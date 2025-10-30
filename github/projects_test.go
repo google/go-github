@@ -619,7 +619,7 @@ func TestProjectV2Field_Marshal(t *testing.T) {
 	testJSONMarshal(t, field, want)
 }
 
-func TestProjectsService_ListProjectItemsForOrg(t *testing.T) {
+func TestProjectsService_ListOrganizationProjectItems(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -636,7 +636,7 @@ func TestProjectsService_ListProjectItemsForOrg(t *testing.T) {
 
 	opts := &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr("2"), Before: Ptr("1"), PerPage: Ptr(50)}, Query: Ptr("status:open")}, Fields: []int64{10, 11}}
 	ctx := t.Context()
-	items, _, err := client.Projects.ListProjectItemsForOrg(ctx, "o", 1, opts)
+	items, _, err := client.Projects.ListOrganizationProjectItems(ctx, "o", 1, opts)
 	if err != nil {
 		t.Fatalf("Projects.ListProjectItemsForOrg returned error: %v", err)
 	}
@@ -646,12 +646,12 @@ func TestProjectsService_ListProjectItemsForOrg(t *testing.T) {
 
 	const methodName = "ListProjectItemsForOrg"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListProjectItemsForOrg(ctx, "\n", 1, opts)
+		_, _, err = client.Projects.ListOrganizationProjectItems(ctx, "\n", 1, opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListProjectItemsForOrg(ctx, "o", 1, opts)
+		got, resp, err := client.Projects.ListOrganizationProjectItems(ctx, "o", 1, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -659,12 +659,12 @@ func TestProjectsService_ListProjectItemsForOrg(t *testing.T) {
 	})
 
 	ctxBypass := context.WithValue(ctx, BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectItemsForOrg(ctxBypass, "o", 1, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}}); err != nil {
+	if _, _, err = client.Projects.ListOrganizationProjectItems(ctxBypass, "o", 1, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
 
-func TestProjectsService_AddProjectItemForOrg(t *testing.T) {
+func TestProjectsService_AddOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -679,7 +679,7 @@ func TestProjectsService_AddProjectItemForOrg(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	item, _, err := client.Projects.AddProjectItemForOrg(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 99})
+	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 99})
 	if err != nil {
 		t.Fatalf("Projects.AddProjectItemForOrg returned error: %v", err)
 	}
@@ -699,7 +699,7 @@ func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "AddProjectItemForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.AddProjectItemForOrg(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 1})
+		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 1})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -707,7 +707,7 @@ func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
 	})
 }
 
-func TestProjectsService_GetProjectItemForOrg(t *testing.T) {
+func TestProjectsService_GetOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
@@ -716,7 +716,7 @@ func TestProjectsService_GetProjectItemForOrg(t *testing.T) {
 	})
 	ctx := t.Context()
 	opts := &GetProjectItemOptions{}
-	item, _, err := client.Projects.GetProjectItemForOrg(ctx, "o", 1, 17, opts)
+	item, _, err := client.Projects.GetOrganizationProjectItem(ctx, "o", 1, 17, opts)
 	if err != nil {
 		t.Fatalf("GetProjectItemForOrg error: %v", err)
 	}
@@ -725,7 +725,7 @@ func TestProjectsService_GetProjectItemForOrg(t *testing.T) {
 	}
 }
 
-func TestProjectsService_GetProjectItemForOrg_error(t *testing.T) {
+func TestProjectsService_GetOrganizationProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
@@ -735,7 +735,7 @@ func TestProjectsService_GetProjectItemForOrg_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "GetProjectItemForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.GetProjectItemForOrg(ctx, "o", 1, 17, &GetProjectItemOptions{})
+		got, resp, err := client.Projects.GetOrganizationProjectItem(ctx, "o", 1, 17, &GetProjectItemOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -743,7 +743,7 @@ func TestProjectsService_GetProjectItemForOrg_error(t *testing.T) {
 	})
 }
 
-func TestProjectsService_UpdateProjectItemForOrg(t *testing.T) {
+func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
@@ -757,7 +757,7 @@ func TestProjectsService_UpdateProjectItemForOrg(t *testing.T) {
 	})
 	archived := true
 	ctx := t.Context()
-	item, _, err := client.Projects.UpdateProjectItemForOrg(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
+	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
 	if err != nil {
 		t.Fatalf("UpdateProjectItemForOrg error: %v", err)
 	}
@@ -766,7 +766,7 @@ func TestProjectsService_UpdateProjectItemForOrg(t *testing.T) {
 	}
 }
 
-func TestProjectsService_UpdateProjectItemForOrg_error(t *testing.T) {
+func TestProjectsService_UpdateOrganizationProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
@@ -777,7 +777,7 @@ func TestProjectsService_UpdateProjectItemForOrg_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "UpdateProjectItemForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateProjectItemForOrg(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
+		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -785,7 +785,7 @@ func TestProjectsService_UpdateProjectItemForOrg_error(t *testing.T) {
 	})
 }
 
-func TestProjectsService_DeleteProjectItemForOrg(t *testing.T) {
+func TestProjectsService_DeleteOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
@@ -793,12 +793,12 @@ func TestProjectsService_DeleteProjectItemForOrg(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 	ctx := t.Context()
-	if _, err := client.Projects.DeleteProjectItemForOrg(ctx, "o", 1, 17); err != nil {
+	if _, err := client.Projects.DeleteOrganizationProjectItem(ctx, "o", 1, 17); err != nil {
 		t.Fatalf("DeleteProjectItemForOrg error: %v", err)
 	}
 }
 
-func TestProjectsService_DeleteProjectItemForOrg_error(t *testing.T) {
+func TestProjectsService_DeleteOrganizationProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
@@ -808,11 +808,11 @@ func TestProjectsService_DeleteProjectItemForOrg_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "DeleteProjectItemForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Projects.DeleteProjectItemForOrg(ctx, "o", 1, 17)
+		return client.Projects.DeleteOrganizationProjectItem(ctx, "o", 1, 17)
 	})
 }
 
-func TestProjectsService_ListProjectItemsForUser(t *testing.T) {
+func TestProjectsService_ListUserProjectItems(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
@@ -821,7 +821,7 @@ func TestProjectsService_ListProjectItemsForUser(t *testing.T) {
 		fmt.Fprint(w, `[{"id":7,"node_id":"PVTI_user"}]`)
 	})
 	ctx := t.Context()
-	items, _, err := client.Projects.ListProjectItemsForUser(ctx, "u", 2, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{PerPage: Ptr(20)}, Query: Ptr("type:issue")}})
+	items, _, err := client.Projects.ListUserProjectItems(ctx, "u", 2, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{PerPage: Ptr(20)}, Query: Ptr("type:issue")}})
 	if err != nil {
 		t.Fatalf("ListProjectItemsForUser error: %v", err)
 	}
@@ -830,7 +830,7 @@ func TestProjectsService_ListProjectItemsForUser(t *testing.T) {
 	}
 }
 
-func TestProjectsService_ListProjectItemsForUser_error(t *testing.T) {
+func TestProjectsService_ListUserProjectItems_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
@@ -840,19 +840,19 @@ func TestProjectsService_ListProjectItemsForUser_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "ListProjectItemsForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListProjectItemsForUser(ctx, "u", 2, nil)
+		got, resp, err := client.Projects.ListUserProjectItems(ctx, "u", 2, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListProjectItemsForUser(ctx, "\n", 2, nil)
+		_, _, err = client.Projects.ListUserProjectItems(ctx, "\n", 2, nil)
 		return err
 	})
 }
 
-func TestProjectsService_AddProjectItemForUser(t *testing.T) {
+func TestProjectsService_AddUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
@@ -865,7 +865,7 @@ func TestProjectsService_AddProjectItemForUser(t *testing.T) {
 		fmt.Fprint(w, `{"id":123,"node_id":"PVTI_new_user"}`)
 	})
 	ctx := t.Context()
-	item, _, err := client.Projects.AddProjectItemForUser(ctx, "u", 2, &AddProjectItemOptions{Type: "PullRequest", ID: 123})
+	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: "PullRequest", ID: 123})
 	if err != nil {
 		t.Fatalf("AddProjectItemForUser error: %v", err)
 	}
@@ -874,7 +874,7 @@ func TestProjectsService_AddProjectItemForUser(t *testing.T) {
 	}
 }
 
-func TestProjectsService_AddProjectItemForUser_error(t *testing.T) {
+func TestProjectsService_AddUserProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
@@ -884,7 +884,7 @@ func TestProjectsService_AddProjectItemForUser_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "AddProjectItemForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.AddProjectItemForUser(ctx, "u", 2, &AddProjectItemOptions{Type: "Issue", ID: 5})
+		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: "Issue", ID: 5})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -892,7 +892,7 @@ func TestProjectsService_AddProjectItemForUser_error(t *testing.T) {
 	})
 }
 
-func TestProjectsService_GetProjectItemForUser(t *testing.T) {
+func TestProjectsService_GetUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
@@ -901,7 +901,7 @@ func TestProjectsService_GetProjectItemForUser(t *testing.T) {
 	})
 	ctx := t.Context()
 	opts := &GetProjectItemOptions{}
-	item, _, err := client.Projects.GetProjectItemForUser(ctx, "u", 2, 55, opts)
+	item, _, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, opts)
 	if err != nil {
 		t.Fatalf("GetProjectItemForUser error: %v", err)
 	}
@@ -910,7 +910,7 @@ func TestProjectsService_GetProjectItemForUser(t *testing.T) {
 	}
 }
 
-func TestProjectsService_GetProjectItemForUser_error(t *testing.T) {
+func TestProjectsService_GetUserProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
@@ -920,7 +920,7 @@ func TestProjectsService_GetProjectItemForUser_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "GetProjectItemForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.GetProjectItemForUser(ctx, "u", 2, 55, &GetProjectItemOptions{})
+		got, resp, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, &GetProjectItemOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -928,7 +928,7 @@ func TestProjectsService_GetProjectItemForUser_error(t *testing.T) {
 	})
 }
 
-func TestProjectsService_UpdateProjectItemForUser(t *testing.T) {
+func TestProjectsService_UpdateUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
@@ -942,7 +942,7 @@ func TestProjectsService_UpdateProjectItemForUser(t *testing.T) {
 	})
 	archived := false
 	ctx := t.Context()
-	item, _, err := client.Projects.UpdateProjectItemForUser(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
+	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
 	if err != nil {
 		t.Fatalf("UpdateProjectItemForUser error: %v", err)
 	}
@@ -951,7 +951,7 @@ func TestProjectsService_UpdateProjectItemForUser(t *testing.T) {
 	}
 }
 
-func TestProjectsService_UpdateProjectItemForUser_error(t *testing.T) {
+func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
@@ -962,7 +962,7 @@ func TestProjectsService_UpdateProjectItemForUser_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "UpdateProjectItemForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateProjectItemForUser(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
+		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -970,7 +970,7 @@ func TestProjectsService_UpdateProjectItemForUser_error(t *testing.T) {
 	})
 }
 
-func TestProjectsService_DeleteProjectItemForUser(t *testing.T) {
+func TestProjectsService_DeleteUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
@@ -978,12 +978,12 @@ func TestProjectsService_DeleteProjectItemForUser(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 	ctx := t.Context()
-	if _, err := client.Projects.DeleteProjectItemForUser(ctx, "u", 2, 55); err != nil {
+	if _, err := client.Projects.DeleteUserProjectItem(ctx, "u", 2, 55); err != nil {
 		t.Fatalf("DeleteProjectItemForUser error: %v", err)
 	}
 }
 
-func TestProjectsService_DeleteProjectItemForUser_error(t *testing.T) {
+func TestProjectsService_DeleteUserProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
@@ -993,6 +993,6 @@ func TestProjectsService_DeleteProjectItemForUser_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "DeleteProjectItemForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Projects.DeleteProjectItemForUser(ctx, "u", 2, 55)
+		return client.Projects.DeleteUserProjectItem(ctx, "u", 2, 55)
 	})
 }

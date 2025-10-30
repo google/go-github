@@ -313,12 +313,12 @@ type UpdateProjectItemOptions struct {
 	Fields []*ProjectV2Field `json:"fields,omitempty"`
 }
 
-// ListProjectItemsForOrg lists items for an organization owned project.
+// ListOrganizationProjectItems lists items for an organization owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#list-items-for-an-organization-owned-project
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/items
-func (s *ProjectsService) ListProjectItemsForOrg(ctx context.Context, org string, projectNumber int, opts *ListProjectItemsOptions) ([]*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org string, projectNumber int, opts *ListProjectItemsOptions) ([]*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items", org, projectNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -338,12 +338,12 @@ func (s *ProjectsService) ListProjectItemsForOrg(ctx context.Context, org string
 	return items, resp, nil
 }
 
-// AddProjectItemForOrg adds an issue or pull request item to an organization owned project.
+// AddOrganizationProjectItem adds an issue or pull request item to an organization owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#add-item-to-organization-owned-project
 //
 //meta:operation POST /orgs/{org}/projectsV2/{project_number}/items
-func (s *ProjectsService) AddProjectItemForOrg(ctx context.Context, org string, projectNumber int, opts *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org string, projectNumber int, opts *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items", org, projectNumber)
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
@@ -358,12 +358,12 @@ func (s *ProjectsService) AddProjectItemForOrg(ctx context.Context, org string, 
 	return item, resp, nil
 }
 
-// GetProjectItemForOrg gets a single item from an organization owned project.
+// GetOrganizationProjectItem gets a single item from an organization owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#get-an-item-for-an-organization-owned-project
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) GetProjectItemForOrg(ctx context.Context, org string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items/%v", org, projectNumber, itemID)
 	req, err := s.client.NewRequest("GET", u, opts)
 	if err != nil {
@@ -377,12 +377,12 @@ func (s *ProjectsService) GetProjectItemForOrg(ctx context.Context, org string, 
 	return item, resp, nil
 }
 
-// UpdateProjectItemForOrg updates an item in an organization owned project.
+// UpdateOrganizationProjectItem updates an item in an organization owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#update-project-item-for-organization
 //
 //meta:operation PATCH /orgs/{org}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) UpdateProjectItemForOrg(ctx context.Context, org string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items/%v", org, projectNumber, itemID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
@@ -396,12 +396,12 @@ func (s *ProjectsService) UpdateProjectItemForOrg(ctx context.Context, org strin
 	return item, resp, nil
 }
 
-// DeleteProjectItemForOrg deletes an item from an organization owned project.
+// DeleteOrganizationProjectItem deletes an item from an organization owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#delete-project-item-for-organization
 //
 //meta:operation DELETE /orgs/{org}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) DeleteProjectItemForOrg(ctx context.Context, org string, projectNumber int, itemID int64) (*Response, error) {
+func (s *ProjectsService) DeleteOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items/%v", org, projectNumber, itemID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -410,12 +410,12 @@ func (s *ProjectsService) DeleteProjectItemForOrg(ctx context.Context, org strin
 	return s.client.Do(ctx, req, nil)
 }
 
-// ListProjectItemsForUser lists items for a user owned project.
+// ListUserProjectItems lists items for a user owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#list-items-for-a-user-owned-project
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/items
-func (s *ProjectsService) ListProjectItemsForUser(ctx context.Context, username string, projectNumber int, opts *ListProjectItemsOptions) ([]*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username string, projectNumber int, opts *ListProjectItemsOptions) ([]*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items", username, projectNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -433,12 +433,12 @@ func (s *ProjectsService) ListProjectItemsForUser(ctx context.Context, username 
 	return items, resp, nil
 }
 
-// AddProjectItemForUser adds an issue or pull request item to a user owned project.
+// AddUserProjectItem adds an issue or pull request item to a user owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#add-item-to-user-owned-project
 //
 //meta:operation POST /users/{username}/projectsV2/{project_number}/items
-func (s *ProjectsService) AddProjectItemForUser(ctx context.Context, username string, projectNumber int, opts *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username string, projectNumber int, opts *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items", username, projectNumber)
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
@@ -452,12 +452,12 @@ func (s *ProjectsService) AddProjectItemForUser(ctx context.Context, username st
 	return item, resp, nil
 }
 
-// GetProjectItemForUser gets a single item from a user owned project.
+// GetUserProjectItem gets a single item from a user owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#get-an-item-for-a-user-owned-project
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) GetProjectItemForUser(ctx context.Context, username string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items/%v", username, projectNumber, itemID)
 	req, err := s.client.NewRequest("GET", u, opts)
 	if err != nil {
@@ -471,12 +471,12 @@ func (s *ProjectsService) GetProjectItemForUser(ctx context.Context, username st
 	return item, resp, nil
 }
 
-// UpdateProjectItemForUser updates an item in a user owned project.
+// UpdateUserProjectItem updates an item in a user owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#update-project-item-for-user
 //
 //meta:operation PATCH /users/{username}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) UpdateProjectItemForUser(ctx context.Context, username string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items/%v", username, projectNumber, itemID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
@@ -490,12 +490,12 @@ func (s *ProjectsService) UpdateProjectItemForUser(ctx context.Context, username
 	return item, resp, nil
 }
 
-// DeleteProjectItemForUser deletes an item from a user owned project.
+// DeleteUserProjectItem deletes an item from a user owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#delete-project-item-for-user
 //
 //meta:operation DELETE /users/{username}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) DeleteProjectItemForUser(ctx context.Context, username string, projectNumber int, itemID int64) (*Response, error) {
+func (s *ProjectsService) DeleteUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64) (*Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items/%v", username, projectNumber, itemID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
