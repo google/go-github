@@ -100,12 +100,12 @@ type ProjectV2Field struct {
 	UpdatedAt *Timestamp              `json:"updated_at,omitempty"`
 }
 
-// ListProjectsForOrg lists Projects V2 for an organization.
+// ListOrganizationProjects lists Projects V2 for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/projects#list-projects-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2
-func (s *ProjectsService) ListProjectsForOrg(ctx context.Context, org string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
+func (s *ProjectsService) ListOrganizationProjects(ctx context.Context, org string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -125,12 +125,12 @@ func (s *ProjectsService) ListProjectsForOrg(ctx context.Context, org string, op
 	return projects, resp, nil
 }
 
-// GetProjectForOrg gets a Projects V2 project for an organization by ID.
+// GetOrganizationProject gets a Projects V2 project for an organization by ID.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}
-func (s *ProjectsService) GetProjectForOrg(ctx context.Context, org string, projectNumber int) (*ProjectV2, *Response, error) {
+func (s *ProjectsService) GetOrganizationProject(ctx context.Context, org string, projectNumber int) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v", org, projectNumber)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -145,12 +145,12 @@ func (s *ProjectsService) GetProjectForOrg(ctx context.Context, org string, proj
 	return project, resp, nil
 }
 
-// ListProjectsForUser lists Projects V2 for a user.
+// ListUserProjects lists Projects V2 for a user.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/projects#list-projects-for-user
 //
 //meta:operation GET /users/{username}/projectsV2
-func (s *ProjectsService) ListProjectsForUser(ctx context.Context, username string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
+func (s *ProjectsService) ListUserProjects(ctx context.Context, username string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2", username)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -169,12 +169,12 @@ func (s *ProjectsService) ListProjectsForUser(ctx context.Context, username stri
 	return projects, resp, nil
 }
 
-// GetProjectForUser gets a Projects V2 project for a user by ID.
+// GetUserProject gets a Projects V2 project for a user by ID.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-user
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}
-func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string, projectNumber int) (*ProjectV2, *Response, error) {
+func (s *ProjectsService) GetUserProject(ctx context.Context, username string, projectNumber int) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v", username, projectNumber)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
