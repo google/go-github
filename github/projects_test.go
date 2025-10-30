@@ -205,7 +205,7 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 
 	opts := &ListProjectsOptions{Query: Ptr("text"), ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr("2"), Before: Ptr("1")}}
 	ctx := t.Context()
-	fields, _, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
+	fields, _, err := client.Projects.ListOrganizationProjectFields(ctx, "o", 1, opts)
 	if err != nil {
 		t.Fatalf("Projects.ListProjectFieldsForOrg returned error: %v", err)
 	}
@@ -218,23 +218,23 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 
 	const methodName = "ListProjectFieldsForOrg"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListProjectFieldsForOrg(ctx, "\n", 1, opts)
+		_, _, err = client.Projects.ListOrganizationProjectFields(ctx, "\n", 1, opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
+		got, resp, err := client.Projects.ListOrganizationProjectFields(ctx, "o", 1, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
 	ctxBypass := context.WithValue(ctx, BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectFieldsForOrg(ctxBypass, "o", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}); err != nil {
+	if _, _, err = client.Projects.ListOrganizationProjectFields(ctxBypass, "o", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
 
-func TestProjectsService_ListProjectFieldsForUser(t *testing.T) {
+func TestProjectsService_ListUserProjectFields(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -274,7 +274,7 @@ func TestProjectsService_ListProjectFieldsForUser(t *testing.T) {
 
 	opts := &ListProjectsOptions{Query: Ptr("text"), ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr("2"), Before: Ptr("1")}}
 	ctx := t.Context()
-	fields, _, err := client.Projects.ListProjectFieldsForUser(ctx, "u", 1, opts)
+	fields, _, err := client.Projects.ListUserProjectFields(ctx, "u", 1, opts)
 	if err != nil {
 		t.Fatalf("Projects.ListProjectFieldsForUser returned error: %v", err)
 	}
@@ -287,23 +287,23 @@ func TestProjectsService_ListProjectFieldsForUser(t *testing.T) {
 
 	const methodName = "ListProjectFieldsForUser"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListProjectFieldsForUser(ctx, "\n", 1, opts)
+		_, _, err = client.Projects.ListUserProjectFields(ctx, "\n", 1, opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListProjectFieldsForUser(ctx, "u", 1, opts)
+		got, resp, err := client.Projects.ListUserProjectFields(ctx, "u", 1, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
 	ctxBypass := context.WithValue(ctx, BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectFieldsForUser(ctxBypass, "u", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}); err != nil {
+	if _, _, err = client.Projects.ListUserProjectFields(ctxBypass, "u", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
 
-func TestProjectsService_GetProjectFieldForOrg(t *testing.T) {
+func TestProjectsService_GetOrganizationProjectField(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -326,7 +326,7 @@ func TestProjectsService_GetProjectFieldForOrg(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	field, _, err := client.Projects.GetProjectFieldForOrg(ctx, "o", 1, 1)
+	field, _, err := client.Projects.GetOrganizationProjectField(ctx, "o", 1, 1)
 	if err != nil {
 		t.Fatalf("Projects.GetProjectFieldForOrg returned error: %v", err)
 	}
@@ -336,7 +336,7 @@ func TestProjectsService_GetProjectFieldForOrg(t *testing.T) {
 
 	const methodName = "GetProjectFieldForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.GetProjectFieldForOrg(ctx, "o", 1, 1)
+		got, resp, err := client.Projects.GetOrganizationProjectField(ctx, "o", 1, 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -344,7 +344,7 @@ func TestProjectsService_GetProjectFieldForOrg(t *testing.T) {
 	})
 }
 
-func TestProjectsService_GetProjectFieldForUser(t *testing.T) {
+func TestProjectsService_GetUserProjectField(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -367,7 +367,7 @@ func TestProjectsService_GetProjectFieldForUser(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	field, _, err := client.Projects.GetProjectFieldForUser(ctx, "u", 1, 3)
+	field, _, err := client.Projects.GetUserProjectField(ctx, "u", 1, 3)
 	if err != nil {
 		t.Fatalf("Projects.GetProjectFieldForUser returned error: %v", err)
 	}
@@ -377,7 +377,7 @@ func TestProjectsService_GetProjectFieldForUser(t *testing.T) {
 
 	const methodName = "GetProjectFieldForUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.GetProjectFieldForUser(ctx, "u", 1, 3)
+		got, resp, err := client.Projects.GetUserProjectField(ctx, "u", 1, 3)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -452,7 +452,7 @@ func TestProjectsService_ListProjectsForUser_error(t *testing.T) {
 	})
 }
 
-func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
+func TestProjectsService_ListOrganizationProjectFields_pagination(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -478,7 +478,7 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	first, resp, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, nil)
+	first, resp, err := client.Projects.ListOrganizationProjectFields(ctx, "o", 1, nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
 	}
@@ -490,7 +490,7 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	}
 
 	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr(resp.After)}}
-	second, resp2, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
+	second, resp2, err := client.Projects.ListOrganizationProjectFields(ctx, "o", 1, opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
 	}

@@ -189,12 +189,12 @@ func (s *ProjectsService) GetProjectForUser(ctx context.Context, username string
 	return project, resp, nil
 }
 
-// ListProjectFieldsForOrg lists Projects V2 for an organization.
+// ListOrganizationProjectFields lists Projects V2 for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields#list-project-fields-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields
-func (s *ProjectsService) ListProjectFieldsForOrg(ctx context.Context, org string, projectNumber int, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
+func (s *ProjectsService) ListOrganizationProjectFields(ctx context.Context, org string, projectNumber int, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/fields", org, projectNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -214,12 +214,12 @@ func (s *ProjectsService) ListProjectFieldsForOrg(ctx context.Context, org strin
 	return fields, resp, nil
 }
 
-// ListProjectFieldsForUser lists Projects V2 for a user.
+// ListUserProjectFields lists Projects V2 for a user.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields#list-project-fields-for-user
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/fields
-func (s *ProjectsService) ListProjectFieldsForUser(ctx context.Context, user string, projectNumber int, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
+func (s *ProjectsService) ListUserProjectFields(ctx context.Context, user string, projectNumber int, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/fields", user, projectNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -239,12 +239,12 @@ func (s *ProjectsService) ListProjectFieldsForUser(ctx context.Context, user str
 	return fields, resp, nil
 }
 
-// GetProjectFieldForOrg gets a single project field from an organization owned project.
+// GetOrganizationProjectField gets a single project field from an organization owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields#get-project-field-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields/{field_id}
-func (s *ProjectsService) GetProjectFieldForOrg(ctx context.Context, org string, projectNumber int, fieldID int64) (*ProjectV2Field, *Response, error) {
+func (s *ProjectsService) GetOrganizationProjectField(ctx context.Context, org string, projectNumber int, fieldID int64) (*ProjectV2Field, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/fields/%v", org, projectNumber, fieldID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -259,12 +259,12 @@ func (s *ProjectsService) GetProjectFieldForOrg(ctx context.Context, org string,
 	return field, resp, nil
 }
 
-// GetProjectFieldForUser gets a single project field from a user owned project.
+// GetUserProjectField gets a single project field from a user owned project.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields#get-project-field-for-user
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/fields/{field_id}
-func (s *ProjectsService) GetProjectFieldForUser(ctx context.Context, user string, projectNumber int, fieldID int64) (*ProjectV2Field, *Response, error) {
+func (s *ProjectsService) GetUserProjectField(ctx context.Context, user string, projectNumber int, fieldID int64) (*ProjectV2Field, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/fields/%v", user, projectNumber, fieldID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

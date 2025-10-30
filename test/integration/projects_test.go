@@ -66,9 +66,9 @@ func TestProjectsV2_Org(t *testing.T) {
 		t.Fatalf("GetProjectForOrg returned unexpected project number: got %+v want %d", proj.Number, projectNumber)
 	}
 
-	_, _, err = client.Projects.ListProjectFieldsForOrg(ctx, org, projectNumber, nil)
+	_, _, err = client.Projects.ListOrganizationProjectFields(ctx, org, projectNumber, nil)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectFieldsForOrg returned error: %v. Fields listing might require extra permissions", err)
+		t.Fatalf("Projects.ListOrganizationProjectFields returned error: %v. Fields listing might require extra permissions", err)
 	}
 }
 
