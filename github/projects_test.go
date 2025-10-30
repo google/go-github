@@ -13,7 +13,7 @@ import (
 	"testing"
 )
 
-func TestProjectsService_ListProjectsForOrg(t *testing.T) {
+func TestProjectsService_ListOrganizationProjects(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -34,13 +34,13 @@ func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 	ctx := t.Context()
 	projects, _, err := client.Projects.ListOrganizationProjects(ctx, "o", opts)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectsForOrg returned error: %v", err)
+		t.Fatalf("Projects.ListOrganizationProjects returned error: %v", err)
 	}
 	if len(projects) != 1 || projects[0].GetID() != 1 || projects[0].GetTitle() != "T1" {
-		t.Fatalf("Projects.ListProjectsForOrg returned %+v", projects)
+		t.Fatalf("Projects.ListOrganizationProjects returned %+v", projects)
 	}
 
-	const methodName = "ListProjectsForOrg"
+	const methodName = "ListOrganizationProjects"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Projects.ListOrganizationProjects(ctx, "\n", opts)
 		return err
@@ -73,13 +73,13 @@ func TestProjectsService_GetOrganizationProject(t *testing.T) {
 	ctx := t.Context()
 	project, _, err := client.Projects.GetOrganizationProject(ctx, "o", 1)
 	if err != nil {
-		t.Fatalf("Projects.GetProjectForOrg returned error: %v", err)
+		t.Fatalf("Projects.GetOrganizationProject returned error: %v", err)
 	}
 	if project.GetID() != 1 || project.GetTitle() != "OrgProj" {
-		t.Fatalf("Projects.GetProjectForOrg returned %+v", project)
+		t.Fatalf("Projects.GetOrganizationProject returned %+v", project)
 	}
 
-	const methodName = "GetProjectForOrg"
+	const methodName = "GetOrganizationProject"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetOrganizationProject(ctx, "o", 1)
 		if got != nil {
@@ -110,13 +110,13 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 	var ctxBypass context.Context
 	projects, _, err := client.Projects.ListUserProjects(ctx, "u", opts)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectsForUser returned error: %v", err)
+		t.Fatalf("Projects.ListUserProjects returned error: %v", err)
 	}
 	if len(projects) != 1 || projects[0].GetID() != 2 || projects[0].GetTitle() != "UProj" {
-		t.Fatalf("Projects.ListProjectsForUser returned %+v", projects)
+		t.Fatalf("Projects.ListUserProjects returned %+v", projects)
 	}
 
-	const methodName = "ListProjectsForUser"
+	const methodName = "ListUserProjects"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Projects.ListUserProjects(ctx, "\n", opts)
 		return err
@@ -149,13 +149,13 @@ func TestProjectsService_GetUserProject(t *testing.T) {
 	ctx := t.Context()
 	project, _, err := client.Projects.GetUserProject(ctx, "u", 3)
 	if err != nil {
-		t.Fatalf("Projects.GetProjectForUser returned error: %v", err)
+		t.Fatalf("Projects.GetUserProject returned error: %v", err)
 	}
 	if project.GetID() != 3 || project.GetTitle() != "UserProj" {
-		t.Fatalf("Projects.GetProjectForUser returned %+v", project)
+		t.Fatalf("Projects.GetUserProject returned %+v", project)
 	}
 
-	const methodName = "GetProjectForUser"
+	const methodName = "GetUserProject"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetUserProject(ctx, "u", 3)
 		if got != nil {
@@ -165,7 +165,7 @@ func TestProjectsService_GetUserProject(t *testing.T) {
 	})
 }
 
-func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
+func TestProjectsService_ListOrganizationProjectFields(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -207,16 +207,16 @@ func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
 	ctx := t.Context()
 	fields, _, err := client.Projects.ListOrganizationProjectFields(ctx, "o", 1, opts)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectFieldsForOrg returned error: %v", err)
+		t.Fatalf("Projects.ListOrganizationProjectFields returned error: %v", err)
 	}
 	if len(fields) != 2 {
-		t.Fatalf("Projects.ListProjectFieldsForOrg returned %d fields, want 2", len(fields))
+		t.Fatalf("Projects.ListOrganizationProjectFields returned %d fields, want 2", len(fields))
 	}
 	if fields[0].ID == nil || *fields[0].ID != 1 || fields[1].ID == nil || *fields[1].ID != 2 {
 		t.Fatalf("unexpected field IDs: %+v", fields)
 	}
 
-	const methodName = "ListProjectFieldsForOrg"
+	const methodName = "ListOrganizationProjectFields"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Projects.ListOrganizationProjectFields(ctx, "\n", 1, opts)
 		return err
@@ -276,16 +276,16 @@ func TestProjectsService_ListUserProjectFields(t *testing.T) {
 	ctx := t.Context()
 	fields, _, err := client.Projects.ListUserProjectFields(ctx, "u", 1, opts)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectFieldsForUser returned error: %v", err)
+		t.Fatalf("Projects.ListUserProjectFields returned error: %v", err)
 	}
 	if len(fields) != 2 {
-		t.Fatalf("Projects.ListProjectFieldsForUser returned %d fields, want 2", len(fields))
+		t.Fatalf("Projects.ListUserProjectFields returned %d fields, want 2", len(fields))
 	}
 	if fields[0].ID == nil || *fields[0].ID != 1 || fields[1].ID == nil || *fields[1].ID != 2 {
 		t.Fatalf("unexpected field IDs: %+v", fields)
 	}
 
-	const methodName = "ListProjectFieldsForUser"
+	const methodName = "ListUserProjectFields"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Projects.ListUserProjectFields(ctx, "\n", 1, opts)
 		return err
@@ -328,13 +328,13 @@ func TestProjectsService_GetOrganizationProjectField(t *testing.T) {
 	ctx := t.Context()
 	field, _, err := client.Projects.GetOrganizationProjectField(ctx, "o", 1, 1)
 	if err != nil {
-		t.Fatalf("Projects.GetProjectFieldForOrg returned error: %v", err)
+		t.Fatalf("Projects.GetOrganizationProjectField returned error: %v", err)
 	}
 	if field == nil || field.ID == nil || *field.ID != 1 {
 		t.Fatalf("unexpected field: %+v", field)
 	}
 
-	const methodName = "GetProjectFieldForOrg"
+	const methodName = "GetOrganizationProjectField"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetOrganizationProjectField(ctx, "o", 1, 1)
 		if got != nil {
@@ -369,13 +369,13 @@ func TestProjectsService_GetUserProjectField(t *testing.T) {
 	ctx := t.Context()
 	field, _, err := client.Projects.GetUserProjectField(ctx, "u", 1, 3)
 	if err != nil {
-		t.Fatalf("Projects.GetProjectFieldForUser returned error: %v", err)
+		t.Fatalf("Projects.GetUserProjectField returned error: %v", err)
 	}
 	if field == nil || field.ID == nil || *field.ID != 3 {
 		t.Fatalf("unexpected field: %+v", field)
 	}
 
-	const methodName = "GetProjectFieldForUser"
+	const methodName = "GetUserProjectField"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetUserProjectField(ctx, "u", 1, 3)
 		if got != nil {
@@ -429,7 +429,7 @@ func TestProjectsService_ListUserProjects_pagination(t *testing.T) {
 	}
 }
 
-func TestProjectsService_ListProjectsForUser_error(t *testing.T) {
+func TestProjectsService_ListUserProjects_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2", func(w http.ResponseWriter, r *http.Request) {
@@ -437,7 +437,7 @@ func TestProjectsService_ListProjectsForUser_error(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 	ctx := t.Context()
-	const methodName = "ListProjectsForUser"
+	const methodName = "ListUserProjects"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.ListUserProjects(ctx, "u", nil)
 		if got != nil {
@@ -638,13 +638,13 @@ func TestProjectsService_ListOrganizationProjectItems(t *testing.T) {
 	ctx := t.Context()
 	items, _, err := client.Projects.ListOrganizationProjectItems(ctx, "o", 1, opts)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectItemsForOrg returned error: %v", err)
+		t.Fatalf("Projects.ListOrganizationProjectItems returned error: %v", err)
 	}
 	if len(items) != 1 || items[0].GetID() != 17 {
-		t.Fatalf("Projects.ListProjectItemsForOrg returned %+v", items)
+		t.Fatalf("Projects.ListOrganizationProjectItems returned %+v", items)
 	}
 
-	const methodName = "ListProjectItemsForOrg"
+	const methodName = "ListOrganizationProjectItems"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Projects.ListOrganizationProjectItems(ctx, "\n", 1, opts)
 		return err
@@ -681,7 +681,7 @@ func TestProjectsService_AddOrganizationProjectItem(t *testing.T) {
 	ctx := t.Context()
 	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 99})
 	if err != nil {
-		t.Fatalf("Projects.AddProjectItemForOrg returned error: %v", err)
+		t.Fatalf("Projects.AddOrganizationProjectItem returned error: %v", err)
 	}
 	if item.GetID() != 99 {
 		t.Fatalf("unexpected item: %+v", item)
@@ -697,7 +697,7 @@ func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
 		fmt.Fprint(w, `{"id":1}`)
 	})
 	ctx := t.Context()
-	const methodName = "AddProjectItemForOrg"
+	const methodName = "AddOrganizationProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 1})
 		if got != nil {
@@ -718,7 +718,7 @@ func TestProjectsService_GetOrganizationProjectItem(t *testing.T) {
 	opts := &GetProjectItemOptions{}
 	item, _, err := client.Projects.GetOrganizationProjectItem(ctx, "o", 1, 17, opts)
 	if err != nil {
-		t.Fatalf("GetProjectItemForOrg error: %v", err)
+		t.Fatalf("GetOrganizationProjectItem error: %v", err)
 	}
 	if item.GetID() != 17 {
 		t.Fatalf("unexpected item: %+v", item)
@@ -733,7 +733,7 @@ func TestProjectsService_GetOrganizationProjectItem_error(t *testing.T) {
 		fmt.Fprint(w, `{"id":17}`)
 	})
 	ctx := t.Context()
-	const methodName = "GetProjectItemForOrg"
+	const methodName = "GetOrganizationProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetOrganizationProjectItem(ctx, "o", 1, 17, &GetProjectItemOptions{})
 		if got != nil {
@@ -759,7 +759,7 @@ func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 	ctx := t.Context()
 	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
 	if err != nil {
-		t.Fatalf("UpdateProjectItemForOrg error: %v", err)
+		t.Fatalf("UpdateOrganizationProjectItem error: %v", err)
 	}
 	if item.GetID() != 17 {
 		t.Fatalf("unexpected item: %+v", item)
@@ -794,7 +794,7 @@ func TestProjectsService_DeleteOrganizationProjectItem(t *testing.T) {
 	})
 	ctx := t.Context()
 	if _, err := client.Projects.DeleteOrganizationProjectItem(ctx, "o", 1, 17); err != nil {
-		t.Fatalf("DeleteProjectItemForOrg error: %v", err)
+		t.Fatalf("DeleteOrganizationProjectItem error: %v", err)
 	}
 }
 
@@ -806,7 +806,7 @@ func TestProjectsService_DeleteOrganizationProjectItem_error(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 	ctx := t.Context()
-	const methodName = "DeleteProjectItemForOrg"
+	const methodName = "DeleteOrganizationProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Projects.DeleteOrganizationProjectItem(ctx, "o", 1, 17)
 	})
@@ -823,7 +823,7 @@ func TestProjectsService_ListUserProjectItems(t *testing.T) {
 	ctx := t.Context()
 	items, _, err := client.Projects.ListUserProjectItems(ctx, "u", 2, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{PerPage: Ptr(20)}, Query: Ptr("type:issue")}})
 	if err != nil {
-		t.Fatalf("ListProjectItemsForUser error: %v", err)
+		t.Fatalf("ListUserProjectItems error: %v", err)
 	}
 	if len(items) != 1 || items[0].GetID() != 7 {
 		t.Fatalf("unexpected items: %+v", items)
@@ -838,7 +838,7 @@ func TestProjectsService_ListUserProjectItems_error(t *testing.T) {
 		fmt.Fprint(w, `[]`)
 	})
 	ctx := t.Context()
-	const methodName = "ListProjectItemsForUser"
+	const methodName = "ListUserProjectItems"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.ListUserProjectItems(ctx, "u", 2, nil)
 		if got != nil {
@@ -867,7 +867,7 @@ func TestProjectsService_AddUserProjectItem(t *testing.T) {
 	ctx := t.Context()
 	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: "PullRequest", ID: 123})
 	if err != nil {
-		t.Fatalf("AddProjectItemForUser error: %v", err)
+		t.Fatalf("AddUserProjectItem error: %v", err)
 	}
 	if item.GetID() != 123 {
 		t.Fatalf("unexpected item: %+v", item)
@@ -882,7 +882,7 @@ func TestProjectsService_AddUserProjectItem_error(t *testing.T) {
 		fmt.Fprint(w, `{"id":5}`)
 	})
 	ctx := t.Context()
-	const methodName = "AddProjectItemForUser"
+	const methodName = "AddUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: "Issue", ID: 5})
 		if got != nil {
@@ -903,7 +903,7 @@ func TestProjectsService_GetUserProjectItem(t *testing.T) {
 	opts := &GetProjectItemOptions{}
 	item, _, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, opts)
 	if err != nil {
-		t.Fatalf("GetProjectItemForUser error: %v", err)
+		t.Fatalf("GetUserProjectItem error: %v", err)
 	}
 	if item.GetID() != 55 {
 		t.Fatalf("unexpected item: %+v", item)
@@ -918,7 +918,7 @@ func TestProjectsService_GetUserProjectItem_error(t *testing.T) {
 		fmt.Fprint(w, `{"id":55}`)
 	})
 	ctx := t.Context()
-	const methodName = "GetProjectItemForUser"
+	const methodName = "GetUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, &GetProjectItemOptions{})
 		if got != nil {
@@ -944,7 +944,7 @@ func TestProjectsService_UpdateUserProjectItem(t *testing.T) {
 	ctx := t.Context()
 	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
 	if err != nil {
-		t.Fatalf("UpdateProjectItemForUser error: %v", err)
+		t.Fatalf("UpdateUserProjectItem error: %v", err)
 	}
 	if item.GetID() != 55 {
 		t.Fatalf("unexpected item: %+v", item)
@@ -960,7 +960,7 @@ func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
 	})
 	archived := false
 	ctx := t.Context()
-	const methodName = "UpdateProjectItemForUser"
+	const methodName = "UpdateUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
 		if got != nil {
@@ -979,7 +979,7 @@ func TestProjectsService_DeleteUserProjectItem(t *testing.T) {
 	})
 	ctx := t.Context()
 	if _, err := client.Projects.DeleteUserProjectItem(ctx, "u", 2, 55); err != nil {
-		t.Fatalf("DeleteProjectItemForUser error: %v", err)
+		t.Fatalf("DeleteUserProjectItem error: %v", err)
 	}
 }
 
@@ -991,7 +991,7 @@ func TestProjectsService_DeleteUserProjectItem_error(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 	ctx := t.Context()
-	const methodName = "DeleteProjectItemForUser"
+	const methodName = "DeleteUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Projects.DeleteUserProjectItem(ctx, "u", 2, 55)
 	})
