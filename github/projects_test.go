@@ -8,11 +8,12 @@ package github
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"testing"
 )
 
-func TestProjectsService_ListProjectsForOrg(t *testing.T) {
+func TestProjectsService_ListOrganizationProjects(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -29,24 +30,24 @@ func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1,"title":"T1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 	})
 
-	opts := &ListProjectsOptions{Query: "alpha", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
+	opts := &ListProjectsOptions{Query: Ptr("alpha"), ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr("2"), Before: Ptr("1")}}
 	ctx := t.Context()
-	projects, _, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
+	projects, _, err := client.Projects.ListOrganizationProjects(ctx, "o", opts)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectsForOrg returned error: %v", err)
+		t.Fatalf("Projects.ListOrganizationProjects returned error: %v", err)
 	}
 	if len(projects) != 1 || projects[0].GetID() != 1 || projects[0].GetTitle() != "T1" {
-		t.Fatalf("Projects.ListProjectsForOrg returned %+v", projects)
+		t.Fatalf("Projects.ListOrganizationProjects returned %+v", projects)
 	}
 
-	const methodName = "ListProjectsForOrg"
+	const methodName = "ListOrganizationProjects"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListProjectsForOrg(ctx, "\n", opts)
+		_, _, err = client.Projects.ListOrganizationProjects(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
+		got, resp, err := client.Projects.ListOrganizationProjects(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -55,12 +56,12 @@ func TestProjectsService_ListProjectsForOrg(t *testing.T) {
 
 	// still allow both set (no validation enforced) – ensure it does not error
 	ctxBypass := context.WithValue(t.Context(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectsForOrg(ctxBypass, "o", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
+	if _, _, err = client.Projects.ListOrganizationProjects(ctxBypass, "o", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
 
-func TestProjectsService_GetProjectForOrg(t *testing.T) {
+func TestProjectsService_GetOrganizationProject(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -70,17 +71,17 @@ func TestProjectsService_GetProjectForOrg(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	project, _, err := client.Projects.GetProjectForOrg(ctx, "o", 1)
+	project, _, err := client.Projects.GetOrganizationProject(ctx, "o", 1)
 	if err != nil {
-		t.Fatalf("Projects.GetProjectForOrg returned error: %v", err)
+		t.Fatalf("Projects.GetOrganizationProject returned error: %v", err)
 	}
 	if project.GetID() != 1 || project.GetTitle() != "OrgProj" {
-		t.Fatalf("Projects.GetProjectForOrg returned %+v", project)
+		t.Fatalf("Projects.GetOrganizationProject returned %+v", project)
 	}
 
-	const methodName = "GetProjectForOrg"
+	const methodName = "GetOrganizationProject"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.GetProjectForOrg(ctx, "o", 1)
+		got, resp, err := client.Projects.GetOrganizationProject(ctx, "o", 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -104,25 +105,25 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 		fmt.Fprint(w, `[{"id":2,"title":"UProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 	})
 
-	opts := &ListProjectsOptions{Query: "beta", ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "1", After: "2", PerPage: 2}}
+	opts := &ListProjectsOptions{Query: Ptr("beta"), ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(2)}}
 	ctx := t.Context()
 	var ctxBypass context.Context
-	projects, _, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
+	projects, _, err := client.Projects.ListUserProjects(ctx, "u", opts)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectsForUser returned error: %v", err)
+		t.Fatalf("Projects.ListUserProjects returned error: %v", err)
 	}
 	if len(projects) != 1 || projects[0].GetID() != 2 || projects[0].GetTitle() != "UProj" {
-		t.Fatalf("Projects.ListProjectsForUser returned %+v", projects)
+		t.Fatalf("Projects.ListUserProjects returned %+v", projects)
 	}
 
-	const methodName = "ListProjectsForUser"
+	const methodName = "ListUserProjects"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListProjectsForUser(ctx, "\n", opts)
+		_, _, err = client.Projects.ListUserProjects(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
+		got, resp, err := client.Projects.ListUserProjects(ctx, "u", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -131,32 +132,32 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 
 	// still allow both set (no validation enforced) – ensure it does not error
 	ctxBypass = context.WithValue(t.Context(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectsForUser(ctxBypass, "u", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
+	if _, _, err = client.Projects.ListUserProjects(ctxBypass, "u", &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}); err != nil {
 		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
 
-func TestProjectsService_GetProjectForUser(t *testing.T) {
+func TestProjectsService_GetUserProject(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/users/u/projectsV2/2", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/users/u/projectsV2/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":2,"title":"UProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
+		fmt.Fprint(w, `{"id":3,"title":"UserProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
 	})
 
 	ctx := t.Context()
-	project, _, err := client.Projects.GetProjectForUser(ctx, "u", 2)
+	project, _, err := client.Projects.GetUserProject(ctx, "u", 3)
 	if err != nil {
-		t.Fatalf("Projects.GetProjectForUser returned error: %v", err)
+		t.Fatalf("Projects.GetUserProject returned error: %v", err)
 	}
-	if project.GetID() != 2 || project.GetTitle() != "UProj" {
-		t.Fatalf("Projects.GetProjectForUser returned %+v", project)
+	if project.GetID() != 3 || project.GetTitle() != "UserProj" {
+		t.Fatalf("Projects.GetUserProject returned %+v", project)
 	}
 
-	const methodName = "GetProjectForUser"
+	const methodName = "GetUserProject"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.GetProjectForUser(ctx, "u", 2)
+		got, resp, err := client.Projects.GetUserProject(ctx, "u", 3)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -164,80 +165,247 @@ func TestProjectsService_GetProjectForUser(t *testing.T) {
 	})
 }
 
-func TestProjectsService_ListProjectsForOrg_pagination(t *testing.T) {
+func TestProjectsService_ListOrganizationProjectFields(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	// First page returns a Link header with rel="next" containing an after cursor (after=cursor2)
-	mux.HandleFunc("/orgs/o/projectsV2", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/projectsV2/1/fields", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
 		q := r.URL.Query()
-		after := q.Get("after")
-		before := q.Get("before")
-		if after == "" && before == "" {
-			// first request
-			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2?after=cursor2>; rel=\"next\"")
-			fmt.Fprint(w, `[{"id":1,"title":"P1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+		if q.Get("before") == "b" && q.Get("after") == "a" { // bypass scenario
+			fmt.Fprint(w, `[]`)
 			return
 		}
-		if after == "cursor2" {
-			// second request simulates a previous link
-			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2?before=cursor2>; rel=\"prev\"")
-			fmt.Fprint(w, `[{"id":2,"title":"P2","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
-			return
+		testFormValues(t, r, values{"after": "2", "before": "1", "q": "text"})
+		fmt.Fprint(w, `[
+		{
+			"id": 1,
+			"node_id": "node_1",
+			"name": "Status",
+			"data_type": "single_select",
+			"url": "https://api.github.com/projects/1/fields/field1",
+			"options": [
+				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
+				{"id": "2", "name": "In Progress", "color": "yellow"}
+			],
+			"created_at": "2011-01-02T15:04:05Z",
+			"updated_at": "2012-01-02T15:04:05Z"
+		},
+		{
+			"id": 2,
+			"node_id": "node_2",
+			"name": "Priority",
+			"data_type": "text",
+			"url": "https://api.github.com/projects/1/fields/field2",
+			"created_at": "2011-01-02T15:04:05Z",
+			"updated_at": "2012-01-02T15:04:05Z"
 		}
-		// unexpected state
-		http.Error(w, "unexpected query", http.StatusBadRequest)
+		]`)
 	})
 
+	opts := &ListProjectsOptions{Query: Ptr("text"), ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr("2"), Before: Ptr("1")}}
 	ctx := t.Context()
-	first, resp, err := client.Projects.ListProjectsForOrg(ctx, "o", nil)
+	fields, _, err := client.Projects.ListOrganizationProjectFields(ctx, "o", 1, opts)
 	if err != nil {
-		t.Fatalf("first page error: %v", err)
+		t.Fatalf("Projects.ListOrganizationProjectFields returned error: %v", err)
 	}
-	if len(first) != 1 || first[0].GetID() != 1 {
-		t.Fatalf("unexpected first page %+v", first)
+	if len(fields) != 2 {
+		t.Fatalf("Projects.ListOrganizationProjectFields returned %d fields, want 2", len(fields))
 	}
-	if resp.After != "cursor2" {
-		t.Fatalf("expected resp.After=cursor2 got %q", resp.After)
+	if fields[0].ID == nil || *fields[0].ID != 1 || fields[1].ID == nil || *fields[1].ID != 2 {
+		t.Fatalf("unexpected field IDs: %+v", fields)
 	}
 
-	// Use resp.After as opts.After for next page
-	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: resp.After}}
-	second, resp2, err := client.Projects.ListProjectsForOrg(ctx, "o", opts)
-	if err != nil {
-		t.Fatalf("second page error: %v", err)
-	}
-	if len(second) != 1 || second[0].GetID() != 2 {
-		t.Fatalf("unexpected second page %+v", second)
-	}
-	if resp2.Before != "cursor2" {
-		t.Fatalf("expected resp2.Before=cursor2 got %q", resp2.Before)
+	const methodName = "ListOrganizationProjectFields"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListOrganizationProjectFields(ctx, "\n", 1, opts)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListOrganizationProjectFields(ctx, "o", 1, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+	ctxBypass := context.WithValue(ctx, BypassRateLimitCheck, true)
+	if _, _, err = client.Projects.ListOrganizationProjectFields(ctxBypass, "o", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}); err != nil {
+		t.Fatalf("unexpected error when both before/after set: %v", err)
 	}
 }
 
-func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
+func TestProjectsService_ListUserProjectFields(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	mux.HandleFunc("/users/u/projectsV2/1/fields", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		q := r.URL.Query()
+		if q.Get("before") == "b" && q.Get("after") == "a" { // bypass scenario
+			fmt.Fprint(w, `[]`)
+			return
+		}
+		testFormValues(t, r, values{"after": "2", "before": "1", "q": "text"})
+		fmt.Fprint(w, `[
+		{
+			"id": 1,
+			"node_id": "node_1",
+			"name": "Status",
+			"data_type": "single_select",
+			"url": "https://api.github.com/projects/1/fields/field1",
+			"options": [
+				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
+				{"id": "2", "name": "In Progress", "color": "yellow"}
+			],
+			"created_at": "2011-01-02T15:04:05Z",
+			"updated_at": "2012-01-02T15:04:05Z"
+		},
+		{
+			"id": 2,
+			"node_id": "node_2",
+			"name": "Priority",
+			"data_type": "text",
+			"url": "https://api.github.com/projects/1/fields/field2",
+			"created_at": "2011-01-02T15:04:05Z",
+			"updated_at": "2012-01-02T15:04:05Z"
+		}
+		]`)
+	})
+
+	opts := &ListProjectsOptions{Query: Ptr("text"), ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr("2"), Before: Ptr("1")}}
+	ctx := t.Context()
+	fields, _, err := client.Projects.ListUserProjectFields(ctx, "u", 1, opts)
+	if err != nil {
+		t.Fatalf("Projects.ListUserProjectFields returned error: %v", err)
+	}
+	if len(fields) != 2 {
+		t.Fatalf("Projects.ListUserProjectFields returned %d fields, want 2", len(fields))
+	}
+	if fields[0].ID == nil || *fields[0].ID != 1 || fields[1].ID == nil || *fields[1].ID != 2 {
+		t.Fatalf("unexpected field IDs: %+v", fields)
+	}
+
+	const methodName = "ListUserProjectFields"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListUserProjectFields(ctx, "\n", 1, opts)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListUserProjectFields(ctx, "u", 1, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+	ctxBypass := context.WithValue(ctx, BypassRateLimitCheck, true)
+	if _, _, err = client.Projects.ListUserProjectFields(ctxBypass, "u", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}); err != nil {
+		t.Fatalf("unexpected error when both before/after set: %v", err)
+	}
+}
+
+func TestProjectsService_GetOrganizationProjectField(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/projectsV2/1/fields/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `
+		{
+			"id": 1,
+			"node_id": "node_1",
+			"name": "Status",
+			"data_type": "single_select",
+			"url": "https://api.github.com/projects/1/fields/field1",
+			"options": [
+				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
+				{"id": "2", "name": "In Progress", "color": "yellow"}
+			],
+			"created_at": "2011-01-02T15:04:05Z",
+			"updated_at": "2012-01-02T15:04:05Z"
+		}`)
+	})
+
+	ctx := t.Context()
+	field, _, err := client.Projects.GetOrganizationProjectField(ctx, "o", 1, 1)
+	if err != nil {
+		t.Fatalf("Projects.GetOrganizationProjectField returned error: %v", err)
+	}
+	if field == nil || field.ID == nil || *field.ID != 1 {
+		t.Fatalf("unexpected field: %+v", field)
+	}
+
+	const methodName = "GetOrganizationProjectField"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetOrganizationProjectField(ctx, "o", 1, 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_GetUserProjectField(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/projectsV2/1/fields/3", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `
+		{
+			"id": 3,
+			"node_id": "node_3",
+			"name": "Status",
+			"data_type": "single_select",
+			"url": "https://api.github.com/projects/1/fields/field3",
+			"options": [
+				{"id": "1", "name": "Done", "color": "red", "description": "Done task"},
+				{"id": "2", "name": "In Progress", "color": "yellow"}
+			],
+			"created_at": "2011-01-02T15:04:05Z",
+			"updated_at": "2012-01-02T15:04:05Z"
+		}`)
+	})
+
+	ctx := t.Context()
+	field, _, err := client.Projects.GetUserProjectField(ctx, "u", 1, 3)
+	if err != nil {
+		t.Fatalf("Projects.GetUserProjectField returned error: %v", err)
+	}
+	if field == nil || field.ID == nil || *field.ID != 3 {
+		t.Fatalf("unexpected field: %+v", field)
+	}
+
+	const methodName = "GetUserProjectField"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetUserProjectField(ctx, "u", 1, 3)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_ListUserProjects_pagination(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2", func(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query()
 		after := q.Get("after")
 		before := q.Get("before")
-		if after == "" && before == "" { // first page
+		if after == "" && before == "" {
 			w.Header().Set("Link", "<http://example.org/users/u/projectsV2?after=ucursor2>; rel=\"next\"")
 			fmt.Fprint(w, `[{"id":10,"title":"UP1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 			return
 		}
-		if after == "ucursor2" { // second page provides prev
+		if after == "ucursor2" {
 			w.Header().Set("Link", "<http://example.org/users/u/projectsV2?before=ucursor2>; rel=\"prev\"")
 			fmt.Fprint(w, `[{"id":11,"title":"UP2","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 			return
 		}
 		http.Error(w, "unexpected query", http.StatusBadRequest)
 	})
-
 	ctx := t.Context()
-	first, resp, err := client.Projects.ListProjectsForUser(ctx, "u", nil)
+	first, resp, err := client.Projects.ListUserProjects(ctx, "u", nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
 	}
@@ -248,8 +416,8 @@ func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 		t.Fatalf("expected resp.After=ucursor2 got %q", resp.After)
 	}
 
-	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: resp.After}}
-	second, resp2, err := client.Projects.ListProjectsForUser(ctx, "u", opts)
+	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr(resp.After)}}
+	second, resp2, err := client.Projects.ListUserProjects(ctx, "u", opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
 	}
@@ -261,122 +429,30 @@ func TestProjectsService_ListProjectsForUser_pagination(t *testing.T) {
 	}
 }
 
-func TestProjectsService_ListProjectFieldsForOrg(t *testing.T) {
+func TestProjectsService_ListUserProjects_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/orgs/o/projectsV2/1/fields", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/users/u/projectsV2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		q := r.URL.Query()
-		if q.Get("before") == "b" && q.Get("after") == "a" {
-			fmt.Fprint(w, `[]`)
-			return
-		}
-		testFormValues(t, r, values{"q": "text", "after": "2", "before": "1"})
-		fmt.Fprint(w, `[
-			{
-				"id": 1,
-				"node_id": "node_1",
-				"name": "Status",
-				"dataType": "single_select",
-				"url": "https://api.github.com/projects/1/fields/field1",
-				"options": [
-					{
-						"id": "option1",
-						"name": "Todo",
-						"color": "blue",
-						"description": "Tasks to be done"
-					},
-					{
-						"id": "option2",
-						"name": "In Progress",
-						"color": "yellow"
-					}
-				],
-				"created_at": "2011-01-02T15:04:05Z",
-				"updated_at": "2012-01-02T15:04:05Z"
-			},
-			{
-				"id": 2,
-				"node_id": "node_2",
-				"name": "Priority",
-				"dataType": "text",
-				"url": "https://api.github.com/projects/1/fields/field2",
-				"created_at": "2011-01-02T15:04:05Z",
-				"updated_at": "2012-01-02T15:04:05Z"
-			}
-		]`)
+		fmt.Fprint(w, `[]`)
 	})
-
-	opts := &ListProjectsOptions{Query: "text", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
 	ctx := t.Context()
-	fields, _, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
-	if err != nil {
-		t.Fatalf("Projects.ListProjectFieldsForOrg returned error: %v", err)
-	}
-
-	if len(fields) != 2 {
-		t.Fatalf("Projects.ListProjectFieldsForOrg returned %v fields, want 2", len(fields))
-	}
-
-	field1 := fields[0]
-	if field1.ID == nil || *field1.ID != 1 || field1.Name != "Status" || field1.DataType != "single_select" {
-		t.Errorf("First field: got ID=%v, Name=%v, DataType=%v; want 1, Status, single_select", field1.ID, field1.Name, field1.DataType)
-	}
-	if len(field1.Options) != 2 {
-		t.Errorf("First field options: got %v, want 2", len(field1.Options))
-	} else {
-		getName := func(o *any) string {
-			if o == nil || *o == nil {
-				return ""
-			}
-			switch v := (*o).(type) {
-			case map[string]any:
-				if n, ok := v["name"].(string); ok {
-					return n
-				}
-			default:
-				// fall back to fmt for debug; reflection can be added if needed.
-			}
-			return ""
-		}
-		name0, name1 := getName(field1.Options[0]), getName(field1.Options[1])
-		if name0 != "Todo" || name1 != "In Progress" {
-			t.Errorf("First field option names: got %q, %q; want Todo, In Progress", name0, name1)
-		}
-	}
-
-	// Validate second field (without options)
-	field2 := fields[1]
-	if field2.ID == nil || *field2.ID != 2 || field2.Name != "Priority" || field2.DataType != "text" {
-		t.Errorf("Second field: got ID=%v, Name=%v, DataType=%v; want 2, Priority, text", field2.ID, field2.Name, field2.DataType)
-	}
-	if len(field2.Options) != 0 {
-		t.Errorf("Second field options: got %v, want 0", len(field2.Options))
-	}
-
-	const methodName = "ListProjectFieldsForOrg"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.ListProjectFieldsForOrg(ctx, "\n", 1, opts)
-		return err
-	})
-
+	const methodName = "ListUserProjects"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
+		got, resp, err := client.Projects.ListUserProjects(ctx, "u", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
-
-	// still allow both set (no validation enforced) – ensure it does not error
-	ctxBypass := context.WithValue(t.Context(), BypassRateLimitCheck, true)
-	if _, _, err = client.Projects.ListProjectFieldsForOrg(ctxBypass, "o", 1, &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "b", After: "a"}}); err != nil {
-		t.Fatalf("unexpected error when both before/after set: %v", err)
-	}
+	// bad options (bad username) should error
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListUserProjects(ctx, "\n", nil)
+		return err
+	})
 }
 
-func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
+func TestProjectsService_ListOrganizationProjectFields_pagination(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -388,13 +464,13 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 		if after == "" && before == "" {
 			// first request
 			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2/1/fields?after=cursor2>; rel=\"next\"")
-			fmt.Fprint(w, `[{"id":1,"name":"Status","dataType":"single_select","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":1,"name":"Status","data_type":"single_select","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 			return
 		}
 		if after == "cursor2" {
 			// second request simulates a previous link
 			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2/1/fields?before=cursor2>; rel=\"prev\"")
-			fmt.Fprint(w, `[{"id":2,"name":"Priority","dataType":"text","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":2,"name":"Priority","data_type":"text","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 			return
 		}
 		// unexpected state
@@ -402,7 +478,7 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	first, resp, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, nil)
+	first, resp, err := client.Projects.ListOrganizationProjectFields(ctx, "o", 1, nil)
 	if err != nil {
 		t.Fatalf("first page error: %v", err)
 	}
@@ -413,8 +489,8 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 		t.Fatalf("expected resp.After=cursor2 got %q", resp.After)
 	}
 
-	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: resp.After}}
-	second, resp2, err := client.Projects.ListProjectFieldsForOrg(ctx, "o", 1, opts)
+	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr(resp.After)}}
+	second, resp2, err := client.Projects.ListOrganizationProjectFields(ctx, "o", 1, opts)
 	if err != nil {
 		t.Fatalf("second page error: %v", err)
 	}
@@ -426,6 +502,53 @@ func TestProjectsService_ListProjectFieldsForOrg_pagination(t *testing.T) {
 	}
 }
 
+func TestProjectsService_ListOrganizationProjects_pagination(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/projectsV2", func(w http.ResponseWriter, r *http.Request) {
+		q := r.URL.Query()
+		after := q.Get("after")
+		before := q.Get("before")
+		if after == "" && before == "" {
+			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2?after=ocursor2>; rel=\"next\"")
+			fmt.Fprint(w, `[{"id":20,"title":"OP1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			return
+		}
+		if after == "ocursor2" {
+			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2?before=ocursor2>; rel=\"prev\"")
+			fmt.Fprint(w, `[{"id":21,"title":"OP2","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			return
+		}
+		http.Error(w, "unexpected query", http.StatusBadRequest)
+	})
+
+	ctx := t.Context()
+	first, resp, err := client.Projects.ListOrganizationProjects(ctx, "o", nil)
+	if err != nil {
+		t.Fatalf("first page error: %v", err)
+	}
+	if len(first) != 1 || first[0].GetID() != 20 {
+		t.Fatalf("unexpected first page %+v", first)
+	}
+	if resp.After != "ocursor2" {
+		t.Fatalf("expected resp.After=ocursor2 got %q", resp.After)
+	}
+
+	opts := &ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr(resp.After)}}
+	second, resp2, err := client.Projects.ListOrganizationProjects(ctx, "o", opts)
+	if err != nil {
+		t.Fatalf("second page error: %v", err)
+	}
+	if len(second) != 1 || second[0].GetID() != 21 {
+		t.Fatalf("unexpected second page %+v", second)
+	}
+	if resp2.Before != "ocursor2" {
+		t.Fatalf("expected resp2.Before=ocursor2 got %q", resp2.Before)
+	}
+}
+
+// Marshal test ensures V2 fields marshal correctly.
 func TestProjectV2_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &ProjectV2{}, "{}")
@@ -451,48 +574,537 @@ func TestProjectV2_Marshal(t *testing.T) {
 	testJSONMarshal(t, p, want)
 }
 
+// Marshal test ensures V2 field structures marshal correctly.
 func TestProjectV2Field_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ProjectV2Field{}, "{}")       // empty struct
-	testJSONMarshal(t, &ProjectV2FieldOption{}, "{}") // option struct still individually testable
-
-	type optStruct struct {
-		Color       string `json:"color,omitempty"`
-		Description string `json:"description,omitempty"`
-		ID          string `json:"id,omitempty"`
-		Name        string `json:"name,omitempty"`
-	}
-	optVal := &optStruct{Color: "blue", Description: "Tasks to be done", ID: "option1", Name: "Todo"}
-	var optAny any = optVal
+	testJSONMarshal(t, &ProjectV2Field{}, "{}")
+	testJSONMarshal(t, &ProjectV2FieldOption{}, "{}")
 
 	field := &ProjectV2Field{
-		ID:        Ptr(int64(1)),
-		NodeID:    "node_1",
-		Name:      "Status",
-		DataType:  "single_select",
-		URL:       "https://api.github.com/projects/1/fields/field1",
-		Options:   []*any{&optAny},
+		ID:         Ptr(int64(2)),
+		NodeID:     Ptr("node_1"),
+		Name:       Ptr("Status"),
+		DataType:   Ptr("single_select"),
+		ProjectURL: Ptr("https://api.github.com/projects/67890"),
+		Options: []*ProjectV2FieldOption{
+			{
+				ID:          Ptr("1"),
+				Name:        Ptr("Todo"),
+				Color:       Ptr("blue"),
+				Description: Ptr("Tasks to be done"),
+			},
+		},
 		CreatedAt: &Timestamp{referenceTime},
 		UpdatedAt: &Timestamp{referenceTime},
 	}
 
 	want := `{
-			"id": 1,
-	        "node_id": "node_1",
-	        "name": "Status",
-	        "dataType": "single_select",
-	        "url": "https://api.github.com/projects/1/fields/field1",
-	        "options": [
-	            {
-	                "id": "option1",
-	                "name": "Todo",
-	                "color": "blue",
-	                "description": "Tasks to be done"
-	            }
-	        ],
-	        "created_at": ` + referenceTimeStr + `,
-	        "updated_at": ` + referenceTimeStr + `
-	    }`
+        "id": 2,
+        "node_id": "node_1",
+        "name": "Status",
+        "data_type": "single_select",
+        "project_url": "https://api.github.com/projects/67890",
+        "options": [
+            {
+                "id": "1",
+                "name": "Todo",
+                "color": "blue",
+                "description": "Tasks to be done"
+            }
+        ],
+        "created_at": ` + referenceTimeStr + `,
+        "updated_at": ` + referenceTimeStr + `
+    }`
 
 	testJSONMarshal(t, field, want)
+}
+
+// Marshal test ensures ProjectV2FieldConfiguration marshals correctly.
+func TestProjectV2FieldConfiguration_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ProjectV2FieldConfiguration{}, "{}")
+	testJSONMarshal(t, &ProjectV2FieldIteration{}, "{}")
+
+	// Test a field with configuration (iteration field)
+	fieldWithConfiguration := &ProjectV2Field{
+		ID:         Ptr(int64(3)),
+		NodeID:     Ptr("node_3"),
+		Name:       Ptr("Sprint"),
+		DataType:   Ptr("iteration"),
+		ProjectURL: Ptr("https://api.github.com/projects/67890"),
+		Configuration: &ProjectV2FieldConfiguration{
+			Duration: Ptr(1209600), // 2 weeks in seconds
+			StartDay: Ptr(1),       // Monday
+			Iterations: []*ProjectV2FieldIteration{
+				{
+					ID:        Ptr("iter_1"),
+					Title:     Ptr("Sprint 1"),
+					StartDate: Ptr("2025-01-06"),
+					Duration:  Ptr(1209600),
+				},
+				{
+					ID:        Ptr("iter_2"),
+					Title:     Ptr("Sprint 2"),
+					StartDate: Ptr("2025-01-20"),
+					Duration:  Ptr(1209600),
+				},
+			},
+		},
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+        "id": 3,
+        "node_id": "node_3",
+        "name": "Sprint",
+        "data_type": "iteration",
+        "project_url": "https://api.github.com/projects/67890",
+        "configuration": {
+            "duration": 1209600,
+            "start_day": 1,
+            "iterations": [
+                {
+                    "id": "iter_1",
+                    "title": "Sprint 1",
+                    "start_date": "2025-01-06",
+                    "duration": 1209600
+                },
+                {
+                    "id": "iter_2",
+                    "title": "Sprint 2",
+                    "start_date": "2025-01-20",
+                    "duration": 1209600
+                }
+            ]
+        },
+        "created_at": ` + referenceTimeStr + `,
+        "updated_at": ` + referenceTimeStr + `
+    }`
+
+	testJSONMarshal(t, fieldWithConfiguration, want)
+
+	// Test just the configuration struct by itself
+	config := &ProjectV2FieldConfiguration{
+		Duration: Ptr(604800), // 1 week in seconds
+		StartDay: Ptr(0),      // Sunday
+		Iterations: []*ProjectV2FieldIteration{
+			{
+				ID:        Ptr("config_iter_1"),
+				Title:     Ptr("Week 1"),
+				StartDate: Ptr("2025-01-01"),
+				Duration:  Ptr(604800),
+			},
+		},
+	}
+
+	configWant := `{
+        "duration": 604800,
+        "start_day": 0,
+        "iterations": [
+            {
+                "id": "config_iter_1",
+                "title": "Week 1",
+                "start_date": "2025-01-01",
+                "duration": 604800
+            }
+        ]
+    }`
+
+	testJSONMarshal(t, config, configWant)
+
+	// Test iteration struct by itself
+	iteration := &ProjectV2FieldIteration{
+		ID:        Ptr("single_iter"),
+		Title:     Ptr("Test Iteration"),
+		StartDate: Ptr("2025-02-01"),
+		Duration:  Ptr(1209600),
+	}
+
+	iterationWant := `{
+        "id": "single_iter",
+        "title": "Test Iteration",
+        "start_date": "2025-02-01",
+        "duration": 1209600
+    }`
+
+	testJSONMarshal(t, iteration, iterationWant)
+}
+
+func TestProjectsService_ListOrganizationProjectItems(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/projectsV2/1/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		q := r.URL.Query()
+		if q.Get("before") == "b" && q.Get("after") == "a" { // bypass scenario
+			fmt.Fprint(w, `[]`)
+			return
+		}
+		testFormValues(t, r, values{"after": "2", "before": "1", "per_page": "50", "fields": "10,11", "q": "status:open"})
+		fmt.Fprint(w, `[{"id":17,"node_id":"PVTI_node"}]`)
+	})
+
+	opts := &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: Ptr("2"), Before: Ptr("1"), PerPage: Ptr(50)}, Query: Ptr("status:open")}, Fields: []int64{10, 11}}
+	ctx := t.Context()
+	items, _, err := client.Projects.ListOrganizationProjectItems(ctx, "o", 1, opts)
+	if err != nil {
+		t.Fatalf("Projects.ListOrganizationProjectItems returned error: %v", err)
+	}
+	if len(items) != 1 || items[0].GetID() != 17 {
+		t.Fatalf("Projects.ListOrganizationProjectItems returned %+v", items)
+	}
+
+	const methodName = "ListOrganizationProjectItems"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListOrganizationProjectItems(ctx, "\n", 1, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListOrganizationProjectItems(ctx, "o", 1, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+
+	ctxBypass := context.WithValue(ctx, BypassRateLimitCheck, true)
+	if _, _, err = client.Projects.ListOrganizationProjectItems(ctxBypass, "o", 1, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: Ptr("b"), After: Ptr("a")}}}); err != nil {
+		t.Fatalf("unexpected error when both before/after set: %v", err)
+	}
+}
+
+func TestProjectsService_AddOrganizationProjectItem(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/projectsV2/1/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		b, _ := io.ReadAll(r.Body)
+		body := string(b)
+		if body != `{"type":"Issue","id":99}`+"\n" { // encoder adds newline
+			t.Fatalf("unexpected body: %s", body)
+		}
+		fmt.Fprint(w, `{"id":99,"node_id":"PVTI_new"}`)
+	})
+
+	ctx := t.Context()
+	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 99})
+	if err != nil {
+		t.Fatalf("Projects.AddOrganizationProjectItem returned error: %v", err)
+	}
+	if item.GetID() != 99 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+}
+
+func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, `{"id":1}`)
+	})
+	ctx := t.Context()
+	const methodName = "AddOrganizationProjectItem"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 1})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_GetOrganizationProjectItem(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":17,"node_id":"PVTI_node"}`)
+	})
+	ctx := t.Context()
+	opts := &GetProjectItemOptions{}
+	item, _, err := client.Projects.GetOrganizationProjectItem(ctx, "o", 1, 17, opts)
+	if err != nil {
+		t.Fatalf("GetOrganizationProjectItem error: %v", err)
+	}
+	if item.GetID() != 17 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+}
+
+func TestProjectsService_GetOrganizationProjectItem_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":17}`)
+	})
+	ctx := t.Context()
+	const methodName = "GetOrganizationProjectItem"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetOrganizationProjectItem(ctx, "o", 1, 17, &GetProjectItemOptions{})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		b, _ := io.ReadAll(r.Body)
+		body := string(b)
+		if body != `{"archived":true}`+"\n" {
+			t.Fatalf("unexpected body: %s", body)
+		}
+		fmt.Fprint(w, `{"id":17}`)
+	})
+	archived := true
+	ctx := t.Context()
+	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
+	if err != nil {
+		t.Fatalf("UpdateOrganizationProjectItem error: %v", err)
+	}
+	if item.GetID() != 17 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+}
+
+func TestProjectsService_UpdateOrganizationProjectItem_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"id":17}`)
+	})
+	archived := true
+	ctx := t.Context()
+	const methodName = "UpdateProjectItemForOrg"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_DeleteOrganizationProjectItem(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+	ctx := t.Context()
+	if _, err := client.Projects.DeleteOrganizationProjectItem(ctx, "o", 1, 17); err != nil {
+		t.Fatalf("DeleteOrganizationProjectItem error: %v", err)
+	}
+}
+
+func TestProjectsService_DeleteOrganizationProjectItem_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+	ctx := t.Context()
+	const methodName = "DeleteOrganizationProjectItem"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Projects.DeleteOrganizationProjectItem(ctx, "o", 1, 17)
+	})
+}
+
+func TestProjectsService_ListUserProjectItems(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "20", "q": "type:issue"})
+		fmt.Fprint(w, `[{"id":7,"node_id":"PVTI_user"}]`)
+	})
+	ctx := t.Context()
+	items, _, err := client.Projects.ListUserProjectItems(ctx, "u", 2, &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{PerPage: Ptr(20)}, Query: Ptr("type:issue")}})
+	if err != nil {
+		t.Fatalf("ListUserProjectItems error: %v", err)
+	}
+	if len(items) != 1 || items[0].GetID() != 7 {
+		t.Fatalf("unexpected items: %+v", items)
+	}
+}
+
+func TestProjectsService_ListUserProjectItems_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[]`)
+	})
+	ctx := t.Context()
+	const methodName = "ListUserProjectItems"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListUserProjectItems(ctx, "u", 2, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListUserProjectItems(ctx, "\n", 2, nil)
+		return err
+	})
+}
+
+func TestProjectsService_AddUserProjectItem(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		b, _ := io.ReadAll(r.Body)
+		body := string(b)
+		if body != `{"type":"PullRequest","id":123}`+"\n" {
+			t.Fatalf("unexpected body: %s", body)
+		}
+		fmt.Fprint(w, `{"id":123,"node_id":"PVTI_new_user"}`)
+	})
+	ctx := t.Context()
+	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: "PullRequest", ID: 123})
+	if err != nil {
+		t.Fatalf("AddUserProjectItem error: %v", err)
+	}
+	if item.GetID() != 123 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+}
+
+func TestProjectsService_AddUserProjectItem_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{"id":5}`)
+	})
+	ctx := t.Context()
+	const methodName = "AddUserProjectItem"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: "Issue", ID: 5})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_GetUserProjectItem(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":55,"node_id":"PVTI_user_item"}`)
+	})
+	ctx := t.Context()
+	opts := &GetProjectItemOptions{}
+	item, _, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, opts)
+	if err != nil {
+		t.Fatalf("GetUserProjectItem error: %v", err)
+	}
+	if item.GetID() != 55 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+}
+
+func TestProjectsService_GetUserProjectItem_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":55}`)
+	})
+	ctx := t.Context()
+	const methodName = "GetUserProjectItem"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, &GetProjectItemOptions{})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_UpdateUserProjectItem(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		b, _ := io.ReadAll(r.Body)
+		body := string(b)
+		if body != `{"archived":false}`+"\n" {
+			t.Fatalf("unexpected body: %s", body)
+		}
+		fmt.Fprint(w, `{"id":55}`)
+	})
+	archived := false
+	ctx := t.Context()
+	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
+	if err != nil {
+		t.Fatalf("UpdateUserProjectItem error: %v", err)
+	}
+	if item.GetID() != 55 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+}
+
+func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"id":55}`)
+	})
+	archived := false
+	ctx := t.Context()
+	const methodName = "UpdateUserProjectItem"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_DeleteUserProjectItem(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+	ctx := t.Context()
+	if _, err := client.Projects.DeleteUserProjectItem(ctx, "u", 2, 55); err != nil {
+		t.Fatalf("DeleteUserProjectItem error: %v", err)
+	}
+}
+
+func TestProjectsService_DeleteUserProjectItem_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+	ctx := t.Context()
+	const methodName = "DeleteUserProjectItem"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Projects.DeleteUserProjectItem(ctx, "u", 2, 55)
+	})
 }
