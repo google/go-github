@@ -698,3 +698,62 @@ func TestSCIMProvisionedIdentities_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestSCIMProvisionedGroups_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &SCIMProvisionedGroups{}, "{}")
+
+	u := &SCIMProvisionedGroups{
+		Schemas:      []string{"s1"},
+		TotalResults: Ptr(1),
+		ItemsPerPage: Ptr(2),
+		StartIndex:   Ptr(3),
+		Resources: []*SCIMGroupAttributes{
+			{
+				DisplayName: Ptr("dn"),
+				Members: []*SCIMDisplayReference{
+					{
+						Value:   "v",
+						Ref:     "r",
+						Display: Ptr("d"),
+					},
+				},
+				Schemas:    []string{"s2"},
+				ExternalID: Ptr("eid"),
+				ID:         Ptr("id"),
+				Meta: &SCIMMeta{
+					ResourceType: Ptr("rt"),
+					Created:      &Timestamp{referenceTime},
+					LastModified: &Timestamp{referenceTime},
+					Location:     Ptr("l"),
+				},
+			},
+		},
+	}
+
+	want := `{
+		"schemas": ["s1"],
+		"totalResults": 1,
+		"itemsPerPage": 2,
+		"startIndex": 3,
+		"Resources": [{
+			"displayName": "dn",
+			"members": [{
+				"value": "v",
+				"$ref": "r",
+				"display": "d"
+			}]
+			,"schemas": ["s2"],
+			"externalId": "eid",
+			"id": "id",
+			"meta": {
+				"resourceType": "rt",
+				"created": ` + referenceTimeStr + `,
+				"lastModified": ` + referenceTimeStr + `,
+				"location": "l"
+			}
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
