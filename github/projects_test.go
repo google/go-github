@@ -182,7 +182,7 @@ func TestProjectsService_ListOrganizationProjectFields(t *testing.T) {
 			"id": 1,
 			"node_id": "node_1",
 			"name": "Status",
-			"dataType": "single_select",
+			"data_type": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field1",
 			"options": [
 				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
@@ -195,7 +195,7 @@ func TestProjectsService_ListOrganizationProjectFields(t *testing.T) {
 			"id": 2,
 			"node_id": "node_2",
 			"name": "Priority",
-			"dataType": "text",
+			"data_type": "text",
 			"url": "https://api.github.com/projects/1/fields/field2",
 			"created_at": "2011-01-02T15:04:05Z",
 			"updated_at": "2012-01-02T15:04:05Z"
@@ -251,7 +251,7 @@ func TestProjectsService_ListUserProjectFields(t *testing.T) {
 			"id": 1,
 			"node_id": "node_1",
 			"name": "Status",
-			"dataType": "single_select",
+			"data_type": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field1",
 			"options": [
 				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
@@ -264,7 +264,7 @@ func TestProjectsService_ListUserProjectFields(t *testing.T) {
 			"id": 2,
 			"node_id": "node_2",
 			"name": "Priority",
-			"dataType": "text",
+			"data_type": "text",
 			"url": "https://api.github.com/projects/1/fields/field2",
 			"created_at": "2011-01-02T15:04:05Z",
 			"updated_at": "2012-01-02T15:04:05Z"
@@ -314,7 +314,7 @@ func TestProjectsService_GetOrganizationProjectField(t *testing.T) {
 			"id": 1,
 			"node_id": "node_1",
 			"name": "Status",
-			"dataType": "single_select",
+			"data_type": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field1",
 			"options": [
 				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
@@ -355,7 +355,7 @@ func TestProjectsService_GetUserProjectField(t *testing.T) {
 			"id": 3,
 			"node_id": "node_3",
 			"name": "Status",
-			"dataType": "single_select",
+			"data_type": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field3",
 			"options": [
 				{"id": "1", "name": "Done", "color": "red", "description": "Done task"},
@@ -464,13 +464,13 @@ func TestProjectsService_ListOrganizationProjectFields_pagination(t *testing.T) 
 		if after == "" && before == "" {
 			// first request
 			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2/1/fields?after=cursor2>; rel=\"next\"")
-			fmt.Fprint(w, `[{"id":1,"name":"Status","dataType":"single_select","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":1,"name":"Status","data_type":"single_select","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 			return
 		}
 		if after == "cursor2" {
 			// second request simulates a previous link
 			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2/1/fields?before=cursor2>; rel=\"prev\"")
-			fmt.Fprint(w, `[{"id":2,"name":"Priority","dataType":"text","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":2,"name":"Priority","data_type":"text","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
 			return
 		}
 		// unexpected state
@@ -581,11 +581,11 @@ func TestProjectV2Field_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ProjectV2FieldOption{}, "{}")
 
 	field := &ProjectV2Field{
-		ID:       Ptr(int64(2)),
-		NodeID:   Ptr("node_1"),
-		Name:     Ptr("Status"),
-		DataType: Ptr("single_select"),
-		URL:      Ptr("https://api.github.com/projects/1/fields/field1"),
+		ID:         Ptr(int64(2)),
+		NodeID:     Ptr("node_1"),
+		Name:       Ptr("Status"),
+		DataType:   Ptr("single_select"),
+		ProjectURL: Ptr("https://api.github.com/projects/67890"),
 		Options: []*ProjectV2FieldOption{
 			{
 				ID:          Ptr("1"),
@@ -602,8 +602,8 @@ func TestProjectV2Field_Marshal(t *testing.T) {
         "id": 2,
         "node_id": "node_1",
         "name": "Status",
-        "dataType": "single_select",
-        "url": "https://api.github.com/projects/1/fields/field1",
+        "data_type": "single_select",
+        "project_url": "https://api.github.com/projects/67890",
         "options": [
             {
                 "id": "1",
@@ -617,6 +617,118 @@ func TestProjectV2Field_Marshal(t *testing.T) {
     }`
 
 	testJSONMarshal(t, field, want)
+}
+
+// Marshal test ensures ProjectV2FieldConfiguration marshals correctly.
+func TestProjectV2FieldConfiguration_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ProjectV2FieldConfiguration{}, "{}")
+	testJSONMarshal(t, &ProjectV2FieldIteration{}, "{}")
+
+	// Test a field with configuration (iteration field)
+	fieldWithConfiguration := &ProjectV2Field{
+		ID:         Ptr(int64(3)),
+		NodeID:     Ptr("node_3"),
+		Name:       Ptr("Sprint"),
+		DataType:   Ptr("iteration"),
+		ProjectURL: Ptr("https://api.github.com/projects/67890"),
+		Configuration: &ProjectV2FieldConfiguration{
+			Duration: Ptr(1209600), // 2 weeks in seconds
+			StartDay: Ptr(1),       // Monday
+			Iterations: []*ProjectV2FieldIteration{
+				{
+					ID:        Ptr("iter_1"),
+					Title:     Ptr("Sprint 1"),
+					StartDate: Ptr("2025-01-06"),
+					Duration:  Ptr(1209600),
+				},
+				{
+					ID:        Ptr("iter_2"),
+					Title:     Ptr("Sprint 2"),
+					StartDate: Ptr("2025-01-20"),
+					Duration:  Ptr(1209600),
+				},
+			},
+		},
+		CreatedAt: &Timestamp{referenceTime},
+		UpdatedAt: &Timestamp{referenceTime},
+	}
+
+	want := `{
+        "id": 3,
+        "node_id": "node_3",
+        "name": "Sprint",
+        "data_type": "iteration",
+        "project_url": "https://api.github.com/projects/67890",
+        "configuration": {
+            "duration": 1209600,
+            "start_day": 1,
+            "iterations": [
+                {
+                    "id": "iter_1",
+                    "title": "Sprint 1",
+                    "start_date": "2025-01-06",
+                    "duration": 1209600
+                },
+                {
+                    "id": "iter_2",
+                    "title": "Sprint 2",
+                    "start_date": "2025-01-20",
+                    "duration": 1209600
+                }
+            ]
+        },
+        "created_at": ` + referenceTimeStr + `,
+        "updated_at": ` + referenceTimeStr + `
+    }`
+
+	testJSONMarshal(t, fieldWithConfiguration, want)
+
+	// Test just the configuration struct by itself
+	config := &ProjectV2FieldConfiguration{
+		Duration: Ptr(604800), // 1 week in seconds
+		StartDay: Ptr(0),      // Sunday
+		Iterations: []*ProjectV2FieldIteration{
+			{
+				ID:        Ptr("config_iter_1"),
+				Title:     Ptr("Week 1"),
+				StartDate: Ptr("2025-01-01"),
+				Duration:  Ptr(604800),
+			},
+		},
+	}
+
+	configWant := `{
+        "duration": 604800,
+        "start_day": 0,
+        "iterations": [
+            {
+                "id": "config_iter_1",
+                "title": "Week 1",
+                "start_date": "2025-01-01",
+                "duration": 604800
+            }
+        ]
+    }`
+
+	testJSONMarshal(t, config, configWant)
+
+	// Test iteration struct by itself
+	iteration := &ProjectV2FieldIteration{
+		ID:        Ptr("single_iter"),
+		Title:     Ptr("Test Iteration"),
+		StartDate: Ptr("2025-02-01"),
+		Duration:  Ptr(1209600),
+	}
+
+	iterationWant := `{
+        "id": "single_iter",
+        "title": "Test Iteration",
+        "start_date": "2025-02-01",
+        "duration": 1209600
+    }`
+
+	testJSONMarshal(t, iteration, iterationWant)
 }
 
 func TestProjectsService_ListOrganizationProjectItems(t *testing.T) {

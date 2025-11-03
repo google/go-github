@@ -19150,6 +19150,14 @@ func (p *ProjectV2Event) GetSender() *User {
 	return p.Sender
 }
 
+// GetConfiguration returns the Configuration field.
+func (p *ProjectV2Field) GetConfiguration() *ProjectV2FieldConfiguration {
+	if p == nil {
+		return nil
+	}
+	return p.Configuration
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Field) GetCreatedAt() Timestamp {
 	if p == nil || p.CreatedAt == nil {
@@ -19190,6 +19198,14 @@ func (p *ProjectV2Field) GetNodeID() string {
 	return *p.NodeID
 }
 
+// GetProjectURL returns the ProjectURL field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetProjectURL() string {
+	if p == nil || p.ProjectURL == nil {
+		return ""
+	}
+	return *p.ProjectURL
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Field) GetUpdatedAt() Timestamp {
 	if p == nil || p.UpdatedAt == nil {
@@ -19198,12 +19214,52 @@ func (p *ProjectV2Field) GetUpdatedAt() Timestamp {
 	return *p.UpdatedAt
 }
 
-// GetURL returns the URL field if it's non-nil, zero value otherwise.
-func (p *ProjectV2Field) GetURL() string {
-	if p == nil || p.URL == nil {
+// GetDuration returns the Duration field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldConfiguration) GetDuration() int {
+	if p == nil || p.Duration == nil {
+		return 0
+	}
+	return *p.Duration
+}
+
+// GetStartDay returns the StartDay field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldConfiguration) GetStartDay() int {
+	if p == nil || p.StartDay == nil {
+		return 0
+	}
+	return *p.StartDay
+}
+
+// GetDuration returns the Duration field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIteration) GetDuration() int {
+	if p == nil || p.Duration == nil {
+		return 0
+	}
+	return *p.Duration
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIteration) GetID() string {
+	if p == nil || p.ID == nil {
 		return ""
 	}
-	return *p.URL
+	return *p.ID
+}
+
+// GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIteration) GetStartDate() string {
+	if p == nil || p.StartDate == nil {
+		return ""
+	}
+	return *p.StartDate
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIteration) GetTitle() string {
+	if p == nil || p.Title == nil {
+		return ""
+	}
+	return *p.Title
 }
 
 // GetColor returns the Color field if it's non-nil, zero value otherwise.

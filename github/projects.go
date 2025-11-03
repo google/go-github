@@ -85,19 +85,41 @@ type ProjectV2FieldOption struct {
 	Description *string `json:"description,omitempty"` // An optional description for this option.
 }
 
+// ProjectV2FieldIteration represents an iteration within a project field of type iteration.
+// It defines a specific time-bound period that can be associated with project items.
+//
+// GitHub API docs: https://docs.github.com/rest/projects/fields
+type ProjectV2FieldIteration struct {
+	ID        *string `json:"id,omitempty"`         // The unique identifier for the iteration.
+	Title     *string `json:"title,omitempty"`      // The title of the iteration.
+	StartDate *string `json:"start_date,omitempty"` // The start date of the iteration in ISO 8601 format.
+	Duration  *int    `json:"duration,omitempty"`   // The duration of the iteration in seconds.
+}
+
+// ProjectV2FieldConfiguration represents the configuration for a project field of type iteration.
+// It defines settings such as duration and start day for iterations within the project.
+//
+// GitHub API docs: https://docs.github.com/rest/projects/fields
+type ProjectV2FieldConfiguration struct {
+	Duration   *int                       `json:"duration,omitempty"`   // The duration of the iteration field in seconds.
+	StartDay   *int                       `json:"start_day,omitempty"`  // The start day for the iteration.
+	Iterations []*ProjectV2FieldIteration `json:"iterations,omitempty"` // The list of iterations associated with the configuration.
+}
+
 // ProjectV2Field represents a field in a GitHub Projects V2 project.
 // Fields define the structure and data types for project items.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2Field struct {
-	ID        *int64                  `json:"id,omitempty"`
-	NodeID    *string                 `json:"node_id,omitempty"`
-	Name      *string                 `json:"name,omitempty"`
-	DataType  *string                 `json:"dataType,omitempty"`
-	URL       *string                 `json:"url,omitempty"`
-	Options   []*ProjectV2FieldOption `json:"options,omitempty"`
-	CreatedAt *Timestamp              `json:"created_at,omitempty"`
-	UpdatedAt *Timestamp              `json:"updated_at,omitempty"`
+	ID            *int64                       `json:"id,omitempty"`
+	NodeID        *string                      `json:"node_id,omitempty"`
+	Name          *string                      `json:"name,omitempty"`
+	DataType      *string                      `json:"data_type,omitempty"`
+	ProjectURL    *string                      `json:"project_url,omitempty"`
+	Options       []*ProjectV2FieldOption      `json:"options,omitempty"`
+	Configuration *ProjectV2FieldConfiguration `json:"configuration,omitempty"`
+	CreatedAt     *Timestamp                   `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp                   `json:"updated_at,omitempty"`
 }
 
 // ListOrganizationProjects lists Projects V2 for an organization.

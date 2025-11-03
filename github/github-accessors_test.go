@@ -24869,6 +24869,14 @@ func TestProjectV2Event_GetSender(tt *testing.T) {
 	p.GetSender()
 }
 
+func TestProjectV2Field_GetConfiguration(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2Field{}
+	p.GetConfiguration()
+	p = nil
+	p.GetConfiguration()
+}
+
 func TestProjectV2Field_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -24924,6 +24932,17 @@ func TestProjectV2Field_GetNodeID(tt *testing.T) {
 	p.GetNodeID()
 }
 
+func TestProjectV2Field_GetProjectURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2Field{ProjectURL: &zeroValue}
+	p.GetProjectURL()
+	p = &ProjectV2Field{}
+	p.GetProjectURL()
+	p = nil
+	p.GetProjectURL()
+}
+
 func TestProjectV2Field_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -24935,15 +24954,70 @@ func TestProjectV2Field_GetUpdatedAt(tt *testing.T) {
 	p.GetUpdatedAt()
 }
 
-func TestProjectV2Field_GetURL(tt *testing.T) {
+func TestProjectV2FieldConfiguration_GetDuration(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &ProjectV2FieldConfiguration{Duration: &zeroValue}
+	p.GetDuration()
+	p = &ProjectV2FieldConfiguration{}
+	p.GetDuration()
+	p = nil
+	p.GetDuration()
+}
+
+func TestProjectV2FieldConfiguration_GetStartDay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &ProjectV2FieldConfiguration{StartDay: &zeroValue}
+	p.GetStartDay()
+	p = &ProjectV2FieldConfiguration{}
+	p.GetStartDay()
+	p = nil
+	p.GetStartDay()
+}
+
+func TestProjectV2FieldIteration_GetDuration(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &ProjectV2FieldIteration{Duration: &zeroValue}
+	p.GetDuration()
+	p = &ProjectV2FieldIteration{}
+	p.GetDuration()
+	p = nil
+	p.GetDuration()
+}
+
+func TestProjectV2FieldIteration_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	p := &ProjectV2Field{URL: &zeroValue}
-	p.GetURL()
-	p = &ProjectV2Field{}
-	p.GetURL()
+	p := &ProjectV2FieldIteration{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectV2FieldIteration{}
+	p.GetID()
 	p = nil
-	p.GetURL()
+	p.GetID()
+}
+
+func TestProjectV2FieldIteration_GetStartDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2FieldIteration{StartDate: &zeroValue}
+	p.GetStartDate()
+	p = &ProjectV2FieldIteration{}
+	p.GetStartDate()
+	p = nil
+	p.GetStartDate()
+}
+
+func TestProjectV2FieldIteration_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2FieldIteration{Title: &zeroValue}
+	p.GetTitle()
+	p = &ProjectV2FieldIteration{}
+	p.GetTitle()
+	p = nil
+	p.GetTitle()
 }
 
 func TestProjectV2FieldOption_GetColor(tt *testing.T) {
