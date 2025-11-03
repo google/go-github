@@ -86,7 +86,9 @@ func (s *EnterpriseService) UpdateRepositoryRuleset(ctx context.Context, enterpr
 func (s *EnterpriseService) UpdateRepositoryRulesetClearBypassActor(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
-	rsClearBypassActor := rulesetClearBypassActors{}
+	rsClearBypassActor := rulesetClearBypassActors{
+		BypassActors: []*BypassActor{},
+	}
 
 	req, err := s.client.NewRequest("PUT", u, rsClearBypassActor)
 	if err != nil {
