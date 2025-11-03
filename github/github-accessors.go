@@ -14078,6 +14078,38 @@ func (l *ListOrganizations) GetTotalCount() int {
 	return *l.TotalCount
 }
 
+// GetQuery returns the Query field if it's non-nil, zero value otherwise.
+func (l *ListProjectsOptions) GetQuery() string {
+	if l == nil || l.Query == nil {
+		return ""
+	}
+	return *l.Query
+}
+
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (l *ListProjectsPaginationOptions) GetAfter() string {
+	if l == nil || l.After == nil {
+		return ""
+	}
+	return *l.After
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (l *ListProjectsPaginationOptions) GetBefore() string {
+	if l == nil || l.Before == nil {
+		return ""
+	}
+	return *l.Before
+}
+
+// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
+func (l *ListProjectsPaginationOptions) GetPerPage() int {
+	if l == nil || l.PerPage == nil {
+		return 0
+	}
+	return *l.PerPage
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (l *ListRepositories) GetTotalCount() int {
 	if l == nil || l.TotalCount == nil {
@@ -19118,12 +19150,28 @@ func (p *ProjectV2Event) GetSender() *User {
 	return p.Sender
 }
 
+// GetConfiguration returns the Configuration field.
+func (p *ProjectV2Field) GetConfiguration() *ProjectV2FieldConfiguration {
+	if p == nil {
+		return nil
+	}
+	return p.Configuration
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Field) GetCreatedAt() Timestamp {
 	if p == nil || p.CreatedAt == nil {
 		return Timestamp{}
 	}
 	return *p.CreatedAt
+}
+
+// GetDataType returns the DataType field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetDataType() string {
+	if p == nil || p.DataType == nil {
+		return ""
+	}
+	return *p.DataType
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -19134,12 +19182,116 @@ func (p *ProjectV2Field) GetID() int64 {
 	return *p.ID
 }
 
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
+// GetProjectURL returns the ProjectURL field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Field) GetProjectURL() string {
+	if p == nil || p.ProjectURL == nil {
+		return ""
+	}
+	return *p.ProjectURL
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Field) GetUpdatedAt() Timestamp {
 	if p == nil || p.UpdatedAt == nil {
 		return Timestamp{}
 	}
 	return *p.UpdatedAt
+}
+
+// GetDuration returns the Duration field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldConfiguration) GetDuration() int {
+	if p == nil || p.Duration == nil {
+		return 0
+	}
+	return *p.Duration
+}
+
+// GetStartDay returns the StartDay field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldConfiguration) GetStartDay() int {
+	if p == nil || p.StartDay == nil {
+		return 0
+	}
+	return *p.StartDay
+}
+
+// GetDuration returns the Duration field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIteration) GetDuration() int {
+	if p == nil || p.Duration == nil {
+		return 0
+	}
+	return *p.Duration
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIteration) GetID() string {
+	if p == nil || p.ID == nil {
+		return ""
+	}
+	return *p.ID
+}
+
+// GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIteration) GetStartDate() string {
+	if p == nil || p.StartDate == nil {
+		return ""
+	}
+	return *p.StartDate
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIteration) GetTitle() string {
+	if p == nil || p.Title == nil {
+		return ""
+	}
+	return *p.Title
+}
+
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldOption) GetColor() string {
+	if p == nil || p.Color == nil {
+		return ""
+	}
+	return *p.Color
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldOption) GetDescription() string {
+	if p == nil || p.Description == nil {
+		return ""
+	}
+	return *p.Description
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldOption) GetID() string {
+	if p == nil || p.ID == nil {
+		return ""
+	}
+	return *p.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldOption) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
 }
 
 // GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.
@@ -19190,6 +19342,14 @@ func (p *ProjectV2Item) GetID() int64 {
 	return *p.ID
 }
 
+// GetItemURL returns the ItemURL field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Item) GetItemURL() string {
+	if p == nil || p.ItemURL == nil {
+		return ""
+	}
+	return *p.ItemURL
+}
+
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Item) GetNodeID() string {
 	if p == nil || p.NodeID == nil {
@@ -19204,6 +19364,14 @@ func (p *ProjectV2Item) GetProjectNodeID() string {
 		return ""
 	}
 	return *p.ProjectNodeID
+}
+
+// GetProjectURL returns the ProjectURL field if it's non-nil, zero value otherwise.
+func (p *ProjectV2Item) GetProjectURL() string {
+	if p == nil || p.ProjectURL == nil {
+		return ""
+	}
+	return *p.ProjectURL
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
@@ -28964,6 +29132,14 @@ func (u *UpdateOrganizationPrivateRegistry) GetVisibility() *PrivateRegistryVisi
 		return nil
 	}
 	return u.Visibility
+}
+
+// GetArchived returns the Archived field if it's non-nil, zero value otherwise.
+func (u *UpdateProjectItemOptions) GetArchived() bool {
+	if u == nil || u.Archived == nil {
+		return false
+	}
+	return *u.Archived
 }
 
 // GetForce returns the Force field if it's non-nil, zero value otherwise.
