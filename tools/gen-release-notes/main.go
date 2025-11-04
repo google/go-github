@@ -19,7 +19,6 @@ import (
 	"log"
 	"net/http"
 	"regexp"
-	"runtime"
 	"strings"
 )
 
@@ -37,24 +36,18 @@ var (
 	bracketsRE    = regexp.MustCompile(`(?ms)(<[^>]+>)`)
 	newlinesRE    = regexp.MustCompile(`(?m)(\n+)`)
 	descriptionRE = regexp.MustCompile(`^\* (.*?\((#[^\)]+)\))`)
-
-	newline = "\n"
 )
 
 func main() {
 	log.SetFlags(0)
 	flag.Parse()
 
-	if runtime.GOOS == "windows" {
-		newline = "\r\n"
-	}
-
 	priorRelease := getPriorRelease()
 
 	newChanges := newChangesSinceRelease(priorRelease)
 
 	releaseNotes := genReleaseNotes(newChanges)
-	fmt.Printf("%v%v", releaseNotes, newline)
+	fmt.Printf("%v%v", releaseNotes, "\n")
 
 	log.Print("Done.")
 }
@@ -72,14 +65,13 @@ func genReleaseNotes(text string) string {
 	refBreakingLines, refNonBreakingLines := genRefLines(fullBreakingLines, fullNonBreakingLines)
 
 	return fmt.Sprintf(releaseNotesFmt,
-		strings.Join(fullBreakingLines, newline),
-		strings.Join(fullNonBreakingLines, newline),
-		strings.Join(refBreakingLines, newline),
-		strings.Join(refNonBreakingLines, newline))
+		strings.Join(fullBreakingLines, "\n"),
+		strings.Join(fullNonBreakingLines, "\n"),
+		strings.Join(refBreakingLines, "\n"),
+		strings.Join(refNonBreakingLines, "\n"))
 }
 
 func splitIntoPRs(text string) []string {
-	text = strings.ReplaceAll(text, "\r\n", "\n")
 	parts := strings.Split(text, detailsDiv)
 	if len(parts) < 2 {
 		log.Fatal("unable to find PRs")
@@ -107,7 +99,7 @@ func stripPRHTML(text string) string {
 	if i := strings.Index(text, "</a>"); i > 0 {
 		newText := text[:i] + strings.Join(innerText, "")
 		newText = strings.ReplaceAll(newText, "…", "")
-		newText = newlinesRE.ReplaceAllString(newText, newline+"  ")
+		newText = newlinesRE.ReplaceAllString(newText, "\n  ")
 		return newText
 	}
 	return text

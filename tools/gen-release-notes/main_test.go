@@ -17,11 +17,14 @@ import (
 var compareV76HTML string
 
 //go:embed testdata/release-notes-v77.txt
-var want string
+var releaseNotes string
 
 func TestGenReleaseNotes(t *testing.T) {
 	t.Parallel()
-	got := genReleaseNotes(compareV76HTML)
+	text := strings.ReplaceAll(compareV76HTML, "\r\n", "\n")
+	got := genReleaseNotes(text)
+	got = strings.ReplaceAll(got, "\r\n", "\n")
+	want := strings.ReplaceAll(releaseNotes, "\r\n", "\n")
 
 	if diff := cmp.Diff(want, got); diff != "" {
 		t.Log(got)
@@ -32,7 +35,9 @@ func TestGenReleaseNotes(t *testing.T) {
 func TestSplitIntoPRs(t *testing.T) {
 	t.Parallel()
 
-	text := compareV76HTML[191600:]
+	text := strings.ReplaceAll(compareV76HTML, "\r\n", "\n")
+	text = text[191600:]
+
 	got := splitIntoPRs(text)
 	want := []string{
 		`* Bump go-github from v75 to v76 in /scrape (#3783)`,
