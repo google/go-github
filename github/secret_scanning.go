@@ -172,7 +172,7 @@ type SecretScanningScanHistory struct {
 // To use this endpoint, you must be a member of the enterprise, and you must use an access token with the repo scope or
 // security_events scope. Alerts are only returned for organizations in the enterprise for which you are an organization owner or a security manager.
 //
-// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#list-secret-scanning-alerts-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/secret-scanning#list-secret-scanning-alerts-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/secret-scanning/alerts
 func (s *SecretScanningService) ListAlertsForEnterprise(ctx context.Context, enterprise string, opts *SecretScanningAlertListOptions) ([]*SecretScanningAlert, *Response, error) {
