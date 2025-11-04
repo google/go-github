@@ -23,11 +23,7 @@ func TestGenReleaseNotes(t *testing.T) {
 	t.Parallel()
 	got := genReleaseNotes(compareV76HTML)
 
-	// Normalize line endings for cross-platform compatibility.
-	normalizedWant := strings.ReplaceAll(want, "\r\n", "\n")
-	normalizedGot := strings.ReplaceAll(got, "\r\n", "\n")
-
-	if diff := cmp.Diff(normalizedWant, normalizedGot); diff != "" {
+	if diff := cmp.Diff(want, got); diff != "" {
 		t.Log(got)
 		t.Errorf("genReleaseNotes mismatch (-want +got):\n%v", diff)
 	}
@@ -57,9 +53,7 @@ func TestSplitIntoPRs(t *testing.T) {
 		t.Fatalf("splitIntoPRs = %v lines, want %v", len(got), len(want))
 	}
 	for i := range got {
-		normalizedGot := strings.ReplaceAll(got[i], "\r\n", "\n")
-		normalizedWant := strings.ReplaceAll(want[i], "\r\n", "\n")
-		if normalizedGot != normalizedWant {
+		if got[i] != want[i] {
 			t.Errorf("splitIntoPRs[%v] =\n%v\n, want \n%v", i, got[i], want[i])
 		}
 	}
@@ -134,9 +128,7 @@ func TestMatchDivs(t *testing.T) {
 `
 
 	got := matchDivs(text)
-	normalizedGot := strings.ReplaceAll(got, "\r\n", "\n")
-	normalizedWant := strings.ReplaceAll(want, "\r\n", "\n")
-	if diff := cmp.Diff(normalizedWant, normalizedGot); diff != "" {
+	if diff := cmp.Diff(want, got); diff != "" {
 		t.Errorf("matchDivs mismatch (-want +got):\n%v", diff)
 	}
 }
@@ -235,15 +227,7 @@ BREAKING CHANGE: ` + "`" + `RepositoriesService.CreateStatus` + "`" + ` now take
 			if diff := cmp.Diff(tt.wantTagSeq, gotTagSeq); diff != "" {
 				t.Errorf("gotTagSeq=\n%#v,\n wantTagSeq=\n%#v", gotTagSeq, tt.wantTagSeq)
 			}
-			normalizedGot := make([]string, len(gotInnerText))
-			for i, s := range gotInnerText {
-				normalizedGot[i] = strings.ReplaceAll(s, "\r\n", "\n")
-			}
-			normalizedWant := make([]string, len(tt.wantInnerText))
-			for i, s := range tt.wantInnerText {
-				normalizedWant[i] = strings.ReplaceAll(s, "\r\n", "\n")
-			}
-			if diff := cmp.Diff(normalizedWant, normalizedGot); diff != "" {
+			if diff := cmp.Diff(tt.wantInnerText, gotInnerText); diff != "" {
 				t.Errorf("gotInnerText=\n%#v,\n wantInnerText=\n%#v", gotInnerText, tt.wantInnerText)
 			}
 		})
