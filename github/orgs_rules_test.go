@@ -1593,6 +1593,7 @@ func TestOrganizationsService_UpdateRepositoryRulesetClearBypassActor(t *testing
 
 	mux.HandleFunc("/orgs/o/rulesets/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
+		testBody(t, r, `{"bypass_actors":[]}`+"\n")
 		fmt.Fprint(w, `{
 			"id": 21,
 			"name": "test ruleset",

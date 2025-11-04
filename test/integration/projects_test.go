@@ -41,10 +41,10 @@ func TestProjectsV2_Org(t *testing.T) {
 
 	opts := &github.ListProjectsOptions{}
 	// List projects for org; pick the first available project we can read.
-	projects, _, err := client.Projects.ListProjectsForOrg(ctx, org, opts)
+	projects, _, err := client.Projects.ListOrganizationProjects(ctx, org, opts)
 	if err != nil {
 		// If listing itself fails, abort this test.
-		t.Fatalf("Projects.ListProjectsForOrg returned error: %v", err)
+		t.Fatalf("Projects.ListOrganizationProjects returned error: %v", err)
 	}
 	if len(projects) == 0 {
 		t.Skipf("no Projects V2 found for org %s", org)
@@ -56,19 +56,19 @@ func TestProjectsV2_Org(t *testing.T) {
 	projectNumber := *project.Number
 
 	// Re-fetch via Get to exercise endpoint explicitly.
-	proj, _, err := client.Projects.GetProjectForOrg(ctx, org, projectNumber)
+	proj, _, err := client.Projects.GetOrganizationProject(ctx, org, projectNumber)
 	if err != nil {
 		// Permission mismatch? Skip CRUD while still reporting failure would make the test fail;
 		// we want correctness so treat as fatal here.
-		t.Fatalf("Projects.GetProjectForOrg returned error: %v", err)
+		t.Fatalf("Projects.GetOrganizationProject returned error: %v", err)
 	}
 	if proj.Number == nil || *proj.Number != projectNumber {
-		t.Fatalf("GetProjectForOrg returned unexpected project number: got %+v want %d", proj.Number, projectNumber)
+		t.Fatalf("GetOrganizationProject returned unexpected project number: got %+v want %d", proj.Number, projectNumber)
 	}
 
-	_, _, err = client.Projects.ListProjectFieldsForOrg(ctx, org, projectNumber, nil)
+	_, _, err = client.Projects.ListOrganizationProjectFields(ctx, org, projectNumber, nil)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectFieldsForOrg returned error: %v. Fields listing might require extra permissions", err)
+		t.Fatalf("Projects.ListOrganizationProjectFields returned error: %v. Fields listing might require extra permissions", err)
 	}
 }
 
@@ -81,9 +81,9 @@ func TestProjectsV2_User(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &github.ListProjectsOptions{}
-	projects, _, err := client.Projects.ListProjectsForUser(ctx, user, opts)
+	projects, _, err := client.Projects.ListUserProjects(ctx, user, opts)
 	if err != nil {
-		t.Fatalf("Projects.ListProjectsForUser returned error: %v. This indicates API or permission issue", err)
+		t.Fatalf("Projects.ListUserProjects returned error: %v. This indicates API or permission issue", err)
 	}
 	if len(projects) == 0 {
 		t.Skipf("no Projects V2 found for user %s", user)
@@ -93,12 +93,12 @@ func TestProjectsV2_User(t *testing.T) {
 		t.Skip("selected user project has nil Number field")
 	}
 
-	proj, _, err := client.Projects.GetProjectForUser(ctx, user, *project.Number)
+	proj, _, err := client.Projects.GetUserProject(ctx, user, *project.Number)
 	if err != nil {
 		// can't fetch specific project; treat as fatal
-		t.Fatalf("Projects.GetProjectForUser returned error: %v", err)
+		t.Fatalf("Projects.GetUserProject returned error: %v", err)
 	}
 	if proj.Number == nil || *proj.Number != *project.Number {
-		t.Fatalf("GetProjectForUser returned unexpected project number: got %+v want %d", proj.Number, *project.Number)
+		t.Fatalf("GetUserProject returned unexpected project number: got %+v want %d", proj.Number, *project.Number)
 	}
 }
