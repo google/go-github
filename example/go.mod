@@ -1,4 +1,4 @@
-module github.com/google/go-github/v76/example
+module github.com/google/go-github/v77/example
 
 go 1.24.0
 
@@ -7,7 +7,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.17.0
 	github.com/gofri/go-github-pagination v1.0.1
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
-	github.com/google/go-github/v76 v76.0.0
+	github.com/google/go-github/v77 v77.0.0
 	github.com/sigstore/sigstore-go v0.6.1
 	golang.org/x/crypto v0.43.0
 	golang.org/x/term v0.36.0
@@ -100,4 +100,4 @@ require (
 )
 
 // Use version at HEAD, not the latest published.
-replace github.com/google/go-github/v76 => ../
+replace github.com/google/go-github/v77 => ../

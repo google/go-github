@@ -1,8 +1,8 @@
 version: v2.2.2
 plugins:
-  - module: "github.com/google/go-github/v76/tools/fmtpercentv"
+  - module: "github.com/google/go-github/v77/tools/fmtpercentv"
     path: ./tools/fmtpercentv
-  - module: "github.com/google/go-github/v76/tools/jsonfieldname"
+  - module: "github.com/google/go-github/v77/tools/jsonfieldname"
     path: ./tools/jsonfieldname
-  - module: "github.com/google/go-github/v76/tools/sliceofpointers"
+  - module: "github.com/google/go-github/v77/tools/sliceofpointers"
     path: ./tools/sliceofpointers
