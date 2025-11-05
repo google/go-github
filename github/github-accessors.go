@@ -6782,6 +6782,22 @@ func (c *CustomPatternBackfillScan) GetPatternSlug() string {
 	return *c.PatternSlug
 }
 
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (c *CustomPropertiesValues) GetOrganizationID() int64 {
+	if c == nil || c.OrganizationID == nil {
+		return 0
+	}
+	return *c.OrganizationID
+}
+
+// GetOrganizationLogin returns the OrganizationLogin field if it's non-nil, zero value otherwise.
+func (c *CustomPropertiesValues) GetOrganizationLogin() string {
+	if c == nil || c.OrganizationLogin == nil {
+		return ""
+	}
+	return *c.OrganizationLogin
+}
+
 // GetDefaultValue returns the DefaultValue field if it's non-nil, zero value otherwise.
 func (c *CustomProperty) GetDefaultValue() string {
 	if c == nil || c.DefaultValue == nil {
@@ -19444,6 +19460,70 @@ func (p *ProjectV2ItemEvent) GetSender() *User {
 		return nil
 	}
 	return p.Sender
+}
+
+// GetDefaultValue returns the DefaultValue field if it's non-nil, zero value otherwise.
+func (p *Property) GetDefaultValue() string {
+	if p == nil || p.DefaultValue == nil {
+		return ""
+	}
+	return *p.DefaultValue
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (p *Property) GetDescription() string {
+	if p == nil || p.Description == nil {
+		return ""
+	}
+	return *p.Description
+}
+
+// GetRequired returns the Required field if it's non-nil, zero value otherwise.
+func (p *Property) GetRequired() bool {
+	if p == nil || p.Required == nil {
+		return false
+	}
+	return *p.Required
+}
+
+// GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.
+func (p *Property) GetSourceType() string {
+	if p == nil || p.SourceType == nil {
+		return ""
+	}
+	return *p.SourceType
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *Property) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
+}
+
+// GetValuesEditableBy returns the ValuesEditableBy field if it's non-nil, zero value otherwise.
+func (p *Property) GetValuesEditableBy() string {
+	if p == nil || p.ValuesEditableBy == nil {
+		return ""
+	}
+	return *p.ValuesEditableBy
+}
+
+// GetPropertyName returns the PropertyName field if it's non-nil, zero value otherwise.
+func (p *PropertyValue) GetPropertyName() string {
+	if p == nil || p.PropertyName == nil {
+		return ""
+	}
+	return *p.PropertyName
+}
+
+// GetValue returns the Value field if it's non-nil, zero value otherwise.
+func (p *PropertyValue) GetValue() string {
+	if p == nil || p.Value == nil {
+		return ""
+	}
+	return *p.Value
 }
 
 // GetAllowDeletions returns the AllowDeletions field.

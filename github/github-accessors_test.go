@@ -8868,6 +8868,28 @@ func TestCustomPatternBackfillScan_GetPatternSlug(tt *testing.T) {
 	c.GetPatternSlug()
 }
 
+func TestCustomPropertiesValues_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CustomPropertiesValues{OrganizationID: &zeroValue}
+	c.GetOrganizationID()
+	c = &CustomPropertiesValues{}
+	c.GetOrganizationID()
+	c = nil
+	c.GetOrganizationID()
+}
+
+func TestCustomPropertiesValues_GetOrganizationLogin(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CustomPropertiesValues{OrganizationLogin: &zeroValue}
+	c.GetOrganizationLogin()
+	c = &CustomPropertiesValues{}
+	c.GetOrganizationLogin()
+	c = nil
+	c.GetOrganizationLogin()
+}
+
 func TestCustomProperty_GetDefaultValue(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -25247,6 +25269,94 @@ func TestProjectV2ItemEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 	p = nil
 	p.GetSender()
+}
+
+func TestProperty_GetDefaultValue(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &Property{DefaultValue: &zeroValue}
+	p.GetDefaultValue()
+	p = &Property{}
+	p.GetDefaultValue()
+	p = nil
+	p.GetDefaultValue()
+}
+
+func TestProperty_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &Property{Description: &zeroValue}
+	p.GetDescription()
+	p = &Property{}
+	p.GetDescription()
+	p = nil
+	p.GetDescription()
+}
+
+func TestProperty_GetRequired(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &Property{Required: &zeroValue}
+	p.GetRequired()
+	p = &Property{}
+	p.GetRequired()
+	p = nil
+	p.GetRequired()
+}
+
+func TestProperty_GetSourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &Property{SourceType: &zeroValue}
+	p.GetSourceType()
+	p = &Property{}
+	p.GetSourceType()
+	p = nil
+	p.GetSourceType()
+}
+
+func TestProperty_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &Property{URL: &zeroValue}
+	p.GetURL()
+	p = &Property{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
+}
+
+func TestProperty_GetValuesEditableBy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &Property{ValuesEditableBy: &zeroValue}
+	p.GetValuesEditableBy()
+	p = &Property{}
+	p.GetValuesEditableBy()
+	p = nil
+	p.GetValuesEditableBy()
+}
+
+func TestPropertyValue_GetPropertyName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PropertyValue{PropertyName: &zeroValue}
+	p.GetPropertyName()
+	p = &PropertyValue{}
+	p.GetPropertyName()
+	p = nil
+	p.GetPropertyName()
+}
+
+func TestPropertyValue_GetValue(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PropertyValue{Value: &zeroValue}
+	p.GetValue()
+	p = &PropertyValue{}
+	p.GetValue()
+	p = nil
+	p.GetValue()
 }
 
 func TestProtection_GetAllowDeletions(tt *testing.T) {
