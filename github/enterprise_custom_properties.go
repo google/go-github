@@ -35,7 +35,7 @@ type EnterpriseCustomPropertyValuesRequest struct {
 	Properties []*CustomPropertyValue `json:"properties"`
 }
 
-// GetEnterpriseCustomPropertySchema gets all organization custom property definitions that are defined on an enterprise.
+// GetOrganizationCustomPropertySchema gets all organization custom property definitions that are defined on an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#get-organization-custom-properties-schema-for-an-enterprise
 //
