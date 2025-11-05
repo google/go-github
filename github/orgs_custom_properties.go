@@ -13,7 +13,7 @@ import (
 // OrganizationCustomPropertyValues represents the custom property values for an organization.
 type OrganizationCustomPropertyValues struct {
 	// List of custom property names and associated values to apply to the organization.
-	Properties []*PropertyValue `json:"properties,omitempty"`
+	Properties []*CustomPropertyValue `json:"properties,omitempty"`
 }
 
 // GetOrganizationCustomPropertyValues returns all custom property names and their values for an organization.
@@ -21,7 +21,7 @@ type OrganizationCustomPropertyValues struct {
 // GitHub API docs: https://docs.github.com/rest/orgs/custom-properties-for-orgs#get-all-custom-property-values-for-an-organization
 //
 //meta:operation GET /organizations/{org}/org-properties/values
-func (s *OrganizationsService) GetOrganizationCustomPropertyValues(ctx context.Context, org string) ([]*PropertyValue, *Response, error) {
+func (s *OrganizationsService) GetOrganizationCustomPropertyValues(ctx context.Context, org string) ([]*CustomPropertyValue, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/org-properties/values", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -29,7 +29,7 @@ func (s *OrganizationsService) GetOrganizationCustomPropertyValues(ctx context.C
 		return nil, nil, err
 	}
 
-	var values []*PropertyValue
+	var values []*CustomPropertyValue
 	resp, err := s.client.Do(ctx, req, &values)
 	if err != nil {
 		return nil, resp, err

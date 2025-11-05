@@ -218,17 +218,10 @@ type RepositoryRulesetRefConditionParameters struct {
 	Exclude []string `json:"exclude"`
 }
 
-// RepositoryRulesetOrganizationPropertyTargetParameters represents an organization_property name and values to be used for targeting.
-type RepositoryRulesetOrganizationPropertyTargetParameters struct {
-	Name           string   `json:"name"`
-	PropertyValues []string `json:"property_values"`
-	Source         *string  `json:"source,omitempty"`
-}
-
 // RepositoryRulesetOrganizationPropertyConditionParameters represents the conditions object for an organization property selector.
 type RepositoryRulesetOrganizationPropertyConditionParameters struct {
-	Include []*RepositoryRulesetOrganizationPropertyTargetParameters `json:"include"`
-	Exclude []*RepositoryRulesetOrganizationPropertyTargetParameters `json:"exclude"`
+	Include []*RepositoryRulesetRepositoryPropertyTargetParameters `json:"include"`
+	Exclude []*RepositoryRulesetRepositoryPropertyTargetParameters `json:"exclude"`
 }
 
 // RepositoryRulesetRepositoryIDsConditionParameters represents the conditions object for repository_id.
