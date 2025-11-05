@@ -6118,28 +6118,12 @@ func (c *CostCenterDeleteResponse) GetName() string {
 	return *c.Name
 }
 
-// GetState returns the State field if it's non-nil, zero value otherwise.
-func (c *CostCenterListOptions) GetState() string {
-	if c == nil || c.State == nil {
-		return ""
-	}
-	return *c.State
-}
-
 // GetMessage returns the Message field if it's non-nil, zero value otherwise.
 func (c *CostCenterRemoveResourceResponse) GetMessage() string {
 	if c == nil || c.Message == nil {
 		return ""
 	}
 	return *c.Message
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CostCenterRequest) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
 }
 
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
@@ -14044,6 +14028,14 @@ func (l *ListCodespaces) GetTotalCount() int {
 		return 0
 	}
 	return *l.TotalCount
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (l *ListCostCenterOptions) GetState() string {
+	if l == nil || l.State == nil {
+		return ""
+	}
+	return *l.State
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.

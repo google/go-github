@@ -30,14 +30,15 @@ type CostCenters struct {
 	CostCenters []*CostCenter `json:"costCenters,omitempty"`
 }
 
-// CostCenterListOptions specifies optional parameters to the EnterpriseService.ListCostCenters method.
-type CostCenterListOptions struct {
+// ListCostCenterOptions specifies optional parameters to the EnterpriseService.ListCostCenters method.
+type ListCostCenterOptions struct {
+	// Set to `active` or `deleted` to only list cost centers in a specific state.
 	State *string `url:"state,omitempty"`
 }
 
 // CostCenterRequest represents a request to create or update a cost center.
 type CostCenterRequest struct {
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 }
 
 // CostCenterResourceRequest represents a request to add or remove resources from a cost center.
@@ -78,7 +79,7 @@ type CostCenterDeleteResponse struct {
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#get-all-cost-centers-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/cost-centers
-func (s *EnterpriseService) ListCostCenters(ctx context.Context, enterprise string, opts *CostCenterListOptions) (*CostCenters, *Response, error) {
+func (s *EnterpriseService) ListCostCenters(ctx context.Context, enterprise string, opts *ListCostCenterOptions) (*CostCenters, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {

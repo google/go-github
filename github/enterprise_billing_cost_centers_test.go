@@ -56,7 +56,7 @@ func TestEnterpriseService_ListCostCenters(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &CostCenterListOptions{
+	opts := &ListCostCenterOptions{
 		State: Ptr("active"),
 	}
 	costCenters, _, err := client.Enterprise.ListCostCenters(ctx, "e", opts)
@@ -139,7 +139,7 @@ func TestEnterpriseService_CreateCostCenter(t *testing.T) {
 
 	ctx := t.Context()
 	req := CostCenterRequest{
-		Name: Ptr("Engineering Team"),
+		Name: "Engineering Team",
 	}
 	costCenter, _, err := client.Enterprise.CreateCostCenter(ctx, "e", req)
 	if err != nil {
@@ -280,7 +280,7 @@ func TestEnterpriseService_UpdateCostCenter(t *testing.T) {
 
 	ctx := t.Context()
 	req := CostCenterRequest{
-		Name: Ptr("Updated Cost Center Name"),
+		Name: "Updated Cost Center Name",
 	}
 	costCenter, _, err := client.Enterprise.UpdateCostCenter(ctx, "e", "2eeb8ffe-6903-11ee-8c99-0242ac120002", req)
 	if err != nil {
@@ -607,7 +607,7 @@ func TestCostCenterRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CostCenterRequest{}, "{}")
 
 	u := &CostCenterRequest{
-		Name: Ptr("Engineering"),
+		Name: "Engineering",
 	}
 
 	want := `{

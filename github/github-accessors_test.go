@@ -7985,17 +7985,6 @@ func TestCostCenterDeleteResponse_GetName(tt *testing.T) {
 	c.GetName()
 }
 
-func TestCostCenterListOptions_GetState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CostCenterListOptions{State: &zeroValue}
-	c.GetState()
-	c = &CostCenterListOptions{}
-	c.GetState()
-	c = nil
-	c.GetState()
-}
-
 func TestCostCenterRemoveResourceResponse_GetMessage(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8005,17 +7994,6 @@ func TestCostCenterRemoveResourceResponse_GetMessage(tt *testing.T) {
 	c.GetMessage()
 	c = nil
 	c.GetMessage()
-}
-
-func TestCostCenterRequest_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CostCenterRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CostCenterRequest{}
-	c.GetName()
-	c = nil
-	c.GetName()
 }
 
 func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {
@@ -18242,6 +18220,17 @@ func TestListCodespaces_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 	l = nil
 	l.GetTotalCount()
+}
+
+func TestListCostCenterOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListCostCenterOptions{State: &zeroValue}
+	l.GetState()
+	l = &ListCostCenterOptions{}
+	l.GetState()
+	l = nil
+	l.GetState()
 }
 
 func TestListCustomDeploymentRuleIntegrationsResponse_GetTotalCount(tt *testing.T) {
