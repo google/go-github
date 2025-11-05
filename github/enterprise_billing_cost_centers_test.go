@@ -351,7 +351,7 @@ func TestEnterpriseService_DeleteCostCenter(t *testing.T) {
 		t.Errorf("Enterprise.DeleteCostCenter returned error: %v", err)
 	}
 
-	want := &CostCenterDeleteResponse{
+	want := &DeleteCostCenterResponse{
 		Message:         Ptr("Cost center successfully deleted."),
 		ID:              Ptr("2eeb8ffe-6903-11ee-8c99-0242ac120002"),
 		Name:            Ptr("Engineering Team"),
@@ -423,7 +423,7 @@ func TestEnterpriseService_AddResourcesToCostCenter(t *testing.T) {
 		t.Errorf("Enterprise.AddResourcesToCostCenter returned error: %v", err)
 	}
 
-	want := &CostCenterAddResourceResponse{
+	want := &AddResourcesToCostCenterResponse{
 		Message: Ptr("Resources successfully added to the cost center."),
 		ReassignedResources: []*ReassignedResource{
 			{
@@ -492,7 +492,7 @@ func TestEnterpriseService_RemoveResourcesFromCostCenter(t *testing.T) {
 		t.Errorf("Enterprise.RemoveResourcesFromCostCenter returned error: %v", err)
 	}
 
-	want := &CostCenterRemoveResourceResponse{
+	want := &RemoveResourcesFromCostCenterResponse{
 		Message: Ptr("Resources successfully removed from the cost center."),
 	}
 	if !cmp.Equal(result, want) {

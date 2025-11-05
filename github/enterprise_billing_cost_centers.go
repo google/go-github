@@ -48,8 +48,8 @@ type CostCenterResourceRequest struct {
 	Repositories  []string `json:"repositories,omitempty"`
 }
 
-// CostCenterAddResourceResponse represents a response from adding resources to a cost center.
-type CostCenterAddResourceResponse struct {
+// AddResourcesToCostCenterResponse represents a response from adding resources to a cost center.
+type AddResourcesToCostCenterResponse struct {
 	Message             *string               `json:"message,omitempty"`
 	ReassignedResources []*ReassignedResource `json:"reassigned_resources,omitempty"`
 }
@@ -61,13 +61,13 @@ type ReassignedResource struct {
 	PreviousCostCenter *string `json:"previous_cost_center,omitempty"`
 }
 
-// CostCenterRemoveResourceResponse represents a response from removing resources from a cost center.
-type CostCenterRemoveResourceResponse struct {
+// RemoveResourcesFromCostCenterResponse represents a response from removing resources from a cost center.
+type RemoveResourcesFromCostCenterResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// CostCenterDeleteResponse represents a response from deleting a cost center.
-type CostCenterDeleteResponse struct {
+// DeleteCostCenterResponse represents a response from deleting a cost center.
+type DeleteCostCenterResponse struct {
 	Message         *string `json:"message,omitempty"`
 	ID              *string `json:"id,omitempty"`
 	Name            *string `json:"name,omitempty"`
@@ -171,7 +171,7 @@ func (s *EnterpriseService) UpdateCostCenter(ctx context.Context, enterprise, co
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#delete-a-cost-center
 //
 //meta:operation DELETE /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
-func (s *EnterpriseService) DeleteCostCenter(ctx context.Context, enterprise, costCenterID string) (*CostCenterDeleteResponse, *Response, error) {
+func (s *EnterpriseService) DeleteCostCenter(ctx context.Context, enterprise, costCenterID string) (*DeleteCostCenterResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers/%v", enterprise, costCenterID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -179,7 +179,7 @@ func (s *EnterpriseService) DeleteCostCenter(ctx context.Context, enterprise, co
 		return nil, nil, err
 	}
 
-	result := &CostCenterDeleteResponse{}
+	result := &DeleteCostCenterResponse{}
 	resp, err := s.client.Do(ctx, req, result)
 	if err != nil {
 		return nil, resp, err
@@ -193,7 +193,7 @@ func (s *EnterpriseService) DeleteCostCenter(ctx context.Context, enterprise, co
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#add-resources-to-a-cost-center
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}/resource
-func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterprise, costCenterID string, resources CostCenterResourceRequest) (*CostCenterAddResourceResponse, *Response, error) {
+func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterprise, costCenterID string, resources CostCenterResourceRequest) (*AddResourcesToCostCenterResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers/%v/resource", enterprise, costCenterID)
 
 	req, err := s.client.NewRequest("POST", u, resources)
@@ -201,7 +201,7 @@ func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterp
 		return nil, nil, err
 	}
 
-	result := &CostCenterAddResourceResponse{}
+	result := &AddResourcesToCostCenterResponse{}
 	resp, err := s.client.Do(ctx, req, result)
 	if err != nil {
 		return nil, resp, err
@@ -215,7 +215,7 @@ func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterp
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#remove-resources-from-a-cost-center
 //
 //meta:operation DELETE /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}/resource
-func (s *EnterpriseService) RemoveResourcesFromCostCenter(ctx context.Context, enterprise, costCenterID string, resources CostCenterResourceRequest) (*CostCenterRemoveResourceResponse, *Response, error) {
+func (s *EnterpriseService) RemoveResourcesFromCostCenter(ctx context.Context, enterprise, costCenterID string, resources CostCenterResourceRequest) (*RemoveResourcesFromCostCenterResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers/%v/resource", enterprise, costCenterID)
 
 	req, err := s.client.NewRequest("DELETE", u, resources)
@@ -223,7 +223,7 @@ func (s *EnterpriseService) RemoveResourcesFromCostCenter(ctx context.Context, e
 		return nil, nil, err
 	}
 
-	result := &CostCenterRemoveResourceResponse{}
+	result := &RemoveResourcesFromCostCenterResponse{}
 	resp, err := s.client.Do(ctx, req, result)
 	if err != nil {
 		return nil, resp, err

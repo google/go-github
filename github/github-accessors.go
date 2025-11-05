@@ -342,6 +342,14 @@ func (a *ActorLocation) GetCountryCode() string {
 	return *a.CountryCode
 }
 
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (a *AddResourcesToCostCenterResponse) GetMessage() string {
+	if a == nil || a.Message == nil {
+		return ""
+	}
+	return *a.Message
+}
+
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
 func (a *AdminEnforcedChanges) GetFrom() bool {
 	if a == nil || a.From == nil {
@@ -6078,54 +6086,6 @@ func (c *CostCenter) GetState() string {
 	return *c.State
 }
 
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (c *CostCenterAddResourceResponse) GetMessage() string {
-	if c == nil || c.Message == nil {
-		return ""
-	}
-	return *c.Message
-}
-
-// GetCostCenterState returns the CostCenterState field if it's non-nil, zero value otherwise.
-func (c *CostCenterDeleteResponse) GetCostCenterState() string {
-	if c == nil || c.CostCenterState == nil {
-		return ""
-	}
-	return *c.CostCenterState
-}
-
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (c *CostCenterDeleteResponse) GetID() string {
-	if c == nil || c.ID == nil {
-		return ""
-	}
-	return *c.ID
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (c *CostCenterDeleteResponse) GetMessage() string {
-	if c == nil || c.Message == nil {
-		return ""
-	}
-	return *c.Message
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CostCenterDeleteResponse) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (c *CostCenterRemoveResourceResponse) GetMessage() string {
-	if c == nil || c.Message == nil {
-		return ""
-	}
-	return *c.Message
-}
-
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
 func (c *CreateCheckRunOptions) GetCompletedAt() Timestamp {
 	if c == nil || c.CompletedAt == nil {
@@ -7132,6 +7092,38 @@ func (d *DeleteAnalysis) GetNextAnalysisURL() string {
 		return ""
 	}
 	return *d.NextAnalysisURL
+}
+
+// GetCostCenterState returns the CostCenterState field if it's non-nil, zero value otherwise.
+func (d *DeleteCostCenterResponse) GetCostCenterState() string {
+	if d == nil || d.CostCenterState == nil {
+		return ""
+	}
+	return *d.CostCenterState
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (d *DeleteCostCenterResponse) GetID() string {
+	if d == nil || d.ID == nil {
+		return ""
+	}
+	return *d.ID
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (d *DeleteCostCenterResponse) GetMessage() string {
+	if d == nil || d.Message == nil {
+		return ""
+	}
+	return *d.Message
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DeleteCostCenterResponse) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
 }
 
 // GetInstallation returns the Installation field.
@@ -22380,6 +22372,14 @@ func (r *ReleaseVersion) GetVersion() string {
 		return ""
 	}
 	return *r.Version
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (r *RemoveResourcesFromCostCenterResponse) GetMessage() string {
+	if r == nil || r.Message == nil {
+		return ""
+	}
+	return *r.Message
 }
 
 // GetExpiresAt returns the ExpiresAt field if it's non-nil, zero value otherwise.
