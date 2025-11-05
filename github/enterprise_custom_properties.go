@@ -57,12 +57,12 @@ func (s *EnterpriseService) GetOrganizationCustomPropertySchema(ctx context.Cont
 	return schema, resp, nil
 }
 
-// CreateOrUpdateEnterpriseCustomPropertySchema creates new or updates existing organization custom properties defined on an enterprise in a batch.
+// CreateOrUpdateOrganizationCustomPropertySchema creates new or updates existing organization custom properties defined on an enterprise in a batch.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#create-or-update-organization-custom-property-definitions-on-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/org-properties/schema
-func (s *EnterpriseService) CreateOrUpdateEnterpriseCustomPropertySchema(ctx context.Context, enterprise string, schema EnterpriseCustomPropertySchema) (*Response, error) {
+func (s *EnterpriseService) CreateOrUpdateOrganizationCustomPropertySchema(ctx context.Context, enterprise string, schema EnterpriseCustomPropertySchema) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema", enterprise)
 	req, err := s.client.NewRequest("PATCH", u, schema)
 	if err != nil {
@@ -77,12 +77,12 @@ func (s *EnterpriseService) CreateOrUpdateEnterpriseCustomPropertySchema(ctx con
 	return resp, nil
 }
 
-// GetEnterpriseCustomProperty retrieves a specific organization custom property definition from an enterprise.
+// GetOrganizationCustomProperty retrieves a specific organization custom property definition from an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#get-an-organization-custom-property-definition-from-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/org-properties/schema/{custom_property_name}
-func (s *EnterpriseService) GetEnterpriseCustomProperty(ctx context.Context, enterprise, customPropertyName string) (*CustomProperty, *Response, error) {
+func (s *EnterpriseService) GetOrganizationCustomProperty(ctx context.Context, enterprise, customPropertyName string) (*CustomProperty, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema/%v", enterprise, customPropertyName)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -99,12 +99,12 @@ func (s *EnterpriseService) GetEnterpriseCustomProperty(ctx context.Context, ent
 	return property, resp, nil
 }
 
-// CreateOrUpdateEnterpriseCustomProperty creates a new or updates an existing organization custom property definition that is defined on an enterprise.
+// CreateOrUpdateOrganizationCustomProperty creates a new or updates an existing organization custom property definition that is defined on an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#create-or-update-an-organization-custom-property-definition-on-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/org-properties/schema/{custom_property_name}
-func (s *EnterpriseService) CreateOrUpdateEnterpriseCustomProperty(ctx context.Context, enterprise, customPropertyName string, property CustomProperty) (*Response, error) {
+func (s *EnterpriseService) CreateOrUpdateOrganizationCustomProperty(ctx context.Context, enterprise, customPropertyName string, property CustomProperty) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema/%v", enterprise, customPropertyName)
 	req, err := s.client.NewRequest("PUT", u, property)
 	if err != nil {
@@ -119,12 +119,12 @@ func (s *EnterpriseService) CreateOrUpdateEnterpriseCustomProperty(ctx context.C
 	return resp, nil
 }
 
-// DeleteEnterpriseCustomProperty removes an organization custom property definition that is defined on an enterprise.
+// DeleteOrganizationCustomProperty removes an organization custom property definition that is defined on an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#remove-an-organization-custom-property-definition-from-an-enterprise
 //
 //meta:operation DELETE /enterprises/{enterprise}/org-properties/schema/{custom_property_name}
-func (s *EnterpriseService) DeleteEnterpriseCustomProperty(ctx context.Context, enterprise, customPropertyName string) (*Response, error) {
+func (s *EnterpriseService) DeleteOrganizationCustomProperty(ctx context.Context, enterprise, customPropertyName string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema/%v", enterprise, customPropertyName)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -139,13 +139,13 @@ func (s *EnterpriseService) DeleteEnterpriseCustomProperty(ctx context.Context, 
 	return resp, nil
 }
 
-// GetEnterpriseCustomPropertyValues lists enterprise organizations with all of their custom property values.
+// ListEnterpriseCustomPropertyValues lists enterprise organizations with all of their custom property values.
 // Returns a list of organizations and their custom property values defined in the enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#list-custom-property-values-for-organizations-in-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/org-properties/values
-func (s *EnterpriseService) GetEnterpriseCustomPropertyValues(ctx context.Context, enterprise string, opts *ListOptions) ([]*EnterpriseCustomPropertiesValues, *Response, error) {
+func (s *EnterpriseService) ListEnterpriseCustomPropertyValues(ctx context.Context, enterprise string, opts *ListOptions) ([]*EnterpriseCustomPropertiesValues, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/values", enterprise)
 
 	u, err := addOptions(u, opts)
