@@ -35,12 +35,12 @@ type EnterpriseCustomPropertyValuesRequest struct {
 	Properties []*CustomPropertyValue `json:"properties"`
 }
 
-// GetEnterpriseCustomPropertySchema gives all organization custom property definitions that are defined on an enterprise.
+// GetEnterpriseCustomPropertySchema gets all organization custom property definitions that are defined on an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#get-organization-custom-properties-schema-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/org-properties/schema
-func (s *EnterpriseService) GetEnterpriseCustomPropertySchema(ctx context.Context, enterprise string) (*EnterpriseCustomPropertySchema, *Response, error) {
+func (s *EnterpriseService) GetOrganizationCustomPropertySchema(ctx context.Context, enterprise string) (*EnterpriseCustomPropertySchema, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema", enterprise)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -167,7 +167,7 @@ func (s *EnterpriseService) GetEnterpriseCustomPropertyValues(ctx context.Contex
 	return values, resp, nil
 }
 
-// CreateOrUpdateEnterpriseCustomPropertyValues create or update custom property values for organizations in an enterprise.
+// CreateOrUpdateEnterpriseCustomPropertyValues creates or updates custom property values for organizations in an enterprise.
 // To remove a custom property value from an organization, set the property value to null.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#create-or-update-custom-property-values-for-organizations-in-an-enterprise

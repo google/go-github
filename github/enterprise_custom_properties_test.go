@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestEnterpriseService_GetEnterpriseCustomPropertySchema(t *testing.T) {
+func TestEnterpriseService_GetOrganizationCustomPropertySchema(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -29,9 +29,9 @@ func TestEnterpriseService_GetEnterpriseCustomPropertySchema(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Enterprise.GetEnterpriseCustomPropertySchema(ctx, "e")
+	got, _, err := client.Enterprise.GetOrganizationCustomPropertySchema(ctx, "e")
 	if err != nil {
-		t.Fatalf("Enterprise.GetEnterpriseCustomPropertySchema returned error: %v", err)
+		t.Fatalf("Enterprise.GetOrganizationCustomPropertySchema returned error: %v", err)
 	}
 
 	want := &EnterpriseCustomPropertySchema{
@@ -45,16 +45,16 @@ func TestEnterpriseService_GetEnterpriseCustomPropertySchema(t *testing.T) {
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Enterprise.GetEnterpriseCustomPropertySchema = %+v, want %+v", got, want)
+		t.Errorf("Enterprise.GetOrganizationCustomPropertySchema = %+v, want %+v", got, want)
 	}
 
-	const methodName = "GetEnterpriseCustomPropertySchema"
+	const methodName = "GetOrganizationCustomPropertySchema"
 	testBadOptions(t, methodName, func() error {
-		_, _, err := client.Enterprise.GetEnterpriseCustomPropertySchema(ctx, "\n")
+		_, _, err := client.Enterprise.GetOrganizationCustomPropertySchema(ctx, "\n")
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.GetEnterpriseCustomPropertySchema(ctx, "e")
+		got, resp, err := client.Enterprise.GetOrganizationCustomPropertySchema(ctx, "e")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
