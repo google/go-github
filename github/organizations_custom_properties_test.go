@@ -62,7 +62,7 @@ func TestEnterpriseService_GetEnterpriseCustomPropertySchema(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_UpdateEnterpriseCustomPropertySchema(t *testing.T) {
+func TestEnterpriseService_CreateOrUpdateEnterpriseCustomPropertySchema(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -72,21 +72,21 @@ func TestEnterpriseService_UpdateEnterpriseCustomPropertySchema(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	schema := &EnterpriseCustomPropertySchema{
+	schema := EnterpriseCustomPropertySchema{
 		Properties: []*Property{{Name: "team"}},
 	}
-	_, err := client.Enterprise.UpdateEnterpriseCustomPropertySchema(ctx, "e", schema)
+	_, err := client.Enterprise.CreateOrUpdateEnterpriseCustomPropertySchema(ctx, "e", schema)
 	if err != nil {
-		t.Errorf("Enterprise.UpdateEnterpriseCustomPropertySchema returned error: %v", err)
+		t.Errorf("Enterprise.CreateOrUpdateEnterpriseCustomPropertySchema returned error: %v", err)
 	}
 
-	const methodName = "UpdateEnterpriseCustomPropertySchema"
+	const methodName = "CreateOrUpdateEnterpriseCustomPropertySchema"
 	testBadOptions(t, methodName, func() error {
-		_, err := client.Enterprise.UpdateEnterpriseCustomPropertySchema(ctx, "\n", schema)
+		_, err := client.Enterprise.CreateOrUpdateEnterpriseCustomPropertySchema(ctx, "\n", schema)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.UpdateEnterpriseCustomPropertySchema(ctx, "e", schema)
+		return client.Enterprise.CreateOrUpdateEnterpriseCustomPropertySchema(ctx, "e", schema)
 	})
 }
 
@@ -133,7 +133,7 @@ func TestEnterpriseService_GetEnterpriseCustomProperty(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_UpdateEnterpriseCustomProperty(t *testing.T) {
+func TestEnterpriseService_CreateOrUpdateEnterpriseCustomProperty(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -143,19 +143,19 @@ func TestEnterpriseService_UpdateEnterpriseCustomProperty(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	property := &Property{Name: "team"}
-	_, err := client.Enterprise.UpdateEnterpriseCustomProperty(ctx, "e", "prop", property)
+	property := Property{Name: "team"}
+	_, err := client.Enterprise.CreateOrUpdateEnterpriseCustomProperty(ctx, "e", "prop", property)
 	if err != nil {
-		t.Errorf("Enterprise.UpdateEnterpriseCustomProperty returned error: %v", err)
+		t.Errorf("Enterprise.CreateOrUpdateEnterpriseCustomProperty returned error: %v", err)
 	}
 
-	const methodName = "UpdateEnterpriseCustomProperty"
+	const methodName = "CreateOrUpdateEnterpriseCustomProperty"
 	testBadOptions(t, methodName, func() error {
-		_, err := client.Enterprise.UpdateEnterpriseCustomProperty(ctx, "\n", "prop", property)
+		_, err := client.Enterprise.CreateOrUpdateEnterpriseCustomProperty(ctx, "\n", "prop", property)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.UpdateEnterpriseCustomProperty(ctx, "e", "prop", property)
+		return client.Enterprise.CreateOrUpdateEnterpriseCustomProperty(ctx, "e", "prop", property)
 	})
 }
 
@@ -231,7 +231,7 @@ func TestEnterpriseService_GetEnterpriseCustomPropertyValues(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_UpdateEnterpriseCustomPropertyValues(t *testing.T) {
+func TestEnterpriseService_CreateOrUpdateEnterpriseCustomPropertyValues(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -244,21 +244,21 @@ func TestEnterpriseService_UpdateEnterpriseCustomPropertyValues(t *testing.T) {
 	values := []*PropertyValue{{PropertyName: Ptr("team"), Value: Ptr("core")}}
 	orgs := []string{"org1"}
 
-	opts := CustomPropertiesValuesUpdate{
+	opts := EnterpriseCustomPropertyValues{
 		OrganizationLogin: orgs,
 		Properties:        values,
 	}
-	_, err := client.Enterprise.UpdateEnterpriseCustomPropertyValues(ctx, "e", opts)
+	_, err := client.Enterprise.CreateOrUpdateEnterpriseCustomPropertyValues(ctx, "e", opts)
 	if err != nil {
-		t.Errorf("Enterprise.UpdateEnterpriseCustomPropertyValues returned error: %v", err)
+		t.Errorf("Enterprise.CreateOrUpdateEnterpriseCustomPropertyValues returned error: %v", err)
 	}
 
-	const methodName = "UpdateEnterpriseCustomPropertyValues"
+	const methodName = "CreateOrUpdateEnterpriseCustomPropertyValues"
 	testBadOptions(t, methodName, func() error {
-		_, err := client.Enterprise.UpdateEnterpriseCustomPropertyValues(ctx, "\n", opts)
+		_, err := client.Enterprise.CreateOrUpdateEnterpriseCustomPropertyValues(ctx, "\n", opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.UpdateEnterpriseCustomPropertyValues(ctx, "e", opts)
+		return client.Enterprise.CreateOrUpdateEnterpriseCustomPropertyValues(ctx, "e", opts)
 	})
 }

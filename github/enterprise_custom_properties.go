@@ -57,8 +57,8 @@ type CustomPropertiesValues struct {
 	Properties []*PropertyValue `json:"properties,omitempty"`
 }
 
-// CustomPropertiesValuesUpdate represents the request to update custom property values for organizations within an enterprise.
-type CustomPropertiesValuesUpdate struct {
+// EnterpriseCustomPropertyValues represents the request to update custom property values for organizations within an enterprise.
+type EnterpriseCustomPropertyValues struct {
 	// The names of organizations that the custom property values will be applied to.
 	// OrganizationLogin specifies the organization name when updating multiple organizations.
 	OrganizationLogin []string `json:"organization_login"`
@@ -88,12 +88,12 @@ func (s *EnterpriseService) GetEnterpriseCustomPropertySchema(ctx context.Contex
 	return schema, resp, nil
 }
 
-// UpdateEnterpriseCustomPropertySchema creates new or updates existing organization custom properties defined on an enterprise in a batch.
+// CreateOrUpdateEnterpriseCustomPropertySchema creates new or updates existing organization custom properties defined on an enterprise in a batch.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#create-or-update-organization-custom-property-definitions-on-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/org-properties/schema
-func (s *EnterpriseService) UpdateEnterpriseCustomPropertySchema(ctx context.Context, enterprise string, schema *EnterpriseCustomPropertySchema) (*Response, error) {
+func (s *EnterpriseService) CreateOrUpdateEnterpriseCustomPropertySchema(ctx context.Context, enterprise string, schema EnterpriseCustomPropertySchema) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema", enterprise)
 	req, err := s.client.NewRequest("PATCH", u, schema)
 	if err != nil {
@@ -130,12 +130,12 @@ func (s *EnterpriseService) GetEnterpriseCustomProperty(ctx context.Context, ent
 	return property, resp, nil
 }
 
-// UpdateEnterpriseCustomProperty creates a new or updates an existing organization custom property definition that is defined on an enterprise.
+// CreateOrUpdateEnterpriseCustomProperty creates a new or updates an existing organization custom property definition that is defined on an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#create-or-update-an-organization-custom-property-definition-on-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/org-properties/schema/{custom_property_name}
-func (s *EnterpriseService) UpdateEnterpriseCustomProperty(ctx context.Context, enterprise, customPropertyName string, property *Property) (*Response, error) {
+func (s *EnterpriseService) CreateOrUpdateEnterpriseCustomProperty(ctx context.Context, enterprise, customPropertyName string, property Property) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema/%v", enterprise, customPropertyName)
 	req, err := s.client.NewRequest("PUT", u, property)
 	if err != nil {
@@ -198,13 +198,13 @@ func (s *EnterpriseService) GetEnterpriseCustomPropertyValues(ctx context.Contex
 	return values, resp, nil
 }
 
-// UpdateEnterpriseCustomPropertyValues create or update custom property values for organizations in an enterprise.
+// CreateOrUpdateEnterpriseCustomPropertyValues create or update custom property values for organizations in an enterprise.
 // To remove a custom property value from an organization, set the property value to null.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs#create-or-update-custom-property-values-for-organizations-in-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/org-properties/values
-func (s *EnterpriseService) UpdateEnterpriseCustomPropertyValues(ctx context.Context, enterprise string, values CustomPropertiesValuesUpdate) (*Response, error) {
+func (s *EnterpriseService) CreateOrUpdateEnterpriseCustomPropertyValues(ctx context.Context, enterprise string, values EnterpriseCustomPropertyValues) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/values", enterprise)
 	req, err := s.client.NewRequest("PATCH", u, values)
 	if err != nil {

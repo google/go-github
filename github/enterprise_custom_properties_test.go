@@ -60,7 +60,7 @@ func TestOrganizationsService_GetOrganizationCustomPropertyValues(t *testing.T) 
 	})
 }
 
-func TestOrganizationsService_UpdateOrganizationCustomPropertyValues(t *testing.T) {
+func TestOrganizationsService_CreateOrUpdateOrgCustomPropertyValues(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -78,17 +78,17 @@ func TestOrganizationsService_UpdateOrganizationCustomPropertyValues(t *testing.
 	props := OrganizationCustomPropertyValues{
 		Properties: values,
 	}
-	_, err := client.Organizations.UpdateOrganizationCustomPropertyValues(ctx, "o", props)
+	_, err := client.Organizations.CreateOrUpdateOrgCustomPropertyValues(ctx, "o", props)
 	if err != nil {
-		t.Errorf("Organizations.UpdateOrganizationCustomPropertyValues returned error: %v", err)
+		t.Errorf("Organizations.CreateOrUpdateOrgCustomPropertyValues returned error: %v", err)
 	}
 
-	const methodName = "UpdateOrganizationCustomPropertyValues"
+	const methodName = "CreateOrUpdateOrgCustomPropertyValues"
 	testBadOptions(t, methodName, func() error {
-		_, err := client.Organizations.UpdateOrganizationCustomPropertyValues(ctx, "\n", props)
+		_, err := client.Organizations.CreateOrUpdateOrgCustomPropertyValues(ctx, "\n", props)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Organizations.UpdateOrganizationCustomPropertyValues(ctx, "o", props)
+		return client.Organizations.CreateOrUpdateOrgCustomPropertyValues(ctx, "o", props)
 	})
 }

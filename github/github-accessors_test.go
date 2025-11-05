@@ -31787,6 +31787,14 @@ func TestRepositoryRulesetConditions_GetOrganizationName(tt *testing.T) {
 	r.GetOrganizationName()
 }
 
+func TestRepositoryRulesetConditions_GetOrganizationProperty(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetConditions{}
+	r.GetOrganizationProperty()
+	r = nil
+	r.GetOrganizationProperty()
+}
+
 func TestRepositoryRulesetConditions_GetRefName(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryRulesetConditions{}
@@ -31911,6 +31919,17 @@ func TestRepositoryRulesetLinks_GetSelf(tt *testing.T) {
 	r.GetSelf()
 	r = nil
 	r.GetSelf()
+}
+
+func TestRepositoryRulesetOrganizationPropertyTargetParameters_GetSource(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryRulesetOrganizationPropertyTargetParameters{Source: &zeroValue}
+	r.GetSource()
+	r = &RepositoryRulesetOrganizationPropertyTargetParameters{}
+	r.GetSource()
+	r = nil
+	r.GetSource()
 }
 
 func TestRepositoryRulesetRepositoryNamesConditionParameters_GetProtected(tt *testing.T) {

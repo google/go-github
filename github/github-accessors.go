@@ -24598,6 +24598,14 @@ func (r *RepositoryRulesetConditions) GetOrganizationName() *RepositoryRulesetOr
 	return r.OrganizationName
 }
 
+// GetOrganizationProperty returns the OrganizationProperty field.
+func (r *RepositoryRulesetConditions) GetOrganizationProperty() *RepositoryRulesetOrganizationPropertyConditionParameters {
+	if r == nil {
+		return nil
+	}
+	return r.OrganizationProperty
+}
+
 // GetRefName returns the RefName field.
 func (r *RepositoryRulesetConditions) GetRefName() *RepositoryRulesetRefConditionParameters {
 	if r == nil {
@@ -24716,6 +24724,14 @@ func (r *RepositoryRulesetLinks) GetSelf() *RepositoryRulesetLink {
 		return nil
 	}
 	return r.Self
+}
+
+// GetSource returns the Source field if it's non-nil, zero value otherwise.
+func (r *RepositoryRulesetOrganizationPropertyTargetParameters) GetSource() string {
+	if r == nil || r.Source == nil {
+		return ""
+	}
+	return *r.Source
 }
 
 // GetProtected returns the Protected field if it's non-nil, zero value otherwise.
