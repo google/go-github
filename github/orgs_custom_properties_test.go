@@ -32,12 +32,12 @@ func TestOrganizationsService_GetOrganizationCustomPropertyValues(t *testing.T) 
 	ctx := t.Context()
 	got, _, err := client.Organizations.GetOrganizationCustomPropertyValues(ctx, "o")
 	if err != nil {
-		t.Errorf("Organizations.GetOrganizationCustomPropertyValues returned error: %v", err)
+		t.Fatalf("Organizations.GetOrganizationCustomPropertyValues returned error: %v", err)
 	}
 
 	want := []*CustomPropertyValue{
-		{PropertyName: "team", Value: Ptr("core")},
-		{PropertyName: "level", Value: Ptr("gold")},
+		{PropertyName: "team", Value: "core"},
+		{PropertyName: "level", Value: "gold"},
 	}
 
 	if !cmp.Equal(got, want) {

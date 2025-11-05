@@ -21,7 +21,7 @@ func TestEnterpriseService_GetEnterpriseCustomPropertySchema(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"properties": [{
-				"name": "team",
+				"property_name": "team",
 				"value_type": "string",
 				"description": "Team name"
 			}]
@@ -31,7 +31,7 @@ func TestEnterpriseService_GetEnterpriseCustomPropertySchema(t *testing.T) {
 	ctx := t.Context()
 	got, _, err := client.Enterprise.GetEnterpriseCustomPropertySchema(ctx, "e")
 	if err != nil {
-		t.Errorf("Enterprise.GetEnterpriseCustomPropertySchema returned error: %v", err)
+		t.Fatalf("Enterprise.GetEnterpriseCustomPropertySchema returned error: %v", err)
 	}
 
 	want := &EnterpriseCustomPropertySchema{
@@ -97,7 +97,7 @@ func TestEnterpriseService_GetEnterpriseCustomProperty(t *testing.T) {
 	mux.HandleFunc("/enterprises/e/org-properties/schema/prop", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
-			"name": "team",
+			"property_name": "team",
 			"value_type": "string",
 			"description": "Team name"
 		}`)
@@ -106,7 +106,7 @@ func TestEnterpriseService_GetEnterpriseCustomProperty(t *testing.T) {
 	ctx := t.Context()
 	got, _, err := client.Enterprise.GetEnterpriseCustomProperty(ctx, "e", "prop")
 	if err != nil {
-		t.Errorf("Enterprise.GetEnterpriseCustomProperty returned error: %v", err)
+		t.Fatalf("Enterprise.GetEnterpriseCustomProperty returned error: %v", err)
 	}
 
 	want := &CustomProperty{
@@ -193,14 +193,16 @@ func TestEnterpriseService_GetEnterpriseCustomPropertyValues(t *testing.T) {
 		fmt.Fprint(w, `[{
 			"organization_id": 1,
 			"organization_login": "org1",
-			"properties": [{"property_name": "team", "value": "core"}]
+			"properties": [
+				{"property_name": "team", "value": "core"}
+			]
 		}]`)
 	})
 
 	ctx := t.Context()
 	got, _, err := client.Enterprise.GetEnterpriseCustomPropertyValues(ctx, "e", nil)
 	if err != nil {
-		t.Errorf("Enterprise.GetEnterpriseCustomPropertyValues returned error: %v", err)
+		t.Fatalf("Enterprise.GetEnterpriseCustomPropertyValues returned error: %v", err)
 	}
 
 	want := []*EnterpriseCustomPropertiesValues{
@@ -208,7 +210,7 @@ func TestEnterpriseService_GetEnterpriseCustomPropertyValues(t *testing.T) {
 			OrganizationID:    Ptr(int64(1)),
 			OrganizationLogin: Ptr("org1"),
 			Properties: []*CustomPropertyValue{
-				{PropertyName: "team", Value: Ptr("core")},
+				{PropertyName: "team", Value: "core"},
 			},
 		},
 	}
