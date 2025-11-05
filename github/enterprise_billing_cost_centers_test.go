@@ -71,7 +71,7 @@ func TestEnterpriseService_ListCostCenters(t *testing.T) {
 				Name:              "Cost Center Name",
 				State:             Ptr("active"),
 				AzureSubscription: Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-				Resources: []CostCenterResource{
+				Resources: []*CostCenterResource{
 					{
 						Type: "User",
 						Name: "Monalisa",
@@ -86,7 +86,7 @@ func TestEnterpriseService_ListCostCenters(t *testing.T) {
 				ID:    "3ffb9ffe-6903-11ee-8c99-0242ac120003",
 				Name:  "Another Cost Center",
 				State: Ptr("active"),
-				Resources: []CostCenterResource{
+				Resources: []*CostCenterResource{
 					{
 						Type: "User",
 						Name: "Octocat",
@@ -149,7 +149,7 @@ func TestEnterpriseService_CreateCostCenter(t *testing.T) {
 	want := &CostCenter{
 		ID:        "abc123",
 		Name:      "Engineering Team",
-		Resources: []CostCenterResource{},
+		Resources: []*CostCenterResource{},
 	}
 	if !cmp.Equal(costCenter, want) {
 		t.Errorf("Enterprise.CreateCostCenter returned %+v, want %+v", costCenter, want)
@@ -214,7 +214,7 @@ func TestEnterpriseService_GetCostCenter(t *testing.T) {
 		Name:              "Cost Center Name",
 		State:             Ptr("active"),
 		AzureSubscription: Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-		Resources: []CostCenterResource{
+		Resources: []*CostCenterResource{
 			{
 				Type: "User",
 				Name: "Monalisa",
@@ -292,7 +292,7 @@ func TestEnterpriseService_UpdateCostCenter(t *testing.T) {
 		Name:              "Updated Cost Center Name",
 		State:             Ptr("active"),
 		AzureSubscription: Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-		Resources: []CostCenterResource{
+		Resources: []*CostCenterResource{
 			{
 				Type: "User",
 				Name: "Monalisa",
@@ -532,7 +532,7 @@ func TestCostCenter_Marshal(t *testing.T) {
 		Name:              "Engineering",
 		State:             Ptr("active"),
 		AzureSubscription: Ptr("sub-123"),
-		Resources: []CostCenterResource{
+		Resources: []*CostCenterResource{
 			{
 				Type: "user",
 				Name: "octocat",
@@ -582,7 +582,7 @@ func TestCostCenters_Marshal(t *testing.T) {
 			{
 				ID:        "1",
 				Name:      "Engineering",
-				Resources: []CostCenterResource{},
+				Resources: []*CostCenterResource{},
 				State:     Ptr("active"),
 			},
 		},

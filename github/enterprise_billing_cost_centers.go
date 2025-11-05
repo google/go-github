@@ -12,11 +12,11 @@ import (
 
 // CostCenter represents an enterprise cost center.
 type CostCenter struct {
-	ID                string               `json:"id"`
-	Name              string               `json:"name"`
-	Resources         []CostCenterResource `json:"resources"`
-	State             *string              `json:"state,omitempty"`
-	AzureSubscription *string              `json:"azure_subscription,omitempty"`
+	ID                string                `json:"id"`
+	Name              string                `json:"name"`
+	Resources         []*CostCenterResource `json:"resources"`
+	State             *string               `json:"state,omitempty"`
+	AzureSubscription *string               `json:"azure_subscription,omitempty"`
 }
 
 // CostCenterResource represents a resource assigned to a cost center.
