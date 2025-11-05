@@ -7908,6 +7908,116 @@ func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestCostCenter_GetAzureSubscription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CostCenter{AzureSubscription: &zeroValue}
+	c.GetAzureSubscription()
+	c = &CostCenter{}
+	c.GetAzureSubscription()
+	c = nil
+	c.GetAzureSubscription()
+}
+
+func TestCostCenter_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CostCenter{State: &zeroValue}
+	c.GetState()
+	c = &CostCenter{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCostCenterAddResourceResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CostCenterAddResourceResponse{Message: &zeroValue}
+	c.GetMessage()
+	c = &CostCenterAddResourceResponse{}
+	c.GetMessage()
+	c = nil
+	c.GetMessage()
+}
+
+func TestCostCenterDeleteResponse_GetCostCenterState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CostCenterDeleteResponse{CostCenterState: &zeroValue}
+	c.GetCostCenterState()
+	c = &CostCenterDeleteResponse{}
+	c.GetCostCenterState()
+	c = nil
+	c.GetCostCenterState()
+}
+
+func TestCostCenterDeleteResponse_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CostCenterDeleteResponse{ID: &zeroValue}
+	c.GetID()
+	c = &CostCenterDeleteResponse{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCostCenterDeleteResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CostCenterDeleteResponse{Message: &zeroValue}
+	c.GetMessage()
+	c = &CostCenterDeleteResponse{}
+	c.GetMessage()
+	c = nil
+	c.GetMessage()
+}
+
+func TestCostCenterDeleteResponse_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CostCenterDeleteResponse{Name: &zeroValue}
+	c.GetName()
+	c = &CostCenterDeleteResponse{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCostCenterListOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CostCenterListOptions{State: &zeroValue}
+	c.GetState()
+	c = &CostCenterListOptions{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCostCenterRemoveResourceResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CostCenterRemoveResourceResponse{Message: &zeroValue}
+	c.GetMessage()
+	c = &CostCenterRemoveResourceResponse{}
+	c.GetMessage()
+	c = nil
+	c.GetMessage()
+}
+
+func TestCostCenterRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CostCenterRequest{Name: &zeroValue}
+	c.GetName()
+	c = &CostCenterRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
 func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -28367,6 +28477,39 @@ func TestReactions_GetURL(tt *testing.T) {
 	r.GetURL()
 	r = nil
 	r.GetURL()
+}
+
+func TestReassignedResource_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &ReassignedResource{Name: &zeroValue}
+	r.GetName()
+	r = &ReassignedResource{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestReassignedResource_GetPreviousCostCenter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &ReassignedResource{PreviousCostCenter: &zeroValue}
+	r.GetPreviousCostCenter()
+	r = &ReassignedResource{}
+	r.GetPreviousCostCenter()
+	r = nil
+	r.GetPreviousCostCenter()
+}
+
+func TestReassignedResource_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &ReassignedResource{ResourceType: &zeroValue}
+	r.GetResourceType()
+	r = &ReassignedResource{}
+	r.GetResourceType()
+	r = nil
+	r.GetResourceType()
 }
 
 func TestReference_GetNodeID(tt *testing.T) {

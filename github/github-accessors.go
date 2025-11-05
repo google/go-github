@@ -6062,6 +6062,86 @@ func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
+// GetAzureSubscription returns the AzureSubscription field if it's non-nil, zero value otherwise.
+func (c *CostCenter) GetAzureSubscription() string {
+	if c == nil || c.AzureSubscription == nil {
+		return ""
+	}
+	return *c.AzureSubscription
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (c *CostCenter) GetState() string {
+	if c == nil || c.State == nil {
+		return ""
+	}
+	return *c.State
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (c *CostCenterAddResourceResponse) GetMessage() string {
+	if c == nil || c.Message == nil {
+		return ""
+	}
+	return *c.Message
+}
+
+// GetCostCenterState returns the CostCenterState field if it's non-nil, zero value otherwise.
+func (c *CostCenterDeleteResponse) GetCostCenterState() string {
+	if c == nil || c.CostCenterState == nil {
+		return ""
+	}
+	return *c.CostCenterState
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CostCenterDeleteResponse) GetID() string {
+	if c == nil || c.ID == nil {
+		return ""
+	}
+	return *c.ID
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (c *CostCenterDeleteResponse) GetMessage() string {
+	if c == nil || c.Message == nil {
+		return ""
+	}
+	return *c.Message
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CostCenterDeleteResponse) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (c *CostCenterListOptions) GetState() string {
+	if c == nil || c.State == nil {
+		return ""
+	}
+	return *c.State
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (c *CostCenterRemoveResourceResponse) GetMessage() string {
+	if c == nil || c.Message == nil {
+		return ""
+	}
+	return *c.Message
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CostCenterRequest) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
 func (c *CreateCheckRunOptions) GetCompletedAt() Timestamp {
 	if c == nil || c.CompletedAt == nil {
@@ -21964,6 +22044,30 @@ func (r *Reactions) GetURL() string {
 		return ""
 	}
 	return *r.URL
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *ReassignedResource) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
+// GetPreviousCostCenter returns the PreviousCostCenter field if it's non-nil, zero value otherwise.
+func (r *ReassignedResource) GetPreviousCostCenter() string {
+	if r == nil || r.PreviousCostCenter == nil {
+		return ""
+	}
+	return *r.PreviousCostCenter
+}
+
+// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
+func (r *ReassignedResource) GetResourceType() string {
+	if r == nil || r.ResourceType == nil {
+		return ""
+	}
+	return *r.ResourceType
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
