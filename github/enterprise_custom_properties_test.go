@@ -200,7 +200,8 @@ func TestEnterpriseService_GetEnterpriseCustomPropertyValues(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Enterprise.GetEnterpriseCustomPropertyValues(ctx, "e", nil)
+	opts := &ListOptions{Page: 1, PerPage: 10}
+	got, _, err := client.Enterprise.GetEnterpriseCustomPropertyValues(ctx, "e", opts)
 	if err != nil {
 		t.Fatalf("Enterprise.GetEnterpriseCustomPropertyValues returned error: %v", err)
 	}
@@ -221,7 +222,7 @@ func TestEnterpriseService_GetEnterpriseCustomPropertyValues(t *testing.T) {
 
 	const methodName = "GetEnterpriseCustomPropertyValues"
 	testBadOptions(t, methodName, func() error {
-		_, _, err := client.Enterprise.GetEnterpriseCustomPropertyValues(ctx, "\n", nil)
+		_, _, err := client.Enterprise.GetEnterpriseCustomPropertyValues(ctx, "\n", opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
