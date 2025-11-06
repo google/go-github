@@ -338,7 +338,7 @@ type ProjectV2FieldUpdate struct {
 	// For single_select fields: string (option ID)
 	// For date fields: string (ISO 8601 date)
 	// For iteration fields: string (iteration ID)
-	Value interface{} `json:"value"`
+	Value any `json:"value"`
 }
 
 // UpdateProjectItemOptions represents fields that can be modified for a project item.

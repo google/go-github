@@ -883,7 +883,6 @@ func TestProjectsService_GetOrganizationProjectItem_WithFieldsOption(t *testing.
 	if item.GetID() != 17 {
 		t.Fatalf("unexpected item: %+v", item)
 	}
-	
 	const methodName = "GetOrganizationProjectItemWithFields"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetOrganizationProjectItem(ctx, "o", 1, 17, opts)
@@ -950,7 +949,7 @@ func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testi
 		}
 		fmt.Fprint(w, `{"id":17,"node_id":"PVTI_node_updated"}`)
 	})
-	
+
 	ctx := t.Context()
 	opts := &UpdateProjectItemOptions{
 		Fields: []*ProjectV2FieldUpdate{
@@ -965,7 +964,7 @@ func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testi
 	if item.GetID() != 17 {
 		t.Fatalf("unexpected item: %+v", item)
 	}
-	
+
 	const methodName = "UpdateOrganizationProjectItemWithFields"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, opts)
@@ -1146,7 +1145,7 @@ func TestProjectsService_GetUserProjectItem_WithFieldsOption(t *testing.T) {
 	if item.GetID() != 55 {
 		t.Fatalf("unexpected item: %+v", item)
 	}
-	
+
 	const methodName = "GetUserProjectItemWithFields"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, opts)
@@ -1213,7 +1212,7 @@ func TestProjectsService_UpdateUserProjectItem_WithFieldUpdates(t *testing.T) {
 		}
 		fmt.Fprint(w, `{"id":55,"node_id":"PVTI_user_updated"}`)
 	})
-	
+
 	ctx := t.Context()
 	opts := &UpdateProjectItemOptions{
 		Fields: []*ProjectV2FieldUpdate{
@@ -1228,7 +1227,7 @@ func TestProjectsService_UpdateUserProjectItem_WithFieldUpdates(t *testing.T) {
 	if item.GetID() != 55 {
 		t.Fatalf("unexpected item: %+v", item)
 	}
-	
+
 	const methodName = "UpdateUserProjectItemWithFields"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, opts)
