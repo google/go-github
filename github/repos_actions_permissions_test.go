@@ -20,7 +20,7 @@ func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"enabled": true, "allowed_actions": "all"}`)
+		fmt.Fprint(w, `{"enabled": true, "allowed_actions": "all", "sha_pinning_required": true}`)
 	})
 
 	ctx := t.Context()
@@ -28,7 +28,7 @@ func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetActionsPermissions returned error: %v", err)
 	}
-	want := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("all")}
+	want := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("all"), SHAPinningRequired: Ptr(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.GetActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -52,7 +52,7 @@ func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("selected")}
+	input := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("selected"), SHAPinningRequired: Ptr(true)}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		v := new(ActionsPermissionsRepository)
@@ -63,7 +63,7 @@ func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
-		fmt.Fprint(w, `{"enabled": true, "allowed_actions": "selected"}`)
+		fmt.Fprint(w, `{"enabled": true, "allowed_actions": "selected", "sha_pinning_required": true}`)
 	})
 
 	ctx := t.Context()
@@ -72,7 +72,7 @@ func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 		t.Errorf("Repositories.UpdateActionsPermissions returned error: %v", err)
 	}
 
-	want := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("selected")}
+	want := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("selected"), SHAPinningRequired: Ptr(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.UpdateActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -100,12 +100,14 @@ func TestActionsPermissionsRepository_Marshal(t *testing.T) {
 		Enabled:            Ptr(true),
 		AllowedActions:     Ptr("all"),
 		SelectedActionsURL: Ptr("someURL"),
+		SHAPinningRequired: Ptr(true),
 	}
 
 	want := `{
 		"enabled": true,
 		"allowed_actions": "all",
-		"selected_actions_url": "someURL"
+		"selected_actions_url": "someURL",
+		"sha_pinning_required": true
 	}`
 
 	testJSONMarshal(t, u, want)

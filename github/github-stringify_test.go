@@ -49,8 +49,9 @@ func TestActionsPermissions_String(t *testing.T) {
 		EnabledRepositories: Ptr(""),
 		AllowedActions:      Ptr(""),
 		SelectedActionsURL:  Ptr(""),
+		SHAPinningRequired:  Ptr(false),
 	}
-	want := `github.ActionsPermissions{EnabledRepositories:"", AllowedActions:"", SelectedActionsURL:""}`
+	want := `github.ActionsPermissions{EnabledRepositories:"", AllowedActions:"", SelectedActionsURL:"", SHAPinningRequired:false}`
 	if got := v.String(); got != want {
 		t.Errorf("ActionsPermissions.String = %v, want %v", got, want)
 	}
@@ -75,8 +76,9 @@ func TestActionsPermissionsRepository_String(t *testing.T) {
 		Enabled:            Ptr(false),
 		AllowedActions:     Ptr(""),
 		SelectedActionsURL: Ptr(""),
+		SHAPinningRequired: Ptr(false),
 	}
-	want := `github.ActionsPermissionsRepository{Enabled:false, AllowedActions:"", SelectedActionsURL:""}`
+	want := `github.ActionsPermissionsRepository{Enabled:false, AllowedActions:"", SelectedActionsURL:"", SHAPinningRequired:false}`
 	if got := v.String(); got != want {
 		t.Errorf("ActionsPermissionsRepository.String = %v, want %v", got, want)
 	}
