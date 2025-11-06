@@ -855,6 +855,45 @@ func TestProjectsService_GetOrganizationProjectItem_error(t *testing.T) {
 	})
 }
 
+func TestProjectsService_GetOrganizationProjectItem_WithFieldsOption(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		// Verify that fields option is properly added as comma-separated URL parameter
+		testFormValues(t, r, values{"fields": "123,456,789"})
+		fmt.Fprint(w, `{
+			"id":17,
+			"node_id":"PVTI_node_fields",
+			"fields":[
+				{"id":123,"name":"Status","data_type":"single_select"},
+				{"id":456,"name":"Priority","data_type":"single_select"},
+				{"id":789,"name":"Assignee","data_type":"text"}
+			]
+		}`)
+	})
+	ctx := t.Context()
+	opts := &GetProjectItemOptions{
+		Fields: []int64{123, 456, 789}, // Request specific field IDs
+	}
+	item, _, err := client.Projects.GetOrganizationProjectItem(ctx, "o", 1, 17, opts)
+	if err != nil {
+		t.Fatalf("GetOrganizationProjectItem error: %v", err)
+	}
+	if item.GetID() != 17 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+	
+	const methodName = "GetOrganizationProjectItemWithFields"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetOrganizationProjectItem(ctx, "o", 1, 17, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -1033,6 +1072,44 @@ func TestProjectsService_GetUserProjectItem_error(t *testing.T) {
 	const methodName = "GetUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, &GetProjectItemOptions{})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_GetUserProjectItem_WithFieldsOption(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		// Verify that fields option is properly added as comma-separated URL parameter
+		testFormValues(t, r, values{"fields": "100,200"})
+		fmt.Fprint(w, `{
+			"id":55,
+			"node_id":"PVTI_user_item_fields",
+			"fields":[
+				{"id":100,"name":"Status","data_type":"single_select"},
+				{"id":200,"name":"Milestone","data_type":"text"}
+			]
+		}`)
+	})
+	ctx := t.Context()
+	opts := &GetProjectItemOptions{
+		Fields: []int64{100, 200}, // Request specific field IDs
+	}
+	item, _, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, opts)
+	if err != nil {
+		t.Fatalf("GetUserProjectItem error: %v", err)
+	}
+	if item.GetID() != 55 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+	
+	const methodName = "GetUserProjectItemWithFields"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

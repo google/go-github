@@ -387,7 +387,11 @@ func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org st
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items/%v", org, projectNumber, itemID)
-	req, err := s.client.NewRequest("GET", u, opts)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -481,6 +485,10 @@ func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username strin
 //meta:operation GET /users/{username}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items/%v", username, projectNumber, itemID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.client.NewRequest("GET", u, opts)
 	if err != nil {
 		return nil, nil, err
