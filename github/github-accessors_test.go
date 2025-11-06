@@ -9264,50 +9264,6 @@ func TestDeleteAnalysis_GetNextAnalysisURL(tt *testing.T) {
 	d.GetNextAnalysisURL()
 }
 
-func TestDeleteCostCenterResponse_GetCostCenterState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DeleteCostCenterResponse{CostCenterState: &zeroValue}
-	d.GetCostCenterState()
-	d = &DeleteCostCenterResponse{}
-	d.GetCostCenterState()
-	d = nil
-	d.GetCostCenterState()
-}
-
-func TestDeleteCostCenterResponse_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DeleteCostCenterResponse{ID: &zeroValue}
-	d.GetID()
-	d = &DeleteCostCenterResponse{}
-	d.GetID()
-	d = nil
-	d.GetID()
-}
-
-func TestDeleteCostCenterResponse_GetMessage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DeleteCostCenterResponse{Message: &zeroValue}
-	d.GetMessage()
-	d = &DeleteCostCenterResponse{}
-	d.GetMessage()
-	d = nil
-	d.GetMessage()
-}
-
-func TestDeleteCostCenterResponse_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DeleteCostCenterResponse{Name: &zeroValue}
-	d.GetName()
-	d = &DeleteCostCenterResponse{}
-	d.GetName()
-	d = nil
-	d.GetName()
-}
-
 func TestDeleteEvent_GetInstallation(tt *testing.T) {
 	tt.Parallel()
 	d := &DeleteEvent{}

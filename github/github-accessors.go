@@ -7094,38 +7094,6 @@ func (d *DeleteAnalysis) GetNextAnalysisURL() string {
 	return *d.NextAnalysisURL
 }
 
-// GetCostCenterState returns the CostCenterState field if it's non-nil, zero value otherwise.
-func (d *DeleteCostCenterResponse) GetCostCenterState() string {
-	if d == nil || d.CostCenterState == nil {
-		return ""
-	}
-	return *d.CostCenterState
-}
-
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (d *DeleteCostCenterResponse) GetID() string {
-	if d == nil || d.ID == nil {
-		return ""
-	}
-	return *d.ID
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (d *DeleteCostCenterResponse) GetMessage() string {
-	if d == nil || d.Message == nil {
-		return ""
-	}
-	return *d.Message
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (d *DeleteCostCenterResponse) GetName() string {
-	if d == nil || d.Name == nil {
-		return ""
-	}
-	return *d.Name
-}
-
 // GetInstallation returns the Installation field.
 func (d *DeleteEvent) GetInstallation() *Installation {
 	if d == nil {

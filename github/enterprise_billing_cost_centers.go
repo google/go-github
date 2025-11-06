@@ -68,10 +68,10 @@ type RemoveResourcesFromCostCenterResponse struct {
 
 // DeleteCostCenterResponse represents a response from deleting a cost center.
 type DeleteCostCenterResponse struct {
-	Message         *string `json:"message,omitempty"`
-	ID              *string `json:"id,omitempty"`
-	Name            *string `json:"name,omitempty"`
-	CostCenterState *string `json:"costCenterState,omitempty"`
+	Message         string `json:"message"`
+	ID              string `json:"id"`
+	Name            string `json:"name"`
+	CostCenterState string `json:"costCenterState"`
 }
 
 // ListCostCenters lists all cost centers for an enterprise.
