@@ -273,6 +273,17 @@ func TestActionsPermissions_GetSelectedActionsURL(tt *testing.T) {
 	a.GetSelectedActionsURL()
 }
 
+func TestActionsPermissions_GetSHAPinningRequired(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &ActionsPermissions{SHAPinningRequired: &zeroValue}
+	a.GetSHAPinningRequired()
+	a = &ActionsPermissions{}
+	a.GetSHAPinningRequired()
+	a = nil
+	a.GetSHAPinningRequired()
+}
+
 func TestActionsPermissionsEnterprise_GetAllowedActions(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -337,6 +348,17 @@ func TestActionsPermissionsRepository_GetSelectedActionsURL(tt *testing.T) {
 	a.GetSelectedActionsURL()
 	a = nil
 	a.GetSelectedActionsURL()
+}
+
+func TestActionsPermissionsRepository_GetSHAPinningRequired(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &ActionsPermissionsRepository{SHAPinningRequired: &zeroValue}
+	a.GetSHAPinningRequired()
+	a = &ActionsPermissionsRepository{}
+	a.GetSHAPinningRequired()
+	a = nil
+	a.GetSHAPinningRequired()
 }
 
 func TestActionsVariable_GetCreatedAt(tt *testing.T) {

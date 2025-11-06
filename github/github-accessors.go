@@ -206,6 +206,14 @@ func (a *ActionsPermissions) GetSelectedActionsURL() string {
 	return *a.SelectedActionsURL
 }
 
+// GetSHAPinningRequired returns the SHAPinningRequired field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissions) GetSHAPinningRequired() bool {
+	if a == nil || a.SHAPinningRequired == nil {
+		return false
+	}
+	return *a.SHAPinningRequired
+}
+
 // GetAllowedActions returns the AllowedActions field if it's non-nil, zero value otherwise.
 func (a *ActionsPermissionsEnterprise) GetAllowedActions() string {
 	if a == nil || a.AllowedActions == nil {
@@ -252,6 +260,14 @@ func (a *ActionsPermissionsRepository) GetSelectedActionsURL() string {
 		return ""
 	}
 	return *a.SelectedActionsURL
+}
+
+// GetSHAPinningRequired returns the SHAPinningRequired field if it's non-nil, zero value otherwise.
+func (a *ActionsPermissionsRepository) GetSHAPinningRequired() bool {
+	if a == nil || a.SHAPinningRequired == nil {
+		return false
+	}
+	return *a.SHAPinningRequired
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
