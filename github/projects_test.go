@@ -936,6 +936,46 @@ func TestProjectsService_UpdateOrganizationProjectItem_error(t *testing.T) {
 	})
 }
 
+func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		b, _ := io.ReadAll(r.Body)
+		body := string(b)
+		// Verify the field updates are properly formatted in the request body
+		expectedBody := `{"fields":[{"id":123,"value":"Updated text value"},{"id":456,"value":"Done"}]}`
+		if body != expectedBody+"\n" {
+			t.Fatalf("unexpected body: %s, expected: %s", body, expectedBody)
+		}
+		fmt.Fprint(w, `{"id":17,"node_id":"PVTI_node_updated"}`)
+	})
+	
+	ctx := t.Context()
+	opts := &UpdateProjectItemOptions{
+		Fields: []*ProjectV2FieldUpdate{
+			{ID: 123, Value: "Updated text value"},
+			{ID: 456, Value: "Done"},
+		},
+	}
+	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, opts)
+	if err != nil {
+		t.Fatalf("UpdateOrganizationProjectItem error: %v", err)
+	}
+	if item.GetID() != 17 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+	
+	const methodName = "UpdateOrganizationProjectItemWithFields"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestProjectsService_DeleteOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -1152,6 +1192,46 @@ func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
 	const methodName = "UpdateUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_UpdateUserProjectItem_WithFieldUpdates(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		b, _ := io.ReadAll(r.Body)
+		body := string(b)
+		// Verify the field updates are properly formatted in the request body
+		expectedBody := `{"fields":[{"id":100,"value":"In Progress"},{"id":200,"value":5}]}`
+		if body != expectedBody+"\n" {
+			t.Fatalf("unexpected body: %s, expected: %s", body, expectedBody)
+		}
+		fmt.Fprint(w, `{"id":55,"node_id":"PVTI_user_updated"}`)
+	})
+	
+	ctx := t.Context()
+	opts := &UpdateProjectItemOptions{
+		Fields: []*ProjectV2FieldUpdate{
+			{ID: 100, Value: "In Progress"},
+			{ID: 200, Value: 5}, // number field
+		},
+	}
+	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, opts)
+	if err != nil {
+		t.Fatalf("UpdateUserProjectItem error: %v", err)
+	}
+	if item.GetID() != 55 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+	
+	const methodName = "UpdateUserProjectItemWithFields"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

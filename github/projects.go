@@ -325,14 +325,31 @@ type AddProjectItemOptions struct {
 	ID   int64  `json:"id,omitempty"`
 }
 
+// ProjectV2FieldUpdate represents a field update for a project item.
+// It contains the field ID and the new value to set.
+//
+// GitHub API docs: https://docs.github.com/rest/projects/items#update-project-item-for-organization
+type ProjectV2FieldUpdate struct {
+	// ID is the field ID to update.
+	ID int64 `json:"id"`
+	// Value is the new value to set for the field. The type depends on the field type.
+	// For text fields: string
+	// For number fields: float64 or int
+	// For single_select fields: string (option ID)
+	// For date fields: string (ISO 8601 date)
+	// For iteration fields: string (iteration ID)
+	Value interface{} `json:"value"`
+}
+
 // UpdateProjectItemOptions represents fields that can be modified for a project item.
-// Currently the REST API allows archiving/unarchiving an item (archived boolean).
-// This struct can be expanded in the future as the API grows.
+// The GitHub API expects either archived status updates or field value updates.
 type UpdateProjectItemOptions struct {
 	// Archived indicates whether the item should be archived (true) or unarchived (false).
+	// This is used for archive/unarchive operations.
 	Archived *bool `json:"archived,omitempty"`
-	// Fields allows updating field values for the item. Each entry supplies a field ID and a value.
-	Fields []*ProjectV2Field `json:"fields,omitempty"`
+	// Fields contains field updates to apply to the project item.
+	// Each entry specifies a field ID and its new value.
+	Fields []*ProjectV2FieldUpdate `json:"fields,omitempty"`
 }
 
 // ListOrganizationProjectItems lists items for an organization owned project.
@@ -489,7 +506,7 @@ func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username strin
 	if err != nil {
 		return nil, nil, err
 	}
-	req, err := s.client.NewRequest("GET", u, opts)
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
