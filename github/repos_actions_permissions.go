@@ -17,6 +17,7 @@ type ActionsPermissionsRepository struct {
 	Enabled            *bool   `json:"enabled,omitempty"`
 	AllowedActions     *string `json:"allowed_actions,omitempty"`
 	SelectedActionsURL *string `json:"selected_actions_url,omitempty"`
+	ShaPinningRequired *bool   `json:"sha_pinning_required,omitempty"`
 }
 
 func (a ActionsPermissionsRepository) String() string {
