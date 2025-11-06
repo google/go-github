@@ -39,6 +39,7 @@ func (s *OrganizationsService) GetOrganizationCustomPropertyValues(ctx context.C
 }
 
 // CreateOrUpdateOrgCustomPropertyValues creates or updates custom property values for an organization.
+// To remove a custom property value from an organization, set the property value to null.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/custom-properties-for-orgs#create-or-update-custom-property-values-for-an-organization
 //
