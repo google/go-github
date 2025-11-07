@@ -56,7 +56,7 @@ func TestEnterpriseService_ListCostCenters(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &CostCenterListOptions{
+	opts := &ListCostCenterOptions{
 		State: Ptr("active"),
 	}
 	costCenters, _, err := client.Enterprise.ListCostCenters(ctx, "e", opts)
@@ -139,7 +139,7 @@ func TestEnterpriseService_CreateCostCenter(t *testing.T) {
 
 	ctx := t.Context()
 	req := CostCenterRequest{
-		Name: Ptr("Engineering Team"),
+		Name: "Engineering Team",
 	}
 	costCenter, _, err := client.Enterprise.CreateCostCenter(ctx, "e", req)
 	if err != nil {
@@ -280,7 +280,7 @@ func TestEnterpriseService_UpdateCostCenter(t *testing.T) {
 
 	ctx := t.Context()
 	req := CostCenterRequest{
-		Name: Ptr("Updated Cost Center Name"),
+		Name: "Updated Cost Center Name",
 	}
 	costCenter, _, err := client.Enterprise.UpdateCostCenter(ctx, "e", "2eeb8ffe-6903-11ee-8c99-0242ac120002", req)
 	if err != nil {
@@ -351,11 +351,11 @@ func TestEnterpriseService_DeleteCostCenter(t *testing.T) {
 		t.Errorf("Enterprise.DeleteCostCenter returned error: %v", err)
 	}
 
-	want := &CostCenterDeleteResponse{
-		Message:         Ptr("Cost center successfully deleted."),
-		ID:              Ptr("2eeb8ffe-6903-11ee-8c99-0242ac120002"),
-		Name:            Ptr("Engineering Team"),
-		CostCenterState: Ptr("CostCenterArchived"),
+	want := &DeleteCostCenterResponse{
+		Message:         "Cost center successfully deleted.",
+		ID:              "2eeb8ffe-6903-11ee-8c99-0242ac120002",
+		Name:            "Engineering Team",
+		CostCenterState: "CostCenterArchived",
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Enterprise.DeleteCostCenter returned %+v, want %+v", result, want)
@@ -423,7 +423,7 @@ func TestEnterpriseService_AddResourcesToCostCenter(t *testing.T) {
 		t.Errorf("Enterprise.AddResourcesToCostCenter returned error: %v", err)
 	}
 
-	want := &CostCenterAddResourceResponse{
+	want := &AddResourcesToCostCenterResponse{
 		Message: Ptr("Resources successfully added to the cost center."),
 		ReassignedResources: []*ReassignedResource{
 			{
@@ -492,7 +492,7 @@ func TestEnterpriseService_RemoveResourcesFromCostCenter(t *testing.T) {
 		t.Errorf("Enterprise.RemoveResourcesFromCostCenter returned error: %v", err)
 	}
 
-	want := &CostCenterRemoveResourceResponse{
+	want := &RemoveResourcesFromCostCenterResponse{
 		Message: Ptr("Resources successfully removed from the cost center."),
 	}
 	if !cmp.Equal(result, want) {
@@ -607,7 +607,7 @@ func TestCostCenterRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CostCenterRequest{}, "{}")
 
 	u := &CostCenterRequest{
-		Name: Ptr("Engineering"),
+		Name: "Engineering",
 	}
 
 	want := `{
@@ -631,6 +631,27 @@ func TestCostCenterResourceRequest_Marshal(t *testing.T) {
 		"users": ["octocat"],
 		"organizations": ["github"],
 		"repositories": ["github/go-github"]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestDeleteCostCenterResponse_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &DeleteCostCenterResponse{}, `{"message":"","id":"","name":"","costCenterState":""}`)
+
+	u := &DeleteCostCenterResponse{
+		Message:         "Cost center successfully deleted.",
+		ID:              "2eeb8ffe-6903-11ee-8c99-0242ac120002",
+		Name:            "Engineering Team",
+		CostCenterState: "CostCenterArchived",
+	}
+
+	want := `{
+		"message": "Cost center successfully deleted.",
+		"id": "2eeb8ffe-6903-11ee-8c99-0242ac120002",
+		"name": "Engineering Team",
+		"costCenterState": "CostCenterArchived"
 	}`
 
 	testJSONMarshal(t, u, want)
