@@ -479,6 +479,17 @@ func TestActorLocation_GetCountryCode(tt *testing.T) {
 	a.GetCountryCode()
 }
 
+func TestAddResourcesToCostCenterResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddResourcesToCostCenterResponse{Message: &zeroValue}
+	a.GetMessage()
+	a = &AddResourcesToCostCenterResponse{}
+	a.GetMessage()
+	a = nil
+	a.GetMessage()
+}
+
 func TestAdminEnforcedChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -7950,94 +7961,6 @@ func TestCostCenter_GetState(tt *testing.T) {
 	c.GetState()
 	c = nil
 	c.GetState()
-}
-
-func TestCostCenterAddResourceResponse_GetMessage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CostCenterAddResourceResponse{Message: &zeroValue}
-	c.GetMessage()
-	c = &CostCenterAddResourceResponse{}
-	c.GetMessage()
-	c = nil
-	c.GetMessage()
-}
-
-func TestCostCenterDeleteResponse_GetCostCenterState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CostCenterDeleteResponse{CostCenterState: &zeroValue}
-	c.GetCostCenterState()
-	c = &CostCenterDeleteResponse{}
-	c.GetCostCenterState()
-	c = nil
-	c.GetCostCenterState()
-}
-
-func TestCostCenterDeleteResponse_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CostCenterDeleteResponse{ID: &zeroValue}
-	c.GetID()
-	c = &CostCenterDeleteResponse{}
-	c.GetID()
-	c = nil
-	c.GetID()
-}
-
-func TestCostCenterDeleteResponse_GetMessage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CostCenterDeleteResponse{Message: &zeroValue}
-	c.GetMessage()
-	c = &CostCenterDeleteResponse{}
-	c.GetMessage()
-	c = nil
-	c.GetMessage()
-}
-
-func TestCostCenterDeleteResponse_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CostCenterDeleteResponse{Name: &zeroValue}
-	c.GetName()
-	c = &CostCenterDeleteResponse{}
-	c.GetName()
-	c = nil
-	c.GetName()
-}
-
-func TestCostCenterListOptions_GetState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CostCenterListOptions{State: &zeroValue}
-	c.GetState()
-	c = &CostCenterListOptions{}
-	c.GetState()
-	c = nil
-	c.GetState()
-}
-
-func TestCostCenterRemoveResourceResponse_GetMessage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CostCenterRemoveResourceResponse{Message: &zeroValue}
-	c.GetMessage()
-	c = &CostCenterRemoveResourceResponse{}
-	c.GetMessage()
-	c = nil
-	c.GetMessage()
-}
-
-func TestCostCenterRequest_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CostCenterRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CostCenterRequest{}
-	c.GetName()
-	c = nil
-	c.GetName()
 }
 
 func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {
@@ -18264,6 +18187,17 @@ func TestListCodespaces_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 	l = nil
 	l.GetTotalCount()
+}
+
+func TestListCostCenterOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListCostCenterOptions{State: &zeroValue}
+	l.GetState()
+	l = &ListCostCenterOptions{}
+	l.GetState()
+	l = nil
+	l.GetState()
 }
 
 func TestListCustomDeploymentRuleIntegrationsResponse_GetTotalCount(tt *testing.T) {
@@ -28933,6 +28867,17 @@ func TestReleaseVersion_GetVersion(tt *testing.T) {
 	r.GetVersion()
 	r = nil
 	r.GetVersion()
+}
+
+func TestRemoveResourcesFromCostCenterResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RemoveResourcesFromCostCenterResponse{Message: &zeroValue}
+	r.GetMessage()
+	r = &RemoveResourcesFromCostCenterResponse{}
+	r.GetMessage()
+	r = nil
+	r.GetMessage()
 }
 
 func TestRemoveToken_GetExpiresAt(tt *testing.T) {
