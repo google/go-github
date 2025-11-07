@@ -38,13 +38,13 @@ func (s *OrganizationsService) GetOrganizationCustomPropertyValues(ctx context.C
 	return values, resp, nil
 }
 
-// CreateOrUpdateOrgCustomPropertyValues creates or updates custom property values for an organization.
+// CreateOrUpdateOrganizationCustomPropertyValues creates or updates custom property values for an organization.
 // To remove a custom property value from an organization, set the property value to null.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/custom-properties-for-orgs#create-or-update-custom-property-values-for-an-organization
 //
 //meta:operation PATCH /organizations/{org}/org-properties/values
-func (s *OrganizationsService) CreateOrUpdateOrgCustomPropertyValues(ctx context.Context, org string, values OrganizationCustomPropertyValues) (*Response, error) {
+func (s *OrganizationsService) CreateOrUpdateOrganizationCustomPropertyValues(ctx context.Context, org string, values OrganizationCustomPropertyValues) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/org-properties/values", org)
 	req, err := s.client.NewRequest("PATCH", u, values)
 	if err != nil {
