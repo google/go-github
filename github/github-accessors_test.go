@@ -32869,6 +32869,44 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 }
 
+func TestRulesetRequiredReviewer_GetMinimumApprovals(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	r := &RulesetRequiredReviewer{MinimumApprovals: &zeroValue}
+	r.GetMinimumApprovals()
+	r = &RulesetRequiredReviewer{}
+	r.GetMinimumApprovals()
+	r = nil
+	r.GetMinimumApprovals()
+}
+
+func TestRulesetRequiredReviewer_GetReviewer(tt *testing.T) {
+	tt.Parallel()
+	r := &RulesetRequiredReviewer{}
+	r.GetReviewer()
+	r = nil
+	r.GetReviewer()
+}
+
+func TestRulesetReviewer_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RulesetReviewer{ID: &zeroValue}
+	r.GetID()
+	r = &RulesetReviewer{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRulesetReviewer_GetType(tt *testing.T) {
+	tt.Parallel()
+	r := &RulesetReviewer{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
 func TestRuleStatusCheck_GetIntegrationID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64

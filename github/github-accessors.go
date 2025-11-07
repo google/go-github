@@ -25494,6 +25494,38 @@ func (r *Rule) GetSeverity() string {
 	return *r.Severity
 }
 
+// GetMinimumApprovals returns the MinimumApprovals field if it's non-nil, zero value otherwise.
+func (r *RulesetRequiredReviewer) GetMinimumApprovals() int {
+	if r == nil || r.MinimumApprovals == nil {
+		return 0
+	}
+	return *r.MinimumApprovals
+}
+
+// GetReviewer returns the Reviewer field.
+func (r *RulesetRequiredReviewer) GetReviewer() *RulesetReviewer {
+	if r == nil {
+		return nil
+	}
+	return r.Reviewer
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RulesetReviewer) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetType returns the Type field.
+func (r *RulesetReviewer) GetType() *RulesetReviewerType {
+	if r == nil {
+		return nil
+	}
+	return r.Type
+}
+
 // GetIntegrationID returns the IntegrationID field if it's non-nil, zero value otherwise.
 func (r *RuleStatusCheck) GetIntegrationID() int64 {
 	if r == nil || r.IntegrationID == nil {
