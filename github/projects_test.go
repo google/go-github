@@ -884,6 +884,10 @@ func TestProjectsService_GetOrganizationProjectItem_WithFieldsOption(t *testing.
 		t.Fatalf("unexpected item: %+v", item)
 	}
 	const methodName = "GetOrganizationProjectItemWithFields"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.GetOrganizationProjectItem(ctx, "\n", 1, 17, opts)
+		return err
+	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetOrganizationProjectItem(ctx, "o", 1, 17, opts)
 		if got != nil {
@@ -966,6 +970,10 @@ func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testi
 	}
 
 	const methodName = "UpdateOrganizationProjectItemWithFields"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.UpdateOrganizationProjectItem(ctx, "\n", 1, 17, opts)
+		return err
+	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, opts)
 		if got != nil {
@@ -1147,6 +1155,10 @@ func TestProjectsService_GetUserProjectItem_WithFieldsOption(t *testing.T) {
 	}
 
 	const methodName = "GetUserProjectItemWithFields"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.GetUserProjectItem(ctx, "\n", 2, 55, opts)
+		return err
+	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.GetUserProjectItem(ctx, "u", 2, 55, opts)
 		if got != nil {
@@ -1229,6 +1241,10 @@ func TestProjectsService_UpdateUserProjectItem_WithFieldUpdates(t *testing.T) {
 	}
 
 	const methodName = "UpdateUserProjectItemWithFields"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.UpdateUserProjectItem(ctx, "\n", 2, 55, opts)
+		return err
+	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, opts)
 		if got != nil {
