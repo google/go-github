@@ -36,7 +36,7 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 
 	configurations, _, err := client.Organizations.GetCodeSecurityConfigurations(ctx, "o")
 	if err != nil {
-		t.Errorf("Organizations.GetOrganizationCodeSecurityConfigurations returned error: %v", err)
+		t.Errorf("Organizations.GetCodeSecurityConfigurations returned error: %v", err)
 	}
 
 	want := []*CodeSecurityConfiguration{
@@ -318,7 +318,7 @@ func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *testing.T) {
+func TestOrganizationsService_AttachCodeSecurityConfigurationToRepositories(t *testing.T) {
 	t.Parallel()
 	ctx := t.Context()
 	client, mux, _ := setup(t)
@@ -332,32 +332,32 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationsToRepositories(t *
 		v := new(request)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 		if v.Scope != "selected" {
-			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body scope = %v, want selected", v.Scope)
+			t.Errorf("Organizations.AttachCodeSecurityConfigurationToRepositories request body scope = %v, want selected", v.Scope)
 		}
 		if !cmp.Equal(v.SelectedRepositoryIDs, []int64{5, 20}) {
-			t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories request body selected_repository_ids = %+v, want %+v", v.SelectedRepositoryIDs, []int64{5, 20})
+			t.Errorf("Organizations.AttachCodeSecurityConfigurationToRepositories request body selected_repository_ids = %+v, want %+v", v.SelectedRepositoryIDs, []int64{5, 20})
 		}
 		w.WriteHeader(http.StatusAccepted)
 	})
 
-	resp, err := client.Organizations.AttachCodeSecurityConfigurationsToRepositories(ctx, "o", int64(1), "selected", []int64{5, 20})
+	resp, err := client.Organizations.AttachCodeSecurityConfigurationToRepositories(ctx, "o", int64(1), "selected", []int64{5, 20})
 	if err != nil {
-		t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories returned error: %v", err)
+		t.Errorf("Organizations.AttachCodeSecurityConfigurationToRepositories returned error: %v", err)
 	}
 
 	want := http.StatusAccepted
 	if resp.StatusCode != want {
-		t.Errorf("Organizations.AttachCodeSecurityConfigurationsToRepositories returned status %v, want %v", resp.StatusCode, want)
+		t.Errorf("Organizations.AttachCodeSecurityConfigurationToRepositories returned status %v, want %v", resp.StatusCode, want)
 	}
 
-	const methodName = "AttachCodeSecurityConfigurationsToRepositories"
+	const methodName = "AttachCodeSecurityConfigurationToRepositories"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Organizations.AttachCodeSecurityConfigurationsToRepositories(ctx, "\n", -1, "", nil)
+		_, err = client.Organizations.AttachCodeSecurityConfigurationToRepositories(ctx, "\n", -1, "", nil)
 		return
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		resp, err := client.Organizations.AttachCodeSecurityConfigurationsToRepositories(ctx, "o", 1, "selected", []int64{5, 20})
+		resp, err := client.Organizations.AttachCodeSecurityConfigurationToRepositories(ctx, "o", 1, "selected", []int64{5, 20})
 		return resp, err
 	})
 }

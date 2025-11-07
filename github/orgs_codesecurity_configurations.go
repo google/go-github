@@ -204,12 +204,12 @@ func (s *OrganizationsService) DeleteCodeSecurityConfiguration(ctx context.Conte
 	return resp, nil
 }
 
-// AttachCodeSecurityConfigurationsToRepositories attaches code security configurations to repositories for an organization.
+// AttachCodeSecurityConfigurationToRepositories attaches code security configurations to repositories for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#attach-a-configuration-to-repositories
 //
 //meta:operation POST /orgs/{org}/code-security/configurations/{configuration_id}/attach
-func (s *OrganizationsService) AttachCodeSecurityConfigurationsToRepositories(ctx context.Context, org string, id int64, scope string, repoIDs []int64) (*Response, error) {
+func (s *OrganizationsService) AttachCodeSecurityConfigurationToRepositories(ctx context.Context, org string, id int64, scope string, repoIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/%v/attach", org, id)
 	type selectedRepoIDs struct {
 		Scope       string  `json:"scope"`
