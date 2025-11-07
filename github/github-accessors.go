@@ -3230,6 +3230,22 @@ func (c *CodeScanningAlertState) GetDismissedReason() string {
 	return *c.DismissedReason
 }
 
+// GetRunnerLabel returns the RunnerLabel field if it's non-nil, zero value otherwise.
+func (c *CodeScanningDefaultSetupOptions) GetRunnerLabel() string {
+	if c == nil || c.RunnerLabel == nil {
+		return ""
+	}
+	return *c.RunnerLabel
+}
+
+// GetAllowAdvanced returns the AllowAdvanced field if it's non-nil, zero value otherwise.
+func (c *CodeScanningOptions) GetAllowAdvanced() bool {
+	if c == nil || c.AllowAdvanced == nil {
+		return false
+	}
+	return *c.AllowAdvanced
+}
+
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
 func (c *CodeSearchResult) GetIncompleteResults() bool {
 	if c == nil || c.IncompleteResults == nil {
@@ -3260,6 +3276,38 @@ func (c *CodeSecurityConfiguration) GetCodeScanningDefaultSetup() string {
 		return ""
 	}
 	return *c.CodeScanningDefaultSetup
+}
+
+// GetCodeScanningDefaultSetupOptions returns the CodeScanningDefaultSetupOptions field.
+func (c *CodeSecurityConfiguration) GetCodeScanningDefaultSetupOptions() *CodeScanningDefaultSetupOptions {
+	if c == nil {
+		return nil
+	}
+	return c.CodeScanningDefaultSetupOptions
+}
+
+// GetCodeScanningDelegatedAlertDismissal returns the CodeScanningDelegatedAlertDismissal field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetCodeScanningDelegatedAlertDismissal() string {
+	if c == nil || c.CodeScanningDelegatedAlertDismissal == nil {
+		return ""
+	}
+	return *c.CodeScanningDelegatedAlertDismissal
+}
+
+// GetCodeScanningOptions returns the CodeScanningOptions field.
+func (c *CodeSecurityConfiguration) GetCodeScanningOptions() *CodeScanningOptions {
+	if c == nil {
+		return nil
+	}
+	return c.CodeScanningOptions
+}
+
+// GetCodeSecurity returns the CodeSecurity field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetCodeSecurity() string {
+	if c == nil || c.CodeSecurity == nil {
+		return ""
+	}
+	return *c.CodeSecurity
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
@@ -3358,12 +3406,36 @@ func (c *CodeSecurityConfiguration) GetPrivateVulnerabilityReporting() string {
 	return *c.PrivateVulnerabilityReporting
 }
 
+// GetSecretProtection returns the SecretProtection field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretProtection() string {
+	if c == nil || c.SecretProtection == nil {
+		return ""
+	}
+	return *c.SecretProtection
+}
+
 // GetSecretScanning returns the SecretScanning field if it's non-nil, zero value otherwise.
 func (c *CodeSecurityConfiguration) GetSecretScanning() string {
 	if c == nil || c.SecretScanning == nil {
 		return ""
 	}
 	return *c.SecretScanning
+}
+
+// GetSecretScanningDelegatedAlertDismissal returns the SecretScanningDelegatedAlertDismissal field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanningDelegatedAlertDismissal() string {
+	if c == nil || c.SecretScanningDelegatedAlertDismissal == nil {
+		return ""
+	}
+	return *c.SecretScanningDelegatedAlertDismissal
+}
+
+// GetSecretScanningGenericSecrets returns the SecretScanningGenericSecrets field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanningGenericSecrets() string {
+	if c == nil || c.SecretScanningGenericSecrets == nil {
+		return ""
+	}
+	return *c.SecretScanningGenericSecrets
 }
 
 // GetSecretScanningNonProviderPatterns returns the SecretScanningNonProviderPatterns field if it's non-nil, zero value otherwise.

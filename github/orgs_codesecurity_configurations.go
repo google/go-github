@@ -16,6 +16,17 @@ type DependencyGraphAutosubmitActionOptions struct {
 	LabeledRunners *bool `json:"labeled_runners,omitempty"`
 }
 
+// CodeScanningOptions represents the options for the Security Configuration code scanning feature.
+type CodeScanningOptions struct {
+	AllowAdvanced *bool `json:"allow_advanced,omitempty"`
+}
+
+// CodeScanningDefaultSetupOptions represents the feature options for the code scanning default options.
+type CodeScanningDefaultSetupOptions struct {
+	RunnerType  string  `json:"runner_type"`
+	RunnerLabel *string `json:"runner_label,omitempty"`
+}
+
 // RepositoryAttachment represents a repository attachment to a code security configuration.
 type RepositoryAttachment struct {
 	Status     *string     `json:"status"`
@@ -35,10 +46,17 @@ type CodeSecurityConfiguration struct {
 	DependabotAlerts                       *string                                 `json:"dependabot_alerts,omitempty"`
 	DependabotSecurityUpdates              *string                                 `json:"dependabot_security_updates,omitempty"`
 	CodeScanningDefaultSetup               *string                                 `json:"code_scanning_default_setup,omitempty"`
+	CodeScanningDefaultSetupOptions        *CodeScanningDefaultSetupOptions        `json:"code_scanning_default_setup_options,omitempty"`
+	CodeScanningDelegatedAlertDismissal    *string                                 `json:"code_scanning_delegated_alert_dismissal,omitempty"`
+	CodeScanningOptions                    *CodeScanningOptions                    `json:"code_scanning_options,omitempty"`
+	CodeSecurity                           *string                                 `json:"code_security,omitempty"`
 	SecretScanning                         *string                                 `json:"secret_scanning,omitempty"`
 	SecretScanningPushProtection           *string                                 `json:"secret_scanning_push_protection,omitempty"`
 	SecretScanningValidityChecks           *string                                 `json:"secret_scanning_validity_checks,omitempty"`
 	SecretScanningNonProviderPatterns      *string                                 `json:"secret_scanning_non_provider_patterns,omitempty"`
+	SecretScanningGenericSecrets           *string                                 `json:"secret_scanning_generic_secrets,omitempty"`
+	SecretScanningDelegatedAlertDismissal  *string                                 `json:"secret_scanning_delegated_alert_dismissal,omitempty"`
+	SecretProtection                       *string                                 `json:"secret_protection,omitempty"`
 	PrivateVulnerabilityReporting          *string                                 `json:"private_vulnerability_reporting,omitempty"`
 	Enforcement                            *string                                 `json:"enforcement,omitempty"`
 	URL                                    *string                                 `json:"url,omitempty"`

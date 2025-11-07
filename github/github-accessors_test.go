@@ -4209,6 +4209,28 @@ func TestCodeScanningAlertState_GetDismissedReason(tt *testing.T) {
 	c.GetDismissedReason()
 }
 
+func TestCodeScanningDefaultSetupOptions_GetRunnerLabel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeScanningDefaultSetupOptions{RunnerLabel: &zeroValue}
+	c.GetRunnerLabel()
+	c = &CodeScanningDefaultSetupOptions{}
+	c.GetRunnerLabel()
+	c = nil
+	c.GetRunnerLabel()
+}
+
+func TestCodeScanningOptions_GetAllowAdvanced(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CodeScanningOptions{AllowAdvanced: &zeroValue}
+	c.GetAllowAdvanced()
+	c = &CodeScanningOptions{}
+	c.GetAllowAdvanced()
+	c = nil
+	c.GetAllowAdvanced()
+}
+
 func TestCodeSearchResult_GetIncompleteResults(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -4251,6 +4273,44 @@ func TestCodeSecurityConfiguration_GetCodeScanningDefaultSetup(tt *testing.T) {
 	c.GetCodeScanningDefaultSetup()
 	c = nil
 	c.GetCodeScanningDefaultSetup()
+}
+
+func TestCodeSecurityConfiguration_GetCodeScanningDefaultSetupOptions(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeSecurityConfiguration{}
+	c.GetCodeScanningDefaultSetupOptions()
+	c = nil
+	c.GetCodeScanningDefaultSetupOptions()
+}
+
+func TestCodeSecurityConfiguration_GetCodeScanningDelegatedAlertDismissal(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurityConfiguration{CodeScanningDelegatedAlertDismissal: &zeroValue}
+	c.GetCodeScanningDelegatedAlertDismissal()
+	c = &CodeSecurityConfiguration{}
+	c.GetCodeScanningDelegatedAlertDismissal()
+	c = nil
+	c.GetCodeScanningDelegatedAlertDismissal()
+}
+
+func TestCodeSecurityConfiguration_GetCodeScanningOptions(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeSecurityConfiguration{}
+	c.GetCodeScanningOptions()
+	c = nil
+	c.GetCodeScanningOptions()
+}
+
+func TestCodeSecurityConfiguration_GetCodeSecurity(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurityConfiguration{CodeSecurity: &zeroValue}
+	c.GetCodeSecurity()
+	c = &CodeSecurityConfiguration{}
+	c.GetCodeSecurity()
+	c = nil
+	c.GetCodeSecurity()
 }
 
 func TestCodeSecurityConfiguration_GetCreatedAt(tt *testing.T) {
@@ -4382,6 +4442,17 @@ func TestCodeSecurityConfiguration_GetPrivateVulnerabilityReporting(tt *testing.
 	c.GetPrivateVulnerabilityReporting()
 }
 
+func TestCodeSecurityConfiguration_GetSecretProtection(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurityConfiguration{SecretProtection: &zeroValue}
+	c.GetSecretProtection()
+	c = &CodeSecurityConfiguration{}
+	c.GetSecretProtection()
+	c = nil
+	c.GetSecretProtection()
+}
+
 func TestCodeSecurityConfiguration_GetSecretScanning(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -4391,6 +4462,28 @@ func TestCodeSecurityConfiguration_GetSecretScanning(tt *testing.T) {
 	c.GetSecretScanning()
 	c = nil
 	c.GetSecretScanning()
+}
+
+func TestCodeSecurityConfiguration_GetSecretScanningDelegatedAlertDismissal(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurityConfiguration{SecretScanningDelegatedAlertDismissal: &zeroValue}
+	c.GetSecretScanningDelegatedAlertDismissal()
+	c = &CodeSecurityConfiguration{}
+	c.GetSecretScanningDelegatedAlertDismissal()
+	c = nil
+	c.GetSecretScanningDelegatedAlertDismissal()
+}
+
+func TestCodeSecurityConfiguration_GetSecretScanningGenericSecrets(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurityConfiguration{SecretScanningGenericSecrets: &zeroValue}
+	c.GetSecretScanningGenericSecrets()
+	c = &CodeSecurityConfiguration{}
+	c.GetSecretScanningGenericSecrets()
+	c = nil
+	c.GetSecretScanningGenericSecrets()
 }
 
 func TestCodeSecurityConfiguration_GetSecretScanningNonProviderPatterns(tt *testing.T) {
