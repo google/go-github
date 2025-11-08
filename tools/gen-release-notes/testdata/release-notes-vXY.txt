@@ -1,0 +1,41 @@
+This release contains the following breaking API changes:
+
+* refactor!: Remove pointer from required field of CreateStatus API (#3794)
+  BREAKING CHANGE: `RepositoriesService.CreateStatus` now takes value for `status`, not pointer.
+* feat!: Address post-merge enterprise billing cost center review (#3805)
+  BREAKING CHANGES: Various `EnterpriseService` structs have been renamed for consistency.
+* feat!: Add support for project items CRUD and project fields read operations (#3793)
+
+...and the following additional changes:
+
+* Bump go-github from v75 to v76 in /scrape (#3783)
+* Add custom jsonfieldname linter to ensure Go field name matches JSON tag name (#3757)
+* chore: Fix typo in comment (#3786)
+* feat: Add support for private registries endpoints (#3785)
+* Only set `Authorization` when `token` is available (#3789)
+* test: Ensure Authorization is not set with empty token (#3790)
+* Fix spelling issues (#3792)
+* Add test cases for JSON resource marshaling - SCIM (#3798)
+* fix: Org/Enterprise UpdateRepositoryRulesetClearBypassActor sends empty array (#3796)
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+This release contains the following breaking API changes:
+
+* #3794
+  BREAKING CHANGE: `RepositoriesService.CreateStatus` now takes value for `status`, not pointer.
+* #3805
+  BREAKING CHANGES: Various `EnterpriseService` structs have been renamed for consistency.
+* #3793
+
+...and the following additional changes:
+
+* #3783
+* #3757
+* #3786
+* #3785
+* #3789
+* #3790
+* #3792
+* #3798
+* #3796
