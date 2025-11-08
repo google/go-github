@@ -245,7 +245,7 @@ BREAKING CHANGE: ` + "`" + `RepositoriesService.CreateStatus` + "`" + ` now take
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// t.Parallel()
+			t.Parallel()
 			gotTagSeq, gotInnerText := getTagSequence(tt.text)
 			if diff := cmp.Diff(tt.wantTagSeq, gotTagSeq); diff != "" {
 				t.Errorf("gotTagSeq=\n%#v,\n wantTagSeq=\n%#v", gotTagSeq, tt.wantTagSeq)
