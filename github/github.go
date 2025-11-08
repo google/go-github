@@ -506,6 +506,7 @@ func NewClientWithEnvProxy() *Client {
 }
 
 // NewTokenClient returns a new GitHub API client authenticated with the provided token.
+//
 // Deprecated: Use NewClient(nil).WithAuthToken(token) instead.
 func NewTokenClient(_ context.Context, token string) *Client {
 	// This always returns a nil error.
@@ -709,7 +710,7 @@ func newResponse(r *http.Response) *Response {
 // various pagination link values in the Response.
 func (r *Response) populatePageValues() {
 	if links, ok := r.Response.Header["Link"]; ok && len(links) > 0 {
-		for _, link := range strings.Split(links[0], ",") {
+		for link := range strings.SplitSeq(links[0], ",") {
 			segments := strings.Split(strings.TrimSpace(link), ";")
 
 			// link must at least have href and rel

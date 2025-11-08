@@ -18,6 +18,7 @@ linters:
     - intrange
     - jsonfieldname
     - misspell
+    - modernize
     - musttag
     - nakedret
     - paralleltest
@@ -84,6 +85,9 @@ linters:
       ignore-rules:
         - analyses # returned by the GitHub API
         - cancelled # returned by the GitHub API
+    modernize:
+      disable:
+        - omitzero # TODO: fix
     perfsprint:
       errorf: true
       strconcat: false

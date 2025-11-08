@@ -1,4 +1,4 @@
-version: v2.2.2
+version: v2.6.1
 plugins:
   - module: "github.com/google/go-github/v78/tools/fmtpercentv"
     path: ./tools/fmtpercentv
