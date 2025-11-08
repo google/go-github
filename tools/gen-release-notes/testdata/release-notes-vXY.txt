@@ -2,6 +2,8 @@ This release contains the following breaking API changes:
 
 * refactor!: Remove pointer from required field of CreateStatus API (#3794)
   BREAKING CHANGE: `RepositoriesService.CreateStatus` now takes value for `status`, not pointer.
+* feat!: Address post-merge enterprise billing cost center review (#3805)
+  BREAKING CHANGES: Various `EnterpriseService` structs have been renamed for consistency.
 * feat!: Add support for project items CRUD and project fields read operations (#3793)
 
 ...and the following additional changes:
@@ -22,6 +24,8 @@ This release contains the following breaking API changes:
 
 * #3794
   BREAKING CHANGE: `RepositoriesService.CreateStatus` now takes value for `status`, not pointer.
+* #3805
+  BREAKING CHANGES: Various `EnterpriseService` structs have been renamed for consistency.
 * #3793
 
 ...and the following additional changes:

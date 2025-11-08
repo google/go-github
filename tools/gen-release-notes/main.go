@@ -117,6 +117,10 @@ func getTagSequence(text string) (tagSeq, innerText []string) {
 			switch s {
 			case "", "&hellip;": // skip
 			default:
+				// Special case:
+				if strings.HasPrefix(rawText, "BREAKING") {
+					rawText = "\n\n" + rawText
+				}
 				innerText = append(innerText, rawText)
 			}
 		}

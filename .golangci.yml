@@ -143,11 +143,11 @@ linters:
       fmtpercentv:
         type: module
         description: Reports usage of %d or %s in format strings.
-        original-url: github.com/google/go-github/v77/tools/fmtpercentv
+        original-url: github.com/google/go-github/v78/tools/fmtpercentv
       jsonfieldname:
         type: module
         description: Reports mismatches between Go field and JSON tag names.
-        original-url: github.com/google/go-github/v77/tools/jsonfieldname
+        original-url: github.com/google/go-github/v78/tools/jsonfieldname
         settings:
           allowed-exceptions:
             - ActionsCacheUsageList.RepoCacheUsage # TODO: RepoCacheUsages ?
@@ -215,7 +215,7 @@ linters:
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v77/tools/sliceofpointers
+        original-url: github.com/google/go-github/v78/tools/sliceofpointers
   exclusions:
     rules:
       - linters:

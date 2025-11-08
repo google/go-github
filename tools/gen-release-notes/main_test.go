@@ -13,15 +13,15 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-//go:embed testdata/compare-v76.html
-var compareV76HTML string
+//go:embed testdata/compare-vXX.html
+var compareVXXHTML string
 
-//go:embed testdata/release-notes-v77.txt
+//go:embed testdata/release-notes-vXY.txt
 var releaseNotes string
 
 func TestGenReleaseNotes(t *testing.T) {
 	t.Parallel()
-	text := strings.ReplaceAll(compareV76HTML, "\r\n", "\n")
+	text := strings.ReplaceAll(compareVXXHTML, "\r\n", "\n")
 	got := genReleaseNotes(text)
 	got = strings.ReplaceAll(got, "\r\n", "\n")
 	want := strings.ReplaceAll(releaseNotes, "\r\n", "\n")
@@ -35,7 +35,7 @@ func TestGenReleaseNotes(t *testing.T) {
 func TestSplitIntoPRs(t *testing.T) {
 	t.Parallel()
 
-	text := strings.ReplaceAll(compareV76HTML, "\r\n", "\n")
+	text := strings.ReplaceAll(compareVXXHTML, "\r\n", "\n")
 	text = text[191600:]
 
 	got := splitIntoPRs(text)
@@ -50,6 +50,7 @@ func TestSplitIntoPRs(t *testing.T) {
 		"* refactor!: Remove pointer from required field of CreateStatus API (#3794)\n  BREAKING CHANGE: `RepositoriesService.CreateStatus` now takes value for `status`, not pointer.",
 		`* Add test cases for JSON resource marshaling - SCIM (#3798)`,
 		`* fix: Org/Enterprise UpdateRepositoryRulesetClearBypassActor sends empty array (#3796)`,
+		"* feat!: Address post-merge enterprise billing cost center review (#3805)\n  BREAKING CHANGES: Various `EnterpriseService` structs have been renamed for consistency.",
 		`* feat!: Add support for project items CRUD and project fields read operations (#3793)`,
 	}
 
@@ -222,6 +223,23 @@ BREAKING CHANGE: ` + "`" + `RepositoriesService.CreateStatus` + "`" + ` now take
       <div class="my-2 Details-content--hidden" ><pre class="text-small ws-pre-wrap">…rations (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="3558743250" data-permission-text="Title is private" data-url="https://github.com/google/go-github/issues/3793" data-hovercard-type="pull_request" data-hovercard-url="/google/go-github/pull/3793/hovercard" href="https://github.com/google/go-github/pull/3793">#3793</a>)</pre>`,
 			wantTagSeq:    []string{"/a", "span", "button", "/button", "/span", "/p", "div", "pre", "a", "/a", "/pre"},
 			wantInnerText: []string{"…rations (", "#3793", ")"},
+		},
+		{
+			name: "bug: missing newline",
+			text: `* feat!: Address post-merge enterprise billing cost center review (</a><a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="3591077447" data-permission-text="Title is private" data-url="https://github.com/google/go-github/issues/3805" data-hovercard-type="pull_request" data-hovercard-url="/google/go-github/pull/3805/hovercard" href="https://github.com/google/go-github/pull/3805">#3805</a><a class="Link--primary text-bold js-navigation-open markdown-title" href="/google/go-github/commit/1b0a91c5a79dae9c0a014a93f3e447398ec53fa2">)</a>
+
+        <span class="hidden-text-expander inline">
+            <button aria-expanded="false" aria-label="Commit message body" type="button" data-view-component="true" class="ellipsis-expander js-details-target btn">    &hellip;
+</button>        </span>
+    </p>
+
+      <div class="my-2 Details-content--hidden" ><pre class="text-small ws-pre-wrap">BREAKING CHANGES: Various ` + "`" + `EnterpriseService` + "`" + ` structs have been renamed for consistency.</pre></div>
+
+    <div class="d-flex flex-items-center mt-1" >
+
+`,
+			wantTagSeq:    []string{"/a", "a", "/a", "a", "/a", "span", "button", "/button", "/span", "/p", "div", "pre", "/pre", "/div", "div"},
+			wantInnerText: []string{"#3805", ")", "\n\nBREAKING CHANGES: Various `EnterpriseService` structs have been renamed for consistency."},
 		},
 	}
 

@@ -14,7 +14,7 @@ import (
 	"strconv"
 
 	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/google/go-github/v77/github"
+	"github.com/google/go-github/v78/github"
 	"golang.org/x/sync/errgroup"
 )
 
