@@ -540,7 +540,7 @@ func TestWithEnterpriseURLs(t *testing.T) {
 // Ensure that length of Client.rateLimits is the same as number of fields in RateLimits struct.
 func TestClient_rateLimits(t *testing.T) {
 	t.Parallel()
-	if got, want := len(Client{}.rateLimits), reflect.TypeOf(RateLimits{}).NumField(); got != want {
+	if got, want := len(Client{}.rateLimits), reflect.TypeFor[RateLimits]().NumField(); got != want {
 		t.Errorf("len(Client{}.rateLimits) is %v, want %v", got, want)
 	}
 }
