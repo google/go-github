@@ -100,7 +100,7 @@ func getTree(ref *github.Reference) (tree *github.Tree, err error) {
 	entries := []*github.TreeEntry{}
 
 	// Load each file into the tree.
-	for _, fileArg := range strings.Split(*sourceFiles, ",") {
+	for fileArg := range strings.SplitSeq(*sourceFiles, ",") {
 		file, content, err := getFileContent(fileArg)
 		if err != nil {
 			return nil, err

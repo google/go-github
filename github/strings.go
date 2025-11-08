@@ -11,7 +11,7 @@ import (
 	"reflect"
 )
 
-var timestampType = reflect.TypeOf(Timestamp{})
+var timestampType = reflect.TypeFor[Timestamp]()
 
 // Stringify attempts to create a reasonable string representation of types in
 // the GitHub library. It does things like resolve pointers to their values
