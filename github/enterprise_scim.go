@@ -74,15 +74,17 @@ type SCIMEnterpriseMeta struct {
 	Location     *string    `json:"location,omitempty"`
 }
 
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
+// ListProvisionedSCIMGroupsForEnterprise lists provisioned SCIM groups in an enterprise.
+// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
 //
-//meta:operation GET /scim/v2/enterprises/{enterprise}
-// ----- Already present in scim.go file -----
+//meta:operation GET /scim/v2/enterprises/{enterprise}/Groups
+// func (s *SCIMService) ListProvisionedSCIMGroupsForEnterprise(ctx context.Context, enterprise string, opts *ListOptions) ([]*SCIMEnterpriseGroupAttributes, *Response, error) {
+//}
 
 // ProvisionSCIMEnterpriseGroup creates a SCIM group for an enterprise.
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/enterprise-admin/scim#provision-a-scim-enterprise-group
 //
-//meta:operation POST scim/v2/enterprises/{enterprise}/Groups
+//meta:operation POST /scim/v2/enterprises/{enterprise}/Groups
 //func (s *SCIMService) ProvisionSCIMEnterpriseGroup(ctx context.Context, enterprise string, opts *SCIMGroupAttributes) (*SCIMGroupAttributes, *Response, error) {
 //}
 

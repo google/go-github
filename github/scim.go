@@ -282,6 +282,7 @@ func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID
 }
 
 // ListSCIMProvisionedGroupsForEnterprise lists SCIM provisioned groups for an enterprise.
+// Deprecated: This method is deprecated. Please use ListProvisionedSCIMGroupsForEnterprise from EnterpriseService instead.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
 //
