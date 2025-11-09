@@ -737,6 +737,35 @@ func TestRepositoryRule(t *testing.T) {
 			`{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"automatic_copilot_code_review_enabled": true,"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}}`,
 		},
 		{
+			"pull_request_with_required_reviewers",
+			&RepositoryRule{
+				Type: RulesetRuleTypePullRequest,
+				Parameters: &PullRequestRuleParameters{
+					AllowedMergeMethods: []PullRequestMergeMethod{
+						PullRequestMergeMethodMerge,
+						PullRequestMergeMethodSquash,
+						PullRequestMergeMethodRebase,
+					},
+					DismissStaleReviewsOnPush:      false,
+					RequireCodeOwnerReview:         false,
+					RequireLastPushApproval:        false,
+					RequiredApprovingReviewCount:   0,
+					RequiredReviewThreadResolution: false,
+					RequiredReviewers: []*RulesetRequiredReviewer{
+						{
+							MinimumApprovals: Ptr(1),
+							FilePatterns:     []string{"*"},
+							Reviewer: &RulesetReviewer{
+								ID:   Ptr(int64(123456)),
+								Type: Ptr(RulesetReviewerTypeTeam),
+							},
+						},
+					},
+				},
+			},
+			`{"type":"pull_request","parameters":{"allowed_merge_methods":["merge","squash","rebase"],"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":0,"required_reviewers":[{"minimum_approvals":1,"file_patterns":["*"],"reviewer":{"id":123456,"type":"Team"}}],"required_review_thread_resolution":false}}`,
+		},
+		{
 			"required_status_checks",
 			&RepositoryRule{
 				Type: RulesetRuleTypeRequiredStatusChecks,

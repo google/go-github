@@ -130,6 +130,14 @@ const (
 	MergeQueueMergeMethodSquash MergeQueueMergeMethod = "SQUASH"
 )
 
+// RulesetReviewerType represents the type of reviewer in a ruleset required reviewer.
+type RulesetReviewerType string
+
+// This is the set of GitHub ruleset reviewer types.
+const (
+	RulesetReviewerTypeTeam RulesetReviewerType = "Team"
+)
+
 // PatternRuleOperator models a GitHub pattern rule operator.
 type PatternRuleOperator string
 
@@ -416,13 +424,27 @@ type RequiredDeploymentsRuleParameters struct {
 
 // PullRequestRuleParameters represents the pull_request rule parameters.
 type PullRequestRuleParameters struct {
-	AllowedMergeMethods               []PullRequestMergeMethod `json:"allowed_merge_methods"`
-	AutomaticCopilotCodeReviewEnabled *bool                    `json:"automatic_copilot_code_review_enabled,omitempty"`
-	DismissStaleReviewsOnPush         bool                     `json:"dismiss_stale_reviews_on_push"`
-	RequireCodeOwnerReview            bool                     `json:"require_code_owner_review"`
-	RequireLastPushApproval           bool                     `json:"require_last_push_approval"`
-	RequiredApprovingReviewCount      int                      `json:"required_approving_review_count"`
-	RequiredReviewThreadResolution    bool                     `json:"required_review_thread_resolution"`
+	AllowedMergeMethods               []PullRequestMergeMethod   `json:"allowed_merge_methods"`
+	AutomaticCopilotCodeReviewEnabled *bool                      `json:"automatic_copilot_code_review_enabled,omitempty"`
+	DismissStaleReviewsOnPush         bool                       `json:"dismiss_stale_reviews_on_push"`
+	RequireCodeOwnerReview            bool                       `json:"require_code_owner_review"`
+	RequireLastPushApproval           bool                       `json:"require_last_push_approval"`
+	RequiredApprovingReviewCount      int                        `json:"required_approving_review_count"`
+	RequiredReviewers                 []*RulesetRequiredReviewer `json:"required_reviewers,omitempty"`
+	RequiredReviewThreadResolution    bool                       `json:"required_review_thread_resolution"`
+}
+
+// RulesetRequiredReviewer represents required reviewer parameters for pull requests in rulesets.
+type RulesetRequiredReviewer struct {
+	MinimumApprovals *int             `json:"minimum_approvals,omitempty"`
+	FilePatterns     []string         `json:"file_patterns,omitempty"`
+	Reviewer         *RulesetReviewer `json:"reviewer,omitempty"`
+}
+
+// RulesetReviewer represents a reviewer in a ruleset required reviewer rule.
+type RulesetReviewer struct {
+	ID   *int64               `json:"id,omitempty"`
+	Type *RulesetReviewerType `json:"type,omitempty"`
 }
 
 // RequiredStatusChecksRuleParameters represents the required status checks rule parameters.
