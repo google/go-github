@@ -12946,6 +12946,50 @@ func TestGetAuditLogOptions_GetPhrase(tt *testing.T) {
 	g.GetPhrase()
 }
 
+func TestGetCodeSecurityConfigurationOptions_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	g := &GetCodeSecurityConfigurationOptions{After: &zeroValue}
+	g.GetAfter()
+	g = &GetCodeSecurityConfigurationOptions{}
+	g.GetAfter()
+	g = nil
+	g.GetAfter()
+}
+
+func TestGetCodeSecurityConfigurationOptions_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	g := &GetCodeSecurityConfigurationOptions{Before: &zeroValue}
+	g.GetBefore()
+	g = &GetCodeSecurityConfigurationOptions{}
+	g.GetBefore()
+	g = nil
+	g.GetBefore()
+}
+
+func TestGetCodeSecurityConfigurationOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	g := &GetCodeSecurityConfigurationOptions{PerPage: &zeroValue}
+	g.GetPerPage()
+	g = &GetCodeSecurityConfigurationOptions{}
+	g.GetPerPage()
+	g = nil
+	g.GetPerPage()
+}
+
+func TestGetCodeSecurityConfigurationOptions_GetTargetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	g := &GetCodeSecurityConfigurationOptions{TargetType: &zeroValue}
+	g.GetTargetType()
+	g = &GetCodeSecurityConfigurationOptions{}
+	g.GetTargetType()
+	g = nil
+	g.GetTargetType()
+}
+
 func TestGist_GetComments(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int

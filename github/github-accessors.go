@@ -9990,6 +9990,38 @@ func (g *GetAuditLogOptions) GetPhrase() string {
 	return *g.Phrase
 }
 
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (g *GetCodeSecurityConfigurationOptions) GetAfter() string {
+	if g == nil || g.After == nil {
+		return ""
+	}
+	return *g.After
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (g *GetCodeSecurityConfigurationOptions) GetBefore() string {
+	if g == nil || g.Before == nil {
+		return ""
+	}
+	return *g.Before
+}
+
+// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
+func (g *GetCodeSecurityConfigurationOptions) GetPerPage() int {
+	if g == nil || g.PerPage == nil {
+		return 0
+	}
+	return *g.PerPage
+}
+
+// GetTargetType returns the TargetType field if it's non-nil, zero value otherwise.
+func (g *GetCodeSecurityConfigurationOptions) GetTargetType() string {
+	if g == nil || g.TargetType == nil {
+		return ""
+	}
+	return *g.TargetType
+}
+
 // GetComments returns the Comments field if it's non-nil, zero value otherwise.
 func (g *Gist) GetComments() int {
 	if g == nil || g.Comments == nil {

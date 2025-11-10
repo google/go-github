@@ -77,13 +77,41 @@ type RepositoryCodeSecurityConfiguration struct {
 	Configuration *CodeSecurityConfiguration `json:"configuration,omitempty"`
 }
 
+// GetCodeSecurityConfigurationOptions specifies optional parameters to get security configurations for orgs/enterprises
+//
+// Note: Pagination is powered by before/after cursor-style pagination. After the initial call,
+// inspect the returned *Response. Use resp.After as the opts.After value to request
+// the next page, and resp.Before as the opts.Before value to request the previous
+// page. Set either Before or After for a request; if both are
+// supplied GitHub API will return an error. PerPage controls the number of items
+// per page (max 100 per GitHub API docs).
+type GetCodeSecurityConfigurationOptions struct {
+	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
+	Before *string `url:"before,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query only searches for events after this cursor.
+	After *string `url:"after,omitempty"`
+
+	// For paginated result sets, the number of results to include per page.
+	PerPage *int `url:"per_page,omitempty"`
+
+	// The target type of the code security configurations to get, only valid for the organization endpoint.
+	//
+	// `target_type` defaults to all, can be one of global, all
+	TargetType *string `url:"target_type,omitempty"`
+}
+
 // GetCodeSecurityConfigurations gets code security configurations for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-code-security-configurations-for-an-organization
 //
 //meta:operation GET /orgs/{org}/code-security/configurations
-func (s *OrganizationsService) GetCodeSecurityConfigurations(ctx context.Context, org string) ([]*CodeSecurityConfiguration, *Response, error) {
+func (s *OrganizationsService) GetCodeSecurityConfigurations(ctx context.Context, org string, opts *GetCodeSecurityConfigurationOptions) ([]*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

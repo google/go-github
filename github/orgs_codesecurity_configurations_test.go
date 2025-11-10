@@ -16,11 +16,13 @@ import (
 
 func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
+	opts := &GetCodeSecurityConfigurationOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(30), TargetType: Ptr("all")}
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"before": "1", "after": "2", "per_page": "30", "target_type": "all"})
 		fmt.Fprint(w, `[
 		{
 			"id":1,
@@ -36,7 +38,7 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 		}]`)
 	})
 
-	configurations, _, err := client.Organizations.GetCodeSecurityConfigurations(ctx, "o")
+	configurations, _, err := client.Organizations.GetCodeSecurityConfigurations(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Organizations.GetCodeSecurityConfigurations returned error: %v", err)
 	}
@@ -50,11 +52,11 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 	}
 	const methodName = "GetCodeSecurityConfigurations"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.GetCodeSecurityConfigurations(ctx, "\n")
+		_, _, err = client.Organizations.GetCodeSecurityConfigurations(ctx, "\n", opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetCodeSecurityConfigurations(ctx, "o")
+		got, resp, err := client.Organizations.GetCodeSecurityConfigurations(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

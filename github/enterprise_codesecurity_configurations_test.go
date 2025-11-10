@@ -16,11 +16,13 @@ import (
 
 func TestEnterpriseService_GetCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
+	opts := &GetCodeSecurityConfigurationOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(30)}
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"before": "1", "after": "2", "per_page": "30"})
 		fmt.Fprint(w, `[
 		{
 			"id":1,
@@ -36,7 +38,7 @@ func TestEnterpriseService_GetCodeSecurityConfigurations(t *testing.T) {
 		}]`)
 	})
 
-	configurations, _, err := client.Enterprise.GetCodeSecurityConfigurations(ctx, "e")
+	configurations, _, err := client.Enterprise.GetCodeSecurityConfigurations(ctx, "e", opts)
 	if err != nil {
 		t.Errorf("Enterprise.GetCodeSecurityConfigurations returned error: %v", err)
 	}
@@ -50,11 +52,11 @@ func TestEnterpriseService_GetCodeSecurityConfigurations(t *testing.T) {
 	}
 	const methodName = "GetCodeSecurityConfigurations"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.GetCodeSecurityConfigurations(ctx, "\n")
+		_, _, err = client.Enterprise.GetCodeSecurityConfigurations(ctx, "\n", opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.GetCodeSecurityConfigurations(ctx, "e")
+		got, resp, err := client.Enterprise.GetCodeSecurityConfigurations(ctx, "e", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

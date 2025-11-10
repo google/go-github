@@ -16,8 +16,12 @@ import (
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-code-security-configurations-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations
-func (s *EnterpriseService) GetCodeSecurityConfigurations(ctx context.Context, enterprise string) ([]*CodeSecurityConfiguration, *Response, error) {
+func (s *EnterpriseService) GetCodeSecurityConfigurations(ctx context.Context, enterprise string, opts *GetCodeSecurityConfigurationOptions) ([]*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations", enterprise)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
