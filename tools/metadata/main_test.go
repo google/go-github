@@ -67,7 +67,7 @@ GET /undocumented/{undocumented_id}
 `, "")
 }
 
-//nolint:tparallel,paralleltest // cannot use t.Parallel() when helper calls t.Setenv
+//nolint:paralleltest // cannot use t.Parallel() when helper calls t.Setenv
 func TestUpdateOpenAPI(t *testing.T) {
 	testServer := newTestServer(t, "main", map[string]any{
 		"api.github.com/api.github.com.json": openapi3.T{
