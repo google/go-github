@@ -65,8 +65,7 @@ func TestMigrationService_ListMigrations(t *testing.T) {
 		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
 
 		w.WriteHeader(http.StatusOK)
-		//nolint:fmtpercentv
-		assertWrite(t, w, []byte(fmt.Sprintf("[%s]", migrationJSON)))
+		assertWrite(t, w, fmt.Appendf(nil, "[%s]", migrationJSON))
 	})
 
 	ctx := t.Context()

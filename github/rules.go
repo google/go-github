@@ -130,6 +130,14 @@ const (
 	MergeQueueMergeMethodSquash MergeQueueMergeMethod = "SQUASH"
 )
 
+// RulesetReviewerType represents the type of reviewer in a ruleset required reviewer.
+type RulesetReviewerType string
+
+// This is the set of GitHub ruleset reviewer types.
+const (
+	RulesetReviewerTypeTeam RulesetReviewerType = "Team"
+)
+
 // PatternRuleOperator models a GitHub pattern rule operator.
 type PatternRuleOperator string
 
@@ -203,18 +211,25 @@ type RepositoryRulesetLink struct {
 // RepositoryRulesetConditions represents the conditions object in a ruleset.
 // Set either RepositoryName or RepositoryID or RepositoryProperty, not more than one.
 type RepositoryRulesetConditions struct {
-	RefName            *RepositoryRulesetRefConditionParameters                `json:"ref_name,omitempty"`
-	RepositoryID       *RepositoryRulesetRepositoryIDsConditionParameters      `json:"repository_id,omitempty"`
-	RepositoryName     *RepositoryRulesetRepositoryNamesConditionParameters    `json:"repository_name,omitempty"`
-	RepositoryProperty *RepositoryRulesetRepositoryPropertyConditionParameters `json:"repository_property,omitempty"`
-	OrganizationID     *RepositoryRulesetOrganizationIDsConditionParameters    `json:"organization_id,omitempty"`
-	OrganizationName   *RepositoryRulesetOrganizationNamesConditionParameters  `json:"organization_name,omitempty"`
+	RefName              *RepositoryRulesetRefConditionParameters                  `json:"ref_name,omitempty"`
+	RepositoryID         *RepositoryRulesetRepositoryIDsConditionParameters        `json:"repository_id,omitempty"`
+	RepositoryName       *RepositoryRulesetRepositoryNamesConditionParameters      `json:"repository_name,omitempty"`
+	RepositoryProperty   *RepositoryRulesetRepositoryPropertyConditionParameters   `json:"repository_property,omitempty"`
+	OrganizationID       *RepositoryRulesetOrganizationIDsConditionParameters      `json:"organization_id,omitempty"`
+	OrganizationName     *RepositoryRulesetOrganizationNamesConditionParameters    `json:"organization_name,omitempty"`
+	OrganizationProperty *RepositoryRulesetOrganizationPropertyConditionParameters `json:"organization_property,omitempty"`
 }
 
 // RepositoryRulesetRefConditionParameters represents the conditions object for ref_names.
 type RepositoryRulesetRefConditionParameters struct {
 	Include []string `json:"include"`
 	Exclude []string `json:"exclude"`
+}
+
+// RepositoryRulesetOrganizationPropertyConditionParameters represents the conditions object for an organization property selector.
+type RepositoryRulesetOrganizationPropertyConditionParameters struct {
+	Include []*RepositoryRulesetRepositoryPropertyTargetParameters `json:"include"`
+	Exclude []*RepositoryRulesetRepositoryPropertyTargetParameters `json:"exclude"`
 }
 
 // RepositoryRulesetRepositoryIDsConditionParameters represents the conditions object for repository_id.
@@ -416,13 +431,27 @@ type RequiredDeploymentsRuleParameters struct {
 
 // PullRequestRuleParameters represents the pull_request rule parameters.
 type PullRequestRuleParameters struct {
-	AllowedMergeMethods               []PullRequestMergeMethod `json:"allowed_merge_methods"`
-	AutomaticCopilotCodeReviewEnabled *bool                    `json:"automatic_copilot_code_review_enabled,omitempty"`
-	DismissStaleReviewsOnPush         bool                     `json:"dismiss_stale_reviews_on_push"`
-	RequireCodeOwnerReview            bool                     `json:"require_code_owner_review"`
-	RequireLastPushApproval           bool                     `json:"require_last_push_approval"`
-	RequiredApprovingReviewCount      int                      `json:"required_approving_review_count"`
-	RequiredReviewThreadResolution    bool                     `json:"required_review_thread_resolution"`
+	AllowedMergeMethods               []PullRequestMergeMethod   `json:"allowed_merge_methods"`
+	AutomaticCopilotCodeReviewEnabled *bool                      `json:"automatic_copilot_code_review_enabled,omitempty"`
+	DismissStaleReviewsOnPush         bool                       `json:"dismiss_stale_reviews_on_push"`
+	RequireCodeOwnerReview            bool                       `json:"require_code_owner_review"`
+	RequireLastPushApproval           bool                       `json:"require_last_push_approval"`
+	RequiredApprovingReviewCount      int                        `json:"required_approving_review_count"`
+	RequiredReviewers                 []*RulesetRequiredReviewer `json:"required_reviewers,omitempty"`
+	RequiredReviewThreadResolution    bool                       `json:"required_review_thread_resolution"`
+}
+
+// RulesetRequiredReviewer represents required reviewer parameters for pull requests in rulesets.
+type RulesetRequiredReviewer struct {
+	MinimumApprovals *int             `json:"minimum_approvals,omitempty"`
+	FilePatterns     []string         `json:"file_patterns,omitempty"`
+	Reviewer         *RulesetReviewer `json:"reviewer,omitempty"`
+}
+
+// RulesetReviewer represents a reviewer in a ruleset required reviewer rule.
+type RulesetReviewer struct {
+	ID   *int64               `json:"id,omitempty"`
+	Type *RulesetReviewerType `json:"type,omitempty"`
 }
 
 // RequiredStatusChecksRuleParameters represents the required status checks rule parameters.

@@ -6862,6 +6862,14 @@ func (c *CustomProperty) GetSourceType() string {
 	return *c.SourceType
 }
 
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
 // GetValuesEditableBy returns the ValuesEditableBy field if it's non-nil, zero value otherwise.
 func (c *CustomProperty) GetValuesEditableBy() string {
 	if c == nil || c.ValuesEditableBy == nil {
@@ -9164,6 +9172,22 @@ func (e *Enterprise) GetWebsiteURL() string {
 		return ""
 	}
 	return *e.WebsiteURL
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseCustomPropertiesValues) GetOrganizationID() int64 {
+	if e == nil || e.OrganizationID == nil {
+		return 0
+	}
+	return *e.OrganizationID
+}
+
+// GetOrganizationLogin returns the OrganizationLogin field if it's non-nil, zero value otherwise.
+func (e *EnterpriseCustomPropertiesValues) GetOrganizationLogin() string {
+	if e == nil || e.OrganizationLogin == nil {
+		return ""
+	}
+	return *e.OrganizationLogin
 }
 
 // GetEnterpriseServerUser returns the EnterpriseServerUser field if it's non-nil, zero value otherwise.
@@ -24622,6 +24646,14 @@ func (r *RepositoryRulesetConditions) GetOrganizationName() *RepositoryRulesetOr
 	return r.OrganizationName
 }
 
+// GetOrganizationProperty returns the OrganizationProperty field.
+func (r *RepositoryRulesetConditions) GetOrganizationProperty() *RepositoryRulesetOrganizationPropertyConditionParameters {
+	if r == nil {
+		return nil
+	}
+	return r.OrganizationProperty
+}
+
 // GetRefName returns the RefName field.
 func (r *RepositoryRulesetConditions) GetRefName() *RepositoryRulesetRefConditionParameters {
 	if r == nil {
@@ -25476,6 +25508,38 @@ func (r *Rule) GetSeverity() string {
 		return ""
 	}
 	return *r.Severity
+}
+
+// GetMinimumApprovals returns the MinimumApprovals field if it's non-nil, zero value otherwise.
+func (r *RulesetRequiredReviewer) GetMinimumApprovals() int {
+	if r == nil || r.MinimumApprovals == nil {
+		return 0
+	}
+	return *r.MinimumApprovals
+}
+
+// GetReviewer returns the Reviewer field.
+func (r *RulesetRequiredReviewer) GetReviewer() *RulesetReviewer {
+	if r == nil {
+		return nil
+	}
+	return r.Reviewer
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RulesetReviewer) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetType returns the Type field.
+func (r *RulesetReviewer) GetType() *RulesetReviewerType {
+	if r == nil {
+		return nil
+	}
+	return r.Type
 }
 
 // GetIntegrationID returns the IntegrationID field if it's non-nil, zero value otherwise.

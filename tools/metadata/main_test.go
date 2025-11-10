@@ -23,7 +23,7 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v77/github"
+	"github.com/google/go-github/v78/github"
 )
 
 func TestUpdateGo(t *testing.T) {
@@ -67,7 +67,7 @@ GET /undocumented/{undocumented_id}
 `, "")
 }
 
-//nolint:tparallel,paralleltest // cannot use t.Parallel() when helper calls t.Setenv
+//nolint:paralleltest // cannot use t.Parallel() when helper calls t.Setenv
 func TestUpdateOpenAPI(t *testing.T) {
 	testServer := newTestServer(t, "main", map[string]any{
 		"api.github.com/api.github.com.json": openapi3.T{

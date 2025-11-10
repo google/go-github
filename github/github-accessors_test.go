@@ -8978,6 +8978,17 @@ func TestCustomProperty_GetSourceType(tt *testing.T) {
 	c.GetSourceType()
 }
 
+func TestCustomProperty_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CustomProperty{URL: &zeroValue}
+	c.GetURL()
+	c = &CustomProperty{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
 func TestCustomProperty_GetValuesEditableBy(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -11868,6 +11879,28 @@ func TestEnterprise_GetWebsiteURL(tt *testing.T) {
 	e.GetWebsiteURL()
 	e = nil
 	e.GetWebsiteURL()
+}
+
+func TestEnterpriseCustomPropertiesValues_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	e := &EnterpriseCustomPropertiesValues{OrganizationID: &zeroValue}
+	e.GetOrganizationID()
+	e = &EnterpriseCustomPropertiesValues{}
+	e.GetOrganizationID()
+	e = nil
+	e.GetOrganizationID()
+}
+
+func TestEnterpriseCustomPropertiesValues_GetOrganizationLogin(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseCustomPropertiesValues{OrganizationLogin: &zeroValue}
+	e.GetOrganizationLogin()
+	e = &EnterpriseCustomPropertiesValues{}
+	e.GetOrganizationLogin()
+	e = nil
+	e.GetOrganizationLogin()
 }
 
 func TestEnterpriseLicensedUsers_GetEnterpriseServerUser(tt *testing.T) {
@@ -31811,6 +31844,14 @@ func TestRepositoryRulesetConditions_GetOrganizationName(tt *testing.T) {
 	r.GetOrganizationName()
 }
 
+func TestRepositoryRulesetConditions_GetOrganizationProperty(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetConditions{}
+	r.GetOrganizationProperty()
+	r = nil
+	r.GetOrganizationProperty()
+}
+
 func TestRepositoryRulesetConditions_GetRefName(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryRulesetConditions{}
@@ -32836,6 +32877,44 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 	r = nil
 	r.GetSeverity()
+}
+
+func TestRulesetRequiredReviewer_GetMinimumApprovals(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	r := &RulesetRequiredReviewer{MinimumApprovals: &zeroValue}
+	r.GetMinimumApprovals()
+	r = &RulesetRequiredReviewer{}
+	r.GetMinimumApprovals()
+	r = nil
+	r.GetMinimumApprovals()
+}
+
+func TestRulesetRequiredReviewer_GetReviewer(tt *testing.T) {
+	tt.Parallel()
+	r := &RulesetRequiredReviewer{}
+	r.GetReviewer()
+	r = nil
+	r.GetReviewer()
+}
+
+func TestRulesetReviewer_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RulesetReviewer{ID: &zeroValue}
+	r.GetID()
+	r = &RulesetReviewer{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRulesetReviewer_GetType(tt *testing.T) {
+	tt.Parallel()
+	r := &RulesetReviewer{}
+	r.GetType()
+	r = nil
+	r.GetType()
 }
 
 func TestRuleStatusCheck_GetIntegrationID(tt *testing.T) {

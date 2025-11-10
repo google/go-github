@@ -117,6 +117,10 @@ func getTagSequence(text string) (tagSeq, innerText []string) {
 			switch s {
 			case "", "&hellip;": // skip
 			default:
+				// Special case:
+				if strings.HasPrefix(rawText, "BREAKING") {
+					rawText = "\n\n" + rawText
+				}
 				innerText = append(innerText, rawText)
 			}
 		}
@@ -203,7 +207,7 @@ func genRefLines(breaking, nonBreaking []string) (ref, refNon []string) {
 
 func newChangesSinceRelease(priorRelease string) string {
 	url := fmt.Sprintf("%v/compare/%v...master", baseWebURL, priorRelease)
-	resp, err := http.Get(url) //nolint: gosec
+	resp, err := http.Get(url) //nolint:gosec
 	must(err)
 	defer resp.Body.Close()
 
