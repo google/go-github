@@ -141,7 +141,7 @@ func TestRepositoriesService_DownloadContents_SuccessForFile(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	r, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
+	r, c, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadContents returned error: %v", err)
 	}
@@ -160,14 +160,18 @@ func TestRepositoriesService_DownloadContents_SuccessForFile(t *testing.T) {
 		t.Errorf("Repositories.DownloadContents returned %v, want %v", got, want)
 	}
 
+	if got, want := c.GetName(), "f"; got != want {
+		t.Errorf("Repositories.DownloadContents returned content name %v, want %v", got, want)
+	}
+
 	const methodName = "DownloadContents"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.DownloadContents(ctx, "\n", "\n", "\n", nil)
+		_, _, _, err = client.Repositories.DownloadContents(ctx, "\n", "\n", "\n", nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
+		got, _, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -193,7 +197,7 @@ func TestRepositoriesService_DownloadContents_SuccessForDirectory(t *testing.T) 
 	})
 
 	ctx := t.Context()
-	r, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
+	r, c, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadContents returned error: %v", err)
 	}
@@ -212,14 +216,20 @@ func TestRepositoriesService_DownloadContents_SuccessForDirectory(t *testing.T) 
 		t.Errorf("Repositories.DownloadContents returned %v, want %v", got, want)
 	}
 
+	if got, want := c.GetName(), "f"; got != want {
+		if c != nil {
+			t.Errorf("Repositories.DownloadContents returned content name %v, want %v", got, want)
+		}
+	}
+
 	const methodName = "DownloadContents"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.DownloadContents(ctx, "\n", "\n", "\n", nil)
+		_, _, _, err = client.Repositories.DownloadContents(ctx, "\n", "\n", "\n", nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
+		got, _, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -247,7 +257,7 @@ func TestRepositoriesService_DownloadContents_FailedResponse(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	r, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
+	r, _, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err != nil {
 		t.Errorf("Repositories.DownloadContents returned error: %v", err)
 	}
@@ -280,17 +290,21 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	reader, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
+	reader, contents, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err == nil {
 		t.Error("Repositories.DownloadContents did not return expected error")
+	}
+
+	if reader != nil {
+		t.Error("Repositories.DownloadContents did not return expected reader")
 	}
 
 	if resp == nil {
 		t.Error("Repositories.DownloadContents did not return expected response")
 	}
 
-	if reader != nil {
-		t.Error("Repositories.DownloadContents did not return expected reader")
+	if contents == nil {
+		t.Error("Repositories.DownloadContents did not return expected content")
 	}
 }
 
@@ -305,7 +319,7 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	reader, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
+	reader, _, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d/f", nil)
 	if err == nil {
 		t.Error("Repositories.DownloadContents did not return expected error")
 	}
@@ -316,213 +330,6 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 
 	if reader != nil {
 		t.Error("Repositories.DownloadContents did not return expected reader")
-	}
-}
-
-func TestRepositoriesService_DownloadContentsWithMeta_SuccessForFile(t *testing.T) {
-	t.Parallel()
-	client, mux, serverURL := setup(t)
-
-	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-		  "type": "file",
-		  "name": "f",
-		  "download_url": "`+serverURL+baseURLPath+`/download/f",
-          "content": "foo"
-		}`)
-	})
-
-	ctx := t.Context()
-	r, c, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
-	if err != nil {
-		t.Errorf("Repositories.DownloadContentsWithMeta returned error: %v", err)
-	}
-
-	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
-		t.Errorf("Repositories.DownloadContentsWithMeta returned status code %v, want %v", got, want)
-	}
-
-	bytes, err := io.ReadAll(r)
-	if err != nil {
-		t.Errorf("Error reading response body: %v", err)
-	}
-	r.Close()
-
-	if got, want := string(bytes), "foo"; got != want {
-		t.Errorf("Repositories.DownloadContentsWithMeta returned %v, want %v", got, want)
-	}
-
-	if c != nil && c.Name != nil {
-		if got, want := *c.Name, "f"; got != want {
-			t.Errorf("Repositories.DownloadContentsWithMeta returned content name %v, want %v", got, want)
-		}
-	} else {
-		t.Error("Returned RepositoryContent is null")
-	}
-
-	const methodName = "DownloadContentsWithMeta"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, _, err = client.Repositories.DownloadContentsWithMeta(ctx, "\n", "\n", "\n", nil)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, cot, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		if cot != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, cot)
-		}
-		return resp, err
-	})
-}
-
-func TestRepositoriesService_DownloadContentsWithMeta_SuccessForDirectory(t *testing.T) {
-	t.Parallel()
-	client, mux, serverURL := setup(t)
-
-	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-		  "type": "file",
-		  "name": "f",
-		  "download_url": "`+serverURL+baseURLPath+`/download/f"
-		}`)
-	})
-	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, "foo")
-	})
-
-	ctx := t.Context()
-	r, c, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
-	if err != nil {
-		t.Errorf("Repositories.DownloadContentsWithMeta returned error: %v", err)
-	}
-
-	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
-		t.Errorf("Repositories.DownloadContentsWithMeta returned status code %v, want %v", got, want)
-	}
-
-	bytes, err := io.ReadAll(r)
-	if err != nil {
-		t.Errorf("Error reading response body: %v", err)
-	}
-	r.Close()
-
-	if got, want := string(bytes), "foo"; got != want {
-		t.Errorf("Repositories.DownloadContentsWithMeta returned %v, want %v", got, want)
-	}
-
-	if c != nil && c.Name != nil {
-		if got, want := *c.Name, "f"; got != want {
-			t.Errorf("Repositories.DownloadContentsWithMeta returned content name %v, want %v", got, want)
-		}
-	} else {
-		t.Error("Returned RepositoryContent is null")
-	}
-}
-
-func TestRepositoriesService_DownloadContentsWithMeta_FailedResponse(t *testing.T) {
-	t.Parallel()
-	client, mux, serverURL := setup(t)
-
-	downloadURL := fmt.Sprintf("%v%v/download/f", serverURL, baseURLPath)
-
-	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-			"type": "file",
-			"name": "f",
-			"download_url": "`+downloadURL+`"
-		  }`)
-	})
-	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, "foo error")
-	})
-
-	ctx := t.Context()
-	r, c, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
-	if err != nil {
-		t.Errorf("Repositories.DownloadContentsWithMeta returned error: %v", err)
-	}
-
-	if got, want := resp.Response.StatusCode, http.StatusInternalServerError; got != want {
-		t.Errorf("Repositories.DownloadContentsWithMeta returned status code %v, want %v", got, want)
-	}
-
-	bytes, err := io.ReadAll(r)
-	if err != nil {
-		t.Errorf("Error reading response body: %v", err)
-	}
-	r.Close()
-
-	if got, want := string(bytes), "foo error"; got != want {
-		t.Errorf("Repositories.DownloadContentsWithMeta returned %v, want %v", got, want)
-	}
-
-	if c != nil && c.Name != nil {
-		if got, want := *c.Name, "f"; got != want {
-			t.Errorf("Repositories.DownloadContentsWithMeta returned content name %v, want %v", got, want)
-		}
-	} else {
-		t.Error("Returned RepositoryContent is null")
-	}
-}
-
-func TestRepositoriesService_DownloadContentsWithMeta_NoDownloadURL(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-		  "type": "file",
-		  "name": "f"
-		}`)
-	})
-
-	ctx := t.Context()
-	reader, contents, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
-	if err == nil {
-		t.Error("Repositories.DownloadContentsWithMeta did not return expected error")
-	}
-
-	if reader != nil {
-		t.Error("Repositories.DownloadContentsWithMeta did not return expected reader")
-	}
-
-	if resp == nil {
-		t.Error("Repositories.DownloadContentsWithMeta did not return expected response")
-	}
-
-	if contents == nil {
-		t.Error("Repositories.DownloadContentsWithMeta did not return expected content")
-	}
-}
-
-func TestRepositoriesService_DownloadContentsWithMeta_NoFile(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprint(w, `{"message":"Not Found"}`)
-	})
-
-	ctx := t.Context()
-	_, _, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
-	if err == nil {
-		t.Error("Repositories.DownloadContentsWithMeta did not return expected error")
-	}
-
-	if resp == nil {
-		t.Error("Repositories.DownloadContentsWithMeta did not return expected response")
 	}
 }
 

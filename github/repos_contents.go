@@ -124,33 +124,13 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 }
 
 // DownloadContents returns an io.ReadCloser that reads the contents of the
-// specified file. This function will work with files of any size, as opposed
-// to GetContents which is limited to 1 Mb files. It is the caller's
-// responsibility to close the ReadCloser.
+// specified file, along with the file's metadata. This function will work with
+// files of any size, as opposed to GetContents which is limited to 1 Mb files.
+// It is the caller's responsibility to close the ReadCloser.
 //
-// Note: If you need the file's metadata (name, SHA, URL, etc.) in addition to
-// its content, use DownloadContentsWithMeta instead.
-//
-// It is possible for the download to result in a failed response when the
-// returned error is nil. Callers should check the returned Response status
-// code to verify the content is from a successful response.
-//
-// GitHub API docs: https://docs.github.com/rest/repos/contents#get-repository-content
-//
-//meta:operation GET /repos/{owner}/{repo}/contents/{path}
-func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *Response, error) {
-	reader, _, resp, err := s.DownloadContentsWithMeta(ctx, owner, repo, filepath, opts)
-	return reader, resp, err
-}
-
-// DownloadContentsWithMeta returns both an io.ReadCloser for the file content
-// and the RepositoryContent metadata for the requested file. This function will
-// work with files of any size, as opposed to GetContents which is limited to 1 Mb
-// files. It is the caller's responsibility to close the ReadCloser.
-//
-// Use this method when you need access to the file's metadata (SHA, name, path,
-// URL, etc.) in addition to its content. If you only need the content, use
-// DownloadContents for a simpler API.
+// The returned RepositoryContent contains metadata such as the file's SHA, name,
+// path, URL, etc. If you don't need the metadata, you can ignore the second return
+// value.
 //
 // It is possible for the download to result in a failed response when the
 // returned error is nil. Callers should check the returned Response status
@@ -159,7 +139,7 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 // GitHub API docs: https://docs.github.com/rest/repos/contents#get-repository-content
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
-func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *RepositoryContent, *Response, error) {
+func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *RepositoryContent, *Response, error) {
 	fileContent, _, resp, err := s.GetContents(ctx, owner, repo, filepath, opts)
 	if err != nil {
 		return nil, nil, resp, err

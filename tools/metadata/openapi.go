@@ -55,7 +55,7 @@ func getOpsFromGithub(ctx context.Context, client *github.Client, gitRef string)
 }
 
 func (o *openapiFile) loadDescription(ctx context.Context, client *github.Client, gitRef string) error {
-	contents, resp, err := client.Repositories.DownloadContents(
+	contents, _, resp, err := client.Repositories.DownloadContents(
 		ctx,
 		descriptionsOwnerName,
 		descriptionsRepoName,
