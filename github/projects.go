@@ -74,15 +74,24 @@ type ListProjectsOptions struct {
 	Query *string `url:"q,omitempty"`
 }
 
+// ProjectV2TextContent represents text content in a project field option or iteration.
+// It includes both HTML and raw text representations.
+//
+// GitHub API docs: https://docs.github.com/rest/projects/fields
+type ProjectV2TextContent struct {
+	HTML *string `json:"html,omitempty"`
+	Raw  *string `json:"raw,omitempty"`
+}
+
 // ProjectV2FieldOption represents an option for a project field of type single_select or multi_select.
 // It defines the available choices that can be selected for dropdown-style fields.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2FieldOption struct {
-	ID          *string `json:"id,omitempty"`          // The unique identifier for this option.
-	Name        *string `json:"name,omitempty"`        // The display name of the option.
-	Color       *string `json:"color,omitempty"`       // The color associated with this option (e.g., "blue", "red").
-	Description *string `json:"description,omitempty"` // An optional description for this option.
+	ID          *string               `json:"id,omitempty"`          // The unique identifier for this option.
+	Color       *string               `json:"color,omitempty"`       // The color associated with this option (e.g., "blue", "red").
+	Description *ProjectV2TextContent `json:"description,omitempty"` // An optional description for this option.
+	Name        *ProjectV2TextContent `json:"name,omitempty"`        // The display name of the option.
 }
 
 // ProjectV2FieldIteration represents an iteration within a project field of type iteration.
@@ -90,10 +99,10 @@ type ProjectV2FieldOption struct {
 //
 // GitHub API docs: https://docs.github.com/rest/projects/fields
 type ProjectV2FieldIteration struct {
-	ID        *string `json:"id,omitempty"`         // The unique identifier for the iteration.
-	Title     *string `json:"title,omitempty"`      // The title of the iteration.
-	StartDate *string `json:"start_date,omitempty"` // The start date of the iteration in ISO 8601 format.
-	Duration  *int    `json:"duration,omitempty"`   // The duration of the iteration in seconds.
+	ID        *string               `json:"id,omitempty"`         // The unique identifier for the iteration.
+	Title     *ProjectV2TextContent `json:"title,omitempty"`      // The title of the iteration.
+	StartDate *string               `json:"start_date,omitempty"` // The start date of the iteration in ISO 8601 format.
+	Duration  *int                  `json:"duration,omitempty"`   // The duration of the iteration in seconds.
 }
 
 // ProjectV2FieldConfiguration represents the configuration for a project field of type iteration.
@@ -325,11 +334,10 @@ type AddProjectItemOptions struct {
 	ID   int64  `json:"id,omitempty"`
 }
 
-// ProjectV2FieldUpdate represents a field update for a project item.
-// It contains the field ID and the new value to set.
+// UpdateProjectV2Field represents a field update for a project item.
 //
 // GitHub API docs: https://docs.github.com/rest/projects/items#update-project-item-for-organization
-type ProjectV2FieldUpdate struct {
+type UpdateProjectV2Field struct {
 	// ID is the field ID to update.
 	ID int64 `json:"id"`
 	// Value is the new value to set for the field. The type depends on the field type.
@@ -338,6 +346,7 @@ type ProjectV2FieldUpdate struct {
 	// For single_select fields: string (option ID)
 	// For date fields: string (ISO 8601 date)
 	// For iteration fields: string (iteration ID)
+	// Note: Some field types (title, assignees, labels, etc.) are read-only or managed through other API endpoints.
 	Value any `json:"value"`
 }
 
@@ -349,7 +358,7 @@ type UpdateProjectItemOptions struct {
 	Archived *bool `json:"archived,omitempty"`
 	// Fields contains field updates to apply to the project item.
 	// Each entry specifies a field ID and its new value.
-	Fields []*ProjectV2FieldUpdate `json:"fields,omitempty"`
+	Fields []*UpdateProjectV2Field `json:"fields,omitempty"`
 }
 
 // ListOrganizationProjectItems lists items for an organization owned project.

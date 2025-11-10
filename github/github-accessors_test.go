@@ -25077,10 +25077,7 @@ func TestProjectV2FieldIteration_GetStartDate(tt *testing.T) {
 
 func TestProjectV2FieldIteration_GetTitle(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &ProjectV2FieldIteration{Title: &zeroValue}
-	p.GetTitle()
-	p = &ProjectV2FieldIteration{}
+	p := &ProjectV2FieldIteration{}
 	p.GetTitle()
 	p = nil
 	p.GetTitle()
@@ -25099,10 +25096,7 @@ func TestProjectV2FieldOption_GetColor(tt *testing.T) {
 
 func TestProjectV2FieldOption_GetDescription(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &ProjectV2FieldOption{Description: &zeroValue}
-	p.GetDescription()
-	p = &ProjectV2FieldOption{}
+	p := &ProjectV2FieldOption{}
 	p.GetDescription()
 	p = nil
 	p.GetDescription()
@@ -25121,10 +25115,7 @@ func TestProjectV2FieldOption_GetID(tt *testing.T) {
 
 func TestProjectV2FieldOption_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &ProjectV2FieldOption{Name: &zeroValue}
-	p.GetName()
-	p = &ProjectV2FieldOption{}
+	p := &ProjectV2FieldOption{}
 	p.GetName()
 	p = nil
 	p.GetName()
@@ -25313,6 +25304,39 @@ func TestProjectV2ItemEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 	p = nil
 	p.GetSender()
+}
+
+func TestProjectV2ItemFieldValue_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &ProjectV2ItemFieldValue{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectV2ItemFieldValue{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestProjectV2TextContent_GetHTML(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2TextContent{HTML: &zeroValue}
+	p.GetHTML()
+	p = &ProjectV2TextContent{}
+	p.GetHTML()
+	p = nil
+	p.GetHTML()
+}
+
+func TestProjectV2TextContent_GetRaw(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2TextContent{Raw: &zeroValue}
+	p.GetRaw()
+	p = &ProjectV2TextContent{}
+	p.GetRaw()
+	p = nil
+	p.GetRaw()
 }
 
 func TestProtection_GetAllowDeletions(tt *testing.T) {

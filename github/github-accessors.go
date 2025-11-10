@@ -19302,12 +19302,12 @@ func (p *ProjectV2FieldIteration) GetStartDate() string {
 	return *p.StartDate
 }
 
-// GetTitle returns the Title field if it's non-nil, zero value otherwise.
-func (p *ProjectV2FieldIteration) GetTitle() string {
-	if p == nil || p.Title == nil {
-		return ""
+// GetTitle returns the Title field.
+func (p *ProjectV2FieldIteration) GetTitle() *ProjectV2TextContent {
+	if p == nil {
+		return nil
 	}
-	return *p.Title
+	return p.Title
 }
 
 // GetColor returns the Color field if it's non-nil, zero value otherwise.
@@ -19318,12 +19318,12 @@ func (p *ProjectV2FieldOption) GetColor() string {
 	return *p.Color
 }
 
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (p *ProjectV2FieldOption) GetDescription() string {
-	if p == nil || p.Description == nil {
-		return ""
+// GetDescription returns the Description field.
+func (p *ProjectV2FieldOption) GetDescription() *ProjectV2TextContent {
+	if p == nil {
+		return nil
 	}
-	return *p.Description
+	return p.Description
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -19334,12 +19334,12 @@ func (p *ProjectV2FieldOption) GetID() string {
 	return *p.ID
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (p *ProjectV2FieldOption) GetName() string {
-	if p == nil || p.Name == nil {
-		return ""
+// GetName returns the Name field.
+func (p *ProjectV2FieldOption) GetName() *ProjectV2TextContent {
+	if p == nil {
+		return nil
 	}
-	return *p.Name
+	return p.Name
 }
 
 // GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.
@@ -19492,6 +19492,30 @@ func (p *ProjectV2ItemEvent) GetSender() *User {
 		return nil
 	}
 	return p.Sender
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ItemFieldValue) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetHTML returns the HTML field if it's non-nil, zero value otherwise.
+func (p *ProjectV2TextContent) GetHTML() string {
+	if p == nil || p.HTML == nil {
+		return ""
+	}
+	return *p.HTML
+}
+
+// GetRaw returns the Raw field if it's non-nil, zero value otherwise.
+func (p *ProjectV2TextContent) GetRaw() string {
+	if p == nil || p.Raw == nil {
+		return ""
+	}
+	return *p.Raw
 }
 
 // GetAllowDeletions returns the AllowDeletions field.

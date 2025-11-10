@@ -185,8 +185,8 @@ func TestProjectsService_ListOrganizationProjectFields(t *testing.T) {
 			"data_type": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field1",
 			"options": [
-				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
-				{"id": "2", "name": "In Progress", "color": "yellow"}
+				{"id": "1", "name": {"raw": "Todo", "html": "Todo"}, "color": "blue", "description": {"raw": "Tasks to be done", "html": "Tasks to be done"}},
+				{"id": "2", "name": {"raw": "In Progress", "html": "In Progress"}, "color": "yellow"}
 			],
 			"created_at": "2011-01-02T15:04:05Z",
 			"updated_at": "2012-01-02T15:04:05Z"
@@ -254,8 +254,8 @@ func TestProjectsService_ListUserProjectFields(t *testing.T) {
 			"data_type": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field1",
 			"options": [
-				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
-				{"id": "2", "name": "In Progress", "color": "yellow"}
+				{"id": "1", "name": {"raw": "Todo", "html": "Todo"}, "color": "blue", "description": {"raw": "Tasks to be done", "html": "Tasks to be done"}},
+				{"id": "2", "name": {"raw": "In Progress", "html": "In Progress"}, "color": "yellow"}
 			],
 			"created_at": "2011-01-02T15:04:05Z",
 			"updated_at": "2012-01-02T15:04:05Z"
@@ -317,8 +317,8 @@ func TestProjectsService_GetOrganizationProjectField(t *testing.T) {
 			"data_type": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field1",
 			"options": [
-				{"id": "1", "name": "Todo", "color": "blue", "description": "Tasks to be done"},
-				{"id": "2", "name": "In Progress", "color": "yellow"}
+				{"id": "1", "name": {"raw": "Todo", "html": "Todo"}, "color": "blue", "description": {"raw": "Tasks to be done", "html": "Tasks to be done"}},
+				{"id": "2", "name": {"raw": "In Progress", "html": "In Progress"}, "color": "yellow"}
 			],
 			"created_at": "2011-01-02T15:04:05Z",
 			"updated_at": "2012-01-02T15:04:05Z"
@@ -358,8 +358,8 @@ func TestProjectsService_GetUserProjectField(t *testing.T) {
 			"data_type": "single_select",
 			"url": "https://api.github.com/projects/1/fields/field3",
 			"options": [
-				{"id": "1", "name": "Done", "color": "red", "description": "Done task"},
-				{"id": "2", "name": "In Progress", "color": "yellow"}
+				{"id": "1", "name": {"raw": "Done", "html": "Done"}, "color": "red", "description": {"raw": "Done task", "html": "Done task"}},
+				{"id": "2", "name": {"raw": "In Progress", "html": "In Progress"}, "color": "yellow"}
 			],
 			"created_at": "2011-01-02T15:04:05Z",
 			"updated_at": "2012-01-02T15:04:05Z"
@@ -589,9 +589,9 @@ func TestProjectV2Field_Marshal(t *testing.T) {
 		Options: []*ProjectV2FieldOption{
 			{
 				ID:          Ptr("1"),
-				Name:        Ptr("Todo"),
+				Name:        &ProjectV2TextContent{Raw: Ptr("Todo"), HTML: Ptr("Todo")},
 				Color:       Ptr("blue"),
-				Description: Ptr("Tasks to be done"),
+				Description: &ProjectV2TextContent{Raw: Ptr("Tasks to be done"), HTML: Ptr("Tasks to be done")},
 			},
 		},
 		CreatedAt: &Timestamp{referenceTime},
@@ -607,9 +607,15 @@ func TestProjectV2Field_Marshal(t *testing.T) {
         "options": [
             {
                 "id": "1",
-                "name": "Todo",
                 "color": "blue",
-                "description": "Tasks to be done"
+                "description": {
+                    "raw": "Tasks to be done",
+                    "html": "Tasks to be done"
+                },
+                "name": {
+                    "raw": "Todo",
+                    "html": "Todo"
+                }
             }
         ],
         "created_at": ` + referenceTimeStr + `,
@@ -638,13 +644,13 @@ func TestProjectV2FieldConfiguration_Marshal(t *testing.T) {
 			Iterations: []*ProjectV2FieldIteration{
 				{
 					ID:        Ptr("iter_1"),
-					Title:     Ptr("Sprint 1"),
+					Title:     &ProjectV2TextContent{Raw: Ptr("Sprint 1"), HTML: Ptr("Sprint 1")},
 					StartDate: Ptr("2025-01-06"),
 					Duration:  Ptr(1209600),
 				},
 				{
 					ID:        Ptr("iter_2"),
-					Title:     Ptr("Sprint 2"),
+					Title:     &ProjectV2TextContent{Raw: Ptr("Sprint 2"), HTML: Ptr("Sprint 2")},
 					StartDate: Ptr("2025-01-20"),
 					Duration:  Ptr(1209600),
 				},
@@ -666,13 +672,19 @@ func TestProjectV2FieldConfiguration_Marshal(t *testing.T) {
             "iterations": [
                 {
                     "id": "iter_1",
-                    "title": "Sprint 1",
+                    "title": {
+                        "raw": "Sprint 1",
+                        "html": "Sprint 1"
+                    },
                     "start_date": "2025-01-06",
                     "duration": 1209600
                 },
                 {
                     "id": "iter_2",
-                    "title": "Sprint 2",
+                    "title": {
+                        "raw": "Sprint 2",
+                        "html": "Sprint 2"
+                    },
                     "start_date": "2025-01-20",
                     "duration": 1209600
                 }
@@ -691,7 +703,7 @@ func TestProjectV2FieldConfiguration_Marshal(t *testing.T) {
 		Iterations: []*ProjectV2FieldIteration{
 			{
 				ID:        Ptr("config_iter_1"),
-				Title:     Ptr("Week 1"),
+				Title:     &ProjectV2TextContent{Raw: Ptr("Week 1"), HTML: Ptr("Week 1")},
 				StartDate: Ptr("2025-01-01"),
 				Duration:  Ptr(604800),
 			},
@@ -704,7 +716,10 @@ func TestProjectV2FieldConfiguration_Marshal(t *testing.T) {
         "iterations": [
             {
                 "id": "config_iter_1",
-                "title": "Week 1",
+                "title": {
+                    "raw": "Week 1",
+                    "html": "Week 1"
+                },
                 "start_date": "2025-01-01",
                 "duration": 604800
             }
@@ -716,14 +731,17 @@ func TestProjectV2FieldConfiguration_Marshal(t *testing.T) {
 	// Test iteration struct by itself
 	iteration := &ProjectV2FieldIteration{
 		ID:        Ptr("single_iter"),
-		Title:     Ptr("Test Iteration"),
+		Title:     &ProjectV2TextContent{Raw: Ptr("Test Iteration"), HTML: Ptr("Test Iteration")},
 		StartDate: Ptr("2025-02-01"),
 		Duration:  Ptr(1209600),
 	}
 
 	iterationWant := `{
         "id": "single_iter",
-        "title": "Test Iteration",
+        "title": {
+            "raw": "Test Iteration",
+            "html": "Test Iteration"
+        },
         "start_date": "2025-02-01",
         "duration": 1209600
     }`
@@ -956,7 +974,7 @@ func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testi
 
 	ctx := t.Context()
 	opts := &UpdateProjectItemOptions{
-		Fields: []*ProjectV2FieldUpdate{
+		Fields: []*UpdateProjectV2Field{
 			{ID: 123, Value: "Updated text value"},
 			{ID: 456, Value: "Done"},
 		},
@@ -1227,7 +1245,7 @@ func TestProjectsService_UpdateUserProjectItem_WithFieldUpdates(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &UpdateProjectItemOptions{
-		Fields: []*ProjectV2FieldUpdate{
+		Fields: []*UpdateProjectV2Field{
 			{ID: 100, Value: "In Progress"},
 			{ID: 200, Value: 5}, // number field
 		},
