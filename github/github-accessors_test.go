@@ -4376,17 +4376,6 @@ func TestCodeSecurityConfiguration_GetDependencyGraphAutosubmitActionOptions(tt 
 	c.GetDependencyGraphAutosubmitActionOptions()
 }
 
-func TestCodeSecurityConfiguration_GetDescription(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodeSecurityConfiguration{Description: &zeroValue}
-	c.GetDescription()
-	c = &CodeSecurityConfiguration{}
-	c.GetDescription()
-	c = nil
-	c.GetDescription()
-}
-
 func TestCodeSecurityConfiguration_GetEnforcement(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -4418,17 +4407,6 @@ func TestCodeSecurityConfiguration_GetID(tt *testing.T) {
 	c.GetID()
 	c = nil
 	c.GetID()
-}
-
-func TestCodeSecurityConfiguration_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodeSecurityConfiguration{Name: &zeroValue}
-	c.GetName()
-	c = &CodeSecurityConfiguration{}
-	c.GetName()
-	c = nil
-	c.GetName()
 }
 
 func TestCodeSecurityConfiguration_GetPrivateVulnerabilityReporting(tt *testing.T) {

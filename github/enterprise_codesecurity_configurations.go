@@ -37,10 +37,10 @@ func (s *EnterpriseService) GetCodeSecurityConfigurations(ctx context.Context, e
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#create-a-code-security-configuration-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/code-security/configurations
-func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context, enterprise string, c *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context, enterprise string, config *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations", enterprise)
 
-	req, err := s.client.NewRequest("POST", u, c)
+	req, err := s.client.NewRequest("POST", u, config)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -100,10 +100,10 @@ func (s *EnterpriseService) GetCodeSecurityConfiguration(ctx context.Context, en
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#update-a-custom-code-security-configuration-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/code-security/configurations/{configuration_id}
-func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64, c *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64, config *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, id)
 
-	req, err := s.client.NewRequest("PATCH", u, c)
+	req, err := s.client.NewRequest("PATCH", u, config)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -136,6 +136,8 @@ func (s *EnterpriseService) DeleteCodeSecurityConfiguration(ctx context.Context,
 }
 
 // AttachCodeSecurityConfigurationToRepositories attaches an enterprise code security configuration to repositories.
+// `scope` is the type of repositories to attach the configuration to.
+// Can be one of: `all`, `all_without_configurations`.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#attach-an-enterprise-configuration-to-repositories
 //
@@ -158,26 +160,28 @@ func (s *EnterpriseService) AttachCodeSecurityConfigurationToRepositories(ctx co
 }
 
 // SetDefaultCodeSecurityConfiguration sets a code security configuration as a default for an enterprise.
+// `defaultForNewRepos` specifies which types of repository this security configuration should be applied to by default.
+// Can be one of: `all`, `none`, `private_and_internal, public`.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#set-a-code-security-configuration-as-a-default-for-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/code-security/configurations/{configuration_id}/defaults
-func (s *EnterpriseService) SetDefaultCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64, newReposParam string) (*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
+func (s *EnterpriseService) SetDefaultCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64, defaultForNewRepos string) (*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v/defaults", enterprise, id)
 	type configParam struct {
 		DefaultForNewRepos string `json:"default_for_new_repos"`
 	}
 
-	req, err := s.client.NewRequest("PUT", u, configParam{DefaultForNewRepos: newReposParam})
+	req, err := s.client.NewRequest("PUT", u, configParam{DefaultForNewRepos: defaultForNewRepos})
 	if err != nil {
 		return nil, nil, err
 	}
-	var c *CodeSecurityConfigurationWithDefaultForNewRepos
-	resp, err := s.client.Do(ctx, req, &c)
+	var config *CodeSecurityConfigurationWithDefaultForNewRepos
+	resp, err := s.client.Do(ctx, req, &config)
 	if err != nil {
 		return nil, resp, err
 	}
-	return c, resp, nil
+	return config, resp, nil
 }
 
 // GetRepositoriesForCodeSecurityConfiguration lists the repositories associated with an enterprise code security configuration.

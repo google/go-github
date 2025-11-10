@@ -37,8 +37,8 @@ type RepositoryAttachment struct {
 type CodeSecurityConfiguration struct {
 	ID                                     *int64                                  `json:"id,omitempty"`
 	TargetType                             *string                                 `json:"target_type,omitempty"`
-	Name                                   *string                                 `json:"name"`
-	Description                            *string                                 `json:"description,omitempty"`
+	Name                                   string                                  `json:"name"`
+	Description                            string                                  `json:"description"`
 	AdvancedSecurity                       *string                                 `json:"advanced_security,omitempty"`
 	DependencyGraph                        *string                                 `json:"dependency_graph,omitempty"`
 	DependencyGraphAutosubmitAction        *string                                 `json:"dependency_graph_autosubmit_action,omitempty"`
@@ -103,10 +103,10 @@ func (s *OrganizationsService) GetCodeSecurityConfigurations(ctx context.Context
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#create-a-code-security-configuration
 //
 //meta:operation POST /orgs/{org}/code-security/configurations
-func (s *OrganizationsService) CreateCodeSecurityConfiguration(ctx context.Context, org string, c *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+func (s *OrganizationsService) CreateCodeSecurityConfiguration(ctx context.Context, org string, config *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations", org)
 
-	req, err := s.client.NewRequest("POST", u, c)
+	req, err := s.client.NewRequest("POST", u, config)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -187,10 +187,10 @@ func (s *OrganizationsService) GetCodeSecurityConfiguration(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#update-a-code-security-configuration
 //
 //meta:operation PATCH /orgs/{org}/code-security/configurations/{configuration_id}
-func (s *OrganizationsService) UpdateCodeSecurityConfiguration(ctx context.Context, org string, id int64, c *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+func (s *OrganizationsService) UpdateCodeSecurityConfiguration(ctx context.Context, org string, id int64, config *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/%v", org, id)
 
-	req, err := s.client.NewRequest("PATCH", u, c)
+	req, err := s.client.NewRequest("PATCH", u, config)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -258,12 +258,12 @@ func (s *OrganizationsService) SetDefaultCodeSecurityConfiguration(ctx context.C
 	if err != nil {
 		return nil, nil, err
 	}
-	var c *CodeSecurityConfigurationWithDefaultForNewRepos
-	resp, err := s.client.Do(ctx, req, &c)
+	var config *CodeSecurityConfigurationWithDefaultForNewRepos
+	resp, err := s.client.Do(ctx, req, &config)
 	if err != nil {
 		return nil, resp, err
 	}
-	return c, resp, nil
+	return config, resp, nil
 }
 
 // GetRepositoriesForCodeSecurityConfiguration gets repositories associated with a code security configuration.

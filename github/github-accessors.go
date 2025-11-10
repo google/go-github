@@ -3358,14 +3358,6 @@ func (c *CodeSecurityConfiguration) GetDependencyGraphAutosubmitActionOptions() 
 	return c.DependencyGraphAutosubmitActionOptions
 }
 
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (c *CodeSecurityConfiguration) GetDescription() string {
-	if c == nil || c.Description == nil {
-		return ""
-	}
-	return *c.Description
-}
-
 // GetEnforcement returns the Enforcement field if it's non-nil, zero value otherwise.
 func (c *CodeSecurityConfiguration) GetEnforcement() string {
 	if c == nil || c.Enforcement == nil {
@@ -3388,14 +3380,6 @@ func (c *CodeSecurityConfiguration) GetID() int64 {
 		return 0
 	}
 	return *c.ID
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CodeSecurityConfiguration) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
 }
 
 // GetPrivateVulnerabilityReporting returns the PrivateVulnerabilityReporting field if it's non-nil, zero value otherwise.
