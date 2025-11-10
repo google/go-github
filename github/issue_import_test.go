@@ -224,7 +224,6 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
 		w.WriteHeader(http.StatusOK)
-		//nolint:fmtpercentv
 		assertWrite(t, w, fmt.Appendf(nil, "[%s]", issueImportResponseJSON))
 	})
 

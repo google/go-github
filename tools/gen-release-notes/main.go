@@ -207,7 +207,7 @@ func genRefLines(breaking, nonBreaking []string) (ref, refNon []string) {
 
 func newChangesSinceRelease(priorRelease string) string {
 	url := fmt.Sprintf("%v/compare/%v...master", baseWebURL, priorRelease)
-	resp, err := http.Get(url) //nolint: gosec
+	resp, err := http.Get(url) //nolint:gosec
 	must(err)
 	defer resp.Body.Close()
 
