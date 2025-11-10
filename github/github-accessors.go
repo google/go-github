@@ -6862,6 +6862,14 @@ func (c *CustomProperty) GetSourceType() string {
 	return *c.SourceType
 }
 
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
 // GetValuesEditableBy returns the ValuesEditableBy field if it's non-nil, zero value otherwise.
 func (c *CustomProperty) GetValuesEditableBy() string {
 	if c == nil || c.ValuesEditableBy == nil {
@@ -9164,6 +9172,22 @@ func (e *Enterprise) GetWebsiteURL() string {
 		return ""
 	}
 	return *e.WebsiteURL
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseCustomPropertiesValues) GetOrganizationID() int64 {
+	if e == nil || e.OrganizationID == nil {
+		return 0
+	}
+	return *e.OrganizationID
+}
+
+// GetOrganizationLogin returns the OrganizationLogin field if it's non-nil, zero value otherwise.
+func (e *EnterpriseCustomPropertiesValues) GetOrganizationLogin() string {
+	if e == nil || e.OrganizationLogin == nil {
+		return ""
+	}
+	return *e.OrganizationLogin
 }
 
 // GetEnterpriseServerUser returns the EnterpriseServerUser field if it's non-nil, zero value otherwise.
@@ -24596,6 +24620,14 @@ func (r *RepositoryRulesetConditions) GetOrganizationName() *RepositoryRulesetOr
 		return nil
 	}
 	return r.OrganizationName
+}
+
+// GetOrganizationProperty returns the OrganizationProperty field.
+func (r *RepositoryRulesetConditions) GetOrganizationProperty() *RepositoryRulesetOrganizationPropertyConditionParameters {
+	if r == nil {
+		return nil
+	}
+	return r.OrganizationProperty
 }
 
 // GetRefName returns the RefName field.

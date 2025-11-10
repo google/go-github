@@ -211,18 +211,25 @@ type RepositoryRulesetLink struct {
 // RepositoryRulesetConditions represents the conditions object in a ruleset.
 // Set either RepositoryName or RepositoryID or RepositoryProperty, not more than one.
 type RepositoryRulesetConditions struct {
-	RefName            *RepositoryRulesetRefConditionParameters                `json:"ref_name,omitempty"`
-	RepositoryID       *RepositoryRulesetRepositoryIDsConditionParameters      `json:"repository_id,omitempty"`
-	RepositoryName     *RepositoryRulesetRepositoryNamesConditionParameters    `json:"repository_name,omitempty"`
-	RepositoryProperty *RepositoryRulesetRepositoryPropertyConditionParameters `json:"repository_property,omitempty"`
-	OrganizationID     *RepositoryRulesetOrganizationIDsConditionParameters    `json:"organization_id,omitempty"`
-	OrganizationName   *RepositoryRulesetOrganizationNamesConditionParameters  `json:"organization_name,omitempty"`
+	RefName              *RepositoryRulesetRefConditionParameters                  `json:"ref_name,omitempty"`
+	RepositoryID         *RepositoryRulesetRepositoryIDsConditionParameters        `json:"repository_id,omitempty"`
+	RepositoryName       *RepositoryRulesetRepositoryNamesConditionParameters      `json:"repository_name,omitempty"`
+	RepositoryProperty   *RepositoryRulesetRepositoryPropertyConditionParameters   `json:"repository_property,omitempty"`
+	OrganizationID       *RepositoryRulesetOrganizationIDsConditionParameters      `json:"organization_id,omitempty"`
+	OrganizationName     *RepositoryRulesetOrganizationNamesConditionParameters    `json:"organization_name,omitempty"`
+	OrganizationProperty *RepositoryRulesetOrganizationPropertyConditionParameters `json:"organization_property,omitempty"`
 }
 
 // RepositoryRulesetRefConditionParameters represents the conditions object for ref_names.
 type RepositoryRulesetRefConditionParameters struct {
 	Include []string `json:"include"`
 	Exclude []string `json:"exclude"`
+}
+
+// RepositoryRulesetOrganizationPropertyConditionParameters represents the conditions object for an organization property selector.
+type RepositoryRulesetOrganizationPropertyConditionParameters struct {
+	Include []*RepositoryRulesetRepositoryPropertyTargetParameters `json:"include"`
+	Exclude []*RepositoryRulesetRepositoryPropertyTargetParameters `json:"exclude"`
 }
 
 // RepositoryRulesetRepositoryIDsConditionParameters represents the conditions object for repository_id.
