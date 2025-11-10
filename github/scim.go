@@ -17,26 +17,6 @@ import (
 // GitHub API docs: https://docs.github.com/rest/scim
 type SCIMService service
 
-// SCIMGroupAttributes represents supported SCIM Group attributes.
-//
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
-type SCIMGroupAttributes struct {
-	DisplayName *string                 `json:"displayName,omitempty"` // The name of the group, suitable for display to end-users. (Optional.)
-	Members     []*SCIMDisplayReference `json:"members,omitempty"`     // (Optional.)
-	Schemas     []string                `json:"schemas,omitempty"`     // (Optional.)
-	ExternalID  *string                 `json:"externalId,omitempty"`  // (Optional.)
-	// Only populated as a result of calling ListSCIMProvisionedIdentitiesOptions:
-	ID   *string   `json:"id,omitempty"`
-	Meta *SCIMMeta `json:"meta,omitempty"`
-}
-
-// SCIMDisplayReference represents a JSON SCIM (System for Cross-domain Identity Management) resource.
-type SCIMDisplayReference struct {
-	Value   string  `json:"value"`             // (Required.)
-	Ref     string  `json:"$ref"`              // (Required.)
-	Display *string `json:"display,omitempty"` // (Optional.)
-}
-
 // SCIMUserAttributes represents supported SCIM User attributes.
 //
 // GitHub Enterprise Cloud API docs: https://docs.github.com/rest/scim#supported-scim-user-attributes
@@ -90,15 +70,6 @@ type SCIMMeta struct {
 	Location     *string    `json:"location,omitempty"`
 }
 
-// SCIMProvisionedGroups represents the result of calling ListSCIMProvisionedGroupsForEnterprise.
-type SCIMProvisionedGroups struct {
-	Schemas      []string               `json:"schemas,omitempty"`
-	TotalResults *int                   `json:"totalResults,omitempty"`
-	ItemsPerPage *int                   `json:"itemsPerPage,omitempty"`
-	StartIndex   *int                   `json:"startIndex,omitempty"`
-	Resources    []*SCIMGroupAttributes `json:"Resources,omitempty"`
-}
-
 // SCIMProvisionedIdentities represents the result of calling ListSCIMProvisionedIdentities.
 type SCIMProvisionedIdentities struct {
 	Schemas      []string              `json:"schemas,omitempty"`
@@ -120,26 +91,6 @@ type ListSCIMProvisionedIdentitiesOptions struct {
 	// To filter results for the identity with the email octocat@github.com, you would use this query: ?filter=emails%20eq%20\"octocat@github.com\".
 	// (Optional.)
 	Filter *string `url:"filter,omitempty"`
-}
-
-// ListSCIMProvisionedGroupsForEnterpriseOptions represents options for ListSCIMProvisionedGroupsForEnterprise.
-//
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise--parameters
-type ListSCIMProvisionedGroupsForEnterpriseOptions struct {
-	// Filter specifies the matching results to return.
-	// Multiple filters are not supported. Possible filters are externalId, id, and displayName.
-	// For example: ?filter=externalId eq "9138790-10932-109120392-12321".
-	// (Optional.)
-	Filter *string `url:"filter,omitempty"`
-	// ExcludedAttributes excludes the specified attribute from being returned in the results.
-	// Using this parameter can speed up response time. (Optional.)
-	ExcludedAttributes *string `url:"excludedAttributes,omitempty"`
-	// StartIndex used for pagination: the starting index of the first result to return when paginating through values. (Optional.)
-	// Default: 1.
-	StartIndex *int `url:"startIndex,omitempty"`
-	// Count used for pagination: the number of results to return per page. (Optional.)
-	// Default: 30.
-	Count *int `url:"count,omitempty"`
 }
 
 // ListSCIMProvisionedIdentities lists SCIM provisioned identities.
@@ -279,31 +230,4 @@ func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID
 	}
 
 	return s.client.Do(ctx, req, nil)
-}
-
-// ListSCIMProvisionedGroupsForEnterprise lists SCIM provisioned groups for an enterprise.
-// Deprecated: This method is deprecated. Please use ListProvisionedSCIMGroupsForEnterprise from EnterpriseService instead.
-//
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
-//
-//meta:operation GET /scim/v2/enterprises/{enterprise}/Groups
-func (s *SCIMService) ListSCIMProvisionedGroupsForEnterprise(ctx context.Context, enterprise string, opts *ListSCIMProvisionedGroupsForEnterpriseOptions) (*SCIMProvisionedGroups, *Response, error) {
-	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups", enterprise)
-	u, err := addOptions(u, opts)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	req, err := s.client.NewRequest("GET", u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	groups := new(SCIMProvisionedGroups)
-	resp, err := s.client.Do(ctx, req, groups)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return groups, resp, nil
 }

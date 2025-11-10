@@ -14175,7 +14175,7 @@ func (l *ListRunnersOptions) GetName() string {
 }
 
 // GetCount returns the Count field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetCount() int {
+func (l *ListProvisionedSCIMGroupsForEnterpriseOptions) GetCount() int {
 	if l == nil || l.Count == nil {
 		return 0
 	}
@@ -14183,7 +14183,7 @@ func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetCount() int {
 }
 
 // GetExcludedAttributes returns the ExcludedAttributes field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetExcludedAttributes() string {
+func (l *ListProvisionedSCIMGroupsForEnterpriseOptions) GetExcludedAttributes() string {
 	if l == nil || l.ExcludedAttributes == nil {
 		return ""
 	}
@@ -14191,7 +14191,7 @@ func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetExcludedAttributes() 
 }
 
 // GetFilter returns the Filter field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetFilter() string {
+func (l *ListProvisionedSCIMGroupsForEnterpriseOptions) GetFilter() string {
 	if l == nil || l.Filter == nil {
 		return ""
 	}
@@ -14199,7 +14199,7 @@ func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetFilter() string {
 }
 
 // GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetStartIndex() int {
+func (l *ListProvisionedSCIMGroupsForEnterpriseOptions) GetStartIndex() int {
 	if l == nil || l.StartIndex == nil {
 		return 0
 	}
@@ -25935,7 +25935,7 @@ func (s *ScanningAnalysis) GetWarning() string {
 }
 
 // GetDisplay returns the Display field if it's non-nil, zero value otherwise.
-func (s *SCIMDisplayReference) GetDisplay() string {
+func (s *SCIMEnterpriseDisplayReference) GetDisplay() string {
 	if s == nil || s.Display == nil {
 		return ""
 	}
@@ -25943,7 +25943,7 @@ func (s *SCIMDisplayReference) GetDisplay() string {
 }
 
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
-func (s *SCIMGroupAttributes) GetDisplayName() string {
+func (s *SCIMEnterpriseGroupAttributes) GetDisplayName() string {
 	if s == nil || s.DisplayName == nil {
 		return ""
 	}
@@ -25951,7 +25951,7 @@ func (s *SCIMGroupAttributes) GetDisplayName() string {
 }
 
 // GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
-func (s *SCIMGroupAttributes) GetExternalID() string {
+func (s *SCIMEnterpriseGroupAttributes) GetExternalID() string {
 	if s == nil || s.ExternalID == nil {
 		return ""
 	}
@@ -25959,7 +25959,7 @@ func (s *SCIMGroupAttributes) GetExternalID() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (s *SCIMGroupAttributes) GetID() string {
+func (s *SCIMEnterpriseGroupAttributes) GetID() string {
 	if s == nil || s.ID == nil {
 		return ""
 	}
@@ -25967,7 +25967,7 @@ func (s *SCIMGroupAttributes) GetID() string {
 }
 
 // GetMeta returns the Meta field.
-func (s *SCIMGroupAttributes) GetMeta() *SCIMMeta {
+func (s *SCIMEnterpriseGroupAttributes) GetMeta() *SCIMEnterpriseMeta {
 	if s == nil {
 		return nil
 	}
@@ -26007,7 +26007,7 @@ func (s *SCIMMeta) GetResourceType() string {
 }
 
 // GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
-func (s *SCIMProvisionedGroups) GetItemsPerPage() int {
+func (s *SCIMEnterpriseGroups) GetItemsPerPage() int {
 	if s == nil || s.ItemsPerPage == nil {
 		return 0
 	}
@@ -26015,7 +26015,7 @@ func (s *SCIMProvisionedGroups) GetItemsPerPage() int {
 }
 
 // GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
-func (s *SCIMProvisionedGroups) GetStartIndex() int {
+func (s *SCIMEnterpriseGroups) GetStartIndex() int {
 	if s == nil || s.StartIndex == nil {
 		return 0
 	}
@@ -26023,7 +26023,7 @@ func (s *SCIMProvisionedGroups) GetStartIndex() int {
 }
 
 // GetTotalResults returns the TotalResults field if it's non-nil, zero value otherwise.
-func (s *SCIMProvisionedGroups) GetTotalResults() int {
+func (s *SCIMEnterpriseGroups) GetTotalResults() int {
 	if s == nil || s.TotalResults == nil {
 		return 0
 	}
