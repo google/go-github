@@ -97,54 +97,6 @@ func (r *RepositoryContent) GetContent() (string, error) {
 	}
 }
 
-// DownloadContent downloads the content of a file using the information from
-// the RepositoryContent. This method supports files of any size and works with
-// RepositoryContent entries obtained from GetContents calls on both individual
-// files and directories.
-//
-// It returns an io.ReadCloser for the file content and an *http.Response for
-// the download request (which may be nil if content was obtained without an
-// HTTP request). It is the caller's responsibility to close the ReadCloser.
-func (r *RepositoryContent) DownloadContent(ctx context.Context, httpClient *http.Client) (io.ReadCloser, *http.Response, error) {
-	// Check if this is a file.
-	if r.Type == nil || *r.Type != "file" {
-		return nil, nil, fmt.Errorf("cannot download content for type %q (only files are supported)", r.GetType())
-	}
-
-	// Handle empty files.
-	if r.Size != nil && *r.Size == 0 {
-		return io.NopCloser(strings.NewReader("")), nil, nil
-	}
-
-	// Try to use the inline content if available.
-	if r.Content != nil && *r.Content != "" {
-		content, err := r.GetContent()
-		if err == nil {
-			return io.NopCloser(strings.NewReader(content)), nil, nil
-		}
-		// If GetContent fails (e.g., encoding "none"), fall through to use DownloadURL.
-	}
-
-	// Use the download URL.
-	if r.DownloadURL == nil || *r.DownloadURL == "" {
-		return nil, nil, errors.New("no download URL available for this file")
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "GET", *r.DownloadURL, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	resp, err := httpClient.Do(req)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	// Return the response body even for non-2xx status codes.
-	// Callers should check resp.StatusCode to verify success.
-	return resp.Body, resp, nil
-}
-
 // GetReadme gets the Readme file for the repository.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/contents#get-a-repository-readme
@@ -176,6 +128,9 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // to GetContents which is limited to 1 Mb files. It is the caller's
 // responsibility to close the ReadCloser.
 //
+// Note: If you need the file's metadata (name, SHA, URL, etc.) in addition to
+// its content, use DownloadContentsWithMeta instead.
+//
 // It is possible for the download to result in a failed response when the
 // returned error is nil. Callers should check the returned Response status
 // code to verify the content is from a successful response.
@@ -188,10 +143,14 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 	return reader, resp, err
 }
 
-// DownloadContentsWithMeta is identical to DownloadContents but additionally
-// returns the RepositoryContent of the requested file. This additional data
-// is useful for future operations involving the requested file. For merely
-// reading the content of a file, DownloadContents is perfectly adequate.
+// DownloadContentsWithMeta returns both an io.ReadCloser for the file content
+// and the RepositoryContent metadata for the requested file. This function will
+// work with files of any size, as opposed to GetContents which is limited to 1 Mb
+// files. It is the caller's responsibility to close the ReadCloser.
+//
+// Use this method when you need access to the file's metadata (SHA, name, path,
+// URL, etc.) in addition to its content. If you only need the content, use
+// DownloadContents for a simpler API.
 //
 // It is possible for the download to result in a failed response when the
 // returned error is nil. Callers should check the returned Response status
@@ -209,17 +168,43 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 		return nil, nil, resp, fmt.Errorf("no file found at %v", filepath)
 	}
 
-	reader, httpResp, err := fileContent.DownloadContent(ctx, s.client.client)
+	// Check if this is a file.
+	if fileContent.Type == nil || *fileContent.Type != "file" {
+		return nil, nil, resp, fmt.Errorf("cannot download content for type %q (only files are supported)", fileContent.GetType())
+	}
+
+	// Handle empty files.
+	if fileContent.Size != nil && *fileContent.Size == 0 {
+		return io.NopCloser(strings.NewReader("")), fileContent, resp, nil
+	}
+
+	// Try to use the inline content if available.
+	if fileContent.Content != nil && *fileContent.Content != "" {
+		content, err := fileContent.GetContent()
+		if err == nil {
+			return io.NopCloser(strings.NewReader(content)), fileContent, resp, nil
+		}
+		// If GetContent fails (e.g., encoding "none"), fall through to use DownloadURL.
+	}
+
+	// Use the download URL.
+	if fileContent.DownloadURL == nil || *fileContent.DownloadURL == "" {
+		return nil, fileContent, resp, errors.New("no download URL available for this file")
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", *fileContent.DownloadURL, nil)
 	if err != nil {
 		return nil, fileContent, resp, err
 	}
 
-	// If we got an HTTP response from the download, wrap it in a Response.
-	if httpResp != nil {
-		return reader, fileContent, &Response{Response: httpResp}, nil
+	httpResp, err := s.client.client.Do(req)
+	if err != nil {
+		return nil, fileContent, resp, err
 	}
 
-	return reader, fileContent, resp, nil
+	// Return the response body even for non-2xx status codes.
+	// Callers should check resp.StatusCode to verify success.
+	return httpResp.Body, fileContent, &Response{Response: httpResp}, nil
 }
 
 // GetContents can return either the metadata and content of a single file
