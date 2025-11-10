@@ -21,6 +21,7 @@ linters:
     - modernize
     - musttag
     - nakedret
+    - nolintlint
     - paralleltest
     - perfsprint
     - revive
@@ -88,6 +89,9 @@ linters:
     modernize:
       disable:
         - omitzero # TODO: fix
+    nolintlint:
+      allow-unused: true
+      require-specific: true
     perfsprint:
       errorf: true
       strconcat: false
