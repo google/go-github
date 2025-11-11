@@ -14,9 +14,9 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
+func TestOrganizationsService_ListCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
-	opts := &GetCodeSecurityConfigurationOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(30), TargetType: Ptr("all")}
+	opts := &ListOrgCodeSecurityConfigurationOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(30), TargetType: Ptr("all")}
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
@@ -38,9 +38,9 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 		}]`)
 	})
 
-	configurations, _, err := client.Organizations.GetCodeSecurityConfigurations(ctx, "o", opts)
+	configurations, _, err := client.Organizations.ListCodeSecurityConfigurations(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Organizations.GetCodeSecurityConfigurations returned error: %v", err)
+		t.Errorf("Organizations.ListCodeSecurityConfigurations returned error: %v", err)
 	}
 
 	want := []*CodeSecurityConfiguration{
@@ -48,15 +48,15 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 		{ID: Ptr(int64(2)), Name: "config2", Description: "desc2", PrivateVulnerabilityReporting: Ptr("enabled")},
 	}
 	if !cmp.Equal(configurations, want) {
-		t.Errorf("Organizations.GetCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
+		t.Errorf("Organizations.ListCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
 	}
-	const methodName = "GetCodeSecurityConfigurations"
+	const methodName = "ListCodeSecurityConfigurations"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.GetCodeSecurityConfigurations(ctx, "\n", opts)
+		_, _, err = client.Organizations.ListCodeSecurityConfigurations(ctx, "\n", opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetCodeSecurityConfigurations(ctx, "o", opts)
+		got, resp, err := client.Organizations.ListCodeSecurityConfigurations(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -64,7 +64,7 @@ func TestOrganizationsService_GetCodeSecurityConfigurations(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
+func TestOrganizationsService_ListCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	ctx := t.Context()
@@ -79,24 +79,24 @@ func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 		}`)
 	})
 
-	configuration, _, err := client.Organizations.GetCodeSecurityConfiguration(ctx, "o", 1)
+	configuration, _, err := client.Organizations.ListCodeSecurityConfiguration(ctx, "o", 1)
 	if err != nil {
-		t.Errorf("Organizations.GetCodeSecurityConfiguration returned error: %v", err)
+		t.Errorf("Organizations.ListCodeSecurityConfiguration returned error: %v", err)
 	}
 
 	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}
 	if !cmp.Equal(configuration, want) {
-		t.Errorf("Organizations.GetCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
+		t.Errorf("Organizations.ListCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
 
-	const methodName = "GetCodeSecurityConfiguration"
+	const methodName = "ListCodeSecurityConfiguration"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.GetCodeSecurityConfiguration(ctx, "\n", -1)
+		_, _, err = client.Organizations.ListCodeSecurityConfiguration(ctx, "\n", -1)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetCodeSecurityConfiguration(ctx, "o", 1)
+		got, resp, err := client.Organizations.ListCodeSecurityConfiguration(ctx, "o", 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -109,15 +109,15 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	client, mux, _ := setup(t)
 	ctx := t.Context()
 
-	input := &CodeSecurityConfiguration{
+	input := CodeSecurityConfiguration{
 		Name:                     "config1",
 		Description:              "desc1",
 		CodeScanningDefaultSetup: Ptr("enabled"),
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
-		v := new(CodeSecurityConfiguration)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v CodeSecurityConfiguration
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		if !cmp.Equal(v, input) {
 			t.Errorf("Organizations.CreateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
@@ -250,15 +250,15 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
-	input := &CodeSecurityConfiguration{
+	input := CodeSecurityConfiguration{
 		Name:                     "config1",
 		Description:              "desc1",
 		CodeScanningDefaultSetup: Ptr("enabled"),
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(CodeSecurityConfiguration)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v CodeSecurityConfiguration
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		if !cmp.Equal(v, input) {
 			t.Errorf("Organizations.UpdateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
@@ -477,7 +477,7 @@ func TestOrganizationsService_GetRepositoriesForCodeSecurityConfiguration(t *tes
 	})
 }
 
-func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testing.T) {
+func TestOrganizationsService_ListCodeSecurityConfigurationForRepository(t *testing.T) {
 	t.Parallel()
 	ctx := t.Context()
 	client, mux, _ := setup(t)
@@ -495,9 +495,9 @@ func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testi
 		}`)
 	})
 
-	rc, _, err := client.Organizations.GetCodeSecurityConfigurationForRepository(ctx, "o", "repo8")
+	rc, _, err := client.Organizations.ListCodeSecurityConfigurationForRepository(ctx, "o", "repo8")
 	if err != nil {
-		t.Errorf("Organizations.GetCodeSecurityConfigurationForRepository returned error: %v", err)
+		t.Errorf("Organizations.ListCodeSecurityConfigurationForRepository returned error: %v", err)
 	}
 	c := &CodeSecurityConfiguration{ID: Ptr(int64(42)), Name: "config42", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}
 	want := &RepositoryCodeSecurityConfiguration{
@@ -505,17 +505,17 @@ func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testi
 		Configuration: c,
 	}
 	if !cmp.Equal(rc, want) {
-		t.Errorf("Organizations.GetCodeSecurityConfigurationForRepository returned %+v, want %+v", rc, want)
+		t.Errorf("Organizations.ListCodeSecurityConfigurationForRepository returned %+v, want %+v", rc, want)
 	}
 
-	const methodName = "GetCodeSecurityConfigurationForRepository"
+	const methodName = "ListCodeSecurityConfigurationForRepository"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.GetCodeSecurityConfigurationForRepository(ctx, "\n", "\n")
+		_, _, err = client.Organizations.ListCodeSecurityConfigurationForRepository(ctx, "\n", "\n")
 		return
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetCodeSecurityConfigurationForRepository(ctx, "o", "repo8")
+		got, resp, err := client.Organizations.ListCodeSecurityConfigurationForRepository(ctx, "o", "repo8")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

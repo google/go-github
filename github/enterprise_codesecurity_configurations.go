@@ -11,12 +11,31 @@ import (
 	"net/http"
 )
 
-// GetCodeSecurityConfigurations lists all code security configurations available in an enterprise.
+// ListEnterpriseCodeSecurityConfigurationOptions specifies optional parameters to get security configurations for enterprises.
+//
+// Note: Pagination is powered by before/after cursor-style pagination. After the initial call,
+// inspect the returned *Response. Use resp.After as the opts.After value to request
+// the next page, and resp.Before as the opts.Before value to request the previous
+// page. Set either Before or After for a request; if both are
+// supplied GitHub API will return an error. PerPage controls the number of items
+// per page (max 100 per GitHub API docs).
+type ListEnterpriseCodeSecurityConfigurationOptions struct {
+	// A cursor, as given in the Link header. If specified, the query only searches for security configurations before this cursor.
+	Before *string `url:"before,omitempty"`
+
+	// A cursor, as given in the Link header. If specified, the query only searches for security configurations after this cursor.
+	After *string `url:"after,omitempty"`
+
+	// For paginated result sets, the number of results to include per page.
+	PerPage *int `url:"per_page,omitempty"`
+}
+
+// ListCodeSecurityConfigurations lists all code security configurations available in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-code-security-configurations-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations
-func (s *EnterpriseService) GetCodeSecurityConfigurations(ctx context.Context, enterprise string, opts *GetCodeSecurityConfigurationOptions) ([]*CodeSecurityConfiguration, *Response, error) {
+func (s *EnterpriseService) ListCodeSecurityConfigurations(ctx context.Context, enterprise string, opts *ListEnterpriseCodeSecurityConfigurationOptions) ([]*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -41,7 +60,7 @@ func (s *EnterpriseService) GetCodeSecurityConfigurations(ctx context.Context, e
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#create-a-code-security-configuration-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/code-security/configurations
-func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context, enterprise string, config *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context, enterprise string, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations", enterprise)
 
 	req, err := s.client.NewRequest("POST", u, config)
@@ -78,12 +97,12 @@ func (s *EnterpriseService) GetDefaultCodeSecurityConfigurations(ctx context.Con
 	return configurations, resp, nil
 }
 
-// GetCodeSecurityConfiguration gets a code security configuration available in an enterprise.
+// ListCodeSecurityConfiguration gets a code security configuration available in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#retrieve-a-code-security-configuration-of-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}
-func (s *EnterpriseService) GetCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64) (*CodeSecurityConfiguration, *Response, error) {
+func (s *EnterpriseService) ListCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -104,7 +123,7 @@ func (s *EnterpriseService) GetCodeSecurityConfiguration(ctx context.Context, en
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#update-a-custom-code-security-configuration-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/code-security/configurations/{configuration_id}
-func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64, config *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, id)
 
 	req, err := s.client.NewRequest("PATCH", u, config)

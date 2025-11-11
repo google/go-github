@@ -14,9 +14,9 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestEnterpriseService_GetCodeSecurityConfigurations(t *testing.T) {
+func TestEnterpriseService_ListCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
-	opts := &GetCodeSecurityConfigurationOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(30)}
+	opts := &ListEnterpriseCodeSecurityConfigurationOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(30)}
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
@@ -38,9 +38,9 @@ func TestEnterpriseService_GetCodeSecurityConfigurations(t *testing.T) {
 		}]`)
 	})
 
-	configurations, _, err := client.Enterprise.GetCodeSecurityConfigurations(ctx, "e", opts)
+	configurations, _, err := client.Enterprise.ListCodeSecurityConfigurations(ctx, "e", opts)
 	if err != nil {
-		t.Errorf("Enterprise.GetCodeSecurityConfigurations returned error: %v", err)
+		t.Errorf("Enterprise.ListCodeSecurityConfigurations returned error: %v", err)
 	}
 
 	want := []*CodeSecurityConfiguration{
@@ -48,15 +48,15 @@ func TestEnterpriseService_GetCodeSecurityConfigurations(t *testing.T) {
 		{ID: Ptr(int64(2)), Name: "config2", Description: "desc2", PrivateVulnerabilityReporting: Ptr("enabled")},
 	}
 	if !cmp.Equal(configurations, want) {
-		t.Errorf("Enterprise.GetCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
+		t.Errorf("Enterprise.ListCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
 	}
-	const methodName = "GetCodeSecurityConfigurations"
+	const methodName = "ListCodeSecurityConfigurations"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.GetCodeSecurityConfigurations(ctx, "\n", opts)
+		_, _, err = client.Enterprise.ListCodeSecurityConfigurations(ctx, "\n", opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.GetCodeSecurityConfigurations(ctx, "e", opts)
+		got, resp, err := client.Enterprise.ListCodeSecurityConfigurations(ctx, "e", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -64,7 +64,7 @@ func TestEnterpriseService_GetCodeSecurityConfigurations(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_GetCodeSecurityConfiguration(t *testing.T) {
+func TestEnterpriseService_ListCodeSecurityConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	ctx := t.Context()
@@ -79,24 +79,24 @@ func TestEnterpriseService_GetCodeSecurityConfiguration(t *testing.T) {
 		}`)
 	})
 
-	configuration, _, err := client.Enterprise.GetCodeSecurityConfiguration(ctx, "e", 1)
+	configuration, _, err := client.Enterprise.ListCodeSecurityConfiguration(ctx, "e", 1)
 	if err != nil {
-		t.Errorf("Enterprise.GetCodeSecurityConfiguration returned error: %v", err)
+		t.Errorf("Enterprise.ListCodeSecurityConfiguration returned error: %v", err)
 	}
 
 	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}
 	if !cmp.Equal(configuration, want) {
-		t.Errorf("Enterprise.GetCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
+		t.Errorf("Enterprise.ListCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
 
-	const methodName = "GetCodeSecurityConfiguration"
+	const methodName = "ListCodeSecurityConfiguration"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.GetCodeSecurityConfiguration(ctx, "\n", -1)
+		_, _, err = client.Enterprise.ListCodeSecurityConfiguration(ctx, "\n", -1)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.GetCodeSecurityConfiguration(ctx, "e", 1)
+		got, resp, err := client.Enterprise.ListCodeSecurityConfiguration(ctx, "e", 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -109,15 +109,15 @@ func TestEnterpriseService_CreateCodeSecurityConfiguration(t *testing.T) {
 	client, mux, _ := setup(t)
 	ctx := t.Context()
 
-	input := &CodeSecurityConfiguration{
+	input := CodeSecurityConfiguration{
 		Name:                     "config1",
 		Description:              "desc1",
 		CodeScanningDefaultSetup: Ptr("enabled"),
 	}
 
 	mux.HandleFunc("/enterprises/e/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
-		v := new(CodeSecurityConfiguration)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v CodeSecurityConfiguration
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		if !cmp.Equal(v, input) {
 			t.Errorf("Enterprise.CreateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
@@ -218,15 +218,15 @@ func TestEnterpriseService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
-	input := &CodeSecurityConfiguration{
+	input := CodeSecurityConfiguration{
 		Name:                     "config1",
 		Description:              "desc1",
 		CodeScanningDefaultSetup: Ptr("enabled"),
 	}
 
 	mux.HandleFunc("/enterprises/e/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(CodeSecurityConfiguration)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v CodeSecurityConfiguration
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		if !cmp.Equal(v, input) {
 			t.Errorf("Enterprise.UpdateCodeSecurityConfiguration request body = %+v, want %+v", v, input)

@@ -9990,38 +9990,6 @@ func (g *GetAuditLogOptions) GetPhrase() string {
 	return *g.Phrase
 }
 
-// GetAfter returns the After field if it's non-nil, zero value otherwise.
-func (g *GetCodeSecurityConfigurationOptions) GetAfter() string {
-	if g == nil || g.After == nil {
-		return ""
-	}
-	return *g.After
-}
-
-// GetBefore returns the Before field if it's non-nil, zero value otherwise.
-func (g *GetCodeSecurityConfigurationOptions) GetBefore() string {
-	if g == nil || g.Before == nil {
-		return ""
-	}
-	return *g.Before
-}
-
-// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
-func (g *GetCodeSecurityConfigurationOptions) GetPerPage() int {
-	if g == nil || g.PerPage == nil {
-		return 0
-	}
-	return *g.PerPage
-}
-
-// GetTargetType returns the TargetType field if it's non-nil, zero value otherwise.
-func (g *GetCodeSecurityConfigurationOptions) GetTargetType() string {
-	if g == nil || g.TargetType == nil {
-		return ""
-	}
-	return *g.TargetType
-}
-
 // GetComments returns the Comments field if it's non-nil, zero value otherwise.
 func (g *Gist) GetComments() int {
 	if g == nil || g.Comments == nil {
@@ -14166,6 +14134,30 @@ func (l *ListDeploymentProtectionRuleResponse) GetTotalCount() int {
 	return *l.TotalCount
 }
 
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (l *ListEnterpriseCodeSecurityConfigurationOptions) GetAfter() string {
+	if l == nil || l.After == nil {
+		return ""
+	}
+	return *l.After
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (l *ListEnterpriseCodeSecurityConfigurationOptions) GetBefore() string {
+	if l == nil || l.Before == nil {
+		return ""
+	}
+	return *l.Before
+}
+
+// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
+func (l *ListEnterpriseCodeSecurityConfigurationOptions) GetPerPage() int {
+	if l == nil || l.PerPage == nil {
+		return 0
+	}
+	return *l.PerPage
+}
+
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
 func (l *ListExternalGroupsOptions) GetDisplayName() string {
 	if l == nil || l.DisplayName == nil {
@@ -14260,6 +14252,38 @@ func (l *ListOrganizations) GetTotalCount() int {
 		return 0
 	}
 	return *l.TotalCount
+}
+
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (l *ListOrgCodeSecurityConfigurationOptions) GetAfter() string {
+	if l == nil || l.After == nil {
+		return ""
+	}
+	return *l.After
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (l *ListOrgCodeSecurityConfigurationOptions) GetBefore() string {
+	if l == nil || l.Before == nil {
+		return ""
+	}
+	return *l.Before
+}
+
+// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
+func (l *ListOrgCodeSecurityConfigurationOptions) GetPerPage() int {
+	if l == nil || l.PerPage == nil {
+		return 0
+	}
+	return *l.PerPage
+}
+
+// GetTargetType returns the TargetType field if it's non-nil, zero value otherwise.
+func (l *ListOrgCodeSecurityConfigurationOptions) GetTargetType() string {
+	if l == nil || l.TargetType == nil {
+		return ""
+	}
+	return *l.TargetType
 }
 
 // GetQuery returns the Query field if it's non-nil, zero value otherwise.

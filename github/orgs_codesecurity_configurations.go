@@ -77,7 +77,7 @@ type RepositoryCodeSecurityConfiguration struct {
 	Configuration *CodeSecurityConfiguration `json:"configuration,omitempty"`
 }
 
-// GetCodeSecurityConfigurationOptions specifies optional parameters to get security configurations for orgs/enterprises
+// ListOrgCodeSecurityConfigurationOptions specifies optional parameters to get security configurations for orgs.
 //
 // Note: Pagination is powered by before/after cursor-style pagination. After the initial call,
 // inspect the returned *Response. Use resp.After as the opts.After value to request
@@ -85,28 +85,28 @@ type RepositoryCodeSecurityConfiguration struct {
 // page. Set either Before or After for a request; if both are
 // supplied GitHub API will return an error. PerPage controls the number of items
 // per page (max 100 per GitHub API docs).
-type GetCodeSecurityConfigurationOptions struct {
-	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
+type ListOrgCodeSecurityConfigurationOptions struct {
+	// A cursor, as given in the Link header. If specified, the query only searches for security configurations before this cursor.
 	Before *string `url:"before,omitempty"`
 
-	// A cursor, as given in the Link header. If specified, the query only searches for events after this cursor.
+	// A cursor, as given in the Link header. If specified, the query only searches for security configurations after this cursor.
 	After *string `url:"after,omitempty"`
 
 	// For paginated result sets, the number of results to include per page.
 	PerPage *int `url:"per_page,omitempty"`
 
-	// The target type of the code security configurations to get, only valid for the organization endpoint.
+	// The target type of the code security configurations to get.
 	//
 	// `target_type` defaults to all, can be one of global, all
 	TargetType *string `url:"target_type,omitempty"`
 }
 
-// GetCodeSecurityConfigurations gets code security configurations for an organization.
+// ListCodeSecurityConfigurations gets code security configurations for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-code-security-configurations-for-an-organization
 //
 //meta:operation GET /orgs/{org}/code-security/configurations
-func (s *OrganizationsService) GetCodeSecurityConfigurations(ctx context.Context, org string, opts *GetCodeSecurityConfigurationOptions) ([]*CodeSecurityConfiguration, *Response, error) {
+func (s *OrganizationsService) ListCodeSecurityConfigurations(ctx context.Context, org string, opts *ListOrgCodeSecurityConfigurationOptions) ([]*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -131,7 +131,7 @@ func (s *OrganizationsService) GetCodeSecurityConfigurations(ctx context.Context
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#create-a-code-security-configuration
 //
 //meta:operation POST /orgs/{org}/code-security/configurations
-func (s *OrganizationsService) CreateCodeSecurityConfiguration(ctx context.Context, org string, config *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+func (s *OrganizationsService) CreateCodeSecurityConfiguration(ctx context.Context, org string, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations", org)
 
 	req, err := s.client.NewRequest("POST", u, config)
@@ -189,12 +189,12 @@ func (s *OrganizationsService) DetachCodeSecurityConfigurationsFromRepositories(
 	return resp, nil
 }
 
-// GetCodeSecurityConfiguration gets a code security configuration available in an organization.
+// ListCodeSecurityConfiguration gets a code security configuration available in an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-a-code-security-configuration
 //
 //meta:operation GET /orgs/{org}/code-security/configurations/{configuration_id}
-func (s *OrganizationsService) GetCodeSecurityConfiguration(ctx context.Context, org string, id int64) (*CodeSecurityConfiguration, *Response, error) {
+func (s *OrganizationsService) ListCodeSecurityConfiguration(ctx context.Context, org string, id int64) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/%v", org, id)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -215,7 +215,7 @@ func (s *OrganizationsService) GetCodeSecurityConfiguration(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#update-a-code-security-configuration
 //
 //meta:operation PATCH /orgs/{org}/code-security/configurations/{configuration_id}
-func (s *OrganizationsService) UpdateCodeSecurityConfiguration(ctx context.Context, org string, id int64, config *CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+func (s *OrganizationsService) UpdateCodeSecurityConfiguration(ctx context.Context, org string, id int64, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/%v", org, id)
 
 	req, err := s.client.NewRequest("PATCH", u, config)
@@ -316,12 +316,12 @@ func (s *OrganizationsService) GetRepositoriesForCodeSecurityConfiguration(ctx c
 	return attachments, resp, nil
 }
 
-// GetCodeSecurityConfigurationForRepository gets code security configuration that manages a repository's code security settings.
+// ListCodeSecurityConfigurationForRepository gets code security configuration that manages a repository's code security settings.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-the-code-security-configuration-associated-with-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/code-security-configuration
-func (s *OrganizationsService) GetCodeSecurityConfigurationForRepository(ctx context.Context, org, repo string) (*RepositoryCodeSecurityConfiguration, *Response, error) {
+func (s *OrganizationsService) ListCodeSecurityConfigurationForRepository(ctx context.Context, org, repo string) (*RepositoryCodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-security-configuration", org, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
