@@ -10,12 +10,14 @@ import (
 	"fmt"
 )
 
-// The URIs that are used to indicate the namespaces of the SCIM schemas
-const SCIMSchemasURINamespacesGroups string = "urn:ietf:params:scim:schemas:core:2.0:Group"
-const SCIMSchemasURINamespacesListResponse string = "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+// SCIMSchemasURINamespacesGroups URIs used to indicate the namespaces of the SCIM schemas for groups.
+const SCIMSchemasURINamespacesGroups = "urn:ietf:params:scim:schemas:core:2.0:Group"
+
+// SCIMSchemasURINamespacesListResponse URIs used to indicate the namespaces of the SCIM schemas for list responses.
+const SCIMSchemasURINamespacesListResponse = "urn:ietf:params:scim:api:messages:2.0:ListResponse"
 
 // SCIMEnterpriseGroupAttributes represents supported SCIM Enterprise group attributes.
-// GitHub API docs:https://docs.github.com/en/enterprise-cloud@latest/rest/enterprise-admin/scim#supported-scim-group-attributes
+// GitHub API docs:https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#supported-scim-group-attributes
 type SCIMEnterpriseGroupAttributes struct {
 	DisplayName *string                           `json:"displayName,omitempty"` // Human-readable name for a group.
 	Members     []*SCIMEnterpriseDisplayReference `json:"members,omitempty"`     // List of members who are assigned to the group in SCIM provider
@@ -28,8 +30,8 @@ type SCIMEnterpriseGroupAttributes struct {
 
 // SCIMEnterpriseDisplayReference represents a JSON SCIM (System for Cross-domain Identity Management) resource.
 type SCIMEnterpriseDisplayReference struct {
-	Value   string  `json:"value"` // The local unique identifier for the member
-	Ref     string  `json:"$ref"`
+	Value   string  `json:"value"`             // The local unique identifier for the member
+	Ref     string  `json:"$ref"`              //nolint:jsonfieldname // The $ref is a standard SCIM field
 	Display *string `json:"display,omitempty"` // The display name associated with the member
 }
 
@@ -52,7 +54,7 @@ type SCIMEnterpriseGroups struct {
 
 // ListProvisionedSCIMGroupsForEnterpriseOptions represents query parameters for ListProvisionedSCIMGroupsForEnterprise.
 //
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise--parameters
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise--parameters
 type ListProvisionedSCIMGroupsForEnterpriseOptions struct {
 	// If specified, only results that match the specified filter will be returned. Multiple filters are not supported.
 	// Possible filters are `externalId`, id, and `displayName`. For example,`?filter=externalId eq "9138790-10932-109120392-12321"`.
@@ -68,10 +70,11 @@ type ListProvisionedSCIMGroupsForEnterpriseOptions struct {
 }
 
 // ListProvisionedSCIMGroupsForEnterprise lists provisioned SCIM groups in an enterprise.
-// GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Groups
-func (s *EnterpriseService) ListProvisionedSCIMGroupsForEnterprise(ctx context.Context, enterprise string, opts *ListProvisionedSCIMGroupsForEnterpriseOptions) (*SCIMEnterpriseGroupAttributes, *Response, error) {
+func (s *EnterpriseService) ListProvisionedSCIMGroupsForEnterprise(ctx context.Context, enterprise string, opts *ListProvisionedSCIMGroupsForEnterpriseOptions) (*SCIMEnterpriseGroups, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -83,7 +86,7 @@ func (s *EnterpriseService) ListProvisionedSCIMGroupsForEnterprise(ctx context.C
 		return nil, nil, err
 	}
 
-	groups := new(SCIMEnterpriseGroupAttributes)
+	groups := new(SCIMEnterpriseGroups)
 	resp, err := s.client.Do(ctx, req, groups)
 	if err != nil {
 		return nil, resp, err

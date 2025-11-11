@@ -14182,22 +14182,6 @@ func (l *ListProjectsPaginationOptions) GetPerPage() int {
 	return *l.PerPage
 }
 
-// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
-func (l *ListRepositories) GetTotalCount() int {
-	if l == nil || l.TotalCount == nil {
-		return 0
-	}
-	return *l.TotalCount
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (l *ListRunnersOptions) GetName() string {
-	if l == nil || l.Name == nil {
-		return ""
-	}
-	return *l.Name
-}
-
 // GetCount returns the Count field if it's non-nil, zero value otherwise.
 func (l *ListProvisionedSCIMGroupsForEnterpriseOptions) GetCount() int {
 	if l == nil || l.Count == nil {
@@ -14228,6 +14212,22 @@ func (l *ListProvisionedSCIMGroupsForEnterpriseOptions) GetStartIndex() int {
 		return 0
 	}
 	return *l.StartIndex
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (l *ListRepositories) GetTotalCount() int {
+	if l == nil || l.TotalCount == nil {
+		return 0
+	}
+	return *l.TotalCount
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (l *ListRunnersOptions) GetName() string {
+	if l == nil || l.Name == nil {
+		return ""
+	}
+	return *l.Name
 }
 
 // GetCount returns the Count field if it's non-nil, zero value otherwise.
@@ -26038,6 +26038,62 @@ func (s *SCIMEnterpriseGroupAttributes) GetMeta() *SCIMEnterpriseMeta {
 	return s.Meta
 }
 
+// GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseGroups) GetItemsPerPage() int {
+	if s == nil || s.ItemsPerPage == nil {
+		return 0
+	}
+	return *s.ItemsPerPage
+}
+
+// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseGroups) GetStartIndex() int {
+	if s == nil || s.StartIndex == nil {
+		return 0
+	}
+	return *s.StartIndex
+}
+
+// GetTotalResults returns the TotalResults field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseGroups) GetTotalResults() int {
+	if s == nil || s.TotalResults == nil {
+		return 0
+	}
+	return *s.TotalResults
+}
+
+// GetCreated returns the Created field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseMeta) GetCreated() Timestamp {
+	if s == nil || s.Created == nil {
+		return Timestamp{}
+	}
+	return *s.Created
+}
+
+// GetLastModified returns the LastModified field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseMeta) GetLastModified() Timestamp {
+	if s == nil || s.LastModified == nil {
+		return Timestamp{}
+	}
+	return *s.LastModified
+}
+
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseMeta) GetLocation() string {
+	if s == nil || s.Location == nil {
+		return ""
+	}
+	return *s.Location
+}
+
+// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseMeta) GetResourceType() string {
+	if s == nil || s.ResourceType == nil {
+		return ""
+	}
+	return *s.ResourceType
+}
+
 // GetCreated returns the Created field if it's non-nil, zero value otherwise.
 func (s *SCIMMeta) GetCreated() Timestamp {
 	if s == nil || s.Created == nil {
@@ -26068,30 +26124,6 @@ func (s *SCIMMeta) GetResourceType() string {
 		return ""
 	}
 	return *s.ResourceType
-}
-
-// GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
-func (s *SCIMEnterpriseGroups) GetItemsPerPage() int {
-	if s == nil || s.ItemsPerPage == nil {
-		return 0
-	}
-	return *s.ItemsPerPage
-}
-
-// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
-func (s *SCIMEnterpriseGroups) GetStartIndex() int {
-	if s == nil || s.StartIndex == nil {
-		return 0
-	}
-	return *s.StartIndex
-}
-
-// GetTotalResults returns the TotalResults field if it's non-nil, zero value otherwise.
-func (s *SCIMEnterpriseGroups) GetTotalResults() int {
-	if s == nil || s.TotalResults == nil {
-		return 0
-	}
-	return *s.TotalResults
 }
 
 // GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.

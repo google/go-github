@@ -17,56 +17,52 @@ func TestSCIMProvisionedGroups_Marshal(t *testing.T) {
 	testJSONMarshal(t, &SCIMEnterpriseGroups{}, "{}")
 
 	u := &SCIMEnterpriseGroups{
-		Schemas:      []string{"s1"},
+		Schemas:      []string{SCIMSchemasURINamespacesListResponse},
 		TotalResults: Ptr(1),
-		ItemsPerPage: Ptr(2),
-		StartIndex:   Ptr(3),
-		Resources: []*SCIMEnterpriseGroupAttributes{
-			{
-				DisplayName: Ptr("dn"),
-				Members: []*SCIMEnterpriseDisplayReference{
-					{
-						Value:   "v",
-						Ref:     "r",
-						Display: Ptr("d"),
-					},
-				},
-				Schemas:    []string{"s2"},
-				ExternalID: Ptr("eid"),
-				ID:         Ptr("id"),
-				Meta: &SCIMEnterpriseMeta{
-					ResourceType: Ptr("rt"),
-					Created:      &Timestamp{referenceTime},
-					LastModified: &Timestamp{referenceTime},
-					Location:     Ptr("l"),
-				},
+		ItemsPerPage: Ptr(1),
+		StartIndex:   Ptr(1),
+		Resources: []*SCIMEnterpriseGroupAttributes{{
+			DisplayName: Ptr("gn1"),
+			Members: []*SCIMEnterpriseDisplayReference{{
+				Value:   "idm1",
+				Ref:     "https://api.github.com/scim/v2/enterprises/ee/Users/idm1",
+				Display: Ptr("m1"),
+			}},
+			Schemas:    []string{SCIMSchemasURINamespacesGroups},
+			ExternalID: Ptr("eidgn1"),
+			ID:         Ptr("idgn1"),
+			Meta: &SCIMEnterpriseMeta{
+				ResourceType: Ptr("Group"),
+				Created:      &Timestamp{referenceTime},
+				LastModified: &Timestamp{referenceTime},
+				Location:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1"),
 			},
-		},
+		}},
 	}
 
 	want := `{
-		"schemas": ["s1"],
-		"totalResults": 1,
-		"itemsPerPage": 2,
-		"startIndex": 3,
-		"Resources": [{
-			"displayName": "dn",
-			"members": [{
-				"value": "v",
-				"$ref": "r",
-				"display": "d"
-			}]
-			,"schemas": ["s2"],
-			"externalId": "eid",
-			"id": "id",
-			"meta": {
-				"resourceType": "rt",
-				"created": ` + referenceTimeStr + `,
-				"lastModified": ` + referenceTimeStr + `,
-				"location": "l"
-			}
-		}]
-	}`
+		"schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
+        "totalResults": 1,
+        "itemsPerPage": 1,
+        "startIndex": 1,
+        "Resources": [{
+            "schemas": ["` + SCIMSchemasURINamespacesGroups + `"],
+            "id": "idgn1",
+            "externalId": "eidgn1",
+            "displayName": "gn1",
+            "meta": {
+                "resourceType": "Group",
+                "created": ` + referenceTimeStr + `,
+                "lastModified": ` + referenceTimeStr + `,
+                "location": "https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1"
+            },
+            "members": [{
+                "value": "idm1",
+                "$ref": "https://api.github.com/scim/v2/enterprises/ee/Users/idm1",
+                "display": "m1"
+            }]
+        }]
+    }`
 
 	testJSONMarshal(t, u, want)
 }
@@ -103,13 +99,12 @@ func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
             "display": "d"
         }],
         "id": "id",
-			"meta": {
-				"resourceType": "rt",
-				"created": ` + referenceTimeStr + `,
-				"lastModified": ` + referenceTimeStr + `,
-				"location": "l"
-			}
-		}]
+		"meta": {
+			"resourceType": "rt",
+			"created": ` + referenceTimeStr + `,
+			"lastModified": ` + referenceTimeStr + `,
+			"location": "l"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -119,47 +114,38 @@ func TestEnterpriseService_ListProvisionedSCIMGroupsForEnterprise(t *testing.T) 
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("scim/v2/enterprises/ee/Groups", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/scim/v2/enterprises/ee/Groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"startIndex":         "1",
 			"excludedAttributes": "members,meta",
 			"count":              "3",
-			"filter":             `externalId eq "8aa1"`,
+			"filter":             `externalId eq "914a"`,
 		})
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(`{
-			"schemas": [` + SCIMSchemasURINamespacesListResponse + `],
-			"totalResults": 1,
-			"Resources": [
-			  {
-				"schemas": [` + SCIMSchemasURINamespacesGroups + `],
-				"externalId": "8aa1",
-				"id": "24b2",
-				"displayName": "dn",
-				"members": [
-				  {
-					"value": "879d",
-					"$+ref": "https://api.github.localhost/scim/v2/Users/879d",
-					"display": "u1"
-				  },
-				  {
-					"value": "0db5",
-					"$+ref": "https://api.github.localhost/scim/v2/Users/0db5",
-					"display": "u2"
-				  }
-				],
+			"schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
+            "totalResults": 1,
+            "itemsPerPage": 1,
+            "startIndex": 1,
+            "Resources": [{
+                "schemas": ["` + SCIMSchemasURINamespacesGroups + `"],
+                "id": "914a",
+                "externalId": "de88",
+                "displayName": "gn1",
                 "meta": {
-				  "resourceType": "Group",
-				  "created": ` + referenceTimeStr + `,
-				  "lastModified": ` + referenceTimeStr + `,
-				  "location": "https://api.github.localhost/scim/v2/Groups/24b2"
-				}
-			  }
-			],
-			"startIndex": 1,
-            "itemsPerPage": 1
-		  }`))
+                    "resourceType": "Group",
+                    "created": ` + referenceTimeStr + `,
+                    "lastModified": ` + referenceTimeStr + `,
+                    "location": "https://api.github.com/scim/v2/enterprises/ee/Groups/914a"
+                },
+                "members": [{
+                    "value": "e7f9",
+                    "$ref": "https://api.github.com/scim/v2/enterprises/ee/Users/e7f9",
+                    "display": "d1"
+                }]
+            }]
+        }`))
 	})
 
 	ctx := t.Context()
@@ -167,11 +153,11 @@ func TestEnterpriseService_ListProvisionedSCIMGroupsForEnterprise(t *testing.T) 
 		StartIndex:         Ptr(1),
 		ExcludedAttributes: Ptr("members,meta"),
 		Count:              Ptr(3),
-		Filter:             Ptr(`externalId eq "8aa1"`),
+		Filter:             Ptr(`externalId eq "914a"`),
 	}
 	groups, _, err := client.Enterprise.ListProvisionedSCIMGroupsForEnterprise(ctx, "ee", opts)
 	if err != nil {
-		t.Errorf("Enterprise.ListSCIMProvisionedIdentities returned error: %v", err)
+		t.Errorf("Enterprise.ListProvisionedSCIMGroupsForEnterprise returned error: %v", err)
 	}
 
 	want := SCIMEnterpriseGroups{
@@ -179,36 +165,30 @@ func TestEnterpriseService_ListProvisionedSCIMGroupsForEnterprise(t *testing.T) 
 		TotalResults: Ptr(1),
 		ItemsPerPage: Ptr(1),
 		StartIndex:   Ptr(1),
-		Resources: []*SCIMEnterpriseGroupAttributes{
-			{
-				ID: Ptr("123e4567-e89b-12d3-a456-426614174000"),
-				Meta: &SCIMEnterpriseMeta{
-					ResourceType: Ptr("Group"),
-					Created:      &Timestamp{referenceTime},
-					LastModified: &Timestamp{referenceTime},
-					Location:     Ptr("https://api.github.com/scim/v2/enterprises/octo/Groups/123e4567-e89b-12d3-a456-426614174000"),
-				},
-
-				DisplayName: Ptr("Mona Octocat"),
-				Schemas:     []string{"urn:ietf:params:scim:schemas:core:2.0:Group"},
-				ExternalID:  Ptr("00u1dhhb1fkIGP7RL1d8"),
-				Members: []*SCIMEnterpriseDisplayReference{
-					{
-						Value:   "5fc0c238-1112-11e8-8e45-920c87bdbd75",
-						Ref:     "https://api.github.com/scim/v2/enterprises/octo/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75",
-						Display: Ptr("Mona Octocat"),
-					},
-				},
+		Resources: []*SCIMEnterpriseGroupAttributes{{
+			ID: Ptr("914a"),
+			Meta: &SCIMEnterpriseMeta{
+				ResourceType: Ptr("Group"),
+				Created:      &Timestamp{referenceTime},
+				LastModified: &Timestamp{referenceTime},
+				Location:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Groups/914a"),
 			},
-		},
+			DisplayName: Ptr("gn1"),
+			Schemas:     []string{SCIMSchemasURINamespacesGroups},
+			ExternalID:  Ptr("de88"),
+			Members: []*SCIMEnterpriseDisplayReference{{
+				Value:   "e7f9",
+				Ref:     "https://api.github.com/scim/v2/enterprises/ee/Users/e7f9",
+				Display: Ptr("d1"),
+			}},
+		}},
 	}
 
-	if !cmp.Equal(groups, &want) {
-		diff := cmp.Diff(groups, want)
-		t.Errorf("SCIM.ListSCIMProvisionedGroupsForEnterprise returned %+v, want %+v: diff %+v", groups, want, diff)
+	if diff := cmp.Diff(want, *groups); diff != "" {
+		t.Errorf("Enterprise.ListProvisionedSCIMGroupsForEnterprise diff mismatch (-want +got):\n%v", diff)
 	}
 
-	const methodName = "ListSCIMProvisionedGroupsForEnterprise"
+	const methodName = "ListProvisionedSCIMGroupsForEnterprise"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Enterprise.ListProvisionedSCIMGroupsForEnterprise(ctx, "\n", opts)
 		return err

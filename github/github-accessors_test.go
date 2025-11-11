@@ -18431,6 +18431,50 @@ func TestListProjectsPaginationOptions_GetPerPage(tt *testing.T) {
 	l.GetPerPage()
 }
 
+func TestListProvisionedSCIMGroupsForEnterpriseOptions_GetCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	l := &ListProvisionedSCIMGroupsForEnterpriseOptions{Count: &zeroValue}
+	l.GetCount()
+	l = &ListProvisionedSCIMGroupsForEnterpriseOptions{}
+	l.GetCount()
+	l = nil
+	l.GetCount()
+}
+
+func TestListProvisionedSCIMGroupsForEnterpriseOptions_GetExcludedAttributes(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListProvisionedSCIMGroupsForEnterpriseOptions{ExcludedAttributes: &zeroValue}
+	l.GetExcludedAttributes()
+	l = &ListProvisionedSCIMGroupsForEnterpriseOptions{}
+	l.GetExcludedAttributes()
+	l = nil
+	l.GetExcludedAttributes()
+}
+
+func TestListProvisionedSCIMGroupsForEnterpriseOptions_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListProvisionedSCIMGroupsForEnterpriseOptions{Filter: &zeroValue}
+	l.GetFilter()
+	l = &ListProvisionedSCIMGroupsForEnterpriseOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListProvisionedSCIMGroupsForEnterpriseOptions_GetStartIndex(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	l := &ListProvisionedSCIMGroupsForEnterpriseOptions{StartIndex: &zeroValue}
+	l.GetStartIndex()
+	l = &ListProvisionedSCIMGroupsForEnterpriseOptions{}
+	l.GetStartIndex()
+	l = nil
+	l.GetStartIndex()
+}
+
 func TestListRepositories_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -18451,50 +18495,6 @@ func TestListRunnersOptions_GetName(tt *testing.T) {
 	l.GetName()
 	l = nil
 	l.GetName()
-}
-
-func TestListSCIMProvisionedGroupsForEnterpriseOptions_GetCount(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	l := &ListProvisionedSCIMGroupsForEnterpriseOptions{Count: &zeroValue}
-	l.GetCount()
-	l = &ListProvisionedSCIMGroupsForEnterpriseOptions{}
-	l.GetCount()
-	l = nil
-	l.GetCount()
-}
-
-func TestListSCIMProvisionedGroupsForEnterpriseOptions_GetExcludedAttributes(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListProvisionedSCIMGroupsForEnterpriseOptions{ExcludedAttributes: &zeroValue}
-	l.GetExcludedAttributes()
-	l = &ListProvisionedSCIMGroupsForEnterpriseOptions{}
-	l.GetExcludedAttributes()
-	l = nil
-	l.GetExcludedAttributes()
-}
-
-func TestListSCIMProvisionedGroupsForEnterpriseOptions_GetFilter(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListProvisionedSCIMGroupsForEnterpriseOptions{Filter: &zeroValue}
-	l.GetFilter()
-	l = &ListProvisionedSCIMGroupsForEnterpriseOptions{}
-	l.GetFilter()
-	l = nil
-	l.GetFilter()
-}
-
-func TestListSCIMProvisionedGroupsForEnterpriseOptions_GetStartIndex(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	l := &ListProvisionedSCIMGroupsForEnterpriseOptions{StartIndex: &zeroValue}
-	l.GetStartIndex()
-	l = &ListProvisionedSCIMGroupsForEnterpriseOptions{}
-	l.GetStartIndex()
-	l = nil
-	l.GetStartIndex()
 }
 
 func TestListSCIMProvisionedIdentitiesOptions_GetCount(tt *testing.T) {
@@ -33544,7 +33544,7 @@ func TestScanningAnalysis_GetWarning(tt *testing.T) {
 	s.GetWarning()
 }
 
-func TestSCIMDisplayReference_GetDisplay(tt *testing.T) {
+func TestSCIMEnterpriseDisplayReference_GetDisplay(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
 	s := &SCIMEnterpriseDisplayReference{Display: &zeroValue}
@@ -33555,7 +33555,7 @@ func TestSCIMDisplayReference_GetDisplay(tt *testing.T) {
 	s.GetDisplay()
 }
 
-func TestSCIMGroupAttributes_GetDisplayName(tt *testing.T) {
+func TestSCIMEnterpriseGroupAttributes_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
 	s := &SCIMEnterpriseGroupAttributes{DisplayName: &zeroValue}
@@ -33566,7 +33566,7 @@ func TestSCIMGroupAttributes_GetDisplayName(tt *testing.T) {
 	s.GetDisplayName()
 }
 
-func TestSCIMGroupAttributes_GetExternalID(tt *testing.T) {
+func TestSCIMEnterpriseGroupAttributes_GetExternalID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
 	s := &SCIMEnterpriseGroupAttributes{ExternalID: &zeroValue}
@@ -33577,7 +33577,7 @@ func TestSCIMGroupAttributes_GetExternalID(tt *testing.T) {
 	s.GetExternalID()
 }
 
-func TestSCIMGroupAttributes_GetID(tt *testing.T) {
+func TestSCIMEnterpriseGroupAttributes_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
 	s := &SCIMEnterpriseGroupAttributes{ID: &zeroValue}
@@ -33588,12 +33588,89 @@ func TestSCIMGroupAttributes_GetID(tt *testing.T) {
 	s.GetID()
 }
 
-func TestSCIMGroupAttributes_GetMeta(tt *testing.T) {
+func TestSCIMEnterpriseGroupAttributes_GetMeta(tt *testing.T) {
 	tt.Parallel()
 	s := &SCIMEnterpriseGroupAttributes{}
 	s.GetMeta()
 	s = nil
 	s.GetMeta()
+}
+
+func TestSCIMEnterpriseGroups_GetItemsPerPage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SCIMEnterpriseGroups{ItemsPerPage: &zeroValue}
+	s.GetItemsPerPage()
+	s = &SCIMEnterpriseGroups{}
+	s.GetItemsPerPage()
+	s = nil
+	s.GetItemsPerPage()
+}
+
+func TestSCIMEnterpriseGroups_GetStartIndex(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SCIMEnterpriseGroups{StartIndex: &zeroValue}
+	s.GetStartIndex()
+	s = &SCIMEnterpriseGroups{}
+	s.GetStartIndex()
+	s = nil
+	s.GetStartIndex()
+}
+
+func TestSCIMEnterpriseGroups_GetTotalResults(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SCIMEnterpriseGroups{TotalResults: &zeroValue}
+	s.GetTotalResults()
+	s = &SCIMEnterpriseGroups{}
+	s.GetTotalResults()
+	s = nil
+	s.GetTotalResults()
+}
+
+func TestSCIMEnterpriseMeta_GetCreated(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	s := &SCIMEnterpriseMeta{Created: &zeroValue}
+	s.GetCreated()
+	s = &SCIMEnterpriseMeta{}
+	s.GetCreated()
+	s = nil
+	s.GetCreated()
+}
+
+func TestSCIMEnterpriseMeta_GetLastModified(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	s := &SCIMEnterpriseMeta{LastModified: &zeroValue}
+	s.GetLastModified()
+	s = &SCIMEnterpriseMeta{}
+	s.GetLastModified()
+	s = nil
+	s.GetLastModified()
+}
+
+func TestSCIMEnterpriseMeta_GetLocation(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMEnterpriseMeta{Location: &zeroValue}
+	s.GetLocation()
+	s = &SCIMEnterpriseMeta{}
+	s.GetLocation()
+	s = nil
+	s.GetLocation()
+}
+
+func TestSCIMEnterpriseMeta_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMEnterpriseMeta{ResourceType: &zeroValue}
+	s.GetResourceType()
+	s = &SCIMEnterpriseMeta{}
+	s.GetResourceType()
+	s = nil
+	s.GetResourceType()
 }
 
 func TestSCIMMeta_GetCreated(tt *testing.T) {
@@ -33638,39 +33715,6 @@ func TestSCIMMeta_GetResourceType(tt *testing.T) {
 	s.GetResourceType()
 	s = nil
 	s.GetResourceType()
-}
-
-func TestSCIMProvisionedGroups_GetItemsPerPage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	s := &SCIMEnterpriseGroups{ItemsPerPage: &zeroValue}
-	s.GetItemsPerPage()
-	s = &SCIMEnterpriseGroups{}
-	s.GetItemsPerPage()
-	s = nil
-	s.GetItemsPerPage()
-}
-
-func TestSCIMProvisionedGroups_GetStartIndex(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	s := &SCIMEnterpriseGroups{StartIndex: &zeroValue}
-	s.GetStartIndex()
-	s = &SCIMEnterpriseGroups{}
-	s.GetStartIndex()
-	s = nil
-	s.GetStartIndex()
-}
-
-func TestSCIMProvisionedGroups_GetTotalResults(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	s := &SCIMEnterpriseGroups{TotalResults: &zeroValue}
-	s.GetTotalResults()
-	s = &SCIMEnterpriseGroups{}
-	s.GetTotalResults()
-	s = nil
-	s.GetTotalResults()
 }
 
 func TestSCIMProvisionedIdentities_GetItemsPerPage(tt *testing.T) {
