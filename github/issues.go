@@ -173,17 +173,6 @@ func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptio
 	return s.listIssues(ctx, u, opts)
 }
 
-// ListByOrg fetches the issues in the specified organization for the
-// authenticated user.
-//
-// GitHub API docs: https://docs.github.com/rest/issues/issues#list-organization-issues-assigned-to-the-authenticated-user
-//
-//meta:operation GET /orgs/{org}/issues
-func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueListOptions) ([]*Issue, *Response, error) {
-	u := fmt.Sprintf("orgs/%v/issues", org)
-	return s.listIssues(ctx, u, opts)
-}
-
 func (s *IssuesService) listIssues(ctx context.Context, u string, opts *IssueListOptions) ([]*Issue, *Response, error) {
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -196,6 +185,71 @@ func (s *IssuesService) listIssues(ctx context.Context, u string, opts *IssueLis
 	}
 
 	// TODO: remove custom Accept header when this API fully launch.
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
+
+	var issues []*Issue
+	resp, err := s.client.Do(ctx, req, &issues)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return issues, resp, nil
+}
+
+// IssueListByOrgOptions specifies the optional parameters to the
+// IssuesService.ListByOrg method.
+type IssueListByOrgOptions struct {
+	// Filter specifies which issues to list. Possible values are: assigned,
+	// created, mentioned, subscribed, all. Default is "assigned".
+	Filter string `url:"filter,omitempty"`
+
+	// State filters issues based on their state. Possible values are: open,
+	// closed, all. Default is "open".
+	State string `url:"state,omitempty"`
+
+	// Labels filters issues based on their label.
+	Labels []string `url:"labels,comma,omitempty"`
+
+	// Can be the name of an issue type. If the string "*" is passed, issues with
+	// any type are accepted. If the string "none" is passed, issues without
+	// type are returned.
+	Type string `url:"type,omitempty"`
+
+	// Sort specifies how to sort issues. Possible values are: created, updated,
+	// and comments. Default value is "created".
+	Sort string `url:"sort,omitempty"`
+
+	// Direction in which to sort issues. Possible values are: asc, desc.
+	// Default is "desc".
+	Direction string `url:"direction,omitempty"`
+
+	// Since filters issues by time.
+	Since time.Time `url:"since,omitempty"`
+
+	// Add ListOptions so offset pagination with integer type "page" query parameter is accepted
+	// since ListCursorOptions accepts "page" as string only.
+	ListOptions
+}
+
+// ListByOrg fetches the issues in the specified organization for the
+// authenticated user.
+//
+// GitHub API docs: https://docs.github.com/rest/issues/issues#list-organization-issues-assigned-to-the-authenticated-user
+//
+//meta:operation GET /orgs/{org}/issues
+func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueListByOrgOptions) ([]*Issue, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/issues", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
@@ -223,6 +277,11 @@ type IssueListByRepoOptions struct {
 	// user name, "none" for issues that are not assigned, "*" for issues with
 	// any assigned user.
 	Assignee string `url:"assignee,omitempty"`
+
+	// Can be the name of an issue type. If the string "*" is passed, issues with
+	// any type are accepted. If the string "none" is passed, issues without
+	// type are returned.
+	Type string `url:"type,omitempty"`
 
 	// Creator filters issues based on their creator.
 	Creator string `url:"creator,omitempty"`
