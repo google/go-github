@@ -415,7 +415,9 @@ type UpdateRuleParameters struct {
 
 // MergeQueueRuleParameters represents the merge_queue rule parameters.
 type MergeQueueRuleParameters struct {
+	ActorControlledMerging       bool                  `json:"actor_controlled_merging,omitempty"`
 	CheckResponseTimeoutMinutes  int                   `json:"check_response_timeout_minutes"`
+	CheckRunRetriesLimit         int                   `json:"check_run_retries_limit,omitempty"`
 	GroupingStrategy             MergeGroupingStrategy `json:"grouping_strategy"`
 	MaxEntriesToBuild            int                   `json:"max_entries_to_build"`
 	MaxEntriesToMerge            int                   `json:"max_entries_to_merge"`

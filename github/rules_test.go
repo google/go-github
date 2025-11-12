@@ -691,7 +691,9 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeMergeQueue,
 				Parameters: &MergeQueueRuleParameters{
+					ActorControlledMerging:       true,
 					CheckResponseTimeoutMinutes:  5,
+					CheckRunRetriesLimit:         3,
 					GroupingStrategy:             MergeGroupingStrategyAllGreen,
 					MaxEntriesToBuild:            10,
 					MaxEntriesToMerge:            20,
@@ -700,7 +702,7 @@ func TestRepositoryRule(t *testing.T) {
 					MinEntriesToMergeWaitMinutes: 15,
 				},
 			},
-			`{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}}`,
+			`{"type":"merge_queue","parameters":{"actor_controlled_merging":true,"check_response_timeout_minutes":5,"check_run_retries_limit":3,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}}`,
 		},
 		{
 			"required_deployments",
