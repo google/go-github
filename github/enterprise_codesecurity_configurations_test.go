@@ -389,9 +389,9 @@ func TestEnterpriseService_SetDefaultCodeSecurityConfiguration(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_ListRepositoriesForCodeSecurityConfiguration(t *testing.T) {
+func TestEnterpriseService_ListCodeSecurityConfigurationRepositories(t *testing.T) {
 	t.Parallel()
-	opts := &ListRepositoriesForCodeSecurityConfigurationOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(30), Status: Ptr("attached")}
+	opts := &ListCodeSecurityConfigurationRepositoriesOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(30), Status: Ptr("attached")}
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
@@ -416,26 +416,26 @@ func TestEnterpriseService_ListRepositoriesForCodeSecurityConfiguration(t *testi
 	]`)
 	})
 
-	attachments, _, err := client.Enterprise.ListRepositoriesForCodeSecurityConfiguration(ctx, "e", 1, opts)
+	attachments, _, err := client.Enterprise.ListCodeSecurityConfigurationRepositories(ctx, "e", 1, opts)
 	if err != nil {
-		t.Errorf("Enterprise.ListRepositoriesForCodeSecurityConfiguration returned error: %v", err)
+		t.Errorf("Enterprise.ListCodeSecurityConfigurationRepositories returned error: %v", err)
 	}
 	want := []*RepositoryAttachment{
 		{Status: Ptr("attached"), Repository: &Repository{ID: Ptr(int64(8)), Name: Ptr("repo8")}},
 		{Status: Ptr("attached"), Repository: &Repository{ID: Ptr(int64(42)), Name: Ptr("repo42")}},
 	}
 	if !cmp.Equal(attachments, want) {
-		t.Errorf("Enterprise.ListRepositoriesForCodeSecurityConfiguration returned %+v, want %+v", attachments, want)
+		t.Errorf("Enterprise.ListCodeSecurityConfigurationRepositories returned %+v, want %+v", attachments, want)
 	}
 
-	const methodName = "ListRepositoriesForCodeSecurityConfiguration"
+	const methodName = "ListCodeSecurityConfigurationRepositories"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListRepositoriesForCodeSecurityConfiguration(ctx, "\n", -1, opts)
+		_, _, err = client.Enterprise.ListCodeSecurityConfigurationRepositories(ctx, "\n", -1, opts)
 		return
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.ListRepositoriesForCodeSecurityConfiguration(ctx, "e", 1, opts)
+		got, resp, err := client.Enterprise.ListCodeSecurityConfigurationRepositories(ctx, "e", 1, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

@@ -101,7 +101,7 @@ type ListOrgCodeSecurityConfigurationOptions struct {
 	TargetType *string `url:"target_type,omitempty"`
 }
 
-// ListRepositoriesForCodeSecurityConfigurationOptions specifies optional parameters to list repositories for security configurations for orgs and enterprises.
+// ListCodeSecurityConfigurationRepositoriesOptions specifies optional parameters to list repositories for security configurations for orgs and enterprises.
 //
 // Note: Pagination is powered by before/after cursor-style pagination. After the initial call,
 // inspect the returned *Response. Use resp.After as the opts.After value to request
@@ -109,7 +109,7 @@ type ListOrgCodeSecurityConfigurationOptions struct {
 // page. Set either Before or After for a request; if both are
 // supplied GitHub API will return an error. PerPage controls the number of items
 // per page (max 100 per GitHub API docs).
-type ListRepositoriesForCodeSecurityConfigurationOptions struct {
+type ListCodeSecurityConfigurationRepositoriesOptions struct {
 	// A cursor, as given in the Link header. If specified, the query only searches for repositories before this cursor.
 	Before *string `url:"before,omitempty"`
 
@@ -318,12 +318,12 @@ func (s *OrganizationsService) SetDefaultCodeSecurityConfiguration(ctx context.C
 	return config, resp, nil
 }
 
-// ListRepositoriesForCodeSecurityConfiguration gets repositories associated with a code security configuration.
+// ListCodeSecurityConfigurationRepositories gets repositories associated with a code security configuration.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-repositories-associated-with-a-code-security-configuration
 //
 //meta:operation GET /orgs/{org}/code-security/configurations/{configuration_id}/repositories
-func (s *OrganizationsService) ListRepositoriesForCodeSecurityConfiguration(ctx context.Context, org string, configurationID int64, opts *ListRepositoriesForCodeSecurityConfigurationOptions) ([]*RepositoryAttachment, *Response, error) {
+func (s *OrganizationsService) ListCodeSecurityConfigurationRepositories(ctx context.Context, org string, configurationID int64, opts *ListCodeSecurityConfigurationRepositoriesOptions) ([]*RepositoryAttachment, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/%v/repositories", org, configurationID)
 	u, err := addOptions(u, opts)
 	if err != nil {

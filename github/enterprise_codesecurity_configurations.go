@@ -207,12 +207,12 @@ func (s *EnterpriseService) SetDefaultCodeSecurityConfiguration(ctx context.Cont
 	return config, resp, nil
 }
 
-// ListRepositoriesForCodeSecurityConfiguration lists the repositories associated with an enterprise code security configuration.
+// ListCodeSecurityConfigurationRepositories lists the repositories associated with an enterprise code security configuration.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-repositories-associated-with-an-enterprise-code-security-configuration
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}/repositories
-func (s *EnterpriseService) ListRepositoriesForCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64, opts *ListRepositoriesForCodeSecurityConfigurationOptions) ([]*RepositoryAttachment, *Response, error) {
+func (s *EnterpriseService) ListCodeSecurityConfigurationRepositories(ctx context.Context, enterprise string, configurationID int64, opts *ListCodeSecurityConfigurationRepositoriesOptions) ([]*RepositoryAttachment, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v/repositories", enterprise, configurationID)
 	u, err := addOptions(u, opts)
 	if err != nil {

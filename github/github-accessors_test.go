@@ -18326,6 +18326,50 @@ func TestListCheckSuiteResults_GetTotal(tt *testing.T) {
 	l.GetTotal()
 }
 
+func TestListCodeSecurityConfigurationRepositoriesOptions_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListCodeSecurityConfigurationRepositoriesOptions{After: &zeroValue}
+	l.GetAfter()
+	l = &ListCodeSecurityConfigurationRepositoriesOptions{}
+	l.GetAfter()
+	l = nil
+	l.GetAfter()
+}
+
+func TestListCodeSecurityConfigurationRepositoriesOptions_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListCodeSecurityConfigurationRepositoriesOptions{Before: &zeroValue}
+	l.GetBefore()
+	l = &ListCodeSecurityConfigurationRepositoriesOptions{}
+	l.GetBefore()
+	l = nil
+	l.GetBefore()
+}
+
+func TestListCodeSecurityConfigurationRepositoriesOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	l := &ListCodeSecurityConfigurationRepositoriesOptions{PerPage: &zeroValue}
+	l.GetPerPage()
+	l = &ListCodeSecurityConfigurationRepositoriesOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
+}
+
+func TestListCodeSecurityConfigurationRepositoriesOptions_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListCodeSecurityConfigurationRepositoriesOptions{Status: &zeroValue}
+	l.GetStatus()
+	l = &ListCodeSecurityConfigurationRepositoriesOptions{}
+	l.GetStatus()
+	l = nil
+	l.GetStatus()
+}
+
 func TestListCodespaces_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -18621,50 +18665,6 @@ func TestListRepositories_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 	l = nil
 	l.GetTotalCount()
-}
-
-func TestListRepositoriesForCodeSecurityConfigurationOptions_GetAfter(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListRepositoriesForCodeSecurityConfigurationOptions{After: &zeroValue}
-	l.GetAfter()
-	l = &ListRepositoriesForCodeSecurityConfigurationOptions{}
-	l.GetAfter()
-	l = nil
-	l.GetAfter()
-}
-
-func TestListRepositoriesForCodeSecurityConfigurationOptions_GetBefore(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListRepositoriesForCodeSecurityConfigurationOptions{Before: &zeroValue}
-	l.GetBefore()
-	l = &ListRepositoriesForCodeSecurityConfigurationOptions{}
-	l.GetBefore()
-	l = nil
-	l.GetBefore()
-}
-
-func TestListRepositoriesForCodeSecurityConfigurationOptions_GetPerPage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	l := &ListRepositoriesForCodeSecurityConfigurationOptions{PerPage: &zeroValue}
-	l.GetPerPage()
-	l = &ListRepositoriesForCodeSecurityConfigurationOptions{}
-	l.GetPerPage()
-	l = nil
-	l.GetPerPage()
-}
-
-func TestListRepositoriesForCodeSecurityConfigurationOptions_GetStatus(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListRepositoriesForCodeSecurityConfigurationOptions{Status: &zeroValue}
-	l.GetStatus()
-	l = &ListRepositoriesForCodeSecurityConfigurationOptions{}
-	l.GetStatus()
-	l = nil
-	l.GetStatus()
 }
 
 func TestListRunnersOptions_GetName(tt *testing.T) {
