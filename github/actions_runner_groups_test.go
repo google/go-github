@@ -107,7 +107,7 @@ func TestActionsService_GetOrganizationRunnerGroup(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories","runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
+		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories","runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners","hosted_runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/hosted-runners","network_configuration_id":"EC486D5D793175D7E3B29C27318D5C1AAE49A7833FC85F2E82C3D2C54AC7D3BA","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
 
 	ctx := t.Context()
@@ -123,6 +123,8 @@ func TestActionsService_GetOrganizationRunnerGroup(t *testing.T) {
 		Default:                  Ptr(false),
 		SelectedRepositoriesURL:  Ptr("https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories"),
 		RunnersURL:               Ptr("https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners"),
+		HostedRunnersURL:         Ptr("https://api.github.com/orgs/octo-org/actions/runner_groups/2/hosted-runners"),
+		NetworkConfigurationID:   Ptr("EC486D5D793175D7E3B29C27318D5C1AAE49A7833FC85F2E82C3D2C54AC7D3BA"),
 		Inherited:                Ptr(false),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
@@ -179,7 +181,7 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories","runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
+		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories","runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners","hosted_runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/hosted-runners","network_configuration_id":"EC486D5D793175D7E3B29C27318D5C1AAE49A7833FC85F2E82C3D2C54AC7D3BA","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
 
 	ctx := t.Context()
@@ -189,6 +191,7 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
 		SelectedWorkflows:        []string{},
+		NetworkConfigurationID:   Ptr("EC486D5D793175D7E3B29C27318D5C1AAE49A7833FC85F2E82C3D2C54AC7D3BA"),
 	}
 	group, _, err := client.Actions.CreateOrganizationRunnerGroup(ctx, "o", req)
 	if err != nil {
@@ -202,6 +205,8 @@ func TestActionsService_CreateOrganizationRunnerGroup(t *testing.T) {
 		Default:                  Ptr(false),
 		SelectedRepositoriesURL:  Ptr("https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories"),
 		RunnersURL:               Ptr("https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners"),
+		HostedRunnersURL:         Ptr("https://api.github.com/orgs/octo-org/actions/runner_groups/2/hosted-runners"),
+		NetworkConfigurationID:   Ptr("EC486D5D793175D7E3B29C27318D5C1AAE49A7833FC85F2E82C3D2C54AC7D3BA"),
 		Inherited:                Ptr(false),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
@@ -233,7 +238,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories","runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
+		fmt.Fprint(w, `{"id":2,"name":"octo-runner-group","visibility":"selected","default":false,"selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories","runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners","hosted_runners_url":"https://api.github.com/orgs/octo-org/actions/runner_groups/2/hosted-runners","network_configuration_id":"EC486D5D793175D7E3B29C27318D5C1AAE49A7833FC85F2E82C3D2C54AC7D3BA","inherited":false,"allows_public_repositories":true,"restricted_to_workflows":false,"selected_workflows":[]}`)
 	})
 
 	ctx := t.Context()
@@ -243,6 +248,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
 		SelectedWorkflows:        []string{},
+		NetworkConfigurationID:   Ptr("EC486D5D793175D7E3B29C27318D5C1AAE49A7833FC85F2E82C3D2C54AC7D3BA"),
 	}
 	group, _, err := client.Actions.UpdateOrganizationRunnerGroup(ctx, "o", 2, req)
 	if err != nil {
@@ -256,6 +262,8 @@ func TestActionsService_UpdateOrganizationRunnerGroup(t *testing.T) {
 		Default:                  Ptr(false),
 		SelectedRepositoriesURL:  Ptr("https://api.github.com/orgs/octo-org/actions/runner_groups/2/repositories"),
 		RunnersURL:               Ptr("https://api.github.com/orgs/octo-org/actions/runner_groups/2/runners"),
+		HostedRunnersURL:         Ptr("https://api.github.com/orgs/octo-org/actions/runner_groups/2/hosted-runners"),
+		NetworkConfigurationID:   Ptr("EC486D5D793175D7E3B29C27318D5C1AAE49A7833FC85F2E82C3D2C54AC7D3BA"),
 		Inherited:                Ptr(false),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
@@ -541,6 +549,8 @@ func TestRunnerGroup_Marshal(t *testing.T) {
 		Default:                  Ptr(true),
 		SelectedRepositoriesURL:  Ptr("s"),
 		RunnersURL:               Ptr("r"),
+		HostedRunnersURL:         Ptr("h"),
+		NetworkConfigurationID:   Ptr("nc"),
 		Inherited:                Ptr(true),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
@@ -554,6 +564,8 @@ func TestRunnerGroup_Marshal(t *testing.T) {
 		"default": true,
 		"selected_repositories_url": "s",
 		"runners_url": "r",
+		"hosted_runners_url": "h",
+		"network_configuration_id": "nc",
 		"inherited": true,
 		"allows_public_repositories": true,
 		"restricted_to_workflows": false,
@@ -577,6 +589,8 @@ func TestRunnerGroups_Marshal(t *testing.T) {
 				Default:                  Ptr(true),
 				SelectedRepositoriesURL:  Ptr("s"),
 				RunnersURL:               Ptr("r"),
+				HostedRunnersURL:         Ptr("h"),
+				NetworkConfigurationID:   Ptr("nc"),
 				Inherited:                Ptr(true),
 				AllowsPublicRepositories: Ptr(true),
 				RestrictedToWorkflows:    Ptr(false),
@@ -594,6 +608,8 @@ func TestRunnerGroups_Marshal(t *testing.T) {
 			"default": true,
 			"selected_repositories_url": "s",
 			"runners_url": "r",
+			"hosted_runners_url": "h",
+			"network_configuration_id": "nc",
 			"inherited": true,
 			"allows_public_repositories": true,
 			"restricted_to_workflows": false,
@@ -616,6 +632,7 @@ func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(true),
 		SelectedWorkflows:        []string{"a", "b"},
+		NetworkConfigurationID:   Ptr("nc"),
 	}
 
 	want := `{
@@ -625,7 +642,8 @@ func TestCreateRunnerGroupRequest_Marshal(t *testing.T) {
 		"runners": [1],
 		"allows_public_repositories": true,
 		"restricted_to_workflows": true,
-		"selected_workflows": ["a","b"]
+		"selected_workflows": ["a","b"],
+		"network_configuration_id": "nc"
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -641,6 +659,7 @@ func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
 		SelectedWorkflows:        []string{},
+		NetworkConfigurationID:   Ptr("nc"),
 	}
 
 	want := `{
@@ -648,7 +667,8 @@ func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
 		"visibility": "v",
 		"allows_public_repositories": true,
 		"restricted_to_workflows": false,
-		"selected_workflows": []
+		"selected_workflows": [],
+		"network_configuration_id": "nc"
 	}`
 
 	testJSONMarshal(t, u, want)

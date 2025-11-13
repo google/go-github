@@ -6534,6 +6534,14 @@ func (c *CreateRunnerGroupRequest) GetName() string {
 	return *c.Name
 }
 
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (c *CreateRunnerGroupRequest) GetNetworkConfigurationID() string {
+	if c == nil || c.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *c.NetworkConfigurationID
+}
+
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
 func (c *CreateRunnerGroupRequest) GetRestrictedToWorkflows() bool {
 	if c == nil || c.RestrictedToWorkflows == nil {
@@ -25822,6 +25830,14 @@ func (r *RunnerGroup) GetDefault() bool {
 	return *r.Default
 }
 
+// GetHostedRunnersURL returns the HostedRunnersURL field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetHostedRunnersURL() string {
+	if r == nil || r.HostedRunnersURL == nil {
+		return ""
+	}
+	return *r.HostedRunnersURL
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *RunnerGroup) GetID() int64 {
 	if r == nil || r.ID == nil {
@@ -25844,6 +25860,14 @@ func (r *RunnerGroup) GetName() string {
 		return ""
 	}
 	return *r.Name
+}
+
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetNetworkConfigurationID() string {
+	if r == nil || r.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *r.NetworkConfigurationID
 }
 
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
@@ -29476,6 +29500,14 @@ func (u *UpdateRunnerGroupRequest) GetName() string {
 		return ""
 	}
 	return *u.Name
+}
+
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (u *UpdateRunnerGroupRequest) GetNetworkConfigurationID() string {
+	if u == nil || u.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *u.NetworkConfigurationID
 }
 
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
