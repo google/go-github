@@ -12,7 +12,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestSCIMProvisionedGroups_Marshal(t *testing.T) {
+func TestSCIMEnterpriseGroups_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &SCIMEnterpriseGroups{}, "{}")
 
@@ -149,15 +149,15 @@ func TestEnterpriseService_ListProvisionedSCIMEnterpriseGroups(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &ListProvisionedSCIMEnterpriseGroupsOptions{
+	opts := &ListProvisionedSCIMGroupsEnterpriseOptions{
 		StartIndex:         Ptr(1),
 		ExcludedAttributes: Ptr("members,meta"),
 		Count:              Ptr(3),
 		Filter:             Ptr(`externalId eq "914a"`),
 	}
-	groups, _, err := client.Enterprise.ListProvisionedSCIMEnterpriseGroups(ctx, "ee", opts)
+	groups, _, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "ee", opts)
 	if err != nil {
-		t.Errorf("Enterprise.ListProvisionedSCIMEnterpriseGroups returned error: %v", err)
+		t.Errorf("Enterprise.ListProvisionedSCIMGroups returned error: %v", err)
 	}
 
 	want := SCIMEnterpriseGroups{
@@ -185,17 +185,17 @@ func TestEnterpriseService_ListProvisionedSCIMEnterpriseGroups(t *testing.T) {
 	}
 
 	if diff := cmp.Diff(want, *groups); diff != "" {
-		t.Errorf("Enterprise.ListProvisionedSCIMEnterpriseGroups diff mismatch (-want +got):\n%v", diff)
+		t.Errorf("Enterprise.ListProvisionedSCIMGroups diff mismatch (-want +got):\n%v", diff)
 	}
 
-	const methodName = "ListProvisionedSCIMEnterpriseGroups"
+	const methodName = "ListProvisionedSCIMGroups"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListProvisionedSCIMEnterpriseGroups(ctx, "\n", opts)
+		_, _, err = client.Enterprise.ListProvisionedSCIMGroups(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, r, err := client.Enterprise.ListProvisionedSCIMEnterpriseGroups(ctx, "o", opts)
+		_, r, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "o", opts)
 		return r, err
 	})
 }

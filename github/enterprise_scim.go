@@ -45,7 +45,7 @@ type SCIMEnterpriseMeta struct {
 	Location     *string    `json:"location,omitempty"`     // A URL location of an object
 }
 
-// SCIMEnterpriseGroups represents the result of calling ListProvisionedSCIMEnterpriseGroups.
+// SCIMEnterpriseGroups represents the result of calling ListProvisionedSCIMGroups.
 type SCIMEnterpriseGroups struct {
 	Schemas      []string                         `json:"schemas,omitempty"`
 	TotalResults *int                             `json:"totalResults,omitempty"`
@@ -54,10 +54,10 @@ type SCIMEnterpriseGroups struct {
 	ItemsPerPage *int                             `json:"itemsPerPage,omitempty"`
 }
 
-// ListProvisionedSCIMEnterpriseGroupsOptions represents query parameters for ListProvisionedSCIMEnterpriseGroups.
+// ListProvisionedSCIMGroupsEnterpriseOptions represents query parameters for ListProvisionedSCIMGroups.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise--parameters
-type ListProvisionedSCIMEnterpriseGroupsOptions struct {
+type ListProvisionedSCIMGroupsEnterpriseOptions struct {
 	// If specified, only results that match the specified filter will be returned. Multiple filters are not supported.
 	// Possible filters are `externalId`, id, and `displayName`. For example,`?filter=externalId eq "9138790-10932-109120392-12321"`.
 	Filter *string `url:"filter,omitempty"`
@@ -71,12 +71,12 @@ type ListProvisionedSCIMEnterpriseGroupsOptions struct {
 	Count *int `url:"count,omitempty"`
 }
 
-// ListProvisionedSCIMEnterpriseGroups lists provisioned SCIM groups in an enterprise.
+// ListProvisionedSCIMGroups lists provisioned SCIM groups in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Groups
-func (s *EnterpriseService) ListProvisionedSCIMEnterpriseGroups(ctx context.Context, enterprise string, opts *ListProvisionedSCIMEnterpriseGroupsOptions) (*SCIMEnterpriseGroups, *Response, error) {
+func (s *EnterpriseService) ListProvisionedSCIMGroups(ctx context.Context, enterprise string, opts *ListProvisionedSCIMGroupsEnterpriseOptions) (*SCIMEnterpriseGroups, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {

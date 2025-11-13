@@ -18431,45 +18431,45 @@ func TestListProjectsPaginationOptions_GetPerPage(tt *testing.T) {
 	l.GetPerPage()
 }
 
-func TestListProvisionedSCIMEnterpriseGroupsOptions_GetCount(tt *testing.T) {
+func TestListProvisionedSCIMGroupsEnterpriseOptions_GetCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	l := &ListProvisionedSCIMEnterpriseGroupsOptions{Count: &zeroValue}
+	l := &ListProvisionedSCIMGroupsEnterpriseOptions{Count: &zeroValue}
 	l.GetCount()
-	l = &ListProvisionedSCIMEnterpriseGroupsOptions{}
+	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
 	l.GetCount()
 	l = nil
 	l.GetCount()
 }
 
-func TestListProvisionedSCIMEnterpriseGroupsOptions_GetExcludedAttributes(tt *testing.T) {
+func TestListProvisionedSCIMGroupsEnterpriseOptions_GetExcludedAttributes(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	l := &ListProvisionedSCIMEnterpriseGroupsOptions{ExcludedAttributes: &zeroValue}
+	l := &ListProvisionedSCIMGroupsEnterpriseOptions{ExcludedAttributes: &zeroValue}
 	l.GetExcludedAttributes()
-	l = &ListProvisionedSCIMEnterpriseGroupsOptions{}
+	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
 	l.GetExcludedAttributes()
 	l = nil
 	l.GetExcludedAttributes()
 }
 
-func TestListProvisionedSCIMEnterpriseGroupsOptions_GetFilter(tt *testing.T) {
+func TestListProvisionedSCIMGroupsEnterpriseOptions_GetFilter(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	l := &ListProvisionedSCIMEnterpriseGroupsOptions{Filter: &zeroValue}
+	l := &ListProvisionedSCIMGroupsEnterpriseOptions{Filter: &zeroValue}
 	l.GetFilter()
-	l = &ListProvisionedSCIMEnterpriseGroupsOptions{}
+	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
 	l.GetFilter()
 	l = nil
 	l.GetFilter()
 }
 
-func TestListProvisionedSCIMEnterpriseGroupsOptions_GetStartIndex(tt *testing.T) {
+func TestListProvisionedSCIMGroupsEnterpriseOptions_GetStartIndex(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	l := &ListProvisionedSCIMEnterpriseGroupsOptions{StartIndex: &zeroValue}
+	l := &ListProvisionedSCIMGroupsEnterpriseOptions{StartIndex: &zeroValue}
 	l.GetStartIndex()
-	l = &ListProvisionedSCIMEnterpriseGroupsOptions{}
+	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
 	l.GetStartIndex()
 	l = nil
 	l.GetStartIndex()

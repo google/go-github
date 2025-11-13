@@ -14183,7 +14183,7 @@ func (l *ListProjectsPaginationOptions) GetPerPage() int {
 }
 
 // GetCount returns the Count field if it's non-nil, zero value otherwise.
-func (l *ListProvisionedSCIMEnterpriseGroupsOptions) GetCount() int {
+func (l *ListProvisionedSCIMGroupsEnterpriseOptions) GetCount() int {
 	if l == nil || l.Count == nil {
 		return 0
 	}
@@ -14191,7 +14191,7 @@ func (l *ListProvisionedSCIMEnterpriseGroupsOptions) GetCount() int {
 }
 
 // GetExcludedAttributes returns the ExcludedAttributes field if it's non-nil, zero value otherwise.
-func (l *ListProvisionedSCIMEnterpriseGroupsOptions) GetExcludedAttributes() string {
+func (l *ListProvisionedSCIMGroupsEnterpriseOptions) GetExcludedAttributes() string {
 	if l == nil || l.ExcludedAttributes == nil {
 		return ""
 	}
@@ -14199,7 +14199,7 @@ func (l *ListProvisionedSCIMEnterpriseGroupsOptions) GetExcludedAttributes() str
 }
 
 // GetFilter returns the Filter field if it's non-nil, zero value otherwise.
-func (l *ListProvisionedSCIMEnterpriseGroupsOptions) GetFilter() string {
+func (l *ListProvisionedSCIMGroupsEnterpriseOptions) GetFilter() string {
 	if l == nil || l.Filter == nil {
 		return ""
 	}
@@ -14207,7 +14207,7 @@ func (l *ListProvisionedSCIMEnterpriseGroupsOptions) GetFilter() string {
 }
 
 // GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
-func (l *ListProvisionedSCIMEnterpriseGroupsOptions) GetStartIndex() int {
+func (l *ListProvisionedSCIMGroupsEnterpriseOptions) GetStartIndex() int {
 	if l == nil || l.StartIndex == nil {
 		return 0
 	}
