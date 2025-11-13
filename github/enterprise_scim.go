@@ -10,10 +10,12 @@ import (
 	"fmt"
 )
 
-// SCIMSchemasURINamespacesGroups URIs used to indicate the namespaces of the SCIM schemas for groups.
+// SCIMSchemasURINamespacesGroups is the SCIM schema URI namespace for group resources.
+// This constant represents the standard SCIM core schema for group objects as defined by RFC 7643.
 const SCIMSchemasURINamespacesGroups = "urn:ietf:params:scim:schemas:core:2.0:Group"
 
-// SCIMSchemasURINamespacesListResponse URIs used to indicate the namespaces of the SCIM schemas for list responses.
+// SCIMSchemasURINamespacesListResponse is the SCIM schema URI namespace for list response resources.
+// This constant represents the standard SCIM namespace for list responses used in paginated queries, as defined by RFC 7644.
 const SCIMSchemasURINamespacesListResponse = "urn:ietf:params:scim:api:messages:2.0:ListResponse"
 
 // SCIMEnterpriseGroupAttributes represents supported SCIM Enterprise group attributes.
@@ -28,11 +30,11 @@ type SCIMEnterpriseGroupAttributes struct {
 	Meta    *SCIMEnterpriseMeta `json:"meta,omitempty"`    // The metadata associated with the creation/updates to the group.
 }
 
-// SCIMEnterpriseDisplayReference represents a JSON SCIM (System for Cross-domain Identity Management) resource.
+// SCIMEnterpriseDisplayReference represents a JSON SCIM (System for Cross-domain Identity Management) resource reference.
 type SCIMEnterpriseDisplayReference struct {
-	Value   string  `json:"value"`             // The local unique identifier for the member
-	Ref     string  `json:"$ref"`              //nolint:jsonfieldname // The $ref is a standard SCIM field
-	Display *string `json:"display,omitempty"` // The display name associated with the member
+	Value   string  `json:"value"`             // The local unique identifier for the member (e.g., user ID or group ID).
+	Ref     string  `json:"$ref"`              // The URI reference to the member resource (e.g., https://api.github.com/scim/v2/Users/{id}).
+	Display *string `json:"display,omitempty"` // The display name associated with the member (e.g., user name or group name).
 }
 
 // SCIMEnterpriseMeta represents metadata about the SCIM resource.
