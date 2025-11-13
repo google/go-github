@@ -50,7 +50,6 @@ func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var comments []*RepositoryComment
@@ -79,7 +78,6 @@ func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var comments []*RepositoryComment
@@ -125,7 +123,6 @@ func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	c := new(RepositoryComment)

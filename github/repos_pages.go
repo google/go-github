@@ -219,7 +219,6 @@ func (s *RepositoriesService) DisablePages(ctx context.Context, owner, repo stri
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
 
 	return s.client.Do(ctx, req, nil)
