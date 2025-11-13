@@ -110,7 +110,7 @@ func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestEnterpriseService_ListProvisionedSCIMGroupsForEnterprise(t *testing.T) {
+func TestEnterpriseService_ListProvisionedSCIMEnterpriseGroups(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -149,15 +149,15 @@ func TestEnterpriseService_ListProvisionedSCIMGroupsForEnterprise(t *testing.T) 
 	})
 
 	ctx := t.Context()
-	opts := &ListProvisionedSCIMGroupsForEnterpriseOptions{
+	opts := &ListProvisionedSCIMEnterpriseGroupsOptions{
 		StartIndex:         Ptr(1),
 		ExcludedAttributes: Ptr("members,meta"),
 		Count:              Ptr(3),
 		Filter:             Ptr(`externalId eq "914a"`),
 	}
-	groups, _, err := client.Enterprise.ListProvisionedSCIMGroupsForEnterprise(ctx, "ee", opts)
+	groups, _, err := client.Enterprise.ListProvisionedSCIMEnterpriseGroups(ctx, "ee", opts)
 	if err != nil {
-		t.Errorf("Enterprise.ListProvisionedSCIMGroupsForEnterprise returned error: %v", err)
+		t.Errorf("Enterprise.ListProvisionedSCIMEnterpriseGroups returned error: %v", err)
 	}
 
 	want := SCIMEnterpriseGroups{
@@ -185,17 +185,17 @@ func TestEnterpriseService_ListProvisionedSCIMGroupsForEnterprise(t *testing.T) 
 	}
 
 	if diff := cmp.Diff(want, *groups); diff != "" {
-		t.Errorf("Enterprise.ListProvisionedSCIMGroupsForEnterprise diff mismatch (-want +got):\n%v", diff)
+		t.Errorf("Enterprise.ListProvisionedSCIMEnterpriseGroups diff mismatch (-want +got):\n%v", diff)
 	}
 
-	const methodName = "ListProvisionedSCIMGroupsForEnterprise"
+	const methodName = "ListProvisionedSCIMEnterpriseGroups"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListProvisionedSCIMGroupsForEnterprise(ctx, "\n", opts)
+		_, _, err = client.Enterprise.ListProvisionedSCIMEnterpriseGroups(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, r, err := client.Enterprise.ListProvisionedSCIMGroupsForEnterprise(ctx, "o", opts)
+		_, r, err := client.Enterprise.ListProvisionedSCIMEnterpriseGroups(ctx, "o", opts)
 		return r, err
 	})
 }
