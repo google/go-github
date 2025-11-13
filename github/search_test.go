@@ -8,6 +8,7 @@ package github
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -77,7 +78,12 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 				]
 			}
 		`
-		if r.Header.Get("Accept") == "application/vnd.github.v3.text-match+json" {
+		list := strings.Split(r.Header.Get("Accept"), ",")
+		aMap := make(map[string]struct{})
+		for _, s := range list {
+			aMap[strings.TrimSpace(s)] = struct{}{}
+		}
+		if _, ok := aMap["application/vnd.github.v3.text-match+json"]; ok {
 			textMatchResponse = `
 					{
 						"total_count": 1,

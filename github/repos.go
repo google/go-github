@@ -434,7 +434,6 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opts *R
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
 	acceptHeaders := []string{mediaTypeTopicsPreview, mediaTypeRepositoryVisibilityPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
@@ -638,7 +637,6 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when the license support fully launches
 	// https://docs.github.com/rest/licenses/#get-a-repositorys-license
 	acceptHeaders := []string{
 		mediaTypeCodesOfConductPreview,
@@ -671,7 +669,6 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
 	r := new(Repository)
@@ -789,7 +786,6 @@ func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner,
 		return false, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
 	resp, err := s.client.Do(ctx, req, nil)
@@ -810,7 +806,6 @@ func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, own
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
 	return s.client.Do(ctx, req, nil)
@@ -829,7 +824,6 @@ func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, ow
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
 	return s.client.Do(ctx, req, nil)
@@ -1507,7 +1501,6 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	p := new(Protection)
@@ -1587,7 +1580,6 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	p := new(Protection)
@@ -1630,7 +1622,6 @@ func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeSignaturePreview)
 
 	p := new(SignaturesProtectedBranch)
@@ -1657,7 +1648,6 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeSignaturePreview)
 
 	r := new(SignaturesProtectedBranch)
@@ -1683,7 +1673,6 @@ func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Co
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeSignaturePreview)
 
 	return s.client.Do(ctx, req, nil)
@@ -1764,7 +1753,6 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	r := new(PullRequestReviewsEnforcement)
@@ -1791,7 +1779,6 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	r := new(PullRequestReviewsEnforcement)
@@ -1823,7 +1810,6 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	r := new(PullRequestReviewsEnforcement)
@@ -1933,7 +1919,6 @@ func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	topics := new(repositoryTopics)
@@ -1963,7 +1948,6 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	t = new(repositoryTopics)
