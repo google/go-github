@@ -27,7 +27,6 @@ func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string,
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
 	var blockedUsers []*User
@@ -52,7 +51,6 @@ func (s *OrganizationsService) IsBlocked(ctx context.Context, org, user string) 
 		return false, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
 	resp, err := s.client.Do(ctx, req, nil)
@@ -73,7 +71,6 @@ func (s *OrganizationsService) BlockUser(ctx context.Context, org, user string) 
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
 	return s.client.Do(ctx, req, nil)
@@ -92,7 +89,6 @@ func (s *OrganizationsService) UnblockUser(ctx context.Context, org, user string
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
 	return s.client.Do(ctx, req, nil)

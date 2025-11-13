@@ -188,7 +188,6 @@ func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	acceptHeaders := []string{mediaTypeTimelinePreview, mediaTypeProjectCardDetailsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
