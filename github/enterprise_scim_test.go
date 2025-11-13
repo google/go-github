@@ -32,7 +32,7 @@ func TestSCIMProvisionedGroups_Marshal(t *testing.T) {
 			ExternalID: Ptr("eidgn1"),
 			ID:         Ptr("idgn1"),
 			Meta: &SCIMEnterpriseMeta{
-				ResourceType: Ptr("Group"),
+				ResourceType: "Group",
 				Created:      &Timestamp{referenceTime},
 				LastModified: &Timestamp{referenceTime},
 				Location:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1"),
@@ -82,7 +82,7 @@ func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
 		ID:         Ptr("id"),
 		Schemas:    []string{"s1"},
 		Meta: &SCIMEnterpriseMeta{
-			ResourceType: Ptr("rt"),
+			ResourceType: "rt",
 			Created:      &Timestamp{referenceTime},
 			LastModified: &Timestamp{referenceTime},
 			Location:     Ptr("l"),
@@ -168,7 +168,7 @@ func TestEnterpriseService_ListProvisionedSCIMEnterpriseGroups(t *testing.T) {
 		Resources: []*SCIMEnterpriseGroupAttributes{{
 			ID: Ptr("914a"),
 			Meta: &SCIMEnterpriseMeta{
-				ResourceType: Ptr("Group"),
+				ResourceType: "Group",
 				Created:      &Timestamp{referenceTime},
 				LastModified: &Timestamp{referenceTime},
 				Location:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Groups/914a"),

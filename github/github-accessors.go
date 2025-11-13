@@ -26110,14 +26110,6 @@ func (s *SCIMEnterpriseMeta) GetLocation() string {
 	return *s.Location
 }
 
-// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
-func (s *SCIMEnterpriseMeta) GetResourceType() string {
-	if s == nil || s.ResourceType == nil {
-		return ""
-	}
-	return *s.ResourceType
-}
-
 // GetCreated returns the Created field if it's non-nil, zero value otherwise.
 func (s *SCIMMeta) GetCreated() Timestamp {
 	if s == nil || s.Created == nil {

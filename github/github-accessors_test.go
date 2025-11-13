@@ -33686,17 +33686,6 @@ func TestSCIMEnterpriseMeta_GetLocation(tt *testing.T) {
 	s.GetLocation()
 }
 
-func TestSCIMEnterpriseMeta_GetResourceType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	s := &SCIMEnterpriseMeta{ResourceType: &zeroValue}
-	s.GetResourceType()
-	s = &SCIMEnterpriseMeta{}
-	s.GetResourceType()
-	s = nil
-	s.GetResourceType()
-}
-
 func TestSCIMMeta_GetCreated(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp

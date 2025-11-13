@@ -33,25 +33,25 @@ type SCIMEnterpriseGroupAttributes struct {
 // SCIMEnterpriseDisplayReference represents a JSON SCIM (System for Cross-domain Identity Management) resource reference.
 type SCIMEnterpriseDisplayReference struct {
 	Value   string  `json:"value"`             // The local unique identifier for the member (e.g., user ID or group ID).
-	Ref     string  `json:"$ref"`              // The URI reference to the member resource (e.g., https://api.github.com/scim/v2/Users/{id}).
+	Ref     string  `json:"$ref"`              //nolint:jsonfieldname // The URI reference to the member resource (e.g., https://api.github.com/scim/v2/Users/{id}).
 	Display *string `json:"display,omitempty"` // The display name associated with the member (e.g., user name or group name).
 }
 
 // SCIMEnterpriseMeta represents metadata about the SCIM resource.
 type SCIMEnterpriseMeta struct {
-	ResourceType *string    `json:"resourceType"`           // A type of a resource (`User` or `Group`).
+	ResourceType string     `json:"resourceType"`           // A type of a resource (`User` or `Group`).
 	Created      *Timestamp `json:"created,omitempty"`      // A date and time when the user was created.
 	LastModified *Timestamp `json:"lastModified,omitempty"` // A date and time when the user was last modified.
 	Location     *string    `json:"location,omitempty"`     // A URL location of an object
 }
 
-// SCIMEnterpriseGroups represents the result of calling ListProvisionedSCIMEnterpriseGroupss.
+// SCIMEnterpriseGroups represents the result of calling ListProvisionedSCIMEnterpriseGroups.
 type SCIMEnterpriseGroups struct {
-	Schemas      []string                         `json:"schemas"`
-	TotalResults *int                             `json:"totalResults"`
-	Resources    []*SCIMEnterpriseGroupAttributes `json:"Resources"`
-	StartIndex   *int                             `json:"startIndex"`
-	ItemsPerPage *int                             `json:"itemsPerPage"`
+	Schemas      []string                         `json:"schemas,omitempty"`
+	TotalResults *int                             `json:"totalResults,omitempty"`
+	Resources    []*SCIMEnterpriseGroupAttributes `json:"Resources,omitempty"`
+	StartIndex   *int                             `json:"startIndex,omitempty"`
+	ItemsPerPage *int                             `json:"itemsPerPage,omitempty"`
 }
 
 // ListProvisionedSCIMEnterpriseGroupsOptions represents query parameters for ListProvisionedSCIMEnterpriseGroups.
