@@ -8465,6 +8465,17 @@ func TestCreateRunnerGroupRequest_GetName(tt *testing.T) {
 	c.GetName()
 }
 
+func TestCreateRunnerGroupRequest_GetNetworkConfigurationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateRunnerGroupRequest{NetworkConfigurationID: &zeroValue}
+	c.GetNetworkConfigurationID()
+	c = &CreateRunnerGroupRequest{}
+	c.GetNetworkConfigurationID()
+	c = nil
+	c.GetNetworkConfigurationID()
+}
+
 func TestCreateRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -33104,6 +33115,17 @@ func TestRunnerGroup_GetDefault(tt *testing.T) {
 	r.GetDefault()
 }
 
+func TestRunnerGroup_GetHostedRunnersURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RunnerGroup{HostedRunnersURL: &zeroValue}
+	r.GetHostedRunnersURL()
+	r = &RunnerGroup{}
+	r.GetHostedRunnersURL()
+	r = nil
+	r.GetHostedRunnersURL()
+}
+
 func TestRunnerGroup_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -33135,6 +33157,17 @@ func TestRunnerGroup_GetName(tt *testing.T) {
 	r.GetName()
 	r = nil
 	r.GetName()
+}
+
+func TestRunnerGroup_GetNetworkConfigurationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RunnerGroup{NetworkConfigurationID: &zeroValue}
+	r.GetNetworkConfigurationID()
+	r = &RunnerGroup{}
+	r.GetNetworkConfigurationID()
+	r = nil
+	r.GetNetworkConfigurationID()
 }
 
 func TestRunnerGroup_GetRestrictedToWorkflows(tt *testing.T) {
@@ -37796,6 +37829,17 @@ func TestUpdateRunnerGroupRequest_GetName(tt *testing.T) {
 	u.GetName()
 	u = nil
 	u.GetName()
+}
+
+func TestUpdateRunnerGroupRequest_GetNetworkConfigurationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateRunnerGroupRequest{NetworkConfigurationID: &zeroValue}
+	u.GetNetworkConfigurationID()
+	u = &UpdateRunnerGroupRequest{}
+	u.GetNetworkConfigurationID()
+	u = nil
+	u.GetNetworkConfigurationID()
 }
 
 func TestUpdateRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
