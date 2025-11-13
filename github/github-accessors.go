@@ -14326,6 +14326,38 @@ func (l *ListRepositories) GetTotalCount() int {
 	return *l.TotalCount
 }
 
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (l *ListRepositoriesForCodeSecurityConfigurationOptions) GetAfter() string {
+	if l == nil || l.After == nil {
+		return ""
+	}
+	return *l.After
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (l *ListRepositoriesForCodeSecurityConfigurationOptions) GetBefore() string {
+	if l == nil || l.Before == nil {
+		return ""
+	}
+	return *l.Before
+}
+
+// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
+func (l *ListRepositoriesForCodeSecurityConfigurationOptions) GetPerPage() int {
+	if l == nil || l.PerPage == nil {
+		return 0
+	}
+	return *l.PerPage
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (l *ListRepositoriesForCodeSecurityConfigurationOptions) GetStatus() string {
+	if l == nil || l.Status == nil {
+		return ""
+	}
+	return *l.Status
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (l *ListRunnersOptions) GetName() string {
 	if l == nil || l.Name == nil {

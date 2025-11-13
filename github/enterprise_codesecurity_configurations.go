@@ -76,12 +76,12 @@ func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context,
 	return configuration, resp, nil
 }
 
-// GetDefaultCodeSecurityConfigurations lists the default code security configurations for an enterprise.
+// ListDefaultCodeSecurityConfigurations lists the default code security configurations for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-default-code-security-configurations-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations/defaults
-func (s *EnterpriseService) GetDefaultCodeSecurityConfigurations(ctx context.Context, enterprise string) ([]*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
+func (s *EnterpriseService) ListDefaultCodeSecurityConfigurations(ctx context.Context, enterprise string) ([]*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/defaults", enterprise)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -97,13 +97,13 @@ func (s *EnterpriseService) GetDefaultCodeSecurityConfigurations(ctx context.Con
 	return configurations, resp, nil
 }
 
-// ListCodeSecurityConfiguration gets a code security configuration available in an enterprise.
+// GetCodeSecurityConfiguration gets a code security configuration available in an enterprise.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#retrieve-a-code-security-configuration-of-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}
-func (s *EnterpriseService) ListCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64) (*CodeSecurityConfiguration, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, id)
+func (s *EnterpriseService) GetCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64) (*CodeSecurityConfiguration, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, configurationID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -123,8 +123,8 @@ func (s *EnterpriseService) ListCodeSecurityConfiguration(ctx context.Context, e
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#update-a-custom-code-security-configuration-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/code-security/configurations/{configuration_id}
-func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, id)
+func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, configurationID)
 
 	req, err := s.client.NewRequest("PATCH", u, config)
 	if err != nil {
@@ -144,8 +144,8 @@ func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#delete-a-code-security-configuration-for-an-enterprise
 //
 //meta:operation DELETE /enterprises/{enterprise}/code-security/configurations/{configuration_id}
-func (s *EnterpriseService) DeleteCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64) (*Response, error) {
-	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, id)
+func (s *EnterpriseService) DeleteCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, configurationID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
@@ -165,8 +165,8 @@ func (s *EnterpriseService) DeleteCodeSecurityConfiguration(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#attach-an-enterprise-configuration-to-repositories
 //
 //meta:operation POST /enterprises/{enterprise}/code-security/configurations/{configuration_id}/attach
-func (s *EnterpriseService) AttachCodeSecurityConfigurationToRepositories(ctx context.Context, enterprise string, id int64, scope string) (*Response, error) {
-	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v/attach", enterprise, id)
+func (s *EnterpriseService) AttachCodeSecurityConfigurationToRepositories(ctx context.Context, enterprise string, configurationID int64, scope string) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v/attach", enterprise, configurationID)
 	type scopeType struct {
 		Scope string `json:"scope"`
 	}
@@ -184,13 +184,13 @@ func (s *EnterpriseService) AttachCodeSecurityConfigurationToRepositories(ctx co
 
 // SetDefaultCodeSecurityConfiguration sets a code security configuration as a default for an enterprise.
 // `defaultForNewRepos` specifies which types of repository this security configuration should be applied to by default.
-// Can be one of: `all`, `none`, `private_and_internal, public`.
+// Can be one of: `all`, `none`, `private_and_internal`, `public`.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#set-a-code-security-configuration-as-a-default-for-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/code-security/configurations/{configuration_id}/defaults
-func (s *EnterpriseService) SetDefaultCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64, defaultForNewRepos string) (*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v/defaults", enterprise, id)
+func (s *EnterpriseService) SetDefaultCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64, defaultForNewRepos string) (*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v/defaults", enterprise, configurationID)
 	type configParam struct {
 		DefaultForNewRepos string `json:"default_for_new_repos"`
 	}
@@ -207,13 +207,17 @@ func (s *EnterpriseService) SetDefaultCodeSecurityConfiguration(ctx context.Cont
 	return config, resp, nil
 }
 
-// GetRepositoriesForCodeSecurityConfiguration lists the repositories associated with an enterprise code security configuration.
+// ListRepositoriesForCodeSecurityConfiguration lists the repositories associated with an enterprise code security configuration.
 //
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-repositories-associated-with-an-enterprise-code-security-configuration
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}/repositories
-func (s *EnterpriseService) GetRepositoriesForCodeSecurityConfiguration(ctx context.Context, enterprise string, id int64) ([]*RepositoryAttachment, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v/repositories", enterprise, id)
+func (s *EnterpriseService) ListRepositoriesForCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64, opts *ListRepositoriesForCodeSecurityConfigurationOptions) ([]*RepositoryAttachment, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v/repositories", enterprise, configurationID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
