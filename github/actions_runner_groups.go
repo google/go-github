@@ -18,6 +18,8 @@ type RunnerGroup struct {
 	Default                      *bool    `json:"default,omitempty"`
 	SelectedRepositoriesURL      *string  `json:"selected_repositories_url,omitempty"`
 	RunnersURL                   *string  `json:"runners_url,omitempty"`
+	HostedRunnersURL             *string  `json:"hosted_runners_url,omitempty"`
+	NetworkConfigurationID       *string  `json:"network_configuration_id,omitempty"`
 	Inherited                    *bool    `json:"inherited,omitempty"`
 	AllowsPublicRepositories     *bool    `json:"allows_public_repositories,omitempty"`
 	RestrictedToWorkflows        *bool    `json:"restricted_to_workflows,omitempty"`
@@ -45,6 +47,8 @@ type CreateRunnerGroupRequest struct {
 	RestrictedToWorkflows *bool `json:"restricted_to_workflows,omitempty"`
 	// List of workflows the runner group should be allowed to run. This setting will be ignored unless RestrictedToWorkflows is set to true.
 	SelectedWorkflows []string `json:"selected_workflows,omitempty"`
+	// The identifier of a hosted compute network configuration.
+	NetworkConfigurationID *string `json:"network_configuration_id,omitempty"`
 }
 
 // UpdateRunnerGroupRequest represents a request to update a Runner group for an organization.
@@ -54,6 +58,7 @@ type UpdateRunnerGroupRequest struct {
 	AllowsPublicRepositories *bool    `json:"allows_public_repositories,omitempty"`
 	RestrictedToWorkflows    *bool    `json:"restricted_to_workflows,omitempty"`
 	SelectedWorkflows        []string `json:"selected_workflows,omitempty"`
+	NetworkConfigurationID   *string  `json:"network_configuration_id,omitempty"`
 }
 
 // SetRepoAccessRunnerGroupRequest represents a request to replace the list of repositories
