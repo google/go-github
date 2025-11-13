@@ -197,7 +197,6 @@ func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, ow
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeListPullsOrBranchesForCommitPreview)
 	var pulls []*PullRequest
 	resp, err := s.client.Do(ctx, req, &pulls)
@@ -332,7 +331,6 @@ func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeUpdatePullRequestBranchPreview)
 
 	p := new(PullRequestBranchUpdateResponse)

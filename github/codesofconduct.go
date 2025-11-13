@@ -36,7 +36,6 @@ func (s *CodesOfConductService) List(ctx context.Context) ([]*CodeOfConduct, *Re
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
 	var cs []*CodeOfConduct
@@ -67,7 +66,6 @@ func (s *CodesOfConductService) Get(ctx context.Context, key string) (*CodeOfCon
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
 	coc := new(CodeOfConduct)

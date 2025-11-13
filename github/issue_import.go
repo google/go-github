@@ -81,7 +81,6 @@ func (s *IssueImportService) Create(ctx context.Context, owner, repo string, iss
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
 	i := new(IssueImportResponse)
@@ -112,7 +111,6 @@ func (s *IssueImportService) CheckStatus(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
 	i := new(IssueImportResponse)
@@ -136,7 +134,6 @@ func (s *IssueImportService) CheckStatusSince(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept headers when APIs fully launch.
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
 	var b bytes.Buffer

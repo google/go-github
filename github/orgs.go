@@ -236,7 +236,6 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 
 	organization := new(Organization)
@@ -281,7 +280,6 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 
 	o := new(Organization)

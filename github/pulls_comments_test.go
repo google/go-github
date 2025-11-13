@@ -271,7 +271,6 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 		v := new(PullRequestComment)
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
-		// TODO: remove custom Accept header assertion when the API fully launches.
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

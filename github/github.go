@@ -56,7 +56,7 @@ const (
 	mediaTypeIssueImportAPI    = "application/vnd.github.golden-comet-preview+json"
 	mediaTypeStarring          = "application/vnd.github.star+json"
 
-	// Media Type values to access preview APIs
+	// Media Type values to access preview APIs.
 	// These media types will be added to the API request as headers
 	// and used to enable particular features on GitHub API that are still in preview.
 	// After some time, specific media types will be promoted (to a "stable" state).
@@ -71,7 +71,7 @@ const (
 	// versions. Additionally, non-functional (preview) headers don't create any side effects
 	// on GitHub Cloud version.
 	//
-	// See https://github.com/google/go-github/pull/2125 for full context.
+	// See https://github.com/google/go-github/pull/2125 and https://github.com/google/go-github/pull/2188 for full context.
 
 	// https://help.github.com/enterprise/2.4/admin/guides/migrations/exporting-the-github-com-organization-s-repositories/
 	mediaTypeMigrationsPreview = "application/vnd.github.wyandotte-preview+json"
@@ -90,6 +90,9 @@ const (
 
 	// https://developer.github.com/changes/2016-09-14-projects-api/
 	mediaTypeProjectsPreview = "application/vnd.github.inertia-preview+json"
+
+	// https://developer.github.com/changes/2017-01-05-commit-search-api/
+	mediaTypeCommitSearchPreview = "application/vnd.github.cloak-preview+json"
 
 	// https://developer.github.com/changes/2017-02-28-user-blocking-apis-and-webhook/
 	mediaTypeBlockUsersPreview = "application/vnd.github.giant-sentry-fist-preview+json"

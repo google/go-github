@@ -195,7 +195,6 @@ func (s *IssuesService) listIssues(ctx context.Context, u string, opts *IssueLis
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launch.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
@@ -268,7 +267,6 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
@@ -292,7 +290,6 @@ func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int)
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launch.
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	issue := new(Issue)

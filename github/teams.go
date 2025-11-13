@@ -405,7 +405,6 @@ func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int6
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when topics API fully launches.
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	var repos []*Repository
@@ -434,7 +433,6 @@ func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when topics API fully launches.
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	var repos []*Repository
@@ -626,7 +624,6 @@ func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID i
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	var projects []*ProjectV2
@@ -651,7 +648,6 @@ func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug str
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	var projects []*ProjectV2
@@ -678,7 +674,6 @@ func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	projects := &ProjectV2{}
@@ -703,7 +698,6 @@ func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug s
 		return nil, nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	projects := &ProjectV2{}
@@ -743,7 +737,6 @@ func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, pr
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
@@ -763,7 +756,6 @@ func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug strin
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
@@ -788,7 +780,6 @@ func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID,
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)
@@ -811,7 +802,6 @@ func (s *TeamsService) RemoveTeamProjectBySlug(ctx context.Context, org, slug st
 		return nil, err
 	}
 
-	// TODO: remove custom Accept header when this API fully launches.
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	return s.client.Do(ctx, req, nil)

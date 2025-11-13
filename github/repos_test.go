@@ -1159,7 +1159,6 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprintf(w, `{
 						"required_status_checks":{
@@ -1314,7 +1313,6 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 	for _, test := range tests {
 		mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "GET")
-			// TODO: remove custom Accept header when this API fully launches
 			testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 			fmt.Fprintf(w, `{
 					"required_status_checks":{
@@ -1475,7 +1473,6 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
 
-				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -1664,7 +1661,6 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
 
-				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -1844,7 +1840,6 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
 
-				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -1998,7 +1993,6 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
 
-				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -2141,7 +2135,6 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
 
-				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -2816,7 +2809,6 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
-				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
 			"dismissal_restrictions":{
@@ -2905,7 +2897,6 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 				if !cmp.Equal(v, input) {
 					t.Errorf("Request body = %+v, want %+v", v, input)
 				}
-				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
 					"dismissal_restrictions":{
@@ -2979,7 +2970,6 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PATCH")
-				// TODO: remove custom Accept header when this API fully launches
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				testBody(t, r, `{"dismissal_restrictions":{}}`+"\n")
 				fmt.Fprint(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
