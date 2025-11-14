@@ -9,4 +9,5 @@ type Example struct {
 	GithubThing string `json:"github_thing"`      // Should not be flagged
 	ID          string `json:"id,omitempty"`      // Should not be flagged
 	Strings     string `json:"strings,omitempty"` // Should not be flagged
+	Ref         string `json:"$ref,omitempty"`    // Should not be flagged
 }

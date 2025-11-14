@@ -134,6 +134,8 @@ func checkGoFieldName(structName, goFieldName, jsonTagName string, tokenPos toke
 }
 
 func splitJSONTag(jsonTagName string) []string {
+	jsonTagName = strings.TrimPrefix(jsonTagName, "$")
+
 	if strings.Contains(jsonTagName, "_") {
 		return strings.Split(jsonTagName, "_")
 	}

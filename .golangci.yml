@@ -202,7 +202,6 @@ linters:
             - RepositoriesSearchResult.Repositories
             - RepositoriesSearchResult.Total
             - RepositoryVulnerabilityAlert.GitHubSecurityAdvisoryID
-            - SCIMDisplayReference.Ref
             - SecretScanningAlertLocationDetails.Startline # TODO: StartLine
             - SecretScanningPatternOverride.Bypassrate # TODO: BypassRate
             - StarredRepository.Repository # TODO: Repo
