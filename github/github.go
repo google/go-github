@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	Version = "v78.0.0"
+	Version = "v79.0.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
