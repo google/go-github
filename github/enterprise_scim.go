@@ -19,7 +19,7 @@ const SCIMSchemasURINamespacesGroups = "urn:ietf:params:scim:schemas:core:2.0:Gr
 const SCIMSchemasURINamespacesListResponse = "urn:ietf:params:scim:api:messages:2.0:ListResponse"
 
 // SCIMEnterpriseGroupAttributes represents supported SCIM Enterprise group attributes.
-
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#supported-scim-group-attributes
 type SCIMEnterpriseGroupAttributes struct {
 	DisplayName *string                           `json:"displayName,omitempty"` // Human-readable name for a group.
