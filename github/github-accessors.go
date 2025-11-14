@@ -26246,6 +26246,94 @@ func (s *SCIMEnterpriseMeta) GetLocation() string {
 	return *s.Location
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseUserAttributes) GetID() string {
+	if s == nil || s.ID == nil {
+		return ""
+	}
+	return *s.ID
+}
+
+// GetMeta returns the Meta field.
+func (s *SCIMEnterpriseUserAttributes) GetMeta() *SCIMEnterpriseMeta {
+	if s == nil {
+		return nil
+	}
+	return s.Meta
+}
+
+// GetName returns the Name field.
+func (s *SCIMEnterpriseUserAttributes) GetName() *SCIMEnterpriseUserName {
+	if s == nil {
+		return nil
+	}
+	return s.Name
+}
+
+// GetFormatted returns the Formatted field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseUserName) GetFormatted() string {
+	if s == nil || s.Formatted == nil {
+		return ""
+	}
+	return *s.Formatted
+}
+
+// GetMiddleName returns the MiddleName field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseUserName) GetMiddleName() string {
+	if s == nil || s.MiddleName == nil {
+		return ""
+	}
+	return *s.MiddleName
+}
+
+// GetDisplay returns the Display field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseUserRole) GetDisplay() string {
+	if s == nil || s.Display == nil {
+		return ""
+	}
+	return *s.Display
+}
+
+// GetPrimary returns the Primary field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseUserRole) GetPrimary() bool {
+	if s == nil || s.Primary == nil {
+		return false
+	}
+	return *s.Primary
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseUserRole) GetType() string {
+	if s == nil || s.Type == nil {
+		return ""
+	}
+	return *s.Type
+}
+
+// GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseUsers) GetItemsPerPage() int {
+	if s == nil || s.ItemsPerPage == nil {
+		return 0
+	}
+	return *s.ItemsPerPage
+}
+
+// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseUsers) GetStartIndex() int {
+	if s == nil || s.StartIndex == nil {
+		return 0
+	}
+	return *s.StartIndex
+}
+
+// GetTotalResults returns the TotalResults field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseUsers) GetTotalResults() int {
+	if s == nil || s.TotalResults == nil {
+		return 0
+	}
+	return *s.TotalResults
+}
+
 // GetCreated returns the Created field if it's non-nil, zero value otherwise.
 func (s *SCIMMeta) GetCreated() Timestamp {
 	if s == nil || s.Created == nil {

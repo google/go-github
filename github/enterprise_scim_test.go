@@ -67,6 +67,139 @@ func TestSCIMEnterpriseGroups_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestSCIMEnterpriseUsers_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &SCIMEnterpriseUsers{}, "{}")
+
+	u := &SCIMEnterpriseUsers{
+		Schemas:      []string{SCIMSchemasURINamespacesListResponse},
+		TotalResults: Ptr(1),
+		ItemsPerPage: Ptr(1),
+		StartIndex:   Ptr(1),
+		Resources: []*SCIMEnterpriseUserAttributes{{
+			Active: true,
+			Emails: []*SCIMEnterpriseUserEmail{{
+				Primary: true,
+				Type:    "work",
+				Value:   "un1@email.com",
+			}},
+			Roles: []*SCIMEnterpriseUserRole{{
+				Display: Ptr("rd1"),
+				Primary: Ptr(true),
+				Type:    Ptr("rt1"),
+				Value:   "rv1",
+			}},
+			Schemas:  []string{SCIMSchemasURINamespacesUser},
+			UserName: "un1",
+			Groups: []*SCIMEnterpriseDisplayReference{{
+				Value:   "idgn1",
+				Ref:     "https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1",
+				Display: Ptr("gn1"),
+			}},
+			ID:          Ptr("idun1"),
+			ExternalID:  "eidun1",
+			DisplayName: "dun1",
+			Meta: &SCIMEnterpriseMeta{
+				ResourceType: "User",
+				Created:      &Timestamp{referenceTime},
+				LastModified: &Timestamp{referenceTime},
+				Location:     Ptr("https://api.github.com/scim/v2/enterprises/ee/User/idun1"),
+			},
+			Name: &SCIMEnterpriseUserName{
+				GivenName:  "gnn1",
+				FamilyName: "fnn1",
+				Formatted:  Ptr("f1"),
+				MiddleName: Ptr("mn1"),
+			},
+		}},
+	}
+
+	want := `{
+        "schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
+        "TotalResults": 1,
+        "itemsPerPage": 1,
+        "StartIndex": 1,
+        "Resources": [{
+            "active": true,
+            "emails": [{
+                "primary": true,
+                "type": "work",
+                "value": "un1@email.com"
+            }],
+            "roles": [{
+                "display": "rd1",
+                "primary": true,
+                "type": "rt1",
+                "value": "rv1"
+            }],
+            "schemas": ["` + SCIMSchemasURINamespacesUser + `"],
+            "userName": "un1",
+            "groups": [{
+                "value": "idgn1",
+                "$ref": "https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1",
+                "display": "gn1"
+            }],
+            "id": "idun1",
+            "externalId": "eidun1",
+            "name": {
+                "givenName": "gnn1",
+                "familyName": "fnn1",
+                "formatted": "f1",
+                "middleName": "mn1"
+            },
+            "displayName": "dun1",
+            "meta": {
+                "resourceType": "User",
+                "created": ` + referenceTimeStr + `,
+                "lastModified": ` + referenceTimeStr + `,
+                "location": "https://api.github.com/scim/v2/enterprises/ee/User/idun1"
+            }
+        }]
+    }`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestListProvisionedSCIMGroupsEnterpriseOptions_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ListProvisionedSCIMGroupsEnterpriseOptions{}, "{}")
+
+	u := &ListProvisionedSCIMGroupsEnterpriseOptions{
+		Filter:             "f",
+		ExcludedAttributes: "ea",
+		StartIndex:         5,
+		Count:              9,
+	}
+
+	want := `{
+        "filter": "f",
+        "excludedAttributes": "ea",
+        "startIndex": 5,
+        "count": 9
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestListProvisionedSCIMUsersEnterpriseOptions_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ListProvisionedSCIMUsersEnterpriseOptions{}, "{}")
+
+	u := &ListProvisionedSCIMUsersEnterpriseOptions{
+		Filter:     "f",
+		StartIndex: 3,
+		Count:      7,
+	}
+
+	want := `{
+        "filter": "f",
+        "startIndex": 3,
+        "count": 7
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &SCIMEnterpriseGroupAttributes{}, "{}")
