@@ -14351,38 +14351,6 @@ func (l *ListRunnersOptions) GetName() string {
 }
 
 // GetCount returns the Count field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetCount() int {
-	if l == nil || l.Count == nil {
-		return 0
-	}
-	return *l.Count
-}
-
-// GetExcludedAttributes returns the ExcludedAttributes field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetExcludedAttributes() string {
-	if l == nil || l.ExcludedAttributes == nil {
-		return ""
-	}
-	return *l.ExcludedAttributes
-}
-
-// GetFilter returns the Filter field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetFilter() string {
-	if l == nil || l.Filter == nil {
-		return ""
-	}
-	return *l.Filter
-}
-
-// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
-func (l *ListSCIMProvisionedGroupsForEnterpriseOptions) GetStartIndex() int {
-	if l == nil || l.StartIndex == nil {
-		return 0
-	}
-	return *l.StartIndex
-}
-
-// GetCount returns the Count field if it's non-nil, zero value otherwise.
 func (l *ListSCIMProvisionedIdentitiesOptions) GetCount() int {
 	if l == nil || l.Count == nil {
 		return 0
@@ -26191,7 +26159,7 @@ func (s *ScanningAnalysis) GetWarning() string {
 }
 
 // GetDisplay returns the Display field if it's non-nil, zero value otherwise.
-func (s *SCIMDisplayReference) GetDisplay() string {
+func (s *SCIMEnterpriseDisplayReference) GetDisplay() string {
 	if s == nil || s.Display == nil {
 		return ""
 	}
@@ -26199,7 +26167,7 @@ func (s *SCIMDisplayReference) GetDisplay() string {
 }
 
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
-func (s *SCIMGroupAttributes) GetDisplayName() string {
+func (s *SCIMEnterpriseGroupAttributes) GetDisplayName() string {
 	if s == nil || s.DisplayName == nil {
 		return ""
 	}
@@ -26207,7 +26175,7 @@ func (s *SCIMGroupAttributes) GetDisplayName() string {
 }
 
 // GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
-func (s *SCIMGroupAttributes) GetExternalID() string {
+func (s *SCIMEnterpriseGroupAttributes) GetExternalID() string {
 	if s == nil || s.ExternalID == nil {
 		return ""
 	}
@@ -26215,7 +26183,7 @@ func (s *SCIMGroupAttributes) GetExternalID() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (s *SCIMGroupAttributes) GetID() string {
+func (s *SCIMEnterpriseGroupAttributes) GetID() string {
 	if s == nil || s.ID == nil {
 		return ""
 	}
@@ -26223,11 +26191,59 @@ func (s *SCIMGroupAttributes) GetID() string {
 }
 
 // GetMeta returns the Meta field.
-func (s *SCIMGroupAttributes) GetMeta() *SCIMMeta {
+func (s *SCIMEnterpriseGroupAttributes) GetMeta() *SCIMEnterpriseMeta {
 	if s == nil {
 		return nil
 	}
 	return s.Meta
+}
+
+// GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseGroups) GetItemsPerPage() int {
+	if s == nil || s.ItemsPerPage == nil {
+		return 0
+	}
+	return *s.ItemsPerPage
+}
+
+// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseGroups) GetStartIndex() int {
+	if s == nil || s.StartIndex == nil {
+		return 0
+	}
+	return *s.StartIndex
+}
+
+// GetTotalResults returns the TotalResults field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseGroups) GetTotalResults() int {
+	if s == nil || s.TotalResults == nil {
+		return 0
+	}
+	return *s.TotalResults
+}
+
+// GetCreated returns the Created field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseMeta) GetCreated() Timestamp {
+	if s == nil || s.Created == nil {
+		return Timestamp{}
+	}
+	return *s.Created
+}
+
+// GetLastModified returns the LastModified field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseMeta) GetLastModified() Timestamp {
+	if s == nil || s.LastModified == nil {
+		return Timestamp{}
+	}
+	return *s.LastModified
+}
+
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseMeta) GetLocation() string {
+	if s == nil || s.Location == nil {
+		return ""
+	}
+	return *s.Location
 }
 
 // GetCreated returns the Created field if it's non-nil, zero value otherwise.
@@ -26260,30 +26276,6 @@ func (s *SCIMMeta) GetResourceType() string {
 		return ""
 	}
 	return *s.ResourceType
-}
-
-// GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
-func (s *SCIMProvisionedGroups) GetItemsPerPage() int {
-	if s == nil || s.ItemsPerPage == nil {
-		return 0
-	}
-	return *s.ItemsPerPage
-}
-
-// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
-func (s *SCIMProvisionedGroups) GetStartIndex() int {
-	if s == nil || s.StartIndex == nil {
-		return 0
-	}
-	return *s.StartIndex
-}
-
-// GetTotalResults returns the TotalResults field if it's non-nil, zero value otherwise.
-func (s *SCIMProvisionedGroups) GetTotalResults() int {
-	if s == nil || s.TotalResults == nil {
-		return 0
-	}
-	return *s.TotalResults
 }
 
 // GetItemsPerPage returns the ItemsPerPage field if it's non-nil, zero value otherwise.
