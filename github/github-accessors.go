@@ -14182,38 +14182,6 @@ func (l *ListProjectsPaginationOptions) GetPerPage() int {
 	return *l.PerPage
 }
 
-// GetCount returns the Count field if it's non-nil, zero value otherwise.
-func (l *ListProvisionedSCIMGroupsEnterpriseOptions) GetCount() int {
-	if l == nil || l.Count == nil {
-		return 0
-	}
-	return *l.Count
-}
-
-// GetExcludedAttributes returns the ExcludedAttributes field if it's non-nil, zero value otherwise.
-func (l *ListProvisionedSCIMGroupsEnterpriseOptions) GetExcludedAttributes() string {
-	if l == nil || l.ExcludedAttributes == nil {
-		return ""
-	}
-	return *l.ExcludedAttributes
-}
-
-// GetFilter returns the Filter field if it's non-nil, zero value otherwise.
-func (l *ListProvisionedSCIMGroupsEnterpriseOptions) GetFilter() string {
-	if l == nil || l.Filter == nil {
-		return ""
-	}
-	return *l.Filter
-}
-
-// GetStartIndex returns the StartIndex field if it's non-nil, zero value otherwise.
-func (l *ListProvisionedSCIMGroupsEnterpriseOptions) GetStartIndex() int {
-	if l == nil || l.StartIndex == nil {
-		return 0
-	}
-	return *l.StartIndex
-}
-
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (l *ListRepositories) GetTotalCount() int {
 	if l == nil || l.TotalCount == nil {

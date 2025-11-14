@@ -150,10 +150,10 @@ func TestEnterpriseService_ListProvisionedSCIMEnterpriseGroups(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListProvisionedSCIMGroupsEnterpriseOptions{
-		StartIndex:         Ptr(1),
-		ExcludedAttributes: Ptr("members,meta"),
-		Count:              Ptr(3),
-		Filter:             Ptr(`externalId eq "914a"`),
+		StartIndex:         1,
+		ExcludedAttributes: "members,meta",
+		Count:              3,
+		Filter:             `externalId eq "914a"`,
 	}
 	groups, _, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "ee", opts)
 	if err != nil {

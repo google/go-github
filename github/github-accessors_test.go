@@ -18431,50 +18431,6 @@ func TestListProjectsPaginationOptions_GetPerPage(tt *testing.T) {
 	l.GetPerPage()
 }
 
-func TestListProvisionedSCIMGroupsEnterpriseOptions_GetCount(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	l := &ListProvisionedSCIMGroupsEnterpriseOptions{Count: &zeroValue}
-	l.GetCount()
-	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
-	l.GetCount()
-	l = nil
-	l.GetCount()
-}
-
-func TestListProvisionedSCIMGroupsEnterpriseOptions_GetExcludedAttributes(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListProvisionedSCIMGroupsEnterpriseOptions{ExcludedAttributes: &zeroValue}
-	l.GetExcludedAttributes()
-	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
-	l.GetExcludedAttributes()
-	l = nil
-	l.GetExcludedAttributes()
-}
-
-func TestListProvisionedSCIMGroupsEnterpriseOptions_GetFilter(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListProvisionedSCIMGroupsEnterpriseOptions{Filter: &zeroValue}
-	l.GetFilter()
-	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
-	l.GetFilter()
-	l = nil
-	l.GetFilter()
-}
-
-func TestListProvisionedSCIMGroupsEnterpriseOptions_GetStartIndex(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	l := &ListProvisionedSCIMGroupsEnterpriseOptions{StartIndex: &zeroValue}
-	l.GetStartIndex()
-	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
-	l.GetStartIndex()
-	l = nil
-	l.GetStartIndex()
-}
-
 func TestListRepositories_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
