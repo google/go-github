@@ -3238,6 +3238,22 @@ func (c *CodeScanningAlertState) GetDismissedReason() string {
 	return *c.DismissedReason
 }
 
+// GetRunnerLabel returns the RunnerLabel field if it's non-nil, zero value otherwise.
+func (c *CodeScanningDefaultSetupOptions) GetRunnerLabel() string {
+	if c == nil || c.RunnerLabel == nil {
+		return ""
+	}
+	return *c.RunnerLabel
+}
+
+// GetAllowAdvanced returns the AllowAdvanced field if it's non-nil, zero value otherwise.
+func (c *CodeScanningOptions) GetAllowAdvanced() bool {
+	if c == nil || c.AllowAdvanced == nil {
+		return false
+	}
+	return *c.AllowAdvanced
+}
+
 // GetIncompleteResults returns the IncompleteResults field if it's non-nil, zero value otherwise.
 func (c *CodeSearchResult) GetIncompleteResults() bool {
 	if c == nil || c.IncompleteResults == nil {
@@ -3268,6 +3284,38 @@ func (c *CodeSecurityConfiguration) GetCodeScanningDefaultSetup() string {
 		return ""
 	}
 	return *c.CodeScanningDefaultSetup
+}
+
+// GetCodeScanningDefaultSetupOptions returns the CodeScanningDefaultSetupOptions field.
+func (c *CodeSecurityConfiguration) GetCodeScanningDefaultSetupOptions() *CodeScanningDefaultSetupOptions {
+	if c == nil {
+		return nil
+	}
+	return c.CodeScanningDefaultSetupOptions
+}
+
+// GetCodeScanningDelegatedAlertDismissal returns the CodeScanningDelegatedAlertDismissal field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetCodeScanningDelegatedAlertDismissal() string {
+	if c == nil || c.CodeScanningDelegatedAlertDismissal == nil {
+		return ""
+	}
+	return *c.CodeScanningDelegatedAlertDismissal
+}
+
+// GetCodeScanningOptions returns the CodeScanningOptions field.
+func (c *CodeSecurityConfiguration) GetCodeScanningOptions() *CodeScanningOptions {
+	if c == nil {
+		return nil
+	}
+	return c.CodeScanningOptions
+}
+
+// GetCodeSecurity returns the CodeSecurity field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetCodeSecurity() string {
+	if c == nil || c.CodeSecurity == nil {
+		return ""
+	}
+	return *c.CodeSecurity
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
@@ -3318,14 +3366,6 @@ func (c *CodeSecurityConfiguration) GetDependencyGraphAutosubmitActionOptions() 
 	return c.DependencyGraphAutosubmitActionOptions
 }
 
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (c *CodeSecurityConfiguration) GetDescription() string {
-	if c == nil || c.Description == nil {
-		return ""
-	}
-	return *c.Description
-}
-
 // GetEnforcement returns the Enforcement field if it's non-nil, zero value otherwise.
 func (c *CodeSecurityConfiguration) GetEnforcement() string {
 	if c == nil || c.Enforcement == nil {
@@ -3350,14 +3390,6 @@ func (c *CodeSecurityConfiguration) GetID() int64 {
 	return *c.ID
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CodeSecurityConfiguration) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
-}
-
 // GetPrivateVulnerabilityReporting returns the PrivateVulnerabilityReporting field if it's non-nil, zero value otherwise.
 func (c *CodeSecurityConfiguration) GetPrivateVulnerabilityReporting() string {
 	if c == nil || c.PrivateVulnerabilityReporting == nil {
@@ -3366,12 +3398,36 @@ func (c *CodeSecurityConfiguration) GetPrivateVulnerabilityReporting() string {
 	return *c.PrivateVulnerabilityReporting
 }
 
+// GetSecretProtection returns the SecretProtection field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretProtection() string {
+	if c == nil || c.SecretProtection == nil {
+		return ""
+	}
+	return *c.SecretProtection
+}
+
 // GetSecretScanning returns the SecretScanning field if it's non-nil, zero value otherwise.
 func (c *CodeSecurityConfiguration) GetSecretScanning() string {
 	if c == nil || c.SecretScanning == nil {
 		return ""
 	}
 	return *c.SecretScanning
+}
+
+// GetSecretScanningDelegatedAlertDismissal returns the SecretScanningDelegatedAlertDismissal field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanningDelegatedAlertDismissal() string {
+	if c == nil || c.SecretScanningDelegatedAlertDismissal == nil {
+		return ""
+	}
+	return *c.SecretScanningDelegatedAlertDismissal
+}
+
+// GetSecretScanningGenericSecrets returns the SecretScanningGenericSecrets field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanningGenericSecrets() string {
+	if c == nil || c.SecretScanningGenericSecrets == nil {
+		return ""
+	}
+	return *c.SecretScanningGenericSecrets
 }
 
 // GetSecretScanningNonProviderPatterns returns the SecretScanningNonProviderPatterns field if it's non-nil, zero value otherwise.
@@ -6476,6 +6532,14 @@ func (c *CreateRunnerGroupRequest) GetName() string {
 		return ""
 	}
 	return *c.Name
+}
+
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (c *CreateRunnerGroupRequest) GetNetworkConfigurationID() string {
+	if c == nil || c.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *c.NetworkConfigurationID
 }
 
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
@@ -14022,6 +14086,38 @@ func (l *ListCheckSuiteResults) GetTotal() int {
 	return *l.Total
 }
 
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (l *ListCodeSecurityConfigurationRepositoriesOptions) GetAfter() string {
+	if l == nil || l.After == nil {
+		return ""
+	}
+	return *l.After
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (l *ListCodeSecurityConfigurationRepositoriesOptions) GetBefore() string {
+	if l == nil || l.Before == nil {
+		return ""
+	}
+	return *l.Before
+}
+
+// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
+func (l *ListCodeSecurityConfigurationRepositoriesOptions) GetPerPage() int {
+	if l == nil || l.PerPage == nil {
+		return 0
+	}
+	return *l.PerPage
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (l *ListCodeSecurityConfigurationRepositoriesOptions) GetStatus() string {
+	if l == nil || l.Status == nil {
+		return ""
+	}
+	return *l.Status
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (l *ListCodespaces) GetTotalCount() int {
 	if l == nil || l.TotalCount == nil {
@@ -14052,6 +14148,30 @@ func (l *ListDeploymentProtectionRuleResponse) GetTotalCount() int {
 		return 0
 	}
 	return *l.TotalCount
+}
+
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (l *ListEnterpriseCodeSecurityConfigurationOptions) GetAfter() string {
+	if l == nil || l.After == nil {
+		return ""
+	}
+	return *l.After
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (l *ListEnterpriseCodeSecurityConfigurationOptions) GetBefore() string {
+	if l == nil || l.Before == nil {
+		return ""
+	}
+	return *l.Before
+}
+
+// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
+func (l *ListEnterpriseCodeSecurityConfigurationOptions) GetPerPage() int {
+	if l == nil || l.PerPage == nil {
+		return 0
+	}
+	return *l.PerPage
 }
 
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
@@ -14148,6 +14268,38 @@ func (l *ListOrganizations) GetTotalCount() int {
 		return 0
 	}
 	return *l.TotalCount
+}
+
+// GetAfter returns the After field if it's non-nil, zero value otherwise.
+func (l *ListOrgCodeSecurityConfigurationOptions) GetAfter() string {
+	if l == nil || l.After == nil {
+		return ""
+	}
+	return *l.After
+}
+
+// GetBefore returns the Before field if it's non-nil, zero value otherwise.
+func (l *ListOrgCodeSecurityConfigurationOptions) GetBefore() string {
+	if l == nil || l.Before == nil {
+		return ""
+	}
+	return *l.Before
+}
+
+// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
+func (l *ListOrgCodeSecurityConfigurationOptions) GetPerPage() int {
+	if l == nil || l.PerPage == nil {
+		return 0
+	}
+	return *l.PerPage
+}
+
+// GetTargetType returns the TargetType field if it's non-nil, zero value otherwise.
+func (l *ListOrgCodeSecurityConfigurationOptions) GetTargetType() string {
+	if l == nil || l.TargetType == nil {
+		return ""
+	}
+	return *l.TargetType
 }
 
 // GetQuery returns the Query field if it's non-nil, zero value otherwise.
@@ -25646,6 +25798,14 @@ func (r *RunnerGroup) GetDefault() bool {
 	return *r.Default
 }
 
+// GetHostedRunnersURL returns the HostedRunnersURL field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetHostedRunnersURL() string {
+	if r == nil || r.HostedRunnersURL == nil {
+		return ""
+	}
+	return *r.HostedRunnersURL
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *RunnerGroup) GetID() int64 {
 	if r == nil || r.ID == nil {
@@ -25668,6 +25828,14 @@ func (r *RunnerGroup) GetName() string {
 		return ""
 	}
 	return *r.Name
+}
+
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (r *RunnerGroup) GetNetworkConfigurationID() string {
+	if r == nil || r.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *r.NetworkConfigurationID
 }
 
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
@@ -29324,6 +29492,14 @@ func (u *UpdateRunnerGroupRequest) GetName() string {
 		return ""
 	}
 	return *u.Name
+}
+
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (u *UpdateRunnerGroupRequest) GetNetworkConfigurationID() string {
+	if u == nil || u.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *u.NetworkConfigurationID
 }
 
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
