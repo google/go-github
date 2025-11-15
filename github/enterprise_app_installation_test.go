@@ -107,8 +107,7 @@ func TestEnterpriseService_ListEnterpriseAppInstallationForOrg(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListEnterpriseAppInstallationForOrg returned error: %v", err)
 	}
-
-	want := &[]Installation{
+	want := []*Installation{
 		{ID: Ptr(int64(99))},
 	}
 
