@@ -78,6 +78,30 @@ func (a *AcceptedAssignment) GetSubmitted() bool {
 	return *a.Submitted
 }
 
+// GetFullName returns the FullName field if it's non-nil, zero value otherwise.
+func (a *AccessibleRepository) GetFullName() string {
+	if a == nil || a.FullName == nil {
+		return ""
+	}
+	return *a.FullName
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AccessibleRepository) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *AccessibleRepository) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
 // GetGithubOwnedAllowed returns the GithubOwnedAllowed field if it's non-nil, zero value otherwise.
 func (a *ActionsAllowed) GetGithubOwnedAllowed() bool {
 	if a == nil || a.GithubOwnedAllowed == nil {
@@ -11284,6 +11308,22 @@ func (i *Import) GetVCSUsername() string {
 		return ""
 	}
 	return *i.VCSUsername
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (i *InstallableOrganization) GetID() int64 {
+	if i == nil || i.ID == nil {
+		return 0
+	}
+	return *i.ID
+}
+
+// GetLogin returns the Login field if it's non-nil, zero value otherwise.
+func (i *InstallableOrganization) GetLogin() string {
+	if i == nil || i.Login == nil {
+		return ""
+	}
+	return *i.Login
 }
 
 // GetAccessTokensURL returns the AccessTokensURL field if it's non-nil, zero value otherwise.
