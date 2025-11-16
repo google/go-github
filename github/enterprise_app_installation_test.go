@@ -170,7 +170,7 @@ func TestEnterpriseService_InstallEnterpriseOrganizationApp(t *testing.T) {
 	})
 }
 
-func UninstallEnterpriseOrganizationApp(t *testing.T) {
+func TestEnterpriseService_UninstallEnterpriseOrganizationApp(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
