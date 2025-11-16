@@ -6,7 +6,6 @@
 package github
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -15,6 +14,7 @@ import (
 )
 
 func TestEnterpriseAppsService_ListRepositoriesForOrgInstallation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/apps/organizations/o/installations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +23,7 @@ func TestEnterpriseAppsService_ListRepositoriesForOrgInstallation(t *testing.T) 
 		fmt.Fprint(w, `{"total_count":1, "repositories":[{"id":1}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repos, _, err := client.EnterpriseApps.ListRepositoriesForOrgInstallation(ctx, "e", "o", 1, &ListOptions{Page: 1})
 	if err != nil {
 		t.Errorf("EnterpriseApps.ListRepositoriesForOrgInstallation returned error: %v", err)
@@ -31,7 +31,7 @@ func TestEnterpriseAppsService_ListRepositoriesForOrgInstallation(t *testing.T) 
 
 	want := &ListRepositories{TotalCount: Ptr(1), Repositories: []*Repository{{ID: Ptr(int64(1))}}}
 	if diff := cmp.Diff(repos, want); diff != "" {
-		t.Errorf("EnterpriseApps.ListRepositoriesForOrgInstallation returned diff (-want +got):\n%s", diff)
+		t.Errorf("EnterpriseApps.ListRepositoriesForOrgInstallation returned diff (-want +got):\n%v", diff)
 	}
 
 	const methodName = "ListRepositoriesForOrgInstallation"
@@ -47,6 +47,7 @@ func TestEnterpriseAppsService_ListRepositoriesForOrgInstallation(t *testing.T) 
 }
 
 func TestEnterpriseAppsService_ToggleInstallationRepositories(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &EnterpriseInstallationRepositoriesToggleOptions{
@@ -60,7 +61,7 @@ func TestEnterpriseAppsService_ToggleInstallationRepositories(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":2, "repositories":[{"id":1},{"id":2}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repos, _, err := client.EnterpriseApps.ToggleInstallationRepositories(ctx, "e", "o", 1, input)
 	if err != nil {
 		t.Errorf("EnterpriseApps.ToggleInstallationRepositories returned error: %v", err)
@@ -68,7 +69,7 @@ func TestEnterpriseAppsService_ToggleInstallationRepositories(t *testing.T) {
 
 	want := &ListRepositories{TotalCount: Ptr(2), Repositories: []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}}
 	if diff := cmp.Diff(repos, want); diff != "" {
-		t.Errorf("EnterpriseApps.ToggleInstallationRepositories returned diff (-want +got):\n%s", diff)
+		t.Errorf("EnterpriseApps.ToggleInstallationRepositories returned diff (-want +got):\n%v", diff)
 	}
 
 	const methodName = "ToggleInstallationRepositories"
@@ -84,6 +85,7 @@ func TestEnterpriseAppsService_ToggleInstallationRepositories(t *testing.T) {
 }
 
 func TestEnterpriseAppsService_AddRepositoriesToInstallation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &EnterpriseInstallationRepositoriesOptions{SelectedRepositoryIDs: []int64{1, 2}}
@@ -94,7 +96,7 @@ func TestEnterpriseAppsService_AddRepositoriesToInstallation(t *testing.T) {
 		fmt.Fprint(w, `{"total_count":2, "repositories":[{"id":1},{"id":2}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repos, _, err := client.EnterpriseApps.AddRepositoriesToInstallation(ctx, "e", "o", 1, input)
 	if err != nil {
 		t.Errorf("EnterpriseApps.AddRepositoriesToInstallation returned error: %v", err)
@@ -102,7 +104,7 @@ func TestEnterpriseAppsService_AddRepositoriesToInstallation(t *testing.T) {
 
 	want := &ListRepositories{TotalCount: Ptr(2), Repositories: []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}}
 	if diff := cmp.Diff(repos, want); diff != "" {
-		t.Errorf("EnterpriseApps.AddRepositoriesToInstallation returned diff (-want +got):\n%s", diff)
+		t.Errorf("EnterpriseApps.AddRepositoriesToInstallation returned diff (-want +got):\n%v", diff)
 	}
 
 	const methodName = "AddRepositoriesToInstallation"
@@ -118,6 +120,7 @@ func TestEnterpriseAppsService_AddRepositoriesToInstallation(t *testing.T) {
 }
 
 func TestEnterpriseAppsService_RemoveRepositoriesFromInstallation(t *testing.T) {
+	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &EnterpriseInstallationRepositoriesOptions{SelectedRepositoryIDs: []int64{1, 2}}
@@ -128,7 +131,7 @@ func TestEnterpriseAppsService_RemoveRepositoriesFromInstallation(t *testing.T) 
 		fmt.Fprint(w, `{"total_count":2, "repositories":[{"id":1},{"id":2}]}`)
 	})
 
-	ctx := context.Background()
+	ctx := t.Context()
 	repos, _, err := client.EnterpriseApps.RemoveRepositoriesFromInstallation(ctx, "e", "o", 1, input)
 	if err != nil {
 		t.Errorf("EnterpriseApps.RemoveRepositoriesFromInstallation returned error: %v", err)
@@ -136,7 +139,7 @@ func TestEnterpriseAppsService_RemoveRepositoriesFromInstallation(t *testing.T) 
 
 	want := &ListRepositories{TotalCount: Ptr(2), Repositories: []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}}
 	if diff := cmp.Diff(repos, want); diff != "" {
-		t.Errorf("EnterpriseApps.RemoveRepositoriesFromInstallation returned diff (-want +got):\n%s", diff)
+		t.Errorf("EnterpriseApps.RemoveRepositoriesFromInstallation returned diff (-want +got):\n%v", diff)
 	}
 
 	const methodName = "RemoveRepositoriesFromInstallation"
