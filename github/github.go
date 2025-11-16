@@ -206,7 +206,6 @@ type Client struct {
 	DependencyGraph    *DependencyGraphService
 	Emojis             *EmojisService
 	Enterprise         *EnterpriseService
-	EnterpriseApps     *EnterpriseAppsService
 	Gists              *GistsService
 	Git                *GitService
 	Gitignores         *GitignoresService
@@ -449,7 +448,6 @@ func (c *Client) initialize() {
 	c.DependencyGraph = (*DependencyGraphService)(&c.common)
 	c.Emojis = (*EmojisService)(&c.common)
 	c.Enterprise = (*EnterpriseService)(&c.common)
-	c.EnterpriseApps = (*EnterpriseAppsService)(&c.common)
 	c.Gists = (*GistsService)(&c.common)
 	c.Git = (*GitService)(&c.common)
 	c.Gitignores = (*GitignoresService)(&c.common)
