@@ -34,12 +34,12 @@ type AppInstallationRequest struct {
 	Repository []string `json:"repository,omitempty"`
 }
 
-// ListInstallableEnterpriseOrgs lists the organizations in an enterprise that are installable for an app.
+// ListInstallableEnterpriseOrganization lists the organizations in an enterprise that are installable for an app.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#get-enterprise-owned-organizations-that-can-have-github-apps-installed
 //
 //meta:operation GET /enterprises/{enterprise}/apps/installable_organizations
-func (s *EnterpriseService) ListInstallableEnterpriseOrgs(ctx context.Context, enterprise string, opts *ListOptions) ([]*InstallableOrganization, *Response, error) {
+func (s *EnterpriseService) ListInstallableEnterpriseOrganization(ctx context.Context, enterprise string, opts *ListOptions) ([]*InstallableOrganization, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/installable_organizations", enterprise)
 
 	u, err := addOptions(u, opts)
@@ -61,12 +61,12 @@ func (s *EnterpriseService) ListInstallableEnterpriseOrgs(ctx context.Context, e
 	return orgs, resp, nil
 }
 
-// ListEnterpriseOrgAccessibleRepositories lists the repositories accessible to an app in an enterprise-owned organization.
+// ListOrganizationAccessibleRepositories lists the repositories accessible to an app in an enterprise-owned organization.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#get-repositories-belonging-to-an-enterprise-owned-organization
 //
 //meta:operation GET /enterprises/{enterprise}/apps/installable_organizations/{org}/accessible_repositories
-func (s *EnterpriseService) ListEnterpriseOrgAccessibleRepositories(ctx context.Context, enterprise, org string, opts *ListOptions) ([]*AccessibleRepository, *Response, error) {
+func (s *EnterpriseService) ListOrganizationAccessibleRepositories(ctx context.Context, enterprise, org string, opts *ListOptions) ([]*AccessibleRepository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/installable_organizations/%v/accessible_repositories", enterprise, org)
 
 	u, err := addOptions(u, opts)
@@ -88,12 +88,12 @@ func (s *EnterpriseService) ListEnterpriseOrgAccessibleRepositories(ctx context.
 	return repos, resp, nil
 }
 
-// ListEnterpriseAppInstallationForOrg lists the GitHub app installations associated with the given enterprise-owned organization.
+// ListAppOrganizationInstallations lists the GitHub app installations associated with the given enterprise-owned organization.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#list-github-apps-installed-on-an-enterprise-owned-organization
 //
 //meta:operation GET /enterprises/{enterprise}/apps/organizations/{org}/installations
-func (s *EnterpriseService) ListEnterpriseAppInstallationForOrg(ctx context.Context, enterprise, org string, opts *ListOptions) ([]*Installation, *Response, error) {
+func (s *EnterpriseService) ListAppOrganizationInstallations(ctx context.Context, enterprise, org string, opts *ListOptions) ([]*Installation, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations", enterprise, org)
 
 	u, err := addOptions(u, opts)
@@ -115,13 +115,13 @@ func (s *EnterpriseService) ListEnterpriseAppInstallationForOrg(ctx context.Cont
 	return installation, resp, nil
 }
 
-// InstallEnterpriseOrgApp installs any valid GitHub app on the specified organization owned by the enterprise.
+// InstallEnterpriseOrganizationApp installs any valid GitHub app on the specified organization owned by the enterprise.
 // If the app is already installed on the organization, and is suspended, it will be unsuspended. If the app has a pending installation request, they will all be approved.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#install-a-github-app-on-an-enterprise-owned-organization
 //
 //meta:operation POST /enterprises/{enterprise}/apps/organizations/{org}/installations
-func (s *EnterpriseService) InstallEnterpriseOrgApp(ctx context.Context, enterprise, org string, request AppInstallationRequest) (*Installation, *Response, error) {
+func (s *EnterpriseService) InstallEnterpriseOrganizationApp(ctx context.Context, enterprise, org string, request AppInstallationRequest) (*Installation, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations", enterprise, org)
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
@@ -137,12 +137,12 @@ func (s *EnterpriseService) InstallEnterpriseOrgApp(ctx context.Context, enterpr
 	return installation, resp, nil
 }
 
-// UninstallEnterpriseOrgApp uninstalls a GitHub app from an organization. Any app installed on the organization can be removed.
+// UninstallEnterpriseOrganizationApp uninstalls a GitHub app from an organization. Any app installed on the organization can be removed.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#uninstall-a-github-app-from-an-enterprise-owned-organization
 //
 //meta:operation DELETE /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}
-func (s *EnterpriseService) UninstallEnterpriseOrgApp(ctx context.Context, enterprise, org string, installationID int64) (*Response, error) {
+func (s *EnterpriseService) UninstallEnterpriseOrganizationApp(ctx context.Context, enterprise, org string, installationID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v", enterprise, org, installationID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
