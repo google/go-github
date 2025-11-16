@@ -11985,6 +11985,17 @@ func TestEnterpriseCustomPropertiesValues_GetOrganizationLogin(tt *testing.T) {
 	e.GetOrganizationLogin()
 }
 
+func TestEnterpriseInstallationRepositoriesToggleOptions_GetRepositorySelection(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseInstallationRepositoriesToggleOptions{RepositorySelection: &zeroValue}
+	e.GetRepositorySelection()
+	e = &EnterpriseInstallationRepositoriesToggleOptions{}
+	e.GetRepositorySelection()
+	e = nil
+	e.GetRepositorySelection()
+}
+
 func TestEnterpriseLicensedUsers_GetEnterpriseServerUser(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool

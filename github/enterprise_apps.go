@@ -33,7 +33,7 @@ type EnterpriseInstallationRepositoriesToggleOptions struct {
 // ListRepositoriesForOrgInstallation lists the repositories that an enterprise app installation
 // has access to on an organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#list-repositories-accessible-to-the-app-installation-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#get-the-repositories-accessible-to-a-given-github-app-installation
 //
 //meta:operation GET /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories
 func (s *EnterpriseAppsService) ListRepositoriesForOrgInstallation(ctx context.Context, enterprise, org string, installationID int64, opts *ListOptions) (*ListRepositories, *Response, error) {
