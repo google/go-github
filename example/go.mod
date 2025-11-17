@@ -10,7 +10,7 @@ require (
 	github.com/google/go-github/v79 v79.0.0
 	github.com/sigstore/sigstore-go v0.6.1
 	golang.org/x/crypto v0.43.0
-	golang.org/x/term v0.36.0
+	golang.org/x/term v0.37.0
 	google.golang.org/appengine v1.6.8
 )
 
@@ -90,7 +90,7 @@ require (
 	golang.org/x/mod v0.28.0 // indirect
 	golang.org/x/net v0.45.0 // indirect
 	golang.org/x/sync v0.17.0 // indirect
-	golang.org/x/sys v0.37.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240520151616-dc85e6b867a5 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
