@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestEnterpriseService_ListInstallableEnterpriseOrganization(t *testing.T) {
+func TestEnterpriseService_ListInstallableAppOrganizations(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -24,9 +24,9 @@ func TestEnterpriseService_ListInstallableEnterpriseOrganization(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 10}
-	got, _, err := client.Enterprise.ListInstallableEnterpriseOrganization(ctx, "e", opts)
+	got, _, err := client.Enterprise.ListInstallableAppOrganizations(ctx, "e", opts)
 	if err != nil {
-		t.Fatalf("Enterprise.ListInstallableEnterpriseOrganization returned error: %v", err)
+		t.Fatalf("Enterprise.ListInstallableAppOrganizations returned error: %v", err)
 	}
 
 	want := []*InstallableOrganization{
@@ -34,16 +34,16 @@ func TestEnterpriseService_ListInstallableEnterpriseOrganization(t *testing.T) {
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Enterprise.ListInstallableEnterpriseOrganization = %+v, want %+v", got, want)
+		t.Errorf("Enterprise.ListInstallableAppOrganizations = %+v, want %+v", got, want)
 	}
 
-	const methodName = "ListInstallableEnterpriseOrganization"
+	const methodName = "ListInstallableAppOrganizations"
 	testBadOptions(t, methodName, func() error {
-		_, _, err := client.Enterprise.ListInstallableEnterpriseOrganization(ctx, "\n", opts)
+		_, _, err := client.Enterprise.ListInstallableAppOrganizations(ctx, "\n", opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.ListInstallableEnterpriseOrganization(ctx, "e", nil)
+		got, resp, err := client.Enterprise.ListInstallableAppOrganizations(ctx, "e", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -51,7 +51,7 @@ func TestEnterpriseService_ListInstallableEnterpriseOrganization(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_ListOrganizationAccessibleRepositories(t *testing.T) {
+func TestEnterpriseService_ListOrganizationAccessibleAppRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -62,9 +62,9 @@ func TestEnterpriseService_ListOrganizationAccessibleRepositories(t *testing.T) 
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := t.Context()
-	repos, _, err := client.Enterprise.ListOrganizationAccessibleRepositories(ctx, "e", "org1", opts)
+	repos, _, err := client.Enterprise.ListOrganizationAccessibleAppRepositories(ctx, "e", "org1", opts)
 	if err != nil {
-		t.Errorf("Enterprise.ListOrganizationAccessibleRepositories returned error: %v", err)
+		t.Errorf("Enterprise.ListOrganizationAccessibleAppRepositories returned error: %v", err)
 	}
 
 	want := []*AccessibleRepository{
@@ -72,18 +72,18 @@ func TestEnterpriseService_ListOrganizationAccessibleRepositories(t *testing.T) 
 	}
 
 	if !cmp.Equal(repos, want) {
-		t.Errorf("Enterprise.ListOrganizationAccessibleRepositories returned %+v, want %+v", repos, want)
+		t.Errorf("Enterprise.ListOrganizationAccessibleAppRepositories returned %+v, want %+v", repos, want)
 	}
 
-	const methodName = "ListOrganizationAccessibleRepositories"
+	const methodName = "ListOrganizationAccessibleAppRepositories"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListOrganizationAccessibleRepositories(ctx, "\n", "org1", opts)
+		_, _, err = client.Enterprise.ListOrganizationAccessibleAppRepositories(ctx, "\n", "org1", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.ListOrganizationAccessibleRepositories(ctx, "e", "org1", nil)
+		got, resp, err := client.Enterprise.ListOrganizationAccessibleAppRepositories(ctx, "e", "org1", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

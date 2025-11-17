@@ -34,12 +34,12 @@ type AppInstallationRequest struct {
 	Repository []string `json:"repository,omitempty"`
 }
 
-// ListInstallableEnterpriseOrganization lists the organizations in an enterprise that are installable for an app.
+// ListInstallableAppOrganizations lists the organizations in an enterprise that are installable for an app.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#get-enterprise-owned-organizations-that-can-have-github-apps-installed
 //
 //meta:operation GET /enterprises/{enterprise}/apps/installable_organizations
-func (s *EnterpriseService) ListInstallableEnterpriseOrganization(ctx context.Context, enterprise string, opts *ListOptions) ([]*InstallableOrganization, *Response, error) {
+func (s *EnterpriseService) ListInstallableAppOrganizations(ctx context.Context, enterprise string, opts *ListOptions) ([]*InstallableOrganization, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/installable_organizations", enterprise)
 
 	u, err := addOptions(u, opts)
@@ -61,12 +61,12 @@ func (s *EnterpriseService) ListInstallableEnterpriseOrganization(ctx context.Co
 	return orgs, resp, nil
 }
 
-// ListOrganizationAccessibleRepositories lists the repositories accessible to an app in an enterprise-owned organization.
+// ListOrganizationAccessibleAppRepositories lists the repositories accessible to an app in an enterprise-owned organization.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#get-repositories-belonging-to-an-enterprise-owned-organization
 //
 //meta:operation GET /enterprises/{enterprise}/apps/installable_organizations/{org}/accessible_repositories
-func (s *EnterpriseService) ListOrganizationAccessibleRepositories(ctx context.Context, enterprise, org string, opts *ListOptions) ([]*AccessibleRepository, *Response, error) {
+func (s *EnterpriseService) ListOrganizationAccessibleAppRepositories(ctx context.Context, enterprise, org string, opts *ListOptions) ([]*AccessibleRepository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/installable_organizations/%v/accessible_repositories", enterprise, org)
 
 	u, err := addOptions(u, opts)
