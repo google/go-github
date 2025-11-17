@@ -61,12 +61,12 @@ func (s *EnterpriseService) ListInstallableAppOrganizations(ctx context.Context,
 	return orgs, resp, nil
 }
 
-// ListOrganizationAccessibleAppRepositories lists the repositories accessible to an app in an enterprise-owned organization.
+// ListOrganizationAppAccessibleRepositories lists the repositories accessible to an app in an enterprise-owned organization.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#get-repositories-belonging-to-an-enterprise-owned-organization
 //
 //meta:operation GET /enterprises/{enterprise}/apps/installable_organizations/{org}/accessible_repositories
-func (s *EnterpriseService) ListOrganizationAccessibleAppRepositories(ctx context.Context, enterprise, org string, opts *ListOptions) ([]*AccessibleRepository, *Response, error) {
+func (s *EnterpriseService) ListOrganizationAppAccessibleRepositories(ctx context.Context, enterprise, org string, opts *ListOptions) ([]*AccessibleRepository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/installable_organizations/%v/accessible_repositories", enterprise, org)
 
 	u, err := addOptions(u, opts)

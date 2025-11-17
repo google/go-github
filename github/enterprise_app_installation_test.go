@@ -51,7 +51,7 @@ func TestEnterpriseService_ListInstallableAppOrganizations(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_ListOrganizationAccessibleAppRepositories(t *testing.T) {
+func TestEnterpriseService_ListOrganizationAppAccessibleRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -62,9 +62,9 @@ func TestEnterpriseService_ListOrganizationAccessibleAppRepositories(t *testing.
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := t.Context()
-	repos, _, err := client.Enterprise.ListOrganizationAccessibleAppRepositories(ctx, "e", "org1", opts)
+	repos, _, err := client.Enterprise.ListOrganizationAppAccessibleRepositories(ctx, "e", "org1", opts)
 	if err != nil {
-		t.Errorf("Enterprise.ListOrganizationAccessibleAppRepositories returned error: %v", err)
+		t.Errorf("Enterprise.ListOrganizationAppAccessibleRepositories returned error: %v", err)
 	}
 
 	want := []*AccessibleRepository{
@@ -72,18 +72,18 @@ func TestEnterpriseService_ListOrganizationAccessibleAppRepositories(t *testing.
 	}
 
 	if !cmp.Equal(repos, want) {
-		t.Errorf("Enterprise.ListOrganizationAccessibleAppRepositories returned %+v, want %+v", repos, want)
+		t.Errorf("Enterprise.ListOrganizationAppAccessibleRepositories returned %+v, want %+v", repos, want)
 	}
 
-	const methodName = "ListOrganizationAccessibleAppRepositories"
+	const methodName = "ListOrganizationAppAccessibleRepositories"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListOrganizationAccessibleAppRepositories(ctx, "\n", "org1", opts)
+		_, _, err = client.Enterprise.ListOrganizationAppAccessibleRepositories(ctx, "\n", "org1", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.ListOrganizationAccessibleAppRepositories(ctx, "e", "org1", nil)
+		got, resp, err := client.Enterprise.ListOrganizationAppAccessibleRepositories(ctx, "e", "org1", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
