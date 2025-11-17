@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestEnterpriseService_ListInstallableAppOrganizations(t *testing.T) {
+func TestEnterpriseService_ListAppInstallableOrganizations(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -24,9 +24,9 @@ func TestEnterpriseService_ListInstallableAppOrganizations(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 10}
-	got, _, err := client.Enterprise.ListInstallableAppOrganizations(ctx, "e", opts)
+	got, _, err := client.Enterprise.ListAppInstallableOrganizations(ctx, "e", opts)
 	if err != nil {
-		t.Fatalf("Enterprise.ListInstallableAppOrganizations returned error: %v", err)
+		t.Fatalf("Enterprise.ListAppInstallableOrganizations returned error: %v", err)
 	}
 
 	want := []*InstallableOrganization{
@@ -34,16 +34,16 @@ func TestEnterpriseService_ListInstallableAppOrganizations(t *testing.T) {
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Enterprise.ListInstallableAppOrganizations = %+v, want %+v", got, want)
+		t.Errorf("Enterprise.ListAppInstallableOrganizations = %+v, want %+v", got, want)
 	}
 
-	const methodName = "ListInstallableAppOrganizations"
+	const methodName = "ListAppInstallableOrganizations"
 	testBadOptions(t, methodName, func() error {
-		_, _, err := client.Enterprise.ListInstallableAppOrganizations(ctx, "\n", opts)
+		_, _, err := client.Enterprise.ListAppInstallableOrganizations(ctx, "\n", opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.ListInstallableAppOrganizations(ctx, "e", nil)
+		got, resp, err := client.Enterprise.ListAppInstallableOrganizations(ctx, "e", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -51,7 +51,7 @@ func TestEnterpriseService_ListInstallableAppOrganizations(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_ListOrganizationAppAccessibleRepositories(t *testing.T) {
+func TestEnterpriseService_ListAppAccessibleOrganizationRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -62,9 +62,9 @@ func TestEnterpriseService_ListOrganizationAppAccessibleRepositories(t *testing.
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := t.Context()
-	repos, _, err := client.Enterprise.ListOrganizationAppAccessibleRepositories(ctx, "e", "org1", opts)
+	repos, _, err := client.Enterprise.ListAppAccessibleOrganizationRepositories(ctx, "e", "org1", opts)
 	if err != nil {
-		t.Errorf("Enterprise.ListOrganizationAppAccessibleRepositories returned error: %v", err)
+		t.Errorf("Enterprise.ListAppAccessibleOrganizationRepositories returned error: %v", err)
 	}
 
 	want := []*AccessibleRepository{
@@ -72,18 +72,18 @@ func TestEnterpriseService_ListOrganizationAppAccessibleRepositories(t *testing.
 	}
 
 	if !cmp.Equal(repos, want) {
-		t.Errorf("Enterprise.ListOrganizationAppAccessibleRepositories returned %+v, want %+v", repos, want)
+		t.Errorf("Enterprise.ListAppAccessibleOrganizationRepositories returned %+v, want %+v", repos, want)
 	}
 
-	const methodName = "ListOrganizationAppAccessibleRepositories"
+	const methodName = "ListAppAccessibleOrganizationRepositories"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListOrganizationAppAccessibleRepositories(ctx, "\n", "org1", opts)
+		_, _, err = client.Enterprise.ListAppAccessibleOrganizationRepositories(ctx, "\n", "org1", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.ListOrganizationAppAccessibleRepositories(ctx, "e", "org1", nil)
+		got, resp, err := client.Enterprise.ListAppAccessibleOrganizationRepositories(ctx, "e", "org1", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -91,7 +91,7 @@ func TestEnterpriseService_ListOrganizationAppAccessibleRepositories(t *testing.
 	})
 }
 
-func TestEnterpriseService_ListAppOrganizationInstallations(t *testing.T) {
+func TestEnterpriseService_ListAppInstallations(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -103,27 +103,27 @@ func TestEnterpriseService_ListAppOrganizationInstallations(t *testing.T) {
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := t.Context()
-	installations, _, err := client.Enterprise.ListAppOrganizationInstallations(ctx, "e", "org1", opts)
+	installations, _, err := client.Enterprise.ListAppInstallations(ctx, "e", "org1", opts)
 	if err != nil {
-		t.Errorf("ListAppOrganizationInstallations returned error: %v", err)
+		t.Errorf("ListAppInstallations returned error: %v", err)
 	}
 	want := []*Installation{
 		{ID: Ptr(int64(99))},
 	}
 
 	if !cmp.Equal(installations, want) {
-		t.Errorf("ListAppOrganizationInstallations returned %+v, want %+v", installations, want)
+		t.Errorf("ListAppInstallations returned %+v, want %+v", installations, want)
 	}
 
-	const methodName = "ListAppOrganizationInstallations"
+	const methodName = "ListAppInstallations"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListAppOrganizationInstallations(ctx, "\n", "org1", &ListOptions{})
+		_, _, err = client.Enterprise.ListAppInstallations(ctx, "\n", "org1", &ListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.ListAppOrganizationInstallations(ctx, "e", "org1", nil)
+		got, resp, err := client.Enterprise.ListAppInstallations(ctx, "e", "org1", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -131,7 +131,7 @@ func TestEnterpriseService_ListAppOrganizationInstallations(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_InstallEnterpriseOrganizationApp(t *testing.T) {
+func TestEnterpriseService_InstallApp(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -148,21 +148,21 @@ func TestEnterpriseService_InstallEnterpriseOrganizationApp(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	installation, _, err := client.Enterprise.InstallEnterpriseOrganizationApp(ctx, "e", "org1", req)
+	installation, _, err := client.Enterprise.InstallApp(ctx, "e", "org1", req)
 	if err != nil {
-		t.Errorf("InstallEnterpriseOrganizationApp returned error: %v", err)
+		t.Errorf("InstallApp returned error: %v", err)
 	}
 
 	want := &Installation{ID: Ptr(int64(555))}
 
 	if !cmp.Equal(installation, want) {
-		t.Errorf("InstallEnterpriseOrganizationApp returned %+v, want %+v", installation, want)
+		t.Errorf("InstallApp returned %+v, want %+v", installation, want)
 	}
 
-	const methodName = "InstallEnterpriseOrganizationApp"
+	const methodName = "InstallApp"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.InstallEnterpriseOrganizationApp(ctx, "e", "org1", req)
+		got, resp, err := client.Enterprise.InstallApp(ctx, "e", "org1", req)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -170,7 +170,7 @@ func TestEnterpriseService_InstallEnterpriseOrganizationApp(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_UninstallEnterpriseOrganizationApp(t *testing.T) {
+func TestEnterpriseService_UninstallApp(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -180,18 +180,18 @@ func TestEnterpriseService_UninstallEnterpriseOrganizationApp(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	resp, err := client.Enterprise.UninstallEnterpriseOrganizationApp(ctx, "e", "org1", 123)
+	resp, err := client.Enterprise.UninstallApp(ctx, "e", "org1", 123)
 	if err != nil {
-		t.Errorf("UninstallEnterpriseOrganizationApp returned error: %v", err)
+		t.Errorf("UninstallApp returned error: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		t.Errorf("UninstallEnterpriseOrganizationApp returned status %v, want %v", resp.StatusCode, http.StatusNoContent)
+		t.Errorf("UninstallApp returned status %v, want %v", resp.StatusCode, http.StatusNoContent)
 	}
 
-	const methodName = "UninstallEnterpriseOrganizationApp"
+	const methodName = "UninstallApp"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.UninstallEnterpriseOrganizationApp(ctx, "e", "org1", 123)
+		return client.Enterprise.UninstallApp(ctx, "e", "org1", 123)
 	})
 }
