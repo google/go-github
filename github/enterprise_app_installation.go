@@ -12,8 +12,9 @@ import (
 
 // InstallableOrganization represents an organization in an enterprise in which a GitHub app can be installed.
 type InstallableOrganization struct {
-	ID    *int64  `json:"id,omitempty"`
-	Login *string `json:"login,omitempty"`
+	ID                        *int64  `json:"id,omitempty"`
+	Login                     *string `json:"login,omitempty"`
+	AccessibleRepositoriesURL *string `json:"accessible_repositories_url"`
 }
 
 // AccessibleRepository represents a repository that can be made accessible to a GitHub app.
@@ -23,15 +24,15 @@ type AccessibleRepository struct {
 	FullName *string `json:"full_name,omitempty"`
 }
 
-// AppInstallationRequest represents the request to install a GitHub app on an enterprise-owned organization.
-type AppInstallationRequest struct {
+// InstallAppRequest represents the request to install a GitHub app on an enterprise-owned organization.
+type InstallAppRequest struct {
 	// The Client ID of the GitHub App to install.
 	ClientID string `json:"client_id"`
 	// The selection of repositories that the GitHub app can access.
 	// Can be one of: all, selected, none
 	RepositorySelection string `json:"repository_selection"`
 	// A list of repository names that the GitHub App can access, if the repository_selection is set to selected.
-	Repository []string `json:"repository,omitempty"`
+	Repositories []string `json:"repositories,omitempty"`
 }
 
 // ListAppInstallableOrganizations lists the organizations in an enterprise that are installable for an app.
@@ -121,7 +122,7 @@ func (s *EnterpriseService) ListAppInstallations(ctx context.Context, enterprise
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#install-a-github-app-on-an-enterprise-owned-organization
 //
 //meta:operation POST /enterprises/{enterprise}/apps/organizations/{org}/installations
-func (s *EnterpriseService) InstallApp(ctx context.Context, enterprise, org string, request AppInstallationRequest) (*Installation, *Response, error) {
+func (s *EnterpriseService) InstallApp(ctx context.Context, enterprise, org string, request InstallAppRequest) (*Installation, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations", enterprise, org)
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
