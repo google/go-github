@@ -78,14 +78,6 @@ func (a *AcceptedAssignment) GetSubmitted() bool {
 	return *a.Submitted
 }
 
-// GetFullName returns the FullName field if it's non-nil, zero value otherwise.
-func (a *AccessibleRepository) GetFullName() string {
-	if a == nil || a.FullName == nil {
-		return ""
-	}
-	return *a.FullName
-}
-
 // GetGithubOwnedAllowed returns the GithubOwnedAllowed field if it's non-nil, zero value otherwise.
 func (a *ActionsAllowed) GetGithubOwnedAllowed() bool {
 	if a == nil || a.GithubOwnedAllowed == nil {

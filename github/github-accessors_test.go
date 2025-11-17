@@ -97,17 +97,6 @@ func TestAcceptedAssignment_GetSubmitted(tt *testing.T) {
 	a.GetSubmitted()
 }
 
-func TestAccessibleRepository_GetFullName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &AccessibleRepository{FullName: &zeroValue}
-	a.GetFullName()
-	a = &AccessibleRepository{}
-	a.GetFullName()
-	a = nil
-	a.GetFullName()
-}
-
 func TestActionsAllowed_GetGithubOwnedAllowed(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool

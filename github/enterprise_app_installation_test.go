@@ -68,7 +68,7 @@ func TestEnterpriseService_ListAppAccessibleOrganizationRepositories(t *testing.
 	}
 
 	want := []*AccessibleRepository{
-		{ID: int64(10), Name: "repo1", FullName: Ptr("org1/repo1")},
+		{ID: int64(10), Name: "repo1", FullName: "org1/repo1"},
 	}
 
 	if !cmp.Equal(repos, want) {
