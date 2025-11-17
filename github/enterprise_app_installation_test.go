@@ -30,7 +30,7 @@ func TestEnterpriseService_ListAppInstallableOrganizations(t *testing.T) {
 	}
 
 	want := []*InstallableOrganization{
-		{ID: Ptr(int64(1)), Login: Ptr("org1")},
+		{ID: int64(1), Login: "org1"},
 	}
 
 	if !cmp.Equal(got, want) {
@@ -68,7 +68,7 @@ func TestEnterpriseService_ListAppAccessibleOrganizationRepositories(t *testing.
 	}
 
 	want := []*AccessibleRepository{
-		{ID: Ptr(int64(10)), Name: Ptr("repo1"), FullName: Ptr("org1/repo1")},
+		{ID: int64(10), Name: "repo1", FullName: Ptr("org1/repo1")},
 	}
 
 	if !cmp.Equal(repos, want) {

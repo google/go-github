@@ -108,28 +108,6 @@ func TestAccessibleRepository_GetFullName(tt *testing.T) {
 	a.GetFullName()
 }
 
-func TestAccessibleRepository_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	a := &AccessibleRepository{ID: &zeroValue}
-	a.GetID()
-	a = &AccessibleRepository{}
-	a.GetID()
-	a = nil
-	a.GetID()
-}
-
-func TestAccessibleRepository_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &AccessibleRepository{Name: &zeroValue}
-	a.GetName()
-	a = &AccessibleRepository{}
-	a.GetName()
-	a = nil
-	a.GetName()
-}
-
 func TestActionsAllowed_GetGithubOwnedAllowed(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -14704,28 +14682,6 @@ func TestInstallableOrganization_GetAccessibleRepositoriesURL(tt *testing.T) {
 	i.GetAccessibleRepositoriesURL()
 	i = nil
 	i.GetAccessibleRepositoriesURL()
-}
-
-func TestInstallableOrganization_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	i := &InstallableOrganization{ID: &zeroValue}
-	i.GetID()
-	i = &InstallableOrganization{}
-	i.GetID()
-	i = nil
-	i.GetID()
-}
-
-func TestInstallableOrganization_GetLogin(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &InstallableOrganization{Login: &zeroValue}
-	i.GetLogin()
-	i = &InstallableOrganization{}
-	i.GetLogin()
-	i = nil
-	i.GetLogin()
 }
 
 func TestInstallation_GetAccessTokensURL(tt *testing.T) {

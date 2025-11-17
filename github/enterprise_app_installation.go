@@ -12,15 +12,15 @@ import (
 
 // InstallableOrganization represents an organization in an enterprise in which a GitHub app can be installed.
 type InstallableOrganization struct {
-	ID                        *int64  `json:"id,omitempty"`
-	Login                     *string `json:"login,omitempty"`
+	ID                        int64   `json:"id"`
+	Login                     string  `json:"login"`
 	AccessibleRepositoriesURL *string `json:"accessible_repositories_url"`
 }
 
 // AccessibleRepository represents a repository that can be made accessible to a GitHub app.
 type AccessibleRepository struct {
-	ID       *int64  `json:"id,omitempty"`
-	Name     *string `json:"name,omitempty"`
+	ID       int64   `json:"id"`
+	Name     string  `json:"name"`
 	FullName *string `json:"full_name,omitempty"`
 }
 
