@@ -14662,6 +14662,17 @@ func TestImport_GetVCSUsername(tt *testing.T) {
 	i.GetVCSUsername()
 }
 
+func TestInstallableOrganization_GetAccessibleRepositoriesURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallableOrganization{AccessibleRepositoriesURL: &zeroValue}
+	i.GetAccessibleRepositoriesURL()
+	i = &InstallableOrganization{}
+	i.GetAccessibleRepositoriesURL()
+	i = nil
+	i.GetAccessibleRepositoriesURL()
+}
+
 func TestInstallation_GetAccessTokensURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
