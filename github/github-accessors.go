@@ -11286,6 +11286,14 @@ func (i *Import) GetVCSUsername() string {
 	return *i.VCSUsername
 }
 
+// GetAccessibleRepositoriesURL returns the AccessibleRepositoriesURL field if it's non-nil, zero value otherwise.
+func (i *InstallableOrganization) GetAccessibleRepositoriesURL() string {
+	if i == nil || i.AccessibleRepositoriesURL == nil {
+		return ""
+	}
+	return *i.AccessibleRepositoriesURL
+}
+
 // GetAccessTokensURL returns the AccessTokensURL field if it's non-nil, zero value otherwise.
 func (i *Installation) GetAccessTokensURL() string {
 	if i == nil || i.AccessTokensURL == nil {
