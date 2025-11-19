@@ -243,12 +243,13 @@ func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestEnterpriseService_ListProvisionedSCIMEnterpriseGroups(t *testing.T) {
+func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeSCIM)
 		testFormValues(t, r, values{
 			"startIndex":         "1",
 			"excludedAttributes": "members,meta",

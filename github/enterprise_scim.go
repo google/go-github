@@ -156,6 +156,7 @@ func (s *EnterpriseService) ListProvisionedSCIMGroups(ctx context.Context, enter
 	if err != nil {
 		return nil, nil, err
 	}
+	req.Header.Set("Accept", mediaTypeSCIM)
 
 	groups := new(SCIMEnterpriseGroups)
 	resp, err := s.client.Do(ctx, req, groups)
