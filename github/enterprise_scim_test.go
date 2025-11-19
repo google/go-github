@@ -290,7 +290,7 @@ func TestEnterpriseService_ListProvisionedSCIMEnterpriseGroups(t *testing.T) {
 	}
 	groups, _, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "ee", opts)
 	if err != nil {
-		t.Errorf("Enterprise.ListProvisionedSCIMGroups returned error: %v", err)
+		t.Fatalf("Enterprise.ListProvisionedSCIMGroups returned unexpected error: %v", err)
 	}
 
 	want := SCIMEnterpriseGroups{
