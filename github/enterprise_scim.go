@@ -167,12 +167,12 @@ func (s *EnterpriseService) ListProvisionedSCIMGroups(ctx context.Context, enter
 	return groups, resp, nil
 }
 
-// ListSCIMProvisionedUsers lists provisioned SCIM enterprise users.
+// ListProvisionedSCIMUsers lists provisioned SCIM enterprise users.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-scim-provisioned-identities-for-an-enterprise
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Users
-func (s *EnterpriseService) ListSCIMProvisionedUsers(ctx context.Context, enterprise string, opts *ListProvisionedSCIMUsersEnterpriseOptions) (*SCIMEnterpriseUsers, *Response, error) {
+func (s *EnterpriseService) ListProvisionedSCIMUsers(ctx context.Context, enterprise string, opts *ListProvisionedSCIMUsersEnterpriseOptions) (*SCIMEnterpriseUsers, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Users", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -183,6 +183,7 @@ func (s *EnterpriseService) ListSCIMProvisionedUsers(ctx context.Context, enterp
 	if err != nil {
 		return nil, nil, err
 	}
+	req.Header.Set("Accept", mediaTypeSCIM)
 
 	users := new(SCIMEnterpriseUsers)
 	resp, err := s.client.Do(ctx, req, users)

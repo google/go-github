@@ -333,3 +333,108 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 		return r, err
 	})
 }
+
+func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/scim/v2/enterprises/octo-org/Users", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeSCIM)
+		testFormValues(t, r, values{
+			"startIndex": "1",
+			"count":      "3",
+			"filter":     `userName eq "octocat@github.com"`,
+		})
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{
+            "schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
+            "totalResults": 1,
+            "itemsPerPage": 1,
+            "startIndex": 1,
+            "Resources": [
+              {
+                "schemas": ["` + SCIMSchemasURINamespacesUser + `"],
+                "id": "5fc0",
+                "externalId": "00u1",
+                "userName": "octocat@github.com",
+                "displayName": "Mona Octocat",
+                "name": {
+                  "givenName": "Mona",
+                  "familyName": "Octocat",
+                  "formatted": "Mona Octocat"
+                },
+                "emails": [
+                  {
+                    "value": "octocat@github.com",
+                    "primary": true
+                  }
+                ],
+                "active": true,
+                "meta": {
+                  "resourceType": "User",
+                  "created": ` + referenceTimeStr + `,
+                  "lastModified": ` + referenceTimeStr + `,
+                  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0"
+                }
+              }
+            ]
+        }`))
+	})
+
+	ctx := t.Context()
+	opts := &ListProvisionedSCIMUsersEnterpriseOptions{
+		StartIndex: 1,
+		Count:      3,
+		Filter:     `userName eq "octocat@github.com"`,
+	}
+	users, _, err := client.Enterprise.ListProvisionedSCIMUsers(ctx, "octo-org", opts)
+	if err != nil {
+		t.Fatalf("Enterprise.ListProvisionedSCIMUsers returned unexpected error: %v", err)
+	}
+
+	want := SCIMEnterpriseUsers{
+		Schemas:      []string{SCIMSchemasURINamespacesListResponse},
+		TotalResults: Ptr(1),
+		ItemsPerPage: Ptr(1),
+		StartIndex:   Ptr(1),
+		Resources: []*SCIMEnterpriseUserAttributes{{
+			Schemas:     []string{SCIMSchemasURINamespacesUser},
+			ID:          Ptr("5fc0"),
+			ExternalID:  "00u1",
+			UserName:    "octocat@github.com",
+			DisplayName: "Mona Octocat",
+			Name: &SCIMEnterpriseUserName{
+				GivenName:  "Mona",
+				FamilyName: "Octocat",
+				Formatted:  Ptr("Mona Octocat"),
+			},
+			Emails: []*SCIMEnterpriseUserEmail{{
+				Value:   "octocat@github.com",
+				Primary: true,
+			}},
+			Active: true,
+			Meta: &SCIMEnterpriseMeta{
+				ResourceType: "User",
+				Created:      &Timestamp{referenceTime},
+				LastModified: &Timestamp{referenceTime},
+				Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0"),
+			},
+		}},
+	}
+
+	if diff := cmp.Diff(want, *users); diff != "" {
+		t.Errorf("Enterprise.ListProvisionedSCIMUsers diff mismatch (-want +got):\n%v", diff)
+	}
+
+	const methodName = "ListProvisionedSCIMUsers"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.ListProvisionedSCIMUsers(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		_, r, err := client.Enterprise.ListProvisionedSCIMUsers(ctx, "o", opts)
+		return r, err
+	})
+}
