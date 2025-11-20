@@ -17,7 +17,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"path"
 	"strings"
 )
 
@@ -125,9 +124,13 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 }
 
 // DownloadContents returns an io.ReadCloser that reads the contents of the
-// specified file. This function will work with files of any size, as opposed
-// to GetContents which is limited to 1 Mb files. It is the caller's
-// responsibility to close the ReadCloser.
+// specified file, along with the file's metadata. This function will work with
+// files of any size, as opposed to GetContents which is limited to 1 Mb files.
+// It is the caller's responsibility to close the ReadCloser.
+//
+// The returned RepositoryContent contains metadata such as the file's SHA, name,
+// path, URL, etc. If you don't need the metadata, you can ignore the second return
+// value.
 //
 // It is possible for the download to result in a failed response when the
 // returned error is nil. Callers should check the returned Response status
@@ -136,90 +139,52 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // GitHub API docs: https://docs.github.com/rest/repos/contents#get-repository-content
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
-func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *Response, error) {
-	dir := path.Dir(filepath)
-	filename := path.Base(filepath)
+func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *RepositoryContent, *Response, error) {
 	fileContent, _, resp, err := s.GetContents(ctx, owner, repo, filepath, opts)
-	if err == nil && fileContent != nil {
-		content, err := fileContent.GetContent()
-		if err == nil && content != "" {
-			return io.NopCloser(strings.NewReader(content)), resp, nil
-		}
-	}
-
-	_, dirContents, resp, err := s.GetContents(ctx, owner, repo, dir, opts)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	for _, contents := range dirContents {
-		if contents.GetName() == filename {
-			if contents.GetDownloadURL() == "" {
-				return nil, resp, fmt.Errorf("no download link found for %v", filepath)
-			}
-			dlReq, err := http.NewRequestWithContext(ctx, "GET", *contents.DownloadURL, nil)
-			if err != nil {
-				return nil, resp, err
-			}
-			dlResp, err := s.client.client.Do(dlReq)
-			if err != nil {
-				return nil, &Response{Response: dlResp}, err
-			}
-
-			return dlResp.Body, &Response{Response: dlResp}, nil
-		}
-	}
-
-	return nil, resp, fmt.Errorf("no file named %v found in %v", filename, dir)
-}
-
-// DownloadContentsWithMeta is identical to DownloadContents but additionally
-// returns the RepositoryContent of the requested file. This additional data
-// is useful for future operations involving the requested file. For merely
-// reading the content of a file, DownloadContents is perfectly adequate.
-//
-// It is possible for the download to result in a failed response when the
-// returned error is nil. Callers should check the returned Response status
-// code to verify the content is from a successful response.
-//
-// GitHub API docs: https://docs.github.com/rest/repos/contents#get-repository-content
-//
-//meta:operation GET /repos/{owner}/{repo}/contents/{path}
-func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *RepositoryContent, *Response, error) {
-	dir := path.Dir(filepath)
-	filename := path.Base(filepath)
-	fileContent, _, resp, err := s.GetContents(ctx, owner, repo, filepath, opts)
-	if err == nil && fileContent != nil {
-		content, err := fileContent.GetContent()
-		if err == nil && content != "" {
-			return io.NopCloser(strings.NewReader(content)), fileContent, resp, nil
-		}
-	}
-
-	_, dirContents, resp, err := s.GetContents(ctx, owner, repo, dir, opts)
 	if err != nil {
 		return nil, nil, resp, err
 	}
-
-	for _, contents := range dirContents {
-		if contents.GetName() == filename {
-			if contents.GetDownloadURL() == "" {
-				return nil, contents, resp, fmt.Errorf("no download link found for %v", filepath)
-			}
-			dlReq, err := http.NewRequestWithContext(ctx, "GET", *contents.DownloadURL, nil)
-			if err != nil {
-				return nil, contents, resp, err
-			}
-			dlResp, err := s.client.client.Do(dlReq)
-			if err != nil {
-				return nil, contents, &Response{Response: dlResp}, err
-			}
-
-			return dlResp.Body, contents, &Response{Response: dlResp}, nil
-		}
+	if fileContent == nil {
+		return nil, nil, resp, fmt.Errorf("no file found at %v", filepath)
 	}
 
-	return nil, nil, resp, fmt.Errorf("no file named %v found in %v", filename, dir)
+	// Check if this is a file.
+	if fileContent.Type == nil || *fileContent.Type != "file" {
+		return nil, nil, resp, fmt.Errorf("cannot download content for type %q (only files are supported)", fileContent.GetType())
+	}
+
+	// Handle empty files.
+	if fileContent.Size != nil && *fileContent.Size == 0 {
+		return io.NopCloser(strings.NewReader("")), fileContent, resp, nil
+	}
+
+	// Try to use the inline content if available.
+	if fileContent.Content != nil && *fileContent.Content != "" {
+		content, err := fileContent.GetContent()
+		if err == nil {
+			return io.NopCloser(strings.NewReader(content)), fileContent, resp, nil
+		}
+		// If GetContent fails (e.g., encoding "none"), fall through to use DownloadURL.
+	}
+
+	// Use the download URL.
+	if fileContent.DownloadURL == nil || *fileContent.DownloadURL == "" {
+		return nil, fileContent, resp, errors.New("no download URL available for this file")
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", *fileContent.DownloadURL, nil)
+	if err != nil {
+		return nil, fileContent, resp, err
+	}
+
+	httpResp, err := s.client.client.Do(req)
+	if err != nil {
+		return nil, fileContent, resp, err
+	}
+
+	// Return the response body even for non-2xx status codes.
+	// Callers should check resp.StatusCode to verify success.
+	return httpResp.Body, fileContent, &Response{Response: httpResp}, nil
 }
 
 // GetContents can return either the metadata and content of a single file
