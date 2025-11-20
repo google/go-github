@@ -9254,6 +9254,14 @@ func (e *EnterpriseCustomPropertiesValues) GetOrganizationLogin() string {
 	return *e.OrganizationLogin
 }
 
+// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+func (e *EnterpriseInstallationRepositoriesToggleOptions) GetRepositorySelection() string {
+	if e == nil || e.RepositorySelection == nil {
+		return ""
+	}
+	return *e.RepositorySelection
+}
+
 // GetEnterpriseServerUser returns the EnterpriseServerUser field if it's non-nil, zero value otherwise.
 func (e *EnterpriseLicensedUsers) GetEnterpriseServerUser() bool {
 	if e == nil || e.EnterpriseServerUser == nil {
