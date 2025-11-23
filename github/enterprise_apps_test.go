@@ -20,7 +20,7 @@ func TestEnterpriseService_ListRepositoriesForOrgInstallation(t *testing.T) {
 	mux.HandleFunc("/enterprises/e/apps/organizations/o/installations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "1"})
-		fmt.Fprint(w, `{"total_count":1, "repositories":[{"id":1}]}`)
+		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
 	ctx := t.Context()
@@ -29,7 +29,7 @@ func TestEnterpriseService_ListRepositoriesForOrgInstallation(t *testing.T) {
 		t.Errorf("Enterprise.ListRepositoriesForOrgInstallation returned error: %v", err)
 	}
 
-	want := &ListRepositories{TotalCount: Ptr(1), Repositories: []*Repository{{ID: Ptr(int64(1))}}}
+	want := []*AccessibleRepository{{ID: 1}}
 	if diff := cmp.Diff(repos, want); diff != "" {
 		t.Errorf("Enterprise.ListRepositoriesForOrgInstallation returned diff (-want +got):\n%v", diff)
 	}
@@ -50,7 +50,7 @@ func TestEnterpriseService_ToggleInstallationRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &EnterpriseInstallationRepositoriesToggleOptions{
+	input := EnterpriseInstallationRepositoriesToggleOptions{
 		RepositorySelection:   String("selected"),
 		SelectedRepositoryIDs: []int64{1, 2},
 	}

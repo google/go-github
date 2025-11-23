@@ -24,13 +24,15 @@ type EnterpriseInstallationRepositoriesToggleOptions struct {
 	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
 }
 
+
+
 // ListRepositoriesForOrgInstallation lists the repositories that an enterprise app installation
 // has access to on an organization.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#get-the-repositories-accessible-to-a-given-github-app-installation
 //
 //meta:operation GET /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories
-func (s *EnterpriseService) ListRepositoriesForOrgInstallation(ctx context.Context, enterprise, org string, installationID int64, opts *ListOptions) (*ListRepositories, *Response, error) {
+func (s *EnterpriseService) ListRepositoriesForOrgInstallation(ctx context.Context, enterprise, org string, installationID int64, opts *ListOptions) ([]*AccessibleRepository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories", enterprise, org, installationID)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -42,7 +44,7 @@ func (s *EnterpriseService) ListRepositoriesForOrgInstallation(ctx context.Conte
 		return nil, nil, err
 	}
 
-	var r *ListRepositories
+	var r []*AccessibleRepository
 	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
@@ -57,7 +59,7 @@ func (s *EnterpriseService) ListRepositoriesForOrgInstallation(ctx context.Conte
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#toggle-installation-repository-access-between-selected-and-all-repositories
 //
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories
-func (s *EnterpriseService) ToggleInstallationRepositories(ctx context.Context, enterprise, org string, installationID int64, opts *EnterpriseInstallationRepositoriesToggleOptions) (*ListRepositories, *Response, error) {
+func (s *EnterpriseService) ToggleInstallationRepositories(ctx context.Context, enterprise, org string, installationID int64, opts EnterpriseInstallationRepositoriesToggleOptions) (*ListRepositories, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories", enterprise, org, installationID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
