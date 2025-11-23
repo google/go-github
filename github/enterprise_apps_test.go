@@ -58,17 +58,17 @@ func TestEnterpriseService_ToggleInstallationRepositories(t *testing.T) {
 	mux.HandleFunc("/enterprises/e/apps/organizations/o/installations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testBody(t, r, `{"repository_selection":"selected","selected_repository_ids":[1,2]}`+"\n")
-		fmt.Fprint(w, `{"total_count":2, "repositories":[{"id":1},{"id":2}]}`)
+		fmt.Fprint(w, `{"id":1, "repository_selection":"selected"}`)
 	})
 
 	ctx := t.Context()
-	repos, _, err := client.Enterprise.ToggleInstallationRepositories(ctx, "e", "o", 1, input)
+	inst, _, err := client.Enterprise.ToggleInstallationRepositories(ctx, "e", "o", 1, input)
 	if err != nil {
 		t.Errorf("Enterprise.ToggleInstallationRepositories returned error: %v", err)
 	}
 
-	want := &ListRepositories{TotalCount: Ptr(2), Repositories: []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}}
-	if diff := cmp.Diff(repos, want); diff != "" {
+	want := &Installation{ID: Ptr(int64(1)), RepositorySelection: Ptr("selected")}
+	if diff := cmp.Diff(inst, want); diff != "" {
 		t.Errorf("Enterprise.ToggleInstallationRepositories returned diff (-want +got):\n%v", diff)
 	}
 
