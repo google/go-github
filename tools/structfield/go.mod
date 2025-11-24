@@ -1,4 +1,4 @@
-module tools/jsonfieldname
+module tools/structfield
 
 go 1.24.0
 

@@ -3,15 +3,18 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package jsonfieldname is a custom linter to be used by
+// Package structfield is a custom linter to be used by
 // golangci-lint to find instances where the Go field name
-// of a struct does not match the JSON tag name.
+// of a struct does not match the JSON or URL tag name.
 // It honors idiomatic Go initialisms and handles the
 // special case of `Github` vs `GitHub` as agreed upon
 // by the original author of the repo.
-package jsonfieldname
+// It also checks that fields with "omitempty" tags
+// are pointer types, except for slices and maps.
+package structfield
 
 import (
+	"fmt"
 	"go/ast"
 	"go/token"
 	"reflect"
@@ -23,31 +26,43 @@ import (
 )
 
 func init() {
-	register.Plugin("jsonfieldname", New)
+	register.Plugin("structfield", New)
 }
 
-// JSONFieldNamePlugin is a custom linter plugin for golangci-lint.
-type JSONFieldNamePlugin struct {
-	allowedExceptions map[string]bool
+// StructFieldPlugin is a custom linter plugin for golangci-lint.
+type StructFieldPlugin struct {
+	allowedTagNameExceptions map[string]bool
+	allowedTagTypeExceptions map[string]bool
 }
 
-// Settings is the configuration for the jsonfieldname linter.
+// Settings is the configuration for the structfield linter.
 type Settings struct {
-	AllowedExceptions []string `json:"allowed-exceptions" yaml:"allowed-exceptions"`
+	AllowedTagNameExceptions []string `json:"allowed-tag-name-exceptions" yaml:"allowed-tag-name-exceptions"`
+	AllowedTagTypeExceptions []string `json:"allowed-tag-type-exceptions" yaml:"allowed-tag-type-exceptions"`
 }
 
 // New returns an analysis.Analyzer to use with golangci-lint.
-// It parses the "allowed-exceptions" section to determine which warnings to skip.
 func New(cfg any) (register.LinterPlugin, error) {
-	allowedExceptions := map[string]bool{}
+	allowedTagNameExceptions := map[string]bool{}
+	allowedTagTypeExceptions := map[string]bool{}
 
 	if cfg != nil {
 		if settingsMap, ok := cfg.(map[string]any); ok {
-			if exceptionsRaw, ok := settingsMap["allowed-exceptions"]; ok {
+			if exceptionsRaw, ok := settingsMap["allowed-tag-name-exceptions"]; ok {
 				if exceptionsList, ok := exceptionsRaw.([]any); ok {
 					for _, item := range exceptionsList {
 						if exception, ok := item.(string); ok {
-							allowedExceptions[exception] = true
+							allowedTagNameExceptions[exception] = true
+						}
+					}
+				}
+			}
+
+			if exceptionsRaw, ok := settingsMap["allowed-tag-type-exceptions"]; ok {
+				if exceptionsList, ok := exceptionsRaw.([]any); ok {
+					for _, item := range exceptionsList {
+						if exception, ok := item.(string); ok {
+							allowedTagTypeExceptions[exception] = true
 						}
 					}
 				}
@@ -55,28 +70,33 @@ func New(cfg any) (register.LinterPlugin, error) {
 		}
 	}
 
-	return &JSONFieldNamePlugin{allowedExceptions: allowedExceptions}, nil
+	return &StructFieldPlugin{
+		allowedTagNameExceptions: allowedTagNameExceptions,
+		allowedTagTypeExceptions: allowedTagTypeExceptions,
+	}, nil
 }
 
-// BuildAnalyzers builds the analyzers for the JSONFieldNamePlugin.
-func (f *JSONFieldNamePlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
+// BuildAnalyzers builds the analyzers for the StructFieldPlugin.
+func (f *StructFieldPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 	return []*analysis.Analyzer{
 		{
-			Name: "jsonfieldname",
-			Doc:  "Reports mismatches between Go field and JSON tag names. Note that the JSON tag name is the source-of-truth and the Go field name needs to match it.",
+			Name: "structfield",
+			Doc: `Reports mismatches between Go field and JSON or URL tag names and types.
+Note that the JSON or URL tag name is the source-of-truth and the Go field name needs to match it.
+If the tag contains "omitempty", then the Go field must be a pointer type except slices and maps.`,
 			Run: func(pass *analysis.Pass) (any, error) {
-				return run(pass, f.allowedExceptions)
+				return run(pass, f.allowedTagNameExceptions, f.allowedTagTypeExceptions)
 			},
 		},
 	}, nil
 }
 
-// GetLoadMode returns the load mode for the JSONFieldNamePlugin.
-func (f *JSONFieldNamePlugin) GetLoadMode() string {
+// GetLoadMode returns the load mode for the StructFieldPlugin.
+func (f *StructFieldPlugin) GetLoadMode() string {
 	return register.LoadModeSyntax
 }
 
-func run(pass *analysis.Pass, allowedExceptions map[string]bool) (any, error) {
+func run(pass *analysis.Pass, allowedTagNameExceptions, allowedTagTypeExceptions map[string]bool) (any, error) {
 	for _, file := range pass.Files {
 		ast.Inspect(file, func(n ast.Node) bool {
 			if n == nil {
@@ -102,15 +122,28 @@ func run(pass *analysis.Pass, allowedExceptions map[string]bool) (any, error) {
 					}
 
 					goField := field.Names[0]
+
 					tagValue := strings.Trim(field.Tag.Value, "`")
 					structTag := reflect.StructTag(tagValue)
-					jsonTagName, ok := structTag.Lookup("json")
-					if !ok || jsonTagName == "-" {
-						continue
-					}
-					jsonTagName = strings.TrimSuffix(jsonTagName, ",omitempty")
 
-					checkGoFieldName(structName, goField.Name, jsonTagName, goField.Pos(), pass, allowedExceptions)
+					jsonTagName, ok := structTag.Lookup("json")
+					if ok && jsonTagName != "-" {
+						if strings.Contains(jsonTagName, ",omitempty") {
+							checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypeExceptions)
+							jsonTagName = strings.ReplaceAll(jsonTagName, ",omitempty", "")
+						}
+						checkGoFieldName(structName, goField.Name, jsonTagName, goField.Pos(), pass, allowedTagNameExceptions)
+					}
+
+					urlTagName, ok := structTag.Lookup("url")
+					if ok && urlTagName != "-" {
+						if strings.Contains(urlTagName, ",omitempty") {
+							checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypeExceptions)
+							urlTagName = strings.ReplaceAll(urlTagName, ",omitempty", "")
+						}
+						urlTagName = strings.ReplaceAll(urlTagName, ",comma", "")
+						checkGoFieldName(structName, goField.Name, urlTagName, goField.Pos(), pass, allowedTagNameExceptions)
+					}
 				}
 			}
 
@@ -120,20 +153,58 @@ func run(pass *analysis.Pass, allowedExceptions map[string]bool) (any, error) {
 	return nil, nil
 }
 
-func checkGoFieldName(structName, goFieldName, jsonTagName string, tokenPos token.Pos, pass *analysis.Pass, allowedExceptions map[string]bool) {
+func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Pos, pass *analysis.Pass, allowedExceptions map[string]bool) {
 	fullName := structName + "." + goFieldName
 	if allowedExceptions[fullName] {
 		return
 	}
 
-	want, alternate := jsonTagToPascal(jsonTagName)
+	want, alternate := tagNameToPascal(tagName)
 	if goFieldName != want && goFieldName != alternate {
-		const msg = "change Go field name %q to %q for JSON tag %q in struct %q"
-		pass.Reportf(tokenPos, msg, goFieldName, want, jsonTagName, structName)
+		const msg = "change Go field name %q to %q for tag %q in struct %q"
+		pass.Reportf(tokenPos, msg, goFieldName, want, tagName, structName)
 	}
 }
 
-func splitJSONTag(jsonTagName string) []string {
+func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos token.Pos, pass *analysis.Pass, allowedExceptions map[string]bool) {
+	fullName := structName + "." + goFieldName
+	if allowedExceptions[fullName] {
+		return
+	}
+
+	var skip bool
+	switch fieldType := field.Type.(type) {
+	case *ast.StarExpr, *ast.ArrayType, *ast.MapType:
+		skip = true
+	case *ast.SelectorExpr:
+		// check if type is json.RawMessage
+		if ident, ok := fieldType.X.(*ast.Ident); ok && ident.Name == "json" && fieldType.Sel.Name == "RawMessage" {
+			skip = true
+		}
+	case *ast.Ident:
+		// check if type is `any`
+		if fieldType.Name == "any" {
+			skip = true
+		}
+	}
+	if !skip {
+		const msg = `change the %q field type to %q in the struct %q because its tag uses "omitempty"`
+		pass.Reportf(tokenPos, msg, goFieldName, "*"+exprToString(field.Type), structName)
+	}
+}
+
+func exprToString(e ast.Expr) string {
+	switch t := e.(type) {
+	case *ast.Ident:
+		return t.Name
+	case *ast.SelectorExpr:
+		return exprToString(t.X) + "." + t.Sel.Name
+	default:
+		return fmt.Sprintf("%T", e)
+	}
+}
+
+func splitTag(jsonTagName string) []string {
 	jsonTagName = strings.TrimPrefix(jsonTagName, "$")
 
 	if strings.Contains(jsonTagName, "_") {
@@ -159,8 +230,8 @@ func splitJSONTag(jsonTagName string) []string {
 
 var camelCaseRE = regexp.MustCompile(`([a-z0-9])([A-Z])`)
 
-func jsonTagToPascal(jsonTagName string) (want, alternate string) {
-	parts := splitJSONTag(jsonTagName)
+func tagNameToPascal(tagName string) (want, alternate string) {
+	parts := splitTag(tagName)
 	alt := make([]string, len(parts))
 	for i, part := range parts {
 		alt[i] = part
