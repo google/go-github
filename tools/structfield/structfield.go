@@ -16,6 +16,7 @@ import (
 	"fmt"
 	"go/ast"
 	"go/token"
+	"go/types"
 	"reflect"
 	"regexp"
 	"strings"
@@ -102,54 +103,59 @@ func run(pass *analysis.Pass, allowedTagNameExceptions, allowedTagTypeExceptions
 				return false
 			}
 
-			switch t := n.(type) {
-			case *ast.TypeSpec:
-				structType, ok := t.Type.(*ast.StructType)
-				if !ok {
-					return true
+			t, ok := n.(*ast.TypeSpec)
+			if !ok {
+				return true
+			}
+			structType, ok := t.Type.(*ast.StructType)
+			if !ok {
+				return true
+			}
+
+			// Check only exported
+			if !ast.IsExported(t.Name.Name) {
+				return true
+			}
+
+			for _, field := range structType.Fields.List {
+				if field.Tag == nil || len(field.Names) == 0 {
+					continue
 				}
-				structName := t.Name.Name
 
-				// Only check exported structs.
-				if !ast.IsExported(structName) {
-					return true
-				}
-
-				for _, field := range structType.Fields.List {
-					if field.Tag == nil || len(field.Names) == 0 {
-						continue
-					}
-
-					goField := field.Names[0]
-
-					tagValue := strings.Trim(field.Tag.Value, "`")
-					structTag := reflect.StructTag(tagValue)
-
-					jsonTagName, ok := structTag.Lookup("json")
-					if ok && jsonTagName != "-" {
-						if strings.Contains(jsonTagName, ",omitempty") {
-							checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypeExceptions)
-							jsonTagName = strings.ReplaceAll(jsonTagName, ",omitempty", "")
-						}
-						checkGoFieldName(structName, goField.Name, jsonTagName, goField.Pos(), pass, allowedTagNameExceptions)
-					}
-
-					urlTagName, ok := structTag.Lookup("url")
-					if ok && urlTagName != "-" {
-						if strings.Contains(urlTagName, ",omitempty") {
-							checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypeExceptions)
-							urlTagName = strings.ReplaceAll(urlTagName, ",omitempty", "")
-						}
-						urlTagName = strings.ReplaceAll(urlTagName, ",comma", "")
-						checkGoFieldName(structName, goField.Name, urlTagName, goField.Pos(), pass, allowedTagNameExceptions)
-					}
-				}
+				processStructField(t.Name.Name, field, pass, allowedTagNameExceptions, allowedTagTypeExceptions)
 			}
 
 			return true
 		})
 	}
 	return nil, nil
+}
+
+func processStructField(structName string, field *ast.Field, pass *analysis.Pass, allowedTagNameExceptions, allowedTagTypeExceptions map[string]bool) {
+	goField := field.Names[0]
+	tagValue := strings.Trim(field.Tag.Value, "`")
+	structTag := reflect.StructTag(tagValue)
+
+	processTag(structName, goField, field, structTag, "json", pass, allowedTagNameExceptions, allowedTagTypeExceptions)
+	processTag(structName, goField, field, structTag, "url", pass, allowedTagNameExceptions, allowedTagTypeExceptions)
+}
+
+func processTag(structName string, goField *ast.Ident, field *ast.Field, structTag reflect.StructTag, tagType string, pass *analysis.Pass, allowedTagNameExceptions, allowedTagTypeExceptions map[string]bool) {
+	tagName, ok := structTag.Lookup(tagType)
+	if !ok || tagName == "-" {
+		return
+	}
+
+	if strings.Contains(tagName, ",omitempty") {
+		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypeExceptions)
+		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
+	}
+
+	if tagType == "url" {
+		tagName = strings.ReplaceAll(tagName, ",comma", "")
+	}
+
+	checkGoFieldName(structName, goField.Name, tagName, goField.Pos(), pass, allowedTagNameExceptions)
 }
 
 func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Pos, pass *analysis.Pass, allowedExceptions map[string]bool) {
@@ -166,30 +172,74 @@ func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Po
 }
 
 func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos token.Pos, pass *analysis.Pass, allowedExceptions map[string]bool) {
-	fullName := structName + "." + goFieldName
-	if allowedExceptions[fullName] {
+	if allowedExceptions[structName+"."+goFieldName] {
 		return
 	}
 
-	var skip bool
-	switch fieldType := field.Type.(type) {
-	case *ast.StarExpr, *ast.ArrayType, *ast.MapType:
-		skip = true
-	case *ast.SelectorExpr:
-		// check if type is json.RawMessage
-		if ident, ok := fieldType.X.(*ast.Ident); ok && ident.Name == "json" && fieldType.Sel.Name == "RawMessage" {
-			skip = true
-		}
-	case *ast.Ident:
-		// check if type is `any`
-		if fieldType.Name == "any" {
-			skip = true
-		}
-	}
-	if !skip {
+	skipOmitempty := checkAndReportInvalidTypes(structName, goFieldName, field.Type, tokenPos, pass)
+
+	if !skipOmitempty {
 		const msg = `change the %q field type to %q in the struct %q because its tag uses "omitempty"`
 		pass.Reportf(tokenPos, msg, goFieldName, "*"+exprToString(field.Type), structName)
 	}
+}
+
+func checkAndReportInvalidTypes(structName, goFieldName string, fieldType ast.Expr, tokenPos token.Pos, pass *analysis.Pass) bool {
+	switch ft := fieldType.(type) {
+	case *ast.StarExpr:
+		// Check for *[]T where T is builtin - should be []T
+		if arrType, ok := ft.X.(*ast.ArrayType); ok {
+			if ident, ok := arrType.Elt.(*ast.Ident); ok && isBuiltinType(ident.Name) {
+				const msg = "change the %q field type to %q in the struct %q"
+				pass.Reportf(tokenPos, msg, goFieldName, "[]"+ident.Name, structName)
+			} else {
+				checkStructArrayType(structName, goFieldName, arrType, tokenPos, pass)
+			}
+		}
+		// Check for *map - should be map
+		if _, ok := ft.X.(*ast.MapType); ok {
+			const msg = "change the %q field type to %q in the struct %q"
+			pass.Reportf(tokenPos, msg, goFieldName, exprToString(ft.X), structName)
+		}
+		return true
+	case *ast.MapType:
+		return true
+	case *ast.ArrayType:
+		checkStructArrayType(structName, goFieldName, ft, tokenPos, pass)
+		return true
+	case *ast.SelectorExpr:
+		// Check for json.RawMessage
+		if ident, ok := ft.X.(*ast.Ident); ok && ident.Name == "json" && ft.Sel.Name == "RawMessage" {
+			return true
+		}
+	case *ast.Ident:
+		// Check for `any` type
+		if ft.Name == "any" {
+			return true
+		}
+	}
+	return false
+}
+
+func checkStructArrayType(structName, goFieldName string, arrType *ast.ArrayType, tokenPos token.Pos, pass *analysis.Pass) {
+	if starExpr, ok := arrType.Elt.(*ast.StarExpr); ok {
+		if ident, ok := starExpr.X.(*ast.Ident); ok && isBuiltinType(ident.Name) {
+			const msg = "change the %q field type to %q in the struct %q"
+			pass.Reportf(tokenPos, msg, goFieldName, "[]"+ident.Name, structName)
+		}
+		return
+	}
+
+	if ident, ok := arrType.Elt.(*ast.Ident); ok && ident.Obj != nil {
+		if _, ok := ident.Obj.Decl.(*ast.TypeSpec).Type.(*ast.StructType); ok {
+			const msg = "change the %q field type to %q in the struct %q"
+			pass.Reportf(tokenPos, msg, goFieldName, "[]*"+ident.Name, structName)
+		}
+	}
+}
+
+func isBuiltinType(typeName string) bool {
+	return types.Universe.Lookup(typeName) != nil
 }
 
 func exprToString(e ast.Expr) string {
@@ -198,6 +248,8 @@ func exprToString(e ast.Expr) string {
 		return t.Name
 	case *ast.SelectorExpr:
 		return exprToString(t.X) + "." + t.Sel.Name
+	case *ast.MapType:
+		return "map[" + exprToString(t.Key) + "]" + exprToString(t.Value)
 	default:
 		return fmt.Sprintf("%T", e)
 	}

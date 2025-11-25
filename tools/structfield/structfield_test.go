@@ -16,10 +16,12 @@ func TestRun(t *testing.T) {
 	testdata := analysistest.TestData()
 	plugin, _ := New(map[string]any{
 		"allowed-tag-names": []any{
-			"Example.Query",
+			"JSONFieldName.Query",
+			"URLFieldName.Query",
 		},
 		"allowed-tag-types": []any{
 			"JSONFieldType.Exception",
+			"URLFieldType.Exception",
 		},
 	})
 	analyzers, _ := plugin.BuildAnalyzers()
