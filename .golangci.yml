@@ -152,6 +152,10 @@ linters:
         type: module
         description: Reports usage of %d or %s in format strings.
         original-url: github.com/google/go-github/v79/tools/fmtpercentv
+      sliceofpointers:
+        type: module
+        description: Reports usage of []*string and slices of structs without pointers.
+        original-url: github.com/google/go-github/v79/tools/sliceofpointers
       structfield:
         type: module
         description: Reports mismatches between Go field and JSON, URL tag names and types.
@@ -404,10 +408,6 @@ linters:
             - UploadOptions.Label # TODO: Repositories
             - UploadOptions.Name # TODO: Repositories
             - UserListOptions.Since # TODO: Users
-      sliceofpointers:
-        type: module
-        description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v79/tools/sliceofpointers
   exclusions:
     rules:
       - linters:

@@ -9,8 +9,7 @@
 // It honors idiomatic Go initialisms and handles the
 // special case of `Github` vs `GitHub` as agreed upon
 // by the original author of the repo.
-// It also checks that fields with "omitempty" tags
-// are pointer types, except for slices and maps.
+// It also checks that fields with "omitempty" tags are reference types.
 package structfield
 
 import (
@@ -83,7 +82,7 @@ func (f *StructFieldPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 			Name: "structfield",
 			Doc: `Reports mismatches between Go field and JSON or URL tag names and types.
 Note that the JSON or URL tag name is the source-of-truth and the Go field name needs to match it.
-If the tag contains "omitempty", then the Go field must be a pointer type except slices and maps.`,
+If the tag contains "omitempty", then the Go field must be a reference type.`,
 			Run: func(pass *analysis.Pass) (any, error) {
 				return run(pass, f.allowedTagNameExceptions, f.allowedTagTypeExceptions)
 			},
