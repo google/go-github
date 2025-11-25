@@ -15,10 +15,10 @@ func TestRun(t *testing.T) {
 	t.Parallel()
 	testdata := analysistest.TestData()
 	plugin, _ := New(map[string]any{
-		"allowed-tag-name-exceptions": []any{
+		"allowed-tag-names": []any{
 			"Example.Query",
 		},
-		"allowed-tag-type-exceptions": []any{
+		"allowed-tag-types": []any{
 			"JSONFieldType.Exception",
 		},
 	})

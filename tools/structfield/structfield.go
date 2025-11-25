@@ -30,38 +30,38 @@ func init() {
 
 // StructFieldPlugin is a custom linter plugin for golangci-lint.
 type StructFieldPlugin struct {
-	allowedTagNameExceptions map[string]bool
-	allowedTagTypeExceptions map[string]bool
+	allowedTagNames map[string]bool
+	allowedTagTypes map[string]bool
 }
 
 // Settings is the configuration for the structfield linter.
 type Settings struct {
-	AllowedTagNameExceptions []string `json:"allowed-tag-name-exceptions" yaml:"allowed-tag-name-exceptions"`
-	AllowedTagTypeExceptions []string `json:"allowed-tag-type-exceptions" yaml:"allowed-tag-type-exceptions"`
+	AllowedTagNames []string `json:"allowed-tag-names" yaml:"allowed-tag-names"`
+	AllowedTagTypes []string `json:"allowed-tag-types" yaml:"allowed-tag-types"`
 }
 
 // New returns an analysis.Analyzer to use with golangci-lint.
 func New(cfg any) (register.LinterPlugin, error) {
-	allowedTagNameExceptions := map[string]bool{}
-	allowedTagTypeExceptions := map[string]bool{}
+	allowedTagNames := map[string]bool{}
+	allowedTagTypes := map[string]bool{}
 
 	if cfg != nil {
 		if settingsMap, ok := cfg.(map[string]any); ok {
-			if exceptionsRaw, ok := settingsMap["allowed-tag-name-exceptions"]; ok {
+			if exceptionsRaw, ok := settingsMap["allowed-tag-names"]; ok {
 				if exceptionsList, ok := exceptionsRaw.([]any); ok {
 					for _, item := range exceptionsList {
 						if exception, ok := item.(string); ok {
-							allowedTagNameExceptions[exception] = true
+							allowedTagNames[exception] = true
 						}
 					}
 				}
 			}
 
-			if exceptionsRaw, ok := settingsMap["allowed-tag-type-exceptions"]; ok {
+			if exceptionsRaw, ok := settingsMap["allowed-tag-types"]; ok {
 				if exceptionsList, ok := exceptionsRaw.([]any); ok {
 					for _, item := range exceptionsList {
 						if exception, ok := item.(string); ok {
-							allowedTagTypeExceptions[exception] = true
+							allowedTagTypes[exception] = true
 						}
 					}
 				}
@@ -70,8 +70,8 @@ func New(cfg any) (register.LinterPlugin, error) {
 	}
 
 	return &StructFieldPlugin{
-		allowedTagNameExceptions: allowedTagNameExceptions,
-		allowedTagTypeExceptions: allowedTagTypeExceptions,
+		allowedTagNames: allowedTagNames,
+		allowedTagTypes: allowedTagTypes,
 	}, nil
 }
 
@@ -84,7 +84,7 @@ func (f *StructFieldPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 Note that the JSON or URL tag name is the source-of-truth and the Go field name needs to match it.
 If the tag contains "omitempty", then the Go field must be a reference type.`,
 			Run: func(pass *analysis.Pass) (any, error) {
-				return run(pass, f.allowedTagNameExceptions, f.allowedTagTypeExceptions)
+				return run(pass, f.allowedTagNames, f.allowedTagTypes)
 			},
 		},
 	}, nil

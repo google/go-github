@@ -161,7 +161,7 @@ linters:
         description: Reports mismatches between Go field and JSON, URL tag names and types.
         original-url: github.com/google/go-github/v79/tools/structfield
         settings:
-          allowed-tag-name-exceptions:
+          allowed-tag-names:
             - ActionsCacheUsageList.RepoCacheUsage # TODO: RepoCacheUsages ?
             - AuditEntry.ExternalIdentityNameID
             - AuditEntry.Timestamp
@@ -225,7 +225,7 @@ linters:
             - WeeklyStats.Commits
             - WeeklyStats.Deletions
             - WeeklyStats.Week
-          allowed-tag-type-exceptions:
+          allowed-tag-types:
             - ActivityListStarredOptions.Direction # TODO: Activities
             - ActivityListStarredOptions.Sort # TODO: Activities
             - AddProjectItemOptions.ID # TODO: Projects
