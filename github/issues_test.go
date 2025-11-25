@@ -586,6 +586,7 @@ func TestIssue_Marshal(t *testing.T) {
 		EventsURL:         Ptr("eurl"),
 		LabelsURL:         Ptr("lurl"),
 		RepositoryURL:     Ptr("rurl"),
+		ParentIssueURL:    Ptr("piurl"),
 		Milestone:         &Milestone{ID: Ptr(int64(1))},
 		PullRequestLinks:  &PullRequestLinks{URL: Ptr("url")},
 		Repository:        &Repository{ID: Ptr(int64(1))},
@@ -629,6 +630,7 @@ func TestIssue_Marshal(t *testing.T) {
 		"events_url": "eurl",
 		"labels_url": "lurl",
 		"repository_url": "rurl",
+		"parent_issue_url": "piurl",
 		"milestone": {
 			"id": 1
 		},

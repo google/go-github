@@ -12558,6 +12558,14 @@ func (i *Issue) GetNumber() int {
 	return *i.Number
 }
 
+// GetParentIssueURL returns the ParentIssueURL field if it's non-nil, zero value otherwise.
+func (i *Issue) GetParentIssueURL() string {
+	if i == nil || i.ParentIssueURL == nil {
+		return ""
+	}
+	return *i.ParentIssueURL
+}
+
 // GetPullRequestLinks returns the PullRequestLinks field.
 func (i *Issue) GetPullRequestLinks() *PullRequestLinks {
 	if i == nil {

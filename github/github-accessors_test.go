@@ -16327,6 +16327,17 @@ func TestIssue_GetNumber(tt *testing.T) {
 	i.GetNumber()
 }
 
+func TestIssue_GetParentIssueURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &Issue{ParentIssueURL: &zeroValue}
+	i.GetParentIssueURL()
+	i = &Issue{}
+	i.GetParentIssueURL()
+	i = nil
+	i.GetParentIssueURL()
+}
+
 func TestIssue_GetPullRequestLinks(tt *testing.T) {
 	tt.Parallel()
 	i := &Issue{}
