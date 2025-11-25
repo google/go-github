@@ -55,6 +55,7 @@ const (
 	mediaTypeOrgPermissionRepo = "application/vnd.github.v3.repository+json"
 	mediaTypeIssueImportAPI    = "application/vnd.github.golden-comet-preview+json"
 	mediaTypeStarring          = "application/vnd.github.star+json"
+	mediaTypeSCIM              = "application/scim+json"
 
 	// Media Type values to access preview APIs.
 	// These media types will be added to the API request as headers

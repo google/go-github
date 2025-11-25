@@ -18656,6 +18656,83 @@ func TestListProjectsPaginationOptions_GetPerPage(tt *testing.T) {
 	l.GetPerPage()
 }
 
+func TestListProvisionedSCIMGroupsEnterpriseOptions_GetCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	l := &ListProvisionedSCIMGroupsEnterpriseOptions{Count: &zeroValue}
+	l.GetCount()
+	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
+	l.GetCount()
+	l = nil
+	l.GetCount()
+}
+
+func TestListProvisionedSCIMGroupsEnterpriseOptions_GetExcludedAttributes(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListProvisionedSCIMGroupsEnterpriseOptions{ExcludedAttributes: &zeroValue}
+	l.GetExcludedAttributes()
+	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
+	l.GetExcludedAttributes()
+	l = nil
+	l.GetExcludedAttributes()
+}
+
+func TestListProvisionedSCIMGroupsEnterpriseOptions_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListProvisionedSCIMGroupsEnterpriseOptions{Filter: &zeroValue}
+	l.GetFilter()
+	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListProvisionedSCIMGroupsEnterpriseOptions_GetStartIndex(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	l := &ListProvisionedSCIMGroupsEnterpriseOptions{StartIndex: &zeroValue}
+	l.GetStartIndex()
+	l = &ListProvisionedSCIMGroupsEnterpriseOptions{}
+	l.GetStartIndex()
+	l = nil
+	l.GetStartIndex()
+}
+
+func TestListProvisionedSCIMUsersEnterpriseOptions_GetCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	l := &ListProvisionedSCIMUsersEnterpriseOptions{Count: &zeroValue}
+	l.GetCount()
+	l = &ListProvisionedSCIMUsersEnterpriseOptions{}
+	l.GetCount()
+	l = nil
+	l.GetCount()
+}
+
+func TestListProvisionedSCIMUsersEnterpriseOptions_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListProvisionedSCIMUsersEnterpriseOptions{Filter: &zeroValue}
+	l.GetFilter()
+	l = &ListProvisionedSCIMUsersEnterpriseOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListProvisionedSCIMUsersEnterpriseOptions_GetStartIndex(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	l := &ListProvisionedSCIMUsersEnterpriseOptions{StartIndex: &zeroValue}
+	l.GetStartIndex()
+	l = &ListProvisionedSCIMUsersEnterpriseOptions{}
+	l.GetStartIndex()
+	l = nil
+	l.GetStartIndex()
+}
+
 func TestListRepositories_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -33887,6 +33964,121 @@ func TestSCIMEnterpriseMeta_GetLocation(tt *testing.T) {
 	s.GetLocation()
 	s = nil
 	s.GetLocation()
+}
+
+func TestSCIMEnterpriseUserAttributes_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMEnterpriseUserAttributes{ID: &zeroValue}
+	s.GetID()
+	s = &SCIMEnterpriseUserAttributes{}
+	s.GetID()
+	s = nil
+	s.GetID()
+}
+
+func TestSCIMEnterpriseUserAttributes_GetMeta(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserAttributes{}
+	s.GetMeta()
+	s = nil
+	s.GetMeta()
+}
+
+func TestSCIMEnterpriseUserAttributes_GetName(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserAttributes{}
+	s.GetName()
+	s = nil
+	s.GetName()
+}
+
+func TestSCIMEnterpriseUserName_GetFormatted(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMEnterpriseUserName{Formatted: &zeroValue}
+	s.GetFormatted()
+	s = &SCIMEnterpriseUserName{}
+	s.GetFormatted()
+	s = nil
+	s.GetFormatted()
+}
+
+func TestSCIMEnterpriseUserName_GetMiddleName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMEnterpriseUserName{MiddleName: &zeroValue}
+	s.GetMiddleName()
+	s = &SCIMEnterpriseUserName{}
+	s.GetMiddleName()
+	s = nil
+	s.GetMiddleName()
+}
+
+func TestSCIMEnterpriseUserRole_GetDisplay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMEnterpriseUserRole{Display: &zeroValue}
+	s.GetDisplay()
+	s = &SCIMEnterpriseUserRole{}
+	s.GetDisplay()
+	s = nil
+	s.GetDisplay()
+}
+
+func TestSCIMEnterpriseUserRole_GetPrimary(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SCIMEnterpriseUserRole{Primary: &zeroValue}
+	s.GetPrimary()
+	s = &SCIMEnterpriseUserRole{}
+	s.GetPrimary()
+	s = nil
+	s.GetPrimary()
+}
+
+func TestSCIMEnterpriseUserRole_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMEnterpriseUserRole{Type: &zeroValue}
+	s.GetType()
+	s = &SCIMEnterpriseUserRole{}
+	s.GetType()
+	s = nil
+	s.GetType()
+}
+
+func TestSCIMEnterpriseUsers_GetItemsPerPage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SCIMEnterpriseUsers{ItemsPerPage: &zeroValue}
+	s.GetItemsPerPage()
+	s = &SCIMEnterpriseUsers{}
+	s.GetItemsPerPage()
+	s = nil
+	s.GetItemsPerPage()
+}
+
+func TestSCIMEnterpriseUsers_GetStartIndex(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SCIMEnterpriseUsers{StartIndex: &zeroValue}
+	s.GetStartIndex()
+	s = &SCIMEnterpriseUsers{}
+	s.GetStartIndex()
+	s = nil
+	s.GetStartIndex()
+}
+
+func TestSCIMEnterpriseUsers_GetTotalResults(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SCIMEnterpriseUsers{TotalResults: &zeroValue}
+	s.GetTotalResults()
+	s = &SCIMEnterpriseUsers{}
+	s.GetTotalResults()
+	s = nil
+	s.GetTotalResults()
 }
 
 func TestSCIMMeta_GetCreated(tt *testing.T) {
