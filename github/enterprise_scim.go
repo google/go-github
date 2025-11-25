@@ -65,15 +65,15 @@ type SCIMEnterpriseGroups struct {
 type ListProvisionedSCIMGroupsEnterpriseOptions struct {
 	// If specified, only results that match the specified filter will be returned.
 	// Possible filters are `externalId`, `id`, and `displayName`. For example, `externalId eq "a123"`.
-	Filter string `url:"filter,omitempty"`
+	Filter *string `url:"filter,omitempty"`
 	// Excludes the specified attribute from being returned in the results.
-	ExcludedAttributes string `url:"excludedAttributes,omitempty"`
+	ExcludedAttributes *string `url:"excludedAttributes,omitempty"`
 	// Used for pagination: the starting index of the first result to return when paginating through values.
 	// Default: 1.
-	StartIndex int `url:"startIndex,omitempty"`
+	StartIndex *int `url:"startIndex,omitempty"`
 	// Used for pagination: the number of results to return per page.
 	// Default: 30.
-	Count int `url:"count,omitempty"`
+	Count *int `url:"count,omitempty"`
 }
 
 // SCIMEnterpriseUserAttributes represents supported SCIM enterprise user attributes.
@@ -131,13 +131,13 @@ type SCIMEnterpriseUsers struct {
 type ListProvisionedSCIMUsersEnterpriseOptions struct {
 	// If specified, only results that match the specified filter will be returned.
 	// Possible filters are `userName`, `externalId`, `id`, and `displayName`. For example, `externalId eq "a123"`.
-	Filter string `url:"filter,omitempty"`
+	Filter *string `url:"filter,omitempty"`
 	// Used for pagination: the starting index of the first result to return when paginating through values.
 	// Default: 1.
-	StartIndex int `url:"startIndex,omitempty"`
+	StartIndex *int `url:"startIndex,omitempty"`
 	// Used for pagination: the number of results to return per page.
 	// Default: 30.
-	Count int `url:"count,omitempty"`
+	Count *int `url:"count,omitempty"`
 }
 
 // ListProvisionedSCIMGroups lists provisioned SCIM groups in an enterprise.

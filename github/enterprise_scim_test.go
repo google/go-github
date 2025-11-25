@@ -165,10 +165,10 @@ func TestListProvisionedSCIMGroupsEnterpriseOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ListProvisionedSCIMGroupsEnterpriseOptions{}, "{}")
 
 	u := &ListProvisionedSCIMGroupsEnterpriseOptions{
-		Filter:             "f",
-		ExcludedAttributes: "ea",
-		StartIndex:         5,
-		Count:              9,
+		Filter:             Ptr("f"),
+		ExcludedAttributes: Ptr("ea"),
+		StartIndex:         Ptr(5),
+		Count:              Ptr(9),
 	}
 
 	want := `{
@@ -186,9 +186,9 @@ func TestListProvisionedSCIMUsersEnterpriseOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &ListProvisionedSCIMUsersEnterpriseOptions{}, "{}")
 
 	u := &ListProvisionedSCIMUsersEnterpriseOptions{
-		Filter:     "f",
-		StartIndex: 3,
-		Count:      7,
+		Filter:     Ptr("f"),
+		StartIndex: Ptr(3),
+		Count:      Ptr(7),
 	}
 
 	want := `{
@@ -284,10 +284,10 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListProvisionedSCIMGroupsEnterpriseOptions{
-		StartIndex:         1,
-		ExcludedAttributes: "members,meta",
-		Count:              3,
-		Filter:             `externalId eq "914a"`,
+		StartIndex:         Ptr(1),
+		ExcludedAttributes: Ptr("members,meta"),
+		Count:              Ptr(3),
+		Filter:             Ptr(`externalId eq "914a"`),
 	}
 	groups, _, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "ee", opts)
 	if err != nil {
@@ -384,9 +384,9 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListProvisionedSCIMUsersEnterpriseOptions{
-		StartIndex: 1,
-		Count:      3,
-		Filter:     `userName eq "octocat@github.com"`,
+		StartIndex: Ptr(1),
+		Count:      Ptr(3),
+		Filter:     Ptr(`userName eq "octocat@github.com"`),
 	}
 	users, _, err := client.Enterprise.ListProvisionedSCIMUsers(ctx, "octo-org", opts)
 	if err != nil {
