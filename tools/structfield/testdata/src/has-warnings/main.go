@@ -14,13 +14,14 @@ type JSONFieldName struct {
 }
 
 type JSONFieldType struct {
-	String                  string             `json:"string,omitempty"`                      // want `change the "String" field type to "\*string" in the struct "JSONFieldType" because its tag uses "omitempty"`
-	SliceOfStringPointers   []*string          `json:"slice_of_string_pointers,omitempty"`    // want `change the "SliceOfStringPointers" field type to "\[\]string" in the struct "JSONFieldType"`
-	PointerToSliceOfStrings *[]string          `json:"pointer_to_slice_of_strings,omitempty"` // want `change the "PointerToSliceOfStrings" field type to "\[\]string" in the struct "JSONFieldType"`
-	SliceOfStructs          []Struct           `json:"slice_of_structs,omitempty"`            // want `change the "SliceOfStructs" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
-	PointerToSliceOfStructs *[]Struct          `json:"pointer_to_slice_of_structs,omitempty"` // want `change the "PointerToSliceOfStructs" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
-	PointerToMap            *map[string]string `json:"pointer_to_map,omitempty"`              // want `change the "PointerToMap" field type to "map\[string\]string" in the struct "JSONFieldType"`
-	SliceOfInts             []*int             `json:"slice_of_ints,omitempty"`               // want `change the "SliceOfInts" field type to "\[\]int" in the struct "JSONFieldType"`
+	String                         string             `json:"string,omitempty"`                              // want `change the "String" field type to "\*string" in the struct "JSONFieldType" because its tag uses "omitempty"`
+	SliceOfStringPointers          []*string          `json:"slice_of_string_pointers,omitempty"`            // want `change the "SliceOfStringPointers" field type to "\[\]string" in the struct "JSONFieldType"`
+	PointerToSliceOfStrings        *[]string          `json:"pointer_to_slice_of_strings,omitempty"`         // want `change the "PointerToSliceOfStrings" field type to "\[\]string" in the struct "JSONFieldType"`
+	SliceOfStructs                 []Struct           `json:"slice_of_structs,omitempty"`                    // want `change the "SliceOfStructs" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
+	PointerToSliceOfStructs        *[]Struct          `json:"pointer_to_slice_of_structs,omitempty"`         // want `change the "PointerToSliceOfStructs" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
+	PointerToSliceOfPointerStructs *[]*Struct         `json:"pointer_to_slice_of_pointer_structs,omitempty"` // want `change the "PointerToSliceOfPointerStructs" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
+	PointerToMap                   *map[string]string `json:"pointer_to_map,omitempty"`                      // want `change the "PointerToMap" field type to "map\[string\]string" in the struct "JSONFieldType"`
+	SliceOfInts                    []*int             `json:"slice_of_ints,omitempty"`                       // want `change the "SliceOfInts" field type to "\[\]int" in the struct "JSONFieldType"`
 }
 
 type Struct struct{}

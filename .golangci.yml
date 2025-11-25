@@ -251,12 +251,16 @@ linters:
             - CredentialAuthorizationsListOptions.Login # TODO: Organizations
             - DependabotEncryptedSecret.SelectedRepositoryIDs # TODO: Dependabot
             - DependabotEncryptedSecret.Visibility # TODO: Dependabot
+            - DeploymentRequest.RequiredContexts # TODO: Deployments
             - DeploymentsListOptions.Environment # TODO: Repositories
             - DeploymentsListOptions.Ref # TODO: Repositories
             - DeploymentsListOptions.SHA # TODO: Repositories
             - DeploymentsListOptions.Task # TODO: Repositories
             - DiscussionCommentListOptions.Direction # TODO: Teams
             - DiscussionListOptions.Direction # TODO: Teams
+            - DismissalRestrictionsRequest.Apps # TODO: Repositories
+            - DismissalRestrictionsRequest.Teams # TODO: Repositories
+            - DismissalRestrictionsRequest.Users # TODO: Repositories
             - EncryptedSecret.SelectedRepositoryIDs # TODO: Actions
             - EncryptedSecret.Visibility # TODO: Actions
             - ErrorBlock.Reason # TODO: Common
@@ -290,6 +294,11 @@ linters:
             - IssueListOptions.Since # TODO: Issues
             - IssueListOptions.Sort # TODO: Issues
             - IssueListOptions.State # TODO: Issues
+            - IssueRequest.Assignees # TODO: Issues
+            - IssueRequest.Labels # TODO: Issues
+            - License.Conditions # TODO: Licenses
+            - License.Limitations # TODO: Licenses
+            - License.Permissions # TODO: Licenses
             - ListCodespacesOptions.RepositoryID # TODO: Codespaces
             - ListCollaboratorsOptions.Affiliation # TODO: Repositories
             - ListCollaboratorsOptions.Permission # TODO: Repositories
@@ -346,6 +355,7 @@ linters:
             - ListWorkflowRunsOptions.HeadSHA # TODO: Actions
             - ListWorkflowRunsOptions.Status # TODO: Actions
             - LockIssueOptions.LockReason # TODO: Issues
+            - MarketplacePlan.Bullets # TODO: Marketplaces
             - MilestoneListOptions.Direction # TODO: Issues
             - MilestoneListOptions.Sort # TODO: Issues
             - MilestoneListOptions.State # TODO: Issues
@@ -388,6 +398,8 @@ linters:
             - RepositoryListOptions.Sort # TODO: Repositories
             - RepositoryListOptions.Type # TODO: Repositories
             - RepositoryListOptions.Visibility # TODO: Repositories
+            - RequiredStatusChecks.Checks # TODO: Repositories
+            - RequiredStatusChecks.Contexts # TODO: Repositories
             - SearchOptions.Order # TODO: Search
             - SearchOptions.Sort # TODO: Search
             - Secret.SelectedRepositoriesURL # TODO: Actions

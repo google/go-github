@@ -96,7 +96,7 @@ func (f *StructFieldPlugin) GetLoadMode() string {
 	return register.LoadModeSyntax
 }
 
-func run(pass *analysis.Pass, allowedTagNameExceptions, allowedTagTypeExceptions map[string]bool) (any, error) {
+func run(pass *analysis.Pass, allowedTagNames, allowedTagTypes map[string]bool) (any, error) {
 	for _, file := range pass.Files {
 		ast.Inspect(file, func(n ast.Node) bool {
 			if n == nil {
@@ -122,7 +122,7 @@ func run(pass *analysis.Pass, allowedTagNameExceptions, allowedTagTypeExceptions
 					continue
 				}
 
-				processStructField(t.Name.Name, field, pass, allowedTagNameExceptions, allowedTagTypeExceptions)
+				processStructField(t.Name.Name, field, pass, allowedTagNames, allowedTagTypes)
 			}
 
 			return true
@@ -131,23 +131,23 @@ func run(pass *analysis.Pass, allowedTagNameExceptions, allowedTagTypeExceptions
 	return nil, nil
 }
 
-func processStructField(structName string, field *ast.Field, pass *analysis.Pass, allowedTagNameExceptions, allowedTagTypeExceptions map[string]bool) {
+func processStructField(structName string, field *ast.Field, pass *analysis.Pass, allowedTagNames, allowedTagTypes map[string]bool) {
 	goField := field.Names[0]
 	tagValue := strings.Trim(field.Tag.Value, "`")
 	structTag := reflect.StructTag(tagValue)
 
-	processTag(structName, goField, field, structTag, "json", pass, allowedTagNameExceptions, allowedTagTypeExceptions)
-	processTag(structName, goField, field, structTag, "url", pass, allowedTagNameExceptions, allowedTagTypeExceptions)
+	processTag(structName, goField, field, structTag, "json", pass, allowedTagNames, allowedTagTypes)
+	processTag(structName, goField, field, structTag, "url", pass, allowedTagNames, allowedTagTypes)
 }
 
-func processTag(structName string, goField *ast.Ident, field *ast.Field, structTag reflect.StructTag, tagType string, pass *analysis.Pass, allowedTagNameExceptions, allowedTagTypeExceptions map[string]bool) {
+func processTag(structName string, goField *ast.Ident, field *ast.Field, structTag reflect.StructTag, tagType string, pass *analysis.Pass, allowedTagNames, allowedTagTypes map[string]bool) {
 	tagName, ok := structTag.Lookup(tagType)
 	if !ok || tagName == "-" {
 		return
 	}
 
 	if strings.Contains(tagName, ",omitempty") {
-		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypeExceptions)
+		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypes)
 		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
 	}
 
@@ -155,12 +155,12 @@ func processTag(structName string, goField *ast.Ident, field *ast.Field, structT
 		tagName = strings.ReplaceAll(tagName, ",comma", "")
 	}
 
-	checkGoFieldName(structName, goField.Name, tagName, goField.Pos(), pass, allowedTagNameExceptions)
+	checkGoFieldName(structName, goField.Name, tagName, goField.Pos(), pass, allowedTagNames)
 }
 
-func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Pos, pass *analysis.Pass, allowedExceptions map[string]bool) {
+func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Pos, pass *analysis.Pass, allowedNames map[string]bool) {
 	fullName := structName + "." + goFieldName
-	if allowedExceptions[fullName] {
+	if allowedNames[fullName] {
 		return
 	}
 
@@ -171,8 +171,8 @@ func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Po
 	}
 }
 
-func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos token.Pos, pass *analysis.Pass, allowedExceptions map[string]bool) {
-	if allowedExceptions[structName+"."+goFieldName] {
+func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos token.Pos, pass *analysis.Pass, allowedTypes map[string]bool) {
+	if allowedTypes[structName+"."+goFieldName] {
 		return
 	}
 
@@ -192,6 +192,12 @@ func checkAndReportInvalidTypes(structName, goFieldName string, fieldType ast.Ex
 			if ident, ok := arrType.Elt.(*ast.Ident); ok && isBuiltinType(ident.Name) {
 				const msg = "change the %q field type to %q in the struct %q"
 				pass.Reportf(tokenPos, msg, goFieldName, "[]"+ident.Name, structName)
+			} else if starExpr, ok := arrType.Elt.(*ast.StarExpr); ok {
+				// Check for *[]*T - should be []*T
+				if ident, ok := starExpr.X.(*ast.Ident); ok {
+					const msg = "change the %q field type to %q in the struct %q"
+					pass.Reportf(tokenPos, msg, goFieldName, "[]*"+ident.Name, structName)
+				}
 			} else {
 				checkStructArrayType(structName, goFieldName, arrType, tokenPos, pass)
 			}
