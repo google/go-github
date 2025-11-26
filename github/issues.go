@@ -160,6 +160,7 @@ type IssueType struct {
 // repositories.
 //
 // GitHub API docs: https://docs.github.com/rest/issues/issues#list-issues-assigned-to-the-authenticated-user
+//
 // GitHub API docs: https://docs.github.com/rest/issues/issues#list-user-account-issues-assigned-to-the-authenticated-user
 //
 //meta:operation GET /issues
