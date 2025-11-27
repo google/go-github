@@ -9254,14 +9254,6 @@ func (e *EnterpriseCustomPropertiesValues) GetOrganizationLogin() string {
 	return *e.OrganizationLogin
 }
 
-// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
-func (e *EnterpriseInstallationRepositoriesToggleOptions) GetRepositorySelection() string {
-	if e == nil || e.RepositorySelection == nil {
-		return ""
-	}
-	return *e.RepositorySelection
-}
-
 // GetEnterpriseServerUser returns the EnterpriseServerUser field if it's non-nil, zero value otherwise.
 func (e *EnterpriseLicensedUsers) GetEnterpriseServerUser() bool {
 	if e == nil || e.EnterpriseServerUser == nil {
@@ -29468,6 +29460,14 @@ func (t *TreeEntry) GetURL() string {
 		return ""
 	}
 	return *t.URL
+}
+
+// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+func (u *UpdateAppInstallationRepositoriesOptions) GetRepositorySelection() string {
+	if u == nil || u.RepositorySelection == nil {
+		return ""
+	}
+	return *u.RepositorySelection
 }
 
 // GetPath returns the Path field if it's non-nil, zero value otherwise.

@@ -11985,17 +11985,6 @@ func TestEnterpriseCustomPropertiesValues_GetOrganizationLogin(tt *testing.T) {
 	e.GetOrganizationLogin()
 }
 
-func TestEnterpriseInstallationRepositoriesToggleOptions_GetRepositorySelection(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseInstallationRepositoriesToggleOptions{RepositorySelection: &zeroValue}
-	e.GetRepositorySelection()
-	e = &EnterpriseInstallationRepositoriesToggleOptions{}
-	e.GetRepositorySelection()
-	e = nil
-	e.GetRepositorySelection()
-}
-
 func TestEnterpriseLicensedUsers_GetEnterpriseServerUser(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -37977,6 +37966,17 @@ func TestTreeEntry_GetURL(tt *testing.T) {
 	t.GetURL()
 	t = nil
 	t.GetURL()
+}
+
+func TestUpdateAppInstallationRepositoriesOptions_GetRepositorySelection(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateAppInstallationRepositoriesOptions{RepositorySelection: &zeroValue}
+	u.GetRepositorySelection()
+	u = &UpdateAppInstallationRepositoriesOptions{}
+	u.GetRepositorySelection()
+	u = nil
+	u.GetRepositorySelection()
 }
 
 func TestUpdateAttributeForSCIMUserOperations_GetPath(tt *testing.T) {
