@@ -244,6 +244,37 @@ func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestSCIMEnterpriseAttributeOptions_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &SCIMEnterpriseAttributeOptions{}, "{}")
+
+	u := &SCIMEnterpriseAttributeOptions{
+		Schemas: []string{"s"},
+		Operations: []SCIMEnterpriseAttributeOperations{{
+			Op:    "o1",
+			Path:  Ptr("p1"),
+			Value: Ptr("v1"),
+		},
+			{
+				Op: "o2",
+			}},
+	}
+
+	want := `{
+		"schemas": ["s"],
+		"Operations": [{
+			"op": "o1",
+			"path": "p1",
+			"value": "v1"
+		},
+		{
+			"op": "o2"
+		}]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -439,6 +470,188 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Enterprise.ListProvisionedSCIMUsers(ctx, "ee", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_UpdateAttributeSCIMGroup(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/abcd", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeSCIM)
+		testBody(t, r, `{"schemas":["`+SCIMSchemasURINamespacesPatchOp+`"],"Operations":[{"op":"replace","path":"displayName","value":"Employees"}]}`+"\n")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{
+			"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
+			"id": "abcd",
+			"externalId": "8aa1",
+			"displayName": "Employees",
+			"members": [{
+				"value": "879d",
+				"$ref": "https://api.github.localhost/scim/v2/enterprises/ee/Users/879d",
+				"display": "User 1"
+			}],
+			"meta": {
+				"resourceType": "Group",
+				"created": `+referenceTimeStr+`,
+				"lastModified": `+referenceTimeStr+`,
+				"location": "https://api.github.localhost/scim/v2/enterprises/ee/Groups/abcd"
+			}
+		}`)
+	})
+	want := &SCIMEnterpriseGroupAttributes{
+		Schemas:     []string{SCIMSchemasURINamespacesGroups},
+		ID:          Ptr("abcd"),
+		ExternalID:  Ptr("8aa1"),
+		DisplayName: Ptr("Employees"),
+		Members: []*SCIMEnterpriseDisplayReference{{
+			Value:   "879d",
+			Ref:     "https://api.github.localhost/scim/v2/enterprises/ee/Users/879d",
+			Display: Ptr("User 1"),
+		}},
+		Meta: &SCIMEnterpriseMeta{
+			ResourceType: "Group",
+			Created:      &Timestamp{referenceTime},
+			LastModified: &Timestamp{referenceTime},
+			Location:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Groups/abcd"),
+		},
+	}
+
+	ctx := t.Context()
+	input := SCIMEnterpriseAttributeOptions{
+		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
+		Operations: []SCIMEnterpriseAttributeOperations{{
+			Op:    "replace",
+			Path:  Ptr("displayName"),
+			Value: Ptr("Employees"),
+		}},
+	}
+	got, _, err := client.Enterprise.UpdateAttributeSCIMGroup(ctx, "ee", "abcd", input)
+	if err != nil {
+		t.Fatalf("Enterprise.UpdateAttributeSCIMGroup returned unexpected error: %v", err)
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("Enterprise.UpdateAttributeSCIMGroup diff mismatch (-want +got):\n%v", diff)
+	}
+
+	const methodName = "UpdateAttributeSCIMGroup"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.UpdateAttributeSCIMGroup(ctx, "\n", "\n", SCIMEnterpriseAttributeOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.UpdateAttributeSCIMGroup(ctx, "ee", "abcd", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_UpdateAttributeSCIMUser(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/scim/v2/enterprises/ee/Users/7fce", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeSCIM)
+		testBody(t, r, `{"schemas":["`+SCIMSchemasURINamespacesPatchOp+`"],"Operations":[{"op":"replace","path":"emails[type eq 'work'].value","value":"updatedEmail@email.com"},{"op":"replace","path":"name.familyName","value":"updatedFamilyName"}]}`+"\n")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{
+			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
+			"id": "7fce",
+			"externalId": "e123",
+			"active": true,
+			"userName": "e123",
+			"name": {
+				"formatted": "John Doe X",
+				"familyName": "updatedFamilyName",
+				"givenName": "John",
+				"middleName": "X"
+			},
+			"displayName": "John Doe",
+			"emails": [{
+				"value": "john@email.com",
+				"type": "work",
+				"primary": true
+			}],
+			"roles": [{
+				"value": "User",
+				"primary": false
+			}],
+			"meta": {
+				"resourceType": "User",
+				"created": `+referenceTimeStr+`,
+				"lastModified": `+referenceTimeStr+`,
+				"location": "https://api.github.localhost/scim/v2/enterprises/ee/Users/7fce"
+			}
+		}`)
+	})
+	want := &SCIMEnterpriseUserAttributes{
+		Schemas:     []string{SCIMSchemasURINamespacesUser},
+		ID:          Ptr("7fce"),
+		ExternalID:  "e123",
+		Active:      true,
+		UserName:    "e123",
+		DisplayName: "John Doe",
+		Name: &SCIMEnterpriseUserName{
+			Formatted:  Ptr("John Doe X"),
+			FamilyName: "updatedFamilyName",
+			GivenName:  "John",
+			MiddleName: Ptr("X"),
+		},
+		Emails: []*SCIMEnterpriseUserEmail{{
+			Value:   "john@email.com",
+			Type:    "work",
+			Primary: true,
+		}},
+		Roles: []*SCIMEnterpriseUserRole{{
+			Value:   "User",
+			Primary: Ptr(false),
+		}},
+		Meta: &SCIMEnterpriseMeta{
+			ResourceType: "User",
+			Created:      &Timestamp{referenceTime},
+			LastModified: &Timestamp{referenceTime},
+			Location:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/7fce"),
+		},
+	}
+
+	ctx := t.Context()
+	input := SCIMEnterpriseAttributeOptions{
+		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
+		Operations: []SCIMEnterpriseAttributeOperations{{
+			Op:    "replace",
+			Path:  Ptr("emails[type eq 'work'].value"),
+			Value: Ptr("updatedEmail@email.com"),
+		}, {
+			Op:    "replace",
+			Path:  Ptr("name.familyName"),
+			Value: Ptr("updatedFamilyName"),
+		}},
+	}
+	got, _, err := client.Enterprise.UpdateAttributeSCIMUser(ctx, "ee", "7fce", input)
+	if err != nil {
+		t.Fatalf("Enterprise.UpdateAttributeSCIMUser returned unexpected error: %v", err)
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("Enterprise.UpdateAttributeSCIMUser diff mismatch (-want +got):\n%v", diff)
+	}
+
+	const methodName = "UpdateAttributeSCIMUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.UpdateAttributeSCIMUser(ctx, "\n", "\n", SCIMEnterpriseAttributeOptions{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.UpdateAttributeSCIMUser(ctx, "ee", "7fce", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

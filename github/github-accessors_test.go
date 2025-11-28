@@ -33848,6 +33848,28 @@ func TestScanningAnalysis_GetWarning(tt *testing.T) {
 	s.GetWarning()
 }
 
+func TestSCIMEnterpriseAttributeOperations_GetPath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMEnterpriseAttributeOperations{Path: &zeroValue}
+	s.GetPath()
+	s = &SCIMEnterpriseAttributeOperations{}
+	s.GetPath()
+	s = nil
+	s.GetPath()
+}
+
+func TestSCIMEnterpriseAttributeOperations_GetValue(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMEnterpriseAttributeOperations{Value: &zeroValue}
+	s.GetValue()
+	s = &SCIMEnterpriseAttributeOperations{}
+	s.GetValue()
+	s = nil
+	s.GetValue()
+}
+
 func TestSCIMEnterpriseDisplayReference_GetDisplay(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
