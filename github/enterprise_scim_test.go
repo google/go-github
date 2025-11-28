@@ -42,27 +42,27 @@ func TestSCIMEnterpriseGroups_Marshal(t *testing.T) {
 
 	want := `{
 		"schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
-        "totalResults": 1,
-        "itemsPerPage": 1,
-        "startIndex": 1,
-        "Resources": [{
-            "schemas": ["` + SCIMSchemasURINamespacesGroups + `"],
-            "id": "idgn1",
-            "externalId": "eidgn1",
-            "displayName": "gn1",
-            "meta": {
-                "resourceType": "Group",
-                "created": ` + referenceTimeStr + `,
-                "lastModified": ` + referenceTimeStr + `,
-                "location": "https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1"
-            },
-            "members": [{
-                "value": "idm1",
-                "$ref": "https://api.github.com/scim/v2/enterprises/ee/Users/idm1",
-                "display": "m1"
-            }]
-        }]
-    }`
+		"totalResults": 1,
+		"itemsPerPage": 1,
+		"startIndex": 1,
+		"Resources": [{
+			"schemas": ["` + SCIMSchemasURINamespacesGroups + `"],
+			"id": "idgn1",
+			"externalId": "eidgn1",
+			"displayName": "gn1",
+			"meta": {
+				"resourceType": "Group",
+				"created": ` + referenceTimeStr + `,
+				"lastModified": ` + referenceTimeStr + `,
+				"location": "https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1"
+			},
+			"members": [{
+				"value": "idm1",
+				"$ref": "https://api.github.com/scim/v2/enterprises/ee/Users/idm1",
+				"display": "m1"
+			}]
+		}]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -115,47 +115,47 @@ func TestSCIMEnterpriseUsers_Marshal(t *testing.T) {
 	}
 
 	want := `{
-        "schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
-        "TotalResults": 1,
-        "itemsPerPage": 1,
-        "StartIndex": 1,
-        "Resources": [{
-            "active": true,
-            "emails": [{
-                "primary": true,
-                "type": "work",
-                "value": "un1@email.com"
-            }],
-            "roles": [{
-                "display": "rd1",
-                "primary": true,
-                "type": "rt1",
-                "value": "rv1"
-            }],
-            "schemas": ["` + SCIMSchemasURINamespacesUser + `"],
-            "userName": "un1",
-            "groups": [{
-                "value": "idgn1",
-                "$ref": "https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1",
-                "display": "gn1"
-            }],
-            "id": "idun1",
-            "externalId": "eidun1",
-            "name": {
-                "givenName": "gnn1",
-                "familyName": "fnn1",
-                "formatted": "f1",
-                "middleName": "mn1"
-            },
-            "displayName": "dun1",
-            "meta": {
-                "resourceType": "User",
-                "created": ` + referenceTimeStr + `,
-                "lastModified": ` + referenceTimeStr + `,
-                "location": "https://api.github.com/scim/v2/enterprises/ee/User/idun1"
-            }
-        }]
-    }`
+		"schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
+		"TotalResults": 1,
+		"itemsPerPage": 1,
+		"StartIndex": 1,
+		"Resources": [{
+			"active": true,
+			"emails": [{
+				"primary": true,
+				"type": "work",
+				"value": "un1@email.com"
+			}],
+			"roles": [{
+				"display": "rd1",
+				"primary": true,
+				"type": "rt1",
+				"value": "rv1"
+			}],
+			"schemas": ["` + SCIMSchemasURINamespacesUser + `"],
+			"userName": "un1",
+			"groups": [{
+				"value": "idgn1",
+				"$ref": "https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1",
+				"display": "gn1"
+			}],
+			"id": "idun1",
+			"externalId": "eidun1",
+			"name": {
+				"givenName": "gnn1",
+				"familyName": "fnn1",
+				"formatted": "f1",
+				"middleName": "mn1"
+			},
+			"displayName": "dun1",
+			"meta": {
+				"resourceType": "User",
+				"created": ` + referenceTimeStr + `,
+				"lastModified": ` + referenceTimeStr + `,
+				"location": "https://api.github.com/scim/v2/enterprises/ee/User/idun1"
+			}
+		}]
+	}`
 
 	testJSONMarshal(t, u, want)
 }
@@ -172,10 +172,10 @@ func TestListProvisionedSCIMGroupsEnterpriseOptions_Marshal(t *testing.T) {
 	}
 
 	want := `{
-        "filter": "f",
-        "excludedAttributes": "ea",
-        "startIndex": 5,
-        "count": 9
+		"filter": "f",
+		"excludedAttributes": "ea",
+		"startIndex": 5,
+		"count": 9
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -192,9 +192,9 @@ func TestListProvisionedSCIMUsersEnterpriseOptions_Marshal(t *testing.T) {
 	}
 
 	want := `{
-        "filter": "f",
-        "startIndex": 3,
-        "count": 7
+		"filter": "f",
+		"startIndex": 3,
+		"count": 7
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -223,15 +223,15 @@ func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
 	}
 
 	want := `{
-        "schemas": ["s1"],
-        "externalId": "eid",
+		"schemas": ["s1"],
+		"externalId": "eid",
 		"displayName": "dn",
-        "members" : [{
-            "value": "v",
-            "$ref": "r",
-            "display": "d"
-        }],
-        "id": "id",
+		"members" : [{
+			"value": "v",
+			"$ref": "r",
+			"display": "d"
+		}],
+		"id": "id",
 		"meta": {
 			"resourceType": "rt",
 			"created": ` + referenceTimeStr + `,
@@ -259,27 +259,27 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(`{
 			"schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
-            "totalResults": 1,
-            "itemsPerPage": 1,
-            "startIndex": 1,
-            "Resources": [{
-                "schemas": ["` + SCIMSchemasURINamespacesGroups + `"],
-                "id": "914a",
-                "externalId": "de88",
-                "displayName": "gn1",
-                "meta": {
-                    "resourceType": "Group",
-                    "created": ` + referenceTimeStr + `,
-                    "lastModified": ` + referenceTimeStr + `,
-                    "location": "https://api.github.com/scim/v2/enterprises/ee/Groups/914a"
-                },
-                "members": [{
-                    "value": "e7f9",
-                    "$ref": "https://api.github.com/scim/v2/enterprises/ee/Users/e7f9",
-                    "display": "d1"
-                }]
-            }]
-        }`))
+			"totalResults": 1,
+			"itemsPerPage": 1,
+			"startIndex": 1,
+			"Resources": [{
+				"schemas": ["` + SCIMSchemasURINamespacesGroups + `"],
+				"id": "914a",
+				"externalId": "de88",
+				"displayName": "gn1",
+				"meta": {
+					"resourceType": "Group",
+					"created": ` + referenceTimeStr + `,
+					"lastModified": ` + referenceTimeStr + `,
+					"location": "https://api.github.com/scim/v2/enterprises/ee/Groups/914a"
+				},
+				"members": [{
+					"value": "e7f9",
+					"$ref": "https://api.github.com/scim/v2/enterprises/ee/Users/e7f9",
+					"display": "d1"
+				}]
+			}]
+		}`))
 	})
 
 	ctx := t.Context()
@@ -348,38 +348,38 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 		})
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(`{
-            "schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
-            "totalResults": 1,
-            "itemsPerPage": 1,
-            "startIndex": 1,
-            "Resources": [
-              {
-                "schemas": ["` + SCIMSchemasURINamespacesUser + `"],
-                "id": "5fc0",
-                "externalId": "00u1",
-                "userName": "octocat@github.com",
-                "displayName": "Mona Octocat",
-                "name": {
-                  "givenName": "Mona",
-                  "familyName": "Octocat",
-                  "formatted": "Mona Octocat"
-                },
-                "emails": [
-                  {
-                    "value": "octocat@github.com",
-                    "primary": true
-                  }
-                ],
-                "active": true,
-                "meta": {
-                  "resourceType": "User",
-                  "created": ` + referenceTimeStr + `,
-                  "lastModified": ` + referenceTimeStr + `,
-                  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0"
-                }
-              }
-            ]
-        }`))
+			"schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
+			"totalResults": 1,
+			"itemsPerPage": 1,
+			"startIndex": 1,
+			"Resources": [
+			  {
+				"schemas": ["` + SCIMSchemasURINamespacesUser + `"],
+				"id": "5fc0",
+				"externalId": "00u1",
+				"userName": "octocat@github.com",
+				"displayName": "Mona Octocat",
+				"name": {
+				  "givenName": "Mona",
+				  "familyName": "Octocat",
+				  "formatted": "Mona Octocat"
+				},
+				"emails": [
+				  {
+					"value": "octocat@github.com",
+					"primary": true
+				  }
+				],
+				"active": true,
+				"meta": {
+				  "resourceType": "User",
+				  "created": ` + referenceTimeStr + `,
+				  "lastModified": ` + referenceTimeStr + `,
+				  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0"
+				}
+			  }
+			]
+		}`))
 	})
 
 	ctx := t.Context()
