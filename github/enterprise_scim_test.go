@@ -6,6 +6,7 @@
 package github
 
 import (
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -257,20 +258,20 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 			"filter":             `externalId eq "914a"`,
 		})
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte(`{
-			"schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
+		fmt.Fprint(w, `{
+			"schemas": ["`+SCIMSchemasURINamespacesListResponse+`"],
 			"totalResults": 1,
 			"itemsPerPage": 1,
 			"startIndex": 1,
 			"Resources": [{
-				"schemas": ["` + SCIMSchemasURINamespacesGroups + `"],
+				"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
 				"id": "914a",
 				"externalId": "de88",
 				"displayName": "gn1",
 				"meta": {
 					"resourceType": "Group",
-					"created": ` + referenceTimeStr + `,
-					"lastModified": ` + referenceTimeStr + `,
+					"created": `+referenceTimeStr+`,
+					"lastModified": `+referenceTimeStr+`,
 					"location": "https://api.github.com/scim/v2/enterprises/ee/Groups/914a"
 				},
 				"members": [{
@@ -279,7 +280,7 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 					"display": "d1"
 				}]
 			}]
-		}`))
+		}`)
 	})
 
 	ctx := t.Context()
@@ -289,12 +290,12 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 		Count:              Ptr(3),
 		Filter:             Ptr(`externalId eq "914a"`),
 	}
-	groups, _, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "ee", opts)
+	got, _, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "ee", opts)
 	if err != nil {
 		t.Fatalf("Enterprise.ListProvisionedSCIMGroups returned unexpected error: %v", err)
 	}
 
-	want := SCIMEnterpriseGroups{
+	want := &SCIMEnterpriseGroups{
 		Schemas:      []string{SCIMSchemasURINamespacesListResponse},
 		TotalResults: Ptr(1),
 		ItemsPerPage: Ptr(1),
@@ -318,7 +319,7 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 		}},
 	}
 
-	if diff := cmp.Diff(want, *groups); diff != "" {
+	if diff := cmp.Diff(want, got); diff != "" {
 		t.Errorf("Enterprise.ListProvisionedSCIMGroups diff mismatch (-want +got):\n%v", diff)
 	}
 
@@ -329,8 +330,11 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, r, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "o", opts)
-		return r, err
+		got, resp, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "ee", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
@@ -338,7 +342,7 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/scim/v2/enterprises/octo-org/Users", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/scim/v2/enterprises/ee/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
 		testFormValues(t, r, values{
@@ -347,14 +351,14 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 			"filter":     `userName eq "octocat@github.com"`,
 		})
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte(`{
-			"schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
+		fmt.Fprint(w, `{
+			"schemas": ["`+SCIMSchemasURINamespacesListResponse+`"],
 			"totalResults": 1,
 			"itemsPerPage": 1,
 			"startIndex": 1,
 			"Resources": [
 			  {
-				"schemas": ["` + SCIMSchemasURINamespacesUser + `"],
+				"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
 				"id": "5fc0",
 				"externalId": "00u1",
 				"userName": "octocat@github.com",
@@ -373,13 +377,13 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 				"active": true,
 				"meta": {
 				  "resourceType": "User",
-				  "created": ` + referenceTimeStr + `,
-				  "lastModified": ` + referenceTimeStr + `,
-				  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0"
+				  "created": `+referenceTimeStr+`,
+				  "lastModified": `+referenceTimeStr+`,
+				  "location": "https://api.github.com/scim/v2/enterprises/ee/Users/5fc0"
 				}
 			  }
 			]
-		}`))
+		}`)
 	})
 
 	ctx := t.Context()
@@ -388,12 +392,12 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 		Count:      Ptr(3),
 		Filter:     Ptr(`userName eq "octocat@github.com"`),
 	}
-	users, _, err := client.Enterprise.ListProvisionedSCIMUsers(ctx, "octo-org", opts)
+	got, _, err := client.Enterprise.ListProvisionedSCIMUsers(ctx, "ee", opts)
 	if err != nil {
 		t.Fatalf("Enterprise.ListProvisionedSCIMUsers returned unexpected error: %v", err)
 	}
 
-	want := SCIMEnterpriseUsers{
+	want := &SCIMEnterpriseUsers{
 		Schemas:      []string{SCIMSchemasURINamespacesListResponse},
 		TotalResults: Ptr(1),
 		ItemsPerPage: Ptr(1),
@@ -418,12 +422,12 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 				ResourceType: "User",
 				Created:      &Timestamp{referenceTime},
 				LastModified: &Timestamp{referenceTime},
-				Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0"),
+				Location:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Users/5fc0"),
 			},
 		}},
 	}
 
-	if diff := cmp.Diff(want, *users); diff != "" {
+	if diff := cmp.Diff(want, got); diff != "" {
 		t.Errorf("Enterprise.ListProvisionedSCIMUsers diff mismatch (-want +got):\n%v", diff)
 	}
 
@@ -434,7 +438,10 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, r, err := client.Enterprise.ListProvisionedSCIMUsers(ctx, "o", opts)
-		return r, err
+		got, resp, err := client.Enterprise.ListProvisionedSCIMUsers(ctx, "ee", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
