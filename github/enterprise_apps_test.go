@@ -50,7 +50,7 @@ func TestEnterpriseService_UpdateAppInstallationRepositories(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &UpdateAppInstallationRepositoriesOptions{
+	input := UpdateAppInstallationRepositoriesOptions{
 		RepositorySelection:   String("selected"),
 		SelectedRepositoryIDs: []int64{1, 2},
 	}
@@ -88,7 +88,7 @@ func TestEnterpriseService_AddRepositoriesToAppInstallation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &AppInstallationRepositoriesOptions{SelectedRepositoryIDs: []int64{1, 2}}
+	input := AppInstallationRepositoriesOptions{SelectedRepositoryIDs: []int64{1, 2}}
 
 	mux.HandleFunc("/enterprises/e/apps/organizations/o/installations/1/repositories/add", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -123,7 +123,7 @@ func TestEnterpriseService_RemoveRepositoriesFromAppInstallation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &AppInstallationRepositoriesOptions{SelectedRepositoryIDs: []int64{1, 2}}
+	input := AppInstallationRepositoriesOptions{SelectedRepositoryIDs: []int64{1, 2}}
 
 	mux.HandleFunc("/enterprises/e/apps/organizations/o/installations/1/repositories/remove", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")

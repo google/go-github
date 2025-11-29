@@ -57,7 +57,7 @@ func (s *EnterpriseService) ListRepositoriesForOrgAppInstallation(ctx context.Co
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#toggle-installation-repository-access-between-selected-and-all-repositories
 //
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories
-func (s *EnterpriseService) UpdateAppInstallationRepositories(ctx context.Context, enterprise, org string, installationID int64, opts *UpdateAppInstallationRepositoriesOptions) (*Installation, *Response, error) {
+func (s *EnterpriseService) UpdateAppInstallationRepositories(ctx context.Context, enterprise, org string, installationID int64, opts UpdateAppInstallationRepositoriesOptions) (*Installation, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories", enterprise, org, installationID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
@@ -78,7 +78,7 @@ func (s *EnterpriseService) UpdateAppInstallationRepositories(ctx context.Contex
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#grant-repository-access-to-an-organization-installation
 //
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories/add
-func (s *EnterpriseService) AddRepositoriesToAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts *AppInstallationRepositoriesOptions) ([]*AccessibleRepository, *Response, error) {
+func (s *EnterpriseService) AddRepositoriesToAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts AppInstallationRepositoriesOptions) ([]*AccessibleRepository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories/add", enterprise, org, installationID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
@@ -99,7 +99,7 @@ func (s *EnterpriseService) AddRepositoriesToAppInstallation(ctx context.Context
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#remove-repository-access-from-an-organization-installation
 //
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories/remove
-func (s *EnterpriseService) RemoveRepositoriesFromAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts *AppInstallationRepositoriesOptions) ([]*AccessibleRepository, *Response, error) {
+func (s *EnterpriseService) RemoveRepositoriesFromAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts AppInstallationRepositoriesOptions) ([]*AccessibleRepository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories/remove", enterprise, org, installationID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
