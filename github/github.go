@@ -197,6 +197,7 @@ type Client struct {
 	Apps               *AppsService
 	Authorizations     *AuthorizationsService
 	Billing            *BillingService
+	Credentials        *CredentialsService
 	Checks             *ChecksService
 	Classroom          *ClassroomService
 	CodeScanning       *CodeScanningService
@@ -439,6 +440,7 @@ func (c *Client) initialize() {
 	c.Apps = (*AppsService)(&c.common)
 	c.Authorizations = (*AuthorizationsService)(&c.common)
 	c.Billing = (*BillingService)(&c.common)
+	c.Credentials = (*CredentialsService)(&c.common)
 	c.Checks = (*ChecksService)(&c.common)
 	c.Classroom = (*ClassroomService)(&c.common)
 	c.CodeScanning = (*CodeScanningService)(&c.common)
