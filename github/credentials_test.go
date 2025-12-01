@@ -35,10 +35,10 @@ func TestCredentialsService_Revoke(t *testing.T) {
 		t.Errorf("Credentials.Revoke returned error: %v (want AcceptedError)", err)
 	}
 	if resp == nil {
-		t.Fatalf("Credentials.Revoke returned nil response")
+		t.Fatal("Credentials.Revoke returned nil response")
 	}
 	if resp.StatusCode != http.StatusAccepted {
-		t.Errorf("Credentials.Revoke returned status %d, want %d", resp.StatusCode, http.StatusAccepted)
+		t.Errorf("Credentials.Revoke returned status %v, want %v", resp.StatusCode, http.StatusAccepted)
 	}
 
 	const methodName = "Revoke"
