@@ -250,14 +250,16 @@ func TestSCIMEnterpriseAttributeOptions_Marshal(t *testing.T) {
 
 	u := &SCIMEnterpriseAttributeOptions{
 		Schemas: []string{"s"},
-		Operations: []SCIMEnterpriseAttributeOperations{{
-			Op:    "o1",
-			Path:  Ptr("p1"),
-			Value: Ptr("v1"),
-		},
+		Operations: []SCIMEnterpriseAttributeOperations{
+			{
+				Op:    "o1",
+				Path:  Ptr("p1"),
+				Value: Ptr("v1"),
+			},
 			{
 				Op: "o2",
-			}},
+			},
+		},
 	}
 
 	want := `{
