@@ -12,8 +12,8 @@ import (
 // CredentialsService handles credentials related methods of the GitHub API.
 type CredentialsService service
 
-// RevokeCredentialsRequest represents the request body for revoking credentials.
-type RevokeCredentialsRequest struct {
+// revokeCredentialsRequest represents the request body for revoking credentials.
+type revokeCredentialsRequest struct {
 	// The list of credential strings (tokens) to revoke.
 	Credentials []string `json:"credentials"`
 }
@@ -26,7 +26,7 @@ type RevokeCredentialsRequest struct {
 func (s *CredentialsService) Revoke(ctx context.Context, credentials []string) (*Response, error) {
 	u := "credentials/revoke"
 
-	reqBody := &RevokeCredentialsRequest{Credentials: credentials}
+	reqBody := &revokeCredentialsRequest{Credentials: credentials}
 
 	req, err := s.client.NewRequest("POST", u, reqBody)
 	if err != nil {

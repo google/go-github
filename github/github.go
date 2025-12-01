@@ -197,13 +197,13 @@ type Client struct {
 	Apps               *AppsService
 	Authorizations     *AuthorizationsService
 	Billing            *BillingService
-	Credentials        *CredentialsService
 	Checks             *ChecksService
 	Classroom          *ClassroomService
 	CodeScanning       *CodeScanningService
 	CodesOfConduct     *CodesOfConductService
 	Codespaces         *CodespacesService
 	Copilot            *CopilotService
+	Credentials        *CredentialsService
 	Dependabot         *DependabotService
 	DependencyGraph    *DependencyGraphService
 	Emojis             *EmojisService
