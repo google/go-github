@@ -148,8 +148,8 @@ type ListProvisionedSCIMUsersEnterpriseOptions struct {
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-group
 type SCIMEnterpriseAttributeOptions struct {
-	Schemas    []string                             `json:"schemas"`              // The URIs that are used to indicate the namespaces for a SCIM patch operation.
-	Operations []*SCIMEnterpriseAttributeOperations `json:"Operations,omitempty"` // Set of operations to be performed.
+	Schemas    []string                             `json:"schemas"`    // The URIs that are used to indicate the namespaces for a SCIM patch operation.
+	Operations []*SCIMEnterpriseAttributeOperations `json:"Operations"` // Set of operations to be performed.
 }
 
 // SCIMEnterpriseAttributeOperations represents operations for UpdateAttributeSCIMGroup or UpdateAttributeSCIMUser.
