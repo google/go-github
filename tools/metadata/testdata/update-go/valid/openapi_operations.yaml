@@ -6,6 +6,10 @@ openapi_operations:
   - name: GET /a/{a_id}
     documentation_url: https://docs.github.com/rest/a/a#get-a
   - name: GET /undocumented/{undocumented_id}
+  - name: GET /user
+    documentation_url: https://docs.github.com/rest/users/users#get-a-user
+  - name: GET /users/{username}
+    documentation_url: https://docs.github.com/rest/users/users#get-the-authenticated-user
 operation_overrides:
   - name: GET /a/{a_id}
     documentation_url: https://docs.github.com/rest/a/a#overridden-get-a
