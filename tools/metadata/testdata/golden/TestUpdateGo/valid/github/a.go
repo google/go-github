@@ -28,6 +28,16 @@ func (s *AService) OutdatedLinks() {}
 //meta:operation GET /a/{a_id}
 func (s *AService) Uncommented() {}
 
+// Get gets a user.
+//
+// GitHub API docs: https://docs.github.com/rest/users/users#get-a-user
+//
+// GitHub API docs: https://docs.github.com/rest/users/users#get-the-authenticated-user
+//
+//meta:operation GET /user
+//meta:operation GET /users/{username}
+func (s *AService) Get(user string) {}
+
 func (s *AService) unexported() {}
 
 func NotAMethod() {}

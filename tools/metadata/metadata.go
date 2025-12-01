@@ -333,13 +333,17 @@ func updateDocsVisitor(opsFile *operationsFile) nodeVisitor {
 		}
 		sort.Strings(docLinks)
 
-		for _, dl := range docLinks {
+		for i, dl := range docLinks {
 			group.List = append(
 				group.List,
 				&ast.Comment{
 					Text: "// GitHub API docs: " + cleanURLPath(dl),
 				},
 			)
+			if i < len(docLinks)-1 {
+				// add empty line between doc links
+				group.List = append(group.List, &ast.Comment{Text: "//"})
+			}
 		}
 		_, methodName, _ := strings.Cut(serviceMethod, ".")
 		for _, opName := range undocumentedOps {
