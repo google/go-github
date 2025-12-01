@@ -250,7 +250,7 @@ func TestSCIMEnterpriseAttributeOptions_Marshal(t *testing.T) {
 
 	u := &SCIMEnterpriseAttributeOptions{
 		Schemas: []string{"s"},
-		Operations: []SCIMEnterpriseAttributeOperations{
+		Operations: []*SCIMEnterpriseAttributeOperations{
 			{
 				Op:    "o1",
 				Path:  Ptr("p1"),
@@ -527,7 +527,7 @@ func TestEnterpriseService_UpdateAttributeSCIMGroup(t *testing.T) {
 	ctx := t.Context()
 	input := SCIMEnterpriseAttributeOptions{
 		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
-		Operations: []SCIMEnterpriseAttributeOperations{{
+		Operations: []*SCIMEnterpriseAttributeOperations{{
 			Op:    "replace",
 			Path:  Ptr("displayName"),
 			Value: Ptr("Employees"),
@@ -628,7 +628,7 @@ func TestEnterpriseService_UpdateAttributeSCIMUser(t *testing.T) {
 	ctx := t.Context()
 	input := SCIMEnterpriseAttributeOptions{
 		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
-		Operations: []SCIMEnterpriseAttributeOperations{{
+		Operations: []*SCIMEnterpriseAttributeOperations{{
 			Op:    "replace",
 			Path:  Ptr("emails[type eq 'work'].value"),
 			Value: Ptr("updatedEmail@email.com"),
