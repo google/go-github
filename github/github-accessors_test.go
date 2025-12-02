@@ -37990,6 +37990,17 @@ func TestTreeEntry_GetURL(tt *testing.T) {
 	t.GetURL()
 }
 
+func TestUpdateAppInstallationRepositoriesOptions_GetRepositorySelection(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateAppInstallationRepositoriesOptions{RepositorySelection: &zeroValue}
+	u.GetRepositorySelection()
+	u = &UpdateAppInstallationRepositoriesOptions{}
+	u.GetRepositorySelection()
+	u = nil
+	u.GetRepositorySelection()
+}
+
 func TestUpdateAttributeForSCIMUserOperations_GetPath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
