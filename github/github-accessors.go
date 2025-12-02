@@ -26231,7 +26231,7 @@ func (s *ScanningAnalysis) GetWarning() string {
 }
 
 // GetPath returns the Path field if it's non-nil, zero value otherwise.
-func (s *SCIMEnterpriseAttributeOperations) GetPath() string {
+func (s *SCIMEnterpriseAttributeOperation) GetPath() string {
 	if s == nil || s.Path == nil {
 		return ""
 	}
@@ -26239,7 +26239,7 @@ func (s *SCIMEnterpriseAttributeOperations) GetPath() string {
 }
 
 // GetValue returns the Value field if it's non-nil, zero value otherwise.
-func (s *SCIMEnterpriseAttributeOperations) GetValue() string {
+func (s *SCIMEnterpriseAttributeOperation) GetValue() string {
 	if s == nil || s.Value == nil {
 		return ""
 	}

@@ -244,13 +244,13 @@ func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestSCIMEnterpriseAttributeOptions_Marshal(t *testing.T) {
+func TestSCIMEnterpriseAttribute_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &SCIMEnterpriseAttributeOptions{}, "{}")
+	testJSONMarshal(t, &SCIMEnterpriseAttribute{}, "{}")
 
-	u := &SCIMEnterpriseAttributeOptions{
+	u := &SCIMEnterpriseAttribute{
 		Schemas: []string{"s"},
-		Operations: []*SCIMEnterpriseAttributeOperations{
+		Operations: []*SCIMEnterpriseAttributeOperation{
 			{
 				Op:    "o1",
 				Path:  Ptr("p1"),
@@ -479,7 +479,7 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_UpdateAttributeSCIMGroup(t *testing.T) {
+func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -525,30 +525,30 @@ func TestEnterpriseService_UpdateAttributeSCIMGroup(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	input := SCIMEnterpriseAttributeOptions{
+	input := SCIMEnterpriseAttribute{
 		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
-		Operations: []*SCIMEnterpriseAttributeOperations{{
+		Operations: []*SCIMEnterpriseAttributeOperation{{
 			Op:    "replace",
 			Path:  Ptr("displayName"),
 			Value: Ptr("Employees"),
 		}},
 	}
-	got, _, err := client.Enterprise.UpdateAttributeSCIMGroup(ctx, "ee", "abcd", input)
+	got, _, err := client.Enterprise.UpdateSCIMGroupAttribute(ctx, "ee", "abcd", input)
 	if err != nil {
-		t.Fatalf("Enterprise.UpdateAttributeSCIMGroup returned unexpected error: %v", err)
+		t.Fatalf("Enterprise.UpdateSCIMGroupAttribute returned unexpected error: %v", err)
 	}
 	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("Enterprise.UpdateAttributeSCIMGroup diff mismatch (-want +got):\n%v", diff)
+		t.Errorf("Enterprise.UpdateSCIMGroupAttribute diff mismatch (-want +got):\n%v", diff)
 	}
 
-	const methodName = "UpdateAttributeSCIMGroup"
+	const methodName = "UpdateSCIMGroupAttribute"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.UpdateAttributeSCIMGroup(ctx, "\n", "\n", SCIMEnterpriseAttributeOptions{})
+		_, _, err = client.Enterprise.UpdateSCIMGroupAttribute(ctx, "\n", "\n", SCIMEnterpriseAttribute{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.UpdateAttributeSCIMGroup(ctx, "ee", "abcd", input)
+		got, resp, err := client.Enterprise.UpdateSCIMGroupAttribute(ctx, "ee", "abcd", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -556,7 +556,7 @@ func TestEnterpriseService_UpdateAttributeSCIMGroup(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_UpdateAttributeSCIMUser(t *testing.T) {
+func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -626,9 +626,9 @@ func TestEnterpriseService_UpdateAttributeSCIMUser(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	input := SCIMEnterpriseAttributeOptions{
+	input := SCIMEnterpriseAttribute{
 		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
-		Operations: []*SCIMEnterpriseAttributeOperations{{
+		Operations: []*SCIMEnterpriseAttributeOperation{{
 			Op:    "replace",
 			Path:  Ptr("emails[type eq 'work'].value"),
 			Value: Ptr("updatedEmail@email.com"),
@@ -638,22 +638,22 @@ func TestEnterpriseService_UpdateAttributeSCIMUser(t *testing.T) {
 			Value: Ptr("updatedFamilyName"),
 		}},
 	}
-	got, _, err := client.Enterprise.UpdateAttributeSCIMUser(ctx, "ee", "7fce", input)
+	got, _, err := client.Enterprise.UpdateSCIMUserAttribute(ctx, "ee", "7fce", input)
 	if err != nil {
-		t.Fatalf("Enterprise.UpdateAttributeSCIMUser returned unexpected error: %v", err)
+		t.Fatalf("Enterprise.UpdateSCIMUserAttribute returned unexpected error: %v", err)
 	}
 	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("Enterprise.UpdateAttributeSCIMUser diff mismatch (-want +got):\n%v", diff)
+		t.Errorf("Enterprise.UpdateSCIMUserAttribute diff mismatch (-want +got):\n%v", diff)
 	}
 
-	const methodName = "UpdateAttributeSCIMUser"
+	const methodName = "UpdateSCIMUserAttribute"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.UpdateAttributeSCIMUser(ctx, "\n", "\n", SCIMEnterpriseAttributeOptions{})
+		_, _, err = client.Enterprise.UpdateSCIMUserAttribute(ctx, "\n", "\n", SCIMEnterpriseAttribute{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.UpdateAttributeSCIMUser(ctx, "ee", "7fce", input)
+		got, resp, err := client.Enterprise.UpdateSCIMUserAttribute(ctx, "ee", "7fce", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

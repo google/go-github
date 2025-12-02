@@ -144,17 +144,17 @@ type ListProvisionedSCIMUsersEnterpriseOptions struct {
 	Count *int `url:"count,omitempty"`
 }
 
-// SCIMEnterpriseAttributeOptions represents options for UpdateAttributeSCIMGroup or UpdateAttributeSCIMUser.
+// SCIMEnterpriseAttribute represents attribute operations for UpdateSCIMGroupAttribute or UpdateSCIMUserAttribute.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-group
-type SCIMEnterpriseAttributeOptions struct {
-	Schemas    []string                             `json:"schemas"`    // The URIs that are used to indicate the namespaces for a SCIM patch operation.
-	Operations []*SCIMEnterpriseAttributeOperations `json:"Operations"` // Set of operations to be performed.
+type SCIMEnterpriseAttribute struct {
+	Schemas    []string                            `json:"schemas"`    // The URIs that are used to indicate the namespaces for a SCIM patch operation.
+	Operations []*SCIMEnterpriseAttributeOperation `json:"Operations"` // Set of operations to be performed.
 }
 
-// SCIMEnterpriseAttributeOperations represents operations for UpdateAttributeSCIMGroup or UpdateAttributeSCIMUser.
-type SCIMEnterpriseAttributeOperations struct {
-	Op    string  `json:"op"`              // Can be one of: add, replace, remove
+// SCIMEnterpriseAttributeOperation represents an operation for UpdateSCIMGroupAttribute or UpdateSCIMUserAttribute.
+type SCIMEnterpriseAttributeOperation struct {
+	Op    string  `json:"op"`              // Can be one of: `add`, `replace`, `remove`.
 	Path  *string `json:"path,omitempty"`  // Path to the attribute being modified (Filters are not supported).
 	Value *string `json:"value,omitempty"` // New value for the attribute being modified.
 }
@@ -213,14 +213,14 @@ func (s *EnterpriseService) ListProvisionedSCIMUsers(ctx context.Context, enterp
 	return users, resp, nil
 }
 
-// UpdateAttributeSCIMGroup Update a provisioned group’s individual attributes.
+// UpdateSCIMGroupAttribute Updates a provisioned group’s individual attributes.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-group
 //
 //meta:operation PATCH /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
-func (s *EnterpriseService) UpdateAttributeSCIMGroup(ctx context.Context, enterprise, scimGroupID string, opts SCIMEnterpriseAttributeOptions) (*SCIMEnterpriseGroupAttributes, *Response, error) {
+func (s *EnterpriseService) UpdateSCIMGroupAttribute(ctx context.Context, enterprise, scimGroupID string, attribute SCIMEnterpriseAttribute) (*SCIMEnterpriseGroupAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups/%v", enterprise, scimGroupID)
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest("PATCH", u, attribute)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -235,14 +235,14 @@ func (s *EnterpriseService) UpdateAttributeSCIMGroup(ctx context.Context, enterp
 	return group, resp, nil
 }
 
-// UpdateAttributeSCIMUser Update a provisioned user's individual attributes.
+// UpdateSCIMUserAttribute Updates a provisioned user's individual attributes.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-user
 //
 //meta:operation PATCH /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
-func (s *EnterpriseService) UpdateAttributeSCIMUser(ctx context.Context, enterprise, scimUserID string, opts SCIMEnterpriseAttributeOptions) (*SCIMEnterpriseUserAttributes, *Response, error) {
+func (s *EnterpriseService) UpdateSCIMUserAttribute(ctx context.Context, enterprise, scimUserID string, attribute SCIMEnterpriseAttribute) (*SCIMEnterpriseUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Users/%v", enterprise, scimUserID)
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest("PATCH", u, attribute)
 	if err != nil {
 		return nil, nil, err
 	}

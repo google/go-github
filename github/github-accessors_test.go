@@ -33848,23 +33848,23 @@ func TestScanningAnalysis_GetWarning(tt *testing.T) {
 	s.GetWarning()
 }
 
-func TestSCIMEnterpriseAttributeOperations_GetPath(tt *testing.T) {
+func TestSCIMEnterpriseAttributeOperation_GetPath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	s := &SCIMEnterpriseAttributeOperations{Path: &zeroValue}
+	s := &SCIMEnterpriseAttributeOperation{Path: &zeroValue}
 	s.GetPath()
-	s = &SCIMEnterpriseAttributeOperations{}
+	s = &SCIMEnterpriseAttributeOperation{}
 	s.GetPath()
 	s = nil
 	s.GetPath()
 }
 
-func TestSCIMEnterpriseAttributeOperations_GetValue(tt *testing.T) {
+func TestSCIMEnterpriseAttributeOperation_GetValue(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	s := &SCIMEnterpriseAttributeOperations{Value: &zeroValue}
+	s := &SCIMEnterpriseAttributeOperation{Value: &zeroValue}
 	s.GetValue()
-	s = &SCIMEnterpriseAttributeOperations{}
+	s = &SCIMEnterpriseAttributeOperation{}
 	s.GetValue()
 	s = nil
 	s.GetValue()
