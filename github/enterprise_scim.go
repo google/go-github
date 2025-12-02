@@ -214,7 +214,7 @@ func (s *EnterpriseService) ListProvisionedSCIMUsers(ctx context.Context, enterp
 	return users, resp, nil
 }
 
-// UpdateSCIMGroupAttribute Updates a provisioned group’s individual attributes.
+// UpdateSCIMGroupAttribute updates a provisioned group’s individual attributes.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-group
 //
@@ -236,7 +236,7 @@ func (s *EnterpriseService) UpdateSCIMGroupAttribute(ctx context.Context, enterp
 	return group, resp, nil
 }
 
-// UpdateSCIMUserAttribute Updates a provisioned user's individual attributes.
+// UpdateSCIMUserAttribute updates a provisioned user's individual attributes.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-user
 //
