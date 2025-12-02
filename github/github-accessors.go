@@ -29462,6 +29462,14 @@ func (t *TreeEntry) GetURL() string {
 	return *t.URL
 }
 
+// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+func (u *UpdateAppInstallationRepositoriesOptions) GetRepositorySelection() string {
+	if u == nil || u.RepositorySelection == nil {
+		return ""
+	}
+	return *u.RepositorySelection
+}
+
 // GetPath returns the Path field if it's non-nil, zero value otherwise.
 func (u *UpdateAttributeForSCIMUserOperations) GetPath() string {
 	if u == nil || u.Path == nil {
