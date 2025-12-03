@@ -257,3 +257,21 @@ func (s *EnterpriseService) UpdateSCIMUserAttribute(ctx context.Context, enterpr
 
 	return user, resp, nil
 }
+
+// ProvisionSCIMGroup creates a SCIM group for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#provision-a-scim-enterprise-group
+//
+//meta:operation POST /scim/v2/enterprises/{enterprise}/Groups
+func (s *EnterpriseService) ProvisionSCIMGroup(ctx context.Context, enterprise string, group SCIMEnterpriseGroupAttributes) (*SCIMEnterpriseGroupAttributes, *Response, error) {
+	return nil, nil, nil
+}
+
+// ProvisionSCIMUser creates an external identity for a new SCIM enterprise user.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#provision-a-scim-enterprise-user
+//
+//meta:operation POST /scim/v2/enterprises/{enterprise}/Users
+func (s *EnterpriseService) ProvisionSCIMUser(ctx context.Context, enterprise string, user SCIMEnterpriseUserAttributes) (*SCIMEnterpriseUserAttributes, *Response, error) {
+	return nil, nil, nil
+}
