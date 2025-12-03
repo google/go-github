@@ -69,7 +69,7 @@ type RepositoryRuleType string
 
 // This is the set of GitHub ruleset rule types.
 const (
-	// Branch or tag target rules
+	// Branch or tag target rules.
 	RulesetRuleTypeBranchNamePattern        RepositoryRuleType = "branch_name_pattern"
 	RulesetRuleTypeCodeScanning             RepositoryRuleType = "code_scanning"
 	RulesetRuleTypeCommitAuthorEmailPattern RepositoryRuleType = "commit_author_email_pattern"
@@ -88,13 +88,13 @@ const (
 	RulesetRuleTypeUpdate                   RepositoryRuleType = "update"
 	RulesetRuleTypeWorkflows                RepositoryRuleType = "workflows"
 
-	// Push target rules
+	// Push target rules.
 	RulesetRuleTypeFileExtensionRestriction RepositoryRuleType = "file_extension_restriction"
 	RulesetRuleTypeFilePathRestriction      RepositoryRuleType = "file_path_restriction"
 	RulesetRuleTypeMaxFilePathLength        RepositoryRuleType = "max_file_path_length"
 	RulesetRuleTypeMaxFileSize              RepositoryRuleType = "max_file_size"
 
-	// Repository target rules
+	// Repository target rules.
 	RulesetRuleTypeRepositoryCreate     RepositoryRuleType = "repository_create"
 	RulesetRuleTypeRepositoryDelete     RepositoryRuleType = "repository_delete"
 	RulesetRuleTypeRepositoryName       RepositoryRuleType = "repository_name"
@@ -288,7 +288,7 @@ type RepositoryRule struct {
 // RepositoryRulesetRules represents a GitHub ruleset rules object.
 // This type doesn't have JSON annotations as it uses custom marshaling.
 type RepositoryRulesetRules struct {
-	// Branch or tag target rules
+	// Branch or tag target rules.
 	Creation                 *EmptyRuleParameters
 	Update                   *UpdateRuleParameters
 	Deletion                 *EmptyRuleParameters
@@ -307,13 +307,13 @@ type RepositoryRulesetRules struct {
 	Workflows                *WorkflowsRuleParameters
 	CodeScanning             *CodeScanningRuleParameters
 
-	// Push target rules
+	// Push target rules.
 	FileExtensionRestriction *FileExtensionRestrictionRuleParameters
 	FilePathRestriction      *FilePathRestrictionRuleParameters
 	MaxFilePathLength        *MaxFilePathLengthRuleParameters
 	MaxFileSize              *MaxFileSizeRuleParameters
 
-	// Repository target rules
+	// Repository target rules.
 	RepositoryCreate     *EmptyRuleParameters
 	RepositoryDelete     *EmptyRuleParameters
 	RepositoryName       *SimplePatternRuleParameters
@@ -324,7 +324,7 @@ type RepositoryRulesetRules struct {
 // BranchRules represents the rules active for a GitHub repository branch.
 // This type doesn't have JSON annotations as it uses custom marshaling.
 type BranchRules struct {
-	// Branch or tag target rules
+	// Branch or tag target rules.
 	Creation                 []*BranchRuleMetadata
 	Update                   []*UpdateBranchRule
 	Deletion                 []*BranchRuleMetadata
@@ -343,7 +343,7 @@ type BranchRules struct {
 	Workflows                []*WorkflowsBranchRule
 	CodeScanning             []*CodeScanningBranchRule
 
-	// Push target rules
+	// Push target rules.
 	FileExtensionRestriction []*FileExtensionRestrictionBranchRule
 	FilePathRestriction      []*FilePathRestrictionBranchRule
 	MaxFilePathLength        []*MaxFilePathLengthBranchRule
