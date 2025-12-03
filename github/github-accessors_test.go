@@ -32370,6 +32370,46 @@ func TestRepositoryRulesetRules_GetPullRequest(tt *testing.T) {
 	r.GetPullRequest()
 }
 
+func TestRepositoryRulesetRules_GetRepositoryCreate(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetRepositoryCreate()
+	r = nil
+	r.GetRepositoryCreate()
+}
+
+func TestRepositoryRulesetRules_GetRepositoryDelete(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetRepositoryDelete()
+	r = nil
+	r.GetRepositoryDelete()
+}
+
+func TestRepositoryRulesetRules_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetRepositoryName()
+	r = nil
+	r.GetRepositoryName()
+}
+
+func TestRepositoryRulesetRules_GetRepositoryTransfer(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetRepositoryTransfer()
+	r = nil
+	r.GetRepositoryTransfer()
+}
+
+func TestRepositoryRulesetRules_GetRepositoryVisibility(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetRepositoryVisibility()
+	r = nil
+	r.GetRepositoryVisibility()
+}
+
 func TestRepositoryRulesetRules_GetRequiredDeployments(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryRulesetRules{}
