@@ -798,7 +798,7 @@ func marshalRepositoryRulesetRule[T any](t RepositoryRuleType, params T) ([]byte
 	case RulesetRuleTypeUpdate:
 		paramsTyped, ok := any(params).(*UpdateRuleParameters)
 		if !ok {
-			return nil, fmt.Errorf("expected UpdateRuleParameters for rule type %s", t)
+			return nil, fmt.Errorf("expected UpdateRuleParameters for rule type %v", t)
 		}
 		if paramsTyped == nil || *paramsTyped == (UpdateRuleParameters{}) {
 			hasParams = false
