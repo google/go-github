@@ -162,6 +162,9 @@ type SCIMEnterpriseAttributeOperation struct {
 
 // ListProvisionedSCIMGroups lists provisioned SCIM groups in an enterprise.
 //
+// You can improve query search time by using the `excludedAttributes` query
+// parameter with a value of `members` to exclude members from the response.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Groups
@@ -188,6 +191,10 @@ func (s *EnterpriseService) ListProvisionedSCIMGroups(ctx context.Context, enter
 }
 
 // ListProvisionedSCIMUsers lists provisioned SCIM enterprise users.
+//
+// When members are part of the group provisioning payload, they're designated
+// as external group members. Providers are responsible for maintaining a
+// mapping between the `externalId` and `id` for each user.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-scim-provisioned-identities-for-an-enterprise
 //
@@ -216,6 +223,14 @@ func (s *EnterpriseService) ListProvisionedSCIMUsers(ctx context.Context, enterp
 
 // UpdateSCIMGroupAttribute updates a provisioned group’s individual attributes.
 //
+// The `attribute` parameter must include at least one of the following
+// Operations: `add`, `remove`, or `replace`.
+//
+// The update function can also be used to add group memberships.
+//
+// You can submit group memberships individually or in batches for improved
+// efficiency.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-group
 //
 //meta:operation PATCH /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
@@ -237,6 +252,16 @@ func (s *EnterpriseService) UpdateSCIMGroupAttribute(ctx context.Context, enterp
 }
 
 // UpdateSCIMUserAttribute updates a provisioned user's individual attributes.
+//
+// The `attribute` parameter must include at least one of the following
+// Operations: `add`, `remove`, or `replace`.
+//
+// Note: Complex SCIM path selectors that include filters are not supported.
+// For example, a path selector defined as `"path": "emails[type eq \"work\"]"`
+// will be ineffective.
+//
+// Warning: Setting `active: false` will suspend a user, and their handle and
+// email will be obfuscated.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-user
 //
