@@ -96,8 +96,8 @@ func splitIntoPRs(text string) []string {
 
 func stripPRHTML(text string) string {
 	_, innerText := getTagSequence(text)
-	if i := strings.Index(text, "</a>"); i > 0 {
-		newText := text[:i] + strings.Join(innerText, "")
+	if before, _, ok := strings.Cut(text, "</a>"); ok {
+		newText := before + strings.Join(innerText, "")
 		newText = strings.ReplaceAll(newText, "…", "")
 		newText = newlinesRE.ReplaceAllString(newText, "\n  ")
 		return newText
@@ -138,8 +138,8 @@ func getTagSequence(text string) (tagSeq, innerText []string) {
 			tagSeq = append(tagSeq, s)
 			continue
 		}
-		if i := strings.Index(s, " "); i > 0 {
-			tagSeq = append(tagSeq, s[0:i])
+		if before, _, ok := strings.Cut(s, " "); ok {
+			tagSeq = append(tagSeq, before)
 		} else {
 			tagSeq = append(tagSeq, s)
 		}
