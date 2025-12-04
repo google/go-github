@@ -33881,6 +33881,17 @@ func TestSCIMEnterpriseDisplayReference_GetDisplay(tt *testing.T) {
 	s.GetDisplay()
 }
 
+func TestSCIMEnterpriseDisplayReference_GetRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SCIMEnterpriseDisplayReference{Ref: &zeroValue}
+	s.GetRef()
+	s = &SCIMEnterpriseDisplayReference{}
+	s.GetRef()
+	s = nil
+	s.GetRef()
+}
+
 func TestSCIMEnterpriseGroupAttributes_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
