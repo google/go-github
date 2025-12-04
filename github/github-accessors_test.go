@@ -32298,6 +32298,14 @@ func TestRepositoryRulesetRules_GetCommitterEmailPattern(tt *testing.T) {
 	r.GetCommitterEmailPattern()
 }
 
+func TestRepositoryRulesetRules_GetCopilotCodeReview(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetCopilotCodeReview()
+	r = nil
+	r.GetCopilotCodeReview()
+}
+
 func TestRepositoryRulesetRules_GetCreation(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryRulesetRules{}
