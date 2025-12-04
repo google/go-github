@@ -26,7 +26,7 @@ func TestSCIMEnterpriseGroups_Marshal(t *testing.T) {
 			DisplayName: Ptr("gn1"),
 			Members: []*SCIMEnterpriseDisplayReference{{
 				Value:   "idm1",
-				Ref:     "https://api.github.com/scim/v2/enterprises/ee/Users/idm1",
+				Ref:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Users/idm1"),
 				Display: Ptr("m1"),
 			}},
 			Schemas:    []string{SCIMSchemasURINamespacesGroups},
@@ -94,7 +94,7 @@ func TestSCIMEnterpriseUsers_Marshal(t *testing.T) {
 			UserName: "un1",
 			Groups: []*SCIMEnterpriseDisplayReference{{
 				Value:   "idgn1",
-				Ref:     "https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1",
+				Ref:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1"),
 				Display: Ptr("gn1"),
 			}},
 			ID:          Ptr("idun1"),
@@ -209,7 +209,7 @@ func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
 		DisplayName: Ptr("dn"),
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "v",
-			Ref:     "r",
+			Ref:     Ptr("r"),
 			Display: Ptr("d"),
 		}},
 		ExternalID: Ptr("eid"),
@@ -346,7 +346,7 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 			ExternalID:  Ptr("de88"),
 			Members: []*SCIMEnterpriseDisplayReference{{
 				Value:   "e7f9",
-				Ref:     "https://api.github.com/scim/v2/enterprises/ee/Users/e7f9",
+				Ref:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Users/e7f9"),
 				Display: Ptr("d1"),
 			}},
 		}},
@@ -513,7 +513,7 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 		DisplayName: Ptr("Employees"),
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
-			Ref:     "https://api.github.localhost/scim/v2/enterprises/ee/Users/879d",
+			Ref:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
 			Display: Ptr("User 1"),
 		}},
 		Meta: &SCIMEnterpriseMeta{
@@ -702,11 +702,11 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 		DisplayName: Ptr("dn"),
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
-			Ref:     "https://api.github.localhost/scim/v2/enterprises/ee/Users/879d",
+			Ref:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
 			Display: Ptr("d1"),
 		}, {
 			Value:   "0db5",
-			Ref:     "https://api.github.localhost/scim/v2/enterprises/ee/Users/0db5",
+			Ref:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/0db5"),
 			Display: Ptr("d2"),
 		}},
 		Meta: &SCIMEnterpriseMeta{
