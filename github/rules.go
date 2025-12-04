@@ -87,6 +87,7 @@ const (
 	RulesetRuleTypeTagNamePattern           RepositoryRuleType = "tag_name_pattern"
 	RulesetRuleTypeUpdate                   RepositoryRuleType = "update"
 	RulesetRuleTypeWorkflows                RepositoryRuleType = "workflows"
+	RulesetRuleTypeCopilotCodeReview        RepositoryRuleType = "copilot_code_review"
 
 	// Push target rules.
 	RulesetRuleTypeFileExtensionRestriction RepositoryRuleType = "file_extension_restriction"
@@ -306,6 +307,7 @@ type RepositoryRulesetRules struct {
 	TagNamePattern           *PatternRuleParameters
 	Workflows                *WorkflowsRuleParameters
 	CodeScanning             *CodeScanningRuleParameters
+	CopilotCodeReview        *CopilotCodeReviewRuleParameters
 
 	// Push target rules.
 	FileExtensionRestriction *FileExtensionRestrictionRuleParameters
@@ -539,6 +541,12 @@ type CodeScanningRuleParameters struct {
 	CodeScanningTools []*RuleCodeScanningTool `json:"code_scanning_tools"`
 }
 
+// CopilotCodeReviewRuleParameters represents the copilot_code_review rule parameters.
+type CopilotCodeReviewRuleParameters struct {
+	ReviewNewPushes         bool `json:"review_new_pushes"`
+	ReviewDraftPullRequests bool `json:"review_draft_pull_requests"`
+}
+
 // RuleCodeScanningTool represents a single code scanning tool for the code scanning parameters.
 type RuleCodeScanningTool struct {
 	AlertsThreshold         CodeScanningAlertsThreshold         `json:"alerts_threshold"`
@@ -566,9 +574,9 @@ type repositoryRulesetRuleWrapper struct {
 
 // MarshalJSON is a custom JSON marshaler for RulesetRules.
 func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
-	// The RepositoryRulesetRules type marshals to between 1 and 21 rules.
+	// The RepositoryRulesetRules type marshals to between 1 and 22 rules.
 	// If new rules are added to RepositoryRulesetRules the capacity below needs increasing
-	rawRules := make([]json.RawMessage, 0, 21)
+	rawRules := make([]json.RawMessage, 0, 22)
 
 	if r.Creation != nil {
 		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCreation, r.Creation)
@@ -732,6 +740,14 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 
 	if r.CodeScanning != nil {
 		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCodeScanning, r.CodeScanning)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if r.CopilotCodeReview != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCopilotCodeReview, r.CopilotCodeReview)
 		if err != nil {
 			return nil, err
 		}
@@ -962,6 +978,14 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 
 			if w.Parameters != nil {
 				if err := json.Unmarshal(w.Parameters, r.CodeScanning); err != nil {
+					return err
+				}
+			}
+		case RulesetRuleTypeCopilotCodeReview:
+			r.CopilotCodeReview = &CopilotCodeReviewRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, r.CopilotCodeReview); err != nil {
 					return err
 				}
 			}
