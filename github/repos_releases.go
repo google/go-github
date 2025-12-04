@@ -12,6 +12,7 @@ import (
 	"io"
 	"mime"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -507,11 +508,23 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(ctx context.Context,
 		return nil, nil, errors.New("file must be provided")
 	}
 
-	// Extract upload URL and remove template part (e.g. "{?name,label}") if present.
+	// Extract upload URL.
 	uploadURL := *release.UploadURL
+
+	// If uploadURL contains a template, strip it (e.g. "{?name,label}").
 	if idx := strings.Index(uploadURL, "{"); idx != -1 {
 		uploadURL = uploadURL[:idx]
 	}
+
+	// If uploadURL is absolute (starts with http/https), parse and use only the path.
+	if strings.HasPrefix(uploadURL, "http://") || strings.HasPrefix(uploadURL, "https://") {
+		if uParsed, err := url.Parse(uploadURL); err == nil {
+			uploadURL = uParsed.Path
+		}
+	}
+
+	// Defensive: always remove any leading '/' so client gets a relative path.
+	uploadURL = strings.TrimPrefix(uploadURL, "/")
 
 	// addOptions will append query params for name/label (same as UploadReleaseAsset)
 	u, err := addOptions(uploadURL, opts)

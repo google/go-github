@@ -781,6 +781,83 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
+	t.Parallel()
+
+	var (
+		defaultUploadOptions     = &UploadOptions{Name: "n"}
+		defaultExpectedFormValue = values{"name": "n"}
+		mediaTypeTextPlain       = "text/plain; charset=utf-8"
+	)
+
+	client, mux, _ := setup(t)
+
+	// Use the same endpoint path used in other tests.
+	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Content-Type", mediaTypeTextPlain)
+		testHeader(t, r, "Content-Length", "12")
+		testFormValues(t, r, defaultExpectedFormValue)
+		testBody(t, r, "Upload me !\n")
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	// Create a file using the test helper that existing tests use.
+	file := openTestFile(t, "upload.txt", "Upload me !\n")
+
+	// Provide a templated upload URL like GitHub returns.
+	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
+	release := &RepositoryRelease{
+		UploadURL: &uploadURL,
+	}
+
+	ctx := t.Context()
+	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, defaultUploadOptions, file)
+	if err != nil {
+		t.Fatalf("Repositories.UploadReleaseAssetFromRelease returned error: %v", err)
+	}
+	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	if !cmp.Equal(asset, want) {
+		t.Fatalf("Repositories.UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
+	}
+
+	const methodName = "UploadReleaseAssetFromRelease"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.UploadReleaseAssetFromRelease(ctx, release, defaultUploadOptions, nil)
+		return err
+	})
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_AbsoluteTemplate(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		// Expect name query param created by addOptions after trimming template.
+		if r.URL.Query().Get("name") != "abs.txt" {
+			t.Errorf("Expected name query param 'abs.txt', got %q", r.URL.Query().Get("name"))
+		}
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	file := openTestFile(t, "upload.txt", "Upload me !\n")
+
+	uploadURL := "https://uploads.github.com/repos/o/r/releases/1/assets{?name,label}"
+	release := &RepositoryRelease{UploadURL: &uploadURL}
+
+	opts := &UploadOptions{Name: "abs.txt"}
+	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(t.Context(), release, opts, file)
+	if err != nil {
+		t.Fatalf("UploadReleaseAssetFromRelease returned error: %v", err)
+	}
+	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	if !cmp.Equal(asset, want) {
+		t.Fatalf("UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
+	}
+}
+
 func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &repositoryReleaseRequest{}, "{}")
