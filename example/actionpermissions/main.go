@@ -14,7 +14,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v79/github"
+	"github.com/google/go-github/v80/github"
 )
 
 var (
