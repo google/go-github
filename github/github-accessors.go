@@ -25094,6 +25094,46 @@ func (r *RepositoryRulesetRules) GetPullRequest() *PullRequestRuleParameters {
 	return r.PullRequest
 }
 
+// GetRepositoryCreate returns the RepositoryCreate field.
+func (r *RepositoryRulesetRules) GetRepositoryCreate() *EmptyRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryCreate
+}
+
+// GetRepositoryDelete returns the RepositoryDelete field.
+func (r *RepositoryRulesetRules) GetRepositoryDelete() *EmptyRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryDelete
+}
+
+// GetRepositoryName returns the RepositoryName field.
+func (r *RepositoryRulesetRules) GetRepositoryName() *SimplePatternRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryName
+}
+
+// GetRepositoryTransfer returns the RepositoryTransfer field.
+func (r *RepositoryRulesetRules) GetRepositoryTransfer() *EmptyRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryTransfer
+}
+
+// GetRepositoryVisibility returns the RepositoryVisibility field.
+func (r *RepositoryRulesetRules) GetRepositoryVisibility() *RepositoryVisibilityRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryVisibility
+}
+
 // GetRequiredDeployments returns the RequiredDeployments field.
 func (r *RepositoryRulesetRules) GetRequiredDeployments() *RequiredDeploymentsRuleParameters {
 	if r == nil {
