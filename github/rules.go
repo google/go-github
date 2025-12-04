@@ -1391,6 +1391,16 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		}
 
 		r.Parameters = p
+	case RulesetRuleTypeCopilotCodeReview:
+		p := &CopilotCodeReviewRuleParameters{}
+
+		if w.Parameters != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
+				return err
+			}
+		}
+
+		r.Parameters = p
 	case RulesetRuleTypeRepositoryCreate:
 		r.Parameters = nil
 	case RulesetRuleTypeRepositoryDelete:
