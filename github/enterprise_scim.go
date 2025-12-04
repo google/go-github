@@ -269,7 +269,27 @@ func (s *EnterpriseService) DeleteSCIMGroup(ctx context.Context, enterprise, sci
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Accept", mediaTypeV3)
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// DeleteSCIMUser deletes a SCIM user from an enterprise.
+//
+// Suspends a SCIM user permanently from an enterprise. This action will:
+// remove all the user's data, anonymize their login, email, and display name,
+// erase all external identity SCIM attributes, delete the user's emails,
+// avatar, PATs, SSH keys, OAuth authorizations, GPG keys, and SAML mappings.
+// This action is irreversible.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#delete-a-scim-user-from-an-enterprise
+//
+//meta:operation DELETE /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
+func (s *EnterpriseService) DeleteSCIMUser(ctx context.Context, enterprise, scimUserID string) (*Response, error) {
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Users/%v", enterprise, scimUserID)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return s.client.Do(ctx, req, nil)
 }

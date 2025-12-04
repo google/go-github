@@ -687,3 +687,30 @@ func TestEnterpriseService_DeleteSCIMGroup(t *testing.T) {
 		return client.Enterprise.DeleteSCIMGroup(ctx, "ee", "abcd")
 	})
 }
+
+func TestEnterpriseService_DeleteSCIMUser(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/scim/v2/enterprises/ee/Users/7fce", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testHeader(t, r, "Accept", mediaTypeV3)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	_, err := client.Enterprise.DeleteSCIMUser(ctx, "ee", "7fce")
+	if err != nil {
+		t.Fatalf("Enterprise.DeleteSCIMUser returned unexpected error: %v", err)
+	}
+
+	const methodName = "DeleteSCIMUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Enterprise.DeleteSCIMUser(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Enterprise.DeleteSCIMUser(ctx, "ee", "7fce")
+	})
+}
