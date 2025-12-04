@@ -257,3 +257,19 @@ func (s *EnterpriseService) UpdateSCIMUserAttribute(ctx context.Context, enterpr
 
 	return user, resp, nil
 }
+
+// DeleteSCIMGroup deletes a SCIM group from an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#delete-a-scim-group-from-an-enterprise
+//
+//meta:operation DELETE /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
+func (s *EnterpriseService) DeleteSCIMGroup(ctx context.Context, enterprise, scimGroupID string) (*Response, error) {
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups/%v", enterprise, scimGroupID)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", mediaTypeV3)
+
+	return s.client.Do(ctx, req, nil)
+}
