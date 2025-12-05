@@ -668,7 +668,7 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"dn","members":[{"value":"879d","display":"d1"},{"value":"0db5","display":"d2"}],"externalId":"8aa1","schemas":["urn:ietf:params:scim:schemas:core:2.0:Group"]}`+"\n")
+		testBody(t, r, `{"displayName":"dn","members":[{"value":"879d","display":"d1"},{"value":"0db5","display":"d2"}],"externalId":"8aa1","schemas":["`+SCIMSchemasURINamespacesGroups+`"]}`+"\n")
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
@@ -760,7 +760,7 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"DOE John","name":{"givenName":"John","familyName":"Doe","formatted":"John Doe"},"userName":"e123","emails":[{"value":"john@email.com","primary":true,"type":"work"}],"roles":[{"value":"User","primary":false}],"externalId":"e123","active":true,"schemas":["urn:ietf:params:scim:schemas:core:2.0:User"]}`+"\n")
+		testBody(t, r, `{"displayName":"DOE John","name":{"givenName":"John","familyName":"Doe","formatted":"John Doe"},"userName":"e123","emails":[{"value":"john@email.com","primary":true,"type":"work"}],"roles":[{"value":"User","primary":false}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`+"\n")
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
