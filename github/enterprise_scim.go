@@ -224,7 +224,20 @@ func (s *EnterpriseService) ListProvisionedSCIMUsers(ctx context.Context, enterp
 //
 //meta:operation PUT /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
 func (s *EnterpriseService) SetProvisionedSCIMGroup(ctx context.Context, enterprise, scimGroupID string, group SCIMEnterpriseGroupAttributes) (*SCIMEnterpriseGroupAttributes, *Response, error) {
-	return nil, nil, nil
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups/%v", enterprise, scimGroupID)
+	req, err := s.client.NewRequest("PUT", u, group)
+	if err != nil {
+		return nil, nil, err
+	}
+	req.Header.Set("Accept", mediaTypeSCIM)
+
+	groupNew := new(SCIMEnterpriseGroupAttributes)
+	resp, err := s.client.Do(ctx, req, groupNew)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return groupNew, resp, nil
 }
 
 // SetProvisionedSCIMUser replaces an existing provisioned user's information.
@@ -235,11 +248,24 @@ func (s *EnterpriseService) SetProvisionedSCIMGroup(ctx context.Context, enterpr
 //
 // **Warning**: Setting `active: false` will suspend a user, and their handle and email will be obfuscated.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#set-scim-information-for-a-provisioned-enterprise-group
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#set-scim-information-for-a-provisioned-enterprise-user
 //
 //meta:operation PUT /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
 func (s *EnterpriseService) SetProvisionedSCIMUser(ctx context.Context, enterprise, scimUserID string, user SCIMEnterpriseUserAttributes) (*SCIMEnterpriseUserAttributes, *Response, error) {
-	return nil, nil, nil
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Users/%v", enterprise, scimUserID)
+	req, err := s.client.NewRequest("PUT", u, user)
+	if err != nil {
+		return nil, nil, err
+	}
+	req.Header.Set("Accept", mediaTypeSCIM)
+
+	userNew := new(SCIMEnterpriseUserAttributes)
+	resp, err := s.client.Do(ctx, req, userNew)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return userNew, resp, nil
 }
 
 // UpdateSCIMGroupAttribute updates a provisioned group’s individual attributes.
