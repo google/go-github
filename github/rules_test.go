@@ -938,6 +938,17 @@ func TestRepositoryRule(t *testing.T) {
 			`{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}}`,
 		},
 		{
+			"copilot_code_review",
+			&RepositoryRule{
+				Type: RulesetRuleTypeCopilotCodeReview,
+				Parameters: &CopilotCodeReviewRuleParameters{
+					ReviewNewPushes:         true,
+					ReviewDraftPullRequests: false,
+				},
+			},
+			`{"type":"copilot_code_review","parameters":{"review_new_pushes":true,"review_draft_pull_requests":false}}`,
+		},
+		{
 			"repository_create",
 			&RepositoryRule{Type: RulesetRuleTypeRepositoryCreate, Parameters: nil},
 			`{"type":"repository_create"}`,
