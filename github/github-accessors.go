@@ -9446,6 +9446,38 @@ func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningValidityChecksEnab
 	return *e.SecretScanningValidityChecksEnabled
 }
 
+// GetOrganizationSelectionType returns the OrganizationSelectionType field if it's non-nil, zero value otherwise.
+func (e *EnterpriseTeam) GetOrganizationSelectionType() string {
+	if e == nil || e.OrganizationSelectionType == nil {
+		return ""
+	}
+	return *e.OrganizationSelectionType
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (e *EnterpriseTeamCreateOrUpdateRequest) GetDescription() string {
+	if e == nil || e.Description == nil {
+		return ""
+	}
+	return *e.Description
+}
+
+// GetGroupID returns the GroupID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseTeamCreateOrUpdateRequest) GetGroupID() int64 {
+	if e == nil || e.GroupID == nil {
+		return 0
+	}
+	return *e.GroupID
+}
+
+// GetOrganizationSelectionType returns the OrganizationSelectionType field if it's non-nil, zero value otherwise.
+func (e *EnterpriseTeamCreateOrUpdateRequest) GetOrganizationSelectionType() string {
+	if e == nil || e.OrganizationSelectionType == nil {
+		return ""
+	}
+	return *e.OrganizationSelectionType
+}
+
 // GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
 func (e *Environment) GetCanAdminsBypass() bool {
 	if e == nil || e.CanAdminsBypass == nil {

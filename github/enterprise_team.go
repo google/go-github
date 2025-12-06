@@ -10,32 +10,36 @@ import (
 	"fmt"
 )
 
+// EnterpriseTeam represent a team in a GitHub Enterprise.
 type EnterpriseTeam struct {
 	ID                        int64     `json:"id"`
 	URL                       string    `json:"url"`
 	MemberURL                 string    `json:"member_url"`
 	Name                      string    `json:"name"`
-	Description               *string   `json:"description,omitempty"`
 	HTMLURL                   string    `json:"html_url"`
 	Slug                      string    `json:"slug"`
 	CreatedAt                 Timestamp `json:"created_at"`
 	UpdatedAt                 Timestamp `json:"updated_at"`
 	GroupID                   int64     `json:"group_id"`
 	OrganizationSelectionType *string   `json:"organization_selection_type,omitempty"`
-	SyncToOrganizations       *string   `json:"sync_to_organizations,omitempty"`
 }
 
-type EnterpriseTeamCreateRequest struct {
-	Name                      string  `json:"name"`
-	Description               *string `json:"description,omitempty"`
-	SyncToOrganizations       *string `json:"sync_to_organizations,omitempty"`
+// EnterpriseTeamCreateOrUpdateRequest is used to create or update an enterprise team.
+type EnterpriseTeamCreateOrUpdateRequest struct {
+	// The name of the team.
+	Name string `json:"name"`
+	// A description of the team.
+	Description *string `json:"description,omitempty"`
+	// Specifies which organizations in the enterprise should have access to this team.
+	// Possible values are "disabled" , "all" and "selected". If not specified, the default is "disabled".
 	OrganizationSelectionType *string `json:"organization_selection_type,omitempty"`
-	GroupID                   *int64  `json:"group_id,omitempty"`
+	// The ID of the IdP group to assign team membership with.
+	GroupID *int64 `json:"group_id,omitempty"`
 }
 
 // ListTeams lists all teams in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/enterprise-teams/enterprise-teams#list-enterprise-teams
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#list-enterprise-teams
 //
 //meta:operation GET /enterprises/{enterprise}/teams
 func (s *EnterpriseService) ListTeams(ctx context.Context, enterprise string, opt *ListOptions) ([]*EnterpriseTeam, *Response, error) {
@@ -61,10 +65,10 @@ func (s *EnterpriseService) ListTeams(ctx context.Context, enterprise string, op
 
 // CreateTeam creates a new team in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/enterprise-teams/enterprise-teams#create-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#create-an-enterprise-team
 //
 //meta:operation POST /enterprises/{enterprise}/teams
-func (s *EnterpriseService) CreateTeam(ctx context.Context, enterprise string, team EnterpriseTeamCreateRequest) (*EnterpriseTeam, *Response, error) {
+func (s *EnterpriseService) CreateTeam(ctx context.Context, enterprise string, team EnterpriseTeamCreateOrUpdateRequest) (*EnterpriseTeam, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams", enterprise)
 
 	req, err := s.client.NewRequest("POST", u, team)
@@ -83,7 +87,7 @@ func (s *EnterpriseService) CreateTeam(ctx context.Context, enterprise string, t
 
 // GetTeam retrieves a team in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/enterprise-teams/enterprise-teams#get-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#get-an-enterprise-team
 //
 //meta:operation GET /enterprises/{enterprise}/teams/{team_slug}
 func (s *EnterpriseService) GetTeam(ctx context.Context, enterprise, teamSlug string) (*EnterpriseTeam, *Response, error) {
@@ -105,10 +109,10 @@ func (s *EnterpriseService) GetTeam(ctx context.Context, enterprise, teamSlug st
 
 // UpdateTeam updates a team in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/enterprise-teams/enterprise-teams#update-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#update-an-enterprise-team
 //
 //meta:operation PATCH /enterprises/{enterprise}/teams/{team_slug}
-func (s *EnterpriseService) UpdateTeam(ctx context.Context, enterprise, teamSlug string, team EnterpriseTeamCreateRequest) (*EnterpriseTeam, *Response, error) {
+func (s *EnterpriseService) UpdateTeam(ctx context.Context, enterprise, teamSlug string, team EnterpriseTeamCreateOrUpdateRequest) (*EnterpriseTeam, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v", enterprise, teamSlug)
 
 	req, err := s.client.NewRequest("PATCH", u, team)
@@ -127,7 +131,7 @@ func (s *EnterpriseService) UpdateTeam(ctx context.Context, enterprise, teamSlug
 
 // DeleteTeam deletes a team in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/en/rest/enterprise-teams/enterprise-teams#delete-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#delete-an-enterprise-team
 //
 //meta:operation DELETE /enterprises/{enterprise}/teams/{team_slug}
 func (s *EnterpriseService) DeleteTeam(ctx context.Context, enterprise, teamSlug string) (*Response, error) {

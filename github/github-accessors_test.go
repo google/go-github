@@ -12246,6 +12246,50 @@ func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningValidityChecksEnabl
 	e.GetSecretScanningValidityChecksEnabled()
 }
 
+func TestEnterpriseTeam_GetOrganizationSelectionType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseTeam{OrganizationSelectionType: &zeroValue}
+	e.GetOrganizationSelectionType()
+	e = &EnterpriseTeam{}
+	e.GetOrganizationSelectionType()
+	e = nil
+	e.GetOrganizationSelectionType()
+}
+
+func TestEnterpriseTeamCreateOrUpdateRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseTeamCreateOrUpdateRequest{Description: &zeroValue}
+	e.GetDescription()
+	e = &EnterpriseTeamCreateOrUpdateRequest{}
+	e.GetDescription()
+	e = nil
+	e.GetDescription()
+}
+
+func TestEnterpriseTeamCreateOrUpdateRequest_GetGroupID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	e := &EnterpriseTeamCreateOrUpdateRequest{GroupID: &zeroValue}
+	e.GetGroupID()
+	e = &EnterpriseTeamCreateOrUpdateRequest{}
+	e.GetGroupID()
+	e = nil
+	e.GetGroupID()
+}
+
+func TestEnterpriseTeamCreateOrUpdateRequest_GetOrganizationSelectionType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseTeamCreateOrUpdateRequest{OrganizationSelectionType: &zeroValue}
+	e.GetOrganizationSelectionType()
+	e = &EnterpriseTeamCreateOrUpdateRequest{}
+	e.GetOrganizationSelectionType()
+	e = nil
+	e.GetOrganizationSelectionType()
+}
+
 func TestEnvironment_GetCanAdminsBypass(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
