@@ -12,7 +12,6 @@ import (
 	"io"
 	"mime"
 	"net/http"
-	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -495,57 +494,41 @@ func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, rep
 //
 // This is a convenience wrapper that extracts the release.UploadURL (which is usually
 // templated like "https://uploads.github.com/.../assets{?name,label}") and uploads
-// the provided file using the existing upload helpers.
+// the provided data (reader + size) using the existing upload helpers.
 //
 // GitHub API docs: https://docs.github.com/rest/releases/assets#upload-a-release-asset
 //
 //meta:operation POST /repos/{owner}/{repo}/releases/{release_id}/assets
-func (s *RepositoriesService) UploadReleaseAssetFromRelease(ctx context.Context, release *RepositoryRelease, opts *UploadOptions, file *os.File) (*ReleaseAsset, *Response, error) {
+func (s *RepositoriesService) UploadReleaseAssetFromRelease(ctx context.Context, release *RepositoryRelease, opts *UploadOptions, reader io.Reader, size int64) (*ReleaseAsset, *Response, error) {
 	if release == nil || release.UploadURL == nil {
 		return nil, nil, errors.New("release UploadURL must be provided")
 	}
-	if file == nil {
-		return nil, nil, errors.New("file must be provided")
+	if reader == nil {
+		return nil, nil, errors.New("reader must be provided")
+	}
+	if size < 0 {
+		return nil, nil, errors.New("size must be >= 0")
 	}
 
-	// Extract upload URL.
+	// Strip URI-template portion (e.g. "{?name,label}") if present.
 	uploadURL := *release.UploadURL
-
-	// If uploadURL contains a template, strip it (e.g. "{?name,label}").
 	if idx := strings.Index(uploadURL, "{"); idx != -1 {
 		uploadURL = uploadURL[:idx]
 	}
 
-	// If uploadURL is absolute (starts with http/https), parse and use only the path.
-	if strings.HasPrefix(uploadURL, "http://") || strings.HasPrefix(uploadURL, "https://") {
-		if uParsed, err := url.Parse(uploadURL); err == nil {
-			uploadURL = uParsed.Path
-		}
-	}
-
-	// Defensive: always remove any leading '/' so client gets a relative path.
-	uploadURL = strings.TrimPrefix(uploadURL, "/")
-
-	// addOptions will append query params for name/label (same as UploadReleaseAsset)
+	// IMPORTANT: preserve absolute upload URLs. Do NOT convert to relative paths.
+	// addOptions will append name/label query params (same behavior as UploadReleaseAsset).
 	u, err := addOptions(uploadURL, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	stat, err := file.Stat()
-	if err != nil {
-		return nil, nil, err
-	}
-	if stat.IsDir() {
-		return nil, nil, errors.New("the asset to upload can't be a directory")
-	}
-
-	mediaType := mime.TypeByExtension(filepath.Ext(file.Name()))
+	mediaType := defaultMediaType
 	if opts != nil && opts.MediaType != "" {
 		mediaType = opts.MediaType
 	}
 
-	req, err := s.client.NewUploadRequest(u, file, stat.Size(), mediaType)
+	req, err := s.client.NewUploadRequest(u, reader, size, mediaType)
 	if err != nil {
 		return nil, nil, err
 	}

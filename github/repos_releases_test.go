@@ -781,83 +781,6 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
-	t.Parallel()
-
-	var (
-		defaultUploadOptions     = &UploadOptions{Name: "n"}
-		defaultExpectedFormValue = values{"name": "n"}
-		mediaTypeTextPlain       = "text/plain; charset=utf-8"
-	)
-
-	client, mux, _ := setup(t)
-
-	// Use the same endpoint path used in other tests.
-	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testHeader(t, r, "Content-Type", mediaTypeTextPlain)
-		testHeader(t, r, "Content-Length", "12")
-		testFormValues(t, r, defaultExpectedFormValue)
-		testBody(t, r, "Upload me !\n")
-
-		fmt.Fprint(w, `{"id":1}`)
-	})
-
-	// Create a file using the test helper that existing tests use.
-	file := openTestFile(t, "upload.txt", "Upload me !\n")
-
-	// Provide a templated upload URL like GitHub returns.
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{
-		UploadURL: &uploadURL,
-	}
-
-	ctx := t.Context()
-	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, defaultUploadOptions, file)
-	if err != nil {
-		t.Fatalf("Repositories.UploadReleaseAssetFromRelease returned error: %v", err)
-	}
-	want := &ReleaseAsset{ID: Ptr(int64(1))}
-	if !cmp.Equal(asset, want) {
-		t.Fatalf("Repositories.UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
-	}
-
-	const methodName = "UploadReleaseAssetFromRelease"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.UploadReleaseAssetFromRelease(ctx, release, defaultUploadOptions, nil)
-		return err
-	})
-}
-
-func TestRepositoriesService_UploadReleaseAssetFromRelease_AbsoluteTemplate(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		// Expect name query param created by addOptions after trimming template.
-		if r.URL.Query().Get("name") != "abs.txt" {
-			t.Errorf("Expected name query param 'abs.txt', got %q", r.URL.Query().Get("name"))
-		}
-		fmt.Fprint(w, `{"id":1}`)
-	})
-
-	file := openTestFile(t, "upload.txt", "Upload me !\n")
-
-	uploadURL := "https://uploads.github.com/repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{UploadURL: &uploadURL}
-
-	opts := &UploadOptions{Name: "abs.txt"}
-	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(t.Context(), release, opts, file)
-	if err != nil {
-		t.Fatalf("UploadReleaseAssetFromRelease returned error: %v", err)
-	}
-	want := &ReleaseAsset{ID: Ptr(int64(1))}
-	if !cmp.Equal(asset, want) {
-		t.Fatalf("UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
-	}
-}
-
 func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &repositoryReleaseRequest{}, "{}")
@@ -1006,4 +929,207 @@ func TestGenerateNotesOptions_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
+	t.Parallel()
+
+	var (
+		defaultUploadOptions     = &UploadOptions{Name: "n"}
+		defaultExpectedFormValue = values{"name": "n"}
+		mediaTypeTextPlain       = "text/plain; charset=utf-8"
+	)
+
+	client, mux, _ := setup(t)
+
+	// Use the same endpoint path used in other release asset tests.
+	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Content-Type", mediaTypeTextPlain)
+		testHeader(t, r, "Content-Length", "12")
+		testFormValues(t, r, defaultExpectedFormValue)
+		testBody(t, r, "Upload me !\n")
+
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	body := []byte("Upload me !\n")
+	reader := bytes.NewReader(body)
+	size := int64(len(body))
+
+	// Provide a templated upload URL like GitHub returns.
+	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
+	release := &RepositoryRelease{
+		UploadURL: &uploadURL,
+	}
+
+	ctx := t.Context()
+	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, defaultUploadOptions, reader, size)
+	if err != nil {
+		t.Fatalf("Repositories.UploadReleaseAssetFromRelease returned error: %v", err)
+	}
+	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	if !cmp.Equal(asset, want) {
+		t.Fatalf("Repositories.UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
+	}
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_AbsoluteTemplate(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		// Expect name query param created by addOptions after trimming template.
+		if got := r.URL.Query().Get("name"); got != "abs.txt" {
+			t.Errorf("Expected name query param 'abs.txt', got %q", got)
+		}
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	body := []byte("Upload me !\n")
+	reader := bytes.NewReader(body)
+	size := int64(len(body))
+
+	// Build an absolute URL using the test client's BaseURL.
+	absoluteUploadURL := client.BaseURL.String() + "repos/o/r/releases/1/assets{?name,label}"
+	release := &RepositoryRelease{UploadURL: &absoluteUploadURL}
+
+	opts := &UploadOptions{Name: "abs.txt"}
+	ctx := t.Context()
+	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, opts, reader, size)
+	if err != nil {
+		t.Fatalf("UploadReleaseAssetFromRelease returned error: %v", err)
+	}
+	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	if !cmp.Equal(asset, want) {
+		t.Fatalf("UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
+	}
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_NilRelease(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	body := []byte("Upload me !\n")
+	reader := bytes.NewReader(body)
+	size := int64(len(body))
+
+	ctx := t.Context()
+	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, nil, &UploadOptions{Name: "n"}, reader, size)
+	if err == nil {
+		t.Fatal("expected error for nil release, got nil")
+	}
+
+	const methodName = "UploadReleaseAssetFromRelease"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.UploadReleaseAssetFromRelease(ctx, nil, &UploadOptions{Name: "n"}, reader, size)
+		return err
+	})
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_NilReader(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
+	release := &RepositoryRelease{UploadURL: &uploadURL}
+
+	ctx := t.Context()
+	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n"}, nil, 12)
+	if err == nil {
+		t.Fatal("expected error when reader is nil")
+	}
+
+	const methodName = "UploadReleaseAssetFromRelease"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n"}, nil, 12)
+		return err
+	})
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_NegativeSize(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
+	release := &RepositoryRelease{UploadURL: &uploadURL}
+
+	body := []byte("Upload me !\n")
+	reader := bytes.NewReader(body)
+
+	ctx := t.Context()
+	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n"}, reader, -1)
+	if err == nil {
+		t.Fatal("expected error when size is negative")
+	}
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_NoOpts(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// No opts: we just assert that the handler is hit and body is as expected.
+	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testBody(t, r, "Upload me !\n")
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	body := []byte("Upload me !\n")
+	reader := bytes.NewReader(body)
+	size := int64(len(body))
+
+	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
+	release := &RepositoryRelease{UploadURL: &uploadURL}
+
+	ctx := t.Context()
+	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, nil, reader, size)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	if !cmp.Equal(asset, want) {
+		t.Fatalf("Repositories.UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
+	}
+
+	const methodName = "UploadReleaseAssetFromRelease"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, nil, reader, size)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_WithMediaType(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// Expect explicit media type to be used.
+	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Content-Type", "image/png")
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	body := []byte("Binary!")
+	reader := bytes.NewReader(body)
+	size := int64(len(body))
+
+	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
+	release := &RepositoryRelease{UploadURL: &uploadURL}
+
+	opts := &UploadOptions{Name: "n", MediaType: "image/png"}
+
+	ctx := t.Context()
+	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, opts, reader, size)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	if !cmp.Equal(asset, want) {
+		t.Fatalf("UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
+	}
 }
