@@ -310,12 +310,33 @@ func TestRulesetRules(t *testing.T) {
 	t.Run("UnmarshalJSON_Error", func(t *testing.T) {
 		t.Parallel()
 
-		// Test invalid JSON for CopilotCodeReview parameters
-		invalidJSON := `[{"type":"copilot_code_review","parameters":{"review_new_pushes":"invalid_bool"}}]`
-		got := &RepositoryRulesetRules{}
-		err := json.Unmarshal([]byte(invalidJSON), got)
-		if err == nil {
-			t.Errorf("Expected error unmarshaling invalid JSON, got nil")
+		tests := []struct {
+			name string
+			json string
+		}{
+			{
+				"invalid_copilot_code_review_bool",
+				`[{"type":"copilot_code_review","parameters":{"review_new_pushes":"invalid_bool"}}]`,
+			},
+			{
+				"invalid_copilot_code_review_draft_pr",
+				`[{"type":"copilot_code_review","parameters":{"review_new_pushes":true,"review_draft_pull_requests":"not_a_bool"}}]`,
+			},
+			{
+				"invalid_copilot_code_review_parameters",
+				`[{"type":"copilot_code_review","parameters":"not_an_object"}]`,
+			},
+		}
+
+		for _, tt := range tests {
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				got := &RepositoryRulesetRules{}
+				err := json.Unmarshal([]byte(tt.json), got)
+				if err == nil {
+					t.Errorf("Expected error unmarshaling %q, got nil", tt.json)
+				}
+			})
 		}
 	})
 }
@@ -961,6 +982,14 @@ func TestRepositoryRule(t *testing.T) {
 			`{"type":"copilot_code_review","parameters":{"review_new_pushes":true,"review_draft_pull_requests":false}}`,
 		},
 		{
+			"copilot_code_review_empty_params",
+			&RepositoryRule{
+				Type:       RulesetRuleTypeCopilotCodeReview,
+				Parameters: &CopilotCodeReviewRuleParameters{},
+			},
+			`{"type":"copilot_code_review","parameters":{"review_new_pushes":false,"review_draft_pull_requests":false}}`,
+		},
+		{
 			"repository_create",
 			&RepositoryRule{Type: RulesetRuleTypeRepositoryCreate, Parameters: nil},
 			`{"type":"repository_create"}`,
@@ -1027,12 +1056,33 @@ func TestRepositoryRule(t *testing.T) {
 	t.Run("UnmarshalJSON_Error", func(t *testing.T) {
 		t.Parallel()
 
-		// Test invalid JSON for CopilotCodeReview parameters
-		invalidJSON := `{"type":"copilot_code_review","parameters":{"review_new_pushes":"invalid_bool"}}`
-		got := &RepositoryRule{}
-		err := json.Unmarshal([]byte(invalidJSON), got)
-		if err == nil {
-			t.Errorf("Expected error unmarshaling invalid JSON, got nil")
+		tests := []struct {
+			name string
+			json string
+		}{
+			{
+				"invalid_copilot_code_review_bool",
+				`{"type":"copilot_code_review","parameters":{"review_new_pushes":"invalid_bool"}}`,
+			},
+			{
+				"invalid_copilot_code_review_draft_pr",
+				`{"type":"copilot_code_review","parameters":{"review_new_pushes":true,"review_draft_pull_requests":"not_a_bool"}}`,
+			},
+			{
+				"invalid_copilot_code_review_parameters",
+				`{"type":"copilot_code_review","parameters":"not_an_object"}`,
+			},
+		}
+
+		for _, tt := range tests {
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				got := &RepositoryRule{}
+				err := json.Unmarshal([]byte(tt.json), got)
+				if err == nil {
+					t.Errorf("Expected error unmarshaling %q, got nil", tt.json)
+				}
+			})
 		}
 	})
 }
