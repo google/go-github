@@ -306,6 +306,18 @@ func TestRulesetRules(t *testing.T) {
 			})
 		}
 	})
+
+	t.Run("UnmarshalJSON_Error", func(t *testing.T) {
+		t.Parallel()
+
+		// Test invalid JSON for CopilotCodeReview parameters
+		invalidJSON := `[{"type":"copilot_code_review","parameters":{"review_new_pushes":"invalid_bool"}}]`
+		got := &RepositoryRulesetRules{}
+		err := json.Unmarshal([]byte(invalidJSON), got)
+		if err == nil {
+			t.Errorf("Expected error unmarshaling invalid JSON, got nil")
+		}
+	})
 }
 
 func TestBranchRules(t *testing.T) {
@@ -1009,6 +1021,18 @@ func TestRepositoryRule(t *testing.T) {
 					)
 				}
 			})
+		}
+	})
+
+	t.Run("UnmarshalJSON_Error", func(t *testing.T) {
+		t.Parallel()
+
+		// Test invalid JSON for CopilotCodeReview parameters
+		invalidJSON := `{"type":"copilot_code_review","parameters":{"review_new_pushes":"invalid_bool"}}`
+		got := &RepositoryRule{}
+		err := json.Unmarshal([]byte(invalidJSON), got)
+		if err == nil {
+			t.Errorf("Expected error unmarshaling invalid JSON, got nil")
 		}
 	})
 }
