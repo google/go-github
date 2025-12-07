@@ -689,8 +689,8 @@ func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
 func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 	t.Parallel()
 	var (
-		defaultUploadOptions     = &UploadOptions{Name: "n"}
-		defaultExpectedFormValue = values{"name": "n"}
+		defaultUploadOptions     = &UploadOptions{Name: "n.txt"}
+		defaultExpectedFormValue = values{"name": "n.txt"}
 		mediaTypeTextPlain       = "text/plain; charset=utf-8"
 	)
 	uploadTests := []struct {
@@ -715,23 +715,23 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		},
 		// No file extension and explicit media type.
 		{
-			&UploadOptions{Name: "n", MediaType: "image/png"},
+			&UploadOptions{Name: "n.txt", MediaType: "image/png"},
 			"upload",
 			defaultExpectedFormValue,
 			"image/png",
 		},
 		// File extension and explicit media type.
 		{
-			&UploadOptions{Name: "n", MediaType: "image/png"},
+			&UploadOptions{Name: "n.txt", MediaType: "image/png"},
 			"upload.png",
 			defaultExpectedFormValue,
 			"image/png",
 		},
 		// Label provided.
 		{
-			&UploadOptions{Name: "n", Label: "l"},
+			&UploadOptions{Name: "n.txt", Label: "l"},
 			"upload.txt",
-			values{"name": "n", "label": "l"},
+			values{"name": "n.txt", "label": "l"},
 			mediaTypeTextPlain,
 		},
 		// No label provided.
@@ -935,8 +935,8 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
 	t.Parallel()
 
 	var (
-		defaultUploadOptions     = &UploadOptions{Name: "n"}
-		defaultExpectedFormValue = values{"name": "n"}
+		defaultUploadOptions     = &UploadOptions{Name: "n.txt"}
+		defaultExpectedFormValue = values{"name": "n.txt"}
 		mediaTypeTextPlain       = "text/plain; charset=utf-8"
 	)
 
@@ -1016,14 +1016,14 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NilRelease(t *testing
 	size := int64(len(body))
 
 	ctx := t.Context()
-	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, nil, &UploadOptions{Name: "n"}, reader, size)
+	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, nil, &UploadOptions{Name: "n.txt"}, reader, size)
 	if err == nil {
 		t.Fatal("expected error for nil release, got nil")
 	}
 
 	const methodName = "UploadReleaseAssetFromRelease"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.UploadReleaseAssetFromRelease(ctx, nil, &UploadOptions{Name: "n"}, reader, size)
+		_, _, err = client.Repositories.UploadReleaseAssetFromRelease(ctx, nil, &UploadOptions{Name: "n.txt"}, reader, size)
 		return err
 	})
 }
@@ -1036,14 +1036,14 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NilReader(t *testing.
 	release := &RepositoryRelease{UploadURL: &uploadURL}
 
 	ctx := t.Context()
-	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n"}, nil, 12)
+	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n.txt"}, nil, 12)
 	if err == nil {
 		t.Fatal("expected error when reader is nil")
 	}
 
 	const methodName = "UploadReleaseAssetFromRelease"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n"}, nil, 12)
+		_, _, err = client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n.txt"}, nil, 12)
 		return err
 	})
 }
@@ -1059,7 +1059,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NegativeSize(t *testi
 	reader := bytes.NewReader(body)
 
 	ctx := t.Context()
-	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n"}, reader, -1)
+	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n..txt"}, reader, -1)
 	if err == nil {
 		t.Fatal("expected error when size is negative")
 	}
@@ -1121,7 +1121,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_WithMediaType(t *test
 	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
 	release := &RepositoryRelease{UploadURL: &uploadURL}
 
-	opts := &UploadOptions{Name: "n", MediaType: "image/png"}
+	opts := &UploadOptions{Name: "n.txt", MediaType: "image/png"}
 
 	ctx := t.Context()
 	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, opts, reader, size)

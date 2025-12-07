@@ -499,7 +499,13 @@ func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, rep
 // GitHub API docs: https://docs.github.com/rest/releases/assets#upload-a-release-asset
 //
 //meta:operation POST /repos/{owner}/{repo}/releases/{release_id}/assets
-func (s *RepositoriesService) UploadReleaseAssetFromRelease(ctx context.Context, release *RepositoryRelease, opts *UploadOptions, reader io.Reader, size int64) (*ReleaseAsset, *Response, error) {
+func (s *RepositoriesService) UploadReleaseAssetFromRelease(
+	ctx context.Context,
+	release *RepositoryRelease,
+	opts *UploadOptions,
+	reader io.Reader,
+	size int64,
+) (*ReleaseAsset, *Response, error) {
 	if release == nil || release.UploadURL == nil {
 		return nil, nil, errors.New("release UploadURL must be provided")
 	}
@@ -516,16 +522,28 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(ctx context.Context,
 		uploadURL = uploadURL[:idx]
 	}
 
-	// IMPORTANT: preserve absolute upload URLs. Do NOT convert to relative paths.
+	// If this is a *relative* URL (no scheme), normalize it by trimming a leading "/"
+	// so it works with Client.BaseURL path prefixes (e.g. "/api-v3/").
+	if !strings.HasPrefix(uploadURL, "http://") && !strings.HasPrefix(uploadURL, "https://") {
+		uploadURL = strings.TrimPrefix(uploadURL, "/")
+	}
+
 	// addOptions will append name/label query params (same behavior as UploadReleaseAsset).
 	u, err := addOptions(uploadURL, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
+	// determine media type
 	mediaType := defaultMediaType
 	if opts != nil && opts.MediaType != "" {
 		mediaType = opts.MediaType
+	} else if opts != nil && opts.Name != "" {
+		if ext := filepath.Ext(opts.Name); ext != "" {
+			if mt := mime.TypeByExtension(ext); mt != "" {
+				mediaType = mt
+			}
+		}
 	}
 
 	req, err := s.client.NewUploadRequest(u, reader, size, mediaType)
