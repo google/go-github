@@ -29,7 +29,7 @@ func TestEnterpriseService_ListTeams(t *testing.T) {
 			"slug": "team-one",
 			"created_at": "2020-01-01T00:00:00Z",
 			"updated_at": "2020-01-02T00:00:00Z",
-			"group_id": 99
+			"group_id": "99"
 		}]`)
 	})
 
@@ -48,7 +48,7 @@ func TestEnterpriseService_ListTeams(t *testing.T) {
 			Name:      "Team One",
 			HTMLURL:   "https://example.com/html",
 			Slug:      "team-one",
-			GroupID:   99,
+			GroupID:   "99",
 			CreatedAt: Timestamp{Time: time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)},
 			UpdatedAt: Timestamp{Time: time.Date(2020, time.January, 2, 0, 0, 0, 0, time.UTC)},
 		},

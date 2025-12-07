@@ -9471,9 +9471,9 @@ func (e *EnterpriseTeamCreateOrUpdateRequest) GetDescription() string {
 }
 
 // GetGroupID returns the GroupID field if it's non-nil, zero value otherwise.
-func (e *EnterpriseTeamCreateOrUpdateRequest) GetGroupID() int64 {
+func (e *EnterpriseTeamCreateOrUpdateRequest) GetGroupID() string {
 	if e == nil || e.GroupID == nil {
-		return 0
+		return ""
 	}
 	return *e.GroupID
 }

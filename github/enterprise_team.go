@@ -21,7 +21,7 @@ type EnterpriseTeam struct {
 	Slug                      string    `json:"slug"`
 	CreatedAt                 Timestamp `json:"created_at"`
 	UpdatedAt                 Timestamp `json:"updated_at"`
-	GroupID                   int64     `json:"group_id"`
+	GroupID                   string    `json:"group_id"`
 	OrganizationSelectionType *string   `json:"organization_selection_type,omitempty"`
 }
 
@@ -35,7 +35,7 @@ type EnterpriseTeamCreateOrUpdateRequest struct {
 	// Possible values are "disabled" , "all" and "selected". If not specified, the default is "disabled".
 	OrganizationSelectionType *string `json:"organization_selection_type,omitempty"`
 	// The ID of the IdP group to assign team membership with.
-	GroupID *int64 `json:"group_id,omitempty"`
+	GroupID *string `json:"group_id,omitempty"`
 }
 
 // ListTeams lists all teams in an enterprise.

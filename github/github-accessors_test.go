@@ -12281,7 +12281,7 @@ func TestEnterpriseTeamCreateOrUpdateRequest_GetDescription(tt *testing.T) {
 
 func TestEnterpriseTeamCreateOrUpdateRequest_GetGroupID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
+	var zeroValue string
 	e := &EnterpriseTeamCreateOrUpdateRequest{GroupID: &zeroValue}
 	e.GetGroupID()
 	e = &EnterpriseTeamCreateOrUpdateRequest{}
