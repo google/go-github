@@ -9446,6 +9446,14 @@ func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningValidityChecksEnab
 	return *e.SecretScanningValidityChecksEnabled
 }
 
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (e *EnterpriseTeam) GetDescription() string {
+	if e == nil || e.Description == nil {
+		return ""
+	}
+	return *e.Description
+}
+
 // GetOrganizationSelectionType returns the OrganizationSelectionType field if it's non-nil, zero value otherwise.
 func (e *EnterpriseTeam) GetOrganizationSelectionType() string {
 	if e == nil || e.OrganizationSelectionType == nil {

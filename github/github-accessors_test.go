@@ -12246,6 +12246,17 @@ func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningValidityChecksEnabl
 	e.GetSecretScanningValidityChecksEnabled()
 }
 
+func TestEnterpriseTeam_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseTeam{Description: &zeroValue}
+	e.GetDescription()
+	e = &EnterpriseTeam{}
+	e.GetDescription()
+	e = nil
+	e.GetDescription()
+}
+
 func TestEnterpriseTeam_GetOrganizationSelectionType(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

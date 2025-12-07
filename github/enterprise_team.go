@@ -16,6 +16,7 @@ type EnterpriseTeam struct {
 	URL                       string    `json:"url"`
 	MemberURL                 string    `json:"member_url"`
 	Name                      string    `json:"name"`
+	Description               *string   `json:"description,omitempty"`
 	HTMLURL                   string    `json:"html_url"`
 	Slug                      string    `json:"slug"`
 	CreatedAt                 Timestamp `json:"created_at"`
