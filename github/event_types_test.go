@@ -9789,7 +9789,7 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 		{
 			"created",
 			fmt.Sprintf(
-				`{"action":"created","repository_ruleset":{"id":1,"name":"r","target":"branch","source_type":"Repository","source":"o/r","enforcement":"active","conditions":{"ref_name":{"exclude":[],"include":["~ALL"]}},"rules":[{"type":"deletion"},{"type":"creation"},{"type":"update"},{"type":"required_linear_history"},{"type":"pull_request","parameters":{"required_approving_review_count":2,"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_review_thread_resolution":false,"automatic_copilot_code_review_enabled":false,"allowed_merge_methods":["squash","rebase","merge"]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool":"CodeQL","security_alerts_threshold":"high_or_higher","alerts_threshold":"errors"}]}}],"node_id":"n","created_at":%[1]s,"updated_at":%[1]s,"_links":{"self":{"href":"a"},"html":{"href":"a"}}},"repository":{"id":1,"node_id":"n","name":"r","full_name":"o/r"},"organization":{"id":1,"node_id":"n","name":"o"},"enterprise":{"id":1,"node_id":"n","slug":"e","name":"e"},"installation":{"id":1,"node_id":"n","app_id":1,"app_slug":"a"},"sender":{"id":1,"node_id":"n","login":"l"}}`,
+				`{"action":"created","repository_ruleset":{"id":1,"name":"r","target":"branch","source_type":"Repository","source":"o/r","enforcement":"active","conditions":{"ref_name":{"exclude":[],"include":["~ALL"]}},"rules":[{"type":"deletion"},{"type":"creation"},{"type":"update"},{"type":"required_linear_history"},{"type":"pull_request","parameters":{"required_approving_review_count":2,"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_review_thread_resolution":false,"allowed_merge_methods":["squash","rebase","merge"]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool":"CodeQL","security_alerts_threshold":"high_or_higher","alerts_threshold":"errors"}]}}],"node_id":"n","created_at":%[1]s,"updated_at":%[1]s,"_links":{"self":{"href":"a"},"html":{"href":"a"}}},"repository":{"id":1,"node_id":"n","name":"r","full_name":"o/r"},"organization":{"id":1,"node_id":"n","name":"o"},"enterprise":{"id":1,"node_id":"n","slug":"e","name":"e"},"installation":{"id":1,"node_id":"n","app_id":1,"app_slug":"a"},"sender":{"id":1,"node_id":"n","login":"l"}}`,
 				referenceTimeStr,
 			),
 			&RepositoryRulesetEvent{
@@ -9818,12 +9818,11 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 								PullRequestMergeMethodRebase,
 								PullRequestMergeMethodMerge,
 							},
-							AutomaticCopilotCodeReviewEnabled: Ptr(false),
-							DismissStaleReviewsOnPush:         false,
-							RequireCodeOwnerReview:            false,
-							RequireLastPushApproval:           false,
-							RequiredApprovingReviewCount:      2,
-							RequiredReviewThreadResolution:    false,
+							DismissStaleReviewsOnPush:      false,
+							RequireCodeOwnerReview:         false,
+							RequireLastPushApproval:        false,
+							RequiredApprovingReviewCount:   2,
+							RequiredReviewThreadResolution: false,
 						},
 						CodeScanning: &CodeScanningRuleParameters{
 							CodeScanningTools: []*RuleCodeScanningTool{
@@ -9853,7 +9852,7 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 		{
 			"edited",
 			fmt.Sprintf(
-				`{"action":"edited","repository_ruleset":{"id":1,"name":"r","target":"branch","source_type":"Repository","source":"o/r","enforcement":"active","conditions":{"ref_name":{"exclude":[],"include":["~DEFAULT_BRANCH","refs/heads/dev-*"]}},"rules":[{"type":"deletion"},{"type":"creation"},{"type":"update"},{"type": "required_signatures"},{"type":"pull_request","parameters":{"required_approving_review_count":2,"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_review_thread_resolution":false,"automatic_copilot_code_review_enabled":false,"allowed_merge_methods":["squash","rebase"]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool":"CodeQL","security_alerts_threshold":"medium_or_higher","alerts_threshold":"errors"}]}}],"node_id":"n","created_at":%[1]s,"updated_at":%[1]s,"_links":{"self":{"href":"a"},"html":{"href":"a"}}},"changes":{"rules":{"added":[{"type": "required_signatures"}],"updated":[{"rule":{"type":"pull_request","parameters":{"required_approving_review_count":2,"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_review_thread_resolution":false,"automatic_copilot_code_review_enabled":false,"allowed_merge_methods":["squash","rebase"]}},"changes":{"configuration":{"from":"{\\\"required_reviewers\\\":[],\\\"allowed_merge_methods\\\":[\\\"squash\\\",\\\"rebase\\\",\\\"merge\\\"],\\\"require_code_owner_review\\\":false,\\\"require_last_push_approval\\\":false,\\\"dismiss_stale_reviews_on_push\\\":false,\\\"required_approving_review_count\\\":2,\\\"authorized_dismissal_actors_only\\\":false,\\\"required_review_thread_resolution\\\":false,\\\"ignore_approvals_from_contributors\\\":false,\\\"automatic_copilot_code_review_enabled\\\":false}"}}},{"rule":{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool":"CodeQL","security_alerts_threshold":"medium_or_higher","alerts_threshold":"errors"}]}},"changes":{"configuration":{"from":"{\\\"code_scanning_tools\\\":[{\\\"tool\\\":\\\"CodeQL\\\",\\\"alerts_threshold\\\":\\\"errors\\\",\\\"security_alerts_threshold\\\":\\\"high_or_higher\\\"}]}"}}}],"deleted":[{"type":"required_linear_history"}]},"conditions":{"updated":[{"condition":{"ref_name":{"exclude":[],"include":["~DEFAULT_BRANCH","refs/heads/dev-*"]}},"changes":{"include":{"from":["~ALL"]}}}],"deleted":[]}},"repository":{"id":1,"node_id":"n","name":"r","full_name":"o/r"},"organization":{"id":1,"node_id":"n","name":"o"},"enterprise":{"id":1,"node_id":"n","slug":"e","name":"e"},"installation":{"id":1,"node_id":"n","app_id":1,"app_slug":"a"},"sender":{"id":1,"node_id":"n","login":"l"}}`,
+				`{"action":"edited","repository_ruleset":{"id":1,"name":"r","target":"branch","source_type":"Repository","source":"o/r","enforcement":"active","conditions":{"ref_name":{"exclude":[],"include":["~DEFAULT_BRANCH","refs/heads/dev-*"]}},"rules":[{"type":"deletion"},{"type":"creation"},{"type":"update"},{"type": "required_signatures"},{"type":"pull_request","parameters":{"required_approving_review_count":2,"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_review_thread_resolution":false,"allowed_merge_methods":["squash","rebase"]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool":"CodeQL","security_alerts_threshold":"medium_or_higher","alerts_threshold":"errors"}]}}],"node_id":"n","created_at":%[1]s,"updated_at":%[1]s,"_links":{"self":{"href":"a"},"html":{"href":"a"}}},"changes":{"rules":{"added":[{"type": "required_signatures"}],"updated":[{"rule":{"type":"pull_request","parameters":{"required_approving_review_count":2,"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_review_thread_resolution":false,"allowed_merge_methods":["squash","rebase"]}},"changes":{"configuration":{"from":"{\\\"required_reviewers\\\":[],\\\"allowed_merge_methods\\\":[\\\"squash\\\",\\\"rebase\\\",\\\"merge\\\"],\\\"require_code_owner_review\\\":false,\\\"require_last_push_approval\\\":false,\\\"dismiss_stale_reviews_on_push\\\":false,\\\"required_approving_review_count\\\":2,\\\"authorized_dismissal_actors_only\\\":false,\\\"required_review_thread_resolution\\\":false,\\\"ignore_approvals_from_contributors\\\":false}"}}},{"rule":{"type":"code_scanning","parameters":{"code_scanning_tools":[{"tool":"CodeQL","security_alerts_threshold":"medium_or_higher","alerts_threshold":"errors"}]}},"changes":{"configuration":{"from":"{\\\"code_scanning_tools\\\":[{\\\"tool\\\":\\\"CodeQL\\\",\\\"alerts_threshold\\\":\\\"errors\\\",\\\"security_alerts_threshold\\\":\\\"high_or_higher\\\"}]}"}}}],"deleted":[{"type":"required_linear_history"}]},"conditions":{"updated":[{"condition":{"ref_name":{"exclude":[],"include":["~DEFAULT_BRANCH","refs/heads/dev-*"]}},"changes":{"include":{"from":["~ALL"]}}}],"deleted":[]}},"repository":{"id":1,"node_id":"n","name":"r","full_name":"o/r"},"organization":{"id":1,"node_id":"n","name":"o"},"enterprise":{"id":1,"node_id":"n","slug":"e","name":"e"},"installation":{"id":1,"node_id":"n","app_id":1,"app_slug":"a"},"sender":{"id":1,"node_id":"n","login":"l"}}`,
 				referenceTimeStr,
 			),
 			&RepositoryRulesetEvent{
@@ -9881,12 +9880,11 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 								PullRequestMergeMethodSquash,
 								PullRequestMergeMethodRebase,
 							},
-							AutomaticCopilotCodeReviewEnabled: Ptr(false),
-							DismissStaleReviewsOnPush:         false,
-							RequireCodeOwnerReview:            false,
-							RequireLastPushApproval:           false,
-							RequiredApprovingReviewCount:      2,
-							RequiredReviewThreadResolution:    false,
+							DismissStaleReviewsOnPush:      false,
+							RequireCodeOwnerReview:         false,
+							RequireLastPushApproval:        false,
+							RequiredApprovingReviewCount:   2,
+							RequiredReviewThreadResolution: false,
 						},
 						CodeScanning: &CodeScanningRuleParameters{
 							CodeScanningTools: []*RuleCodeScanningTool{
@@ -9936,18 +9934,17 @@ func TestRepositoryRulesetEvent_Unmarshal(t *testing.T) {
 											PullRequestMergeMethodSquash,
 											PullRequestMergeMethodRebase,
 										},
-										AutomaticCopilotCodeReviewEnabled: Ptr(false),
-										DismissStaleReviewsOnPush:         false,
-										RequireCodeOwnerReview:            false,
-										RequireLastPushApproval:           false,
-										RequiredApprovingReviewCount:      2,
-										RequiredReviewThreadResolution:    false,
+										DismissStaleReviewsOnPush:      false,
+										RequireCodeOwnerReview:         false,
+										RequireLastPushApproval:        false,
+										RequiredApprovingReviewCount:   2,
+										RequiredReviewThreadResolution: false,
 									},
 								},
 								Changes: &RepositoryRulesetChangedRule{
 									Configuration: &RepositoryRulesetChangeSource{
 										From: Ptr(
-											`{\"required_reviewers\":[],\"allowed_merge_methods\":[\"squash\",\"rebase\",\"merge\"],\"require_code_owner_review\":false,\"require_last_push_approval\":false,\"dismiss_stale_reviews_on_push\":false,\"required_approving_review_count\":2,\"authorized_dismissal_actors_only\":false,\"required_review_thread_resolution\":false,\"ignore_approvals_from_contributors\":false,\"automatic_copilot_code_review_enabled\":false}`,
+											`{\"required_reviewers\":[],\"allowed_merge_methods\":[\"squash\",\"rebase\",\"merge\"],\"require_code_owner_review\":false,\"require_last_push_approval\":false,\"dismiss_stale_reviews_on_push\":false,\"required_approving_review_count\":2,\"authorized_dismissal_actors_only\":false,\"required_review_thread_resolution\":false,\"ignore_approvals_from_contributors\":false}`,
 										),
 									},
 								},
