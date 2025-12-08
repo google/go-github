@@ -214,6 +214,60 @@ func (s *EnterpriseService) ListProvisionedSCIMUsers(ctx context.Context, enterp
 	return users, resp, nil
 }
 
+// SetProvisionedSCIMGroup replaces an existing provisioned group’s information.
+//
+// You must provide all the information required for the group as if you were provisioning it for the first time. Any
+// existing group information that you don't provide will be removed, including group membership. To update only
+// specific attributes, refer to the `Enterprise.UpdateSCIMGroupAttribute()` method.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#set-scim-information-for-a-provisioned-enterprise-group
+//
+//meta:operation PUT /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
+func (s *EnterpriseService) SetProvisionedSCIMGroup(ctx context.Context, enterprise, scimGroupID string, group SCIMEnterpriseGroupAttributes) (*SCIMEnterpriseGroupAttributes, *Response, error) {
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups/%v", enterprise, scimGroupID)
+	req, err := s.client.NewRequest("PUT", u, group)
+	if err != nil {
+		return nil, nil, err
+	}
+	req.Header.Set("Accept", mediaTypeSCIM)
+
+	groupNew := new(SCIMEnterpriseGroupAttributes)
+	resp, err := s.client.Do(ctx, req, groupNew)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return groupNew, resp, nil
+}
+
+// SetProvisionedSCIMUser replaces an existing provisioned user's information.
+//
+// You must supply complete user information, just as you would when provisioning them initially. Any previously
+// existing data not provided will be deleted. To update specific attributes only, refer to the
+// `Enterprise.UpdateSCIMUserAttribute()` method.
+//
+// **Warning**: Setting `active: false` will suspend a user, and their handle and email will be obfuscated.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#set-scim-information-for-a-provisioned-enterprise-user
+//
+//meta:operation PUT /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
+func (s *EnterpriseService) SetProvisionedSCIMUser(ctx context.Context, enterprise, scimUserID string, user SCIMEnterpriseUserAttributes) (*SCIMEnterpriseUserAttributes, *Response, error) {
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Users/%v", enterprise, scimUserID)
+	req, err := s.client.NewRequest("PUT", u, user)
+	if err != nil {
+		return nil, nil, err
+	}
+	req.Header.Set("Accept", mediaTypeSCIM)
+
+	userNew := new(SCIMEnterpriseUserAttributes)
+	resp, err := s.client.Do(ctx, req, userNew)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return userNew, resp, nil
+}
+
 // UpdateSCIMGroupAttribute updates a provisioned group’s individual attributes.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-group
