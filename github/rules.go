@@ -75,6 +75,7 @@ const (
 	RulesetRuleTypeCommitAuthorEmailPattern RepositoryRuleType = "commit_author_email_pattern"
 	RulesetRuleTypeCommitMessagePattern     RepositoryRuleType = "commit_message_pattern"
 	RulesetRuleTypeCommitterEmailPattern    RepositoryRuleType = "committer_email_pattern"
+	RulesetRuleTypeCopilotCodeReview        RepositoryRuleType = "copilot_code_review"
 	RulesetRuleTypeCreation                 RepositoryRuleType = "creation"
 	RulesetRuleTypeDeletion                 RepositoryRuleType = "deletion"
 	RulesetRuleTypeMergeQueue               RepositoryRuleType = "merge_queue"
@@ -87,7 +88,6 @@ const (
 	RulesetRuleTypeTagNamePattern           RepositoryRuleType = "tag_name_pattern"
 	RulesetRuleTypeUpdate                   RepositoryRuleType = "update"
 	RulesetRuleTypeWorkflows                RepositoryRuleType = "workflows"
-	RulesetRuleTypeCopilotCodeReview        RepositoryRuleType = "copilot_code_review"
 
 	// Push target rules.
 	RulesetRuleTypeFileExtensionRestriction RepositoryRuleType = "file_extension_restriction"
