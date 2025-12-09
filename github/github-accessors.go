@@ -25062,6 +25062,14 @@ func (r *RepositoryRulesetRules) GetCommitterEmailPattern() *PatternRuleParamete
 	return r.CommitterEmailPattern
 }
 
+// GetCopilotCodeReview returns the CopilotCodeReview field.
+func (r *RepositoryRulesetRules) GetCopilotCodeReview() *CopilotCodeReviewRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.CopilotCodeReview
+}
+
 // GetCreation returns the Creation field.
 func (r *RepositoryRulesetRules) GetCreation() *EmptyRuleParameters {
 	if r == nil {
