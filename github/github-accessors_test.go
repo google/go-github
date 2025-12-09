@@ -34393,6 +34393,17 @@ func TestSCIMUserRole_GetType(tt *testing.T) {
 	s.GetType()
 }
 
+func TestSearchOptions_GetAdvancedSearch(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SearchOptions{AdvancedSearch: &zeroValue}
+	s.GetAdvancedSearch()
+	s = &SearchOptions{}
+	s.GetAdvancedSearch()
+	s = nil
+	s.GetAdvancedSearch()
+}
+
 func TestSecretScanning_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
