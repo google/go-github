@@ -150,3 +150,136 @@ func (s *EnterpriseService) DeleteTeam(ctx context.Context, enterprise, teamSlug
 
 	return resp, nil
 }
+
+// ListTeamMembers lists all members of a team in an enterprise team.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#list-members-in-an-enterprise-team
+//
+//meta:operation GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships
+func (s *EnterpriseService) ListTeamMembers(ctx context.Context, enterprise, enterpriseTeam string, opt *ListOptions) ([]*User, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships", enterprise, enterpriseTeam)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var members []*User
+	resp, err := s.client.Do(ctx, req, &members)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return members, resp, nil
+}
+
+// BulkAddTeamMembers adds multiple members to a team in an enterprise team.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#bulk-add-team-members
+//
+//meta:operation POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/add
+func (s *EnterpriseService) BulkAddTeamMembers(ctx context.Context, enterprise, enterpriseTeam string, username []string) ([]*User, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships/add", enterprise, enterpriseTeam)
+	req, err := s.client.NewRequest("POST", u, map[string][]string{"usernames": username})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var members []*User
+	resp, err := s.client.Do(ctx, req, &members)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return members, resp, nil
+}
+
+// BulkRemoveTeamMembers removes multiple members from a team in an enterprise team.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#bulk-remove-team-members
+//
+//meta:operation POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove
+func (s *EnterpriseService) BulkRemoveTeamMembers(ctx context.Context, enterprise, enterpriseTeam string, username []string) ([]*User, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships/remove", enterprise, enterpriseTeam)
+	req, err := s.client.NewRequest("POST", u, map[string][]string{"usernames": username})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var members []*User
+	resp, err := s.client.Do(ctx, req, &members)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return members, resp, nil
+}
+
+// GetTeamMembership retrieves a team membership for a user in an enterprise team.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#get-enterprise-team-membership
+//
+//meta:operation GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}
+func (s *EnterpriseService) GetTeamMembership(ctx context.Context, enterprise, enterpriseTeam, username string) (*User, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships/%v", enterprise, enterpriseTeam, username)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var membership *User
+	resp, err := s.client.Do(ctx, req, &membership)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return membership, resp, nil
+}
+
+// AddTeamMember adds a member to a team in an enterprise team.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#add-team-member
+//
+//meta:operation PUT /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}
+func (s *EnterpriseService) AddTeamMember(ctx context.Context, enterprise, enterpriseTeam, username string) (*User, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships/%v", enterprise, enterpriseTeam, username)
+
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var member *User
+	resp, err := s.client.Do(ctx, req, &member)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return member, resp, nil
+}
+
+// RemoveTeamMember removes a member from a team in an enterprise team.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#remove-team-membership
+//
+//meta:operation DELETE /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}
+func (s *EnterpriseService) RemoveTeamMember(ctx context.Context, enterprise, enterpriseTeam, username string) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships/%v", enterprise, enterpriseTeam, username)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}

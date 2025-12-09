@@ -7,7 +7,9 @@ package github
 
 import (
 	"fmt"
+	"io"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -232,5 +234,260 @@ func TestEnterpriseService_DeleteTeam(t *testing.T) {
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Enterprise.DeleteTeam(ctx, "e", "t1")
+	})
+}
+
+func TestEnterpriseService_ListTeamMembers(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/memberships", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+			"login": "user1",
+			"id": 1001,
+			"url": "https://example.com/user1"
+		}]`)
+	})
+	ctx := t.Context()
+	opts := &ListOptions{Page: 1, PerPage: 10}
+	got, _, err := client.Enterprise.ListTeamMembers(ctx, "e", "t1", opts)
+	if err != nil {
+		t.Fatalf("Enterprise.ListTeamMembers returned error: %v", err)
+	}
+
+	want := []*User{
+		{
+			Login: Ptr("user1"),
+			ID:    Ptr(int64(1001)),
+			URL:   Ptr("https://example.com/user1"),
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Enterprise.ListTeamMembers = %+v, want %+v", got, want)
+	}
+
+	const methodName = "ListTeamMembers"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Enterprise.ListTeamMembers(ctx, "\n", "t1", opts)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.ListTeamMembers(ctx, "e", "t1", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_BulkAddTeamMembers(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/memberships/add", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+
+		body, _ := io.ReadAll(r.Body)
+		if !strings.Contains(string(body), `"usernames":["u1","u2"]`) {
+			t.Errorf("Request body = %v, want usernames u1,u2", body)
+		}
+
+		fmt.Fprint(w, `[{
+			"login": "u1",
+			"id": 1
+		},{
+			"login": "u2",
+			"id": 2
+		}]`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Enterprise.BulkAddTeamMembers(ctx, "e", "t1", []string{"u1", "u2"})
+	if err != nil {
+		t.Fatalf("BulkAddTeamMembers returned error: %v", err)
+	}
+
+	want := []*User{
+		{Login: Ptr("u1"), ID: Ptr(int64(1))},
+		{Login: Ptr("u2"), ID: Ptr(int64(2))},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("BulkAddTeamMembers = %+v, want %+v", got, want)
+	}
+
+	const methodName = "BulkAddTeamMembers"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Enterprise.BulkAddTeamMembers(ctx, "\n", "t1", []string{"u1"})
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.BulkAddTeamMembers(ctx, "e", "t1", []string{"u1"})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_BulkRemoveTeamMembers(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/memberships/remove", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+
+		body, _ := io.ReadAll(r.Body)
+		if !strings.Contains(string(body), `"usernames":["u1","u2"]`) {
+			t.Errorf("Request body = %v, want usernames u1,u2", body)
+		}
+
+		fmt.Fprint(w, `[{
+			"login": "u1",
+			"id": 1
+		},{
+			"login": "u2",
+			"id": 2
+		}]`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Enterprise.BulkRemoveTeamMembers(ctx, "e", "t1", []string{"u1", "u2"})
+	if err != nil {
+		t.Fatalf("BulkRemoveTeamMembers returned error: %v", err)
+	}
+
+	want := []*User{
+		{Login: Ptr("u1"), ID: Ptr(int64(1))},
+		{Login: Ptr("u2"), ID: Ptr(int64(2))},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("BulkRemoveTeamMembers = %+v, want %+v", got, want)
+	}
+
+	const methodName = "BulkRemoveTeamMembers"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Enterprise.BulkRemoveTeamMembers(ctx, "\n", "t1", []string{"u1"})
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.BulkRemoveTeamMembers(ctx, "e", "t1", []string{"u1"})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_GetTeamMembership(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/memberships/u1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"login": "u1",
+			"id": 10
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Enterprise.GetTeamMembership(ctx, "e", "t1", "u1")
+	if err != nil {
+		t.Fatalf("GetTeamMembership returned error: %v", err)
+	}
+
+	want := &User{
+		Login: Ptr("u1"),
+		ID:    Ptr(int64(10)),
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("GetTeamMembership = %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetTeamMembership"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Enterprise.GetTeamMembership(ctx, "\n", "t1", "u1")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetTeamMembership(ctx, "e", "t1", "u1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_AddTeamMember(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/memberships/u1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `{
+			"login": "u1",
+			"id": 5
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Enterprise.AddTeamMember(ctx, "e", "t1", "u1")
+	if err != nil {
+		t.Fatalf("AddTeamMember returned error: %v", err)
+	}
+
+	want := &User{
+		Login: Ptr("u1"),
+		ID:    Ptr(int64(5)),
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("AddTeamMember = %+v, want %+v", got, want)
+	}
+
+	const methodName = "AddTeamMember"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Enterprise.AddTeamMember(ctx, "\n", "t1", "u1")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.AddTeamMember(ctx, "e", "t1", "u1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_RemoveTeamMember(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/memberships/u1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Enterprise.RemoveTeamMember(ctx, "e", "t1", "u1")
+	if err != nil {
+		t.Fatalf("RemoveTeamMember returned error: %v", err)
+	}
+	if resp == nil {
+		t.Fatal("RemoveTeamMember returned nil Response")
+	}
+
+	const methodName = "RemoveTeamMember"
+	testBadOptions(t, methodName, func() error {
+		_, err := client.Enterprise.RemoveTeamMember(ctx, "\n", "t1", "u1")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Enterprise.RemoveTeamMember(ctx, "e", "t1", "u1")
 	})
 }
