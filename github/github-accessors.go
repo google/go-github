@@ -26646,6 +26646,14 @@ func (s *SCIMUserRole) GetType() string {
 	return *s.Type
 }
 
+// GetAdvancedSearch returns the AdvancedSearch field if it's non-nil, zero value otherwise.
+func (s *SearchOptions) GetAdvancedSearch() bool {
+	if s == nil || s.AdvancedSearch == nil {
+		return false
+	}
+	return *s.AdvancedSearch
+}
+
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
 func (s *SecretScanning) GetStatus() string {
 	if s == nil || s.Status == nil {
