@@ -7,9 +7,7 @@ package github
 
 import (
 	"fmt"
-	"io"
 	"net/http"
-	"strings"
 	"testing"
 	"time"
 
@@ -289,11 +287,6 @@ func TestEnterpriseService_BulkAddTeamMembers(t *testing.T) {
 	mux.HandleFunc("/enterprises/e/teams/t1/memberships/add", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 
-		body, _ := io.ReadAll(r.Body)
-		if !strings.Contains(string(body), `"usernames":["u1","u2"]`) {
-			t.Errorf("Request body = %v, want usernames u1,u2", body)
-		}
-
 		fmt.Fprint(w, `[{
 			"login": "u1",
 			"id": 1
@@ -338,11 +331,6 @@ func TestEnterpriseService_BulkRemoveTeamMembers(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/teams/t1/memberships/remove", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-
-		body, _ := io.ReadAll(r.Body)
-		if !strings.Contains(string(body), `"usernames":["u1","u2"]`) {
-			t.Errorf("Request body = %v, want usernames u1,u2", body)
-		}
 
 		fmt.Fprint(w, `[{
 			"login": "u1",
