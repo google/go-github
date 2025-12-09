@@ -54,6 +54,9 @@ type SearchOptions struct {
 	// Whether to retrieve text match metadata with a query
 	TextMatch bool `url:"-"`
 
+	// Whether to enable advanced search for issues
+	AdvancedSearch *bool `url:"advanced_search,omitempty"`
+
 	ListOptions
 }
 

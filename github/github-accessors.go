@@ -25054,6 +25054,14 @@ func (r *RepositoryRulesetRules) GetCommitterEmailPattern() *PatternRuleParamete
 	return r.CommitterEmailPattern
 }
 
+// GetCopilotCodeReview returns the CopilotCodeReview field.
+func (r *RepositoryRulesetRules) GetCopilotCodeReview() *CopilotCodeReviewRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.CopilotCodeReview
+}
+
 // GetCreation returns the Creation field.
 func (r *RepositoryRulesetRules) GetCreation() *EmptyRuleParameters {
 	if r == nil {
@@ -26636,6 +26644,14 @@ func (s *SCIMUserRole) GetType() string {
 		return ""
 	}
 	return *s.Type
+}
+
+// GetAdvancedSearch returns the AdvancedSearch field if it's non-nil, zero value otherwise.
+func (s *SearchOptions) GetAdvancedSearch() bool {
+	if s == nil || s.AdvancedSearch == nil {
+		return false
+	}
+	return *s.AdvancedSearch
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
