@@ -55,7 +55,7 @@ type SearchOptions struct {
 	TextMatch bool `url:"-"`
 
 	// Whether to enable advanced search for issues
-	AdvancedSearch bool `url:"advanced_search,omitempty"`
+	AdvancedSearch *bool `url:"advanced_search,omitempty"`
 
 	ListOptions
 }

@@ -283,7 +283,7 @@ func TestSearchService_Issues_advancedSearch(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": true, "items": [{"number":1},{"number":2}]}`)
 	})
 
-	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}, AdvancedSearch: true}
+	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}, AdvancedSearch: Ptr(true)}
 	ctx := t.Context()
 	result, _, err := client.Search.Issues(ctx, "blah", opts)
 	if err != nil {
