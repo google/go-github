@@ -162,6 +162,9 @@ type SCIMEnterpriseAttributeOperation struct {
 
 // ListProvisionedSCIMGroups lists provisioned SCIM groups in an enterprise.
 //
+// You can improve query search time by using the `excludedAttributes` query
+// parameter with a value of `members` to exclude members from the response.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Groups
@@ -188,6 +191,10 @@ func (s *EnterpriseService) ListProvisionedSCIMGroups(ctx context.Context, enter
 }
 
 // ListProvisionedSCIMUsers lists provisioned SCIM enterprise users.
+//
+// When members are part of the group provisioning payload, they're designated
+// as external group members. Providers are responsible for maintaining a
+// mapping between the `externalId` and `id` for each user.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-scim-provisioned-identities-for-an-enterprise
 //
@@ -270,6 +277,14 @@ func (s *EnterpriseService) SetProvisionedSCIMUser(ctx context.Context, enterpri
 
 // UpdateSCIMGroupAttribute updates a provisioned group’s individual attributes.
 //
+// The `attribute` parameter must include at least one of the following
+// Operations: `add`, `remove`, or `replace`.
+//
+// The update function can also be used to add group memberships.
+//
+// You can submit group memberships individually or in batches for improved
+// efficiency.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-group
 //
 //meta:operation PATCH /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
@@ -292,6 +307,16 @@ func (s *EnterpriseService) UpdateSCIMGroupAttribute(ctx context.Context, enterp
 
 // UpdateSCIMUserAttribute updates a provisioned user's individual attributes.
 //
+// The `attribute` parameter must include at least one of the following
+// Operations: `add`, `remove`, or `replace`.
+//
+// Note: Complex SCIM path selectors that include filters are not supported.
+// For example, a path selector defined as `"path": "emails[type eq \"work\"]"`
+// will be ineffective.
+//
+// Warning: Setting `active: false` will suspend a user, and their handle and
+// email will be obfuscated.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-user
 //
 //meta:operation PATCH /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
@@ -310,4 +335,40 @@ func (s *EnterpriseService) UpdateSCIMUserAttribute(ctx context.Context, enterpr
 	}
 
 	return user, resp, nil
+}
+
+// DeleteSCIMGroup deletes a SCIM group from an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#delete-a-scim-group-from-an-enterprise
+//
+//meta:operation DELETE /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
+func (s *EnterpriseService) DeleteSCIMGroup(ctx context.Context, enterprise, scimGroupID string) (*Response, error) {
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups/%v", enterprise, scimGroupID)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// DeleteSCIMUser deletes a SCIM user from an enterprise.
+//
+// Suspends a SCIM user permanently from an enterprise. This action will:
+// remove all the user's data, anonymize their login, email, and display name,
+// erase all external identity SCIM attributes, delete the user's emails,
+// avatar, PATs, SSH keys, OAuth authorizations, GPG keys, and SAML mappings.
+// This action is irreversible.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#delete-a-scim-user-from-an-enterprise
+//
+//meta:operation DELETE /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
+func (s *EnterpriseService) DeleteSCIMUser(ctx context.Context, enterprise, scimUserID string) (*Response, error) {
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Users/%v", enterprise, scimUserID)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
 }
