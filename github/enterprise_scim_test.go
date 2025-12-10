@@ -26,7 +26,7 @@ func TestSCIMEnterpriseGroups_Marshal(t *testing.T) {
 			DisplayName: Ptr("gn1"),
 			Members: []*SCIMEnterpriseDisplayReference{{
 				Value:   "idm1",
-				Ref:     "https://api.github.com/scim/v2/enterprises/ee/Users/idm1",
+				Ref:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Users/idm1"),
 				Display: Ptr("m1"),
 			}},
 			Schemas:    []string{SCIMSchemasURINamespacesGroups},
@@ -94,7 +94,7 @@ func TestSCIMEnterpriseUsers_Marshal(t *testing.T) {
 			UserName: "un1",
 			Groups: []*SCIMEnterpriseDisplayReference{{
 				Value:   "idgn1",
-				Ref:     "https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1",
+				Ref:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Groups/idgn1"),
 				Display: Ptr("gn1"),
 			}},
 			ID:          Ptr("idun1"),
@@ -209,7 +209,7 @@ func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
 		DisplayName: Ptr("dn"),
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "v",
-			Ref:     "r",
+			Ref:     Ptr("r"),
 			Display: Ptr("d"),
 		}},
 		ExternalID: Ptr("eid"),
@@ -346,14 +346,14 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 			ExternalID:  Ptr("de88"),
 			Members: []*SCIMEnterpriseDisplayReference{{
 				Value:   "e7f9",
-				Ref:     "https://api.github.com/scim/v2/enterprises/ee/Users/e7f9",
+				Ref:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Users/e7f9"),
 				Display: Ptr("d1"),
 			}},
 		}},
 	}
 
 	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("Enterprise.ListProvisionedSCIMGroups diff mismatch (-want +got):\n%v", diff)
+		t.Fatalf("Enterprise.ListProvisionedSCIMGroups diff mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "ListProvisionedSCIMGroups"
@@ -461,7 +461,7 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 	}
 
 	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("Enterprise.ListProvisionedSCIMUsers diff mismatch (-want +got):\n%v", diff)
+		t.Fatalf("Enterprise.ListProvisionedSCIMUsers diff mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "ListProvisionedSCIMUsers"
@@ -662,7 +662,7 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 		DisplayName: Ptr("Employees"),
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
-			Ref:     "https://api.github.localhost/scim/v2/enterprises/ee/Users/879d",
+			Ref:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
 			Display: Ptr("User 1"),
 		}},
 		Meta: &SCIMEnterpriseMeta{
@@ -687,7 +687,7 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 		t.Fatalf("Enterprise.UpdateSCIMGroupAttribute returned unexpected error: %v", err)
 	}
 	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("Enterprise.UpdateSCIMGroupAttribute diff mismatch (-want +got):\n%v", diff)
+		t.Fatalf("Enterprise.UpdateSCIMGroupAttribute diff mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "UpdateSCIMGroupAttribute"
@@ -792,7 +792,7 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 		t.Fatalf("Enterprise.UpdateSCIMUserAttribute returned unexpected error: %v", err)
 	}
 	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("Enterprise.UpdateSCIMUserAttribute diff mismatch (-want +got):\n%v", diff)
+		t.Fatalf("Enterprise.UpdateSCIMUserAttribute diff mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "UpdateSCIMUserAttribute"
@@ -803,6 +803,210 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Enterprise.UpdateSCIMUserAttribute(ctx, "ee", "7fce", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/scim/v2/enterprises/ee/Groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeSCIM)
+		testBody(t, r, `{"displayName":"dn","members":[{"value":"879d","display":"d1"},{"value":"0db5","display":"d2"}],"externalId":"8aa1","schemas":["`+SCIMSchemasURINamespacesGroups+`"]}`+"\n")
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, `{
+			"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
+			"id": "abcd",
+			"externalId": "8aa1",
+			"displayName": "dn",
+			"members": [
+			  {
+			    "value": "879d",
+			    "$ref": "https://api.github.localhost/scim/v2/enterprises/ee/Users/879d",
+			    "display": "d1"
+			  },
+			  {
+			    "value": "0db5",
+			    "$ref": "https://api.github.localhost/scim/v2/enterprises/ee/Users/0db5",
+			    "display": "d2"
+			  }
+			],
+			"meta": {
+			  "resourceType": "Group",
+			  "created": `+referenceTimeStr+`,
+			  "lastModified": `+referenceTimeStr+`,
+			  "location": "https://api.github.localhost/scim/v2/enterprises/ee/Groups/abcd"
+			}
+		}`)
+	})
+	want := &SCIMEnterpriseGroupAttributes{
+		Schemas:     []string{SCIMSchemasURINamespacesGroups},
+		ID:          Ptr("abcd"),
+		ExternalID:  Ptr("8aa1"),
+		DisplayName: Ptr("dn"),
+		Members: []*SCIMEnterpriseDisplayReference{{
+			Value:   "879d",
+			Ref:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
+			Display: Ptr("d1"),
+		}, {
+			Value:   "0db5",
+			Ref:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/0db5"),
+			Display: Ptr("d2"),
+		}},
+		Meta: &SCIMEnterpriseMeta{
+			ResourceType: "Group",
+			Created:      &Timestamp{referenceTime},
+			LastModified: &Timestamp{referenceTime},
+			Location:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Groups/abcd"),
+		},
+	}
+
+	ctx := t.Context()
+	input := SCIMEnterpriseGroupAttributes{
+		Schemas:     []string{SCIMSchemasURINamespacesGroups},
+		ExternalID:  Ptr("8aa1"),
+		DisplayName: Ptr("dn"),
+		Members: []*SCIMEnterpriseDisplayReference{{
+			Value:   "879d",
+			Display: Ptr("d1"),
+		}, {
+			Value:   "0db5",
+			Display: Ptr("d2"),
+		}},
+	}
+	got, _, err := client.Enterprise.ProvisionSCIMGroup(ctx, "ee", input)
+	if err != nil {
+		t.Fatalf("Enterprise.ProvisionSCIMGroup returned unexpected error: %v", err)
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Fatalf("Enterprise.ProvisionSCIMGroup diff mismatch (-want +got):\n%v", diff)
+	}
+
+	const methodName = "ProvisionSCIMGroup"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.ProvisionSCIMGroup(ctx, "\n", SCIMEnterpriseGroupAttributes{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.ProvisionSCIMGroup(ctx, "ee", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/scim/v2/enterprises/ee/Users", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Accept", mediaTypeSCIM)
+		testBody(t, r, `{"displayName":"DOE John","name":{"givenName":"John","familyName":"Doe","formatted":"John Doe"},"userName":"e123","emails":[{"value":"john@email.com","primary":true,"type":"work"}],"roles":[{"value":"User","primary":false}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`+"\n")
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, `{
+			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
+			"id": "7fce",
+			"externalId": "e123",
+			"active": true,
+			"userName": "e123",
+			"name": {
+				"formatted": "John Doe",
+				"familyName": "Doe",
+				"givenName": "John"
+			},
+			"displayName": "DOE John",
+			"emails": [{
+				"value": "john@email.com",
+				"type": "work",
+				"primary": true
+			}],
+			"roles": [{
+				"value": "User",
+				"primary": false
+			}],
+			"meta": {
+				"resourceType": "User",
+				"created": `+referenceTimeStr+`,
+				"lastModified": `+referenceTimeStr+`,
+				"location": "https://api.github.localhost/scim/v2/enterprises/ee/Users/7fce"
+			}
+		}`)
+	})
+	want := &SCIMEnterpriseUserAttributes{
+		Schemas:     []string{SCIMSchemasURINamespacesUser},
+		ID:          Ptr("7fce"),
+		ExternalID:  "e123",
+		Active:      true,
+		UserName:    "e123",
+		DisplayName: "DOE John",
+		Name: &SCIMEnterpriseUserName{
+			Formatted:  Ptr("John Doe"),
+			FamilyName: "Doe",
+			GivenName:  "John",
+		},
+		Emails: []*SCIMEnterpriseUserEmail{{
+			Value:   "john@email.com",
+			Type:    "work",
+			Primary: true,
+		}},
+		Roles: []*SCIMEnterpriseUserRole{{
+			Value:   "User",
+			Primary: Ptr(false),
+		}},
+		Meta: &SCIMEnterpriseMeta{
+			ResourceType: "User",
+			Created:      &Timestamp{referenceTime},
+			LastModified: &Timestamp{referenceTime},
+			Location:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/7fce"),
+		},
+	}
+
+	ctx := t.Context()
+	input := SCIMEnterpriseUserAttributes{
+		Schemas:    []string{SCIMSchemasURINamespacesUser},
+		ExternalID: "e123",
+		Active:     true,
+		UserName:   "e123",
+		Name: &SCIMEnterpriseUserName{
+			Formatted:  Ptr("John Doe"),
+			FamilyName: "Doe",
+			GivenName:  "John",
+		},
+		DisplayName: "DOE John",
+		Emails: []*SCIMEnterpriseUserEmail{{
+			Value:   "john@email.com",
+			Type:    "work",
+			Primary: true,
+		}},
+		Roles: []*SCIMEnterpriseUserRole{{
+			Value:   "User",
+			Primary: Ptr(false),
+		}},
+	}
+	got, _, err := client.Enterprise.ProvisionSCIMUser(ctx, "ee", input)
+	if err != nil {
+		t.Fatalf("Enterprise.ProvisionSCIMUser returned unexpected error: %v", err)
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Fatalf("Enterprise.ProvisionSCIMUser diff mismatch (-want +got):\n%v", diff)
+	}
+
+	const methodName = "ProvisionSCIMUser"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.ProvisionSCIMUser(ctx, "\n", SCIMEnterpriseUserAttributes{})
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.ProvisionSCIMUser(ctx, "ee", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
