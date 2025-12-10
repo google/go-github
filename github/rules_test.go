@@ -701,6 +701,31 @@ func TestBranchRules(t *testing.T) {
 			})
 		}
 	})
+
+	t.Run("UnmarshalJSON_Error", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name string
+			json string
+		}{
+			{
+				"invalid_copilot_code_review_parameters",
+				`[{"type":"copilot_code_review","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":"not_an_object"}]`,
+			},
+		}
+
+		for _, tt := range tests {
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				got := &BranchRules{}
+				err := json.Unmarshal([]byte(tt.json), got)
+				if err == nil {
+					t.Errorf("Expected error unmarshaling %q, got nil", tt.json)
+				}
+			})
+		}
+	})
 }
 
 func TestRepositoryRule(t *testing.T) {
