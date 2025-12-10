@@ -42,7 +42,7 @@ type SCIMEnterpriseGroupAttributes struct {
 // SCIMEnterpriseDisplayReference represents a JSON SCIM (System for Cross-domain Identity Management) resource reference.
 type SCIMEnterpriseDisplayReference struct {
 	Value   string  `json:"value"`             // The local unique identifier for the member (e.g., user ID or group ID).
-	Ref     *string `json:"$ref,omitempty"`    // The URI reference to the member resource (e.g., https://api.github.com/scim/v2/Users/{id}).
+	Ref     *string `json:"$ref,omitempty"`    // The URI reference to the Members or Groups resource (e.g., /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}).
 	Display *string `json:"display,omitempty"` // The display name associated with the member (e.g., user name or group name).
 }
 
