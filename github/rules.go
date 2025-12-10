@@ -344,6 +344,7 @@ type BranchRules struct {
 	TagNamePattern           []*PatternBranchRule
 	Workflows                []*WorkflowsBranchRule
 	CodeScanning             []*CodeScanningBranchRule
+	CopilotCodeReview        []*CopilotCodeReviewBranchRule
 
 	// Push target rules.
 	FileExtensionRestriction []*FileExtensionRestrictionBranchRule
@@ -429,6 +430,12 @@ type WorkflowsBranchRule struct {
 type CodeScanningBranchRule struct {
 	BranchRuleMetadata
 	Parameters CodeScanningRuleParameters `json:"parameters"`
+}
+
+// CopilotCodeReviewBranchRule represents a copilot code review branch rule.
+type CopilotCodeReviewBranchRule struct {
+	BranchRuleMetadata
+	Parameters CopilotCodeReviewRuleParameters `json:"parameters"`
 }
 
 // EmptyRuleParameters represents the parameters for a rule with no options.
@@ -1203,6 +1210,16 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			}
 
 			r.CodeScanning = append(r.CodeScanning, &CodeScanningBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+		case RulesetRuleTypeCopilotCodeReview:
+			params := &CopilotCodeReviewRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
+					return err
+				}
+			}
+
+			r.CopilotCodeReview = append(r.CopilotCodeReview, &CopilotCodeReviewBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		}
 	}
 
