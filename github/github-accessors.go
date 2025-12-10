@@ -26334,6 +26334,14 @@ func (s *SCIMEnterpriseDisplayReference) GetDisplay() string {
 	return *s.Display
 }
 
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (s *SCIMEnterpriseDisplayReference) GetRef() string {
+	if s == nil || s.Ref == nil {
+		return ""
+	}
+	return *s.Ref
+}
+
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
 func (s *SCIMEnterpriseGroupAttributes) GetDisplayName() string {
 	if s == nil || s.DisplayName == nil {
