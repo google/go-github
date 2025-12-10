@@ -984,7 +984,7 @@ func TestRepositoryRule(t *testing.T) {
 				Type:       RulesetRuleTypeCopilotCodeReview,
 				Parameters: &CopilotCodeReviewRuleParameters{},
 			},
-			`{"type":"copilot_code_review","parameters":{}}`,
+			`{"type":"copilot_code_review","parameters":{"review_on_push":false,"review_draft_pull_requests":false}}`,
 		},
 		{
 			"repository_create",
@@ -1024,6 +1024,61 @@ func TestRepositoryRule(t *testing.T) {
 			`{"type":"repository_visibility","parameters":{"internal":false,"private":false}}`,
 		},
 	}
+
+	marshalTests := []struct {
+		name string
+		rule *RepositoryRule
+		json string
+	}{
+		{
+			"creation",
+			&RepositoryRule{Type: RulesetRuleTypeCreation, Parameters: nil},
+			`{"type":"creation"}`,
+		},
+		{
+			"copilot_code_review",
+			&RepositoryRule{
+				Type: RulesetRuleTypeCopilotCodeReview,
+				Parameters: &CopilotCodeReviewRuleParameters{
+					ReviewOnPush:            true,
+					ReviewDraftPullRequests: false,
+				},
+			},
+			`{"type":"copilot_code_review","parameters":{"review_on_push":true,"review_draft_pull_requests":false}}`,
+		},
+		{
+			"copilot_code_review_empty_params",
+			&RepositoryRule{
+				Type:       RulesetRuleTypeCopilotCodeReview,
+				Parameters: &CopilotCodeReviewRuleParameters{},
+			},
+			`{"type":"copilot_code_review","parameters":{"review_on_push":false,"review_draft_pull_requests":false}}`,
+		},
+	}
+
+	t.Run("MarshalJSON", func(t *testing.T) {
+		t.Parallel()
+
+		for _, test := range marshalTests {
+			t.Run(test.name, func(t *testing.T) {
+				t.Parallel()
+
+				got, err := json.Marshal(test.rule)
+				if err != nil {
+					t.Errorf("Unable to marshal JSON for %#v", test.rule)
+				}
+
+				if diff := cmp.Diff(test.json, string(got)); diff != "" {
+					t.Errorf(
+						"json.Marshal returned:\n%v\nwant:\n%v\ndiff:\n%v",
+						string(got),
+						test.json,
+						diff,
+					)
+				}
+			})
+		}
+	})
 
 	t.Run("UnmarshalJSON", func(t *testing.T) {
 		t.Parallel()
