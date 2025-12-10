@@ -12246,6 +12246,61 @@ func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningValidityChecksEnabl
 	e.GetSecretScanningValidityChecksEnabled()
 }
 
+func TestEnterpriseTeam_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseTeam{Description: &zeroValue}
+	e.GetDescription()
+	e = &EnterpriseTeam{}
+	e.GetDescription()
+	e = nil
+	e.GetDescription()
+}
+
+func TestEnterpriseTeam_GetOrganizationSelectionType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseTeam{OrganizationSelectionType: &zeroValue}
+	e.GetOrganizationSelectionType()
+	e = &EnterpriseTeam{}
+	e.GetOrganizationSelectionType()
+	e = nil
+	e.GetOrganizationSelectionType()
+}
+
+func TestEnterpriseTeamCreateOrUpdateRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseTeamCreateOrUpdateRequest{Description: &zeroValue}
+	e.GetDescription()
+	e = &EnterpriseTeamCreateOrUpdateRequest{}
+	e.GetDescription()
+	e = nil
+	e.GetDescription()
+}
+
+func TestEnterpriseTeamCreateOrUpdateRequest_GetGroupID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseTeamCreateOrUpdateRequest{GroupID: &zeroValue}
+	e.GetGroupID()
+	e = &EnterpriseTeamCreateOrUpdateRequest{}
+	e.GetGroupID()
+	e = nil
+	e.GetGroupID()
+}
+
+func TestEnterpriseTeamCreateOrUpdateRequest_GetOrganizationSelectionType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseTeamCreateOrUpdateRequest{OrganizationSelectionType: &zeroValue}
+	e.GetOrganizationSelectionType()
+	e = &EnterpriseTeamCreateOrUpdateRequest{}
+	e.GetOrganizationSelectionType()
+	e = nil
+	e.GetOrganizationSelectionType()
+}
+
 func TestEnvironment_GetCanAdminsBypass(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -27619,17 +27674,6 @@ func TestPullRequestReviewThreadEvent_GetThread(tt *testing.T) {
 	p.GetThread()
 }
 
-func TestPullRequestRuleParameters_GetAutomaticCopilotCodeReviewEnabled(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	p := &PullRequestRuleParameters{AutomaticCopilotCodeReviewEnabled: &zeroValue}
-	p.GetAutomaticCopilotCodeReviewEnabled()
-	p = &PullRequestRuleParameters{}
-	p.GetAutomaticCopilotCodeReviewEnabled()
-	p = nil
-	p.GetAutomaticCopilotCodeReviewEnabled()
-}
-
 func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -32298,6 +32342,14 @@ func TestRepositoryRulesetRules_GetCommitterEmailPattern(tt *testing.T) {
 	r.GetCommitterEmailPattern()
 }
 
+func TestRepositoryRulesetRules_GetCopilotCodeReview(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetCopilotCodeReview()
+	r = nil
+	r.GetCopilotCodeReview()
+}
+
 func TestRepositoryRulesetRules_GetCreation(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryRulesetRules{}
@@ -32368,6 +32420,46 @@ func TestRepositoryRulesetRules_GetPullRequest(tt *testing.T) {
 	r.GetPullRequest()
 	r = nil
 	r.GetPullRequest()
+}
+
+func TestRepositoryRulesetRules_GetRepositoryCreate(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetRepositoryCreate()
+	r = nil
+	r.GetRepositoryCreate()
+}
+
+func TestRepositoryRulesetRules_GetRepositoryDelete(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetRepositoryDelete()
+	r = nil
+	r.GetRepositoryDelete()
+}
+
+func TestRepositoryRulesetRules_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetRepositoryName()
+	r = nil
+	r.GetRepositoryName()
+}
+
+func TestRepositoryRulesetRules_GetRepositoryTransfer(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetRepositoryTransfer()
+	r = nil
+	r.GetRepositoryTransfer()
+}
+
+func TestRepositoryRulesetRules_GetRepositoryVisibility(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetRepositoryVisibility()
+	r = nil
+	r.GetRepositoryVisibility()
 }
 
 func TestRepositoryRulesetRules_GetRequiredDeployments(tt *testing.T) {
@@ -34307,6 +34399,17 @@ func TestSCIMUserRole_GetType(tt *testing.T) {
 	s.GetType()
 	s = nil
 	s.GetType()
+}
+
+func TestSearchOptions_GetAdvancedSearch(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SearchOptions{AdvancedSearch: &zeroValue}
+	s.GetAdvancedSearch()
+	s = &SearchOptions{}
+	s.GetAdvancedSearch()
+	s = nil
+	s.GetAdvancedSearch()
 }
 
 func TestSecretScanning_GetStatus(tt *testing.T) {

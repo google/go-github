@@ -9446,6 +9446,46 @@ func (e *EnterpriseSecurityAnalysisSettings) GetSecretScanningValidityChecksEnab
 	return *e.SecretScanningValidityChecksEnabled
 }
 
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (e *EnterpriseTeam) GetDescription() string {
+	if e == nil || e.Description == nil {
+		return ""
+	}
+	return *e.Description
+}
+
+// GetOrganizationSelectionType returns the OrganizationSelectionType field if it's non-nil, zero value otherwise.
+func (e *EnterpriseTeam) GetOrganizationSelectionType() string {
+	if e == nil || e.OrganizationSelectionType == nil {
+		return ""
+	}
+	return *e.OrganizationSelectionType
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (e *EnterpriseTeamCreateOrUpdateRequest) GetDescription() string {
+	if e == nil || e.Description == nil {
+		return ""
+	}
+	return *e.Description
+}
+
+// GetGroupID returns the GroupID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseTeamCreateOrUpdateRequest) GetGroupID() string {
+	if e == nil || e.GroupID == nil {
+		return ""
+	}
+	return *e.GroupID
+}
+
+// GetOrganizationSelectionType returns the OrganizationSelectionType field if it's non-nil, zero value otherwise.
+func (e *EnterpriseTeamCreateOrUpdateRequest) GetOrganizationSelectionType() string {
+	if e == nil || e.OrganizationSelectionType == nil {
+		return ""
+	}
+	return *e.OrganizationSelectionType
+}
+
 // GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
 func (e *Environment) GetCanAdminsBypass() bool {
 	if e == nil || e.CanAdminsBypass == nil {
@@ -21366,14 +21406,6 @@ func (p *PullRequestReviewThreadEvent) GetThread() *PullRequestThread {
 	return p.Thread
 }
 
-// GetAutomaticCopilotCodeReviewEnabled returns the AutomaticCopilotCodeReviewEnabled field if it's non-nil, zero value otherwise.
-func (p *PullRequestRuleParameters) GetAutomaticCopilotCodeReviewEnabled() bool {
-	if p == nil || p.AutomaticCopilotCodeReviewEnabled == nil {
-		return false
-	}
-	return *p.AutomaticCopilotCodeReviewEnabled
-}
-
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestTargetEvent) GetAction() string {
 	if p == nil || p.Action == nil {
@@ -25022,6 +25054,14 @@ func (r *RepositoryRulesetRules) GetCommitterEmailPattern() *PatternRuleParamete
 	return r.CommitterEmailPattern
 }
 
+// GetCopilotCodeReview returns the CopilotCodeReview field.
+func (r *RepositoryRulesetRules) GetCopilotCodeReview() *CopilotCodeReviewRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.CopilotCodeReview
+}
+
 // GetCreation returns the Creation field.
 func (r *RepositoryRulesetRules) GetCreation() *EmptyRuleParameters {
 	if r == nil {
@@ -25092,6 +25132,46 @@ func (r *RepositoryRulesetRules) GetPullRequest() *PullRequestRuleParameters {
 		return nil
 	}
 	return r.PullRequest
+}
+
+// GetRepositoryCreate returns the RepositoryCreate field.
+func (r *RepositoryRulesetRules) GetRepositoryCreate() *EmptyRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryCreate
+}
+
+// GetRepositoryDelete returns the RepositoryDelete field.
+func (r *RepositoryRulesetRules) GetRepositoryDelete() *EmptyRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryDelete
+}
+
+// GetRepositoryName returns the RepositoryName field.
+func (r *RepositoryRulesetRules) GetRepositoryName() *SimplePatternRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryName
+}
+
+// GetRepositoryTransfer returns the RepositoryTransfer field.
+func (r *RepositoryRulesetRules) GetRepositoryTransfer() *EmptyRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryTransfer
+}
+
+// GetRepositoryVisibility returns the RepositoryVisibility field.
+func (r *RepositoryRulesetRules) GetRepositoryVisibility() *RepositoryVisibilityRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.RepositoryVisibility
 }
 
 // GetRequiredDeployments returns the RequiredDeployments field.
@@ -26572,6 +26652,14 @@ func (s *SCIMUserRole) GetType() string {
 		return ""
 	}
 	return *s.Type
+}
+
+// GetAdvancedSearch returns the AdvancedSearch field if it's non-nil, zero value otherwise.
+func (s *SearchOptions) GetAdvancedSearch() bool {
+	if s == nil || s.AdvancedSearch == nil {
+		return false
+	}
+	return *s.AdvancedSearch
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
