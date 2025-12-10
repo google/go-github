@@ -122,8 +122,8 @@ func TestRulesetRules(t *testing.T) {
 					},
 				},
 				CopilotCodeReview: &CopilotCodeReviewRuleParameters{
-					ReviewOnPush:            Bool(true),
-					ReviewDraftPullRequests: Bool(false),
+					ReviewOnPush:            true,
+					ReviewDraftPullRequests: false,
 				},
 				RepositoryCreate:     &EmptyRuleParameters{},
 				RepositoryDelete:     &EmptyRuleParameters{},
@@ -243,8 +243,8 @@ func TestRulesetRules(t *testing.T) {
 					},
 				},
 				CopilotCodeReview: &CopilotCodeReviewRuleParameters{
-					ReviewOnPush:            Bool(true),
-					ReviewDraftPullRequests: Bool(false),
+					ReviewOnPush:            true,
+					ReviewDraftPullRequests: false,
 				},
 				RepositoryCreate:     &EmptyRuleParameters{},
 				RepositoryDelete:     &EmptyRuleParameters{},
@@ -972,8 +972,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeCopilotCodeReview,
 				Parameters: &CopilotCodeReviewRuleParameters{
-					ReviewOnPush:            Bool(true),
-					ReviewDraftPullRequests: Bool(false),
+					ReviewOnPush:            true,
+					ReviewDraftPullRequests: false,
 				},
 			},
 			`{"type":"copilot_code_review","parameters":{"review_on_push":true,"review_draft_pull_requests":false}}`,

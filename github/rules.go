@@ -542,8 +542,8 @@ type CodeScanningRuleParameters struct {
 
 // CopilotCodeReviewRuleParameters represents the copilot_code_review rule parameters.
 type CopilotCodeReviewRuleParameters struct {
-	ReviewOnPush            *bool `json:"review_on_push,omitempty"`
-	ReviewDraftPullRequests *bool `json:"review_draft_pull_requests,omitempty"`
+	ReviewOnPush            bool `json:"review_on_push"`
+	ReviewDraftPullRequests bool `json:"review_draft_pull_requests"`
 }
 
 // RuleCodeScanningTool represents a single code scanning tool for the code scanning parameters.
