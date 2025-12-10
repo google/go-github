@@ -151,7 +151,7 @@ func (s *EnterpriseService) DeleteTeam(ctx context.Context, enterprise, teamSlug
 	return resp, nil
 }
 
-// ListTeamMembers lists all members of a team in an enterprise team.
+// ListTeamMembers lists all members of an enterprise team.
 //
 // GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#list-members-in-an-enterprise-team
 //
@@ -177,7 +177,7 @@ func (s *EnterpriseService) ListTeamMembers(ctx context.Context, enterprise, ent
 	return members, resp, nil
 }
 
-// BulkAddTeamMembers adds multiple members to a team in an enterprise team.
+// BulkAddTeamMembers adds multiple members to an enterprise team.
 //
 // GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#bulk-add-team-members
 //
@@ -198,7 +198,7 @@ func (s *EnterpriseService) BulkAddTeamMembers(ctx context.Context, enterprise, 
 	return members, resp, nil
 }
 
-// BulkRemoveTeamMembers removes multiple members from a team in an enterprise team.
+// BulkRemoveTeamMembers removes multiple members from an enterprise team.
 //
 // GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#bulk-remove-team-members
 //
@@ -241,7 +241,7 @@ func (s *EnterpriseService) GetTeamMembership(ctx context.Context, enterprise, e
 	return membership, resp, nil
 }
 
-// AddTeamMember adds a member to a team in an enterprise team.
+// AddTeamMember adds a member to an enterprise team.
 //
 // GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#add-team-member
 //
@@ -263,7 +263,7 @@ func (s *EnterpriseService) AddTeamMember(ctx context.Context, enterprise, enter
 	return member, resp, nil
 }
 
-// RemoveTeamMember removes a member from a team in an enterprise team.
+// RemoveTeamMember removes a member from an enterprise team.
 //
 // GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#remove-team-membership
 //
