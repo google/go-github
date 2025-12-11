@@ -479,3 +479,270 @@ func TestEnterpriseService_RemoveTeamMember(t *testing.T) {
 		return client.Enterprise.RemoveTeamMember(ctx, "e", "t1", "u1")
 	})
 }
+
+func TestEnterpriseService_ListAssignments(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/organizations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+        {
+            "login": "team-one",
+            "id": 1,
+            "node_id": "node-id",
+            "url": "https://example.com/team1",
+            "repos_url": "https://example.com/members",
+            "events_url": "https://example.com/events",
+            "hooks_url": "https://api.github.com/orgs/team-one/hooks",
+            "issues_url": "https://api.github.com/orgs/team-one/issues",
+            "members_url": "https://api.github.com/orgs/team-one/members",
+            "public_members_url": "https://api.github.com/orgs/team-one/public_members",
+            "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+            "description": "Team One"
+        }
+    ]`)
+	})
+
+	ctx := t.Context()
+	opts := &ListOptions{Page: 1, PerPage: 10}
+	got, _, err := client.Enterprise.ListAssignments(ctx, "e", "t1", opts)
+	if err != nil {
+		t.Fatalf("Enterprise.ListAssignments returned error: %v", err)
+	}
+
+	want := []*Organization{
+		{
+			Login:            Ptr("team-one"),
+			URL:              Ptr("https://example.com/team1"),
+			NodeID:           Ptr("node-id"),
+			ReposURL:         Ptr("https://example.com/members"),
+			EventsURL:        Ptr("https://example.com/events"),
+			ID:               Ptr(int64(1)),
+			HooksURL:         Ptr("https://api.github.com/orgs/team-one/hooks"),
+			IssuesURL:        Ptr("https://api.github.com/orgs/team-one/issues"),
+			MembersURL:       Ptr("https://api.github.com/orgs/team-one/members"),
+			PublicMembersURL: Ptr("https://api.github.com/orgs/team-one/public_members"),
+			AvatarURL:        Ptr("https://github.com/images/error/octocat_happy.gif"),
+			Description:      Ptr("Team One"),
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Enterprise.ListAssignments = %+v, want %+v", got, want)
+	}
+
+	const methodName = "ListAssignments"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Enterprise.ListAssignments(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.ListAssignments(ctx, "e", "t1", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_AddMultipleAssignments(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/organizations/add", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+
+		fmt.Fprint(w, `[{
+			"login": "o1",
+			"id": 1
+		},{
+			"login": "o2",
+			"id": 2
+		}]`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Enterprise.AddMultipleAssignments(ctx, "e", "t1", []string{"o1", "o2"})
+	if err != nil {
+		t.Fatalf("AddMultipleAssignments returned error: %v", err)
+	}
+
+	want := []*Organization{
+		{Login: Ptr("o1"), ID: Ptr(int64(1))},
+		{Login: Ptr("o2"), ID: Ptr(int64(2))},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("AddMultipleAssignments = %+v, want %+v", got, want)
+	}
+
+	const methodName = "AddMultipleAssignments"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Enterprise.AddMultipleAssignments(ctx, "\n", "t1", []string{"o1"})
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.AddMultipleAssignments(ctx, "e", "t1", []string{"o1"})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_RemoveMultipleAssignments(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/organizations/remove", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+
+		fmt.Fprint(w, `[{
+			"login": "o1",
+			"id": 1
+		},{
+			"login": "o2",
+			"id": 2
+		}]`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Enterprise.RemoveMultipleAssignments(ctx, "e", "t1", []string{"o1", "o2"})
+	if err != nil {
+		t.Fatalf("RemoveMultipleAssignments returned error: %v", err)
+	}
+
+	want := []*Organization{
+		{Login: Ptr("o1"), ID: Ptr(int64(1))},
+		{Login: Ptr("o2"), ID: Ptr(int64(2))},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("RemoveMultipleAssignments = %+v, want %+v", got, want)
+	}
+
+	const methodName = "RemoveMultipleAssignments"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Enterprise.RemoveMultipleAssignments(ctx, "\n", "t1", []string{"o1"})
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.RemoveMultipleAssignments(ctx, "e", "t1", []string{"o1"})
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_GetAssignment(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/organizations/o1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"login": "o1",
+			"id": 10
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Enterprise.GetAssignment(ctx, "e", "t1", "o1")
+	if err != nil {
+		t.Fatalf("GetAssignment returned error: %v", err)
+	}
+
+	want := &Organization{
+		Login: Ptr("o1"),
+		ID:    Ptr(int64(10)),
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("GetAssignment = %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetAssignment"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Enterprise.GetAssignment(ctx, "\n", "t1", "o1")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetAssignment(ctx, "e", "t1", "o1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_AddAssignment(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/organizations/o1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		fmt.Fprint(w, `{
+			"login": "o1",
+			"id": 5
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Enterprise.AddAssignment(ctx, "e", "t1", "o1")
+	if err != nil {
+		t.Fatalf("AddAssignment returned error: %v", err)
+	}
+
+	want := &Organization{
+		Login: Ptr("o1"),
+		ID:    Ptr(int64(5)),
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("AddAssignment = %+v, want %+v", got, want)
+	}
+
+	const methodName = "AddAssignment"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Enterprise.AddAssignment(ctx, "\n", "t1", "o1")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.AddAssignment(ctx, "e", "t1", "o1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_RemoveAssignment(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/teams/t1/organizations/o1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Enterprise.RemoveAssignment(ctx, "e", "t1", "o1")
+	if err != nil {
+		t.Fatalf("RemoveAssignment returned error: %v", err)
+	}
+	if resp == nil {
+		t.Fatal("RemoveAssignment returned nil Response")
+	}
+
+	const methodName = "RemoveAssignment"
+	testBadOptions(t, methodName, func() error {
+		_, err := client.Enterprise.RemoveAssignment(ctx, "\n", "t1", "o1")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Enterprise.RemoveAssignment(ctx, "e", "t1", "o1")
+	})
+}
