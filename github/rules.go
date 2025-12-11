@@ -791,6 +791,10 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
+	if len(rawRules) == 0 {
+		return []byte("[]"), nil
+	}
+
 	return json.Marshal(rawRules)
 }
 
