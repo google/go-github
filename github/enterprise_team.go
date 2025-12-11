@@ -283,3 +283,138 @@ func (s *EnterpriseService) RemoveTeamMember(ctx context.Context, enterprise, en
 
 	return resp, nil
 }
+
+// ListAssignments gets all organizations assigned to an enterprise team.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#get-organization-assignments
+//
+//meta:operation GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations
+func (s *EnterpriseService) ListAssignments(ctx context.Context, enterprise, enterpriseTeam string, opt *ListOptions) ([]*Organization, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations", enterprise, enterpriseTeam)
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var orgs []*Organization
+	resp, err := s.client.Do(ctx, req, &orgs)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return orgs, resp, nil
+}
+
+// AddMultipleAssignments assigns an enterprise team to multiple organizations.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#add-organization-assignments
+//
+//meta:operation POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/add
+func (s *EnterpriseService) AddMultipleAssignments(ctx context.Context, enterprise, enterpriseTeam string, organizationSlugs []string) ([]*Organization, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations/add", enterprise, enterpriseTeam)
+
+	req, err := s.client.NewRequest("POST", u, map[string][]string{"organization_slugs": organizationSlugs})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var orgs []*Organization
+	resp, err := s.client.Do(ctx, req, &orgs)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return orgs, resp, nil
+}
+
+// RemoveMultipleAssignments unassigns an enterprise team from multiple organizations.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#remove-organization-assignments
+//
+//meta:operation POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/remove
+func (s *EnterpriseService) RemoveMultipleAssignments(ctx context.Context, enterprise, enterpriseTeam string, organizationSlugs []string) ([]*Organization, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations/remove", enterprise, enterpriseTeam)
+
+	req, err := s.client.NewRequest("POST", u, map[string][]string{"organization_slugs": organizationSlugs})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var orgs []*Organization
+	resp, err := s.client.Do(ctx, req, &orgs)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return orgs, resp, nil
+}
+
+// GetAssignment checks if an enterprise team is assigned to an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#get-organization-assignment
+//
+//meta:operation GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}
+func (s *EnterpriseService) GetAssignment(ctx context.Context, enterprise, enterpriseTeam, org string) (*Organization, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations/%v", enterprise, enterpriseTeam, org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var organization *Organization
+	resp, err := s.client.Do(ctx, req, &organization)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return organization, resp, nil
+}
+
+// AddAssignment assigns an enterprise team to an organizations.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#add-an-organization-assignment
+//
+//meta:operation PUT /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}
+func (s *EnterpriseService) AddAssignment(ctx context.Context, enterprise, enterpriseTeam, org string) (*Organization, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations/%v", enterprise, enterpriseTeam, org)
+
+	req, err := s.client.NewRequest("PUT", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var organization *Organization
+	resp, err := s.client.Do(ctx, req, &organization)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return organization, resp, nil
+}
+
+// RemoveAssignment unassigns an enterprise team from an organizations.
+//
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#delete-an-organization-assignment
+//
+//meta:operation DELETE /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}
+func (s *EnterpriseService) RemoveAssignment(ctx context.Context, enterprise, enterpriseTeam, org string) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations/%v", enterprise, enterpriseTeam, org)
+
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
