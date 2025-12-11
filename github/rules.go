@@ -573,9 +573,7 @@ type repositoryRulesetRuleWrapper struct {
 
 // MarshalJSON is a custom JSON marshaler for RulesetRules.
 func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
-	// The RepositoryRulesetRules type marshals to between 1 and 22 rules.
-	// If new rules are added to RepositoryRulesetRules the capacity below needs increasing
-	rawRules := make([]json.RawMessage, 0, 22)
+	var rawRules []json.RawMessage
 
 	if r.Creation != nil {
 		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCreation, r.Creation)
