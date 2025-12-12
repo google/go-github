@@ -1775,64 +1775,74 @@ func TestEnterpriseService_UpdateRepositoryRulesetClearBypassActor(t *testing.T)
 
 	mux.HandleFunc("/enterprises/e/rulesets/84", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"bypass_actors":[]}`+"\n")
+		testBody(t, r, `{"name":"","source":"","enforcement":"","bypass_actors":[]}`+"\n")
 		fmt.Fprint(w, `{
-			"id": 84,
-			"name": "test ruleset",
-			"target": "branch",
-			"source_type": "Enterprise",
-			"source": "e",
-			"enforcement": "active",
-			"bypass_mode": "none",
-			"conditions": {
-				"organization_name": {
-					"include": [
-						"important_organization",
-						"another_important_organization"
-					],
-					"exclude": [
-						"unimportant_organization"
-					]
-				},
-			  "repository_name": {
-					"include": [
-						"important_repository",
-						"another_important_repository"
-					],
-					"exclude": [
-						"unimportant_repository"
-					],
-					"protected": true
-				},
-			  "ref_name": {
-					"include": [
-						"refs/heads/main",
-						"refs/heads/master"
-					],
-					"exclude": [
-						"refs/heads/dev*"
-					]
-				}
-			},
-			"rules": [
-			  {
-					"type": "creation"
-			  }
-			]
-		}`)
+            "id": 84,
+            "name": "test ruleset",
+            "target": "branch",
+            "source_type": "Enterprise",
+            "source": "e",
+            "enforcement": "active",
+            "bypass_mode": "none",
+            "conditions": {
+                "organization_name": {
+                    "include": [
+                        "important_organization",
+                        "another_important_organization"
+                    ],
+                    "exclude": [
+                        "unimportant_organization"
+                    ]
+                },
+                "repository_name": {
+                    "include": [
+                        "important_repository",
+                        "another_important_repository"
+                    ],
+                    "exclude": [
+                        "unimportant_repository"
+                    ],
+                    "protected": true
+                },
+                "ref_name": {
+                    "include": [
+                        "refs/heads/main",
+                        "refs/heads/master"
+                    ],
+                    "exclude": [
+                        "refs/heads/dev*"
+                    ]
+                }
+            },
+            "rules": [
+                {
+                    "type": "creation"
+                }
+            ]
+        }`)
 	})
+
+	// ... inside TestEnterpriseService_UpdateRepositoryRulesetClearBypassActor ...
 
 	ctx := t.Context()
 
-	_, err := client.Enterprise.UpdateRepositoryRulesetClearBypassActor(ctx, "e", 84)
-	if err != nil {
-		t.Errorf("Enterprise.UpdateRepositoryRulesetClearBypassActor returned error: %v \n", err)
+	input := RepositoryRuleset{
+		BypassActors: []*BypassActor{},
 	}
 
-	const methodName = "UpdateRepositoryRulesetClearBypassActor"
+	// FIX 1: Add an extra underscore (_) to handle the 3 return values
+	_, _, err := client.Enterprise.UpdateRepositoryRuleset(ctx, "e", 84, input)
+	if err != nil {
+		t.Errorf("Enterprise.UpdateRepositoryRuleset returned error: %v \n", err)
+	}
 
+	const methodName = "UpdateRepositoryRuleset"
+
+	// FIX 2: Adapt the return values for the failure test helper
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Enterprise.UpdateRepositoryRulesetClearBypassActor(ctx, "e", 84)
+		// Discard the first return value (ruleset) so the signature matches (*Response, error)
+		_, resp, err := client.Enterprise.UpdateRepositoryRuleset(ctx, "e", 84, input)
+		return resp, err
 	})
 }
 

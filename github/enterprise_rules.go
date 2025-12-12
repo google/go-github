@@ -83,31 +83,34 @@ func (s *EnterpriseService) UpdateRepositoryRuleset(ctx context.Context, enterpr
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
 //
 //meta:operation PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
-func (s *EnterpriseService) UpdateRepositoryRulesetClearBypassActor(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
-	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
+// func (s *EnterpriseService) UpdateRepositoryRulesetClearBypassActor(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
+// 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
-	rsClearBypassActor := rulesetClearBypassActors{
-		BypassActors: []*BypassActor{},
-	}
+// 	rsClearBypassActor := rulesetClearBypassActors{
+// 		BypassActors: []*BypassActor{},
+// 	}
 
-	req, err := s.client.NewRequest("PUT", u, rsClearBypassActor)
-	if err != nil {
-		return nil, err
-	}
+// 	req, err := s.client.NewRequest("PUT", u, rsClearBypassActor)
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
-	if err != nil {
-		return resp, err
-	}
+// 	resp, err := s.client.Do(ctx, req, nil)
+// 	if err != nil {
+// 		return resp, err
+// 	}
 
-	return resp, nil
-}
+// 	return resp, nil
+// }
 
 // DeleteRepositoryRuleset deletes a repository ruleset from the specified enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#delete-an-enterprise-repository-ruleset
 //
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
+//
 //meta:operation DELETE /enterprises/{enterprise}/rulesets/{ruleset_id}
+//meta:operation PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
 func (s *EnterpriseService) DeleteRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 

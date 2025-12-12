@@ -1593,55 +1593,67 @@ func TestOrganizationsService_UpdateRepositoryRulesetClearBypassActor(t *testing
 
 	mux.HandleFunc("/orgs/o/rulesets/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"bypass_actors":[]}`+"\n")
+
+		// VERIFICATION: Check that sending an empty slice results in "bypass_actors": []
+		testBody(t, r, `{"name":"","source":"","enforcement":"","bypass_actors":[]}`+"\n")
+
 		fmt.Fprint(w, `{
-			"id": 21,
-			"name": "test ruleset",
-			"target": "branch",
-			"source_type": "Organization",
-			"source": "o",
-			"enforcement": "active",
-			"bypass_mode": "none",
-			"conditions": {
-				"repository_name": {
-					"include": [
-						"important_repository",
-						"another_important_repository"
-					],
-					"exclude": [
-						"unimportant_repository"
-					],
-					"protected": true
-				},
-			  "ref_name": {
-					"include": [
-						"refs/heads/main",
-						"refs/heads/master"
-					],
-					"exclude": [
-						"refs/heads/dev*"
-					]
-				}
-			},
-			"rules": [
-			  {
-					"type": "creation"
-			  }
-			]
-		}`)
+            "id": 21,
+            "name": "test ruleset",
+            "target": "branch",
+            "source_type": "Organization",
+            "source": "o",
+            "enforcement": "active",
+            "bypass_mode": "none",
+            "conditions": {
+                "repository_name": {
+                    "include": [
+                        "important_repository",
+                        "another_important_repository"
+                    ],
+                    "exclude": [
+                        "unimportant_repository"
+                    ],
+                    "protected": true
+                },
+                "ref_name": {
+                    "include": [
+                        "refs/heads/main",
+                        "refs/heads/master"
+                    ],
+                    "exclude": [
+                        "refs/heads/dev*"
+                    ]
+                }
+            },
+            "rules": [
+              {
+                    "type": "creation"
+              }
+            ]
+        }`)
 	})
+
+	// ... inside TestOrganizationsService_UpdateRepositoryRulesetClearBypassActor ...
 
 	ctx := t.Context()
 
-	_, err := client.Organizations.UpdateRepositoryRulesetClearBypassActor(ctx, "o", 21)
-	if err != nil {
-		t.Errorf("Organizations.UpdateRepositoryRulesetClearBypassActor returned error: %v \n", err)
+	input := RepositoryRuleset{
+		BypassActors: []*BypassActor{},
 	}
 
-	const methodName = "UpdateRepositoryRulesetClearBypassActor"
+	// FIX 1: Add an extra underscore (_)
+	_, _, err := client.Organizations.UpdateRepositoryRuleset(ctx, "o", 21, input)
+	if err != nil {
+		t.Errorf("Organizations.UpdateRepositoryRuleset returned error: %v \n", err)
+	}
 
+	const methodName = "UpdateRepositoryRuleset"
+
+	// FIX 2: Adapt the return values
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Organizations.UpdateRepositoryRulesetClearBypassActor(ctx, "o", 21)
+		_, resp, err := client.Organizations.UpdateRepositoryRuleset(ctx, "o", 21, input)
+		return resp, err
 	})
 }
 
