@@ -30,6 +30,13 @@ func (t Tree) String() string {
 // TreeEntry represents the contents of a tree structure. TreeEntry can
 // represent either a blob, a commit (in the case of a submodule), or another
 // tree.
+//
+// When used with [GitService.CreateTree], set Content for small text files,
+// or set SHA to reference an existing blob (use [GitService.CreateBlob] for
+// binary files or large content). To delete an entry, set both Content and SHA
+// to nil; the entry will be serialized with `"sha": null` which the API interprets
+// as a deletion. When deleting, the Type and Mode fields are ignored; only Path
+// is required.
 type TreeEntry struct {
 	SHA     *string `json:"sha,omitempty"`
 	Path    *string `json:"path,omitempty"`
@@ -126,6 +133,12 @@ type createTree struct {
 // CreateTree creates a new tree in a repository. If both a tree and a nested
 // path modifying that tree are specified, it will overwrite the contents of
 // that tree with the new path contents and write a new tree out.
+//
+// When baseTree is provided, entries are merged with that tree: paths not
+// mentioned in entries are preserved from the base tree. If the same path
+// appears multiple times in entries, the last entry wins. To delete an entry,
+// include a [TreeEntry] with the path and both SHA and Content set to nil.
+// Entire directories can be deleted this way.
 //
 // GitHub API docs: https://docs.github.com/rest/git/trees#create-a-tree
 //
