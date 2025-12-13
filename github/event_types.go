@@ -1374,7 +1374,8 @@ type PushEvent struct {
 	Size *int `json:"size,omitempty"`
 	// Commits is the list of commits in the push event.
 	//
-	// Deprecated: GitHub will remove commit summaries from Events API payloads on October 7, 2025.
+	// This field is only populated for webhook events.
+	// It has been removed from Events API payloads on October 7, 2025.
 	// Use the Commits REST API endpoint to get detailed commit information.
 	// See: https://docs.github.com/rest/commits/commits#list-commits
 	Commits []*HeadCommit `json:"commits,omitempty"`
