@@ -21,7 +21,7 @@ type CustomProperty struct {
 	URL *string `json:"url,omitempty"`
 	// SourceType is the source type of the property where it has been created. Can be one of: organization, enterprise.
 	SourceType *string `json:"source_type,omitempty"`
-	// The type of the value for the property. Can be one of: string, single_select, multi_select, true_false.
+	// The type of the value for the property. Can be one of: string, single_select, multi_select, true_false, url.
 	ValueType string `json:"value_type"`
 	// Whether the property is required.
 	Required *bool `json:"required,omitempty"`
