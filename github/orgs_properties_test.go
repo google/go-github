@@ -40,6 +40,13 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
           "property_name": "team",
           "value_type": "string",
           "description": "Team owning the repository"
+        },
+        {
+          "property_name": "documentation",
+          "value_type": "url",
+          "required": true,
+          "description": "Link to the documentation",
+          "default_value": "https://example.com/docs"
         }
         ]`)
 	})
@@ -68,6 +75,13 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 			PropertyName: Ptr("team"),
 			ValueType:    "string",
 			Description:  Ptr("Team owning the repository"),
+		},
+		{
+			PropertyName: Ptr("documentation"),
+			ValueType:    "url",
+			Required:     Ptr(true),
+			Description:  Ptr("Link to the documentation"),
+			DefaultValue: Ptr("https://example.com/docs"),
 		},
 	}
 	if !cmp.Equal(properties, want) {
