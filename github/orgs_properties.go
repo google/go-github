@@ -12,6 +12,15 @@ import (
 	"fmt"
 )
 
+// Valid values for CustomProperty.ValueType.
+const (
+	PropertyValueTypeString       = "string"
+	PropertyValueTypeSingleSelect = "single_select"
+	PropertyValueTypeMultiSelect  = "multi_select"
+	PropertyValueTypeTrueFalse    = "true_false"
+	PropertyValueTypeURL          = "url"
+)
+
 // CustomProperty represents an organization custom property object.
 type CustomProperty struct {
 	// PropertyName is required for most endpoints except when calling CreateOrUpdateCustomProperty;
