@@ -27,6 +27,7 @@ type JSONFieldType struct {
 	Exception             string            `json:"exception,omitempty"`
 	Value                 any               `json:"value,omitempty"`
 	SliceOfPointerStructs []*Struct         `json:"slice_of_pointer_structs,omitempty"`
+	SliceOfZerosStructs   []*Struct         `json:"slice_of_zeros_structs,omitzero"`
 }
 
 type URLFieldName struct {

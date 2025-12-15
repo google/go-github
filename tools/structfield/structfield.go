@@ -146,8 +146,13 @@ func processTag(structName string, goField *ast.Ident, field *ast.Field, structT
 		return
 	}
 
+	if strings.Contains(tagName, ",omitzero") {
+		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypes, "omitzero")
+		tagName = strings.ReplaceAll(tagName, ",omitzero", "")
+	}
+
 	if strings.Contains(tagName, ",omitempty") {
-		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypes)
+		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypes, "omitempty")
 		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
 	}
 
@@ -171,7 +176,7 @@ func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Po
 	}
 }
 
-func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos token.Pos, pass *analysis.Pass, allowedTypes map[string]bool) {
+func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos token.Pos, pass *analysis.Pass, allowedTypes map[string]bool, omitTag string) {
 	if allowedTypes[structName+"."+goFieldName] {
 		return
 	}
@@ -179,8 +184,8 @@ func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos
 	skipOmitempty := checkAndReportInvalidTypes(structName, goFieldName, field.Type, tokenPos, pass)
 
 	if !skipOmitempty {
-		const msg = `change the %q field type to %q in the struct %q because its tag uses "omitempty"`
-		pass.Reportf(tokenPos, msg, goFieldName, "*"+exprToString(field.Type), structName)
+		const msg = `change the %q field type to %q in the struct %q because its tag uses "%v"`
+		pass.Reportf(tokenPos, msg, goFieldName, "*"+exprToString(field.Type), structName, omitTag)
 	}
 }
 
