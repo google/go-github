@@ -149,28 +149,99 @@ func processTag(structName string, goField *ast.Ident, field *ast.Field, structT
 	hasOmitEmpty := strings.Contains(tagName, ",omitempty")
 	hasOmitZero := strings.Contains(tagName, ",omitzero")
 
-	if hasOmitEmpty && hasOmitZero {
-		omitTag := "omitempty and omitzero"
-		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypes, omitTag)
+	switch {
+	// Both omitempty and omitzero
+	case hasOmitEmpty && hasOmitZero:
+		if tagType == "url" {
+			const msg = "the %q field in struct %q uses unsupported omitzero tag for URL tags"
+			pass.Reportf(field.Pos(), msg, goField.Name, structName)
+		} else {
+			checkGoFieldType(structName, goField.Name, field, field.Pos(), pass, allowedTagTypes, hasOmitEmpty, hasOmitZero)
+		}
 		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
 		tagName = strings.ReplaceAll(tagName, ",omitzero", "")
-	} else if hasOmitEmpty || hasOmitZero {
-		omitTag := "omitempty"
-		if hasOmitZero {
-			omitTag = "omitzero"
+
+	// Only omitempty
+	case hasOmitEmpty:
+		checkGoFieldType(structName, goField.Name, field, field.Pos(), pass, allowedTagTypes, hasOmitEmpty, hasOmitZero)
+		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
+
+		if tagType == "url" {
+			tagName = strings.ReplaceAll(tagName, ",comma", "")
 		}
 
-		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypes, omitTag)
-
-		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
+	// Only omitzero
+	case hasOmitZero:
+		if tagType == "url" {
+			const msg = "the %q field in struct %q uses unsupported omitzero tag for URL tags"
+			pass.Reportf(field.Pos(), msg, goField.Name, structName)
+		} else {
+			checkGoFieldType(structName, goField.Name, field, field.Pos(), pass, allowedTagTypes, hasOmitEmpty, hasOmitZero)
+		}
 		tagName = strings.ReplaceAll(tagName, ",omitzero", "")
-	}
-
-	if tagType == "url" {
-		tagName = strings.ReplaceAll(tagName, ",comma", "")
 	}
 
 	checkGoFieldName(structName, goField.Name, tagName, goField.Pos(), pass, allowedTagNames)
+}
+
+func checkAndReportInvalidTypesForOmitzero(structName, goFieldName string, fieldType ast.Expr, tokenPos token.Pos, pass *analysis.Pass) bool {
+	switch ft := fieldType.(type) {
+	case *ast.StarExpr:
+		// Check for *Struct
+		if ident, ok := ft.X.(*ast.Ident); ok {
+			if obj := pass.TypesInfo.ObjectOf(ident); obj != nil {
+				if _, ok := obj.Type().Underlying().(*types.Struct); ok {
+					return true
+				}
+			}
+		}
+		// Check for *[]T where T is builtin - should be []T
+		if arrType, ok := ft.X.(*ast.ArrayType); ok {
+			// For *[]Struct
+			if ident, ok := arrType.Elt.(*ast.Ident); ok {
+				if obj := pass.TypesInfo.ObjectOf(ident); obj != nil {
+					if _, ok := obj.Type().Underlying().(*types.Struct); ok {
+						const msg = "change the %q field type to %q in the struct %q"
+						pass.Reportf(tokenPos, msg, goFieldName, "[]*"+ident.Name, structName)
+						return true
+					}
+				}
+			}
+			// For *[]*Struct
+			if starExpr, ok := arrType.Elt.(*ast.StarExpr); ok {
+				if ident, ok := starExpr.X.(*ast.Ident); ok {
+					const msg = "change the %q field type to %q in the struct %q"
+					pass.Reportf(tokenPos, msg, goFieldName, "[]*"+ident.Name, structName)
+					return true
+				}
+			}
+			// For *[]builtin
+			if ident, ok := arrType.Elt.(*ast.Ident); ok && isBuiltinType(ident.Name) {
+				const msg = "change the %q field type to %q in the struct %q"
+				pass.Reportf(tokenPos, msg, goFieldName, "[]"+ident.Name, structName)
+				return true
+			}
+		}
+		if _, ok := ft.X.(*ast.MapType); ok {
+			return true
+		}
+	// Slice
+	case *ast.ArrayType:
+		return true
+
+	// Map
+	case *ast.MapType:
+		return true
+
+	// Struct
+	case *ast.Ident:
+		if obj := pass.TypesInfo.ObjectOf(ft); obj != nil {
+			if _, ok := obj.Type().Underlying().(*types.Struct); ok {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Pos, pass *analysis.Pass, allowedNames map[string]bool) {
@@ -186,16 +257,36 @@ func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Po
 	}
 }
 
-func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos token.Pos, pass *analysis.Pass, allowedTypes map[string]bool, omitTag string) {
+func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos token.Pos, pass *analysis.Pass, allowedTypes map[string]bool, omitempty, omitzero bool) {
 	if allowedTypes[structName+"."+goFieldName] {
 		return
 	}
+	switch {
+	case omitempty && omitzero:
+		skipOmitzero := checkAndReportInvalidTypesForOmitzero(structName, goFieldName, field.Type, tokenPos, pass)
+		skipOmitempty := checkAndReportInvalidTypes(structName, goFieldName, field.Type, tokenPos, pass)
+		if !skipOmitzero {
+			const msg = `change the %q field type to a slice, map, or struct in the struct %q because its tag uses "omitzero"`
+			pass.Reportf(tokenPos, msg, goFieldName, structName)
+		}
+		if !skipOmitempty {
+			const msg = `change the %q field type to %q in the struct %q because its tag uses "omitempty"`
+			pass.Reportf(tokenPos, msg, goFieldName, "*"+exprToString(field.Type), structName)
+		}
 
-	skipOmitempty := checkAndReportInvalidTypes(structName, goFieldName, field.Type, tokenPos, pass)
+	case omitzero:
+		skipOmitzero := checkAndReportInvalidTypesForOmitzero(structName, goFieldName, field.Type, tokenPos, pass)
+		if !skipOmitzero {
+			const msg = `change the %q field type to a slice, map, or struct in the struct %q because its tag uses "omitzero"`
+			pass.Reportf(tokenPos, msg, goFieldName, structName)
+		}
 
-	if !skipOmitempty {
-		const msg = `change the %q field type to %q in the struct %q because its tag uses "%v"`
-		pass.Reportf(tokenPos, msg, goFieldName, "*"+exprToString(field.Type), structName, omitTag)
+	case omitempty:
+		skipOmitempty := checkAndReportInvalidTypes(structName, goFieldName, field.Type, tokenPos, pass)
+		if !skipOmitempty {
+			const msg = `change the %q field type to %q in the struct %q because its tag uses "omitempty"`
+			pass.Reportf(tokenPos, msg, goFieldName, "*"+exprToString(field.Type), structName)
+		}
 	}
 }
 
