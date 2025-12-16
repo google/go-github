@@ -22,6 +22,8 @@ type JSONFieldType struct {
 	PointerToSliceOfPointerStructs *[]*Struct         `json:"pointer_to_slice_of_pointer_structs,omitempty"` // want `change the "PointerToSliceOfPointerStructs" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
 	PointerToMap                   *map[string]string `json:"pointer_to_map,omitempty"`                      // want `change the "PointerToMap" field type to "map\[string\]string" in the struct "JSONFieldType"`
 	SliceOfInts                    []*int             `json:"slice_of_ints,omitempty"`                       // want `change the "SliceOfInts" field type to "\[\]int" in the struct "JSONFieldType"`
+	SliceOfZeroInts                []*int             `json:"slice_of_zero_ints,omitzero"`                   // want `change the "SliceOfZeroInts" field type to "\[\]int" in the struct "JSONFieldType"`
+	SliceOfBothOmitTags            []*int             `json:"slice_of_both_omit_tags,omitempty,omitzero"`    // want `change the "SliceOfBothOmitTags" field type to "\[\]int" in the struct "JSONFieldType"`
 }
 
 type Struct struct{}
@@ -31,7 +33,9 @@ type URLFieldName struct {
 }
 
 type URLFieldType struct {
-	Page          string `url:"page,omitempty"`          // want `change the "Page" field type to "\*string" in the struct "URLFieldType" because its tag uses "omitempty"`
-	PerPage       int    `url:"per_page,omitempty"`      // want `change the "PerPage" field type to "\*int" in the struct "URLFieldType" because its tag uses "omitempty"`
-	Participating bool   `url:"participating,omitempty"` // want `change the "Participating" field type to "\*bool" in the struct "URLFieldType" because its tag uses "omitempty"`
+	Page          string `url:"page,omitempty"`                   // want `change the "Page" field type to "\*string" in the struct "URLFieldType" because its tag uses "omitempty"`
+	PerPage       int    `url:"per_page,omitempty"`               // want `change the "PerPage" field type to "\*int" in the struct "URLFieldType" because its tag uses "omitempty"`
+	Participating bool   `url:"participating,omitempty"`          // want `change the "Participating" field type to "\*bool" in the struct "URLFieldType" because its tag uses "omitempty"`
+	PerPageZeros  int    `url:"per_page_zeros,omitzero"`          // want `change the "PerPageZeros" field type to "\*int" in the struct "URLFieldType" because its tag uses "omitzero"`
+	PerPageBoth   int    `url:"per_page_both,omitempty,omitzero"` // want `change the "PerPageBoth" field type to "\*int" in the struct "URLFieldType" because its tag uses "omitempty and omitzero"`
 }

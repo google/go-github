@@ -28,6 +28,7 @@ type JSONFieldType struct {
 	Value                 any               `json:"value,omitempty"`
 	SliceOfPointerStructs []*Struct         `json:"slice_of_pointer_structs,omitempty"`
 	SliceOfZerosStructs   []*Struct         `json:"slice_of_zeros_structs,omitzero"`
+	SliceOfBothOmitTags   []*Struct         `json:"slice_of_both_omit_tags,omitempty,omitzero"`
 }
 
 type URLFieldName struct {

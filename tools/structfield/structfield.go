@@ -146,14 +146,24 @@ func processTag(structName string, goField *ast.Ident, field *ast.Field, structT
 		return
 	}
 
-	if strings.Contains(tagName, ",omitzero") {
-		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypes, "omitzero")
-		tagName = strings.ReplaceAll(tagName, ",omitzero", "")
-	}
+	hasOmitEmpty := strings.Contains(tagName, ",omitempty")
+	hasOmitZero := strings.Contains(tagName, ",omitzero")
 
-	if strings.Contains(tagName, ",omitempty") {
-		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypes, "omitempty")
+	if hasOmitEmpty && hasOmitZero {
+		omitTag := "omitempty and omitzero"
+		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypes, omitTag)
 		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
+		tagName = strings.ReplaceAll(tagName, ",omitzero", "")
+	} else if hasOmitEmpty || hasOmitZero {
+		omitTag := "omitempty"
+		if hasOmitZero {
+			omitTag = "omitzero"
+		}
+
+		checkGoFieldType(structName, goField.Name, field, field.Type.Pos(), pass, allowedTagTypes, omitTag)
+
+		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
+		tagName = strings.ReplaceAll(tagName, ",omitzero", "")
 	}
 
 	if tagType == "url" {
