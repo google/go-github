@@ -381,6 +381,24 @@ func (s *EnterpriseService) ProvisionSCIMUser(ctx context.Context, enterprise st
 	return userProvisioned, resp, nil
 }
 
+// GetProvisionedSCIMGroup gets information about a SCIM group.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#get-scim-provisioning-information-for-an-enterprise-group
+//
+//meta:operation GET /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
+func (s *EnterpriseService) GetProvisionedSCIMGroup(ctx context.Context, enterprise, scimGroupID, excludedAttributes string) (*SCIMEnterpriseGroupAttributes, *Response, error) {
+	return nil, nil, nil
+}
+
+// GetProvisionedSCIMUser gets information about a SCIM user.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#get-scim-provisioning-information-for-an-enterprise-user
+//
+//meta:operation GET /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
+func (s *EnterpriseService) GetProvisionedSCIMUser(ctx context.Context, enterprise, scimUserID string) (*SCIMEnterpriseUserAttributes, *Response, error) {
+	return nil, nil, nil
+}
+
 // DeleteSCIMGroup deletes a SCIM group from an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#delete-a-scim-group-from-an-enterprise
