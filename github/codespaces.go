@@ -186,8 +186,8 @@ type DevContainersConfig struct {
 
 // CodespaceDefaults represents default settings for a Codespace.
 type CodespaceDefaults struct {
-	DevcontainerPath *string `json:"devcontainer_path,omitempty"`
 	Location         string  `json:"location"`
+	DevcontainerPath *string `json:"devcontainer_path,omitempty"`
 }
 
 // CodespaceDefaultAttributes represents the default attributes for codespaces created by the user with the repository.
@@ -214,20 +214,20 @@ type CodespacePullRequestOptions struct {
 
 // CodespaceCreateForUserOptions represents options for creating a codespace for the authenticated user.
 type CodespaceCreateForUserOptions struct {
-	Ref                        *string                      `json:"ref,omitempty"`
-	Geo                        *string                      `json:"geo,omitempty"`
-	ClientIP                   *string                      `json:"client_ip,omitempty"`
-	RetentionPeriodMinutes     *int                         `json:"retention_period_minutes,omitempty"`
-	Location                   *string                      `json:"location,omitempty"`
-	PullRequest                *CodespacePullRequestOptions `json:"pull_request"`
-	Machine                    *string                      `json:"machine,omitempty"`
-	DevcontainerPath           *string                      `json:"devcontainer_path,omitempty"`
-	MultiRepoPermissionsOptOut *bool                        `json:"multi_repo_permissions_opt_out,omitempty"`
-	WorkingDirectory           *string                      `json:"working_directory,omitempty"`
-	IdleTimeoutMinutes         *int                         `json:"idle_timeout_minutes,omitempty"`
-	DisplayName                *string                      `json:"display_name,omitempty"`
+	PullRequest *CodespacePullRequestOptions `json:"pull_request"`
 	// RepositoryID represents the repository ID for this codespace.
-	RepositoryID int64 `json:"repository_id"`
+	RepositoryID               int64   `json:"repository_id"`
+	Ref                        *string `json:"ref,omitempty"`
+	Geo                        *string `json:"geo,omitempty"`
+	ClientIP                   *string `json:"client_ip,omitempty"`
+	RetentionPeriodMinutes     *int    `json:"retention_period_minutes,omitempty"`
+	Location                   *string `json:"location,omitempty"`
+	Machine                    *string `json:"machine,omitempty"`
+	DevcontainerPath           *string `json:"devcontainer_path,omitempty"`
+	MultiRepoPermissionsOptOut *bool   `json:"multi_repo_permissions_opt_out,omitempty"`
+	WorkingDirectory           *string `json:"working_directory,omitempty"`
+	IdleTimeoutMinutes         *int    `json:"idle_timeout_minutes,omitempty"`
+	DisplayName                *string `json:"display_name,omitempty"`
 }
 
 // UpdateCodespaceOptions represents options for updating a codespace.
