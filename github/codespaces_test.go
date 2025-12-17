@@ -379,12 +379,12 @@ func TestCodespacesService_GetDefaultAttributes(t *testing.T) {
 	}
 
 	want := &CodespaceDefaultAttributes{
-		BillableOwner: User{
+		BillableOwner: &User{
 			Login: Ptr("user1"),
 			ID:    Ptr(int64(1001)),
 			URL:   Ptr("https://example.com/user1"),
 		},
-		Defaults: CodespaceDefaults{
+		Defaults: &CodespaceDefaults{
 			DevcontainerPath: Ptr(".devcontainer/devcontainer.json"),
 			Location:         "WestUs2",
 		},
@@ -425,7 +425,7 @@ func TestCodespacesService_CheckPermissions(t *testing.T) {
 		t.Errorf("Codespaces.CheckPermissions returned error: %v", err)
 	}
 
-	want := bool(true)
+	want := CodespacePermissions{Accepted: true}
 	if !cmp.Equal(hasPermission, &want) {
 		t.Errorf("Codespaces.CheckPermissions = %+v, want %+v", hasPermission, want)
 	}
@@ -499,19 +499,18 @@ func TestCodespacesService_CreateForAuthenticatedUser(t *testing.T) {
 		testBody(
 			t,
 			r,
-			`{"ref":"main","geo":"WestUs2","machine":"standardLinux","idle_timeout_minutes":60,"repository_id":111}`+"\n",
+			`{"ref":"main","geo":"WestUs2","pull_request":null,"machine":"standardLinux","idle_timeout_minutes":60,"repository_id":111}`+"\n",
 		)
 		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
 	})
 
 	opt := &CodespaceCreateForUserOptions{
-		CreateCodespaceOptions: &CreateCodespaceOptions{
-			Ref:                Ptr("main"),
-			Geo:                Ptr("WestUs2"),
-			Machine:            Ptr("standardLinux"),
-			IdleTimeoutMinutes: Ptr(60),
-		},
-		RepositoryID: int64(111),
+		Ref:                Ptr("main"),
+		Geo:                Ptr("WestUs2"),
+		Machine:            Ptr("standardLinux"),
+		IdleTimeoutMinutes: Ptr(60),
+		RepositoryID:       int64(111),
+		PullRequest:        nil,
 	}
 
 	ctx := t.Context()

@@ -178,13 +178,13 @@ type DevContainer struct {
 	DisplayName *string `json:"display_name,omitempty"`
 }
 
-// DevContainersConfig represents list of devcontainer configuration in a repository.
+// DevContainersConfig represents a list of devcontainer configurations in a repository.
 type DevContainersConfig struct {
 	Devcontainers []*DevContainer `json:"devcontainers"`
 	TotalCount    int64           `json:"total_count"`
 }
 
-// CodespaceDefaults represents the a field for DefaultAttributes.
+// CodespaceDefaults represents default settings for a Codespace.
 type CodespaceDefaults struct {
 	DevcontainerPath *string `json:"devcontainer_path,omitempty"`
 	Location         string  `json:"location"`
@@ -192,8 +192,8 @@ type CodespaceDefaults struct {
 
 // CodespaceDefaultAttributes represents the default attributes for codespaces created by the user with the repository.
 type CodespaceDefaultAttributes struct {
-	BillableOwner User              `json:"billable_owner"`
-	Defaults      CodespaceDefaults `json:"defaults"`
+	BillableOwner *User              `json:"billable_owner"`
+	Defaults      *CodespaceDefaults `json:"defaults"`
 }
 
 // CodespaceGetDefaultAttributesOptions represents options for getting default attributes for a codespace.
@@ -204,7 +204,7 @@ type CodespaceGetDefaultAttributesOptions struct {
 	ClientIP *string `url:"client_ip,omitempty"`
 }
 
-// CodespacePullRequestOptions represents a field for CodespaceCreateForUserOptions.
+// CodespacePullRequestOptions represents options for a CodespacePullRequest.
 type CodespacePullRequestOptions struct {
 	// PullRequestNumber represents the pull request number.
 	PullRequestNumber int64 `json:"pull_request_number"`
@@ -214,8 +214,18 @@ type CodespacePullRequestOptions struct {
 
 // CodespaceCreateForUserOptions represents options for creating a codespace for the authenticated user.
 type CodespaceCreateForUserOptions struct {
-	*CreateCodespaceOptions
-	*CodespacePullRequestOptions
+	Ref                        *string                      `json:"ref,omitempty"`
+	Geo                        *string                      `json:"geo,omitempty"`
+	ClientIP                   *string                      `json:"client_ip,omitempty"`
+	RetentionPeriodMinutes     *int                         `json:"retention_period_minutes,omitempty"`
+	Location                   *string                      `json:"location,omitempty"`
+	PullRequest                *CodespacePullRequestOptions `json:"pull_request"`
+	Machine                    *string                      `json:"machine,omitempty"`
+	DevcontainerPath           *string                      `json:"devcontainer_path,omitempty"`
+	MultiRepoPermissionsOptOut *bool                        `json:"multi_repo_permissions_opt_out,omitempty"`
+	WorkingDirectory           *string                      `json:"working_directory,omitempty"`
+	IdleTimeoutMinutes         *int                         `json:"idle_timeout_minutes,omitempty"`
+	DisplayName                *string                      `json:"display_name,omitempty"`
 	// RepositoryID represents the repository ID for this codespace.
 	RepositoryID int64 `json:"repository_id"`
 }
@@ -249,6 +259,11 @@ type PublishCodespaceOptions struct {
 	Private *bool `json:"private,omitempty"`
 }
 
+// CodespacePermissions represents a response indicating whether the permissions defined by a devcontainer have been accepted.
+type CodespacePermissions struct {
+	Accepted bool `json:"accepted"`
+}
+
 // CreateInRepo creates a codespace in a repository.
 //
 // Creates a codespace owned by the authenticated user in the specified repository.
@@ -260,7 +275,6 @@ type PublishCodespaceOptions struct {
 //meta:operation POST /repos/{owner}/{repo}/codespaces
 func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string, request *CreateCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces", owner, repo)
-
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
@@ -285,7 +299,6 @@ func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string
 //meta:operation POST /user/codespaces/{codespace_name}/start
 func (s *CodespacesService) Start(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/start", codespaceName)
-
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -310,7 +323,6 @@ func (s *CodespacesService) Start(ctx context.Context, codespaceName string) (*C
 //meta:operation POST /user/codespaces/{codespace_name}/stop
 func (s *CodespacesService) Stop(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/stop", codespaceName)
-
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -335,7 +347,6 @@ func (s *CodespacesService) Stop(ctx context.Context, codespaceName string) (*Co
 //meta:operation DELETE /user/codespaces/{codespace_name}
 func (s *CodespacesService) Delete(ctx context.Context, codespaceName string) (*Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v", codespaceName)
-
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
@@ -351,7 +362,6 @@ func (s *CodespacesService) Delete(ctx context.Context, codespaceName string) (*
 //meta:operation GET /repos/{owner}/{repo}/codespaces/devcontainers
 func (s *CodespacesService) ListDevContainersConfig(ctx context.Context, owner, repo string, opt *ListOptions) (*DevContainersConfig, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces/devcontainers", owner, repo)
-
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -378,7 +388,6 @@ func (s *CodespacesService) ListDevContainersConfig(ctx context.Context, owner, 
 //meta:operation GET /repos/{owner}/{repo}/codespaces/new
 func (s *CodespacesService) GetDefaultAttributes(ctx context.Context, owner, repo string, opt *CodespaceGetDefaultAttributesOptions) (*CodespaceDefaultAttributes, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces/new", owner, repo)
-
 	u, err := addOptions(u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -403,9 +412,8 @@ func (s *CodespacesService) GetDefaultAttributes(ctx context.Context, owner, rep
 // GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#check-if-permissions-defined-by-a-devcontainer-have-been-accepted-by-the-authenticated-user
 //
 //meta:operation GET /repos/{owner}/{repo}/codespaces/permissions_check
-func (s *CodespacesService) CheckPermissions(ctx context.Context, owner, repo, ref, devcontainerPath string) (*bool, *Response, error) {
+func (s *CodespacesService) CheckPermissions(ctx context.Context, owner, repo, ref, devcontainerPath string) (*CodespacePermissions, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces/permissions_check", owner, repo)
-
 	u, err := addOptions(u, &struct {
 		Ref              string `url:"ref"`
 		DevcontainerPath string `url:"devcontainer_path"`
@@ -422,16 +430,13 @@ func (s *CodespacesService) CheckPermissions(ctx context.Context, owner, repo, r
 		return nil, nil, err
 	}
 
-	var hasPermission struct {
-		Accepted *bool `json:"accepted,omitempty"`
-	}
-
+	var hasPermission *CodespacePermissions
 	resp, err := s.client.Do(ctx, req, &hasPermission)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return hasPermission.Accepted, resp, nil
+	return hasPermission, resp, nil
 }
 
 // CreateFromPullRequest creates a codespace owned by the authenticated user for the specified pull request.
@@ -441,7 +446,6 @@ func (s *CodespacesService) CheckPermissions(ctx context.Context, owner, repo, r
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces
 func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, repo string, pullNumber int, opt *CreateCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/codespaces", owner, repo, pullNumber)
-
 	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -465,7 +469,6 @@ func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, re
 //meta:operation POST /user/codespaces
 func (s *CodespacesService) CreateForAuthenticatedUser(ctx context.Context, opt *CodespaceCreateForUserOptions) (*Codespace, *Response, error) {
 	u := "user/codespaces"
-
 	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -487,7 +490,6 @@ func (s *CodespacesService) CreateForAuthenticatedUser(ctx context.Context, opt 
 //meta:operation GET /user/codespaces/{codespace_name}
 func (s *CodespacesService) GetInfo(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v", codespaceName)
-
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -511,7 +513,6 @@ func (s *CodespacesService) GetInfo(ctx context.Context, codespaceName string) (
 //meta:operation PATCH /user/codespaces/{codespace_name}
 func (s *CodespacesService) Update(ctx context.Context, codespaceName string, opt *UpdateCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v", codespaceName)
-
 	req, err := s.client.NewRequest("PATCH", u, opt)
 	if err != nil {
 		return nil, nil, err
@@ -533,7 +534,6 @@ func (s *CodespacesService) Update(ctx context.Context, codespaceName string, op
 //meta:operation POST /user/codespaces/{codespace_name}/exports
 func (s *CodespacesService) TriggerExport(ctx context.Context, codespaceName string) (*CodespaceExport, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/exports", codespaceName)
-
 	req, err := s.client.NewRequest("POST", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -555,7 +555,6 @@ func (s *CodespacesService) TriggerExport(ctx context.Context, codespaceName str
 //meta:operation GET /user/codespaces/{codespace_name}/exports/{export_id}
 func (s *CodespacesService) GetLatestExport(ctx context.Context, codespaceName string) (*CodespaceExport, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/exports/latest", codespaceName)
-
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -577,7 +576,6 @@ func (s *CodespacesService) GetLatestExport(ctx context.Context, codespaceName s
 //meta:operation POST /user/codespaces/{codespace_name}/publish
 func (s *CodespacesService) PublishCodespace(ctx context.Context, codespaceName string, opt *PublishCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/publish", codespaceName)
-
 	req, err := s.client.NewRequest("POST", u, opt)
 	if err != nil {
 		return nil, nil, err
