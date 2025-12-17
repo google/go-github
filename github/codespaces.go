@@ -167,7 +167,86 @@ type CreateCodespaceOptions struct {
 	DisplayName                *string `json:"display_name,omitempty"`
 	// RetentionPeriodMinutes represents the duration in minutes after codespace has gone idle in which it will be deleted.
 	// Must be integer minutes between 0 and 43200 (30 days).
-	RetentionPeriodMinutes *int `json:"retention_period_minutes,omitempty"`
+	RetentionPeriodMinutes *int    `json:"retention_period_minutes,omitempty"`
+	Location               *string `json:"location,omitempty"`
+}
+
+// DevContainer represents a devcontainer configuration in a repository.
+type DevContainer struct {
+	Path        string  `json:"path"`
+	Name        *string `json:"name,omitempty"`
+	DisplayName *string `json:"display_name,omitempty"`
+}
+
+// DevContainersConfig represents list of devcontainer configuration in a repository.
+type DevContainersConfig struct {
+	Devcontainers []*DevContainer `json:"devcontainers"`
+	TotalCount    int64           `json:"total_count"`
+}
+
+// CodespaceDefaults represents the a field for DefaultAttributes.
+type CodespaceDefaults struct {
+	DevcontainerPath *string `json:"devcontainer_path,omitempty"`
+	Location         string  `json:"location"`
+}
+
+// CodespaceDefaultAttributes represents the default attributes for codespaces created by the user with the repository.
+type CodespaceDefaultAttributes struct {
+	BillableOwner User              `json:"billable_owner"`
+	Defaults      CodespaceDefaults `json:"defaults"`
+}
+
+// CodespaceGetDefaultAttributesOptions represents options for getting default attributes for a codespace.
+type CodespaceGetDefaultAttributesOptions struct {
+	// Ref represents the branch or commit to check for a default devcontainer path. If not specified, the default branch will be checked.
+	Ref *string `url:"ref,omitempty"`
+	// ClientIP represents an alternative IP for default location auto-detection, such as when proxying a request.
+	ClientIP *string `url:"client_ip,omitempty"`
+}
+
+// CodespacePullRequestOptions represents a field for CodespaceCreateForUserOptions.
+type CodespacePullRequestOptions struct {
+	// PullRequestNumber represents the pull request number.
+	PullRequestNumber int64 `json:"pull_request_number"`
+	// RepositoryID represents the repository ID for this codespace.
+	RepositoryID int64 `json:"repository_id"`
+}
+
+// CodespaceCreateForUserOptions represents options for creating a codespace for the authenticated user.
+type CodespaceCreateForUserOptions struct {
+	*CreateCodespaceOptions
+	*CodespacePullRequestOptions
+	// RepositoryID represents the repository ID for this codespace.
+	RepositoryID int64 `json:"repository_id"`
+}
+
+// UpdateCodespaceOptions represents options for updating a codespace.
+type UpdateCodespaceOptions struct {
+	// Machine represents a valid machine to transition this codespace to.
+	Machine *string `json:"machine,omitempty"`
+	// RecentFolders represents the recently opened folders inside the codespace.
+	// It is currently used by the clients to determine the folder path to load the codespace in.
+	RecentFolders []string `json:"recent_folders,omitempty"`
+}
+
+// CodespaceExport represents an export of a codespace.
+type CodespaceExport struct {
+	// Can be one of: `succeeded`, `failed`, `in_progress`.
+	State       *string    `json:"state,omitempty"`
+	CompletedAt *Timestamp `json:"completed_at,omitempty"`
+	Branch      *string    `json:"branch,omitempty"`
+	SHA         *string    `json:"sha,omitempty"`
+	ID          *string    `json:"id,omitempty"`
+	ExportURL   *string    `json:"export_url,omitempty"`
+	HTMLURL     *string    `json:"html_url,omitempty"`
+}
+
+// PublishCodespaceOptions represents options for creating a repository from an unpublished codespace.
+type PublishCodespaceOptions struct {
+	// Name represents the name of the new repository.
+	Name *string `json:"name,omitempty"`
+	// Private represents whether the new repository is private. Defaults to false.
+	Private *bool `json:"private,omitempty"`
 }
 
 // CreateInRepo creates a codespace in a repository.
@@ -263,4 +342,252 @@ func (s *CodespacesService) Delete(ctx context.Context, codespaceName string) (*
 	}
 
 	return s.client.Do(ctx, req, nil)
+}
+
+// ListDevContainersConfig lists devcontainer configurations in a repository for the authenticated user.
+//
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#list-devcontainer-configurations-in-a-repository-for-the-authenticated-user
+//
+//meta:operation GET /repos/{owner}/{repo}/codespaces/devcontainers
+func (s *CodespacesService) ListDevContainersConfig(ctx context.Context, owner, repo string, opt *ListOptions) (*DevContainersConfig, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/codespaces/devcontainers", owner, repo)
+
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var devcontainers *DevContainersConfig
+	resp, err := s.client.Do(ctx, req, &devcontainers)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return devcontainers, resp, nil
+}
+
+// GetDefaultAttributes gets the default attributes for codespaces created by the user with the repository.
+//
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#get-default-attributes-for-a-codespace
+//
+//meta:operation GET /repos/{owner}/{repo}/codespaces/new
+func (s *CodespacesService) GetDefaultAttributes(ctx context.Context, owner, repo string, opt *CodespaceGetDefaultAttributesOptions) (*CodespaceDefaultAttributes, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/codespaces/new", owner, repo)
+
+	u, err := addOptions(u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var attributes *CodespaceDefaultAttributes
+	resp, err := s.client.Do(ctx, req, &attributes)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return attributes, resp, nil
+}
+
+// CheckPermissions checks whether the permissions defined by a given devcontainer configuration have been accepted by the authenticated user.
+//
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#check-if-permissions-defined-by-a-devcontainer-have-been-accepted-by-the-authenticated-user
+//
+//meta:operation GET /repos/{owner}/{repo}/codespaces/permissions_check
+func (s *CodespacesService) CheckPermissions(ctx context.Context, owner, repo, ref, devcontainerPath string) (*bool, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/codespaces/permissions_check", owner, repo)
+
+	u, err := addOptions(u, &struct {
+		Ref              string `url:"ref"`
+		DevcontainerPath string `url:"devcontainer_path"`
+	}{
+		Ref:              ref,
+		DevcontainerPath: devcontainerPath,
+	})
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var hasPermission struct {
+		Accepted *bool `json:"accepted,omitempty"`
+	}
+
+	resp, err := s.client.Do(ctx, req, &hasPermission)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return hasPermission.Accepted, resp, nil
+}
+
+// CreateFromPullRequest creates a codespace owned by the authenticated user for the specified pull request.
+//
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-codespace-from-a-pull-request
+//
+//meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces
+func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, repo string, pullNumber int, opt *CreateCodespaceOptions) (*Codespace, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/codespaces", owner, repo, pullNumber)
+
+	req, err := s.client.NewRequest("POST", u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespace *Codespace
+	resp, err := s.client.Do(ctx, req, &codespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespace, resp, nil
+}
+
+// CreateForAuthenticatedUser creates a new codespace, owned by the authenticated user.
+//
+// This method requires either RepositoryId OR a PullRequest but not both.
+//
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-codespace-for-the-authenticated-user
+//
+//meta:operation POST /user/codespaces
+func (s *CodespacesService) CreateForAuthenticatedUser(ctx context.Context, opt *CodespaceCreateForUserOptions) (*Codespace, *Response, error) {
+	u := "user/codespaces"
+
+	req, err := s.client.NewRequest("POST", u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespace *Codespace
+	resp, err := s.client.Do(ctx, req, &codespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespace, resp, nil
+}
+
+// GetInfo gets information about a user's codespace.
+//
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#get-a-codespace-for-the-authenticated-user
+//
+//meta:operation GET /user/codespaces/{codespace_name}
+func (s *CodespacesService) GetInfo(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
+	u := fmt.Sprintf("user/codespaces/%v", codespaceName)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespace *Codespace
+	resp, err := s.client.Do(ctx, req, &codespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespace, resp, nil
+}
+
+// Update updates a codespace owned by the authenticated user.
+//
+// Only the codespace's machine type and recent folders can be modified using this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#update-a-codespace-for-the-authenticated-user
+//
+//meta:operation PATCH /user/codespaces/{codespace_name}
+func (s *CodespacesService) Update(ctx context.Context, codespaceName string, opt *UpdateCodespaceOptions) (*Codespace, *Response, error) {
+	u := fmt.Sprintf("user/codespaces/%v", codespaceName)
+
+	req, err := s.client.NewRequest("PATCH", u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespace *Codespace
+	resp, err := s.client.Do(ctx, req, &codespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespace, resp, nil
+}
+
+// TriggerExport triggers an export of the specified codespace and returns a URL and ID where the status of the export can be monitored.
+//
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#export-a-codespace-for-the-authenticated-user
+//
+//meta:operation POST /user/codespaces/{codespace_name}/exports
+func (s *CodespacesService) TriggerExport(ctx context.Context, codespaceName string) (*CodespaceExport, *Response, error) {
+	u := fmt.Sprintf("user/codespaces/%v/exports", codespaceName)
+
+	req, err := s.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespace *CodespaceExport
+	resp, err := s.client.Do(ctx, req, &codespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespace, resp, nil
+}
+
+// GetLatestExport gets information about an export of a codespace.
+//
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#get-details-about-a-codespace-export
+//
+//meta:operation GET /user/codespaces/{codespace_name}/exports/{export_id}
+func (s *CodespacesService) GetLatestExport(ctx context.Context, codespaceName string) (*CodespaceExport, *Response, error) {
+	u := fmt.Sprintf("user/codespaces/%v/exports/latest", codespaceName)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespace *CodespaceExport
+	resp, err := s.client.Do(ctx, req, &codespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespace, resp, nil
+}
+
+// PublishCodespace publishes an unpublished codespace, creating a new repository and assigning it to the codespace.
+//
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-repository-from-an-unpublished-codespace
+//
+//meta:operation POST /user/codespaces/{codespace_name}/publish
+func (s *CodespacesService) PublishCodespace(ctx context.Context, codespaceName string, opt *PublishCodespaceOptions) (*Codespace, *Response, error) {
+	u := fmt.Sprintf("user/codespaces/%v/publish", codespaceName)
+
+	req, err := s.client.NewRequest("POST", u, opt)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var codespace *Codespace
+	resp, err := s.client.Do(ctx, req, &codespace)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return codespace, resp, nil
 }

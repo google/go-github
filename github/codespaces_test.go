@@ -291,3 +291,486 @@ func TestCodespacesService_Delete(t *testing.T) {
 		return client.Codespaces.Delete(ctx, "codespace_1")
 	})
 }
+
+func TestCodespacesService_ListDevContainersConfig(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/codespaces/devcontainers", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"total_count": 1,
+			"devcontainers": [{
+				"path": ".devcontainer/foobar/devcontainer.json",
+				"name": "foobar",
+				"display_name": "foobar"
+			}]
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &ListOptions{Page: 1, PerPage: 10}
+
+	got, _, err := client.Codespaces.ListDevContainersConfig(ctx, "o", "r", opts)
+	if err != nil {
+		t.Fatalf("Codespaces.ListDevContainersConfig returned error: %v", err)
+	}
+
+	want := &DevContainersConfig{
+		TotalCount: 1,
+		Devcontainers: []*DevContainer{
+			{
+				Path:        ".devcontainer/foobar/devcontainer.json",
+				Name:        Ptr("foobar"),
+				DisplayName: Ptr("foobar"),
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Codespaces.ListDevContainersConfig = %+v, want %+v", got, want)
+	}
+
+	const methodName = "ListDevContainersConfig"
+
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Codespaces.ListDevContainersConfig(ctx, "\n", "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.ListDevContainersConfig(ctx, "e", "r", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodespacesService_GetDefaultAttributes(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/codespaces/new", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"billable_owner": {
+				"login": "user1",
+				"id": 1001,
+				"url": "https://example.com/user1"
+			},
+			"defaults": {
+				"devcontainer_path": ".devcontainer/devcontainer.json",
+				"location": "WestUs2"
+			}
+		}`)
+	})
+
+	ctx := t.Context()
+
+	opt := &CodespaceGetDefaultAttributesOptions{
+		Ref:      Ptr("main"),
+		ClientIP: Ptr("1.2.3.4"),
+	}
+
+	got, _, err := client.Codespaces.GetDefaultAttributes(ctx, "o", "r", opt)
+	if err != nil {
+		t.Fatalf("Codespaces.GetDefaultAttributes returned error: %v", err)
+	}
+
+	want := &CodespaceDefaultAttributes{
+		BillableOwner: User{
+			Login: Ptr("user1"),
+			ID:    Ptr(int64(1001)),
+			URL:   Ptr("https://example.com/user1"),
+		},
+		Defaults: CodespaceDefaults{
+			DevcontainerPath: Ptr(".devcontainer/devcontainer.json"),
+			Location:         "WestUs2",
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Codespaces.GetDefaultAttributes = %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetDefaultAttributes"
+
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Codespaces.GetDefaultAttributes(ctx, "\n", "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.GetDefaultAttributes(ctx, "e", "r", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodespacesService_CheckPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/codespaces/permissions_check", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"accepted": true}`)
+	})
+
+	ctx := t.Context()
+	hasPermission, _, err := client.Codespaces.CheckPermissions(ctx, "o", "r", "main", "path")
+	if err != nil {
+		t.Errorf("Codespaces.CheckPermissions returned error: %v", err)
+	}
+
+	want := bool(true)
+	if !cmp.Equal(hasPermission, &want) {
+		t.Errorf("Codespaces.CheckPermissions = %+v, want %+v", hasPermission, want)
+	}
+
+	const methodName = "CheckPermissions"
+
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Codespaces.CheckPermissions(ctx, "\n", "\n", "main", "path")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.CheckPermissions(ctx, "o", "r", "main", "path")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodespacesService_CreateFromPullRequest(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/owner/repo/pulls/42/codespaces", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testBody(t, r, `{"machine":"standardLinux","idle_timeout_minutes":60}`+"\n")
+		fmt.Fprint(w, `{"id":1, "repository": {"id": 1}}`)
+	})
+	input := &CreateCodespaceOptions{
+		Machine:            Ptr("standardLinux"),
+		IdleTimeoutMinutes: Ptr(60),
+	}
+	ctx := t.Context()
+	codespace, _, err := client.Codespaces.CreateFromPullRequest(ctx, "owner", "repo", 42, input)
+	if err != nil {
+		t.Errorf("Codespaces.CreateFromPullRequest returned error: %v", err)
+	}
+	want := &Codespace{
+		ID: Ptr(int64(1)),
+		Repository: &Repository{
+			ID: Ptr(int64(1)),
+		},
+	}
+
+	if !cmp.Equal(codespace, want) {
+		t.Errorf("Codespaces.CreateFromPullRequest returned %+v, want %+v", codespace, want)
+	}
+
+	const methodName = "CreateFromPullRequest"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Codespaces.CreateFromPullRequest(ctx, "\n", "", 0, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.CreateFromPullRequest(ctx, "o", "r", 42, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodespacesService_CreateForAuthenticatedUser(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/user/codespaces", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testBody(
+			t,
+			r,
+			`{"ref":"main","geo":"WestUs2","machine":"standardLinux","idle_timeout_minutes":60,"repository_id":111}`+"\n",
+		)
+		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
+	})
+
+	opt := &CodespaceCreateForUserOptions{
+		CreateCodespaceOptions: &CreateCodespaceOptions{
+			Ref:                Ptr("main"),
+			Geo:                Ptr("WestUs2"),
+			Machine:            Ptr("standardLinux"),
+			IdleTimeoutMinutes: Ptr(60),
+		},
+		RepositoryID: int64(111),
+	}
+
+	ctx := t.Context()
+	codespace, _, err := client.Codespaces.CreateForAuthenticatedUser(
+		ctx,
+		opt,
+	)
+	if err != nil {
+		t.Fatalf("Codespaces.CreateForAuthenticatedUser returned error: %v", err)
+	}
+
+	want := &Codespace{
+		ID: Ptr(int64(1)),
+		Repository: &Repository{
+			ID: Ptr(int64(111)),
+		},
+	}
+
+	if !cmp.Equal(codespace, want) {
+		t.Errorf("Codespaces.CreateForAuthenticatedUser returned %+v, want %+v", codespace, want)
+	}
+
+	const methodName = "CreateForAuthenticatedUser"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.CreateForAuthenticatedUser(
+			ctx,
+			opt,
+		)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodespacesService_GetInfo(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/user/codespaces/codespace_1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
+	})
+
+	ctx := t.Context()
+	codespace, _, err := client.Codespaces.GetInfo(ctx, "codespace_1")
+	if err != nil {
+		t.Fatalf("Codespaces.GetInfo returned error: %v", err)
+	}
+
+	want := &Codespace{
+		ID: Ptr(int64(1)),
+		Repository: &Repository{
+			ID: Ptr(int64(111)),
+		},
+	}
+
+	if !cmp.Equal(codespace, want) {
+		t.Errorf("Codespaces.GetInfo returned %+v, want %+v", codespace, want)
+	}
+
+	const methodName = "GetInfo"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.GetInfo(ctx, "codespace_1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodespacesService_Update(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/user/codespaces/codespace_1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testBody(
+			t,
+			r,
+			`{"machine":"standardLinux","recent_folders":["folder1","folder2"]}`+"\n",
+		)
+		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
+	})
+
+	opt := &UpdateCodespaceOptions{
+		Machine: Ptr("standardLinux"),
+		RecentFolders: []string{
+			"folder1",
+			"folder2",
+		},
+	}
+
+	ctx := t.Context()
+	codespace, _, err := client.Codespaces.Update(
+		ctx,
+		"codespace_1",
+		opt,
+	)
+	if err != nil {
+		t.Fatalf("Codespaces.Update returned error: %v", err)
+	}
+
+	want := &Codespace{
+		ID: Ptr(int64(1)),
+		Repository: &Repository{
+			ID: Ptr(int64(111)),
+		},
+	}
+
+	if !cmp.Equal(codespace, want) {
+		t.Errorf("Codespaces.Update returned %+v, want %+v", codespace, want)
+	}
+
+	const methodName = "Update"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.Update(
+			ctx,
+			"codespace_1",
+			opt,
+		)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodespacesService_TriggerExport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/user/codespaces/codespace_1/exports", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{
+			"state": "succeeded",
+			"completed_at": "2025-12-11T00:00:00Z",
+			"branch": "main",
+			"export_url": "https://api.github.com/user/codespaces/:name/exports/latest"
+		}`)
+	})
+
+	ctx := t.Context()
+	export, _, err := client.Codespaces.TriggerExport(ctx, "codespace_1")
+	if err != nil {
+		t.Fatalf("Codespaces.TriggerExport returned error: %v", err)
+	}
+
+	want := &CodespaceExport{
+		State:       Ptr("succeeded"),
+		CompletedAt: Ptr(Timestamp{Time: time.Date(2025, time.December, 11, 0, 0, 0, 0, time.UTC)}),
+		Branch:      Ptr("main"),
+		ExportURL:   Ptr("https://api.github.com/user/codespaces/:name/exports/latest"),
+	}
+
+	if !cmp.Equal(export, want) {
+		t.Errorf("Codespaces.TriggerExport returned %+v, want %+v", export, want)
+	}
+
+	const methodName = "TriggerExport"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.TriggerExport(ctx, "codespace_1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodespacesService_GetLatestExport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/user/codespaces/codespace_1/exports/latest", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"state": "succeeded",
+			"completed_at": "2025-12-11T00:00:00Z",
+			"branch": "main",
+			"export_url": "https://api.github.com/user/codespaces/:name/exports/latest"
+		}`)
+	})
+
+	ctx := t.Context()
+	export, _, err := client.Codespaces.GetLatestExport(ctx, "codespace_1")
+	if err != nil {
+		t.Fatalf("Codespaces.GetLatestExport returned error: %v", err)
+	}
+
+	want := &CodespaceExport{
+		State:       Ptr("succeeded"),
+		CompletedAt: Ptr(Timestamp{Time: time.Date(2025, time.December, 11, 0, 0, 0, 0, time.UTC)}),
+		Branch:      Ptr("main"),
+		ExportURL:   Ptr("https://api.github.com/user/codespaces/:name/exports/latest"),
+	}
+
+	if !cmp.Equal(export, want) {
+		t.Errorf("Codespaces.GetLatestExport returned %+v, want %+v", export, want)
+	}
+
+	const methodName = "GetLatestExport"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.GetLatestExport(ctx, "codespace_1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCodespacesService_PublishCodespace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/user/codespaces/codespace_1/publish", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testBody(
+			t,
+			r,
+			`{"name":"repo","private":true}`+"\n",
+		)
+		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
+	})
+
+	opt := &PublishCodespaceOptions{
+		Name:    Ptr("repo"),
+		Private: Ptr(true),
+	}
+
+	ctx := t.Context()
+	repo, _, err := client.Codespaces.PublishCodespace(
+		ctx,
+		"codespace_1",
+		opt,
+	)
+	if err != nil {
+		t.Fatalf("Codespaces.PublishCodespace returned error: %v", err)
+	}
+
+	want := &Codespace{
+		ID: Ptr(int64(1)),
+		Repository: &Repository{
+			ID: Ptr(int64(111)),
+		},
+	}
+	if !cmp.Equal(repo, want) {
+		t.Errorf("Codespaces.PublishCodespace returned %+v, want %+v", repo, want)
+	}
+
+	const methodName = "PublishCodespace"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.PublishCodespace(
+			ctx,
+			"codespace_1",
+			opt,
+		)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
