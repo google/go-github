@@ -499,7 +499,7 @@ func TestCodespacesService_CreateForAuthenticatedUser(t *testing.T) {
 		testBody(
 			t,
 			r,
-			`{"ref":"main","geo":"WestUs2","pull_request":null,"machine":"standardLinux","idle_timeout_minutes":60,"repository_id":111}`+"\n",
+			`{"pull_request":null,"repository_id":111,"ref":"main","geo":"WestUs2","machine":"standardLinux","idle_timeout_minutes":60}`+"\n",
 		)
 		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
 	})
