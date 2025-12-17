@@ -149,38 +149,19 @@ func processTag(structName string, goField *ast.Ident, field *ast.Field, structT
 	hasOmitEmpty := strings.Contains(tagName, ",omitempty")
 	hasOmitZero := strings.Contains(tagName, ",omitzero")
 
-	switch {
-	// Both omitempty and omitzero
-	case hasOmitEmpty && hasOmitZero:
-		if tagType == "url" {
-			const msg = "the %q field in struct %q uses unsupported omitzero tag for URL tags"
-			pass.Reportf(field.Pos(), msg, goField.Name, structName)
-		} else {
-			checkGoFieldType(structName, goField.Name, field, field.Pos(), pass, allowedTagTypes, hasOmitEmpty, hasOmitZero)
-		}
-		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
-		tagName = strings.ReplaceAll(tagName, ",omitzero", "")
-
-	// Only omitempty
-	case hasOmitEmpty:
-		checkGoFieldType(structName, goField.Name, field, field.Pos(), pass, allowedTagTypes, hasOmitEmpty, hasOmitZero)
-		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
-
-		if tagType == "url" {
-			tagName = strings.ReplaceAll(tagName, ",comma", "")
-		}
-
-	// Only omitzero
-	case hasOmitZero:
-		if tagType == "url" {
+	if hasOmitEmpty || hasOmitZero {
+		if tagType == "url" && hasOmitZero {
 			const msg = "the %q field in struct %q uses unsupported omitzero tag for URL tags"
 			pass.Reportf(field.Pos(), msg, goField.Name, structName)
 		} else {
 			checkGoFieldType(structName, goField.Name, field, field.Pos(), pass, allowedTagTypes, hasOmitEmpty, hasOmitZero)
 		}
 		tagName = strings.ReplaceAll(tagName, ",omitzero", "")
+		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
 	}
-
+	if tagType == "url" && hasOmitEmpty {
+		tagName = strings.ReplaceAll(tagName, ",comma", "")
+	}
 	checkGoFieldName(structName, goField.Name, tagName, goField.Pos(), pass, allowedTagNames)
 }
 
@@ -195,7 +176,6 @@ func checkAndReportInvalidTypesForOmitzero(structName, goFieldName string, field
 				}
 			}
 		}
-		// Check for *[]T where T is builtin - should be []T
 		if arrType, ok := ft.X.(*ast.ArrayType); ok {
 			// For *[]Struct
 			if ident, ok := arrType.Elt.(*ast.Ident); ok {
