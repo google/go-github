@@ -292,7 +292,7 @@ func TestCodespacesService_Delete(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_ListDevContainersConfig(t *testing.T) {
+func TestCodespacesService_ListDevContainerConfigurations(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -311,12 +311,12 @@ func TestCodespacesService_ListDevContainersConfig(t *testing.T) {
 	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 10}
 
-	got, _, err := client.Codespaces.ListDevContainersConfig(ctx, "o", "r", opts)
+	got, _, err := client.Codespaces.ListDevContainerConfigurations(ctx, "o", "r", opts)
 	if err != nil {
-		t.Fatalf("Codespaces.ListDevContainersConfig returned error: %v", err)
+		t.Fatalf("Codespaces.ListDevContainerConfigurations returned error: %v", err)
 	}
 
-	want := &DevContainersConfig{
+	want := &DevContainerConfigurations{
 		TotalCount: 1,
 		Devcontainers: []*DevContainer{
 			{
@@ -328,18 +328,18 @@ func TestCodespacesService_ListDevContainersConfig(t *testing.T) {
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Codespaces.ListDevContainersConfig = %+v, want %+v", got, want)
+		t.Errorf("Codespaces.ListDevContainerConfigurations = %+v, want %+v", got, want)
 	}
 
-	const methodName = "ListDevContainersConfig"
+	const methodName = "ListDevContainerConfigurations"
 
 	testBadOptions(t, methodName, func() error {
-		_, _, err := client.Codespaces.ListDevContainersConfig(ctx, "\n", "\n", opts)
+		_, _, err := client.Codespaces.ListDevContainerConfigurations(ctx, "\n", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.ListDevContainersConfig(ctx, "e", "r", opts)
+		got, resp, err := client.Codespaces.ListDevContainerConfigurations(ctx, "e", "r", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -490,7 +490,7 @@ func TestCodespacesService_CreateFromPullRequest(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_CreateForAuthenticatedUser(t *testing.T) {
+func TestCodespacesService_CreateCodespace(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -514,12 +514,12 @@ func TestCodespacesService_CreateForAuthenticatedUser(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	codespace, _, err := client.Codespaces.CreateForAuthenticatedUser(
+	codespace, _, err := client.Codespaces.CreateCodespace(
 		ctx,
 		opt,
 	)
 	if err != nil {
-		t.Fatalf("Codespaces.CreateForAuthenticatedUser returned error: %v", err)
+		t.Fatalf("Codespaces.CreateCodespace returned error: %v", err)
 	}
 
 	want := &Codespace{
@@ -530,12 +530,12 @@ func TestCodespacesService_CreateForAuthenticatedUser(t *testing.T) {
 	}
 
 	if !cmp.Equal(codespace, want) {
-		t.Errorf("Codespaces.CreateForAuthenticatedUser returned %+v, want %+v", codespace, want)
+		t.Errorf("Codespaces.CreateCodespace returned %+v, want %+v", codespace, want)
 	}
 
-	const methodName = "CreateForAuthenticatedUser"
+	const methodName = "CreateCodespace"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.CreateForAuthenticatedUser(
+		got, resp, err := client.Codespaces.CreateCodespace(
 			ctx,
 			opt,
 		)
@@ -546,7 +546,7 @@ func TestCodespacesService_CreateForAuthenticatedUser(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_GetInfo(t *testing.T) {
+func TestCodespacesService_GetCodespace(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -556,9 +556,9 @@ func TestCodespacesService_GetInfo(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	codespace, _, err := client.Codespaces.GetInfo(ctx, "codespace_1")
+	codespace, _, err := client.Codespaces.GetCodespace(ctx, "codespace_1")
 	if err != nil {
-		t.Fatalf("Codespaces.GetInfo returned error: %v", err)
+		t.Fatalf("Codespaces.GetCodespace returned error: %v", err)
 	}
 
 	want := &Codespace{
@@ -569,12 +569,12 @@ func TestCodespacesService_GetInfo(t *testing.T) {
 	}
 
 	if !cmp.Equal(codespace, want) {
-		t.Errorf("Codespaces.GetInfo returned %+v, want %+v", codespace, want)
+		t.Errorf("Codespaces.GetCodespace returned %+v, want %+v", codespace, want)
 	}
 
-	const methodName = "GetInfo"
+	const methodName = "GetCodespace"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.GetInfo(ctx, "codespace_1")
+		got, resp, err := client.Codespaces.GetCodespace(ctx, "codespace_1")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -639,7 +639,7 @@ func TestCodespacesService_Update(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_TriggerExport(t *testing.T) {
+func TestCodespacesService_ExportCodespace(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -654,9 +654,9 @@ func TestCodespacesService_TriggerExport(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	export, _, err := client.Codespaces.TriggerExport(ctx, "codespace_1")
+	export, _, err := client.Codespaces.ExportCodespace(ctx, "codespace_1")
 	if err != nil {
-		t.Fatalf("Codespaces.TriggerExport returned error: %v", err)
+		t.Fatalf("Codespaces.ExportCodespace returned error: %v", err)
 	}
 
 	want := &CodespaceExport{
@@ -667,12 +667,12 @@ func TestCodespacesService_TriggerExport(t *testing.T) {
 	}
 
 	if !cmp.Equal(export, want) {
-		t.Errorf("Codespaces.TriggerExport returned %+v, want %+v", export, want)
+		t.Errorf("Codespaces.ExportCodespace returned %+v, want %+v", export, want)
 	}
 
-	const methodName = "TriggerExport"
+	const methodName = "ExportCodespace"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.TriggerExport(ctx, "codespace_1")
+		got, resp, err := client.Codespaces.ExportCodespace(ctx, "codespace_1")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -680,7 +680,7 @@ func TestCodespacesService_TriggerExport(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_GetLatestExport(t *testing.T) {
+func TestCodespacesService_GetLatestCodespaceExport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -695,9 +695,9 @@ func TestCodespacesService_GetLatestExport(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	export, _, err := client.Codespaces.GetLatestExport(ctx, "codespace_1")
+	export, _, err := client.Codespaces.GetLatestCodespaceExport(ctx, "codespace_1")
 	if err != nil {
-		t.Fatalf("Codespaces.GetLatestExport returned error: %v", err)
+		t.Fatalf("Codespaces.GetLatestCodespaceExport returned error: %v", err)
 	}
 
 	want := &CodespaceExport{
@@ -708,12 +708,12 @@ func TestCodespacesService_GetLatestExport(t *testing.T) {
 	}
 
 	if !cmp.Equal(export, want) {
-		t.Errorf("Codespaces.GetLatestExport returned %+v, want %+v", export, want)
+		t.Errorf("Codespaces.GetLatestCodespaceExport returned %+v, want %+v", export, want)
 	}
 
-	const methodName = "GetLatestExport"
+	const methodName = "GetLatestCodespaceExport"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.GetLatestExport(ctx, "codespace_1")
+		got, resp, err := client.Codespaces.GetLatestCodespaceExport(ctx, "codespace_1")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
