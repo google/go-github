@@ -25098,6 +25098,25 @@ func TestProjectV2_GetID(tt *testing.T) {
 	p.GetID()
 }
 
+func TestProjectV2_GetIsTemplate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &ProjectV2{IsTemplate: &zeroValue}
+	p.GetIsTemplate()
+	p = &ProjectV2{}
+	p.GetIsTemplate()
+	p = nil
+	p.GetIsTemplate()
+}
+
+func TestProjectV2_GetLatestStatusUpdate(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2{}
+	p.GetLatestStatusUpdate()
+	p = nil
+	p.GetLatestStatusUpdate()
+}
+
 func TestProjectV2_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -25236,6 +25255,80 @@ func TestProjectV2_GetURL(tt *testing.T) {
 	p.GetURL()
 	p = nil
 	p.GetURL()
+}
+
+func TestProjectV2DraftIssue_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2DraftIssue{Body: &zeroValue}
+	p.GetBody()
+	p = &ProjectV2DraftIssue{}
+	p.GetBody()
+	p = nil
+	p.GetBody()
+}
+
+func TestProjectV2DraftIssue_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &ProjectV2DraftIssue{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &ProjectV2DraftIssue{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestProjectV2DraftIssue_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &ProjectV2DraftIssue{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectV2DraftIssue{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestProjectV2DraftIssue_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2DraftIssue{NodeID: &zeroValue}
+	p.GetNodeID()
+	p = &ProjectV2DraftIssue{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestProjectV2DraftIssue_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2DraftIssue{Title: &zeroValue}
+	p.GetTitle()
+	p = &ProjectV2DraftIssue{}
+	p.GetTitle()
+	p = nil
+	p.GetTitle()
+}
+
+func TestProjectV2DraftIssue_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &ProjectV2DraftIssue{UpdatedAt: &zeroValue}
+	p.GetUpdatedAt()
+	p = &ProjectV2DraftIssue{}
+	p.GetUpdatedAt()
+	p = nil
+	p.GetUpdatedAt()
+}
+
+func TestProjectV2DraftIssue_GetUser(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2DraftIssue{}
+	p.GetUser()
+	p = nil
+	p.GetUser()
 }
 
 func TestProjectV2Event_GetAction(tt *testing.T) {
@@ -25491,10 +25584,7 @@ func TestProjectV2Item_GetContentNodeID(tt *testing.T) {
 
 func TestProjectV2Item_GetContentType(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &ProjectV2Item{ContentType: &zeroValue}
-	p.GetContentType()
-	p = &ProjectV2Item{}
+	p := &ProjectV2Item{}
 	p.GetContentType()
 	p = nil
 	p.GetContentType()
@@ -25601,6 +25691,30 @@ func TestProjectV2ItemChange_GetFieldValue(tt *testing.T) {
 	p.GetFieldValue()
 }
 
+func TestProjectV2ItemContent_GetDraftIssue(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2ItemContent{}
+	p.GetDraftIssue()
+	p = nil
+	p.GetDraftIssue()
+}
+
+func TestProjectV2ItemContent_GetIssue(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2ItemContent{}
+	p.GetIssue()
+	p = nil
+	p.GetIssue()
+}
+
+func TestProjectV2ItemContent_GetPullRequest(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2ItemContent{}
+	p.GetPullRequest()
+	p = nil
+	p.GetPullRequest()
+}
+
 func TestProjectV2ItemEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -25661,6 +25775,214 @@ func TestProjectV2ItemFieldValue_GetID(tt *testing.T) {
 	p.GetID()
 	p = nil
 	p.GetID()
+}
+
+func TestProjectV2ItemWithContent_GetArchivedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &ProjectV2ItemWithContent{ArchivedAt: &zeroValue}
+	p.GetArchivedAt()
+	p = &ProjectV2ItemWithContent{}
+	p.GetArchivedAt()
+	p = nil
+	p.GetArchivedAt()
+}
+
+func TestProjectV2ItemWithContent_GetContent(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2ItemWithContent{}
+	p.GetContent()
+	p = nil
+	p.GetContent()
+}
+
+func TestProjectV2ItemWithContent_GetContentType(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2ItemWithContent{}
+	p.GetContentType()
+	p = nil
+	p.GetContentType()
+}
+
+func TestProjectV2ItemWithContent_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &ProjectV2ItemWithContent{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &ProjectV2ItemWithContent{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestProjectV2ItemWithContent_GetCreator(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2ItemWithContent{}
+	p.GetCreator()
+	p = nil
+	p.GetCreator()
+}
+
+func TestProjectV2ItemWithContent_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &ProjectV2ItemWithContent{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectV2ItemWithContent{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestProjectV2ItemWithContent_GetItemURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2ItemWithContent{ItemURL: &zeroValue}
+	p.GetItemURL()
+	p = &ProjectV2ItemWithContent{}
+	p.GetItemURL()
+	p = nil
+	p.GetItemURL()
+}
+
+func TestProjectV2ItemWithContent_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2ItemWithContent{NodeID: &zeroValue}
+	p.GetNodeID()
+	p = &ProjectV2ItemWithContent{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestProjectV2ItemWithContent_GetProjectURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2ItemWithContent{ProjectURL: &zeroValue}
+	p.GetProjectURL()
+	p = &ProjectV2ItemWithContent{}
+	p.GetProjectURL()
+	p = nil
+	p.GetProjectURL()
+}
+
+func TestProjectV2ItemWithContent_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &ProjectV2ItemWithContent{UpdatedAt: &zeroValue}
+	p.GetUpdatedAt()
+	p = &ProjectV2ItemWithContent{}
+	p.GetUpdatedAt()
+	p = nil
+	p.GetUpdatedAt()
+}
+
+func TestProjectV2StatusUpdate_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2StatusUpdate{Body: &zeroValue}
+	p.GetBody()
+	p = &ProjectV2StatusUpdate{}
+	p.GetBody()
+	p = nil
+	p.GetBody()
+}
+
+func TestProjectV2StatusUpdate_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &ProjectV2StatusUpdate{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &ProjectV2StatusUpdate{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestProjectV2StatusUpdate_GetCreator(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2StatusUpdate{}
+	p.GetCreator()
+	p = nil
+	p.GetCreator()
+}
+
+func TestProjectV2StatusUpdate_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &ProjectV2StatusUpdate{ID: &zeroValue}
+	p.GetID()
+	p = &ProjectV2StatusUpdate{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestProjectV2StatusUpdate_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2StatusUpdate{NodeID: &zeroValue}
+	p.GetNodeID()
+	p = &ProjectV2StatusUpdate{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestProjectV2StatusUpdate_GetProjectNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2StatusUpdate{ProjectNodeID: &zeroValue}
+	p.GetProjectNodeID()
+	p = &ProjectV2StatusUpdate{}
+	p.GetProjectNodeID()
+	p = nil
+	p.GetProjectNodeID()
+}
+
+func TestProjectV2StatusUpdate_GetStartDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2StatusUpdate{StartDate: &zeroValue}
+	p.GetStartDate()
+	p = &ProjectV2StatusUpdate{}
+	p.GetStartDate()
+	p = nil
+	p.GetStartDate()
+}
+
+func TestProjectV2StatusUpdate_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2StatusUpdate{Status: &zeroValue}
+	p.GetStatus()
+	p = &ProjectV2StatusUpdate{}
+	p.GetStatus()
+	p = nil
+	p.GetStatus()
+}
+
+func TestProjectV2StatusUpdate_GetTargetDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2StatusUpdate{TargetDate: &zeroValue}
+	p.GetTargetDate()
+	p = &ProjectV2StatusUpdate{}
+	p.GetTargetDate()
+	p = nil
+	p.GetTargetDate()
+}
+
+func TestProjectV2StatusUpdate_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &ProjectV2StatusUpdate{UpdatedAt: &zeroValue}
+	p.GetUpdatedAt()
+	p = &ProjectV2StatusUpdate{}
+	p.GetUpdatedAt()
+	p = nil
+	p.GetUpdatedAt()
 }
 
 func TestProjectV2TextContent_GetHTML(tt *testing.T) {

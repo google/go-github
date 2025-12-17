@@ -19310,6 +19310,22 @@ func (p *ProjectV2) GetID() int64 {
 	return *p.ID
 }
 
+// GetIsTemplate returns the IsTemplate field if it's non-nil, zero value otherwise.
+func (p *ProjectV2) GetIsTemplate() bool {
+	if p == nil || p.IsTemplate == nil {
+		return false
+	}
+	return *p.IsTemplate
+}
+
+// GetLatestStatusUpdate returns the LatestStatusUpdate field.
+func (p *ProjectV2) GetLatestStatusUpdate() *ProjectV2StatusUpdate {
+	if p == nil {
+		return nil
+	}
+	return p.LatestStatusUpdate
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (p *ProjectV2) GetName() string {
 	if p == nil || p.Name == nil {
@@ -19412,6 +19428,62 @@ func (p *ProjectV2) GetURL() string {
 		return ""
 	}
 	return *p.URL
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (p *ProjectV2DraftIssue) GetBody() string {
+	if p == nil || p.Body == nil {
+		return ""
+	}
+	return *p.Body
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *ProjectV2DraftIssue) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2DraftIssue) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2DraftIssue) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (p *ProjectV2DraftIssue) GetTitle() string {
+	if p == nil || p.Title == nil {
+		return ""
+	}
+	return *p.Title
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (p *ProjectV2DraftIssue) GetUpdatedAt() Timestamp {
+	if p == nil || p.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.UpdatedAt
+}
+
+// GetUser returns the User field.
+func (p *ProjectV2DraftIssue) GetUser() *User {
+	if p == nil {
+		return nil
+	}
+	return p.User
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
@@ -19614,12 +19686,12 @@ func (p *ProjectV2Item) GetContentNodeID() string {
 	return *p.ContentNodeID
 }
 
-// GetContentType returns the ContentType field if it's non-nil, zero value otherwise.
-func (p *ProjectV2Item) GetContentType() string {
-	if p == nil || p.ContentType == nil {
-		return ""
+// GetContentType returns the ContentType field.
+func (p *ProjectV2Item) GetContentType() *ProjectV2ItemContentType {
+	if p == nil {
+		return nil
 	}
-	return *p.ContentType
+	return p.ContentType
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
@@ -19702,6 +19774,30 @@ func (p *ProjectV2ItemChange) GetFieldValue() *FieldValue {
 	return p.FieldValue
 }
 
+// GetDraftIssue returns the DraftIssue field.
+func (p *ProjectV2ItemContent) GetDraftIssue() *ProjectV2DraftIssue {
+	if p == nil {
+		return nil
+	}
+	return p.DraftIssue
+}
+
+// GetIssue returns the Issue field.
+func (p *ProjectV2ItemContent) GetIssue() *Issue {
+	if p == nil {
+		return nil
+	}
+	return p.Issue
+}
+
+// GetPullRequest returns the PullRequest field.
+func (p *ProjectV2ItemContent) GetPullRequest() *PullRequest {
+	if p == nil {
+		return nil
+	}
+	return p.PullRequest
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *ProjectV2ItemEvent) GetAction() string {
 	if p == nil || p.Action == nil {
@@ -19756,6 +19852,166 @@ func (p *ProjectV2ItemFieldValue) GetID() int64 {
 		return 0
 	}
 	return *p.ID
+}
+
+// GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ItemWithContent) GetArchivedAt() Timestamp {
+	if p == nil || p.ArchivedAt == nil {
+		return Timestamp{}
+	}
+	return *p.ArchivedAt
+}
+
+// GetContent returns the Content field.
+func (p *ProjectV2ItemWithContent) GetContent() *ProjectV2ItemContent {
+	if p == nil {
+		return nil
+	}
+	return p.Content
+}
+
+// GetContentType returns the ContentType field.
+func (p *ProjectV2ItemWithContent) GetContentType() *ProjectV2ItemContentType {
+	if p == nil {
+		return nil
+	}
+	return p.ContentType
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ItemWithContent) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetCreator returns the Creator field.
+func (p *ProjectV2ItemWithContent) GetCreator() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Creator
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ItemWithContent) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetItemURL returns the ItemURL field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ItemWithContent) GetItemURL() string {
+	if p == nil || p.ItemURL == nil {
+		return ""
+	}
+	return *p.ItemURL
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ItemWithContent) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
+// GetProjectURL returns the ProjectURL field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ItemWithContent) GetProjectURL() string {
+	if p == nil || p.ProjectURL == nil {
+		return ""
+	}
+	return *p.ProjectURL
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ItemWithContent) GetUpdatedAt() Timestamp {
+	if p == nil || p.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.UpdatedAt
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (p *ProjectV2StatusUpdate) GetBody() string {
+	if p == nil || p.Body == nil {
+		return ""
+	}
+	return *p.Body
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *ProjectV2StatusUpdate) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetCreator returns the Creator field.
+func (p *ProjectV2StatusUpdate) GetCreator() *User {
+	if p == nil {
+		return nil
+	}
+	return p.Creator
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2StatusUpdate) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2StatusUpdate) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
+// GetProjectNodeID returns the ProjectNodeID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2StatusUpdate) GetProjectNodeID() string {
+	if p == nil || p.ProjectNodeID == nil {
+		return ""
+	}
+	return *p.ProjectNodeID
+}
+
+// GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
+func (p *ProjectV2StatusUpdate) GetStartDate() string {
+	if p == nil || p.StartDate == nil {
+		return ""
+	}
+	return *p.StartDate
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (p *ProjectV2StatusUpdate) GetStatus() string {
+	if p == nil || p.Status == nil {
+		return ""
+	}
+	return *p.Status
+}
+
+// GetTargetDate returns the TargetDate field if it's non-nil, zero value otherwise.
+func (p *ProjectV2StatusUpdate) GetTargetDate() string {
+	if p == nil || p.TargetDate == nil {
+		return ""
+	}
+	return *p.TargetDate
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (p *ProjectV2StatusUpdate) GetUpdatedAt() Timestamp {
+	if p == nil || p.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.UpdatedAt
 }
 
 // GetHTML returns the HTML field if it's non-nil, zero value otherwise.

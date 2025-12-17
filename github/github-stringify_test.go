@@ -1560,19 +1560,78 @@ func TestProjectV2_String(t *testing.T) {
 		Number:                 Ptr(0),
 		ShortDescription:       Ptr(""),
 		DeletedBy:              &User{},
+		State:                  Ptr(""),
+		LatestStatusUpdate:     &ProjectV2StatusUpdate{},
+		IsTemplate:             Ptr(false),
 		URL:                    Ptr(""),
 		HTMLURL:                Ptr(""),
 		ColumnsURL:             Ptr(""),
 		OwnerURL:               Ptr(""),
 		Name:                   Ptr(""),
 		Body:                   Ptr(""),
-		State:                  Ptr(""),
 		OrganizationPermission: Ptr(""),
 		Private:                Ptr(false),
 	}
-	want := `github.ProjectV2{ID:0, NodeID:"", Owner:github.User{}, Creator:github.User{}, Title:"", Description:"", Public:false, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, DeletedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Number:0, ShortDescription:"", DeletedBy:github.User{}, URL:"", HTMLURL:"", ColumnsURL:"", OwnerURL:"", Name:"", Body:"", State:"", OrganizationPermission:"", Private:false}`
+	want := `github.ProjectV2{ID:0, NodeID:"", Owner:github.User{}, Creator:github.User{}, Title:"", Description:"", Public:false, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, DeletedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Number:0, ShortDescription:"", DeletedBy:github.User{}, State:"", LatestStatusUpdate:github.ProjectV2StatusUpdate{}, IsTemplate:false, URL:"", HTMLURL:"", ColumnsURL:"", OwnerURL:"", Name:"", Body:"", OrganizationPermission:"", Private:false}`
 	if got := v.String(); got != want {
 		t.Errorf("ProjectV2.String = %v, want %v", got, want)
+	}
+}
+
+func TestProjectV2DraftIssue_String(t *testing.T) {
+	t.Parallel()
+	v := ProjectV2DraftIssue{
+		ID:        Ptr(int64(0)),
+		NodeID:    Ptr(""),
+		Title:     Ptr(""),
+		Body:      Ptr(""),
+		User:      &User{},
+		CreatedAt: &Timestamp{},
+		UpdatedAt: &Timestamp{},
+	}
+	want := `github.ProjectV2DraftIssue{ID:0, NodeID:"", Title:"", Body:"", User:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	if got := v.String(); got != want {
+		t.Errorf("ProjectV2DraftIssue.String = %v, want %v", got, want)
+	}
+}
+
+func TestProjectV2ItemWithContent_String(t *testing.T) {
+	t.Parallel()
+	v := ProjectV2ItemWithContent{
+		ID:          Ptr(int64(0)),
+		NodeID:      Ptr(""),
+		ProjectURL:  Ptr(""),
+		ContentType: Ptr(ProjectV2ItemContentType("")),
+		Content:     &ProjectV2ItemContent{},
+		Creator:     &User{},
+		CreatedAt:   &Timestamp{},
+		UpdatedAt:   &Timestamp{},
+		ArchivedAt:  &Timestamp{},
+		ItemURL:     Ptr(""),
+	}
+	want := `github.ProjectV2ItemWithContent{ID:0, NodeID:"", ProjectURL:"", ContentType:"", Content:github.ProjectV2ItemContent{}, Creator:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ArchivedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ItemURL:""}`
+	if got := v.String(); got != want {
+		t.Errorf("ProjectV2ItemWithContent.String = %v, want %v", got, want)
+	}
+}
+
+func TestProjectV2StatusUpdate_String(t *testing.T) {
+	t.Parallel()
+	v := ProjectV2StatusUpdate{
+		ID:            Ptr(int64(0)),
+		NodeID:        Ptr(""),
+		ProjectNodeID: Ptr(""),
+		Creator:       &User{},
+		CreatedAt:     &Timestamp{},
+		UpdatedAt:     &Timestamp{},
+		Status:        Ptr(""),
+		StartDate:     Ptr(""),
+		TargetDate:    Ptr(""),
+		Body:          Ptr(""),
+	}
+	want := `github.ProjectV2StatusUpdate{ID:0, NodeID:"", ProjectNodeID:"", Creator:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Status:"", StartDate:"", TargetDate:"", Body:""}`
+	if got := v.String(); got != want {
+		t.Errorf("ProjectV2StatusUpdate.String = %v, want %v", got, want)
 	}
 }
 

@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -16,22 +17,65 @@ import (
 // GitHub API docs: https://docs.github.com/rest/projects/projects
 type ProjectsService service
 
+// ProjectV2ItemContentType represents the type of content in a ProjectV2Item.
+type ProjectV2ItemContentType string
+
+// This is the set of possible content types for a ProjectV2Item.
+const (
+	ProjectV2ItemContentTypeIssue       ProjectV2ItemContentType = "Issue"
+	ProjectV2ItemContentTypePullRequest ProjectV2ItemContentType = "PullRequest"
+	ProjectV2ItemContentTypeDraftIssue  ProjectV2ItemContentType = "DraftIssue"
+)
+
+// ProjectV2StatusUpdate represents a status update for a project.
+type ProjectV2StatusUpdate struct {
+	ID            *int64     `json:"id,omitempty"`
+	NodeID        *string    `json:"node_id,omitempty"`
+	ProjectNodeID *string    `json:"project_node_id,omitempty"`
+	Creator       *User      `json:"creator,omitempty"`
+	CreatedAt     *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
+	// Status can be one of: "INACTIVE", "ON_TRACK", "AT_RISK", "OFF_TRACK", "COMPLETE".
+	Status     *string `json:"status,omitempty"`
+	StartDate  *string `json:"start_date,omitempty"`
+	TargetDate *string `json:"target_date,omitempty"`
+	Body       *string `json:"body,omitempty"`
+}
+
+func (s ProjectV2StatusUpdate) String() string { return Stringify(s) }
+
+// ProjectV2DraftIssue represents a draft issue in a project.
+type ProjectV2DraftIssue struct {
+	ID        *int64     `json:"id,omitempty"`
+	NodeID    *string    `json:"node_id,omitempty"`
+	Title     *string    `json:"title,omitempty"`
+	Body      *string    `json:"body,omitempty"`
+	User      *User      `json:"user,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+}
+
+func (d ProjectV2DraftIssue) String() string { return Stringify(d) }
+
 // ProjectV2 represents a v2 project.
 type ProjectV2 struct {
-	ID               *int64     `json:"id,omitempty"`
-	NodeID           *string    `json:"node_id,omitempty"`
-	Owner            *User      `json:"owner,omitempty"`
-	Creator          *User      `json:"creator,omitempty"`
-	Title            *string    `json:"title,omitempty"`
-	Description      *string    `json:"description,omitempty"`
-	Public           *bool      `json:"public,omitempty"`
-	ClosedAt         *Timestamp `json:"closed_at,omitempty"`
-	CreatedAt        *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
-	DeletedAt        *Timestamp `json:"deleted_at,omitempty"`
-	Number           *int       `json:"number,omitempty"`
-	ShortDescription *string    `json:"short_description,omitempty"`
-	DeletedBy        *User      `json:"deleted_by,omitempty"`
+	ID                 *int64                 `json:"id,omitempty"`
+	NodeID             *string                `json:"node_id,omitempty"`
+	Owner              *User                  `json:"owner,omitempty"`
+	Creator            *User                  `json:"creator,omitempty"`
+	Title              *string                `json:"title,omitempty"`
+	Description        *string                `json:"description,omitempty"`
+	Public             *bool                  `json:"public,omitempty"`
+	ClosedAt           *Timestamp             `json:"closed_at,omitempty"`
+	CreatedAt          *Timestamp             `json:"created_at,omitempty"`
+	UpdatedAt          *Timestamp             `json:"updated_at,omitempty"`
+	DeletedAt          *Timestamp             `json:"deleted_at,omitempty"`
+	Number             *int                   `json:"number,omitempty"`
+	ShortDescription   *string                `json:"short_description,omitempty"`
+	DeletedBy          *User                  `json:"deleted_by,omitempty"`
+	State              *string                `json:"state,omitempty"`
+	LatestStatusUpdate *ProjectV2StatusUpdate `json:"latest_status_update,omitempty"`
+	IsTemplate         *bool                  `json:"is_template,omitempty"`
 
 	// Fields migrated from the Project (classic) struct:
 	URL                    *string `json:"url,omitempty"`
@@ -40,7 +84,6 @@ type ProjectV2 struct {
 	OwnerURL               *string `json:"owner_url,omitempty"`
 	Name                   *string `json:"name,omitempty"`
 	Body                   *string `json:"body,omitempty"`
-	State                  *string `json:"state,omitempty"`
 	OrganizationPermission *string `json:"organization_permission,omitempty"`
 	Private                *bool   `json:"private,omitempty"`
 }
@@ -113,6 +156,87 @@ type ProjectV2FieldConfiguration struct {
 	Duration   *int                       `json:"duration,omitempty"`   // The duration of the iteration field in seconds.
 	StartDay   *int                       `json:"start_day,omitempty"`  // The start day for the iteration.
 	Iterations []*ProjectV2FieldIteration `json:"iterations,omitempty"` // The list of iterations associated with the configuration.
+}
+
+// ProjectV2ItemContent is a union type that holds the content of a ProjectV2Item.
+// The actual type depends on the ContentType field of the parent ProjectV2ItemWithContent.
+// Only one of the fields will be populated after unmarshaling.
+type ProjectV2ItemContent struct {
+	Issue       *Issue               `json:"-"`
+	PullRequest *PullRequest         `json:"-"`
+	DraftIssue  *ProjectV2DraftIssue `json:"-"`
+}
+
+// MarshalJSON implements custom marshaling for ProjectV2ItemContent.
+func (c *ProjectV2ItemContent) MarshalJSON() ([]byte, error) {
+	if c.Issue != nil {
+		return json.Marshal(c.Issue)
+	}
+	if c.PullRequest != nil {
+		return json.Marshal(c.PullRequest)
+	}
+	if c.DraftIssue != nil {
+		return json.Marshal(c.DraftIssue)
+	}
+	return []byte("null"), nil
+}
+
+// ProjectV2ItemWithContent represents a full project item with field values.
+// This type is used by Get, List, and Update operations which return field values.
+// The Content field is automatically unmarshaled into the appropriate type based on ContentType.
+// The Fields array contains flexible field value structures.
+type ProjectV2ItemWithContent struct {
+	ID          *int64                    `json:"id,omitempty"`
+	NodeID      *string                   `json:"node_id,omitempty"`
+	ProjectURL  *string                   `json:"project_url,omitempty"`
+	ContentType *ProjectV2ItemContentType `json:"content_type,omitempty"`
+	// Content contains the issue, pull request, or draft issue data.
+	// Access the typed content via Content.Issue, Content.PullRequest, or Content.DraftIssue.
+	Content    *ProjectV2ItemContent `json:"content,omitempty"`
+	Creator    *User                 `json:"creator,omitempty"`
+	CreatedAt  *Timestamp            `json:"created_at,omitempty"`
+	UpdatedAt  *Timestamp            `json:"updated_at,omitempty"`
+	ArchivedAt *Timestamp            `json:"archived_at,omitempty"`
+	ItemURL    *string               `json:"item_url,omitempty"`
+	// Fields contains field values with flexible structures that depend on field types.
+	Fields []map[string]interface{} `json:"fields,omitempty"`
+}
+
+func (i ProjectV2ItemWithContent) String() string { return Stringify(i) }
+
+// UnmarshalJSON implements custom unmarshaling for ProjectV2ItemWithContent.
+// It uses the ContentType field to determine how to unmarshal the Content field.
+func (i *ProjectV2ItemWithContent) UnmarshalJSON(data []byte) error {
+	type contentAlias ProjectV2ItemWithContent
+
+	aux := &struct {
+		Content json.RawMessage `json:"content,omitempty"`
+		*contentAlias
+	}{
+		contentAlias: (*contentAlias)(i),
+	}
+
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+
+	// Now unmarshal the content based on ContentType
+	if len(aux.Content) > 0 && string(aux.Content) != "null" && i.ContentType != nil {
+		i.Content = &ProjectV2ItemContent{}
+		switch *i.ContentType {
+		case ProjectV2ItemContentTypeIssue:
+			i.Content.Issue = &Issue{}
+			return json.Unmarshal(aux.Content, i.Content.Issue)
+		case ProjectV2ItemContentTypePullRequest:
+			i.Content.PullRequest = &PullRequest{}
+			return json.Unmarshal(aux.Content, i.Content.PullRequest)
+		case ProjectV2ItemContentTypeDraftIssue:
+			i.Content.DraftIssue = &ProjectV2DraftIssue{}
+			return json.Unmarshal(aux.Content, i.Content.DraftIssue)
+		}
+	}
+
+	return nil
 }
 
 // ProjectV2Field represents a field in a GitHub Projects V2 project.
@@ -330,8 +454,8 @@ type GetProjectItemOptions struct {
 // to a project. The Type must be either "Issue" or "PullRequest" (as per API docs) and
 // ID is the numerical ID of that issue or pull request.
 type AddProjectItemOptions struct {
-	Type string `json:"type,omitempty"`
-	ID   int64  `json:"id,omitempty"`
+	Type ProjectV2ItemContentType `json:"type,omitempty"`
+	ID   int64                    `json:"id,omitempty"`
 }
 
 // UpdateProjectV2Field represents a field update for a project item.
@@ -366,7 +490,7 @@ type UpdateProjectItemOptions struct {
 // GitHub API docs: https://docs.github.com/rest/projects/items#list-items-for-an-organization-owned-project
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/items
-func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org string, projectNumber int, opts *ListProjectItemsOptions) ([]*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org string, projectNumber int, opts *ListProjectItemsOptions) ([]*ProjectV2ItemWithContent, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items", org, projectNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -378,7 +502,7 @@ func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org 
 		return nil, nil, err
 	}
 
-	var items []*ProjectV2Item
+	var items []*ProjectV2ItemWithContent
 	resp, err := s.client.Do(ctx, req, &items)
 	if err != nil {
 		return nil, resp, err
@@ -411,7 +535,7 @@ func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org st
 // GitHub API docs: https://docs.github.com/rest/projects/items#get-an-item-for-an-organization-owned-project
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2ItemWithContent, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items/%v", org, projectNumber, itemID)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -421,7 +545,7 @@ func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org st
 	if err != nil {
 		return nil, nil, err
 	}
-	item := new(ProjectV2Item)
+	item := new(ProjectV2ItemWithContent)
 	resp, err := s.client.Do(ctx, req, item)
 	if err != nil {
 		return nil, resp, err
@@ -434,13 +558,13 @@ func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org st
 // GitHub API docs: https://docs.github.com/rest/projects/items#update-project-item-for-organization
 //
 //meta:operation PATCH /orgs/{org}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2ItemWithContent, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items/%v", org, projectNumber, itemID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
-	item := new(ProjectV2Item)
+	item := new(ProjectV2ItemWithContent)
 	resp, err := s.client.Do(ctx, req, item)
 	if err != nil {
 		return nil, resp, err
@@ -467,7 +591,7 @@ func (s *ProjectsService) DeleteOrganizationProjectItem(ctx context.Context, org
 // GitHub API docs: https://docs.github.com/rest/projects/items#list-items-for-a-user-owned-project
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/items
-func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username string, projectNumber int, opts *ListProjectItemsOptions) ([]*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username string, projectNumber int, opts *ListProjectItemsOptions) ([]*ProjectV2ItemWithContent, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items", username, projectNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -477,7 +601,7 @@ func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username str
 	if err != nil {
 		return nil, nil, err
 	}
-	var items []*ProjectV2Item
+	var items []*ProjectV2ItemWithContent
 	resp, err := s.client.Do(ctx, req, &items)
 	if err != nil {
 		return nil, resp, err
@@ -509,7 +633,7 @@ func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username strin
 // GitHub API docs: https://docs.github.com/rest/projects/items#get-an-item-for-a-user-owned-project
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2ItemWithContent, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items/%v", username, projectNumber, itemID)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -519,7 +643,7 @@ func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username strin
 	if err != nil {
 		return nil, nil, err
 	}
-	item := new(ProjectV2Item)
+	item := new(ProjectV2ItemWithContent)
 	resp, err := s.client.Do(ctx, req, item)
 	if err != nil {
 		return nil, resp, err
@@ -532,13 +656,13 @@ func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username strin
 // GitHub API docs: https://docs.github.com/rest/projects/items#update-project-item-for-user
 //
 //meta:operation PATCH /users/{username}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2ItemWithContent, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items/%v", username, projectNumber, itemID)
 	req, err := s.client.NewRequest("PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
-	item := new(ProjectV2Item)
+	item := new(ProjectV2ItemWithContent)
 	resp, err := s.client.Do(ctx, req, item)
 	if err != nil {
 		return nil, resp, err

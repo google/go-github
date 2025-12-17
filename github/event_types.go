@@ -1177,7 +1177,7 @@ type ProjectV2Item struct {
 	ProjectNodeID *string                    `json:"project_node_id,omitempty"`
 	ContentNodeID *string                    `json:"content_node_id,omitempty"`
 	ProjectURL    *string                    `json:"project_url,omitempty"`
-	ContentType   *string                    `json:"content_type,omitempty"`
+	ContentType   *ProjectV2ItemContentType  `json:"content_type,omitempty"`
 	Creator       *User                      `json:"creator,omitempty"`
 	CreatedAt     *Timestamp                 `json:"created_at,omitempty"`
 	UpdatedAt     *Timestamp                 `json:"updated_at,omitempty"`
