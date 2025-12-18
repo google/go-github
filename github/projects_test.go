@@ -810,7 +810,7 @@ func TestProjectsService_AddOrganizationProjectItem(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 99})
+	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(99))})
 	if err != nil {
 		t.Fatalf("Projects.AddOrganizationProjectItem returned error: %v", err)
 	}
@@ -830,7 +830,7 @@ func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "AddOrganizationProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 1})
+		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(1))})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1082,7 +1082,7 @@ func TestProjectsService_AddUserProjectItem(t *testing.T) {
 		fmt.Fprint(w, `{"id":123,"node_id":"PVTI_new_user"}`)
 	})
 	ctx := t.Context()
-	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: "PullRequest", ID: 123})
+	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("PullRequest")), ID: Ptr(int64(123))})
 	if err != nil {
 		t.Fatalf("AddUserProjectItem error: %v", err)
 	}
@@ -1101,7 +1101,7 @@ func TestProjectsService_AddUserProjectItem_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "AddUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: "Issue", ID: 5})
+		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(5))})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1551,6 +1551,16 @@ func TestProjectV2Item_UnmarshalJSON_EmptyJSON(t *testing.T) {
 	}
 }
 
+func TestProjectV2Item_UnmarshalJSON_InvalidJSON(t *testing.T) {
+	t.Parallel()
+
+	// Test with invalid JSON
+	var item ProjectV2Item
+	if err := json.Unmarshal([]byte("~~~"), &item); err == nil {
+		t.Error("expected error for invalid JSON, got nil")
+	}
+}
+
 func TestProjectV2Item_Marshal_Issue(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &ProjectV2Item{}, "{}")
@@ -1630,6 +1640,23 @@ func TestProjectV2Item_Marshal_DraftIssue(t *testing.T) {
 			"body":"Work in progress",
 			"title":"Draft task"
 		},
+		"id":789
+	}`
+
+	testJSONMarshal(t, item, want)
+}
+
+func TestProjectV2Item_Marshal_MissingContent(t *testing.T) {
+	t.Parallel()
+
+	item := &ProjectV2Item{
+		ContentType: Ptr(ProjectV2ItemContentTypeIssue),
+		Content:     nil,
+		ID:          Ptr(int64(789)),
+	}
+
+	want := `{
+		"content_type":"Issue",
 		"id":789
 	}`
 

@@ -358,6 +358,22 @@ func (a *ActorLocation) GetCountryCode() string {
 	return *a.CountryCode
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AddProjectItemOptions) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetType returns the Type field.
+func (a *AddProjectItemOptions) GetType() *ProjectV2ItemContentType {
+	if a == nil {
+		return nil
+	}
+	return a.Type
+}
+
 // GetMessage returns the Message field if it's non-nil, zero value otherwise.
 func (a *AddResourcesToCostCenterResponse) GetMessage() string {
 	if a == nil || a.Message == nil {
@@ -19854,12 +19870,28 @@ func (p *ProjectV2ItemEvent) GetSender() *User {
 	return p.Sender
 }
 
+// GetDataType returns the DataType field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ItemFieldValue) GetDataType() string {
+	if p == nil || p.DataType == nil {
+		return ""
+	}
+	return *p.DataType
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (p *ProjectV2ItemFieldValue) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}
 	return *p.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ItemFieldValue) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.

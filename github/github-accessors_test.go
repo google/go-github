@@ -479,6 +479,25 @@ func TestActorLocation_GetCountryCode(tt *testing.T) {
 	a.GetCountryCode()
 }
 
+func TestAddProjectItemOptions_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AddProjectItemOptions{ID: &zeroValue}
+	a.GetID()
+	a = &AddProjectItemOptions{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAddProjectItemOptions_GetType(tt *testing.T) {
+	tt.Parallel()
+	a := &AddProjectItemOptions{}
+	a.GetType()
+	a = nil
+	a.GetType()
+}
+
 func TestAddResourcesToCostCenterResponse_GetMessage(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -25774,6 +25793,17 @@ func TestProjectV2ItemEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 }
 
+func TestProjectV2ItemFieldValue_GetDataType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2ItemFieldValue{DataType: &zeroValue}
+	p.GetDataType()
+	p = &ProjectV2ItemFieldValue{}
+	p.GetDataType()
+	p = nil
+	p.GetDataType()
+}
+
 func TestProjectV2ItemFieldValue_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -25783,6 +25813,17 @@ func TestProjectV2ItemFieldValue_GetID(tt *testing.T) {
 	p.GetID()
 	p = nil
 	p.GetID()
+}
+
+func TestProjectV2ItemFieldValue_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2ItemFieldValue{Name: &zeroValue}
+	p.GetName()
+	p = &ProjectV2ItemFieldValue{}
+	p.GetName()
+	p = nil
+	p.GetName()
 }
 
 func TestProjectV2StatusUpdate_GetBody(tt *testing.T) {

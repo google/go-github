@@ -202,14 +202,14 @@ type ProjectV2Item struct {
 
 // UnmarshalJSON implements custom unmarshaling for ProjectV2Item.
 // It uses the ContentType field to determine how to unmarshal the Content field.
-func (i *ProjectV2Item) UnmarshalJSON(data []byte) error {
+func (p *ProjectV2Item) UnmarshalJSON(data []byte) error {
 	type contentAlias ProjectV2Item
 
 	aux := &struct {
 		Content json.RawMessage `json:"content,omitempty"`
 		*contentAlias
 	}{
-		contentAlias: (*contentAlias)(i),
+		contentAlias: (*contentAlias)(p),
 	}
 
 	if err := json.Unmarshal(data, aux); err != nil {
@@ -217,18 +217,18 @@ func (i *ProjectV2Item) UnmarshalJSON(data []byte) error {
 	}
 
 	// Now unmarshal the content based on ContentType
-	if len(aux.Content) > 0 && string(aux.Content) != "null" && i.ContentType != nil {
-		i.Content = &ProjectV2ItemContent{}
-		switch *i.ContentType {
+	if len(aux.Content) > 0 && string(aux.Content) != "null" && p.ContentType != nil {
+		p.Content = &ProjectV2ItemContent{}
+		switch *p.ContentType {
 		case ProjectV2ItemContentTypeIssue:
-			i.Content.Issue = &Issue{}
-			return json.Unmarshal(aux.Content, i.Content.Issue)
+			p.Content.Issue = &Issue{}
+			return json.Unmarshal(aux.Content, p.Content.Issue)
 		case ProjectV2ItemContentTypePullRequest:
-			i.Content.PullRequest = &PullRequest{}
-			return json.Unmarshal(aux.Content, i.Content.PullRequest)
+			p.Content.PullRequest = &PullRequest{}
+			return json.Unmarshal(aux.Content, p.Content.PullRequest)
 		case ProjectV2ItemContentTypeDraftIssue:
-			i.Content.DraftIssue = &ProjectV2DraftIssue{}
-			return json.Unmarshal(aux.Content, i.Content.DraftIssue)
+			p.Content.DraftIssue = &ProjectV2DraftIssue{}
+			return json.Unmarshal(aux.Content, p.Content.DraftIssue)
 		}
 	}
 
@@ -253,9 +253,9 @@ type ProjectV2Field struct {
 
 // ProjectV2ItemFieldValue represents a field value of a project item.
 type ProjectV2ItemFieldValue struct {
-	ID       *int64 `json:"id,omitempty"`
-	Name     string `json:"name,omitempty"`
-	DataType string `json:"data_type,omitempty"`
+	ID       *int64  `json:"id,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	DataType *string `json:"data_type,omitempty"`
 	// Value set for the field. The type depends on the field type:
 	//   - text: string
 	//   - number: float64
@@ -472,8 +472,8 @@ type GetProjectItemOptions struct {
 // to a project. The Type must be either "Issue" or "PullRequest" (as per API docs) and
 // ID is the numerical ID of that issue or pull request.
 type AddProjectItemOptions struct {
-	Type ProjectV2ItemContentType `json:"type,omitempty"`
-	ID   int64                    `json:"id,omitempty"`
+	Type *ProjectV2ItemContentType `json:"type,omitempty"`
+	ID   *int64                    `json:"id,omitempty"`
 }
 
 // UpdateProjectV2Field represents a field update for a project item.
