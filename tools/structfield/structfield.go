@@ -271,7 +271,6 @@ func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos
 		if !skipOmitzero {
 			const msg = `the %q field in struct %q uses "omitzero"; remove "omitzero", as it is only allowed with structs, maps, and slices`
 			pass.Reportf(tokenPos, msg, goFieldName, structName)
-
 		}
 
 	case omitempty:
