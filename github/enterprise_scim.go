@@ -387,7 +387,30 @@ func (s *EnterpriseService) ProvisionSCIMUser(ctx context.Context, enterprise st
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
 func (s *EnterpriseService) GetProvisionedSCIMGroup(ctx context.Context, enterprise, scimGroupID, excludedAttributes string) (*SCIMEnterpriseGroupAttributes, *Response, error) {
-	return nil, nil, nil
+	var err error
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups/%v", enterprise, scimGroupID)
+	if excludedAttributes != "" {
+		u, err = addOptions(u, &ListProvisionedSCIMGroupsEnterpriseOptions{
+			ExcludedAttributes: &excludedAttributes,
+		})
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	req.Header.Set("Accept", mediaTypeSCIM)
+
+	group := new(SCIMEnterpriseGroupAttributes)
+	resp, err := s.client.Do(ctx, req, group)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return group, resp, nil
 }
 
 // GetProvisionedSCIMUser gets information about a SCIM user.
@@ -396,7 +419,22 @@ func (s *EnterpriseService) GetProvisionedSCIMGroup(ctx context.Context, enterpr
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
 func (s *EnterpriseService) GetProvisionedSCIMUser(ctx context.Context, enterprise, scimUserID string) (*SCIMEnterpriseUserAttributes, *Response, error) {
-	return nil, nil, nil
+	var err error
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Users/%v", enterprise, scimUserID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	req.Header.Set("Accept", mediaTypeSCIM)
+
+	user := new(SCIMEnterpriseUserAttributes)
+	resp, err := s.client.Do(ctx, req, user)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return user, resp, nil
 }
 
 // DeleteSCIMGroup deletes a SCIM group from an enterprise.

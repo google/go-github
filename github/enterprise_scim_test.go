@@ -1043,12 +1043,12 @@ func TestEnterpriseService_GetProvisionedSCIMGroup(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "914a", "")
+	got1, _, err := client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "914a", "")
 	if err != nil {
 		t.Fatalf("Enterprise.GetProvisionedSCIMGroup returned unexpected error: %v", err)
 	}
 
-	want := &SCIMEnterpriseGroupAttributes{
+	want1 := &SCIMEnterpriseGroupAttributes{
 		ID: Ptr("914a"),
 		Meta: &SCIMEnterpriseMeta{
 			ResourceType: "Group",
@@ -1066,39 +1066,39 @@ func TestEnterpriseService_GetProvisionedSCIMGroup(t *testing.T) {
 		}},
 	}
 
-	if diff := cmp.Diff(want, got); diff != "" {
+	if diff := cmp.Diff(want1, got1); diff != "" {
 		t.Fatalf("Enterprise.GetProvisionedSCIMGroup diff mismatch (-want +got):\n%v", diff)
 	}
 
 	// Test 2 with values
-	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/914a", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/78ba", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
 		testFormValues(t, r, values{"excludedAttributes": "externalId,members,schemas,meta"})
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
-			"id": "914a",
-			"displayName": "gn1"
+			"id": "78ba",
+			"displayName": "gn2"
 		}`)
 	})
 
-	got, _, err = client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "914a", "meta")
+	got2, _, err := client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "78ba", "externalId,members,schemas,meta")
 	if err != nil {
 		t.Fatalf("Enterprise.GetProvisionedSCIMGroup returned unexpected error: %v", err)
 	}
 
-	want = &SCIMEnterpriseGroupAttributes{
-		ID:          Ptr("914a"),
-		DisplayName: Ptr("gn1"),
+	want2 := &SCIMEnterpriseGroupAttributes{
+		ID:          Ptr("78ba"),
+		DisplayName: Ptr("gn2"),
 	}
 
-	if diff := cmp.Diff(want, got); diff != "" {
+	if diff := cmp.Diff(want2, got2); diff != "" {
 		t.Fatalf("Enterprise.GetProvisionedSCIMGroup diff mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "GetProvisionedSCIMGroup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "914a", "\n")
+		_, _, err = client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "\n", "")
 		return err
 	})
 
