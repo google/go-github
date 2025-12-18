@@ -168,14 +168,21 @@ func processTag(structName string, goField *ast.Ident, field *ast.Field, structT
 func checkAndReportInvalidTypesForOmitzero(structName, goFieldName string, fieldType ast.Expr, tokenPos token.Pos, pass *analysis.Pass) bool {
 	switch ft := fieldType.(type) {
 	case *ast.StarExpr:
-		// Check for *Struct
 		if ident, ok := ft.X.(*ast.Ident); ok {
+			// Check for *Struct
 			if obj := pass.TypesInfo.ObjectOf(ident); obj != nil {
 				if _, ok := obj.Type().Underlying().(*types.Struct); ok {
 					return true
 				}
 			}
+			// Check for *builtin
+			if isBuiltinType(ident.Name) {
+				const msg = `the %q field in struct %q uses "omitzero" with a primitive type; remove "omitzero" and only use "omitempty" with primitive types"`
+				pass.Reportf(tokenPos, msg, goFieldName, structName)
+				return true
+			}
 		}
+
 		if arrType, ok := ft.X.(*ast.ArrayType); ok {
 			// For *[]Struct
 			if ident, ok := arrType.Elt.(*ast.Ident); ok {
@@ -216,7 +223,12 @@ func checkAndReportInvalidTypesForOmitzero(structName, goFieldName string, field
 	// Struct
 	case *ast.Ident:
 		if obj := pass.TypesInfo.ObjectOf(ft); obj != nil {
-			if _, ok := obj.Type().Underlying().(*types.Struct); ok {
+			switch obj.Type().Underlying().(type) {
+			case *types.Struct:
+				return true
+			case *types.Basic:
+				const msg = `the %q field in struct %q uses "omitzero" with a primitive type; remove "omitzero", as it is only allowed with structs, maps, and slices`
+				pass.Reportf(tokenPos, msg, goFieldName, structName)
 				return true
 			}
 		}
@@ -246,7 +258,7 @@ func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos
 		skipOmitzero := checkAndReportInvalidTypesForOmitzero(structName, goFieldName, field.Type, tokenPos, pass)
 		skipOmitempty := checkAndReportInvalidTypes(structName, goFieldName, field.Type, tokenPos, pass)
 		if !skipOmitzero {
-			const msg = `change the %q field type to a slice, map, or struct in the struct %q because its tag uses "omitzero"`
+			const msg = `the %q field in struct %q uses "omitzero"; remove "omitzero", as it is only allowed with structs, maps, and slices`
 			pass.Reportf(tokenPos, msg, goFieldName, structName)
 		}
 		if !skipOmitempty {
@@ -257,8 +269,9 @@ func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos
 	case omitzero:
 		skipOmitzero := checkAndReportInvalidTypesForOmitzero(structName, goFieldName, field.Type, tokenPos, pass)
 		if !skipOmitzero {
-			const msg = `change the %q field type to a slice, map, or struct in the struct %q because its tag uses "omitzero"`
+			const msg = `the %q field in struct %q uses "omitzero"; remove "omitzero", as it is only allowed with structs, maps, and slices`
 			pass.Reportf(tokenPos, msg, goFieldName, structName)
+
 		}
 
 	case omitempty:
