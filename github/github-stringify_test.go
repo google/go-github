@@ -1578,63 +1578,6 @@ func TestProjectV2_String(t *testing.T) {
 	}
 }
 
-func TestProjectV2DraftIssue_String(t *testing.T) {
-	t.Parallel()
-	v := ProjectV2DraftIssue{
-		ID:        Ptr(int64(0)),
-		NodeID:    Ptr(""),
-		Title:     Ptr(""),
-		Body:      Ptr(""),
-		User:      &User{},
-		CreatedAt: &Timestamp{},
-		UpdatedAt: &Timestamp{},
-	}
-	want := `github.ProjectV2DraftIssue{ID:0, NodeID:"", Title:"", Body:"", User:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
-	if got := v.String(); got != want {
-		t.Errorf("ProjectV2DraftIssue.String = %v, want %v", got, want)
-	}
-}
-
-func TestProjectV2ItemWithContent_String(t *testing.T) {
-	t.Parallel()
-	v := ProjectV2ItemWithContent{
-		ID:          Ptr(int64(0)),
-		NodeID:      Ptr(""),
-		ProjectURL:  Ptr(""),
-		ContentType: Ptr(ProjectV2ItemContentType("")),
-		Content:     &ProjectV2ItemContent{},
-		Creator:     &User{},
-		CreatedAt:   &Timestamp{},
-		UpdatedAt:   &Timestamp{},
-		ArchivedAt:  &Timestamp{},
-		ItemURL:     Ptr(""),
-	}
-	want := `github.ProjectV2ItemWithContent{ID:0, NodeID:"", ProjectURL:"", ContentType:"", Content:github.ProjectV2ItemContent{}, Creator:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ArchivedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ItemURL:""}`
-	if got := v.String(); got != want {
-		t.Errorf("ProjectV2ItemWithContent.String = %v, want %v", got, want)
-	}
-}
-
-func TestProjectV2StatusUpdate_String(t *testing.T) {
-	t.Parallel()
-	v := ProjectV2StatusUpdate{
-		ID:            Ptr(int64(0)),
-		NodeID:        Ptr(""),
-		ProjectNodeID: Ptr(""),
-		Creator:       &User{},
-		CreatedAt:     &Timestamp{},
-		UpdatedAt:     &Timestamp{},
-		Status:        Ptr(""),
-		StartDate:     Ptr(""),
-		TargetDate:    Ptr(""),
-		Body:          Ptr(""),
-	}
-	want := `github.ProjectV2StatusUpdate{ID:0, NodeID:"", ProjectNodeID:"", Creator:github.User{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Status:"", StartDate:"", TargetDate:"", Body:""}`
-	if got := v.String(); got != want {
-		t.Errorf("ProjectV2StatusUpdate.String = %v, want %v", got, want)
-	}
-}
-
 func TestPullRequest_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequest{

@@ -42,8 +42,6 @@ type ProjectV2StatusUpdate struct {
 	Body       *string `json:"body,omitempty"`
 }
 
-func (s ProjectV2StatusUpdate) String() string { return Stringify(s) }
-
 // ProjectV2DraftIssue represents a draft issue in a project.
 type ProjectV2DraftIssue struct {
 	ID        *int64     `json:"id,omitempty"`
@@ -54,8 +52,6 @@ type ProjectV2DraftIssue struct {
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
 }
-
-func (d ProjectV2DraftIssue) String() string { return Stringify(d) }
 
 // ProjectV2 represents a v2 project.
 type ProjectV2 struct {
@@ -199,10 +195,8 @@ type ProjectV2ItemWithContent struct {
 	ArchivedAt *Timestamp            `json:"archived_at,omitempty"`
 	ItemURL    *string               `json:"item_url,omitempty"`
 	// Fields contains field values with flexible structures that depend on field types.
-	Fields []map[string]interface{} `json:"fields,omitempty"`
+	Fields []map[string]any `json:"fields,omitempty"`
 }
-
-func (i ProjectV2ItemWithContent) String() string { return Stringify(i) }
 
 // UnmarshalJSON implements custom unmarshaling for ProjectV2ItemWithContent.
 // It uses the ContentType field to determine how to unmarshal the Content field.

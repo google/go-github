@@ -1303,7 +1303,7 @@ func TestProjectsService_DeleteUserProjectItem_error(t *testing.T) {
 func TestProjectV2ItemWithContent_UnmarshalJSON_Issue(t *testing.T) {
 	t.Parallel()
 
-	// Test unmarshalling an issue
+	// Test unmarshaling an issue
 	jsonData := `{
 		"id": 123,
 		"node_id": "PVTI_test",
@@ -1329,16 +1329,16 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_Issue(t *testing.T) {
 
 	// Verify basic fields
 	if item.GetID() != 123 {
-		t.Errorf("ID = %d, want 123", item.GetID())
+		t.Errorf("ID = %v, want 123", item.GetID())
 	}
 	if item.GetNodeID() != "PVTI_test" {
-		t.Errorf("NodeID = %s, want PVTI_test", item.GetNodeID())
+		t.Errorf("NodeID = %v, want PVTI_test", item.GetNodeID())
 	}
 	if item.ContentType == nil || *item.ContentType != ProjectV2ItemContentTypeIssue {
 		t.Errorf("ContentType = %v, want Issue", item.ContentType)
 	}
 
-	// Verify content is unmarshalled as Issue
+	// Verify content is unmarshaled as Issue
 	if item.Content == nil {
 		t.Fatal("Content is nil")
 	}
@@ -1346,13 +1346,13 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_Issue(t *testing.T) {
 		t.Fatal("Content.Issue is nil")
 	}
 	if item.GetContent().GetIssue().GetNumber() != 10 {
-		t.Errorf("Issue.Number = %d, want 10", item.GetContent().GetIssue().GetNumber())
+		t.Errorf("Issue.Number = %v, want 10", item.GetContent().GetIssue().GetNumber())
 	}
 	if item.GetContent().GetIssue().GetTitle() != "Test Issue" {
-		t.Errorf("Issue.Title = %s, want Test Issue", item.GetContent().GetIssue().GetTitle())
+		t.Errorf("Issue.Title = %v, want Test Issue", item.GetContent().GetIssue().GetTitle())
 	}
 	if item.GetContent().GetIssue().GetState() != "open" {
-		t.Errorf("Issue.State = %s, want open", item.GetContent().GetIssue().GetState())
+		t.Errorf("Issue.State = %v, want open", item.GetContent().GetIssue().GetState())
 	}
 
 	// Verify other content types are nil
@@ -1367,7 +1367,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_Issue(t *testing.T) {
 func TestProjectV2ItemWithContent_UnmarshalJSON_PullRequest(t *testing.T) {
 	t.Parallel()
 
-	// Test unmarshalling a pull request
+	// Test unmarshaling a pull request
 	jsonData := `{
 		"id": 124,
 		"node_id": "PVTI_pr",
@@ -1398,13 +1398,13 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_PullRequest(t *testing.T) {
 
 	// Verify basic fields
 	if item.GetID() != 124 {
-		t.Errorf("ID = %d, want 124", item.GetID())
+		t.Errorf("ID = %v, want 124", item.GetID())
 	}
 	if item.ContentType == nil || *item.ContentType != ProjectV2ItemContentTypePullRequest {
 		t.Errorf("ContentType = %v, want PullRequest", item.ContentType)
 	}
 
-	// Verify content is unmarshalled as PullRequest
+	// Verify content is unmarshaled as PullRequest
 	if item.Content == nil {
 		t.Fatal("Content is nil")
 	}
@@ -1412,16 +1412,16 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_PullRequest(t *testing.T) {
 		t.Fatal("Content.PullRequest is nil")
 	}
 	if item.GetContent().GetPullRequest().GetNumber() != 20 {
-		t.Errorf("PullRequest.Number = %d, want 20", item.GetContent().GetPullRequest().GetNumber())
+		t.Errorf("PullRequest.Number = %v, want 20", item.GetContent().GetPullRequest().GetNumber())
 	}
 	if item.GetContent().GetPullRequest().GetTitle() != "Test PR" {
-		t.Errorf("PullRequest.Title = %s, want Test PR", item.GetContent().GetPullRequest().GetTitle())
+		t.Errorf("PullRequest.Title = %v, want Test PR", item.GetContent().GetPullRequest().GetTitle())
 	}
-	if item.GetContent().GetPullRequest().GetMerged() != true {
+	if !item.GetContent().GetPullRequest().GetMerged() {
 		t.Errorf("PullRequest.Merged = %t, want true", item.GetContent().GetPullRequest().GetMerged())
 	}
 	if item.GetContent().GetPullRequest().GetMergeCommitSHA() != "abc123" {
-		t.Errorf("PullRequest.MergeCommitSHA = %s, want abc123", item.GetContent().GetPullRequest().GetMergeCommitSHA())
+		t.Errorf("PullRequest.MergeCommitSHA = %v, want abc123", item.GetContent().GetPullRequest().GetMergeCommitSHA())
 	}
 
 	// Verify other content types are nil
@@ -1436,7 +1436,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_PullRequest(t *testing.T) {
 func TestProjectV2ItemWithContent_UnmarshalJSON_DraftIssue(t *testing.T) {
 	t.Parallel()
 
-	// Test unmarshalling a draft issue
+	// Test unmarshaling a draft issue
 	jsonData := `{
 		"id": 125,
 		"node_id": "PVTI_draft",
@@ -1457,13 +1457,13 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_DraftIssue(t *testing.T) {
 
 	// Verify basic fields
 	if item.GetID() != 125 {
-		t.Errorf("ID = %d, want 125", item.GetID())
+		t.Errorf("ID = %v, want 125", item.GetID())
 	}
 	if item.ContentType == nil || *item.ContentType != ProjectV2ItemContentTypeDraftIssue {
 		t.Errorf("ContentType = %v, want DraftIssue", item.ContentType)
 	}
 
-	// Verify content is unmarshalled as DraftIssue
+	// Verify content is unmarshaled as DraftIssue
 	if item.Content == nil {
 		t.Fatal("Content is nil")
 	}
@@ -1471,13 +1471,13 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_DraftIssue(t *testing.T) {
 		t.Fatal("Content.DraftIssue is nil")
 	}
 	if item.GetContent().GetDraftIssue().GetID() != 458 {
-		t.Errorf("DraftIssue.ID = %d, want 458", item.GetContent().GetDraftIssue().GetID())
+		t.Errorf("DraftIssue.ID = %v, want 458", item.GetContent().GetDraftIssue().GetID())
 	}
 	if item.GetContent().GetDraftIssue().GetTitle() != "Draft Issue Title" {
-		t.Errorf("DraftIssue.Title = %s, want Draft Issue Title", item.GetContent().GetDraftIssue().GetTitle())
+		t.Errorf("DraftIssue.Title = %v, want Draft Issue Title", item.GetContent().GetDraftIssue().GetTitle())
 	}
 	if item.GetContent().GetDraftIssue().GetBody() != "Draft issue body content" {
-		t.Errorf("DraftIssue.Body = %s, want Draft issue body content", item.GetContent().GetDraftIssue().GetBody())
+		t.Errorf("DraftIssue.Body = %v, want Draft issue body content", item.GetContent().GetDraftIssue().GetBody())
 	}
 
 	// Verify other content types are nil
@@ -1545,9 +1545,9 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_EmptyJSON(t *testing.T) {
 		t.Fatalf("json.Unmarshal failed with null: %v", err)
 	}
 
-	// Verify item is in zero state after unmarshalling null
+	// Verify item is in zero state after unmarshaling null
 	if item.Content != nil {
-		t.Error("Content should be nil after unmarshalling null")
+		t.Error("Content should be nil after unmarshaling null")
 	}
 }
 
