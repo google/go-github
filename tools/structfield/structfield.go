@@ -177,7 +177,7 @@ func checkAndReportInvalidTypesForOmitzero(structName, goFieldName string, field
 			}
 			// Check for *builtin
 			if isBuiltinType(ident.Name) {
-				const msg = `the %q field in struct %q uses "omitzero" with a primitive type; remove "omitzero" and only use "omitempty" with primitive types"`
+				const msg = `the %q field in struct %q uses "omitzero" with a primitive type; remove "omitzero" and use only "omitempty" for pointer primitive types"`
 				pass.Reportf(tokenPos, msg, goFieldName, structName)
 				return true
 			}
