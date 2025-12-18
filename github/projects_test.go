@@ -1300,7 +1300,7 @@ func TestProjectsService_DeleteUserProjectItem_error(t *testing.T) {
 	})
 }
 
-func TestProjectV2ItemWithContent_UnmarshalJSON_Issue(t *testing.T) {
+func TestProjectV2Item_UnmarshalJSON_Issue(t *testing.T) {
 	t.Parallel()
 
 	// Test unmarshaling an issue
@@ -1322,7 +1322,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_Issue(t *testing.T) {
 		"created_at": "2023-01-01T00:00:00Z"
 	}`
 
-	var item ProjectV2ItemWithContent
+	var item ProjectV2Item
 	if err := json.Unmarshal([]byte(jsonData), &item); err != nil {
 		t.Fatalf("json.Unmarshal failed: %v", err)
 	}
@@ -1364,7 +1364,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_Issue(t *testing.T) {
 	}
 }
 
-func TestProjectV2ItemWithContent_UnmarshalJSON_PullRequest(t *testing.T) {
+func TestProjectV2Item_UnmarshalJSON_PullRequest(t *testing.T) {
 	t.Parallel()
 
 	// Test unmarshaling a pull request
@@ -1391,7 +1391,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_PullRequest(t *testing.T) {
 		"created_at": "2023-01-02T00:00:00Z"
 	}`
 
-	var item ProjectV2ItemWithContent
+	var item ProjectV2Item
 	if err := json.Unmarshal([]byte(jsonData), &item); err != nil {
 		t.Fatalf("json.Unmarshal failed: %v", err)
 	}
@@ -1433,7 +1433,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_PullRequest(t *testing.T) {
 	}
 }
 
-func TestProjectV2ItemWithContent_UnmarshalJSON_DraftIssue(t *testing.T) {
+func TestProjectV2Item_UnmarshalJSON_DraftIssue(t *testing.T) {
 	t.Parallel()
 
 	// Test unmarshaling a draft issue
@@ -1450,7 +1450,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_DraftIssue(t *testing.T) {
 		"created_at": "2023-01-03T00:00:00Z"
 	}`
 
-	var item ProjectV2ItemWithContent
+	var item ProjectV2Item
 	if err := json.Unmarshal([]byte(jsonData), &item); err != nil {
 		t.Fatalf("json.Unmarshal failed: %v", err)
 	}
@@ -1489,7 +1489,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_DraftIssue(t *testing.T) {
 	}
 }
 
-func TestProjectV2ItemWithContent_UnmarshalJSON_NullContent(t *testing.T) {
+func TestProjectV2Item_UnmarshalJSON_NullContent(t *testing.T) {
 	t.Parallel()
 
 	// Test with null content
@@ -1500,7 +1500,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_NullContent(t *testing.T) {
 		"content": null
 	}`
 
-	var item ProjectV2ItemWithContent
+	var item ProjectV2Item
 	if err := json.Unmarshal([]byte(jsonData), &item); err != nil {
 		t.Fatalf("json.Unmarshal failed: %v", err)
 	}
@@ -1511,7 +1511,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_NullContent(t *testing.T) {
 	}
 }
 
-func TestProjectV2ItemWithContent_UnmarshalJSON_MissingContentType(t *testing.T) {
+func TestProjectV2Item_UnmarshalJSON_MissingContentType(t *testing.T) {
 	t.Parallel()
 
 	// Test without content_type field
@@ -1524,7 +1524,7 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_MissingContentType(t *testing.T)
 		}
 	}`
 
-	var item ProjectV2ItemWithContent
+	var item ProjectV2Item
 	if err := json.Unmarshal([]byte(jsonData), &item); err != nil {
 		t.Fatalf("json.Unmarshal failed: %v", err)
 	}
@@ -1536,11 +1536,11 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_MissingContentType(t *testing.T)
 	}
 }
 
-func TestProjectV2ItemWithContent_UnmarshalJSON_EmptyJSON(t *testing.T) {
+func TestProjectV2Item_UnmarshalJSON_EmptyJSON(t *testing.T) {
 	t.Parallel()
 
 	// Test with null JSON
-	var item ProjectV2ItemWithContent
+	var item ProjectV2Item
 	if err := json.Unmarshal([]byte("null"), &item); err != nil {
 		t.Fatalf("json.Unmarshal failed with null: %v", err)
 	}
@@ -1551,11 +1551,11 @@ func TestProjectV2ItemWithContent_UnmarshalJSON_EmptyJSON(t *testing.T) {
 	}
 }
 
-func TestProjectV2ItemWithContent_Marshal_Issue(t *testing.T) {
+func TestProjectV2Item_Marshal_Issue(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ProjectV2ItemWithContent{}, "{}")
+	testJSONMarshal(t, &ProjectV2Item{}, "{}")
 
-	item := &ProjectV2ItemWithContent{
+	item := &ProjectV2Item{
 		ContentType: Ptr(ProjectV2ItemContentTypeIssue),
 		Content: &ProjectV2ItemContent{
 			Issue: &Issue{
@@ -1580,11 +1580,11 @@ func TestProjectV2ItemWithContent_Marshal_Issue(t *testing.T) {
 	testJSONMarshal(t, item, want)
 }
 
-func TestProjectV2ItemWithContent_Marshal_PullRequest(t *testing.T) {
+func TestProjectV2Item_Marshal_PullRequest(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ProjectV2ItemWithContent{}, "{}")
+	testJSONMarshal(t, &ProjectV2Item{}, "{}")
 
-	item := &ProjectV2ItemWithContent{
+	item := &ProjectV2Item{
 		ContentType: Ptr(ProjectV2ItemContentTypePullRequest),
 		Content: &ProjectV2ItemContent{
 			PullRequest: &PullRequest{
@@ -1609,11 +1609,11 @@ func TestProjectV2ItemWithContent_Marshal_PullRequest(t *testing.T) {
 	testJSONMarshal(t, item, want)
 }
 
-func TestProjectV2ItemWithContent_Marshal_DraftIssue(t *testing.T) {
+func TestProjectV2Item_Marshal_DraftIssue(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ProjectV2ItemWithContent{}, "{}")
+	testJSONMarshal(t, &ProjectV2Item{}, "{}")
 
-	item := &ProjectV2ItemWithContent{
+	item := &ProjectV2Item{
 		ContentType: Ptr(ProjectV2ItemContentTypeDraftIssue),
 		Content: &ProjectV2ItemContent{
 			DraftIssue: &ProjectV2DraftIssue{

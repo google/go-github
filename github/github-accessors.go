@@ -19678,6 +19678,14 @@ func (p *ProjectV2Item) GetArchivedAt() Timestamp {
 	return *p.ArchivedAt
 }
 
+// GetContent returns the Content field.
+func (p *ProjectV2Item) GetContent() *ProjectV2ItemContent {
+	if p == nil {
+		return nil
+	}
+	return p.Content
+}
+
 // GetContentNodeID returns the ContentNodeID field if it's non-nil, zero value otherwise.
 func (p *ProjectV2Item) GetContentNodeID() string {
 	if p == nil || p.ContentNodeID == nil {
@@ -19852,86 +19860,6 @@ func (p *ProjectV2ItemFieldValue) GetID() int64 {
 		return 0
 	}
 	return *p.ID
-}
-
-// GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.
-func (p *ProjectV2ItemWithContent) GetArchivedAt() Timestamp {
-	if p == nil || p.ArchivedAt == nil {
-		return Timestamp{}
-	}
-	return *p.ArchivedAt
-}
-
-// GetContent returns the Content field.
-func (p *ProjectV2ItemWithContent) GetContent() *ProjectV2ItemContent {
-	if p == nil {
-		return nil
-	}
-	return p.Content
-}
-
-// GetContentType returns the ContentType field.
-func (p *ProjectV2ItemWithContent) GetContentType() *ProjectV2ItemContentType {
-	if p == nil {
-		return nil
-	}
-	return p.ContentType
-}
-
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (p *ProjectV2ItemWithContent) GetCreatedAt() Timestamp {
-	if p == nil || p.CreatedAt == nil {
-		return Timestamp{}
-	}
-	return *p.CreatedAt
-}
-
-// GetCreator returns the Creator field.
-func (p *ProjectV2ItemWithContent) GetCreator() *User {
-	if p == nil {
-		return nil
-	}
-	return p.Creator
-}
-
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (p *ProjectV2ItemWithContent) GetID() int64 {
-	if p == nil || p.ID == nil {
-		return 0
-	}
-	return *p.ID
-}
-
-// GetItemURL returns the ItemURL field if it's non-nil, zero value otherwise.
-func (p *ProjectV2ItemWithContent) GetItemURL() string {
-	if p == nil || p.ItemURL == nil {
-		return ""
-	}
-	return *p.ItemURL
-}
-
-// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
-func (p *ProjectV2ItemWithContent) GetNodeID() string {
-	if p == nil || p.NodeID == nil {
-		return ""
-	}
-	return *p.NodeID
-}
-
-// GetProjectURL returns the ProjectURL field if it's non-nil, zero value otherwise.
-func (p *ProjectV2ItemWithContent) GetProjectURL() string {
-	if p == nil || p.ProjectURL == nil {
-		return ""
-	}
-	return *p.ProjectURL
-}
-
-// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (p *ProjectV2ItemWithContent) GetUpdatedAt() Timestamp {
-	if p == nil || p.UpdatedAt == nil {
-		return Timestamp{}
-	}
-	return *p.UpdatedAt
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
