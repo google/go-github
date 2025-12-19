@@ -23,17 +23,22 @@ type JSONFieldType struct {
 	PointerToMap                   *map[string]string `json:"pointer_to_map,omitempty"`                      // want `change the "PointerToMap" field type to "map\[string\]string" in the struct "JSONFieldType"`
 	SliceOfInts                    []*int             `json:"slice_of_ints,omitempty"`                       // want `change the "SliceOfInts" field type to "\[\]int" in the struct "JSONFieldType"`
 
-	Count                              int        `json:"count,omitzero"`                                    // want `the "Count" field in struct "JSONFieldType" uses "omitzero" with a primitive type; remove "omitzero", as it is only allowed with structs, maps, and slices`
-	Size                               *int       `json:"size,omitzero"`                                     // want `the "Size" field in struct "JSONFieldType" uses "omitzero" with a primitive type; remove "omitzero" and use only "omitempty" for pointer primitive types`
-	PointerToSliceOfStringsZero        *[]string  `json:"pointer_to_slice_of_strings_zero,omitzero"`         // want `change the "PointerToSliceOfStringsZero" field type to "\[\]string" in the struct "JSONFieldType"`
-	PointerToSliceOfStructsZero        *[]Struct  `json:"pointer_to_slice_of_structs_zero,omitzero"`         // want `change the "PointerToSliceOfStructsZero" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
-	PointerToSliceOfPointerStructsZero *[]*Struct `json:"pointer_to_slice_of_pointer_structs_zero,omitzero"` // want `change the "PointerToSliceOfPointerStructsZero" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
-	PointerSliceInt                    *[]int     `json:"pointer_slice_int,omitempty"`                       // want `change the "PointerSliceInt" field type to "\[\]int" in the struct "JSONFieldType"`
-	AnyZero                            any        `json:"any_zero,omitzero"`                                 // want `the "AnyZero" field in struct "JSONFieldType" uses "omitzero"; remove "omitzero", as it is only allowed with structs, maps, and slices`
+	Count                              int                `json:"count,omitzero"`                                    // want `the "Count" field in struct "JSONFieldType" uses "omitzero" with a primitive type; remove "omitzero", as it is only allowed with structs, maps, and slices`
+	Size                               *int               `json:"size,omitzero"`                                     // want `the "Size" field in struct "JSONFieldType" uses "omitzero" with a primitive type; remove "omitzero" and use only "omitempty" for pointer primitive types`
+	PointerToSliceOfStringsZero        *[]string          `json:"pointer_to_slice_of_strings_zero,omitzero"`         // want `change the "PointerToSliceOfStringsZero" field type to "\[\]string" in the struct "JSONFieldType"`
+	PointerToSliceOfStructsZero        *[]Struct          `json:"pointer_to_slice_of_structs_zero,omitzero"`         // want `change the "PointerToSliceOfStructsZero" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
+	PointerToSliceOfPointerStructsZero *[]*Struct         `json:"pointer_to_slice_of_pointer_structs_zero,omitzero"` // want `change the "PointerToSliceOfPointerStructsZero" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
+	PointerSliceInt                    *[]int             `json:"pointer_slice_int,omitzero"`                        // want `change the "PointerSliceInt" field type to "\[\]int" in the struct "JSONFieldType"`
+	AnyZero                            any                `json:"any_zero,omitzero"`                                 // want `the "AnyZero" field in struct "JSONFieldType" uses "omitzero"; remove "omitzero", as it is only allowed with structs, maps, and slices`
+	StringPointerSlice                 []*string          `json:"string_pointer_slice,omitzero"`                     // want `change the "StringPointerSlice" field type to "\[\]string" in the struct "JSONFieldType"`
+	PointerToMapZero                   *map[string]string `json:"pointer__to_map_zero,omitzero"`                     // want `change the "PointerToMapZero" field type to "map\[string\]string" in the struct "JSONFieldType"`
+	SliceOfStructsZero                 []Struct           `json:"slice_of_structs_zero,omitzero"`                    // want `change the "SliceOfStructsZero" field type to "\[\]\*Struct" in the struct "JSONFieldType"`
+	StructZero                         Struct             `json:"struct_zero,omitzero"`                              // want `change the "StructZero" field type to "\*Struct" in the struct "JSONFieldType"`
 
 	AnyBoth              any     `json:"any_both,omitempty,omitzero"`                // want `the "AnyBoth" field in struct "JSONFieldType" uses "omitzero"; remove "omitzero", as it is only allowed with structs, maps, and slices`
-	NonPointerStructBoth Struct  `json:"non_pointer_struct_both,omitempty,omitzero"` // want `change the "NonPointerStructBoth" field type to "\*Struct" in the struct "JSONFieldType" because its tag uses "omitempty"`
+	NonPointerStructBoth Struct  `json:"non_pointer_struct_both,omitempty,omitzero"` // want `change the "NonPointerStructBoth" field type to "\*Struct" in the struct "JSONFieldType"`
 	PointerStringBoth    *string `json:"pointer_string_both,omitempty,omitzero"`     // want `the "PointerStringBoth" field in struct "JSONFieldType" uses "omitzero" with a primitive type; remove "omitzero" and use only "omitempty" for pointer primitive types`
+	StructZeroBoth       Struct  `json:"struct_zero_both,omitempty,omitzero"`        // want `change the "StructZeroBoth" field type to "\*Struct" in the struct "JSONFieldType"`
 }
 
 type Struct struct{}
