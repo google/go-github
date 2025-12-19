@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -16,22 +17,61 @@ import (
 // GitHub API docs: https://docs.github.com/rest/projects/projects
 type ProjectsService service
 
+// ProjectV2ItemContentType represents the type of content in a ProjectV2Item.
+type ProjectV2ItemContentType string
+
+// This is the set of possible content types for a ProjectV2Item.
+const (
+	ProjectV2ItemContentTypeDraftIssue  ProjectV2ItemContentType = "DraftIssue"
+	ProjectV2ItemContentTypeIssue       ProjectV2ItemContentType = "Issue"
+	ProjectV2ItemContentTypePullRequest ProjectV2ItemContentType = "PullRequest"
+)
+
+// ProjectV2StatusUpdate represents a status update for a project.
+type ProjectV2StatusUpdate struct {
+	ID            *int64     `json:"id,omitempty"`
+	NodeID        *string    `json:"node_id,omitempty"`
+	ProjectNodeID *string    `json:"project_node_id,omitempty"`
+	Creator       *User      `json:"creator,omitempty"`
+	CreatedAt     *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
+	// Status can be one of: "INACTIVE", "ON_TRACK", "AT_RISK", "OFF_TRACK", "COMPLETE".
+	Status     *string `json:"status,omitempty"`
+	StartDate  *string `json:"start_date,omitempty"`
+	TargetDate *string `json:"target_date,omitempty"`
+	Body       *string `json:"body,omitempty"`
+}
+
+// ProjectV2DraftIssue represents a draft issue in a project.
+type ProjectV2DraftIssue struct {
+	ID        *int64     `json:"id,omitempty"`
+	NodeID    *string    `json:"node_id,omitempty"`
+	Title     *string    `json:"title,omitempty"`
+	Body      *string    `json:"body,omitempty"`
+	User      *User      `json:"user,omitempty"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+}
+
 // ProjectV2 represents a v2 project.
 type ProjectV2 struct {
-	ID               *int64     `json:"id,omitempty"`
-	NodeID           *string    `json:"node_id,omitempty"`
-	Owner            *User      `json:"owner,omitempty"`
-	Creator          *User      `json:"creator,omitempty"`
-	Title            *string    `json:"title,omitempty"`
-	Description      *string    `json:"description,omitempty"`
-	Public           *bool      `json:"public,omitempty"`
-	ClosedAt         *Timestamp `json:"closed_at,omitempty"`
-	CreatedAt        *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
-	DeletedAt        *Timestamp `json:"deleted_at,omitempty"`
-	Number           *int       `json:"number,omitempty"`
-	ShortDescription *string    `json:"short_description,omitempty"`
-	DeletedBy        *User      `json:"deleted_by,omitempty"`
+	ID                 *int64                 `json:"id,omitempty"`
+	NodeID             *string                `json:"node_id,omitempty"`
+	Owner              *User                  `json:"owner,omitempty"`
+	Creator            *User                  `json:"creator,omitempty"`
+	Title              *string                `json:"title,omitempty"`
+	Description        *string                `json:"description,omitempty"`
+	Public             *bool                  `json:"public,omitempty"`
+	ClosedAt           *Timestamp             `json:"closed_at,omitempty"`
+	CreatedAt          *Timestamp             `json:"created_at,omitempty"`
+	UpdatedAt          *Timestamp             `json:"updated_at,omitempty"`
+	DeletedAt          *Timestamp             `json:"deleted_at,omitempty"`
+	Number             *int                   `json:"number,omitempty"`
+	ShortDescription   *string                `json:"short_description,omitempty"`
+	DeletedBy          *User                  `json:"deleted_by,omitempty"`
+	State              *string                `json:"state,omitempty"`
+	LatestStatusUpdate *ProjectV2StatusUpdate `json:"latest_status_update,omitempty"`
+	IsTemplate         *bool                  `json:"is_template,omitempty"`
 
 	// Fields migrated from the Project (classic) struct:
 	URL                    *string `json:"url,omitempty"`
@@ -40,7 +80,6 @@ type ProjectV2 struct {
 	OwnerURL               *string `json:"owner_url,omitempty"`
 	Name                   *string `json:"name,omitempty"`
 	Body                   *string `json:"body,omitempty"`
-	State                  *string `json:"state,omitempty"`
 	OrganizationPermission *string `json:"organization_permission,omitempty"`
 	Private                *bool   `json:"private,omitempty"`
 }
@@ -115,6 +154,87 @@ type ProjectV2FieldConfiguration struct {
 	Iterations []*ProjectV2FieldIteration `json:"iterations,omitempty"` // The list of iterations associated with the configuration.
 }
 
+// ProjectV2ItemContent is a union type that holds the content of a ProjectV2Item.
+// The actual type depends on the ContentType field of the parent ProjectV2Item.
+// Only one of the fields will be populated after unmarshaling.
+type ProjectV2ItemContent struct {
+	Issue       *Issue               `json:"-"`
+	PullRequest *PullRequest         `json:"-"`
+	DraftIssue  *ProjectV2DraftIssue `json:"-"`
+}
+
+// MarshalJSON implements custom marshaling for ProjectV2ItemContent.
+func (c *ProjectV2ItemContent) MarshalJSON() ([]byte, error) {
+	if c.Issue != nil {
+		return json.Marshal(c.Issue)
+	}
+	if c.PullRequest != nil {
+		return json.Marshal(c.PullRequest)
+	}
+	if c.DraftIssue != nil {
+		return json.Marshal(c.DraftIssue)
+	}
+	return []byte("null"), nil
+}
+
+// ProjectV2Item represents a full project item with field values.
+// This type is used by Get, List, and Update operations which return field values.
+// The Content field is automatically unmarshaled into the appropriate type based on ContentType.
+type ProjectV2Item struct {
+	ArchivedAt  *Timestamp                 `json:"archived_at,omitempty"`
+	Content     *ProjectV2ItemContent      `json:"content,omitempty"`
+	ContentType *ProjectV2ItemContentType  `json:"content_type,omitempty"`
+	CreatedAt   *Timestamp                 `json:"created_at,omitempty"`
+	Creator     *User                      `json:"creator,omitempty"`
+	Fields      []*ProjectV2ItemFieldValue `json:"fields,omitempty"`
+	ID          *int64                     `json:"id,omitempty"`
+	ItemURL     *string                    `json:"item_url,omitempty"`
+	NodeID      *string                    `json:"node_id,omitempty"`
+	ProjectURL  *string                    `json:"project_url,omitempty"`
+	UpdatedAt   *Timestamp                 `json:"updated_at,omitempty"`
+
+	// ProjectNodeID and ContentNodeID are used in ProjectsV2Item Webhook payloads.
+	// They may not be populated in all API responses, but are included here for completeness.
+	// See: https://docs.github.com/en/webhooks/webhook-events-and-payloads#projects_v2_item
+	ProjectNodeID *string `json:"project_node_id,omitempty"`
+	ContentNodeID *string `json:"content_node_id,omitempty"`
+}
+
+// UnmarshalJSON implements custom unmarshaling for ProjectV2Item.
+// It uses the ContentType field to determine how to unmarshal the Content field.
+func (p *ProjectV2Item) UnmarshalJSON(data []byte) error {
+	type contentAlias ProjectV2Item
+
+	aux := &struct {
+		Content json.RawMessage `json:"content,omitempty"`
+		*contentAlias
+	}{
+		contentAlias: (*contentAlias)(p),
+	}
+
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+
+	// Now unmarshal the content based on ContentType
+	if len(aux.Content) > 0 && string(aux.Content) != "null" && p.ContentType != nil {
+		p.Content = &ProjectV2ItemContent{}
+		switch *p.ContentType {
+		case ProjectV2ItemContentTypeIssue:
+			p.Content.Issue = &Issue{}
+			return json.Unmarshal(aux.Content, p.Content.Issue)
+		case ProjectV2ItemContentTypePullRequest:
+			p.Content.PullRequest = &PullRequest{}
+			return json.Unmarshal(aux.Content, p.Content.PullRequest)
+		case ProjectV2ItemContentTypeDraftIssue:
+			p.Content.DraftIssue = &ProjectV2DraftIssue{}
+			return json.Unmarshal(aux.Content, p.Content.DraftIssue)
+		}
+	}
+
+	return nil
+}
+
 // ProjectV2Field represents a field in a GitHub Projects V2 project.
 // Fields define the structure and data types for project items.
 //
@@ -129,6 +249,28 @@ type ProjectV2Field struct {
 	Configuration *ProjectV2FieldConfiguration `json:"configuration,omitempty"`
 	CreatedAt     *Timestamp                   `json:"created_at,omitempty"`
 	UpdatedAt     *Timestamp                   `json:"updated_at,omitempty"`
+}
+
+// ProjectV2ItemFieldValue represents a field value of a project item.
+type ProjectV2ItemFieldValue struct {
+	ID       *int64  `json:"id,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	DataType *string `json:"data_type,omitempty"`
+	// Value set for the field. The type depends on the field type:
+	//   - text: string
+	//   - number: float64
+	//   - date: string (ISO 8601 date format, e.g. "2023-06-23") or null
+	//   - single_select: object with "id", "name", "color", "description" fields or null
+	//   - iteration: object with "id", "title", "start_date", "duration" fields or null
+	//   - title: object with "text" field (read-only, reflects the item's title) or null
+	//   - assignees: array of user objects with "login", "id", etc. or null
+	//   - labels: array of label objects with "id", "name", "color", etc. or null
+	//   - linked_pull_requests: array of pull request objects or null
+	//   - milestone: milestone object with "id", "title", "description", etc. or null
+	//   - repository: repository object with "id", "name", "full_name", etc. or null
+	//   - reviewers: array of user objects or null
+	//   - status: object with "id", "name", "color", "description" fields (same structure as single_select) or null
+	Value any `json:"value,omitempty"`
 }
 
 // ListOrganizationProjects lists Projects V2 for an organization.
@@ -330,8 +472,8 @@ type GetProjectItemOptions struct {
 // to a project. The Type must be either "Issue" or "PullRequest" (as per API docs) and
 // ID is the numerical ID of that issue or pull request.
 type AddProjectItemOptions struct {
-	Type string `json:"type,omitempty"`
-	ID   int64  `json:"id,omitempty"`
+	Type *ProjectV2ItemContentType `json:"type,omitempty"`
+	ID   *int64                    `json:"id,omitempty"`
 }
 
 // UpdateProjectV2Field represents a field update for a project item.

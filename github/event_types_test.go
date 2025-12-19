@@ -15866,7 +15866,7 @@ func TestProjectV2ItemEvent_Marshal(t *testing.T) {
 			NodeID:        Ptr("nid"),
 			ProjectNodeID: Ptr("pnid"),
 			ContentNodeID: Ptr("cnid"),
-			ContentType:   Ptr("ct"),
+			ContentType:   Ptr(ProjectV2ItemContentType("ct")),
 			Creator: &User{
 				Login:     Ptr("l"),
 				ID:        Ptr(int64(1)),
