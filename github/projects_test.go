@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -809,7 +810,7 @@ func TestProjectsService_AddOrganizationProjectItem(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 99})
+	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(99))})
 	if err != nil {
 		t.Fatalf("Projects.AddOrganizationProjectItem returned error: %v", err)
 	}
@@ -829,7 +830,7 @@ func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "AddOrganizationProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: "Issue", ID: 1})
+		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(1))})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1081,7 +1082,7 @@ func TestProjectsService_AddUserProjectItem(t *testing.T) {
 		fmt.Fprint(w, `{"id":123,"node_id":"PVTI_new_user"}`)
 	})
 	ctx := t.Context()
-	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: "PullRequest", ID: 123})
+	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("PullRequest")), ID: Ptr(int64(123))})
 	if err != nil {
 		t.Fatalf("AddUserProjectItem error: %v", err)
 	}
@@ -1100,7 +1101,7 @@ func TestProjectsService_AddUserProjectItem_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "AddUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: "Issue", ID: 5})
+		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(5))})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1297,4 +1298,367 @@ func TestProjectsService_DeleteUserProjectItem_error(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Projects.DeleteUserProjectItem(ctx, "u", 2, 55)
 	})
+}
+
+func TestProjectV2Item_UnmarshalJSON_Issue(t *testing.T) {
+	t.Parallel()
+
+	// Test unmarshaling an issue
+	jsonData := `{
+		"id": 123,
+		"node_id": "PVTI_test",
+		"content_type": "Issue",
+		"content": {
+			"id": 456,
+			"number": 10,
+			"title": "Test Issue",
+			"state": "open",
+			"body": "Issue body",
+			"repository": {
+				"id": 789,
+				"name": "test-repo"
+			}
+		},
+		"created_at": "2023-01-01T00:00:00Z"
+	}`
+
+	var item ProjectV2Item
+	if err := json.Unmarshal([]byte(jsonData), &item); err != nil {
+		t.Fatalf("json.Unmarshal failed: %v", err)
+	}
+
+	// Verify basic fields
+	if item.GetID() != 123 {
+		t.Errorf("ID = %v, want 123", item.GetID())
+	}
+	if item.GetNodeID() != "PVTI_test" {
+		t.Errorf("NodeID = %v, want PVTI_test", item.GetNodeID())
+	}
+	if item.ContentType == nil || *item.ContentType != ProjectV2ItemContentTypeIssue {
+		t.Errorf("ContentType = %v, want Issue", item.ContentType)
+	}
+
+	// Verify content is unmarshaled as Issue
+	if item.Content == nil {
+		t.Fatal("Content is nil")
+	}
+	if item.GetContent().GetIssue() == nil {
+		t.Fatal("Content.Issue is nil")
+	}
+	if item.GetContent().GetIssue().GetNumber() != 10 {
+		t.Errorf("Issue.Number = %v, want 10", item.GetContent().GetIssue().GetNumber())
+	}
+	if item.GetContent().GetIssue().GetTitle() != "Test Issue" {
+		t.Errorf("Issue.Title = %v, want Test Issue", item.GetContent().GetIssue().GetTitle())
+	}
+	if item.GetContent().GetIssue().GetState() != "open" {
+		t.Errorf("Issue.State = %v, want open", item.GetContent().GetIssue().GetState())
+	}
+
+	// Verify other content types are nil
+	if item.GetContent().GetPullRequest() != nil {
+		t.Error("Content.PullRequest should be nil for Issue content")
+	}
+	if item.GetContent().GetDraftIssue() != nil {
+		t.Error("Content.DraftIssue should be nil for Issue content")
+	}
+}
+
+func TestProjectV2Item_UnmarshalJSON_PullRequest(t *testing.T) {
+	t.Parallel()
+
+	// Test unmarshaling a pull request
+	jsonData := `{
+		"id": 124,
+		"node_id": "PVTI_pr",
+		"content_type": "PullRequest",
+		"content": {
+			"id": 457,
+			"number": 20,
+			"title": "Test PR",
+			"state": "closed",
+			"merged": true,
+			"merge_commit_sha": "abc123",
+			"head": {
+				"ref": "feature-branch",
+				"sha": "def456"
+			},
+			"base": {
+				"ref": "main",
+				"sha": "ghi789"
+			}
+		},
+		"created_at": "2023-01-02T00:00:00Z"
+	}`
+
+	var item ProjectV2Item
+	if err := json.Unmarshal([]byte(jsonData), &item); err != nil {
+		t.Fatalf("json.Unmarshal failed: %v", err)
+	}
+
+	// Verify basic fields
+	if item.GetID() != 124 {
+		t.Errorf("ID = %v, want 124", item.GetID())
+	}
+	if item.ContentType == nil || *item.ContentType != ProjectV2ItemContentTypePullRequest {
+		t.Errorf("ContentType = %v, want PullRequest", item.ContentType)
+	}
+
+	// Verify content is unmarshaled as PullRequest
+	if item.Content == nil {
+		t.Fatal("Content is nil")
+	}
+	if item.GetContent().GetPullRequest() == nil {
+		t.Fatal("Content.PullRequest is nil")
+	}
+	if item.GetContent().GetPullRequest().GetNumber() != 20 {
+		t.Errorf("PullRequest.Number = %v, want 20", item.GetContent().GetPullRequest().GetNumber())
+	}
+	if item.GetContent().GetPullRequest().GetTitle() != "Test PR" {
+		t.Errorf("PullRequest.Title = %v, want Test PR", item.GetContent().GetPullRequest().GetTitle())
+	}
+	if !item.GetContent().GetPullRequest().GetMerged() {
+		t.Errorf("PullRequest.Merged = %t, want true", item.GetContent().GetPullRequest().GetMerged())
+	}
+	if item.GetContent().GetPullRequest().GetMergeCommitSHA() != "abc123" {
+		t.Errorf("PullRequest.MergeCommitSHA = %v, want abc123", item.GetContent().GetPullRequest().GetMergeCommitSHA())
+	}
+
+	// Verify other content types are nil
+	if item.GetContent().GetIssue() != nil {
+		t.Error("Content.Issue should be nil for PullRequest content")
+	}
+	if item.GetContent().GetDraftIssue() != nil {
+		t.Error("Content.DraftIssue should be nil for PullRequest content")
+	}
+}
+
+func TestProjectV2Item_UnmarshalJSON_DraftIssue(t *testing.T) {
+	t.Parallel()
+
+	// Test unmarshaling a draft issue
+	jsonData := `{
+		"id": 125,
+		"node_id": "PVTI_draft",
+		"content_type": "DraftIssue",
+		"content": {
+			"id": 458,
+			"node_id": "DI_test",
+			"title": "Draft Issue Title",
+			"body": "Draft issue body content"
+		},
+		"created_at": "2023-01-03T00:00:00Z"
+	}`
+
+	var item ProjectV2Item
+	if err := json.Unmarshal([]byte(jsonData), &item); err != nil {
+		t.Fatalf("json.Unmarshal failed: %v", err)
+	}
+
+	// Verify basic fields
+	if item.GetID() != 125 {
+		t.Errorf("ID = %v, want 125", item.GetID())
+	}
+	if item.ContentType == nil || *item.ContentType != ProjectV2ItemContentTypeDraftIssue {
+		t.Errorf("ContentType = %v, want DraftIssue", item.ContentType)
+	}
+
+	// Verify content is unmarshaled as DraftIssue
+	if item.Content == nil {
+		t.Fatal("Content is nil")
+	}
+	if item.GetContent().GetDraftIssue() == nil {
+		t.Fatal("Content.DraftIssue is nil")
+	}
+	if item.GetContent().GetDraftIssue().GetID() != 458 {
+		t.Errorf("DraftIssue.ID = %v, want 458", item.GetContent().GetDraftIssue().GetID())
+	}
+	if item.GetContent().GetDraftIssue().GetTitle() != "Draft Issue Title" {
+		t.Errorf("DraftIssue.Title = %v, want Draft Issue Title", item.GetContent().GetDraftIssue().GetTitle())
+	}
+	if item.GetContent().GetDraftIssue().GetBody() != "Draft issue body content" {
+		t.Errorf("DraftIssue.Body = %v, want Draft issue body content", item.GetContent().GetDraftIssue().GetBody())
+	}
+
+	// Verify other content types are nil
+	if item.GetContent().GetIssue() != nil {
+		t.Error("Content.Issue should be nil for DraftIssue content")
+	}
+	if item.GetContent().GetPullRequest() != nil {
+		t.Error("Content.PullRequest should be nil for DraftIssue content")
+	}
+}
+
+func TestProjectV2Item_UnmarshalJSON_NullContent(t *testing.T) {
+	t.Parallel()
+
+	// Test with null content
+	jsonData := `{
+		"id": 126,
+		"node_id": "PVTI_null",
+		"content_type": "Issue",
+		"content": null
+	}`
+
+	var item ProjectV2Item
+	if err := json.Unmarshal([]byte(jsonData), &item); err != nil {
+		t.Fatalf("json.Unmarshal failed: %v", err)
+	}
+
+	// Content should be nil
+	if item.Content != nil {
+		t.Error("Content should be nil when content is null in JSON")
+	}
+}
+
+func TestProjectV2Item_UnmarshalJSON_MissingContentType(t *testing.T) {
+	t.Parallel()
+
+	// Test without content_type field
+	jsonData := `{
+		"id": 127,
+		"node_id": "PVTI_no_type",
+		"content": {
+			"id": 459,
+			"title": "Some content"
+		}
+	}`
+
+	var item ProjectV2Item
+	if err := json.Unmarshal([]byte(jsonData), &item); err != nil {
+		t.Fatalf("json.Unmarshal failed: %v", err)
+	}
+
+	// Should handle missing ContentType gracefully - content should be nil
+	// since we can't determine the type
+	if item.Content != nil {
+		t.Error("Content should be nil when ContentType is missing")
+	}
+}
+
+func TestProjectV2Item_UnmarshalJSON_EmptyJSON(t *testing.T) {
+	t.Parallel()
+
+	// Test with null JSON
+	var item ProjectV2Item
+	if err := json.Unmarshal([]byte("null"), &item); err != nil {
+		t.Fatalf("json.Unmarshal failed with null: %v", err)
+	}
+
+	// Verify item is in zero state after unmarshaling null
+	if item.Content != nil {
+		t.Error("Content should be nil after unmarshaling null")
+	}
+}
+
+func TestProjectV2Item_UnmarshalJSON_InvalidJSON(t *testing.T) {
+	t.Parallel()
+
+	// Test with invalid JSON
+	var item ProjectV2Item
+	if err := json.Unmarshal([]byte("~~~"), &item); err == nil {
+		t.Error("expected error for invalid JSON, got nil")
+	}
+}
+
+func TestProjectV2Item_Marshal_Issue(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ProjectV2Item{}, "{}")
+
+	item := &ProjectV2Item{
+		ContentType: Ptr(ProjectV2ItemContentTypeIssue),
+		Content: &ProjectV2ItemContent{
+			Issue: &Issue{
+				Number: Ptr(42),
+				Title:  Ptr("Bug report"),
+				State:  Ptr("open"),
+			},
+		},
+		ID: Ptr(int64(123)),
+	}
+
+	want := `{
+		"content_type":"Issue",
+		"content":{
+			"number":42,
+			"state":"open",
+			"title":"Bug report"
+		},
+		"id":123
+	}`
+
+	testJSONMarshal(t, item, want)
+}
+
+func TestProjectV2Item_Marshal_PullRequest(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ProjectV2Item{}, "{}")
+
+	item := &ProjectV2Item{
+		ContentType: Ptr(ProjectV2ItemContentTypePullRequest),
+		Content: &ProjectV2ItemContent{
+			PullRequest: &PullRequest{
+				Number: Ptr(99),
+				Title:  Ptr("Feature addition"),
+				State:  Ptr("closed"),
+			},
+		},
+		ID: Ptr(int64(456)),
+	}
+
+	want := `{
+		"content_type":"PullRequest",
+		"content":{
+			"number":99,
+			"state":"closed",
+			"title":"Feature addition"
+		},
+		"id":456
+	}`
+
+	testJSONMarshal(t, item, want)
+}
+
+func TestProjectV2Item_Marshal_DraftIssue(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ProjectV2Item{}, "{}")
+
+	item := &ProjectV2Item{
+		ContentType: Ptr(ProjectV2ItemContentTypeDraftIssue),
+		Content: &ProjectV2ItemContent{
+			DraftIssue: &ProjectV2DraftIssue{
+				Title: Ptr("Draft task"),
+				Body:  Ptr("Work in progress"),
+			},
+		},
+		ID: Ptr(int64(789)),
+	}
+
+	want := `{
+		"content_type":"DraftIssue",
+		"content":{
+			"body":"Work in progress",
+			"title":"Draft task"
+		},
+		"id":789
+	}`
+
+	testJSONMarshal(t, item, want)
+}
+
+func TestProjectV2Item_Marshal_MissingContent(t *testing.T) {
+	t.Parallel()
+
+	item := &ProjectV2Item{
+		ContentType: Ptr(ProjectV2ItemContentTypeIssue),
+		Content:     nil,
+		ID:          Ptr(int64(789)),
+	}
+
+	want := `{
+		"content_type":"Issue",
+		"id":789
+	}`
+
+	testJSONMarshal(t, item, want)
 }

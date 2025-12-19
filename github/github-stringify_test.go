@@ -1560,17 +1560,19 @@ func TestProjectV2_String(t *testing.T) {
 		Number:                 Ptr(0),
 		ShortDescription:       Ptr(""),
 		DeletedBy:              &User{},
+		State:                  Ptr(""),
+		LatestStatusUpdate:     &ProjectV2StatusUpdate{},
+		IsTemplate:             Ptr(false),
 		URL:                    Ptr(""),
 		HTMLURL:                Ptr(""),
 		ColumnsURL:             Ptr(""),
 		OwnerURL:               Ptr(""),
 		Name:                   Ptr(""),
 		Body:                   Ptr(""),
-		State:                  Ptr(""),
 		OrganizationPermission: Ptr(""),
 		Private:                Ptr(false),
 	}
-	want := `github.ProjectV2{ID:0, NodeID:"", Owner:github.User{}, Creator:github.User{}, Title:"", Description:"", Public:false, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, DeletedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Number:0, ShortDescription:"", DeletedBy:github.User{}, URL:"", HTMLURL:"", ColumnsURL:"", OwnerURL:"", Name:"", Body:"", State:"", OrganizationPermission:"", Private:false}`
+	want := `github.ProjectV2{ID:0, NodeID:"", Owner:github.User{}, Creator:github.User{}, Title:"", Description:"", Public:false, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, DeletedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Number:0, ShortDescription:"", DeletedBy:github.User{}, State:"", LatestStatusUpdate:github.ProjectV2StatusUpdate{}, IsTemplate:false, URL:"", HTMLURL:"", ColumnsURL:"", OwnerURL:"", Name:"", Body:"", OrganizationPermission:"", Private:false}`
 	if got := v.String(); got != want {
 		t.Errorf("ProjectV2.String = %v, want %v", got, want)
 	}
