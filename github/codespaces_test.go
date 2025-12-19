@@ -490,7 +490,7 @@ func TestCodespacesService_CreateFromPullRequest(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_CreateCodespace(t *testing.T) {
+func TestCodespacesService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -514,12 +514,12 @@ func TestCodespacesService_CreateCodespace(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	codespace, _, err := client.Codespaces.CreateCodespace(
+	codespace, _, err := client.Codespaces.Create(
 		ctx,
 		opt,
 	)
 	if err != nil {
-		t.Fatalf("Codespaces.CreateCodespace returned error: %v", err)
+		t.Fatalf("Codespaces.Create returned error: %v", err)
 	}
 
 	want := &Codespace{
@@ -530,12 +530,12 @@ func TestCodespacesService_CreateCodespace(t *testing.T) {
 	}
 
 	if !cmp.Equal(codespace, want) {
-		t.Errorf("Codespaces.CreateCodespace returned %+v, want %+v", codespace, want)
+		t.Errorf("Codespaces.Create returned %+v, want %+v", codespace, want)
 	}
 
-	const methodName = "CreateCodespace"
+	const methodName = "Create"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.CreateCodespace(
+		got, resp, err := client.Codespaces.Create(
 			ctx,
 			opt,
 		)
@@ -546,7 +546,7 @@ func TestCodespacesService_CreateCodespace(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_GetCodespace(t *testing.T) {
+func TestCodespacesService_Get(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -556,9 +556,9 @@ func TestCodespacesService_GetCodespace(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	codespace, _, err := client.Codespaces.GetCodespace(ctx, "codespace_1")
+	codespace, _, err := client.Codespaces.Get(ctx, "codespace_1")
 	if err != nil {
-		t.Fatalf("Codespaces.GetCodespace returned error: %v", err)
+		t.Fatalf("Codespaces.Get returned error: %v", err)
 	}
 
 	want := &Codespace{
@@ -569,12 +569,12 @@ func TestCodespacesService_GetCodespace(t *testing.T) {
 	}
 
 	if !cmp.Equal(codespace, want) {
-		t.Errorf("Codespaces.GetCodespace returned %+v, want %+v", codespace, want)
+		t.Errorf("Codespaces.Get returned %+v, want %+v", codespace, want)
 	}
 
-	const methodName = "GetCodespace"
+	const methodName = "Get"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.GetCodespace(ctx, "codespace_1")
+		got, resp, err := client.Codespaces.Get(ctx, "codespace_1")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -721,7 +721,7 @@ func TestCodespacesService_GetLatestCodespaceExport(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_PublishCodespace(t *testing.T) {
+func TestCodespacesService_Publish(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -741,13 +741,13 @@ func TestCodespacesService_PublishCodespace(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	repo, _, err := client.Codespaces.PublishCodespace(
+	repo, _, err := client.Codespaces.Publish(
 		ctx,
 		"codespace_1",
 		opt,
 	)
 	if err != nil {
-		t.Fatalf("Codespaces.PublishCodespace returned error: %v", err)
+		t.Fatalf("Codespaces.Publish returned error: %v", err)
 	}
 
 	want := &Codespace{
@@ -757,12 +757,12 @@ func TestCodespacesService_PublishCodespace(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(repo, want) {
-		t.Errorf("Codespaces.PublishCodespace returned %+v, want %+v", repo, want)
+		t.Errorf("Codespaces.Publish returned %+v, want %+v", repo, want)
 	}
 
-	const methodName = "PublishCodespace"
+	const methodName = "Publish"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.PublishCodespace(
+		got, resp, err := client.Codespaces.Publish(
 			ctx,
 			"codespace_1",
 			opt,

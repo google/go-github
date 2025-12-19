@@ -460,14 +460,14 @@ func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, re
 	return codespace, resp, nil
 }
 
-// CreateCodespace creates a new codespace, owned by the authenticated user.
+// Create creates a new codespace, owned by the authenticated user.
 //
 // This method requires either RepositoryId OR a PullRequest but not both.
 //
 // GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-codespace-for-the-authenticated-user
 //
 //meta:operation POST /user/codespaces
-func (s *CodespacesService) CreateCodespace(ctx context.Context, opts *CodespaceCreateForUserOptions) (*Codespace, *Response, error) {
+func (s *CodespacesService) Create(ctx context.Context, opts *CodespaceCreateForUserOptions) (*Codespace, *Response, error) {
 	u := "user/codespaces"
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
@@ -483,12 +483,12 @@ func (s *CodespacesService) CreateCodespace(ctx context.Context, opts *Codespace
 	return codespace, resp, nil
 }
 
-// GetCodespace gets information about a user's codespace.
+// Get gets information about a user's codespace.
 //
 // GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#get-a-codespace-for-the-authenticated-user
 //
 //meta:operation GET /user/codespaces/{codespace_name}
-func (s *CodespacesService) GetCodespace(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
+func (s *CodespacesService) Get(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v", codespaceName)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -569,12 +569,12 @@ func (s *CodespacesService) GetLatestCodespaceExport(ctx context.Context, codesp
 	return codespace, resp, nil
 }
 
-// PublishCodespace publishes an unpublished codespace, creating a new repository and assigning it to the codespace.
+// Publish publishes an unpublished codespace, creating a new repository and assigning it to the codespace.
 //
 // GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-repository-from-an-unpublished-codespace
 //
 //meta:operation POST /user/codespaces/{codespace_name}/publish
-func (s *CodespacesService) PublishCodespace(ctx context.Context, codespaceName string, opts *PublishCodespaceOptions) (*Codespace, *Response, error) {
+func (s *CodespacesService) Publish(ctx context.Context, codespaceName string, opts *PublishCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/publish", codespaceName)
 	req, err := s.client.NewRequest("POST", u, opts)
 	if err != nil {
