@@ -3750,6 +3750,198 @@ func (c *Codespace) GetWebURL() string {
 	return *c.WebURL
 }
 
+// GetClientIP returns the ClientIP field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetClientIP() string {
+	if c == nil || c.ClientIP == nil {
+		return ""
+	}
+	return *c.ClientIP
+}
+
+// GetDevcontainerPath returns the DevcontainerPath field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetDevcontainerPath() string {
+	if c == nil || c.DevcontainerPath == nil {
+		return ""
+	}
+	return *c.DevcontainerPath
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetDisplayName() string {
+	if c == nil || c.DisplayName == nil {
+		return ""
+	}
+	return *c.DisplayName
+}
+
+// GetGeo returns the Geo field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetGeo() string {
+	if c == nil || c.Geo == nil {
+		return ""
+	}
+	return *c.Geo
+}
+
+// GetIdleTimeoutMinutes returns the IdleTimeoutMinutes field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetIdleTimeoutMinutes() int {
+	if c == nil || c.IdleTimeoutMinutes == nil {
+		return 0
+	}
+	return *c.IdleTimeoutMinutes
+}
+
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetLocation() string {
+	if c == nil || c.Location == nil {
+		return ""
+	}
+	return *c.Location
+}
+
+// GetMachine returns the Machine field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetMachine() string {
+	if c == nil || c.Machine == nil {
+		return ""
+	}
+	return *c.Machine
+}
+
+// GetMultiRepoPermissionsOptOut returns the MultiRepoPermissionsOptOut field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetMultiRepoPermissionsOptOut() bool {
+	if c == nil || c.MultiRepoPermissionsOptOut == nil {
+		return false
+	}
+	return *c.MultiRepoPermissionsOptOut
+}
+
+// GetPullRequest returns the PullRequest field.
+func (c *CodespaceCreateForUserOptions) GetPullRequest() *CodespacePullRequestOptions {
+	if c == nil {
+		return nil
+	}
+	return c.PullRequest
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetRef() string {
+	if c == nil || c.Ref == nil {
+		return ""
+	}
+	return *c.Ref
+}
+
+// GetRetentionPeriodMinutes returns the RetentionPeriodMinutes field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetRetentionPeriodMinutes() int {
+	if c == nil || c.RetentionPeriodMinutes == nil {
+		return 0
+	}
+	return *c.RetentionPeriodMinutes
+}
+
+// GetWorkingDirectory returns the WorkingDirectory field if it's non-nil, zero value otherwise.
+func (c *CodespaceCreateForUserOptions) GetWorkingDirectory() string {
+	if c == nil || c.WorkingDirectory == nil {
+		return ""
+	}
+	return *c.WorkingDirectory
+}
+
+// GetBillableOwner returns the BillableOwner field.
+func (c *CodespaceDefaultAttributes) GetBillableOwner() *User {
+	if c == nil {
+		return nil
+	}
+	return c.BillableOwner
+}
+
+// GetDefaults returns the Defaults field.
+func (c *CodespaceDefaultAttributes) GetDefaults() *CodespaceDefaults {
+	if c == nil {
+		return nil
+	}
+	return c.Defaults
+}
+
+// GetDevcontainerPath returns the DevcontainerPath field if it's non-nil, zero value otherwise.
+func (c *CodespaceDefaults) GetDevcontainerPath() string {
+	if c == nil || c.DevcontainerPath == nil {
+		return ""
+	}
+	return *c.DevcontainerPath
+}
+
+// GetBranch returns the Branch field if it's non-nil, zero value otherwise.
+func (c *CodespaceExport) GetBranch() string {
+	if c == nil || c.Branch == nil {
+		return ""
+	}
+	return *c.Branch
+}
+
+// GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
+func (c *CodespaceExport) GetCompletedAt() Timestamp {
+	if c == nil || c.CompletedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CompletedAt
+}
+
+// GetExportURL returns the ExportURL field if it's non-nil, zero value otherwise.
+func (c *CodespaceExport) GetExportURL() string {
+	if c == nil || c.ExportURL == nil {
+		return ""
+	}
+	return *c.ExportURL
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (c *CodespaceExport) GetHTMLURL() string {
+	if c == nil || c.HTMLURL == nil {
+		return ""
+	}
+	return *c.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CodespaceExport) GetID() string {
+	if c == nil || c.ID == nil {
+		return ""
+	}
+	return *c.ID
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (c *CodespaceExport) GetSHA() string {
+	if c == nil || c.SHA == nil {
+		return ""
+	}
+	return *c.SHA
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (c *CodespaceExport) GetState() string {
+	if c == nil || c.State == nil {
+		return ""
+	}
+	return *c.State
+}
+
+// GetClientIP returns the ClientIP field if it's non-nil, zero value otherwise.
+func (c *CodespaceGetDefaultAttributesOptions) GetClientIP() string {
+	if c == nil || c.ClientIP == nil {
+		return ""
+	}
+	return *c.ClientIP
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (c *CodespaceGetDefaultAttributesOptions) GetRef() string {
+	if c == nil || c.Ref == nil {
+		return ""
+	}
+	return *c.Ref
+}
+
 // GetAhead returns the Ahead field if it's non-nil, zero value otherwise.
 func (c *CodespacesGitStatus) GetAhead() int {
 	if c == nil || c.Ahead == nil {
@@ -6278,6 +6470,14 @@ func (c *CreateCodespaceOptions) GetIdleTimeoutMinutes() int {
 	return *c.IdleTimeoutMinutes
 }
 
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceOptions) GetLocation() string {
+	if c == nil || c.Location == nil {
+		return ""
+	}
+	return *c.Location
+}
+
 // GetMachine returns the Machine field if it's non-nil, zero value otherwise.
 func (c *CreateCodespaceOptions) GetMachine() string {
 	if c == nil || c.Machine == nil {
@@ -8476,6 +8676,22 @@ func (d *DeploymentStatusRequest) GetState() string {
 		return ""
 	}
 	return *d.State
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (d *DevContainer) GetDisplayName() string {
+	if d == nil || d.DisplayName == nil {
+		return ""
+	}
+	return *d.DisplayName
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (d *DevContainer) GetName() string {
+	if d == nil || d.Name == nil {
+		return ""
+	}
+	return *d.Name
 }
 
 // GetActiveLockReason returns the ActiveLockReason field if it's non-nil, zero value otherwise.
@@ -20390,6 +20606,22 @@ func (p *PublicKey) GetKeyID() string {
 	return *p.KeyID
 }
 
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *PublishCodespaceOptions) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
+// GetPrivate returns the Private field if it's non-nil, zero value otherwise.
+func (p *PublishCodespaceOptions) GetPrivate() bool {
+	if p == nil || p.Private == nil {
+		return false
+	}
+	return *p.Private
+}
+
 // GetActiveLockReason returns the ActiveLockReason field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetActiveLockReason() string {
 	if p == nil || p.ActiveLockReason == nil {
@@ -29852,6 +30084,14 @@ func (u *UpdateCheckRunOptions) GetStatus() string {
 		return ""
 	}
 	return *u.Status
+}
+
+// GetMachine returns the Machine field if it's non-nil, zero value otherwise.
+func (u *UpdateCodespaceOptions) GetMachine() string {
+	if u == nil || u.Machine == nil {
+		return ""
+	}
+	return *u.Machine
 }
 
 // GetQuerySuite returns the QuerySuite field if it's non-nil, zero value otherwise.

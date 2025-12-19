@@ -190,9 +190,9 @@ func (s *SecurityAdvisoriesService) CreateTemporaryPrivateFork(ctx context.Conte
 // GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories-for-an-organization
 //
 //meta:operation GET /orgs/{org}/security-advisories
-func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx context.Context, org string, opt *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
+func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx context.Context, org string, opts *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/security-advisories", org)
-	url, err := addOptions(url, opt)
+	url, err := addOptions(url, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -216,9 +216,9 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx c
 // GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories
 //
 //meta:operation GET /repos/{owner}/{repo}/security-advisories
-func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context.Context, owner, repo string, opt *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
+func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context.Context, owner, repo string, opts *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/security-advisories", owner, repo)
-	url, err := addOptions(url, opt)
+	url, err := addOptions(url, opts)
 	if err != nil {
 		return nil, nil, err
 	}

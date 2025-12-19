@@ -43,9 +43,9 @@ type EnterpriseTeamCreateOrUpdateRequest struct {
 // GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#list-enterprise-teams
 //
 //meta:operation GET /enterprises/{enterprise}/teams
-func (s *EnterpriseService) ListTeams(ctx context.Context, enterprise string, opt *ListOptions) ([]*EnterpriseTeam, *Response, error) {
+func (s *EnterpriseService) ListTeams(ctx context.Context, enterprise string, opts *ListOptions) ([]*EnterpriseTeam, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams", enterprise)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -156,9 +156,9 @@ func (s *EnterpriseService) DeleteTeam(ctx context.Context, enterprise, teamSlug
 // GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#list-members-in-an-enterprise-team
 //
 //meta:operation GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships
-func (s *EnterpriseService) ListTeamMembers(ctx context.Context, enterprise, enterpriseTeam string, opt *ListOptions) ([]*User, *Response, error) {
+func (s *EnterpriseService) ListTeamMembers(ctx context.Context, enterprise, enterpriseTeam string, opts *ListOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships", enterprise, enterpriseTeam)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -289,9 +289,9 @@ func (s *EnterpriseService) RemoveTeamMember(ctx context.Context, enterprise, en
 // GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#get-organization-assignments
 //
 //meta:operation GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations
-func (s *EnterpriseService) ListAssignments(ctx context.Context, enterprise, enterpriseTeam string, opt *ListOptions) ([]*Organization, *Response, error) {
+func (s *EnterpriseService) ListAssignments(ctx context.Context, enterprise, enterpriseTeam string, opts *ListOptions) ([]*Organization, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations", enterprise, enterpriseTeam)
-	u, err := addOptions(u, opt)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
