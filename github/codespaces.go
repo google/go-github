@@ -430,13 +430,13 @@ func (s *CodespacesService) CheckPermissions(ctx context.Context, owner, repo, r
 		return nil, nil, err
 	}
 
-	var hasPermission *CodespacePermissions
-	resp, err := s.client.Do(ctx, req, &hasPermission)
+	var permissions *CodespacePermissions
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return hasPermission, resp, nil
+	return permissions, resp, nil
 }
 
 // CreateFromPullRequest creates a codespace owned by the authenticated user for the specified pull request.
@@ -444,9 +444,9 @@ func (s *CodespacesService) CheckPermissions(ctx context.Context, owner, repo, r
 // GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-codespace-from-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces
-func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, repo string, pullNumber int, opts *CreateCodespaceOptions) (*Codespace, *Response, error) {
+func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, repo string, pullNumber int, request *CreateCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/codespaces", owner, repo, pullNumber)
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
