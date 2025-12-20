@@ -18919,6 +18919,39 @@ func TestListGlobalSecurityAdvisoriesOptions_GetUpdated(tt *testing.T) {
 	l.GetUpdated()
 }
 
+func TestListMachinesOptions_GetClientIP(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListMachinesOptions{ClientIP: &zeroValue}
+	l.GetClientIP()
+	l = &ListMachinesOptions{}
+	l.GetClientIP()
+	l = nil
+	l.GetClientIP()
+}
+
+func TestListMachinesOptions_GetLocation(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListMachinesOptions{Location: &zeroValue}
+	l.GetLocation()
+	l = &ListMachinesOptions{}
+	l.GetLocation()
+	l = nil
+	l.GetLocation()
+}
+
+func TestListMachinesOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListMachinesOptions{Ref: &zeroValue}
+	l.GetRef()
+	l = &ListMachinesOptions{}
+	l.GetRef()
+	l = nil
+	l.GetRef()
+}
+
 func TestListOrganizations_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
