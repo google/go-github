@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// CodespaceMachine  represent a description of the machine powering a codespace.
+// CodespaceMachine represent a description of the machine powering a codespace.
 type CodespaceMachine struct {
 	Name            *string `json:"name,omitempty"`
 	DisplayName     *string `json:"display_name,omitempty"`
