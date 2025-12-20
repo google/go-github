@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestCodespacesService_ListMachinesTypesForRepository(t *testing.T) {
+func TestCodespacesService_ListMachineTypesForRepository(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -37,44 +37,48 @@ func TestCodespacesService_ListMachinesTypesForRepository(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opt := &ListMachinesOptions{
+	opts := &ListMachinesOptions{
 		Ref:      Ptr("main"),
 		Location: Ptr("WestUs2"),
 		ClientIP: Ptr("1.2.3.4"),
 	}
 
-	got, _, err := client.Codespaces.ListMachinesTypesForRepository(
+	got, _, err := client.Codespaces.ListMachineTypesForRepository(
 		ctx,
 		"owner",
 		"repo",
-		opt,
+		opts,
 	)
 	if err != nil {
-		t.Fatalf("Codespaces.ListMachinesTypesForRepository returned error: %v", err)
+		t.Fatalf("Codespaces.ListMachineTypesForRepository returned error: %v", err)
 	}
 
 	want := &CodespaceMachines{
 		TotalCount: 1,
-		Machines: []*Machine{
+		Machines: []*CodespaceMachine{
 			{
-				Name:                 "standardLinux",
-				DisplayName:          "4 cores, 8 GB RAM, 64 GB storage",
-				OperatingSystem:      "linux",
-				StorageInBytes:       68719476736,
-				MemoryInBytes:        17179869184,
-				CPUs:                 4,
-				PrebuildAvailability: "ready",
+				Name:                 Ptr("standardLinux"),
+				DisplayName:          Ptr("4 cores, 8 GB RAM, 64 GB storage"),
+				OperatingSystem:      Ptr("linux"),
+				StorageInBytes:       Ptr(int64(68719476736)),
+				MemoryInBytes:        Ptr(int64(17179869184)),
+				CPUs:                 Ptr(4),
+				PrebuildAvailability: Ptr("ready"),
 			},
 		},
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Codespaces.ListMachinesTypesForRepository returned %+v, want %+v", got, want)
+		t.Errorf("Codespaces.ListMachineTypesForRepository returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "ListMachinesTypesForRepository"
+	const methodName = "ListMachineTypesForRepository"
+	testBadOptions(t, methodName, func() error {
+		_, _, err := client.Codespaces.ListMachineTypesForRepository(ctx, "\n", "/n", opts)
+		return err
+	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.ListMachinesTypesForRepository(ctx, "/n", "/n", opt)
+		got, resp, err := client.Codespaces.ListMachineTypesForRepository(ctx, "/n", "/n", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -82,7 +86,7 @@ func TestCodespacesService_ListMachinesTypesForRepository(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_ListMachinesTypesForCodespace(t *testing.T) {
+func TestCodespacesService_ListMachineTypesForCodespace(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -106,33 +110,33 @@ func TestCodespacesService_ListMachinesTypesForCodespace(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Codespaces.ListMachinesTypesForCodespace(ctx, "codespace_1")
+	got, _, err := client.Codespaces.ListMachineTypesForCodespace(ctx, "codespace_1")
 	if err != nil {
-		t.Fatalf("Codespaces.ListMachinesTypesForCodespace returned error: %v", err)
+		t.Fatalf("Codespaces.ListMachineTypesForCodespace returned error: %v", err)
 	}
 
 	want := &CodespaceMachines{
 		TotalCount: 1,
-		Machines: []*Machine{
+		Machines: []*CodespaceMachine{
 			{
-				Name:                 "standardLinux",
-				DisplayName:          "4 cores, 8 GB RAM, 64 GB storage",
-				OperatingSystem:      "linux",
-				StorageInBytes:       68719476736,
-				MemoryInBytes:        17179869184,
-				CPUs:                 4,
-				PrebuildAvailability: "ready",
+				Name:                 Ptr("standardLinux"),
+				DisplayName:          Ptr("4 cores, 8 GB RAM, 64 GB storage"),
+				OperatingSystem:      Ptr("linux"),
+				StorageInBytes:       Ptr(int64(68719476736)),
+				MemoryInBytes:        Ptr(int64(17179869184)),
+				CPUs:                 Ptr(4),
+				PrebuildAvailability: Ptr("ready"),
 			},
 		},
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Codespaces.ListMachinesTypesForCodespace returned %+v, want %+v", got, want)
+		t.Errorf("Codespaces.ListMachineTypesForCodespace returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "ListMachinesTypesForCodespace"
+	const methodName = "ListMachineTypesForCodespace"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.ListMachinesTypesForCodespace(ctx, "/n")
+		got, resp, err := client.Codespaces.ListMachineTypesForCodespace(ctx, "/n")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

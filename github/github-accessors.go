@@ -3942,6 +3942,62 @@ func (c *CodespaceGetDefaultAttributesOptions) GetRef() string {
 	return *c.Ref
 }
 
+// GetCPUs returns the CPUs field if it's non-nil, zero value otherwise.
+func (c *CodespaceMachine) GetCPUs() int {
+	if c == nil || c.CPUs == nil {
+		return 0
+	}
+	return *c.CPUs
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (c *CodespaceMachine) GetDisplayName() string {
+	if c == nil || c.DisplayName == nil {
+		return ""
+	}
+	return *c.DisplayName
+}
+
+// GetMemoryInBytes returns the MemoryInBytes field if it's non-nil, zero value otherwise.
+func (c *CodespaceMachine) GetMemoryInBytes() int64 {
+	if c == nil || c.MemoryInBytes == nil {
+		return 0
+	}
+	return *c.MemoryInBytes
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CodespaceMachine) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetOperatingSystem returns the OperatingSystem field if it's non-nil, zero value otherwise.
+func (c *CodespaceMachine) GetOperatingSystem() string {
+	if c == nil || c.OperatingSystem == nil {
+		return ""
+	}
+	return *c.OperatingSystem
+}
+
+// GetPrebuildAvailability returns the PrebuildAvailability field if it's non-nil, zero value otherwise.
+func (c *CodespaceMachine) GetPrebuildAvailability() string {
+	if c == nil || c.PrebuildAvailability == nil {
+		return ""
+	}
+	return *c.PrebuildAvailability
+}
+
+// GetStorageInBytes returns the StorageInBytes field if it's non-nil, zero value otherwise.
+func (c *CodespaceMachine) GetStorageInBytes() int64 {
+	if c == nil || c.StorageInBytes == nil {
+		return 0
+	}
+	return *c.StorageInBytes
+}
+
 // GetAhead returns the Ahead field if it's non-nil, zero value otherwise.
 func (c *CodespacesGitStatus) GetAhead() int {
 	if c == nil || c.Ahead == nil {
