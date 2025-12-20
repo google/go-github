@@ -182,6 +182,15 @@ func TestListProvisionedSCIMGroupsEnterpriseOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestGetProvisionedSCIMGroupEnterpriseOptions_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &GetProvisionedSCIMGroupEnterpriseOptions{}, "{}")
+
+	u := &GetProvisionedSCIMGroupEnterpriseOptions{ExcludedAttributes: Ptr("ea")}
+	want := `{"excludedAttributes": "ea"}`
+	testJSONMarshal(t, u, want)
+}
+
 func TestListProvisionedSCIMUsersEnterpriseOptions_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &ListProvisionedSCIMUsersEnterpriseOptions{}, "{}")
@@ -1018,10 +1027,10 @@ func TestEnterpriseService_GetProvisionedSCIMGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	// Test 1 without values
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/914a", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
+		testFormValues(t, r, values{"excludedAttributes": "members,meta"})
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
@@ -1043,12 +1052,13 @@ func TestEnterpriseService_GetProvisionedSCIMGroup(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got1, _, err := client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "914a", "")
+	opts := &GetProvisionedSCIMGroupEnterpriseOptions{ExcludedAttributes: Ptr("members,meta")}
+	got, _, err := client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "914a", opts)
 	if err != nil {
 		t.Fatalf("Enterprise.GetProvisionedSCIMGroup returned unexpected error: %v", err)
 	}
 
-	want1 := &SCIMEnterpriseGroupAttributes{
+	want := &SCIMEnterpriseGroupAttributes{
 		ID: Ptr("914a"),
 		Meta: &SCIMEnterpriseMeta{
 			ResourceType: "Group",
@@ -1066,44 +1076,18 @@ func TestEnterpriseService_GetProvisionedSCIMGroup(t *testing.T) {
 		}},
 	}
 
-	if diff := cmp.Diff(want1, got1); diff != "" {
-		t.Fatalf("Enterprise.GetProvisionedSCIMGroup diff mismatch (-want +got):\n%v", diff)
-	}
-
-	// Test 2 with values
-	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/78ba", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testFormValues(t, r, values{"excludedAttributes": "externalId,members,schemas,meta"})
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprint(w, `{
-			"id": "78ba",
-			"displayName": "gn2"
-		}`)
-	})
-
-	got2, _, err := client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "78ba", "externalId,members,schemas,meta")
-	if err != nil {
-		t.Fatalf("Enterprise.GetProvisionedSCIMGroup returned unexpected error: %v", err)
-	}
-
-	want2 := &SCIMEnterpriseGroupAttributes{
-		ID:          Ptr("78ba"),
-		DisplayName: Ptr("gn2"),
-	}
-
-	if diff := cmp.Diff(want2, got2); diff != "" {
+	if diff := cmp.Diff(want, got); diff != "" {
 		t.Fatalf("Enterprise.GetProvisionedSCIMGroup diff mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "GetProvisionedSCIMGroup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "\n", "")
+		_, _, err = client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "914a", "meta")
+		got, resp, err := client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "914a", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
