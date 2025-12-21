@@ -53,9 +53,9 @@ func TestCodespacesService_ListMachineTypesForRepository(t *testing.T) {
 		t.Fatalf("Codespaces.ListMachineTypesForRepository returned error: %v", err)
 	}
 
-	want := &CodespaceMachines{
+	want := &CodespacesMachines{
 		TotalCount: 1,
-		Machines: []*CodespaceMachine{
+		Machines: []*CodespacesMachine{
 			{
 				Name:                 Ptr("standardLinux"),
 				DisplayName:          Ptr("4 cores, 8 GB RAM, 64 GB storage"),
@@ -115,9 +115,9 @@ func TestCodespacesService_ListMachineTypesForCodespace(t *testing.T) {
 		t.Fatalf("Codespaces.ListMachineTypesForCodespace returned error: %v", err)
 	}
 
-	want := &CodespaceMachines{
+	want := &CodespacesMachines{
 		TotalCount: 1,
-		Machines: []*CodespaceMachine{
+		Machines: []*CodespacesMachine{
 			{
 				Name:                 Ptr("standardLinux"),
 				DisplayName:          Ptr("4 cores, 8 GB RAM, 64 GB storage"),
