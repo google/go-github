@@ -19106,6 +19106,39 @@ func TestListProvisionedSCIMUsersEnterpriseOptions_GetStartIndex(tt *testing.T) 
 	l.GetStartIndex()
 }
 
+func TestListRepoMachineTypesOptions_GetClientIP(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListRepoMachineTypesOptions{ClientIP: &zeroValue}
+	l.GetClientIP()
+	l = &ListRepoMachineTypesOptions{}
+	l.GetClientIP()
+	l = nil
+	l.GetClientIP()
+}
+
+func TestListRepoMachineTypesOptions_GetLocation(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListRepoMachineTypesOptions{Location: &zeroValue}
+	l.GetLocation()
+	l = &ListRepoMachineTypesOptions{}
+	l.GetLocation()
+	l = nil
+	l.GetLocation()
+}
+
+func TestListRepoMachineTypesOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	l := &ListRepoMachineTypesOptions{Ref: &zeroValue}
+	l.GetRef()
+	l = &ListRepoMachineTypesOptions{}
+	l.GetRef()
+	l = nil
+	l.GetRef()
+}
+
 func TestListRepositories_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
