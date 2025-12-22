@@ -10238,6 +10238,14 @@ func (g *GetAuditLogOptions) GetPhrase() string {
 	return *g.Phrase
 }
 
+// GetExcludedAttributes returns the ExcludedAttributes field if it's non-nil, zero value otherwise.
+func (g *GetProvisionedSCIMGroupEnterpriseOptions) GetExcludedAttributes() string {
+	if g == nil || g.ExcludedAttributes == nil {
+		return ""
+	}
+	return *g.ExcludedAttributes
+}
+
 // GetComments returns the Comments field if it's non-nil, zero value otherwise.
 func (g *Gist) GetComments() int {
 	if g == nil || g.Comments == nil {

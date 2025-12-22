@@ -13275,6 +13275,17 @@ func TestGetAuditLogOptions_GetPhrase(tt *testing.T) {
 	g.GetPhrase()
 }
 
+func TestGetProvisionedSCIMGroupEnterpriseOptions_GetExcludedAttributes(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	g := &GetProvisionedSCIMGroupEnterpriseOptions{ExcludedAttributes: &zeroValue}
+	g.GetExcludedAttributes()
+	g = &GetProvisionedSCIMGroupEnterpriseOptions{}
+	g.GetExcludedAttributes()
+	g = nil
+	g.GetExcludedAttributes()
+}
+
 func TestGist_GetComments(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
