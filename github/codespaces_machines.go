@@ -16,22 +16,22 @@ type CodespacesMachines struct {
 	Machines   []*CodespacesMachine `json:"machines"`
 }
 
-// ListMachinesOptions represent options for ListMachineTypesForRepository.
-type ListMachinesOptions struct {
+// ListRepoMachineTypesOptions represent options for ListMachineTypesForRepository.
+type ListRepoMachineTypesOptions struct {
 	// Ref represent the branch or commit to check for prebuild availability and devcontainer restrictions.
-	Ref *string `json:"ref,omitempty"`
+	Ref *string `url:"ref,omitempty"`
 	// Location represent the location to check for available machines. Assigned by IP if not provided.
-	Location *string `json:"location,omitempty"`
+	Location *string `url:"location,omitempty"`
 	// ClientIP represent the IP for location auto-detection when proxying a request
-	ClientIP *string `json:"client_ip,omitempty"`
+	ClientIP *string `url:"client_ip,omitempty"`
 }
 
-// ListMachineTypesForRepository lists the machine types available for a given repository based on its configuration.
+// ListRepositoryMachineTypes lists the machine types available for a given repository based on its configuration.
 //
 // GitHub API docs: https://docs.github.com/rest/codespaces/machines#list-available-machine-types-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/codespaces/machines
-func (s *CodespacesService) ListMachineTypesForRepository(ctx context.Context, owner, repo string, opts *ListMachinesOptions) (*CodespacesMachines, *Response, error) {
+func (s *CodespacesService) ListRepositoryMachineTypes(ctx context.Context, owner, repo string, opts *ListRepoMachineTypesOptions) (*CodespacesMachines, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces/machines", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -52,12 +52,12 @@ func (s *CodespacesService) ListMachineTypesForRepository(ctx context.Context, o
 	return machines, resp, nil
 }
 
-// ListMachineTypesForCodespace lists the machine types a codespace can transition to use.
+// ListCodespaceMachineTypes lists the machine types a codespace can transition to use.
 //
 // GitHub API docs: https://docs.github.com/rest/codespaces/machines#list-machine-types-for-a-codespace
 //
 //meta:operation GET /user/codespaces/{codespace_name}/machines
-func (s *CodespacesService) ListMachineTypesForCodespace(ctx context.Context, codespaceName string) (*CodespacesMachines, *Response, error) {
+func (s *CodespacesService) ListCodespaceMachineTypes(ctx context.Context, codespaceName string) (*CodespacesMachines, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/machines", codespaceName)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {

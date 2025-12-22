@@ -13,13 +13,17 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestCodespacesService_ListMachineTypesForRepository(t *testing.T) {
+func TestCodespacesService_ListRepositoryMachineTypes(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/owner/repo/codespaces/machines", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-
+		testFormValues(t, r, values{
+			"ref":       "main",
+			"location":  "WestUs2",
+			"client_ip": "1.2.3.4",
+		})
 		fmt.Fprint(w, `{
 			"total_count": 1,
 			"machines": [
@@ -37,20 +41,20 @@ func TestCodespacesService_ListMachineTypesForRepository(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &ListMachinesOptions{
+	opts := &ListRepoMachineTypesOptions{
 		Ref:      Ptr("main"),
 		Location: Ptr("WestUs2"),
 		ClientIP: Ptr("1.2.3.4"),
 	}
 
-	got, _, err := client.Codespaces.ListMachineTypesForRepository(
+	got, _, err := client.Codespaces.ListRepositoryMachineTypes(
 		ctx,
 		"owner",
 		"repo",
 		opts,
 	)
 	if err != nil {
-		t.Fatalf("Codespaces.ListMachineTypesForRepository returned error: %v", err)
+		t.Fatalf("Codespaces.ListRepositoryMachineTypes returned error: %v", err)
 	}
 
 	want := &CodespacesMachines{
@@ -69,16 +73,16 @@ func TestCodespacesService_ListMachineTypesForRepository(t *testing.T) {
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Codespaces.ListMachineTypesForRepository returned %+v, want %+v", got, want)
+		t.Errorf("Codespaces.ListRepositoryMachineTypes returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "ListMachineTypesForRepository"
+	const methodName = "ListRepositoryMachineTypes"
 	testBadOptions(t, methodName, func() error {
-		_, _, err := client.Codespaces.ListMachineTypesForRepository(ctx, "\n", "/n", opts)
+		_, _, err := client.Codespaces.ListRepositoryMachineTypes(ctx, "\n", "/n", opts)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.ListMachineTypesForRepository(ctx, "/n", "/n", opts)
+		got, resp, err := client.Codespaces.ListRepositoryMachineTypes(ctx, "/n", "/n", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -86,7 +90,7 @@ func TestCodespacesService_ListMachineTypesForRepository(t *testing.T) {
 	})
 }
 
-func TestCodespacesService_ListMachineTypesForCodespace(t *testing.T) {
+func TestCodespacesService_ListCodespaceMachineTypes(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -110,9 +114,9 @@ func TestCodespacesService_ListMachineTypesForCodespace(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Codespaces.ListMachineTypesForCodespace(ctx, "codespace_1")
+	got, _, err := client.Codespaces.ListCodespaceMachineTypes(ctx, "codespace_1")
 	if err != nil {
-		t.Fatalf("Codespaces.ListMachineTypesForCodespace returned error: %v", err)
+		t.Fatalf("Codespaces.ListCodespaceMachineTypes returned error: %v", err)
 	}
 
 	want := &CodespacesMachines{
@@ -131,12 +135,12 @@ func TestCodespacesService_ListMachineTypesForCodespace(t *testing.T) {
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Codespaces.ListMachineTypesForCodespace returned %+v, want %+v", got, want)
+		t.Errorf("Codespaces.ListCodespaceMachineTypes returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "ListMachineTypesForCodespace"
+	const methodName = "ListCodespaceMachineTypes"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Codespaces.ListMachineTypesForCodespace(ctx, "/n")
+		got, resp, err := client.Codespaces.ListCodespaceMachineTypes(ctx, "/n")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
