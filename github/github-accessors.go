@@ -14686,6 +14686,30 @@ func (l *ListProvisionedSCIMUsersEnterpriseOptions) GetStartIndex() int {
 	return *l.StartIndex
 }
 
+// GetClientIP returns the ClientIP field if it's non-nil, zero value otherwise.
+func (l *ListRepoMachineTypesOptions) GetClientIP() string {
+	if l == nil || l.ClientIP == nil {
+		return ""
+	}
+	return *l.ClientIP
+}
+
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (l *ListRepoMachineTypesOptions) GetLocation() string {
+	if l == nil || l.Location == nil {
+		return ""
+	}
+	return *l.Location
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (l *ListRepoMachineTypesOptions) GetRef() string {
+	if l == nil || l.Ref == nil {
+		return ""
+	}
+	return *l.Ref
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (l *ListRepositories) GetTotalCount() int {
 	if l == nil || l.TotalCount == nil {
