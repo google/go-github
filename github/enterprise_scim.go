@@ -70,7 +70,7 @@ type ListProvisionedSCIMGroupsEnterpriseOptions struct {
 	// If specified, only results that match the specified filter will be returned.
 	// Possible filters are `externalId`, `id`, and `displayName`. For example, `externalId eq "a123"`.
 	Filter *string `url:"filter,omitempty"`
-	// Excludes the specified attribute from being returned in the results.
+	// Excludes the specified attributes from being returned in the results.
 	ExcludedAttributes *string `url:"excludedAttributes,omitempty"`
 	// Used for pagination: the starting index of the first result to return when paginating through values.
 	// Default: 1.
@@ -78,6 +78,14 @@ type ListProvisionedSCIMGroupsEnterpriseOptions struct {
 	// Used for pagination: the number of results to return per page.
 	// Default: 30.
 	Count *int `url:"count,omitempty"`
+}
+
+// GetProvisionedSCIMGroupEnterpriseOptions represents query parameters for GetProvisionedSCIMGroup.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#get-scim-provisioning-information-for-an-enterprise-group
+type GetProvisionedSCIMGroupEnterpriseOptions struct {
+	// Excludes the specified attributes from being returned in the results.
+	ExcludedAttributes *string `url:"excludedAttributes,omitempty"`
 }
 
 // SCIMEnterpriseUserAttributes represents supported SCIM enterprise user attributes, and represents the result of calling UpdateSCIMUserAttribute.
@@ -162,8 +170,9 @@ type SCIMEnterpriseAttributeOperation struct {
 
 // ListProvisionedSCIMGroups lists provisioned SCIM groups in an enterprise.
 //
-// You can improve query search time by using the `excludedAttributes` query
-// parameter with a value of `members` to exclude members from the response.
+// You can improve query search time by using the `excludedAttributes` and
+// exclude the specified attributes, e.g. `members` to exclude members from the
+// response.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
 //
@@ -379,6 +388,60 @@ func (s *EnterpriseService) ProvisionSCIMUser(ctx context.Context, enterprise st
 	}
 
 	return userProvisioned, resp, nil
+}
+
+// GetProvisionedSCIMGroup gets information about a SCIM group.
+//
+// You can use the `excludedAttributes` from `opts` and exclude the specified
+// attributes from being returned in the results. Using this parameter can
+// speed up response time.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#get-scim-provisioning-information-for-an-enterprise-group
+//
+//meta:operation GET /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
+func (s *EnterpriseService) GetProvisionedSCIMGroup(ctx context.Context, enterprise, scimGroupID string, opts *GetProvisionedSCIMGroupEnterpriseOptions) (*SCIMEnterpriseGroupAttributes, *Response, error) {
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups/%v", enterprise, scimGroupID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	req.Header.Set("Accept", mediaTypeSCIM)
+
+	group := new(SCIMEnterpriseGroupAttributes)
+	resp, err := s.client.Do(ctx, req, group)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return group, resp, nil
+}
+
+// GetProvisionedSCIMUser gets information about a SCIM user.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#get-scim-provisioning-information-for-an-enterprise-user
+//
+//meta:operation GET /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
+func (s *EnterpriseService) GetProvisionedSCIMUser(ctx context.Context, enterprise, scimUserID string) (*SCIMEnterpriseUserAttributes, *Response, error) {
+	u := fmt.Sprintf("scim/v2/enterprises/%v/Users/%v", enterprise, scimUserID)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	req.Header.Set("Accept", mediaTypeSCIM)
+
+	user := new(SCIMEnterpriseUserAttributes)
+	resp, err := s.client.Do(ctx, req, user)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return user, resp, nil
 }
 
 // DeleteSCIMGroup deletes a SCIM group from an enterprise.
