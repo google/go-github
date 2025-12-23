@@ -10,29 +10,6 @@ import (
 	"fmt"
 )
 
-// rulesetNoOmitBypassActors represents a GitHub ruleset object. The struct does not omit bypassActors if the field is nil or an empty array is passed.
-type rulesetNoOmitBypassActors struct {
-	ID                   *int64                       `json:"id,omitempty"`
-	Name                 string                       `json:"name"`
-	Target               *RulesetTarget               `json:"target,omitempty"`
-	SourceType           *RulesetSourceType           `json:"source_type,omitempty"`
-	Source               string                       `json:"source"`
-	Enforcement          RulesetEnforcement           `json:"enforcement"`
-	BypassActors         []*BypassActor               `json:"bypass_actors"`
-	CurrentUserCanBypass *BypassMode                  `json:"current_user_can_bypass,omitempty"`
-	NodeID               *string                      `json:"node_id,omitempty"`
-	Links                *RepositoryRulesetLinks      `json:"_links,omitempty"`
-	Conditions           *RepositoryRulesetConditions `json:"conditions,omitempty"`
-	Rules                *RepositoryRulesetRules      `json:"rules,omitempty"`
-	UpdatedAt            *Timestamp                   `json:"updated_at,omitempty"`
-	CreatedAt            *Timestamp                   `json:"created_at,omitempty"`
-}
-
-// rulesetClearBypassActors is used to clear the bypass actors when modifying a GitHub ruleset object.
-type rulesetClearBypassActors struct {
-	BypassActors []*BypassActor `json:"bypass_actors"`
-}
-
 // GetRulesForBranch gets all the repository rules that apply to the specified branch.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/rules#get-rules-for-a-branch
@@ -151,73 +128,6 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
 	req, err := s.client.NewRequest("PUT", u, ruleset)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	var rs *RepositoryRuleset
-	resp, err := s.client.Do(ctx, req, &rs)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return rs, resp, nil
-}
-
-// UpdateRulesetClearBypassActor clears the bypass actors for a repository ruleset for the specified repository.
-//
-// This function is necessary as the UpdateRuleset function does not marshal ByPassActor if passed as an empty array.
-//
-// GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
-//
-//meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
-func (s *RepositoriesService) UpdateRulesetClearBypassActor(ctx context.Context, owner, repo string, rulesetID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
-
-	rsClearBypassActor := rulesetClearBypassActors{
-		BypassActors: []*BypassActor{},
-	}
-
-	req, err := s.client.NewRequest("PUT", u, rsClearBypassActor)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := s.client.Do(ctx, req, nil)
-	if err != nil {
-		return resp, err
-	}
-
-	return resp, nil
-}
-
-// UpdateRulesetNoBypassActor updates a repository ruleset for the specified repository.
-//
-// This function is necessary as the UpdateRuleset function does not marshal ByPassActor if passed as an empty array.
-//
-// Deprecated: Use UpdateRulesetClearBypassActor instead.
-//
-// GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
-//
-//meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
-func (s *RepositoriesService) UpdateRulesetNoBypassActor(ctx context.Context, owner, repo string, rulesetID int64, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
-
-	rsNoBypassActor := rulesetNoOmitBypassActors{
-		ID:           ruleset.ID,
-		Name:         ruleset.Name,
-		Target:       ruleset.Target,
-		SourceType:   ruleset.SourceType,
-		Source:       ruleset.Source,
-		Enforcement:  ruleset.Enforcement,
-		BypassActors: ruleset.BypassActors,
-		NodeID:       ruleset.NodeID,
-		Links:        ruleset.Links,
-		Conditions:   ruleset.Conditions,
-		Rules:        ruleset.Rules,
-	}
-
-	req, err := s.client.NewRequest("PUT", u, rsNoBypassActor)
 	if err != nil {
 		return nil, nil, err
 	}

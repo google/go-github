@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -61,6 +62,75 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestRepositoriesService_UpdateRuleset_OmitZero_Nil(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+
+		var v map[string]any
+		if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
+			t.Errorf("could not decode body: %v", err)
+		}
+
+		if _, ok := v["bypass_actors"]; ok {
+			t.Error("Request body contained 'bypass_actors', expected it to be omitted for nil input")
+		}
+
+		fmt.Fprint(w, `{
+			"id": 42,
+			"name": "ruleset",
+			"source": "o/repo",
+			"enforcement": "active"
+		}`)
+	})
+
+	ctx := t.Context()
+	input := RepositoryRuleset{
+		Name:         "ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: nil,
+	}
+
+	_, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, input)
+	if err != nil {
+		t.Errorf("Repositories.UpdateRuleset returned error: %v", err)
+	}
+}
+
+func TestRepositoriesService_UpdateRuleset_OmitZero_EmptySlice(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// Scenario 2: User passes empty slice (non-zero value).
+	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+
+		testBody(t, r, `{"name":"ruleset","source":"","enforcement":"active","bypass_actors":[]}`+"\n")
+
+		fmt.Fprint(w, `{
+			"id": 42,
+			"name": "ruleset",
+			"source": "o/repo",
+			"enforcement": "active",
+			"bypass_actors": []
+		}`)
+	})
+
+	ctx := t.Context()
+	input := RepositoryRuleset{
+		Name:         "ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: []*BypassActor{},
+	}
+
+	_, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, input)
+	if err != nil {
+		t.Errorf("Repositories.UpdateRuleset returned error: %v", err)
+	}
 }
 
 func TestRepositoriesService_GetRulesForBranch_ListOptions(t *testing.T) {
@@ -447,103 +517,6 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, RepositoryRuleset{})
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
-func TestRepositoriesService_UpdateRulesetClearBypassActor(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testBody(t, r, `{"bypass_actors":[]}`+"\n")
-		fmt.Fprint(w, `{
-			"id": 42,
-			"name": "ruleset",
-			"source_type": "Repository",
-			"source": "o/repo",
-			"enforcement": "active"
-			"conditions": {
-				"ref_name": {
-					"include": [
-						"refs/heads/main",
-						"refs/heads/master"
-					],
-					"exclude": [
-						"refs/heads/dev*"
-					]
-				}
-			},
-			"rules": [
-			  {
-					"type": "creation"
-			  }
-			]
-		}`)
-	})
-
-	ctx := t.Context()
-
-	_, err := client.Repositories.UpdateRulesetClearBypassActor(ctx, "o", "repo", 42)
-	if err != nil {
-		t.Errorf("Repositories.UpdateRulesetClearBypassActor returned error: %v \n", err)
-	}
-
-	const methodName = "UpdateRulesetClearBypassActor"
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Repositories.UpdateRulesetClearBypassActor(ctx, "o", "repo", 42)
-	})
-}
-
-func TestRepositoriesService_UpdateRulesetNoBypassActor(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	rs := RepositoryRuleset{
-		Name:        "ruleset",
-		Source:      "o/repo",
-		Enforcement: RulesetEnforcementActive,
-	}
-
-	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		fmt.Fprint(w, `{
-			"id": 42,
-			"name": "ruleset",
-			"source_type": "Repository",
-			"source": "o/repo",
-			"enforcement": "active"
-		}`)
-	})
-
-	ctx := t.Context()
-
-	ruleSet, _, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, rs)
-	if err != nil {
-		t.Errorf("Repositories.UpdateRulesetNoBypassActor returned error: %v \n", err)
-	}
-
-	want := &RepositoryRuleset{
-		ID:          Ptr(int64(42)),
-		Name:        "ruleset",
-		SourceType:  Ptr(RulesetSourceTypeRepository),
-		Source:      "o/repo",
-		Enforcement: RulesetEnforcementActive,
-	}
-
-	if !cmp.Equal(ruleSet, want) {
-		t.Errorf("Repositories.UpdateRulesetNoBypassActor returned %+v, want %+v", ruleSet, want)
-	}
-
-	const methodName = "UpdateRulesetNoBypassActor"
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.UpdateRulesetNoBypassActor(ctx, "o", "repo", 42, RepositoryRuleset{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -1587,62 +1588,74 @@ func TestOrganizationsService_UpdateRepositoryRulesetWithRepoProp(t *testing.T) 
 	})
 }
 
-func TestOrganizationsService_UpdateRepositoryRulesetClearBypassActor(t *testing.T) {
+func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_Nil(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/orgs/o/rulesets/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"bypass_actors":[]}`+"\n")
+
+		var v map[string]any
+		if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
+			t.Errorf("could not decode body: %v", err)
+		}
+
+		if _, ok := v["bypass_actors"]; ok {
+			t.Error("Request body contained 'bypass_actors', expected it to be omitted for nil input")
+		}
+
 		fmt.Fprint(w, `{
 			"id": 21,
 			"name": "test ruleset",
-			"target": "branch",
 			"source_type": "Organization",
 			"source": "o",
-			"enforcement": "active",
-			"bypass_mode": "none",
-			"conditions": {
-				"repository_name": {
-					"include": [
-						"important_repository",
-						"another_important_repository"
-					],
-					"exclude": [
-						"unimportant_repository"
-					],
-					"protected": true
-				},
-			  "ref_name": {
-					"include": [
-						"refs/heads/main",
-						"refs/heads/master"
-					],
-					"exclude": [
-						"refs/heads/dev*"
-					]
-				}
-			},
-			"rules": [
-			  {
-					"type": "creation"
-			  }
-			]
+			"enforcement": "active"
 		}`)
 	})
 
 	ctx := t.Context()
-
-	_, err := client.Organizations.UpdateRepositoryRulesetClearBypassActor(ctx, "o", 21)
-	if err != nil {
-		t.Errorf("Organizations.UpdateRepositoryRulesetClearBypassActor returned error: %v \n", err)
+	input := RepositoryRuleset{
+		Name:         "test ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: nil,
 	}
 
-	const methodName = "UpdateRepositoryRulesetClearBypassActor"
+	_, _, err := client.Organizations.UpdateRepositoryRuleset(ctx, "o", 21, input)
+	if err != nil {
+		t.Errorf("Organizations.UpdateRepositoryRuleset returned error: %v", err)
+	}
+}
 
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Organizations.UpdateRepositoryRulesetClearBypassActor(ctx, "o", 21)
+func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_EmptySlice(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/rulesets/21", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+
+		testBody(t, r, `{"name":"test ruleset","source":"","enforcement":"active","bypass_actors":[]}`+"\n")
+
+		fmt.Fprint(w, `{
+			"id": 21,
+			"name": "test ruleset",
+			"source_type": "Organization",
+			"source": "o",
+			"enforcement": "active",
+			"bypass_actors": []
+		}`)
 	})
+
+	ctx := t.Context()
+	input := RepositoryRuleset{
+		Name:         "test ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: []*BypassActor{},
+	}
+
+	_, _, err := client.Organizations.UpdateRepositoryRuleset(ctx, "o", 21, input)
+	if err != nil {
+		t.Errorf("Organizations.UpdateRepositoryRuleset returned error: %v", err)
+	}
 }
 
 func TestOrganizationsService_DeleteRepositoryRuleset(t *testing.T) {
