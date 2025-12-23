@@ -1592,11 +1592,9 @@ func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_Nil(t *testing.T)
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	// Scenario 1: User passes nil (zero value).
 	mux.HandleFunc("/orgs/o/rulesets/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 
-		// Verify "bypass_actors" key is NOT present in the JSON body
 		var v map[string]any
 		if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
 			t.Errorf("could not decode body: %v", err)
@@ -1619,7 +1617,7 @@ func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_Nil(t *testing.T)
 	input := RepositoryRuleset{
 		Name:         "test ruleset",
 		Enforcement:  RulesetEnforcementActive,
-		BypassActors: nil, // Explicitly nil (Zero Value)
+		BypassActors: nil,
 	}
 
 	_, _, err := client.Organizations.UpdateRepositoryRuleset(ctx, "o", 21, input)
@@ -1632,11 +1630,9 @@ func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_EmptySlice(t *tes
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	// Scenario 2: User passes empty slice.
 	mux.HandleFunc("/orgs/o/rulesets/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 
-		// FIXED: Added "source":"" to match the actual JSON output
 		testBody(t, r, `{"name":"test ruleset","source":"","enforcement":"active","bypass_actors":[]}`+"\n")
 
 		fmt.Fprint(w, `{

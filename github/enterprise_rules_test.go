@@ -392,7 +392,6 @@ func TestEnterpriseService_UpdateRepositoryRuleset_OmitZero_Nil(t *testing.T) {
 	mux.HandleFunc("/enterprises/e/rulesets/84", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 
-		// Verify "bypass_actors" key is NOT present
 		var v map[string]any
 		if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
 			t.Errorf("could not decode body: %v", err)
@@ -424,7 +423,6 @@ func TestEnterpriseService_UpdateRepositoryRuleset_OmitZero_EmptySlice(t *testin
 	mux.HandleFunc("/enterprises/e/rulesets/84", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 
-		// FIXED: Added "source":"" and "enforcement":"" to match actual JSON output
 		testBody(t, r, `{"name":"test ruleset","source":"","enforcement":"","bypass_actors":[]}`+"\n")
 
 		fmt.Fprint(w, `{"id": 84, "name": "test ruleset", "bypass_actors": []}`)

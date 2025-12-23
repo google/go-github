@@ -80,10 +80,7 @@ func (s *EnterpriseService) UpdateRepositoryRuleset(ctx context.Context, enterpr
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#delete-an-enterprise-repository-ruleset
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
-//
 //meta:operation DELETE /enterprises/{enterprise}/rulesets/{ruleset_id}
-//meta:operation PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
 func (s *EnterpriseService) DeleteRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 

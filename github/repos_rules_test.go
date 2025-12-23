@@ -68,11 +68,9 @@ func TestRepositoriesService_UpdateRuleset_OmitZero_Nil(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	// Scenario 1: User passes nil (zero value).
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 
-		// Verify "bypass_actors" key is NOT present in the JSON body
 		var v map[string]any
 		if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
 			t.Errorf("could not decode body: %v", err)
@@ -94,7 +92,7 @@ func TestRepositoriesService_UpdateRuleset_OmitZero_Nil(t *testing.T) {
 	input := RepositoryRuleset{
 		Name:         "ruleset",
 		Enforcement:  RulesetEnforcementActive,
-		BypassActors: nil, // Explicitly nil (Zero Value)
+		BypassActors: nil,
 	}
 
 	_, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, input)

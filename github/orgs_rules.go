@@ -107,10 +107,7 @@ func (s *OrganizationsService) UpdateRepositoryRuleset(ctx context.Context, org 
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/rules#delete-an-organization-repository-ruleset
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/rules#update-an-organization-repository-ruleset
-//
 //meta:operation DELETE /orgs/{org}/rulesets/{ruleset_id}
-//meta:operation PUT /orgs/{org}/rulesets/{ruleset_id}
 func (s *OrganizationsService) DeleteRepositoryRuleset(ctx context.Context, org string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
 
