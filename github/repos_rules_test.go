@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -61,6 +62,78 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestRepositoriesService_UpdateRuleset_OmitZero_Nil(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// Scenario 1: User passes nil (zero value).
+	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+
+		// Verify "bypass_actors" key is NOT present in the JSON body
+		var v map[string]any
+		if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
+			t.Errorf("could not decode body: %v", err)
+		}
+
+		if _, ok := v["bypass_actors"]; ok {
+			t.Error("Request body contained 'bypass_actors', expected it to be omitted for nil input")
+		}
+
+		fmt.Fprint(w, `{
+			"id": 42,
+			"name": "ruleset",
+			"source": "o/repo",
+			"enforcement": "active"
+		}`)
+	})
+
+	ctx := t.Context()
+	input := RepositoryRuleset{
+		Name:         "ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: nil, // Explicitly nil (Zero Value)
+	}
+
+	_, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, input)
+	if err != nil {
+		t.Errorf("Repositories.UpdateRuleset returned error: %v", err)
+	}
+}
+
+func TestRepositoriesService_UpdateRuleset_OmitZero_EmptySlice(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// Scenario 2: User passes empty slice (non-zero value).
+	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+
+		// FIXED: Added "source":"" to match the actual JSON output
+		testBody(t, r, `{"name":"ruleset","source":"","enforcement":"active","bypass_actors":[]}`+"\n")
+
+		fmt.Fprint(w, `{
+			"id": 42,
+			"name": "ruleset",
+			"source": "o/repo",
+			"enforcement": "active",
+			"bypass_actors": []
+		}`)
+	})
+
+	ctx := t.Context()
+	input := RepositoryRuleset{
+		Name:         "ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: []*BypassActor{},
+	}
+
+	_, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, input)
+	if err != nil {
+		t.Errorf("Repositories.UpdateRuleset returned error: %v", err)
+	}
 }
 
 func TestRepositoriesService_GetRulesForBranch_ListOptions(t *testing.T) {
