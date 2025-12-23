@@ -76,33 +76,6 @@ func (s *EnterpriseService) UpdateRepositoryRuleset(ctx context.Context, enterpr
 	return rs, resp, nil
 }
 
-// UpdateRepositoryRulesetClearBypassActor clears the bypass actors for a repository ruleset for the specified enterprise.
-//
-// This function is necessary as the UpdateRepositoryRuleset function does not marshal ByPassActor if passed as an empty array.
-//
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
-//
-//meta:operation PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
-func (s *EnterpriseService) UpdateRepositoryRulesetClearBypassActor(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
-	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
-
-	rsClearBypassActor := rulesetClearBypassActors{
-		BypassActors: []*BypassActor{},
-	}
-
-	req, err := s.client.NewRequest("PUT", u, rsClearBypassActor)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := s.client.Do(ctx, req, nil)
-	if err != nil {
-		return resp, err
-	}
-
-	return resp, nil
-}
-
 // DeleteRepositoryRuleset deletes a repository ruleset from the specified enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#delete-an-enterprise-repository-ruleset
