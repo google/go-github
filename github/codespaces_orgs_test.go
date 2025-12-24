@@ -59,7 +59,7 @@ func TestCodespacesService_SetOrgAccessControl(t *testing.T) {
 	ctx := t.Context()
 	req := CodespaceOrgAccessControlRequest{
 		Visibility:        "selected_members",
-		SelectedUsernames: []string{"u2", "u2"},
+		SelectedUsernames: []string{"u1", "u2"},
 	}
 
 	_, err := client.Codespaces.SetOrgAccessControl(ctx, "o1", req)
