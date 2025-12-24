@@ -10,8 +10,8 @@ import (
 	"fmt"
 )
 
-// CodespaceOrgAccessControlRequest represent request for SetOrgAccessControl.
-type CodespaceOrgAccessControlRequest struct {
+// CodespacesOrgAccessControlRequest represent request for SetOrgAccessControl.
+type CodespacesOrgAccessControlRequest struct {
 	// Visibility represent which users can access codespaces in the organization.
 	// Can be one of: disabled, selected_members, all_members, all_members_and_outside_collaborators.
 	Visibility string `json:"visibility"`
@@ -51,7 +51,7 @@ func (s *CodespacesService) ListInOrg(ctx context.Context, org string, opts *Lis
 // GitHub API docs: https://docs.github.com/rest/codespaces/organizations#manage-access-control-for-organization-codespaces
 //
 //meta:operation PUT /orgs/{org}/codespaces/access
-func (s *CodespacesService) SetOrgAccessControl(ctx context.Context, org string, request CodespaceOrgAccessControlRequest) (*Response, error) {
+func (s *CodespacesService) SetOrgAccessControl(ctx context.Context, org string, request CodespacesOrgAccessControlRequest) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/access", org)
 	req, err := s.client.NewRequest("PUT", u, request)
 	if err != nil {
@@ -66,7 +66,7 @@ func (s *CodespacesService) SetOrgAccessControl(ctx context.Context, org string,
 	return resp, nil
 }
 
-// AddUsersToOrgAccess adds users to Codespaces access for an organization
+// AddUsersToOrgAccess adds users to Codespaces access for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/codespaces/organizations#add-users-to-codespaces-access-for-an-organization
 //
@@ -86,7 +86,7 @@ func (s *CodespacesService) AddUsersToOrgAccess(ctx context.Context, org string,
 	return resp, nil
 }
 
-// RemoveUsersFromOrgAccess removes users from Codespaces access for an organization
+// RemoveUsersFromOrgAccess removes users from Codespaces access for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/codespaces/organizations#remove-users-from-codespaces-access-for-an-organization
 //

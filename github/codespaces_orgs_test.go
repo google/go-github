@@ -64,7 +64,7 @@ func TestCodespacesService_SetOrgAccessControl(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	req := CodespaceOrgAccessControlRequest{
+	req := CodespacesOrgAccessControlRequest{
 		Visibility:        "selected_members",
 		SelectedUsernames: []string{"u1", "u2"},
 	}
