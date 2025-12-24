@@ -44,6 +44,13 @@ func TestCodespacesService_ListInOrg(t *testing.T) {
 		_, _, err := client.Codespaces.ListInOrg(ctx, "\n", opts)
 		return err
 	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.ListInOrg(ctx, "o1", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestCodespacesService_SetOrgAccessControl(t *testing.T) {
@@ -167,6 +174,13 @@ func TestCodespacesService_ListUserCodespacesInOrg(t *testing.T) {
 	testBadOptions(t, methodName, func() error {
 		_, _, err := client.Codespaces.ListUserCodespacesInOrg(ctx, "\n", "\n", opts)
 		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Codespaces.ListUserCodespacesInOrg(ctx, "o1", "u1", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
