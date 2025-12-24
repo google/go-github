@@ -689,8 +689,8 @@ func TestRepositoriesService_DeleteReleaseAsset(t *testing.T) {
 func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 	t.Parallel()
 	var (
-		defaultUploadOptions     = &UploadOptions{Name: "n.txt"}
-		defaultExpectedFormValue = values{"name": "n.txt"}
+		defaultUploadOptions     = &UploadOptions{Name: "n"}
+		defaultExpectedFormValue = values{"name": "n"}
 		mediaTypeTextPlain       = "text/plain; charset=utf-8"
 	)
 	uploadTests := []struct {
@@ -715,23 +715,23 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		},
 		// No file extension and explicit media type.
 		{
-			&UploadOptions{Name: "n.txt", MediaType: "image/png"},
+			&UploadOptions{Name: "n", MediaType: "image/png"},
 			"upload",
 			defaultExpectedFormValue,
 			"image/png",
 		},
 		// File extension and explicit media type.
 		{
-			&UploadOptions{Name: "n.txt", MediaType: "image/png"},
+			&UploadOptions{Name: "n", MediaType: "image/png"},
 			"upload.png",
 			defaultExpectedFormValue,
 			"image/png",
 		},
 		// Label provided.
 		{
-			&UploadOptions{Name: "n.txt", Label: "l"},
+			&UploadOptions{Name: "n", Label: "l"},
 			"upload.txt",
-			values{"name": "n.txt", "label": "l"},
+			values{"name": "n", "label": "l"},
 			mediaTypeTextPlain,
 		},
 		// No label provided.

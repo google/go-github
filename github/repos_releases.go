@@ -536,12 +536,15 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(
 
 	// determine media type
 	mediaType := defaultMediaType
-	if opts != nil && opts.MediaType != "" {
-		mediaType = opts.MediaType
-	} else if opts != nil && opts.Name != "" {
-		if ext := filepath.Ext(opts.Name); ext != "" {
-			if mt := mime.TypeByExtension(ext); mt != "" {
-				mediaType = mt
+	if opts != nil {
+		switch {
+		case opts.MediaType != "":
+			mediaType = opts.MediaType
+		case opts.Name != "":
+			if ext := filepath.Ext(opts.Name); ext != "" {
+				if mt := mime.TypeByExtension(ext); mt != "" {
+					mediaType = mt
+				}
 			}
 		}
 	}
