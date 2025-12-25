@@ -13729,7 +13729,7 @@ func TestCustomPropertyEvent_Marshal(t *testing.T) {
 		Action: Ptr("created"),
 		Definition: &CustomProperty{
 			PropertyName:     Ptr("name"),
-			ValueType:        "single_select",
+			ValueType:        PropertyValueTypeSingleSelect,
 			SourceType:       Ptr("enterprise"),
 			Required:         Ptr(true),
 			DefaultValue:     Ptr("production"),

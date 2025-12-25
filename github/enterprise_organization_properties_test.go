@@ -38,7 +38,7 @@ func TestEnterpriseService_GetOrganizationCustomPropertySchema(t *testing.T) {
 		Properties: []*CustomProperty{
 			{
 				PropertyName: Ptr("team"),
-				ValueType:    "string",
+				ValueType:    PropertyValueTypeString,
 				Description:  Ptr("Team name"),
 			},
 		},
@@ -111,7 +111,7 @@ func TestEnterpriseService_GetOrganizationCustomProperty(t *testing.T) {
 
 	want := &CustomProperty{
 		PropertyName: Ptr("team"),
-		ValueType:    "string",
+		ValueType:    PropertyValueTypeString,
 		Description:  Ptr("Team name"),
 	}
 
