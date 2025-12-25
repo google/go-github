@@ -53,7 +53,7 @@ func TestEnterpriseService_GetAllCustomProperties(t *testing.T) {
 	want := []*CustomProperty{
 		{
 			PropertyName:     Ptr("name"),
-			ValueType:        "single_select",
+			ValueType:        PropertyValueTypeSingleSelect,
 			Required:         Ptr(true),
 			DefaultValue:     Ptr("production"),
 			Description:      Ptr("Prod or dev environment"),
@@ -62,11 +62,11 @@ func TestEnterpriseService_GetAllCustomProperties(t *testing.T) {
 		},
 		{
 			PropertyName: Ptr("service"),
-			ValueType:    "string",
+			ValueType:    PropertyValueTypeString,
 		},
 		{
 			PropertyName: Ptr("team"),
-			ValueType:    "string",
+			ValueType:    PropertyValueTypeString,
 			Description:  Ptr("Team owning the repository"),
 		},
 	}
@@ -109,12 +109,12 @@ func TestEnterpriseService_CreateOrUpdateCustomProperties(t *testing.T) {
 	properties, _, err := client.Enterprise.CreateOrUpdateCustomProperties(ctx, "e", []*CustomProperty{
 		{
 			PropertyName: Ptr("name"),
-			ValueType:    "single_select",
+			ValueType:    PropertyValueTypeSingleSelect,
 			Required:     Ptr(true),
 		},
 		{
 			PropertyName: Ptr("service"),
-			ValueType:    "string",
+			ValueType:    PropertyValueTypeString,
 		},
 	})
 	if err != nil {
@@ -124,12 +124,12 @@ func TestEnterpriseService_CreateOrUpdateCustomProperties(t *testing.T) {
 	want := []*CustomProperty{
 		{
 			PropertyName: Ptr("name"),
-			ValueType:    "single_select",
+			ValueType:    PropertyValueTypeSingleSelect,
 			Required:     Ptr(true),
 		},
 		{
 			PropertyName: Ptr("service"),
-			ValueType:    "string",
+			ValueType:    PropertyValueTypeString,
 		},
 	}
 
@@ -176,7 +176,7 @@ func TestEnterpriseService_GetCustomProperty(t *testing.T) {
 
 	want := &CustomProperty{
 		PropertyName:     Ptr("name"),
-		ValueType:        "single_select",
+		ValueType:        PropertyValueTypeSingleSelect,
 		Required:         Ptr(true),
 		DefaultValue:     Ptr("production"),
 		Description:      Ptr("Prod or dev environment"),
@@ -220,7 +220,7 @@ func TestEnterpriseService_CreateOrUpdateCustomProperty(t *testing.T) {
 
 	ctx := t.Context()
 	property, _, err := client.Enterprise.CreateOrUpdateCustomProperty(ctx, "e", "name", &CustomProperty{
-		ValueType:        "single_select",
+		ValueType:        PropertyValueTypeSingleSelect,
 		Required:         Ptr(true),
 		DefaultValue:     Ptr("production"),
 		Description:      Ptr("Prod or dev environment"),
@@ -233,7 +233,7 @@ func TestEnterpriseService_CreateOrUpdateCustomProperty(t *testing.T) {
 
 	want := &CustomProperty{
 		PropertyName:     Ptr("name"),
-		ValueType:        "single_select",
+		ValueType:        PropertyValueTypeSingleSelect,
 		Required:         Ptr(true),
 		DefaultValue:     Ptr("production"),
 		Description:      Ptr("Prod or dev environment"),

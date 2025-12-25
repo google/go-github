@@ -12,6 +12,15 @@ import (
 	"fmt"
 )
 
+// Valid values for CustomProperty.ValueType.
+const (
+	PropertyValueTypeString       = "string"
+	PropertyValueTypeSingleSelect = "single_select"
+	PropertyValueTypeMultiSelect  = "multi_select"
+	PropertyValueTypeTrueFalse    = "true_false"
+	PropertyValueTypeURL          = "url"
+)
+
 // CustomProperty represents an organization custom property object.
 type CustomProperty struct {
 	// PropertyName is required for most endpoints except when calling CreateOrUpdateCustomProperty;
@@ -21,7 +30,7 @@ type CustomProperty struct {
 	URL *string `json:"url,omitempty"`
 	// SourceType is the source type of the property where it has been created. Can be one of: organization, enterprise.
 	SourceType *string `json:"source_type,omitempty"`
-	// The type of the value for the property. Can be one of: string, single_select, multi_select, true_false.
+	// The type of the value for the property. Can be one of: string, single_select, multi_select, true_false, url.
 	ValueType string `json:"value_type"`
 	// Whether the property is required.
 	Required *bool `json:"required,omitempty"`
