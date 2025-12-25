@@ -488,3 +488,76 @@ func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, rep
 	}
 	return asset, resp, nil
 }
+
+// UploadReleaseAssetFromRelease uploads an asset using the UploadURL that's embedded
+// in a RepositoryRelease object.
+//
+// This is a convenience wrapper that extracts the release.UploadURL (which is usually
+// templated like "https://uploads.github.com/.../assets{?name,label}") and uploads
+// the provided data (reader + size) using the existing upload helpers.
+//
+// GitHub API docs: https://docs.github.com/rest/releases/assets#upload-a-release-asset
+//
+//meta:operation POST /repos/{owner}/{repo}/releases/{release_id}/assets
+func (s *RepositoriesService) UploadReleaseAssetFromRelease(
+	ctx context.Context,
+	release *RepositoryRelease,
+	opts *UploadOptions,
+	reader io.Reader,
+	size int64,
+) (*ReleaseAsset, *Response, error) {
+	if release == nil || release.UploadURL == nil {
+		return nil, nil, errors.New("release UploadURL must be provided")
+	}
+	if reader == nil {
+		return nil, nil, errors.New("reader must be provided")
+	}
+	if size < 0 {
+		return nil, nil, errors.New("size must be >= 0")
+	}
+
+	// Strip URI-template portion (e.g. "{?name,label}") if present.
+	uploadURL := *release.UploadURL
+	if idx := strings.Index(uploadURL, "{"); idx != -1 {
+		uploadURL = uploadURL[:idx]
+	}
+
+	// If this is a *relative* URL (no scheme), normalize it by trimming a leading "/"
+	// so it works with Client.BaseURL path prefixes (e.g. "/api-v3/").
+	if !strings.HasPrefix(uploadURL, "http://") && !strings.HasPrefix(uploadURL, "https://") {
+		uploadURL = strings.TrimPrefix(uploadURL, "/")
+	}
+
+	// addOptions will append name/label query params (same behavior as UploadReleaseAsset).
+	u, err := addOptions(uploadURL, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// determine media type
+	mediaType := defaultMediaType
+	if opts != nil {
+		switch {
+		case opts.MediaType != "":
+			mediaType = opts.MediaType
+		case opts.Name != "":
+			if ext := filepath.Ext(opts.Name); ext != "" {
+				if mt := mime.TypeByExtension(ext); mt != "" {
+					mediaType = mt
+				}
+			}
+		}
+	}
+
+	req, err := s.client.NewUploadRequest(u, reader, size, mediaType)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	asset := new(ReleaseAsset)
+	resp, err := s.client.Do(ctx, req, asset)
+	if err != nil {
+		return nil, resp, err
+	}
+	return asset, resp, nil
+}
