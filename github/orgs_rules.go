@@ -103,33 +103,6 @@ func (s *OrganizationsService) UpdateRepositoryRuleset(ctx context.Context, org 
 	return rs, resp, nil
 }
 
-// UpdateRepositoryRulesetClearBypassActor clears the bypass actors for a repository ruleset for the specified organization.
-//
-// This function is necessary as the UpdateRepositoryRuleset function does not marshal ByPassActor if passed as an empty array.
-//
-// GitHub API docs: https://docs.github.com/rest/orgs/rules#update-an-organization-repository-ruleset
-//
-//meta:operation PUT /orgs/{org}/rulesets/{ruleset_id}
-func (s *OrganizationsService) UpdateRepositoryRulesetClearBypassActor(ctx context.Context, org string, rulesetID int64) (*Response, error) {
-	u := fmt.Sprintf("orgs/%v/rulesets/%v", org, rulesetID)
-
-	rsClearBypassActor := rulesetClearBypassActors{
-		BypassActors: []*BypassActor{},
-	}
-
-	req, err := s.client.NewRequest("PUT", u, rsClearBypassActor)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := s.client.Do(ctx, req, nil)
-	if err != nil {
-		return resp, err
-	}
-
-	return resp, nil
-}
-
 // DeleteRepositoryRuleset deletes a repository ruleset from the specified organization.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/rules#delete-an-organization-repository-ruleset

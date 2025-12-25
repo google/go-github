@@ -1148,44 +1148,6 @@ type FieldValue struct {
 	To            json.RawMessage `json:"to,omitempty"`
 }
 
-// ProjectV2ItemFieldValue represents a field value of a project item.
-type ProjectV2ItemFieldValue struct {
-	ID       *int64 `json:"id,omitempty"`
-	Name     string `json:"name,omitempty"`
-	DataType string `json:"data_type,omitempty"`
-	// Value set for the field. The type depends on the field type:
-	//   - text: string
-	//   - number: float64
-	//   - date: string (ISO 8601 date format, e.g. "2023-06-23") or null
-	//   - single_select: object with "id", "name", "color", "description" fields or null
-	//   - iteration: object with "id", "title", "start_date", "duration" fields or null
-	//   - title: object with "text" field (read-only, reflects the item's title) or null
-	//   - assignees: array of user objects with "login", "id", etc. or null
-	//   - labels: array of label objects with "id", "name", "color", etc. or null
-	//   - linked_pull_requests: array of pull request objects or null
-	//   - milestone: milestone object with "id", "title", "description", etc. or null
-	//   - repository: repository object with "id", "name", "full_name", etc. or null
-	//   - reviewers: array of user objects or null
-	//   - status: object with "id", "name", "color", "description" fields (same structure as single_select) or null
-	Value any `json:"value,omitempty"`
-}
-
-// ProjectV2Item represents an item belonging to a project.
-type ProjectV2Item struct {
-	ID            *int64                     `json:"id,omitempty"`
-	NodeID        *string                    `json:"node_id,omitempty"`
-	ProjectNodeID *string                    `json:"project_node_id,omitempty"`
-	ContentNodeID *string                    `json:"content_node_id,omitempty"`
-	ProjectURL    *string                    `json:"project_url,omitempty"`
-	ContentType   *string                    `json:"content_type,omitempty"`
-	Creator       *User                      `json:"creator,omitempty"`
-	CreatedAt     *Timestamp                 `json:"created_at,omitempty"`
-	UpdatedAt     *Timestamp                 `json:"updated_at,omitempty"`
-	ArchivedAt    *Timestamp                 `json:"archived_at,omitempty"`
-	ItemURL       *string                    `json:"item_url,omitempty"`
-	Fields        []*ProjectV2ItemFieldValue `json:"fields,omitempty"`
-}
-
 // PublicEvent is triggered when a private repository is open sourced.
 // According to GitHub: "Without a doubt: the best GitHub event."
 // The Webhook event name is "public".
@@ -1374,7 +1336,8 @@ type PushEvent struct {
 	Size *int `json:"size,omitempty"`
 	// Commits is the list of commits in the push event.
 	//
-	// Deprecated: GitHub will remove commit summaries from Events API payloads on October 7, 2025.
+	// This field is only populated for webhook events.
+	// It has been removed from Events API payloads on October 7, 2025.
 	// Use the Commits REST API endpoint to get detailed commit information.
 	// See: https://docs.github.com/rest/commits/commits#list-commits
 	Commits []*HeadCommit `json:"commits,omitempty"`

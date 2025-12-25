@@ -265,6 +265,41 @@ func TestSearchService_Issues(t *testing.T) {
 	}
 }
 
+func TestSearchService_Issues_advancedSearch(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/search/issues", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"q":               "blah",
+			"sort":            "forks",
+			"order":           "desc",
+			"page":            "2",
+			"per_page":        "2",
+			"advanced_search": "true",
+		})
+
+		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": true, "items": [{"number":1},{"number":2}]}`)
+	})
+
+	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}, AdvancedSearch: Ptr(true)}
+	ctx := t.Context()
+	result, _, err := client.Search.Issues(ctx, "blah", opts)
+	if err != nil {
+		t.Errorf("Search.Issues_advancedSearch returned error: %v", err)
+	}
+
+	want := &IssuesSearchResult{
+		Total:             Ptr(4),
+		IncompleteResults: Ptr(true),
+		Issues:            []*Issue{{Number: Ptr(1)}, {Number: Ptr(2)}},
+	}
+	if !cmp.Equal(result, want) {
+		t.Errorf("Search.Issues_advancedSearch returned %+v, want %+v", result, want)
+	}
+}
+
 func TestSearchService_Issues_coverage(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)

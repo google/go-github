@@ -7,7 +7,7 @@ package github
 
 import (
 	"encoding/json"
-	"reflect"
+	"fmt"
 )
 
 // RulesetTarget represents a GitHub ruleset target.
@@ -15,9 +15,10 @@ type RulesetTarget string
 
 // This is the set of GitHub ruleset targets.
 const (
-	RulesetTargetBranch RulesetTarget = "branch"
-	RulesetTargetTag    RulesetTarget = "tag"
-	RulesetTargetPush   RulesetTarget = "push"
+	RulesetTargetBranch     RulesetTarget = "branch"
+	RulesetTargetTag        RulesetTarget = "tag"
+	RulesetTargetPush       RulesetTarget = "push"
+	RulesetTargetRepository RulesetTarget = "repository"
 )
 
 // RulesetSourceType represents a GitHub ruleset source type.
@@ -68,27 +69,38 @@ type RepositoryRuleType string
 
 // This is the set of GitHub ruleset rule types.
 const (
-	RulesetRuleTypeCreation                 RepositoryRuleType = "creation"
-	RulesetRuleTypeUpdate                   RepositoryRuleType = "update"
-	RulesetRuleTypeDeletion                 RepositoryRuleType = "deletion"
-	RulesetRuleTypeRequiredLinearHistory    RepositoryRuleType = "required_linear_history"
-	RulesetRuleTypeMergeQueue               RepositoryRuleType = "merge_queue"
-	RulesetRuleTypeRequiredDeployments      RepositoryRuleType = "required_deployments"
-	RulesetRuleTypeRequiredSignatures       RepositoryRuleType = "required_signatures"
-	RulesetRuleTypePullRequest              RepositoryRuleType = "pull_request"
-	RulesetRuleTypeRequiredStatusChecks     RepositoryRuleType = "required_status_checks"
-	RulesetRuleTypeNonFastForward           RepositoryRuleType = "non_fast_forward"
-	RulesetRuleTypeCommitMessagePattern     RepositoryRuleType = "commit_message_pattern"
-	RulesetRuleTypeCommitAuthorEmailPattern RepositoryRuleType = "commit_author_email_pattern"
-	RulesetRuleTypeCommitterEmailPattern    RepositoryRuleType = "committer_email_pattern"
+	// Branch or tag target rules.
 	RulesetRuleTypeBranchNamePattern        RepositoryRuleType = "branch_name_pattern"
+	RulesetRuleTypeCodeScanning             RepositoryRuleType = "code_scanning"
+	RulesetRuleTypeCommitAuthorEmailPattern RepositoryRuleType = "commit_author_email_pattern"
+	RulesetRuleTypeCommitMessagePattern     RepositoryRuleType = "commit_message_pattern"
+	RulesetRuleTypeCommitterEmailPattern    RepositoryRuleType = "committer_email_pattern"
+	RulesetRuleTypeCopilotCodeReview        RepositoryRuleType = "copilot_code_review"
+	RulesetRuleTypeCreation                 RepositoryRuleType = "creation"
+	RulesetRuleTypeDeletion                 RepositoryRuleType = "deletion"
+	RulesetRuleTypeMergeQueue               RepositoryRuleType = "merge_queue"
+	RulesetRuleTypeNonFastForward           RepositoryRuleType = "non_fast_forward"
+	RulesetRuleTypePullRequest              RepositoryRuleType = "pull_request"
+	RulesetRuleTypeRequiredDeployments      RepositoryRuleType = "required_deployments"
+	RulesetRuleTypeRequiredLinearHistory    RepositoryRuleType = "required_linear_history"
+	RulesetRuleTypeRequiredSignatures       RepositoryRuleType = "required_signatures"
+	RulesetRuleTypeRequiredStatusChecks     RepositoryRuleType = "required_status_checks"
 	RulesetRuleTypeTagNamePattern           RepositoryRuleType = "tag_name_pattern"
+	RulesetRuleTypeUpdate                   RepositoryRuleType = "update"
+	RulesetRuleTypeWorkflows                RepositoryRuleType = "workflows"
+
+	// Push target rules.
+	RulesetRuleTypeFileExtensionRestriction RepositoryRuleType = "file_extension_restriction"
 	RulesetRuleTypeFilePathRestriction      RepositoryRuleType = "file_path_restriction"
 	RulesetRuleTypeMaxFilePathLength        RepositoryRuleType = "max_file_path_length"
-	RulesetRuleTypeFileExtensionRestriction RepositoryRuleType = "file_extension_restriction"
 	RulesetRuleTypeMaxFileSize              RepositoryRuleType = "max_file_size"
-	RulesetRuleTypeWorkflows                RepositoryRuleType = "workflows"
-	RulesetRuleTypeCodeScanning             RepositoryRuleType = "code_scanning"
+
+	// Repository target rules.
+	RulesetRuleTypeRepositoryCreate     RepositoryRuleType = "repository_create"
+	RulesetRuleTypeRepositoryDelete     RepositoryRuleType = "repository_delete"
+	RulesetRuleTypeRepositoryName       RepositoryRuleType = "repository_name"
+	RulesetRuleTypeRepositoryTransfer   RepositoryRuleType = "repository_transfer"
+	RulesetRuleTypeRepositoryVisibility RepositoryRuleType = "repository_visibility"
 )
 
 // MergeGroupingStrategy models a GitHub merge grouping strategy.
@@ -180,7 +192,7 @@ type RepositoryRuleset struct {
 	SourceType           *RulesetSourceType           `json:"source_type,omitempty"`
 	Source               string                       `json:"source"`
 	Enforcement          RulesetEnforcement           `json:"enforcement"`
-	BypassActors         []*BypassActor               `json:"bypass_actors,omitempty"`
+	BypassActors         []*BypassActor               `json:"bypass_actors,omitzero"`
 	CurrentUserCanBypass *BypassMode                  `json:"current_user_can_bypass,omitempty"`
 	NodeID               *string                      `json:"node_id,omitempty"`
 	Links                *RepositoryRulesetLinks      `json:"_links,omitempty"`
@@ -277,6 +289,7 @@ type RepositoryRule struct {
 // RepositoryRulesetRules represents a GitHub ruleset rules object.
 // This type doesn't have JSON annotations as it uses custom marshaling.
 type RepositoryRulesetRules struct {
+	// Branch or tag target rules.
 	Creation                 *EmptyRuleParameters
 	Update                   *UpdateRuleParameters
 	Deletion                 *EmptyRuleParameters
@@ -292,17 +305,28 @@ type RepositoryRulesetRules struct {
 	CommitterEmailPattern    *PatternRuleParameters
 	BranchNamePattern        *PatternRuleParameters
 	TagNamePattern           *PatternRuleParameters
-	FilePathRestriction      *FilePathRestrictionRuleParameters
-	MaxFilePathLength        *MaxFilePathLengthRuleParameters
-	FileExtensionRestriction *FileExtensionRestrictionRuleParameters
-	MaxFileSize              *MaxFileSizeRuleParameters
 	Workflows                *WorkflowsRuleParameters
 	CodeScanning             *CodeScanningRuleParameters
+	CopilotCodeReview        *CopilotCodeReviewRuleParameters
+
+	// Push target rules.
+	FileExtensionRestriction *FileExtensionRestrictionRuleParameters
+	FilePathRestriction      *FilePathRestrictionRuleParameters
+	MaxFilePathLength        *MaxFilePathLengthRuleParameters
+	MaxFileSize              *MaxFileSizeRuleParameters
+
+	// Repository target rules.
+	RepositoryCreate     *EmptyRuleParameters
+	RepositoryDelete     *EmptyRuleParameters
+	RepositoryName       *SimplePatternRuleParameters
+	RepositoryTransfer   *EmptyRuleParameters
+	RepositoryVisibility *RepositoryVisibilityRuleParameters
 }
 
 // BranchRules represents the rules active for a GitHub repository branch.
 // This type doesn't have JSON annotations as it uses custom marshaling.
 type BranchRules struct {
+	// Branch or tag target rules.
 	Creation                 []*BranchRuleMetadata
 	Update                   []*UpdateBranchRule
 	Deletion                 []*BranchRuleMetadata
@@ -318,12 +342,15 @@ type BranchRules struct {
 	CommitterEmailPattern    []*PatternBranchRule
 	BranchNamePattern        []*PatternBranchRule
 	TagNamePattern           []*PatternBranchRule
-	FilePathRestriction      []*FilePathRestrictionBranchRule
-	MaxFilePathLength        []*MaxFilePathLengthBranchRule
-	FileExtensionRestriction []*FileExtensionRestrictionBranchRule
-	MaxFileSize              []*MaxFileSizeBranchRule
 	Workflows                []*WorkflowsBranchRule
 	CodeScanning             []*CodeScanningBranchRule
+	CopilotCodeReview        []*CopilotCodeReviewBranchRule
+
+	// Push target rules.
+	FileExtensionRestriction []*FileExtensionRestrictionBranchRule
+	FilePathRestriction      []*FilePathRestrictionBranchRule
+	MaxFilePathLength        []*MaxFilePathLengthBranchRule
+	MaxFileSize              []*MaxFileSizeBranchRule
 }
 
 // BranchRuleMetadata represents the metadata for a branch rule.
@@ -405,6 +432,12 @@ type CodeScanningBranchRule struct {
 	Parameters CodeScanningRuleParameters `json:"parameters"`
 }
 
+// CopilotCodeReviewBranchRule represents a copilot code review branch rule.
+type CopilotCodeReviewBranchRule struct {
+	BranchRuleMetadata
+	Parameters CopilotCodeReviewRuleParameters `json:"parameters"`
+}
+
 // EmptyRuleParameters represents the parameters for a rule with no options.
 type EmptyRuleParameters struct{}
 
@@ -431,14 +464,13 @@ type RequiredDeploymentsRuleParameters struct {
 
 // PullRequestRuleParameters represents the pull_request rule parameters.
 type PullRequestRuleParameters struct {
-	AllowedMergeMethods               []PullRequestMergeMethod   `json:"allowed_merge_methods"`
-	AutomaticCopilotCodeReviewEnabled *bool                      `json:"automatic_copilot_code_review_enabled,omitempty"`
-	DismissStaleReviewsOnPush         bool                       `json:"dismiss_stale_reviews_on_push"`
-	RequireCodeOwnerReview            bool                       `json:"require_code_owner_review"`
-	RequireLastPushApproval           bool                       `json:"require_last_push_approval"`
-	RequiredApprovingReviewCount      int                        `json:"required_approving_review_count"`
-	RequiredReviewers                 []*RulesetRequiredReviewer `json:"required_reviewers,omitempty"`
-	RequiredReviewThreadResolution    bool                       `json:"required_review_thread_resolution"`
+	AllowedMergeMethods            []PullRequestMergeMethod   `json:"allowed_merge_methods"`
+	DismissStaleReviewsOnPush      bool                       `json:"dismiss_stale_reviews_on_push"`
+	RequireCodeOwnerReview         bool                       `json:"require_code_owner_review"`
+	RequireLastPushApproval        bool                       `json:"require_last_push_approval"`
+	RequiredApprovingReviewCount   int                        `json:"required_approving_review_count"`
+	RequiredReviewers              []*RulesetRequiredReviewer `json:"required_reviewers,omitempty"`
+	RequiredReviewThreadResolution bool                       `json:"required_review_thread_resolution"`
 }
 
 // RulesetRequiredReviewer represents required reviewer parameters for pull requests in rulesets.
@@ -515,11 +547,29 @@ type CodeScanningRuleParameters struct {
 	CodeScanningTools []*RuleCodeScanningTool `json:"code_scanning_tools"`
 }
 
+// CopilotCodeReviewRuleParameters represents the copilot_code_review rule parameters.
+type CopilotCodeReviewRuleParameters struct {
+	ReviewOnPush            bool `json:"review_on_push"`
+	ReviewDraftPullRequests bool `json:"review_draft_pull_requests"`
+}
+
 // RuleCodeScanningTool represents a single code scanning tool for the code scanning parameters.
 type RuleCodeScanningTool struct {
 	AlertsThreshold         CodeScanningAlertsThreshold         `json:"alerts_threshold"`
 	SecurityAlertsThreshold CodeScanningSecurityAlertsThreshold `json:"security_alerts_threshold"`
 	Tool                    string                              `json:"tool"`
+}
+
+// SimplePatternRuleParameters represents the parameters for a simple pattern rule.
+type SimplePatternRuleParameters struct {
+	Negate  bool   `json:"negate"`
+	Pattern string `json:"pattern"`
+}
+
+// RepositoryVisibilityRuleParameters represents the repository visibility rule parameters.
+type RepositoryVisibilityRuleParameters struct {
+	Internal bool `json:"internal"`
+	Private  bool `json:"private"`
 }
 
 // repositoryRulesetRuleWrapper is a helper type to marshal & unmarshal a ruleset rule.
@@ -530,9 +580,7 @@ type repositoryRulesetRuleWrapper struct {
 
 // MarshalJSON is a custom JSON marshaler for RulesetRules.
 func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
-	// The RepositoryRulesetRules type marshals to between 1 and 21 rules.
-	// If new rules are added to RepositoryRulesetRules the capacity below needs increasing
-	rawRules := make([]json.RawMessage, 0, 21)
+	var rawRules []json.RawMessage
 
 	if r.Creation != nil {
 		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCreation, r.Creation)
@@ -702,17 +750,86 @@ func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 		rawRules = append(rawRules, json.RawMessage(bytes))
 	}
 
+	if r.CopilotCodeReview != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCopilotCodeReview, r.CopilotCodeReview)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if r.RepositoryCreate != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeRepositoryCreate, r.RepositoryCreate)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if r.RepositoryDelete != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeRepositoryDelete, r.RepositoryDelete)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if r.RepositoryName != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeRepositoryName, r.RepositoryName)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if r.RepositoryTransfer != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeRepositoryTransfer, r.RepositoryTransfer)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if r.RepositoryVisibility != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeRepositoryVisibility, r.RepositoryVisibility)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if len(rawRules) == 0 {
+		return []byte("[]"), nil
+	}
+
 	return json.Marshal(rawRules)
 }
 
 // marshalRepositoryRulesetRule is a helper function to marshal a ruleset rule.
-//
-// TODO: Benchmark the code that uses reflection.
-// TODO: Use a generator here instead of reflection if there is a significant performance hit.
 func marshalRepositoryRulesetRule[T any](t RepositoryRuleType, params T) ([]byte, error) {
-	paramsType := reflect.TypeFor[T]()
+	hasParams := true
 
-	if paramsType.Kind() == reflect.Pointer && (reflect.ValueOf(params).IsNil() || reflect.ValueOf(params).Elem().IsZero()) {
+	switch t {
+	case RulesetRuleTypeCreation,
+		RulesetRuleTypeDeletion,
+		RulesetRuleTypeRequiredLinearHistory,
+		RulesetRuleTypeRequiredSignatures,
+		RulesetRuleTypeNonFastForward,
+		RulesetRuleTypeRepositoryCreate,
+		RulesetRuleTypeRepositoryDelete,
+		RulesetRuleTypeRepositoryTransfer:
+		hasParams = false
+	case RulesetRuleTypeUpdate:
+		paramsTyped, ok := any(params).(*UpdateRuleParameters)
+		if !ok {
+			return nil, fmt.Errorf("expected UpdateRuleParameters for rule type %v", t)
+		}
+		if paramsTyped == nil || *paramsTyped == (UpdateRuleParameters{}) {
+			hasParams = false
+		}
+	}
+
+	if !hasParams {
 		return json.Marshal(repositoryRulesetRuleWrapper{Type: t})
 	}
 
@@ -869,6 +986,36 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 
 			if w.Parameters != nil {
 				if err := json.Unmarshal(w.Parameters, r.CodeScanning); err != nil {
+					return err
+				}
+			}
+		case RulesetRuleTypeCopilotCodeReview:
+			r.CopilotCodeReview = &CopilotCodeReviewRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, r.CopilotCodeReview); err != nil {
+					return err
+				}
+			}
+		case RulesetRuleTypeRepositoryCreate:
+			r.RepositoryCreate = &EmptyRuleParameters{}
+		case RulesetRuleTypeRepositoryDelete:
+			r.RepositoryDelete = &EmptyRuleParameters{}
+		case RulesetRuleTypeRepositoryName:
+			r.RepositoryName = &SimplePatternRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, r.RepositoryName); err != nil {
+					return err
+				}
+			}
+		case RulesetRuleTypeRepositoryTransfer:
+			r.RepositoryTransfer = &EmptyRuleParameters{}
+		case RulesetRuleTypeRepositoryVisibility:
+			r.RepositoryVisibility = &RepositoryVisibilityRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, r.RepositoryVisibility); err != nil {
 					return err
 				}
 			}
@@ -1065,6 +1212,16 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			}
 
 			r.CodeScanning = append(r.CodeScanning, &CodeScanningBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+		case RulesetRuleTypeCopilotCodeReview:
+			params := &CopilotCodeReviewRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
+					return err
+				}
+			}
+
+			r.CopilotCodeReview = append(r.CopilotCodeReview, &CopilotCodeReviewBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		}
 	}
 
@@ -1251,6 +1408,41 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 			}
 		}
 
+		r.Parameters = p
+	case RulesetRuleTypeCopilotCodeReview:
+		p := &CopilotCodeReviewRuleParameters{}
+
+		if w.Parameters != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
+				return err
+			}
+		}
+
+		r.Parameters = p
+	case RulesetRuleTypeRepositoryCreate:
+		r.Parameters = nil
+	case RulesetRuleTypeRepositoryDelete:
+		r.Parameters = nil
+	case RulesetRuleTypeRepositoryName:
+		p := &SimplePatternRuleParameters{}
+
+		if w.Parameters != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
+				return err
+			}
+		}
+
+		r.Parameters = p
+	case RulesetRuleTypeRepositoryTransfer:
+		r.Parameters = nil
+	case RulesetRuleTypeRepositoryVisibility:
+		p := &RepositoryVisibilityRuleParameters{}
+
+		if w.Parameters != nil {
+			if err := json.Unmarshal(w.Parameters, p); err != nil {
+				return err
+			}
+		}
 		r.Parameters = p
 	}
 

@@ -5,7 +5,7 @@
 
 set -e
 
-GOLANGCI_LINT_VERSION="2.6.1"
+GOLANGCI_LINT_VERSION="2.7.0"
 
 CDPATH="" cd -- "$(dirname -- "$0")/.."
 BIN="$(pwd -P)"/bin
@@ -22,7 +22,7 @@ fail() {
 # install golangci-lint and custom-gcl in ./bin if they don't exist with the correct version
 if ! "$BIN"/custom-gcl --version 2> /dev/null | grep -q "$GOLANGCI_LINT_VERSION"; then
   GOBIN="$BIN" go install "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
-  "$BIN"/golangci-lint custom && mv ./custom-gcl "$BIN"
+  "$BIN"/golangci-lint custom --name custom-gcl --destination "$BIN"
 fi
 
 MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort)"
