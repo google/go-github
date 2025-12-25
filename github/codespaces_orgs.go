@@ -17,7 +17,7 @@ type CodespacesOrgAccessControlRequest struct {
 	Visibility string `json:"visibility"`
 	// SelectedUsernames represent the usernames of the organization members who should have access to codespaces in the organization.
 	// Required when visibility is selected_members.
-	SelectedUsernames []string `json:"selected_usernames,omitempty"`
+	SelectedUsernames []string `json:"selected_usernames,omitzero"`
 }
 
 // ListInOrg lists the codespaces associated to a specified organization.
