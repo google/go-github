@@ -520,5 +520,18 @@ func nodeServiceMethod(fn *ast.FuncDecl) string {
 		return ""
 	}
 
-	return id.Name + "." + fn.Name.Name
+	serviceMethod := id.Name + "." + fn.Name.Name
+	if skipServiceMethod[serviceMethod] {
+		return ""
+	}
+
+	return serviceMethod
+}
+
+// See: https://github.com/google/go-github/issues/3894
+var skipServiceMethod = map[string]bool{
+	"BillingService.GetOrganizationPackagesBilling": true,
+	"BillingService.GetOrganizationStorageBilling":  true,
+	"BillingService.GetPackagesBilling":             true,
+	"BillingService.GetStorageBilling":              true,
 }

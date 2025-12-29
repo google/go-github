@@ -76,7 +76,7 @@ type DeleteCostCenterResponse struct {
 
 // ListCostCenters lists all cost centers for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#get-all-cost-centers-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers#get-all-cost-centers-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/cost-centers
 func (s *EnterpriseService) ListCostCenters(ctx context.Context, enterprise string, opts *ListCostCenterOptions) (*CostCenters, *Response, error) {
@@ -102,7 +102,7 @@ func (s *EnterpriseService) ListCostCenters(ctx context.Context, enterprise stri
 
 // CreateCostCenter creates a new cost center for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#create-a-new-cost-center
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers#create-a-new-cost-center
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/cost-centers
 func (s *EnterpriseService) CreateCostCenter(ctx context.Context, enterprise string, costCenter CostCenterRequest) (*CostCenter, *Response, error) {
@@ -124,7 +124,7 @@ func (s *EnterpriseService) CreateCostCenter(ctx context.Context, enterprise str
 
 // GetCostCenter gets a cost center by ID for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#get-a-cost-center-by-id
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers#get-a-cost-center-by-id
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
 func (s *EnterpriseService) GetCostCenter(ctx context.Context, enterprise, costCenterID string) (*CostCenter, *Response, error) {
@@ -146,7 +146,7 @@ func (s *EnterpriseService) GetCostCenter(ctx context.Context, enterprise, costC
 
 // UpdateCostCenter updates the name of a cost center.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#update-a-cost-center-name
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers#update-a-cost-center-name
 //
 //meta:operation PATCH /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
 func (s *EnterpriseService) UpdateCostCenter(ctx context.Context, enterprise, costCenterID string, costCenter CostCenterRequest) (*CostCenter, *Response, error) {
@@ -168,7 +168,7 @@ func (s *EnterpriseService) UpdateCostCenter(ctx context.Context, enterprise, co
 
 // DeleteCostCenter deletes a cost center.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#delete-a-cost-center
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers#delete-a-cost-center
 //
 //meta:operation DELETE /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
 func (s *EnterpriseService) DeleteCostCenter(ctx context.Context, enterprise, costCenterID string) (*DeleteCostCenterResponse, *Response, error) {
@@ -190,7 +190,7 @@ func (s *EnterpriseService) DeleteCostCenter(ctx context.Context, enterprise, co
 
 // AddResourcesToCostCenter adds resources to a cost center.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#add-resources-to-a-cost-center
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers#add-resources-to-a-cost-center
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}/resource
 func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterprise, costCenterID string, resources CostCenterResourceRequest) (*AddResourcesToCostCenterResponse, *Response, error) {
@@ -212,7 +212,7 @@ func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterp
 
 // RemoveResourcesFromCostCenter removes resources from a cost center.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/billing#remove-resources-from-a-cost-center
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers#remove-resources-from-a-cost-center
 //
 //meta:operation DELETE /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}/resource
 func (s *EnterpriseService) RemoveResourcesFromCostCenter(ctx context.Context, enterprise, costCenterID string, resources CostCenterResourceRequest) (*RemoveResourcesFromCostCenterResponse, *Response, error) {

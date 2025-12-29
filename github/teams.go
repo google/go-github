@@ -613,7 +613,7 @@ func (s *TeamsService) ListUserTeams(ctx context.Context, opts *ListOptions) ([]
 //
 // Deprecated: Use ListTeamProjectsBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#list-team-projects
+// GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#list-team-projects
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects
 func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID int64) ([]*ProjectV2, *Response, error) {
@@ -637,7 +637,7 @@ func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID i
 
 // ListTeamProjectsBySlug lists the organization projects for a team given the team slug.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#list-team-projects
+// GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#list-team-projects
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects
 func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug string) ([]*ProjectV2, *Response, error) {
@@ -664,7 +664,7 @@ func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug str
 //
 // Deprecated: Use ReviewTeamProjectsBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-project
+// GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#check-team-permissions-for-a-project
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID, projectID int64) (*ProjectV2, *Response, error) {
@@ -688,7 +688,7 @@ func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID
 // ReviewTeamProjectsBySlug checks whether a team, given its slug, has read, write, or admin
 // permissions for an organization project.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-project
+// GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#check-team-permissions-for-a-project
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug string, projectID int64) (*ProjectV2, *Response, error) {
@@ -727,7 +727,7 @@ type TeamProjectOptions struct {
 //
 // Deprecated: Use AddTeamProjectBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#add-or-update-team-project-permissions
+// GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, opts *TeamProjectOptions) (*Response, error) {
@@ -746,7 +746,7 @@ func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, pr
 // To add a project to a team or update the team's permission on a project, the
 // authenticated user must have admin permissions for the project.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#add-or-update-team-project-permissions
+// GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64, opts *TeamProjectOptions) (*Response, error) {
@@ -770,7 +770,7 @@ func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug strin
 //
 // Deprecated: Use RemoveTeamProjectBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#remove-a-project-from-a-team
+// GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#remove-a-project-from-a-team
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64) (*Response, error) {
@@ -792,7 +792,7 @@ func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID,
 // or project.
 // Note: This endpoint removes the project from the team, but does not delete it.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#remove-a-project-from-a-team
+// GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#remove-a-project-from-a-team
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) RemoveTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64) (*Response, error) {
