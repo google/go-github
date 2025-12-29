@@ -6286,6 +6286,30 @@ func (c *CopilotMetricsListOptions) GetUntil() time.Time {
 	return *c.Until
 }
 
+// GetReportDay returns the ReportDay field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsReportResponse) GetReportDay() string {
+	if c == nil || c.ReportDay == nil {
+		return ""
+	}
+	return *c.ReportDay
+}
+
+// GetReportEndDay returns the ReportEndDay field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsReportResponse) GetReportEndDay() string {
+	if c == nil || c.ReportEndDay == nil {
+		return ""
+	}
+	return *c.ReportEndDay
+}
+
+// GetReportStartDay returns the ReportStartDay field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsReportResponse) GetReportStartDay() string {
+	if c == nil || c.ReportStartDay == nil {
+		return ""
+	}
+	return *c.ReportStartDay
+}
+
 // GetSeatBreakdown returns the SeatBreakdown field.
 func (c *CopilotOrganizationDetails) GetSeatBreakdown() *CopilotSeatBreakdown {
 	if c == nil {
