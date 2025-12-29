@@ -173,9 +173,8 @@ type PremiumRequestUsageReport struct {
 
 // GetOrganizationPackagesBilling returns the free and paid storage used for GitHub Packages in gigabytes for an Org.
 //
-// GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-packages-billing-for-an-organization
-//
-//meta:operation GET /orgs/{org}/settings/billing/packages
+// This endpoint appears to have disappeared from the official GitHub v3 API documentation website.
+// See https://github.com/google/go-github/issues/3894 for details.
 func (s *BillingService) GetOrganizationPackagesBilling(ctx context.Context, org string) (*PackagesBilling, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/packages", org)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -195,9 +194,8 @@ func (s *BillingService) GetOrganizationPackagesBilling(ctx context.Context, org
 // GetOrganizationStorageBilling returns the estimated paid and estimated total storage used for GitHub Actions
 // and GitHub Packages in gigabytes for an Org.
 //
-// GitHub API docs: https://docs.github.com/rest/billing/billing#get-shared-storage-billing-for-an-organization
-//
-//meta:operation GET /orgs/{org}/settings/billing/shared-storage
+// This endpoint appears to have disappeared from the official GitHub v3 API documentation website.
+// See https://github.com/google/go-github/issues/3894 for details.
 func (s *BillingService) GetOrganizationStorageBilling(ctx context.Context, org string) (*StorageBilling, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/shared-storage", org)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -242,9 +240,8 @@ func (s *BillingService) GetOrganizationAdvancedSecurityActiveCommitters(ctx con
 
 // GetPackagesBilling returns the free and paid storage used for GitHub Packages in gigabytes for a user.
 //
-// GitHub API docs: https://docs.github.com/rest/billing/billing#get-github-packages-billing-for-a-user
-//
-//meta:operation GET /users/{username}/settings/billing/packages
+// This endpoint appears to have disappeared from the official GitHub v3 API documentation website.
+// See https://github.com/google/go-github/issues/3894 for details.
 func (s *BillingService) GetPackagesBilling(ctx context.Context, user string) (*PackagesBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/packages", user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -264,9 +261,8 @@ func (s *BillingService) GetPackagesBilling(ctx context.Context, user string) (*
 // GetStorageBilling returns the estimated paid and estimated total storage used for GitHub Actions
 // and GitHub Packages in gigabytes for a user.
 //
-// GitHub API docs: https://docs.github.com/rest/billing/billing#get-shared-storage-billing-for-a-user
-//
-//meta:operation GET /users/{username}/settings/billing/shared-storage
+// This endpoint appears to have disappeared from the official GitHub v3 API documentation website.
+// See https://github.com/google/go-github/issues/3894 for details.
 func (s *BillingService) GetStorageBilling(ctx context.Context, user string) (*StorageBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/shared-storage", user)
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -287,7 +283,7 @@ func (s *BillingService) GetStorageBilling(ctx context.Context, user string) (*S
 //
 // Note: This endpoint is only available to organizations with access to the enhanced billing platform.
 //
-// GitHub API docs: https://docs.github.com/rest/billing/enhanced-billing#get-billing-usage-report-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/billing/usage#get-billing-usage-report-for-an-organization
 //
 //meta:operation GET /organizations/{org}/settings/billing/usage
 func (s *BillingService) GetOrganizationUsageReport(ctx context.Context, org string, opts *UsageReportOptions) (*UsageReport, *Response, error) {
@@ -315,7 +311,7 @@ func (s *BillingService) GetOrganizationUsageReport(ctx context.Context, org str
 //
 // Note: This endpoint is only available to users with access to the enhanced billing platform.
 //
-// GitHub API docs: https://docs.github.com/rest/billing/enhanced-billing#get-billing-usage-report-for-a-user
+// GitHub API docs: https://docs.github.com/rest/billing/usage#get-billing-usage-report-for-a-user
 //
 //meta:operation GET /users/{username}/settings/billing/usage
 func (s *BillingService) GetUsageReport(ctx context.Context, user string, opts *UsageReportOptions) (*UsageReport, *Response, error) {
@@ -344,7 +340,7 @@ func (s *BillingService) GetUsageReport(ctx context.Context, user string, opts *
 //
 // Note: This endpoint is only available to organizations with access to the enhanced billing platform.
 //
-// GitHub API docs: https://docs.github.com/rest/billing/enhanced-billing#get-billing-premium-request-usage-report-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/billing/usage#get-billing-premium-request-usage-report-for-an-organization
 //
 //meta:operation GET /organizations/{org}/settings/billing/premium_request/usage
 func (s *BillingService) GetOrganizationPremiumRequestUsageReport(ctx context.Context, org string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
@@ -373,7 +369,7 @@ func (s *BillingService) GetOrganizationPremiumRequestUsageReport(ctx context.Co
 //
 // Note: This endpoint is only available to users with access to the enhanced billing platform.
 //
-// GitHub API docs: https://docs.github.com/rest/billing/enhanced-billing#get-billing-premium-request-usage-report-for-a-user
+// GitHub API docs: https://docs.github.com/rest/billing/usage#get-billing-premium-request-usage-report-for-a-user
 //
 //meta:operation GET /users/{username}/settings/billing/premium_request/usage
 func (s *BillingService) GetPremiumRequestUsageReport(ctx context.Context, user string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
