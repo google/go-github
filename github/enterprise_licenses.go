@@ -91,7 +91,7 @@ type LastLicenseSyncProperties struct {
 
 // GetConsumedLicenses collect information about the number of consumed licenses and a collection with all the users with consumed enterprise licenses.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/license#list-enterprise-consumed-licenses
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing#list-enterprise-consumed-licenses
 //
 //meta:operation GET /enterprises/{enterprise}/consumed-licenses
 func (s *EnterpriseService) GetConsumedLicenses(ctx context.Context, enterprise string, opts *ListOptions) (*EnterpriseConsumedLicenses, *Response, error) {
@@ -117,7 +117,7 @@ func (s *EnterpriseService) GetConsumedLicenses(ctx context.Context, enterprise 
 
 // GetLicenseSyncStatus collects information about the status of a license sync job for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/license#get-a-license-sync-status
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing#get-a-license-sync-status
 //
 //meta:operation GET /enterprises/{enterprise}/license-sync-status
 func (s *EnterpriseService) GetLicenseSyncStatus(ctx context.Context, enterprise string) (*EnterpriseLicenseSyncStatus, *Response, error) {
