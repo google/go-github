@@ -371,7 +371,7 @@ func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Cont
 
 // ListTeamDiscussionReactions lists the reactions for a team discussion.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#list-reactions-for-a-team-discussion-legacy
+// GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#list-reactions-for-a-team-discussion-legacy
 //
 //meta:operation GET /teams/{team_id}/discussions/{discussion_number}/reactions
 func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, teamID int64, discussionNumber int, opts *ListReactionOptions) ([]*Reaction, *Response, error) {
@@ -400,7 +400,7 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 // CreateTeamDiscussionReaction creates a reaction for a team discussion.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#create-reaction-for-a-team-discussion-legacy
+// GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#create-reaction-for-a-team-discussion-legacy
 //
 //meta:operation POST /teams/{team_id}/discussions/{discussion_number}/reactions
 func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, teamID int64, discussionNumber int, content string) (*Reaction, *Response, error) {
@@ -425,7 +425,7 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 
 // DeleteTeamDiscussionReaction deletes the reaction to a team discussion.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-team-discussion-reaction
+// GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#delete-team-discussion-reaction
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}
 func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org, teamSlug string, discussionNumber int, reactionID int64) (*Response, error) {
@@ -436,7 +436,7 @@ func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org
 
 // DeleteTeamDiscussionReactionByOrgIDAndTeamID deletes the reaction to a team discussion by organization ID and team ID.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#create-reaction-for-a-team-discussion
+// GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#create-reaction-for-a-team-discussion
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions
 func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber int, reactionID int64) (*Response, error) {
@@ -447,7 +447,7 @@ func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx cont
 
 // ListTeamDiscussionCommentReactions lists the reactions for a team discussion comment.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#list-reactions-for-a-team-discussion-comment-legacy
+// GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#list-reactions-for-a-team-discussion-comment-legacy
 //
 //meta:operation GET /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions
 func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Context, teamID int64, discussionNumber, commentNumber int, opts *ListReactionOptions) ([]*Reaction, *Response, error) {
@@ -475,7 +475,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 // CreateTeamDiscussionCommentReaction creates a reaction for a team discussion comment.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#create-reaction-for-a-team-discussion-comment-legacy
+// GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#create-reaction-for-a-team-discussion-comment-legacy
 //
 //meta:operation POST /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions
 func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Context, teamID int64, discussionNumber, commentNumber int, content string) (*Reaction, *Response, error) {
@@ -500,7 +500,7 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 
 // DeleteTeamDiscussionCommentReaction deletes the reaction to a team discussion comment.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-team-discussion-comment-reaction
+// GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#delete-team-discussion-comment-reaction
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}
 func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Context, org, teamSlug string, discussionNumber, commentNumber int, reactionID int64) (*Response, error) {
@@ -511,7 +511,7 @@ func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Conte
 
 // DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID deletes the reaction to a team discussion comment by organization ID and team ID.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#create-reaction-for-a-team-discussion-comment
+// GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#create-reaction-for-a-team-discussion-comment
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions
 func (s *ReactionsService) DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx context.Context, orgID, teamID, discussionNumber, commentNumber int, reactionID int64) (*Response, error) {
