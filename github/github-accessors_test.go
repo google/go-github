@@ -8204,39 +8204,6 @@ func TestCopilotMetricsListOptions_GetUntil(tt *testing.T) {
 	c.GetUntil()
 }
 
-func TestCopilotMetricsReportResponse_GetReportDay(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CopilotMetricsReportResponse{ReportDay: &zeroValue}
-	c.GetReportDay()
-	c = &CopilotMetricsReportResponse{}
-	c.GetReportDay()
-	c = nil
-	c.GetReportDay()
-}
-
-func TestCopilotMetricsReportResponse_GetReportEndDay(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CopilotMetricsReportResponse{ReportEndDay: &zeroValue}
-	c.GetReportEndDay()
-	c = &CopilotMetricsReportResponse{}
-	c.GetReportEndDay()
-	c = nil
-	c.GetReportEndDay()
-}
-
-func TestCopilotMetricsReportResponse_GetReportStartDay(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CopilotMetricsReportResponse{ReportStartDay: &zeroValue}
-	c.GetReportStartDay()
-	c = &CopilotMetricsReportResponse{}
-	c.GetReportStartDay()
-	c = nil
-	c.GetReportStartDay()
-}
-
 func TestCopilotOrganizationDetails_GetSeatBreakdown(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotOrganizationDetails{}

@@ -2530,9 +2530,9 @@ func TestCopilotService_GetEnterpriseMetricsReport1Day(t *testing.T) {
 		t.Errorf("Copilot.GetEnterpriseMetricsReport1Day returned error: %v", err)
 	}
 
-	want := &CopilotMetricsReportResponse{
+	want := &CopilotMetricsDailyReportResponse{
 		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
-		ReportDay:     Ptr("2025-07-01"),
+		ReportDay:     "2025-07-01",
 	}
 
 	if !cmp.Equal(got, want) {
@@ -2574,10 +2574,10 @@ func TestCopilotService_GetEnterpriseMetricsReport28Day(t *testing.T) {
 		t.Errorf("Copilot.GetEnterpriseMetricsReport28Day returned error: %v", err)
 	}
 
-	want := &CopilotMetricsReportResponse{
+	want := &CopilotMetricsPeriodReportResponse{
 		DownloadLinks:  []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
-		ReportStartDay: Ptr("2025-07-01"),
-		ReportEndDay:   Ptr("2025-07-28"),
+		ReportStartDay: "2025-07-01",
+		ReportEndDay:   "2025-07-28",
 	}
 
 	if !cmp.Equal(got, want) {
@@ -2620,9 +2620,9 @@ func TestCopilotService_GetEnterpriseMetricsReportUsers1Day(t *testing.T) {
 		t.Errorf("Copilot.GetEnterpriseMetricsReportUsers1Day returned error: %v", err)
 	}
 
-	want := &CopilotMetricsReportResponse{
+	want := &CopilotMetricsDailyReportResponse{
 		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
-		ReportDay:     Ptr("2025-07-01"),
+		ReportDay:     "2025-07-01",
 	}
 
 	if !cmp.Equal(got, want) {
@@ -2664,10 +2664,10 @@ func TestCopilotService_GetEnterpriseMetricsReportUsers28Day(t *testing.T) {
 		t.Errorf("Copilot.GetEnterpriseMetricsReportUsers28Day returned error: %v", err)
 	}
 
-	want := &CopilotMetricsReportResponse{
+	want := &CopilotMetricsPeriodReportResponse{
 		DownloadLinks:  []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
-		ReportStartDay: Ptr("2025-07-01"),
-		ReportEndDay:   Ptr("2025-07-28"),
+		ReportStartDay: "2025-07-01",
+		ReportEndDay:   "2025-07-28",
 	}
 
 	if !cmp.Equal(got, want) {
@@ -2710,9 +2710,9 @@ func TestCopilotService_GetOrganizationMetricsReport1Day(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationMetricsReport1Day returned error: %v", err)
 	}
 
-	want := &CopilotMetricsReportResponse{
+	want := &CopilotMetricsDailyReportResponse{
 		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
-		ReportDay:     Ptr("2025-07-01"),
+		ReportDay:     "2025-07-01",
 	}
 
 	if !cmp.Equal(got, want) {
@@ -2754,10 +2754,10 @@ func TestCopilotService_GetOrganizationMetricsReport28Day(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationMetricsReport28Day returned error: %v", err)
 	}
 
-	want := &CopilotMetricsReportResponse{
+	want := &CopilotMetricsPeriodReportResponse{
 		DownloadLinks:  []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
-		ReportStartDay: Ptr("2025-07-01"),
-		ReportEndDay:   Ptr("2025-07-28"),
+		ReportStartDay: "2025-07-01",
+		ReportEndDay:   "2025-07-28",
 	}
 
 	if !cmp.Equal(got, want) {
@@ -2800,9 +2800,9 @@ func TestCopilotService_GetOrganizationMetricsReportUsers1Day(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationMetricsReportUsers1Day returned error: %v", err)
 	}
 
-	want := &CopilotMetricsReportResponse{
+	want := &CopilotMetricsDailyReportResponse{
 		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
-		ReportDay:     Ptr("2025-07-01"),
+		ReportDay:     "2025-07-01",
 	}
 
 	if !cmp.Equal(got, want) {
@@ -2844,10 +2844,10 @@ func TestCopilotService_GetOrganizationMetricsReportUsers28Day(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationMetricsReportUsers28Day returned error: %v", err)
 	}
 
-	want := &CopilotMetricsReportResponse{
+	want := &CopilotMetricsPeriodReportResponse{
 		DownloadLinks:  []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
-		ReportStartDay: Ptr("2025-07-01"),
-		ReportEndDay:   Ptr("2025-07-28"),
+		ReportStartDay: "2025-07-01",
+		ReportEndDay:   "2025-07-28",
 	}
 
 	if !cmp.Equal(got, want) {
