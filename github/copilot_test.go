@@ -2509,3 +2509,363 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestCopilotService_GetEnterpriseDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/metrics/reports/enterprise-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2025-07-01"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"],
+			"report_day": "2025-07-01"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2025-07-01"}
+	got, _, err := client.Copilot.GetEnterpriseDailyMetricsReport(ctx, "e", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
+		ReportDay:     "2025-07-01",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseDailyMetricsReport(ctx, "e", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetEnterpriseMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/metrics/reports/enterprise-28-day/latest", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"],
+			"report_start_day": "2025-07-01",
+			"report_end_day": "2025-07-28"
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.GetEnterpriseMetricsReport(ctx, "e")
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotMetricsReport{
+		DownloadLinks:  []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
+		ReportStartDay: "2025-07-01",
+		ReportEndDay:   "2025-07-28",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseMetricsReport(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseMetricsReport(ctx, "e")
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetEnterpriseUsersDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/metrics/reports/users-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2025-07-01"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"],
+			"report_day": "2025-07-01"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2025-07-01"}
+	got, _, err := client.Copilot.GetEnterpriseUsersDailyMetricsReport(ctx, "e", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseUsersDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
+		ReportDay:     "2025-07-01",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseUsersDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseUsersDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseUsersDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseUsersDailyMetricsReport(ctx, "e", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseUsersDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetEnterpriseUsersMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/metrics/reports/users-28-day/latest", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"],
+			"report_start_day": "2025-07-01",
+			"report_end_day": "2025-07-28"
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.GetEnterpriseUsersMetricsReport(ctx, "e")
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseUsersMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotMetricsReport{
+		DownloadLinks:  []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
+		ReportStartDay: "2025-07-01",
+		ReportEndDay:   "2025-07-28",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseUsersMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseUsersMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseUsersMetricsReport(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseUsersMetricsReport(ctx, "e")
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseUsersMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/metrics/reports/organization-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2025-07-01"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"],
+			"report_day": "2025-07-01"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2025-07-01"}
+	got, _, err := client.Copilot.GetOrganizationDailyMetricsReport(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
+		ReportDay:     "2025-07-01",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationDailyMetricsReport(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/metrics/reports/organization-28-day/latest", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"],
+			"report_start_day": "2025-07-01",
+			"report_end_day": "2025-07-28"
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.GetOrganizationMetricsReport(ctx, "o")
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotMetricsReport{
+		DownloadLinks:  []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
+		ReportStartDay: "2025-07-01",
+		ReportEndDay:   "2025-07-28",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationMetricsReport(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationMetricsReport(ctx, "o")
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationUsersDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/metrics/reports/users-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2025-07-01"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"],
+			"report_day": "2025-07-01"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2025-07-01"}
+	got, _, err := client.Copilot.GetOrganizationUsersDailyMetricsReport(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationUsersDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
+		ReportDay:     "2025-07-01",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationUsersDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationUsersDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationUsersDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationUsersDailyMetricsReport(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationUsersDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationUsersMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/metrics/reports/users-28-day/latest", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"],
+			"report_start_day": "2025-07-01",
+			"report_end_day": "2025-07-28"
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.GetOrganizationUsersMetricsReport(ctx, "o")
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationUsersMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotMetricsReport{
+		DownloadLinks:  []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
+		ReportStartDay: "2025-07-01",
+		ReportEndDay:   "2025-07-28",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationUsersMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationUsersMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationUsersMetricsReport(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationUsersMetricsReport(ctx, "o")
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationUsersMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
