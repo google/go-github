@@ -190,8 +190,8 @@ type CopilotMetricsReportOptions struct {
 	Day string `url:"day"` // Required, format: YYYY-MM-DD
 }
 
-// CopilotMetricsDailyReport represents the response from 1-day Copilot metrics report endpoints.
-type CopilotMetricsDailyReport struct {
+// CopilotDailyMetricsReport represents the response from 1-day Copilot metrics report endpoints.
+type CopilotDailyMetricsReport struct {
 	DownloadLinks []string `json:"download_links"`
 	ReportDay     string   `json:"report_day"`
 }
@@ -598,7 +598,7 @@ func (s *CopilotService) GetOrganizationTeamMetrics(ctx context.Context, org, te
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-enterprise-usage-metrics-for-a-specific-day
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-1-day
-func (s *CopilotService) GetEnterpriseDailyMetricsReport(ctx context.Context, enterprise string, opts *CopilotMetricsReportOptions) (*CopilotMetricsDailyReport, *Response, error) {
+func (s *CopilotService) GetEnterpriseDailyMetricsReport(ctx context.Context, enterprise string, opts *CopilotMetricsReportOptions) (*CopilotDailyMetricsReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/copilot/metrics/reports/enterprise-1-day", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -610,7 +610,7 @@ func (s *CopilotService) GetEnterpriseDailyMetricsReport(ctx context.Context, en
 		return nil, nil, err
 	}
 
-	var report *CopilotMetricsDailyReport
+	var report *CopilotDailyMetricsReport
 	resp, err := s.client.Do(ctx, req, &report)
 	if err != nil {
 		return nil, resp, err
@@ -646,7 +646,7 @@ func (s *CopilotService) GetEnterpriseMetricsReport(ctx context.Context, enterpr
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-users-usage-metrics-for-a-specific-day
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/users-1-day
-func (s *CopilotService) GetEnterpriseUsersDailyMetricsReport(ctx context.Context, enterprise string, opts *CopilotMetricsReportOptions) (*CopilotMetricsDailyReport, *Response, error) {
+func (s *CopilotService) GetEnterpriseUsersDailyMetricsReport(ctx context.Context, enterprise string, opts *CopilotMetricsReportOptions) (*CopilotDailyMetricsReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/copilot/metrics/reports/users-1-day", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -658,7 +658,7 @@ func (s *CopilotService) GetEnterpriseUsersDailyMetricsReport(ctx context.Contex
 		return nil, nil, err
 	}
 
-	var report *CopilotMetricsDailyReport
+	var report *CopilotDailyMetricsReport
 	resp, err := s.client.Do(ctx, req, &report)
 	if err != nil {
 		return nil, resp, err
@@ -694,7 +694,7 @@ func (s *CopilotService) GetEnterpriseUsersMetricsReport(ctx context.Context, en
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-organization-usage-metrics-for-a-specific-day
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/organization-1-day
-func (s *CopilotService) GetOrganizationDailyMetricsReport(ctx context.Context, org string, opts *CopilotMetricsReportOptions) (*CopilotMetricsDailyReport, *Response, error) {
+func (s *CopilotService) GetOrganizationDailyMetricsReport(ctx context.Context, org string, opts *CopilotMetricsReportOptions) (*CopilotDailyMetricsReport, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/metrics/reports/organization-1-day", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -706,7 +706,7 @@ func (s *CopilotService) GetOrganizationDailyMetricsReport(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	var report *CopilotMetricsDailyReport
+	var report *CopilotDailyMetricsReport
 	resp, err := s.client.Do(ctx, req, &report)
 	if err != nil {
 		return nil, resp, err
@@ -742,7 +742,7 @@ func (s *CopilotService) GetOrganizationMetricsReport(ctx context.Context, org s
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-organization-users-usage-metrics-for-a-specific-day
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/users-1-day
-func (s *CopilotService) GetOrganizationUsersDailyMetricsReport(ctx context.Context, org string, opts *CopilotMetricsReportOptions) (*CopilotMetricsDailyReport, *Response, error) {
+func (s *CopilotService) GetOrganizationUsersDailyMetricsReport(ctx context.Context, org string, opts *CopilotMetricsReportOptions) (*CopilotDailyMetricsReport, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/metrics/reports/users-1-day", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -754,7 +754,7 @@ func (s *CopilotService) GetOrganizationUsersDailyMetricsReport(ctx context.Cont
 		return nil, nil, err
 	}
 
-	var report *CopilotMetricsDailyReport
+	var report *CopilotDailyMetricsReport
 	resp, err := s.client.Do(ctx, req, &report)
 	if err != nil {
 		return nil, resp, err

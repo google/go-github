@@ -2530,7 +2530,7 @@ func TestCopilotService_GetEnterpriseDailyMetricsReport(t *testing.T) {
 		t.Errorf("Copilot.GetEnterpriseDailyMetricsReport returned error: %v", err)
 	}
 
-	want := &CopilotMetricsDailyReport{
+	want := &CopilotDailyMetricsReport{
 		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
 		ReportDay:     "2025-07-01",
 	}
@@ -2620,7 +2620,7 @@ func TestCopilotService_GetEnterpriseUsersDailyMetricsReport(t *testing.T) {
 		t.Errorf("Copilot.GetEnterpriseUsersDailyMetricsReport returned error: %v", err)
 	}
 
-	want := &CopilotMetricsDailyReport{
+	want := &CopilotDailyMetricsReport{
 		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
 		ReportDay:     "2025-07-01",
 	}
@@ -2710,7 +2710,7 @@ func TestCopilotService_GetOrganizationDailyMetricsReport(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationDailyMetricsReport returned error: %v", err)
 	}
 
-	want := &CopilotMetricsDailyReport{
+	want := &CopilotDailyMetricsReport{
 		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
 		ReportDay:     "2025-07-01",
 	}
@@ -2800,7 +2800,7 @@ func TestCopilotService_GetOrganizationUsersDailyMetricsReport(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationUsersDailyMetricsReport returned error: %v", err)
 	}
 
-	want := &CopilotMetricsDailyReport{
+	want := &CopilotDailyMetricsReport{
 		DownloadLinks: []string{"https://example.com/copilot-usage-report-1.json", "https://example.com/copilot-usage-report-2.json"},
 		ReportDay:     "2025-07-01",
 	}
