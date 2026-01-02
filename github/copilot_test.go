@@ -2780,7 +2780,7 @@ func TestCopilotService_GetOrganizationMetricsReport(t *testing.T) {
 	})
 }
 
-func TestCopilotService_GetOrganizationMetricsReportUsers1Day(t *testing.T) {
+func TestCopilotService_GetOrganizationUsersDailyMetricsReport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -2795,9 +2795,9 @@ func TestCopilotService_GetOrganizationMetricsReportUsers1Day(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &CopilotMetricsReportOptions{Day: "2025-07-01"}
-	got, _, err := client.Copilot.GetOrganizationMetricsReportUsers1Day(ctx, "o", opts)
+	got, _, err := client.Copilot.GetOrganizationUsersDailyMetricsReport(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Copilot.GetOrganizationMetricsReportUsers1Day returned error: %v", err)
+		t.Errorf("Copilot.GetOrganizationUsersDailyMetricsReport returned error: %v", err)
 	}
 
 	want := &CopilotMetricsDailyReport{
@@ -2806,20 +2806,20 @@ func TestCopilotService_GetOrganizationMetricsReportUsers1Day(t *testing.T) {
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Copilot.GetOrganizationMetricsReportUsers1Day returned %+v, want %+v", got, want)
+		t.Errorf("Copilot.GetOrganizationUsersDailyMetricsReport returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "GetOrganizationMetricsReportUsers1Day"
+	const methodName = "GetOrganizationUsersDailyMetricsReport"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.GetOrganizationMetricsReportUsers1Day(ctx, "\n", opts)
+		_, _, err = client.Copilot.GetOrganizationUsersDailyMetricsReport(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.GetOrganizationMetricsReportUsers1Day(ctx, "o", opts)
+		got, resp, err := client.Copilot.GetOrganizationUsersDailyMetricsReport(ctx, "o", opts)
 		if got != nil {
-			t.Errorf("Copilot.GetOrganizationMetricsReportUsers1Day returned %+v, want nil", got)
+			t.Errorf("Copilot.GetOrganizationUsersDailyMetricsReport returned %+v, want nil", got)
 		}
 		return resp, err
 	})
