@@ -619,12 +619,12 @@ func (s *CopilotService) GetEnterpriseMetricsReport1Day(ctx context.Context, ent
 	return report, resp, nil
 }
 
-// GetEnterpriseMetricsReport28Day gets a report containing Copilot metrics for a 28-day rolling window for an enterprise.
+// GetEnterpriseMetricsReport gets a report containing Copilot metrics for a 28-day rolling window for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-enterprise-usage-metrics
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-28-day/latest
-func (s *CopilotService) GetEnterpriseMetricsReport28Day(ctx context.Context, enterprise string) (*CopilotMetricsReport, *Response, error) {
+func (s *CopilotService) GetEnterpriseMetricsReport(ctx context.Context, enterprise string) (*CopilotMetricsReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/copilot/metrics/reports/enterprise-28-day/latest", enterprise)
 
 	req, err := s.client.NewRequest("GET", u, nil)
