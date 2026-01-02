@@ -2510,7 +2510,7 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 	})
 }
 
-func TestCopilotService_GetEnterpriseMetricsReport1Day(t *testing.T) {
+func TestCopilotService_GetEnterpriseDailyMetricsReport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -2525,9 +2525,9 @@ func TestCopilotService_GetEnterpriseMetricsReport1Day(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &CopilotMetricsReportOptions{Day: "2025-07-01"}
-	got, _, err := client.Copilot.GetEnterpriseMetricsReport1Day(ctx, "e", opts)
+	got, _, err := client.Copilot.GetEnterpriseDailyMetricsReport(ctx, "e", opts)
 	if err != nil {
-		t.Errorf("Copilot.GetEnterpriseMetricsReport1Day returned error: %v", err)
+		t.Errorf("Copilot.GetEnterpriseDailyMetricsReport returned error: %v", err)
 	}
 
 	want := &CopilotMetricsDailyReport{
@@ -2536,20 +2536,20 @@ func TestCopilotService_GetEnterpriseMetricsReport1Day(t *testing.T) {
 	}
 
 	if !cmp.Equal(got, want) {
-		t.Errorf("Copilot.GetEnterpriseMetricsReport1Day returned %+v, want %+v", got, want)
+		t.Errorf("Copilot.GetEnterpriseDailyMetricsReport returned %+v, want %+v", got, want)
 	}
 
-	const methodName = "GetEnterpriseMetricsReport1Day"
+	const methodName = "GetEnterpriseDailyMetricsReport"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Copilot.GetEnterpriseMetricsReport1Day(ctx, "\n", opts)
+		_, _, err = client.Copilot.GetEnterpriseDailyMetricsReport(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Copilot.GetEnterpriseMetricsReport1Day(ctx, "e", opts)
+		got, resp, err := client.Copilot.GetEnterpriseDailyMetricsReport(ctx, "e", opts)
 		if got != nil {
-			t.Errorf("Copilot.GetEnterpriseMetricsReport1Day returned %+v, want nil", got)
+			t.Errorf("Copilot.GetEnterpriseDailyMetricsReport returned %+v, want nil", got)
 		}
 		return resp, err
 	})
