@@ -689,12 +689,12 @@ func (s *CopilotService) GetEnterpriseUsersMetricsReport(ctx context.Context, en
 	return report, resp, nil
 }
 
-// GetOrganizationMetricsReport1Day gets a report containing Copilot metrics for a single day for an organization.
+// GetOrganizationDailyMetricsReport gets a report containing Copilot metrics for a single day for an organization.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-organization-usage-metrics-for-a-specific-day
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/organization-1-day
-func (s *CopilotService) GetOrganizationMetricsReport1Day(ctx context.Context, org string, opts *CopilotMetricsReportOptions) (*CopilotMetricsDailyReport, *Response, error) {
+func (s *CopilotService) GetOrganizationDailyMetricsReport(ctx context.Context, org string, opts *CopilotMetricsReportOptions) (*CopilotMetricsDailyReport, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/metrics/reports/organization-1-day", org)
 	u, err := addOptions(u, opts)
 	if err != nil {
