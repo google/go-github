@@ -196,8 +196,8 @@ type CopilotMetricsDailyReport struct {
 	ReportDay     string   `json:"report_day"`
 }
 
-// CopilotMetricsPeriodReportResponse represents the response from 28-day Copilot metrics report endpoints.
-type CopilotMetricsPeriodReportResponse struct {
+// CopilotMetricsReport represents the response from 28-day Copilot metrics report endpoints.
+type CopilotMetricsReport struct {
 	DownloadLinks  []string `json:"download_links"`
 	ReportStartDay string   `json:"report_start_day"`
 	ReportEndDay   string   `json:"report_end_day"`
@@ -624,7 +624,7 @@ func (s *CopilotService) GetEnterpriseMetricsReport1Day(ctx context.Context, ent
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-enterprise-usage-metrics
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-28-day/latest
-func (s *CopilotService) GetEnterpriseMetricsReport28Day(ctx context.Context, enterprise string) (*CopilotMetricsPeriodReportResponse, *Response, error) {
+func (s *CopilotService) GetEnterpriseMetricsReport28Day(ctx context.Context, enterprise string) (*CopilotMetricsReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/copilot/metrics/reports/enterprise-28-day/latest", enterprise)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -632,7 +632,7 @@ func (s *CopilotService) GetEnterpriseMetricsReport28Day(ctx context.Context, en
 		return nil, nil, err
 	}
 
-	var report *CopilotMetricsPeriodReportResponse
+	var report *CopilotMetricsReport
 	resp, err := s.client.Do(ctx, req, &report)
 	if err != nil {
 		return nil, resp, err
@@ -672,7 +672,7 @@ func (s *CopilotService) GetEnterpriseMetricsReportUsers1Day(ctx context.Context
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-users-usage-metrics
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/users-28-day/latest
-func (s *CopilotService) GetEnterpriseMetricsReportUsers28Day(ctx context.Context, enterprise string) (*CopilotMetricsPeriodReportResponse, *Response, error) {
+func (s *CopilotService) GetEnterpriseMetricsReportUsers28Day(ctx context.Context, enterprise string) (*CopilotMetricsReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/copilot/metrics/reports/users-28-day/latest", enterprise)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -680,7 +680,7 @@ func (s *CopilotService) GetEnterpriseMetricsReportUsers28Day(ctx context.Contex
 		return nil, nil, err
 	}
 
-	var report *CopilotMetricsPeriodReportResponse
+	var report *CopilotMetricsReport
 	resp, err := s.client.Do(ctx, req, &report)
 	if err != nil {
 		return nil, resp, err
@@ -720,7 +720,7 @@ func (s *CopilotService) GetOrganizationMetricsReport1Day(ctx context.Context, o
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-organization-usage-metrics
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/organization-28-day/latest
-func (s *CopilotService) GetOrganizationMetricsReport28Day(ctx context.Context, org string) (*CopilotMetricsPeriodReportResponse, *Response, error) {
+func (s *CopilotService) GetOrganizationMetricsReport28Day(ctx context.Context, org string) (*CopilotMetricsReport, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/metrics/reports/organization-28-day/latest", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -728,7 +728,7 @@ func (s *CopilotService) GetOrganizationMetricsReport28Day(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	var report *CopilotMetricsPeriodReportResponse
+	var report *CopilotMetricsReport
 	resp, err := s.client.Do(ctx, req, &report)
 	if err != nil {
 		return nil, resp, err
@@ -768,7 +768,7 @@ func (s *CopilotService) GetOrganizationMetricsReportUsers1Day(ctx context.Conte
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-organization-users-usage-metrics
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/users-28-day/latest
-func (s *CopilotService) GetOrganizationMetricsReportUsers28Day(ctx context.Context, org string) (*CopilotMetricsPeriodReportResponse, *Response, error) {
+func (s *CopilotService) GetOrganizationMetricsReportUsers28Day(ctx context.Context, org string) (*CopilotMetricsReport, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/metrics/reports/users-28-day/latest", org)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -776,7 +776,7 @@ func (s *CopilotService) GetOrganizationMetricsReportUsers28Day(ctx context.Cont
 		return nil, nil, err
 	}
 
-	var report *CopilotMetricsPeriodReportResponse
+	var report *CopilotMetricsReport
 	resp, err := s.client.Do(ctx, req, &report)
 	if err != nil {
 		return nil, resp, err
