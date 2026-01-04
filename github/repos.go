@@ -1629,6 +1629,9 @@ func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, 
 	p := new(SignaturesProtectedBranch)
 	resp, err := s.client.Do(ctx, req, p)
 	if err != nil {
+		if isBranchNotProtected(err) {
+			err = ErrBranchNotProtected
+		}
 		return nil, resp, err
 	}
 
