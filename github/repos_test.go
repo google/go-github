@@ -3242,6 +3242,45 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_GetSignaturesProtectedBranch_branchNotProtected(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		branch  string
+		urlPath string
+	}{
+		{branch: "b", urlPath: "/repos/o/r/branches/b/protection/required_signatures"},
+		{branch: "feat/branch-50%", urlPath: "/repos/o/r/branches/feat%2fbranch-50%25/protection/required_signatures"},
+	}
+
+	for _, test := range tests {
+		t.Run(test.branch, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+
+				w.WriteHeader(http.StatusBadRequest)
+				fmt.Fprintf(w, `{
+			"message": %q,
+			"documentation_url": "https://docs.github.com/rest/repos#get-branch-protection"
+			}`, githubBranchNotProtected)
+			})
+
+			ctx := t.Context()
+			checks, _, err := client.Repositories.GetSignaturesProtectedBranch(ctx, "o", "r", test.branch)
+
+			if checks != nil {
+				t.Error("Repositories.GetSignaturesProtectedBranch returned non-nil status-checks data")
+			}
+
+			if !errors.Is(err, ErrBranchNotProtected) {
+				t.Errorf("Repositories.GetSignaturesProtectedBranch returned an invalid error: %v", err)
+			}
+		})
+	}
+}
+
 func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
