@@ -1,8 +1,8 @@
 version: v2.7.0
 plugins:
-  - module: "github.com/google/go-github/v80/tools/fmtpercentv"
+  - module: "github.com/google/go-github/v81/tools/fmtpercentv"
     path: ./tools/fmtpercentv
-  - module: "github.com/google/go-github/v80/tools/sliceofpointers"
+  - module: "github.com/google/go-github/v81/tools/sliceofpointers"
     path: ./tools/sliceofpointers
-  - module: "github.com/google/go-github/v80/tools/structfield"
+  - module: "github.com/google/go-github/v81/tools/structfield"
     path: ./tools/structfield
