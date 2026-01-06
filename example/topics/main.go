@@ -12,7 +12,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/google/go-github/v80/github"
+	"github.com/google/go-github/v81/github"
 )
 
 // Fetch and lists all the public topics associated with the specified GitHub topic.
