@@ -7,7 +7,7 @@ require (
 	github.com/google/go-github/v81 v81.0.0
 )
 
-require github.com/google/go-querystring v1.1.0 // indirect
+require github.com/google/go-querystring v1.2.0 // indirect
 
 // Use version at HEAD, not the latest published.
 replace github.com/google/go-github/v81 => ../..
