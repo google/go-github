@@ -13220,6 +13220,17 @@ func TestGenerateJITConfigRequest_GetWorkFolder(tt *testing.T) {
 	g.GetWorkFolder()
 }
 
+func TestGenerateNotesOptions_GetConfigurationFilePath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	g := &GenerateNotesOptions{ConfigurationFilePath: &zeroValue}
+	g.GetConfigurationFilePath()
+	g = &GenerateNotesOptions{}
+	g.GetConfigurationFilePath()
+	g = nil
+	g.GetConfigurationFilePath()
+}
+
 func TestGenerateNotesOptions_GetPreviousTagName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

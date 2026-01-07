@@ -60,9 +60,10 @@ type RepositoryReleaseNotes struct {
 
 // GenerateNotesOptions represents the options to generate release notes.
 type GenerateNotesOptions struct {
-	TagName         string  `json:"tag_name"`
-	PreviousTagName *string `json:"previous_tag_name,omitempty"`
-	TargetCommitish *string `json:"target_commitish,omitempty"`
+	TagName               string  `json:"tag_name"`
+	PreviousTagName       *string `json:"previous_tag_name,omitempty"`
+	TargetCommitish       *string `json:"target_commitish,omitempty"`
+	ConfigurationFilePath *string `json:"configuration_file_path,omitempty"`
 }
 
 // ReleaseAsset represents a GitHub release asset in a repository.
