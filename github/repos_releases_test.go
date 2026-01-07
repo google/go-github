@@ -917,15 +917,17 @@ func TestGenerateNotesOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GenerateNotesOptions{}, "{}")
 
 	u := &GenerateNotesOptions{
-		TagName:         "tag_name",
-		PreviousTagName: Ptr("previous_tag_name"),
-		TargetCommitish: Ptr("target_commitish"),
+		TagName:               "tag_name",
+		PreviousTagName:       Ptr("previous_tag_name"),
+		TargetCommitish:       Ptr("target_commitish"),
+		ConfigurationFilePath: Ptr("configuration_file_path"),
 	}
 
 	want := `{
-		"tag_name":          "tag_name",
-		"previous_tag_name": "previous_tag_name",
-		"target_commitish":  "target_commitish"
+		"tag_name":               "tag_name",
+		"previous_tag_name":      "previous_tag_name",
+		"target_commitish":       "target_commitish",
+		"configuration_file_path": "configuration_file_path"
 	}`
 
 	testJSONMarshal(t, u, want)
