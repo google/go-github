@@ -10198,6 +10198,14 @@ func (g *GenerateJITConfigRequest) GetWorkFolder() string {
 	return *g.WorkFolder
 }
 
+// GetConfigurationFilePath returns the ConfigurationFilePath field if it's non-nil, zero value otherwise.
+func (g *GenerateNotesOptions) GetConfigurationFilePath() string {
+	if g == nil || g.ConfigurationFilePath == nil {
+		return ""
+	}
+	return *g.ConfigurationFilePath
+}
+
 // GetPreviousTagName returns the PreviousTagName field if it's non-nil, zero value otherwise.
 func (g *GenerateNotesOptions) GetPreviousTagName() string {
 	if g == nil || g.PreviousTagName == nil {
