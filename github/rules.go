@@ -464,7 +464,7 @@ type RequiredDeploymentsRuleParameters struct {
 
 // PullRequestRuleParameters represents the pull_request rule parameters.
 type PullRequestRuleParameters struct {
-	AllowedMergeMethods            []PullRequestMergeMethod   `json:"allowed_merge_methods"`
+	AllowedMergeMethods            []PullRequestMergeMethod   `json:"allowed_merge_methods,omitempty"`
 	DismissStaleReviewsOnPush      bool                       `json:"dismiss_stale_reviews_on_push"`
 	RequireCodeOwnerReview         bool                       `json:"require_code_owner_review"`
 	RequireLastPushApproval        bool                       `json:"require_last_push_approval"`
