@@ -22606,6 +22606,14 @@ func (r *RateLimits) GetCore() *Rate {
 	return r.Core
 }
 
+// GetDependencySBOM returns the DependencySBOM field.
+func (r *RateLimits) GetDependencySBOM() *Rate {
+	if r == nil {
+		return nil
+	}
+	return r.DependencySBOM
+}
+
 // GetDependencySnapshots returns the DependencySnapshots field.
 func (r *RateLimits) GetDependencySnapshots() *Rate {
 	if r == nil {
