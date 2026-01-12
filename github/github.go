@@ -336,6 +336,10 @@ func addOptions(s string, opts any) (string, error) {
 // authentication, either use Client.WithAuthToken or provide NewClient with
 // an http.Client that will perform the authentication for you (such as that
 // provided by the golang.org/x/oauth2 library).
+//
+// Note: When using a nil httpClient, the default client has no timeout set.
+// This may not be suitable for production environments. It is recommended to
+// provide a custom http.Client with an appropriate timeout.
 func NewClient(httpClient *http.Client) *Client {
 	if httpClient == nil {
 		httpClient = &http.Client{}
