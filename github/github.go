@@ -1527,6 +1527,7 @@ const (
 	DependencySnapshotsCategory
 	CodeSearchCategory
 	AuditLogCategory
+	DependencySBOMCategory
 
 	Categories // An array of this length will be able to contain all rate limit categories.
 )
@@ -1577,6 +1578,11 @@ func GetRateLimitCategory(method, path string) RateLimitCategory {
 	// https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#get-the-audit-log-for-an-organization
 	case strings.HasSuffix(path, "/audit-log"):
 		return AuditLogCategory
+
+	// https://docs.github.com/en/rest/dependency-graph/sboms?apiVersion=2022-11-28#export-a-software-bill-of-materials-sbom-for-a-repository
+	case strings.HasPrefix(path, "/repos/") &&
+		strings.HasSuffix(path, "/dependency-graph/sbom"):
+		return DependencySBOMCategory
 	}
 }
 
