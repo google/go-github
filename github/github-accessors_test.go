@@ -29219,6 +29219,14 @@ func TestRateLimits_GetCore(tt *testing.T) {
 	r.GetCore()
 }
 
+func TestRateLimits_GetDependencySBOM(tt *testing.T) {
+	tt.Parallel()
+	r := &RateLimits{}
+	r.GetDependencySBOM()
+	r = nil
+	r.GetDependencySBOM()
+}
+
 func TestRateLimits_GetDependencySnapshots(tt *testing.T) {
 	tt.Parallel()
 	r := &RateLimits{}

@@ -28,8 +28,9 @@ func TestRateLimits_String(t *testing.T) {
 		DependencySnapshots:       &Rate{},
 		CodeSearch:                &Rate{},
 		AuditLog:                  &Rate{},
+		DependencySBOM:            &Rate{},
 	}
-	want := `github.RateLimits{Core:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, Search:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, GraphQL:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, IntegrationManifest:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, SourceImport:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, CodeScanningUpload:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, ActionsRunnerRegistration:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, SCIM:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, DependencySnapshots:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, CodeSearch:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, AuditLog:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}}`
+	want := `github.RateLimits{Core:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, Search:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, GraphQL:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, IntegrationManifest:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, SourceImport:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, CodeScanningUpload:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, ActionsRunnerRegistration:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, SCIM:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, DependencySnapshots:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, CodeSearch:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, AuditLog:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}, DependencySBOM:github.Rate{Limit:0, Remaining:0, Used:0, Reset:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Resource:""}}`
 	if got := v.String(); got != want {
 		t.Errorf("RateLimits.String = %v, want %v", got, want)
 	}
@@ -52,7 +53,8 @@ func TestRateLimits(t *testing.T) {
 			"scim": {"limit":9,"remaining":8,"used":1,"reset":1372700880},
 			"dependency_snapshots": {"limit":10,"remaining":9,"used":1,"reset":1372700881},
 			"code_search": {"limit":11,"remaining":10,"used":1,"reset":1372700882},
-			"audit_log": {"limit": 12,"remaining":11,"used":1,"reset":1372700883}
+			"audit_log": {"limit": 12,"remaining":11,"used":1,"reset":1372700883},
+			"dependency_sbom": {"limit": 100,"remaining":100,"used":0,"reset":1372700884}
 		}}`)
 	})
 
@@ -129,6 +131,12 @@ func TestRateLimits(t *testing.T) {
 			Used:      1,
 			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 3, 0, time.UTC).Local()},
 		},
+		DependencySBOM: &Rate{
+			Limit:     100,
+			Remaining: 100,
+			Used:      0,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 4, 0, time.UTC).Local()},
+		},
 	}
 	if !cmp.Equal(rate, want) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
@@ -180,6 +188,10 @@ func TestRateLimits(t *testing.T) {
 		{
 			category: AuditLogCategory,
 			rate:     want.AuditLog,
+		},
+		{
+			category: DependencySBOMCategory,
+			rate:     want.DependencySBOM,
 		},
 	}
 
@@ -225,7 +237,8 @@ func TestRateLimits_overQuota(t *testing.T) {
 			"scim": {"limit":9,"remaining":8,"used":1,"reset":1372700880},
 			"dependency_snapshots": {"limit":10,"remaining":9,"used":1,"reset":1372700881},
 			"code_search": {"limit":11,"remaining":10,"used":1,"reset":1372700882},
-			"audit_log": {"limit":12,"remaining":11,"used":1,"reset":1372700883}
+			"audit_log": {"limit":12,"remaining":11,"used":1,"reset":1372700883},
+			"dependency_sbom": {"limit":13,"remaining":12,"used":1,"reset":1372700884}
 		}}`)
 	})
 
@@ -302,6 +315,12 @@ func TestRateLimits_overQuota(t *testing.T) {
 			Used:      1,
 			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 3, 0, time.UTC).Local()},
 		},
+		DependencySBOM: &Rate{
+			Limit:     13,
+			Remaining: 12,
+			Used:      1,
+			Reset:     Timestamp{time.Date(2013, time.July, 1, 17, 48, 4, 0, time.UTC).Local()},
+		},
 	}
 	if !cmp.Equal(rate, want) {
 		t.Errorf("RateLimits returned %+v, want %+v", rate, want)
@@ -354,6 +373,10 @@ func TestRateLimits_overQuota(t *testing.T) {
 		{
 			category: AuditLogCategory,
 			rate:     want.AuditLog,
+		},
+		{
+			category: DependencySBOMCategory,
+			rate:     want.DependencySBOM,
 		},
 	}
 	for _, tt := range tests {
@@ -434,6 +457,12 @@ func TestRateLimits_Marshal(t *testing.T) {
 			Used:      0,
 			Reset:     Timestamp{referenceTime},
 		},
+		DependencySBOM: &Rate{
+			Limit:     1,
+			Remaining: 1,
+			Used:      0,
+			Reset:     Timestamp{referenceTime},
+		},
 	}
 
 	want := `{
@@ -498,6 +527,12 @@ func TestRateLimits_Marshal(t *testing.T) {
 			"reset": ` + referenceTimeStr + `
 		},
 		"audit_log": {
+			"limit": 1,
+			"remaining": 1,
+			"used": 0,
+			"reset": ` + referenceTimeStr + `
+		},
+		"dependency_sbom": {
 			"limit": 1,
 			"remaining": 1,
 			"used": 0,

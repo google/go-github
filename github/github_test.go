@@ -1328,6 +1328,11 @@ func TestDo_rateLimitCategory(t *testing.T) {
 			url:      "/orgs/google/audit-log",
 			category: AuditLogCategory,
 		},
+		{
+			method:   "GET",
+			url:      "/repos/google/go-github/dependency-graph/sbom",
+			category: DependencySBOMCategory,
+		},
 		// missing a check for actionsRunnerRegistrationCategory: API not found
 	}
 
