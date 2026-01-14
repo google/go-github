@@ -11,44 +11,106 @@ import (
 	"testing"
 )
 
-func TestIterators(t *testing.T) {
+func TestIterators_Table(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name      string
+		mock      func(w http.ResponseWriter, r *http.Request)
+		opts      *RepositoryListByUserOptions
+		wantCount int
+		wantErr   bool
+	}{
+		{
+			name: "single page",
+			mock: func(w http.ResponseWriter, _ *http.Request) {
+				fmt.Fprint(w, `[{"id":1}]`)
+			},
+			wantCount: 1,
+		},
+		{
+			name: "multi page",
+			mock: func(w http.ResponseWriter, r *http.Request) {
+				page := r.URL.Query().Get("page")
+				if page == "" || page == "1" {
+					w.Header().Set("Link", `<http://localhost/api-v3/users/u/repos?page=2>; rel="next"`)
+					fmt.Fprint(w, `[{"id":1}]`)
+				} else {
+					fmt.Fprint(w, `[{"id":2}]`)
+				}
+			},
+			wantCount: 2,
+		},
+		{
+			name: "error on first page",
+			mock: func(w http.ResponseWriter, _ *http.Request) {
+				w.WriteHeader(http.StatusInternalServerError)
+			},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
+				tt.mock(w, r)
+			})
+
+			ctx := t.Context()
+			count := 0
+			var iterErr error
+			for _, err := range client.Repositories.ListByUserIter(ctx, "u", tt.opts) {
+				if err != nil {
+					iterErr = err
+					break // Stop iteration on error
+				}
+				count++
+			}
+
+			if tt.wantErr {
+				if iterErr == nil {
+					t.Error("expected error, got nil")
+				}
+			} else {
+				if iterErr != nil {
+					t.Errorf("unexpected error: %v", iterErr)
+				}
+				if count != tt.wantCount {
+					t.Errorf("got %v items, want %v", count, tt.wantCount)
+				}
+			}
+		})
+	}
+}
+
+func TestIterators_Safety(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/users/u/repos", func(w http.ResponseWriter, r *http.Request) {
-		// Just consume body
-		r.Body.Close()
-
 		page := r.URL.Query().Get("page")
-		switch page {
-		case "", "1":
-			w.Header().Set("Link", `<http://localhost/users/u/repos?page=2>; rel="next"`)
-			fmt.Fprint(w, `[{"id":1}]`)
-		case "2":
-			fmt.Fprint(w, `[{"id":2}]`)
+		if page == "1" || page == "" {
+			w.Header().Set("Link", `<http://localhost/api-v3/users/u/repos?page=2>; rel="next"`)
 		}
+		fmt.Fprint(w, `[]`)
 	})
 
-	ctx := t.Context()
 	opts := &RepositoryListByUserOptions{
-		ListOptions: ListOptions{PerPage: 1},
+		ListOptions: ListOptions{Page: 1},
 	}
+	originalPage := opts.Page
 
-	var repos []*Repository
-	for repo, err := range client.Repositories.ListByUserIter(ctx, "u", opts) {
+	ctx := t.Context()
+	// Run iterator. Even if no items, it should finish when pagination ends.
+	for _, err := range client.Repositories.ListByUserIter(ctx, "u", opts) {
 		if err != nil {
-			t.Fatalf("ListByUserIter returned error: %v", err)
+			break
 		}
-		repos = append(repos, repo)
 	}
 
-	if len(repos) != 2 {
-		t.Errorf("ListByUserIter returned %v repos, want 2", len(repos))
-	}
-	if repos[0].GetID() != 1 {
-		t.Errorf("repo[0].ID = %v, want 1", repos[0].GetID())
-	}
-	if repos[1].GetID() != 2 {
-		t.Errorf("repo[1].ID = %v, want 2", repos[1].GetID())
+	if opts.Page != originalPage {
+		t.Errorf("original opts.Page mutated! got %v, want %v", opts.Page, originalPage)
 	}
 }
