@@ -9290,17 +9290,6 @@ func TestCustomPatternBackfillScan_GetPatternSlug(tt *testing.T) {
 	c.GetPatternSlug()
 }
 
-func TestCustomProperty_GetDefaultValue(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CustomProperty{DefaultValue: &zeroValue}
-	c.GetDefaultValue()
-	c = &CustomProperty{}
-	c.GetDefaultValue()
-	c = nil
-	c.GetDefaultValue()
-}
-
 func TestCustomProperty_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
