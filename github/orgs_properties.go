@@ -60,7 +60,7 @@ func (cp CustomProperty) DefaultValueString() (string, bool) {
 	}
 }
 
-// DefaultValueStrings returns the DefaultValue as a slice of string if the ValueType is string or multi_select.
+// DefaultValueStrings returns the DefaultValue as a slice of string if the ValueType is multi_select.
 func (cp CustomProperty) DefaultValueStrings() ([]string, bool) {
 	switch cp.ValueType {
 	case PropertyValueTypeMultiSelect:
@@ -71,7 +71,7 @@ func (cp CustomProperty) DefaultValueStrings() ([]string, bool) {
 	}
 }
 
-// DefaultValueBool returns the DefaultValue as a string if the ValueType is string or true_false.
+// DefaultValueBool returns the DefaultValue as a string if the ValueType is true_false.
 func (cp CustomProperty) DefaultValueBool() (bool, bool) {
 	switch cp.ValueType {
 	case PropertyValueTypeTrueFalse:
