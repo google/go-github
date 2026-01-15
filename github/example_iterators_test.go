@@ -19,6 +19,7 @@ func ExampleRepositoriesService_ListByUserIter() {
 
 	// List all repositories for a user using the iterator.
 	// This automatically handles pagination.
+	// Note that if `opts` is `nil`, a new empty `opts` will be created and used within the iterator.
 	opts := &github.RepositoryListByUserOptions{Type: "public"}
 	for repo, err := range client.Repositories.ListByUserIter(ctx, "octocat", opts) {
 		if err != nil {
