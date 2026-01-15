@@ -3438,6 +3438,22 @@ func (c *CodeSecurityConfiguration) GetSecretScanningDelegatedAlertDismissal() s
 	return *c.SecretScanningDelegatedAlertDismissal
 }
 
+// GetSecretScanningDelegatedBypass returns the SecretScanningDelegatedBypass field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanningDelegatedBypass() string {
+	if c == nil || c.SecretScanningDelegatedBypass == nil {
+		return ""
+	}
+	return *c.SecretScanningDelegatedBypass
+}
+
+// GetSecretScanningDelegatedBypassOptions returns the SecretScanningDelegatedBypassOptions field.
+func (c *CodeSecurityConfiguration) GetSecretScanningDelegatedBypassOptions() *SecretScanningDelegatedBypassOptions {
+	if c == nil {
+		return nil
+	}
+	return c.SecretScanningDelegatedBypassOptions
+}
+
 // GetSecretScanningGenericSecrets returns the SecretScanningGenericSecrets field if it's non-nil, zero value otherwise.
 func (c *CodeSecurityConfiguration) GetSecretScanningGenericSecrets() string {
 	if c == nil || c.SecretScanningGenericSecrets == nil {
