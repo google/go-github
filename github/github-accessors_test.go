@@ -9290,6 +9290,17 @@ func TestCustomPatternBackfillScan_GetPatternSlug(tt *testing.T) {
 	c.GetPatternSlug()
 }
 
+func TestCustomProperty_GetDefaultValue(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CustomProperty{DefaultValue: &zeroValue}
+	c.GetDefaultValue()
+	c = &CustomProperty{}
+	c.GetDefaultValue()
+	c = nil
+	c.GetDefaultValue()
+}
+
 func TestCustomProperty_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -29206,14 +29217,6 @@ func TestRateLimits_GetCore(tt *testing.T) {
 	r.GetCore()
 	r = nil
 	r.GetCore()
-}
-
-func TestRateLimits_GetDependencySBOM(tt *testing.T) {
-	tt.Parallel()
-	r := &RateLimits{}
-	r.GetDependencySBOM()
-	r = nil
-	r.GetDependencySBOM()
 }
 
 func TestRateLimits_GetDependencySnapshots(tt *testing.T) {

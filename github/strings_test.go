@@ -106,17 +106,63 @@ func TestStringify_Primitives(t *testing.T) {
 		{uint64(10), "10"},
 		{uintptr(11), "11"},
 
-		// Float variants
+		// Float variants (Precision Correctness)
 		{float32(1.1), "1.1"},
 		{float64(1.1), "1.1"},
 		{float32(1.0000001), "1.0000001"},
 		{float64(1.000000000000001), "1.000000000000001"},
+
+		// Boundary Cases
+		{int8(-128), "-128"},
+		{int8(127), "127"},
+		{uint64(18446744073709551615), "18446744073709551615"},
+
+		// String Optimization
+		{"hello", `"hello"`},
+		{"", `""`},
 	}
 
 	for i, tt := range tests {
 		s := Stringify(tt.in)
 		if s != tt.out {
-			t.Errorf("%d. Stringify(%T) => %q, want %q", i, tt.in, s, tt.out)
+			t.Errorf("%v. Stringify(%T) => %q, want %q", i, tt.in, s, tt.out)
+		}
+	}
+}
+
+func TestStringify_BufferPool(t *testing.T) {
+	t.Parallel()
+	// Verify that concurrent usage of Stringify is safe and doesn't corrupt buffers.
+	// While we can't easily verify reuse without exposing internal metrics,
+	// we can verify correctness under load which implies proper Reset() handling.
+	const goroutines = 10
+	const iterations = 100
+
+	errCh := make(chan error, goroutines)
+
+	for range goroutines {
+		go func() {
+			for range iterations {
+				// Use a mix of types to exercise different code paths
+				s1 := Stringify(123)
+				if s1 != "123" {
+					errCh <- fmt.Errorf("got %q, want %q", s1, "123")
+					return
+				}
+
+				s2 := Stringify("test")
+				if s2 != `"test"` {
+					errCh <- fmt.Errorf("got %q, want %q", s2, `"test"`)
+					return
+				}
+			}
+			errCh <- nil
+		}()
+	}
+
+	for range goroutines {
+		if err := <-errCh; err != nil {
+			t.Error(err)
 		}
 	}
 }

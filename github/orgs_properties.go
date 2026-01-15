@@ -10,19 +10,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"strconv"
 )
-
-// PropertyValueType represents the type of a custom property value.
-type PropertyValueType string
 
 // Valid values for CustomProperty.ValueType.
 const (
-	PropertyValueTypeString       PropertyValueType = "string"
-	PropertyValueTypeSingleSelect PropertyValueType = "single_select"
-	PropertyValueTypeMultiSelect  PropertyValueType = "multi_select"
-	PropertyValueTypeTrueFalse    PropertyValueType = "true_false"
-	PropertyValueTypeURL          PropertyValueType = "url"
+	PropertyValueTypeString       = "string"
+	PropertyValueTypeSingleSelect = "single_select"
+	PropertyValueTypeMultiSelect  = "multi_select"
+	PropertyValueTypeTrueFalse    = "true_false"
+	PropertyValueTypeURL          = "url"
 )
 
 // CustomProperty represents an organization custom property object.
@@ -35,11 +31,11 @@ type CustomProperty struct {
 	// SourceType is the source type of the property where it has been created. Can be one of: organization, enterprise.
 	SourceType *string `json:"source_type,omitempty"`
 	// The type of the value for the property. Can be one of: string, single_select, multi_select, true_false, url.
-	ValueType PropertyValueType `json:"value_type"`
+	ValueType string `json:"value_type"`
 	// Whether the property is required.
 	Required *bool `json:"required,omitempty"`
 	// Default value of the property.
-	DefaultValue any `json:"default_value,omitempty"`
+	DefaultValue *string `json:"default_value,omitempty"`
 	// Short description of the property.
 	Description *string `json:"description,omitempty"`
 	// An ordered list of the allowed values of the property. The property can have up to 200
@@ -47,42 +43,6 @@ type CustomProperty struct {
 	AllowedValues []string `json:"allowed_values,omitempty"`
 	// Who can edit the values of the property. Can be one of: org_actors, org_and_repo_actors, nil (null).
 	ValuesEditableBy *string `json:"values_editable_by,omitempty"`
-}
-
-// DefaultValueString returns the DefaultValue as a string if the ValueType is string or single_select or url.
-func (cp CustomProperty) DefaultValueString() (string, bool) {
-	switch cp.ValueType {
-	case PropertyValueTypeString, PropertyValueTypeSingleSelect, PropertyValueTypeURL:
-		s, ok := cp.DefaultValue.(string)
-		return s, ok
-	default:
-		return "", false
-	}
-}
-
-// DefaultValueStrings returns the DefaultValue as a slice of string if the ValueType is multi_select.
-func (cp CustomProperty) DefaultValueStrings() ([]string, bool) {
-	switch cp.ValueType {
-	case PropertyValueTypeMultiSelect:
-		s, ok := cp.DefaultValue.([]string)
-		return s, ok
-	default:
-		return nil, false
-	}
-}
-
-// DefaultValueBool returns the DefaultValue as a string if the ValueType is true_false.
-func (cp CustomProperty) DefaultValueBool() (bool, bool) {
-	switch cp.ValueType {
-	case PropertyValueTypeTrueFalse:
-		if s, ok := cp.DefaultValue.(string); ok {
-			b, err := strconv.ParseBool(s)
-			return b, err == nil
-		}
-		return false, false
-	default:
-		return false, false
-	}
 }
 
 // RepoCustomPropertyValue represents a repository custom property value.

@@ -13732,7 +13732,7 @@ func TestCustomPropertyEvent_Marshal(t *testing.T) {
 			ValueType:        PropertyValueTypeSingleSelect,
 			SourceType:       Ptr("enterprise"),
 			Required:         Ptr(true),
-			DefaultValue:     "production",
+			DefaultValue:     Ptr("production"),
 			Description:      Ptr("Prod or dev environment"),
 			AllowedValues:    []string{"production", "development"},
 			ValuesEditableBy: Ptr("org_actors"),

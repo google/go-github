@@ -381,7 +381,8 @@ func visitServiceMethods(dir string, writeFiles bool, visit nodeVisitor) error {
 		filename := filepath.Join(dir, dirEntry.Name())
 		if dirEntry.IsDir() ||
 			!strings.HasSuffix(filename, ".go") ||
-			strings.HasSuffix(filename, "_test.go") {
+			strings.HasSuffix(filename, "_test.go") ||
+			strings.HasSuffix(filename, "iterators.go") {
 			continue
 		}
 		err = errors.Join(err, visitFileMethods(writeFiles, filename, visit))
