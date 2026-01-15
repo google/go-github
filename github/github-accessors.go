@@ -7102,6 +7102,14 @@ func (c *CustomPatternBackfillScan) GetPatternSlug() string {
 	return *c.PatternSlug
 }
 
+// GetDefaultValue returns the DefaultValue field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetDefaultValue() string {
+	if c == nil || c.DefaultValue == nil {
+		return ""
+	}
+	return *c.DefaultValue
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (c *CustomProperty) GetDescription() string {
 	if c == nil || c.Description == nil {
@@ -22596,14 +22604,6 @@ func (r *RateLimits) GetCore() *Rate {
 		return nil
 	}
 	return r.Core
-}
-
-// GetDependencySBOM returns the DependencySBOM field.
-func (r *RateLimits) GetDependencySBOM() *Rate {
-	if r == nil {
-		return nil
-	}
-	return r.DependencySBOM
 }
 
 // GetDependencySnapshots returns the DependencySnapshots field.
