@@ -4483,6 +4483,25 @@ func TestCodeSecurityConfiguration_GetSecretScanningDelegatedAlertDismissal(tt *
 	c.GetSecretScanningDelegatedAlertDismissal()
 }
 
+func TestCodeSecurityConfiguration_GetSecretScanningDelegatedBypass(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurityConfiguration{SecretScanningDelegatedBypass: &zeroValue}
+	c.GetSecretScanningDelegatedBypass()
+	c = &CodeSecurityConfiguration{}
+	c.GetSecretScanningDelegatedBypass()
+	c = nil
+	c.GetSecretScanningDelegatedBypass()
+}
+
+func TestCodeSecurityConfiguration_GetSecretScanningDelegatedBypassOptions(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeSecurityConfiguration{}
+	c.GetSecretScanningDelegatedBypassOptions()
+	c = nil
+	c.GetSecretScanningDelegatedBypassOptions()
+}
+
 func TestCodeSecurityConfiguration_GetSecretScanningGenericSecrets(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

@@ -33,6 +33,19 @@ type RepositoryAttachment struct {
 	Repository *Repository `json:"repository"`
 }
 
+// SecretScanningDelegatedBypassOptions represents the feature options for the secret scanning delegated bypass.
+type SecretScanningDelegatedBypassOptions struct {
+	Reviewers []*BypassReviewer `json:"reviewers,omitzero"`
+}
+
+// BypassReviewer represents the bypass reviewers for the delegated bypass of a code security configuration.
+// SecurityConfigurationID is added by GitHub in responses.
+type BypassReviewer struct {
+	ReviewerID              int64  `json:"reviewer_id"`
+	ReviewerType            string `json:"reviewer_type"`
+	SecurityConfigurationID *int64 `json:"security_configuration_id,omitempty"`
+}
+
 // CodeSecurityConfiguration represents a code security configuration.
 type CodeSecurityConfiguration struct {
 	ID                                     *int64                                  `json:"id,omitempty"`
@@ -52,6 +65,8 @@ type CodeSecurityConfiguration struct {
 	CodeSecurity                           *string                                 `json:"code_security,omitempty"`
 	SecretScanning                         *string                                 `json:"secret_scanning,omitempty"`
 	SecretScanningPushProtection           *string                                 `json:"secret_scanning_push_protection,omitempty"`
+	SecretScanningDelegatedBypass          *string                                 `json:"secret_scanning_delegated_bypass,omitempty"`
+	SecretScanningDelegatedBypassOptions   *SecretScanningDelegatedBypassOptions   `json:"secret_scanning_delegated_bypass_options,omitempty"`
 	SecretScanningValidityChecks           *string                                 `json:"secret_scanning_validity_checks,omitempty"`
 	SecretScanningNonProviderPatterns      *string                                 `json:"secret_scanning_non_provider_patterns,omitempty"`
 	SecretScanningGenericSecrets           *string                                 `json:"secret_scanning_generic_secrets,omitempty"`

@@ -156,6 +156,112 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	})
 }
 
+func TestOrganizationsService_CreateCodeSecurityConfigurationWithDelegatedBypass(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	ctx := t.Context()
+
+	input := CodeSecurityConfiguration{
+		Name:                          "config1",
+		Description:                   "desc1",
+		SecretProtection:              Ptr("enabled"), // required to configure bypass
+		SecretScanning:                Ptr("enabled"), // required to configure bypass
+		SecretScanningPushProtection:  Ptr("enabled"), // required to configure bypass
+		SecretScanningDelegatedBypass: Ptr("enabled"),
+		SecretScanningDelegatedBypassOptions: &SecretScanningDelegatedBypassOptions{
+			Reviewers: []*BypassReviewer{
+				{
+					ReviewerType: "TEAM",
+					ReviewerID:   456,
+				},
+				{
+					ReviewerType: "ROLE",
+					ReviewerID:   789,
+				},
+			},
+		},
+	}
+
+	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
+		var v CodeSecurityConfiguration
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+
+		if !cmp.Equal(v, input) {
+			t.Errorf("Organizations.CreateCodeSecurityConfiguration with Bypass request body = %+v, want %+v", v, input)
+		}
+
+		fmt.Fprint(w, `{
+			"id":123,
+			"name":"config1",
+			"description":"desc1",
+			"secret_protection": "enabled",
+			"secret_scanning": "enabled",
+			"secret_scanning_push_protection": "enabled",
+			"secret_scanning_delegated_bypass": "enabled",
+			"secret_scanning_delegated_bypass_options": {
+				"reviewers": [
+					{
+						"security_configuration_id": 123,
+						"reviewer_type": "TEAM",	
+						"reviewer_id": 456
+					},
+					{
+						"security_configuration_id": 123,
+						"reviewer_type": "ROLE",	
+						"reviewer_id": 789
+					}
+				]			
+			}
+		}`)
+	})
+
+	configuration, _, err := client.Organizations.CreateCodeSecurityConfiguration(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Organizations.CreateCodeSecurityConfiguration with Bypass returned error: %v", err)
+	}
+
+	want := &CodeSecurityConfiguration{
+		ID:                            Ptr(int64(123)),
+		Name:                          "config1",
+		Description:                   "desc1",
+		SecretProtection:              Ptr("enabled"),
+		SecretScanning:                Ptr("enabled"),
+		SecretScanningPushProtection:  Ptr("enabled"),
+		SecretScanningDelegatedBypass: Ptr("enabled"),
+		SecretScanningDelegatedBypassOptions: &SecretScanningDelegatedBypassOptions{
+			Reviewers: []*BypassReviewer{
+				{
+					SecurityConfigurationID: Ptr(int64(123)),
+					ReviewerType:            "TEAM",
+					ReviewerID:              456,
+				},
+				{
+					SecurityConfigurationID: Ptr(int64(123)),
+					ReviewerType:            "ROLE",
+					ReviewerID:              789,
+				},
+			},
+		},
+	}
+	if !cmp.Equal(configuration, want) {
+		t.Errorf("Organizations.CreateCodeSecurityConfiguration with Bypass returned %+v, want %+v", configuration, want)
+	}
+
+	const methodName = "CreateCodeSecurityConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.CreateCodeSecurityConfiguration(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.CreateCodeSecurityConfiguration(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestOrganizationsService_ListDefaultCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
