@@ -2222,6 +2222,14 @@ func (b *BypassActor) GetBypassMode() *BypassMode {
 	return b.BypassMode
 }
 
+// GetSecurityConfigurationID returns the SecurityConfigurationID field if it's non-nil, zero value otherwise.
+func (b *BypassReviewer) GetSecurityConfigurationID() int64 {
+	if b == nil || b.SecurityConfigurationID == nil {
+		return 0
+	}
+	return *b.SecurityConfigurationID
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {
@@ -3436,6 +3444,22 @@ func (c *CodeSecurityConfiguration) GetSecretScanningDelegatedAlertDismissal() s
 		return ""
 	}
 	return *c.SecretScanningDelegatedAlertDismissal
+}
+
+// GetSecretScanningDelegatedBypass returns the SecretScanningDelegatedBypass field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanningDelegatedBypass() string {
+	if c == nil || c.SecretScanningDelegatedBypass == nil {
+		return ""
+	}
+	return *c.SecretScanningDelegatedBypass
+}
+
+// GetSecretScanningDelegatedBypassOptions returns the SecretScanningDelegatedBypassOptions field.
+func (c *CodeSecurityConfiguration) GetSecretScanningDelegatedBypassOptions() *SecretScanningDelegatedBypassOptions {
+	if c == nil {
+		return nil
+	}
+	return c.SecretScanningDelegatedBypassOptions
 }
 
 // GetSecretScanningGenericSecrets returns the SecretScanningGenericSecrets field if it's non-nil, zero value otherwise.
