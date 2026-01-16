@@ -2222,6 +2222,14 @@ func (b *BypassActor) GetBypassMode() *BypassMode {
 	return b.BypassMode
 }
 
+// GetSecurityConfigurationID returns the SecurityConfigurationID field if it's non-nil, zero value otherwise.
+func (b *BypassReviewer) GetSecurityConfigurationID() int64 {
+	if b == nil || b.SecurityConfigurationID == nil {
+		return 0
+	}
+	return *b.SecurityConfigurationID
+}
+
 // GetApp returns the App field.
 func (c *CheckRun) GetApp() *App {
 	if c == nil {

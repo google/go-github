@@ -2907,6 +2907,17 @@ func TestBypassActor_GetBypassMode(tt *testing.T) {
 	b.GetBypassMode()
 }
 
+func TestBypassReviewer_GetSecurityConfigurationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	b := &BypassReviewer{SecurityConfigurationID: &zeroValue}
+	b.GetSecurityConfigurationID()
+	b = &BypassReviewer{}
+	b.GetSecurityConfigurationID()
+	b = nil
+	b.GetSecurityConfigurationID()
+}
+
 func TestCheckRun_GetApp(tt *testing.T) {
 	tt.Parallel()
 	c := &CheckRun{}
