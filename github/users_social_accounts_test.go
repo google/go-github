@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -58,14 +57,8 @@ func TestUsersService_AddSocialAccounts(t *testing.T) {
 	input := []string{"https://twitter.com/github"}
 
 	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
-		var v []string
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testBody(t, r, `{"account_urls":["https://twitter.com/github"]}`+"\n")
 		fmt.Fprint(w, `[{"provider":"twitter","url":"https://twitter.com/github"},{"provider":"facebook","url":"https://facebook.com/github"}]`)
 	})
 
@@ -100,14 +93,10 @@ func TestUsersService_DeleteSocialAccounts(t *testing.T) {
 
 	input := []string{"https://twitter.com/github"}
 
-	mux.HandleFunc("/user/social_accounts", func(_ http.ResponseWriter, r *http.Request) {
-		var v []string
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
+	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testBody(t, r, `{"account_urls":["https://twitter.com/github"]}`+"\n")
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
