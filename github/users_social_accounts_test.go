@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -23,8 +22,8 @@ func TestUsersService_ListSocialAccounts(t *testing.T) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{
-			"provider": "twitter",
-			"url": "https://twitter.com/github"
+			"provider": "example",
+			"url": "https://example.com"
 		}]`)
 	})
 
@@ -35,7 +34,7 @@ func TestUsersService_ListSocialAccounts(t *testing.T) {
 		t.Errorf("Users.ListSocialAccounts returned error: %v", err)
 	}
 
-	want := []*SocialAccount{{Provider: Ptr("twitter"), URL: Ptr("https://twitter.com/github")}}
+	want := []*SocialAccount{{Provider: Ptr("example"), URL: Ptr("https://example.com")}}
 	if !cmp.Equal(accounts, want) {
 		t.Errorf("Users.ListSocialAccounts returned %#v, want %#v", accounts, want)
 	}
@@ -55,18 +54,12 @@ func TestUsersService_AddSocialAccounts(t *testing.T) {
 
 	client, mux, _ := setup(t)
 
-	input := []string{"https://twitter.com/github"}
+	input := []string{"https://example.com"}
 
 	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
-		var v []string
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
-		fmt.Fprint(w, `[{"provider":"twitter","url":"https://twitter.com/github"},{"provider":"facebook","url":"https://facebook.com/github"}]`)
+		testBody(t, r, `{"account_urls":["https://example.com"]}`+"\n")
+		fmt.Fprint(w, `[{"provider":"example","url":"https://example.com"}]`)
 	})
 
 	ctx := t.Context()
@@ -76,8 +69,7 @@ func TestUsersService_AddSocialAccounts(t *testing.T) {
 	}
 
 	want := []*SocialAccount{
-		{Provider: Ptr("twitter"), URL: Ptr("https://twitter.com/github")},
-		{Provider: Ptr("facebook"), URL: Ptr("https://facebook.com/github")},
+		{Provider: Ptr("example"), URL: Ptr("https://example.com")},
 	}
 	if !cmp.Equal(accounts, want) {
 		t.Errorf("Users.AddSocialAccounts returned %#v, want %#v", accounts, want)
@@ -98,16 +90,12 @@ func TestUsersService_DeleteSocialAccounts(t *testing.T) {
 
 	client, mux, _ := setup(t)
 
-	input := []string{"https://twitter.com/github"}
+	input := []string{"https://example.com"}
 
-	mux.HandleFunc("/user/social_accounts", func(_ http.ResponseWriter, r *http.Request) {
-		var v []string
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
+	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testBody(t, r, `{"account_urls":["https://example.com"]}`+"\n")
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
@@ -131,8 +119,8 @@ func TestUsersService_ListUserSocialAccounts(t *testing.T) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{
-			"provider": "twitter",
-			"url": "https://twitter.com/github"
+			"provider": "example",
+			"url": "https://example.com"
 		}]`)
 	})
 
@@ -143,7 +131,7 @@ func TestUsersService_ListUserSocialAccounts(t *testing.T) {
 		t.Errorf("Users.ListUserSocialAccounts returned error: %v", err)
 	}
 
-	want := []*SocialAccount{{Provider: Ptr("twitter"), URL: Ptr("https://twitter.com/github")}}
+	want := []*SocialAccount{{Provider: Ptr("example"), URL: Ptr("https://example.com")}}
 	if !cmp.Equal(accounts, want) {
 		t.Errorf("Users.ListUserSocialAccounts returned %#v, want %#v", accounts, want)
 	}
