@@ -16,8 +16,8 @@ type SocialAccount struct {
 	URL      *string `json:"url,omitempty"`
 }
 
-// socialAccountRequest represents the request body for adding or deleting social accounts.
-type socialAccountRequest struct {
+// socialAccountsRequest represents the request body for adding or deleting social accounts.
+type socialAccountsRequest struct {
 	AccountURLs []string `json:"account_urls"`
 }
 
@@ -54,7 +54,7 @@ func (s *UsersService) ListSocialAccounts(ctx context.Context, opts *ListOptions
 //meta:operation POST /user/social_accounts
 func (s *UsersService) AddSocialAccounts(ctx context.Context, accountURLs []string) ([]*SocialAccount, *Response, error) {
 	u := "user/social_accounts"
-	req, err := s.client.NewRequest("POST", u, socialAccountRequest{AccountURLs: accountURLs})
+	req, err := s.client.NewRequest("POST", u, &socialAccountsRequest{AccountURLs: accountURLs})
 	if err != nil {
 		return nil, nil, err
 	}
@@ -75,7 +75,7 @@ func (s *UsersService) AddSocialAccounts(ctx context.Context, accountURLs []stri
 //meta:operation DELETE /user/social_accounts
 func (s *UsersService) DeleteSocialAccounts(ctx context.Context, accountURLs []string) (*Response, error) {
 	u := "user/social_accounts"
-	req, err := s.client.NewRequest("DELETE", u, socialAccountRequest{AccountURLs: accountURLs})
+	req, err := s.client.NewRequest("DELETE", u, &socialAccountsRequest{AccountURLs: accountURLs})
 	if err != nil {
 		return nil, err
 	}
