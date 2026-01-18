@@ -128,9 +128,8 @@ func TestGitService_ListMatchingRefs_singleRef(t *testing.T) {
 		  ]`)
 	})
 
-	opts := &ReferenceListOptions{Ref: "refs/heads/b"}
 	ctx := t.Context()
-	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
+	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", "heads/b")
 	if err != nil {
 		t.Fatalf("Git.ListMatchingRefs returned error: %v", err)
 	}
@@ -149,20 +148,14 @@ func TestGitService_ListMatchingRefs_singleRef(t *testing.T) {
 		t.Errorf("Git.ListMatchingRefs returned %+v, want %+v", ref, want)
 	}
 
-	// without 'refs/' prefix
-	opts = &ReferenceListOptions{Ref: "heads/b"}
-	if _, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts); err != nil {
-		t.Errorf("Git.ListMatchingRefs returned error: %v", err)
-	}
-
 	const methodName = "ListMatchingRefs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.ListMatchingRefs(ctx, "\n", "\n", opts)
+		_, _, err = client.Git.ListMatchingRefs(ctx, "\n", "\n", "")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
+		got, resp, err := client.Git.ListMatchingRefs(ctx, "o", "r", "")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -200,9 +193,8 @@ func TestGitService_ListMatchingRefs_multipleRefs(t *testing.T) {
 		`)
 	})
 
-	opts := &ReferenceListOptions{Ref: "refs/heads/b"}
 	ctx := t.Context()
-	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
+	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", "heads/b")
 	if err != nil {
 		t.Errorf("Git.ListMatchingRefs returned error: %v", err)
 	}
@@ -222,12 +214,12 @@ func TestGitService_ListMatchingRefs_multipleRefs(t *testing.T) {
 
 	const methodName = "ListMatchingRefs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.ListMatchingRefs(ctx, "\n", "\n", opts)
+		_, _, err = client.Git.ListMatchingRefs(ctx, "\n", "\n", "")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
+		got, resp, err := client.Git.ListMatchingRefs(ctx, "o", "r", "")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -244,9 +236,8 @@ func TestGitService_ListMatchingRefs_noRefs(t *testing.T) {
 		fmt.Fprint(w, "[]")
 	})
 
-	opts := &ReferenceListOptions{Ref: "refs/heads/b"}
 	ctx := t.Context()
-	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
+	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", "heads/b")
 	if err != nil {
 		t.Errorf("Git.ListMatchingRefs returned error: %v", err)
 	}
@@ -257,12 +248,12 @@ func TestGitService_ListMatchingRefs_noRefs(t *testing.T) {
 
 	const methodName = "ListMatchingRefs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.ListMatchingRefs(ctx, "\n", "\n", opts)
+		_, _, err = client.Git.ListMatchingRefs(ctx, "\n", "\n", "")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
+		got, resp, err := client.Git.ListMatchingRefs(ctx, "o", "r", "")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -300,7 +291,7 @@ func TestGitService_ListMatchingRefs_allRefs(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", nil)
+	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", "")
 	if err != nil {
 		t.Errorf("Git.ListMatchingRefs returned error: %v", err)
 	}
@@ -331,49 +322,12 @@ func TestGitService_ListMatchingRefs_allRefs(t *testing.T) {
 
 	const methodName = "ListMatchingRefs"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.ListMatchingRefs(ctx, "\n", "\n", nil)
+		_, _, err = client.Git.ListMatchingRefs(ctx, "\n", "\n", "")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Git.ListMatchingRefs(ctx, "o", "r", nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
-func TestGitService_ListMatchingRefs_options(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/repos/o/r/git/matching-refs/t", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "2"})
-		fmt.Fprint(w, `[{"ref": "r"}]`)
-	})
-
-	opts := &ReferenceListOptions{Ref: "t", ListOptions: ListOptions{Page: 2}}
-	ctx := t.Context()
-	refs, _, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
-	if err != nil {
-		t.Errorf("Git.ListMatchingRefs returned error: %v", err)
-	}
-
-	want := []*Reference{{Ref: Ptr("r")}}
-	if !cmp.Equal(refs, want) {
-		t.Errorf("Git.ListMatchingRefs returned %+v, want %+v", refs, want)
-	}
-
-	const methodName = "ListMatchingRefs"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Git.ListMatchingRefs(ctx, "\n", "\n", opts)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Git.ListMatchingRefs(ctx, "o", "r", opts)
+		got, resp, err := client.Git.ListMatchingRefs(ctx, "o", "r", "")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

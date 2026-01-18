@@ -82,31 +82,17 @@ func refURLEscape(ref string) string {
 	return strings.Join(parts, "/")
 }
 
-// ReferenceListOptions specifies optional parameters to the
-// GitService.ListMatchingRefs method.
-type ReferenceListOptions struct {
-	// The ref must be formatted as `heads/<branch name>` for branches and `tags/<tag name>` for tags.
-	Ref string `url:"-"`
-
-	ListOptions
-}
-
 // ListMatchingRefs lists references in a repository that match a supplied ref.
+// The ref in the URL must be formatted as `heads/<branch name>` for branches and `tags/<tag name>` for tags.
+// If the ref doesn't exist in the repository, but existing refs start with ref, they will be returned as an array.
 // Use an empty ref to list all references.
 //
 // GitHub API docs: https://docs.github.com/rest/git/refs#list-matching-references
 //
 //meta:operation GET /repos/{owner}/{repo}/git/matching-refs/{ref}
-func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo string, opts *ReferenceListOptions) ([]*Reference, *Response, error) {
-	var ref string
-	if opts != nil {
-		ref = strings.TrimPrefix(opts.Ref, "refs/")
-	}
+func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo, ref string) ([]*Reference, *Response, error) {
+	ref = strings.TrimPrefix(ref, "refs/") // API expects no "refs/" prefix
 	u := fmt.Sprintf("repos/%v/%v/git/matching-refs/%v", owner, repo, refURLEscape(ref))
-	u, err := addOptions(u, opts)
-	if err != nil {
-		return nil, nil, err
-	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
