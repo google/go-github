@@ -540,6 +540,24 @@ func WithVersion(version string) RequestOption {
 	}
 }
 
+// WithOffsetPagination adds page query parameter to the request.
+func WithOffsetPagination(page int) RequestOption {
+	return func(req *http.Request) {
+		q := req.URL.Query()
+		q.Set("page", strconv.Itoa(page))
+		req.URL.RawQuery = q.Encode()
+	}
+}
+
+// WithAfterPagination adds cursor pagination parameters to the request.
+func WithAfterPagination(after string) RequestOption {
+	return func(req *http.Request) {
+		q := req.URL.Query()
+		q.Set("after", after)
+		req.URL.RawQuery = q.Encode()
+	}
+}
+
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash. If
@@ -581,7 +599,9 @@ func (c *Client) NewRequest(method, urlStr string, body any, opts ...RequestOpti
 	req.Header.Set(headerAPIVersion, defaultAPIVersion)
 
 	for _, opt := range opts {
-		opt(req)
+		if opt != nil {
+			opt(req)
+		}
 	}
 
 	return req, nil
