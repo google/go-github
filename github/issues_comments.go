@@ -60,7 +60,7 @@ type IssueListCommentsOptions struct {
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/comments
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/comments
-func (s *IssuesService) ListComments(ctx context.Context, owner, repo string, number int, opts *IssueListCommentsOptions) ([]*IssueComment, *Response, error) {
+func (s *IssuesService) ListComments(ctx context.Context, owner, repo string, number int, opts *IssueListCommentsOptions, reqOpts ...RequestOption) ([]*IssueComment, *Response, error) {
 	var u string
 	if number == 0 {
 		u = fmt.Sprintf("repos/%v/%v/issues/comments", owner, repo)
@@ -72,7 +72,7 @@ func (s *IssuesService) ListComments(ctx context.Context, owner, repo string, nu
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest("GET", u, nil, reqOpts...)
 	if err != nil {
 		return nil, nil, err
 	}
