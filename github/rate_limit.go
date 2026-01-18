@@ -63,7 +63,6 @@ type RateLimits struct {
 	DependencySnapshots       *Rate `json:"dependency_snapshots"`
 	CodeSearch                *Rate `json:"code_search"`
 	AuditLog                  *Rate `json:"audit_log"`
-	DependencySBOM            *Rate `json:"dependency_sbom"`
 }
 
 func (r RateLimits) String() string {
@@ -126,9 +125,6 @@ func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, err
 		}
 		if response.Resources.AuditLog != nil {
 			s.client.rateLimits[AuditLogCategory] = *response.Resources.AuditLog
-		}
-		if response.Resources.DependencySBOM != nil {
-			s.client.rateLimits[DependencySBOMCategory] = *response.Resources.DependencySBOM
 		}
 		s.client.rateMu.Unlock()
 	}
