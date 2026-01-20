@@ -64,8 +64,22 @@ func (cp CustomProperty) DefaultValueString() (string, bool) {
 func (cp CustomProperty) DefaultValueStrings() ([]string, bool) {
 	switch cp.ValueType {
 	case PropertyValueTypeMultiSelect:
-		s, ok := cp.DefaultValue.([]string)
-		return s, ok
+		switch v := cp.DefaultValue.(type) {
+		case []string:
+			return v, true
+		case []any:
+			vals := make([]string, len(v))
+			for i, item := range v {
+				s, ok := item.(string)
+				if !ok {
+					return nil, false
+				}
+				vals[i] = s
+			}
+			return vals, true
+		default:
+			return nil, false
+		}
 	default:
 		return nil, false
 	}
