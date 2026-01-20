@@ -21,35 +21,51 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 	mux.HandleFunc("/orgs/o/properties/schema", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[
-		{
-          "property_name": "name",
-          "value_type": "single_select",
-          "required": true,
-          "default_value": "production",
-          "description": "Prod or dev environment",
-          "allowed_values":[
-            "production",
-            "development"
-          ],
-          "values_editable_by": "org_actors"
-        },
-        {
-          "property_name": "service",
-          "value_type": "string"
-        },
-        {
-          "property_name": "team",
-          "value_type": "string",
-          "description": "Team owning the repository"
-        },
-        {
-          "property_name": "documentation",
-          "value_type": "url",
-          "required": true,
-          "description": "Link to the documentation",
-          "default_value": "https://example.com/docs"
-        }
-        ]`)
+  {
+    "property_name": "name",
+    "value_type": "single_select",
+    "required": true,
+    "default_value": "production",
+    "description": "Prod or dev environment",
+    "allowed_values":[
+      "production",
+      "development"
+    ],
+    "values_editable_by": "org_actors"
+  },
+  {
+    "property_name": "test",
+    "value_type": "multi_select",
+    "required": true,
+    "default_value": [
+      "foo",
+      "baz"
+    ],
+    "description": "Prod or dev environment",
+    "allowed_values":[
+      "foo",
+      "bar",
+			"baz"
+    ],
+    "values_editable_by": "org_actors"
+  },
+  {
+    "property_name": "service",
+    "value_type": "string"
+  },
+  {
+    "property_name": "team",
+    "value_type": "string",
+    "description": "Team owning the repository"
+  },
+  {
+    "property_name": "documentation",
+    "value_type": "url",
+    "required": true,
+    "description": "Link to the documentation",
+    "default_value": "https://example.com/docs"
+  }
+]`)
 	})
 
 	ctx := t.Context()
@@ -69,6 +85,15 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 			ValuesEditableBy: Ptr("org_actors"),
 		},
 		{
+			PropertyName:     Ptr("test"),
+			ValueType:        PropertyValueTypeMultiSelect,
+			Required:         Ptr(true),
+			DefaultValue:     []any{"foo", "baz"},
+			Description:      Ptr("Prod or dev environment"),
+			AllowedValues:    []string{"foo", "bar", "baz"},
+			ValuesEditableBy: Ptr("org_actors"),
+		},
+		{
 			PropertyName: Ptr("service"),
 			ValueType:    PropertyValueTypeString,
 		},
@@ -85,11 +110,15 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 			DefaultValue: "https://example.com/docs",
 		},
 	}
-	if !cmp.Equal(properties, want) {
-		t.Errorf("Organizations.GetAllCustomProperties returned %+v, want %+v", properties, want)
-	}
 
 	const methodName = "GetAllCustomProperties"
+
+	// if !cmp.Equal(properties, want) {
+	// 	t.Errorf("Organizations.GetAllCustomProperties returned %+v, want %+v", properties, want)
+	// }
+	if diff := cmp.Diff(want, properties); diff != "" {
+		t.Errorf("Organizations.%s diff mismatch (-want +got):\n%v", methodName, diff)
+	}
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Organizations.GetAllCustomProperties(ctx, "o")
@@ -636,7 +665,16 @@ func TestCustomPropertyDefaultValueStrings(t *testing.T) {
 			want: []string{},
 		},
 		{
-			testName: "multi_select_single_value",
+			testName: "multi_select_any_slice_single_value",
+			property: &CustomProperty{
+				ValueType:    PropertyValueTypeMultiSelect,
+				DefaultValue: []any{"a"},
+			},
+			ok:   true,
+			want: []string{"a"},
+		},
+		{
+			testName: "multi_select_string_slice_single_value",
 			property: &CustomProperty{
 				ValueType:    PropertyValueTypeMultiSelect,
 				DefaultValue: []string{"a"},
@@ -645,7 +683,16 @@ func TestCustomPropertyDefaultValueStrings(t *testing.T) {
 			want: []string{"a"},
 		},
 		{
-			testName: "multi_select_multi_value",
+			testName: "multi_select_any_slice_multi_value",
+			property: &CustomProperty{
+				ValueType:    PropertyValueTypeMultiSelect,
+				DefaultValue: []any{"a", "b"},
+			},
+			ok:   true,
+			want: []string{"a", "b"},
+		},
+		{
+			testName: "multi_select_string_slice_multi_value",
 			property: &CustomProperty{
 				ValueType:    PropertyValueTypeMultiSelect,
 				DefaultValue: []string{"a", "b"},
