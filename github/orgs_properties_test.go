@@ -113,11 +113,8 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 
 	const methodName = "GetAllCustomProperties"
 
-	// if !cmp.Equal(properties, want) {
-	// 	t.Errorf("Organizations.GetAllCustomProperties returned %+v, want %+v", properties, want)
-	// }
 	if diff := cmp.Diff(want, properties); diff != "" {
-		t.Errorf("Organizations.%s diff mismatch (-want +got):\n%v", methodName, diff)
+		t.Errorf("Organizations.%v diff mismatch (-want +got):\n%v", methodName, diff)
 	}
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
