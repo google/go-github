@@ -42,25 +42,11 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
         with:
           go-version: ${{ matrix.go-version }}
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      # Get values for cache paths to be used in later steps
-      - id: cache-paths
-        run: |
-          echo "go-cache=$(go env GOCACHE)" >> $GITHUB_OUTPUT
-          echo "go-mod-cache=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
-
-      - name: Cache go modules
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
-        with:
-          path: |
-            ${{ steps.cache-paths.outputs.go-cache }}
-            ${{ steps.cache-paths.outputs.go-mod-cache }}
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: ${{ runner.os }}-go-
+          cache-dependency-path: "**/go.sum"
 
       - name: Run go test
         run: |
