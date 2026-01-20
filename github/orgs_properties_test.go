@@ -644,6 +644,15 @@ func TestCustomPropertyDefaultValueStrings(t *testing.T) {
 			want: []string{},
 		},
 		{
+			testName: "invalid_slice",
+			property: &CustomProperty{
+				ValueType:    PropertyValueTypeString,
+				DefaultValue: []any{1, 2, 3},
+			},
+			ok:   false,
+			want: []string{},
+		},
+		{
 			testName: "multi_select_invalid_value",
 			property: &CustomProperty{
 				ValueType:    PropertyValueTypeMultiSelect,
