@@ -42,6 +42,14 @@ func TestEnterpriseService_ListEnterpriseBudgets(t *testing.T) {
 	if !cmp.Equal(budgets, want) {
 		t.Errorf("Enterprise.ListEnterpriseBudgets returned %+v, want %+v", budgets, want)
 	}
+	const methodName = "ListEnterpriseBudgets"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.ListEnterpriseBudgets(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestEnterpriseService_GetEnterpriseBudget(t *testing.T) {
@@ -69,6 +77,14 @@ func TestEnterpriseService_GetEnterpriseBudget(t *testing.T) {
 	if !cmp.Equal(budget, want) {
 		t.Errorf("Enterprise.GetEnterpriseBudget returned %+v, want %+v", budget, want)
 	}
+	const methodName = "GetEnterpriseBudget"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetEnterpriseBudget(ctx, "e", "1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestEnterpriseService_CreateEnterpriseBudget(t *testing.T) {
@@ -104,6 +120,14 @@ func TestEnterpriseService_CreateEnterpriseBudget(t *testing.T) {
 	if !cmp.Equal(budget, want) {
 		t.Errorf("Enterprise.CreateEnterpriseBudget returned %+v, want %+v", budget, want)
 	}
+	const methodName = "CreateEnterpriseBudget"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.CreateEnterpriseBudget(ctx, "e", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestEnterpriseService_UpdateEnterpriseBudget(t *testing.T) {
@@ -136,6 +160,14 @@ func TestEnterpriseService_UpdateEnterpriseBudget(t *testing.T) {
 	if !cmp.Equal(budget, want) {
 		t.Errorf("Enterprise.UpdateEnterpriseBudget returned %+v, want %+v", budget, want)
 	}
+	const methodName = "UpdateEnterpriseBudget"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.UpdateEnterpriseBudget(ctx, "e", "1", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestEnterpriseService_DeleteEnterpriseBudget(t *testing.T) {
@@ -152,6 +184,10 @@ func TestEnterpriseService_DeleteEnterpriseBudget(t *testing.T) {
 	if err != nil {
 		t.Errorf("Enterprise.DeleteEnterpriseBudget returned error: %v", err)
 	}
+	const methodName = "DeleteEnterpriseBudget"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Enterprise.DeleteEnterpriseBudget(ctx, "e", "1")
+	})
 }
 
 func TestBudget_Marshal(t *testing.T) {

@@ -52,6 +52,14 @@ func TestBillingService_ListOrganizationBudgets(t *testing.T) {
 	if !cmp.Equal(budgets, want) {
 		t.Errorf("Billing.ListOrganizationBudgets returned %+v, want %+v", budgets, want)
 	}
+	const methodName = "ListOrganizationBudgets"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.ListOrganizationBudgets(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestBillingService_GetOrganizationBudget(t *testing.T) {
@@ -79,6 +87,14 @@ func TestBillingService_GetOrganizationBudget(t *testing.T) {
 	if !cmp.Equal(budget, want) {
 		t.Errorf("Billing.GetOrganizationBudget returned %+v, want %+v", budget, want)
 	}
+	const methodName = "GetOrganizationBudget"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetOrganizationBudget(ctx, "o", "1")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestBillingService_UpdateOrganizationBudget(t *testing.T) {
@@ -111,6 +127,14 @@ func TestBillingService_UpdateOrganizationBudget(t *testing.T) {
 	if !cmp.Equal(budget, want) {
 		t.Errorf("Billing.UpdateOrganizationBudget returned %+v, want %+v", budget, want)
 	}
+	const methodName = "UpdateOrganizationBudget"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.UpdateOrganizationBudget(ctx, "o", "1", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestBillingService_DeleteOrganizationBudget(t *testing.T) {
@@ -127,4 +151,8 @@ func TestBillingService_DeleteOrganizationBudget(t *testing.T) {
 	if err != nil {
 		t.Errorf("Billing.DeleteOrganizationBudget returned error: %v", err)
 	}
+	const methodName = "DeleteOrganizationBudget"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Billing.DeleteOrganizationBudget(ctx, "o", "1")
+	})
 }
