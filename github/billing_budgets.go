@@ -1,4 +1,4 @@
-// Copyright 2025 The go-github AUTHORS. All rights reserved.
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -12,21 +12,21 @@ import (
 
 // Budget represents a GitHub budget.
 type Budget struct {
-	ID                     *string         `json:"id,omitempty"`
-	BudgetName             *string         `json:"budget_name,omitempty"`
-	TargetSubAccount       *string         `json:"target_sub_account,omitempty"`
-	TargetType             *string         `json:"target_type,omitempty"`
-	TargetID               *int64          `json:"target_id,omitempty"`
-	TargetName             *string         `json:"target_name,omitempty"`
-	PricingModel           *string         `json:"pricing_model,omitempty"`
-	PricingModelID         *string         `json:"pricing_model_id,omitempty"`
+	ID                      *string         `json:"id,omitempty"`
+	BudgetName              *string         `json:"budget_name,omitempty"`
+	TargetSubAccount        *string         `json:"target_sub_account,omitempty"`
+	TargetType              *string         `json:"target_type,omitempty"`
+	TargetID                *int64          `json:"target_id,omitempty"`
+	TargetName              *string         `json:"target_name,omitempty"`
+	PricingModel            *string         `json:"pricing_model,omitempty"`
+	PricingModelID          *string         `json:"pricing_model_id,omitempty"`
 	PricingModelDisplayName *string         `json:"pricing_model_display_name,omitempty"`
-	BudgetType             *string         `json:"budget_type,omitempty"`
-	LimitAmount            *float64        `json:"limit_amount,omitempty"`
-	CurrentAmount          *float64        `json:"current_amount,omitempty"`
-	Currency               *string         `json:"currency,omitempty"`
-	ExcludeCostCenterUsage *bool           `json:"exclude_cost_center_usage,omitempty"`
-	BudgetAlerting         *BudgetAlerting `json:"budget_alerting,omitempty"`
+	BudgetType              *string         `json:"budget_type,omitempty"`
+	LimitAmount             *float64        `json:"limit_amount,omitempty"`
+	CurrentAmount           *float64        `json:"current_amount,omitempty"`
+	Currency                *string         `json:"currency,omitempty"`
+	ExcludeCostCenterUsage  *bool           `json:"exclude_cost_center_usage,omitempty"`
+	BudgetAlerting          *BudgetAlerting `json:"budget_alerting,omitempty"`
 }
 
 // BudgetAlerting represents the alerting configuration for a budget.
@@ -61,7 +61,7 @@ func (s *BillingService) ListOrganizationBudgets(ctx context.Context, org string
 // GitHub API docs: https://docs.github.com/rest/billing/budgets#get-a-budget-for-an-organization
 //
 // meta:operation GET /organizations/{org}/settings/billing/budgets/{budget_id}
-func (s *BillingService) GetOrganizationBudget(ctx context.Context, org string, budgetID string) (*Budget, *Response, error) {
+func (s *BillingService) GetOrganizationBudget(ctx context.Context, org, budgetID string) (*Budget, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/settings/billing/budgets/%v", org, budgetID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func (s *BillingService) GetOrganizationBudget(ctx context.Context, org string, 
 // GitHub API docs: https://docs.github.com/rest/billing/budgets#update-a-budget-for-an-organization
 //
 // meta:operation PATCH /organizations/{org}/settings/billing/budgets/{budget_id}
-func (s *BillingService) UpdateOrganizationBudget(ctx context.Context, org string, budgetID string, budget *Budget) (*Budget, *Response, error) {
+func (s *BillingService) UpdateOrganizationBudget(ctx context.Context, org, budgetID string, budget *Budget) (*Budget, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/settings/billing/budgets/%v", org, budgetID)
 	req, err := s.client.NewRequest("PATCH", u, budget)
 	if err != nil {
@@ -103,7 +103,7 @@ func (s *BillingService) UpdateOrganizationBudget(ctx context.Context, org strin
 // GitHub API docs: https://docs.github.com/rest/billing/budgets#delete-a-budget-for-an-organization
 //
 // meta:operation DELETE /organizations/{org}/settings/billing/budgets/{budget_id}
-func (s *BillingService) DeleteOrganizationBudget(ctx context.Context, org string, budgetID string) (*Response, error) {
+func (s *BillingService) DeleteOrganizationBudget(ctx context.Context, org, budgetID string) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/settings/billing/budgets/%v", org, budgetID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {

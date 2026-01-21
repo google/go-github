@@ -1,4 +1,4 @@
-// Copyright 2025 The go-github AUTHORS. All rights reserved.
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -36,7 +36,7 @@ func (s *EnterpriseService) ListEnterpriseBudgets(ctx context.Context, enterpris
 // GitHub API docs: https://docs.github.com/rest/billing/budgets#get-a-budget-for-an-enterprise
 //
 // meta:operation GET /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) GetEnterpriseBudget(ctx context.Context, enterprise string, budgetID string) (*Budget, *Response, error) {
+func (s *EnterpriseService) GetEnterpriseBudget(ctx context.Context, enterprise, budgetID string) (*Budget, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func (s *EnterpriseService) CreateEnterpriseBudget(ctx context.Context, enterpri
 // GitHub API docs: https://docs.github.com/rest/billing/budgets#update-a-budget-for-an-enterprise
 //
 // meta:operation PATCH /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) UpdateEnterpriseBudget(ctx context.Context, enterprise string, budgetID string, budget *Budget) (*Budget, *Response, error) {
+func (s *EnterpriseService) UpdateEnterpriseBudget(ctx context.Context, enterprise, budgetID string, budget *Budget) (*Budget, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 	req, err := s.client.NewRequest("PATCH", u, budget)
 	if err != nil {
@@ -99,7 +99,7 @@ func (s *EnterpriseService) UpdateEnterpriseBudget(ctx context.Context, enterpri
 // GitHub API docs: https://docs.github.com/rest/billing/budgets#delete-a-budget-for-an-enterprise
 //
 // meta:operation DELETE /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) DeleteEnterpriseBudget(ctx context.Context, enterprise string, budgetID string) (*Response, error) {
+func (s *EnterpriseService) DeleteEnterpriseBudget(ctx context.Context, enterprise, budgetID string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
