@@ -15,7 +15,7 @@ import (
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#get-all-budgets
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/budgets
-func (s *EnterpriseService) ListEnterpriseBudgets(ctx context.Context, enterprise string) ([]*Budget, *Response, error) {
+func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) ([]*Budget, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets", enterprise)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func (s *EnterpriseService) ListEnterpriseBudgets(ctx context.Context, enterpris
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#get-a-budget-by-id
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) GetEnterpriseBudget(ctx context.Context, enterprise, budgetID string) (*Budget, *Response, error) {
+func (s *EnterpriseService) GetBudget(ctx context.Context, enterprise, budgetID string) (*Budget, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func (s *EnterpriseService) GetEnterpriseBudget(ctx context.Context, enterprise,
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#create-a-budget
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/budgets
-func (s *EnterpriseService) CreateEnterpriseBudget(ctx context.Context, enterprise string, budget *Budget) (*Budget, *Response, error) {
+func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string, budget *Budget) (*Budget, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets", enterprise)
 	req, err := s.client.NewRequest("POST", u, budget)
 	if err != nil {
@@ -78,7 +78,7 @@ func (s *EnterpriseService) CreateEnterpriseBudget(ctx context.Context, enterpri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#update-a-budget
 //
 //meta:operation PATCH /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) UpdateEnterpriseBudget(ctx context.Context, enterprise, budgetID string, budget *Budget) (*Budget, *Response, error) {
+func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, budget *Budget) (*Budget, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 	req, err := s.client.NewRequest("PATCH", u, budget)
 	if err != nil {
@@ -99,7 +99,7 @@ func (s *EnterpriseService) UpdateEnterpriseBudget(ctx context.Context, enterpri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#delete-a-budget
 //
 //meta:operation DELETE /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) DeleteEnterpriseBudget(ctx context.Context, enterprise, budgetID string) (*Response, error) {
+func (s *EnterpriseService) DeleteBudget(ctx context.Context, enterprise, budgetID string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
