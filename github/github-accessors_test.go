@@ -2880,6 +2880,173 @@ func TestBranchProtectionRuleEvent_GetSender(tt *testing.T) {
 	b.GetSender()
 }
 
+func TestBudget_GetBudgetAlerting(tt *testing.T) {
+	tt.Parallel()
+	b := &Budget{}
+	b.GetBudgetAlerting()
+	b = nil
+	b.GetBudgetAlerting()
+}
+
+func TestBudget_GetBudgetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Budget{BudgetName: &zeroValue}
+	b.GetBudgetName()
+	b = &Budget{}
+	b.GetBudgetName()
+	b = nil
+	b.GetBudgetName()
+}
+
+func TestBudget_GetBudgetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Budget{BudgetType: &zeroValue}
+	b.GetBudgetType()
+	b = &Budget{}
+	b.GetBudgetType()
+	b = nil
+	b.GetBudgetType()
+}
+
+func TestBudget_GetCurrency(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Budget{Currency: &zeroValue}
+	b.GetCurrency()
+	b = &Budget{}
+	b.GetCurrency()
+	b = nil
+	b.GetCurrency()
+}
+
+func TestBudget_GetCurrentAmount(tt *testing.T) {
+	tt.Parallel()
+	b := &Budget{}
+	b.GetCurrentAmount()
+	b = nil
+	b.GetCurrentAmount()
+}
+
+func TestBudget_GetExcludeCostCenterUsage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	b := &Budget{ExcludeCostCenterUsage: &zeroValue}
+	b.GetExcludeCostCenterUsage()
+	b = &Budget{}
+	b.GetExcludeCostCenterUsage()
+	b = nil
+	b.GetExcludeCostCenterUsage()
+}
+
+func TestBudget_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Budget{ID: &zeroValue}
+	b.GetID()
+	b = &Budget{}
+	b.GetID()
+	b = nil
+	b.GetID()
+}
+
+func TestBudget_GetLimitAmount(tt *testing.T) {
+	tt.Parallel()
+	b := &Budget{}
+	b.GetLimitAmount()
+	b = nil
+	b.GetLimitAmount()
+}
+
+func TestBudget_GetPricingModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Budget{PricingModel: &zeroValue}
+	b.GetPricingModel()
+	b = &Budget{}
+	b.GetPricingModel()
+	b = nil
+	b.GetPricingModel()
+}
+
+func TestBudget_GetPricingModelDisplayName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Budget{PricingModelDisplayName: &zeroValue}
+	b.GetPricingModelDisplayName()
+	b = &Budget{}
+	b.GetPricingModelDisplayName()
+	b = nil
+	b.GetPricingModelDisplayName()
+}
+
+func TestBudget_GetPricingModelID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Budget{PricingModelID: &zeroValue}
+	b.GetPricingModelID()
+	b = &Budget{}
+	b.GetPricingModelID()
+	b = nil
+	b.GetPricingModelID()
+}
+
+func TestBudget_GetTargetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	b := &Budget{TargetID: &zeroValue}
+	b.GetTargetID()
+	b = &Budget{}
+	b.GetTargetID()
+	b = nil
+	b.GetTargetID()
+}
+
+func TestBudget_GetTargetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Budget{TargetName: &zeroValue}
+	b.GetTargetName()
+	b = &Budget{}
+	b.GetTargetName()
+	b = nil
+	b.GetTargetName()
+}
+
+func TestBudget_GetTargetSubAccount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Budget{TargetSubAccount: &zeroValue}
+	b.GetTargetSubAccount()
+	b = &Budget{}
+	b.GetTargetSubAccount()
+	b = nil
+	b.GetTargetSubAccount()
+}
+
+func TestBudget_GetTargetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &Budget{TargetType: &zeroValue}
+	b.GetTargetType()
+	b = &Budget{}
+	b.GetTargetType()
+	b = nil
+	b.GetTargetType()
+}
+
+func TestBudgetAlerting_GetWillAlert(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	b := &BudgetAlerting{WillAlert: &zeroValue}
+	b.GetWillAlert()
+	b = &BudgetAlerting{}
+	b.GetWillAlert()
+	b = nil
+	b.GetWillAlert()
+}
+
 func TestBypassActor_GetActorID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
