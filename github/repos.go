@@ -501,21 +501,22 @@ type createRepoRequest struct {
 	// Creating an organization repository. Required for non-owners.
 	TeamID *int64 `json:"team_id,omitempty"`
 
-	AutoInit                  *bool   `json:"auto_init,omitempty"`
-	GitignoreTemplate         *string `json:"gitignore_template,omitempty"`
-	LicenseTemplate           *string `json:"license_template,omitempty"`
-	AllowSquashMerge          *bool   `json:"allow_squash_merge,omitempty"`
-	AllowMergeCommit          *bool   `json:"allow_merge_commit,omitempty"`
-	AllowRebaseMerge          *bool   `json:"allow_rebase_merge,omitempty"`
-	AllowUpdateBranch         *bool   `json:"allow_update_branch,omitempty"`
-	AllowAutoMerge            *bool   `json:"allow_auto_merge,omitempty"`
-	AllowForking              *bool   `json:"allow_forking,omitempty"`
-	DeleteBranchOnMerge       *bool   `json:"delete_branch_on_merge,omitempty"`
-	UseSquashPRTitleAsDefault *bool   `json:"use_squash_pr_title_as_default,omitempty"`
-	SquashMergeCommitTitle    *string `json:"squash_merge_commit_title,omitempty"`
-	SquashMergeCommitMessage  *string `json:"squash_merge_commit_message,omitempty"`
-	MergeCommitTitle          *string `json:"merge_commit_title,omitempty"`
-	MergeCommitMessage        *string `json:"merge_commit_message,omitempty"`
+	AutoInit                  *bool          `json:"auto_init,omitempty"`
+	GitignoreTemplate         *string        `json:"gitignore_template,omitempty"`
+	LicenseTemplate           *string        `json:"license_template,omitempty"`
+	AllowSquashMerge          *bool          `json:"allow_squash_merge,omitempty"`
+	AllowMergeCommit          *bool          `json:"allow_merge_commit,omitempty"`
+	AllowRebaseMerge          *bool          `json:"allow_rebase_merge,omitempty"`
+	AllowUpdateBranch         *bool          `json:"allow_update_branch,omitempty"`
+	AllowAutoMerge            *bool          `json:"allow_auto_merge,omitempty"`
+	AllowForking              *bool          `json:"allow_forking,omitempty"`
+	DeleteBranchOnMerge       *bool          `json:"delete_branch_on_merge,omitempty"`
+	UseSquashPRTitleAsDefault *bool          `json:"use_squash_pr_title_as_default,omitempty"`
+	SquashMergeCommitTitle    *string        `json:"squash_merge_commit_title,omitempty"`
+	SquashMergeCommitMessage  *string        `json:"squash_merge_commit_message,omitempty"`
+	MergeCommitTitle          *string        `json:"merge_commit_title,omitempty"`
+	MergeCommitMessage        *string        `json:"merge_commit_message,omitempty"`
+	CustomProperties          map[string]any `json:"custom_properties,omitempty"`
 }
 
 // Create a new repository. If an organization is specified, the new
@@ -575,6 +576,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		SquashMergeCommitMessage:  repo.SquashMergeCommitMessage,
 		MergeCommitTitle:          repo.MergeCommitTitle,
 		MergeCommitMessage:        repo.MergeCommitMessage,
+		CustomProperties:          repo.CustomProperties,
 	}
 
 	req, err := s.client.NewRequest("POST", u, repoReq)
