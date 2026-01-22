@@ -40,7 +40,7 @@ func TestRepositories_CRUD(t *testing.T) {
 	if err == nil {
 		t.Fatal("Test repository still exists after deleting it.")
 	}
-	if err != nil && resp.StatusCode != http.StatusNotFound {
+	if resp.StatusCode != http.StatusNotFound {
 		t.Fatalf("Repositories.Get() returned error: %v", err)
 	}
 }

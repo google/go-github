@@ -15,6 +15,7 @@ linters:
     - godot
     - goheader
     - gosec
+    - govet
     - intrange
     - misspell
     - modernize
@@ -65,6 +66,11 @@ linters:
         - G104
         # int(os.Stdin.Fd())
         - G115
+    govet:
+      enable-all: true
+      disable:
+        - fieldalignment
+        - shadow
     misspell:
       locale: US
       # extra words from https://go.dev//wiki/Spelling

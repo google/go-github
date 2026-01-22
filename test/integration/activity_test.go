@@ -125,11 +125,10 @@ func TestActivity_Watching(t *testing.T) {
 		t.Fatalf("Activity.GetRepositorySubscription returned error: %v", err)
 	}
 
-	switch {
-	case sub != nil: // If already subscribing, delete then recreate subscription.
+	if sub != nil { // If already subscribing, delete then recreate subscription.
 		deleteSubscription(t)
 		createSubscription(t)
-	case sub == nil: // Otherwise, create subscription and then delete it.
+	} else { // Otherwise, create subscription and then delete it.
 		createSubscription(t)
 		deleteSubscription(t)
 	}
