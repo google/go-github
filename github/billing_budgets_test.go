@@ -19,17 +19,19 @@ func TestBillingService_ListOrganizationBudgets(t *testing.T) {
 
 	mux.HandleFunc("/organizations/o/settings/billing/budgets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[
-			{
-				"id": "1",
-				"budget_name": "Budget 1",
-				"limit_amount": 100.5,
-				"budget_alerting": {
-					"will_alert": true,
-					"alert_recipients": ["user1"]
+		fmt.Fprint(w, `{
+			"budgets": [
+				{
+					"id": "1",
+					"budget_name": "Budget 1",
+					"limit_amount": 100.5,
+					"budget_alerting": {
+						"will_alert": true,
+						"alert_recipients": ["user1"]
+					}
 				}
-			}
-		]`)
+			]
+		}`)
 	})
 
 	ctx := t.Context()
@@ -38,14 +40,16 @@ func TestBillingService_ListOrganizationBudgets(t *testing.T) {
 		t.Errorf("Billing.ListOrganizationBudgets returned error: %v", err)
 	}
 
-	want := []*Budget{
-		{
-			ID:          Ptr("1"),
-			BudgetName:  Ptr("Budget 1"),
-			LimitAmount: Ptr(100.5),
-			BudgetAlerting: &BudgetAlerting{
-				WillAlert:       Ptr(true),
-				AlertRecipients: []string{"user1"},
+	want := &BudgetList{
+		Budgets: []*Budget{
+			{
+				ID:          Ptr("1"),
+				BudgetName:  Ptr("Budget 1"),
+				LimitAmount: Ptr(100.5),
+				BudgetAlerting: &BudgetAlerting{
+					WillAlert:       Ptr(true),
+					AlertRecipients: []string{"user1"},
+				},
 			},
 		},
 	}
@@ -109,8 +113,10 @@ func TestBillingService_UpdateOrganizationBudget(t *testing.T) {
 		testMethod(t, r, "PATCH")
 		testBody(t, r, `{"budget_name":"Updated Budget"}`+"\n")
 		fmt.Fprint(w, `{
-			"id": "1",
-			"budget_name": "Updated Budget"
+			"budget": {
+				"id": "1",
+				"budget_name": "Updated Budget"
+			}
 		}`)
 	})
 
@@ -120,9 +126,11 @@ func TestBillingService_UpdateOrganizationBudget(t *testing.T) {
 		t.Errorf("Billing.UpdateOrganizationBudget returned error: %v", err)
 	}
 
-	want := &Budget{
-		ID:         Ptr("1"),
-		BudgetName: Ptr("Updated Budget"),
+	want := &BudgetResponse{
+		Budget: &Budget{
+			ID:         Ptr("1"),
+			BudgetName: Ptr("Updated Budget"),
+		},
 	}
 	if !cmp.Equal(budget, want) {
 		t.Errorf("Billing.UpdateOrganizationBudget returned %+v, want %+v", budget, want)

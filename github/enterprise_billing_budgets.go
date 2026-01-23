@@ -15,15 +15,15 @@ import (
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#get-all-budgets
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/budgets
-func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) ([]*Budget, *Response, error) {
+func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) (*BudgetList, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets", enterprise)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var budgets []*Budget
-	resp, err := s.client.Do(ctx, req, &budgets)
+	budgets := new(BudgetList)
+	resp, err := s.client.Do(ctx, req, budgets)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -78,14 +78,14 @@ func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string,
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#update-a-budget
 //
 //meta:operation PATCH /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, budget *Budget) (*Budget, *Response, error) {
+func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, budget *Budget) (*BudgetResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 	req, err := s.client.NewRequest("PATCH", u, budget)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	updatedBudget := new(Budget)
+	updatedBudget := new(BudgetResponse)
 	resp, err := s.client.Do(ctx, req, updatedBudget)
 	if err != nil {
 		return nil, resp, err

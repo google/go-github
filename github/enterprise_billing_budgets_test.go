@@ -19,12 +19,14 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[
-			{
-				"id": "1",
-				"budget_name": "Budget 1"
-			}
-		]`)
+		fmt.Fprint(w, `{
+			"budgets": [
+				{
+					"id": "1",
+					"budget_name": "Budget 1"
+				}
+			]
+		}`)
 	})
 
 	ctx := t.Context()
@@ -33,10 +35,12 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 		t.Errorf("Enterprise.ListBudgets returned error: %v", err)
 	}
 
-	want := []*Budget{
-		{
-			ID:         Ptr("1"),
-			BudgetName: Ptr("Budget 1"),
+	want := &BudgetList{
+		Budgets: []*Budget{
+			{
+				ID:         Ptr("1"),
+				BudgetName: Ptr("Budget 1"),
+			},
 		},
 	}
 	if !cmp.Equal(budgets, want) {
@@ -142,8 +146,10 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 		testMethod(t, r, "PATCH")
 		testBody(t, r, `{"budget_name":"Updated Budget"}`+"\n")
 		fmt.Fprint(w, `{
-			"id": "1",
-			"budget_name": "Updated Budget"
+			"budget": {
+				"id": "1",
+				"budget_name": "Updated Budget"
+			}
 		}`)
 	})
 
@@ -153,9 +159,11 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 		t.Errorf("Enterprise.UpdateBudget returned error: %v", err)
 	}
 
-	want := &Budget{
-		ID:         Ptr("1"),
-		BudgetName: Ptr("Updated Budget"),
+	want := &BudgetResponse{
+		Budget: &Budget{
+			ID:         Ptr("1"),
+			BudgetName: Ptr("Updated Budget"),
+		},
 	}
 	if !cmp.Equal(budget, want) {
 		t.Errorf("Enterprise.UpdateBudget returned %+v, want %+v", budget, want)

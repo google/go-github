@@ -35,20 +35,33 @@ type BudgetAlerting struct {
 	AlertRecipients []string `json:"alert_recipients,omitempty"`
 }
 
+// BudgetList represents a list of budgets.
+type BudgetList struct {
+	Budgets     []*Budget `json:"budgets"`
+	HasNextPage *bool     `json:"has_next_page,omitempty"`
+}
+
+// BudgetResponse represents the response when updating a budget.
+type BudgetResponse struct {
+	Budget  *Budget `json:"budget"`
+	Message *string `json:"message,omitempty"`
+}
+
 // ListOrganizationBudgets lists all budgets for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/billing/budgets#get-all-budgets-for-an-organization
 //
 //meta:operation GET /organizations/{org}/settings/billing/budgets
-func (s *BillingService) ListOrganizationBudgets(ctx context.Context, org string) ([]*Budget, *Response, error) {
+//meta:operation GET /organizations/{org}/settings/billing/budgets
+func (s *BillingService) ListOrganizationBudgets(ctx context.Context, org string) (*BudgetList, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/settings/billing/budgets", org)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var budgets []*Budget
-	resp, err := s.client.Do(ctx, req, &budgets)
+	budgets := new(BudgetList)
+	resp, err := s.client.Do(ctx, req, budgets)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -82,14 +95,15 @@ func (s *BillingService) GetOrganizationBudget(ctx context.Context, org, budgetI
 // GitHub API docs: https://docs.github.com/rest/billing/budgets#update-a-budget-for-an-organization
 //
 //meta:operation PATCH /organizations/{org}/settings/billing/budgets/{budget_id}
-func (s *BillingService) UpdateOrganizationBudget(ctx context.Context, org, budgetID string, budget *Budget) (*Budget, *Response, error) {
+//meta:operation PATCH /organizations/{org}/settings/billing/budgets/{budget_id}
+func (s *BillingService) UpdateOrganizationBudget(ctx context.Context, org, budgetID string, budget *Budget) (*BudgetResponse, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/settings/billing/budgets/%v", org, budgetID)
 	req, err := s.client.NewRequest("PATCH", u, budget)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	updatedBudget := new(Budget)
+	updatedBudget := new(BudgetResponse)
 	resp, err := s.client.Do(ctx, req, updatedBudget)
 	if err != nil {
 		return nil, resp, err
