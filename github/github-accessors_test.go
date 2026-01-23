@@ -3047,6 +3047,36 @@ func TestBudgetAlerting_GetWillAlert(tt *testing.T) {
 	b.GetWillAlert()
 }
 
+func TestBudgetList_GetHasNextPage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	b := &BudgetList{HasNextPage: &zeroValue}
+	b.GetHasNextPage()
+	b = &BudgetList{}
+	b.GetHasNextPage()
+	b = nil
+	b.GetHasNextPage()
+}
+
+func TestBudgetResponse_GetBudget(tt *testing.T) {
+	tt.Parallel()
+	b := &BudgetResponse{}
+	b.GetBudget()
+	b = nil
+	b.GetBudget()
+}
+
+func TestBudgetResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	b := &BudgetResponse{Message: &zeroValue}
+	b.GetMessage()
+	b = &BudgetResponse{}
+	b.GetMessage()
+	b = nil
+	b.GetMessage()
+}
+
 func TestBypassActor_GetActorID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64

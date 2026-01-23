@@ -2326,6 +2326,30 @@ func (b *BudgetAlerting) GetWillAlert() bool {
 	return *b.WillAlert
 }
 
+// GetHasNextPage returns the HasNextPage field if it's non-nil, zero value otherwise.
+func (b *BudgetList) GetHasNextPage() bool {
+	if b == nil || b.HasNextPage == nil {
+		return false
+	}
+	return *b.HasNextPage
+}
+
+// GetBudget returns the Budget field.
+func (b *BudgetResponse) GetBudget() *Budget {
+	if b == nil {
+		return nil
+	}
+	return b.Budget
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (b *BudgetResponse) GetMessage() string {
+	if b == nil || b.Message == nil {
+		return ""
+	}
+	return *b.Message
+}
+
 // GetActorID returns the ActorID field if it's non-nil, zero value otherwise.
 func (b *BypassActor) GetActorID() int64 {
 	if b == nil || b.ActorID == nil {

@@ -10,7 +10,7 @@ import (
 	"fmt"
 )
 
-// ListEnterpriseBudgets lists all budgets for an enterprise.
+// ListBudgets lists all budgets for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#get-all-budgets
 //
@@ -31,7 +31,7 @@ func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) 
 	return budgets, resp, nil
 }
 
-// GetEnterpriseBudget gets a specific budget for an enterprise.
+// GetBudget gets a specific budget for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#get-a-budget-by-id
 //
@@ -52,7 +52,7 @@ func (s *EnterpriseService) GetBudget(ctx context.Context, enterprise, budgetID 
 	return budget, resp, nil
 }
 
-// CreateEnterpriseBudget creates a specific budget for an enterprise.
+// CreateBudget creates a specific budget for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#create-a-budget
 //
@@ -73,7 +73,7 @@ func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string,
 	return createdBudget, resp, nil
 }
 
-// UpdateEnterpriseBudget updates a specific budget for an enterprise.
+// UpdateBudget updates a specific budget for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#update-a-budget
 //
@@ -94,7 +94,7 @@ func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budget
 	return updatedBudget, resp, nil
 }
 
-// DeleteEnterpriseBudget deletes a specific budget for an enterprise.
+// DeleteBudget deletes a specific budget for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#delete-a-budget
 //
