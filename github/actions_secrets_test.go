@@ -92,7 +92,6 @@ func TestPublicKey_UnmarshalJSON(t *testing.T) {
 	}
 }
 
-
 func TestActionsService_GetRepoPublicKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
