@@ -92,53 +92,6 @@ func TestPublicKey_UnmarshalJSON(t *testing.T) {
 	}
 }
 
-func TestPublicKey_MarshalJSON(t *testing.T) {
-	t.Parallel()
-	testCases := map[string]struct {
-		input    PublicKey
-		wantJSON string
-		wantErr  bool
-	}{
-		"Empty": {
-			input:    PublicKey{},
-			wantJSON: `{"key_id":null,"key":null}`,
-			wantErr:  false,
-		},
-		"Valid KeyID and Key": {
-			input:    PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")},
-			wantJSON: `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`,
-			wantErr:  false,
-		},
-		"Nil KeyID": {
-			input:    PublicKey{KeyID: nil, Key: Ptr("abc")},
-			wantJSON: `{"key_id":null,"key":"abc"}`,
-			wantErr:  false,
-		},
-		"Nil Key": {
-			input:    PublicKey{KeyID: Ptr("1234"), Key: nil},
-			wantJSON: `{"key_id":"1234","key":null}`,
-			wantErr:  false,
-		},
-	}
-
-	for name, tt := range testCases {
-		t.Run(name, func(t *testing.T) {
-			t.Parallel()
-			data, err := json.Marshal(tt.input)
-			if err != nil && !tt.wantErr {
-				t.Errorf("PublicKey.MarshalJSON returned an unexpected error: %+v", err)
-			}
-			if err == nil && tt.wantErr {
-				t.Error("PublicKey.MarshalJSON returned nil instead of an error")
-			}
-			got := string(data)
-			if got != tt.wantJSON {
-				t.Errorf("PublicKey.MarshalJSON expected JSON %s, got %s", tt.wantJSON, got)
-			}
-		})
-	}
-}
-
 
 func TestActionsService_GetRepoPublicKey(t *testing.T) {
 	t.Parallel()

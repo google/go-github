@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -419,4 +420,48 @@ func TestAuditEntry_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestAuditEntry_UnmarshalJSON_NoAdditionalFields(t *testing.T) {
+	t.Parallel()
+
+	var entry AuditEntry
+	payload := []byte(`{"action":"login","actor":"octo","token_id":10,"unknown":null}`)
+
+	if err := json.Unmarshal(payload, &entry); err != nil {
+		t.Fatalf("json.Unmarshal returned error: %v", err)
+	}
+
+	if entry.Action == nil || *entry.Action != "login" {
+		t.Fatalf("Action mismatch, got: %v", entry.Action)
+	}
+
+	if entry.Actor == nil || *entry.Actor != "octo" {
+		t.Fatalf("Actor mismatch, got: %v", entry.Actor)
+	}
+
+	if entry.TokenID == nil || *entry.TokenID != int64(10) {
+		t.Fatalf("TokenID mismatch, got: %v", entry.TokenID)
+	}
+
+	if entry.AdditionalFields != nil {
+		t.Fatalf("AdditionalFields should be nil, got: %#v", entry.AdditionalFields)
+	}
+}
+
+func TestAuditEntry_MarshalJSON_FieldCollision(t *testing.T) {
+	t.Parallel()
+
+	entry := &AuditEntry{
+		Action: Ptr("login"),
+		AdditionalFields: map[string]any{
+			"action": "override",
+		},
+	}
+
+	if _, err := entry.MarshalJSON(); err == nil {
+		t.Fatal("AuditEntry.MarshalJSON expected error for field collision, got nil")
+	} else if !strings.Contains(err.Error(), "unexpected field") {
+		t.Fatalf("unexpected error: %v", err)
+	}
 }
