@@ -81,6 +81,92 @@ func TestStringify(t *testing.T) {
 	}
 }
 
+func TestStringify_Primitives(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		in  any
+		out string
+	}{
+		// Bool
+		{true, "true"},
+		{false, "false"},
+
+		// Int variants
+		{int(1), "1"},
+		{int8(2), "2"},
+		{int16(3), "3"},
+		{int32(4), "4"},
+		{int64(5), "5"},
+
+		// Uint variants
+		{uint(6), "6"},
+		{uint8(7), "7"},
+		{uint16(8), "8"},
+		{uint32(9), "9"},
+		{uint64(10), "10"},
+		{uintptr(11), "11"},
+
+		// Float variants (Precision Correctness)
+		{float32(1.1), "1.1"},
+		{float64(1.1), "1.1"},
+		{float32(1.0000001), "1.0000001"},
+		{float64(1.000000000000001), "1.000000000000001"},
+
+		// Boundary Cases
+		{int8(-128), "-128"},
+		{int8(127), "127"},
+		{uint64(18446744073709551615), "18446744073709551615"},
+
+		// String Optimization
+		{"hello", `"hello"`},
+		{"", `""`},
+	}
+
+	for i, tt := range tests {
+		s := Stringify(tt.in)
+		if s != tt.out {
+			t.Errorf("%v. Stringify(%T) => %q, want %q", i, tt.in, s, tt.out)
+		}
+	}
+}
+
+func TestStringify_BufferPool(t *testing.T) {
+	t.Parallel()
+	// Verify that concurrent usage of Stringify is safe and doesn't corrupt buffers.
+	// While we can't easily verify reuse without exposing internal metrics,
+	// we can verify correctness under load which implies proper Reset() handling.
+	const goroutines = 10
+	const iterations = 100
+
+	errCh := make(chan error, goroutines)
+
+	for range goroutines {
+		go func() {
+			for range iterations {
+				// Use a mix of types to exercise different code paths
+				s1 := Stringify(123)
+				if s1 != "123" {
+					errCh <- fmt.Errorf("got %q, want %q", s1, "123")
+					return
+				}
+
+				s2 := Stringify("test")
+				if s2 != `"test"` {
+					errCh <- fmt.Errorf("got %q, want %q", s2, `"test"`)
+					return
+				}
+			}
+			errCh <- nil
+		}()
+	}
+
+	for range goroutines {
+		if err := <-errCh; err != nil {
+			t.Error(err)
+		}
+	}
+}
+
 // Directly test the String() methods on various GitHub types. We don't do an
 // exhaustive test of all the various field types, since TestStringify() above
 // takes care of that. Rather, we just make sure that Stringify() is being
@@ -140,6 +226,26 @@ func TestString(t *testing.T) {
 		s := tt.in.(fmt.Stringer).String()
 		if s != tt.out {
 			t.Errorf("%v. String() => %q, want %q", i, tt.in, tt.out)
+		}
+	}
+}
+
+func TestStringify_Floats(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		in  any
+		out string
+	}{
+		{float32(1.1), "1.1"},
+		{float64(1.1), "1.1"},
+		{float32(1.0000001), "1.0000001"},
+		{struct{ F float32 }{1.1}, "{F:1.1}"},
+	}
+
+	for i, tt := range tests {
+		s := Stringify(tt.in)
+		if s != tt.out {
+			t.Errorf("%v. Stringify(%v) = %q, want %q", i, tt.in, s, tt.out)
 		}
 	}
 }
