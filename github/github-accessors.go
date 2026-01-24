@@ -23934,10 +23934,10 @@ func (r *Repository) GetParent() *Repository {
 	return r.Parent
 }
 
-// GetPermissions returns the Permissions map if it's non-nil, an empty map otherwise.
-func (r *Repository) GetPermissions() map[string]bool {
-	if r == nil || r.Permissions == nil {
-		return map[string]bool{}
+// GetPermissions returns the Permissions field.
+func (r *Repository) GetPermissions() *RepositoryPermissions {
+	if r == nil {
+		return nil
 	}
 	return r.Permissions
 }
@@ -25052,6 +25052,46 @@ func (r *RepositoryPermissionLevel) GetUser() *User {
 		return nil
 	}
 	return r.User
+}
+
+// GetAdmin returns the Admin field if it's non-nil, zero value otherwise.
+func (r *RepositoryPermissions) GetAdmin() bool {
+	if r == nil || r.Admin == nil {
+		return false
+	}
+	return *r.Admin
+}
+
+// GetMaintain returns the Maintain field if it's non-nil, zero value otherwise.
+func (r *RepositoryPermissions) GetMaintain() bool {
+	if r == nil || r.Maintain == nil {
+		return false
+	}
+	return *r.Maintain
+}
+
+// GetPull returns the Pull field if it's non-nil, zero value otherwise.
+func (r *RepositoryPermissions) GetPull() bool {
+	if r == nil || r.Pull == nil {
+		return false
+	}
+	return *r.Pull
+}
+
+// GetPush returns the Push field if it's non-nil, zero value otherwise.
+func (r *RepositoryPermissions) GetPush() bool {
+	if r == nil || r.Push == nil {
+		return false
+	}
+	return *r.Push
+}
+
+// GetTriage returns the Triage field if it's non-nil, zero value otherwise.
+func (r *RepositoryPermissions) GetTriage() bool {
+	if r == nil || r.Triage == nil {
+		return false
+	}
+	return *r.Triage
 }
 
 // GetAssetsURL returns the AssetsURL field if it's non-nil, zero value otherwise.
