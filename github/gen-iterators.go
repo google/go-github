@@ -1,4 +1,4 @@
-﻿// Copyright 2026 The go-github AUTHORS. All rights reserved.
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -209,7 +209,6 @@ func (t *templateData) processMethods(f *ast.File) error {
 			continue
 		}
 
-
 		if !fd.Name.IsExported() || !strings.HasPrefix(fd.Name.Name, "List") {
 			continue
 		}
@@ -217,7 +216,6 @@ func (t *templateData) processMethods(f *ast.File) error {
 		if strings.Contains(fd.Name.Name, "MatchingRefs") {
 			continue
 		}
-
 
 		if fd.Type.Results == nil || len(fd.Type.Results.List) != 3 {
 			continue
