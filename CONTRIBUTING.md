@@ -106,6 +106,8 @@ tips (which are frequently ignored by AI-driven PRs):
 * If a PR involves bug fixes, it should certainly include a unit test (or tests)
   that demonstrates the bug - without the PR changes, the new unit test would
   fail, but with the included PR changes, the new test(s) pass.
+* When possible, try to make smaller, focused PRs (which are easier to review
+  and easier for others to understand).
 
 ## Code Comments
 
