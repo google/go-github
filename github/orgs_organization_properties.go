@@ -18,7 +18,7 @@ type OrganizationCustomPropertyValues struct {
 
 // GetOrganizationCustomPropertyValues returns all custom property names and their values for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/custom-properties-for-orgs#get-all-custom-property-values-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-properties-for-orgs#get-all-custom-property-values-for-an-organization
 //
 //meta:operation GET /organizations/{org}/org-properties/values
 func (s *OrganizationsService) GetOrganizationCustomPropertyValues(ctx context.Context, org string) ([]*CustomPropertyValue, *Response, error) {
@@ -41,7 +41,7 @@ func (s *OrganizationsService) GetOrganizationCustomPropertyValues(ctx context.C
 // CreateOrUpdateOrganizationCustomPropertyValues creates or updates custom property values for an organization.
 // To remove a custom property value from an organization, set the property value to null.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/custom-properties-for-orgs#create-or-update-custom-property-values-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-properties-for-orgs#create-or-update-custom-property-values-for-an-organization
 //
 //meta:operation PATCH /organizations/{org}/org-properties/values
 func (s *OrganizationsService) CreateOrUpdateOrganizationCustomPropertyValues(ctx context.Context, org string, values OrganizationCustomPropertyValues) (*Response, error) {
