@@ -27,7 +27,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 76df6d2c9e8fb2188bb8b342d472e9673f9fdc08
+openapi_commit: 04fd6c592fc546217404b07e0b0e581fb00a963a
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -1754,14 +1754,12 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.19/ghes-3.19.json
   - name: GET /organizations/{org}/org-properties/values
-    documentation_url: https://docs.github.com/rest/orgs/custom-properties-for-orgs#get-all-custom-property-values-for-an-organization
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/orgs/custom-properties-for-orgs#get-all-custom-property-values-for-an-organization
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: PATCH /organizations/{org}/org-properties/values
-    documentation_url: https://docs.github.com/rest/orgs/custom-properties-for-orgs#create-or-update-custom-property-values-for-an-organization
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/orgs/custom-properties-for-orgs#create-or-update-custom-property-values-for-an-organization
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /organizations/{org}/settings/billing/budgets
     documentation_url: https://docs.github.com/rest/billing/budgets#get-all-budgets-for-an-organization
@@ -3366,6 +3364,11 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/projectsV2/{project_number}/views
+    documentation_url: https://docs.github.com/rest/projects/views#create-a-view-for-an-organization-owned-project
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/projectsV2/{project_number}/views/{view_number}/items
     documentation_url: https://docs.github.com/rest/projects/items#list-items-for-an-organization-project-view
     openapi_files:
@@ -3654,35 +3657,25 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.19/ghes-3.19.json
   - name: GET /orgs/{org}/teams/{team_slug}/discussions
-    documentation_url: https://docs.github.com/rest/teams/discussions#list-discussions
+    documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#list-discussions
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.19/ghes-3.19.json
+      - descriptions/ghes-3.13/ghes-3.13.json
   - name: POST /orgs/{org}/teams/{team_slug}/discussions
-    documentation_url: https://docs.github.com/rest/teams/discussions#create-a-discussion
+    documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#create-a-discussion
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.19/ghes-3.19.json
+      - descriptions/ghes-3.13/ghes-3.13.json
   - name: DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
-    documentation_url: https://docs.github.com/rest/teams/discussions#delete-a-discussion
+    documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#delete-a-discussion
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.19/ghes-3.19.json
+      - descriptions/ghes-3.13/ghes-3.13.json
   - name: GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
-    documentation_url: https://docs.github.com/rest/teams/discussions#get-a-discussion
+    documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#get-a-discussion
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.19/ghes-3.19.json
+      - descriptions/ghes-3.13/ghes-3.13.json
   - name: PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
-    documentation_url: https://docs.github.com/rest/teams/discussions#update-a-discussion
+    documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#update-a-discussion
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.19/ghes-3.19.json
+      - descriptions/ghes-3.13/ghes-3.13.json
   - name: GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#list-discussion-comments
     openapi_files:
@@ -7076,35 +7069,25 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.19/ghes-3.19.json
   - name: GET /teams/{team_id}/discussions
-    documentation_url: https://docs.github.com/rest/teams/discussions#list-discussions-legacy
+    documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#list-discussions-legacy
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.19/ghes-3.19.json
+      - descriptions/ghes-3.13/ghes-3.13.json
   - name: POST /teams/{team_id}/discussions
-    documentation_url: https://docs.github.com/rest/teams/discussions#create-a-discussion-legacy
+    documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#create-a-discussion-legacy
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.19/ghes-3.19.json
+      - descriptions/ghes-3.13/ghes-3.13.json
   - name: DELETE /teams/{team_id}/discussions/{discussion_number}
-    documentation_url: https://docs.github.com/rest/teams/discussions#delete-a-discussion-legacy
+    documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#delete-a-discussion-legacy
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.19/ghes-3.19.json
+      - descriptions/ghes-3.13/ghes-3.13.json
   - name: GET /teams/{team_id}/discussions/{discussion_number}
-    documentation_url: https://docs.github.com/rest/teams/discussions#get-a-discussion-legacy
+    documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#get-a-discussion-legacy
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.19/ghes-3.19.json
+      - descriptions/ghes-3.13/ghes-3.13.json
   - name: PATCH /teams/{team_id}/discussions/{discussion_number}
-    documentation_url: https://docs.github.com/rest/teams/discussions#update-a-discussion-legacy
+    documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#update-a-discussion-legacy
     openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.19/ghes-3.19.json
+      - descriptions/ghes-3.13/ghes-3.13.json
   - name: GET /teams/{team_id}/discussions/{discussion_number}/comments
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#list-discussion-comments-legacy
     openapi_files:
@@ -7782,6 +7765,11 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.19/ghes-3.19.json
+  - name: POST /users/{user_id}/projectsV2/{project_number}/views
+    documentation_url: https://docs.github.com/rest/projects/views#create-a-view-for-a-user-owned-project
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /users/{username}
     documentation_url: https://docs.github.com/rest/users/users#get-a-user
     openapi_files:
