@@ -90,6 +90,25 @@ file.
 [monitored by codecov.io]: https://codecov.io/gh/google/go-github
 [REVIEWERS]: ./REVIEWERS
 
+## Tips
+
+Although we have not (yet) banned AI-driven contributions to this repo (as many
+other open source projects have), we encourage you to read and honor the following
+tips (which are frequently ignored by AI-driven PRs):
+
+* Always review your own PRs using the same user interface that your actual
+  reviewers will be using with a critical eye, attempting to anticipate what your
+  reviewers will call out, _before_ asking anyone to review your PR.
+* Come up with a short and appropriate PR title.
+* Come up with a short, well-written, and appropriate PR description (we don't
+  need hundreds of lines of text here - keep it short and to-the-point so a
+  reviewer can _quickly_ determine what the PR is all about).
+* If a PR involves bug fixes, it should certainly include a unit test (or tests)
+  that demonstrates the bug - without the PR changes, the new unit test would
+  fail, but with the included PR changes, the new test(s) pass.
+* When possible, try to make smaller, focused PRs (which are easier to review
+  and easier for others to understand).
+
 ## Code Comments
 
 Every exported method and type needs to have code comments that follow
@@ -178,7 +197,7 @@ may be useful to know what it is. Its sections are:
   the OpenAPI descriptions. Others have no documentation_url and result in a
   note in the generated code that the documentation is missing.
 
-- `operation_overrides` - is where we override the documentation_url for 
+- `operation_overrides` - is where we override the documentation_url for
   operations where the link in the OpenAPI descriptions is wrong.
 
 Please note that if your PR unit tests are failing due to an out-of-date
