@@ -72,13 +72,11 @@ func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/artifacts/d/metadata/deployment-records", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":1}]}`)
 	})
 
 	ctx := t.Context()
-	opts := &ListOptions{Page: 2}
-	got, _, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "d", opts)
+	got, _, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "d")
 	if err != nil {
 		t.Errorf("ListArtifactDeploymentRecords returned error: %v", err)
 	}
@@ -128,7 +126,7 @@ func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "d", nil)
+	got, _, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "d")
 	if err != nil {
 		t.Errorf("ListArtifactStorageRecords returned error: %v", err)
 	}
@@ -156,16 +154,10 @@ func TestOrganizationsService_ArtifactMetadata_InvalidOrg(t *testing.T) {
 	_, _, err = client.Organizations.CreateArtifactStorageRecord(ctx, "%", nil)
 	testURLParseError(t, err)
 
-	_, _, err = client.Organizations.ListArtifactDeploymentRecords(ctx, "%", "d", nil)
+	_, _, err = client.Organizations.ListArtifactDeploymentRecords(ctx, "%", "d")
 	testURLParseError(t, err)
 
-	_, _, err = client.Organizations.ListArtifactDeploymentRecords(ctx, "%", "d", &ListOptions{})
-	testURLParseError(t, err)
-
-	_, _, err = client.Organizations.ListArtifactStorageRecords(ctx, "%", "d", nil)
-	testURLParseError(t, err)
-
-	_, _, err = client.Organizations.ListArtifactStorageRecords(ctx, "%", "d", &ListOptions{})
+	_, _, err = client.Organizations.ListArtifactStorageRecords(ctx, "%", "d")
 	testURLParseError(t, err)
 }
 
