@@ -145,9 +145,27 @@ func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
 func TestOrganizationsService_ArtifactMetadata_InvalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
-
 	ctx := t.Context()
+
 	_, _, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "%", nil)
+	testURLParseError(t, err)
+
+	_, _, err = client.Organizations.SetClusterDeploymentRecords(ctx, "%", "c", nil)
+	testURLParseError(t, err)
+
+	_, _, err = client.Organizations.CreateArtifactStorageRecord(ctx, "%", nil)
+	testURLParseError(t, err)
+
+	_, _, err = client.Organizations.ListArtifactDeploymentRecords(ctx, "%", "d", nil)
+	testURLParseError(t, err)
+
+	_, _, err = client.Organizations.ListArtifactDeploymentRecords(ctx, "%", "d", &ListOptions{})
+	testURLParseError(t, err)
+
+	_, _, err = client.Organizations.ListArtifactStorageRecords(ctx, "%", "d", nil)
+	testURLParseError(t, err)
+
+	_, _, err = client.Organizations.ListArtifactStorageRecords(ctx, "%", "d", &ListOptions{})
 	testURLParseError(t, err)
 }
 
@@ -168,4 +186,20 @@ func TestArtifactDeploymentRecord_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
+}
+
+func TestArtifactMetadata_String(t *testing.T) {
+	t.Parallel()
+
+	r1 := ArtifactDeploymentRecord{Name: Ptr("n")}
+	_ = r1.String()
+
+	r2 := ArtifactDeploymentResponse{TotalCount: Ptr(1)}
+	_ = r2.String()
+
+	r3 := ArtifactStorageRecord{Name: Ptr("n")}
+	_ = r3.String()
+
+	r4 := ArtifactStorageResponse{TotalCount: Ptr(1)}
+	_ = r4.String()
 }
