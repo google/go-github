@@ -1134,6 +1134,110 @@ func (a *Artifact) GetWorkflowRun() *ArtifactWorkflowRun {
 	return a.WorkflowRun
 }
 
+// GetAttestationID returns the AttestationID field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetAttestationID() int64 {
+	if a == nil || a.AttestationID == nil {
+		return 0
+	}
+	return *a.AttestationID
+}
+
+// GetCluster returns the Cluster field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetCluster() string {
+	if a == nil || a.Cluster == nil {
+		return ""
+	}
+	return *a.Cluster
+}
+
+// GetCreated returns the Created field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetCreated() Timestamp {
+	if a == nil || a.Created == nil {
+		return Timestamp{}
+	}
+	return *a.Created
+}
+
+// GetDeploymentName returns the DeploymentName field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetDeploymentName() string {
+	if a == nil || a.DeploymentName == nil {
+		return ""
+	}
+	return *a.DeploymentName
+}
+
+// GetDigest returns the Digest field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetDigest() string {
+	if a == nil || a.Digest == nil {
+		return ""
+	}
+	return *a.Digest
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetLogicalEnvironment returns the LogicalEnvironment field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetLogicalEnvironment() string {
+	if a == nil || a.LogicalEnvironment == nil {
+		return ""
+	}
+	return *a.LogicalEnvironment
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
+// GetPhysicalEnvironment returns the PhysicalEnvironment field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetPhysicalEnvironment() string {
+	if a == nil || a.PhysicalEnvironment == nil {
+		return ""
+	}
+	return *a.PhysicalEnvironment
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetStatus() string {
+	if a == nil || a.Status == nil {
+		return ""
+	}
+	return *a.Status
+}
+
+// GetTags returns the Tags map if it's non-nil, an empty map otherwise.
+func (a *ArtifactDeploymentRecord) GetTags() map[string]string {
+	if a == nil || a.Tags == nil {
+		return map[string]string{}
+	}
+	return a.Tags
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentRecord) GetUpdatedAt() Timestamp {
+	if a == nil || a.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.UpdatedAt
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (a *ArtifactDeploymentResponse) GetTotalCount() int {
+	if a == nil || a.TotalCount == nil {
+		return 0
+	}
+	return *a.TotalCount
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (a *ArtifactList) GetTotalCount() int64 {
 	if a == nil || a.TotalCount == nil {
@@ -1164,6 +1268,78 @@ func (a *ArtifactPeriodOpt) GetDays() int {
 		return 0
 	}
 	return *a.Days
+}
+
+// GetArtifactURL returns the ArtifactURL field if it's non-nil, zero value otherwise.
+func (a *ArtifactStorageRecord) GetArtifactURL() string {
+	if a == nil || a.ArtifactURL == nil {
+		return ""
+	}
+	return *a.ArtifactURL
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (a *ArtifactStorageRecord) GetCreatedAt() Timestamp {
+	if a == nil || a.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.CreatedAt
+}
+
+// GetDigest returns the Digest field if it's non-nil, zero value otherwise.
+func (a *ArtifactStorageRecord) GetDigest() string {
+	if a == nil || a.Digest == nil {
+		return ""
+	}
+	return *a.Digest
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *ArtifactStorageRecord) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
+// GetRegistryURL returns the RegistryURL field if it's non-nil, zero value otherwise.
+func (a *ArtifactStorageRecord) GetRegistryURL() string {
+	if a == nil || a.RegistryURL == nil {
+		return ""
+	}
+	return *a.RegistryURL
+}
+
+// GetRepository returns the Repository field if it's non-nil, zero value otherwise.
+func (a *ArtifactStorageRecord) GetRepository() string {
+	if a == nil || a.Repository == nil {
+		return ""
+	}
+	return *a.Repository
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (a *ArtifactStorageRecord) GetStatus() string {
+	if a == nil || a.Status == nil {
+		return ""
+	}
+	return *a.Status
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (a *ArtifactStorageRecord) GetUpdatedAt() Timestamp {
+	if a == nil || a.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.UpdatedAt
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (a *ArtifactStorageResponse) GetTotalCount() int {
+	if a == nil || a.TotalCount == nil {
+		return 0
+	}
+	return *a.TotalCount
 }
 
 // GetHeadBranch returns the HeadBranch field if it's non-nil, zero value otherwise.
