@@ -5,7 +5,7 @@
 
 // gen-release-notes first reads the web page https://github.com/google/go-github
 // to determine what the prior release was, (e.g. "v76.0.0")
-// then reads https://github.com/google/go-github/compare/${PRIOR_RELEASE}...master
+// then reads https://github.com/google/go-github/compare/commit-list?range=${PRIOR_RELEASE}...master
 // to find out what changes were made since then.
 //
 // Finally, it writes the release notes to stdout, summarizing the
@@ -43,6 +43,7 @@ func main() {
 	flag.Parse()
 
 	priorRelease := getPriorRelease()
+	log.Printf("Prior release: %v", priorRelease)
 
 	newChanges := newChangesSinceRelease(priorRelease)
 
@@ -206,7 +207,7 @@ func genRefLines(breaking, nonBreaking []string) (ref, refNon []string) {
 }
 
 func newChangesSinceRelease(priorRelease string) string {
-	url := fmt.Sprintf("%v/compare/%v...master", baseWebURL, priorRelease)
+	url := fmt.Sprintf("%v/compare/commit-list?range=%v...master", baseWebURL, priorRelease)
 	resp, err := http.Get(url) //nolint:gosec
 	must(err)
 	defer resp.Body.Close()
