@@ -72,11 +72,13 @@ func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/artifacts/d/metadata/deployment-records", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":1}]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "d")
+	opts := &ListOptions{Page: 2}
+	got, _, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "d", opts)
 	if err != nil {
 		t.Errorf("ListArtifactDeploymentRecords returned error: %v", err)
 	}
@@ -113,6 +115,30 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateArtifactStorageRecord returned %+v, want %+v", got, want)
+	}
+}
+
+func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/artifacts/d/metadata/storage-records", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"total_count":1,"storage_records":[{"name":"s-test"}]}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "d", nil)
+	if err != nil {
+		t.Errorf("ListArtifactStorageRecords returned error: %v", err)
+	}
+
+	want := &ArtifactStorageResponse{
+		TotalCount:     Ptr(1),
+		StorageRecords: []*ArtifactStorageRecord{{Name: Ptr("s-test")}},
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("ListArtifactStorageRecords returned %+v, want %+v", got, want)
 	}
 }
 
