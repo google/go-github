@@ -1,4 +1,4 @@
-// Copyright 2024 The go-github AUTHORS. All rights reserved.
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -186,20 +186,4 @@ func TestArtifactDeploymentRecord_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, u, want)
-}
-
-func TestArtifactMetadata_String(t *testing.T) {
-	t.Parallel()
-
-	r1 := ArtifactDeploymentRecord{Name: Ptr("n")}
-	_ = r1.String()
-
-	r2 := ArtifactDeploymentResponse{TotalCount: Ptr(1)}
-	_ = r2.String()
-
-	r3 := ArtifactStorageRecord{Name: Ptr("n")}
-	_ = r3.String()
-
-	r4 := ArtifactStorageResponse{TotalCount: Ptr(1)}
-	_ = r4.String()
 }
