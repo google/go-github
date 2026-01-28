@@ -115,6 +115,41 @@ func TestAdvancedSecurity_String(t *testing.T) {
 	}
 }
 
+func TestArtifactDeploymentRecord_String(t *testing.T) {
+	t.Parallel()
+	v := ArtifactDeploymentRecord{
+		ID:                  Ptr(int64(0)),
+		Digest:              Ptr(""),
+		Name:                Ptr(""),
+		Version:             Ptr(""),
+		Status:              Ptr(""),
+		LogicalEnvironment:  Ptr(""),
+		PhysicalEnvironment: Ptr(""),
+		Cluster:             Ptr(""),
+		DeploymentName:      Ptr(""),
+		RuntimeRisks:        []string{""},
+		GithubRepository:    Ptr(""),
+		AttestationID:       Ptr(int64(0)),
+		CreatedAt:           &Timestamp{},
+		UpdatedAt:           &Timestamp{},
+	}
+	want := `github.ArtifactDeploymentRecord{ID:0, Digest:"", Name:"", Version:"", Status:"", LogicalEnvironment:"", PhysicalEnvironment:"", Cluster:"", DeploymentName:"", RuntimeRisks:[""], GithubRepository:"", AttestationID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	if got := v.String(); got != want {
+		t.Errorf("ArtifactDeploymentRecord.String = %v, want %v", got, want)
+	}
+}
+
+func TestArtifactDeploymentResponse_String(t *testing.T) {
+	t.Parallel()
+	v := ArtifactDeploymentResponse{
+		TotalCount: Ptr(0),
+	}
+	want := `github.ArtifactDeploymentResponse{TotalCount:0}`
+	if got := v.String(); got != want {
+		t.Errorf("ArtifactDeploymentResponse.String = %v, want %v", got, want)
+	}
+}
+
 func TestArtifactPeriod_String(t *testing.T) {
 	t.Parallel()
 	v := ArtifactPeriod{
@@ -124,6 +159,39 @@ func TestArtifactPeriod_String(t *testing.T) {
 	want := `github.ArtifactPeriod{Days:0, MaximumAllowedDays:0}`
 	if got := v.String(); got != want {
 		t.Errorf("ArtifactPeriod.String = %v, want %v", got, want)
+	}
+}
+
+func TestArtifactStorageRecord_String(t *testing.T) {
+	t.Parallel()
+	v := ArtifactStorageRecord{
+		ID:               Ptr(int64(0)),
+		Name:             Ptr(""),
+		Digest:           Ptr(""),
+		Version:          Ptr(""),
+		ArtifactURL:      Ptr(""),
+		Path:             Ptr(""),
+		RegistryURL:      Ptr(""),
+		Repository:       Ptr(""),
+		Status:           Ptr(""),
+		GithubRepository: Ptr(""),
+		CreatedAt:        &Timestamp{},
+		UpdatedAt:        &Timestamp{},
+	}
+	want := `github.ArtifactStorageRecord{ID:0, Name:"", Digest:"", Version:"", ArtifactURL:"", Path:"", RegistryURL:"", Repository:"", Status:"", GithubRepository:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	if got := v.String(); got != want {
+		t.Errorf("ArtifactStorageRecord.String = %v, want %v", got, want)
+	}
+}
+
+func TestArtifactStorageResponse_String(t *testing.T) {
+	t.Parallel()
+	v := ArtifactStorageResponse{
+		TotalCount: Ptr(0),
+	}
+	want := `github.ArtifactStorageResponse{TotalCount:0}`
+	if got := v.String(); got != want {
+		t.Errorf("ArtifactStorageResponse.String = %v, want %v", got, want)
 	}
 }
 
@@ -323,6 +391,18 @@ func TestClassroomUser_String(t *testing.T) {
 	want := `github.ClassroomUser{ID:0, Login:"", AvatarURL:"", HTMLURL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("ClassroomUser.String = %v, want %v", got, want)
+	}
+}
+
+func TestClusterDeploymentRecordsRequest_String(t *testing.T) {
+	t.Parallel()
+	v := ClusterDeploymentRecordsRequest{
+		LogicalEnvironment:  Ptr(""),
+		PhysicalEnvironment: Ptr(""),
+	}
+	want := `github.ClusterDeploymentRecordsRequest{LogicalEnvironment:"", PhysicalEnvironment:""}`
+	if got := v.String(); got != want {
+		t.Errorf("ClusterDeploymentRecordsRequest.String = %v, want %v", got, want)
 	}
 }
 

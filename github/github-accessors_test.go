@@ -1468,6 +1468,171 @@ func TestArtifact_GetWorkflowRun(tt *testing.T) {
 	a.GetWorkflowRun()
 }
 
+func TestArtifactDeploymentRecord_GetAttestationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &ArtifactDeploymentRecord{AttestationID: &zeroValue}
+	a.GetAttestationID()
+	a = &ArtifactDeploymentRecord{}
+	a.GetAttestationID()
+	a = nil
+	a.GetAttestationID()
+}
+
+func TestArtifactDeploymentRecord_GetCluster(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{Cluster: &zeroValue}
+	a.GetCluster()
+	a = &ArtifactDeploymentRecord{}
+	a.GetCluster()
+	a = nil
+	a.GetCluster()
+}
+
+func TestArtifactDeploymentRecord_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &ArtifactDeploymentRecord{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &ArtifactDeploymentRecord{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestArtifactDeploymentRecord_GetDeploymentName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{DeploymentName: &zeroValue}
+	a.GetDeploymentName()
+	a = &ArtifactDeploymentRecord{}
+	a.GetDeploymentName()
+	a = nil
+	a.GetDeploymentName()
+}
+
+func TestArtifactDeploymentRecord_GetDigest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{Digest: &zeroValue}
+	a.GetDigest()
+	a = &ArtifactDeploymentRecord{}
+	a.GetDigest()
+	a = nil
+	a.GetDigest()
+}
+
+func TestArtifactDeploymentRecord_GetGithubRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{GithubRepository: &zeroValue}
+	a.GetGithubRepository()
+	a = &ArtifactDeploymentRecord{}
+	a.GetGithubRepository()
+	a = nil
+	a.GetGithubRepository()
+}
+
+func TestArtifactDeploymentRecord_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &ArtifactDeploymentRecord{ID: &zeroValue}
+	a.GetID()
+	a = &ArtifactDeploymentRecord{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestArtifactDeploymentRecord_GetLogicalEnvironment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{LogicalEnvironment: &zeroValue}
+	a.GetLogicalEnvironment()
+	a = &ArtifactDeploymentRecord{}
+	a.GetLogicalEnvironment()
+	a = nil
+	a.GetLogicalEnvironment()
+}
+
+func TestArtifactDeploymentRecord_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{Name: &zeroValue}
+	a.GetName()
+	a = &ArtifactDeploymentRecord{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestArtifactDeploymentRecord_GetPhysicalEnvironment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{PhysicalEnvironment: &zeroValue}
+	a.GetPhysicalEnvironment()
+	a = &ArtifactDeploymentRecord{}
+	a.GetPhysicalEnvironment()
+	a = nil
+	a.GetPhysicalEnvironment()
+}
+
+func TestArtifactDeploymentRecord_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{Status: &zeroValue}
+	a.GetStatus()
+	a = &ArtifactDeploymentRecord{}
+	a.GetStatus()
+	a = nil
+	a.GetStatus()
+}
+
+func TestArtifactDeploymentRecord_GetTags(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]string{}
+	a := &ArtifactDeploymentRecord{Tags: zeroValue}
+	a.GetTags()
+	a = &ArtifactDeploymentRecord{}
+	a.GetTags()
+	a = nil
+	a.GetTags()
+}
+
+func TestArtifactDeploymentRecord_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &ArtifactDeploymentRecord{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &ArtifactDeploymentRecord{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestArtifactDeploymentRecord_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{Version: &zeroValue}
+	a.GetVersion()
+	a = &ArtifactDeploymentRecord{}
+	a.GetVersion()
+	a = nil
+	a.GetVersion()
+}
+
+func TestArtifactDeploymentResponse_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ArtifactDeploymentResponse{TotalCount: &zeroValue}
+	a.GetTotalCount()
+	a = &ArtifactDeploymentResponse{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
 func TestArtifactList_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -1510,6 +1675,149 @@ func TestArtifactPeriodOpt_GetDays(tt *testing.T) {
 	a.GetDays()
 	a = nil
 	a.GetDays()
+}
+
+func TestArtifactStorageRecord_GetArtifactURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{ArtifactURL: &zeroValue}
+	a.GetArtifactURL()
+	a = &ArtifactStorageRecord{}
+	a.GetArtifactURL()
+	a = nil
+	a.GetArtifactURL()
+}
+
+func TestArtifactStorageRecord_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &ArtifactStorageRecord{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &ArtifactStorageRecord{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestArtifactStorageRecord_GetDigest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{Digest: &zeroValue}
+	a.GetDigest()
+	a = &ArtifactStorageRecord{}
+	a.GetDigest()
+	a = nil
+	a.GetDigest()
+}
+
+func TestArtifactStorageRecord_GetGithubRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{GithubRepository: &zeroValue}
+	a.GetGithubRepository()
+	a = &ArtifactStorageRecord{}
+	a.GetGithubRepository()
+	a = nil
+	a.GetGithubRepository()
+}
+
+func TestArtifactStorageRecord_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &ArtifactStorageRecord{ID: &zeroValue}
+	a.GetID()
+	a = &ArtifactStorageRecord{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestArtifactStorageRecord_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{Name: &zeroValue}
+	a.GetName()
+	a = &ArtifactStorageRecord{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestArtifactStorageRecord_GetPath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{Path: &zeroValue}
+	a.GetPath()
+	a = &ArtifactStorageRecord{}
+	a.GetPath()
+	a = nil
+	a.GetPath()
+}
+
+func TestArtifactStorageRecord_GetRegistryURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{RegistryURL: &zeroValue}
+	a.GetRegistryURL()
+	a = &ArtifactStorageRecord{}
+	a.GetRegistryURL()
+	a = nil
+	a.GetRegistryURL()
+}
+
+func TestArtifactStorageRecord_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{Repository: &zeroValue}
+	a.GetRepository()
+	a = &ArtifactStorageRecord{}
+	a.GetRepository()
+	a = nil
+	a.GetRepository()
+}
+
+func TestArtifactStorageRecord_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{Status: &zeroValue}
+	a.GetStatus()
+	a = &ArtifactStorageRecord{}
+	a.GetStatus()
+	a = nil
+	a.GetStatus()
+}
+
+func TestArtifactStorageRecord_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &ArtifactStorageRecord{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &ArtifactStorageRecord{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestArtifactStorageRecord_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{Version: &zeroValue}
+	a.GetVersion()
+	a = &ArtifactStorageRecord{}
+	a.GetVersion()
+	a = nil
+	a.GetVersion()
+}
+
+func TestArtifactStorageResponse_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &ArtifactStorageResponse{TotalCount: &zeroValue}
+	a.GetTotalCount()
+	a = &ArtifactStorageResponse{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
 }
 
 func TestArtifactWorkflowRun_GetHeadBranch(tt *testing.T) {
@@ -3862,6 +4170,28 @@ func TestClassroomUser_GetLogin(tt *testing.T) {
 	c.GetLogin()
 	c = nil
 	c.GetLogin()
+}
+
+func TestClusterDeploymentRecordsRequest_GetLogicalEnvironment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ClusterDeploymentRecordsRequest{LogicalEnvironment: &zeroValue}
+	c.GetLogicalEnvironment()
+	c = &ClusterDeploymentRecordsRequest{}
+	c.GetLogicalEnvironment()
+	c = nil
+	c.GetLogicalEnvironment()
+}
+
+func TestClusterDeploymentRecordsRequest_GetPhysicalEnvironment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ClusterDeploymentRecordsRequest{PhysicalEnvironment: &zeroValue}
+	c.GetPhysicalEnvironment()
+	c = &ClusterDeploymentRecordsRequest{}
+	c.GetPhysicalEnvironment()
+	c = nil
+	c.GetPhysicalEnvironment()
 }
 
 func TestClusterSSHKey_GetFingerprint(tt *testing.T) {
