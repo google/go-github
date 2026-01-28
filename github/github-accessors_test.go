@@ -1490,15 +1490,15 @@ func TestArtifactDeploymentRecord_GetCluster(tt *testing.T) {
 	a.GetCluster()
 }
 
-func TestArtifactDeploymentRecord_GetCreated(tt *testing.T) {
+func TestArtifactDeploymentRecord_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	a := &ArtifactDeploymentRecord{Created: &zeroValue}
-	a.GetCreated()
+	a := &ArtifactDeploymentRecord{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
 	a = &ArtifactDeploymentRecord{}
-	a.GetCreated()
+	a.GetCreatedAt()
 	a = nil
-	a.GetCreated()
+	a.GetCreatedAt()
 }
 
 func TestArtifactDeploymentRecord_GetDeploymentName(tt *testing.T) {
@@ -1521,6 +1521,17 @@ func TestArtifactDeploymentRecord_GetDigest(tt *testing.T) {
 	a.GetDigest()
 	a = nil
 	a.GetDigest()
+}
+
+func TestArtifactDeploymentRecord_GetGithubRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{GithubRepository: &zeroValue}
+	a.GetGithubRepository()
+	a = &ArtifactDeploymentRecord{}
+	a.GetGithubRepository()
+	a = nil
+	a.GetGithubRepository()
 }
 
 func TestArtifactDeploymentRecord_GetID(tt *testing.T) {
@@ -1598,6 +1609,17 @@ func TestArtifactDeploymentRecord_GetUpdatedAt(tt *testing.T) {
 	a.GetUpdatedAt()
 	a = nil
 	a.GetUpdatedAt()
+}
+
+func TestArtifactDeploymentRecord_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactDeploymentRecord{Version: &zeroValue}
+	a.GetVersion()
+	a = &ArtifactDeploymentRecord{}
+	a.GetVersion()
+	a = nil
+	a.GetVersion()
 }
 
 func TestArtifactDeploymentResponse_GetTotalCount(tt *testing.T) {
@@ -1688,6 +1710,28 @@ func TestArtifactStorageRecord_GetDigest(tt *testing.T) {
 	a.GetDigest()
 }
 
+func TestArtifactStorageRecord_GetGithubRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{GithubRepository: &zeroValue}
+	a.GetGithubRepository()
+	a = &ArtifactStorageRecord{}
+	a.GetGithubRepository()
+	a = nil
+	a.GetGithubRepository()
+}
+
+func TestArtifactStorageRecord_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &ArtifactStorageRecord{ID: &zeroValue}
+	a.GetID()
+	a = &ArtifactStorageRecord{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
 func TestArtifactStorageRecord_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -1697,6 +1741,17 @@ func TestArtifactStorageRecord_GetName(tt *testing.T) {
 	a.GetName()
 	a = nil
 	a.GetName()
+}
+
+func TestArtifactStorageRecord_GetPath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{Path: &zeroValue}
+	a.GetPath()
+	a = &ArtifactStorageRecord{}
+	a.GetPath()
+	a = nil
+	a.GetPath()
 }
 
 func TestArtifactStorageRecord_GetRegistryURL(tt *testing.T) {
@@ -1741,6 +1796,17 @@ func TestArtifactStorageRecord_GetUpdatedAt(tt *testing.T) {
 	a.GetUpdatedAt()
 	a = nil
 	a.GetUpdatedAt()
+}
+
+func TestArtifactStorageRecord_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ArtifactStorageRecord{Version: &zeroValue}
+	a.GetVersion()
+	a = &ArtifactStorageRecord{}
+	a.GetVersion()
+	a = nil
+	a.GetVersion()
 }
 
 func TestArtifactStorageResponse_GetTotalCount(tt *testing.T) {
@@ -4104,6 +4170,28 @@ func TestClassroomUser_GetLogin(tt *testing.T) {
 	c.GetLogin()
 	c = nil
 	c.GetLogin()
+}
+
+func TestClusterDeploymentRecordsRequest_GetLogicalEnvironment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ClusterDeploymentRecordsRequest{LogicalEnvironment: &zeroValue}
+	c.GetLogicalEnvironment()
+	c = &ClusterDeploymentRecordsRequest{}
+	c.GetLogicalEnvironment()
+	c = nil
+	c.GetLogicalEnvironment()
+}
+
+func TestClusterDeploymentRecordsRequest_GetPhysicalEnvironment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ClusterDeploymentRecordsRequest{PhysicalEnvironment: &zeroValue}
+	c.GetPhysicalEnvironment()
+	c = &ClusterDeploymentRecordsRequest{}
+	c.GetPhysicalEnvironment()
+	c = nil
+	c.GetPhysicalEnvironment()
 }
 
 func TestClusterSSHKey_GetFingerprint(tt *testing.T) {

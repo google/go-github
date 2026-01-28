@@ -15,15 +15,18 @@ type ArtifactDeploymentRecord struct {
 	ID                  *int64            `json:"id,omitempty"`
 	Digest              *string           `json:"digest,omitempty"`
 	Name                *string           `json:"name,omitempty"`
+	Version             *string           `json:"version,omitempty"`
 	Status              *string           `json:"status,omitempty"`
 	LogicalEnvironment  *string           `json:"logical_environment,omitempty"`
 	PhysicalEnvironment *string           `json:"physical_environment,omitempty"`
 	Cluster             *string           `json:"cluster,omitempty"`
 	DeploymentName      *string           `json:"deployment_name,omitempty"`
 	Tags                map[string]string `json:"tags,omitempty"`
-	Created             *Timestamp        `json:"created,omitempty"`
-	UpdatedAt           *Timestamp        `json:"updated_at,omitempty"`
+	RuntimeRisks        []string          `json:"runtime_risks,omitempty"`
+	GithubRepository    *string           `json:"github_repository,omitempty"`
 	AttestationID       *int64            `json:"attestation_id,omitempty"`
+	CreatedAt           *Timestamp        `json:"created_at,omitempty"`
+	UpdatedAt           *Timestamp        `json:"updated_at,omitempty"`
 }
 
 func (r ArtifactDeploymentRecord) String() string { return Stringify(r) }
@@ -36,16 +39,29 @@ type ArtifactDeploymentResponse struct {
 
 func (r ArtifactDeploymentResponse) String() string { return Stringify(r) }
 
+// ClusterDeploymentRecordsRequest represents the request body for setting cluster deployment records.
+type ClusterDeploymentRecordsRequest struct {
+	LogicalEnvironment  *string                     `json:"logical_environment,omitempty"`
+	PhysicalEnvironment *string                     `json:"physical_environment,omitempty"`
+	Deployments         []*ArtifactDeploymentRecord `json:"deployments,omitempty"`
+}
+
+func (r ClusterDeploymentRecordsRequest) String() string { return Stringify(r) }
+
 // ArtifactStorageRecord represents a GitHub artifact storage record.
 type ArtifactStorageRecord struct {
-	Name        *string    `json:"name,omitempty"`
-	Digest      *string    `json:"digest,omitempty"`
-	ArtifactURL *string    `json:"artifact_url,omitempty"`
-	RegistryURL *string    `json:"registry_url,omitempty"`
-	Repository  *string    `json:"repository,omitempty"`
-	Status      *string    `json:"status,omitempty"`
-	CreatedAt   *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
+	ID               *int64     `json:"id,omitempty"`
+	Name             *string    `json:"name,omitempty"`
+	Digest           *string    `json:"digest,omitempty"`
+	Version          *string    `json:"version,omitempty"`
+	ArtifactURL      *string    `json:"artifact_url,omitempty"`
+	Path             *string    `json:"path,omitempty"`
+	RegistryURL      *string    `json:"registry_url,omitempty"`
+	Repository       *string    `json:"repository,omitempty"`
+	Status           *string    `json:"status,omitempty"`
+	GithubRepository *string    `json:"github_repository,omitempty"`
+	CreatedAt        *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
 }
 
 func (r ArtifactStorageRecord) String() string { return Stringify(r) }
@@ -79,9 +95,9 @@ func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Contex
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#set-cluster-deployment-records
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}
-func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, org, cluster string, record *ArtifactDeploymentRecord) (*ArtifactDeploymentResponse, *Response, error) {
+func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, org, cluster string, request *ClusterDeploymentRecordsRequest) (*ArtifactDeploymentResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/metadata/deployment-record/cluster/%v", org, cluster)
-	req, err := s.client.NewRequest("POST", u, record)
+	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}

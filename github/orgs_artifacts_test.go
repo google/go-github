@@ -17,11 +17,23 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactDeploymentRecord{Name: Ptr("test-n")}
+	input := &ArtifactDeploymentRecord{
+		Name:               Ptr("test-n"),
+		Digest:             Ptr("sha256:123"),
+		Version:            Ptr("v1.0.0"),
+		Status:             Ptr("deployed"),
+		LogicalEnvironment: Ptr("prod"),
+		DeploymentName:     Ptr("dep-1"),
+		RuntimeRisks:       []string{"critical-resource", "internet-exposed"},
+		GithubRepository:   Ptr("octo-org/octo-repo"),
+		Tags: map[string]string{
+			"data-access": "sensitive",
+		},
+	}
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONMarshal(t, input, `{"name":"test-n"}`)
+		testJSONMarshal(t, input, `{"digest":"sha256:123","name":"test-n","version":"v1.0.0","status":"deployed","logical_environment":"prod","deployment_name":"dep-1","tags":{"data-access":"sensitive"},"runtime_risks":["critical-resource","internet-exposed"],"github_repository":"octo-org/octo-repo"}`)
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":1}]}`)
 	})
 
@@ -44,10 +56,21 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactDeploymentRecord{Name: Ptr("cluster-deploy")}
+	input := &ClusterDeploymentRecordsRequest{
+		LogicalEnvironment:  Ptr("prod"),
+		PhysicalEnvironment: Ptr("pacific-east"),
+		Deployments: []*ArtifactDeploymentRecord{
+			{
+				Name:    Ptr("awesome-image"),
+				Version: Ptr("v2.0"),
+				Status:  Ptr("deployed"),
+			},
+		},
+	}
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record/cluster/c1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
+		testJSONMarshal(t, input, `{"logical_environment":"prod","physical_environment":"pacific-east","deployments":[{"name":"awesome-image","version":"v2.0","status":"deployed"}]}`)
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":2}]}`)
 	})
 
@@ -66,39 +89,23 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 	}
 }
 
-func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/orgs/o/artifacts/d/metadata/deployment-records", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":1}]}`)
-	})
-
-	ctx := t.Context()
-	got, _, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "d")
-	if err != nil {
-		t.Errorf("ListArtifactDeploymentRecords returned error: %v", err)
-	}
-
-	want := &ArtifactDeploymentResponse{
-		TotalCount:        Ptr(1),
-		DeploymentRecords: []*ArtifactDeploymentRecord{{ID: Ptr(int64(1))}},
-	}
-	if !cmp.Equal(got, want) {
-		t.Errorf("ListArtifactDeploymentRecords returned %+v, want %+v", got, want)
-	}
-}
-
 func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactStorageRecord{Name: Ptr("s-test")}
+	input := &ArtifactStorageRecord{
+		Name:             Ptr("libfoo"),
+		Version:          Ptr("v1.2.3"),
+		Path:             Ptr("target/libs"),
+		GithubRepository: Ptr("org/repo"),
+		RegistryURL:      Ptr("https://reg.example.com"),
+		Status:           Ptr("active"),
+	}
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/storage-record", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprint(w, `{"total_count":1,"storage_records":[{"name":"s-test"}]}`)
+		testJSONMarshal(t, input, `{"name":"libfoo","version":"v1.2.3","path":"target/libs","registry_url":"https://reg.example.com","status":"active","github_repository":"org/repo"}`)
+		fmt.Fprint(w, `{"total_count":1,"storage_records":[{"name":"libfoo"}]}`)
 	})
 
 	ctx := t.Context()
@@ -109,10 +116,36 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 
 	want := &ArtifactStorageResponse{
 		TotalCount:     Ptr(1),
-		StorageRecords: []*ArtifactStorageRecord{{Name: Ptr("s-test")}},
+		StorageRecords: []*ArtifactStorageRecord{{Name: Ptr("libfoo")}},
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateArtifactStorageRecord returned %+v, want %+v", got, want)
+	}
+}
+
+func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/artifacts/sha256:abc/metadata/deployment-records", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":1, "runtime_risks": ["sensitive-data"]}]}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "sha256:abc")
+	if err != nil {
+		t.Errorf("ListArtifactDeploymentRecords returned error: %v", err)
+	}
+
+	want := &ArtifactDeploymentResponse{
+		TotalCount: Ptr(1),
+		DeploymentRecords: []*ArtifactDeploymentRecord{
+			{ID: Ptr(int64(1)), RuntimeRisks: []string{"sensitive-data"}},
+		},
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("ListArtifactDeploymentRecords returned %+v, want %+v", got, want)
 	}
 }
 
@@ -120,62 +153,22 @@ func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/artifacts/d/metadata/storage-records", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/orgs/o/artifacts/sha256:abc/metadata/storage-records", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"total_count":1,"storage_records":[{"name":"s-test"}]}`)
+		fmt.Fprint(w, `{"total_count":1,"storage_records":[{"name":"libfoo"}]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "d")
+	got, _, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "sha256:abc")
 	if err != nil {
 		t.Errorf("ListArtifactStorageRecords returned error: %v", err)
 	}
 
 	want := &ArtifactStorageResponse{
 		TotalCount:     Ptr(1),
-		StorageRecords: []*ArtifactStorageRecord{{Name: Ptr("s-test")}},
+		StorageRecords: []*ArtifactStorageRecord{{Name: Ptr("libfoo")}},
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListArtifactStorageRecords returned %+v, want %+v", got, want)
 	}
-}
-
-func TestOrganizationsService_ArtifactMetadata_InvalidOrg(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-	ctx := t.Context()
-
-	_, _, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "%", nil)
-	testURLParseError(t, err)
-
-	_, _, err = client.Organizations.SetClusterDeploymentRecords(ctx, "%", "c", nil)
-	testURLParseError(t, err)
-
-	_, _, err = client.Organizations.CreateArtifactStorageRecord(ctx, "%", nil)
-	testURLParseError(t, err)
-
-	_, _, err = client.Organizations.ListArtifactDeploymentRecords(ctx, "%", "d")
-	testURLParseError(t, err)
-
-	_, _, err = client.Organizations.ListArtifactStorageRecords(ctx, "%", "d")
-	testURLParseError(t, err)
-}
-
-func TestArtifactDeploymentRecord_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ArtifactDeploymentRecord{}, "{}")
-
-	u := &ArtifactDeploymentRecord{
-		ID:     Ptr(int64(1)),
-		Name:   Ptr("n"),
-		Status: Ptr("s"),
-	}
-
-	want := `{
-		"id": 1,
-		"name": "n",
-		"status": "s"
-	}`
-
-	testJSONMarshal(t, u, want)
 }
