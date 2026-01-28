@@ -388,8 +388,7 @@ func ({{.RecvVar}} *{{.RecvType}}) {{.IterMethod}}({{.Args}}) iter.Seq2[{{.Retur
 		if {{.OptsName}} == nil {
 			{{.OptsName}} = &{{.OptsType}}{}
 		} else {
-			optsCopy := *{{.OptsName}}
-			{{.OptsName}} = &optsCopy
+			{{.OptsName}} = Ptr(*{{.OptsName}})
 		}
 		{{else}}
 		// Opts is value type, already a copy
