@@ -446,8 +446,6 @@ func Test{{.RecvType}}_{{.IterMethod}}(t *testing.T) {
 		fmt.Fprint(w, ` + "`" + `{{.TestJSON}}` + "`" + `)
 	})
 
-
-
 	// Call iterator with zero values
 	iter := client.{{.ClientField}}.{{.IterMethod}}({{.ZeroArgs}})
 	for _, err := range iter {
