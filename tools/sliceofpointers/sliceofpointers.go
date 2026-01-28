@@ -70,8 +70,10 @@ func checkArrayType(arrType *ast.ArrayType, tokenPos token.Pos, pass *analysis.P
 			pass.Reportf(tokenPos, msg)
 		}
 	} else if ident, ok := arrType.Elt.(*ast.Ident); ok && ident.Obj != nil {
-		if _, ok := ident.Obj.Decl.(*ast.TypeSpec).Type.(*ast.StructType); ok {
-			pass.Reportf(tokenPos, "use []*%v instead of []%[1]v", ident.Name)
+		if typeSpec, ok := ident.Obj.Decl.(*ast.TypeSpec); ok {
+			if _, ok := typeSpec.Type.(*ast.StructType); ok {
+				pass.Reportf(tokenPos, "use []*%v instead of []%[1]v", ident.Name)
+			}
 		}
 	}
 }
