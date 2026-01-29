@@ -16,6 +16,7 @@ import (
 	"path/filepath"
 
 	"github.com/alecthomas/kong"
+
 	"github.com/google/go-github/v82/github"
 )
 

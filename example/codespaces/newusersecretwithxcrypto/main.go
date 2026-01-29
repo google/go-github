@@ -38,8 +38,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v82/github"
 	"golang.org/x/crypto/nacl/box"
+
+	"github.com/google/go-github/v82/github"
 )
 
 var (
