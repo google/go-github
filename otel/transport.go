@@ -101,7 +101,7 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 
 	if resp.StatusCode >= 400 {
-		span.SetStatus(codes.Error, fmt.Sprintf("HTTP %d", resp.StatusCode))
+		span.SetStatus(codes.Error, fmt.Sprintf("HTTP %v", resp.StatusCode))
 	} else {
 		span.SetStatus(codes.Ok, "OK")
 	}
