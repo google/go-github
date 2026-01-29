@@ -40,7 +40,7 @@ const (
 	headerRateLimit     = "X-Ratelimit-Limit"
 	headerRateRemaining = "X-Ratelimit-Remaining"
 	headerRateUsed      = "X-Ratelimit-Used"
-	headerRateReset     = "X-Ratelimit-Reset"
+	HeaderRateReset     = "X-Ratelimit-Reset"
 	headerRateResource  = "X-Ratelimit-Resource"
 	headerOTP           = "X-Github-Otp"
 	headerRetryAfter    = "Retry-After"
@@ -794,7 +794,7 @@ func parseRate(r *http.Response) Rate {
 	if used := r.Header.Get(headerRateUsed); used != "" {
 		rate.Used, _ = strconv.Atoi(used)
 	}
-	if reset := r.Header.Get(headerRateReset); reset != "" {
+	if reset := r.Header.Get(HeaderRateReset); reset != "" {
 		if v, _ := strconv.ParseInt(reset, 10, 64); v != 0 {
 			rate.Reset = Timestamp{time.Unix(v, 0)}
 		}
