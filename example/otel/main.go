@@ -58,6 +58,6 @@ func main() {
     
     // Check if we captured attributes in response
     if resp != nil {
-        fmt.Printf("Response Status: %s\n", resp.Status)
+        fmt.Printf("Response Status: %v\n", resp.Status)
     }
 }
