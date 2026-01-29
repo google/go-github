@@ -15,8 +15,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v82/github"
 	"golang.org/x/term"
+
+	"github.com/google/go-github/v82/github"
 )
 
 func main() {

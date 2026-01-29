@@ -1,8 +1,7 @@
-version: v2.7.0
+# .custom-gcl.yml
+golangci-lint:
+  version: v1.62.2
+
 plugins:
-  - module: "github.com/google/go-github/v82/tools/fmtpercentv"
-    path: ./tools/fmtpercentv
-  - module: "github.com/google/go-github/v82/tools/sliceofpointers"
-    path: ./tools/sliceofpointers
-  - module: "github.com/google/go-github/v82/tools/structfield"
-    path: ./tools/structfield
+  - module: "tools/fmtpercentv"
+    path: "tools/fmtpercentv"
