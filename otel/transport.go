@@ -96,7 +96,7 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	if reqID := resp.Header.Get("X-Github-Request-Id"); reqID != "" {
 		span.SetAttributes(attribute.String("github.request_id", reqID))
 	}
-	if resource := resp.Header.Get("X-Ratelimit-Resource"); resource != "" {
+	if resource := resp.Header.Get(github.HeaderRateResource); resource != "" {
 		span.SetAttributes(attribute.String("github.rate_limit.resource", resource))
 	}
 
