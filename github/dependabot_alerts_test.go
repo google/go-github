@@ -302,13 +302,13 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
 				URL: Ptr("https://github.com/advisories/GHSA-rf4j-j272-fj86"),
 			},
 			{
-				URL: Ptr("https://usn.ubuntu.com/3559-1/"),
+				URL: Ptr("https://example.com/3559-1/"),
 			},
 			{
-				URL: Ptr("https://www.djangoproject.com/weblog/2018/feb/01/security-releases/"),
+				URL: Ptr("https://example.com/weblog/2018/feb/01/security-releases/"),
 			},
 			{
-				URL: Ptr("https://www.securitytracker.com/id/1040422"),
+				URL: Ptr("https://example.com/id/1040422"),
 			},
 		},
 		PublishedAt: &Timestamp{publishedAt},
@@ -378,13 +378,13 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
           "url": "https://github.com/advisories/GHSA-rf4j-j272-fj86"
         },
         {
-          "url": "https://usn.ubuntu.com/3559-1/"
+          "url": "https://example.com/3559-1/"
         },
         {
-          "url": "https://www.djangoproject.com/weblog/2018/feb/01/security-releases/"
+          "url": "https://example.com/weblog/2018/feb/01/security-releases/"
         },
         {
-          "url": "https://www.securitytracker.com/id/1040422"
+          "url": "https://example.com/id/1040422"
         }
       ],
       "published_at": "2018-10-03T21:13:54Z",

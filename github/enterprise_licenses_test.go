@@ -39,9 +39,9 @@ func TestEnterpriseService_GetConsumedLicenses(t *testing.T) {
 				"github_com_saml_name_id": "saml123",
 				"github_com_orgs_with_pending_invites": [],
 				"github_com_two_factor_auth": true,
-				"enterprise_server_emails": ["user1@enterprise.local"],
+				"enterprise_server_emails": ["user1@example.com"],
 				"visual_studio_license_status": "active",
-				"visual_studio_subscription_email": "user1@visualstudio.com",
+				"visual_studio_subscription_email": "user1@example.com",
 				"total_user_accounts": 1
 			}]
 		}`)
@@ -60,7 +60,7 @@ func TestEnterpriseService_GetConsumedLicenses(t *testing.T) {
 	samlNameID := "saml123"
 	twoFactorAuth := true
 	licenseStatus := "active"
-	vsEmail := "user1@visualstudio.com"
+	vsEmail := "user1@example.com"
 
 	want := &EnterpriseConsumedLicenses{
 		TotalSeatsConsumed:  20,
@@ -81,7 +81,7 @@ func TestEnterpriseService_GetConsumedLicenses(t *testing.T) {
 				GithubComSamlNameID:             &samlNameID,
 				GithubComOrgsWithPendingInvites: []string{},
 				GithubComTwoFactorAuth:          &twoFactorAuth,
-				EnterpriseServerEmails:          []string{"user1@enterprise.local"},
+				EnterpriseServerEmails:          []string{"user1@example.com"},
 				VisualStudioLicenseStatus:       &licenseStatus,
 				VisualStudioSubscriptionEmail:   &vsEmail,
 				TotalUserAccounts:               1,
