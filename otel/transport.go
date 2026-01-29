@@ -21,7 +21,7 @@ import (
 const (
 	// instrumentationName is the name of this instrumentation package.
 	// NOTE: This must be updated when the major version of go-github changes.
-	instrumentationName = "github.com/google/go-github/v82/otel"
+	instrumentationName = "github.com/google/go-github/otel"
 )
 
 // Transport is an http.RoundTripper that instrument requests with OpenTelemetry.
