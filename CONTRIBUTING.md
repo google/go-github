@@ -131,6 +131,25 @@ tips (which are frequently ignored by AI-driven PRs):
 * When possible, try to make smaller, focused PRs (which are easier to review
   and easier for others to understand).
 
+### Use proper commit messages and PR titles
+
+Effective Git commit messages and subject lines hold immense significance in comprehending alterations and enhancing the code's maintainability.
+
+Always commit the changes to your fork and push them to the corresponding original repo by sending a Pull Request (PR). Follow the best practices for writing commit messages/PR titles.
+
+1. Limit the subject line to 50 characters
+2. Capitalize the subject line
+3. Do not end the subject line with a period
+4. Use the imperative mood in the subject line. A properly formed Git commit subject line should always be able to complete the following sentence:
+   If applied, this commit will `<your subject line here>`
+
+(This above advice can be found all over the internet, but was copied from [here](https://learn-ballerina.github.io/best_practices/use_proper_titles.html).)
+
+5. You may optionally prefix the PR title with the type of PR it is, in lower case,
+   followed by a colon. For example, `feat:`, `chore:`, `fix:`, `docs:`, etc.
+   For breaking API changes, add an exclamation point.
+   For example, `feat!:`, `chore!:`, `fix!:`, `docs!:`, etc.
+
 ## Code Comments
 
 Every exported method and type needs to have code comments that follow
