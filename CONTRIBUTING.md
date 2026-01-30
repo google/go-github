@@ -90,6 +90,28 @@ file.
 [monitored by codecov.io]: https://codecov.io/gh/google/go-github
 [REVIEWERS]: ./REVIEWERS
 
+### Windows users
+
+Use Git Bash as a terminal or WSL instead of PowerShell.
+
+To avoid [issues][] with a few linters and formatters within golangci-lint,
+make sure you check out files only with LF endings:
+
+```sh
+git config core.autocrlf false
+git config core.eol lf
+```
+
+To convert an existing cloned repo from CRLF to LF, use the following commands:
+
+```sh
+git config core.autocrlf false
+git rm --cached -r .
+git reset --hard HEAD
+```
+
+[issues]: https://github.com/golangci/golangci-lint/discussions/5840
+
 ## Tips
 
 Although we have not (yet) banned AI-driven contributions to this repo (as many
