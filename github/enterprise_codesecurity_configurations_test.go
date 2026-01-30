@@ -253,7 +253,7 @@ func TestEnterpriseService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	const methodName = "UpdateCodeSecurityConfiguration"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Enterprise.UpdateCodeSecurityConfiguration(ctx, "\n", -1, input)
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
@@ -288,7 +288,7 @@ func TestEnterpriseService_DeleteCodeSecurityConfiguration(t *testing.T) {
 	const methodName = "DeleteCodeSecurityConfiguration"
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Enterprise.DeleteCodeSecurityConfiguration(ctx, "\n", -1)
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
@@ -328,7 +328,7 @@ func TestEnterpriseService_AttachCodeSecurityConfigurationToRepositories(t *test
 	const methodName = "AttachCodeSecurityConfigurationToRepositories"
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Enterprise.AttachCodeSecurityConfigurationToRepositories(ctx, "\n", -1, "")
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
@@ -377,7 +377,7 @@ func TestEnterpriseService_SetDefaultCodeSecurityConfiguration(t *testing.T) {
 	const methodName = "SetDefaultCodeSecurityConfiguration"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Enterprise.SetDefaultCodeSecurityConfiguration(ctx, "\n", -1, "")
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
@@ -431,7 +431,7 @@ func TestEnterpriseService_ListCodeSecurityConfigurationRepositories(t *testing.
 	const methodName = "ListCodeSecurityConfigurationRepositories"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Enterprise.ListCodeSecurityConfigurationRepositories(ctx, "\n", -1, opts)
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {

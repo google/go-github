@@ -5,12 +5,10 @@
 
 set -e
 
-GOLANGCI_LINT_VERSION="2.7.0"
+CUSTOM_GCL="$(script/setup-custom-gcl.sh)"
 
 CDPATH="" cd -- "$(dirname -- "$0")/.."
 BIN="$(pwd -P)"/bin
-
-mkdir -p "$BIN"
 
 EXIT_CODE=0
 
@@ -19,12 +17,6 @@ fail() {
   EXIT_CODE=1
 }
 
-# install golangci-lint and custom-gcl in ./bin if they don't exist with the correct version
-if ! "$BIN"/custom-gcl --version 2> /dev/null | grep -q "$GOLANGCI_LINT_VERSION"; then
-  GOBIN="$BIN" go install "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v$GOLANGCI_LINT_VERSION"
-  "$BIN"/golangci-lint custom --name custom-gcl --destination "$BIN"
-fi
-
 MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort)"
 
 for dir in $MOD_DIRS; do
@@ -32,7 +24,7 @@ for dir in $MOD_DIRS; do
   echo linting "$dir"
   (
     cd "$dir"
-    "$BIN"/custom-gcl run
+    "$CUSTOM_GCL" run
   ) || fail "failed linting $dir"
 done
 

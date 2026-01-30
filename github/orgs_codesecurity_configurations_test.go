@@ -391,7 +391,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	const methodName = "UpdateCodeSecurityConfiguration"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Organizations.UpdateCodeSecurityConfiguration(ctx, "\n", -1, input)
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
@@ -426,7 +426,7 @@ func TestOrganizationsService_DeleteCodeSecurityConfiguration(t *testing.T) {
 	const methodName = "DeleteCodeSecurityConfiguration"
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Organizations.DeleteCodeSecurityConfiguration(ctx, "\n", -1)
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
@@ -470,7 +470,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationToRepositories(t *t
 	const methodName = "AttachCodeSecurityConfigurationToRepositories"
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Organizations.AttachCodeSecurityConfigurationToRepositories(ctx, "\n", -1, "", nil)
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
@@ -519,7 +519,7 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 	const methodName = "SetDefaultCodeSecurityConfiguration"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Organizations.SetDefaultCodeSecurityConfiguration(ctx, "\n", -1, "")
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
@@ -573,7 +573,7 @@ func TestOrganizationsService_ListCodeSecurityConfigurationRepositories(t *testi
 	const methodName = "ListCodeSecurityConfigurationRepositories"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Organizations.ListCodeSecurityConfigurationRepositories(ctx, "\n", -1, opts)
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
@@ -619,7 +619,7 @@ func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testi
 	const methodName = "GetCodeSecurityConfigurationForRepository"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Organizations.GetCodeSecurityConfigurationForRepository(ctx, "\n", "\n")
-		return
+		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {

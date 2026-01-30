@@ -257,7 +257,7 @@ Its subcommands are:
 The `script` directory has shell scripts that help with common development
 tasks.
 
-**script/fmt.sh** formats all go code in the repository.
+**script/fmt.sh** formats all Go code in the repository.
 
 **script/generate.sh** runs code generators and `go mod tidy` on all modules. With
 `--check` it checks that the generated files are current.
