@@ -22,9 +22,8 @@ import (
 	"os"
 	"strings"
 
-	"golang.org/x/term"
-
 	"github.com/google/go-github/v82/github"
+	"golang.org/x/term"
 )
 
 func main() {

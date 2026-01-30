@@ -471,10 +471,5 @@ formatters:
     - gofumpt
     - goimports
   settings:
-    gci:
-      sections:
-        - standard
-        - default
-        - prefix(github.com/google/go-github/)
     gofumpt:
       extra-rules: true

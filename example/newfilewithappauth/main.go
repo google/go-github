@@ -16,7 +16,6 @@ import (
 	"time"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-
 	"github.com/google/go-github/v82/github"
 )
 

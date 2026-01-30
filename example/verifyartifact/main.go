@@ -18,11 +18,10 @@ import (
 	"log"
 	"os"
 
+	"github.com/google/go-github/v82/github"
 	"github.com/sigstore/sigstore-go/pkg/bundle"
 	"github.com/sigstore/sigstore-go/pkg/root"
 	"github.com/sigstore/sigstore-go/pkg/verify"
-
-	"github.com/google/go-github/v82/github"
 )
 
 var (

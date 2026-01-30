@@ -18,7 +18,6 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-
 	"github.com/google/go-github/v82/github"
 )
 
