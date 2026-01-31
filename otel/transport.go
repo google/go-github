@@ -1,7 +1,8 @@
-// Copyright 2026 The go-github Authors. All rights reserved.
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// Package otel provides OpenTelemetry instrumentation for the go-github client.
 package otel
 
 import (
@@ -52,7 +53,7 @@ func NewTransport(base http.RoundTripper, opts ...Option) *Transport {
 // RoundTrip implements http.RoundTripper.
 func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	ctx := req.Context()
-	spanName := fmt.Sprintf("github/%s", req.Method)
+	spanName := fmt.Sprintf("github/%v", req.Method)
 	
 	// Start Span
 	ctx, span := t.Tracer.Start(ctx, spanName, trace.WithSpanKind(trace.SpanKindClient))
