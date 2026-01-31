@@ -470,3 +470,6 @@ formatters:
     - gofmt
     - gofumpt
     - goimports
+  settings:
+    gofumpt:
+      extra-rules: true
