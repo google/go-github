@@ -43,7 +43,7 @@ func (t *Timestamp) UnmarshalJSON(data []byte) (err error) {
 	} else {
 		t.Time, err = time.Parse(`"`+time.RFC3339+`"`, str)
 	}
-	return
+	return err
 }
 
 // Equal reports whether t and u are equal based on time.Equal.

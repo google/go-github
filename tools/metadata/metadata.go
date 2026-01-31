@@ -24,8 +24,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/go-github/v81/github"
-	"gopkg.in/yaml.v3"
+	"github.com/google/go-github/v82/github"
+	"go.yaml.in/yaml/v3"
 )
 
 type operation struct {
