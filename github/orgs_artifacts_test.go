@@ -31,8 +31,6 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 		},
 	}
 
-	_ = input.String()
-
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testJSONMarshal(t, input, `{"digest":"sha256:123","name":"test-n","version":"v1.0.0","status":"deployed","logical_environment":"prod","deployment_name":"dep-1","tags":{"data-access":"sensitive"},"runtime_risks":["critical-resource","internet-exposed"],"github_repository":"octo-org/octo-repo"}`)
@@ -50,12 +48,23 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 		DeploymentRecords: []*ArtifactDeploymentRecord{{ID: Ptr(int64(1))}},
 	}
 
-	_ = want.String()
-	_ = want.DeploymentRecords[0].String()
-
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateArtifactDeploymentRecord returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "CreateArtifactDeploymentRecord"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.CreateArtifactDeploymentRecord(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
@@ -73,8 +82,6 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 			},
 		},
 	}
-
-	_ = input.String()
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record/cluster/c1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -95,6 +102,20 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 	if !cmp.Equal(got, want) {
 		t.Errorf("SetClusterDeploymentRecords returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "SetClusterDeploymentRecords"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.SetClusterDeploymentRecords(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.SetClusterDeploymentRecords(ctx, "o", "c1", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
@@ -109,8 +130,6 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 		RegistryURL:      Ptr("https://reg.example.com"),
 		Status:           Ptr("active"),
 	}
-
-	_ = input.String()
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/storage-record", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -129,12 +148,23 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 		StorageRecords: []*ArtifactStorageRecord{{Name: Ptr("libfoo")}},
 	}
 
-	_ = want.String()
-	_ = want.StorageRecords[0].String()
-
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateArtifactStorageRecord returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "CreateArtifactStorageRecord"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.CreateArtifactStorageRecord(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.CreateArtifactStorageRecord(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
@@ -143,11 +173,12 @@ func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/artifacts/sha256:abc/metadata/deployment-records", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{}) // Ensure no query parameters are sent by default
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":1, "runtime_risks": ["sensitive-data"]}]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "sha256:abc")
+	got, _, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "sha256:abc", nil)
 	if err != nil {
 		t.Errorf("ListArtifactDeploymentRecords returned error: %v", err)
 	}
@@ -161,6 +192,20 @@ func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListArtifactDeploymentRecords returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "ListArtifactDeploymentRecords"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListArtifactDeploymentRecords(ctx, "\n", "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "sha256:abc", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
@@ -169,11 +214,12 @@ func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/artifacts/sha256:abc/metadata/storage-records", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{}) // Ensure no query parameters are sent by default
 		fmt.Fprint(w, `{"total_count":1,"storage_records":[{"name":"libfoo"}]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "sha256:abc")
+	got, _, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "sha256:abc", nil)
 	if err != nil {
 		t.Errorf("ListArtifactStorageRecords returned error: %v", err)
 	}
@@ -185,4 +231,18 @@ func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListArtifactStorageRecords returned %+v, want %+v", got, want)
 	}
+
+	const methodName = "ListArtifactStorageRecords"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListArtifactStorageRecords(ctx, "\n", "\n", nil)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "sha256:abc", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }

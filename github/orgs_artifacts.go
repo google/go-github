@@ -29,8 +29,6 @@ type ArtifactDeploymentRecord struct {
 	UpdatedAt           *Timestamp        `json:"updated_at,omitempty"`
 }
 
-func (r ArtifactDeploymentRecord) String() string { return Stringify(r) }
-
 // CreateArtifactDeploymentRequest represents the request body for creating a deployment record.
 type CreateArtifactDeploymentRequest struct {
 	Digest              *string           `json:"digest,omitempty"`
@@ -46,15 +44,11 @@ type CreateArtifactDeploymentRequest struct {
 	GithubRepository    *string           `json:"github_repository,omitempty"`
 }
 
-func (r CreateArtifactDeploymentRequest) String() string { return Stringify(r) }
-
 // ArtifactDeploymentResponse represents the response for deployment records.
 type ArtifactDeploymentResponse struct {
 	TotalCount        *int                        `json:"total_count,omitempty"`
 	DeploymentRecords []*ArtifactDeploymentRecord `json:"deployment_records,omitempty"`
 }
-
-func (r ArtifactDeploymentResponse) String() string { return Stringify(r) }
 
 // ClusterDeploymentRecordsRequest represents the request body for setting cluster deployment records.
 type ClusterDeploymentRecordsRequest struct {
@@ -62,8 +56,6 @@ type ClusterDeploymentRecordsRequest struct {
 	PhysicalEnvironment *string                            `json:"physical_environment,omitempty"`
 	Deployments         []*CreateArtifactDeploymentRequest `json:"deployments,omitempty"`
 }
-
-func (r ClusterDeploymentRecordsRequest) String() string { return Stringify(r) }
 
 // ArtifactStorageRecord represents a GitHub artifact storage record.
 type ArtifactStorageRecord struct {
@@ -81,8 +73,6 @@ type ArtifactStorageRecord struct {
 	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
 }
 
-func (r ArtifactStorageRecord) String() string { return Stringify(r) }
-
 // CreateArtifactStorageRequest represents the request body for creating a storage record.
 type CreateArtifactStorageRequest struct {
 	Name             *string `json:"name,omitempty"`
@@ -96,15 +86,11 @@ type CreateArtifactStorageRequest struct {
 	GithubRepository *string `json:"github_repository,omitempty"`
 }
 
-func (r CreateArtifactStorageRequest) String() string { return Stringify(r) }
-
 // ArtifactStorageResponse represents the response for storage records.
 type ArtifactStorageResponse struct {
 	TotalCount     *int                     `json:"total_count,omitempty"`
 	StorageRecords []*ArtifactStorageRecord `json:"storage_records,omitempty"`
 }
-
-func (r ArtifactStorageResponse) String() string { return Stringify(r) }
 
 // CreateArtifactDeploymentRecord creates an artifact deployment record for an organization.
 //
@@ -119,7 +105,10 @@ func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Contex
 	}
 	v := new(ArtifactDeploymentResponse)
 	resp, err := s.client.Do(ctx, req, v)
-	return v, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+	return v, resp, nil
 }
 
 // SetClusterDeploymentRecords sets deployment records for a given cluster.
@@ -135,7 +124,10 @@ func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, 
 	}
 	v := new(ArtifactDeploymentResponse)
 	resp, err := s.client.Do(ctx, req, v)
-	return v, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+	return v, resp, nil
 }
 
 // CreateArtifactStorageRecord creates metadata storage records for artifacts.
@@ -151,7 +143,10 @@ func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, 
 	}
 	v := new(ArtifactStorageResponse)
 	resp, err := s.client.Do(ctx, req, v)
-	return v, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+	return v, resp, nil
 }
 
 // ListArtifactDeploymentRecords lists deployment records for an artifact metadata.
@@ -159,8 +154,12 @@ func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#list-artifact-deployment-records
 //
 //meta:operation GET /orgs/{org}/artifacts/{subject_digest}/metadata/deployment-records
-func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context, org, subjectDigest string) (*ArtifactDeploymentResponse, *Response, error) {
+func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context, org, subjectDigest string, opts *ListOptions) (*ArtifactDeploymentResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/%v/metadata/deployment-records", org, subjectDigest)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -169,7 +168,10 @@ func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context
 
 	v := new(ArtifactDeploymentResponse)
 	resp, err := s.client.Do(ctx, req, v)
-	return v, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+	return v, resp, nil
 }
 
 // ListArtifactStorageRecords lists artifact storage records with a given subject digest.
@@ -177,8 +179,12 @@ func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#list-artifact-storage-records
 //
 //meta:operation GET /orgs/{org}/artifacts/{subject_digest}/metadata/storage-records
-func (s *OrganizationsService) ListArtifactStorageRecords(ctx context.Context, org, subjectDigest string) (*ArtifactStorageResponse, *Response, error) {
+func (s *OrganizationsService) ListArtifactStorageRecords(ctx context.Context, org, subjectDigest string, opts *ListOptions) (*ArtifactStorageResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/%v/metadata/storage-records", org, subjectDigest)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -187,5 +193,8 @@ func (s *OrganizationsService) ListArtifactStorageRecords(ctx context.Context, o
 
 	v := new(ArtifactStorageResponse)
 	resp, err := s.client.Do(ctx, req, v)
-	return v, resp, err
+	if err != nil {
+		return nil, resp, err
+	}
+	return v, resp, nil
 }
