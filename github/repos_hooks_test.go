@@ -322,12 +322,12 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 			{
 				Added: []string{"1", "2", "3"},
 				Author: &WebHookAuthor{
-					Email: Ptr("abc@gmail.com"),
+					Email: Ptr("abc@example.com"),
 					Name:  Ptr("abc"),
 					Login: Ptr("abc_12"),
 				},
 				Committer: &WebHookAuthor{
-					Email: Ptr("abc@gmail.com"),
+					Email: Ptr("abc@example.com"),
 					Name:  Ptr("abc"),
 					Login: Ptr("abc_12"),
 				},
@@ -343,12 +343,12 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 		HeadCommit: &WebHookCommit{
 			Added: []string{"1", "2", "3"},
 			Author: &WebHookAuthor{
-				Email: Ptr("abc@gmail.com"),
+				Email: Ptr("abc@example.com"),
 				Name:  Ptr("abc"),
 				Login: Ptr("abc_12"),
 			},
 			Committer: &WebHookAuthor{
-				Email: Ptr("abc@gmail.com"),
+				Email: Ptr("abc@example.com"),
 				Name:  Ptr("abc"),
 				Login: Ptr("abc_12"),
 			},
@@ -364,14 +364,14 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 			ID: Ptr(int64(22)),
 		},
 		Pusher: &CommitAuthor{
-			Login: Ptr("rd@yahoo.com"),
+			Login: Ptr("rd@example.com"),
 		},
 		Repo: &PushEventRepository{
 			ID:     Ptr(int64(321)),
 			NodeID: Ptr("node_321"),
 		},
 		Sender: &User{
-			Login: Ptr("st@gmail.com"),
+			Login: Ptr("st@example.com"),
 			ID:    Ptr(int64(202)),
 		},
 	}
@@ -384,12 +384,12 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 			{
 			"added":   ["1", "2", "3"],
 			"author":{
-				"email": "abc@gmail.com",
+				"email": "abc@example.com",
 				"name": "abc",
 				"username": "abc_12"
 			},
 			"committer": {
-				"email": "abc@gmail.com",
+				"email": "abc@example.com",
 				"name": "abc",
 				"username": "abc_12"
 			},
@@ -405,12 +405,12 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 		"head_commit": {
 			"added":   ["1", "2", "3"],
 		"author":{
-			"email": "abc@gmail.com",
+			"email": "abc@example.com",
 			"name": "abc",
 			"username": "abc_12"
 		},
 		"committer": {
-			"email": "abc@gmail.com",
+			"email": "abc@example.com",
 			"name": "abc",
 			"username": "abc_12"
 		},
@@ -426,14 +426,14 @@ func TestBranchWebHookPayload_Marshal(t *testing.T) {
 			"id" : 22
 		},
 		"pusher":{
-			"username": "rd@yahoo.com"
+			"username": "rd@example.com"
 		},
 		"repository":{
 			"id": 321,
 			"node_id": "node_321"
 		},
 		"sender":{
-			"login": "st@gmail.com",
+			"login": "st@example.com",
 			"id": 202
 		}
 	}`
@@ -446,13 +446,13 @@ func TestBranchWebHookAuthor_Marshal(t *testing.T) {
 	testJSONMarshal(t, &WebHookAuthor{}, "{}")
 
 	v := &WebHookAuthor{
-		Email: Ptr("abc@gmail.com"),
+		Email: Ptr("abc@example.com"),
 		Name:  Ptr("abc"),
 		Login: Ptr("abc_12"),
 	}
 
 	want := `{
-			"email": "abc@gmail.com",
+			"email": "abc@example.com",
 			"name": "abc",
 			"username": "abc_12"
 	}`
@@ -467,12 +467,12 @@ func TestBranchWebHookCommit_Marshal(t *testing.T) {
 	v := &WebHookCommit{
 		Added: []string{"1", "2", "3"},
 		Author: &WebHookAuthor{
-			Email: Ptr("abc@gmail.com"),
+			Email: Ptr("abc@example.com"),
 			Name:  Ptr("abc"),
 			Login: Ptr("abc_12"),
 		},
 		Committer: &WebHookAuthor{
-			Email: Ptr("abc@gmail.com"),
+			Email: Ptr("abc@example.com"),
 			Name:  Ptr("abc"),
 			Login: Ptr("abc_12"),
 		},
@@ -485,12 +485,12 @@ func TestBranchWebHookCommit_Marshal(t *testing.T) {
 	want := `{
 		"added":   ["1", "2", "3"],
 		"author":{
-			"email": "abc@gmail.com",
+			"email": "abc@example.com",
 			"name": "abc",
 			"username": "abc_12"
 		},
 		"committer": {
-			"email": "abc@gmail.com",
+			"email": "abc@example.com",
 			"name": "abc",
 			"username": "abc_12"
 		},

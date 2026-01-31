@@ -26,7 +26,7 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 			Branch: Ptr("master"),
 			Path:   Ptr("/"),
 		},
-		CNAME: Ptr("www.my-domain.com"), // not passed along.
+		CNAME: Ptr("www.example.com"), // not passed along.
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -80,7 +80,7 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 
 	input := &Pages{
 		BuildType: Ptr("workflow"),
-		CNAME:     Ptr("www.my-domain.com"), // not passed along.
+		CNAME:     Ptr("www.example.com"), // not passed along.
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -129,7 +129,7 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
-		CNAME:     Ptr("www.my-domain.com"),
+		CNAME:     Ptr("www.example.com"),
 		BuildType: Ptr("legacy"),
 		Source:    &PagesSource{Branch: Ptr("gh-pages")},
 	}
@@ -139,12 +139,12 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{CNAME: Ptr("www.my-domain.com"), BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("gh-pages")}}
+		want := &PagesUpdate{CNAME: Ptr("www.example.com"), BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("gh-pages")}}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
-		fmt.Fprint(w, `{"cname":"www.my-domain.com","build_type":"legacy","source":{"branch":"gh-pages"}}`)
+		fmt.Fprint(w, `{"cname":"www.example.com","build_type":"legacy","source":{"branch":"gh-pages"}}`)
 	})
 
 	ctx := t.Context()
@@ -169,7 +169,7 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
-		CNAME:     Ptr("www.my-domain.com"),
+		CNAME:     Ptr("www.example.com"),
 		BuildType: Ptr("workflow"),
 	}
 
@@ -178,12 +178,12 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
 
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{CNAME: Ptr("www.my-domain.com"), BuildType: Ptr("workflow")}
+		want := &PagesUpdate{CNAME: Ptr("www.example.com"), BuildType: Ptr("workflow")}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
 		}
 
-		fmt.Fprint(w, `{"cname":"www.my-domain.com","build_type":"workflow"}`)
+		fmt.Fprint(w, `{"cname":"www.example.com","build_type":"workflow"}`)
 	})
 
 	ctx := t.Context()
