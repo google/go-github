@@ -46,18 +46,18 @@ func main() {
 	client := github.NewClient(httpClient)
 
 	// Make a request (Get Rate Limits is public and cheap)
-	limits, resp, err := client.RateLimits(context.Background())
+	limits, resp, err := client.RateLimit.Get(context.Background())
 	if err != nil {
 		log.Printf("Error fetching rate limits: %v", err)
 	} else {
-		fmt.Printf("Core Rate Limit: %d/%d (Resets at %v)\n", 
-			limits.GetCore().Remaining, 
-			limits.GetCore().Limit, 
+		fmt.Printf("Core Rate Limit: %v/%v (Resets at %v)\n",
+			limits.GetCore().Remaining,
+			limits.GetCore().Limit,
 			limits.GetCore().Reset)
 	}
-    
-    // Check if we captured attributes in response
-    if resp != nil {
-        fmt.Printf("Response Status: %v\n", resp.Status)
-    }
+
+	// Check if we captured attributes in response
+	if resp != nil {
+		fmt.Printf("Response Status: %v\n", resp.Status)
+	}
 }
