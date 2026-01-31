@@ -71,7 +71,8 @@ file.
 
 5. Do your best to have [well-formed commit messages][] for each change. This
    provides consistency throughout the project, and ensures that commit messages
-   are able to be formatted properly by various git tools.
+   are able to be formatted properly by various git tools. See next section for
+   more details.
 
 6. Finally, push the commits to your fork and submit a [pull request][].
    **NOTE:** Please do not use force-push on PRs in this repo, as it makes it
@@ -89,6 +90,47 @@ file.
 [pull request]: https://help.github.com/articles/creating-a-pull-request
 [monitored by codecov.io]: https://codecov.io/gh/google/go-github
 [REVIEWERS]: ./REVIEWERS
+
+### Use proper commit messages and PR titles
+
+Effective Git commit messages and subject lines hold immense significance in comprehending alterations and enhancing the code's maintainability.
+
+Always commit the changes to your fork and push them to the corresponding original repo by sending a Pull Request (PR). Follow the best practices for writing commit messages/PR titles.
+
+1. Limit the subject line to 50 characters
+2. Capitalize the subject line
+3. Do not end the subject line with a period
+4. Use the imperative mood in the subject line. A properly formed Git commit subject line should always be able to complete the following sentence:
+   If applied, this commit will `<your subject line here>`
+
+(This above advice can be found all over the internet, but was copied from [here](https://learn-ballerina.github.io/best_practices/use_proper_titles.html).)
+
+5. You may optionally prefix the PR title with the type of PR it is, in lower case,
+   followed by a colon. For example, `feat:`, `chore:`, `fix:`, `docs:`, etc.
+   For breaking API changes, add an exclamation point.
+   For example, `feat!:`, `chore!:`, `fix!:`, etc.
+
+### Windows users
+
+Use Git Bash as a terminal or WSL instead of PowerShell.
+
+To avoid [issues][] with a few linters and formatters within golangci-lint,
+make sure you check out files only with LF endings:
+
+```sh
+git config core.autocrlf false
+git config core.eol lf
+```
+
+To convert an existing cloned repo from CRLF to LF, use the following commands:
+
+```sh
+git config core.autocrlf false
+git rm --cached -r .
+git reset --hard HEAD
+```
+
+[issues]: https://github.com/golangci/golangci-lint/discussions/5840
 
 ## Tips
 
@@ -235,7 +277,7 @@ Its subcommands are:
 The `script` directory has shell scripts that help with common development
 tasks.
 
-**script/fmt.sh** formats all go code in the repository.
+**script/fmt.sh** formats all Go code in the repository.
 
 **script/generate.sh** runs code generators and `go mod tidy` on all modules. With
 `--check` it checks that the generated files are current.
