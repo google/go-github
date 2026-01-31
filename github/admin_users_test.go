@@ -94,7 +94,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 		testMethod(t, r, "POST")
 		testBody(t, r, `{"scopes":["repo"]}`+"\n")
 		fmt.Fprint(w, `{"id": 1234,
-		"url": "https://git.company.com/api/v3/authorizations/1234",
+		"url": "https://example.com/authorizations",
 		"app": {
 		  "name": "GitHub Site Administrator",
 		  "url": "https://docs.github.com/en/rest/enterprise/users/",
@@ -123,7 +123,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 	date := Timestamp{Time: time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	want := &UserAuthorization{
 		ID:  Ptr(int64(1234)),
-		URL: Ptr("https://git.company.com/api/v3/authorizations/1234"),
+		URL: Ptr("https://example.com/authorizations"),
 		App: &OAuthAPP{
 			Name:     Ptr("GitHub Site Administrator"),
 			URL:      Ptr("https://docs.github.com/en/rest/enterprise/users/"),

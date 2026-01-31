@@ -296,7 +296,7 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
 		},
 		References: []*AdvisoryReference{
 			{
-				URL: Ptr("https://nvd.nist.gov/vuln/detail/CVE-2018-6188"),
+				URL: Ptr("https://example.com/vuln/detail/CVE-2018-6188"),
 			},
 			{
 				URL: Ptr("https://github.com/advisories/GHSA-rf4j-j272-fj86"),
@@ -372,7 +372,7 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
       ],
       "references": [
         {
-          "url": "https://nvd.nist.gov/vuln/detail/CVE-2018-6188"
+          "url": "https://example.com/vuln/detail/CVE-2018-6188"
         },
         {
           "url": "https://github.com/advisories/GHSA-rf4j-j272-fj86"
