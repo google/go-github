@@ -14,3 +14,5 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/google/go-querystring v1.2.0 // indirect
 )
+
+replace github.com/google/go-github/v82 => ../
