@@ -55,7 +55,6 @@ func NewTransport(base http.RoundTripper, opts ...Option) *Transport {
 func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	ctx := req.Context()
 	spanName := fmt.Sprintf("github/%v", req.Method)
-	
 	// Start Span
 	ctx, span := t.Tracer.Start(ctx, spanName, trace.WithSpanKind(trace.SpanKindClient))
 	defer span.End()
