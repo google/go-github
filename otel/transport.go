@@ -79,7 +79,6 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 
 	// Capture response attributes
 	span.SetAttributes(attribute.Int("http.status_code", resp.StatusCode))
-	
 	// Capture GitHub Specifics
 	if limit := resp.Header.Get("X-Ratelimit-Limit"); limit != "" {
 		if v, err := strconv.Atoi(limit); err == nil {
