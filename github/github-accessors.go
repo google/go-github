@@ -6630,6 +6630,158 @@ func (c *CostCenter) GetState() string {
 	return *c.State
 }
 
+// GetCluster returns the Cluster field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactDeploymentRequest) GetCluster() string {
+	if c == nil || c.Cluster == nil {
+		return ""
+	}
+	return *c.Cluster
+}
+
+// GetDeploymentName returns the DeploymentName field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactDeploymentRequest) GetDeploymentName() string {
+	if c == nil || c.DeploymentName == nil {
+		return ""
+	}
+	return *c.DeploymentName
+}
+
+// GetDigest returns the Digest field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactDeploymentRequest) GetDigest() string {
+	if c == nil || c.Digest == nil {
+		return ""
+	}
+	return *c.Digest
+}
+
+// GetGithubRepository returns the GithubRepository field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactDeploymentRequest) GetGithubRepository() string {
+	if c == nil || c.GithubRepository == nil {
+		return ""
+	}
+	return *c.GithubRepository
+}
+
+// GetLogicalEnvironment returns the LogicalEnvironment field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactDeploymentRequest) GetLogicalEnvironment() string {
+	if c == nil || c.LogicalEnvironment == nil {
+		return ""
+	}
+	return *c.LogicalEnvironment
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactDeploymentRequest) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetPhysicalEnvironment returns the PhysicalEnvironment field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactDeploymentRequest) GetPhysicalEnvironment() string {
+	if c == nil || c.PhysicalEnvironment == nil {
+		return ""
+	}
+	return *c.PhysicalEnvironment
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactDeploymentRequest) GetStatus() string {
+	if c == nil || c.Status == nil {
+		return ""
+	}
+	return *c.Status
+}
+
+// GetTags returns the Tags map if it's non-nil, an empty map otherwise.
+func (c *CreateArtifactDeploymentRequest) GetTags() map[string]string {
+	if c == nil || c.Tags == nil {
+		return map[string]string{}
+	}
+	return c.Tags
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactDeploymentRequest) GetVersion() string {
+	if c == nil || c.Version == nil {
+		return ""
+	}
+	return *c.Version
+}
+
+// GetArtifactURL returns the ArtifactURL field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactStorageRequest) GetArtifactURL() string {
+	if c == nil || c.ArtifactURL == nil {
+		return ""
+	}
+	return *c.ArtifactURL
+}
+
+// GetDigest returns the Digest field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactStorageRequest) GetDigest() string {
+	if c == nil || c.Digest == nil {
+		return ""
+	}
+	return *c.Digest
+}
+
+// GetGithubRepository returns the GithubRepository field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactStorageRequest) GetGithubRepository() string {
+	if c == nil || c.GithubRepository == nil {
+		return ""
+	}
+	return *c.GithubRepository
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactStorageRequest) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactStorageRequest) GetPath() string {
+	if c == nil || c.Path == nil {
+		return ""
+	}
+	return *c.Path
+}
+
+// GetRegistryURL returns the RegistryURL field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactStorageRequest) GetRegistryURL() string {
+	if c == nil || c.RegistryURL == nil {
+		return ""
+	}
+	return *c.RegistryURL
+}
+
+// GetRepository returns the Repository field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactStorageRequest) GetRepository() string {
+	if c == nil || c.Repository == nil {
+		return ""
+	}
+	return *c.Repository
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactStorageRequest) GetStatus() string {
+	if c == nil || c.Status == nil {
+		return ""
+	}
+	return *c.Status
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (c *CreateArtifactStorageRequest) GetVersion() string {
+	if c == nil || c.Version == nil {
+		return ""
+	}
+	return *c.Version
+}
+
 // GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
 func (c *CreateCheckRunOptions) GetCompletedAt() Timestamp {
 	if c == nil || c.CompletedAt == nil {

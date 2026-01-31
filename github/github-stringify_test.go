@@ -577,6 +577,45 @@ func TestContributorStats_String(t *testing.T) {
 	}
 }
 
+func TestCreateArtifactDeploymentRequest_String(t *testing.T) {
+	t.Parallel()
+	v := CreateArtifactDeploymentRequest{
+		Digest:              Ptr(""),
+		Name:                Ptr(""),
+		Version:             Ptr(""),
+		Status:              Ptr(""),
+		LogicalEnvironment:  Ptr(""),
+		PhysicalEnvironment: Ptr(""),
+		Cluster:             Ptr(""),
+		DeploymentName:      Ptr(""),
+		RuntimeRisks:        []string{""},
+		GithubRepository:    Ptr(""),
+	}
+	want := `github.CreateArtifactDeploymentRequest{Digest:"", Name:"", Version:"", Status:"", LogicalEnvironment:"", PhysicalEnvironment:"", Cluster:"", DeploymentName:"", RuntimeRisks:[""], GithubRepository:""}`
+	if got := v.String(); got != want {
+		t.Errorf("CreateArtifactDeploymentRequest.String = %v, want %v", got, want)
+	}
+}
+
+func TestCreateArtifactStorageRequest_String(t *testing.T) {
+	t.Parallel()
+	v := CreateArtifactStorageRequest{
+		Name:             Ptr(""),
+		Digest:           Ptr(""),
+		Version:          Ptr(""),
+		ArtifactURL:      Ptr(""),
+		Path:             Ptr(""),
+		RegistryURL:      Ptr(""),
+		Repository:       Ptr(""),
+		Status:           Ptr(""),
+		GithubRepository: Ptr(""),
+	}
+	want := `github.CreateArtifactStorageRequest{Name:"", Digest:"", Version:"", ArtifactURL:"", Path:"", RegistryURL:"", Repository:"", Status:"", GithubRepository:""}`
+	if got := v.String(); got != want {
+		t.Errorf("CreateArtifactStorageRequest.String = %v, want %v", got, want)
+	}
+}
+
 func TestDependabotSecurityUpdates_String(t *testing.T) {
 	t.Parallel()
 	v := DependabotSecurityUpdates{

@@ -17,7 +17,7 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactDeploymentRecord{
+	input := &CreateArtifactDeploymentRequest{
 		Name:               Ptr("test-n"),
 		Digest:             Ptr("sha256:123"),
 		Version:            Ptr("v1.0.0"),
@@ -30,6 +30,8 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 			"data-access": "sensitive",
 		},
 	}
+
+	_ = input.String()
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -47,6 +49,10 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 		TotalCount:        Ptr(1),
 		DeploymentRecords: []*ArtifactDeploymentRecord{{ID: Ptr(int64(1))}},
 	}
+
+	_ = want.String()
+	_ = want.DeploymentRecords[0].String()
+
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateArtifactDeploymentRecord returned %+v, want %+v", got, want)
 	}
@@ -59,7 +65,7 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 	input := &ClusterDeploymentRecordsRequest{
 		LogicalEnvironment:  Ptr("prod"),
 		PhysicalEnvironment: Ptr("pacific-east"),
-		Deployments: []*ArtifactDeploymentRecord{
+		Deployments: []*CreateArtifactDeploymentRequest{
 			{
 				Name:    Ptr("awesome-image"),
 				Version: Ptr("v2.0"),
@@ -67,6 +73,8 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 			},
 		},
 	}
+
+	_ = input.String()
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record/cluster/c1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -93,7 +101,7 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactStorageRecord{
+	input := &CreateArtifactStorageRequest{
 		Name:             Ptr("libfoo"),
 		Version:          Ptr("v1.2.3"),
 		Path:             Ptr("target/libs"),
@@ -101,6 +109,8 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 		RegistryURL:      Ptr("https://reg.example.com"),
 		Status:           Ptr("active"),
 	}
+
+	_ = input.String()
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/storage-record", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -118,6 +128,10 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 		TotalCount:     Ptr(1),
 		StorageRecords: []*ArtifactStorageRecord{{Name: Ptr("libfoo")}},
 	}
+
+	_ = want.String()
+	_ = want.StorageRecords[0].String()
+
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateArtifactStorageRecord returned %+v, want %+v", got, want)
 	}

@@ -8668,6 +8668,215 @@ func TestCostCenter_GetState(tt *testing.T) {
 	c.GetState()
 }
 
+func TestCreateArtifactDeploymentRequest_GetCluster(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactDeploymentRequest{Cluster: &zeroValue}
+	c.GetCluster()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetCluster()
+	c = nil
+	c.GetCluster()
+}
+
+func TestCreateArtifactDeploymentRequest_GetDeploymentName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactDeploymentRequest{DeploymentName: &zeroValue}
+	c.GetDeploymentName()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetDeploymentName()
+	c = nil
+	c.GetDeploymentName()
+}
+
+func TestCreateArtifactDeploymentRequest_GetDigest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactDeploymentRequest{Digest: &zeroValue}
+	c.GetDigest()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetDigest()
+	c = nil
+	c.GetDigest()
+}
+
+func TestCreateArtifactDeploymentRequest_GetGithubRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactDeploymentRequest{GithubRepository: &zeroValue}
+	c.GetGithubRepository()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetGithubRepository()
+	c = nil
+	c.GetGithubRepository()
+}
+
+func TestCreateArtifactDeploymentRequest_GetLogicalEnvironment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactDeploymentRequest{LogicalEnvironment: &zeroValue}
+	c.GetLogicalEnvironment()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetLogicalEnvironment()
+	c = nil
+	c.GetLogicalEnvironment()
+}
+
+func TestCreateArtifactDeploymentRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactDeploymentRequest{Name: &zeroValue}
+	c.GetName()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateArtifactDeploymentRequest_GetPhysicalEnvironment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactDeploymentRequest{PhysicalEnvironment: &zeroValue}
+	c.GetPhysicalEnvironment()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetPhysicalEnvironment()
+	c = nil
+	c.GetPhysicalEnvironment()
+}
+
+func TestCreateArtifactDeploymentRequest_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactDeploymentRequest{Status: &zeroValue}
+	c.GetStatus()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetStatus()
+	c = nil
+	c.GetStatus()
+}
+
+func TestCreateArtifactDeploymentRequest_GetTags(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]string{}
+	c := &CreateArtifactDeploymentRequest{Tags: zeroValue}
+	c.GetTags()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetTags()
+	c = nil
+	c.GetTags()
+}
+
+func TestCreateArtifactDeploymentRequest_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactDeploymentRequest{Version: &zeroValue}
+	c.GetVersion()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetVersion()
+	c = nil
+	c.GetVersion()
+}
+
+func TestCreateArtifactStorageRequest_GetArtifactURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactStorageRequest{ArtifactURL: &zeroValue}
+	c.GetArtifactURL()
+	c = &CreateArtifactStorageRequest{}
+	c.GetArtifactURL()
+	c = nil
+	c.GetArtifactURL()
+}
+
+func TestCreateArtifactStorageRequest_GetDigest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactStorageRequest{Digest: &zeroValue}
+	c.GetDigest()
+	c = &CreateArtifactStorageRequest{}
+	c.GetDigest()
+	c = nil
+	c.GetDigest()
+}
+
+func TestCreateArtifactStorageRequest_GetGithubRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactStorageRequest{GithubRepository: &zeroValue}
+	c.GetGithubRepository()
+	c = &CreateArtifactStorageRequest{}
+	c.GetGithubRepository()
+	c = nil
+	c.GetGithubRepository()
+}
+
+func TestCreateArtifactStorageRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactStorageRequest{Name: &zeroValue}
+	c.GetName()
+	c = &CreateArtifactStorageRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateArtifactStorageRequest_GetPath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactStorageRequest{Path: &zeroValue}
+	c.GetPath()
+	c = &CreateArtifactStorageRequest{}
+	c.GetPath()
+	c = nil
+	c.GetPath()
+}
+
+func TestCreateArtifactStorageRequest_GetRegistryURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactStorageRequest{RegistryURL: &zeroValue}
+	c.GetRegistryURL()
+	c = &CreateArtifactStorageRequest{}
+	c.GetRegistryURL()
+	c = nil
+	c.GetRegistryURL()
+}
+
+func TestCreateArtifactStorageRequest_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactStorageRequest{Repository: &zeroValue}
+	c.GetRepository()
+	c = &CreateArtifactStorageRequest{}
+	c.GetRepository()
+	c = nil
+	c.GetRepository()
+}
+
+func TestCreateArtifactStorageRequest_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactStorageRequest{Status: &zeroValue}
+	c.GetStatus()
+	c = &CreateArtifactStorageRequest{}
+	c.GetStatus()
+	c = nil
+	c.GetStatus()
+}
+
+func TestCreateArtifactStorageRequest_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateArtifactStorageRequest{Version: &zeroValue}
+	c.GetVersion()
+	c = &CreateArtifactStorageRequest{}
+	c.GetVersion()
+	c = nil
+	c.GetVersion()
+}
+
 func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp

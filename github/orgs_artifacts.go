@@ -31,6 +31,23 @@ type ArtifactDeploymentRecord struct {
 
 func (r ArtifactDeploymentRecord) String() string { return Stringify(r) }
 
+// CreateArtifactDeploymentRequest represents the request body for creating a deployment record.
+type CreateArtifactDeploymentRequest struct {
+	Digest              *string           `json:"digest,omitempty"`
+	Name                *string           `json:"name,omitempty"`
+	Version             *string           `json:"version,omitempty"`
+	Status              *string           `json:"status,omitempty"`
+	LogicalEnvironment  *string           `json:"logical_environment,omitempty"`
+	PhysicalEnvironment *string           `json:"physical_environment,omitempty"`
+	Cluster             *string           `json:"cluster,omitempty"`
+	DeploymentName      *string           `json:"deployment_name,omitempty"`
+	Tags                map[string]string `json:"tags,omitempty"`
+	RuntimeRisks        []string          `json:"runtime_risks,omitempty"`
+	GithubRepository    *string           `json:"github_repository,omitempty"`
+}
+
+func (r CreateArtifactDeploymentRequest) String() string { return Stringify(r) }
+
 // ArtifactDeploymentResponse represents the response for deployment records.
 type ArtifactDeploymentResponse struct {
 	TotalCount        *int                        `json:"total_count,omitempty"`
@@ -41,9 +58,9 @@ func (r ArtifactDeploymentResponse) String() string { return Stringify(r) }
 
 // ClusterDeploymentRecordsRequest represents the request body for setting cluster deployment records.
 type ClusterDeploymentRecordsRequest struct {
-	LogicalEnvironment  *string                     `json:"logical_environment,omitempty"`
-	PhysicalEnvironment *string                     `json:"physical_environment,omitempty"`
-	Deployments         []*ArtifactDeploymentRecord `json:"deployments,omitempty"`
+	LogicalEnvironment  *string                            `json:"logical_environment,omitempty"`
+	PhysicalEnvironment *string                            `json:"physical_environment,omitempty"`
+	Deployments         []*CreateArtifactDeploymentRequest `json:"deployments,omitempty"`
 }
 
 func (r ClusterDeploymentRecordsRequest) String() string { return Stringify(r) }
@@ -66,6 +83,21 @@ type ArtifactStorageRecord struct {
 
 func (r ArtifactStorageRecord) String() string { return Stringify(r) }
 
+// CreateArtifactStorageRequest represents the request body for creating a storage record.
+type CreateArtifactStorageRequest struct {
+	Name             *string `json:"name,omitempty"`
+	Digest           *string `json:"digest,omitempty"`
+	Version          *string `json:"version,omitempty"`
+	ArtifactURL      *string `json:"artifact_url,omitempty"`
+	Path             *string `json:"path,omitempty"`
+	RegistryURL      *string `json:"registry_url,omitempty"`
+	Repository       *string `json:"repository,omitempty"`
+	Status           *string `json:"status,omitempty"`
+	GithubRepository *string `json:"github_repository,omitempty"`
+}
+
+func (r CreateArtifactStorageRequest) String() string { return Stringify(r) }
+
 // ArtifactStorageResponse represents the response for storage records.
 type ArtifactStorageResponse struct {
 	TotalCount     *int                     `json:"total_count,omitempty"`
@@ -79,7 +111,7 @@ func (r ArtifactStorageResponse) String() string { return Stringify(r) }
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#create-an-artifact-deployment-record
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/deployment-record
-func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Context, org string, record *ArtifactDeploymentRecord) (*ArtifactDeploymentResponse, *Response, error) {
+func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Context, org string, record *CreateArtifactDeploymentRequest) (*ArtifactDeploymentResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/metadata/deployment-record", org)
 	req, err := s.client.NewRequest("POST", u, record)
 	if err != nil {
@@ -111,7 +143,7 @@ func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#create-artifact-metadata-storage-record
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/storage-record
-func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, org string, record *ArtifactStorageRecord) (*ArtifactStorageResponse, *Response, error) {
+func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, org string, record *CreateArtifactStorageRequest) (*ArtifactStorageResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/metadata/storage-record", org)
 	req, err := s.client.NewRequest("POST", u, record)
 	if err != nil {
