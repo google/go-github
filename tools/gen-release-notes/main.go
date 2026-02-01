@@ -38,8 +38,8 @@ func main() {
 	priorRelease := *sinceTag
 	if priorRelease == "" {
 		priorRelease = getPriorRelease()
+		log.Printf("Prior release: %v", priorRelease)
 	}
-	log.Printf("Prior release: %v", priorRelease)
 
 	newChanges := newChangesSinceRelease(priorRelease)
 
