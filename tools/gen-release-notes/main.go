@@ -29,6 +29,7 @@ var (
 	sinceTag = flag.String("tag", "", "List all changes since this tag (e.g. 'v76.0.0')")
 
 	descriptionRE = regexp.MustCompile(`^\* (.*?\((#[^\)]+)\))`)
+	releaseTagRE  = regexp.MustCompile(`[^a-zA-Z0-9.\-_]+`)
 )
 
 func main() {
@@ -120,21 +121,21 @@ func genRefLines(breaking, nonBreaking []string) (ref, refNon []string) {
 }
 
 func runCommand(cmdArgs []string) string {
-	// #nosec G204
-	cmd := exec.Command(cmdArgs[0], cmdArgs[1:]...)
+	cmd := exec.Command(cmdArgs[0], cmdArgs[1:]...) //nolint:gosec
 	out := &bytes.Buffer{}
 	cmd.Stdout = out
 	cmd.Stderr = os.Stderr
 
 	log.Printf("Running command: %v", strings.Join(cmdArgs, " "))
 	if err := cmd.Run(); err != nil {
-		log.Fatalf("unable to run command: %v", err)
+		log.Fatalf("command failed: %v", err)
 	}
 
 	return strings.TrimSpace(out.String())
 }
 
 func newChangesSinceRelease(priorRelease string) string {
+	priorRelease = releaseTagRE.ReplaceAllString(priorRelease, "")
 	cmdArgs := []string{"git", "log", priorRelease + "..", "--no-color"}
 	return runCommand(cmdArgs)
 }
