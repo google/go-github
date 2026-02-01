@@ -3,7 +3,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// This example demonstrates ...
+// This example demonstrates how to use the otel transport to instrument
+// the go-github client with OpenTelemetry tracing.
 package main
 
 import (
