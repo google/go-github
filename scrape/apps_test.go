@@ -108,7 +108,7 @@ func Test_CreateApp(t *testing.T) {
 		t.Fatalf("CreateApp: %v", err)
 	}
 	if got, want := resp.StatusCode, http.StatusCreated; got != want {
-		t.Errorf("CreateApp returned status code %d, want %d", got, want)
+		t.Errorf("CreateApp returned status code %v, want %v", got, want)
 	}
 }
 
