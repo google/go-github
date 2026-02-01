@@ -40,8 +40,8 @@ const (
 	headerRateLimit     = "X-Ratelimit-Limit"
 	headerRateRemaining = "X-Ratelimit-Remaining"
 	headerRateUsed      = "X-Ratelimit-Used"
-	headerRateReset     = "X-Ratelimit-Reset"
-	headerRateResource  = "X-Ratelimit-Resource"
+	HeaderRateReset     = "X-Ratelimit-Reset"
+	HeaderRateResource  = "X-Ratelimit-Resource"
 	headerOTP           = "X-Github-Otp"
 	headerRetryAfter    = "Retry-After"
 
@@ -794,12 +794,12 @@ func parseRate(r *http.Response) Rate {
 	if used := r.Header.Get(headerRateUsed); used != "" {
 		rate.Used, _ = strconv.Atoi(used)
 	}
-	if reset := r.Header.Get(headerRateReset); reset != "" {
+	if reset := r.Header.Get(HeaderRateReset); reset != "" {
 		if v, _ := strconv.ParseInt(reset, 10, 64); v != 0 {
 			rate.Reset = Timestamp{time.Unix(v, 0)}
 		}
 	}
-	if resource := r.Header.Get(headerRateResource); resource != "" {
+	if resource := r.Header.Get(HeaderRateResource); resource != "" {
 		rate.Resource = resource
 	}
 	return rate
@@ -820,7 +820,7 @@ func parseSecondaryRate(r *http.Response) *time.Duration {
 	// According to GitHub support, endpoints might return x-ratelimit-reset instead,
 	// as an integer which represents the number of seconds since epoch UTC,
 	// representing the time to resume making requests.
-	if v := r.Header.Get(headerRateReset); v != "" {
+	if v := r.Header.Get(HeaderRateReset); v != "" {
 		secondsSinceEpoch, _ := strconv.ParseInt(v, 10, 64) // Error handling is noop.
 		retryAfter := time.Until(time.Unix(secondsSinceEpoch, 0))
 		return &retryAfter
