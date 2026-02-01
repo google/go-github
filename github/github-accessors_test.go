@@ -15742,6 +15742,17 @@ func TestInstallationPermissions_GetOrganizationCodespacesSettings(tt *testing.T
 	i.GetOrganizationCodespacesSettings()
 }
 
+func TestInstallationPermissions_GetOrganizationCopilotMetrics(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationCopilotMetrics: &zeroValue}
+	i.GetOrganizationCopilotMetrics()
+	i = &InstallationPermissions{}
+	i.GetOrganizationCopilotMetrics()
+	i = nil
+	i.GetOrganizationCopilotMetrics()
+}
+
 func TestInstallationPermissions_GetOrganizationCopilotSeatManagement(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
