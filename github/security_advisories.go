@@ -190,14 +190,14 @@ func (s *SecurityAdvisoriesService) CreateTemporaryPrivateFork(ctx context.Conte
 // GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories-for-an-organization
 //
 //meta:operation GET /orgs/{org}/security-advisories
-func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx context.Context, org string, opts *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
+func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx context.Context, org string, opts *ListRepositorySecurityAdvisoriesOptions, reqOpts ...RequestOption) ([]*SecurityAdvisory, *Response, error) {
 	url := fmt.Sprintf("orgs/%v/security-advisories", org)
 	url, err := addOptions(url, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest("GET", url, nil, reqOpts...)
 	if err != nil {
 		return nil, nil, err
 	}
