@@ -3,47 +3,44 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// gen-release-notes first reads the web page https://github.com/google/go-github
-// to determine what the prior release was, (e.g. "v76.0.0")
-// then reads https://github.com/google/go-github/compare/commit-list?range=${PRIOR_RELEASE}...master
-// to find out what changes were made since then.
+// gen-release-notes calls `git` to determine what the prior release was, (e.g. "v76.0.0")
+// then calls `git` again to find out what changes were made since then.
 //
 // Finally, it writes the release notes to stdout, summarizing the
 // breaking and non-breaking changes since that release.
+//
+// Usage:
+//
+//	go run tools/gen-release-notes/main.go [--tag v76.0.0]
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
+	"os"
+	"os/exec"
 	"regexp"
 	"strings"
 )
 
-const (
-	baseWebURL = "https://github.com/google/go-github"
-
-	// fragile, but works for now.
-	detailsDiv = `<div class="flex-auto min-width-0 js-details-container Details">`
-)
-
 var (
-	releaseRE     = regexp.MustCompile(`<span [^>]+>([^<]+)</span>\s*<span title="Label: Latest"[^>]*>`)
-	linkPrimaryRE = regexp.MustCompile(`(?ms)(.*?<a class="Link--primary[^>]+>)`)
-	startAvatarRE = regexp.MustCompile(`(?ms)(<div class="AvatarStack)`)
-	bracketsRE    = regexp.MustCompile(`(?ms)(<[^>]+>)`)
-	newlinesRE    = regexp.MustCompile(`(?m)(\n+)`)
+	sinceTag = flag.String("tag", "", "List all changes since this tag (e.g. 'v76.0.0')")
+
 	descriptionRE = regexp.MustCompile(`^\* (.*?\((#[^\)]+)\))`)
+	releaseTagRE  = regexp.MustCompile(`[^a-zA-Z0-9.\-_]+`)
 )
 
 func main() {
 	log.SetFlags(0)
 	flag.Parse()
 
-	priorRelease := getPriorRelease()
-	log.Printf("Prior release: %v", priorRelease)
+	priorRelease := *sinceTag
+	if priorRelease == "" {
+		priorRelease = getPriorRelease()
+		log.Printf("Prior release: %v", priorRelease)
+	}
 
 	newChanges := newChangesSinceRelease(priorRelease)
 
@@ -54,13 +51,6 @@ func main() {
 }
 
 func genReleaseNotes(text string) string {
-	// strip everything before first detailsDiv:
-	idx := strings.Index(text, detailsDiv)
-	if idx < 0 {
-		log.Fatal("Could not find detailsDiv")
-	}
-	text = text[idx:]
-
 	allLines := splitIntoPRs(text)
 	fullBreakingLines, fullNonBreakingLines := splitBreakingLines(allLines)
 	refBreakingLines, refNonBreakingLines := genRefLines(fullBreakingLines, fullNonBreakingLines)
@@ -73,7 +63,7 @@ func genReleaseNotes(text string) string {
 }
 
 func splitIntoPRs(text string) []string {
-	parts := strings.Split(text, detailsDiv)
+	parts := strings.Split("\n"+text, "\ncommit ")
 	if len(parts) < 2 {
 		log.Fatal("unable to find PRs")
 	}
@@ -82,101 +72,25 @@ func splitIntoPRs(text string) []string {
 		if part == "" {
 			continue
 		}
-		newDiv := matchDivs(part)
-		for {
-			oldDiv := newDiv
-			newDiv = stripPRHTML(oldDiv)
-			if newDiv == oldDiv {
-				break
+		lines := strings.Split(part, "\n")
+		if len(lines) < 5 { // commit, Author:, Date:, blank, msg
+			continue
+		}
+		var newPR []string
+		for _, line := range lines[1:] {
+			line = strings.TrimSpace(line)
+			if line == "" || strings.HasPrefix(line, "Author: ") || strings.HasPrefix(line, "Date: ") {
+				continue
+			}
+			if len(newPR) == 0 {
+				newPR = append(newPR, "* "+line)
+			} else {
+				newPR = append(newPR, "  "+line)
 			}
 		}
-		prs = append(prs, newDiv)
+		prs = append(prs, strings.Join(newPR, "\n"))
 	}
 	return prs
-}
-
-func stripPRHTML(text string) string {
-	_, innerText := getTagSequence(text)
-	if before, _, ok := strings.Cut(text, "</a>"); ok {
-		newText := before + strings.Join(innerText, "")
-		newText = strings.ReplaceAll(newText, "…", "")
-		newText = newlinesRE.ReplaceAllString(newText, "\n  ")
-		return newText
-	}
-	return text
-}
-
-func getTagSequence(text string) (tagSeq, innerText []string) {
-	m := bracketsRE.FindAllStringIndex(text, -1)
-	var lastEnd int
-	for _, pair := range m {
-		start := pair[0]
-		end := pair[1] - 1
-		if lastEnd > 0 && start > lastEnd+1 {
-			rawText := text[lastEnd+1 : start]
-			s := strings.TrimSpace(rawText)
-			switch s {
-			case "", "&hellip;": // skip
-			default:
-				// Special case:
-				if strings.HasPrefix(rawText, "BREAKING") {
-					rawText = "\n\n" + rawText
-				}
-				innerText = append(innerText, rawText)
-			}
-		}
-		lastEnd = end
-		s := text[start+1 : end]
-		if s == "code" {
-			innerText = append(innerText, " `")
-			continue
-		}
-		if s == "/code" {
-			innerText = append(innerText, "` ")
-			continue
-		}
-		if s[0] == '/' {
-			tagSeq = append(tagSeq, s)
-			continue
-		}
-		if before, _, ok := strings.Cut(s, " "); ok {
-			tagSeq = append(tagSeq, before)
-		} else {
-			tagSeq = append(tagSeq, s)
-		}
-	}
-	return tagSeq, innerText
-}
-
-func matchDivs(text string) string {
-	chunks := strings.Split(text, `</div>`)
-	var divCount int
-	var lastChunk int
-	for i, chunk := range chunks {
-		chunks[i] = strings.TrimSpace(chunks[i])
-		divsInChunk := strings.Count(chunk, `<div `)
-		divCount += divsInChunk
-		lastChunk++
-		if lastChunk == divCount {
-			newDivs := strings.Join(chunks[:lastChunk], "")
-			return stripLinkPrimary(newDivs)
-		}
-	}
-	return ""
-}
-
-func stripLinkPrimary(text string) string {
-	m := linkPrimaryRE.FindStringSubmatch(text)
-	if len(m) != 2 {
-		log.Fatalf("unable to find link primary in: '%v'", text)
-	}
-	newText := strings.TrimSpace(text[len(m[0]):])
-	// As a special case, trim off all the Avatar stuff
-	m2 := startAvatarRE.FindStringIndex(newText)
-	if len(m2) > 0 {
-		newText = newText[:m2[0]]
-	}
-	return "* " + newText
 }
 
 func splitBreakingLines(allLines []string) (breaking, nonBreaking []string) {
@@ -206,46 +120,33 @@ func genRefLines(breaking, nonBreaking []string) (ref, refNon []string) {
 	return ref, refNon
 }
 
+func runCommand(cmdArgs []string) string {
+	cmd := exec.Command(cmdArgs[0], cmdArgs[1:]...) //nolint:gosec
+	out := &bytes.Buffer{}
+	cmd.Stdout = out
+	cmd.Stderr = os.Stderr
+
+	log.Printf("Running command: %v", strings.Join(cmdArgs, " "))
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("command failed: %v", err)
+	}
+
+	return strings.TrimSpace(out.String())
+}
+
 func newChangesSinceRelease(priorRelease string) string {
-	url := fmt.Sprintf("%v/compare/commit-list?range=%v...master", baseWebURL, priorRelease)
-	resp, err := http.Get(url) //nolint:gosec
-	must(err)
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	must(err)
-
-	return string(body)
+	priorRelease = releaseTagRE.ReplaceAllString(priorRelease, "")
+	cmdArgs := []string{"git", "log", priorRelease + "..", "--no-color"}
+	return runCommand(cmdArgs)
 }
 
 func getPriorRelease() string {
-	resp, err := http.Get(baseWebURL)
-	must(err)
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	must(err)
-
-	matches := releaseRE.FindStringSubmatch(string(body))
-	if len(matches) != 2 {
-		log.Fatal("could not find release info")
-	}
-
-	priorRelease := strings.TrimSpace(matches[1])
-	if priorRelease == "" {
-		log.Fatal("found empty prior release version")
-	}
-
-	return priorRelease
+	cmdArgs := []string{"git", "describe", "--tags", "--abbrev=0"}
+	return runCommand(cmdArgs)
 }
 
-func must(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-const releaseNotesFmt = `This release contains the following breaking API changes:
+const releaseNotesFmt = `
+This release contains the following breaking API changes:
 
 %v
 
