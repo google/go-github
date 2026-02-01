@@ -24,7 +24,7 @@ type mockTransport struct {
 	Err      error
 }
 
-func (m *mockTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+func (m *mockTransport) RoundTrip(_ *http.Request) (*http.Response, error) {
 	if m.Err != nil {
 		return nil, m.Err
 	}
@@ -36,6 +36,7 @@ func (m *mockTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 }
 
 func TestNewTransport_Defaults(t *testing.T) {
+	t.Parallel()
 	transport := NewTransport(nil)
 	if transport.Base != http.DefaultTransport {
 		t.Error("NewTransport(nil) should result in http.DefaultTransport")
@@ -49,6 +50,7 @@ func TestNewTransport_Defaults(t *testing.T) {
 }
 
 func TestRoundTrip_Spans(t *testing.T) {
+	t.Parallel()
 	// Setup Trace Provider
 	exporter := tracetest.NewInMemoryExporter()
 	tp := trace.NewTracerProvider(trace.WithSyncer(exporter))
@@ -85,7 +87,7 @@ func TestRoundTrip_Spans(t *testing.T) {
 
 	// Verify Name
 	if span.Name != "github/GET" {
-		t.Errorf("Expected span name 'github/GET', got '%s'", span.Name)
+		t.Errorf("Expected span name 'github/GET', got '%v'", span.Name)
 	}
 
 	// Verify Attributes
@@ -105,7 +107,7 @@ func TestRoundTrip_Spans(t *testing.T) {
 
 	for k, v := range expectedStringAttrs {
 		if got, ok := attrs[k]; !ok || got.AsString() != v {
-			t.Errorf("Expected attr '%s' = '%s', got '%v'", k, v, got)
+			t.Errorf("Expected attr '%v' = '%v', got '%v'", k, v, got)
 		}
 	}
 
@@ -117,12 +119,13 @@ func TestRoundTrip_Spans(t *testing.T) {
 
 	for k, v := range expectedIntAttrs {
 		if got, ok := attrs[k]; !ok || got.AsInt64() != v {
-			t.Errorf("Expected attr '%s' = '%d', got '%v'", k, v, got)
+			t.Errorf("Expected attr '%v' = '%v', got '%v'", k, v, got)
 		}
 	}
 }
 
 func TestRoundTrip_Error(t *testing.T) {
+	t.Parallel()
 	exporter := tracetest.NewInMemoryExporter()
 	tp := trace.NewTracerProvider(trace.WithSyncer(exporter))
 
@@ -149,11 +152,12 @@ func TestRoundTrip_Error(t *testing.T) {
 		t.Errorf("Expected span status Error, got %v", span.Status.Code)
 	}
 	if span.Status.Description != "network failure" {
-		t.Errorf("Expected span description 'network failure', got '%s'", span.Status.Description)
+		t.Errorf("Expected span description 'network failure', got '%v'", span.Status.Description)
 	}
 }
 
 func TestRoundTrip_HTTPError(t *testing.T) {
+	t.Parallel()
 	exporter := tracetest.NewInMemoryExporter()
 	tp := trace.NewTracerProvider(trace.WithSyncer(exporter))
 
@@ -179,11 +183,12 @@ func TestRoundTrip_HTTPError(t *testing.T) {
 		t.Errorf("Expected span status Error, got %v", span.Status.Code)
 	}
 	if span.Status.Description != "HTTP 404" {
-		t.Errorf("Expected span description 'HTTP 404', got '%s'", span.Status.Description)
+		t.Errorf("Expected span description 'HTTP 404', got '%v'", span.Status.Description)
 	}
 }
 
 func TestWithMeterProvider(t *testing.T) {
+	t.Parallel()
 	meter := otel.GetMeterProvider()
 	transport := NewTransport(nil, WithMeterProvider(meter))
 	if transport.Meter == nil {
