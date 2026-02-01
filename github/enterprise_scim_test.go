@@ -82,7 +82,7 @@ func TestSCIMEnterpriseUsers_Marshal(t *testing.T) {
 			Emails: []*SCIMEnterpriseUserEmail{{
 				Primary: true,
 				Type:    "work",
-				Value:   "un1@email.com",
+				Value:   "un1@example.com",
 			}},
 			Roles: []*SCIMEnterpriseUserRole{{
 				Display: Ptr("rd1"),
@@ -125,7 +125,7 @@ func TestSCIMEnterpriseUsers_Marshal(t *testing.T) {
 			"emails": [{
 				"primary": true,
 				"type": "work",
-				"value": "un1@email.com"
+				"value": "un1@example.com"
 			}],
 			"roles": [{
 				"display": "rd1",
@@ -559,7 +559,7 @@ func TestEnterpriseService_SetProvisionedSCIMUser(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Users/7fce", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"John Doe","userName":"e123","emails":[{"value":"john@email.com","primary":true,"type":"work"}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`+"\n")
+		testBody(t, r, `{"displayName":"John Doe","userName":"e123","emails":[{"value":"john@example.com","primary":true,"type":"work"}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`+"\n")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
@@ -569,7 +569,7 @@ func TestEnterpriseService_SetProvisionedSCIMUser(t *testing.T) {
 			"userName": "e123",
 			"displayName": "John Doe",
 			"emails": [{
-				"value": "john@email.com",
+				"value": "john@example.com",
 				"type": "work",
 				"primary": true
 			}],
@@ -589,7 +589,7 @@ func TestEnterpriseService_SetProvisionedSCIMUser(t *testing.T) {
 		UserName:    "e123",
 		DisplayName: "John Doe",
 		Emails: []*SCIMEnterpriseUserEmail{{
-			Value:   "john@email.com",
+			Value:   "john@example.com",
 			Type:    "work",
 			Primary: true,
 		}},
@@ -609,7 +609,7 @@ func TestEnterpriseService_SetProvisionedSCIMUser(t *testing.T) {
 		UserName:    "e123",
 		DisplayName: "John Doe",
 		Emails: []*SCIMEnterpriseUserEmail{{
-			Value:   "john@email.com",
+			Value:   "john@example.com",
 			Type:    "work",
 			Primary: true,
 		}},
@@ -721,7 +721,7 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Users/7fce", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"schemas":["`+SCIMSchemasURINamespacesPatchOp+`"],"Operations":[{"op":"replace","path":"emails[type eq 'work'].value","value":"updatedEmail@email.com"},{"op":"replace","path":"name.familyName","value":"updatedFamilyName"}]}`+"\n")
+		testBody(t, r, `{"schemas":["`+SCIMSchemasURINamespacesPatchOp+`"],"Operations":[{"op":"replace","path":"emails[type eq 'work'].value","value":"updatedEmail@example.com"},{"op":"replace","path":"name.familyName","value":"updatedFamilyName"}]}`+"\n")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
@@ -737,7 +737,7 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 			},
 			"displayName": "John Doe",
 			"emails": [{
-				"value": "john@email.com",
+				"value": "john@example.com",
 				"type": "work",
 				"primary": true
 			}],
@@ -767,7 +767,7 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 			MiddleName: Ptr("X"),
 		},
 		Emails: []*SCIMEnterpriseUserEmail{{
-			Value:   "john@email.com",
+			Value:   "john@example.com",
 			Type:    "work",
 			Primary: true,
 		}},
@@ -789,7 +789,7 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 		Operations: []*SCIMEnterpriseAttributeOperation{{
 			Op:    "replace",
 			Path:  Ptr("emails[type eq 'work'].value"),
-			Value: Ptr("updatedEmail@email.com"),
+			Value: Ptr("updatedEmail@example.com"),
 		}, {
 			Op:    "replace",
 			Path:  Ptr("name.familyName"),
@@ -918,7 +918,7 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"DOE John","name":{"givenName":"John","familyName":"Doe","formatted":"John Doe"},"userName":"e123","emails":[{"value":"john@email.com","primary":true,"type":"work"}],"roles":[{"value":"User","primary":false}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`+"\n")
+		testBody(t, r, `{"displayName":"DOE John","name":{"givenName":"John","familyName":"Doe","formatted":"John Doe"},"userName":"e123","emails":[{"value":"john@example.com","primary":true,"type":"work"}],"roles":[{"value":"User","primary":false}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`+"\n")
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
@@ -933,7 +933,7 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 			},
 			"displayName": "DOE John",
 			"emails": [{
-				"value": "john@email.com",
+				"value": "john@example.com",
 				"type": "work",
 				"primary": true
 			}],
@@ -962,7 +962,7 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 			GivenName:  "John",
 		},
 		Emails: []*SCIMEnterpriseUserEmail{{
-			Value:   "john@email.com",
+			Value:   "john@example.com",
 			Type:    "work",
 			Primary: true,
 		}},
@@ -991,7 +991,7 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 		},
 		DisplayName: "DOE John",
 		Emails: []*SCIMEnterpriseUserEmail{{
-			Value:   "john@email.com",
+			Value:   "john@example.com",
 			Type:    "work",
 			Primary: true,
 		}},

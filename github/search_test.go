@@ -932,7 +932,7 @@ func TestLabelsSearchResult_Marshal(t *testing.T) {
 		Labels: []*LabelResult{
 			{
 				ID:          Ptr(int64(1)),
-				URL:         Ptr("https://www.test-url.com"),
+				URL:         Ptr("https://www.example.com"),
 				Name:        Ptr("test name"),
 				Color:       Ptr("green"),
 				Default:     Ptr(true),
@@ -948,7 +948,7 @@ func TestLabelsSearchResult_Marshal(t *testing.T) {
 		"items": [
 			{
 				"id": 1,
-				"url": "https://www.test-url.com",
+				"url": "https://www.example.com",
 				"name": "test name",
 				"color": "green",
 				"default": true,
