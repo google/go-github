@@ -49,6 +49,13 @@ Finally, to use the top-of-trunk version of this repo, use the following command
 go get github.com/google/go-github/v82@master
 ```
 
+To discover all the changes that have occured since a prior release, you can
+first clone the repo, then run (for example):
+
+```bash
+go run tools/gen-release-notes/main.go --tag v82.0.0
+```
+
 ## Usage ##
 
 ```go
@@ -297,7 +304,7 @@ client := github.NewClient(
 
 Alternatively, the [bored-engineer/github-conditional-http-transport](https://github.com/bored-engineer/github-conditional-http-transport)
 package relies on (undocumented) GitHub specific cache logic and is
-recommended when making requests using short-lived credentials such as a 
+recommended when making requests using short-lived credentials such as a
 [GitHub App installation token](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation).
 
 ### Creating and Updating Resources ###
@@ -350,7 +357,7 @@ for {
 
 #### Iterators (**experimental**) ####
 
-Go v1.23 introduces the new `iter` package.  
+Go v1.23 introduces the new `iter` package.
 
 With the `enrichman/gh-iter` package, it is possible to create iterators for `go-github`. The iterator will handle pagination for you, looping through all the available results.
 
@@ -370,8 +377,8 @@ For complete usage of `enrichman/gh-iter`, see the full [package docs](https://g
 #### Middleware ####
 
 You can use [gofri/go-github-pagination](https://github.com/gofri/go-github-pagination) to handle
-pagination for you. It supports both sync and async modes, as well as customizations.  
-By default, the middleware automatically paginates through all pages, aggregates results, and returns them as an array.  
+pagination for you. It supports both sync and async modes, as well as customizations.
+By default, the middleware automatically paginates through all pages, aggregates results, and returns them as an array.
 See `example/ratelimit/main.go` for usage.
 
 ### Webhooks ###
