@@ -94,7 +94,7 @@ func Test_CreateApp(t *testing.T) {
 	t.Parallel()
 	client, mux := setup(t)
 
-	mux.HandleFunc("/apps/settings/new", func(w http.ResponseWriter, _ *http.Request) {
+	mux.HandleFunc("/settings/apps/new", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
