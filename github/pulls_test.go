@@ -511,6 +511,13 @@ func TestPullRequestsService_Edit(t *testing.T) {
 			_, _, err = client.PullRequests.Edit(ctx, "\n", "\n", -i, tt.input)
 			return err
 		})
+		testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+			got, resp, err := client.PullRequests.Edit(ctx, "o", "r", i, tt.input)
+			if got != nil {
+				t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+			}
+			return resp, err
+		})
 	}
 }
 

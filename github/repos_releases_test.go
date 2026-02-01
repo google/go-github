@@ -779,6 +779,13 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 			return err
 		})
 	}
+	testNewRequestAndDoFailure(t, "UploadReleaseAsset", client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UploadReleaseAsset(t.Context(), "o", "r", 1, defaultUploadOptions, openTestFile(t, "upload.txt", "Upload me !\n"))
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure UploadReleaseAsset = %#v, want nil", got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
