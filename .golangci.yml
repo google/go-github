@@ -51,6 +51,8 @@ linters:
         - commentFormatting
         - deprecatedComment
         - paramTypeCombine
+    unparam:
+      check-exported: true  
     goheader:
       values:
         regexp:
