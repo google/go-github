@@ -12102,6 +12102,14 @@ func (i *InstallationPermissions) GetOrganizationCodespacesSettings() string {
 	return *i.OrganizationCodespacesSettings
 }
 
+// GetOrganizationCopilotMetrics returns the OrganizationCopilotMetrics field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetOrganizationCopilotMetrics() string {
+	if i == nil || i.OrganizationCopilotMetrics == nil {
+		return ""
+	}
+	return *i.OrganizationCopilotMetrics
+}
+
 // GetOrganizationCopilotSeatManagement returns the OrganizationCopilotSeatManagement field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetOrganizationCopilotSeatManagement() string {
 	if i == nil || i.OrganizationCopilotSeatManagement == nil {

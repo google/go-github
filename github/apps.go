@@ -115,6 +115,7 @@ type InstallationPermissions struct {
 	OrganizationCodespaces                  *string `json:"organization_codespaces,omitempty"`
 	OrganizationCodespacesSecrets           *string `json:"organization_codespaces_secrets,omitempty"`
 	OrganizationCodespacesSettings          *string `json:"organization_codespaces_settings,omitempty"`
+	OrganizationCopilotMetrics              *string `json:"organization_copilot_metrics,omitempty"`
 	OrganizationCopilotSeatManagement       *string `json:"organization_copilot_seat_management,omitempty"`
 	OrganizationCustomProperties            *string `json:"organization_custom_properties,omitempty"`
 	OrganizationCustomRoles                 *string `json:"organization_custom_roles,omitempty"`
