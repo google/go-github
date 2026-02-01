@@ -4378,12 +4378,12 @@ func TestSignaturesProtectedBranch_Marshal(t *testing.T) {
 	testJSONMarshal(t, &SignaturesProtectedBranch{}, "{}")
 
 	u := &SignaturesProtectedBranch{
-		URL:     Ptr("https://www.testURL.in"),
+		URL:     Ptr("https://www.example.com"),
 		Enabled: Ptr(false),
 	}
 
 	want := `{
-		"url": "https://www.testURL.in",
+		"url": "https://www.example.com",
 		"enabled": false
 	}`
 
@@ -4426,12 +4426,12 @@ func TestAdminEnforcement_Marshal(t *testing.T) {
 	testJSONMarshal(t, &AdminEnforcement{}, "{}")
 
 	u := &AdminEnforcement{
-		URL:     Ptr("https://www.test-url.in"),
+		URL:     Ptr("https://www.example.com"),
 		Enabled: false,
 	}
 
 	want := `{
-		"url": "https://www.test-url.in",
+		"url": "https://www.example.com",
 		"enabled": false
 	}`
 
