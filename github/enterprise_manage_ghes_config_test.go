@@ -123,8 +123,8 @@ func TestEnterpriseService_Settings(t *testing.T) {
 				"noreply_address": "noreply@github.com"
 			},
 			"ntp": {
-				"primary_server": "0.pool.ntp.org",
-				"secondary_server": "1.pool.ntp.org"
+				"primary_server": "example.com/primary",
+				"secondary_server": "example.com/secondary"
 			},
 			"timezone": null,
 			"snmp": {
@@ -266,8 +266,8 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			EnableStarttlsAuto:      Ptr(true),
 		},
 		NTP: &ConfigSettingsNTP{
-			PrimaryServer:   Ptr("0.pool.ntp.org"),
-			SecondaryServer: Ptr("1.pool.ntp.org"),
+			PrimaryServer:   Ptr("example.com/primary"),
+			SecondaryServer: Ptr("example.com/secondary"),
 		},
 		Timezone: nil,
 		SNMP: &ConfigSettingsSNMP{
