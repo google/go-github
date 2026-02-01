@@ -778,14 +778,14 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 			_, _, err = client.Repositories.UploadReleaseAsset(ctx, "\n", "\n", int64(key), test.uploadOpts, file)
 			return err
 		})
-		testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-			got, resp, err := client.Repositories.UploadReleaseAsset(ctx, "o", "r", int64(key), test.uploadOpts, file)
-			if got != nil {
-				t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-			}
-			return resp, err
-		})
 	}
+	testNewRequestAndDoFailure(t, "UploadReleaseAsset", client, func() (*Response, error) {
+		got, resp, err := client.Repositories.UploadReleaseAsset(t.Context(), "o", "r", 1, defaultUploadOptions, openTestFile(t, "upload.txt", "Upload me !\n"))
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure UploadReleaseAsset = %#v, want nil", got)
+		}
+		return resp, err
+	})
 }
 
 func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
