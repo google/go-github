@@ -94,17 +94,21 @@ func Test_CreateApp(t *testing.T) {
 	t.Parallel()
 	client, mux := setup(t)
 
-	mux.HandleFunc("/apps/settings/new", func(w http.ResponseWriter, _ *http.Request) {
+	mux.HandleFunc("/settings/apps/new", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	if _, err := client.CreateApp(&AppManifest{
+	resp, err := client.CreateApp(&AppManifest{
 		URL: github.Ptr("https://example.com"),
 		HookAttributes: map[string]string{
 			"url": "https://example.com/hook",
 		},
-	}, ""); err != nil {
+	}, "")
+	if err != nil {
 		t.Fatalf("CreateApp: %v", err)
+	}
+	if got, want := resp.StatusCode, http.StatusCreated; got != want {
+		t.Errorf("CreateApp returned status code %v, want %v", got, want)
 	}
 }
 
