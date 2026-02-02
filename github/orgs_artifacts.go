@@ -179,7 +179,7 @@ func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#list-artifact-storage-records
 //
 //meta:operation GET /orgs/{org}/artifacts/{subject_digest}/metadata/storage-records
-func (s *OrganizationsService) ListArtifactStorageRecords(ctx context.Context, org, subjectDigest string, opts *ListOptions) (*ArtifactStorageResponse, *Response, error) {
+func (s *OrganizationsService) ListArtifactStorageRecords(ctx context.Context, org, subjectDigest string) (*ArtifactStorageResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/%v/metadata/storage-records", org, subjectDigest)
 	u, err := addOptions(u, opts)
 	if err != nil {
