@@ -51,8 +51,6 @@ linters:
         - commentFormatting
         - deprecatedComment
         - paramTypeCombine
-    unparam:
-      check-exported: true  
     goheader:
       values:
         regexp:
@@ -147,6 +145,8 @@ linters:
       checks:
         - "all"
         - "-QF1008" # allow embedded field in selector
+    unparam:
+      check-exported: true  
     usetesting:
       context-background: true
       context-todo: true
