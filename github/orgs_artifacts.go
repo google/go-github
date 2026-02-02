@@ -75,12 +75,12 @@ type ArtifactStorageRecord struct {
 
 // CreateArtifactStorageRequest represents the request body for creating a storage record.
 type CreateArtifactStorageRequest struct {
-	Name             *string `json:"name,omitempty"`
-	Digest           *string `json:"digest,omitempty"`
+	Name             string `json:"name"`
+	Digest           string `json:"digest"`
 	Version          *string `json:"version,omitempty"`
 	ArtifactURL      *string `json:"artifact_url,omitempty"`
 	Path             *string `json:"path,omitempty"`
-	RegistryURL      *string `json:"registry_url,omitempty"`
+	RegistryURL      string `json:"registry_url"`
 	Repository       *string `json:"repository,omitempty"`
 	Status           *string `json:"status,omitempty"`
 	GithubRepository *string `json:"github_repository,omitempty"`
