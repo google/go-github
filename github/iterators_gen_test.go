@@ -22,7 +22,7 @@ func TestActivityService_ListEventsIter(t *testing.T) {
 	})
 
 	// Call iterator with zero values
-	iter := client.Activity.ListEventsIter(context.Background(), nil)
+	iter := client.Activity.ListEventsIter(t.Context(), nil)
 	for _, err := range iter {
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
