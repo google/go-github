@@ -52,9 +52,9 @@ type ArtifactDeploymentResponse struct {
 
 // ClusterDeploymentRecordsRequest represents the request body for setting cluster deployment records.
 type ClusterDeploymentRecordsRequest struct {
-	LogicalEnvironment  *string                            `json:"logical_environment,omitempty"`
+	LogicalEnvironment  string                            `json:"logical_environment"`
 	PhysicalEnvironment *string                            `json:"physical_environment,omitempty"`
-	Deployments         []*CreateArtifactDeploymentRequest `json:"deployments,omitempty"`
+	Deployments         []*CreateArtifactDeploymentRequest `json:"deployments"`
 }
 
 // ArtifactStorageRecord represents a GitHub artifact storage record.
