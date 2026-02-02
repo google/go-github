@@ -36,12 +36,12 @@ const (
 	defaultUserAgent  = "go-github" + "/" + Version
 	uploadBaseURL     = "https://uploads.github.com/"
 
-	headerAPIVersion    = "X-Github-Api-Version"
-	headerRateLimit     = "X-Ratelimit-Limit"
-	headerRateRemaining = "X-Ratelimit-Remaining"
-	headerRateUsed      = "X-Ratelimit-Used"
+	HeaderRateLimit     = "X-Ratelimit-Limit"
+	HeaderRateRemaining = "X-Ratelimit-Remaining"
+	HeaderRateUsed      = "X-Ratelimit-Used"
 	HeaderRateReset     = "X-Ratelimit-Reset"
 	HeaderRateResource  = "X-Ratelimit-Resource"
+	headerAPIVersion    = "X-Github-Api-Version"
 	headerOTP           = "X-Github-Otp"
 	headerRetryAfter    = "Retry-After"
 
@@ -785,13 +785,13 @@ func (r *Response) populatePageValues() {
 // parseRate parses the rate related headers.
 func parseRate(r *http.Response) Rate {
 	var rate Rate
-	if limit := r.Header.Get(headerRateLimit); limit != "" {
+	if limit := r.Header.Get(HeaderRateLimit); limit != "" {
 		rate.Limit, _ = strconv.Atoi(limit)
 	}
-	if remaining := r.Header.Get(headerRateRemaining); remaining != "" {
+	if remaining := r.Header.Get(HeaderRateRemaining); remaining != "" {
 		rate.Remaining, _ = strconv.Atoi(remaining)
 	}
-	if used := r.Header.Get(headerRateUsed); used != "" {
+	if used := r.Header.Get(HeaderRateUsed); used != "" {
 		rate.Used, _ = strconv.Atoi(used)
 	}
 	if reset := r.Header.Get(HeaderRateReset); reset != "" {
@@ -1451,10 +1451,7 @@ func CheckResponse(r *http.Response) error {
 	switch {
 	case r.StatusCode == http.StatusUnauthorized && strings.HasPrefix(r.Header.Get(headerOTP), "required"):
 		return (*TwoFactorAuthError)(errorResponse)
-	// Primary rate limit exceeded: GitHub returns 403 or 429 with X-RateLimit-Remaining: 0
-	// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
-	case (r.StatusCode == http.StatusForbidden || r.StatusCode == http.StatusTooManyRequests) &&
-		r.Header.Get(headerRateRemaining) == "0":
+	case r.StatusCode == http.StatusForbidden && r.Header.Get(HeaderRateRemaining) == "0":
 		return &RateLimitError{
 			Rate:     parseRate(r),
 			Response: errorResponse.Response,

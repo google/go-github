@@ -13,8 +13,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/google/go-github/v82/github"
-	"github.com/google/go-github/v82/otel"
+	"github.com/google/go-github/v81/github"
+	"github.com/google/go-github/v81/otel"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/trace"
 )
@@ -43,7 +43,6 @@ func main() {
 		),
 	}
 
-	// Create GitHub client
 	client := github.NewClient(httpClient)
 
 	// Make a request (Get Rate Limits is public and cheap)

@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/google/go-github/v82/github"
+	"github.com/google/go-github/v81/github"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -80,12 +80,12 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	// Capture response attributes
 	span.SetAttributes(attribute.Int("http.status_code", resp.StatusCode))
 	// Capture GitHub Specifics
-	if limit := resp.Header.Get("X-Ratelimit-Limit"); limit != "" {
+	if limit := resp.Header.Get(github.HeaderRateLimit); limit != "" {
 		if v, err := strconv.Atoi(limit); err == nil {
 			span.SetAttributes(attribute.Int("github.rate_limit.limit", v))
 		}
 	}
-	if remaining := resp.Header.Get("X-Ratelimit-Remaining"); remaining != "" {
+	if remaining := resp.Header.Get(github.HeaderRateRemaining); remaining != "" {
 		if v, err := strconv.Atoi(remaining); err == nil {
 			span.SetAttributes(attribute.Int("github.rate_limit.remaining", v))
 		}

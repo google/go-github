@@ -1230,9 +1230,9 @@ func TestDo_rateLimit(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set(headerRateLimit, "60")
-		w.Header().Set(headerRateRemaining, "59")
-		w.Header().Set(headerRateUsed, "1")
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "59")
+		w.Header().Set(HeaderRateUsed, "1")
 		w.Header().Set(HeaderRateReset, "1372700873")
 		w.Header().Set(HeaderRateResource, "core")
 	})
@@ -1349,9 +1349,9 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set(headerRateLimit, "60")
-		w.Header().Set(headerRateRemaining, "59")
-		w.Header().Set(headerRateUsed, "1")
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "59")
+		w.Header().Set(HeaderRateUsed, "1")
 		w.Header().Set(HeaderRateReset, "1372700873")
 		w.Header().Set(HeaderRateResource, "core")
 		http.Error(w, "Bad Request", 400)
@@ -1390,9 +1390,9 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set(headerRateLimit, "60")
-		w.Header().Set(headerRateRemaining, "0")
-		w.Header().Set(headerRateUsed, "60")
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "60")
 		w.Header().Set(HeaderRateReset, "1372700873")
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1440,9 +1440,9 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	reset := time.Now().UTC().Add(time.Minute).Round(time.Second) // Rate reset is a minute from now, with 1 second precision.
 
 	mux.HandleFunc("/first", func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set(headerRateLimit, "60")
-		w.Header().Set(headerRateRemaining, "0")
-		w.Header().Set(headerRateUsed, "60")
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "60")
 		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1508,9 +1508,9 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 	// By adding the X-From-Cache header we pretend this is served from a cache.
 	mux.HandleFunc("/first", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("X-From-Cache", "1")
-		w.Header().Set(headerRateLimit, "60")
-		w.Header().Set(headerRateRemaining, "0")
-		w.Header().Set(headerRateUsed, "60")
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "60")
 		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1556,9 +1556,9 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		if firstRequest {
 			firstRequest = false
-			w.Header().Set(headerRateLimit, "60")
-			w.Header().Set(headerRateRemaining, "0")
-			w.Header().Set(headerRateUsed, "60")
+			w.Header().Set(HeaderRateLimit, "60")
+			w.Header().Set(HeaderRateRemaining, "0")
+			w.Header().Set(HeaderRateUsed, "60")
 			w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
 			w.Header().Set(HeaderRateResource, "core")
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1569,9 +1569,9 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 }`)
 			return
 		}
-		w.Header().Set(headerRateLimit, "5000")
-		w.Header().Set(headerRateRemaining, "5000")
-		w.Header().Set(headerRateUsed, "0")
+		w.Header().Set(HeaderRateLimit, "5000")
+		w.Header().Set(HeaderRateRemaining, "5000")
+		w.Header().Set(HeaderRateUsed, "0")
 		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1600,9 +1600,9 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 	requestCount := 0
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		requestCount++
-		w.Header().Set(headerRateLimit, "60")
-		w.Header().Set(headerRateRemaining, "0")
-		w.Header().Set(headerRateUsed, "60")
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "60")
 		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1634,9 +1634,9 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 	requestCount := 0
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		requestCount++
-		w.Header().Set(headerRateLimit, "5000")
-		w.Header().Set(headerRateRemaining, "5000")
-		w.Header().Set(headerRateUsed, "0")
+		w.Header().Set(HeaderRateLimit, "5000")
+		w.Header().Set(HeaderRateRemaining, "5000")
+		w.Header().Set(HeaderRateUsed, "0")
 		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1667,9 +1667,9 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 	requestCount := 0
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		requestCount++
-		w.Header().Set(headerRateLimit, "60")
-		w.Header().Set(headerRateRemaining, "0")
-		w.Header().Set(headerRateUsed, "60")
+		w.Header().Set(HeaderRateLimit, "60")
+		w.Header().Set(HeaderRateRemaining, "0")
+		w.Header().Set(HeaderRateUsed, "60")
 		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1702,9 +1702,9 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 	requestCount := 0
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		requestCount++
-		w.Header().Set(headerRateLimit, "5000")
-		w.Header().Set(headerRateRemaining, "5000")
-		w.Header().Set(headerRateUsed, "0")
+		w.Header().Set(HeaderRateLimit, "5000")
+		w.Header().Set(HeaderRateRemaining, "5000")
+		w.Header().Set(HeaderRateUsed, "0")
 		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1858,7 +1858,7 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.Header().Set(HeaderRateReset, strconv.Itoa(int(blockUntil)))
-		w.Header().Set(headerRateRemaining, "1") // set remaining to a value > 0 to distinct from a primary rate limit
+		w.Header().Set(HeaderRateRemaining, "1") // set remaining to a value > 0 to distinct from a primary rate limit
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
    "message": "You have triggered an abuse detection mechanism ...",
@@ -1917,7 +1917,7 @@ func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.Header().Set(HeaderRateReset, strconv.Itoa(int(blockUntil)))
-		w.Header().Set(headerRateRemaining, "1") // set remaining to a value > 0 to distinct from a primary rate limit
+		w.Header().Set(HeaderRateRemaining, "1") // set remaining to a value > 0 to distinct from a primary rate limit
 		w.WriteHeader(http.StatusForbidden)
 		fmt.Fprintln(w, `{
    "message": "You have triggered an abuse detection mechanism ...",
@@ -1956,9 +1956,14 @@ func TestDo_rateLimit_disableRateLimitCheck(t *testing.T) {
 	requestCount := 0
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		requestCount++
-		w.Header().Set(headerRateLimit, "5000")
-		w.Header().Set(headerRateRemaining, "5000")
-		w.Header().Set(headerRateUsed, "0")
+		w.Header().Set(HeaderRateLimit, "5000")
+		w.Header().Set(HeaderRateRemaining, "5000")
+		w.Header().Set(HeaderRateUsed, "0")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(HeaderRateResource, "core")
+		w.Header().Set(HeaderRateLimit, "5000")
+		w.Header().Set(HeaderRateRemaining, "5000")
+		w.Header().Set(HeaderRateUsed, "0")
 		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -1992,9 +1997,9 @@ func TestDo_rateLimit_bypassRateLimitCheck(t *testing.T) {
 	requestCount := 0
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		requestCount++
-		w.Header().Set(headerRateLimit, "5000")
-		w.Header().Set(headerRateRemaining, "5000")
-		w.Header().Set(headerRateUsed, "0")
+		w.Header().Set(HeaderRateLimit, "5000")
+		w.Header().Set(HeaderRateRemaining, "5000")
+		w.Header().Set(HeaderRateUsed, "0")
 		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -2135,9 +2140,9 @@ func TestCheckResponse_RateLimit(t *testing.T) {
 		Body: io.NopCloser(strings.NewReader(`{"message":"m",
 			"documentation_url": "url"}`)),
 	}
-	res.Header.Set(headerRateLimit, "60")
-	res.Header.Set(headerRateRemaining, "0")
-	res.Header.Set(headerRateUsed, "1")
+	res.Header.Set(HeaderRateLimit, "60")
+	res.Header.Set(HeaderRateRemaining, "0")
+	res.Header.Set(HeaderRateUsed, "1")
 	res.Header.Set(HeaderRateReset, "243424")
 	res.Header.Set(HeaderRateResource, "core")
 

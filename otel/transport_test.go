@@ -11,7 +11,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/google/go-github/v82/github"
+	"github.com/google/go-github/v81/github"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -57,8 +57,8 @@ func TestRoundTrip_Spans(t *testing.T) {
 
 	// Setup Headers
 	headers := http.Header{}
-	headers.Set("X-Ratelimit-Limit", "5000")
-	headers.Set("X-Ratelimit-Remaining", "4999")
+	headers.Set(github.HeaderRateLimit, "5000")
+	headers.Set(github.HeaderRateRemaining, "4999")
 	headers.Set(github.HeaderRateReset, "1372700873")
 	headers.Set("X-Github-Request-Id", "1234-5678")
 	headers.Set(github.HeaderRateResource, "core")
