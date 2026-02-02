@@ -49,7 +49,7 @@ Finally, to use the top-of-trunk version of this repo, use the following command
 go get github.com/google/go-github/v82@master
 ```
 
-To discover all the changes that have occured since a prior release, you can
+To discover all the changes that have occurred since a prior release, you can
 first clone the repo, then run (for example):
 
 ```bash
