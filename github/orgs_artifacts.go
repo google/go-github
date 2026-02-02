@@ -154,7 +154,7 @@ func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#list-artifact-deployment-records
 //
 //meta:operation GET /orgs/{org}/artifacts/{subject_digest}/metadata/deployment-records
-func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context, org, subjectDigest string, opts *ListOptions) (*ArtifactDeploymentResponse, *Response, error) {
+func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context, org, subjectDigest string) (*ArtifactDeploymentResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/%v/metadata/deployment-records", org, subjectDigest)
 	u, err := addOptions(u, opts)
 	if err != nil {
