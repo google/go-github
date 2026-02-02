@@ -31,14 +31,14 @@ type ArtifactDeploymentRecord struct {
 
 // CreateArtifactDeploymentRequest represents the request body for creating a deployment record.
 type CreateArtifactDeploymentRequest struct {
-	Digest              *string           `json:"digest,omitempty"`
-	Name                *string           `json:"name,omitempty"`
+	Digest              string           `json:"digest"`
+	Name                string           `json:"name"`
 	Version             *string           `json:"version,omitempty"`
 	Status              *string           `json:"status,omitempty"`
 	LogicalEnvironment  *string           `json:"logical_environment,omitempty"`
 	PhysicalEnvironment *string           `json:"physical_environment,omitempty"`
 	Cluster             *string           `json:"cluster,omitempty"`
-	DeploymentName      *string           `json:"deployment_name,omitempty"`
+	DeploymentName      string           `json:"deployment_name"`
 	Tags                map[string]string `json:"tags,omitempty"`
 	RuntimeRisks        []string          `json:"runtime_risks,omitempty"`
 	GithubRepository    *string           `json:"github_repository,omitempty"`
