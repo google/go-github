@@ -194,12 +194,12 @@ func TestGPGEmail_Marshal(t *testing.T) {
 	testJSONMarshal(t, &GPGEmail{}, "{}")
 
 	u := &GPGEmail{
-		Email:    Ptr("email@abc.com"),
+		Email:    Ptr("email@example.com"),
 		Verified: Ptr(false),
 	}
 
 	want := `{
-		"email" : "email@abc.com",
+		"email" : "email@example.com",
 		"verified" : false
 	}`
 

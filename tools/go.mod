@@ -6,9 +6,9 @@ require (
 	github.com/alecthomas/kong v1.13.0
 	github.com/getkin/kin-openapi v0.133.0
 	github.com/google/go-cmp v0.7.0
-	github.com/google/go-github/v81 v81.0.0
+	github.com/google/go-github/v82 v82.0.0
+	go.yaml.in/yaml/v3 v3.0.4
 	golang.org/x/sync v0.19.0
-	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -23,7 +23,8 @@ require (
 	github.com/oasdiff/yaml3 v0.0.0-20250309153720-d2182401db90 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/woodsbury/decimal128 v1.3.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 // Use version at HEAD, not the latest published.
-replace github.com/google/go-github/v81 => ../
+replace github.com/google/go-github/v82 => ../

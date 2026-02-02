@@ -1,7 +1,7 @@
 # go-github #
 
 [![go-github release (latest SemVer)](https://img.shields.io/github/v/release/google/go-github?sort=semver)](https://github.com/google/go-github/releases)
-[![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v81/github)
+[![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/google/go-github/v82/github)
 [![Test Status](https://github.com/google/go-github/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/google/go-github/actions/workflows/tests.yml)
 [![Test Coverage](https://codecov.io/gh/google/go-github/branch/master/graph/badge.svg)](https://codecov.io/gh/google/go-github)
 [![Discuss at go-github@googlegroups.com](https://img.shields.io/badge/discuss-go--github%40googlegroups.com-blue.svg)](https://groups.google.com/group/go-github)
@@ -30,7 +30,7 @@ If you're interested in using the [GraphQL API v4][], the recommended library is
 go-github is compatible with modern Go releases in module mode, with Go installed:
 
 ```bash
-go get github.com/google/go-github/v81
+go get github.com/google/go-github/v82
 ```
 
 will resolve and add the package to the current development module, along with its dependencies.
@@ -38,7 +38,7 @@ will resolve and add the package to the current development module, along with i
 Alternatively the same can be achieved if you use import in a package:
 
 ```go
-import "github.com/google/go-github/v81/github"
+import "github.com/google/go-github/v82/github"
 ```
 
 and run `go get` without parameters.
@@ -46,13 +46,20 @@ and run `go get` without parameters.
 Finally, to use the top-of-trunk version of this repo, use the following command:
 
 ```bash
-go get github.com/google/go-github/v81@master
+go get github.com/google/go-github/v82@master
+```
+
+To discover all the changes that have occured since a prior release, you can
+first clone the repo, then run (for example):
+
+```bash
+go run tools/gen-release-notes/main.go --tag v82.0.0
 ```
 
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v81/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/google/go-github/v82/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 import "github.com/google/go-github/github" // with go modules disabled
 ```
 
@@ -102,7 +109,7 @@ include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.
 
 For API methods that require HTTP Basic Authentication, use the
-[`BasicAuthTransport`](https://pkg.go.dev/github.com/google/go-github/v81/github#BasicAuthTransport).
+[`BasicAuthTransport`](https://pkg.go.dev/github.com/google/go-github/v82/github#BasicAuthTransport).
 
 #### As a GitHub App ####
 
@@ -125,7 +132,7 @@ import (
 	"net/http"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v81/github"
+	"github.com/google/go-github/v82/github"
 )
 
 func main() {
@@ -159,7 +166,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/google/go-github/v81/github"
+	"github.com/google/go-github/v82/github"
 	"github.com/jferrl/go-githubauth"
 	"golang.org/x/oauth2"
 )
@@ -297,7 +304,7 @@ client := github.NewClient(
 
 Alternatively, the [bored-engineer/github-conditional-http-transport](https://github.com/bored-engineer/github-conditional-http-transport)
 package relies on (undocumented) GitHub specific cache logic and is
-recommended when making requests using short-lived credentials such as a 
+recommended when making requests using short-lived credentials such as a
 [GitHub App installation token](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation).
 
 ### Creating and Updating Resources ###
@@ -350,7 +357,7 @@ for {
 
 #### Iterators (**experimental**) ####
 
-Go v1.23 introduces the new `iter` package.  
+Go v1.23 introduces the new `iter` package.
 
 With the `enrichman/gh-iter` package, it is possible to create iterators for `go-github`. The iterator will handle pagination for you, looping through all the available results.
 
@@ -370,8 +377,8 @@ For complete usage of `enrichman/gh-iter`, see the full [package docs](https://g
 #### Middleware ####
 
 You can use [gofri/go-github-pagination](https://github.com/gofri/go-github-pagination) to handle
-pagination for you. It supports both sync and async modes, as well as customizations.  
-By default, the middleware automatically paginates through all pages, aggregates results, and returns them as an array.  
+pagination for you. It supports both sync and async modes, as well as customizations.
+By default, the middleware automatically paginates through all pages, aggregates results, and returns them as an array.
 See `example/ratelimit/main.go` for usage.
 
 ### Webhooks ###
@@ -400,7 +407,7 @@ For complete usage of go-github, see the full [package docs][].
 
 [GitHub API v3]: https://docs.github.com/en/rest
 [personal access token]: https://github.com/blog/1509-personal-api-tokens
-[package docs]: https://pkg.go.dev/github.com/google/go-github/v81/github
+[package docs]: https://pkg.go.dev/github.com/google/go-github/v82/github
 [GraphQL API v4]: https://developer.github.com/v4/
 [shurcooL/githubv4]: https://github.com/shurcooL/githubv4
 [GitHub webhook events]: https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads
@@ -474,7 +481,7 @@ Versions prior to 48.2.0 are not listed.
 
 | go-github Version | GitHub v3 API Version |
 | ----------------- | --------------------- |
-| 81.0.0            | 2022-11-28            |
+| 82.0.0            | 2022-11-28            |
 | ...               | 2022-11-28            |
 | 48.2.0            | 2022-11-28            |
 

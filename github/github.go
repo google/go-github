@@ -5,7 +5,7 @@
 
 //go:generate go run gen-accessors.go
 //go:generate go run gen-stringify-test.go
-//go:generate ../script/metadata.sh update-go
+//go:generate sh ../script/metadata.sh update-go
 
 package github
 
@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	Version = "v81.0.0"
+	Version = "v82.0.0"
 
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
@@ -1457,7 +1457,9 @@ func CheckResponse(r *http.Response) error {
 			Response: errorResponse.Response,
 			Message:  errorResponse.Message,
 		}
-	case r.StatusCode == http.StatusForbidden &&
+	// Secondary rate limit exceeded: GitHub returns 403 or 429 with specific documentation_url
+	// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits
+	case (r.StatusCode == http.StatusForbidden || r.StatusCode == http.StatusTooManyRequests) &&
 		(strings.HasSuffix(errorResponse.DocumentationURL, "#abuse-rate-limits") ||
 			strings.HasSuffix(errorResponse.DocumentationURL, "secondary-rate-limits")):
 		abuseRateLimitError := &AbuseRateLimitError{

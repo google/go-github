@@ -2187,6 +2187,77 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 	}
 }
 
+// TestCheckResponse_RateLimit_TooManyRequests tests that HTTP 429 with
+// X-RateLimit-Remaining: 0 is correctly detected as RateLimitError.
+// GitHub API can return either 403 or 429 for rate limiting.
+// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
+func TestCheckResponse_RateLimit_TooManyRequests(t *testing.T) {
+	t.Parallel()
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusTooManyRequests,
+		Header:     http.Header{},
+		Body: io.NopCloser(strings.NewReader(`{"message":"m",
+			"documentation_url": "url"}`)),
+	}
+	res.Header.Set(headerRateLimit, "60")
+	res.Header.Set(headerRateRemaining, "0")
+	res.Header.Set(headerRateUsed, "60")
+	res.Header.Set(HeaderRateReset, "243424")
+	res.Header.Set(HeaderRateResource, "core")
+
+	var err *RateLimitError
+	errors.As(CheckResponse(res), &err)
+
+	if err == nil {
+		t.Error("Expected error response.")
+	}
+
+	want := &RateLimitError{
+		Rate:     parseRate(res),
+		Response: res,
+		Message:  "m",
+	}
+	if !errors.Is(err, want) {
+		t.Errorf("Error = %#v, want %#v", err, want)
+	}
+}
+
+// TestCheckResponse_AbuseRateLimit_TooManyRequests tests that HTTP 429 with
+// secondary rate limit documentation_url is correctly detected as AbuseRateLimitError.
+// GitHub API can return either 403 or 429 for secondary rate limits.
+// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits
+func TestCheckResponse_AbuseRateLimit_TooManyRequests(t *testing.T) {
+	t.Parallel()
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusTooManyRequests,
+		Header:     http.Header{},
+		Body: io.NopCloser(strings.NewReader(`{"message":"m",
+			"documentation_url": "https://docs.github.com/rest/overview/rate-limits-for-the-rest-api#about-secondary-rate-limits"}`)),
+	}
+	res.Header.Set(headerRetryAfter, "60")
+
+	var err *AbuseRateLimitError
+	errors.As(CheckResponse(res), &err)
+
+	if err == nil {
+		t.Fatal("Expected error response.")
+	}
+
+	if err.Response != res {
+		t.Errorf("Response = %v, want %v", err.Response, res)
+	}
+	if err.Message != "m" {
+		t.Errorf("Message = %q, want %q", err.Message, "m")
+	}
+	if err.RetryAfter == nil {
+		t.Error("Expected RetryAfter to be set")
+	} else if *err.RetryAfter != 60*time.Second {
+		t.Errorf("RetryAfter = %v, want %v", *err.RetryAfter, 60*time.Second)
+	}
+}
+
 func TestCheckResponse_RedirectionError(t *testing.T) {
 	t.Parallel()
 	urlStr := "/foo/bar"

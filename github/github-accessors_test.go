@@ -15742,6 +15742,17 @@ func TestInstallationPermissions_GetOrganizationCodespacesSettings(tt *testing.T
 	i.GetOrganizationCodespacesSettings()
 }
 
+func TestInstallationPermissions_GetOrganizationCopilotMetrics(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{OrganizationCopilotMetrics: &zeroValue}
+	i.GetOrganizationCopilotMetrics()
+	i = &InstallationPermissions{}
+	i.GetOrganizationCopilotMetrics()
+	i = nil
+	i.GetOrganizationCopilotMetrics()
+}
+
 func TestInstallationPermissions_GetOrganizationCopilotSeatManagement(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -30963,10 +30974,7 @@ func TestRepository_GetParent(tt *testing.T) {
 
 func TestRepository_GetPermissions(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := map[string]bool{}
-	r := &Repository{Permissions: zeroValue}
-	r.GetPermissions()
-	r = &Repository{}
+	r := &Repository{}
 	r.GetPermissions()
 	r = nil
 	r.GetPermissions()
@@ -32403,6 +32411,61 @@ func TestRepositoryPermissionLevel_GetUser(tt *testing.T) {
 	r.GetUser()
 	r = nil
 	r.GetUser()
+}
+
+func TestRepositoryPermissions_GetAdmin(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepositoryPermissions{Admin: &zeroValue}
+	r.GetAdmin()
+	r = &RepositoryPermissions{}
+	r.GetAdmin()
+	r = nil
+	r.GetAdmin()
+}
+
+func TestRepositoryPermissions_GetMaintain(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepositoryPermissions{Maintain: &zeroValue}
+	r.GetMaintain()
+	r = &RepositoryPermissions{}
+	r.GetMaintain()
+	r = nil
+	r.GetMaintain()
+}
+
+func TestRepositoryPermissions_GetPull(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepositoryPermissions{Pull: &zeroValue}
+	r.GetPull()
+	r = &RepositoryPermissions{}
+	r.GetPull()
+	r = nil
+	r.GetPull()
+}
+
+func TestRepositoryPermissions_GetPush(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepositoryPermissions{Push: &zeroValue}
+	r.GetPush()
+	r = &RepositoryPermissions{}
+	r.GetPush()
+	r = nil
+	r.GetPush()
+}
+
+func TestRepositoryPermissions_GetTriage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepositoryPermissions{Triage: &zeroValue}
+	r.GetTriage()
+	r = &RepositoryPermissions{}
+	r.GetTriage()
+	r = nil
+	r.GetTriage()
 }
 
 func TestRepositoryRelease_GetAssetsURL(tt *testing.T) {
