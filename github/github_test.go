@@ -1961,11 +1961,6 @@ func TestDo_rateLimit_disableRateLimitCheck(t *testing.T) {
 		w.Header().Set(HeaderRateUsed, "0")
 		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
 		w.Header().Set(HeaderRateResource, "core")
-		w.Header().Set(HeaderRateLimit, "5000")
-		w.Header().Set(HeaderRateRemaining, "5000")
-		w.Header().Set(HeaderRateUsed, "0")
-		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
-		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
@@ -2200,9 +2195,9 @@ func TestCheckResponse_RateLimit_TooManyRequests(t *testing.T) {
 		Body: io.NopCloser(strings.NewReader(`{"message":"m",
 			"documentation_url": "url"}`)),
 	}
-	res.Header.Set(headerRateLimit, "60")
-	res.Header.Set(headerRateRemaining, "0")
-	res.Header.Set(headerRateUsed, "60")
+	res.Header.Set(HeaderRateLimit, "60")
+	res.Header.Set(HeaderRateRemaining, "0")
+	res.Header.Set(HeaderRateUsed, "60")
 	res.Header.Set(HeaderRateReset, "243424")
 	res.Header.Set(HeaderRateResource, "core")
 

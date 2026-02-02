@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/google/go-github/v81/github"
+	"github.com/google/go-github/v82/github"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -22,7 +22,6 @@ import (
 
 const (
 	// instrumentationName is the name of this instrumentation package.
-	// NOTE: This must be updated when the major version of go-github changes.
 	instrumentationName = "github.com/google/go-github/otel"
 )
 
@@ -93,7 +92,7 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	if reset := resp.Header.Get(github.HeaderRateReset); reset != "" {
 		span.SetAttributes(attribute.String("github.rate_limit.reset", reset))
 	}
-	if reqID := resp.Header.Get("X-Github-Request-Id"); reqID != "" {
+	if reqID := resp.Header.Get(github.HeaderRequestID); reqID != "" {
 		span.SetAttributes(attribute.String("github.request_id", reqID))
 	}
 	if resource := resp.Header.Get(github.HeaderRateResource); resource != "" {

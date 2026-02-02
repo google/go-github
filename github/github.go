@@ -41,9 +41,11 @@ const (
 	HeaderRateUsed      = "X-Ratelimit-Used"
 	HeaderRateReset     = "X-Ratelimit-Reset"
 	HeaderRateResource  = "X-Ratelimit-Resource"
-	headerAPIVersion    = "X-Github-Api-Version"
-	headerOTP           = "X-Github-Otp"
-	headerRetryAfter    = "Retry-After"
+	HeaderRequestID     = "X-Github-Request-Id"
+
+	headerAPIVersion = "X-Github-Api-Version"
+	headerOTP        = "X-Github-Otp"
+	headerRetryAfter = "Retry-After"
 
 	headerTokenExpiration = "Github-Authentication-Token-Expiration"
 
@@ -1451,7 +1453,10 @@ func CheckResponse(r *http.Response) error {
 	switch {
 	case r.StatusCode == http.StatusUnauthorized && strings.HasPrefix(r.Header.Get(headerOTP), "required"):
 		return (*TwoFactorAuthError)(errorResponse)
-	case r.StatusCode == http.StatusForbidden && r.Header.Get(HeaderRateRemaining) == "0":
+	// Primary rate limit exceeded: GitHub returns 403 or 429 with X-RateLimit-Remaining: 0
+	// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
+	case (r.StatusCode == http.StatusForbidden || r.StatusCode == http.StatusTooManyRequests) &&
+		r.Header.Get(HeaderRateRemaining) == "0":
 		return &RateLimitError{
 			Rate:     parseRate(r),
 			Response: errorResponse.Response,
