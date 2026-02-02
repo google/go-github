@@ -520,6 +520,11 @@ func nodeServiceMethod(fn *ast.FuncDecl) string {
 		return ""
 	}
 
+	// Skip generated Iterator methods.
+	if strings.HasSuffix(fn.Name.Name, "Iter") {
+		return ""
+	}
+
 	serviceMethod := id.Name + "." + fn.Name.Name
 	if skipServiceMethod[serviceMethod] {
 		return ""
