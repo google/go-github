@@ -46,6 +46,14 @@ func TestSearchService_Repositories(t *testing.T) {
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
 	}
+	const methodName = "Repositories"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Search.Repositories(ctx, "blah", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestSearchService_Repositories_coverage(t *testing.T) {
@@ -171,6 +179,14 @@ func TestSearchService_Topics(t *testing.T) {
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Topics returned %+v, want %+v", result, want)
 	}
+	const methodName = "Topics"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Search.Topics(ctx, "blah", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestSearchService_Topics_coverage(t *testing.T) {
@@ -216,6 +232,14 @@ func TestSearchService_Commits(t *testing.T) {
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Commits returned %+v, want %+v", result, want)
 	}
+	const methodName = "Commits"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Search.Commits(ctx, "blah", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestSearchService_Commits_coverage(t *testing.T) {
@@ -263,6 +287,14 @@ func TestSearchService_Issues(t *testing.T) {
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
 	}
+	const methodName = "Issues"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Search.Issues(ctx, "blah", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestSearchService_Issues_advancedSearch(t *testing.T) {
@@ -422,6 +454,14 @@ func TestSearchService_Users(t *testing.T) {
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Users returned %+v, want %+v", result, want)
 	}
+	const methodName = "Users"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Search.Users(ctx, "blah", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestSearchService_Users_coverage(t *testing.T) {
@@ -469,6 +509,14 @@ func TestSearchService_Code(t *testing.T) {
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
 	}
+	const methodName = "Code"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Search.Code(ctx, "blah", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestSearchService_Code_coverage(t *testing.T) {
@@ -583,6 +631,14 @@ func TestSearchService_Labels(t *testing.T) {
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Labels returned %+v, want %+v", result, want)
 	}
+	const methodName = "Labels"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Search.Labels(ctx, 1234, "blah", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestSearchService_Labels_coverage(t *testing.T) {
@@ -932,7 +988,7 @@ func TestLabelsSearchResult_Marshal(t *testing.T) {
 		Labels: []*LabelResult{
 			{
 				ID:          Ptr(int64(1)),
-				URL:         Ptr("https://www.test-url.com"),
+				URL:         Ptr("https://www.example.com"),
 				Name:        Ptr("test name"),
 				Color:       Ptr("green"),
 				Default:     Ptr(true),
@@ -948,7 +1004,7 @@ func TestLabelsSearchResult_Marshal(t *testing.T) {
 		"items": [
 			{
 				"id": 1,
-				"url": "https://www.test-url.com",
+				"url": "https://www.example.com",
 				"name": "test name",
 				"color": "green",
 				"default": true,

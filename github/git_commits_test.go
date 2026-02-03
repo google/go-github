@@ -482,13 +482,13 @@ func TestGitService_createSignatureMessage_withoutCommitter(t *testing.T) {
 		},
 		Committer: &CommitAuthor{
 			Name:  Ptr("foo"),
-			Email: Ptr("foo@bar.com"),
+			Email: Ptr("foo@example.com"),
 			Date:  &Timestamp{date},
 		},
 	})
 	expected := `parent p
 author go-github <go-github@github.com> 1493849023 +0200
-committer foo <foo@bar.com> 1493849023 +0200
+committer foo <foo@example.com> 1493849023 +0200
 
 Commit Message.`
 	if msg != expected {
