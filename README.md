@@ -372,9 +372,9 @@ var allRepos []*github.Repository
 // create an iterator and start looping through all the results
 iter := client.Repositories.ListIter(ctx, "github", nil)
 for repo, err := range iter {
-  if err != nil {
-    log.Fatal(err)
-  }
+	if err != nil {
+		log.Fatal(err)
+	}
 	allRepos = append(allRepos, repo)
 }
 ```
