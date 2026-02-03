@@ -30622,10 +30622,10 @@ func (u *User) GetOwnedPrivateRepos() int64 {
 	return *u.OwnedPrivateRepos
 }
 
-// GetPermissions returns the Permissions map if it's non-nil, an empty map otherwise.
-func (u *User) GetPermissions() map[string]bool {
-	if u == nil || u.Permissions == nil {
-		return map[string]bool{}
+// GetPermissions returns the Permissions field.
+func (u *User) GetPermissions() *RepositoryPermissions {
+	if u == nil {
+		return nil
 	}
 	return u.Permissions
 }
