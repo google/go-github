@@ -10,7 +10,10 @@ if [ "$1" = "--check" ]; then
   GENTEMP="$(mktemp -d)"
   git worktree add -q --detach "$GENTEMP"
   trap 'git worktree remove -f "$GENTEMP"; rm -rf "$GENTEMP"' EXIT
-  for f in $(git ls-files -com --exclude-standard); do
+  git diff --name-only --diff-filter=D --no-renames HEAD | while read -r f; do
+    rm -f "$GENTEMP/$f"
+  done
+  git ls-files -com --exclude-standard | while read -r f; do
     target="$GENTEMP/$f"
     mkdir -p "$(dirname -- "$target")"
     cp "$f" "$target"
