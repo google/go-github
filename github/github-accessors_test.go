@@ -39881,10 +39881,7 @@ func TestUser_GetOwnedPrivateRepos(tt *testing.T) {
 
 func TestUser_GetPermissions(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := map[string]bool{}
-	u := &User{Permissions: zeroValue}
-	u.GetPermissions()
-	u = &User{}
+	u := &User{}
 	u.GetPermissions()
 	u = nil
 	u.GetPermissions()
