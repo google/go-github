@@ -355,7 +355,7 @@ for {
 }
 ```
 
-#### Iterators (**experimental**) ####
+#### Iterators ####
 
 Go v1.23 introduces the new `iter` package.
 
@@ -363,6 +363,21 @@ The new `github/gen-iterators.go` file auto-generates "*Iter" methods in `github
 for all methods that support page number iteration (using the `NextPage` field in each response).
 To handle rate limiting issues, make sure to use a rate-limiting transport.
 (See [Rate Limiting](/#rate-limiting) above for more details.)
+To use these methods, simply create an iterator and then range over it, for example:
+
+```go
+client := github.NewClient(nil)
+var allRepos []*github.Repository
+
+// create an iterator and start looping through all the results
+iter := client.Repositories.ListIter(ctx, "github", nil)
+for repo, err := range iter {
+  if err != nil {
+    log.Fatal(err)
+  }
+	allRepos = append(allRepos, repo)
+}
+```
 
 Alternatively, if you wish to use an external package, there is `enrichman/gh-iter`.
 Its iterator will handle pagination for you, looping through all the available results.
