@@ -14,16 +14,12 @@ import (
 type ArtifactDeploymentRecord struct {
 	ID                  *int64            `json:"id,omitempty"`
 	Digest              *string           `json:"digest,omitempty"`
-	Name                *string           `json:"name,omitempty"`
-	Version             *string           `json:"version,omitempty"`
-	Status              *string           `json:"status,omitempty"`
 	LogicalEnvironment  *string           `json:"logical_environment,omitempty"`
 	PhysicalEnvironment *string           `json:"physical_environment,omitempty"`
 	Cluster             *string           `json:"cluster,omitempty"`
 	DeploymentName      *string           `json:"deployment_name,omitempty"`
 	Tags                map[string]string `json:"tags,omitempty"`
 	RuntimeRisks        []string          `json:"runtime_risks,omitempty"`
-	GithubRepository    *string           `json:"github_repository,omitempty"`
 	AttestationID       *int64            `json:"attestation_id,omitempty"`
 	CreatedAt           *Timestamp        `json:"created_at,omitempty"`
 	UpdatedAt           *Timestamp        `json:"updated_at,omitempty"`
@@ -59,18 +55,15 @@ type ClusterDeploymentRecordsRequest struct {
 
 // ArtifactStorageRecord represents a GitHub artifact storage record.
 type ArtifactStorageRecord struct {
-	ID               *int64     `json:"id,omitempty"`
-	Name             *string    `json:"name,omitempty"`
-	Digest           *string    `json:"digest,omitempty"`
-	Version          *string    `json:"version,omitempty"`
-	ArtifactURL      *string    `json:"artifact_url,omitempty"`
-	Path             *string    `json:"path,omitempty"`
-	RegistryURL      *string    `json:"registry_url,omitempty"`
-	Repository       *string    `json:"repository,omitempty"`
-	Status           *string    `json:"status,omitempty"`
-	GithubRepository *string    `json:"github_repository,omitempty"`
-	CreatedAt        *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt        *Timestamp `json:"updated_at,omitempty"`
+	ID          *int64     `json:"id,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Digest      *string    `json:"digest,omitempty"`
+	ArtifactURL *string    `json:"artifact_url,omitempty"`
+	RegistryURL *string    `json:"registry_url,omitempty"`
+	Repository  *string    `json:"repository,omitempty"`
+	Status      *string    `json:"status,omitempty"`
+	CreatedAt   *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
 }
 
 // CreateArtifactStorageRequest represents the request body for creating a storage record.

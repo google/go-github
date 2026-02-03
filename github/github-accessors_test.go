@@ -1523,17 +1523,6 @@ func TestArtifactDeploymentRecord_GetDigest(tt *testing.T) {
 	a.GetDigest()
 }
 
-func TestArtifactDeploymentRecord_GetGithubRepository(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &ArtifactDeploymentRecord{GithubRepository: &zeroValue}
-	a.GetGithubRepository()
-	a = &ArtifactDeploymentRecord{}
-	a.GetGithubRepository()
-	a = nil
-	a.GetGithubRepository()
-}
-
 func TestArtifactDeploymentRecord_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -1556,17 +1545,6 @@ func TestArtifactDeploymentRecord_GetLogicalEnvironment(tt *testing.T) {
 	a.GetLogicalEnvironment()
 }
 
-func TestArtifactDeploymentRecord_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &ArtifactDeploymentRecord{Name: &zeroValue}
-	a.GetName()
-	a = &ArtifactDeploymentRecord{}
-	a.GetName()
-	a = nil
-	a.GetName()
-}
-
 func TestArtifactDeploymentRecord_GetPhysicalEnvironment(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -1576,17 +1554,6 @@ func TestArtifactDeploymentRecord_GetPhysicalEnvironment(tt *testing.T) {
 	a.GetPhysicalEnvironment()
 	a = nil
 	a.GetPhysicalEnvironment()
-}
-
-func TestArtifactDeploymentRecord_GetStatus(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &ArtifactDeploymentRecord{Status: &zeroValue}
-	a.GetStatus()
-	a = &ArtifactDeploymentRecord{}
-	a.GetStatus()
-	a = nil
-	a.GetStatus()
 }
 
 func TestArtifactDeploymentRecord_GetTags(tt *testing.T) {
@@ -1609,17 +1576,6 @@ func TestArtifactDeploymentRecord_GetUpdatedAt(tt *testing.T) {
 	a.GetUpdatedAt()
 	a = nil
 	a.GetUpdatedAt()
-}
-
-func TestArtifactDeploymentRecord_GetVersion(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &ArtifactDeploymentRecord{Version: &zeroValue}
-	a.GetVersion()
-	a = &ArtifactDeploymentRecord{}
-	a.GetVersion()
-	a = nil
-	a.GetVersion()
 }
 
 func TestArtifactDeploymentResponse_GetTotalCount(tt *testing.T) {
@@ -1710,17 +1666,6 @@ func TestArtifactStorageRecord_GetDigest(tt *testing.T) {
 	a.GetDigest()
 }
 
-func TestArtifactStorageRecord_GetGithubRepository(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &ArtifactStorageRecord{GithubRepository: &zeroValue}
-	a.GetGithubRepository()
-	a = &ArtifactStorageRecord{}
-	a.GetGithubRepository()
-	a = nil
-	a.GetGithubRepository()
-}
-
 func TestArtifactStorageRecord_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -1741,17 +1686,6 @@ func TestArtifactStorageRecord_GetName(tt *testing.T) {
 	a.GetName()
 	a = nil
 	a.GetName()
-}
-
-func TestArtifactStorageRecord_GetPath(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &ArtifactStorageRecord{Path: &zeroValue}
-	a.GetPath()
-	a = &ArtifactStorageRecord{}
-	a.GetPath()
-	a = nil
-	a.GetPath()
 }
 
 func TestArtifactStorageRecord_GetRegistryURL(tt *testing.T) {
@@ -1796,17 +1730,6 @@ func TestArtifactStorageRecord_GetUpdatedAt(tt *testing.T) {
 	a.GetUpdatedAt()
 	a = nil
 	a.GetUpdatedAt()
-}
-
-func TestArtifactStorageRecord_GetVersion(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &ArtifactStorageRecord{Version: &zeroValue}
-	a.GetVersion()
-	a = &ArtifactStorageRecord{}
-	a.GetVersion()
-	a = nil
-	a.GetVersion()
 }
 
 func TestArtifactStorageResponse_GetTotalCount(tt *testing.T) {

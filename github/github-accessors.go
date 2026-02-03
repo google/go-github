@@ -1174,14 +1174,6 @@ func (a *ArtifactDeploymentRecord) GetDigest() string {
 	return *a.Digest
 }
 
-// GetGithubRepository returns the GithubRepository field if it's non-nil, zero value otherwise.
-func (a *ArtifactDeploymentRecord) GetGithubRepository() string {
-	if a == nil || a.GithubRepository == nil {
-		return ""
-	}
-	return *a.GithubRepository
-}
-
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (a *ArtifactDeploymentRecord) GetID() int64 {
 	if a == nil || a.ID == nil {
@@ -1198,28 +1190,12 @@ func (a *ArtifactDeploymentRecord) GetLogicalEnvironment() string {
 	return *a.LogicalEnvironment
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (a *ArtifactDeploymentRecord) GetName() string {
-	if a == nil || a.Name == nil {
-		return ""
-	}
-	return *a.Name
-}
-
 // GetPhysicalEnvironment returns the PhysicalEnvironment field if it's non-nil, zero value otherwise.
 func (a *ArtifactDeploymentRecord) GetPhysicalEnvironment() string {
 	if a == nil || a.PhysicalEnvironment == nil {
 		return ""
 	}
 	return *a.PhysicalEnvironment
-}
-
-// GetStatus returns the Status field if it's non-nil, zero value otherwise.
-func (a *ArtifactDeploymentRecord) GetStatus() string {
-	if a == nil || a.Status == nil {
-		return ""
-	}
-	return *a.Status
 }
 
 // GetTags returns the Tags map if it's non-nil, an empty map otherwise.
@@ -1236,14 +1212,6 @@ func (a *ArtifactDeploymentRecord) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *a.UpdatedAt
-}
-
-// GetVersion returns the Version field if it's non-nil, zero value otherwise.
-func (a *ArtifactDeploymentRecord) GetVersion() string {
-	if a == nil || a.Version == nil {
-		return ""
-	}
-	return *a.Version
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
@@ -1310,14 +1278,6 @@ func (a *ArtifactStorageRecord) GetDigest() string {
 	return *a.Digest
 }
 
-// GetGithubRepository returns the GithubRepository field if it's non-nil, zero value otherwise.
-func (a *ArtifactStorageRecord) GetGithubRepository() string {
-	if a == nil || a.GithubRepository == nil {
-		return ""
-	}
-	return *a.GithubRepository
-}
-
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (a *ArtifactStorageRecord) GetID() int64 {
 	if a == nil || a.ID == nil {
@@ -1332,14 +1292,6 @@ func (a *ArtifactStorageRecord) GetName() string {
 		return ""
 	}
 	return *a.Name
-}
-
-// GetPath returns the Path field if it's non-nil, zero value otherwise.
-func (a *ArtifactStorageRecord) GetPath() string {
-	if a == nil || a.Path == nil {
-		return ""
-	}
-	return *a.Path
 }
 
 // GetRegistryURL returns the RegistryURL field if it's non-nil, zero value otherwise.
@@ -1372,14 +1324,6 @@ func (a *ArtifactStorageRecord) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *a.UpdatedAt
-}
-
-// GetVersion returns the Version field if it's non-nil, zero value otherwise.
-func (a *ArtifactStorageRecord) GetVersion() string {
-	if a == nil || a.Version == nil {
-		return ""
-	}
-	return *a.Version
 }
 
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
