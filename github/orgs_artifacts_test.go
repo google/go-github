@@ -18,12 +18,12 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &CreateArtifactDeploymentRequest{
-		Name:               Ptr("test-n"),
-		Digest:             Ptr("sha256:123"),
+		Name:               "test-n",
+		Digest:             "sha256:123",
 		Version:            Ptr("v1.0.0"),
 		Status:             Ptr("deployed"),
 		LogicalEnvironment: Ptr("prod"),
-		DeploymentName:     Ptr("dep-1"),
+		DeploymentName:     "dep-1",
 		RuntimeRisks:       []string{"critical-resource", "internet-exposed"},
 		GithubRepository:   Ptr("octo-org/octo-repo"),
 		Tags: map[string]string{
@@ -72,20 +72,22 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &ClusterDeploymentRecordsRequest{
-		LogicalEnvironment:  Ptr("prod"),
+		LogicalEnvironment:  "prod",
 		PhysicalEnvironment: Ptr("pacific-east"),
 		Deployments: []*CreateArtifactDeploymentRequest{
 			{
-				Name:    Ptr("awesome-image"),
-				Version: Ptr("v2.0"),
-				Status:  Ptr("deployed"),
+				Name:           "awesome-image",
+				Digest:         "sha256:abc",
+				DeploymentName: "dep-1",
+				Version:        Ptr("v2.0"),
+				Status:         Ptr("deployed"),
 			},
 		},
 	}
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record/cluster/c1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONMarshal(t, input, `{"logical_environment":"prod","physical_environment":"pacific-east","deployments":[{"name":"awesome-image","version":"v2.0","status":"deployed"}]}`)
+		testJSONMarshal(t, input, `{"logical_environment":"prod","physical_environment":"pacific-east","deployments":[{"digest":"sha256:abc","name":"awesome-image","version":"v2.0","status":"deployed","deployment_name":"dep-1"}]}`)
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":2}]}`)
 	})
 
@@ -123,17 +125,18 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &CreateArtifactStorageRequest{
-		Name:             Ptr("libfoo"),
+		Name:             "libfoo",
+		Digest:           "sha256:123",
 		Version:          Ptr("v1.2.3"),
 		Path:             Ptr("target/libs"),
 		GithubRepository: Ptr("org/repo"),
-		RegistryURL:      Ptr("https://reg.example.com"),
+		RegistryURL:      "https://reg.example.com",
 		Status:           Ptr("active"),
 	}
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/storage-record", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONMarshal(t, input, `{"name":"libfoo","version":"v1.2.3","path":"target/libs","registry_url":"https://reg.example.com","status":"active","github_repository":"org/repo"}`)
+		testJSONMarshal(t, input, `{"name":"libfoo","digest":"sha256:123","version":"v1.2.3","path":"target/libs","registry_url":"https://reg.example.com","status":"active","github_repository":"org/repo"}`)
 		fmt.Fprint(w, `{"total_count":1,"storage_records":[{"name":"libfoo"}]}`)
 	})
 
@@ -178,7 +181,7 @@ func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "sha256:abc", nil)
+	got, _, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "sha256:abc")
 	if err != nil {
 		t.Errorf("ListArtifactDeploymentRecords returned error: %v", err)
 	}
@@ -195,12 +198,12 @@ func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
 
 	const methodName = "ListArtifactDeploymentRecords"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.ListArtifactDeploymentRecords(ctx, "\n", "\n", nil)
+		_, _, err = client.Organizations.ListArtifactDeploymentRecords(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "sha256:abc", nil)
+		got, resp, err := client.Organizations.ListArtifactDeploymentRecords(ctx, "o", "sha256:abc")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -219,7 +222,7 @@ func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "sha256:abc", nil)
+	got, _, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "sha256:abc")
 	if err != nil {
 		t.Errorf("ListArtifactStorageRecords returned error: %v", err)
 	}
@@ -234,12 +237,12 @@ func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
 
 	const methodName = "ListArtifactStorageRecords"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.ListArtifactStorageRecords(ctx, "\n", "\n", nil)
+		_, _, err = client.Organizations.ListArtifactStorageRecords(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "sha256:abc", nil)
+		got, resp, err := client.Organizations.ListArtifactStorageRecords(ctx, "o", "sha256:abc")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

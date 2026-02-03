@@ -4172,17 +4172,6 @@ func TestClassroomUser_GetLogin(tt *testing.T) {
 	c.GetLogin()
 }
 
-func TestClusterDeploymentRecordsRequest_GetLogicalEnvironment(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &ClusterDeploymentRecordsRequest{LogicalEnvironment: &zeroValue}
-	c.GetLogicalEnvironment()
-	c = &ClusterDeploymentRecordsRequest{}
-	c.GetLogicalEnvironment()
-	c = nil
-	c.GetLogicalEnvironment()
-}
-
 func TestClusterDeploymentRecordsRequest_GetPhysicalEnvironment(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8679,28 +8668,6 @@ func TestCreateArtifactDeploymentRequest_GetCluster(tt *testing.T) {
 	c.GetCluster()
 }
 
-func TestCreateArtifactDeploymentRequest_GetDeploymentName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateArtifactDeploymentRequest{DeploymentName: &zeroValue}
-	c.GetDeploymentName()
-	c = &CreateArtifactDeploymentRequest{}
-	c.GetDeploymentName()
-	c = nil
-	c.GetDeploymentName()
-}
-
-func TestCreateArtifactDeploymentRequest_GetDigest(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateArtifactDeploymentRequest{Digest: &zeroValue}
-	c.GetDigest()
-	c = &CreateArtifactDeploymentRequest{}
-	c.GetDigest()
-	c = nil
-	c.GetDigest()
-}
-
 func TestCreateArtifactDeploymentRequest_GetGithubRepository(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8721,17 +8688,6 @@ func TestCreateArtifactDeploymentRequest_GetLogicalEnvironment(tt *testing.T) {
 	c.GetLogicalEnvironment()
 	c = nil
 	c.GetLogicalEnvironment()
-}
-
-func TestCreateArtifactDeploymentRequest_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateArtifactDeploymentRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CreateArtifactDeploymentRequest{}
-	c.GetName()
-	c = nil
-	c.GetName()
 }
 
 func TestCreateArtifactDeploymentRequest_GetPhysicalEnvironment(tt *testing.T) {
@@ -8789,17 +8745,6 @@ func TestCreateArtifactStorageRequest_GetArtifactURL(tt *testing.T) {
 	c.GetArtifactURL()
 }
 
-func TestCreateArtifactStorageRequest_GetDigest(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateArtifactStorageRequest{Digest: &zeroValue}
-	c.GetDigest()
-	c = &CreateArtifactStorageRequest{}
-	c.GetDigest()
-	c = nil
-	c.GetDigest()
-}
-
 func TestCreateArtifactStorageRequest_GetGithubRepository(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8811,17 +8756,6 @@ func TestCreateArtifactStorageRequest_GetGithubRepository(tt *testing.T) {
 	c.GetGithubRepository()
 }
 
-func TestCreateArtifactStorageRequest_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateArtifactStorageRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CreateArtifactStorageRequest{}
-	c.GetName()
-	c = nil
-	c.GetName()
-}
-
 func TestCreateArtifactStorageRequest_GetPath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8831,17 +8765,6 @@ func TestCreateArtifactStorageRequest_GetPath(tt *testing.T) {
 	c.GetPath()
 	c = nil
 	c.GetPath()
-}
-
-func TestCreateArtifactStorageRequest_GetRegistryURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateArtifactStorageRequest{RegistryURL: &zeroValue}
-	c.GetRegistryURL()
-	c = &CreateArtifactStorageRequest{}
-	c.GetRegistryURL()
-	c = nil
-	c.GetRegistryURL()
 }
 
 func TestCreateArtifactStorageRequest_GetRepository(tt *testing.T) {

@@ -3190,14 +3190,6 @@ func (c *ClassroomUser) GetLogin() string {
 	return *c.Login
 }
 
-// GetLogicalEnvironment returns the LogicalEnvironment field if it's non-nil, zero value otherwise.
-func (c *ClusterDeploymentRecordsRequest) GetLogicalEnvironment() string {
-	if c == nil || c.LogicalEnvironment == nil {
-		return ""
-	}
-	return *c.LogicalEnvironment
-}
-
 // GetPhysicalEnvironment returns the PhysicalEnvironment field if it's non-nil, zero value otherwise.
 func (c *ClusterDeploymentRecordsRequest) GetPhysicalEnvironment() string {
 	if c == nil || c.PhysicalEnvironment == nil {
@@ -6638,22 +6630,6 @@ func (c *CreateArtifactDeploymentRequest) GetCluster() string {
 	return *c.Cluster
 }
 
-// GetDeploymentName returns the DeploymentName field if it's non-nil, zero value otherwise.
-func (c *CreateArtifactDeploymentRequest) GetDeploymentName() string {
-	if c == nil || c.DeploymentName == nil {
-		return ""
-	}
-	return *c.DeploymentName
-}
-
-// GetDigest returns the Digest field if it's non-nil, zero value otherwise.
-func (c *CreateArtifactDeploymentRequest) GetDigest() string {
-	if c == nil || c.Digest == nil {
-		return ""
-	}
-	return *c.Digest
-}
-
 // GetGithubRepository returns the GithubRepository field if it's non-nil, zero value otherwise.
 func (c *CreateArtifactDeploymentRequest) GetGithubRepository() string {
 	if c == nil || c.GithubRepository == nil {
@@ -6668,14 +6644,6 @@ func (c *CreateArtifactDeploymentRequest) GetLogicalEnvironment() string {
 		return ""
 	}
 	return *c.LogicalEnvironment
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CreateArtifactDeploymentRequest) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
 }
 
 // GetPhysicalEnvironment returns the PhysicalEnvironment field if it's non-nil, zero value otherwise.
@@ -6718,14 +6686,6 @@ func (c *CreateArtifactStorageRequest) GetArtifactURL() string {
 	return *c.ArtifactURL
 }
 
-// GetDigest returns the Digest field if it's non-nil, zero value otherwise.
-func (c *CreateArtifactStorageRequest) GetDigest() string {
-	if c == nil || c.Digest == nil {
-		return ""
-	}
-	return *c.Digest
-}
-
 // GetGithubRepository returns the GithubRepository field if it's non-nil, zero value otherwise.
 func (c *CreateArtifactStorageRequest) GetGithubRepository() string {
 	if c == nil || c.GithubRepository == nil {
@@ -6734,28 +6694,12 @@ func (c *CreateArtifactStorageRequest) GetGithubRepository() string {
 	return *c.GithubRepository
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CreateArtifactStorageRequest) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
-}
-
 // GetPath returns the Path field if it's non-nil, zero value otherwise.
 func (c *CreateArtifactStorageRequest) GetPath() string {
 	if c == nil || c.Path == nil {
 		return ""
 	}
 	return *c.Path
-}
-
-// GetRegistryURL returns the RegistryURL field if it's non-nil, zero value otherwise.
-func (c *CreateArtifactStorageRequest) GetRegistryURL() string {
-	if c == nil || c.RegistryURL == nil {
-		return ""
-	}
-	return *c.RegistryURL
 }
 
 // GetRepository returns the Repository field if it's non-nil, zero value otherwise.
