@@ -18,2287 +18,11153 @@ import (
 func TestActivityService_ListEventsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListEventsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListEventsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListEventsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListEventsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListEventsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListEventsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListEventsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Event, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListEventsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListEventsForOrganizationIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListEventsForOrganizationIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListEventsForOrganizationIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListEventsForOrganizationIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListEventsForOrganizationIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListEventsForOrganizationIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListEventsForOrganizationIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListEventsForOrganizationIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Event, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListEventsForOrganizationIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListEventsForRepoNetworkIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListEventsForRepoNetworkIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListEventsForRepoNetworkIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListEventsForRepoNetworkIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListEventsForRepoNetworkIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListEventsForRepoNetworkIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListEventsForRepoNetworkIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListEventsForRepoNetworkIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Event, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListEventsForRepoNetworkIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListEventsPerformedByUserIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListEventsPerformedByUserIter(t.Context(), "", false, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListEventsPerformedByUserIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListEventsPerformedByUserIter(t.Context(), "", false, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListEventsPerformedByUserIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListEventsPerformedByUserIter(t.Context(), "", false, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListEventsPerformedByUserIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListEventsPerformedByUserIter(t.Context(), "", false, nil)
+	gotItems = 0 // reset
+	iter(func(item *Event, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListEventsPerformedByUserIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListEventsReceivedByUserIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListEventsReceivedByUserIter(t.Context(), "", false, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListEventsReceivedByUserIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListEventsReceivedByUserIter(t.Context(), "", false, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListEventsReceivedByUserIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListEventsReceivedByUserIter(t.Context(), "", false, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListEventsReceivedByUserIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListEventsReceivedByUserIter(t.Context(), "", false, nil)
+	gotItems = 0 // reset
+	iter(func(item *Event, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListEventsReceivedByUserIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListIssueEventsForRepositoryIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListIssueEventsForRepositoryIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListIssueEventsForRepositoryIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListIssueEventsForRepositoryIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListIssueEventsForRepositoryIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListIssueEventsForRepositoryIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListIssueEventsForRepositoryIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListIssueEventsForRepositoryIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *IssueEvent, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListIssueEventsForRepositoryIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListNotificationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListNotificationsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListNotificationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &NotificationListOptions{}
+	iter = client.Activity.ListNotificationsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListNotificationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListNotificationsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListNotificationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListNotificationsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Notification, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListNotificationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListRepositoryEventsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListRepositoryEventsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListRepositoryEventsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListRepositoryEventsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListRepositoryEventsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListRepositoryEventsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListRepositoryEventsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListRepositoryEventsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Event, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListRepositoryEventsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListRepositoryNotificationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListRepositoryNotificationsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListRepositoryNotificationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &NotificationListOptions{}
+	iter = client.Activity.ListRepositoryNotificationsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListRepositoryNotificationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListRepositoryNotificationsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListRepositoryNotificationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListRepositoryNotificationsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Notification, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListRepositoryNotificationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListStargazersIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListStargazersIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListStargazersIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListStargazersIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListStargazersIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListStargazersIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListStargazersIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListStargazersIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Stargazer, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListStargazersIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListStarredIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListStarredIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListStarredIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ActivityListStarredOptions{}
+	iter = client.Activity.ListStarredIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListStarredIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListStarredIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListStarredIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListStarredIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *StarredRepository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListStarredIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListUserEventsForOrganizationIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListUserEventsForOrganizationIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListUserEventsForOrganizationIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListUserEventsForOrganizationIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListUserEventsForOrganizationIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListUserEventsForOrganizationIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListUserEventsForOrganizationIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListUserEventsForOrganizationIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Event, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListUserEventsForOrganizationIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListWatchedIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListWatchedIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListWatchedIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListWatchedIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListWatchedIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListWatchedIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListWatchedIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListWatchedIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Repository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListWatchedIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestActivityService_ListWatchersIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Activity.ListWatchersIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Activity.ListWatchersIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Activity.ListWatchersIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Activity.ListWatchersIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Activity.ListWatchersIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListWatchersIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Activity.ListWatchersIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Activity.ListWatchersIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestAppsService_ListInstallationRequestsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Apps.ListInstallationRequestsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Apps.ListInstallationRequestsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Apps.ListInstallationRequestsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Apps.ListInstallationRequestsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Apps.ListInstallationRequestsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Apps.ListInstallationRequestsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Apps.ListInstallationRequestsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *InstallationRequest, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Apps.ListInstallationRequestsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestAppsService_ListInstallationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Apps.ListInstallationsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Apps.ListInstallationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Apps.ListInstallationsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Apps.ListInstallationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Apps.ListInstallationsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Apps.ListInstallationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Apps.ListInstallationsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Installation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Apps.ListInstallationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestAppsService_ListUserInstallationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `{"installations": []}`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `{"installations": [{},{},{}]}`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `{"installations": [{},{},{},{}]}`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `{"installations": [{},{}]}`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `{"installations": [{},{}]}`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Apps.ListUserInstallationsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Apps.ListUserInstallationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Apps.ListUserInstallationsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Apps.ListUserInstallationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Apps.ListUserInstallationsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Apps.ListUserInstallationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Apps.ListUserInstallationsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Installation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Apps.ListUserInstallationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestChecksService_ListCheckRunAnnotationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Checks.ListCheckRunAnnotationsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Checks.ListCheckRunAnnotationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Checks.ListCheckRunAnnotationsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Checks.ListCheckRunAnnotationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Checks.ListCheckRunAnnotationsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Checks.ListCheckRunAnnotationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Checks.ListCheckRunAnnotationsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *CheckRunAnnotation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Checks.ListCheckRunAnnotationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestClassroomService_ListAcceptedAssignmentsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Classroom.ListAcceptedAssignmentsIter(t.Context(), 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Classroom.ListAcceptedAssignmentsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Classroom.ListAcceptedAssignmentsIter(t.Context(), 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Classroom.ListAcceptedAssignmentsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Classroom.ListAcceptedAssignmentsIter(t.Context(), 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Classroom.ListAcceptedAssignmentsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Classroom.ListAcceptedAssignmentsIter(t.Context(), 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *AcceptedAssignment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Classroom.ListAcceptedAssignmentsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestClassroomService_ListClassroomAssignmentsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Classroom.ListClassroomAssignmentsIter(t.Context(), 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Classroom.ListClassroomAssignmentsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Classroom.ListClassroomAssignmentsIter(t.Context(), 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Classroom.ListClassroomAssignmentsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Classroom.ListClassroomAssignmentsIter(t.Context(), 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Classroom.ListClassroomAssignmentsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Classroom.ListClassroomAssignmentsIter(t.Context(), 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *ClassroomAssignment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Classroom.ListClassroomAssignmentsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestClassroomService_ListClassroomsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Classroom.ListClassroomsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Classroom.ListClassroomsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Classroom.ListClassroomsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Classroom.ListClassroomsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Classroom.ListClassroomsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Classroom.ListClassroomsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Classroom.ListClassroomsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Classroom, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Classroom.ListClassroomsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestCodeScanningService_ListAlertInstancesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.CodeScanning.ListAlertInstancesIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.CodeScanning.ListAlertInstancesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &AlertInstancesListOptions{}
+	iter = client.CodeScanning.ListAlertInstancesIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.CodeScanning.ListAlertInstancesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.CodeScanning.ListAlertInstancesIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.CodeScanning.ListAlertInstancesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.CodeScanning.ListAlertInstancesIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *MostRecentInstance, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.CodeScanning.ListAlertInstancesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestCodeScanningService_ListAlertsForOrgIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.CodeScanning.ListAlertsForOrgIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.CodeScanning.ListAlertsForOrgIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &AlertListOptions{}
+	iter = client.CodeScanning.ListAlertsForOrgIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.CodeScanning.ListAlertsForOrgIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.CodeScanning.ListAlertsForOrgIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.CodeScanning.ListAlertsForOrgIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.CodeScanning.ListAlertsForOrgIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Alert, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.CodeScanning.ListAlertsForOrgIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestCodeScanningService_ListAlertsForRepoIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.CodeScanning.ListAlertsForRepoIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.CodeScanning.ListAlertsForRepoIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &AlertListOptions{}
+	iter = client.CodeScanning.ListAlertsForRepoIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.CodeScanning.ListAlertsForRepoIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.CodeScanning.ListAlertsForRepoIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.CodeScanning.ListAlertsForRepoIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.CodeScanning.ListAlertsForRepoIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Alert, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.CodeScanning.ListAlertsForRepoIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestCodeScanningService_ListAnalysesForRepoIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.CodeScanning.ListAnalysesForRepoIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.CodeScanning.ListAnalysesForRepoIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &AnalysesListOptions{}
+	iter = client.CodeScanning.ListAnalysesForRepoIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.CodeScanning.ListAnalysesForRepoIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.CodeScanning.ListAnalysesForRepoIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.CodeScanning.ListAnalysesForRepoIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.CodeScanning.ListAnalysesForRepoIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *ScanningAnalysis, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.CodeScanning.ListAnalysesForRepoIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestDependabotService_ListOrgAlertsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Dependabot.ListOrgAlertsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Dependabot.ListOrgAlertsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListAlertsOptions{}
+	iter = client.Dependabot.ListOrgAlertsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Dependabot.ListOrgAlertsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Dependabot.ListOrgAlertsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Dependabot.ListOrgAlertsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Dependabot.ListOrgAlertsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *DependabotAlert, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Dependabot.ListOrgAlertsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestDependabotService_ListRepoAlertsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Dependabot.ListRepoAlertsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Dependabot.ListRepoAlertsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListAlertsOptions{}
+	iter = client.Dependabot.ListRepoAlertsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Dependabot.ListRepoAlertsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Dependabot.ListRepoAlertsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Dependabot.ListRepoAlertsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Dependabot.ListRepoAlertsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *DependabotAlert, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Dependabot.ListRepoAlertsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestEnterpriseService_ListAppAccessibleOrganizationRepositoriesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Enterprise.ListAppAccessibleOrganizationRepositoriesIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Enterprise.ListAppAccessibleOrganizationRepositoriesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Enterprise.ListAppAccessibleOrganizationRepositoriesIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Enterprise.ListAppAccessibleOrganizationRepositoriesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Enterprise.ListAppAccessibleOrganizationRepositoriesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListAppAccessibleOrganizationRepositoriesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Enterprise.ListAppAccessibleOrganizationRepositoriesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *AccessibleRepository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListAppAccessibleOrganizationRepositoriesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestEnterpriseService_ListAppInstallableOrganizationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Enterprise.ListAppInstallableOrganizationsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Enterprise.ListAppInstallableOrganizationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Enterprise.ListAppInstallableOrganizationsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Enterprise.ListAppInstallableOrganizationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Enterprise.ListAppInstallableOrganizationsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListAppInstallableOrganizationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Enterprise.ListAppInstallableOrganizationsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *InstallableOrganization, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListAppInstallableOrganizationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestEnterpriseService_ListAppInstallationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Enterprise.ListAppInstallationsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Enterprise.ListAppInstallationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Enterprise.ListAppInstallationsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Enterprise.ListAppInstallationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Enterprise.ListAppInstallationsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListAppInstallationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Enterprise.ListAppInstallationsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Installation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListAppInstallationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestEnterpriseService_ListAssignmentsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Enterprise.ListAssignmentsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Enterprise.ListAssignmentsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Enterprise.ListAssignmentsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Enterprise.ListAssignmentsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Enterprise.ListAssignmentsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListAssignmentsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Enterprise.ListAssignmentsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Organization, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListAssignmentsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestEnterpriseService_ListOrganizationCustomPropertyValuesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Enterprise.ListOrganizationCustomPropertyValuesIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Enterprise.ListOrganizationCustomPropertyValuesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Enterprise.ListOrganizationCustomPropertyValuesIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Enterprise.ListOrganizationCustomPropertyValuesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Enterprise.ListOrganizationCustomPropertyValuesIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListOrganizationCustomPropertyValuesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Enterprise.ListOrganizationCustomPropertyValuesIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *EnterpriseCustomPropertiesValues, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListOrganizationCustomPropertyValuesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestEnterpriseService_ListRepositoriesForOrgAppInstallationIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Enterprise.ListRepositoriesForOrgAppInstallationIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Enterprise.ListRepositoriesForOrgAppInstallationIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Enterprise.ListRepositoriesForOrgAppInstallationIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Enterprise.ListRepositoriesForOrgAppInstallationIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Enterprise.ListRepositoriesForOrgAppInstallationIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListRepositoriesForOrgAppInstallationIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Enterprise.ListRepositoriesForOrgAppInstallationIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *AccessibleRepository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListRepositoriesForOrgAppInstallationIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestEnterpriseService_ListTeamMembersIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Enterprise.ListTeamMembersIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Enterprise.ListTeamMembersIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Enterprise.ListTeamMembersIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Enterprise.ListTeamMembersIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Enterprise.ListTeamMembersIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListTeamMembersIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Enterprise.ListTeamMembersIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListTeamMembersIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestEnterpriseService_ListTeamsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Enterprise.ListTeamsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Enterprise.ListTeamsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Enterprise.ListTeamsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Enterprise.ListTeamsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Enterprise.ListTeamsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListTeamsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Enterprise.ListTeamsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *EnterpriseTeam, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Enterprise.ListTeamsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestGistsService_ListIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Gists.ListIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Gists.ListIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &GistListOptions{}
+	iter = client.Gists.ListIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Gists.ListIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Gists.ListIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Gists.ListIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Gist, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestGistsService_ListAllIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Gists.ListAllIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Gists.ListAllIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &GistListOptions{}
+	iter = client.Gists.ListAllIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Gists.ListAllIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Gists.ListAllIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListAllIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Gists.ListAllIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Gist, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListAllIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestGistsService_ListCommentsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Gists.ListCommentsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Gists.ListCommentsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Gists.ListCommentsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Gists.ListCommentsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Gists.ListCommentsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListCommentsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Gists.ListCommentsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *GistComment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListCommentsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestGistsService_ListCommitsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Gists.ListCommitsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Gists.ListCommitsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Gists.ListCommitsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Gists.ListCommitsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Gists.ListCommitsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListCommitsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Gists.ListCommitsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *GistCommit, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListCommitsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestGistsService_ListForksIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Gists.ListForksIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Gists.ListForksIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Gists.ListForksIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Gists.ListForksIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Gists.ListForksIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListForksIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Gists.ListForksIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *GistFork, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListForksIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestGistsService_ListStarredIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Gists.ListStarredIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Gists.ListStarredIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &GistListOptions{}
+	iter = client.Gists.ListStarredIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Gists.ListStarredIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Gists.ListStarredIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListStarredIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Gists.ListStarredIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Gist, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Gists.ListStarredIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListIter(t.Context(), false, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &IssueListOptions{}
+	iter = client.Issues.ListIter(t.Context(), false, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListIter(t.Context(), false, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListIter(t.Context(), false, nil)
+	gotItems = 0 // reset
+	iter(func(item *Issue, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListAssigneesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListAssigneesIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListAssigneesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Issues.ListAssigneesIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListAssigneesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListAssigneesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListAssigneesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListAssigneesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListAssigneesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListByOrgIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListByOrgIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListByOrgIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &IssueListOptions{}
+	iter = client.Issues.ListByOrgIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListByOrgIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListByOrgIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListByOrgIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListByOrgIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Issue, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListByOrgIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListByRepoIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListByRepoIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListByRepoIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &IssueListByRepoOptions{}
+	iter = client.Issues.ListByRepoIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListByRepoIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListByRepoIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListByRepoIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListByRepoIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Issue, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListByRepoIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListCommentsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListCommentsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListCommentsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &IssueListCommentsOptions{}
+	iter = client.Issues.ListCommentsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListCommentsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListCommentsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListCommentsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListCommentsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *IssueComment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListCommentsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListIssueEventsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListIssueEventsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListIssueEventsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Issues.ListIssueEventsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListIssueEventsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListIssueEventsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListIssueEventsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListIssueEventsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *IssueEvent, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListIssueEventsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListIssueTimelineIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListIssueTimelineIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListIssueTimelineIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Issues.ListIssueTimelineIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListIssueTimelineIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListIssueTimelineIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListIssueTimelineIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListIssueTimelineIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Timeline, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListIssueTimelineIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListLabelsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListLabelsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListLabelsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Issues.ListLabelsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListLabelsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListLabelsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListLabelsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListLabelsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Label, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListLabelsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListLabelsByIssueIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListLabelsByIssueIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListLabelsByIssueIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Issues.ListLabelsByIssueIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListLabelsByIssueIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListLabelsByIssueIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListLabelsByIssueIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListLabelsByIssueIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Label, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListLabelsByIssueIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListLabelsForMilestoneIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListLabelsForMilestoneIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListLabelsForMilestoneIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Issues.ListLabelsForMilestoneIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListLabelsForMilestoneIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListLabelsForMilestoneIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListLabelsForMilestoneIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListLabelsForMilestoneIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Label, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListLabelsForMilestoneIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListMilestonesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListMilestonesIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListMilestonesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &MilestoneListOptions{}
+	iter = client.Issues.ListMilestonesIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListMilestonesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListMilestonesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListMilestonesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListMilestonesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Milestone, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListMilestonesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestIssuesService_ListRepositoryEventsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Issues.ListRepositoryEventsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListRepositoryEventsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Issues.ListRepositoryEventsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListRepositoryEventsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Issues.ListRepositoryEventsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListRepositoryEventsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Issues.ListRepositoryEventsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *IssueEvent, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListRepositoryEventsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestMarketplaceService_ListMarketplacePurchasesForUserIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Marketplace.ListMarketplacePurchasesForUserIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Marketplace.ListMarketplacePurchasesForUserIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Marketplace.ListMarketplacePurchasesForUserIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Marketplace.ListMarketplacePurchasesForUserIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Marketplace.ListMarketplacePurchasesForUserIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Marketplace.ListMarketplacePurchasesForUserIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Marketplace.ListMarketplacePurchasesForUserIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *MarketplacePurchase, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Marketplace.ListMarketplacePurchasesForUserIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestMarketplaceService_ListPlanAccountsForPlanIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Marketplace.ListPlanAccountsForPlanIter(t.Context(), 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Marketplace.ListPlanAccountsForPlanIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Marketplace.ListPlanAccountsForPlanIter(t.Context(), 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Marketplace.ListPlanAccountsForPlanIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Marketplace.ListPlanAccountsForPlanIter(t.Context(), 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Marketplace.ListPlanAccountsForPlanIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Marketplace.ListPlanAccountsForPlanIter(t.Context(), 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *MarketplacePlanAccount, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Marketplace.ListPlanAccountsForPlanIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestMarketplaceService_ListPlansIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Marketplace.ListPlansIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Marketplace.ListPlansIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Marketplace.ListPlansIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Marketplace.ListPlansIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Marketplace.ListPlansIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Marketplace.ListPlansIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Marketplace.ListPlansIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *MarketplacePlan, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Marketplace.ListPlansIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestMigrationService_ListMigrationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Migrations.ListMigrationsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Migrations.ListMigrationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Migrations.ListMigrationsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Migrations.ListMigrationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Migrations.ListMigrationsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Migrations.ListMigrationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Migrations.ListMigrationsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Migration, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Migrations.ListMigrationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestMigrationService_ListUserMigrationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Migrations.ListUserMigrationsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Migrations.ListUserMigrationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Migrations.ListUserMigrationsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Migrations.ListUserMigrationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Migrations.ListUserMigrationsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Migrations.ListUserMigrationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Migrations.ListUserMigrationsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *UserMigration, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Migrations.ListUserMigrationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Organizations.ListIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Organization, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListAllIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListAllIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListAllIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &OrganizationsListOptions{}
+	iter = client.Organizations.ListAllIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListAllIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListAllIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListAllIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListAllIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Organization, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListAllIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListBlockedUsersIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListBlockedUsersIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListBlockedUsersIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Organizations.ListBlockedUsersIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListBlockedUsersIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListBlockedUsersIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListBlockedUsersIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListBlockedUsersIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListBlockedUsersIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListCredentialAuthorizationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListCredentialAuthorizationsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListCredentialAuthorizationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &CredentialAuthorizationsListOptions{}
+	iter = client.Organizations.ListCredentialAuthorizationsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListCredentialAuthorizationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListCredentialAuthorizationsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListCredentialAuthorizationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListCredentialAuthorizationsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *CredentialAuthorization, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListCredentialAuthorizationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListCustomPropertyValuesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListCustomPropertyValuesIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListCustomPropertyValuesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListCustomPropertyValuesOptions{}
+	iter = client.Organizations.ListCustomPropertyValuesIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListCustomPropertyValuesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListCustomPropertyValuesIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListCustomPropertyValuesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListCustomPropertyValuesIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *RepoCustomPropertyValue, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListCustomPropertyValuesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListFailedOrgInvitationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListFailedOrgInvitationsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListFailedOrgInvitationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Organizations.ListFailedOrgInvitationsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListFailedOrgInvitationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListFailedOrgInvitationsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListFailedOrgInvitationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListFailedOrgInvitationsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Invitation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListFailedOrgInvitationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListFineGrainedPersonalAccessTokensIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListFineGrainedPersonalAccessTokensIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListFineGrainedPersonalAccessTokensIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListFineGrainedPATOptions{}
+	iter = client.Organizations.ListFineGrainedPersonalAccessTokensIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListFineGrainedPersonalAccessTokensIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListFineGrainedPersonalAccessTokensIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListFineGrainedPersonalAccessTokensIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListFineGrainedPersonalAccessTokensIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *PersonalAccessToken, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListFineGrainedPersonalAccessTokensIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListHooksIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListHooksIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListHooksIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Organizations.ListHooksIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListHooksIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListHooksIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListHooksIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListHooksIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Hook, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListHooksIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListMembersIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListMembersIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListMembersIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListMembersOptions{}
+	iter = client.Organizations.ListMembersIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListMembersIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListMembersIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListMembersIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListMembersIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListMembersIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListOrgInvitationTeamsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListOrgInvitationTeamsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListOrgInvitationTeamsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Organizations.ListOrgInvitationTeamsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListOrgInvitationTeamsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListOrgInvitationTeamsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListOrgInvitationTeamsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListOrgInvitationTeamsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Team, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListOrgInvitationTeamsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListOrgMembershipsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListOrgMembershipsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListOrgMembershipsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOrgMembershipsOptions{}
+	iter = client.Organizations.ListOrgMembershipsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListOrgMembershipsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListOrgMembershipsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListOrgMembershipsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListOrgMembershipsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Membership, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListOrgMembershipsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListOutsideCollaboratorsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListOutsideCollaboratorsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListOutsideCollaboratorsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOutsideCollaboratorsOptions{}
+	iter = client.Organizations.ListOutsideCollaboratorsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListOutsideCollaboratorsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListOutsideCollaboratorsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListOutsideCollaboratorsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListOutsideCollaboratorsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListOutsideCollaboratorsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListPackagesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListPackagesIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListPackagesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &PackageListOptions{}
+	iter = client.Organizations.ListPackagesIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListPackagesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListPackagesIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListPackagesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListPackagesIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Package, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListPackagesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListPendingOrgInvitationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListPendingOrgInvitationsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListPendingOrgInvitationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Organizations.ListPendingOrgInvitationsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListPendingOrgInvitationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListPendingOrgInvitationsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListPendingOrgInvitationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListPendingOrgInvitationsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Invitation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListPendingOrgInvitationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListTeamsAssignedToOrgRoleIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListTeamsAssignedToOrgRoleIter(t.Context(), "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListTeamsAssignedToOrgRoleIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Organizations.ListTeamsAssignedToOrgRoleIter(t.Context(), "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListTeamsAssignedToOrgRoleIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListTeamsAssignedToOrgRoleIter(t.Context(), "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListTeamsAssignedToOrgRoleIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListTeamsAssignedToOrgRoleIter(t.Context(), "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Team, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListTeamsAssignedToOrgRoleIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestOrganizationsService_ListUsersAssignedToOrgRoleIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Organizations.ListUsersAssignedToOrgRoleIter(t.Context(), "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListUsersAssignedToOrgRoleIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Organizations.ListUsersAssignedToOrgRoleIter(t.Context(), "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListUsersAssignedToOrgRoleIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Organizations.ListUsersAssignedToOrgRoleIter(t.Context(), "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListUsersAssignedToOrgRoleIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Organizations.ListUsersAssignedToOrgRoleIter(t.Context(), "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListUsersAssignedToOrgRoleIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestPullRequestsService_ListIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.PullRequests.ListIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.PullRequests.ListIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &PullRequestListOptions{}
+	iter = client.PullRequests.ListIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.PullRequests.ListIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.PullRequests.ListIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.PullRequests.ListIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *PullRequest, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestPullRequestsService_ListCommentsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.PullRequests.ListCommentsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.PullRequests.ListCommentsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &PullRequestListCommentsOptions{}
+	iter = client.PullRequests.ListCommentsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.PullRequests.ListCommentsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.PullRequests.ListCommentsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListCommentsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.PullRequests.ListCommentsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *PullRequestComment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListCommentsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestPullRequestsService_ListCommitsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.PullRequests.ListCommitsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.PullRequests.ListCommitsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.PullRequests.ListCommitsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.PullRequests.ListCommitsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.PullRequests.ListCommitsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListCommitsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.PullRequests.ListCommitsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *RepositoryCommit, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListCommitsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestPullRequestsService_ListFilesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.PullRequests.ListFilesIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.PullRequests.ListFilesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.PullRequests.ListFilesIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.PullRequests.ListFilesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.PullRequests.ListFilesIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListFilesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.PullRequests.ListFilesIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *CommitFile, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListFilesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestPullRequestsService_ListPullRequestsWithCommitIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.PullRequests.ListPullRequestsWithCommitIter(t.Context(), "", "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.PullRequests.ListPullRequestsWithCommitIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.PullRequests.ListPullRequestsWithCommitIter(t.Context(), "", "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.PullRequests.ListPullRequestsWithCommitIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.PullRequests.ListPullRequestsWithCommitIter(t.Context(), "", "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListPullRequestsWithCommitIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.PullRequests.ListPullRequestsWithCommitIter(t.Context(), "", "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *PullRequest, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListPullRequestsWithCommitIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestPullRequestsService_ListReviewCommentsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.PullRequests.ListReviewCommentsIter(t.Context(), "", "", 0, 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.PullRequests.ListReviewCommentsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.PullRequests.ListReviewCommentsIter(t.Context(), "", "", 0, 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.PullRequests.ListReviewCommentsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.PullRequests.ListReviewCommentsIter(t.Context(), "", "", 0, 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListReviewCommentsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.PullRequests.ListReviewCommentsIter(t.Context(), "", "", 0, 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *PullRequestComment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListReviewCommentsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestPullRequestsService_ListReviewsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.PullRequests.ListReviewsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.PullRequests.ListReviewsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.PullRequests.ListReviewsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.PullRequests.ListReviewsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.PullRequests.ListReviewsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListReviewsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.PullRequests.ListReviewsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *PullRequestReview, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.PullRequests.ListReviewsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestReactionsService_ListCommentReactionsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Reactions.ListCommentReactionsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Reactions.ListCommentReactionsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListReactionOptions{}
+	iter = client.Reactions.ListCommentReactionsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Reactions.ListCommentReactionsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Reactions.ListCommentReactionsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListCommentReactionsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Reactions.ListCommentReactionsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Reaction, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListCommentReactionsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestReactionsService_ListIssueCommentReactionsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Reactions.ListIssueCommentReactionsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Reactions.ListIssueCommentReactionsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListReactionOptions{}
+	iter = client.Reactions.ListIssueCommentReactionsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Reactions.ListIssueCommentReactionsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Reactions.ListIssueCommentReactionsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListIssueCommentReactionsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Reactions.ListIssueCommentReactionsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Reaction, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListIssueCommentReactionsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestReactionsService_ListIssueReactionsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Reactions.ListIssueReactionsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Reactions.ListIssueReactionsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListReactionOptions{}
+	iter = client.Reactions.ListIssueReactionsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Reactions.ListIssueReactionsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Reactions.ListIssueReactionsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListIssueReactionsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Reactions.ListIssueReactionsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Reaction, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListIssueReactionsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestReactionsService_ListPullRequestCommentReactionsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Reactions.ListPullRequestCommentReactionsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Reactions.ListPullRequestCommentReactionsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListReactionOptions{}
+	iter = client.Reactions.ListPullRequestCommentReactionsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Reactions.ListPullRequestCommentReactionsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Reactions.ListPullRequestCommentReactionsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListPullRequestCommentReactionsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Reactions.ListPullRequestCommentReactionsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Reaction, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListPullRequestCommentReactionsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestReactionsService_ListReleaseReactionsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Reactions.ListReleaseReactionsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Reactions.ListReleaseReactionsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListReactionOptions{}
+	iter = client.Reactions.ListReleaseReactionsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Reactions.ListReleaseReactionsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Reactions.ListReleaseReactionsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListReleaseReactionsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Reactions.ListReleaseReactionsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Reaction, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListReleaseReactionsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestReactionsService_ListTeamDiscussionCommentReactionsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Reactions.ListTeamDiscussionCommentReactionsIter(t.Context(), 0, 0, 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Reactions.ListTeamDiscussionCommentReactionsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListReactionOptions{}
+	iter = client.Reactions.ListTeamDiscussionCommentReactionsIter(t.Context(), 0, 0, 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Reactions.ListTeamDiscussionCommentReactionsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Reactions.ListTeamDiscussionCommentReactionsIter(t.Context(), 0, 0, 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListTeamDiscussionCommentReactionsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Reactions.ListTeamDiscussionCommentReactionsIter(t.Context(), 0, 0, 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Reaction, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListTeamDiscussionCommentReactionsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestReactionsService_ListTeamDiscussionReactionsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Reactions.ListTeamDiscussionReactionsIter(t.Context(), 0, 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Reactions.ListTeamDiscussionReactionsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListReactionOptions{}
+	iter = client.Reactions.ListTeamDiscussionReactionsIter(t.Context(), 0, 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Reactions.ListTeamDiscussionReactionsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Reactions.ListTeamDiscussionReactionsIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListTeamDiscussionReactionsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Reactions.ListTeamDiscussionReactionsIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Reaction, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Reactions.ListTeamDiscussionReactionsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &RepositoryListOptions{}
+	iter = client.Repositories.ListIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Repository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListAutolinksIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListAutolinksIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListAutolinksIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListAutolinksIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListAutolinksIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListAutolinksIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListAutolinksIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListAutolinksIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Autolink, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListAutolinksIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListBranchesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListBranchesIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListBranchesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &BranchListOptions{}
+	iter = client.Repositories.ListBranchesIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListBranchesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListBranchesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListBranchesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListBranchesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Branch, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListBranchesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListByAuthenticatedUserIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListByAuthenticatedUserIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListByAuthenticatedUserIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &RepositoryListByAuthenticatedUserOptions{}
+	iter = client.Repositories.ListByAuthenticatedUserIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListByAuthenticatedUserIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListByAuthenticatedUserIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListByAuthenticatedUserIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListByAuthenticatedUserIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Repository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListByAuthenticatedUserIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListByOrgIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListByOrgIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListByOrgIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &RepositoryListByOrgOptions{}
+	iter = client.Repositories.ListByOrgIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListByOrgIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListByOrgIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListByOrgIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListByOrgIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Repository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListByOrgIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListByUserIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListByUserIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListByUserIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &RepositoryListByUserOptions{}
+	iter = client.Repositories.ListByUserIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListByUserIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListByUserIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListByUserIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListByUserIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Repository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListByUserIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListCollaboratorsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListCollaboratorsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListCollaboratorsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListCollaboratorsOptions{}
+	iter = client.Repositories.ListCollaboratorsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListCollaboratorsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListCollaboratorsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListCollaboratorsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListCollaboratorsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListCollaboratorsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListCommentsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListCommentsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListCommentsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListCommentsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListCommentsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListCommentsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListCommentsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListCommentsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *RepositoryComment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListCommentsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListCommitCommentsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListCommitCommentsIter(t.Context(), "", "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListCommitCommentsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListCommitCommentsIter(t.Context(), "", "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListCommitCommentsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListCommitCommentsIter(t.Context(), "", "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListCommitCommentsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListCommitCommentsIter(t.Context(), "", "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *RepositoryComment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListCommitCommentsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListCommitsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListCommitsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListCommitsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &CommitsListOptions{}
+	iter = client.Repositories.ListCommitsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListCommitsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListCommitsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListCommitsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListCommitsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *RepositoryCommit, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListCommitsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListContributorsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListContributorsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListContributorsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListContributorsOptions{}
+	iter = client.Repositories.ListContributorsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListContributorsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListContributorsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListContributorsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListContributorsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Contributor, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListContributorsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListDeploymentStatusesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListDeploymentStatusesIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListDeploymentStatusesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListDeploymentStatusesIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListDeploymentStatusesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListDeploymentStatusesIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListDeploymentStatusesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListDeploymentStatusesIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *DeploymentStatus, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListDeploymentStatusesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListDeploymentsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListDeploymentsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListDeploymentsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &DeploymentsListOptions{}
+	iter = client.Repositories.ListDeploymentsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListDeploymentsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListDeploymentsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListDeploymentsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListDeploymentsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Deployment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListDeploymentsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListForksIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListForksIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListForksIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &RepositoryListForksOptions{}
+	iter = client.Repositories.ListForksIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListForksIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListForksIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListForksIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListForksIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Repository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListForksIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListHooksIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListHooksIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListHooksIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListHooksIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListHooksIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListHooksIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListHooksIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListHooksIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Hook, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListHooksIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListInvitationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListInvitationsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListInvitationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListInvitationsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListInvitationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListInvitationsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListInvitationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListInvitationsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *RepositoryInvitation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListInvitationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListKeysIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListKeysIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListKeysIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListKeysIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListKeysIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListKeysIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListKeysIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListKeysIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Key, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListKeysIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListPagesBuildsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListPagesBuildsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListPagesBuildsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListPagesBuildsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListPagesBuildsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListPagesBuildsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListPagesBuildsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListPagesBuildsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *PagesBuild, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListPagesBuildsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListPreReceiveHooksIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListPreReceiveHooksIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListPreReceiveHooksIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListPreReceiveHooksIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListPreReceiveHooksIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListPreReceiveHooksIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListPreReceiveHooksIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListPreReceiveHooksIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *PreReceiveHook, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListPreReceiveHooksIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListReleaseAssetsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListReleaseAssetsIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListReleaseAssetsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListReleaseAssetsIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListReleaseAssetsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListReleaseAssetsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListReleaseAssetsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListReleaseAssetsIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *ReleaseAsset, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListReleaseAssetsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListReleasesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListReleasesIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListReleasesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListReleasesIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListReleasesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListReleasesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListReleasesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListReleasesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *RepositoryRelease, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListReleasesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListStatusesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListStatusesIter(t.Context(), "", "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListStatusesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListStatusesIter(t.Context(), "", "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListStatusesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListStatusesIter(t.Context(), "", "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListStatusesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListStatusesIter(t.Context(), "", "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *RepoStatus, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListStatusesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListTagsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListTagsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListTagsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListTagsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListTagsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListTagsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListTagsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListTagsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *RepositoryTag, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListTagsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestRepositoriesService_ListTeamsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Repositories.ListTeamsIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Repositories.ListTeamsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Repositories.ListTeamsIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Repositories.ListTeamsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Repositories.ListTeamsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListTeamsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Repositories.ListTeamsIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Team, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Repositories.ListTeamsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestSecretScanningService_ListAlertsForEnterpriseIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.SecretScanning.ListAlertsForEnterpriseIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.SecretScanning.ListAlertsForEnterpriseIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &SecretScanningAlertListOptions{}
+	iter = client.SecretScanning.ListAlertsForEnterpriseIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.SecretScanning.ListAlertsForEnterpriseIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.SecretScanning.ListAlertsForEnterpriseIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.SecretScanning.ListAlertsForEnterpriseIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.SecretScanning.ListAlertsForEnterpriseIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *SecretScanningAlert, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.SecretScanning.ListAlertsForEnterpriseIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestSecretScanningService_ListAlertsForOrgIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.SecretScanning.ListAlertsForOrgIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.SecretScanning.ListAlertsForOrgIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &SecretScanningAlertListOptions{}
+	iter = client.SecretScanning.ListAlertsForOrgIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.SecretScanning.ListAlertsForOrgIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.SecretScanning.ListAlertsForOrgIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.SecretScanning.ListAlertsForOrgIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.SecretScanning.ListAlertsForOrgIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *SecretScanningAlert, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.SecretScanning.ListAlertsForOrgIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestSecretScanningService_ListAlertsForRepoIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.SecretScanning.ListAlertsForRepoIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.SecretScanning.ListAlertsForRepoIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &SecretScanningAlertListOptions{}
+	iter = client.SecretScanning.ListAlertsForRepoIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.SecretScanning.ListAlertsForRepoIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.SecretScanning.ListAlertsForRepoIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.SecretScanning.ListAlertsForRepoIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.SecretScanning.ListAlertsForRepoIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *SecretScanningAlert, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.SecretScanning.ListAlertsForRepoIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestSecretScanningService_ListLocationsForAlertIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.SecretScanning.ListLocationsForAlertIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.SecretScanning.ListLocationsForAlertIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.SecretScanning.ListLocationsForAlertIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.SecretScanning.ListLocationsForAlertIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.SecretScanning.ListLocationsForAlertIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.SecretScanning.ListLocationsForAlertIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.SecretScanning.ListLocationsForAlertIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *SecretScanningAlertLocation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.SecretScanning.ListLocationsForAlertIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestSubIssueService_ListByIssueIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.SubIssue.ListByIssueIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.SubIssue.ListByIssueIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &IssueListOptions{}
+	iter = client.SubIssue.ListByIssueIter(t.Context(), "", "", 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.SubIssue.ListByIssueIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.SubIssue.ListByIssueIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.SubIssue.ListByIssueIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.SubIssue.ListByIssueIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *SubIssue, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.SubIssue.ListByIssueIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListChildTeamsByParentIDIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListChildTeamsByParentIDIter(t.Context(), 0, 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListChildTeamsByParentIDIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Teams.ListChildTeamsByParentIDIter(t.Context(), 0, 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListChildTeamsByParentIDIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListChildTeamsByParentIDIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListChildTeamsByParentIDIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListChildTeamsByParentIDIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Team, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListChildTeamsByParentIDIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListChildTeamsByParentSlugIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListChildTeamsByParentSlugIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListChildTeamsByParentSlugIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Teams.ListChildTeamsByParentSlugIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListChildTeamsByParentSlugIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListChildTeamsByParentSlugIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListChildTeamsByParentSlugIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListChildTeamsByParentSlugIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Team, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListChildTeamsByParentSlugIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListCommentsByIDIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListCommentsByIDIter(t.Context(), 0, 0, 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListCommentsByIDIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	options := &DiscussionCommentListOptions{}
+	iter = client.Teams.ListCommentsByIDIter(t.Context(), 0, 0, 0, options)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListCommentsByIDIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListCommentsByIDIter(t.Context(), 0, 0, 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListCommentsByIDIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListCommentsByIDIter(t.Context(), 0, 0, 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *DiscussionComment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListCommentsByIDIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListCommentsBySlugIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListCommentsBySlugIter(t.Context(), "", "", 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListCommentsBySlugIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	options := &DiscussionCommentListOptions{}
+	iter = client.Teams.ListCommentsBySlugIter(t.Context(), "", "", 0, options)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListCommentsBySlugIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListCommentsBySlugIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListCommentsBySlugIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListCommentsBySlugIter(t.Context(), "", "", 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *DiscussionComment, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListCommentsBySlugIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListDiscussionsByIDIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListDiscussionsByIDIter(t.Context(), 0, 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListDiscussionsByIDIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &DiscussionListOptions{}
+	iter = client.Teams.ListDiscussionsByIDIter(t.Context(), 0, 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListDiscussionsByIDIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListDiscussionsByIDIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListDiscussionsByIDIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListDiscussionsByIDIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *TeamDiscussion, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListDiscussionsByIDIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListDiscussionsBySlugIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListDiscussionsBySlugIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListDiscussionsBySlugIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &DiscussionListOptions{}
+	iter = client.Teams.ListDiscussionsBySlugIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListDiscussionsBySlugIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListDiscussionsBySlugIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListDiscussionsBySlugIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListDiscussionsBySlugIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *TeamDiscussion, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListDiscussionsBySlugIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListPendingTeamInvitationsByIDIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListPendingTeamInvitationsByIDIter(t.Context(), 0, 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListPendingTeamInvitationsByIDIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Teams.ListPendingTeamInvitationsByIDIter(t.Context(), 0, 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListPendingTeamInvitationsByIDIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListPendingTeamInvitationsByIDIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListPendingTeamInvitationsByIDIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListPendingTeamInvitationsByIDIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Invitation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListPendingTeamInvitationsByIDIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListPendingTeamInvitationsBySlugIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListPendingTeamInvitationsBySlugIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListPendingTeamInvitationsBySlugIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Teams.ListPendingTeamInvitationsBySlugIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListPendingTeamInvitationsBySlugIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListPendingTeamInvitationsBySlugIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListPendingTeamInvitationsBySlugIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListPendingTeamInvitationsBySlugIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Invitation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListPendingTeamInvitationsBySlugIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListTeamMembersByIDIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListTeamMembersByIDIter(t.Context(), 0, 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListTeamMembersByIDIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &TeamListTeamMembersOptions{}
+	iter = client.Teams.ListTeamMembersByIDIter(t.Context(), 0, 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListTeamMembersByIDIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListTeamMembersByIDIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListTeamMembersByIDIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListTeamMembersByIDIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListTeamMembersByIDIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListTeamMembersBySlugIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListTeamMembersBySlugIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListTeamMembersBySlugIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &TeamListTeamMembersOptions{}
+	iter = client.Teams.ListTeamMembersBySlugIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListTeamMembersBySlugIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListTeamMembersBySlugIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListTeamMembersBySlugIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListTeamMembersBySlugIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListTeamMembersBySlugIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListTeamReposByIDIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListTeamReposByIDIter(t.Context(), 0, 0, nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListTeamReposByIDIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Teams.ListTeamReposByIDIter(t.Context(), 0, 0, opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListTeamReposByIDIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListTeamReposByIDIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListTeamReposByIDIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListTeamReposByIDIter(t.Context(), 0, 0, nil)
+	gotItems = 0 // reset
+	iter(func(item *Repository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListTeamReposByIDIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListTeamReposBySlugIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListTeamReposBySlugIter(t.Context(), "", "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListTeamReposBySlugIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Teams.ListTeamReposBySlugIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListTeamReposBySlugIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListTeamReposBySlugIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListTeamReposBySlugIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListTeamReposBySlugIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Repository, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListTeamReposBySlugIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListTeamsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListTeamsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListTeamsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Teams.ListTeamsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListTeamsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListTeamsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListTeamsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListTeamsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Team, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListTeamsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestTeamsService_ListUserTeamsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Teams.ListUserTeamsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Teams.ListUserTeamsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Teams.ListUserTeamsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Teams.ListUserTeamsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Teams.ListUserTeamsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListUserTeamsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Teams.ListUserTeamsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *Team, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Teams.ListUserTeamsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListAllIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListAllIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListAllIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &UserListOptions{}
+	iter = client.Users.ListAllIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListAllIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListAllIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListAllIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListAllIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListAllIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListBlockedUsersIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListBlockedUsersIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListBlockedUsersIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Users.ListBlockedUsersIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListBlockedUsersIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListBlockedUsersIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListBlockedUsersIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListBlockedUsersIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListBlockedUsersIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListEmailsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListEmailsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListEmailsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Users.ListEmailsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListEmailsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListEmailsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListEmailsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListEmailsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *UserEmail, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListEmailsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListFollowersIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListFollowersIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListFollowersIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Users.ListFollowersIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListFollowersIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListFollowersIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListFollowersIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListFollowersIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListFollowersIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListFollowingIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListFollowingIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListFollowingIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Users.ListFollowingIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListFollowingIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListFollowingIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListFollowingIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListFollowingIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *User, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListFollowingIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListGPGKeysIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListGPGKeysIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListGPGKeysIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Users.ListGPGKeysIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListGPGKeysIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListGPGKeysIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListGPGKeysIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListGPGKeysIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *GPGKey, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListGPGKeysIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListInvitationsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListInvitationsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListInvitationsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Users.ListInvitationsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListInvitationsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListInvitationsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListInvitationsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListInvitationsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *RepositoryInvitation, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListInvitationsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListKeysIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListKeysIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListKeysIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Users.ListKeysIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListKeysIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListKeysIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListKeysIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListKeysIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Key, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListKeysIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListPackagesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListPackagesIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListPackagesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &PackageListOptions{}
+	iter = client.Users.ListPackagesIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListPackagesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListPackagesIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListPackagesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListPackagesIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *Package, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListPackagesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListSSHSigningKeysIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListSSHSigningKeysIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListSSHSigningKeysIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Users.ListSSHSigningKeysIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListSSHSigningKeysIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListSSHSigningKeysIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListSSHSigningKeysIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListSSHSigningKeysIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *SSHSigningKey, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListSSHSigningKeysIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListSocialAccountsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListSocialAccountsIter(t.Context(), nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListSocialAccountsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Users.ListSocialAccountsIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListSocialAccountsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListSocialAccountsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListSocialAccountsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListSocialAccountsIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *SocialAccount, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListSocialAccountsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
 func TestUsersService_ListUserSocialAccountsIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	var callNum int
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `[]`)
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
 	})
 
-	// Call iterator with zero values
+	// Call 1: iterator using zero values
 	iter := client.Users.ListUserSocialAccountsIter(t.Context(), "", nil)
+	var gotItems int
 	for _, err := range iter {
+		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Users.ListUserSocialAccountsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListOptions{}
+	iter = client.Users.ListUserSocialAccountsIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Users.ListUserSocialAccountsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.Users.ListUserSocialAccountsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListUserSocialAccountsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.Users.ListUserSocialAccountsIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *SocialAccount, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Users.ListUserSocialAccountsIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
