@@ -1739,7 +1739,7 @@ func TestCodeScanningService_ListAlertsForOrgIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
@@ -1817,7 +1817,7 @@ func TestCodeScanningService_ListAlertsForRepoIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
@@ -1973,7 +1973,7 @@ func TestDependabotService_ListOrgAlertsIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
@@ -2051,7 +2051,7 @@ func TestDependabotService_ListRepoAlertsIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
@@ -3221,7 +3221,7 @@ func TestIssuesService_ListIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
@@ -3377,7 +3377,7 @@ func TestIssuesService_ListByOrgIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
@@ -3455,7 +3455,7 @@ func TestIssuesService_ListByRepoIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
@@ -8759,7 +8759,7 @@ func TestSecretScanningService_ListAlertsForEnterpriseIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
@@ -8837,7 +8837,7 @@ func TestSecretScanningService_ListAlertsForOrgIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
@@ -8915,7 +8915,7 @@ func TestSecretScanningService_ListAlertsForRepoIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
@@ -9063,6 +9063,240 @@ func TestSecretScanningService_ListLocationsForAlertIter(t *testing.T) {
 	}
 }
 
+func TestSecurityAdvisoriesService_ListGlobalSecurityAdvisoriesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
+	})
+
+	// Call 1: iterator using zero values
+	iter := client.SecurityAdvisories.ListGlobalSecurityAdvisoriesIter(t.Context(), nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.SecurityAdvisories.ListGlobalSecurityAdvisoriesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListGlobalSecurityAdvisoriesOptions{}
+	iter = client.SecurityAdvisories.ListGlobalSecurityAdvisoriesIter(t.Context(), opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.SecurityAdvisories.ListGlobalSecurityAdvisoriesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.SecurityAdvisories.ListGlobalSecurityAdvisoriesIter(t.Context(), nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.SecurityAdvisories.ListGlobalSecurityAdvisoriesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.SecurityAdvisories.ListGlobalSecurityAdvisoriesIter(t.Context(), nil)
+	gotItems = 0 // reset
+	iter(func(item *GlobalSecurityAdvisory, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.SecurityAdvisories.ListGlobalSecurityAdvisoriesIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
+	})
+
+	// Call 1: iterator using zero values
+	iter := client.SecurityAdvisories.ListRepositorySecurityAdvisoriesIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.SecurityAdvisories.ListRepositorySecurityAdvisoriesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListRepositorySecurityAdvisoriesOptions{}
+	iter = client.SecurityAdvisories.ListRepositorySecurityAdvisoriesIter(t.Context(), "", "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.SecurityAdvisories.ListRepositorySecurityAdvisoriesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.SecurityAdvisories.ListRepositorySecurityAdvisoriesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.SecurityAdvisories.ListRepositorySecurityAdvisoriesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.SecurityAdvisories.ListRepositorySecurityAdvisoriesIter(t.Context(), "", "", nil)
+	gotItems = 0 // reset
+	iter(func(item *SecurityAdvisory, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.SecurityAdvisories.ListRepositorySecurityAdvisoriesIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrgIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
+		case 3:
+			fmt.Fprint(w, `[{},{}]`) // Call 2 below: return 2 items, no next page, no errors
+		case 4:
+			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+		case 5:
+			fmt.Fprint(w, `[{},{}]`) // Call 4 below: return 2 items, no next page, no errors
+		}
+	})
+
+	// Call 1: iterator using zero values
+	iter := client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrgIter(t.Context(), "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrgIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 2: iterator using non-nil opts
+	opts := &ListRepositorySecurityAdvisoriesOptions{}
+	iter = client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrgIter(t.Context(), "", opts)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrgIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	// Call 3: iterator returns an error
+	iter = client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrgIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrgIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	// Call 4: iterator returns false
+	iter = client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrgIter(t.Context(), "", nil)
+	gotItems = 0 // reset
+	iter(func(item *SecurityAdvisory, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		// Force the iterator to hit:
+		// if !yield(item, nil) { return }
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrgIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
 func TestSubIssueService_ListByIssueIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -9071,7 +9305,7 @@ func TestSubIssueService_ListByIssueIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`) // Call 1 below: return 3 items, NextPage=1, no errors
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`) // still Call 1 below: return 4 more items, no next page, no errors
