@@ -74,11 +74,13 @@ func TestRoundTrip_Spans(t *testing.T) {
 	)
 
 	req := httptest.NewRequest("GET", "https://api.github.com/users/google", nil)
-	_, err := transport.RoundTrip(req)
+	resp, err := transport.RoundTrip(req)
 	if err != nil {
 		t.Fatalf("RoundTrip failed: %v", err)
 	}
-
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Expected status code 200, got %v", resp.StatusCode)
+	}
 	spans := exporter.GetSpans()
 	if len(spans) != 1 {
 		t.Fatalf("Expected 1 span, got %d", len(spans))
