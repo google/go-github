@@ -90,7 +90,7 @@ type ArtifactStorageResponse struct {
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#create-an-artifact-deployment-record
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/deployment-record
-func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Context, org string, record *CreateArtifactDeploymentRequest) (*ArtifactDeploymentResponse, *Response, error) {
+func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Context, org string, record CreateArtifactDeploymentRequest) (*ArtifactDeploymentResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/metadata/deployment-record", org)
 	req, err := s.client.NewRequest("POST", u, record)
 	if err != nil {
@@ -109,7 +109,7 @@ func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Contex
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#set-cluster-deployment-records
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}
-func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, org, cluster string, request *ClusterDeploymentRecordsRequest) (*ArtifactDeploymentResponse, *Response, error) {
+func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, org, cluster string, request ClusterDeploymentRecordsRequest) (*ArtifactDeploymentResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/metadata/deployment-record/cluster/%v", org, cluster)
 	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
@@ -128,7 +128,7 @@ func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#create-artifact-metadata-storage-record
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/storage-record
-func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, org string, record *CreateArtifactStorageRequest) (*ArtifactStorageResponse, *Response, error) {
+func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, org string, record CreateArtifactStorageRequest) (*ArtifactStorageResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/metadata/storage-record", org)
 	req, err := s.client.NewRequest("POST", u, record)
 	if err != nil {

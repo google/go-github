@@ -38,7 +38,8 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "o", input)
+	// Pass by value (dereference pointer)
+	got, _, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("CreateArtifactDeploymentRecord returned error: %v", err)
 	}
@@ -54,12 +55,12 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 
 	const methodName = "CreateArtifactDeploymentRecord"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.CreateArtifactDeploymentRecord(ctx, "\n", input)
+		_, _, err = client.Organizations.CreateArtifactDeploymentRecord(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "o", input)
+		got, resp, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -92,7 +93,8 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.SetClusterDeploymentRecords(ctx, "o", "c1", input)
+	// Pass by value (dereference pointer)
+	got, _, err := client.Organizations.SetClusterDeploymentRecords(ctx, "o", "c1", *input)
 	if err != nil {
 		t.Errorf("SetClusterDeploymentRecords returned error: %v", err)
 	}
@@ -107,12 +109,12 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 
 	const methodName = "SetClusterDeploymentRecords"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.SetClusterDeploymentRecords(ctx, "\n", "\n", input)
+		_, _, err = client.Organizations.SetClusterDeploymentRecords(ctx, "\n", "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.SetClusterDeploymentRecords(ctx, "o", "c1", input)
+		got, resp, err := client.Organizations.SetClusterDeploymentRecords(ctx, "o", "c1", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -141,7 +143,8 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.CreateArtifactStorageRecord(ctx, "o", input)
+	// Pass by value (dereference pointer)
+	got, _, err := client.Organizations.CreateArtifactStorageRecord(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("CreateArtifactStorageRecord returned error: %v", err)
 	}
@@ -157,12 +160,12 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 
 	const methodName = "CreateArtifactStorageRecord"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.CreateArtifactStorageRecord(ctx, "\n", input)
+		_, _, err = client.Organizations.CreateArtifactStorageRecord(ctx, "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateArtifactStorageRecord(ctx, "o", input)
+		got, resp, err := client.Organizations.CreateArtifactStorageRecord(ctx, "o", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
