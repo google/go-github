@@ -32,17 +32,17 @@ import (
 const (
 	Version = "v82.0.0"
 
+	HeaderRateLimit     = "X-Ratelimit-Limit"
+	HeaderRateRemaining = "X-Ratelimit-Remaining"
+	HeaderRateReset     = "X-Ratelimit-Reset"
+	HeaderRateResource  = "X-Ratelimit-Resource"
+	HeaderRateUsed      = "X-Ratelimit-Used"
+	HeaderRequestID     = "X-Github-Request-Id"
+
 	defaultAPIVersion = "2022-11-28"
 	defaultBaseURL    = "https://api.github.com/"
 	defaultUserAgent  = "go-github" + "/" + Version
 	uploadBaseURL     = "https://uploads.github.com/"
-
-	HeaderRateLimit     = "X-Ratelimit-Limit"
-	HeaderRateRemaining = "X-Ratelimit-Remaining"
-	HeaderRateUsed      = "X-Ratelimit-Used"
-	HeaderRateReset     = "X-Ratelimit-Reset"
-	HeaderRateResource  = "X-Ratelimit-Resource"
-	HeaderRequestID     = "X-Github-Request-Id"
 
 	headerAPIVersion = "X-Github-Api-Version"
 	headerOTP        = "X-Github-Otp"
