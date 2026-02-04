@@ -101,24 +101,25 @@ type structDef struct {
 }
 
 type method struct {
-	RecvType       string
-	RecvVar        string
-	ClientField    string
-	MethodName     string
-	IterMethod     string
-	Args           string
-	CallArgs       string
-	TestCallArgs   string
-	ZeroArgs       string
-	ReturnType     string
-	OptsType       string
-	OptsName       string
-	OptsIsPtr      bool
-	UseListOptions bool
-	UsePage        bool
-	TestJSON1      string
-	TestJSON2      string
-	TestJSON3      string
+	RecvType             string
+	RecvVar              string
+	ClientField          string
+	MethodName           string
+	IterMethod           string
+	Args                 string
+	CallArgs             string
+	TestCallArgs         string
+	ZeroArgs             string
+	ReturnType           string
+	OptsType             string
+	OptsName             string
+	OptsIsPtr            bool
+	UseListCursorOptions bool
+	UseListOptions       bool
+	UsePage              bool
+	TestJSON1            string
+	TestJSON2            string
+	TestJSON3            string
 }
 
 // customTestJSON maps method names to the JSON response they expect in tests.
@@ -164,16 +165,24 @@ func (t *templateData) processStructs(f *ast.File) {
 	}
 }
 
+func (t *templateData) hasListCursorOptions(structName string) bool {
+	return t.hasOptions(structName, "ListCursorOptions")
+}
+
 func (t *templateData) hasListOptions(structName string) bool {
+	return t.hasOptions(structName, "ListOptions")
+}
+
+func (t *templateData) hasOptions(structName, optionsType string) bool {
 	sd, ok := t.Structs[structName]
 	if !ok {
 		return false
 	}
 	for _, embed := range sd.Embeds {
-		if embed == "ListOptions" {
+		if embed == optionsType {
 			return true
 		}
-		if t.hasListOptions(embed) {
+		if t.hasOptions(embed, optionsType) {
 			return true
 		}
 	}
@@ -290,11 +299,12 @@ func (t *templateData) processMethods(f *ast.File) error {
 			continue
 		}
 
+		useListCursorOptions := t.hasListCursorOptions(optsType)
 		useListOptions := t.hasListOptions(optsType)
 		usePage := t.hasIntPage(optsType)
 
-		if !useListOptions && !usePage {
-			logf("Skipping %s.%s: opts %s does not have ListOptions or Page int", recvType, fd.Name.Name, optsType)
+		if !useListCursorOptions && !useListOptions && !usePage {
+			logf("Skipping %s.%s: opts %s does not have ListCursorOptions, ListOptions, or Page int", recvType, fd.Name.Name, optsType)
 			continue
 		}
 
@@ -316,24 +326,25 @@ func (t *templateData) processMethods(f *ast.File) error {
 		testJSON3 := strings.ReplaceAll(testJSON, "[]", "[{},{}]")       // Call 2 - return 2 items
 
 		m := &method{
-			RecvType:       recType,
-			RecvVar:        recvVar,
-			ClientField:    clientField,
-			MethodName:     fd.Name.Name,
-			IterMethod:     fd.Name.Name + "Iter",
-			Args:           strings.Join(args, ", "),
-			CallArgs:       strings.Join(callArgs, ", "),
-			TestCallArgs:   strings.Join(testCallArgs, ", "),
-			ZeroArgs:       strings.Join(zeroArgs, ", "),
-			ReturnType:     eltType,
-			OptsType:       optsType,
-			OptsName:       optsName,
-			OptsIsPtr:      optsIsPtr,
-			UseListOptions: useListOptions,
-			UsePage:        usePage,
-			TestJSON1:      testJSON1,
-			TestJSON2:      testJSON2,
-			TestJSON3:      testJSON3,
+			RecvType:             recType,
+			RecvVar:              recvVar,
+			ClientField:          clientField,
+			MethodName:           fd.Name.Name,
+			IterMethod:           fd.Name.Name + "Iter",
+			Args:                 strings.Join(args, ", "),
+			CallArgs:             strings.Join(callArgs, ", "),
+			TestCallArgs:         strings.Join(testCallArgs, ", "),
+			ZeroArgs:             strings.Join(zeroArgs, ", "),
+			ReturnType:           eltType,
+			OptsType:             optsType,
+			OptsName:             optsName,
+			OptsIsPtr:            optsIsPtr,
+			UseListCursorOptions: useListCursorOptions,
+			UseListOptions:       useListOptions,
+			UsePage:              usePage,
+			TestJSON1:            testJSON1,
+			TestJSON2:            testJSON2,
+			TestJSON3:            testJSON3,
 		}
 		t.Methods = append(t.Methods, m)
 	}
@@ -432,12 +443,26 @@ func ({{.RecvVar}} *{{.RecvType}}) {{.IterMethod}}({{.Args}}) iter.Seq2[{{.Retur
 				}
 			}
 
+			{{if and .UseListCursorOptions .UseListOptions}}
+			if resp.Cursor == "" && resp.NextPage == 0 {
+				break
+			}
+			{{.OptsName}}.ListCursorOptions.Cursor = resp.Cursor
+			{{.OptsName}}.ListOptions.Page = resp.NextPage
+			{{else if .UseListCursorOptions}}
+			if resp.Cursor == "" {
+				break
+			}
+			{{.OptsName}}.ListCursorOptions.Cursor = resp.Cursor
+			{{else if .UseListOptions}}
 			if resp.NextPage == 0 {
 				break
 			}
-			{{if .UseListOptions}}
 			{{.OptsName}}.ListOptions.Page = resp.NextPage
 			{{else}}
+			if resp.NextPage == 0 {
+				break
+			}
 			{{.OptsName}}.Page = resp.NextPage
 			{{end -}}
 		}
@@ -464,20 +489,23 @@ func Test{{.RecvType}}_{{.IterMethod}}(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
+			{{- if .UseListCursorOptions}}
+			w.Header().Set("Link", ` + "`" + `<https://api.github.com/?cursor=yo>; rel="next"` + "`" + `)
+			{{else}}
 			w.Header().Set("Link", ` + "`" + `<https://api.github.com/?page=1>; rel="next"` + "`" + `)
-			fmt.Fprint(w, ` + "`" + `{{.TestJSON1}}` + "`" + `) // Call 1 below: return 3 items, NextPage=1, no errors
+			{{end -}}
+			fmt.Fprint(w, ` + "`" + `{{.TestJSON1}}` + "`" + `)
 		case 2:
-			fmt.Fprint(w, ` + "`" + `{{.TestJSON2}}` + "`" + `) // still Call 1 below: return 4 more items, no next page, no errors
+			fmt.Fprint(w, ` + "`" + `{{.TestJSON2}}` + "`" + `)
 		case 3:
-			fmt.Fprint(w, ` + "`" + `{{.TestJSON3}}` + "`" + `) // Call 2 below: return 2 items, no next page, no errors
+			fmt.Fprint(w, ` + "`" + `{{.TestJSON3}}` + "`" + `)
 		case 4:
-			w.WriteHeader(http.StatusNotFound) // Call 3 below: endpoint returns an error
+			w.WriteHeader(http.StatusNotFound)
 		case 5:
-			fmt.Fprint(w, ` + "`" + `{{.TestJSON3}}` + "`" + `) // Call 4 below: return 2 items, no next page, no errors
+			fmt.Fprint(w, ` + "`" + `{{.TestJSON3}}` + "`" + `)
 		}
 	})
 
-	// Call 1: iterator using zero values
 	iter := client.{{.ClientField}}.{{.IterMethod}}({{.ZeroArgs}})
 	var gotItems int
 	for _, err := range iter {
@@ -490,10 +518,9 @@ func Test{{.RecvType}}_{{.IterMethod}}(t *testing.T) {
 		t.Errorf("client.{{.ClientField}}.{{.IterMethod}} call 1 got %v items; want %v", gotItems, want)
 	}
 
-	// Call 2: iterator using non-nil opts
 	{{.OptsName}} := &{{.OptsType}}{}
 	iter = client.{{.ClientField}}.{{.IterMethod}}({{.TestCallArgs}})
-	gotItems = 0 // reset
+	gotItems = 0
 	for _, err := range iter {
 		gotItems++
 		if err != nil {
@@ -504,9 +531,8 @@ func Test{{.RecvType}}_{{.IterMethod}}(t *testing.T) {
 		t.Errorf("client.{{.ClientField}}.{{.IterMethod}} call 2 got %v items; want %v", gotItems, want)
 	}
 
-	// Call 3: iterator returns an error
 	iter = client.{{.ClientField}}.{{.IterMethod}}({{.ZeroArgs}})
-	gotItems = 0 // reset
+	gotItems = 0
 	for _, err := range iter {
 		gotItems++
 		if err == nil {
@@ -517,16 +543,13 @@ func Test{{.RecvType}}_{{.IterMethod}}(t *testing.T) {
 		t.Errorf("client.{{.ClientField}}.{{.IterMethod}} call 3 got %v items; want 1 (an error)", gotItems)
 	}
 
-	// Call 4: iterator returns false
 	iter = client.{{.ClientField}}.{{.IterMethod}}({{.ZeroArgs}})
-	gotItems = 0 // reset
+	gotItems = 0
 	iter(func(item {{.ReturnType}}, err error) bool {
 		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
-		// Force the iterator to hit:
-		// if !yield(item, nil) { return }
 		return false
 	})
 	if gotItems != 1 {

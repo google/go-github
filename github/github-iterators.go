@@ -40,7 +40,6 @@ func (s *ActivityService) ListEventsIter(ctx context.Context, opts *ListOptions)
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -72,7 +71,6 @@ func (s *ActivityService) ListEventsForOrganizationIter(ctx context.Context, org
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -104,7 +102,6 @@ func (s *ActivityService) ListEventsForRepoNetworkIter(ctx context.Context, owne
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -136,7 +133,6 @@ func (s *ActivityService) ListEventsPerformedByUserIter(ctx context.Context, use
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -168,7 +164,6 @@ func (s *ActivityService) ListEventsReceivedByUserIter(ctx context.Context, user
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -200,7 +195,6 @@ func (s *ActivityService) ListIssueEventsForRepositoryIter(ctx context.Context, 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -232,7 +226,6 @@ func (s *ActivityService) ListNotificationsIter(ctx context.Context, opts *Notif
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -264,7 +257,6 @@ func (s *ActivityService) ListRepositoryEventsIter(ctx context.Context, owner st
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -296,7 +288,6 @@ func (s *ActivityService) ListRepositoryNotificationsIter(ctx context.Context, o
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -328,7 +319,6 @@ func (s *ActivityService) ListStargazersIter(ctx context.Context, owner string, 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -360,7 +350,6 @@ func (s *ActivityService) ListStarredIter(ctx context.Context, user string, opts
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -392,7 +381,6 @@ func (s *ActivityService) ListUserEventsForOrganizationIter(ctx context.Context,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -424,7 +412,6 @@ func (s *ActivityService) ListWatchedIter(ctx context.Context, user string, opts
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -456,7 +443,6 @@ func (s *ActivityService) ListWatchersIter(ctx context.Context, owner string, re
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -488,7 +474,6 @@ func (s *AppsService) ListInstallationRequestsIter(ctx context.Context, opts *Li
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -520,7 +505,6 @@ func (s *AppsService) ListInstallationsIter(ctx context.Context, opts *ListOptio
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -552,7 +536,6 @@ func (s *AppsService) ListUserInstallationsIter(ctx context.Context, opts *ListO
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -584,7 +567,6 @@ func (s *ChecksService) ListCheckRunAnnotationsIter(ctx context.Context, owner s
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -616,7 +598,6 @@ func (s *ClassroomService) ListAcceptedAssignmentsIter(ctx context.Context, assi
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -648,7 +629,6 @@ func (s *ClassroomService) ListClassroomAssignmentsIter(ctx context.Context, cla
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -680,7 +660,6 @@ func (s *ClassroomService) ListClassroomsIter(ctx context.Context, opts *ListOpt
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -712,7 +691,6 @@ func (s *CodeScanningService) ListAlertInstancesIter(ctx context.Context, owner 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -741,10 +719,10 @@ func (s *CodeScanningService) ListAlertsForOrgIter(ctx context.Context, org stri
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -773,10 +751,10 @@ func (s *CodeScanningService) ListAlertsForRepoIter(ctx context.Context, owner s
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -808,7 +786,6 @@ func (s *CodeScanningService) ListAnalysesForRepoIter(ctx context.Context, owner
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -837,10 +814,10 @@ func (s *DependabotService) ListOrgAlertsIter(ctx context.Context, org string, o
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -869,10 +846,10 @@ func (s *DependabotService) ListRepoAlertsIter(ctx context.Context, owner string
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -904,7 +881,6 @@ func (s *EnterpriseService) ListAppAccessibleOrganizationRepositoriesIter(ctx co
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -936,7 +912,6 @@ func (s *EnterpriseService) ListAppInstallableOrganizationsIter(ctx context.Cont
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -968,7 +943,6 @@ func (s *EnterpriseService) ListAppInstallationsIter(ctx context.Context, enterp
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1000,7 +974,6 @@ func (s *EnterpriseService) ListAssignmentsIter(ctx context.Context, enterprise 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1032,7 +1005,6 @@ func (s *EnterpriseService) ListOrganizationCustomPropertyValuesIter(ctx context
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1064,7 +1036,6 @@ func (s *EnterpriseService) ListRepositoriesForOrgAppInstallationIter(ctx contex
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1096,7 +1067,6 @@ func (s *EnterpriseService) ListTeamMembersIter(ctx context.Context, enterprise 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1128,7 +1098,6 @@ func (s *EnterpriseService) ListTeamsIter(ctx context.Context, enterprise string
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1160,7 +1129,6 @@ func (s *GistsService) ListIter(ctx context.Context, user string, opts *GistList
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1192,7 +1160,6 @@ func (s *GistsService) ListAllIter(ctx context.Context, opts *GistListOptions) i
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1224,7 +1191,6 @@ func (s *GistsService) ListCommentsIter(ctx context.Context, gistID string, opts
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1256,7 +1222,6 @@ func (s *GistsService) ListCommitsIter(ctx context.Context, id string, opts *Lis
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1288,7 +1253,6 @@ func (s *GistsService) ListForksIter(ctx context.Context, id string, opts *ListO
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1320,7 +1284,6 @@ func (s *GistsService) ListStarredIter(ctx context.Context, opts *GistListOption
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1349,10 +1312,10 @@ func (s *IssuesService) ListIter(ctx context.Context, all bool, opts *IssueListO
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1384,7 +1347,6 @@ func (s *IssuesService) ListAssigneesIter(ctx context.Context, owner string, rep
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1413,10 +1375,10 @@ func (s *IssuesService) ListByOrgIter(ctx context.Context, org string, opts *Iss
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1445,10 +1407,10 @@ func (s *IssuesService) ListByRepoIter(ctx context.Context, owner string, repo s
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1480,7 +1442,6 @@ func (s *IssuesService) ListCommentsIter(ctx context.Context, owner string, repo
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1512,7 +1473,6 @@ func (s *IssuesService) ListIssueEventsIter(ctx context.Context, owner string, r
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1544,7 +1504,6 @@ func (s *IssuesService) ListIssueTimelineIter(ctx context.Context, owner string,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1576,7 +1535,6 @@ func (s *IssuesService) ListLabelsIter(ctx context.Context, owner string, repo s
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1608,7 +1566,6 @@ func (s *IssuesService) ListLabelsByIssueIter(ctx context.Context, owner string,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1640,7 +1597,6 @@ func (s *IssuesService) ListLabelsForMilestoneIter(ctx context.Context, owner st
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1672,7 +1628,6 @@ func (s *IssuesService) ListMilestonesIter(ctx context.Context, owner string, re
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1704,7 +1659,6 @@ func (s *IssuesService) ListRepositoryEventsIter(ctx context.Context, owner stri
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1736,7 +1690,6 @@ func (s *MarketplaceService) ListMarketplacePurchasesForUserIter(ctx context.Con
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1768,7 +1721,6 @@ func (s *MarketplaceService) ListPlanAccountsForPlanIter(ctx context.Context, pl
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1800,7 +1752,6 @@ func (s *MarketplaceService) ListPlansIter(ctx context.Context, opts *ListOption
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1832,7 +1783,6 @@ func (s *MigrationService) ListMigrationsIter(ctx context.Context, org string, o
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1864,7 +1814,6 @@ func (s *MigrationService) ListUserMigrationsIter(ctx context.Context, opts *Lis
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1896,7 +1845,6 @@ func (s *OrganizationsService) ListIter(ctx context.Context, user string, opts *
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1928,7 +1876,6 @@ func (s *OrganizationsService) ListAllIter(ctx context.Context, opts *Organizati
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1960,7 +1907,6 @@ func (s *OrganizationsService) ListBlockedUsersIter(ctx context.Context, org str
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -1992,7 +1938,6 @@ func (s *OrganizationsService) ListCredentialAuthorizationsIter(ctx context.Cont
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2024,7 +1969,6 @@ func (s *OrganizationsService) ListCustomPropertyValuesIter(ctx context.Context,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2056,7 +2000,6 @@ func (s *OrganizationsService) ListFailedOrgInvitationsIter(ctx context.Context,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2088,7 +2031,6 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokensIter(ctx conte
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2120,7 +2062,6 @@ func (s *OrganizationsService) ListHooksIter(ctx context.Context, org string, op
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2152,7 +2093,6 @@ func (s *OrganizationsService) ListMembersIter(ctx context.Context, org string, 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2184,7 +2124,6 @@ func (s *OrganizationsService) ListOrgInvitationTeamsIter(ctx context.Context, o
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2216,7 +2155,6 @@ func (s *OrganizationsService) ListOrgMembershipsIter(ctx context.Context, opts 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2248,7 +2186,6 @@ func (s *OrganizationsService) ListOutsideCollaboratorsIter(ctx context.Context,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2280,7 +2217,6 @@ func (s *OrganizationsService) ListPackagesIter(ctx context.Context, org string,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2312,7 +2248,6 @@ func (s *OrganizationsService) ListPendingOrgInvitationsIter(ctx context.Context
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2344,7 +2279,6 @@ func (s *OrganizationsService) ListTeamsAssignedToOrgRoleIter(ctx context.Contex
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2376,7 +2310,6 @@ func (s *OrganizationsService) ListUsersAssignedToOrgRoleIter(ctx context.Contex
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2408,7 +2341,6 @@ func (s *PullRequestsService) ListIter(ctx context.Context, owner string, repo s
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2440,7 +2372,6 @@ func (s *PullRequestsService) ListCommentsIter(ctx context.Context, owner string
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2472,7 +2403,6 @@ func (s *PullRequestsService) ListCommitsIter(ctx context.Context, owner string,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2504,7 +2434,6 @@ func (s *PullRequestsService) ListFilesIter(ctx context.Context, owner string, r
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2536,7 +2465,6 @@ func (s *PullRequestsService) ListPullRequestsWithCommitIter(ctx context.Context
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2568,7 +2496,6 @@ func (s *PullRequestsService) ListReviewCommentsIter(ctx context.Context, owner 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2600,7 +2527,6 @@ func (s *PullRequestsService) ListReviewsIter(ctx context.Context, owner string,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2632,7 +2558,6 @@ func (s *ReactionsService) ListCommentReactionsIter(ctx context.Context, owner s
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2664,7 +2589,6 @@ func (s *ReactionsService) ListIssueCommentReactionsIter(ctx context.Context, ow
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2696,7 +2620,6 @@ func (s *ReactionsService) ListIssueReactionsIter(ctx context.Context, owner str
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2728,7 +2651,6 @@ func (s *ReactionsService) ListPullRequestCommentReactionsIter(ctx context.Conte
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2760,7 +2682,6 @@ func (s *ReactionsService) ListReleaseReactionsIter(ctx context.Context, owner s
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2792,7 +2713,6 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactionsIter(ctx context.Co
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2824,7 +2744,6 @@ func (s *ReactionsService) ListTeamDiscussionReactionsIter(ctx context.Context, 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2856,7 +2775,6 @@ func (s *RepositoriesService) ListIter(ctx context.Context, user string, opts *R
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2888,7 +2806,6 @@ func (s *RepositoriesService) ListAutolinksIter(ctx context.Context, owner strin
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -2920,7 +2837,6 @@ func (s *RepositoriesService) ListBranchesIter(ctx context.Context, owner string
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2952,7 +2868,6 @@ func (s *RepositoriesService) ListByAuthenticatedUserIter(ctx context.Context, o
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -2984,7 +2899,6 @@ func (s *RepositoriesService) ListByOrgIter(ctx context.Context, org string, opt
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3016,7 +2930,6 @@ func (s *RepositoriesService) ListByUserIter(ctx context.Context, user string, o
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3048,7 +2961,6 @@ func (s *RepositoriesService) ListCollaboratorsIter(ctx context.Context, owner s
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3080,7 +2992,6 @@ func (s *RepositoriesService) ListCommentsIter(ctx context.Context, owner string
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3112,7 +3023,6 @@ func (s *RepositoriesService) ListCommitCommentsIter(ctx context.Context, owner 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3144,7 +3054,6 @@ func (s *RepositoriesService) ListCommitsIter(ctx context.Context, owner string,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3176,7 +3085,6 @@ func (s *RepositoriesService) ListContributorsIter(ctx context.Context, owner st
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3208,7 +3116,6 @@ func (s *RepositoriesService) ListDeploymentStatusesIter(ctx context.Context, ow
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3240,7 +3147,6 @@ func (s *RepositoriesService) ListDeploymentsIter(ctx context.Context, owner str
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3272,7 +3178,6 @@ func (s *RepositoriesService) ListForksIter(ctx context.Context, owner string, r
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3304,7 +3209,6 @@ func (s *RepositoriesService) ListHooksIter(ctx context.Context, owner string, r
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3336,7 +3240,6 @@ func (s *RepositoriesService) ListInvitationsIter(ctx context.Context, owner str
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3368,7 +3271,6 @@ func (s *RepositoriesService) ListKeysIter(ctx context.Context, owner string, re
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3400,7 +3302,6 @@ func (s *RepositoriesService) ListPagesBuildsIter(ctx context.Context, owner str
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3432,7 +3333,6 @@ func (s *RepositoriesService) ListPreReceiveHooksIter(ctx context.Context, owner
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3464,7 +3364,6 @@ func (s *RepositoriesService) ListReleaseAssetsIter(ctx context.Context, owner s
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3496,7 +3395,6 @@ func (s *RepositoriesService) ListReleasesIter(ctx context.Context, owner string
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3528,7 +3426,6 @@ func (s *RepositoriesService) ListStatusesIter(ctx context.Context, owner string
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3560,7 +3457,6 @@ func (s *RepositoriesService) ListTagsIter(ctx context.Context, owner string, re
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3592,7 +3488,6 @@ func (s *RepositoriesService) ListTeamsIter(ctx context.Context, owner string, r
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3621,10 +3516,10 @@ func (s *SecretScanningService) ListAlertsForEnterpriseIter(ctx context.Context,
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3653,10 +3548,10 @@ func (s *SecretScanningService) ListAlertsForOrgIter(ctx context.Context, org st
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3685,10 +3580,10 @@ func (s *SecretScanningService) ListAlertsForRepoIter(ctx context.Context, owner
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3720,8 +3615,100 @@ func (s *SecretScanningService) ListLocationsForAlertIter(ctx context.Context, o
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListGlobalSecurityAdvisoriesIter returns an iterator that paginates through all results of ListGlobalSecurityAdvisories.
+func (s *SecurityAdvisoriesService) ListGlobalSecurityAdvisoriesIter(ctx context.Context, opts *ListGlobalSecurityAdvisoriesOptions) iter.Seq2[*GlobalSecurityAdvisory, error] {
+	return func(yield func(*GlobalSecurityAdvisory, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListGlobalSecurityAdvisoriesOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			items, resp, err := s.ListGlobalSecurityAdvisories(ctx, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range items {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.Cursor == "" {
+				break
+			}
+			opts.ListCursorOptions.Cursor = resp.Cursor
+		}
+	}
+}
+
+// ListRepositorySecurityAdvisoriesIter returns an iterator that paginates through all results of ListRepositorySecurityAdvisories.
+func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesIter(ctx context.Context, owner string, repo string, opts *ListRepositorySecurityAdvisoriesOptions) iter.Seq2[*SecurityAdvisory, error] {
+	return func(yield func(*SecurityAdvisory, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListRepositorySecurityAdvisoriesOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			items, resp, err := s.ListRepositorySecurityAdvisories(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range items {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.Cursor == "" {
+				break
+			}
+			opts.ListCursorOptions.Cursor = resp.Cursor
+		}
+	}
+}
+
+// ListRepositorySecurityAdvisoriesForOrgIter returns an iterator that paginates through all results of ListRepositorySecurityAdvisoriesForOrg.
+func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrgIter(ctx context.Context, org string, opts *ListRepositorySecurityAdvisoriesOptions) iter.Seq2[*SecurityAdvisory, error] {
+	return func(yield func(*SecurityAdvisory, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListRepositorySecurityAdvisoriesOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			items, resp, err := s.ListRepositorySecurityAdvisoriesForOrg(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range items {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.Cursor == "" {
+				break
+			}
+			opts.ListCursorOptions.Cursor = resp.Cursor
 		}
 	}
 }
@@ -3749,10 +3736,10 @@ func (s *SubIssueService) ListByIssueIter(ctx context.Context, owner string, rep
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" && resp.NextPage == 0 {
 				break
 			}
-
+			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3784,7 +3771,6 @@ func (s *TeamsService) ListChildTeamsByParentIDIter(ctx context.Context, orgID i
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3816,7 +3802,6 @@ func (s *TeamsService) ListChildTeamsByParentSlugIter(ctx context.Context, org s
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -3848,7 +3833,6 @@ func (s *TeamsService) ListCommentsByIDIter(ctx context.Context, orgID int64, te
 			if resp.NextPage == 0 {
 				break
 			}
-
 			options.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3880,7 +3864,6 @@ func (s *TeamsService) ListCommentsBySlugIter(ctx context.Context, org string, s
 			if resp.NextPage == 0 {
 				break
 			}
-
 			options.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3912,7 +3895,6 @@ func (s *TeamsService) ListDiscussionsByIDIter(ctx context.Context, orgID int64,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3944,7 +3926,6 @@ func (s *TeamsService) ListDiscussionsBySlugIter(ctx context.Context, org string
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3976,7 +3957,6 @@ func (s *TeamsService) ListPendingTeamInvitationsByIDIter(ctx context.Context, o
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4008,7 +3988,6 @@ func (s *TeamsService) ListPendingTeamInvitationsBySlugIter(ctx context.Context,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4040,7 +4019,6 @@ func (s *TeamsService) ListTeamMembersByIDIter(ctx context.Context, orgID int64,
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -4072,7 +4050,6 @@ func (s *TeamsService) ListTeamMembersBySlugIter(ctx context.Context, org string
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -4104,7 +4081,6 @@ func (s *TeamsService) ListTeamReposByIDIter(ctx context.Context, orgID int64, t
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4136,7 +4112,6 @@ func (s *TeamsService) ListTeamReposBySlugIter(ctx context.Context, org string, 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4168,7 +4143,6 @@ func (s *TeamsService) ListTeamsIter(ctx context.Context, org string, opts *List
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4200,7 +4174,6 @@ func (s *TeamsService) ListUserTeamsIter(ctx context.Context, opts *ListOptions)
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4232,7 +4205,6 @@ func (s *UsersService) ListAllIter(ctx context.Context, opts *UserListOptions) i
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -4264,7 +4236,6 @@ func (s *UsersService) ListBlockedUsersIter(ctx context.Context, opts *ListOptio
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4296,7 +4267,6 @@ func (s *UsersService) ListEmailsIter(ctx context.Context, opts *ListOptions) it
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4328,7 +4298,6 @@ func (s *UsersService) ListFollowersIter(ctx context.Context, user string, opts 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4360,7 +4329,6 @@ func (s *UsersService) ListFollowingIter(ctx context.Context, user string, opts 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4392,7 +4360,6 @@ func (s *UsersService) ListGPGKeysIter(ctx context.Context, user string, opts *L
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4424,7 +4391,6 @@ func (s *UsersService) ListInvitationsIter(ctx context.Context, opts *ListOption
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4456,7 +4422,6 @@ func (s *UsersService) ListKeysIter(ctx context.Context, user string, opts *List
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4488,7 +4453,6 @@ func (s *UsersService) ListPackagesIter(ctx context.Context, user string, opts *
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -4520,7 +4484,6 @@ func (s *UsersService) ListSSHSigningKeysIter(ctx context.Context, user string, 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4552,7 +4515,6 @@ func (s *UsersService) ListSocialAccountsIter(ctx context.Context, opts *ListOpt
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
@@ -4584,7 +4546,6 @@ func (s *UsersService) ListUserSocialAccountsIter(ctx context.Context, username 
 			if resp.NextPage == 0 {
 				break
 			}
-
 			opts.Page = resp.NextPage
 		}
 	}
