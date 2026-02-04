@@ -1257,7 +1257,7 @@ func TestRepoAdvisoryCreditDetailed_Marshal(t *testing.T) {
 					},
 				},
 			},
-			Permissions: map[string]bool{"p1": true},
+			Permissions: &RepositoryPermissions{Pull: Ptr(true)},
 			RoleName:    Ptr("r"),
 		},
 	}
@@ -1323,7 +1323,7 @@ func TestRepoAdvisoryCreditDetailed_Marshal(t *testing.T) {
 			}
 		  ],
 		  "permissions": {
-			"p1": true
+			"pull": true
 		  },
 		  "role_name": "r"
 		}
@@ -1396,7 +1396,7 @@ func TestCredit_Marshal(t *testing.T) {
 					},
 				},
 			},
-			Permissions: map[string]bool{"p1": true},
+			Permissions: &RepositoryPermissions{Pull: Ptr(true)},
 			RoleName:    Ptr("r"),
 		},
 	}
@@ -1461,7 +1461,7 @@ func TestCredit_Marshal(t *testing.T) {
 			}
 			],
 			"permissions": {
-			"p1": true
+			"pull": true
 			},
 			"role_name": "r"
 		}
@@ -1554,7 +1554,7 @@ func TestGlobalSecurityAdvisory_Marshal(t *testing.T) {
 							},
 						},
 					},
-					Permissions: map[string]bool{"p1": true},
+					Permissions: &RepositoryPermissions{Pull: Ptr(true)},
 					RoleName:    Ptr("r"),
 				},
 			},
@@ -1708,7 +1708,7 @@ func TestGlobalSecurityAdvisory_Marshal(t *testing.T) {
 				}
 			  ],
 			  "permissions": {
-				"p1": true
+				"pull": true
 			  },
 			  "role_name": "r"
 			},
