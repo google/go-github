@@ -26878,14 +26878,6 @@ func (s *SCIMEnterpriseAttributeOperation) GetPath() string {
 	return *s.Path
 }
 
-// GetValue returns the Value field if it's non-nil, zero value otherwise.
-func (s *SCIMEnterpriseAttributeOperation) GetValue() string {
-	if s == nil || s.Value == nil {
-		return ""
-	}
-	return *s.Value
-}
-
 // GetDisplay returns the Display field if it's non-nil, zero value otherwise.
 func (s *SCIMEnterpriseDisplayReference) GetDisplay() string {
 	if s == nil || s.Display == nil {
