@@ -192,13 +192,9 @@ func (s *EnterpriseService) GetHostedRunner(ctx context.Context, enterprise stri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#update-a-github-hosted-runner-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
-func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise string, runnerID int64, updateReq HostedRunnerRequest) (*HostedRunner, *Response, error) {
-	if err := validateUpdateHostedRunnerRequest(&updateReq); err != nil {
-		return nil, nil, fmt.Errorf("validation failed: %w", err)
-	}
-
+func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise string, runnerID int64, request UpdateHostedRunnerRequest) (*HostedRunner, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/%v", enterprise, runnerID)
-	req, err := s.client.NewRequest("PATCH", u, updateReq)
+	req, err := s.client.NewRequest("PATCH", u, request)
 	if err != nil {
 		return nil, nil, err
 	}

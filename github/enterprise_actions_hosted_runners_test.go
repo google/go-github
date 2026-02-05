@@ -725,12 +725,12 @@ func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 
 	// Test for a valid update without `Size`
 	ctx := t.Context()
-	validReq := HostedRunnerRequest{
-		Name:           "My larger runner",
-		RunnerGroupID:  1,
-		MaximumRunners: 50,
-		EnableStaticIP: false,
-		ImageVersion:   "1.0.0",
+	validReq := UpdateHostedRunnerRequest{
+		Name:           Ptr("My larger runner"),
+		RunnerGroupID:  Ptr(int64(1)),
+		MaximumRunners: Ptr(int64(50)),
+		EnableStaticIP: Ptr(false),
+		ImageVersion:   Ptr("1.0.0"),
 	}
 	hostedRunner, _, err := client.Enterprise.UpdateHostedRunner(ctx, "o", 23, validReq)
 	if err != nil {
@@ -768,47 +768,6 @@ func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 
 	if !cmp.Equal(hostedRunner, want) {
 		t.Errorf("Enterprise.UpdateHostedRunner returned %+v, want %+v", hostedRunner, want)
-	}
-
-	testCases := []struct {
-		name          string
-		request       HostedRunnerRequest
-		expectedError string
-	}{
-		{
-			name: "Size Set in Update Request",
-			request: HostedRunnerRequest{
-				Name:           "My larger runner",
-				RunnerGroupID:  1,
-				MaximumRunners: 50,
-				EnableStaticIP: false,
-				ImageVersion:   "1.0.0",
-				Size:           "4-core", // Should cause validation error
-			},
-			expectedError: "validation failed: size cannot be updated, API does not support updating size",
-		},
-		{
-			name: "Image Set in Update Request",
-			request: HostedRunnerRequest{
-				Name:           "My larger runner",
-				RunnerGroupID:  1,
-				MaximumRunners: 50,
-				EnableStaticIP: false,
-				ImageVersion:   "1.0.0",
-				Image: HostedRunnerImage{ // Should cause validation error
-					ID:      "ubuntu-latest",
-					Source:  "github",
-					Version: "latest",
-				},
-			},
-			expectedError: "validation failed: image struct should not be set directly; use the ImageVersion to specify version details",
-		},
-	}
-	for _, tt := range testCases {
-		_, _, err := client.Enterprise.UpdateHostedRunner(ctx, "o", 23, tt.request)
-		if err == nil || err.Error() != tt.expectedError {
-			t.Errorf("expected error: %v, got: %v", tt.expectedError, err)
-		}
 	}
 
 	const methodName = "UpdateHostedRunner"
