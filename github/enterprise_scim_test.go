@@ -264,12 +264,15 @@ func TestSCIMEnterpriseAttribute_Marshal(t *testing.T) {
 			{
 				Op:    "o2",
 				Path:  Ptr("p2"),
-				Value: Ptr("v2"),
+				Value: "v2",
 			},
 			{
-				Op:    "add",
-				Path:  Ptr("members"),
-				Value: Ptr(`"value":[{"value":"v-1"},{"value":"v-2"}]`),
+				Op:   "add",
+				Path: Ptr("members"),
+				Value: []*SCIMEnterpriseDisplayReference{
+					{Value: "v-1"},
+					{Value: "v-2"},
+				},
 			},
 		},
 	}
@@ -284,16 +287,15 @@ func TestSCIMEnterpriseAttribute_Marshal(t *testing.T) {
 				"value": "v2"
 			},
 			{
-				"op": "replace",
-				"path": "emails[type eq 'work'].value",
-				"value": "v@3.com"
-			},
-			{
-				"op":"add",
-				"path":"members",
-				"value":[
-					{"value":"abc-123"},
-					{"value":"def-456"}
+				"op": "add",
+				"path": "members",
+				"value": [
+					{
+						"value": "v-1"
+					},
+					{
+						"value": "v-2"
+					}
 				]
 			}
 		]
