@@ -30550,6 +30550,62 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetVisibility() string {
 	return *u.Visibility
 }
 
+// GetEnableStaticIP returns the EnableStaticIP field if it's non-nil, zero value otherwise.
+func (u *UpdateHostedRunnerRequest) GetEnableStaticIP() bool {
+	if u == nil || u.EnableStaticIP == nil {
+		return false
+	}
+	return *u.EnableStaticIP
+}
+
+// GetImageID returns the ImageID field if it's non-nil, zero value otherwise.
+func (u *UpdateHostedRunnerRequest) GetImageID() string {
+	if u == nil || u.ImageID == nil {
+		return ""
+	}
+	return *u.ImageID
+}
+
+// GetImageVersion returns the ImageVersion field if it's non-nil, zero value otherwise.
+func (u *UpdateHostedRunnerRequest) GetImageVersion() string {
+	if u == nil || u.ImageVersion == nil {
+		return ""
+	}
+	return *u.ImageVersion
+}
+
+// GetMaximumRunners returns the MaximumRunners field if it's non-nil, zero value otherwise.
+func (u *UpdateHostedRunnerRequest) GetMaximumRunners() int64 {
+	if u == nil || u.MaximumRunners == nil {
+		return 0
+	}
+	return *u.MaximumRunners
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateHostedRunnerRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetRunnerGroupID returns the RunnerGroupID field if it's non-nil, zero value otherwise.
+func (u *UpdateHostedRunnerRequest) GetRunnerGroupID() int64 {
+	if u == nil || u.RunnerGroupID == nil {
+		return 0
+	}
+	return *u.RunnerGroupID
+}
+
+// GetSize returns the Size field if it's non-nil, zero value otherwise.
+func (u *UpdateHostedRunnerRequest) GetSize() string {
+	if u == nil || u.Size == nil {
+		return ""
+	}
+	return *u.Size
+}
+
 // GetEncryptedValue returns the EncryptedValue field if it's non-nil, zero value otherwise.
 func (u *UpdateOrganizationPrivateRegistry) GetEncryptedValue() string {
 	if u == nil || u.EncryptedValue == nil {
