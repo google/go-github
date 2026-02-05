@@ -93,7 +93,7 @@ type HostedRunnerImage struct {
 // HostedRunnerRequest specifies body parameters to Hosted Runner configuration.
 type HostedRunnerRequest struct {
 	Name           string            `json:"name,omitempty"`
-	Image          HostedRunnerImage `json:"image,omitempty"`
+	Image          HostedRunnerImage `json:"image"`
 	RunnerGroupID  int64             `json:"runner_group_id,omitempty"`
 	Size           string            `json:"size,omitempty"`
 	MaximumRunners int64             `json:"maximum_runners,omitempty"`
