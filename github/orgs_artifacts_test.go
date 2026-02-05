@@ -21,10 +21,10 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 		Name:               "test-n",
 		Digest:             "sha256:123",
 		Version:            Ptr("v1.0.0"),
-		Status:             Ptr("deployed"),
-		LogicalEnvironment: Ptr("prod"),
+		Status:             "deployed",
+		LogicalEnvironment: "prod",
 		DeploymentName:     "dep-1",
-		RuntimeRisks:       []string{"critical-resource", "internet-exposed"},
+		RuntimeRisks:       []DeploymentRuntimeRisk{DeploymentRuntimeRiskCriticalResource, DeploymentRuntimeRiskInternetExposed},
 		GithubRepository:   Ptr("octo-org/octo-repo"),
 		Tags: map[string]string{
 			"data-access": "sensitive",
@@ -33,12 +33,11 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONMarshal(t, input, `{"digest":"sha256:123","name":"test-n","version":"v1.0.0","status":"deployed","logical_environment":"prod","deployment_name":"dep-1","tags":{"data-access":"sensitive"},"runtime_risks":["critical-resource","internet-exposed"],"github_repository":"octo-org/octo-repo"}`)
+		testJSONMarshal(t, input, `{"name":"test-n","digest":"sha256:123","version":"v1.0.0","status":"deployed","logical_environment":"prod","deployment_name":"dep-1","tags":{"data-access":"sensitive"},"runtime_risks":["critical-resource","internet-exposed"],"github_repository":"octo-org/octo-repo"}`)
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":1}]}`)
 	})
 
 	ctx := t.Context()
-	// Pass by value (dereference pointer)
 	got, _, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("CreateArtifactDeploymentRecord returned error: %v", err)
@@ -75,25 +74,24 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 	input := &ClusterDeploymentRecordsRequest{
 		LogicalEnvironment:  "prod",
 		PhysicalEnvironment: Ptr("pacific-east"),
-		Deployments: []*CreateArtifactDeploymentRequest{
+		Deployments: []*ClusterArtifactDeployment{
 			{
 				Name:           "awesome-image",
 				Digest:         "sha256:abc",
 				DeploymentName: "dep-1",
 				Version:        Ptr("v2.0"),
-				Status:         Ptr("deployed"),
+				Status:         "deployed",
 			},
 		},
 	}
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record/cluster/c1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONMarshal(t, input, `{"logical_environment":"prod","physical_environment":"pacific-east","deployments":[{"digest":"sha256:abc","name":"awesome-image","version":"v2.0","status":"deployed","deployment_name":"dep-1"}]}`)
+		testJSONMarshal(t, input, `{"logical_environment":"prod","physical_environment":"pacific-east","deployments":[{"name":"awesome-image","digest":"sha256:abc","version":"v2.0","status":"deployed","deployment_name":"dep-1"}]}`)
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":2}]}`)
 	})
 
 	ctx := t.Context()
-	// Pass by value (dereference pointer)
 	got, _, err := client.Organizations.SetClusterDeploymentRecords(ctx, "o", "c1", *input)
 	if err != nil {
 		t.Errorf("SetClusterDeploymentRecords returned error: %v", err)
@@ -143,7 +141,6 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	// Pass by value (dereference pointer)
 	got, _, err := client.Organizations.CreateArtifactStorageRecord(ctx, "o", *input)
 	if err != nil {
 		t.Errorf("CreateArtifactStorageRecord returned error: %v", err)
@@ -179,7 +176,7 @@ func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/artifacts/sha256:abc/metadata/deployment-records", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{}) // Ensure no query parameters are sent by default
+		testFormValues(t, r, values{})
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":1, "runtime_risks": ["sensitive-data"]}]}`)
 	})
 
@@ -192,7 +189,7 @@ func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
 	want := &ArtifactDeploymentResponse{
 		TotalCount: Ptr(1),
 		DeploymentRecords: []*ArtifactDeploymentRecord{
-			{ID: Ptr(int64(1)), RuntimeRisks: []string{"sensitive-data"}},
+			{ID: Ptr(int64(1)), RuntimeRisks: []DeploymentRuntimeRisk{DeploymentRuntimeRiskSensitiveData}},
 		},
 	}
 	if !cmp.Equal(got, want) {
@@ -220,7 +217,7 @@ func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/artifacts/sha256:abc/metadata/storage-records", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{}) // Ensure no query parameters are sent by default
+		testFormValues(t, r, values{})
 		fmt.Fprint(w, `{"total_count":1,"storage_records":[{"name":"libfoo"}]}`)
 	})
 

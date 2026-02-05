@@ -4095,6 +4095,39 @@ func TestClassroomUser_GetLogin(tt *testing.T) {
 	c.GetLogin()
 }
 
+func TestClusterArtifactDeployment_GetGithubRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ClusterArtifactDeployment{GithubRepository: &zeroValue}
+	c.GetGithubRepository()
+	c = &ClusterArtifactDeployment{}
+	c.GetGithubRepository()
+	c = nil
+	c.GetGithubRepository()
+}
+
+func TestClusterArtifactDeployment_GetTags(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]string{}
+	c := &ClusterArtifactDeployment{Tags: zeroValue}
+	c.GetTags()
+	c = &ClusterArtifactDeployment{}
+	c.GetTags()
+	c = nil
+	c.GetTags()
+}
+
+func TestClusterArtifactDeployment_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &ClusterArtifactDeployment{Version: &zeroValue}
+	c.GetVersion()
+	c = &ClusterArtifactDeployment{}
+	c.GetVersion()
+	c = nil
+	c.GetVersion()
+}
+
 func TestClusterDeploymentRecordsRequest_GetPhysicalEnvironment(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8602,17 +8635,6 @@ func TestCreateArtifactDeploymentRequest_GetGithubRepository(tt *testing.T) {
 	c.GetGithubRepository()
 }
 
-func TestCreateArtifactDeploymentRequest_GetLogicalEnvironment(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateArtifactDeploymentRequest{LogicalEnvironment: &zeroValue}
-	c.GetLogicalEnvironment()
-	c = &CreateArtifactDeploymentRequest{}
-	c.GetLogicalEnvironment()
-	c = nil
-	c.GetLogicalEnvironment()
-}
-
 func TestCreateArtifactDeploymentRequest_GetPhysicalEnvironment(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8622,17 +8644,6 @@ func TestCreateArtifactDeploymentRequest_GetPhysicalEnvironment(tt *testing.T) {
 	c.GetPhysicalEnvironment()
 	c = nil
 	c.GetPhysicalEnvironment()
-}
-
-func TestCreateArtifactDeploymentRequest_GetStatus(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateArtifactDeploymentRequest{Status: &zeroValue}
-	c.GetStatus()
-	c = &CreateArtifactDeploymentRequest{}
-	c.GetStatus()
-	c = nil
-	c.GetStatus()
 }
 
 func TestCreateArtifactDeploymentRequest_GetTags(tt *testing.T) {

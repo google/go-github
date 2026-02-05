@@ -10,34 +10,44 @@ import (
 	"fmt"
 )
 
+// DeploymentRuntimeRisk represents the runtime risk of a deployment.
+type DeploymentRuntimeRisk string
+
+const (
+	DeploymentRuntimeRiskCriticalResource DeploymentRuntimeRisk = "critical-resource"
+	DeploymentRuntimeRiskInternetExposed  DeploymentRuntimeRisk = "internet-exposed"
+	DeploymentRuntimeRiskLateralMovement  DeploymentRuntimeRisk = "lateral-movement"
+	DeploymentRuntimeRiskSensitiveData    DeploymentRuntimeRisk = "sensitive-data"
+)
+
 // ArtifactDeploymentRecord represents a GitHub artifact deployment record.
 type ArtifactDeploymentRecord struct {
-	ID                  *int64            `json:"id,omitempty"`
-	Digest              *string           `json:"digest,omitempty"`
-	LogicalEnvironment  *string           `json:"logical_environment,omitempty"`
-	PhysicalEnvironment *string           `json:"physical_environment,omitempty"`
-	Cluster             *string           `json:"cluster,omitempty"`
-	DeploymentName      *string           `json:"deployment_name,omitempty"`
-	Tags                map[string]string `json:"tags,omitempty"`
-	RuntimeRisks        []string          `json:"runtime_risks,omitempty"`
-	AttestationID       *int64            `json:"attestation_id,omitempty"`
-	CreatedAt           *Timestamp        `json:"created_at,omitempty"`
-	UpdatedAt           *Timestamp        `json:"updated_at,omitempty"`
+	ID                  *int64                  `json:"id,omitempty"`
+	Digest              *string                 `json:"digest,omitempty"`
+	LogicalEnvironment  *string                 `json:"logical_environment,omitempty"`
+	PhysicalEnvironment *string                 `json:"physical_environment,omitempty"`
+	Cluster             *string                 `json:"cluster,omitempty"`
+	DeploymentName      *string                 `json:"deployment_name,omitempty"`
+	Tags                map[string]string       `json:"tags,omitempty"`
+	RuntimeRisks        []DeploymentRuntimeRisk `json:"runtime_risks,omitempty"`
+	AttestationID       *int64                  `json:"attestation_id,omitempty"`
+	CreatedAt           *Timestamp              `json:"created_at,omitempty"`
+	UpdatedAt           *Timestamp              `json:"updated_at,omitempty"`
 }
 
 // CreateArtifactDeploymentRequest represents the request body for creating a deployment record.
 type CreateArtifactDeploymentRequest struct {
-	Digest              string            `json:"digest"`
-	Name                string            `json:"name"`
-	Version             *string           `json:"version,omitempty"`
-	Status              *string           `json:"status,omitempty"`
-	LogicalEnvironment  *string           `json:"logical_environment,omitempty"`
-	PhysicalEnvironment *string           `json:"physical_environment,omitempty"`
-	Cluster             *string           `json:"cluster,omitempty"`
-	DeploymentName      string            `json:"deployment_name"`
-	Tags                map[string]string `json:"tags,omitempty"`
-	RuntimeRisks        []string          `json:"runtime_risks,omitempty"`
-	GithubRepository    *string           `json:"github_repository,omitempty"`
+	Name                string                  `json:"name"`
+	Digest              string                  `json:"digest"`
+	Version             *string                 `json:"version,omitempty"`
+	Status              string                  `json:"status"`
+	LogicalEnvironment  string                  `json:"logical_environment"`
+	PhysicalEnvironment *string                 `json:"physical_environment,omitempty"`
+	Cluster             *string                 `json:"cluster,omitempty"`
+	DeploymentName      string                  `json:"deployment_name"`
+	Tags                map[string]string       `json:"tags,omitempty"`
+	RuntimeRisks        []DeploymentRuntimeRisk `json:"runtime_risks,omitempty"`
+	GithubRepository    *string                 `json:"github_repository,omitempty"`
 }
 
 // ArtifactDeploymentResponse represents the response for deployment records.
@@ -46,11 +56,23 @@ type ArtifactDeploymentResponse struct {
 	DeploymentRecords []*ArtifactDeploymentRecord `json:"deployment_records,omitempty"`
 }
 
+// ClusterArtifactDeployment represents a deployment within a cluster record request.
+type ClusterArtifactDeployment struct {
+	Name             string                  `json:"name"`
+	Digest           string                  `json:"digest"`
+	Version          *string                 `json:"version,omitempty"`
+	Status           string                  `json:"status"`
+	DeploymentName   string                  `json:"deployment_name"`
+	Tags             map[string]string       `json:"tags,omitempty"`
+	RuntimeRisks     []DeploymentRuntimeRisk `json:"runtime_risks,omitempty"`
+	GithubRepository *string                 `json:"github_repository,omitempty"`
+}
+
 // ClusterDeploymentRecordsRequest represents the request body for setting cluster deployment records.
 type ClusterDeploymentRecordsRequest struct {
-	LogicalEnvironment  string                             `json:"logical_environment"`
-	PhysicalEnvironment *string                            `json:"physical_environment,omitempty"`
-	Deployments         []*CreateArtifactDeploymentRequest `json:"deployments"`
+	LogicalEnvironment  string                       `json:"logical_environment"`
+	PhysicalEnvironment *string                      `json:"physical_environment,omitempty"`
+	Deployments         []*ClusterArtifactDeployment `json:"deployments"`
 }
 
 // ArtifactStorageRecord represents a GitHub artifact storage record.
@@ -85,7 +107,7 @@ type ArtifactStorageResponse struct {
 	StorageRecords []*ArtifactStorageRecord `json:"storage_records,omitempty"`
 }
 
-// CreateArtifactDeploymentRecord creates an artifact deployment record for an organization.
+// CreateArtifactDeploymentRecord creates or updates deployment records for an artifact associated with an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#create-an-artifact-deployment-record
 //
@@ -144,6 +166,8 @@ func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, 
 
 // ListArtifactDeploymentRecords lists deployment records for an artifact metadata.
 //
+// subjectDigest is SHA256 digest of the artifact, in the form sha256:HEX_DIGEST.
+//
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#list-artifact-deployment-records
 //
 //meta:operation GET /orgs/{org}/artifacts/{subject_digest}/metadata/deployment-records
@@ -164,6 +188,8 @@ func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context
 }
 
 // ListArtifactStorageRecords lists artifact storage records with a given subject digest.
+//
+// subjectDigest is SHA256 digest of the artifact, in the form sha256:HEX_DIGEST.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#list-artifact-storage-records
 //

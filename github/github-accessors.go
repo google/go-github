@@ -3134,6 +3134,30 @@ func (c *ClassroomUser) GetLogin() string {
 	return *c.Login
 }
 
+// GetGithubRepository returns the GithubRepository field if it's non-nil, zero value otherwise.
+func (c *ClusterArtifactDeployment) GetGithubRepository() string {
+	if c == nil || c.GithubRepository == nil {
+		return ""
+	}
+	return *c.GithubRepository
+}
+
+// GetTags returns the Tags map if it's non-nil, an empty map otherwise.
+func (c *ClusterArtifactDeployment) GetTags() map[string]string {
+	if c == nil || c.Tags == nil {
+		return map[string]string{}
+	}
+	return c.Tags
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (c *ClusterArtifactDeployment) GetVersion() string {
+	if c == nil || c.Version == nil {
+		return ""
+	}
+	return *c.Version
+}
+
 // GetPhysicalEnvironment returns the PhysicalEnvironment field if it's non-nil, zero value otherwise.
 func (c *ClusterDeploymentRecordsRequest) GetPhysicalEnvironment() string {
 	if c == nil || c.PhysicalEnvironment == nil {
@@ -6582,28 +6606,12 @@ func (c *CreateArtifactDeploymentRequest) GetGithubRepository() string {
 	return *c.GithubRepository
 }
 
-// GetLogicalEnvironment returns the LogicalEnvironment field if it's non-nil, zero value otherwise.
-func (c *CreateArtifactDeploymentRequest) GetLogicalEnvironment() string {
-	if c == nil || c.LogicalEnvironment == nil {
-		return ""
-	}
-	return *c.LogicalEnvironment
-}
-
 // GetPhysicalEnvironment returns the PhysicalEnvironment field if it's non-nil, zero value otherwise.
 func (c *CreateArtifactDeploymentRequest) GetPhysicalEnvironment() string {
 	if c == nil || c.PhysicalEnvironment == nil {
 		return ""
 	}
 	return *c.PhysicalEnvironment
-}
-
-// GetStatus returns the Status field if it's non-nil, zero value otherwise.
-func (c *CreateArtifactDeploymentRequest) GetStatus() string {
-	if c == nil || c.Status == nil {
-		return ""
-	}
-	return *c.Status
 }
 
 // GetTags returns the Tags map if it's non-nil, an empty map otherwise.
