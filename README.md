@@ -328,7 +328,7 @@ Users who have worked with protocol buffers should find this pattern familiar.
 ### Pagination ###
 
 All requests for resource collections (repos, pull requests, issues, etc.)
-support pagination. Pagination options are described in the
+support pagination. Pagination options using page numbers are described in the
 `github.ListOptions` struct and passed to the list methods directly or as an
 embedded type of a more specific list options struct (for example
 `github.PullRequestListOptions`). Pages information is available via the
@@ -355,12 +355,19 @@ for {
 }
 ```
 
+Pagination options using string cursors are described in the `github.ListCursorOptions`
+struct and passed to the list methods directly or as an
+embedded type of a more specific list cursor options struct (for example
+`github.ListGlobalSecurityAdvisoriesOptions`). Similarly, cursor and pages information
+is available via the `github.Response` struct.
+
 #### Iterators ####
 
 Go v1.23 introduces the new `iter` package.
 
 The new `github/gen-iterators.go` file auto-generates "*Iter" methods in `github/github-iterators.go`
-for all methods that support page number iteration (using the `NextPage` field in each response).
+for all methods that support page number iteration (using the `NextPage` field in each response)
+or string cursor iteration (using the `Cursor` field in each response).
 To handle rate limiting issues, make sure to use a rate-limiting transport.
 (See [Rate Limiting](/#rate-limiting) above for more details.)
 To use these methods, simply create an iterator and then range over it, for example:
