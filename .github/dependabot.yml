@@ -5,6 +5,10 @@ updates:
   schedule:
     interval: weekly
 - package-ecosystem: gomod
+  directory: otel
+  schedule:
+    interval: weekly
+- package-ecosystem: gomod
   directory: scrape
   schedule:
     interval: weekly
