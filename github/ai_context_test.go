@@ -1,4 +1,7 @@
-// github/ai_context_test.go
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
 
 package github
 
@@ -9,34 +12,36 @@ import (
 	"time"
 )
 
-// Internal helpers to avoid test dependency cycles
+// Internal helpers to avoid test dependency cycles.
 func strPtr(s string) *string { return &s }
 func int64Ptr(i int64) *int64 { return &i }
 func intPtr(i int) *int       { return &i }
 func boolPtr(b bool) *bool    { return &b }
 
 func TestOperationSiliconDiet(t *testing.T) {
+	t.Parallel()
+
 	// 1. SETUP: Construct the "Fat" Struct
 	now := Timestamp{time.Now()}
 	url := "https://api.github.com/repos/google/go-github/issues/1"
-	
+
 	fatIssue := &Issue{
-		ID:            int64Ptr(1234567890),
-		NodeID:        strPtr("MDU6SXNzdWUxMjM0NTY3ODkw"), // NOISE
-		Number:        intPtr(1),
-		State:         strPtr("open"),
-		Title:         strPtr("Optimize Struct Payload for AI Agents"),
-		Body:          strPtr("The current payload is too heavy. We need to strip HATEOAS links."),
+		ID:     int64Ptr(1234567890),
+		NodeID: strPtr("MDU6SXNzdWUxMjM0NTY3ODkw"), // NOISE
+		Number: intPtr(1),
+		State:  strPtr("open"),
+		Title:  strPtr("Optimize Struct Payload for AI Agents"),
+		Body:   strPtr("The current payload is too heavy. We need to strip HATEOAS links."),
 		User: &User{
-			Login:             strPtr("mechanic-ai"),
-			ID:                int64Ptr(999),
-			NodeID:            strPtr("MDQ6VXNlcjk5OTk5"),
-			AvatarURL:         strPtr("https://avatars.githubusercontent.com/u/999?v=4"),
-			GravatarID:        strPtr(""),
-			URL:               strPtr("https://api.github.com/users/mechanic-ai"), // NOISE
-			HTMLURL:           strPtr("https://github.com/mechanic-ai"),
-			Type:              strPtr("User"),
-			SiteAdmin:         boolPtr(false),
+			Login:      strPtr("mechanic-ai"),
+			ID:         int64Ptr(999),
+			NodeID:     strPtr("MDQ6VXNlcjk5OTk5"),
+			AvatarURL:  strPtr("https://avatars.githubusercontent.com/u/999?v=4"),
+			GravatarID: strPtr(""),
+			URL:        strPtr("https://api.github.com/users/mechanic-ai"), // NOISE
+			HTMLURL:    strPtr("https://github.com/mechanic-ai"),
+			Type:       strPtr("User"),
+			SiteAdmin:  boolPtr(false),
 		},
 		Labels: []*Label{
 			{
@@ -54,10 +59,10 @@ func TestOperationSiliconDiet(t *testing.T) {
 				Default: boolPtr(false),
 			},
 		},
-		URL:           strPtr(url), // NOISE
-		HTMLURL:       strPtr("https://github.com/google/go-github/issues/1"),
-		CreatedAt:     &now,
-		UpdatedAt:     &now,
+		URL:       strPtr(url), // NOISE
+		HTMLURL:   strPtr("https://github.com/google/go-github/issues/1"),
+		CreatedAt: &now,
+		UpdatedAt: &now,
 	}
 
 	// 2. EXECUTE: Measure Fat Payload
@@ -71,7 +76,7 @@ func TestOperationSiliconDiet(t *testing.T) {
 
 	// 4. VERIFY: Calculate Reduction Vector
 	reduction := float64(fatSize-leanSize) / float64(fatSize) * 100
-	
+
 	t.Logf("FAT Payload:  %d bytes", fatSize)
 	t.Logf("LEAN Payload: %d bytes", leanSize)
 	t.Logf("REDUCTION:    %.2f%%", reduction)
@@ -83,25 +88,26 @@ func TestOperationSiliconDiet(t *testing.T) {
 
 	// 6. VALIDATE: Signal Integrity
 	if leanCtx["title"] != "Optimize Struct Payload for AI Agents" {
-		t.Errorf("Signal Loss: Title mismatch")
+		t.Error("Signal Loss: Title mismatch")
 	}
 	if leanCtx["author"] != "mechanic-ai" {
-		t.Errorf("Signal Loss: Author identity lost")
+		t.Error("Signal Loss: Author identity lost")
 	}
-	
-	// [FIXED]: Used leanCtx instead of leanContext
+
 	labels, ok := leanCtx["labels"].([]string)
 	if !ok || len(labels) != 2 {
-		t.Errorf("Signal Loss: Label flattening failed")
+		t.Error("Signal Loss: Label flattening failed")
 	}
 	if labels[0] != "optimization" {
-		t.Errorf("Signal Loss: Label content mismatch")
+		t.Error("Signal Loss: Label content mismatch")
 	}
 
 	fmt.Printf("MISSION SUCCESS: Issue Payload Reduced by %.2f%%\n", reduction)
 }
 
 func TestCommentOptimization(t *testing.T) {
+	t.Parallel()
+
 	now := Timestamp{time.Now()}
 	url := "https://api.github.com/repos/google/go-github/issues/comments/555"
 
@@ -116,19 +122,19 @@ func TestCommentOptimization(t *testing.T) {
 	}
 
 	leanCtx := fatComment.ToAgentContext()
-	
+
 	// Validate Signal
 	if leanCtx["author"] != "reviewer" {
-		t.Errorf("Comment Signal Loss: Author missing")
+		t.Error("Comment Signal Loss: Author missing")
 	}
 	if leanCtx["body"] != "This is a critical update." {
-		t.Errorf("Comment Signal Loss: Body text missing")
+		t.Error("Comment Signal Loss: Body text missing")
 	}
-	
+
 	// Validate Noise Reduction
 	if _, exists := leanCtx["node_id"]; exists {
-		t.Errorf("Comment Failure: NodeID leaked into context")
+		t.Error("Comment Failure: NodeID leaked into context")
 	}
-	
+
 	fmt.Println("MISSION SUCCESS: Comment Optimized")
 }

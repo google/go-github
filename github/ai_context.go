@@ -1,4 +1,7 @@
-// github/ai_context.go
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
 
 package github
 
@@ -6,20 +9,15 @@ import (
 	"time"
 )
 
-// [OPERATION SILICON DIET]
-// ToAgentContext transforms "Fat Structs" into high-signal context maps.
-// Physics: Reduces payload entropy by >80% to maximize LLM context window efficiency.
-
-// ---------------------------------------------------------------------
-// 1. ISSUES (The Unit of Work)
-// ---------------------------------------------------------------------
-
-func (i *Issue) ToAgentContext() map[string]interface{} {
+// ToAgentContext transforms the Issue struct into a high-signal context map.
+// It eliminates URLs, NodeIDs, and heavy nested pointers to reduce payload
+// entropy by >80% for RAG efficiency.
+func (i *Issue) ToAgentContext() map[string]any {
 	if i == nil {
 		return nil
 	}
 
-	ctx := map[string]interface{}{
+	ctx := map[string]any{
 		"number":     i.GetNumber(),
 		"title":      i.GetTitle(),
 		"state":      i.GetState(),
@@ -62,16 +60,14 @@ func (i *Issue) ToAgentContext() map[string]interface{} {
 	return ctx
 }
 
-// ---------------------------------------------------------------------
-// 2. PULL REQUESTS (The Code Vector)
-// ---------------------------------------------------------------------
-
-func (p *PullRequest) ToAgentContext() map[string]interface{} {
+// ToAgentContext transforms the PullRequest struct into a token-optimized map.
+// It focuses on the "Diff Intent" (Head/Base) and Merge status.
+func (p *PullRequest) ToAgentContext() map[string]any {
 	if p == nil {
 		return nil
 	}
 
-	ctx := map[string]interface{}{
+	ctx := map[string]any{
 		"number":        p.GetNumber(),
 		"title":         p.GetTitle(),
 		"state":         p.GetState(),
@@ -102,39 +98,33 @@ func (p *PullRequest) ToAgentContext() map[string]interface{} {
 	return ctx
 }
 
-// ---------------------------------------------------------------------
-// 3. COMMENTS (The Discussion Vector)
-// ---------------------------------------------------------------------
-
-func (c *IssueComment) ToAgentContext() map[string]interface{} {
-	if c == nil {
+// ToAgentContext optimizes IssueComment payloads by stripping metadata overhead.
+func (i *IssueComment) ToAgentContext() map[string]any {
+	if i == nil {
 		return nil
 	}
-	
-	ctx := map[string]interface{}{
-		"id":         c.GetID(),
-		"body":       trimBody(c.GetBody()),
-		"created_at": c.GetCreatedAt().Format(time.RFC3339),
-		"html_url":   c.GetHTMLURL(),
+
+	ctx := map[string]any{
+		"id":         i.GetID(),
+		"body":       trimBody(i.GetBody()),
+		"created_at": i.GetCreatedAt().Format(time.RFC3339),
+		"html_url":   i.GetHTMLURL(),
 	}
 
-	if c.User != nil {
-		ctx["author"] = c.User.GetLogin()
+	if i.User != nil {
+		ctx["author"] = i.User.GetLogin()
 	}
-	
+
 	return ctx
 }
 
-// ---------------------------------------------------------------------
-// 4. REPOSITORIES (The Battlefield)
-// ---------------------------------------------------------------------
-
-func (r *Repository) ToAgentContext() map[string]interface{} {
+// ToAgentContext optimizes Repository payloads by ignoring deep plumbing links.
+func (r *Repository) ToAgentContext() map[string]any {
 	if r == nil {
 		return nil
 	}
 
-	ctx := map[string]interface{}{
+	ctx := map[string]any{
 		"name":           r.GetName(),
 		"full_name":      r.GetFullName(),
 		"description":    r.GetDescription(),
