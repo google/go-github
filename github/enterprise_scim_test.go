@@ -260,27 +260,43 @@ func TestSCIMEnterpriseAttribute_Marshal(t *testing.T) {
 	u := &SCIMEnterpriseAttribute{
 		Schemas: []string{"s"},
 		Operations: []*SCIMEnterpriseAttributeOperation{
+			{Op: "o1"},
 			{
-				Op:    "o1",
-				Path:  Ptr("p1"),
-				Value: Ptr("v1"),
+				Op:    "o2",
+				Path:  Ptr("p2"),
+				Value: Ptr("v2"),
 			},
 			{
-				Op: "o2",
+				Op:    "add",
+				Path:  Ptr("members"),
+				Value: Ptr(`"value":[{"value":"v-1"},{"value":"v-2"}]`),
 			},
 		},
 	}
 
 	want := `{
 		"schemas": ["s"],
-		"Operations": [{
-			"op": "o1",
-			"path": "p1",
-			"value": "v1"
-		},
-		{
-			"op": "o2"
-		}]
+		"Operations": [
+			{"op": "o1"},
+			{
+				"op": "o2",
+				"path": "p2",
+				"value": "v2"
+			},
+			{
+				"op": "replace",
+				"path": "emails[type eq 'work'].value",
+				"value": "v@3.com"
+			},
+			{
+				"op":"add",
+				"path":"members",
+				"value":[
+					{"value":"abc-123"},
+					{"value":"def-456"}
+				]
+			}
+		]
 	}`
 
 	testJSONMarshal(t, u, want)
