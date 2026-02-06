@@ -9071,6 +9071,39 @@ func TestCreateEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 }
 
+func TestCreateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateHostedRunnerRequest{EnableStaticIP: &zeroValue}
+	c.GetEnableStaticIP()
+	c = &CreateHostedRunnerRequest{}
+	c.GetEnableStaticIP()
+	c = nil
+	c.GetEnableStaticIP()
+}
+
+func TestCreateHostedRunnerRequest_GetImageGen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateHostedRunnerRequest{ImageGen: &zeroValue}
+	c.GetImageGen()
+	c = &CreateHostedRunnerRequest{}
+	c.GetImageGen()
+	c = nil
+	c.GetImageGen()
+}
+
+func TestCreateHostedRunnerRequest_GetMaximumRunners(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreateHostedRunnerRequest{MaximumRunners: &zeroValue}
+	c.GetMaximumRunners()
+	c = &CreateHostedRunnerRequest{}
+	c.GetMaximumRunners()
+	c = nil
+	c.GetMaximumRunners()
+}
+
 func TestCreateOrganizationPrivateRegistry_GetUsername(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -15088,6 +15121,17 @@ func TestHostedRunner_GetStatus(tt *testing.T) {
 	h.GetStatus()
 	h = nil
 	h.GetStatus()
+}
+
+func TestHostedRunnerImage_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerImage{Version: &zeroValue}
+	h.GetVersion()
+	h = &HostedRunnerImage{}
+	h.GetVersion()
+	h = nil
+	h.GetVersion()
 }
 
 func TestHostedRunnerImageDetail_GetDisplayName(tt *testing.T) {

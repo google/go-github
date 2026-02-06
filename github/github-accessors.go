@@ -6934,6 +6934,30 @@ func (c *CreateEvent) GetSender() *User {
 	return c.Sender
 }
 
+// GetEnableStaticIP returns the EnableStaticIP field if it's non-nil, zero value otherwise.
+func (c *CreateHostedRunnerRequest) GetEnableStaticIP() bool {
+	if c == nil || c.EnableStaticIP == nil {
+		return false
+	}
+	return *c.EnableStaticIP
+}
+
+// GetImageGen returns the ImageGen field if it's non-nil, zero value otherwise.
+func (c *CreateHostedRunnerRequest) GetImageGen() bool {
+	if c == nil || c.ImageGen == nil {
+		return false
+	}
+	return *c.ImageGen
+}
+
+// GetMaximumRunners returns the MaximumRunners field if it's non-nil, zero value otherwise.
+func (c *CreateHostedRunnerRequest) GetMaximumRunners() int64 {
+	if c == nil || c.MaximumRunners == nil {
+		return 0
+	}
+	return *c.MaximumRunners
+}
+
 // GetUsername returns the Username field if it's non-nil, zero value otherwise.
 func (c *CreateOrganizationPrivateRegistry) GetUsername() string {
 	if c == nil || c.Username == nil {
@@ -11604,6 +11628,14 @@ func (h *HostedRunner) GetStatus() string {
 		return ""
 	}
 	return *h.Status
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImage) GetVersion() string {
+	if h == nil || h.Version == nil {
+		return ""
+	}
+	return *h.Version
 }
 
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.

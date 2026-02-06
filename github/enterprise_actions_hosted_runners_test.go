@@ -191,17 +191,18 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	req := &HostedRunnerRequest{
+	req := CreateHostedRunnerRequest{
 		Name: "My Hosted runner",
 		Image: HostedRunnerImage{
 			ID:      "ubuntu-latest",
 			Source:  "github",
-			Version: "latest",
+			Version: Ptr("latest"),
 		},
 		RunnerGroupID:  1,
 		Size:           "4-core",
-		MaximumRunners: 50,
-		EnableStaticIP: false,
+		MaximumRunners: Ptr(int64(50)),
+		EnableStaticIP: Ptr(false),
+		ImageGen:       Ptr(true),
 	}
 	hostedRunner, _, err := client.Enterprise.CreateHostedRunner(ctx, "o", req)
 	if err != nil {
@@ -244,17 +245,17 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 	// Validation tests
 	testCases := []struct {
 		name          string
-		request       *HostedRunnerRequest
+		request       CreateHostedRunnerRequest
 		expectedError string
 	}{
 		{
 			name: "Missing Size",
-			request: &HostedRunnerRequest{
+			request: CreateHostedRunnerRequest{
 				Name: "My Hosted runner",
 				Image: HostedRunnerImage{
 					ID:      "ubuntu-latest",
 					Source:  "github",
-					Version: "latest",
+					Version: Ptr("latest"),
 				},
 				RunnerGroupID: 1,
 			},
@@ -262,7 +263,7 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 		},
 		{
 			name: "Missing Image",
-			request: &HostedRunnerRequest{
+			request: CreateHostedRunnerRequest{
 				Name:          "My Hosted runner",
 				RunnerGroupID: 1,
 				Size:          "4-core",
@@ -271,11 +272,11 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 		},
 		{
 			name: "Missing Name",
-			request: &HostedRunnerRequest{
+			request: CreateHostedRunnerRequest{
 				Image: HostedRunnerImage{
 					ID:      "ubuntu-latest",
 					Source:  "github",
-					Version: "latest",
+					Version: Ptr("latest"),
 				},
 				RunnerGroupID: 1,
 				Size:          "4-core",
@@ -284,33 +285,16 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 		},
 		{
 			name: "Missing RunnerGroupID",
-			request: &HostedRunnerRequest{
+			request: CreateHostedRunnerRequest{
 				Name: "My Hosted runner",
 				Image: HostedRunnerImage{
 					ID:      "ubuntu-latest",
 					Source:  "github",
-					Version: "latest",
+					Version: Ptr("latest"),
 				},
 				Size: "4-core",
 			},
 			expectedError: "validation failed: runner group ID is required for creating a hosted runner",
-		},
-		{
-			name: "ImageVersion Set Instead of Image Struct",
-			request: &HostedRunnerRequest{
-				Name: "My Hosted runner",
-				Image: HostedRunnerImage{
-					ID:      "ubuntu-latest",
-					Source:  "github",
-					Version: "latest",
-				},
-				RunnerGroupID:  1,
-				Size:           "4-core",
-				ImageVersion:   "1.0.0",
-				MaximumRunners: 50,
-				EnableStaticIP: false,
-			},
-			expectedError: "validation failed: imageVersion should not be set directly; use the Image struct to specify image details",
 		},
 	}
 

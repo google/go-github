@@ -41,8 +41,8 @@ func (s *EnterpriseService) ListHostedRunners(ctx context.Context, enterprise st
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#create-a-github-hosted-runner-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/actions/hosted-runners
-func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise string, request *HostedRunnerRequest) (*HostedRunner, *Response, error) {
-	if err := validateCreateHostedRunnerRequest(request); err != nil {
+func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise string, request CreateHostedRunnerRequest) (*HostedRunner, *Response, error) {
+	if err := validateCreateHostedRunnerRequest(&request); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
