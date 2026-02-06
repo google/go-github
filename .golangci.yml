@@ -92,9 +92,6 @@ linters:
       ignore-rules:
         - analyses # returned by the GitHub API
         - cancelled # returned by the GitHub API
-    modernize:
-      disable:
-        - omitzero # TODO: fix
     nolintlint:
       allow-unused: true
       require-specific: true

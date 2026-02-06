@@ -101,10 +101,11 @@ func (s *ActivityService) ListRepositoryNotifications(ctx context.Context, owner
 }
 
 type markReadOptions struct {
-	LastReadAt Timestamp `json:"last_read_at,omitempty"`
+	LastReadAt Timestamp `json:"last_read_at,omitzero"`
 }
 
 // MarkNotificationsRead marks all notifications up to lastRead as read.
+// If lastRead is the zero value, all notifications in the repository are marked as read.
 //
 // GitHub API docs: https://docs.github.com/rest/activity/notifications#mark-notifications-as-read
 //
@@ -123,6 +124,7 @@ func (s *ActivityService) MarkNotificationsRead(ctx context.Context, lastRead Ti
 
 // MarkRepositoryNotificationsRead marks all notifications up to lastRead in
 // the specified repository as read.
+// If lastRead is the zero value, all notifications in the repository are marked as read.
 //
 // GitHub API docs: https://docs.github.com/rest/activity/notifications#mark-repository-notifications-as-read
 //
