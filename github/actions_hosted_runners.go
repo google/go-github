@@ -89,7 +89,7 @@ type HostedRunnerImage struct {
 	// The source of the runner image. Can be one of: github, partner, custom.
 	Source string `json:"source"`
 	// The version of the runner image to deploy. This is relevant only for runners using custom images.
-	Version *string `json:"version"`
+	Version *string `json:"version,omitempty"`
 }
 
 // CreateHostedRunnerRequest specifies body parameters to create Hosted Runner configuration.
