@@ -48,7 +48,7 @@ type RepositoryContent struct {
 // RepositoryContentResponse holds the parsed response from CreateFile, UpdateFile, and DeleteFile.
 type RepositoryContentResponse struct {
 	Content *RepositoryContent `json:"content,omitempty"`
-	Commit  `json:"commit,omitempty"`
+	Commit  `json:"commit"`
 }
 
 // RepositoryContentFileOptions specifies optional parameters for CreateFile, UpdateFile, and DeleteFile.

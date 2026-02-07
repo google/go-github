@@ -83,47 +83,54 @@ func (s *ActionsService) ListHostedRunners(ctx context.Context, org string, opts
 }
 
 // HostedRunnerImage represents the image of GitHub-hosted runners.
-// To list all available images, use GET /actions/hosted-runners/images/github-owned or GET /actions/hosted-runners/images/partner.
 type HostedRunnerImage struct {
-	ID      string `json:"id"`
-	Source  string `json:"source"`
-	Version string `json:"version"`
+	// The unique identifier of the runner image.
+	ID string `json:"id"`
+	// The source of the runner image. Can be one of: github, partner, custom.
+	Source string `json:"source"`
+	// The version of the runner image to deploy. This is relevant only for runners using custom images.
+	Version *string `json:"version,omitempty"`
 }
 
-// HostedRunnerRequest specifies body parameters to Hosted Runner configuration.
-type HostedRunnerRequest struct {
-	Name           string            `json:"name,omitempty"`
-	Image          HostedRunnerImage `json:"image,omitempty"`
-	RunnerGroupID  int64             `json:"runner_group_id,omitempty"`
-	Size           string            `json:"size,omitempty"`
-	MaximumRunners int64             `json:"maximum_runners,omitempty"`
-	EnableStaticIP bool              `json:"enable_static_ip,omitempty"`
-	ImageVersion   string            `json:"image_version,omitempty"`
+// CreateHostedRunnerRequest specifies body parameters to create Hosted Runner configuration.
+type CreateHostedRunnerRequest struct {
+	Name           string            `json:"name"`
+	Image          HostedRunnerImage `json:"image"`
+	Size           string            `json:"size"`
+	RunnerGroupID  int64             `json:"runner_group_id"`
+	MaximumRunners *int64            `json:"maximum_runners,omitempty"`
+	EnableStaticIP *bool             `json:"enable_static_ip,omitempty"`
+	ImageGen       *bool             `json:"image_gen,omitempty"`
 }
 
-// validateCreateHostedRunnerRequest validates the provided HostedRunnerRequest to ensure
+// UpdateHostedRunnerRequest specifies body parameters to update Hosted Runner configuration.
+type UpdateHostedRunnerRequest struct {
+	Name           *string `json:"name,omitempty"`
+	RunnerGroupID  *int64  `json:"runner_group_id,omitempty"`
+	MaximumRunners *int64  `json:"maximum_runners,omitempty"`
+	EnableStaticIP *bool   `json:"enable_static_ip,omitempty"`
+	Size           *string `json:"size,omitempty"`
+	ImageID        *string `json:"image_id,omitempty"`
+	ImageVersion   *string `json:"image_version,omitempty"`
+}
+
+// validateCreateHostedRunnerRequest validates the provided CreateHostedRunnerRequest to ensure
 // that all required fields are properly set and that no invalid fields are present for hosted runner create request.
 //
 // If any of these conditions are violated, an appropriate error message is returned.
 // Otherwise, nil is returned, indicating the request is valid.
-func validateCreateHostedRunnerRequest(request *HostedRunnerRequest) error {
-	if request == nil {
-		return errors.New("request is required for creating a hosted runner")
-	}
-	if request.Size == "" {
-		return errors.New("size is required for creating a hosted runner")
+func validateCreateHostedRunnerRequest(request *CreateHostedRunnerRequest) error {
+	if request.Name == "" {
+		return errors.New("name is required for creating a hosted runner")
 	}
 	if request.Image == (HostedRunnerImage{}) {
 		return errors.New("image is required for creating a hosted runner")
 	}
-	if request.Name == "" {
-		return errors.New("name is required for creating a hosted runner")
+	if request.Size == "" {
+		return errors.New("size is required for creating a hosted runner")
 	}
 	if request.RunnerGroupID == 0 {
 		return errors.New("runner group ID is required for creating a hosted runner")
-	}
-	if request.ImageVersion != "" {
-		return errors.New("imageVersion should not be set directly; use the Image struct to specify image details")
 	}
 	return nil
 }
@@ -133,8 +140,8 @@ func validateCreateHostedRunnerRequest(request *HostedRunnerRequest) error {
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#create-a-github-hosted-runner-for-an-organization
 //
 //meta:operation POST /orgs/{org}/actions/hosted-runners
-func (s *ActionsService) CreateHostedRunner(ctx context.Context, org string, request *HostedRunnerRequest) (*HostedRunner, *Response, error) {
-	if err := validateCreateHostedRunnerRequest(request); err != nil {
+func (s *ActionsService) CreateHostedRunner(ctx context.Context, org string, request CreateHostedRunnerRequest) (*HostedRunner, *Response, error) {
+	if err := validateCreateHostedRunnerRequest(&request); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
@@ -317,33 +324,14 @@ func (s *ActionsService) GetHostedRunner(ctx context.Context, org string, runner
 	return hostedRunner, resp, nil
 }
 
-// validateUpdateHostedRunnerRequest validates the provided HostedRunnerRequest to ensure
-// that no disallowed updates are made for a hosted runner update request.
-//
-// If any of these conditions are violated, an appropriate error message is returned.
-// Otherwise, nil is returned, indicating the request is valid for an update.
-func validateUpdateHostedRunnerRequest(request *HostedRunnerRequest) error {
-	if request.Size != "" {
-		return errors.New("size cannot be updated, API does not support updating size")
-	}
-	if request.Image != (HostedRunnerImage{}) {
-		return errors.New("image struct should not be set directly; use the ImageVersion to specify version details")
-	}
-	return nil
-}
-
 // UpdateHostedRunner updates a GitHub-hosted runner for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#update-a-github-hosted-runner-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/actions/hosted-runners/{hosted_runner_id}
-func (s *ActionsService) UpdateHostedRunner(ctx context.Context, org string, runnerID int64, updateReq HostedRunnerRequest) (*HostedRunner, *Response, error) {
-	if err := validateUpdateHostedRunnerRequest(&updateReq); err != nil {
-		return nil, nil, fmt.Errorf("validation failed: %w", err)
-	}
-
+func (s *ActionsService) UpdateHostedRunner(ctx context.Context, org string, runnerID int64, request UpdateHostedRunnerRequest) (*HostedRunner, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/%v", org, runnerID)
-	req, err := s.client.NewRequest("PATCH", u, updateReq)
+	req, err := s.client.NewRequest("PATCH", u, request)
 	if err != nil {
 		return nil, nil, err
 	}

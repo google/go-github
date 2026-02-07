@@ -9071,6 +9071,39 @@ func TestCreateEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 }
 
+func TestCreateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateHostedRunnerRequest{EnableStaticIP: &zeroValue}
+	c.GetEnableStaticIP()
+	c = &CreateHostedRunnerRequest{}
+	c.GetEnableStaticIP()
+	c = nil
+	c.GetEnableStaticIP()
+}
+
+func TestCreateHostedRunnerRequest_GetImageGen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateHostedRunnerRequest{ImageGen: &zeroValue}
+	c.GetImageGen()
+	c = &CreateHostedRunnerRequest{}
+	c.GetImageGen()
+	c = nil
+	c.GetImageGen()
+}
+
+func TestCreateHostedRunnerRequest_GetMaximumRunners(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreateHostedRunnerRequest{MaximumRunners: &zeroValue}
+	c.GetMaximumRunners()
+	c = &CreateHostedRunnerRequest{}
+	c.GetMaximumRunners()
+	c = nil
+	c.GetMaximumRunners()
+}
+
 func TestCreateOrganizationPrivateRegistry_GetUsername(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -15088,6 +15121,17 @@ func TestHostedRunner_GetStatus(tt *testing.T) {
 	h.GetStatus()
 	h = nil
 	h.GetStatus()
+}
+
+func TestHostedRunnerImage_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HostedRunnerImage{Version: &zeroValue}
+	h.GetVersion()
+	h = &HostedRunnerImage{}
+	h.GetVersion()
+	h = nil
+	h.GetVersion()
 }
 
 func TestHostedRunnerImageDetail_GetDisplayName(tt *testing.T) {
@@ -39396,6 +39440,83 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
+}
+
+func TestUpdateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateHostedRunnerRequest{EnableStaticIP: &zeroValue}
+	u.GetEnableStaticIP()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetEnableStaticIP()
+	u = nil
+	u.GetEnableStaticIP()
+}
+
+func TestUpdateHostedRunnerRequest_GetImageID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateHostedRunnerRequest{ImageID: &zeroValue}
+	u.GetImageID()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetImageID()
+	u = nil
+	u.GetImageID()
+}
+
+func TestUpdateHostedRunnerRequest_GetImageVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateHostedRunnerRequest{ImageVersion: &zeroValue}
+	u.GetImageVersion()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetImageVersion()
+	u = nil
+	u.GetImageVersion()
+}
+
+func TestUpdateHostedRunnerRequest_GetMaximumRunners(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	u := &UpdateHostedRunnerRequest{MaximumRunners: &zeroValue}
+	u.GetMaximumRunners()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetMaximumRunners()
+	u = nil
+	u.GetMaximumRunners()
+}
+
+func TestUpdateHostedRunnerRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateHostedRunnerRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateHostedRunnerRequest_GetRunnerGroupID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	u := &UpdateHostedRunnerRequest{RunnerGroupID: &zeroValue}
+	u.GetRunnerGroupID()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetRunnerGroupID()
+	u = nil
+	u.GetRunnerGroupID()
+}
+
+func TestUpdateHostedRunnerRequest_GetSize(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateHostedRunnerRequest{Size: &zeroValue}
+	u.GetSize()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetSize()
+	u = nil
+	u.GetSize()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetEncryptedValue(tt *testing.T) {
