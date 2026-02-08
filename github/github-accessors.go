@@ -2366,6 +2366,158 @@ func (b *BranchProtectionRuleEvent) GetSender() *User {
 	return b.Sender
 }
 
+// GetBudgetAlerting returns the BudgetAlerting field.
+func (b *Budget) GetBudgetAlerting() *BudgetAlerting {
+	if b == nil {
+		return nil
+	}
+	return b.BudgetAlerting
+}
+
+// GetBudgetName returns the BudgetName field if it's non-nil, zero value otherwise.
+func (b *Budget) GetBudgetName() string {
+	if b == nil || b.BudgetName == nil {
+		return ""
+	}
+	return *b.BudgetName
+}
+
+// GetBudgetType returns the BudgetType field if it's non-nil, zero value otherwise.
+func (b *Budget) GetBudgetType() string {
+	if b == nil || b.BudgetType == nil {
+		return ""
+	}
+	return *b.BudgetType
+}
+
+// GetCurrency returns the Currency field if it's non-nil, zero value otherwise.
+func (b *Budget) GetCurrency() string {
+	if b == nil || b.Currency == nil {
+		return ""
+	}
+	return *b.Currency
+}
+
+// GetCurrentAmount returns the CurrentAmount field.
+func (b *Budget) GetCurrentAmount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.CurrentAmount
+}
+
+// GetExcludeCostCenterUsage returns the ExcludeCostCenterUsage field if it's non-nil, zero value otherwise.
+func (b *Budget) GetExcludeCostCenterUsage() bool {
+	if b == nil || b.ExcludeCostCenterUsage == nil {
+		return false
+	}
+	return *b.ExcludeCostCenterUsage
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (b *Budget) GetID() string {
+	if b == nil || b.ID == nil {
+		return ""
+	}
+	return *b.ID
+}
+
+// GetLimitAmount returns the LimitAmount field.
+func (b *Budget) GetLimitAmount() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.LimitAmount
+}
+
+// GetPricingModel returns the PricingModel field if it's non-nil, zero value otherwise.
+func (b *Budget) GetPricingModel() string {
+	if b == nil || b.PricingModel == nil {
+		return ""
+	}
+	return *b.PricingModel
+}
+
+// GetPricingModelDisplayName returns the PricingModelDisplayName field if it's non-nil, zero value otherwise.
+func (b *Budget) GetPricingModelDisplayName() string {
+	if b == nil || b.PricingModelDisplayName == nil {
+		return ""
+	}
+	return *b.PricingModelDisplayName
+}
+
+// GetPricingModelID returns the PricingModelID field if it's non-nil, zero value otherwise.
+func (b *Budget) GetPricingModelID() string {
+	if b == nil || b.PricingModelID == nil {
+		return ""
+	}
+	return *b.PricingModelID
+}
+
+// GetTargetID returns the TargetID field if it's non-nil, zero value otherwise.
+func (b *Budget) GetTargetID() int64 {
+	if b == nil || b.TargetID == nil {
+		return 0
+	}
+	return *b.TargetID
+}
+
+// GetTargetName returns the TargetName field if it's non-nil, zero value otherwise.
+func (b *Budget) GetTargetName() string {
+	if b == nil || b.TargetName == nil {
+		return ""
+	}
+	return *b.TargetName
+}
+
+// GetTargetSubAccount returns the TargetSubAccount field if it's non-nil, zero value otherwise.
+func (b *Budget) GetTargetSubAccount() string {
+	if b == nil || b.TargetSubAccount == nil {
+		return ""
+	}
+	return *b.TargetSubAccount
+}
+
+// GetTargetType returns the TargetType field if it's non-nil, zero value otherwise.
+func (b *Budget) GetTargetType() string {
+	if b == nil || b.TargetType == nil {
+		return ""
+	}
+	return *b.TargetType
+}
+
+// GetWillAlert returns the WillAlert field if it's non-nil, zero value otherwise.
+func (b *BudgetAlerting) GetWillAlert() bool {
+	if b == nil || b.WillAlert == nil {
+		return false
+	}
+	return *b.WillAlert
+}
+
+// GetHasNextPage returns the HasNextPage field if it's non-nil, zero value otherwise.
+func (b *BudgetList) GetHasNextPage() bool {
+	if b == nil || b.HasNextPage == nil {
+		return false
+	}
+	return *b.HasNextPage
+}
+
+// GetBudget returns the Budget field.
+func (b *BudgetResponse) GetBudget() *Budget {
+	if b == nil {
+		return nil
+	}
+	return b.Budget
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (b *BudgetResponse) GetMessage() string {
+	if b == nil || b.Message == nil {
+		return ""
+	}
+	return *b.Message
+}
+
 // GetActorID returns the ActorID field if it's non-nil, zero value otherwise.
 func (b *BypassActor) GetActorID() int64 {
 	if b == nil || b.ActorID == nil {
