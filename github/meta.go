@@ -57,6 +57,14 @@ type APIMeta struct {
 	ActionsMacos []string `json:"actions_macos,omitempty"`
 
 	// An array of IP addresses in CIDR format specifying the IP addresses
+	// GitHub Codespaces will originate from.
+	Codespaces []string `json:"codespaces,omitempty"`
+
+	// An array of IP addresses in CIDR format specifying the IP addresses
+	// GitHub Copilot will originate from.
+	Copilot []string `json:"copilot,omitempty"`
+
+	// An array of IP addresses in CIDR format specifying the IP addresses
 	// Dependabot will originate from.
 	Dependabot []string `json:"dependabot,omitempty"`
 
@@ -86,7 +94,14 @@ type APIMetaDomains struct {
 	Copilot              []string                     `json:"copilot,omitempty"`
 	Packages             []string                     `json:"packages,omitempty"`
 	Actions              []string                     `json:"actions,omitempty"`
+	ActionsInbound       *ActionsInboundDomains       `json:"actions_inbound,omitempty"`
 	ArtifactAttestations *APIMetaArtifactAttestations `json:"artifact_attestations,omitempty"`
+}
+
+// ActionsInboundDomains represents the domains associated with GitHub Actions inbound traffic.
+type ActionsInboundDomains struct {
+	FullDomains     []string `json:"full_domains,omitempty"`
+	WildcardDomains []string `json:"wildcard_domains,omitempty"`
 }
 
 // APIMetaArtifactAttestations represents the artifact attestation services domains.
