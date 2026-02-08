@@ -92,9 +92,6 @@ linters:
       ignore-rules:
         - analyses # returned by the GitHub API
         - cancelled # returned by the GitHub API
-    modernize:
-      disable:
-        - omitzero # TODO: fix
     nolintlint:
       allow-unused: true
       require-specific: true
@@ -146,7 +143,7 @@ linters:
         - "all"
         - "-QF1008" # allow embedded field in selector
     unparam:
-      check-exported: true  
+      check-exported: true
     usetesting:
       context-background: true
       context-todo: true
@@ -275,13 +272,6 @@ linters:
             - ErrorResponse.DocumentationURL # TODO: Common
             - GetCodeownersErrorsOptions.Ref # TODO: Repositories
             - GistListOptions.Since # TODO: Gists
-            - HostedRunnerRequest.EnableStaticIP # TODO: Actions
-            - HostedRunnerRequest.Image # TODO: Actions
-            - HostedRunnerRequest.ImageVersion # TODO: Actions
-            - HostedRunnerRequest.MaximumRunners # TODO: Actions
-            - HostedRunnerRequest.Name # TODO: Actions
-            - HostedRunnerRequest.RunnerGroupID # TODO: Actions
-            - HostedRunnerRequest.Size # TODO: Actions
             - IssueEvent.Action # TODO: Issues
             - IssueListByRepoOptions.Assignee # TODO: Issues
             - IssueListByRepoOptions.Assignee # TODO: Issues
