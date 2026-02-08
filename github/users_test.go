@@ -330,7 +330,7 @@ func TestUsersService_ListAll(t *testing.T) {
 		fmt.Fprint(w, `[{"id":2}]`)
 	})
 
-	opt := &UserListOptions{Since: 1, PerPage: 30}
+	opt := &UserListOptions{Since: 1, PerPage: Ptr(30)}
 	ctx := t.Context()
 	users, _, err := client.Users.ListAll(ctx, opt)
 	if err != nil {
@@ -499,7 +499,7 @@ func TestUserListOptions_Marshal(t *testing.T) {
 
 	u := &UserListOptions{
 		Since:   int64(1900),
-		PerPage: 30,
+		PerPage: Ptr(30),
 	}
 
 	want := `{

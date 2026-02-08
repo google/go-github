@@ -40617,6 +40617,17 @@ func TestUserLDAPMapping_GetURL(tt *testing.T) {
 	u.GetURL()
 }
 
+func TestUserListOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UserListOptions{PerPage: &zeroValue}
+	u.GetPerPage()
+	u = &UserListOptions{}
+	u.GetPerPage()
+	u = nil
+	u.GetPerPage()
+}
+
 func TestUserMigration_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

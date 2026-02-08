@@ -212,7 +212,7 @@ type UserListOptions struct {
 	Since int64 `url:"since,omitempty"`
 
 	// Note: Pagination is powered exclusively by the Since parameter,
-	PerPage int `url:"per_page,omitempty"`
+	PerPage *int `url:"per_page,omitempty"`
 }
 
 // ListAll lists all GitHub users.
