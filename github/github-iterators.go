@@ -4179,37 +4179,6 @@ func (s *TeamsService) ListUserTeamsIter(ctx context.Context, opts *ListOptions)
 	}
 }
 
-// ListAllIter returns an iterator that paginates through all results of ListAll.
-func (s *UsersService) ListAllIter(ctx context.Context, opts *UserListOptions) iter.Seq2[*User, error] {
-	return func(yield func(*User, error) bool) {
-		// Create a copy of opts to avoid mutating the caller's struct
-		if opts == nil {
-			opts = &UserListOptions{}
-		} else {
-			opts = Ptr(*opts)
-		}
-
-		for {
-			items, resp, err := s.ListAll(ctx, opts)
-			if err != nil {
-				yield(nil, err)
-				return
-			}
-
-			for _, item := range items {
-				if !yield(item, nil) {
-					return
-				}
-			}
-
-			if resp.NextPage == 0 {
-				break
-			}
-			opts.ListOptions.Page = resp.NextPage
-		}
-	}
-}
-
 // ListBlockedUsersIter returns an iterator that paginates through all results of ListBlockedUsers.
 func (s *UsersService) ListBlockedUsersIter(ctx context.Context, opts *ListOptions) iter.Seq2[*User, error] {
 	return func(yield func(*User, error) bool) {

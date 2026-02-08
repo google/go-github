@@ -417,7 +417,6 @@ linters:
             - UpdateRuleParameters.UpdateAllowsFetchAndMerge # TODO: Rules
             - UploadOptions.Label # TODO: Repositories
             - UploadOptions.Name # TODO: Repositories
-            - UserListOptions.Since # TODO: Users
   exclusions:
     rules:
       - linters:

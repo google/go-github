@@ -326,11 +326,11 @@ func TestUsersService_ListAll(t *testing.T) {
 
 	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"since": "1", "page": "2"})
+		testFormValues(t, r, values{"since": "1", "per_page": "30"})
 		fmt.Fprint(w, `[{"id":2}]`)
 	})
 
-	opt := &UserListOptions{1, ListOptions{Page: 2}}
+	opt := &UserListOptions{Since: Ptr(int64(1)), PerPage: Ptr(30)}
 	ctx := t.Context()
 	users, _, err := client.Users.ListAll(ctx, opt)
 	if err != nil {
@@ -498,17 +498,13 @@ func TestUserListOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, &UserListOptions{}, "{}")
 
 	u := &UserListOptions{
-		Since: int64(1900),
-		ListOptions: ListOptions{
-			Page:    int(1),
-			PerPage: int(10),
-		},
+		Since:   Ptr(int64(1900)),
+		PerPage: Ptr(30),
 	}
 
 	want := `{
 		"since" : 1900,
-		"page": 1,
-		"perPage": 10
+		"perPage": 30
 	}`
 
 	testJSONMarshal(t, u, want)

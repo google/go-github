@@ -105,7 +105,7 @@ func ExampleUsersService_ListAll() {
 		if len(users) == 0 {
 			break
 		}
-		opts.Since = *users[len(users)-1].ID
+		opts.Since = users[len(users)-1].ID
 		// Process users...
 	}
 }
