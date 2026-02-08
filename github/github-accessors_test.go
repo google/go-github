@@ -40628,6 +40628,17 @@ func TestUserListOptions_GetPerPage(tt *testing.T) {
 	u.GetPerPage()
 }
 
+func TestUserListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	u := &UserListOptions{Since: &zeroValue}
+	u.GetSince()
+	u = &UserListOptions{}
+	u.GetSince()
+	u = nil
+	u.GetSince()
+}
+
 func TestUserMigration_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

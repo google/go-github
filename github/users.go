@@ -209,7 +209,7 @@ func (s *UsersService) GetHovercard(ctx context.Context, user string, opts *Hove
 // method.
 type UserListOptions struct {
 	// ID of the last user seen
-	Since int64 `url:"since,omitempty"`
+	Since *int64 `url:"since,omitempty"`
 
 	// Note: Pagination is powered exclusively by the Since parameter,
 	PerPage *int `url:"per_page,omitempty"`
