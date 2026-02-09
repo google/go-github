@@ -165,7 +165,7 @@ type SCIMEnterpriseAttribute struct {
 type SCIMEnterpriseAttributeOperation struct {
 	Op    string  `json:"op"`              // Can be one of: `add`, `replace`, `remove`.
 	Path  *string `json:"path,omitempty"`  // Path to the attribute being modified (Filters are not supported).
-	Value *string `json:"value,omitempty"` // New value for the attribute being modified.
+	Value any     `json:"value,omitempty"` // New value for the attribute being modified.
 }
 
 // ListProvisionedSCIMGroups lists provisioned SCIM groups in an enterprise.

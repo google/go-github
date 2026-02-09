@@ -14910,6 +14910,14 @@ func (l *ListGlobalSecurityAdvisoriesOptions) GetUpdated() string {
 	return *l.Updated
 }
 
+// GetFeatured returns the Featured field if it's non-nil, zero value otherwise.
+func (l *ListLicensesOptions) GetFeatured() bool {
+	if l == nil || l.Featured == nil {
+		return false
+	}
+	return *l.Featured
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (l *ListOrganizations) GetTotalCount() int {
 	if l == nil || l.TotalCount == nil {
@@ -27196,14 +27204,6 @@ func (s *SCIMEnterpriseAttributeOperation) GetPath() string {
 		return ""
 	}
 	return *s.Path
-}
-
-// GetValue returns the Value field if it's non-nil, zero value otherwise.
-func (s *SCIMEnterpriseAttributeOperation) GetValue() string {
-	if s == nil || s.Value == nil {
-		return ""
-	}
-	return *s.Value
 }
 
 // GetDisplay returns the Display field if it's non-nil, zero value otherwise.

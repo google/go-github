@@ -1661,6 +1661,37 @@ func (s *IssuesService) ListRepositoryEventsIter(ctx context.Context, owner stri
 	}
 }
 
+// ListIter returns an iterator that paginates through all results of List.
+func (s *LicensesService) ListIter(ctx context.Context, opts *ListLicensesOptions) iter.Seq2[*License, error] {
+	return func(yield func(*License, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListLicensesOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			items, resp, err := s.List(ctx, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range items {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListMarketplacePurchasesForUserIter returns an iterator that paginates through all results of ListMarketplacePurchasesForUser.
 func (s *MarketplaceService) ListMarketplacePurchasesForUserIter(ctx context.Context, opts *ListOptions) iter.Seq2[*MarketplacePurchase, error] {
 	return func(yield func(*MarketplacePurchase, error) bool) {
@@ -2773,6 +2804,37 @@ func (s *RepositoriesService) ListIter(ctx context.Context, user string, opts *R
 				break
 			}
 			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
+// ListAllTopicsIter returns an iterator that paginates through all results of ListAllTopics.
+func (s *RepositoriesService) ListAllTopicsIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[string, error] {
+	return func(yield func(string, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			items, resp, err := s.ListAllTopics(ctx, owner, repo, opts)
+			if err != nil {
+				yield(*new(string), err)
+				return
+			}
+
+			for _, item := range items {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
 		}
 	}
 }

@@ -19411,6 +19411,17 @@ func TestListGlobalSecurityAdvisoriesOptions_GetUpdated(tt *testing.T) {
 	l.GetUpdated()
 }
 
+func TestListLicensesOptions_GetFeatured(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	l := &ListLicensesOptions{Featured: &zeroValue}
+	l.GetFeatured()
+	l = &ListLicensesOptions{}
+	l.GetFeatured()
+	l = nil
+	l.GetFeatured()
+}
+
 func TestListOrganizations_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -35114,17 +35125,6 @@ func TestSCIMEnterpriseAttributeOperation_GetPath(tt *testing.T) {
 	s.GetPath()
 	s = nil
 	s.GetPath()
-}
-
-func TestSCIMEnterpriseAttributeOperation_GetValue(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	s := &SCIMEnterpriseAttributeOperation{Value: &zeroValue}
-	s.GetValue()
-	s = &SCIMEnterpriseAttributeOperation{}
-	s.GetValue()
-	s = nil
-	s.GetValue()
 }
 
 func TestSCIMEnterpriseDisplayReference_GetDisplay(tt *testing.T) {
