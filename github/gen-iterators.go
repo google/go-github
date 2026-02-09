@@ -126,6 +126,7 @@ type method struct {
 // This is needed for methods that internally unmarshal a wrapper struct
 // even though they return a slice.
 var customTestJSON = map[string]string{
+	// Uncomment in #3978: "ListAllTopics":         `{"names": []}`,
 	"ListUserInstallations": `{"installations": []}`,
 }
 
@@ -317,13 +318,16 @@ func (t *templateData) processMethods(f *ast.File) error {
 			logf("WARNING: clientField is 's' for %s.%s (recvType=%s)", recvType, fd.Name.Name, recType)
 		}
 
-		testJSON := "[]"
+		testJSON, emptyReturnValue := "[]", "{}"
 		if val, ok := customTestJSON[fd.Name.Name]; ok {
 			testJSON = val
 		}
-		testJSON1 := strings.ReplaceAll(testJSON, "[]", "[{},{},{}]")    // Call 1 - return 3 items
-		testJSON2 := strings.ReplaceAll(testJSON, "[]", "[{},{},{},{}]") // Call 1 part 2 - return 4 items
-		testJSON3 := strings.ReplaceAll(testJSON, "[]", "[{},{}]")       // Call 2 - return 2 items
+		if eltType == "string" {
+			emptyReturnValue = `""`
+		}
+		testJSON1 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v,%[1]v]", emptyReturnValue))       // Call 1 - return 3 items
+		testJSON2 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v,%[1]v,%[1]v]", emptyReturnValue)) // Call 1 part 2 - return 4 items
+		testJSON3 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v]", emptyReturnValue))             // Call 2 - return 2 items
 
 		m := &method{
 			RecvType:             recType,
