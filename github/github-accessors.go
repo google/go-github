@@ -31446,6 +31446,22 @@ func (u *UserLDAPMapping) GetURL() string {
 	return *u.URL
 }
 
+// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
+func (u *UserListOptions) GetPerPage() int {
+	if u == nil || u.PerPage == nil {
+		return 0
+	}
+	return *u.PerPage
+}
+
+// GetSince returns the Since field if it's non-nil, zero value otherwise.
+func (u *UserListOptions) GetSince() int64 {
+	if u == nil || u.Since == nil {
+		return 0
+	}
+	return *u.Since
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (u *UserMigration) GetCreatedAt() string {
 	if u == nil || u.CreatedAt == nil {

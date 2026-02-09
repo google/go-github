@@ -40606,6 +40606,28 @@ func TestUserLDAPMapping_GetURL(tt *testing.T) {
 	u.GetURL()
 }
 
+func TestUserListOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UserListOptions{PerPage: &zeroValue}
+	u.GetPerPage()
+	u = &UserListOptions{}
+	u.GetPerPage()
+	u = nil
+	u.GetPerPage()
+}
+
+func TestUserListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	u := &UserListOptions{Since: &zeroValue}
+	u.GetSince()
+	u = &UserListOptions{}
+	u.GetSince()
+	u = nil
+	u.GetSince()
+}
+
 func TestUserMigration_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
