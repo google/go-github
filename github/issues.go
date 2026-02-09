@@ -125,10 +125,7 @@ type IssueListOptions struct {
 	// Since filters issues by time.
 	Since time.Time `url:"since,omitempty"`
 
-	ListCursorOptions
-
 	// Add ListOptions so offset pagination with integer type "page" query parameter is accepted
-	// since ListCursorOptions accepts "page" as string only.
 	ListOptions
 }
 
@@ -245,10 +242,7 @@ type IssueListByRepoOptions struct {
 	// Since filters issues by time.
 	Since time.Time `url:"since,omitempty"`
 
-	ListCursorOptions
-
 	// Add ListOptions so offset pagination with integer type "page" query parameter is accepted
-	// since ListCursorOptions accepts "page" as string only.
 	ListOptions
 }
 

@@ -2975,7 +2975,7 @@ func TestIssuesService_ListIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -3119,7 +3119,7 @@ func TestIssuesService_ListByOrgIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -3191,7 +3191,7 @@ func TestIssuesService_ListByRepoIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -8591,7 +8591,7 @@ func TestSubIssueService_ListByIssueIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
