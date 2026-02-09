@@ -24,7 +24,7 @@ if [ "$1" = "--check" ]; then
   (
     cd "$GENTEMP"
     git add .
-    git -c user.name='bot' -c user.email='bot@localhost' commit -m "generate" -q --allow-empty
+    git -c user.name='bot' -c user.email='bot@localhost' -c commit.gpgsign=false commit -m "generate" -q --allow-empty
     script/generate.sh
     [ -z "$(git status --porcelain)" ] || {
       msg="Generated files are out of date. Please run script/generate.sh and commit the results"
