@@ -126,7 +126,7 @@ type method struct {
 // This is needed for methods that internally unmarshal a wrapper struct
 // even though they return a slice.
 var customTestJSON = map[string]string{
-	// Uncomment in #3978: "ListAllTopics":         `{"names": []}`,
+	"ListAllTopics":         `{"names": []}`,
 	"ListUserInstallations": `{"installations": []}`,
 }
 

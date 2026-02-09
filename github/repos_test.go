@@ -3476,11 +3476,16 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
+		testFormValues(t, r, values{
+			"page":     "1",
+			"per_page": "30",
+		})
 		fmt.Fprint(w, `{"names":["go", "go-github", "github"]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Repositories.ListAllTopics(ctx, "o", "r")
+	opts := &ListOptions{Page: 1, PerPage: 30}
+	got, _, err := client.Repositories.ListAllTopics(ctx, "o", "r", opts)
 	if err != nil {
 		t.Fatalf("Repositories.ListAllTopics returned error: %v", err)
 	}
@@ -3492,12 +3497,12 @@ func TestRepositoriesService_ListAllTopics(t *testing.T) {
 
 	const methodName = "ListAllTopics"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListAllTopics(ctx, "\n", "\n")
+		_, _, err = client.Repositories.ListAllTopics(ctx, "\n", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListAllTopics(ctx, "o", "r")
+		got, resp, err := client.Repositories.ListAllTopics(ctx, "o", "r", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -3516,7 +3521,7 @@ func TestRepositoriesService_ListAllTopics_emptyTopics(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Repositories.ListAllTopics(ctx, "o", "r")
+	got, _, err := client.Repositories.ListAllTopics(ctx, "o", "r", nil)
 	if err != nil {
 		t.Fatalf("Repositories.ListAllTopics returned error: %v", err)
 	}

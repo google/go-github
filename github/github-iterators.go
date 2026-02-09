@@ -2780,6 +2780,37 @@ func (s *RepositoriesService) ListIter(ctx context.Context, user string, opts *R
 	}
 }
 
+// ListAllTopicsIter returns an iterator that paginates through all results of ListAllTopics.
+func (s *RepositoriesService) ListAllTopicsIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[string, error] {
+	return func(yield func(string, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			items, resp, err := s.ListAllTopics(ctx, owner, repo, opts)
+			if err != nil {
+				yield(*new(string), err)
+				return
+			}
+
+			for _, item := range items {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListAutolinksIter returns an iterator that paginates through all results of ListAutolinks.
 func (s *RepositoriesService) ListAutolinksIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*Autolink, error] {
 	return func(yield func(*Autolink, error) bool) {
