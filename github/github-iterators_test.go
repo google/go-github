@@ -6432,15 +6432,15 @@ func TestRepositoriesService_ListAllTopicsIter(t *testing.T) {
 		switch callNum {
 		case 1:
 			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
-			fmt.Fprint(w, `[{},{},{}]`)
+			fmt.Fprint(w, `{"names": ["","",""]}`)
 		case 2:
-			fmt.Fprint(w, `[{},{},{},{}]`)
+			fmt.Fprint(w, `{"names": ["","","",""]}`)
 		case 3:
-			fmt.Fprint(w, `[{},{}]`)
+			fmt.Fprint(w, `{"names": ["",""]}`)
 		case 4:
 			w.WriteHeader(http.StatusNotFound)
 		case 5:
-			fmt.Fprint(w, `[{},{}]`)
+			fmt.Fprint(w, `{"names": ["",""]}`)
 		}
 	})
 
