@@ -19411,6 +19411,17 @@ func TestListGlobalSecurityAdvisoriesOptions_GetUpdated(tt *testing.T) {
 	l.GetUpdated()
 }
 
+func TestListLicensesOptions_GetFeatured(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	l := &ListLicensesOptions{Featured: &zeroValue}
+	l.GetFeatured()
+	l = &ListLicensesOptions{}
+	l.GetFeatured()
+	l = nil
+	l.GetFeatured()
+}
+
 func TestListOrganizations_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
