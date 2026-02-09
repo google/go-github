@@ -1928,8 +1928,13 @@ type repositoryTopics struct {
 // GitHub API docs: https://docs.github.com/rest/repos/repos#get-all-repository-topics
 //
 //meta:operation GET /repos/{owner}/{repo}/topics
-func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo string) ([]string, *Response, error) {
+func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo string, opts *ListOptions) ([]string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/topics", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
