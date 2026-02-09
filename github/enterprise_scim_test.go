@@ -294,7 +294,7 @@ func TestSCIMEnterpriseAttribute_Marshal(t *testing.T) {
 			{
 				"op": "replace",
 				"path": "emails[type eq 'work'].value",
-				"value": "v@3.com"
+				"value": "v@example.com"
 			},
 			{
 				"op": "add",
