@@ -35,15 +35,14 @@ func TestIssuesService_List_all(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	since := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
-
+	// Reviewer suggestion applied: Ptr() handles the time.Time inline
 	opt := &IssueListOptions{
 		Filter:      Ptr("all"),
 		State:       Ptr("closed"),
 		Labels:      []string{"a", "b"},
 		Sort:        Ptr("updated"),
 		Direction:   Ptr("asc"),
-		Since:       &since,
+		Since:       Ptr(time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)),
 		ListOptions: ListOptions{Page: 1, PerPage: 2},
 	}
 	ctx := t.Context()
