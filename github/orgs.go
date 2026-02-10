@@ -154,10 +154,10 @@ func (p Plan) String() string {
 // OrganizationsService.ListAll method.
 type OrganizationsListOptions struct {
 	// An organization ID. Only return organizations with an ID greater than this ID.
-	Since *int64 `url:"since,omitempty"`
+	Since int64 `url:"since,omitempty"`
 
 	// The number of results per page (max 100).
-	PerPage *int `url:"per_page,omitempty"`
+	PerPage int `url:"per_page,omitempty"`
 }
 
 // ListAll lists all organizations, in the order that they were created on GitHub.

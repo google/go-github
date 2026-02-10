@@ -77,7 +77,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 		fmt.Fprint(w, `[{"id":4314092}]`)
 	})
 
-	opt := &OrganizationsListOptions{Since: Ptr(int64(1342004)), PerPage: Ptr(30)}
+	opt := &OrganizationsListOptions{Since: int64(1342004), PerPage: 30}
 	ctx := t.Context()
 	orgs, _, err := client.Organizations.ListAll(ctx, opt)
 	if err != nil {

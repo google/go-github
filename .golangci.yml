@@ -361,6 +361,8 @@ linters:
             - NotificationListOptions.Before # TODO: Activities
             - NotificationListOptions.Participating # TODO: Activities
             - NotificationListOptions.Since # TODO: Activities
+            - OrganizationsListOptions.Since # TODO: Organizations
+            - OrganizationsListOptions.PerPage # TODO: Organizations
             - ProjectV2ItemFieldValue.DataType # TODO: Projects
             - ProjectV2ItemFieldValue.Name # TODO: Projects
             - PullRequestListCommentsOptions.Direction # TODO: PullRequests

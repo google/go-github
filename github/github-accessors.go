@@ -17374,22 +17374,6 @@ func (o *OrganizationInstallations) GetTotalCount() int {
 	return *o.TotalCount
 }
 
-// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
-func (o *OrganizationsListOptions) GetPerPage() int {
-	if o == nil || o.PerPage == nil {
-		return 0
-	}
-	return *o.PerPage
-}
-
-// GetSince returns the Since field if it's non-nil, zero value otherwise.
-func (o *OrganizationsListOptions) GetSince() int64 {
-	if o == nil || o.Since == nil {
-		return 0
-	}
-	return *o.Since
-}
-
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (o *OrgBlockEvent) GetAction() string {
 	if o == nil || o.Action == nil {

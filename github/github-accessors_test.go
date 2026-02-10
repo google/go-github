@@ -22631,28 +22631,6 @@ func TestOrganizationInstallations_GetTotalCount(tt *testing.T) {
 	o.GetTotalCount()
 }
 
-func TestOrganizationsListOptions_GetPerPage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	o := &OrganizationsListOptions{PerPage: &zeroValue}
-	o.GetPerPage()
-	o = &OrganizationsListOptions{}
-	o.GetPerPage()
-	o = nil
-	o.GetPerPage()
-}
-
-func TestOrganizationsListOptions_GetSince(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	o := &OrganizationsListOptions{Since: &zeroValue}
-	o.GetSince()
-	o = &OrganizationsListOptions{}
-	o.GetSince()
-	o = nil
-	o.GetSince()
-}
-
 func TestOrgBlockEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
