@@ -103,7 +103,7 @@ func main() {
 		}
 		fmt.Println("Duplicate allowed-tag-names:")
 		for _, name := range sortedKeys(duplicateNames) {
-			fmt.Printf("  - %v (%d)\n", name, duplicateNames[name])
+			fmt.Printf("  - %v (%v)\n", name, duplicateNames[name])
 		}
 	}
 	if len(duplicateTypes) > 0 {
@@ -112,7 +112,7 @@ func main() {
 		}
 		fmt.Println("Duplicate allowed-tag-types:")
 		for _, name := range sortedKeys(duplicateTypes) {
-			fmt.Printf("  - %v (%d)\n", name, duplicateTypes[name])
+			fmt.Printf("  - %v (%v)\n", name, duplicateTypes[name])
 		}
 	}
 }
@@ -326,7 +326,7 @@ func removeObsoleteExceptions(configPath string, obsoleteNames, obsoleteTypes []
 	}
 	seenNames := make(map[string]bool)
 	seenTypes := make(map[string]bool)
-	var items []listItem
+	var items []*listItem
 
 	updated := make([]string, 0, len(lines))
 	section := ""
@@ -375,7 +375,7 @@ func removeObsoleteExceptions(configPath string, obsoleteNames, obsoleteTypes []
 				}
 				seenTypes[value] = true
 			}
-			items = append(items, listItem{value: value, line: line})
+			items = append(items, &listItem{value: value, line: line})
 			i++
 			continue
 		}
@@ -403,7 +403,7 @@ type listItem struct {
 	line  string
 }
 
-func appendSortedItems(lines []string, items []listItem) []string {
+func appendSortedItems(lines []string, items []*listItem) []string {
 	sort.Slice(items, func(i, j int) bool {
 		return items[i].value < items[j].value
 	})
