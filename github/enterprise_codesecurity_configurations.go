@@ -21,13 +21,13 @@ import (
 // per page (max 100 per GitHub API docs).
 type ListEnterpriseCodeSecurityConfigurationOptions struct {
 	// A cursor, as given in the Link header. If specified, the query only searches for security configurations before this cursor.
-	Before *string `url:"before,omitempty"`
+	Before string `url:"before,omitempty"`
 
 	// A cursor, as given in the Link header. If specified, the query only searches for security configurations after this cursor.
-	After *string `url:"after,omitempty"`
+	After string `url:"after,omitempty"`
 
 	// For paginated result sets, the number of results to include per page.
-	PerPage *int `url:"per_page,omitempty"`
+	PerPage int `url:"per_page,omitempty"`
 }
 
 // ListCodeSecurityConfigurations lists all code security configurations available in an enterprise.

@@ -9,7 +9,8 @@
 // It honors idiomatic Go initialisms and handles the
 // special case of `Github` vs `GitHub` as agreed upon
 // by the original author of the repo.
-// It also checks that fields with "omitempty" tags are reference types.
+// It also checks that fields with "omitempty" tags are reference types
+// for `json` struct tags and value types for `url` struct tags.
 package structfield
 
 import (
@@ -17,6 +18,7 @@ import (
 	"go/ast"
 	"go/token"
 	"go/types"
+	"log"
 	"reflect"
 	"regexp"
 	"strings"
@@ -83,7 +85,8 @@ func (f *StructFieldPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 			Name: "structfield",
 			Doc: `Reports mismatches between Go field and JSON or URL tag names and types.
 Note that the JSON or URL tag name is the source-of-truth and the Go field name needs to match it.
-If the tag contains "omitempty", then the Go field must be a reference type.`,
+If the "json" tag contains "omitempty", then the Go field must be a reference type.
+If the "url" tag contains "omitempty", then the Go field must be a value type (unless it is a timestamp).`,
 			Run: func(pass *analysis.Pass) (any, error) {
 				return run(pass, f.allowedTagNames, f.allowedTagTypes)
 			},
@@ -150,22 +153,22 @@ func processTag(structName string, goField *ast.Ident, field *ast.Field, structT
 	hasOmitZero := strings.Contains(tagName, ",omitzero")
 
 	if hasOmitEmpty || hasOmitZero {
-		if tagType == "url" && hasOmitZero {
-			const msg = "the %q field in struct %q uses unsupported omitzero tag for URL tags"
-			pass.Reportf(field.Pos(), msg, goField.Name, structName)
-		} else {
-			checkGoFieldType(structName, goField.Name, field, field.Pos(), pass, allowedTagTypes, hasOmitEmpty, hasOmitZero)
-		}
+		// if tagType == "url" && hasOmitZero {
+		//			const msg = "the %q field in struct %q uses unsupported omitzero tag for URL tags"
+		//			pass.Reportf(field.Pos(), msg, goField.Name, structName)
+		//		} else {
+		checkGoFieldType(structName, goField.Name, tagType, field, field.Pos(), pass, allowedTagTypes, hasOmitEmpty, hasOmitZero)
+		//		}
 		tagName = strings.ReplaceAll(tagName, ",omitzero", "")
 		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
 	}
 	if tagType == "url" {
 		tagName = strings.ReplaceAll(tagName, ",comma", "")
 	}
-	checkGoFieldName(structName, goField.Name, tagName, goField.Pos(), pass, allowedTagNames)
+	checkGoFieldName(structName, goField.Name, tagType, tagName, goField.Pos(), pass, allowedTagNames)
 }
 
-func checkAndReportInvalidTypesForOmitzero(structName, goFieldName string, fieldType ast.Expr, tokenPos token.Pos, pass *analysis.Pass) bool {
+func checkAndReportInvalidTypesForOmitzero(structName, tagType, goFieldName string, fieldType ast.Expr, tokenPos token.Pos, pass *analysis.Pass) bool {
 	switch ft := fieldType.(type) {
 	case *ast.StarExpr:
 		// Check for *[]T where T is builtin - should be []T
@@ -184,7 +187,7 @@ func checkAndReportInvalidTypesForOmitzero(structName, goFieldName string, field
 			}
 			return true
 		}
-		// Check for *int - should not to be used with omitzero only with omitempty
+		// Check for *int and other pointers to builtin types
 		if ident, ok := ft.X.(*ast.Ident); ok {
 			if isBuiltinType(ident.Name) {
 				const msg = `the %q field in struct %q uses "omitzero" with a primitive type; remove "omitzero" and use only "omitempty" for pointer primitive types"`
@@ -202,6 +205,11 @@ func checkAndReportInvalidTypesForOmitzero(structName, goFieldName string, field
 	case *ast.MapType:
 		return true
 	case *ast.ArrayType:
+		if tagType == "url" {
+			const msg = "the %q field in struct %q uses unsupported omitzero tag for URL tags"
+			pass.Reportf(tokenPos, msg, goFieldName, structName)
+			return true
+		}
 		checkStructArrayType(structName, goFieldName, ft, tokenPos, pass)
 		return true
 	case *ast.Ident:
@@ -213,17 +221,26 @@ func checkAndReportInvalidTypesForOmitzero(structName, goFieldName string, field
 				pass.Reportf(tokenPos, msg, goFieldName, "*"+ft.Name, structName)
 				return true
 			case *types.Basic:
+				if tagType == "url" {
+					const msg = "the %q field in struct %q uses unsupported omitzero tag for URL tags"
+					pass.Reportf(tokenPos, msg, goFieldName, structName)
+					return true
+				}
 				// For Builtin - should not to be used with omitzero
 				const msg = `the %q field in struct %q uses "omitzero" with a primitive type; remove "omitzero", as it is only allowed with structs, maps, and slices`
 				pass.Reportf(tokenPos, msg, goFieldName, structName)
 				return true
 			}
 		}
+	case *ast.SelectorExpr:
+		return true
+	default:
+		log.Fatalf("unhandled type: %T", ft)
 	}
 	return false
 }
 
-func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Pos, pass *analysis.Pass, allowedNames map[string]bool) {
+func checkGoFieldName(structName, goFieldName, tagType, tagName string, tokenPos token.Pos, pass *analysis.Pass, allowedNames map[string]bool) {
 	fullName := structName + "." + goFieldName
 	if allowedNames[fullName] {
 		return
@@ -231,33 +248,32 @@ func checkGoFieldName(structName, goFieldName, tagName string, tokenPos token.Po
 
 	want, alternate := tagNameToPascal(tagName)
 	if goFieldName != want && goFieldName != alternate {
-		const msg = "change Go field name %q to %q for tag %q in struct %q"
-		pass.Reportf(tokenPos, msg, goFieldName, want, tagName, structName)
+		const msg = "change Go field name %q to %q for %v tag %q in struct %q"
+		pass.Reportf(tokenPos, msg, goFieldName, want, tagType, tagName, structName)
 	}
 }
 
-func checkGoFieldType(structName, goFieldName string, field *ast.Field, tokenPos token.Pos, pass *analysis.Pass, allowedTypes map[string]bool, omitempty, omitzero bool) {
+func checkGoFieldType(structName, goFieldName, tagType string, field *ast.Field, tokenPos token.Pos, pass *analysis.Pass, allowedTypes map[string]bool, omitempty, omitzero bool) {
 	if allowedTypes[structName+"."+goFieldName] {
 		return
 	}
 	switch {
 	case omitzero:
-		skipOmitzero := checkAndReportInvalidTypesForOmitzero(structName, goFieldName, field.Type, tokenPos, pass)
+		skipOmitzero := checkAndReportInvalidTypesForOmitzero(structName, tagType, goFieldName, field.Type, tokenPos, pass)
 		if !skipOmitzero {
 			const msg = `the %q field in struct %q uses "omitzero"; remove "omitzero", as it is only allowed with structs, maps, and slices`
 			pass.Reportf(tokenPos, msg, goFieldName, structName)
 		}
 
 	case omitempty:
-		skipOmitempty := checkAndReportInvalidTypes(structName, goFieldName, field.Type, tokenPos, pass)
-		if !skipOmitempty {
-			const msg = `change the %q field type to %q in the struct %q because its tag uses "omitempty"`
-			pass.Reportf(tokenPos, msg, goFieldName, "*"+exprToString(field.Type), structName)
+		if newFieldType, ok := checkAndReportInvalidTypes(structName, tagType, goFieldName, field.Type, tokenPos, pass); !ok {
+			const msg = `change the %q field type to %q in the struct %q because its %v tag uses "omitempty"`
+			pass.Reportf(tokenPos, msg, goFieldName, newFieldType, structName, tagType)
 		}
 	}
 }
 
-func checkAndReportInvalidTypes(structName, goFieldName string, fieldType ast.Expr, tokenPos token.Pos, pass *analysis.Pass) bool {
+func checkAndReportInvalidTypes(structName, tagType, goFieldName string, fieldType ast.Expr, tokenPos token.Pos, pass *analysis.Pass) (newFieldType string, ok bool) {
 	switch ft := fieldType.(type) {
 	case *ast.StarExpr:
 		// Check for *[]T where T is builtin - should be []T
@@ -280,24 +296,41 @@ func checkAndReportInvalidTypes(structName, goFieldName string, fieldType ast.Ex
 			const msg = "change the %q field type to %q in the struct %q"
 			pass.Reportf(tokenPos, msg, goFieldName, exprToString(ft.X), structName)
 		}
-		return true
+		if ident, ok := ft.X.(*ast.Ident); ok && tagType == "url" {
+			switch ident.Name {
+			// Remove the pointer for primitives in url tags
+			case "string", "int", "int64", "float64", "bool":
+				return ident.Name, false
+			}
+		}
+		return "", true
 	case *ast.MapType:
-		return true
+		return "", true
 	case *ast.ArrayType:
 		checkStructArrayType(structName, goFieldName, ft, tokenPos, pass)
-		return true
+		return "", true
 	case *ast.SelectorExpr:
 		// Check for json.RawMessage
 		if ident, ok := ft.X.(*ast.Ident); ok && ident.Name == "json" && ft.Sel.Name == "RawMessage" {
-			return true
+			return "", true
 		}
 	case *ast.Ident:
 		// Check for `any` type
 		if ft.Name == "any" {
-			return true
+			return "", true
 		}
+		if tagType == "url" {
+			switch ft.Name {
+			case "string", "int", "int64", "float64", "bool":
+				return "", true
+			}
+		}
+	default:
+		log.Fatalf("unhandled type: %T", ft)
 	}
-	return false
+
+	newFieldType = "*" + exprToString(fieldType)
+	return newFieldType, false
 }
 
 func checkStructArrayType(structName, goFieldName string, arrType *ast.ArrayType, tokenPos token.Pos, pass *analysis.Pass) {
