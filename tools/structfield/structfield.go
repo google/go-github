@@ -153,12 +153,7 @@ func processTag(structName string, goField *ast.Ident, field *ast.Field, structT
 	hasOmitZero := strings.Contains(tagName, ",omitzero")
 
 	if hasOmitEmpty || hasOmitZero {
-		// if tagType == "url" && hasOmitZero {
-		//			const msg = "the %q field in struct %q uses unsupported omitzero tag for URL tags"
-		//			pass.Reportf(field.Pos(), msg, goField.Name, structName)
-		//		} else {
 		checkGoFieldType(structName, goField.Name, tagType, field, field.Pos(), pass, allowedTagTypes, hasOmitEmpty, hasOmitZero)
-		//		}
 		tagName = strings.ReplaceAll(tagName, ",omitzero", "")
 		tagName = strings.ReplaceAll(tagName, ",omitempty", "")
 	}
