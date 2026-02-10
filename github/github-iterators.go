@@ -1880,37 +1880,6 @@ func (s *OrganizationsService) ListIter(ctx context.Context, user string, opts *
 	}
 }
 
-// ListAllIter returns an iterator that paginates through all results of ListAll.
-func (s *OrganizationsService) ListAllIter(ctx context.Context, opts *OrganizationsListOptions) iter.Seq2[*Organization, error] {
-	return func(yield func(*Organization, error) bool) {
-		// Create a copy of opts to avoid mutating the caller's struct
-		if opts == nil {
-			opts = &OrganizationsListOptions{}
-		} else {
-			opts = Ptr(*opts)
-		}
-
-		for {
-			items, resp, err := s.ListAll(ctx, opts)
-			if err != nil {
-				yield(nil, err)
-				return
-			}
-
-			for _, item := range items {
-				if !yield(item, nil) {
-					return
-				}
-			}
-
-			if resp.NextPage == 0 {
-				break
-			}
-			opts.ListOptions.Page = resp.NextPage
-		}
-	}
-}
-
 // ListBlockedUsersIter returns an iterator that paginates through all results of ListBlockedUsers.
 func (s *OrganizationsService) ListBlockedUsersIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*User, error] {
 	return func(yield func(*User, error) bool) {

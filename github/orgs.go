@@ -153,13 +153,11 @@ func (p Plan) String() string {
 // OrganizationsListOptions specifies the optional parameters to the
 // OrganizationsService.ListAll method.
 type OrganizationsListOptions struct {
-	// Since filters Organizations by ID.
+	// An organization ID. Only return organizations with an ID greater than this ID.
 	Since int64 `url:"since,omitempty"`
 
-	// Note: Pagination is powered exclusively by the Since parameter,
-	// ListOptions.Page has no effect.
-	// ListOptions.PerPage controls an undocumented GitHub API parameter.
-	ListOptions
+	// The number of results per page (max 100).
+	PerPage int `url:"per_page,omitempty"`
 }
 
 // ListAll lists all organizations, in the order that they were created on GitHub.
