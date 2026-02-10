@@ -113,11 +113,16 @@ func TestRepositoriesService_ListCustomDeploymentRuleIntegrations(t *testing.T) 
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment_protection_rules/apps", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page":     "1",
+			"per_page": "30",
+		})
 		fmt.Fprint(w, `{"total_count": 2, "available_custom_deployment_protection_rule_integrations": [{"id": 1, "node_id": "GHT58kRlcGxveW1lbnRTdTY!bbcy", "slug": "a-custom-app", "integration_url": "https://api.github.com/apps/a-custom-app"}, {"id": 2, "node_id": "UHVE67RlcGxveW1lbnRTdTY!jfeuy", "slug": "another-custom-app", "integration_url": "https://api.github.com/apps/another-custom-app"}]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Repositories.ListCustomDeploymentRuleIntegrations(ctx, "o", "r", "e")
+	opts := &ListOptions{Page: 1, PerPage: 30}
+	got, _, err := client.Repositories.ListCustomDeploymentRuleIntegrations(ctx, "o", "r", "e", opts)
 	if err != nil {
 		t.Errorf("Repositories.ListCustomDeploymentRuleIntegrations returned error: %v", err)
 	}
@@ -135,7 +140,7 @@ func TestRepositoriesService_ListCustomDeploymentRuleIntegrations(t *testing.T) 
 
 	const methodName = "ListCustomDeploymentRuleIntegrations"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListCustomDeploymentRuleIntegrations(ctx, "o", "r", "e")
+		got, resp, err := client.Repositories.ListCustomDeploymentRuleIntegrations(ctx, "o", "r", "e", opts)
 		if got != nil {
 			t.Errorf("got non-nil Repositories.ListCustomDeploymentRuleIntegrations response: %+v", got)
 		}
