@@ -58,13 +58,26 @@ func (l License) String() string {
 	return Stringify(l)
 }
 
+// ListLicensesOptions specifies the optional parameters to the LicensesService.List method.
+type ListLicensesOptions struct {
+	Featured *bool `url:"featured,omitempty"`
+
+	ListOptions
+}
+
 // List popular open source licenses.
 //
 // GitHub API docs: https://docs.github.com/rest/licenses/licenses#get-all-commonly-used-licenses
 //
 //meta:operation GET /licenses
-func (s *LicensesService) List(ctx context.Context) ([]*License, *Response, error) {
-	req, err := s.client.NewRequest("GET", "licenses", nil)
+func (s *LicensesService) List(ctx context.Context, opts *ListLicensesOptions) ([]*License, *Response, error) {
+	u := "licenses"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
