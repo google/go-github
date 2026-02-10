@@ -71,14 +71,13 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	since := int64(1342004)
 	mux.HandleFunc("/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"since": "1342004"})
+		testFormValues(t, r, values{"since": "1342004", "per_page": "30"})
 		fmt.Fprint(w, `[{"id":4314092}]`)
 	})
 
-	opt := &OrganizationsListOptions{Since: since}
+	opt := &OrganizationsListOptions{Since: int64(1342004), PerPage: 30}
 	ctx := t.Context()
 	orgs, _, err := client.Organizations.ListAll(ctx, opt)
 	if err != nil {
