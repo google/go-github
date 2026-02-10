@@ -17903,61 +17903,6 @@ func TestIssueListCommentsOptions_GetSort(tt *testing.T) {
 	i.GetSort()
 }
 
-func TestIssueListOptions_GetDirection(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueListOptions{Direction: &zeroValue}
-	i.GetDirection()
-	i = &IssueListOptions{}
-	i.GetDirection()
-	i = nil
-	i.GetDirection()
-}
-
-func TestIssueListOptions_GetFilter(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueListOptions{Filter: &zeroValue}
-	i.GetFilter()
-	i = &IssueListOptions{}
-	i.GetFilter()
-	i = nil
-	i.GetFilter()
-}
-
-func TestIssueListOptions_GetSince(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue time.Time
-	i := &IssueListOptions{Since: &zeroValue}
-	i.GetSince()
-	i = &IssueListOptions{}
-	i.GetSince()
-	i = nil
-	i.GetSince()
-}
-
-func TestIssueListOptions_GetSort(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueListOptions{Sort: &zeroValue}
-	i.GetSort()
-	i = &IssueListOptions{}
-	i.GetSort()
-	i = nil
-	i.GetSort()
-}
-
-func TestIssueListOptions_GetState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueListOptions{State: &zeroValue}
-	i.GetState()
-	i = &IssueListOptions{}
-	i.GetState()
-	i = nil
-	i.GetState()
-}
-
 func TestIssueRequest_GetAssignee(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

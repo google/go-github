@@ -36,12 +36,12 @@ func TestIssuesService_List_all(t *testing.T) {
 	})
 
 	opt := &IssueListOptions{
-		Filter:      Ptr("all"),
-		State:       Ptr("closed"),
+		Filter:      "all",
+		State:       "closed",
 		Labels:      []string{"a", "b"},
-		Sort:        Ptr("updated"),
-		Direction:   Ptr("asc"),
-		Since:       Ptr(referenceTime),
+		Sort:        "updated",
+		Direction:   "asc",
+		Since:       referenceTime,
 		ListOptions: ListOptions{Page: 1, PerPage: 2},
 	}
 	ctx := t.Context()
