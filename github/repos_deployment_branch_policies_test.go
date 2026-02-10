@@ -44,6 +44,11 @@ func TestRepositoriesService_ListDeploymentBranchPolicies(t *testing.T) {
 	}
 
 	const methodName = "ListDeploymentBranchPolicies"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListDeploymentBranchPolicies(ctx, "\n", "\n", "\n", opts)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Repositories.ListDeploymentBranchPolicies(ctx, "o", "r", "e", opts)
 		if got != nil {

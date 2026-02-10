@@ -139,6 +139,10 @@ func TestRepositoriesService_ListCustomDeploymentRuleIntegrations(t *testing.T) 
 	}
 
 	const methodName = "ListCustomDeploymentRuleIntegrations"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListCustomDeploymentRuleIntegrations(ctx, "\n", "\n", "\n", opts)
+		return err
+	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Repositories.ListCustomDeploymentRuleIntegrations(ctx, "o", "r", "e", opts)
 		if got != nil {
