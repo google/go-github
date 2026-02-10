@@ -28,21 +28,20 @@ func TestIssuesService_List_all(t *testing.T) {
 			"labels":    "a,b",
 			"sort":      "updated",
 			"direction": "asc",
-			"since":     "2002-02-10T15:30:00Z",
+			"since":     referenceTime.Format(time.RFC3339),
 			"page":      "1",
 			"per_page":  "2",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	// Reviewer suggestion applied: Ptr() handles the time.Time inline
 	opt := &IssueListOptions{
 		Filter:      Ptr("all"),
 		State:       Ptr("closed"),
 		Labels:      []string{"a", "b"},
 		Sort:        Ptr("updated"),
 		Direction:   Ptr("asc"),
-		Since:       Ptr(time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)),
+		Since:       Ptr(referenceTime),
 		ListOptions: ListOptions{Page: 1, PerPage: 2},
 	}
 	ctx := t.Context()
@@ -158,7 +157,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 			"labels":    "a,b",
 			"sort":      "updated",
 			"direction": "asc",
-			"since":     "2002-02-10T15:30:00Z",
+			"since":     referenceTime.Format(time.RFC3339),
 			"per_page":  "1",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
@@ -174,7 +173,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		Labels:            []string{"a", "b"},
 		Sort:              "updated",
 		Direction:         "asc",
-		Since:             time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+		Since:             referenceTime,
 		ListCursorOptions: ListCursorOptions{PerPage: 1},
 	}
 
