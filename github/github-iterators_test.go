@@ -3191,7 +3191,7 @@ func TestIssuesService_ListByRepoIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)

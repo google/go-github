@@ -105,25 +105,25 @@ type IssueRequest struct {
 type IssueListOptions struct {
 	// Filter specifies which issues to list. Possible values are: assigned,
 	// created, mentioned, subscribed, all. Default is "assigned".
-	Filter string `url:"filter,omitempty"`
+	Filter *string `url:"filter,omitempty"`
 
 	// State filters issues based on their state. Possible values are: open,
 	// closed, all. Default is "open".
-	State string `url:"state,omitempty"`
+	State *string `url:"state,omitempty"`
 
 	// Labels filters issues based on their label.
 	Labels []string `url:"labels,comma,omitempty"`
 
 	// Sort specifies how to sort issues. Possible values are: created, updated,
 	// and comments. Default value is "created".
-	Sort string `url:"sort,omitempty"`
+	Sort *string `url:"sort,omitempty"`
 
 	// Direction in which to sort issues. Possible values are: asc, desc.
 	// Default is "desc".
-	Direction string `url:"direction,omitempty"`
+	Direction *string `url:"direction,omitempty"`
 
 	// Since filters issues by time.
-	Since time.Time `url:"since,omitempty"`
+	Since *time.Time `url:"since,omitempty"`
 
 	// Add ListOptions so offset pagination with integer type "page" query parameter is accepted
 	ListOptions
@@ -242,8 +242,8 @@ type IssueListByRepoOptions struct {
 	// Since filters issues by time.
 	Since time.Time `url:"since,omitempty"`
 
-	// Add ListOptions so offset pagination with integer type "page" query parameter is accepted
-	ListOptions
+	// ListCursorOptions specifies the optional parameters for cursor pagination.
+	ListCursorOptions
 }
 
 // ListByRepo lists the issues for the specified repository.

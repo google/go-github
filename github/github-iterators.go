@@ -1405,10 +1405,10 @@ func (s *IssuesService) ListByRepoIter(ctx context.Context, owner string, repo s
 				}
 			}
 
-			if resp.NextPage == 0 {
+			if resp.Cursor == "" {
 				break
 			}
-			opts.ListOptions.Page = resp.NextPage
+			opts.ListCursorOptions.Cursor = resp.Cursor
 		}
 	}
 }

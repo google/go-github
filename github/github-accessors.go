@@ -13774,6 +13774,46 @@ func (i *IssueListCommentsOptions) GetSort() string {
 	return *i.Sort
 }
 
+// GetDirection returns the Direction field if it's non-nil, zero value otherwise.
+func (i *IssueListOptions) GetDirection() string {
+	if i == nil || i.Direction == nil {
+		return ""
+	}
+	return *i.Direction
+}
+
+// GetFilter returns the Filter field if it's non-nil, zero value otherwise.
+func (i *IssueListOptions) GetFilter() string {
+	if i == nil || i.Filter == nil {
+		return ""
+	}
+	return *i.Filter
+}
+
+// GetSince returns the Since field if it's non-nil, zero value otherwise.
+func (i *IssueListOptions) GetSince() time.Time {
+	if i == nil || i.Since == nil {
+		return time.Time{}
+	}
+	return *i.Since
+}
+
+// GetSort returns the Sort field if it's non-nil, zero value otherwise.
+func (i *IssueListOptions) GetSort() string {
+	if i == nil || i.Sort == nil {
+		return ""
+	}
+	return *i.Sort
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (i *IssueListOptions) GetState() string {
+	if i == nil || i.State == nil {
+		return ""
+	}
+	return *i.State
+}
+
 // GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
 func (i *IssueRequest) GetAssignee() string {
 	if i == nil || i.Assignee == nil {

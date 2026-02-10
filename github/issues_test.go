@@ -35,12 +35,16 @@ func TestIssuesService_List_all(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
+	since := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
+
 	opt := &IssueListOptions{
-		"all", "closed",
-		[]string{"a", "b"},
-		"updated", "asc",
-		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
-		ListOptions{Page: 1, PerPage: 2},
+		Filter:      Ptr("all"),
+		State:       Ptr("closed"),
+		Labels:      []string{"a", "b"},
+		Sort:        Ptr("updated"),
+		Direction:   Ptr("asc"),
+		Since:       &since,
+		ListOptions: ListOptions{Page: 1, PerPage: 2},
 	}
 	ctx := t.Context()
 	issues, _, err := client.Issues.List(ctx, true, opt)
@@ -161,13 +165,20 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
+	// IssueListByRepoOptions uses standard strings (not pointers) and ListCursorOptions
 	opt := &IssueListByRepoOptions{
-		"*", "closed", "a", "c", "m",
-		[]string{"a", "b"},
-		"updated", "asc",
-		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
-		ListOptions{PerPage: 1},
+		Milestone:         "*",
+		State:             "closed",
+		Assignee:          "a",
+		Creator:           "c",
+		Mentioned:         "m",
+		Labels:            []string{"a", "b"},
+		Sort:              "updated",
+		Direction:         "asc",
+		Since:             time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+		ListCursorOptions: ListCursorOptions{PerPage: 1},
 	}
+
 	ctx := t.Context()
 	issues, _, err := client.Issues.ListByRepo(ctx, "o", "r", opt)
 	if err != nil {
