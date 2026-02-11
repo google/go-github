@@ -412,7 +412,8 @@ func (c *Client) WithEnterpriseURLs(baseURL, uploadURL string) (*Client, error) 
 	}
 	if !strings.HasSuffix(c2.UploadURL.Path, "/api/uploads/") &&
 		!strings.HasPrefix(c2.UploadURL.Host, "api.") &&
-		!strings.Contains(c2.UploadURL.Host, ".api.") {
+		!strings.Contains(c2.UploadURL.Host, ".api.") &&
+		!strings.HasPrefix(c2.UploadURL.Host, "uploads.") {
 		c2.UploadURL.Path += "api/uploads/"
 	}
 	return c2, nil
