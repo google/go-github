@@ -1312,10 +1312,9 @@ func (s *IssuesService) ListIter(ctx context.Context, all bool, opts *IssueListO
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1375,10 +1374,9 @@ func (s *IssuesService) ListByOrgIter(ctx context.Context, org string, opts *Iss
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3767,10 +3765,9 @@ func (s *SubIssueService) ListByIssueIter(ctx context.Context, owner string, rep
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
