@@ -367,7 +367,7 @@ Go v1.23 introduces the new `iter` package.
 
 The new `github/gen-iterators.go` file auto-generates "*Iter" methods in `github/github-iterators.go`
 for all methods that support page number iteration (using the `NextPage` field in each response)
-or string cursor iteration (using the `Cursor` field in each response).
+or string cursor iteration (using the `After` field in each response).
 To handle rate limiting issues, make sure to use a rate-limiting transport.
 (See [Rate Limiting](/#rate-limiting) above for more details.)
 To use these methods, simply create an iterator and then range over it, for example:
