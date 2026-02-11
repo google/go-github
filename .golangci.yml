@@ -231,38 +231,27 @@ linters:
             - WeeklyStats.Deletions
             - WeeklyStats.Week
           allowed-tag-types:
-            - ActivityListStarredOptions.Direction # TODO: Activities
-            - ActivityListStarredOptions.Sort # TODO: Activities
-            - AddProjectItemOptions.ID # TODO: Projects
-            - AddProjectItemOptions.Type # TODO: Projects
-            - AlertInstancesListOptions.Ref # TODO: CodeScanning
-            - AlertListOptions.Direction # TODO: CodeScanning
-            - AlertListOptions.Ref # TODO: CodeScanning
-            - AlertListOptions.Severity # TODO: CodeScanning
-            - AlertListOptions.Sort # TODO: CodeScanning
-            - AlertListOptions.State # TODO: CodeScanning
-            - AlertListOptions.ToolGUID # TODO: CodeScanning
-            - AlertListOptions.ToolName # TODO: CodeScanning
             - APIMetaArtifactAttestations.TrustDomain # TODO: Meta
-            - CommitsListOptions.Author # TODO: Repositories
-            - CommitsListOptions.Path # TODO: Repositories
-            - CommitsListOptions.SHA # TODO: Repositories
+            - ActionsCacheListOptions.Direction
+            - ActionsCacheListOptions.Key
+            - ActionsCacheListOptions.Ref
+            - ActionsCacheListOptions.Sort
+            - ActiveCommittersListOptions.AdvancedSecurityProduct
+            - AnalysesListOptions.Ref
+            - AnalysesListOptions.SarifID
+            - BranchListOptions.Protected
+            - CodespaceGetDefaultAttributesOptions.ClientIP
+            - CodespaceGetDefaultAttributesOptions.Ref
             - CommitsListOptions.Since # TODO: Repositories
             - CommitsListOptions.Until # TODO: Repositories
+            - ConfigApplyEventsOptions.LastRequestID
             - CreateTag.Message # TODO: Git
             - CreateTag.Object # TODO: Git
             - CreateTag.Tag # TODO: Git
             - CreateTag.Type # TODO: Git
-            - CredentialAuthorizationsListOptions.Login # TODO: Organizations
             - DependabotEncryptedSecret.SelectedRepositoryIDs # TODO: Dependabot
             - DependabotEncryptedSecret.Visibility # TODO: Dependabot
             - DeploymentRequest.RequiredContexts # TODO: Deployments
-            - DeploymentsListOptions.Environment # TODO: Repositories
-            - DeploymentsListOptions.Ref # TODO: Repositories
-            - DeploymentsListOptions.SHA # TODO: Repositories
-            - DeploymentsListOptions.Task # TODO: Repositories
-            - DiscussionCommentListOptions.Direction # TODO: Teams
-            - DiscussionListOptions.Direction # TODO: Teams
             - DismissalRestrictionsRequest.Apps # TODO: Repositories
             - DismissalRestrictionsRequest.Teams # TODO: Repositories
             - DismissalRestrictionsRequest.Users # TODO: Repositories
@@ -270,153 +259,97 @@ linters:
             - EncryptedSecret.Visibility # TODO: Actions
             - ErrorBlock.Reason # TODO: Common
             - ErrorResponse.DocumentationURL # TODO: Common
-            - GetCodeownersErrorsOptions.Ref # TODO: Repositories
+            - GetAuditLogOptions.Include
+            - GetAuditLogOptions.Order
+            - GetAuditLogOptions.Phrase
+            - GetProvisionedSCIMGroupEnterpriseOptions.ExcludedAttributes
             - GistListOptions.Since # TODO: Gists
             - IssueEvent.Action # TODO: Issues
-            - IssueListByRepoOptions.Assignee # TODO: Issues
-            - IssueListByRepoOptions.Assignee # TODO: Issues
-            - IssueListByRepoOptions.Creator # TODO: Issues
-            - IssueListByRepoOptions.Creator # TODO: Issues
-            - IssueListByRepoOptions.Direction # TODO: Issues
-            - IssueListByRepoOptions.Direction # TODO: Issues
-            - IssueListByRepoOptions.Mentioned # TODO: Issues
-            - IssueListByRepoOptions.Mentioned # TODO: Issues
-            - IssueListByRepoOptions.Milestone # TODO: Issues
             - IssueListByRepoOptions.Since # TODO: Issues
-            - IssueListByRepoOptions.Since # TODO: Issues
-            - IssueListByRepoOptions.Sort # TODO: Issues
-            - IssueListByRepoOptions.Sort # TODO: Issues
-            - IssueListByRepoOptions.State # TODO: Issues
-            - IssueListOptions.Direction # TODO: Issues
-            - IssueListOptions.Filter # TODO: Issues
+            - IssueListCommentsOptions.Direction
+            - IssueListCommentsOptions.Sort
             - IssueListOptions.Since # TODO: Issues
-            - IssueListOptions.Sort # TODO: Issues
-            - IssueListOptions.State # TODO: Issues
             - IssueRequest.Assignees # TODO: Issues
             - IssueRequest.Labels # TODO: Issues
             - License.Conditions # TODO: Licenses
             - License.Limitations # TODO: Licenses
             - License.Permissions # TODO: Licenses
-            - ListCodespacesOptions.RepositoryID # TODO: Codespaces
-            - ListCollaboratorsOptions.Affiliation # TODO: Repositories
-            - ListCollaboratorsOptions.Permission # TODO: Repositories
-            - ListContributorsOptions.Anon # TODO: Repositories
-            - ListCursorOptions.After # TODO: Common
-            - ListCursorOptions.Before # TODO: Common
-            - ListCursorOptions.Cursor # TODO: Common
-            - ListCursorOptions.First # TODO: Common
-            - ListCursorOptions.Last # TODO: Common
-            - ListCursorOptions.Page # TODO: Common
-            - ListCursorOptions.PerPage # TODO: Common
-            - ListCustomPropertyValuesOptions.RepositoryQuery # TODO: Organizations
-            - ListEnterpriseRunnerGroupOptions.VisibleToOrganization # TODO: Enterprise
-            - ListFineGrainedPATOptions.Direction # TODO: Organizations
-            - ListFineGrainedPATOptions.LastUsedAfter # TODO: Organizations
-            - ListFineGrainedPATOptions.LastUsedBefore # TODO: Organizations
-            - ListFineGrainedPATOptions.Permission # TODO: Organizations
-            - ListFineGrainedPATOptions.Repository # TODO: Organizations
-            - ListFineGrainedPATOptions.Sort # TODO: Organizations
-            - ListIDPGroupsOptions.Query # TODO: Teams
-            - ListMembersOptions.Filter # TODO: Organizations
-            - ListMembersOptions.Role # TODO: Organizations
-            - ListOptions.Page # TODO: Common
-            - ListOptions.PerPage # TODO: Common
-            - ListOrgMembershipsOptions.State # TODO: Organizations
-            - ListOrgRunnerGroupOptions.VisibleToRepository # TODO: Actions
-            - ListOutsideCollaboratorsOptions.Filter # TODO: Organizations
+            - ListAlertsOptions.Direction
+            - ListAlertsOptions.Ecosystem
+            - ListAlertsOptions.Package
+            - ListAlertsOptions.Scope
+            - ListAlertsOptions.Severity
+            - ListAlertsOptions.Sort
+            - ListAlertsOptions.State
+            - ListArtifactsOptions.Name
+            - ListCheckRunsOptions.AppID
+            - ListCheckRunsOptions.CheckName
+            - ListCheckRunsOptions.Filter
+            - ListCheckRunsOptions.Status
+            - ListCheckSuiteOptions.AppID
+            - ListCheckSuiteOptions.CheckName
+            - ListCostCenterOptions.State
+            - ListExternalGroupsOptions.DisplayName
+            - ListGlobalSecurityAdvisoriesOptions.Affects
+            - ListGlobalSecurityAdvisoriesOptions.CVEID
+            - ListGlobalSecurityAdvisoriesOptions.Ecosystem
+            - ListGlobalSecurityAdvisoriesOptions.GHSAID
+            - ListGlobalSecurityAdvisoriesOptions.IsWithdrawn
+            - ListGlobalSecurityAdvisoriesOptions.Modified
+            - ListGlobalSecurityAdvisoriesOptions.Published
+            - ListGlobalSecurityAdvisoriesOptions.Severity
+            - ListGlobalSecurityAdvisoriesOptions.Type
+            - ListGlobalSecurityAdvisoriesOptions.Updated
+            - ListLicensesOptions.Featured
             - ListProvisionedSCIMGroupsEnterpriseOptions.Count # TODO: Enterprise
             - ListProvisionedSCIMGroupsEnterpriseOptions.ExcludedAttributes # TODO: Enterprise
             - ListProvisionedSCIMGroupsEnterpriseOptions.Filter # TODO: Enterprise
             - ListProvisionedSCIMGroupsEnterpriseOptions.StartIndex # TODO: Enterprise
-            - ListReactionOptions.Content # TODO: Reactions
-            - ListRepositoryActivityOptions.ActivityType # TODO: Repositories
-            - ListRepositoryActivityOptions.Actor # TODO: Repositories
-            - ListRepositoryActivityOptions.After # TODO: Repositories
-            - ListRepositoryActivityOptions.Before # TODO: Repositories
-            - ListRepositoryActivityOptions.Direction # TODO: Repositories
-            - ListRepositoryActivityOptions.PerPage # TODO: Repositories
-            - ListRepositoryActivityOptions.Ref # TODO: Repositories
-            - ListRepositoryActivityOptions.TimePeriod # TODO: Repositories
-            - ListRepositorySecurityAdvisoriesOptions.Direction # TODO: SecurityAdvisories
-            - ListRepositorySecurityAdvisoriesOptions.Direction # TODO: SecurityAdvisories
-            - ListRepositorySecurityAdvisoriesOptions.Sort # TODO: SecurityAdvisories
-            - ListRepositorySecurityAdvisoriesOptions.Sort # TODO: SecurityAdvisories
-            - ListRepositorySecurityAdvisoriesOptions.State # TODO: SecurityAdvisories
-            - ListRepositorySecurityAdvisoriesOptions.State # TODO: SecurityAdvisories
-            - ListWorkflowJobsOptions.Filter # TODO: Actions
-            - ListWorkflowRunsOptions.Actor # TODO: Actions
-            - ListWorkflowRunsOptions.Branch # TODO: Actions
-            - ListWorkflowRunsOptions.CheckSuiteID # TODO: Actions
-            - ListWorkflowRunsOptions.Created # TODO: Actions
-            - ListWorkflowRunsOptions.Event # TODO: Actions
-            - ListWorkflowRunsOptions.ExcludePullRequests # TODO: Actions
-            - ListWorkflowRunsOptions.HeadSHA # TODO: Actions
-            - ListWorkflowRunsOptions.Status # TODO: Actions
+            - ListProvisionedSCIMUsersEnterpriseOptions.Count
+            - ListProvisionedSCIMUsersEnterpriseOptions.Filter
+            - ListProvisionedSCIMUsersEnterpriseOptions.StartIndex
+            - ListRepoMachineTypesOptions.ClientIP
+            - ListRepoMachineTypesOptions.Location
+            - ListRepoMachineTypesOptions.Ref
+            - ListRunnersOptions.Name
+            - ListSCIMProvisionedIdentitiesOptions.Count
+            - ListSCIMProvisionedIdentitiesOptions.Filter
+            - ListSCIMProvisionedIdentitiesOptions.StartIndex
             - LockIssueOptions.LockReason # TODO: Issues
             - MarketplacePlan.Bullets # TODO: Marketplaces
-            - MilestoneListOptions.Direction # TODO: Issues
-            - MilestoneListOptions.Sort # TODO: Issues
-            - MilestoneListOptions.State # TODO: Issues
-            - NotificationListOptions.All # TODO: Activities
+            - NodeQueryOptions.ClusterRoles
+            - NodeQueryOptions.UUID
             - NotificationListOptions.Before # TODO: Activities
-            - NotificationListOptions.Participating # TODO: Activities
             - NotificationListOptions.Since # TODO: Activities
-            - OrganizationsListOptions.Since # TODO: Organizations
-            - ProjectV2ItemFieldValue.DataType # TODO: Projects
-            - ProjectV2ItemFieldValue.Name # TODO: Projects
-            - PullRequestListCommentsOptions.Direction # TODO: PullRequests
+            - PackageListOptions.PackageType
+            - PackageListOptions.State
+            - PackageListOptions.Visibility
+            - PremiumRequestUsageReportOptions.Day
+            - PremiumRequestUsageReportOptions.Model
+            - PremiumRequestUsageReportOptions.Month
+            - PremiumRequestUsageReportOptions.Product
+            - PremiumRequestUsageReportOptions.User
+            - PremiumRequestUsageReportOptions.Year
             - PullRequestListCommentsOptions.Since # TODO: PullRequests
-            - PullRequestListCommentsOptions.Sort # TODO: PullRequests
-            - PullRequestListOptions.Base # TODO: PullRequests
-            - PullRequestListOptions.Direction # TODO: PullRequests
-            - PullRequestListOptions.Head # TODO: PullRequests
-            - PullRequestListOptions.Sort # TODO: PullRequests
-            - PullRequestListOptions.State # TODO: PullRequests
             - Rate.Resource # TODO: Common
             - RepositoryAddCollaboratorOptions.Permission # TODO: Repositories
-            - RepositoryContentGetOptions.Ref # TODO: Repositories
             - RepositoryCreateForkOptions.DefaultBranchOnly # TODO: Repositories
             - RepositoryCreateForkOptions.Name # TODO: Repositories
             - RepositoryCreateForkOptions.Organization # TODO: Repositories
-            - RepositoryListAllOptions.Since # TODO: Repositories
-            - RepositoryListByAuthenticatedUserOptions.Affiliation # TODO: Repositories
-            - RepositoryListByAuthenticatedUserOptions.Direction # TODO: Repositories
-            - RepositoryListByAuthenticatedUserOptions.Sort # TODO: Repositories
-            - RepositoryListByAuthenticatedUserOptions.Type # TODO: Repositories
-            - RepositoryListByAuthenticatedUserOptions.Visibility # TODO: Repositories
-            - RepositoryListByOrgOptions.Direction # TODO: Repositories
-            - RepositoryListByOrgOptions.Sort # TODO: Repositories
-            - RepositoryListByOrgOptions.Type # TODO: Repositories
-            - RepositoryListByUserOptions.Direction # TODO: Repositories
-            - RepositoryListByUserOptions.Sort # TODO: Repositories
-            - RepositoryListByUserOptions.Type # TODO: Repositories
-            - RepositoryListForksOptions.Sort # TODO: Repositories
-            - RepositoryListOptions.Affiliation # TODO: Repositories
-            - RepositoryListOptions.Direction # TODO: Repositories
-            - RepositoryListOptions.Sort # TODO: Repositories
-            - RepositoryListOptions.Type # TODO: Repositories
-            - RepositoryListOptions.Visibility # TODO: Repositories
+            - RepositoryListRulesetsOptions.IncludesParents
             - RequiredStatusChecks.Checks # TODO: Repositories
             - RequiredStatusChecks.Contexts # TODO: Repositories
-            - SearchOptions.Order # TODO: Search
-            - SearchOptions.Sort # TODO: Search
+            - SearchOptions.AdvancedSearch
             - Secret.SelectedRepositoriesURL # TODO: Actions
             - Secret.Visibility # TODO: Actions
-            - SecretScanningAlertListOptions.Direction # TODO: SecretScanning
-            - SecretScanningAlertListOptions.IsMultiRepo # TODO: SecretScanning
-            - SecretScanningAlertListOptions.IsPubliclyLeaked # TODO: SecretScanning
-            - SecretScanningAlertListOptions.Resolution # TODO: SecretScanning
-            - SecretScanningAlertListOptions.SecretType # TODO: SecretScanning
-            - SecretScanningAlertListOptions.Sort # TODO: SecretScanning
-            - SecretScanningAlertListOptions.State # TODO: SecretScanning
-            - SecretScanningAlertListOptions.Validity # TODO: SecretScanning
             - TeamAddTeamMembershipOptions.Role # TODO: Teams
             - TeamAddTeamRepoOptions.Permission # TODO: Teams
-            - TeamListTeamMembersOptions.Role # TODO: Teams
-            - TrafficBreakdownOptions.Per  # TODO: Repositories
             - UpdateRuleParameters.UpdateAllowsFetchAndMerge # TODO: Rules
-            - UploadOptions.Label # TODO: Repositories
-            - UploadOptions.Name # TODO: Repositories
+            - UsageReportOptions.Day
+            - UsageReportOptions.Hour
+            - UsageReportOptions.Month
+            - UsageReportOptions.Year
+            - WorkflowRunAttemptOptions.ExcludePullRequests
   exclusions:
     rules:
       - linters:

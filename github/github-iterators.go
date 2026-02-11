@@ -1312,10 +1312,9 @@ func (s *IssuesService) ListIter(ctx context.Context, all bool, opts *IssueListO
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1375,10 +1374,9 @@ func (s *IssuesService) ListByOrgIter(ctx context.Context, org string, opts *Iss
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1664,6 +1662,37 @@ func (s *IssuesService) ListRepositoryEventsIter(ctx context.Context, owner stri
 	}
 }
 
+// ListIter returns an iterator that paginates through all results of List.
+func (s *LicensesService) ListIter(ctx context.Context, opts *ListLicensesOptions) iter.Seq2[*License, error] {
+	return func(yield func(*License, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListLicensesOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			items, resp, err := s.List(ctx, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range items {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListMarketplacePurchasesForUserIter returns an iterator that paginates through all results of ListMarketplacePurchasesForUser.
 func (s *MarketplaceService) ListMarketplacePurchasesForUserIter(ctx context.Context, opts *ListOptions) iter.Seq2[*MarketplacePurchase, error] {
 	return func(yield func(*MarketplacePurchase, error) bool) {
@@ -1846,37 +1875,6 @@ func (s *OrganizationsService) ListIter(ctx context.Context, user string, opts *
 				break
 			}
 			opts.Page = resp.NextPage
-		}
-	}
-}
-
-// ListAllIter returns an iterator that paginates through all results of ListAll.
-func (s *OrganizationsService) ListAllIter(ctx context.Context, opts *OrganizationsListOptions) iter.Seq2[*Organization, error] {
-	return func(yield func(*Organization, error) bool) {
-		// Create a copy of opts to avoid mutating the caller's struct
-		if opts == nil {
-			opts = &OrganizationsListOptions{}
-		} else {
-			opts = Ptr(*opts)
-		}
-
-		for {
-			items, resp, err := s.ListAll(ctx, opts)
-			if err != nil {
-				yield(nil, err)
-				return
-			}
-
-			for _, item := range items {
-				if !yield(item, nil) {
-					return
-				}
-			}
-
-			if resp.NextPage == 0 {
-				break
-			}
-			opts.ListOptions.Page = resp.NextPage
 		}
 	}
 }
@@ -3767,10 +3765,9 @@ func (s *SubIssueService) ListByIssueIter(ctx context.Context, owner string, rep
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}

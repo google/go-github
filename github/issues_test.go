@@ -28,22 +28,21 @@ func TestIssuesService_List_all(t *testing.T) {
 			"labels":    "a,b",
 			"sort":      "updated",
 			"direction": "asc",
-			"since":     "2002-02-10T15:30:00Z",
+			"since":     referenceTime.Format(time.RFC3339),
 			"page":      "1",
 			"per_page":  "2",
-			"before":    "foo",
-			"after":     "bar",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
 	opt := &IssueListOptions{
-		"all", "closed",
-		[]string{"a", "b"},
-		"updated", "asc",
-		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
-		ListCursorOptions{Before: "foo", After: "bar"},
-		ListOptions{Page: 1, PerPage: 2},
+		Filter:      "all",
+		State:       "closed",
+		Labels:      []string{"a", "b"},
+		Sort:        "updated",
+		Direction:   "asc",
+		Since:       referenceTime,
+		ListOptions: ListOptions{Page: 1, PerPage: 2},
 	}
 	ctx := t.Context()
 	issues, _, err := client.Issues.List(ctx, true, opt)
@@ -158,22 +157,26 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 			"labels":    "a,b",
 			"sort":      "updated",
 			"direction": "asc",
-			"since":     "2002-02-10T15:30:00Z",
+			"since":     referenceTime.Format(time.RFC3339),
 			"per_page":  "1",
-			"before":    "foo",
-			"after":     "bar",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
+	// IssueListByRepoOptions uses standard strings (not pointers) and ListCursorOptions
 	opt := &IssueListByRepoOptions{
-		"*", "closed", "a", "c", "m",
-		[]string{"a", "b"},
-		"updated", "asc",
-		time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
-		ListCursorOptions{PerPage: 1, Before: "foo", After: "bar"},
-		ListOptions{0, 0},
+		Milestone:         "*",
+		State:             "closed",
+		Assignee:          "a",
+		Creator:           "c",
+		Mentioned:         "m",
+		Labels:            []string{"a", "b"},
+		Sort:              "updated",
+		Direction:         "asc",
+		Since:             referenceTime,
+		ListCursorOptions: ListCursorOptions{PerPage: 1},
 	}
+
 	ctx := t.Context()
 	issues, _, err := client.Issues.ListByRepo(ctx, "o", "r", opt)
 	if err != nil {

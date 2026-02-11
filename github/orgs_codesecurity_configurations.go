@@ -102,18 +102,18 @@ type RepositoryCodeSecurityConfiguration struct {
 // per page (max 100 per GitHub API docs).
 type ListOrgCodeSecurityConfigurationOptions struct {
 	// A cursor, as given in the Link header. If specified, the query only searches for security configurations before this cursor.
-	Before *string `url:"before,omitempty"`
+	Before string `url:"before,omitempty"`
 
 	// A cursor, as given in the Link header. If specified, the query only searches for security configurations after this cursor.
-	After *string `url:"after,omitempty"`
+	After string `url:"after,omitempty"`
 
 	// For paginated result sets, the number of results to include per page.
-	PerPage *int `url:"per_page,omitempty"`
+	PerPage int `url:"per_page,omitempty"`
 
 	// The target type of the code security configurations to get.
 	//
 	// `target_type` defaults to all, can be one of `global`, `all`
-	TargetType *string `url:"target_type,omitempty"`
+	TargetType string `url:"target_type,omitempty"`
 }
 
 // ListCodeSecurityConfigurationRepositoriesOptions specifies optional parameters to list repositories for security configurations for orgs and enterprises.
@@ -126,18 +126,18 @@ type ListOrgCodeSecurityConfigurationOptions struct {
 // per page (max 100 per GitHub API docs).
 type ListCodeSecurityConfigurationRepositoriesOptions struct {
 	// A cursor, as given in the Link header. If specified, the query only searches for repositories before this cursor.
-	Before *string `url:"before,omitempty"`
+	Before string `url:"before,omitempty"`
 
 	// A cursor, as given in the Link header. If specified, the query only searches for repositories after this cursor.
-	After *string `url:"after,omitempty"`
+	After string `url:"after,omitempty"`
 
 	// For paginated result sets, the number of results to include per page.
-	PerPage *int `url:"per_page,omitempty"`
+	PerPage int `url:"per_page,omitempty"`
 
 	// A comma-separated list of statuses. If specified, only repositories with these attachment statuses will be returned.
 	//
 	// `status` defaults to all, can be one of `all`, `attached`, `attaching`, `removed`, `enforced`, `failed`, `updating`, `removed_by_enterprise` and also `detached` but only for the org endpoint.
-	Status *string `url:"status,omitempty"`
+	Status string `url:"status,omitempty"`
 }
 
 // ListCodeSecurityConfigurations gets code security configurations for an organization.

@@ -115,11 +115,13 @@ func TestLicensesService_List(t *testing.T) {
 
 	mux.HandleFunc("/licenses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"featured": "true", "page": "2", "per_page": "20"})
 		fmt.Fprint(w, `[{"key":"mit","name":"MIT","spdx_id":"MIT","url":"https://api.github.com/licenses/mit","featured":true}]`)
 	})
 
+	opts := &ListLicensesOptions{Featured: Ptr(true), ListOptions: ListOptions{Page: 2, PerPage: 20}}
 	ctx := t.Context()
-	licenses, _, err := client.Licenses.List(ctx)
+	licenses, _, err := client.Licenses.List(ctx, opts)
 	if err != nil {
 		t.Errorf("Licenses.List returned error: %v", err)
 	}
@@ -137,7 +139,7 @@ func TestLicensesService_List(t *testing.T) {
 
 	const methodName = "List"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Licenses.List(ctx)
+		got, resp, err := client.Licenses.List(ctx, opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

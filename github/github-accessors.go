@@ -14734,38 +14734,6 @@ func (l *ListCheckSuiteResults) GetTotal() int {
 	return *l.Total
 }
 
-// GetAfter returns the After field if it's non-nil, zero value otherwise.
-func (l *ListCodeSecurityConfigurationRepositoriesOptions) GetAfter() string {
-	if l == nil || l.After == nil {
-		return ""
-	}
-	return *l.After
-}
-
-// GetBefore returns the Before field if it's non-nil, zero value otherwise.
-func (l *ListCodeSecurityConfigurationRepositoriesOptions) GetBefore() string {
-	if l == nil || l.Before == nil {
-		return ""
-	}
-	return *l.Before
-}
-
-// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
-func (l *ListCodeSecurityConfigurationRepositoriesOptions) GetPerPage() int {
-	if l == nil || l.PerPage == nil {
-		return 0
-	}
-	return *l.PerPage
-}
-
-// GetStatus returns the Status field if it's non-nil, zero value otherwise.
-func (l *ListCodeSecurityConfigurationRepositoriesOptions) GetStatus() string {
-	if l == nil || l.Status == nil {
-		return ""
-	}
-	return *l.Status
-}
-
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (l *ListCodespaces) GetTotalCount() int {
 	if l == nil || l.TotalCount == nil {
@@ -14796,30 +14764,6 @@ func (l *ListDeploymentProtectionRuleResponse) GetTotalCount() int {
 		return 0
 	}
 	return *l.TotalCount
-}
-
-// GetAfter returns the After field if it's non-nil, zero value otherwise.
-func (l *ListEnterpriseCodeSecurityConfigurationOptions) GetAfter() string {
-	if l == nil || l.After == nil {
-		return ""
-	}
-	return *l.After
-}
-
-// GetBefore returns the Before field if it's non-nil, zero value otherwise.
-func (l *ListEnterpriseCodeSecurityConfigurationOptions) GetBefore() string {
-	if l == nil || l.Before == nil {
-		return ""
-	}
-	return *l.Before
-}
-
-// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
-func (l *ListEnterpriseCodeSecurityConfigurationOptions) GetPerPage() int {
-	if l == nil || l.PerPage == nil {
-		return 0
-	}
-	return *l.PerPage
 }
 
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
@@ -14910,76 +14854,20 @@ func (l *ListGlobalSecurityAdvisoriesOptions) GetUpdated() string {
 	return *l.Updated
 }
 
+// GetFeatured returns the Featured field if it's non-nil, zero value otherwise.
+func (l *ListLicensesOptions) GetFeatured() bool {
+	if l == nil || l.Featured == nil {
+		return false
+	}
+	return *l.Featured
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (l *ListOrganizations) GetTotalCount() int {
 	if l == nil || l.TotalCount == nil {
 		return 0
 	}
 	return *l.TotalCount
-}
-
-// GetAfter returns the After field if it's non-nil, zero value otherwise.
-func (l *ListOrgCodeSecurityConfigurationOptions) GetAfter() string {
-	if l == nil || l.After == nil {
-		return ""
-	}
-	return *l.After
-}
-
-// GetBefore returns the Before field if it's non-nil, zero value otherwise.
-func (l *ListOrgCodeSecurityConfigurationOptions) GetBefore() string {
-	if l == nil || l.Before == nil {
-		return ""
-	}
-	return *l.Before
-}
-
-// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
-func (l *ListOrgCodeSecurityConfigurationOptions) GetPerPage() int {
-	if l == nil || l.PerPage == nil {
-		return 0
-	}
-	return *l.PerPage
-}
-
-// GetTargetType returns the TargetType field if it's non-nil, zero value otherwise.
-func (l *ListOrgCodeSecurityConfigurationOptions) GetTargetType() string {
-	if l == nil || l.TargetType == nil {
-		return ""
-	}
-	return *l.TargetType
-}
-
-// GetQuery returns the Query field if it's non-nil, zero value otherwise.
-func (l *ListProjectsOptions) GetQuery() string {
-	if l == nil || l.Query == nil {
-		return ""
-	}
-	return *l.Query
-}
-
-// GetAfter returns the After field if it's non-nil, zero value otherwise.
-func (l *ListProjectsPaginationOptions) GetAfter() string {
-	if l == nil || l.After == nil {
-		return ""
-	}
-	return *l.After
-}
-
-// GetBefore returns the Before field if it's non-nil, zero value otherwise.
-func (l *ListProjectsPaginationOptions) GetBefore() string {
-	if l == nil || l.Before == nil {
-		return ""
-	}
-	return *l.Before
-}
-
-// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
-func (l *ListProjectsPaginationOptions) GetPerPage() int {
-	if l == nil || l.PerPage == nil {
-		return 0
-	}
-	return *l.PerPage
 }
 
 // GetCount returns the Count field if it's non-nil, zero value otherwise.
@@ -31444,22 +31332,6 @@ func (u *UserLDAPMapping) GetURL() string {
 		return ""
 	}
 	return *u.URL
-}
-
-// GetPerPage returns the PerPage field if it's non-nil, zero value otherwise.
-func (u *UserListOptions) GetPerPage() int {
-	if u == nil || u.PerPage == nil {
-		return 0
-	}
-	return *u.PerPage
-}
-
-// GetSince returns the Since field if it's non-nil, zero value otherwise.
-func (u *UserListOptions) GetSince() int64 {
-	if u == nil || u.Since == nil {
-		return 0
-	}
-	return *u.Since
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.

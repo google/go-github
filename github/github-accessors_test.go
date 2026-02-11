@@ -19169,50 +19169,6 @@ func TestListCheckSuiteResults_GetTotal(tt *testing.T) {
 	l.GetTotal()
 }
 
-func TestListCodeSecurityConfigurationRepositoriesOptions_GetAfter(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListCodeSecurityConfigurationRepositoriesOptions{After: &zeroValue}
-	l.GetAfter()
-	l = &ListCodeSecurityConfigurationRepositoriesOptions{}
-	l.GetAfter()
-	l = nil
-	l.GetAfter()
-}
-
-func TestListCodeSecurityConfigurationRepositoriesOptions_GetBefore(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListCodeSecurityConfigurationRepositoriesOptions{Before: &zeroValue}
-	l.GetBefore()
-	l = &ListCodeSecurityConfigurationRepositoriesOptions{}
-	l.GetBefore()
-	l = nil
-	l.GetBefore()
-}
-
-func TestListCodeSecurityConfigurationRepositoriesOptions_GetPerPage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	l := &ListCodeSecurityConfigurationRepositoriesOptions{PerPage: &zeroValue}
-	l.GetPerPage()
-	l = &ListCodeSecurityConfigurationRepositoriesOptions{}
-	l.GetPerPage()
-	l = nil
-	l.GetPerPage()
-}
-
-func TestListCodeSecurityConfigurationRepositoriesOptions_GetStatus(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListCodeSecurityConfigurationRepositoriesOptions{Status: &zeroValue}
-	l.GetStatus()
-	l = &ListCodeSecurityConfigurationRepositoriesOptions{}
-	l.GetStatus()
-	l = nil
-	l.GetStatus()
-}
-
 func TestListCodespaces_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -19255,39 +19211,6 @@ func TestListDeploymentProtectionRuleResponse_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 	l = nil
 	l.GetTotalCount()
-}
-
-func TestListEnterpriseCodeSecurityConfigurationOptions_GetAfter(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListEnterpriseCodeSecurityConfigurationOptions{After: &zeroValue}
-	l.GetAfter()
-	l = &ListEnterpriseCodeSecurityConfigurationOptions{}
-	l.GetAfter()
-	l = nil
-	l.GetAfter()
-}
-
-func TestListEnterpriseCodeSecurityConfigurationOptions_GetBefore(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListEnterpriseCodeSecurityConfigurationOptions{Before: &zeroValue}
-	l.GetBefore()
-	l = &ListEnterpriseCodeSecurityConfigurationOptions{}
-	l.GetBefore()
-	l = nil
-	l.GetBefore()
-}
-
-func TestListEnterpriseCodeSecurityConfigurationOptions_GetPerPage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	l := &ListEnterpriseCodeSecurityConfigurationOptions{PerPage: &zeroValue}
-	l.GetPerPage()
-	l = &ListEnterpriseCodeSecurityConfigurationOptions{}
-	l.GetPerPage()
-	l = nil
-	l.GetPerPage()
 }
 
 func TestListExternalGroupsOptions_GetDisplayName(tt *testing.T) {
@@ -19411,6 +19334,17 @@ func TestListGlobalSecurityAdvisoriesOptions_GetUpdated(tt *testing.T) {
 	l.GetUpdated()
 }
 
+func TestListLicensesOptions_GetFeatured(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	l := &ListLicensesOptions{Featured: &zeroValue}
+	l.GetFeatured()
+	l = &ListLicensesOptions{}
+	l.GetFeatured()
+	l = nil
+	l.GetFeatured()
+}
+
 func TestListOrganizations_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -19420,94 +19354,6 @@ func TestListOrganizations_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 	l = nil
 	l.GetTotalCount()
-}
-
-func TestListOrgCodeSecurityConfigurationOptions_GetAfter(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListOrgCodeSecurityConfigurationOptions{After: &zeroValue}
-	l.GetAfter()
-	l = &ListOrgCodeSecurityConfigurationOptions{}
-	l.GetAfter()
-	l = nil
-	l.GetAfter()
-}
-
-func TestListOrgCodeSecurityConfigurationOptions_GetBefore(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListOrgCodeSecurityConfigurationOptions{Before: &zeroValue}
-	l.GetBefore()
-	l = &ListOrgCodeSecurityConfigurationOptions{}
-	l.GetBefore()
-	l = nil
-	l.GetBefore()
-}
-
-func TestListOrgCodeSecurityConfigurationOptions_GetPerPage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	l := &ListOrgCodeSecurityConfigurationOptions{PerPage: &zeroValue}
-	l.GetPerPage()
-	l = &ListOrgCodeSecurityConfigurationOptions{}
-	l.GetPerPage()
-	l = nil
-	l.GetPerPage()
-}
-
-func TestListOrgCodeSecurityConfigurationOptions_GetTargetType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListOrgCodeSecurityConfigurationOptions{TargetType: &zeroValue}
-	l.GetTargetType()
-	l = &ListOrgCodeSecurityConfigurationOptions{}
-	l.GetTargetType()
-	l = nil
-	l.GetTargetType()
-}
-
-func TestListProjectsOptions_GetQuery(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListProjectsOptions{Query: &zeroValue}
-	l.GetQuery()
-	l = &ListProjectsOptions{}
-	l.GetQuery()
-	l = nil
-	l.GetQuery()
-}
-
-func TestListProjectsPaginationOptions_GetAfter(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListProjectsPaginationOptions{After: &zeroValue}
-	l.GetAfter()
-	l = &ListProjectsPaginationOptions{}
-	l.GetAfter()
-	l = nil
-	l.GetAfter()
-}
-
-func TestListProjectsPaginationOptions_GetBefore(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	l := &ListProjectsPaginationOptions{Before: &zeroValue}
-	l.GetBefore()
-	l = &ListProjectsPaginationOptions{}
-	l.GetBefore()
-	l = nil
-	l.GetBefore()
-}
-
-func TestListProjectsPaginationOptions_GetPerPage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	l := &ListProjectsPaginationOptions{PerPage: &zeroValue}
-	l.GetPerPage()
-	l = &ListProjectsPaginationOptions{}
-	l.GetPerPage()
-	l = nil
-	l.GetPerPage()
 }
 
 func TestListProvisionedSCIMGroupsEnterpriseOptions_GetCount(tt *testing.T) {
@@ -40604,28 +40450,6 @@ func TestUserLDAPMapping_GetURL(tt *testing.T) {
 	u.GetURL()
 	u = nil
 	u.GetURL()
-}
-
-func TestUserListOptions_GetPerPage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	u := &UserListOptions{PerPage: &zeroValue}
-	u.GetPerPage()
-	u = &UserListOptions{}
-	u.GetPerPage()
-	u = nil
-	u.GetPerPage()
-}
-
-func TestUserListOptions_GetSince(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	u := &UserListOptions{Since: &zeroValue}
-	u.GetSince()
-	u = &UserListOptions{}
-	u.GetSince()
-	u = nil
-	u.GetSince()
 }
 
 func TestUserMigration_GetCreatedAt(tt *testing.T) {
