@@ -291,12 +291,9 @@ func checkAndReportInvalidTypes(structName, tagType, goFieldName string, fieldTy
 			const msg = "change the %q field type to %q in the struct %q"
 			pass.Reportf(tokenPos, msg, goFieldName, exprToString(ft.X), structName)
 		}
-		if ident, ok := ft.X.(*ast.Ident); ok && tagType == "url" {
-			switch ident.Name {
+		if ident, ok := ft.X.(*ast.Ident); ok && tagType == "url" && isBuiltinType(ident.Name) {
 			// Remove the pointer for primitives in url tags
-			case "string", "int", "int64", "float64", "bool":
-				return ident.Name, false
-			}
+			return ident.Name, false
 		}
 		return "", true
 	case *ast.MapType:
@@ -314,11 +311,8 @@ func checkAndReportInvalidTypes(structName, tagType, goFieldName string, fieldTy
 		if ft.Name == "any" {
 			return "", true
 		}
-		if tagType == "url" {
-			switch ft.Name {
-			case "string", "int", "int64", "float64", "bool":
-				return "", true
-			}
+		if tagType == "url" && isBuiltinType(ft.Name) {
+			return "", true
 		}
 	default:
 		log.Fatalf("unhandled type: %T", ft)

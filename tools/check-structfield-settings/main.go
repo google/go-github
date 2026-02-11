@@ -16,18 +16,20 @@ import (
 	"fmt"
 	"io/fs"
 	"log"
+	"maps"
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 
 	"github.com/golangci/plugin-module-register/register"
 	"github.com/google/go-github/v82/tools/structfield"
+	"go.yaml.in/yaml/v3"
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/checker"
 	"golang.org/x/tools/go/packages"
-	"gopkg.in/yaml.v3"
 )
 
 func init() {
@@ -72,7 +74,7 @@ func main() {
 	obsoleteTypes := diffKeys(allowedTypes, usedTypes)
 
 	if len(obsoleteNames) == 0 && len(obsoleteTypes) == 0 && len(duplicateNames) == 0 && len(duplicateTypes) == 0 {
-		log.Print("No obsolete structfield exceptions found.")
+		fmt.Println("No obsolete structfield exceptions found.")
 		return
 	}
 
@@ -276,7 +278,7 @@ func diffKeys(all, used map[string]bool) []string {
 			obsolete = append(obsolete, key)
 		}
 	}
-	sort.Strings(obsolete)
+	slices.Sort(obsolete)
 	return obsolete
 }
 
@@ -293,12 +295,7 @@ func findDuplicates(values []string) map[string]int {
 }
 
 func sortedKeys(values map[string]int) []string {
-	keys := make([]string, 0, len(values))
-	for key := range values {
-		keys = append(keys, key)
-	}
-	sort.Strings(keys)
-	return keys
+	return slices.Sorted(maps.Keys(values))
 }
 
 func removeObsoleteExceptions(configPath string, obsoleteNames, obsoleteTypes []string) error {

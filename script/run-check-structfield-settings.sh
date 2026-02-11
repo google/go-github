@@ -1,2 +1,2 @@
 #!/bin/bash -e
-pushd tools/check-structfield-settings && go run . "$@"
+go run -C tools/check-structfield-settings  . "$@"
