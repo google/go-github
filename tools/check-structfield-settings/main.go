@@ -82,6 +82,8 @@ func main() {
 		if err := removeObsoleteExceptions(resolvedConfig, obsoleteNames, obsoleteTypes); err != nil {
 			log.Fatalf("fix: %v", err)
 		}
+		fmt.Printf("Removed %v obsolete fields from .golangci.yml.\n", len(obsoleteNames)+len(obsoleteTypes))
+		return
 	}
 
 	if len(obsoleteNames) > 0 {
