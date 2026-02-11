@@ -40,15 +40,16 @@ type JSONFieldType struct {
 }
 
 type URLFieldName struct {
-	ID    *string `url:"id,omitempty"`
-	Query string  `url:"q"`
+	ID    string `url:"id,omitempty"`
+	Query string `url:"q"`
 }
 
 type URLFieldType struct {
-	Page      *string    `url:"page,omitempty"`
-	PerPage   *int       `url:"per_page,omitempty"`
+	Page      string     `url:"page,omitempty"`
+	PerPage   int        `url:"per_page,omitempty"`
 	Labels    []string   `url:"labels,omitempty,comma"`
 	Since     *time.Time `url:"since,omitempty"`
+	Since2    time.Time  `url:"since2,omitzero"`
 	Fields    []int64    `url:"fields,omitempty,comma"`
 	Exception string     `url:"exception,omitempty"`
 }

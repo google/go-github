@@ -96,13 +96,13 @@ func (p ProjectV2) String() string { return Stringify(p) }
 // per page (max 100 per GitHub API docs).
 type ListProjectsPaginationOptions struct {
 	// A cursor, as given in the Link header. If specified, the query only searches for events before this cursor.
-	Before *string `url:"before,omitempty"`
+	Before string `url:"before,omitempty"`
 
 	// A cursor, as given in the Link header. If specified, the query only searches for events after this cursor.
-	After *string `url:"after,omitempty"`
+	After string `url:"after,omitempty"`
 
 	// For paginated result sets, the number of results to include per page.
-	PerPage *int `url:"per_page,omitempty"`
+	PerPage int `url:"per_page,omitempty"`
 }
 
 // ListProjectsOptions specifies optional parameters to list projects for user / organization.
@@ -110,7 +110,7 @@ type ListProjectsOptions struct {
 	ListProjectsPaginationOptions
 
 	// Q is an optional query string to limit results to projects of the specified type.
-	Query *string `url:"q,omitempty"`
+	Query string `url:"q,omitempty"`
 }
 
 // ProjectV2TextContent represents text content in a project field option or iteration.

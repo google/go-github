@@ -16,7 +16,7 @@ import (
 
 func TestOrganizationsService_ListCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
-	opts := &ListOrgCodeSecurityConfigurationOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(30), TargetType: Ptr("all")}
+	opts := &ListOrgCodeSecurityConfigurationOptions{Before: "1", After: "2", PerPage: 30, TargetType: "all"}
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
@@ -533,7 +533,7 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 
 func TestOrganizationsService_ListCodeSecurityConfigurationRepositories(t *testing.T) {
 	t.Parallel()
-	opts := &ListCodeSecurityConfigurationRepositoriesOptions{Before: Ptr("1"), After: Ptr("2"), PerPage: Ptr(30), Status: Ptr("attached")}
+	opts := &ListCodeSecurityConfigurationRepositoriesOptions{Before: "1", After: "2", PerPage: 30, Status: "attached"}
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
