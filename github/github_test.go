@@ -509,6 +509,13 @@ func TestWithEnterpriseURLs(t *testing.T) {
 			uploadURL:     "https://cloud-api.custom-upload-url/",
 			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
 		},
+		{
+			name:          "URL has uploads subdomain, does not modify",
+			baseURL:       "https://api.custom-url/",
+			wantBaseURL:   "https://api.custom-url/",
+			uploadURL:     "https://uploads.custom-upload-url/",
+			wantUploadURL: "https://uploads.custom-upload-url/",
+		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
