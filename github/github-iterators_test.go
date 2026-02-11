@@ -1607,7 +1607,7 @@ func TestCodeScanningService_ListAlertsForOrgIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -1679,7 +1679,7 @@ func TestCodeScanningService_ListAlertsForRepoIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -1823,7 +1823,7 @@ func TestDependabotService_ListOrgAlertsIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -1895,7 +1895,7 @@ func TestDependabotService_ListRepoAlertsIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -3191,7 +3191,7 @@ func TestIssuesService_ListByRepoIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -8159,7 +8159,7 @@ func TestSecretScanningService_ListAlertsForEnterpriseIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -8231,7 +8231,7 @@ func TestSecretScanningService_ListAlertsForOrgIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -8303,7 +8303,7 @@ func TestSecretScanningService_ListAlertsForRepoIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -8447,7 +8447,7 @@ func TestSecurityAdvisoriesService_ListGlobalSecurityAdvisoriesIter(t *testing.T
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -8519,7 +8519,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesIter(t *testi
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -8591,7 +8591,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrgIter(t 
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)

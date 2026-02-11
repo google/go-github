@@ -719,10 +719,10 @@ func (s *CodeScanningService) ListAlertsForOrgIter(ctx context.Context, org stri
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.After == "" && resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -751,10 +751,10 @@ func (s *CodeScanningService) ListAlertsForRepoIter(ctx context.Context, owner s
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.After == "" && resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -814,10 +814,10 @@ func (s *DependabotService) ListOrgAlertsIter(ctx context.Context, org string, o
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.After == "" && resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -846,10 +846,10 @@ func (s *DependabotService) ListRepoAlertsIter(ctx context.Context, owner string
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.After == "" && resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -1405,10 +1405,10 @@ func (s *IssuesService) ListByRepoIter(ctx context.Context, owner string, repo s
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.After == "" && resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3545,10 +3545,10 @@ func (s *SecretScanningService) ListAlertsForEnterpriseIter(ctx context.Context,
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.After == "" && resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3577,10 +3577,10 @@ func (s *SecretScanningService) ListAlertsForOrgIter(ctx context.Context, org st
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.After == "" && resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3609,10 +3609,10 @@ func (s *SecretScanningService) ListAlertsForRepoIter(ctx context.Context, owner
 				}
 			}
 
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.After == "" && resp.NextPage == 0 {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 			opts.ListOptions.Page = resp.NextPage
 		}
 	}
@@ -3672,10 +3672,10 @@ func (s *SecurityAdvisoriesService) ListGlobalSecurityAdvisoriesIter(ctx context
 				}
 			}
 
-			if resp.Cursor == "" {
+			if resp.After == "" {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 		}
 	}
 }
@@ -3703,10 +3703,10 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesIter(ctx con
 				}
 			}
 
-			if resp.Cursor == "" {
+			if resp.After == "" {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 		}
 	}
 }
@@ -3734,10 +3734,10 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrgIter(c
 				}
 			}
 
-			if resp.Cursor == "" {
+			if resp.After == "" {
 				break
 			}
-			opts.ListCursorOptions.Cursor = resp.Cursor
+			opts.ListCursorOptions.After = resp.After
 		}
 	}
 }

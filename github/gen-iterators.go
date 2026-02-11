@@ -448,16 +448,16 @@ func ({{.RecvVar}} *{{.RecvType}}) {{.IterMethod}}({{.Args}}) iter.Seq2[{{.Retur
 			}
 
 			{{if and .UseListCursorOptions .UseListOptions}}
-			if resp.Cursor == "" && resp.NextPage == 0 {
+			if resp.After == "" && resp.NextPage == 0 {
 				break
 			}
-			{{.OptsName}}.ListCursorOptions.Cursor = resp.Cursor
+			{{.OptsName}}.ListCursorOptions.After = resp.After
 			{{.OptsName}}.ListOptions.Page = resp.NextPage
 			{{else if .UseListCursorOptions}}
-			if resp.Cursor == "" {
+			if resp.After == "" {
 				break
 			}
-			{{.OptsName}}.ListCursorOptions.Cursor = resp.Cursor
+			{{.OptsName}}.ListCursorOptions.After = resp.After
 			{{else if .UseListOptions}}
 			if resp.NextPage == 0 {
 				break
@@ -494,7 +494,7 @@ func Test{{.RecvType}}_{{.IterMethod}}(t *testing.T) {
 		switch callNum {
 		case 1:
 			{{- if .UseListCursorOptions}}
-			w.Header().Set("Link", ` + "`" + `<https://api.github.com/?cursor=yo>; rel="next"` + "`" + `)
+			w.Header().Set("Link", ` + "`" + `<https://api.github.com/?after=yo>; rel="next"` + "`" + `)
 			{{else}}
 			w.Header().Set("Link", ` + "`" + `<https://api.github.com/?page=1>; rel="next"` + "`" + `)
 			{{end -}}
