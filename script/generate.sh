@@ -1,5 +1,7 @@
 #!/bin/sh
-#/ script/generate.sh runs go generate on all modules in this repo.
+#/ `script/generate.sh` runs `go generate` on all modules in this repo.
+#/ It also runs `script/run-check-structfield-settings.sh -fix` to keep linter
+#/ exceptions in `.golangci.yml` up to date.
 #/ `script/generate.sh --check` checks that the generated files are up to date.
 
 set -e
@@ -49,3 +51,4 @@ for dir in $MOD_DIRS; do
     go mod tidy
   )
 done
+script/run-check-structfield-settings.sh -fix
