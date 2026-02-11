@@ -209,8 +209,8 @@ func (s *UsersService) GetHovercard(ctx context.Context, user string, opts *Hove
 // method.
 type UserListOptions struct {
 	// A user ID. Only return users with an ID greater than this ID.
-	Since   *int64 `url:"since,omitempty"`
-	PerPage *int   `url:"per_page,omitempty"`
+	Since   int64 `url:"since,omitempty"`
+	PerPage int   `url:"per_page,omitempty"`
 }
 
 // ListAll lists all GitHub users.
