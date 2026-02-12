@@ -125,14 +125,7 @@ type ListOrgCodeSecurityConfigurationOptions struct {
 // supplied GitHub API will return an error. PerPage controls the number of items
 // per page (max 100 per GitHub API docs).
 type ListCodeSecurityConfigurationRepositoriesOptions struct {
-	// A cursor, as given in the Link header. If specified, the query only searches for repositories before this cursor.
-	Before string `url:"before,omitempty"`
-
-	// A cursor, as given in the Link header. If specified, the query only searches for repositories after this cursor.
-	After string `url:"after,omitempty"`
-
-	// For paginated result sets, the number of results to include per page.
-	PerPage int `url:"per_page,omitempty"`
+	ListCursorOptions
 
 	// A comma-separated list of statuses. If specified, only repositories with these attachment statuses will be returned.
 	//

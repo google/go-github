@@ -533,7 +533,14 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 
 func TestOrganizationsService_ListCodeSecurityConfigurationRepositories(t *testing.T) {
 	t.Parallel()
-	opts := &ListCodeSecurityConfigurationRepositoriesOptions{Before: "1", After: "2", PerPage: 30, Status: "attached"}
+	opts := &ListCodeSecurityConfigurationRepositoriesOptions{
+		ListCursorOptions: ListCursorOptions{
+			Before:  "1",
+			After:   "2",
+			PerPage: 30,
+		},
+		Status: "attached",
+	}
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 

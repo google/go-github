@@ -16,7 +16,13 @@ import (
 
 func TestEnterpriseService_ListCodeSecurityConfigurations(t *testing.T) {
 	t.Parallel()
-	opts := &ListEnterpriseCodeSecurityConfigurationOptions{Before: "1", After: "2", PerPage: 30}
+	opts := &ListEnterpriseCodeSecurityConfigurationOptions{
+		ListCursorOptions: ListCursorOptions{
+			Before:  "1",
+			After:   "2",
+			PerPage: 30,
+		},
+	}
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
@@ -391,7 +397,14 @@ func TestEnterpriseService_SetDefaultCodeSecurityConfiguration(t *testing.T) {
 
 func TestEnterpriseService_ListCodeSecurityConfigurationRepositories(t *testing.T) {
 	t.Parallel()
-	opts := &ListCodeSecurityConfigurationRepositoriesOptions{Before: "1", After: "2", PerPage: 30, Status: "attached"}
+	opts := &ListCodeSecurityConfigurationRepositoriesOptions{
+		ListCursorOptions: ListCursorOptions{
+			Before:  "1",
+			After:   "2",
+			PerPage: 30,
+		},
+		Status: "attached",
+	}
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 

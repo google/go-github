@@ -979,6 +979,68 @@ func (s *EnterpriseService) ListAssignmentsIter(ctx context.Context, enterprise 
 	}
 }
 
+// ListCodeSecurityConfigurationRepositoriesIter returns an iterator that paginates through all results of ListCodeSecurityConfigurationRepositories.
+func (s *EnterpriseService) ListCodeSecurityConfigurationRepositoriesIter(ctx context.Context, enterprise string, configurationID int64, opts *ListCodeSecurityConfigurationRepositoriesOptions) iter.Seq2[*RepositoryAttachment, error] {
+	return func(yield func(*RepositoryAttachment, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListCodeSecurityConfigurationRepositoriesOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			items, resp, err := s.ListCodeSecurityConfigurationRepositories(ctx, enterprise, configurationID, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range items {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.After == "" {
+				break
+			}
+			opts.ListCursorOptions.After = resp.After
+		}
+	}
+}
+
+// ListCodeSecurityConfigurationsIter returns an iterator that paginates through all results of ListCodeSecurityConfigurations.
+func (s *EnterpriseService) ListCodeSecurityConfigurationsIter(ctx context.Context, enterprise string, opts *ListEnterpriseCodeSecurityConfigurationOptions) iter.Seq2[*CodeSecurityConfiguration, error] {
+	return func(yield func(*CodeSecurityConfiguration, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListEnterpriseCodeSecurityConfigurationOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			items, resp, err := s.ListCodeSecurityConfigurations(ctx, enterprise, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range items {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.After == "" {
+				break
+			}
+			opts.ListCursorOptions.After = resp.After
+		}
+	}
+}
+
 // ListOrganizationCustomPropertyValuesIter returns an iterator that paginates through all results of ListOrganizationCustomPropertyValues.
 func (s *EnterpriseService) ListOrganizationCustomPropertyValuesIter(ctx context.Context, enterprise string, opts *ListOptions) iter.Seq2[*EnterpriseCustomPropertiesValues, error] {
 	return func(yield func(*EnterpriseCustomPropertiesValues, error) bool) {
@@ -1906,6 +1968,37 @@ func (s *OrganizationsService) ListBlockedUsersIter(ctx context.Context, org str
 				break
 			}
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListCodeSecurityConfigurationRepositoriesIter returns an iterator that paginates through all results of ListCodeSecurityConfigurationRepositories.
+func (s *OrganizationsService) ListCodeSecurityConfigurationRepositoriesIter(ctx context.Context, org string, configurationID int64, opts *ListCodeSecurityConfigurationRepositoriesOptions) iter.Seq2[*RepositoryAttachment, error] {
+	return func(yield func(*RepositoryAttachment, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListCodeSecurityConfigurationRepositoriesOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			items, resp, err := s.ListCodeSecurityConfigurationRepositories(ctx, org, configurationID, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range items {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.After == "" {
+				break
+			}
+			opts.ListCursorOptions.After = resp.After
 		}
 	}
 }
