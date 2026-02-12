@@ -117,6 +117,7 @@ type method struct {
 	UseListCursorOptions bool
 	UseListOptions       bool
 	UsePage              bool
+	UseAfter             bool
 	TestJSON1            string
 	TestJSON2            string
 	TestJSON3            string
@@ -200,6 +201,22 @@ func (t *templateData) hasIntPage(structName string) bool {
 	}
 	for _, embed := range sd.Embeds {
 		if t.hasIntPage(embed) {
+			return true
+		}
+	}
+	return false
+}
+
+func (t *templateData) hasStringAfter(structName string) bool {
+	sd, ok := t.Structs[structName]
+	if !ok {
+		return false
+	}
+	if typeStr, ok := sd.Fields["After"]; ok {
+		return typeStr == "string"
+	}
+	for _, embed := range sd.Embeds {
+		if t.hasStringAfter(embed) {
 			return true
 		}
 	}
@@ -303,9 +320,10 @@ func (t *templateData) processMethods(f *ast.File) error {
 		useListCursorOptions := t.hasListCursorOptions(optsType)
 		useListOptions := t.hasListOptions(optsType)
 		usePage := t.hasIntPage(optsType)
+		useAfter := t.hasStringAfter(optsType)
 
-		if !useListCursorOptions && !useListOptions && !usePage {
-			logf("Skipping %s.%s: opts %s does not have ListCursorOptions, ListOptions, or Page int", recvType, fd.Name.Name, optsType)
+		if !useListCursorOptions && !useListOptions && !usePage && !useAfter {
+			logf("Skipping %s.%s: opts %s does not have ListCursorOptions, ListOptions, Page int, or After string", recvType, fd.Name.Name, optsType)
 			continue
 		}
 
@@ -346,6 +364,7 @@ func (t *templateData) processMethods(f *ast.File) error {
 			UseListCursorOptions: useListCursorOptions,
 			UseListOptions:       useListOptions,
 			UsePage:              usePage,
+			UseAfter:             useAfter,
 			TestJSON1:            testJSON1,
 			TestJSON2:            testJSON2,
 			TestJSON3:            testJSON3,
@@ -463,11 +482,16 @@ func ({{.RecvVar}} *{{.RecvType}}) {{.IterMethod}}({{.Args}}) iter.Seq2[{{.Retur
 				break
 			}
 			{{.OptsName}}.ListOptions.Page = resp.NextPage
-			{{else}}
+			{{else if .UsePage}}
 			if resp.NextPage == 0 {
 				break
 			}
 			{{.OptsName}}.Page = resp.NextPage
+			{{else if .UseAfter}}
+			if resp.After == "" {
+				break
+			}
+			{{.OptsName}}.After = resp.After
 			{{end -}}
 		}
 	}
