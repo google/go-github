@@ -92,8 +92,12 @@ func (s *RepositoriesService) CreateCustomDeploymentProtectionRule(ctx context.C
 // GitHub API docs: https://docs.github.com/rest/deployments/protection-rules#list-custom-deployment-rule-integrations-available-for-an-environment
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/apps
-func (s *RepositoriesService) ListCustomDeploymentRuleIntegrations(ctx context.Context, owner, repo, environment string) (*ListCustomDeploymentRuleIntegrationsResponse, *Response, error) {
+func (s *RepositoriesService) ListCustomDeploymentRuleIntegrations(ctx context.Context, owner, repo, environment string, opts *ListOptions) (*ListCustomDeploymentRuleIntegrationsResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules/apps", owner, repo, environment)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
