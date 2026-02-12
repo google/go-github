@@ -752,7 +752,5 @@ func TestActionVariable_Marshal(t *testing.T) {
 		"selected_repository_ids": [1,2,3]
 	}`, referenceTimeStr, referenceTimeStr)
 
-	fmt.Println(want)
-
 	testJSONMarshal(t, av, want)
 }

@@ -40,6 +40,8 @@ linters:
       comparison: true
     forbidigo:
       forbid:
+        - pattern: ^fmt\.Print.*$
+          msg: "Do not use fmt.Print statements."
         - pattern: ^reflect\.DeepEqual$
           msg: "Use cmp.Equal instead of reflect.DeepEqual"
         - pattern: "^http\\.Method[A-Z][a-z]*$"
@@ -358,6 +360,11 @@ linters:
           - gosec
           - unparam
         path: _test\.go
+
+      # Allow fmt.Print in examples, internal tools, and tests.
+      - linters: [forbidigo]
+        path: ^(example|tools|test|scrape)\/
+        text: 'fmt\.Print'
 
       # We need to pass nil Context in order to test DoBare erroring on nil ctx.
       - linters: [staticcheck]
