@@ -171,8 +171,6 @@ func TestEnterpriseService_GetLicenseSyncStatus(t *testing.T) {
 		},
 	}
 
-	fmt.Printf("%v\n", cmp.Diff(want, syncStatus))
-
 	if !cmp.Equal(syncStatus, want) {
 		t.Errorf("Enterprise.GetLicenseSyncStatus returned %+v, want %+v", syncStatus, want)
 	}
