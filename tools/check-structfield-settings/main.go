@@ -74,7 +74,6 @@ func main() {
 	obsoleteTypes := diffKeys(allowedTypes, usedTypes)
 
 	if len(obsoleteNames) == 0 && len(obsoleteTypes) == 0 && len(duplicateNames) == 0 && len(duplicateTypes) == 0 {
-		fmt.Println("No obsolete structfield exceptions found.")
 		return
 	}
 
