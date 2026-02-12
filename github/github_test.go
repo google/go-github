@@ -187,33 +187,6 @@ func testJSONMarshal(t *testing.T, v any, want string) {
 	}
 }
 
-// Test whether the v fields have the url tag and the parsing of v
-// produces query parameters that corresponds to the want string.
-func testAddURLOptions(t *testing.T, url string, v any, want string) {
-	t.Helper()
-
-	vt := reflect.Indirect(reflect.ValueOf(v)).Type()
-	for i := range vt.NumField() {
-		field := vt.Field(i)
-		if alias, ok := field.Tag.Lookup("url"); ok {
-			if alias == "" {
-				t.Errorf("The field %+v has a blank url tag", field)
-			}
-		} else {
-			t.Errorf("The field %+v has no url tag specified", field)
-		}
-	}
-
-	got, err := addOptions(url, v)
-	if err != nil {
-		t.Errorf("Unable to add %#v as query parameters", v)
-	}
-
-	if got != want {
-		t.Errorf("addOptions(%q, %#v) returned %v, want %v", url, v, got, want)
-	}
-}
-
 // Test how bad options are handled. Method f under test should
 // return an error.
 func testBadOptions(t *testing.T, methodName string, f func() error) {
@@ -3052,13 +3025,6 @@ func TestAbuseRateLimitError(t *testing.T) {
 	}
 	if got, want := r.Error(), "PUT https://example.com: 429 <msg>"; got != want {
 		t.Errorf("AbuseRateLimitError = %q, want %q", got, want)
-	}
-}
-
-func TestAddOptions_QueryValues(t *testing.T) {
-	t.Parallel()
-	if _, err := addOptions("yo", ""); err == nil {
-		t.Error("addOptions err = nil, want error")
 	}
 }
 

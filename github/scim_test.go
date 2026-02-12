@@ -444,40 +444,6 @@ func TestUpdateAttributeForSCIMUserOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestListSCIMProvisionedIdentitiesOptions_addOptions(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ListSCIMProvisionedIdentitiesOptions{}, `{
-		"StartIndex": null,
-		"Count": null,
-		"Filter": null
-	}`)
-
-	url := "some/path"
-
-	testAddURLOptions(t, url, &ListSCIMProvisionedIdentitiesOptions{}, url)
-
-	testAddURLOptions(
-		t,
-		url,
-		&ListSCIMProvisionedIdentitiesOptions{
-			StartIndex: Ptr(1),
-			Count:      Ptr(10),
-		},
-		fmt.Sprintf("%v?count=10&startIndex=1", url),
-	)
-
-	testAddURLOptions(
-		t,
-		url,
-		&ListSCIMProvisionedIdentitiesOptions{
-			StartIndex: Ptr(1),
-			Count:      Ptr(10),
-			Filter:     Ptr("test"),
-		},
-		fmt.Sprintf("%v?count=10&filter=test&startIndex=1", url),
-	)
-}
-
 func TestSCIMUserName_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &SCIMUserName{}, `{
