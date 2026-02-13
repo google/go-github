@@ -588,11 +588,11 @@ func TestBillingService_GetOrganizationPremiumRequestUsageReport(t *testing.T) {
 				Model:            "GPT-5",
 				UnitType:         "requests",
 				PricePerUnit:     0.04,
-				GrossQuantity:    100,
+				GrossQuantity:    100.0,
 				GrossAmount:      4.0,
-				DiscountQuantity: 0,
+				DiscountQuantity: 0.0,
 				DiscountAmount:   0.0,
-				NetQuantity:      100,
+				NetQuantity:      100.0,
 				NetAmount:        4.0,
 			},
 		},
@@ -681,11 +681,11 @@ func TestBillingService_GetPremiumRequestUsageReport(t *testing.T) {
 				Model:            "GPT-4",
 				UnitType:         "requests",
 				PricePerUnit:     0.02,
-				GrossQuantity:    50,
+				GrossQuantity:    50.0,
 				GrossAmount:      1.0,
-				DiscountQuantity: 5,
+				DiscountQuantity: 5.0,
 				DiscountAmount:   0.1,
-				NetQuantity:      45,
+				NetQuantity:      45.0,
 				NetAmount:        0.9,
 			},
 		},
@@ -716,4 +716,64 @@ func TestBillingService_GetPremiumRequestUsageReport_invalidUser(t *testing.T) {
 	ctx := t.Context()
 	_, _, err := client.Billing.GetPremiumRequestUsageReport(ctx, "%", nil)
 	testURLParseError(t, err)
+}
+
+func TestBillingService_PremiumRequestUsageItem_FloatQuantities(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	mux.HandleFunc("/organizations/o/settings/billing/premium_request/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2026,
+				"month": 2
+			},
+			"organization": "testorg",
+			"usageItems": [
+				{
+					"product": "Copilot",
+					"sku": "Copilot Premium Request",
+					"model": "GPT-5.2",
+					"unitType": "requests",
+					"pricePerUnit": 0.04,
+					"grossQuantity": 5054.0,
+					"grossAmount": 202.16,
+					"discountQuantity": 4974.0,
+					"discountAmount": 198.96,
+					"netQuantity": 80.0,
+					"netAmount": 3.2
+				}
+			]
+		}`)
+	})
+	ctx := t.Context()
+	report, _, err := client.Billing.GetOrganizationPremiumRequestUsageReport(ctx, "o", nil)
+	if err != nil {
+		t.Fatalf("Billing.GetOrganizationPremiumRequestUsageReport returned error: %v", err)
+	}
+	want := &PremiumRequestUsageReport{
+		TimePeriod: PremiumRequestUsageTimePeriod{
+			Year:  2026,
+			Month: Ptr(2),
+		},
+		Organization: Ptr("testorg"),
+		UsageItems: []*PremiumRequestUsageItem{
+			{
+				Product:          "Copilot",
+				SKU:              "Copilot Premium Request",
+				Model:            "GPT-5.2",
+				UnitType:         "requests",
+				PricePerUnit:     0.04,
+				GrossQuantity:    5054.0,
+				GrossAmount:      202.16,
+				DiscountQuantity: 4974.0,
+				DiscountAmount:   198.96,
+				NetQuantity:      80.0,
+				NetAmount:        3.2,
+			},
+		},
+	}
+	if !cmp.Equal(report, want) {
+		t.Errorf("Billing.GetOrganizationPremiumRequestUsageReport returned %+v, want %+v", report, want)
+	}
 }
