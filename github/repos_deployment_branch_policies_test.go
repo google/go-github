@@ -17,12 +17,17 @@ func TestRepositoriesService_ListDeploymentBranchPolicies(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies", func(w http.ResponseWriter, _ *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/deployment-branch-policies", func(w http.ResponseWriter, r *http.Request) {
+		testFormValues(t, r, values{
+			"page":     "1",
+			"per_page": "30",
+		})
 		fmt.Fprint(w, `{"total_count":2, "branch_policies":[{"id":1}, {"id": 2}]}`)
 	})
 
+	opts := &ListOptions{Page: 1, PerPage: 30}
 	ctx := t.Context()
-	got, _, err := client.Repositories.ListDeploymentBranchPolicies(ctx, "o", "r", "e")
+	got, _, err := client.Repositories.ListDeploymentBranchPolicies(ctx, "o", "r", "e", opts)
 	if err != nil {
 		t.Errorf("Repositories.ListDeploymentBranchPolicies returned error: %v", err)
 	}
@@ -39,8 +44,13 @@ func TestRepositoriesService_ListDeploymentBranchPolicies(t *testing.T) {
 	}
 
 	const methodName = "ListDeploymentBranchPolicies"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.ListDeploymentBranchPolicies(ctx, "\n", "\n", "\n", opts)
+		return err
+	})
+
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListDeploymentBranchPolicies(ctx, "o", "r", "e")
+		got, resp, err := client.Repositories.ListDeploymentBranchPolicies(ctx, "o", "r", "e", opts)
 		if got != nil {
 			t.Errorf("got non-nil Repositories.ListDeploymentBranchPolicies response: %+v", got)
 		}

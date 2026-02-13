@@ -35,8 +35,12 @@ type DeploymentBranchPolicyRequest struct {
 // GitHub API docs: https://docs.github.com/rest/deployments/branch-policies#list-deployment-branch-policies
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies
-func (s *RepositoriesService) ListDeploymentBranchPolicies(ctx context.Context, owner, repo, environment string) (*DeploymentBranchPolicyResponse, *Response, error) {
+func (s *RepositoriesService) ListDeploymentBranchPolicies(ctx context.Context, owner, repo, environment string, opts *ListOptions) (*DeploymentBranchPolicyResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies", owner, repo, environment)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
