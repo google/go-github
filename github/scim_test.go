@@ -120,7 +120,7 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, r, err := client.SCIM.ListSCIMProvisionedIdentities(ctx, "o", opts)
+		_, r, err := client.SCIM.ListSCIMProvisionedIdentities(ctx, "o", nil)
 		return r, err
 	})
 }
