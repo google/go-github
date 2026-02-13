@@ -362,7 +362,7 @@ func (t *templateData) collectMethodInfo(fd *ast.FuncDecl) (*methodInfo, bool) {
 		typeStr := typeToString(field.Type)
 		zeroArg := getZeroValue(typeStr)
 		for _, name := range field.Names {
-			args = append(args, fmt.Sprintf("%s %s", name.Name, typeStr))
+			args = append(args, fmt.Sprintf("%v %v", name.Name, typeStr))
 			callArgs = append(callArgs, name.Name)
 			zeroArgs = append(zeroArgs, zeroArg)
 
@@ -393,7 +393,7 @@ func (t *templateData) collectMethodInfo(fd *ast.FuncDecl) (*methodInfo, bool) {
 	useAfter := t.hasStringAfter(optsType)
 
 	if !useListCursorOptions && !useListOptions && !usePage && !useAfter {
-		logf("Skipping %s.%s: opts %s does not have ListCursorOptions, ListOptions, Page int, or After string", recvType, fd.Name.Name, optsType)
+		logf("Skipping %v.%v: opts %v does not have ListCursorOptions, ListOptions, Page int, or After string", recvType, fd.Name.Name, optsType)
 		return nil, false
 	}
 
@@ -403,7 +403,7 @@ func (t *templateData) collectMethodInfo(fd *ast.FuncDecl) (*methodInfo, bool) {
 		clientField = "Migrations"
 	}
 	if clientField == "s" {
-		logf("WARNING: clientField is 's' for %s.%s (recvType=%s)", recvType, fd.Name.Name, recType)
+		logf("WARNING: clientField is 's' for %v.%v (recvType=%v)", recvType, fd.Name.Name, recType)
 	}
 
 	return &methodInfo{
@@ -457,7 +457,6 @@ func (t *templateData) processReturnArrayType(fd *ast.FuncDecl, sliceRet *ast.Ar
 		UseListOptions:       methodInfo.UseListOptions,
 		UsePage:              methodInfo.UsePage,
 		UseAfter:             methodInfo.UseAfter,
-		WrappedItemsField:    "",
 		TestJSON1:            testJSON1,
 		TestJSON2:            testJSON2,
 		TestJSON3:            testJSON3,
@@ -469,21 +468,21 @@ func (t *templateData) processReturnStarExpr(fd *ast.FuncDecl, starRet *ast.Star
 	wrapperType := typeToString(starRet.X)
 	wrapperDef, ok := t.Structs[wrapperType]
 	if !ok {
-		logf("Skipping %s.%s: wrapper type %s not found", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
+		logf("Skipping %v.%v: wrapper type %v not found", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
 		return
 	}
 
 	itemsField, itemsType, ok := findSinglePointerSliceField(wrapperDef)
 	if !ok {
-		logf("Skipping %s.%s: wrapper %s does not contain exactly one []*T field", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
+		logf("Skipping %v.%v: wrapper %v does not contain exactly one []*T field", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
 		return
 	}
 
 	testJSON, emptyReturnValue := "[]", "{}"
 	if jsonField, ok := wrapperDef.FieldJSON[itemsField]; ok && jsonField != "" {
-		testJSON = fmt.Sprintf(`{"%s": []}`, jsonField)
+		testJSON = fmt.Sprintf(`{"%v": []}`, jsonField)
 	} else {
-		testJSON = fmt.Sprintf(`{"%s": []}`, lowerFirst(itemsField))
+		testJSON = fmt.Sprintf(`{"%v": []}`, lowerFirst(itemsField))
 	}
 	if val, ok := customTestJSON[fd.Name.Name]; ok {
 		testJSON = val
@@ -555,7 +554,7 @@ func typeToString(expr ast.Expr) string {
 	case *ast.ArrayType:
 		return "[]" + typeToString(x.Elt)
 	case *ast.MapType:
-		return fmt.Sprintf("map[%s]%s", typeToString(x.Key), typeToString(x.Value))
+		return fmt.Sprintf("map[%v]%v", typeToString(x.Key), typeToString(x.Value))
 	default:
 		return ""
 	}
