@@ -4,7 +4,7 @@
 
 set -e
 
-GOLANGCI_LINT_VERSION="2.7.0"
+GOLANGCI_LINT_VERSION="2.9.0"
 
 # should in sync with fmt.sh and lint.sh
 BIN="$(pwd -P)"/bin

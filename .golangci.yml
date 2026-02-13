@@ -2,6 +2,7 @@ version: "2"
 run:
   build-tags:
     - integration
+  allow-parallel-runners: true
 linters:
   enable:
     - canonicalheader
