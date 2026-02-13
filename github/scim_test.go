@@ -20,6 +20,7 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 
 	mux.HandleFunc("/scim/v2/organizations/o/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"startIndex": "1", "count": "10", "filter": `userName="Octocat"`})
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(`{
 			"schemas": [
@@ -61,7 +62,11 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &ListSCIMProvisionedIdentitiesOptions{}
+	opts := &ListSCIMProvisionedIdentitiesOptions{
+		StartIndex: Ptr(1),
+		Count:      Ptr(10),
+		Filter:     Ptr(`userName="Octocat"`),
+	}
 	identities, _, err := client.SCIM.ListSCIMProvisionedIdentities(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("SCIM.ListSCIMProvisionedIdentities returned error: %v", err)
