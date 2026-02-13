@@ -202,7 +202,7 @@ func TestListReviewers(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, nil)
+	got, _, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1)
 	if err != nil {
 		t.Errorf("PullRequests.ListReviewers returned error: %v", err)
 	}
@@ -227,40 +227,7 @@ func TestListReviewers(t *testing.T) {
 
 	const methodName = "ListReviewers"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, nil)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
-	})
-}
-
-func TestListReviewers_withOptions(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		testFormValues(t, r, values{
-			"page": "2",
-		})
-		fmt.Fprint(w, `{}`)
-	})
-
-	ctx := t.Context()
-	_, _, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, &ListOptions{Page: 2})
-	if err != nil {
-		t.Errorf("PullRequests.ListReviewers returned error: %v", err)
-	}
-
-	const methodName = "ListReviewers"
-	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.PullRequests.ListReviewers(ctx, "\n", "\n", 1, &ListOptions{Page: 2})
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1, &ListOptions{Page: 2})
+		got, resp, err := client.PullRequests.ListReviewers(ctx, "o", "r", 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
