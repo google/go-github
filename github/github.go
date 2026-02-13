@@ -19,7 +19,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -312,11 +311,12 @@ type RawOptions struct {
 	Type RawType
 }
 
+type structPtr[T any] interface{ *T }
+
 // addOptions adds the parameters in opts as URL query parameters to s. opts
 // must be a struct whose fields may contain "url" tags.
-func addOptions(s string, opts any) (string, error) {
-	v := reflect.ValueOf(opts)
-	if v.Kind() == reflect.Pointer && v.IsNil() {
+func addOptions[P structPtr[T], T any](s string, opts P) (string, error) {
+	if opts == nil {
 		return s, nil
 	}
 

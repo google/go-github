@@ -114,7 +114,7 @@ func (s *ActionsService) ListCaches(ctx context.Context, owner, repo string, opt
 //meta:operation DELETE /repos/{owner}/{repo}/actions/caches
 func (s *ActionsService) DeleteCachesByKey(ctx context.Context, owner, repo, key string, ref *string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/caches", owner, repo)
-	u, err := addOptions(u, ActionsCache{Key: &key, Ref: ref})
+	u, err := addOptions(u, &ActionsCache{Key: &key, Ref: ref})
 	if err != nil {
 		return nil, err
 	}
