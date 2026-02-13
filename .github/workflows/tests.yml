@@ -27,7 +27,7 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        go-version: ['stable', 'oldstable'] # test with N and the .0 release of N-1
+        go-version: [stable, oldstable] # test with N and the .0 release of N-1
         platform: [ubuntu-latest]
         include:
           # include windows, but only with the latest Go version, since there
