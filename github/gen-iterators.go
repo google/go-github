@@ -623,7 +623,7 @@ func ({{.RecvVar}} *{{.RecvType}}) {{.IterMethod}}({{.Args}}) iter.Seq2[{{.Retur
 
 		{{end}}
 		for {
-			resultList, resp, err := {{.RecvVar}}.{{.MethodName}}({{.CallArgs}})
+			results, resp, err := {{.RecvVar}}.{{.MethodName}}({{.CallArgs}})
 			if err != nil {
 				yield({{if hasPrefix .ReturnType "*"}}nil{{else}}*new({{.ReturnType}}){{end}}, err)
 				return
@@ -631,12 +631,12 @@ func ({{.RecvVar}} *{{.RecvType}}) {{.IterMethod}}({{.Args}}) iter.Seq2[{{.Retur
 
 			{{if .WrappedItemsField -}}
 			var iterItems []{{.ReturnType}}
-			if resultList != nil {
-				iterItems = resultList.{{.WrappedItemsField}}
+			if results != nil {
+				iterItems = results.{{.WrappedItemsField}}
 			}
 			for _, item := range iterItems {
 			{{else -}}
-			for _, item := range resultList {
+			for _, item := range results {
 			{{end -}}
 				if !yield(item, nil) {
 					return
