@@ -20,15 +20,11 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "2"})
 		fmt.Fprint(w, `[{"id":1, "key_prefix": "TICKET-", "url_template": "https://example.com/TICKET?query=<num>"}, {"id":2, "key_prefix": "STORY-", "url_template": "https://example.com/STORY?query=<num>"}]`)
 	})
 
-	opt := &ListOptions{
-		Page: 2,
-	}
 	ctx := t.Context()
-	autolinks, _, err := client.Repositories.ListAutolinks(ctx, "o", "r", opt)
+	autolinks, _, err := client.Repositories.ListAutolinks(ctx, "o", "r")
 	if err != nil {
 		t.Errorf("Repositories.ListAutolinks returned error: %v", err)
 	}
@@ -44,12 +40,12 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 
 	const methodName = "ListAutolinks"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.ListAutolinks(ctx, "\n", "\n", opt)
+		_, _, err = client.Repositories.ListAutolinks(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.ListAutolinks(ctx, "o", "r", opt)
+		got, resp, err := client.Repositories.ListAutolinks(ctx, "o", "r")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
