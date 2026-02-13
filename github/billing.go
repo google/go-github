@@ -144,11 +144,11 @@ type PremiumRequestUsageItem struct {
 	Model            string  `json:"model"`
 	UnitType         string  `json:"unitType"`
 	PricePerUnit     float64 `json:"pricePerUnit"`
-	GrossQuantity    int     `json:"grossQuantity"`
+	GrossQuantity    float64 `json:"grossQuantity"`
 	GrossAmount      float64 `json:"grossAmount"`
-	DiscountQuantity int     `json:"discountQuantity"`
+	DiscountQuantity float64 `json:"discountQuantity"`
 	DiscountAmount   float64 `json:"discountAmount"`
-	NetQuantity      int     `json:"netQuantity"`
+	NetQuantity      float64 `json:"netQuantity"`
 	NetAmount        float64 `json:"netAmount"`
 }
 
