@@ -517,7 +517,7 @@ func Test{{.RecvType}}_{{.IterMethod}}(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			{{- if .UseListCursorOptions}}
+			{{- if or .UseListCursorOptions .UseAfter}}
 			w.Header().Set("Link", ` + "`" + `<https://api.github.com/?after=yo>; rel="next"` + "`" + `)
 			{{else}}
 			w.Header().Set("Link", ` + "`" + `<https://api.github.com/?page=1>; rel="next"` + "`" + `)
