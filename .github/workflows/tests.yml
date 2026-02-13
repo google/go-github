@@ -32,11 +32,11 @@ jobs:
         include:
           # include windows, but only with the latest Go version, since there
           # is very little in the library that is platform specific
-          - go-version: 1.x
+          - go-version: 'stable'
             platform: windows-latest
 
           # only update test coverage stats with the most recent go version on linux
-          - go-version: 1.x
+          - go-version: 'stable'
             platform: ubuntu-latest
             update-coverage: true
     runs-on: ${{ matrix.platform }}
