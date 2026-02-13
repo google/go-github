@@ -31,12 +31,8 @@ type Autolink struct {
 // GitHub API docs: https://docs.github.com/rest/repos/autolinks#get-all-autolinks-of-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/autolinks
-func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Autolink, *Response, error) {
+func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo string) ([]*Autolink, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks", owner, repo)
-	u, err := addOptions(u, opts)
-	if err != nil {
-		return nil, nil, err
-	}
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
