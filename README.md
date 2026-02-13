@@ -59,8 +59,7 @@ go run tools/gen-release-notes/main.go --tag v82.0.0
 ## Usage ##
 
 ```go
-import "github.com/google/go-github/v82/github"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
-import "github.com/google/go-github/github" // with go modules disabled
+import "github.com/google/go-github/v82/github"
 ```
 
 Construct a new GitHub client, then use the various services on the client to
