@@ -368,7 +368,7 @@ func TestUsersService_ListPackageVersions(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &PackageVersionListOptions{
+	opts := &ListPackageVersionOptions{
 		ListOptions: ListOptions{Page: 1, PerPage: 2},
 	}
 	packages, _, err := client.Users.ListPackageVersions(ctx, "container", "hello_docker", opts)
@@ -392,12 +392,12 @@ func TestUsersService_ListPackageVersions(t *testing.T) {
 
 	const methodName = "ListPackageVersions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Users.ListPackageVersions(ctx, "\n", "\n", &PackageVersionListOptions{})
+		_, _, err = client.Users.ListPackageVersions(ctx, "\n", "\n", &ListPackageVersionOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.ListPackageVersions(ctx, "", "", &PackageVersionListOptions{})
+		got, resp, err := client.Users.ListPackageVersions(ctx, "", "", &ListPackageVersionOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

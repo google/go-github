@@ -127,8 +127,8 @@ func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, pa
 	return s.client.Do(ctx, req, nil)
 }
 
-// PackageVersionListOptions specifies the optional parameters to the UsersService.ListPackageVersions.
-type PackageVersionListOptions struct {
+// ListPackageVersionOptions specifies the optional parameters to the UsersService.ListPackageVersions.
+type ListPackageVersionOptions struct {
 	// State of package either "active" or "deleted".
 	State string `url:"state,omitempty"`
 
@@ -140,7 +140,7 @@ type PackageVersionListOptions struct {
 // GitHub API docs: https://docs.github.com/rest/packages/packages#list-package-versions-for-a-package-owned-by-the-authenticated-user
 //
 //meta:operation GET /user/packages/{package_type}/{package_name}/versions
-func (s *UsersService) ListPackageVersions(ctx context.Context, packageType, packageName string, opts *PackageVersionListOptions) ([]*PackageVersion, *Response, error) {
+func (s *UsersService) ListPackageVersions(ctx context.Context, packageType, packageName string, opts *ListPackageVersionOptions) ([]*PackageVersion, *Response, error) {
 	u := fmt.Sprintf("user/packages/%v/%v/versions", packageType, packageName)
 	u, err := addOptions(u, opts)
 	if err != nil {
