@@ -16032,7 +16032,7 @@ func TestUsersService_ListPackageVersionsIter(t *testing.T) {
 		t.Errorf("client.Users.ListPackageVersionsIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	opts := &PackageListOptions{}
+	opts := &PackageVersionListOptions{}
 	iter = client.Users.ListPackageVersionsIter(t.Context(), "", "", opts)
 	gotItems = 0
 	for _, err := range iter {
