@@ -22,7 +22,9 @@ import (
 	"go/token"
 	"log"
 	"os"
+	"reflect"
 	"slices"
+	"strconv"
 	"strings"
 	"text/template"
 )
@@ -95,9 +97,10 @@ type templateData struct {
 }
 
 type structDef struct {
-	Name   string
-	Fields map[string]string
-	Embeds []string
+	Name      string
+	Fields    map[string]string
+	FieldJSON map[string]string
+	Embeds    []string
 }
 
 type method struct {
@@ -118,9 +121,28 @@ type method struct {
 	UseListOptions       bool
 	UsePage              bool
 	UseAfter             bool
+	WrappedItemsField    string
 	TestJSON1            string
 	TestJSON2            string
 	TestJSON3            string
+}
+
+type methodInfo struct {
+	RecvTypeRaw          string
+	RecvType             string
+	RecvVar              string
+	ClientField          string
+	Args                 string
+	CallArgs             string
+	TestCallArgs         string
+	ZeroArgs             string
+	OptsType             string
+	OptsName             string
+	OptsIsPtr            bool
+	UseListCursorOptions bool
+	UseListOptions       bool
+	UsePage              bool
+	UseAfter             bool
 }
 
 // customTestJSON maps method names to the JSON response they expect in tests.
@@ -148,17 +170,34 @@ func (t *templateData) processStructs(f *ast.File) {
 			}
 
 			sd := &structDef{
-				Name:   ts.Name.Name,
-				Fields: make(map[string]string),
+				Name:      ts.Name.Name,
+				Fields:    make(map[string]string),
+				FieldJSON: make(map[string]string),
 			}
 
+			fieldJSON := ""
 			for _, field := range st.Fields.List {
 				typeStr := typeToString(field.Type)
+				fieldJSON = ""
+				if field.Tag != nil {
+					if unquotedTag, err := strconv.Unquote(field.Tag.Value); err == nil {
+						fieldJSON = reflect.StructTag(unquotedTag).Get("json")
+						if idx := strings.Index(fieldJSON, ","); idx >= 0 {
+							fieldJSON = fieldJSON[:idx]
+						}
+						if fieldJSON == "-" {
+							fieldJSON = ""
+						}
+					}
+				}
 				if len(field.Names) == 0 {
 					sd.Embeds = append(sd.Embeds, strings.TrimPrefix(typeStr, "*"))
 				} else {
 					for _, name := range field.Names {
 						sd.Fields[name.Name] = typeStr
+						if fieldJSON != "" {
+							sd.FieldJSON[name.Name] = fieldJSON
+						}
 					}
 				}
 			}
@@ -257,121 +296,251 @@ func (t *templateData) processMethods(f *ast.File) error {
 			continue
 		}
 
-		sliceRet, ok := fd.Type.Results.List[0].Type.(*ast.ArrayType)
+		methodInfo, ok := t.isMethodIteratable(fd)
 		if !ok {
 			continue
 		}
-		eltType := typeToString(sliceRet.Elt)
 
-		if typeToString(fd.Type.Results.List[1].Type) != "*Response" {
-			continue
+		switch retType := fd.Type.Results.List[0].Type.(type) {
+		case *ast.ArrayType:
+			t.processReturnArrayType(fd, retType, methodInfo)
+		case *ast.StarExpr:
+			t.processReturnStarExpr(fd, retType, methodInfo)
+		default:
+			log.Fatalf("unhandled return type: %T", retType)
 		}
-		if typeToString(fd.Type.Results.List[2].Type) != "error" {
-			continue
-		}
-
-		recvType := typeToString(fd.Recv.List[0].Type)
-		if !strings.HasPrefix(recvType, "*") || !strings.HasSuffix(recvType, "Service") {
-			continue
-		}
-		recvVar := ""
-		if len(fd.Recv.List[0].Names) > 0 {
-			recvVar = fd.Recv.List[0].Names[0].Name
-		}
-
-		args := []string{}
-		callArgs := []string{}
-		testCallArgs := []string{}
-		zeroArgs := []string{}
-		var optsType string
-		var optsName string
-		hasOpts := false
-		optsIsPtr := false
-
-		for _, field := range fd.Type.Params.List {
-			typeStr := typeToString(field.Type)
-			zeroArg := getZeroValue(typeStr)
-			for _, name := range field.Names {
-				args = append(args, fmt.Sprintf("%s %s", name.Name, typeStr))
-				callArgs = append(callArgs, name.Name)
-				zeroArgs = append(zeroArgs, zeroArg)
-
-				if strings.HasSuffix(typeStr, "Options") {
-					optsType = strings.TrimPrefix(typeStr, "*")
-					optsName = name.Name
-					hasOpts = true
-					optsIsPtr = strings.HasPrefix(typeStr, "*")
-				}
-			}
-			// second pass: generate testCallArgs after optsName is identified
-			for _, name := range field.Names {
-				if name.Name == optsName {
-					testCallArgs = append(testCallArgs, name.Name)
-				} else {
-					testCallArgs = append(testCallArgs, zeroArg)
-				}
-			}
-		}
-
-		if !hasOpts {
-			continue
-		}
-
-		useListCursorOptions := t.hasListCursorOptions(optsType)
-		useListOptions := t.hasListOptions(optsType)
-		usePage := t.hasIntPage(optsType)
-		useAfter := t.hasStringAfter(optsType)
-
-		if !useListCursorOptions && !useListOptions && !usePage && !useAfter {
-			logf("Skipping %s.%s: opts %s does not have ListCursorOptions, ListOptions, Page int, or After string", recvType, fd.Name.Name, optsType)
-			continue
-		}
-
-		recType := strings.TrimPrefix(recvType, "*")
-		clientField := strings.TrimSuffix(recType, "Service")
-		if clientField == "Migration" {
-			clientField = "Migrations"
-		}
-		if clientField == "s" {
-			logf("WARNING: clientField is 's' for %s.%s (recvType=%s)", recvType, fd.Name.Name, recType)
-		}
-
-		testJSON, emptyReturnValue := "[]", "{}"
-		if val, ok := customTestJSON[fd.Name.Name]; ok {
-			testJSON = val
-		}
-		if eltType == "string" {
-			emptyReturnValue = `""`
-		}
-		testJSON1 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v,%[1]v]", emptyReturnValue))       // Call 1 - return 3 items
-		testJSON2 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v,%[1]v,%[1]v]", emptyReturnValue)) // Call 1 part 2 - return 4 items
-		testJSON3 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v]", emptyReturnValue))             // Call 2 - return 2 items
-
-		m := &method{
-			RecvType:             recType,
-			RecvVar:              recvVar,
-			ClientField:          clientField,
-			MethodName:           fd.Name.Name,
-			IterMethod:           fd.Name.Name + "Iter",
-			Args:                 strings.Join(args, ", "),
-			CallArgs:             strings.Join(callArgs, ", "),
-			TestCallArgs:         strings.Join(testCallArgs, ", "),
-			ZeroArgs:             strings.Join(zeroArgs, ", "),
-			ReturnType:           eltType,
-			OptsType:             optsType,
-			OptsName:             optsName,
-			OptsIsPtr:            optsIsPtr,
-			UseListCursorOptions: useListCursorOptions,
-			UseListOptions:       useListOptions,
-			UsePage:              usePage,
-			UseAfter:             useAfter,
-			TestJSON1:            testJSON1,
-			TestJSON2:            testJSON2,
-			TestJSON3:            testJSON3,
-		}
-		t.Methods = append(t.Methods, m)
 	}
 	return nil
+}
+
+func (t *templateData) isMethodIteratable(fd *ast.FuncDecl) (*methodInfo, bool) {
+	if !validateMethodShape(fd) {
+		return nil, false
+	}
+
+	methodInfo, ok := t.collectMethodInfo(fd)
+	if !ok {
+		return nil, false
+	}
+
+	return methodInfo, true
+}
+
+func validateMethodShape(fd *ast.FuncDecl) bool {
+	if typeToString(fd.Type.Results.List[1].Type) != "*Response" {
+		return false
+	}
+	if typeToString(fd.Type.Results.List[2].Type) != "error" {
+		return false
+	}
+
+	recvType := typeToString(fd.Recv.List[0].Type)
+	if !strings.HasPrefix(recvType, "*") || !strings.HasSuffix(recvType, "Service") {
+		return false
+	}
+
+	return true
+}
+
+func (t *templateData) collectMethodInfo(fd *ast.FuncDecl) (*methodInfo, bool) {
+	recvType := typeToString(fd.Recv.List[0].Type)
+	recvVar := ""
+	if len(fd.Recv.List[0].Names) > 0 {
+		recvVar = fd.Recv.List[0].Names[0].Name
+	}
+
+	args := []string{}
+	callArgs := []string{}
+	testCallArgs := []string{}
+	zeroArgs := []string{}
+	var optsType string
+	var optsName string
+	hasOpts := false
+	optsIsPtr := false
+
+	for _, field := range fd.Type.Params.List {
+		typeStr := typeToString(field.Type)
+		zeroArg := getZeroValue(typeStr)
+		for _, name := range field.Names {
+			args = append(args, fmt.Sprintf("%v %v", name.Name, typeStr))
+			callArgs = append(callArgs, name.Name)
+			zeroArgs = append(zeroArgs, zeroArg)
+
+			if strings.HasSuffix(typeStr, "Options") {
+				optsType = strings.TrimPrefix(typeStr, "*")
+				optsName = name.Name
+				hasOpts = true
+				optsIsPtr = strings.HasPrefix(typeStr, "*")
+			}
+		}
+		// second pass: generate testCallArgs after optsName is identified
+		for _, name := range field.Names {
+			if name.Name == optsName {
+				testCallArgs = append(testCallArgs, name.Name)
+			} else {
+				testCallArgs = append(testCallArgs, zeroArg)
+			}
+		}
+	}
+
+	if !hasOpts {
+		return nil, false
+	}
+
+	useListCursorOptions := t.hasListCursorOptions(optsType)
+	useListOptions := t.hasListOptions(optsType)
+	usePage := t.hasIntPage(optsType)
+	useAfter := t.hasStringAfter(optsType)
+
+	if !useListCursorOptions && !useListOptions && !usePage && !useAfter {
+		logf("Skipping %v.%v: opts %v does not have ListCursorOptions, ListOptions, Page int, or After string", recvType, fd.Name.Name, optsType)
+		return nil, false
+	}
+
+	recType := strings.TrimPrefix(recvType, "*")
+	clientField := strings.TrimSuffix(recType, "Service")
+	if clientField == "Migration" {
+		clientField = "Migrations"
+	}
+	if clientField == "s" {
+		logf("WARNING: clientField is 's' for %v.%v (recvType=%v)", recvType, fd.Name.Name, recType)
+	}
+
+	return &methodInfo{
+		RecvTypeRaw:          recvType,
+		RecvType:             recType,
+		RecvVar:              recvVar,
+		ClientField:          clientField,
+		Args:                 strings.Join(args, ", "),
+		CallArgs:             strings.Join(callArgs, ", "),
+		TestCallArgs:         strings.Join(testCallArgs, ", "),
+		ZeroArgs:             strings.Join(zeroArgs, ", "),
+		OptsType:             optsType,
+		OptsName:             optsName,
+		OptsIsPtr:            optsIsPtr,
+		UseListCursorOptions: useListCursorOptions,
+		UseListOptions:       useListOptions,
+		UsePage:              usePage,
+		UseAfter:             useAfter,
+	}, true
+}
+
+func (t *templateData) processReturnArrayType(fd *ast.FuncDecl, sliceRet *ast.ArrayType, methodInfo *methodInfo) {
+	testJSON, emptyReturnValue := "[]", "{}"
+	if val, ok := customTestJSON[fd.Name.Name]; ok {
+		testJSON = val
+	}
+
+	eltType := typeToString(sliceRet.Elt)
+	if eltType == "string" {
+		emptyReturnValue = `""`
+	}
+	testJSON1 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v,%[1]v]", emptyReturnValue))       // Call 1 - return 3 items
+	testJSON2 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v,%[1]v,%[1]v]", emptyReturnValue)) // Call 1 part 2 - return 4 items
+	testJSON3 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v]", emptyReturnValue))             // Call 2 - return 2 items
+
+	m := &method{
+		RecvType:             methodInfo.RecvType,
+		RecvVar:              methodInfo.RecvVar,
+		ClientField:          methodInfo.ClientField,
+		MethodName:           fd.Name.Name,
+		IterMethod:           fd.Name.Name + "Iter",
+		Args:                 methodInfo.Args,
+		CallArgs:             methodInfo.CallArgs,
+		TestCallArgs:         methodInfo.TestCallArgs,
+		ZeroArgs:             methodInfo.ZeroArgs,
+		ReturnType:           eltType,
+		OptsType:             methodInfo.OptsType,
+		OptsName:             methodInfo.OptsName,
+		OptsIsPtr:            methodInfo.OptsIsPtr,
+		UseListCursorOptions: methodInfo.UseListCursorOptions,
+		UseListOptions:       methodInfo.UseListOptions,
+		UsePage:              methodInfo.UsePage,
+		UseAfter:             methodInfo.UseAfter,
+		TestJSON1:            testJSON1,
+		TestJSON2:            testJSON2,
+		TestJSON3:            testJSON3,
+	}
+	t.Methods = append(t.Methods, m)
+}
+
+func (t *templateData) processReturnStarExpr(fd *ast.FuncDecl, starRet *ast.StarExpr, methodInfo *methodInfo) {
+	wrapperType := typeToString(starRet.X)
+	wrapperDef, ok := t.Structs[wrapperType]
+	if !ok {
+		logf("Skipping %v.%v: wrapper type %v not found", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
+		return
+	}
+
+	itemsField, itemsType, ok := findSinglePointerSliceField(wrapperDef)
+	if !ok {
+		logf("Skipping %v.%v: wrapper %v does not contain exactly one []*T field", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
+		return
+	}
+
+	testJSON, emptyReturnValue := "[]", "{}"
+	if jsonField, ok := wrapperDef.FieldJSON[itemsField]; ok && jsonField != "" {
+		testJSON = fmt.Sprintf(`{"%v": []}`, jsonField)
+	} else {
+		testJSON = fmt.Sprintf(`{"%v": []}`, lowerFirst(itemsField))
+	}
+	if val, ok := customTestJSON[fd.Name.Name]; ok {
+		testJSON = val
+	}
+
+	eltType := strings.TrimPrefix(itemsType, "[]")
+	if eltType == "string" {
+		emptyReturnValue = `""`
+	}
+	testJSON1 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v,%[1]v]", emptyReturnValue))       // Call 1 - return 3 items
+	testJSON2 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v,%[1]v,%[1]v]", emptyReturnValue)) // Call 1 part 2 - return 4 items
+	testJSON3 := strings.ReplaceAll(testJSON, "[]", fmt.Sprintf("[%v,%[1]v]", emptyReturnValue))             // Call 2 - return 2 items
+
+	m := &method{
+		RecvType:             methodInfo.RecvType,
+		RecvVar:              methodInfo.RecvVar,
+		ClientField:          methodInfo.ClientField,
+		MethodName:           fd.Name.Name,
+		IterMethod:           fd.Name.Name + "Iter",
+		Args:                 methodInfo.Args,
+		CallArgs:             methodInfo.CallArgs,
+		TestCallArgs:         methodInfo.TestCallArgs,
+		ZeroArgs:             methodInfo.ZeroArgs,
+		ReturnType:           eltType,
+		OptsType:             methodInfo.OptsType,
+		OptsName:             methodInfo.OptsName,
+		OptsIsPtr:            methodInfo.OptsIsPtr,
+		UseListCursorOptions: methodInfo.UseListCursorOptions,
+		UseListOptions:       methodInfo.UseListOptions,
+		UsePage:              methodInfo.UsePage,
+		UseAfter:             methodInfo.UseAfter,
+		WrappedItemsField:    itemsField,
+		TestJSON1:            testJSON1,
+		TestJSON2:            testJSON2,
+		TestJSON3:            testJSON3,
+	}
+	t.Methods = append(t.Methods, m)
+}
+
+func findSinglePointerSliceField(sd *structDef) (fieldName, fieldType string, ok bool) {
+	matches := []string{}
+	for name, typeStr := range sd.Fields {
+		if strings.HasPrefix(typeStr, "[]*") {
+			matches = append(matches, name)
+		}
+	}
+	if len(matches) != 1 {
+		return "", "", false
+	}
+	fieldName = matches[0]
+	return fieldName, sd.Fields[fieldName], true
+}
+
+func lowerFirst(s string) string {
+	if s == "" {
+		return s
+	}
+	return strings.ToLower(s[:1]) + s[1:]
 }
 
 func typeToString(expr ast.Expr) string {
@@ -385,7 +554,7 @@ func typeToString(expr ast.Expr) string {
 	case *ast.ArrayType:
 		return "[]" + typeToString(x.Elt)
 	case *ast.MapType:
-		return fmt.Sprintf("map[%s]%s", typeToString(x.Key), typeToString(x.Value))
+		return fmt.Sprintf("map[%v]%v", typeToString(x.Key), typeToString(x.Value))
 	default:
 		return ""
 	}
@@ -454,13 +623,21 @@ func ({{.RecvVar}} *{{.RecvType}}) {{.IterMethod}}({{.Args}}) iter.Seq2[{{.Retur
 
 		{{end}}
 		for {
-			items, resp, err := {{.RecvVar}}.{{.MethodName}}({{.CallArgs}})
+			results, resp, err := {{.RecvVar}}.{{.MethodName}}({{.CallArgs}})
 			if err != nil {
 				yield({{if hasPrefix .ReturnType "*"}}nil{{else}}*new({{.ReturnType}}){{end}}, err)
 				return
 			}
 
-			for _, item := range items {
+			{{if .WrappedItemsField -}}
+			var iterItems []{{.ReturnType}}
+			if results != nil {
+				iterItems = results.{{.WrappedItemsField}}
+			}
+			for _, item := range iterItems {
+			{{else -}}
+			for _, item := range results {
+			{{end -}}
 				if !yield(item, nil) {
 					return
 				}
