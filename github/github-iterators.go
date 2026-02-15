@@ -7172,6 +7172,37 @@ func (s *UsersService) ListKeysIter(ctx context.Context, user string, opts *List
 	}
 }
 
+// ListPackageVersionsIter returns an iterator that paginates through all results of ListPackageVersions.
+func (s *UsersService) ListPackageVersionsIter(ctx context.Context, packageType string, packageName string, opts *PackageListOptions) iter.Seq2[*PackageVersion, error] {
+	return func(yield func(*PackageVersion, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &PackageListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListPackageVersions(ctx, packageType, packageName, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListPackagesIter returns an iterator that paginates through all results of ListPackages.
 func (s *UsersService) ListPackagesIter(ctx context.Context, user string, opts *PackageListOptions) iter.Seq2[*Package, error] {
 	return func(yield func(*Package, error) bool) {
