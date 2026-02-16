@@ -167,7 +167,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 
 	const methodName = "ListByOrg"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Issues.ListByOrg(ctx, "\n", nil)
+		_, _, err = client.Issues.ListByOrg(ctx, "\n", opts)
 		return err
 	})
 
