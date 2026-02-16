@@ -127,26 +127,47 @@ func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, pa
 	return s.client.Do(ctx, req, nil)
 }
 
-// PackageGetAllVersions gets all versions of a package for a user. Passing the empty string for "user" will
-// get versions for the authenticated user.
-//
-// GitHub API docs: https://docs.github.com/rest/packages/packages#list-package-versions-for-a-package-owned-by-a-user
+// ListPackageVersionsOptions specifies the optional parameters to the UsersService.ListPackageVersions.
+type ListPackageVersionsOptions struct {
+	// State of package either "active" or "deleted".
+	State string `url:"state,omitempty"`
+
+	ListOptions
+}
+
+// ListPackageVersions gets all versions of a package for the authenticated user.
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages#list-package-versions-for-a-package-owned-by-the-authenticated-user
 //
 //meta:operation GET /user/packages/{package_type}/{package_name}/versions
-//meta:operation GET /users/{username}/packages/{package_type}/{package_name}/versions
-func (s *UsersService) PackageGetAllVersions(ctx context.Context, user, packageType, packageName string, opts *PackageListOptions) ([]*PackageVersion, *Response, error) {
-	var u string
-	if user != "" {
-		u = fmt.Sprintf("users/%v/packages/%v/%v/versions", user, packageType, packageName)
-	} else {
-		u = fmt.Sprintf("user/packages/%v/%v/versions", packageType, packageName)
-	}
+func (s *UsersService) ListPackageVersions(ctx context.Context, packageType, packageName string, opts *ListPackageVersionsOptions) ([]*PackageVersion, *Response, error) {
+	u := fmt.Sprintf("user/packages/%v/%v/versions", packageType, packageName)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var versions []*PackageVersion
+	resp, err := s.client.Do(ctx, req, &versions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return versions, resp, nil
+}
+
+// ListUserPackageVersions returns package versions for a public package owned by a specified user.
+//
+// GitHub API docs: https://docs.github.com/rest/packages/packages#list-package-versions-for-a-package-owned-by-a-user
+//
+//meta:operation GET /users/{username}/packages/{package_type}/{package_name}/versions
+func (s *UsersService) ListUserPackageVersions(ctx context.Context, user, packageType, packageName string) ([]*PackageVersion, *Response, error) {
+	u := fmt.Sprintf("users/%v/packages/%v/%v/versions", user, packageType, packageName)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
