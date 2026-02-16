@@ -368,7 +368,7 @@ func TestUsersService_ListPackageVersions(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &ListPackageVersionOptions{
+	opts := &ListPackageVersionsOptions{
 		ListOptions: ListOptions{Page: 1, PerPage: 2},
 	}
 	packages, _, err := client.Users.ListPackageVersions(ctx, "container", "hello_docker", opts)
@@ -392,12 +392,12 @@ func TestUsersService_ListPackageVersions(t *testing.T) {
 
 	const methodName = "ListPackageVersions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Users.ListPackageVersions(ctx, "\n", "\n", &ListPackageVersionOptions{})
+		_, _, err = client.Users.ListPackageVersions(ctx, "\n", "\n", &ListPackageVersionsOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.ListPackageVersions(ctx, "", "", &ListPackageVersionOptions{})
+		got, resp, err := client.Users.ListPackageVersions(ctx, "", "", &ListPackageVersionsOptions{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -405,7 +405,7 @@ func TestUsersService_ListPackageVersions(t *testing.T) {
 	})
 }
 
-func TestUsersService_ListPackageVersionsForUser(t *testing.T) {
+func TestUsersService_ListUserPackageVersions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -434,9 +434,9 @@ func TestUsersService_ListPackageVersionsForUser(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	packages, _, err := client.Users.ListPackageVersionsForUser(ctx, "u", "container", "hello_docker")
+	packages, _, err := client.Users.ListUserPackageVersions(ctx, "u", "container", "hello_docker")
 	if err != nil {
-		t.Errorf("Users.ListPackageVersionsForUser returned error: %v", err)
+		t.Errorf("Users.ListUserPackageVersions returned error: %v", err)
 	}
 
 	want := []*PackageVersion{{
@@ -450,17 +450,17 @@ func TestUsersService_ListPackageVersionsForUser(t *testing.T) {
 		Metadata:       json.RawMessage(m),
 	}}
 	if !cmp.Equal(packages, want) {
-		t.Errorf("Users.ListPackageVersionsForUser returned %+v, want %+v", packages, want)
+		t.Errorf("Users.ListUserPackageVersions returned %+v, want %+v", packages, want)
 	}
 
-	const methodName = "ListPackageVersionsForUser"
+	const methodName = "ListUserPackageVersions"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Users.ListPackageVersionsForUser(ctx, "\n", "\n", "\n")
+		_, _, err = client.Users.ListUserPackageVersions(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.ListPackageVersionsForUser(ctx, "", "", "")
+		got, resp, err := client.Users.ListUserPackageVersions(ctx, "", "", "")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

@@ -127,8 +127,8 @@ func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, pa
 	return s.client.Do(ctx, req, nil)
 }
 
-// ListPackageVersionOptions specifies the optional parameters to the UsersService.ListPackageVersions.
-type ListPackageVersionOptions struct {
+// ListPackageVersionsOptions specifies the optional parameters to the UsersService.ListPackageVersions.
+type ListPackageVersionsOptions struct {
 	// State of package either "active" or "deleted".
 	State string `url:"state,omitempty"`
 
@@ -140,7 +140,7 @@ type ListPackageVersionOptions struct {
 // GitHub API docs: https://docs.github.com/rest/packages/packages#list-package-versions-for-a-package-owned-by-the-authenticated-user
 //
 //meta:operation GET /user/packages/{package_type}/{package_name}/versions
-func (s *UsersService) ListPackageVersions(ctx context.Context, packageType, packageName string, opts *ListPackageVersionOptions) ([]*PackageVersion, *Response, error) {
+func (s *UsersService) ListPackageVersions(ctx context.Context, packageType, packageName string, opts *ListPackageVersionsOptions) ([]*PackageVersion, *Response, error) {
 	u := fmt.Sprintf("user/packages/%v/%v/versions", packageType, packageName)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -161,12 +161,12 @@ func (s *UsersService) ListPackageVersions(ctx context.Context, packageType, pac
 	return versions, resp, nil
 }
 
-// ListPackageVersionsForUser gets all versions of a package for a user.
+// ListUserPackageVersions returns package versions for a public package owned by a specified user.
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages#list-package-versions-for-a-package-owned-by-a-user
 //
 //meta:operation GET /users/{username}/packages/{package_type}/{package_name}/versions
-func (s *UsersService) ListPackageVersionsForUser(ctx context.Context, user, packageType, packageName string) ([]*PackageVersion, *Response, error) {
+func (s *UsersService) ListUserPackageVersions(ctx context.Context, user, packageType, packageName string) ([]*PackageVersion, *Response, error) {
 	u := fmt.Sprintf("users/%v/packages/%v/%v/versions", user, packageType, packageName)
 
 	req, err := s.client.NewRequest("GET", u, nil)
