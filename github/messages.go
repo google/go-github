@@ -19,11 +19,12 @@ import (
 	"fmt"
 	"hash"
 	"io"
+	"maps"
 	"mime"
 	"net/http"
 	"net/url"
 	"reflect"
-	"sort"
+	"slices"
 	"strings"
 )
 
@@ -334,12 +335,7 @@ func ParseWebHook(messageType string, payload []byte) (any, error) {
 // MessageTypes returns a sorted list of all the known GitHub event type strings
 // supported by go-github.
 func MessageTypes() []string {
-	types := make([]string, 0, len(eventTypeMapping))
-	for t := range eventTypeMapping {
-		types = append(types, t)
-	}
-	sort.Strings(types)
-	return types
+	return slices.Sorted(maps.Keys(eventTypeMapping))
 }
 
 // EventForType returns an empty struct matching the specified GitHub event type.

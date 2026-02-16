@@ -11,6 +11,7 @@
 package main
 
 import (
+	"cmp"
 	"errors"
 	"flag"
 	"fmt"
@@ -21,7 +22,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"slices"
-	"sort"
 	"strings"
 
 	"github.com/golangci/plugin-module-register/register"
@@ -278,8 +278,7 @@ func diffKeys(all, used map[string]bool) []string {
 			obsolete = append(obsolete, key)
 		}
 	}
-	slices.Sort(obsolete)
-	return obsolete
+	return slices.Sorted(slices.Values(obsolete))
 }
 
 func findDuplicates(values []string) map[string]int {
@@ -401,8 +400,8 @@ type listItem struct {
 }
 
 func appendSortedItems(lines []string, items []*listItem) []string {
-	sort.Slice(items, func(i, j int) bool {
-		return items[i].value < items[j].value
+	slices.SortFunc(items, func(a, b *listItem) int {
+		return cmp.Compare(a.value, b.value)
 	})
 	for _, item := range items {
 		lines = append(lines, item.line)
