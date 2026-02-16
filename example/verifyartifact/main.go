@@ -144,7 +144,7 @@ func getIdentityPolicies() ([]verify.PolicyOption, error) {
 	}, nil
 }
 
-func getSignedEntityVerifier() (*verify.SignedEntityVerifier, error) {
+func getSignedEntityVerifier() (*verify.Verifier, error) {
 	// Set up the verifier
 	verifierConfig := []verify.VerifierOption{
 		verify.WithSignedCertificateTimestamps(1),
@@ -158,7 +158,7 @@ func getSignedEntityVerifier() (*verify.SignedEntityVerifier, error) {
 		return nil, err
 	}
 
-	return verify.NewSignedEntityVerifier(trustedMaterial, verifierConfig...)
+	return verify.NewVerifier(trustedMaterial, verifierConfig...)
 }
 
 func getPolicyBuilder() (*verify.PolicyBuilder, error) {
@@ -179,7 +179,7 @@ func getPolicyBuilder() (*verify.PolicyBuilder, error) {
 	return &pb, nil
 }
 
-func runVerification(sev *verify.SignedEntityVerifier, pb *verify.PolicyBuilder, b *bundle.Bundle) error {
+func runVerification(sev *verify.Verifier, pb *verify.PolicyBuilder, b *bundle.Bundle) error {
 	res, err := sev.Verify(b, *pb)
 	if err != nil {
 		return err
