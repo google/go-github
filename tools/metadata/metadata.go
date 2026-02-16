@@ -7,6 +7,7 @@ package main
 
 import (
 	"bytes"
+	"cmp"
 	"context"
 	"errors"
 	"fmt"
@@ -15,12 +16,13 @@ import (
 	"go/parser"
 	"go/printer"
 	"go/token"
+	"maps"
 	"net/url"
 	"os"
 	"path"
 	"path/filepath"
 	"regexp"
-	"sort"
+	"slices"
 	"strings"
 	"sync"
 
@@ -70,13 +72,10 @@ func operationsEqual(a, b []*operation) bool {
 }
 
 func sortOperations(ops []*operation) {
-	sort.Slice(ops, func(i, j int) bool {
-		leftVerb, leftURL := parseOpName(ops[i].Name)
-		rightVerb, rightURL := parseOpName(ops[j].Name)
-		if leftURL != rightURL {
-			return leftURL < rightURL
-		}
-		return leftVerb < rightVerb
+	slices.SortFunc(ops, func(a, b *operation) int {
+		leftVerb, leftURL := parseOpName(a.Name)
+		rightVerb, rightURL := parseOpName(b.Name)
+		return cmp.Or(cmp.Compare(leftURL, rightURL), cmp.Compare(leftVerb, rightVerb))
 	})
 }
 
@@ -291,11 +290,7 @@ func updateDocsVisitor(opsFile *operationsFile) nodeVisitor {
 			}
 			linksMap[op.DocumentationURL] = struct{}{}
 		}
-		var undocumentedOps []string
-		for op := range undocMap {
-			undocumentedOps = append(undocumentedOps, op)
-		}
-		sort.Strings(undocumentedOps)
+		undocumentedOps := slices.Sorted(maps.Keys(undocMap))
 
 		// Find the group that comes before the function
 		var group *ast.CommentGroup
@@ -327,12 +322,7 @@ func updateDocsVisitor(opsFile *operationsFile) nodeVisitor {
 		// add an empty line before adding doc links
 		group.List = append(group.List, &ast.Comment{Text: "//"})
 
-		var docLinks []string
-		for link := range linksMap {
-			docLinks = append(docLinks, link)
-		}
-		sort.Strings(docLinks)
-
+		docLinks := slices.Sorted(maps.Keys(linksMap))
 		for i, dl := range docLinks {
 			group.List = append(
 				group.List,
@@ -479,7 +469,7 @@ func methodOps(opsFile *operationsFile, cmap ast.CommentMap, fn *ast.FuncDecl) (
 				for _, op := range found {
 					foundNames = append(foundNames, op.Name)
 				}
-				sort.Strings(foundNames)
+				slices.Sort(foundNames)
 				err = errors.Join(err, fmt.Errorf("ambiguous operation %q could match any of: %v", opName, foundNames))
 			}
 		}

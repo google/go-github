@@ -47,6 +47,8 @@ linters:
           msg: "Use cmp.Equal instead of reflect.DeepEqual"
         - pattern: "^http\\.Method[A-Z][a-z]*$"
           msg: "Use string literals instead of http.Method constants (https://pkg.go.dev/net/http#pkg-constants)"
+        - pattern: ^sort\..*$
+          msg: "Use sorting functions from the slices package instead."
     gocritic:
       disable-all: true
       enabled-checks:

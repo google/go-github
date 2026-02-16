@@ -6,11 +6,12 @@
 package main
 
 import (
+	"cmp"
 	"context"
 	"fmt"
 	"io"
 	"regexp"
-	"sort"
+	"slices"
 	"strconv"
 
 	"github.com/getkin/kin-openapi/openapi3"
@@ -80,20 +81,6 @@ func (o *openapiFile) loadDescription(ctx context.Context, client *github.Client
 	return err
 }
 
-// less sorts by the following rules:
-//   - planIdx ascending
-//   - releaseMajor descending
-//   - releaseMinor descending
-func (o *openapiFile) less(other *openapiFile) bool {
-	if o.planIdx != other.planIdx {
-		return o.planIdx < other.planIdx
-	}
-	if o.releaseMajor != other.releaseMajor {
-		return o.releaseMajor > other.releaseMajor
-	}
-	return o.releaseMinor > other.releaseMinor
-}
-
 var dirPatterns = []*regexp.Regexp{
 	regexp.MustCompile(`^(?P<plan>api\.github\.com)(-(?P<major>\d+)\.(?P<minor>\d+))?$`),
 	regexp.MustCompile(`^(?P<plan>ghec)(-(?P<major>\d+)\.(?P<minor>\d+))?$`),
@@ -154,8 +141,16 @@ func getDescriptions(ctx context.Context, client *github.Client, gitRef string) 
 			break
 		}
 	}
-	sort.Slice(files, func(i, j int) bool {
-		return files[i].less(files[j])
+	slices.SortFunc(files, func(a, b *openapiFile) int {
+		// sort by the following rules:
+		//   - planIdx ascending
+		//   - releaseMajor descending
+		//   - releaseMinor descending
+		return cmp.Or(
+			cmp.Compare(a.planIdx, b.planIdx),
+			cmp.Compare(b.releaseMajor, a.releaseMajor),
+			cmp.Compare(b.releaseMinor, a.releaseMinor),
+		)
 	})
 	g, ctx := errgroup.WithContext(ctx)
 	for _, file := range files {
