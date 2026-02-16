@@ -10,7 +10,7 @@ package integration
 import (
 	"testing"
 
-	"github.com/google/go-github/v82/github"
+	"github.com/google/go-github/v83/github"
 )
 
 func TestLicenses_ListIter(t *testing.T) {

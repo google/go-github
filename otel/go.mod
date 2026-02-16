@@ -1,9 +1,9 @@
-module github.com/google/go-github/v82/otel
+module github.com/google/go-github/v83/otel
 
 go 1.24.0
 
 require (
-	github.com/google/go-github/v82 v82.0.0
+	github.com/google/go-github/v83 v83.0.0
 	go.opentelemetry.io/otel v1.40.0
 	go.opentelemetry.io/otel/metric v1.40.0
 	go.opentelemetry.io/otel/sdk v1.40.0
@@ -20,4 +20,4 @@ require (
 	golang.org/x/sys v0.40.0 // indirect
 )
 
-replace github.com/google/go-github/v82 => ../
+replace github.com/google/go-github/v83 => ../
