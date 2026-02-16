@@ -27,16 +27,16 @@ jobs:
         shell: bash
     strategy:
       matrix:
-        go-version: [1.x, 1.24.0] # test with N and the .0 release of N-1
+        go-version: [stable, oldstable] # test with N and the .0 release of N-1
         platform: [ubuntu-latest]
         include:
           # include windows, but only with the latest Go version, since there
           # is very little in the library that is platform specific
-          - go-version: 1.x
+          - go-version: stable
             platform: windows-latest
 
           # only update test coverage stats with the most recent go version on linux
-          - go-version: 1.x
+          - go-version: stable
             platform: ubuntu-latest
             update-coverage: true
     runs-on: ${{ matrix.platform }}

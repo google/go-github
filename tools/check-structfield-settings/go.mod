@@ -1,6 +1,6 @@
 module github.com/google/go-github/v83/tools/check-structfield-settings
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/golangci/plugin-module-register v0.1.1
