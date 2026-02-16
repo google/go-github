@@ -13,8 +13,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/google/go-github/v82/github"
-	"github.com/google/go-github/v82/otel"
+	"github.com/google/go-github/v83/github"
+	"github.com/google/go-github/v83/otel"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/trace"
 )
