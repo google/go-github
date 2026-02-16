@@ -268,10 +268,10 @@ linters:
             - GetProvisionedSCIMGroupEnterpriseOptions.ExcludedAttributes
             - GistListOptions.Since # TODO: Gists
             - IssueEvent.Action # TODO: Issues
+            - IssueListByOrgOptions.Since
             - IssueListByRepoOptions.Since # TODO: Issues
             - IssueListCommentsOptions.Direction
             - IssueListCommentsOptions.Sort
-            - IssueListOptions.Since # TODO: Issues
             - IssueRequest.Assignees # TODO: Issues
             - IssueRequest.Labels # TODO: Issues
             - License.Conditions # TODO: Licenses
@@ -284,6 +284,7 @@ linters:
             - ListAlertsOptions.Severity
             - ListAlertsOptions.Sort
             - ListAlertsOptions.State
+            - ListAllIssuesOptions.Since
             - ListArtifactsOptions.Name
             - ListCheckRunsOptions.AppID
             - ListCheckRunsOptions.CheckName
@@ -318,6 +319,7 @@ linters:
             - ListSCIMProvisionedIdentitiesOptions.Count
             - ListSCIMProvisionedIdentitiesOptions.Filter
             - ListSCIMProvisionedIdentitiesOptions.StartIndex
+            - ListUserIssuesOptions.Since
             - LockIssueOptions.LockReason # TODO: Issues
             - MarketplacePlan.Bullets # TODO: Marketplaces
             - NodeQueryOptions.ClusterRoles

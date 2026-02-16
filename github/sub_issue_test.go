@@ -59,12 +59,19 @@ func TestSubIssuesService_ListByIssue(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page":     "2",
+			"per_page": "50",
+		})
 
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
 	ctx := t.Context()
-	opt := &IssueListOptions{}
+	opt := &ListOptions{
+		Page:    2,
+		PerPage: 50,
+	}
 	issues, _, err := client.SubIssue.ListByIssue(ctx, "o", "r", 1, opt)
 	if err != nil {
 		t.Errorf("SubIssues.ListByIssue returned error: %v", err)

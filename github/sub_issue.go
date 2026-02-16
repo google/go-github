@@ -71,7 +71,7 @@ func (s *SubIssueService) Remove(ctx context.Context, owner, repo string, issueN
 // GitHub API docs: https://docs.github.com/rest/issues/sub-issues#list-sub-issues
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
-func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, issueNumber int64, opts *IssueListOptions) ([]*SubIssue, *Response, error) {
+func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, issueNumber int64, opts *ListOptions) ([]*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues", owner, repo, issueNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
