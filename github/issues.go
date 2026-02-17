@@ -126,7 +126,7 @@ type IssueType struct {
 // IssuesService.ListAllIssues method.
 type ListAllIssuesOptions struct {
 	// Filter specifies which issues to list. Possible values are: assigned,
-	// created, mentioned, subscribed, all. Default is "assigned".
+	// created, mentioned, subscribed, repos, all. Default is "assigned".
 	Filter string `url:"filter,omitempty"`
 
 	// State filters issues based on their state. Possible values are: open,
@@ -147,7 +147,6 @@ type ListAllIssuesOptions struct {
 	// Since filters issues by time.
 	Since time.Time `url:"since,omitempty"`
 
-	// These options are undocumented in the GitHub API.
 	Collab bool `url:"collab,omitempty"`
 	Orgs   bool `url:"orgs,omitempty"`
 	Owned  bool `url:"owned,omitempty"`
@@ -190,7 +189,7 @@ func (s *IssuesService) ListAllIssues(ctx context.Context, opts *ListAllIssuesOp
 // IssuesService.ListUserIssues method.
 type ListUserIssuesOptions struct {
 	// Filter specifies which issues to list. Possible values are: assigned,
-	// created, mentioned, subscribed, all. Default is "assigned".
+	// created, mentioned, subscribed, repos, all. Default is "assigned".
 	Filter string `url:"filter,omitempty"`
 
 	// State filters issues based on their state. Possible values are: open,
@@ -246,7 +245,7 @@ func (s *IssuesService) ListUserIssues(ctx context.Context, opts *ListUserIssues
 // IssuesService.ListByOrg method.
 type IssueListByOrgOptions struct {
 	// Filter specifies which issues to list. Possible values are: assigned,
-	// created, mentioned, subscribed, all. Default is "assigned".
+	// created, mentioned, subscribed, repos, all. Default is "assigned".
 	Filter string `url:"filter,omitempty"`
 
 	// State filters issues based on their state. Possible values are: open,
