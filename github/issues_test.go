@@ -15,7 +15,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestIssuesService_List_all(t *testing.T) {
+func TestIssuesService_ListAllIssues(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -28,36 +28,44 @@ func TestIssuesService_List_all(t *testing.T) {
 			"labels":    "a,b",
 			"sort":      "updated",
 			"direction": "asc",
-			"since":     referenceTime.Format(time.RFC3339),
-			"page":      "1",
-			"per_page":  "2",
+			"since":     "2026-01-02T00:00:00Z",
+			"collab":    "true",
+			"orgs":      "true",
+			"owned":     "true",
+			"pulls":     "true",
+			"page":      "5",
+			"per_page":  "10",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
-	opt := &IssueListOptions{
+	opt := &ListAllIssuesOptions{
 		Filter:      "all",
 		State:       "closed",
 		Labels:      []string{"a", "b"},
 		Sort:        "updated",
 		Direction:   "asc",
-		Since:       referenceTime,
-		ListOptions: ListOptions{Page: 1, PerPage: 2},
+		Since:       time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC),
+		Collab:      true,
+		Orgs:        true,
+		Owned:       true,
+		Pulls:       true,
+		ListOptions: ListOptions{Page: 5, PerPage: 10},
 	}
 	ctx := t.Context()
-	issues, _, err := client.Issues.List(ctx, true, opt)
+	issues, _, err := client.Issues.ListAllIssues(ctx, opt)
 	if err != nil {
-		t.Errorf("Issues.List returned error: %v", err)
+		t.Errorf("Issues.ListAllIssues returned error: %v", err)
 	}
 
 	want := []*Issue{{Number: Ptr(1)}}
 	if !cmp.Equal(issues, want) {
-		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
+		t.Errorf("Issues.ListAllIssues = %+v, want %+v", issues, want)
 	}
 
-	const methodName = "List"
+	const methodName = "ListAllIssues"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Issues.List(ctx, true, opt)
+		got, resp, err := client.Issues.ListAllIssues(ctx, nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -65,26 +73,54 @@ func TestIssuesService_List_all(t *testing.T) {
 	})
 }
 
-func TestIssuesService_List_owned(t *testing.T) {
+func TestIssuesService_ListUserIssues(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/user/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		testFormValues(t, r, values{
+			"filter":    "all",
+			"state":     "closed",
+			"labels":    "a,b",
+			"sort":      "updated",
+			"direction": "asc",
+			"since":     "2026-01-02T00:00:00Z",
+			"per_page":  "4",
+			"page":      "2",
+		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
 	ctx := t.Context()
-	issues, _, err := client.Issues.List(ctx, false, nil)
+	opts := &ListUserIssuesOptions{
+		Filter:      "all",
+		State:       "closed",
+		Labels:      []string{"a", "b"},
+		Sort:        "updated",
+		Direction:   "asc",
+		Since:       time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC),
+		ListOptions: ListOptions{Page: 2, PerPage: 4},
+	}
+	issues, _, err := client.Issues.ListUserIssues(ctx, opts)
 	if err != nil {
-		t.Errorf("Issues.List returned error: %v", err)
+		t.Errorf("Issues.ListUserIssues returned error: %v", err)
 	}
 
 	want := []*Issue{{Number: Ptr(1)}}
 	if !cmp.Equal(issues, want) {
-		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
+		t.Errorf("Issues.ListUserIssues = %+v, want %+v", issues, want)
 	}
+
+	const methodName = "ListUserIssues"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Issues.ListUserIssues(ctx, nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, nil)
+		}
+		return resp, err
+	})
 }
 
 func TestIssuesService_ListByOrg(t *testing.T) {
@@ -93,24 +129,45 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"filter":    "all",
+			"state":     "closed",
+			"labels":    "a,b",
+			"type":      "bug",
+			"sort":      "updated",
+			"direction": "asc",
+			"since":     "2026-01-02T00:00:00Z",
+			"per_page":  "4",
+			"page":      "2",
+		})
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
 
 	ctx := t.Context()
-	issues, _, err := client.Issues.ListByOrg(ctx, "o", nil)
+	opts := &IssueListByOrgOptions{
+		Filter:      "all",
+		State:       "closed",
+		Labels:      []string{"a", "b"},
+		Type:        "bug",
+		Sort:        "updated",
+		Direction:   "asc",
+		Since:       time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC),
+		ListOptions: ListOptions{Page: 2, PerPage: 4},
+	}
+	issues, _, err := client.Issues.ListByOrg(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
 	}
 
 	want := []*Issue{{Number: Ptr(1)}}
 	if !cmp.Equal(issues, want) {
-		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
+		t.Errorf("Issues.ListByOrg returned %+v, want %+v", issues, want)
 	}
 
 	const methodName = "ListByOrg"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Issues.ListByOrg(ctx, "\n", nil)
+		_, _, err = client.Issues.ListByOrg(ctx, "\n", opts)
 		return err
 	})
 
@@ -121,24 +178,6 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestIssuesService_ListByOrg_invalidOrg(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-
-	ctx := t.Context()
-	_, _, err := client.Issues.ListByOrg(ctx, "%", nil)
-	testURLParseError(t, err)
-}
-
-func TestIssuesService_ListByOrg_badOrg(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-
-	ctx := t.Context()
-	_, _, err := client.Issues.ListByOrg(ctx, "\n", nil)
-	testURLParseError(t, err)
 }
 
 func TestIssuesService_ListByRepo(t *testing.T) {
@@ -180,12 +219,12 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	ctx := t.Context()
 	issues, _, err := client.Issues.ListByRepo(ctx, "o", "r", opt)
 	if err != nil {
-		t.Errorf("Issues.ListByOrg returned error: %v", err)
+		t.Errorf("Issues.ListByRepo returned error: %v", err)
 	}
 
 	want := []*Issue{{Number: Ptr(1)}}
 	if !cmp.Equal(issues, want) {
-		t.Errorf("Issues.List returned %+v, want %+v", issues, want)
+		t.Errorf("Issues.ListByRepo returned %+v, want %+v", issues, want)
 	}
 
 	const methodName = "ListByRepo"
@@ -195,21 +234,12 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Issues.ListByRepo(ctx, "o", "r", opt)
+		got, resp, err := client.Issues.ListByRepo(ctx, "o", "r", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
-}
-
-func TestIssuesService_ListByRepo_invalidOwner(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-
-	ctx := t.Context()
-	_, _, err := client.Issues.ListByRepo(ctx, "%", "r", nil)
-	testURLParseError(t, err)
 }
 
 func TestIssuesService_Get(t *testing.T) {
