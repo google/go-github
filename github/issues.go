@@ -100,35 +100,6 @@ type IssueRequest struct {
 	Type        *string   `json:"type,omitempty"`
 }
 
-// IssueListOptions specifies the optional parameters to the IssuesService.List
-// and IssuesService.ListByOrg methods.
-type IssueListOptions struct {
-	// Filter specifies which issues to list. Possible values are: assigned,
-	// created, mentioned, subscribed, all. Default is "assigned".
-	Filter string `url:"filter,omitempty"`
-
-	// State filters issues based on their state. Possible values are: open,
-	// closed, all. Default is "open".
-	State string `url:"state,omitempty"`
-
-	// Labels filters issues based on their label.
-	Labels []string `url:"labels,comma,omitempty"`
-
-	// Sort specifies how to sort issues. Possible values are: created, updated,
-	// and comments. Default value is "created".
-	Sort string `url:"sort,omitempty"`
-
-	// Direction in which to sort issues. Possible values are: asc, desc.
-	// Default is "desc".
-	Direction string `url:"direction,omitempty"`
-
-	// Since filters issues by time.
-	Since time.Time `url:"since,omitempty"`
-
-	// Add ListOptions so offset pagination with integer type "page" query parameter is accepted
-	ListOptions
-}
-
 // PullRequestLinks object is added to the Issue object when it's an issue included
 // in the IssueCommentEvent webhook payload, if the webhook is fired by a comment on a PR.
 type PullRequestLinks struct {
@@ -151,25 +122,154 @@ type IssueType struct {
 	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
 }
 
-// List the issues for the authenticated user. If all is true, list issues
-// across all the user's visible repositories including owned, member, and
-// organization repositories; if false, list only owned and member
-// repositories.
+// ListAllIssuesOptions specifies the optional parameters to the
+// IssuesService.ListAllIssues method.
+type ListAllIssuesOptions struct {
+	// Filter specifies which issues to list. Possible values are: assigned,
+	// created, mentioned, subscribed, repos, all. Default is "assigned".
+	Filter string `url:"filter,omitempty"`
+
+	// State filters issues based on their state. Possible values are: open,
+	// closed, all. Default is "open".
+	State string `url:"state,omitempty"`
+
+	// Labels filters issues based on their label.
+	Labels []string `url:"labels,comma,omitempty"`
+
+	// Sort specifies how to sort issues. Possible values are: created, updated,
+	// and comments. Default value is "created".
+	Sort string `url:"sort,omitempty"`
+
+	// Direction in which to sort issues. Possible values are: asc, desc.
+	// Default is "desc".
+	Direction string `url:"direction,omitempty"`
+
+	// Since filters issues by time.
+	Since time.Time `url:"since,omitempty"`
+
+	Collab bool `url:"collab,omitempty"`
+	Orgs   bool `url:"orgs,omitempty"`
+	Owned  bool `url:"owned,omitempty"`
+	Pulls  bool `url:"pulls,omitempty"`
+
+	ListOptions
+}
+
+// ListAllIssues gets issues assigned to the authenticated user across all visible repositories including owned repositories,
+// member repositories, and organization repositories.
+// You can use the filter query parameter to fetch issues that are not necessarily assigned to you.
 //
 // GitHub API docs: https://docs.github.com/rest/issues/issues#list-issues-assigned-to-the-authenticated-user
 //
+//meta:operation GET /issues
+func (s *IssuesService) ListAllIssues(ctx context.Context, opts *ListAllIssuesOptions) ([]*Issue, *Response, error) {
+	u := "issues"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
+
+	var issues []*Issue
+	resp, err := s.client.Do(ctx, req, &issues)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return issues, resp, nil
+}
+
+// ListUserIssuesOptions specifies the optional parameters to the
+// IssuesService.ListUserIssues method.
+type ListUserIssuesOptions struct {
+	// Filter specifies which issues to list. Possible values are: assigned,
+	// created, mentioned, subscribed, repos, all. Default is "assigned".
+	Filter string `url:"filter,omitempty"`
+
+	// State filters issues based on their state. Possible values are: open,
+	// closed, all. Default is "open".
+	State string `url:"state,omitempty"`
+
+	// Labels filters issues based on their label.
+	Labels []string `url:"labels,comma,omitempty"`
+
+	// Sort specifies how to sort issues. Possible values are: created, updated,
+	// and comments. Default value is "created".
+	Sort string `url:"sort,omitempty"`
+
+	// Direction in which to sort issues. Possible values are: asc, desc.
+	// Default is "desc".
+	Direction string `url:"direction,omitempty"`
+
+	// Since filters issues by time.
+	Since time.Time `url:"since,omitempty"`
+
+	ListOptions
+}
+
+// ListUserIssues gets issues across owned and member repositories assigned to the authenticated user.
+//
 // GitHub API docs: https://docs.github.com/rest/issues/issues#list-user-account-issues-assigned-to-the-authenticated-user
 //
-//meta:operation GET /issues
 //meta:operation GET /user/issues
-func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptions) ([]*Issue, *Response, error) {
-	var u string
-	if all {
-		u = "issues"
-	} else {
-		u = "user/issues"
+func (s *IssuesService) ListUserIssues(ctx context.Context, opts *ListUserIssuesOptions) ([]*Issue, *Response, error) {
+	u := "user/issues"
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
 	}
-	return s.listIssues(ctx, u, opts)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req.Header.Set("Accept", mediaTypeReactionsPreview)
+
+	var issues []*Issue
+	resp, err := s.client.Do(ctx, req, &issues)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return issues, resp, nil
+}
+
+// IssueListByOrgOptions specifies the optional parameters to the
+// IssuesService.ListByOrg method.
+type IssueListByOrgOptions struct {
+	// Filter specifies which issues to list. Possible values are: assigned,
+	// created, mentioned, subscribed, repos, all. Default is "assigned".
+	Filter string `url:"filter,omitempty"`
+
+	// State filters issues based on their state. Possible values are: open,
+	// closed, all. Default is "open".
+	State string `url:"state,omitempty"`
+
+	// Labels filters issues based on their label.
+	Labels []string `url:"labels,comma,omitempty"`
+
+	// Type can be the name of an issue type.
+	Type string `url:"type,omitempty"`
+
+	// Sort specifies how to sort issues. Possible values are: created, updated,
+	// and comments. Default value is "created".
+	Sort string `url:"sort,omitempty"`
+
+	// Direction in which to sort issues. Possible values are: asc, desc.
+	// Default is "desc".
+	Direction string `url:"direction,omitempty"`
+
+	// Since filters issues by time.
+	Since time.Time `url:"since,omitempty"`
+
+	ListOptions
 }
 
 // ListByOrg fetches the issues in the specified organization for the
@@ -178,12 +278,8 @@ func (s *IssuesService) List(ctx context.Context, all bool, opts *IssueListOptio
 // GitHub API docs: https://docs.github.com/rest/issues/issues#list-organization-issues-assigned-to-the-authenticated-user
 //
 //meta:operation GET /orgs/{org}/issues
-func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueListOptions) ([]*Issue, *Response, error) {
+func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueListByOrgOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issues", org)
-	return s.listIssues(ctx, u, opts)
-}
-
-func (s *IssuesService) listIssues(ctx context.Context, u string, opts *IssueListOptions) ([]*Issue, *Response, error) {
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -221,6 +317,11 @@ type IssueListByRepoOptions struct {
 	// user name, "none" for issues that are not assigned, "*" for issues with
 	// any assigned user.
 	Assignee string `url:"assignee,omitempty"`
+
+	// Type can be the name of an issue type.
+	// If the string * is passed, issues with any type are accepted.
+	// If the string none is passed, issues without type are returned.
+	Type string `url:"type,omitempty"`
 
 	// Creator filters issues based on their creator.
 	Creator string `url:"creator,omitempty"`
