@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -156,6 +157,30 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 		}
 		return resp, err
 	})
+}
+
+func TestOrganizationsService_ListFineGrainedPersonalAccessTokens_ownerOnly(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/personal-access-tokens", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		// When only Owner is set, addOptions adds no query params, so URL gets "?" + owner[]=...
+		if !strings.Contains(r.URL.RawQuery, "owner[]=") {
+			t.Errorf("Expected query to contain owner[]=, got %q", r.URL.RawQuery)
+		}
+		if strings.HasPrefix(r.URL.RawQuery, "&") {
+			t.Errorf("Expected query to start with ?, got %q", r.URL.RawQuery)
+		}
+		fmt.Fprint(w, "[]")
+	})
+
+	opts := &ListFineGrainedPATOptions{Owner: []string{"octocat"}}
+	ctx := t.Context()
+	_, _, err := client.Organizations.ListFineGrainedPersonalAccessTokens(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Organizations.ListFineGrainedPersonalAccessTokens returned error: %v", err)
+	}
 }
 
 func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *testing.T) {
@@ -327,6 +352,58 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests_nilOpti
 	}
 	if resp == nil {
 		t.Error("Organizations.ListFineGrainedPersonalAccessTokenRequests with nil opts returned nil response")
+	}
+}
+
+func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests_ownerOnly(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/personal-access-token-requests", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		// When only Owner is set (no ListOptions, TokenID, etc.), addOptions adds no query params, so URL gets "?" + owner[]=...
+		if !strings.Contains(r.URL.RawQuery, "owner[]=") {
+			t.Errorf("Expected query to contain owner[]=, got %q", r.URL.RawQuery)
+		}
+		if strings.HasPrefix(r.URL.RawQuery, "&") {
+			t.Errorf("Expected query to start with ?, got %q", r.URL.RawQuery)
+		}
+		fmt.Fprint(w, "[]")
+	})
+
+	opts := &ListFineGrainedPATRequestOptions{
+		ListFineGrainedPATOptions: ListFineGrainedPATOptions{Owner: []string{"octocat"}},
+	}
+	ctx := t.Context()
+	_, _, err := client.Organizations.ListFineGrainedPersonalAccessTokenRequests(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Organizations.ListFineGrainedPersonalAccessTokenRequests returned error: %v", err)
+	}
+}
+
+func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests_tokenIDOnly(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/personal-access-token-requests", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		// When only TokenID is set (no Owner, ListOptions, etc.), addOptions adds no query params, so URL gets "?" + token_id[]=...
+		if !strings.Contains(r.URL.RawQuery, "token_id[]=") {
+			t.Errorf("Expected query to contain token_id[]=, got %q", r.URL.RawQuery)
+		}
+		if strings.HasPrefix(r.URL.RawQuery, "&") {
+			t.Errorf("Expected query not to start with & (token_id should be first param with ?), got %q", r.URL.RawQuery)
+		}
+		fmt.Fprint(w, "[]")
+	})
+
+	opts := &ListFineGrainedPATRequestOptions{
+		TokenID: []int64{11579703},
+	}
+	ctx := t.Context()
+	_, _, err := client.Organizations.ListFineGrainedPersonalAccessTokenRequests(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Organizations.ListFineGrainedPersonalAccessTokenRequests returned error: %v", err)
 	}
 }
 
