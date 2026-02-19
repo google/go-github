@@ -52,8 +52,7 @@ func run(pass *analysis.Pass) (any, error) {
 				return false
 			}
 
-			switch t := n.(type) {
-			case *ast.ArrayType:
+			if t, ok := n.(*ast.ArrayType); ok {
 				checkArrayType(t, t.Pos(), pass)
 			}
 
