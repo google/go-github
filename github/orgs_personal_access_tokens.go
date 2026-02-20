@@ -116,8 +116,8 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokens(ctx context.C
 	return pats, resp, nil
 }
 
-// FineGrainedPersonalAccessTokenRequests represents the details of a request to access organization resources via a fine-grained personal access token.
-type FineGrainedPersonalAccessTokenRequests struct {
+// FineGrainedPersonalAccessTokenRequest represents the details of a request to access organization resources via a fine-grained personal access token.
+type FineGrainedPersonalAccessTokenRequest struct {
 	// Unique identifier of the request for access via fine-grained personal access token.
 	ID *int64 `json:"id,omitempty"`
 
@@ -171,7 +171,7 @@ type ListFineGrainedPATRequestOptions struct {
 // GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens#list-requests-to-access-organization-resources-with-fine-grained-personal-access-tokens
 //
 //meta:operation GET /orgs/{org}/personal-access-token-requests
-func (s *OrganizationsService) ListFineGrainedPersonalAccessTokenRequests(ctx context.Context, org string, opts *ListFineGrainedPATRequestOptions) ([]*FineGrainedPersonalAccessTokenRequests, *Response, error) {
+func (s *OrganizationsService) ListFineGrainedPersonalAccessTokenRequests(ctx context.Context, org string, opts *ListFineGrainedPATRequestOptions) ([]*FineGrainedPersonalAccessTokenRequest, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/personal-access-token-requests", org)
 	// The `owner` parameter is a special case that uses the `owner[]=...` format and needs a custom function to format it correctly.
 	u, err := addListFineGrainedPATRequestOptions(u, opts)
@@ -184,7 +184,7 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokenRequests(ctx co
 		return nil, nil, err
 	}
 
-	var pats []*FineGrainedPersonalAccessTokenRequests
+	var pats []*FineGrainedPersonalAccessTokenRequest
 
 	resp, err := s.client.Do(ctx, req, &pats)
 	if err != nil {

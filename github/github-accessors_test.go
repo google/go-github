@@ -13614,127 +13614,127 @@ func TestFieldValue_GetProjectNumber(tt *testing.T) {
 	f.GetProjectNumber()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetCreatedAt(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	f := &FineGrainedPersonalAccessTokenRequests{CreatedAt: &zeroValue}
+	f := &FineGrainedPersonalAccessTokenRequest{CreatedAt: &zeroValue}
 	f.GetCreatedAt()
-	f = &FineGrainedPersonalAccessTokenRequests{}
+	f = &FineGrainedPersonalAccessTokenRequest{}
 	f.GetCreatedAt()
 	f = nil
 	f.GetCreatedAt()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetID(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
-	f := &FineGrainedPersonalAccessTokenRequests{ID: &zeroValue}
+	f := &FineGrainedPersonalAccessTokenRequest{ID: &zeroValue}
 	f.GetID()
-	f = &FineGrainedPersonalAccessTokenRequests{}
+	f = &FineGrainedPersonalAccessTokenRequest{}
 	f.GetID()
 	f = nil
 	f.GetID()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetOwner(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetOwner(tt *testing.T) {
 	tt.Parallel()
-	f := &FineGrainedPersonalAccessTokenRequests{}
+	f := &FineGrainedPersonalAccessTokenRequest{}
 	f.GetOwner()
 	f = nil
 	f.GetOwner()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetPermissions(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetPermissions(tt *testing.T) {
 	tt.Parallel()
-	f := &FineGrainedPersonalAccessTokenRequests{}
+	f := &FineGrainedPersonalAccessTokenRequest{}
 	f.GetPermissions()
 	f = nil
 	f.GetPermissions()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetReason(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetReason(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	f := &FineGrainedPersonalAccessTokenRequests{Reason: &zeroValue}
+	f := &FineGrainedPersonalAccessTokenRequest{Reason: &zeroValue}
 	f.GetReason()
-	f = &FineGrainedPersonalAccessTokenRequests{}
+	f = &FineGrainedPersonalAccessTokenRequest{}
 	f.GetReason()
 	f = nil
 	f.GetReason()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetRepositoriesURL(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetRepositoriesURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	f := &FineGrainedPersonalAccessTokenRequests{RepositoriesURL: &zeroValue}
+	f := &FineGrainedPersonalAccessTokenRequest{RepositoriesURL: &zeroValue}
 	f.GetRepositoriesURL()
-	f = &FineGrainedPersonalAccessTokenRequests{}
+	f = &FineGrainedPersonalAccessTokenRequest{}
 	f.GetRepositoriesURL()
 	f = nil
 	f.GetRepositoriesURL()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetRepositorySelection(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetRepositorySelection(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	f := &FineGrainedPersonalAccessTokenRequests{RepositorySelection: &zeroValue}
+	f := &FineGrainedPersonalAccessTokenRequest{RepositorySelection: &zeroValue}
 	f.GetRepositorySelection()
-	f = &FineGrainedPersonalAccessTokenRequests{}
+	f = &FineGrainedPersonalAccessTokenRequest{}
 	f.GetRepositorySelection()
 	f = nil
 	f.GetRepositorySelection()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetTokenExpired(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetTokenExpired(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	f := &FineGrainedPersonalAccessTokenRequests{TokenExpired: &zeroValue}
+	f := &FineGrainedPersonalAccessTokenRequest{TokenExpired: &zeroValue}
 	f.GetTokenExpired()
-	f = &FineGrainedPersonalAccessTokenRequests{}
+	f = &FineGrainedPersonalAccessTokenRequest{}
 	f.GetTokenExpired()
 	f = nil
 	f.GetTokenExpired()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetTokenExpiresAt(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetTokenExpiresAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	f := &FineGrainedPersonalAccessTokenRequests{TokenExpiresAt: &zeroValue}
+	f := &FineGrainedPersonalAccessTokenRequest{TokenExpiresAt: &zeroValue}
 	f.GetTokenExpiresAt()
-	f = &FineGrainedPersonalAccessTokenRequests{}
+	f = &FineGrainedPersonalAccessTokenRequest{}
 	f.GetTokenExpiresAt()
 	f = nil
 	f.GetTokenExpiresAt()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetTokenID(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetTokenID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
-	f := &FineGrainedPersonalAccessTokenRequests{TokenID: &zeroValue}
+	f := &FineGrainedPersonalAccessTokenRequest{TokenID: &zeroValue}
 	f.GetTokenID()
-	f = &FineGrainedPersonalAccessTokenRequests{}
+	f = &FineGrainedPersonalAccessTokenRequest{}
 	f.GetTokenID()
 	f = nil
 	f.GetTokenID()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetTokenLastUsedAt(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetTokenLastUsedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	f := &FineGrainedPersonalAccessTokenRequests{TokenLastUsedAt: &zeroValue}
+	f := &FineGrainedPersonalAccessTokenRequest{TokenLastUsedAt: &zeroValue}
 	f.GetTokenLastUsedAt()
-	f = &FineGrainedPersonalAccessTokenRequests{}
+	f = &FineGrainedPersonalAccessTokenRequest{}
 	f.GetTokenLastUsedAt()
 	f = nil
 	f.GetTokenLastUsedAt()
 }
 
-func TestFineGrainedPersonalAccessTokenRequests_GetTokenName(tt *testing.T) {
+func TestFineGrainedPersonalAccessTokenRequest_GetTokenName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	f := &FineGrainedPersonalAccessTokenRequests{TokenName: &zeroValue}
+	f := &FineGrainedPersonalAccessTokenRequest{TokenName: &zeroValue}
 	f.GetTokenName()
-	f = &FineGrainedPersonalAccessTokenRequests{}
+	f = &FineGrainedPersonalAccessTokenRequest{}
 	f.GetTokenName()
 	f = nil
 	f.GetTokenName()

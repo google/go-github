@@ -9147,7 +9147,7 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequestsIter(t *
 
 	iter = client.Organizations.ListFineGrainedPersonalAccessTokenRequestsIter(t.Context(), "", nil)
 	gotItems = 0
-	iter(func(item *FineGrainedPersonalAccessTokenRequests, err error) bool {
+	iter(func(item *FineGrainedPersonalAccessTokenRequest, err error) bool {
 		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)

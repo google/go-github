@@ -267,7 +267,7 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *test
 		t.Errorf("Organizations.ListFineGrainedPersonalAccessTokenRequests returned error: %v", err)
 	}
 
-	want := []*FineGrainedPersonalAccessTokenRequests{
+	want := []*FineGrainedPersonalAccessTokenRequest{
 		{
 			ID:     Ptr(int64(1848980)),
 			Reason: nil,
