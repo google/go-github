@@ -1239,7 +1239,14 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 	r.Type = w.Type
 
 	switch r.Type {
-	case RulesetRuleTypeCreation:
+	case RulesetRuleTypeCreation,
+		RulesetRuleTypeDeletion,
+		RulesetRuleTypeRequiredLinearHistory,
+		RulesetRuleTypeRequiredSignatures,
+		RulesetRuleTypeNonFastForward,
+		RulesetRuleTypeRepositoryCreate,
+		RulesetRuleTypeRepositoryDelete,
+		RulesetRuleTypeRepositoryTransfer:
 		r.Parameters = nil
 	case RulesetRuleTypeUpdate:
 		p := &UpdateRuleParameters{}
@@ -1251,10 +1258,6 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		}
 
 		r.Parameters = p
-	case RulesetRuleTypeDeletion:
-		r.Parameters = nil
-	case RulesetRuleTypeRequiredLinearHistory:
-		r.Parameters = nil
 	case RulesetRuleTypeMergeQueue:
 		p := &MergeQueueRuleParameters{}
 
@@ -1275,8 +1278,6 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		}
 
 		r.Parameters = p
-	case RulesetRuleTypeRequiredSignatures:
-		r.Parameters = nil
 	case RulesetRuleTypePullRequest:
 		p := &PullRequestRuleParameters{}
 
@@ -1297,49 +1298,11 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		}
 
 		r.Parameters = p
-	case RulesetRuleTypeNonFastForward:
-		r.Parameters = nil
-	case RulesetRuleTypeCommitMessagePattern:
-		p := &PatternRuleParameters{}
-
-		if w.Parameters != nil {
-			if err := json.Unmarshal(w.Parameters, p); err != nil {
-				return err
-			}
-		}
-
-		r.Parameters = p
-	case RulesetRuleTypeCommitAuthorEmailPattern:
-		p := &PatternRuleParameters{}
-
-		if w.Parameters != nil {
-			if err := json.Unmarshal(w.Parameters, p); err != nil {
-				return err
-			}
-		}
-
-		r.Parameters = p
-	case RulesetRuleTypeCommitterEmailPattern:
-		p := &PatternRuleParameters{}
-
-		if w.Parameters != nil {
-			if err := json.Unmarshal(w.Parameters, p); err != nil {
-				return err
-			}
-		}
-
-		r.Parameters = p
-	case RulesetRuleTypeBranchNamePattern:
-		p := &PatternRuleParameters{}
-
-		if w.Parameters != nil {
-			if err := json.Unmarshal(w.Parameters, p); err != nil {
-				return err
-			}
-		}
-
-		r.Parameters = p
-	case RulesetRuleTypeTagNamePattern:
+	case RulesetRuleTypeCommitMessagePattern,
+		RulesetRuleTypeCommitAuthorEmailPattern,
+		RulesetRuleTypeCommitterEmailPattern,
+		RulesetRuleTypeBranchNamePattern,
+		RulesetRuleTypeTagNamePattern:
 		p := &PatternRuleParameters{}
 
 		if w.Parameters != nil {
@@ -1419,10 +1382,6 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		}
 
 		r.Parameters = p
-	case RulesetRuleTypeRepositoryCreate:
-		r.Parameters = nil
-	case RulesetRuleTypeRepositoryDelete:
-		r.Parameters = nil
 	case RulesetRuleTypeRepositoryName:
 		p := &SimplePatternRuleParameters{}
 
@@ -1433,8 +1392,6 @@ func (r *RepositoryRule) UnmarshalJSON(data []byte) error {
 		}
 
 		r.Parameters = p
-	case RulesetRuleTypeRepositoryTransfer:
-		r.Parameters = nil
 	case RulesetRuleTypeRepositoryVisibility:
 		p := &RepositoryVisibilityRuleParameters{}
 

@@ -325,10 +325,7 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 	case "commits":
 		// Accept header for search commits preview endpoint
 		acceptHeaders = append(acceptHeaders, mediaTypeCommitSearchPreview)
-	case "topics":
-		// Accept header for search repositories based on topics preview endpoint
-		acceptHeaders = append(acceptHeaders, mediaTypeTopicsPreview)
-	case "repositories":
+	case "topics", "repositories":
 		// Accept header for search repositories based on topics preview endpoint
 		acceptHeaders = append(acceptHeaders, mediaTypeTopicsPreview)
 	case "issues":

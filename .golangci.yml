@@ -71,6 +71,10 @@ linters:
         - G104
         # int(os.Stdin.Fd())
         - G115
+        # false positive
+        - G704
+        # false positive on valid struct fields "AccessToken", "ClientSecret", "Secret", "Password"
+        - G117
     govet:
       enable-all: true
       disable:
@@ -126,8 +130,16 @@ linters:
         - name: filename-format
           arguments:
             - ^[_a-z][_a-z0-9]*.go$
+        - name: forbidden-call-in-wg-go
+        - name: identical-branches
+        - name: identical-ifelseif-branches
+        - name: identical-ifelseif-conditions
+        - name: identical-switch-branches
+        - name: identical-switch-conditions
+        - name: if-return
         - name: increment-decrement
         - name: indent-error-flow
+        - name: inefficient-map-lookup
         - name: package-comments
         - name: range
         - name: receiver-naming
@@ -138,9 +150,15 @@ linters:
         - name: unexported-naming
         - name: unexported-return
         - name: unnecessary-format
+        - name: unnecessary-if
+        - name: unnecessary-stmt
         - name: unreachable-code
         - name: unused-parameter
         - name: use-any
+        - name: use-errors-new
+        - name: use-fmt-print
+        - name: use-slices-sort
+        - name: use-waitgroup-go
         - name: var-declaration
         - name: var-naming
     staticcheck:
@@ -385,10 +403,10 @@ linters:
       - linters: [errcheck]
         text: Error return value of .(.*Close|fmt\.Fprint.*|fmt\.Scanf|os\.Remove(All)?). is not checked
 
-      # We don't care about file inclusion via variable in examples or internal tools.
+      # We don't care about gosec issues in examples or internal tools.
       - linters: [gosec]
         path: ^(example|tools)\/
-        text: 'G304: Potential file inclusion via variable'
+        text: '(G304|G705|G706)'
 
       # We don't run parallel integration tests
       - linters: [paralleltest, tparallel]
