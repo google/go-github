@@ -119,42 +119,42 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokens(ctx context.C
 // FineGrainedPersonalAccessTokenRequests represents the details of a request to access organization resources via a fine-grained personal access token.
 type FineGrainedPersonalAccessTokenRequests struct {
 	// Unique identifier of the request for access via fine-grained personal access token.
-	ID *int64 `json:"id"`
+	ID *int64 `json:"id,omitempty"`
 
 	// Reason is the reason for the request.
-	Reason *string `json:"reason"`
+	Reason *string `json:"reason,omitempty"`
 
 	// Owner is the GitHub user associated with the token.
-	Owner *User `json:"owner"`
+	Owner *User `json:"owner,omitempty"`
 
 	// RepositorySelection is the type of repository selection requested.
 	// Possible values are: "none", "all", "subset".
-	RepositorySelection *string `json:"repository_selection"`
+	RepositorySelection *string `json:"repository_selection,omitempty"`
 
 	// URL to the list of repositories the fine-grained personal access token can access.
 	// Only follow when `repository_selection` is `subset`.
-	RepositoriesURL *string `json:"repositories_url"`
+	RepositoriesURL *string `json:"repositories_url,omitempty"`
 
 	// Permissions are the permissions requested, categorized by type.
-	Permissions *PersonalAccessTokenPermissions `json:"permissions"`
+	Permissions *PersonalAccessTokenPermissions `json:"permissions,omitempty"`
 
 	// Date and time when the request was created.
-	CreatedAt *Timestamp `json:"created_at"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
 
 	// Whether the associated fine-grained personal access token has expired.
-	TokenExpired *bool `json:"token_expired"`
+	TokenExpired *bool `json:"token_expired,omitempty"`
 
 	// Date and time when the associated fine-grained personal access token expires.
-	TokenExpiresAt *Timestamp `json:"token_expires_at"`
+	TokenExpiresAt *Timestamp `json:"token_expires_at,omitempty"`
 
 	// TokenID
-	TokenID *int64 `json:"token_id"`
+	TokenID *int64 `json:"token_id,omitempty"`
 
 	// TokenName
-	TokenName *string `json:"token_name"`
+	TokenName *string `json:"token_name,omitempty"`
 
 	// Date and time when the associated fine-grained personal access token was last used for authentication.
-	TokenLastUsedAt *Timestamp `json:"token_last_used_at"`
+	TokenLastUsedAt *Timestamp `json:"token_last_used_at,omitempty"`
 }
 
 // ListFineGrainedPATRequestOptions specifies optional parameters to ListFineGrainedPersonalAccessTokenRequests.
