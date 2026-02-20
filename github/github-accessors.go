@@ -10478,6 +10478,102 @@ func (f *FieldValue) GetProjectNumber() int64 {
 	return *f.ProjectNumber
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetCreatedAt() Timestamp {
+	if f == nil || f.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *f.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetID() int64 {
+	if f == nil || f.ID == nil {
+		return 0
+	}
+	return *f.ID
+}
+
+// GetOwner returns the Owner field.
+func (f *FineGrainedPersonalAccessTokenRequest) GetOwner() *User {
+	if f == nil {
+		return nil
+	}
+	return f.Owner
+}
+
+// GetPermissions returns the Permissions field.
+func (f *FineGrainedPersonalAccessTokenRequest) GetPermissions() *PersonalAccessTokenPermissions {
+	if f == nil {
+		return nil
+	}
+	return f.Permissions
+}
+
+// GetReason returns the Reason field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetReason() string {
+	if f == nil || f.Reason == nil {
+		return ""
+	}
+	return *f.Reason
+}
+
+// GetRepositoriesURL returns the RepositoriesURL field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetRepositoriesURL() string {
+	if f == nil || f.RepositoriesURL == nil {
+		return ""
+	}
+	return *f.RepositoriesURL
+}
+
+// GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetRepositorySelection() string {
+	if f == nil || f.RepositorySelection == nil {
+		return ""
+	}
+	return *f.RepositorySelection
+}
+
+// GetTokenExpired returns the TokenExpired field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetTokenExpired() bool {
+	if f == nil || f.TokenExpired == nil {
+		return false
+	}
+	return *f.TokenExpired
+}
+
+// GetTokenExpiresAt returns the TokenExpiresAt field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetTokenExpiresAt() Timestamp {
+	if f == nil || f.TokenExpiresAt == nil {
+		return Timestamp{}
+	}
+	return *f.TokenExpiresAt
+}
+
+// GetTokenID returns the TokenID field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetTokenID() int64 {
+	if f == nil || f.TokenID == nil {
+		return 0
+	}
+	return *f.TokenID
+}
+
+// GetTokenLastUsedAt returns the TokenLastUsedAt field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetTokenLastUsedAt() Timestamp {
+	if f == nil || f.TokenLastUsedAt == nil {
+		return Timestamp{}
+	}
+	return *f.TokenLastUsedAt
+}
+
+// GetTokenName returns the TokenName field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetTokenName() string {
+	if f == nil || f.TokenName == nil {
+		return ""
+	}
+	return *f.TokenName
+}
+
 // GetIdentifier returns the Identifier field if it's non-nil, zero value otherwise.
 func (f *FirstPatchedVersion) GetIdentifier() string {
 	if f == nil || f.Identifier == nil {
