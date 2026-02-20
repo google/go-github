@@ -52,8 +52,7 @@ func run(pass *analysis.Pass) (any, error) {
 				return false
 			}
 
-			switch t := n.(type) {
-			case *ast.CallExpr:
+			if t, ok := n.(*ast.CallExpr); ok {
 				checkCallExpr(t, t.Pos(), pass)
 			}
 
