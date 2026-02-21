@@ -7174,6 +7174,38 @@ func (c *CreateWorkflowDispatchEventRequest) GetInputs() map[string]any {
 	return c.Inputs
 }
 
+// GetReturnRunDetails returns the ReturnRunDetails field if it's non-nil, zero value otherwise.
+func (c *CreateWorkflowDispatchEventRequest) GetReturnRunDetails() bool {
+	if c == nil || c.ReturnRunDetails == nil {
+		return false
+	}
+	return *c.ReturnRunDetails
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (c *CreateWorkflowDispatchEventResponse) GetHTMLURL() string {
+	if c == nil || c.HTMLURL == nil {
+		return ""
+	}
+	return *c.HTMLURL
+}
+
+// GetRunURL returns the RunURL field if it's non-nil, zero value otherwise.
+func (c *CreateWorkflowDispatchEventResponse) GetRunURL() string {
+	if c == nil || c.RunURL == nil {
+		return ""
+	}
+	return *c.RunURL
+}
+
+// GetWorkflowRunID returns the WorkflowRunID field if it's non-nil, zero value otherwise.
+func (c *CreateWorkflowDispatchEventResponse) GetWorkflowRunID() int64 {
+	if c == nil || c.WorkflowRunID == nil {
+		return 0
+	}
+	return *c.WorkflowRunID
+}
+
 // GetCreated returns the Created field if it's non-nil, zero value otherwise.
 func (c *CreationInfo) GetCreated() Timestamp {
 	if c == nil || c.Created == nil {

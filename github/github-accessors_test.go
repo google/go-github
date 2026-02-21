@@ -9395,6 +9395,50 @@ func TestCreateWorkflowDispatchEventRequest_GetInputs(tt *testing.T) {
 	c.GetInputs()
 }
 
+func TestCreateWorkflowDispatchEventRequest_GetReturnRunDetails(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateWorkflowDispatchEventRequest{ReturnRunDetails: &zeroValue}
+	c.GetReturnRunDetails()
+	c = &CreateWorkflowDispatchEventRequest{}
+	c.GetReturnRunDetails()
+	c = nil
+	c.GetReturnRunDetails()
+}
+
+func TestCreateWorkflowDispatchEventResponse_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateWorkflowDispatchEventResponse{HTMLURL: &zeroValue}
+	c.GetHTMLURL()
+	c = &CreateWorkflowDispatchEventResponse{}
+	c.GetHTMLURL()
+	c = nil
+	c.GetHTMLURL()
+}
+
+func TestCreateWorkflowDispatchEventResponse_GetRunURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateWorkflowDispatchEventResponse{RunURL: &zeroValue}
+	c.GetRunURL()
+	c = &CreateWorkflowDispatchEventResponse{}
+	c.GetRunURL()
+	c = nil
+	c.GetRunURL()
+}
+
+func TestCreateWorkflowDispatchEventResponse_GetWorkflowRunID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreateWorkflowDispatchEventResponse{WorkflowRunID: &zeroValue}
+	c.GetWorkflowRunID()
+	c = &CreateWorkflowDispatchEventResponse{}
+	c.GetWorkflowRunID()
+	c = nil
+	c.GetWorkflowRunID()
+}
+
 func TestCreationInfo_GetCreated(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
