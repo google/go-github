@@ -1561,6 +1561,59 @@ func TestProjectV2Item_UnmarshalJSON_InvalidJSON(t *testing.T) {
 	}
 }
 
+func TestProjectV2ItemContent_MarshalJSON_Empty(t *testing.T) {
+	t.Parallel()
+
+	content := &ProjectV2ItemContent{}
+
+	got, err := content.MarshalJSON()
+	if err != nil {
+		t.Fatalf("MarshalJSON returned error: %v", err)
+	}
+
+	if string(got) != "null" {
+		t.Fatalf("MarshalJSON expected null, got %s", got)
+	}
+}
+
+func TestProjectV2Item_UnmarshalJSON_ContentWithoutType(t *testing.T) {
+	t.Parallel()
+
+	payload := `{"content":{"number":7}}`
+	var item ProjectV2Item
+
+	if err := json.Unmarshal([]byte(payload), &item); err != nil {
+		t.Fatalf("json.Unmarshal returned error: %v", err)
+	}
+
+	if item.Content != nil {
+		t.Fatalf("Content should be nil when content_type is missing, got %#v", item.Content)
+	}
+}
+
+func TestProjectV2Item_UnmarshalJSON_UnknownContentType(t *testing.T) {
+	t.Parallel()
+
+	payload := `{"content_type":"Alien","content":{"id":1}}`
+	var item ProjectV2Item
+
+	if err := json.Unmarshal([]byte(payload), &item); err != nil {
+		t.Fatalf("json.Unmarshal returned error: %v", err)
+	}
+
+	if item.ContentType == nil || *item.ContentType != "Alien" {
+		t.Fatalf("ContentType mismatch, got: %+v", item.ContentType)
+	}
+
+	if item.Content == nil {
+		t.Fatal("Content should be initialized for unknown content_type")
+	}
+
+	if item.Content.Issue != nil || item.Content.PullRequest != nil || item.Content.DraftIssue != nil {
+		t.Fatalf("Content fields should remain nil for unknown content_type, got %#v", item.Content)
+	}
+}
+
 func TestProjectV2Item_Marshal_Issue(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &ProjectV2Item{}, "{}")
