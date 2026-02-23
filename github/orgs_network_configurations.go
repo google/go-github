@@ -89,10 +89,7 @@ func validateNetworkConfigurationRequest(req NetworkConfigurationRequest) error 
 	}
 
 	networkIDs := req.NetworkSettingsIDs
-	if err := validateNetworkSettingsID(networkIDs); err != nil {
-		return err
-	}
-	return nil
+	return validateNetworkSettingsID(networkIDs)
 }
 
 // NetworkConfigurationRequest represents a request to create or update a network configuration for an organization.

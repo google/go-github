@@ -744,8 +744,7 @@ func (r *Response) populatePageValues() {
 
 			if cursor := q.Get("cursor"); cursor != "" {
 				for _, segment := range segments[1:] {
-					switch strings.TrimSpace(segment) {
-					case `rel="next"`:
+					if strings.TrimSpace(segment) == `rel="next"` {
 						r.Cursor = cursor
 					}
 				}
