@@ -225,8 +225,8 @@ func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url st
 		return nil, nil, err
 	}
 
-	dispatchResponse := new(CreateWorkflowDispatchEventResponse)
-	resp, err := s.client.Do(ctx, req, dispatchResponse)
+	var dispatchResponse *CreateWorkflowDispatchEventResponse
+	resp, err := s.client.Do(ctx, req, &dispatchResponse)
 	if err != nil {
 		return nil, resp, err
 	}

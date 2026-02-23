@@ -380,9 +380,8 @@ func TestActionsService_CreateWorkflowDispatchEventByID_noRunDetails(t *testing.
 		t.Errorf("Actions.CreateWorkflowDispatchEventByID returned error: %v", err)
 	}
 
-	want := &CreateWorkflowDispatchEventResponse{}
-	if !cmp.Equal(dispatchResponse, want) {
-		t.Errorf("Actions.CreateWorkflowDispatchEventByID = %+v, want %+v", dispatchResponse, want)
+	if dispatchResponse != nil {
+		t.Errorf("Actions.CreateWorkflowDispatchEventByID = %+v, want nil", dispatchResponse)
 	}
 }
 
@@ -414,9 +413,8 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName_noRunDetails(t *te
 		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName returned error: %v", err)
 	}
 
-	want := &CreateWorkflowDispatchEventResponse{}
-	if !cmp.Equal(dispatchResponse, want) {
-		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName = %+v, want %+v", dispatchResponse, want)
+	if dispatchResponse != nil {
+		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName = %+v, want nil", dispatchResponse)
 	}
 }
 
