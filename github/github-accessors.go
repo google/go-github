@@ -806,6 +806,14 @@ func (a *APIMeta) GetVerifiablePasswordAuthentication() bool {
 	return *a.VerifiablePasswordAuthentication
 }
 
+// GetActionsInbound returns the ActionsInbound field.
+func (a *APIMetaDomains) GetActionsInbound() *ActionsInboundDomains {
+	if a == nil {
+		return nil
+	}
+	return a.ActionsInbound
+}
+
 // GetArtifactAttestations returns the ArtifactAttestations field.
 func (a *APIMetaDomains) GetArtifactAttestations() *APIMetaArtifactAttestations {
 	if a == nil {
