@@ -1654,6 +1654,30 @@ func (a *AuditEntry) GetUserID() int64 {
 	return *a.UserID
 }
 
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AuditStream) GetID() int {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetPausedAt returns the PausedAt field if it's non-nil, zero value otherwise.
+func (a *AuditStream) GetPausedAt() time.Time {
+	if a == nil || a.PausedAt == nil {
+		return time.Time{}
+	}
+	return *a.PausedAt
+}
+
+// GetVendorSpecific returns the VendorSpecific field if it's non-nil, zero value otherwise.
+func (a *AuditStream) GetVendorSpecific() map[string]string {
+	if a == nil || a.VendorSpecific == nil {
+		return map[string]string{}
+	}
+	return *a.VendorSpecific
+}
+
 // GetApp returns the App field.
 func (a *Authorization) GetApp() *AuthorizationApp {
 	if a == nil {
