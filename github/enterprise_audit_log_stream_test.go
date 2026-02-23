@@ -1,160 +1,283 @@
-// Copyright 2021 The go-github AUTHORS. All rights reserved.
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 package github
 
-// func TestEnterpriseService_CreateAuditStream(t *testing.T) {
-// 	t.Parallel()
-// 	client, mux, _ := setup(t)
+import (
+	"context"
+	"fmt"
+	"net/http"
+	"testing"
 
-// 	mux.HandleFunc("/enterprises/e/audit-log/streams", func(w http.ResponseWriter, r *http.Request) {
-// 		testMethod(t, r, "POST")
+	"github.com/google/go-cmp/cmp"
+)
 
-// 		fmt.Fprint(w, `{
-// 			"id": 1,
-// 			"stream_type": "Azure Blob Storage",
-// 			"stream_details": "US",
-// 			"enabled": true,
-// 			"created_at": "2024-06-06T08:00:00Z",
-// 			"updated_at": "2024-06-06T08:00:00Z",
-// 			"paused_at": null
-// 		}`)
-// 	})
+func TestEnterpriseService_GetAuditLogStreamKey(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-// 	ctx := context.Background()
-// 	config := &AuditStreamConfig{
-// 		Enabled:    true,
-// 		StreamType: "Azure Blob Storage",
-// 		VendorSpecific: AzureBlobConfig{
-// 			KeyID:           "123",
-// 			EncryptedSASURL: "base64-encrypted-sas-url",
-// 		},
-// 	}
+	mux.HandleFunc("/enterprises/e/audit-log/stream-key", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
+	})
 
-// 	stream, resp, err := client.Enterprise.CreateAuditStream(ctx, "e", config)
-// 	if err != nil {
-// 		t.Fatalf("CreateAuditStream returned error: %v", err)
-// 	}
-// 	if resp == nil {
-// 		t.Fatal("expected non-nil HTTP response")
-// 	}
-// 	if stream == nil {
-// 		t.Fatal("expected non-nil AuditStreamEntry")
-// 	}
-// 	if stream.ID != 1 {
-// 		t.Errorf("ID = %d, want 1", stream.ID)
-// 	}
-// 	if stream.StreamType != "Azure Blob Storage" {
-// 		t.Errorf("StreamType = %q, want %q", stream.StreamType, "Azure Blob Storage")
-// 	}
-// 	if !stream.Enabled {
-// 		t.Errorf("Enabled = %v, want true", stream.Enabled)
-// 	}
-// }
+	ctx := context.Background()
+	key, _, err := client.Enterprise.GetAuditLogStreamKey(ctx, "e")
+	if err != nil {
+		t.Errorf("Enterprise.GetAuditLogStreamKey returned error: %v", err)
+	}
 
-// func TestEnterpriseService_GetAuditStream(t *testing.T) {
-// 	t.Parallel()
-// 	client, mux, _ := setup(t)
+	want := &AuditLogStreamKey{
+		KeyID:     Ptr("1234"),
+		PublicKey: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"),
+	}
+	if !cmp.Equal(key, want) {
+		t.Errorf("Enterprise.GetAuditLogStreamKey returned %+v, want %+v", key, want)
+	}
 
-// 	mux.HandleFunc("/enterprises/e/audit-log/streams/42", func(w http.ResponseWriter, r *http.Request) {
-// 		testMethod(t, r, "GET")
-// 		testHeader(t, r, "Accept", "application/vnd.github+json")
-// 		fmt.Fprint(w, `{"id":42,"stream_type":"Azure Blob Storage","enabled":true}`)
-// 	})
+	const methodName = "GetAuditLogStreamKey"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GetAuditLogStreamKey(ctx, "\n")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetAuditLogStreamKey(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
 
-// 	got, resp, err := client.Enterprise.GetAuditStream(context.Background(), "e", 42)
-// 	if err != nil {
-// 		t.Fatalf("GetAuditStream returned error: %v", err)
-// 	}
-// 	if resp == nil {
-// 		t.Fatal("expected non-nil response")
-// 	}
-// 	if got == nil || got.ID != 42 || !got.Enabled || got.StreamType != "Azure Blob Storage" {
-// 		t.Fatalf("unexpected stream: %+v", got)
-// 	}
-// }
+func TestEnterpriseService_ListAuditLogStreams(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-// func TestEnterpriseService_ListAuditStreams(t *testing.T) {
-// 	t.Parallel()
-// 	client, mux, _ := setup(t)
+	mux.HandleFunc("/enterprises/e/audit-log/streams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"id":1,"stream_type":"Splunk","stream_details":"US","enabled":true}]`)
+	})
 
-// 	mux.HandleFunc("/enterprises/e/audit-log/streams", func(w http.ResponseWriter, r *http.Request) {
-// 		testMethod(t, r, "GET")
-// 		fmt.Fprint(w, `[
-// 			{
-// 				"id": 1,
-// 				"stream_type": "Azure Blob Storage",
-// 				"stream_details": "US",
-// 				"enabled": true,
-// 				"created_at": "2024-06-06T08:00:00Z",
-// 				"updated_at": "2024-06-06T08:00:00Z",
-// 				"paused_at": null,
-// 				"vendor_specific": {
-// 					"key_id": "k1",
-// 					"encrypted_sas_url": "enc1"
-// 				}
-// 			},
-// 			{
-// 				"id": 2,
-// 				"stream_type": "Azure Blob Storage",
-// 				"stream_details": "EU",
-// 				"enabled": false,
-// 				"created_at": "2024-06-07T08:00:00Z",
-// 				"updated_at": "2024-06-07T08:00:00Z",
-// 				"paused_at": null,
-// 				"vendor_specific": {
-// 					"key_id": "k2",
-// 					"encrypted_sas_url": "enc2"
-// 				}
-// 			}
-// 		]`)
-// 	})
+	ctx := context.Background()
+	streams, _, err := client.Enterprise.ListAuditLogStreams(ctx, "e")
+	if err != nil {
+		t.Errorf("Enterprise.ListAuditLogStreams returned error: %v", err)
+	}
 
-// 	ctx := context.Background()
-// 	got, resp, err := client.Enterprise.ListAuditStreams(ctx, "e")
-// 	if err != nil {
-// 		t.Fatalf("ListAuditStreams returned error: %v", err)
-// 	}
-// 	if resp == nil {
-// 		t.Fatal("expected non-nil response")
-// 	}
-// 	if len(got) != 2 {
-// 		t.Fatalf("len(streams) = %d, want 2", len(got))
-// 	}
-// 	if got[0].ID != 1 {
-// 		t.Errorf("streams[0].ID = %d, want 1", got[0].ID)
-// 	}
-// 	if got[0].StreamType != "Azure Blob Storage" {
-// 		t.Errorf("streams[0].StreamType = %q, want %q", got[0].StreamType, "Azure Blob Storage")
-// 	}
-// 	if !got[0].Enabled {
-// 		t.Errorf("streams[0].Enabled = %v, want true", got[0].Enabled)
-// 	}
-// 	if got[1].Enabled {
-// 		t.Errorf("streams[1].Enabled = %v, want false", got[1].Enabled)
-// 	}
-// }
+	want := []*AuditLogStream{
+		{
+			ID:            Ptr(int64(1)),
+			StreamType:    Ptr("Splunk"),
+			StreamDetails: Ptr("US"),
+			Enabled:       Ptr(true),
+		},
+	}
+	if !cmp.Equal(streams, want) {
+		t.Errorf("Enterprise.ListAuditLogStreams returned %+v, want %+v", streams, want)
+	}
 
-// func TestEnterpriseService_DeleteAuditStream(t *testing.T) {
-// 	t.Parallel()
-// 	client, mux, _ := setup(t)
+	const methodName = "ListAuditLogStreams"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.ListAuditLogStreams(ctx, "\n")
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.ListAuditLogStreams(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
 
-// 	mux.HandleFunc("/enterprises/e/audit-log/streams/42", func(w http.ResponseWriter, r *http.Request) {
-// 		testMethod(t, r, "DELETE")
-// 		w.WriteHeader(http.StatusNoContent) // 204
-// 	})
+func TestEnterpriseService_GetAuditLogStream(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
 
-// 	ctx := context.Background()
-// 	resp, err := client.Enterprise.DeleteAuditStream(ctx, "e", 42)
-// 	if err != nil {
-// 		t.Fatalf("DeleteAuditStream returned error: %v", err)
-// 	}
-// 	if resp == nil {
-// 		t.Fatal("expected non-nil response")
-// 	}
-// 	if resp.Response.StatusCode != http.StatusNoContent {
-// 		t.Errorf("StatusCode = %d, want %d", resp.Response.StatusCode, http.StatusNoContent)
-// 	}
-// }
+	mux.HandleFunc("/enterprises/e/audit-log/streams/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":1,"stream_type":"Datadog","stream_details":"US","enabled":true}`)
+	})
+
+	ctx := context.Background()
+	stream, _, err := client.Enterprise.GetAuditLogStream(ctx, "e", 1)
+	if err != nil {
+		t.Errorf("Enterprise.GetAuditLogStream returned error: %v", err)
+	}
+
+	want := &AuditLogStream{
+		ID:            Ptr(int64(1)),
+		StreamType:    Ptr("Datadog"),
+		StreamDetails: Ptr("US"),
+		Enabled:       Ptr(true),
+	}
+	if !cmp.Equal(stream, want) {
+		t.Errorf("Enterprise.GetAuditLogStream returned %+v, want %+v", stream, want)
+	}
+
+	const methodName = "GetAuditLogStream"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GetAuditLogStream(ctx, "\n", 1)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetAuditLogStream(ctx, "e", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_CreateAuditLogStream(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/audit-log/streams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		fmt.Fprint(w, `{"id":2,"stream_type":"Datadog","stream_details":"US3","enabled":false}`)
+	})
+
+	input := NewDatadogStreamConfig(false, &DatadogConfig{
+		EncryptedToken: Ptr("ENCRYPTED"),
+		Site:           Ptr("US3"),
+		KeyID:          Ptr("v1"),
+	})
+
+	ctx := context.Background()
+	stream, _, err := client.Enterprise.CreateAuditLogStream(ctx, "e", input)
+	if err != nil {
+		t.Errorf("Enterprise.CreateAuditLogStream returned error: %v", err)
+	}
+
+	want := &AuditLogStream{
+		ID:            Ptr(int64(2)),
+		StreamType:    Ptr("Datadog"),
+		StreamDetails: Ptr("US3"),
+		Enabled:       Ptr(false),
+	}
+	if !cmp.Equal(stream, want) {
+		t.Errorf("Enterprise.CreateAuditLogStream returned %+v, want %+v", stream, want)
+	}
+
+	const methodName = "CreateAuditLogStream"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.CreateAuditLogStream(ctx, "\n", input)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.CreateAuditLogStream(ctx, "e", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_UpdateAuditLogStream(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/audit-log/streams/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		fmt.Fprint(w, `{"id":1,"stream_type":"Splunk","stream_details":"splunk.example.com","enabled":true}`)
+	})
+
+	input := NewSplunkStreamConfig(true, &SplunkConfig{
+		Domain:         Ptr("splunk.example.com"),
+		Port:           Ptr(uint16(8089)),
+		KeyID:          Ptr("v1"),
+		EncryptedToken: Ptr("ENCRYPTED"),
+		SSLVerify:      Ptr(true),
+	})
+
+	ctx := context.Background()
+	stream, _, err := client.Enterprise.UpdateAuditLogStream(ctx, "e", 1, input)
+	if err != nil {
+		t.Errorf("Enterprise.UpdateAuditLogStream returned error: %v", err)
+	}
+
+	want := &AuditLogStream{
+		ID:            Ptr(int64(1)),
+		StreamType:    Ptr("Splunk"),
+		StreamDetails: Ptr("splunk.example.com"),
+		Enabled:       Ptr(true),
+	}
+	if !cmp.Equal(stream, want) {
+		t.Errorf("Enterprise.UpdateAuditLogStream returned %+v, want %+v", stream, want)
+	}
+
+	const methodName = "UpdateAuditLogStream"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.UpdateAuditLogStream(ctx, "\n", 1, input)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.UpdateAuditLogStream(ctx, "e", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_DeleteAuditLogStream(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/audit-log/streams/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := context.Background()
+	_, err := client.Enterprise.DeleteAuditLogStream(ctx, "e", 1)
+	if err != nil {
+		t.Errorf("Enterprise.DeleteAuditLogStream returned error: %v", err)
+	}
+
+	const methodName = "DeleteAuditLogStream"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Enterprise.DeleteAuditLogStream(ctx, "\n", 1)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Enterprise.DeleteAuditLogStream(ctx, "e", 1)
+	})
+}
+
+func TestNewAzureBlobStreamConfig(t *testing.T) {
+	t.Parallel()
+	cfg := &AzureBlobConfig{
+		KeyID:           Ptr("v1"),
+		EncryptedSASURL: Ptr("ENCRYPTED"),
+		Container:       Ptr("my-container"),
+	}
+	got := NewAzureBlobStreamConfig(true, cfg)
+	if got.StreamType == nil || *got.StreamType != "Azure Blob Storage" {
+		t.Errorf("NewAzureBlobStreamConfig StreamType = %v, want Azure Blob Storage", got.StreamType)
+	}
+	if got.Enabled == nil || !*got.Enabled {
+		t.Errorf("NewAzureBlobStreamConfig Enabled = %v, want true", got.Enabled)
+	}
+	if got.VendorSpecific != cfg {
+		t.Errorf("NewAzureBlobStreamConfig VendorSpecific = %v, want %v", got.VendorSpecific, cfg)
+	}
+}
+
+func TestNewDatadogStreamConfig(t *testing.T) {
+	t.Parallel()
+	cfg := &DatadogConfig{
+		EncryptedToken: Ptr("ENCRYPTED"),
+		Site:           Ptr("US"),
+		KeyID:          Ptr("v1"),
+	}
+	got := NewDatadogStreamConfig(false, cfg)
+	if got.StreamType == nil || *got.StreamType != "Datadog" {
+		t.Errorf("NewDatadogStreamConfig StreamType = %v, want Datadog", got.StreamType)
+	}
+	if got.Enabled == nil || *got.Enabled {
+		t.Errorf("NewDatadogStreamConfig Enabled = %v, want false", got.Enabled)
+	}
+}

@@ -980,6 +980,127 @@ func TestAllowForkSyncing_GetEnabled(tt *testing.T) {
 	a.GetEnabled()
 }
 
+func TestAmazonS3AccessKeysConfig_GetAuthenticationType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3AccessKeysConfig{AuthenticationType: &zeroValue}
+	a.GetAuthenticationType()
+	a = &AmazonS3AccessKeysConfig{}
+	a.GetAuthenticationType()
+	a = nil
+	a.GetAuthenticationType()
+}
+
+func TestAmazonS3AccessKeysConfig_GetBucket(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3AccessKeysConfig{Bucket: &zeroValue}
+	a.GetBucket()
+	a = &AmazonS3AccessKeysConfig{}
+	a.GetBucket()
+	a = nil
+	a.GetBucket()
+}
+
+func TestAmazonS3AccessKeysConfig_GetEncryptedAccessKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3AccessKeysConfig{EncryptedAccessKeyID: &zeroValue}
+	a.GetEncryptedAccessKeyID()
+	a = &AmazonS3AccessKeysConfig{}
+	a.GetEncryptedAccessKeyID()
+	a = nil
+	a.GetEncryptedAccessKeyID()
+}
+
+func TestAmazonS3AccessKeysConfig_GetEncryptedSecretKey(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3AccessKeysConfig{EncryptedSecretKey: &zeroValue}
+	a.GetEncryptedSecretKey()
+	a = &AmazonS3AccessKeysConfig{}
+	a.GetEncryptedSecretKey()
+	a = nil
+	a.GetEncryptedSecretKey()
+}
+
+func TestAmazonS3AccessKeysConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3AccessKeysConfig{KeyID: &zeroValue}
+	a.GetKeyID()
+	a = &AmazonS3AccessKeysConfig{}
+	a.GetKeyID()
+	a = nil
+	a.GetKeyID()
+}
+
+func TestAmazonS3AccessKeysConfig_GetRegion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3AccessKeysConfig{Region: &zeroValue}
+	a.GetRegion()
+	a = &AmazonS3AccessKeysConfig{}
+	a.GetRegion()
+	a = nil
+	a.GetRegion()
+}
+
+func TestAmazonS3OIDCConfig_GetARNRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3OIDCConfig{ARNRole: &zeroValue}
+	a.GetARNRole()
+	a = &AmazonS3OIDCConfig{}
+	a.GetARNRole()
+	a = nil
+	a.GetARNRole()
+}
+
+func TestAmazonS3OIDCConfig_GetAuthenticationType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3OIDCConfig{AuthenticationType: &zeroValue}
+	a.GetAuthenticationType()
+	a = &AmazonS3OIDCConfig{}
+	a.GetAuthenticationType()
+	a = nil
+	a.GetAuthenticationType()
+}
+
+func TestAmazonS3OIDCConfig_GetBucket(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3OIDCConfig{Bucket: &zeroValue}
+	a.GetBucket()
+	a = &AmazonS3OIDCConfig{}
+	a.GetBucket()
+	a = nil
+	a.GetBucket()
+}
+
+func TestAmazonS3OIDCConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3OIDCConfig{KeyID: &zeroValue}
+	a.GetKeyID()
+	a = &AmazonS3OIDCConfig{}
+	a.GetKeyID()
+	a = nil
+	a.GetKeyID()
+}
+
+func TestAmazonS3OIDCConfig_GetRegion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AmazonS3OIDCConfig{Region: &zeroValue}
+	a.GetRegion()
+	a = &AmazonS3OIDCConfig{}
+	a.GetRegion()
+	a = nil
+	a.GetRegion()
+}
+
 func TestAnalysesListOptions_GetRef(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -2177,37 +2298,125 @@ func TestAuditEntry_GetUserID(tt *testing.T) {
 	a.GetUserID()
 }
 
-func TestAuditStream_GetID(tt *testing.T) {
+func TestAuditLogStream_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	a := &AuditStream{ID: &zeroValue}
+	var zeroValue Timestamp
+	a := &AuditLogStream{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &AuditLogStream{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestAuditLogStream_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &AuditLogStream{Enabled: &zeroValue}
+	a.GetEnabled()
+	a = &AuditLogStream{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
+}
+
+func TestAuditLogStream_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AuditLogStream{ID: &zeroValue}
 	a.GetID()
-	a = &AuditStream{}
+	a = &AuditLogStream{}
 	a.GetID()
 	a = nil
 	a.GetID()
 }
 
-func TestAuditStream_GetPausedAt(tt *testing.T) {
+func TestAuditLogStream_GetPausedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue time.Time
-	a := &AuditStream{PausedAt: &zeroValue}
+	var zeroValue Timestamp
+	a := &AuditLogStream{PausedAt: &zeroValue}
 	a.GetPausedAt()
-	a = &AuditStream{}
+	a = &AuditLogStream{}
 	a.GetPausedAt()
 	a = nil
 	a.GetPausedAt()
 }
 
-func TestAuditStream_GetVendorSpecific(tt *testing.T) {
+func TestAuditLogStream_GetStreamDetails(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue map[string]string
-	a := &AuditStream{VendorSpecific: &zeroValue}
-	a.GetVendorSpecific()
-	a = &AuditStream{}
-	a.GetVendorSpecific()
+	var zeroValue string
+	a := &AuditLogStream{StreamDetails: &zeroValue}
+	a.GetStreamDetails()
+	a = &AuditLogStream{}
+	a.GetStreamDetails()
 	a = nil
-	a.GetVendorSpecific()
+	a.GetStreamDetails()
+}
+
+func TestAuditLogStream_GetStreamType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AuditLogStream{StreamType: &zeroValue}
+	a.GetStreamType()
+	a = &AuditLogStream{}
+	a.GetStreamType()
+	a = nil
+	a.GetStreamType()
+}
+
+func TestAuditLogStream_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AuditLogStream{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &AuditLogStream{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestAuditLogStreamConfig_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	a := &AuditLogStreamConfig{Enabled: &zeroValue}
+	a.GetEnabled()
+	a = &AuditLogStreamConfig{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
+}
+
+func TestAuditLogStreamConfig_GetStreamType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AuditLogStreamConfig{StreamType: &zeroValue}
+	a.GetStreamType()
+	a = &AuditLogStreamConfig{}
+	a.GetStreamType()
+	a = nil
+	a.GetStreamType()
+}
+
+func TestAuditLogStreamKey_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AuditLogStreamKey{KeyID: &zeroValue}
+	a.GetKeyID()
+	a = &AuditLogStreamKey{}
+	a.GetKeyID()
+	a = nil
+	a.GetKeyID()
+}
+
+func TestAuditLogStreamKey_GetPublicKey(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AuditLogStreamKey{PublicKey: &zeroValue}
+	a.GetPublicKey()
+	a = &AuditLogStreamKey{}
+	a.GetPublicKey()
+	a = nil
+	a.GetPublicKey()
 }
 
 func TestAuthorization_GetApp(tt *testing.T) {
@@ -2598,6 +2807,72 @@ func TestAutoTriggerCheck_GetSetting(tt *testing.T) {
 	a.GetSetting()
 	a = nil
 	a.GetSetting()
+}
+
+func TestAzureBlobConfig_GetContainer(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AzureBlobConfig{Container: &zeroValue}
+	a.GetContainer()
+	a = &AzureBlobConfig{}
+	a.GetContainer()
+	a = nil
+	a.GetContainer()
+}
+
+func TestAzureBlobConfig_GetEncryptedSASURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AzureBlobConfig{EncryptedSASURL: &zeroValue}
+	a.GetEncryptedSASURL()
+	a = &AzureBlobConfig{}
+	a.GetEncryptedSASURL()
+	a = nil
+	a.GetEncryptedSASURL()
+}
+
+func TestAzureBlobConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AzureBlobConfig{KeyID: &zeroValue}
+	a.GetKeyID()
+	a = &AzureBlobConfig{}
+	a.GetKeyID()
+	a = nil
+	a.GetKeyID()
+}
+
+func TestAzureHubConfig_GetEncryptedConnString(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AzureHubConfig{EncryptedConnString: &zeroValue}
+	a.GetEncryptedConnString()
+	a = &AzureHubConfig{}
+	a.GetEncryptedConnString()
+	a = nil
+	a.GetEncryptedConnString()
+}
+
+func TestAzureHubConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AzureHubConfig{KeyID: &zeroValue}
+	a.GetKeyID()
+	a = &AzureHubConfig{}
+	a.GetKeyID()
+	a = nil
+	a.GetKeyID()
+}
+
+func TestAzureHubConfig_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AzureHubConfig{Name: &zeroValue}
+	a.GetName()
+	a = &AzureHubConfig{}
+	a.GetName()
+	a = nil
+	a.GetName()
 }
 
 func TestBlob_GetContent(tt *testing.T) {
@@ -10043,6 +10318,39 @@ func TestCustomRepoRoles_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestDatadogConfig_GetEncryptedToken(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DatadogConfig{EncryptedToken: &zeroValue}
+	d.GetEncryptedToken()
+	d = &DatadogConfig{}
+	d.GetEncryptedToken()
+	d = nil
+	d.GetEncryptedToken()
+}
+
+func TestDatadogConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DatadogConfig{KeyID: &zeroValue}
+	d.GetKeyID()
+	d = &DatadogConfig{}
+	d.GetKeyID()
+	d = nil
+	d.GetKeyID()
+}
+
+func TestDatadogConfig_GetSite(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DatadogConfig{Site: &zeroValue}
+	d.GetSite()
+	d = &DatadogConfig{}
+	d.GetSite()
+	d = nil
+	d.GetSite()
+}
+
 func TestDefaultSetupConfiguration_GetQuerySuite(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -14443,6 +14751,39 @@ func TestGollumEvent_GetSender(tt *testing.T) {
 	g.GetSender()
 }
 
+func TestGoogleCloudConfig_GetBucket(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	g := &GoogleCloudConfig{Bucket: &zeroValue}
+	g.GetBucket()
+	g = &GoogleCloudConfig{}
+	g.GetBucket()
+	g = nil
+	g.GetBucket()
+}
+
+func TestGoogleCloudConfig_GetEncryptedJSONCredentials(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	g := &GoogleCloudConfig{EncryptedJSONCredentials: &zeroValue}
+	g.GetEncryptedJSONCredentials()
+	g = &GoogleCloudConfig{}
+	g.GetEncryptedJSONCredentials()
+	g = nil
+	g.GetEncryptedJSONCredentials()
+}
+
+func TestGoogleCloudConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	g := &GoogleCloudConfig{KeyID: &zeroValue}
+	g.GetKeyID()
+	g = &GoogleCloudConfig{}
+	g.GetKeyID()
+	g = nil
+	g.GetKeyID()
+}
+
 func TestGPGEmail_GetEmail(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -14729,6 +15070,69 @@ func TestHeadCommit_GetURL(tt *testing.T) {
 	h.GetURL()
 	h = nil
 	h.GetURL()
+}
+
+func TestHecConfig_GetDomain(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HecConfig{Domain: &zeroValue}
+	h.GetDomain()
+	h = &HecConfig{}
+	h.GetDomain()
+	h = nil
+	h.GetDomain()
+}
+
+func TestHecConfig_GetEncryptedToken(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HecConfig{EncryptedToken: &zeroValue}
+	h.GetEncryptedToken()
+	h = &HecConfig{}
+	h.GetEncryptedToken()
+	h = nil
+	h.GetEncryptedToken()
+}
+
+func TestHecConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HecConfig{KeyID: &zeroValue}
+	h.GetKeyID()
+	h = &HecConfig{}
+	h.GetKeyID()
+	h = nil
+	h.GetKeyID()
+}
+
+func TestHecConfig_GetPath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	h := &HecConfig{Path: &zeroValue}
+	h.GetPath()
+	h = &HecConfig{}
+	h.GetPath()
+	h = nil
+	h.GetPath()
+}
+
+func TestHecConfig_GetPort(tt *testing.T) {
+	tt.Parallel()
+	h := &HecConfig{}
+	h.GetPort()
+	h = nil
+	h.GetPort()
+}
+
+func TestHecConfig_GetSSLVerify(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	h := &HecConfig{SSLVerify: &zeroValue}
+	h.GetSSLVerify()
+	h = &HecConfig{}
+	h.GetSSLVerify()
+	h = nil
+	h.GetSSLVerify()
 }
 
 func TestHook_GetActive(tt *testing.T) {
@@ -36957,6 +37361,58 @@ func TestSourceImportAuthor_GetURL(tt *testing.T) {
 	s.GetURL()
 	s = nil
 	s.GetURL()
+}
+
+func TestSplunkConfig_GetDomain(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SplunkConfig{Domain: &zeroValue}
+	s.GetDomain()
+	s = &SplunkConfig{}
+	s.GetDomain()
+	s = nil
+	s.GetDomain()
+}
+
+func TestSplunkConfig_GetEncryptedToken(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SplunkConfig{EncryptedToken: &zeroValue}
+	s.GetEncryptedToken()
+	s = &SplunkConfig{}
+	s.GetEncryptedToken()
+	s = nil
+	s.GetEncryptedToken()
+}
+
+func TestSplunkConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SplunkConfig{KeyID: &zeroValue}
+	s.GetKeyID()
+	s = &SplunkConfig{}
+	s.GetKeyID()
+	s = nil
+	s.GetKeyID()
+}
+
+func TestSplunkConfig_GetPort(tt *testing.T) {
+	tt.Parallel()
+	s := &SplunkConfig{}
+	s.GetPort()
+	s = nil
+	s.GetPort()
+}
+
+func TestSplunkConfig_GetSSLVerify(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SplunkConfig{SSLVerify: &zeroValue}
+	s.GetSSLVerify()
+	s = &SplunkConfig{}
+	s.GetSSLVerify()
+	s = nil
+	s.GetSSLVerify()
 }
 
 func TestSponsorshipChanges_GetPrivacyLevel(tt *testing.T) {

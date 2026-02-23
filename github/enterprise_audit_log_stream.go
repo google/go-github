@@ -7,22 +7,21 @@ package github
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 )
 
 // AuditLogStream represents an audit log stream configuration for an enterprise.
 type AuditLogStream struct {
-	ID            *int64          `json:"id,omitempty"`
-	StreamType    *string         `json:"stream_type,omitempty"`
-	StreamDetails json.RawMessage `json:"stream_details,omitempty"`
-	Enabled       *bool           `json:"enabled,omitempty"`
-	CreatedAt     *Timestamp      `json:"created_at,omitempty"`
-	UpdatedAt     *Timestamp      `json:"updated_at,omitempty"`
-	PausedAt      *Timestamp      `json:"paused_at,omitempty"`
+	ID            *int64     `json:"id,omitempty"`
+	StreamType    *string    `json:"stream_type,omitempty"`
+	StreamDetails *string    `json:"stream_details,omitempty"`
+	Enabled       *bool      `json:"enabled,omitempty"`
+	CreatedAt     *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
+	PausedAt      *Timestamp `json:"paused_at,omitempty"`
 }
 
-// AuditLogStreamConfig represents a configuration for creating/updating an audit log stream.
+// AuditLogStreamConfig represents a configuration for creating or updating an audit log stream.
 type AuditLogStreamConfig struct {
 	Enabled        *bool                      `json:"enabled,omitempty"`
 	StreamType     *string                    `json:"stream_type,omitempty"`
@@ -35,40 +34,46 @@ type AuditLogStreamVendorConfig interface {
 	isAuditLogStreamVendorConfig()
 }
 
-// AzureBlobConfig represents vendor specific config for Azure Blob Storage.
+// AuditLogStreamKey represents the public key used to encrypt secrets for audit log streaming.
+type AuditLogStreamKey struct {
+	KeyID     *string `json:"key_id,omitempty"`
+	PublicKey *string `json:"key,omitempty"`
+}
+
+// AzureBlobConfig represents vendor-specific config for Azure Blob Storage.
 type AzureBlobConfig struct {
 	KeyID           *string `json:"key_id,omitempty"`
 	EncryptedSASURL *string `json:"encrypted_sas_url,omitempty"`
 	Container       *string `json:"container,omitempty"`
 }
 
-// AzureHubConfig represents vendor specific config for Azure Event Hubs.
+// AzureHubConfig represents vendor-specific config for Azure Event Hubs.
 type AzureHubConfig struct {
 	Name                *string `json:"name,omitempty"`
 	EncryptedConnString *string `json:"encrypted_connstring,omitempty"`
 	KeyID               *string `json:"key_id,omitempty"`
 }
 
-// AmazonS3OIDCConfig represents vendor specific config for Amazon S3 with OIDC authentication.
+// AmazonS3OIDCConfig represents vendor-specific config for Amazon S3 with OIDC authentication.
 type AmazonS3OIDCConfig struct {
 	Bucket             *string `json:"bucket,omitempty"`
 	Region             *string `json:"region,omitempty"`
 	KeyID              *string `json:"key_id,omitempty"`
-	AuthenticationType *string `json:"authentication_type,omitempty"`
+	AuthenticationType *string `json:"authentication_type,omitempty"` // Value: "oidc"
 	ARNRole            *string `json:"arn_role,omitempty"`
 }
 
-// AmazonS3AccessKeysConfig represents vendor specific config for Amazon S3 with access keys authentication.
+// AmazonS3AccessKeysConfig represents vendor-specific config for Amazon S3 with access key authentication.
 type AmazonS3AccessKeysConfig struct {
 	Bucket               *string `json:"bucket,omitempty"`
 	Region               *string `json:"region,omitempty"`
 	KeyID                *string `json:"key_id,omitempty"`
-	AuthenticationType   *string `json:"authentication_type,omitempty"`
+	AuthenticationType   *string `json:"authentication_type,omitempty"` // Value: "access_keys"
 	EncryptedSecretKey   *string `json:"encrypted_secret_key,omitempty"`
 	EncryptedAccessKeyID *string `json:"encrypted_access_key_id,omitempty"`
 }
 
-// SplunkConfig represents vendor specific config for Splunk.
+// SplunkConfig represents vendor-specific config for Splunk.
 type SplunkConfig struct {
 	Domain         *string `json:"domain,omitempty"`
 	Port           *uint16 `json:"port,omitempty"`
@@ -77,7 +82,7 @@ type SplunkConfig struct {
 	SSLVerify      *bool   `json:"ssl_verify,omitempty"`
 }
 
-// HecConfig represents vendor specific config for HTTPS Event Collector.
+// HecConfig represents vendor-specific config for an HTTPS Event Collector (HEC) endpoint.
 type HecConfig struct {
 	Domain         *string `json:"domain,omitempty"`
 	Port           *uint16 `json:"port,omitempty"`
@@ -87,17 +92,17 @@ type HecConfig struct {
 	SSLVerify      *bool   `json:"ssl_verify,omitempty"`
 }
 
-// GoogleCloudConfig represents vendor specific config for Google Cloud Storage.
+// GoogleCloudConfig represents vendor-specific config for Google Cloud Storage.
 type GoogleCloudConfig struct {
 	Bucket                   *string `json:"bucket,omitempty"`
 	KeyID                    *string `json:"key_id,omitempty"`
 	EncryptedJSONCredentials *string `json:"encrypted_json_credentials,omitempty"`
 }
 
-// DatadogConfig represents vendor specific config for Datadog.
+// DatadogConfig represents vendor-specific config for Datadog.
 type DatadogConfig struct {
 	EncryptedToken *string `json:"encrypted_token,omitempty"`
-	Site           *string `json:"site,omitempty"` // Can be one of: US, US3, US5, EU1, US1-FED, AP1
+	Site           *string `json:"site,omitempty"` // One of: US, US3, US5, EU1, US1-FED, AP1
 	KeyID          *string `json:"key_id,omitempty"`
 }
 
@@ -111,29 +116,29 @@ func (*HecConfig) isAuditLogStreamVendorConfig()                {}
 func (*GoogleCloudConfig) isAuditLogStreamVendorConfig()        {}
 func (*DatadogConfig) isAuditLogStreamVendorConfig()            {}
 
-// Helper functions for constructing AuditLogStreamConfig per vendor type.
+// Helper constructors for AuditLogStreamConfig.
 
 // NewAzureBlobStreamConfig returns an AuditLogStreamConfig for Azure Blob Storage.
 func NewAzureBlobStreamConfig(enabled bool, cfg *AzureBlobConfig) *AuditLogStreamConfig {
-	streamType := "AzureBlobStorage"
+	streamType := "Azure Blob Storage"
 	return &AuditLogStreamConfig{Enabled: &enabled, StreamType: &streamType, VendorSpecific: cfg}
 }
 
 // NewAzureHubStreamConfig returns an AuditLogStreamConfig for Azure Event Hubs.
 func NewAzureHubStreamConfig(enabled bool, cfg *AzureHubConfig) *AuditLogStreamConfig {
-	streamType := "AzureHubs"
+	streamType := "Azure Event Hubs"
 	return &AuditLogStreamConfig{Enabled: &enabled, StreamType: &streamType, VendorSpecific: cfg}
 }
 
 // NewAmazonS3OIDCStreamConfig returns an AuditLogStreamConfig for Amazon S3 with OIDC auth.
 func NewAmazonS3OIDCStreamConfig(enabled bool, cfg *AmazonS3OIDCConfig) *AuditLogStreamConfig {
-	streamType := "AmazonS3"
+	streamType := "Amazon S3"
 	return &AuditLogStreamConfig{Enabled: &enabled, StreamType: &streamType, VendorSpecific: cfg}
 }
 
-// NewAmazonS3AccessKeysStreamConfig returns an AuditLogStreamConfig for Amazon S3 with access keys auth.
+// NewAmazonS3AccessKeysStreamConfig returns an AuditLogStreamConfig for Amazon S3 with access key auth.
 func NewAmazonS3AccessKeysStreamConfig(enabled bool, cfg *AmazonS3AccessKeysConfig) *AuditLogStreamConfig {
-	streamType := "AmazonS3"
+	streamType := "Amazon S3"
 	return &AuditLogStreamConfig{Enabled: &enabled, StreamType: &streamType, VendorSpecific: cfg}
 }
 
@@ -143,15 +148,15 @@ func NewSplunkStreamConfig(enabled bool, cfg *SplunkConfig) *AuditLogStreamConfi
 	return &AuditLogStreamConfig{Enabled: &enabled, StreamType: &streamType, VendorSpecific: cfg}
 }
 
-// NewHecStreamConfig returns an AuditLogStreamConfig for HTTPS Event Collector.
+// NewHecStreamConfig returns an AuditLogStreamConfig for an HTTPS Event Collector endpoint.
 func NewHecStreamConfig(enabled bool, cfg *HecConfig) *AuditLogStreamConfig {
-	streamType := "Hec"
+	streamType := "HTTPS Event Collector"
 	return &AuditLogStreamConfig{Enabled: &enabled, StreamType: &streamType, VendorSpecific: cfg}
 }
 
 // NewGoogleCloudStreamConfig returns an AuditLogStreamConfig for Google Cloud Storage.
 func NewGoogleCloudStreamConfig(enabled bool, cfg *GoogleCloudConfig) *AuditLogStreamConfig {
-	streamType := "GoogleCloudStorage"
+	streamType := "Google Cloud Storage"
 	return &AuditLogStreamConfig{Enabled: &enabled, StreamType: &streamType, VendorSpecific: cfg}
 }
 
@@ -159,6 +164,30 @@ func NewGoogleCloudStreamConfig(enabled bool, cfg *GoogleCloudConfig) *AuditLogS
 func NewDatadogStreamConfig(enabled bool, cfg *DatadogConfig) *AuditLogStreamConfig {
 	streamType := "Datadog"
 	return &AuditLogStreamConfig{Enabled: &enabled, StreamType: &streamType, VendorSpecific: cfg}
+}
+
+// GetAuditLogStreamKey retrieves the public key used to encrypt secrets for audit log streaming.
+// Credentials must be encrypted with this key before being submitted via CreateAuditLogStream
+// or UpdateAuditLogStream.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#get-the-audit-log-streaming-key-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/audit-log/stream-key
+func (s *EnterpriseService) GetAuditLogStreamKey(ctx context.Context, enterprise string) (*AuditLogStreamKey, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/audit-log/stream-key", enterprise)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var key *AuditLogStreamKey
+	resp, err := s.client.Do(ctx, req, &key)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return key, resp, nil
 }
 
 // ListAuditLogStreams lists the audit log stream configurations for an enterprise.
@@ -183,29 +212,7 @@ func (s *EnterpriseService) ListAuditLogStreams(ctx context.Context, enterprise 
 	return streams, resp, nil
 }
 
-// CreateAuditLogStream creates an audit log streaming configuration for an enterprise.
-//
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#create-an-audit-log-streaming-configuration-for-an-enterprise
-//
-//meta:operation POST /enterprises/{enterprise}/audit-log/streams
-func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise string, config *AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
-	u := fmt.Sprintf("enterprises/%v/audit-log/streams", enterprise)
-
-	req, err := s.client.NewRequest("POST", u, config)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	var stream *AuditLogStream
-	resp, err := s.client.Do(ctx, req, &stream)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return stream, resp, nil
-}
-
-// GetAuditLogStream gets an audit log streaming configuration for an enterprise.
+// GetAuditLogStream gets a single audit log stream configuration for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#get-an-audit-log-streaming-configuration-for-an-enterprise
 //
@@ -227,7 +234,31 @@ func (s *EnterpriseService) GetAuditLogStream(ctx context.Context, enterprise st
 	return stream, resp, nil
 }
 
-// UpdateAuditLogStream updates an audit log streaming configuration for an enterprise.
+// CreateAuditLogStream creates an audit log streaming configuration for an enterprise.
+// Credentials in the config must be encrypted using the key returned by GetAuditLogStreamKey.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#create-an-audit-log-streaming-configuration-for-an-enterprise
+//
+//meta:operation POST /enterprises/{enterprise}/audit-log/streams
+func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise string, config *AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/audit-log/streams", enterprise)
+
+	req, err := s.client.NewRequest("POST", u, config)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var stream *AuditLogStream
+	resp, err := s.client.Do(ctx, req, &stream)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return stream, resp, nil
+}
+
+// UpdateAuditLogStream updates an existing audit log stream configuration for an enterprise.
+// Credentials in the config must be encrypted using the key returned by GetAuditLogStreamKey.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#update-an-audit-log-streaming-configuration-for-an-enterprise
 //
@@ -249,7 +280,7 @@ func (s *EnterpriseService) UpdateAuditLogStream(ctx context.Context, enterprise
 	return stream, resp, nil
 }
 
-// DeleteAuditLogStream deletes an audit log streaming configuration for an enterprise.
+// DeleteAuditLogStream deletes an audit log stream configuration for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#delete-an-audit-log-streaming-configuration-for-an-enterprise
 //
