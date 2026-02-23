@@ -180,7 +180,6 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokenRequests(ctx co
 	}
 
 	var pats []*FineGrainedPersonalAccessTokenRequest
-
 	resp, err := s.client.Do(ctx, req, &pats)
 	if err != nil {
 		return nil, resp, err
