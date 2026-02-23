@@ -9120,7 +9120,7 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequestsIter(t *
 		t.Errorf("client.Organizations.ListFineGrainedPersonalAccessTokenRequestsIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	opts := &ListFineGrainedPATRequestOptions{}
+	opts := &ListFineGrainedPATOptions{}
 	iter = client.Organizations.ListFineGrainedPersonalAccessTokenRequestsIter(t.Context(), "", opts)
 	gotItems = 0
 	for _, err := range iter {

@@ -84,6 +84,9 @@ type ListFineGrainedPATOptions struct {
 	// This is a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
 	LastUsedAfter string `url:"last_used_after,omitempty"`
 
+	// TokenID filters results by the given fine-grained personal access token IDs.
+	TokenID []int64 `url:"-"`
+
 	ListOptions
 }
 
@@ -119,50 +122,42 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokens(ctx context.C
 // FineGrainedPersonalAccessTokenRequest represents the details of a request to access organization resources via a fine-grained personal access token.
 type FineGrainedPersonalAccessTokenRequest struct {
 	// Unique identifier of the request for access via fine-grained personal access token.
-	ID *int64 `json:"id,omitempty"`
+	ID int64 `json:"id"`
 
 	// Reason is the reason for the request.
-	Reason *string `json:"reason,omitempty"`
+	Reason string `json:"reason"`
 
 	// Owner is the GitHub user associated with the token.
-	Owner *User `json:"owner,omitempty"`
+	Owner User `json:"owner"`
 
 	// RepositorySelection is the type of repository selection requested.
 	// Possible values are: "none", "all", "subset".
-	RepositorySelection *string `json:"repository_selection,omitempty"`
+	RepositorySelection string `json:"repository_selection"`
 
 	// URL to the list of repositories the fine-grained personal access token can access.
 	// Only follow when `repository_selection` is `subset`.
-	RepositoriesURL *string `json:"repositories_url,omitempty"`
+	RepositoriesURL string `json:"repositories_url"`
 
 	// Permissions are the permissions requested, categorized by type.
-	Permissions *PersonalAccessTokenPermissions `json:"permissions,omitempty"`
+	Permissions PersonalAccessTokenPermissions `json:"permissions"`
 
 	// Date and time when the request was created.
-	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	CreatedAt *Timestamp `json:"created_at"`
 
 	// Whether the associated fine-grained personal access token has expired.
-	TokenExpired *bool `json:"token_expired,omitempty"`
+	TokenExpired bool `json:"token_expired"`
 
 	// Date and time when the associated fine-grained personal access token expires.
-	TokenExpiresAt *Timestamp `json:"token_expires_at,omitempty"`
+	TokenExpiresAt *Timestamp `json:"token_expires_at"`
 
 	// TokenID
-	TokenID *int64 `json:"token_id,omitempty"`
+	TokenID int64 `json:"token_id"`
 
 	// TokenName
-	TokenName *string `json:"token_name,omitempty"`
+	TokenName string `json:"token_name"`
 
 	// Date and time when the associated fine-grained personal access token was last used for authentication.
-	TokenLastUsedAt *Timestamp `json:"token_last_used_at,omitempty"`
-}
-
-// ListFineGrainedPATRequestOptions specifies optional parameters to ListFineGrainedPersonalAccessTokenRequests.
-type ListFineGrainedPATRequestOptions struct {
-	// TokenID filters results by the given fine-grained personal access token IDs.
-	TokenID []int64 `url:"-"`
-
-	ListFineGrainedPATOptions
+	TokenLastUsedAt *Timestamp `json:"token_last_used_at"`
 }
 
 // ListFineGrainedPersonalAccessTokenRequests lists requests to access organization resources via fine-grained personal access tokens.
@@ -171,10 +166,10 @@ type ListFineGrainedPATRequestOptions struct {
 // GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens#list-requests-to-access-organization-resources-with-fine-grained-personal-access-tokens
 //
 //meta:operation GET /orgs/{org}/personal-access-token-requests
-func (s *OrganizationsService) ListFineGrainedPersonalAccessTokenRequests(ctx context.Context, org string, opts *ListFineGrainedPATRequestOptions) ([]*FineGrainedPersonalAccessTokenRequest, *Response, error) {
+func (s *OrganizationsService) ListFineGrainedPersonalAccessTokenRequests(ctx context.Context, org string, opts *ListFineGrainedPATOptions) ([]*FineGrainedPersonalAccessTokenRequest, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/personal-access-token-requests", org)
 	// The `owner` parameter is a special case that uses the `owner[]=...` format and needs a custom function to format it correctly.
-	u, err := addListFineGrainedPATRequestOptions(u, opts)
+	u, err := addListFineGrainedPATOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -218,16 +213,16 @@ func (s *OrganizationsService) ReviewPersonalAccessTokenRequest(ctx context.Cont
 	return s.client.Do(ctx, req, nil)
 }
 
-// addListFineGrainedPATOptions adds the owner parameter to the URL query string with the correct format if it is set.
+// addListFineGrainedPATOptions adds the owner and token_id parameters to the URL query string with the correct format if they are set.
 //
 // GitHub API expects the owner parameter to be a list of strings in the `owner[]=...` format.
-// For multiple owner values, the owner parameter is repeated in the query string.
+// For multiple owner and token_id values, the owner and token_id parameters are repeated in the query string.
 //
 // Example:
-// owner[]=user1&owner[]=user2
-// This will filter the results to only include fine-grained personal access tokens owned by `user1` and `user2`.
+// owner[]=user1&owner[]=user2&token_id[]=123&token_id[]=456
+// This will filter the results to only include fine-grained personal access tokens owned by `user1` and `user2` and with token IDs `123` and `456`.
 //
-// This function ensures the owner parameter is formatted correctly in the URL query string.
+// This function ensures the owner and token_id parameters are formatted correctly in the URL query string.
 func addListFineGrainedPATOptions(s string, opts *ListFineGrainedPATOptions) (string, error) {
 	u, err := addOptions(s, opts)
 	if err != nil {
@@ -236,43 +231,6 @@ func addListFineGrainedPATOptions(s string, opts *ListFineGrainedPATOptions) (st
 
 	if opts == nil {
 		return "", errors.New("opts must be provided")
-	}
-
-	if len(opts.Owner) > 0 {
-		ownerVals := make([]string, len(opts.Owner))
-		for i, owner := range opts.Owner {
-			ownerVals[i] = fmt.Sprintf("owner[]=%v", url.QueryEscape(owner))
-		}
-		ownerQuery := strings.Join(ownerVals, "&")
-
-		if strings.Contains(u, "?") {
-			u += "&" + ownerQuery
-		} else {
-			u += "?" + ownerQuery
-		}
-	}
-
-	return u, nil
-}
-
-// addListFineGrainedPATRequestOptions adds the owner and token_id parameters to the URL query string with the correct format if they are set.
-//
-// GitHub API expects the owner and token_id parameters to be a list of strings in the `owner[]=...` and `token_id[]=...` format.
-// For multiple owner and token_id values, the parameters are repeated in the query string.
-//
-// Example:
-// owner[]=user1&owner[]=user2&token_id[]=123&token_id[]=456
-// This will filter the results to only include requests for fine-grained personal access tokens owned by `user1` and `user2` and with token IDs `123` and `456`.
-//
-// This function ensures the owner and token_id parameters are formatted correctly in the URL query string.
-func addListFineGrainedPATRequestOptions(s string, opts *ListFineGrainedPATRequestOptions) (string, error) {
-	if opts == nil {
-		return s, nil
-	}
-
-	u, err := addOptions(s, opts)
-	if err != nil {
-		return s, err
 	}
 
 	if len(opts.Owner) > 0 {

@@ -252,14 +252,12 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *test
 		]`)
 	})
 
-	opts := &ListFineGrainedPATRequestOptions{
-		ListFineGrainedPATOptions: ListFineGrainedPATOptions{
-			ListOptions: ListOptions{Page: 2, PerPage: 2},
-			Sort:        "created_at",
-			Direction:   "desc",
-			Owner:       []string{"octocat", "octodog"},
-		},
-		TokenID: []int64{11579703, 11579704},
+	opts := &ListFineGrainedPATOptions{
+		ListOptions: ListOptions{Page: 2, PerPage: 2},
+		Sort:        "created_at",
+		Direction:   "desc",
+		Owner:       []string{"octocat", "octodog"},
+		TokenID:     []int64{11579703, 11579704},
 	}
 	ctx := t.Context()
 	requests, resp, err := client.Organizations.ListFineGrainedPersonalAccessTokenRequests(ctx, "o", opts)
@@ -269,9 +267,9 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *test
 
 	want := []*FineGrainedPersonalAccessTokenRequest{
 		{
-			ID:     Ptr(int64(1848980)),
-			Reason: nil,
-			Owner: &User{
+			ID:     1848980,
+			Reason: "",
+			Owner: User{
 				Login:             Ptr("octocat"),
 				ID:                Ptr(int64(1)),
 				NodeID:            Ptr("MDQ6VXNlcjE="),
@@ -291,15 +289,15 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *test
 				Type:              Ptr("User"),
 				SiteAdmin:         Ptr(false),
 			},
-			RepositorySelection: Ptr("all"),
-			RepositoriesURL:     Ptr("https://api.github.com/organizations/135028681/personal-access-token-requests/1848980/repositories"),
-			Permissions: &PersonalAccessTokenPermissions{
+			RepositorySelection: "all",
+			RepositoriesURL:     "https://api.github.com/organizations/135028681/personal-access-token-requests/1848980/repositories",
+			Permissions: PersonalAccessTokenPermissions{
 				Repo: map[string]string{"metadata": "read"},
 			},
 			CreatedAt:       &Timestamp{time.Date(2026, time.February, 17, 6, 49, 30, 0, time.UTC)},
-			TokenID:         Ptr(int64(11579703)),
-			TokenName:       Ptr("testFineGrained"),
-			TokenExpired:    Ptr(false),
+			TokenID:         11579703,
+			TokenName:       "testFineGrained",
+			TokenExpired:    false,
 			TokenExpiresAt:  &Timestamp{time.Date(2026, time.April, 18, 6, 49, 30, 0, time.UTC)},
 			TokenLastUsedAt: nil,
 		},
@@ -327,34 +325,6 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *test
 	})
 }
 
-func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests_nilOptions(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/orgs/o/personal-access-token-requests", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		if r.URL.RawQuery != "" {
-			t.Errorf("Expected no query string when opts is nil, got %q", r.URL.RawQuery)
-		}
-		fmt.Fprint(w, "[]")
-	})
-
-	ctx := t.Context()
-	requests, resp, err := client.Organizations.ListFineGrainedPersonalAccessTokenRequests(ctx, "o", nil)
-	if err != nil {
-		t.Errorf("Organizations.ListFineGrainedPersonalAccessTokenRequests with nil opts returned error: %v", err)
-	}
-	if requests == nil {
-		t.Error("Organizations.ListFineGrainedPersonalAccessTokenRequests with nil opts returned nil requests")
-	}
-	if len(requests) != 0 {
-		t.Errorf("Organizations.ListFineGrainedPersonalAccessTokenRequests with nil opts returned %v requests, want 0", len(requests))
-	}
-	if resp == nil {
-		t.Error("Organizations.ListFineGrainedPersonalAccessTokenRequests with nil opts returned nil response")
-	}
-}
-
 func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests_ownerOnly(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -371,8 +341,8 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests_ownerOn
 		fmt.Fprint(w, "[]")
 	})
 
-	opts := &ListFineGrainedPATRequestOptions{
-		ListFineGrainedPATOptions: ListFineGrainedPATOptions{Owner: []string{"octocat"}},
+	opts := &ListFineGrainedPATOptions{
+		Owner: []string{"octocat"},
 	}
 	ctx := t.Context()
 	_, _, err := client.Organizations.ListFineGrainedPersonalAccessTokenRequests(ctx, "o", opts)
@@ -397,7 +367,7 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests_tokenID
 		fmt.Fprint(w, "[]")
 	})
 
-	opts := &ListFineGrainedPATRequestOptions{
+	opts := &ListFineGrainedPATOptions{
 		TokenID: []int64{11579703},
 	}
 	ctx := t.Context()
