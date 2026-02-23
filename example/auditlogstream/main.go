@@ -6,19 +6,15 @@
 // The auditlogstream command demonstrates managing enterprise audit log
 // streams for Azure Blob Storage using the go-github library.
 //
-// Usage — create (github.com):
+// The GitHub API base URL is read from the GITHUB_API_URL environment
+// variable. When running inside a GitHub Actions workflow this is set
+// automatically.
+//
+// Usage — create:
 //
 //	export GITHUB_AUTH_TOKEN=<your token>
+//	export GITHUB_API_URL=https://api.<domain>.ghe.com/ or https://domain/api/v3/
 //	go run main.go create \
-//	  -enterprise=my-enterprise \
-//	  -container=my-container \
-//	  -sas-url=<plain-text-sas-url>
-//
-// Usage — create (GitHub Enterprise Server):
-//
-//	export GITHUB_AUTH_TOKEN=<your token>
-//	go run main.go create \
-//	  -base-url=https://github.example.com/api/v3/ \
 //	  -enterprise=my-enterprise \
 //	  -container=my-container \
 //	  -sas-url=<plain-text-sas-url>
@@ -26,8 +22,8 @@
 // Usage — delete:
 //
 //	export GITHUB_AUTH_TOKEN=<your token>
+//	export GITHUB_API_URL=https://api.<domain>.ghe.com/ or https://domain/api/v3/
 //	go run main.go delete \
-//	  -base-url=https://github.example.com/api/v3/ \
 //	  -enterprise=my-enterprise \
 //	  -stream-id=42
 package main
@@ -53,7 +49,7 @@ func encryptSecret(publicKeyB64, secret string) (string, error) {
 		return "", fmt.Errorf("decoding public key: %w", err)
 	}
 	if len(publicKeyBytes) != 32 {
-		return "", fmt.Errorf("public key must be 32 bytes, got %d", len(publicKeyBytes))
+		return "", fmt.Errorf("public key must be 32 bytes, got %v", len(publicKeyBytes))
 	}
 	var publicKey [32]byte
 	copy(publicKey[:], publicKeyBytes)
@@ -68,7 +64,7 @@ func encryptSecret(publicKeyB64, secret string) (string, error) {
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %s <create|delete> [flags]\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "Usage: %v <create|delete> [flags]\n", os.Args[0])
 		os.Exit(1)
 	}
 
@@ -85,30 +81,32 @@ func main() {
 
 func runCreate(args []string) {
 	fs := flag.NewFlagSet("create", flag.ExitOnError)
-	baseURL := fs.String("base-url", "https://api.github.com/", "GitHub API base URL. For GitHub Enterprise Server use https://HOSTNAME/api/v3/.")
-	enterprise := fs.String("enterprise", "", "Name of the GitHub enterprise slug (required).")
+	enterprise := fs.String("enterprise", "", "Enterprise slug (required).")
 	container := fs.String("container", "", "Azure Blob Storage container name (required).")
 	sasURL := fs.String("sas-url", "", "Plain-text Azure SAS URL to encrypt and submit (required).")
 	enabled := fs.Bool("enabled", true, "Whether the stream should be enabled immediately.")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil {
+		log.Fatalf("Error parsing flags: %v", err)
+	}
 
 	token := requireEnv("GITHUB_AUTH_TOKEN")
+	apiURL := requireEnv("GITHUB_API_URL")
 	requireFlag("enterprise", *enterprise)
 	requireFlag("container", *container)
 	requireFlag("sas-url", *sasURL)
 
 	ctx := context.Background()
-	client := newClient(token, *baseURL)
+	client := newClient(token, apiURL)
 
 	// Step 1: Fetch the enterprise's public streaming key.
 	streamKey, _, err := client.Enterprise.GetAuditLogStreamKey(ctx, *enterprise)
 	if err != nil {
 		log.Fatalf("Error fetching audit log stream key: %v", err)
 	}
-	fmt.Printf("Retrieved stream key ID: %s\n", streamKey.GetKeyID())
+	fmt.Printf("Retrieved stream key ID: %v\n", streamKey.GetKeyID())
 
 	// Step 2: Encrypt the SAS URL using the public key (sealed box / crypto_box_seal).
-	encryptedSASURL, err := encryptSecret(streamKey.GetPublicKey(), *sasURL)
+	encryptedSASURL, err := encryptSecret(streamKey.GetKey(), *sasURL)
 	if err != nil {
 		log.Fatalf("Error encrypting SAS URL: %v", err)
 	}
@@ -118,7 +116,7 @@ func runCreate(args []string) {
 	config := github.NewAzureBlobStreamConfig(*enabled, &github.AzureBlobConfig{
 		KeyID:           streamKey.KeyID,
 		Container:       github.Ptr(*container),
-		EncryptedSASURL: github.Ptr(encryptedSASURL),
+		EncryptedSasURL: github.Ptr(encryptedSASURL),
 	})
 
 	stream, _, err := client.Enterprise.CreateAuditLogStream(ctx, *enterprise, config)
@@ -126,39 +124,41 @@ func runCreate(args []string) {
 		log.Fatalf("Error creating audit log stream: %v", err)
 	}
 
-	fmt.Printf("Successfully created audit log stream:\n")
-	fmt.Printf("  ID:         %d\n", stream.GetID())
-	fmt.Printf("  Type:       %s\n", stream.GetStreamType())
+	fmt.Println("Successfully created audit log stream:")
+	fmt.Printf("  ID:         %v\n", stream.GetID())
+	fmt.Printf("  Type:       %v\n", stream.GetStreamType())
 	fmt.Printf("  Enabled:    %v\n", stream.GetEnabled())
 	fmt.Printf("  Created at: %v\n", stream.GetCreatedAt())
 }
 
 func runDelete(args []string) {
 	fs := flag.NewFlagSet("delete", flag.ExitOnError)
-	baseURL := fs.String("base-url", "https://api.github.com/", "GitHub API base URL. For GitHub Enterprise Server use https://HOSTNAME/api/v3/.")
-	enterprise := fs.String("enterprise", "", "Name of the GitHub enterprise slug (required).")
+	enterprise := fs.String("enterprise", "", "Enterprise slug (required).")
 	streamID := fs.Int64("stream-id", 0, "ID of the audit log stream to delete (required).")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil {
+		log.Fatalf("Error parsing flags: %v", err)
+	}
 
 	token := requireEnv("GITHUB_AUTH_TOKEN")
+	apiURL := requireEnv("GITHUB_API_URL")
 	requireFlag("enterprise", *enterprise)
 	if *streamID == 0 {
 		log.Fatal("flag -stream-id is required")
 	}
 
 	ctx := context.Background()
-	client := newClient(token, *baseURL)
+	client := newClient(token, apiURL)
 
 	_, err := client.Enterprise.DeleteAuditLogStream(ctx, *enterprise, *streamID)
 	if err != nil {
 		log.Fatalf("Error deleting audit log stream: %v", err)
 	}
 
-	fmt.Printf("Successfully deleted audit log stream %d.\n", *streamID)
+	fmt.Printf("Successfully deleted audit log stream %v.\n", *streamID)
 }
 
-func newClient(token, baseURL string) *github.Client {
-	client, err := github.NewClient(nil).WithAuthToken(token).WithEnterpriseURLs(baseURL, baseURL)
+func newClient(token, apiURL string) *github.Client {
+	client, err := github.NewClient(nil).WithAuthToken(token).WithEnterpriseURLs(apiURL, apiURL)
 	if err != nil {
 		log.Fatalf("Error creating GitHub client: %v", err)
 	}
@@ -168,13 +168,13 @@ func newClient(token, baseURL string) *github.Client {
 func requireEnv(name string) string {
 	val := os.Getenv(name)
 	if val == "" {
-		log.Fatalf("environment variable %s is not set", name)
+		log.Fatalf("environment variable %v is not set", name)
 	}
 	return val
 }
 
 func requireFlag(name, val string) {
 	if val == "" {
-		log.Fatalf("flag -%s is required", name)
+		log.Fatalf("flag -%v is required", name)
 	}
 }

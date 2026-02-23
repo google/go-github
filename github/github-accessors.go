@@ -814,12 +814,12 @@ func (a *AmazonS3AccessKeysConfig) GetRegion() string {
 	return *a.Region
 }
 
-// GetARNRole returns the ARNRole field if it's non-nil, zero value otherwise.
-func (a *AmazonS3OIDCConfig) GetARNRole() string {
-	if a == nil || a.ARNRole == nil {
+// GetArnRole returns the ArnRole field if it's non-nil, zero value otherwise.
+func (a *AmazonS3OIDCConfig) GetArnRole() string {
+	if a == nil || a.ArnRole == nil {
 		return ""
 	}
-	return *a.ARNRole
+	return *a.ArnRole
 }
 
 // GetAuthenticationType returns the AuthenticationType field if it's non-nil, zero value otherwise.
@@ -1814,20 +1814,28 @@ func (a *AuditLogStreamConfig) GetStreamType() string {
 	return *a.StreamType
 }
 
+// GetVendorSpecific returns the VendorSpecific field.
+func (a *AuditLogStreamConfig) GetVendorSpecific() *AuditLogStreamVendorConfig {
+	if a == nil {
+		return nil
+	}
+	return a.VendorSpecific
+}
+
+// GetKey returns the Key field if it's non-nil, zero value otherwise.
+func (a *AuditLogStreamKey) GetKey() string {
+	if a == nil || a.Key == nil {
+		return ""
+	}
+	return *a.Key
+}
+
 // GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
 func (a *AuditLogStreamKey) GetKeyID() string {
 	if a == nil || a.KeyID == nil {
 		return ""
 	}
 	return *a.KeyID
-}
-
-// GetPublicKey returns the PublicKey field if it's non-nil, zero value otherwise.
-func (a *AuditLogStreamKey) GetPublicKey() string {
-	if a == nil || a.PublicKey == nil {
-		return ""
-	}
-	return *a.PublicKey
 }
 
 // GetApp returns the App field.
@@ -2126,12 +2134,12 @@ func (a *AzureBlobConfig) GetContainer() string {
 	return *a.Container
 }
 
-// GetEncryptedSASURL returns the EncryptedSASURL field if it's non-nil, zero value otherwise.
-func (a *AzureBlobConfig) GetEncryptedSASURL() string {
-	if a == nil || a.EncryptedSASURL == nil {
+// GetEncryptedSasURL returns the EncryptedSasURL field if it's non-nil, zero value otherwise.
+func (a *AzureBlobConfig) GetEncryptedSasURL() string {
+	if a == nil || a.EncryptedSasURL == nil {
 		return ""
 	}
-	return *a.EncryptedSASURL
+	return *a.EncryptedSasURL
 }
 
 // GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
@@ -2142,12 +2150,12 @@ func (a *AzureBlobConfig) GetKeyID() string {
 	return *a.KeyID
 }
 
-// GetEncryptedConnString returns the EncryptedConnString field if it's non-nil, zero value otherwise.
-func (a *AzureHubConfig) GetEncryptedConnString() string {
-	if a == nil || a.EncryptedConnString == nil {
+// GetEncryptedConnstring returns the EncryptedConnstring field if it's non-nil, zero value otherwise.
+func (a *AzureHubConfig) GetEncryptedConnstring() string {
+	if a == nil || a.EncryptedConnstring == nil {
 		return ""
 	}
-	return *a.EncryptedConnString
+	return *a.EncryptedConnstring
 }
 
 // GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.

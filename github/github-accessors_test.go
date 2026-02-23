@@ -1046,15 +1046,15 @@ func TestAmazonS3AccessKeysConfig_GetRegion(tt *testing.T) {
 	a.GetRegion()
 }
 
-func TestAmazonS3OIDCConfig_GetARNRole(tt *testing.T) {
+func TestAmazonS3OIDCConfig_GetArnRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	a := &AmazonS3OIDCConfig{ARNRole: &zeroValue}
-	a.GetARNRole()
+	a := &AmazonS3OIDCConfig{ArnRole: &zeroValue}
+	a.GetArnRole()
 	a = &AmazonS3OIDCConfig{}
-	a.GetARNRole()
+	a.GetArnRole()
 	a = nil
-	a.GetARNRole()
+	a.GetArnRole()
 }
 
 func TestAmazonS3OIDCConfig_GetAuthenticationType(tt *testing.T) {
@@ -2397,6 +2397,25 @@ func TestAuditLogStreamConfig_GetStreamType(tt *testing.T) {
 	a.GetStreamType()
 }
 
+func TestAuditLogStreamConfig_GetVendorSpecific(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStreamConfig{}
+	a.GetVendorSpecific()
+	a = nil
+	a.GetVendorSpecific()
+}
+
+func TestAuditLogStreamKey_GetKey(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AuditLogStreamKey{Key: &zeroValue}
+	a.GetKey()
+	a = &AuditLogStreamKey{}
+	a.GetKey()
+	a = nil
+	a.GetKey()
+}
+
 func TestAuditLogStreamKey_GetKeyID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -2406,17 +2425,6 @@ func TestAuditLogStreamKey_GetKeyID(tt *testing.T) {
 	a.GetKeyID()
 	a = nil
 	a.GetKeyID()
-}
-
-func TestAuditLogStreamKey_GetPublicKey(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &AuditLogStreamKey{PublicKey: &zeroValue}
-	a.GetPublicKey()
-	a = &AuditLogStreamKey{}
-	a.GetPublicKey()
-	a = nil
-	a.GetPublicKey()
 }
 
 func TestAuthorization_GetApp(tt *testing.T) {
@@ -2820,15 +2828,15 @@ func TestAzureBlobConfig_GetContainer(tt *testing.T) {
 	a.GetContainer()
 }
 
-func TestAzureBlobConfig_GetEncryptedSASURL(tt *testing.T) {
+func TestAzureBlobConfig_GetEncryptedSasURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	a := &AzureBlobConfig{EncryptedSASURL: &zeroValue}
-	a.GetEncryptedSASURL()
+	a := &AzureBlobConfig{EncryptedSasURL: &zeroValue}
+	a.GetEncryptedSasURL()
 	a = &AzureBlobConfig{}
-	a.GetEncryptedSASURL()
+	a.GetEncryptedSasURL()
 	a = nil
-	a.GetEncryptedSASURL()
+	a.GetEncryptedSasURL()
 }
 
 func TestAzureBlobConfig_GetKeyID(tt *testing.T) {
@@ -2842,15 +2850,15 @@ func TestAzureBlobConfig_GetKeyID(tt *testing.T) {
 	a.GetKeyID()
 }
 
-func TestAzureHubConfig_GetEncryptedConnString(tt *testing.T) {
+func TestAzureHubConfig_GetEncryptedConnstring(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	a := &AzureHubConfig{EncryptedConnString: &zeroValue}
-	a.GetEncryptedConnString()
+	a := &AzureHubConfig{EncryptedConnstring: &zeroValue}
+	a.GetEncryptedConnstring()
 	a = &AzureHubConfig{}
-	a.GetEncryptedConnString()
+	a.GetEncryptedConnstring()
 	a = nil
-	a.GetEncryptedConnString()
+	a.GetEncryptedConnstring()
 }
 
 func TestAzureHubConfig_GetKeyID(tt *testing.T) {
