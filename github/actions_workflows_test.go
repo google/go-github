@@ -235,12 +235,13 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	event := CreateWorkflowDispatchEventRequest{
-		Ref: "d4cfb6e7",
+		Ref:              "d4cfb6e7",
+		ReturnRunDetails: Ptr(true),
 		Inputs: map[string]any{
 			"key": "value",
 		},
 	}
-	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(_ http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
 		var v CreateWorkflowDispatchEventRequest
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
@@ -248,33 +249,110 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 		if !cmp.Equal(v, event) {
 			t.Errorf("Request body = %+v, want %+v", v, event)
 		}
+
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{"workflow_run_id":1,"run_url":"https://api.github.com/repos/o/r/actions/runs/1","html_url":"https://github.com/o/r/actions/runs/1"}`)
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
+	dispatchResponse, _, err := client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
 	if err != nil {
 		t.Errorf("Actions.CreateWorkflowDispatchEventByID returned error: %v", err)
 	}
 
+	want := &WorkflowDispatchRunDetails{
+		WorkflowRunID: Ptr(int64(1)),
+		RunURL:        Ptr("https://api.github.com/repos/o/r/actions/runs/1"),
+		HTMLURL:       Ptr("https://github.com/o/r/actions/runs/1"),
+	}
+	if !cmp.Equal(dispatchResponse, want) {
+		t.Errorf("Actions.CreateWorkflowDispatchEventByID = %+v, want %+v", dispatchResponse, want)
+	}
+
 	// Test s.client.NewRequest failure
 	client.BaseURL.Path = ""
-	_, err = client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
+	_, _, err = client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByID err = nil, want error")
 	}
 
 	const methodName = "CreateWorkflowDispatchEventByID"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
+		_, _, err = client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
+		got, resp, err := client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
 func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	event := CreateWorkflowDispatchEventRequest{
+		Ref:              "d4cfb6e7",
+		ReturnRunDetails: Ptr(true),
+		Inputs: map[string]any{
+			"key": "value",
+		},
+	}
+	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
+		var v CreateWorkflowDispatchEventRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, event) {
+			t.Errorf("Request body = %+v, want %+v", v, event)
+		}
+
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{"workflow_run_id":1,"run_url":"https://api.github.com/repos/o/r/actions/runs/1","html_url":"https://github.com/o/r/actions/runs/1"}`)
+	})
+
+	ctx := t.Context()
+	dispatchResponse, _, err := client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
+	if err != nil {
+		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName returned error: %v", err)
+	}
+
+	want := &WorkflowDispatchRunDetails{
+		WorkflowRunID: Ptr(int64(1)),
+		RunURL:        Ptr("https://api.github.com/repos/o/r/actions/runs/1"),
+		HTMLURL:       Ptr("https://github.com/o/r/actions/runs/1"),
+	}
+	if !cmp.Equal(dispatchResponse, want) {
+		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName = %+v, want %+v", dispatchResponse, want)
+	}
+
+	// Test s.client.NewRequest failure
+	client.BaseURL.Path = ""
+	_, _, err = client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
+	if err == nil {
+		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByFileName err = nil, want error")
+	}
+
+	const methodName = "CreateWorkflowDispatchEventByFileName"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_CreateWorkflowDispatchEventByID_noRunDetails(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -284,7 +362,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 			"key": "value",
 		},
 	}
-	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(_ http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
 		var v CreateWorkflowDispatchEventRequest
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
@@ -292,30 +370,52 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 		if !cmp.Equal(v, event) {
 			t.Errorf("Request body = %+v, want %+v", v, event)
 		}
+
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
+	dispatchResponse, _, err := client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
+	if err != nil {
+		t.Errorf("Actions.CreateWorkflowDispatchEventByID returned error: %v", err)
+	}
+
+	if dispatchResponse != nil {
+		t.Errorf("Actions.CreateWorkflowDispatchEventByID = %+v, want nil", dispatchResponse)
+	}
+}
+
+func TestActionsService_CreateWorkflowDispatchEventByFileName_noRunDetails(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	event := CreateWorkflowDispatchEventRequest{
+		Ref: "d4cfb6e7",
+		Inputs: map[string]any{
+			"key": "value",
+		},
+	}
+	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
+		var v CreateWorkflowDispatchEventRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, event) {
+			t.Errorf("Request body = %+v, want %+v", v, event)
+		}
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	dispatchResponse, _, err := client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
 	if err != nil {
 		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName returned error: %v", err)
 	}
 
-	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
-	_, err = client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
-	if err == nil {
-		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByFileName err = nil, want error")
+	if dispatchResponse != nil {
+		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName = %+v, want nil", dispatchResponse)
 	}
-
-	const methodName = "CreateWorkflowDispatchEventByFileName"
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
-	})
 }
 
 func TestActionsService_EnableWorkflowByID(t *testing.T) {
