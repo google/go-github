@@ -10478,6 +10478,30 @@ func (f *FieldValue) GetProjectNumber() int64 {
 	return *f.ProjectNumber
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetCreatedAt() Timestamp {
+	if f == nil || f.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *f.CreatedAt
+}
+
+// GetTokenExpiresAt returns the TokenExpiresAt field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetTokenExpiresAt() Timestamp {
+	if f == nil || f.TokenExpiresAt == nil {
+		return Timestamp{}
+	}
+	return *f.TokenExpiresAt
+}
+
+// GetTokenLastUsedAt returns the TokenLastUsedAt field if it's non-nil, zero value otherwise.
+func (f *FineGrainedPersonalAccessTokenRequest) GetTokenLastUsedAt() Timestamp {
+	if f == nil || f.TokenLastUsedAt == nil {
+		return Timestamp{}
+	}
+	return *f.TokenLastUsedAt
+}
+
 // GetIdentifier returns the Identifier field if it's non-nil, zero value otherwise.
 func (f *FirstPatchedVersion) GetIdentifier() string {
 	if f == nil || f.Identifier == nil {

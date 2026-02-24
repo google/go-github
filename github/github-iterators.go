@@ -4149,6 +4149,37 @@ func (s *OrganizationsService) ListFailedOrgInvitationsIter(ctx context.Context,
 	}
 }
 
+// ListFineGrainedPersonalAccessTokenRequestsIter returns an iterator that paginates through all results of ListFineGrainedPersonalAccessTokenRequests.
+func (s *OrganizationsService) ListFineGrainedPersonalAccessTokenRequestsIter(ctx context.Context, org string, opts *ListFineGrainedPATOptions) iter.Seq2[*FineGrainedPersonalAccessTokenRequest, error] {
+	return func(yield func(*FineGrainedPersonalAccessTokenRequest, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListFineGrainedPATOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListFineGrainedPersonalAccessTokenRequests(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListFineGrainedPersonalAccessTokensIter returns an iterator that paginates through all results of ListFineGrainedPersonalAccessTokens.
 func (s *OrganizationsService) ListFineGrainedPersonalAccessTokensIter(ctx context.Context, org string, opts *ListFineGrainedPATOptions) iter.Seq2[*PersonalAccessToken, error] {
 	return func(yield func(*PersonalAccessToken, error) bool) {

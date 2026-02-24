@@ -13614,6 +13614,39 @@ func TestFieldValue_GetProjectNumber(tt *testing.T) {
 	f.GetProjectNumber()
 }
 
+func TestFineGrainedPersonalAccessTokenRequest_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	f := &FineGrainedPersonalAccessTokenRequest{CreatedAt: &zeroValue}
+	f.GetCreatedAt()
+	f = &FineGrainedPersonalAccessTokenRequest{}
+	f.GetCreatedAt()
+	f = nil
+	f.GetCreatedAt()
+}
+
+func TestFineGrainedPersonalAccessTokenRequest_GetTokenExpiresAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	f := &FineGrainedPersonalAccessTokenRequest{TokenExpiresAt: &zeroValue}
+	f.GetTokenExpiresAt()
+	f = &FineGrainedPersonalAccessTokenRequest{}
+	f.GetTokenExpiresAt()
+	f = nil
+	f.GetTokenExpiresAt()
+}
+
+func TestFineGrainedPersonalAccessTokenRequest_GetTokenLastUsedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	f := &FineGrainedPersonalAccessTokenRequest{TokenLastUsedAt: &zeroValue}
+	f.GetTokenLastUsedAt()
+	f = &FineGrainedPersonalAccessTokenRequest{}
+	f.GetTokenLastUsedAt()
+	f = nil
+	f.GetTokenLastUsedAt()
+}
+
 func TestFirstPatchedVersion_GetIdentifier(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
