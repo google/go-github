@@ -260,7 +260,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 		t.Errorf("Actions.CreateWorkflowDispatchEventByID returned error: %v", err)
 	}
 
-	want := &CreateWorkflowDispatchEventResponse{
+	want := &WorkflowDispatchRunDetails{
 		WorkflowRunID: Ptr(int64(1)),
 		RunURL:        Ptr("https://api.github.com/repos/o/r/actions/runs/1"),
 		HTMLURL:       Ptr("https://github.com/o/r/actions/runs/1"),
@@ -321,7 +321,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName returned error: %v", err)
 	}
 
-	want := &CreateWorkflowDispatchEventResponse{
+	want := &WorkflowDispatchRunDetails{
 		WorkflowRunID: Ptr(int64(1)),
 		RunURL:        Ptr("https://api.github.com/repos/o/r/actions/runs/1"),
 		HTMLURL:       Ptr("https://github.com/o/r/actions/runs/1"),

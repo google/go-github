@@ -9406,39 +9406,6 @@ func TestCreateWorkflowDispatchEventRequest_GetReturnRunDetails(tt *testing.T) {
 	c.GetReturnRunDetails()
 }
 
-func TestCreateWorkflowDispatchEventResponse_GetHTMLURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateWorkflowDispatchEventResponse{HTMLURL: &zeroValue}
-	c.GetHTMLURL()
-	c = &CreateWorkflowDispatchEventResponse{}
-	c.GetHTMLURL()
-	c = nil
-	c.GetHTMLURL()
-}
-
-func TestCreateWorkflowDispatchEventResponse_GetRunURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateWorkflowDispatchEventResponse{RunURL: &zeroValue}
-	c.GetRunURL()
-	c = &CreateWorkflowDispatchEventResponse{}
-	c.GetRunURL()
-	c = nil
-	c.GetRunURL()
-}
-
-func TestCreateWorkflowDispatchEventResponse_GetWorkflowRunID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	c := &CreateWorkflowDispatchEventResponse{WorkflowRunID: &zeroValue}
-	c.GetWorkflowRunID()
-	c = &CreateWorkflowDispatchEventResponse{}
-	c.GetWorkflowRunID()
-	c = nil
-	c.GetWorkflowRunID()
-}
-
 func TestCreationInfo_GetCreated(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -40954,6 +40921,39 @@ func TestWorkflowDispatchEvent_GetWorkflow(tt *testing.T) {
 	w.GetWorkflow()
 	w = nil
 	w.GetWorkflow()
+}
+
+func TestWorkflowDispatchRunDetails_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	w := &WorkflowDispatchRunDetails{HTMLURL: &zeroValue}
+	w.GetHTMLURL()
+	w = &WorkflowDispatchRunDetails{}
+	w.GetHTMLURL()
+	w = nil
+	w.GetHTMLURL()
+}
+
+func TestWorkflowDispatchRunDetails_GetRunURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	w := &WorkflowDispatchRunDetails{RunURL: &zeroValue}
+	w.GetRunURL()
+	w = &WorkflowDispatchRunDetails{}
+	w.GetRunURL()
+	w = nil
+	w.GetRunURL()
+}
+
+func TestWorkflowDispatchRunDetails_GetWorkflowRunID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	w := &WorkflowDispatchRunDetails{WorkflowRunID: &zeroValue}
+	w.GetWorkflowRunID()
+	w = &WorkflowDispatchRunDetails{}
+	w.GetWorkflowRunID()
+	w = nil
+	w.GetWorkflowRunID()
 }
 
 func TestWorkflowJob_GetCheckRunURL(tt *testing.T) {
