@@ -30393,6 +30393,28 @@ func TestRepoDependencies_GetVersionInfo(tt *testing.T) {
 	r.GetVersionInfo()
 }
 
+func TestRepoFineGrainedPermission_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepoFineGrainedPermission{Description: &zeroValue}
+	r.GetDescription()
+	r = &RepoFineGrainedPermission{}
+	r.GetDescription()
+	r = nil
+	r.GetDescription()
+}
+
+func TestRepoFineGrainedPermission_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepoFineGrainedPermission{Name: &zeroValue}
+	r.GetName()
+	r = &RepoFineGrainedPermission{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
 func TestRepoMergeUpstreamRequest_GetBranch(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

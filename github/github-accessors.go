@@ -23510,6 +23510,22 @@ func (r *RepoDependencies) GetVersionInfo() string {
 	return *r.VersionInfo
 }
 
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (r *RepoFineGrainedPermission) GetDescription() string {
+	if r == nil || r.Description == nil {
+		return ""
+	}
+	return *r.Description
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *RepoFineGrainedPermission) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
 // GetBranch returns the Branch field if it's non-nil, zero value otherwise.
 func (r *RepoMergeUpstreamRequest) GetBranch() string {
 	if r == nil || r.Branch == nil {
