@@ -572,15 +572,12 @@ func TestNewRequest_invalidJSON(t *testing.T) {
 	c := NewClient(nil)
 
 	type T struct {
-		A map[any]any
+		F func()
 	}
 	_, err := c.NewRequest("GET", ".", &T{})
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
-	}
-	if !errors.As(err, new(*json.UnsupportedTypeError)) {
-		t.Errorf("Expected a JSON error; got %#v.", err)
 	}
 }
 

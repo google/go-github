@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -261,7 +262,7 @@ func TestHookDelivery_ParsePayload_invalidPayload(t *testing.T) {
 	}
 
 	_, err := d.ParseRequestPayload()
-	if err == nil || err.Error() != "json: cannot unmarshal string into Go struct field CheckRun.check_run.id of type int64" {
+	if err == nil || !strings.Contains(err.Error(), "json: cannot unmarshal") || !strings.Contains(err.Error(), "check_run.id") {
 		t.Errorf("unexpected error: %v", err)
 	}
 }

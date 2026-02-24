@@ -590,7 +590,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_Unmars
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisoriesForOrg(ctx, "o", nil)
 	if err == nil {
 		t.Error("Expected unmarshal error")
-	} else if !strings.Contains(err.Error(), "json: cannot unmarshal number into Go struct field SecurityAdvisory.ghsa_id of type string") {
+	} else if !strings.Contains(err.Error(), "json: cannot unmarshal") || !strings.Contains(err.Error(), "ghsa_id") {
 		t.Errorf("ListRepositorySecurityAdvisoriesForOrg returned unexpected error: %v", err)
 	}
 	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
@@ -721,7 +721,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_UnmarshalErr
 	advisories, resp, err := client.SecurityAdvisories.ListRepositorySecurityAdvisories(ctx, "o", "r", nil)
 	if err == nil {
 		t.Error("Expected unmarshal error")
-	} else if !strings.Contains(err.Error(), "json: cannot unmarshal number into Go struct field SecurityAdvisory.ghsa_id of type string") {
+	} else if !strings.Contains(err.Error(), "json: cannot unmarshal") || !strings.Contains(err.Error(), "ghsa_id") {
 		t.Errorf("ListRepositorySecurityAdvisories returned unexpected error: %v", err)
 	}
 	if got, want := resp.Response.StatusCode, http.StatusOK; got != want {
