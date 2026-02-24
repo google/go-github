@@ -59,9 +59,9 @@ type CreateWorkflowDispatchEventRequest struct {
 	ReturnRunDetails *bool `json:"return_run_details,omitempty"`
 }
 
-// CreateWorkflowDispatchEventResponse represents the response from creating
+// WorkflowDispatchRunDetails represents the response from creating
 // a workflow dispatch event when ReturnRunDetails is set to true.
-type CreateWorkflowDispatchEventResponse struct {
+type WorkflowDispatchRunDetails struct {
 	WorkflowRunID *int64  `json:"workflow_run_id,omitempty"`
 	RunURL        *string `json:"run_url,omitempty"`
 	HTMLURL       *string `json:"html_url,omitempty"`
@@ -202,7 +202,7 @@ func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*Wor
 // GitHub API docs: https://docs.github.com/rest/actions/workflows#create-a-workflow-dispatch-event
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
-func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, owner, repo string, workflowID int64, event CreateWorkflowDispatchEventRequest) (*CreateWorkflowDispatchEventResponse, *Response, error) {
+func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, owner, repo string, workflowID int64, event CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowID)
 
 	return s.createWorkflowDispatchEvent(ctx, u, &event)
@@ -213,25 +213,25 @@ func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, ow
 // GitHub API docs: https://docs.github.com/rest/actions/workflows#create-a-workflow-dispatch-event
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
-func (s *ActionsService) CreateWorkflowDispatchEventByFileName(ctx context.Context, owner, repo, workflowFileName string, event CreateWorkflowDispatchEventRequest) (*CreateWorkflowDispatchEventResponse, *Response, error) {
+func (s *ActionsService) CreateWorkflowDispatchEventByFileName(ctx context.Context, owner, repo, workflowFileName string, event CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowFileName)
 
 	return s.createWorkflowDispatchEvent(ctx, u, &event)
 }
 
-func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url string, event *CreateWorkflowDispatchEventRequest) (*CreateWorkflowDispatchEventResponse, *Response, error) {
+func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url string, event *CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
 	req, err := s.client.NewRequest("POST", url, event)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var dispatchResponse *CreateWorkflowDispatchEventResponse
-	resp, err := s.client.Do(ctx, req, &dispatchResponse)
+	var dispatchRunDetails *WorkflowDispatchRunDetails
+	resp, err := s.client.Do(ctx, req, &dispatchRunDetails)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return dispatchResponse, resp, nil
+	return dispatchRunDetails, resp, nil
 }
 
 // EnableWorkflowByID enables a workflow and sets the state of the workflow to "active".
