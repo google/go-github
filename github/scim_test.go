@@ -491,7 +491,7 @@ func TestSCIMUserRole_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, &SCIMUserRole{
 		Value:   "enterprise_owner",
-		Primary: Bool(true),
+		Primary: Ptr(true),
 	}, `{
 		"value": "enterprise_owner",
 		"primary": true
