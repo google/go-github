@@ -1,0 +1,97 @@
+// Copyright 2025 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package github
+
+import (
+	"fmt"
+	"net/http"
+	"testing"
+)
+
+func TestRepositoriesService_EnableImmutableReleases(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/owner/repo/immutable-releases", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	_, err := client.Repositories.EnableImmutableReleases(ctx, "owner", "repo")
+	if err != nil {
+		t.Errorf("Repositories.EnableImmutableReleases returned error: %v", err)
+	}
+
+	const methodName = "EnableImmutableReleases"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.EnableImmutableReleases(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.EnableImmutableReleases(ctx, "owner", "repo")
+	})
+}
+
+func TestRepositoriesService_DisableImmutableReleases(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/owner/repo/immutable-releases", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	_, err := client.Repositories.DisableImmutableReleases(ctx, "owner", "repo")
+	if err != nil {
+		t.Errorf("Repositories.DisableImmutableReleases returned error: %v", err)
+	}
+
+	const methodName = "DisableImmutableReleases"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Repositories.DisableImmutableReleases(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Repositories.DisableImmutableReleases(ctx, "owner", "repo")
+	})
+}
+
+func TestRepositoriesService_IsImmutableReleasesEnabled(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/owner/repo/immutable-releases", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"enabled": true}`)
+	})
+
+	ctx := t.Context()
+	enabled, _, err := client.Repositories.IsImmutableReleasesEnabled(ctx, "owner", "repo")
+	if err != nil {
+		t.Errorf("Repositories.IsImmutableReleasesEnabled returned error: %v", err)
+	}
+	if want := true; enabled != want {
+		t.Errorf("Repositories.IsImmutableReleasesEnabled returned %+v, want %+v", enabled, want)
+	}
+
+	const methodName = "IsImmutableReleasesEnabled"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Repositories.IsImmutableReleasesEnabled(ctx, "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Repositories.IsImmutableReleasesEnabled(ctx, "owner", "repo")
+		if got {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		}
+		return resp, err
+	})
+}
