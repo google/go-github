@@ -68,7 +68,7 @@ func TestTeamsService_GetTeamByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "parent":null}`)
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "type": "organization", "parent":null}`)
 	})
 
 	ctx := t.Context()
@@ -77,7 +77,7 @@ func TestTeamsService_GetTeamByID(t *testing.T) {
 		t.Errorf("Teams.GetTeamByID returned error: %v", err)
 	}
 
-	want := &Team{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), URL: Ptr("u"), Slug: Ptr("s"), Permission: Ptr("p"), LDAPDN: Ptr("cn=n,ou=groups,dc=example,dc=com")}
+	want := &Team{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), URL: Ptr("u"), Slug: Ptr("s"), Permission: Ptr("p"), LDAPDN: Ptr("cn=n,ou=groups,dc=example,dc=com"), Type: Ptr("organization")}
 	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.GetTeamByID returned %+v, want %+v", team, want)
 	}
@@ -125,7 +125,7 @@ func TestTeamsService_GetTeamBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "parent":null}`)
+		fmt.Fprint(w, `{"id":1, "name":"n", "description": "d", "url":"u", "slug": "s", "permission":"p", "ldap_dn":"cn=n,ou=groups,dc=example,dc=com", "type": "organization", "parent":null}`)
 	})
 
 	ctx := t.Context()
@@ -134,7 +134,7 @@ func TestTeamsService_GetTeamBySlug(t *testing.T) {
 		t.Errorf("Teams.GetTeamBySlug returned error: %v", err)
 	}
 
-	want := &Team{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), URL: Ptr("u"), Slug: Ptr("s"), Permission: Ptr("p"), LDAPDN: Ptr("cn=n,ou=groups,dc=example,dc=com")}
+	want := &Team{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), URL: Ptr("u"), Slug: Ptr("s"), Permission: Ptr("p"), LDAPDN: Ptr("cn=n,ou=groups,dc=example,dc=com"), Type: Ptr("organization")}
 	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.GetTeamBySlug returned %+v, want %+v", team, want)
 	}
@@ -1650,6 +1650,7 @@ func TestTeams_Marshal(t *testing.T) {
 			ReposCount:   Ptr(1),
 		},
 		LDAPDN: Ptr("l"),
+		Type:   Ptr("t"),
 	}
 
 	want := `{
@@ -1689,7 +1690,8 @@ func TestTeams_Marshal(t *testing.T) {
 			"members_count": 1,
 			"repos_count": 1
 		},
-		"ldap_dn": "l"
+		"ldap_dn": "l",
+		"type": "t"
 	}`
 
 	testJSONMarshal(t, u, want)

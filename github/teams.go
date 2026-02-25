@@ -60,6 +60,10 @@ type Team struct {
 	// possible values are: "direct", "indirect", "mixed". This is only populated when
 	// calling the ListTeamsAssignedToOrgRole method.
 	Assignment *string `json:"assignment,omitempty"`
+
+	// Type identifies the ownership type of the team
+	// Possible values are: "organization", "enterprise".
+	Type *string `json:"type,omitempty"`
 }
 
 func (t Team) String() string {

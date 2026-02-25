@@ -29358,6 +29358,14 @@ func (t *Team) GetSlug() string {
 	return *t.Slug
 }
 
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (t *Team) GetType() string {
+	if t == nil || t.Type == nil {
+		return ""
+	}
+	return *t.Type
+}
+
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (t *Team) GetURL() string {
 	if t == nil || t.URL == nil {

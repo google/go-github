@@ -37861,6 +37861,17 @@ func TestTeam_GetSlug(tt *testing.T) {
 	t.GetSlug()
 }
 
+func TestTeam_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	t := &Team{Type: &zeroValue}
+	t.GetType()
+	t = &Team{}
+	t.GetType()
+	t = nil
+	t.GetType()
+}
+
 func TestTeam_GetURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
