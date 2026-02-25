@@ -51,7 +51,7 @@ func TestEnterpriseService_UpdateAppInstallationRepositories(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := UpdateAppInstallationRepositoriesOptions{
-		RepositorySelection:   String("selected"),
+		RepositorySelection:   Ptr("selected"),
 		SelectedRepositoryIDs: []int64{1, 2},
 	}
 
