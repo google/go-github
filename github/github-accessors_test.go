@@ -1032,6 +1032,14 @@ func TestAPIMeta_GetVerifiablePasswordAuthentication(tt *testing.T) {
 	a.GetVerifiablePasswordAuthentication()
 }
 
+func TestAPIMetaDomains_GetActionsInbound(tt *testing.T) {
+	tt.Parallel()
+	a := &APIMetaDomains{}
+	a.GetActionsInbound()
+	a = nil
+	a.GetActionsInbound()
+}
+
 func TestAPIMetaDomains_GetArtifactAttestations(tt *testing.T) {
 	tt.Parallel()
 	a := &APIMetaDomains{}

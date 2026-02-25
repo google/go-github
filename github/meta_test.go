@@ -76,7 +76,7 @@ func TestMetaService_Get(t *testing.T) {
 
 	mux.HandleFunc("/meta", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"web":["w"],"api":["a"],"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "github_enterprise_importer": ["gei"], "actions":["a"], "actions_macos": ["example.com/1", "example.com/2"], "dependabot":["d"], "verifiable_password_authentication": true, "domains":{"website":["*.github.com","*.github.dev","*.github.io","*.example.com/assets","*.example.com"],"artifact_attestations":{"trust_domain":"","services":["*.actions.github.com","tuf-repo.github.com","fulcio.github.com","timestamp.github.com"]}}}`)
+		fmt.Fprint(w, `{"web":["w"],"api":["a"],"hooks":["h"], "git":["g"], "pages":["p"], "importer":["i"], "github_enterprise_importer": ["gei"], "actions":["a"], "actions_macos": ["example.com/1", "example.com/2"], "codespaces": ["cs"], "copilot": ["c"], "dependabot":["d"], "verifiable_password_authentication": true, "domains":{"actions_inbound": { "full_domains": ["github.com"], "wildcard_domains": ["*.github.com"]},"website":["*.github.com","*.github.dev","*.github.io","*.example.com/assets","*.example.com"],"artifact_attestations":{"trust_domain":"","services":["*.actions.github.com","tuf-repo.github.com","fulcio.github.com","timestamp.github.com"]}}}`)
 	})
 
 	ctx := t.Context()
@@ -93,6 +93,8 @@ func TestMetaService_Get(t *testing.T) {
 		GithubEnterpriseImporter: []string{"gei"},
 		Actions:                  []string{"a"},
 		ActionsMacos:             []string{"example.com/1", "example.com/2"},
+		Codespaces:               []string{"cs"},
+		Copilot:                  []string{"c"},
 		Dependabot:               []string{"d"},
 		API:                      []string{"a"},
 		Web:                      []string{"w"},
@@ -112,6 +114,10 @@ func TestMetaService_Get(t *testing.T) {
 					"fulcio.github.com",
 					"timestamp.github.com",
 				},
+			},
+			ActionsInbound: &ActionsInboundDomains{
+				FullDomains:     []string{"github.com"},
+				WildcardDomains: []string{"*.github.com"},
 			},
 		},
 
