@@ -310,12 +310,12 @@ func TestOrganizationsService_ListRepositoryFineGrainedPermissions(t *testing.T)
 
 	want := []*RepoFineGrainedPermission{
 		{
-			Name:        Ptr("add_assignee"),
-			Description: Ptr("Assign or remove a user"),
+			Name:        "add_assignee",
+			Description: "Assign or remove a user",
 		},
 		{
-			Name:        Ptr("add_label"),
-			Description: Ptr("Add or remove a label"),
+			Name:        "add_label",
+			Description: "Add or remove a label",
 		},
 	}
 	if !cmp.Equal(perms, want) {

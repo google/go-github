@@ -40,8 +40,8 @@ type CreateOrUpdateCustomRepoRoleOptions struct {
 
 // RepoFineGrainedPermission represents a fine-grained permission that can be used in a custom repository role.
 type RepoFineGrainedPermission struct {
-	Name        *string `json:"name,omitempty"`
-	Description *string `json:"description,omitempty"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
 // ListCustomRepoRoles lists the custom repository roles available in this organization.
