@@ -162,7 +162,7 @@ func testBody(t *testing.T, r *http.Request, want string) {
 }
 
 // testJSONMarshal tests both JSON marshaling and unmarshaling of a value by comparing
-// the marshaled output with the expected JSON string,
+// the marshaled output with the expected JSON string.
 func testJSONMarshal[T any](t *testing.T, v T, want string, opts ...cmp.Option) {
 	t.Helper()
 
