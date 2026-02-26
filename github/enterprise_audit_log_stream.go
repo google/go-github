@@ -178,7 +178,7 @@ func NewDatadogStreamConfig(enabled bool, cfg *DatadogConfig) *AuditLogStreamCon
 // Credentials must be encrypted with this key before being submitted via CreateAuditLogStream
 // or UpdateAuditLogStream.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#get-the-audit-log-streaming-key-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#get-the-audit-log-stream-key-for-encrypting-secrets
 //
 //meta:operation GET /enterprises/{enterprise}/audit-log/stream-key
 func (s *EnterpriseService) GetAuditLogStreamKey(ctx context.Context, enterprise string) (*AuditLogStreamKey, *Response, error) {
@@ -222,7 +222,7 @@ func (s *EnterpriseService) ListAuditLogStreams(ctx context.Context, enterprise 
 
 // GetAuditLogStream gets a single audit log stream configuration for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#get-an-audit-log-streaming-configuration-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#list-one-audit-log-streaming-configuration-via-a-stream-id
 //
 //meta:operation GET /enterprises/{enterprise}/audit-log/streams/{stream_id}
 func (s *EnterpriseService) GetAuditLogStream(ctx context.Context, enterprise string, streamID int64) (*AuditLogStream, *Response, error) {
@@ -268,13 +268,13 @@ func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise
 // UpdateAuditLogStream updates an existing audit log stream configuration for an enterprise.
 // Credentials in the config must be encrypted using the key returned by GetAuditLogStreamKey.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#update-an-audit-log-streaming-configuration-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#update-an-existing-audit-log-stream-configuration
 //
-//meta:operation PATCH /enterprises/{enterprise}/audit-log/streams/{stream_id}
+//meta:operation PUT /enterprises/{enterprise}/audit-log/streams/{stream_id}
 func (s *EnterpriseService) UpdateAuditLogStream(ctx context.Context, enterprise string, streamID int64, config *AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/streams/%v", enterprise, streamID)
 
-	req, err := s.client.NewRequest("PATCH", u, config)
+	req, err := s.client.NewRequest("PUT", u, config)
 	if err != nil {
 		return nil, nil, err
 	}

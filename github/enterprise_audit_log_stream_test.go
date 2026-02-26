@@ -180,7 +180,7 @@ func TestEnterpriseService_UpdateAuditLogStream(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/enterprises/e/audit-log/streams/1", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
+		testMethod(t, r, "PUT")
 		fmt.Fprint(w, `{"id":1,"stream_type":"Splunk","stream_details":"splunk.example.com","enabled":true}`)
 	})
 
