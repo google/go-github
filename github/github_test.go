@@ -163,28 +163,156 @@ func testBody(t *testing.T, r *http.Request, want string) {
 
 // Test whether the marshaling of v produces JSON that corresponds
 // to the want string.
-func testJSONMarshal(t *testing.T, v any, want string) {
+func testJSONMarshal[T any](t *testing.T, v T, want string) {
 	t.Helper()
-	// Unmarshal the wanted JSON, to verify its correctness, and marshal it back
-	// to sort the keys.
-	u := reflect.New(reflect.TypeOf(v)).Interface()
-	if err := json.Unmarshal([]byte(want), &u); err != nil {
-		t.Errorf("Unable to unmarshal JSON for %v: %v", want, err)
-	}
-	w, err := json.MarshalIndent(u, "", "  ")
+
+	testJSONMarshalData(t, v, want)
+	testJSONUnmarshalData(t, v, want)
+}
+
+// testJSONMarshalData tests JSON marshaling by comparing the marshaled output with the expected JSON string.
+//
+// This function compares JSON by unmarshaling both values into any and using cmp.Diff.
+// This means the comparison ignores:
+//   - Whitespace differences
+//   - Key ordering in objects
+//   - Numeric type differences (e.g., int vs float with same value)
+func testJSONMarshalData[T any](t *testing.T, v T, want string) {
+	t.Helper()
+
+	got, err := json.Marshal(v)
 	if err != nil {
-		t.Errorf("Unable to marshal JSON for %#v", u)
+		t.Fatalf("Unable to marshal got JSON for %#v: %v", v, err)
 	}
 
-	// Marshal the target value.
-	got, err := json.MarshalIndent(v, "", "  ")
-	if err != nil {
-		t.Errorf("Unable to marshal JSON for %#v", v)
+	// Unmarshal both the marshaled output and expected JSON into any
+	// to enable semantic comparison that ignores formatting differences
+	var gotAny any
+	if err := json.Unmarshal(got, &gotAny); err != nil {
+		t.Fatalf("Unable to unmarshal got JSON %v: %v", got, err)
 	}
 
-	if diff := cmp.Diff(string(w), string(got)); diff != "" {
-		t.Errorf("json.Marshal returned:\n%v\nwant:\n%v\ndiff:\n%v", got, w, diff)
+	var wantAny any
+	if err := json.Unmarshal([]byte(want), &wantAny); err != nil {
+		t.Fatalf("Unable to unmarshal want JSON %v: %v", want, err)
 	}
+
+	// Compare the semantic content
+	if diff := cmp.Diff(wantAny, gotAny); diff != "" {
+		t.Errorf("json.Marshal returned:\n%v\nwant:\n%v\ndiff:\n%v", got, want, diff)
+	}
+}
+
+// testJSONUnmarshalData tests JSON unmarshaling by parsing the JSON string
+// and comparing the result with the expected value.
+//
+// This function uses custom comparison options that handle special cases:
+//   - json.RawMessage fields are compared semantically (ignoring whitespace/formatting)
+//   - Fields with json:"-" tags are ignored (as they shouldn't be in JSON anyway)
+//   - Fields of type "any" are compared by their JSON representation
+func testJSONUnmarshalData[T any](t *testing.T, want T, v string) {
+	t.Helper()
+
+	cmpOpts := []cmp.Option{jsonRawMessageComparator(), anyTypeComparator()}
+	ignoreFields := jsonIgnoredFields(want)
+	for _, fieldName := range ignoreFields {
+		cmpOpts = append(cmpOpts, ignoreFieldOption(fieldName))
+	}
+
+	var got T
+	if err := json.Unmarshal([]byte(v), &got); err != nil {
+		t.Fatalf("Unable to unmarshal JSON %v: %v", v, err)
+	}
+
+	if diff := cmp.Diff(want, got, cmpOpts...); diff != "" {
+		t.Errorf("json.Unmarshal returned:\n%#v\nwant:\n%#v\ndiff:\n%v", got, want, diff)
+	}
+}
+
+// jsonRawMessageComparator returns a cmp.Option that compares json.RawMessage
+// values by their semantic JSON content rather than byte-for-byte equality.
+func jsonRawMessageComparator() cmp.Option {
+	return cmp.Comparer(func(x, y json.RawMessage) bool {
+		if len(x) == 0 && len(y) == 0 {
+			return true
+		}
+		if len(x) == 0 || len(y) == 0 {
+			return false
+		}
+
+		var xVal, yVal any
+		if err := json.Unmarshal(x, &xVal); err != nil {
+			return false
+		}
+		if err := json.Unmarshal(y, &yVal); err != nil {
+			return false
+		}
+		return cmp.Equal(xVal, yVal)
+	})
+}
+
+// anyTypeComparator returns a cmp.Option that compares fields of type "any"
+// by marshaling them to JSON and comparing the results.
+func anyTypeComparator() cmp.Option {
+	return cmp.FilterPath(func(p cmp.Path) bool {
+		if len(p) == 0 {
+			return false
+		}
+		vf, ok := p[len(p)-1].(cmp.StructField)
+		return ok && vf.Type() == reflect.TypeFor[any]()
+	}, cmp.Comparer(func(x, y any) bool {
+		xJSON, err := json.Marshal(x)
+		if err != nil {
+			return false
+		}
+		yJSON, err := json.Marshal(y)
+		if err != nil {
+			return false
+		}
+
+		var xVal, yVal any
+		if err := json.Unmarshal(xJSON, &xVal); err != nil {
+			return false
+		}
+		if err := json.Unmarshal(yJSON, &yVal); err != nil {
+			return false
+		}
+		return cmp.Equal(xVal, yVal)
+	}))
+}
+
+// jsonIgnoredFields returns a list of field names that have the json:"-" tag.
+// These fields should not be marshaled/unmarshaled and thus should be ignored in comparisons.
+func jsonIgnoredFields[T any](value T) []string {
+	var ignoreFields []string
+
+	rv := reflect.ValueOf(value)
+	if rv.Kind() == reflect.Pointer {
+		rv = rv.Elem()
+	}
+
+	// Only process structs
+	if rv.Kind() != reflect.Struct {
+		return ignoreFields
+	}
+
+	rt := rv.Type()
+	for i := range rt.NumField() {
+		field := rt.Field(i)
+		if tag := field.Tag.Get("json"); tag == "-" {
+			ignoreFields = append(ignoreFields, field.Name)
+		}
+	}
+
+	return ignoreFields
+}
+
+// ignoreFieldOption returns a cmp.Option that ignores a specific field by name.
+func ignoreFieldOption(fieldName string) cmp.Option {
+	return cmp.FilterPath(func(p cmp.Path) bool {
+		sf, ok := p.Index(-1).(cmp.StructField)
+		return ok && sf.Name() == fieldName
+	}, cmp.Ignore())
 }
 
 // Test how bad options are handled. Method f under test should
@@ -3061,7 +3189,10 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 
 func TestErrorResponse_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ErrorResponse{}, "{}")
+	testJSONMarshal(t, &ErrorResponse{}, `{
+		"message": "",
+		"errors": null
+	}`)
 
 	u := &ErrorResponse{
 		Message: "msg",
@@ -3119,7 +3250,16 @@ func TestErrorBlock_Marshal(t *testing.T) {
 
 func TestRateLimitError_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RateLimitError{}, "{}")
+	testJSONMarshal(t, &RateLimitError{}, `{
+		"Rate": {
+			"limit": 0,
+			"remaining": 0,
+			"reset": `+emptyTimeStr+`,
+			"used": 0
+		},
+		"Response": null,
+		"message": ""
+	}`)
 
 	u := &RateLimitError{
 		Rate: Rate{
@@ -3134,8 +3274,10 @@ func TestRateLimitError_Marshal(t *testing.T) {
 		"Rate": {
 			"limit": 1,
 			"remaining": 1,
-			"reset": ` + referenceTimeStr + `
+			"reset": ` + referenceTimeStr + `,
+			"used": 0
 		},
+		"Response": null,
 		"message": "msg"
 	}`
 
@@ -3144,14 +3286,20 @@ func TestRateLimitError_Marshal(t *testing.T) {
 
 func TestAbuseRateLimitError_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &AbuseRateLimitError{}, "{}")
+	testJSONMarshal(t, &AbuseRateLimitError{}, `{
+		"Response": null,
+		"message": "",
+		"RetryAfter": null
+	}`)
 
 	u := &AbuseRateLimitError{
 		Message: "msg",
 	}
 
 	want := `{
-		"message": "msg"
+		"Response": null,
+		"message": "msg",
+		"RetryAfter": null
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -3159,7 +3307,12 @@ func TestAbuseRateLimitError_Marshal(t *testing.T) {
 
 func TestError_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Error{}, "{}")
+	testJSONMarshal(t, &Error{}, `{
+		"resource": "",
+		"field": "",
+		"code": "",
+		"message": ""
+	}`)
 
 	u := &Error{
 		Resource: "res",

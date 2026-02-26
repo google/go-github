@@ -172,35 +172,6 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	})
 }
 
-func TestGetAuditLogOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &GetAuditLogOptions{}, "{}")
-
-	u := &GetAuditLogOptions{
-		Phrase:  Ptr("p"),
-		Include: Ptr("i"),
-		Order:   Ptr("o"),
-		ListCursorOptions: ListCursorOptions{
-			Page:    "p",
-			PerPage: 1,
-			After:   "a",
-			Before:  "b",
-		},
-	}
-
-	want := `{
-		"phrase": "p",
-		"include": "i",
-		"order": "o",
-		"Page": "p",
-		"PerPage": 1,
-		"After": "a",
-		"Before": "b"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestHookConfig_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &HookConfig{}, "{}")

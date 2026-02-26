@@ -1054,14 +1054,14 @@ func TestPackageVersionBodyInfo_Marshal(t *testing.T) {
 
 func TestPackageEventContainerMetadata_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &PackageContainerMetadata{}, "{}")
+	testJSONMarshal(t, &PackageEventContainerMetadata{}, "{}")
 
 	o := &PackageEventContainerMetadata{
 		Labels: map[string]any{
 			"k": "v",
 		},
 		Manifest: map[string]any{
-			"k": 1,
+			"k": float64(1),
 		},
 		Tag: &PackageEventContainerMetadataTag{
 			Name:   Ptr("n"),
@@ -1209,7 +1209,7 @@ func TestPackageNPMMetadata_Marshal(t *testing.T) {
 				Repository:           map[string]string{"k1": "v1"},
 				Engines:              map[string]string{"k1": "v1"},
 				Directories:          map[string]string{"k1": "v1"},
-				Scripts:              map[string]any{"k1": 1},
+				Scripts:              map[string]any{"k1": float64(1)},
 				Bin:                  map[string]any{"k1": true},
 				Man:                  map[string]any{"k1": "v1"},
 				Keywords:             []string{"kw1", "kw2"},
@@ -1228,7 +1228,7 @@ func TestPackageNPMMetadata_Marshal(t *testing.T) {
 				"homepage": "h",
 				"license": "l",
 				"main": "m",
-				"ID": "id",
+				"id": "id",
 				"node_version": "nv",
 				"npm_version": "npmv",
 				"readme": "r",
