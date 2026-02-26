@@ -554,7 +554,6 @@ func TestRunnerGroup_Marshal(t *testing.T) {
 		Inherited:                Ptr(true),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
-		SelectedWorkflows:        []string(nil),
 	}
 
 	want := `{
@@ -596,7 +595,6 @@ func TestRunnerGroups_Marshal(t *testing.T) {
 				Inherited:                Ptr(true),
 				AllowsPublicRepositories: Ptr(true),
 				RestrictedToWorkflows:    Ptr(false),
-				SelectedWorkflows:        []string(nil),
 			},
 		},
 	}
@@ -659,7 +657,6 @@ func TestUpdateRunnerGroupRequest_Marshal(t *testing.T) {
 		Visibility:               Ptr("v"),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
-		SelectedWorkflows:        []string(nil),
 		NetworkConfigurationID:   Ptr("nc"),
 	}
 

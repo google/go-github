@@ -1007,7 +1007,6 @@ func TestCommitResult_Marshal(t *testing.T) {
 		Commit:      &Commit{SHA: Ptr("test")},
 		Author:      &User{ID: Ptr(int64(1))},
 		Committer:   &User{ID: Ptr(int64(1))},
-		Parents:     []*Commit(nil),
 	}
 
 	want := `{

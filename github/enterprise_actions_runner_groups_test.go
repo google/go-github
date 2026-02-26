@@ -544,7 +544,6 @@ func TestEnterpriseRunnerGroup_Marshal(t *testing.T) {
 		Inherited:                Ptr(true),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
-		SelectedWorkflows:        []string(nil),
 	}
 
 	want := `{
@@ -579,7 +578,6 @@ func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
 				Inherited:                Ptr(true),
 				AllowsPublicRepositories: Ptr(true),
 				RestrictedToWorkflows:    Ptr(false),
-				SelectedWorkflows:        []string(nil),
 			},
 		},
 	}
@@ -638,7 +636,6 @@ func TestUpdateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
 		Visibility:               Ptr("v"),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
-		SelectedWorkflows:        []string(nil),
 	}
 
 	want := `{

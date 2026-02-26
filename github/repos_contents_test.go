@@ -1194,7 +1194,7 @@ func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
 
 	r := &RepositoryContentFileOptions{
 		Message: Ptr("type"),
-		Content: []byte("1"),
+		Content: []byte{1},
 		SHA:     Ptr("type"),
 		Branch:  Ptr("type"),
 		Author: &CommitAuthor{
@@ -1213,7 +1213,7 @@ func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
 
 	want := `{
 		"message": "type",
-		"content": "MQ==",
+		"content": "AQ==",
 		"sha": "type",
 		"branch": "type",
 		"author": {
