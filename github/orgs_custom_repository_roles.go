@@ -38,6 +38,12 @@ type CreateOrUpdateCustomRepoRoleOptions struct {
 	Permissions []string `json:"permissions"`
 }
 
+// RepoFineGrainedPermission represents a fine-grained permission that can be used in a custom repository role.
+type RepoFineGrainedPermission struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
 // ListCustomRepoRoles lists the custom repository roles available in this organization.
 // In order to see custom repository roles in an organization, the authenticated user must be an organization owner.
 //
@@ -151,4 +157,27 @@ func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org str
 	}
 
 	return resp, nil
+}
+
+// ListRepositoryFineGrainedPermissions lists the fine-grained permissions that can be used in custom repository roles for an organization.
+// The authenticated user must be an administrator of the organization or of a repository of the organization to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#list-repository-fine-grained-permissions-for-an-organization
+//
+//meta:operation GET /orgs/{org}/repository-fine-grained-permissions
+func (s *OrganizationsService) ListRepositoryFineGrainedPermissions(ctx context.Context, org string) ([]*RepoFineGrainedPermission, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/repository-fine-grained-permissions", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var perms []*RepoFineGrainedPermission
+	resp, err := s.client.Do(ctx, req, &perms)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return perms, resp, nil
 }
