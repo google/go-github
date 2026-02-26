@@ -283,3 +283,56 @@ func TestOrganizationsService_DeleteCustomRepoRole(t *testing.T) {
 		return err
 	})
 }
+
+func TestOrganizationsService_ListRepositoryFineGrainedPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/repository-fine-grained-permissions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[
+			{
+				"name": "add_assignee",
+				"description": "Assign or remove a user"
+			},
+			{
+				"name": "add_label",
+				"description": "Add or remove a label"
+			}
+		]`)
+	})
+
+	ctx := t.Context()
+	perms, _, err := client.Organizations.ListRepositoryFineGrainedPermissions(ctx, "o")
+	if err != nil {
+		t.Errorf("Organizations.ListRepositoryFineGrainedPermissions returned error: %v", err)
+	}
+
+	want := []*RepoFineGrainedPermission{
+		{
+			Name:        "add_assignee",
+			Description: "Assign or remove a user",
+		},
+		{
+			Name:        "add_label",
+			Description: "Add or remove a label",
+		},
+	}
+	if !cmp.Equal(perms, want) {
+		t.Errorf("Organizations.ListRepositoryFineGrainedPermissions returned %+v, want %+v", perms, want)
+	}
+
+	const methodName = "ListRepositoryFineGrainedPermissions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListRepositoryFineGrainedPermissions(ctx, "\no")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListRepositoryFineGrainedPermissions(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
