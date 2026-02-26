@@ -26,7 +26,7 @@ type tagProtectionRequest struct {
 //
 // Deprecated: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules#get-all-repository-rulesets
 //
-// GitHub API docs: https://docs.github.com/rest/repos/tags#closing-down---list-tag-protection-states-for-a-repository
+// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/repos/tags#closing-down---list-tag-protection-states-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/tags/protection
 func (s *RepositoriesService) ListTagProtection(ctx context.Context, owner, repo string) ([]*TagProtection, *Response, error) {
@@ -50,7 +50,7 @@ func (s *RepositoriesService) ListTagProtection(ctx context.Context, owner, repo
 //
 // Deprecated: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules#create-a-repository-ruleset
 //
-// GitHub API docs: https://docs.github.com/rest/repos/tags#closing-down---create-a-tag-protection-state-for-a-repository
+// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/repos/tags#closing-down---create-a-tag-protection-state-for-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/tags/protection
 func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, repo, pattern string) (*TagProtection, *Response, error) {
@@ -74,7 +74,7 @@ func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, re
 //
 // Deprecated: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules#delete-a-repository-ruleset
 //
-// GitHub API docs: https://docs.github.com/rest/repos/tags#closing-down---delete-a-tag-protection-state-for-a-repository
+// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/repos/tags#closing-down---delete-a-tag-protection-state-for-a-repository
 //
 //meta:operation DELETE /repos/{owner}/{repo}/tags/protection/{tag_protection_id}
 func (s *RepositoriesService) DeleteTagProtection(ctx context.Context, owner, repo string, tagProtectionID int64) (*Response, error) {
