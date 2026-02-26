@@ -207,7 +207,8 @@ func TestCopilotService_GetSeatDetailsTeam(t *testing.T) {
 	}
 
 	want := &Team{
-		ID: Ptr(int64(1)),
+		ID:   Ptr(int64(1)),
+		Type: Ptr("Team"),
 	}
 
 	if got, ok := seatDetails.GetTeam(); ok && !cmp.Equal(got, want) {
@@ -575,6 +576,7 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 				Assignee: &Team{
 					ID:   Ptr(int64(1)),
 					Name: Ptr("octokittens"),
+					Type: Ptr("Team"),
 				},
 				AssigningTeam:           nil,
 				CreatedAt:               &createdAt2,
@@ -599,9 +601,7 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 		},
 	}
 
-	if !cmp.Equal(got, want) {
-		t.Errorf("Copilot.ListCopilotSeats returned %+v, want %+v", got, want)
-	}
+	assertNoDiff(t, want, got)
 
 	const methodName = "ListCopilotSeats"
 

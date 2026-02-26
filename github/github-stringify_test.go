@@ -2251,8 +2251,9 @@ func TestTeam_String(t *testing.T) {
 		Parent:              &Team{},
 		LDAPDN:              Ptr(""),
 		Assignment:          Ptr(""),
+		Type:                Ptr(""),
 	}
-	want := `github.Team{ID:0, NodeID:"", Name:"", Description:"", URL:"", Slug:"", Permission:"", Privacy:"", NotificationSetting:"", MembersCount:0, ReposCount:0, Organization:github.Organization{}, HTMLURL:"", MembersURL:"", RepositoriesURL:"", Parent:github.Team{}, LDAPDN:"", Assignment:""}`
+	want := `github.Team{ID:0, NodeID:"", Name:"", Description:"", URL:"", Slug:"", Permission:"", Privacy:"", NotificationSetting:"", MembersCount:0, ReposCount:0, Organization:github.Organization{}, HTMLURL:"", MembersURL:"", RepositoriesURL:"", Parent:github.Team{}, LDAPDN:"", Assignment:"", Type:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Team.String = %v, want %v", got, want)
 	}
