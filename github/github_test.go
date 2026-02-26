@@ -235,10 +235,6 @@ func jsonRawMessageComparator() cmp.Option {
 		if len(x) == 0 && len(y) == 0 {
 			return true
 		}
-		if len(x) == 0 || len(y) == 0 {
-			return false
-		}
-
 		var xVal, yVal any
 		if err := json.Unmarshal(x, &xVal); err != nil {
 			return false
