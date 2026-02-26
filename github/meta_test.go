@@ -34,18 +34,14 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		Domains: &APIMetaDomains{
 			Website: []string{
 				"*.github.com",
-				"*.github.dev",
-				"*.github.io",
 				"*.example.com/assets",
 				"*.example.com",
 			},
 			ArtifactAttestations: &APIMetaArtifactAttestations{
 				TrustDomain: "",
 				Services: []string{
-					"*.actions.github.com",
-					"tuf-repo.github.com",
-					"fulcio.github.com",
-					"timestamp.github.com",
+					"*.actions.example.com",
+					"timestamp.example.com",
 				},
 			},
 		},
@@ -64,7 +60,7 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		"ssh_keys":["k"],
 		"api":["a"],
 		"web":["w"],
-		"domains":{"website":["*.github.com","*.github.dev","*.github.io","*.example.com/assets","*.example.com"],"artifact_attestations":{"services":["*.actions.github.com","tuf-repo.github.com","fulcio.github.com","timestamp.github.com"]}}
+		"domains":{"website":["*.github.com","*.example.com/assets","*.example.com"],"artifact_attestations":{"services":["*.actions.example.com","timestamp.example.com"]}}
 	}`
 
 	testJSONMarshal(t, a, want)
