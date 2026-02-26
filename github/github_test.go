@@ -661,7 +661,10 @@ func TestNewFormRequest(t *testing.T) {
 	form := url.Values{}
 	form.Add("login", "l")
 	inBody, outBody := strings.NewReader(form.Encode()), "login=l"
-	req, _ := c.NewFormRequest(inURL, inBody)
+	req, err := c.NewFormRequest(inURL, inBody)
+	if err != nil {
+		t.Fatalf("NewFormRequest returned unexpected error: %v", err)
+	}
 
 	// test that relative URL was expanded
 	if got, want := req.URL.String(), outURL; got != want {
@@ -669,9 +672,12 @@ func TestNewFormRequest(t *testing.T) {
 	}
 
 	// test that body was form encoded
-	body, _ := io.ReadAll(req.Body)
+	body, err := io.ReadAll(req.Body)
+	if err != nil {
+		t.Fatalf("Error reading request body: %v", err)
+	}
 	if got, want := string(body), outBody; got != want {
-		t.Errorf("NewFormRequest(%q) Body is %v, want %v", inBody, got, want)
+		t.Errorf("NewFormRequest() Body is %v, want %v", got, want)
 	}
 
 	// test that default user-agent is attached to the request
@@ -681,13 +687,16 @@ func TestNewFormRequest(t *testing.T) {
 
 	apiVersion := req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, defaultAPIVersion; got != want {
-		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
+		t.Errorf("NewFormRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
-	req, _ = c.NewFormRequest(inURL, inBody, WithVersion("2022-11-29"))
+	req, err = c.NewFormRequest(inURL, inBody, WithVersion("2022-11-29"))
+	if err != nil {
+		t.Fatalf("NewFormRequest with WithVersion returned unexpected error: %v", err)
+	}
 	apiVersion = req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, "2022-11-29"; got != want {
-		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
+		t.Errorf("NewFormRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 }
 
