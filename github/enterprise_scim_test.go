@@ -265,7 +265,8 @@ func TestSCIMEnterpriseAttribute_Marshal(t *testing.T) {
 		]
 	}`
 
-	testJSONMarshalData(t, u, want)
+	testJSONMarshalOnly(t, u, want)
+	// can't unmarshal Operations back into []*SCIMEnterpriseAttributeOperation, so skip testJSONUnmarshalOnly
 }
 
 func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {

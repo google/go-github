@@ -144,6 +144,5 @@ func TestEvent_Marshal(t *testing.T) {
 		"id": "id"
 	}`
 
-	testJSONMarshalData(t, u, want)
-	testJSONUnmarshalData(t, u, want, cmpJSONRawMessageComparator())
+	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }

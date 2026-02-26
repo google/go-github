@@ -980,8 +980,7 @@ func TestEncryptedSecret_Marshal(t *testing.T) {
 		"selected_repository_ids": [1]
 	}`
 
-	testJSONMarshalData(t, u, want)
-	testJSONUnmarshalData(t, u, want, cmpIgnoreFieldOption("Name"))
+	testJSONMarshal(t, u, want, cmpIgnoreFieldOption("Name"))
 }
 
 func TestSelectedReposList_Marshal(t *testing.T) {

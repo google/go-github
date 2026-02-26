@@ -389,5 +389,6 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshalData(t, u, want)
+	testJSONMarshalOnly(t, u, want)
+	// can't unmarshal AdditionalFields back into map[string]any, so skip testJSONUnmarshalOnly
 }

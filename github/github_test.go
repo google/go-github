@@ -161,23 +161,23 @@ func testBody(t *testing.T, r *http.Request, want string) {
 	}
 }
 
-// Test whether the marshaling of v produces JSON that corresponds
-// to the want string.
-func testJSONMarshal[T any](t *testing.T, v T, want string) {
+// testJSONMarshal tests both JSON marshaling and unmarshaling of a value by comparing
+// the marshaled output with the expected JSON string,
+func testJSONMarshal[T any](t *testing.T, v T, want string, opts ...cmp.Option) {
 	t.Helper()
 
-	testJSONMarshalData(t, v, want)
-	testJSONUnmarshalData(t, v, want)
+	testJSONMarshalOnly(t, v, want)
+	testJSONUnmarshalOnly(t, v, want, opts...)
 }
 
-// testJSONMarshalData tests JSON marshaling by comparing the marshaled output with the expected JSON string.
+// testJSONMarshalOnly tests JSON marshaling by comparing the marshaled output with the expected JSON string.
 //
 // This function compares JSON by unmarshaling both values into any and using cmp.Diff.
 // This means the comparison ignores:
 //   - Whitespace differences
 //   - Key ordering in objects
 //   - Numeric type differences (e.g., int vs float with same value)
-func testJSONMarshalData[T any](t *testing.T, v T, want string) {
+func testJSONMarshalOnly[T any](t *testing.T, v T, want string) {
 	t.Helper()
 
 	got, err := json.Marshal(v)
@@ -203,9 +203,9 @@ func testJSONMarshalData[T any](t *testing.T, v T, want string) {
 	}
 }
 
-// testJSONUnmarshalData tests JSON unmarshaling by parsing the JSON string
+// testJSONUnmarshalOnly tests JSON unmarshaling by parsing the JSON string
 // and comparing the result with the expected value.
-func testJSONUnmarshalData[T any](t *testing.T, want T, v string, opts ...cmp.Option) {
+func testJSONUnmarshalOnly[T any](t *testing.T, want T, v string, opts ...cmp.Option) {
 	t.Helper()
 
 	var got T

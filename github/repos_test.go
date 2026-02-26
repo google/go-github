@@ -4356,8 +4356,7 @@ func TestDispatchRequestOptions_Marshal(t *testing.T) {
 		}
 	  }`
 
-	testJSONMarshalData(t, u, want)
-	testJSONUnmarshalData(t, u, want, cmpJSONRawMessageComparator())
+	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestTransferRequest_Marshal(t *testing.T) {
