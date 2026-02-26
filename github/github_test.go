@@ -214,8 +214,7 @@ func testJSONUnmarshalData[T any](t *testing.T, want T, v string) {
 	t.Helper()
 
 	cmpOpts := []cmp.Option{jsonRawMessageComparator(), anyTypeComparator()}
-	ignoreFields := jsonIgnoredFields(want)
-	for _, fieldName := range ignoreFields {
+	for _, fieldName := range jsonIgnoredFields(want) {
 		cmpOpts = append(cmpOpts, ignoreFieldOption(fieldName))
 	}
 
@@ -307,11 +306,23 @@ func jsonIgnoredFields[T any](value T) []string {
 	return ignoreFields
 }
 
-// ignoreFieldOption returns a cmp.Option that ignores a specific field by name.
+// ignoreFieldOption returns a cmp.Option that ignores a specific field by name,
+// but only when it's a top-level field (not nested within other structs).
+// This prevents accidentally ignoring nested struct fields with the same name.
 func ignoreFieldOption(fieldName string) cmp.Option {
 	return cmp.FilterPath(func(p cmp.Path) bool {
-		sf, ok := p.Index(-1).(cmp.StructField)
-		return ok && sf.Name() == fieldName
+		sf, ok := p[len(p)-1].(cmp.StructField)
+		if !ok || sf.Name() != fieldName {
+			return false
+		}
+		// Only ignore top-level fields (path contains exactly one StructField)
+		structFieldCount := 0
+		for i := range p {
+			if _, ok := p[i].(cmp.StructField); ok {
+				structFieldCount++
+			}
+		}
+		return structFieldCount == 1
 	}, cmp.Ignore())
 }
 
