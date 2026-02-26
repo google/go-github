@@ -6141,7 +6141,8 @@ func TestDeploymentEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshalData(t, u, want)
+	testJSONUnmarshalData(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
@@ -6529,7 +6530,8 @@ func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshalData(t, u, want)
+	testJSONUnmarshalData(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestDeploymentReviewEvent_Marshal(t *testing.T) {
@@ -7466,7 +7468,8 @@ func TestDeploymentStatusEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshalData(t, u, want)
+	testJSONUnmarshalData(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestDiscussionCommentEvent_Marshal(t *testing.T) {
@@ -9101,7 +9104,8 @@ func TestRepositoryDispatchEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshalData(t, u, want)
+	testJSONUnmarshalData(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestRepositoryImportEvent_Marshal(t *testing.T) {
@@ -12128,7 +12132,8 @@ func TestWorkflowDispatchEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshalData(t, u, want)
+	testJSONUnmarshalData(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestWatchEvent_Marshal(t *testing.T) {
@@ -16408,7 +16413,8 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshalData(t, u, want)
+	testJSONUnmarshalData(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestPullRequestReviewCommentEvent_Marshal(t *testing.T) {

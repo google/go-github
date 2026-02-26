@@ -389,5 +389,5 @@ func TestAuditEntry_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshalData(t, u, want)
 }

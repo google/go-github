@@ -442,7 +442,8 @@ func TestPackageVersion_Marshal(t *testing.T) {
 		"deleted_at": ` + referenceTimeStr + `
 	}`
 
-	testJSONMarshal(t, o, want)
+	testJSONMarshalData(t, o, want)
+	testJSONUnmarshalData(t, o, want, cmpJSONRawMessageComparator())
 }
 
 func TestPackageVersion_GetBody(t *testing.T) {
@@ -1163,7 +1164,8 @@ func TestPackageNugetMetadata_Marshal(t *testing.T) {
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			testJSONMarshal(t, test.input, test.want)
+			testJSONMarshalData(t, test.input, test.want)
+			testJSONUnmarshalData(t, test.input, test.want, cmpJSONRawMessageComparator())
 		})
 	}
 }

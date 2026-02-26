@@ -205,32 +205,22 @@ func testJSONMarshalData[T any](t *testing.T, v T, want string) {
 
 // testJSONUnmarshalData tests JSON unmarshaling by parsing the JSON string
 // and comparing the result with the expected value.
-//
-// This function uses custom comparison options that handle special cases:
-//   - json.RawMessage fields are compared semantically (ignoring whitespace/formatting)
-//   - Fields with json:"-" tags are ignored (as they shouldn't be in JSON anyway)
-//   - Fields of type "any" are compared by their JSON representation
-func testJSONUnmarshalData[T any](t *testing.T, want T, v string) {
+func testJSONUnmarshalData[T any](t *testing.T, want T, v string, opts ...cmp.Option) {
 	t.Helper()
-
-	cmpOpts := []cmp.Option{jsonRawMessageComparator(), anyTypeComparator()}
-	for _, fieldName := range jsonIgnoredFields(want) {
-		cmpOpts = append(cmpOpts, ignoreFieldOption(fieldName))
-	}
 
 	var got T
 	if err := json.Unmarshal([]byte(v), &got); err != nil {
 		t.Fatalf("Unable to unmarshal JSON %v: %v", v, err)
 	}
 
-	if diff := cmp.Diff(want, got, cmpOpts...); diff != "" {
+	if diff := cmp.Diff(want, got, opts...); diff != "" {
 		t.Errorf("json.Unmarshal returned:\n%#v\nwant:\n%#v\ndiff:\n%v", got, want, diff)
 	}
 }
 
-// jsonRawMessageComparator returns a cmp.Option that compares json.RawMessage
-// values by their semantic JSON content rather than byte-for-byte equality.
-func jsonRawMessageComparator() cmp.Option {
+// cmpJSONRawMessageComparator returns an option for use in testJSONUnmarshalData that compares
+// json.RawMessage values by their semantic JSON content rather than byte-for-byte equality.
+func cmpJSONRawMessageComparator() cmp.Option {
 	return cmp.Comparer(func(x, y json.RawMessage) bool {
 		if len(x) == 0 && len(y) == 0 {
 			return true
@@ -246,66 +236,10 @@ func jsonRawMessageComparator() cmp.Option {
 	})
 }
 
-// anyTypeComparator returns a cmp.Option that compares fields of type "any"
-// by marshaling them to JSON and comparing the results.
-func anyTypeComparator() cmp.Option {
-	return cmp.FilterPath(func(p cmp.Path) bool {
-		if len(p) == 0 {
-			return false
-		}
-		vf, ok := p[len(p)-1].(cmp.StructField)
-		return ok && vf.Type() == reflect.TypeFor[any]()
-	}, cmp.Comparer(func(x, y any) bool {
-		xJSON, err := json.Marshal(x)
-		if err != nil {
-			return false
-		}
-		yJSON, err := json.Marshal(y)
-		if err != nil {
-			return false
-		}
-
-		var xVal, yVal any
-		if err := json.Unmarshal(xJSON, &xVal); err != nil {
-			return false
-		}
-		if err := json.Unmarshal(yJSON, &yVal); err != nil {
-			return false
-		}
-		return cmp.Equal(xVal, yVal)
-	}))
-}
-
-// jsonIgnoredFields returns a list of field names that have the json:"-" tag.
-// These fields should not be marshaled/unmarshaled and thus should be ignored in comparisons.
-func jsonIgnoredFields[T any](value T) []string {
-	var ignoreFields []string
-
-	rv := reflect.ValueOf(value)
-	if rv.Kind() == reflect.Pointer {
-		rv = rv.Elem()
-	}
-
-	// Only process structs
-	if rv.Kind() != reflect.Struct {
-		return ignoreFields
-	}
-
-	rt := rv.Type()
-	for i := range rt.NumField() {
-		field := rt.Field(i)
-		if tag := field.Tag.Get("json"); tag == "-" {
-			ignoreFields = append(ignoreFields, field.Name)
-		}
-	}
-
-	return ignoreFields
-}
-
-// ignoreFieldOption returns a cmp.Option that ignores a specific field by name,
-// but only when it's a top-level field (not nested within other structs).
+// cmpIgnoreFieldOption returns an option for use in testJSONUnmarshalData that ignores a specific
+// field by name, but only when it's a top-level field (not nested within other structs).
 // This prevents accidentally ignoring nested struct fields with the same name.
-func ignoreFieldOption(fieldName string) cmp.Option {
+func cmpIgnoreFieldOption(fieldName string) cmp.Option {
 	return cmp.FilterPath(func(p cmp.Path) bool {
 		sf, ok := p[len(p)-1].(cmp.StructField)
 		if !ok || sf.Name() != fieldName {

@@ -265,7 +265,7 @@ func TestSCIMEnterpriseAttribute_Marshal(t *testing.T) {
 		]
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshalData(t, u, want)
 }
 
 func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
