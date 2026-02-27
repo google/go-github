@@ -28,8 +28,8 @@ type AuditLogStreamConfig struct {
 	VendorSpecific *AuditLogStreamVendorConfig `json:"vendor_specific,omitempty"`
 }
 
-// AuditLogStreamVendorConfig is a marker interface for vendor-specific audit log
-// stream configurations.
+// AuditLogStreamVendorConfig is a sealed marker interface for vendor-specific audit log
+// stream configurations. Only this package can define implementations.
 type AuditLogStreamVendorConfig interface {
 	isAuditLogStreamVendorConfig()
 }
