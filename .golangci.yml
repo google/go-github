@@ -98,9 +98,6 @@ linters:
           correction: unmarshaled
         - typo: unmarshalling
           correction: unmarshaling
-        # TODO: uncomment when https://github.com/golangci/misspell/issues/38 is fixed
-        # - typo: whitespace
-        #   correction: white space
       ignore-rules:
         - analyses # returned by the GitHub API
         - cancelled # returned by the GitHub API
