@@ -32,7 +32,7 @@ Update go source code to be consistent with openapi_operations.yaml.
  - Formats modified files with the equivalent of "go fmt".
 `,
 
-	"format_help": `Format whitespace in openapi_operations.yaml and sort its operations.`,
+	"format_help": `Format white space in openapi_operations.yaml and sort its operations.`,
 	"unused_help": `List operations in openapi_operations.yaml that aren't used by any service methods.`,
 
 	"working_dir_help": `Working directory. Should be the root of the go-github repository.`,
@@ -40,7 +40,7 @@ Update go source code to be consistent with openapi_operations.yaml.
 
 	"openapi_validate_help": `
 Instead of updating, make sure that the operations in openapi_operations.yaml's "openapi_operations" field are
-consistent with the sha listed in "openapi_commit". This is run in CI as a convenience so that reviewers can trust
+consistent with the SHA listed in "openapi_commit". This is run in CI as a convenience so that reviewers can trust
 changes to openapi_operations.yaml.
 `,
 

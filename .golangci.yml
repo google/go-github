@@ -82,7 +82,7 @@ linters:
         - shadow
     misspell:
       locale: US
-      # extra words from https://go.dev//wiki/Spelling
+      # extra words from https://go.dev/wiki/Spelling
       extra-words:
         - typo: marshall
           correction: marshal
