@@ -82,7 +82,7 @@ linters:
         - shadow
     misspell:
       locale: US
-      # extra words from https://go.dev//wiki/Spelling
+      # extra words from https://go.dev/wiki/Spelling
       extra-words:
         - typo: marshall
           correction: marshal
@@ -98,6 +98,9 @@ linters:
           correction: unmarshaled
         - typo: unmarshalling
           correction: unmarshaling
+        # TODO: uncomment when https://github.com/golangci/misspell/issues/38 is fixed
+        # - typo: whitespace
+        #   correction: white space
       ignore-rules:
         - analyses # returned by the GitHub API
         - cancelled # returned by the GitHub API
