@@ -989,10 +989,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_AbsoluteTemplate(t *t
 
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		// Expect name query param created by addOptions after trimming template.
-		if got := r.URL.Query().Get("name"); got != "abs.txt" {
-			t.Errorf("Expected name query param 'abs.txt', got %q", got)
-		}
+		testFormValues(t, r, values{"name": "abs.txt"})
 		fmt.Fprint(w, `{"id":1}`)
 	})
 

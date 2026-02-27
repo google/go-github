@@ -551,11 +551,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisoriesForOrg_NotFou
 
 	mux.HandleFunc("/orgs/o/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-
-		query := r.URL.Query()
-		if query.Get("state") != "draft" {
-			t.Errorf("ListRepositorySecurityAdvisoriesForOrg returned %+v, want %+v", query.Get("state"), "draft")
-		}
+		testFormValues(t, r, values{"state": "draft"})
 
 		http.NotFound(w, r)
 	})
@@ -682,11 +678,7 @@ func TestSecurityAdvisoriesService_ListRepositorySecurityAdvisories_NotFound(t *
 
 	mux.HandleFunc("/repos/o/r/security-advisories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-
-		query := r.URL.Query()
-		if query.Get("state") != "draft" {
-			t.Errorf("ListRepositorySecurityAdvisories returned %+v, want %+v", query.Get("state"), "draft")
-		}
+		testFormValues(t, r, values{"state": "draft"})
 
 		http.NotFound(w, r)
 	})
