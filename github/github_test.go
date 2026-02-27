@@ -163,6 +163,10 @@ func testBody(t *testing.T, r *http.Request, want string) {
 
 // testJSONMarshal tests both JSON marshaling and unmarshaling of a value by comparing
 // the marshaled output with the expected JSON string.
+//
+// This is the recommended function for most use cases.
+// It performs a round-trip test that ensures both marshaling (Go value to JSON)
+// and unmarshaling (JSON to Go value) work correctly and produce semantically equivalent results.
 func testJSONMarshal[T any](t *testing.T, v T, want string, opts ...cmp.Option) {
 	t.Helper()
 
@@ -177,6 +181,9 @@ func testJSONMarshal[T any](t *testing.T, v T, want string, opts ...cmp.Option) 
 //   - White space differences
 //   - Key ordering in objects
 //   - Numeric type differences (e.g., int vs float with same value)
+//
+// In most cases, use testJSONMarshal instead.
+// Only use this function in rare cases where you need to test marshaling behavior in isolation.
 func testJSONMarshalOnly[T any](t *testing.T, v T, want string) {
 	t.Helper()
 
@@ -205,6 +212,9 @@ func testJSONMarshalOnly[T any](t *testing.T, v T, want string) {
 
 // testJSONUnmarshalOnly tests JSON unmarshaling by parsing the JSON string
 // and comparing the result with the expected value.
+//
+// In most cases, use testJSONMarshal instead.
+// Only use this function in rare cases where you need to test unmarshaling behavior in isolation.
 func testJSONUnmarshalOnly[T any](t *testing.T, want T, v string, opts ...cmp.Option) {
 	t.Helper()
 
