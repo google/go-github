@@ -8,7 +8,6 @@ package github
 import (
 	"fmt"
 	"net/http"
-	"strings"
 	"testing"
 	"time"
 )
@@ -19,6 +18,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/audit-log", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"include": "all", "phrase": "action:workflows", "order": "asc"})
 
 		fmt.Fprint(w, `[
 	{
@@ -86,7 +86,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 		Order:   Ptr("asc"),
 	}
 
-	auditEntries, resp, err := client.Organizations.GetAuditLog(ctx, "o", &getOpts)
+	auditEntries, _, err := client.Organizations.GetAuditLog(ctx, "o", &getOpts)
 	if err != nil {
 		t.Errorf("Organizations.GetAuditLog returned error: %v", err)
 	}
@@ -150,12 +150,6 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	}
 
 	assertNoDiff(t, want, auditEntries)
-
-	// assert query string has lower case params
-	requestedQuery := resp.Request.URL.RawQuery
-	if !strings.Contains(requestedQuery, "phrase") {
-		t.Errorf("Organizations.GetAuditLog query string \ngot: %+v,\nwant:%+v", requestedQuery, "phrase")
-	}
 
 	const methodName = "GetAuditLog"
 	testBadOptions(t, methodName, func() (err error) {

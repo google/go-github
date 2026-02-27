@@ -119,16 +119,30 @@ func testMethod(t *testing.T, r *http.Request, want string) {
 
 type values map[string]string
 
-func testFormValues(t *testing.T, r *http.Request, values values) {
+// testFormValues checks that the request form values match the expected values.
+// It expects exactly one value per key.
+func testFormValues(t *testing.T, r *http.Request, want values) {
 	t.Helper()
-	want := url.Values{}
-	for k, v := range values {
-		want.Set(k, v)
+
+	wantValues := url.Values{}
+	for k, v := range want {
+		wantValues.Add(k, v)
 	}
 
 	assertNilError(t, r.ParseForm())
+	if got := r.Form; !cmp.Equal(got, wantValues) {
+		t.Errorf("Request query parameters: %v, want %v", got, wantValues)
+	}
+}
+
+// testFormValuesList checks that the request form values match the expected values.
+// It allows for multiple values per key.
+func testFormValuesList(t *testing.T, r *http.Request, want url.Values) {
+	t.Helper()
+
+	assertNilError(t, r.ParseForm())
 	if got := r.Form; !cmp.Equal(got, want) {
-		t.Errorf("Request parameters: %v, want %v", got, want)
+		t.Errorf("Request query parameters: %v, want %v", got, want)
 	}
 }
 
