@@ -241,6 +241,9 @@ func cmpJSONRawMessageComparator() cmp.Option {
 // This prevents accidentally ignoring nested struct fields with the same name.
 func cmpIgnoreFieldOption(fieldName string) cmp.Option {
 	return cmp.FilterPath(func(p cmp.Path) bool {
+		if len(p) == 0 {
+			return false
+		}
 		sf, ok := p[len(p)-1].(cmp.StructField)
 		if !ok || sf.Name() != fieldName {
 			return false
