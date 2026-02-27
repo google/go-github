@@ -1,4 +1,4 @@
-// Copyright 2025 The go-github AUTHORS. All rights reserved.
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -10,14 +10,15 @@ import (
 	"fmt"
 )
 
-// checkImmutableReleases represents whether immutable releases are enabled for a repository.
-type checkImmutableReleases struct {
-	Enabled bool `json:"enabled,omitempty"`
+// RepoImmutableReleasesStatus represents the immutable releases status for a repository.
+type RepoImmutableReleasesStatus struct {
+	Enabled         *bool `json:"enabled,omitempty"`
+	EnforcedByOwner *bool `json:"enforced_by_owner,omitempty"`
 }
 
 // EnableImmutableReleases enables immutable releases for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-immutable-releases-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-immutable-releases
 //
 //meta:operation PUT /repos/{owner}/{repo}/immutable-releases
 func (s *RepositoriesService) EnableImmutableReleases(ctx context.Context, owner, repo string) (*Response, error) {
@@ -38,7 +39,7 @@ func (s *RepositoriesService) EnableImmutableReleases(ctx context.Context, owner
 
 // DisableImmutableReleases disables immutable releases for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-immutable-releases-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-immutable-releases
 //
 //meta:operation DELETE /repos/{owner}/{repo}/immutable-releases
 func (s *RepositoriesService) DisableImmutableReleases(ctx context.Context, owner, repo string) (*Response, error) {
@@ -58,20 +59,24 @@ func (s *RepositoriesService) DisableImmutableReleases(ctx context.Context, owne
 }
 
 // IsImmutableReleasesEnabled checks if immutable releases are enabled for
-// the repository and returns a boolean indicating the status.
+// the repository.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/repos#check-if-immutable-releases-are-enabled-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/immutable-releases
-func (s *RepositoriesService) IsImmutableReleasesEnabled(ctx context.Context, owner, repo string) (bool, *Response, error) {
+func (s *RepositoriesService) IsImmutableReleasesEnabled(ctx context.Context, owner, repo string) (*RepoImmutableReleasesStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/immutable-releases", owner, repo)
 
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return false, nil, err
+		return nil, nil, err
 	}
 
-	immutableReleases := new(checkImmutableReleases)
-	resp, err := s.client.Do(ctx, req, immutableReleases)
-	return immutableReleases.Enabled, resp, err
+	status := new(RepoImmutableReleasesStatus)
+	resp, err := s.client.Do(ctx, req, status)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return status, resp, nil
 }

@@ -1,4 +1,4 @@
-// Copyright 2025 The go-github AUTHORS. All rights reserved.
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
 //
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestRepositoriesService_EnableImmutableReleases(t *testing.T) {
@@ -69,16 +71,17 @@ func TestRepositoriesService_IsImmutableReleasesEnabled(t *testing.T) {
 
 	mux.HandleFunc("/repos/owner/repo/immutable-releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"enabled": true}`)
+		fmt.Fprint(w, `{"enabled": true, "enforced_by_owner": false}`)
 	})
 
 	ctx := t.Context()
-	enabled, _, err := client.Repositories.IsImmutableReleasesEnabled(ctx, "owner", "repo")
+	status, _, err := client.Repositories.IsImmutableReleasesEnabled(ctx, "owner", "repo")
 	if err != nil {
 		t.Errorf("Repositories.IsImmutableReleasesEnabled returned error: %v", err)
 	}
-	if want := true; enabled != want {
-		t.Errorf("Repositories.IsImmutableReleasesEnabled returned %+v, want %+v", enabled, want)
+	want := &RepoImmutableReleasesStatus{Enabled: Ptr(true), EnforcedByOwner: Ptr(false)}
+	if !cmp.Equal(status, want) {
+		t.Errorf("Repositories.IsImmutableReleasesEnabled returned %+v, want %+v", status, want)
 	}
 
 	const methodName = "IsImmutableReleasesEnabled"
@@ -89,8 +92,8 @@ func TestRepositoriesService_IsImmutableReleasesEnabled(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Repositories.IsImmutableReleasesEnabled(ctx, "owner", "repo")
-		if got {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want false", methodName, got)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
