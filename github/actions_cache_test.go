@@ -545,7 +545,7 @@ func TestActionsCache_Marshal(t *testing.T) {
 
 func TestActionsCacheList_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ActionsCacheList{}, "{}")
+	testJSONMarshal(t, &ActionsCacheList{}, `{"total_count":0}`)
 
 	u := &ActionsCacheList{
 		TotalCount: 2,
@@ -590,7 +590,11 @@ func TestActionsCacheList_Marshal(t *testing.T) {
 
 func TestActionsCacheUsage_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ActionsCacheUsage{}, "{}")
+	testJSONMarshal(t, &ActionsCacheUsage{}, `{
+		"active_caches_count": 0,
+		"active_caches_size_in_bytes": 0,
+		"full_name": ""
+	}`)
 
 	u := &ActionsCacheUsage{
 		FullName:                "cache_usage1",
@@ -609,7 +613,7 @@ func TestActionsCacheUsage_Marshal(t *testing.T) {
 
 func TestActionsCacheUsageList_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ActionsCacheUsageList{}, "{}")
+	testJSONMarshal(t, &ActionsCacheUsageList{}, `{"total_count": 0}`)
 
 	u := &ActionsCacheUsageList{
 		TotalCount: 1,
@@ -636,7 +640,10 @@ func TestActionsCacheUsageList_Marshal(t *testing.T) {
 
 func TestTotalCacheUsage_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &TotalCacheUsage{}, "{}")
+	testJSONMarshal(t, &TotalCacheUsage{}, `{
+		"total_active_caches_count": 0,
+		"total_active_caches_size_in_bytes": 0
+	}`)
 
 	u := &TotalCacheUsage{
 		TotalActiveCachesUsageSizeInBytes: 2,

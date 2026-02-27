@@ -877,7 +877,10 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 
 func TestPublicKey_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &PublicKey{}, "{}")
+	testJSONMarshal(t, &PublicKey{}, `{
+		"key": null,
+		"key_id": null
+	}`)
 
 	u := &PublicKey{
 		KeyID: Ptr("kid"),
@@ -894,7 +897,11 @@ func TestPublicKey_Marshal(t *testing.T) {
 
 func TestSecret_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Secret{}, "{}")
+	testJSONMarshal(t, &Secret{}, `{
+		"name": "",
+		"created_at": "0001-01-01T00:00:00Z",
+		"updated_at": "0001-01-01T00:00:00Z"
+	}`)
 
 	u := &Secret{
 		Name:                    "n",
@@ -917,7 +924,10 @@ func TestSecret_Marshal(t *testing.T) {
 
 func TestSecrets_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Secrets{}, "{}")
+	testJSONMarshal(t, &Secrets{}, `{
+		"total_count": 0,
+		"secrets": null
+	}`)
 
 	u := &Secrets{
 		TotalCount: 1,
@@ -950,7 +960,10 @@ func TestSecrets_Marshal(t *testing.T) {
 
 func TestEncryptedSecret_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &EncryptedSecret{}, "{}")
+	testJSONMarshal(t, &EncryptedSecret{}, `{
+		"key_id": "",
+		"encrypted_value": ""
+	}`)
 
 	u := &EncryptedSecret{
 		Name:                  "n",
@@ -967,7 +980,7 @@ func TestEncryptedSecret_Marshal(t *testing.T) {
 		"selected_repository_ids": [1]
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshal(t, u, want, cmpIgnoreFieldOption("Name"))
 }
 
 func TestSelectedReposList_Marshal(t *testing.T) {

@@ -162,7 +162,7 @@ func TestAppsService_RevokeInstallationToken(t *testing.T) {
 
 func TestListRepositories_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ListRepositories{}, "{}")
+	testJSONMarshal(t, &ListRepositories{}, `{"repositories": null}`)
 
 	u := &ListRepositories{
 		TotalCount: Ptr(1),

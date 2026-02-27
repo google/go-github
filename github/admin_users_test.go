@@ -185,7 +185,7 @@ func TestUserImpersonation_Delete(t *testing.T) {
 
 func TestCreateUserRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &CreateUserRequest{}, "{}")
+	testJSONMarshal(t, &CreateUserRequest{}, `{"login": ""}`)
 
 	u := &CreateUserRequest{
 		Login: "l",

@@ -921,7 +921,7 @@ func TestRepositoryRelease_Marshal(t *testing.T) {
 
 func TestGenerateNotesOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &GenerateNotesOptions{}, "{}")
+	testJSONMarshal(t, &GenerateNotesOptions{}, `{"tag_name": ""}`)
 
 	u := &GenerateNotesOptions{
 		TagName:               "tag_name",

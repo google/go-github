@@ -6141,7 +6141,7 @@ func TestDeploymentEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
@@ -6529,7 +6529,7 @@ func TestDeploymentProtectionRuleEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestDeploymentReviewEvent_Marshal(t *testing.T) {
@@ -7466,7 +7466,7 @@ func TestDeploymentStatusEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestDiscussionCommentEvent_Marshal(t *testing.T) {
@@ -8576,7 +8576,6 @@ func TestPingEvent_Marshal(t *testing.T) {
 				"key": "value"
 			},
 			"config": {
-				"key": "value"
 			},
 			"events": [
 				"a"
@@ -9102,7 +9101,7 @@ func TestRepositoryDispatchEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestRepositoryImportEvent_Marshal(t *testing.T) {
@@ -12129,7 +12128,7 @@ func TestWorkflowDispatchEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestWatchEvent_Marshal(t *testing.T) {
@@ -13465,7 +13464,7 @@ func TestMetaEvent_Marshal(t *testing.T) {
 
 func TestRequestedAction_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RequestedAction{}, "{}")
+	testJSONMarshal(t, &RequestedAction{}, `{"identifier": ""}`)
 
 	r := &RequestedAction{
 		Identifier: "i",
@@ -13857,11 +13856,6 @@ func TestCustomPropertyEvent_Marshal(t *testing.T) {
           	],
           	"values_editable_by": "org_actors"
         },
-		"repository": {
-			"id": 1,
-			"name": "n",
-			"url": "s"
-		},
 		"sender": {
 			"login": "l",
 			"id": 1,
@@ -16414,7 +16408,7 @@ func TestPullRequestEvent_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }
 
 func TestPullRequestReviewCommentEvent_Marshal(t *testing.T) {
@@ -18037,7 +18031,6 @@ func TestSecurityAdvisoryEvent_Marshal(t *testing.T) {
 		  ],
 		  "published_at": ` + referenceTimeStr + `,
 		  "updated_at": ` + referenceTimeStr + `,
-		  "withdrawn_at": null,
 		  "vulnerabilities": [
 			{
 			  "package": {
@@ -18534,8 +18527,7 @@ func TestSecurityAndAnalysisEvent_Marshal(t *testing.T) {
 			"url": "u",
 			"events_url": "e",
 			"repos_url": "r"
-		},
-		"target_type": "running"
+		}
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -18727,10 +18719,6 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 			}
 		  ],
 		  "state": "open",
-		  "fixed_at": null,
-		  "dismissed_by": null,
-		  "dismissed_at": null,
-		  "dismissed_reason": null,
 		  "rule": {
 			"id": "Style/FrozenStringLiteralComment",
 			"severity": "note",
@@ -18742,8 +18730,7 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 			"help": "help"
 		  },
 		  "tool": {
-			"name": "Rubocop",
-			"version": null
+			"name": "Rubocop"
 		  }
 		},
 		"ref": "refs/heads/main",
@@ -18775,7 +18762,6 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 			"site_admin": false
 		  },
 		  "html_url": "a",
-		  "description": null,
 		  "fork": false,
 		  "url": "a",
 		  "forks_url": "a",
@@ -18821,23 +18807,18 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 		  "ssh_url": "a",
 		  "clone_url": "a",
 		  "svn_url": "a",
-		  "homepage": null,
 		  "size": 0,
 		  "stargazers_count": 0,
 		  "watchers_count": 0,
-		  "language": null,
 		  "has_issues": true,
 		  "has_projects": true,
 		  "has_downloads": true,
 		  "has_wiki": true,
 		  "has_pages": true,
 		  "forks_count": 0,
-		  "mirror_url": null,
 		  "archived": false,
 		  "disabled": false,
 		  "open_issues_count": 2,
-		  "license": null,
-		  "forks": 0,
 		  "open_issues": 2,
 		  "watchers": 0,
 		  "default_branch": "main"

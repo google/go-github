@@ -715,7 +715,7 @@ func TestWorkflowUsage_Marshal(t *testing.T) {
 
 func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, "{}")
+	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, `{"ref": ""}`)
 
 	inputs := make(map[string]any, 0)
 	inputs["key"] = "value"

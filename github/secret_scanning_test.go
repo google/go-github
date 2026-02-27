@@ -602,7 +602,7 @@ func TestSecretScanningAlertLocationDetails_Marshal(t *testing.T) {
 
 func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &SecretScanningAlertUpdateOptions{}, `{}`)
+	testJSONMarshal(t, &SecretScanningAlertUpdateOptions{}, `{"state": ""}`)
 
 	u := &SecretScanningAlertUpdateOptions{
 		State:      "open",

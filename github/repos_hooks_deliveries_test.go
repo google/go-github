@@ -290,7 +290,7 @@ func TestHookRequest_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, r, want)
+	testJSONMarshal(t, r, want, cmpJSONRawMessageComparator())
 }
 
 func TestHookRequest_GetHeader(t *testing.T) {
@@ -351,7 +351,7 @@ func TestHookResponse_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, r, want)
+	testJSONMarshal(t, r, want, cmpJSONRawMessageComparator())
 }
 
 func TestHookResponse_GetHeader(t *testing.T) {
@@ -450,5 +450,5 @@ func TestHookDelivery_Marshal(t *testing.T) {
 		}
 	}`
 
-	testJSONMarshal(t, r, want)
+	testJSONMarshal(t, r, want, cmpJSONRawMessageComparator())
 }

@@ -572,7 +572,7 @@ func TestPagesError_Marshal(t *testing.T) {
 
 func TestPagesUpdate_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &PagesUpdate{}, "{}")
+	testJSONMarshal(t, &PagesUpdate{}, `{"cname": null}`)
 
 	u := &PagesUpdate{
 		CNAME:  Ptr("cname"),

@@ -235,7 +235,7 @@ func TestTrafficViews_Marshal(t *testing.T) {
 
 	want := `{
 		"views": [{
-			"timestamp": "2016-05-31T16:00:00.000Z",
+			"timestamp": "2016-05-31T16:00:00Z",
 			"count": 7,
 			"uniques": 6
 		}],
@@ -262,7 +262,7 @@ func TestTrafficClones_Marshal(t *testing.T) {
 
 	want := `{
 		"clones": [{
-			"timestamp": "2021-10-29T16:00:00.000Z",
+			"timestamp": "2021-10-29T16:00:00Z",
 			"count": 1,
 			"uniques": 1
 		}],
@@ -305,25 +305,10 @@ func TestTrafficData_Marshal(t *testing.T) {
 	}
 
 	want := `{
-			"timestamp": "2016-05-31T16:00:00.000Z",
+			"timestamp": "2016-05-31T16:00:00Z",
 			"count": 7,
 			"uniques": 6
       }`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestTrafficBreakdownOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &TrafficBreakdownOptions{}, "{}")
-
-	u := &TrafficBreakdownOptions{
-		Per: "day",
-	}
-
-	want := `{
-		"per": "day"
-	}`
 
 	testJSONMarshal(t, u, want)
 }

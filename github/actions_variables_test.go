@@ -730,7 +730,10 @@ func TestActionsService_DeleteEnvVariable(t *testing.T) {
 
 func TestActionVariable_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ActionsVariable{}, "{}")
+	testJSONMarshal(t, &ActionsVariable{}, `{
+		"name": "",
+		"value": ""
+	}`)
 
 	av := &ActionsVariable{
 		Name:                    "n",

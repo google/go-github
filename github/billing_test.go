@@ -240,9 +240,13 @@ func TestMinutesUsedBreakdown_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestPackageBilling_Marshal(t *testing.T) {
+func TestPackagesBilling_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &PackagesBilling{}, "{}")
+	testJSONMarshal(t, &PackagesBilling{}, `{
+		"total_gigabytes_bandwidth_used": 0,
+		"total_paid_gigabytes_bandwidth_used": 0,
+		"included_gigabytes_bandwidth": 0
+	}`)
 
 	u := &PackagesBilling{
 		TotalGigabytesBandwidthUsed:     1,
@@ -261,7 +265,11 @@ func TestPackageBilling_Marshal(t *testing.T) {
 
 func TestStorageBilling_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &StorageBilling{}, "{}")
+	testJSONMarshal(t, &StorageBilling{}, `{
+		"days_left_in_billing_cycle": 0,
+		"estimated_paid_storage_for_month": 0,
+		"estimated_storage_for_month": 0
+	}`)
 
 	u := &StorageBilling{
 		DaysLeftInBillingCycle:       1,

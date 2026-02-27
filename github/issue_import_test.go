@@ -369,7 +369,7 @@ func TestIssueImportResponse_Marshal(t *testing.T) {
 
 func TestComment_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Comment{}, "{}")
+	testJSONMarshal(t, &Comment{}, `{"body": ""}`)
 
 	u := &Comment{
 		CreatedAt: &Timestamp{referenceTime},
@@ -386,7 +386,10 @@ func TestComment_Marshal(t *testing.T) {
 
 func TestIssueImport_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &IssueImport{}, "{}")
+	testJSONMarshal(t, &IssueImport{}, `{
+		"title": "",
+		"body": ""
+	}`)
 
 	u := &IssueImport{
 		Title:     "title",
@@ -419,7 +422,12 @@ func TestIssueImport_Marshal(t *testing.T) {
 
 func TestIssueImportRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &IssueImportRequest{}, "{}")
+	testJSONMarshal(t, &IssueImportRequest{}, `{
+		"issue": {
+			"title": "",
+			"body": ""
+		}
+	}`)
 
 	u := &IssueImportRequest{
 		IssueImport: IssueImport{

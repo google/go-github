@@ -446,7 +446,7 @@ func TestNotificationSubject_Marshal(t *testing.T) {
 
 func TestMarkReadOptions_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &markReadOptions{}, "{}")
+	testJSONMarshal(t, &markReadOptions{}, `{}`)
 
 	u := &markReadOptions{
 		LastReadAt: Timestamp{referenceTime},

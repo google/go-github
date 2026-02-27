@@ -505,7 +505,7 @@ func TestBranchWebHookCommit_Marshal(t *testing.T) {
 
 func TestBranchCreateHookRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &createHookRequest{}, "{}")
+	testJSONMarshal(t, &createHookRequest{}, `{"name": ""}`)
 
 	v := &createHookRequest{
 		Name:   "abc",

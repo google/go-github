@@ -295,7 +295,7 @@ func TestRepositoriesService_DeleteComment_invalidOwner(t *testing.T) {
 
 func TestRepositoryComment_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RepositoryComment{}, "{}")
+	testJSONMarshal(t, &RepositoryComment{}, `{"body": null}`)
 
 	r := &RepositoryComment{
 		HTMLURL:  Ptr("hurl"),

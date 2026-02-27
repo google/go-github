@@ -604,7 +604,7 @@ func TestCostCenters_Marshal(t *testing.T) {
 
 func TestCostCenterRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &CostCenterRequest{}, "{}")
+	testJSONMarshal(t, &CostCenterRequest{}, `{"name": ""}`)
 
 	u := &CostCenterRequest{
 		Name: "Engineering",

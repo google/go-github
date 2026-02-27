@@ -635,7 +635,11 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 
 func TestReference_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Reference{}, "{}")
+	testJSONMarshal(t, &Reference{}, `{
+		"ref": null,
+		"url": null,
+		"object": null
+	}`)
 
 	u := &Reference{
 		Ref: Ptr("ref"),
@@ -664,7 +668,11 @@ func TestReference_Marshal(t *testing.T) {
 
 func TestGitObject_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &GitObject{}, "{}")
+	testJSONMarshal(t, &GitObject{}, `{
+		"type": null,
+		"sha": null,
+		"url": null
+	}`)
 
 	u := &GitObject{
 		Type: Ptr("type"),

@@ -246,9 +246,6 @@ func TestTimeline_Marshal(t *testing.T) {
 			"from": "from",
 			"to": "to"
 		},
-		"project_card": {
-			"id": 1
-		},
 		"state": "state"
 	}`
 

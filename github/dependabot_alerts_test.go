@@ -388,8 +388,7 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
         }
       ],
       "published_at": "2018-10-03T21:13:54Z",
-      "updated_at": "2022-04-26T18:35:37Z",
-      "withdrawn_at": null
+      "updated_at": "2022-04-26T18:35:37Z"
 	}`
 
 	testJSONMarshal(t, h, want)

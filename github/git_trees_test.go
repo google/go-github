@@ -382,7 +382,7 @@ func TestTree_Marshal(t *testing.T) {
 
 func TestTreeEntry_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &TreeEntry{}, "{}")
+	testJSONMarshal(t, &TreeEntry{}, `{"sha": null}`)
 
 	u := &TreeEntry{
 		SHA:     Ptr("sha"),
@@ -409,7 +409,7 @@ func TestTreeEntry_Marshal(t *testing.T) {
 
 func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &treeEntryWithFileDelete{}, "{}")
+	testJSONMarshal(t, &treeEntryWithFileDelete{}, `{"sha": null}`)
 
 	u := &treeEntryWithFileDelete{
 		SHA:     Ptr("sha"),
@@ -436,7 +436,7 @@ func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
 
 func TestCreateTree_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &createTree{}, "{}")
+	testJSONMarshal(t, &createTree{}, `{"tree": null}`)
 
 	u := &createTree{
 		BaseTree: "bt",
