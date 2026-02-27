@@ -135,7 +135,7 @@ func testFormValues(t *testing.T, r *http.Request, want values) {
 	}
 }
 
-// testFormValuesMany checks that the request form values match the expected values.
+// testFormValuesList checks that the request form values match the expected values.
 // It allows for multiple values per key.
 func testFormValuesList(t *testing.T, r *http.Request, want url.Values) {
 	t.Helper()
