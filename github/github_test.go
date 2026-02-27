@@ -174,7 +174,7 @@ func testJSONMarshal[T any](t *testing.T, v T, want string, opts ...cmp.Option) 
 //
 // This function compares JSON by unmarshaling both values into any and using cmp.Diff.
 // This means the comparison ignores:
-//   - Whitespace differences
+//   - White space differences
 //   - Key ordering in objects
 //   - Numeric type differences (e.g., int vs float with same value)
 func testJSONMarshalOnly[T any](t *testing.T, v T, want string) {
