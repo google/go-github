@@ -260,6 +260,133 @@ func TestNewAzureBlobStreamConfig(t *testing.T) {
 	if got.Enabled == nil || !*got.Enabled {
 		t.Errorf("NewAzureBlobStreamConfig Enabled = %v, want true", got.Enabled)
 	}
+	if got.VendorSpecific == nil {
+		t.Fatal("NewAzureBlobStreamConfig VendorSpecific is nil")
+	}
+}
+
+func TestNewAzureHubStreamConfig(t *testing.T) {
+	t.Parallel()
+	cfg := &AzureHubConfig{
+		Name:                Ptr("my-hub"),
+		EncryptedConnstring: Ptr("ENCRYPTED"),
+		KeyID:               Ptr("v1"),
+	}
+	got := NewAzureHubStreamConfig(true, cfg)
+	if got.StreamType == nil || *got.StreamType != "Azure Event Hubs" {
+		t.Errorf("NewAzureHubStreamConfig StreamType = %v, want Azure Event Hubs", got.StreamType)
+	}
+	if got.Enabled == nil || !*got.Enabled {
+		t.Errorf("NewAzureHubStreamConfig Enabled = %v, want true", got.Enabled)
+	}
+	if got.VendorSpecific == nil {
+		t.Fatal("NewAzureHubStreamConfig VendorSpecific is nil")
+	}
+}
+
+func TestNewAmazonS3OIDCStreamConfig(t *testing.T) {
+	t.Parallel()
+	cfg := &AmazonS3OIDCConfig{
+		Bucket:             Ptr("my-bucket"),
+		Region:             Ptr("us-east-1"),
+		KeyID:              Ptr("v1"),
+		AuthenticationType: Ptr("oidc"),
+		ArnRole:            Ptr("arn:aws:iam::role/my-role"),
+	}
+	got := NewAmazonS3OIDCStreamConfig(true, cfg)
+	if got.StreamType == nil || *got.StreamType != "Amazon S3" {
+		t.Errorf("NewAmazonS3OIDCStreamConfig StreamType = %v, want Amazon S3", got.StreamType)
+	}
+	if got.Enabled == nil || !*got.Enabled {
+		t.Errorf("NewAmazonS3OIDCStreamConfig Enabled = %v, want true", got.Enabled)
+	}
+	if got.VendorSpecific == nil {
+		t.Fatal("NewAmazonS3OIDCStreamConfig VendorSpecific is nil")
+	}
+}
+
+func TestNewAmazonS3AccessKeysStreamConfig(t *testing.T) {
+	t.Parallel()
+	cfg := &AmazonS3AccessKeysConfig{
+		Bucket:               Ptr("my-bucket"),
+		Region:               Ptr("us-west-2"),
+		KeyID:                Ptr("v1"),
+		AuthenticationType:   Ptr("access_keys"),
+		EncryptedSecretKey:   Ptr("ENCRYPTED_SECRET"),
+		EncryptedAccessKeyID: Ptr("ENCRYPTED_KEY_ID"),
+	}
+	got := NewAmazonS3AccessKeysStreamConfig(false, cfg)
+	if got.StreamType == nil || *got.StreamType != "Amazon S3" {
+		t.Errorf("NewAmazonS3AccessKeysStreamConfig StreamType = %v, want Amazon S3", got.StreamType)
+	}
+	if got.Enabled == nil || *got.Enabled {
+		t.Errorf("NewAmazonS3AccessKeysStreamConfig Enabled = %v, want false", got.Enabled)
+	}
+	if got.VendorSpecific == nil {
+		t.Fatal("NewAmazonS3AccessKeysStreamConfig VendorSpecific is nil")
+	}
+}
+
+func TestNewSplunkStreamConfig(t *testing.T) {
+	t.Parallel()
+	cfg := &SplunkConfig{
+		Domain:         Ptr("splunk.example.com"),
+		Port:           Ptr(uint16(8089)),
+		KeyID:          Ptr("v1"),
+		EncryptedToken: Ptr("ENCRYPTED"),
+		SSLVerify:      Ptr(true),
+	}
+	got := NewSplunkStreamConfig(true, cfg)
+	if got.StreamType == nil || *got.StreamType != "Splunk" {
+		t.Errorf("NewSplunkStreamConfig StreamType = %v, want Splunk", got.StreamType)
+	}
+	if got.Enabled == nil || !*got.Enabled {
+		t.Errorf("NewSplunkStreamConfig Enabled = %v, want true", got.Enabled)
+	}
+	if got.VendorSpecific == nil {
+		t.Fatal("NewSplunkStreamConfig VendorSpecific is nil")
+	}
+}
+
+func TestNewHecStreamConfig(t *testing.T) {
+	t.Parallel()
+	cfg := &HecConfig{
+		Domain:         Ptr("hec.example.com"),
+		Port:           Ptr(uint16(443)),
+		KeyID:          Ptr("v1"),
+		EncryptedToken: Ptr("ENCRYPTED"),
+		Path:           Ptr("/services/collector"),
+		SSLVerify:      Ptr(true),
+	}
+	got := NewHecStreamConfig(false, cfg)
+	if got.StreamType == nil || *got.StreamType != "HTTPS Event Collector" {
+		t.Errorf("NewHecStreamConfig StreamType = %v, want HTTPS Event Collector", got.StreamType)
+	}
+	if got.Enabled == nil || *got.Enabled {
+		t.Errorf("NewHecStreamConfig Enabled = %v, want false", got.Enabled)
+	}
+	if got.VendorSpecific == nil {
+		t.Fatal("NewHecStreamConfig VendorSpecific is nil")
+	}
+}
+
+func TestNewGoogleCloudStreamConfig(t *testing.T) {
+	t.Parallel()
+	cfg := &GoogleCloudConfig{
+		Bucket:                   Ptr("my-gcs-bucket"),
+		KeyID:                    Ptr("v1"),
+		EncryptedJSONCredentials: Ptr("ENCRYPTED"),
+	}
+	got := NewGoogleCloudStreamConfig(true, cfg)
+	if got.StreamType == nil || *got.StreamType != "Google Cloud Storage" {
+		t.Errorf("NewGoogleCloudStreamConfig StreamType = %v, want Google Cloud Storage", got.StreamType)
+	}
+	if got.Enabled == nil || !*got.Enabled {
+		t.Errorf("NewGoogleCloudStreamConfig Enabled = %v, want true", got.Enabled)
+	}
+	if got.VendorSpecific == nil {
+		t.Fatal("NewGoogleCloudStreamConfig VendorSpecific is nil")
+	}
 }
 
 func TestNewDatadogStreamConfig(t *testing.T) {
@@ -275,5 +402,8 @@ func TestNewDatadogStreamConfig(t *testing.T) {
 	}
 	if got.Enabled == nil || *got.Enabled {
 		t.Errorf("NewDatadogStreamConfig Enabled = %v, want false", got.Enabled)
+	}
+	if got.VendorSpecific == nil {
+		t.Fatal("NewDatadogStreamConfig VendorSpecific is nil")
 	}
 }
