@@ -25,7 +25,7 @@ import (
 	"strings"
 
 	"github.com/golangci/plugin-module-register/register"
-	"github.com/google/go-github/v83/tools/structfield"
+	"github.com/google/go-github/v84/tools/structfield"
 	"go.yaml.in/yaml/v3"
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/checker"

@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/google/go-github/v83/github"
+	"github.com/google/go-github/v84/github"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -22,7 +22,7 @@ import (
 
 const (
 	// instrumentationName is the name of this instrumentation package.
-	instrumentationName = "github.com/google/go-github/v83/otel"
+	instrumentationName = "github.com/google/go-github/v84/otel"
 )
 
 // Transport is an http.RoundTripper that instrument requests with OpenTelemetry.

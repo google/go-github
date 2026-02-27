@@ -16,7 +16,7 @@ import (
 	"path/filepath"
 
 	"github.com/alecthomas/kong"
-	"github.com/google/go-github/v83/github"
+	"github.com/google/go-github/v84/github"
 )
 
 var helpVars = kong.Vars{

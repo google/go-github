@@ -17,7 +17,7 @@ import (
 	"github.com/gofri/go-github-ratelimit/v2/github_ratelimit"
 	"github.com/gofri/go-github-ratelimit/v2/github_ratelimit/github_primary_ratelimit"
 	"github.com/gofri/go-github-ratelimit/v2/github_ratelimit/github_secondary_ratelimit"
-	"github.com/google/go-github/v83/github"
+	"github.com/google/go-github/v84/github"
 )
 
 func main() {
