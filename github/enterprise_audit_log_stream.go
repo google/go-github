@@ -106,7 +106,7 @@ type DatadogConfig struct {
 	KeyID          *string `json:"key_id,omitempty"`
 }
 
-// Implement the marker interface for all vendor config types.
+// Implement the sealed marker interface for all vendor config types.
 func (*AzureBlobConfig) isAuditLogStreamVendorConfig()          {}
 func (*AzureHubConfig) isAuditLogStreamVendorConfig()           {}
 func (*AmazonS3OIDCConfig) isAuditLogStreamVendorConfig()       {}
