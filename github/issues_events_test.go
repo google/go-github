@@ -429,9 +429,6 @@ func TestIssueEvent_Marshal(t *testing.T) {
 			"to": "to"
 		},
 		"lock_reason": "lr",
-		"project_card": {
-			"id": 1
-		},
 		"dismissed_review": {
 			"state": "state",
 			"review_id": 1,

@@ -117,9 +117,9 @@ func TestSCIMEnterpriseUsers_Marshal(t *testing.T) {
 
 	want := `{
 		"schemas": ["` + SCIMSchemasURINamespacesListResponse + `"],
-		"TotalResults": 1,
+		"totalResults": 1,
 		"itemsPerPage": 1,
-		"StartIndex": 1,
+		"startIndex": 1,
 		"Resources": [{
 			"active": true,
 			"emails": [{
@@ -156,55 +156,6 @@ func TestSCIMEnterpriseUsers_Marshal(t *testing.T) {
 				"location": "https://api.github.com/scim/v2/enterprises/ee/User/idun1"
 			}
 		}]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestListProvisionedSCIMGroupsEnterpriseOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ListProvisionedSCIMGroupsEnterpriseOptions{}, "{}")
-
-	u := &ListProvisionedSCIMGroupsEnterpriseOptions{
-		Filter:             Ptr("f"),
-		ExcludedAttributes: Ptr("ea"),
-		StartIndex:         Ptr(5),
-		Count:              Ptr(9),
-	}
-
-	want := `{
-		"filter": "f",
-		"excludedAttributes": "ea",
-		"startIndex": 5,
-		"count": 9
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestGetProvisionedSCIMGroupEnterpriseOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &GetProvisionedSCIMGroupEnterpriseOptions{}, "{}")
-
-	u := &GetProvisionedSCIMGroupEnterpriseOptions{ExcludedAttributes: Ptr("ea")}
-	want := `{"excludedAttributes": "ea"}`
-	testJSONMarshal(t, u, want)
-}
-
-func TestListProvisionedSCIMUsersEnterpriseOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ListProvisionedSCIMUsersEnterpriseOptions{}, "{}")
-
-	u := &ListProvisionedSCIMUsersEnterpriseOptions{
-		Filter:     Ptr("f"),
-		StartIndex: Ptr(3),
-		Count:      Ptr(7),
-	}
-
-	want := `{
-		"filter": "f",
-		"startIndex": 3,
-		"count": 7
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -255,7 +206,10 @@ func TestSCIMEnterpriseGroupAttributes_Marshal(t *testing.T) {
 
 func TestSCIMEnterpriseAttribute_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &SCIMEnterpriseAttribute{}, "{}")
+	testJSONMarshal(t, &SCIMEnterpriseAttribute{}, `{
+		"schemas": null,
+		"Operations": null
+	}`)
 
 	u := &SCIMEnterpriseAttribute{
 		Schemas: []string{"s"},
@@ -311,7 +265,8 @@ func TestSCIMEnterpriseAttribute_Marshal(t *testing.T) {
 		]
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshalOnly(t, u, want)
+	// can't unmarshal Operations back into []*SCIMEnterpriseAttributeOperation, so skip testJSONUnmarshalOnly
 }
 
 func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {

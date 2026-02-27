@@ -139,7 +139,7 @@ func TestRepositoriesService_GetCodeownersErrors_specificRef(t *testing.T) {
 
 func TestCodeownersErrors_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &CodeownersErrors{}, "{}")
+	testJSONMarshal(t, &CodeownersErrors{}, `{"errors": null}`)
 
 	u := &CodeownersErrors{
 		Errors: []*CodeownersError{

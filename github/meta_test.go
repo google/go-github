@@ -34,18 +34,14 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		Domains: &APIMetaDomains{
 			Website: []string{
 				"*.github.com",
-				"*.github.dev",
-				"*.github.io",
 				"*.example.com/assets",
 				"*.example.com",
 			},
 			ArtifactAttestations: &APIMetaArtifactAttestations{
 				TrustDomain: "",
 				Services: []string{
-					"*.actions.github.com",
-					"tuf-repo.github.com",
-					"fulcio.github.com",
-					"timestamp.github.com",
+					"*.actions.example.com",
+					"timestamp.example.com",
 				},
 			},
 		},
@@ -58,13 +54,13 @@ func TestAPIMeta_Marshal(t *testing.T) {
 		"importer":["i"],
 		"github_enterprise_importer":["gei"],
 		"actions":["a"],
-    "actions_macos":["example.com/1", "example.com/2"],
+		"actions_macos":["example.com/1", "example.com/2"],
 		"dependabot":["d"],
 		"ssh_key_fingerprints":{"a":"f"},
 		"ssh_keys":["k"],
 		"api":["a"],
 		"web":["w"],
-		"domains":{"website":["*.github.com","*.github.dev","*.github.io","*.example.com/assets","*.example.com"],"artifact_attestations":{"trust_domain":"","services":["*.actions.github.com","tuf-repo.github.com","fulcio.github.com","timestamp.github.com"]}}
+		"domains":{"website":["*.github.com","*.example.com/assets","*.example.com"],"artifact_attestations":{"services":["*.actions.example.com","timestamp.example.com"]}}
 	}`
 
 	testJSONMarshal(t, a, want)

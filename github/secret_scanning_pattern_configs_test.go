@@ -532,7 +532,10 @@ func TestSecretScanningPatternConfigsUpdateOptions_Marshal(t *testing.T) {
 
 func TestSecretScanningProviderPatternSetting_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &SecretScanningProviderPatternSetting{}, `{}`)
+	testJSONMarshal(t, &SecretScanningProviderPatternSetting{}, `{
+		"token_type": "",
+		"push_protection_setting": ""
+	}`)
 
 	v := SecretScanningProviderPatternSetting{
 		TokenType:             "GITHUB_PERSONAL_ACCESS_TOKEN",
@@ -549,7 +552,10 @@ func TestSecretScanningProviderPatternSetting_Marshal(t *testing.T) {
 
 func TestSecretScanningCustomPatternSetting_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &SecretScanningCustomPatternSetting{}, `{}`)
+	testJSONMarshal(t, &SecretScanningCustomPatternSetting{}, `{
+		"token_type": "",
+		"push_protection_setting": ""
+	}`)
 
 	v := SecretScanningCustomPatternSetting{
 		TokenType:             "cp_2",

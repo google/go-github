@@ -144,5 +144,5 @@ func TestEvent_Marshal(t *testing.T) {
 		"id": "id"
 	}`
 
-	testJSONMarshal(t, u, want)
+	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }

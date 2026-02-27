@@ -544,7 +544,6 @@ func TestEnterpriseRunnerGroup_Marshal(t *testing.T) {
 		Inherited:                Ptr(true),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
-		SelectedWorkflows:        []string{},
 	}
 
 	want := `{
@@ -556,8 +555,7 @@ func TestEnterpriseRunnerGroup_Marshal(t *testing.T) {
 		"runners_url": "r",
 		"inherited": true,
 		"allows_public_repositories": true,
-		"restricted_to_workflows": false,
-		"selected_workflows": []
+		"restricted_to_workflows": false
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -565,7 +563,7 @@ func TestEnterpriseRunnerGroup_Marshal(t *testing.T) {
 
 func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &EnterpriseRunnerGroups{}, "{}")
+	testJSONMarshal(t, &EnterpriseRunnerGroups{}, `{"runner_groups": null}`)
 
 	u := &EnterpriseRunnerGroups{
 		TotalCount: Ptr(1),
@@ -580,7 +578,6 @@ func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
 				Inherited:                Ptr(true),
 				AllowsPublicRepositories: Ptr(true),
 				RestrictedToWorkflows:    Ptr(false),
-				SelectedWorkflows:        []string{},
 			},
 		},
 	}
@@ -596,8 +593,7 @@ func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
 			"runners_url": "r",
 			"inherited": true,
 			"allows_public_repositories": true,
-			"restricted_to_workflows": false,
-			"selected_workflows": []
+			"restricted_to_workflows": false
 		}]
 	}`
 
@@ -640,15 +636,13 @@ func TestUpdateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
 		Visibility:               Ptr("v"),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
-		SelectedWorkflows:        []string{},
 	}
 
 	want := `{
 		"name": "n",
 		"visibility": "v",
 		"allows_public_repositories": true,
-		"restricted_to_workflows": false,
-		"selected_workflows": []
+		"restricted_to_workflows": false
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -656,7 +650,7 @@ func TestUpdateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
 
 func TestSetOrgAccessRunnerGroupRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &SetOrgAccessRunnerGroupRequest{}, "{}")
+	testJSONMarshal(t, &SetOrgAccessRunnerGroupRequest{}, `{"selected_organization_ids": null}`)
 
 	u := &SetOrgAccessRunnerGroupRequest{
 		SelectedOrganizationIDs: []int64{1},

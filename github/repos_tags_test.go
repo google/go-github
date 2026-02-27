@@ -132,7 +132,10 @@ func TestRepositoriesService_DeleteTagProtection(t *testing.T) {
 
 func TestTagProtection_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &TagProtection{}, "{}")
+	testJSONMarshal(t, &TagProtection{}, `{
+		"id": null,
+		"pattern": null
+	}`)
 
 	u := &TagProtection{
 		ID:      Ptr(int64(1)),

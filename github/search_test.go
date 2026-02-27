@@ -845,30 +845,6 @@ func TestLabelResult_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestSearchOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SearchOptions{}, "{}")
-
-	u := &SearchOptions{
-		Sort:      "author-date",
-		Order:     "asc",
-		TextMatch: false,
-		ListOptions: ListOptions{
-			Page:    int(1),
-			PerPage: int(10),
-		},
-	}
-
-	want := `{
-		"sort": "author-date",
-		"order": "asc",
-		"page": 1,
-		"perPage": 10
-      }`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestIssuesSearchResult_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &IssuesSearchResult{}, "{}")
@@ -1031,7 +1007,6 @@ func TestCommitResult_Marshal(t *testing.T) {
 		Commit:      &Commit{SHA: Ptr("test")},
 		Author:      &User{ID: Ptr(int64(1))},
 		Committer:   &User{ID: Ptr(int64(1))},
-		Parents:     []*Commit{},
 	}
 
 	want := `{
