@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -30,6 +31,17 @@ const (
 	// to ensure relative URLs are used for all endpoints. See issue #752.
 	baseURLPath = "/api-v3"
 )
+
+// raceSafeTestConn wraps a net.Conn to hide concrete connection types such as *net.TCPConn.
+//
+// Go's HTTP transport may enable OS-level sendfile optimizations when it sees a concrete
+// TCP connection and an *os.File request body. Under the race detector on Windows, that
+// specific optimized path can trigger a known data race in internal polling structures.
+// Returning this wrapper from DialContext keeps behavior identical for tests while forcing
+// the transport onto the generic copy path, which is stable under -race.
+type raceSafeTestConn struct {
+	net.Conn
+}
 
 // setup sets up a test HTTP server along with a github.Client that is
 // configured to talk to that test server. Tests should register handlers on
@@ -57,8 +69,19 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) 
 	// server is a test HTTP server used to provide mock API responses.
 	server := httptest.NewServer(apiHandler)
 
+	testDialer := &net.Dialer{Timeout: 30 * time.Second}
+
 	// Create a custom transport with isolated connection pool
 	transport := &http.Transport{
+		// Wrap dialed connections so transport does not take concrete-TCP sendfile fast paths
+		// that can race under Windows + -race in upload tests.
+		DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+			conn, err := testDialer.DialContext(ctx, network, addr)
+			if err != nil {
+				return nil, err
+			}
+			return &raceSafeTestConn{Conn: conn}, nil
+		},
 		// Controls connection reuse - false allows reuse, true forces new connections for each request
 		DisableKeepAlives: false,
 		// Maximum concurrent connections per host (active + idle)

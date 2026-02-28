@@ -636,7 +636,20 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", u.String(), reader)
+	requestBody := reader
+	if reader != nil {
+		// Wrap the provided reader so transport code does not observe concrete body types
+		// (for example *os.File) and switch to platform-specific sendfile fast paths.
+		//
+		// Why this exists:
+		// race-enabled test runs on Windows have surfaced data races in the sendfile path
+		// while request read/write loops run concurrently. Hiding concrete type information
+		// keeps uploads on the generic io.Reader copy path, which is race-stable and preserves
+		// request semantics (same bytes, same headers, same content length).
+		requestBody = uploadRequestBodyReader{Reader: reader}
+	}
+
+	req, err := http.NewRequest("POST", u.String(), requestBody)
 	if err != nil {
 		return nil, err
 	}
@@ -656,6 +669,12 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 	}
 
 	return req, nil
+}
+
+// uploadRequestBodyReader intentionally wraps an io.Reader to hide concrete reader types.
+// See NewUploadRequest for why this prevents race-prone transport optimizations.
+type uploadRequestBodyReader struct {
+	io.Reader
 }
 
 // Response is a GitHub API response. This wraps the standard http.Response
