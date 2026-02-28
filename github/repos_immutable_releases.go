@@ -72,8 +72,8 @@ func (s *RepositoriesService) AreImmutableReleasesEnabled(ctx context.Context, o
 		return nil, nil, err
 	}
 
-	status := new(RepoImmutableReleasesStatus)
-	resp, err := s.client.Do(ctx, req, status)
+	var status *RepoImmutableReleasesStatus
+	resp, err := s.client.Do(ctx, req, &status)
 	if err != nil {
 		return nil, resp, err
 	}
