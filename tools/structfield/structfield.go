@@ -425,7 +425,7 @@ var initialisms = map[string]bool{
 	"OID": true, "OS": true,
 	"PEM": true, "PR": true, "QPS": true,
 	"RAM": true, "RHS": true, "RPC": true,
-	"SAML": true, "SBOM": true, "SCIM": true,
+	"SAML": true, "SAS": true, "SBOM": true, "SCIM": true,
 	"SHA": true, "SHA1": true, "SHA256": true,
 	"SKU": true, "SLA": true, "SMTP": true, "SNMP": true,
 	"SPDX": true, "SPDXID": true, "SQL": true, "SSH": true,
