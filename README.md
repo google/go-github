@@ -154,7 +154,7 @@ func main() {
 
 `go-githubauth` implements a set of `oauth2.TokenSource` to be used with `oauth2.Client`. An `oauth2.Client` can be injected into the `github.Client` to authenticate requests.
 
-Other example using `go-githubauth`:
+Another example using `go-githubauth`:
 
 ```go
 package main
