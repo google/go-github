@@ -36,8 +36,8 @@ type AuditLogStreamVendorConfig interface {
 
 // AuditLogStreamKey represents the public key used to encrypt secrets for audit log streaming.
 type AuditLogStreamKey struct {
-	KeyID *string `json:"key_id,omitempty"`
-	Key   *string `json:"key,omitempty"`
+	KeyID string `json:"key_id"`
+	Key   string `json:"key"`
 }
 
 // AzureBlobConfig represents vendor-specific config for Azure Blob Storage.
