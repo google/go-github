@@ -51,8 +51,7 @@ func encryptSecret(publicKeyB64, secret string) (string, error) {
 	if len(publicKeyBytes) != 32 {
 		return "", fmt.Errorf("public key must be 32 bytes, got %v", len(publicKeyBytes))
 	}
-	var publicKey [32]byte
-	copy(publicKey[:], publicKeyBytes)
+	publicKey := [32]byte(publicKeyBytes
 
 	encrypted, err := box.SealAnonymous(nil, []byte(secret), &publicKey, rand.Reader)
 	if err != nil {
