@@ -37,7 +37,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v83/github"
+	"github.com/google/go-github/v84/github"
 	"golang.org/x/crypto/nacl/box"
 )
 
@@ -51,7 +51,7 @@ func encryptSecret(publicKeyB64, secret string) (string, error) {
 	if len(publicKeyBytes) != 32 {
 		return "", fmt.Errorf("public key must be 32 bytes, got %v", len(publicKeyBytes))
 	}
-	publicKey := [32]byte(publicKeyBytes
+	publicKey := [32]byte(publicKeyBytes)
 
 	encrypted, err := box.SealAnonymous(nil, []byte(secret), &publicKey, rand.Reader)
 	if err != nil {
@@ -78,47 +78,58 @@ func main() {
 	}
 }
 
-func runCreate(args []string) {
-	fs := flag.NewFlagSet("create", flag.ExitOnError)
+// newFlagSet creates a FlagSet with the common -enterprise flag pre-registered.
+func newFlagSet(name string) (*flag.FlagSet, *string) {
+	fs := flag.NewFlagSet(name, flag.ExitOnError)
 	enterprise := fs.String("enterprise", "", "Enterprise slug (required).")
-	container := fs.String("container", "", "Azure Blob Storage container name (required).")
-	sasURL := fs.String("sas-url", "", "Plain-text Azure SAS URL to encrypt and submit (required).")
-	enabled := fs.Bool("enabled", true, "Whether the stream should be enabled immediately.")
+	return fs, enterprise
+}
+
+// parseAndInit parses the FlagSet, validates the enterprise flag, reads
+// environment variables, and returns a ready-to-use context, client, and
+// enterprise slug.
+func parseAndInit(fs *flag.FlagSet, enterprise *string, args []string) (context.Context, *github.Client, string) {
 	if err := fs.Parse(args); err != nil {
 		log.Fatalf("Error parsing flags: %v", err)
 	}
 
+	requireFlag("enterprise", *enterprise)
+
 	token := requireEnv("GITHUB_AUTH_TOKEN")
 	apiURL := requireEnv("GITHUB_API_URL")
-	requireFlag("enterprise", *enterprise)
+
+	return context.Background(), newClient(token, apiURL), *enterprise
+}
+
+func runCreate(args []string) {
+	fs, enterprise := newFlagSet("create")
+	container := fs.String("container", "", "Azure Blob Storage container name (required).")
+	sasURL := fs.String("sas-url", "", "Plain-text Azure SAS URL to encrypt and submit (required).")
+	enabled := fs.Bool("enabled", true, "Whether the stream should be enabled immediately.")
+
+	ctx, client, ent := parseAndInit(fs, enterprise, args)
 	requireFlag("container", *container)
 	requireFlag("sas-url", *sasURL)
 
-	ctx := context.Background()
-	client := newClient(token, apiURL)
-
-	// Step 1: Fetch the enterprise's public streaming key.
-	streamKey, _, err := client.Enterprise.GetAuditLogStreamKey(ctx, *enterprise)
+	streamKey, _, err := client.Enterprise.GetAuditLogStreamKey(ctx, ent)
 	if err != nil {
 		log.Fatalf("Error fetching audit log stream key: %v", err)
 	}
 	fmt.Printf("Retrieved stream key ID: %v\n", streamKey.GetKeyID())
 
-	// Step 2: Encrypt the SAS URL using the public key (sealed box / crypto_box_seal).
 	encryptedSASURL, err := encryptSecret(streamKey.GetKey(), *sasURL)
 	if err != nil {
 		log.Fatalf("Error encrypting SAS URL: %v", err)
 	}
 	fmt.Println("SAS URL encrypted successfully.")
 
-	// Step 3: Create the audit log stream.
 	config := github.NewAzureBlobStreamConfig(*enabled, &github.AzureBlobConfig{
 		KeyID:           streamKey.KeyID,
 		Container:       container,
 		EncryptedSasURL: &encryptedSASURL,
 	})
 
-	stream, _, err := client.Enterprise.CreateAuditLogStream(ctx, *enterprise, config)
+	stream, _, err := client.Enterprise.CreateAuditLogStream(ctx, ent, config)
 	if err != nil {
 		log.Fatalf("Error creating audit log stream: %v", err)
 	}
@@ -131,24 +142,13 @@ func runCreate(args []string) {
 }
 
 func runDelete(args []string) {
-	fs := flag.NewFlagSet("delete", flag.ExitOnError)
-	enterprise := fs.String("enterprise", "", "Enterprise slug (required).")
+	fs, enterprise := newFlagSet("delete")
 	streamID := fs.Int64("stream-id", 0, "ID of the audit log stream to delete (required).")
-	if err := fs.Parse(args); err != nil {
-		log.Fatalf("Error parsing flags: %v", err)
-	}
 
-	token := requireEnv("GITHUB_AUTH_TOKEN")
-	apiURL := requireEnv("GITHUB_API_URL")
-	requireFlag("enterprise", *enterprise)
-	if *streamID == 0 {
-		log.Fatal("flag -stream-id is required")
-	}
+	ctx, client, ent := parseAndInit(fs, enterprise, args)
+	requireIntFlag("stream-id", *streamID)
 
-	ctx := context.Background()
-	client := newClient(token, apiURL)
-
-	_, err := client.Enterprise.DeleteAuditLogStream(ctx, *enterprise, *streamID)
+	_, err := client.Enterprise.DeleteAuditLogStream(ctx, ent, *streamID)
 	if err != nil {
 		log.Fatalf("Error deleting audit log stream: %v", err)
 	}
@@ -174,6 +174,12 @@ func requireEnv(name string) string {
 
 func requireFlag(name, val string) {
 	if val == "" {
+		log.Fatalf("flag -%v is required", name)
+	}
+}
+
+func requireIntFlag(name string, val int64) {
+	if val == 0 {
 		log.Fatalf("flag -%v is required", name)
 	}
 }
