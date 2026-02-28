@@ -1,8 +1,8 @@
 version: v2.10.1 # should be in sync with script/setup-custom-gcl.sh
 plugins:
-  - module: "github.com/google/go-github/v83/tools/fmtpercentv"
+  - module: "github.com/google/go-github/v84/tools/fmtpercentv"
     path: ./tools/fmtpercentv
-  - module: "github.com/google/go-github/v83/tools/sliceofpointers"
+  - module: "github.com/google/go-github/v84/tools/sliceofpointers"
     path: ./tools/sliceofpointers
-  - module: "github.com/google/go-github/v83/tools/structfield"
+  - module: "github.com/google/go-github/v84/tools/structfield"
     path: ./tools/structfield

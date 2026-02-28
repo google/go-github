@@ -11,7 +11,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/google/go-github/v83/github"
+	"github.com/google/go-github/v84/github"
 )
 
 // Integration tests for Projects V2 endpoints defined in github/projects.go.

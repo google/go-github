@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
+	"net/url"
 	"testing"
 	"time"
 
@@ -22,26 +22,13 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 
 	mux.HandleFunc("/orgs/o/personal-access-tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		expectedQuery := map[string][]string{
+		testFormValuesList(t, r, url.Values{
 			"per_page":  {"2"},
 			"page":      {"2"},
 			"sort":      {"created_at"},
 			"direction": {"desc"},
 			"owner[]":   {"octocat", "octodog", "otherbot"},
-		}
-
-		query := r.URL.Query()
-		for key, expectedValues := range expectedQuery {
-			actualValues := query[key]
-			if len(actualValues) != len(expectedValues) {
-				t.Errorf("Expected %v values for query param %v, got %v", len(expectedValues), key, len(actualValues))
-			}
-			for i, expectedValue := range expectedValues {
-				if actualValues[i] != expectedValue {
-					t.Errorf("Expected query param %v to be %v, got %v", key, expectedValue, actualValues[i])
-				}
-			}
-		}
+		})
 
 		fmt.Fprint(w, `
 		[
@@ -165,13 +152,8 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens_ownerOnly(t *t
 
 	mux.HandleFunc("/orgs/o/personal-access-tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		// When only Owner is set, addOptions adds no query params, so URL gets "?" + owner[]=...
-		if !strings.Contains(r.URL.RawQuery, "owner[]=") {
-			t.Errorf("Expected query to contain owner[]=, got %q", r.URL.RawQuery)
-		}
-		if strings.HasPrefix(r.URL.RawQuery, "&") {
-			t.Errorf("Expected query to start with ?, got %q", r.URL.RawQuery)
-		}
+		testFormValues(t, r, values{"owner[]": "octocat"})
+
 		fmt.Fprint(w, "[]")
 	})
 
@@ -189,27 +171,14 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *test
 
 	mux.HandleFunc("/orgs/o/personal-access-token-requests", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		expectedQuery := map[string][]string{
+		testFormValuesList(t, r, url.Values{
 			"per_page":   {"2"},
 			"page":       {"2"},
 			"sort":       {"created_at"},
 			"direction":  {"desc"},
 			"owner[]":    {"octocat", "octodog"},
 			"token_id[]": {"11579703", "11579704"},
-		}
-
-		query := r.URL.Query()
-		for key, expectedValues := range expectedQuery {
-			actualValues := query[key]
-			if len(actualValues) != len(expectedValues) {
-				t.Errorf("Expected %v values for query param %v, got %v", len(expectedValues), key, len(actualValues))
-			}
-			for i, expectedValue := range expectedValues {
-				if actualValues[i] != expectedValue {
-					t.Errorf("Expected query param %v to be %v, got %v", key, expectedValue, actualValues[i])
-				}
-			}
-		}
+		})
 
 		fmt.Fprint(w, `[
 			{
@@ -331,13 +300,7 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests_ownerOn
 
 	mux.HandleFunc("/orgs/o/personal-access-token-requests", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		// When only Owner is set (no ListOptions, TokenID, etc.), addOptions adds no query params, so URL gets "?" + owner[]=...
-		if !strings.Contains(r.URL.RawQuery, "owner[]=") {
-			t.Errorf("Expected query to contain owner[]=, got %q", r.URL.RawQuery)
-		}
-		if strings.HasPrefix(r.URL.RawQuery, "&") {
-			t.Errorf("Expected query to start with ?, got %q", r.URL.RawQuery)
-		}
+		testFormValues(t, r, values{"owner[]": "octocat"})
 		fmt.Fprint(w, "[]")
 	})
 
@@ -357,13 +320,7 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests_tokenID
 
 	mux.HandleFunc("/orgs/o/personal-access-token-requests", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		// When only TokenID is set (no Owner, ListOptions, etc.), addOptions adds no query params, so URL gets "?" + token_id[]=...
-		if !strings.Contains(r.URL.RawQuery, "token_id[]=") {
-			t.Errorf("Expected query to contain token_id[]=, got %q", r.URL.RawQuery)
-		}
-		if strings.HasPrefix(r.URL.RawQuery, "&") {
-			t.Errorf("Expected query not to start with & (token_id should be first param with ?), got %q", r.URL.RawQuery)
-		}
+		testFormValues(t, r, values{"token_id[]": "11579703"})
 		fmt.Fprint(w, "[]")
 	})
 

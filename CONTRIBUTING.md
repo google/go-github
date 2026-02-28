@@ -264,7 +264,7 @@ Its subcommands are:
 - `update-go` - updates Go files with documentation URLs and formats comments.
   It is used by `script/generate.sh`.
 
-- `format` - formats whitespace in `openapi_operations.yaml` and sorts its
+- `format` - formats white space in `openapi_operations.yaml` and sorts its
   arrays. It is used by `script/fmt.sh`.
 
 - `unused` - lists operations from `openapi_operations.yaml` that are not mapped

@@ -1010,10 +1010,7 @@ func TestRepositoriesService_GetContents_NoTrailingSlashInDirectoryApiPath(t *te
 
 	mux.HandleFunc("/repos/o/r/contents/.github", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		query := r.URL.Query()
-		if query.Get("ref") != "mybranch" {
-			t.Errorf("Repositories.GetContents returned %+v, want %+v", query.Get("ref"), "mybranch")
-		}
+		testFormValues(t, r, values{"ref": "mybranch"})
 		fmt.Fprint(w, `{}`)
 	})
 	ctx := t.Context()
