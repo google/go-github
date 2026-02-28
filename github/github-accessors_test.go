@@ -30445,6 +30445,28 @@ func TestRepoDependencies_GetVersionInfo(tt *testing.T) {
 	r.GetVersionInfo()
 }
 
+func TestRepoImmutableReleasesStatus_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepoImmutableReleasesStatus{Enabled: &zeroValue}
+	r.GetEnabled()
+	r = &RepoImmutableReleasesStatus{}
+	r.GetEnabled()
+	r = nil
+	r.GetEnabled()
+}
+
+func TestRepoImmutableReleasesStatus_GetEnforcedByOwner(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &RepoImmutableReleasesStatus{EnforcedByOwner: &zeroValue}
+	r.GetEnforcedByOwner()
+	r = &RepoImmutableReleasesStatus{}
+	r.GetEnforcedByOwner()
+	r = nil
+	r.GetEnforcedByOwner()
+}
+
 func TestRepoMergeUpstreamRequest_GetBranch(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

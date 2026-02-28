@@ -23550,6 +23550,22 @@ func (r *RepoDependencies) GetVersionInfo() string {
 	return *r.VersionInfo
 }
 
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (r *RepoImmutableReleasesStatus) GetEnabled() bool {
+	if r == nil || r.Enabled == nil {
+		return false
+	}
+	return *r.Enabled
+}
+
+// GetEnforcedByOwner returns the EnforcedByOwner field if it's non-nil, zero value otherwise.
+func (r *RepoImmutableReleasesStatus) GetEnforcedByOwner() bool {
+	if r == nil || r.EnforcedByOwner == nil {
+		return false
+	}
+	return *r.EnforcedByOwner
+}
+
 // GetBranch returns the Branch field if it's non-nil, zero value otherwise.
 func (r *RepoMergeUpstreamRequest) GetBranch() string {
 	if r == nil || r.Branch == nil {
