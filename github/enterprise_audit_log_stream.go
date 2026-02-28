@@ -12,12 +12,12 @@ import (
 
 // AuditLogStream represents an audit log stream configuration for an enterprise.
 type AuditLogStream struct {
-	ID            *int64     `json:"id,omitempty"`
-	StreamType    *string    `json:"stream_type,omitempty"`
-	StreamDetails *string    `json:"stream_details,omitempty"`
-	Enabled       *bool      `json:"enabled,omitempty"`
-	CreatedAt     *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt     *Timestamp `json:"updated_at,omitempty"`
+	ID            int64     `json:"id"`
+	StreamType    string    `json:"stream_type"`
+	StreamDetails string    `json:"stream_details"`
+	Enabled       bool      `json:"enabled"`
+	CreatedAt     Timestamp `json:"created_at"`
+	UpdatedAt     Timestamp `json:"updated_at"`
 	PausedAt      *Timestamp `json:"paused_at,omitempty"`
 }
 
