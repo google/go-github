@@ -114,8 +114,8 @@ func runCreate(args []string) {
 	// Step 3: Create the audit log stream.
 	config := github.NewAzureBlobStreamConfig(*enabled, &github.AzureBlobConfig{
 		KeyID:           streamKey.KeyID,
-		Container:       github.Ptr(*container),
-		EncryptedSasURL: github.Ptr(encryptedSASURL),
+		Container:       container,
+		EncryptedSasURL: &encryptedSASURL,
 	})
 
 	stream, _, err := client.Enterprise.CreateAuditLogStream(ctx, *enterprise, config)
