@@ -23,9 +23,9 @@ type AuditLogStream struct {
 
 // AuditLogStreamConfig represents a configuration for creating or updating an audit log stream.
 type AuditLogStreamConfig struct {
-	Enabled        *bool                       `json:"enabled,omitempty"`
-	StreamType     *string                     `json:"stream_type,omitempty"`
-	VendorSpecific *AuditLogStreamVendorConfig `json:"vendor_specific,omitempty"`
+	Enabled        bool                       `json:"enabled"`
+	StreamType     string                     `json:"stream_type"`
+	VendorSpecific AuditLogStreamVendorConfig `json:"vendor_specific"`
 }
 
 // AuditLogStreamVendorConfig is a sealed marker interface for vendor-specific audit log
