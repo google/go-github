@@ -42,9 +42,9 @@ type AuditLogStreamKey struct {
 
 // AzureBlobConfig represents vendor-specific config for Azure Blob Storage.
 type AzureBlobConfig struct {
-	KeyID           *string `json:"key_id,omitempty"`
-	EncryptedSasURL *string `json:"encrypted_sas_url,omitempty"`
-	Container       *string `json:"container,omitempty"`
+	KeyID           string `json:"key_id"`
+	EncryptedSasURL string `json:"encrypted_sas_url"`
+	Container       string `json:"container"`
 }
 
 // AzureHubConfig represents vendor-specific config for Azure Event Hubs.
