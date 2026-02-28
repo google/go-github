@@ -65,7 +65,7 @@ func TestRepositoriesService_DisableImmutableReleases(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_IsImmutableReleasesEnabled(t *testing.T) {
+func TestRepositoriesService_AreImmutableReleasesEnabled(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -75,23 +75,23 @@ func TestRepositoriesService_IsImmutableReleasesEnabled(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	status, _, err := client.Repositories.IsImmutableReleasesEnabled(ctx, "owner", "repo")
+	status, _, err := client.Repositories.AreImmutableReleasesEnabled(ctx, "owner", "repo")
 	if err != nil {
-		t.Errorf("Repositories.IsImmutableReleasesEnabled returned error: %v", err)
+		t.Errorf("Repositories.AreImmutableReleasesEnabled returned error: %v", err)
 	}
 	want := &RepoImmutableReleasesStatus{Enabled: Ptr(true), EnforcedByOwner: Ptr(false)}
 	if !cmp.Equal(status, want) {
-		t.Errorf("Repositories.IsImmutableReleasesEnabled returned %+v, want %+v", status, want)
+		t.Errorf("Repositories.AreImmutableReleasesEnabled returned %+v, want %+v", status, want)
 	}
 
-	const methodName = "IsImmutableReleasesEnabled"
+	const methodName = "AreImmutableReleasesEnabled"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.IsImmutableReleasesEnabled(ctx, "\n", "\n")
+		_, _, err = client.Repositories.AreImmutableReleasesEnabled(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.IsImmutableReleasesEnabled(ctx, "owner", "repo")
+		got, resp, err := client.Repositories.AreImmutableReleasesEnabled(ctx, "owner", "repo")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
