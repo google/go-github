@@ -129,7 +129,7 @@ func runCreate(args []string) {
 		EncryptedSASURL: encryptedSASURL,
 	})
 
-	stream, _, err := client.Enterprise.CreateAuditLogStream(ctx, ent, config)
+	stream, _, err := client.Enterprise.CreateAuditLogStream(ctx, ent, *config)
 	if err != nil {
 		log.Fatalf("Error creating audit log stream: %v", err)
 	}

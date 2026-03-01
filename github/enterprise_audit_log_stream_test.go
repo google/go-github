@@ -146,7 +146,7 @@ func TestEnterpriseService_CreateAuditLogStream(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	stream, _, err := client.Enterprise.CreateAuditLogStream(ctx, "e", input)
+	stream, _, err := client.Enterprise.CreateAuditLogStream(ctx, "e", *input)
 	if err != nil {
 		t.Errorf("Enterprise.CreateAuditLogStream returned error: %v", err)
 	}
@@ -163,11 +163,11 @@ func TestEnterpriseService_CreateAuditLogStream(t *testing.T) {
 
 	const methodName = "CreateAuditLogStream"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.CreateAuditLogStream(ctx, "\n", input)
+		_, _, err = client.Enterprise.CreateAuditLogStream(ctx, "\n", *input)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.CreateAuditLogStream(ctx, "e", input)
+		got, resp, err := client.Enterprise.CreateAuditLogStream(ctx, "e", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
