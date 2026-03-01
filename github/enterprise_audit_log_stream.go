@@ -230,7 +230,7 @@ func (s *EnterpriseService) GetAuditLogStream(ctx context.Context, enterprise st
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#create-an-audit-log-streaming-configuration-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/audit-log/streams
-func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise string, config *AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
+func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise string, config AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/streams", enterprise)
 
 	req, err := s.client.NewRequest("POST", u, config)
