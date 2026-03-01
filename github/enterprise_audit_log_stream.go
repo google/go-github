@@ -118,58 +118,42 @@ func (*DatadogConfig) isAuditLogStreamVendorConfig()            {}
 
 // NewAzureBlobStreamConfig returns an AuditLogStreamConfig for Azure Blob Storage.
 func NewAzureBlobStreamConfig(enabled bool, cfg *AzureBlobConfig) *AuditLogStreamConfig {
-	streamType := "Azure Blob Storage"
-	v := AuditLogStreamVendorConfig(cfg)
-	return &AuditLogStreamConfig{Enabled: enabled, StreamType: streamType, VendorSpecific: v}
+	return &AuditLogStreamConfig{Enabled: enabled, StreamType: "Azure Blob Storage", VendorSpecific: cfg}
 }
 
 // NewAzureHubStreamConfig returns an AuditLogStreamConfig for Azure Event Hubs.
 func NewAzureHubStreamConfig(enabled bool, cfg *AzureHubConfig) *AuditLogStreamConfig {
-	streamType := "Azure Event Hubs"
-	v := AuditLogStreamVendorConfig(cfg)
-	return &AuditLogStreamConfig{Enabled: enabled, StreamType: streamType, VendorSpecific: v}
+	return &AuditLogStreamConfig{Enabled: enabled, StreamType: "Azure Event Hubs", VendorSpecific: cfg}
 }
 
 // NewAmazonS3OIDCStreamConfig returns an AuditLogStreamConfig for Amazon S3 with OIDC auth.
 func NewAmazonS3OIDCStreamConfig(enabled bool, cfg *AmazonS3OIDCConfig) *AuditLogStreamConfig {
-	streamType := "Amazon S3"
-	v := AuditLogStreamVendorConfig(cfg)
-	return &AuditLogStreamConfig{Enabled: enabled, StreamType: streamType, VendorSpecific: v}
+	return &AuditLogStreamConfig{Enabled: enabled, StreamType: "Amazon S3", VendorSpecific: cfg}
 }
 
 // NewAmazonS3AccessKeysStreamConfig returns an AuditLogStreamConfig for Amazon S3 with access key auth.
 func NewAmazonS3AccessKeysStreamConfig(enabled bool, cfg *AmazonS3AccessKeysConfig) *AuditLogStreamConfig {
-	streamType := "Amazon S3"
-	v := AuditLogStreamVendorConfig(cfg)
-	return &AuditLogStreamConfig{Enabled: enabled, StreamType: streamType, VendorSpecific: v}
+	return &AuditLogStreamConfig{Enabled: enabled, StreamType: "Amazon S3", VendorSpecific: cfg}
 }
 
 // NewSplunkStreamConfig returns an AuditLogStreamConfig for Splunk.
 func NewSplunkStreamConfig(enabled bool, cfg *SplunkConfig) *AuditLogStreamConfig {
-	streamType := "Splunk"
-	v := AuditLogStreamVendorConfig(cfg)
-	return &AuditLogStreamConfig{Enabled: enabled, StreamType: streamType, VendorSpecific: v}
+	return &AuditLogStreamConfig{Enabled: enabled, StreamType: "Splunk", VendorSpecific: cfg}
 }
 
 // NewHecStreamConfig returns an AuditLogStreamConfig for an HTTPS Event Collector endpoint.
 func NewHecStreamConfig(enabled bool, cfg *HecConfig) *AuditLogStreamConfig {
-	streamType := "HTTPS Event Collector"
-	v := AuditLogStreamVendorConfig(cfg)
-	return &AuditLogStreamConfig{Enabled: enabled, StreamType: streamType, VendorSpecific: v}
+	return &AuditLogStreamConfig{Enabled: enabled, StreamType: "HTTPS Event Collector", VendorSpecific: cfg}
 }
 
 // NewGoogleCloudStreamConfig returns an AuditLogStreamConfig for Google Cloud Storage.
 func NewGoogleCloudStreamConfig(enabled bool, cfg *GoogleCloudConfig) *AuditLogStreamConfig {
-	streamType := "Google Cloud Storage"
-	v := AuditLogStreamVendorConfig(cfg)
-	return &AuditLogStreamConfig{Enabled: enabled, StreamType: streamType, VendorSpecific: v}
+	return &AuditLogStreamConfig{Enabled: enabled, StreamType: "Google Cloud Storage", VendorSpecific: cfg}
 }
 
 // NewDatadogStreamConfig returns an AuditLogStreamConfig for Datadog.
 func NewDatadogStreamConfig(enabled bool, cfg *DatadogConfig) *AuditLogStreamConfig {
-	streamType := "Datadog"
-	v := AuditLogStreamVendorConfig(cfg)
-	return &AuditLogStreamConfig{Enabled: enabled, StreamType: streamType, VendorSpecific: v}
+	return &AuditLogStreamConfig{Enabled: enabled, StreamType: "Datadog", VendorSpecific: cfg}
 }
 
 // GetAuditLogStreamKey retrieves the public key used to encrypt secrets for audit log streaming.
