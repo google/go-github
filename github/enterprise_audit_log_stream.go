@@ -253,7 +253,7 @@ func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#update-an-existing-audit-log-stream-configuration
 //
 //meta:operation PUT /enterprises/{enterprise}/audit-log/streams/{stream_id}
-func (s *EnterpriseService) UpdateAuditLogStream(ctx context.Context, enterprise string, streamID int64, config *AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
+func (s *EnterpriseService) UpdateAuditLogStream(ctx context.Context, enterprise string, streamID int64, config AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/streams/%v", enterprise, streamID)
 
 	req, err := s.client.NewRequest("PUT", u, config)
