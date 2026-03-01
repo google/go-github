@@ -253,15 +253,16 @@ func TestNewAzureBlobStreamConfig(t *testing.T) {
 		EncryptedSASURL: "ENCRYPTED",
 		Container:       "my-container",
 	}
+
 	got := NewAzureBlobStreamConfig(true, cfg)
-	if got.StreamType != "Azure Blob Storage" {
-		t.Errorf("NewAzureBlobStreamConfig StreamType = %v, want Azure Blob Storage", got.StreamType)
+
+	want := &AuditLogStreamConfig{
+		Enabled:        true,
+		StreamType:     "Azure Blob Storage",
+		VendorSpecific: cfg,
 	}
-	if !got.Enabled {
-		t.Errorf("NewAzureBlobStreamConfig Enabled = %v, want true", got.Enabled)
-	}
-	if got.VendorSpecific == nil {
-		t.Fatal("NewAzureBlobStreamConfig VendorSpecific is nil")
+	if !cmp.Equal(got, want) {
+		t.Errorf("NewAzureBlobStreamConfig = %+v, want %+v", got, want)
 	}
 }
 
