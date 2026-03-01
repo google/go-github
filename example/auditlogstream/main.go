@@ -115,9 +115,9 @@ func runCreate(args []string) {
 	if err != nil {
 		log.Fatalf("Error fetching audit log stream key: %v", err)
 	}
-	fmt.Printf("Retrieved stream key ID: %v\n", streamKey.GetKeyID())
+	fmt.Printf("Retrieved stream key ID: %v\n", streamKey.KeyID)
 
-	encryptedSASURL, err := encryptSecret(streamKey.GetKey(), *sasURL)
+	encryptedSASURL, err := encryptSecret(streamKey.Key, *sasURL)
 	if err != nil {
 		log.Fatalf("Error encrypting SAS URL: %v", err)
 	}
@@ -125,8 +125,8 @@ func runCreate(args []string) {
 
 	config := github.NewAzureBlobStreamConfig(*enabled, &github.AzureBlobConfig{
 		KeyID:           streamKey.KeyID,
-		Container:       container,
-		EncryptedSasURL: &encryptedSASURL,
+		Container:       *container,
+		EncryptedSASURL: encryptedSASURL,
 	})
 
 	stream, _, err := client.Enterprise.CreateAuditLogStream(ctx, ent, config)
@@ -135,10 +135,10 @@ func runCreate(args []string) {
 	}
 
 	fmt.Println("Successfully created audit log stream:")
-	fmt.Printf("  ID:         %v\n", stream.GetID())
-	fmt.Printf("  Type:       %v\n", stream.GetStreamType())
-	fmt.Printf("  Enabled:    %v\n", stream.GetEnabled())
-	fmt.Printf("  Created at: %v\n", stream.GetCreatedAt())
+	fmt.Printf("  ID:         %v\n", stream.ID)
+	fmt.Printf("  Type:       %v\n", stream.StreamType)
+	fmt.Printf("  Enabled:    %v\n", stream.Enabled)
+	fmt.Printf("  Created at: %v\n", stream.CreatedAt)
 }
 
 func runDelete(args []string) {

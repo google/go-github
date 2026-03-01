@@ -29,8 +29,8 @@ func TestEnterpriseService_GetAuditLogStreamKey(t *testing.T) {
 	}
 
 	want := &AuditLogStreamKey{
-		KeyID: Ptr("1234"),
-		Key:   Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"),
+		KeyID: "1234",
+		Key:   "2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234",
 	}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Enterprise.GetAuditLogStreamKey returned %+v, want %+v", key, want)
@@ -67,10 +67,10 @@ func TestEnterpriseService_ListAuditLogStreams(t *testing.T) {
 
 	want := []*AuditLogStream{
 		{
-			ID:            Ptr(int64(1)),
-			StreamType:    Ptr("Splunk"),
-			StreamDetails: Ptr("US"),
-			Enabled:       Ptr(true),
+			ID:            1,
+			StreamType:    "Splunk",
+			StreamDetails: "US",
+			Enabled:       true,
 		},
 	}
 	if !cmp.Equal(streams, want) {
@@ -107,10 +107,10 @@ func TestEnterpriseService_GetAuditLogStream(t *testing.T) {
 	}
 
 	want := &AuditLogStream{
-		ID:            Ptr(int64(1)),
-		StreamType:    Ptr("Datadog"),
-		StreamDetails: Ptr("US"),
-		Enabled:       Ptr(true),
+		ID:            1,
+		StreamType:    "Datadog",
+		StreamDetails: "US",
+		Enabled:       true,
 	}
 	if !cmp.Equal(stream, want) {
 		t.Errorf("Enterprise.GetAuditLogStream returned %+v, want %+v", stream, want)
@@ -140,9 +140,9 @@ func TestEnterpriseService_CreateAuditLogStream(t *testing.T) {
 	})
 
 	input := NewDatadogStreamConfig(false, &DatadogConfig{
-		EncryptedToken: Ptr("ENCRYPTED"),
-		Site:           Ptr("US3"),
-		KeyID:          Ptr("v1"),
+		EncryptedToken: "ENCRYPTED",
+		Site:           "US3",
+		KeyID:          "v1",
 	})
 
 	ctx := t.Context()
@@ -152,10 +152,10 @@ func TestEnterpriseService_CreateAuditLogStream(t *testing.T) {
 	}
 
 	want := &AuditLogStream{
-		ID:            Ptr(int64(2)),
-		StreamType:    Ptr("Datadog"),
-		StreamDetails: Ptr("US3"),
-		Enabled:       Ptr(false),
+		ID:            2,
+		StreamType:    "Datadog",
+		StreamDetails: "US3",
+		Enabled:       false,
 	}
 	if !cmp.Equal(stream, want) {
 		t.Errorf("Enterprise.CreateAuditLogStream returned %+v, want %+v", stream, want)
@@ -185,11 +185,11 @@ func TestEnterpriseService_UpdateAuditLogStream(t *testing.T) {
 	})
 
 	input := NewSplunkStreamConfig(true, &SplunkConfig{
-		Domain:         Ptr("splunk.example.com"),
-		Port:           Ptr(uint16(8089)),
-		KeyID:          Ptr("v1"),
-		EncryptedToken: Ptr("ENCRYPTED"),
-		SSLVerify:      Ptr(true),
+		Domain:         "splunk.example.com",
+		Port:           8089,
+		KeyID:          "v1",
+		EncryptedToken: "ENCRYPTED",
+		SSLVerify:      true,
 	})
 
 	ctx := t.Context()
@@ -199,10 +199,10 @@ func TestEnterpriseService_UpdateAuditLogStream(t *testing.T) {
 	}
 
 	want := &AuditLogStream{
-		ID:            Ptr(int64(1)),
-		StreamType:    Ptr("Splunk"),
-		StreamDetails: Ptr("splunk.example.com"),
-		Enabled:       Ptr(true),
+		ID:            1,
+		StreamType:    "Splunk",
+		StreamDetails: "splunk.example.com",
+		Enabled:       true,
 	}
 	if !cmp.Equal(stream, want) {
 		t.Errorf("Enterprise.UpdateAuditLogStream returned %+v, want %+v", stream, want)
@@ -249,15 +249,15 @@ func TestEnterpriseService_DeleteAuditLogStream(t *testing.T) {
 func TestNewAzureBlobStreamConfig(t *testing.T) {
 	t.Parallel()
 	cfg := &AzureBlobConfig{
-		KeyID:           Ptr("v1"),
-		EncryptedSasURL: Ptr("ENCRYPTED"),
-		Container:       Ptr("my-container"),
+		KeyID:           "v1",
+		EncryptedSASURL: "ENCRYPTED",
+		Container:       "my-container",
 	}
 	got := NewAzureBlobStreamConfig(true, cfg)
-	if got.StreamType == nil || *got.StreamType != "Azure Blob Storage" {
+	if got.StreamType != "Azure Blob Storage" {
 		t.Errorf("NewAzureBlobStreamConfig StreamType = %v, want Azure Blob Storage", got.StreamType)
 	}
-	if got.Enabled == nil || !*got.Enabled {
+	if !got.Enabled {
 		t.Errorf("NewAzureBlobStreamConfig Enabled = %v, want true", got.Enabled)
 	}
 	if got.VendorSpecific == nil {
@@ -268,15 +268,15 @@ func TestNewAzureBlobStreamConfig(t *testing.T) {
 func TestNewAzureHubStreamConfig(t *testing.T) {
 	t.Parallel()
 	cfg := &AzureHubConfig{
-		Name:                Ptr("my-hub"),
-		EncryptedConnstring: Ptr("ENCRYPTED"),
-		KeyID:               Ptr("v1"),
+		Name:                "my-hub",
+		EncryptedConnstring: "ENCRYPTED",
+		KeyID:               "v1",
 	}
 	got := NewAzureHubStreamConfig(true, cfg)
-	if got.StreamType == nil || *got.StreamType != "Azure Event Hubs" {
+	if got.StreamType != "Azure Event Hubs" {
 		t.Errorf("NewAzureHubStreamConfig StreamType = %v, want Azure Event Hubs", got.StreamType)
 	}
-	if got.Enabled == nil || !*got.Enabled {
+	if !got.Enabled {
 		t.Errorf("NewAzureHubStreamConfig Enabled = %v, want true", got.Enabled)
 	}
 	if got.VendorSpecific == nil {
@@ -287,17 +287,17 @@ func TestNewAzureHubStreamConfig(t *testing.T) {
 func TestNewAmazonS3OIDCStreamConfig(t *testing.T) {
 	t.Parallel()
 	cfg := &AmazonS3OIDCConfig{
-		Bucket:             Ptr("my-bucket"),
-		Region:             Ptr("us-east-1"),
-		KeyID:              Ptr("v1"),
-		AuthenticationType: Ptr("oidc"),
-		ArnRole:            Ptr("arn:aws:iam::role/my-role"),
+		Bucket:             "my-bucket",
+		Region:             "us-east-1",
+		KeyID:              "v1",
+		AuthenticationType: "oidc",
+		ArnRole:            "arn:aws:iam::role/my-role",
 	}
 	got := NewAmazonS3OIDCStreamConfig(true, cfg)
-	if got.StreamType == nil || *got.StreamType != "Amazon S3" {
+	if got.StreamType != "Amazon S3" {
 		t.Errorf("NewAmazonS3OIDCStreamConfig StreamType = %v, want Amazon S3", got.StreamType)
 	}
-	if got.Enabled == nil || !*got.Enabled {
+	if !got.Enabled {
 		t.Errorf("NewAmazonS3OIDCStreamConfig Enabled = %v, want true", got.Enabled)
 	}
 	if got.VendorSpecific == nil {
@@ -308,18 +308,18 @@ func TestNewAmazonS3OIDCStreamConfig(t *testing.T) {
 func TestNewAmazonS3AccessKeysStreamConfig(t *testing.T) {
 	t.Parallel()
 	cfg := &AmazonS3AccessKeysConfig{
-		Bucket:               Ptr("my-bucket"),
-		Region:               Ptr("us-west-2"),
-		KeyID:                Ptr("v1"),
-		AuthenticationType:   Ptr("access_keys"),
-		EncryptedSecretKey:   Ptr("ENCRYPTED_SECRET"),
-		EncryptedAccessKeyID: Ptr("ENCRYPTED_KEY_ID"),
+		Bucket:               "my-bucket",
+		Region:               "us-west-2",
+		KeyID:                "v1",
+		AuthenticationType:   "access_keys",
+		EncryptedSecretKey:   "ENCRYPTED_SECRET",
+		EncryptedAccessKeyID: "ENCRYPTED_KEY_ID",
 	}
 	got := NewAmazonS3AccessKeysStreamConfig(false, cfg)
-	if got.StreamType == nil || *got.StreamType != "Amazon S3" {
+	if got.StreamType != "Amazon S3" {
 		t.Errorf("NewAmazonS3AccessKeysStreamConfig StreamType = %v, want Amazon S3", got.StreamType)
 	}
-	if got.Enabled == nil || *got.Enabled {
+	if got.Enabled {
 		t.Errorf("NewAmazonS3AccessKeysStreamConfig Enabled = %v, want false", got.Enabled)
 	}
 	if got.VendorSpecific == nil {
@@ -330,17 +330,17 @@ func TestNewAmazonS3AccessKeysStreamConfig(t *testing.T) {
 func TestNewSplunkStreamConfig(t *testing.T) {
 	t.Parallel()
 	cfg := &SplunkConfig{
-		Domain:         Ptr("splunk.example.com"),
-		Port:           Ptr(uint16(8089)),
-		KeyID:          Ptr("v1"),
-		EncryptedToken: Ptr("ENCRYPTED"),
-		SSLVerify:      Ptr(true),
+		Domain:         "splunk.example.com",
+		Port:           8089,
+		KeyID:          "v1",
+		EncryptedToken: "ENCRYPTED",
+		SSLVerify:      true,
 	}
 	got := NewSplunkStreamConfig(true, cfg)
-	if got.StreamType == nil || *got.StreamType != "Splunk" {
+	if got.StreamType != "Splunk" {
 		t.Errorf("NewSplunkStreamConfig StreamType = %v, want Splunk", got.StreamType)
 	}
-	if got.Enabled == nil || !*got.Enabled {
+	if !got.Enabled {
 		t.Errorf("NewSplunkStreamConfig Enabled = %v, want true", got.Enabled)
 	}
 	if got.VendorSpecific == nil {
@@ -351,18 +351,18 @@ func TestNewSplunkStreamConfig(t *testing.T) {
 func TestNewHecStreamConfig(t *testing.T) {
 	t.Parallel()
 	cfg := &HecConfig{
-		Domain:         Ptr("hec.example.com"),
-		Port:           Ptr(uint16(443)),
-		KeyID:          Ptr("v1"),
-		EncryptedToken: Ptr("ENCRYPTED"),
-		Path:           Ptr("/services/collector"),
-		SSLVerify:      Ptr(true),
+		Domain:         "hec.example.com",
+		Port:           443,
+		KeyID:          "v1",
+		EncryptedToken: "ENCRYPTED",
+		Path:           "/services/collector",
+		SSLVerify:      true,
 	}
 	got := NewHecStreamConfig(false, cfg)
-	if got.StreamType == nil || *got.StreamType != "HTTPS Event Collector" {
+	if got.StreamType != "HTTPS Event Collector" {
 		t.Errorf("NewHecStreamConfig StreamType = %v, want HTTPS Event Collector", got.StreamType)
 	}
-	if got.Enabled == nil || *got.Enabled {
+	if got.Enabled {
 		t.Errorf("NewHecStreamConfig Enabled = %v, want false", got.Enabled)
 	}
 	if got.VendorSpecific == nil {
@@ -373,15 +373,15 @@ func TestNewHecStreamConfig(t *testing.T) {
 func TestNewGoogleCloudStreamConfig(t *testing.T) {
 	t.Parallel()
 	cfg := &GoogleCloudConfig{
-		Bucket:                   Ptr("my-gcs-bucket"),
-		KeyID:                    Ptr("v1"),
-		EncryptedJSONCredentials: Ptr("ENCRYPTED"),
+		Bucket:                   "my-gcs-bucket",
+		KeyID:                    "v1",
+		EncryptedJSONCredentials: "ENCRYPTED",
 	}
 	got := NewGoogleCloudStreamConfig(true, cfg)
-	if got.StreamType == nil || *got.StreamType != "Google Cloud Storage" {
+	if got.StreamType != "Google Cloud Storage" {
 		t.Errorf("NewGoogleCloudStreamConfig StreamType = %v, want Google Cloud Storage", got.StreamType)
 	}
-	if got.Enabled == nil || !*got.Enabled {
+	if !got.Enabled {
 		t.Errorf("NewGoogleCloudStreamConfig Enabled = %v, want true", got.Enabled)
 	}
 	if got.VendorSpecific == nil {
@@ -392,15 +392,15 @@ func TestNewGoogleCloudStreamConfig(t *testing.T) {
 func TestNewDatadogStreamConfig(t *testing.T) {
 	t.Parallel()
 	cfg := &DatadogConfig{
-		EncryptedToken: Ptr("ENCRYPTED"),
-		Site:           Ptr("US"),
-		KeyID:          Ptr("v1"),
+		EncryptedToken: "ENCRYPTED",
+		Site:           "US",
+		KeyID:          "v1",
 	}
 	got := NewDatadogStreamConfig(false, cfg)
-	if got.StreamType == nil || *got.StreamType != "Datadog" {
+	if got.StreamType != "Datadog" {
 		t.Errorf("NewDatadogStreamConfig StreamType = %v, want Datadog", got.StreamType)
 	}
-	if got.Enabled == nil || *got.Enabled {
+	if got.Enabled {
 		t.Errorf("NewDatadogStreamConfig Enabled = %v, want false", got.Enabled)
 	}
 	if got.VendorSpecific == nil {

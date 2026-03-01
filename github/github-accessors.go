@@ -766,94 +766,6 @@ func (a *AllowForkSyncing) GetEnabled() bool {
 	return *a.Enabled
 }
 
-// GetAuthenticationType returns the AuthenticationType field if it's non-nil, zero value otherwise.
-func (a *AmazonS3AccessKeysConfig) GetAuthenticationType() string {
-	if a == nil || a.AuthenticationType == nil {
-		return ""
-	}
-	return *a.AuthenticationType
-}
-
-// GetBucket returns the Bucket field if it's non-nil, zero value otherwise.
-func (a *AmazonS3AccessKeysConfig) GetBucket() string {
-	if a == nil || a.Bucket == nil {
-		return ""
-	}
-	return *a.Bucket
-}
-
-// GetEncryptedAccessKeyID returns the EncryptedAccessKeyID field if it's non-nil, zero value otherwise.
-func (a *AmazonS3AccessKeysConfig) GetEncryptedAccessKeyID() string {
-	if a == nil || a.EncryptedAccessKeyID == nil {
-		return ""
-	}
-	return *a.EncryptedAccessKeyID
-}
-
-// GetEncryptedSecretKey returns the EncryptedSecretKey field if it's non-nil, zero value otherwise.
-func (a *AmazonS3AccessKeysConfig) GetEncryptedSecretKey() string {
-	if a == nil || a.EncryptedSecretKey == nil {
-		return ""
-	}
-	return *a.EncryptedSecretKey
-}
-
-// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
-func (a *AmazonS3AccessKeysConfig) GetKeyID() string {
-	if a == nil || a.KeyID == nil {
-		return ""
-	}
-	return *a.KeyID
-}
-
-// GetRegion returns the Region field if it's non-nil, zero value otherwise.
-func (a *AmazonS3AccessKeysConfig) GetRegion() string {
-	if a == nil || a.Region == nil {
-		return ""
-	}
-	return *a.Region
-}
-
-// GetArnRole returns the ArnRole field if it's non-nil, zero value otherwise.
-func (a *AmazonS3OIDCConfig) GetArnRole() string {
-	if a == nil || a.ArnRole == nil {
-		return ""
-	}
-	return *a.ArnRole
-}
-
-// GetAuthenticationType returns the AuthenticationType field if it's non-nil, zero value otherwise.
-func (a *AmazonS3OIDCConfig) GetAuthenticationType() string {
-	if a == nil || a.AuthenticationType == nil {
-		return ""
-	}
-	return *a.AuthenticationType
-}
-
-// GetBucket returns the Bucket field if it's non-nil, zero value otherwise.
-func (a *AmazonS3OIDCConfig) GetBucket() string {
-	if a == nil || a.Bucket == nil {
-		return ""
-	}
-	return *a.Bucket
-}
-
-// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
-func (a *AmazonS3OIDCConfig) GetKeyID() string {
-	if a == nil || a.KeyID == nil {
-		return ""
-	}
-	return *a.KeyID
-}
-
-// GetRegion returns the Region field if it's non-nil, zero value otherwise.
-func (a *AmazonS3OIDCConfig) GetRegion() string {
-	if a == nil || a.Region == nil {
-		return ""
-	}
-	return *a.Region
-}
-
 // GetRef returns the Ref field if it's non-nil, zero value otherwise.
 func (a *AnalysesListOptions) GetRef() string {
 	if a == nil || a.Ref == nil {
@@ -1742,100 +1654,12 @@ func (a *AuditEntry) GetUserID() int64 {
 	return *a.UserID
 }
 
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (a *AuditLogStream) GetCreatedAt() Timestamp {
-	if a == nil || a.CreatedAt == nil {
-		return Timestamp{}
-	}
-	return *a.CreatedAt
-}
-
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (a *AuditLogStream) GetEnabled() bool {
-	if a == nil || a.Enabled == nil {
-		return false
-	}
-	return *a.Enabled
-}
-
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (a *AuditLogStream) GetID() int64 {
-	if a == nil || a.ID == nil {
-		return 0
-	}
-	return *a.ID
-}
-
 // GetPausedAt returns the PausedAt field if it's non-nil, zero value otherwise.
 func (a *AuditLogStream) GetPausedAt() Timestamp {
 	if a == nil || a.PausedAt == nil {
 		return Timestamp{}
 	}
 	return *a.PausedAt
-}
-
-// GetStreamDetails returns the StreamDetails field if it's non-nil, zero value otherwise.
-func (a *AuditLogStream) GetStreamDetails() string {
-	if a == nil || a.StreamDetails == nil {
-		return ""
-	}
-	return *a.StreamDetails
-}
-
-// GetStreamType returns the StreamType field if it's non-nil, zero value otherwise.
-func (a *AuditLogStream) GetStreamType() string {
-	if a == nil || a.StreamType == nil {
-		return ""
-	}
-	return *a.StreamType
-}
-
-// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (a *AuditLogStream) GetUpdatedAt() Timestamp {
-	if a == nil || a.UpdatedAt == nil {
-		return Timestamp{}
-	}
-	return *a.UpdatedAt
-}
-
-// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
-func (a *AuditLogStreamConfig) GetEnabled() bool {
-	if a == nil || a.Enabled == nil {
-		return false
-	}
-	return *a.Enabled
-}
-
-// GetStreamType returns the StreamType field if it's non-nil, zero value otherwise.
-func (a *AuditLogStreamConfig) GetStreamType() string {
-	if a == nil || a.StreamType == nil {
-		return ""
-	}
-	return *a.StreamType
-}
-
-// GetVendorSpecific returns the VendorSpecific field.
-func (a *AuditLogStreamConfig) GetVendorSpecific() *AuditLogStreamVendorConfig {
-	if a == nil {
-		return nil
-	}
-	return a.VendorSpecific
-}
-
-// GetKey returns the Key field if it's non-nil, zero value otherwise.
-func (a *AuditLogStreamKey) GetKey() string {
-	if a == nil || a.Key == nil {
-		return ""
-	}
-	return *a.Key
-}
-
-// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
-func (a *AuditLogStreamKey) GetKeyID() string {
-	if a == nil || a.KeyID == nil {
-		return ""
-	}
-	return *a.KeyID
 }
 
 // GetApp returns the App field.
@@ -2124,54 +1948,6 @@ func (a *AutoTriggerCheck) GetSetting() bool {
 		return false
 	}
 	return *a.Setting
-}
-
-// GetContainer returns the Container field if it's non-nil, zero value otherwise.
-func (a *AzureBlobConfig) GetContainer() string {
-	if a == nil || a.Container == nil {
-		return ""
-	}
-	return *a.Container
-}
-
-// GetEncryptedSasURL returns the EncryptedSasURL field if it's non-nil, zero value otherwise.
-func (a *AzureBlobConfig) GetEncryptedSasURL() string {
-	if a == nil || a.EncryptedSasURL == nil {
-		return ""
-	}
-	return *a.EncryptedSasURL
-}
-
-// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
-func (a *AzureBlobConfig) GetKeyID() string {
-	if a == nil || a.KeyID == nil {
-		return ""
-	}
-	return *a.KeyID
-}
-
-// GetEncryptedConnstring returns the EncryptedConnstring field if it's non-nil, zero value otherwise.
-func (a *AzureHubConfig) GetEncryptedConnstring() string {
-	if a == nil || a.EncryptedConnstring == nil {
-		return ""
-	}
-	return *a.EncryptedConnstring
-}
-
-// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
-func (a *AzureHubConfig) GetKeyID() string {
-	if a == nil || a.KeyID == nil {
-		return ""
-	}
-	return *a.KeyID
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (a *AzureHubConfig) GetName() string {
-	if a == nil || a.Name == nil {
-		return ""
-	}
-	return *a.Name
 }
 
 // GetContent returns the Content field if it's non-nil, zero value otherwise.
@@ -7886,30 +7662,6 @@ func (c *CustomRepoRoles) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
-// GetEncryptedToken returns the EncryptedToken field if it's non-nil, zero value otherwise.
-func (d *DatadogConfig) GetEncryptedToken() string {
-	if d == nil || d.EncryptedToken == nil {
-		return ""
-	}
-	return *d.EncryptedToken
-}
-
-// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
-func (d *DatadogConfig) GetKeyID() string {
-	if d == nil || d.KeyID == nil {
-		return ""
-	}
-	return *d.KeyID
-}
-
-// GetSite returns the Site field if it's non-nil, zero value otherwise.
-func (d *DatadogConfig) GetSite() string {
-	if d == nil || d.Site == nil {
-		return ""
-	}
-	return *d.Site
-}
-
 // GetQuerySuite returns the QuerySuite field if it's non-nil, zero value otherwise.
 func (d *DefaultSetupConfiguration) GetQuerySuite() string {
 	if d == nil || d.QuerySuite == nil {
@@ -11350,30 +11102,6 @@ func (g *GollumEvent) GetSender() *User {
 	return g.Sender
 }
 
-// GetBucket returns the Bucket field if it's non-nil, zero value otherwise.
-func (g *GoogleCloudConfig) GetBucket() string {
-	if g == nil || g.Bucket == nil {
-		return ""
-	}
-	return *g.Bucket
-}
-
-// GetEncryptedJSONCredentials returns the EncryptedJSONCredentials field if it's non-nil, zero value otherwise.
-func (g *GoogleCloudConfig) GetEncryptedJSONCredentials() string {
-	if g == nil || g.EncryptedJSONCredentials == nil {
-		return ""
-	}
-	return *g.EncryptedJSONCredentials
-}
-
-// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
-func (g *GoogleCloudConfig) GetKeyID() string {
-	if g == nil || g.KeyID == nil {
-		return ""
-	}
-	return *g.KeyID
-}
-
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
 func (g *GPGEmail) GetEmail() string {
 	if g == nil || g.Email == nil {
@@ -11588,54 +11316,6 @@ func (h *HeadCommit) GetURL() string {
 		return ""
 	}
 	return *h.URL
-}
-
-// GetDomain returns the Domain field if it's non-nil, zero value otherwise.
-func (h *HecConfig) GetDomain() string {
-	if h == nil || h.Domain == nil {
-		return ""
-	}
-	return *h.Domain
-}
-
-// GetEncryptedToken returns the EncryptedToken field if it's non-nil, zero value otherwise.
-func (h *HecConfig) GetEncryptedToken() string {
-	if h == nil || h.EncryptedToken == nil {
-		return ""
-	}
-	return *h.EncryptedToken
-}
-
-// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
-func (h *HecConfig) GetKeyID() string {
-	if h == nil || h.KeyID == nil {
-		return ""
-	}
-	return *h.KeyID
-}
-
-// GetPath returns the Path field if it's non-nil, zero value otherwise.
-func (h *HecConfig) GetPath() string {
-	if h == nil || h.Path == nil {
-		return ""
-	}
-	return *h.Path
-}
-
-// GetPort returns the Port field.
-func (h *HecConfig) GetPort() *uint16 {
-	if h == nil {
-		return nil
-	}
-	return h.Port
-}
-
-// GetSSLVerify returns the SSLVerify field if it's non-nil, zero value otherwise.
-func (h *HecConfig) GetSSLVerify() bool {
-	if h == nil || h.SSLVerify == nil {
-		return false
-	}
-	return *h.SSLVerify
 }
 
 // GetActive returns the Active field if it's non-nil, zero value otherwise.
@@ -28972,46 +28652,6 @@ func (s *SourceImportAuthor) GetURL() string {
 		return ""
 	}
 	return *s.URL
-}
-
-// GetDomain returns the Domain field if it's non-nil, zero value otherwise.
-func (s *SplunkConfig) GetDomain() string {
-	if s == nil || s.Domain == nil {
-		return ""
-	}
-	return *s.Domain
-}
-
-// GetEncryptedToken returns the EncryptedToken field if it's non-nil, zero value otherwise.
-func (s *SplunkConfig) GetEncryptedToken() string {
-	if s == nil || s.EncryptedToken == nil {
-		return ""
-	}
-	return *s.EncryptedToken
-}
-
-// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
-func (s *SplunkConfig) GetKeyID() string {
-	if s == nil || s.KeyID == nil {
-		return ""
-	}
-	return *s.KeyID
-}
-
-// GetPort returns the Port field.
-func (s *SplunkConfig) GetPort() *uint16 {
-	if s == nil {
-		return nil
-	}
-	return s.Port
-}
-
-// GetSSLVerify returns the SSLVerify field if it's non-nil, zero value otherwise.
-func (s *SplunkConfig) GetSSLVerify() bool {
-	if s == nil || s.SSLVerify == nil {
-		return false
-	}
-	return *s.SSLVerify
 }
 
 // GetPrivacyLevel returns the PrivacyLevel field if it's non-nil, zero value otherwise.
