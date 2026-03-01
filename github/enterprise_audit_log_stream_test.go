@@ -193,7 +193,7 @@ func TestEnterpriseService_UpdateAuditLogStream(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	stream, _, err := client.Enterprise.UpdateAuditLogStream(ctx, "e", 1, input)
+	stream, _, err := client.Enterprise.UpdateAuditLogStream(ctx, "e", 1, *input)
 	if err != nil {
 		t.Errorf("Enterprise.UpdateAuditLogStream returned error: %v", err)
 	}
@@ -210,11 +210,11 @@ func TestEnterpriseService_UpdateAuditLogStream(t *testing.T) {
 
 	const methodName = "UpdateAuditLogStream"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.UpdateAuditLogStream(ctx, "\n", 1, input)
+		_, _, err = client.Enterprise.UpdateAuditLogStream(ctx, "\n", 1, *input)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.UpdateAuditLogStream(ctx, "e", 1, input)
+		got, resp, err := client.Enterprise.UpdateAuditLogStream(ctx, "e", 1, *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -273,15 +273,16 @@ func TestNewAzureHubStreamConfig(t *testing.T) {
 		EncryptedConnstring: "ENCRYPTED",
 		KeyID:               "v1",
 	}
+
 	got := NewAzureHubStreamConfig(true, cfg)
-	if got.StreamType != "Azure Event Hubs" {
-		t.Errorf("NewAzureHubStreamConfig StreamType = %v, want Azure Event Hubs", got.StreamType)
+
+	want := &AuditLogStreamConfig{
+		Enabled:        true,
+		StreamType:     "Azure Event Hubs",
+		VendorSpecific: cfg,
 	}
-	if !got.Enabled {
-		t.Errorf("NewAzureHubStreamConfig Enabled = %v, want true", got.Enabled)
-	}
-	if got.VendorSpecific == nil {
-		t.Fatal("NewAzureHubStreamConfig VendorSpecific is nil")
+	if !cmp.Equal(got, want) {
+		t.Errorf("NewAzureHubStreamConfig = %+v, want %+v", got, want)
 	}
 }
 
@@ -294,15 +295,16 @@ func TestNewAmazonS3OIDCStreamConfig(t *testing.T) {
 		AuthenticationType: "oidc",
 		ArnRole:            "arn:aws:iam::role/my-role",
 	}
+
 	got := NewAmazonS3OIDCStreamConfig(true, cfg)
-	if got.StreamType != "Amazon S3" {
-		t.Errorf("NewAmazonS3OIDCStreamConfig StreamType = %v, want Amazon S3", got.StreamType)
+
+	want := &AuditLogStreamConfig{
+		Enabled:        true,
+		StreamType:     "Amazon S3",
+		VendorSpecific: cfg,
 	}
-	if !got.Enabled {
-		t.Errorf("NewAmazonS3OIDCStreamConfig Enabled = %v, want true", got.Enabled)
-	}
-	if got.VendorSpecific == nil {
-		t.Fatal("NewAmazonS3OIDCStreamConfig VendorSpecific is nil")
+	if !cmp.Equal(got, want) {
+		t.Errorf("NewAmazonS3OIDCStreamConfig = %+v, want %+v", got, want)
 	}
 }
 
@@ -316,15 +318,16 @@ func TestNewAmazonS3AccessKeysStreamConfig(t *testing.T) {
 		EncryptedSecretKey:   "ENCRYPTED_SECRET",
 		EncryptedAccessKeyID: "ENCRYPTED_KEY_ID",
 	}
+
 	got := NewAmazonS3AccessKeysStreamConfig(false, cfg)
-	if got.StreamType != "Amazon S3" {
-		t.Errorf("NewAmazonS3AccessKeysStreamConfig StreamType = %v, want Amazon S3", got.StreamType)
+
+	want := &AuditLogStreamConfig{
+		Enabled:        false,
+		StreamType:     "Amazon S3",
+		VendorSpecific: cfg,
 	}
-	if got.Enabled {
-		t.Errorf("NewAmazonS3AccessKeysStreamConfig Enabled = %v, want false", got.Enabled)
-	}
-	if got.VendorSpecific == nil {
-		t.Fatal("NewAmazonS3AccessKeysStreamConfig VendorSpecific is nil")
+	if !cmp.Equal(got, want) {
+		t.Errorf("NewAmazonS3AccessKeysStreamConfig = %+v, want %+v", got, want)
 	}
 }
 
@@ -337,15 +340,16 @@ func TestNewSplunkStreamConfig(t *testing.T) {
 		EncryptedToken: "ENCRYPTED",
 		SSLVerify:      true,
 	}
+
 	got := NewSplunkStreamConfig(true, cfg)
-	if got.StreamType != "Splunk" {
-		t.Errorf("NewSplunkStreamConfig StreamType = %v, want Splunk", got.StreamType)
+
+	want := &AuditLogStreamConfig{
+		Enabled:        true,
+		StreamType:     "Splunk",
+		VendorSpecific: cfg,
 	}
-	if !got.Enabled {
-		t.Errorf("NewSplunkStreamConfig Enabled = %v, want true", got.Enabled)
-	}
-	if got.VendorSpecific == nil {
-		t.Fatal("NewSplunkStreamConfig VendorSpecific is nil")
+	if !cmp.Equal(got, want) {
+		t.Errorf("NewSplunkStreamConfig = %+v, want %+v", got, want)
 	}
 }
 
@@ -359,15 +363,16 @@ func TestNewHecStreamConfig(t *testing.T) {
 		Path:           "/services/collector",
 		SSLVerify:      true,
 	}
+
 	got := NewHecStreamConfig(false, cfg)
-	if got.StreamType != "HTTPS Event Collector" {
-		t.Errorf("NewHecStreamConfig StreamType = %v, want HTTPS Event Collector", got.StreamType)
+
+	want := &AuditLogStreamConfig{
+		Enabled:        false,
+		StreamType:     "HTTPS Event Collector",
+		VendorSpecific: cfg,
 	}
-	if got.Enabled {
-		t.Errorf("NewHecStreamConfig Enabled = %v, want false", got.Enabled)
-	}
-	if got.VendorSpecific == nil {
-		t.Fatal("NewHecStreamConfig VendorSpecific is nil")
+	if !cmp.Equal(got, want) {
+		t.Errorf("NewHecStreamConfig = %+v, want %+v", got, want)
 	}
 }
 
@@ -378,15 +383,16 @@ func TestNewGoogleCloudStreamConfig(t *testing.T) {
 		KeyID:                    "v1",
 		EncryptedJSONCredentials: "ENCRYPTED",
 	}
+
 	got := NewGoogleCloudStreamConfig(true, cfg)
-	if got.StreamType != "Google Cloud Storage" {
-		t.Errorf("NewGoogleCloudStreamConfig StreamType = %v, want Google Cloud Storage", got.StreamType)
+
+	want := &AuditLogStreamConfig{
+		Enabled:        true,
+		StreamType:     "Google Cloud Storage",
+		VendorSpecific: cfg,
 	}
-	if !got.Enabled {
-		t.Errorf("NewGoogleCloudStreamConfig Enabled = %v, want true", got.Enabled)
-	}
-	if got.VendorSpecific == nil {
-		t.Fatal("NewGoogleCloudStreamConfig VendorSpecific is nil")
+	if !cmp.Equal(got, want) {
+		t.Errorf("NewGoogleCloudStreamConfig = %+v, want %+v", got, want)
 	}
 }
 
@@ -397,14 +403,15 @@ func TestNewDatadogStreamConfig(t *testing.T) {
 		Site:           "US",
 		KeyID:          "v1",
 	}
+
 	got := NewDatadogStreamConfig(false, cfg)
-	if got.StreamType != "Datadog" {
-		t.Errorf("NewDatadogStreamConfig StreamType = %v, want Datadog", got.StreamType)
+
+	want := &AuditLogStreamConfig{
+		Enabled:        false,
+		StreamType:     "Datadog",
+		VendorSpecific: cfg,
 	}
-	if got.Enabled {
-		t.Errorf("NewDatadogStreamConfig Enabled = %v, want false", got.Enabled)
-	}
-	if got.VendorSpecific == nil {
-		t.Fatal("NewDatadogStreamConfig VendorSpecific is nil")
+	if !cmp.Equal(got, want) {
+		t.Errorf("NewDatadogStreamConfig = %+v, want %+v", got, want)
 	}
 }
