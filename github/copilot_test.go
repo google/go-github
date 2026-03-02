@@ -456,42 +456,6 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 			}`)
 	})
 
-	tmp, err := time.Parse(time.RFC3339, "2021-08-03T18:00:00-06:00")
-	if err != nil {
-		panic(err)
-	}
-	createdAt1 := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-09-23T15:00:00-06:00")
-	if err != nil {
-		panic(err)
-	}
-	updatedAt1 := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-10-14T00:53:32-06:00")
-	if err != nil {
-		panic(err)
-	}
-	lastActivityAt1 := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-09-23T18:00:00-06:00")
-	if err != nil {
-		panic(err)
-	}
-	createdAt2 := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-09-23T15:00:00-06:00")
-	if err != nil {
-		panic(err)
-	}
-	updatedAt2 := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-10-13T00:53:32-06:00")
-	if err != nil {
-		panic(err)
-	}
-	lastActivityAt2 := Timestamp{tmp}
-
 	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 100}
 	got, _, err := client.Copilot.ListCopilotSeats(ctx, "o", opts)
@@ -538,10 +502,11 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					RepositoriesURL:     Ptr("https://api.github.com/teams/1/repos"),
 					Parent:              nil,
 				},
-				CreatedAt:               &createdAt1,
-				UpdatedAt:               &updatedAt1,
+
+				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.August, 3, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
 				PendingCancellationDate: nil,
-				LastActivityAt:          &lastActivityAt1,
+				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 14, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
@@ -566,10 +531,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					SiteAdmin:         Ptr(false),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               &createdAt2,
-				UpdatedAt:               &updatedAt2,
+				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
 				PendingCancellationDate: Ptr("2021-11-01"),
-				LastActivityAt:          &lastActivityAt2,
+				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 13, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
@@ -579,10 +544,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					Type: Ptr("Team"),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               &createdAt2,
-				UpdatedAt:               &updatedAt2,
+				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
 				PendingCancellationDate: Ptr("2021-11-01"),
-				LastActivityAt:          &lastActivityAt2,
+				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 13, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
@@ -592,10 +557,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					Type: Ptr("Organization"),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               &createdAt2,
-				UpdatedAt:               &updatedAt2,
+				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
 				PendingCancellationDate: Ptr("2021-11-01"),
-				LastActivityAt:          &lastActivityAt2,
+				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 13, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 			},
 		},
@@ -706,42 +671,6 @@ func TestCopilotService_ListCopilotEnterpriseSeats(t *testing.T) {
 		}`)
 	})
 
-	tmp, err := time.Parse(time.RFC3339, "2021-08-03T18:00:00-06:00")
-	if err != nil {
-		panic(err)
-	}
-	createdAt1 := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-09-23T15:00:00-06:00")
-	if err != nil {
-		panic(err)
-	}
-	updatedAt1 := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-10-14T00:53:32-06:00")
-	if err != nil {
-		panic(err)
-	}
-	lastActivityAt1 := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-09-23T18:00:00-06:00")
-	if err != nil {
-		panic(err)
-	}
-	createdAt2 := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-09-23T15:00:00-06:00")
-	if err != nil {
-		panic(err)
-	}
-	updatedAt2 := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-10-13T00:53:32-06:00")
-	if err != nil {
-		panic(err)
-	}
-	lastActivityAt2 := Timestamp{tmp}
-
 	ctx := t.Context()
 	opts := &ListOptions{Page: 1, PerPage: 100}
 	got, _, err := client.Copilot.ListCopilotEnterpriseSeats(ctx, "e", opts)
@@ -788,10 +717,10 @@ func TestCopilotService_ListCopilotEnterpriseSeats(t *testing.T) {
 					RepositoriesURL:     Ptr("https://api.github.com/teams/1/repos"),
 					Parent:              nil,
 				},
-				CreatedAt:               &createdAt1,
-				UpdatedAt:               &updatedAt1,
+				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.August, 3, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
 				PendingCancellationDate: nil,
-				LastActivityAt:          &lastActivityAt1,
+				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 14, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 				PlanType:                Ptr("business"),
 			},
@@ -817,10 +746,10 @@ func TestCopilotService_ListCopilotEnterpriseSeats(t *testing.T) {
 					SiteAdmin:         Ptr(false),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               &createdAt2,
-				UpdatedAt:               &updatedAt2,
+				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
 				PendingCancellationDate: Ptr("2021-11-01"),
-				LastActivityAt:          &lastActivityAt2,
+				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 13, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 				PlanType:                nil,
 			},
@@ -1051,24 +980,6 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 			}`)
 	})
 
-	tmp, err := time.Parse(time.RFC3339, "2021-08-03T18:00:00-06:00")
-	if err != nil {
-		panic(err)
-	}
-	createdAt := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-09-23T15:00:00-06:00")
-	if err != nil {
-		panic(err)
-	}
-	updatedAt := Timestamp{tmp}
-
-	tmp, err = time.Parse(time.RFC3339, "2021-10-14T00:53:32-06:00")
-	if err != nil {
-		panic(err)
-	}
-	lastActivityAt := Timestamp{tmp}
-
 	ctx := t.Context()
 	got, _, err := client.Copilot.GetSeatDetails(ctx, "o", "u")
 	if err != nil {
@@ -1111,10 +1022,10 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 			RepositoriesURL:     Ptr("https://api.github.com/teams/1/repos"),
 			Parent:              nil,
 		},
-		CreatedAt:               &createdAt,
-		UpdatedAt:               &updatedAt,
+		CreatedAt:               Ptr(Timestamp{time.Date(2021, time.August, 3, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+		UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
 		PendingCancellationDate: nil,
-		LastActivityAt:          &lastActivityAt,
+		LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 14, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
 		LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 	}
 
