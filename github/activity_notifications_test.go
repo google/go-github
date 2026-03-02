@@ -255,19 +255,19 @@ func TestActivityService_MarkThreadDone(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Activity.MarkThreadDone(ctx, 1)
+	_, err := client.Activity.MarkThreadDone(ctx, "1")
 	if err != nil {
 		t.Errorf("Activity.MarkThreadDone returned error: %v", err)
 	}
 
 	const methodName = "MarkThreadDone"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Activity.MarkThreadDone(ctx, 0)
+		_, err = client.Activity.MarkThreadDone(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Activity.MarkThreadDone(ctx, 1)
+		return client.Activity.MarkThreadDone(ctx, "1")
 	})
 }
 
