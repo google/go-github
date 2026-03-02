@@ -21,6 +21,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"testing/synctest"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
@@ -1639,7 +1640,7 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 
-	// Second request should not by hindered by rate limits.
+	// Second request should not be hindered by rate limits.
 	req, _ = client.NewRequest("GET", "second", nil)
 	_, err = client.Do(ctx, req, nil)
 	if err != nil {
@@ -1903,110 +1904,112 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 // Ensure *AbuseRateLimitError.RetryAfter is parsed correctly for the Retry-After header.
 func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
+	synctest.Test(t, func(t *testing.T) {
+		client, mux, _ := setup(t)
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("Content-Type", "application/json; charset=utf-8")
-		w.Header().Set(headerRetryAfter, "123") // Retry after value of 123 seconds.
-		w.WriteHeader(http.StatusForbidden)
-		fmt.Fprintln(w, `{
+		mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			w.Header().Set(headerRetryAfter, "123") // Retry after value of 123 seconds.
+			w.WriteHeader(http.StatusForbidden)
+			fmt.Fprintln(w, `{
    "message": "You have triggered an abuse detection mechanism ...",
    "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
 }`)
+		})
+
+		req, _ := client.NewRequest("GET", ".", nil)
+		ctx := t.Context()
+		_, err := client.Do(ctx, req, nil)
+
+		if err == nil {
+			t.Error("Expected error to be returned.")
+		}
+		var abuseRateLimitErr *AbuseRateLimitError
+		if !errors.As(err, &abuseRateLimitErr) {
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+		}
+		if abuseRateLimitErr.RetryAfter == nil {
+			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+		}
+		if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; got != want {
+			t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+		}
+
+		// expect prevention of a following request
+		if _, err = client.Do(ctx, req, nil); err == nil {
+			t.Error("Expected error to be returned.")
+		}
+		if !errors.As(err, &abuseRateLimitErr) {
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+		}
+		if abuseRateLimitErr.RetryAfter == nil {
+			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+		}
+		if got, want := 123*time.Second, *abuseRateLimitErr.RetryAfter; got != want {
+			t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+		}
+		if got, wantSuffix := abuseRateLimitErr.Message, "not making remote request."; !strings.HasSuffix(got, wantSuffix) {
+			t.Errorf("Expected request to be prevented because of secondary rate limit, got: %v.", got)
+		}
 	})
-
-	req, _ := client.NewRequest("GET", ".", nil)
-	ctx := t.Context()
-	_, err := client.Do(ctx, req, nil)
-
-	if err == nil {
-		t.Error("Expected error to be returned.")
-	}
-	var abuseRateLimitErr *AbuseRateLimitError
-	if !errors.As(err, &abuseRateLimitErr) {
-		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
-	}
-	if abuseRateLimitErr.RetryAfter == nil {
-		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
-	}
-	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; got != want {
-		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
-	}
-
-	// expect prevention of a following request
-	if _, err = client.Do(ctx, req, nil); err == nil {
-		t.Error("Expected error to be returned.")
-	}
-	if !errors.As(err, &abuseRateLimitErr) {
-		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
-	}
-	if abuseRateLimitErr.RetryAfter == nil {
-		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
-	}
-	// the saved duration might be a bit smaller than Retry-After because the duration is calculated from the expected end-of-cooldown time
-	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; want-got > 1*time.Second {
-		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
-	}
-	if got, wantSuffix := abuseRateLimitErr.Message, "not making remote request."; !strings.HasSuffix(got, wantSuffix) {
-		t.Errorf("Expected request to be prevented because of secondary rate limit, got: %v.", got)
-	}
 }
 
 // Ensure *AbuseRateLimitError.RetryAfter is parsed correctly for the x-ratelimit-reset header.
 func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 	t.Parallel()
-	client, mux, _ := setup(t)
+	synctest.Test(t, func(t *testing.T) {
+		client, mux, _ := setup(t)
 
-	// x-ratelimit-reset value of 123 seconds into the future.
-	blockUntil := time.Now().Add(time.Duration(123) * time.Second).Unix()
+		// x-ratelimit-reset value of 123 seconds into the future.
+		blockUntil := time.Now().UTC().Add(123 * time.Second).Unix()
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("Content-Type", "application/json; charset=utf-8")
-		w.Header().Set(HeaderRateReset, strconv.Itoa(int(blockUntil)))
-		w.Header().Set(HeaderRateRemaining, "1") // set remaining to a value > 0 to distinct from a primary rate limit
-		w.WriteHeader(http.StatusForbidden)
-		fmt.Fprintln(w, `{
+		mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			w.Header().Set(HeaderRateReset, strconv.Itoa(int(blockUntil)))
+			w.Header().Set(HeaderRateRemaining, "1") // set remaining to a value > 0 to distinct from a primary rate limit
+			w.WriteHeader(http.StatusForbidden)
+			fmt.Fprintln(w, `{
    "message": "You have triggered an abuse detection mechanism ...",
    "documentation_url": "https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
 }`)
+		})
+
+		req, _ := client.NewRequest("GET", ".", nil)
+		ctx := t.Context()
+		_, err := client.Do(ctx, req, nil)
+
+		if err == nil {
+			t.Error("Expected error to be returned.")
+		}
+		var abuseRateLimitErr *AbuseRateLimitError
+		if !errors.As(err, &abuseRateLimitErr) {
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+		}
+		if abuseRateLimitErr.RetryAfter == nil {
+			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+		}
+
+		if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; got != want {
+			t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+		}
+
+		// expect prevention of a following request
+		if _, err = client.Do(ctx, req, nil); err == nil {
+			t.Error("Expected error to be returned.")
+		}
+		if !errors.As(err, &abuseRateLimitErr) {
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+		}
+		if abuseRateLimitErr.RetryAfter == nil {
+			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
+		}
+		if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; got != want {
+			t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
+		}
+		if got, wantSuffix := abuseRateLimitErr.Message, "not making remote request."; !strings.HasSuffix(got, wantSuffix) {
+			t.Errorf("Expected request to be prevented because of secondary rate limit, got: %v.", got)
+		}
 	})
-
-	req, _ := client.NewRequest("GET", ".", nil)
-	ctx := t.Context()
-	_, err := client.Do(ctx, req, nil)
-
-	if err == nil {
-		t.Error("Expected error to be returned.")
-	}
-	var abuseRateLimitErr *AbuseRateLimitError
-	if !errors.As(err, &abuseRateLimitErr) {
-		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
-	}
-	if abuseRateLimitErr.RetryAfter == nil {
-		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
-	}
-	// the retry after value might be a bit smaller than the original duration because the duration is calculated from the expected end-of-cooldown time
-	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; want-got > 1*time.Second {
-		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
-	}
-
-	// expect prevention of a following request
-	if _, err = client.Do(ctx, req, nil); err == nil {
-		t.Error("Expected error to be returned.")
-	}
-	if !errors.As(err, &abuseRateLimitErr) {
-		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
-	}
-	if abuseRateLimitErr.RetryAfter == nil {
-		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
-	}
-	// the saved duration might be a bit smaller than Retry-After because the duration is calculated from the expected end-of-cooldown time
-	if got, want := *abuseRateLimitErr.RetryAfter, 123*time.Second; want-got > 1*time.Second {
-		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
-	}
-	if got, wantSuffix := abuseRateLimitErr.Message, "not making remote request."; !strings.HasSuffix(got, wantSuffix) {
-		t.Errorf("Expected request to be prevented because of secondary rate limit, got: %v.", got)
-	}
 }
 
 // Ensure *AbuseRateLimitError.RetryAfter respect a max duration if specified.
