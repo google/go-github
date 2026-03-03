@@ -15456,7 +15456,7 @@ func TestTeamsService_ListTeamsIter(t *testing.T) {
 		t.Errorf("client.Teams.ListTeamsIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	opts := &ListOptions{}
+	opts := &ListTeamsOptions{}
 	iter = client.Teams.ListTeamsIter(t.Context(), "", opts)
 	gotItems = 0
 	for _, err := range iter {

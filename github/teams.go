@@ -90,12 +90,23 @@ func (i Invitation) String() string {
 	return Stringify(i)
 }
 
+// ListTeamsOptions specifies the optional parameters to the TeamsService.ListTeams method.
+type ListTeamsOptions struct {
+	// Type filters the list of teams by ownership type. Possible values are:
+	//   "all" - returns all teams (default)
+	//   "organization" - returns only organization-level teams
+	//   "enterprise" - returns only enterprise-level teams
+	Type string `url:"type,omitempty"`
+
+	ListOptions
+}
+
 // ListTeams lists all of the teams for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/teams/teams#list-teams
 //
 //meta:operation GET /orgs/{org}/teams
-func (s *TeamsService) ListTeams(ctx context.Context, org string, opts *ListOptions) ([]*Team, *Response, error) {
+func (s *TeamsService) ListTeams(ctx context.Context, org string, opts *ListTeamsOptions) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
 	u, err := addOptions(u, opts)
 	if err != nil {

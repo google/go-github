@@ -6921,11 +6921,11 @@ func (s *TeamsService) ListTeamReposBySlugIter(ctx context.Context, org string, 
 }
 
 // ListTeamsIter returns an iterator that paginates through all results of ListTeams.
-func (s *TeamsService) ListTeamsIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*Team, error] {
+func (s *TeamsService) ListTeamsIter(ctx context.Context, org string, opts *ListTeamsOptions) iter.Seq2[*Team, error] {
 	return func(yield func(*Team, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
-			opts = &ListOptions{}
+			opts = &ListTeamsOptions{}
 		} else {
 			opts = Ptr(*opts)
 		}

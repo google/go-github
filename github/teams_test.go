@@ -26,7 +26,7 @@ func TestTeamsService_ListTeams(t *testing.T) {
 		fmt.Fprint(w, `[{"id":1}]`)
 	})
 
-	opt := &ListOptions{Page: 2}
+	opt := &ListTeamsOptions{ListOptions: ListOptions{Page: 2}}
 	ctx := t.Context()
 	teams, _, err := client.Teams.ListTeams(ctx, "o", opt)
 	if err != nil {
@@ -51,6 +51,29 @@ func TestTeamsService_ListTeams(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestTeamsService_ListTeams_withTypeFilter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"type": "enterprise"})
+		fmt.Fprint(w, `[{"id":1,"type":"enterprise"}]`)
+	})
+
+	opt := &ListTeamsOptions{Type: "enterprise"}
+	ctx := t.Context()
+	teams, _, err := client.Teams.ListTeams(ctx, "o", opt)
+	if err != nil {
+		t.Errorf("Teams.ListTeams returned error: %v", err)
+	}
+
+	want := []*Team{{ID: Ptr(int64(1)), Type: Ptr("enterprise")}}
+	if !cmp.Equal(teams, want) {
+		t.Errorf("Teams.ListTeams returned %+v, want %+v", teams, want)
+	}
 }
 
 func TestTeamsService_ListTeams_invalidOrg(t *testing.T) {
