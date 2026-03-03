@@ -822,6 +822,14 @@ func (a *APIMetaDomains) GetArtifactAttestations() *APIMetaArtifactAttestations 
 	return a.ArtifactAttestations
 }
 
+// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
+func (a *App) GetClientID() string {
+	if a == nil || a.ClientID == nil {
+		return ""
+	}
+	return *a.ClientID
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (a *App) GetCreatedAt() Timestamp {
 	if a == nil || a.CreatedAt == nil {

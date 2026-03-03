@@ -20,6 +20,7 @@ type AppsService service
 type App struct {
 	ID                 *int64                   `json:"id,omitempty"`
 	Slug               *string                  `json:"slug,omitempty"`
+	ClientID           *string                  `json:"client_id,omitempty"`
 	NodeID             *string                  `json:"node_id,omitempty"`
 	Owner              *User                    `json:"owner,omitempty"`
 	Name               *string                  `json:"name,omitempty"`
