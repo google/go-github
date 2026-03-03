@@ -1048,6 +1048,17 @@ func TestAPIMetaDomains_GetArtifactAttestations(tt *testing.T) {
 	a.GetArtifactAttestations()
 }
 
+func TestApp_GetClientID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &App{ClientID: &zeroValue}
+	a.GetClientID()
+	a = &App{}
+	a.GetClientID()
+	a = nil
+	a.GetClientID()
+}
+
 func TestApp_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
