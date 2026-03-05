@@ -10,7 +10,7 @@ require (
 	github.com/google/go-github/v84 v84.0.0
 	github.com/google/go-github/v84/otel v0.0.0-00010101000000-000000000000
 	github.com/sigstore/sigstore-go v1.1.4
-	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.40.0
+	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.41.0
 	go.opentelemetry.io/otel/sdk v1.41.0
 	golang.org/x/crypto v0.48.0
 	golang.org/x/term v0.40.0
