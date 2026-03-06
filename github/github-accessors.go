@@ -2390,6 +2390,102 @@ func (b *BranchProtectionRuleEvent) GetSender() *User {
 	return b.Sender
 }
 
+// GetBudgetAlerting returns the BudgetAlerting field.
+func (b *Budget) GetBudgetAlerting() *BudgetAlerting {
+	if b == nil {
+		return nil
+	}
+	return b.BudgetAlerting
+}
+
+// GetBudgetAmount returns the BudgetAmount field if it's non-nil, zero value otherwise.
+func (b *Budget) GetBudgetAmount() int {
+	if b == nil || b.BudgetAmount == nil {
+		return 0
+	}
+	return *b.BudgetAmount
+}
+
+// GetBudgetEntityName returns the BudgetEntityName field if it's non-nil, zero value otherwise.
+func (b *Budget) GetBudgetEntityName() string {
+	if b == nil || b.BudgetEntityName == nil {
+		return ""
+	}
+	return *b.BudgetEntityName
+}
+
+// GetBudgetProductSKU returns the BudgetProductSKU field if it's non-nil, zero value otherwise.
+func (b *Budget) GetBudgetProductSKU() string {
+	if b == nil || b.BudgetProductSKU == nil {
+		return ""
+	}
+	return *b.BudgetProductSKU
+}
+
+// GetBudgetScope returns the BudgetScope field if it's non-nil, zero value otherwise.
+func (b *Budget) GetBudgetScope() string {
+	if b == nil || b.BudgetScope == nil {
+		return ""
+	}
+	return *b.BudgetScope
+}
+
+// GetBudgetType returns the BudgetType field if it's non-nil, zero value otherwise.
+func (b *Budget) GetBudgetType() string {
+	if b == nil || b.BudgetType == nil {
+		return ""
+	}
+	return *b.BudgetType
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (b *Budget) GetID() string {
+	if b == nil || b.ID == nil {
+		return ""
+	}
+	return *b.ID
+}
+
+// GetPreventFurtherUsage returns the PreventFurtherUsage field if it's non-nil, zero value otherwise.
+func (b *Budget) GetPreventFurtherUsage() bool {
+	if b == nil || b.PreventFurtherUsage == nil {
+		return false
+	}
+	return *b.PreventFurtherUsage
+}
+
+// GetBudget returns the Budget field.
+func (b *BudgetActionResponse) GetBudget() *Budget {
+	if b == nil {
+		return nil
+	}
+	return b.Budget
+}
+
+// GetBudgetID returns the BudgetID field if it's non-nil, zero value otherwise.
+func (b *BudgetActionResponse) GetBudgetID() string {
+	if b == nil || b.BudgetID == nil {
+		return ""
+	}
+	return *b.BudgetID
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (b *BudgetActionResponse) GetMessage() string {
+	if b == nil || b.Message == nil {
+		return ""
+	}
+	return *b.Message
+}
+
+// GetWillAlert returns the WillAlert field if it's non-nil, zero value otherwise.
+func (b *BudgetAlerting) GetWillAlert() bool {
+	if b == nil || b.WillAlert == nil {
+		return false
+	}
+	return *b.WillAlert
+}
+
 // GetActorID returns the ActorID field if it's non-nil, zero value otherwise.
 func (b *BypassActor) GetActorID() int64 {
 	if b == nil || b.ActorID == nil {

@@ -216,6 +216,25 @@ func TestAuthorizationUpdateRequest_String(t *testing.T) {
 	}
 }
 
+func TestBudget_String(t *testing.T) {
+	t.Parallel()
+	v := Budget{
+		ID:                  Ptr(""),
+		BudgetType:          Ptr(""),
+		BudgetProductSkus:   []string{""},
+		BudgetProductSKU:    Ptr(""),
+		BudgetScope:         Ptr(""),
+		BudgetEntityName:    Ptr(""),
+		BudgetAmount:        Ptr(0),
+		PreventFurtherUsage: Ptr(false),
+		BudgetAlerting:      &BudgetAlerting{},
+	}
+	want := `github.Budget{ID:"", BudgetType:"", BudgetProductSkus:[""], BudgetProductSKU:"", BudgetScope:"", BudgetEntityName:"", BudgetAmount:0, PreventFurtherUsage:false, BudgetAlerting:github.BudgetAlerting{}}`
+	if got := v.String(); got != want {
+		t.Errorf("Budget.String = %v, want %v", got, want)
+	}
+}
+
 func TestCheckRun_String(t *testing.T) {
 	t.Parallel()
 	v := CheckRun{
