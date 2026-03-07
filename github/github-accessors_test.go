@@ -3141,132 +3141,6 @@ func TestBranchProtectionRuleEvent_GetSender(tt *testing.T) {
 	b.GetSender()
 }
 
-func TestBudget_GetBudgetAlerting(tt *testing.T) {
-	tt.Parallel()
-	b := &Budget{}
-	b.GetBudgetAlerting()
-	b = nil
-	b.GetBudgetAlerting()
-}
-
-func TestBudget_GetBudgetAmount(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	b := &Budget{BudgetAmount: &zeroValue}
-	b.GetBudgetAmount()
-	b = &Budget{}
-	b.GetBudgetAmount()
-	b = nil
-	b.GetBudgetAmount()
-}
-
-func TestBudget_GetBudgetEntityName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	b := &Budget{BudgetEntityName: &zeroValue}
-	b.GetBudgetEntityName()
-	b = &Budget{}
-	b.GetBudgetEntityName()
-	b = nil
-	b.GetBudgetEntityName()
-}
-
-func TestBudget_GetBudgetProductSKU(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	b := &Budget{BudgetProductSKU: &zeroValue}
-	b.GetBudgetProductSKU()
-	b = &Budget{}
-	b.GetBudgetProductSKU()
-	b = nil
-	b.GetBudgetProductSKU()
-}
-
-func TestBudget_GetBudgetScope(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	b := &Budget{BudgetScope: &zeroValue}
-	b.GetBudgetScope()
-	b = &Budget{}
-	b.GetBudgetScope()
-	b = nil
-	b.GetBudgetScope()
-}
-
-func TestBudget_GetBudgetType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	b := &Budget{BudgetType: &zeroValue}
-	b.GetBudgetType()
-	b = &Budget{}
-	b.GetBudgetType()
-	b = nil
-	b.GetBudgetType()
-}
-
-func TestBudget_GetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	b := &Budget{ID: &zeroValue}
-	b.GetID()
-	b = &Budget{}
-	b.GetID()
-	b = nil
-	b.GetID()
-}
-
-func TestBudget_GetPreventFurtherUsage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	b := &Budget{PreventFurtherUsage: &zeroValue}
-	b.GetPreventFurtherUsage()
-	b = &Budget{}
-	b.GetPreventFurtherUsage()
-	b = nil
-	b.GetPreventFurtherUsage()
-}
-
-func TestBudgetActionResponse_GetBudget(tt *testing.T) {
-	tt.Parallel()
-	b := &BudgetActionResponse{}
-	b.GetBudget()
-	b = nil
-	b.GetBudget()
-}
-
-func TestBudgetActionResponse_GetBudgetID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	b := &BudgetActionResponse{BudgetID: &zeroValue}
-	b.GetBudgetID()
-	b = &BudgetActionResponse{}
-	b.GetBudgetID()
-	b = nil
-	b.GetBudgetID()
-}
-
-func TestBudgetActionResponse_GetMessage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	b := &BudgetActionResponse{Message: &zeroValue}
-	b.GetMessage()
-	b = &BudgetActionResponse{}
-	b.GetMessage()
-	b = nil
-	b.GetMessage()
-}
-
-func TestBudgetAlerting_GetWillAlert(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	b := &BudgetAlerting{WillAlert: &zeroValue}
-	b.GetWillAlert()
-	b = &BudgetAlerting{}
-	b.GetWillAlert()
-	b = nil
-	b.GetWillAlert()
-}
-
 func TestBypassActor_GetActorID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -12883,6 +12757,132 @@ func TestEnterprise_GetWebsiteURL(tt *testing.T) {
 	e.GetWebsiteURL()
 	e = nil
 	e.GetWebsiteURL()
+}
+
+func TestEnterpriseBudget_GetBudgetAlerting(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseBudget{}
+	e.GetBudgetAlerting()
+	e = nil
+	e.GetBudgetAlerting()
+}
+
+func TestEnterpriseBudget_GetBudgetAmount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	e := &EnterpriseBudget{BudgetAmount: &zeroValue}
+	e.GetBudgetAmount()
+	e = &EnterpriseBudget{}
+	e.GetBudgetAmount()
+	e = nil
+	e.GetBudgetAmount()
+}
+
+func TestEnterpriseBudget_GetBudgetEntityName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseBudget{BudgetEntityName: &zeroValue}
+	e.GetBudgetEntityName()
+	e = &EnterpriseBudget{}
+	e.GetBudgetEntityName()
+	e = nil
+	e.GetBudgetEntityName()
+}
+
+func TestEnterpriseBudget_GetBudgetProductSKU(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseBudget{BudgetProductSKU: &zeroValue}
+	e.GetBudgetProductSKU()
+	e = &EnterpriseBudget{}
+	e.GetBudgetProductSKU()
+	e = nil
+	e.GetBudgetProductSKU()
+}
+
+func TestEnterpriseBudget_GetBudgetScope(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseBudget{BudgetScope: &zeroValue}
+	e.GetBudgetScope()
+	e = &EnterpriseBudget{}
+	e.GetBudgetScope()
+	e = nil
+	e.GetBudgetScope()
+}
+
+func TestEnterpriseBudget_GetBudgetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseBudget{BudgetType: &zeroValue}
+	e.GetBudgetType()
+	e = &EnterpriseBudget{}
+	e.GetBudgetType()
+	e = nil
+	e.GetBudgetType()
+}
+
+func TestEnterpriseBudget_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseBudget{ID: &zeroValue}
+	e.GetID()
+	e = &EnterpriseBudget{}
+	e.GetID()
+	e = nil
+	e.GetID()
+}
+
+func TestEnterpriseBudget_GetPreventFurtherUsage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	e := &EnterpriseBudget{PreventFurtherUsage: &zeroValue}
+	e.GetPreventFurtherUsage()
+	e = &EnterpriseBudget{}
+	e.GetPreventFurtherUsage()
+	e = nil
+	e.GetPreventFurtherUsage()
+}
+
+func TestEnterpriseBudgetActionResponse_GetBudget(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseBudgetActionResponse{}
+	e.GetBudget()
+	e = nil
+	e.GetBudget()
+}
+
+func TestEnterpriseBudgetActionResponse_GetBudgetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseBudgetActionResponse{BudgetID: &zeroValue}
+	e.GetBudgetID()
+	e = &EnterpriseBudgetActionResponse{}
+	e.GetBudgetID()
+	e = nil
+	e.GetBudgetID()
+}
+
+func TestEnterpriseBudgetActionResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseBudgetActionResponse{Message: &zeroValue}
+	e.GetMessage()
+	e = &EnterpriseBudgetActionResponse{}
+	e.GetMessage()
+	e = nil
+	e.GetMessage()
+}
+
+func TestEnterpriseBudgetAlerting_GetWillAlert(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	e := &EnterpriseBudgetAlerting{WillAlert: &zeroValue}
+	e.GetWillAlert()
+	e = &EnterpriseBudgetAlerting{}
+	e.GetWillAlert()
+	e = nil
+	e.GetWillAlert()
 }
 
 func TestEnterpriseCustomPropertiesValues_GetOrganizationID(tt *testing.T) {

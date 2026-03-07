@@ -44,7 +44,7 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 	}
 
 	want := &EnterpriseBudgets{
-		Budgets: []*Budget{
+		Budgets: []*EnterpriseBudget{
 			{
 				ID:                  Ptr("2066deda-923f-43f9-88d2-62395a28c0cdd"),
 				BudgetType:          Ptr("ProductPricing"),
@@ -52,7 +52,7 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 				BudgetScope:         Ptr("enterprise"),
 				BudgetAmount:        Ptr(1000),
 				PreventFurtherUsage: Ptr(true),
-				BudgetAlerting: &BudgetAlerting{
+				BudgetAlerting: &EnterpriseBudgetAlerting{
 					WillAlert:       Ptr(true),
 					AlertRecipients: []string{"enterprise-admin"},
 				},
@@ -70,6 +70,11 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
+	})
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.ListBudgets(ctx, "\n")
+		return err
 	})
 }
 
@@ -95,7 +100,7 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	req := &Budget{
+	req := EnterpriseBudget{
 		BudgetAmount:        Ptr(200),
 		PreventFurtherUsage: Ptr(true),
 		BudgetScope:         Ptr("enterprise"),
@@ -108,7 +113,7 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 		t.Errorf("Enterprise.CreateBudget returned error: %v", err)
 	}
 
-	want := &BudgetActionResponse{
+	want := &EnterpriseBudgetActionResponse{
 		Message: Ptr("Budget successfully created."),
 	}
 	if !cmp.Equal(resp, want) {
@@ -123,6 +128,11 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 		}
 		return resp, err
 	})
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.CreateBudget(ctx, "\n", req)
+		return err
+	})
 }
 
 func TestEnterpriseService_CreateBudget_invalidEnterprise(t *testing.T) {
@@ -130,7 +140,7 @@ func TestEnterpriseService_CreateBudget_invalidEnterprise(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Enterprise.CreateBudget(ctx, "%", &Budget{})
+	_, _, err := client.Enterprise.CreateBudget(ctx, "%", EnterpriseBudget{})
 	testURLParseError(t, err)
 }
 
@@ -156,7 +166,7 @@ func TestEnterpriseService_GetBudget(t *testing.T) {
 		t.Errorf("Enterprise.GetBudget returned error: %v", err)
 	}
 
-	want := &Budget{
+	want := &EnterpriseBudget{
 		ID:                  Ptr("2066deda-923f-43f9-88d2-62395a28c0cdd"),
 		BudgetType:          Ptr("ProductPricing"),
 		BudgetProductSKU:    Ptr("actions_linux"),
@@ -175,6 +185,11 @@ func TestEnterpriseService_GetBudget(t *testing.T) {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
+	})
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GetBudget(ctx, "\n", "\n")
+		return err
 	})
 }
 
@@ -205,7 +220,7 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	req := &Budget{
+	req := &EnterpriseBudget{
 		BudgetAmount:        Ptr(10),
 		PreventFurtherUsage: Ptr(false),
 	}
@@ -215,9 +230,9 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 		t.Errorf("Enterprise.UpdateBudget returned error: %v", err)
 	}
 
-	want := &BudgetActionResponse{
+	want := &EnterpriseBudgetActionResponse{
 		Message: Ptr("Budget successfully updated."),
-		Budget: &Budget{
+		Budget: &EnterpriseBudget{
 			ID:                  Ptr("b-123"),
 			BudgetAmount:        Ptr(10),
 			PreventFurtherUsage: Ptr(false),
@@ -235,6 +250,11 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 		}
 		return resp, err
 	})
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.UpdateBudget(ctx, "\n", "\n", req)
+		return err
+	})
 }
 
 func TestEnterpriseService_UpdateBudget_invalidEnterprise(t *testing.T) {
@@ -242,7 +262,7 @@ func TestEnterpriseService_UpdateBudget_invalidEnterprise(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Enterprise.UpdateBudget(ctx, "%", "b-123", &Budget{})
+	_, _, err := client.Enterprise.UpdateBudget(ctx, "%", "b-123", &EnterpriseBudget{})
 	testURLParseError(t, err)
 }
 
@@ -264,7 +284,7 @@ func TestEnterpriseService_DeleteBudget(t *testing.T) {
 		t.Errorf("Enterprise.DeleteBudget returned error: %v", err)
 	}
 
-	want := &BudgetActionResponse{
+	want := &EnterpriseBudgetActionResponse{
 		Message:  Ptr("Budget successfully deleted."),
 		BudgetID: Ptr("b-123"),
 	}
@@ -280,6 +300,11 @@ func TestEnterpriseService_DeleteBudget(t *testing.T) {
 		}
 		return resp, err
 	})
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.DeleteBudget(ctx, "\n", "\n")
+		return err
+	})
 }
 
 func TestEnterpriseService_DeleteBudget_invalidEnterprise(t *testing.T) {
@@ -291,11 +316,11 @@ func TestEnterpriseService_DeleteBudget_invalidEnterprise(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestBudget_Marshal(t *testing.T) {
+func TestEnterpriseBudget_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &Budget{}, "{}")
+	testJSONMarshal(t, &EnterpriseBudget{}, "{}")
 
-	u := &Budget{
+	u := &EnterpriseBudget{
 		ID:                  Ptr("b-123"),
 		BudgetType:          Ptr("ProductPricing"),
 		BudgetProductSkus:   []string{"actions"},
@@ -304,7 +329,7 @@ func TestBudget_Marshal(t *testing.T) {
 		BudgetEntityName:    Ptr("org-name"),
 		BudgetAmount:        Ptr(100),
 		PreventFurtherUsage: Ptr(true),
-		BudgetAlerting: &BudgetAlerting{
+		BudgetAlerting: &EnterpriseBudgetAlerting{
 			WillAlert:       Ptr(true),
 			AlertRecipients: []string{"mona"},
 		},
@@ -328,11 +353,11 @@ func TestBudget_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestBudgetAlerting_Marshal(t *testing.T) {
+func TestEnterpriseBudgetAlerting_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &BudgetAlerting{}, "{}")
+	testJSONMarshal(t, &EnterpriseBudgetAlerting{}, "{}")
 
-	u := &BudgetAlerting{
+	u := &EnterpriseBudgetAlerting{
 		WillAlert:       Ptr(true),
 		AlertRecipients: []string{"admin1", "admin2"},
 	}
@@ -350,7 +375,7 @@ func TestEnterpriseBudgets_Marshal(t *testing.T) {
 	testJSONMarshal(t, &EnterpriseBudgets{}, "{}")
 
 	u := &EnterpriseBudgets{
-		Budgets: []*Budget{
+		Budgets: []*EnterpriseBudget{
 			{
 				ID: Ptr("1"),
 			},
@@ -368,14 +393,14 @@ func TestEnterpriseBudgets_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestBudgetActionResponse_Marshal(t *testing.T) {
+func TestEnterpriseBudgetActionResponse_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &BudgetActionResponse{}, "{}")
+	testJSONMarshal(t, &EnterpriseBudgetActionResponse{}, "{}")
 
-	u := &BudgetActionResponse{
+	u := &EnterpriseBudgetActionResponse{
 		Message:  Ptr("Success"),
 		BudgetID: Ptr("123"),
-		Budget: &Budget{
+		Budget: &EnterpriseBudget{
 			ID: Ptr("123"),
 		},
 	}
