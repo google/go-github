@@ -220,7 +220,7 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	req := &EnterpriseBudget{
+	req := EnterpriseBudget{
 		BudgetAmount:        Ptr(10),
 		PreventFurtherUsage: Ptr(false),
 	}
@@ -262,7 +262,7 @@ func TestEnterpriseService_UpdateBudget_invalidEnterprise(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Enterprise.UpdateBudget(ctx, "%", "b-123", &EnterpriseBudget{})
+	_, _, err := client.Enterprise.UpdateBudget(ctx, "%", "b-123", EnterpriseBudget{})
 	testURLParseError(t, err)
 }
 

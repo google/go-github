@@ -116,7 +116,7 @@ func (s *EnterpriseService) GetBudget(ctx context.Context, enterprise, budgetID 
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#update-a-budget
 //
 //meta:operation PATCH /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, budget *EnterpriseBudget) (*EnterpriseBudgetActionResponse, *Response, error) {
+func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, budget EnterpriseBudget) (*EnterpriseBudgetActionResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 
 	req, err := s.client.NewRequest("PATCH", u, budget)
