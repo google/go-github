@@ -9830,6 +9830,142 @@ func (e *Enterprise) GetWebsiteURL() string {
 	return *e.WebsiteURL
 }
 
+// GetBudgetAlerting returns the BudgetAlerting field.
+func (e *EnterpriseBudget) GetBudgetAlerting() *EnterpriseBudgetAlerting {
+	if e == nil {
+		return nil
+	}
+	return e.BudgetAlerting
+}
+
+// GetBudgetAmount returns the BudgetAmount field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudget) GetBudgetAmount() int {
+	if e == nil || e.BudgetAmount == nil {
+		return 0
+	}
+	return *e.BudgetAmount
+}
+
+// GetBudgetEntityName returns the BudgetEntityName field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudget) GetBudgetEntityName() string {
+	if e == nil || e.BudgetEntityName == nil {
+		return ""
+	}
+	return *e.BudgetEntityName
+}
+
+// GetBudgetProductSKU returns the BudgetProductSKU field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudget) GetBudgetProductSKU() string {
+	if e == nil || e.BudgetProductSKU == nil {
+		return ""
+	}
+	return *e.BudgetProductSKU
+}
+
+// GetBudgetScope returns the BudgetScope field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudget) GetBudgetScope() string {
+	if e == nil || e.BudgetScope == nil {
+		return ""
+	}
+	return *e.BudgetScope
+}
+
+// GetBudgetType returns the BudgetType field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudget) GetBudgetType() string {
+	if e == nil || e.BudgetType == nil {
+		return ""
+	}
+	return *e.BudgetType
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudget) GetID() string {
+	if e == nil || e.ID == nil {
+		return ""
+	}
+	return *e.ID
+}
+
+// GetPreventFurtherUsage returns the PreventFurtherUsage field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudget) GetPreventFurtherUsage() bool {
+	if e == nil || e.PreventFurtherUsage == nil {
+		return false
+	}
+	return *e.PreventFurtherUsage
+}
+
+// GetWillAlert returns the WillAlert field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudgetAlerting) GetWillAlert() bool {
+	if e == nil || e.WillAlert == nil {
+		return false
+	}
+	return *e.WillAlert
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudgetDeleteResponse) GetID() string {
+	if e == nil || e.ID == nil {
+		return ""
+	}
+	return *e.ID
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudgetDeleteResponse) GetMessage() string {
+	if e == nil || e.Message == nil {
+		return ""
+	}
+	return *e.Message
+}
+
+// GetHasNextPage returns the HasNextPage field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudgets) GetHasNextPage() bool {
+	if e == nil || e.HasNextPage == nil {
+		return false
+	}
+	return *e.HasNextPage
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudgets) GetTotalCount() int {
+	if e == nil || e.TotalCount == nil {
+		return 0
+	}
+	return *e.TotalCount
+}
+
+// GetBudget returns the Budget field.
+func (e *EnterpriseBudgetUpdateResponse) GetBudget() *EnterpriseBudget {
+	if e == nil {
+		return nil
+	}
+	return e.Budget
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudgetUpdateResponse) GetMessage() string {
+	if e == nil || e.Message == nil {
+		return ""
+	}
+	return *e.Message
+}
+
+// GetBudgetEntityName returns the BudgetEntityName field if it's non-nil, zero value otherwise.
+func (e *EnterpriseCreateBudget) GetBudgetEntityName() string {
+	if e == nil || e.BudgetEntityName == nil {
+		return ""
+	}
+	return *e.BudgetEntityName
+}
+
+// GetBudgetProductSKU returns the BudgetProductSKU field if it's non-nil, zero value otherwise.
+func (e *EnterpriseCreateBudget) GetBudgetProductSKU() string {
+	if e == nil || e.BudgetProductSKU == nil {
+		return ""
+	}
+	return *e.BudgetProductSKU
+}
+
 // GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
 func (e *EnterpriseCustomPropertiesValues) GetOrganizationID() int64 {
 	if e == nil || e.OrganizationID == nil {
@@ -10076,6 +10212,62 @@ func (e *EnterpriseTeamCreateOrUpdateRequest) GetOrganizationSelectionType() str
 		return ""
 	}
 	return *e.OrganizationSelectionType
+}
+
+// GetBudgetAlerting returns the BudgetAlerting field.
+func (e *EnterpriseUpdateBudget) GetBudgetAlerting() *EnterpriseBudgetAlerting {
+	if e == nil {
+		return nil
+	}
+	return e.BudgetAlerting
+}
+
+// GetBudgetAmount returns the BudgetAmount field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUpdateBudget) GetBudgetAmount() int {
+	if e == nil || e.BudgetAmount == nil {
+		return 0
+	}
+	return *e.BudgetAmount
+}
+
+// GetBudgetEntityName returns the BudgetEntityName field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUpdateBudget) GetBudgetEntityName() string {
+	if e == nil || e.BudgetEntityName == nil {
+		return ""
+	}
+	return *e.BudgetEntityName
+}
+
+// GetBudgetProductSKU returns the BudgetProductSKU field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUpdateBudget) GetBudgetProductSKU() string {
+	if e == nil || e.BudgetProductSKU == nil {
+		return ""
+	}
+	return *e.BudgetProductSKU
+}
+
+// GetBudgetScope returns the BudgetScope field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUpdateBudget) GetBudgetScope() string {
+	if e == nil || e.BudgetScope == nil {
+		return ""
+	}
+	return *e.BudgetScope
+}
+
+// GetBudgetType returns the BudgetType field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUpdateBudget) GetBudgetType() string {
+	if e == nil || e.BudgetType == nil {
+		return ""
+	}
+	return *e.BudgetType
+}
+
+// GetPreventFurtherUsage returns the PreventFurtherUsage field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUpdateBudget) GetPreventFurtherUsage() bool {
+	if e == nil || e.PreventFurtherUsage == nil {
+		return false
+	}
+	return *e.PreventFurtherUsage
 }
 
 // GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
