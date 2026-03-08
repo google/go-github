@@ -495,3 +495,38 @@ func TestOrganizationsService_ListUsersAssignedToOrgRole(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestOrganizationsService_ListFineGrainedPermissions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/organization-fine-grained-permissions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{"name":"p1", "description":"d1"}]`)
+	})
+
+	ctx := t.Context()
+	permissions, _, err := client.Organizations.ListFineGrainedPermissions(ctx, "o")
+	if err != nil {
+		t.Errorf("Organizations.ListFineGrainedPermissions returned error: %v", err)
+	}
+
+	want := []*OrganizationFineGrainedPermission{{Name: Ptr("p1"), Description: Ptr("d1")}}
+	if !cmp.Equal(permissions, want) {
+		t.Errorf("Organizations.ListFineGrainedPermissions returned %+v, want %+v", permissions, want)
+	}
+
+	const methodName = "ListFineGrainedPermissions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Organizations.ListFineGrainedPermissions(ctx, "\no")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Organizations.ListFineGrainedPermissions(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
