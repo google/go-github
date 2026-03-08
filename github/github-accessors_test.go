@@ -22529,6 +22529,28 @@ func TestOrganizationEvent_GetSender(tt *testing.T) {
 	o.GetSender()
 }
 
+func TestOrganizationFineGrainedPermission_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	o := &OrganizationFineGrainedPermission{Description: &zeroValue}
+	o.GetDescription()
+	o = &OrganizationFineGrainedPermission{}
+	o.GetDescription()
+	o = nil
+	o.GetDescription()
+}
+
+func TestOrganizationFineGrainedPermission_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	o := &OrganizationFineGrainedPermission{Name: &zeroValue}
+	o.GetName()
+	o = &OrganizationFineGrainedPermission{}
+	o.GetName()
+	o = nil
+	o.GetName()
+}
+
 func TestOrganizationInstallations_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
