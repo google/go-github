@@ -573,7 +573,6 @@ func TestEnterpriseBudget_String(t *testing.T) {
 	v := EnterpriseBudget{
 		ID:                  Ptr(""),
 		BudgetType:          Ptr(""),
-		BudgetProductSkus:   []string{""},
 		BudgetProductSKU:    Ptr(""),
 		BudgetScope:         Ptr(""),
 		BudgetEntityName:    Ptr(""),
@@ -581,7 +580,7 @@ func TestEnterpriseBudget_String(t *testing.T) {
 		PreventFurtherUsage: Ptr(false),
 		BudgetAlerting:      &EnterpriseBudgetAlerting{},
 	}
-	want := `github.EnterpriseBudget{ID:"", BudgetType:"", BudgetProductSkus:[""], BudgetProductSKU:"", BudgetScope:"", BudgetEntityName:"", BudgetAmount:0, PreventFurtherUsage:false, BudgetAlerting:github.EnterpriseBudgetAlerting{}}`
+	want := `github.EnterpriseBudget{ID:"", BudgetType:"", BudgetProductSKU:"", BudgetScope:"", BudgetEntityName:"", BudgetAmount:0, PreventFurtherUsage:false, BudgetAlerting:github.EnterpriseBudgetAlerting{}}`
 	if got := v.String(); got != want {
 		t.Errorf("EnterpriseBudget.String = %v, want %v", got, want)
 	}
