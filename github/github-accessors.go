@@ -17302,6 +17302,22 @@ func (o *OrganizationEvent) GetSender() *User {
 	return o.Sender
 }
 
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (o *OrganizationFineGrainedPermission) GetDescription() string {
+	if o == nil || o.Description == nil {
+		return ""
+	}
+	return *o.Description
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (o *OrganizationFineGrainedPermission) GetName() string {
+	if o == nil || o.Name == nil {
+		return ""
+	}
+	return *o.Name
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (o *OrganizationInstallations) GetTotalCount() int {
 	if o == nil || o.TotalCount == nil {
