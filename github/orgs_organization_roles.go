@@ -29,11 +29,19 @@ type CustomOrgRoles struct {
 	BaseRole    *string       `json:"base_role,omitempty"`
 }
 
-// CreateOrUpdateOrgRoleOptions represents options required to create or update a custom organization role.
-type CreateOrUpdateOrgRoleOptions struct {
-	Name        *string  `json:"name,omitempty"`
-	Description *string  `json:"description,omitempty"`
+// CreateOrgRoleOptions represents options required to create a custom organization role.
+type CreateOrgRoleOptions struct {
+	Name        string   `json:"name"`
 	Permissions []string `json:"permissions"`
+	Description *string  `json:"description,omitempty"`
+	BaseRole    *string  `json:"base_role,omitempty"`
+}
+
+// UpdateOrgRoleOptions represents options required to update a custom organization role.
+type UpdateOrgRoleOptions struct {
+	Name        *string  `json:"name,omitempty"`
+	Permissions []string `json:"permissions,omitempty"`
+	Description *string  `json:"description,omitempty"`
 	BaseRole    *string  `json:"base_role,omitempty"`
 }
 
@@ -89,7 +97,7 @@ func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleI
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#create-a-custom-organization-role
 //
 //meta:operation POST /orgs/{org}/organization-roles
-func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, opts *CreateOrUpdateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
+func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, opts *CreateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles", org)
 
 	req, err := s.client.NewRequest("POST", u, opts)
@@ -112,7 +120,7 @@ func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org stri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#update-a-custom-organization-role
 //
 //meta:operation PATCH /orgs/{org}/organization-roles/{role_id}
-func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, opts *CreateOrUpdateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
+func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, opts *UpdateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
 	req, err := s.client.NewRequest("PATCH", u, opts)

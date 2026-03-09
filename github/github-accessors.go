@@ -7015,6 +7015,22 @@ func (c *CreateOrgInvitationOptions) GetRole() string {
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (c *CreateOrgRoleOptions) GetBaseRole() string {
+	if c == nil || c.BaseRole == nil {
+		return ""
+	}
+	return *c.BaseRole
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateOrgRoleOptions) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
 func (c *CreateOrUpdateCustomRepoRoleOptions) GetBaseRole() string {
 	if c == nil || c.BaseRole == nil {
 		return ""
@@ -7060,30 +7076,6 @@ func (c *CreateOrUpdateIssueTypesOptions) GetIsPrivate() bool {
 		return false
 	}
 	return *c.IsPrivate
-}
-
-// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateOrgRoleOptions) GetBaseRole() string {
-	if c == nil || c.BaseRole == nil {
-		return ""
-	}
-	return *c.BaseRole
-}
-
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateOrgRoleOptions) GetDescription() string {
-	if c == nil || c.Description == nil {
-		return ""
-	}
-	return *c.Description
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateOrgRoleOptions) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
@@ -30644,6 +30636,30 @@ func (u *UpdateOrganizationPrivateRegistry) GetVisibility() *PrivateRegistryVisi
 		return nil
 	}
 	return u.Visibility
+}
+
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (u *UpdateOrgRoleOptions) GetBaseRole() string {
+	if u == nil || u.BaseRole == nil {
+		return ""
+	}
+	return *u.BaseRole
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateOrgRoleOptions) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateOrgRoleOptions) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
 }
 
 // GetArchived returns the Archived field if it's non-nil, zero value otherwise.

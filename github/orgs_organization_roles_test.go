@@ -207,10 +207,10 @@ func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
 
 	ctx := t.Context()
 
-	opts := &CreateOrUpdateOrgRoleOptions{
-		Name:        Ptr("Reader"),
-		Description: Ptr("A role for reading custom org roles"),
+	opts := &CreateOrgRoleOptions{
+		Name:        "Reader",
 		Permissions: []string{"read_organization_custom_org_role"},
+		Description: Ptr("A role for reading custom org roles"),
 	}
 	gotRoles, _, err := client.Organizations.CreateCustomOrgRole(ctx, "o", opts)
 	if err != nil {
@@ -249,7 +249,7 @@ func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
 
 	ctx := t.Context()
 
-	opts := &CreateOrUpdateOrgRoleOptions{
+	opts := &UpdateOrgRoleOptions{
 		Name:        Ptr("Updated Name"),
 		Description: Ptr("Updated Description"),
 	}

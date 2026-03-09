@@ -9178,6 +9178,28 @@ func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
 	c.GetRole()
 }
 
+func TestCreateOrgRoleOptions_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrgRoleOptions{BaseRole: &zeroValue}
+	c.GetBaseRole()
+	c = &CreateOrgRoleOptions{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCreateOrgRoleOptions_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrgRoleOptions{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateOrgRoleOptions{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
 func TestCreateOrUpdateCustomRepoRoleOptions_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -9242,39 +9264,6 @@ func TestCreateOrUpdateIssueTypesOptions_GetIsPrivate(tt *testing.T) {
 	c.GetIsPrivate()
 	c = nil
 	c.GetIsPrivate()
-}
-
-func TestCreateOrUpdateOrgRoleOptions_GetBaseRole(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrUpdateOrgRoleOptions{BaseRole: &zeroValue}
-	c.GetBaseRole()
-	c = &CreateOrUpdateOrgRoleOptions{}
-	c.GetBaseRole()
-	c = nil
-	c.GetBaseRole()
-}
-
-func TestCreateOrUpdateOrgRoleOptions_GetDescription(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrUpdateOrgRoleOptions{Description: &zeroValue}
-	c.GetDescription()
-	c = &CreateOrUpdateOrgRoleOptions{}
-	c.GetDescription()
-	c = nil
-	c.GetDescription()
-}
-
-func TestCreateOrUpdateOrgRoleOptions_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrUpdateOrgRoleOptions{Name: &zeroValue}
-	c.GetName()
-	c = &CreateOrUpdateOrgRoleOptions{}
-	c.GetName()
-	c = nil
-	c.GetName()
 }
 
 func TestCreateProtectedChanges_GetFrom(tt *testing.T) {
@@ -39522,6 +39511,39 @@ func TestUpdateOrganizationPrivateRegistry_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
+}
+
+func TestUpdateOrgRoleOptions_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrgRoleOptions{BaseRole: &zeroValue}
+	u.GetBaseRole()
+	u = &UpdateOrgRoleOptions{}
+	u.GetBaseRole()
+	u = nil
+	u.GetBaseRole()
+}
+
+func TestUpdateOrgRoleOptions_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrgRoleOptions{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateOrgRoleOptions{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateOrgRoleOptions_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrgRoleOptions{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateOrgRoleOptions{}
+	u.GetName()
+	u = nil
+	u.GetName()
 }
 
 func TestUpdateProjectItemOptions_GetArchived(tt *testing.T) {
