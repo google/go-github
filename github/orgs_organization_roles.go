@@ -37,6 +37,12 @@ type CreateOrUpdateOrgRoleOptions struct {
 	BaseRole    *string  `json:"base_role,omitempty"`
 }
 
+// OrganizationFineGrainedPermission represents a fine-grained permission that protects organization resources.
+type OrganizationFineGrainedPermission struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
 // ListRoles lists the custom roles available in this organization.
 // In order to see custom roles in an organization, the authenticated user must be an organization owner.
 //
@@ -292,4 +298,32 @@ func (s *OrganizationsService) ListUsersAssignedToOrgRole(ctx context.Context, o
 	}
 
 	return users, resp, nil
+}
+
+// ListFineGrainedPermissions lists the fine-grained permissions that can be used in custom organization roles for an organization.
+//
+// To use this endpoint, the authenticated user must be one of:
+//   - An administrator for the organization.
+//   - A user, or a user on a team, with the fine-grained permissions of `read_organization_custom_org_role` in the organization.
+//
+// OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#list-organization-fine-grained-permissions-for-an-organization
+//
+//meta:operation GET /orgs/{org}/organization-fine-grained-permissions
+func (s *OrganizationsService) ListFineGrainedPermissions(ctx context.Context, org string) ([]*OrganizationFineGrainedPermission, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/organization-fine-grained-permissions", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var permissions []*OrganizationFineGrainedPermission
+	resp, err := s.client.Do(ctx, req, &permissions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return permissions, resp, nil
 }
