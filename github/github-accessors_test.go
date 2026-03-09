@@ -12855,67 +12855,12 @@ func TestEnterpriseBudgetAlerting_GetWillAlert(tt *testing.T) {
 	e.GetWillAlert()
 }
 
-func TestEnterpriseBudgetDeleteResponse_GetID(tt *testing.T) {
+func TestEnterpriseCreateBudget_GetBudgetAlerting(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseBudgetDeleteResponse{ID: &zeroValue}
-	e.GetID()
-	e = &EnterpriseBudgetDeleteResponse{}
-	e.GetID()
+	e := &EnterpriseCreateBudget{}
+	e.GetBudgetAlerting()
 	e = nil
-	e.GetID()
-}
-
-func TestEnterpriseBudgetDeleteResponse_GetMessage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseBudgetDeleteResponse{Message: &zeroValue}
-	e.GetMessage()
-	e = &EnterpriseBudgetDeleteResponse{}
-	e.GetMessage()
-	e = nil
-	e.GetMessage()
-}
-
-func TestEnterpriseBudgets_GetHasNextPage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	e := &EnterpriseBudgets{HasNextPage: &zeroValue}
-	e.GetHasNextPage()
-	e = &EnterpriseBudgets{}
-	e.GetHasNextPage()
-	e = nil
-	e.GetHasNextPage()
-}
-
-func TestEnterpriseBudgets_GetTotalCount(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	e := &EnterpriseBudgets{TotalCount: &zeroValue}
-	e.GetTotalCount()
-	e = &EnterpriseBudgets{}
-	e.GetTotalCount()
-	e = nil
-	e.GetTotalCount()
-}
-
-func TestEnterpriseBudgetUpdateResponse_GetBudget(tt *testing.T) {
-	tt.Parallel()
-	e := &EnterpriseBudgetUpdateResponse{}
-	e.GetBudget()
-	e = nil
-	e.GetBudget()
-}
-
-func TestEnterpriseBudgetUpdateResponse_GetMessage(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseBudgetUpdateResponse{Message: &zeroValue}
-	e.GetMessage()
-	e = &EnterpriseBudgetUpdateResponse{}
-	e.GetMessage()
-	e = nil
-	e.GetMessage()
+	e.GetBudgetAlerting()
 }
 
 func TestEnterpriseCreateBudget_GetBudgetEntityName(tt *testing.T) {
@@ -12938,6 +12883,14 @@ func TestEnterpriseCreateBudget_GetBudgetProductSKU(tt *testing.T) {
 	e.GetBudgetProductSKU()
 	e = nil
 	e.GetBudgetProductSKU()
+}
+
+func TestEnterpriseCreateOrUpdateBudgetResponse_GetBudget(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseCreateOrUpdateBudgetResponse{}
+	e.GetBudget()
+	e = nil
+	e.GetBudget()
 }
 
 func TestEnterpriseCustomPropertiesValues_GetOrganizationID(tt *testing.T) {
@@ -13045,6 +12998,28 @@ func TestEnterpriseLicenseSyncStatus_GetProperties(tt *testing.T) {
 	e.GetProperties()
 	e = nil
 	e.GetProperties()
+}
+
+func TestEnterpriseListBudgets_GetHasNextPage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	e := &EnterpriseListBudgets{HasNextPage: &zeroValue}
+	e.GetHasNextPage()
+	e = &EnterpriseListBudgets{}
+	e.GetHasNextPage()
+	e = nil
+	e.GetHasNextPage()
+}
+
+func TestEnterpriseListBudgets_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	e := &EnterpriseListBudgets{TotalCount: &zeroValue}
+	e.GetTotalCount()
+	e = &EnterpriseListBudgets{}
+	e.GetTotalCount()
+	e = nil
+	e.GetTotalCount()
 }
 
 func TestEnterpriseRunnerGroup_GetAllowsPublicRepositories(tt *testing.T) {

@@ -10,6 +10,20 @@ import (
 	"fmt"
 )
 
+// BudgetScope constants represent the scope of the budget.
+const (
+	BudgetScopeEnterprise   = "enterprise"
+	BudgetScopeOrganization = "organization"
+	BudgetScopeRepository   = "repository"
+	BudgetScopeCostCenter   = "cost_center"
+)
+
+// BudgetType constants represent the type of pricing for the budget.
+const (
+	BudgetTypeProductPricing = "ProductPricing"
+	BudgetTypeSkuPricing     = "SkuPricing"
+)
+
 // EnterpriseBudgetAlerting represents alerting settings for a GitHub enterprise budget.
 type EnterpriseBudgetAlerting struct {
 	WillAlert       *bool    `json:"will_alert,omitempty"`
@@ -32,22 +46,22 @@ func (b EnterpriseBudget) String() string {
 	return Stringify(b)
 }
 
-// EnterpriseBudgets represents a collection of GitHub enterprise budgets.
-type EnterpriseBudgets struct {
-	Budgets     []*EnterpriseBudget `json:"budgets,omitempty"`
+// EnterpriseListBudgets represents a collection of GitHub enterprise budgets.
+type EnterpriseListBudgets struct {
+	Budgets     []*EnterpriseBudget `json:"budgets"`
 	HasNextPage *bool               `json:"has_next_page,omitempty"`
 	TotalCount  *int                `json:"total_count,omitempty"`
 }
 
 // EnterpriseCreateBudget represents the payload to create a GitHub enterprise budget.
 type EnterpriseCreateBudget struct {
-	BudgetAmount        int                      `json:"budget_amount"`
-	PreventFurtherUsage bool                     `json:"prevent_further_usage"`
-	BudgetAlerting      EnterpriseBudgetAlerting `json:"budget_alerting"`
-	BudgetScope         string                   `json:"budget_scope"`
-	BudgetEntityName    *string                  `json:"budget_entity_name,omitempty"`
-	BudgetType          string                   `json:"budget_type"`
-	BudgetProductSKU    *string                  `json:"budget_product_sku,omitempty"`
+	BudgetAmount        int                       `json:"budget_amount"`
+	PreventFurtherUsage bool                      `json:"prevent_further_usage"`
+	BudgetAlerting      *EnterpriseBudgetAlerting `json:"budget_alerting"`
+	BudgetScope         string                    `json:"budget_scope"`
+	BudgetEntityName    *string                   `json:"budget_entity_name,omitempty"`
+	BudgetType          string                    `json:"budget_type"`
+	BudgetProductSKU    *string                   `json:"budget_product_sku,omitempty"`
 }
 
 // EnterpriseUpdateBudget represents the payload to update a GitHub enterprise budget.
@@ -61,16 +75,16 @@ type EnterpriseUpdateBudget struct {
 	BudgetProductSKU    *string                   `json:"budget_product_sku,omitempty"`
 }
 
-// EnterpriseBudgetUpdateResponse represents the response when creating or updating a budget.
-type EnterpriseBudgetUpdateResponse struct {
-	Message *string           `json:"message,omitempty"`
-	Budget  *EnterpriseBudget `json:"budget,omitempty"`
+// EnterpriseCreateOrUpdateBudgetResponse represents the response when creating or updating a budget.
+type EnterpriseCreateOrUpdateBudgetResponse struct {
+	Message string            `json:"message"`
+	Budget  *EnterpriseBudget `json:"budget"`
 }
 
-// EnterpriseBudgetDeleteResponse represents the response when deleting a budget.
-type EnterpriseBudgetDeleteResponse struct {
-	Message *string `json:"message,omitempty"`
-	ID      *string `json:"id,omitempty"`
+// EnterpriseDeleteBudgetResponse represents the response when deleting a budget.
+type EnterpriseDeleteBudgetResponse struct {
+	Message string `json:"message"`
+	ID      string `json:"id"`
 }
 
 // ListBudgets gets all budgets for an enterprise.
@@ -78,7 +92,7 @@ type EnterpriseBudgetDeleteResponse struct {
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#get-all-budgets
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/budgets
-func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) (*EnterpriseBudgets, *Response, error) {
+func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) (*EnterpriseListBudgets, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets", enterprise)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -86,7 +100,7 @@ func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) 
 		return nil, nil, err
 	}
 
-	var budgets *EnterpriseBudgets
+	var budgets *EnterpriseListBudgets
 	resp, err := s.client.Do(ctx, req, &budgets)
 	if err != nil {
 		return nil, resp, err
@@ -100,7 +114,7 @@ func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) 
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#create-a-budget
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/budgets
-func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string, budget EnterpriseCreateBudget) (*EnterpriseBudgetUpdateResponse, *Response, error) {
+func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string, budget EnterpriseCreateBudget) (*EnterpriseCreateOrUpdateBudgetResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets", enterprise)
 
 	req, err := s.client.NewRequest("POST", u, budget)
@@ -108,13 +122,13 @@ func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string,
 		return nil, nil, err
 	}
 
-	var actionResponse *EnterpriseBudgetUpdateResponse
-	resp, err := s.client.Do(ctx, req, &actionResponse)
+	var createBudgetResponse *EnterpriseCreateOrUpdateBudgetResponse
+	resp, err := s.client.Do(ctx, req, &createBudgetResponse)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return actionResponse, resp, nil
+	return createBudgetResponse, resp, nil
 }
 
 // GetBudget gets a budget by ID for an enterprise.
@@ -144,7 +158,7 @@ func (s *EnterpriseService) GetBudget(ctx context.Context, enterprise, budgetID 
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#update-a-budget
 //
 //meta:operation PATCH /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, budget EnterpriseUpdateBudget) (*EnterpriseBudgetUpdateResponse, *Response, error) {
+func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, budget EnterpriseUpdateBudget) (*EnterpriseCreateOrUpdateBudgetResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 
 	req, err := s.client.NewRequest("PATCH", u, budget)
@@ -152,13 +166,13 @@ func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budget
 		return nil, nil, err
 	}
 
-	var actionResponse *EnterpriseBudgetUpdateResponse
-	resp, err := s.client.Do(ctx, req, &actionResponse)
+	var updateBudgetResponse *EnterpriseCreateOrUpdateBudgetResponse
+	resp, err := s.client.Do(ctx, req, &updateBudgetResponse)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return actionResponse, resp, nil
+	return updateBudgetResponse, resp, nil
 }
 
 // DeleteBudget deletes a budget by ID for an enterprise.
@@ -166,7 +180,7 @@ func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budget
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#delete-a-budget
 //
 //meta:operation DELETE /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) DeleteBudget(ctx context.Context, enterprise, budgetID string) (*EnterpriseBudgetDeleteResponse, *Response, error) {
+func (s *EnterpriseService) DeleteBudget(ctx context.Context, enterprise, budgetID string) (*EnterpriseDeleteBudgetResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 
 	req, err := s.client.NewRequest("DELETE", u, nil)
@@ -174,11 +188,11 @@ func (s *EnterpriseService) DeleteBudget(ctx context.Context, enterprise, budget
 		return nil, nil, err
 	}
 
-	var actionResponse *EnterpriseBudgetDeleteResponse
-	resp, err := s.client.Do(ctx, req, &actionResponse)
+	var deleteBudgetResponse *EnterpriseDeleteBudgetResponse
+	resp, err := s.client.Do(ctx, req, &deleteBudgetResponse)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return actionResponse, resp, nil
+	return deleteBudgetResponse, resp, nil
 }

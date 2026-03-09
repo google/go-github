@@ -9902,52 +9902,12 @@ func (e *EnterpriseBudgetAlerting) GetWillAlert() bool {
 	return *e.WillAlert
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
-func (e *EnterpriseBudgetDeleteResponse) GetID() string {
-	if e == nil || e.ID == nil {
-		return ""
-	}
-	return *e.ID
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (e *EnterpriseBudgetDeleteResponse) GetMessage() string {
-	if e == nil || e.Message == nil {
-		return ""
-	}
-	return *e.Message
-}
-
-// GetHasNextPage returns the HasNextPage field if it's non-nil, zero value otherwise.
-func (e *EnterpriseBudgets) GetHasNextPage() bool {
-	if e == nil || e.HasNextPage == nil {
-		return false
-	}
-	return *e.HasNextPage
-}
-
-// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
-func (e *EnterpriseBudgets) GetTotalCount() int {
-	if e == nil || e.TotalCount == nil {
-		return 0
-	}
-	return *e.TotalCount
-}
-
-// GetBudget returns the Budget field.
-func (e *EnterpriseBudgetUpdateResponse) GetBudget() *EnterpriseBudget {
+// GetBudgetAlerting returns the BudgetAlerting field.
+func (e *EnterpriseCreateBudget) GetBudgetAlerting() *EnterpriseBudgetAlerting {
 	if e == nil {
 		return nil
 	}
-	return e.Budget
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (e *EnterpriseBudgetUpdateResponse) GetMessage() string {
-	if e == nil || e.Message == nil {
-		return ""
-	}
-	return *e.Message
+	return e.BudgetAlerting
 }
 
 // GetBudgetEntityName returns the BudgetEntityName field if it's non-nil, zero value otherwise.
@@ -9964,6 +9924,14 @@ func (e *EnterpriseCreateBudget) GetBudgetProductSKU() string {
 		return ""
 	}
 	return *e.BudgetProductSKU
+}
+
+// GetBudget returns the Budget field.
+func (e *EnterpriseCreateOrUpdateBudgetResponse) GetBudget() *EnterpriseBudget {
+	if e == nil {
+		return nil
+	}
+	return e.Budget
 }
 
 // GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
@@ -10044,6 +10012,22 @@ func (e *EnterpriseLicenseSyncStatus) GetProperties() *ServerInstanceProperties 
 		return nil
 	}
 	return e.Properties
+}
+
+// GetHasNextPage returns the HasNextPage field if it's non-nil, zero value otherwise.
+func (e *EnterpriseListBudgets) GetHasNextPage() bool {
+	if e == nil || e.HasNextPage == nil {
+		return false
+	}
+	return *e.HasNextPage
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (e *EnterpriseListBudgets) GetTotalCount() int {
+	if e == nil || e.TotalCount == nil {
+		return 0
+	}
+	return *e.TotalCount
 }
 
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
