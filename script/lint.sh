@@ -41,7 +41,7 @@ trap 'rm -rf "$LOG_DIR"' EXIT
 
 # --- Helper Functions ---
 print_header() {
-    printf "${BOLD}%s${NC}\n\n" "$1"
+  printf "${BOLD}%s${NC}\n\n" "$1"
 }
 
 
@@ -91,26 +91,26 @@ wait_pids
 if [ -n "$CHECK_GITHUB_OPENAPI" ]; then
   print_header "Validating openapi_operations.yaml"
   if script/metadata.sh update-openapi --validate; then
-      printf "${GREEN}✔ openapi_operations.yaml is valid${NC}\n"
+    printf "${GREEN}✔ openapi_operations.yaml is valid${NC}\n"
   else
-      printf "${RED}✘ openapi_operations.yaml validation failed${NC}\n"
-      fail
+    printf "${RED}✘ openapi_operations.yaml validation failed${NC}\n"
+    fail
   fi
 fi
 
 print_header "Validating generated files"
 if script/generate.sh --check; then
-    printf "${GREEN}✔ Generated files are up to date${NC}\n"
+  printf "${GREEN}✔ Generated files are up to date${NC}\n"
 else
-    printf "${RED}✘ Generated files out of sync${NC}\n"
-    fail
+  printf "${RED}✘ Generated files out of sync${NC}\n"
+  fail
 fi
 
 # --- Final Summary ---
 printf -- "----------------------------\n"
 SUMMARY_COLOR="$GREEN"
 if [ "$FAILED_COUNT" -gt 0 ]; then
-    SUMMARY_COLOR="$RED"
+  SUMMARY_COLOR="$RED"
 fi
 
 printf "%bLinting: issues found in %d module directories.%b\n" "$SUMMARY_COLOR" "$FAILED_COUNT" "$NC"
