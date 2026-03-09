@@ -511,7 +511,7 @@ func TestOrganizationsService_ListFineGrainedPermissions(t *testing.T) {
 		t.Errorf("Organizations.ListFineGrainedPermissions returned error: %v", err)
 	}
 
-	want := []*OrganizationFineGrainedPermission{{Name: Ptr("p1"), Description: Ptr("d1")}}
+	want := []*OrganizationFineGrainedPermission{{Name: "p1", Description: "d1"}}
 	if !cmp.Equal(permissions, want) {
 		t.Errorf("Organizations.ListFineGrainedPermissions returned %+v, want %+v", permissions, want)
 	}

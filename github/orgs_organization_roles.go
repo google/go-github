@@ -39,8 +39,8 @@ type CreateOrUpdateOrgRoleOptions struct {
 
 // OrganizationFineGrainedPermission represents a fine-grained permission that protects organization resources.
 type OrganizationFineGrainedPermission struct {
-	Name        *string `json:"name,omitempty"`
-	Description *string `json:"description,omitempty"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
 // ListRoles lists the custom roles available in this organization.
