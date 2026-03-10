@@ -6854,6 +6854,22 @@ func (c *CreateCodespaceOptions) GetWorkingDirectory() string {
 	return *c.WorkingDirectory
 }
 
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (c *CreateCustomOrgRoleRequest) GetBaseRole() string {
+	if c == nil || c.BaseRole == nil {
+		return ""
+	}
+	return *c.BaseRole
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateCustomOrgRoleRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
 func (c *CreateEnterpriseRunnerGroupRequest) GetAllowsPublicRepositories() bool {
 	if c == nil || c.AllowsPublicRepositories == nil {
@@ -7012,22 +7028,6 @@ func (c *CreateOrgInvitationOptions) GetRole() string {
 		return ""
 	}
 	return *c.Role
-}
-
-// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
-func (c *CreateOrgRoleOptions) GetBaseRole() string {
-	if c == nil || c.BaseRole == nil {
-		return ""
-	}
-	return *c.BaseRole
-}
-
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (c *CreateOrgRoleOptions) GetDescription() string {
-	if c == nil || c.Description == nil {
-		return ""
-	}
-	return *c.Description
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
@@ -7383,7 +7383,7 @@ func (c *CustomDeploymentProtectionRuleRequest) GetIntegrationID() int64 {
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
-func (c *CustomOrgRoles) GetBaseRole() string {
+func (c *CustomOrgRole) GetBaseRole() string {
 	if c == nil || c.BaseRole == nil {
 		return ""
 	}
@@ -7391,7 +7391,7 @@ func (c *CustomOrgRoles) GetBaseRole() string {
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (c *CustomOrgRoles) GetCreatedAt() Timestamp {
+func (c *CustomOrgRole) GetCreatedAt() Timestamp {
 	if c == nil || c.CreatedAt == nil {
 		return Timestamp{}
 	}
@@ -7399,7 +7399,7 @@ func (c *CustomOrgRoles) GetCreatedAt() Timestamp {
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (c *CustomOrgRoles) GetDescription() string {
+func (c *CustomOrgRole) GetDescription() string {
 	if c == nil || c.Description == nil {
 		return ""
 	}
@@ -7407,7 +7407,7 @@ func (c *CustomOrgRoles) GetDescription() string {
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
-func (c *CustomOrgRoles) GetID() int64 {
+func (c *CustomOrgRole) GetID() int64 {
 	if c == nil || c.ID == nil {
 		return 0
 	}
@@ -7415,7 +7415,7 @@ func (c *CustomOrgRoles) GetID() int64 {
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CustomOrgRoles) GetName() string {
+func (c *CustomOrgRole) GetName() string {
 	if c == nil || c.Name == nil {
 		return ""
 	}
@@ -7423,7 +7423,7 @@ func (c *CustomOrgRoles) GetName() string {
 }
 
 // GetOrg returns the Org field.
-func (c *CustomOrgRoles) GetOrg() *Organization {
+func (c *CustomOrgRole) GetOrg() *Organization {
 	if c == nil {
 		return nil
 	}
@@ -7431,7 +7431,7 @@ func (c *CustomOrgRoles) GetOrg() *Organization {
 }
 
 // GetSource returns the Source field if it's non-nil, zero value otherwise.
-func (c *CustomOrgRoles) GetSource() string {
+func (c *CustomOrgRole) GetSource() string {
 	if c == nil || c.Source == nil {
 		return ""
 	}
@@ -7439,7 +7439,7 @@ func (c *CustomOrgRoles) GetSource() string {
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
-func (c *CustomOrgRoles) GetUpdatedAt() Timestamp {
+func (c *CustomOrgRole) GetUpdatedAt() Timestamp {
 	if c == nil || c.UpdatedAt == nil {
 		return Timestamp{}
 	}
@@ -30478,6 +30478,30 @@ func (u *UpdateCodespaceOptions) GetMachine() string {
 	return *u.Machine
 }
 
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (u *UpdateCustomOrgRoleRequest) GetBaseRole() string {
+	if u == nil || u.BaseRole == nil {
+		return ""
+	}
+	return *u.BaseRole
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateCustomOrgRoleRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateCustomOrgRoleRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
 // GetQuerySuite returns the QuerySuite field if it's non-nil, zero value otherwise.
 func (u *UpdateDefaultSetupConfigurationOptions) GetQuerySuite() string {
 	if u == nil || u.QuerySuite == nil {
@@ -30636,30 +30660,6 @@ func (u *UpdateOrganizationPrivateRegistry) GetVisibility() *PrivateRegistryVisi
 		return nil
 	}
 	return u.Visibility
-}
-
-// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
-func (u *UpdateOrgRoleOptions) GetBaseRole() string {
-	if u == nil || u.BaseRole == nil {
-		return ""
-	}
-	return *u.BaseRole
-}
-
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (u *UpdateOrgRoleOptions) GetDescription() string {
-	if u == nil || u.Description == nil {
-		return ""
-	}
-	return *u.Description
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (u *UpdateOrgRoleOptions) GetName() string {
-	if u == nil || u.Name == nil {
-		return ""
-	}
-	return *u.Name
 }
 
 // GetArchived returns the Archived field if it's non-nil, zero value otherwise.

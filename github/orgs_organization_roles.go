@@ -12,12 +12,12 @@ import (
 
 // OrganizationCustomRoles represents custom organization roles available in specified organization.
 type OrganizationCustomRoles struct {
-	TotalCount      *int              `json:"total_count,omitempty"`
-	CustomRepoRoles []*CustomOrgRoles `json:"roles,omitempty"`
+	TotalCount      *int             `json:"total_count,omitempty"`
+	CustomRepoRoles []*CustomOrgRole `json:"roles,omitempty"`
 }
 
-// CustomOrgRoles represents custom organization role available in specified organization.
-type CustomOrgRoles struct {
+// CustomOrgRole represents custom organization role available in specified organization.
+type CustomOrgRole struct {
 	ID          *int64        `json:"id,omitempty"`
 	Name        *string       `json:"name,omitempty"`
 	Description *string       `json:"description,omitempty"`
@@ -29,20 +29,20 @@ type CustomOrgRoles struct {
 	BaseRole    *string       `json:"base_role,omitempty"`
 }
 
-// CreateOrgRoleOptions represents options required to create a custom organization role.
-type CreateOrgRoleOptions struct {
+// CreateCustomOrgRoleRequest represents options required to create a custom organization role.
+type CreateCustomOrgRoleRequest struct {
 	Name        string   `json:"name"`
 	Description *string  `json:"description,omitempty"`
 	Permissions []string `json:"permissions"`
 	BaseRole    *string  `json:"base_role,omitempty"` // Can be one of: read, triage, write, maintain, admin
 }
 
-// UpdateOrgRoleOptions represents options required to update a custom organization role.
-type UpdateOrgRoleOptions struct {
+// UpdateCustomOrgRoleRequest represents options required to update a custom organization role.
+type UpdateCustomOrgRoleRequest struct {
 	Name        *string  `json:"name,omitempty"`
-	Permissions []string `json:"permissions,omitempty"`
 	Description *string  `json:"description,omitempty"`
-	BaseRole    *string  `json:"base_role,omitempty"`
+	Permissions []string `json:"permissions,omitempty"`
+	BaseRole    *string  `json:"base_role,omitempty"` // Can be one of: none, read, triage, write, maintain, admin
 }
 
 // ListRoles lists the custom roles available in this organization.
@@ -74,7 +74,7 @@ func (s *OrganizationsService) ListRoles(ctx context.Context, org string) (*Orga
 // GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#get-an-organization-role
 //
 //meta:operation GET /orgs/{org}/organization-roles/{role_id}
-func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleID int64) (*CustomOrgRoles, *Response, error) {
+func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleID int64) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -82,7 +82,7 @@ func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleI
 		return nil, nil, err
 	}
 
-	resultingRole := new(CustomOrgRoles)
+	resultingRole := new(CustomOrgRole)
 	resp, err := s.client.Do(ctx, req, resultingRole)
 	if err != nil {
 		return nil, resp, err
@@ -97,7 +97,7 @@ func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleI
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#create-a-custom-organization-role
 //
 //meta:operation POST /orgs/{org}/organization-roles
-func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, opts *CreateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
+func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, opts CreateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles", org)
 
 	req, err := s.client.NewRequest("POST", u, opts)
@@ -105,7 +105,7 @@ func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org stri
 		return nil, nil, err
 	}
 
-	resultingRole := new(CustomOrgRoles)
+	resultingRole := new(CustomOrgRole)
 	resp, err := s.client.Do(ctx, req, resultingRole)
 	if err != nil {
 		return nil, resp, err
@@ -120,7 +120,7 @@ func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org stri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#update-a-custom-organization-role
 //
 //meta:operation PATCH /orgs/{org}/organization-roles/{role_id}
-func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, opts *UpdateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
+func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, opts UpdateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
 	req, err := s.client.NewRequest("PATCH", u, opts)
@@ -128,7 +128,7 @@ func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org stri
 		return nil, nil, err
 	}
 
-	resultingRole := new(CustomOrgRoles)
+	resultingRole := new(CustomOrgRole)
 	resp, err := s.client.Do(ctx, req, resultingRole)
 	if err != nil {
 		return nil, resp, err
@@ -151,7 +151,7 @@ func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org stri
 		return nil, err
 	}
 
-	resultingRole := new(CustomOrgRoles)
+	resultingRole := new(CustomOrgRole)
 	resp, err := s.client.Do(ctx, req, resultingRole)
 	if err != nil {
 		return resp, err

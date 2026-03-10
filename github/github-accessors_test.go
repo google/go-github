@@ -8970,6 +8970,28 @@ func TestCreateCodespaceOptions_GetWorkingDirectory(tt *testing.T) {
 	c.GetWorkingDirectory()
 }
 
+func TestCreateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCustomOrgRoleRequest{BaseRole: &zeroValue}
+	c.GetBaseRole()
+	c = &CreateCustomOrgRoleRequest{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCreateCustomOrgRoleRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCustomOrgRoleRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateCustomOrgRoleRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
 func TestCreateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -9176,28 +9198,6 @@ func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
 	c.GetRole()
 	c = nil
 	c.GetRole()
-}
-
-func TestCreateOrgRoleOptions_GetBaseRole(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrgRoleOptions{BaseRole: &zeroValue}
-	c.GetBaseRole()
-	c = &CreateOrgRoleOptions{}
-	c.GetBaseRole()
-	c = nil
-	c.GetBaseRole()
-}
-
-func TestCreateOrgRoleOptions_GetDescription(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrgRoleOptions{Description: &zeroValue}
-	c.GetDescription()
-	c = &CreateOrgRoleOptions{}
-	c.GetDescription()
-	c = nil
-	c.GetDescription()
 }
 
 func TestCreateOrUpdateCustomRepoRoleOptions_GetBaseRole(tt *testing.T) {
@@ -9672,86 +9672,86 @@ func TestCustomDeploymentProtectionRuleRequest_GetIntegrationID(tt *testing.T) {
 	c.GetIntegrationID()
 }
 
-func TestCustomOrgRoles_GetBaseRole(tt *testing.T) {
+func TestCustomOrgRole_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CustomOrgRoles{BaseRole: &zeroValue}
+	c := &CustomOrgRole{BaseRole: &zeroValue}
 	c.GetBaseRole()
-	c = &CustomOrgRoles{}
+	c = &CustomOrgRole{}
 	c.GetBaseRole()
 	c = nil
 	c.GetBaseRole()
 }
 
-func TestCustomOrgRoles_GetCreatedAt(tt *testing.T) {
+func TestCustomOrgRole_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	c := &CustomOrgRoles{CreatedAt: &zeroValue}
+	c := &CustomOrgRole{CreatedAt: &zeroValue}
 	c.GetCreatedAt()
-	c = &CustomOrgRoles{}
+	c = &CustomOrgRole{}
 	c.GetCreatedAt()
 	c = nil
 	c.GetCreatedAt()
 }
 
-func TestCustomOrgRoles_GetDescription(tt *testing.T) {
+func TestCustomOrgRole_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CustomOrgRoles{Description: &zeroValue}
+	c := &CustomOrgRole{Description: &zeroValue}
 	c.GetDescription()
-	c = &CustomOrgRoles{}
+	c = &CustomOrgRole{}
 	c.GetDescription()
 	c = nil
 	c.GetDescription()
 }
 
-func TestCustomOrgRoles_GetID(tt *testing.T) {
+func TestCustomOrgRole_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
-	c := &CustomOrgRoles{ID: &zeroValue}
+	c := &CustomOrgRole{ID: &zeroValue}
 	c.GetID()
-	c = &CustomOrgRoles{}
+	c = &CustomOrgRole{}
 	c.GetID()
 	c = nil
 	c.GetID()
 }
 
-func TestCustomOrgRoles_GetName(tt *testing.T) {
+func TestCustomOrgRole_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CustomOrgRoles{Name: &zeroValue}
+	c := &CustomOrgRole{Name: &zeroValue}
 	c.GetName()
-	c = &CustomOrgRoles{}
+	c = &CustomOrgRole{}
 	c.GetName()
 	c = nil
 	c.GetName()
 }
 
-func TestCustomOrgRoles_GetOrg(tt *testing.T) {
+func TestCustomOrgRole_GetOrg(tt *testing.T) {
 	tt.Parallel()
-	c := &CustomOrgRoles{}
+	c := &CustomOrgRole{}
 	c.GetOrg()
 	c = nil
 	c.GetOrg()
 }
 
-func TestCustomOrgRoles_GetSource(tt *testing.T) {
+func TestCustomOrgRole_GetSource(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CustomOrgRoles{Source: &zeroValue}
+	c := &CustomOrgRole{Source: &zeroValue}
 	c.GetSource()
-	c = &CustomOrgRoles{}
+	c = &CustomOrgRole{}
 	c.GetSource()
 	c = nil
 	c.GetSource()
 }
 
-func TestCustomOrgRoles_GetUpdatedAt(tt *testing.T) {
+func TestCustomOrgRole_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	c := &CustomOrgRoles{UpdatedAt: &zeroValue}
+	c := &CustomOrgRole{UpdatedAt: &zeroValue}
 	c.GetUpdatedAt()
-	c = &CustomOrgRoles{}
+	c = &CustomOrgRole{}
 	c.GetUpdatedAt()
 	c = nil
 	c.GetUpdatedAt()
@@ -39296,6 +39296,39 @@ func TestUpdateCodespaceOptions_GetMachine(tt *testing.T) {
 	u.GetMachine()
 }
 
+func TestUpdateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCustomOrgRoleRequest{BaseRole: &zeroValue}
+	u.GetBaseRole()
+	u = &UpdateCustomOrgRoleRequest{}
+	u.GetBaseRole()
+	u = nil
+	u.GetBaseRole()
+}
+
+func TestUpdateCustomOrgRoleRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCustomOrgRoleRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateCustomOrgRoleRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateCustomOrgRoleRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCustomOrgRoleRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateCustomOrgRoleRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
 func TestUpdateDefaultSetupConfigurationOptions_GetQuerySuite(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39511,39 +39544,6 @@ func TestUpdateOrganizationPrivateRegistry_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
-}
-
-func TestUpdateOrgRoleOptions_GetBaseRole(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UpdateOrgRoleOptions{BaseRole: &zeroValue}
-	u.GetBaseRole()
-	u = &UpdateOrgRoleOptions{}
-	u.GetBaseRole()
-	u = nil
-	u.GetBaseRole()
-}
-
-func TestUpdateOrgRoleOptions_GetDescription(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UpdateOrgRoleOptions{Description: &zeroValue}
-	u.GetDescription()
-	u = &UpdateOrgRoleOptions{}
-	u.GetDescription()
-	u = nil
-	u.GetDescription()
-}
-
-func TestUpdateOrgRoleOptions_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UpdateOrgRoleOptions{Name: &zeroValue}
-	u.GetName()
-	u = &UpdateOrgRoleOptions{}
-	u.GetName()
-	u = nil
-	u.GetName()
 }
 
 func TestUpdateProjectItemOptions_GetArchived(tt *testing.T) {
