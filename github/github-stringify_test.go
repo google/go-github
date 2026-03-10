@@ -568,6 +568,24 @@ func TestEnterprise_String(t *testing.T) {
 	}
 }
 
+func TestEnterpriseBudget_String(t *testing.T) {
+	t.Parallel()
+	v := EnterpriseBudget{
+		ID:                  Ptr(""),
+		BudgetType:          Ptr(""),
+		BudgetProductSKU:    Ptr(""),
+		BudgetScope:         Ptr(""),
+		BudgetEntityName:    Ptr(""),
+		BudgetAmount:        Ptr(0),
+		PreventFurtherUsage: Ptr(false),
+		BudgetAlerting:      &EnterpriseBudgetAlerting{},
+	}
+	want := `github.EnterpriseBudget{ID:"", BudgetType:"", BudgetProductSKU:"", BudgetScope:"", BudgetEntityName:"", BudgetAmount:0, PreventFurtherUsage:false, BudgetAlerting:github.EnterpriseBudgetAlerting{}}`
+	if got := v.String(); got != want {
+		t.Errorf("EnterpriseBudget.String = %v, want %v", got, want)
+	}
+}
+
 func TestEvent_String(t *testing.T) {
 	t.Parallel()
 	v := Event{
