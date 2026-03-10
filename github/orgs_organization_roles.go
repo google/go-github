@@ -37,7 +37,7 @@ type CreateCustomOrgRoleRequest struct {
 	BaseRole    *string  `json:"base_role,omitempty"` // Can be one of: read, triage, write, maintain, admin
 }
 
-// UpdateCustomOrgRoleRequest represents options required to update a custom organization role.
+// UpdateCustomOrgRoleRequest represents body parameters to update a custom organization role.
 type UpdateCustomOrgRoleRequest struct {
 	Name        *string  `json:"name,omitempty"`
 	Description *string  `json:"description,omitempty"`
