@@ -32,9 +32,9 @@ type CustomOrgRoles struct {
 // CreateOrgRoleOptions represents options required to create a custom organization role.
 type CreateOrgRoleOptions struct {
 	Name        string   `json:"name"`
-	Permissions []string `json:"permissions"`
 	Description *string  `json:"description,omitempty"`
-	BaseRole    *string  `json:"base_role,omitempty"`
+	Permissions []string `json:"permissions"`
+	BaseRole    *string  `json:"base_role,omitempty"` // Can be one of: read, triage, write, maintain, admin
 }
 
 // UpdateOrgRoleOptions represents options required to update a custom organization role.
