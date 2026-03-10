@@ -29,7 +29,7 @@ type CustomOrgRole struct {
 	BaseRole    *string       `json:"base_role,omitempty"`
 }
 
-// CreateCustomOrgRoleRequest represents options required to create a custom organization role.
+// CreateCustomOrgRoleRequest represents body parameters required to create a custom organization role.
 type CreateCustomOrgRoleRequest struct {
 	Name        string   `json:"name"`
 	Description *string  `json:"description,omitempty"`
