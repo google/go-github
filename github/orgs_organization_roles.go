@@ -12,12 +12,12 @@ import (
 
 // OrganizationCustomRoles represents custom organization roles available in specified organization.
 type OrganizationCustomRoles struct {
-	TotalCount      *int              `json:"total_count,omitempty"`
-	CustomRepoRoles []*CustomOrgRoles `json:"roles,omitempty"`
+	TotalCount      *int             `json:"total_count,omitempty"`
+	CustomRepoRoles []*CustomOrgRole `json:"roles,omitempty"`
 }
 
-// CustomOrgRoles represents custom organization role available in specified organization.
-type CustomOrgRoles struct {
+// CustomOrgRole represents custom organization role available in specified organization.
+type CustomOrgRole struct {
 	ID          *int64        `json:"id,omitempty"`
 	Name        *string       `json:"name,omitempty"`
 	Description *string       `json:"description,omitempty"`
@@ -29,12 +29,26 @@ type CustomOrgRoles struct {
 	BaseRole    *string       `json:"base_role,omitempty"`
 }
 
-// CreateOrUpdateOrgRoleOptions represents options required to create or update a custom organization role.
-type CreateOrUpdateOrgRoleOptions struct {
-	Name        *string  `json:"name,omitempty"`
+// CreateCustomOrgRoleRequest represents body parameters required to create a custom organization role.
+type CreateCustomOrgRoleRequest struct {
+	Name        string   `json:"name"`
 	Description *string  `json:"description,omitempty"`
 	Permissions []string `json:"permissions"`
-	BaseRole    *string  `json:"base_role,omitempty"`
+	BaseRole    *string  `json:"base_role,omitempty"` // Can be one of: read, triage, write, maintain, admin
+}
+
+// UpdateCustomOrgRoleRequest represents body parameters to update a custom organization role.
+type UpdateCustomOrgRoleRequest struct {
+	Name        *string  `json:"name,omitempty"`
+	Description *string  `json:"description,omitempty"`
+	Permissions []string `json:"permissions,omitempty"`
+	BaseRole    *string  `json:"base_role,omitempty"` // Can be one of: none, read, triage, write, maintain, admin
+}
+
+// OrganizationFineGrainedPermission represents a fine-grained permission that protects organization resources.
+type OrganizationFineGrainedPermission struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
 // ListRoles lists the custom roles available in this organization.
@@ -66,7 +80,7 @@ func (s *OrganizationsService) ListRoles(ctx context.Context, org string) (*Orga
 // GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#get-an-organization-role
 //
 //meta:operation GET /orgs/{org}/organization-roles/{role_id}
-func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleID int64) (*CustomOrgRoles, *Response, error) {
+func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleID int64) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
 	req, err := s.client.NewRequest("GET", u, nil)
@@ -74,7 +88,7 @@ func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleI
 		return nil, nil, err
 	}
 
-	resultingRole := new(CustomOrgRoles)
+	resultingRole := new(CustomOrgRole)
 	resp, err := s.client.Do(ctx, req, resultingRole)
 	if err != nil {
 		return nil, resp, err
@@ -89,15 +103,15 @@ func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleI
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#create-a-custom-organization-role
 //
 //meta:operation POST /orgs/{org}/organization-roles
-func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, opts *CreateOrUpdateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
+func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, request CreateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles", org)
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest("POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	resultingRole := new(CustomOrgRoles)
+	resultingRole := new(CustomOrgRole)
 	resp, err := s.client.Do(ctx, req, resultingRole)
 	if err != nil {
 		return nil, resp, err
@@ -112,15 +126,15 @@ func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org stri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#update-a-custom-organization-role
 //
 //meta:operation PATCH /orgs/{org}/organization-roles/{role_id}
-func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, opts *CreateOrUpdateOrgRoleOptions) (*CustomOrgRoles, *Response, error) {
+func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, request UpdateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest("PATCH", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	resultingRole := new(CustomOrgRoles)
+	resultingRole := new(CustomOrgRole)
 	resp, err := s.client.Do(ctx, req, resultingRole)
 	if err != nil {
 		return nil, resp, err
@@ -143,7 +157,7 @@ func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org stri
 		return nil, err
 	}
 
-	resultingRole := new(CustomOrgRoles)
+	resultingRole := new(CustomOrgRole)
 	resp, err := s.client.Do(ctx, req, resultingRole)
 	if err != nil {
 		return resp, err
@@ -292,4 +306,32 @@ func (s *OrganizationsService) ListUsersAssignedToOrgRole(ctx context.Context, o
 	}
 
 	return users, resp, nil
+}
+
+// ListFineGrainedPermissions lists the fine-grained permissions that can be used in custom organization roles for an organization.
+//
+// To use this endpoint, the authenticated user must be one of:
+//   - An administrator for the organization.
+//   - A user, or a user on a team, with the fine-grained permissions of `read_organization_custom_org_role` in the organization.
+//
+// OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use this endpoint.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#list-organization-fine-grained-permissions-for-an-organization
+//
+//meta:operation GET /orgs/{org}/organization-fine-grained-permissions
+func (s *OrganizationsService) ListFineGrainedPermissions(ctx context.Context, org string) ([]*OrganizationFineGrainedPermission, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/organization-fine-grained-permissions", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var permissions []*OrganizationFineGrainedPermission
+	resp, err := s.client.Do(ctx, req, &permissions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return permissions, resp, nil
 }
