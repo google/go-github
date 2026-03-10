@@ -54,7 +54,7 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 
 	want := &OrganizationCustomRoles{
 		TotalCount: Ptr(1),
-		CustomRepoRoles: []*CustomOrgRoles{
+		CustomRepoRoles: []*CustomOrgRole{
 			{
 				ID:          Ptr(int64(1)),
 				Name:        Ptr("Auditor"),
@@ -123,7 +123,7 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 		t.Errorf("Organizations.GetOrgRole returned error: %v", err)
 	}
 
-	wantBuiltInRole := &CustomOrgRoles{
+	wantBuiltInRole := &CustomOrgRole{
 		ID:          Ptr(int64(8132)),
 		Name:        Ptr("all_repo_read"),
 		Description: Ptr("Grants read access to all repositories in the organization."),
@@ -162,7 +162,7 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 		t.Errorf("Organizations.GetOrgRole returned error: %v", err)
 	}
 
-	wantCustomRole := &CustomOrgRoles{
+	wantCustomRole := &CustomOrgRole{
 		ID:          Ptr(int64(123456)),
 		Name:        Ptr("test-role"),
 		Description: Ptr("test-role"),
@@ -207,17 +207,17 @@ func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
 
 	ctx := t.Context()
 
-	opts := &CreateOrUpdateOrgRoleOptions{
-		Name:        Ptr("Reader"),
-		Description: Ptr("A role for reading custom org roles"),
+	opts := CreateCustomOrgRoleRequest{
+		Name:        "Reader",
 		Permissions: []string{"read_organization_custom_org_role"},
+		Description: Ptr("A role for reading custom org roles"),
 	}
 	gotRoles, _, err := client.Organizations.CreateCustomOrgRole(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Organizations.CreateCustomOrgRole returned error: %v", err)
 	}
 
-	want := &CustomOrgRoles{ID: Ptr(int64(8030)), Name: Ptr("Reader"), Permissions: []string{"read_organization_custom_org_role"}, Description: Ptr("A role for reading custom org roles")}
+	want := &CustomOrgRole{ID: Ptr(int64(8030)), Name: Ptr("Reader"), Permissions: []string{"read_organization_custom_org_role"}, Description: Ptr("A role for reading custom org roles")}
 
 	if !cmp.Equal(gotRoles, want) {
 		t.Errorf("Organizations.CreateCustomOrgRole returned %+v, want %+v", gotRoles, want)
@@ -225,12 +225,12 @@ func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
 
 	const methodName = "CreateCustomOrgRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.CreateCustomOrgRole(ctx, "\no", nil)
+		_, _, err = client.Organizations.CreateCustomOrgRole(ctx, "\no", CreateCustomOrgRoleRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateCustomOrgRole(ctx, "o", nil)
+		got, resp, err := client.Organizations.CreateCustomOrgRole(ctx, "o", CreateCustomOrgRoleRequest{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -249,7 +249,7 @@ func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
 
 	ctx := t.Context()
 
-	opts := &CreateOrUpdateOrgRoleOptions{
+	opts := UpdateCustomOrgRoleRequest{
 		Name:        Ptr("Updated Name"),
 		Description: Ptr("Updated Description"),
 	}
@@ -258,7 +258,7 @@ func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
 		t.Errorf("Organizations.UpdateCustomOrgRole returned error: %v", err)
 	}
 
-	want := &CustomOrgRoles{ID: Ptr(int64(8030)), Name: Ptr("Updated Name"), Permissions: []string{"read_organization_custom_org_role"}, Description: Ptr("Updated Description")}
+	want := &CustomOrgRole{ID: Ptr(int64(8030)), Name: Ptr("Updated Name"), Permissions: []string{"read_organization_custom_org_role"}, Description: Ptr("Updated Description")}
 
 	if !cmp.Equal(gotRoles, want) {
 		t.Errorf("Organizations.UpdateCustomOrgRole returned %+v, want %+v", gotRoles, want)
@@ -266,12 +266,12 @@ func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
 
 	const methodName = "UpdateCustomOrgRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.UpdateCustomOrgRole(ctx, "\no", 8030, nil)
+		_, _, err = client.Organizations.UpdateCustomOrgRole(ctx, "\no", 8030, UpdateCustomOrgRoleRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateCustomOrgRole(ctx, "o", 8030, nil)
+		got, resp, err := client.Organizations.UpdateCustomOrgRole(ctx, "o", 8030, UpdateCustomOrgRoleRequest{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
