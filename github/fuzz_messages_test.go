@@ -1,3 +1,8 @@
+// Copyright 2026 The go-github AUTHORS. All rights reserved.
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package github
 
 import (
@@ -54,7 +59,7 @@ func FuzzParseWebHook(f *testing.F) {
 		f.Add(messageType, b)
 	}
 
-	f.Fuzz(func(t *testing.T, eventType string, payload []byte) {
+	f.Fuzz(func(_ *testing.T, eventType string, payload []byte) {
 		if len(payload) > 1<<20 {
 			return
 		}
