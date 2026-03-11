@@ -12,7 +12,14 @@ import (
 )
 
 // FuzzParseWebHook tests ParseWebHook against arbitrary event types and payloads.
-// It verifies that no input causes a panic or nil pointer dereference.
+// It verifies that no input triggers a panic or nil pointer dereference.
+//
+// This fuzz test is intended for integration with OSS-Fuzz (https://google.github.io/oss-fuzz/)
+// for continuous fuzzing in the cloud.
+//
+// To run:
+//
+//	go test -fuzz=^FuzzParseWebHook$ -fuzztime=30s .
 func FuzzParseWebHook(f *testing.F) {
 	seeds := []struct {
 		eventType string
