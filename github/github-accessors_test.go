@@ -641,6 +641,22 @@ func TestAdvisoryCVSS_GetVectorString(tt *testing.T) {
 	a.GetVectorString()
 }
 
+func TestAdvisoryCvssSeverities_GetCvssV3(tt *testing.T) {
+	tt.Parallel()
+	a := &AdvisoryCvssSeverities{}
+	a.GetCvssV3()
+	a = nil
+	a.GetCvssV3()
+}
+
+func TestAdvisoryCvssSeverities_GetCvssV4(tt *testing.T) {
+	tt.Parallel()
+	a := &AdvisoryCvssSeverities{}
+	a.GetCvssV4()
+	a = nil
+	a.GetCvssV4()
+}
+
 func TestAdvisoryCWEs_GetCWEID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -1969,6 +1985,17 @@ func TestAttachment_GetTitle(tt *testing.T) {
 	a.GetTitle()
 	a = nil
 	a.GetTitle()
+}
+
+func TestAttestation_GetBundleURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &Attestation{BundleURL: &zeroValue}
+	a.GetBundleURL()
+	a = &Attestation{}
+	a.GetBundleURL()
+	a = nil
+	a.GetBundleURL()
 }
 
 func TestAuditEntry_GetAction(tt *testing.T) {
@@ -9055,17 +9082,6 @@ func TestCreateEvent_GetInstallation(tt *testing.T) {
 	c.GetInstallation()
 }
 
-func TestCreateEvent_GetMasterBranch(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateEvent{MasterBranch: &zeroValue}
-	c.GetMasterBranch()
-	c = &CreateEvent{}
-	c.GetMasterBranch()
-	c = nil
-	c.GetMasterBranch()
-}
-
 func TestCreateEvent_GetOrg(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateEvent{}
@@ -10466,6 +10482,14 @@ func TestDependabotSecurityAdvisory_GetCVSS(tt *testing.T) {
 	d.GetCVSS()
 	d = nil
 	d.GetCVSS()
+}
+
+func TestDependabotSecurityAdvisory_GetCvssSeverities(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotSecurityAdvisory{}
+	d.GetCvssSeverities()
+	d = nil
+	d.GetCvssSeverities()
 }
 
 func TestDependabotSecurityAdvisory_GetDescription(tt *testing.T) {
@@ -17296,14 +17320,6 @@ func TestIssue_GetActiveLockReason(tt *testing.T) {
 	i.GetActiveLockReason()
 }
 
-func TestIssue_GetAssignee(tt *testing.T) {
-	tt.Parallel()
-	i := &Issue{}
-	i.GetAssignee()
-	i = nil
-	i.GetAssignee()
-}
-
 func TestIssue_GetAuthorAssociation(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -18194,17 +18210,6 @@ func TestIssueListCommentsOptions_GetSort(tt *testing.T) {
 	i.GetSort()
 	i = nil
 	i.GetSort()
-}
-
-func TestIssueRequest_GetAssignee(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueRequest{Assignee: &zeroValue}
-	i.GetAssignee()
-	i = &IssueRequest{}
-	i.GetAssignee()
-	i = nil
-	i.GetAssignee()
 }
 
 func TestIssueRequest_GetAssignees(tt *testing.T) {
@@ -21695,17 +21700,6 @@ func TestNewTeam_GetParentTeamID(tt *testing.T) {
 	n.GetParentTeamID()
 	n = nil
 	n.GetParentTeamID()
-}
-
-func TestNewTeam_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{Permission: &zeroValue}
-	n.GetPermission()
-	n = &NewTeam{}
-	n.GetPermission()
-	n = nil
-	n.GetPermission()
 }
 
 func TestNewTeam_GetPrivacy(tt *testing.T) {
@@ -27396,14 +27390,6 @@ func TestPullRequest_GetAdditions(tt *testing.T) {
 	p.GetAdditions()
 }
 
-func TestPullRequest_GetAssignee(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequest{}
-	p.GetAssignee()
-	p = nil
-	p.GetAssignee()
-}
-
 func TestPullRequest_GetAuthorAssociation(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -27643,17 +27629,6 @@ func TestPullRequest_GetMergeableState(tt *testing.T) {
 	p.GetMergeableState()
 	p = nil
 	p.GetMergeableState()
-}
-
-func TestPullRequest_GetMergeCommitSHA(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &PullRequest{MergeCommitSHA: &zeroValue}
-	p.GetMergeCommitSHA()
-	p = &PullRequest{}
-	p.GetMergeCommitSHA()
-	p = nil
-	p.GetMergeCommitSHA()
 }
 
 func TestPullRequest_GetMerged(tt *testing.T) {
@@ -29505,17 +29480,6 @@ func TestPushEventRepository_GetGitURL(tt *testing.T) {
 	p.GetGitURL()
 }
 
-func TestPushEventRepository_GetHasDownloads(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	p := &PushEventRepository{HasDownloads: &zeroValue}
-	p.GetHasDownloads()
-	p = &PushEventRepository{}
-	p.GetHasDownloads()
-	p = nil
-	p.GetHasDownloads()
-}
-
 func TestPushEventRepository_GetHasIssues(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -29591,17 +29555,6 @@ func TestPushEventRepository_GetLanguage(tt *testing.T) {
 	p.GetLanguage()
 	p = nil
 	p.GetLanguage()
-}
-
-func TestPushEventRepository_GetMasterBranch(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &PushEventRepository{MasterBranch: &zeroValue}
-	p.GetMasterBranch()
-	p = &PushEventRepository{}
-	p.GetMasterBranch()
-	p = nil
-	p.GetMasterBranch()
 }
 
 func TestPushEventRepository_GetName(tt *testing.T) {
@@ -31211,17 +31164,6 @@ func TestRepository_GetHasDiscussions(tt *testing.T) {
 	r.GetHasDiscussions()
 }
 
-func TestRepository_GetHasDownloads(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	r := &Repository{HasDownloads: &zeroValue}
-	r.GetHasDownloads()
-	r = &Repository{}
-	r.GetHasDownloads()
-	r = nil
-	r.GetHasDownloads()
-}
-
 func TestRepository_GetHasIssues(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -31415,17 +31357,6 @@ func TestRepository_GetLicenseTemplate(tt *testing.T) {
 	r.GetLicenseTemplate()
 	r = nil
 	r.GetLicenseTemplate()
-}
-
-func TestRepository_GetMasterBranch(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	r := &Repository{MasterBranch: &zeroValue}
-	r.GetMasterBranch()
-	r = &Repository{}
-	r.GetMasterBranch()
-	r = nil
-	r.GetMasterBranch()
 }
 
 func TestRepository_GetMergeCommitMessage(tt *testing.T) {
@@ -31845,17 +31776,6 @@ func TestRepository_GetURL(tt *testing.T) {
 	r.GetURL()
 	r = nil
 	r.GetURL()
-}
-
-func TestRepository_GetUseSquashPRTitleAsDefault(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	r := &Repository{UseSquashPRTitleAsDefault: &zeroValue}
-	r.GetUseSquashPRTitleAsDefault()
-	r = &Repository{}
-	r.GetUseSquashPRTitleAsDefault()
-	r = nil
-	r.GetUseSquashPRTitleAsDefault()
 }
 
 func TestRepository_GetVisibility(tt *testing.T) {
@@ -36567,6 +36487,14 @@ func TestSecurityAdvisory_GetCVSS(tt *testing.T) {
 	s.GetCVSS()
 	s = nil
 	s.GetCVSS()
+}
+
+func TestSecurityAdvisory_GetCvssSeverities(tt *testing.T) {
+	tt.Parallel()
+	s := &SecurityAdvisory{}
+	s.GetCvssSeverities()
+	s = nil
+	s.GetCvssSeverities()
 }
 
 func TestSecurityAdvisory_GetDescription(tt *testing.T) {

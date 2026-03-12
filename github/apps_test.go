@@ -381,7 +381,7 @@ func TestAppsService_DeleteInstallation(t *testing.T) {
 
 	mux.HandleFunc("/app/installations/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		w.WriteHeader(http.StatusNoContent)
+		w.WriteHeader(http.StatusAccepted)
 	})
 
 	ctx := t.Context()

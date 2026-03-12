@@ -5,20 +5,16 @@
 
 package github
 
-import (
-	"encoding/json"
-)
-
 // Attestation represents an artifact attestation associated with a repository.
-// The provided bundle can be used to verify the provenance of artifacts.
+// The provided bundle URL can be used to verify the provenance of artifacts.
 //
 // https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds
 type Attestation struct {
-	// The attestation's Sigstore Bundle.
+	// BundleURL is the URL to retrieve the attestation's Sigstore Bundle.
 	// Refer to the sigstore bundle specification for more info:
 	// https://github.com/sigstore/protobuf-specs/blob/main/protos/sigstore_bundle.proto
-	Bundle       json.RawMessage `json:"bundle"`
-	RepositoryID int64           `json:"repository_id"`
+	BundleURL    *string `json:"bundle_url,omitempty"`
+	RepositoryID int64   `json:"repository_id"`
 }
 
 // AttestationsResponse represents a collection of artifact attestations.

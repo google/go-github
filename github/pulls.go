@@ -51,7 +51,6 @@ type PullRequest struct {
 	CommentsURL       *string    `json:"comments_url,omitempty"`
 	ReviewCommentsURL *string    `json:"review_comments_url,omitempty"`
 	ReviewCommentURL  *string    `json:"review_comment_url,omitempty"`
-	Assignee          *User      `json:"assignee,omitempty"`
 	Assignees         []*User    `json:"assignees,omitempty"`
 	Milestone         *Milestone `json:"milestone,omitempty"`
 	// AuthorAssociation is the pull request author's relationship to the repository.
@@ -71,7 +70,6 @@ type PullRequest struct {
 	MergeableState      *string `json:"mergeable_state,omitempty"`
 	Rebaseable          *bool   `json:"rebaseable,omitempty"`
 	MergedBy            *User   `json:"merged_by,omitempty"`
-	MergeCommitSHA      *string `json:"merge_commit_sha,omitempty"`
 	Comments            *int    `json:"comments,omitempty"`
 	Commits             *int    `json:"commits,omitempty"`
 	Additions           *int    `json:"additions,omitempty"`

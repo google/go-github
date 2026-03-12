@@ -36,7 +36,6 @@ type Repository struct {
 	Homepage                  *string                `json:"homepage,omitempty"`
 	CodeOfConduct             *CodeOfConduct         `json:"code_of_conduct,omitempty"`
 	DefaultBranch             *string                `json:"default_branch,omitempty"`
-	MasterBranch              *string                `json:"master_branch,omitempty"`
 	CreatedAt                 *Timestamp             `json:"created_at,omitempty"`
 	PushedAt                  *Timestamp             `json:"pushed_at,omitempty"`
 	UpdatedAt                 *Timestamp             `json:"updated_at,omitempty"`
@@ -71,7 +70,6 @@ type Repository struct {
 	AllowForking              *bool                  `json:"allow_forking,omitempty"`
 	WebCommitSignoffRequired  *bool                  `json:"web_commit_signoff_required,omitempty"`
 	DeleteBranchOnMerge       *bool                  `json:"delete_branch_on_merge,omitempty"`
-	UseSquashPRTitleAsDefault *bool                  `json:"use_squash_pr_title_as_default,omitempty"`
 	SquashMergeCommitTitle    *string                `json:"squash_merge_commit_title,omitempty"`   // Can be one of: "PR_TITLE", "COMMIT_OR_PR_TITLE"
 	SquashMergeCommitMessage  *string                `json:"squash_merge_commit_message,omitempty"` // Can be one of: "PR_BODY", "COMMIT_MESSAGES", "BLANK"
 	MergeCommitTitle          *string                `json:"merge_commit_title,omitempty"`          // Can be one of: "PR_TITLE", "MERGE_MESSAGE"
@@ -90,7 +88,6 @@ type Repository struct {
 	HasWiki           *bool   `json:"has_wiki,omitempty"`
 	HasPages          *bool   `json:"has_pages,omitempty"`
 	HasProjects       *bool   `json:"has_projects,omitempty"`
-	HasDownloads      *bool   `json:"has_downloads,omitempty"`
 	HasDiscussions    *bool   `json:"has_discussions,omitempty"`
 	IsTemplate        *bool   `json:"is_template,omitempty"`
 	LicenseTemplate   *string `json:"license_template,omitempty"`
@@ -520,7 +517,6 @@ type createRepoRequest struct {
 	AllowAutoMerge            *bool          `json:"allow_auto_merge,omitempty"`
 	AllowForking              *bool          `json:"allow_forking,omitempty"`
 	DeleteBranchOnMerge       *bool          `json:"delete_branch_on_merge,omitempty"`
-	UseSquashPRTitleAsDefault *bool          `json:"use_squash_pr_title_as_default,omitempty"`
 	SquashMergeCommitTitle    *string        `json:"squash_merge_commit_title,omitempty"`
 	SquashMergeCommitMessage  *string        `json:"squash_merge_commit_message,omitempty"`
 	MergeCommitTitle          *string        `json:"merge_commit_title,omitempty"`
@@ -580,7 +576,6 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		AllowAutoMerge:            repo.AllowAutoMerge,
 		AllowForking:              repo.AllowForking,
 		DeleteBranchOnMerge:       repo.DeleteBranchOnMerge,
-		UseSquashPRTitleAsDefault: repo.UseSquashPRTitleAsDefault,
 		SquashMergeCommitTitle:    repo.SquashMergeCommitTitle,
 		SquashMergeCommitMessage:  repo.SquashMergeCommitMessage,
 		MergeCommitTitle:          repo.MergeCommitTitle,
