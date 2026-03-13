@@ -13482,11 +13482,10 @@ func TestCreateEvent_Marshal(t *testing.T) {
 	testJSONMarshal(t, &CreateEvent{}, "{}")
 
 	r := &CreateEvent{
-		Ref:          Ptr("r"),
-		RefType:      Ptr("rt"),
-		MasterBranch: Ptr("mb"),
-		Description:  Ptr("d"),
-		PusherType:   Ptr("pt"),
+		Ref:         Ptr("r"),
+		RefType:     Ptr("rt"),
+		Description: Ptr("d"),
+		PusherType:  Ptr("pt"),
 		Repo: &Repository{
 			ID:   Ptr(int64(1)),
 			URL:  Ptr("s"),
@@ -13600,7 +13599,6 @@ func TestCreateEvent_Marshal(t *testing.T) {
 	want := `{
 		"ref": "r",
 		"ref_type": "rt",
-		"master_branch": "mb",
 		"description": "d",
 		"pusher_type": "pt",
 		"repository": {
@@ -15533,7 +15531,6 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		WatchersCount:   Ptr(1),
 		Language:        Ptr("l"),
 		HasIssues:       Ptr(true),
-		HasDownloads:    Ptr(true),
 		HasWiki:         Ptr(true),
 		HasPages:        Ptr(true),
 		ForksCount:      Ptr(1),
@@ -15541,7 +15538,6 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		Disabled:        Ptr(true),
 		OpenIssuesCount: Ptr(1),
 		DefaultBranch:   Ptr("d"),
-		MasterBranch:    Ptr("m"),
 		Organization:    Ptr("o"),
 		URL:             Ptr("u"),
 		ArchiveURL:      Ptr("a"),
@@ -15589,7 +15585,6 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		"watchers_count": 1,
 		"language": "l",
 		"has_issues": true,
-		"has_downloads": true,
 		"has_wiki": true,
 		"has_pages": true,
 		"forks_count": 1,
@@ -15597,7 +15592,6 @@ func TestPushEventRepository_Marshal(t *testing.T) {
 		"disabled": true,
 		"open_issues_count": 1,
 		"default_branch": "d",
-		"master_branch": "m",
 		"organization": "o",
 		"url": "u",
 		"archive_url": "a",
@@ -18627,7 +18621,6 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 			HasWiki:          Ptr(true),
 			HasPages:         Ptr(true),
 			HasProjects:      Ptr(true),
-			HasDownloads:     Ptr(true),
 			URL:              Ptr("a"),
 			ArchiveURL:       Ptr("a"),
 			AssigneesURL:     Ptr("a"),
@@ -18812,7 +18805,6 @@ func TestCodeScanningAlertEvent_Marshal(t *testing.T) {
 		  "watchers_count": 0,
 		  "has_issues": true,
 		  "has_projects": true,
-		  "has_downloads": true,
 		  "has_wiki": true,
 		  "has_pages": true,
 		  "forks_count": 0,

@@ -120,10 +120,9 @@ type ContentReferenceEvent struct {
 type CreateEvent struct {
 	Ref *string `json:"ref,omitempty"`
 	// RefType is the object that was created. Possible values are: "repository", "branch", "tag".
-	RefType      *string `json:"ref_type,omitempty"`
-	MasterBranch *string `json:"master_branch,omitempty"`
-	Description  *string `json:"description,omitempty"`
-	PusherType   *string `json:"pusher_type,omitempty"`
+	RefType     *string `json:"ref_type,omitempty"`
+	Description *string `json:"description,omitempty"`
+	PusherType  *string `json:"pusher_type,omitempty"`
 
 	// The following fields are only populated by Webhook events.
 	Repo         *Repository   `json:"repository,omitempty"`
@@ -1416,7 +1415,6 @@ type PushEventRepository struct {
 	WatchersCount    *int           `json:"watchers_count,omitempty"`
 	Language         *string        `json:"language,omitempty"`
 	HasIssues        *bool          `json:"has_issues,omitempty"`
-	HasDownloads     *bool          `json:"has_downloads,omitempty"`
 	HasWiki          *bool          `json:"has_wiki,omitempty"`
 	HasPages         *bool          `json:"has_pages,omitempty"`
 	ForksCount       *int           `json:"forks_count,omitempty"`
@@ -1424,7 +1422,6 @@ type PushEventRepository struct {
 	Disabled         *bool          `json:"disabled,omitempty"`
 	OpenIssuesCount  *int           `json:"open_issues_count,omitempty"`
 	DefaultBranch    *string        `json:"default_branch,omitempty"`
-	MasterBranch     *string        `json:"master_branch,omitempty"`
 	Organization     *string        `json:"organization,omitempty"`
 	URL              *string        `json:"url,omitempty"`
 	ArchiveURL       *string        `json:"archive_url,omitempty"`
@@ -1887,6 +1884,7 @@ type WorkflowRunEvent struct {
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory
 type SecurityAdvisory struct {
 	CVSS               *AdvisoryCVSS                 `json:"cvss,omitempty"`
+	CVSSSeverities     *AdvisoryCvssSeverities       `json:"cvss_severities,omitempty"`
 	CWEs               []*AdvisoryCWEs               `json:"cwes,omitempty"`
 	GHSAID             *string                       `json:"ghsa_id,omitempty"`
 	Summary            *string                       `json:"summary,omitempty"`

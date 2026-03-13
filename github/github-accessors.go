@@ -502,6 +502,22 @@ func (a *AdvisoryCVSS) GetVectorString() string {
 	return *a.VectorString
 }
 
+// GetCVSSV3 returns the CVSSV3 field.
+func (a *AdvisoryCvssSeverities) GetCVSSV3() *AdvisoryCVSS {
+	if a == nil {
+		return nil
+	}
+	return a.CVSSV3
+}
+
+// GetCVSSV4 returns the CVSSV4 field.
+func (a *AdvisoryCvssSeverities) GetCVSSV4() *AdvisoryCVSS {
+	if a == nil {
+		return nil
+	}
+	return a.CVSSV4
+}
+
 // GetCWEID returns the CWEID field if it's non-nil, zero value otherwise.
 func (a *AdvisoryCWEs) GetCWEID() string {
 	if a == nil || a.CWEID == nil {
@@ -1500,6 +1516,14 @@ func (a *Attachment) GetTitle() string {
 		return ""
 	}
 	return *a.Title
+}
+
+// GetBundleURL returns the BundleURL field if it's non-nil, zero value otherwise.
+func (a *Attestation) GetBundleURL() string {
+	if a == nil || a.BundleURL == nil {
+		return ""
+	}
+	return *a.BundleURL
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
@@ -6918,14 +6942,6 @@ func (c *CreateEvent) GetInstallation() *Installation {
 	return c.Installation
 }
 
-// GetMasterBranch returns the MasterBranch field if it's non-nil, zero value otherwise.
-func (c *CreateEvent) GetMasterBranch() string {
-	if c == nil || c.MasterBranch == nil {
-		return ""
-	}
-	return *c.MasterBranch
-}
-
 // GetOrg returns the Org field.
 func (c *CreateEvent) GetOrg() *Organization {
 	if c == nil {
@@ -8020,6 +8036,14 @@ func (d *DependabotSecurityAdvisory) GetCVSS() *AdvisoryCVSS {
 		return nil
 	}
 	return d.CVSS
+}
+
+// GetCVSSSeverities returns the CVSSSeverities field.
+func (d *DependabotSecurityAdvisory) GetCVSSSeverities() *AdvisoryCvssSeverities {
+	if d == nil {
+		return nil
+	}
+	return d.CVSSSeverities
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
@@ -13278,14 +13302,6 @@ func (i *Issue) GetActiveLockReason() string {
 	return *i.ActiveLockReason
 }
 
-// GetAssignee returns the Assignee field.
-func (i *Issue) GetAssignee() *User {
-	if i == nil {
-		return nil
-	}
-	return i.Assignee
-}
-
 // GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
 func (i *Issue) GetAuthorAssociation() string {
 	if i == nil || i.AuthorAssociation == nil {
@@ -13996,14 +14012,6 @@ func (i *IssueListCommentsOptions) GetSort() string {
 		return ""
 	}
 	return *i.Sort
-}
-
-// GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
-func (i *IssueRequest) GetAssignee() string {
-	if i == nil || i.Assignee == nil {
-		return ""
-	}
-	return *i.Assignee
 }
 
 // GetAssignees returns the Assignees field if it's non-nil, zero value otherwise.
@@ -16684,14 +16692,6 @@ func (n *NewTeam) GetParentTeamID() int64 {
 		return 0
 	}
 	return *n.ParentTeamID
-}
-
-// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetPermission() string {
-	if n == nil || n.Permission == nil {
-		return ""
-	}
-	return *n.Permission
 }
 
 // GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
@@ -21134,14 +21134,6 @@ func (p *PullRequest) GetAdditions() int {
 	return *p.Additions
 }
 
-// GetAssignee returns the Assignee field.
-func (p *PullRequest) GetAssignee() *User {
-	if p == nil {
-		return nil
-	}
-	return p.Assignee
-}
-
 // GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetAuthorAssociation() string {
 	if p == nil || p.AuthorAssociation == nil {
@@ -21324,14 +21316,6 @@ func (p *PullRequest) GetMergeableState() string {
 		return ""
 	}
 	return *p.MergeableState
-}
-
-// GetMergeCommitSHA returns the MergeCommitSHA field if it's non-nil, zero value otherwise.
-func (p *PullRequest) GetMergeCommitSHA() string {
-	if p == nil || p.MergeCommitSHA == nil {
-		return ""
-	}
-	return *p.MergeCommitSHA
 }
 
 // GetMerged returns the Merged field if it's non-nil, zero value otherwise.
@@ -22814,14 +22798,6 @@ func (p *PushEventRepository) GetGitURL() string {
 	return *p.GitURL
 }
 
-// GetHasDownloads returns the HasDownloads field if it's non-nil, zero value otherwise.
-func (p *PushEventRepository) GetHasDownloads() bool {
-	if p == nil || p.HasDownloads == nil {
-		return false
-	}
-	return *p.HasDownloads
-}
-
 // GetHasIssues returns the HasIssues field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetHasIssues() bool {
 	if p == nil || p.HasIssues == nil {
@@ -22876,14 +22852,6 @@ func (p *PushEventRepository) GetLanguage() string {
 		return ""
 	}
 	return *p.Language
-}
-
-// GetMasterBranch returns the MasterBranch field if it's non-nil, zero value otherwise.
-func (p *PushEventRepository) GetMasterBranch() string {
-	if p == nil || p.MasterBranch == nil {
-		return ""
-	}
-	return *p.MasterBranch
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -24118,14 +24086,6 @@ func (r *Repository) GetHasDiscussions() bool {
 	return *r.HasDiscussions
 }
 
-// GetHasDownloads returns the HasDownloads field if it's non-nil, zero value otherwise.
-func (r *Repository) GetHasDownloads() bool {
-	if r == nil || r.HasDownloads == nil {
-		return false
-	}
-	return *r.HasDownloads
-}
-
 // GetHasIssues returns the HasIssues field if it's non-nil, zero value otherwise.
 func (r *Repository) GetHasIssues() bool {
 	if r == nil || r.HasIssues == nil {
@@ -24268,14 +24228,6 @@ func (r *Repository) GetLicenseTemplate() string {
 		return ""
 	}
 	return *r.LicenseTemplate
-}
-
-// GetMasterBranch returns the MasterBranch field if it's non-nil, zero value otherwise.
-func (r *Repository) GetMasterBranch() string {
-	if r == nil || r.MasterBranch == nil {
-		return ""
-	}
-	return *r.MasterBranch
 }
 
 // GetMergeCommitMessage returns the MergeCommitMessage field if it's non-nil, zero value otherwise.
@@ -24596,14 +24548,6 @@ func (r *Repository) GetURL() string {
 		return ""
 	}
 	return *r.URL
-}
-
-// GetUseSquashPRTitleAsDefault returns the UseSquashPRTitleAsDefault field if it's non-nil, zero value otherwise.
-func (r *Repository) GetUseSquashPRTitleAsDefault() bool {
-	if r == nil || r.UseSquashPRTitleAsDefault == nil {
-		return false
-	}
-	return *r.UseSquashPRTitleAsDefault
 }
 
 // GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
@@ -28316,6 +28260,14 @@ func (s *SecurityAdvisory) GetCVSS() *AdvisoryCVSS {
 		return nil
 	}
 	return s.CVSS
+}
+
+// GetCVSSSeverities returns the CVSSSeverities field.
+func (s *SecurityAdvisory) GetCVSSSeverities() *AdvisoryCvssSeverities {
+	if s == nil {
+		return nil
+	}
+	return s.CVSSSeverities
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.

@@ -15,7 +15,9 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/google/go-github/v84/github"
@@ -102,14 +104,23 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var b *bundle.Bundle
 	for _, attestation := range attestations.Attestations {
-		if err := json.Unmarshal(attestation.Bundle, &b); err != nil {
+		resp, err := http.Get(attestation.GetBundleURL())
+		if err != nil {
+			log.Fatal(err)
+		}
+		body, err := io.ReadAll(resp.Body)
+		resp.Body.Close()
+		if err != nil {
 			log.Fatal(err)
 		}
 
-		err := runVerification(sev, pb, b)
-		if err != nil {
+		var b *bundle.Bundle
+		if err := json.Unmarshal(body, &b); err != nil {
+			log.Fatal(err)
+		}
+
+		if err := runVerification(sev, pb, b); err != nil {
 			log.Fatal(err)
 		}
 	}

@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"errors"
 	"fmt"
 )
 
@@ -375,7 +376,13 @@ func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Respon
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(ctx, req, nil)
+	// GitHub returns 202 Accepted for this endpoint; treat it as success.
+	var aerr *AcceptedError
+	if errors.As(err, &aerr) {
+		return resp, nil
+	}
+	return resp, err
 }
 
 // CreateInstallationToken creates a new installation token.

@@ -42,7 +42,6 @@ type Issue struct {
 	AuthorAssociation *string           `json:"author_association,omitempty"`
 	User              *User             `json:"user,omitempty"`
 	Labels            []*Label          `json:"labels,omitempty"`
-	Assignee          *User             `json:"assignee,omitempty"`
 	Comments          *int              `json:"comments,omitempty"`
 	ClosedAt          *Timestamp        `json:"closed_at,omitempty"`
 	CreatedAt         *Timestamp        `json:"created_at,omitempty"`
@@ -86,13 +85,12 @@ func (i Issue) IsPullRequest() bool {
 
 // IssueRequest represents a request to create/edit an issue.
 // It is separate from Issue above because otherwise Labels
-// and Assignee fail to serialize to the correct JSON.
+// and Assignees fail to serialize to the correct JSON.
 type IssueRequest struct {
-	Title    *string   `json:"title,omitempty"`
-	Body     *string   `json:"body,omitempty"`
-	Labels   *[]string `json:"labels,omitempty"`
-	Assignee *string   `json:"assignee,omitempty"`
-	State    *string   `json:"state,omitempty"`
+	Title  *string   `json:"title,omitempty"`
+	Body   *string   `json:"body,omitempty"`
+	Labels *[]string `json:"labels,omitempty"`
+	State  *string   `json:"state,omitempty"`
 	// StateReason can be 'completed' or 'not_planned'.
 	StateReason *string   `json:"state_reason,omitempty"`
 	Milestone   *int      `json:"milestone,omitempty"`

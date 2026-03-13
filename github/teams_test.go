@@ -1588,7 +1588,6 @@ func TestNewTeam_Marshal(t *testing.T) {
 		RepoNames:           []string{"repo1", "repo2"},
 		NotificationSetting: Ptr("notifications_enabled"),
 		ParentTeamID:        Ptr(int64(1)),
-		Permission:          Ptr("perm"),
 		Privacy:             Ptr("p"),
 		LDAPDN:              Ptr("l"),
 	}
@@ -1600,7 +1599,6 @@ func TestNewTeam_Marshal(t *testing.T) {
 		"repo_names":     ["repo1", "repo2"],
 		"parent_team_id": 1,
 		"notification_setting": "notifications_enabled",
-		"permission":     "perm",
 		"privacy":        "p",
 		"ldap_dn":        "l"
 	}`

@@ -863,7 +863,6 @@ func TestIssuesSearchResult_Marshal(t *testing.T) {
 				AuthorAssociation: Ptr("aa"),
 				User:              &User{ID: Ptr(int64(1))},
 				Labels:            []*Label{{ID: Ptr(int64(1))}},
-				Assignee:          &User{ID: Ptr(int64(1))},
 				Comments:          Ptr(1),
 				ClosedAt:          &Timestamp{referenceTime},
 				CreatedAt:         &Timestamp{referenceTime},
@@ -907,9 +906,6 @@ func TestIssuesSearchResult_Marshal(t *testing.T) {
 						"id": 1
 					}
 				],
-				"assignee": {
-					"id": 1
-				},
 				"comments": 1,
 				"closed_at": ` + referenceTimeStr + `,
 				"created_at": ` + referenceTimeStr + `,

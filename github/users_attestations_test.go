@@ -23,11 +23,11 @@ func TestUsersService_ListAttestations(t *testing.T) {
 			"attestations": [
 				{
 					"repository_id": 1,
-					"bundle": {}
+					"bundle_url": "https://example.com/bundle/1"
 				},
 				{
 					"repository_id": 2,
-					"bundle": {}
+					"bundle_url": "https://example.com/bundle/2"
 				}
 			]
 		}`)
@@ -42,11 +42,11 @@ func TestUsersService_ListAttestations(t *testing.T) {
 		Attestations: []*Attestation{
 			{
 				RepositoryID: 1,
-				Bundle:       []byte(`{}`),
+				BundleURL:    Ptr("https://example.com/bundle/1"),
 			},
 			{
 				RepositoryID: 2,
-				Bundle:       []byte(`{}`),
+				BundleURL:    Ptr("https://example.com/bundle/2"),
 			},
 		},
 	}

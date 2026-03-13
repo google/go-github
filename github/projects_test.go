@@ -1378,7 +1378,6 @@ func TestProjectV2Item_UnmarshalJSON_PullRequest(t *testing.T) {
 			"title": "Test PR",
 			"state": "closed",
 			"merged": true,
-			"merge_commit_sha": "abc123",
 			"head": {
 				"ref": "feature-branch",
 				"sha": "def456"
@@ -1419,9 +1418,6 @@ func TestProjectV2Item_UnmarshalJSON_PullRequest(t *testing.T) {
 	}
 	if !item.GetContent().GetPullRequest().GetMerged() {
 		t.Errorf("PullRequest.Merged = %t, want true", item.GetContent().GetPullRequest().GetMerged())
-	}
-	if item.GetContent().GetPullRequest().GetMergeCommitSHA() != "abc123" {
-		t.Errorf("PullRequest.MergeCommitSHA = %v, want abc123", item.GetContent().GetPullRequest().GetMergeCommitSHA())
 	}
 
 	// Verify other content types are nil

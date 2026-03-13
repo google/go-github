@@ -300,10 +300,9 @@ func TestIssuesService_Create(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &IssueRequest{
-		Title:    Ptr("t"),
-		Body:     Ptr("b"),
-		Assignee: Ptr("a"),
-		Labels:   &[]string{"l1", "l2"},
+		Title:  Ptr("t"),
+		Body:   Ptr("b"),
+		Labels: &[]string{"l1", "l2"},
 	}
 
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -568,7 +567,6 @@ func TestIssueRequest_Marshal(t *testing.T) {
 		Title:     Ptr("url"),
 		Body:      Ptr("url"),
 		Labels:    &[]string{"l"},
-		Assignee:  Ptr("url"),
 		State:     Ptr("url"),
 		Milestone: Ptr(1),
 		Assignees: &[]string{"a"},
@@ -581,7 +579,6 @@ func TestIssueRequest_Marshal(t *testing.T) {
 		"labels": [
 			"l"
 		],
-		"assignee": "url",
 		"state": "url",
 		"milestone": 1,
 		"assignees": [
@@ -607,7 +604,6 @@ func TestIssue_Marshal(t *testing.T) {
 		AuthorAssociation: Ptr("aa"),
 		User:              &User{ID: Ptr(int64(1))},
 		Labels:            []*Label{{ID: Ptr(int64(1))}},
-		Assignee:          &User{ID: Ptr(int64(1))},
 		Comments:          Ptr(1),
 		ClosedAt:          &Timestamp{referenceTime},
 		CreatedAt:         &Timestamp{referenceTime},
@@ -647,9 +643,6 @@ func TestIssue_Marshal(t *testing.T) {
 				"id": 1
 			}
 		],
-		"assignee": {
-			"id": 1
-		},
 		"comments": 1,
 		"closed_at": ` + referenceTimeStr + `,
 		"created_at": ` + referenceTimeStr + `,
