@@ -421,9 +421,7 @@ issues:
 formatters:
   enable:
     - gci
-    - gofmt
     - gofumpt
-    - goimports
   settings:
     gofumpt:
       extra-rules: true
