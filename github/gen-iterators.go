@@ -121,6 +121,7 @@ type method struct {
 	UseListOptions       bool
 	UsePage              bool
 	UseAfter             bool
+	UseCursor            bool
 	WrappedItemsField    string
 	TestJSON1            string
 	TestJSON2            string
@@ -143,6 +144,15 @@ type methodInfo struct {
 	UseListOptions       bool
 	UsePage              bool
 	UseAfter             bool
+	UseCursor            bool
+}
+
+// useCursorPagination identifies method names that require `Cursor` pagination
+// instead of using `After`.
+var useCursorPagination = map[string]bool{
+	"AppsService.ListHookDeliveries":          true,
+	"OrganizationsService.ListHookDeliveries": true,
+	"RepositoriesService.ListHookDeliveries":  true,
 }
 
 // customTestJSON maps method names to the JSON response they expect in tests.
@@ -391,13 +401,18 @@ func (t *templateData) collectMethodInfo(fd *ast.FuncDecl) (*methodInfo, bool) {
 	useListOptions := t.hasListOptions(optsType)
 	usePage := t.hasIntPage(optsType)
 	useAfter := t.hasStringAfter(optsType)
+	recType := strings.TrimPrefix(recvType, "*")
+	var useCursor bool
+	if useCursorPagination[recType+"."+fd.Name.Name] {
+		useCursor = true
+		useAfter = false
+	}
 
-	if !useListCursorOptions && !useListOptions && !usePage && !useAfter {
+	if !useListCursorOptions && !useListOptions && !usePage && !useAfter && !useCursor {
 		logf("Skipping %v.%v: opts %v does not have ListCursorOptions, ListOptions, Page int, or After string", recvType, fd.Name.Name, optsType)
 		return nil, false
 	}
 
-	recType := strings.TrimPrefix(recvType, "*")
 	clientField := strings.TrimSuffix(recType, "Service")
 	if clientField == "Migration" {
 		clientField = "Migrations"
@@ -422,6 +437,7 @@ func (t *templateData) collectMethodInfo(fd *ast.FuncDecl) (*methodInfo, bool) {
 		UseListOptions:       useListOptions,
 		UsePage:              usePage,
 		UseAfter:             useAfter,
+		UseCursor:            useCursor,
 	}, true
 }
 
@@ -457,6 +473,7 @@ func (t *templateData) processReturnArrayType(fd *ast.FuncDecl, sliceRet *ast.Ar
 		UseListOptions:       methodInfo.UseListOptions,
 		UsePage:              methodInfo.UsePage,
 		UseAfter:             methodInfo.UseAfter,
+		UseCursor:            methodInfo.UseCursor,
 		TestJSON1:            testJSON1,
 		TestJSON2:            testJSON2,
 		TestJSON3:            testJSON3,
@@ -514,6 +531,7 @@ func (t *templateData) processReturnStarExpr(fd *ast.FuncDecl, starRet *ast.Star
 		UseListOptions:       methodInfo.UseListOptions,
 		UsePage:              methodInfo.UsePage,
 		UseAfter:             methodInfo.UseAfter,
+		UseCursor:            methodInfo.UseCursor,
 		WrappedItemsField:    itemsField,
 		TestJSON1:            testJSON1,
 		TestJSON2:            testJSON2,
@@ -669,6 +687,11 @@ func ({{.RecvVar}} *{{.RecvType}}) {{.IterMethod}}({{.Args}}) iter.Seq2[{{.Retur
 				break
 			}
 			{{.OptsName}}.After = resp.After
+			{{else if .UseCursor}}
+			if resp.Cursor == "" {
+				break
+			}
+			{{.OptsName}}.Cursor = resp.Cursor
 			{{end -}}
 		}
 	}
@@ -694,7 +717,9 @@ func Test{{.RecvType}}_{{.IterMethod}}(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			{{- if or .UseListCursorOptions .UseAfter}}
+			{{- if .UseCursor}}
+			w.Header().Set("Link", ` + "`" + `<https://api.github.com/?cursor=yo>; rel="next"` + "`" + `)
+			{{else if or .UseListCursorOptions .UseAfter}}
 			w.Header().Set("Link", ` + "`" + `<https://api.github.com/?after=yo>; rel="next"` + "`" + `)
 			{{else}}
 			w.Header().Set("Link", ` + "`" + `<https://api.github.com/?page=1>; rel="next"` + "`" + `)
