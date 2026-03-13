@@ -27,7 +27,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 884c183f5163e1155700894ac68dd891e8668fd5
+openapi_commit: 4e819bd9aa9411232e1c34e7d1ffaaffc224e94b
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -2997,6 +2997,26 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/issue-fields
+    documentation_url: https://docs.github.com/rest/orgs/issue-fields#list-issue-fields-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/issue-fields
+    documentation_url: https://docs.github.com/rest/orgs/issue-fields#create-issue-field-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/issue-fields/{issue_field_id}
+    documentation_url: https://docs.github.com/rest/orgs/issue-fields#delete-issue-field-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/issue-fields/{issue_field_id}
+    documentation_url: https://docs.github.com/rest/orgs/issue-fields#update-issue-field-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/issue-types
     documentation_url: https://docs.github.com/rest/orgs/issue-types#list-issue-types-for-an-organization
     openapi_files:
@@ -5955,6 +5975,12 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.20/ghes-3.20.json
+  - name: GET /repos/{owner}/{repo}/issues/{issue_number}/issue-field-values
+    documentation_url: https://docs.github.com/rest/issues/issue-field-values#list-issue-field-values-for-an-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+      - descriptions/ghes-3.20/ghes-3.20.json
   - name: DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels
     documentation_url: https://docs.github.com/rest/issues/labels#remove-all-labels-from-an-issue
     openapi_files:
@@ -6926,6 +6952,21 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.7/rest/actions/secrets#create-or-update-an-environment-secret
     openapi_files:
       - descriptions/ghes-3.7/ghes-3.7.json
+  - name: POST /repositories/{repository_id}/issues/{issue_number}/issue-field-values
+    documentation_url: https://docs.github.com/rest/issues/issue-field-values#add-issue-field-values-to-an-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /repositories/{repository_id}/issues/{issue_number}/issue-field-values
+    documentation_url: https://docs.github.com/rest/issues/issue-field-values#set-issue-field-values-for-an-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /repositories/{repository_id}/issues/{issue_number}/issue-field-values/{issue_field_id}
+    documentation_url: https://docs.github.com/rest/issues/issue-field-values#delete-an-issue-field-value-from-an-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /scim/v2/Groups
     documentation_url: https://docs.github.com/enterprise-server@3.7/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
     openapi_files:
