@@ -1486,10 +1486,10 @@ func (s *AppsService) ListHookDeliveriesIter(ctx context.Context, opts *ListCurs
 				}
 			}
 
-			if resp.After == "" {
+			if resp.Cursor == "" {
 				break
 			}
-			opts.After = resp.After
+			opts.Cursor = resp.Cursor
 		}
 	}
 }
@@ -4234,10 +4234,10 @@ func (s *OrganizationsService) ListHookDeliveriesIter(ctx context.Context, org s
 				}
 			}
 
-			if resp.After == "" {
+			if resp.Cursor == "" {
 				break
 			}
-			opts.After = resp.After
+			opts.Cursor = resp.Cursor
 		}
 	}
 }
@@ -5878,10 +5878,10 @@ func (s *RepositoriesService) ListHookDeliveriesIter(ctx context.Context, owner 
 				}
 			}
 
-			if resp.After == "" {
+			if resp.Cursor == "" {
 				break
 			}
-			opts.After = resp.After
+			opts.Cursor = resp.Cursor
 		}
 	}
 }

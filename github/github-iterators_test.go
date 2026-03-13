@@ -3119,7 +3119,7 @@ func TestAppsService_ListHookDeliveriesIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -9239,7 +9239,7 @@ func TestOrganizationsService_ListHookDeliveriesIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
@@ -12983,7 +12983,7 @@ func TestRepositoriesService_ListHookDeliveriesIter(t *testing.T) {
 		callNum++
 		switch callNum {
 		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
+			w.Header().Set("Link", `<https://api.github.com/?cursor=yo>; rel="next"`)
 			fmt.Fprint(w, `[{},{},{}]`)
 		case 2:
 			fmt.Fprint(w, `[{},{},{},{}]`)
