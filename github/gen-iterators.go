@@ -296,7 +296,7 @@ func (t *templateData) processMethods(f *ast.File) error {
 			continue
 		}
 
-		methodInfo, ok := t.isMethodIteratable(fd)
+		methodInfo, ok := t.isMethodIterable(fd)
 		if !ok {
 			continue
 		}
@@ -313,7 +313,7 @@ func (t *templateData) processMethods(f *ast.File) error {
 	return nil
 }
 
-func (t *templateData) isMethodIteratable(fd *ast.FuncDecl) (*methodInfo, bool) {
+func (t *templateData) isMethodIterable(fd *ast.FuncDecl) (*methodInfo, bool) {
 	if !validateMethodShape(fd) {
 		return nil, false
 	}

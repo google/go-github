@@ -46,7 +46,7 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 			wantRule:  []*RequiredReviewer{},
 			wantError: true,
 		},
-		"Wrong Type Type in Reviewer Object": {
+		"Wrong Type in Reviewer Object": {
 			data:      []byte(`[{"type": 1, "reviewer": {"id": 1}}]`),
 			wantRule:  []*RequiredReviewer{{Type: nil, Reviewer: nil}},
 			wantError: true,
