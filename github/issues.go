@@ -87,10 +87,10 @@ func (i Issue) IsPullRequest() bool {
 // It is separate from Issue above because otherwise Labels
 // and Assignees fail to serialize to the correct JSON.
 type IssueRequest struct {
-	Title    *string   `json:"title,omitempty"`
-	Body     *string   `json:"body,omitempty"`
-	Labels   *[]string `json:"labels,omitempty"`
-	State    *string   `json:"state,omitempty"`
+	Title  *string   `json:"title,omitempty"`
+	Body   *string   `json:"body,omitempty"`
+	Labels *[]string `json:"labels,omitempty"`
+	State  *string   `json:"state,omitempty"`
 	// StateReason can be 'completed' or 'not_planned'.
 	StateReason *string   `json:"state_reason,omitempty"`
 	Milestone   *int      `json:"milestone,omitempty"`

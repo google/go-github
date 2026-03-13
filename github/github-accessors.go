@@ -502,20 +502,20 @@ func (a *AdvisoryCVSS) GetVectorString() string {
 	return *a.VectorString
 }
 
-// GetCvssV3 returns the CvssV3 field.
-func (a *AdvisoryCvssSeverities) GetCvssV3() *AdvisoryCVSS {
+// GetCVSSV3 returns the CVSSV3 field.
+func (a *AdvisoryCvssSeverities) GetCVSSV3() *AdvisoryCVSS {
 	if a == nil {
 		return nil
 	}
-	return a.CvssV3
+	return a.CVSSV3
 }
 
-// GetCvssV4 returns the CvssV4 field.
-func (a *AdvisoryCvssSeverities) GetCvssV4() *AdvisoryCVSS {
+// GetCVSSV4 returns the CVSSV4 field.
+func (a *AdvisoryCvssSeverities) GetCVSSV4() *AdvisoryCVSS {
 	if a == nil {
 		return nil
 	}
-	return a.CvssV4
+	return a.CVSSV4
 }
 
 // GetCWEID returns the CWEID field if it's non-nil, zero value otherwise.
@@ -8038,12 +8038,12 @@ func (d *DependabotSecurityAdvisory) GetCVSS() *AdvisoryCVSS {
 	return d.CVSS
 }
 
-// GetCvssSeverities returns the CvssSeverities field.
-func (d *DependabotSecurityAdvisory) GetCvssSeverities() *AdvisoryCvssSeverities {
+// GetCVSSSeverities returns the CVSSSeverities field.
+func (d *DependabotSecurityAdvisory) GetCVSSSeverities() *AdvisoryCvssSeverities {
 	if d == nil {
 		return nil
 	}
-	return d.CvssSeverities
+	return d.CVSSSeverities
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
@@ -28262,12 +28262,12 @@ func (s *SecurityAdvisory) GetCVSS() *AdvisoryCVSS {
 	return s.CVSS
 }
 
-// GetCvssSeverities returns the CvssSeverities field.
-func (s *SecurityAdvisory) GetCvssSeverities() *AdvisoryCvssSeverities {
+// GetCVSSSeverities returns the CVSSSeverities field.
+func (s *SecurityAdvisory) GetCVSSSeverities() *AdvisoryCvssSeverities {
 	if s == nil {
 		return nil
 	}
-	return s.CvssSeverities
+	return s.CVSSSeverities
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.

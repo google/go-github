@@ -641,20 +641,20 @@ func TestAdvisoryCVSS_GetVectorString(tt *testing.T) {
 	a.GetVectorString()
 }
 
-func TestAdvisoryCvssSeverities_GetCvssV3(tt *testing.T) {
+func TestAdvisoryCvssSeverities_GetCVSSV3(tt *testing.T) {
 	tt.Parallel()
 	a := &AdvisoryCvssSeverities{}
-	a.GetCvssV3()
+	a.GetCVSSV3()
 	a = nil
-	a.GetCvssV3()
+	a.GetCVSSV3()
 }
 
-func TestAdvisoryCvssSeverities_GetCvssV4(tt *testing.T) {
+func TestAdvisoryCvssSeverities_GetCVSSV4(tt *testing.T) {
 	tt.Parallel()
 	a := &AdvisoryCvssSeverities{}
-	a.GetCvssV4()
+	a.GetCVSSV4()
 	a = nil
-	a.GetCvssV4()
+	a.GetCVSSV4()
 }
 
 func TestAdvisoryCWEs_GetCWEID(tt *testing.T) {
@@ -10484,12 +10484,12 @@ func TestDependabotSecurityAdvisory_GetCVSS(tt *testing.T) {
 	d.GetCVSS()
 }
 
-func TestDependabotSecurityAdvisory_GetCvssSeverities(tt *testing.T) {
+func TestDependabotSecurityAdvisory_GetCVSSSeverities(tt *testing.T) {
 	tt.Parallel()
 	d := &DependabotSecurityAdvisory{}
-	d.GetCvssSeverities()
+	d.GetCVSSSeverities()
 	d = nil
-	d.GetCvssSeverities()
+	d.GetCVSSSeverities()
 }
 
 func TestDependabotSecurityAdvisory_GetDescription(tt *testing.T) {
@@ -36489,12 +36489,12 @@ func TestSecurityAdvisory_GetCVSS(tt *testing.T) {
 	s.GetCVSS()
 }
 
-func TestSecurityAdvisory_GetCvssSeverities(tt *testing.T) {
+func TestSecurityAdvisory_GetCVSSSeverities(tt *testing.T) {
 	tt.Parallel()
 	s := &SecurityAdvisory{}
-	s.GetCvssSeverities()
+	s.GetCVSSSeverities()
 	s = nil
-	s.GetCvssSeverities()
+	s.GetCVSSSeverities()
 }
 
 func TestSecurityAdvisory_GetDescription(tt *testing.T) {
