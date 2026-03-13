@@ -8,7 +8,7 @@ for data that cannot be retrieved via the REST or GraphQL APIs.
 
 **Add only what you need.**  Whereas the main go-github library attempts to
 implement the entire GitHub REST API, there is little point in trying to do that
-here.  Certainly, feel free to contribution patches to get data you actually
+here.  Certainly, feel free to contribute patches to get data you actually
 need, but I'd rather not try and provide exhaustive coverage of all GitHub data
 here.
 
