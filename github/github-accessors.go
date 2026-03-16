@@ -6886,6 +6886,14 @@ func (c *CreateEnterpriseRunnerGroupRequest) GetName() string {
 	return *c.Name
 }
 
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (c *CreateEnterpriseRunnerGroupRequest) GetNetworkConfigurationID() string {
+	if c == nil || c.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *c.NetworkConfigurationID
+}
+
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
 func (c *CreateEnterpriseRunnerGroupRequest) GetRestrictedToWorkflows() bool {
 	if c == nil || c.RestrictedToWorkflows == nil {
@@ -10038,6 +10046,14 @@ func (e *EnterpriseRunnerGroup) GetDefault() bool {
 	return *e.Default
 }
 
+// GetHostedRunnersURL returns the HostedRunnersURL field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetHostedRunnersURL() string {
+	if e == nil || e.HostedRunnersURL == nil {
+		return ""
+	}
+	return *e.HostedRunnersURL
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (e *EnterpriseRunnerGroup) GetID() int64 {
 	if e == nil || e.ID == nil {
@@ -10060,6 +10076,14 @@ func (e *EnterpriseRunnerGroup) GetName() string {
 		return ""
 	}
 	return *e.Name
+}
+
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseRunnerGroup) GetNetworkConfigurationID() string {
+	if e == nil || e.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *e.NetworkConfigurationID
 }
 
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
@@ -30716,6 +30740,14 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetName() string {
 		return ""
 	}
 	return *u.Name
+}
+
+// GetNetworkConfigurationID returns the NetworkConfigurationID field if it's non-nil, zero value otherwise.
+func (u *UpdateEnterpriseRunnerGroupRequest) GetNetworkConfigurationID() string {
+	if u == nil || u.NetworkConfigurationID == nil {
+		return ""
+	}
+	return *u.NetworkConfigurationID
 }
 
 // GetRestrictedToWorkflows returns the RestrictedToWorkflows field if it's non-nil, zero value otherwise.
