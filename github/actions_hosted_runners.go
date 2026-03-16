@@ -403,14 +403,14 @@ func (s *ActionsService) DeleteHostedRunner(ctx context.Context, org string, run
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#list-custom-images-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/images/custom
-func (s *ActionsService) ListHostedRunnerCustomImages(ctx context.Context, org string) (*HostedRunnerCustomImageVersions, *Response, error) {
+func (s *ActionsService) ListHostedRunnerCustomImages(ctx context.Context, org string) (*HostedRunnerCustomImages, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/images/custom", org)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	images := new(HostedRunnerCustomImageVersions)
+	images := new(HostedRunnerCustomImages)
 	resp, err := s.client.Do(ctx, req, images)
 	if err != nil {
 		return nil, resp, err

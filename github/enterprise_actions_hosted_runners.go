@@ -234,14 +234,14 @@ func (s *EnterpriseService) DeleteHostedRunner(ctx context.Context, enterprise s
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#list-custom-images-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom
-func (s *EnterpriseService) ListHostedRunnerCustomImages(ctx context.Context, enterprise string) (*HostedRunnerCustomImageVersions, *Response, error) {
+func (s *EnterpriseService) ListHostedRunnerCustomImages(ctx context.Context, enterprise string) (*HostedRunnerCustomImages, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom", enterprise)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	images := new(HostedRunnerCustomImageVersions)
+	images := new(HostedRunnerCustomImages)
 	resp, err := s.client.Do(ctx, req, images)
 	if err != nil {
 		return nil, resp, err

@@ -868,16 +868,24 @@ func TestEnterpriseService_ListHostedRunnerCustomImages(t *testing.T) {
 			"total_count": 2,
 			"image_versions": [
 				{
-					"version": "1.1.0",
-					"size_gb": 75,
-					"state": "Ready",
-					"created_on": "2024-11-09T23:39:01Z"
+					"id": 1,
+					"platform": "linux-x64",
+					"name": "CustomImage1",
+					"source": "custom",
+					"versions_count": 4,
+					"total_versions_size": 200,
+					"latest_version": "1.3.0",
+					"state": "Ready"
 				},
 				{
-					"version": "1.0.0",
-					"size_gb": 75,
-					"state": "Ready",
-					"created_on": "2024-11-08T20:39:01Z"
+					"id": 2,
+					"platform": "linux-x64",
+					"name": "CustomImage2",
+					"source": "custom",
+					"versions_count": 2,
+					"total_versions_size": 150,
+					"latest_version": "1.0.0",
+					"state": "Ready"
 				}
 			]
 		}`)
@@ -889,20 +897,28 @@ func TestEnterpriseService_ListHostedRunnerCustomImages(t *testing.T) {
 		t.Errorf("Enterprise.ListHostedRunnerCustomImages returned error: %v", err)
 	}
 
-	want := &HostedRunnerCustomImageVersions{
+	want := &HostedRunnerCustomImages{
 		TotalCount: 2,
-		ImageVersions: []*HostedRunnerCustomImageVersion{
+		ImageVersions: []*HostedRunnerCustomImage{
 			{
-				Version:   Ptr("1.1.0"),
-				SizeGB:    Ptr(75),
-				State:     Ptr("Ready"),
-				CreatedOn: &Timestamp{time.Date(2024, 11, 9, 23, 39, 1, 0, time.UTC)},
+				ID:                Ptr(int64(1)),
+				Platform:          Ptr("linux-x64"),
+				Name:              Ptr("CustomImage1"),
+				Source:            Ptr("custom"),
+				VersionsCount:     Ptr(4),
+				TotalVersionsSize: Ptr(200),
+				LatestVersion:     Ptr("1.3.0"),
+				State:             Ptr("Ready"),
 			},
 			{
-				Version:   Ptr("1.0.0"),
-				SizeGB:    Ptr(75),
-				State:     Ptr("Ready"),
-				CreatedOn: &Timestamp{time.Date(2024, 11, 8, 20, 39, 1, 0, time.UTC)},
+				ID:                Ptr(int64(2)),
+				Platform:          Ptr("linux-x64"),
+				Name:              Ptr("CustomImage2"),
+				Source:            Ptr("custom"),
+				VersionsCount:     Ptr(2),
+				TotalVersionsSize: Ptr(150),
+				LatestVersion:     Ptr("1.0.0"),
+				State:             Ptr("Ready"),
 			},
 		},
 	}
