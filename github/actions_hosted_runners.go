@@ -32,7 +32,7 @@ type HostedRunner struct {
 	Name               *string                  `json:"name,omitempty"`
 	RunnerGroupID      *int64                   `json:"runner_group_id,omitempty"`
 	Platform           *string                  `json:"platform,omitempty"`
-	ImageDetails       *HostedRunnerImageDetail `json:"image_details,omitempty"`
+	ImageDetails       *HostedRunnerImageDetail `json:"image,omitempty"`
 	MachineSizeDetails *HostedRunnerMachineSpec `json:"machine_size_details,omitempty"`
 	Status             *string                  `json:"status,omitempty"`
 	MaximumRunners     *int64                   `json:"maximum_runners,omitempty"`
@@ -44,7 +44,7 @@ type HostedRunner struct {
 // HostedRunnerImageDetail represents the image details of a GitHub-hosted runners.
 type HostedRunnerImageDetail struct {
 	ID          *string `json:"id"`           // The ID of the image. Use this ID for the `image` parameter when creating a new larger runner. Example: ubuntu-20.04
-	SizeGB      *int64  `json:"size_gb"`      // Image size in GB. Example: 86
+	SizeGB      *int64  `json:"size"`         // Image size in GB. Example: 86
 	DisplayName *string `json:"display_name"` // Display name for this image. Example: 20.04
 	Source      *string `json:"source"`       // The image provider. Example: github, partner, custom
 	Version     *string `json:"version"`      // The image version of the hosted runner pool. Example: latest

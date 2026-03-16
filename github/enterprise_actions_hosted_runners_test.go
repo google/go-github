@@ -28,9 +28,9 @@ func TestEnterpriseService_ListHostedRunners(t *testing.T) {
 					"name": "My hosted ubuntu runner",
 					"runner_group_id": 2,
 					"platform": "linux-x64",
-					"image_details": {
+					"image": {
 						"id": "ubuntu-20.04",
-						"size_gb": 86
+						"size": 86
 					},
 					"machine_size_details": {
 						"id": "4-core",
@@ -55,9 +55,9 @@ func TestEnterpriseService_ListHostedRunners(t *testing.T) {
 					"name": "My hosted Windows runner",
 					"runner_group_id": 2,
 					"platform": "win-x64",
-					"image_details": {
+					"image": {
 						"id": "windows-latest",
-						"size_gb": 256
+						"size": 256
 					},
 					"machine_size_details": {
 						"id": "8-core",
@@ -166,9 +166,9 @@ func TestEnterpriseService_CreateHostedRunner(t *testing.T) {
 			"name": "My hosted ubuntu runner",
 			"runner_group_id": 2,
 			"platform": "linux-x64",
-			"image_details": {
+			"image": {
 				"id": "ubuntu-20.04",
-				"size_gb": 86
+				"size": 86
 			},
 			"machine_size_details": {
 				"id": "4-core",
@@ -594,9 +594,9 @@ func TestEnterpriseService_GetHostedRunner(t *testing.T) {
 			"name": "My hosted ubuntu runner",
 			"runner_group_id": 2,
 			"platform": "linux-x64",
-			"image_details": {
+			"image": {
 				"id": "ubuntu-20.04",
-				"size_gb": 86
+				"size": 86
 			},
 			"machine_size_details": {
 				"id": "4-core",
@@ -683,9 +683,9 @@ func TestEnterpriseService_UpdateHostedRunner(t *testing.T) {
 			"name": "My hosted ubuntu runner",
 			"runner_group_id": 2,
 			"platform": "linux-x64",
-			"image_details": {
+			"image": {
 				"id": "ubuntu-20.04",
-				"size_gb": 86
+				"size": 86
 			},
 			"machine_size_details": {
 				"id": "4-core",
@@ -780,9 +780,9 @@ func TestEnterpriseService_DeleteHostedRunner(t *testing.T) {
 			"name": "My hosted ubuntu runner",
 			"runner_group_id": 2,
 			"platform": "linux-x64",
-			"image_details": {
+			"image": {
 				"id": "ubuntu-20.04",
-				"size_gb": 86
+				"size": 86
 			},
 			"machine_size_details": {
 				"id": "4-core",
