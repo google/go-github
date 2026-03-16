@@ -4,11 +4,12 @@ run:
     - integration
   allow-parallel-runners: true
 linters:
+  default: none
   enable:
     - canonicalheader
-    - copyloopvar
     - dogsled
     - dupl
+    - errcheck
     - errorlint
     - fmtpercentv
     - forbidigo
@@ -17,7 +18,7 @@ linters:
     - goheader
     - gosec
     - govet
-    - intrange
+    - ineffassign
     - misspell
     - modernize
     - musttag
@@ -32,6 +33,7 @@ linters:
     - tparallel
     - unconvert
     - unparam
+    - unused
     - usetesting
     - whitespace
   settings:
@@ -80,6 +82,8 @@ linters:
       disable:
         - fieldalignment
         - shadow
+    ineffassign:
+      check-escaping-errors: true
     misspell:
       locale: US
       # extra words from https://go.dev/wiki/Spelling
