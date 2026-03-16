@@ -16686,14 +16686,6 @@ func (n *NewTeam) GetParentTeamID() int64 {
 	return *n.ParentTeamID
 }
 
-// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetPermission() string {
-	if n == nil || n.Permission == nil {
-		return ""
-	}
-	return *n.Permission
-}
-
 // GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
 func (n *NewTeam) GetPrivacy() string {
 	if n == nil || n.Privacy == nil {

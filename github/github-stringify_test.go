@@ -1167,11 +1167,10 @@ func TestNewTeam_String(t *testing.T) {
 		RepoNames:           []string{""},
 		ParentTeamID:        Ptr(int64(0)),
 		NotificationSetting: Ptr(""),
-		Permission:          Ptr(""),
 		Privacy:             Ptr(""),
 		LDAPDN:              Ptr(""),
 	}
-	want := `github.NewTeam{Name:"", Description:"", Maintainers:[""], RepoNames:[""], ParentTeamID:0, NotificationSetting:"", Permission:"", Privacy:"", LDAPDN:""}`
+	want := `github.NewTeam{Name:"", Description:"", Maintainers:[""], RepoNames:[""], ParentTeamID:0, NotificationSetting:"", Privacy:"", LDAPDN:""}`
 	if got := v.String(); got != want {
 		t.Errorf("NewTeam.String = %v, want %v", got, want)
 	}

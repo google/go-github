@@ -21697,17 +21697,6 @@ func TestNewTeam_GetParentTeamID(tt *testing.T) {
 	n.GetParentTeamID()
 }
 
-func TestNewTeam_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{Permission: &zeroValue}
-	n.GetPermission()
-	n = &NewTeam{}
-	n.GetPermission()
-	n = nil
-	n.GetPermission()
-}
-
 func TestNewTeam_GetPrivacy(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
