@@ -241,8 +241,8 @@ func (s *EnterpriseService) ListHostedRunnerCustomImages(ctx context.Context, en
 		return nil, nil, err
 	}
 
-	images := new(HostedRunnerCustomImages)
-	resp, err := s.client.Do(ctx, req, images)
+	var images *HostedRunnerCustomImages
+	resp, err := s.client.Do(ctx, req, &images)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -262,8 +262,8 @@ func (s *EnterpriseService) GetHostedRunnerCustomImage(ctx context.Context, ente
 		return nil, nil, err
 	}
 
-	image := new(HostedRunnerCustomImage)
-	resp, err := s.client.Do(ctx, req, image)
+	var image *HostedRunnerCustomImage
+	resp, err := s.client.Do(ctx, req, &image)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -298,8 +298,8 @@ func (s *EnterpriseService) ListHostedRunnerCustomImageVersions(ctx context.Cont
 		return nil, nil, err
 	}
 
-	versions := new(HostedRunnerCustomImageVersions)
-	resp, err := s.client.Do(ctx, req, versions)
+	var versions *HostedRunnerCustomImageVersions
+	resp, err := s.client.Do(ctx, req, &versions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -319,8 +319,8 @@ func (s *EnterpriseService) GetHostedRunnerCustomImageVersion(ctx context.Contex
 		return nil, nil, err
 	}
 
-	imageVersion := new(HostedRunnerCustomImageVersion)
-	resp, err := s.client.Do(ctx, req, imageVersion)
+	var imageVersion *HostedRunnerCustomImageVersion
+	resp, err := s.client.Do(ctx, req, &imageVersion)
 	if err != nil {
 		return nil, resp, err
 	}

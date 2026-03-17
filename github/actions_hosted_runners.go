@@ -410,8 +410,8 @@ func (s *ActionsService) ListHostedRunnerCustomImages(ctx context.Context, org s
 		return nil, nil, err
 	}
 
-	images := new(HostedRunnerCustomImages)
-	resp, err := s.client.Do(ctx, req, images)
+	var images *HostedRunnerCustomImages
+	resp, err := s.client.Do(ctx, req, &images)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -431,8 +431,8 @@ func (s *ActionsService) GetHostedRunnerCustomImage(ctx context.Context, org str
 		return nil, nil, err
 	}
 
-	image := new(HostedRunnerCustomImage)
-	resp, err := s.client.Do(ctx, req, image)
+	var image *HostedRunnerCustomImage
+	resp, err := s.client.Do(ctx, req, &image)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -467,8 +467,8 @@ func (s *ActionsService) ListHostedRunnerCustomImageVersions(ctx context.Context
 		return nil, nil, err
 	}
 
-	versions := new(HostedRunnerCustomImageVersions)
-	resp, err := s.client.Do(ctx, req, versions)
+	var versions *HostedRunnerCustomImageVersions
+	resp, err := s.client.Do(ctx, req, &versions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -488,8 +488,8 @@ func (s *ActionsService) GetHostedRunnerCustomImageVersion(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	imageVersion := new(HostedRunnerCustomImageVersion)
-	resp, err := s.client.Do(ctx, req, imageVersion)
+	var imageVersion *HostedRunnerCustomImageVersion
+	resp, err := s.client.Do(ctx, req, &imageVersion)
 	if err != nil {
 		return nil, resp, err
 	}
