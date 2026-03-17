@@ -14127,12 +14127,12 @@ func TestHostedRunner_GetID(tt *testing.T) {
 	h.GetID()
 }
 
-func TestHostedRunner_GetImageDetails(tt *testing.T) {
+func TestHostedRunner_GetImage(tt *testing.T) {
 	tt.Parallel()
 	h := &HostedRunner{}
-	h.GetImageDetails()
+	h.GetImage()
 	h = nil
-	h.GetImageDetails()
+	h.GetImage()
 }
 
 func TestHostedRunner_GetLastActiveOn(tt *testing.T) {
@@ -14242,15 +14242,15 @@ func TestHostedRunnerImageDetail_GetID(tt *testing.T) {
 	h.GetID()
 }
 
-func TestHostedRunnerImageDetail_GetSizeGB(tt *testing.T) {
+func TestHostedRunnerImageDetail_GetSize(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
-	h := &HostedRunnerImageDetail{SizeGB: &zeroValue}
-	h.GetSizeGB()
+	h := &HostedRunnerImageDetail{Size: &zeroValue}
+	h.GetSize()
 	h = &HostedRunnerImageDetail{}
-	h.GetSizeGB()
+	h.GetSize()
 	h = nil
-	h.GetSizeGB()
+	h.GetSize()
 }
 
 func TestHostedRunnerImageDetail_GetSource(tt *testing.T) {
