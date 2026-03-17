@@ -174,16 +174,17 @@ type HostedRunnerCustomImage struct {
 
 // HostedRunnerCustomImages represents a collection of custom images for GitHub-hosted runners.
 type HostedRunnerCustomImages struct {
-	TotalCount    int                        `json:"total_count"`
-	ImageVersions []*HostedRunnerCustomImage `json:"image_versions"`
+	TotalCount int                        `json:"total_count"`
+	Images     []*HostedRunnerCustomImage `json:"images"`
 }
 
 // HostedRunnerCustomImageVersion represents a version of a custom image for GitHub-hosted runners.
 type HostedRunnerCustomImageVersion struct {
-	Version   *string    `json:"version,omitempty"`
-	SizeGB    *int       `json:"size_gb,omitempty"`
-	State     *string    `json:"state,omitempty"`
-	CreatedOn *Timestamp `json:"created_on,omitempty"`
+	Version      *string    `json:"version,omitempty"`
+	SizeGB       *int       `json:"size_gb,omitempty"`
+	State        *string    `json:"state,omitempty"`
+	StateDetails *string    `json:"state_details,omitempty"`
+	CreatedOn    *Timestamp `json:"created_on,omitempty"`
 }
 
 // HostedRunnerCustomImageVersions represents a collection of versions of a custom image.
