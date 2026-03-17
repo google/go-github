@@ -282,7 +282,7 @@ func (s *ActionsService) ListRunnerGroupHostedRunners(ctx context.Context, org s
 		return nil, nil, err
 	}
 
-	runners := &HostedRunners{}
+	var runners *HostedRunners
 	resp, err := s.client.Do(ctx, req, &runners)
 	if err != nil {
 		return nil, resp, err
