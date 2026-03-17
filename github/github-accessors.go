@@ -11782,12 +11782,12 @@ func (h *HostedRunner) GetID() int64 {
 	return *h.ID
 }
 
-// GetImageDetails returns the ImageDetails field.
-func (h *HostedRunner) GetImageDetails() *HostedRunnerImageDetail {
+// GetImage returns the Image field.
+func (h *HostedRunner) GetImage() *HostedRunnerImageDetail {
 	if h == nil {
 		return nil
 	}
-	return h.ImageDetails
+	return h.Image
 }
 
 // GetLastActiveOn returns the LastActiveOn field if it's non-nil, zero value otherwise.
@@ -11878,12 +11878,12 @@ func (h *HostedRunnerImageDetail) GetID() string {
 	return *h.ID
 }
 
-// GetSizeGB returns the SizeGB field if it's non-nil, zero value otherwise.
-func (h *HostedRunnerImageDetail) GetSizeGB() int64 {
-	if h == nil || h.SizeGB == nil {
+// GetSize returns the Size field if it's non-nil, zero value otherwise.
+func (h *HostedRunnerImageDetail) GetSize() int64 {
+	if h == nil || h.Size == nil {
 		return 0
 	}
-	return *h.SizeGB
+	return *h.Size
 }
 
 // GetSource returns the Source field if it's non-nil, zero value otherwise.

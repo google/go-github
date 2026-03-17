@@ -91,9 +91,9 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 				Name:          Ptr("My hosted ubuntu runner"),
 				RunnerGroupID: Ptr(int64(2)),
 				Platform:      Ptr("linux-x64"),
-				ImageDetails: &HostedRunnerImageDetail{
+				Image: &HostedRunnerImageDetail{
 					ID:     Ptr("ubuntu-20.04"),
-					SizeGB: Ptr(int64(86)),
+					Size: Ptr(int64(86)),
 				},
 				MachineSizeDetails: &HostedRunnerMachineSpec{
 					ID:        "4-core",
@@ -118,9 +118,9 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 				Name:          Ptr("My hosted Windows runner"),
 				RunnerGroupID: Ptr(int64(2)),
 				Platform:      Ptr("win-x64"),
-				ImageDetails: &HostedRunnerImageDetail{
+				Image: &HostedRunnerImageDetail{
 					ID:     Ptr("windows-latest"),
-					SizeGB: Ptr(int64(256)),
+					Size: Ptr(int64(256)),
 				},
 				MachineSizeDetails: &HostedRunnerMachineSpec{
 					ID:        "8-core",
@@ -216,9 +216,9 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 		Name:          Ptr("My hosted ubuntu runner"),
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
-		ImageDetails: &HostedRunnerImageDetail{
+		Image: &HostedRunnerImageDetail{
 			ID:     Ptr("ubuntu-20.04"),
-			SizeGB: Ptr(int64(86)),
+			Size: Ptr(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
 			ID:        "4-core",
@@ -632,9 +632,9 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 		Name:          Ptr("My hosted ubuntu runner"),
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
-		ImageDetails: &HostedRunnerImageDetail{
+		Image: &HostedRunnerImageDetail{
 			ID:     Ptr("ubuntu-20.04"),
-			SizeGB: Ptr(int64(86)),
+			Size: Ptr(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
 			ID:        "4-core",
@@ -728,9 +728,9 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 		Name:          Ptr("My hosted ubuntu runner"),
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
-		ImageDetails: &HostedRunnerImageDetail{
+		Image: &HostedRunnerImageDetail{
 			ID:     Ptr("ubuntu-20.04"),
-			SizeGB: Ptr(int64(86)),
+			Size: Ptr(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
 			ID:        "4-core",
@@ -817,9 +817,9 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 		Name:          Ptr("My hosted ubuntu runner"),
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
-		ImageDetails: &HostedRunnerImageDetail{
+		Image: &HostedRunnerImageDetail{
 			ID:     Ptr("ubuntu-20.04"),
-			SizeGB: Ptr(int64(86)),
+			Size: Ptr(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
 			ID:        "4-core",
