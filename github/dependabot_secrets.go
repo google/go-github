@@ -17,8 +17,8 @@ func (s *DependabotService) getPublicKey(ctx context.Context, url string) (*Publ
 		return nil, nil, err
 	}
 
-	pubKey := new(PublicKey)
-	resp, err := s.client.Do(ctx, req, pubKey)
+	var pubKey *PublicKey
+	resp, err := s.client.Do(ctx, req, &pubKey)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -57,7 +57,7 @@ func (s *DependabotService) listSecrets(ctx context.Context, url string, opts *L
 		return nil, nil, err
 	}
 
-	secrets := new(Secrets)
+	var secrets *Secrets
 	resp, err := s.client.Do(ctx, req, &secrets)
 	if err != nil {
 		return nil, resp, err
@@ -94,8 +94,8 @@ func (s *DependabotService) getSecret(ctx context.Context, url string) (*Secret,
 		return nil, nil, err
 	}
 
-	secret := new(Secret)
-	resp, err := s.client.Do(ctx, req, secret)
+	var secret *Secret
+	resp, err := s.client.Do(ctx, req, &secret)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -236,8 +236,8 @@ func (s *DependabotService) ListSelectedReposForOrgSecret(ctx context.Context, o
 		return nil, nil, err
 	}
 
-	result := new(SelectedReposList)
-	resp, err := s.client.Do(ctx, req, result)
+	var result *SelectedReposList
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}

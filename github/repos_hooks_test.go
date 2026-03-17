@@ -21,8 +21,8 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 	input := &Hook{CreatedAt: &Timestamp{referenceTime}}
 
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createHookRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *createHookRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		want := &createHookRequest{Name: "web"}
@@ -171,8 +171,8 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 	input := &Hook{}
 
 	mux.HandleFunc("/repos/o/r/hooks/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Hook)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Hook
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

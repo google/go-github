@@ -102,8 +102,8 @@ func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sh
 		return nil, nil, err
 	}
 
-	c := new(RepositoryComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *RepositoryComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -125,8 +125,8 @@ func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	c := new(RepositoryComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *RepositoryComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -146,8 +146,8 @@ func (s *RepositoriesService) UpdateComment(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	c := new(RepositoryComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *RepositoryComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -166,5 +166,6 @@ func (s *RepositoriesService) DeleteComment(ctx context.Context, owner, repo str
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }

@@ -45,8 +45,8 @@ func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, 
 		return nil, nil, err
 	}
 
-	permissions := new(ActionsPermissionsRepository)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *ActionsPermissionsRepository
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -66,8 +66,8 @@ func (s *RepositoriesService) UpdateActionsPermissions(ctx context.Context, owne
 		return nil, nil, err
 	}
 
-	permissions := new(ActionsPermissionsRepository)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *ActionsPermissionsRepository
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -88,8 +88,8 @@ func (s *RepositoriesService) GetDefaultWorkflowPermissions(ctx context.Context,
 		return nil, nil, err
 	}
 
-	permissions := new(DefaultWorkflowPermissionRepository)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *DefaultWorkflowPermissionRepository
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -109,8 +109,8 @@ func (s *RepositoriesService) UpdateDefaultWorkflowPermissions(ctx context.Conte
 		return nil, nil, err
 	}
 
-	p := new(DefaultWorkflowPermissionRepository)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *DefaultWorkflowPermissionRepository
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -131,8 +131,8 @@ func (s *RepositoriesService) GetArtifactAndLogRetentionPeriod(ctx context.Conte
 		return nil, nil, err
 	}
 
-	arp := new(ArtifactPeriod)
-	resp, err := s.client.Do(ctx, req, arp)
+	var arp *ArtifactPeriod
+	resp, err := s.client.Do(ctx, req, &arp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -168,8 +168,8 @@ func (s *RepositoriesService) GetPrivateRepoForkPRWorkflowSettings(ctx context.C
 		return nil, nil, err
 	}
 
-	permissions := new(WorkflowsPermissions)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *WorkflowsPermissions
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -205,8 +205,8 @@ func (s *ActionsService) GetForkPRContributorApprovalPermissions(ctx context.Con
 		return nil, nil, err
 	}
 
-	policy := new(ContributorApprovalPermissions)
-	resp, err := s.client.Do(ctx, req, policy)
+	var policy *ContributorApprovalPermissions
+	resp, err := s.client.Do(ctx, req, &policy)
 	if err != nil {
 		return nil, resp, err
 	}

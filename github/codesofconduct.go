@@ -68,8 +68,8 @@ func (s *CodesOfConductService) Get(ctx context.Context, key string) (*CodeOfCon
 
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
-	coc := new(CodeOfConduct)
-	resp, err := s.client.Do(ctx, req, coc)
+	var coc *CodeOfConduct
+	resp, err := s.client.Do(ctx, req, &coc)
 	if err != nil {
 		return nil, resp, err
 	}

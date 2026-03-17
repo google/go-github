@@ -123,8 +123,8 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 	input := &Key{Key: Ptr("k"), Title: Ptr("t")}
 
 	mux.HandleFunc("/user/ssh_signing_keys", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Key)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Key
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

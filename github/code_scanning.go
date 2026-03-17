@@ -318,8 +318,8 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	a := new(Alert)
-	resp, err := s.client.Do(ctx, req, a)
+	var a *Alert
+	resp, err := s.client.Do(ctx, req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -345,8 +345,8 @@ func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	a := new(Alert)
-	resp, err := s.client.Do(ctx, req, a)
+	var a *Alert
+	resp, err := s.client.Do(ctx, req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -410,8 +410,8 @@ func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo strin
 	if !errors.As(err, &acceptedError) {
 		return nil, resp, err
 	}
-	sarifID := new(SarifID)
-	decErr := json.Unmarshal(acceptedError.Raw, sarifID)
+	var sarifID *SarifID
+	decErr := json.Unmarshal(acceptedError.Raw, &sarifID)
 	if decErr != nil {
 		return nil, resp, decErr
 	}
@@ -444,8 +444,8 @@ func (s *CodeScanningService) GetSARIF(ctx context.Context, owner, repo, sarifID
 		return nil, nil, err
 	}
 
-	sarifUpload := new(SARIFUpload)
-	resp, err := s.client.Do(ctx, req, sarifUpload)
+	var sarifUpload *SARIFUpload
+	resp, err := s.client.Do(ctx, req, &sarifUpload)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -501,8 +501,8 @@ func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	analysis := new(ScanningAnalysis)
-	resp, err := s.client.Do(ctx, req, analysis)
+	var analysis *ScanningAnalysis
+	resp, err := s.client.Do(ctx, req, &analysis)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -536,8 +536,8 @@ func (s *CodeScanningService) DeleteAnalysis(ctx context.Context, owner, repo st
 		return nil, nil, err
 	}
 
-	deleteAnalysis := new(DeleteAnalysis)
-	resp, err := s.client.Do(ctx, req, deleteAnalysis)
+	var deleteAnalysis *DeleteAnalysis
+	resp, err := s.client.Do(ctx, req, &deleteAnalysis)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -586,8 +586,8 @@ func (s *CodeScanningService) GetCodeQLDatabase(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	codeqlDatabase := new(CodeQLDatabase)
-	resp, err := s.client.Do(ctx, req, codeqlDatabase)
+	var codeqlDatabase *CodeQLDatabase
+	resp, err := s.client.Do(ctx, req, &codeqlDatabase)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -620,8 +620,8 @@ func (s *CodeScanningService) GetDefaultSetupConfiguration(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	cfg := new(DefaultSetupConfiguration)
-	resp, err := s.client.Do(ctx, req, cfg)
+	var cfg *DefaultSetupConfiguration
+	resp, err := s.client.Do(ctx, req, &cfg)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -663,8 +663,8 @@ func (s *CodeScanningService) UpdateDefaultSetupConfiguration(ctx context.Contex
 		return nil, nil, err
 	}
 
-	a := new(UpdateDefaultSetupConfigurationResponse)
-	resp, err := s.client.Do(ctx, req, a)
+	var a *UpdateDefaultSetupConfigurationResponse
+	resp, err := s.client.Do(ctx, req, &a)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -86,8 +86,8 @@ func (s *MigrationService) StartUserMigration(ctx context.Context, repos []strin
 
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	m := &UserMigration{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *UserMigration
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -139,8 +139,8 @@ func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*
 
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	m := &UserMigration{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *UserMigration
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -164,8 +164,6 @@ func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64
 
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	m := &UserMigration{}
-
 	var loc string
 	originalRedirect := s.client.client.CheckRedirect
 	s.client.client.CheckRedirect = func(req *http.Request, _ []*http.Request) error {
@@ -175,10 +173,13 @@ func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64
 	defer func() {
 		s.client.client.CheckRedirect = originalRedirect
 	}()
-	resp, err := s.client.Do(ctx, req, m)
+
+	var m *UserMigration
+	resp, err := s.client.Do(ctx, req, &m)
 	if err == nil {
 		return "", errors.New("expected redirect, none provided")
 	}
+
 	loc = resp.Header.Get("Location")
 	return loc, nil
 }

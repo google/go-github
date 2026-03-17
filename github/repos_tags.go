@@ -61,8 +61,8 @@ func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	tagProtection := new(TagProtection)
-	resp, err := s.client.Do(ctx, req, tagProtection)
+	var tagProtection *TagProtection
+	resp, err := s.client.Do(ctx, req, &tagProtection)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -91,8 +91,8 @@ func (s *EnterpriseService) ListCostCenters(ctx context.Context, enterprise stri
 		return nil, nil, err
 	}
 
-	costCenters := &CostCenters{}
-	resp, err := s.client.Do(ctx, req, costCenters)
+	var costCenters *CostCenters
+	resp, err := s.client.Do(ctx, req, &costCenters)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -113,8 +113,8 @@ func (s *EnterpriseService) CreateCostCenter(ctx context.Context, enterprise str
 		return nil, nil, err
 	}
 
-	result := &CostCenter{}
-	resp, err := s.client.Do(ctx, req, result)
+	var result *CostCenter
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -135,8 +135,8 @@ func (s *EnterpriseService) GetCostCenter(ctx context.Context, enterprise, costC
 		return nil, nil, err
 	}
 
-	costCenter := &CostCenter{}
-	resp, err := s.client.Do(ctx, req, costCenter)
+	var costCenter *CostCenter
+	resp, err := s.client.Do(ctx, req, &costCenter)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -157,8 +157,8 @@ func (s *EnterpriseService) UpdateCostCenter(ctx context.Context, enterprise, co
 		return nil, nil, err
 	}
 
-	result := &CostCenter{}
-	resp, err := s.client.Do(ctx, req, result)
+	var result *CostCenter
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -179,8 +179,8 @@ func (s *EnterpriseService) DeleteCostCenter(ctx context.Context, enterprise, co
 		return nil, nil, err
 	}
 
-	result := &DeleteCostCenterResponse{}
-	resp, err := s.client.Do(ctx, req, result)
+	var result *DeleteCostCenterResponse
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -201,8 +201,8 @@ func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterp
 		return nil, nil, err
 	}
 
-	result := &AddResourcesToCostCenterResponse{}
-	resp, err := s.client.Do(ctx, req, result)
+	var result *AddResourcesToCostCenterResponse
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -223,8 +223,8 @@ func (s *EnterpriseService) RemoveResourcesFromCostCenter(ctx context.Context, e
 		return nil, nil, err
 	}
 
-	result := &RemoveResourcesFromCostCenterResponse{}
-	resp, err := s.client.Do(ctx, req, result)
+	var result *RemoveResourcesFromCostCenterResponse
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}

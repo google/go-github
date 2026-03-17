@@ -55,8 +55,8 @@ func TestActionsService_UpdateActionsPermissionsInEnterprise(t *testing.T) {
 	input := &ActionsPermissionsEnterprise{EnabledOrganizations: Ptr("all"), AllowedActions: Ptr("selected")}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ActionsPermissionsEnterprise)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *ActionsPermissionsEnterprise
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -260,8 +260,8 @@ func TestActionsService_UpdateActionsAllowedInEnterprise(t *testing.T) {
 	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ActionsAllowed)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *ActionsAllowed
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -338,8 +338,8 @@ func TestActionsService_UpdateDefaultWorkflowPermissionsInEnterprise(t *testing.
 	input := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
-		v := new(DefaultWorkflowPermissionEnterprise)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *DefaultWorkflowPermissionEnterprise
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -420,8 +420,8 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInEnterprise(t *testi
 	input := &ArtifactPeriodOpt{Days: Ptr(90)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ArtifactPeriodOpt)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *ArtifactPeriodOpt
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -492,8 +492,8 @@ func TestActionsService_UpdateSelfHostedRunnerPermissionsInEnterprise(t *testing
 	input := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: Ptr(false)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
-		v := new(SelfHostRunnerPermissionsEnterprise)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *SelfHostRunnerPermissionsEnterprise
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -573,8 +573,8 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(t *t
 	}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {
-		v := new(WorkflowsPermissionsOpt)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *WorkflowsPermissionsOpt
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -645,8 +645,8 @@ func TestActionsService_UpdateEnterpriseForkPRContributorApprovalPermissions(t *
 	input := ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ContributorApprovalPermissions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *ContributorApprovalPermissions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, &input) {

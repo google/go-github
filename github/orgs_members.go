@@ -256,8 +256,8 @@ func (s *OrganizationsService) GetOrgMembership(ctx context.Context, user, org s
 		return nil, nil, err
 	}
 
-	membership := new(Membership)
-	resp, err := s.client.Do(ctx, req, membership)
+	var membership *Membership
+	resp, err := s.client.Do(ctx, req, &membership)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -290,8 +290,8 @@ func (s *OrganizationsService) EditOrgMembership(ctx context.Context, user, org 
 		return nil, nil, err
 	}
 
-	m := new(Membership)
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Membership
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

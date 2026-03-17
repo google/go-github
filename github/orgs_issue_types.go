@@ -53,8 +53,8 @@ func (s *OrganizationsService) CreateIssueType(ctx context.Context, org string, 
 		return nil, nil, err
 	}
 
-	issueType := new(IssueType)
-	resp, err := s.client.Do(ctx, req, issueType)
+	var issueType *IssueType
+	resp, err := s.client.Do(ctx, req, &issueType)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -74,8 +74,8 @@ func (s *OrganizationsService) UpdateIssueType(ctx context.Context, org string, 
 		return nil, nil, err
 	}
 
-	issueType := new(IssueType)
-	resp, err := s.client.Do(ctx, req, issueType)
+	var issueType *IssueType
+	resp, err := s.client.Do(ctx, req, &issueType)
 	if err != nil {
 		return nil, resp, err
 	}

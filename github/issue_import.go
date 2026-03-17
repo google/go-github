@@ -83,20 +83,20 @@ func (s *IssueImportService) Create(ctx context.Context, owner, repo string, iss
 
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
-	i := new(IssueImportResponse)
-	resp, err := s.client.Do(ctx, req, i)
+	var i IssueImportResponse
+	resp, err := s.client.Do(ctx, req, &i)
 	if err != nil {
 		var aerr *AcceptedError
 		if errors.As(err, &aerr) {
-			if err := json.Unmarshal(aerr.Raw, i); err != nil {
-				return i, resp, err
+			if err := json.Unmarshal(aerr.Raw, &i); err != nil {
+				return &i, resp, err
 			}
-			return i, resp, err
+			return &i, resp, err
 		}
 		return nil, resp, err
 	}
 
-	return i, resp, nil
+	return &i, resp, nil
 }
 
 // CheckStatus checks the status of an imported issue.
@@ -113,8 +113,8 @@ func (s *IssueImportService) CheckStatus(ctx context.Context, owner, repo string
 
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
-	i := new(IssueImportResponse)
-	resp, err := s.client.Do(ctx, req, i)
+	var i *IssueImportResponse
+	resp, err := s.client.Do(ctx, req, &i)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -51,8 +51,8 @@ func (s *RepositoriesService) GetCodeownersErrors(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	codeownersErrors := &CodeownersErrors{}
-	resp, err := s.client.Do(ctx, req, codeownersErrors)
+	var codeownersErrors *CodeownersErrors
+	resp, err := s.client.Do(ctx, req, &codeownersErrors)
 	if err != nil {
 		return nil, resp, err
 	}

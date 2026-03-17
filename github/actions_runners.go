@@ -70,8 +70,8 @@ func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, org string, r
 		return nil, nil, err
 	}
 
-	jitConfig := new(JITRunnerConfig)
-	resp, err := s.client.Do(ctx, req, jitConfig)
+	var jitConfig *JITRunnerConfig
+	resp, err := s.client.Do(ctx, req, &jitConfig)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -91,8 +91,8 @@ func (s *ActionsService) GenerateRepoJITConfig(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	jitConfig := new(JITRunnerConfig)
-	resp, err := s.client.Do(ctx, req, jitConfig)
+	var jitConfig *JITRunnerConfig
+	resp, err := s.client.Do(ctx, req, &jitConfig)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -119,8 +119,8 @@ func (s *ActionsService) CreateRegistrationToken(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	registrationToken := new(RegistrationToken)
-	resp, err := s.client.Do(ctx, req, registrationToken)
+	var registrationToken *RegistrationToken
+	resp, err := s.client.Do(ctx, req, &registrationToken)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -174,7 +174,7 @@ func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, op
 		return nil, nil, err
 	}
 
-	runners := &Runners{}
+	var runners *Runners
 	resp, err := s.client.Do(ctx, req, &runners)
 	if err != nil {
 		return nil, resp, err
@@ -195,8 +195,8 @@ func (s *ActionsService) GetRunner(ctx context.Context, owner, repo string, runn
 		return nil, nil, err
 	}
 
-	runner := new(Runner)
-	resp, err := s.client.Do(ctx, req, runner)
+	var runner *Runner
+	resp, err := s.client.Do(ctx, req, &runner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -223,8 +223,8 @@ func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	removeToken := new(RemoveToken)
-	resp, err := s.client.Do(ctx, req, removeToken)
+	var removeToken *RemoveToken
+	resp, err := s.client.Do(ctx, req, &removeToken)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -282,8 +282,8 @@ func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context
 		return nil, nil, err
 	}
 
-	registrationToken := new(RegistrationToken)
-	resp, err := s.client.Do(ctx, req, registrationToken)
+	var registrationToken *RegistrationToken
+	resp, err := s.client.Do(ctx, req, &registrationToken)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -308,7 +308,7 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, org string
 		return nil, nil, err
 	}
 
-	runners := &Runners{}
+	var runners *Runners
 	resp, err := s.client.Do(ctx, req, &runners)
 	if err != nil {
 		return nil, resp, err
@@ -329,8 +329,8 @@ func (s *ActionsService) GetOrganizationRunner(ctx context.Context, org string, 
 		return nil, nil, err
 	}
 
-	runner := new(Runner)
-	resp, err := s.client.Do(ctx, req, runner)
+	var runner *Runner
+	resp, err := s.client.Do(ctx, req, &runner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -351,8 +351,8 @@ func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, org 
 		return nil, nil, err
 	}
 
-	removeToken := new(RemoveToken)
-	resp, err := s.client.Do(ctx, req, removeToken)
+	var removeToken *RemoveToken
+	resp, err := s.client.Do(ctx, req, &removeToken)
 	if err != nil {
 		return nil, resp, err
 	}

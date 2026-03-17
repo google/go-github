@@ -126,8 +126,8 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 
 	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
 
-	enable := new(Pages)
-	resp, err := s.client.Do(ctx, req, enable)
+	var enable *Pages
+	resp, err := s.client.Do(ctx, req, &enable)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -236,8 +236,8 @@ func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	site := new(Pages)
-	resp, err := s.client.Do(ctx, req, site)
+	var site *Pages
+	resp, err := s.client.Do(ctx, req, &site)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -283,8 +283,8 @@ func (s *RepositoriesService) GetLatestPagesBuild(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	build := new(PagesBuild)
-	resp, err := s.client.Do(ctx, req, build)
+	var build *PagesBuild
+	resp, err := s.client.Do(ctx, req, &build)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -304,8 +304,8 @@ func (s *RepositoriesService) GetPageBuild(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	build := new(PagesBuild)
-	resp, err := s.client.Do(ctx, req, build)
+	var build *PagesBuild
+	resp, err := s.client.Do(ctx, req, &build)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -325,8 +325,8 @@ func (s *RepositoriesService) RequestPageBuild(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	build := new(PagesBuild)
-	resp, err := s.client.Do(ctx, req, build)
+	var build *PagesBuild
+	resp, err := s.client.Do(ctx, req, &build)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -346,8 +346,8 @@ func (s *RepositoriesService) GetPageHealthCheck(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	healthCheckResponse := new(PagesHealthCheckResponse)
-	resp, err := s.client.Do(ctx, req, healthCheckResponse)
+	var healthCheckResponse *PagesHealthCheckResponse
+	resp, err := s.client.Do(ctx, req, &healthCheckResponse)
 	if err != nil {
 		return nil, resp, err
 	}

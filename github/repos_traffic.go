@@ -113,7 +113,7 @@ func (s *RepositoriesService) ListTrafficViews(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	trafficViews := new(TrafficViews)
+	var trafficViews *TrafficViews
 	resp, err := s.client.Do(ctx, req, &trafficViews)
 	if err != nil {
 		return nil, resp, err
@@ -139,7 +139,7 @@ func (s *RepositoriesService) ListTrafficClones(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	trafficClones := new(TrafficClones)
+	var trafficClones *TrafficClones
 	resp, err := s.client.Do(ctx, req, &trafficClones)
 	if err != nil {
 		return nil, resp, err

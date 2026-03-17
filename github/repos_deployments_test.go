@@ -95,8 +95,8 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 	input := &DeploymentRequest{Ref: Ptr("1111"), Task: Ptr("deploy"), TransientEnvironment: Ptr(true)}
 
 	mux.HandleFunc("/repos/o/r/deployments", func(w http.ResponseWriter, r *http.Request) {
-		v := new(DeploymentRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *DeploymentRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
@@ -254,8 +254,8 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 	input := &DeploymentStatusRequest{State: Ptr("inactive"), Description: Ptr("deploy"), AutoInactive: Ptr(false)}
 
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
-		v := new(DeploymentStatusRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *DeploymentStatusRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}

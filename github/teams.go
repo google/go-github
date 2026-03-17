@@ -130,8 +130,8 @@ func (s *TeamsService) GetTeamByID(ctx context.Context, orgID, teamID int64) (*T
 		return nil, nil, err
 	}
 
-	t := new(Team)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *Team
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -151,8 +151,8 @@ func (s *TeamsService) GetTeamBySlug(ctx context.Context, org, slug string) (*Te
 		return nil, nil, err
 	}
 
-	t := new(Team)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *Team
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -206,8 +206,8 @@ func (s *TeamsService) CreateTeam(ctx context.Context, org string, team NewTeam)
 		return nil, nil, err
 	}
 
-	t := new(Team)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *Team
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -266,8 +266,8 @@ func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, te
 		return nil, nil, err
 	}
 
-	t := new(Team)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *Team
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -295,8 +295,8 @@ func (s *TeamsService) EditTeamBySlug(ctx context.Context, org, slug string, tea
 		return nil, nil, err
 	}
 
-	t := new(Team)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *Team
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -466,8 +466,8 @@ func (s *TeamsService) IsTeamRepoByID(ctx context.Context, orgID, teamID int64, 
 
 	req.Header.Set("Accept", mediaTypeOrgPermissionRepo)
 
-	repository := new(Repository)
-	resp, err := s.client.Do(ctx, req, repository)
+	var repository *Repository
+	resp, err := s.client.Do(ctx, req, &repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -491,8 +491,8 @@ func (s *TeamsService) IsTeamRepoBySlug(ctx context.Context, org, slug, owner, r
 
 	req.Header.Set("Accept", mediaTypeOrgPermissionRepo)
 
-	repository := new(Repository)
-	resp, err := s.client.Do(ctx, req, repository)
+	var repository *Repository
+	resp, err := s.client.Do(ctx, req, &repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -680,7 +680,7 @@ func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID
 
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	projects := &ProjectV2{}
+	var projects *ProjectV2
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
 		return nil, resp, err
@@ -704,7 +704,7 @@ func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug s
 
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	projects := &ProjectV2{}
+	var projects *ProjectV2
 	resp, err := s.client.Do(ctx, req, &projects)
 	if err != nil {
 		return nil, resp, err
@@ -848,8 +848,8 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 		return nil, nil, err
 	}
 
-	groups := new(IDPGroupList)
-	resp, err := s.client.Do(ctx, req, groups)
+	var groups *IDPGroupList
+	resp, err := s.client.Do(ctx, req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -873,8 +873,8 @@ func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, team
 		return nil, nil, err
 	}
 
-	groups := new(IDPGroupList)
-	resp, err := s.client.Do(ctx, req, groups)
+	var groups *IDPGroupList
+	resp, err := s.client.Do(ctx, req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -896,8 +896,8 @@ func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug
 		return nil, nil, err
 	}
 
-	groups := new(IDPGroupList)
-	resp, err := s.client.Do(ctx, req, groups)
+	var groups *IDPGroupList
+	resp, err := s.client.Do(ctx, req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -921,8 +921,8 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context
 		return nil, nil, err
 	}
 
-	groups := new(IDPGroupList)
-	resp, err := s.client.Do(ctx, req, groups)
+	var groups *IDPGroupList
+	resp, err := s.client.Do(ctx, req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -944,8 +944,8 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Conte
 		return nil, nil, err
 	}
 
-	groups := new(IDPGroupList)
-	resp, err := s.client.Do(ctx, req, groups)
+	var groups *IDPGroupList
+	resp, err := s.client.Do(ctx, req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -993,8 +993,8 @@ func (s *TeamsService) GetExternalGroup(ctx context.Context, org string, groupID
 		return nil, nil, err
 	}
 
-	externalGroup := new(ExternalGroup)
-	resp, err := s.client.Do(ctx, req, externalGroup)
+	var externalGroup *ExternalGroup
+	resp, err := s.client.Do(ctx, req, &externalGroup)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1027,8 +1027,8 @@ func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts 
 		return nil, nil, err
 	}
 
-	externalGroups := new(ExternalGroupList)
-	resp, err := s.client.Do(ctx, req, externalGroups)
+	var externalGroups *ExternalGroupList
+	resp, err := s.client.Do(ctx, req, &externalGroups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1049,8 +1049,8 @@ func (s *TeamsService) ListExternalGroupsForTeamBySlug(ctx context.Context, org,
 		return nil, nil, err
 	}
 
-	externalGroups := new(ExternalGroupList)
-	resp, err := s.client.Do(ctx, req, externalGroups)
+	var externalGroups *ExternalGroupList
+	resp, err := s.client.Do(ctx, req, &externalGroups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1071,8 +1071,8 @@ func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, sl
 		return nil, nil, err
 	}
 
-	externalGroup := new(ExternalGroup)
-	resp, err := s.client.Do(ctx, req, externalGroup)
+	var externalGroup *ExternalGroup
+	resp, err := s.client.Do(ctx, req, &externalGroup)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -359,8 +359,8 @@ func TestPullRequestsService_Create(t *testing.T) {
 	input := &NewPullRequest{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
-		v := new(NewPullRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *NewPullRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

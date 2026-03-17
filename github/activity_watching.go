@@ -101,8 +101,8 @@ func (s *ActivityService) GetRepositorySubscription(ctx context.Context, owner, 
 		return nil, nil, err
 	}
 
-	sub := new(Subscription)
-	resp, err := s.client.Do(ctx, req, sub)
+	var sub *Subscription
+	resp, err := s.client.Do(ctx, req, &sub)
 	if err != nil {
 		// if it's just a 404, don't return that as an error
 		_, err = parseBoolResponse(err)
@@ -130,8 +130,8 @@ func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, 
 		return nil, nil, err
 	}
 
-	sub := new(Subscription)
-	resp, err := s.client.Do(ctx, req, sub)
+	var sub *Subscription
+	resp, err := s.client.Do(ctx, req, &sub)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -155,8 +155,8 @@ func (s *ActivityService) GetThread(ctx context.Context, id string) (*Notificati
 		return nil, nil, err
 	}
 
-	notification := new(Notification)
-	resp, err := s.client.Do(ctx, req, notification)
+	var notification *Notification
+	resp, err := s.client.Do(ctx, req, &notification)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -211,8 +211,8 @@ func (s *ActivityService) GetThreadSubscription(ctx context.Context, id string) 
 		return nil, nil, err
 	}
 
-	sub := new(Subscription)
-	resp, err := s.client.Do(ctx, req, sub)
+	var sub *Subscription
+	resp, err := s.client.Do(ctx, req, &sub)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -234,8 +234,8 @@ func (s *ActivityService) SetThreadSubscription(ctx context.Context, id string, 
 		return nil, nil, err
 	}
 
-	sub := new(Subscription)
-	resp, err := s.client.Do(ctx, req, sub)
+	var sub *Subscription
+	resp, err := s.client.Do(ctx, req, &sub)
 	if err != nil {
 		return nil, resp, err
 	}

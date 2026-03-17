@@ -113,8 +113,8 @@ func (s *TeamsService) GetDiscussionByID(ctx context.Context, orgID, teamID int6
 		return nil, nil, err
 	}
 
-	teamDiscussion := &TeamDiscussion{}
-	resp, err := s.client.Do(ctx, req, teamDiscussion)
+	var teamDiscussion *TeamDiscussion
+	resp, err := s.client.Do(ctx, req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -135,8 +135,8 @@ func (s *TeamsService) GetDiscussionBySlug(ctx context.Context, org, slug string
 		return nil, nil, err
 	}
 
-	teamDiscussion := &TeamDiscussion{}
-	resp, err := s.client.Do(ctx, req, teamDiscussion)
+	var teamDiscussion *TeamDiscussion
+	resp, err := s.client.Do(ctx, req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -157,8 +157,8 @@ func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID i
 		return nil, nil, err
 	}
 
-	teamDiscussion := &TeamDiscussion{}
-	resp, err := s.client.Do(ctx, req, teamDiscussion)
+	var teamDiscussion *TeamDiscussion
+	resp, err := s.client.Do(ctx, req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -179,8 +179,8 @@ func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug str
 		return nil, nil, err
 	}
 
-	teamDiscussion := &TeamDiscussion{}
-	resp, err := s.client.Do(ctx, req, teamDiscussion)
+	var teamDiscussion *TeamDiscussion
+	resp, err := s.client.Do(ctx, req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -202,8 +202,8 @@ func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int
 		return nil, nil, err
 	}
 
-	teamDiscussion := &TeamDiscussion{}
-	resp, err := s.client.Do(ctx, req, teamDiscussion)
+	var teamDiscussion *TeamDiscussion
+	resp, err := s.client.Do(ctx, req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -225,8 +225,8 @@ func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug strin
 		return nil, nil, err
 	}
 
-	teamDiscussion := &TeamDiscussion{}
-	resp, err := s.client.Do(ctx, req, teamDiscussion)
+	var teamDiscussion *TeamDiscussion
+	resp, err := s.client.Do(ctx, req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}

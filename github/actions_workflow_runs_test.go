@@ -1604,8 +1604,8 @@ func TestActionService_PendingDeployments(t *testing.T) {
 	input := &PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: "approved", Comment: ""}
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PendingDeploymentsRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *PendingDeploymentsRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

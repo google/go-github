@@ -267,8 +267,8 @@ func TestOrganizationsService_Edit(t *testing.T) {
 	input := &Organization{Login: Ptr("l")}
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Organization)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Organization
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testHeader(t, r, "Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 		testMethod(t, r, "PATCH")

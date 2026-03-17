@@ -78,8 +78,8 @@ func (s *RepositoriesService) CreateCustomDeploymentProtectionRule(ctx context.C
 		return nil, nil, err
 	}
 
-	protectionRule := new(CustomDeploymentProtectionRule)
-	resp, err := s.client.Do(ctx, req, protectionRule)
+	var protectionRule *CustomDeploymentProtectionRule
+	resp, err := s.client.Do(ctx, req, &protectionRule)
 	if err != nil {
 		return nil, resp, err
 	}

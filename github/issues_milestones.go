@@ -90,8 +90,8 @@ func (s *IssuesService) GetMilestone(ctx context.Context, owner, repo string, nu
 		return nil, nil, err
 	}
 
-	milestone := new(Milestone)
-	resp, err := s.client.Do(ctx, req, milestone)
+	var milestone *Milestone
+	resp, err := s.client.Do(ctx, req, &milestone)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -111,8 +111,8 @@ func (s *IssuesService) CreateMilestone(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	m := new(Milestone)
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Milestone
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -132,8 +132,8 @@ func (s *IssuesService) EditMilestone(ctx context.Context, owner, repo string, n
 		return nil, nil, err
 	}
 
-	m := new(Milestone)
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Milestone
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

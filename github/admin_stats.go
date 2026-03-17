@@ -162,8 +162,8 @@ func (s *AdminService) GetAdminStats(ctx context.Context) (*AdminStats, *Respons
 		return nil, nil, err
 	}
 
-	m := new(AdminStats)
-	resp, err := s.client.Do(ctx, req, m)
+	var m *AdminStats
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

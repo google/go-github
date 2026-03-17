@@ -237,13 +237,13 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 
 	req.Header.Set("Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 
-	organization := new(Organization)
-	resp, err := s.client.Do(ctx, req, organization)
+	var o *Organization
+	resp, err := s.client.Do(ctx, req, &o)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return organization, resp, nil
+	return o, resp, nil
 }
 
 // GetByID fetches an organization.
@@ -258,13 +258,13 @@ func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organiza
 		return nil, nil, err
 	}
 
-	organization := new(Organization)
-	resp, err := s.client.Do(ctx, req, organization)
+	var org *Organization
+	resp, err := s.client.Do(ctx, req, &org)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return organization, resp, nil
+	return org, resp, nil
 }
 
 // Edit an organization.
@@ -281,8 +281,8 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 
 	req.Header.Set("Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 
-	o := new(Organization)
-	resp, err := s.client.Do(ctx, req, o)
+	var o *Organization
+	resp, err := s.client.Do(ctx, req, &o)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -323,8 +323,8 @@ func (s *OrganizationsService) ListInstallations(ctx context.Context, org string
 		return nil, nil, err
 	}
 
-	result := new(OrganizationInstallations)
-	resp, err := s.client.Do(ctx, req, result)
+	var result *OrganizationInstallations
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}

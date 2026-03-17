@@ -75,8 +75,8 @@ func (s *UsersService) GetKey(ctx context.Context, id int64) (*Key, *Response, e
 		return nil, nil, err
 	}
 
-	key := new(Key)
-	resp, err := s.client.Do(ctx, req, key)
+	var key *Key
+	resp, err := s.client.Do(ctx, req, &key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -97,8 +97,8 @@ func (s *UsersService) CreateKey(ctx context.Context, key *Key) (*Key, *Response
 		return nil, nil, err
 	}
 
-	k := new(Key)
-	resp, err := s.client.Do(ctx, req, k)
+	var k *Key
+	resp, err := s.client.Do(ctx, req, &k)
 	if err != nil {
 		return nil, resp, err
 	}

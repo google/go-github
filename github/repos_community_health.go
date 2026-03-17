@@ -53,8 +53,8 @@ func (s *RepositoriesService) GetCommunityHealthMetrics(ctx context.Context, own
 		return nil, nil, err
 	}
 
-	metrics := &CommunityHealthMetrics{}
-	resp, err := s.client.Do(ctx, req, metrics)
+	var metrics *CommunityHealthMetrics
+	resp, err := s.client.Do(ctx, req, &metrics)
 	if err != nil {
 		return nil, resp, err
 	}

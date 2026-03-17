@@ -183,8 +183,8 @@ func (s *RepositoriesService) ListParticipation(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	participation := new(RepositoryParticipation)
-	resp, err := s.client.Do(ctx, req, participation)
+	var participation *RepositoryParticipation
+	resp, err := s.client.Do(ctx, req, &participation)
 	if err != nil {
 		return nil, resp, err
 	}

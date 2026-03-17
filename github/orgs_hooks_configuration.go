@@ -22,8 +22,8 @@ func (s *OrganizationsService) GetHookConfiguration(ctx context.Context, org str
 		return nil, nil, err
 	}
 
-	config := new(HookConfig)
-	resp, err := s.client.Do(ctx, req, config)
+	var config *HookConfig
+	resp, err := s.client.Do(ctx, req, &config)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -43,8 +43,8 @@ func (s *OrganizationsService) EditHookConfiguration(ctx context.Context, org st
 		return nil, nil, err
 	}
 
-	c := new(HookConfig)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *HookConfig
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}

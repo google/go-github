@@ -65,8 +65,8 @@ func (s *OrganizationsService) ListRoles(ctx context.Context, org string) (*Orga
 		return nil, nil, err
 	}
 
-	customRepoRoles := new(OrganizationCustomRoles)
-	resp, err := s.client.Do(ctx, req, customRepoRoles)
+	var customRepoRoles *OrganizationCustomRoles
+	resp, err := s.client.Do(ctx, req, &customRepoRoles)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -88,8 +88,8 @@ func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleI
 		return nil, nil, err
 	}
 
-	resultingRole := new(CustomOrgRole)
-	resp, err := s.client.Do(ctx, req, resultingRole)
+	var resultingRole *CustomOrgRole
+	resp, err := s.client.Do(ctx, req, &resultingRole)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -111,8 +111,8 @@ func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org stri
 		return nil, nil, err
 	}
 
-	resultingRole := new(CustomOrgRole)
-	resp, err := s.client.Do(ctx, req, resultingRole)
+	var resultingRole *CustomOrgRole
+	resp, err := s.client.Do(ctx, req, &resultingRole)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -134,8 +134,8 @@ func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org stri
 		return nil, nil, err
 	}
 
-	resultingRole := new(CustomOrgRole)
-	resp, err := s.client.Do(ctx, req, resultingRole)
+	var resultingRole *CustomOrgRole
+	resp, err := s.client.Do(ctx, req, &resultingRole)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -157,8 +157,8 @@ func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org stri
 		return nil, err
 	}
 
-	resultingRole := new(CustomOrgRole)
-	resp, err := s.client.Do(ctx, req, resultingRole)
+	var resultingRole *CustomOrgRole
+	resp, err := s.client.Do(ctx, req, &resultingRole)
 	if err != nil {
 		return resp, err
 	}

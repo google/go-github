@@ -27,11 +27,12 @@ func (s *EnterpriseService) ListEnterpriseNetworkConfigurations(ctx context.Cont
 		return nil, nil, err
 	}
 
-	networks := &NetworkConfigurations{}
-	resp, err := s.client.Do(ctx, req, networks)
+	var networks *NetworkConfigurations
+	resp, err := s.client.Do(ctx, req, &networks)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return networks, resp, nil
 }
 
@@ -51,8 +52,8 @@ func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Con
 		return nil, nil, err
 	}
 
-	network := &NetworkConfiguration{}
-	resp, err := s.client.Do(ctx, req, network)
+	var network *NetworkConfiguration
+	resp, err := s.client.Do(ctx, req, &network)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -72,11 +73,12 @@ func (s *EnterpriseService) GetEnterpriseNetworkConfiguration(ctx context.Contex
 		return nil, nil, err
 	}
 
-	network := &NetworkConfiguration{}
-	resp, err := s.client.Do(ctx, req, network)
+	var network *NetworkConfiguration
+	resp, err := s.client.Do(ctx, req, &network)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return network, resp, nil
 }
 
@@ -96,11 +98,12 @@ func (s *EnterpriseService) UpdateEnterpriseNetworkConfiguration(ctx context.Con
 		return nil, nil, err
 	}
 
-	network := &NetworkConfiguration{}
-	resp, err := s.client.Do(ctx, req, network)
+	var network *NetworkConfiguration
+	resp, err := s.client.Do(ctx, req, &network)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return network, resp, nil
 }
 
@@ -115,6 +118,7 @@ func (s *EnterpriseService) DeleteEnterpriseNetworkConfiguration(ctx context.Con
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -130,10 +134,11 @@ func (s *EnterpriseService) GetEnterpriseNetworkSettingsResource(ctx context.Con
 		return nil, nil, err
 	}
 
-	resource := &NetworkSettingsResource{}
-	resp, err := s.client.Do(ctx, req, resource)
+	var resource *NetworkSettingsResource
+	resp, err := s.client.Do(ctx, req, &resource)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return resource, resp, err
 }

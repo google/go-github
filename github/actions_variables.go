@@ -41,7 +41,7 @@ func (s *ActionsService) listVariables(ctx context.Context, url string, opts *Li
 		return nil, nil, err
 	}
 
-	variables := new(ActionsVariables)
+	var variables *ActionsVariables
 	resp, err := s.client.Do(ctx, req, &variables)
 	if err != nil {
 		return nil, resp, err
@@ -96,8 +96,8 @@ func (s *ActionsService) getVariable(ctx context.Context, url string) (*ActionsV
 		return nil, nil, err
 	}
 
-	variable := new(ActionsVariable)
-	resp, err := s.client.Do(ctx, req, variable)
+	var variable *ActionsVariable
+	resp, err := s.client.Do(ctx, req, &variable)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -273,8 +273,8 @@ func (s *ActionsService) listSelectedReposForVariable(ctx context.Context, url s
 		return nil, nil, err
 	}
 
-	result := new(SelectedReposList)
-	resp, err := s.client.Do(ctx, req, result)
+	var result *SelectedReposList
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}

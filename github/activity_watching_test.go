@@ -194,8 +194,8 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 	input := &Subscription{Subscribed: Ptr(true)}
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Subscription)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Subscription
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {

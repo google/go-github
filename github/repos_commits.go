@@ -165,8 +165,8 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 		return nil, nil, err
 	}
 
-	commit := new(RepositoryCommit)
-	resp, err := s.client.Do(ctx, req, commit)
+	var commit *RepositoryCommit
+	resp, err := s.client.Do(ctx, req, &commit)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -252,8 +252,8 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo, b
 		return nil, nil, err
 	}
 
-	comp := new(CommitsComparison)
-	resp, err := s.client.Do(ctx, req, comp)
+	var comp *CommitsComparison
+	resp, err := s.client.Do(ctx, req, &comp)
 	if err != nil {
 		return nil, resp, err
 	}

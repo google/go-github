@@ -192,8 +192,8 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 	input := NewTeam{Name: "n", Privacy: Ptr("closed"), RepoNames: []string{"r"}}
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
-		v := new(NewTeam)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *NewTeam
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, &input) {
@@ -245,8 +245,8 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 	input := NewTeam{Name: "n", Privacy: Ptr("closed")}
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(NewTeam)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *NewTeam
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {
@@ -290,13 +290,13 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 	var body string
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(NewTeam)
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Errorf("Unable to read body: %v", err)
 		}
 		body = string(buf)
-		assertNilError(t, json.NewDecoder(bytes.NewBuffer(buf)).Decode(v))
+		var v *NewTeam
+		assertNilError(t, json.NewDecoder(bytes.NewBuffer(buf)).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {
@@ -329,8 +329,8 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 	input := NewTeam{Name: "n", Privacy: Ptr("closed")}
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
-		v := new(NewTeam)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *NewTeam
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {
@@ -374,13 +374,13 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 	var body string
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
-		v := new(NewTeam)
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
 			t.Errorf("Unable to read body: %v", err)
 		}
 		body = string(buf)
-		assertNilError(t, json.NewDecoder(bytes.NewBuffer(buf)).Decode(v))
+		var v *NewTeam
+		assertNilError(t, json.NewDecoder(bytes.NewBuffer(buf)).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, &input) {
@@ -791,8 +791,8 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
-		v := new(TeamAddTeamRepoOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *TeamAddTeamRepoOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, opt) {
@@ -826,8 +826,8 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
-		v := new(TeamAddTeamRepoOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *TeamAddTeamRepoOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, opt) {
@@ -1162,8 +1162,8 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
-		v := &TeamProjectOptions{}
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *TeamProjectOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}
@@ -1200,8 +1200,8 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
 
-		v := &TeamProjectOptions{}
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *TeamProjectOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)
 		}

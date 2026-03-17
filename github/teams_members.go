@@ -87,8 +87,8 @@ func (s *TeamsService) GetTeamMembershipByID(ctx context.Context, orgID, teamID 
 		return nil, nil, err
 	}
 
-	t := new(Membership)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *Membership
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -109,8 +109,8 @@ func (s *TeamsService) GetTeamMembershipBySlug(ctx context.Context, org, slug, u
 		return nil, nil, err
 	}
 
-	t := new(Membership)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *Membership
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -145,8 +145,8 @@ func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID 
 		return nil, nil, err
 	}
 
-	t := new(Membership)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *Membership
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -167,8 +167,8 @@ func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, u
 		return nil, nil, err
 	}
 
-	t := new(Membership)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *Membership
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}

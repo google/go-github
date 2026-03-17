@@ -100,8 +100,8 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	}
 
 	mux.HandleFunc("/orgs/o/private-registries", func(w http.ResponseWriter, r *http.Request) {
-		v := new(CreateOrganizationPrivateRegistry)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *CreateOrganizationPrivateRegistry
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -250,8 +250,8 @@ func TestPrivateRegistries_UpdateOrganizationPrivateRegistry(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/private-registries/MAVEN_REPOSITORY_SECRET", func(w http.ResponseWriter, r *http.Request) {
-		v := new(UpdateOrganizationPrivateRegistry)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *UpdateOrganizationPrivateRegistry
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

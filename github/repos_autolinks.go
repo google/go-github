@@ -61,8 +61,8 @@ func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	al := new(Autolink)
-	resp, err := s.client.Do(ctx, req, al)
+	var al *Autolink
+	resp, err := s.client.Do(ctx, req, &al)
 	if err != nil {
 		return nil, resp, err
 	}

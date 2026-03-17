@@ -63,8 +63,8 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 		IsAlphanumeric: Ptr(true),
 	}
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
-		v := new(AutolinkOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *AutolinkOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, opt) {
 			t.Errorf("Request body = %+v, want %+v", v, opt)

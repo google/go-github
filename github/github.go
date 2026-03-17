@@ -1627,15 +1627,14 @@ func setCredentialsAsHeaders(req *http.Request, id, secret string) *http.Request
 	//
 	// Since we are going to modify only req.Header here, we only need a deep copy
 	// of req.Header.
-	convertedRequest := new(http.Request)
-	*convertedRequest = *req
+	convertedRequest := *req
 	convertedRequest.Header = make(http.Header, len(req.Header))
 
 	for k, s := range req.Header {
 		convertedRequest.Header[k] = append([]string(nil), s...)
 	}
 	convertedRequest.SetBasicAuth(id, secret)
-	return convertedRequest
+	return &convertedRequest
 }
 
 /*

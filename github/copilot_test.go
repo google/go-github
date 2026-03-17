@@ -26,11 +26,9 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "Invalid JSON",
-			data: `{`,
-			want: &CopilotSeatDetails{
-				Assignee: nil,
-			},
+			name:    "Invalid JSON",
+			data:    `{`,
+			want:    nil,
 			wantErr: true,
 		},
 		{
@@ -123,11 +121,11 @@ func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		seatDetails := &CopilotSeatDetails{}
+		var seatDetails *CopilotSeatDetails
 
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			err := json.Unmarshal([]byte(tc.data), seatDetails)
+			err := json.Unmarshal([]byte(tc.data), &seatDetails)
 			if err == nil && tc.wantErr {
 				t.Error("CopilotSeatDetails.UnmarshalJSON returned nil instead of an error")
 			}
@@ -150,9 +148,9 @@ func TestCopilotService_GetSeatDetailsUser(t *testing.T) {
 				}
 			}`
 
-	seatDetails := &CopilotSeatDetails{}
+	var seatDetails *CopilotSeatDetails
 
-	err := json.Unmarshal([]byte(data), seatDetails)
+	err := json.Unmarshal([]byte(data), &seatDetails)
 	if err != nil {
 		t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
 	}
@@ -199,9 +197,9 @@ func TestCopilotService_GetSeatDetailsTeam(t *testing.T) {
 				}
 			}`
 
-	seatDetails := &CopilotSeatDetails{}
+	var seatDetails *CopilotSeatDetails
 
-	err := json.Unmarshal([]byte(data), seatDetails)
+	err := json.Unmarshal([]byte(data), &seatDetails)
 	if err != nil {
 		t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
 	}
@@ -248,9 +246,9 @@ func TestCopilotService_GetSeatDetailsOrganization(t *testing.T) {
 				}
 			}`
 
-	seatDetails := &CopilotSeatDetails{}
+	var seatDetails *CopilotSeatDetails
 
-	err := json.Unmarshal([]byte(data), seatDetails)
+	err := json.Unmarshal([]byte(data), &seatDetails)
 	if err != nil {
 		t.Errorf("CopilotSeatDetails.UnmarshalJSON returned an unexpected error: %v", err)
 	}

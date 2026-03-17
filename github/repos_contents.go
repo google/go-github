@@ -115,8 +115,8 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	readme := new(RepositoryContent)
-	resp, err := s.client.Do(ctx, req, readme)
+	var readme *RepositoryContent
+	resp, err := s.client.Do(ctx, req, &readme)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -284,8 +284,8 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 		return nil, nil, err
 	}
 
-	createResponse := new(RepositoryContentResponse)
-	resp, err := s.client.Do(ctx, req, createResponse)
+	var createResponse *RepositoryContentResponse
+	resp, err := s.client.Do(ctx, req, &createResponse)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -306,8 +306,8 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 		return nil, nil, err
 	}
 
-	updateResponse := new(RepositoryContentResponse)
-	resp, err := s.client.Do(ctx, req, updateResponse)
+	var updateResponse *RepositoryContentResponse
+	resp, err := s.client.Do(ctx, req, &updateResponse)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -328,8 +328,8 @@ func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path 
 		return nil, nil, err
 	}
 
-	deleteResponse := new(RepositoryContentResponse)
-	resp, err := s.client.Do(ctx, req, deleteResponse)
+	var deleteResponse *RepositoryContentResponse
+	resp, err := s.client.Do(ctx, req, &deleteResponse)
 	if err != nil {
 		return nil, resp, err
 	}

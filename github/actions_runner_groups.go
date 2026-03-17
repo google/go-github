@@ -100,7 +100,7 @@ func (s *ActionsService) ListOrganizationRunnerGroups(ctx context.Context, org s
 		return nil, nil, err
 	}
 
-	groups := &RunnerGroups{}
+	var groups *RunnerGroups
 	resp, err := s.client.Do(ctx, req, &groups)
 	if err != nil {
 		return nil, resp, err
@@ -121,8 +121,8 @@ func (s *ActionsService) GetOrganizationRunnerGroup(ctx context.Context, org str
 		return nil, nil, err
 	}
 
-	runnerGroup := new(RunnerGroup)
-	resp, err := s.client.Do(ctx, req, runnerGroup)
+	var runnerGroup *RunnerGroup
+	resp, err := s.client.Do(ctx, req, &runnerGroup)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -158,8 +158,8 @@ func (s *ActionsService) CreateOrganizationRunnerGroup(ctx context.Context, org 
 		return nil, nil, err
 	}
 
-	runnerGroup := new(RunnerGroup)
-	resp, err := s.client.Do(ctx, req, runnerGroup)
+	var runnerGroup *RunnerGroup
+	resp, err := s.client.Do(ctx, req, &runnerGroup)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -179,8 +179,8 @@ func (s *ActionsService) UpdateOrganizationRunnerGroup(ctx context.Context, org 
 		return nil, nil, err
 	}
 
-	runnerGroup := new(RunnerGroup)
-	resp, err := s.client.Do(ctx, req, runnerGroup)
+	var runnerGroup *RunnerGroup
+	resp, err := s.client.Do(ctx, req, &runnerGroup)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -205,7 +205,7 @@ func (s *ActionsService) ListRepositoryAccessRunnerGroup(ctx context.Context, or
 		return nil, nil, err
 	}
 
-	repos := &ListRepositories{}
+	var repos *ListRepositories
 	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
 		return nil, resp, err
@@ -308,7 +308,7 @@ func (s *ActionsService) ListRunnerGroupRunners(ctx context.Context, org string,
 		return nil, nil, err
 	}
 
-	runners := &Runners{}
+	var runners *Runners
 	resp, err := s.client.Do(ctx, req, &runners)
 	if err != nil {
 		return nil, resp, err

@@ -57,8 +57,8 @@ func (s *SubIssueService) Remove(ctx context.Context, owner, repo string, issueN
 		return nil, nil, err
 	}
 
-	si := new(SubIssue)
-	resp, err := s.client.Do(ctx, req, si)
+	var si *SubIssue
+	resp, err := s.client.Do(ctx, req, &si)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -107,8 +107,8 @@ func (s *SubIssueService) Add(ctx context.Context, owner, repo string, issueNumb
 		return nil, nil, err
 	}
 
-	si := new(SubIssue)
-	resp, err := s.client.Do(ctx, req, si)
+	var si *SubIssue
+	resp, err := s.client.Do(ctx, req, &si)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -130,8 +130,8 @@ func (s *SubIssueService) Reprioritize(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	si := new(SubIssue)
-	resp, err := s.client.Do(ctx, req, si)
+	var si *SubIssue
+	resp, err := s.client.Do(ctx, req, &si)
 	if err != nil {
 		return nil, resp, err
 	}

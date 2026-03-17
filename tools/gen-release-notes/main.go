@@ -122,8 +122,8 @@ func genRefLines(breaking, nonBreaking []string) (ref, refNon []string) {
 
 func runCommand(cmdArgs []string) string {
 	cmd := exec.Command(cmdArgs[0], cmdArgs[1:]...) //nolint:gosec
-	out := &bytes.Buffer{}
-	cmd.Stdout = out
+	var out bytes.Buffer
+	cmd.Stdout = &out
 	cmd.Stderr = os.Stderr
 
 	log.Printf("Running command: %v", strings.Join(cmdArgs, " "))

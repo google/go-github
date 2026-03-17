@@ -104,8 +104,8 @@ func (s *LicensesService) Get(ctx context.Context, licenseName string) (*License
 		return nil, nil, err
 	}
 
-	license := new(License)
-	resp, err := s.client.Do(ctx, req, license)
+	var license *License
+	resp, err := s.client.Do(ctx, req, &license)
 	if err != nil {
 		return nil, resp, err
 	}

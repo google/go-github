@@ -219,8 +219,8 @@ func (s *PullRequestsService) Get(ctx context.Context, owner, repo string, numbe
 		return nil, nil, err
 	}
 
-	pull := new(PullRequest)
-	resp, err := s.client.Do(ctx, req, pull)
+	var pull *PullRequest
+	resp, err := s.client.Do(ctx, req, &pull)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -289,8 +289,8 @@ func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, pu
 		return nil, nil, err
 	}
 
-	p := new(PullRequest)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *PullRequest
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -333,8 +333,8 @@ func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo stri
 
 	req.Header.Set("Accept", mediaTypeUpdatePullRequestBranchPreview)
 
-	p := new(PullRequestBranchUpdateResponse)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *PullRequestBranchUpdateResponse
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -384,8 +384,8 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner, repo string, numb
 		return nil, nil, err
 	}
 
-	p := new(PullRequest)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *PullRequest
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -497,7 +497,7 @@ type pullRequestMergeRequest struct {
 func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/merge", owner, repo, number)
 
-	pullRequestBody := &pullRequestMergeRequest{}
+	var pullRequestBody pullRequestMergeRequest
 	if commitMessage != "" {
 		pullRequestBody.CommitMessage = &commitMessage
 	}
@@ -509,13 +509,13 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, num
 			pullRequestBody.CommitMessage = &commitMessage
 		}
 	}
-	req, err := s.client.NewRequest("PUT", u, pullRequestBody)
+	req, err := s.client.NewRequest("PUT", u, &pullRequestBody)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	mergeResult := new(PullRequestMergeResult)
-	resp, err := s.client.Do(ctx, req, mergeResult)
+	var mergeResult *PullRequestMergeResult
+	resp, err := s.client.Do(ctx, req, &mergeResult)
 	if err != nil {
 		return nil, resp, err
 	}

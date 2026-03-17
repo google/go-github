@@ -27,7 +27,7 @@ func (s *EnterpriseService) ListHostedRunners(ctx context.Context, enterprise st
 		return nil, nil, err
 	}
 
-	runners := &HostedRunners{}
+	var runners *HostedRunners
 	resp, err := s.client.Do(ctx, req, &runners)
 	if err != nil {
 		return nil, resp, err
@@ -52,8 +52,8 @@ func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise s
 		return nil, nil, err
 	}
 
-	hostedRunner := new(HostedRunner)
-	resp, err := s.client.Do(ctx, req, hostedRunner)
+	var hostedRunner *HostedRunner
+	resp, err := s.client.Do(ctx, req, &hostedRunner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -73,8 +73,8 @@ func (s *EnterpriseService) GetHostedRunnerGitHubOwnedImages(ctx context.Context
 		return nil, nil, err
 	}
 
-	hostedRunnerImages := new(HostedRunnerImages)
-	resp, err := s.client.Do(ctx, req, hostedRunnerImages)
+	var hostedRunnerImages *HostedRunnerImages
+	resp, err := s.client.Do(ctx, req, &hostedRunnerImages)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -94,8 +94,8 @@ func (s *EnterpriseService) GetHostedRunnerPartnerImages(ctx context.Context, en
 		return nil, nil, err
 	}
 
-	hostedRunnerImages := new(HostedRunnerImages)
-	resp, err := s.client.Do(ctx, req, hostedRunnerImages)
+	var hostedRunnerImages *HostedRunnerImages
+	resp, err := s.client.Do(ctx, req, &hostedRunnerImages)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -115,8 +115,8 @@ func (s *EnterpriseService) GetHostedRunnerLimits(ctx context.Context, enterpris
 		return nil, nil, err
 	}
 
-	publicIPLimits := new(HostedRunnerPublicIPLimits)
-	resp, err := s.client.Do(ctx, req, publicIPLimits)
+	var publicIPLimits *HostedRunnerPublicIPLimits
+	resp, err := s.client.Do(ctx, req, &publicIPLimits)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -136,8 +136,8 @@ func (s *EnterpriseService) GetHostedRunnerMachineSpecs(ctx context.Context, ent
 		return nil, nil, err
 	}
 
-	machineSpecs := new(HostedRunnerMachineSpecs)
-	resp, err := s.client.Do(ctx, req, machineSpecs)
+	var machineSpecs *HostedRunnerMachineSpecs
+	resp, err := s.client.Do(ctx, req, &machineSpecs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -157,8 +157,8 @@ func (s *EnterpriseService) GetHostedRunnerPlatforms(ctx context.Context, enterp
 		return nil, nil, err
 	}
 
-	platforms := new(HostedRunnerPlatforms)
-	resp, err := s.client.Do(ctx, req, platforms)
+	var platforms *HostedRunnerPlatforms
+	resp, err := s.client.Do(ctx, req, &platforms)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -178,8 +178,8 @@ func (s *EnterpriseService) GetHostedRunner(ctx context.Context, enterprise stri
 		return nil, nil, err
 	}
 
-	hostedRunner := new(HostedRunner)
-	resp, err := s.client.Do(ctx, req, hostedRunner)
+	var hostedRunner *HostedRunner
+	resp, err := s.client.Do(ctx, req, &hostedRunner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -199,8 +199,8 @@ func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise s
 		return nil, nil, err
 	}
 
-	hostedRunner := new(HostedRunner)
-	resp, err := s.client.Do(ctx, req, hostedRunner)
+	var hostedRunner *HostedRunner
+	resp, err := s.client.Do(ctx, req, &hostedRunner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -220,8 +220,8 @@ func (s *EnterpriseService) DeleteHostedRunner(ctx context.Context, enterprise s
 		return nil, nil, err
 	}
 
-	hostedRunner := new(HostedRunner)
-	resp, err := s.client.Do(ctx, req, hostedRunner)
+	var hostedRunner *HostedRunner
+	resp, err := s.client.Do(ctx, req, &hostedRunner)
 	if err != nil {
 		return nil, resp, err
 	}

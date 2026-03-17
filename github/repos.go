@@ -595,8 +595,8 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 
 	acceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-	r := new(Repository)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *Repository
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -629,8 +629,8 @@ func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOw
 	}
 
 	req.Header.Set("Accept", mediaTypeRepositoryTemplatePreview)
-	r := new(Repository)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *Repository
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -659,8 +659,8 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 	}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
-	repository := new(Repository)
-	resp, err := s.client.Do(ctx, req, repository)
+	var repository *Repository
+	resp, err := s.client.Do(ctx, req, &repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -684,8 +684,8 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
-	r := new(Repository)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *Repository
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -705,8 +705,8 @@ func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repositor
 		return nil, nil, err
 	}
 
-	repository := new(Repository)
-	resp, err := s.client.Do(ctx, req, repository)
+	var repository *Repository
+	resp, err := s.client.Do(ctx, req, &repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -728,8 +728,8 @@ func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repo
 
 	acceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
-	r := new(Repository)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *Repository
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -855,8 +855,8 @@ func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, own
 		return nil, nil, err
 	}
 
-	p := new(AutomatedSecurityFixes)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *AutomatedSecurityFixes
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1463,8 +1463,8 @@ func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch
 		return nil, newResponse(resp), fmt.Errorf("unexpected status code: %v", resp.Status)
 	}
 
-	b := new(Branch)
-	err = json.NewDecoder(resp.Body).Decode(b)
+	var b *Branch
+	err = json.NewDecoder(resp.Body).Decode(&b)
 	return b, newResponse(resp), err
 }
 
@@ -1491,8 +1491,8 @@ func (s *RepositoriesService) RenameBranch(ctx context.Context, owner, repo, bra
 		return nil, nil, err
 	}
 
-	b := new(Branch)
-	resp, err := s.client.Do(ctx, req, b)
+	var b *Branch
+	resp, err := s.client.Do(ctx, req, &b)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1516,8 +1516,8 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
-	p := new(Protection)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *Protection
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		if isBranchNotProtected(err) {
 			err = ErrBranchNotProtected
@@ -1542,8 +1542,8 @@ func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner
 		return nil, nil, err
 	}
 
-	p := new(RequiredStatusChecks)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *RequiredStatusChecks
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		if isBranchNotProtected(err) {
 			err = ErrBranchNotProtected
@@ -1595,8 +1595,8 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
-	p := new(Protection)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *Protection
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1637,8 +1637,8 @@ func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, 
 
 	req.Header.Set("Accept", mediaTypeSignaturePreview)
 
-	p := new(SignaturesProtectedBranch)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *SignaturesProtectedBranch
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		if isBranchNotProtected(err) {
 			err = ErrBranchNotProtected
@@ -1666,8 +1666,8 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 
 	req.Header.Set("Accept", mediaTypeSignaturePreview)
 
-	r := new(SignaturesProtectedBranch)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *SignaturesProtectedBranch
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1708,8 +1708,8 @@ func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, ow
 		return nil, nil, err
 	}
 
-	sc := new(RequiredStatusChecks)
-	resp, err := s.client.Do(ctx, req, sc)
+	var sc *RequiredStatusChecks
+	resp, err := s.client.Do(ctx, req, &sc)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1746,8 +1746,8 @@ func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (
 		return nil, nil, err
 	}
 
-	r := &RepositoryLicense{}
-	resp, err := s.client.Do(ctx, req, r)
+	var r *RepositoryLicense
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1771,8 +1771,8 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
-	r := new(PullRequestReviewsEnforcement)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *PullRequestReviewsEnforcement
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1797,8 +1797,8 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
-	r := new(PullRequestReviewsEnforcement)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *PullRequestReviewsEnforcement
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1828,8 +1828,8 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
-	r := new(PullRequestReviewsEnforcement)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *PullRequestReviewsEnforcement
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1868,8 +1868,8 @@ func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	r := new(AdminEnforcement)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *AdminEnforcement
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1892,8 +1892,8 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	r := new(AdminEnforcement)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *AdminEnforcement
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1942,8 +1942,8 @@ func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo str
 
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
-	topics := new(repositoryTopics)
-	resp, err := s.client.Do(ctx, req, topics)
+	var topics *repositoryTopics
+	resp, err := s.client.Do(ctx, req, &topics)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2329,8 +2329,8 @@ func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	r := new(Repository)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *Repository
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2360,8 +2360,8 @@ func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	r := new(Repository)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *Repository
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2439,8 +2439,8 @@ func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, own
 		return false, nil, err
 	}
 
-	privateReporting := new(checkPrivateReporting)
-	resp, err := s.client.Do(ctx, req, privateReporting)
+	var privateReporting checkPrivateReporting
+	resp, err := s.client.Do(ctx, req, &privateReporting)
 	return privateReporting.Enabled, resp, err
 }
 

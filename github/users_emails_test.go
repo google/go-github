@@ -148,7 +148,7 @@ func TestUsersService_SetEmailVisibility(t *testing.T) {
 	input := &UserEmail{Visibility: Ptr("private")}
 
 	mux.HandleFunc("/user/email/visibility", func(w http.ResponseWriter, r *http.Request) {
-		v := new(UserEmail)
+		var v *UserEmail
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")

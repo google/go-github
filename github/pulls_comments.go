@@ -122,8 +122,8 @@ func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string
 	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
-	comment := new(PullRequestComment)
-	resp, err := s.client.Do(ctx, req, comment)
+	var comment *PullRequestComment
+	resp, err := s.client.Do(ctx, req, &comment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -145,8 +145,8 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo str
 	acceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
-	c := new(PullRequestComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *PullRequestComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -173,8 +173,8 @@ func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner,
 		return nil, nil, err
 	}
 
-	c := new(PullRequestComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *PullRequestComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -195,8 +195,8 @@ func (s *PullRequestsService) EditComment(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	c := new(PullRequestComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *PullRequestComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -215,5 +215,6 @@ func (s *PullRequestsService) DeleteComment(ctx context.Context, owner, repo str
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }

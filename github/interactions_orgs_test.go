@@ -57,8 +57,8 @@ func TestInteractionsService_UpdateRestrictionsForOrg(t *testing.T) {
 	input := &InteractionRestriction{Limit: Ptr("existing_users")}
 
 	mux.HandleFunc("/orgs/o/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
-		v := new(InteractionRestriction)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *InteractionRestriction
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)

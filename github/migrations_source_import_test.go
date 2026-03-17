@@ -26,8 +26,8 @@ func TestMigrationService_StartImport(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Import)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Import
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {
@@ -109,8 +109,8 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Import)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Import
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
@@ -190,8 +190,8 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 	input := &SourceImportAuthor{Name: Ptr("n"), Email: Ptr("e")}
 
 	mux.HandleFunc("/repos/o/r/import/authors/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(SourceImportAuthor)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *SourceImportAuthor
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
@@ -233,8 +233,8 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 	input := &Import{UseLFS: Ptr("opt_in")}
 
 	mux.HandleFunc("/repos/o/r/import/lfs", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Import)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Import
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

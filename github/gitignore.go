@@ -58,8 +58,8 @@ func (s *GitignoresService) Get(ctx context.Context, name string) (*Gitignore, *
 		return nil, nil, err
 	}
 
-	gitignore := new(Gitignore)
-	resp, err := s.client.Do(ctx, req, gitignore)
+	var gitignore *Gitignore
+	resp, err := s.client.Do(ctx, req, &gitignore)
 	if err != nil {
 		return nil, resp, err
 	}

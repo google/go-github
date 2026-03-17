@@ -23,8 +23,8 @@ func TestAdminOrgs_Create(t *testing.T) {
 	}
 
 	mux.HandleFunc("/admin/organizations", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createOrgRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *createOrgRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		want := &createOrgRequest{Login: Ptr("github"), Admin: Ptr("ghAdmin")}
@@ -65,8 +65,8 @@ func TestAdminOrgs_Rename(t *testing.T) {
 	}
 
 	mux.HandleFunc("/admin/organizations/o", func(w http.ResponseWriter, r *http.Request) {
-		v := new(renameOrgRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *renameOrgRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		want := &renameOrgRequest{Login: Ptr("the-new-octocats")}
@@ -112,8 +112,8 @@ func TestAdminOrgs_RenameByName(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/admin/organizations/o", func(w http.ResponseWriter, r *http.Request) {
-		v := new(renameOrgRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *renameOrgRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		want := &renameOrgRequest{Login: Ptr("the-new-octocats")}

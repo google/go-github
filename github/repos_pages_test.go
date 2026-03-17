@@ -30,8 +30,8 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createPagesRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *createPagesRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
@@ -84,8 +84,8 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createPagesRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *createPagesRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
@@ -135,8 +135,8 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PagesUpdate)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *PagesUpdate
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		want := &PagesUpdate{CNAME: Ptr("www.example.com"), BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("gh-pages")}}
@@ -174,8 +174,8 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PagesUpdate)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *PagesUpdate
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		want := &PagesUpdate{CNAME: Ptr("www.example.com"), BuildType: Ptr("workflow")}
@@ -212,8 +212,8 @@ func TestRepositoriesService_UpdatePagesGHES(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		v := new(PagesUpdate)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *PagesUpdate
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		want := &PagesUpdate{BuildType: Ptr("workflow")}

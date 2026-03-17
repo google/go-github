@@ -67,8 +67,8 @@ func (s *ActivityService) ListFeeds(ctx context.Context) (*Feeds, *Response, err
 		return nil, nil, err
 	}
 
-	f := &Feeds{}
-	resp, err := s.client.Do(ctx, req, f)
+	var f *Feeds
+	resp, err := s.client.Do(ctx, req, &f)
 	if err != nil {
 		return nil, resp, err
 	}

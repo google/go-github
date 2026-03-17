@@ -44,8 +44,8 @@ func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, req
 		return nil, nil, err
 	}
 
-	commit := new(RepositoryCommit)
-	resp, err := s.client.Do(ctx, req, commit)
+	var commit *RepositoryCommit
+	resp, err := s.client.Do(ctx, req, &commit)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -66,8 +66,8 @@ func (s *RepositoriesService) MergeUpstream(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	result := new(RepoMergeUpstreamResult)
-	resp, err := s.client.Do(ctx, req, result)
+	var result *RepoMergeUpstreamResult
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}

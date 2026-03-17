@@ -82,8 +82,8 @@ func (s *RepositoriesService) CreateStatus(ctx context.Context, owner, repo, ref
 		return nil, nil, err
 	}
 
-	repoStatus := new(RepoStatus)
-	resp, err := s.client.Do(ctx, req, repoStatus)
+	var repoStatus *RepoStatus
+	resp, err := s.client.Do(ctx, req, &repoStatus)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -128,8 +128,8 @@ func (s *RepositoriesService) GetCombinedStatus(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	status := new(CombinedStatus)
-	resp, err := s.client.Do(ctx, req, status)
+	var status *CombinedStatus
+	resp, err := s.client.Do(ctx, req, &status)
 	if err != nil {
 		return nil, resp, err
 	}

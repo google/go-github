@@ -307,8 +307,8 @@ func TestIssuesService_Create(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
-		v := new(IssueRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *IssueRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -360,8 +360,8 @@ func TestIssuesService_Edit(t *testing.T) {
 	input := &IssueRequest{Title: Ptr("t"), Type: Ptr("bug")}
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(IssueRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *IssueRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {
@@ -512,7 +512,7 @@ func TestIssuesService_Unlock(t *testing.T) {
 
 func TestIsPullRequest(t *testing.T) {
 	t.Parallel()
-	i := new(Issue)
+	var i Issue
 	if i.IsPullRequest() {
 		t.Errorf("expected i.IsPullRequest (%v) to return false, got true", i)
 	}

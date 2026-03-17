@@ -54,8 +54,8 @@ func (s *ActionsService) getPublicKey(ctx context.Context, url string) (*PublicK
 		return nil, nil, err
 	}
 
-	pubKey := new(PublicKey)
-	resp, err := s.client.Do(ctx, req, pubKey)
+	var pubKey *PublicKey
+	resp, err := s.client.Do(ctx, req, &pubKey)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -119,7 +119,7 @@ func (s *ActionsService) listSecrets(ctx context.Context, url string, opts *List
 		return nil, nil, err
 	}
 
-	secrets := new(Secrets)
+	var secrets *Secrets
 	resp, err := s.client.Do(ctx, req, &secrets)
 	if err != nil {
 		return nil, resp, err
@@ -177,8 +177,8 @@ func (s *ActionsService) getSecret(ctx context.Context, url string) (*Secret, *R
 		return nil, nil, err
 	}
 
-	secret := new(Secret)
-	resp, err := s.client.Do(ctx, req, secret)
+	var secret *Secret
+	resp, err := s.client.Do(ctx, req, &secret)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -339,8 +339,8 @@ func (s *ActionsService) listSelectedReposForSecret(ctx context.Context, url str
 		return nil, nil, err
 	}
 
-	result := new(SelectedReposList)
-	resp, err := s.client.Do(ctx, req, result)
+	var result *SelectedReposList
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}

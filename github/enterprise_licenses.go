@@ -106,7 +106,7 @@ func (s *EnterpriseService) GetConsumedLicenses(ctx context.Context, enterprise 
 		return nil, nil, err
 	}
 
-	consumedLicenses := &EnterpriseConsumedLicenses{}
+	var consumedLicenses *EnterpriseConsumedLicenses
 	resp, err := s.client.Do(ctx, req, &consumedLicenses)
 	if err != nil {
 		return nil, resp, err
@@ -128,7 +128,7 @@ func (s *EnterpriseService) GetLicenseSyncStatus(ctx context.Context, enterprise
 		return nil, nil, err
 	}
 
-	syncStatus := &EnterpriseLicenseSyncStatus{}
+	var syncStatus *EnterpriseLicenseSyncStatus
 	resp, err := s.client.Do(ctx, req, &syncStatus)
 	if err != nil {
 		return nil, resp, err

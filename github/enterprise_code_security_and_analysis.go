@@ -32,8 +32,8 @@ func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, ente
 		return nil, nil, err
 	}
 
-	settings := new(EnterpriseSecurityAnalysisSettings)
-	resp, err := s.client.Do(ctx, req, settings)
+	var settings *EnterpriseSecurityAnalysisSettings
+	resp, err := s.client.Do(ctx, req, &settings)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -116,11 +116,12 @@ func (s *OrganizationsService) ListNetworkConfigurations(ctx context.Context, or
 		return nil, nil, err
 	}
 
-	configurations := &NetworkConfigurations{}
-	resp, err := s.client.Do(ctx, req, configurations)
+	var configurations *NetworkConfigurations
+	resp, err := s.client.Do(ctx, req, &configurations)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return configurations, resp, nil
 }
 
@@ -140,11 +141,12 @@ func (s *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, o
 		return nil, nil, err
 	}
 
-	configuration := &NetworkConfiguration{}
-	resp, err := s.client.Do(ctx, req, configuration)
+	var configuration *NetworkConfiguration
+	resp, err := s.client.Do(ctx, req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return configuration, resp, nil
 }
 
@@ -160,11 +162,12 @@ func (s *OrganizationsService) GetNetworkConfiguration(ctx context.Context, org,
 		return nil, nil, err
 	}
 
-	configuration := &NetworkConfiguration{}
-	resp, err := s.client.Do(ctx, req, configuration)
+	var configuration *NetworkConfiguration
+	resp, err := s.client.Do(ctx, req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return configuration, resp, nil
 }
 
@@ -184,11 +187,12 @@ func (s *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, o
 		return nil, nil, err
 	}
 
-	configuration := &NetworkConfiguration{}
-	resp, err := s.client.Do(ctx, req, configuration)
+	var configuration *NetworkConfiguration
+	resp, err := s.client.Do(ctx, req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return configuration, resp, nil
 }
 
@@ -204,11 +208,12 @@ func (s *OrganizationsService) DeleteNetworkConfigurations(ctx context.Context, 
 		return nil, err
 	}
 
-	configuration := &NetworkConfiguration{}
-	resp, err := s.client.Do(ctx, req, configuration)
+	var configuration *NetworkConfiguration
+	resp, err := s.client.Do(ctx, req, &configuration)
 	if err != nil {
 		return resp, err
 	}
+
 	return resp, nil
 }
 
@@ -224,10 +229,11 @@ func (s *OrganizationsService) GetNetworkConfigurationResource(ctx context.Conte
 		return nil, nil, err
 	}
 
-	resource := &NetworkSettingsResource{}
-	resp, err := s.client.Do(ctx, req, resource)
+	var resource *NetworkSettingsResource
+	resp, err := s.client.Do(ctx, req, &resource)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return resource, resp, nil
 }

@@ -33,8 +33,8 @@ func (s *GitService) GetBlob(ctx context.Context, owner, repo, sha string) (*Blo
 		return nil, nil, err
 	}
 
-	blob := new(Blob)
-	resp, err := s.client.Do(ctx, req, blob)
+	var blob *Blob
+	resp, err := s.client.Do(ctx, req, &blob)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -78,11 +78,11 @@ func (s *GitService) CreateBlob(ctx context.Context, owner, repo string, blob Bl
 		return nil, nil, err
 	}
 
-	t := new(Blob)
-	resp, err := s.client.Do(ctx, req, t)
+	var v *Blob
+	resp, err := s.client.Do(ctx, req, &v)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return t, resp, nil
+	return v, resp, nil
 }

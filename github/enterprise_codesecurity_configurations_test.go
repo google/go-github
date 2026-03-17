@@ -307,8 +307,8 @@ func TestEnterpriseService_AttachCodeSecurityConfigurationToRepositories(t *test
 		type request struct {
 			Scope string `json:"scope"`
 		}
-		v := new(request)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *request
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		if v.Scope != "all_without_configurations" {
 			t.Errorf("Enterprise.AttachCodeSecurityConfigurationToRepositories request body scope = %v, want selected", v.Scope)
 		}

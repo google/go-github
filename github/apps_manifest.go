@@ -41,8 +41,8 @@ func (s *AppsService) CompleteAppManifest(ctx context.Context, code string) (*Ap
 		return nil, nil, err
 	}
 
-	cfg := new(AppConfig)
-	resp, err := s.client.Do(ctx, req, cfg)
+	var cfg *AppConfig
+	resp, err := s.client.Do(ctx, req, &cfg)
 	if err != nil {
 		return nil, resp, err
 	}

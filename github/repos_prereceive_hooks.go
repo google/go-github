@@ -64,8 +64,8 @@ func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo
 
 	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
-	h := new(PreReceiveHook)
-	resp, err := s.client.Do(ctx, req, h)
+	var h *PreReceiveHook
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -87,8 +87,8 @@ func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, r
 
 	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
-	h := new(PreReceiveHook)
-	resp, err := s.client.Do(ctx, req, h)
+	var h *PreReceiveHook
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}

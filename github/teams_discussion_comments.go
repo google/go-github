@@ -107,8 +107,8 @@ func (s *TeamsService) GetCommentByID(ctx context.Context, orgID, teamID int64, 
 		return nil, nil, err
 	}
 
-	discussionComment := &DiscussionComment{}
-	resp, err := s.client.Do(ctx, req, discussionComment)
+	var discussionComment *DiscussionComment
+	resp, err := s.client.Do(ctx, req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -130,8 +130,8 @@ func (s *TeamsService) GetCommentBySlug(ctx context.Context, org, slug string, d
 		return nil, nil, err
 	}
 
-	discussionComment := &DiscussionComment{}
-	resp, err := s.client.Do(ctx, req, discussionComment)
+	var discussionComment *DiscussionComment
+	resp, err := s.client.Do(ctx, req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -152,8 +152,8 @@ func (s *TeamsService) CreateCommentByID(ctx context.Context, orgID, teamID int6
 		return nil, nil, err
 	}
 
-	discussionComment := &DiscussionComment{}
-	resp, err := s.client.Do(ctx, req, discussionComment)
+	var discussionComment *DiscussionComment
+	resp, err := s.client.Do(ctx, req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -174,8 +174,8 @@ func (s *TeamsService) CreateCommentBySlug(ctx context.Context, org, slug string
 		return nil, nil, err
 	}
 
-	discussionComment := &DiscussionComment{}
-	resp, err := s.client.Do(ctx, req, discussionComment)
+	var discussionComment *DiscussionComment
+	resp, err := s.client.Do(ctx, req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -197,8 +197,8 @@ func (s *TeamsService) EditCommentByID(ctx context.Context, orgID, teamID int64,
 		return nil, nil, err
 	}
 
-	discussionComment := &DiscussionComment{}
-	resp, err := s.client.Do(ctx, req, discussionComment)
+	var discussionComment *DiscussionComment
+	resp, err := s.client.Do(ctx, req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -220,8 +220,8 @@ func (s *TeamsService) EditCommentBySlug(ctx context.Context, org, slug string, 
 		return nil, nil, err
 	}
 
-	discussionComment := &DiscussionComment{}
-	resp, err := s.client.Do(ctx, req, discussionComment)
+	var discussionComment *DiscussionComment
+	resp, err := s.client.Do(ctx, req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}

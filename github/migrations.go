@@ -111,8 +111,8 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	m := &Migration{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Migration
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -164,8 +164,8 @@ func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id i
 
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	m := &Migration{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Migration
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

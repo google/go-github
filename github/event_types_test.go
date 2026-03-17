@@ -8445,7 +8445,6 @@ func TestPingEvent_Marshal(t *testing.T) {
 
 	l := make(map[string]any)
 	l["key"] = "value"
-	hookConfig := new(HookConfig)
 
 	u := &PingEvent{
 		Zen:    Ptr("z"),
@@ -8460,7 +8459,7 @@ func TestPingEvent_Marshal(t *testing.T) {
 			TestURL:      Ptr("tu"),
 			PingURL:      Ptr("pu"),
 			LastResponse: l,
-			Config:       hookConfig,
+			Config:       &HookConfig{},
 			Events:       []string{"a"},
 			Active:       Ptr(true),
 		},

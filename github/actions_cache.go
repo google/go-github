@@ -92,8 +92,8 @@ func (s *ActionsService) ListCaches(ctx context.Context, owner, repo string, opt
 		return nil, nil, err
 	}
 
-	actionCacheList := new(ActionsCacheList)
-	resp, err := s.client.Do(ctx, req, actionCacheList)
+	var actionCacheList *ActionsCacheList
+	resp, err := s.client.Do(ctx, req, &actionCacheList)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -160,8 +160,8 @@ func (s *ActionsService) GetCacheUsageForRepo(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	cacheUsage := new(ActionsCacheUsage)
-	res, err := s.client.Do(ctx, req, cacheUsage)
+	var cacheUsage *ActionsCacheUsage
+	res, err := s.client.Do(ctx, req, &cacheUsage)
 	if err != nil {
 		return nil, res, err
 	}
@@ -190,8 +190,8 @@ func (s *ActionsService) ListCacheUsageByRepoForOrg(ctx context.Context, org str
 		return nil, nil, err
 	}
 
-	cacheUsage := new(ActionsCacheUsageList)
-	res, err := s.client.Do(ctx, req, cacheUsage)
+	var cacheUsage *ActionsCacheUsageList
+	res, err := s.client.Do(ctx, req, &cacheUsage)
 	if err != nil {
 		return nil, res, err
 	}
@@ -215,8 +215,8 @@ func (s *ActionsService) GetTotalCacheUsageForOrg(ctx context.Context, org strin
 		return nil, nil, err
 	}
 
-	cacheUsage := new(TotalCacheUsage)
-	res, err := s.client.Do(ctx, req, cacheUsage)
+	var cacheUsage *TotalCacheUsage
+	res, err := s.client.Do(ctx, req, &cacheUsage)
 	if err != nil {
 		return nil, res, err
 	}
@@ -239,8 +239,8 @@ func (s *ActionsService) GetTotalCacheUsageForEnterprise(ctx context.Context, en
 		return nil, nil, err
 	}
 
-	cacheUsage := new(TotalCacheUsage)
-	res, err := s.client.Do(ctx, req, cacheUsage)
+	var cacheUsage *TotalCacheUsage
+	res, err := s.client.Do(ctx, req, &cacheUsage)
 	if err != nil {
 		return nil, res, err
 	}

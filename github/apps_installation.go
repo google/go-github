@@ -33,7 +33,6 @@ func (s *AppsService) ListRepos(ctx context.Context, opts *ListOptions) (*ListRe
 	}
 
 	var r *ListRepositories
-
 	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
@@ -81,8 +80,8 @@ func (s *AppsService) AddRepository(ctx context.Context, instID, repoID int64) (
 		return nil, nil, err
 	}
 
-	r := new(Repository)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *Repository
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}

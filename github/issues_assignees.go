@@ -69,8 +69,8 @@ func (s *IssuesService) AddAssignees(ctx context.Context, owner, repo string, nu
 		return nil, nil, err
 	}
 
-	issue := &Issue{}
-	resp, err := s.client.Do(ctx, req, issue)
+	var issue *Issue
+	resp, err := s.client.Do(ctx, req, &issue)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -93,8 +93,8 @@ func (s *IssuesService) RemoveAssignees(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	issue := &Issue{}
-	resp, err := s.client.Do(ctx, req, issue)
+	var issue *Issue
+	resp, err := s.client.Do(ctx, req, &issue)
 	if err != nil {
 		return nil, resp, err
 	}

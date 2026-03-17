@@ -79,8 +79,8 @@ func (s *ActionsService) GetActionsPermissions(ctx context.Context, org string) 
 		return nil, nil, err
 	}
 
-	permissions := new(ActionsPermissions)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *ActionsPermissions
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -100,8 +100,8 @@ func (s *ActionsService) UpdateActionsPermissions(ctx context.Context, org strin
 		return nil, nil, err
 	}
 
-	p := new(ActionsPermissions)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *ActionsPermissions
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -126,8 +126,8 @@ func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string
 		return nil, nil, err
 	}
 
-	repos := &ActionsEnabledOnOrgRepos{}
-	resp, err := s.client.Do(ctx, req, repos)
+	var repos *ActionsEnabledOnOrgRepos
+	resp, err := s.client.Do(ctx, req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -213,8 +213,8 @@ func (s *ActionsService) GetActionsAllowed(ctx context.Context, org string) (*Ac
 		return nil, nil, err
 	}
 
-	actionsAllowed := new(ActionsAllowed)
-	resp, err := s.client.Do(ctx, req, actionsAllowed)
+	var actionsAllowed *ActionsAllowed
+	resp, err := s.client.Do(ctx, req, &actionsAllowed)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -234,8 +234,8 @@ func (s *ActionsService) UpdateActionsAllowed(ctx context.Context, org string, a
 		return nil, nil, err
 	}
 
-	p := new(ActionsAllowed)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *ActionsAllowed
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -256,8 +256,8 @@ func (s *ActionsService) GetDefaultWorkflowPermissionsInOrganization(ctx context
 		return nil, nil, err
 	}
 
-	permissions := new(DefaultWorkflowPermissionOrganization)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *DefaultWorkflowPermissionOrganization
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -277,8 +277,8 @@ func (s *ActionsService) UpdateDefaultWorkflowPermissionsInOrganization(ctx cont
 		return nil, nil, err
 	}
 
-	p := new(DefaultWorkflowPermissionOrganization)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *DefaultWorkflowPermissionOrganization
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -299,8 +299,8 @@ func (s *ActionsService) GetArtifactAndLogRetentionPeriodInOrganization(ctx cont
 		return nil, nil, err
 	}
 
-	arp := new(ArtifactPeriod)
-	resp, err := s.client.Do(ctx, req, arp)
+	var arp *ArtifactPeriod
+	resp, err := s.client.Do(ctx, req, &arp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -336,8 +336,8 @@ func (s *ActionsService) GetSelfHostedRunnersSettingsInOrganization(ctx context.
 		return nil, nil, err
 	}
 
-	settings := new(SelfHostedRunnersSettingsOrganization)
-	resp, err := s.client.Do(ctx, req, settings)
+	var settings *SelfHostedRunnersSettingsOrganization
+	resp, err := s.client.Do(ctx, req, &settings)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -384,8 +384,8 @@ func (s *ActionsService) ListRepositoriesSelfHostedRunnersAllowedInOrganization(
 		return nil, nil, err
 	}
 
-	settings := new(SelfHostedRunnersAllowedRepos)
-	resp, err := s.client.Do(ctx, req, settings)
+	var settings *SelfHostedRunnersAllowedRepos
+	resp, err := s.client.Do(ctx, req, &settings)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -461,8 +461,8 @@ func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInOrganization(ctx 
 		return nil, nil, err
 	}
 
-	permissions := new(WorkflowsPermissions)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *WorkflowsPermissions
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -498,8 +498,8 @@ func (s *ActionsService) GetOrganizationForkPRContributorApprovalPermissions(ctx
 		return nil, nil, err
 	}
 
-	policy := new(ContributorApprovalPermissions)
-	resp, err := s.client.Do(ctx, req, policy)
+	var policy *ContributorApprovalPermissions
+	resp, err := s.client.Do(ctx, req, &policy)
 	if err != nil {
 		return nil, resp, err
 	}
