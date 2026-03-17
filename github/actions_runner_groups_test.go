@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -410,6 +411,149 @@ func TestActionsService_RemoveRepositoryAccessRunnerGroup(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.RemoveRepositoryAccessRunnerGroup(ctx, "o", 2, 42)
+	})
+}
+
+func TestActionsService_ListRunnerGroupHostedRunners(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/runner-groups/2/hosted-runners", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "2", "page": "2"})
+		fmt.Fprint(w, `{
+			"total_count": 2,
+			"runners": [
+				{
+					"id": 5,
+					"name": "My hosted ubuntu runner",
+					"runner_group_id": 2,
+					"platform": "linux-x64",
+					"image_details": {
+						"id": "ubuntu-20.04",
+						"size_gb": 86
+					},
+					"machine_size_details": {
+						"id": "4-core",
+						"cpu_cores": 4,
+						"memory_gb": 16,
+						"storage_gb": 150
+					},
+					"status": "Ready",
+					"maximum_runners": 10,
+					"public_ip_enabled": true,
+					"public_ips": [
+						{
+							"enabled": true,
+							"prefix": "20.80.208.150",
+							"length": 31
+						}
+					],
+					"last_active_on": "2023-04-26T15:23:37Z"
+				},
+				{
+					"id": 7,
+					"name": "My hosted Windows runner",
+					"runner_group_id": 2,
+					"platform": "win-x64",
+					"image_details": {
+						"id": "windows-latest",
+						"size_gb": 256
+					},
+					"machine_size_details": {
+						"id": "8-core",
+						"cpu_cores": 8,
+						"memory_gb": 32,
+						"storage_gb": 300
+					},
+					"status": "Ready",
+					"maximum_runners": 20,
+					"public_ip_enabled": false,
+					"public_ips": [],
+					"last_active_on": "2023-04-26T15:23:37Z"
+				}
+			]
+		}`)
+	})
+
+	opts := &ListOptions{Page: 2, PerPage: 2}
+	ctx := t.Context()
+	runners, _, err := client.Actions.ListRunnerGroupHostedRunners(ctx, "o", 2, opts)
+	if err != nil {
+		t.Errorf("Actions.ListRunnerGroupHostedRunners returned error: %v", err)
+	}
+
+	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
+
+	want := &HostedRunners{
+		TotalCount: 2,
+		Runners: []*HostedRunner{
+			{
+				ID:            Ptr(int64(5)),
+				Name:          Ptr("My hosted ubuntu runner"),
+				RunnerGroupID: Ptr(int64(2)),
+				Platform:      Ptr("linux-x64"),
+				ImageDetails: &HostedRunnerImageDetail{
+					ID:     Ptr("ubuntu-20.04"),
+					SizeGB: Ptr(int64(86)),
+				},
+				MachineSizeDetails: &HostedRunnerMachineSpec{
+					ID:        "4-core",
+					CPUCores:  4,
+					MemoryGB:  16,
+					StorageGB: 150,
+				},
+				Status:          Ptr("Ready"),
+				MaximumRunners:  Ptr(int64(10)),
+				PublicIPEnabled: Ptr(true),
+				PublicIPs: []*HostedRunnerPublicIP{
+					{
+						Enabled: true,
+						Prefix:  "20.80.208.150",
+						Length:  31,
+					},
+				},
+				LastActiveOn: Ptr(lastActiveOn),
+			},
+			{
+				ID:            Ptr(int64(7)),
+				Name:          Ptr("My hosted Windows runner"),
+				RunnerGroupID: Ptr(int64(2)),
+				Platform:      Ptr("win-x64"),
+				ImageDetails: &HostedRunnerImageDetail{
+					ID:     Ptr("windows-latest"),
+					SizeGB: Ptr(int64(256)),
+				},
+				MachineSizeDetails: &HostedRunnerMachineSpec{
+					ID:        "8-core",
+					CPUCores:  8,
+					MemoryGB:  32,
+					StorageGB: 300,
+				},
+				Status:          Ptr("Ready"),
+				MaximumRunners:  Ptr(int64(20)),
+				PublicIPEnabled: Ptr(false),
+				PublicIPs:       []*HostedRunnerPublicIP{},
+				LastActiveOn:    Ptr(lastActiveOn),
+			},
+		},
+	}
+	if !cmp.Equal(runners, want) {
+		t.Errorf("Actions.ListRunnerGroupHostedRunners returned %+v, want %+v", runners, want)
+	}
+
+	const methodName = "ListRunnerGroupHostedRunners"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListRunnerGroupHostedRunners(ctx, "\n", 2, opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListRunnerGroupHostedRunners(ctx, "o", 2, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 

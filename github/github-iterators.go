@@ -679,6 +679,41 @@ func (s *ActionsService) ListRepositoryWorkflowRunsIter(ctx context.Context, own
 	}
 }
 
+// ListRunnerGroupHostedRunnersIter returns an iterator that paginates through all results of ListRunnerGroupHostedRunners.
+func (s *ActionsService) ListRunnerGroupHostedRunnersIter(ctx context.Context, org string, groupID int64, opts *ListOptions) iter.Seq2[*HostedRunner, error] {
+	return func(yield func(*HostedRunner, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRunnerGroupHostedRunners(ctx, org, groupID, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*HostedRunner
+			if results != nil {
+				iterItems = results.Runners
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListRunnerGroupRunnersIter returns an iterator that paginates through all results of ListRunnerGroupRunners.
 func (s *ActionsService) ListRunnerGroupRunnersIter(ctx context.Context, org string, groupID int64, opts *ListOptions) iter.Seq2[*Runner, error] {
 	return func(yield func(*Runner, error) bool) {
