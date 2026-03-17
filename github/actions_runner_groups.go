@@ -265,6 +265,32 @@ func (s *ActionsService) RemoveRepositoryAccessRunnerGroup(ctx context.Context, 
 	return s.client.Do(ctx, req, nil)
 }
 
+// ListRunnerGroupHostedRunners lists the GitHub-hosted runners in an organization runner group.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runner-groups#list-github-hosted-runners-in-a-group-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/runner-groups/{runner_group_id}/hosted-runners
+func (s *ActionsService) ListRunnerGroupHostedRunners(ctx context.Context, org string, groupID int64, opts *ListOptions) (*HostedRunners, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/runner-groups/%v/hosted-runners", org, groupID)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var runners *HostedRunners
+	resp, err := s.client.Do(ctx, req, &runners)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return runners, resp, nil
+}
+
 // ListRunnerGroupRunners lists self-hosted runners that are in a specific organization group.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runner-groups#list-self-hosted-runners-in-a-group-for-an-organization
