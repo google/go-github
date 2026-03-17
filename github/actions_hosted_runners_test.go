@@ -92,7 +92,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 				RunnerGroupID: Ptr(int64(2)),
 				Platform:      Ptr("linux-x64"),
 				Image: &HostedRunnerImageDetail{
-					ID:     Ptr("ubuntu-20.04"),
+					ID:   Ptr("ubuntu-20.04"),
 					Size: Ptr(int64(86)),
 				},
 				MachineSizeDetails: &HostedRunnerMachineSpec{
@@ -119,7 +119,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 				RunnerGroupID: Ptr(int64(2)),
 				Platform:      Ptr("win-x64"),
 				Image: &HostedRunnerImageDetail{
-					ID:     Ptr("windows-latest"),
+					ID:   Ptr("windows-latest"),
 					Size: Ptr(int64(256)),
 				},
 				MachineSizeDetails: &HostedRunnerMachineSpec{
@@ -217,7 +217,7 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
 		Image: &HostedRunnerImageDetail{
-			ID:     Ptr("ubuntu-20.04"),
+			ID:   Ptr("ubuntu-20.04"),
 			Size: Ptr(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
@@ -633,7 +633,7 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
 		Image: &HostedRunnerImageDetail{
-			ID:     Ptr("ubuntu-20.04"),
+			ID:   Ptr("ubuntu-20.04"),
 			Size: Ptr(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
@@ -729,7 +729,7 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
 		Image: &HostedRunnerImageDetail{
-			ID:     Ptr("ubuntu-20.04"),
+			ID:   Ptr("ubuntu-20.04"),
 			Size: Ptr(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
@@ -818,7 +818,7 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 		RunnerGroupID: Ptr(int64(2)),
 		Platform:      Ptr("linux-x64"),
 		Image: &HostedRunnerImageDetail{
-			ID:     Ptr("ubuntu-20.04"),
+			ID:   Ptr("ubuntu-20.04"),
 			Size: Ptr(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
