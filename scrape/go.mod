@@ -3,7 +3,7 @@ module github.com/google/go-github/scrape
 go 1.25.0
 
 require (
-	github.com/PuerkitoBio/goquery v1.11.0
+	github.com/PuerkitoBio/goquery v1.12.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v84 v84.0.0
 	github.com/xlzd/gotp v0.1.0
