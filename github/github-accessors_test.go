@@ -15,6 +15,14 @@ import (
 	"time"
 )
 
+func TestAbuseRateLimitError_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	a := &AbuseRateLimitError{}
+	a.GetMessage()
+	a = nil
+	a.GetMessage()
+}
+
 func TestAbuseRateLimitError_GetRetryAfter(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue time.Duration
@@ -86,6 +94,17 @@ func TestAcceptedAssignment_GetRepository(tt *testing.T) {
 	a.GetRepository()
 }
 
+func TestAcceptedAssignment_GetStudents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ClassroomUser{}
+	a := &AcceptedAssignment{Students: zeroValue}
+	a.GetStudents()
+	a = &AcceptedAssignment{}
+	a.GetStudents()
+	a = nil
+	a.GetStudents()
+}
+
 func TestAcceptedAssignment_GetSubmitted(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -97,6 +116,41 @@ func TestAcceptedAssignment_GetSubmitted(tt *testing.T) {
 	a.GetSubmitted()
 }
 
+func TestAcceptedError_GetRaw(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []byte{}
+	a := &AcceptedError{Raw: zeroValue}
+	a.GetRaw()
+	a = &AcceptedError{}
+	a.GetRaw()
+	a = nil
+	a.GetRaw()
+}
+
+func TestAccessibleRepository_GetFullName(tt *testing.T) {
+	tt.Parallel()
+	a := &AccessibleRepository{}
+	a.GetFullName()
+	a = nil
+	a.GetFullName()
+}
+
+func TestAccessibleRepository_GetID(tt *testing.T) {
+	tt.Parallel()
+	a := &AccessibleRepository{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAccessibleRepository_GetName(tt *testing.T) {
+	tt.Parallel()
+	a := &AccessibleRepository{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
 func TestActionsAllowed_GetGithubOwnedAllowed(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -106,6 +160,17 @@ func TestActionsAllowed_GetGithubOwnedAllowed(tt *testing.T) {
 	a.GetGithubOwnedAllowed()
 	a = nil
 	a.GetGithubOwnedAllowed()
+}
+
+func TestActionsAllowed_GetPatternsAllowed(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &ActionsAllowed{PatternsAllowed: zeroValue}
+	a.GetPatternsAllowed()
+	a = &ActionsAllowed{}
+	a.GetPatternsAllowed()
+	a = nil
+	a.GetPatternsAllowed()
 }
 
 func TestActionsAllowed_GetVerifiedAllowed(tt *testing.T) {
@@ -196,6 +261,25 @@ func TestActionsCache_GetVersion(tt *testing.T) {
 	a.GetVersion()
 }
 
+func TestActionsCacheList_GetActionsCaches(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsCache{}
+	a := &ActionsCacheList{ActionsCaches: zeroValue}
+	a.GetActionsCaches()
+	a = &ActionsCacheList{}
+	a.GetActionsCaches()
+	a = nil
+	a.GetActionsCaches()
+}
+
+func TestActionsCacheList_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsCacheList{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
 func TestActionsCacheListOptions_GetDirection(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -238,6 +322,109 @@ func TestActionsCacheListOptions_GetSort(tt *testing.T) {
 	a.GetSort()
 	a = nil
 	a.GetSort()
+}
+
+func TestActionsCacheUsage_GetActiveCachesCount(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsCacheUsage{}
+	a.GetActiveCachesCount()
+	a = nil
+	a.GetActiveCachesCount()
+}
+
+func TestActionsCacheUsage_GetActiveCachesSizeInBytes(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsCacheUsage{}
+	a.GetActiveCachesSizeInBytes()
+	a = nil
+	a.GetActiveCachesSizeInBytes()
+}
+
+func TestActionsCacheUsage_GetFullName(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsCacheUsage{}
+	a.GetFullName()
+	a = nil
+	a.GetFullName()
+}
+
+func TestActionsCacheUsageList_GetRepoCacheUsage(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsCacheUsage{}
+	a := &ActionsCacheUsageList{RepoCacheUsage: zeroValue}
+	a.GetRepoCacheUsage()
+	a = &ActionsCacheUsageList{}
+	a.GetRepoCacheUsage()
+	a = nil
+	a.GetRepoCacheUsage()
+}
+
+func TestActionsCacheUsageList_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsCacheUsageList{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
+func TestActionsEnabledOnEnterpriseRepos_GetOrganizations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Organization{}
+	a := &ActionsEnabledOnEnterpriseRepos{Organizations: zeroValue}
+	a.GetOrganizations()
+	a = &ActionsEnabledOnEnterpriseRepos{}
+	a.GetOrganizations()
+	a = nil
+	a.GetOrganizations()
+}
+
+func TestActionsEnabledOnEnterpriseRepos_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsEnabledOnEnterpriseRepos{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
+func TestActionsEnabledOnOrgRepos_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	a := &ActionsEnabledOnOrgRepos{Repositories: zeroValue}
+	a.GetRepositories()
+	a = &ActionsEnabledOnOrgRepos{}
+	a.GetRepositories()
+	a = nil
+	a.GetRepositories()
+}
+
+func TestActionsEnabledOnOrgRepos_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsEnabledOnOrgRepos{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
+func TestActionsInboundDomains_GetFullDomains(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &ActionsInboundDomains{FullDomains: zeroValue}
+	a.GetFullDomains()
+	a = &ActionsInboundDomains{}
+	a.GetFullDomains()
+	a = nil
+	a.GetFullDomains()
+}
+
+func TestActionsInboundDomains_GetWildcardDomains(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &ActionsInboundDomains{WildcardDomains: zeroValue}
+	a.GetWildcardDomains()
+	a = &ActionsInboundDomains{}
+	a.GetWildcardDomains()
+	a = nil
+	a.GetWildcardDomains()
 }
 
 func TestActionsPermissions_GetAllowedActions(tt *testing.T) {
@@ -372,6 +559,14 @@ func TestActionsVariable_GetCreatedAt(tt *testing.T) {
 	a.GetCreatedAt()
 }
 
+func TestActionsVariable_GetName(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsVariable{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
 func TestActionsVariable_GetSelectedRepositoriesURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -402,6 +597,14 @@ func TestActionsVariable_GetUpdatedAt(tt *testing.T) {
 	a.GetUpdatedAt()
 }
 
+func TestActionsVariable_GetValue(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsVariable{}
+	a.GetValue()
+	a = nil
+	a.GetValue()
+}
+
 func TestActionsVariable_GetVisibility(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -411,6 +614,25 @@ func TestActionsVariable_GetVisibility(tt *testing.T) {
 	a.GetVisibility()
 	a = nil
 	a.GetVisibility()
+}
+
+func TestActionsVariables_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsVariables{}
+	a.GetTotalCount()
+	a = nil
+	a.GetTotalCount()
+}
+
+func TestActionsVariables_GetVariables(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ActionsVariable{}
+	a := &ActionsVariables{Variables: zeroValue}
+	a.GetVariables()
+	a = &ActionsVariables{}
+	a.GetVariables()
+	a = nil
+	a.GetVariables()
 }
 
 func TestActiveCommitters_GetMaximumAdvancedSecurityCommitters(tt *testing.T) {
@@ -433,6 +655,17 @@ func TestActiveCommitters_GetPurchasedAdvancedSecurityCommitters(tt *testing.T) 
 	a.GetPurchasedAdvancedSecurityCommitters()
 	a = nil
 	a.GetPurchasedAdvancedSecurityCommitters()
+}
+
+func TestActiveCommitters_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryActiveCommitters{}
+	a := &ActiveCommitters{Repositories: zeroValue}
+	a.GetRepositories()
+	a = &ActiveCommitters{}
+	a.GetRepositories()
+	a = nil
+	a.GetRepositories()
 }
 
 func TestActiveCommitters_GetTotalAdvancedSecurityCommitters(tt *testing.T) {
@@ -466,6 +699,22 @@ func TestActiveCommittersListOptions_GetAdvancedSecurityProduct(tt *testing.T) {
 	a.GetAdvancedSecurityProduct()
 	a = nil
 	a.GetAdvancedSecurityProduct()
+}
+
+func TestActivityListStarredOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	a := &ActivityListStarredOptions{}
+	a.GetDirection()
+	a = nil
+	a.GetDirection()
+}
+
+func TestActivityListStarredOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	a := &ActivityListStarredOptions{}
+	a.GetSort()
+	a = nil
+	a.GetSort()
 }
 
 func TestActorLocation_GetCountryCode(tt *testing.T) {
@@ -509,6 +758,17 @@ func TestAddResourcesToCostCenterResponse_GetMessage(tt *testing.T) {
 	a.GetMessage()
 }
 
+func TestAddResourcesToCostCenterResponse_GetReassignedResources(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ReassignedResource{}
+	a := &AddResourcesToCostCenterResponse{ReassignedResources: zeroValue}
+	a.GetReassignedResources()
+	a = &AddResourcesToCostCenterResponse{}
+	a.GetReassignedResources()
+	a = nil
+	a.GetReassignedResources()
+}
+
 func TestAdminEnforcedChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -518,6 +778,14 @@ func TestAdminEnforcedChanges_GetFrom(tt *testing.T) {
 	a.GetFrom()
 	a = nil
 	a.GetFrom()
+}
+
+func TestAdminEnforcement_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	a := &AdminEnforcement{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
 }
 
 func TestAdminEnforcement_GetURL(tt *testing.T) {
@@ -622,9 +890,36 @@ func TestAdvancedSecurity_GetStatus(tt *testing.T) {
 	a.GetStatus()
 }
 
+func TestAdvancedSecurityCommittersBreakdown_GetLastPushedDate(tt *testing.T) {
+	tt.Parallel()
+	a := &AdvancedSecurityCommittersBreakdown{}
+	a.GetLastPushedDate()
+	a = nil
+	a.GetLastPushedDate()
+}
+
+func TestAdvancedSecurityCommittersBreakdown_GetLastPushedEmail(tt *testing.T) {
+	tt.Parallel()
+	a := &AdvancedSecurityCommittersBreakdown{}
+	a.GetLastPushedEmail()
+	a = nil
+	a.GetLastPushedEmail()
+}
+
+func TestAdvancedSecurityCommittersBreakdown_GetUserLogin(tt *testing.T) {
+	tt.Parallel()
+	a := &AdvancedSecurityCommittersBreakdown{}
+	a.GetUserLogin()
+	a = nil
+	a.GetUserLogin()
+}
+
 func TestAdvisoryCVSS_GetScore(tt *testing.T) {
 	tt.Parallel()
-	a := &AdvisoryCVSS{}
+	var zeroValue float64
+	a := &AdvisoryCVSS{Score: &zeroValue}
+	a.GetScore()
+	a = &AdvisoryCVSS{}
 	a.GetScore()
 	a = nil
 	a.GetScore()
@@ -661,6 +956,22 @@ func TestAdvisoryCWEs_GetName(tt *testing.T) {
 	a.GetName()
 	a = nil
 	a.GetName()
+}
+
+func TestAdvisoryEPSS_GetPercentage(tt *testing.T) {
+	tt.Parallel()
+	a := &AdvisoryEPSS{}
+	a.GetPercentage()
+	a = nil
+	a.GetPercentage()
+}
+
+func TestAdvisoryEPSS_GetPercentile(tt *testing.T) {
+	tt.Parallel()
+	a := &AdvisoryEPSS{}
+	a.GetPercentile()
+	a = nil
+	a.GetPercentile()
 }
 
 func TestAdvisoryIdentifier_GetType(tt *testing.T) {
@@ -732,6 +1043,17 @@ func TestAdvisoryVulnerability_GetSeverity(tt *testing.T) {
 	a.GetSeverity()
 	a = nil
 	a.GetSeverity()
+}
+
+func TestAdvisoryVulnerability_GetVulnerableFunctions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &AdvisoryVulnerability{VulnerableFunctions: zeroValue}
+	a.GetVulnerableFunctions()
+	a = &AdvisoryVulnerability{}
+	a.GetVulnerableFunctions()
+	a = nil
+	a.GetVulnerableFunctions()
 }
 
 func TestAdvisoryVulnerability_GetVulnerableVersionRange(tt *testing.T) {
@@ -836,6 +1158,17 @@ func TestAlert_GetHTMLURL(tt *testing.T) {
 	a.GetHTMLURL()
 	a = nil
 	a.GetHTMLURL()
+}
+
+func TestAlert_GetInstances(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*MostRecentInstance{}
+	a := &Alert{Instances: zeroValue}
+	a.GetInstances()
+	a = &Alert{}
+	a.GetInstances()
+	a = nil
+	a.GetInstances()
 }
 
 func TestAlert_GetInstancesURL(tt *testing.T) {
@@ -958,6 +1291,78 @@ func TestAlert_GetURL(tt *testing.T) {
 	a.GetURL()
 }
 
+func TestAlertInstancesListOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	a := &AlertInstancesListOptions{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestAlertListOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	a := &AlertListOptions{}
+	a.GetDirection()
+	a = nil
+	a.GetDirection()
+}
+
+func TestAlertListOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	a := &AlertListOptions{}
+	a.GetRef()
+	a = nil
+	a.GetRef()
+}
+
+func TestAlertListOptions_GetSeverity(tt *testing.T) {
+	tt.Parallel()
+	a := &AlertListOptions{}
+	a.GetSeverity()
+	a = nil
+	a.GetSeverity()
+}
+
+func TestAlertListOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	a := &AlertListOptions{}
+	a.GetSort()
+	a = nil
+	a.GetSort()
+}
+
+func TestAlertListOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	a := &AlertListOptions{}
+	a.GetState()
+	a = nil
+	a.GetState()
+}
+
+func TestAlertListOptions_GetToolGUID(tt *testing.T) {
+	tt.Parallel()
+	a := &AlertListOptions{}
+	a.GetToolGUID()
+	a = nil
+	a.GetToolGUID()
+}
+
+func TestAlertListOptions_GetToolName(tt *testing.T) {
+	tt.Parallel()
+	a := &AlertListOptions{}
+	a.GetToolName()
+	a = nil
+	a.GetToolName()
+}
+
+func TestAllowDeletions_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	a := &AllowDeletions{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
+}
+
 func TestAllowDeletionsEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -969,6 +1374,14 @@ func TestAllowDeletionsEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	a.GetFrom()
 }
 
+func TestAllowForcePushes_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	a := &AllowForcePushes{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
+}
+
 func TestAllowForkSyncing_GetEnabled(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -978,6 +1391,94 @@ func TestAllowForkSyncing_GetEnabled(tt *testing.T) {
 	a.GetEnabled()
 	a = nil
 	a.GetEnabled()
+}
+
+func TestAmazonS3AccessKeysConfig_GetAuthenticationType(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3AccessKeysConfig{}
+	a.GetAuthenticationType()
+	a = nil
+	a.GetAuthenticationType()
+}
+
+func TestAmazonS3AccessKeysConfig_GetBucket(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3AccessKeysConfig{}
+	a.GetBucket()
+	a = nil
+	a.GetBucket()
+}
+
+func TestAmazonS3AccessKeysConfig_GetEncryptedAccessKeyID(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3AccessKeysConfig{}
+	a.GetEncryptedAccessKeyID()
+	a = nil
+	a.GetEncryptedAccessKeyID()
+}
+
+func TestAmazonS3AccessKeysConfig_GetEncryptedSecretKey(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3AccessKeysConfig{}
+	a.GetEncryptedSecretKey()
+	a = nil
+	a.GetEncryptedSecretKey()
+}
+
+func TestAmazonS3AccessKeysConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3AccessKeysConfig{}
+	a.GetKeyID()
+	a = nil
+	a.GetKeyID()
+}
+
+func TestAmazonS3AccessKeysConfig_GetRegion(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3AccessKeysConfig{}
+	a.GetRegion()
+	a = nil
+	a.GetRegion()
+}
+
+func TestAmazonS3OIDCConfig_GetArnRole(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3OIDCConfig{}
+	a.GetArnRole()
+	a = nil
+	a.GetArnRole()
+}
+
+func TestAmazonS3OIDCConfig_GetAuthenticationType(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3OIDCConfig{}
+	a.GetAuthenticationType()
+	a = nil
+	a.GetAuthenticationType()
+}
+
+func TestAmazonS3OIDCConfig_GetBucket(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3OIDCConfig{}
+	a.GetBucket()
+	a = nil
+	a.GetBucket()
+}
+
+func TestAmazonS3OIDCConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3OIDCConfig{}
+	a.GetKeyID()
+	a = nil
+	a.GetKeyID()
+}
+
+func TestAmazonS3OIDCConfig_GetRegion(tt *testing.T) {
+	tt.Parallel()
+	a := &AmazonS3OIDCConfig{}
+	a.GetRegion()
+	a = nil
+	a.GetRegion()
 }
 
 func TestAnalysesListOptions_GetRef(tt *testing.T) {
@@ -1002,12 +1503,144 @@ func TestAnalysesListOptions_GetSarifID(tt *testing.T) {
 	a.GetSarifID()
 }
 
+func TestAPIMeta_GetActions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{Actions: zeroValue}
+	a.GetActions()
+	a = &APIMeta{}
+	a.GetActions()
+	a = nil
+	a.GetActions()
+}
+
+func TestAPIMeta_GetActionsMacos(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{ActionsMacos: zeroValue}
+	a.GetActionsMacos()
+	a = &APIMeta{}
+	a.GetActionsMacos()
+	a = nil
+	a.GetActionsMacos()
+}
+
+func TestAPIMeta_GetAPI(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{API: zeroValue}
+	a.GetAPI()
+	a = &APIMeta{}
+	a.GetAPI()
+	a = nil
+	a.GetAPI()
+}
+
+func TestAPIMeta_GetCodespaces(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{Codespaces: zeroValue}
+	a.GetCodespaces()
+	a = &APIMeta{}
+	a.GetCodespaces()
+	a = nil
+	a.GetCodespaces()
+}
+
+func TestAPIMeta_GetCopilot(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{Copilot: zeroValue}
+	a.GetCopilot()
+	a = &APIMeta{}
+	a.GetCopilot()
+	a = nil
+	a.GetCopilot()
+}
+
+func TestAPIMeta_GetDependabot(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{Dependabot: zeroValue}
+	a.GetDependabot()
+	a = &APIMeta{}
+	a.GetDependabot()
+	a = nil
+	a.GetDependabot()
+}
+
 func TestAPIMeta_GetDomains(tt *testing.T) {
 	tt.Parallel()
 	a := &APIMeta{}
 	a.GetDomains()
 	a = nil
 	a.GetDomains()
+}
+
+func TestAPIMeta_GetGit(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{Git: zeroValue}
+	a.GetGit()
+	a = &APIMeta{}
+	a.GetGit()
+	a = nil
+	a.GetGit()
+}
+
+func TestAPIMeta_GetGithubEnterpriseImporter(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{GithubEnterpriseImporter: zeroValue}
+	a.GetGithubEnterpriseImporter()
+	a = &APIMeta{}
+	a.GetGithubEnterpriseImporter()
+	a = nil
+	a.GetGithubEnterpriseImporter()
+}
+
+func TestAPIMeta_GetHooks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{Hooks: zeroValue}
+	a.GetHooks()
+	a = &APIMeta{}
+	a.GetHooks()
+	a = nil
+	a.GetHooks()
+}
+
+func TestAPIMeta_GetImporter(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{Importer: zeroValue}
+	a.GetImporter()
+	a = &APIMeta{}
+	a.GetImporter()
+	a = nil
+	a.GetImporter()
+}
+
+func TestAPIMeta_GetPackages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{Packages: zeroValue}
+	a.GetPackages()
+	a = &APIMeta{}
+	a.GetPackages()
+	a = nil
+	a.GetPackages()
+}
+
+func TestAPIMeta_GetPages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{Pages: zeroValue}
+	a.GetPages()
+	a = &APIMeta{}
+	a.GetPages()
+	a = nil
+	a.GetPages()
 }
 
 func TestAPIMeta_GetSSHKeyFingerprints(tt *testing.T) {
@@ -1021,6 +1654,17 @@ func TestAPIMeta_GetSSHKeyFingerprints(tt *testing.T) {
 	a.GetSSHKeyFingerprints()
 }
 
+func TestAPIMeta_GetSSHKeys(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{SSHKeys: zeroValue}
+	a.GetSSHKeys()
+	a = &APIMeta{}
+	a.GetSSHKeys()
+	a = nil
+	a.GetSSHKeys()
+}
+
 func TestAPIMeta_GetVerifiablePasswordAuthentication(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -1030,6 +1674,47 @@ func TestAPIMeta_GetVerifiablePasswordAuthentication(tt *testing.T) {
 	a.GetVerifiablePasswordAuthentication()
 	a = nil
 	a.GetVerifiablePasswordAuthentication()
+}
+
+func TestAPIMeta_GetWeb(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMeta{Web: zeroValue}
+	a.GetWeb()
+	a = &APIMeta{}
+	a.GetWeb()
+	a = nil
+	a.GetWeb()
+}
+
+func TestAPIMetaArtifactAttestations_GetServices(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMetaArtifactAttestations{Services: zeroValue}
+	a.GetServices()
+	a = &APIMetaArtifactAttestations{}
+	a.GetServices()
+	a = nil
+	a.GetServices()
+}
+
+func TestAPIMetaArtifactAttestations_GetTrustDomain(tt *testing.T) {
+	tt.Parallel()
+	a := &APIMetaArtifactAttestations{}
+	a.GetTrustDomain()
+	a = nil
+	a.GetTrustDomain()
+}
+
+func TestAPIMetaDomains_GetActions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMetaDomains{Actions: zeroValue}
+	a.GetActions()
+	a = &APIMetaDomains{}
+	a.GetActions()
+	a = nil
+	a.GetActions()
 }
 
 func TestAPIMetaDomains_GetActionsInbound(tt *testing.T) {
@@ -1046,6 +1731,50 @@ func TestAPIMetaDomains_GetArtifactAttestations(tt *testing.T) {
 	a.GetArtifactAttestations()
 	a = nil
 	a.GetArtifactAttestations()
+}
+
+func TestAPIMetaDomains_GetCodespaces(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMetaDomains{Codespaces: zeroValue}
+	a.GetCodespaces()
+	a = &APIMetaDomains{}
+	a.GetCodespaces()
+	a = nil
+	a.GetCodespaces()
+}
+
+func TestAPIMetaDomains_GetCopilot(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMetaDomains{Copilot: zeroValue}
+	a.GetCopilot()
+	a = &APIMetaDomains{}
+	a.GetCopilot()
+	a = nil
+	a.GetCopilot()
+}
+
+func TestAPIMetaDomains_GetPackages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMetaDomains{Packages: zeroValue}
+	a.GetPackages()
+	a = &APIMetaDomains{}
+	a.GetPackages()
+	a = nil
+	a.GetPackages()
+}
+
+func TestAPIMetaDomains_GetWebsite(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &APIMetaDomains{Website: zeroValue}
+	a.GetWebsite()
+	a = &APIMetaDomains{}
+	a.GetWebsite()
+	a = nil
+	a.GetWebsite()
 }
 
 func TestApp_GetClientID(tt *testing.T) {
@@ -1079,6 +1808,17 @@ func TestApp_GetDescription(tt *testing.T) {
 	a.GetDescription()
 	a = nil
 	a.GetDescription()
+}
+
+func TestApp_GetEvents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &App{Events: zeroValue}
+	a.GetEvents()
+	a = &App{}
+	a.GetEvents()
+	a = nil
+	a.GetEvents()
 }
 
 func TestApp_GetExternalURL(tt *testing.T) {
@@ -1336,6 +2076,17 @@ func TestAppConfig_GetWebhookSecret(tt *testing.T) {
 	a.GetWebhookSecret()
 }
 
+func TestAppInstallationRepositoriesOptions_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	a := &AppInstallationRepositoriesOptions{SelectedRepositoryIDs: zeroValue}
+	a.GetSelectedRepositoryIDs()
+	a = &AppInstallationRepositoriesOptions{}
+	a.GetSelectedRepositoryIDs()
+	a = nil
+	a.GetSelectedRepositoryIDs()
+}
+
 func TestArchivedAt_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -1575,6 +2326,17 @@ func TestArtifactDeploymentRecord_GetPhysicalEnvironment(tt *testing.T) {
 	a.GetPhysicalEnvironment()
 }
 
+func TestArtifactDeploymentRecord_GetRuntimeRisks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []DeploymentRuntimeRisk{}
+	a := &ArtifactDeploymentRecord{RuntimeRisks: zeroValue}
+	a.GetRuntimeRisks()
+	a = &ArtifactDeploymentRecord{}
+	a.GetRuntimeRisks()
+	a = nil
+	a.GetRuntimeRisks()
+}
+
 func TestArtifactDeploymentRecord_GetTags(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := map[string]string{}
@@ -1597,6 +2359,17 @@ func TestArtifactDeploymentRecord_GetUpdatedAt(tt *testing.T) {
 	a.GetUpdatedAt()
 }
 
+func TestArtifactDeploymentResponse_GetDeploymentRecords(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ArtifactDeploymentRecord{}
+	a := &ArtifactDeploymentResponse{DeploymentRecords: zeroValue}
+	a.GetDeploymentRecords()
+	a = &ArtifactDeploymentResponse{}
+	a.GetDeploymentRecords()
+	a = nil
+	a.GetDeploymentRecords()
+}
+
 func TestArtifactDeploymentResponse_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -1606,6 +2379,17 @@ func TestArtifactDeploymentResponse_GetTotalCount(tt *testing.T) {
 	a.GetTotalCount()
 	a = nil
 	a.GetTotalCount()
+}
+
+func TestArtifactList_GetArtifacts(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Artifact{}
+	a := &ArtifactList{Artifacts: zeroValue}
+	a.GetArtifacts()
+	a = &ArtifactList{}
+	a.GetArtifacts()
+	a = nil
+	a.GetArtifacts()
 }
 
 func TestArtifactList_GetTotalCount(tt *testing.T) {
@@ -1749,6 +2533,17 @@ func TestArtifactStorageRecord_GetUpdatedAt(tt *testing.T) {
 	a.GetUpdatedAt()
 	a = nil
 	a.GetUpdatedAt()
+}
+
+func TestArtifactStorageResponse_GetStorageRecords(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ArtifactStorageRecord{}
+	a := &ArtifactStorageResponse{StorageRecords: zeroValue}
+	a.GetStorageRecords()
+	a = &ArtifactStorageResponse{}
+	a.GetStorageRecords()
+	a = nil
+	a.GetStorageRecords()
 }
 
 func TestArtifactStorageResponse_GetTotalCount(tt *testing.T) {
@@ -1971,6 +2766,33 @@ func TestAttachment_GetTitle(tt *testing.T) {
 	a.GetTitle()
 }
 
+func TestAttestation_GetBundle(tt *testing.T) {
+	tt.Parallel()
+	a := &Attestation{}
+	a.GetBundle()
+	a = nil
+	a.GetBundle()
+}
+
+func TestAttestation_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	a := &Attestation{}
+	a.GetRepositoryID()
+	a = nil
+	a.GetRepositoryID()
+}
+
+func TestAttestationsResponse_GetAttestations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Attestation{}
+	a := &AttestationsResponse{Attestations: zeroValue}
+	a.GetAttestations()
+	a = &AttestationsResponse{}
+	a.GetAttestations()
+	a = nil
+	a.GetAttestations()
+}
+
 func TestAuditEntry_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -2188,6 +3010,30 @@ func TestAuditEntry_GetUserID(tt *testing.T) {
 	a.GetUserID()
 }
 
+func TestAuditLogStream_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStream{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestAuditLogStream_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStream{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
+}
+
+func TestAuditLogStream_GetID(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStream{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
 func TestAuditLogStream_GetPausedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -2197,6 +3043,70 @@ func TestAuditLogStream_GetPausedAt(tt *testing.T) {
 	a.GetPausedAt()
 	a = nil
 	a.GetPausedAt()
+}
+
+func TestAuditLogStream_GetStreamDetails(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStream{}
+	a.GetStreamDetails()
+	a = nil
+	a.GetStreamDetails()
+}
+
+func TestAuditLogStream_GetStreamType(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStream{}
+	a.GetStreamType()
+	a = nil
+	a.GetStreamType()
+}
+
+func TestAuditLogStream_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStream{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestAuditLogStreamConfig_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStreamConfig{}
+	a.GetEnabled()
+	a = nil
+	a.GetEnabled()
+}
+
+func TestAuditLogStreamConfig_GetStreamType(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStreamConfig{}
+	a.GetStreamType()
+	a = nil
+	a.GetStreamType()
+}
+
+func TestAuditLogStreamConfig_GetVendorSpecific(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStreamConfig{}
+	a.GetVendorSpecific()
+	a = nil
+	a.GetVendorSpecific()
+}
+
+func TestAuditLogStreamKey_GetKey(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStreamKey{}
+	a.GetKey()
+	a = nil
+	a.GetKey()
+}
+
+func TestAuditLogStreamKey_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	a := &AuditLogStreamKey{}
+	a.GetKeyID()
+	a = nil
+	a.GetKeyID()
 }
 
 func TestAuthorization_GetApp(tt *testing.T) {
@@ -2271,6 +3181,17 @@ func TestAuthorization_GetNoteURL(tt *testing.T) {
 	a.GetNoteURL()
 	a = nil
 	a.GetNoteURL()
+}
+
+func TestAuthorization_GetScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []Scope{}
+	a := &Authorization{Scopes: zeroValue}
+	a.GetScopes()
+	a = &Authorization{}
+	a.GetScopes()
+	a = nil
+	a.GetScopes()
 }
 
 func TestAuthorization_GetToken(tt *testing.T) {
@@ -2413,6 +3334,28 @@ func TestAuthorizationRequest_GetNoteURL(tt *testing.T) {
 	a.GetNoteURL()
 }
 
+func TestAuthorizationRequest_GetScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []Scope{}
+	a := &AuthorizationRequest{Scopes: zeroValue}
+	a.GetScopes()
+	a = &AuthorizationRequest{}
+	a.GetScopes()
+	a = nil
+	a.GetScopes()
+}
+
+func TestAuthorizationUpdateRequest_GetAddScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &AuthorizationUpdateRequest{AddScopes: zeroValue}
+	a.GetAddScopes()
+	a = &AuthorizationUpdateRequest{}
+	a.GetAddScopes()
+	a = nil
+	a.GetAddScopes()
+}
+
 func TestAuthorizationUpdateRequest_GetFingerprint(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -2444,6 +3387,39 @@ func TestAuthorizationUpdateRequest_GetNoteURL(tt *testing.T) {
 	a.GetNoteURL()
 	a = nil
 	a.GetNoteURL()
+}
+
+func TestAuthorizationUpdateRequest_GetRemoveScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &AuthorizationUpdateRequest{RemoveScopes: zeroValue}
+	a.GetRemoveScopes()
+	a = &AuthorizationUpdateRequest{}
+	a.GetRemoveScopes()
+	a = nil
+	a.GetRemoveScopes()
+}
+
+func TestAuthorizationUpdateRequest_GetScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &AuthorizationUpdateRequest{Scopes: zeroValue}
+	a.GetScopes()
+	a = &AuthorizationUpdateRequest{}
+	a.GetScopes()
+	a = nil
+	a.GetScopes()
+}
+
+func TestAuthorizedActorNames_GetFrom(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	a := &AuthorizedActorNames{From: zeroValue}
+	a.GetFrom()
+	a = &AuthorizedActorNames{}
+	a.GetFrom()
+	a = nil
+	a.GetFrom()
 }
 
 func TestAuthorizedActorsOnly_GetFrom(tt *testing.T) {
@@ -2587,6 +3563,78 @@ func TestAutoTriggerCheck_GetSetting(tt *testing.T) {
 	a.GetSetting()
 	a = nil
 	a.GetSetting()
+}
+
+func TestAzureBlobConfig_GetContainer(tt *testing.T) {
+	tt.Parallel()
+	a := &AzureBlobConfig{}
+	a.GetContainer()
+	a = nil
+	a.GetContainer()
+}
+
+func TestAzureBlobConfig_GetEncryptedSASURL(tt *testing.T) {
+	tt.Parallel()
+	a := &AzureBlobConfig{}
+	a.GetEncryptedSASURL()
+	a = nil
+	a.GetEncryptedSASURL()
+}
+
+func TestAzureBlobConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	a := &AzureBlobConfig{}
+	a.GetKeyID()
+	a = nil
+	a.GetKeyID()
+}
+
+func TestAzureHubConfig_GetEncryptedConnstring(tt *testing.T) {
+	tt.Parallel()
+	a := &AzureHubConfig{}
+	a.GetEncryptedConnstring()
+	a = nil
+	a.GetEncryptedConnstring()
+}
+
+func TestAzureHubConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	a := &AzureHubConfig{}
+	a.GetKeyID()
+	a = nil
+	a.GetKeyID()
+}
+
+func TestAzureHubConfig_GetName(tt *testing.T) {
+	tt.Parallel()
+	a := &AzureHubConfig{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestBasicAuthTransport_GetOTP(tt *testing.T) {
+	tt.Parallel()
+	b := &BasicAuthTransport{}
+	b.GetOTP()
+	b = nil
+	b.GetOTP()
+}
+
+func TestBasicAuthTransport_GetPassword(tt *testing.T) {
+	tt.Parallel()
+	b := &BasicAuthTransport{}
+	b.GetPassword()
+	b = nil
+	b.GetPassword()
+}
+
+func TestBasicAuthTransport_GetUsername(tt *testing.T) {
+	tt.Parallel()
+	b := &BasicAuthTransport{}
+	b.GetUsername()
+	b = nil
+	b.GetUsername()
 }
 
 func TestBlob_GetContent(tt *testing.T) {
@@ -2862,6 +3910,17 @@ func TestBranchProtectionRule_GetAllowForcePushesEnforcementLevel(tt *testing.T)
 	b.GetAllowForcePushesEnforcementLevel()
 }
 
+func TestBranchProtectionRule_GetAuthorizedActorNames(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	b := &BranchProtectionRule{AuthorizedActorNames: zeroValue}
+	b.GetAuthorizedActorNames()
+	b = &BranchProtectionRule{}
+	b.GetAuthorizedActorNames()
+	b = nil
+	b.GetAuthorizedActorNames()
+}
+
 func TestBranchProtectionRule_GetAuthorizedActorsOnly(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -3027,6 +4086,17 @@ func TestBranchProtectionRule_GetRequiredDeploymentsEnforcementLevel(tt *testing
 	b.GetRequiredDeploymentsEnforcementLevel()
 }
 
+func TestBranchProtectionRule_GetRequiredStatusChecks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	b := &BranchProtectionRule{RequiredStatusChecks: zeroValue}
+	b.GetRequiredStatusChecks()
+	b = &BranchProtectionRule{}
+	b.GetRequiredStatusChecks()
+	b = nil
+	b.GetRequiredStatusChecks()
+}
+
 func TestBranchProtectionRule_GetRequiredStatusChecksEnforcementLevel(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -3141,6 +4211,338 @@ func TestBranchProtectionRuleEvent_GetSender(tt *testing.T) {
 	b.GetSender()
 }
 
+func TestBranchRestrictions_GetApps(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*App{}
+	b := &BranchRestrictions{Apps: zeroValue}
+	b.GetApps()
+	b = &BranchRestrictions{}
+	b.GetApps()
+	b = nil
+	b.GetApps()
+}
+
+func TestBranchRestrictions_GetTeams(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Team{}
+	b := &BranchRestrictions{Teams: zeroValue}
+	b.GetTeams()
+	b = &BranchRestrictions{}
+	b.GetTeams()
+	b = nil
+	b.GetTeams()
+}
+
+func TestBranchRestrictions_GetUsers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	b := &BranchRestrictions{Users: zeroValue}
+	b.GetUsers()
+	b = &BranchRestrictions{}
+	b.GetUsers()
+	b = nil
+	b.GetUsers()
+}
+
+func TestBranchRestrictionsRequest_GetApps(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	b := &BranchRestrictionsRequest{Apps: zeroValue}
+	b.GetApps()
+	b = &BranchRestrictionsRequest{}
+	b.GetApps()
+	b = nil
+	b.GetApps()
+}
+
+func TestBranchRestrictionsRequest_GetTeams(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	b := &BranchRestrictionsRequest{Teams: zeroValue}
+	b.GetTeams()
+	b = &BranchRestrictionsRequest{}
+	b.GetTeams()
+	b = nil
+	b.GetTeams()
+}
+
+func TestBranchRestrictionsRequest_GetUsers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	b := &BranchRestrictionsRequest{Users: zeroValue}
+	b.GetUsers()
+	b = &BranchRestrictionsRequest{}
+	b.GetUsers()
+	b = nil
+	b.GetUsers()
+}
+
+func TestBranchRuleMetadata_GetRulesetID(tt *testing.T) {
+	tt.Parallel()
+	b := &BranchRuleMetadata{}
+	b.GetRulesetID()
+	b = nil
+	b.GetRulesetID()
+}
+
+func TestBranchRuleMetadata_GetRulesetSource(tt *testing.T) {
+	tt.Parallel()
+	b := &BranchRuleMetadata{}
+	b.GetRulesetSource()
+	b = nil
+	b.GetRulesetSource()
+}
+
+func TestBranchRuleMetadata_GetRulesetSourceType(tt *testing.T) {
+	tt.Parallel()
+	b := &BranchRuleMetadata{}
+	b.GetRulesetSourceType()
+	b = nil
+	b.GetRulesetSourceType()
+}
+
+func TestBranchRules_GetBranchNamePattern(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PatternBranchRule{}
+	b := &BranchRules{BranchNamePattern: zeroValue}
+	b.GetBranchNamePattern()
+	b = &BranchRules{}
+	b.GetBranchNamePattern()
+	b = nil
+	b.GetBranchNamePattern()
+}
+
+func TestBranchRules_GetCodeScanning(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CodeScanningBranchRule{}
+	b := &BranchRules{CodeScanning: zeroValue}
+	b.GetCodeScanning()
+	b = &BranchRules{}
+	b.GetCodeScanning()
+	b = nil
+	b.GetCodeScanning()
+}
+
+func TestBranchRules_GetCommitAuthorEmailPattern(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PatternBranchRule{}
+	b := &BranchRules{CommitAuthorEmailPattern: zeroValue}
+	b.GetCommitAuthorEmailPattern()
+	b = &BranchRules{}
+	b.GetCommitAuthorEmailPattern()
+	b = nil
+	b.GetCommitAuthorEmailPattern()
+}
+
+func TestBranchRules_GetCommitMessagePattern(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PatternBranchRule{}
+	b := &BranchRules{CommitMessagePattern: zeroValue}
+	b.GetCommitMessagePattern()
+	b = &BranchRules{}
+	b.GetCommitMessagePattern()
+	b = nil
+	b.GetCommitMessagePattern()
+}
+
+func TestBranchRules_GetCommitterEmailPattern(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PatternBranchRule{}
+	b := &BranchRules{CommitterEmailPattern: zeroValue}
+	b.GetCommitterEmailPattern()
+	b = &BranchRules{}
+	b.GetCommitterEmailPattern()
+	b = nil
+	b.GetCommitterEmailPattern()
+}
+
+func TestBranchRules_GetCopilotCodeReview(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotCodeReviewBranchRule{}
+	b := &BranchRules{CopilotCodeReview: zeroValue}
+	b.GetCopilotCodeReview()
+	b = &BranchRules{}
+	b.GetCopilotCodeReview()
+	b = nil
+	b.GetCopilotCodeReview()
+}
+
+func TestBranchRules_GetCreation(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*BranchRuleMetadata{}
+	b := &BranchRules{Creation: zeroValue}
+	b.GetCreation()
+	b = &BranchRules{}
+	b.GetCreation()
+	b = nil
+	b.GetCreation()
+}
+
+func TestBranchRules_GetDeletion(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*BranchRuleMetadata{}
+	b := &BranchRules{Deletion: zeroValue}
+	b.GetDeletion()
+	b = &BranchRules{}
+	b.GetDeletion()
+	b = nil
+	b.GetDeletion()
+}
+
+func TestBranchRules_GetFileExtensionRestriction(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*FileExtensionRestrictionBranchRule{}
+	b := &BranchRules{FileExtensionRestriction: zeroValue}
+	b.GetFileExtensionRestriction()
+	b = &BranchRules{}
+	b.GetFileExtensionRestriction()
+	b = nil
+	b.GetFileExtensionRestriction()
+}
+
+func TestBranchRules_GetFilePathRestriction(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*FilePathRestrictionBranchRule{}
+	b := &BranchRules{FilePathRestriction: zeroValue}
+	b.GetFilePathRestriction()
+	b = &BranchRules{}
+	b.GetFilePathRestriction()
+	b = nil
+	b.GetFilePathRestriction()
+}
+
+func TestBranchRules_GetMaxFilePathLength(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*MaxFilePathLengthBranchRule{}
+	b := &BranchRules{MaxFilePathLength: zeroValue}
+	b.GetMaxFilePathLength()
+	b = &BranchRules{}
+	b.GetMaxFilePathLength()
+	b = nil
+	b.GetMaxFilePathLength()
+}
+
+func TestBranchRules_GetMaxFileSize(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*MaxFileSizeBranchRule{}
+	b := &BranchRules{MaxFileSize: zeroValue}
+	b.GetMaxFileSize()
+	b = &BranchRules{}
+	b.GetMaxFileSize()
+	b = nil
+	b.GetMaxFileSize()
+}
+
+func TestBranchRules_GetMergeQueue(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*MergeQueueBranchRule{}
+	b := &BranchRules{MergeQueue: zeroValue}
+	b.GetMergeQueue()
+	b = &BranchRules{}
+	b.GetMergeQueue()
+	b = nil
+	b.GetMergeQueue()
+}
+
+func TestBranchRules_GetNonFastForward(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*BranchRuleMetadata{}
+	b := &BranchRules{NonFastForward: zeroValue}
+	b.GetNonFastForward()
+	b = &BranchRules{}
+	b.GetNonFastForward()
+	b = nil
+	b.GetNonFastForward()
+}
+
+func TestBranchRules_GetPullRequest(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequestBranchRule{}
+	b := &BranchRules{PullRequest: zeroValue}
+	b.GetPullRequest()
+	b = &BranchRules{}
+	b.GetPullRequest()
+	b = nil
+	b.GetPullRequest()
+}
+
+func TestBranchRules_GetRequiredDeployments(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RequiredDeploymentsBranchRule{}
+	b := &BranchRules{RequiredDeployments: zeroValue}
+	b.GetRequiredDeployments()
+	b = &BranchRules{}
+	b.GetRequiredDeployments()
+	b = nil
+	b.GetRequiredDeployments()
+}
+
+func TestBranchRules_GetRequiredLinearHistory(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*BranchRuleMetadata{}
+	b := &BranchRules{RequiredLinearHistory: zeroValue}
+	b.GetRequiredLinearHistory()
+	b = &BranchRules{}
+	b.GetRequiredLinearHistory()
+	b = nil
+	b.GetRequiredLinearHistory()
+}
+
+func TestBranchRules_GetRequiredSignatures(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*BranchRuleMetadata{}
+	b := &BranchRules{RequiredSignatures: zeroValue}
+	b.GetRequiredSignatures()
+	b = &BranchRules{}
+	b.GetRequiredSignatures()
+	b = nil
+	b.GetRequiredSignatures()
+}
+
+func TestBranchRules_GetRequiredStatusChecks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RequiredStatusChecksBranchRule{}
+	b := &BranchRules{RequiredStatusChecks: zeroValue}
+	b.GetRequiredStatusChecks()
+	b = &BranchRules{}
+	b.GetRequiredStatusChecks()
+	b = nil
+	b.GetRequiredStatusChecks()
+}
+
+func TestBranchRules_GetTagNamePattern(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PatternBranchRule{}
+	b := &BranchRules{TagNamePattern: zeroValue}
+	b.GetTagNamePattern()
+	b = &BranchRules{}
+	b.GetTagNamePattern()
+	b = nil
+	b.GetTagNamePattern()
+}
+
+func TestBranchRules_GetUpdate(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*UpdateBranchRule{}
+	b := &BranchRules{Update: zeroValue}
+	b.GetUpdate()
+	b = &BranchRules{}
+	b.GetUpdate()
+	b = nil
+	b.GetUpdate()
+}
+
+func TestBranchRules_GetWorkflows(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*WorkflowsBranchRule{}
+	b := &BranchRules{Workflows: zeroValue}
+	b.GetWorkflows()
+	b = &BranchRules{}
+	b.GetWorkflows()
+	b = nil
+	b.GetWorkflows()
+}
+
 func TestBypassActor_GetActorID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -3166,6 +4568,88 @@ func TestBypassActor_GetBypassMode(tt *testing.T) {
 	b.GetBypassMode()
 	b = nil
 	b.GetBypassMode()
+}
+
+func TestBypassPullRequestAllowances_GetApps(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*App{}
+	b := &BypassPullRequestAllowances{Apps: zeroValue}
+	b.GetApps()
+	b = &BypassPullRequestAllowances{}
+	b.GetApps()
+	b = nil
+	b.GetApps()
+}
+
+func TestBypassPullRequestAllowances_GetTeams(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Team{}
+	b := &BypassPullRequestAllowances{Teams: zeroValue}
+	b.GetTeams()
+	b = &BypassPullRequestAllowances{}
+	b.GetTeams()
+	b = nil
+	b.GetTeams()
+}
+
+func TestBypassPullRequestAllowances_GetUsers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	b := &BypassPullRequestAllowances{Users: zeroValue}
+	b.GetUsers()
+	b = &BypassPullRequestAllowances{}
+	b.GetUsers()
+	b = nil
+	b.GetUsers()
+}
+
+func TestBypassPullRequestAllowancesRequest_GetApps(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	b := &BypassPullRequestAllowancesRequest{Apps: zeroValue}
+	b.GetApps()
+	b = &BypassPullRequestAllowancesRequest{}
+	b.GetApps()
+	b = nil
+	b.GetApps()
+}
+
+func TestBypassPullRequestAllowancesRequest_GetTeams(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	b := &BypassPullRequestAllowancesRequest{Teams: zeroValue}
+	b.GetTeams()
+	b = &BypassPullRequestAllowancesRequest{}
+	b.GetTeams()
+	b = nil
+	b.GetTeams()
+}
+
+func TestBypassPullRequestAllowancesRequest_GetUsers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	b := &BypassPullRequestAllowancesRequest{Users: zeroValue}
+	b.GetUsers()
+	b = &BypassPullRequestAllowancesRequest{}
+	b.GetUsers()
+	b = nil
+	b.GetUsers()
+}
+
+func TestBypassReviewer_GetReviewerID(tt *testing.T) {
+	tt.Parallel()
+	b := &BypassReviewer{}
+	b.GetReviewerID()
+	b = nil
+	b.GetReviewerID()
+}
+
+func TestBypassReviewer_GetReviewerType(tt *testing.T) {
+	tt.Parallel()
+	b := &BypassReviewer{}
+	b.GetReviewerType()
+	b = nil
+	b.GetReviewerType()
 }
 
 func TestBypassReviewer_GetSecurityConfigurationID(tt *testing.T) {
@@ -3302,6 +4786,17 @@ func TestCheckRun_GetOutput(tt *testing.T) {
 	c.GetOutput()
 }
 
+func TestCheckRun_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequest{}
+	c := &CheckRun{PullRequests: zeroValue}
+	c.GetPullRequests()
+	c = &CheckRun{}
+	c.GetPullRequests()
+	c = nil
+	c.GetPullRequests()
+}
+
 func TestCheckRun_GetStartedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -3333,6 +4828,30 @@ func TestCheckRun_GetURL(tt *testing.T) {
 	c.GetURL()
 	c = nil
 	c.GetURL()
+}
+
+func TestCheckRunAction_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	c := &CheckRunAction{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCheckRunAction_GetIdentifier(tt *testing.T) {
+	tt.Parallel()
+	c := &CheckRunAction{}
+	c.GetIdentifier()
+	c = nil
+	c.GetIdentifier()
+}
+
+func TestCheckRunAction_GetLabel(tt *testing.T) {
+	tt.Parallel()
+	c := &CheckRunAction{}
+	c.GetLabel()
+	c = nil
+	c.GetLabel()
 }
 
 func TestCheckRunAnnotation_GetAnnotationLevel(tt *testing.T) {
@@ -3526,6 +5045,17 @@ func TestCheckRunImage_GetImageURL(tt *testing.T) {
 	c.GetImageURL()
 }
 
+func TestCheckRunOutput_GetAnnotations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CheckRunAnnotation{}
+	c := &CheckRunOutput{Annotations: zeroValue}
+	c.GetAnnotations()
+	c = &CheckRunOutput{}
+	c.GetAnnotations()
+	c = nil
+	c.GetAnnotations()
+}
+
 func TestCheckRunOutput_GetAnnotationsCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -3546,6 +5076,17 @@ func TestCheckRunOutput_GetAnnotationsURL(tt *testing.T) {
 	c.GetAnnotationsURL()
 	c = nil
 	c.GetAnnotationsURL()
+}
+
+func TestCheckRunOutput_GetImages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CheckRunImage{}
+	c := &CheckRunOutput{Images: zeroValue}
+	c.GetImages()
+	c = &CheckRunOutput{}
+	c.GetImages()
+	c = nil
+	c.GetImages()
 }
 
 func TestCheckRunOutput_GetSummary(tt *testing.T) {
@@ -3696,6 +5237,17 @@ func TestCheckSuite_GetNodeID(tt *testing.T) {
 	c.GetNodeID()
 }
 
+func TestCheckSuite_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequest{}
+	c := &CheckSuite{PullRequests: zeroValue}
+	c.GetPullRequests()
+	c = &CheckSuite{}
+	c.GetPullRequests()
+	c = nil
+	c.GetPullRequests()
+}
+
 func TestCheckSuite_GetRepository(tt *testing.T) {
 	tt.Parallel()
 	c := &CheckSuite{}
@@ -3808,6 +5360,17 @@ func TestCheckSuiteEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 	c = nil
 	c.GetSender()
+}
+
+func TestCheckSuitePreferenceOptions_GetAutoTriggerChecks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AutoTriggerCheck{}
+	c := &CheckSuitePreferenceOptions{AutoTriggerChecks: zeroValue}
+	c.GetAutoTriggerChecks()
+	c = &CheckSuitePreferenceOptions{}
+	c.GetAutoTriggerChecks()
+	c = nil
+	c.GetAutoTriggerChecks()
 }
 
 func TestCheckSuitePreferenceResults_GetPreferences(tt *testing.T) {
@@ -4125,6 +5688,22 @@ func TestClassroomUser_GetLogin(tt *testing.T) {
 	c.GetLogin()
 }
 
+func TestClusterArtifactDeployment_GetDeploymentName(tt *testing.T) {
+	tt.Parallel()
+	c := &ClusterArtifactDeployment{}
+	c.GetDeploymentName()
+	c = nil
+	c.GetDeploymentName()
+}
+
+func TestClusterArtifactDeployment_GetDigest(tt *testing.T) {
+	tt.Parallel()
+	c := &ClusterArtifactDeployment{}
+	c.GetDigest()
+	c = nil
+	c.GetDigest()
+}
+
 func TestClusterArtifactDeployment_GetGithubRepository(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -4134,6 +5713,33 @@ func TestClusterArtifactDeployment_GetGithubRepository(tt *testing.T) {
 	c.GetGithubRepository()
 	c = nil
 	c.GetGithubRepository()
+}
+
+func TestClusterArtifactDeployment_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &ClusterArtifactDeployment{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestClusterArtifactDeployment_GetRuntimeRisks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []DeploymentRuntimeRisk{}
+	c := &ClusterArtifactDeployment{RuntimeRisks: zeroValue}
+	c.GetRuntimeRisks()
+	c = &ClusterArtifactDeployment{}
+	c.GetRuntimeRisks()
+	c = nil
+	c.GetRuntimeRisks()
+}
+
+func TestClusterArtifactDeployment_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	c := &ClusterArtifactDeployment{}
+	c.GetStatus()
+	c = nil
+	c.GetStatus()
 }
 
 func TestClusterArtifactDeployment_GetTags(tt *testing.T) {
@@ -4156,6 +5762,25 @@ func TestClusterArtifactDeployment_GetVersion(tt *testing.T) {
 	c.GetVersion()
 	c = nil
 	c.GetVersion()
+}
+
+func TestClusterDeploymentRecordsRequest_GetDeployments(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ClusterArtifactDeployment{}
+	c := &ClusterDeploymentRecordsRequest{Deployments: zeroValue}
+	c.GetDeployments()
+	c = &ClusterDeploymentRecordsRequest{}
+	c.GetDeployments()
+	c = nil
+	c.GetDeployments()
+}
+
+func TestClusterDeploymentRecordsRequest_GetLogicalEnvironment(tt *testing.T) {
+	tt.Parallel()
+	c := &ClusterDeploymentRecordsRequest{}
+	c.GetLogicalEnvironment()
+	c = nil
+	c.GetLogicalEnvironment()
 }
 
 func TestClusterDeploymentRecordsRequest_GetPhysicalEnvironment(tt *testing.T) {
@@ -4191,6 +5816,17 @@ func TestClusterSSHKey_GetKey(tt *testing.T) {
 	c.GetKey()
 }
 
+func TestClusterStatus_GetNodes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ClusterStatusNode{}
+	c := &ClusterStatus{Nodes: zeroValue}
+	c.GetNodes()
+	c = &ClusterStatus{}
+	c.GetNodes()
+	c = nil
+	c.GetNodes()
+}
+
 func TestClusterStatus_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -4211,6 +5847,17 @@ func TestClusterStatusNode_GetHostname(tt *testing.T) {
 	c.GetHostname()
 	c = nil
 	c.GetHostname()
+}
+
+func TestClusterStatusNode_GetServices(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ClusterStatusNodeServiceItem{}
+	c := &ClusterStatusNode{Services: zeroValue}
+	c.GetServices()
+	c = &ClusterStatusNode{}
+	c.GetServices()
+	c = nil
+	c.GetServices()
 }
 
 func TestClusterStatusNode_GetStatus(tt *testing.T) {
@@ -4301,6 +5948,54 @@ func TestCodeOfConduct_GetURL(tt *testing.T) {
 	c.GetURL()
 }
 
+func TestCodeownersError_GetColumn(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeownersError{}
+	c.GetColumn()
+	c = nil
+	c.GetColumn()
+}
+
+func TestCodeownersError_GetKind(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeownersError{}
+	c.GetKind()
+	c = nil
+	c.GetKind()
+}
+
+func TestCodeownersError_GetLine(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeownersError{}
+	c.GetLine()
+	c = nil
+	c.GetLine()
+}
+
+func TestCodeownersError_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeownersError{}
+	c.GetMessage()
+	c = nil
+	c.GetMessage()
+}
+
+func TestCodeownersError_GetPath(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeownersError{}
+	c.GetPath()
+	c = nil
+	c.GetPath()
+}
+
+func TestCodeownersError_GetSource(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeownersError{}
+	c.GetSource()
+	c = nil
+	c.GetSource()
+}
+
 func TestCodeownersError_GetSuggestion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -4310,6 +6005,17 @@ func TestCodeownersError_GetSuggestion(tt *testing.T) {
 	c.GetSuggestion()
 	c = nil
 	c.GetSuggestion()
+}
+
+func TestCodeownersErrors_GetErrors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CodeownersError{}
+	c := &CodeownersErrors{Errors: zeroValue}
+	c.GetErrors()
+	c = &CodeownersErrors{}
+	c.GetErrors()
+	c = nil
+	c.GetErrors()
 }
 
 func TestCodeQLDatabase_GetContentType(tt *testing.T) {
@@ -4460,6 +6166,17 @@ func TestCodeResult_GetSHA(tt *testing.T) {
 	c.GetSHA()
 }
 
+func TestCodeResult_GetTextMatches(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*TextMatch{}
+	c := &CodeResult{TextMatches: zeroValue}
+	c.GetTextMatches()
+	c = &CodeResult{}
+	c.GetTextMatches()
+	c = nil
+	c.GetTextMatches()
+}
+
 func TestCodeScanningAlertEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -4555,6 +6272,22 @@ func TestCodeScanningAlertState_GetDismissedReason(tt *testing.T) {
 	c.GetDismissedReason()
 }
 
+func TestCodeScanningAlertState_GetState(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeScanningAlertState{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCodeScanningBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeScanningBranchRule{}
+	c.GetParameters()
+	c = nil
+	c.GetParameters()
+}
+
 func TestCodeScanningDefaultSetupOptions_GetRunnerLabel(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -4566,6 +6299,14 @@ func TestCodeScanningDefaultSetupOptions_GetRunnerLabel(tt *testing.T) {
 	c.GetRunnerLabel()
 }
 
+func TestCodeScanningDefaultSetupOptions_GetRunnerType(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeScanningDefaultSetupOptions{}
+	c.GetRunnerType()
+	c = nil
+	c.GetRunnerType()
+}
+
 func TestCodeScanningOptions_GetAllowAdvanced(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -4575,6 +6316,28 @@ func TestCodeScanningOptions_GetAllowAdvanced(tt *testing.T) {
 	c.GetAllowAdvanced()
 	c = nil
 	c.GetAllowAdvanced()
+}
+
+func TestCodeScanningRuleParameters_GetCodeScanningTools(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RuleCodeScanningTool{}
+	c := &CodeScanningRuleParameters{CodeScanningTools: zeroValue}
+	c.GetCodeScanningTools()
+	c = &CodeScanningRuleParameters{}
+	c.GetCodeScanningTools()
+	c = nil
+	c.GetCodeScanningTools()
+}
+
+func TestCodeSearchResult_GetCodeResults(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CodeResult{}
+	c := &CodeSearchResult{CodeResults: zeroValue}
+	c.GetCodeResults()
+	c = &CodeSearchResult{}
+	c.GetCodeResults()
+	c = nil
+	c.GetCodeResults()
 }
 
 func TestCodeSearchResult_GetIncompleteResults(tt *testing.T) {
@@ -4722,6 +6485,14 @@ func TestCodeSecurityConfiguration_GetDependencyGraphAutosubmitActionOptions(tt 
 	c.GetDependencyGraphAutosubmitActionOptions()
 }
 
+func TestCodeSecurityConfiguration_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeSecurityConfiguration{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
 func TestCodeSecurityConfiguration_GetEnforcement(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -4753,6 +6524,14 @@ func TestCodeSecurityConfiguration_GetID(tt *testing.T) {
 	c.GetID()
 	c = nil
 	c.GetID()
+}
+
+func TestCodeSecurityConfiguration_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeSecurityConfiguration{}
+	c.GetName()
+	c = nil
+	c.GetName()
 }
 
 func TestCodeSecurityConfiguration_GetPrivateVulnerabilityReporting(tt *testing.T) {
@@ -5122,6 +6901,17 @@ func TestCodespace_GetPullsURL(tt *testing.T) {
 	c.GetPullsURL()
 }
 
+func TestCodespace_GetRecentFolders(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &Codespace{RecentFolders: zeroValue}
+	c.GetRecentFolders()
+	c = &Codespace{}
+	c.GetRecentFolders()
+	c = nil
+	c.GetRecentFolders()
+}
+
 func TestCodespace_GetRepository(tt *testing.T) {
 	tt.Parallel()
 	c := &Codespace{}
@@ -5333,6 +7123,14 @@ func TestCodespaceCreateForUserOptions_GetRef(tt *testing.T) {
 	c.GetRef()
 }
 
+func TestCodespaceCreateForUserOptions_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	c := &CodespaceCreateForUserOptions{}
+	c.GetRepositoryID()
+	c = nil
+	c.GetRepositoryID()
+}
+
 func TestCodespaceCreateForUserOptions_GetRetentionPeriodMinutes(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -5380,6 +7178,14 @@ func TestCodespaceDefaults_GetDevcontainerPath(tt *testing.T) {
 	c.GetDevcontainerPath()
 	c = nil
 	c.GetDevcontainerPath()
+}
+
+func TestCodespaceDefaults_GetLocation(tt *testing.T) {
+	tt.Parallel()
+	c := &CodespaceDefaults{}
+	c.GetLocation()
+	c = nil
+	c.GetLocation()
 }
 
 func TestCodespaceExport_GetBranch(tt *testing.T) {
@@ -5479,6 +7285,30 @@ func TestCodespaceGetDefaultAttributesOptions_GetRef(tt *testing.T) {
 	c.GetRef()
 	c = nil
 	c.GetRef()
+}
+
+func TestCodespacePermissions_GetAccepted(tt *testing.T) {
+	tt.Parallel()
+	c := &CodespacePermissions{}
+	c.GetAccepted()
+	c = nil
+	c.GetAccepted()
+}
+
+func TestCodespacePullRequestOptions_GetPullRequestNumber(tt *testing.T) {
+	tt.Parallel()
+	c := &CodespacePullRequestOptions{}
+	c.GetPullRequestNumber()
+	c = nil
+	c.GetPullRequestNumber()
+}
+
+func TestCodespacePullRequestOptions_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	c := &CodespacePullRequestOptions{}
+	c.GetRepositoryID()
+	c = nil
+	c.GetRepositoryID()
 }
 
 func TestCodespacesGitStatus_GetAhead(tt *testing.T) {
@@ -5611,6 +7441,55 @@ func TestCodespacesMachine_GetStorageInBytes(tt *testing.T) {
 	c.GetStorageInBytes()
 	c = nil
 	c.GetStorageInBytes()
+}
+
+func TestCodespacesMachines_GetMachines(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CodespacesMachine{}
+	c := &CodespacesMachines{Machines: zeroValue}
+	c.GetMachines()
+	c = &CodespacesMachines{}
+	c.GetMachines()
+	c = nil
+	c.GetMachines()
+}
+
+func TestCodespacesMachines_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	c := &CodespacesMachines{}
+	c.GetTotalCount()
+	c = nil
+	c.GetTotalCount()
+}
+
+func TestCodespacesOrgAccessControlRequest_GetSelectedUsernames(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CodespacesOrgAccessControlRequest{SelectedUsernames: zeroValue}
+	c.GetSelectedUsernames()
+	c = &CodespacesOrgAccessControlRequest{}
+	c.GetSelectedUsernames()
+	c = nil
+	c.GetSelectedUsernames()
+}
+
+func TestCodespacesOrgAccessControlRequest_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	c := &CodespacesOrgAccessControlRequest{}
+	c.GetVisibility()
+	c = nil
+	c.GetVisibility()
+}
+
+func TestCodespacesRuntimeConstraints_GetAllowedPortPrivacySettings(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CodespacesRuntimeConstraints{AllowedPortPrivacySettings: zeroValue}
+	c.GetAllowedPortPrivacySettings()
+	c = &CodespacesRuntimeConstraints{}
+	c.GetAllowedPortPrivacySettings()
+	c = nil
+	c.GetAllowedPortPrivacySettings()
 }
 
 func TestCollaboratorInvitation_GetCreatedAt(tt *testing.T) {
@@ -5747,6 +7626,17 @@ func TestCombinedStatus_GetState(tt *testing.T) {
 	c.GetState()
 }
 
+func TestCombinedStatus_GetStatuses(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepoStatus{}
+	c := &CombinedStatus{Statuses: zeroValue}
+	c.GetStatuses()
+	c = &CombinedStatus{}
+	c.GetStatuses()
+	c = nil
+	c.GetStatuses()
+}
+
 func TestCombinedStatus_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -5756,6 +7646,14 @@ func TestCombinedStatus_GetTotalCount(tt *testing.T) {
 	c.GetTotalCount()
 	c = nil
 	c.GetTotalCount()
+}
+
+func TestComment_GetBody(tt *testing.T) {
+	tt.Parallel()
+	c := &Comment{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
 }
 
 func TestComment_GetCreatedAt(tt *testing.T) {
@@ -6008,6 +7906,17 @@ func TestCommit_GetNodeID(tt *testing.T) {
 	c.GetNodeID()
 	c = nil
 	c.GetNodeID()
+}
+
+func TestCommit_GetParents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Commit{}
+	c := &Commit{Parents: zeroValue}
+	c.GetParents()
+	c = &Commit{}
+	c.GetParents()
+	c = nil
+	c.GetParents()
 }
 
 func TestCommit_GetSHA(tt *testing.T) {
@@ -6310,6 +8219,17 @@ func TestCommitResult_GetHTMLURL(tt *testing.T) {
 	c.GetHTMLURL()
 }
 
+func TestCommitResult_GetParents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Commit{}
+	c := &CommitResult{Parents: zeroValue}
+	c.GetParents()
+	c = &CommitResult{}
+	c.GetParents()
+	c = nil
+	c.GetParents()
+}
+
 func TestCommitResult_GetRepository(tt *testing.T) {
 	tt.Parallel()
 	c := &CommitResult{}
@@ -6320,7 +8240,10 @@ func TestCommitResult_GetRepository(tt *testing.T) {
 
 func TestCommitResult_GetScore(tt *testing.T) {
 	tt.Parallel()
-	c := &CommitResult{}
+	var zeroValue float64
+	c := &CommitResult{Score: &zeroValue}
+	c.GetScore()
+	c = &CommitResult{}
 	c.GetScore()
 	c = nil
 	c.GetScore()
@@ -6378,6 +8301,17 @@ func TestCommitsComparison_GetBehindBy(tt *testing.T) {
 	c.GetBehindBy()
 }
 
+func TestCommitsComparison_GetCommits(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryCommit{}
+	c := &CommitsComparison{Commits: zeroValue}
+	c.GetCommits()
+	c = &CommitsComparison{}
+	c.GetCommits()
+	c = nil
+	c.GetCommits()
+}
+
 func TestCommitsComparison_GetDiffURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -6387,6 +8321,17 @@ func TestCommitsComparison_GetDiffURL(tt *testing.T) {
 	c.GetDiffURL()
 	c = nil
 	c.GetDiffURL()
+}
+
+func TestCommitsComparison_GetFiles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CommitFile{}
+	c := &CommitsComparison{Files: zeroValue}
+	c.GetFiles()
+	c = &CommitsComparison{}
+	c.GetFiles()
+	c = nil
+	c.GetFiles()
 }
 
 func TestCommitsComparison_GetHTMLURL(tt *testing.T) {
@@ -6461,6 +8406,57 @@ func TestCommitsComparison_GetURL(tt *testing.T) {
 	c.GetURL()
 	c = nil
 	c.GetURL()
+}
+
+func TestCommitsListOptions_GetAuthor(tt *testing.T) {
+	tt.Parallel()
+	c := &CommitsListOptions{}
+	c.GetAuthor()
+	c = nil
+	c.GetAuthor()
+}
+
+func TestCommitsListOptions_GetPath(tt *testing.T) {
+	tt.Parallel()
+	c := &CommitsListOptions{}
+	c.GetPath()
+	c = nil
+	c.GetPath()
+}
+
+func TestCommitsListOptions_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	c := &CommitsListOptions{}
+	c.GetSHA()
+	c = nil
+	c.GetSHA()
+}
+
+func TestCommitsListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	c := &CommitsListOptions{}
+	c.GetSince()
+	c = nil
+	c.GetSince()
+}
+
+func TestCommitsListOptions_GetUntil(tt *testing.T) {
+	tt.Parallel()
+	c := &CommitsListOptions{}
+	c.GetUntil()
+	c = nil
+	c.GetUntil()
+}
+
+func TestCommitsSearchResult_GetCommits(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CommitResult{}
+	c := &CommitsSearchResult{Commits: zeroValue}
+	c.GetCommits()
+	c = &CommitsSearchResult{}
+	c.GetCommits()
+	c = nil
+	c.GetCommits()
 }
 
 func TestCommitsSearchResult_GetIncompleteResults(tt *testing.T) {
@@ -6637,6 +8633,28 @@ func TestCommunityHealthMetrics_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestConfigApplyEvents_GetNodes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ConfigApplyEventsNode{}
+	c := &ConfigApplyEvents{Nodes: zeroValue}
+	c.GetNodes()
+	c = &ConfigApplyEvents{}
+	c.GetNodes()
+	c = nil
+	c.GetNodes()
+}
+
+func TestConfigApplyEventsNode_GetEvents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ConfigApplyEventsNodeEvent{}
+	c := &ConfigApplyEventsNode{Events: zeroValue}
+	c.GetEvents()
+	c = &ConfigApplyEventsNode{}
+	c.GetEvents()
+	c = nil
+	c.GetEvents()
+}
+
 func TestConfigApplyEventsNode_GetLastRequestID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -6800,6 +8818,17 @@ func TestConfigApplyOptions_GetRunID(tt *testing.T) {
 	c.GetRunID()
 	c = nil
 	c.GetRunID()
+}
+
+func TestConfigApplyStatus_GetNodes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ConfigApplyStatusNode{}
+	c := &ConfigApplyStatus{Nodes: zeroValue}
+	c.GetNodes()
+	c = &ConfigApplyStatus{}
+	c.GetNodes()
+	c = nil
+	c.GetNodes()
 }
 
 func TestConfigApplyStatus_GetRunning(tt *testing.T) {
@@ -7395,6 +9424,17 @@ func TestConfigSettingsLDAP_GetAdminGroup(tt *testing.T) {
 	c.GetAdminGroup()
 }
 
+func TestConfigSettingsLDAP_GetBase(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &ConfigSettingsLDAP{Base: zeroValue}
+	c.GetBase()
+	c = &ConfigSettingsLDAP{}
+	c.GetBase()
+	c = nil
+	c.GetBase()
+}
+
 func TestConfigSettingsLDAP_GetBindDN(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -7530,6 +9570,17 @@ func TestConfigSettingsLDAP_GetUID(tt *testing.T) {
 	c.GetUID()
 	c = nil
 	c.GetUID()
+}
+
+func TestConfigSettingsLDAP_GetUserGroups(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &ConfigSettingsLDAP{UserGroups: zeroValue}
+	c.GetUserGroups()
+	c = &ConfigSettingsLDAP{}
+	c.GetUserGroups()
+	c = nil
+	c.GetUserGroups()
 }
 
 func TestConfigSettingsLDAP_GetUserSyncEmails(tt *testing.T) {
@@ -8400,6 +10451,14 @@ func TestContributor_GetURL(tt *testing.T) {
 	c.GetURL()
 }
 
+func TestContributorApprovalPermissions_GetApprovalPolicy(tt *testing.T) {
+	tt.Parallel()
+	c := &ContributorApprovalPermissions{}
+	c.GetApprovalPolicy()
+	c = nil
+	c.GetApprovalPolicy()
+}
+
 func TestContributorStats_GetAuthor(tt *testing.T) {
 	tt.Parallel()
 	c := &ContributorStats{}
@@ -8419,6 +10478,79 @@ func TestContributorStats_GetTotal(tt *testing.T) {
 	c.GetTotal()
 }
 
+func TestContributorStats_GetWeeks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*WeeklyStats{}
+	c := &ContributorStats{Weeks: zeroValue}
+	c.GetWeeks()
+	c = &ContributorStats{}
+	c.GetWeeks()
+	c = nil
+	c.GetWeeks()
+}
+
+func TestCopilotCodeReviewBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCodeReviewBranchRule{}
+	c.GetParameters()
+	c = nil
+	c.GetParameters()
+}
+
+func TestCopilotCodeReviewRuleParameters_GetReviewDraftPullRequests(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCodeReviewRuleParameters{}
+	c.GetReviewDraftPullRequests()
+	c = nil
+	c.GetReviewDraftPullRequests()
+}
+
+func TestCopilotCodeReviewRuleParameters_GetReviewOnPush(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCodeReviewRuleParameters{}
+	c.GetReviewOnPush()
+	c = nil
+	c.GetReviewOnPush()
+}
+
+func TestCopilotDailyMetricsReport_GetDownloadLinks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CopilotDailyMetricsReport{DownloadLinks: zeroValue}
+	c.GetDownloadLinks()
+	c = &CopilotDailyMetricsReport{}
+	c.GetDownloadLinks()
+	c = nil
+	c.GetDownloadLinks()
+}
+
+func TestCopilotDailyMetricsReport_GetReportDay(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDailyMetricsReport{}
+	c.GetReportDay()
+	c = nil
+	c.GetReportDay()
+}
+
+func TestCopilotDotcomChat_GetModels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotDotcomChatModel{}
+	c := &CopilotDotcomChat{Models: zeroValue}
+	c.GetModels()
+	c = &CopilotDotcomChat{}
+	c.GetModels()
+	c = nil
+	c.GetModels()
+}
+
+func TestCopilotDotcomChat_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomChat{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
 func TestCopilotDotcomChatModel_GetCustomModelTrainingDate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8428,6 +10560,57 @@ func TestCopilotDotcomChatModel_GetCustomModelTrainingDate(tt *testing.T) {
 	c.GetCustomModelTrainingDate()
 	c = nil
 	c.GetCustomModelTrainingDate()
+}
+
+func TestCopilotDotcomChatModel_GetIsCustomModel(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomChatModel{}
+	c.GetIsCustomModel()
+	c = nil
+	c.GetIsCustomModel()
+}
+
+func TestCopilotDotcomChatModel_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomChatModel{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotDotcomChatModel_GetTotalChats(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomChatModel{}
+	c.GetTotalChats()
+	c = nil
+	c.GetTotalChats()
+}
+
+func TestCopilotDotcomChatModel_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomChatModel{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
+func TestCopilotDotcomPullRequests_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotDotcomPullRequestsRepository{}
+	c := &CopilotDotcomPullRequests{Repositories: zeroValue}
+	c.GetRepositories()
+	c = &CopilotDotcomPullRequests{}
+	c.GetRepositories()
+	c = nil
+	c.GetRepositories()
+}
+
+func TestCopilotDotcomPullRequests_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomPullRequests{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
 }
 
 func TestCopilotDotcomPullRequestsModel_GetCustomModelTrainingDate(tt *testing.T) {
@@ -8441,6 +10624,111 @@ func TestCopilotDotcomPullRequestsModel_GetCustomModelTrainingDate(tt *testing.T
 	c.GetCustomModelTrainingDate()
 }
 
+func TestCopilotDotcomPullRequestsModel_GetIsCustomModel(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomPullRequestsModel{}
+	c.GetIsCustomModel()
+	c = nil
+	c.GetIsCustomModel()
+}
+
+func TestCopilotDotcomPullRequestsModel_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomPullRequestsModel{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotDotcomPullRequestsModel_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomPullRequestsModel{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
+func TestCopilotDotcomPullRequestsModel_GetTotalPRSummariesCreated(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomPullRequestsModel{}
+	c.GetTotalPRSummariesCreated()
+	c = nil
+	c.GetTotalPRSummariesCreated()
+}
+
+func TestCopilotDotcomPullRequestsRepository_GetModels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotDotcomPullRequestsModel{}
+	c := &CopilotDotcomPullRequestsRepository{Models: zeroValue}
+	c.GetModels()
+	c = &CopilotDotcomPullRequestsRepository{}
+	c.GetModels()
+	c = nil
+	c.GetModels()
+}
+
+func TestCopilotDotcomPullRequestsRepository_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomPullRequestsRepository{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotDotcomPullRequestsRepository_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDotcomPullRequestsRepository{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
+func TestCopilotIDEChat_GetEditors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotIDEChatEditor{}
+	c := &CopilotIDEChat{Editors: zeroValue}
+	c.GetEditors()
+	c = &CopilotIDEChat{}
+	c.GetEditors()
+	c = nil
+	c.GetEditors()
+}
+
+func TestCopilotIDEChat_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDEChat{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
+func TestCopilotIDEChatEditor_GetModels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotIDEChatModel{}
+	c := &CopilotIDEChatEditor{Models: zeroValue}
+	c.GetModels()
+	c = &CopilotIDEChatEditor{}
+	c.GetModels()
+	c = nil
+	c.GetModels()
+}
+
+func TestCopilotIDEChatEditor_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDEChatEditor{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotIDEChatEditor_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDEChatEditor{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
 func TestCopilotIDEChatModel_GetCustomModelTrainingDate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8452,6 +10740,127 @@ func TestCopilotIDEChatModel_GetCustomModelTrainingDate(tt *testing.T) {
 	c.GetCustomModelTrainingDate()
 }
 
+func TestCopilotIDEChatModel_GetIsCustomModel(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDEChatModel{}
+	c.GetIsCustomModel()
+	c = nil
+	c.GetIsCustomModel()
+}
+
+func TestCopilotIDEChatModel_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDEChatModel{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotIDEChatModel_GetTotalChatCopyEvents(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDEChatModel{}
+	c.GetTotalChatCopyEvents()
+	c = nil
+	c.GetTotalChatCopyEvents()
+}
+
+func TestCopilotIDEChatModel_GetTotalChatInsertionEvents(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDEChatModel{}
+	c.GetTotalChatInsertionEvents()
+	c = nil
+	c.GetTotalChatInsertionEvents()
+}
+
+func TestCopilotIDEChatModel_GetTotalChats(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDEChatModel{}
+	c.GetTotalChats()
+	c = nil
+	c.GetTotalChats()
+}
+
+func TestCopilotIDEChatModel_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDEChatModel{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
+func TestCopilotIDECodeCompletions_GetEditors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotIDECodeCompletionsEditor{}
+	c := &CopilotIDECodeCompletions{Editors: zeroValue}
+	c.GetEditors()
+	c = &CopilotIDECodeCompletions{}
+	c.GetEditors()
+	c = nil
+	c.GetEditors()
+}
+
+func TestCopilotIDECodeCompletions_GetLanguages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotIDECodeCompletionsLanguage{}
+	c := &CopilotIDECodeCompletions{Languages: zeroValue}
+	c.GetLanguages()
+	c = &CopilotIDECodeCompletions{}
+	c.GetLanguages()
+	c = nil
+	c.GetLanguages()
+}
+
+func TestCopilotIDECodeCompletions_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletions{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
+func TestCopilotIDECodeCompletionsEditor_GetModels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotIDECodeCompletionsModel{}
+	c := &CopilotIDECodeCompletionsEditor{Models: zeroValue}
+	c.GetModels()
+	c = &CopilotIDECodeCompletionsEditor{}
+	c.GetModels()
+	c = nil
+	c.GetModels()
+}
+
+func TestCopilotIDECodeCompletionsEditor_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsEditor{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotIDECodeCompletionsEditor_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsEditor{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
+func TestCopilotIDECodeCompletionsLanguage_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsLanguage{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotIDECodeCompletionsLanguage_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsLanguage{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
 func TestCopilotIDECodeCompletionsModel_GetCustomModelTrainingDate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8461,6 +10870,89 @@ func TestCopilotIDECodeCompletionsModel_GetCustomModelTrainingDate(tt *testing.T
 	c.GetCustomModelTrainingDate()
 	c = nil
 	c.GetCustomModelTrainingDate()
+}
+
+func TestCopilotIDECodeCompletionsModel_GetIsCustomModel(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsModel{}
+	c.GetIsCustomModel()
+	c = nil
+	c.GetIsCustomModel()
+}
+
+func TestCopilotIDECodeCompletionsModel_GetLanguages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotIDECodeCompletionsModelLanguage{}
+	c := &CopilotIDECodeCompletionsModel{Languages: zeroValue}
+	c.GetLanguages()
+	c = &CopilotIDECodeCompletionsModel{}
+	c.GetLanguages()
+	c = nil
+	c.GetLanguages()
+}
+
+func TestCopilotIDECodeCompletionsModel_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsModel{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotIDECodeCompletionsModel_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsModel{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
+func TestCopilotIDECodeCompletionsModelLanguage_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsModelLanguage{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotIDECodeCompletionsModelLanguage_GetTotalCodeAcceptances(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsModelLanguage{}
+	c.GetTotalCodeAcceptances()
+	c = nil
+	c.GetTotalCodeAcceptances()
+}
+
+func TestCopilotIDECodeCompletionsModelLanguage_GetTotalCodeLinesAccepted(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsModelLanguage{}
+	c.GetTotalCodeLinesAccepted()
+	c = nil
+	c.GetTotalCodeLinesAccepted()
+}
+
+func TestCopilotIDECodeCompletionsModelLanguage_GetTotalCodeLinesSuggested(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsModelLanguage{}
+	c.GetTotalCodeLinesSuggested()
+	c = nil
+	c.GetTotalCodeLinesSuggested()
+}
+
+func TestCopilotIDECodeCompletionsModelLanguage_GetTotalCodeSuggestions(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsModelLanguage{}
+	c.GetTotalCodeSuggestions()
+	c = nil
+	c.GetTotalCodeSuggestions()
+}
+
+func TestCopilotIDECodeCompletionsModelLanguage_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotIDECodeCompletionsModelLanguage{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
 }
 
 func TestCopilotMetrics_GetCopilotDotcomChat(tt *testing.T) {
@@ -8493,6 +10985,14 @@ func TestCopilotMetrics_GetCopilotIDECodeCompletions(tt *testing.T) {
 	c.GetCopilotIDECodeCompletions()
 	c = nil
 	c.GetCopilotIDECodeCompletions()
+}
+
+func TestCopilotMetrics_GetDate(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetrics{}
+	c.GetDate()
+	c = nil
+	c.GetDate()
 }
 
 func TestCopilotMetrics_GetTotalActiveUsers(tt *testing.T) {
@@ -8539,12 +11039,127 @@ func TestCopilotMetricsListOptions_GetUntil(tt *testing.T) {
 	c.GetUntil()
 }
 
+func TestCopilotMetricsReport_GetDownloadLinks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CopilotMetricsReport{DownloadLinks: zeroValue}
+	c.GetDownloadLinks()
+	c = &CopilotMetricsReport{}
+	c.GetDownloadLinks()
+	c = nil
+	c.GetDownloadLinks()
+}
+
+func TestCopilotMetricsReport_GetReportEndDay(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsReport{}
+	c.GetReportEndDay()
+	c = nil
+	c.GetReportEndDay()
+}
+
+func TestCopilotMetricsReport_GetReportStartDay(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsReport{}
+	c.GetReportStartDay()
+	c = nil
+	c.GetReportStartDay()
+}
+
+func TestCopilotMetricsReportOptions_GetDay(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsReportOptions{}
+	c.GetDay()
+	c = nil
+	c.GetDay()
+}
+
+func TestCopilotOrganizationDetails_GetCopilotChat(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotOrganizationDetails{}
+	c.GetCopilotChat()
+	c = nil
+	c.GetCopilotChat()
+}
+
+func TestCopilotOrganizationDetails_GetPublicCodeSuggestions(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotOrganizationDetails{}
+	c.GetPublicCodeSuggestions()
+	c = nil
+	c.GetPublicCodeSuggestions()
+}
+
 func TestCopilotOrganizationDetails_GetSeatBreakdown(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotOrganizationDetails{}
 	c.GetSeatBreakdown()
 	c = nil
 	c.GetSeatBreakdown()
+}
+
+func TestCopilotOrganizationDetails_GetSeatManagementSetting(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotOrganizationDetails{}
+	c.GetSeatManagementSetting()
+	c = nil
+	c.GetSeatManagementSetting()
+}
+
+func TestCopilotSeatBreakdown_GetActiveThisCycle(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSeatBreakdown{}
+	c.GetActiveThisCycle()
+	c = nil
+	c.GetActiveThisCycle()
+}
+
+func TestCopilotSeatBreakdown_GetAddedThisCycle(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSeatBreakdown{}
+	c.GetAddedThisCycle()
+	c = nil
+	c.GetAddedThisCycle()
+}
+
+func TestCopilotSeatBreakdown_GetInactiveThisCycle(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSeatBreakdown{}
+	c.GetInactiveThisCycle()
+	c = nil
+	c.GetInactiveThisCycle()
+}
+
+func TestCopilotSeatBreakdown_GetPendingCancellation(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSeatBreakdown{}
+	c.GetPendingCancellation()
+	c = nil
+	c.GetPendingCancellation()
+}
+
+func TestCopilotSeatBreakdown_GetPendingInvitation(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSeatBreakdown{}
+	c.GetPendingInvitation()
+	c = nil
+	c.GetPendingInvitation()
+}
+
+func TestCopilotSeatBreakdown_GetTotal(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSeatBreakdown{}
+	c.GetTotal()
+	c = nil
+	c.GetTotal()
+}
+
+func TestCopilotSeatDetails_GetAssignee(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSeatDetails{}
+	c.GetAssignee()
+	c = nil
+	c.GetAssignee()
 }
 
 func TestCopilotSeatDetails_GetAssigningTeam(tt *testing.T) {
@@ -8632,6 +11247,33 @@ func TestCostCenter_GetAzureSubscription(tt *testing.T) {
 	c.GetAzureSubscription()
 }
 
+func TestCostCenter_GetID(tt *testing.T) {
+	tt.Parallel()
+	c := &CostCenter{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCostCenter_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CostCenter{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCostCenter_GetResources(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CostCenterResource{}
+	c := &CostCenter{Resources: zeroValue}
+	c.GetResources()
+	c = &CostCenter{}
+	c.GetResources()
+	c = nil
+	c.GetResources()
+}
+
 func TestCostCenter_GetState(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8641,6 +11283,74 @@ func TestCostCenter_GetState(tt *testing.T) {
 	c.GetState()
 	c = nil
 	c.GetState()
+}
+
+func TestCostCenterRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CostCenterRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCostCenterResource_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CostCenterResource{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCostCenterResource_GetType(tt *testing.T) {
+	tt.Parallel()
+	c := &CostCenterResource{}
+	c.GetType()
+	c = nil
+	c.GetType()
+}
+
+func TestCostCenterResourceRequest_GetOrganizations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CostCenterResourceRequest{Organizations: zeroValue}
+	c.GetOrganizations()
+	c = &CostCenterResourceRequest{}
+	c.GetOrganizations()
+	c = nil
+	c.GetOrganizations()
+}
+
+func TestCostCenterResourceRequest_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CostCenterResourceRequest{Repositories: zeroValue}
+	c.GetRepositories()
+	c = &CostCenterResourceRequest{}
+	c.GetRepositories()
+	c = nil
+	c.GetRepositories()
+}
+
+func TestCostCenterResourceRequest_GetUsers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CostCenterResourceRequest{Users: zeroValue}
+	c.GetUsers()
+	c = &CostCenterResourceRequest{}
+	c.GetUsers()
+	c = nil
+	c.GetUsers()
+}
+
+func TestCostCenters_GetCostCenters(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CostCenter{}
+	c := &CostCenters{CostCenters: zeroValue}
+	c.GetCostCenters()
+	c = &CostCenters{}
+	c.GetCostCenters()
+	c = nil
+	c.GetCostCenters()
 }
 
 func TestCreateArtifactDeploymentRequest_GetCluster(tt *testing.T) {
@@ -8654,6 +11364,22 @@ func TestCreateArtifactDeploymentRequest_GetCluster(tt *testing.T) {
 	c.GetCluster()
 }
 
+func TestCreateArtifactDeploymentRequest_GetDeploymentName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateArtifactDeploymentRequest{}
+	c.GetDeploymentName()
+	c = nil
+	c.GetDeploymentName()
+}
+
+func TestCreateArtifactDeploymentRequest_GetDigest(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateArtifactDeploymentRequest{}
+	c.GetDigest()
+	c = nil
+	c.GetDigest()
+}
+
 func TestCreateArtifactDeploymentRequest_GetGithubRepository(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8665,6 +11391,22 @@ func TestCreateArtifactDeploymentRequest_GetGithubRepository(tt *testing.T) {
 	c.GetGithubRepository()
 }
 
+func TestCreateArtifactDeploymentRequest_GetLogicalEnvironment(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateArtifactDeploymentRequest{}
+	c.GetLogicalEnvironment()
+	c = nil
+	c.GetLogicalEnvironment()
+}
+
+func TestCreateArtifactDeploymentRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateArtifactDeploymentRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
 func TestCreateArtifactDeploymentRequest_GetPhysicalEnvironment(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8674,6 +11416,25 @@ func TestCreateArtifactDeploymentRequest_GetPhysicalEnvironment(tt *testing.T) {
 	c.GetPhysicalEnvironment()
 	c = nil
 	c.GetPhysicalEnvironment()
+}
+
+func TestCreateArtifactDeploymentRequest_GetRuntimeRisks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []DeploymentRuntimeRisk{}
+	c := &CreateArtifactDeploymentRequest{RuntimeRisks: zeroValue}
+	c.GetRuntimeRisks()
+	c = &CreateArtifactDeploymentRequest{}
+	c.GetRuntimeRisks()
+	c = nil
+	c.GetRuntimeRisks()
+}
+
+func TestCreateArtifactDeploymentRequest_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateArtifactDeploymentRequest{}
+	c.GetStatus()
+	c = nil
+	c.GetStatus()
 }
 
 func TestCreateArtifactDeploymentRequest_GetTags(tt *testing.T) {
@@ -8709,6 +11470,14 @@ func TestCreateArtifactStorageRequest_GetArtifactURL(tt *testing.T) {
 	c.GetArtifactURL()
 }
 
+func TestCreateArtifactStorageRequest_GetDigest(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateArtifactStorageRequest{}
+	c.GetDigest()
+	c = nil
+	c.GetDigest()
+}
+
 func TestCreateArtifactStorageRequest_GetGithubRepository(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8720,6 +11489,14 @@ func TestCreateArtifactStorageRequest_GetGithubRepository(tt *testing.T) {
 	c.GetGithubRepository()
 }
 
+func TestCreateArtifactStorageRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateArtifactStorageRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
 func TestCreateArtifactStorageRequest_GetPath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8729,6 +11506,14 @@ func TestCreateArtifactStorageRequest_GetPath(tt *testing.T) {
 	c.GetPath()
 	c = nil
 	c.GetPath()
+}
+
+func TestCreateArtifactStorageRequest_GetRegistryURL(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateArtifactStorageRequest{}
+	c.GetRegistryURL()
+	c = nil
+	c.GetRegistryURL()
 }
 
 func TestCreateArtifactStorageRequest_GetRepository(tt *testing.T) {
@@ -8762,6 +11547,17 @@ func TestCreateArtifactStorageRequest_GetVersion(tt *testing.T) {
 	c.GetVersion()
 	c = nil
 	c.GetVersion()
+}
+
+func TestCreateCheckRunOptions_GetActions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CheckRunAction{}
+	c := &CreateCheckRunOptions{Actions: zeroValue}
+	c.GetActions()
+	c = &CreateCheckRunOptions{}
+	c.GetActions()
+	c = nil
+	c.GetActions()
 }
 
 func TestCreateCheckRunOptions_GetCompletedAt(tt *testing.T) {
@@ -8808,6 +11604,22 @@ func TestCreateCheckRunOptions_GetExternalID(tt *testing.T) {
 	c.GetExternalID()
 }
 
+func TestCreateCheckRunOptions_GetHeadSHA(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCheckRunOptions{}
+	c.GetHeadSHA()
+	c = nil
+	c.GetHeadSHA()
+}
+
+func TestCreateCheckRunOptions_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCheckRunOptions{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
 func TestCreateCheckRunOptions_GetOutput(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateCheckRunOptions{}
@@ -8847,6 +11659,14 @@ func TestCreateCheckSuiteOptions_GetHeadBranch(tt *testing.T) {
 	c.GetHeadBranch()
 	c = nil
 	c.GetHeadBranch()
+}
+
+func TestCreateCheckSuiteOptions_GetHeadSHA(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCheckSuiteOptions{}
+	c.GetHeadSHA()
+	c = nil
+	c.GetHeadSHA()
 }
 
 func TestCreateCodespaceOptions_GetClientIP(tt *testing.T) {
@@ -8970,6 +11790,14 @@ func TestCreateCodespaceOptions_GetWorkingDirectory(tt *testing.T) {
 	c.GetWorkingDirectory()
 }
 
+func TestCreateCommitOptions_GetSigner(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCommitOptions{}
+	c.GetSigner()
+	c = nil
+	c.GetSigner()
+}
+
 func TestCreateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -8990,6 +11818,25 @@ func TestCreateCustomOrgRoleRequest_GetDescription(tt *testing.T) {
 	c.GetDescription()
 	c = nil
 	c.GetDescription()
+}
+
+func TestCreateCustomOrgRoleRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCustomOrgRoleRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateCustomOrgRoleRequest_GetPermissions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateCustomOrgRoleRequest{Permissions: zeroValue}
+	c.GetPermissions()
+	c = &CreateCustomOrgRoleRequest{}
+	c.GetPermissions()
+	c = nil
+	c.GetPermissions()
 }
 
 func TestCreateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
@@ -9023,6 +11870,39 @@ func TestCreateEnterpriseRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing
 	c.GetRestrictedToWorkflows()
 	c = nil
 	c.GetRestrictedToWorkflows()
+}
+
+func TestCreateEnterpriseRunnerGroupRequest_GetRunners(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	c := &CreateEnterpriseRunnerGroupRequest{Runners: zeroValue}
+	c.GetRunners()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetRunners()
+	c = nil
+	c.GetRunners()
+}
+
+func TestCreateEnterpriseRunnerGroupRequest_GetSelectedOrganizationIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	c := &CreateEnterpriseRunnerGroupRequest{SelectedOrganizationIDs: zeroValue}
+	c.GetSelectedOrganizationIDs()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetSelectedOrganizationIDs()
+	c = nil
+	c.GetSelectedOrganizationIDs()
+}
+
+func TestCreateEnterpriseRunnerGroupRequest_GetSelectedWorkflows(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateEnterpriseRunnerGroupRequest{SelectedWorkflows: zeroValue}
+	c.GetSelectedWorkflows()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetSelectedWorkflows()
+	c = nil
+	c.GetSelectedWorkflows()
 }
 
 func TestCreateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
@@ -9134,6 +12014,14 @@ func TestCreateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {
 	c.GetEnableStaticIP()
 }
 
+func TestCreateHostedRunnerRequest_GetImage(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateHostedRunnerRequest{}
+	c.GetImage()
+	c = nil
+	c.GetImage()
+}
+
 func TestCreateHostedRunnerRequest_GetImageGen(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -9156,6 +12044,73 @@ func TestCreateHostedRunnerRequest_GetMaximumRunners(tt *testing.T) {
 	c.GetMaximumRunners()
 }
 
+func TestCreateHostedRunnerRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateHostedRunnerRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateHostedRunnerRequest_GetRunnerGroupID(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateHostedRunnerRequest{}
+	c.GetRunnerGroupID()
+	c = nil
+	c.GetRunnerGroupID()
+}
+
+func TestCreateHostedRunnerRequest_GetSize(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateHostedRunnerRequest{}
+	c.GetSize()
+	c = nil
+	c.GetSize()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetEncryptedValue(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateOrganizationPrivateRegistry{}
+	c.GetEncryptedValue()
+	c = nil
+	c.GetEncryptedValue()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateOrganizationPrivateRegistry{}
+	c.GetKeyID()
+	c = nil
+	c.GetKeyID()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetRegistryType(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateOrganizationPrivateRegistry{}
+	c.GetRegistryType()
+	c = nil
+	c.GetRegistryType()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	c := &CreateOrganizationPrivateRegistry{SelectedRepositoryIDs: zeroValue}
+	c.GetSelectedRepositoryIDs()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetSelectedRepositoryIDs()
+	c = nil
+	c.GetSelectedRepositoryIDs()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetURL(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateOrganizationPrivateRegistry{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
 func TestCreateOrganizationPrivateRegistry_GetUsername(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -9165,6 +12120,14 @@ func TestCreateOrganizationPrivateRegistry_GetUsername(tt *testing.T) {
 	c.GetUsername()
 	c = nil
 	c.GetUsername()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateOrganizationPrivateRegistry{}
+	c.GetVisibility()
+	c = nil
+	c.GetVisibility()
 }
 
 func TestCreateOrgInvitationOptions_GetEmail(tt *testing.T) {
@@ -9200,6 +12163,17 @@ func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
 	c.GetRole()
 }
 
+func TestCreateOrgInvitationOptions_GetTeamID(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	c := &CreateOrgInvitationOptions{TeamID: zeroValue}
+	c.GetTeamID()
+	c = &CreateOrgInvitationOptions{}
+	c.GetTeamID()
+	c = nil
+	c.GetTeamID()
+}
+
 func TestCreateOrUpdateCustomRepoRoleOptions_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -9233,6 +12207,17 @@ func TestCreateOrUpdateCustomRepoRoleOptions_GetName(tt *testing.T) {
 	c.GetName()
 }
 
+func TestCreateOrUpdateCustomRepoRoleOptions_GetPermissions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateOrUpdateCustomRepoRoleOptions{Permissions: zeroValue}
+	c.GetPermissions()
+	c = &CreateOrUpdateCustomRepoRoleOptions{}
+	c.GetPermissions()
+	c = nil
+	c.GetPermissions()
+}
+
 func TestCreateOrUpdateIssueTypesOptions_GetColor(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -9255,6 +12240,14 @@ func TestCreateOrUpdateIssueTypesOptions_GetDescription(tt *testing.T) {
 	c.GetDescription()
 }
 
+func TestCreateOrUpdateIssueTypesOptions_GetIsEnabled(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateOrUpdateIssueTypesOptions{}
+	c.GetIsEnabled()
+	c = nil
+	c.GetIsEnabled()
+}
+
 func TestCreateOrUpdateIssueTypesOptions_GetIsPrivate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -9266,6 +12259,14 @@ func TestCreateOrUpdateIssueTypesOptions_GetIsPrivate(tt *testing.T) {
 	c.GetIsPrivate()
 }
 
+func TestCreateOrUpdateIssueTypesOptions_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateOrUpdateIssueTypesOptions{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
 func TestCreateProtectedChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -9275,6 +12276,22 @@ func TestCreateProtectedChanges_GetFrom(tt *testing.T) {
 	c.GetFrom()
 	c = nil
 	c.GetFrom()
+}
+
+func TestCreateRef_GetRef(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateRef{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
+func TestCreateRef_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateRef{}
+	c.GetSHA()
+	c = nil
+	c.GetSHA()
 }
 
 func TestCreateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
@@ -9321,6 +12338,39 @@ func TestCreateRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
 	c.GetRestrictedToWorkflows()
 }
 
+func TestCreateRunnerGroupRequest_GetRunners(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	c := &CreateRunnerGroupRequest{Runners: zeroValue}
+	c.GetRunners()
+	c = &CreateRunnerGroupRequest{}
+	c.GetRunners()
+	c = nil
+	c.GetRunners()
+}
+
+func TestCreateRunnerGroupRequest_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	c := &CreateRunnerGroupRequest{SelectedRepositoryIDs: zeroValue}
+	c.GetSelectedRepositoryIDs()
+	c = &CreateRunnerGroupRequest{}
+	c.GetSelectedRepositoryIDs()
+	c = nil
+	c.GetSelectedRepositoryIDs()
+}
+
+func TestCreateRunnerGroupRequest_GetSelectedWorkflows(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateRunnerGroupRequest{SelectedWorkflows: zeroValue}
+	c.GetSelectedWorkflows()
+	c = &CreateRunnerGroupRequest{}
+	c.GetSelectedWorkflows()
+	c = nil
+	c.GetSelectedWorkflows()
+}
+
 func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -9332,12 +12382,44 @@ func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
+func TestCreateTag_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateTag{}
+	c.GetMessage()
+	c = nil
+	c.GetMessage()
+}
+
+func TestCreateTag_GetObject(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateTag{}
+	c.GetObject()
+	c = nil
+	c.GetObject()
+}
+
+func TestCreateTag_GetTag(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateTag{}
+	c.GetTag()
+	c = nil
+	c.GetTag()
+}
+
 func TestCreateTag_GetTagger(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateTag{}
 	c.GetTagger()
 	c = nil
 	c.GetTagger()
+}
+
+func TestCreateTag_GetType(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateTag{}
+	c.GetType()
+	c = nil
+	c.GetType()
 }
 
 func TestCreateUpdateEnvironment_GetCanAdminsBypass(tt *testing.T) {
@@ -9370,6 +12452,17 @@ func TestCreateUpdateEnvironment_GetPreventSelfReview(tt *testing.T) {
 	c.GetPreventSelfReview()
 }
 
+func TestCreateUpdateEnvironment_GetReviewers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*EnvReviewers{}
+	c := &CreateUpdateEnvironment{Reviewers: zeroValue}
+	c.GetReviewers()
+	c = &CreateUpdateEnvironment{}
+	c.GetReviewers()
+	c = nil
+	c.GetReviewers()
+}
+
 func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -9390,6 +12483,14 @@ func TestCreateUserRequest_GetEmail(tt *testing.T) {
 	c.GetEmail()
 	c = nil
 	c.GetEmail()
+}
+
+func TestCreateUserRequest_GetLogin(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateUserRequest{}
+	c.GetLogin()
+	c = nil
+	c.GetLogin()
 }
 
 func TestCreateUserRequest_GetSuspended(tt *testing.T) {
@@ -9414,6 +12515,14 @@ func TestCreateWorkflowDispatchEventRequest_GetInputs(tt *testing.T) {
 	c.GetInputs()
 }
 
+func TestCreateWorkflowDispatchEventRequest_GetRef(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateWorkflowDispatchEventRequest{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
 func TestCreateWorkflowDispatchEventRequest_GetReturnRunDetails(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -9434,6 +12543,17 @@ func TestCreationInfo_GetCreated(tt *testing.T) {
 	c.GetCreated()
 	c = nil
 	c.GetCreated()
+}
+
+func TestCreationInfo_GetCreators(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreationInfo{Creators: zeroValue}
+	c.GetCreators()
+	c = &CreationInfo{}
+	c.GetCreators()
+	c = nil
+	c.GetCreators()
 }
 
 func TestCredentialAuthorization_GetAuthorizedCredentialExpiresAt(tt *testing.T) {
@@ -9546,6 +12666,17 @@ func TestCredentialAuthorization_GetLogin(tt *testing.T) {
 	c.GetLogin()
 }
 
+func TestCredentialAuthorization_GetScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CredentialAuthorization{Scopes: zeroValue}
+	c.GetScopes()
+	c = &CredentialAuthorization{}
+	c.GetScopes()
+	c = nil
+	c.GetScopes()
+}
+
 func TestCredentialAuthorization_GetTokenLastEight(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -9555,6 +12686,14 @@ func TestCredentialAuthorization_GetTokenLastEight(tt *testing.T) {
 	c.GetTokenLastEight()
 	c = nil
 	c.GetTokenLastEight()
+}
+
+func TestCredentialAuthorizationsListOptions_GetLogin(tt *testing.T) {
+	tt.Parallel()
+	c := &CredentialAuthorizationsListOptions{}
+	c.GetLogin()
+	c = nil
+	c.GetLogin()
 }
 
 func TestCredit_GetType(tt *testing.T) {
@@ -9735,6 +12874,17 @@ func TestCustomOrgRole_GetOrg(tt *testing.T) {
 	c.GetOrg()
 }
 
+func TestCustomOrgRole_GetPermissions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CustomOrgRole{Permissions: zeroValue}
+	c.GetPermissions()
+	c = &CustomOrgRole{}
+	c.GetPermissions()
+	c = nil
+	c.GetPermissions()
+}
+
 func TestCustomOrgRole_GetSource(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -9777,6 +12927,25 @@ func TestCustomPatternBackfillScan_GetPatternSlug(tt *testing.T) {
 	c.GetPatternSlug()
 	c = nil
 	c.GetPatternSlug()
+}
+
+func TestCustomProperty_GetAllowedValues(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CustomProperty{AllowedValues: zeroValue}
+	c.GetAllowedValues()
+	c = &CustomProperty{}
+	c.GetAllowedValues()
+	c = nil
+	c.GetAllowedValues()
+}
+
+func TestCustomProperty_GetDefaultValue(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomProperty{}
+	c.GetDefaultValue()
+	c = nil
+	c.GetDefaultValue()
 }
 
 func TestCustomProperty_GetDescription(tt *testing.T) {
@@ -9845,6 +13014,14 @@ func TestCustomProperty_GetValuesEditableBy(tt *testing.T) {
 	c.GetValuesEditableBy()
 }
 
+func TestCustomProperty_GetValueType(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomProperty{}
+	c.GetValueType()
+	c = nil
+	c.GetValueType()
+}
+
 func TestCustomPropertyEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -9896,6 +13073,22 @@ func TestCustomPropertyEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 }
 
+func TestCustomPropertyValue_GetPropertyName(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyValue{}
+	c.GetPropertyName()
+	c = nil
+	c.GetPropertyName()
+}
+
+func TestCustomPropertyValue_GetValue(tt *testing.T) {
+	tt.Parallel()
+	c := &CustomPropertyValue{}
+	c.GetValue()
+	c = nil
+	c.GetValue()
+}
+
 func TestCustomPropertyValuesEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -9921,6 +13114,28 @@ func TestCustomPropertyValuesEvent_GetInstallation(tt *testing.T) {
 	c.GetInstallation()
 	c = nil
 	c.GetInstallation()
+}
+
+func TestCustomPropertyValuesEvent_GetNewPropertyValues(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomPropertyValue{}
+	c := &CustomPropertyValuesEvent{NewPropertyValues: zeroValue}
+	c.GetNewPropertyValues()
+	c = &CustomPropertyValuesEvent{}
+	c.GetNewPropertyValues()
+	c = nil
+	c.GetNewPropertyValues()
+}
+
+func TestCustomPropertyValuesEvent_GetOldPropertyValues(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomPropertyValue{}
+	c := &CustomPropertyValuesEvent{OldPropertyValues: zeroValue}
+	c.GetOldPropertyValues()
+	c = &CustomPropertyValuesEvent{}
+	c.GetOldPropertyValues()
+	c = nil
+	c.GetOldPropertyValues()
 }
 
 func TestCustomPropertyValuesEvent_GetOrg(tt *testing.T) {
@@ -10010,6 +13225,17 @@ func TestCustomRepoRoles_GetOrg(tt *testing.T) {
 	c.GetOrg()
 }
 
+func TestCustomRepoRoles_GetPermissions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CustomRepoRoles{Permissions: zeroValue}
+	c.GetPermissions()
+	c = &CustomRepoRoles{}
+	c.GetPermissions()
+	c = nil
+	c.GetPermissions()
+}
+
 func TestCustomRepoRoles_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -10019,6 +13245,41 @@ func TestCustomRepoRoles_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 	c = nil
 	c.GetUpdatedAt()
+}
+
+func TestDatadogConfig_GetEncryptedToken(tt *testing.T) {
+	tt.Parallel()
+	d := &DatadogConfig{}
+	d.GetEncryptedToken()
+	d = nil
+	d.GetEncryptedToken()
+}
+
+func TestDatadogConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	d := &DatadogConfig{}
+	d.GetKeyID()
+	d = nil
+	d.GetKeyID()
+}
+
+func TestDatadogConfig_GetSite(tt *testing.T) {
+	tt.Parallel()
+	d := &DatadogConfig{}
+	d.GetSite()
+	d = nil
+	d.GetSite()
+}
+
+func TestDefaultSetupConfiguration_GetLanguages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	d := &DefaultSetupConfiguration{Languages: zeroValue}
+	d.GetLanguages()
+	d = &DefaultSetupConfiguration{}
+	d.GetLanguages()
+	d = nil
+	d.GetLanguages()
 }
 
 func TestDefaultSetupConfiguration_GetQuerySuite(tt *testing.T) {
@@ -10140,6 +13401,38 @@ func TestDeleteAnalysis_GetNextAnalysisURL(tt *testing.T) {
 	d.GetNextAnalysisURL()
 	d = nil
 	d.GetNextAnalysisURL()
+}
+
+func TestDeleteCostCenterResponse_GetCostCenterState(tt *testing.T) {
+	tt.Parallel()
+	d := &DeleteCostCenterResponse{}
+	d.GetCostCenterState()
+	d = nil
+	d.GetCostCenterState()
+}
+
+func TestDeleteCostCenterResponse_GetID(tt *testing.T) {
+	tt.Parallel()
+	d := &DeleteCostCenterResponse{}
+	d.GetID()
+	d = nil
+	d.GetID()
+}
+
+func TestDeleteCostCenterResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	d := &DeleteCostCenterResponse{}
+	d.GetMessage()
+	d = nil
+	d.GetMessage()
+}
+
+func TestDeleteCostCenterResponse_GetName(tt *testing.T) {
+	tt.Parallel()
+	d := &DeleteCostCenterResponse{}
+	d.GetName()
+	d = nil
+	d.GetName()
 }
 
 func TestDeleteEvent_GetInstallation(tt *testing.T) {
@@ -10449,6 +13742,54 @@ func TestDependabotAlertState_GetDismissedReason(tt *testing.T) {
 	d.GetDismissedReason()
 }
 
+func TestDependabotAlertState_GetState(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotAlertState{}
+	d.GetState()
+	d = nil
+	d.GetState()
+}
+
+func TestDependabotEncryptedSecret_GetEncryptedValue(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotEncryptedSecret{}
+	d.GetEncryptedValue()
+	d = nil
+	d.GetEncryptedValue()
+}
+
+func TestDependabotEncryptedSecret_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotEncryptedSecret{}
+	d.GetKeyID()
+	d = nil
+	d.GetKeyID()
+}
+
+func TestDependabotEncryptedSecret_GetName(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotEncryptedSecret{}
+	d.GetName()
+	d = nil
+	d.GetName()
+}
+
+func TestDependabotEncryptedSecret_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotEncryptedSecret{}
+	d.GetSelectedRepositoryIDs()
+	d = nil
+	d.GetSelectedRepositoryIDs()
+}
+
+func TestDependabotEncryptedSecret_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotEncryptedSecret{}
+	d.GetVisibility()
+	d = nil
+	d.GetVisibility()
+}
+
 func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -10466,6 +13807,17 @@ func TestDependabotSecurityAdvisory_GetCVSS(tt *testing.T) {
 	d.GetCVSS()
 	d = nil
 	d.GetCVSS()
+}
+
+func TestDependabotSecurityAdvisory_GetCWEs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AdvisoryCWEs{}
+	d := &DependabotSecurityAdvisory{CWEs: zeroValue}
+	d.GetCWEs()
+	d = &DependabotSecurityAdvisory{}
+	d.GetCWEs()
+	d = nil
+	d.GetCWEs()
 }
 
 func TestDependabotSecurityAdvisory_GetDescription(tt *testing.T) {
@@ -10498,6 +13850,17 @@ func TestDependabotSecurityAdvisory_GetGHSAID(tt *testing.T) {
 	d.GetGHSAID()
 }
 
+func TestDependabotSecurityAdvisory_GetIdentifiers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AdvisoryIdentifier{}
+	d := &DependabotSecurityAdvisory{Identifiers: zeroValue}
+	d.GetIdentifiers()
+	d = &DependabotSecurityAdvisory{}
+	d.GetIdentifiers()
+	d = nil
+	d.GetIdentifiers()
+}
+
 func TestDependabotSecurityAdvisory_GetPublishedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -10507,6 +13870,17 @@ func TestDependabotSecurityAdvisory_GetPublishedAt(tt *testing.T) {
 	d.GetPublishedAt()
 	d = nil
 	d.GetPublishedAt()
+}
+
+func TestDependabotSecurityAdvisory_GetReferences(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AdvisoryReference{}
+	d := &DependabotSecurityAdvisory{References: zeroValue}
+	d.GetReferences()
+	d = &DependabotSecurityAdvisory{}
+	d.GetReferences()
+	d = nil
+	d.GetReferences()
 }
 
 func TestDependabotSecurityAdvisory_GetSeverity(tt *testing.T) {
@@ -10540,6 +13914,17 @@ func TestDependabotSecurityAdvisory_GetUpdatedAt(tt *testing.T) {
 	d.GetUpdatedAt()
 	d = nil
 	d.GetUpdatedAt()
+}
+
+func TestDependabotSecurityAdvisory_GetVulnerabilities(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AdvisoryVulnerability{}
+	d := &DependabotSecurityAdvisory{Vulnerabilities: zeroValue}
+	d.GetVulnerabilities()
+	d = &DependabotSecurityAdvisory{}
+	d.GetVulnerabilities()
+	d = nil
+	d.GetVulnerabilities()
 }
 
 func TestDependabotSecurityAdvisory_GetWithdrawnAt(tt *testing.T) {
@@ -10665,6 +14050,14 @@ func TestDependencyGraphSnapshot_GetSha(tt *testing.T) {
 	d.GetSha()
 }
 
+func TestDependencyGraphSnapshot_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	d := &DependencyGraphSnapshot{}
+	d.GetVersion()
+	d = nil
+	d.GetVersion()
+}
+
 func TestDependencyGraphSnapshotCreationData_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -10674,6 +14067,14 @@ func TestDependencyGraphSnapshotCreationData_GetCreatedAt(tt *testing.T) {
 	d.GetCreatedAt()
 	d = nil
 	d.GetCreatedAt()
+}
+
+func TestDependencyGraphSnapshotCreationData_GetID(tt *testing.T) {
+	tt.Parallel()
+	d := &DependencyGraphSnapshotCreationData{}
+	d.GetID()
+	d = nil
+	d.GetID()
 }
 
 func TestDependencyGraphSnapshotCreationData_GetMessage(tt *testing.T) {
@@ -10803,6 +14204,17 @@ func TestDependencyGraphSnapshotManifestFile_GetSourceLocation(tt *testing.T) {
 	d.GetSourceLocation()
 	d = nil
 	d.GetSourceLocation()
+}
+
+func TestDependencyGraphSnapshotResolvedDependency_GetDependencies(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	d := &DependencyGraphSnapshotResolvedDependency{Dependencies: zeroValue}
+	d.GetDependencies()
+	d = &DependencyGraphSnapshotResolvedDependency{}
+	d.GetDependencies()
+	d = nil
+	d.GetDependencies()
 }
 
 func TestDependencyGraphSnapshotResolvedDependency_GetMetadata(tt *testing.T) {
@@ -10963,6 +14375,14 @@ func TestDeployment_GetNodeID(tt *testing.T) {
 	d.GetNodeID()
 }
 
+func TestDeployment_GetPayload(tt *testing.T) {
+	tt.Parallel()
+	d := &Deployment{}
+	d.GetPayload()
+	d = nil
+	d.GetPayload()
+}
+
 func TestDeployment_GetRef(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -11106,6 +14526,17 @@ func TestDeploymentBranchPolicyRequest_GetType(tt *testing.T) {
 	d.GetType()
 }
 
+func TestDeploymentBranchPolicyResponse_GetBranchPolicies(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*DeploymentBranchPolicy{}
+	d := &DeploymentBranchPolicyResponse{BranchPolicies: zeroValue}
+	d.GetBranchPolicies()
+	d = &DeploymentBranchPolicyResponse{}
+	d.GetBranchPolicies()
+	d = nil
+	d.GetBranchPolicies()
+}
+
 func TestDeploymentBranchPolicyResponse_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -11241,6 +14672,17 @@ func TestDeploymentProtectionRuleEvent_GetOrganization(tt *testing.T) {
 	d.GetOrganization()
 }
 
+func TestDeploymentProtectionRuleEvent_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequest{}
+	d := &DeploymentProtectionRuleEvent{PullRequests: zeroValue}
+	d.GetPullRequests()
+	d = &DeploymentProtectionRuleEvent{}
+	d.GetPullRequests()
+	d = nil
+	d.GetPullRequests()
+}
+
 func TestDeploymentProtectionRuleEvent_GetRepo(tt *testing.T) {
 	tt.Parallel()
 	d := &DeploymentProtectionRuleEvent{}
@@ -11288,6 +14730,14 @@ func TestDeploymentRequest_GetEnvironment(tt *testing.T) {
 	d.GetEnvironment()
 	d = nil
 	d.GetEnvironment()
+}
+
+func TestDeploymentRequest_GetPayload(tt *testing.T) {
+	tt.Parallel()
+	d := &DeploymentRequest{}
+	d.GetPayload()
+	d = nil
+	d.GetPayload()
 }
 
 func TestDeploymentRequest_GetProductionEnvironment(tt *testing.T) {
@@ -11426,6 +14876,17 @@ func TestDeploymentReviewEvent_GetRequester(tt *testing.T) {
 	d.GetRequester()
 }
 
+func TestDeploymentReviewEvent_GetReviewers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RequiredReviewer{}
+	d := &DeploymentReviewEvent{Reviewers: zeroValue}
+	d.GetReviewers()
+	d = &DeploymentReviewEvent{}
+	d.GetReviewers()
+	d = nil
+	d.GetReviewers()
+}
+
 func TestDeploymentReviewEvent_GetSender(tt *testing.T) {
 	tt.Parallel()
 	d := &DeploymentReviewEvent{}
@@ -11453,12 +14914,55 @@ func TestDeploymentReviewEvent_GetWorkflowJobRun(tt *testing.T) {
 	d.GetWorkflowJobRun()
 }
 
+func TestDeploymentReviewEvent_GetWorkflowJobRuns(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*WorkflowJobRun{}
+	d := &DeploymentReviewEvent{WorkflowJobRuns: zeroValue}
+	d.GetWorkflowJobRuns()
+	d = &DeploymentReviewEvent{}
+	d.GetWorkflowJobRuns()
+	d = nil
+	d.GetWorkflowJobRuns()
+}
+
 func TestDeploymentReviewEvent_GetWorkflowRun(tt *testing.T) {
 	tt.Parallel()
 	d := &DeploymentReviewEvent{}
 	d.GetWorkflowRun()
 	d = nil
 	d.GetWorkflowRun()
+}
+
+func TestDeploymentsListOptions_GetEnvironment(tt *testing.T) {
+	tt.Parallel()
+	d := &DeploymentsListOptions{}
+	d.GetEnvironment()
+	d = nil
+	d.GetEnvironment()
+}
+
+func TestDeploymentsListOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	d := &DeploymentsListOptions{}
+	d.GetRef()
+	d = nil
+	d.GetRef()
+}
+
+func TestDeploymentsListOptions_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	d := &DeploymentsListOptions{}
+	d.GetSHA()
+	d = nil
+	d.GetSHA()
+}
+
+func TestDeploymentsListOptions_GetTask(tt *testing.T) {
+	tt.Parallel()
+	d := &DeploymentsListOptions{}
+	d.GetTask()
+	d = nil
+	d.GetTask()
 }
 
 func TestDeploymentStatus_GetCreatedAt(tt *testing.T) {
@@ -11757,6 +15261,33 @@ func TestDevContainer_GetName(tt *testing.T) {
 	d.GetName()
 	d = nil
 	d.GetName()
+}
+
+func TestDevContainer_GetPath(tt *testing.T) {
+	tt.Parallel()
+	d := &DevContainer{}
+	d.GetPath()
+	d = nil
+	d.GetPath()
+}
+
+func TestDevContainerConfigurations_GetDevcontainers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*DevContainer{}
+	d := &DevContainerConfigurations{Devcontainers: zeroValue}
+	d.GetDevcontainers()
+	d = &DevContainerConfigurations{}
+	d.GetDevcontainers()
+	d = nil
+	d.GetDevcontainers()
+}
+
+func TestDevContainerConfigurations_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	d := &DevContainerConfigurations{}
+	d.GetTotalCount()
+	d = nil
+	d.GetTotalCount()
 }
 
 func TestDiscussion_GetActiveLockReason(tt *testing.T) {
@@ -12268,6 +15799,14 @@ func TestDiscussionCommentEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 }
 
+func TestDiscussionCommentListOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	d := &DiscussionCommentListOptions{}
+	d.GetDirection()
+	d = nil
+	d.GetDirection()
+}
+
 func TestDiscussionEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -12317,6 +15856,47 @@ func TestDiscussionEvent_GetSender(tt *testing.T) {
 	d.GetSender()
 	d = nil
 	d.GetSender()
+}
+
+func TestDiscussionListOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	d := &DiscussionListOptions{}
+	d.GetDirection()
+	d = nil
+	d.GetDirection()
+}
+
+func TestDismissalRestrictions_GetApps(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*App{}
+	d := &DismissalRestrictions{Apps: zeroValue}
+	d.GetApps()
+	d = &DismissalRestrictions{}
+	d.GetApps()
+	d = nil
+	d.GetApps()
+}
+
+func TestDismissalRestrictions_GetTeams(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Team{}
+	d := &DismissalRestrictions{Teams: zeroValue}
+	d.GetTeams()
+	d = &DismissalRestrictions{}
+	d.GetTeams()
+	d = nil
+	d.GetTeams()
+}
+
+func TestDismissalRestrictions_GetUsers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	d := &DismissalRestrictions{Users: zeroValue}
+	d.GetUsers()
+	d = &DismissalRestrictions{}
+	d.GetUsers()
+	d = nil
+	d.GetUsers()
 }
 
 func TestDismissalRestrictionsRequest_GetApps(tt *testing.T) {
@@ -12416,6 +15996,14 @@ func TestDispatchRequestOptions_GetClientPayload(tt *testing.T) {
 	d.GetClientPayload()
 	d = nil
 	d.GetClientPayload()
+}
+
+func TestDispatchRequestOptions_GetEventType(tt *testing.T) {
+	tt.Parallel()
+	d := &DispatchRequestOptions{}
+	d.GetEventType()
+	d = nil
+	d.GetEventType()
 }
 
 func TestDraftReviewComment_GetBody(tt *testing.T) {
@@ -12638,6 +16226,57 @@ func TestEditTitle_GetFrom(tt *testing.T) {
 	e.GetFrom()
 }
 
+func TestEditTopics_GetFrom(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	e := &EditTopics{From: zeroValue}
+	e.GetFrom()
+	e = &EditTopics{}
+	e.GetFrom()
+	e = nil
+	e.GetFrom()
+}
+
+func TestEncryptedSecret_GetEncryptedValue(tt *testing.T) {
+	tt.Parallel()
+	e := &EncryptedSecret{}
+	e.GetEncryptedValue()
+	e = nil
+	e.GetEncryptedValue()
+}
+
+func TestEncryptedSecret_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	e := &EncryptedSecret{}
+	e.GetKeyID()
+	e = nil
+	e.GetKeyID()
+}
+
+func TestEncryptedSecret_GetName(tt *testing.T) {
+	tt.Parallel()
+	e := &EncryptedSecret{}
+	e.GetName()
+	e = nil
+	e.GetName()
+}
+
+func TestEncryptedSecret_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	e := &EncryptedSecret{}
+	e.GetSelectedRepositoryIDs()
+	e = nil
+	e.GetSelectedRepositoryIDs()
+}
+
+func TestEncryptedSecret_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	e := &EncryptedSecret{}
+	e.GetVisibility()
+	e = nil
+	e.GetVisibility()
+}
+
 func TestEnterprise_GetAvatarURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -12833,6 +16472,17 @@ func TestEnterpriseBudget_GetPreventFurtherUsage(tt *testing.T) {
 	e.GetPreventFurtherUsage()
 }
 
+func TestEnterpriseBudgetAlerting_GetAlertRecipients(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	e := &EnterpriseBudgetAlerting{AlertRecipients: zeroValue}
+	e.GetAlertRecipients()
+	e = &EnterpriseBudgetAlerting{}
+	e.GetAlertRecipients()
+	e = nil
+	e.GetAlertRecipients()
+}
+
 func TestEnterpriseBudgetAlerting_GetWillAlert(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -12844,12 +16494,47 @@ func TestEnterpriseBudgetAlerting_GetWillAlert(tt *testing.T) {
 	e.GetWillAlert()
 }
 
+func TestEnterpriseConsumedLicenses_GetTotalSeatsConsumed(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseConsumedLicenses{}
+	e.GetTotalSeatsConsumed()
+	e = nil
+	e.GetTotalSeatsConsumed()
+}
+
+func TestEnterpriseConsumedLicenses_GetTotalSeatsPurchased(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseConsumedLicenses{}
+	e.GetTotalSeatsPurchased()
+	e = nil
+	e.GetTotalSeatsPurchased()
+}
+
+func TestEnterpriseConsumedLicenses_GetUsers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*EnterpriseLicensedUsers{}
+	e := &EnterpriseConsumedLicenses{Users: zeroValue}
+	e.GetUsers()
+	e = &EnterpriseConsumedLicenses{}
+	e.GetUsers()
+	e = nil
+	e.GetUsers()
+}
+
 func TestEnterpriseCreateBudget_GetBudgetAlerting(tt *testing.T) {
 	tt.Parallel()
 	e := &EnterpriseCreateBudget{}
 	e.GetBudgetAlerting()
 	e = nil
 	e.GetBudgetAlerting()
+}
+
+func TestEnterpriseCreateBudget_GetBudgetAmount(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseCreateBudget{}
+	e.GetBudgetAmount()
+	e = nil
+	e.GetBudgetAmount()
 }
 
 func TestEnterpriseCreateBudget_GetBudgetEntityName(tt *testing.T) {
@@ -12874,12 +16559,44 @@ func TestEnterpriseCreateBudget_GetBudgetProductSKU(tt *testing.T) {
 	e.GetBudgetProductSKU()
 }
 
+func TestEnterpriseCreateBudget_GetBudgetScope(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseCreateBudget{}
+	e.GetBudgetScope()
+	e = nil
+	e.GetBudgetScope()
+}
+
+func TestEnterpriseCreateBudget_GetBudgetType(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseCreateBudget{}
+	e.GetBudgetType()
+	e = nil
+	e.GetBudgetType()
+}
+
+func TestEnterpriseCreateBudget_GetPreventFurtherUsage(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseCreateBudget{}
+	e.GetPreventFurtherUsage()
+	e = nil
+	e.GetPreventFurtherUsage()
+}
+
 func TestEnterpriseCreateOrUpdateBudgetResponse_GetBudget(tt *testing.T) {
 	tt.Parallel()
 	e := &EnterpriseCreateOrUpdateBudgetResponse{}
 	e.GetBudget()
 	e = nil
 	e.GetBudget()
+}
+
+func TestEnterpriseCreateOrUpdateBudgetResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseCreateOrUpdateBudgetResponse{}
+	e.GetMessage()
+	e = nil
+	e.GetMessage()
 }
 
 func TestEnterpriseCustomPropertiesValues_GetOrganizationID(tt *testing.T) {
@@ -12904,6 +16621,77 @@ func TestEnterpriseCustomPropertiesValues_GetOrganizationLogin(tt *testing.T) {
 	e.GetOrganizationLogin()
 }
 
+func TestEnterpriseCustomPropertiesValues_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomPropertyValue{}
+	e := &EnterpriseCustomPropertiesValues{Properties: zeroValue}
+	e.GetProperties()
+	e = &EnterpriseCustomPropertiesValues{}
+	e.GetProperties()
+	e = nil
+	e.GetProperties()
+}
+
+func TestEnterpriseCustomPropertySchema_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomProperty{}
+	e := &EnterpriseCustomPropertySchema{Properties: zeroValue}
+	e.GetProperties()
+	e = &EnterpriseCustomPropertySchema{}
+	e.GetProperties()
+	e = nil
+	e.GetProperties()
+}
+
+func TestEnterpriseCustomPropertyValuesRequest_GetOrganizationLogin(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	e := &EnterpriseCustomPropertyValuesRequest{OrganizationLogin: zeroValue}
+	e.GetOrganizationLogin()
+	e = &EnterpriseCustomPropertyValuesRequest{}
+	e.GetOrganizationLogin()
+	e = nil
+	e.GetOrganizationLogin()
+}
+
+func TestEnterpriseCustomPropertyValuesRequest_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomPropertyValue{}
+	e := &EnterpriseCustomPropertyValuesRequest{Properties: zeroValue}
+	e.GetProperties()
+	e = &EnterpriseCustomPropertyValuesRequest{}
+	e.GetProperties()
+	e = nil
+	e.GetProperties()
+}
+
+func TestEnterpriseDeleteBudgetResponse_GetID(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseDeleteBudgetResponse{}
+	e.GetID()
+	e = nil
+	e.GetID()
+}
+
+func TestEnterpriseDeleteBudgetResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseDeleteBudgetResponse{}
+	e.GetMessage()
+	e = nil
+	e.GetMessage()
+}
+
+func TestEnterpriseLicensedUsers_GetEnterpriseServerEmails(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	e := &EnterpriseLicensedUsers{EnterpriseServerEmails: zeroValue}
+	e.GetEnterpriseServerEmails()
+	e = &EnterpriseLicensedUsers{}
+	e.GetEnterpriseServerEmails()
+	e = nil
+	e.GetEnterpriseServerEmails()
+}
+
 func TestEnterpriseLicensedUsers_GetEnterpriseServerUser(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -12915,6 +16703,47 @@ func TestEnterpriseLicensedUsers_GetEnterpriseServerUser(tt *testing.T) {
 	e.GetEnterpriseServerUser()
 }
 
+func TestEnterpriseLicensedUsers_GetEnterpriseServerUserIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	e := &EnterpriseLicensedUsers{EnterpriseServerUserIDs: zeroValue}
+	e.GetEnterpriseServerUserIDs()
+	e = &EnterpriseLicensedUsers{}
+	e.GetEnterpriseServerUserIDs()
+	e = nil
+	e.GetEnterpriseServerUserIDs()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComEnterpriseRoles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	e := &EnterpriseLicensedUsers{GithubComEnterpriseRoles: zeroValue}
+	e.GetGithubComEnterpriseRoles()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComEnterpriseRoles()
+	e = nil
+	e.GetGithubComEnterpriseRoles()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComLogin(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseLicensedUsers{}
+	e.GetGithubComLogin()
+	e = nil
+	e.GetGithubComLogin()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComMemberRoles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	e := &EnterpriseLicensedUsers{GithubComMemberRoles: zeroValue}
+	e.GetGithubComMemberRoles()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComMemberRoles()
+	e = nil
+	e.GetGithubComMemberRoles()
+}
+
 func TestEnterpriseLicensedUsers_GetGithubComName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -12924,6 +16753,17 @@ func TestEnterpriseLicensedUsers_GetGithubComName(tt *testing.T) {
 	e.GetGithubComName()
 	e = nil
 	e.GetGithubComName()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComOrgsWithPendingInvites(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	e := &EnterpriseLicensedUsers{GithubComOrgsWithPendingInvites: zeroValue}
+	e.GetGithubComOrgsWithPendingInvites()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComOrgsWithPendingInvites()
+	e = nil
+	e.GetGithubComOrgsWithPendingInvites()
 }
 
 func TestEnterpriseLicensedUsers_GetGithubComProfile(tt *testing.T) {
@@ -12959,6 +16799,41 @@ func TestEnterpriseLicensedUsers_GetGithubComTwoFactorAuth(tt *testing.T) {
 	e.GetGithubComTwoFactorAuth()
 }
 
+func TestEnterpriseLicensedUsers_GetGithubComUser(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseLicensedUsers{}
+	e.GetGithubComUser()
+	e = nil
+	e.GetGithubComUser()
+}
+
+func TestEnterpriseLicensedUsers_GetGithubComVerifiedDomainEmails(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	e := &EnterpriseLicensedUsers{GithubComVerifiedDomainEmails: zeroValue}
+	e.GetGithubComVerifiedDomainEmails()
+	e = &EnterpriseLicensedUsers{}
+	e.GetGithubComVerifiedDomainEmails()
+	e = nil
+	e.GetGithubComVerifiedDomainEmails()
+}
+
+func TestEnterpriseLicensedUsers_GetLicenseType(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseLicensedUsers{}
+	e.GetLicenseType()
+	e = nil
+	e.GetLicenseType()
+}
+
+func TestEnterpriseLicensedUsers_GetTotalUserAccounts(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseLicensedUsers{}
+	e.GetTotalUserAccounts()
+	e = nil
+	e.GetTotalUserAccounts()
+}
+
 func TestEnterpriseLicensedUsers_GetVisualStudioLicenseStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -12981,12 +16856,47 @@ func TestEnterpriseLicensedUsers_GetVisualStudioSubscriptionEmail(tt *testing.T)
 	e.GetVisualStudioSubscriptionEmail()
 }
 
+func TestEnterpriseLicensedUsers_GetVisualStudioSubscriptionUser(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseLicensedUsers{}
+	e.GetVisualStudioSubscriptionUser()
+	e = nil
+	e.GetVisualStudioSubscriptionUser()
+}
+
+func TestEnterpriseLicenseSyncStatus_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseLicenseSyncStatus{}
+	e.GetDescription()
+	e = nil
+	e.GetDescription()
+}
+
 func TestEnterpriseLicenseSyncStatus_GetProperties(tt *testing.T) {
 	tt.Parallel()
 	e := &EnterpriseLicenseSyncStatus{}
 	e.GetProperties()
 	e = nil
 	e.GetProperties()
+}
+
+func TestEnterpriseLicenseSyncStatus_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseLicenseSyncStatus{}
+	e.GetTitle()
+	e = nil
+	e.GetTitle()
+}
+
+func TestEnterpriseListBudgets_GetBudgets(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*EnterpriseBudget{}
+	e := &EnterpriseListBudgets{Budgets: zeroValue}
+	e.GetBudgets()
+	e = &EnterpriseListBudgets{}
+	e.GetBudgets()
+	e = nil
+	e.GetBudgets()
 }
 
 func TestEnterpriseListBudgets_GetHasNextPage(tt *testing.T) {
@@ -13099,6 +17009,17 @@ func TestEnterpriseRunnerGroup_GetSelectedOrganizationsURL(tt *testing.T) {
 	e.GetSelectedOrganizationsURL()
 }
 
+func TestEnterpriseRunnerGroup_GetSelectedWorkflows(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	e := &EnterpriseRunnerGroup{SelectedWorkflows: zeroValue}
+	e.GetSelectedWorkflows()
+	e = &EnterpriseRunnerGroup{}
+	e.GetSelectedWorkflows()
+	e = nil
+	e.GetSelectedWorkflows()
+}
+
 func TestEnterpriseRunnerGroup_GetVisibility(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -13119,6 +17040,17 @@ func TestEnterpriseRunnerGroup_GetWorkflowRestrictionsReadOnly(tt *testing.T) {
 	e.GetWorkflowRestrictionsReadOnly()
 	e = nil
 	e.GetWorkflowRestrictionsReadOnly()
+}
+
+func TestEnterpriseRunnerGroups_GetRunnerGroups(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*EnterpriseRunnerGroup{}
+	e := &EnterpriseRunnerGroups{RunnerGroups: zeroValue}
+	e.GetRunnerGroups()
+	e = &EnterpriseRunnerGroups{}
+	e.GetRunnerGroups()
+	e = nil
+	e.GetRunnerGroups()
 }
 
 func TestEnterpriseRunnerGroups_GetTotalCount(tt *testing.T) {
@@ -13187,6 +17119,14 @@ func TestEnterpriseSecurityAnalysisSettings_GetSecretScanningValidityChecksEnabl
 	e.GetSecretScanningValidityChecksEnabled()
 }
 
+func TestEnterpriseTeam_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseTeam{}
+	e.GetCreatedAt()
+	e = nil
+	e.GetCreatedAt()
+}
+
 func TestEnterpriseTeam_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -13198,6 +17138,46 @@ func TestEnterpriseTeam_GetDescription(tt *testing.T) {
 	e.GetDescription()
 }
 
+func TestEnterpriseTeam_GetGroupID(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseTeam{}
+	e.GetGroupID()
+	e = nil
+	e.GetGroupID()
+}
+
+func TestEnterpriseTeam_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseTeam{}
+	e.GetHTMLURL()
+	e = nil
+	e.GetHTMLURL()
+}
+
+func TestEnterpriseTeam_GetID(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseTeam{}
+	e.GetID()
+	e = nil
+	e.GetID()
+}
+
+func TestEnterpriseTeam_GetMemberURL(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseTeam{}
+	e.GetMemberURL()
+	e = nil
+	e.GetMemberURL()
+}
+
+func TestEnterpriseTeam_GetName(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseTeam{}
+	e.GetName()
+	e = nil
+	e.GetName()
+}
+
 func TestEnterpriseTeam_GetOrganizationSelectionType(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -13207,6 +17187,30 @@ func TestEnterpriseTeam_GetOrganizationSelectionType(tt *testing.T) {
 	e.GetOrganizationSelectionType()
 	e = nil
 	e.GetOrganizationSelectionType()
+}
+
+func TestEnterpriseTeam_GetSlug(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseTeam{}
+	e.GetSlug()
+	e = nil
+	e.GetSlug()
+}
+
+func TestEnterpriseTeam_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseTeam{}
+	e.GetUpdatedAt()
+	e = nil
+	e.GetUpdatedAt()
+}
+
+func TestEnterpriseTeam_GetURL(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseTeam{}
+	e.GetURL()
+	e = nil
+	e.GetURL()
 }
 
 func TestEnterpriseTeamCreateOrUpdateRequest_GetDescription(tt *testing.T) {
@@ -13229,6 +17233,14 @@ func TestEnterpriseTeamCreateOrUpdateRequest_GetGroupID(tt *testing.T) {
 	e.GetGroupID()
 	e = nil
 	e.GetGroupID()
+}
+
+func TestEnterpriseTeamCreateOrUpdateRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseTeamCreateOrUpdateRequest{}
+	e.GetName()
+	e = nil
+	e.GetName()
 }
 
 func TestEnterpriseTeamCreateOrUpdateRequest_GetOrganizationSelectionType(tt *testing.T) {
@@ -13412,6 +17424,17 @@ func TestEnvironment_GetOwner(tt *testing.T) {
 	e.GetOwner()
 }
 
+func TestEnvironment_GetProtectionRules(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ProtectionRule{}
+	e := &Environment{ProtectionRules: zeroValue}
+	e.GetProtectionRules()
+	e = &Environment{}
+	e.GetProtectionRules()
+	e = nil
+	e.GetProtectionRules()
+}
+
 func TestEnvironment_GetRepo(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -13421,6 +17444,17 @@ func TestEnvironment_GetRepo(tt *testing.T) {
 	e.GetRepo()
 	e = nil
 	e.GetRepo()
+}
+
+func TestEnvironment_GetReviewers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*EnvReviewers{}
+	e := &Environment{Reviewers: zeroValue}
+	e.GetReviewers()
+	e = &Environment{}
+	e.GetReviewers()
+	e = nil
+	e.GetReviewers()
 }
 
 func TestEnvironment_GetUpdatedAt(tt *testing.T) {
@@ -13456,6 +17490,17 @@ func TestEnvironment_GetWaitTimer(tt *testing.T) {
 	e.GetWaitTimer()
 }
 
+func TestEnvResponse_GetEnvironments(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Environment{}
+	e := &EnvResponse{Environments: zeroValue}
+	e.GetEnvironments()
+	e = &EnvResponse{}
+	e.GetEnvironments()
+	e = nil
+	e.GetEnvironments()
+}
+
 func TestEnvResponse_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -13489,6 +17534,38 @@ func TestEnvReviewers_GetType(tt *testing.T) {
 	e.GetType()
 }
 
+func TestError_GetCode(tt *testing.T) {
+	tt.Parallel()
+	e := &Error{}
+	e.GetCode()
+	e = nil
+	e.GetCode()
+}
+
+func TestError_GetField(tt *testing.T) {
+	tt.Parallel()
+	e := &Error{}
+	e.GetField()
+	e = nil
+	e.GetField()
+}
+
+func TestError_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	e := &Error{}
+	e.GetMessage()
+	e = nil
+	e.GetMessage()
+}
+
+func TestError_GetResource(tt *testing.T) {
+	tt.Parallel()
+	e := &Error{}
+	e.GetResource()
+	e = nil
+	e.GetResource()
+}
+
 func TestErrorBlock_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -13500,12 +17577,47 @@ func TestErrorBlock_GetCreatedAt(tt *testing.T) {
 	e.GetCreatedAt()
 }
 
+func TestErrorBlock_GetReason(tt *testing.T) {
+	tt.Parallel()
+	e := &ErrorBlock{}
+	e.GetReason()
+	e = nil
+	e.GetReason()
+}
+
 func TestErrorResponse_GetBlock(tt *testing.T) {
 	tt.Parallel()
 	e := &ErrorResponse{}
 	e.GetBlock()
 	e = nil
 	e.GetBlock()
+}
+
+func TestErrorResponse_GetDocumentationURL(tt *testing.T) {
+	tt.Parallel()
+	e := &ErrorResponse{}
+	e.GetDocumentationURL()
+	e = nil
+	e.GetDocumentationURL()
+}
+
+func TestErrorResponse_GetErrors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []Error{}
+	e := &ErrorResponse{Errors: zeroValue}
+	e.GetErrors()
+	e = &ErrorResponse{}
+	e.GetErrors()
+	e = nil
+	e.GetErrors()
+}
+
+func TestErrorResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	e := &ErrorResponse{}
+	e.GetMessage()
+	e = nil
+	e.GetMessage()
 }
 
 func TestEvent_GetActor(tt *testing.T) {
@@ -13609,6 +17721,28 @@ func TestExternalGroup_GetGroupName(tt *testing.T) {
 	e.GetGroupName()
 }
 
+func TestExternalGroup_GetMembers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ExternalGroupMember{}
+	e := &ExternalGroup{Members: zeroValue}
+	e.GetMembers()
+	e = &ExternalGroup{}
+	e.GetMembers()
+	e = nil
+	e.GetMembers()
+}
+
+func TestExternalGroup_GetTeams(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ExternalGroupTeam{}
+	e := &ExternalGroup{Teams: zeroValue}
+	e.GetTeams()
+	e = &ExternalGroup{}
+	e.GetTeams()
+	e = nil
+	e.GetTeams()
+}
+
 func TestExternalGroup_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -13618,6 +17752,17 @@ func TestExternalGroup_GetUpdatedAt(tt *testing.T) {
 	e.GetUpdatedAt()
 	e = nil
 	e.GetUpdatedAt()
+}
+
+func TestExternalGroupList_GetGroups(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ExternalGroup{}
+	e := &ExternalGroupList{Groups: zeroValue}
+	e.GetGroups()
+	e = &ExternalGroupList{}
+	e.GetGroups()
+	e = nil
+	e.GetGroups()
 }
 
 func TestExternalGroupMember_GetMemberEmail(tt *testing.T) {
@@ -13732,6 +17877,17 @@ func TestFeedLinks_GetCurrentUserOrganization(tt *testing.T) {
 	f.GetCurrentUserOrganization()
 }
 
+func TestFeedLinks_GetCurrentUserOrganizations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*FeedLink{}
+	f := &FeedLinks{CurrentUserOrganizations: zeroValue}
+	f.GetCurrentUserOrganizations()
+	f = &FeedLinks{}
+	f.GetCurrentUserOrganizations()
+	f = nil
+	f.GetCurrentUserOrganizations()
+}
+
 func TestFeedLinks_GetCurrentUserPublic(tt *testing.T) {
 	tt.Parallel()
 	f := &FeedLinks{}
@@ -13776,6 +17932,17 @@ func TestFeeds_GetCurrentUserOrganizationURL(tt *testing.T) {
 	f.GetCurrentUserOrganizationURL()
 	f = nil
 	f.GetCurrentUserOrganizationURL()
+}
+
+func TestFeeds_GetCurrentUserOrganizationURLs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	f := &Feeds{CurrentUserOrganizationURLs: zeroValue}
+	f.GetCurrentUserOrganizationURLs()
+	f = &Feeds{}
+	f.GetCurrentUserOrganizationURLs()
+	f = nil
+	f.GetCurrentUserOrganizationURLs()
 }
 
 func TestFeeds_GetCurrentUserPublicURL(tt *testing.T) {
@@ -13863,6 +18030,14 @@ func TestFieldValue_GetFieldType(tt *testing.T) {
 	f.GetFieldType()
 }
 
+func TestFieldValue_GetFrom(tt *testing.T) {
+	tt.Parallel()
+	f := &FieldValue{}
+	f.GetFrom()
+	f = nil
+	f.GetFrom()
+}
+
 func TestFieldValue_GetProjectNumber(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -13872,6 +18047,52 @@ func TestFieldValue_GetProjectNumber(tt *testing.T) {
 	f.GetProjectNumber()
 	f = nil
 	f.GetProjectNumber()
+}
+
+func TestFieldValue_GetTo(tt *testing.T) {
+	tt.Parallel()
+	f := &FieldValue{}
+	f.GetTo()
+	f = nil
+	f.GetTo()
+}
+
+func TestFileExtensionRestrictionBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	f := &FileExtensionRestrictionBranchRule{}
+	f.GetParameters()
+	f = nil
+	f.GetParameters()
+}
+
+func TestFileExtensionRestrictionRuleParameters_GetRestrictedFileExtensions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	f := &FileExtensionRestrictionRuleParameters{RestrictedFileExtensions: zeroValue}
+	f.GetRestrictedFileExtensions()
+	f = &FileExtensionRestrictionRuleParameters{}
+	f.GetRestrictedFileExtensions()
+	f = nil
+	f.GetRestrictedFileExtensions()
+}
+
+func TestFilePathRestrictionBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	f := &FilePathRestrictionBranchRule{}
+	f.GetParameters()
+	f = nil
+	f.GetParameters()
+}
+
+func TestFilePathRestrictionRuleParameters_GetRestrictedFilePaths(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	f := &FilePathRestrictionRuleParameters{RestrictedFilePaths: zeroValue}
+	f.GetRestrictedFilePaths()
+	f = &FilePathRestrictionRuleParameters{}
+	f.GetRestrictedFilePaths()
+	f = nil
+	f.GetRestrictedFilePaths()
 }
 
 func TestFineGrainedPersonalAccessTokenRequest_GetCreatedAt(tt *testing.T) {
@@ -13885,6 +18106,62 @@ func TestFineGrainedPersonalAccessTokenRequest_GetCreatedAt(tt *testing.T) {
 	f.GetCreatedAt()
 }
 
+func TestFineGrainedPersonalAccessTokenRequest_GetID(tt *testing.T) {
+	tt.Parallel()
+	f := &FineGrainedPersonalAccessTokenRequest{}
+	f.GetID()
+	f = nil
+	f.GetID()
+}
+
+func TestFineGrainedPersonalAccessTokenRequest_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	f := &FineGrainedPersonalAccessTokenRequest{}
+	f.GetOwner()
+	f = nil
+	f.GetOwner()
+}
+
+func TestFineGrainedPersonalAccessTokenRequest_GetPermissions(tt *testing.T) {
+	tt.Parallel()
+	f := &FineGrainedPersonalAccessTokenRequest{}
+	f.GetPermissions()
+	f = nil
+	f.GetPermissions()
+}
+
+func TestFineGrainedPersonalAccessTokenRequest_GetReason(tt *testing.T) {
+	tt.Parallel()
+	f := &FineGrainedPersonalAccessTokenRequest{}
+	f.GetReason()
+	f = nil
+	f.GetReason()
+}
+
+func TestFineGrainedPersonalAccessTokenRequest_GetRepositoriesURL(tt *testing.T) {
+	tt.Parallel()
+	f := &FineGrainedPersonalAccessTokenRequest{}
+	f.GetRepositoriesURL()
+	f = nil
+	f.GetRepositoriesURL()
+}
+
+func TestFineGrainedPersonalAccessTokenRequest_GetRepositorySelection(tt *testing.T) {
+	tt.Parallel()
+	f := &FineGrainedPersonalAccessTokenRequest{}
+	f.GetRepositorySelection()
+	f = nil
+	f.GetRepositorySelection()
+}
+
+func TestFineGrainedPersonalAccessTokenRequest_GetTokenExpired(tt *testing.T) {
+	tt.Parallel()
+	f := &FineGrainedPersonalAccessTokenRequest{}
+	f.GetTokenExpired()
+	f = nil
+	f.GetTokenExpired()
+}
+
 func TestFineGrainedPersonalAccessTokenRequest_GetTokenExpiresAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -13896,6 +18173,14 @@ func TestFineGrainedPersonalAccessTokenRequest_GetTokenExpiresAt(tt *testing.T) 
 	f.GetTokenExpiresAt()
 }
 
+func TestFineGrainedPersonalAccessTokenRequest_GetTokenID(tt *testing.T) {
+	tt.Parallel()
+	f := &FineGrainedPersonalAccessTokenRequest{}
+	f.GetTokenID()
+	f = nil
+	f.GetTokenID()
+}
+
 func TestFineGrainedPersonalAccessTokenRequest_GetTokenLastUsedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -13905,6 +18190,14 @@ func TestFineGrainedPersonalAccessTokenRequest_GetTokenLastUsedAt(tt *testing.T)
 	f.GetTokenLastUsedAt()
 	f = nil
 	f.GetTokenLastUsedAt()
+}
+
+func TestFineGrainedPersonalAccessTokenRequest_GetTokenName(tt *testing.T) {
+	tt.Parallel()
+	f := &FineGrainedPersonalAccessTokenRequest{}
+	f.GetTokenName()
+	f = nil
+	f.GetTokenName()
 }
 
 func TestFirstPatchedVersion_GetIdentifier(tt *testing.T) {
@@ -13950,6 +18243,33 @@ func TestForkEvent_GetSender(tt *testing.T) {
 	f.GetSender()
 }
 
+func TestGenerateJITConfigRequest_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	g := &GenerateJITConfigRequest{Labels: zeroValue}
+	g.GetLabels()
+	g = &GenerateJITConfigRequest{}
+	g.GetLabels()
+	g = nil
+	g.GetLabels()
+}
+
+func TestGenerateJITConfigRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	g := &GenerateJITConfigRequest{}
+	g.GetName()
+	g = nil
+	g.GetName()
+}
+
+func TestGenerateJITConfigRequest_GetRunnerGroupID(tt *testing.T) {
+	tt.Parallel()
+	g := &GenerateJITConfigRequest{}
+	g.GetRunnerGroupID()
+	g = nil
+	g.GetRunnerGroupID()
+}
+
 func TestGenerateJITConfigRequest_GetWorkFolder(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -13981,6 +18301,14 @@ func TestGenerateNotesOptions_GetPreviousTagName(tt *testing.T) {
 	g.GetPreviousTagName()
 	g = nil
 	g.GetPreviousTagName()
+}
+
+func TestGenerateNotesOptions_GetTagName(tt *testing.T) {
+	tt.Parallel()
+	g := &GenerateNotesOptions{}
+	g.GetTagName()
+	g = nil
+	g.GetTagName()
 }
 
 func TestGenerateNotesOptions_GetTargetCommitish(tt *testing.T) {
@@ -14025,6 +18353,25 @@ func TestGetAuditLogOptions_GetPhrase(tt *testing.T) {
 	g.GetPhrase()
 	g = nil
 	g.GetPhrase()
+}
+
+func TestGetCodeownersErrorsOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	g := &GetCodeownersErrorsOptions{}
+	g.GetRef()
+	g = nil
+	g.GetRef()
+}
+
+func TestGetProjectItemOptions_GetFields(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	g := &GetProjectItemOptions{Fields: zeroValue}
+	g.GetFields()
+	g = &GetProjectItemOptions{}
+	g.GetFields()
+	g = nil
+	g.GetFields()
 }
 
 func TestGetProvisionedSCIMGroupEnterpriseOptions_GetExcludedAttributes(tt *testing.T) {
@@ -14408,6 +18755,14 @@ func TestGistFork_GetUser(tt *testing.T) {
 	g.GetUser()
 }
 
+func TestGistListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	g := &GistListOptions{}
+	g.GetSince()
+	g = nil
+	g.GetSince()
+}
+
 func TestGistStats_GetPrivateGists(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -14523,6 +18878,17 @@ func TestGitObject_GetURL(tt *testing.T) {
 	g.GetURL()
 }
 
+func TestGlobalSecurityAdvisory_GetCredits(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Credit{}
+	g := &GlobalSecurityAdvisory{Credits: zeroValue}
+	g.GetCredits()
+	g = &GlobalSecurityAdvisory{}
+	g.GetCredits()
+	g = nil
+	g.GetCredits()
+}
+
 func TestGlobalSecurityAdvisory_GetGithubReviewedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -14554,6 +18920,17 @@ func TestGlobalSecurityAdvisory_GetNVDPublishedAt(tt *testing.T) {
 	g.GetNVDPublishedAt()
 	g = nil
 	g.GetNVDPublishedAt()
+}
+
+func TestGlobalSecurityAdvisory_GetReferences(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	g := &GlobalSecurityAdvisory{References: zeroValue}
+	g.GetReferences()
+	g = &GlobalSecurityAdvisory{}
+	g.GetReferences()
+	g = nil
+	g.GetReferences()
 }
 
 func TestGlobalSecurityAdvisory_GetRepositoryAdvisoryURL(tt *testing.T) {
@@ -14589,6 +18966,17 @@ func TestGlobalSecurityAdvisory_GetType(tt *testing.T) {
 	g.GetType()
 }
 
+func TestGlobalSecurityAdvisory_GetVulnerabilities(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*GlobalSecurityVulnerability{}
+	g := &GlobalSecurityAdvisory{Vulnerabilities: zeroValue}
+	g.GetVulnerabilities()
+	g = &GlobalSecurityAdvisory{}
+	g.GetVulnerabilities()
+	g = nil
+	g.GetVulnerabilities()
+}
+
 func TestGlobalSecurityVulnerability_GetFirstPatchedVersion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -14606,6 +18994,17 @@ func TestGlobalSecurityVulnerability_GetPackage(tt *testing.T) {
 	g.GetPackage()
 	g = nil
 	g.GetPackage()
+}
+
+func TestGlobalSecurityVulnerability_GetVulnerableFunctions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	g := &GlobalSecurityVulnerability{VulnerableFunctions: zeroValue}
+	g.GetVulnerableFunctions()
+	g = &GlobalSecurityVulnerability{}
+	g.GetVulnerableFunctions()
+	g = nil
+	g.GetVulnerableFunctions()
 }
 
 func TestGlobalSecurityVulnerability_GetVulnerableVersionRange(tt *testing.T) {
@@ -14635,6 +19034,17 @@ func TestGollumEvent_GetOrg(tt *testing.T) {
 	g.GetOrg()
 }
 
+func TestGollumEvent_GetPages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Page{}
+	g := &GollumEvent{Pages: zeroValue}
+	g.GetPages()
+	g = &GollumEvent{}
+	g.GetPages()
+	g = nil
+	g.GetPages()
+}
+
 func TestGollumEvent_GetRepo(tt *testing.T) {
 	tt.Parallel()
 	g := &GollumEvent{}
@@ -14649,6 +19059,30 @@ func TestGollumEvent_GetSender(tt *testing.T) {
 	g.GetSender()
 	g = nil
 	g.GetSender()
+}
+
+func TestGoogleCloudConfig_GetBucket(tt *testing.T) {
+	tt.Parallel()
+	g := &GoogleCloudConfig{}
+	g.GetBucket()
+	g = nil
+	g.GetBucket()
+}
+
+func TestGoogleCloudConfig_GetEncryptedJSONCredentials(tt *testing.T) {
+	tt.Parallel()
+	g := &GoogleCloudConfig{}
+	g.GetEncryptedJSONCredentials()
+	g = nil
+	g.GetEncryptedJSONCredentials()
+}
+
+func TestGoogleCloudConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	g := &GoogleCloudConfig{}
+	g.GetKeyID()
+	g = nil
+	g.GetKeyID()
 }
 
 func TestGPGEmail_GetEmail(tt *testing.T) {
@@ -14728,6 +19162,17 @@ func TestGPGKey_GetCreatedAt(tt *testing.T) {
 	g.GetCreatedAt()
 }
 
+func TestGPGKey_GetEmails(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*GPGEmail{}
+	g := &GPGKey{Emails: zeroValue}
+	g.GetEmails()
+	g = &GPGKey{}
+	g.GetEmails()
+	g = nil
+	g.GetEmails()
+}
+
 func TestGPGKey_GetExpiresAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -14794,6 +19239,17 @@ func TestGPGKey_GetRawKey(tt *testing.T) {
 	g.GetRawKey()
 }
 
+func TestGPGKey_GetSubkeys(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*GPGKey{}
+	g := &GPGKey{Subkeys: zeroValue}
+	g.GetSubkeys()
+	g = &GPGKey{}
+	g.GetSubkeys()
+	g = nil
+	g.GetSubkeys()
+}
+
 func TestGrant_GetApp(tt *testing.T) {
 	tt.Parallel()
 	g := &Grant{}
@@ -14824,6 +19280,17 @@ func TestGrant_GetID(tt *testing.T) {
 	g.GetID()
 }
 
+func TestGrant_GetScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	g := &Grant{Scopes: zeroValue}
+	g.GetScopes()
+	g = &Grant{}
+	g.GetScopes()
+	g = nil
+	g.GetScopes()
+}
+
 func TestGrant_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -14844,6 +19311,17 @@ func TestGrant_GetURL(tt *testing.T) {
 	g.GetURL()
 	g = nil
 	g.GetURL()
+}
+
+func TestHeadCommit_GetAdded(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	h := &HeadCommit{Added: zeroValue}
+	h.GetAdded()
+	h = &HeadCommit{}
+	h.GetAdded()
+	h = nil
+	h.GetAdded()
 }
 
 func TestHeadCommit_GetAuthor(tt *testing.T) {
@@ -14895,6 +19373,28 @@ func TestHeadCommit_GetMessage(tt *testing.T) {
 	h.GetMessage()
 }
 
+func TestHeadCommit_GetModified(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	h := &HeadCommit{Modified: zeroValue}
+	h.GetModified()
+	h = &HeadCommit{}
+	h.GetModified()
+	h = nil
+	h.GetModified()
+}
+
+func TestHeadCommit_GetRemoved(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	h := &HeadCommit{Removed: zeroValue}
+	h.GetRemoved()
+	h = &HeadCommit{}
+	h.GetRemoved()
+	h = nil
+	h.GetRemoved()
+}
+
 func TestHeadCommit_GetSHA(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -14939,6 +19439,54 @@ func TestHeadCommit_GetURL(tt *testing.T) {
 	h.GetURL()
 }
 
+func TestHecConfig_GetDomain(tt *testing.T) {
+	tt.Parallel()
+	h := &HecConfig{}
+	h.GetDomain()
+	h = nil
+	h.GetDomain()
+}
+
+func TestHecConfig_GetEncryptedToken(tt *testing.T) {
+	tt.Parallel()
+	h := &HecConfig{}
+	h.GetEncryptedToken()
+	h = nil
+	h.GetEncryptedToken()
+}
+
+func TestHecConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	h := &HecConfig{}
+	h.GetKeyID()
+	h = nil
+	h.GetKeyID()
+}
+
+func TestHecConfig_GetPath(tt *testing.T) {
+	tt.Parallel()
+	h := &HecConfig{}
+	h.GetPath()
+	h = nil
+	h.GetPath()
+}
+
+func TestHecConfig_GetPort(tt *testing.T) {
+	tt.Parallel()
+	h := &HecConfig{}
+	h.GetPort()
+	h = nil
+	h.GetPort()
+}
+
+func TestHecConfig_GetSSLVerify(tt *testing.T) {
+	tt.Parallel()
+	h := &HecConfig{}
+	h.GetSSLVerify()
+	h = nil
+	h.GetSSLVerify()
+}
+
 func TestHook_GetActive(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -14967,6 +19515,17 @@ func TestHook_GetCreatedAt(tt *testing.T) {
 	h.GetCreatedAt()
 	h = nil
 	h.GetCreatedAt()
+}
+
+func TestHook_GetEvents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	h := &Hook{Events: zeroValue}
+	h.GetEvents()
+	h = &Hook{}
+	h.GetEvents()
+	h = nil
+	h.GetEvents()
 }
 
 func TestHook_GetID(tt *testing.T) {
@@ -15125,7 +19684,10 @@ func TestHookDelivery_GetDeliveredAt(tt *testing.T) {
 
 func TestHookDelivery_GetDuration(tt *testing.T) {
 	tt.Parallel()
-	h := &HookDelivery{}
+	var zeroValue float64
+	h := &HookDelivery{Duration: &zeroValue}
+	h.GetDuration()
+	h = &HookDelivery{}
 	h.GetDuration()
 	h = nil
 	h.GetDuration()
@@ -15394,6 +19956,17 @@ func TestHostedRunner_GetPublicIPEnabled(tt *testing.T) {
 	h.GetPublicIPEnabled()
 }
 
+func TestHostedRunner_GetPublicIPs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*HostedRunnerPublicIP{}
+	h := &HostedRunner{PublicIPs: zeroValue}
+	h.GetPublicIPs()
+	h = &HostedRunner{}
+	h.GetPublicIPs()
+	h = nil
+	h.GetPublicIPs()
+}
+
 func TestHostedRunner_GetRunnerGroupID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -15414,6 +19987,22 @@ func TestHostedRunner_GetStatus(tt *testing.T) {
 	h.GetStatus()
 	h = nil
 	h.GetStatus()
+}
+
+func TestHostedRunnerImage_GetID(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerImage{}
+	h.GetID()
+	h = nil
+	h.GetID()
+}
+
+func TestHostedRunnerImage_GetSource(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerImage{}
+	h.GetSource()
+	h = nil
+	h.GetSource()
 }
 
 func TestHostedRunnerImage_GetVersion(tt *testing.T) {
@@ -15482,12 +20071,211 @@ func TestHostedRunnerImageDetail_GetVersion(tt *testing.T) {
 	h.GetVersion()
 }
 
+func TestHostedRunnerImages_GetImages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*HostedRunnerImageSpecs{}
+	h := &HostedRunnerImages{Images: zeroValue}
+	h.GetImages()
+	h = &HostedRunnerImages{}
+	h.GetImages()
+	h = nil
+	h.GetImages()
+}
+
+func TestHostedRunnerImages_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerImages{}
+	h.GetTotalCount()
+	h = nil
+	h.GetTotalCount()
+}
+
+func TestHostedRunnerImageSpecs_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerImageSpecs{}
+	h.GetDisplayName()
+	h = nil
+	h.GetDisplayName()
+}
+
+func TestHostedRunnerImageSpecs_GetID(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerImageSpecs{}
+	h.GetID()
+	h = nil
+	h.GetID()
+}
+
+func TestHostedRunnerImageSpecs_GetPlatform(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerImageSpecs{}
+	h.GetPlatform()
+	h = nil
+	h.GetPlatform()
+}
+
+func TestHostedRunnerImageSpecs_GetSizeGB(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerImageSpecs{}
+	h.GetSizeGB()
+	h = nil
+	h.GetSizeGB()
+}
+
+func TestHostedRunnerImageSpecs_GetSource(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerImageSpecs{}
+	h.GetSource()
+	h = nil
+	h.GetSource()
+}
+
+func TestHostedRunnerMachineSpec_GetCPUCores(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerMachineSpec{}
+	h.GetCPUCores()
+	h = nil
+	h.GetCPUCores()
+}
+
+func TestHostedRunnerMachineSpec_GetID(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerMachineSpec{}
+	h.GetID()
+	h = nil
+	h.GetID()
+}
+
+func TestHostedRunnerMachineSpec_GetMemoryGB(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerMachineSpec{}
+	h.GetMemoryGB()
+	h = nil
+	h.GetMemoryGB()
+}
+
+func TestHostedRunnerMachineSpec_GetStorageGB(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerMachineSpec{}
+	h.GetStorageGB()
+	h = nil
+	h.GetStorageGB()
+}
+
+func TestHostedRunnerMachineSpecs_GetMachineSpecs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*HostedRunnerMachineSpec{}
+	h := &HostedRunnerMachineSpecs{MachineSpecs: zeroValue}
+	h.GetMachineSpecs()
+	h = &HostedRunnerMachineSpecs{}
+	h.GetMachineSpecs()
+	h = nil
+	h.GetMachineSpecs()
+}
+
+func TestHostedRunnerMachineSpecs_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerMachineSpecs{}
+	h.GetTotalCount()
+	h = nil
+	h.GetTotalCount()
+}
+
+func TestHostedRunnerPlatforms_GetPlatforms(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	h := &HostedRunnerPlatforms{Platforms: zeroValue}
+	h.GetPlatforms()
+	h = &HostedRunnerPlatforms{}
+	h.GetPlatforms()
+	h = nil
+	h.GetPlatforms()
+}
+
+func TestHostedRunnerPlatforms_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerPlatforms{}
+	h.GetTotalCount()
+	h = nil
+	h.GetTotalCount()
+}
+
+func TestHostedRunnerPublicIP_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerPublicIP{}
+	h.GetEnabled()
+	h = nil
+	h.GetEnabled()
+}
+
+func TestHostedRunnerPublicIP_GetLength(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerPublicIP{}
+	h.GetLength()
+	h = nil
+	h.GetLength()
+}
+
+func TestHostedRunnerPublicIP_GetPrefix(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerPublicIP{}
+	h.GetPrefix()
+	h = nil
+	h.GetPrefix()
+}
+
 func TestHostedRunnerPublicIPLimits_GetPublicIPs(tt *testing.T) {
 	tt.Parallel()
 	h := &HostedRunnerPublicIPLimits{}
 	h.GetPublicIPs()
 	h = nil
 	h.GetPublicIPs()
+}
+
+func TestHostedRunners_GetRunners(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*HostedRunner{}
+	h := &HostedRunners{Runners: zeroValue}
+	h.GetRunners()
+	h = &HostedRunners{}
+	h.GetRunners()
+	h = nil
+	h.GetRunners()
+}
+
+func TestHostedRunners_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunners{}
+	h.GetTotalCount()
+	h = nil
+	h.GetTotalCount()
+}
+
+func TestHovercard_GetContexts(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*UserContext{}
+	h := &Hovercard{Contexts: zeroValue}
+	h.GetContexts()
+	h = &Hovercard{}
+	h.GetContexts()
+	h = nil
+	h.GetContexts()
+}
+
+func TestHovercardOptions_GetSubjectID(tt *testing.T) {
+	tt.Parallel()
+	h := &HovercardOptions{}
+	h.GetSubjectID()
+	h = nil
+	h.GetSubjectID()
+}
+
+func TestHovercardOptions_GetSubjectType(tt *testing.T) {
+	tt.Parallel()
+	h := &HovercardOptions{}
+	h.GetSubjectType()
+	h = nil
+	h.GetSubjectType()
 }
 
 func TestIDPGroup_GetGroupDescription(tt *testing.T) {
@@ -15523,6 +20311,17 @@ func TestIDPGroup_GetGroupName(tt *testing.T) {
 	i.GetGroupName()
 }
 
+func TestIDPGroupList_GetGroups(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*IDPGroup{}
+	i := &IDPGroupList{Groups: zeroValue}
+	i.GetGroups()
+	i = &IDPGroupList{}
+	i.GetGroups()
+	i = nil
+	i.GetGroups()
+}
+
 func TestImmutableReleasePolicy_GetEnforcedRepositories(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -15532,6 +20331,17 @@ func TestImmutableReleasePolicy_GetEnforcedRepositories(tt *testing.T) {
 	i.GetEnforcedRepositories()
 	i = nil
 	i.GetEnforcedRepositories()
+}
+
+func TestImmutableReleasePolicy_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	i := &ImmutableReleasePolicy{SelectedRepositoryIDs: zeroValue}
+	i.GetSelectedRepositoryIDs()
+	i = &ImmutableReleasePolicy{}
+	i.GetSelectedRepositoryIDs()
+	i = nil
+	i.GetSelectedRepositoryIDs()
 }
 
 func TestImmutableReleaseSettings_GetEnforcedRepositories(tt *testing.T) {
@@ -15554,6 +20364,17 @@ func TestImmutableReleaseSettings_GetSelectedRepositoriesURL(tt *testing.T) {
 	i.GetSelectedRepositoriesURL()
 	i = nil
 	i.GetSelectedRepositoriesURL()
+}
+
+func TestImpersonateUserOptions_GetScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	i := &ImpersonateUserOptions{Scopes: zeroValue}
+	i.GetScopes()
+	i = &ImpersonateUserOptions{}
+	i.GetScopes()
+	i = nil
+	i.GetScopes()
 }
 
 func TestImport_GetAuthorsCount(tt *testing.T) {
@@ -15677,6 +20498,17 @@ func TestImport_GetPercent(tt *testing.T) {
 	i.GetPercent()
 }
 
+func TestImport_GetProjectChoices(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Import{}
+	i := &Import{ProjectChoices: zeroValue}
+	i.GetProjectChoices()
+	i = &Import{}
+	i.GetProjectChoices()
+	i = nil
+	i.GetProjectChoices()
+}
+
 func TestImport_GetPushPercent(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -15798,6 +20630,22 @@ func TestImport_GetVCSUsername(tt *testing.T) {
 	i.GetVCSUsername()
 }
 
+func TestInitialConfigOptions_GetLicense(tt *testing.T) {
+	tt.Parallel()
+	i := &InitialConfigOptions{}
+	i.GetLicense()
+	i = nil
+	i.GetLicense()
+}
+
+func TestInitialConfigOptions_GetPassword(tt *testing.T) {
+	tt.Parallel()
+	i := &InitialConfigOptions{}
+	i.GetPassword()
+	i = nil
+	i.GetPassword()
+}
+
 func TestInstallableOrganization_GetAccessibleRepositoriesURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -15807,6 +20655,49 @@ func TestInstallableOrganization_GetAccessibleRepositoriesURL(tt *testing.T) {
 	i.GetAccessibleRepositoriesURL()
 	i = nil
 	i.GetAccessibleRepositoriesURL()
+}
+
+func TestInstallableOrganization_GetID(tt *testing.T) {
+	tt.Parallel()
+	i := &InstallableOrganization{}
+	i.GetID()
+	i = nil
+	i.GetID()
+}
+
+func TestInstallableOrganization_GetLogin(tt *testing.T) {
+	tt.Parallel()
+	i := &InstallableOrganization{}
+	i.GetLogin()
+	i = nil
+	i.GetLogin()
+}
+
+func TestInstallAppRequest_GetClientID(tt *testing.T) {
+	tt.Parallel()
+	i := &InstallAppRequest{}
+	i.GetClientID()
+	i = nil
+	i.GetClientID()
+}
+
+func TestInstallAppRequest_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	i := &InstallAppRequest{Repositories: zeroValue}
+	i.GetRepositories()
+	i = &InstallAppRequest{}
+	i.GetRepositories()
+	i = nil
+	i.GetRepositories()
+}
+
+func TestInstallAppRequest_GetRepositorySelection(tt *testing.T) {
+	tt.Parallel()
+	i := &InstallAppRequest{}
+	i.GetRepositorySelection()
+	i = nil
+	i.GetRepositorySelection()
 }
 
 func TestInstallation_GetAccessTokensURL(tt *testing.T) {
@@ -15870,6 +20761,17 @@ func TestInstallation_GetCreatedAt(tt *testing.T) {
 	i.GetCreatedAt()
 	i = nil
 	i.GetCreatedAt()
+}
+
+func TestInstallation_GetEvents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	i := &Installation{Events: zeroValue}
+	i.GetEvents()
+	i = &Installation{}
+	i.GetEvents()
+	i = nil
+	i.GetEvents()
 }
 
 func TestInstallation_GetHasMultipleSingleFiles(tt *testing.T) {
@@ -15955,6 +20857,17 @@ func TestInstallation_GetSingleFileName(tt *testing.T) {
 	i.GetSingleFileName()
 	i = nil
 	i.GetSingleFileName()
+}
+
+func TestInstallation_GetSingleFilePaths(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	i := &Installation{SingleFilePaths: zeroValue}
+	i.GetSingleFilePaths()
+	i = &Installation{}
+	i.GetSingleFilePaths()
+	i = nil
+	i.GetSingleFilePaths()
 }
 
 func TestInstallation_GetSuspendedAt(tt *testing.T) {
@@ -16050,6 +20963,17 @@ func TestInstallationEvent_GetOrg(tt *testing.T) {
 	i.GetOrg()
 	i = nil
 	i.GetOrg()
+}
+
+func TestInstallationEvent_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	i := &InstallationEvent{Repositories: zeroValue}
+	i.GetRepositories()
+	i = &InstallationEvent{}
+	i.GetRepositories()
+	i = nil
+	i.GetRepositories()
 }
 
 func TestInstallationEvent_GetRequester(tt *testing.T) {
@@ -16931,6 +21855,28 @@ func TestInstallationRepositoriesEvent_GetOrg(tt *testing.T) {
 	i.GetOrg()
 }
 
+func TestInstallationRepositoriesEvent_GetRepositoriesAdded(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	i := &InstallationRepositoriesEvent{RepositoriesAdded: zeroValue}
+	i.GetRepositoriesAdded()
+	i = &InstallationRepositoriesEvent{}
+	i.GetRepositoriesAdded()
+	i = nil
+	i.GetRepositoriesAdded()
+}
+
+func TestInstallationRepositoriesEvent_GetRepositoriesRemoved(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	i := &InstallationRepositoriesEvent{RepositoriesRemoved: zeroValue}
+	i.GetRepositoriesRemoved()
+	i = &InstallationRepositoriesEvent{}
+	i.GetRepositoriesRemoved()
+	i = nil
+	i.GetRepositoriesRemoved()
+}
+
 func TestInstallationRepositoriesEvent_GetRepositorySelection(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -17107,6 +22053,17 @@ func TestInstallationToken_GetPermissions(tt *testing.T) {
 	i.GetPermissions()
 }
 
+func TestInstallationToken_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	i := &InstallationToken{Repositories: zeroValue}
+	i.GetRepositories()
+	i = &InstallationToken{}
+	i.GetRepositories()
+	i = nil
+	i.GetRepositories()
+}
+
 func TestInstallationToken_GetToken(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -17126,12 +22083,56 @@ func TestInstallationTokenListRepoOptions_GetPermissions(tt *testing.T) {
 	i.GetPermissions()
 }
 
+func TestInstallationTokenListRepoOptions_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	i := &InstallationTokenListRepoOptions{Repositories: zeroValue}
+	i.GetRepositories()
+	i = &InstallationTokenListRepoOptions{}
+	i.GetRepositories()
+	i = nil
+	i.GetRepositories()
+}
+
+func TestInstallationTokenListRepoOptions_GetRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	i := &InstallationTokenListRepoOptions{RepositoryIDs: zeroValue}
+	i.GetRepositoryIDs()
+	i = &InstallationTokenListRepoOptions{}
+	i.GetRepositoryIDs()
+	i = nil
+	i.GetRepositoryIDs()
+}
+
 func TestInstallationTokenOptions_GetPermissions(tt *testing.T) {
 	tt.Parallel()
 	i := &InstallationTokenOptions{}
 	i.GetPermissions()
 	i = nil
 	i.GetPermissions()
+}
+
+func TestInstallationTokenOptions_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	i := &InstallationTokenOptions{Repositories: zeroValue}
+	i.GetRepositories()
+	i = &InstallationTokenOptions{}
+	i.GetRepositories()
+	i = nil
+	i.GetRepositories()
+}
+
+func TestInstallationTokenOptions_GetRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	i := &InstallationTokenOptions{RepositoryIDs: zeroValue}
+	i.GetRepositoryIDs()
+	i = &InstallationTokenOptions{}
+	i.GetRepositoryIDs()
+	i = nil
+	i.GetRepositoryIDs()
 }
 
 func TestInteractionRestriction_GetExpiresAt(tt *testing.T) {
@@ -17304,6 +22305,17 @@ func TestIssue_GetAssignee(tt *testing.T) {
 	i.GetAssignee()
 }
 
+func TestIssue_GetAssignees(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	i := &Issue{Assignees: zeroValue}
+	i.GetAssignees()
+	i = &Issue{}
+	i.GetAssignees()
+	i = nil
+	i.GetAssignees()
+}
+
 func TestIssue_GetAuthorAssociation(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -17420,6 +22432,17 @@ func TestIssue_GetID(tt *testing.T) {
 	i.GetID()
 	i = nil
 	i.GetID()
+}
+
+func TestIssue_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Label{}
+	i := &Issue{Labels: zeroValue}
+	i.GetLabels()
+	i = &Issue{}
+	i.GetLabels()
+	i = nil
+	i.GetLabels()
 }
 
 func TestIssue_GetLabelsURL(tt *testing.T) {
@@ -17540,6 +22563,17 @@ func TestIssue_GetStateReason(tt *testing.T) {
 	i.GetStateReason()
 	i = nil
 	i.GetStateReason()
+}
+
+func TestIssue_GetTextMatches(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*TextMatch{}
+	i := &Issue{TextMatches: zeroValue}
+	i.GetTextMatches()
+	i = &Issue{}
+	i.GetTextMatches()
+	i = nil
+	i.GetTextMatches()
 }
 
 func TestIssue_GetTitle(tt *testing.T) {
@@ -17773,6 +22807,14 @@ func TestIssueCommentEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 }
 
+func TestIssueEvent_GetAction(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueEvent{}
+	i.GetAction()
+	i = nil
+	i.GetAction()
+}
+
 func TestIssueEvent_GetActor(tt *testing.T) {
 	tt.Parallel()
 	i := &IssueEvent{}
@@ -17954,6 +22996,14 @@ func TestIssueImport_GetAssignee(tt *testing.T) {
 	i.GetAssignee()
 }
 
+func TestIssueImport_GetBody(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueImport{}
+	i.GetBody()
+	i = nil
+	i.GetBody()
+}
+
 func TestIssueImport_GetClosed(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -17987,6 +23037,17 @@ func TestIssueImport_GetCreatedAt(tt *testing.T) {
 	i.GetCreatedAt()
 }
 
+func TestIssueImport_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	i := &IssueImport{Labels: zeroValue}
+	i.GetLabels()
+	i = &IssueImport{}
+	i.GetLabels()
+	i = nil
+	i.GetLabels()
+}
+
 func TestIssueImport_GetMilestone(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -17996,6 +23057,14 @@ func TestIssueImport_GetMilestone(tt *testing.T) {
 	i.GetMilestone()
 	i = nil
 	i.GetMilestone()
+}
+
+func TestIssueImport_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueImport{}
+	i.GetTitle()
+	i = nil
+	i.GetTitle()
 }
 
 func TestIssueImport_GetUpdatedAt(tt *testing.T) {
@@ -18064,6 +23133,25 @@ func TestIssueImportError_GetValue(tt *testing.T) {
 	i.GetValue()
 }
 
+func TestIssueImportRequest_GetComments(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Comment{}
+	i := &IssueImportRequest{Comments: zeroValue}
+	i.GetComments()
+	i = &IssueImportRequest{}
+	i.GetComments()
+	i = nil
+	i.GetComments()
+}
+
+func TestIssueImportRequest_GetIssueImport(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueImportRequest{}
+	i.GetIssueImport()
+	i = nil
+	i.GetIssueImport()
+}
+
 func TestIssueImportResponse_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -18084,6 +23172,17 @@ func TestIssueImportResponse_GetDocumentationURL(tt *testing.T) {
 	i.GetDocumentationURL()
 	i = nil
 	i.GetDocumentationURL()
+}
+
+func TestIssueImportResponse_GetErrors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*IssueImportError{}
+	i := &IssueImportResponse{Errors: zeroValue}
+	i.GetErrors()
+	i = &IssueImportResponse{}
+	i.GetErrors()
+	i = nil
+	i.GetErrors()
 }
 
 func TestIssueImportResponse_GetID(tt *testing.T) {
@@ -18161,6 +23260,148 @@ func TestIssueImportResponse_GetURL(tt *testing.T) {
 	i.GetURL()
 	i = nil
 	i.GetURL()
+}
+
+func TestIssueListByOrgOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByOrgOptions{}
+	i.GetDirection()
+	i = nil
+	i.GetDirection()
+}
+
+func TestIssueListByOrgOptions_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByOrgOptions{}
+	i.GetFilter()
+	i = nil
+	i.GetFilter()
+}
+
+func TestIssueListByOrgOptions_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	i := &IssueListByOrgOptions{Labels: zeroValue}
+	i.GetLabels()
+	i = &IssueListByOrgOptions{}
+	i.GetLabels()
+	i = nil
+	i.GetLabels()
+}
+
+func TestIssueListByOrgOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByOrgOptions{}
+	i.GetSince()
+	i = nil
+	i.GetSince()
+}
+
+func TestIssueListByOrgOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByOrgOptions{}
+	i.GetSort()
+	i = nil
+	i.GetSort()
+}
+
+func TestIssueListByOrgOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByOrgOptions{}
+	i.GetState()
+	i = nil
+	i.GetState()
+}
+
+func TestIssueListByOrgOptions_GetType(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByOrgOptions{}
+	i.GetType()
+	i = nil
+	i.GetType()
+}
+
+func TestIssueListByRepoOptions_GetAssignee(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByRepoOptions{}
+	i.GetAssignee()
+	i = nil
+	i.GetAssignee()
+}
+
+func TestIssueListByRepoOptions_GetCreator(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByRepoOptions{}
+	i.GetCreator()
+	i = nil
+	i.GetCreator()
+}
+
+func TestIssueListByRepoOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByRepoOptions{}
+	i.GetDirection()
+	i = nil
+	i.GetDirection()
+}
+
+func TestIssueListByRepoOptions_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	i := &IssueListByRepoOptions{Labels: zeroValue}
+	i.GetLabels()
+	i = &IssueListByRepoOptions{}
+	i.GetLabels()
+	i = nil
+	i.GetLabels()
+}
+
+func TestIssueListByRepoOptions_GetMentioned(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByRepoOptions{}
+	i.GetMentioned()
+	i = nil
+	i.GetMentioned()
+}
+
+func TestIssueListByRepoOptions_GetMilestone(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByRepoOptions{}
+	i.GetMilestone()
+	i = nil
+	i.GetMilestone()
+}
+
+func TestIssueListByRepoOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByRepoOptions{}
+	i.GetSince()
+	i = nil
+	i.GetSince()
+}
+
+func TestIssueListByRepoOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByRepoOptions{}
+	i.GetSort()
+	i = nil
+	i.GetSort()
+}
+
+func TestIssueListByRepoOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByRepoOptions{}
+	i.GetState()
+	i = nil
+	i.GetState()
+}
+
+func TestIssueListByRepoOptions_GetType(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueListByRepoOptions{}
+	i.GetType()
+	i = nil
+	i.GetType()
 }
 
 func TestIssueListCommentsOptions_GetDirection(tt *testing.T) {
@@ -18389,6 +23630,17 @@ func TestIssuesSearchResult_GetIncompleteResults(tt *testing.T) {
 	i.GetIncompleteResults()
 }
 
+func TestIssuesSearchResult_GetIssues(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Issue{}
+	i := &IssuesSearchResult{Issues: zeroValue}
+	i.GetIssues()
+	i = &IssuesSearchResult{}
+	i.GetIssues()
+	i = nil
+	i.GetIssues()
+}
+
 func TestIssuesSearchResult_GetTotal(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -18527,6 +23779,17 @@ func TestJITRunnerConfig_GetRunner(tt *testing.T) {
 	j.GetRunner()
 	j = nil
 	j.GetRunner()
+}
+
+func TestJobs_GetJobs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*WorkflowJob{}
+	j := &Jobs{Jobs: zeroValue}
+	j.GetJobs()
+	j = &Jobs{}
+	j.GetJobs()
+	j = nil
+	j.GetJobs()
 }
 
 func TestJobs_GetTotalCount(tt *testing.T) {
@@ -18832,7 +24095,10 @@ func TestLabelResult_GetName(tt *testing.T) {
 
 func TestLabelResult_GetScore(tt *testing.T) {
 	tt.Parallel()
-	l := &LabelResult{}
+	var zeroValue float64
+	l := &LabelResult{Score: &zeroValue}
+	l.GetScore()
+	l = &LabelResult{}
 	l.GetScore()
 	l = nil
 	l.GetScore()
@@ -18858,6 +24124,17 @@ func TestLabelsSearchResult_GetIncompleteResults(tt *testing.T) {
 	l.GetIncompleteResults()
 	l = nil
 	l.GetIncompleteResults()
+}
+
+func TestLabelsSearchResult_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*LabelResult{}
+	l := &LabelsSearchResult{Labels: zeroValue}
+	l.GetLabels()
+	l = &LabelsSearchResult{}
+	l.GetLabels()
+	l = nil
+	l.GetLabels()
 }
 
 func TestLabelsSearchResult_GetTotal(tt *testing.T) {
@@ -18923,6 +24200,14 @@ func TestLastLicenseSync_GetProperties(tt *testing.T) {
 	l.GetProperties()
 }
 
+func TestLastLicenseSync_GetType(tt *testing.T) {
+	tt.Parallel()
+	l := &LastLicenseSync{}
+	l.GetType()
+	l = nil
+	l.GetType()
+}
+
 func TestLastLicenseSyncProperties_GetDate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -18932,6 +24217,22 @@ func TestLastLicenseSyncProperties_GetDate(tt *testing.T) {
 	l.GetDate()
 	l = nil
 	l.GetDate()
+}
+
+func TestLastLicenseSyncProperties_GetError(tt *testing.T) {
+	tt.Parallel()
+	l := &LastLicenseSyncProperties{}
+	l.GetError()
+	l = nil
+	l.GetError()
+}
+
+func TestLastLicenseSyncProperties_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	l := &LastLicenseSyncProperties{}
+	l.GetStatus()
+	l = nil
+	l.GetStatus()
 }
 
 func TestLicense_GetBody(tt *testing.T) {
@@ -19363,6 +24664,89 @@ func TestListAlertsOptions_GetState(tt *testing.T) {
 	l.GetState()
 }
 
+func TestListAllIssuesOptions_GetCollab(tt *testing.T) {
+	tt.Parallel()
+	l := &ListAllIssuesOptions{}
+	l.GetCollab()
+	l = nil
+	l.GetCollab()
+}
+
+func TestListAllIssuesOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	l := &ListAllIssuesOptions{}
+	l.GetDirection()
+	l = nil
+	l.GetDirection()
+}
+
+func TestListAllIssuesOptions_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListAllIssuesOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListAllIssuesOptions_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	l := &ListAllIssuesOptions{Labels: zeroValue}
+	l.GetLabels()
+	l = &ListAllIssuesOptions{}
+	l.GetLabels()
+	l = nil
+	l.GetLabels()
+}
+
+func TestListAllIssuesOptions_GetOrgs(tt *testing.T) {
+	tt.Parallel()
+	l := &ListAllIssuesOptions{}
+	l.GetOrgs()
+	l = nil
+	l.GetOrgs()
+}
+
+func TestListAllIssuesOptions_GetOwned(tt *testing.T) {
+	tt.Parallel()
+	l := &ListAllIssuesOptions{}
+	l.GetOwned()
+	l = nil
+	l.GetOwned()
+}
+
+func TestListAllIssuesOptions_GetPulls(tt *testing.T) {
+	tt.Parallel()
+	l := &ListAllIssuesOptions{}
+	l.GetPulls()
+	l = nil
+	l.GetPulls()
+}
+
+func TestListAllIssuesOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	l := &ListAllIssuesOptions{}
+	l.GetSince()
+	l = nil
+	l.GetSince()
+}
+
+func TestListAllIssuesOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	l := &ListAllIssuesOptions{}
+	l.GetSort()
+	l = nil
+	l.GetSort()
+}
+
+func TestListAllIssuesOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	l := &ListAllIssuesOptions{}
+	l.GetState()
+	l = nil
+	l.GetState()
+}
+
 func TestListArtifactsOptions_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -19418,6 +24802,17 @@ func TestListCheckRunsOptions_GetStatus(tt *testing.T) {
 	l.GetStatus()
 }
 
+func TestListCheckRunsResults_GetCheckRuns(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CheckRun{}
+	l := &ListCheckRunsResults{CheckRuns: zeroValue}
+	l.GetCheckRuns()
+	l = &ListCheckRunsResults{}
+	l.GetCheckRuns()
+	l = nil
+	l.GetCheckRuns()
+}
+
 func TestListCheckRunsResults_GetTotal(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -19451,6 +24846,17 @@ func TestListCheckSuiteOptions_GetCheckName(tt *testing.T) {
 	l.GetCheckName()
 }
 
+func TestListCheckSuiteResults_GetCheckSuites(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CheckSuite{}
+	l := &ListCheckSuiteResults{CheckSuites: zeroValue}
+	l.GetCheckSuites()
+	l = &ListCheckSuiteResults{}
+	l.GetCheckSuites()
+	l = nil
+	l.GetCheckSuites()
+}
+
 func TestListCheckSuiteResults_GetTotal(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -19460,6 +24866,49 @@ func TestListCheckSuiteResults_GetTotal(tt *testing.T) {
 	l.GetTotal()
 	l = nil
 	l.GetTotal()
+}
+
+func TestListCodeSecurityConfigurationRepositoriesOptions_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCodeSecurityConfigurationRepositoriesOptions{}
+	l.GetAfter()
+	l = nil
+	l.GetAfter()
+}
+
+func TestListCodeSecurityConfigurationRepositoriesOptions_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCodeSecurityConfigurationRepositoriesOptions{}
+	l.GetBefore()
+	l = nil
+	l.GetBefore()
+}
+
+func TestListCodeSecurityConfigurationRepositoriesOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCodeSecurityConfigurationRepositoriesOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
+}
+
+func TestListCodeSecurityConfigurationRepositoriesOptions_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCodeSecurityConfigurationRepositoriesOptions{}
+	l.GetStatus()
+	l = nil
+	l.GetStatus()
+}
+
+func TestListCodespaces_GetCodespaces(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Codespace{}
+	l := &ListCodespaces{Codespaces: zeroValue}
+	l.GetCodespaces()
+	l = &ListCodespaces{}
+	l.GetCodespaces()
+	l = nil
+	l.GetCodespaces()
 }
 
 func TestListCodespaces_GetTotalCount(tt *testing.T) {
@@ -19473,6 +24922,57 @@ func TestListCodespaces_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 }
 
+func TestListCodespacesOptions_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCodespacesOptions{}
+	l.GetRepositoryID()
+	l = nil
+	l.GetRepositoryID()
+}
+
+func TestListCollaboratorsOptions_GetAffiliation(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCollaboratorsOptions{}
+	l.GetAffiliation()
+	l = nil
+	l.GetAffiliation()
+}
+
+func TestListCollaboratorsOptions_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCollaboratorsOptions{}
+	l.GetPermission()
+	l = nil
+	l.GetPermission()
+}
+
+func TestListContributorsOptions_GetAnon(tt *testing.T) {
+	tt.Parallel()
+	l := &ListContributorsOptions{}
+	l.GetAnon()
+	l = nil
+	l.GetAnon()
+}
+
+func TestListCopilotSeatsResponse_GetSeats(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotSeatDetails{}
+	l := &ListCopilotSeatsResponse{Seats: zeroValue}
+	l.GetSeats()
+	l = &ListCopilotSeatsResponse{}
+	l.GetSeats()
+	l = nil
+	l.GetSeats()
+}
+
+func TestListCopilotSeatsResponse_GetTotalSeats(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCopilotSeatsResponse{}
+	l.GetTotalSeats()
+	l = nil
+	l.GetTotalSeats()
+}
+
 func TestListCostCenterOptions_GetState(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -19482,6 +24982,73 @@ func TestListCostCenterOptions_GetState(tt *testing.T) {
 	l.GetState()
 	l = nil
 	l.GetState()
+}
+
+func TestListCursorOptions_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCursorOptions{}
+	l.GetAfter()
+	l = nil
+	l.GetAfter()
+}
+
+func TestListCursorOptions_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCursorOptions{}
+	l.GetBefore()
+	l = nil
+	l.GetBefore()
+}
+
+func TestListCursorOptions_GetCursor(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCursorOptions{}
+	l.GetCursor()
+	l = nil
+	l.GetCursor()
+}
+
+func TestListCursorOptions_GetFirst(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCursorOptions{}
+	l.GetFirst()
+	l = nil
+	l.GetFirst()
+}
+
+func TestListCursorOptions_GetLast(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCursorOptions{}
+	l.GetLast()
+	l = nil
+	l.GetLast()
+}
+
+func TestListCursorOptions_GetPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCursorOptions{}
+	l.GetPage()
+	l = nil
+	l.GetPage()
+}
+
+func TestListCursorOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCursorOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
+}
+
+func TestListCustomDeploymentRuleIntegrationsResponse_GetAvailableIntegrations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomDeploymentProtectionRuleApp{}
+	l := &ListCustomDeploymentRuleIntegrationsResponse{AvailableIntegrations: zeroValue}
+	l.GetAvailableIntegrations()
+	l = &ListCustomDeploymentRuleIntegrationsResponse{}
+	l.GetAvailableIntegrations()
+	l = nil
+	l.GetAvailableIntegrations()
 }
 
 func TestListCustomDeploymentRuleIntegrationsResponse_GetTotalCount(tt *testing.T) {
@@ -19495,6 +25062,25 @@ func TestListCustomDeploymentRuleIntegrationsResponse_GetTotalCount(tt *testing.
 	l.GetTotalCount()
 }
 
+func TestListCustomPropertyValuesOptions_GetRepositoryQuery(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCustomPropertyValuesOptions{}
+	l.GetRepositoryQuery()
+	l = nil
+	l.GetRepositoryQuery()
+}
+
+func TestListDeploymentProtectionRuleResponse_GetProtectionRules(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomDeploymentProtectionRule{}
+	l := &ListDeploymentProtectionRuleResponse{ProtectionRules: zeroValue}
+	l.GetProtectionRules()
+	l = &ListDeploymentProtectionRuleResponse{}
+	l.GetProtectionRules()
+	l = nil
+	l.GetProtectionRules()
+}
+
 func TestListDeploymentProtectionRuleResponse_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -19506,6 +25092,38 @@ func TestListDeploymentProtectionRuleResponse_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 }
 
+func TestListEnterpriseCodeSecurityConfigurationOptions_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListEnterpriseCodeSecurityConfigurationOptions{}
+	l.GetAfter()
+	l = nil
+	l.GetAfter()
+}
+
+func TestListEnterpriseCodeSecurityConfigurationOptions_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	l := &ListEnterpriseCodeSecurityConfigurationOptions{}
+	l.GetBefore()
+	l = nil
+	l.GetBefore()
+}
+
+func TestListEnterpriseCodeSecurityConfigurationOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListEnterpriseCodeSecurityConfigurationOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
+}
+
+func TestListEnterpriseRunnerGroupOptions_GetVisibleToOrganization(tt *testing.T) {
+	tt.Parallel()
+	l := &ListEnterpriseRunnerGroupOptions{}
+	l.GetVisibleToOrganization()
+	l = nil
+	l.GetVisibleToOrganization()
+}
+
 func TestListExternalGroupsOptions_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -19515,6 +25133,76 @@ func TestListExternalGroupsOptions_GetDisplayName(tt *testing.T) {
 	l.GetDisplayName()
 	l = nil
 	l.GetDisplayName()
+}
+
+func TestListFineGrainedPATOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	l := &ListFineGrainedPATOptions{}
+	l.GetDirection()
+	l = nil
+	l.GetDirection()
+}
+
+func TestListFineGrainedPATOptions_GetLastUsedAfter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListFineGrainedPATOptions{}
+	l.GetLastUsedAfter()
+	l = nil
+	l.GetLastUsedAfter()
+}
+
+func TestListFineGrainedPATOptions_GetLastUsedBefore(tt *testing.T) {
+	tt.Parallel()
+	l := &ListFineGrainedPATOptions{}
+	l.GetLastUsedBefore()
+	l = nil
+	l.GetLastUsedBefore()
+}
+
+func TestListFineGrainedPATOptions_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	l := &ListFineGrainedPATOptions{Owner: zeroValue}
+	l.GetOwner()
+	l = &ListFineGrainedPATOptions{}
+	l.GetOwner()
+	l = nil
+	l.GetOwner()
+}
+
+func TestListFineGrainedPATOptions_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	l := &ListFineGrainedPATOptions{}
+	l.GetPermission()
+	l = nil
+	l.GetPermission()
+}
+
+func TestListFineGrainedPATOptions_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	l := &ListFineGrainedPATOptions{}
+	l.GetRepository()
+	l = nil
+	l.GetRepository()
+}
+
+func TestListFineGrainedPATOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	l := &ListFineGrainedPATOptions{}
+	l.GetSort()
+	l = nil
+	l.GetSort()
+}
+
+func TestListFineGrainedPATOptions_GetTokenID(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	l := &ListFineGrainedPATOptions{TokenID: zeroValue}
+	l.GetTokenID()
+	l = &ListFineGrainedPATOptions{}
+	l.GetTokenID()
+	l = nil
+	l.GetTokenID()
 }
 
 func TestListGlobalSecurityAdvisoriesOptions_GetAffects(tt *testing.T) {
@@ -19537,6 +25225,17 @@ func TestListGlobalSecurityAdvisoriesOptions_GetCVEID(tt *testing.T) {
 	l.GetCVEID()
 	l = nil
 	l.GetCVEID()
+}
+
+func TestListGlobalSecurityAdvisoriesOptions_GetCWEs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	l := &ListGlobalSecurityAdvisoriesOptions{CWEs: zeroValue}
+	l.GetCWEs()
+	l = &ListGlobalSecurityAdvisoriesOptions{}
+	l.GetCWEs()
+	l = nil
+	l.GetCWEs()
 }
 
 func TestListGlobalSecurityAdvisoriesOptions_GetEcosystem(tt *testing.T) {
@@ -19627,6 +25326,14 @@ func TestListGlobalSecurityAdvisoriesOptions_GetUpdated(tt *testing.T) {
 	l.GetUpdated()
 }
 
+func TestListIDPGroupsOptions_GetQuery(tt *testing.T) {
+	tt.Parallel()
+	l := &ListIDPGroupsOptions{}
+	l.GetQuery()
+	l = nil
+	l.GetQuery()
+}
+
 func TestListLicensesOptions_GetFeatured(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -19638,6 +25345,57 @@ func TestListLicensesOptions_GetFeatured(tt *testing.T) {
 	l.GetFeatured()
 }
 
+func TestListMembersOptions_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListMembersOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListMembersOptions_GetPublicOnly(tt *testing.T) {
+	tt.Parallel()
+	l := &ListMembersOptions{}
+	l.GetPublicOnly()
+	l = nil
+	l.GetPublicOnly()
+}
+
+func TestListMembersOptions_GetRole(tt *testing.T) {
+	tt.Parallel()
+	l := &ListMembersOptions{}
+	l.GetRole()
+	l = nil
+	l.GetRole()
+}
+
+func TestListOptions_GetPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListOptions{}
+	l.GetPage()
+	l = nil
+	l.GetPage()
+}
+
+func TestListOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
+}
+
+func TestListOrganizations_GetOrganizations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Organization{}
+	l := &ListOrganizations{Organizations: zeroValue}
+	l.GetOrganizations()
+	l = &ListOrganizations{}
+	l.GetOrganizations()
+	l = nil
+	l.GetOrganizations()
+}
+
 func TestListOrganizations_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -19647,6 +25405,113 @@ func TestListOrganizations_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 	l = nil
 	l.GetTotalCount()
+}
+
+func TestListOrgCodeSecurityConfigurationOptions_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListOrgCodeSecurityConfigurationOptions{}
+	l.GetAfter()
+	l = nil
+	l.GetAfter()
+}
+
+func TestListOrgCodeSecurityConfigurationOptions_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	l := &ListOrgCodeSecurityConfigurationOptions{}
+	l.GetBefore()
+	l = nil
+	l.GetBefore()
+}
+
+func TestListOrgCodeSecurityConfigurationOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListOrgCodeSecurityConfigurationOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
+}
+
+func TestListOrgCodeSecurityConfigurationOptions_GetTargetType(tt *testing.T) {
+	tt.Parallel()
+	l := &ListOrgCodeSecurityConfigurationOptions{}
+	l.GetTargetType()
+	l = nil
+	l.GetTargetType()
+}
+
+func TestListOrgMembershipsOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	l := &ListOrgMembershipsOptions{}
+	l.GetState()
+	l = nil
+	l.GetState()
+}
+
+func TestListOrgRunnerGroupOptions_GetVisibleToRepository(tt *testing.T) {
+	tt.Parallel()
+	l := &ListOrgRunnerGroupOptions{}
+	l.GetVisibleToRepository()
+	l = nil
+	l.GetVisibleToRepository()
+}
+
+func TestListOutsideCollaboratorsOptions_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListOutsideCollaboratorsOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListPackageVersionsOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	l := &ListPackageVersionsOptions{}
+	l.GetState()
+	l = nil
+	l.GetState()
+}
+
+func TestListProjectItemsOptions_GetFields(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	l := &ListProjectItemsOptions{Fields: zeroValue}
+	l.GetFields()
+	l = &ListProjectItemsOptions{}
+	l.GetFields()
+	l = nil
+	l.GetFields()
+}
+
+func TestListProjectsOptions_GetQuery(tt *testing.T) {
+	tt.Parallel()
+	l := &ListProjectsOptions{}
+	l.GetQuery()
+	l = nil
+	l.GetQuery()
+}
+
+func TestListProjectsPaginationOptions_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListProjectsPaginationOptions{}
+	l.GetAfter()
+	l = nil
+	l.GetAfter()
+}
+
+func TestListProjectsPaginationOptions_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	l := &ListProjectsPaginationOptions{}
+	l.GetBefore()
+	l = nil
+	l.GetBefore()
+}
+
+func TestListProjectsPaginationOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListProjectsPaginationOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
 }
 
 func TestListProvisionedSCIMGroupsEnterpriseOptions_GetCount(tt *testing.T) {
@@ -19726,6 +25591,14 @@ func TestListProvisionedSCIMUsersEnterpriseOptions_GetStartIndex(tt *testing.T) 
 	l.GetStartIndex()
 }
 
+func TestListReactionOptions_GetContent(tt *testing.T) {
+	tt.Parallel()
+	l := &ListReactionOptions{}
+	l.GetContent()
+	l = nil
+	l.GetContent()
+}
+
 func TestListRepoMachineTypesOptions_GetClientIP(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -19759,6 +25632,17 @@ func TestListRepoMachineTypesOptions_GetRef(tt *testing.T) {
 	l.GetRef()
 }
 
+func TestListRepositories_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	l := &ListRepositories{Repositories: zeroValue}
+	l.GetRepositories()
+	l = &ListRepositories{}
+	l.GetRepositories()
+	l = nil
+	l.GetRepositories()
+}
+
 func TestListRepositories_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -19768,6 +25652,94 @@ func TestListRepositories_GetTotalCount(tt *testing.T) {
 	l.GetTotalCount()
 	l = nil
 	l.GetTotalCount()
+}
+
+func TestListRepositoryActivityOptions_GetActivityType(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositoryActivityOptions{}
+	l.GetActivityType()
+	l = nil
+	l.GetActivityType()
+}
+
+func TestListRepositoryActivityOptions_GetActor(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositoryActivityOptions{}
+	l.GetActor()
+	l = nil
+	l.GetActor()
+}
+
+func TestListRepositoryActivityOptions_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositoryActivityOptions{}
+	l.GetAfter()
+	l = nil
+	l.GetAfter()
+}
+
+func TestListRepositoryActivityOptions_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositoryActivityOptions{}
+	l.GetBefore()
+	l = nil
+	l.GetBefore()
+}
+
+func TestListRepositoryActivityOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositoryActivityOptions{}
+	l.GetDirection()
+	l = nil
+	l.GetDirection()
+}
+
+func TestListRepositoryActivityOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositoryActivityOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
+}
+
+func TestListRepositoryActivityOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositoryActivityOptions{}
+	l.GetRef()
+	l = nil
+	l.GetRef()
+}
+
+func TestListRepositoryActivityOptions_GetTimePeriod(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositoryActivityOptions{}
+	l.GetTimePeriod()
+	l = nil
+	l.GetTimePeriod()
+}
+
+func TestListRepositorySecurityAdvisoriesOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositorySecurityAdvisoriesOptions{}
+	l.GetDirection()
+	l = nil
+	l.GetDirection()
+}
+
+func TestListRepositorySecurityAdvisoriesOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositorySecurityAdvisoriesOptions{}
+	l.GetSort()
+	l = nil
+	l.GetSort()
+}
+
+func TestListRepositorySecurityAdvisoriesOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRepositorySecurityAdvisoriesOptions{}
+	l.GetState()
+	l = nil
+	l.GetState()
 }
 
 func TestListRunnersOptions_GetName(tt *testing.T) {
@@ -19812,6 +25784,129 @@ func TestListSCIMProvisionedIdentitiesOptions_GetStartIndex(tt *testing.T) {
 	l.GetStartIndex()
 	l = nil
 	l.GetStartIndex()
+}
+
+func TestListUserIssuesOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	l := &ListUserIssuesOptions{}
+	l.GetDirection()
+	l = nil
+	l.GetDirection()
+}
+
+func TestListUserIssuesOptions_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListUserIssuesOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListUserIssuesOptions_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	l := &ListUserIssuesOptions{Labels: zeroValue}
+	l.GetLabels()
+	l = &ListUserIssuesOptions{}
+	l.GetLabels()
+	l = nil
+	l.GetLabels()
+}
+
+func TestListUserIssuesOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	l := &ListUserIssuesOptions{}
+	l.GetSince()
+	l = nil
+	l.GetSince()
+}
+
+func TestListUserIssuesOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	l := &ListUserIssuesOptions{}
+	l.GetSort()
+	l = nil
+	l.GetSort()
+}
+
+func TestListUserIssuesOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	l := &ListUserIssuesOptions{}
+	l.GetState()
+	l = nil
+	l.GetState()
+}
+
+func TestListWorkflowJobsOptions_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	l := &ListWorkflowJobsOptions{}
+	l.GetFilter()
+	l = nil
+	l.GetFilter()
+}
+
+func TestListWorkflowRunsOptions_GetActor(tt *testing.T) {
+	tt.Parallel()
+	l := &ListWorkflowRunsOptions{}
+	l.GetActor()
+	l = nil
+	l.GetActor()
+}
+
+func TestListWorkflowRunsOptions_GetBranch(tt *testing.T) {
+	tt.Parallel()
+	l := &ListWorkflowRunsOptions{}
+	l.GetBranch()
+	l = nil
+	l.GetBranch()
+}
+
+func TestListWorkflowRunsOptions_GetCheckSuiteID(tt *testing.T) {
+	tt.Parallel()
+	l := &ListWorkflowRunsOptions{}
+	l.GetCheckSuiteID()
+	l = nil
+	l.GetCheckSuiteID()
+}
+
+func TestListWorkflowRunsOptions_GetCreated(tt *testing.T) {
+	tt.Parallel()
+	l := &ListWorkflowRunsOptions{}
+	l.GetCreated()
+	l = nil
+	l.GetCreated()
+}
+
+func TestListWorkflowRunsOptions_GetEvent(tt *testing.T) {
+	tt.Parallel()
+	l := &ListWorkflowRunsOptions{}
+	l.GetEvent()
+	l = nil
+	l.GetEvent()
+}
+
+func TestListWorkflowRunsOptions_GetExcludePullRequests(tt *testing.T) {
+	tt.Parallel()
+	l := &ListWorkflowRunsOptions{}
+	l.GetExcludePullRequests()
+	l = nil
+	l.GetExcludePullRequests()
+}
+
+func TestListWorkflowRunsOptions_GetHeadSHA(tt *testing.T) {
+	tt.Parallel()
+	l := &ListWorkflowRunsOptions{}
+	l.GetHeadSHA()
+	l = nil
+	l.GetHeadSHA()
+}
+
+func TestListWorkflowRunsOptions_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	l := &ListWorkflowRunsOptions{}
+	l.GetStatus()
+	l = nil
+	l.GetStatus()
 }
 
 func TestLocation_GetEndColumn(tt *testing.T) {
@@ -19880,6 +25975,14 @@ func TestLockBranch_GetEnabled(tt *testing.T) {
 	l.GetEnabled()
 }
 
+func TestLockIssueOptions_GetLockReason(tt *testing.T) {
+	tt.Parallel()
+	l := &LockIssueOptions{}
+	l.GetLockReason()
+	l = nil
+	l.GetLockReason()
+}
+
 func TestMaintenanceOperationStatus_GetHostname(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -19911,6 +26014,25 @@ func TestMaintenanceOperationStatus_GetUUID(tt *testing.T) {
 	m.GetUUID()
 	m = nil
 	m.GetUUID()
+}
+
+func TestMaintenanceOptions_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	m := &MaintenanceOptions{}
+	m.GetEnabled()
+	m = nil
+	m.GetEnabled()
+}
+
+func TestMaintenanceOptions_GetIPExceptionList(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	m := &MaintenanceOptions{IPExceptionList: zeroValue}
+	m.GetIPExceptionList()
+	m = &MaintenanceOptions{}
+	m.GetIPExceptionList()
+	m = nil
+	m.GetIPExceptionList()
 }
 
 func TestMaintenanceOptions_GetMaintenanceModeMessage(tt *testing.T) {
@@ -19957,6 +26079,17 @@ func TestMaintenanceStatus_GetCanUnsetMaintenance(tt *testing.T) {
 	m.GetCanUnsetMaintenance()
 }
 
+func TestMaintenanceStatus_GetConnectionServices(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ConnectionServiceItem{}
+	m := &MaintenanceStatus{ConnectionServices: zeroValue}
+	m.GetConnectionServices()
+	m = &MaintenanceStatus{}
+	m.GetConnectionServices()
+	m = nil
+	m.GetConnectionServices()
+}
+
 func TestMaintenanceStatus_GetHostname(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -19966,6 +26099,17 @@ func TestMaintenanceStatus_GetHostname(tt *testing.T) {
 	m.GetHostname()
 	m = nil
 	m.GetHostname()
+}
+
+func TestMaintenanceStatus_GetIPExceptionList(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	m := &MaintenanceStatus{IPExceptionList: zeroValue}
+	m.GetIPExceptionList()
+	m = &MaintenanceStatus{}
+	m.GetIPExceptionList()
+	m = nil
+	m.GetIPExceptionList()
 }
 
 func TestMaintenanceStatus_GetMaintenanceModeMessage(tt *testing.T) {
@@ -20010,6 +26154,22 @@ func TestMaintenanceStatus_GetUUID(tt *testing.T) {
 	m.GetUUID()
 	m = nil
 	m.GetUUID()
+}
+
+func TestMarkdownOptions_GetContext(tt *testing.T) {
+	tt.Parallel()
+	m := &MarkdownOptions{}
+	m.GetContext()
+	m = nil
+	m.GetContext()
+}
+
+func TestMarkdownOptions_GetMode(tt *testing.T) {
+	tt.Parallel()
+	m := &MarkdownOptions{}
+	m.GetMode()
+	m = nil
+	m.GetMode()
 }
 
 func TestMarketplacePendingChange_GetEffectiveDate(tt *testing.T) {
@@ -20488,6 +26648,17 @@ func TestMarketplacePurchaseEvent_GetSender(tt *testing.T) {
 	m.GetSender()
 }
 
+func TestMatch_GetIndices(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int{}
+	m := &Match{Indices: zeroValue}
+	m.GetIndices()
+	m = &Match{}
+	m.GetIndices()
+	m = nil
+	m.GetIndices()
+}
+
 func TestMatch_GetText(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -20497,6 +26668,38 @@ func TestMatch_GetText(tt *testing.T) {
 	m.GetText()
 	m = nil
 	m.GetText()
+}
+
+func TestMaxFilePathLengthBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	m := &MaxFilePathLengthBranchRule{}
+	m.GetParameters()
+	m = nil
+	m.GetParameters()
+}
+
+func TestMaxFilePathLengthRuleParameters_GetMaxFilePathLength(tt *testing.T) {
+	tt.Parallel()
+	m := &MaxFilePathLengthRuleParameters{}
+	m.GetMaxFilePathLength()
+	m = nil
+	m.GetMaxFilePathLength()
+}
+
+func TestMaxFileSizeBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	m := &MaxFileSizeBranchRule{}
+	m.GetParameters()
+	m = nil
+	m.GetParameters()
+}
+
+func TestMaxFileSizeRuleParameters_GetMaxFileSize(tt *testing.T) {
+	tt.Parallel()
+	m := &MaxFileSizeRuleParameters{}
+	m.GetMaxFileSize()
+	m = nil
+	m.GetMaxFileSize()
 }
 
 func TestMemberChanges_GetPermission(tt *testing.T) {
@@ -20854,6 +27057,70 @@ func TestMergeGroupEvent_GetSender(tt *testing.T) {
 	m.GetSender()
 }
 
+func TestMergeQueueBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	m := &MergeQueueBranchRule{}
+	m.GetParameters()
+	m = nil
+	m.GetParameters()
+}
+
+func TestMergeQueueRuleParameters_GetCheckResponseTimeoutMinutes(tt *testing.T) {
+	tt.Parallel()
+	m := &MergeQueueRuleParameters{}
+	m.GetCheckResponseTimeoutMinutes()
+	m = nil
+	m.GetCheckResponseTimeoutMinutes()
+}
+
+func TestMergeQueueRuleParameters_GetGroupingStrategy(tt *testing.T) {
+	tt.Parallel()
+	m := &MergeQueueRuleParameters{}
+	m.GetGroupingStrategy()
+	m = nil
+	m.GetGroupingStrategy()
+}
+
+func TestMergeQueueRuleParameters_GetMaxEntriesToBuild(tt *testing.T) {
+	tt.Parallel()
+	m := &MergeQueueRuleParameters{}
+	m.GetMaxEntriesToBuild()
+	m = nil
+	m.GetMaxEntriesToBuild()
+}
+
+func TestMergeQueueRuleParameters_GetMaxEntriesToMerge(tt *testing.T) {
+	tt.Parallel()
+	m := &MergeQueueRuleParameters{}
+	m.GetMaxEntriesToMerge()
+	m = nil
+	m.GetMaxEntriesToMerge()
+}
+
+func TestMergeQueueRuleParameters_GetMergeMethod(tt *testing.T) {
+	tt.Parallel()
+	m := &MergeQueueRuleParameters{}
+	m.GetMergeMethod()
+	m = nil
+	m.GetMergeMethod()
+}
+
+func TestMergeQueueRuleParameters_GetMinEntriesToMerge(tt *testing.T) {
+	tt.Parallel()
+	m := &MergeQueueRuleParameters{}
+	m.GetMinEntriesToMerge()
+	m = nil
+	m.GetMinEntriesToMerge()
+}
+
+func TestMergeQueueRuleParameters_GetMinEntriesToMergeWaitMinutes(tt *testing.T) {
+	tt.Parallel()
+	m := &MergeQueueRuleParameters{}
+	m.GetMinEntriesToMergeWaitMinutes()
+	m = nil
+	m.GetMinEntriesToMergeWaitMinutes()
+}
+
 func TestMessage_GetText(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -21048,6 +27315,17 @@ func TestMigration_GetLockRepositories(tt *testing.T) {
 	m.GetLockRepositories()
 }
 
+func TestMigration_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	m := &Migration{Repositories: zeroValue}
+	m.GetRepositories()
+	m = &Migration{}
+	m.GetRepositories()
+	m = nil
+	m.GetRepositories()
+}
+
 func TestMigration_GetState(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -21079,6 +27357,41 @@ func TestMigration_GetURL(tt *testing.T) {
 	m.GetURL()
 	m = nil
 	m.GetURL()
+}
+
+func TestMigrationOptions_GetExclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	m := &MigrationOptions{Exclude: zeroValue}
+	m.GetExclude()
+	m = &MigrationOptions{}
+	m.GetExclude()
+	m = nil
+	m.GetExclude()
+}
+
+func TestMigrationOptions_GetExcludeAttachments(tt *testing.T) {
+	tt.Parallel()
+	m := &MigrationOptions{}
+	m.GetExcludeAttachments()
+	m = nil
+	m.GetExcludeAttachments()
+}
+
+func TestMigrationOptions_GetExcludeReleases(tt *testing.T) {
+	tt.Parallel()
+	m := &MigrationOptions{}
+	m.GetExcludeReleases()
+	m = nil
+	m.GetExcludeReleases()
+}
+
+func TestMigrationOptions_GetLockRepositories(tt *testing.T) {
+	tt.Parallel()
+	m := &MigrationOptions{}
+	m.GetLockRepositories()
+	m = nil
+	m.GetLockRepositories()
 }
 
 func TestMilestone_GetClosedAt(tt *testing.T) {
@@ -21313,6 +27626,30 @@ func TestMilestoneEvent_GetSender(tt *testing.T) {
 	m.GetSender()
 }
 
+func TestMilestoneListOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	m := &MilestoneListOptions{}
+	m.GetDirection()
+	m = nil
+	m.GetDirection()
+}
+
+func TestMilestoneListOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	m := &MilestoneListOptions{}
+	m.GetSort()
+	m = nil
+	m.GetSort()
+}
+
+func TestMilestoneListOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	m := &MilestoneListOptions{}
+	m.GetState()
+	m = nil
+	m.GetState()
+}
+
 func TestMilestoneStats_GetClosedMilestones(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -21366,6 +27703,17 @@ func TestMostRecentInstance_GetCategory(tt *testing.T) {
 	m.GetCategory()
 	m = nil
 	m.GetCategory()
+}
+
+func TestMostRecentInstance_GetClassifications(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	m := &MostRecentInstance{Classifications: zeroValue}
+	m.GetClassifications()
+	m = &MostRecentInstance{}
+	m.GetClassifications()
+	m = nil
+	m.GetClassifications()
 }
 
 func TestMostRecentInstance_GetCommitSHA(tt *testing.T) {
@@ -21480,6 +27828,17 @@ func TestNetworkConfiguration_GetName(tt *testing.T) {
 	n.GetName()
 }
 
+func TestNetworkConfiguration_GetNetworkSettingsIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	n := &NetworkConfiguration{NetworkSettingsIDs: zeroValue}
+	n.GetNetworkSettingsIDs()
+	n = &NetworkConfiguration{}
+	n.GetNetworkSettingsIDs()
+	n = nil
+	n.GetNetworkSettingsIDs()
+}
+
 func TestNetworkConfigurationRequest_GetComputeService(tt *testing.T) {
 	tt.Parallel()
 	n := &NetworkConfigurationRequest{}
@@ -21497,6 +27856,28 @@ func TestNetworkConfigurationRequest_GetName(tt *testing.T) {
 	n.GetName()
 	n = nil
 	n.GetName()
+}
+
+func TestNetworkConfigurationRequest_GetNetworkSettingsIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	n := &NetworkConfigurationRequest{NetworkSettingsIDs: zeroValue}
+	n.GetNetworkSettingsIDs()
+	n = &NetworkConfigurationRequest{}
+	n.GetNetworkSettingsIDs()
+	n = nil
+	n.GetNetworkSettingsIDs()
+}
+
+func TestNetworkConfigurations_GetNetworkConfigurations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*NetworkConfiguration{}
+	n := &NetworkConfigurations{NetworkConfigurations: zeroValue}
+	n.GetNetworkConfigurations()
+	n = &NetworkConfigurations{}
+	n.GetNetworkConfigurations()
+	n = nil
+	n.GetNetworkConfigurations()
 }
 
 func TestNetworkConfigurations_GetTotalCount(tt *testing.T) {
@@ -21675,6 +28056,25 @@ func TestNewTeam_GetLDAPDN(tt *testing.T) {
 	n.GetLDAPDN()
 }
 
+func TestNewTeam_GetMaintainers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	n := &NewTeam{Maintainers: zeroValue}
+	n.GetMaintainers()
+	n = &NewTeam{}
+	n.GetMaintainers()
+	n = nil
+	n.GetMaintainers()
+}
+
+func TestNewTeam_GetName(tt *testing.T) {
+	tt.Parallel()
+	n := &NewTeam{}
+	n.GetName()
+	n = nil
+	n.GetName()
+}
+
 func TestNewTeam_GetNotificationSetting(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -21719,6 +28119,28 @@ func TestNewTeam_GetPrivacy(tt *testing.T) {
 	n.GetPrivacy()
 }
 
+func TestNewTeam_GetRepoNames(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	n := &NewTeam{RepoNames: zeroValue}
+	n.GetRepoNames()
+	n = &NewTeam{}
+	n.GetRepoNames()
+	n = nil
+	n.GetRepoNames()
+}
+
+func TestNodeDetails_GetClusterRoles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	n := &NodeDetails{ClusterRoles: zeroValue}
+	n.GetClusterRoles()
+	n = &NodeDetails{}
+	n.GetClusterRoles()
+	n = nil
+	n.GetClusterRoles()
+}
+
 func TestNodeDetails_GetHostname(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -21739,6 +28161,17 @@ func TestNodeDetails_GetUUID(tt *testing.T) {
 	n.GetUUID()
 	n = nil
 	n.GetUUID()
+}
+
+func TestNodeMetadataStatus_GetNodes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*NodeDetails{}
+	n := &NodeMetadataStatus{Nodes: zeroValue}
+	n.GetNodes()
+	n = &NodeMetadataStatus{}
+	n.GetNodes()
+	n = nil
+	n.GetNodes()
 }
 
 func TestNodeMetadataStatus_GetTopology(tt *testing.T) {
@@ -21875,6 +28308,38 @@ func TestNotification_GetURL(tt *testing.T) {
 	n.GetURL()
 }
 
+func TestNotificationListOptions_GetAll(tt *testing.T) {
+	tt.Parallel()
+	n := &NotificationListOptions{}
+	n.GetAll()
+	n = nil
+	n.GetAll()
+}
+
+func TestNotificationListOptions_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	n := &NotificationListOptions{}
+	n.GetBefore()
+	n = nil
+	n.GetBefore()
+}
+
+func TestNotificationListOptions_GetParticipating(tt *testing.T) {
+	tt.Parallel()
+	n := &NotificationListOptions{}
+	n.GetParticipating()
+	n = nil
+	n.GetParticipating()
+}
+
+func TestNotificationListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	n := &NotificationListOptions{}
+	n.GetSince()
+	n = nil
+	n.GetSince()
+}
+
 func TestNotificationSubject_GetLatestCommentURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -21950,6 +28415,17 @@ func TestOAuthAPP_GetURL(tt *testing.T) {
 	o.GetURL()
 	o = nil
 	o.GetURL()
+}
+
+func TestOIDCSubjectClaimCustomTemplate_GetIncludeClaimKeys(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	o := &OIDCSubjectClaimCustomTemplate{IncludeClaimKeys: zeroValue}
+	o.GetIncludeClaimKeys()
+	o = &OIDCSubjectClaimCustomTemplate{}
+	o.GetIncludeClaimKeys()
+	o = nil
+	o.GetIncludeClaimKeys()
 }
 
 func TestOIDCSubjectClaimCustomTemplate_GetUseDefault(tt *testing.T) {
@@ -22675,6 +29151,28 @@ func TestOrganization_GetWebCommitSignoffRequired(tt *testing.T) {
 	o.GetWebCommitSignoffRequired()
 }
 
+func TestOrganizationCustomPropertyValues_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomPropertyValue{}
+	o := &OrganizationCustomPropertyValues{Properties: zeroValue}
+	o.GetProperties()
+	o = &OrganizationCustomPropertyValues{}
+	o.GetProperties()
+	o = nil
+	o.GetProperties()
+}
+
+func TestOrganizationCustomRepoRoles_GetCustomRepoRoles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomRepoRoles{}
+	o := &OrganizationCustomRepoRoles{CustomRepoRoles: zeroValue}
+	o.GetCustomRepoRoles()
+	o = &OrganizationCustomRepoRoles{}
+	o.GetCustomRepoRoles()
+	o = nil
+	o.GetCustomRepoRoles()
+}
+
 func TestOrganizationCustomRepoRoles_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -22684,6 +29182,17 @@ func TestOrganizationCustomRepoRoles_GetTotalCount(tt *testing.T) {
 	o.GetTotalCount()
 	o = nil
 	o.GetTotalCount()
+}
+
+func TestOrganizationCustomRoles_GetCustomRepoRoles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomOrgRole{}
+	o := &OrganizationCustomRoles{CustomRepoRoles: zeroValue}
+	o.GetCustomRepoRoles()
+	o = &OrganizationCustomRoles{}
+	o.GetCustomRepoRoles()
+	o = nil
+	o.GetCustomRepoRoles()
 }
 
 func TestOrganizationCustomRoles_GetTotalCount(tt *testing.T) {
@@ -22748,6 +29257,33 @@ func TestOrganizationEvent_GetSender(tt *testing.T) {
 	o.GetSender()
 }
 
+func TestOrganizationFineGrainedPermission_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	o := &OrganizationFineGrainedPermission{}
+	o.GetDescription()
+	o = nil
+	o.GetDescription()
+}
+
+func TestOrganizationFineGrainedPermission_GetName(tt *testing.T) {
+	tt.Parallel()
+	o := &OrganizationFineGrainedPermission{}
+	o.GetName()
+	o = nil
+	o.GetName()
+}
+
+func TestOrganizationInstallations_GetInstallations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Installation{}
+	o := &OrganizationInstallations{Installations: zeroValue}
+	o.GetInstallations()
+	o = &OrganizationInstallations{}
+	o.GetInstallations()
+	o = nil
+	o.GetInstallations()
+}
+
 func TestOrganizationInstallations_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -22757,6 +29293,22 @@ func TestOrganizationInstallations_GetTotalCount(tt *testing.T) {
 	o.GetTotalCount()
 	o = nil
 	o.GetTotalCount()
+}
+
+func TestOrganizationsListOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	o := &OrganizationsListOptions{}
+	o.GetPerPage()
+	o = nil
+	o.GetPerPage()
+}
+
+func TestOrganizationsListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	o := &OrganizationsListOptions{}
+	o.GetSince()
+	o = nil
+	o.GetSince()
 }
 
 func TestOrgBlockEvent_GetAction(tt *testing.T) {
@@ -23026,6 +29578,17 @@ func TestPackage_GetVisibility(tt *testing.T) {
 	p.GetVisibility()
 }
 
+func TestPackageContainerMetadata_GetTags(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	p := &PackageContainerMetadata{Tags: zeroValue}
+	p.GetTags()
+	p = &PackageContainerMetadata{}
+	p.GetTags()
+	p = nil
+	p.GetTags()
+}
+
 func TestPackageEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -23127,6 +29690,30 @@ func TestPackageEventContainerMetadataTag_GetName(tt *testing.T) {
 	p.GetName()
 	p = nil
 	p.GetName()
+}
+
+func TestPackageExternalRef_GetReferenceCategory(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageExternalRef{}
+	p.GetReferenceCategory()
+	p = nil
+	p.GetReferenceCategory()
+}
+
+func TestPackageExternalRef_GetReferenceLocator(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageExternalRef{}
+	p.GetReferenceLocator()
+	p = nil
+	p.GetReferenceLocator()
+}
+
+func TestPackageExternalRef_GetReferenceType(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageExternalRef{}
+	p.GetReferenceType()
+	p = nil
+	p.GetReferenceType()
 }
 
 func TestPackageFile_GetAuthor(tt *testing.T) {
@@ -23354,6 +29941,28 @@ func TestPackageNPMMetadata_GetCommitOID(tt *testing.T) {
 	p.GetCommitOID()
 }
 
+func TestPackageNPMMetadata_GetContributors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []any{}
+	p := &PackageNPMMetadata{Contributors: zeroValue}
+	p.GetContributors()
+	p = &PackageNPMMetadata{}
+	p.GetContributors()
+	p = nil
+	p.GetContributors()
+}
+
+func TestPackageNPMMetadata_GetCPU(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	p := &PackageNPMMetadata{CPU: zeroValue}
+	p.GetCPU()
+	p = &PackageNPMMetadata{}
+	p.GetCPU()
+	p = nil
+	p.GetCPU()
+}
+
 func TestPackageNPMMetadata_GetDeletedByID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -23431,6 +30040,17 @@ func TestPackageNPMMetadata_GetEngines(tt *testing.T) {
 	p.GetEngines()
 }
 
+func TestPackageNPMMetadata_GetFiles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	p := &PackageNPMMetadata{Files: zeroValue}
+	p.GetFiles()
+	p = &PackageNPMMetadata{}
+	p.GetFiles()
+	p = nil
+	p.GetFiles()
+}
+
 func TestPackageNPMMetadata_GetGitHead(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -23486,6 +30106,17 @@ func TestPackageNPMMetadata_GetInstallationCommand(tt *testing.T) {
 	p.GetInstallationCommand()
 }
 
+func TestPackageNPMMetadata_GetKeywords(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	p := &PackageNPMMetadata{Keywords: zeroValue}
+	p.GetKeywords()
+	p = &PackageNPMMetadata{}
+	p.GetKeywords()
+	p = nil
+	p.GetKeywords()
+}
+
 func TestPackageNPMMetadata_GetLicense(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -23506,6 +30137,17 @@ func TestPackageNPMMetadata_GetMain(tt *testing.T) {
 	p.GetMain()
 	p = nil
 	p.GetMain()
+}
+
+func TestPackageNPMMetadata_GetMaintainers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []any{}
+	p := &PackageNPMMetadata{Maintainers: zeroValue}
+	p.GetMaintainers()
+	p = &PackageNPMMetadata{}
+	p.GetMaintainers()
+	p = nil
+	p.GetMaintainers()
 }
 
 func TestPackageNPMMetadata_GetMan(tt *testing.T) {
@@ -23572,6 +30214,17 @@ func TestPackageNPMMetadata_GetOptionalDependencies(tt *testing.T) {
 	p.GetOptionalDependencies()
 	p = nil
 	p.GetOptionalDependencies()
+}
+
+func TestPackageNPMMetadata_GetOS(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	p := &PackageNPMMetadata{OS: zeroValue}
+	p.GetOS()
+	p = &PackageNPMMetadata{}
+	p.GetOS()
+	p = nil
+	p.GetOS()
 }
 
 func TestPackageNPMMetadata_GetPeerDependencies(tt *testing.T) {
@@ -23651,6 +30304,14 @@ func TestPackageNPMMetadata_GetVersion(tt *testing.T) {
 	p.GetVersion()
 }
 
+func TestPackageNugetMetadata_GetID(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageNugetMetadata{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
 func TestPackageNugetMetadata_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -23660,6 +30321,14 @@ func TestPackageNugetMetadata_GetName(tt *testing.T) {
 	p.GetName()
 	p = nil
 	p.GetName()
+}
+
+func TestPackageNugetMetadata_GetValue(tt *testing.T) {
+	tt.Parallel()
+	p := &PackageNugetMetadata{}
+	p.GetValue()
+	p = nil
+	p.GetValue()
 }
 
 func TestPackageRegistry_GetAboutURL(tt *testing.T) {
@@ -23835,6 +30504,30 @@ func TestPackageRelease_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
+func TestPackagesBilling_GetIncludedGigabytesBandwidth(tt *testing.T) {
+	tt.Parallel()
+	p := &PackagesBilling{}
+	p.GetIncludedGigabytesBandwidth()
+	p = nil
+	p.GetIncludedGigabytesBandwidth()
+}
+
+func TestPackagesBilling_GetTotalGigabytesBandwidthUsed(tt *testing.T) {
+	tt.Parallel()
+	p := &PackagesBilling{}
+	p.GetTotalGigabytesBandwidthUsed()
+	p = nil
+	p.GetTotalGigabytesBandwidthUsed()
+}
+
+func TestPackagesBilling_GetTotalPaidGigabytesBandwidthUsed(tt *testing.T) {
+	tt.Parallel()
+	p := &PackagesBilling{}
+	p.GetTotalPaidGigabytesBandwidthUsed()
+	p = nil
+	p.GetTotalPaidGigabytesBandwidthUsed()
+}
+
 func TestPackageVersion_GetAuthor(tt *testing.T) {
 	tt.Parallel()
 	p := &PackageVersion{}
@@ -23893,6 +30586,17 @@ func TestPackageVersion_GetDescription(tt *testing.T) {
 	p.GetDescription()
 	p = nil
 	p.GetDescription()
+}
+
+func TestPackageVersion_GetDockerMetadata(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []any{}
+	p := &PackageVersion{DockerMetadata: zeroValue}
+	p.GetDockerMetadata()
+	p = &PackageVersion{}
+	p.GetDockerMetadata()
+	p = nil
+	p.GetDockerMetadata()
 }
 
 func TestPackageVersion_GetDraft(tt *testing.T) {
@@ -23978,6 +30682,28 @@ func TestPackageVersion_GetNPMMetadata(tt *testing.T) {
 	p.GetNPMMetadata()
 	p = nil
 	p.GetNPMMetadata()
+}
+
+func TestPackageVersion_GetNugetMetadata(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PackageNugetMetadata{}
+	p := &PackageVersion{NugetMetadata: zeroValue}
+	p.GetNugetMetadata()
+	p = &PackageVersion{}
+	p.GetNugetMetadata()
+	p = nil
+	p.GetNugetMetadata()
+}
+
+func TestPackageVersion_GetPackageFiles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PackageFile{}
+	p := &PackageVersion{PackageFiles: zeroValue}
+	p.GetPackageFiles()
+	p = &PackageVersion{}
+	p.GetPackageFiles()
+	p = nil
+	p.GetPackageFiles()
 }
 
 func TestPackageVersion_GetPackageHTMLURL(tt *testing.T) {
@@ -24862,6 +31588,17 @@ func TestPagesHTTPSCertificate_GetDescription(tt *testing.T) {
 	p.GetDescription()
 }
 
+func TestPagesHTTPSCertificate_GetDomains(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	p := &PagesHTTPSCertificate{Domains: zeroValue}
+	p.GetDomains()
+	p = &PagesHTTPSCertificate{}
+	p.GetDomains()
+	p = nil
+	p.GetDomains()
+}
+
 func TestPagesHTTPSCertificate_GetExpiresAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -25010,6 +31747,14 @@ func TestPagesUpdateWithoutCNAME_GetSource(tt *testing.T) {
 	p.GetSource()
 }
 
+func TestPatternBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	p := &PatternBranchRule{}
+	p.GetParameters()
+	p = nil
+	p.GetParameters()
+}
+
 func TestPatternRuleParameters_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -25032,6 +31777,22 @@ func TestPatternRuleParameters_GetNegate(tt *testing.T) {
 	p.GetNegate()
 }
 
+func TestPatternRuleParameters_GetOperator(tt *testing.T) {
+	tt.Parallel()
+	p := &PatternRuleParameters{}
+	p.GetOperator()
+	p = nil
+	p.GetOperator()
+}
+
+func TestPatternRuleParameters_GetPattern(tt *testing.T) {
+	tt.Parallel()
+	p := &PatternRuleParameters{}
+	p.GetPattern()
+	p = nil
+	p.GetPattern()
+}
+
 func TestPendingDeployment_GetCurrentUserCanApprove(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -25049,6 +31810,17 @@ func TestPendingDeployment_GetEnvironment(tt *testing.T) {
 	p.GetEnvironment()
 	p = nil
 	p.GetEnvironment()
+}
+
+func TestPendingDeployment_GetReviewers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RequiredReviewer{}
+	p := &PendingDeployment{Reviewers: zeroValue}
+	p.GetReviewers()
+	p = &PendingDeployment{}
+	p.GetReviewers()
+	p = nil
+	p.GetReviewers()
 }
 
 func TestPendingDeployment_GetWaitTimer(tt *testing.T) {
@@ -25126,6 +31898,33 @@ func TestPendingDeploymentEnvironment_GetURL(tt *testing.T) {
 	p.GetURL()
 	p = nil
 	p.GetURL()
+}
+
+func TestPendingDeploymentsRequest_GetComment(tt *testing.T) {
+	tt.Parallel()
+	p := &PendingDeploymentsRequest{}
+	p.GetComment()
+	p = nil
+	p.GetComment()
+}
+
+func TestPendingDeploymentsRequest_GetEnvironmentIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	p := &PendingDeploymentsRequest{EnvironmentIDs: zeroValue}
+	p.GetEnvironmentIDs()
+	p = &PendingDeploymentsRequest{}
+	p.GetEnvironmentIDs()
+	p = nil
+	p.GetEnvironmentIDs()
+}
+
+func TestPendingDeploymentsRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	p := &PendingDeploymentsRequest{}
+	p.GetState()
+	p = nil
+	p.GetState()
 }
 
 func TestPersonalAccessToken_GetAccessGrantedAt(tt *testing.T) {
@@ -25336,6 +32135,17 @@ func TestPersonalAccessTokenRequest_GetPermissionsUpgraded(tt *testing.T) {
 	p.GetPermissionsUpgraded()
 	p = nil
 	p.GetPermissionsUpgraded()
+}
+
+func TestPersonalAccessTokenRequest_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	p := &PersonalAccessTokenRequest{Repositories: zeroValue}
+	p.GetRepositories()
+	p = &PersonalAccessTokenRequest{}
+	p.GetRepositories()
+	p = nil
+	p.GetRepositories()
 }
 
 func TestPersonalAccessTokenRequest_GetRepositoryCount(tt *testing.T) {
@@ -25564,6 +32374,105 @@ func TestPlan_GetSpace(tt *testing.T) {
 	p.GetSpace()
 }
 
+func TestPreferenceList_GetAutoTriggerChecks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AutoTriggerCheck{}
+	p := &PreferenceList{AutoTriggerChecks: zeroValue}
+	p.GetAutoTriggerChecks()
+	p = &PreferenceList{}
+	p.GetAutoTriggerChecks()
+	p = nil
+	p.GetAutoTriggerChecks()
+}
+
+func TestPremiumRequestUsageItem_GetDiscountAmount(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetDiscountAmount()
+	p = nil
+	p.GetDiscountAmount()
+}
+
+func TestPremiumRequestUsageItem_GetDiscountQuantity(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetDiscountQuantity()
+	p = nil
+	p.GetDiscountQuantity()
+}
+
+func TestPremiumRequestUsageItem_GetGrossAmount(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetGrossAmount()
+	p = nil
+	p.GetGrossAmount()
+}
+
+func TestPremiumRequestUsageItem_GetGrossQuantity(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetGrossQuantity()
+	p = nil
+	p.GetGrossQuantity()
+}
+
+func TestPremiumRequestUsageItem_GetModel(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetModel()
+	p = nil
+	p.GetModel()
+}
+
+func TestPremiumRequestUsageItem_GetNetAmount(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetNetAmount()
+	p = nil
+	p.GetNetAmount()
+}
+
+func TestPremiumRequestUsageItem_GetNetQuantity(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetNetQuantity()
+	p = nil
+	p.GetNetQuantity()
+}
+
+func TestPremiumRequestUsageItem_GetPricePerUnit(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetPricePerUnit()
+	p = nil
+	p.GetPricePerUnit()
+}
+
+func TestPremiumRequestUsageItem_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetProduct()
+	p = nil
+	p.GetProduct()
+}
+
+func TestPremiumRequestUsageItem_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetSKU()
+	p = nil
+	p.GetSKU()
+}
+
+func TestPremiumRequestUsageItem_GetUnitType(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageItem{}
+	p.GetUnitType()
+	p = nil
+	p.GetUnitType()
+}
+
 func TestPremiumRequestUsageReport_GetModel(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -25595,6 +32504,25 @@ func TestPremiumRequestUsageReport_GetProduct(tt *testing.T) {
 	p.GetProduct()
 	p = nil
 	p.GetProduct()
+}
+
+func TestPremiumRequestUsageReport_GetTimePeriod(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageReport{}
+	p.GetTimePeriod()
+	p = nil
+	p.GetTimePeriod()
+}
+
+func TestPremiumRequestUsageReport_GetUsageItems(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PremiumRequestUsageItem{}
+	p := &PremiumRequestUsageReport{UsageItems: zeroValue}
+	p.GetUsageItems()
+	p = &PremiumRequestUsageReport{}
+	p.GetUsageItems()
+	p = nil
+	p.GetUsageItems()
 }
 
 func TestPremiumRequestUsageReport_GetUser(tt *testing.T) {
@@ -25696,6 +32624,14 @@ func TestPremiumRequestUsageTimePeriod_GetMonth(tt *testing.T) {
 	p.GetMonth()
 }
 
+func TestPremiumRequestUsageTimePeriod_GetYear(tt *testing.T) {
+	tt.Parallel()
+	p := &PremiumRequestUsageTimePeriod{}
+	p.GetYear()
+	p = nil
+	p.GetYear()
+}
+
 func TestPreReceiveHook_GetConfigURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -25738,6 +32674,17 @@ func TestPreReceiveHook_GetName(tt *testing.T) {
 	p.GetName()
 	p = nil
 	p.GetName()
+}
+
+func TestPrivateRegistries_GetConfigurations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PrivateRegistry{}
+	p := &PrivateRegistries{Configurations: zeroValue}
+	p.GetConfigurations()
+	p = &PrivateRegistries{}
+	p.GetConfigurations()
+	p = nil
+	p.GetConfigurations()
 }
 
 func TestPrivateRegistries_GetTotalCount(tt *testing.T) {
@@ -26408,6 +33355,17 @@ func TestProjectV2Field_GetNodeID(tt *testing.T) {
 	p.GetNodeID()
 }
 
+func TestProjectV2Field_GetOptions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ProjectV2FieldOption{}
+	p := &ProjectV2Field{Options: zeroValue}
+	p.GetOptions()
+	p = &ProjectV2Field{}
+	p.GetOptions()
+	p = nil
+	p.GetOptions()
+}
+
 func TestProjectV2Field_GetProjectURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -26439,6 +33397,17 @@ func TestProjectV2FieldConfiguration_GetDuration(tt *testing.T) {
 	p.GetDuration()
 	p = nil
 	p.GetDuration()
+}
+
+func TestProjectV2FieldConfiguration_GetIterations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ProjectV2FieldIteration{}
+	p := &ProjectV2FieldConfiguration{Iterations: zeroValue}
+	p.GetIterations()
+	p = &ProjectV2FieldConfiguration{}
+	p.GetIterations()
+	p = nil
+	p.GetIterations()
 }
 
 func TestProjectV2FieldConfiguration_GetStartDay(tt *testing.T) {
@@ -26586,6 +33555,17 @@ func TestProjectV2Item_GetCreator(tt *testing.T) {
 	p.GetCreator()
 	p = nil
 	p.GetCreator()
+}
+
+func TestProjectV2Item_GetFields(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ProjectV2ItemFieldValue{}
+	p := &ProjectV2Item{Fields: zeroValue}
+	p.GetFields()
+	p = &ProjectV2Item{}
+	p.GetFields()
+	p = nil
+	p.GetFields()
 }
 
 func TestProjectV2Item_GetID(tt *testing.T) {
@@ -26776,6 +33756,14 @@ func TestProjectV2ItemFieldValue_GetName(tt *testing.T) {
 	p.GetName()
 	p = nil
 	p.GetName()
+}
+
+func TestProjectV2ItemFieldValue_GetValue(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2ItemFieldValue{}
+	p.GetValue()
+	p = nil
+	p.GetValue()
 }
 
 func TestProjectV2StatusUpdate_GetBody(tt *testing.T) {
@@ -27186,6 +34174,14 @@ func TestProtectionRequest_GetBlockCreations(tt *testing.T) {
 	p.GetBlockCreations()
 }
 
+func TestProtectionRequest_GetEnforceAdmins(tt *testing.T) {
+	tt.Parallel()
+	p := &ProtectionRequest{}
+	p.GetEnforceAdmins()
+	p = nil
+	p.GetEnforceAdmins()
+}
+
 func TestProtectionRequest_GetLockBranch(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -27276,6 +34272,17 @@ func TestProtectionRule_GetPreventSelfReview(tt *testing.T) {
 	p.GetPreventSelfReview()
 }
 
+func TestProtectionRule_GetReviewers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RequiredReviewer{}
+	p := &ProtectionRule{Reviewers: zeroValue}
+	p.GetReviewers()
+	p = &ProtectionRule{}
+	p.GetReviewers()
+	p = nil
+	p.GetReviewers()
+}
+
 func TestProtectionRule_GetType(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -27328,6 +34335,22 @@ func TestPublicEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 	p = nil
 	p.GetSender()
+}
+
+func TestPublicIPUsage_GetCurrentUsage(tt *testing.T) {
+	tt.Parallel()
+	p := &PublicIPUsage{}
+	p.GetCurrentUsage()
+	p = nil
+	p.GetCurrentUsage()
+}
+
+func TestPublicIPUsage_GetMaximum(tt *testing.T) {
+	tt.Parallel()
+	p := &PublicIPUsage{}
+	p.GetMaximum()
+	p = nil
+	p.GetMaximum()
 }
 
 func TestPublicKey_GetKey(tt *testing.T) {
@@ -27402,6 +34425,17 @@ func TestPullRequest_GetAssignee(tt *testing.T) {
 	p.GetAssignee()
 	p = nil
 	p.GetAssignee()
+}
+
+func TestPullRequest_GetAssignees(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	p := &PullRequest{Assignees: zeroValue}
+	p.GetAssignees()
+	p = &PullRequest{}
+	p.GetAssignees()
+	p = nil
+	p.GetAssignees()
 }
 
 func TestPullRequest_GetAuthorAssociation(tt *testing.T) {
@@ -27593,6 +34627,17 @@ func TestPullRequest_GetIssueURL(tt *testing.T) {
 	p.GetIssueURL()
 }
 
+func TestPullRequest_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Label{}
+	p := &PullRequest{Labels: zeroValue}
+	p.GetLabels()
+	p = &PullRequest{}
+	p.GetLabels()
+	p = nil
+	p.GetLabels()
+}
+
 func TestPullRequest_GetLinks(tt *testing.T) {
 	tt.Parallel()
 	p := &PullRequest{}
@@ -27736,6 +34781,28 @@ func TestPullRequest_GetRebaseable(tt *testing.T) {
 	p.GetRebaseable()
 	p = nil
 	p.GetRebaseable()
+}
+
+func TestPullRequest_GetRequestedReviewers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	p := &PullRequest{RequestedReviewers: zeroValue}
+	p.GetRequestedReviewers()
+	p = &PullRequest{}
+	p.GetRequestedReviewers()
+	p = nil
+	p.GetRequestedReviewers()
+}
+
+func TestPullRequest_GetRequestedTeams(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Team{}
+	p := &PullRequest{RequestedTeams: zeroValue}
+	p.GetRequestedTeams()
+	p = &PullRequest{}
+	p.GetRequestedTeams()
+	p = nil
+	p.GetRequestedTeams()
 }
 
 func TestPullRequest_GetReviewComments(tt *testing.T) {
@@ -27922,6 +34989,14 @@ func TestPullRequestBranch_GetUser(tt *testing.T) {
 	p.GetUser()
 	p = nil
 	p.GetUser()
+}
+
+func TestPullRequestBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestBranchRule{}
+	p.GetParameters()
+	p = nil
+	p.GetParameters()
 }
 
 func TestPullRequestBranchUpdateOptions_GetExpectedHeadSHA(tt *testing.T) {
@@ -28435,6 +35510,70 @@ func TestPullRequestLinks_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
+func TestPullRequestListCommentsOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestListCommentsOptions{}
+	p.GetDirection()
+	p = nil
+	p.GetDirection()
+}
+
+func TestPullRequestListCommentsOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestListCommentsOptions{}
+	p.GetSince()
+	p = nil
+	p.GetSince()
+}
+
+func TestPullRequestListCommentsOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestListCommentsOptions{}
+	p.GetSort()
+	p = nil
+	p.GetSort()
+}
+
+func TestPullRequestListOptions_GetBase(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestListOptions{}
+	p.GetBase()
+	p = nil
+	p.GetBase()
+}
+
+func TestPullRequestListOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestListOptions{}
+	p.GetDirection()
+	p = nil
+	p.GetDirection()
+}
+
+func TestPullRequestListOptions_GetHead(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestListOptions{}
+	p.GetHead()
+	p = nil
+	p.GetHead()
+}
+
+func TestPullRequestListOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestListOptions{}
+	p.GetSort()
+	p = nil
+	p.GetSort()
+}
+
+func TestPullRequestListOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestListOptions{}
+	p.GetState()
+	p = nil
+	p.GetState()
+}
+
 func TestPullRequestMergeResult_GetMerged(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -28463,6 +35602,38 @@ func TestPullRequestMergeResult_GetSHA(tt *testing.T) {
 	p := &PullRequestMergeResult{SHA: &zeroValue}
 	p.GetSHA()
 	p = &PullRequestMergeResult{}
+	p.GetSHA()
+	p = nil
+	p.GetSHA()
+}
+
+func TestPullRequestOptions_GetCommitTitle(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestOptions{}
+	p.GetCommitTitle()
+	p = nil
+	p.GetCommitTitle()
+}
+
+func TestPullRequestOptions_GetDontDefaultIfBlank(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestOptions{}
+	p.GetDontDefaultIfBlank()
+	p = nil
+	p.GetDontDefaultIfBlank()
+}
+
+func TestPullRequestOptions_GetMergeMethod(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestOptions{}
+	p.GetMergeMethod()
+	p = nil
+	p.GetMergeMethod()
+}
+
+func TestPullRequestOptions_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestOptions{}
 	p.GetSHA()
 	p = nil
 	p.GetSHA()
@@ -28723,6 +35894,17 @@ func TestPullRequestReviewRequest_GetBody(tt *testing.T) {
 	p.GetBody()
 }
 
+func TestPullRequestReviewRequest_GetComments(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*DraftReviewComment{}
+	p := &PullRequestReviewRequest{Comments: zeroValue}
+	p.GetComments()
+	p = &PullRequestReviewRequest{}
+	p.GetComments()
+	p = nil
+	p.GetComments()
+}
+
 func TestPullRequestReviewRequest_GetCommitID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -28772,6 +35954,38 @@ func TestPullRequestReviewsEnforcement_GetDismissalRestrictions(tt *testing.T) {
 	p.GetDismissalRestrictions()
 }
 
+func TestPullRequestReviewsEnforcement_GetDismissStaleReviews(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewsEnforcement{}
+	p.GetDismissStaleReviews()
+	p = nil
+	p.GetDismissStaleReviews()
+}
+
+func TestPullRequestReviewsEnforcement_GetRequireCodeOwnerReviews(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewsEnforcement{}
+	p.GetRequireCodeOwnerReviews()
+	p = nil
+	p.GetRequireCodeOwnerReviews()
+}
+
+func TestPullRequestReviewsEnforcement_GetRequiredApprovingReviewCount(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewsEnforcement{}
+	p.GetRequiredApprovingReviewCount()
+	p = nil
+	p.GetRequiredApprovingReviewCount()
+}
+
+func TestPullRequestReviewsEnforcement_GetRequireLastPushApproval(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewsEnforcement{}
+	p.GetRequireLastPushApproval()
+	p = nil
+	p.GetRequireLastPushApproval()
+}
+
 func TestPullRequestReviewsEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -28797,6 +36011,30 @@ func TestPullRequestReviewsEnforcementRequest_GetDismissalRestrictionsRequest(tt
 	p.GetDismissalRestrictionsRequest()
 	p = nil
 	p.GetDismissalRestrictionsRequest()
+}
+
+func TestPullRequestReviewsEnforcementRequest_GetDismissStaleReviews(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewsEnforcementRequest{}
+	p.GetDismissStaleReviews()
+	p = nil
+	p.GetDismissStaleReviews()
+}
+
+func TestPullRequestReviewsEnforcementRequest_GetRequireCodeOwnerReviews(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewsEnforcementRequest{}
+	p.GetRequireCodeOwnerReviews()
+	p = nil
+	p.GetRequireCodeOwnerReviews()
+}
+
+func TestPullRequestReviewsEnforcementRequest_GetRequiredApprovingReviewCount(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewsEnforcementRequest{}
+	p.GetRequiredApprovingReviewCount()
+	p = nil
+	p.GetRequiredApprovingReviewCount()
 }
 
 func TestPullRequestReviewsEnforcementRequest_GetRequireLastPushApproval(tt *testing.T) {
@@ -28846,6 +36084,14 @@ func TestPullRequestReviewsEnforcementUpdate_GetRequireCodeOwnerReviews(tt *test
 	p.GetRequireCodeOwnerReviews()
 	p = nil
 	p.GetRequireCodeOwnerReviews()
+}
+
+func TestPullRequestReviewsEnforcementUpdate_GetRequiredApprovingReviewCount(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewsEnforcementUpdate{}
+	p.GetRequiredApprovingReviewCount()
+	p = nil
+	p.GetRequiredApprovingReviewCount()
 }
 
 func TestPullRequestReviewsEnforcementUpdate_GetRequireLastPushApproval(tt *testing.T) {
@@ -28916,6 +36162,68 @@ func TestPullRequestReviewThreadEvent_GetThread(tt *testing.T) {
 	p.GetThread()
 	p = nil
 	p.GetThread()
+}
+
+func TestPullRequestRuleParameters_GetAllowedMergeMethods(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []PullRequestMergeMethod{}
+	p := &PullRequestRuleParameters{AllowedMergeMethods: zeroValue}
+	p.GetAllowedMergeMethods()
+	p = &PullRequestRuleParameters{}
+	p.GetAllowedMergeMethods()
+	p = nil
+	p.GetAllowedMergeMethods()
+}
+
+func TestPullRequestRuleParameters_GetDismissStaleReviewsOnPush(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestRuleParameters{}
+	p.GetDismissStaleReviewsOnPush()
+	p = nil
+	p.GetDismissStaleReviewsOnPush()
+}
+
+func TestPullRequestRuleParameters_GetRequireCodeOwnerReview(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestRuleParameters{}
+	p.GetRequireCodeOwnerReview()
+	p = nil
+	p.GetRequireCodeOwnerReview()
+}
+
+func TestPullRequestRuleParameters_GetRequiredApprovingReviewCount(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestRuleParameters{}
+	p.GetRequiredApprovingReviewCount()
+	p = nil
+	p.GetRequiredApprovingReviewCount()
+}
+
+func TestPullRequestRuleParameters_GetRequiredReviewers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RulesetRequiredReviewer{}
+	p := &PullRequestRuleParameters{RequiredReviewers: zeroValue}
+	p.GetRequiredReviewers()
+	p = &PullRequestRuleParameters{}
+	p.GetRequiredReviewers()
+	p = nil
+	p.GetRequiredReviewers()
+}
+
+func TestPullRequestRuleParameters_GetRequiredReviewThreadResolution(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestRuleParameters{}
+	p.GetRequiredReviewThreadResolution()
+	p = nil
+	p.GetRequiredReviewThreadResolution()
+}
+
+func TestPullRequestRuleParameters_GetRequireLastPushApproval(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestRuleParameters{}
+	p.GetRequireLastPushApproval()
+	p = nil
+	p.GetRequireLastPushApproval()
 }
 
 func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
@@ -29048,6 +36356,17 @@ func TestPullRequestTargetEvent_GetSender(tt *testing.T) {
 	p.GetSender()
 	p = nil
 	p.GetSender()
+}
+
+func TestPullRequestThread_GetComments(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequestComment{}
+	p := &PullRequestThread{Comments: zeroValue}
+	p.GetComments()
+	p = &PullRequestThread{}
+	p.GetComments()
+	p = nil
+	p.GetComments()
 }
 
 func TestPullRequestThread_GetID(tt *testing.T) {
@@ -29744,6 +37063,17 @@ func TestPushEventRepository_GetSVNURL(tt *testing.T) {
 	p.GetSVNURL()
 }
 
+func TestPushEventRepository_GetTopics(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	p := &PushEventRepository{Topics: zeroValue}
+	p.GetTopics()
+	p = &PushEventRepository{}
+	p.GetTopics()
+	p = nil
+	p.GetTopics()
+}
+
 func TestPushEventRepository_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -29786,6 +37116,94 @@ func TestPushProtectionBypass_GetExpireAt(tt *testing.T) {
 	p.GetExpireAt()
 	p = nil
 	p.GetExpireAt()
+}
+
+func TestPushProtectionBypass_GetReason(tt *testing.T) {
+	tt.Parallel()
+	p := &PushProtectionBypass{}
+	p.GetReason()
+	p = nil
+	p.GetReason()
+}
+
+func TestPushProtectionBypass_GetTokenType(tt *testing.T) {
+	tt.Parallel()
+	p := &PushProtectionBypass{}
+	p.GetTokenType()
+	p = nil
+	p.GetTokenType()
+}
+
+func TestPushProtectionBypassRequest_GetPlaceholderID(tt *testing.T) {
+	tt.Parallel()
+	p := &PushProtectionBypassRequest{}
+	p.GetPlaceholderID()
+	p = nil
+	p.GetPlaceholderID()
+}
+
+func TestPushProtectionBypassRequest_GetReason(tt *testing.T) {
+	tt.Parallel()
+	p := &PushProtectionBypassRequest{}
+	p.GetReason()
+	p = nil
+	p.GetReason()
+}
+
+func TestRate_GetLimit(tt *testing.T) {
+	tt.Parallel()
+	r := &Rate{}
+	r.GetLimit()
+	r = nil
+	r.GetLimit()
+}
+
+func TestRate_GetRemaining(tt *testing.T) {
+	tt.Parallel()
+	r := &Rate{}
+	r.GetRemaining()
+	r = nil
+	r.GetRemaining()
+}
+
+func TestRate_GetReset(tt *testing.T) {
+	tt.Parallel()
+	r := &Rate{}
+	r.GetReset()
+	r = nil
+	r.GetReset()
+}
+
+func TestRate_GetResource(tt *testing.T) {
+	tt.Parallel()
+	r := &Rate{}
+	r.GetResource()
+	r = nil
+	r.GetResource()
+}
+
+func TestRate_GetUsed(tt *testing.T) {
+	tt.Parallel()
+	r := &Rate{}
+	r.GetUsed()
+	r = nil
+	r.GetUsed()
+}
+
+func TestRateLimitError_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	r := &RateLimitError{}
+	r.GetMessage()
+	r = nil
+	r.GetMessage()
+}
+
+func TestRateLimitError_GetRate(tt *testing.T) {
+	tt.Parallel()
+	r := &RateLimitError{}
+	r.GetRate()
+	r = nil
+	r.GetRate()
 }
 
 func TestRateLimits_GetActionsRunnerRegistration(tt *testing.T) {
@@ -29882,6 +37300,14 @@ func TestRateLimits_GetSourceImport(tt *testing.T) {
 	r.GetSourceImport()
 	r = nil
 	r.GetSourceImport()
+}
+
+func TestRawOptions_GetType(tt *testing.T) {
+	tt.Parallel()
+	r := &RawOptions{}
+	r.GetType()
+	r = nil
+	r.GetType()
 }
 
 func TestReaction_GetContent(tt *testing.T) {
@@ -30077,6 +37503,14 @@ func TestReassignedResource_GetResourceType(tt *testing.T) {
 	r.GetResourceType()
 	r = nil
 	r.GetResourceType()
+}
+
+func TestRedirectionError_GetStatusCode(tt *testing.T) {
+	tt.Parallel()
+	r := &RedirectionError{}
+	r.GetStatusCode()
+	r = nil
+	r.GetStatusCode()
 }
 
 func TestReference_GetNodeID(tt *testing.T) {
@@ -30609,6 +38043,41 @@ func TestRepoAdvisoryCreditDetailed_GetUser(tt *testing.T) {
 	r.GetUser()
 }
 
+func TestRepoCustomPropertyValue_GetProperties(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomPropertyValue{}
+	r := &RepoCustomPropertyValue{Properties: zeroValue}
+	r.GetProperties()
+	r = &RepoCustomPropertyValue{}
+	r.GetProperties()
+	r = nil
+	r.GetProperties()
+}
+
+func TestRepoCustomPropertyValue_GetRepositoryFullName(tt *testing.T) {
+	tt.Parallel()
+	r := &RepoCustomPropertyValue{}
+	r.GetRepositoryFullName()
+	r = nil
+	r.GetRepositoryFullName()
+}
+
+func TestRepoCustomPropertyValue_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	r := &RepoCustomPropertyValue{}
+	r.GetRepositoryID()
+	r = nil
+	r.GetRepositoryID()
+}
+
+func TestRepoCustomPropertyValue_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	r := &RepoCustomPropertyValue{}
+	r.GetRepositoryName()
+	r = nil
+	r.GetRepositoryName()
+}
+
 func TestRepoDependencies_GetDownloadLocation(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -30618,6 +38087,17 @@ func TestRepoDependencies_GetDownloadLocation(tt *testing.T) {
 	r.GetDownloadLocation()
 	r = nil
 	r.GetDownloadLocation()
+}
+
+func TestRepoDependencies_GetExternalRefs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PackageExternalRef{}
+	r := &RepoDependencies{ExternalRefs: zeroValue}
+	r.GetExternalRefs()
+	r = &RepoDependencies{}
+	r.GetExternalRefs()
+	r = nil
+	r.GetExternalRefs()
 }
 
 func TestRepoDependencies_GetFilesAnalyzed(tt *testing.T) {
@@ -30684,6 +38164,22 @@ func TestRepoDependencies_GetVersionInfo(tt *testing.T) {
 	r.GetVersionInfo()
 	r = nil
 	r.GetVersionInfo()
+}
+
+func TestRepoFineGrainedPermission_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	r := &RepoFineGrainedPermission{}
+	r.GetDescription()
+	r = nil
+	r.GetDescription()
+}
+
+func TestRepoFineGrainedPermission_GetName(tt *testing.T) {
+	tt.Parallel()
+	r := &RepoFineGrainedPermission{}
+	r.GetName()
+	r = nil
+	r.GetName()
 }
 
 func TestRepoImmutableReleasesStatus_GetEnabled(tt *testing.T) {
@@ -30772,6 +38268,17 @@ func TestRepositoriesSearchResult_GetIncompleteResults(tt *testing.T) {
 	r.GetIncompleteResults()
 	r = nil
 	r.GetIncompleteResults()
+}
+
+func TestRepositoriesSearchResult_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	r := &RepositoriesSearchResult{Repositories: zeroValue}
+	r.GetRepositories()
+	r = &RepositoriesSearchResult{}
+	r.GetRepositories()
+	r = nil
+	r.GetRepositories()
 }
 
 func TestRepositoriesSearchResult_GetTotal(tt *testing.T) {
@@ -31814,6 +39321,28 @@ func TestRepository_GetTemplateRepository(tt *testing.T) {
 	r.GetTemplateRepository()
 }
 
+func TestRepository_GetTextMatches(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*TextMatch{}
+	r := &Repository{TextMatches: zeroValue}
+	r.GetTextMatches()
+	r = &Repository{}
+	r.GetTextMatches()
+	r = nil
+	r.GetTextMatches()
+}
+
+func TestRepository_GetTopics(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &Repository{Topics: zeroValue}
+	r.GetTopics()
+	r = &Repository{}
+	r.GetTopics()
+	r = nil
+	r.GetTopics()
+}
+
 func TestRepository_GetTreesURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -31913,12 +39442,87 @@ func TestRepositoryActionsAccessLevel_GetAccessLevel(tt *testing.T) {
 	r.GetAccessLevel()
 }
 
+func TestRepositoryActiveCommitters_GetAdvancedSecurityCommitters(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryActiveCommitters{}
+	r.GetAdvancedSecurityCommitters()
+	r = nil
+	r.GetAdvancedSecurityCommitters()
+}
+
+func TestRepositoryActiveCommitters_GetAdvancedSecurityCommittersBreakdown(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AdvancedSecurityCommittersBreakdown{}
+	r := &RepositoryActiveCommitters{AdvancedSecurityCommittersBreakdown: zeroValue}
+	r.GetAdvancedSecurityCommittersBreakdown()
+	r = &RepositoryActiveCommitters{}
+	r.GetAdvancedSecurityCommittersBreakdown()
+	r = nil
+	r.GetAdvancedSecurityCommittersBreakdown()
+}
+
+func TestRepositoryActiveCommitters_GetName(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryActiveCommitters{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRepositoryActivity_GetActivityType(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryActivity{}
+	r.GetActivityType()
+	r = nil
+	r.GetActivityType()
+}
+
 func TestRepositoryActivity_GetActor(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryActivity{}
 	r.GetActor()
 	r = nil
 	r.GetActor()
+}
+
+func TestRepositoryActivity_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryActivity{}
+	r.GetAfter()
+	r = nil
+	r.GetAfter()
+}
+
+func TestRepositoryActivity_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryActivity{}
+	r.GetBefore()
+	r = nil
+	r.GetBefore()
+}
+
+func TestRepositoryActivity_GetID(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryActivity{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRepositoryActivity_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryActivity{}
+	r.GetNodeID()
+	r = nil
+	r.GetNodeID()
+}
+
+func TestRepositoryActivity_GetRef(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryActivity{}
+	r.GetRef()
+	r = nil
+	r.GetRef()
 }
 
 func TestRepositoryActivity_GetTimestamp(tt *testing.T) {
@@ -32141,6 +39745,14 @@ func TestRepositoryActor_GetUserViewType(tt *testing.T) {
 	r.GetUserViewType()
 }
 
+func TestRepositoryAddCollaboratorOptions_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryAddCollaboratorOptions{}
+	r.GetPermission()
+	r = nil
+	r.GetPermission()
+}
+
 func TestRepositoryAttachment_GetRepository(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryAttachment{}
@@ -32340,6 +39952,17 @@ func TestRepositoryCommit_GetCommitter(tt *testing.T) {
 	r.GetCommitter()
 }
 
+func TestRepositoryCommit_GetFiles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CommitFile{}
+	r := &RepositoryCommit{Files: zeroValue}
+	r.GetFiles()
+	r = &RepositoryCommit{}
+	r.GetFiles()
+	r = nil
+	r.GetFiles()
+}
+
 func TestRepositoryCommit_GetHTMLURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -32360,6 +39983,17 @@ func TestRepositoryCommit_GetNodeID(tt *testing.T) {
 	r.GetNodeID()
 	r = nil
 	r.GetNodeID()
+}
+
+func TestRepositoryCommit_GetParents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Commit{}
+	r := &RepositoryCommit{Parents: zeroValue}
+	r.GetParents()
+	r = &RepositoryCommit{}
+	r.GetParents()
+	r = nil
+	r.GetParents()
 }
 
 func TestRepositoryCommit_GetSHA(tt *testing.T) {
@@ -32551,6 +40185,17 @@ func TestRepositoryContentFileOptions_GetCommitter(tt *testing.T) {
 	r.GetCommitter()
 }
 
+func TestRepositoryContentFileOptions_GetContent(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []byte{}
+	r := &RepositoryContentFileOptions{Content: zeroValue}
+	r.GetContent()
+	r = &RepositoryContentFileOptions{}
+	r.GetContent()
+	r = nil
+	r.GetContent()
+}
+
 func TestRepositoryContentFileOptions_GetMessage(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -32573,12 +40218,44 @@ func TestRepositoryContentFileOptions_GetSHA(tt *testing.T) {
 	r.GetSHA()
 }
 
+func TestRepositoryContentGetOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryContentGetOptions{}
+	r.GetRef()
+	r = nil
+	r.GetRef()
+}
+
 func TestRepositoryContentResponse_GetContent(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryContentResponse{}
 	r.GetContent()
 	r = nil
 	r.GetContent()
+}
+
+func TestRepositoryCreateForkOptions_GetDefaultBranchOnly(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryCreateForkOptions{}
+	r.GetDefaultBranchOnly()
+	r = nil
+	r.GetDefaultBranchOnly()
+}
+
+func TestRepositoryCreateForkOptions_GetName(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryCreateForkOptions{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRepositoryCreateForkOptions_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryCreateForkOptions{}
+	r.GetOrganization()
+	r = nil
+	r.GetOrganization()
 }
 
 func TestRepositoryDispatchEvent_GetAction(tt *testing.T) {
@@ -32601,6 +40278,14 @@ func TestRepositoryDispatchEvent_GetBranch(tt *testing.T) {
 	r.GetBranch()
 	r = nil
 	r.GetBranch()
+}
+
+func TestRepositoryDispatchEvent_GetClientPayload(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryDispatchEvent{}
+	r.GetClientPayload()
+	r = nil
+	r.GetClientPayload()
 }
 
 func TestRepositoryDispatchEvent_GetInstallation(tt *testing.T) {
@@ -32940,6 +40625,150 @@ func TestRepositoryLicense_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRepositoryListAllOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListAllOptions{}
+	r.GetSince()
+	r = nil
+	r.GetSince()
+}
+
+func TestRepositoryListByAuthenticatedUserOptions_GetAffiliation(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByAuthenticatedUserOptions{}
+	r.GetAffiliation()
+	r = nil
+	r.GetAffiliation()
+}
+
+func TestRepositoryListByAuthenticatedUserOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByAuthenticatedUserOptions{}
+	r.GetDirection()
+	r = nil
+	r.GetDirection()
+}
+
+func TestRepositoryListByAuthenticatedUserOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByAuthenticatedUserOptions{}
+	r.GetSort()
+	r = nil
+	r.GetSort()
+}
+
+func TestRepositoryListByAuthenticatedUserOptions_GetType(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByAuthenticatedUserOptions{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepositoryListByAuthenticatedUserOptions_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByAuthenticatedUserOptions{}
+	r.GetVisibility()
+	r = nil
+	r.GetVisibility()
+}
+
+func TestRepositoryListByOrgOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByOrgOptions{}
+	r.GetDirection()
+	r = nil
+	r.GetDirection()
+}
+
+func TestRepositoryListByOrgOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByOrgOptions{}
+	r.GetSort()
+	r = nil
+	r.GetSort()
+}
+
+func TestRepositoryListByOrgOptions_GetType(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByOrgOptions{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepositoryListByUserOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByUserOptions{}
+	r.GetDirection()
+	r = nil
+	r.GetDirection()
+}
+
+func TestRepositoryListByUserOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByUserOptions{}
+	r.GetSort()
+	r = nil
+	r.GetSort()
+}
+
+func TestRepositoryListByUserOptions_GetType(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListByUserOptions{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepositoryListForksOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListForksOptions{}
+	r.GetSort()
+	r = nil
+	r.GetSort()
+}
+
+func TestRepositoryListOptions_GetAffiliation(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListOptions{}
+	r.GetAffiliation()
+	r = nil
+	r.GetAffiliation()
+}
+
+func TestRepositoryListOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListOptions{}
+	r.GetDirection()
+	r = nil
+	r.GetDirection()
+}
+
+func TestRepositoryListOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListOptions{}
+	r.GetSort()
+	r = nil
+	r.GetSort()
+}
+
+func TestRepositoryListOptions_GetType(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListOptions{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepositoryListOptions_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryListOptions{}
+	r.GetVisibility()
+	r = nil
+	r.GetVisibility()
+}
+
 func TestRepositoryListRulesetsOptions_GetIncludesParents(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -32982,6 +40811,28 @@ func TestRepositoryMergeRequest_GetHead(tt *testing.T) {
 	r.GetHead()
 	r = nil
 	r.GetHead()
+}
+
+func TestRepositoryParticipation_GetAll(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int{}
+	r := &RepositoryParticipation{All: zeroValue}
+	r.GetAll()
+	r = &RepositoryParticipation{}
+	r.GetAll()
+	r = nil
+	r.GetAll()
+}
+
+func TestRepositoryParticipation_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int{}
+	r := &RepositoryParticipation{Owner: zeroValue}
+	r.GetOwner()
+	r = &RepositoryParticipation{}
+	r.GetOwner()
+	r = nil
+	r.GetOwner()
 }
 
 func TestRepositoryPermissionLevel_GetPermission(tt *testing.T) {
@@ -33067,6 +40918,17 @@ func TestRepositoryPermissions_GetTriage(tt *testing.T) {
 	r.GetTriage()
 	r = nil
 	r.GetTriage()
+}
+
+func TestRepositoryRelease_GetAssets(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ReleaseAsset{}
+	r := &RepositoryRelease{Assets: zeroValue}
+	r.GetAssets()
+	r = &RepositoryRelease{}
+	r.GetAssets()
+	r = nil
+	r.GetAssets()
 }
 
 func TestRepositoryRelease_GetAssetsURL(tt *testing.T) {
@@ -33297,6 +41159,49 @@ func TestRepositoryRelease_GetZipballURL(tt *testing.T) {
 	r.GetZipballURL()
 }
 
+func TestRepositoryReleaseNotes_GetBody(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryReleaseNotes{}
+	r.GetBody()
+	r = nil
+	r.GetBody()
+}
+
+func TestRepositoryReleaseNotes_GetName(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryReleaseNotes{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRepositoryRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRepositoryRule_GetType(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRule{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
+func TestRepositoryRuleset_GetBypassActors(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*BypassActor{}
+	r := &RepositoryRuleset{BypassActors: zeroValue}
+	r.GetBypassActors()
+	r = &RepositoryRuleset{}
+	r.GetBypassActors()
+	r = nil
+	r.GetBypassActors()
+}
+
 func TestRepositoryRuleset_GetConditions(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryRuleset{}
@@ -33324,6 +41229,14 @@ func TestRepositoryRuleset_GetCurrentUserCanBypass(tt *testing.T) {
 	r.GetCurrentUserCanBypass()
 }
 
+func TestRepositoryRuleset_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRuleset{}
+	r.GetEnforcement()
+	r = nil
+	r.GetEnforcement()
+}
+
 func TestRepositoryRuleset_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -33343,6 +41256,14 @@ func TestRepositoryRuleset_GetLinks(tt *testing.T) {
 	r.GetLinks()
 }
 
+func TestRepositoryRuleset_GetName(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRuleset{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
 func TestRepositoryRuleset_GetNodeID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -33360,6 +41281,14 @@ func TestRepositoryRuleset_GetRules(tt *testing.T) {
 	r.GetRules()
 	r = nil
 	r.GetRules()
+}
+
+func TestRepositoryRuleset_GetSource(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRuleset{}
+	r.GetSource()
+	r = nil
+	r.GetSource()
 }
 
 func TestRepositoryRuleset_GetSourceType(tt *testing.T) {
@@ -33389,6 +41318,39 @@ func TestRepositoryRuleset_GetUpdatedAt(tt *testing.T) {
 	r.GetUpdatedAt()
 }
 
+func TestRepositoryRulesetChangedConditions_GetAdded(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryRulesetConditions{}
+	r := &RepositoryRulesetChangedConditions{Added: zeroValue}
+	r.GetAdded()
+	r = &RepositoryRulesetChangedConditions{}
+	r.GetAdded()
+	r = nil
+	r.GetAdded()
+}
+
+func TestRepositoryRulesetChangedConditions_GetDeleted(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryRulesetConditions{}
+	r := &RepositoryRulesetChangedConditions{Deleted: zeroValue}
+	r.GetDeleted()
+	r = &RepositoryRulesetChangedConditions{}
+	r.GetDeleted()
+	r = nil
+	r.GetDeleted()
+}
+
+func TestRepositoryRulesetChangedConditions_GetUpdated(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryRulesetUpdatedConditions{}
+	r := &RepositoryRulesetChangedConditions{Updated: zeroValue}
+	r.GetUpdated()
+	r = &RepositoryRulesetChangedConditions{}
+	r.GetUpdated()
+	r = nil
+	r.GetUpdated()
+}
+
 func TestRepositoryRulesetChangedRule_GetConfiguration(tt *testing.T) {
 	tt.Parallel()
 	r := &RepositoryRulesetChangedRule{}
@@ -33411,6 +41373,39 @@ func TestRepositoryRulesetChangedRule_GetRuleType(tt *testing.T) {
 	r.GetRuleType()
 	r = nil
 	r.GetRuleType()
+}
+
+func TestRepositoryRulesetChangedRules_GetAdded(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryRule{}
+	r := &RepositoryRulesetChangedRules{Added: zeroValue}
+	r.GetAdded()
+	r = &RepositoryRulesetChangedRules{}
+	r.GetAdded()
+	r = nil
+	r.GetAdded()
+}
+
+func TestRepositoryRulesetChangedRules_GetDeleted(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryRule{}
+	r := &RepositoryRulesetChangedRules{Deleted: zeroValue}
+	r.GetDeleted()
+	r = &RepositoryRulesetChangedRules{}
+	r.GetDeleted()
+	r = nil
+	r.GetDeleted()
+}
+
+func TestRepositoryRulesetChangedRules_GetUpdated(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryRulesetUpdatedRules{}
+	r := &RepositoryRulesetChangedRules{Updated: zeroValue}
+	r.GetUpdated()
+	r = &RepositoryRulesetChangedRules{}
+	r.GetUpdated()
+	r = nil
+	r.GetUpdated()
 }
 
 func TestRepositoryRulesetChanges_GetConditions(tt *testing.T) {
@@ -33451,6 +41446,17 @@ func TestRepositoryRulesetChangeSource_GetFrom(tt *testing.T) {
 	r := &RepositoryRulesetChangeSource{From: &zeroValue}
 	r.GetFrom()
 	r = &RepositoryRulesetChangeSource{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
+}
+
+func TestRepositoryRulesetChangeSources_GetFrom(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RepositoryRulesetChangeSources{From: zeroValue}
+	r.GetFrom()
+	r = &RepositoryRulesetChangeSources{}
 	r.GetFrom()
 	r = nil
 	r.GetFrom()
@@ -33606,6 +41612,116 @@ func TestRepositoryRulesetLinks_GetSelf(tt *testing.T) {
 	r.GetSelf()
 }
 
+func TestRepositoryRulesetOrganizationIDsConditionParameters_GetOrganizationIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	r := &RepositoryRulesetOrganizationIDsConditionParameters{OrganizationIDs: zeroValue}
+	r.GetOrganizationIDs()
+	r = &RepositoryRulesetOrganizationIDsConditionParameters{}
+	r.GetOrganizationIDs()
+	r = nil
+	r.GetOrganizationIDs()
+}
+
+func TestRepositoryRulesetOrganizationNamesConditionParameters_GetExclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RepositoryRulesetOrganizationNamesConditionParameters{Exclude: zeroValue}
+	r.GetExclude()
+	r = &RepositoryRulesetOrganizationNamesConditionParameters{}
+	r.GetExclude()
+	r = nil
+	r.GetExclude()
+}
+
+func TestRepositoryRulesetOrganizationNamesConditionParameters_GetInclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RepositoryRulesetOrganizationNamesConditionParameters{Include: zeroValue}
+	r.GetInclude()
+	r = &RepositoryRulesetOrganizationNamesConditionParameters{}
+	r.GetInclude()
+	r = nil
+	r.GetInclude()
+}
+
+func TestRepositoryRulesetOrganizationPropertyConditionParameters_GetExclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryRulesetRepositoryPropertyTargetParameters{}
+	r := &RepositoryRulesetOrganizationPropertyConditionParameters{Exclude: zeroValue}
+	r.GetExclude()
+	r = &RepositoryRulesetOrganizationPropertyConditionParameters{}
+	r.GetExclude()
+	r = nil
+	r.GetExclude()
+}
+
+func TestRepositoryRulesetOrganizationPropertyConditionParameters_GetInclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryRulesetRepositoryPropertyTargetParameters{}
+	r := &RepositoryRulesetOrganizationPropertyConditionParameters{Include: zeroValue}
+	r.GetInclude()
+	r = &RepositoryRulesetOrganizationPropertyConditionParameters{}
+	r.GetInclude()
+	r = nil
+	r.GetInclude()
+}
+
+func TestRepositoryRulesetRefConditionParameters_GetExclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RepositoryRulesetRefConditionParameters{Exclude: zeroValue}
+	r.GetExclude()
+	r = &RepositoryRulesetRefConditionParameters{}
+	r.GetExclude()
+	r = nil
+	r.GetExclude()
+}
+
+func TestRepositoryRulesetRefConditionParameters_GetInclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RepositoryRulesetRefConditionParameters{Include: zeroValue}
+	r.GetInclude()
+	r = &RepositoryRulesetRefConditionParameters{}
+	r.GetInclude()
+	r = nil
+	r.GetInclude()
+}
+
+func TestRepositoryRulesetRepositoryIDsConditionParameters_GetRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	r := &RepositoryRulesetRepositoryIDsConditionParameters{RepositoryIDs: zeroValue}
+	r.GetRepositoryIDs()
+	r = &RepositoryRulesetRepositoryIDsConditionParameters{}
+	r.GetRepositoryIDs()
+	r = nil
+	r.GetRepositoryIDs()
+}
+
+func TestRepositoryRulesetRepositoryNamesConditionParameters_GetExclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RepositoryRulesetRepositoryNamesConditionParameters{Exclude: zeroValue}
+	r.GetExclude()
+	r = &RepositoryRulesetRepositoryNamesConditionParameters{}
+	r.GetExclude()
+	r = nil
+	r.GetExclude()
+}
+
+func TestRepositoryRulesetRepositoryNamesConditionParameters_GetInclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RepositoryRulesetRepositoryNamesConditionParameters{Include: zeroValue}
+	r.GetInclude()
+	r = &RepositoryRulesetRepositoryNamesConditionParameters{}
+	r.GetInclude()
+	r = nil
+	r.GetInclude()
+}
+
 func TestRepositoryRulesetRepositoryNamesConditionParameters_GetProtected(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -33615,6 +41731,47 @@ func TestRepositoryRulesetRepositoryNamesConditionParameters_GetProtected(tt *te
 	r.GetProtected()
 	r = nil
 	r.GetProtected()
+}
+
+func TestRepositoryRulesetRepositoryPropertyConditionParameters_GetExclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryRulesetRepositoryPropertyTargetParameters{}
+	r := &RepositoryRulesetRepositoryPropertyConditionParameters{Exclude: zeroValue}
+	r.GetExclude()
+	r = &RepositoryRulesetRepositoryPropertyConditionParameters{}
+	r.GetExclude()
+	r = nil
+	r.GetExclude()
+}
+
+func TestRepositoryRulesetRepositoryPropertyConditionParameters_GetInclude(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepositoryRulesetRepositoryPropertyTargetParameters{}
+	r := &RepositoryRulesetRepositoryPropertyConditionParameters{Include: zeroValue}
+	r.GetInclude()
+	r = &RepositoryRulesetRepositoryPropertyConditionParameters{}
+	r.GetInclude()
+	r = nil
+	r.GetInclude()
+}
+
+func TestRepositoryRulesetRepositoryPropertyTargetParameters_GetName(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRepositoryPropertyTargetParameters{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRepositoryRulesetRepositoryPropertyTargetParameters_GetPropertyValues(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RepositoryRulesetRepositoryPropertyTargetParameters{PropertyValues: zeroValue}
+	r.GetPropertyValues()
+	r = &RepositoryRulesetRepositoryPropertyTargetParameters{}
+	r.GetPropertyValues()
+	r = nil
+	r.GetPropertyValues()
 }
 
 func TestRepositoryRulesetRepositoryPropertyTargetParameters_GetSource(tt *testing.T) {
@@ -33947,6 +42104,22 @@ func TestRepositoryTag_GetZipballURL(tt *testing.T) {
 	r.GetZipballURL()
 	r = nil
 	r.GetZipballURL()
+}
+
+func TestRepositoryVisibilityRuleParameters_GetInternal(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryVisibilityRuleParameters{}
+	r.GetInternal()
+	r = nil
+	r.GetInternal()
+}
+
+func TestRepositoryVisibilityRuleParameters_GetPrivate(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryVisibilityRuleParameters{}
+	r.GetPrivate()
+	r = nil
+	r.GetPrivate()
 }
 
 func TestRepositoryVulnerabilityAlert_GetAffectedPackageName(tt *testing.T) {
@@ -34313,6 +42486,14 @@ func TestRepoStatus_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRequestedAction_GetIdentifier(tt *testing.T) {
+	tt.Parallel()
+	r := &RequestedAction{}
+	r.GetIdentifier()
+	r = nil
+	r.GetIdentifier()
+}
+
 func TestRequireCodeOwnerReviewChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -34322,6 +42503,14 @@ func TestRequireCodeOwnerReviewChanges_GetFrom(tt *testing.T) {
 	r.GetFrom()
 	r = nil
 	r.GetFrom()
+}
+
+func TestRequiredConversationResolution_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	r := &RequiredConversationResolution{}
+	r.GetEnabled()
+	r = nil
+	r.GetEnabled()
 }
 
 func TestRequiredConversationResolutionLevelChanges_GetFrom(tt *testing.T) {
@@ -34335,6 +42524,14 @@ func TestRequiredConversationResolutionLevelChanges_GetFrom(tt *testing.T) {
 	r.GetFrom()
 }
 
+func TestRequiredDeploymentsBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	r := &RequiredDeploymentsBranchRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
 func TestRequiredDeploymentsEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -34344,6 +42541,25 @@ func TestRequiredDeploymentsEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	r.GetFrom()
 	r = nil
 	r.GetFrom()
+}
+
+func TestRequiredDeploymentsRuleParameters_GetRequiredDeploymentEnvironments(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RequiredDeploymentsRuleParameters{RequiredDeploymentEnvironments: zeroValue}
+	r.GetRequiredDeploymentEnvironments()
+	r = &RequiredDeploymentsRuleParameters{}
+	r.GetRequiredDeploymentEnvironments()
+	r = nil
+	r.GetRequiredDeploymentEnvironments()
+}
+
+func TestRequiredReviewer_GetReviewer(tt *testing.T) {
+	tt.Parallel()
+	r := &RequiredReviewer{}
+	r.GetReviewer()
+	r = nil
+	r.GetReviewer()
 }
 
 func TestRequiredReviewer_GetType(tt *testing.T) {
@@ -34366,6 +42582,14 @@ func TestRequiredStatusCheck_GetAppID(tt *testing.T) {
 	r.GetAppID()
 	r = nil
 	r.GetAppID()
+}
+
+func TestRequiredStatusCheck_GetContext(tt *testing.T) {
+	tt.Parallel()
+	r := &RequiredStatusCheck{}
+	r.GetContext()
+	r = nil
+	r.GetContext()
 }
 
 func TestRequiredStatusChecks_GetChecks(tt *testing.T) {
@@ -34401,6 +42625,14 @@ func TestRequiredStatusChecks_GetContextsURL(tt *testing.T) {
 	r.GetContextsURL()
 }
 
+func TestRequiredStatusChecks_GetStrict(tt *testing.T) {
+	tt.Parallel()
+	r := &RequiredStatusChecks{}
+	r.GetStrict()
+	r = nil
+	r.GetStrict()
+}
+
 func TestRequiredStatusChecks_GetURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -34412,6 +42644,25 @@ func TestRequiredStatusChecks_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestRequiredStatusChecksBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	r := &RequiredStatusChecksBranchRule{}
+	r.GetParameters()
+	r = nil
+	r.GetParameters()
+}
+
+func TestRequiredStatusChecksChanges_GetFrom(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RequiredStatusChecksChanges{From: zeroValue}
+	r.GetFrom()
+	r = &RequiredStatusChecksChanges{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
+}
+
 func TestRequiredStatusChecksEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -34421,6 +42672,28 @@ func TestRequiredStatusChecksEnforcementLevelChanges_GetFrom(tt *testing.T) {
 	r.GetFrom()
 	r = nil
 	r.GetFrom()
+}
+
+func TestRequiredStatusChecksRequest_GetChecks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RequiredStatusCheck{}
+	r := &RequiredStatusChecksRequest{Checks: zeroValue}
+	r.GetChecks()
+	r = &RequiredStatusChecksRequest{}
+	r.GetChecks()
+	r = nil
+	r.GetChecks()
+}
+
+func TestRequiredStatusChecksRequest_GetContexts(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RequiredStatusChecksRequest{Contexts: zeroValue}
+	r.GetContexts()
+	r = &RequiredStatusChecksRequest{}
+	r.GetContexts()
+	r = nil
+	r.GetContexts()
 }
 
 func TestRequiredStatusChecksRequest_GetStrict(tt *testing.T) {
@@ -34445,6 +42718,25 @@ func TestRequiredStatusChecksRuleParameters_GetDoNotEnforceOnCreate(tt *testing.
 	r.GetDoNotEnforceOnCreate()
 }
 
+func TestRequiredStatusChecksRuleParameters_GetRequiredStatusChecks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RuleStatusCheck{}
+	r := &RequiredStatusChecksRuleParameters{RequiredStatusChecks: zeroValue}
+	r.GetRequiredStatusChecks()
+	r = &RequiredStatusChecksRuleParameters{}
+	r.GetRequiredStatusChecks()
+	r = nil
+	r.GetRequiredStatusChecks()
+}
+
+func TestRequiredStatusChecksRuleParameters_GetStrictRequiredStatusChecksPolicy(tt *testing.T) {
+	tt.Parallel()
+	r := &RequiredStatusChecksRuleParameters{}
+	r.GetStrictRequiredStatusChecksPolicy()
+	r = nil
+	r.GetStrictRequiredStatusChecksPolicy()
+}
+
 func TestRequireLastPushApprovalChanges_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -34456,6 +42748,140 @@ func TestRequireLastPushApprovalChanges_GetFrom(tt *testing.T) {
 	r.GetFrom()
 }
 
+func TestRequireLinearHistory_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	r := &RequireLinearHistory{}
+	r.GetEnabled()
+	r = nil
+	r.GetEnabled()
+}
+
+func TestResponse_GetAfter(tt *testing.T) {
+	tt.Parallel()
+	r := &Response{}
+	r.GetAfter()
+	r = nil
+	r.GetAfter()
+}
+
+func TestResponse_GetBefore(tt *testing.T) {
+	tt.Parallel()
+	r := &Response{}
+	r.GetBefore()
+	r = nil
+	r.GetBefore()
+}
+
+func TestResponse_GetCursor(tt *testing.T) {
+	tt.Parallel()
+	r := &Response{}
+	r.GetCursor()
+	r = nil
+	r.GetCursor()
+}
+
+func TestResponse_GetFirstPage(tt *testing.T) {
+	tt.Parallel()
+	r := &Response{}
+	r.GetFirstPage()
+	r = nil
+	r.GetFirstPage()
+}
+
+func TestResponse_GetLastPage(tt *testing.T) {
+	tt.Parallel()
+	r := &Response{}
+	r.GetLastPage()
+	r = nil
+	r.GetLastPage()
+}
+
+func TestResponse_GetNextPage(tt *testing.T) {
+	tt.Parallel()
+	r := &Response{}
+	r.GetNextPage()
+	r = nil
+	r.GetNextPage()
+}
+
+func TestResponse_GetNextPageToken(tt *testing.T) {
+	tt.Parallel()
+	r := &Response{}
+	r.GetNextPageToken()
+	r = nil
+	r.GetNextPageToken()
+}
+
+func TestResponse_GetPrevPage(tt *testing.T) {
+	tt.Parallel()
+	r := &Response{}
+	r.GetPrevPage()
+	r = nil
+	r.GetPrevPage()
+}
+
+func TestResponse_GetRate(tt *testing.T) {
+	tt.Parallel()
+	r := &Response{}
+	r.GetRate()
+	r = nil
+	r.GetRate()
+}
+
+func TestResponse_GetTokenExpiration(tt *testing.T) {
+	tt.Parallel()
+	r := &Response{}
+	r.GetTokenExpiration()
+	r = nil
+	r.GetTokenExpiration()
+}
+
+func TestReviewCustomDeploymentProtectionRuleRequest_GetComment(tt *testing.T) {
+	tt.Parallel()
+	r := &ReviewCustomDeploymentProtectionRuleRequest{}
+	r.GetComment()
+	r = nil
+	r.GetComment()
+}
+
+func TestReviewCustomDeploymentProtectionRuleRequest_GetEnvironmentName(tt *testing.T) {
+	tt.Parallel()
+	r := &ReviewCustomDeploymentProtectionRuleRequest{}
+	r.GetEnvironmentName()
+	r = nil
+	r.GetEnvironmentName()
+}
+
+func TestReviewCustomDeploymentProtectionRuleRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	r := &ReviewCustomDeploymentProtectionRuleRequest{}
+	r.GetState()
+	r = nil
+	r.GetState()
+}
+
+func TestReviewers_GetTeams(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Team{}
+	r := &Reviewers{Teams: zeroValue}
+	r.GetTeams()
+	r = &Reviewers{}
+	r.GetTeams()
+	r = nil
+	r.GetTeams()
+}
+
+func TestReviewers_GetUsers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	r := &Reviewers{Users: zeroValue}
+	r.GetUsers()
+	r = &Reviewers{}
+	r.GetUsers()
+	r = nil
+	r.GetUsers()
+}
+
 func TestReviewersRequest_GetNodeID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -34465,6 +42891,36 @@ func TestReviewersRequest_GetNodeID(tt *testing.T) {
 	r.GetNodeID()
 	r = nil
 	r.GetNodeID()
+}
+
+func TestReviewersRequest_GetReviewers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &ReviewersRequest{Reviewers: zeroValue}
+	r.GetReviewers()
+	r = &ReviewersRequest{}
+	r.GetReviewers()
+	r = nil
+	r.GetReviewers()
+}
+
+func TestReviewersRequest_GetTeamReviewers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &ReviewersRequest{TeamReviewers: zeroValue}
+	r.GetTeamReviewers()
+	r = &ReviewersRequest{}
+	r.GetTeamReviewers()
+	r = nil
+	r.GetTeamReviewers()
+}
+
+func TestReviewPersonalAccessTokenRequestOptions_GetAction(tt *testing.T) {
+	tt.Parallel()
+	r := &ReviewPersonalAccessTokenRequestOptions{}
+	r.GetAction()
+	r = nil
+	r.GetAction()
 }
 
 func TestReviewPersonalAccessTokenRequestOptions_GetReason(tt *testing.T) {
@@ -34555,6 +43011,52 @@ func TestRule_GetSeverity(tt *testing.T) {
 	r.GetSeverity()
 }
 
+func TestRule_GetTags(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &Rule{Tags: zeroValue}
+	r.GetTags()
+	r = &Rule{}
+	r.GetTags()
+	r = nil
+	r.GetTags()
+}
+
+func TestRuleCodeScanningTool_GetAlertsThreshold(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleCodeScanningTool{}
+	r.GetAlertsThreshold()
+	r = nil
+	r.GetAlertsThreshold()
+}
+
+func TestRuleCodeScanningTool_GetSecurityAlertsThreshold(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleCodeScanningTool{}
+	r.GetSecurityAlertsThreshold()
+	r = nil
+	r.GetSecurityAlertsThreshold()
+}
+
+func TestRuleCodeScanningTool_GetTool(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleCodeScanningTool{}
+	r.GetTool()
+	r = nil
+	r.GetTool()
+}
+
+func TestRulesetRequiredReviewer_GetFilePatterns(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RulesetRequiredReviewer{FilePatterns: zeroValue}
+	r.GetFilePatterns()
+	r = &RulesetRequiredReviewer{}
+	r.GetFilePatterns()
+	r = nil
+	r.GetFilePatterns()
+}
+
 func TestRulesetRequiredReviewer_GetMinimumApprovals(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -34593,6 +43095,14 @@ func TestRulesetReviewer_GetType(tt *testing.T) {
 	r.GetType()
 }
 
+func TestRuleStatusCheck_GetContext(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleStatusCheck{}
+	r.GetContext()
+	r = nil
+	r.GetContext()
+}
+
 func TestRuleStatusCheck_GetIntegrationID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -34602,6 +43112,14 @@ func TestRuleStatusCheck_GetIntegrationID(tt *testing.T) {
 	r.GetIntegrationID()
 	r = nil
 	r.GetIntegrationID()
+}
+
+func TestRuleWorkflow_GetPath(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleWorkflow{}
+	r.GetPath()
+	r = nil
+	r.GetPath()
 }
 
 func TestRuleWorkflow_GetRef(tt *testing.T) {
@@ -34657,6 +43175,17 @@ func TestRunner_GetID(tt *testing.T) {
 	r.GetID()
 	r = nil
 	r.GetID()
+}
+
+func TestRunner_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RunnerLabels{}
+	r := &Runner{Labels: zeroValue}
+	r.GetLabels()
+	r = &Runner{}
+	r.GetLabels()
+	r = nil
+	r.GetLabels()
 }
 
 func TestRunner_GetName(tt *testing.T) {
@@ -34868,6 +43397,17 @@ func TestRunnerGroup_GetSelectedRepositoriesURL(tt *testing.T) {
 	r.GetSelectedRepositoriesURL()
 }
 
+func TestRunnerGroup_GetSelectedWorkflows(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	r := &RunnerGroup{SelectedWorkflows: zeroValue}
+	r.GetSelectedWorkflows()
+	r = &RunnerGroup{}
+	r.GetSelectedWorkflows()
+	r = nil
+	r.GetSelectedWorkflows()
+}
+
 func TestRunnerGroup_GetVisibility(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -34888,6 +43428,25 @@ func TestRunnerGroup_GetWorkflowRestrictionsReadOnly(tt *testing.T) {
 	r.GetWorkflowRestrictionsReadOnly()
 	r = nil
 	r.GetWorkflowRestrictionsReadOnly()
+}
+
+func TestRunnerGroups_GetRunnerGroups(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RunnerGroup{}
+	r := &RunnerGroups{RunnerGroups: zeroValue}
+	r.GetRunnerGroups()
+	r = &RunnerGroups{}
+	r.GetRunnerGroups()
+	r = nil
+	r.GetRunnerGroups()
+}
+
+func TestRunnerGroups_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	r := &RunnerGroups{}
+	r.GetTotalCount()
+	r = nil
+	r.GetTotalCount()
 }
 
 func TestRunnerLabels_GetID(tt *testing.T) {
@@ -34921,6 +43480,25 @@ func TestRunnerLabels_GetType(tt *testing.T) {
 	r.GetType()
 	r = nil
 	r.GetType()
+}
+
+func TestRunners_GetRunners(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Runner{}
+	r := &Runners{Runners: zeroValue}
+	r.GetRunners()
+	r = &Runners{}
+	r.GetRunners()
+	r = nil
+	r.GetRunners()
+}
+
+func TestRunners_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	r := &Runners{}
+	r.GetTotalCount()
+	r = nil
+	r.GetTotalCount()
 }
 
 func TestSarifAnalysis_GetCheckoutURI(tt *testing.T) {
@@ -35060,6 +43638,17 @@ func TestSBOMInfo_GetDataLicense(tt *testing.T) {
 	s.GetDataLicense()
 }
 
+func TestSBOMInfo_GetDocumentDescribes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SBOMInfo{DocumentDescribes: zeroValue}
+	s.GetDocumentDescribes()
+	s = &SBOMInfo{}
+	s.GetDocumentDescribes()
+	s = nil
+	s.GetDocumentDescribes()
+}
+
 func TestSBOMInfo_GetDocumentNamespace(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -35082,6 +43671,28 @@ func TestSBOMInfo_GetName(tt *testing.T) {
 	s.GetName()
 }
 
+func TestSBOMInfo_GetPackages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepoDependencies{}
+	s := &SBOMInfo{Packages: zeroValue}
+	s.GetPackages()
+	s = &SBOMInfo{}
+	s.GetPackages()
+	s = nil
+	s.GetPackages()
+}
+
+func TestSBOMInfo_GetRelationships(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SBOMRelationship{}
+	s := &SBOMInfo{Relationships: zeroValue}
+	s.GetRelationships()
+	s = &SBOMInfo{}
+	s.GetRelationships()
+	s = nil
+	s.GetRelationships()
+}
+
 func TestSBOMInfo_GetSPDXID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -35102,6 +43713,30 @@ func TestSBOMInfo_GetSPDXVersion(tt *testing.T) {
 	s.GetSPDXVersion()
 	s = nil
 	s.GetSPDXVersion()
+}
+
+func TestSBOMRelationship_GetRelatedSPDXElement(tt *testing.T) {
+	tt.Parallel()
+	s := &SBOMRelationship{}
+	s.GetRelatedSPDXElement()
+	s = nil
+	s.GetRelatedSPDXElement()
+}
+
+func TestSBOMRelationship_GetRelationshipType(tt *testing.T) {
+	tt.Parallel()
+	s := &SBOMRelationship{}
+	s.GetRelationshipType()
+	s = nil
+	s.GetRelationshipType()
+}
+
+func TestSBOMRelationship_GetSPDXElementID(tt *testing.T) {
+	tt.Parallel()
+	s := &SBOMRelationship{}
+	s.GetSPDXElementID()
+	s = nil
+	s.GetSPDXElementID()
 }
 
 func TestScanningAnalysis_GetAnalysisKey(tt *testing.T) {
@@ -35266,6 +43901,36 @@ func TestScanningAnalysis_GetWarning(tt *testing.T) {
 	s.GetWarning()
 }
 
+func TestSCIMEnterpriseAttribute_GetOperations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMEnterpriseAttributeOperation{}
+	s := &SCIMEnterpriseAttribute{Operations: zeroValue}
+	s.GetOperations()
+	s = &SCIMEnterpriseAttribute{}
+	s.GetOperations()
+	s = nil
+	s.GetOperations()
+}
+
+func TestSCIMEnterpriseAttribute_GetSchemas(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SCIMEnterpriseAttribute{Schemas: zeroValue}
+	s.GetSchemas()
+	s = &SCIMEnterpriseAttribute{}
+	s.GetSchemas()
+	s = nil
+	s.GetSchemas()
+}
+
+func TestSCIMEnterpriseAttributeOperation_GetOp(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseAttributeOperation{}
+	s.GetOp()
+	s = nil
+	s.GetOp()
+}
+
 func TestSCIMEnterpriseAttributeOperation_GetPath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -35275,6 +43940,14 @@ func TestSCIMEnterpriseAttributeOperation_GetPath(tt *testing.T) {
 	s.GetPath()
 	s = nil
 	s.GetPath()
+}
+
+func TestSCIMEnterpriseAttributeOperation_GetValue(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseAttributeOperation{}
+	s.GetValue()
+	s = nil
+	s.GetValue()
 }
 
 func TestSCIMEnterpriseDisplayReference_GetDisplay(tt *testing.T) {
@@ -35297,6 +43970,14 @@ func TestSCIMEnterpriseDisplayReference_GetRef(tt *testing.T) {
 	s.GetRef()
 	s = nil
 	s.GetRef()
+}
+
+func TestSCIMEnterpriseDisplayReference_GetValue(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseDisplayReference{}
+	s.GetValue()
+	s = nil
+	s.GetValue()
 }
 
 func TestSCIMEnterpriseGroupAttributes_GetDisplayName(tt *testing.T) {
@@ -35332,12 +44013,34 @@ func TestSCIMEnterpriseGroupAttributes_GetID(tt *testing.T) {
 	s.GetID()
 }
 
+func TestSCIMEnterpriseGroupAttributes_GetMembers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMEnterpriseDisplayReference{}
+	s := &SCIMEnterpriseGroupAttributes{Members: zeroValue}
+	s.GetMembers()
+	s = &SCIMEnterpriseGroupAttributes{}
+	s.GetMembers()
+	s = nil
+	s.GetMembers()
+}
+
 func TestSCIMEnterpriseGroupAttributes_GetMeta(tt *testing.T) {
 	tt.Parallel()
 	s := &SCIMEnterpriseGroupAttributes{}
 	s.GetMeta()
 	s = nil
 	s.GetMeta()
+}
+
+func TestSCIMEnterpriseGroupAttributes_GetSchemas(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SCIMEnterpriseGroupAttributes{Schemas: zeroValue}
+	s.GetSchemas()
+	s = &SCIMEnterpriseGroupAttributes{}
+	s.GetSchemas()
+	s = nil
+	s.GetSchemas()
 }
 
 func TestSCIMEnterpriseGroups_GetItemsPerPage(tt *testing.T) {
@@ -35349,6 +44052,28 @@ func TestSCIMEnterpriseGroups_GetItemsPerPage(tt *testing.T) {
 	s.GetItemsPerPage()
 	s = nil
 	s.GetItemsPerPage()
+}
+
+func TestSCIMEnterpriseGroups_GetResources(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMEnterpriseGroupAttributes{}
+	s := &SCIMEnterpriseGroups{Resources: zeroValue}
+	s.GetResources()
+	s = &SCIMEnterpriseGroups{}
+	s.GetResources()
+	s = nil
+	s.GetResources()
+}
+
+func TestSCIMEnterpriseGroups_GetSchemas(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SCIMEnterpriseGroups{Schemas: zeroValue}
+	s.GetSchemas()
+	s = &SCIMEnterpriseGroups{}
+	s.GetSchemas()
+	s = nil
+	s.GetSchemas()
 }
 
 func TestSCIMEnterpriseGroups_GetStartIndex(tt *testing.T) {
@@ -35406,6 +44131,60 @@ func TestSCIMEnterpriseMeta_GetLocation(tt *testing.T) {
 	s.GetLocation()
 }
 
+func TestSCIMEnterpriseMeta_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseMeta{}
+	s.GetResourceType()
+	s = nil
+	s.GetResourceType()
+}
+
+func TestSCIMEnterpriseUserAttributes_GetActive(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserAttributes{}
+	s.GetActive()
+	s = nil
+	s.GetActive()
+}
+
+func TestSCIMEnterpriseUserAttributes_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserAttributes{}
+	s.GetDisplayName()
+	s = nil
+	s.GetDisplayName()
+}
+
+func TestSCIMEnterpriseUserAttributes_GetEmails(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMEnterpriseUserEmail{}
+	s := &SCIMEnterpriseUserAttributes{Emails: zeroValue}
+	s.GetEmails()
+	s = &SCIMEnterpriseUserAttributes{}
+	s.GetEmails()
+	s = nil
+	s.GetEmails()
+}
+
+func TestSCIMEnterpriseUserAttributes_GetExternalID(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserAttributes{}
+	s.GetExternalID()
+	s = nil
+	s.GetExternalID()
+}
+
+func TestSCIMEnterpriseUserAttributes_GetGroups(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMEnterpriseDisplayReference{}
+	s := &SCIMEnterpriseUserAttributes{Groups: zeroValue}
+	s.GetGroups()
+	s = &SCIMEnterpriseUserAttributes{}
+	s.GetGroups()
+	s = nil
+	s.GetGroups()
+}
+
 func TestSCIMEnterpriseUserAttributes_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -35433,6 +44212,68 @@ func TestSCIMEnterpriseUserAttributes_GetName(tt *testing.T) {
 	s.GetName()
 }
 
+func TestSCIMEnterpriseUserAttributes_GetRoles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMEnterpriseUserRole{}
+	s := &SCIMEnterpriseUserAttributes{Roles: zeroValue}
+	s.GetRoles()
+	s = &SCIMEnterpriseUserAttributes{}
+	s.GetRoles()
+	s = nil
+	s.GetRoles()
+}
+
+func TestSCIMEnterpriseUserAttributes_GetSchemas(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SCIMEnterpriseUserAttributes{Schemas: zeroValue}
+	s.GetSchemas()
+	s = &SCIMEnterpriseUserAttributes{}
+	s.GetSchemas()
+	s = nil
+	s.GetSchemas()
+}
+
+func TestSCIMEnterpriseUserAttributes_GetUserName(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserAttributes{}
+	s.GetUserName()
+	s = nil
+	s.GetUserName()
+}
+
+func TestSCIMEnterpriseUserEmail_GetPrimary(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserEmail{}
+	s.GetPrimary()
+	s = nil
+	s.GetPrimary()
+}
+
+func TestSCIMEnterpriseUserEmail_GetType(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserEmail{}
+	s.GetType()
+	s = nil
+	s.GetType()
+}
+
+func TestSCIMEnterpriseUserEmail_GetValue(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserEmail{}
+	s.GetValue()
+	s = nil
+	s.GetValue()
+}
+
+func TestSCIMEnterpriseUserName_GetFamilyName(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserName{}
+	s.GetFamilyName()
+	s = nil
+	s.GetFamilyName()
+}
+
 func TestSCIMEnterpriseUserName_GetFormatted(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -35442,6 +44283,14 @@ func TestSCIMEnterpriseUserName_GetFormatted(tt *testing.T) {
 	s.GetFormatted()
 	s = nil
 	s.GetFormatted()
+}
+
+func TestSCIMEnterpriseUserName_GetGivenName(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserName{}
+	s.GetGivenName()
+	s = nil
+	s.GetGivenName()
 }
 
 func TestSCIMEnterpriseUserName_GetMiddleName(tt *testing.T) {
@@ -35488,6 +44337,14 @@ func TestSCIMEnterpriseUserRole_GetType(tt *testing.T) {
 	s.GetType()
 }
 
+func TestSCIMEnterpriseUserRole_GetValue(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMEnterpriseUserRole{}
+	s.GetValue()
+	s = nil
+	s.GetValue()
+}
+
 func TestSCIMEnterpriseUsers_GetItemsPerPage(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -35497,6 +44354,28 @@ func TestSCIMEnterpriseUsers_GetItemsPerPage(tt *testing.T) {
 	s.GetItemsPerPage()
 	s = nil
 	s.GetItemsPerPage()
+}
+
+func TestSCIMEnterpriseUsers_GetResources(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMEnterpriseUserAttributes{}
+	s := &SCIMEnterpriseUsers{Resources: zeroValue}
+	s.GetResources()
+	s = &SCIMEnterpriseUsers{}
+	s.GetResources()
+	s = nil
+	s.GetResources()
+}
+
+func TestSCIMEnterpriseUsers_GetSchemas(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SCIMEnterpriseUsers{Schemas: zeroValue}
+	s.GetSchemas()
+	s = &SCIMEnterpriseUsers{}
+	s.GetSchemas()
+	s = nil
+	s.GetSchemas()
 }
 
 func TestSCIMEnterpriseUsers_GetStartIndex(tt *testing.T) {
@@ -35576,6 +44455,28 @@ func TestSCIMProvisionedIdentities_GetItemsPerPage(tt *testing.T) {
 	s.GetItemsPerPage()
 }
 
+func TestSCIMProvisionedIdentities_GetResources(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMUserAttributes{}
+	s := &SCIMProvisionedIdentities{Resources: zeroValue}
+	s.GetResources()
+	s = &SCIMProvisionedIdentities{}
+	s.GetResources()
+	s = nil
+	s.GetResources()
+}
+
+func TestSCIMProvisionedIdentities_GetSchemas(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SCIMProvisionedIdentities{Schemas: zeroValue}
+	s.GetSchemas()
+	s = &SCIMProvisionedIdentities{}
+	s.GetSchemas()
+	s = nil
+	s.GetSchemas()
+}
+
 func TestSCIMProvisionedIdentities_GetStartIndex(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -35620,6 +44521,17 @@ func TestSCIMUserAttributes_GetDisplayName(tt *testing.T) {
 	s.GetDisplayName()
 }
 
+func TestSCIMUserAttributes_GetEmails(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMUserEmail{}
+	s := &SCIMUserAttributes{Emails: zeroValue}
+	s.GetEmails()
+	s = &SCIMUserAttributes{}
+	s.GetEmails()
+	s = nil
+	s.GetEmails()
+}
+
 func TestSCIMUserAttributes_GetExternalID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -35629,6 +44541,17 @@ func TestSCIMUserAttributes_GetExternalID(tt *testing.T) {
 	s.GetExternalID()
 	s = nil
 	s.GetExternalID()
+}
+
+func TestSCIMUserAttributes_GetGroups(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SCIMUserAttributes{Groups: zeroValue}
+	s.GetGroups()
+	s = &SCIMUserAttributes{}
+	s.GetGroups()
+	s = nil
+	s.GetGroups()
 }
 
 func TestSCIMUserAttributes_GetID(tt *testing.T) {
@@ -35648,6 +44571,44 @@ func TestSCIMUserAttributes_GetMeta(tt *testing.T) {
 	s.GetMeta()
 	s = nil
 	s.GetMeta()
+}
+
+func TestSCIMUserAttributes_GetName(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMUserAttributes{}
+	s.GetName()
+	s = nil
+	s.GetName()
+}
+
+func TestSCIMUserAttributes_GetRoles(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMUserRole{}
+	s := &SCIMUserAttributes{Roles: zeroValue}
+	s.GetRoles()
+	s = &SCIMUserAttributes{}
+	s.GetRoles()
+	s = nil
+	s.GetRoles()
+}
+
+func TestSCIMUserAttributes_GetSchemas(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SCIMUserAttributes{Schemas: zeroValue}
+	s.GetSchemas()
+	s = &SCIMUserAttributes{}
+	s.GetSchemas()
+	s = nil
+	s.GetSchemas()
+}
+
+func TestSCIMUserAttributes_GetUserName(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMUserAttributes{}
+	s.GetUserName()
+	s = nil
+	s.GetUserName()
 }
 
 func TestSCIMUserEmail_GetPrimary(tt *testing.T) {
@@ -35672,6 +44633,22 @@ func TestSCIMUserEmail_GetType(tt *testing.T) {
 	s.GetType()
 }
 
+func TestSCIMUserEmail_GetValue(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMUserEmail{}
+	s.GetValue()
+	s = nil
+	s.GetValue()
+}
+
+func TestSCIMUserName_GetFamilyName(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMUserName{}
+	s.GetFamilyName()
+	s = nil
+	s.GetFamilyName()
+}
+
 func TestSCIMUserName_GetFormatted(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -35681,6 +44658,14 @@ func TestSCIMUserName_GetFormatted(tt *testing.T) {
 	s.GetFormatted()
 	s = nil
 	s.GetFormatted()
+}
+
+func TestSCIMUserName_GetGivenName(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMUserName{}
+	s.GetGivenName()
+	s = nil
+	s.GetGivenName()
 }
 
 func TestSCIMUserRole_GetDisplay(tt *testing.T) {
@@ -35716,6 +44701,14 @@ func TestSCIMUserRole_GetType(tt *testing.T) {
 	s.GetType()
 }
 
+func TestSCIMUserRole_GetValue(tt *testing.T) {
+	tt.Parallel()
+	s := &SCIMUserRole{}
+	s.GetValue()
+	s = nil
+	s.GetValue()
+}
+
 func TestSearchOptions_GetAdvancedSearch(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -35725,6 +44718,105 @@ func TestSearchOptions_GetAdvancedSearch(tt *testing.T) {
 	s.GetAdvancedSearch()
 	s = nil
 	s.GetAdvancedSearch()
+}
+
+func TestSearchOptions_GetOrder(tt *testing.T) {
+	tt.Parallel()
+	s := &SearchOptions{}
+	s.GetOrder()
+	s = nil
+	s.GetOrder()
+}
+
+func TestSearchOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	s := &SearchOptions{}
+	s.GetSort()
+	s = nil
+	s.GetSort()
+}
+
+func TestSearchOptions_GetTextMatch(tt *testing.T) {
+	tt.Parallel()
+	s := &SearchOptions{}
+	s.GetTextMatch()
+	s = nil
+	s.GetTextMatch()
+}
+
+func TestSeatAssignments_GetSeatsCreated(tt *testing.T) {
+	tt.Parallel()
+	s := &SeatAssignments{}
+	s.GetSeatsCreated()
+	s = nil
+	s.GetSeatsCreated()
+}
+
+func TestSeatCancellations_GetSeatsCancelled(tt *testing.T) {
+	tt.Parallel()
+	s := &SeatCancellations{}
+	s.GetSeatsCancelled()
+	s = nil
+	s.GetSeatsCancelled()
+}
+
+func TestSecret_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	s := &Secret{}
+	s.GetCreatedAt()
+	s = nil
+	s.GetCreatedAt()
+}
+
+func TestSecret_GetName(tt *testing.T) {
+	tt.Parallel()
+	s := &Secret{}
+	s.GetName()
+	s = nil
+	s.GetName()
+}
+
+func TestSecret_GetSelectedRepositoriesURL(tt *testing.T) {
+	tt.Parallel()
+	s := &Secret{}
+	s.GetSelectedRepositoriesURL()
+	s = nil
+	s.GetSelectedRepositoriesURL()
+}
+
+func TestSecret_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	s := &Secret{}
+	s.GetUpdatedAt()
+	s = nil
+	s.GetUpdatedAt()
+}
+
+func TestSecret_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	s := &Secret{}
+	s.GetVisibility()
+	s = nil
+	s.GetVisibility()
+}
+
+func TestSecrets_GetSecrets(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Secret{}
+	s := &Secrets{Secrets: zeroValue}
+	s.GetSecrets()
+	s = &Secrets{}
+	s.GetSecrets()
+	s = nil
+	s.GetSecrets()
+}
+
+func TestSecrets_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	s := &Secrets{}
+	s.GetTotalCount()
+	s = nil
+	s.GetTotalCount()
 }
 
 func TestSecretScanning_GetStatus(tt *testing.T) {
@@ -36090,6 +45182,70 @@ func TestSecretScanningAlertEvent_GetSender(tt *testing.T) {
 	s.GetSender()
 }
 
+func TestSecretScanningAlertListOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertListOptions{}
+	s.GetDirection()
+	s = nil
+	s.GetDirection()
+}
+
+func TestSecretScanningAlertListOptions_GetIsMultiRepo(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertListOptions{}
+	s.GetIsMultiRepo()
+	s = nil
+	s.GetIsMultiRepo()
+}
+
+func TestSecretScanningAlertListOptions_GetIsPubliclyLeaked(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertListOptions{}
+	s.GetIsPubliclyLeaked()
+	s = nil
+	s.GetIsPubliclyLeaked()
+}
+
+func TestSecretScanningAlertListOptions_GetResolution(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertListOptions{}
+	s.GetResolution()
+	s = nil
+	s.GetResolution()
+}
+
+func TestSecretScanningAlertListOptions_GetSecretType(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertListOptions{}
+	s.GetSecretType()
+	s = nil
+	s.GetSecretType()
+}
+
+func TestSecretScanningAlertListOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertListOptions{}
+	s.GetSort()
+	s = nil
+	s.GetSort()
+}
+
+func TestSecretScanningAlertListOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertListOptions{}
+	s.GetState()
+	s = nil
+	s.GetState()
+}
+
+func TestSecretScanningAlertListOptions_GetValidity(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertListOptions{}
+	s.GetValidity()
+	s = nil
+	s.GetValidity()
+}
+
 func TestSecretScanningAlertLocation_GetDetails(tt *testing.T) {
 	tt.Parallel()
 	s := &SecretScanningAlertLocation{}
@@ -36300,6 +45456,14 @@ func TestSecretScanningAlertUpdateOptions_GetResolutionComment(tt *testing.T) {
 	s.GetResolutionComment()
 }
 
+func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertUpdateOptions{}
+	s.GetState()
+	s = nil
+	s.GetState()
+}
+
 func TestSecretScanningCustomPatternSetting_GetCustomPatternVersion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -36309,6 +45473,44 @@ func TestSecretScanningCustomPatternSetting_GetCustomPatternVersion(tt *testing.
 	s.GetCustomPatternVersion()
 	s = nil
 	s.GetCustomPatternVersion()
+}
+
+func TestSecretScanningCustomPatternSetting_GetPushProtectionSetting(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningCustomPatternSetting{}
+	s.GetPushProtectionSetting()
+	s = nil
+	s.GetPushProtectionSetting()
+}
+
+func TestSecretScanningCustomPatternSetting_GetTokenType(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningCustomPatternSetting{}
+	s.GetTokenType()
+	s = nil
+	s.GetTokenType()
+}
+
+func TestSecretScanningDelegatedBypassOptions_GetReviewers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*BypassReviewer{}
+	s := &SecretScanningDelegatedBypassOptions{Reviewers: zeroValue}
+	s.GetReviewers()
+	s = &SecretScanningDelegatedBypassOptions{}
+	s.GetReviewers()
+	s = nil
+	s.GetReviewers()
+}
+
+func TestSecretScanningPatternConfigs_GetCustomPatternOverrides(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningPatternOverride{}
+	s := &SecretScanningPatternConfigs{CustomPatternOverrides: zeroValue}
+	s.GetCustomPatternOverrides()
+	s = &SecretScanningPatternConfigs{}
+	s.GetCustomPatternOverrides()
+	s = nil
+	s.GetCustomPatternOverrides()
 }
 
 func TestSecretScanningPatternConfigs_GetPatternConfigVersion(tt *testing.T) {
@@ -36322,6 +45524,17 @@ func TestSecretScanningPatternConfigs_GetPatternConfigVersion(tt *testing.T) {
 	s.GetPatternConfigVersion()
 }
 
+func TestSecretScanningPatternConfigs_GetProviderPatternOverrides(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningPatternOverride{}
+	s := &SecretScanningPatternConfigs{ProviderPatternOverrides: zeroValue}
+	s.GetProviderPatternOverrides()
+	s = &SecretScanningPatternConfigs{}
+	s.GetProviderPatternOverrides()
+	s = nil
+	s.GetProviderPatternOverrides()
+}
+
 func TestSecretScanningPatternConfigsUpdate_GetPatternConfigVersion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -36333,6 +45546,17 @@ func TestSecretScanningPatternConfigsUpdate_GetPatternConfigVersion(tt *testing.
 	s.GetPatternConfigVersion()
 }
 
+func TestSecretScanningPatternConfigsUpdateOptions_GetCustomPatternSettings(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningCustomPatternSetting{}
+	s := &SecretScanningPatternConfigsUpdateOptions{CustomPatternSettings: zeroValue}
+	s.GetCustomPatternSettings()
+	s = &SecretScanningPatternConfigsUpdateOptions{}
+	s.GetCustomPatternSettings()
+	s = nil
+	s.GetCustomPatternSettings()
+}
+
 func TestSecretScanningPatternConfigsUpdateOptions_GetPatternConfigVersion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -36342,6 +45566,17 @@ func TestSecretScanningPatternConfigsUpdateOptions_GetPatternConfigVersion(tt *t
 	s.GetPatternConfigVersion()
 	s = nil
 	s.GetPatternConfigVersion()
+}
+
+func TestSecretScanningPatternConfigsUpdateOptions_GetProviderPatternSettings(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningProviderPatternSetting{}
+	s := &SecretScanningPatternConfigsUpdateOptions{ProviderPatternSettings: zeroValue}
+	s.GetProviderPatternSettings()
+	s = &SecretScanningPatternConfigsUpdateOptions{}
+	s.GetProviderPatternSettings()
+	s = nil
+	s.GetProviderPatternSettings()
 }
 
 func TestSecretScanningPatternOverride_GetAlertTotal(tt *testing.T) {
@@ -36476,6 +45711,22 @@ func TestSecretScanningPatternOverride_GetTokenType(tt *testing.T) {
 	s.GetTokenType()
 }
 
+func TestSecretScanningProviderPatternSetting_GetPushProtectionSetting(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningProviderPatternSetting{}
+	s.GetPushProtectionSetting()
+	s = nil
+	s.GetPushProtectionSetting()
+}
+
+func TestSecretScanningProviderPatternSetting_GetTokenType(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningProviderPatternSetting{}
+	s.GetTokenType()
+	s = nil
+	s.GetTokenType()
+}
+
 func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -36485,6 +45736,50 @@ func TestSecretScanningPushProtection_GetStatus(tt *testing.T) {
 	s.GetStatus()
 	s = nil
 	s.GetStatus()
+}
+
+func TestSecretScanningScanHistory_GetBackfillScans(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretsScan{}
+	s := &SecretScanningScanHistory{BackfillScans: zeroValue}
+	s.GetBackfillScans()
+	s = &SecretScanningScanHistory{}
+	s.GetBackfillScans()
+	s = nil
+	s.GetBackfillScans()
+}
+
+func TestSecretScanningScanHistory_GetCustomPatternBackfillScans(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CustomPatternBackfillScan{}
+	s := &SecretScanningScanHistory{CustomPatternBackfillScans: zeroValue}
+	s.GetCustomPatternBackfillScans()
+	s = &SecretScanningScanHistory{}
+	s.GetCustomPatternBackfillScans()
+	s = nil
+	s.GetCustomPatternBackfillScans()
+}
+
+func TestSecretScanningScanHistory_GetIncrementalScans(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretsScan{}
+	s := &SecretScanningScanHistory{IncrementalScans: zeroValue}
+	s.GetIncrementalScans()
+	s = &SecretScanningScanHistory{}
+	s.GetIncrementalScans()
+	s = nil
+	s.GetIncrementalScans()
+}
+
+func TestSecretScanningScanHistory_GetPatternUpdateScans(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretsScan{}
+	s := &SecretScanningScanHistory{PatternUpdateScans: zeroValue}
+	s.GetPatternUpdateScans()
+	s = &SecretScanningScanHistory{}
+	s.GetPatternUpdateScans()
+	s = nil
+	s.GetPatternUpdateScans()
 }
 
 func TestSecretScanningValidityChecks_GetStatus(tt *testing.T) {
@@ -36520,6 +45815,22 @@ func TestSecretsScan_GetStartedAt(tt *testing.T) {
 	s.GetStartedAt()
 }
 
+func TestSecretsScan_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretsScan{}
+	s.GetStatus()
+	s = nil
+	s.GetStatus()
+}
+
+func TestSecretsScan_GetType(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretsScan{}
+	s.GetType()
+	s = nil
+	s.GetType()
+}
+
 func TestSecurityAdvisory_GetAuthor(tt *testing.T) {
 	tt.Parallel()
 	s := &SecurityAdvisory{}
@@ -36539,6 +45850,28 @@ func TestSecurityAdvisory_GetClosedAt(tt *testing.T) {
 	s.GetClosedAt()
 }
 
+func TestSecurityAdvisory_GetCollaboratingTeams(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Team{}
+	s := &SecurityAdvisory{CollaboratingTeams: zeroValue}
+	s.GetCollaboratingTeams()
+	s = &SecurityAdvisory{}
+	s.GetCollaboratingTeams()
+	s = nil
+	s.GetCollaboratingTeams()
+}
+
+func TestSecurityAdvisory_GetCollaboratingUsers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	s := &SecurityAdvisory{CollaboratingUsers: zeroValue}
+	s.GetCollaboratingUsers()
+	s = &SecurityAdvisory{}
+	s.GetCollaboratingUsers()
+	s = nil
+	s.GetCollaboratingUsers()
+}
+
 func TestSecurityAdvisory_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -36548,6 +45881,28 @@ func TestSecurityAdvisory_GetCreatedAt(tt *testing.T) {
 	s.GetCreatedAt()
 	s = nil
 	s.GetCreatedAt()
+}
+
+func TestSecurityAdvisory_GetCredits(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepoAdvisoryCredit{}
+	s := &SecurityAdvisory{Credits: zeroValue}
+	s.GetCredits()
+	s = &SecurityAdvisory{}
+	s.GetCredits()
+	s = nil
+	s.GetCredits()
+}
+
+func TestSecurityAdvisory_GetCreditsDetailed(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RepoAdvisoryCreditDetailed{}
+	s := &SecurityAdvisory{CreditsDetailed: zeroValue}
+	s.GetCreditsDetailed()
+	s = &SecurityAdvisory{}
+	s.GetCreditsDetailed()
+	s = nil
+	s.GetCreditsDetailed()
 }
 
 func TestSecurityAdvisory_GetCVEID(tt *testing.T) {
@@ -36567,6 +45922,28 @@ func TestSecurityAdvisory_GetCVSS(tt *testing.T) {
 	s.GetCVSS()
 	s = nil
 	s.GetCVSS()
+}
+
+func TestSecurityAdvisory_GetCWEIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SecurityAdvisory{CWEIDs: zeroValue}
+	s.GetCWEIDs()
+	s = &SecurityAdvisory{}
+	s.GetCWEIDs()
+	s = nil
+	s.GetCWEIDs()
+}
+
+func TestSecurityAdvisory_GetCWEs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AdvisoryCWEs{}
+	s := &SecurityAdvisory{CWEs: zeroValue}
+	s.GetCWEs()
+	s = &SecurityAdvisory{}
+	s.GetCWEs()
+	s = nil
+	s.GetCWEs()
 }
 
 func TestSecurityAdvisory_GetDescription(tt *testing.T) {
@@ -36602,6 +45979,17 @@ func TestSecurityAdvisory_GetHTMLURL(tt *testing.T) {
 	s.GetHTMLURL()
 }
 
+func TestSecurityAdvisory_GetIdentifiers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AdvisoryIdentifier{}
+	s := &SecurityAdvisory{Identifiers: zeroValue}
+	s.GetIdentifiers()
+	s = &SecurityAdvisory{}
+	s.GetIdentifiers()
+	s = nil
+	s.GetIdentifiers()
+}
+
 func TestSecurityAdvisory_GetPrivateFork(tt *testing.T) {
 	tt.Parallel()
 	s := &SecurityAdvisory{}
@@ -36627,6 +46015,17 @@ func TestSecurityAdvisory_GetPublisher(tt *testing.T) {
 	s.GetPublisher()
 	s = nil
 	s.GetPublisher()
+}
+
+func TestSecurityAdvisory_GetReferences(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AdvisoryReference{}
+	s := &SecurityAdvisory{References: zeroValue}
+	s.GetReferences()
+	s = &SecurityAdvisory{}
+	s.GetReferences()
+	s = nil
+	s.GetReferences()
 }
 
 func TestSecurityAdvisory_GetSeverity(tt *testing.T) {
@@ -36690,6 +46089,17 @@ func TestSecurityAdvisory_GetURL(tt *testing.T) {
 	s.GetURL()
 	s = nil
 	s.GetURL()
+}
+
+func TestSecurityAdvisory_GetVulnerabilities(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AdvisoryVulnerability{}
+	s := &SecurityAdvisory{Vulnerabilities: zeroValue}
+	s.GetVulnerabilities()
+	s = &SecurityAdvisory{}
+	s.GetVulnerabilities()
+	s = nil
+	s.GetVulnerabilities()
 }
 
 func TestSecurityAdvisory_GetWithdrawnAt(tt *testing.T) {
@@ -36877,12 +46287,42 @@ func TestSecurityAndAnalysisEvent_GetSender(tt *testing.T) {
 	s.GetSender()
 }
 
+func TestSelectedReposList_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	s := &SelectedReposList{Repositories: zeroValue}
+	s.GetRepositories()
+	s = &SelectedReposList{}
+	s.GetRepositories()
+	s = nil
+	s.GetRepositories()
+}
+
 func TestSelectedReposList_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
 	s := &SelectedReposList{TotalCount: &zeroValue}
 	s.GetTotalCount()
 	s = &SelectedReposList{}
+	s.GetTotalCount()
+	s = nil
+	s.GetTotalCount()
+}
+
+func TestSelfHostedRunnersAllowedRepos_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	s := &SelfHostedRunnersAllowedRepos{Repositories: zeroValue}
+	s.GetRepositories()
+	s = &SelfHostedRunnersAllowedRepos{}
+	s.GetRepositories()
+	s = nil
+	s.GetRepositories()
+}
+
+func TestSelfHostedRunnersAllowedRepos_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	s := &SelfHostedRunnersAllowedRepos{}
 	s.GetTotalCount()
 	s = nil
 	s.GetTotalCount()
@@ -36948,6 +46388,22 @@ func TestServerInstances_GetItems(tt *testing.T) {
 	s.GetItems()
 }
 
+func TestServerInstances_GetType(tt *testing.T) {
+	tt.Parallel()
+	s := &ServerInstances{}
+	s.GetType()
+	s = nil
+	s.GetType()
+}
+
+func TestServerItemProperties_GetHostname(tt *testing.T) {
+	tt.Parallel()
+	s := &ServerItemProperties{}
+	s.GetHostname()
+	s = nil
+	s.GetHostname()
+}
+
 func TestServerItemProperties_GetLastSync(tt *testing.T) {
 	tt.Parallel()
 	s := &ServerItemProperties{}
@@ -36956,12 +46412,61 @@ func TestServerItemProperties_GetLastSync(tt *testing.T) {
 	s.GetLastSync()
 }
 
+func TestServerItemProperties_GetServerID(tt *testing.T) {
+	tt.Parallel()
+	s := &ServerItemProperties{}
+	s.GetServerID()
+	s = nil
+	s.GetServerID()
+}
+
 func TestServiceInstanceItems_GetProperties(tt *testing.T) {
 	tt.Parallel()
 	s := &ServiceInstanceItems{}
 	s.GetProperties()
 	s = nil
 	s.GetProperties()
+}
+
+func TestServiceInstanceItems_GetType(tt *testing.T) {
+	tt.Parallel()
+	s := &ServiceInstanceItems{}
+	s.GetType()
+	s = nil
+	s.GetType()
+}
+
+func TestSetOrgAccessRunnerGroupRequest_GetSelectedOrganizationIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	s := &SetOrgAccessRunnerGroupRequest{SelectedOrganizationIDs: zeroValue}
+	s.GetSelectedOrganizationIDs()
+	s = &SetOrgAccessRunnerGroupRequest{}
+	s.GetSelectedOrganizationIDs()
+	s = nil
+	s.GetSelectedOrganizationIDs()
+}
+
+func TestSetRepoAccessRunnerGroupRequest_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	s := &SetRepoAccessRunnerGroupRequest{SelectedRepositoryIDs: zeroValue}
+	s.GetSelectedRepositoryIDs()
+	s = &SetRepoAccessRunnerGroupRequest{}
+	s.GetSelectedRepositoryIDs()
+	s = nil
+	s.GetSelectedRepositoryIDs()
+}
+
+func TestSetRunnerGroupRunnersRequest_GetRunners(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	s := &SetRunnerGroupRunnersRequest{Runners: zeroValue}
+	s.GetRunners()
+	s = &SetRunnerGroupRunnersRequest{}
+	s.GetRunners()
+	s = nil
+	s.GetRunners()
 }
 
 func TestSignatureRequirementEnforcementLevelChanges_GetFrom(tt *testing.T) {
@@ -37039,6 +46544,22 @@ func TestSignatureVerification_GetVerified(tt *testing.T) {
 	s.GetVerified()
 	s = nil
 	s.GetVerified()
+}
+
+func TestSimplePatternRuleParameters_GetNegate(tt *testing.T) {
+	tt.Parallel()
+	s := &SimplePatternRuleParameters{}
+	s.GetNegate()
+	s = nil
+	s.GetNegate()
+}
+
+func TestSimplePatternRuleParameters_GetPattern(tt *testing.T) {
+	tt.Parallel()
+	s := &SimplePatternRuleParameters{}
+	s.GetPattern()
+	s = nil
+	s.GetPattern()
 }
 
 func TestSocialAccount_GetProvider(tt *testing.T) {
@@ -37189,6 +46710,46 @@ func TestSourceImportAuthor_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
+func TestSplunkConfig_GetDomain(tt *testing.T) {
+	tt.Parallel()
+	s := &SplunkConfig{}
+	s.GetDomain()
+	s = nil
+	s.GetDomain()
+}
+
+func TestSplunkConfig_GetEncryptedToken(tt *testing.T) {
+	tt.Parallel()
+	s := &SplunkConfig{}
+	s.GetEncryptedToken()
+	s = nil
+	s.GetEncryptedToken()
+}
+
+func TestSplunkConfig_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	s := &SplunkConfig{}
+	s.GetKeyID()
+	s = nil
+	s.GetKeyID()
+}
+
+func TestSplunkConfig_GetPort(tt *testing.T) {
+	tt.Parallel()
+	s := &SplunkConfig{}
+	s.GetPort()
+	s = nil
+	s.GetPort()
+}
+
+func TestSplunkConfig_GetSSLVerify(tt *testing.T) {
+	tt.Parallel()
+	s := &SplunkConfig{}
+	s.GetSSLVerify()
+	s = nil
+	s.GetSSLVerify()
+}
+
 func TestSponsorshipChanges_GetPrivacyLevel(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -37279,6 +46840,14 @@ func TestSponsorshipTier_GetFrom(tt *testing.T) {
 	s.GetFrom()
 	s = nil
 	s.GetFrom()
+}
+
+func TestSSHKeyOptions_GetKey(tt *testing.T) {
+	tt.Parallel()
+	s := &SSHKeyOptions{}
+	s.GetKey()
+	s = nil
+	s.GetKey()
 }
 
 func TestSSHKeyStatus_GetHostname(tt *testing.T) {
@@ -37461,6 +47030,17 @@ func TestStarredRepository_GetStarredAt(tt *testing.T) {
 	s.GetStarredAt()
 }
 
+func TestStatusEvent_GetBranches(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Branch{}
+	s := &StatusEvent{Branches: zeroValue}
+	s.GetBranches()
+	s = &StatusEvent{}
+	s.GetBranches()
+	s = nil
+	s.GetBranches()
+}
+
 func TestStatusEvent_GetCommit(tt *testing.T) {
 	tt.Parallel()
 	s := &StatusEvent{}
@@ -37600,6 +47180,30 @@ func TestStatusEvent_GetUpdatedAt(tt *testing.T) {
 	s.GetUpdatedAt()
 }
 
+func TestStorageBilling_GetDaysLeftInBillingCycle(tt *testing.T) {
+	tt.Parallel()
+	s := &StorageBilling{}
+	s.GetDaysLeftInBillingCycle()
+	s = nil
+	s.GetDaysLeftInBillingCycle()
+}
+
+func TestStorageBilling_GetEstimatedPaidStorageForMonth(tt *testing.T) {
+	tt.Parallel()
+	s := &StorageBilling{}
+	s.GetEstimatedPaidStorageForMonth()
+	s = nil
+	s.GetEstimatedPaidStorageForMonth()
+}
+
+func TestStorageBilling_GetEstimatedStorageForMonth(tt *testing.T) {
+	tt.Parallel()
+	s := &StorageBilling{}
+	s.GetEstimatedStorageForMonth()
+	s = nil
+	s.GetEstimatedStorageForMonth()
+}
+
 func TestSubIssueRequest_GetAfterID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -37631,6 +47235,14 @@ func TestSubIssueRequest_GetReplaceParent(tt *testing.T) {
 	s.GetReplaceParent()
 	s = nil
 	s.GetReplaceParent()
+}
+
+func TestSubIssueRequest_GetSubIssueID(tt *testing.T) {
+	tt.Parallel()
+	s := &SubIssueRequest{}
+	s.GetSubIssueID()
+	s = nil
+	s.GetSubIssueID()
 }
 
 func TestSubscription_GetCreatedAt(tt *testing.T) {
@@ -37710,6 +47322,17 @@ func TestSubscription_GetURL(tt *testing.T) {
 	s.GetURL()
 }
 
+func TestSystemRequirements_GetNodes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SystemRequirementsNode{}
+	s := &SystemRequirements{Nodes: zeroValue}
+	s.GetNodes()
+	s = &SystemRequirements{}
+	s.GetNodes()
+	s = nil
+	s.GetNodes()
+}
+
 func TestSystemRequirements_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -37730,6 +47353,17 @@ func TestSystemRequirementsNode_GetHostname(tt *testing.T) {
 	s.GetHostname()
 	s = nil
 	s.GetHostname()
+}
+
+func TestSystemRequirementsNode_GetRolesStatus(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SystemRequirementsNodeRoleStatus{}
+	s := &SystemRequirementsNode{RolesStatus: zeroValue}
+	s.GetRolesStatus()
+	s = &SystemRequirementsNode{}
+	s.GetRolesStatus()
+	s = nil
+	s.GetRolesStatus()
 }
 
 func TestSystemRequirementsNode_GetStatus(tt *testing.T) {
@@ -38186,6 +47820,22 @@ func TestTeamAddEvent_GetTeam(tt *testing.T) {
 	t.GetTeam()
 }
 
+func TestTeamAddTeamMembershipOptions_GetRole(tt *testing.T) {
+	tt.Parallel()
+	t := &TeamAddTeamMembershipOptions{}
+	t.GetRole()
+	t = nil
+	t.GetRole()
+}
+
+func TestTeamAddTeamRepoOptions_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	t := &TeamAddTeamRepoOptions{}
+	t.GetPermission()
+	t = nil
+	t.GetPermission()
+}
+
 func TestTeamChange_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	t := &TeamChange{}
@@ -38590,6 +48240,14 @@ func TestTeamLDAPMapping_GetURL(tt *testing.T) {
 	t.GetURL()
 }
 
+func TestTeamListTeamMembersOptions_GetRole(tt *testing.T) {
+	tt.Parallel()
+	t := &TeamListTeamMembersOptions{}
+	t.GetRole()
+	t = nil
+	t.GetRole()
+}
+
 func TestTeamName_GetFrom(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -38736,6 +48394,17 @@ func TestTextMatch_GetFragment(tt *testing.T) {
 	t.GetFragment()
 	t = nil
 	t.GetFragment()
+}
+
+func TestTextMatch_GetMatches(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Match{}
+	t := &TextMatch{Matches: zeroValue}
+	t.GetMatches()
+	t = &TextMatch{}
+	t.GetMatches()
+	t = nil
+	t.GetMatches()
 }
 
 func TestTextMatch_GetObjectType(tt *testing.T) {
@@ -38902,6 +48571,17 @@ func TestTimeline_GetMilestone(tt *testing.T) {
 	t.GetMilestone()
 	t = nil
 	t.GetMilestone()
+}
+
+func TestTimeline_GetParents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Commit{}
+	t := &Timeline{Parents: zeroValue}
+	t.GetParents()
+	t = &Timeline{}
+	t.GetParents()
+	t = nil
+	t.GetParents()
 }
 
 func TestTimeline_GetPerformedViaGithubApp(tt *testing.T) {
@@ -39116,7 +48796,10 @@ func TestTopicResult_GetName(tt *testing.T) {
 
 func TestTopicResult_GetScore(tt *testing.T) {
 	tt.Parallel()
-	t := &TopicResult{}
+	var zeroValue float64
+	t := &TopicResult{Score: &zeroValue}
+	t.GetScore()
+	t = &TopicResult{}
 	t.GetScore()
 	t = nil
 	t.GetScore()
@@ -39155,6 +48838,17 @@ func TestTopicsSearchResult_GetIncompleteResults(tt *testing.T) {
 	t.GetIncompleteResults()
 }
 
+func TestTopicsSearchResult_GetTopics(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*TopicResult{}
+	t := &TopicsSearchResult{Topics: zeroValue}
+	t.GetTopics()
+	t = &TopicsSearchResult{}
+	t.GetTopics()
+	t = nil
+	t.GetTopics()
+}
+
 func TestTopicsSearchResult_GetTotal(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -39164,6 +48858,41 @@ func TestTopicsSearchResult_GetTotal(tt *testing.T) {
 	t.GetTotal()
 	t = nil
 	t.GetTotal()
+}
+
+func TestTotalCacheUsage_GetTotalActiveCachesCount(tt *testing.T) {
+	tt.Parallel()
+	t := &TotalCacheUsage{}
+	t.GetTotalActiveCachesCount()
+	t = nil
+	t.GetTotalActiveCachesCount()
+}
+
+func TestTotalCacheUsage_GetTotalActiveCachesUsageSizeInBytes(tt *testing.T) {
+	tt.Parallel()
+	t := &TotalCacheUsage{}
+	t.GetTotalActiveCachesUsageSizeInBytes()
+	t = nil
+	t.GetTotalActiveCachesUsageSizeInBytes()
+}
+
+func TestTrafficBreakdownOptions_GetPer(tt *testing.T) {
+	tt.Parallel()
+	t := &TrafficBreakdownOptions{}
+	t.GetPer()
+	t = nil
+	t.GetPer()
+}
+
+func TestTrafficClones_GetClones(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*TrafficData{}
+	t := &TrafficClones{Clones: zeroValue}
+	t.GetClones()
+	t = &TrafficClones{}
+	t.GetClones()
+	t = nil
+	t.GetClones()
 }
 
 func TestTrafficClones_GetCount(tt *testing.T) {
@@ -39320,6 +49049,17 @@ func TestTrafficViews_GetUniques(tt *testing.T) {
 	t.GetUniques()
 }
 
+func TestTrafficViews_GetViews(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*TrafficData{}
+	t := &TrafficViews{Views: zeroValue}
+	t.GetViews()
+	t = &TrafficViews{}
+	t.GetViews()
+	t = nil
+	t.GetViews()
+}
+
 func TestTransferRequest_GetNewName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39329,6 +49069,36 @@ func TestTransferRequest_GetNewName(tt *testing.T) {
 	t.GetNewName()
 	t = nil
 	t.GetNewName()
+}
+
+func TestTransferRequest_GetNewOwner(tt *testing.T) {
+	tt.Parallel()
+	t := &TransferRequest{}
+	t.GetNewOwner()
+	t = nil
+	t.GetNewOwner()
+}
+
+func TestTransferRequest_GetTeamID(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	t := &TransferRequest{TeamID: zeroValue}
+	t.GetTeamID()
+	t = &TransferRequest{}
+	t.GetTeamID()
+	t = nil
+	t.GetTeamID()
+}
+
+func TestTree_GetEntries(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*TreeEntry{}
+	t := &Tree{Entries: zeroValue}
+	t.GetEntries()
+	t = &Tree{}
+	t.GetEntries()
+	t = nil
+	t.GetEntries()
 }
 
 func TestTree_GetSHA(tt *testing.T) {
@@ -39430,6 +49200,22 @@ func TestTreeEntry_GetURL(tt *testing.T) {
 	t.GetURL()
 }
 
+func TestUnauthenticatedRateLimitedTransport_GetClientID(tt *testing.T) {
+	tt.Parallel()
+	u := &UnauthenticatedRateLimitedTransport{}
+	u.GetClientID()
+	u = nil
+	u.GetClientID()
+}
+
+func TestUnauthenticatedRateLimitedTransport_GetClientSecret(tt *testing.T) {
+	tt.Parallel()
+	u := &UnauthenticatedRateLimitedTransport{}
+	u.GetClientSecret()
+	u = nil
+	u.GetClientSecret()
+}
+
 func TestUpdateAppInstallationRepositoriesOptions_GetRepositorySelection(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39441,6 +49227,25 @@ func TestUpdateAppInstallationRepositoriesOptions_GetRepositorySelection(tt *tes
 	u.GetRepositorySelection()
 }
 
+func TestUpdateAppInstallationRepositoriesOptions_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	u := &UpdateAppInstallationRepositoriesOptions{SelectedRepositoryIDs: zeroValue}
+	u.GetSelectedRepositoryIDs()
+	u = &UpdateAppInstallationRepositoriesOptions{}
+	u.GetSelectedRepositoryIDs()
+	u = nil
+	u.GetSelectedRepositoryIDs()
+}
+
+func TestUpdateAttributeForSCIMUserOperations_GetOp(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateAttributeForSCIMUserOperations{}
+	u.GetOp()
+	u = nil
+	u.GetOp()
+}
+
 func TestUpdateAttributeForSCIMUserOperations_GetPath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39450,6 +49255,52 @@ func TestUpdateAttributeForSCIMUserOperations_GetPath(tt *testing.T) {
 	u.GetPath()
 	u = nil
 	u.GetPath()
+}
+
+func TestUpdateAttributeForSCIMUserOperations_GetValue(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateAttributeForSCIMUserOperations{}
+	u.GetValue()
+	u = nil
+	u.GetValue()
+}
+
+func TestUpdateAttributeForSCIMUserOptions_GetOperations(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateAttributeForSCIMUserOptions{}
+	u.GetOperations()
+	u = nil
+	u.GetOperations()
+}
+
+func TestUpdateAttributeForSCIMUserOptions_GetSchemas(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateAttributeForSCIMUserOptions{Schemas: zeroValue}
+	u.GetSchemas()
+	u = &UpdateAttributeForSCIMUserOptions{}
+	u.GetSchemas()
+	u = nil
+	u.GetSchemas()
+}
+
+func TestUpdateBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateBranchRule{}
+	u.GetParameters()
+	u = nil
+	u.GetParameters()
+}
+
+func TestUpdateCheckRunOptions_GetActions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CheckRunAction{}
+	u := &UpdateCheckRunOptions{Actions: zeroValue}
+	u.GetActions()
+	u = &UpdateCheckRunOptions{}
+	u.GetActions()
+	u = nil
+	u.GetActions()
 }
 
 func TestUpdateCheckRunOptions_GetCompletedAt(tt *testing.T) {
@@ -39496,6 +49347,14 @@ func TestUpdateCheckRunOptions_GetExternalID(tt *testing.T) {
 	u.GetExternalID()
 }
 
+func TestUpdateCheckRunOptions_GetName(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateCheckRunOptions{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
 func TestUpdateCheckRunOptions_GetOutput(tt *testing.T) {
 	tt.Parallel()
 	u := &UpdateCheckRunOptions{}
@@ -39524,6 +49383,17 @@ func TestUpdateCodespaceOptions_GetMachine(tt *testing.T) {
 	u.GetMachine()
 	u = nil
 	u.GetMachine()
+}
+
+func TestUpdateCodespaceOptions_GetRecentFolders(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateCodespaceOptions{RecentFolders: zeroValue}
+	u.GetRecentFolders()
+	u = &UpdateCodespaceOptions{}
+	u.GetRecentFolders()
+	u = nil
+	u.GetRecentFolders()
 }
 
 func TestUpdateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
@@ -39559,6 +49429,28 @@ func TestUpdateCustomOrgRoleRequest_GetName(tt *testing.T) {
 	u.GetName()
 }
 
+func TestUpdateCustomOrgRoleRequest_GetPermissions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateCustomOrgRoleRequest{Permissions: zeroValue}
+	u.GetPermissions()
+	u = &UpdateCustomOrgRoleRequest{}
+	u.GetPermissions()
+	u = nil
+	u.GetPermissions()
+}
+
+func TestUpdateDefaultSetupConfigurationOptions_GetLanguages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateDefaultSetupConfigurationOptions{Languages: zeroValue}
+	u.GetLanguages()
+	u = &UpdateDefaultSetupConfigurationOptions{}
+	u.GetLanguages()
+	u = nil
+	u.GetLanguages()
+}
+
 func TestUpdateDefaultSetupConfigurationOptions_GetQuerySuite(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39568,6 +49460,14 @@ func TestUpdateDefaultSetupConfigurationOptions_GetQuerySuite(tt *testing.T) {
 	u.GetQuerySuite()
 	u = nil
 	u.GetQuerySuite()
+}
+
+func TestUpdateDefaultSetupConfigurationOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateDefaultSetupConfigurationOptions{}
+	u.GetState()
+	u = nil
+	u.GetState()
 }
 
 func TestUpdateDefaultSetupConfigurationResponse_GetRunID(tt *testing.T) {
@@ -39623,6 +49523,17 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing
 	u.GetRestrictedToWorkflows()
 	u = nil
 	u.GetRestrictedToWorkflows()
+}
+
+func TestUpdateEnterpriseRunnerGroupRequest_GetSelectedWorkflows(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateEnterpriseRunnerGroupRequest{SelectedWorkflows: zeroValue}
+	u.GetSelectedWorkflows()
+	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetSelectedWorkflows()
+	u = nil
+	u.GetSelectedWorkflows()
 }
 
 func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
@@ -39746,6 +49657,17 @@ func TestUpdateOrganizationPrivateRegistry_GetRegistryType(tt *testing.T) {
 	u.GetRegistryType()
 }
 
+func TestUpdateOrganizationPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	u := &UpdateOrganizationPrivateRegistry{SelectedRepositoryIDs: zeroValue}
+	u.GetSelectedRepositoryIDs()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetSelectedRepositoryIDs()
+	u = nil
+	u.GetSelectedRepositoryIDs()
+}
+
 func TestUpdateOrganizationPrivateRegistry_GetURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39787,6 +49709,33 @@ func TestUpdateProjectItemOptions_GetArchived(tt *testing.T) {
 	u.GetArchived()
 }
 
+func TestUpdateProjectItemOptions_GetFields(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*UpdateProjectV2Field{}
+	u := &UpdateProjectItemOptions{Fields: zeroValue}
+	u.GetFields()
+	u = &UpdateProjectItemOptions{}
+	u.GetFields()
+	u = nil
+	u.GetFields()
+}
+
+func TestUpdateProjectV2Field_GetID(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateProjectV2Field{}
+	u.GetID()
+	u = nil
+	u.GetID()
+}
+
+func TestUpdateProjectV2Field_GetValue(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateProjectV2Field{}
+	u.GetValue()
+	u = nil
+	u.GetValue()
+}
+
 func TestUpdateRef_GetForce(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -39796,6 +49745,22 @@ func TestUpdateRef_GetForce(tt *testing.T) {
 	u.GetForce()
 	u = nil
 	u.GetForce()
+}
+
+func TestUpdateRef_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateRef{}
+	u.GetSHA()
+	u = nil
+	u.GetSHA()
+}
+
+func TestUpdateRuleParameters_GetUpdateAllowsFetchAndMerge(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateRuleParameters{}
+	u.GetUpdateAllowsFetchAndMerge()
+	u = nil
+	u.GetUpdateAllowsFetchAndMerge()
 }
 
 func TestUpdateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
@@ -39842,6 +49807,17 @@ func TestUpdateRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
 	u.GetRestrictedToWorkflows()
 }
 
+func TestUpdateRunnerGroupRequest_GetSelectedWorkflows(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateRunnerGroupRequest{SelectedWorkflows: zeroValue}
+	u.GetSelectedWorkflows()
+	u = &UpdateRunnerGroupRequest{}
+	u.GetSelectedWorkflows()
+	u = nil
+	u.GetSelectedWorkflows()
+}
+
 func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39851,6 +49827,70 @@ func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
+}
+
+func TestUploadLicenseOptions_GetLicense(tt *testing.T) {
+	tt.Parallel()
+	u := &UploadLicenseOptions{}
+	u.GetLicense()
+	u = nil
+	u.GetLicense()
+}
+
+func TestUploadOptions_GetLabel(tt *testing.T) {
+	tt.Parallel()
+	u := &UploadOptions{}
+	u.GetLabel()
+	u = nil
+	u.GetLabel()
+}
+
+func TestUploadOptions_GetMediaType(tt *testing.T) {
+	tt.Parallel()
+	u := &UploadOptions{}
+	u.GetMediaType()
+	u = nil
+	u.GetMediaType()
+}
+
+func TestUploadOptions_GetName(tt *testing.T) {
+	tt.Parallel()
+	u := &UploadOptions{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUsageItem_GetDate(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetDate()
+	u = nil
+	u.GetDate()
+}
+
+func TestUsageItem_GetDiscountAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetDiscountAmount()
+	u = nil
+	u.GetDiscountAmount()
+}
+
+func TestUsageItem_GetGrossAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetGrossAmount()
+	u = nil
+	u.GetGrossAmount()
+}
+
+func TestUsageItem_GetNetAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetNetAmount()
+	u = nil
+	u.GetNetAmount()
 }
 
 func TestUsageItem_GetOrganizationName(tt *testing.T) {
@@ -39864,6 +49904,30 @@ func TestUsageItem_GetOrganizationName(tt *testing.T) {
 	u.GetOrganizationName()
 }
 
+func TestUsageItem_GetPricePerUnit(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetPricePerUnit()
+	u = nil
+	u.GetPricePerUnit()
+}
+
+func TestUsageItem_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetProduct()
+	u = nil
+	u.GetProduct()
+}
+
+func TestUsageItem_GetQuantity(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetQuantity()
+	u = nil
+	u.GetQuantity()
+}
+
 func TestUsageItem_GetRepositoryName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39873,6 +49937,33 @@ func TestUsageItem_GetRepositoryName(tt *testing.T) {
 	u.GetRepositoryName()
 	u = nil
 	u.GetRepositoryName()
+}
+
+func TestUsageItem_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetSKU()
+	u = nil
+	u.GetSKU()
+}
+
+func TestUsageItem_GetUnitType(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageItem{}
+	u.GetUnitType()
+	u = nil
+	u.GetUnitType()
+}
+
+func TestUsageReport_GetUsageItems(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*UsageItem{}
+	u := &UsageReport{UsageItems: zeroValue}
+	u.GetUsageItems()
+	u = &UsageReport{}
+	u.GetUsageItems()
+	u = nil
+	u.GetUsageItems()
 }
 
 func TestUsageReportOptions_GetDay(tt *testing.T) {
@@ -40128,6 +50219,17 @@ func TestUser_GetID(tt *testing.T) {
 	u.GetID()
 }
 
+func TestUser_GetInheritedFrom(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Team{}
+	u := &User{InheritedFrom: zeroValue}
+	u.GetInheritedFrom()
+	u = &User{}
+	u.GetInheritedFrom()
+	u = nil
+	u.GetInheritedFrom()
+}
+
 func TestUser_GetLdapDn(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -40331,6 +50433,17 @@ func TestUser_GetSuspendedAt(tt *testing.T) {
 	u.GetSuspendedAt()
 }
 
+func TestUser_GetTextMatches(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*TextMatch{}
+	u := &User{TextMatches: zeroValue}
+	u.GetTextMatches()
+	u = &User{}
+	u.GetTextMatches()
+	u = nil
+	u.GetTextMatches()
+}
+
 func TestUser_GetTotalPrivateRepos(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -40469,6 +50582,17 @@ func TestUserAuthorization_GetNoteURL(tt *testing.T) {
 	u.GetNoteURL()
 	u = nil
 	u.GetNoteURL()
+}
+
+func TestUserAuthorization_GetScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UserAuthorization{Scopes: zeroValue}
+	u.GetScopes()
+	u = &UserAuthorization{}
+	u.GetScopes()
+	u = nil
+	u.GetScopes()
 }
 
 func TestUserAuthorization_GetToken(tt *testing.T) {
@@ -40811,6 +50935,22 @@ func TestUserLDAPMapping_GetURL(tt *testing.T) {
 	u.GetURL()
 }
 
+func TestUserListOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	u := &UserListOptions{}
+	u.GetPerPage()
+	u = nil
+	u.GetPerPage()
+}
+
+func TestUserListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	u := &UserListOptions{}
+	u.GetSince()
+	u = nil
+	u.GetSince()
+}
+
 func TestUserMigration_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -40866,6 +51006,17 @@ func TestUserMigration_GetLockRepositories(tt *testing.T) {
 	u.GetLockRepositories()
 }
 
+func TestUserMigration_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	u := &UserMigration{Repositories: zeroValue}
+	u.GetRepositories()
+	u = &UserMigration{}
+	u.GetRepositories()
+	u = nil
+	u.GetRepositories()
+}
+
 func TestUserMigration_GetState(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -40899,6 +51050,22 @@ func TestUserMigration_GetURL(tt *testing.T) {
 	u.GetURL()
 }
 
+func TestUserMigrationOptions_GetExcludeAttachments(tt *testing.T) {
+	tt.Parallel()
+	u := &UserMigrationOptions{}
+	u.GetExcludeAttachments()
+	u = nil
+	u.GetExcludeAttachments()
+}
+
+func TestUserMigrationOptions_GetLockRepositories(tt *testing.T) {
+	tt.Parallel()
+	u := &UserMigrationOptions{}
+	u.GetLockRepositories()
+	u = nil
+	u.GetLockRepositories()
+}
+
 func TestUsersSearchResult_GetIncompleteResults(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -40919,6 +51086,17 @@ func TestUsersSearchResult_GetTotal(tt *testing.T) {
 	u.GetTotal()
 	u = nil
 	u.GetTotal()
+}
+
+func TestUsersSearchResult_GetUsers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	u := &UsersSearchResult{Users: zeroValue}
+	u.GetUsers()
+	u = &UsersSearchResult{}
+	u.GetUsers()
+	u = nil
+	u.GetUsers()
 }
 
 func TestUserStats_GetAdminUsers(tt *testing.T) {
@@ -41028,6 +51206,17 @@ func TestWatchEvent_GetSender(tt *testing.T) {
 	w.GetSender()
 	w = nil
 	w.GetSender()
+}
+
+func TestWeeklyCommitActivity_GetDays(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int{}
+	w := &WeeklyCommitActivity{Days: zeroValue}
+	w.GetDays()
+	w = &WeeklyCommitActivity{}
+	w.GetDays()
+	w = nil
+	w.GetDays()
 }
 
 func TestWeeklyCommitActivity_GetTotal(tt *testing.T) {
@@ -41217,6 +51406,14 @@ func TestWorkflowBill_GetTotalMS(tt *testing.T) {
 	w.GetTotalMS()
 }
 
+func TestWorkflowDispatchEvent_GetInputs(tt *testing.T) {
+	tt.Parallel()
+	w := &WorkflowDispatchEvent{}
+	w.GetInputs()
+	w = nil
+	w.GetInputs()
+}
+
 func TestWorkflowDispatchEvent_GetInstallation(tt *testing.T) {
 	tt.Parallel()
 	w := &WorkflowDispatchEvent{}
@@ -41392,6 +51589,17 @@ func TestWorkflowJob_GetID(tt *testing.T) {
 	w.GetID()
 }
 
+func TestWorkflowJob_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	w := &WorkflowJob{Labels: zeroValue}
+	w.GetLabels()
+	w = &WorkflowJob{}
+	w.GetLabels()
+	w = nil
+	w.GetLabels()
+}
+
 func TestWorkflowJob_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -41511,6 +51719,17 @@ func TestWorkflowJob_GetStatus(tt *testing.T) {
 	w.GetStatus()
 	w = nil
 	w.GetStatus()
+}
+
+func TestWorkflowJob_GetSteps(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*TaskStep{}
+	w := &WorkflowJob{Steps: zeroValue}
+	w.GetSteps()
+	w = &WorkflowJob{}
+	w.GetSteps()
+	w = nil
+	w.GetSteps()
 }
 
 func TestWorkflowJob_GetURL(tt *testing.T) {
@@ -41915,6 +52134,28 @@ func TestWorkflowRun_GetPreviousAttemptURL(tt *testing.T) {
 	w.GetPreviousAttemptURL()
 }
 
+func TestWorkflowRun_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequest{}
+	w := &WorkflowRun{PullRequests: zeroValue}
+	w.GetPullRequests()
+	w = &WorkflowRun{}
+	w.GetPullRequests()
+	w = nil
+	w.GetPullRequests()
+}
+
+func TestWorkflowRun_GetReferencedWorkflows(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ReferencedWorkflow{}
+	w := &WorkflowRun{ReferencedWorkflows: zeroValue}
+	w.GetReferencedWorkflows()
+	w = &WorkflowRun{}
+	w.GetReferencedWorkflows()
+	w = nil
+	w.GetReferencedWorkflows()
+}
+
 func TestWorkflowRun_GetRepository(tt *testing.T) {
 	tt.Parallel()
 	w := &WorkflowRun{}
@@ -42041,6 +52282,17 @@ func TestWorkflowRunAttemptOptions_GetExcludePullRequests(tt *testing.T) {
 	w.GetExcludePullRequests()
 }
 
+func TestWorkflowRunBill_GetJobRuns(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*WorkflowRunJobRun{}
+	w := &WorkflowRunBill{JobRuns: zeroValue}
+	w.GetJobRuns()
+	w = &WorkflowRunBill{}
+	w.GetJobRuns()
+	w = nil
+	w.GetJobRuns()
+}
+
 func TestWorkflowRunBill_GetJobs(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -42155,6 +52407,17 @@ func TestWorkflowRuns_GetTotalCount(tt *testing.T) {
 	w.GetTotalCount()
 }
 
+func TestWorkflowRuns_GetWorkflowRuns(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*WorkflowRun{}
+	w := &WorkflowRuns{WorkflowRuns: zeroValue}
+	w.GetWorkflowRuns()
+	w = &WorkflowRuns{}
+	w.GetWorkflowRuns()
+	w = nil
+	w.GetWorkflowRuns()
+}
+
 func TestWorkflowRunUsage_GetBillable(tt *testing.T) {
 	tt.Parallel()
 	w := &WorkflowRunUsage{}
@@ -42183,6 +52446,25 @@ func TestWorkflows_GetTotalCount(tt *testing.T) {
 	w.GetTotalCount()
 	w = nil
 	w.GetTotalCount()
+}
+
+func TestWorkflows_GetWorkflows(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Workflow{}
+	w := &Workflows{Workflows: zeroValue}
+	w.GetWorkflows()
+	w = &Workflows{}
+	w.GetWorkflows()
+	w = nil
+	w.GetWorkflows()
+}
+
+func TestWorkflowsBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	w := &WorkflowsBranchRule{}
+	w.GetParameters()
+	w = nil
+	w.GetParameters()
 }
 
 func TestWorkflowsPermissions_GetRequireApprovalForForkPRWorkflows(tt *testing.T) {
@@ -42240,6 +52522,14 @@ func TestWorkflowsPermissionsOpt_GetRequireApprovalForForkPRWorkflows(tt *testin
 	w.GetRequireApprovalForForkPRWorkflows()
 }
 
+func TestWorkflowsPermissionsOpt_GetRunWorkflowsFromForkPullRequests(tt *testing.T) {
+	tt.Parallel()
+	w := &WorkflowsPermissionsOpt{}
+	w.GetRunWorkflowsFromForkPullRequests()
+	w = nil
+	w.GetRunWorkflowsFromForkPullRequests()
+}
+
 func TestWorkflowsPermissionsOpt_GetSendSecretsAndVariables(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -42271,6 +52561,17 @@ func TestWorkflowsRuleParameters_GetDoNotEnforceOnCreate(tt *testing.T) {
 	w.GetDoNotEnforceOnCreate()
 	w = nil
 	w.GetDoNotEnforceOnCreate()
+}
+
+func TestWorkflowsRuleParameters_GetWorkflows(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RuleWorkflow{}
+	w := &WorkflowsRuleParameters{Workflows: zeroValue}
+	w.GetWorkflows()
+	w = &WorkflowsRuleParameters{}
+	w.GetWorkflows()
+	w = nil
+	w.GetWorkflows()
 }
 
 func TestWorkflowUsage_GetBillable(tt *testing.T) {
