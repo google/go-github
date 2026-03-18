@@ -92,8 +92,8 @@ func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, m
 		return nil, nil, err
 	}
 
-	m := new(UserLDAPMapping)
-	resp, err := s.client.Do(ctx, req, m)
+	var m *UserLDAPMapping
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -113,8 +113,8 @@ func (s *AdminService) UpdateTeamLDAPMapping(ctx context.Context, team int64, ma
 		return nil, nil, err
 	}
 
-	m := new(TeamLDAPMapping)
-	resp, err := s.client.Do(ctx, req, m)
+	var m *TeamLDAPMapping
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

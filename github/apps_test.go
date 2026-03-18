@@ -450,8 +450,8 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 	}
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
-		v := new(InstallationTokenOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *InstallationTokenOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		if !cmp.Equal(v, installationTokenOptions) {
 			t.Errorf("request sent %+v, want %+v", v, installationTokenOptions)
@@ -486,8 +486,8 @@ func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
 	}
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
-		v := new(InstallationTokenListRepoOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *InstallationTokenListRepoOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		if !cmp.Equal(v, installationTokenListRepoOptions) {
 			t.Errorf("request sent %+v, want %+v", v, installationTokenListRepoOptions)

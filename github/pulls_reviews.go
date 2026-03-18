@@ -141,8 +141,8 @@ func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	review := new(PullRequestReview)
-	resp, err := s.client.Do(ctx, req, review)
+	var review *PullRequestReview
+	resp, err := s.client.Do(ctx, req, &review)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -163,8 +163,8 @@ func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	review := new(PullRequestReview)
-	resp, err := s.client.Do(ctx, req, review)
+	var review *PullRequestReview
+	resp, err := s.client.Do(ctx, req, &review)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -254,8 +254,8 @@ func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo stri
 		req.Header.Set("Accept", mediaTypeMultiLineCommentsPreview)
 	}
 
-	r := new(PullRequestReview)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *PullRequestReview
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -279,8 +279,8 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	review := &PullRequestReview{}
-	resp, err := s.client.Do(ctx, req, review)
+	var review *PullRequestReview
+	resp, err := s.client.Do(ctx, req, &review)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -301,8 +301,8 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	r := new(PullRequestReview)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *PullRequestReview
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -323,8 +323,8 @@ func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	r := new(PullRequestReview)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *PullRequestReview
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}

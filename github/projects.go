@@ -295,6 +295,7 @@ func (s *ProjectsService) ListOrganizationProjects(ctx context.Context, org stri
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return projects, resp, nil
 }
 
@@ -310,11 +311,12 @@ func (s *ProjectsService) GetOrganizationProject(ctx context.Context, org string
 		return nil, nil, err
 	}
 
-	project := new(ProjectV2)
-	resp, err := s.client.Do(ctx, req, project)
+	var project *ProjectV2
+	resp, err := s.client.Do(ctx, req, &project)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return project, resp, nil
 }
 
@@ -339,6 +341,7 @@ func (s *ProjectsService) ListUserProjects(ctx context.Context, username string,
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return projects, resp, nil
 }
 
@@ -354,11 +357,12 @@ func (s *ProjectsService) GetUserProject(ctx context.Context, username string, p
 		return nil, nil, err
 	}
 
-	project := new(ProjectV2)
-	resp, err := s.client.Do(ctx, req, project)
+	var project *ProjectV2
+	resp, err := s.client.Do(ctx, req, &project)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return project, resp, nil
 }
 
@@ -384,6 +388,7 @@ func (s *ProjectsService) ListOrganizationProjectFields(ctx context.Context, org
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return fields, resp, nil
 }
 
@@ -409,6 +414,7 @@ func (s *ProjectsService) ListUserProjectFields(ctx context.Context, user string
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return fields, resp, nil
 }
 
@@ -424,11 +430,12 @@ func (s *ProjectsService) GetOrganizationProjectField(ctx context.Context, org s
 		return nil, nil, err
 	}
 
-	field := new(ProjectV2Field)
-	resp, err := s.client.Do(ctx, req, field)
+	var field *ProjectV2Field
+	resp, err := s.client.Do(ctx, req, &field)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return field, resp, nil
 }
 
@@ -444,11 +451,12 @@ func (s *ProjectsService) GetUserProjectField(ctx context.Context, user string, 
 		return nil, nil, err
 	}
 
-	field := new(ProjectV2Field)
-	resp, err := s.client.Do(ctx, req, field)
+	var field *ProjectV2Field
+	resp, err := s.client.Do(ctx, req, &field)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return field, resp, nil
 }
 
@@ -525,6 +533,7 @@ func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org 
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return items, resp, nil
 }
 
@@ -540,11 +549,12 @@ func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org st
 		return nil, nil, err
 	}
 
-	item := new(ProjectV2Item)
-	resp, err := s.client.Do(ctx, req, item)
+	var item *ProjectV2Item
+	resp, err := s.client.Do(ctx, req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return item, resp, nil
 }
 
@@ -559,15 +569,18 @@ func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org st
 	if err != nil {
 		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
-	item := new(ProjectV2Item)
-	resp, err := s.client.Do(ctx, req, item)
+
+	var item *ProjectV2Item
+	resp, err := s.client.Do(ctx, req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return item, resp, nil
 }
 
@@ -582,11 +595,13 @@ func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org
 	if err != nil {
 		return nil, nil, err
 	}
-	item := new(ProjectV2Item)
-	resp, err := s.client.Do(ctx, req, item)
+
+	var item *ProjectV2Item
+	resp, err := s.client.Do(ctx, req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return item, resp, nil
 }
 
@@ -601,6 +616,7 @@ func (s *ProjectsService) DeleteOrganizationProjectItem(ctx context.Context, org
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 
@@ -615,15 +631,18 @@ func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username str
 	if err != nil {
 		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
+
 	var items []*ProjectV2Item
 	resp, err := s.client.Do(ctx, req, &items)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return items, resp, nil
 }
 
@@ -638,11 +657,13 @@ func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username strin
 	if err != nil {
 		return nil, nil, err
 	}
-	item := new(ProjectV2Item)
-	resp, err := s.client.Do(ctx, req, item)
+
+	var item *ProjectV2Item
+	resp, err := s.client.Do(ctx, req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return item, resp, nil
 }
 
@@ -657,15 +678,18 @@ func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username strin
 	if err != nil {
 		return nil, nil, err
 	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
-	item := new(ProjectV2Item)
-	resp, err := s.client.Do(ctx, req, item)
+
+	var item *ProjectV2Item
+	resp, err := s.client.Do(ctx, req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return item, resp, nil
 }
 
@@ -680,11 +704,13 @@ func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username st
 	if err != nil {
 		return nil, nil, err
 	}
-	item := new(ProjectV2Item)
-	resp, err := s.client.Do(ctx, req, item)
+
+	var item *ProjectV2Item
+	resp, err := s.client.Do(ctx, req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return item, resp, nil
 }
 
@@ -699,5 +725,6 @@ func (s *ProjectsService) DeleteUserProjectItem(ctx context.Context, username st
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }

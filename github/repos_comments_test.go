@@ -115,8 +115,8 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 	input := &RepositoryComment{Body: Ptr("b")}
 
 	mux.HandleFunc("/repos/o/r/commits/s/comments", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RepositoryComment)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *RepositoryComment
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -213,8 +213,8 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 	input := &RepositoryComment{Body: Ptr("b")}
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RepositoryComment)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *RepositoryComment
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

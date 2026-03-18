@@ -84,8 +84,8 @@ func (s *EnterpriseService) CheckSystemRequirements(ctx context.Context) (*Syste
 		return nil, nil, err
 	}
 
-	systemRequirements := new(SystemRequirements)
-	resp, err := s.client.Do(ctx, req, systemRequirements)
+	var systemRequirements *SystemRequirements
+	resp, err := s.client.Do(ctx, req, &systemRequirements)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -105,8 +105,8 @@ func (s *EnterpriseService) ClusterStatus(ctx context.Context) (*ClusterStatus, 
 		return nil, nil, err
 	}
 
-	clusterStatus := new(ClusterStatus)
-	resp, err := s.client.Do(ctx, req, clusterStatus)
+	var clusterStatus *ClusterStatus
+	resp, err := s.client.Do(ctx, req, &clusterStatus)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -129,8 +129,8 @@ func (s *EnterpriseService) ReplicationStatus(ctx context.Context, opts *NodeQue
 		return nil, nil, err
 	}
 
-	status := new(ClusterStatus)
-	resp, err := s.client.Do(ctx, req, status)
+	var status *ClusterStatus
+	resp, err := s.client.Do(ctx, req, &status)
 	if err != nil {
 		return nil, resp, err
 	}

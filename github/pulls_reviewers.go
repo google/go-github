@@ -42,8 +42,8 @@ func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	r := new(PullRequest)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *PullRequest
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -64,8 +64,8 @@ func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	reviewers := new(Reviewers)
-	resp, err := s.client.Do(ctx, req, reviewers)
+	var reviewers *Reviewers
+	resp, err := s.client.Do(ctx, req, &reviewers)
 	if err != nil {
 		return nil, resp, err
 	}

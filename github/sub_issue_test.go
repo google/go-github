@@ -21,8 +21,8 @@ func TestSubIssuesService_Add(t *testing.T) {
 	input := &SubIssueRequest{SubIssueID: 42}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues", func(w http.ResponseWriter, r *http.Request) {
-		v := new(SubIssueRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *SubIssueRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -104,8 +104,8 @@ func TestSubIssuesService_Remove(t *testing.T) {
 	input := &SubIssueRequest{SubIssueID: 42}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issue", func(w http.ResponseWriter, r *http.Request) {
-		v := new(SubIssueRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *SubIssueRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "DELETE")
 		if !cmp.Equal(v, input) {
@@ -145,8 +145,8 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues/priority", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 
-		v := new(SubIssueRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *SubIssueRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

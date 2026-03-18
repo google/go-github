@@ -24,8 +24,8 @@ func TestMarkdownService_Markdown(t *testing.T) {
 		Context: Ptr("google/go-github"),
 	}
 	mux.HandleFunc("/markdown", func(w http.ResponseWriter, r *http.Request) {
-		v := new(markdownRenderRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *markdownRenderRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

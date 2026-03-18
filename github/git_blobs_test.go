@@ -116,8 +116,8 @@ func TestGitService_CreateBlob(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/blobs", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Blob)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Blob
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 

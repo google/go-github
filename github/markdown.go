@@ -59,8 +59,8 @@ func (s *MarkdownService) Render(ctx context.Context, text string, opts *Markdow
 		return "", nil, err
 	}
 
-	buf := new(bytes.Buffer)
-	resp, err := s.client.Do(ctx, req, buf)
+	var buf bytes.Buffer
+	resp, err := s.client.Do(ctx, req, &buf)
 	if err != nil {
 		return "", resp, err
 	}

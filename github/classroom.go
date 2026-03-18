@@ -118,8 +118,8 @@ func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64
 		return nil, nil, err
 	}
 
-	assignment := new(ClassroomAssignment)
-	resp, err := s.client.Do(ctx, req, assignment)
+	var assignment *ClassroomAssignment
+	resp, err := s.client.Do(ctx, req, &assignment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -141,8 +141,8 @@ func (s *ClassroomService) GetClassroom(ctx context.Context, classroomID int64) 
 		return nil, nil, err
 	}
 
-	classroom := new(Classroom)
-	resp, err := s.client.Do(ctx, req, classroom)
+	var classroom *Classroom
+	resp, err := s.client.Do(ctx, req, &classroom)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -66,8 +66,8 @@ func TestRepositoriesService_CreateTagProtection(t *testing.T) {
 	pattern := "tag*"
 
 	mux.HandleFunc("/repos/o/r/tags/protection", func(w http.ResponseWriter, r *http.Request) {
-		v := new(tagProtectionRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *tagProtectionRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		want := &tagProtectionRequest{Pattern: "tag*"}

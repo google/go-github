@@ -182,8 +182,8 @@ func TestGitService_CreateCommit(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createCommit)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *createCommit
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 
@@ -240,8 +240,8 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
-		v := new(createCommit)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *createCommit
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 

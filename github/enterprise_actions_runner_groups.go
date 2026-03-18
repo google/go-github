@@ -99,7 +99,7 @@ func (s *EnterpriseService) ListRunnerGroups(ctx context.Context, enterprise str
 		return nil, nil, err
 	}
 
-	groups := &EnterpriseRunnerGroups{}
+	var groups *EnterpriseRunnerGroups
 	resp, err := s.client.Do(ctx, req, &groups)
 	if err != nil {
 		return nil, resp, err
@@ -120,8 +120,8 @@ func (s *EnterpriseService) GetEnterpriseRunnerGroup(ctx context.Context, enterp
 		return nil, nil, err
 	}
 
-	runnerGroup := new(EnterpriseRunnerGroup)
-	resp, err := s.client.Do(ctx, req, runnerGroup)
+	var runnerGroup *EnterpriseRunnerGroup
+	resp, err := s.client.Do(ctx, req, &runnerGroup)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -157,8 +157,8 @@ func (s *EnterpriseService) CreateEnterpriseRunnerGroup(ctx context.Context, ent
 		return nil, nil, err
 	}
 
-	runnerGroup := new(EnterpriseRunnerGroup)
-	resp, err := s.client.Do(ctx, req, runnerGroup)
+	var runnerGroup *EnterpriseRunnerGroup
+	resp, err := s.client.Do(ctx, req, &runnerGroup)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -178,8 +178,8 @@ func (s *EnterpriseService) UpdateEnterpriseRunnerGroup(ctx context.Context, ent
 		return nil, nil, err
 	}
 
-	runnerGroup := new(EnterpriseRunnerGroup)
-	resp, err := s.client.Do(ctx, req, runnerGroup)
+	var runnerGroup *EnterpriseRunnerGroup
+	resp, err := s.client.Do(ctx, req, &runnerGroup)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -204,7 +204,7 @@ func (s *EnterpriseService) ListOrganizationAccessRunnerGroup(ctx context.Contex
 		return nil, nil, err
 	}
 
-	orgs := &ListOrganizations{}
+	var orgs *ListOrganizations
 	resp, err := s.client.Do(ctx, req, &orgs)
 	if err != nil {
 		return nil, resp, err
@@ -281,7 +281,7 @@ func (s *EnterpriseService) ListRunnerGroupRunners(ctx context.Context, enterpri
 		return nil, nil, err
 	}
 
-	runners := &Runners{}
+	var runners *Runners
 	resp, err := s.client.Do(ctx, req, &runners)
 	if err != nil {
 		return nil, resp, err

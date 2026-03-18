@@ -39,8 +39,8 @@ func (s *AdminService) CreateOrg(ctx context.Context, org *Organization, admin s
 		return nil, nil, err
 	}
 
-	o := new(Organization)
-	resp, err := s.client.Do(ctx, req, o)
+	var o *Organization
+	resp, err := s.client.Do(ctx, req, &o)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -93,8 +93,8 @@ func (s *AdminService) RenameOrgByName(ctx context.Context, org, newName string)
 		return nil, nil, err
 	}
 
-	o := new(RenameOrgResponse)
-	resp, err := s.client.Do(ctx, req, o)
+	var o *RenameOrgResponse
+	resp, err := s.client.Do(ctx, req, &o)
 	if err != nil {
 		return nil, resp, err
 	}

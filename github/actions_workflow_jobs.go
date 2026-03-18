@@ -85,7 +85,7 @@ func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	jobs := new(Jobs)
+	var jobs *Jobs
 	resp, err := s.client.Do(ctx, req, &jobs)
 	if err != nil {
 		return nil, resp, err
@@ -111,7 +111,7 @@ func (s *ActionsService) ListWorkflowJobsAttempt(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	jobs := new(Jobs)
+	var jobs *Jobs
 	resp, err := s.client.Do(ctx, req, &jobs)
 	if err != nil {
 		return nil, resp, err
@@ -133,8 +133,8 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	job := new(WorkflowJob)
-	resp, err := s.client.Do(ctx, req, job)
+	var job *WorkflowJob
+	resp, err := s.client.Do(ctx, req, &job)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -43,8 +43,8 @@ func (s *GitService) GetTag(ctx context.Context, owner, repo, sha string) (*Tag,
 		return nil, nil, err
 	}
 
-	tag := new(Tag)
-	resp, err := s.client.Do(ctx, req, tag)
+	var tag *Tag
+	resp, err := s.client.Do(ctx, req, &tag)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -65,8 +65,8 @@ func (s *GitService) CreateTag(ctx context.Context, owner, repo string, tag Crea
 		return nil, nil, err
 	}
 
-	t := new(Tag)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *Tag
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}

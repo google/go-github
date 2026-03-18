@@ -55,8 +55,8 @@ func TestRepositoriesService_UpdateActionsAllowed(t *testing.T) {
 	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ActionsAllowed)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *ActionsAllowed
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {

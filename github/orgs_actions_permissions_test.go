@@ -55,8 +55,8 @@ func TestOrganizationsService_UpdateActionsPermissions(t *testing.T) {
 	input := &ActionsPermissions{EnabledRepositories: Ptr("all"), AllowedActions: Ptr("selected")}
 
 	mux.HandleFunc("/orgs/o/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
-		v := new(ActionsPermissions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *ActionsPermissions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {

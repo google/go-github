@@ -63,8 +63,8 @@ func (s *IssuesService) GetLabel(ctx context.Context, owner, repo, name string) 
 		return nil, nil, err
 	}
 
-	label := new(Label)
-	resp, err := s.client.Do(ctx, req, label)
+	var label *Label
+	resp, err := s.client.Do(ctx, req, &label)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -84,8 +84,8 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, lab
 		return nil, nil, err
 	}
 
-	l := new(Label)
-	resp, err := s.client.Do(ctx, req, l)
+	var l *Label
+	resp, err := s.client.Do(ctx, req, &l)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -105,8 +105,8 @@ func (s *IssuesService) EditLabel(ctx context.Context, owner, repo, name string,
 		return nil, nil, err
 	}
 
-	l := new(Label)
-	resp, err := s.client.Do(ctx, req, l)
+	var l *Label
+	resp, err := s.client.Do(ctx, req, &l)
 	if err != nil {
 		return nil, resp, err
 	}

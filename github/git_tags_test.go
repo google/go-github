@@ -61,8 +61,8 @@ func TestGitService_CreateTag(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/tags", func(w http.ResponseWriter, r *http.Request) {
-		v := new(CreateTag)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *CreateTag
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(*v, inputTag) {

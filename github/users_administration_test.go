@@ -98,8 +98,8 @@ func TestUsersServiceReason_Suspend(t *testing.T) {
 	input := &UserSuspendOptions{Reason: Ptr("test")}
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
-		v := new(UserSuspendOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *UserSuspendOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {

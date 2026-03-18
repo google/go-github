@@ -115,8 +115,8 @@ func (s *RepositoriesService) GetPermissionLevel(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	rpl := new(RepositoryPermissionLevel)
-	resp, err := s.client.Do(ctx, req, rpl)
+	var rpl *RepositoryPermissionLevel
+	resp, err := s.client.Do(ctx, req, &rpl)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -152,8 +152,8 @@ func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, 
 		return nil, nil, err
 	}
 
-	acr := new(CollaboratorInvitation)
-	resp, err := s.client.Do(ctx, req, acr)
+	var acr *CollaboratorInvitation
+	resp, err := s.client.Do(ctx, req, &acr)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -105,8 +105,8 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 		return nil, nil, err
 	}
 
-	uResp := new(User)
-	resp, err := s.client.Do(ctx, req, uResp)
+	var uResp *User
+	resp, err := s.client.Do(ctx, req, &uResp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -126,8 +126,8 @@ func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response,
 		return nil, nil, err
 	}
 
-	user := new(User)
-	resp, err := s.client.Do(ctx, req, user)
+	var user *User
+	resp, err := s.client.Do(ctx, req, &user)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -147,8 +147,8 @@ func (s *UsersService) Edit(ctx context.Context, user *User) (*User, *Response, 
 		return nil, nil, err
 	}
 
-	uResp := new(User)
-	resp, err := s.client.Do(ctx, req, uResp)
+	var uResp *User
+	resp, err := s.client.Do(ctx, req, &uResp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -196,8 +196,8 @@ func (s *UsersService) GetHovercard(ctx context.Context, user string, opts *Hove
 		return nil, nil, err
 	}
 
-	hc := new(Hovercard)
-	resp, err := s.client.Do(ctx, req, hc)
+	var hc *Hovercard
+	resp, err := s.client.Do(ctx, req, &hc)
 	if err != nil {
 		return nil, resp, err
 	}

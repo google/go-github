@@ -114,7 +114,7 @@ func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	workflows := new(Workflows)
+	var workflows *Workflows
 	resp, err := s.client.Do(ctx, req, &workflows)
 	if err != nil {
 		return nil, resp, err
@@ -151,8 +151,8 @@ func (s *ActionsService) getWorkflow(ctx context.Context, url string) (*Workflow
 		return nil, nil, err
 	}
 
-	workflow := new(Workflow)
-	resp, err := s.client.Do(ctx, req, workflow)
+	var workflow *Workflow
+	resp, err := s.client.Do(ctx, req, &workflow)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -188,8 +188,8 @@ func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*Wor
 		return nil, nil, err
 	}
 
-	workflowUsage := new(WorkflowUsage)
-	resp, err := s.client.Do(ctx, req, workflowUsage)
+	var workflowUsage *WorkflowUsage
+	resp, err := s.client.Do(ctx, req, &workflowUsage)
 	if err != nil {
 		return nil, resp, err
 	}

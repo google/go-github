@@ -104,8 +104,8 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	m := &Reaction{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Reaction
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -182,8 +182,8 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	m := &Reaction{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Reaction
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -260,8 +260,8 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	m := &Reaction{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Reaction
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -338,8 +338,8 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	m := &Reaction{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Reaction
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -414,8 +414,8 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	m := &Reaction{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Reaction
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -489,8 +489,8 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	m := &Reaction{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Reaction
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -550,8 +550,8 @@ func (s *ReactionsService) CreateReleaseReaction(ctx context.Context, owner, rep
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	m := &Reaction{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Reaction
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

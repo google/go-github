@@ -155,8 +155,8 @@ func (s *RepositoriesService) GenerateReleaseNotes(ctx context.Context, owner, r
 		return nil, nil, err
 	}
 
-	r := new(RepositoryReleaseNotes)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *RepositoryReleaseNotes
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -170,11 +170,12 @@ func (s *RepositoriesService) getSingleRelease(ctx context.Context, url string) 
 		return nil, nil, err
 	}
 
-	release := new(RepositoryRelease)
-	resp, err := s.client.Do(ctx, req, release)
+	var release *RepositoryRelease
+	resp, err := s.client.Do(ctx, req, &release)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return release, resp, nil
 }
 
@@ -228,11 +229,12 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	r := new(RepositoryRelease)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *RepositoryRelease
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return r, resp, nil
 }
 
@@ -267,11 +269,12 @@ func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	r := new(RepositoryRelease)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *RepositoryRelease
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return r, resp, nil
 }
 
@@ -328,11 +331,12 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	asset := new(ReleaseAsset)
-	resp, err := s.client.Do(ctx, req, asset)
+	var asset *ReleaseAsset
+	resp, err := s.client.Do(ctx, req, &asset)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return asset, resp, nil
 }
 
@@ -424,11 +428,12 @@ func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	asset := new(ReleaseAsset)
-	resp, err := s.client.Do(ctx, req, asset)
+	var asset *ReleaseAsset
+	resp, err := s.client.Do(ctx, req, &asset)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return asset, resp, nil
 }
 
@@ -482,11 +487,12 @@ func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	asset := new(ReleaseAsset)
-	resp, err := s.client.Do(ctx, req, asset)
+	var asset *ReleaseAsset
+	resp, err := s.client.Do(ctx, req, &asset)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return asset, resp, nil
 }
 
@@ -555,10 +561,11 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(
 		return nil, nil, err
 	}
 
-	asset := new(ReleaseAsset)
-	resp, err := s.client.Do(ctx, req, asset)
+	var asset *ReleaseAsset
+	resp, err := s.client.Do(ctx, req, &asset)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return asset, resp, nil
 }

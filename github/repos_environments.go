@@ -137,7 +137,6 @@ func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo 
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, name string) (*Environment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, name)
-
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -195,14 +194,13 @@ type createUpdateEnvironmentNoEnterprise struct {
 //meta:operation PUT /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, name)
-
 	req, err := s.client.NewRequest("PUT", u, environment)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	e := new(Environment)
-	resp, err := s.client.Do(ctx, req, e)
+	var e *Environment
+	resp, err := s.client.Do(ctx, req, &e)
 	if err != nil {
 		// The API returns 422 when the pricing plan doesn't support all the fields sent.
 		// This path will be executed for Pro/Teams private repos.
@@ -215,6 +213,7 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 		}
 		return nil, resp, err
 	}
+
 	return e, resp, nil
 }
 
@@ -228,11 +227,12 @@ func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u st
 		return nil, nil, err
 	}
 
-	e := new(Environment)
-	resp, err := s.client.Do(ctx, req, e)
+	var e *Environment
+	resp, err := s.client.Do(ctx, req, &e)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return e, resp, nil
 }
 
@@ -243,10 +243,10 @@ func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u st
 //meta:operation DELETE /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) DeleteEnvironment(ctx context.Context, owner, repo, name string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, name)
-
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }

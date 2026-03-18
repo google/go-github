@@ -24,9 +24,8 @@ func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner,
 
 	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
-	repositoryInteractions := new(InteractionRestriction)
-
-	resp, err := s.client.Do(ctx, req, repositoryInteractions)
+	var repositoryInteractions *InteractionRestriction
+	resp, err := s.client.Do(ctx, req, &repositoryInteractions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -55,9 +54,8 @@ func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, own
 
 	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
-	repositoryInteractions := new(InteractionRestriction)
-
-	resp, err := s.client.Do(ctx, req, repositoryInteractions)
+	var repositoryInteractions *InteractionRestriction
+	resp, err := s.client.Do(ctx, req, &repositoryInteractions)
 	if err != nil {
 		return nil, resp, err
 	}

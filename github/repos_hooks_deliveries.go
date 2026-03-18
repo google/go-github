@@ -120,8 +120,8 @@ func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	h := new(HookDelivery)
-	resp, err := s.client.Do(ctx, req, h)
+	var h *HookDelivery
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -141,8 +141,8 @@ func (s *RepositoriesService) RedeliverHookDelivery(ctx context.Context, owner, 
 		return nil, nil, err
 	}
 
-	h := new(HookDelivery)
-	resp, err := s.client.Do(ctx, req, h)
+	var h *HookDelivery
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}

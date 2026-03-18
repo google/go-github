@@ -123,8 +123,8 @@ func (s *MetaService) Get(ctx context.Context) (*APIMeta, *Response, error) {
 		return nil, nil, err
 	}
 
-	meta := new(APIMeta)
-	resp, err := s.client.Do(ctx, req, meta)
+	var meta *APIMeta
+	resp, err := s.client.Do(ctx, req, &meta)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -156,8 +156,8 @@ func (s *MetaService) Octocat(ctx context.Context, message string) (string, *Res
 		return "", nil, err
 	}
 
-	buf := new(bytes.Buffer)
-	resp, err := s.client.Do(ctx, req, buf)
+	var buf bytes.Buffer
+	resp, err := s.client.Do(ctx, req, &buf)
 	if err != nil {
 		return "", resp, err
 	}
@@ -186,8 +186,8 @@ func (s *MetaService) Zen(ctx context.Context) (string, *Response, error) {
 		return "", nil, err
 	}
 
-	buf := new(bytes.Buffer)
-	resp, err := s.client.Do(ctx, req, buf)
+	var buf bytes.Buffer
+	resp, err := s.client.Do(ctx, req, &buf)
 	if err != nil {
 		return "", resp, err
 	}

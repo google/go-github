@@ -86,8 +86,8 @@ func (s *RepositoriesService) UpdateInvitation(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	invite := &RepositoryInvitation{}
-	resp, err := s.client.Do(ctx, req, invite)
+	var invite *RepositoryInvitation
+	resp, err := s.client.Do(ctx, req, &invite)
 	if err != nil {
 		return nil, resp, err
 	}

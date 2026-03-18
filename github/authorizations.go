@@ -159,8 +159,8 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken
 	}
 	req.Header.Set("Accept", mediaTypeOAuthAppPreview)
 
-	a := new(Authorization)
-	resp, err := s.client.Do(ctx, req, a)
+	var a *Authorization
+	resp, err := s.client.Do(ctx, req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -194,8 +194,8 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken
 	}
 	req.Header.Set("Accept", mediaTypeOAuthAppPreview)
 
-	a := new(Authorization)
-	resp, err := s.client.Do(ctx, req, a)
+	var a *Authorization
+	resp, err := s.client.Do(ctx, req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -267,8 +267,8 @@ func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, usernam
 		return nil, nil, err
 	}
 
-	a := new(Authorization)
-	resp, err := s.client.Do(ctx, req, a)
+	var a *Authorization
+	resp, err := s.client.Do(ctx, req, &a)
 	if err != nil {
 		return nil, resp, err
 	}

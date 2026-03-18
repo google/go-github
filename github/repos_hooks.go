@@ -102,8 +102,8 @@ func (s *RepositoriesService) CreateHook(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	h := new(Hook)
-	resp, err := s.client.Do(ctx, req, h)
+	var h *Hook
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -148,8 +148,9 @@ func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, i
 	if err != nil {
 		return nil, nil, err
 	}
-	h := new(Hook)
-	resp, err := s.client.Do(ctx, req, h)
+
+	var h *Hook
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -168,8 +169,9 @@ func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, 
 	if err != nil {
 		return nil, nil, err
 	}
-	h := new(Hook)
-	resp, err := s.client.Do(ctx, req, h)
+
+	var h *Hook
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -188,6 +190,7 @@ func (s *RepositoriesService) DeleteHook(ctx context.Context, owner, repo string
 	if err != nil {
 		return nil, err
 	}
+
 	return s.client.Do(ctx, req, nil)
 }
 

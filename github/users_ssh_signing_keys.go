@@ -70,8 +70,8 @@ func (s *UsersService) GetSSHSigningKey(ctx context.Context, id int64) (*SSHSign
 		return nil, nil, err
 	}
 
-	key := new(SSHSigningKey)
-	resp, err := s.client.Do(ctx, req, key)
+	var key *SSHSigningKey
+	resp, err := s.client.Do(ctx, req, &key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -92,8 +92,8 @@ func (s *UsersService) CreateSSHSigningKey(ctx context.Context, key *Key) (*SSHS
 		return nil, nil, err
 	}
 
-	k := new(SSHSigningKey)
-	resp, err := s.client.Do(ctx, req, k)
+	var k *SSHSigningKey
+	resp, err := s.client.Do(ctx, req, &k)
 	if err != nil {
 		return nil, resp, err
 	}

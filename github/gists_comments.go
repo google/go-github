@@ -61,8 +61,8 @@ func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID 
 		return nil, nil, err
 	}
 
-	c := new(GistComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *GistComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -82,8 +82,8 @@ func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment
 		return nil, nil, err
 	}
 
-	c := new(GistComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *GistComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -103,8 +103,8 @@ func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID
 		return nil, nil, err
 	}
 
-	c := new(GistComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *GistComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}

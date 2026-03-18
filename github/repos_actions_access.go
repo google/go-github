@@ -33,8 +33,8 @@ func (s *RepositoriesService) GetActionsAccessLevel(ctx context.Context, owner, 
 		return nil, nil, err
 	}
 
-	raal := new(RepositoryActionsAccessLevel)
-	resp, err := s.client.Do(ctx, req, raal)
+	var raal *RepositoryActionsAccessLevel
+	resp, err := s.client.Do(ctx, req, &raal)
 	if err != nil {
 		return nil, resp, err
 	}

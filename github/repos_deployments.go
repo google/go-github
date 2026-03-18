@@ -100,8 +100,8 @@ func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	deployment := new(Deployment)
-	resp, err := s.client.Do(ctx, req, deployment)
+	var deployment *Deployment
+	resp, err := s.client.Do(ctx, req, &deployment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -125,8 +125,8 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
-	d := new(Deployment)
-	resp, err := s.client.Do(ctx, req, d)
+	var d *Deployment
+	resp, err := s.client.Do(ctx, req, &d)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -225,8 +225,8 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
-	d := new(DeploymentStatus)
-	resp, err := s.client.Do(ctx, req, d)
+	var d *DeploymentStatus
+	resp, err := s.client.Do(ctx, req, &d)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -250,8 +250,8 @@ func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner,
 	acceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
-	d := new(DeploymentStatus)
-	resp, err := s.client.Do(ctx, req, d)
+	var d *DeploymentStatus
+	resp, err := s.client.Do(ctx, req, &d)
 	if err != nil {
 		return nil, resp, err
 	}

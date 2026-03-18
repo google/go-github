@@ -190,8 +190,8 @@ func (s *EnterpriseService) ListProvisionedSCIMGroups(ctx context.Context, enter
 	}
 	req.Header.Set("Accept", mediaTypeSCIM)
 
-	groups := new(SCIMEnterpriseGroups)
-	resp, err := s.client.Do(ctx, req, groups)
+	var groups *SCIMEnterpriseGroups
+	resp, err := s.client.Do(ctx, req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -221,8 +221,8 @@ func (s *EnterpriseService) ListProvisionedSCIMUsers(ctx context.Context, enterp
 	}
 	req.Header.Set("Accept", mediaTypeSCIM)
 
-	users := new(SCIMEnterpriseUsers)
-	resp, err := s.client.Do(ctx, req, users)
+	var users *SCIMEnterpriseUsers
+	resp, err := s.client.Do(ctx, req, &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -247,8 +247,8 @@ func (s *EnterpriseService) SetProvisionedSCIMGroup(ctx context.Context, enterpr
 	}
 	req.Header.Set("Accept", mediaTypeSCIM)
 
-	groupNew := new(SCIMEnterpriseGroupAttributes)
-	resp, err := s.client.Do(ctx, req, groupNew)
+	var groupNew *SCIMEnterpriseGroupAttributes
+	resp, err := s.client.Do(ctx, req, &groupNew)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -275,8 +275,8 @@ func (s *EnterpriseService) SetProvisionedSCIMUser(ctx context.Context, enterpri
 	}
 	req.Header.Set("Accept", mediaTypeSCIM)
 
-	userNew := new(SCIMEnterpriseUserAttributes)
-	resp, err := s.client.Do(ctx, req, userNew)
+	var userNew *SCIMEnterpriseUserAttributes
+	resp, err := s.client.Do(ctx, req, &userNew)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -305,8 +305,8 @@ func (s *EnterpriseService) UpdateSCIMGroupAttribute(ctx context.Context, enterp
 	}
 	req.Header.Set("Accept", mediaTypeSCIM)
 
-	group := new(SCIMEnterpriseGroupAttributes)
-	resp, err := s.client.Do(ctx, req, group)
+	var group *SCIMEnterpriseGroupAttributes
+	resp, err := s.client.Do(ctx, req, &group)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -337,8 +337,8 @@ func (s *EnterpriseService) UpdateSCIMUserAttribute(ctx context.Context, enterpr
 	}
 	req.Header.Set("Accept", mediaTypeSCIM)
 
-	user := new(SCIMEnterpriseUserAttributes)
-	resp, err := s.client.Do(ctx, req, user)
+	var user *SCIMEnterpriseUserAttributes
+	resp, err := s.client.Do(ctx, req, &user)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -359,8 +359,8 @@ func (s *EnterpriseService) ProvisionSCIMGroup(ctx context.Context, enterprise s
 	}
 	req.Header.Set("Accept", mediaTypeSCIM)
 
-	groupProvisioned := new(SCIMEnterpriseGroupAttributes)
-	resp, err := s.client.Do(ctx, req, groupProvisioned)
+	var groupProvisioned *SCIMEnterpriseGroupAttributes
+	resp, err := s.client.Do(ctx, req, &groupProvisioned)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -381,8 +381,8 @@ func (s *EnterpriseService) ProvisionSCIMUser(ctx context.Context, enterprise st
 	}
 	req.Header.Set("Accept", mediaTypeSCIM)
 
-	userProvisioned := new(SCIMEnterpriseUserAttributes)
-	resp, err := s.client.Do(ctx, req, userProvisioned)
+	var userProvisioned *SCIMEnterpriseUserAttributes
+	resp, err := s.client.Do(ctx, req, &userProvisioned)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -412,8 +412,8 @@ func (s *EnterpriseService) GetProvisionedSCIMGroup(ctx context.Context, enterpr
 	}
 	req.Header.Set("Accept", mediaTypeSCIM)
 
-	group := new(SCIMEnterpriseGroupAttributes)
-	resp, err := s.client.Do(ctx, req, group)
+	var group *SCIMEnterpriseGroupAttributes
+	resp, err := s.client.Do(ctx, req, &group)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -435,8 +435,8 @@ func (s *EnterpriseService) GetProvisionedSCIMUser(ctx context.Context, enterpri
 	}
 	req.Header.Set("Accept", mediaTypeSCIM)
 
-	user := new(SCIMEnterpriseUserAttributes)
-	resp, err := s.client.Do(ctx, req, user)
+	var user *SCIMEnterpriseUserAttributes
+	resp, err := s.client.Do(ctx, req, &user)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -190,8 +190,8 @@ func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, er
 		return nil, nil, err
 	}
 
-	gist := new(Gist)
-	resp, err := s.client.Do(ctx, req, gist)
+	var gist *Gist
+	resp, err := s.client.Do(ctx, req, &gist)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -211,8 +211,8 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 		return nil, nil, err
 	}
 
-	gist := new(Gist)
-	resp, err := s.client.Do(ctx, req, gist)
+	var gist *Gist
+	resp, err := s.client.Do(ctx, req, &gist)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -232,8 +232,8 @@ func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response
 		return nil, nil, err
 	}
 
-	g := new(Gist)
-	resp, err := s.client.Do(ctx, req, g)
+	var g *Gist
+	resp, err := s.client.Do(ctx, req, &g)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -253,8 +253,8 @@ func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, 
 		return nil, nil, err
 	}
 
-	g := new(Gist)
-	resp, err := s.client.Do(ctx, req, g)
+	var g *Gist
+	resp, err := s.client.Do(ctx, req, &g)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -362,8 +362,8 @@ func (s *GistsService) Fork(ctx context.Context, id string) (*Gist, *Response, e
 		return nil, nil, err
 	}
 
-	g := new(Gist)
-	resp, err := s.client.Do(ctx, req, g)
+	var g *Gist
+	resp, err := s.client.Do(ctx, req, &g)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -47,8 +47,8 @@ func (s *AppsService) GetHookDelivery(ctx context.Context, deliveryID int64) (*H
 		return nil, nil, err
 	}
 
-	h := new(HookDelivery)
-	resp, err := s.client.Do(ctx, req, h)
+	var h *HookDelivery
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -68,8 +68,8 @@ func (s *AppsService) RedeliverHookDelivery(ctx context.Context, deliveryID int6
 		return nil, nil, err
 	}
 
-	h := new(HookDelivery)
-	resp, err := s.client.Do(ctx, req, h)
+	var h *HookDelivery
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}

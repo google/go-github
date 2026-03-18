@@ -64,8 +64,8 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
-		v := new(SarifAnalysis)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *SarifAnalysis
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		want := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
 		if !cmp.Equal(v, want) {

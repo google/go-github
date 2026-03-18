@@ -89,8 +89,8 @@ func (s *UsersService) GetGPGKey(ctx context.Context, id int64) (*GPGKey, *Respo
 		return nil, nil, err
 	}
 
-	key := &GPGKey{}
-	resp, err := s.client.Do(ctx, req, key)
+	var key *GPGKey
+	resp, err := s.client.Do(ctx, req, &key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -113,8 +113,8 @@ func (s *UsersService) CreateGPGKey(ctx context.Context, armoredPublicKey string
 		return nil, nil, err
 	}
 
-	key := &GPGKey{}
-	resp, err := s.client.Do(ctx, req, key)
+	var key *GPGKey
+	resp, err := s.client.Do(ctx, req, &key)
 	if err != nil {
 		return nil, resp, err
 	}

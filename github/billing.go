@@ -182,8 +182,8 @@ func (s *BillingService) GetOrganizationPackagesBilling(ctx context.Context, org
 		return nil, nil, err
 	}
 
-	result := new(PackagesBilling)
-	resp, err := s.client.Do(ctx, req, result)
+	var result *PackagesBilling
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -203,8 +203,8 @@ func (s *BillingService) GetOrganizationStorageBilling(ctx context.Context, org 
 		return nil, nil, err
 	}
 
-	result := new(StorageBilling)
-	resp, err := s.client.Do(ctx, req, result)
+	var result *StorageBilling
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -229,8 +229,8 @@ func (s *BillingService) GetOrganizationAdvancedSecurityActiveCommitters(ctx con
 		return nil, nil, err
 	}
 
-	result := new(ActiveCommitters)
-	resp, err := s.client.Do(ctx, req, result)
+	var result *ActiveCommitters
+	resp, err := s.client.Do(ctx, req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -249,8 +249,8 @@ func (s *BillingService) GetPackagesBilling(ctx context.Context, user string) (*
 		return nil, nil, err
 	}
 
-	packagesUserBilling := new(PackagesBilling)
-	resp, err := s.client.Do(ctx, req, packagesUserBilling)
+	var packagesUserBilling *PackagesBilling
+	resp, err := s.client.Do(ctx, req, &packagesUserBilling)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -270,8 +270,8 @@ func (s *BillingService) GetStorageBilling(ctx context.Context, user string) (*S
 		return nil, nil, err
 	}
 
-	storageUserBilling := new(StorageBilling)
-	resp, err := s.client.Do(ctx, req, storageUserBilling)
+	var storageUserBilling *StorageBilling
+	resp, err := s.client.Do(ctx, req, &storageUserBilling)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -298,8 +298,8 @@ func (s *BillingService) GetOrganizationUsageReport(ctx context.Context, org str
 		return nil, nil, err
 	}
 
-	usageReport := new(UsageReport)
-	resp, err := s.client.Do(ctx, req, usageReport)
+	var usageReport *UsageReport
+	resp, err := s.client.Do(ctx, req, &usageReport)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -326,8 +326,8 @@ func (s *BillingService) GetUsageReport(ctx context.Context, user string, opts *
 		return nil, nil, err
 	}
 
-	usageReport := new(UsageReport)
-	resp, err := s.client.Do(ctx, req, usageReport)
+	var usageReport *UsageReport
+	resp, err := s.client.Do(ctx, req, &usageReport)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -355,8 +355,8 @@ func (s *BillingService) GetOrganizationPremiumRequestUsageReport(ctx context.Co
 		return nil, nil, err
 	}
 
-	premiumRequestUsageReport := new(PremiumRequestUsageReport)
-	resp, err := s.client.Do(ctx, req, premiumRequestUsageReport)
+	var premiumRequestUsageReport *PremiumRequestUsageReport
+	resp, err := s.client.Do(ctx, req, &premiumRequestUsageReport)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -384,8 +384,8 @@ func (s *BillingService) GetPremiumRequestUsageReport(ctx context.Context, user 
 		return nil, nil, err
 	}
 
-	premiumRequestUsageReport := new(PremiumRequestUsageReport)
-	resp, err := s.client.Do(ctx, req, premiumRequestUsageReport)
+	var premiumRequestUsageReport *PremiumRequestUsageReport
+	resp, err := s.client.Do(ctx, req, &premiumRequestUsageReport)
 	if err != nil {
 		return nil, resp, err
 	}

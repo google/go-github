@@ -251,8 +251,8 @@ func TestUsersService_Edit(t *testing.T) {
 	input := &User{Name: Ptr("n")}
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		v := new(User)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *User
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

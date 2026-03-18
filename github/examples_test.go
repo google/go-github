@@ -95,9 +95,9 @@ func ExampleRepositoriesService_CreateFile() {
 
 func ExampleUsersService_ListAll() {
 	client := github.NewClient(nil)
+	ctx := context.Background()
 	opts := &github.UserListOptions{}
 	for {
-		ctx := context.Background()
 		users, _, err := client.Users.ListAll(ctx, opts)
 		if err != nil {
 			log.Fatalf("error listing users: %v", err)

@@ -446,8 +446,8 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationToRepositories(t *t
 			Scope                 string  `json:"scope"`
 			SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
 		}
-		v := new(request)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *request
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		if v.Scope != "selected" {
 			t.Errorf("Organizations.AttachCodeSecurityConfigurationToRepositories request body scope = %v, want selected", v.Scope)
 		}

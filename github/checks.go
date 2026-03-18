@@ -113,8 +113,8 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner, repo string, che
 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
-	checkRun := new(CheckRun)
-	resp, err := s.client.Do(ctx, req, checkRun)
+	var checkRun *CheckRun
+	resp, err := s.client.Do(ctx, req, &checkRun)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -136,8 +136,8 @@ func (s *ChecksService) GetCheckSuite(ctx context.Context, owner, repo string, c
 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
-	checkSuite := new(CheckSuite)
-	resp, err := s.client.Do(ctx, req, checkSuite)
+	var checkSuite *CheckSuite
+	resp, err := s.client.Do(ctx, req, &checkSuite)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -180,8 +180,8 @@ func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, 
 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
-	checkRun := new(CheckRun)
-	resp, err := s.client.Do(ctx, req, checkRun)
+	var checkRun *CheckRun
+	resp, err := s.client.Do(ctx, req, &checkRun)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -215,8 +215,8 @@ func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, 
 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
-	checkRun := new(CheckRun)
-	resp, err := s.client.Do(ctx, req, checkRun)
+	var checkRun *CheckRun
+	resp, err := s.client.Do(ctx, req, &checkRun)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -453,8 +453,8 @@ func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string
 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
-	checkSuite := new(CheckSuite)
-	resp, err := s.client.Do(ctx, req, checkSuite)
+	var checkSuite *CheckSuite
+	resp, err := s.client.Do(ctx, req, &checkSuite)
 	if err != nil {
 		return nil, resp, err
 	}

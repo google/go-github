@@ -96,8 +96,8 @@ func (s *ActionsService) ListArtifacts(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	artifactList := new(ArtifactList)
-	resp, err := s.client.Do(ctx, req, artifactList)
+	var artifactList *ArtifactList
+	resp, err := s.client.Do(ctx, req, &artifactList)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -122,8 +122,8 @@ func (s *ActionsService) ListWorkflowRunArtifacts(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	artifactList := new(ArtifactList)
-	resp, err := s.client.Do(ctx, req, artifactList)
+	var artifactList *ArtifactList
+	resp, err := s.client.Do(ctx, req, &artifactList)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -144,8 +144,8 @@ func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, ar
 		return nil, nil, err
 	}
 
-	artifact := new(Artifact)
-	resp, err := s.client.Do(ctx, req, artifact)
+	var artifact *Artifact
+	resp, err := s.client.Do(ctx, req, &artifact)
 	if err != nil {
 		return nil, resp, err
 	}

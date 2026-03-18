@@ -25,8 +25,8 @@ func TestRepositoriesService_Merge(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/merges", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RepositoryMergeRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *RepositoryMergeRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -90,8 +90,8 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/merge-upstream", func(w http.ResponseWriter, r *http.Request) {
-		v := new(RepoMergeUpstreamRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *RepoMergeUpstreamRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

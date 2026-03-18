@@ -106,8 +106,8 @@ func (s *AdminService) CreateUserImpersonation(ctx context.Context, username str
 		return nil, nil, err
 	}
 
-	a := new(UserAuthorization)
-	resp, err := s.client.Do(ctx, req, a)
+	var a *UserAuthorization
+	resp, err := s.client.Do(ctx, req, &a)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -238,20 +238,20 @@ func (cp *CopilotSeatDetails) UnmarshalJSON(data []byte) error {
 		}
 
 		if t, ok := v["type"].(string); ok && t == "User" {
-			user := &User{}
-			if err := json.Unmarshal(jsonData, user); err != nil {
+			var user *User
+			if err := json.Unmarshal(jsonData, &user); err != nil {
 				return err
 			}
 			cp.Assignee = user
 		} else if t, ok := v["type"].(string); ok && t == "Team" {
-			team := &Team{}
-			if err := json.Unmarshal(jsonData, team); err != nil {
+			var team *Team
+			if err := json.Unmarshal(jsonData, &team); err != nil {
 				return err
 			}
 			cp.Assignee = team
 		} else if t, ok := v["type"].(string); ok && t == "Organization" {
-			organization := &Organization{}
-			if err := json.Unmarshal(jsonData, organization); err != nil {
+			var organization *Organization
+			if err := json.Unmarshal(jsonData, &organization); err != nil {
 				return err
 			}
 			cp.Assignee = organization

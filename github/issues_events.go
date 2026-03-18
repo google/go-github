@@ -169,8 +169,8 @@ func (s *IssuesService) GetEvent(ctx context.Context, owner, repo string, id int
 		return nil, nil, err
 	}
 
-	event := new(IssueEvent)
-	resp, err := s.client.Do(ctx, req, event)
+	var event *IssueEvent
+	resp, err := s.client.Do(ctx, req, &event)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -49,8 +49,8 @@ func (s *OrganizationsService) GetHook(ctx context.Context, org string, id int64
 		return nil, nil, err
 	}
 
-	hook := new(Hook)
-	resp, err := s.client.Do(ctx, req, hook)
+	var hook *Hook
+	resp, err := s.client.Do(ctx, req, &hook)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -86,8 +86,8 @@ func (s *OrganizationsService) CreateHook(ctx context.Context, org string, hook 
 		return nil, nil, err
 	}
 
-	h := new(Hook)
-	resp, err := s.client.Do(ctx, req, h)
+	var h *Hook
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -107,8 +107,8 @@ func (s *OrganizationsService) EditHook(ctx context.Context, org string, id int6
 		return nil, nil, err
 	}
 
-	h := new(Hook)
-	resp, err := s.client.Do(ctx, req, h)
+	var h *Hook
+	resp, err := s.client.Do(ctx, req, &h)
 	if err != nil {
 		return nil, resp, err
 	}

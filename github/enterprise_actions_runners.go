@@ -44,8 +44,8 @@ func (s *EnterpriseService) GenerateEnterpriseJITConfig(ctx context.Context, ent
 		return nil, nil, err
 	}
 
-	jitConfig := new(JITRunnerConfig)
-	resp, err := s.client.Do(ctx, req, jitConfig)
+	var jitConfig *JITRunnerConfig
+	resp, err := s.client.Do(ctx, req, &jitConfig)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -66,8 +66,8 @@ func (s *EnterpriseService) CreateRegistrationToken(ctx context.Context, enterpr
 		return nil, nil, err
 	}
 
-	registrationToken := new(RegistrationToken)
-	resp, err := s.client.Do(ctx, req, registrationToken)
+	var registrationToken *RegistrationToken
+	resp, err := s.client.Do(ctx, req, &registrationToken)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -92,7 +92,7 @@ func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, 
 		return nil, nil, err
 	}
 
-	runners := &Runners{}
+	var runners *Runners
 	resp, err := s.client.Do(ctx, req, &runners)
 	if err != nil {
 		return nil, resp, err
@@ -113,8 +113,8 @@ func (s *EnterpriseService) GetRunner(ctx context.Context, enterprise string, ru
 		return nil, nil, err
 	}
 
-	runner := new(Runner)
-	resp, err := s.client.Do(ctx, req, runner)
+	var runner *Runner
+	resp, err := s.client.Do(ctx, req, &runner)
 	if err != nil {
 		return nil, resp, err
 	}

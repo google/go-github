@@ -603,8 +603,8 @@ func TestEnterpriseService_InitialConfig(t *testing.T) {
 	}
 
 	mux.HandleFunc("/manage/v1/config/init", func(_ http.ResponseWriter, r *http.Request) {
-		v := new(InitialConfigOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *InitialConfigOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if diff := cmp.Diff(v, input); diff != "" {
@@ -629,8 +629,8 @@ func TestEnterpriseService_ConfigApply(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		got := new(ConfigApplyOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(got))
+		var got *ConfigApplyOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&got))
 
 		want := &ConfigApplyOptions{
 			RunID: Ptr("1234"),
@@ -673,8 +673,8 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		got := new(ConfigApplyOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(got))
+		var got *ConfigApplyOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&got))
 
 		want := &ConfigApplyOptions{
 			RunID: Ptr("1234"),

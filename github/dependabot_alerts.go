@@ -155,8 +155,8 @@ func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	alert := new(DependabotAlert)
-	resp, err := s.client.Do(ctx, req, alert)
+	var alert *DependabotAlert
+	resp, err := s.client.Do(ctx, req, &alert)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -176,8 +176,8 @@ func (s *DependabotService) UpdateAlert(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	alert := new(DependabotAlert)
-	resp, err := s.client.Do(ctx, req, alert)
+	var alert *DependabotAlert
+	resp, err := s.client.Do(ctx, req, &alert)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -313,8 +313,8 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 	input := &Subscription{Subscribed: Ptr(true)}
 
 	mux.HandleFunc("/notifications/threads/1/subscription", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Subscription)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Subscription
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PUT")
 		if !cmp.Equal(v, input) {

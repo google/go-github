@@ -111,8 +111,8 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 	input := &Label{Name: Ptr("n")}
 
 	mux.HandleFunc("/repos/o/r/labels", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Label)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Label
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {
@@ -164,8 +164,8 @@ func TestIssuesService_EditLabel(t *testing.T) {
 	input := &Label{Name: Ptr("z")}
 
 	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
-		v := new(Label)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *Label
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

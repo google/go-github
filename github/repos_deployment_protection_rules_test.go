@@ -59,8 +59,8 @@ func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) 
 	}
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment_protection_rules", func(w http.ResponseWriter, r *http.Request) {
-		v := new(CustomDeploymentProtectionRuleRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *CustomDeploymentProtectionRuleRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		want := input

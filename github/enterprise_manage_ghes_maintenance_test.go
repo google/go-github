@@ -95,8 +95,8 @@ func TestEnterpriseService_CreateMaintenance(t *testing.T) {
 	}
 
 	mux.HandleFunc("/manage/v1/maintenance", func(w http.ResponseWriter, r *http.Request) {
-		v := new(MaintenanceOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *MaintenanceOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

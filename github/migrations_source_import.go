@@ -156,8 +156,8 @@ func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	out := new(Import)
-	resp, err := s.client.Do(ctx, req, out)
+	var out *Import
+	resp, err := s.client.Do(ctx, req, &out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -177,8 +177,8 @@ func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	out := new(Import)
-	resp, err := s.client.Do(ctx, req, out)
+	var out *Import
+	resp, err := s.client.Do(ctx, req, &out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -198,8 +198,8 @@ func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	out := new(Import)
-	resp, err := s.client.Do(ctx, req, out)
+	var out *Import
+	resp, err := s.client.Do(ctx, req, &out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -252,8 +252,8 @@ func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	out := new(SourceImportAuthor)
-	resp, err := s.client.Do(ctx, req, out)
+	var out *SourceImportAuthor
+	resp, err := s.client.Do(ctx, req, &out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -275,8 +275,8 @@ func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	out := new(Import)
-	resp, err := s.client.Do(ctx, req, out)
+	var out *Import
+	resp, err := s.client.Do(ctx, req, &out)
 	if err != nil {
 		return nil, resp, err
 	}

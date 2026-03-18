@@ -235,8 +235,8 @@ func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response,
 		return nil, nil, err
 	}
 
-	app := new(App)
-	resp, err := s.client.Do(ctx, req, app)
+	var app *App
+	resp, err := s.client.Do(ctx, req, &app)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -391,8 +391,8 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt
 		return nil, nil, err
 	}
 
-	t := new(InstallationToken)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *InstallationToken
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -415,8 +415,8 @@ func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id i
 		return nil, nil, err
 	}
 
-	t := new(InstallationToken)
-	resp, err := s.client.Do(ctx, req, t)
+	var t *InstallationToken
+	resp, err := s.client.Do(ctx, req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -439,8 +439,8 @@ func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID i
 
 	req.Header.Set("Accept", mediaTypeContentAttachmentsPreview)
 
-	m := &Attachment{}
-	resp, err := s.client.Do(ctx, req, m)
+	var m *Attachment
+	resp, err := s.client.Do(ctx, req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -490,8 +490,8 @@ func (s *AppsService) getInstallation(ctx context.Context, url string) (*Install
 		return nil, nil, err
 	}
 
-	i := new(Installation)
-	resp, err := s.client.Do(ctx, req, i)
+	var i *Installation
+	resp, err := s.client.Do(ctx, req, &i)
 	if err != nil {
 		return nil, resp, err
 	}

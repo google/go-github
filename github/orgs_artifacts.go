@@ -118,11 +118,13 @@ func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Contex
 	if err != nil {
 		return nil, nil, err
 	}
-	v := new(ArtifactDeploymentResponse)
-	resp, err := s.client.Do(ctx, req, v)
+
+	var v *ArtifactDeploymentResponse
+	resp, err := s.client.Do(ctx, req, &v)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return v, resp, nil
 }
 
@@ -137,11 +139,13 @@ func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, 
 	if err != nil {
 		return nil, nil, err
 	}
-	v := new(ArtifactDeploymentResponse)
-	resp, err := s.client.Do(ctx, req, v)
+
+	var v *ArtifactDeploymentResponse
+	resp, err := s.client.Do(ctx, req, &v)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return v, resp, nil
 }
 
@@ -156,11 +160,13 @@ func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, 
 	if err != nil {
 		return nil, nil, err
 	}
-	v := new(ArtifactStorageResponse)
-	resp, err := s.client.Do(ctx, req, v)
+
+	var v *ArtifactStorageResponse
+	resp, err := s.client.Do(ctx, req, &v)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return v, resp, nil
 }
 
@@ -179,11 +185,12 @@ func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context
 		return nil, nil, err
 	}
 
-	v := new(ArtifactDeploymentResponse)
-	resp, err := s.client.Do(ctx, req, v)
+	var v *ArtifactDeploymentResponse
+	resp, err := s.client.Do(ctx, req, &v)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return v, resp, nil
 }
 
@@ -202,10 +209,11 @@ func (s *OrganizationsService) ListArtifactStorageRecords(ctx context.Context, o
 		return nil, nil, err
 	}
 
-	v := new(ArtifactStorageResponse)
-	resp, err := s.client.Do(ctx, req, v)
+	var v *ArtifactStorageResponse
+	resp, err := s.client.Do(ctx, req, &v)
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return v, resp, nil
 }

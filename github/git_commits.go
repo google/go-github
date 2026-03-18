@@ -92,8 +92,8 @@ func (s *GitService) GetCommit(ctx context.Context, owner, repo, sha string) (*C
 		return nil, nil, err
 	}
 
-	c := new(Commit)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *Commit
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -166,8 +166,8 @@ func (s *GitService) CreateCommit(ctx context.Context, owner, repo string, commi
 		return nil, nil, err
 	}
 
-	c := new(Commit)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *Commit
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}

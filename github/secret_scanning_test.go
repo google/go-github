@@ -355,8 +355,8 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 
-		v := new(SecretScanningAlertUpdateOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *SecretScanningAlertUpdateOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		want := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
 

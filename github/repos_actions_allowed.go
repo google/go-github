@@ -22,8 +22,8 @@ func (s *RepositoriesService) GetActionsAllowed(ctx context.Context, org, repo s
 		return nil, nil, err
 	}
 
-	actionsAllowed := new(ActionsAllowed)
-	resp, err := s.client.Do(ctx, req, actionsAllowed)
+	var actionsAllowed *ActionsAllowed
+	resp, err := s.client.Do(ctx, req, &actionsAllowed)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -43,8 +43,8 @@ func (s *RepositoriesService) EditActionsAllowed(ctx context.Context, org, repo 
 		return nil, nil, err
 	}
 
-	p := new(ActionsAllowed)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *ActionsAllowed
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}

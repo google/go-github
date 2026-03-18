@@ -59,8 +59,8 @@ func (s *ActionsService) GetActionsPermissionsInEnterprise(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	permissions := new(ActionsPermissionsEnterprise)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *ActionsPermissionsEnterprise
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -80,8 +80,8 @@ func (s *ActionsService) UpdateActionsPermissionsInEnterprise(ctx context.Contex
 		return nil, nil, err
 	}
 
-	p := new(ActionsPermissionsEnterprise)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *ActionsPermissionsEnterprise
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -106,8 +106,8 @@ func (s *ActionsService) ListEnabledOrgsInEnterprise(ctx context.Context, owner 
 		return nil, nil, err
 	}
 
-	orgs := &ActionsEnabledOnEnterpriseRepos{}
-	resp, err := s.client.Do(ctx, req, orgs)
+	var orgs *ActionsEnabledOnEnterpriseRepos
+	resp, err := s.client.Do(ctx, req, &orgs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -193,8 +193,8 @@ func (s *ActionsService) GetActionsAllowedInEnterprise(ctx context.Context, ente
 		return nil, nil, err
 	}
 
-	actionsAllowed := new(ActionsAllowed)
-	resp, err := s.client.Do(ctx, req, actionsAllowed)
+	var actionsAllowed *ActionsAllowed
+	resp, err := s.client.Do(ctx, req, &actionsAllowed)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -214,8 +214,8 @@ func (s *ActionsService) UpdateActionsAllowedInEnterprise(ctx context.Context, e
 		return nil, nil, err
 	}
 
-	p := new(ActionsAllowed)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *ActionsAllowed
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -236,8 +236,8 @@ func (s *ActionsService) GetDefaultWorkflowPermissionsInEnterprise(ctx context.C
 		return nil, nil, err
 	}
 
-	permissions := new(DefaultWorkflowPermissionEnterprise)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *DefaultWorkflowPermissionEnterprise
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -257,8 +257,8 @@ func (s *ActionsService) UpdateDefaultWorkflowPermissionsInEnterprise(ctx contex
 		return nil, nil, err
 	}
 
-	p := new(DefaultWorkflowPermissionEnterprise)
-	resp, err := s.client.Do(ctx, req, p)
+	var p *DefaultWorkflowPermissionEnterprise
+	resp, err := s.client.Do(ctx, req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -279,8 +279,8 @@ func (s *ActionsService) GetArtifactAndLogRetentionPeriodInEnterprise(ctx contex
 		return nil, nil, err
 	}
 
-	arp := new(ArtifactPeriod)
-	resp, err := s.client.Do(ctx, req, arp)
+	var arp *ArtifactPeriod
+	resp, err := s.client.Do(ctx, req, &arp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -315,8 +315,8 @@ func (s *ActionsService) GetSelfHostedRunnerPermissionsInEnterprise(ctx context.
 		return nil, nil, err
 	}
 
-	permissions := new(SelfHostRunnerPermissionsEnterprise)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *SelfHostRunnerPermissionsEnterprise
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -352,8 +352,8 @@ func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx co
 		return nil, nil, err
 	}
 
-	permissions := new(WorkflowsPermissions)
-	resp, err := s.client.Do(ctx, req, permissions)
+	var permissions *WorkflowsPermissions
+	resp, err := s.client.Do(ctx, req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -389,8 +389,8 @@ func (s *ActionsService) GetEnterpriseForkPRContributorApprovalPermissions(ctx c
 		return nil, nil, err
 	}
 
-	policy := new(ContributorApprovalPermissions)
-	resp, err := s.client.Do(ctx, req, policy)
+	var policy *ContributorApprovalPermissions
+	resp, err := s.client.Do(ctx, req, &policy)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -24,9 +24,8 @@ func (s *InteractionsService) GetRestrictionsForOrg(ctx context.Context, organiz
 
 	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
-	organizationInteractions := new(InteractionRestriction)
-
-	resp, err := s.client.Do(ctx, req, organizationInteractions)
+	var organizationInteractions *InteractionRestriction
+	resp, err := s.client.Do(ctx, req, &organizationInteractions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -55,9 +54,8 @@ func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, orga
 
 	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
-	organizationInteractions := new(InteractionRestriction)
-
-	resp, err := s.client.Do(ctx, req, organizationInteractions)
+	var organizationInteractions *InteractionRestriction
+	resp, err := s.client.Do(ctx, req, &organizationInteractions)
 	if err != nil {
 		return nil, resp, err
 	}

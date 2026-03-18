@@ -318,8 +318,8 @@ func (s *EnterpriseService) ConfigApplyEvents(ctx context.Context, opts *ConfigA
 		return nil, nil, err
 	}
 
-	configApplyEvents := new(ConfigApplyEvents)
-	resp, err := s.client.Do(ctx, req, configApplyEvents)
+	var configApplyEvents *ConfigApplyEvents
+	resp, err := s.client.Do(ctx, req, &configApplyEvents)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -425,8 +425,8 @@ func (s *EnterpriseService) NodeMetadata(ctx context.Context, opts *NodeQueryOpt
 		return nil, nil, err
 	}
 
-	status := new(NodeMetadataStatus)
-	resp, err := s.client.Do(ctx, req, status)
+	var status *NodeMetadataStatus
+	resp, err := s.client.Do(ctx, req, &status)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -446,8 +446,8 @@ func (s *EnterpriseService) Settings(ctx context.Context) (*ConfigSettings, *Res
 		return nil, nil, err
 	}
 
-	configSettings := new(ConfigSettings)
-	resp, err := s.client.Do(ctx, req, configSettings)
+	var configSettings *ConfigSettings
+	resp, err := s.client.Do(ctx, req, &configSettings)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -486,8 +486,8 @@ func (s *EnterpriseService) ConfigApply(ctx context.Context, opts *ConfigApplyOp
 		return nil, nil, err
 	}
 
-	configApplyOptions := new(ConfigApplyOptions)
-	resp, err := s.client.Do(ctx, req, configApplyOptions)
+	var configApplyOptions *ConfigApplyOptions
+	resp, err := s.client.Do(ctx, req, &configApplyOptions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -507,8 +507,8 @@ func (s *EnterpriseService) ConfigApplyStatus(ctx context.Context, opts *ConfigA
 		return nil, nil, err
 	}
 
-	status := new(ConfigApplyStatus)
-	resp, err := s.client.Do(ctx, req, status)
+	var status *ConfigApplyStatus
+	resp, err := s.client.Do(ctx, req, &status)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -149,7 +149,7 @@ func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, 
 		return nil, nil, err
 	}
 
-	runs := new(WorkflowRuns)
+	var runs *WorkflowRuns
 	resp, err := s.client.Do(ctx, req, &runs)
 	if err != nil {
 		return nil, resp, err
@@ -195,7 +195,7 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 		return nil, nil, err
 	}
 
-	runs := new(WorkflowRuns)
+	var runs *WorkflowRuns
 	resp, err := s.client.Do(ctx, req, &runs)
 	if err != nil {
 		return nil, resp, err
@@ -218,8 +218,8 @@ func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	run := new(WorkflowRun)
-	resp, err := s.client.Do(ctx, req, run)
+	var run *WorkflowRun
+	resp, err := s.client.Do(ctx, req, &run)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -245,8 +245,8 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	run := new(WorkflowRun)
-	resp, err := s.client.Do(ctx, req, run)
+	var run *WorkflowRun
+	resp, err := s.client.Do(ctx, req, &run)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -473,8 +473,8 @@ func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	workflowRunUsage := new(WorkflowRunUsage)
-	resp, err := s.client.Do(ctx, req, workflowRunUsage)
+	var workflowRunUsage *WorkflowRunUsage
+	resp, err := s.client.Do(ctx, req, &workflowRunUsage)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -168,21 +168,21 @@ func (s *SecurityAdvisoriesService) CreateTemporaryPrivateFork(ctx context.Conte
 		return nil, nil, err
 	}
 
-	fork := new(Repository)
-	resp, err := s.client.Do(ctx, req, fork)
+	var fork Repository
+	resp, err := s.client.Do(ctx, req, &fork)
 	if err != nil {
 		var aerr *AcceptedError
 		if errors.As(err, &aerr) {
-			if err := json.Unmarshal(aerr.Raw, fork); err != nil {
-				return fork, resp, err
+			if err := json.Unmarshal(aerr.Raw, &fork); err != nil {
+				return &fork, resp, err
 			}
 
-			return fork, resp, err
+			return &fork, resp, err
 		}
 		return nil, resp, err
 	}
 
-	return fork, resp, nil
+	return &fork, resp, nil
 }
 
 // ListRepositorySecurityAdvisoriesForOrg lists the repository security advisories for an organization.

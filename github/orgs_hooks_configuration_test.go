@@ -70,8 +70,8 @@ func TestOrganizationsService_EditHookConfiguration(t *testing.T) {
 	input := &HookConfig{}
 
 	mux.HandleFunc("/orgs/o/hooks/1/config", func(w http.ResponseWriter, r *http.Request) {
-		v := new(HookConfig)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *HookConfig
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "PATCH")
 		if !cmp.Equal(v, input) {

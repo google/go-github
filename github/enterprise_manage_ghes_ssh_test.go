@@ -59,8 +59,8 @@ func TestEnterpriseService_DeleteSSHKey(t *testing.T) {
 	}
 
 	mux.HandleFunc("/manage/v1/access/ssh", func(w http.ResponseWriter, r *http.Request) {
-		v := new(SSHKeyOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *SSHKeyOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "DELETE")
 		if !cmp.Equal(v, input) {
@@ -100,8 +100,8 @@ func TestEnterpriseService_CreateSSHKey(t *testing.T) {
 	}
 
 	mux.HandleFunc("/manage/v1/access/ssh", func(w http.ResponseWriter, r *http.Request) {
-		v := new(SSHKeyOptions)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *SSHKeyOptions
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
 		if !cmp.Equal(v, input) {

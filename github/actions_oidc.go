@@ -42,8 +42,8 @@ func (s *ActionsService) getOIDCSubjectClaimCustomTemplate(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	tmpl := new(OIDCSubjectClaimCustomTemplate)
-	resp, err := s.client.Do(ctx, req, tmpl)
+	var tmpl *OIDCSubjectClaimCustomTemplate
+	resp, err := s.client.Do(ctx, req, &tmpl)
 	if err != nil {
 		return nil, resp, err
 	}

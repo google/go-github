@@ -110,8 +110,8 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 		return nil, nil, err
 	}
 
-	identities := new(SCIMProvisionedIdentities)
-	resp, err := s.client.Do(ctx, req, identities)
+	var identities *SCIMProvisionedIdentities
+	resp, err := s.client.Do(ctx, req, &identities)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -132,8 +132,8 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 		return nil, nil, err
 	}
 
-	user := new(SCIMUserAttributes)
-	resp, err := s.client.Do(ctx, req, user)
+	var user *SCIMUserAttributes
+	resp, err := s.client.Do(ctx, req, &user)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -153,7 +153,7 @@ func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, s
 		return nil, nil, err
 	}
 
-	user := new(SCIMUserAttributes)
+	var user *SCIMUserAttributes
 	resp, err := s.client.Do(ctx, req, &user)
 	if err != nil {
 		return nil, resp, err

@@ -103,8 +103,8 @@ func (s *IssuesService) GetComment(ctx context.Context, owner, repo string, comm
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	comment := new(IssueComment)
-	resp, err := s.client.Do(ctx, req, comment)
+	var comment *IssueComment
+	resp, err := s.client.Do(ctx, req, &comment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -123,8 +123,8 @@ func (s *IssuesService) CreateComment(ctx context.Context, owner, repo string, n
 	if err != nil {
 		return nil, nil, err
 	}
-	c := new(IssueComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *IssueComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -144,8 +144,8 @@ func (s *IssuesService) EditComment(ctx context.Context, owner, repo string, com
 	if err != nil {
 		return nil, nil, err
 	}
-	c := new(IssueComment)
-	resp, err := s.client.Do(ctx, req, c)
+	var c *IssueComment
+	resp, err := s.client.Do(ctx, req, &c)
 	if err != nil {
 		return nil, resp, err
 	}

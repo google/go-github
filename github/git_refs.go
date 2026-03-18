@@ -63,8 +63,8 @@ func (s *GitService) GetRef(ctx context.Context, owner, repo, ref string) (*Refe
 		return nil, nil, err
 	}
 
-	r := new(Reference)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *Reference
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -131,8 +131,8 @@ func (s *GitService) CreateRef(ctx context.Context, owner, repo string, ref Crea
 		return nil, nil, err
 	}
 
-	r := new(Reference)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *Reference
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -161,8 +161,8 @@ func (s *GitService) UpdateRef(ctx context.Context, owner, repo, ref string, upd
 		return nil, nil, err
 	}
 
-	r := new(Reference)
-	resp, err := s.client.Do(ctx, req, r)
+	var r *Reference
+	resp, err := s.client.Do(ctx, req, &r)
 	if err != nil {
 		return nil, resp, err
 	}

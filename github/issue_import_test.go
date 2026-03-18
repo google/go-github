@@ -37,8 +37,8 @@ func TestIssueImportService_Create(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
-		v := new(IssueImportRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *IssueImportRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
 		if !cmp.Equal(v, input) {
@@ -95,8 +95,8 @@ func TestIssueImportService_Create_deferred(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
-		v := new(IssueImportRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *IssueImportRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
 		if !cmp.Equal(v, input) {
@@ -141,8 +141,8 @@ func TestIssueImportService_Create_badResponse(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
-		v := new(IssueImportRequest)
-		assertNilError(t, json.NewDecoder(r.Body).Decode(v))
+		var v *IssueImportRequest
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
 		if !cmp.Equal(v, input) {

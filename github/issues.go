@@ -393,8 +393,8 @@ func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int)
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	issue := new(Issue)
-	resp, err := s.client.Do(ctx, req, issue)
+	var issue *Issue
+	resp, err := s.client.Do(ctx, req, &issue)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -414,8 +414,8 @@ func (s *IssuesService) Create(ctx context.Context, owner, repo string, issue *I
 		return nil, nil, err
 	}
 
-	i := new(Issue)
-	resp, err := s.client.Do(ctx, req, i)
+	var i *Issue
+	resp, err := s.client.Do(ctx, req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -435,8 +435,8 @@ func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int
 		return nil, nil, err
 	}
 
-	i := new(Issue)
-	resp, err := s.client.Do(ctx, req, i)
+	var i *Issue
+	resp, err := s.client.Do(ctx, req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -460,8 +460,8 @@ func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	i := new(Issue)
-	resp, err := s.client.Do(ctx, req, i)
+	var i *Issue
+	resp, err := s.client.Do(ctx, req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
