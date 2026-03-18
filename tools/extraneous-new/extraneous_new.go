@@ -27,30 +27,19 @@ type ExtraneousNewPlugin struct {
 	ignoredMethods map[string]bool
 }
 
-// Settings is the configuration for the extraneousnew linter.
-type Settings struct {
-	// IgnoredMethods causes the linter to skip linting individual `Receiver.Methods`.
-	IgnoredMethods []string `json:"ignored-methods" yaml:"ignored-methods"`
-}
-
 // New returns an analysis.Analyzer to use with golangci-lint.
 func New(cfg any) (register.LinterPlugin, error) {
-	settings := Settings{}
+	ignoredMethods := map[string]bool{}
 	if cfg != nil {
 		if data, ok := cfg.(map[string]any); ok {
 			if ignored, ok := data["ignored-methods"].([]any); ok {
 				for _, m := range ignored {
 					if s, ok := m.(string); ok {
-						settings.IgnoredMethods = append(settings.IgnoredMethods, s)
+						ignoredMethods[s] = true
 					}
 				}
 			}
 		}
-	}
-
-	ignoredMethods := map[string]bool{}
-	for _, m := range settings.IgnoredMethods {
-		ignoredMethods[m] = true
 	}
 
 	return &ExtraneousNewPlugin{
