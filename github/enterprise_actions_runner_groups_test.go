@@ -541,6 +541,8 @@ func TestEnterpriseRunnerGroup_Marshal(t *testing.T) {
 		Default:                  Ptr(true),
 		SelectedOrganizationsURL: Ptr("s"),
 		RunnersURL:               Ptr("r"),
+		HostedRunnersURL:         Ptr("h"),
+		NetworkConfigurationID:   Ptr("nc"),
 		Inherited:                Ptr(true),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
@@ -553,6 +555,8 @@ func TestEnterpriseRunnerGroup_Marshal(t *testing.T) {
 		"default": true,
 		"selected_organizations_url": "s",
 		"runners_url": "r",
+		"hosted_runners_url": "h",
+		"network_configuration_id": "nc",
 		"inherited": true,
 		"allows_public_repositories": true,
 		"restricted_to_workflows": false
@@ -575,6 +579,8 @@ func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
 				Default:                  Ptr(true),
 				SelectedOrganizationsURL: Ptr("s"),
 				RunnersURL:               Ptr("r"),
+				HostedRunnersURL:         Ptr("h"),
+				NetworkConfigurationID:   Ptr("nc"),
 				Inherited:                Ptr(true),
 				AllowsPublicRepositories: Ptr(true),
 				RestrictedToWorkflows:    Ptr(false),
@@ -591,6 +597,8 @@ func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
 			"default": true,
 			"selected_organizations_url": "s",
 			"runners_url": "r",
+			"hosted_runners_url": "h",
+			"network_configuration_id": "nc",
 			"inherited": true,
 			"allows_public_repositories": true,
 			"restricted_to_workflows": false
@@ -612,6 +620,7 @@ func TestCreateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(true),
 		SelectedWorkflows:        []string{"a", "b"},
+		NetworkConfigurationID:   Ptr("nc-123"),
 	}
 
 	want := `{
@@ -621,7 +630,8 @@ func TestCreateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
 		"runners": [1],
 		"allows_public_repositories": true,
 		"restricted_to_workflows": true,
-		"selected_workflows": ["a","b"]
+		"selected_workflows": ["a","b"],
+		"network_configuration_id": "nc-123"
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -636,13 +646,15 @@ func TestUpdateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
 		Visibility:               Ptr("v"),
 		AllowsPublicRepositories: Ptr(true),
 		RestrictedToWorkflows:    Ptr(false),
+		NetworkConfigurationID:   Ptr("nc-456"),
 	}
 
 	want := `{
 		"name": "n",
 		"visibility": "v",
 		"allows_public_repositories": true,
-		"restricted_to_workflows": false
+		"restricted_to_workflows": false,
+		"network_configuration_id": "nc-456"
 	}`
 
 	testJSONMarshal(t, u, want)

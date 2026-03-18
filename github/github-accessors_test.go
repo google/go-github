@@ -11861,6 +11861,17 @@ func TestCreateEnterpriseRunnerGroupRequest_GetName(tt *testing.T) {
 	c.GetName()
 }
 
+func TestCreateEnterpriseRunnerGroupRequest_GetNetworkConfigurationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateEnterpriseRunnerGroupRequest{NetworkConfigurationID: &zeroValue}
+	c.GetNetworkConfigurationID()
+	c = &CreateEnterpriseRunnerGroupRequest{}
+	c.GetNetworkConfigurationID()
+	c = nil
+	c.GetNetworkConfigurationID()
+}
+
 func TestCreateEnterpriseRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -16943,6 +16954,17 @@ func TestEnterpriseRunnerGroup_GetDefault(tt *testing.T) {
 	e.GetDefault()
 }
 
+func TestEnterpriseRunnerGroup_GetHostedRunnersURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseRunnerGroup{HostedRunnersURL: &zeroValue}
+	e.GetHostedRunnersURL()
+	e = &EnterpriseRunnerGroup{}
+	e.GetHostedRunnersURL()
+	e = nil
+	e.GetHostedRunnersURL()
+}
+
 func TestEnterpriseRunnerGroup_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -16974,6 +16996,17 @@ func TestEnterpriseRunnerGroup_GetName(tt *testing.T) {
 	e.GetName()
 	e = nil
 	e.GetName()
+}
+
+func TestEnterpriseRunnerGroup_GetNetworkConfigurationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseRunnerGroup{NetworkConfigurationID: &zeroValue}
+	e.GetNetworkConfigurationID()
+	e = &EnterpriseRunnerGroup{}
+	e.GetNetworkConfigurationID()
+	e = nil
+	e.GetNetworkConfigurationID()
 }
 
 func TestEnterpriseRunnerGroup_GetRestrictedToWorkflows(tt *testing.T) {
@@ -49512,6 +49545,17 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetName(tt *testing.T) {
 	u.GetName()
 	u = nil
 	u.GetName()
+}
+
+func TestUpdateEnterpriseRunnerGroupRequest_GetNetworkConfigurationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateEnterpriseRunnerGroupRequest{NetworkConfigurationID: &zeroValue}
+	u.GetNetworkConfigurationID()
+	u = &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetNetworkConfigurationID()
+	u = nil
+	u.GetNetworkConfigurationID()
 }
 
 func TestUpdateEnterpriseRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
