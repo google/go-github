@@ -11,6 +11,7 @@ linters:
     - dupl
     - errcheck
     - errorlint
+    - extraneousnew
     - fmtpercentv
     - forbidigo
     - gocritic
@@ -180,6 +181,14 @@ linters:
       os-create-temp: true
       os-temp-dir: true
     custom:
+      extraneousnew:
+        type: module
+        description: Reports problematic usage of 'new' or '&SomeStruct{}' when a more idiomatic 'var' pointer would be more appropriate.
+        original-url: github.com/google/go-github/v84/tools/extraneousnew
+        settings:
+          ignored-methods:
+            - RateLimitService.Get
+            - RepositoriesService.ReplaceAllTopics
       fmtpercentv:
         type: module
         description: Reports usage of %d or %s in format strings.

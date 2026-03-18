@@ -279,8 +279,8 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	review := &PullRequestReview{}
-	resp, err := s.client.Do(ctx, req, review)
+	var review *PullRequestReview
+	resp, err := s.client.Do(ctx, req, &review)
 	if err != nil {
 		return nil, resp, err
 	}
