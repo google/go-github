@@ -125,8 +125,7 @@ type golangciConfig struct {
 			Custom struct {
 				Structfield struct {
 					Settings struct {
-						AllowedTagNames []string `yaml:"allowed-tag-names"`
-						AllowedTagTypes []string `yaml:"allowed-tag-types"`
+						structfield.Settings `yaml:",inline"`
 					} `yaml:"settings"`
 				} `yaml:"structfield"`
 			} `yaml:"custom"`
