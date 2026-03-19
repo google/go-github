@@ -228,3 +228,117 @@ func (s *EnterpriseService) DeleteHostedRunner(ctx context.Context, enterprise s
 
 	return hostedRunner, resp, nil
 }
+
+// ListHostedRunnerCustomImages lists custom images for GitHub-hosted runners in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#list-custom-images-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom
+func (s *EnterpriseService) ListHostedRunnerCustomImages(ctx context.Context, enterprise string) (*HostedRunnerCustomImages, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom", enterprise)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var images *HostedRunnerCustomImages
+	resp, err := s.client.Do(ctx, req, &images)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return images, resp, nil
+}
+
+// GetHostedRunnerCustomImage gets a custom image definition for GitHub-hosted runners in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#get-an-enterprise-custom-image-definition-for-github-actions-hosted-runners
+//
+//meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}
+func (s *EnterpriseService) GetHostedRunnerCustomImage(ctx context.Context, enterprise string, imageDefinitionID int64) (*HostedRunnerCustomImage, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom/%v", enterprise, imageDefinitionID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var image *HostedRunnerCustomImage
+	resp, err := s.client.Do(ctx, req, &image)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return image, resp, nil
+}
+
+// DeleteHostedRunnerCustomImage deletes a custom image from the enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#delete-a-custom-image-from-the-enterprise
+//
+//meta:operation DELETE /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}
+func (s *EnterpriseService) DeleteHostedRunnerCustomImage(ctx context.Context, enterprise string, imageDefinitionID int64) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom/%v", enterprise, imageDefinitionID)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// ListHostedRunnerCustomImageVersions lists image versions of a custom image for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#list-image-versions-of-a-custom-image-for-an-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}/versions
+func (s *EnterpriseService) ListHostedRunnerCustomImageVersions(ctx context.Context, enterprise string, imageDefinitionID int64) (*HostedRunnerCustomImageVersions, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom/%v/versions", enterprise, imageDefinitionID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var versions *HostedRunnerCustomImageVersions
+	resp, err := s.client.Do(ctx, req, &versions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return versions, resp, nil
+}
+
+// GetHostedRunnerCustomImageVersion gets an image version of a custom image for GitHub-hosted runners in an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#get-an-image-version-of-an-enterprise-custom-image-for-github-actions-hosted-runners
+//
+//meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}
+func (s *EnterpriseService) GetHostedRunnerCustomImageVersion(ctx context.Context, enterprise string, imageDefinitionID int64, version string) (*HostedRunnerCustomImageVersion, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom/%v/versions/%v", enterprise, imageDefinitionID, version)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var imageVersion *HostedRunnerCustomImageVersion
+	resp, err := s.client.Do(ctx, req, &imageVersion)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return imageVersion, resp, nil
+}
+
+// DeleteHostedRunnerCustomImageVersion deletes an image version of a custom image from the enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#delete-an-image-version-of-custom-image-from-the-enterprise
+//
+//meta:operation DELETE /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}
+func (s *EnterpriseService) DeleteHostedRunnerCustomImageVersion(ctx context.Context, enterprise string, imageDefinitionID int64, version string) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom/%v/versions/%v", enterprise, imageDefinitionID, version)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}

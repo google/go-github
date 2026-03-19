@@ -160,6 +160,39 @@ func (s *ActionsService) CreateHostedRunner(ctx context.Context, org string, req
 	return hostedRunner, resp, nil
 }
 
+// HostedRunnerCustomImage represents a custom image definition for GitHub-hosted runners.
+type HostedRunnerCustomImage struct {
+	ID                int64  `json:"id"`
+	Platform          string `json:"platform"`
+	Name              string `json:"name"`
+	Source            string `json:"source"`
+	VersionsCount     int    `json:"versions_count"`
+	TotalVersionsSize int    `json:"total_versions_size"`
+	LatestVersion     string `json:"latest_version"`
+	State             string `json:"state"`
+}
+
+// HostedRunnerCustomImages represents a collection of custom images for GitHub-hosted runners.
+type HostedRunnerCustomImages struct {
+	TotalCount int                        `json:"total_count"`
+	Images     []*HostedRunnerCustomImage `json:"images"`
+}
+
+// HostedRunnerCustomImageVersion represents a version of a custom image for GitHub-hosted runners.
+type HostedRunnerCustomImageVersion struct {
+	Version      string    `json:"version"`
+	SizeGB       int       `json:"size_gb"`
+	State        string    `json:"state"`
+	StateDetails string    `json:"state_details"`
+	CreatedOn    Timestamp `json:"created_on"`
+}
+
+// HostedRunnerCustomImageVersions represents a collection of versions of a custom image.
+type HostedRunnerCustomImageVersions struct {
+	TotalCount    int                               `json:"total_count"`
+	ImageVersions []*HostedRunnerCustomImageVersion `json:"image_versions"`
+}
+
 // HostedRunnerImageSpecs represents the details of a GitHub-hosted runner image.
 type HostedRunnerImageSpecs struct {
 	ID          string `json:"id"`
@@ -364,4 +397,118 @@ func (s *ActionsService) DeleteHostedRunner(ctx context.Context, org string, run
 	}
 
 	return hostedRunner, resp, nil
+}
+
+// ListHostedRunnerCustomImages lists custom images for GitHub-hosted runners in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#list-custom-images-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/hosted-runners/images/custom
+func (s *ActionsService) ListHostedRunnerCustomImages(ctx context.Context, org string) (*HostedRunnerCustomImages, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/images/custom", org)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var images *HostedRunnerCustomImages
+	resp, err := s.client.Do(ctx, req, &images)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return images, resp, nil
+}
+
+// GetHostedRunnerCustomImage gets a custom image definition for GitHub-hosted runners in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-a-custom-image-definition-for-github-actions-hosted-runners
+//
+//meta:operation GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}
+func (s *ActionsService) GetHostedRunnerCustomImage(ctx context.Context, org string, imageDefinitionID int64) (*HostedRunnerCustomImage, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/images/custom/%v", org, imageDefinitionID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var image *HostedRunnerCustomImage
+	resp, err := s.client.Do(ctx, req, &image)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return image, resp, nil
+}
+
+// DeleteHostedRunnerCustomImage deletes a custom image from the organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#delete-a-custom-image-from-the-organization
+//
+//meta:operation DELETE /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}
+func (s *ActionsService) DeleteHostedRunnerCustomImage(ctx context.Context, org string, imageDefinitionID int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/images/custom/%v", org, imageDefinitionID)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
+}
+
+// ListHostedRunnerCustomImageVersions lists image versions of a custom image for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#list-image-versions-of-a-custom-image-for-an-organization
+//
+//meta:operation GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions
+func (s *ActionsService) ListHostedRunnerCustomImageVersions(ctx context.Context, org string, imageDefinitionID int64) (*HostedRunnerCustomImageVersions, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/images/custom/%v/versions", org, imageDefinitionID)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var versions *HostedRunnerCustomImageVersions
+	resp, err := s.client.Do(ctx, req, &versions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return versions, resp, nil
+}
+
+// GetHostedRunnerCustomImageVersion gets an image version of a custom image for GitHub-hosted runners in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-an-image-version-of-a-custom-image-for-github-actions-hosted-runners
+//
+//meta:operation GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}
+func (s *ActionsService) GetHostedRunnerCustomImageVersion(ctx context.Context, org string, imageDefinitionID int64, version string) (*HostedRunnerCustomImageVersion, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/images/custom/%v/versions/%v", org, imageDefinitionID, version)
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var imageVersion *HostedRunnerCustomImageVersion
+	resp, err := s.client.Do(ctx, req, &imageVersion)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return imageVersion, resp, nil
+}
+
+// DeleteHostedRunnerCustomImageVersion deletes an image version of a custom image from the organization.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#delete-an-image-version-of-custom-image-from-the-organization
+//
+//meta:operation DELETE /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}
+func (s *ActionsService) DeleteHostedRunnerCustomImageVersion(ctx context.Context, org string, imageDefinitionID int64, version string) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/images/custom/%v/versions/%v", org, imageDefinitionID, version)
+	req, err := s.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(ctx, req, nil)
 }

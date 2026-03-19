@@ -858,3 +858,311 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestActionsService_ListHostedRunnerCustomImages(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/hosted-runners/images/custom", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"total_count": 2,
+			"images": [
+				{
+					"id": 1,
+					"platform": "linux-x64",
+					"name": "CustomImage1",
+					"source": "custom",
+					"versions_count": 4,
+					"total_versions_size": 200,
+					"latest_version": "1.3.0",
+					"state": "Ready"
+				},
+				{
+					"id": 2,
+					"platform": "linux-x64",
+					"name": "CustomImage2",
+					"source": "custom",
+					"versions_count": 2,
+					"total_versions_size": 150,
+					"latest_version": "1.0.0",
+					"state": "Ready"
+				}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	images, _, err := client.Actions.ListHostedRunnerCustomImages(ctx, "o")
+	if err != nil {
+		t.Errorf("Actions.ListHostedRunnerCustomImages returned error: %v", err)
+	}
+
+	want := &HostedRunnerCustomImages{
+		TotalCount: 2,
+		Images: []*HostedRunnerCustomImage{
+			{
+				ID:                1,
+				Platform:          "linux-x64",
+				Name:              "CustomImage1",
+				Source:            "custom",
+				VersionsCount:     4,
+				TotalVersionsSize: 200,
+				LatestVersion:     "1.3.0",
+				State:             "Ready",
+			},
+			{
+				ID:                2,
+				Platform:          "linux-x64",
+				Name:              "CustomImage2",
+				Source:            "custom",
+				VersionsCount:     2,
+				TotalVersionsSize: 150,
+				LatestVersion:     "1.0.0",
+				State:             "Ready",
+			},
+		},
+	}
+
+	if !cmp.Equal(images, want) {
+		t.Errorf("Actions.ListHostedRunnerCustomImages returned %+v, want %+v", images, want)
+	}
+
+	const methodName = "ListHostedRunnerCustomImages"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListHostedRunnerCustomImages(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListHostedRunnerCustomImages(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_GetHostedRunnerCustomImage(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/hosted-runners/images/custom/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": 1,
+			"platform": "linux-x64",
+			"name": "CustomImage",
+			"source": "custom",
+			"versions_count": 4,
+			"total_versions_size": 200,
+			"latest_version": "1.3.0",
+			"state": "Ready"
+		}`)
+	})
+
+	ctx := t.Context()
+	image, _, err := client.Actions.GetHostedRunnerCustomImage(ctx, "o", 1)
+	if err != nil {
+		t.Errorf("Actions.GetHostedRunnerCustomImage returned error: %v", err)
+	}
+
+	want := &HostedRunnerCustomImage{
+		ID:                1,
+		Platform:          "linux-x64",
+		Name:              "CustomImage",
+		Source:            "custom",
+		VersionsCount:     4,
+		TotalVersionsSize: 200,
+		LatestVersion:     "1.3.0",
+		State:             "Ready",
+	}
+
+	if !cmp.Equal(image, want) {
+		t.Errorf("Actions.GetHostedRunnerCustomImage returned %+v, want %+v", image, want)
+	}
+
+	const methodName = "GetHostedRunnerCustomImage"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetHostedRunnerCustomImage(ctx, "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetHostedRunnerCustomImage(ctx, "o", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_DeleteHostedRunnerCustomImage(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/hosted-runners/images/custom/1", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := t.Context()
+	_, err := client.Actions.DeleteHostedRunnerCustomImage(ctx, "o", 1)
+	if err != nil {
+		t.Errorf("Actions.DeleteHostedRunnerCustomImage returned error: %v", err)
+	}
+
+	const methodName = "DeleteHostedRunnerCustomImage"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.DeleteHostedRunnerCustomImage(ctx, "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.DeleteHostedRunnerCustomImage(ctx, "o", 1)
+	})
+}
+
+func TestActionsService_ListHostedRunnerCustomImageVersions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/hosted-runners/images/custom/1/versions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"total_count": 2,
+			"image_versions": [
+				{
+					"version": "1.1.0",
+					"size_gb": 75,
+					"state": "Ready",
+					"state_details": "None",
+					"created_on": "2024-11-09T23:39:01Z"
+				},
+				{
+					"version": "1.0.0",
+					"size_gb": 75,
+					"state": "Ready",
+					"state_details": "None",
+					"created_on": "2024-11-08T20:39:01Z"
+				}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	versions, _, err := client.Actions.ListHostedRunnerCustomImageVersions(ctx, "o", 1)
+	if err != nil {
+		t.Errorf("Actions.ListHostedRunnerCustomImageVersions returned error: %v", err)
+	}
+
+	want := &HostedRunnerCustomImageVersions{
+		TotalCount: 2,
+		ImageVersions: []*HostedRunnerCustomImageVersion{
+			{
+				Version:      "1.1.0",
+				SizeGB:       75,
+				State:        "Ready",
+				StateDetails: "None",
+				CreatedOn:    Timestamp{time.Date(2024, 11, 9, 23, 39, 1, 0, time.UTC)},
+			},
+			{
+				Version:      "1.0.0",
+				SizeGB:       75,
+				State:        "Ready",
+				StateDetails: "None",
+				CreatedOn:    Timestamp{time.Date(2024, 11, 8, 20, 39, 1, 0, time.UTC)},
+			},
+		},
+	}
+
+	if !cmp.Equal(versions, want) {
+		t.Errorf("Actions.ListHostedRunnerCustomImageVersions returned %+v, want %+v", versions, want)
+	}
+
+	const methodName = "ListHostedRunnerCustomImageVersions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.ListHostedRunnerCustomImageVersions(ctx, "\n", 1)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.ListHostedRunnerCustomImageVersions(ctx, "o", 1)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_GetHostedRunnerCustomImageVersion(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/hosted-runners/images/custom/1/versions/1.0.0", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"version": "1.0.0",
+			"size_gb": 75,
+			"state": "Ready",
+			"state_details": "None",
+			"created_on": "2024-11-08T20:39:01Z"
+		}`)
+	})
+
+	ctx := t.Context()
+	version, _, err := client.Actions.GetHostedRunnerCustomImageVersion(ctx, "o", 1, "1.0.0")
+	if err != nil {
+		t.Errorf("Actions.GetHostedRunnerCustomImageVersion returned error: %v", err)
+	}
+
+	want := &HostedRunnerCustomImageVersion{
+		Version:      "1.0.0",
+		SizeGB:       75,
+		State:        "Ready",
+		StateDetails: "None",
+		CreatedOn:    Timestamp{time.Date(2024, 11, 8, 20, 39, 1, 0, time.UTC)},
+	}
+
+	if !cmp.Equal(version, want) {
+		t.Errorf("Actions.GetHostedRunnerCustomImageVersion returned %+v, want %+v", version, want)
+	}
+
+	const methodName = "GetHostedRunnerCustomImageVersion"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetHostedRunnerCustomImageVersion(ctx, "\n", 1, "1.0.0")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetHostedRunnerCustomImageVersion(ctx, "o", 1, "1.0.0")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestActionsService_DeleteHostedRunnerCustomImageVersion(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/hosted-runners/images/custom/1/versions/1.0.0", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := t.Context()
+	_, err := client.Actions.DeleteHostedRunnerCustomImageVersion(ctx, "o", 1, "1.0.0")
+	if err != nil {
+		t.Errorf("Actions.DeleteHostedRunnerCustomImageVersion returned error: %v", err)
+	}
+
+	const methodName = "DeleteHostedRunnerCustomImageVersion"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.DeleteHostedRunnerCustomImageVersion(ctx, "\n", 1, "1.0.0")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.DeleteHostedRunnerCustomImageVersion(ctx, "o", 1, "1.0.0")
+	})
+}
