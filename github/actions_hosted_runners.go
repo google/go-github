@@ -162,14 +162,14 @@ func (s *ActionsService) CreateHostedRunner(ctx context.Context, org string, req
 
 // HostedRunnerCustomImage represents a custom image definition for GitHub-hosted runners.
 type HostedRunnerCustomImage struct {
-	ID                *int64  `json:"id,omitempty"`
-	Platform          *string `json:"platform,omitempty"`
-	Name              *string `json:"name,omitempty"`
-	Source            *string `json:"source,omitempty"`
-	VersionsCount     *int    `json:"versions_count,omitempty"`
-	TotalVersionsSize *int    `json:"total_versions_size,omitempty"`
-	LatestVersion     *string `json:"latest_version,omitempty"`
-	State             *string `json:"state,omitempty"`
+	ID                int64  `json:"id"`
+	Platform          string `json:"platform"`
+	Name              string `json:"name"`
+	Source            string `json:"source"`
+	VersionsCount     int    `json:"versions_count"`
+	TotalVersionsSize int    `json:"total_versions_size"`
+	LatestVersion     string `json:"latest_version"`
+	State             string `json:"state"`
 }
 
 // HostedRunnerCustomImages represents a collection of custom images for GitHub-hosted runners.
@@ -180,11 +180,11 @@ type HostedRunnerCustomImages struct {
 
 // HostedRunnerCustomImageVersion represents a version of a custom image for GitHub-hosted runners.
 type HostedRunnerCustomImageVersion struct {
-	Version      *string    `json:"version,omitempty"`
-	SizeGB       *int       `json:"size_gb,omitempty"`
-	State        *string    `json:"state,omitempty"`
-	StateDetails *string    `json:"state_details,omitempty"`
-	CreatedOn    *Timestamp `json:"created_on,omitempty"`
+	Version      string    `json:"version"`
+	SizeGB       int       `json:"size_gb"`
+	State        string    `json:"state"`
+	StateDetails string    `json:"state_details"`
+	CreatedOn    Timestamp `json:"created_on"`
 }
 
 // HostedRunnerCustomImageVersions represents a collection of versions of a custom image.

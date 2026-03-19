@@ -15831,6 +15831,142 @@ func (h *HostedRunner) GetStatus() string {
 }
 
 // GetID returns the ID field.
+func (h *HostedRunnerCustomImage) GetID() int64 {
+	if h == nil {
+		return 0
+	}
+	return h.ID
+}
+
+// GetLatestVersion returns the LatestVersion field.
+func (h *HostedRunnerCustomImage) GetLatestVersion() string {
+	if h == nil {
+		return ""
+	}
+	return h.LatestVersion
+}
+
+// GetName returns the Name field.
+func (h *HostedRunnerCustomImage) GetName() string {
+	if h == nil {
+		return ""
+	}
+	return h.Name
+}
+
+// GetPlatform returns the Platform field.
+func (h *HostedRunnerCustomImage) GetPlatform() string {
+	if h == nil {
+		return ""
+	}
+	return h.Platform
+}
+
+// GetSource returns the Source field.
+func (h *HostedRunnerCustomImage) GetSource() string {
+	if h == nil {
+		return ""
+	}
+	return h.Source
+}
+
+// GetState returns the State field.
+func (h *HostedRunnerCustomImage) GetState() string {
+	if h == nil {
+		return ""
+	}
+	return h.State
+}
+
+// GetTotalVersionsSize returns the TotalVersionsSize field.
+func (h *HostedRunnerCustomImage) GetTotalVersionsSize() int {
+	if h == nil {
+		return 0
+	}
+	return h.TotalVersionsSize
+}
+
+// GetVersionsCount returns the VersionsCount field.
+func (h *HostedRunnerCustomImage) GetVersionsCount() int {
+	if h == nil {
+		return 0
+	}
+	return h.VersionsCount
+}
+
+// GetImages returns the Images slice if it's non-nil, nil otherwise.
+func (h *HostedRunnerCustomImages) GetImages() []*HostedRunnerCustomImage {
+	if h == nil || h.Images == nil {
+		return nil
+	}
+	return h.Images
+}
+
+// GetTotalCount returns the TotalCount field.
+func (h *HostedRunnerCustomImages) GetTotalCount() int {
+	if h == nil {
+		return 0
+	}
+	return h.TotalCount
+}
+
+// GetCreatedOn returns the CreatedOn field.
+func (h *HostedRunnerCustomImageVersion) GetCreatedOn() Timestamp {
+	if h == nil {
+		return Timestamp{}
+	}
+	return h.CreatedOn
+}
+
+// GetSizeGB returns the SizeGB field.
+func (h *HostedRunnerCustomImageVersion) GetSizeGB() int {
+	if h == nil {
+		return 0
+	}
+	return h.SizeGB
+}
+
+// GetState returns the State field.
+func (h *HostedRunnerCustomImageVersion) GetState() string {
+	if h == nil {
+		return ""
+	}
+	return h.State
+}
+
+// GetStateDetails returns the StateDetails field.
+func (h *HostedRunnerCustomImageVersion) GetStateDetails() string {
+	if h == nil {
+		return ""
+	}
+	return h.StateDetails
+}
+
+// GetVersion returns the Version field.
+func (h *HostedRunnerCustomImageVersion) GetVersion() string {
+	if h == nil {
+		return ""
+	}
+	return h.Version
+}
+
+// GetImageVersions returns the ImageVersions slice if it's non-nil, nil otherwise.
+func (h *HostedRunnerCustomImageVersions) GetImageVersions() []*HostedRunnerCustomImageVersion {
+	if h == nil || h.ImageVersions == nil {
+		return nil
+	}
+	return h.ImageVersions
+}
+
+// GetTotalCount returns the TotalCount field.
+func (h *HostedRunnerCustomImageVersions) GetTotalCount() int {
+	if h == nil {
+		return 0
+	}
+	return h.TotalCount
+}
+
+// GetID returns the ID field.
 func (h *HostedRunnerImage) GetID() string {
 	if h == nil {
 		return ""

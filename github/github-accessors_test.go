@@ -20022,6 +20022,148 @@ func TestHostedRunner_GetStatus(tt *testing.T) {
 	h.GetStatus()
 }
 
+func TestHostedRunnerCustomImage_GetID(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImage{}
+	h.GetID()
+	h = nil
+	h.GetID()
+}
+
+func TestHostedRunnerCustomImage_GetLatestVersion(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImage{}
+	h.GetLatestVersion()
+	h = nil
+	h.GetLatestVersion()
+}
+
+func TestHostedRunnerCustomImage_GetName(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImage{}
+	h.GetName()
+	h = nil
+	h.GetName()
+}
+
+func TestHostedRunnerCustomImage_GetPlatform(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImage{}
+	h.GetPlatform()
+	h = nil
+	h.GetPlatform()
+}
+
+func TestHostedRunnerCustomImage_GetSource(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImage{}
+	h.GetSource()
+	h = nil
+	h.GetSource()
+}
+
+func TestHostedRunnerCustomImage_GetState(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImage{}
+	h.GetState()
+	h = nil
+	h.GetState()
+}
+
+func TestHostedRunnerCustomImage_GetTotalVersionsSize(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImage{}
+	h.GetTotalVersionsSize()
+	h = nil
+	h.GetTotalVersionsSize()
+}
+
+func TestHostedRunnerCustomImage_GetVersionsCount(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImage{}
+	h.GetVersionsCount()
+	h = nil
+	h.GetVersionsCount()
+}
+
+func TestHostedRunnerCustomImages_GetImages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*HostedRunnerCustomImage{}
+	h := &HostedRunnerCustomImages{Images: zeroValue}
+	h.GetImages()
+	h = &HostedRunnerCustomImages{}
+	h.GetImages()
+	h = nil
+	h.GetImages()
+}
+
+func TestHostedRunnerCustomImages_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImages{}
+	h.GetTotalCount()
+	h = nil
+	h.GetTotalCount()
+}
+
+func TestHostedRunnerCustomImageVersion_GetCreatedOn(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImageVersion{}
+	h.GetCreatedOn()
+	h = nil
+	h.GetCreatedOn()
+}
+
+func TestHostedRunnerCustomImageVersion_GetSizeGB(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImageVersion{}
+	h.GetSizeGB()
+	h = nil
+	h.GetSizeGB()
+}
+
+func TestHostedRunnerCustomImageVersion_GetState(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImageVersion{}
+	h.GetState()
+	h = nil
+	h.GetState()
+}
+
+func TestHostedRunnerCustomImageVersion_GetStateDetails(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImageVersion{}
+	h.GetStateDetails()
+	h = nil
+	h.GetStateDetails()
+}
+
+func TestHostedRunnerCustomImageVersion_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImageVersion{}
+	h.GetVersion()
+	h = nil
+	h.GetVersion()
+}
+
+func TestHostedRunnerCustomImageVersions_GetImageVersions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*HostedRunnerCustomImageVersion{}
+	h := &HostedRunnerCustomImageVersions{ImageVersions: zeroValue}
+	h.GetImageVersions()
+	h = &HostedRunnerCustomImageVersions{}
+	h.GetImageVersions()
+	h = nil
+	h.GetImageVersions()
+}
+
+func TestHostedRunnerCustomImageVersions_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	h := &HostedRunnerCustomImageVersions{}
+	h.GetTotalCount()
+	h = nil
+	h.GetTotalCount()
+}
+
 func TestHostedRunnerImage_GetID(tt *testing.T) {
 	tt.Parallel()
 	h := &HostedRunnerImage{}

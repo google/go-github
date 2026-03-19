@@ -902,24 +902,24 @@ func TestActionsService_ListHostedRunnerCustomImages(t *testing.T) {
 		TotalCount: 2,
 		Images: []*HostedRunnerCustomImage{
 			{
-				ID:                Ptr(int64(1)),
-				Platform:          Ptr("linux-x64"),
-				Name:              Ptr("CustomImage1"),
-				Source:            Ptr("custom"),
-				VersionsCount:     Ptr(4),
-				TotalVersionsSize: Ptr(200),
-				LatestVersion:     Ptr("1.3.0"),
-				State:             Ptr("Ready"),
+				ID:                1,
+				Platform:          "linux-x64",
+				Name:              "CustomImage1",
+				Source:            "custom",
+				VersionsCount:     4,
+				TotalVersionsSize: 200,
+				LatestVersion:     "1.3.0",
+				State:             "Ready",
 			},
 			{
-				ID:                Ptr(int64(2)),
-				Platform:          Ptr("linux-x64"),
-				Name:              Ptr("CustomImage2"),
-				Source:            Ptr("custom"),
-				VersionsCount:     Ptr(2),
-				TotalVersionsSize: Ptr(150),
-				LatestVersion:     Ptr("1.0.0"),
-				State:             Ptr("Ready"),
+				ID:                2,
+				Platform:          "linux-x64",
+				Name:              "CustomImage2",
+				Source:            "custom",
+				VersionsCount:     2,
+				TotalVersionsSize: 150,
+				LatestVersion:     "1.0.0",
+				State:             "Ready",
 			},
 		},
 	}
@@ -968,14 +968,14 @@ func TestActionsService_GetHostedRunnerCustomImage(t *testing.T) {
 	}
 
 	want := &HostedRunnerCustomImage{
-		ID:                Ptr(int64(1)),
-		Platform:          Ptr("linux-x64"),
-		Name:              Ptr("CustomImage"),
-		Source:            Ptr("custom"),
-		VersionsCount:     Ptr(4),
-		TotalVersionsSize: Ptr(200),
-		LatestVersion:     Ptr("1.3.0"),
-		State:             Ptr("Ready"),
+		ID:                1,
+		Platform:          "linux-x64",
+		Name:              "CustomImage",
+		Source:            "custom",
+		VersionsCount:     4,
+		TotalVersionsSize: 200,
+		LatestVersion:     "1.3.0",
+		State:             "Ready",
 	}
 
 	if !cmp.Equal(image, want) {
@@ -1059,18 +1059,18 @@ func TestActionsService_ListHostedRunnerCustomImageVersions(t *testing.T) {
 		TotalCount: 2,
 		ImageVersions: []*HostedRunnerCustomImageVersion{
 			{
-				Version:      Ptr("1.1.0"),
-				SizeGB:       Ptr(75),
-				State:        Ptr("Ready"),
-				StateDetails: Ptr("None"),
-				CreatedOn:    &Timestamp{time.Date(2024, 11, 9, 23, 39, 1, 0, time.UTC)},
+				Version:      "1.1.0",
+				SizeGB:       75,
+				State:        "Ready",
+				StateDetails: "None",
+				CreatedOn:    Timestamp{time.Date(2024, 11, 9, 23, 39, 1, 0, time.UTC)},
 			},
 			{
-				Version:      Ptr("1.0.0"),
-				SizeGB:       Ptr(75),
-				State:        Ptr("Ready"),
-				StateDetails: Ptr("None"),
-				CreatedOn:    &Timestamp{time.Date(2024, 11, 8, 20, 39, 1, 0, time.UTC)},
+				Version:      "1.0.0",
+				SizeGB:       75,
+				State:        "Ready",
+				StateDetails: "None",
+				CreatedOn:    Timestamp{time.Date(2024, 11, 8, 20, 39, 1, 0, time.UTC)},
 			},
 		},
 	}
@@ -1116,11 +1116,11 @@ func TestActionsService_GetHostedRunnerCustomImageVersion(t *testing.T) {
 	}
 
 	want := &HostedRunnerCustomImageVersion{
-		Version:      Ptr("1.0.0"),
-		SizeGB:       Ptr(75),
-		State:        Ptr("Ready"),
-		StateDetails: Ptr("None"),
-		CreatedOn:    &Timestamp{time.Date(2024, 11, 8, 20, 39, 1, 0, time.UTC)},
+		Version:      "1.0.0",
+		SizeGB:       75,
+		State:        "Ready",
+		StateDetails: "None",
+		CreatedOn:    Timestamp{time.Date(2024, 11, 8, 20, 39, 1, 0, time.UTC)},
 	}
 
 	if !cmp.Equal(version, want) {
