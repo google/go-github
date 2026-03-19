@@ -13,6 +13,12 @@ jobs:
       with:
         go-version: stable
         cache-dependency-path: "**/go.sum"
+    - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+      with:
+        path: |
+          bin/golangci-lint
+          bin/custom-gcl
+        key: ${{ runner.os }}-${{ runner.arch }}-tools-${{ hashFiles('.custom-gcl.yml', 'tools/**/go.mod', 'tools/**/go.sum', 'tools/**/*.go') }}
     - run: script/lint.sh
       env:
         CHECK_GITHUB_OPENAPI: 1

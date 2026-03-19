@@ -4,11 +4,19 @@
 
 set -e
 
-# should be in sync with .custom-gcl.yml
-GOLANGCI_LINT_VERSION="v2.10.1"
+ROOT_DIR="$(cd -- "$(dirname -- "$0")/.." > /dev/null 2>&1 && pwd -P)"
+CUSTOM_GCL_CONFIG="$ROOT_DIR/.custom-gcl.yml"
+GOLANGCI_LINT_VERSION="$(
+  sed -n 's/^[[:space:]]*version:[[:space:]]*//p' "$CUSTOM_GCL_CONFIG" \
+  | sed '1{s/[[:space:]]*#.*$//;s/^"//;s/"$//;s/[[:space:]]*$//;p;};d'
+)"
 
-# should in sync with fmt.sh and lint.sh
-BIN="$(pwd -P)"/bin
+if [ -z "$GOLANGCI_LINT_VERSION" ]; then
+  echo "Error: could not determine golangci-lint version from $CUSTOM_GCL_CONFIG" >&2
+  exit 1
+fi
+
+BIN="$ROOT_DIR/bin"
 
 mkdir -p "$BIN"
 

@@ -1,7 +1,7 @@
-version: v2.10.1 # should be in sync with script/setup-custom-gcl.sh
+version: v2.10.1 # this is the version of golangci-lint
 plugins:
   - module: "github.com/google/go-github/v84/tools/extraneousnew"
-    path: ./tools/extraneous-new
+    path: ./tools/extraneousnew
   - module: "github.com/google/go-github/v84/tools/fmtpercentv"
     path: ./tools/fmtpercentv
   - module: "github.com/google/go-github/v84/tools/sliceofpointers"
