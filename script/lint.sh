@@ -28,7 +28,7 @@ MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort -u)"
 # Override with LINT_JOBS, otherwise use detected CPU count.
 : "${LINT_JOBS:=$(getconf _NPROCESSORS_ONLN 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)}"
 
-LINT_DIRS="$(printf '%s\n' "$MOD_DIRS" | grep -v '^example/newreposecretwithlibsodium$')"
+LINT_DIRS="$(printf '%s\n' "$MOD_DIRS")"
 
 FAILED_COUNT=0
 LINT_FAILED=0
@@ -51,7 +51,7 @@ wait_pids() {
     # Identify the directory for this PID
     dir=$(echo "$DIRS_IN_FLIGHT" | awk -v i="$i" '{print $i}')
     log_file="$LOG_DIR/$(echo "$dir" | tr '/' '_').log"
-    
+
     if wait "$pid"; then
       printf "${GREEN}✔ %-40s [ PASS ]${NC}\n" "$dir"
     else

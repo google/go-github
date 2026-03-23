@@ -13,13 +13,14 @@ jobs:
       with:
         go-version: stable
         cache-dependency-path: "**/go.sum"
-    - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+    - name: Check generated code
+      run: ./script/generate.sh --check
+    - uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
       with:
-        path: |
-          bin/golangci-lint
-          bin/custom-gcl
-        key: ${{ runner.os }}-${{ runner.arch }}-tools-${{ hashFiles('.custom-gcl.yml', 'tools/**/go.mod', 'tools/**/go.sum', 'tools/**/*.go') }}
-    - run: script/lint.sh
+        version: v2.10.1 # sync with version in .custom-gcl.yml
+        experimental: "automatic-module-directories"
+    - name: Check OpenAPI
+      run: ./script/metadata.sh update-openapi --validate
       env:
         CHECK_GITHUB_OPENAPI: 1
         GITHUB_TOKEN: ${{ github.token }}
