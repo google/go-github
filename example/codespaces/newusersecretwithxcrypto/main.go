@@ -93,27 +93,27 @@ func getSecretValue(secretName string) (string, error) {
 
 // addUserSecret will add a secret to a GitHub user for use in GitHub Codespaces.
 //
-// The secretName and secretValue will determine the name of the secret added and it's corresponding value.
+// The secretName and secretValue determine the name of the secret added and its corresponding value.
 //
-// The actual transmission of the secret value to GitHub using the api requires that the secret value is encrypted
+// The actual transmission of the secret value to GitHub using the API requires that the secret value is encrypted
 // using the public key of the target user. This encryption is done using x/crypto/nacl/box.
 //
 // First, the public key of the user is retrieved. The public key comes base64
 // encoded, so it must be decoded prior to use.
 //
-// Second, the decode key is converted into a fixed size byte array.
+// Second, the decoded key is converted into a fixed-size byte array.
 //
 // Third, the secret value is converted into a slice of bytes.
 //
 // Fourth, the secret is encrypted with box.SealAnonymous using the user's decoded public key.
 //
-// Fifth, the encrypted secret is encoded as a base64 string to be used in a github.EncodedSecret type.
+// Fifth, the encrypted secret is encoded as a base64 string to be used in a github.EncryptedSecret type.
 //
-// Sixth, The other two properties of the github.EncodedSecret type are determined. The name of the secret to be added
+// Sixth, the other two properties of the github.EncryptedSecret type are determined: the name of the secret to be added
 // (string not base64), and the KeyID of the public key used to encrypt the secret.
 // This can be retrieved via the public key's GetKeyID method.
 //
-// Seventh, the github.EncodedSecret is passed into the GitHub client.Codespaces.CreateOrUpdateUserSecret method to
+// Seventh, the github.EncryptedSecret is passed into the GitHub client.Codespaces.CreateOrUpdateUserSecret method to
 // populate the secret in the GitHub user.
 //
 // Finally, if a repo and owner are passed in, it adds the repo to the user secret.

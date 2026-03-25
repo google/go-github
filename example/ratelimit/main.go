@@ -3,8 +3,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// The ratelimit command demonstrates using the github_ratelimit as well as github_pagination.
-// By using the waiter, the client automatically sleeps and retry requests
+// The ratelimit command demonstrates using github_ratelimit and github_pagination.
+// By using the waiters, the client automatically sleeps and retries requests
 // when it hits secondary rate limits.
 // It also prevents the client from abusing the API in case of a primary rate limit.
 package main
@@ -39,7 +39,7 @@ func main() {
 	)
 	client := github.NewClient(paginator)
 
-	// arbitrary usage of the client
+	// Example usage of the client
 	repos, _, err := client.Repositories.ListByUser(context.Background(), username, nil)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)

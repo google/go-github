@@ -6,7 +6,7 @@
 // listenvironments is an example of how to use ListEnvironments method with EnvironmentListOptions.
 // It's runnable with the following command:
 //
-//	export GITHUB_TOKEN=your_token
+//	export GITHUB_AUTH_TOKEN=your_token
 //	export GITHUB_REPOSITORY_OWNER=your_owner
 //	export GITHUB_REPOSITORY_NAME=your_repo
 //	go run .

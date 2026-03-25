@@ -3,8 +3,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// This is a simple example of how to verify an artifact
-// attestations hosted on GitHub using the sigstore-go library.
+// This is a simple example of how to verify artifact attestations
+// hosted on GitHub using the sigstore-go library.
 // This is a very barebones example drawn from the sigstore-go
 // library's examples and should not be used in production.
 package main
@@ -30,10 +30,10 @@ var (
 	// compute the digest.
 	artifactDigest = flag.String("artifact-digest", "", "The digest of the artifact")
 	// The algorithm used to compute the digest of the artifact.
-	// Note that the GitHub API only currently support querying
+	// Note that the GitHub API currently only supports querying
 	// by sha256 digest.
 	artifactDigestAlgorithm = flag.String("artifact-digest-algorithm", "sha256", "The algorithm used to compute the digest of the artifact")
-	// Attestations produced by GitHub Actions use ID token
+	// Attestations produced by GitHub Actions use ID tokens
 	// issued by GitHub.
 	expectedIssuer = flag.String("expected-issuer", "https://token.actions.githubusercontent.com", "Issuer of the OIDC token")
 	// Subject Alternative Name is set to the calling workflow file.
