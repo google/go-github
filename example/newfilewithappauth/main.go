@@ -4,8 +4,8 @@
 // license that can be found in the LICENSE file.
 
 // newfilewithappauth demonstrates the functionality of GitHub's app authentication
-// methods by fetching an installation access token and reauthenticating to GitHub
-// with OAuth configurations.
+// methods by fetching an installation access token as a GitHub App and then
+// using that token to authenticate with the GitHub API.
 package main
 
 import (

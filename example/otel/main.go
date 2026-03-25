@@ -56,7 +56,7 @@ func main() {
 			limits.GetCore().Reset)
 	}
 
-	// Check if we captured attributes in response
+	// Print the HTTP response status when available.
 	if resp != nil {
 		fmt.Printf("Response Status: %v\n", resp.Status)
 	}
