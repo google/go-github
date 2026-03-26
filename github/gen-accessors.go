@@ -21,12 +21,14 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"flag"
 	"fmt"
 	"go/ast"
 	"go/format"
 	"go/parser"
 	"go/token"
+	"io/fs"
 	"log"
 	"os"
 	"slices"
@@ -39,6 +41,7 @@ const (
 )
 
 var (
+	check   = flag.Bool("check", false, "Check whether generated files are up to date")
 	verbose = flag.Bool("v", false, "Print verbose log messages")
 
 	sourceTmpl = template.Must(template.New("source").Parse(source))
@@ -66,6 +69,10 @@ var (
 		"PushEvent.Commits": true,
 	}
 )
+
+func isCheck() bool {
+	return *check || os.Getenv("CHECK") == "1"
+}
 
 func logf(fmt string, args ...any) {
 	if *verbose {
@@ -231,6 +238,22 @@ func (t *templateData) dump() error {
 		clean, err := format.Source(buf.Bytes())
 		if err != nil {
 			return fmt.Errorf("format.Source:\n%v\n%v", buf.String(), err)
+		}
+
+		if isCheck() {
+			logf("Checking %v...", filename)
+			old, err := os.ReadFile(filename)
+			if err != nil {
+				if errors.Is(err, fs.ErrNotExist) {
+					return fmt.Errorf("Missing file: %v\n", filename)
+				}
+				return err
+			}
+
+			if !bytes.Equal(old, clean) {
+				return fmt.Errorf("Generated files are out of date. Please run go generate ./... and commit the results")
+			}
+			return nil
 		}
 
 		logf("Writing %v...", filename)

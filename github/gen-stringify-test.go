@@ -17,12 +17,14 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"flag"
 	"fmt"
 	"go/ast"
 	"go/format"
 	"go/parser"
 	"go/token"
+	"io/fs"
 	"log"
 	"os"
 	"strings"
@@ -36,6 +38,7 @@ const (
 )
 
 var (
+	check   = flag.Bool("check", false, "Check whether generated files are up to date")
 	verbose = flag.Bool("v", false, "Print verbose log messages")
 
 	// skipStructMethods lists "struct.method" combos to skip.
@@ -82,6 +85,10 @@ var (
 
 	sourceTmpl = template.Must(template.New("source").Funcs(funcMap).Parse(source))
 )
+
+func isCheck() bool {
+	return *check || os.Getenv("CHECK") == "1"
+}
 
 func main() {
 	flag.Parse()
@@ -351,6 +358,22 @@ func (t *templateData) dump() error {
 	if err != nil {
 		log.Printf("failed-to-format source:\n%v", buf)
 		return err
+	}
+
+	if isCheck() {
+		logf("Checking %v...", t.filename)
+		old, err := os.ReadFile(t.filename)
+		if err != nil {
+			if errors.Is(err, fs.ErrNotExist) {
+				return fmt.Errorf("Missing file: %v\n", t.filename)
+			}
+			return err
+		}
+
+		if !bytes.Equal(old, clean) {
+			return fmt.Errorf("Generated files are out of date. Please run go generate ./... and commit the results")
+		}
+		return nil
 	}
 
 	logf("Writing %v...", t.filename)

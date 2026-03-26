@@ -1,5 +1,5 @@
 #!/bin/sh
-#/ `script/generate.sh` runs `go generate` on all modules in this repo.
+#/ `script/generate.sh` runs `go generate` on repo.
 #/ It also runs `script/run-check-structfield-settings.sh -fix` to keep linter
 #/ exceptions in `.golangci.yml` up to date.
 #/ `script/generate.sh --check` checks that the generated files are up to date.
@@ -8,47 +8,28 @@ set -e
 
 CDPATH="" cd -- "$(dirname -- "$0")/.."
 
+CHECK_MODE=0
 if [ "$1" = "--check" ]; then
-  GENTEMP="$(mktemp -d)"
-  git worktree add -q --detach "$GENTEMP"
-  trap 'git worktree remove -f "$GENTEMP"; rm -rf "$GENTEMP"' EXIT
-  git diff --name-only --diff-filter=D --no-renames HEAD | while read -r f; do
-    rm -f "$GENTEMP/$f"
-  done
-  git ls-files -com --exclude-standard | while read -r f; do
-    target="$GENTEMP/$f"
-    mkdir -p "$(dirname -- "$target")"
-    cp "$f" "$target"
-  done
-  if [ -f "$(pwd)"/bin ]; then
-    ln -s "$(pwd)"/bin "$GENTEMP"/bin
-  fi
-  (
-    cd "$GENTEMP"
-    git add .
-    git -c user.name='bot' -c user.email='bot@localhost' -c commit.gpgsign=false commit -m "generate" -q --allow-empty
-    script/generate.sh
-    [ -z "$(git status --porcelain)" ] || {
-      msg="Generated files are out of date. Please run script/generate.sh and commit the results"
-      if [ -n "$GITHUB_ACTIONS" ]; then
-        echo "::error ::$msg"
-      else
-        echo "$msg" 1>&2
-      fi
-      git diff
-      exit 1
-    }
-  )
-  exit 0
+  export CHECK=1
+  CHECK_MODE=1
 fi
+
+go generate ./...
 
 MOD_DIRS="$(git ls-files '*go.mod' | xargs dirname | sort)"
 
 for dir in $MOD_DIRS; do
   (
     cd "$dir"
-    go generate ./...
-    go mod tidy
+    if [ "$CHECK_MODE" = "1" ]; then
+      if ! go mod tidy -diff; then
+        echo "go.mod/go.sum are out of date in $dir"
+        exit 1
+      fi
+    else
+      go mod tidy
+    fi
   )
 done
+
 script/run-check-structfield-settings.sh -fix
