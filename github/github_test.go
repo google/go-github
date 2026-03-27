@@ -20,6 +20,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"testing/synctest"
 	"time"
@@ -1694,9 +1695,9 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 
 	reset := time.Now().UTC().Add(time.Second)
 
-	requestCount := 0
+	var requestCount atomic.Int32
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		requestCount++
+		requestCount.Add(1)
 		w.Header().Set(HeaderRateLimit, "60")
 		w.Header().Set(HeaderRateRemaining, "0")
 		w.Header().Set(HeaderRateUsed, "60")
@@ -1715,7 +1716,7 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
-	if got, want := requestCount, 2; got != want {
+	if got, want := int(requestCount.Load()), 2; got != want {
 		t.Errorf("Expected 2 requests, got %v", got)
 	}
 }
@@ -1727,9 +1728,9 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 
 	reset := time.Now().UTC().Add(time.Second)
 	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
-	requestCount := 0
+	var requestCount atomic.Int32
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		requestCount++
+		requestCount.Add(1)
 		w.Header().Set(HeaderRateLimit, "5000")
 		w.Header().Set(HeaderRateRemaining, "5000")
 		w.Header().Set(HeaderRateUsed, "0")
@@ -1747,7 +1748,7 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 	if got, want := resp.StatusCode, http.StatusOK; got != want {
 		t.Errorf("Response status code = %v, want %v", got, want)
 	}
-	if got, want := requestCount, 1; got != want {
+	if got, want := int(requestCount.Load()), 1; got != want {
 		t.Errorf("Expected 1 request, got %v", got)
 	}
 }
@@ -1759,9 +1760,9 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 
 	// We use a 1 minute reset time to ensure the sleep is not completed.
 	reset := time.Now().UTC().Add(time.Minute)
-	requestCount := 0
+	var requestCount atomic.Int32
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		requestCount++
+		requestCount.Add(1)
 		w.Header().Set(HeaderRateLimit, "60")
 		w.Header().Set(HeaderRateRemaining, "0")
 		w.Header().Set(HeaderRateUsed, "60")
@@ -1782,7 +1783,7 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 	if !errors.Is(err, context.DeadlineExceeded) {
 		t.Error("Expected context deadline exceeded error.")
 	}
-	if got, want := requestCount, 1; got != want {
+	if got, want := int(requestCount.Load()), 1; got != want {
 		t.Errorf("Expected 1 requests, got %v", got)
 	}
 }
@@ -1794,9 +1795,9 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 
 	reset := time.Now().UTC().Add(time.Minute)
 	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
-	requestCount := 0
+	var requestCount atomic.Int32
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		requestCount++
+		requestCount.Add(1)
 		w.Header().Set(HeaderRateLimit, "5000")
 		w.Header().Set(HeaderRateRemaining, "5000")
 		w.Header().Set(HeaderRateUsed, "0")
@@ -1817,7 +1818,7 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 	if got, wantSuffix := rateLimitError.Message, "Context cancelled while waiting for rate limit to reset until"; !strings.HasPrefix(got, wantSuffix) {
 		t.Errorf("Expected request to be prevented because context cancellation, got: %v.", got)
 	}
-	if got, want := requestCount, 0; got != want {
+	if got, want := int(requestCount.Load()), 0; got != want {
 		t.Errorf("Expected 1 requests, got %v", got)
 	}
 }
@@ -2047,9 +2048,9 @@ func TestDo_rateLimit_disableRateLimitCheck(t *testing.T) {
 
 	reset := time.Now().UTC().Add(60 * time.Second)
 	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
-	requestCount := 0
+	var requestCount atomic.Int32
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		requestCount++
+		requestCount.Add(1)
 		w.Header().Set(HeaderRateLimit, "5000")
 		w.Header().Set(HeaderRateRemaining, "5000")
 		w.Header().Set(HeaderRateUsed, "0")
@@ -2067,7 +2068,7 @@ func TestDo_rateLimit_disableRateLimitCheck(t *testing.T) {
 	if got, want := resp.StatusCode, http.StatusOK; got != want {
 		t.Errorf("Response status code = %v, want %v", got, want)
 	}
-	if got, want := requestCount, 1; got != want {
+	if got, want := int(requestCount.Load()), 1; got != want {
 		t.Errorf("Expected 1 request, got %v", got)
 	}
 	if got, want := client.rateLimits[CoreCategory].Remaining, 0; got != want {
@@ -2082,9 +2083,9 @@ func TestDo_rateLimit_bypassRateLimitCheck(t *testing.T) {
 
 	reset := time.Now().UTC().Add(60 * time.Second)
 	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
-	requestCount := 0
+	var requestCount atomic.Int32
 	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
-		requestCount++
+		requestCount.Add(1)
 		w.Header().Set(HeaderRateLimit, "5000")
 		w.Header().Set(HeaderRateRemaining, "5000")
 		w.Header().Set(HeaderRateUsed, "0")
@@ -2102,7 +2103,7 @@ func TestDo_rateLimit_bypassRateLimitCheck(t *testing.T) {
 	if got, want := resp.StatusCode, http.StatusOK; got != want {
 		t.Errorf("Response status code = %v, want %v", got, want)
 	}
-	if got, want := requestCount, 1; got != want {
+	if got, want := int(requestCount.Load()), 1; got != want {
 		t.Errorf("Expected 1 request, got %v", got)
 	}
 	if got, want := client.rateLimits[CoreCategory].Remaining, 5000; got != want {
