@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -205,6 +206,10 @@ func (b *badReader) Read([]byte) (int, error) {
 
 func (b *badReader) Close() error { return errors.New("bad reader") }
 
+type readerFunc func([]byte) (int, error)
+
+func (f readerFunc) Read(p []byte) (int, error) { return f(p) }
+
 func TestValidatePayload_BadRequestBody(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
@@ -223,6 +228,40 @@ func TestValidatePayload_BadRequestBody(t *testing.T) {
 			}
 			if _, err := ValidatePayload(req, nil); err == nil {
 				t.Fatal("ValidatePayload returned nil; want error")
+			}
+		})
+	}
+}
+
+func TestValidatePayload_OversizedBody(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		contentType string
+	}{
+		{contentType: "application/json"},
+		{contentType: "application/x-www-form-urlencoded"},
+	}
+
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("test #%v", i), func(t *testing.T) {
+			t.Parallel()
+			// Simulate a reader that reports more than maxPayloadSize bytes.
+			oversized := io.LimitReader(readerFunc(func(p []byte) (int, error) {
+				for i := range p {
+					p[i] = 0
+				}
+				return len(p), nil
+			}), maxPayloadSize+1)
+			req := &http.Request{
+				Header: http.Header{"Content-Type": []string{tt.contentType}},
+				Body:   io.NopCloser(oversized),
+			}
+			_, err := ValidatePayload(req, nil)
+			if err == nil {
+				t.Fatal("ValidatePayload returned nil; want error for oversized body")
+			}
+			if want := "webhook payload exceeds maximum allowed size"; err.Error() != want {
+				t.Errorf("ValidatePayload error = %q, want %q", err.Error(), want)
 			}
 		})
 	}
