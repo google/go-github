@@ -42,6 +42,10 @@ const (
 	EventTypeHeader = "X-Github-Event"
 	// DeliveryIDHeader is the GitHub header key used to pass the unique ID for the webhook event.
 	DeliveryIDHeader = "X-Github-Delivery"
+
+	// maxPayloadSize is the maximum size of a GitHub webhook payload.
+	// GitHub documents a 25 MB limit for webhook payloads.
+	maxPayloadSize = 25 * 1024 * 1024
 )
 
 var (
@@ -146,8 +150,19 @@ func checkMAC(message, messageMAC, key []byte, hashFunc func() hash.Hash) bool {
 	return hmac.Equal(messageMAC, expectedMAC)
 }
 
-// messageMAC returns the hex-decoded HMAC tag from the signature and its
-// corresponding hash function.
+// readPayloadBody reads the body from readable, enforcing maxPayloadSize.
+func readPayloadBody(readable io.Reader) ([]byte, error) {
+	body, err := io.ReadAll(io.LimitReader(readable, maxPayloadSize+1))
+	if err != nil {
+		return nil, err
+	}
+	if len(body) > maxPayloadSize {
+		return nil, errors.New("webhook payload exceeds maximum allowed size")
+	}
+	return body, nil
+}
+
+// messageMAC returns the MAC method and the corresponding hash function.
 func messageMAC(signature string) ([]byte, func() hash.Hash, error) {
 	if signature == "" {
 		return nil, nil, errors.New("missing signature")
@@ -199,7 +214,7 @@ func ValidatePayloadFromBody(contentType string, readable io.Reader, signature s
 	switch contentType {
 	case "application/json":
 		var err error
-		if body, err = io.ReadAll(readable); err != nil {
+		if body, err = readPayloadBody(readable); err != nil {
 			return nil, err
 		}
 
@@ -213,7 +228,7 @@ func ValidatePayloadFromBody(contentType string, readable io.Reader, signature s
 		const payloadFormParam = "payload"
 
 		var err error
-		if body, err = io.ReadAll(readable); err != nil {
+		if body, err = readPayloadBody(readable); err != nil {
 			return nil, err
 		}
 

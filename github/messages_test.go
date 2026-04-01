@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -205,6 +206,16 @@ func (b *badReader) Read([]byte) (int, error) {
 
 func (b *badReader) Close() error { return errors.New("bad reader") }
 
+// infiniteReader is an io.Reader that returns zeros indefinitely.
+type infiniteReader struct{}
+
+func (infiniteReader) Read(p []byte) (int, error) {
+	for i := range p {
+		p[i] = 0
+	}
+	return len(p), nil
+}
+
 func TestValidatePayload_BadRequestBody(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
@@ -226,6 +237,53 @@ func TestValidatePayload_BadRequestBody(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestValidatePayload_OversizedBody(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		contentType string
+	}{
+		{contentType: "application/json"},
+		{contentType: "application/x-www-form-urlencoded"},
+	}
+
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("test #%v", i), func(t *testing.T) {
+			t.Parallel()
+			// Simulate a reader that reports more than maxPayloadSize bytes.
+			oversized := &fixedSizeReader{remaining: maxPayloadSize + 1}
+			req := &http.Request{
+				Header: http.Header{"Content-Type": []string{tt.contentType}},
+				Body:   io.NopCloser(oversized),
+			}
+			_, err := ValidatePayload(req, nil)
+			if err == nil {
+				t.Fatal("ValidatePayload returned nil; want error for oversized body")
+			}
+			if want := "webhook payload exceeds maximum allowed size"; err.Error() != want {
+				t.Errorf("ValidatePayload error = %q, want %q", err.Error(), want)
+			}
+		})
+	}
+}
+
+// fixedSizeReader is an io.Reader that returns exactly remaining bytes, then EOF.
+type fixedSizeReader struct {
+	remaining int64
+}
+
+func (r *fixedSizeReader) Read(p []byte) (int, error) {
+	if r.remaining == 0 {
+		return 0, io.EOF
+	}
+
+	n := min(int64(len(p)), r.remaining)
+	for i := 0; i < int(n); i++ {
+		p[i] = 0
+	}
+	r.remaining -= n
+	return int(n), nil
 }
 
 func TestValidatePayload_InvalidContentTypeParams(t *testing.T) {
