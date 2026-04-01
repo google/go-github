@@ -206,15 +206,9 @@ func (b *badReader) Read([]byte) (int, error) {
 
 func (b *badReader) Close() error { return errors.New("bad reader") }
 
-// infiniteReader is an io.Reader that returns zeros indefinitely.
-type infiniteReader struct{}
+type readerFunc func([]byte) (int, error)
 
-func (infiniteReader) Read(p []byte) (int, error) {
-	for i := range p {
-		p[i] = 0
-	}
-	return len(p), nil
-}
+func (f readerFunc) Read(p []byte) (int, error) { return f(p) }
 
 func TestValidatePayload_BadRequestBody(t *testing.T) {
 	t.Parallel()
@@ -252,7 +246,12 @@ func TestValidatePayload_OversizedBody(t *testing.T) {
 		t.Run(fmt.Sprintf("test #%v", i), func(t *testing.T) {
 			t.Parallel()
 			// Simulate a reader that reports more than maxPayloadSize bytes.
-			oversized := &fixedSizeReader{remaining: maxPayloadSize + 1}
+			oversized := io.LimitReader(readerFunc(func(p []byte) (int, error) {
+				for i := range p {
+					p[i] = 0
+				}
+				return len(p), nil
+			}), maxPayloadSize+1)
 			req := &http.Request{
 				Header: http.Header{"Content-Type": []string{tt.contentType}},
 				Body:   io.NopCloser(oversized),
@@ -266,24 +265,6 @@ func TestValidatePayload_OversizedBody(t *testing.T) {
 			}
 		})
 	}
-}
-
-// fixedSizeReader is an io.Reader that returns exactly remaining bytes, then EOF.
-type fixedSizeReader struct {
-	remaining int64
-}
-
-func (r *fixedSizeReader) Read(p []byte) (int, error) {
-	if r.remaining == 0 {
-		return 0, io.EOF
-	}
-
-	n := min(int64(len(p)), r.remaining)
-	for i := 0; i < int(n); i++ {
-		p[i] = 0
-	}
-	r.remaining -= n
-	return int(n), nil
 }
 
 func TestValidatePayload_InvalidContentTypeParams(t *testing.T) {
