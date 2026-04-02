@@ -749,6 +749,36 @@ func TestNewRequest_emptyBody(t *testing.T) {
 	}
 }
 
+func TestNewRequest_getBody(t *testing.T) {
+	t.Parallel()
+	c := NewClient(nil)
+
+	req, err := c.NewRequest("POST", ".", &User{Login: Ptr("l")})
+	if err != nil {
+		t.Fatalf("NewRequest returned unexpected error: %v", err)
+	}
+	if req.GetBody == nil {
+		t.Fatal("NewRequest with body did not set GetBody")
+	}
+	original, _ := io.ReadAll(req.Body)
+	rc, err := req.GetBody()
+	if err != nil {
+		t.Fatalf("GetBody returned unexpected error: %v", err)
+	}
+	replay, _ := io.ReadAll(rc)
+	if string(original) != string(replay) {
+		t.Errorf("GetBody returned %q, want %q", replay, original)
+	}
+
+	req, err = c.NewRequest("GET", ".", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned unexpected error: %v", err)
+	}
+	if req.GetBody != nil {
+		t.Fatal("NewRequest without body set GetBody unexpectedly")
+	}
+}
+
 func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
@@ -2174,6 +2204,9 @@ func TestSanitizeURL(t *testing.T) {
 		{"/?a=b", "/?a=b"},
 		{"/?a=b&client_secret=secret", "/?a=b&client_secret=REDACTED"},
 		{"/?a=b&client_id=id&client_secret=secret", "/?a=b&client_id=id&client_secret=REDACTED"},
+		{"/?a=b&access_token=secret", "/?a=b&access_token=REDACTED"},
+		{"/?a=b&token=secret", "/?a=b&token=REDACTED"},
+		{"/?client_secret=s&access_token=t&token=u", "/?access_token=REDACTED&client_secret=REDACTED&token=REDACTED"},
 	}
 
 	for _, tt := range tests {

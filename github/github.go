@@ -559,23 +559,32 @@ func (c *Client) NewRequest(method, urlStr string, body any, opts ...RequestOpti
 		return nil, err
 	}
 
-	var buf io.ReadWriter
+	var rawBody []byte
 	if body != nil {
-		buf = &bytes.Buffer{}
-		enc := json.NewEncoder(buf)
+		var buf bytes.Buffer
+		enc := json.NewEncoder(&buf)
 		enc.SetEscapeHTML(false)
-		err := enc.Encode(body)
-		if err != nil {
+		if err := enc.Encode(body); err != nil {
 			return nil, err
 		}
+		rawBody = buf.Bytes()
 	}
 
-	req, err := http.NewRequest(method, u.String(), buf)
+	var bodyReader io.Reader
+	if rawBody != nil {
+		bodyReader = bytes.NewReader(rawBody)
+	}
+	req, err := http.NewRequest(method, u.String(), bodyReader)
 	if err != nil {
 		return nil, err
 	}
+	if rawBody != nil {
+		req.GetBody = func() (io.ReadCloser, error) {
+			return io.NopCloser(bytes.NewReader(rawBody)), nil
+		}
+	}
 
-	if body != nil {
+	if rawBody != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
 	req.Header.Set("Accept", mediaTypeV3)
@@ -1382,15 +1391,21 @@ func (r *RedirectionError) Is(target error) bool {
 			r.Location != nil && v.Location != nil && r.Location.String() == v.Location.String()) // or they are both not nil and marshaled identically
 }
 
-// sanitizeURL redacts the client_secret parameter from the URL which may be
-// exposed to the user.
+var sensitiveParams = []string{"client_secret", "access_token", "token"}
+
 func sanitizeURL(uri *url.URL) *url.URL {
 	if uri == nil {
 		return nil
 	}
 	params := uri.Query()
-	if len(params.Get("client_secret")) > 0 {
-		params.Set("client_secret", "REDACTED")
+	redacted := false
+	for _, p := range sensitiveParams {
+		if len(params.Get(p)) > 0 {
+			params.Set(p, "REDACTED")
+			redacted = true
+		}
+	}
+	if redacted {
 		uri.RawQuery = params.Encode()
 	}
 	return uri
