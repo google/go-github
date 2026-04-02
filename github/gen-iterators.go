@@ -519,10 +519,22 @@ func (t *templateData) processReturnStarExpr(fd *ast.FuncDecl, starRet *ast.Star
 		return
 	}
 
-	itemsField, itemsType, ok := findSinglePointerSliceField(wrapperDef, methodInfo.RecvType+"."+fd.Name.Name)
-	if !ok {
-		logf("Skipping %v.%v: wrapper %v does not contain exactly one []*T field", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
-		return
+	var itemsField string
+	var itemsType string
+
+	if customNames, ok := sliceToBeUsedForIteration[methodInfo.RecvType+"."+fd.Name.Name]; ok {
+		itemsField = customNames
+		itemsType, ok = wrapperDef.Fields[itemsField]
+		if !ok || !strings.HasPrefix(itemsType, "[]*") {
+			logf("Skipping %v.%v: specified items field %v not found or not of type []*T in wrapper %v", methodInfo.RecvTypeRaw, fd.Name.Name, itemsField, wrapperType)
+			return
+		}
+	} else {
+		itemsField, itemsType, ok = findSinglePointerSliceField(wrapperDef)
+		if !ok {
+			logf("Skipping %v.%v: wrapper %v does not contain exactly one []*T field", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
+			return
+		}
 	}
 
 	testJSON, emptyReturnValue := "[]", "{}"
@@ -570,22 +582,17 @@ func (t *templateData) processReturnStarExpr(fd *ast.FuncDecl, starRet *ast.Star
 	t.Methods = append(t.Methods, m)
 }
 
-func findSinglePointerSliceField(sd *structDef, methodKey string) (fieldName, fieldType string, ok bool) {
+func findSinglePointerSliceField(sd *structDef) (fieldName, fieldType string, ok bool) {
 	matches := []string{}
 	for name, typeStr := range sd.Fields {
 		if strings.HasPrefix(typeStr, "[]*") {
 			matches = append(matches, name)
 		}
 	}
-	if len(matches) != 1 && sliceToBeUsedForIteration[methodKey] == "" {
+	if len(matches) != 1 {
 		return "", "", false
 	}
-
-	if custom, ok := sliceToBeUsedForIteration[methodKey]; ok {
-		fieldName = custom
-	} else {
-		fieldName = matches[0]
-	}
+	fieldName = matches[0]
 	return fieldName, sd.Fields[fieldName], true
 }
 
