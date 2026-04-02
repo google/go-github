@@ -162,6 +162,20 @@ var useCursorPagination = map[string]bool{
 	"RepositoriesService.ListHookDeliveries":  true,
 }
 
+// customNames provides custom names for iterator methods where the default methodName + "Iter" would be confusing.
+var customNames = map[string]string{
+	"RepositoriesService.GetCommit":         "ListCommitFiles",
+	"RepositoriesService.CompareCommits":    "ListCommitComparisonFiles",
+	"RepositoriesService.GetCombinedStatus": "ListCombinedStatus",
+}
+
+// sliceToBeUsedForIteration identifies methods where the wrapper struct contains multiple []*T fields,
+// and specifies which field should be used for iteration.
+var sliceToBeUsedForIteration = map[string]string{
+	"RepositoriesService.GetCommit":      "Files",
+	"RepositoriesService.CompareCommits": "Files",
+}
+
 // customTestJSON maps method names to the JSON response they expect in tests.
 // This is needed for methods that internally unmarshal a wrapper struct
 // even though they return a slice.
@@ -301,7 +315,8 @@ func (t *templateData) processMethods(f *ast.File) error {
 			continue
 		}
 
-		if !fd.Name.IsExported() || !strings.HasPrefix(fd.Name.Name, "List") {
+		methodKey := strings.TrimPrefix(typeToString(fd.Recv.List[0].Type), "*") + "." + fd.Name.Name
+		if !fd.Name.IsExported() || (!strings.HasPrefix(fd.Name.Name, "List") && customNames[methodKey] == "") {
 			continue
 		}
 
@@ -448,6 +463,13 @@ func (t *templateData) collectMethodInfo(fd *ast.FuncDecl) (*methodInfo, bool) {
 	}, true
 }
 
+func getIterName(methodInfo *methodInfo, methodName string) string {
+	if customName, ok := customNames[methodInfo.RecvType+"."+methodName]; ok {
+		return customName + "Iter"
+	}
+	return methodName + "Iter"
+}
+
 func (t *templateData) processReturnArrayType(fd *ast.FuncDecl, sliceRet *ast.ArrayType, methodInfo *methodInfo) {
 	testJSON, emptyReturnValue := "[]", "{}"
 	if val, ok := customTestJSON[fd.Name.Name]; ok {
@@ -467,7 +489,7 @@ func (t *templateData) processReturnArrayType(fd *ast.FuncDecl, sliceRet *ast.Ar
 		RecvVar:              methodInfo.RecvVar,
 		ClientField:          methodInfo.ClientField,
 		MethodName:           fd.Name.Name,
-		IterMethod:           fd.Name.Name + "Iter",
+		IterMethod:           getIterName(methodInfo, fd.Name.Name),
 		Args:                 methodInfo.Args,
 		CallArgs:             methodInfo.CallArgs,
 		TestCallArgs:         methodInfo.TestCallArgs,
@@ -496,8 +518,14 @@ func (t *templateData) processReturnStarExpr(fd *ast.FuncDecl, starRet *ast.Star
 		return
 	}
 
-	itemsField, itemsType, ok := findSinglePointerSliceField(wrapperDef)
-	if !ok {
+	var itemsField, itemsType string
+	if field, ok := sliceToBeUsedForIteration[methodInfo.RecvType+"."+fd.Name.Name]; ok {
+		itemsField = field
+		if itemsType, ok = wrapperDef.Fields[itemsField]; !ok || !strings.HasPrefix(itemsType, "[]*") {
+			logf("Skipping %v.%v: specified items field %v not found or not of type []*T in wrapper %v", methodInfo.RecvTypeRaw, fd.Name.Name, itemsField, wrapperType)
+			return
+		}
+	} else if itemsField, itemsType, ok = findSinglePointerSliceField(wrapperDef); !ok {
 		logf("Skipping %v.%v: wrapper %v does not contain exactly one []*T field", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
 		return
 	}
@@ -525,7 +553,7 @@ func (t *templateData) processReturnStarExpr(fd *ast.FuncDecl, starRet *ast.Star
 		RecvVar:              methodInfo.RecvVar,
 		ClientField:          methodInfo.ClientField,
 		MethodName:           fd.Name.Name,
-		IterMethod:           fd.Name.Name + "Iter",
+		IterMethod:           getIterName(methodInfo, fd.Name.Name),
 		Args:                 methodInfo.Args,
 		CallArgs:             methodInfo.CallArgs,
 		TestCallArgs:         methodInfo.TestCallArgs,
