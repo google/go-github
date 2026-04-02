@@ -316,7 +316,6 @@ func (t *templateData) processMethods(f *ast.File) error {
 		}
 
 		methodKey := strings.TrimPrefix(typeToString(fd.Recv.List[0].Type), "*") + "." + fd.Name.Name
-
 		if !fd.Name.IsExported() || (!strings.HasPrefix(fd.Name.Name, "List") && customNames[methodKey] == "") {
 			continue
 		}
@@ -520,7 +519,6 @@ func (t *templateData) processReturnStarExpr(fd *ast.FuncDecl, starRet *ast.Star
 	}
 
 	var itemsField, itemsType string
-
 	if field, ok := sliceToBeUsedForIteration[methodInfo.RecvType+"."+fd.Name.Name]; ok {
 		itemsField = field
 		if itemsType, ok = wrapperDef.Fields[itemsField]; !ok || !strings.HasPrefix(itemsType, "[]*") {
