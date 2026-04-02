@@ -5316,6 +5316,111 @@ func (s *ReactionsService) ListTeamDiscussionReactionsIter(ctx context.Context, 
 	}
 }
 
+// ListCommitComparisonFilesIter returns an iterator that paginates through all results of CompareCommits.
+func (s *RepositoriesService) ListCommitComparisonFilesIter(ctx context.Context, owner string, repo string, base string, head string, opts *ListOptions) iter.Seq2[*CommitFile, error] {
+	return func(yield func(*CommitFile, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.CompareCommits(ctx, owner, repo, base, head, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*CommitFile
+			if results != nil {
+				iterItems = results.Files
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListCombinedStatusIter returns an iterator that paginates through all results of GetCombinedStatus.
+func (s *RepositoriesService) ListCombinedStatusIter(ctx context.Context, owner string, repo string, ref string, opts *ListOptions) iter.Seq2[*RepoStatus, error] {
+	return func(yield func(*RepoStatus, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.GetCombinedStatus(ctx, owner, repo, ref, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*RepoStatus
+			if results != nil {
+				iterItems = results.Statuses
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListCommitFilesIter returns an iterator that paginates through all results of GetCommit.
+func (s *RepositoriesService) ListCommitFilesIter(ctx context.Context, owner string, repo string, sha string, opts *ListOptions) iter.Seq2[*CommitFile, error] {
+	return func(yield func(*CommitFile, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.GetCommit(ctx, owner, repo, sha, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*CommitFile
+			if results != nil {
+				iterItems = results.Files
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListIter returns an iterator that paginates through all results of List.
 func (s *RepositoriesService) ListIter(ctx context.Context, user string, opts *RepositoryListOptions) iter.Seq2[*Repository, error] {
 	return func(yield func(*Repository, error) bool) {
