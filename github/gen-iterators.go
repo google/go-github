@@ -519,22 +519,17 @@ func (t *templateData) processReturnStarExpr(fd *ast.FuncDecl, starRet *ast.Star
 		return
 	}
 
-	var itemsField string
-	var itemsType string
+	var itemsField, itemsType string
 
 	if field, ok := sliceToBeUsedForIteration[methodInfo.RecvType+"."+fd.Name.Name]; ok {
 		itemsField = field
-		itemsType, ok = wrapperDef.Fields[itemsField]
-		if !ok || !strings.HasPrefix(itemsType, "[]*") {
+		if itemsType, ok = wrapperDef.Fields[itemsField]; !ok || !strings.HasPrefix(itemsType, "[]*") {
 			logf("Skipping %v.%v: specified items field %v not found or not of type []*T in wrapper %v", methodInfo.RecvTypeRaw, fd.Name.Name, itemsField, wrapperType)
 			return
 		}
-	} else {
-		itemsField, itemsType, ok = findSinglePointerSliceField(wrapperDef)
-		if !ok {
-			logf("Skipping %v.%v: wrapper %v does not contain exactly one []*T field", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
-			return
-		}
+	} else if itemsField, itemsType, ok = findSinglePointerSliceField(wrapperDef); !ok {
+		logf("Skipping %v.%v: wrapper %v does not contain exactly one []*T field", methodInfo.RecvTypeRaw, fd.Name.Name, wrapperType)
+		return
 	}
 
 	testJSON, emptyReturnValue := "[]", "{}"
