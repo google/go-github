@@ -559,32 +559,23 @@ func (c *Client) NewRequest(method, urlStr string, body any, opts ...RequestOpti
 		return nil, err
 	}
 
-	var rawBody []byte
+	var buf io.ReadWriter
 	if body != nil {
-		var buf bytes.Buffer
-		enc := json.NewEncoder(&buf)
+		buf = &bytes.Buffer{}
+		enc := json.NewEncoder(buf)
 		enc.SetEscapeHTML(false)
-		if err := enc.Encode(body); err != nil {
+		err := enc.Encode(body)
+		if err != nil {
 			return nil, err
 		}
-		rawBody = buf.Bytes()
 	}
 
-	var bodyReader io.Reader
-	if rawBody != nil {
-		bodyReader = bytes.NewReader(rawBody)
-	}
-	req, err := http.NewRequest(method, u.String(), bodyReader)
+	req, err := http.NewRequest(method, u.String(), buf)
 	if err != nil {
 		return nil, err
 	}
-	if rawBody != nil {
-		req.GetBody = func() (io.ReadCloser, error) {
-			return io.NopCloser(bytes.NewReader(rawBody)), nil
-		}
-	}
 
-	if rawBody != nil {
+	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
 	req.Header.Set("Accept", mediaTypeV3)
