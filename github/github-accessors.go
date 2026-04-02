@@ -18166,6 +18166,14 @@ func (i *IssueCommentEvent) GetSender() *User {
 	return i.Sender
 }
 
+// GetIssueID returns the IssueID field if it's non-nil, zero value otherwise.
+func (i *IssueDependencyRequest) GetIssueID() int64 {
+	if i == nil || i.IssueID == nil {
+		return 0
+	}
+	return *i.IssueID
+}
+
 // GetAction returns the Action field.
 func (i *IssueEvent) GetAction() string {
 	if i == nil {

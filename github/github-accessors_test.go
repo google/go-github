@@ -22982,6 +22982,17 @@ func TestIssueCommentEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 }
 
+func TestIssueDependencyRequest_GetIssueID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	i := &IssueDependencyRequest{IssueID: &zeroValue}
+	i.GetIssueID()
+	i = &IssueDependencyRequest{}
+	i.GetIssueID()
+	i = nil
+	i.GetIssueID()
+}
+
 func TestIssueEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	i := &IssueEvent{}
