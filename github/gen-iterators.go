@@ -522,8 +522,8 @@ func (t *templateData) processReturnStarExpr(fd *ast.FuncDecl, starRet *ast.Star
 	var itemsField string
 	var itemsType string
 
-	if customNames, ok := sliceToBeUsedForIteration[methodInfo.RecvType+"."+fd.Name.Name]; ok {
-		itemsField = customNames
+	if field, ok := sliceToBeUsedForIteration[methodInfo.RecvType+"."+fd.Name.Name]; ok {
+		itemsField = field
 		itemsType, ok = wrapperDef.Fields[itemsField]
 		if !ok || !strings.HasPrefix(itemsType, "[]*") {
 			logf("Skipping %v.%v: specified items field %v not found or not of type []*T in wrapper %v", methodInfo.RecvTypeRaw, fd.Name.Name, itemsField, wrapperType)
