@@ -46,7 +46,7 @@ func (s *IssuesService) ListBlockedBy(ctx context.Context, owner, repo string, n
 // GitHub API docs: https://docs.github.com/rest/issues/issue-dependencies#add-a-dependency-an-issue-is-blocked-by
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by
-func (s *IssuesService) AddBlockedBy(ctx context.Context, owner, repo string, number int, issueDepReq *IssueDependencyRequest) (*Issue, *Response, error) {
+func (s *IssuesService) AddBlockedBy(ctx context.Context, owner, repo string, number int, issueDepReq IssueDependencyRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by", owner, repo, number)
 	req, err := s.client.NewRequest("POST", u, issueDepReq)
 	if err != nil {

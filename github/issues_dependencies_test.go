@@ -64,10 +64,10 @@ func TestIssuesService_AddBlockedBy(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &IssueDependencyRequest{IssueID: Ptr(int64(42))}
+	input := IssueDependencyRequest{IssueID: Ptr(int64(42))}
 
 	mux.HandleFunc("/repos/o/r/issues/1/dependencies/blocked_by", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueDependencyRequest
+		var v IssueDependencyRequest
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 
 		testMethod(t, r, "POST")
@@ -110,7 +110,7 @@ func TestIssuesService_AddBlockedBy_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.AddBlockedBy(ctx, "%", "%", 1, nil)
+	_, _, err := client.Issues.AddBlockedBy(ctx, "%", "%", 1, IssueDependencyRequest{})
 	testURLParseError(t, err)
 }
 
