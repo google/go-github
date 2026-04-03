@@ -1382,10 +1382,10 @@ func (r *RedirectionError) Is(target error) bool {
 			r.Location != nil && v.Location != nil && r.Location.String() == v.Location.String()) // or they are both not nil and marshaled identically
 }
 
-// sanitizeURL redacts sensitive parameters from the URL which may be
-// exposed to the user.
 var sensitiveParams = []string{"client_secret", "access_token", "token"}
 
+// sanitizeURL redacts sensitive parameters from the URL which may be
+// exposed to the user.
 func sanitizeURL(uri *url.URL) *url.URL {
 	if uri == nil {
 		return nil
