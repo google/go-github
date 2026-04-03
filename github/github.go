@@ -1391,12 +1391,16 @@ func sanitizeURL(uri *url.URL) *url.URL {
 		return nil
 	}
 	params := uri.Query()
+	var redacted bool
 	for _, p := range sensitiveParams {
 		if len(params.Get(p)) > 0 {
 			params.Set(p, "REDACTED")
+			redacted = true
 		}
 	}
-	uri.RawQuery = params.Encode()
+	if redacted {
+		uri.RawQuery = params.Encode()
+	}
 	return uri
 }
 
