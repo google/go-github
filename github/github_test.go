@@ -2174,6 +2174,9 @@ func TestSanitizeURL(t *testing.T) {
 		{"/?a=b", "/?a=b"},
 		{"/?a=b&client_secret=secret", "/?a=b&client_secret=REDACTED"},
 		{"/?a=b&client_id=id&client_secret=secret", "/?a=b&client_id=id&client_secret=REDACTED"},
+		{"/?a=b&access_token=secret", "/?a=b&access_token=REDACTED"},
+		{"/?a=b&token=secret", "/?a=b&token=REDACTED"},
+		{"/?client_secret=s&access_token=t&token=u", "/?access_token=REDACTED&client_secret=REDACTED&token=REDACTED"},
 	}
 
 	for _, tt := range tests {

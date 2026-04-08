@@ -1382,15 +1382,23 @@ func (r *RedirectionError) Is(target error) bool {
 			r.Location != nil && v.Location != nil && r.Location.String() == v.Location.String()) // or they are both not nil and marshaled identically
 }
 
-// sanitizeURL redacts the client_secret parameter from the URL which may be
+var sensitiveParams = []string{"client_secret", "access_token", "token"}
+
+// sanitizeURL redacts sensitive parameters from the URL which may be
 // exposed to the user.
 func sanitizeURL(uri *url.URL) *url.URL {
 	if uri == nil {
 		return nil
 	}
 	params := uri.Query()
-	if len(params.Get("client_secret")) > 0 {
-		params.Set("client_secret", "REDACTED")
+	var redacted bool
+	for _, p := range sensitiveParams {
+		if len(params.Get(p)) > 0 {
+			params.Set(p, "REDACTED")
+			redacted = true
+		}
+	}
+	if redacted {
 		uri.RawQuery = params.Encode()
 	}
 	return uri
