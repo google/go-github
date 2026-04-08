@@ -22609,6 +22609,25 @@ func TestIssue_GetID(tt *testing.T) {
 	i.GetID()
 }
 
+func TestIssue_GetIssueDependenciesSummary(tt *testing.T) {
+	tt.Parallel()
+	i := &Issue{}
+	i.GetIssueDependenciesSummary()
+	i = nil
+	i.GetIssueDependenciesSummary()
+}
+
+func TestIssue_GetIssueFieldValues(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*IssueFieldValue{}
+	i := &Issue{IssueFieldValues: zeroValue}
+	i.GetIssueFieldValues()
+	i = &Issue{}
+	i.GetIssueFieldValues()
+	i = nil
+	i.GetIssueFieldValues()
+}
+
 func TestIssue_GetLabels(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*Label{}
@@ -22683,6 +22702,22 @@ func TestIssue_GetParentIssueURL(tt *testing.T) {
 	i.GetParentIssueURL()
 }
 
+func TestIssue_GetPerformedViaGithubApp(tt *testing.T) {
+	tt.Parallel()
+	i := &Issue{}
+	i.GetPerformedViaGithubApp()
+	i = nil
+	i.GetPerformedViaGithubApp()
+}
+
+func TestIssue_GetPinnedComment(tt *testing.T) {
+	tt.Parallel()
+	i := &Issue{}
+	i.GetPinnedComment()
+	i = nil
+	i.GetPinnedComment()
+}
+
 func TestIssue_GetPullRequestLinks(tt *testing.T) {
 	tt.Parallel()
 	i := &Issue{}
@@ -22738,6 +22773,14 @@ func TestIssue_GetStateReason(tt *testing.T) {
 	i.GetStateReason()
 	i = nil
 	i.GetStateReason()
+}
+
+func TestIssue_GetSubIssuesSummary(tt *testing.T) {
+	tt.Parallel()
+	i := &Issue{}
+	i.GetSubIssuesSummary()
+	i = nil
+	i.GetSubIssuesSummary()
 }
 
 func TestIssue_GetTextMatches(tt *testing.T) {
@@ -22982,6 +23025,50 @@ func TestIssueCommentEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 }
 
+func TestIssueDependenciesSummary_GetBlockedBy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	i := &IssueDependenciesSummary{BlockedBy: &zeroValue}
+	i.GetBlockedBy()
+	i = &IssueDependenciesSummary{}
+	i.GetBlockedBy()
+	i = nil
+	i.GetBlockedBy()
+}
+
+func TestIssueDependenciesSummary_GetBlocking(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	i := &IssueDependenciesSummary{Blocking: &zeroValue}
+	i.GetBlocking()
+	i = &IssueDependenciesSummary{}
+	i.GetBlocking()
+	i = nil
+	i.GetBlocking()
+}
+
+func TestIssueDependenciesSummary_GetTotalBlockedBy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	i := &IssueDependenciesSummary{TotalBlockedBy: &zeroValue}
+	i.GetTotalBlockedBy()
+	i = &IssueDependenciesSummary{}
+	i.GetTotalBlockedBy()
+	i = nil
+	i.GetTotalBlockedBy()
+}
+
+func TestIssueDependenciesSummary_GetTotalBlocking(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	i := &IssueDependenciesSummary{TotalBlocking: &zeroValue}
+	i.GetTotalBlocking()
+	i = &IssueDependenciesSummary{}
+	i.GetTotalBlocking()
+	i = nil
+	i.GetTotalBlocking()
+}
+
 func TestIssueDependencyRequest_GetIssueID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -23169,6 +23256,80 @@ func TestIssueEvent_GetURL(tt *testing.T) {
 	i.GetURL()
 	i = nil
 	i.GetURL()
+}
+
+func TestIssueFieldSelectOption_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueFieldSelectOption{Color: &zeroValue}
+	i.GetColor()
+	i = &IssueFieldSelectOption{}
+	i.GetColor()
+	i = nil
+	i.GetColor()
+}
+
+func TestIssueFieldSelectOption_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	i := &IssueFieldSelectOption{ID: &zeroValue}
+	i.GetID()
+	i = &IssueFieldSelectOption{}
+	i.GetID()
+	i = nil
+	i.GetID()
+}
+
+func TestIssueFieldSelectOption_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueFieldSelectOption{Name: &zeroValue}
+	i.GetName()
+	i = &IssueFieldSelectOption{}
+	i.GetName()
+	i = nil
+	i.GetName()
+}
+
+func TestIssueFieldValue_GetDataType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueFieldValue{DataType: &zeroValue}
+	i.GetDataType()
+	i = &IssueFieldValue{}
+	i.GetDataType()
+	i = nil
+	i.GetDataType()
+}
+
+func TestIssueFieldValue_GetIssueFieldID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	i := &IssueFieldValue{IssueFieldID: &zeroValue}
+	i.GetIssueFieldID()
+	i = &IssueFieldValue{}
+	i.GetIssueFieldID()
+	i = nil
+	i.GetIssueFieldID()
+}
+
+func TestIssueFieldValue_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueFieldValue{NodeID: &zeroValue}
+	i.GetNodeID()
+	i = &IssueFieldValue{}
+	i.GetNodeID()
+	i = nil
+	i.GetNodeID()
+}
+
+func TestIssueFieldValue_GetSingleSelectOption(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueFieldValue{}
+	i.GetSingleSelectOption()
+	i = nil
+	i.GetSingleSelectOption()
 }
 
 func TestIssueImport_GetAssignee(tt *testing.T) {
@@ -47429,6 +47590,39 @@ func TestSubIssueRequest_GetSubIssueID(tt *testing.T) {
 	s.GetSubIssueID()
 	s = nil
 	s.GetSubIssueID()
+}
+
+func TestSubIssuesSummary_GetCompleted(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SubIssuesSummary{Completed: &zeroValue}
+	s.GetCompleted()
+	s = &SubIssuesSummary{}
+	s.GetCompleted()
+	s = nil
+	s.GetCompleted()
+}
+
+func TestSubIssuesSummary_GetPercentCompleted(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SubIssuesSummary{PercentCompleted: &zeroValue}
+	s.GetPercentCompleted()
+	s = &SubIssuesSummary{}
+	s.GetPercentCompleted()
+	s = nil
+	s.GetPercentCompleted()
+}
+
+func TestSubIssuesSummary_GetTotal(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	s := &SubIssuesSummary{Total: &zeroValue}
+	s.GetTotal()
+	s = &SubIssuesSummary{}
+	s.GetTotal()
+	s = nil
+	s.GetTotal()
 }
 
 func TestSubscription_GetCreatedAt(tt *testing.T) {
