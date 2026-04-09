@@ -44,7 +44,7 @@ type IssueFieldValue struct {
 	IssueFieldID       *int64                  `json:"issue_field_id,omitempty"`
 	NodeID             *string                 `json:"node_id,omitempty"`
 	DataType           *string                 `json:"data_type,omitempty"`
-	Value              interface{}             `json:"value,omitempty"`
+	Value              any                     `json:"value,omitempty"`
 	SingleSelectOption *IssueFieldSelectOption `json:"single_select_option,omitempty"`
 }
 
