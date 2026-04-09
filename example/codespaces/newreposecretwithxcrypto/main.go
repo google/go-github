@@ -146,8 +146,7 @@ func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName, secretV
 		return nil, fmt.Errorf("unable to decode public key: %v", err)
 	}
 
-	var boxKey [32]byte
-	copy(boxKey[:], decodedPublicKey)
+	boxKey := [32]byte(decodedPublicKey)
 	encryptedBytes, err := box.SealAnonymous([]byte{}, []byte(secretValue), &boxKey, crypto_rand.Reader)
 	if err != nil {
 		return nil, fmt.Errorf("box.SealAnonymous failed with error %w", err)
