@@ -20,7 +20,7 @@ type IssueDependencyRequest struct {
 // GitHub API docs: https://docs.github.com/rest/issues/issue-dependencies#list-dependencies-an-issue-is-blocked-by
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by
-func (s *IssuesService) ListBlockedBy(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Issue, *Response, error) {
+func (s *IssuesService) ListBlockedBy(ctx context.Context, owner, repo string, issueNumber int, opts *ListOptions) ([]*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by", owner, repo, number)
 	u, err := addOptions(u, opts)
 	if err != nil {
