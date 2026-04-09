@@ -1416,7 +1416,6 @@ type PushEventRepository struct {
 	WatchersCount    *int           `json:"watchers_count,omitempty"`
 	Language         *string        `json:"language,omitempty"`
 	HasIssues        *bool          `json:"has_issues,omitempty"`
-	HasDownloads     *bool          `json:"has_downloads,omitempty"`
 	HasWiki          *bool          `json:"has_wiki,omitempty"`
 	HasPages         *bool          `json:"has_pages,omitempty"`
 	ForksCount       *int           `json:"forks_count,omitempty"`

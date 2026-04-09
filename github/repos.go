@@ -90,7 +90,6 @@ type Repository struct {
 	HasWiki           *bool   `json:"has_wiki,omitempty"`
 	HasPages          *bool   `json:"has_pages,omitempty"`
 	HasProjects       *bool   `json:"has_projects,omitempty"`
-	HasDownloads      *bool   `json:"has_downloads,omitempty"`
 	HasDiscussions    *bool   `json:"has_discussions,omitempty"`
 	IsTemplate        *bool   `json:"is_template,omitempty"`
 	LicenseTemplate   *string `json:"license_template,omitempty"`

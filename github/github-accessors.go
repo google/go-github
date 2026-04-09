@@ -29390,14 +29390,6 @@ func (p *PushEventRepository) GetGitURL() string {
 	return *p.GitURL
 }
 
-// GetHasDownloads returns the HasDownloads field if it's non-nil, zero value otherwise.
-func (p *PushEventRepository) GetHasDownloads() bool {
-	if p == nil || p.HasDownloads == nil {
-		return false
-	}
-	return *p.HasDownloads
-}
-
 // GetHasIssues returns the HasIssues field if it's non-nil, zero value otherwise.
 func (p *PushEventRepository) GetHasIssues() bool {
 	if p == nil || p.HasIssues == nil {
@@ -30868,14 +30860,6 @@ func (r *Repository) GetHasDiscussions() bool {
 		return false
 	}
 	return *r.HasDiscussions
-}
-
-// GetHasDownloads returns the HasDownloads field if it's non-nil, zero value otherwise.
-func (r *Repository) GetHasDownloads() bool {
-	if r == nil || r.HasDownloads == nil {
-		return false
-	}
-	return *r.HasDownloads
 }
 
 // GetHasIssues returns the HasIssues field if it's non-nil, zero value otherwise.

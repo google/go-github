@@ -36999,17 +36999,6 @@ func TestPushEventRepository_GetGitURL(tt *testing.T) {
 	p.GetGitURL()
 }
 
-func TestPushEventRepository_GetHasDownloads(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	p := &PushEventRepository{HasDownloads: &zeroValue}
-	p.GetHasDownloads()
-	p = &PushEventRepository{}
-	p.GetHasDownloads()
-	p = nil
-	p.GetHasDownloads()
-}
-
 func TestPushEventRepository_GetHasIssues(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -38891,17 +38880,6 @@ func TestRepository_GetHasDiscussions(tt *testing.T) {
 	r.GetHasDiscussions()
 	r = nil
 	r.GetHasDiscussions()
-}
-
-func TestRepository_GetHasDownloads(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	r := &Repository{HasDownloads: &zeroValue}
-	r.GetHasDownloads()
-	r = &Repository{}
-	r.GetHasDownloads()
-	r = nil
-	r.GetHasDownloads()
 }
 
 func TestRepository_GetHasIssues(tt *testing.T) {
