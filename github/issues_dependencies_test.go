@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -67,13 +66,8 @@ func TestIssuesService_AddBlockedBy(t *testing.T) {
 	input := IssueDependencyRequest{IssueID: int64(42)}
 
 	mux.HandleFunc("/repos/o/r/issues/1/dependencies/blocked_by", func(w http.ResponseWriter, r *http.Request) {
-		var v IssueDependencyRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testBody(t, r, `{"issue_id":42}`+"\n")
 
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"number":42,"title":"Dependency issue"}`)
