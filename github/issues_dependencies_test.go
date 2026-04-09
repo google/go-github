@@ -206,7 +206,7 @@ func TestIssuesService_ListBlocking_invalidOwner(t *testing.T) {
 
 func TestIssueDependencyRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &IssueDependencyRequest{}, `{"issue_id":null}`)
+	testJSONMarshal(t, &IssueDependencyRequest{}, `{"issue_id":0}`)
 
 	u := &IssueDependencyRequest{
 		IssueID: int64(1),

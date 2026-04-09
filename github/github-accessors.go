@@ -18238,12 +18238,12 @@ func (i *IssueDependenciesSummary) GetTotalBlocking() int {
 	return *i.TotalBlocking
 }
 
-// GetIssueID returns the IssueID field if it's non-nil, zero value otherwise.
+// GetIssueID returns the IssueID field.
 func (i *IssueDependencyRequest) GetIssueID() int64 {
-	if i == nil || i.IssueID == nil {
+	if i == nil {
 		return 0
 	}
-	return *i.IssueID
+	return i.IssueID
 }
 
 // GetAction returns the Action field.
@@ -18460,6 +18460,14 @@ func (i *IssueFieldValue) GetSingleSelectOption() *IssueFieldSelectOption {
 		return nil
 	}
 	return i.SingleSelectOption
+}
+
+// GetValue returns the Value field.
+func (i *IssueFieldValue) GetValue() any {
+	if i == nil {
+		return nil
+	}
+	return i.Value
 }
 
 // GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.

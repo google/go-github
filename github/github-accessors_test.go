@@ -23071,10 +23071,7 @@ func TestIssueDependenciesSummary_GetTotalBlocking(tt *testing.T) {
 
 func TestIssueDependencyRequest_GetIssueID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	i := &IssueDependencyRequest{IssueID: &zeroValue}
-	i.GetIssueID()
-	i = &IssueDependencyRequest{}
+	i := &IssueDependencyRequest{}
 	i.GetIssueID()
 	i = nil
 	i.GetIssueID()
@@ -23330,6 +23327,14 @@ func TestIssueFieldValue_GetSingleSelectOption(tt *testing.T) {
 	i.GetSingleSelectOption()
 	i = nil
 	i.GetSingleSelectOption()
+}
+
+func TestIssueFieldValue_GetValue(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueFieldValue{}
+	i.GetValue()
+	i = nil
+	i.GetValue()
 }
 
 func TestIssueImport_GetAssignee(tt *testing.T) {

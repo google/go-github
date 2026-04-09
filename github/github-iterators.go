@@ -3405,7 +3405,7 @@ func (s *IssuesService) ListAssigneesIter(ctx context.Context, owner string, rep
 }
 
 // ListBlockedByIter returns an iterator that paginates through all results of ListBlockedBy.
-func (s *IssuesService) ListBlockedByIter(ctx context.Context, owner string, repo string, number int, opts *ListOptions) iter.Seq2[*Issue, error] {
+func (s *IssuesService) ListBlockedByIter(ctx context.Context, owner string, repo string, issueNumber int64, opts *ListOptions) iter.Seq2[*Issue, error] {
 	return func(yield func(*Issue, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
@@ -3415,7 +3415,7 @@ func (s *IssuesService) ListBlockedByIter(ctx context.Context, owner string, rep
 		}
 
 		for {
-			results, resp, err := s.ListBlockedBy(ctx, owner, repo, number, opts)
+			results, resp, err := s.ListBlockedBy(ctx, owner, repo, issueNumber, opts)
 			if err != nil {
 				yield(nil, err)
 				return
@@ -3436,7 +3436,7 @@ func (s *IssuesService) ListBlockedByIter(ctx context.Context, owner string, rep
 }
 
 // ListBlockingIter returns an iterator that paginates through all results of ListBlocking.
-func (s *IssuesService) ListBlockingIter(ctx context.Context, owner string, repo string, number int, opts *ListOptions) iter.Seq2[*Issue, error] {
+func (s *IssuesService) ListBlockingIter(ctx context.Context, owner string, repo string, issueNumber int64, opts *ListOptions) iter.Seq2[*Issue, error] {
 	return func(yield func(*Issue, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
@@ -3446,7 +3446,7 @@ func (s *IssuesService) ListBlockingIter(ctx context.Context, owner string, repo
 		}
 
 		for {
-			results, resp, err := s.ListBlocking(ctx, owner, repo, number, opts)
+			results, resp, err := s.ListBlocking(ctx, owner, repo, issueNumber, opts)
 			if err != nil {
 				yield(nil, err)
 				return
