@@ -88,8 +88,8 @@ func (s *IssuesService) RemoveBlockedBy(ctx context.Context, owner, repo string,
 // GitHub API docs: https://docs.github.com/rest/issues/issue-dependencies#list-dependencies-an-issue-is-blocking
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocking
-func (s *IssuesService) ListBlocking(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocking", owner, repo, number)
+func (s *IssuesService) ListBlocking(ctx context.Context, owner, repo string, issueNumber int, opts *ListOptions) ([]*Issue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocking", owner, repo, issueNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
