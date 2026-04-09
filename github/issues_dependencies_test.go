@@ -64,7 +64,7 @@ func TestIssuesService_AddBlockedBy(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := IssueDependencyRequest{IssueID: Ptr(int64(42))}
+	input := IssueDependencyRequest{IssueID: int64(42)}
 
 	mux.HandleFunc("/repos/o/r/issues/1/dependencies/blocked_by", func(w http.ResponseWriter, r *http.Request) {
 		var v IssueDependencyRequest
@@ -209,7 +209,7 @@ func TestIssueDependencyRequest_Marshal(t *testing.T) {
 	testJSONMarshal(t, &IssueDependencyRequest{}, `{"issue_id":null}`)
 
 	u := &IssueDependencyRequest{
-		IssueID: Ptr(int64(1)),
+		IssueID: int64(1),
 	}
 
 	want := `{
