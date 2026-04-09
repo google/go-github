@@ -21,7 +21,7 @@ type IssueDependencyRequest struct {
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by
 func (s *IssuesService) ListBlockedBy(ctx context.Context, owner, repo string, issueNumber int, opts *ListOptions) ([]*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by", owner, repo, issueNumber)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -47,7 +47,7 @@ func (s *IssuesService) ListBlockedBy(ctx context.Context, owner, repo string, i
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by
 func (s *IssuesService) AddBlockedBy(ctx context.Context, owner, repo string, issueNumber int, issueDepReq IssueDependencyRequest) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by", owner, repo, number)
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by", owner, repo, issueNumber)
 	req, err := s.client.NewRequest("POST", u, issueDepReq)
 	if err != nil {
 		return nil, nil, err
@@ -67,8 +67,8 @@ func (s *IssuesService) AddBlockedBy(ctx context.Context, owner, repo string, is
 // GitHub API docs: https://docs.github.com/rest/issues/issue-dependencies#remove-dependency-an-issue-is-blocked-by
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by/{issue_id}
-func (s *IssuesService) RemoveBlockedBy(ctx context.Context, owner, repo string, number int, issueID int64) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by/%v", owner, repo, number, issueID)
+func (s *IssuesService) RemoveBlockedBy(ctx context.Context, owner, repo string, issueNumber int, issueID int64) (*Issue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by/%v", owner, repo, issueNumber, issueID)
 	req, err := s.client.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return nil, nil, err
