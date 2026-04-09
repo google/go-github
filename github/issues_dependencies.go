@@ -12,7 +12,7 @@ import (
 
 // IssueDependencyRequest represents a request to add a dependency to an issue.
 type IssueDependencyRequest struct {
-	IssueID *int64 `json:"issue_id"`
+	IssueID int64 `json:"issue_id"`
 }
 
 // ListBlockedBy lists the dependencies that block the specified issue.
