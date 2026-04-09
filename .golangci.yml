@@ -27,6 +27,7 @@ linters:
     - nolintlint
     - paralleltest
     - perfsprint
+    - redundantptr
     - revive
     - sliceofpointers
     - staticcheck
@@ -193,6 +194,10 @@ linters:
         type: module
         description: Reports usage of %d or %s in format strings.
         original-url: github.com/google/go-github/v84/tools/fmtpercentv
+      redundantptr:
+        type: module
+        description: Reports github.Ptr(x) calls that can be replaced with &x.
+        original-url: github.com/google/go-github/v84/tools/redundantptr
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.

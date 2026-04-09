@@ -20,7 +20,6 @@ type BenchmarkStruct struct {
 }
 
 func BenchmarkStringify(b *testing.B) {
-	val := 42
 	s := &BenchmarkStruct{
 		Name:    "benchmark",
 		Age:     30,
@@ -28,7 +27,7 @@ func BenchmarkStringify(b *testing.B) {
 		Score:   1.1,
 		Rank:    99.999999,
 		Tags:    []string{"go", "github", "api"},
-		Pointer: Ptr(val),
+		Pointer: Ptr(42),
 	}
 	b.ResetTimer()
 	for b.Loop() {

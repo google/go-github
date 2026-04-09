@@ -215,7 +215,7 @@ func TestHookDelivery_ParsePayload(t *testing.T) {
 			p := json.RawMessage(bs)
 
 			d := &HookDelivery{
-				Event: Ptr(evt),
+				Event: &evt,
 				Request: &HookRequest{
 					RawPayload: &p,
 				},

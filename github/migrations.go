@@ -98,9 +98,9 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 
 	body := &startMigration{Repositories: repos}
 	if opts != nil {
-		body.LockRepositories = Ptr(opts.LockRepositories)
-		body.ExcludeAttachments = Ptr(opts.ExcludeAttachments)
-		body.ExcludeReleases = Ptr(opts.ExcludeReleases)
+		body.LockRepositories = &opts.LockRepositories
+		body.ExcludeAttachments = &opts.ExcludeAttachments
+		body.ExcludeReleases = &opts.ExcludeReleases
 		body.Exclude = append(body.Exclude, opts.Exclude...)
 	}
 

@@ -1296,7 +1296,7 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					RequireLastPushApproval:      false,
 				},
 				EnforceAdmins: &AdminEnforcement{
-					URL:     Ptr(test.enforceAdminsURLPath),
+					URL:     &test.enforceAdminsURLPath,
 					Enabled: true,
 				},
 				Restrictions: &BranchRestrictions{
@@ -1411,7 +1411,7 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 				RequiredApprovingReviewCount: 1,
 			},
 			EnforceAdmins: &AdminEnforcement{
-				URL:     Ptr(test.enforceAdminsURLPath),
+				URL:     &test.enforceAdminsURLPath,
 				Enabled: true,
 			},
 			Restrictions: &BranchRestrictions{
