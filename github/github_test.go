@@ -508,6 +508,19 @@ func TestWithAuthToken(t *testing.T) {
 			t.Error("The header 'Authorization' must not be set")
 		}
 	})
+
+	t.Run("preserves Marketplace Stubbed field", func(t *testing.T) {
+		t.Parallel()
+
+		c := NewClient(nil)
+		c.Marketplace.Stubbed = true
+
+		c2 := c.WithAuthToken("token")
+
+		if !c2.Marketplace.Stubbed {
+			t.Fatal("WithAuthToken reset Marketplace.Stubbed; want true")
+		}
+	})
 }
 
 func TestWithEnterpriseURLs(t *testing.T) {

@@ -467,7 +467,11 @@ func (c *Client) initialize() {
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
 	c.Markdown = (*MarkdownService)(&c.common)
-	c.Marketplace = &MarketplaceService{client: c}
+	var marketplaceStubbed bool
+	if c.Marketplace != nil {
+		marketplaceStubbed = c.Marketplace.Stubbed
+	}
+	c.Marketplace = &MarketplaceService{client: c, Stubbed: marketplaceStubbed}
 	c.Meta = (*MetaService)(&c.common)
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
@@ -497,6 +501,9 @@ func (c *Client) copy() *Client {
 		UploadURL:                       c.UploadURL,
 		RateLimitRedirectionalEndpoints: c.RateLimitRedirectionalEndpoints,
 		secondaryRateLimitReset:         c.secondaryRateLimitReset,
+	}
+	if c.Marketplace != nil {
+		clone.Marketplace = &MarketplaceService{Stubbed: c.Marketplace.Stubbed}
 	}
 	c.clientMu.Unlock()
 	if c.client != nil {
