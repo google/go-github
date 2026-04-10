@@ -506,7 +506,7 @@ func (c *Client) copy() *Client {
 		clone.client.Timeout = c.client.Timeout
 	}
 	c.rateMu.Lock()
-	copy(clone.rateLimits[:], c.rateLimits[:])
+	clone.rateLimits = c.rateLimits
 	c.rateMu.Unlock()
 	return &clone
 }
