@@ -235,7 +235,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 		Tree:    &Tree{SHA: Ptr("t")},
 		Parents: []*Commit{{SHA: Ptr("p")}},
 		Verification: &SignatureVerification{
-			Signature: Ptr(signature),
+			Signature: &signature,
 		},
 	}
 
@@ -249,7 +249,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 			Message:   input.Message,
 			Tree:      Ptr("t"),
 			Parents:   []string{"p"},
-			Signature: Ptr(signature),
+			Signature: &signature,
 		}
 		if !cmp.Equal(v, want) {
 			t.Errorf("Request body = %+v, want %+v", v, want)
@@ -336,7 +336,7 @@ Commit Message.`
 		fmt.Fprintf(w, `{"sha":"%v"}`, sha)
 	})
 	ctx := t.Context()
-	wantCommit := &Commit{SHA: Ptr(sha)}
+	wantCommit := &Commit{SHA: &sha}
 	opts := CreateCommitOptions{Signer: mockSigner(t, signature, nil, wantMessage)}
 	commit, _, err := client.Git.CreateCommit(ctx, "o", "r", input, &opts)
 	assertNilError(t, err)

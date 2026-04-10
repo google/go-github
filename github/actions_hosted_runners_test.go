@@ -111,7 +111,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 						Length:  31,
 					},
 				},
-				LastActiveOn: Ptr(lastActiveOn),
+				LastActiveOn: &lastActiveOn,
 			},
 			{
 				ID:            Ptr(int64(7)),
@@ -132,7 +132,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 				MaximumRunners:  Ptr(int64(20)),
 				PublicIPEnabled: Ptr(false),
 				PublicIPs:       []*HostedRunnerPublicIP{},
-				LastActiveOn:    Ptr(lastActiveOn),
+				LastActiveOn:    &lastActiveOn,
 			},
 		},
 	}
@@ -236,7 +236,7 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 				Length:  31,
 			},
 		},
-		LastActiveOn: Ptr(lastActiveOn),
+		LastActiveOn: &lastActiveOn,
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
@@ -652,7 +652,7 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 				Length:  31,
 			},
 		},
-		LastActiveOn: Ptr(lastActiveOn),
+		LastActiveOn: &lastActiveOn,
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
@@ -748,7 +748,7 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 				Length:  31,
 			},
 		},
-		LastActiveOn: Ptr(lastActiveOn),
+		LastActiveOn: &lastActiveOn,
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
@@ -837,7 +837,7 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 				Length:  31,
 			},
 		},
-		LastActiveOn: Ptr(lastActiveOn),
+		LastActiveOn: &lastActiveOn,
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
