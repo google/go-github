@@ -50240,6 +50240,17 @@ func TestUser_GetBlog(tt *testing.T) {
 	u.GetBlog()
 }
 
+func TestUser_GetBusinessPlus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &User{BusinessPlus: &zeroValue}
+	u.GetBusinessPlus()
+	u = &User{}
+	u.GetBusinessPlus()
+	u = nil
+	u.GetBusinessPlus()
+}
+
 func TestUser_GetCollaborators(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int

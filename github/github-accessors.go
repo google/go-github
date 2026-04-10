@@ -39982,6 +39982,14 @@ func (u *User) GetBlog() string {
 	return *u.Blog
 }
 
+// GetBusinessPlus returns the BusinessPlus field if it's non-nil, zero value otherwise.
+func (u *User) GetBusinessPlus() bool {
+	if u == nil || u.BusinessPlus == nil {
+		return false
+	}
+	return *u.BusinessPlus
+}
+
 // GetCollaborators returns the Collaborators field if it's non-nil, zero value otherwise.
 func (u *User) GetCollaborators() int {
 	if u == nil || u.Collaborators == nil {
