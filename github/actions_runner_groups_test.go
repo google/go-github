@@ -483,6 +483,8 @@ func TestActionsService_ListRunnerGroupHostedRunners(t *testing.T) {
 		t.Errorf("Actions.ListRunnerGroupHostedRunners returned error: %v", err)
 	}
 
+	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
+
 	want := &HostedRunners{
 		TotalCount: 2,
 		Runners: []*HostedRunner{
@@ -511,7 +513,7 @@ func TestActionsService_ListRunnerGroupHostedRunners(t *testing.T) {
 						Length:  31,
 					},
 				},
-				LastActiveOn: Ptr(Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}),
+				LastActiveOn: &lastActiveOn,
 			},
 			{
 				ID:            Ptr(int64(7)),
@@ -532,7 +534,7 @@ func TestActionsService_ListRunnerGroupHostedRunners(t *testing.T) {
 				MaximumRunners:  Ptr(int64(20)),
 				PublicIPEnabled: Ptr(false),
 				PublicIPs:       []*HostedRunnerPublicIP{},
-				LastActiveOn:    Ptr(Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}),
+				LastActiveOn:    &lastActiveOn,
 			},
 		},
 	}
