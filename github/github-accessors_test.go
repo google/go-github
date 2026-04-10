@@ -50240,6 +50240,17 @@ func TestUser_GetBlog(tt *testing.T) {
 	u.GetBlog()
 }
 
+func TestUser_GetBusinessPlus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &User{BusinessPlus: &zeroValue}
+	u.GetBusinessPlus()
+	u = &User{}
+	u.GetBusinessPlus()
+	u = nil
+	u.GetBusinessPlus()
+}
+
 func TestUser_GetCollaborators(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -50471,6 +50482,17 @@ func TestUser_GetNodeID(tt *testing.T) {
 	u.GetNodeID()
 }
 
+func TestUser_GetNotificationEmail(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &User{NotificationEmail: &zeroValue}
+	u.GetNotificationEmail()
+	u = &User{}
+	u.GetNotificationEmail()
+	u = nil
+	u.GetNotificationEmail()
+}
+
 func TestUser_GetOrganizationsURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -50694,6 +50716,17 @@ func TestUser_GetURL(tt *testing.T) {
 	u.GetURL()
 	u = nil
 	u.GetURL()
+}
+
+func TestUser_GetUserViewType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &User{UserViewType: &zeroValue}
+	u.GetUserViewType()
+	u = &User{}
+	u.GetUserViewType()
+	u = nil
+	u.GetUserViewType()
 }
 
 func TestUserAuthorization_GetApp(tt *testing.T) {

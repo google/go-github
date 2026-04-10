@@ -39982,6 +39982,14 @@ func (u *User) GetBlog() string {
 	return *u.Blog
 }
 
+// GetBusinessPlus returns the BusinessPlus field if it's non-nil, zero value otherwise.
+func (u *User) GetBusinessPlus() bool {
+	if u == nil || u.BusinessPlus == nil {
+		return false
+	}
+	return *u.BusinessPlus
+}
+
 // GetCollaborators returns the Collaborators field if it's non-nil, zero value otherwise.
 func (u *User) GetCollaborators() int {
 	if u == nil || u.Collaborators == nil {
@@ -40150,6 +40158,14 @@ func (u *User) GetNodeID() string {
 	return *u.NodeID
 }
 
+// GetNotificationEmail returns the NotificationEmail field if it's non-nil, zero value otherwise.
+func (u *User) GetNotificationEmail() string {
+	if u == nil || u.NotificationEmail == nil {
+		return ""
+	}
+	return *u.NotificationEmail
+}
+
 // GetOrganizationsURL returns the OrganizationsURL field if it's non-nil, zero value otherwise.
 func (u *User) GetOrganizationsURL() string {
 	if u == nil || u.OrganizationsURL == nil {
@@ -40316,6 +40332,14 @@ func (u *User) GetURL() string {
 		return ""
 	}
 	return *u.URL
+}
+
+// GetUserViewType returns the UserViewType field if it's non-nil, zero value otherwise.
+func (u *User) GetUserViewType() string {
+	if u == nil || u.UserViewType == nil {
+		return ""
+	}
+	return *u.UserViewType
 }
 
 // GetApp returns the App field.

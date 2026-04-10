@@ -20,6 +20,7 @@ type UsersService service
 type User struct {
 	Login                   *string    `json:"login,omitempty"`
 	ID                      *int64     `json:"id,omitempty"`
+	UserViewType            *string    `json:"user_view_type,omitempty"`
 	NodeID                  *string    `json:"node_id,omitempty"`
 	AvatarURL               *string    `json:"avatar_url,omitempty"`
 	HTMLURL                 *string    `json:"html_url,omitempty"`
@@ -29,6 +30,7 @@ type User struct {
 	Blog                    *string    `json:"blog,omitempty"`
 	Location                *string    `json:"location,omitempty"`
 	Email                   *string    `json:"email,omitempty"`
+	NotificationEmail       *string    `json:"notification_email,omitempty"`
 	Hireable                *bool      `json:"hireable,omitempty"`
 	Bio                     *string    `json:"bio,omitempty"`
 	TwitterUsername         *string    `json:"twitter_username,omitempty"`
@@ -48,6 +50,7 @@ type User struct {
 	Collaborators           *int       `json:"collaborators,omitempty"`
 	TwoFactorAuthentication *bool      `json:"two_factor_authentication,omitempty"`
 	Plan                    *Plan      `json:"plan,omitempty"`
+	BusinessPlus            *bool      `json:"business_plus,omitempty"`
 	LdapDn                  *string    `json:"ldap_dn,omitempty"`
 
 	// API URLs
