@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"time"
 )
 
@@ -491,6 +492,10 @@ func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (
 
 // GetEnterpriseMetrics gets Copilot usage metrics for an enterprise.
 //
+// Deprecated: Focus has shifted to the new Download Copilot Usage Metrics APIs.
+// These endpoints are kept around for GitHub Enterprise Server users, but are no longer supported on the Public GitHub service.
+// Use GetEnterpriseDailyMetricsReport or GetEnterpriseMetricsReport instead.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics
@@ -516,6 +521,9 @@ func (s *CopilotService) GetEnterpriseMetrics(ctx context.Context, enterprise st
 }
 
 // GetEnterpriseTeamMetrics gets Copilot usage metrics for an enterprise team.
+//
+// Deprecated: Focus has shifted to the new Download Copilot Usage Metrics APIs.
+// These endpoints are kept around for GitHub Enterprise Server users, but are no longer supported on the Public GitHub service.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise-team
 //
@@ -543,6 +551,10 @@ func (s *CopilotService) GetEnterpriseTeamMetrics(ctx context.Context, enterpris
 
 // GetOrganizationMetrics gets Copilot usage metrics for an organization.
 //
+// Deprecated: Focus has shifted to the new Download Copilot Usage Metrics APIs.
+// These endpoints are kept around for GitHub Enterprise Server users, but are no longer supported on the Public GitHub service.
+// Use GetOrganizationDailyMetricsReport or GetOrganizationMetricsReport instead.
+//
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-organization
 //
 //meta:operation GET /orgs/{org}/copilot/metrics
@@ -568,6 +580,9 @@ func (s *CopilotService) GetOrganizationMetrics(ctx context.Context, org string,
 }
 
 // GetOrganizationTeamMetrics gets Copilot usage metrics for an organization team.
+//
+// Deprecated: Focus has shifted to the new Download Copilot Usage Metrics APIs.
+// These endpoints are kept around for GitHub Enterprise Server users, but are no longer supported on the Public GitHub service.
 //
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-a-team
 //
@@ -783,4 +798,33 @@ func (s *CopilotService) GetOrganizationUsersMetricsReport(ctx context.Context, 
 	}
 
 	return report, resp, nil
+}
+
+// DownloadCopilotMetrics downloads a Copilot metrics report from the provided download link
+// and returns the metric data. This can be used to download metrics from a link returned by
+// GetEnterpriseDailyMetricsReport, GetEnterpriseMetricsReport, GetEnterpriseUsersDailyMetricsReport,
+// GetEnterpriseUsersMetricsReport, GetOrganizationDailyMetricsReport, GetOrganizationMetricsReport,
+// GetOrganizationUsersDailyMetricsReport, GetOrganizationUsersMetricsReport.
+func (s *CopilotService) DownloadCopilotMetrics(ctx context.Context, url string) ([]*CopilotMetrics, *Response, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	resp, err := s.client.client.Do(req)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer resp.Body.Close()
+
+	if err := CheckResponse(resp); err != nil {
+		return nil, newResponse(resp), err
+	}
+
+	var metrics []*CopilotMetrics
+	if err := json.NewDecoder(resp.Body).Decode(&metrics); err != nil {
+		return nil, newResponse(resp), err
+	}
+
+	return metrics, newResponse(resp), nil
 }

@@ -2778,3 +2778,113 @@ func TestCopilotService_GetOrganizationUsersMetricsReport(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/download", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+			"date": "2023-01-01",
+			"total_active_users": 100,
+			"total_engaged_users": 50,
+			"copilot_ide_code_completions": {
+				"total_engaged_users": 50,
+				"languages": [
+					{
+						"name": "go",
+						"total_engaged_users": 10
+					}
+				],
+				"editors": [
+					{
+						"name": "vscode",
+						"total_engaged_users": 10,
+						"models": [
+							{
+								"name": "model1",
+								"is_custom_model": false,
+								"custom_model_training_date": null,
+								"total_engaged_users": 10,
+								"languages": [
+									{
+										"name": "go",
+										"total_engaged_users": 10,
+										"total_code_suggestions": 100,
+										"total_code_acceptances": 50,
+										"total_code_lines_suggested": 1000,
+										"total_code_lines_accepted": 500
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		}]`)
+	})
+
+	ctx := t.Context()
+	url := client.BaseURL.String() + "path/to/download"
+	got, _, err := client.Copilot.DownloadCopilotMetrics(ctx, url)
+	if err != nil {
+		t.Errorf("Copilot.DownloadCopilotMetrics returned error: %v", err)
+	}
+
+	want := []*CopilotMetrics{
+		{
+			Date:              "2023-01-01",
+			TotalActiveUsers:  Ptr(100),
+			TotalEngagedUsers: Ptr(50),
+			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
+				TotalEngagedUsers: 50,
+				Languages: []*CopilotIDECodeCompletionsLanguage{
+					{
+						Name:              "go",
+						TotalEngagedUsers: 10,
+					},
+				},
+				Editors: []*CopilotIDECodeCompletionsEditor{
+					{
+						Name:              "vscode",
+						TotalEngagedUsers: 10,
+						Models: []*CopilotIDECodeCompletionsModel{
+							{
+								Name:              "model1",
+								IsCustomModel:     false,
+								TotalEngagedUsers: 10,
+								Languages: []*CopilotIDECodeCompletionsModelLanguage{
+									{
+										Name:                    "go",
+										TotalEngagedUsers:       10,
+										TotalCodeSuggestions:    100,
+										TotalCodeAcceptances:    50,
+										TotalCodeLinesSuggested: 1000,
+										TotalCodeLinesAccepted:  500,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.DownloadCopilotMetrics returned %+v, want %+v", got, want)
+	}
+
+	// Test unexpected status code
+	mux.HandleFunc("/path/to/download/error", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+
+	urlErr := client.BaseURL.String() + "path/to/download/error"
+	_, _, err = client.Copilot.DownloadCopilotMetrics(ctx, urlErr)
+	if err == nil {
+		t.Errorf("Copilot.DownloadCopilotMetrics expected error but got none")
+	}
+}
