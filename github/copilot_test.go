@@ -2827,9 +2827,12 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 
 	ctx := t.Context()
 	url := client.BaseURL.String() + "path/to/download"
-	got, _, err := client.Copilot.DownloadCopilotMetrics(ctx, url)
+	got, resp, err := client.Copilot.DownloadCopilotMetrics(ctx, url)
 	if err != nil {
 		t.Errorf("Copilot.DownloadCopilotMetrics returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Copilot.DownloadCopilotMetrics returned status code: %v", resp.StatusCode)
 	}
 
 	want := []*CopilotMetrics{
@@ -2885,6 +2888,29 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 	urlErr := client.BaseURL.String() + "path/to/download/error"
 	_, _, err = client.Copilot.DownloadCopilotMetrics(ctx, urlErr)
 	if err == nil {
-		t.Errorf("Copilot.DownloadCopilotMetrics expected error but got none")
+		t.Error("Copilot.DownloadCopilotMetrics expected error but got none")
+	}
+
+	// Test invalid URL (fails http.NewRequestWithContext)
+	_, _, err = client.Copilot.DownloadCopilotMetrics(ctx, "\n")
+	if err == nil {
+		t.Error("Copilot.DownloadCopilotMetrics expected error for invalid URL, got none")
+	}
+
+	// Test invalid scheme (fails client.Do)
+	_, _, err = client.Copilot.DownloadCopilotMetrics(ctx, "invalid-scheme://test")
+	if err == nil {
+		t.Error("Copilot.DownloadCopilotMetrics expected error for invalid scheme, got none")
+	}
+
+	// Test json decoding error
+	mux.HandleFunc("/path/to/download/badjson", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{invalid JSON`)
+	})
+	urlBadJson := client.BaseURL.String() + "path/to/download/badjson"
+	_, _, err = client.Copilot.DownloadCopilotMetrics(ctx, urlBadJson)
+	if err == nil {
+		t.Error("Copilot.DownloadCopilotMetrics expected error for bad JSON, got none")
 	}
 }
