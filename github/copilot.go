@@ -491,6 +491,10 @@ func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (
 
 // GetEnterpriseMetrics gets Copilot usage metrics for an enterprise.
 //
+// Deprecated: This endpoint was closed down on April 2, 2026 for github.com.
+// It may still be available for GitHub Enterprise Server. Use GetEnterpriseDailyMetricsReport
+// or GetEnterpriseMetricsReport instead.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics
@@ -516,6 +520,10 @@ func (s *CopilotService) GetEnterpriseMetrics(ctx context.Context, enterprise st
 }
 
 // GetEnterpriseTeamMetrics gets Copilot usage metrics for an enterprise team.
+//
+// Deprecated: This endpoint was closed down on April 2, 2026 for github.com.
+// It may still be available for GitHub Enterprise Server. Use GetEnterpriseDailyMetricsReport
+// or GetEnterpriseMetricsReport instead.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-enterprise-team
 //
@@ -543,6 +551,10 @@ func (s *CopilotService) GetEnterpriseTeamMetrics(ctx context.Context, enterpris
 
 // GetOrganizationMetrics gets Copilot usage metrics for an organization.
 //
+// Deprecated: This endpoint was closed down on April 2, 2026 for github.com.
+// It may still be available for GitHub Enterprise Server. Use GetOrganizationDailyMetricsReport
+// or GetOrganizationMetricsReport instead.
+//
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-an-organization
 //
 //meta:operation GET /orgs/{org}/copilot/metrics
@@ -568,6 +580,10 @@ func (s *CopilotService) GetOrganizationMetrics(ctx context.Context, org string,
 }
 
 // GetOrganizationTeamMetrics gets Copilot usage metrics for an organization team.
+//
+// Deprecated: This endpoint was closed down on April 2, 2026 for github.com.
+// It may still be available for GitHub Enterprise Server. Use GetOrganizationDailyMetricsReport
+// or GetOrganizationMetricsReport instead.
 //
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-metrics#get-copilot-metrics-for-a-team
 //
