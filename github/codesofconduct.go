@@ -27,7 +27,7 @@ func (c *CodeOfConduct) String() string {
 
 // List returns all codes of conduct.
 //
-// GitHub API docs: https://docs.github.com/rest/codes-of-conduct/codes-of-conduct#get-all-codes-of-conduct
+// GitHub API docs: https://docs.github.com/rest/codes-of-conduct/codes-of-conduct?apiVersion=2022-11-28#get-all-codes-of-conduct
 //
 //meta:operation GET /codes_of_conduct
 func (s *CodesOfConductService) List(ctx context.Context) ([]*CodeOfConduct, *Response, error) {
@@ -56,7 +56,7 @@ func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Res
 
 // Get returns an individual code of conduct.
 //
-// GitHub API docs: https://docs.github.com/rest/codes-of-conduct/codes-of-conduct#get-a-code-of-conduct
+// GitHub API docs: https://docs.github.com/rest/codes-of-conduct/codes-of-conduct?apiVersion=2022-11-28#get-a-code-of-conduct
 //
 //meta:operation GET /codes_of_conduct/{key}
 func (s *CodesOfConductService) Get(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {

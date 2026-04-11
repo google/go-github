@@ -32,7 +32,7 @@ import (
 // For example, querying with "language:c++" and "leveldb", then query should be
 // "language:c++ leveldb" but not "language:c+++leveldb".
 //
-// GitHub API docs: https://docs.github.com/rest/search/
+// GitHub API docs: https://docs.github.com/rest/search?apiVersion=2022-11-28
 type SearchService service
 
 // SearchOptions specifies optional parameters to the SearchService methods.
@@ -75,7 +75,7 @@ type RepositoriesSearchResult struct {
 
 // Repositories searches repositories via various criteria.
 //
-// GitHub API docs: https://docs.github.com/rest/search/search#search-repositories
+// GitHub API docs: https://docs.github.com/rest/search/search?apiVersion=2022-11-28#search-repositories
 //
 //meta:operation GET /search/repositories
 func (s *SearchService) Repositories(ctx context.Context, query string, opts *SearchOptions) (*RepositoriesSearchResult, *Response, error) {
@@ -113,7 +113,7 @@ type TopicResult struct {
 // Please see https://help.github.com/articles/searching-topics for more
 // information about search qualifiers.
 //
-// GitHub API docs: https://docs.github.com/rest/search/search#search-topics
+// GitHub API docs: https://docs.github.com/rest/search/search?apiVersion=2022-11-28#search-topics
 //
 //meta:operation GET /search/topics
 func (s *SearchService) Topics(ctx context.Context, query string, opts *SearchOptions) (*TopicsSearchResult, *Response, error) {
@@ -150,7 +150,7 @@ type CommitResult struct {
 
 // Commits searches commits via various criteria.
 //
-// GitHub API docs: https://docs.github.com/rest/search/search#search-commits
+// GitHub API docs: https://docs.github.com/rest/search/search?apiVersion=2022-11-28#search-commits
 //
 //meta:operation GET /search/commits
 func (s *SearchService) Commits(ctx context.Context, query string, opts *SearchOptions) (*CommitsSearchResult, *Response, error) {
@@ -172,7 +172,7 @@ type IssuesSearchResult struct {
 
 // Issues searches issues via various criteria.
 //
-// GitHub API docs: https://docs.github.com/rest/search/search#search-issues-and-pull-requests
+// GitHub API docs: https://docs.github.com/rest/search/search?apiVersion=2022-11-28#search-issues-and-pull-requests
 //
 //meta:operation GET /search/issues
 func (s *SearchService) Issues(ctx context.Context, query string, opts *SearchOptions) (*IssuesSearchResult, *Response, error) {
@@ -194,7 +194,7 @@ type UsersSearchResult struct {
 
 // Users searches users via various criteria.
 //
-// GitHub API docs: https://docs.github.com/rest/search/search#search-users
+// GitHub API docs: https://docs.github.com/rest/search/search?apiVersion=2022-11-28#search-users
 //
 //meta:operation GET /search/users
 func (s *SearchService) Users(ctx context.Context, query string, opts *SearchOptions) (*UsersSearchResult, *Response, error) {
@@ -249,7 +249,7 @@ func (c CodeResult) String() string {
 
 // Code searches code via various criteria.
 //
-// GitHub API docs: https://docs.github.com/rest/search/search#search-code
+// GitHub API docs: https://docs.github.com/rest/search/search?apiVersion=2022-11-28#search-code
 //
 //meta:operation GET /search/code
 func (s *SearchService) Code(ctx context.Context, query string, opts *SearchOptions) (*CodeSearchResult, *Response, error) {
@@ -286,7 +286,7 @@ func (l LabelResult) String() string {
 
 // Labels searches labels in the repository with ID repoID via various criteria.
 //
-// GitHub API docs: https://docs.github.com/rest/search/search#search-labels
+// GitHub API docs: https://docs.github.com/rest/search/search?apiVersion=2022-11-28#search-labels
 //
 //meta:operation GET /search/labels
 func (s *SearchService) Labels(ctx context.Context, repoID int64, query string, opts *SearchOptions) (*LabelsSearchResult, *Response, error) {
@@ -332,7 +332,7 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 		// Accept header for search issues based on reactions preview endpoint
 		acceptHeaders = append(acceptHeaders, mediaTypeReactionsPreview)
 	}
-	// https://docs.github.com/rest/search#search-repositories
+	// https://docs.github.com/rest/search?apiVersion=2022-11-28#search-repositories
 	// Accept header defaults to "application/vnd.github.v3+json"
 	// We change it here to fetch back text-match metadata
 	if opts != nil && opts.TextMatch {

@@ -14,7 +14,7 @@ import (
 // GistsService handles communication with the Gist related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/gists
+// GitHub API docs: https://docs.github.com/rest/gists?apiVersion=2022-11-28
 type GistsService service
 
 // Gist represents a GitHub's gist.
@@ -96,9 +96,9 @@ type GistListOptions struct {
 // is authenticated, it will returns all gists for the authenticated
 // user.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#list-gists-for-a-user
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#list-gists-for-a-user
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#list-gists-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#list-gists-for-the-authenticated-user
 //
 //meta:operation GET /gists
 //meta:operation GET /users/{username}/gists
@@ -130,7 +130,7 @@ func (s *GistsService) List(ctx context.Context, user string, opts *GistListOpti
 
 // ListAll lists all public gists.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#list-public-gists
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#list-public-gists
 //
 //meta:operation GET /gists/public
 func (s *GistsService) ListAll(ctx context.Context, opts *GistListOptions) ([]*Gist, *Response, error) {
@@ -155,7 +155,7 @@ func (s *GistsService) ListAll(ctx context.Context, opts *GistListOptions) ([]*G
 
 // ListStarred lists starred gists of authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#list-starred-gists
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#list-starred-gists
 //
 //meta:operation GET /gists/starred
 func (s *GistsService) ListStarred(ctx context.Context, opts *GistListOptions) ([]*Gist, *Response, error) {
@@ -180,7 +180,7 @@ func (s *GistsService) ListStarred(ctx context.Context, opts *GistListOptions) (
 
 // Get a single gist.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#get-a-gist
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#get-a-gist
 //
 //meta:operation GET /gists/{gist_id}
 func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, error) {
@@ -201,7 +201,7 @@ func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, er
 
 // GetRevision gets a specific revision of a gist.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#get-a-gist-revision
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#get-a-gist-revision
 //
 //meta:operation GET /gists/{gist_id}/{sha}
 func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, *Response, error) {
@@ -222,7 +222,7 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 
 // Create a gist for authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#create-a-gist
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#create-a-gist
 //
 //meta:operation POST /gists
 func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response, error) {
@@ -243,7 +243,7 @@ func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response
 
 // Edit a gist.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#update-a-gist
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#update-a-gist
 //
 //meta:operation PATCH /gists/{gist_id}
 func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, *Response, error) {
@@ -264,7 +264,7 @@ func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, 
 
 // ListCommits lists commits of a gist.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#list-gist-commits
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#list-gist-commits
 //
 //meta:operation GET /gists/{gist_id}/commits
 func (s *GistsService) ListCommits(ctx context.Context, id string, opts *ListOptions) ([]*GistCommit, *Response, error) {
@@ -290,7 +290,7 @@ func (s *GistsService) ListCommits(ctx context.Context, id string, opts *ListOpt
 
 // Delete a gist.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#delete-a-gist
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#delete-a-gist
 //
 //meta:operation DELETE /gists/{gist_id}
 func (s *GistsService) Delete(ctx context.Context, id string) (*Response, error) {
@@ -305,7 +305,7 @@ func (s *GistsService) Delete(ctx context.Context, id string) (*Response, error)
 
 // Star a gist on behalf of authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#star-a-gist
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#star-a-gist
 //
 //meta:operation PUT /gists/{gist_id}/star
 func (s *GistsService) Star(ctx context.Context, id string) (*Response, error) {
@@ -320,7 +320,7 @@ func (s *GistsService) Star(ctx context.Context, id string) (*Response, error) {
 
 // Unstar a gist on a behalf of authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#unstar-a-gist
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#unstar-a-gist
 //
 //meta:operation DELETE /gists/{gist_id}/star
 func (s *GistsService) Unstar(ctx context.Context, id string) (*Response, error) {
@@ -335,7 +335,7 @@ func (s *GistsService) Unstar(ctx context.Context, id string) (*Response, error)
 
 // IsStarred checks if a gist is starred by authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#check-if-a-gist-is-starred
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#check-if-a-gist-is-starred
 //
 //meta:operation GET /gists/{gist_id}/star
 func (s *GistsService) IsStarred(ctx context.Context, id string) (bool, *Response, error) {
@@ -352,7 +352,7 @@ func (s *GistsService) IsStarred(ctx context.Context, id string) (bool, *Respons
 
 // Fork a gist.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#fork-a-gist
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#fork-a-gist
 //
 //meta:operation POST /gists/{gist_id}/forks
 func (s *GistsService) Fork(ctx context.Context, id string) (*Gist, *Response, error) {
@@ -373,7 +373,7 @@ func (s *GistsService) Fork(ctx context.Context, id string) (*Gist, *Response, e
 
 // ListForks lists forks of a gist.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/gists#list-gist-forks
+// GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#list-gist-forks
 //
 //meta:operation GET /gists/{gist_id}/forks
 func (s *GistsService) ListForks(ctx context.Context, id string, opts *ListOptions) ([]*GistFork, *Response, error) {

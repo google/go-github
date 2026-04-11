@@ -8,5 +8,5 @@ package github
 // DependabotService handles communication with the Dependabot related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/dependabot/
+// GitHub API docs: https://docs.github.com/rest/dependabot?apiVersion=2022-11-28
 type DependabotService service

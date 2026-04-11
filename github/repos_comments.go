@@ -35,7 +35,7 @@ func (r RepositoryComment) String() string {
 
 // ListComments lists all the comments for the repository.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/comments#list-commit-comments-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/commits/comments?apiVersion=2022-11-28#list-commit-comments-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/comments
 func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryComment, *Response, error) {
@@ -63,7 +63,7 @@ func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo stri
 
 // ListCommitComments lists all the comments for a given commit SHA.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/comments#list-commit-comments
+// GitHub API docs: https://docs.github.com/rest/commits/comments?apiVersion=2022-11-28#list-commit-comments
 //
 //meta:operation GET /repos/{owner}/{repo}/commits/{commit_sha}/comments
 func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, repo, sha string, opts *ListOptions) ([]*RepositoryComment, *Response, error) {
@@ -92,7 +92,7 @@ func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, rep
 // CreateComment creates a comment for the given commit.
 // Note: GitHub allows for comments to be created for non-existing files and positions.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/comments#create-a-commit-comment
+// GitHub API docs: https://docs.github.com/rest/commits/comments?apiVersion=2022-11-28#create-a-commit-comment
 //
 //meta:operation POST /repos/{owner}/{repo}/commits/{commit_sha}/comments
 func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sha string, comment *RepositoryComment) (*RepositoryComment, *Response, error) {
@@ -113,7 +113,7 @@ func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sh
 
 // GetComment gets a single comment from a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/comments#get-a-commit-comment
+// GitHub API docs: https://docs.github.com/rest/commits/comments?apiVersion=2022-11-28#get-a-commit-comment
 //
 //meta:operation GET /repos/{owner}/{repo}/comments/{comment_id}
 func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string, id int64) (*RepositoryComment, *Response, error) {
@@ -136,7 +136,7 @@ func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string
 
 // UpdateComment updates the body of a single comment.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/comments#update-a-commit-comment
+// GitHub API docs: https://docs.github.com/rest/commits/comments?apiVersion=2022-11-28#update-a-commit-comment
 //
 //meta:operation PATCH /repos/{owner}/{repo}/comments/{comment_id}
 func (s *RepositoriesService) UpdateComment(ctx context.Context, owner, repo string, id int64, comment *RepositoryComment) (*RepositoryComment, *Response, error) {
@@ -157,7 +157,7 @@ func (s *RepositoriesService) UpdateComment(ctx context.Context, owner, repo str
 
 // DeleteComment deletes a single comment from a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/comments#delete-a-commit-comment
+// GitHub API docs: https://docs.github.com/rest/commits/comments?apiVersion=2022-11-28#delete-a-commit-comment
 //
 //meta:operation DELETE /repos/{owner}/{repo}/comments/{comment_id}
 func (s *RepositoriesService) DeleteComment(ctx context.Context, owner, repo string, id int64) (*Response, error) {

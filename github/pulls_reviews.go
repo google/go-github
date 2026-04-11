@@ -29,7 +29,7 @@ type PullRequestReview struct {
 	//
 	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
 	// Use the Pull Request Reviews REST API endpoint to retrieve this information.
-	// See: https://docs.github.com/rest/pulls/reviews#get-a-review-for-a-pull-request
+	// See: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#get-a-review-for-a-pull-request
 	AuthorAssociation *string `json:"author_association,omitempty"`
 }
 
@@ -104,7 +104,7 @@ func (r PullRequestReviewDismissalRequest) String() string {
 
 // ListReviews lists all reviews on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/reviews#list-reviews-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#list-reviews-for-a-pull-request
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews
 func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*PullRequestReview, *Response, error) {
@@ -130,7 +130,7 @@ func (s *PullRequestsService) ListReviews(ctx context.Context, owner, repo strin
 
 // GetReview fetches the specified pull request review.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/reviews#get-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#get-a-review-for-a-pull-request
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}
 func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
@@ -152,7 +152,7 @@ func (s *PullRequestsService) GetReview(ctx context.Context, owner, repo string,
 
 // DeletePendingReview deletes the specified pull request pending review.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/reviews#delete-a-pending-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#delete-a-pending-review-for-a-pull-request
 //
 //meta:operation DELETE /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}
 func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, repo string, number int, reviewID int64) (*PullRequestReview, *Response, error) {
@@ -174,7 +174,7 @@ func (s *PullRequestsService) DeletePendingReview(ctx context.Context, owner, re
 
 // ListReviewComments lists all the comments for the specified review.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/reviews#list-comments-for-a-pull-request-review
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#list-comments-for-a-pull-request-review
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments
 func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, repo string, number int, reviewID int64, opts *ListOptions) ([]*PullRequestComment, *Response, error) {
@@ -234,7 +234,7 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 //	It is waaaaaay better.
 //	```
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/reviews#create-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#create-a-review-for-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews
 func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
@@ -265,7 +265,7 @@ func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo stri
 
 // UpdateReview updates the review summary on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/reviews#update-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#update-a-review-for-a-pull-request
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}
 func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo string, number int, reviewID int64, body string) (*PullRequestReview, *Response, error) {
@@ -290,7 +290,7 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 
 // SubmitReview submits a specified review on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/reviews#submit-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#submit-a-review-for-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events
 func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
@@ -312,7 +312,7 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 
 // DismissReview dismisses a specified review on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/reviews#dismiss-a-review-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#dismiss-a-review-for-a-pull-request
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals
 func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {

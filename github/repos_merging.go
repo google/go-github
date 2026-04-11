@@ -34,7 +34,7 @@ type RepoMergeUpstreamResult struct {
 
 // Merge a branch in the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branches#merge-a-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branches?apiVersion=2022-11-28#merge-a-branch
 //
 //meta:operation POST /repos/{owner}/{repo}/merges
 func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, request *RepositoryMergeRequest) (*RepositoryCommit, *Response, error) {
@@ -56,7 +56,7 @@ func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, req
 // MergeUpstream syncs a branch of a forked repository to keep it up-to-date
 // with the upstream repository.
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branches#sync-a-fork-branch-with-the-upstream-repository
+// GitHub API docs: https://docs.github.com/rest/branches/branches?apiVersion=2022-11-28#sync-a-fork-branch-with-the-upstream-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/merge-upstream
 func (s *RepositoriesService) MergeUpstream(ctx context.Context, owner, repo string, request *RepoMergeUpstreamRequest) (*RepoMergeUpstreamResult, *Response, error) {

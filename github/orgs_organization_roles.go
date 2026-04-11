@@ -54,7 +54,7 @@ type OrganizationFineGrainedPermission struct {
 // ListRoles lists the custom roles available in this organization.
 // In order to see custom roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#get-all-organization-roles-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles?apiVersion=2022-11-28#get-all-organization-roles-for-an-organization
 //
 //meta:operation GET /orgs/{org}/organization-roles
 func (s *OrganizationsService) ListRoles(ctx context.Context, org string) (*OrganizationCustomRoles, *Response, error) {
@@ -77,7 +77,7 @@ func (s *OrganizationsService) ListRoles(ctx context.Context, org string) (*Orga
 // GetOrgRole gets an organization role in this organization.
 // In order to get organization roles in an organization, the authenticated user must be an organization owner, or have access via an organization role.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#get-an-organization-role
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles?apiVersion=2022-11-28#get-an-organization-role
 //
 //meta:operation GET /orgs/{org}/organization-roles/{role_id}
 func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleID int64) (*CustomOrgRole, *Response, error) {
@@ -100,7 +100,7 @@ func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleI
 // CreateCustomOrgRole creates a custom role in this organization.
 // In order to create custom roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#create-a-custom-organization-role
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles?apiVersion=2022-11-28#create-a-custom-organization-role
 //
 //meta:operation POST /orgs/{org}/organization-roles
 func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, request CreateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
@@ -123,7 +123,7 @@ func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org stri
 // UpdateCustomOrgRole updates a custom role in this organization.
 // In order to update custom roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#update-a-custom-organization-role
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles?apiVersion=2022-11-28#update-a-custom-organization-role
 //
 //meta:operation PATCH /orgs/{org}/organization-roles/{role_id}
 func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, request UpdateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
@@ -146,7 +146,7 @@ func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org stri
 // DeleteCustomOrgRole deletes an existing custom role in this organization.
 // In order to delete custom roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#delete-a-custom-organization-role
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles?apiVersion=2022-11-28#delete-a-custom-organization-role
 //
 //meta:operation DELETE /orgs/{org}/organization-roles/{role_id}
 func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org string, roleID int64) (*Response, error) {
@@ -169,7 +169,7 @@ func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org stri
 // AssignOrgRoleToTeam assigns an existing organization role to a team in this organization.
 // In order to assign organization roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#assign-an-organization-role-to-a-team
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles?apiVersion=2022-11-28#assign-an-organization-role-to-a-team
 //
 //meta:operation PUT /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}
 func (s *OrganizationsService) AssignOrgRoleToTeam(ctx context.Context, org, teamSlug string, roleID int64) (*Response, error) {
@@ -191,7 +191,7 @@ func (s *OrganizationsService) AssignOrgRoleToTeam(ctx context.Context, org, tea
 // RemoveOrgRoleFromTeam removes an existing organization role assignment from a team in this organization.
 // In order to remove organization role assignments in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#remove-an-organization-role-from-a-team
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles?apiVersion=2022-11-28#remove-an-organization-role-from-a-team
 //
 //meta:operation DELETE /orgs/{org}/organization-roles/teams/{team_slug}/{role_id}
 func (s *OrganizationsService) RemoveOrgRoleFromTeam(ctx context.Context, org, teamSlug string, roleID int64) (*Response, error) {
@@ -213,7 +213,7 @@ func (s *OrganizationsService) RemoveOrgRoleFromTeam(ctx context.Context, org, t
 // AssignOrgRoleToUser assigns an existing organization role to a user in this organization.
 // In order to assign organization roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#assign-an-organization-role-to-a-user
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles?apiVersion=2022-11-28#assign-an-organization-role-to-a-user
 //
 //meta:operation PUT /orgs/{org}/organization-roles/users/{username}/{role_id}
 func (s *OrganizationsService) AssignOrgRoleToUser(ctx context.Context, org, username string, roleID int64) (*Response, error) {
@@ -235,7 +235,7 @@ func (s *OrganizationsService) AssignOrgRoleToUser(ctx context.Context, org, use
 // RemoveOrgRoleFromUser removes an existing organization role assignment from a user in this organization.
 // In order to remove organization role assignments in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#remove-an-organization-role-from-a-user
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles?apiVersion=2022-11-28#remove-an-organization-role-from-a-user
 //
 //meta:operation DELETE /orgs/{org}/organization-roles/users/{username}/{role_id}
 func (s *OrganizationsService) RemoveOrgRoleFromUser(ctx context.Context, org, username string, roleID int64) (*Response, error) {
@@ -257,7 +257,7 @@ func (s *OrganizationsService) RemoveOrgRoleFromUser(ctx context.Context, org, u
 // ListTeamsAssignedToOrgRole returns all teams assigned to a specific organization role.
 // In order to list teams assigned to an organization role, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#list-teams-that-are-assigned-to-an-organization-role
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles?apiVersion=2022-11-28#list-teams-that-are-assigned-to-an-organization-role
 //
 //meta:operation GET /orgs/{org}/organization-roles/{role_id}/teams
 func (s *OrganizationsService) ListTeamsAssignedToOrgRole(ctx context.Context, org string, roleID int64, opts *ListOptions) ([]*Team, *Response, error) {
@@ -284,7 +284,7 @@ func (s *OrganizationsService) ListTeamsAssignedToOrgRole(ctx context.Context, o
 // ListUsersAssignedToOrgRole returns all users assigned to a specific organization role.
 // In order to list users assigned to an organization role, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles#list-users-that-are-assigned-to-an-organization-role
+// GitHub API docs: https://docs.github.com/rest/orgs/organization-roles?apiVersion=2022-11-28#list-users-that-are-assigned-to-an-organization-role
 //
 //meta:operation GET /orgs/{org}/organization-roles/{role_id}/users
 func (s *OrganizationsService) ListUsersAssignedToOrgRole(ctx context.Context, org string, roleID int64, opts *ListOptions) ([]*User, *Response, error) {
@@ -316,7 +316,7 @@ func (s *OrganizationsService) ListUsersAssignedToOrgRole(ctx context.Context, o
 //
 // OAuth app tokens and personal access tokens (classic) need the `admin:org` scope to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles#list-organization-fine-grained-permissions-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles?apiVersion=2022-11-28#list-organization-fine-grained-permissions-for-an-organization
 //
 //meta:operation GET /orgs/{org}/organization-fine-grained-permissions
 func (s *OrganizationsService) ListFineGrainedPermissions(ctx context.Context, org string) ([]*OrganizationFineGrainedPermission, *Response, error) {

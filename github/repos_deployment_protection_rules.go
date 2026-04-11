@@ -45,7 +45,7 @@ type CustomDeploymentProtectionRuleRequest struct {
 
 // GetAllDeploymentProtectionRules gets all the deployment protection rules for an environment.
 //
-// GitHub API docs: https://docs.github.com/rest/deployments/protection-rules#get-all-deployment-protection-rules-for-an-environment
+// GitHub API docs: https://docs.github.com/rest/deployments/protection-rules?apiVersion=2022-11-28#get-all-deployment-protection-rules-for-an-environment
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules
 func (s *RepositoriesService) GetAllDeploymentProtectionRules(ctx context.Context, owner, repo, environment string) (*ListDeploymentProtectionRuleResponse, *Response, error) {
@@ -67,7 +67,7 @@ func (s *RepositoriesService) GetAllDeploymentProtectionRules(ctx context.Contex
 
 // CreateCustomDeploymentProtectionRule creates a custom deployment protection rule on an environment.
 //
-// GitHub API docs: https://docs.github.com/rest/deployments/protection-rules#create-a-custom-deployment-protection-rule-on-an-environment
+// GitHub API docs: https://docs.github.com/rest/deployments/protection-rules?apiVersion=2022-11-28#create-a-custom-deployment-protection-rule-on-an-environment
 //
 //meta:operation POST /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules
 func (s *RepositoriesService) CreateCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, request *CustomDeploymentProtectionRuleRequest) (*CustomDeploymentProtectionRule, *Response, error) {
@@ -89,7 +89,7 @@ func (s *RepositoriesService) CreateCustomDeploymentProtectionRule(ctx context.C
 
 // ListCustomDeploymentRuleIntegrations lists the custom deployment rule integrations for an environment.
 //
-// GitHub API docs: https://docs.github.com/rest/deployments/protection-rules#list-custom-deployment-rule-integrations-available-for-an-environment
+// GitHub API docs: https://docs.github.com/rest/deployments/protection-rules?apiVersion=2022-11-28#list-custom-deployment-rule-integrations-available-for-an-environment
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/apps
 func (s *RepositoriesService) ListCustomDeploymentRuleIntegrations(ctx context.Context, owner, repo, environment string, opts *ListOptions) (*ListCustomDeploymentRuleIntegrationsResponse, *Response, error) {
@@ -115,7 +115,7 @@ func (s *RepositoriesService) ListCustomDeploymentRuleIntegrations(ctx context.C
 
 // GetCustomDeploymentProtectionRule gets a custom deployment protection rule for an environment.
 //
-// GitHub API docs: https://docs.github.com/rest/deployments/protection-rules#get-a-custom-deployment-protection-rule
+// GitHub API docs: https://docs.github.com/rest/deployments/protection-rules?apiVersion=2022-11-28#get-a-custom-deployment-protection-rule
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}
 func (s *RepositoriesService) GetCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, protectionRuleID int64) (*CustomDeploymentProtectionRule, *Response, error) {
@@ -137,7 +137,7 @@ func (s *RepositoriesService) GetCustomDeploymentProtectionRule(ctx context.Cont
 
 // DisableCustomDeploymentProtectionRule disables a custom deployment protection rule for an environment.
 //
-// GitHub API docs: https://docs.github.com/rest/deployments/protection-rules#disable-a-custom-protection-rule-for-an-environment
+// GitHub API docs: https://docs.github.com/rest/deployments/protection-rules?apiVersion=2022-11-28#disable-a-custom-protection-rule-for-an-environment
 //
 //meta:operation DELETE /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}
 func (s *RepositoriesService) DisableCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, protectionRuleID int64) (*Response, error) {

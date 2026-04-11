@@ -13,7 +13,7 @@ import (
 // LicensesService handles communication with the license related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/licenses/
+// GitHub API docs: https://docs.github.com/rest/licenses?apiVersion=2022-11-28
 type LicensesService service
 
 // RepositoryLicense represents the license for a repository.
@@ -67,7 +67,7 @@ type ListLicensesOptions struct {
 
 // List popular open source licenses.
 //
-// GitHub API docs: https://docs.github.com/rest/licenses/licenses#get-all-commonly-used-licenses
+// GitHub API docs: https://docs.github.com/rest/licenses/licenses?apiVersion=2022-11-28#get-all-commonly-used-licenses
 //
 //meta:operation GET /licenses
 func (s *LicensesService) List(ctx context.Context, opts *ListLicensesOptions) ([]*License, *Response, error) {
@@ -93,7 +93,7 @@ func (s *LicensesService) List(ctx context.Context, opts *ListLicensesOptions) (
 
 // Get extended metadata for one license.
 //
-// GitHub API docs: https://docs.github.com/rest/licenses/licenses#get-a-license
+// GitHub API docs: https://docs.github.com/rest/licenses/licenses?apiVersion=2022-11-28#get-a-license
 //
 //meta:operation GET /licenses/{license}
 func (s *LicensesService) Get(ctx context.Context, licenseName string) (*License, *Response, error) {

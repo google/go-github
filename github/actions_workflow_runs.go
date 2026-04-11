@@ -160,7 +160,7 @@ func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, 
 
 // ListWorkflowRunsByID lists all workflow runs by workflow ID.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#list-workflow-runs-for-a-workflow
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#list-workflow-runs-for-a-workflow
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs
 func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo string, workflowID int64, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
@@ -170,7 +170,7 @@ func (s *ActionsService) ListWorkflowRunsByID(ctx context.Context, owner, repo s
 
 // ListWorkflowRunsByFileName lists all workflow runs by workflow file name.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#list-workflow-runs-for-a-workflow
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#list-workflow-runs-for-a-workflow
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs
 func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, repo, workflowFileName string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
@@ -180,7 +180,7 @@ func (s *ActionsService) ListWorkflowRunsByFileName(ctx context.Context, owner, 
 
 // ListRepositoryWorkflowRuns lists all workflow runs for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#list-workflow-runs-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#list-workflow-runs-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs
 func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *ListWorkflowRunsOptions) (*WorkflowRuns, *Response, error) {
@@ -207,7 +207,7 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 // GetWorkflowRunByID gets a specific workflow run by ID.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#get-a-workflow-run
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}
 func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRun, *Response, error) {
@@ -230,7 +230,7 @@ func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo str
 // GetWorkflowRunAttempt gets a specific workflow run attempt.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-a-workflow-run-attempt
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#get-a-workflow-run-attempt
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}
 func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo string, runID int64, attemptNumber int, opts *WorkflowRunAttemptOptions) (*WorkflowRun, *Response, error) {
@@ -257,7 +257,7 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 // GetWorkflowRunAttemptLogs gets a redirect URL to download a plain text file of logs for a workflow run for attempt number.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve a workflow run ID from the DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#download-workflow-run-attempt-logs
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#download-workflow-run-attempt-logs
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/attempts/{attempt_number}/logs
 func (s *ActionsService) GetWorkflowRunAttemptLogs(ctx context.Context, owner, repo string, runID int64, attemptNumber, maxRedirects int) (*url.URL, *Response, error) {
@@ -308,7 +308,7 @@ func (s *ActionsService) getWorkflowRunAttemptLogsWithRateLimit(ctx context.Cont
 // RerunWorkflowByID re-runs a workflow by ID.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID of a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-a-workflow
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#re-run-a-workflow
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun
 func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
@@ -325,7 +325,7 @@ func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo stri
 // RerunFailedJobsByID re-runs all of the failed jobs and their dependent jobs in a workflow run by ID.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-failed-jobs-from-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#re-run-failed-jobs-from-a-workflow-run
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs
 func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
@@ -343,7 +343,7 @@ func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo st
 //
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#re-run-a-job-from-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#re-run-a-job-from-a-workflow-run
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun
 func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, jobID int64) (*Response, error) {
@@ -360,7 +360,7 @@ func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, j
 // CancelWorkflowRunByID cancels a workflow run by ID.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#cancel-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#cancel-a-workflow-run
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel
 func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
@@ -377,7 +377,7 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 // GetWorkflowRunLogs gets a redirect URL to download a plain text file of logs for a workflow run.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#download-workflow-run-logs
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#download-workflow-run-logs
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/logs
 func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64, maxRedirects int) (*url.URL, *Response, error) {
@@ -428,7 +428,7 @@ func (s *ActionsService) getWorkflowRunLogsWithRateLimit(ctx context.Context, u 
 // DeleteWorkflowRun deletes a workflow run by ID.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#delete-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#delete-a-workflow-run
 //
 //meta:operation DELETE /repos/{owner}/{repo}/actions/runs/{run_id}
 func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
@@ -445,7 +445,7 @@ func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo stri
 // DeleteWorkflowRunLogs deletes all logs for a workflow run.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#delete-workflow-run-logs
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#delete-workflow-run-logs
 //
 //meta:operation DELETE /repos/{owner}/{repo}/actions/runs/{run_id}/logs
 func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
@@ -462,7 +462,7 @@ func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo 
 // GetWorkflowRunUsageByID gets a specific workflow usage run by run ID in the unit of billable milliseconds.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-workflow-run-usage
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#get-workflow-run-usage
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/timing
 func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRunUsage, *Response, error) {
@@ -485,7 +485,7 @@ func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, rep
 // GetPendingDeployments get all deployment environments for a workflow run that are waiting for protection rules to pass.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#get-pending-deployments-for-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#get-pending-deployments-for-a-workflow-run
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments
 func (s *ActionsService) GetPendingDeployments(ctx context.Context, owner, repo string, runID int64) ([]*PendingDeployment, *Response, error) {
@@ -508,7 +508,7 @@ func (s *ActionsService) GetPendingDeployments(ctx context.Context, owner, repo 
 // PendingDeployments approve or reject pending deployments that are waiting on approval by a required reviewer.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#review-pending-deployments-for-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#review-pending-deployments-for-a-workflow-run
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments
 func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo string, runID int64, request *PendingDeploymentsRequest) ([]*Deployment, *Response, error) {
@@ -531,7 +531,7 @@ func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo str
 // ReviewCustomDeploymentProtectionRule approves or rejects custom deployment protection rules provided by a GitHub App for a workflow run.
 // You can use the helper function *DeploymentProtectionRuleEvent.GetRunID() to easily retrieve the workflow run ID from a DeploymentProtectionRuleEvent.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs#review-custom-deployment-protection-rules-for-a-workflow-run
+// GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#review-custom-deployment-protection-rules-for-a-workflow-run
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/deployment_protection_rule
 func (s *ActionsService) ReviewCustomDeploymentProtectionRule(ctx context.Context, owner, repo string, runID int64, request *ReviewCustomDeploymentProtectionRuleRequest) (*Response, error) {

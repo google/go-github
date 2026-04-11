@@ -173,7 +173,7 @@ type Source struct {
 
 // ListIssueTimeline lists events for the specified issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/timeline#list-timeline-events-for-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/timeline?apiVersion=2022-11-28#list-timeline-events-for-an-issue
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/timeline
 func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Timeline, *Response, error) {

@@ -13,9 +13,9 @@ import (
 // ListFollowers lists the followers for a user. Passing the empty string will
 // fetch followers for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/followers#list-followers-of-a-user
+// GitHub API docs: https://docs.github.com/rest/users/followers?apiVersion=2022-11-28#list-followers-of-a-user
 //
-// GitHub API docs: https://docs.github.com/rest/users/followers#list-followers-of-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/followers?apiVersion=2022-11-28#list-followers-of-the-authenticated-user
 //
 //meta:operation GET /user/followers
 //meta:operation GET /users/{username}/followers
@@ -48,9 +48,9 @@ func (s *UsersService) ListFollowers(ctx context.Context, user string, opts *Lis
 // ListFollowing lists the people that a user is following. Passing the empty
 // string will list people the authenticated user is following.
 //
-// GitHub API docs: https://docs.github.com/rest/users/followers#list-the-people-a-user-follows
+// GitHub API docs: https://docs.github.com/rest/users/followers?apiVersion=2022-11-28#list-the-people-a-user-follows
 //
-// GitHub API docs: https://docs.github.com/rest/users/followers#list-the-people-the-authenticated-user-follows
+// GitHub API docs: https://docs.github.com/rest/users/followers?apiVersion=2022-11-28#list-the-people-the-authenticated-user-follows
 //
 //meta:operation GET /user/following
 //meta:operation GET /users/{username}/following
@@ -83,9 +83,9 @@ func (s *UsersService) ListFollowing(ctx context.Context, user string, opts *Lis
 // IsFollowing checks if "user" is following "target". Passing the empty
 // string for "user" will check if the authenticated user is following "target".
 //
-// GitHub API docs: https://docs.github.com/rest/users/followers#check-if-a-person-is-followed-by-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/followers?apiVersion=2022-11-28#check-if-a-person-is-followed-by-the-authenticated-user
 //
-// GitHub API docs: https://docs.github.com/rest/users/followers#check-if-a-user-follows-another-user
+// GitHub API docs: https://docs.github.com/rest/users/followers?apiVersion=2022-11-28#check-if-a-user-follows-another-user
 //
 //meta:operation GET /user/following/{username}
 //meta:operation GET /users/{username}/following/{target_user}
@@ -109,7 +109,7 @@ func (s *UsersService) IsFollowing(ctx context.Context, user, target string) (bo
 
 // Follow will cause the authenticated user to follow the specified user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/followers#follow-a-user
+// GitHub API docs: https://docs.github.com/rest/users/followers?apiVersion=2022-11-28#follow-a-user
 //
 //meta:operation PUT /user/following/{username}
 func (s *UsersService) Follow(ctx context.Context, user string) (*Response, error) {
@@ -124,7 +124,7 @@ func (s *UsersService) Follow(ctx context.Context, user string) (*Response, erro
 
 // Unfollow will cause the authenticated user to unfollow the specified user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/followers#unfollow-a-user
+// GitHub API docs: https://docs.github.com/rest/users/followers?apiVersion=2022-11-28#unfollow-a-user
 //
 //meta:operation DELETE /user/following/{username}
 func (s *UsersService) Unfollow(ctx context.Context, user string) (*Response, error) {

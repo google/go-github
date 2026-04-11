@@ -327,7 +327,7 @@ func updateDocsVisitor(opsFile *operationsFile) nodeVisitor {
 			group.List = append(
 				group.List,
 				&ast.Comment{
-					Text: "// GitHub API docs: " + cleanURLPath(dl),
+					Text: "// GitHub API docs: " + normalizeDocURL(dl),
 				},
 			)
 			if i < len(docLinks)-1 {
@@ -478,14 +478,32 @@ func methodOps(opsFile *operationsFile, cmap ast.CommentMap, fn *ast.FuncDecl) (
 	return ops, err
 }
 
-// cleanURLPath runs path.Clean on the url path. This is to remove the unsightly double slashes from some
-// of the urls in github's openapi descriptions.
-func cleanURLPath(docURL string) string {
+// metadataDocsAPIVersion is appended to generated docs links.
+// Keep this in sync with defaultAPIVersion in github/github.go.
+const metadataDocsAPIVersion = "2022-11-28"
+
+// normalizeDocURL cleans docURL's path and enforces metadataDocsAPIVersion for
+// https://docs.github.com/rest and
+// https://docs.github.com/enterprise-cloud@latest/rest URLs.
+func normalizeDocURL(docURL string) string {
 	u, err := url.Parse(docURL)
 	if err != nil {
 		return docURL
 	}
-	u.Path = path.Clean(u.Path)
+	cleanPath := path.Clean(u.Path)
+	isRESTDocsURL := u.Host == "docs.github.com" &&
+		(cleanPath == "/rest" ||
+			strings.HasPrefix(cleanPath, "/rest/") ||
+			cleanPath == "/enterprise-cloud@latest/rest" ||
+			strings.HasPrefix(cleanPath, "/enterprise-cloud@latest/rest/"))
+	if !isRESTDocsURL {
+		return docURL
+	}
+
+	u.Path = cleanPath
+	q := u.Query()
+	q.Set("apiVersion", metadataDocsAPIVersion)
+	u.RawQuery = q.Encode()
 	return u.String()
 }
 

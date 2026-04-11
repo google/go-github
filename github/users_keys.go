@@ -30,9 +30,9 @@ func (k Key) String() string {
 // ListKeys lists the verified public keys for a user. Passing the empty
 // string will fetch keys for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/keys#list-public-keys-for-a-user
+// GitHub API docs: https://docs.github.com/rest/users/keys?apiVersion=2022-11-28#list-public-keys-for-a-user
 //
-// GitHub API docs: https://docs.github.com/rest/users/keys#list-public-ssh-keys-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/keys?apiVersion=2022-11-28#list-public-ssh-keys-for-the-authenticated-user
 //
 //meta:operation GET /user/keys
 //meta:operation GET /users/{username}/keys
@@ -64,7 +64,7 @@ func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOpti
 
 // GetKey fetches a single public key.
 //
-// GitHub API docs: https://docs.github.com/rest/users/keys#get-a-public-ssh-key-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/keys?apiVersion=2022-11-28#get-a-public-ssh-key-for-the-authenticated-user
 //
 //meta:operation GET /user/keys/{key_id}
 func (s *UsersService) GetKey(ctx context.Context, id int64) (*Key, *Response, error) {
@@ -86,7 +86,7 @@ func (s *UsersService) GetKey(ctx context.Context, id int64) (*Key, *Response, e
 
 // CreateKey adds a public key for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/keys#create-a-public-ssh-key-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/keys?apiVersion=2022-11-28#create-a-public-ssh-key-for-the-authenticated-user
 //
 //meta:operation POST /user/keys
 func (s *UsersService) CreateKey(ctx context.Context, key *Key) (*Key, *Response, error) {
@@ -108,7 +108,7 @@ func (s *UsersService) CreateKey(ctx context.Context, key *Key) (*Key, *Response
 
 // DeleteKey deletes a public key.
 //
-// GitHub API docs: https://docs.github.com/rest/users/keys#delete-a-public-ssh-key-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/keys?apiVersion=2022-11-28#delete-a-public-ssh-key-for-the-authenticated-user
 //
 //meta:operation DELETE /user/keys/{key_id}
 func (s *UsersService) DeleteKey(ctx context.Context, id int64) (*Response, error) {

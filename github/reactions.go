@@ -13,7 +13,7 @@ import (
 // ReactionsService provides access to the reactions-related functions in the
 // GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions
+// GitHub API docs: https://docs.github.com/rest/reactions?apiVersion=2022-11-28
 type ReactionsService service
 
 // Reaction represents a GitHub reaction.
@@ -59,7 +59,7 @@ type ListReactionOptions struct {
 
 // ListCommentReactions lists the reactions for a commit comment.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#list-reactions-for-a-commit-comment
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#list-reactions-for-a-commit-comment
 //
 //meta:operation GET /repos/{owner}/{repo}/comments/{comment_id}/reactions
 func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListReactionOptions) ([]*Reaction, *Response, error) {
@@ -90,7 +90,7 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#create-reaction-for-a-commit-comment
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#create-reaction-for-a-commit-comment
 //
 //meta:operation POST /repos/{owner}/{repo}/comments/{comment_id}/reactions
 func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
@@ -115,7 +115,7 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 
 // DeleteCommentReaction deletes the reaction for a commit comment.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-a-commit-comment-reaction
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#delete-a-commit-comment-reaction
 //
 //meta:operation DELETE /repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}
 func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
@@ -126,7 +126,7 @@ func (s *ReactionsService) DeleteCommentReaction(ctx context.Context, owner, rep
 
 // DeleteCommentReactionByID deletes the reaction for a commit comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-a-commit-comment-reaction
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#delete-a-commit-comment-reaction
 //
 //meta:operation DELETE /repos/{owner}/{repo}/comments/{comment_id}/reactions/{reaction_id}
 func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
@@ -137,7 +137,7 @@ func (s *ReactionsService) DeleteCommentReactionByID(ctx context.Context, repoID
 
 // ListIssueReactions lists the reactions for an issue.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#list-reactions-for-an-issue
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#list-reactions-for-an-issue
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/reactions
 func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo string, number int, opts *ListReactionOptions) ([]*Reaction, *Response, error) {
@@ -168,7 +168,7 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#create-reaction-for-an-issue
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#create-reaction-for-an-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/reactions
 func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo string, number int, content string) (*Reaction, *Response, error) {
@@ -193,7 +193,7 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 
 // DeleteIssueReaction deletes the reaction to an issue.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-an-issue-reaction
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#delete-an-issue-reaction
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}
 func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo string, issueNumber int, reactionID int64) (*Response, error) {
@@ -204,7 +204,7 @@ func (s *ReactionsService) DeleteIssueReaction(ctx context.Context, owner, repo 
 
 // DeleteIssueReactionByID deletes the reaction to an issue by repository ID.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-an-issue-reaction
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#delete-an-issue-reaction
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}
 func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, issueNumber int, reactionID int64) (*Response, error) {
@@ -215,7 +215,7 @@ func (s *ReactionsService) DeleteIssueReactionByID(ctx context.Context, repoID, 
 
 // ListIssueCommentReactions lists the reactions for an issue comment.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#list-reactions-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#list-reactions-for-an-issue-comment
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions
 func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListReactionOptions) ([]*Reaction, *Response, error) {
@@ -246,7 +246,7 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#create-reaction-for-an-issue-comment
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#create-reaction-for-an-issue-comment
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions
 func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
@@ -271,7 +271,7 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 
 // DeleteIssueCommentReaction deletes the reaction to an issue comment.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-an-issue-comment-reaction
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#delete-an-issue-comment-reaction
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}
 func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
@@ -282,7 +282,7 @@ func (s *ReactionsService) DeleteIssueCommentReaction(ctx context.Context, owner
 
 // DeleteIssueCommentReactionByID deletes the reaction to an issue comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-an-issue-comment-reaction
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#delete-an-issue-comment-reaction
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}
 func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
@@ -293,7 +293,7 @@ func (s *ReactionsService) DeleteIssueCommentReactionByID(ctx context.Context, r
 
 // ListPullRequestCommentReactions lists the reactions for a pull request review comment.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#list-reactions-for-a-pull-request-review-comment
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#list-reactions-for-a-pull-request-review-comment
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions
 func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, owner, repo string, id int64, opts *ListReactionOptions) ([]*Reaction, *Response, error) {
@@ -324,7 +324,7 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 // previously created reaction will be returned with Status: 200 OK.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#create-reaction-for-a-pull-request-review-comment
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#create-reaction-for-a-pull-request-review-comment
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions
 func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context, owner, repo string, id int64, content string) (*Reaction, *Response, error) {
@@ -349,7 +349,7 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 
 // DeletePullRequestCommentReaction deletes the reaction to a pull request review comment.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-a-pull-request-comment-reaction
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#delete-a-pull-request-comment-reaction
 //
 //meta:operation DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}
 func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context, owner, repo string, commentID, reactionID int64) (*Response, error) {
@@ -360,7 +360,7 @@ func (s *ReactionsService) DeletePullRequestCommentReaction(ctx context.Context,
 
 // DeletePullRequestCommentReactionByID deletes the reaction to a pull request review comment by repository ID.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-a-pull-request-comment-reaction
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#delete-a-pull-request-comment-reaction
 //
 //meta:operation DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}
 func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Context, repoID, commentID, reactionID int64) (*Response, error) {
@@ -536,7 +536,7 @@ func (s *ReactionsService) deleteReaction(ctx context.Context, url string) (*Res
 // added the reaction type to this release.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#create-reaction-for-a-release
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#create-reaction-for-a-release
 //
 //meta:operation POST /repos/{owner}/{repo}/releases/{release_id}/reactions
 func (s *ReactionsService) CreateReleaseReaction(ctx context.Context, owner, repo string, releaseID int64, content string) (*Reaction, *Response, error) {
@@ -561,7 +561,7 @@ func (s *ReactionsService) CreateReleaseReaction(ctx context.Context, owner, rep
 
 // ListReleaseReactions lists the reactions for a release.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#list-reactions-for-a-release
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#list-reactions-for-a-release
 //
 //meta:operation GET /repos/{owner}/{repo}/releases/{release_id}/reactions
 func (s *ReactionsService) ListReleaseReactions(ctx context.Context, owner, repo string, releaseID int64, opts *ListReactionOptions) ([]*Reaction, *Response, error) {
@@ -589,7 +589,7 @@ func (s *ReactionsService) ListReleaseReactions(ctx context.Context, owner, repo
 
 // DeleteReleaseReaction deletes the reaction for a release.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-a-release-reaction
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#delete-a-release-reaction
 //
 //meta:operation DELETE /repos/{owner}/{repo}/releases/{release_id}/reactions/{reaction_id}
 func (s *ReactionsService) DeleteReleaseReaction(ctx context.Context, owner, repo string, releaseID, reactionID int64) (*Response, error) {
@@ -600,7 +600,7 @@ func (s *ReactionsService) DeleteReleaseReaction(ctx context.Context, owner, rep
 
 // DeleteReleaseReactionByID deletes the reaction for a release by repository ID.
 //
-// GitHub API docs: https://docs.github.com/rest/reactions/reactions#delete-a-release-reaction
+// GitHub API docs: https://docs.github.com/rest/reactions/reactions?apiVersion=2022-11-28#delete-a-release-reaction
 //
 //meta:operation DELETE /repos/{owner}/{repo}/releases/{release_id}/reactions/{reaction_id}
 func (s *ReactionsService) DeleteReleaseReactionByID(ctx context.Context, repoID, releaseID, reactionID int64) (*Response, error) {

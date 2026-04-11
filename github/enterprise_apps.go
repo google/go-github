@@ -27,7 +27,7 @@ type UpdateAppInstallationRepositoriesOptions struct {
 // ListRepositoriesForOrgAppInstallation lists the repositories that an enterprise app installation
 // has access to on an organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#get-the-repositories-accessible-to-a-given-github-app-installation
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#get-the-repositories-accessible-to-a-given-github-app-installation
 //
 //meta:operation GET /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories
 func (s *EnterpriseService) ListRepositoriesForOrgAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts *ListOptions) ([]*AccessibleRepository, *Response, error) {
@@ -54,7 +54,7 @@ func (s *EnterpriseService) ListRepositoriesForOrgAppInstallation(ctx context.Co
 // UpdateAppInstallationRepositories changes a GitHub App installation's repository access
 // between all repositories and a selected set.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#toggle-installation-repository-access-between-selected-and-all-repositories
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#toggle-installation-repository-access-between-selected-and-all-repositories
 //
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories
 func (s *EnterpriseService) UpdateAppInstallationRepositories(ctx context.Context, enterprise, org string, installationID int64, opts UpdateAppInstallationRepositoriesOptions) (*Installation, *Response, error) {
@@ -75,7 +75,7 @@ func (s *EnterpriseService) UpdateAppInstallationRepositories(ctx context.Contex
 
 // AddRepositoriesToAppInstallation grants repository access for a GitHub App installation.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#grant-repository-access-to-an-organization-installation
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#grant-repository-access-to-an-organization-installation
 //
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories/add
 func (s *EnterpriseService) AddRepositoriesToAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts AppInstallationRepositoriesOptions) ([]*AccessibleRepository, *Response, error) {
@@ -96,7 +96,7 @@ func (s *EnterpriseService) AddRepositoriesToAppInstallation(ctx context.Context
 
 // RemoveRepositoriesFromAppInstallation revokes repository access from a GitHub App installation.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#remove-repository-access-from-an-organization-installation
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#remove-repository-access-from-an-organization-installation
 //
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories/remove
 func (s *EnterpriseService) RemoveRepositoriesFromAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts AppInstallationRepositoriesOptions) ([]*AccessibleRepository, *Response, error) {

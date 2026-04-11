@@ -23,7 +23,7 @@ type socialAccountsRequest struct {
 
 // ListSocialAccounts lists all social accounts for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/social-accounts#list-social-accounts-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/social-accounts?apiVersion=2022-11-28#list-social-accounts-for-the-authenticated-user
 //
 //meta:operation GET /user/social_accounts
 func (s *UsersService) ListSocialAccounts(ctx context.Context, opts *ListOptions) ([]*SocialAccount, *Response, error) {
@@ -49,7 +49,7 @@ func (s *UsersService) ListSocialAccounts(ctx context.Context, opts *ListOptions
 
 // AddSocialAccounts adds social accounts for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/social-accounts#add-social-accounts-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/social-accounts?apiVersion=2022-11-28#add-social-accounts-for-the-authenticated-user
 //
 //meta:operation POST /user/social_accounts
 func (s *UsersService) AddSocialAccounts(ctx context.Context, accountURLs []string) ([]*SocialAccount, *Response, error) {
@@ -70,7 +70,7 @@ func (s *UsersService) AddSocialAccounts(ctx context.Context, accountURLs []stri
 
 // DeleteSocialAccounts deletes social accounts for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/social-accounts#delete-social-accounts-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/social-accounts?apiVersion=2022-11-28#delete-social-accounts-for-the-authenticated-user
 //
 //meta:operation DELETE /user/social_accounts
 func (s *UsersService) DeleteSocialAccounts(ctx context.Context, accountURLs []string) (*Response, error) {
@@ -85,7 +85,7 @@ func (s *UsersService) DeleteSocialAccounts(ctx context.Context, accountURLs []s
 
 // ListUserSocialAccounts lists all social accounts for a user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/social-accounts#list-social-accounts-for-a-user
+// GitHub API docs: https://docs.github.com/rest/users/social-accounts?apiVersion=2022-11-28#list-social-accounts-for-a-user
 //
 //meta:operation GET /users/{username}/social_accounts
 func (s *UsersService) ListUserSocialAccounts(ctx context.Context, username string, opts *ListOptions) ([]*SocialAccount, *Response, error) {

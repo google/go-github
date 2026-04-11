@@ -1187,7 +1187,7 @@ func compareHTTPResponse(r1, r2 *http.Response) bool {
 /*
 An ErrorResponse reports one or more errors caused by an API request.
 
-GitHub API docs: https://docs.github.com/rest/#client-errors
+GitHub API docs: https://docs.github.com/rest?apiVersion=2022-11-28#client-errors
 */
 type ErrorResponse struct {
 	Response *http.Response `json:"-"`       // HTTP response that caused this error
@@ -1198,7 +1198,7 @@ type ErrorResponse struct {
 	Block *ErrorBlock `json:"block,omitempty"`
 	// Most errors will also include a documentation_url field pointing
 	// to some content that might help you resolve the error, see
-	// https://docs.github.com/rest/#client-errors
+	// https://docs.github.com/rest?apiVersion=2022-11-28#client-errors
 	DocumentationURL string `json:"documentation_url,omitempty"`
 }
 
@@ -1326,7 +1326,7 @@ func (ae *AcceptedError) Is(target error) bool {
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
-// "documentation_url" field value equal to "https://docs.github.com/rest/overview/rate-limits-for-the-rest-api#about-secondary-rate-limits".
+// "documentation_url" field value equal to "https://docs.github.com/rest/overview/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits".
 type AbuseRateLimitError struct {
 	Response *http.Response // HTTP response that caused this error
 	Message  string         `json:"message"` // error message
@@ -1431,7 +1431,7 @@ GitHub error responses structure are often undocumented and inconsistent.
 Sometimes error is just a simple string (Issue #540).
 In such cases, Message represents an error message as a workaround.
 
-GitHub API docs: https://docs.github.com/rest/#client-errors
+GitHub API docs: https://docs.github.com/rest?apiVersion=2022-11-28#client-errors
 */
 type Error struct {
 	Resource string `json:"resource"` // resource on which the error occurred
@@ -1489,7 +1489,7 @@ func CheckResponse(r *http.Response) error {
 	case r.StatusCode == http.StatusUnauthorized && strings.HasPrefix(r.Header.Get(headerOTP), "required"):
 		return (*TwoFactorAuthError)(errorResponse)
 	// Primary rate limit exceeded: GitHub returns 403 or 429 with X-RateLimit-Remaining: 0
-	// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
+	// See: https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28
 	case (r.StatusCode == http.StatusForbidden || r.StatusCode == http.StatusTooManyRequests) &&
 		r.Header.Get(HeaderRateRemaining) == "0":
 		return &RateLimitError{
@@ -1498,7 +1498,7 @@ func CheckResponse(r *http.Response) error {
 			Message:  errorResponse.Message,
 		}
 	// Secondary rate limit exceeded: GitHub returns 403 or 429 with specific documentation_url
-	// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits
+	// See: https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits
 	case (r.StatusCode == http.StatusForbidden || r.StatusCode == http.StatusTooManyRequests) &&
 		(strings.HasSuffix(errorResponse.DocumentationURL, "#abuse-rate-limits") ||
 			strings.HasSuffix(errorResponse.DocumentationURL, "secondary-rate-limits")):
@@ -1577,13 +1577,13 @@ const (
 // GetRateLimitCategory returns the rate limit RateLimitCategory of the endpoint, determined by HTTP method and Request.URL.Path.
 func GetRateLimitCategory(method, path string) RateLimitCategory {
 	switch {
-	// https://docs.github.com/rest/rate-limit#about-rate-limits
+	// https://docs.github.com/rest/rate-limit?apiVersion=2022-11-28#about-rate-limits
 	default:
 		// NOTE: coreCategory is returned for actionsRunnerRegistrationCategory too,
 		// because no API found for this category.
 		return CoreCategory
 
-	// https://docs.github.com/en/rest/search/search#search-code
+	// https://docs.github.com/rest/search/search?apiVersion=2022-11-28#search-code
 	case strings.HasPrefix(path, "/search/code") &&
 		method == "GET":
 		return CodeSearchCategory
@@ -1597,31 +1597,31 @@ func GetRateLimitCategory(method, path string) RateLimitCategory {
 		method == "POST":
 		return IntegrationManifestCategory
 
-	// https://docs.github.com/rest/migrations/source-imports#start-an-import
+	// https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#start-an-import
 	case strings.HasPrefix(path, "/repos/") &&
 		strings.HasSuffix(path, "/import") &&
 		method == "PUT":
 		return SourceImportCategory
 
-	// https://docs.github.com/rest/code-scanning#upload-an-analysis-as-sarif-data
+	// https://docs.github.com/rest/code-scanning?apiVersion=2022-11-28#upload-an-analysis-as-sarif-data
 	case strings.HasSuffix(path, "/code-scanning/sarifs"):
 		return CodeScanningUploadCategory
 
-	// https://docs.github.com/enterprise-cloud@latest/rest/scim
+	// https://docs.github.com/enterprise-cloud@latest/rest/scim?apiVersion=2022-11-28
 	case strings.HasPrefix(path, "/scim/"):
 		return ScimCategory
 
-	// https://docs.github.com/en/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+	// https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 	case strings.HasPrefix(path, "/repos/") &&
 		strings.HasSuffix(path, "/dependency-graph/snapshots") &&
 		method == "POST":
 		return DependencySnapshotsCategory
 
-	// https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#get-the-audit-log-for-an-organization
+	// https://docs.github.com/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#get-the-audit-log-for-an-organization
 	case strings.HasSuffix(path, "/audit-log"):
 		return AuditLogCategory
 
-	// https://docs.github.com/en/rest/dependency-graph/sboms?apiVersion=2022-11-28#export-a-software-bill-of-materials-sbom-for-a-repository
+	// https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28#export-a-software-bill-of-materials-sbom-for-a-repository
 	case strings.HasPrefix(path, "/repos/") &&
 		strings.HasSuffix(path, "/dependency-graph/sbom"):
 		return DependencySBOMCategory
@@ -1665,7 +1665,7 @@ that need to use a higher rate limit associated with your OAuth application.
 This will add the client id and secret as a base64-encoded string in the format
 ClientID:ClientSecret and apply it as an "Authorization": "Basic" header.
 
-See https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#primary-rate-limit-for-oauth-apps
+See https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#primary-rate-limit-for-oauth-apps
 for more information.
 */
 type UnauthenticatedRateLimitedTransport struct {

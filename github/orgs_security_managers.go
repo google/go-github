@@ -14,7 +14,7 @@ import (
 //
 // Deprecated: Please use `client.Organizations.ListTeamsAssignedToOrgRole` instead.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/security-managers#list-security-manager-teams
+// GitHub API docs: https://docs.github.com/rest/orgs/security-managers?apiVersion=2022-11-28#list-security-manager-teams
 //
 //meta:operation GET /orgs/{org}/security-managers
 func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org string) ([]*Team, *Response, error) {
@@ -38,7 +38,7 @@ func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org
 //
 // Deprecated: Please use `client.Organizations.AssignOrgRoleToTeam` instead.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/security-managers#add-a-security-manager-team
+// GitHub API docs: https://docs.github.com/rest/orgs/security-managers?apiVersion=2022-11-28#add-a-security-manager-team
 //
 //meta:operation PUT /orgs/{org}/security-managers/teams/{team_slug}
 func (s *OrganizationsService) AddSecurityManagerTeam(ctx context.Context, org, team string) (*Response, error) {
@@ -55,7 +55,7 @@ func (s *OrganizationsService) AddSecurityManagerTeam(ctx context.Context, org, 
 //
 // Deprecated: Please use `client.Organizations.RemoveOrgRoleFromTeam` instead.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/security-managers#remove-a-security-manager-team
+// GitHub API docs: https://docs.github.com/rest/orgs/security-managers?apiVersion=2022-11-28#remove-a-security-manager-team
 //
 //meta:operation DELETE /orgs/{org}/security-managers/teams/{team_slug}
 func (s *OrganizationsService) RemoveSecurityManagerTeam(ctx context.Context, org, team string) (*Response, error) {

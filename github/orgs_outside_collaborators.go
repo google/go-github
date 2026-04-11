@@ -27,7 +27,7 @@ type ListOutsideCollaboratorsOptions struct {
 // Warning: The API may change without advance notice during the preview period.
 // Preview features are not supported for production use.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/outside-collaborators#list-outside-collaborators-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/outside-collaborators?apiVersion=2022-11-28#list-outside-collaborators-for-an-organization
 //
 //meta:operation GET /orgs/{org}/outside_collaborators
 func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org string, opts *ListOutsideCollaboratorsOptions) ([]*User, *Response, error) {
@@ -54,7 +54,7 @@ func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org
 // RemoveOutsideCollaborator removes a user from the list of outside collaborators;
 // consequently, removing them from all the organization's repositories.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/outside-collaborators#remove-outside-collaborator-from-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/outside-collaborators?apiVersion=2022-11-28#remove-outside-collaborator-from-an-organization
 //
 //meta:operation DELETE /orgs/{org}/outside_collaborators/{username}
 func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, org, user string) (*Response, error) {
@@ -73,7 +73,7 @@ func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, or
 // Responses for converting a non-member or the last owner to an outside collaborator
 // are listed in GitHub API docs.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/outside-collaborators#convert-an-organization-member-to-outside-collaborator
+// GitHub API docs: https://docs.github.com/rest/orgs/outside-collaborators?apiVersion=2022-11-28#convert-an-organization-member-to-outside-collaborator
 //
 //meta:operation PUT /orgs/{org}/outside_collaborators/{username}
 func (s *OrganizationsService) ConvertMemberToOutsideCollaborator(ctx context.Context, org, user string) (*Response, error) {

@@ -28,7 +28,7 @@ type ListRepoMachineTypesOptions struct {
 
 // ListRepositoryMachineTypes lists the machine types available for a given repository based on its configuration.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/machines#list-available-machine-types-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/codespaces/machines?apiVersion=2022-11-28#list-available-machine-types-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/codespaces/machines
 func (s *CodespacesService) ListRepositoryMachineTypes(ctx context.Context, owner, repo string, opts *ListRepoMachineTypesOptions) (*CodespacesMachines, *Response, error) {
@@ -54,7 +54,7 @@ func (s *CodespacesService) ListRepositoryMachineTypes(ctx context.Context, owne
 
 // ListCodespaceMachineTypes lists the machine types a codespace can transition to use.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/machines#list-machine-types-for-a-codespace
+// GitHub API docs: https://docs.github.com/rest/codespaces/machines?apiVersion=2022-11-28#list-machine-types-for-a-codespace
 //
 //meta:operation GET /user/codespaces/{codespace_name}/machines
 func (s *CodespacesService) ListCodespaceMachineTypes(ctx context.Context, codespaceName string) (*CodespacesMachines, *Response, error) {

@@ -12,7 +12,7 @@ import (
 
 // GetRulesForBranch gets all the repository rules that apply to the specified branch.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/rules#get-rules-for-a-branch
+// GitHub API docs: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#get-rules-for-a-branch
 //
 //meta:operation GET /repos/{owner}/{repo}/rules/branches/{branch}
 func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo, branch string, opts *ListOptions) (*BranchRules, *Response, error) {
@@ -49,7 +49,7 @@ type RepositoryListRulesetsOptions struct {
 // By default, this endpoint will include rulesets configured at the organization or enterprise level that apply to the repository.
 // To exclude those rulesets, set the `RepositoryListRulesetsOptions.IncludesParents` parameter to `false`.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/rules#get-all-repository-rulesets
+// GitHub API docs: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#get-all-repository-rulesets
 //
 //meta:operation GET /repos/{owner}/{repo}/rulesets
 func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo string, opts *RepositoryListRulesetsOptions) ([]*RepositoryRuleset, *Response, error) {
@@ -76,7 +76,7 @@ func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo st
 
 // CreateRuleset creates a repository ruleset for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/rules#create-a-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#create-a-repository-ruleset
 //
 //meta:operation POST /repos/{owner}/{repo}/rulesets
 func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo string, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
@@ -99,7 +99,7 @@ func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo str
 // GetRuleset gets a repository ruleset for the specified repository.
 // If includesParents is true, rulesets configured at the organization or enterprise level that apply to the repository will be returned.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/rules#get-a-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#get-a-repository-ruleset
 //
 //meta:operation GET /repos/{owner}/{repo}/rulesets/{ruleset_id}
 func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string, rulesetID int64, includesParents bool) (*RepositoryRuleset, *Response, error) {
@@ -121,7 +121,7 @@ func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string
 
 // UpdateRuleset updates a repository ruleset for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/rules#update-a-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#update-a-repository-ruleset
 //
 //meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
 func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo string, rulesetID int64, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
@@ -143,7 +143,7 @@ func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo str
 
 // DeleteRuleset deletes a repository ruleset for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/rules#delete-a-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#delete-a-repository-ruleset
 //
 //meta:operation DELETE /repos/{owner}/{repo}/rulesets/{ruleset_id}
 func (s *RepositoriesService) DeleteRuleset(ctx context.Context, owner, repo string, rulesetID int64) (*Response, error) {

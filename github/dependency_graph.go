@@ -13,7 +13,7 @@ import (
 // DependencyGraphService handles communication with the dependency graph
 // related methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/dependency-graph
+// GitHub API docs: https://docs.github.com/rest/dependency-graph?apiVersion=2022-11-28
 type DependencyGraphService service
 
 // SBOM represents a software bill of materials, which describes the
@@ -108,7 +108,7 @@ func (s SBOM) String() string {
 
 // GetSBOM fetches the software bill of materials for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/dependency-graph/sboms#export-a-software-bill-of-materials-sbom-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28#export-a-software-bill-of-materials-sbom-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/dependency-graph/sbom
 func (s *DependencyGraphService) GetSBOM(ctx context.Context, owner, repo string) (*SBOM, *Response, error) {

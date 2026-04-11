@@ -115,7 +115,7 @@ func (i Import) String() string {
 
 // SourceImportAuthor identifies an author imported from a source repository.
 //
-// GitHub API docs: https://docs.github.com/rest/migration/source_imports/#get-commit-authors
+// GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#get-commit-authors
 type SourceImportAuthor struct {
 	ID         *int64  `json:"id,omitempty"`
 	RemoteID   *string `json:"remote_id,omitempty"`
@@ -132,7 +132,7 @@ func (a SourceImportAuthor) String() string {
 
 // LargeFile identifies a file larger than 100MB found during a repository import.
 //
-// GitHub API docs: https://docs.github.com/rest/migration/source_imports/#get-large-files
+// GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#get-large-files
 type LargeFile struct {
 	RefName *string `json:"ref_name,omitempty"`
 	Path    *string `json:"path,omitempty"`
@@ -146,7 +146,7 @@ func (f LargeFile) String() string {
 
 // StartImport initiates a repository import.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/source-imports#start-an-import
+// GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#start-an-import
 //
 //meta:operation PUT /repos/{owner}/{repo}/import
 func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
@@ -167,7 +167,7 @@ func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, 
 
 // ImportProgress queries for the status and progress of an ongoing repository import.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/source-imports#get-an-import-status
+// GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#get-an-import-status
 //
 //meta:operation GET /repos/{owner}/{repo}/import
 func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo string) (*Import, *Response, error) {
@@ -188,7 +188,7 @@ func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo strin
 
 // UpdateImport initiates a repository import.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/source-imports#update-an-import
+// GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#update-an-import
 //
 //meta:operation PATCH /repos/{owner}/{repo}/import
 func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
@@ -219,7 +219,7 @@ func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string,
 // This method and MapCommitAuthor allow you to provide correct Git author
 // information.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/source-imports#get-commit-authors
+// GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#get-commit-authors
 //
 //meta:operation GET /repos/{owner}/{repo}/import/authors
 func (s *MigrationService) CommitAuthors(ctx context.Context, owner, repo string) ([]*SourceImportAuthor, *Response, error) {
@@ -242,7 +242,7 @@ func (s *MigrationService) CommitAuthors(ctx context.Context, owner, repo string
 // application can continue updating authors any time before you push new
 // commits to the repository.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/source-imports#map-a-commit-author
+// GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#map-a-commit-author
 //
 //meta:operation PATCH /repos/{owner}/{repo}/import/authors/{author_id}
 func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo string, id int64, author *SourceImportAuthor) (*SourceImportAuthor, *Response, error) {
@@ -265,7 +265,7 @@ func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo stri
 // files larger than 100MB. Only the UseLFS field on the provided Import is
 // used.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/source-imports#update-git-lfs-preference
+// GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#update-git-lfs-preference
 //
 //meta:operation PATCH /repos/{owner}/{repo}/import/lfs
 func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
@@ -286,7 +286,7 @@ func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo str
 
 // LargeFiles lists files larger than 100MB found during the import.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/source-imports#get-large-files
+// GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#get-large-files
 //
 //meta:operation GET /repos/{owner}/{repo}/import/large_files
 func (s *MigrationService) LargeFiles(ctx context.Context, owner, repo string) ([]*LargeFile, *Response, error) {
@@ -307,7 +307,7 @@ func (s *MigrationService) LargeFiles(ctx context.Context, owner, repo string) (
 
 // CancelImport stops an import for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/source-imports#cancel-an-import
+// GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#cancel-an-import
 //
 //meta:operation DELETE /repos/{owner}/{repo}/import
 func (s *MigrationService) CancelImport(ctx context.Context, owner, repo string) (*Response, error) {

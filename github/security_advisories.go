@@ -15,7 +15,7 @@ import (
 // SecurityAdvisoriesService handles communication with the security advisories
 // related methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/security-advisories
+// GitHub API docs: https://docs.github.com/rest/security-advisories?apiVersion=2022-11-28
 type SecurityAdvisoriesService service
 
 // SecurityAdvisorySubmission represents the Security Advisory Submission.
@@ -131,7 +131,7 @@ type Credit struct {
 // RequestCVE requests a Common Vulnerabilities and Exposures (CVE) for a repository security advisory.
 // The ghsaID is the GitHub Security Advisory identifier of the advisory.
 //
-// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#request-a-cve-for-a-repository-security-advisory
+// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#request-a-cve-for-a-repository-security-advisory
 //
 //meta:operation POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/cve
 func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo, ghsaID string) (*Response, error) {
@@ -157,7 +157,7 @@ func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo,
 // CreateTemporaryPrivateFork creates a temporary private fork to collaborate on fixing a security vulnerability in your repository.
 // The ghsaID is the GitHub Security Advisory identifier of the advisory.
 //
-// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#create-a-temporary-private-fork
+// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#create-a-temporary-private-fork
 //
 //meta:operation POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks
 func (s *SecurityAdvisoriesService) CreateTemporaryPrivateFork(ctx context.Context, owner, repo, ghsaID string) (*Repository, *Response, error) {
@@ -187,7 +187,7 @@ func (s *SecurityAdvisoriesService) CreateTemporaryPrivateFork(ctx context.Conte
 
 // ListRepositorySecurityAdvisoriesForOrg lists the repository security advisories for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories-for-an-organization
 //
 //meta:operation GET /orgs/{org}/security-advisories
 func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx context.Context, org string, opts *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
@@ -213,7 +213,7 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx c
 
 // ListRepositorySecurityAdvisories lists the security advisories in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories
+// GitHub API docs: https://docs.github.com/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories
 //
 //meta:operation GET /repos/{owner}/{repo}/security-advisories
 func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context.Context, owner, repo string, opts *ListRepositorySecurityAdvisoriesOptions) ([]*SecurityAdvisory, *Response, error) {
@@ -239,7 +239,7 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context
 
 // ListGlobalSecurityAdvisories lists all global security advisories.
 //
-// GitHub API docs: https://docs.github.com/rest/security-advisories/global-advisories#list-global-security-advisories
+// GitHub API docs: https://docs.github.com/rest/security-advisories/global-advisories?apiVersion=2022-11-28#list-global-security-advisories
 //
 //meta:operation GET /advisories
 func (s *SecurityAdvisoriesService) ListGlobalSecurityAdvisories(ctx context.Context, opts *ListGlobalSecurityAdvisoriesOptions) ([]*GlobalSecurityAdvisory, *Response, error) {
@@ -265,7 +265,7 @@ func (s *SecurityAdvisoriesService) ListGlobalSecurityAdvisories(ctx context.Con
 
 // GetGlobalSecurityAdvisories gets a global security advisory using its GitHub Security Advisory (GHSA) identifier.
 //
-// GitHub API docs: https://docs.github.com/rest/security-advisories/global-advisories#get-a-global-security-advisory
+// GitHub API docs: https://docs.github.com/rest/security-advisories/global-advisories?apiVersion=2022-11-28#get-a-global-security-advisory
 //
 //meta:operation GET /advisories/{ghsa_id}
 func (s *SecurityAdvisoriesService) GetGlobalSecurityAdvisories(ctx context.Context, ghsaID string) (*GlobalSecurityAdvisory, *Response, error) {

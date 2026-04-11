@@ -160,7 +160,7 @@ func NewDatadogStreamConfig(enabled bool, cfg *DatadogConfig) *AuditLogStreamCon
 // Credentials must be encrypted with this key before being submitted via CreateAuditLogStream
 // or UpdateAuditLogStream.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#get-the-audit-log-stream-key-for-encrypting-secrets
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log?apiVersion=2022-11-28#get-the-audit-log-stream-key-for-encrypting-secrets
 //
 //meta:operation GET /enterprises/{enterprise}/audit-log/stream-key
 func (s *EnterpriseService) GetAuditLogStreamKey(ctx context.Context, enterprise string) (*AuditLogStreamKey, *Response, error) {
@@ -182,7 +182,7 @@ func (s *EnterpriseService) GetAuditLogStreamKey(ctx context.Context, enterprise
 
 // ListAuditLogStreams lists the audit log stream configurations for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#list-audit-log-stream-configurations-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log?apiVersion=2022-11-28#list-audit-log-stream-configurations-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/audit-log/streams
 func (s *EnterpriseService) ListAuditLogStreams(ctx context.Context, enterprise string) ([]*AuditLogStream, *Response, error) {
@@ -204,7 +204,7 @@ func (s *EnterpriseService) ListAuditLogStreams(ctx context.Context, enterprise 
 
 // GetAuditLogStream gets a single audit log stream configuration for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#list-one-audit-log-streaming-configuration-via-a-stream-id
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log?apiVersion=2022-11-28#list-one-audit-log-streaming-configuration-via-a-stream-id
 //
 //meta:operation GET /enterprises/{enterprise}/audit-log/streams/{stream_id}
 func (s *EnterpriseService) GetAuditLogStream(ctx context.Context, enterprise string, streamID int64) (*AuditLogStream, *Response, error) {
@@ -227,7 +227,7 @@ func (s *EnterpriseService) GetAuditLogStream(ctx context.Context, enterprise st
 // CreateAuditLogStream creates an audit log streaming configuration for an enterprise.
 // Credentials in the config must be encrypted using the key returned by GetAuditLogStreamKey.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#create-an-audit-log-streaming-configuration-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log?apiVersion=2022-11-28#create-an-audit-log-streaming-configuration-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/audit-log/streams
 func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise string, config AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
@@ -250,7 +250,7 @@ func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise
 // UpdateAuditLogStream updates an existing audit log stream configuration for an enterprise.
 // Credentials in the config must be encrypted using the key returned by GetAuditLogStreamKey.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#update-an-existing-audit-log-stream-configuration
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log?apiVersion=2022-11-28#update-an-existing-audit-log-stream-configuration
 //
 //meta:operation PUT /enterprises/{enterprise}/audit-log/streams/{stream_id}
 func (s *EnterpriseService) UpdateAuditLogStream(ctx context.Context, enterprise string, streamID int64, config AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
@@ -272,7 +272,7 @@ func (s *EnterpriseService) UpdateAuditLogStream(ctx context.Context, enterprise
 
 // DeleteAuditLogStream deletes an audit log stream configuration for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log#delete-an-audit-log-streaming-configuration-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log?apiVersion=2022-11-28#delete-an-audit-log-streaming-configuration-for-an-enterprise
 //
 //meta:operation DELETE /enterprises/{enterprise}/audit-log/streams/{stream_id}
 func (s *EnterpriseService) DeleteAuditLogStream(ctx context.Context, enterprise string, streamID int64) (*Response, error) {

@@ -28,7 +28,7 @@ type RepositoryInvitation struct {
 
 // ListInvitations lists all currently-open repository invitations.
 //
-// GitHub API docs: https://docs.github.com/rest/collaborators/invitations#list-repository-invitations
+// GitHub API docs: https://docs.github.com/rest/collaborators/invitations?apiVersion=2022-11-28#list-repository-invitations
 //
 //meta:operation GET /repos/{owner}/{repo}/invitations
 func (s *RepositoriesService) ListInvitations(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryInvitation, *Response, error) {
@@ -54,7 +54,7 @@ func (s *RepositoriesService) ListInvitations(ctx context.Context, owner, repo s
 
 // DeleteInvitation deletes a repository invitation.
 //
-// GitHub API docs: https://docs.github.com/rest/collaborators/invitations#delete-a-repository-invitation
+// GitHub API docs: https://docs.github.com/rest/collaborators/invitations?apiVersion=2022-11-28#delete-a-repository-invitation
 //
 //meta:operation DELETE /repos/{owner}/{repo}/invitations/{invitation_id}
 func (s *RepositoriesService) DeleteInvitation(ctx context.Context, owner, repo string, invitationID int64) (*Response, error) {
@@ -73,7 +73,7 @@ func (s *RepositoriesService) DeleteInvitation(ctx context.Context, owner, repo 
 // permissions represents the permissions that the associated user will have
 // on the repository. Possible values are: "read", "write", "admin".
 //
-// GitHub API docs: https://docs.github.com/rest/collaborators/invitations#update-a-repository-invitation
+// GitHub API docs: https://docs.github.com/rest/collaborators/invitations?apiVersion=2022-11-28#update-a-repository-invitation
 //
 //meta:operation PATCH /repos/{owner}/{repo}/invitations/{invitation_id}
 func (s *RepositoriesService) UpdateInvitation(ctx context.Context, owner, repo string, invitationID int64, permissions string) (*RepositoryInvitation, *Response, error) {

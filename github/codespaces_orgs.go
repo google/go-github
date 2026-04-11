@@ -22,7 +22,7 @@ type CodespacesOrgAccessControlRequest struct {
 
 // ListInOrg lists the codespaces associated to a specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/organizations#list-codespaces-for-the-organization
+// GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#list-codespaces-for-the-organization
 //
 //meta:operation GET /orgs/{org}/codespaces
 func (s *CodespacesService) ListInOrg(ctx context.Context, org string, opts *ListOptions) (*ListCodespaces, *Response, error) {
@@ -48,7 +48,7 @@ func (s *CodespacesService) ListInOrg(ctx context.Context, org string, opts *Lis
 
 // SetOrgAccessControl sets which users can access codespaces in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/organizations#manage-access-control-for-organization-codespaces
+// GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#manage-access-control-for-organization-codespaces
 //
 //meta:operation PUT /orgs/{org}/codespaces/access
 func (s *CodespacesService) SetOrgAccessControl(ctx context.Context, org string, request CodespacesOrgAccessControlRequest) (*Response, error) {
@@ -68,7 +68,7 @@ func (s *CodespacesService) SetOrgAccessControl(ctx context.Context, org string,
 
 // AddUsersToOrgAccess adds users to Codespaces access for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/organizations#add-users-to-codespaces-access-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#add-users-to-codespaces-access-for-an-organization
 //
 //meta:operation POST /orgs/{org}/codespaces/access/selected_users
 func (s *CodespacesService) AddUsersToOrgAccess(ctx context.Context, org string, usernames []string) (*Response, error) {
@@ -88,7 +88,7 @@ func (s *CodespacesService) AddUsersToOrgAccess(ctx context.Context, org string,
 
 // RemoveUsersFromOrgAccess removes users from Codespaces access for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/organizations#remove-users-from-codespaces-access-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#remove-users-from-codespaces-access-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/codespaces/access/selected_users
 func (s *CodespacesService) RemoveUsersFromOrgAccess(ctx context.Context, org string, usernames []string) (*Response, error) {
@@ -108,7 +108,7 @@ func (s *CodespacesService) RemoveUsersFromOrgAccess(ctx context.Context, org st
 
 // ListUserCodespacesInOrg lists the codespaces that a member of an organization has for repositories in that organization.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/organizations#list-codespaces-for-a-user-in-organization
+// GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#list-codespaces-for-a-user-in-organization
 //
 //meta:operation GET /orgs/{org}/members/{username}/codespaces
 func (s *CodespacesService) ListUserCodespacesInOrg(ctx context.Context, org, username string, opts *ListOptions) (*ListCodespaces, *Response, error) {
@@ -134,7 +134,7 @@ func (s *CodespacesService) ListUserCodespacesInOrg(ctx context.Context, org, us
 
 // DeleteUserCodespaceInOrg deletes a user's codespace from the organization.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/organizations#delete-a-codespace-from-the-organization
+// GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#delete-a-codespace-from-the-organization
 //
 //meta:operation DELETE /orgs/{org}/members/{username}/codespaces/{codespace_name}
 func (s *CodespacesService) DeleteUserCodespaceInOrg(ctx context.Context, org, username, codespaceName string) (*Response, error) {
@@ -154,7 +154,7 @@ func (s *CodespacesService) DeleteUserCodespaceInOrg(ctx context.Context, org, u
 
 // StopUserCodespaceInOrg stops a codespace for an organization user.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/organizations#stop-a-codespace-for-an-organization-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#stop-a-codespace-for-an-organization-user
 //
 //meta:operation POST /orgs/{org}/members/{username}/codespaces/{codespace_name}/stop
 func (s *CodespacesService) StopUserCodespaceInOrg(ctx context.Context, org, username, codespaceName string) (*Response, error) {

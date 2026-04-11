@@ -40,7 +40,7 @@ type markdownRenderRequest struct {
 
 // Render renders an arbitrary Render document.
 //
-// GitHub API docs: https://docs.github.com/rest/markdown/markdown#render-a-markdown-document
+// GitHub API docs: https://docs.github.com/rest/markdown/markdown?apiVersion=2022-11-28#render-a-markdown-document
 //
 //meta:operation POST /markdown
 func (s *MarkdownService) Render(ctx context.Context, text string, opts *MarkdownOptions) (string, *Response, error) {

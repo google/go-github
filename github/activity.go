@@ -10,7 +10,7 @@ import "context"
 // ActivityService handles communication with the activity related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/
+// GitHub API docs: https://docs.github.com/rest/activity?apiVersion=2022-11-28
 type ActivityService service
 
 // FeedLink represents a link to a related resource.
@@ -58,7 +58,7 @@ type FeedLinks struct {
 // Note: Private feeds are only returned when authenticating via Basic Auth
 // since current feed URIs use the older, non revocable auth tokens.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/feeds#get-feeds
+// GitHub API docs: https://docs.github.com/rest/activity/feeds?apiVersion=2022-11-28#get-feeds
 //
 //meta:operation GET /feeds
 func (s *ActivityService) ListFeeds(ctx context.Context) (*Feeds, *Response, error) {

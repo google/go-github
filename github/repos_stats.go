@@ -45,7 +45,7 @@ func (w WeeklyStats) String() string {
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API docs: https://docs.github.com/rest/metrics/statistics#get-all-contributor-commit-activity
+// GitHub API docs: https://docs.github.com/rest/metrics/statistics?apiVersion=2022-11-28#get-all-contributor-commit-activity
 //
 //meta:operation GET /repos/{owner}/{repo}/stats/contributors
 func (s *RepositoriesService) ListContributorsStats(ctx context.Context, owner, repo string) ([]*ContributorStats, *Response, error) {
@@ -86,7 +86,7 @@ func (w WeeklyCommitActivity) String() string {
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API docs: https://docs.github.com/rest/metrics/statistics#get-the-last-year-of-commit-activity
+// GitHub API docs: https://docs.github.com/rest/metrics/statistics?apiVersion=2022-11-28#get-the-last-year-of-commit-activity
 //
 //meta:operation GET /repos/{owner}/{repo}/stats/commit_activity
 func (s *RepositoriesService) ListCommitActivity(ctx context.Context, owner, repo string) ([]*WeeklyCommitActivity, *Response, error) {
@@ -115,7 +115,7 @@ func (s *RepositoriesService) ListCommitActivity(ctx context.Context, owner, rep
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API docs: https://docs.github.com/rest/metrics/statistics#get-the-weekly-commit-activity
+// GitHub API docs: https://docs.github.com/rest/metrics/statistics?apiVersion=2022-11-28#get-the-weekly-commit-activity
 //
 //meta:operation GET /repos/{owner}/{repo}/stats/code_frequency
 func (s *RepositoriesService) ListCodeFrequency(ctx context.Context, owner, repo string) ([]*WeeklyStats, *Response, error) {
@@ -173,7 +173,7 @@ func (r RepositoryParticipation) String() string {
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API docs: https://docs.github.com/rest/metrics/statistics#get-the-weekly-commit-count
+// GitHub API docs: https://docs.github.com/rest/metrics/statistics?apiVersion=2022-11-28#get-the-weekly-commit-count
 //
 //meta:operation GET /repos/{owner}/{repo}/stats/participation
 func (s *RepositoriesService) ListParticipation(ctx context.Context, owner, repo string) (*RepositoryParticipation, *Response, error) {
@@ -208,7 +208,7 @@ type PunchCard struct {
 // it is now computing the requested statistics. A follow up request, after a
 // delay of a second or so, should result in a successful request.
 //
-// GitHub API docs: https://docs.github.com/rest/metrics/statistics#get-the-hourly-commit-count-for-each-day
+// GitHub API docs: https://docs.github.com/rest/metrics/statistics?apiVersion=2022-11-28#get-the-hourly-commit-count-for-each-day
 //
 //meta:operation GET /repos/{owner}/{repo}/stats/punch_card
 func (s *RepositoriesService) ListPunchCard(ctx context.Context, owner, repo string) ([]*PunchCard, *Response, error) {

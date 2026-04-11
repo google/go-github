@@ -65,7 +65,7 @@ func (s *ActionsService) getPublicKey(ctx context.Context, url string) (*PublicK
 
 // GetRepoPublicKey gets a public key that should be used for secret encryption.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#get-a-repository-public-key
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#get-a-repository-public-key
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/secrets/public-key
 func (s *ActionsService) GetRepoPublicKey(ctx context.Context, owner, repo string) (*PublicKey, *Response, error) {
@@ -75,7 +75,7 @@ func (s *ActionsService) GetRepoPublicKey(ctx context.Context, owner, repo strin
 
 // GetOrgPublicKey gets a public key that should be used for secret encryption.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#get-an-organization-public-key
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#get-an-organization-public-key
 //
 //meta:operation GET /orgs/{org}/actions/secrets/public-key
 func (s *ActionsService) GetOrgPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error) {
@@ -131,7 +131,7 @@ func (s *ActionsService) listSecrets(ctx context.Context, url string, opts *List
 // ListRepoSecrets lists all secrets available in a repository
 // without revealing their encrypted values.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#list-repository-secrets
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#list-repository-secrets
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/secrets
 func (s *ActionsService) ListRepoSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
@@ -142,7 +142,7 @@ func (s *ActionsService) ListRepoSecrets(ctx context.Context, owner, repo string
 // ListRepoOrgSecrets lists all organization secrets available in a repository
 // without revealing their encrypted values.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#list-repository-organization-secrets
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#list-repository-organization-secrets
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/organization-secrets
 func (s *ActionsService) ListRepoOrgSecrets(ctx context.Context, owner, repo string, opts *ListOptions) (*Secrets, *Response, error) {
@@ -153,7 +153,7 @@ func (s *ActionsService) ListRepoOrgSecrets(ctx context.Context, owner, repo str
 // ListOrgSecrets lists all secrets available in an organization
 // without revealing their encrypted values.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#list-organization-secrets
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#list-organization-secrets
 //
 //meta:operation GET /orgs/{org}/actions/secrets
 func (s *ActionsService) ListOrgSecrets(ctx context.Context, org string, opts *ListOptions) (*Secrets, *Response, error) {
@@ -188,7 +188,7 @@ func (s *ActionsService) getSecret(ctx context.Context, url string) (*Secret, *R
 
 // GetRepoSecret gets a single repository secret without revealing its encrypted value.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#get-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#get-a-repository-secret
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/secrets/{secret_name}
 func (s *ActionsService) GetRepoSecret(ctx context.Context, owner, repo, name string) (*Secret, *Response, error) {
@@ -198,7 +198,7 @@ func (s *ActionsService) GetRepoSecret(ctx context.Context, owner, repo, name st
 
 // GetOrgSecret gets a single organization secret without revealing its encrypted value.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#get-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#get-an-organization-secret
 //
 //meta:operation GET /orgs/{org}/actions/secrets/{secret_name}
 func (s *ActionsService) GetOrgSecret(ctx context.Context, org, name string) (*Secret, *Response, error) {
@@ -243,7 +243,7 @@ func (s *ActionsService) putSecret(ctx context.Context, url string, eSecret *Enc
 
 // CreateOrUpdateRepoSecret creates or updates a repository secret with an encrypted value.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#create-or-update-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#create-or-update-a-repository-secret
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
@@ -257,7 +257,7 @@ func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, re
 
 // CreateOrUpdateOrgSecret creates or updates an organization secret with an encrypted value.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#create-or-update-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#create-or-update-an-organization-secret
 //
 //meta:operation PUT /orgs/{org}/actions/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error) {
@@ -294,7 +294,7 @@ func (s *ActionsService) deleteSecret(ctx context.Context, url string) (*Respons
 
 // DeleteRepoSecret deletes a secret in a repository using the secret name.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#delete-a-repository-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#delete-a-repository-secret
 //
 //meta:operation DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}
 func (s *ActionsService) DeleteRepoSecret(ctx context.Context, owner, repo, name string) (*Response, error) {
@@ -304,7 +304,7 @@ func (s *ActionsService) DeleteRepoSecret(ctx context.Context, owner, repo, name
 
 // DeleteOrgSecret deletes a secret in an organization using the secret name.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#delete-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#delete-an-organization-secret
 //
 //meta:operation DELETE /orgs/{org}/actions/secrets/{secret_name}
 func (s *ActionsService) DeleteOrgSecret(ctx context.Context, org, name string) (*Response, error) {
@@ -350,7 +350,7 @@ func (s *ActionsService) listSelectedReposForSecret(ctx context.Context, url str
 
 // ListSelectedReposForOrgSecret lists all repositories that have access to a secret.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#list-selected-repositories-for-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#list-selected-repositories-for-an-organization-secret
 //
 //meta:operation GET /orgs/{org}/actions/secrets/{secret_name}/repositories
 func (s *ActionsService) ListSelectedReposForOrgSecret(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
@@ -373,7 +373,7 @@ func (s *ActionsService) setSelectedReposForSecret(ctx context.Context, url stri
 
 // SetSelectedReposForOrgSecret sets the repositories that have access to a secret.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#set-selected-repositories-for-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#set-selected-repositories-for-an-organization-secret
 //
 //meta:operation PUT /orgs/{org}/actions/secrets/{secret_name}/repositories
 func (s *ActionsService) SetSelectedReposForOrgSecret(ctx context.Context, org, name string, ids SelectedRepoIDs) (*Response, error) {
@@ -392,7 +392,7 @@ func (s *ActionsService) addSelectedRepoToSecret(ctx context.Context, url string
 
 // AddSelectedRepoToOrgSecret adds a repository to an organization secret.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#add-selected-repository-to-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#add-selected-repository-to-an-organization-secret
 //
 //meta:operation PUT /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}
 func (s *ActionsService) AddSelectedRepoToOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {
@@ -415,7 +415,7 @@ func (s *ActionsService) removeSelectedRepoFromSecret(ctx context.Context, url s
 
 // RemoveSelectedRepoFromOrgSecret removes a repository from an organization secret.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/secrets#remove-selected-repository-from-an-organization-secret
+// GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#remove-selected-repository-from-an-organization-secret
 //
 //meta:operation DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}
 func (s *ActionsService) RemoveSelectedRepoFromOrgSecret(ctx context.Context, org, name string, repo *Repository) (*Response, error) {

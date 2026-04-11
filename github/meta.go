@@ -114,7 +114,7 @@ type APIMetaArtifactAttestations struct {
 // this endpoint on your organization’s GitHub Enterprise installation, this
 // endpoint provides information about that installation.
 //
-// GitHub API docs: https://docs.github.com/rest/meta/meta#get-github-meta-information
+// GitHub API docs: https://docs.github.com/rest/meta/meta?apiVersion=2022-11-28#get-github-meta-information
 //
 //meta:operation GET /meta
 func (s *MetaService) Get(ctx context.Context) (*APIMeta, *Response, error) {
@@ -142,7 +142,7 @@ func (c *Client) APIMeta(ctx context.Context) (*APIMeta, *Response, error) {
 // Octocat returns an ASCII art octocat with the specified message in a speech
 // bubble. If message is empty, a random zen phrase is used.
 //
-// GitHub API docs: https://docs.github.com/rest/meta/meta#get-octocat
+// GitHub API docs: https://docs.github.com/rest/meta/meta?apiVersion=2022-11-28#get-octocat
 //
 //meta:operation GET /octocat
 func (s *MetaService) Octocat(ctx context.Context, message string) (string, *Response, error) {
@@ -177,7 +177,7 @@ func (c *Client) Octocat(ctx context.Context, message string) (string, *Response
 //
 // See also: https://warpspire.com/posts/taste/
 //
-// GitHub API docs: https://docs.github.com/rest/meta/meta#get-the-zen-of-github
+// GitHub API docs: https://docs.github.com/rest/meta/meta?apiVersion=2022-11-28#get-the-zen-of-github
 //
 //meta:operation GET /zen
 func (s *MetaService) Zen(ctx context.Context) (string, *Response, error) {

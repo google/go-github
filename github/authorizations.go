@@ -50,7 +50,7 @@ const (
 // This service requires HTTP Basic Authentication; it cannot be accessed using
 // an OAuth token.
 //
-// GitHub API docs: https://docs.github.com/rest/oauth-authorizations
+// GitHub API docs: https://docs.github.com/rest/oauth-authorizations?apiVersion=2022-11-28
 type AuthorizationsService service
 
 // Authorization represents an individual GitHub authorization.
@@ -121,7 +121,7 @@ func (a AuthorizationRequest) String() string {
 // fields. That is, you may provide only one of "Scopes", or "AddScopes", or
 // "RemoveScopes".
 //
-// GitHub API docs: https://docs.github.com/rest/oauth-authorizations#update-an-existing-authorization
+// GitHub API docs: https://docs.github.com/rest/oauth-authorizations?apiVersion=2022-11-28#update-an-existing-authorization
 type AuthorizationUpdateRequest struct {
 	Scopes       []string `json:"scopes,omitempty"`
 	AddScopes    []string `json:"add_scopes,omitempty"`
@@ -143,7 +143,7 @@ func (a AuthorizationUpdateRequest) String() string {
 //
 // The returned Authorization.User field will be populated.
 //
-// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications#check-a-token
+// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications?apiVersion=2022-11-28#check-a-token
 //
 //meta:operation POST /applications/{client_id}/token
 func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error) {
@@ -178,7 +178,7 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken
 //
 // The returned Authorization.User field will be populated.
 //
-// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications#reset-a-token
+// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications?apiVersion=2022-11-28#reset-a-token
 //
 //meta:operation PATCH /applications/{client_id}/token
 func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken string) (*Authorization, *Response, error) {
@@ -209,7 +209,7 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken
 // username is the OAuth application clientID, and the password is its
 // clientSecret. Invalid tokens will return a 404 Not Found.
 //
-// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications#delete-an-app-token
+// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications?apiVersion=2022-11-28#delete-an-app-token
 //
 //meta:operation DELETE /applications/{client_id}/token
 func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToken string) (*Response, error) {
@@ -232,7 +232,7 @@ func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToke
 // grant will also delete all OAuth tokens associated with the application for
 // the user.
 //
-// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications#delete-an-app-authorization
+// GitHub API docs: https://docs.github.com/rest/apps/oauth-applications?apiVersion=2022-11-28#delete-an-app-authorization
 //
 //meta:operation DELETE /applications/{client_id}/grant
 func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, accessToken string) (*Response, error) {

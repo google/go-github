@@ -22,7 +22,7 @@ var ErrBranchNotProtected = errors.New("branch is not protected")
 // RepositoriesService handles communication with the repository related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/
+// GitHub API docs: https://docs.github.com/rest/repos?apiVersion=2022-11-28
 type RepositoriesService service
 
 // Repository represents a GitHub repository.
@@ -142,7 +142,7 @@ type Repository struct {
 	TeamsURL         *string `json:"teams_url,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
-	// See: search.go and https://docs.github.com/rest/search/#text-match-metadata
+	// See: search.go and https://docs.github.com/rest/search?apiVersion=2022-11-28#text-match-metadata
 	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
 	// Visibility is only used for Create and Edit endpoints. The visibility field
@@ -151,7 +151,7 @@ type Repository struct {
 	Visibility *string `json:"visibility,omitempty"`
 
 	// RoleName is only returned by the API 'check team permissions for a repository'.
-	// See: teams.go (IsTeamRepoByID) https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-repository
+	// See: teams.go (IsTeamRepoByID) https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#check-team-permissions-for-a-repository
 	RoleName *string `json:"role_name,omitempty"`
 }
 
@@ -271,9 +271,9 @@ type SecretScanningValidityChecks struct {
 //
 // Deprecated: Use RepositoriesService.ListByUser or RepositoriesService.ListByAuthenticatedUser instead.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repositories-for-a-user
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repositories-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-the-authenticated-user
 //
 //meta:operation GET /user/repos
 //meta:operation GET /users/{username}/repos
@@ -322,7 +322,7 @@ type RepositoryListByUserOptions struct {
 
 // ListByUser lists public repositories for the specified user.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repositories-for-a-user
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user
 //
 //meta:operation GET /users/{username}/repos
 func (s *RepositoriesService) ListByUser(ctx context.Context, user string, opts *RepositoryListByUserOptions) ([]*Repository, *Response, error) {
@@ -385,7 +385,7 @@ type RepositoryListByAuthenticatedUserOptions struct {
 
 // ListByAuthenticatedUser lists repositories for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repositories-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-the-authenticated-user
 //
 //meta:operation GET /user/repos
 func (s *RepositoriesService) ListByAuthenticatedUser(ctx context.Context, opts *RepositoryListByAuthenticatedUserOptions) ([]*Repository, *Response, error) {
@@ -429,7 +429,7 @@ type RepositoryListByOrgOptions struct {
 
 // ListByOrg lists the repositories for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-organization-repositories
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-organization-repositories
 //
 //meta:operation GET /orgs/{org}/repos
 func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opts *RepositoryListByOrgOptions) ([]*Repository, *Response, error) {
@@ -465,7 +465,7 @@ type RepositoryListAllOptions struct {
 
 // ListAll lists all GitHub repositories in the order that they were created.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-public-repositories
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-public-repositories
 //
 //meta:operation GET /repositories
 func (s *RepositoriesService) ListAll(ctx context.Context, opts *RepositoryListAllOptions) ([]*Repository, *Response, error) {
@@ -540,9 +540,9 @@ type createRepoRequest struct {
 // changes propagate throughout its servers. You may set up a loop with
 // exponential back-off to verify repository's creation.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#create-a-repository-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-for-the-authenticated-user
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#create-an-organization-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#create-an-organization-repository
 //
 //meta:operation POST /orgs/{org}/repos
 //meta:operation POST /user/repos
@@ -617,7 +617,7 @@ type TemplateRepoRequest struct {
 
 // CreateFromTemplate generates a repository from a template.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#create-a-repository-using-a-template
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-using-a-template
 //
 //meta:operation POST /repos/{template_owner}/{template_repo}/generate
 func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOwner, templateRepo string, templateRepoReq *TemplateRepoRequest) (*Repository, *Response, error) {
@@ -640,7 +640,7 @@ func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOw
 
 // Get fetches a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#get-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#get-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
@@ -650,7 +650,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 		return nil, nil, err
 	}
 
-	// https://docs.github.com/rest/licenses/#get-a-repositorys-license
+	// https://docs.github.com/rest/licenses?apiVersion=2022-11-28#get-a-repositorys-license
 	acceptHeaders := []string{
 		mediaTypeCodesOfConductPreview,
 		mediaTypeTopicsPreview,
@@ -669,10 +669,10 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 }
 
 // GetCodeOfConduct gets the contents of a repository's code of conduct.
-// Note that https://docs.github.com/rest/codes-of-conduct#about-the-codes-of-conduct-api
+// Note that https://docs.github.com/rest/codes-of-conduct?apiVersion=2022-11-28#about-the-codes-of-conduct-api
 // says to use the GET /repos/{owner}/{repo} endpoint.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#get-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#get-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}
 func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo string) (*CodeOfConduct, *Response, error) {
@@ -716,7 +716,7 @@ func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repositor
 
 // Edit updates a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#update-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#update-a-repository
 //
 //meta:operation PATCH /repos/{owner}/{repo}
 func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repository *Repository) (*Repository, *Response, error) {
@@ -739,7 +739,7 @@ func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repo
 
 // Delete a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#delete-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#delete-a-repository
 //
 //meta:operation DELETE /repos/{owner}/{repo}
 func (s *RepositoriesService) Delete(ctx context.Context, owner, repo string) (*Response, error) {
@@ -788,7 +788,7 @@ type ListContributorsOptions struct {
 
 // GetVulnerabilityAlerts checks if vulnerability alerts are enabled for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#check-if-vulnerability-alerts-are-enabled-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#check-if-vulnerability-alerts-are-enabled-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/vulnerability-alerts
 func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner, repository string) (bool, *Response, error) {
@@ -808,7 +808,7 @@ func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner,
 
 // EnableVulnerabilityAlerts enables vulnerability alerts and the dependency graph for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-vulnerability-alerts
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#enable-vulnerability-alerts
 //
 //meta:operation PUT /repos/{owner}/{repo}/vulnerability-alerts
 func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, owner, repository string) (*Response, error) {
@@ -826,7 +826,7 @@ func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, own
 
 // DisableVulnerabilityAlerts disables vulnerability alerts and the dependency graph for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-vulnerability-alerts
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#disable-vulnerability-alerts
 //
 //meta:operation DELETE /repos/{owner}/{repo}/vulnerability-alerts
 func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, owner, repository string) (*Response, error) {
@@ -844,7 +844,7 @@ func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, ow
 
 // GetAutomatedSecurityFixes checks if the automated security fixes for a repository are enabled.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#check-if-dependabot-security-updates-are-enabled-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#check-if-dependabot-security-updates-are-enabled-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/automated-security-fixes
 func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*AutomatedSecurityFixes, *Response, error) {
@@ -865,7 +865,7 @@ func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, own
 
 // EnableAutomatedSecurityFixes enables the automated security fixes for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-dependabot-security-updates
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#enable-dependabot-security-updates
 //
 //meta:operation PUT /repos/{owner}/{repo}/automated-security-fixes
 func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error) {
@@ -881,7 +881,7 @@ func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, 
 
 // DisableAutomatedSecurityFixes disables vulnerability alerts and the dependency graph for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-dependabot-security-updates
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#disable-dependabot-security-updates
 //
 //meta:operation DELETE /repos/{owner}/{repo}/automated-security-fixes
 func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error) {
@@ -897,7 +897,7 @@ func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context,
 
 // ListContributors lists contributors for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-contributors
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-repository-contributors
 //
 //meta:operation GET /repos/{owner}/{repo}/contributors
 func (s *RepositoriesService) ListContributors(ctx context.Context, owner, repository string, opts *ListContributorsOptions) ([]*Contributor, *Response, error) {
@@ -930,7 +930,7 @@ func (s *RepositoriesService) ListContributors(ctx context.Context, owner, repos
 //	  "Python": 7769
 //	}
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-languages
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-repository-languages
 //
 //meta:operation GET /repos/{owner}/{repo}/languages
 func (s *RepositoriesService) ListLanguages(ctx context.Context, owner, repo string) (map[string]int, *Response, error) {
@@ -951,7 +951,7 @@ func (s *RepositoriesService) ListLanguages(ctx context.Context, owner, repo str
 
 // ListTeams lists the teams for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-teams
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-repository-teams
 //
 //meta:operation GET /repos/{owner}/{repo}/teams
 func (s *RepositoriesService) ListTeams(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Team, *Response, error) {
@@ -985,7 +985,7 @@ type RepositoryTag struct {
 
 // ListTags lists tags for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-tags
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-repository-tags
 //
 //meta:operation GET /repos/{owner}/{repo}/tags
 func (s *RepositoriesService) ListTags(ctx context.Context, owner, repo string, opts *ListOptions) ([]*RepositoryTag, *Response, error) {
@@ -1419,7 +1419,7 @@ type AutomatedSecurityFixes struct {
 
 // ListBranches lists branches for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branches#list-branches
+// GitHub API docs: https://docs.github.com/rest/branches/branches?apiVersion=2022-11-28#list-branches
 //
 //meta:operation GET /repos/{owner}/{repo}/branches
 func (s *RepositoriesService) ListBranches(ctx context.Context, owner, repo string, opts *BranchListOptions) ([]*Branch, *Response, error) {
@@ -1447,7 +1447,7 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner, repo stri
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branches#get-a-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branches?apiVersion=2022-11-28#get-a-branch
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}
 func (s *RepositoriesService) GetBranch(ctx context.Context, owner, repo, branch string, maxRedirects int) (*Branch, *Response, error) {
@@ -1480,7 +1480,7 @@ type renameBranchRequest struct {
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branches#rename-a-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branches?apiVersion=2022-11-28#rename-a-branch
 //
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/rename
 func (s *RepositoriesService) RenameBranch(ctx context.Context, owner, repo, branch, newName string) (*Branch, *Response, error) {
@@ -1504,7 +1504,7 @@ func (s *RepositoriesService) RenameBranch(ctx context.Context, owner, repo, bra
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#get-branch-protection
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection
 func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, repo, branch string) (*Protection, *Response, error) {
@@ -1532,7 +1532,7 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-status-checks-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#get-status-checks-protection
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks
 func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*RequiredStatusChecks, *Response, error) {
@@ -1558,7 +1558,7 @@ func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-all-status-check-contexts
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#get-all-status-check-contexts
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts
 func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Context, owner, repo, branch string) (contexts []string, resp *Response, err error) {
@@ -1583,7 +1583,7 @@ func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Conte
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#update-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
 //
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection
 func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string, preq *ProtectionRequest) (*Protection, *Response, error) {
@@ -1608,7 +1608,7 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#delete-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#delete-branch-protection
 //
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection
 func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner, repo, branch string) (*Response, error) {
@@ -1625,7 +1625,7 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-commit-signature-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#get-commit-signature-protection
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures
 func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
@@ -1654,7 +1654,7 @@ func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, 
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#create-commit-signature-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#create-commit-signature-protection
 //
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures
 func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
@@ -1679,7 +1679,7 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#delete-commit-signature-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#delete-commit-signature-protection
 //
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures
 func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*Response, error) {
@@ -1698,7 +1698,7 @@ func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Co
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#update-status-check-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#update-status-check-protection
 //
 //meta:operation PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks
 func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, owner, repo, branch string, sreq *RequiredStatusChecksRequest) (*RequiredStatusChecks, *Response, error) {
@@ -1721,7 +1721,7 @@ func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, ow
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#remove-status-check-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#remove-status-check-protection
 //
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks
 func (s *RepositoriesService) RemoveRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*Response, error) {
@@ -1736,7 +1736,7 @@ func (s *RepositoriesService) RemoveRequiredStatusChecks(ctx context.Context, ow
 
 // License gets the contents of a repository's license if one is detected.
 //
-// GitHub API docs: https://docs.github.com/rest/licenses/licenses#get-the-license-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/licenses/licenses?apiVersion=2022-11-28#get-the-license-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/license
 func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (*RepositoryLicense, *Response, error) {
@@ -1759,7 +1759,7 @@ func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-pull-request-review-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#get-pull-request-review-protection
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews
 func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
@@ -1785,7 +1785,7 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#update-pull-request-review-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#update-pull-request-review-protection
 //
 //meta:operation PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews
 func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, patch *PullRequestReviewsEnforcementUpdate) (*PullRequestReviewsEnforcement, *Response, error) {
@@ -1811,7 +1811,7 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#update-pull-request-review-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#update-pull-request-review-protection
 //
 //meta:operation PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews
 func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
@@ -1841,7 +1841,7 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#delete-pull-request-review-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#delete-pull-request-review-protection
 //
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews
 func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
@@ -1858,7 +1858,7 @@ func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Con
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-admin-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#get-admin-branch-protection
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins
 func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
@@ -1882,7 +1882,7 @@ func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, re
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#set-admin-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#set-admin-branch-protection
 //
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins
 func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
@@ -1905,7 +1905,7 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#delete-admin-branch-protection
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#delete-admin-branch-protection
 //
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins
 func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
@@ -1925,7 +1925,7 @@ type repositoryTopics struct {
 
 // ListAllTopics lists topics for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#get-all-repository-topics
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#get-all-repository-topics
 //
 //meta:operation GET /repos/{owner}/{repo}/topics
 func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo string, opts *ListOptions) ([]string, *Response, error) {
@@ -1953,7 +1953,7 @@ func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo str
 
 // ReplaceAllTopics replaces all repository topics.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#replace-all-repository-topics
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#replace-all-repository-topics
 //
 //meta:operation PUT /repos/{owner}/{repo}/topics
 func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo string, topics []string) ([]string, *Response, error) {
@@ -1987,7 +1987,7 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 //
 // Deprecated: Please use ListAppRestrictions instead.
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-apps-with-access-to-the-protected-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#get-apps-with-access-to-the-protected-branch
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
 func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error) {
@@ -2011,7 +2011,7 @@ func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch 
 //
 // Note: This is a wrapper around ListApps so a naming convention with ListUserRestrictions and ListTeamRestrictions is preserved.
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-apps-with-access-to-the-protected-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#get-apps-with-access-to-the-protected-branch
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
 func (s *RepositoriesService) ListAppRestrictions(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error) {
@@ -2026,7 +2026,7 @@ func (s *RepositoriesService) ListAppRestrictions(ctx context.Context, owner, re
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#set-app-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#set-app-access-restrictions
 //
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
 func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
@@ -2052,7 +2052,7 @@ func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner,
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#add-app-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#add-app-access-restrictions
 //
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
 func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
@@ -2078,7 +2078,7 @@ func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, rep
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#remove-app-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#remove-app-access-restrictions
 //
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
 func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
@@ -2102,7 +2102,7 @@ func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, 
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-teams-with-access-to-the-protected-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#get-teams-with-access-to-the-protected-branch
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams
 func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, repo, branch string) ([]*Team, *Response, error) {
@@ -2129,7 +2129,7 @@ func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, r
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#set-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#set-team-access-restrictions
 //
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams
 func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
@@ -2155,7 +2155,7 @@ func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#add-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#add-team-access-restrictions
 //
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams
 func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
@@ -2181,7 +2181,7 @@ func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, re
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#remove-team-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#remove-team-access-restrictions
 //
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams
 func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
@@ -2205,7 +2205,7 @@ func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner,
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#get-users-with-access-to-the-protected-branch
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#get-users-with-access-to-the-protected-branch
 //
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users
 func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, repo, branch string) ([]*User, *Response, error) {
@@ -2232,7 +2232,7 @@ func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, r
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#set-user-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#set-user-access-restrictions
 //
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users
 func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
@@ -2258,7 +2258,7 @@ func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#add-user-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#add-user-access-restrictions
 //
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users
 func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
@@ -2284,7 +2284,7 @@ func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, re
 //
 // Note: the branch name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
-// GitHub API docs: https://docs.github.com/rest/branches/branch-protection#remove-user-access-restrictions
+// GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#remove-user-access-restrictions
 //
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users
 func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
@@ -2318,7 +2318,7 @@ type TransferRequest struct {
 // A follow up request, after a delay of a second or so, should result
 // in a successful request.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#transfer-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#transfer-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/transfer
 func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, transfer TransferRequest) (*Repository, *Response, error) {
@@ -2349,7 +2349,7 @@ type DispatchRequestOptions struct {
 
 // Dispatch triggers a repository_dispatch event in a GitHub Actions workflow.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#create-a-repository-dispatch-event
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event
 //
 //meta:operation POST /repos/{owner}/{repo}/dispatches
 func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, opts DispatchRequestOptions) (*Repository, *Response, error) {
@@ -2379,7 +2379,7 @@ func isBranchNotProtected(err error) bool {
 // EnablePrivateReporting enables private reporting of vulnerabilities for a
 // repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-private-vulnerability-reporting-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#enable-private-vulnerability-reporting-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/private-vulnerability-reporting
 func (s *RepositoriesService) EnablePrivateReporting(ctx context.Context, owner, repo string) (*Response, error) {
@@ -2401,7 +2401,7 @@ func (s *RepositoriesService) EnablePrivateReporting(ctx context.Context, owner,
 // DisablePrivateReporting disables private reporting of vulnerabilities for a
 // repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-private-vulnerability-reporting-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#disable-private-vulnerability-reporting-for-a-repository
 //
 //meta:operation DELETE /repos/{owner}/{repo}/private-vulnerability-reporting
 func (s *RepositoriesService) DisablePrivateReporting(ctx context.Context, owner, repo string) (*Response, error) {
@@ -2428,7 +2428,7 @@ type checkPrivateReporting struct {
 // IsPrivateReportingEnabled checks if private vulnerability reporting is enabled
 // for the repository and returns a boolean indicating the status.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#check-if-private-vulnerability-reporting-is-enabled-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#check-if-private-vulnerability-reporting-is-enabled-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/private-vulnerability-reporting
 func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, owner, repo string) (bool, *Response, error) {
@@ -2516,7 +2516,7 @@ type RepositoryActivity struct {
 
 // ListRepositoryActivities lists the activities for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-repository-activities
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-repository-activities
 //
 //meta:operation GET /repos/{owner}/{repo}/activity
 func (s *RepositoriesService) ListRepositoryActivities(ctx context.Context, owner, repo string, opts *ListRepositoryActivityOptions) ([]*RepositoryActivity, *Response, error) {
