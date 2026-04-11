@@ -27,7 +27,7 @@ func (l Label) String() string {
 
 // ListLabels lists all labels for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#list-labels-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#list-labels-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/labels
 func (s *IssuesService) ListLabels(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Label, *Response, error) {
@@ -53,7 +53,7 @@ func (s *IssuesService) ListLabels(ctx context.Context, owner, repo string, opts
 
 // GetLabel gets a single label.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#get-a-label
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#get-a-label
 //
 //meta:operation GET /repos/{owner}/{repo}/labels/{name}
 func (s *IssuesService) GetLabel(ctx context.Context, owner, repo, name string) (*Label, *Response, error) {
@@ -74,7 +74,7 @@ func (s *IssuesService) GetLabel(ctx context.Context, owner, repo, name string) 
 
 // CreateLabel creates a new label on the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#create-a-label
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#create-a-label
 //
 //meta:operation POST /repos/{owner}/{repo}/labels
 func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, label *Label) (*Label, *Response, error) {
@@ -95,7 +95,7 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, lab
 
 // EditLabel edits a label.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#update-a-label
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#update-a-label
 //
 //meta:operation PATCH /repos/{owner}/{repo}/labels/{name}
 func (s *IssuesService) EditLabel(ctx context.Context, owner, repo, name string, label *Label) (*Label, *Response, error) {
@@ -116,7 +116,7 @@ func (s *IssuesService) EditLabel(ctx context.Context, owner, repo, name string,
 
 // DeleteLabel deletes a label.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#delete-a-label
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#delete-a-label
 //
 //meta:operation DELETE /repos/{owner}/{repo}/labels/{name}
 func (s *IssuesService) DeleteLabel(ctx context.Context, owner, repo, name string) (*Response, error) {
@@ -130,7 +130,7 @@ func (s *IssuesService) DeleteLabel(ctx context.Context, owner, repo, name strin
 
 // ListLabelsByIssue lists all labels for an issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#list-labels-for-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#list-labels-for-an-issue
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Label, *Response, error) {
@@ -156,7 +156,7 @@ func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner, repo strin
 
 // AddLabelsToIssue adds labels to an issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#add-labels-to-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#add-labels-to-an-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner, repo string, number int, labels []string) ([]*Label, *Response, error) {
@@ -177,7 +177,7 @@ func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner, repo string
 
 // RemoveLabelForIssue removes a label for an issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#remove-a-label-from-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#remove-a-label-from-an-issue
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}
 func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner, repo string, number int, label string) (*Response, error) {
@@ -192,7 +192,7 @@ func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner, repo str
 
 // ReplaceLabelsForIssue replaces all labels for an issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#set-labels-for-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#set-labels-for-an-issue
 //
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner, repo string, number int, labels []string) ([]*Label, *Response, error) {
@@ -213,7 +213,7 @@ func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner, repo s
 
 // RemoveLabelsForIssue removes all labels for an issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#remove-all-labels-from-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#remove-all-labels-from-an-issue
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner, repo string, number int) (*Response, error) {
@@ -228,7 +228,7 @@ func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner, repo st
 
 // ListLabelsForMilestone lists labels for every issue in a milestone.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/labels#list-labels-for-issues-in-a-milestone
+// GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#list-labels-for-issues-in-a-milestone
 //
 //meta:operation GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels
 func (s *IssuesService) ListLabelsForMilestone(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*Label, *Response, error) {

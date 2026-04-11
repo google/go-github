@@ -159,7 +159,7 @@ Every exported method and type needs to have code comments that follow
 ```go
 // Get fetches a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#get-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#get-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {

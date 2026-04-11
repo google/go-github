@@ -107,7 +107,7 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 
 // ListEnvironments lists all environments for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/deployments/environments#list-environments
+// GitHub API docs: https://docs.github.com/rest/deployments/environments?apiVersion=2022-11-28#list-environments
 //
 //meta:operation GET /repos/{owner}/{repo}/environments
 func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo string, opts *EnvironmentListOptions) (*EnvResponse, *Response, error) {
@@ -132,7 +132,7 @@ func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo 
 
 // GetEnvironment get a single environment for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/deployments/environments#get-an-environment
+// GitHub API docs: https://docs.github.com/rest/deployments/environments?apiVersion=2022-11-28#get-an-environment
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, name string) (*Environment, *Response, error) {
@@ -189,7 +189,7 @@ type createUpdateEnvironmentNoEnterprise struct {
 
 // CreateUpdateEnvironment create or update a new environment for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/deployments/environments#create-or-update-an-environment
+// GitHub API docs: https://docs.github.com/rest/deployments/environments?apiVersion=2022-11-28#create-or-update-an-environment
 //
 //meta:operation PUT /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
@@ -238,7 +238,7 @@ func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u st
 
 // DeleteEnvironment delete an environment from a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/deployments/environments#delete-an-environment
+// GitHub API docs: https://docs.github.com/rest/deployments/environments?apiVersion=2022-11-28#delete-an-environment
 //
 //meta:operation DELETE /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) DeleteEnvironment(ctx context.Context, owner, repo, name string) (*Response, error) {

@@ -99,9 +99,9 @@ type SecretScanningAlertListOptions struct {
 	// List options can vary on the Enterprise type.
 	// On Enterprise Cloud, Secret Scan alerts support requesting by page number
 	// along with providing a cursor for an "after" param.
-	// See: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning#list-secret-scanning-alerts-for-an-organization
+	// See: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning?apiVersion=2022-11-28#list-secret-scanning-alerts-for-an-organization
 	// Whereas on Enterprise Server, pagination is by index.
-	// See: https://docs.github.com/enterprise-server@3.6/rest/secret-scanning#list-secret-scanning-alerts-for-an-organization
+	// See: https://docs.github.com/enterprise-server@3.6/rest/secret-scanning?apiVersion=2022-11-28#list-secret-scanning-alerts-for-an-organization
 	ListOptions
 }
 
@@ -172,7 +172,7 @@ type SecretScanningScanHistory struct {
 // To use this endpoint, you must be a member of the enterprise, and you must use an access token with the repo scope or
 // security_events scope. Alerts are only returned for organizations in the enterprise for which you are an organization owner or a security manager.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/secret-scanning#list-secret-scanning-alerts-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#list-secret-scanning-alerts-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/secret-scanning/alerts
 func (s *SecretScanningService) ListAlertsForEnterprise(ctx context.Context, enterprise string, opts *SecretScanningAlertListOptions) ([]*SecretScanningAlert, *Response, error) {
@@ -201,7 +201,7 @@ func (s *SecretScanningService) ListAlertsForEnterprise(ctx context.Context, ent
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
 //
-// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#list-secret-scanning-alerts-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#list-secret-scanning-alerts-for-an-organization
 //
 //meta:operation GET /orgs/{org}/secret-scanning/alerts
 func (s *SecretScanningService) ListAlertsForOrg(ctx context.Context, org string, opts *SecretScanningAlertListOptions) ([]*SecretScanningAlert, *Response, error) {
@@ -230,7 +230,7 @@ func (s *SecretScanningService) ListAlertsForOrg(ctx context.Context, org string
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
 //
-// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#list-secret-scanning-alerts-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#list-secret-scanning-alerts-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/secret-scanning/alerts
 func (s *SecretScanningService) ListAlertsForRepo(ctx context.Context, owner, repo string, opts *SecretScanningAlertListOptions) ([]*SecretScanningAlert, *Response, error) {
@@ -259,7 +259,7 @@ func (s *SecretScanningService) ListAlertsForRepo(ctx context.Context, owner, re
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
 //
-// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#get-a-secret-scanning-alert
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#get-a-secret-scanning-alert
 //
 //meta:operation GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}
 func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string, number int64) (*SecretScanningAlert, *Response, error) {
@@ -284,7 +284,7 @@ func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
 //
-// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#update-a-secret-scanning-alert
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#update-a-secret-scanning-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}
 func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo string, number int64, opts *SecretScanningAlertUpdateOptions) (*SecretScanningAlert, *Response, error) {
@@ -309,7 +309,7 @@ func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo str
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
 //
-// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#list-locations-for-a-secret-scanning-alert
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#list-locations-for-a-secret-scanning-alert
 //
 //meta:operation GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}/locations
 func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner, repo string, number int64, opts *ListOptions) ([]*SecretScanningAlertLocation, *Response, error) {
@@ -338,7 +338,7 @@ func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope.
 //
-// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#create-a-push-protection-bypass
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#create-a-push-protection-bypass
 //
 //meta:operation POST /repos/{owner}/{repo}/secret-scanning/push-protection-bypasses
 func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, owner, repo string, request PushProtectionBypassRequest) (*PushProtectionBypass, *Response, error) {
@@ -362,7 +362,7 @@ func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, 
 // To use this endpoint, you must be an administrator for the repository or organization, and you must use an access token with
 // the repo scope or security_events scope and gitHub advanced security or secret scanning must be enabled.
 //
-// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning#get-secret-scanning-scan-history-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#get-secret-scanning-scan-history-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/secret-scanning/scan-history
 func (s *SecretScanningService) GetScanHistory(ctx context.Context, owner, repo string) (*SecretScanningScanHistory, *Response, error) {

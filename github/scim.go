@@ -14,12 +14,12 @@ import (
 // SCIMService provides access to SCIM related functions in the
 // GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/scim
+// GitHub API docs: https://docs.github.com/rest/scim?apiVersion=2022-11-28
 type SCIMService service
 
 // SCIMUserAttributes represents supported SCIM User attributes.
 //
-// GitHub Enterprise Cloud API docs: https://docs.github.com/rest/scim#supported-scim-user-attributes
+// GitHub Enterprise Cloud API docs: https://docs.github.com/rest/scim?apiVersion=2022-11-28#supported-scim-user-attributes
 // GitHub Enterprise Server API docs: https://docs.github.com/en/enterprise-server@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#supported-scim-user-attributes
 type SCIMUserAttributes struct {
 	UserName    string           `json:"userName"`              // Configured by the admin. Could be an email, login, or username. (Required.)
@@ -95,7 +95,7 @@ type ListSCIMProvisionedIdentitiesOptions struct {
 
 // ListSCIMProvisionedIdentities lists SCIM provisioned identities.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim#list-scim-provisioned-identities
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#list-scim-provisioned-identities
 //
 //meta:operation GET /scim/v2/organizations/{org}/Users
 func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org string, opts *ListSCIMProvisionedIdentitiesOptions) (*SCIMProvisionedIdentities, *Response, error) {
@@ -121,7 +121,7 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 
 // ProvisionAndInviteSCIMUser provisions organization membership for a user, and sends an activation email to the email address.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim#provision-and-invite-a-scim-user
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#provision-and-invite-a-scim-user
 //
 //meta:operation POST /scim/v2/organizations/{org}/Users
 func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, opts *SCIMUserAttributes) (*SCIMUserAttributes, *Response, error) {
@@ -143,7 +143,7 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 
 // GetSCIMProvisioningInfoForUser returns SCIM provisioning information for a user.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim#get-scim-provisioning-information-for-a-user
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#get-scim-provisioning-information-for-a-user
 //
 //meta:operation GET /scim/v2/organizations/{org}/Users/{scim_user_id}
 func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*SCIMUserAttributes, *Response, error) {
@@ -164,7 +164,7 @@ func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, s
 
 // UpdateProvisionedOrgMembership updates a provisioned organization membership.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim#update-a-provisioned-organization-membership
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#update-a-provisioned-organization-membership
 //
 //meta:operation PUT /scim/v2/organizations/{org}/Users/{scim_user_id}
 func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, scimUserID string, opts *SCIMUserAttributes) (*Response, error) {
@@ -199,7 +199,7 @@ type UpdateAttributeForSCIMUserOperations struct {
 
 // UpdateAttributeForSCIMUser updates an attribute for an SCIM user.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim#update-an-attribute-for-a-scim-user
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#update-an-attribute-for-a-scim-user
 //
 //meta:operation PATCH /scim/v2/organizations/{org}/Users/{scim_user_id}
 func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimUserID string, opts *UpdateAttributeForSCIMUserOptions) (*Response, error) {
@@ -219,7 +219,7 @@ func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimU
 
 // DeleteSCIMUserFromOrg deletes SCIM user from an organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim#delete-a-scim-user-from-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#delete-a-scim-user-from-an-organization
 //
 //meta:operation DELETE /scim/v2/organizations/{org}/Users/{scim_user_id}
 func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID string) (*Response, error) {

@@ -2291,7 +2291,7 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 // TestCheckResponse_RateLimit_TooManyRequests tests that HTTP 429 with
 // X-RateLimit-Remaining: 0 is correctly detected as RateLimitError.
 // GitHub API can return either 403 or 429 for rate limiting.
-// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
+// See: https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28
 func TestCheckResponse_RateLimit_TooManyRequests(t *testing.T) {
 	t.Parallel()
 	res := &http.Response{
@@ -2327,7 +2327,7 @@ func TestCheckResponse_RateLimit_TooManyRequests(t *testing.T) {
 // TestCheckResponse_AbuseRateLimit_TooManyRequests tests that HTTP 429 with
 // secondary rate limit documentation_url is correctly detected as AbuseRateLimitError.
 // GitHub API can return either 403 or 429 for secondary rate limits.
-// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits
+// See: https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits
 func TestCheckResponse_AbuseRateLimit_TooManyRequests(t *testing.T) {
 	t.Parallel()
 	res := &http.Response{

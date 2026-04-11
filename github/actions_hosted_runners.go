@@ -58,7 +58,7 @@ type HostedRunners struct {
 
 // ListHostedRunners lists all the GitHub-hosted runners for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#list-github-hosted-runners-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#list-github-hosted-runners-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners
 func (s *ActionsService) ListHostedRunners(ctx context.Context, org string, opts *ListOptions) (*HostedRunners, *Response, error) {
@@ -137,7 +137,7 @@ func validateCreateHostedRunnerRequest(request *CreateHostedRunnerRequest) error
 
 // CreateHostedRunner creates a GitHub-hosted runner for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#create-a-github-hosted-runner-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#create-a-github-hosted-runner-for-an-organization
 //
 //meta:operation POST /orgs/{org}/actions/hosted-runners
 func (s *ActionsService) CreateHostedRunner(ctx context.Context, org string, request CreateHostedRunnerRequest) (*HostedRunner, *Response, error) {
@@ -210,7 +210,7 @@ type HostedRunnerImages struct {
 
 // GetHostedRunnerGitHubOwnedImages gets the list of GitHub-owned images available for GitHub-hosted runners for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-github-owned-images-for-github-hosted-runners-in-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#get-github-owned-images-for-github-hosted-runners-in-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/images/github-owned
 func (s *ActionsService) GetHostedRunnerGitHubOwnedImages(ctx context.Context, org string) (*HostedRunnerImages, *Response, error) {
@@ -231,7 +231,7 @@ func (s *ActionsService) GetHostedRunnerGitHubOwnedImages(ctx context.Context, o
 
 // GetHostedRunnerPartnerImages gets the list of partner images available for GitHub-hosted runners for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-partner-images-for-github-hosted-runners-in-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#get-partner-images-for-github-hosted-runners-in-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/images/partner
 func (s *ActionsService) GetHostedRunnerPartnerImages(ctx context.Context, org string) (*HostedRunnerImages, *Response, error) {
@@ -263,7 +263,7 @@ type PublicIPUsage struct {
 
 // GetHostedRunnerLimits gets the GitHub-hosted runners Static public IP Limits for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-limits-on-github-hosted-runners-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#get-limits-on-github-hosted-runners-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/limits
 func (s *ActionsService) GetHostedRunnerLimits(ctx context.Context, org string) (*HostedRunnerPublicIPLimits, *Response, error) {
@@ -290,7 +290,7 @@ type HostedRunnerMachineSpecs struct {
 
 // GetHostedRunnerMachineSpecs gets the list of machine specs available for GitHub-hosted runners for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-github-hosted-runners-machine-specs-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#get-github-hosted-runners-machine-specs-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/machine-sizes
 func (s *ActionsService) GetHostedRunnerMachineSpecs(ctx context.Context, org string) (*HostedRunnerMachineSpecs, *Response, error) {
@@ -317,7 +317,7 @@ type HostedRunnerPlatforms struct {
 
 // GetHostedRunnerPlatforms gets list of platforms available for GitHub-hosted runners for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-platforms-for-github-hosted-runners-in-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#get-platforms-for-github-hosted-runners-in-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/platforms
 func (s *ActionsService) GetHostedRunnerPlatforms(ctx context.Context, org string) (*HostedRunnerPlatforms, *Response, error) {
@@ -338,7 +338,7 @@ func (s *ActionsService) GetHostedRunnerPlatforms(ctx context.Context, org strin
 
 // GetHostedRunner gets a GitHub-hosted runner in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-a-github-hosted-runner-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#get-a-github-hosted-runner-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/{hosted_runner_id}
 func (s *ActionsService) GetHostedRunner(ctx context.Context, org string, runnerID int64) (*HostedRunner, *Response, error) {
@@ -359,7 +359,7 @@ func (s *ActionsService) GetHostedRunner(ctx context.Context, org string, runner
 
 // UpdateHostedRunner updates a GitHub-hosted runner for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#update-a-github-hosted-runner-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#update-a-github-hosted-runner-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/actions/hosted-runners/{hosted_runner_id}
 func (s *ActionsService) UpdateHostedRunner(ctx context.Context, org string, runnerID int64, request UpdateHostedRunnerRequest) (*HostedRunner, *Response, error) {
@@ -380,7 +380,7 @@ func (s *ActionsService) UpdateHostedRunner(ctx context.Context, org string, run
 
 // DeleteHostedRunner deletes GitHub-hosted runner from an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#delete-a-github-hosted-runner-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#delete-a-github-hosted-runner-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/actions/hosted-runners/{hosted_runner_id}
 func (s *ActionsService) DeleteHostedRunner(ctx context.Context, org string, runnerID int64) (*HostedRunner, *Response, error) {
@@ -401,7 +401,7 @@ func (s *ActionsService) DeleteHostedRunner(ctx context.Context, org string, run
 
 // ListHostedRunnerCustomImages lists custom images for GitHub-hosted runners in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#list-custom-images-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#list-custom-images-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/images/custom
 func (s *ActionsService) ListHostedRunnerCustomImages(ctx context.Context, org string) (*HostedRunnerCustomImages, *Response, error) {
@@ -422,7 +422,7 @@ func (s *ActionsService) ListHostedRunnerCustomImages(ctx context.Context, org s
 
 // GetHostedRunnerCustomImage gets a custom image definition for GitHub-hosted runners in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-a-custom-image-definition-for-github-actions-hosted-runners
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#get-a-custom-image-definition-for-github-actions-hosted-runners
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}
 func (s *ActionsService) GetHostedRunnerCustomImage(ctx context.Context, org string, imageDefinitionID int64) (*HostedRunnerCustomImage, *Response, error) {
@@ -443,7 +443,7 @@ func (s *ActionsService) GetHostedRunnerCustomImage(ctx context.Context, org str
 
 // DeleteHostedRunnerCustomImage deletes a custom image from the organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#delete-a-custom-image-from-the-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#delete-a-custom-image-from-the-organization
 //
 //meta:operation DELETE /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}
 func (s *ActionsService) DeleteHostedRunnerCustomImage(ctx context.Context, org string, imageDefinitionID int64) (*Response, error) {
@@ -458,7 +458,7 @@ func (s *ActionsService) DeleteHostedRunnerCustomImage(ctx context.Context, org 
 
 // ListHostedRunnerCustomImageVersions lists image versions of a custom image for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#list-image-versions-of-a-custom-image-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#list-image-versions-of-a-custom-image-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions
 func (s *ActionsService) ListHostedRunnerCustomImageVersions(ctx context.Context, org string, imageDefinitionID int64) (*HostedRunnerCustomImageVersions, *Response, error) {
@@ -479,7 +479,7 @@ func (s *ActionsService) ListHostedRunnerCustomImageVersions(ctx context.Context
 
 // GetHostedRunnerCustomImageVersion gets an image version of a custom image for GitHub-hosted runners in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#get-an-image-version-of-a-custom-image-for-github-actions-hosted-runners
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#get-an-image-version-of-a-custom-image-for-github-actions-hosted-runners
 //
 //meta:operation GET /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}
 func (s *ActionsService) GetHostedRunnerCustomImageVersion(ctx context.Context, org string, imageDefinitionID int64, version string) (*HostedRunnerCustomImageVersion, *Response, error) {
@@ -500,7 +500,7 @@ func (s *ActionsService) GetHostedRunnerCustomImageVersion(ctx context.Context, 
 
 // DeleteHostedRunnerCustomImageVersion deletes an image version of a custom image from the organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners#delete-an-image-version-of-custom-image-from-the-organization
+// GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#delete-an-image-version-of-custom-image-from-the-organization
 //
 //meta:operation DELETE /orgs/{org}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}
 func (s *ActionsService) DeleteHostedRunnerCustomImageVersion(ctx context.Context, org string, imageDefinitionID int64, version string) (*Response, error) {

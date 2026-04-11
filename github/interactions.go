@@ -8,7 +8,7 @@ package github
 // InteractionsService handles communication with the repository and organization related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/interactions/
+// GitHub API docs: https://docs.github.com/rest/interactions?apiVersion=2022-11-28
 type InteractionsService service
 
 // InteractionRestriction represents the interaction restrictions for repository and organization.

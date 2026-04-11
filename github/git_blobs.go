@@ -23,7 +23,7 @@ type Blob struct {
 
 // GetBlob fetches a blob from a repo given a SHA.
 //
-// GitHub API docs: https://docs.github.com/rest/git/blobs#get-a-blob
+// GitHub API docs: https://docs.github.com/rest/git/blobs?apiVersion=2022-11-28#get-a-blob
 //
 //meta:operation GET /repos/{owner}/{repo}/git/blobs/{file_sha}
 func (s *GitService) GetBlob(ctx context.Context, owner, repo, sha string) (*Blob, *Response, error) {
@@ -45,7 +45,7 @@ func (s *GitService) GetBlob(ctx context.Context, owner, repo, sha string) (*Blo
 // GetBlobRaw fetches a blob's contents from a repo.
 // Unlike GetBlob, it returns the raw bytes rather than the base64-encoded data.
 //
-// GitHub API docs: https://docs.github.com/rest/git/blobs#get-a-blob
+// GitHub API docs: https://docs.github.com/rest/git/blobs?apiVersion=2022-11-28#get-a-blob
 //
 //meta:operation GET /repos/{owner}/{repo}/git/blobs/{file_sha}
 func (s *GitService) GetBlobRaw(ctx context.Context, owner, repo, sha string) ([]byte, *Response, error) {
@@ -68,7 +68,7 @@ func (s *GitService) GetBlobRaw(ctx context.Context, owner, repo, sha string) ([
 
 // CreateBlob creates a blob object.
 //
-// GitHub API docs: https://docs.github.com/rest/git/blobs#create-a-blob
+// GitHub API docs: https://docs.github.com/rest/git/blobs?apiVersion=2022-11-28#create-a-blob
 //
 //meta:operation POST /repos/{owner}/{repo}/git/blobs
 func (s *GitService) CreateBlob(ctx context.Context, owner, repo string, blob Blob) (*Blob, *Response, error) {

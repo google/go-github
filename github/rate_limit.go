@@ -26,7 +26,7 @@ type Rate struct {
 
 	// The rate limit resource that the request counted against.
 	// For more information about the different resources, see REST API endpoints for rate limits.
-	// GitHub API docs: https://docs.github.com/en/rest/rate-limit/rate-limit#get-rate-limit-status-for-the-authenticated-user
+	// GitHub API docs: https://docs.github.com/rest/rate-limit/rate-limit?apiVersion=2022-11-28#get-rate-limit-status-for-the-authenticated-user
 	Resource string `json:"resource,omitempty"`
 }
 
@@ -40,20 +40,20 @@ type RateLimits struct {
 	// requests are limited to 60 per hour. Authenticated requests are
 	// limited to 5,000 per hour.
 	//
-	// GitHub API docs: https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting
+	// GitHub API docs: https://docs.github.com/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#rate-limiting
 	Core *Rate `json:"core"`
 
 	// The rate limit for search API requests. Unauthenticated requests
 	// are limited to 10 requests per minutes. Authenticated requests are
 	// limited to 30 per minute.
 	//
-	// GitHub API docs: https://docs.github.com/en/rest/search#rate-limit
+	// GitHub API docs: https://docs.github.com/rest/search?apiVersion=2022-11-28#rate-limit
 	Search *Rate `json:"search"`
 
 	// GitHub API docs: https://docs.github.com/en/graphql/overview/resource-limitations#rate-limit
 	GraphQL *Rate `json:"graphql"`
 
-	// GitHub API dos: https://docs.github.com/en/rest/rate-limit
+	// GitHub API docs: https://docs.github.com/rest/rate-limit?apiVersion=2022-11-28
 	IntegrationManifest *Rate `json:"integration_manifest"`
 
 	SourceImport              *Rate `json:"source_import"`
@@ -72,7 +72,7 @@ func (r RateLimits) String() string {
 
 // Get returns the rate limits for the current client.
 //
-// GitHub API docs: https://docs.github.com/rest/rate-limit/rate-limit#get-rate-limit-status-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/rate-limit/rate-limit?apiVersion=2022-11-28#get-rate-limit-status-for-the-authenticated-user
 //
 //meta:operation GET /rate_limit
 func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, error) {

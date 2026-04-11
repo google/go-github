@@ -15,8 +15,8 @@ import (
 // HookDelivery represents the data that is received from GitHub's Webhook Delivery API
 //
 // GitHub API docs:
-// - https://docs.github.com/rest/webhooks/repo-deliveries#list-deliveries-for-a-repository-webhook
-// - https://docs.github.com/rest/webhooks/repo-deliveries#get-a-delivery-for-a-repository-webhook
+// - https://docs.github.com/rest/webhooks/repo-deliveries?apiVersion=2022-11-28#list-deliveries-for-a-repository-webhook
+// - https://docs.github.com/rest/webhooks/repo-deliveries?apiVersion=2022-11-28#get-a-delivery-for-a-repository-webhook
 type HookDelivery struct {
 	ID             *int64     `json:"id,omitempty"`
 	GUID           *string    `json:"guid,omitempty"`
@@ -84,7 +84,7 @@ func (r HookResponse) String() string {
 
 // ListHookDeliveries lists webhook deliveries for a webhook configured in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/webhooks#list-deliveries-for-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks?apiVersion=2022-11-28#list-deliveries-for-a-repository-webhook
 //
 //meta:operation GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries
 func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, repo string, id int64, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
@@ -110,7 +110,7 @@ func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, rep
 
 // GetHookDelivery returns a delivery for a webhook configured in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/webhooks#get-a-delivery-for-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks?apiVersion=2022-11-28#get-a-delivery-for-a-repository-webhook
 //
 //meta:operation GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}
 func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
@@ -131,7 +131,7 @@ func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo s
 
 // RedeliverHookDelivery redelivers a delivery for a webhook configured in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/webhooks#redeliver-a-delivery-for-a-repository-webhook
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks?apiVersion=2022-11-28#redeliver-a-delivery-for-a-repository-webhook
 //
 //meta:operation POST /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts
 func (s *RepositoriesService) RedeliverHookDelivery(ctx context.Context, owner, repo string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {

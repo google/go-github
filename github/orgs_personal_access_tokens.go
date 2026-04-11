@@ -16,7 +16,7 @@ import (
 
 // PersonalAccessToken represents the minimal representation of an organization programmatic access grant.
 //
-// GitHub API docs: https://docs.github.com/en/rest/orgs/personal-access-tokens?apiVersion=2022-11-28
+// GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens?apiVersion=2022-11-28
 type PersonalAccessToken struct {
 	// "Unique identifier of the fine-grained personal access token.
 	// The `pat_id` used to get details about an approved fine-grained personal access token.
@@ -93,7 +93,7 @@ type ListFineGrainedPATOptions struct {
 // ListFineGrainedPersonalAccessTokens lists approved fine-grained personal access tokens owned by organization members that can access organization resources.
 // Only GitHub Apps can call this API, using the `Personal access tokens` organization permissions (read).
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens#list-fine-grained-personal-access-tokens-with-access-to-organization-resources
+// GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens?apiVersion=2022-11-28#list-fine-grained-personal-access-tokens-with-access-to-organization-resources
 //
 //meta:operation GET /orgs/{org}/personal-access-tokens
 func (s *OrganizationsService) ListFineGrainedPersonalAccessTokens(ctx context.Context, org string, opts *ListFineGrainedPATOptions) ([]*PersonalAccessToken, *Response, error) {
@@ -163,7 +163,7 @@ type FineGrainedPersonalAccessTokenRequest struct {
 // ListFineGrainedPersonalAccessTokenRequests lists requests to access organization resources via fine-grained personal access tokens.
 // Only GitHub Apps can call this API, using the `Personal access tokens` organization permissions (read).
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens#list-requests-to-access-organization-resources-with-fine-grained-personal-access-tokens
+// GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens?apiVersion=2022-11-28#list-requests-to-access-organization-resources-with-fine-grained-personal-access-tokens
 //
 //meta:operation GET /orgs/{org}/personal-access-token-requests
 func (s *OrganizationsService) ListFineGrainedPersonalAccessTokenRequests(ctx context.Context, org string, opts *ListFineGrainedPATOptions) ([]*FineGrainedPersonalAccessTokenRequest, *Response, error) {
@@ -198,7 +198,7 @@ type ReviewPersonalAccessTokenRequestOptions struct {
 // Only GitHub Apps can call this API, using the `organization_personal_access_token_requests: write` permission.
 // `action` can be one of `approve` or `deny`.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens#review-a-request-to-access-organization-resources-with-a-fine-grained-personal-access-token
+// GitHub API docs: https://docs.github.com/rest/orgs/personal-access-tokens?apiVersion=2022-11-28#review-a-request-to-access-organization-resources-with-a-fine-grained-personal-access-token
 //
 //meta:operation POST /orgs/{org}/personal-access-token-requests/{pat_request_id}
 func (s *OrganizationsService) ReviewPersonalAccessTokenRequest(ctx context.Context, org string, requestID int64, opts ReviewPersonalAccessTokenRequestOptions) (*Response, error) {

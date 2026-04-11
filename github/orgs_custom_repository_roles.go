@@ -47,7 +47,7 @@ type RepoFineGrainedPermission struct {
 // ListCustomRepoRoles lists the custom repository roles available in this organization.
 // In order to see custom repository roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#list-custom-repository-roles-in-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles?apiVersion=2022-11-28#list-custom-repository-roles-in-an-organization
 //
 //meta:operation GET /orgs/{org}/custom-repository-roles
 func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrganizationCustomRepoRoles, *Response, error) {
@@ -70,7 +70,7 @@ func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org stri
 // GetCustomRepoRole gets a custom repository roles available in this organization.
 // In order to see custom repository roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#get-a-custom-repository-role
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles?apiVersion=2022-11-28#get-a-custom-repository-role
 //
 //meta:operation GET /orgs/{org}/custom-repository-roles/{role_id}
 func (s *OrganizationsService) GetCustomRepoRole(ctx context.Context, org string, roleID int64) (*CustomRepoRoles, *Response, error) {
@@ -93,7 +93,7 @@ func (s *OrganizationsService) GetCustomRepoRole(ctx context.Context, org string
 // CreateCustomRepoRole creates a custom repository role in this organization.
 // In order to create custom repository roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#create-a-custom-repository-role
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles?apiVersion=2022-11-28#create-a-custom-repository-role
 //
 //meta:operation POST /orgs/{org}/custom-repository-roles
 func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org string, opts *CreateOrUpdateCustomRepoRoleOptions) (*CustomRepoRoles, *Response, error) {
@@ -116,7 +116,7 @@ func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org str
 // UpdateCustomRepoRole updates a custom repository role in this organization.
 // In order to update custom repository roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#update-a-custom-repository-role
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles?apiVersion=2022-11-28#update-a-custom-repository-role
 //
 //meta:operation PATCH /orgs/{org}/custom-repository-roles/{role_id}
 func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org string, roleID int64, opts *CreateOrUpdateCustomRepoRoleOptions) (*CustomRepoRoles, *Response, error) {
@@ -139,7 +139,7 @@ func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org str
 // DeleteCustomRepoRole deletes an existing custom repository role in this organization.
 // In order to delete custom repository roles in an organization, the authenticated user must be an organization owner.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#delete-a-custom-repository-role
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles?apiVersion=2022-11-28#delete-a-custom-repository-role
 //
 //meta:operation DELETE /orgs/{org}/custom-repository-roles/{role_id}
 func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org string, roleID int64) (*Response, error) {
@@ -162,7 +162,7 @@ func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org str
 // ListRepositoryFineGrainedPermissions lists the fine-grained permissions that can be used in custom repository roles for an organization.
 // The authenticated user must be an administrator of the organization or of a repository of the organization to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#list-repository-fine-grained-permissions-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles?apiVersion=2022-11-28#list-repository-fine-grained-permissions-for-an-organization
 //
 //meta:operation GET /orgs/{org}/repository-fine-grained-permissions
 func (s *OrganizationsService) ListRepositoryFineGrainedPermissions(ctx context.Context, org string) ([]*RepoFineGrainedPermission, *Response, error) {

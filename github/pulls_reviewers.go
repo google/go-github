@@ -32,7 +32,7 @@ type removeReviewersRequest struct {
 
 // RequestReviewers creates a review request for the provided reviewers for the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/review-requests#request-reviewers-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/review-requests?apiVersion=2022-11-28#request-reviewers-for-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers
 func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*PullRequest, *Response, error) {
@@ -53,7 +53,7 @@ func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo 
 
 // ListReviewers lists reviewers whose reviews have been requested on the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/review-requests#get-all-requested-reviewers-for-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/review-requests?apiVersion=2022-11-28#get-all-requested-reviewers-for-a-pull-request
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers
 func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo string, number int) (*Reviewers, *Response, error) {
@@ -75,7 +75,7 @@ func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo str
 
 // RemoveReviewers removes the review request for the provided reviewers for the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/review-requests#remove-requested-reviewers-from-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/review-requests?apiVersion=2022-11-28#remove-requested-reviewers-from-a-pull-request
 //
 //meta:operation DELETE /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers
 func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*Response, error) {

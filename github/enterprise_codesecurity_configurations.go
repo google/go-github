@@ -32,7 +32,7 @@ type ListEnterpriseCodeSecurityConfigurationOptions struct {
 
 // ListCodeSecurityConfigurations lists all code security configurations available in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-code-security-configurations-for-an-enterprise
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#get-code-security-configurations-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations
 func (s *EnterpriseService) ListCodeSecurityConfigurations(ctx context.Context, enterprise string, opts *ListEnterpriseCodeSecurityConfigurationOptions) ([]*CodeSecurityConfiguration, *Response, error) {
@@ -57,7 +57,7 @@ func (s *EnterpriseService) ListCodeSecurityConfigurations(ctx context.Context, 
 
 // CreateCodeSecurityConfiguration creates a code security configuration in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/code-security/configurations#create-a-code-security-configuration-for-an-enterprise
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#create-a-code-security-configuration-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/code-security/configurations
 func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context, enterprise string, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
@@ -78,7 +78,7 @@ func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context,
 
 // ListDefaultCodeSecurityConfigurations lists the default code security configurations for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-default-code-security-configurations-for-an-enterprise
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#get-default-code-security-configurations-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations/defaults
 func (s *EnterpriseService) ListDefaultCodeSecurityConfigurations(ctx context.Context, enterprise string) ([]*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
@@ -99,7 +99,7 @@ func (s *EnterpriseService) ListDefaultCodeSecurityConfigurations(ctx context.Co
 
 // GetCodeSecurityConfiguration gets a code security configuration available in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/code-security/configurations#retrieve-a-code-security-configuration-of-an-enterprise
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#retrieve-a-code-security-configuration-of-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}
 func (s *EnterpriseService) GetCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64) (*CodeSecurityConfiguration, *Response, error) {
@@ -120,7 +120,7 @@ func (s *EnterpriseService) GetCodeSecurityConfiguration(ctx context.Context, en
 
 // UpdateCodeSecurityConfiguration updates a code security configuration in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/code-security/configurations#update-a-custom-code-security-configuration-for-an-enterprise
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#update-a-custom-code-security-configuration-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/code-security/configurations/{configuration_id}
 func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
@@ -141,7 +141,7 @@ func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context,
 
 // DeleteCodeSecurityConfiguration deletes a code security configuration from an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/code-security/configurations#delete-a-code-security-configuration-for-an-enterprise
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#delete-a-code-security-configuration-for-an-enterprise
 //
 //meta:operation DELETE /enterprises/{enterprise}/code-security/configurations/{configuration_id}
 func (s *EnterpriseService) DeleteCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64) (*Response, error) {
@@ -162,7 +162,7 @@ func (s *EnterpriseService) DeleteCodeSecurityConfiguration(ctx context.Context,
 // `scope` is the type of repositories to attach the configuration to.
 // Can be one of: `all`, `all_without_configurations`.
 //
-// GitHub API docs: https://docs.github.com/rest/code-security/configurations#attach-an-enterprise-configuration-to-repositories
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#attach-an-enterprise-configuration-to-repositories
 //
 //meta:operation POST /enterprises/{enterprise}/code-security/configurations/{configuration_id}/attach
 func (s *EnterpriseService) AttachCodeSecurityConfigurationToRepositories(ctx context.Context, enterprise string, configurationID int64, scope string) (*Response, error) {
@@ -186,7 +186,7 @@ func (s *EnterpriseService) AttachCodeSecurityConfigurationToRepositories(ctx co
 // `defaultForNewRepos` specifies which types of repository this security configuration should be applied to by default.
 // Can be one of: `all`, `none`, `private_and_internal`, `public`.
 //
-// GitHub API docs: https://docs.github.com/rest/code-security/configurations#set-a-code-security-configuration-as-a-default-for-an-enterprise
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#set-a-code-security-configuration-as-a-default-for-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/code-security/configurations/{configuration_id}/defaults
 func (s *EnterpriseService) SetDefaultCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64, defaultForNewRepos string) (*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
@@ -209,7 +209,7 @@ func (s *EnterpriseService) SetDefaultCodeSecurityConfiguration(ctx context.Cont
 
 // ListCodeSecurityConfigurationRepositories lists the repositories associated with an enterprise code security configuration.
 //
-// GitHub API docs: https://docs.github.com/rest/code-security/configurations#get-repositories-associated-with-an-enterprise-code-security-configuration
+// GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#get-repositories-associated-with-an-enterprise-code-security-configuration
 //
 //meta:operation GET /enterprises/{enterprise}/code-security/configurations/{configuration_id}/repositories
 func (s *EnterpriseService) ListCodeSecurityConfigurationRepositories(ctx context.Context, enterprise string, configurationID int64, opts *ListCodeSecurityConfigurationRepositoriesOptions) ([]*RepositoryAttachment, *Response, error) {

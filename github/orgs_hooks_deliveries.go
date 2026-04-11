@@ -12,7 +12,7 @@ import (
 
 // ListHookDeliveries lists webhook deliveries for a webhook configured in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/webhooks#list-deliveries-for-an-organization-webhook
+// GitHub API docs: https://docs.github.com/rest/orgs/webhooks?apiVersion=2022-11-28#list-deliveries-for-an-organization-webhook
 //
 //meta:operation GET /orgs/{org}/hooks/{hook_id}/deliveries
 func (s *OrganizationsService) ListHookDeliveries(ctx context.Context, org string, id int64, opts *ListCursorOptions) ([]*HookDelivery, *Response, error) {
@@ -38,7 +38,7 @@ func (s *OrganizationsService) ListHookDeliveries(ctx context.Context, org strin
 
 // GetHookDelivery returns a delivery for a webhook configured in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/webhooks#get-a-webhook-delivery-for-an-organization-webhook
+// GitHub API docs: https://docs.github.com/rest/orgs/webhooks?apiVersion=2022-11-28#get-a-webhook-delivery-for-an-organization-webhook
 //
 //meta:operation GET /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}
 func (s *OrganizationsService) GetHookDelivery(ctx context.Context, owner string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
@@ -59,7 +59,7 @@ func (s *OrganizationsService) GetHookDelivery(ctx context.Context, owner string
 
 // RedeliverHookDelivery redelivers a delivery for a webhook configured in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/webhooks#redeliver-a-delivery-for-an-organization-webhook
+// GitHub API docs: https://docs.github.com/rest/orgs/webhooks?apiVersion=2022-11-28#redeliver-a-delivery-for-an-organization-webhook
 //
 //meta:operation POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts
 func (s *OrganizationsService) RedeliverHookDelivery(ctx context.Context, owner string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {

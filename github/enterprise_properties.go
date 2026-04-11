@@ -12,7 +12,7 @@ import (
 
 // GetAllCustomProperties gets all custom properties that are defined for the specified enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties#get-custom-properties-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties?apiVersion=2022-11-28#get-custom-properties-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/properties/schema
 func (s *EnterpriseService) GetAllCustomProperties(ctx context.Context, enterprise string) ([]*CustomProperty, *Response, error) {
@@ -34,7 +34,7 @@ func (s *EnterpriseService) GetAllCustomProperties(ctx context.Context, enterpri
 
 // CreateOrUpdateCustomProperties creates new or updates existing custom properties that are defined for the specified enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties#create-or-update-custom-properties-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties?apiVersion=2022-11-28#create-or-update-custom-properties-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/properties/schema
 func (s *EnterpriseService) CreateOrUpdateCustomProperties(ctx context.Context, enterprise string, properties []*CustomProperty) ([]*CustomProperty, *Response, error) {
@@ -62,7 +62,7 @@ func (s *EnterpriseService) CreateOrUpdateCustomProperties(ctx context.Context, 
 
 // GetCustomProperty gets a custom property that is defined for the specified enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties#get-a-custom-property-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties?apiVersion=2022-11-28#get-a-custom-property-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/properties/schema/{custom_property_name}
 func (s *EnterpriseService) GetCustomProperty(ctx context.Context, enterprise, customPropertyName string) (*CustomProperty, *Response, error) {
@@ -84,7 +84,7 @@ func (s *EnterpriseService) GetCustomProperty(ctx context.Context, enterprise, c
 
 // CreateOrUpdateCustomProperty creates a new or updates an existing custom property that is defined for the specified enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties#create-or-update-a-custom-property-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties?apiVersion=2022-11-28#create-or-update-a-custom-property-for-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/properties/schema/{custom_property_name}
 func (s *EnterpriseService) CreateOrUpdateCustomProperty(ctx context.Context, enterprise, customPropertyName string, property *CustomProperty) (*CustomProperty, *Response, error) {
@@ -106,7 +106,7 @@ func (s *EnterpriseService) CreateOrUpdateCustomProperty(ctx context.Context, en
 
 // RemoveCustomProperty removes a custom property that is defined for the specified enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties#remove-a-custom-property-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties?apiVersion=2022-11-28#remove-a-custom-property-for-an-enterprise
 //
 //meta:operation DELETE /enterprises/{enterprise}/properties/schema/{custom_property_name}
 func (s *EnterpriseService) RemoveCustomProperty(ctx context.Context, enterprise, customPropertyName string) (*Response, error) {

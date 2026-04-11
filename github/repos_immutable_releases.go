@@ -18,7 +18,7 @@ type RepoImmutableReleasesStatus struct {
 
 // EnableImmutableReleases enables immutable releases for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#enable-immutable-releases
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#enable-immutable-releases
 //
 //meta:operation PUT /repos/{owner}/{repo}/immutable-releases
 func (s *RepositoriesService) EnableImmutableReleases(ctx context.Context, owner, repo string) (*Response, error) {
@@ -39,7 +39,7 @@ func (s *RepositoriesService) EnableImmutableReleases(ctx context.Context, owner
 
 // DisableImmutableReleases disables immutable releases for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#disable-immutable-releases
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#disable-immutable-releases
 //
 //meta:operation DELETE /repos/{owner}/{repo}/immutable-releases
 func (s *RepositoriesService) DisableImmutableReleases(ctx context.Context, owner, repo string) (*Response, error) {
@@ -61,7 +61,7 @@ func (s *RepositoriesService) DisableImmutableReleases(ctx context.Context, owne
 // AreImmutableReleasesEnabled checks if immutable releases are enabled for
 // the repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#check-if-immutable-releases-are-enabled-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#check-if-immutable-releases-are-enabled-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/immutable-releases
 func (s *RepositoriesService) AreImmutableReleasesEnabled(ctx context.Context, owner, repo string) (*RepoImmutableReleasesStatus, *Response, error) {

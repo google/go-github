@@ -15,7 +15,7 @@ import (
 //
 // Sub-issues help you group and manage your issues with a parent/child relationship.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/sub-issues
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues?apiVersion=2022-11-28
 type SubIssueService service
 
 // SubIssue represents a GitHub sub-issue on a repository.
@@ -46,7 +46,7 @@ type SubIssueRequest struct {
 
 // Remove a sub-issue from the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/sub-issues#remove-sub-issue
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues?apiVersion=2022-11-28#remove-sub-issue
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issue
 func (s *SubIssueService) Remove(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
@@ -68,7 +68,7 @@ func (s *SubIssueService) Remove(ctx context.Context, owner, repo string, issueN
 
 // ListByIssue lists all sub-issues for the specified issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/sub-issues#list-sub-issues
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues?apiVersion=2022-11-28#list-sub-issues
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
 func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, issueNumber int64, opts *ListOptions) ([]*SubIssue, *Response, error) {
@@ -97,7 +97,7 @@ func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, i
 // The sub-issue to be added must belong to the same repository owner as the parent issue.
 // To replace the existing parent of a sub-issue, set replaceParent to true.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/sub-issues#add-sub-issue
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues?apiVersion=2022-11-28#add-sub-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
 func (s *SubIssueService) Add(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
@@ -120,7 +120,7 @@ func (s *SubIssueService) Add(ctx context.Context, owner, repo string, issueNumb
 //
 // Either afterId or beforeId must be specified to determine the new position of the sub-issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/sub-issues#reprioritize-sub-issue
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues?apiVersion=2022-11-28#reprioritize-sub-issue
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority
 func (s *SubIssueService) Reprioritize(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {

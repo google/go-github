@@ -12,7 +12,7 @@ import (
 
 // CreateRepositoryRuleset creates a repository ruleset for the specified enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#create-an-enterprise-repository-ruleset
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules?apiVersion=2022-11-28#create-an-enterprise-repository-ruleset
 //
 //meta:operation POST /enterprises/{enterprise}/rulesets
 func (s *EnterpriseService) CreateRepositoryRuleset(ctx context.Context, enterprise string, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
@@ -34,7 +34,7 @@ func (s *EnterpriseService) CreateRepositoryRuleset(ctx context.Context, enterpr
 
 // GetRepositoryRuleset gets a repository ruleset for the specified enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#get-an-enterprise-repository-ruleset
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules?apiVersion=2022-11-28#get-an-enterprise-repository-ruleset
 //
 //meta:operation GET /enterprises/{enterprise}/rulesets/{ruleset_id}
 func (s *EnterpriseService) GetRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64) (*RepositoryRuleset, *Response, error) {
@@ -56,7 +56,7 @@ func (s *EnterpriseService) GetRepositoryRuleset(ctx context.Context, enterprise
 
 // UpdateRepositoryRuleset updates a repository ruleset for the specified enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#update-an-enterprise-repository-ruleset
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules?apiVersion=2022-11-28#update-an-enterprise-repository-ruleset
 //
 //meta:operation PUT /enterprises/{enterprise}/rulesets/{ruleset_id}
 func (s *EnterpriseService) UpdateRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
@@ -78,7 +78,7 @@ func (s *EnterpriseService) UpdateRepositoryRuleset(ctx context.Context, enterpr
 
 // DeleteRepositoryRuleset deletes a repository ruleset from the specified enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules#delete-an-enterprise-repository-ruleset
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/rules?apiVersion=2022-11-28#delete-an-enterprise-repository-ruleset
 //
 //meta:operation DELETE /enterprises/{enterprise}/rulesets/{ruleset_id}
 func (s *EnterpriseService) DeleteRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {

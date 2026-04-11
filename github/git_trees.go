@@ -101,7 +101,7 @@ func (t *TreeEntry) MarshalJSON() ([]byte, error) {
 
 // GetTree fetches the Tree object for a given sha hash from a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/git/trees#get-a-tree
+// GitHub API docs: https://docs.github.com/rest/git/trees?apiVersion=2022-11-28#get-a-tree
 //
 //meta:operation GET /repos/{owner}/{repo}/git/trees/{tree_sha}
 func (s *GitService) GetTree(ctx context.Context, owner, repo, sha string, recursive bool) (*Tree, *Response, error) {
@@ -140,7 +140,7 @@ type createTree struct {
 // include a [TreeEntry] with the path and both SHA and Content set to nil.
 // Entire directories can be deleted this way.
 //
-// GitHub API docs: https://docs.github.com/rest/git/trees#create-a-tree
+// GitHub API docs: https://docs.github.com/rest/git/trees?apiVersion=2022-11-28#create-a-tree
 //
 //meta:operation POST /repos/{owner}/{repo}/git/trees
 func (s *GitService) CreateTree(ctx context.Context, owner, repo, baseTree string, entries []*TreeEntry) (*Tree, *Response, error) {

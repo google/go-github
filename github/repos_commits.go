@@ -124,7 +124,7 @@ type BranchCommit struct {
 
 // ListCommits lists the commits of a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/commits#list-commits
+// GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#list-commits
 //
 //meta:operation GET /repos/{owner}/{repo}/commits
 func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo string, opts *CommitsListOptions) ([]*RepositoryCommit, *Response, error) {
@@ -150,7 +150,7 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 
 // GetCommit fetches the specified commit, including all details about it.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/commits#get-a-commit
+// GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#get-a-commit
 //
 //meta:operation GET /repos/{owner}/{repo}/commits/{ref}
 func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha string, opts *ListOptions) (*RepositoryCommit, *Response, error) {
@@ -176,7 +176,7 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 
 // GetCommitRaw fetches the specified commit in raw (diff or patch) format.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/commits#get-a-commit
+// GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#get-a-commit
 //
 //meta:operation GET /repos/{owner}/{repo}/commits/{ref}
 func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner, repo, sha string, opts RawOptions) (string, *Response, error) {
@@ -207,7 +207,7 @@ func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner, repo, sha
 // GetCommitSHA1 gets the SHA-1 of a commit reference. If a last-known SHA1 is
 // supplied and no new commits have occurred, a 304 Unmodified response is returned.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/commits#get-a-commit
+// GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#get-a-commit
 //
 //meta:operation GET /repos/{owner}/{repo}/commits/{ref}
 func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, ref, lastSHA string) (string, *Response, error) {
@@ -234,7 +234,7 @@ func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, re
 
 // CompareCommits compares a range of commits with each other.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/commits#compare-two-commits
+// GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#compare-two-commits
 //
 //meta:operation GET /repos/{owner}/{repo}/compare/{basehead}
 func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo, base, head string, opts *ListOptions) (*CommitsComparison, *Response, error) {
@@ -267,7 +267,7 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo, b
 // To compare branches across other repositories in the same network as "repo",
 // use the format "<USERNAME>:branch".
 //
-// GitHub API docs: https://docs.github.com/rest/commits/commits#compare-two-commits
+// GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#compare-two-commits
 //
 //meta:operation GET /repos/{owner}/{repo}/compare/{basehead}
 func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo, base, head string, opts RawOptions) (string, *Response, error) {
@@ -302,7 +302,7 @@ func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo
 // ListBranchesHeadCommit gets all branches where the given commit SHA is the HEAD,
 // or latest commit for the branch.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/commits#list-branches-for-head-commit
+// GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#list-branches-for-head-commit
 //
 //meta:operation GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head
 func (s *RepositoriesService) ListBranchesHeadCommit(ctx context.Context, owner, repo, sha string) ([]*BranchCommit, *Response, error) {

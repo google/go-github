@@ -99,7 +99,7 @@ func (p ContributorApprovalPermissions) String() string {
 
 // ListWorkflows lists all workflows in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#list-repository-workflows
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#list-repository-workflows
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows
 func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, opts *ListOptions) (*Workflows, *Response, error) {
@@ -125,7 +125,7 @@ func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, 
 
 // GetWorkflowByID gets a specific workflow by ID.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#get-a-workflow
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#get-a-workflow
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}
 func (s *ActionsService) GetWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Workflow, *Response, error) {
@@ -136,7 +136,7 @@ func (s *ActionsService) GetWorkflowByID(ctx context.Context, owner, repo string
 
 // GetWorkflowByFileName gets a specific workflow by file name.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#get-a-workflow
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#get-a-workflow
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}
 func (s *ActionsService) GetWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Workflow, *Response, error) {
@@ -162,7 +162,7 @@ func (s *ActionsService) getWorkflow(ctx context.Context, url string) (*Workflow
 
 // GetWorkflowUsageByID gets a specific workflow usage by ID in the unit of billable milliseconds.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#get-workflow-usage
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#get-workflow-usage
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing
 func (s *ActionsService) GetWorkflowUsageByID(ctx context.Context, owner, repo string, workflowID int64) (*WorkflowUsage, *Response, error) {
@@ -173,7 +173,7 @@ func (s *ActionsService) GetWorkflowUsageByID(ctx context.Context, owner, repo s
 
 // GetWorkflowUsageByFileName gets a specific workflow usage by file name in the unit of billable milliseconds.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#get-workflow-usage
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#get-workflow-usage
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing
 func (s *ActionsService) GetWorkflowUsageByFileName(ctx context.Context, owner, repo, workflowFileName string) (*WorkflowUsage, *Response, error) {
@@ -199,7 +199,7 @@ func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*Wor
 
 // CreateWorkflowDispatchEventByID manually triggers a GitHub Actions workflow run.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#create-a-workflow-dispatch-event
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
 func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, owner, repo string, workflowID int64, event CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
@@ -210,7 +210,7 @@ func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, ow
 
 // CreateWorkflowDispatchEventByFileName manually triggers a GitHub Actions workflow run.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#create-a-workflow-dispatch-event
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
 func (s *ActionsService) CreateWorkflowDispatchEventByFileName(ctx context.Context, owner, repo, workflowFileName string, event CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
@@ -236,7 +236,7 @@ func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url st
 
 // EnableWorkflowByID enables a workflow and sets the state of the workflow to "active".
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#enable-a-workflow
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#enable-a-workflow
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/enable
 func (s *ActionsService) EnableWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Response, error) {
@@ -246,7 +246,7 @@ func (s *ActionsService) EnableWorkflowByID(ctx context.Context, owner, repo str
 
 // EnableWorkflowByFileName enables a workflow and sets the state of the workflow to "active".
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#enable-a-workflow
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#enable-a-workflow
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/enable
 func (s *ActionsService) EnableWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Response, error) {
@@ -256,7 +256,7 @@ func (s *ActionsService) EnableWorkflowByFileName(ctx context.Context, owner, re
 
 // DisableWorkflowByID disables a workflow and sets the state of the workflow to "disabled_manually".
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#disable-a-workflow
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#disable-a-workflow
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/disable
 func (s *ActionsService) DisableWorkflowByID(ctx context.Context, owner, repo string, workflowID int64) (*Response, error) {
@@ -266,7 +266,7 @@ func (s *ActionsService) DisableWorkflowByID(ctx context.Context, owner, repo st
 
 // DisableWorkflowByFileName disables a workflow and sets the state of the workflow to "disabled_manually".
 //
-// GitHub API docs: https://docs.github.com/rest/actions/workflows#disable-a-workflow
+// GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#disable-a-workflow
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/disable
 func (s *ActionsService) DisableWorkflowByFileName(ctx context.Context, owner, repo, workflowFileName string) (*Response, error) {

@@ -3,22 +3,20 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
-
-import "github.com/google/go-github/v84/github"
+package github
 
 func main() {
 	// Literal argument cannot be addressed.
-	_ = github.Ptr("a.txt")
+	_ = Ptr("a.txt")
 
 	const file = "a.txt"
-	_ = github.Ptr(file)
+	_ = Ptr(file)
 
 	for range []int{1, 2} {
-		_ = github.Ptr("a")
+		_ = Ptr("a")
 	}
 
-	_ = github.Ptr(getOptions().Mode)
+	_ = Ptr(getOptions().Mode)
 }
 
 func getOptions() struct {

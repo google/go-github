@@ -20,7 +20,7 @@ type revokeCredentialsRequest struct {
 
 // Revoke revokes a list of credentials.
 //
-// GitHub API docs: https://docs.github.com/rest/credentials/revoke#revoke-a-list-of-credentials
+// GitHub API docs: https://docs.github.com/rest/credentials/revoke?apiVersion=2022-11-28#revoke-a-list-of-credentials
 //
 //meta:operation POST /credentials/revoke
 func (s *CredentialsService) Revoke(ctx context.Context, credentials []string) (*Response, error) {

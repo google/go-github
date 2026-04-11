@@ -13,7 +13,7 @@ import (
 // PrivateRegistriesService handles communication with the private registries
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/private-registries
+// GitHub API docs: https://docs.github.com/rest/private-registries?apiVersion=2022-11-28
 type PrivateRegistriesService service
 
 // PrivateRegistryType represents the type of private registry.
@@ -129,7 +129,7 @@ type UpdateOrganizationPrivateRegistry struct {
 
 // ListOrganizationPrivateRegistries lists private registries for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#list-private-registries-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2022-11-28#list-private-registries-for-an-organization
 //
 //meta:operation GET /orgs/{org}/private-registries
 func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context.Context, org string, opts *ListOptions) (*PrivateRegistries, *Response, error) {
@@ -154,7 +154,7 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context
 
 // CreateOrganizationPrivateRegistry creates a private registry configuration with an encrypted value for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#create-a-private-registry-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2022-11-28#create-a-private-registry-for-an-organization
 //
 //meta:operation POST /orgs/{org}/private-registries
 func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context.Context, org string, privateRegistry CreateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
@@ -175,7 +175,7 @@ func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context
 
 // GetOrganizationPrivateRegistriesPublicKey retrieves the public key for encrypting secrets for an organization's private registries.
 //
-// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#get-private-registries-public-key-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2022-11-28#get-private-registries-public-key-for-an-organization
 //
 //meta:operation GET /orgs/{org}/private-registries/public-key
 func (s *PrivateRegistriesService) GetOrganizationPrivateRegistriesPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error) {
@@ -197,7 +197,7 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistriesPublicKey(ctx
 // GetOrganizationPrivateRegistry gets a specific private registry for an organization.
 // The `name` parameter is the name of the private registry to retrieve. It is the same as PrivateRegistry.Name.
 //
-// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#get-a-private-registry-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2022-11-28#get-a-private-registry-for-an-organization
 //
 //meta:operation GET /orgs/{org}/private-registries/{secret_name}
 func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Context, org, secretName string) (*PrivateRegistry, *Response, error) {
@@ -220,7 +220,7 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Co
 // UpdateOrganizationPrivateRegistry updates a specific private registry for an organization.
 // The `name` parameter is the name of the private registry to update. It is the same as PrivateRegistry.Name.
 //
-// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#update-a-private-registry-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2022-11-28#update-a-private-registry-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/private-registries/{secret_name}
 func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context.Context, org, secretName string, privateRegistry UpdateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
@@ -243,7 +243,7 @@ func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context
 // DeleteOrganizationPrivateRegistry deletes a specific private registry for an organization.
 // The `name` parameter is the name of the private registry to delete. It is the same as PrivateRegistry.Name.
 //
-// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations#delete-a-private-registry-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2022-11-28#delete-a-private-registry-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/private-registries/{secret_name}
 func (s *PrivateRegistriesService) DeleteOrganizationPrivateRegistry(ctx context.Context, org, secretName string) (*Response, error) {

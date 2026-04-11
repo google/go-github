@@ -12,7 +12,7 @@ import (
 
 // GetAllRepositoryRulesets gets all the repository rulesets for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/rules#get-all-organization-repository-rulesets
+// GitHub API docs: https://docs.github.com/rest/orgs/rules?apiVersion=2022-11-28#get-all-organization-repository-rulesets
 //
 //meta:operation GET /orgs/{org}/rulesets
 func (s *OrganizationsService) GetAllRepositoryRulesets(ctx context.Context, org string, opts *ListOptions) ([]*RepositoryRuleset, *Response, error) {
@@ -39,7 +39,7 @@ func (s *OrganizationsService) GetAllRepositoryRulesets(ctx context.Context, org
 
 // CreateRepositoryRuleset creates a repository ruleset for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/rules#create-an-organization-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/orgs/rules?apiVersion=2022-11-28#create-an-organization-repository-ruleset
 //
 //meta:operation POST /orgs/{org}/rulesets
 func (s *OrganizationsService) CreateRepositoryRuleset(ctx context.Context, org string, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
@@ -61,7 +61,7 @@ func (s *OrganizationsService) CreateRepositoryRuleset(ctx context.Context, org 
 
 // GetRepositoryRuleset gets a repository ruleset for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/rules#get-an-organization-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/orgs/rules?apiVersion=2022-11-28#get-an-organization-repository-ruleset
 //
 //meta:operation GET /orgs/{org}/rulesets/{ruleset_id}
 func (s *OrganizationsService) GetRepositoryRuleset(ctx context.Context, org string, rulesetID int64) (*RepositoryRuleset, *Response, error) {
@@ -83,7 +83,7 @@ func (s *OrganizationsService) GetRepositoryRuleset(ctx context.Context, org str
 
 // UpdateRepositoryRuleset updates a repository ruleset for the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/rules#update-an-organization-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/orgs/rules?apiVersion=2022-11-28#update-an-organization-repository-ruleset
 //
 //meta:operation PUT /orgs/{org}/rulesets/{ruleset_id}
 func (s *OrganizationsService) UpdateRepositoryRuleset(ctx context.Context, org string, rulesetID int64, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
@@ -105,7 +105,7 @@ func (s *OrganizationsService) UpdateRepositoryRuleset(ctx context.Context, org 
 
 // DeleteRepositoryRuleset deletes a repository ruleset from the specified organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/rules#delete-an-organization-repository-ruleset
+// GitHub API docs: https://docs.github.com/rest/orgs/rules?apiVersion=2022-11-28#delete-an-organization-repository-ruleset
 //
 //meta:operation DELETE /orgs/{org}/rulesets/{ruleset_id}
 func (s *OrganizationsService) DeleteRepositoryRuleset(ctx context.Context, org string, rulesetID int64) (*Response, error) {

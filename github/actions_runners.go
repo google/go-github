@@ -22,7 +22,7 @@ type RunnerApplicationDownload struct {
 
 // ListRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#list-runner-applications-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#list-runner-applications-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runners/downloads
 func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, owner, repo string) ([]*RunnerApplicationDownload, *Response, error) {
@@ -60,7 +60,7 @@ type JITRunnerConfig struct {
 
 // GenerateOrgJITConfig generate a just-in-time configuration for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#create-configuration-for-a-just-in-time-runner-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-organization
 //
 //meta:operation POST /orgs/{org}/actions/runners/generate-jitconfig
 func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, org string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
@@ -81,7 +81,7 @@ func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, org string, r
 
 // GenerateRepoJITConfig generates a just-in-time configuration for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#create-configuration-for-a-just-in-time-runner-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runners/generate-jitconfig
 func (s *ActionsService) GenerateRepoJITConfig(ctx context.Context, owner, repo string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
@@ -108,7 +108,7 @@ type RegistrationToken struct {
 
 // CreateRegistrationToken creates a token that can be used to add a self-hosted runner.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#create-a-registration-token-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-a-registration-token-for-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runners/registration-token
 func (s *ActionsService) CreateRegistrationToken(ctx context.Context, owner, repo string) (*RegistrationToken, *Response, error) {
@@ -159,7 +159,7 @@ type ListRunnersOptions struct {
 
 // ListRunners lists all the self-hosted runners for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#list-self-hosted-runners-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#list-self-hosted-runners-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runners
 func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, opts *ListRunnersOptions) (*Runners, *Response, error) {
@@ -185,7 +185,7 @@ func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, op
 
 // GetRunner gets a specific self-hosted runner for a repository using its runner ID.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#get-a-self-hosted-runner-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#get-a-self-hosted-runner-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/runners/{runner_id}
 func (s *ActionsService) GetRunner(ctx context.Context, owner, repo string, runnerID int64) (*Runner, *Response, error) {
@@ -212,7 +212,7 @@ type RemoveToken struct {
 
 // CreateRemoveToken creates a token that can be used to remove a self-hosted runner from a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#create-a-remove-token-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-a-remove-token-for-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runners/remove-token
 func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo string) (*RemoveToken, *Response, error) {
@@ -234,7 +234,7 @@ func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo stri
 
 // RemoveRunner forces the removal of a self-hosted runner in a repository using the runner id.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#delete-a-self-hosted-runner-from-a-repository
 //
 //meta:operation DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}
 func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, runnerID int64) (*Response, error) {
@@ -250,7 +250,7 @@ func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, r
 
 // ListOrganizationRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#list-runner-applications-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#list-runner-applications-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/runners/downloads
 func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.Context, org string) ([]*RunnerApplicationDownload, *Response, error) {
@@ -271,7 +271,7 @@ func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.
 
 // CreateOrganizationRegistrationToken creates a token that can be used to add a self-hosted runner to an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#create-a-registration-token-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-a-registration-token-for-an-organization
 //
 //meta:operation POST /orgs/{org}/actions/runners/registration-token
 func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context, org string) (*RegistrationToken, *Response, error) {
@@ -293,7 +293,7 @@ func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context
 
 // ListOrganizationRunners lists all the self-hosted runners for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#list-self-hosted-runners-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#list-self-hosted-runners-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/runners
 func (s *ActionsService) ListOrganizationRunners(ctx context.Context, org string, opts *ListRunnersOptions) (*Runners, *Response, error) {
@@ -319,7 +319,7 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, org string
 
 // GetOrganizationRunner gets a specific self-hosted runner for an organization using its runner ID.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#get-a-self-hosted-runner-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#get-a-self-hosted-runner-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/runners/{runner_id}
 func (s *ActionsService) GetOrganizationRunner(ctx context.Context, org string, runnerID int64) (*Runner, *Response, error) {
@@ -340,7 +340,7 @@ func (s *ActionsService) GetOrganizationRunner(ctx context.Context, org string, 
 
 // CreateOrganizationRemoveToken creates a token that can be used to remove a self-hosted runner from an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#create-a-remove-token-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-a-remove-token-for-an-organization
 //
 //meta:operation POST /orgs/{org}/actions/runners/remove-token
 func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, org string) (*RemoveToken, *Response, error) {
@@ -362,7 +362,7 @@ func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, org 
 
 // RemoveOrganizationRunner forces the removal of a self-hosted runner from an organization using the runner id.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners#delete-a-self-hosted-runner-from-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#delete-a-self-hosted-runner-from-an-organization
 //
 //meta:operation DELETE /orgs/{org}/actions/runners/{runner_id}
 func (s *ActionsService) RemoveOrganizationRunner(ctx context.Context, org string, runnerID int64) (*Response, error) {

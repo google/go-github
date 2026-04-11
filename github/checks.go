@@ -13,7 +13,7 @@ import (
 // ChecksService provides access to the Checks API in the
 // GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/
+// GitHub API docs: https://docs.github.com/rest/checks?apiVersion=2022-11-28
 type ChecksService service
 
 // CheckRun represents a GitHub check run on a repository associated with a GitHub app.
@@ -101,7 +101,7 @@ func (c CheckSuite) String() string {
 
 // GetCheckRun gets a check-run for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/runs#get-a-check-run
+// GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#get-a-check-run
 //
 //meta:operation GET /repos/{owner}/{repo}/check-runs/{check_run_id}
 func (s *ChecksService) GetCheckRun(ctx context.Context, owner, repo string, checkRunID int64) (*CheckRun, *Response, error) {
@@ -124,7 +124,7 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner, repo string, che
 
 // GetCheckSuite gets a single check suite.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/suites#get-a-check-suite
+// GitHub API docs: https://docs.github.com/rest/checks/suites?apiVersion=2022-11-28#get-a-check-suite
 //
 //meta:operation GET /repos/{owner}/{repo}/check-suites/{check_suite_id}
 func (s *ChecksService) GetCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64) (*CheckSuite, *Response, error) {
@@ -168,7 +168,7 @@ type CheckRunAction struct {
 
 // CreateCheckRun creates a check run for repository.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/runs#create-a-check-run
+// GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#create-a-check-run
 //
 //meta:operation POST /repos/{owner}/{repo}/check-runs
 func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, opts CreateCheckRunOptions) (*CheckRun, *Response, error) {
@@ -203,7 +203,7 @@ type UpdateCheckRunOptions struct {
 
 // UpdateCheckRun updates a check run for a specific commit in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/runs#update-a-check-run
+// GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#update-a-check-run
 //
 //meta:operation PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}
 func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, checkRunID int64, opts UpdateCheckRunOptions) (*CheckRun, *Response, error) {
@@ -226,7 +226,7 @@ func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, 
 
 // ListCheckRunAnnotations lists the annotations for a check run.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/runs#list-check-run-annotations
+// GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#list-check-run-annotations
 //
 //meta:operation GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations
 func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner, repo string, checkRunID int64, opts *ListOptions) ([]*CheckRunAnnotation, *Response, error) {
@@ -272,7 +272,7 @@ type ListCheckRunsResults struct {
 // The ref can be a commit SHA, branch name `heads/<branch name>`, or tag name `tags/<tag name>`.
 // For more information, see "Git References" in the Git documentation https://git-scm.com/book/en/v2/Git-Internals-Git-References.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/runs#list-check-runs-for-a-git-reference
+// GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#list-check-runs-for-a-git-reference
 //
 //meta:operation GET /repos/{owner}/{repo}/commits/{ref}/check-runs
 func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
@@ -300,7 +300,7 @@ func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, re
 
 // ListCheckRunsCheckSuite lists check runs for a check suite.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/runs#list-check-runs-in-a-check-suite
+// GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#list-check-runs-in-a-check-suite
 //
 //meta:operation GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs
 func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64, opts *ListCheckRunsOptions) (*ListCheckRunsResults, *Response, error) {
@@ -328,7 +328,7 @@ func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo
 
 // ReRequestCheckRun triggers GitHub to rerequest an existing check run.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/runs#rerequest-a-check-run
+// GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#rerequest-a-check-run
 //
 //meta:operation POST /repos/{owner}/{repo}/check-runs/{check_run_id}/rerequest
 func (s *ChecksService) ReRequestCheckRun(ctx context.Context, owner, repo string, checkRunID int64) (*Response, error) {
@@ -362,7 +362,7 @@ type ListCheckSuiteResults struct {
 // The ref can be a commit SHA, branch name `heads/<branch name>`, or tag name `tags/<tag name>`.
 // For more information, see "Git References" in the Git documentation https://git-scm.com/book/en/v2/Git-Internals-Git-References.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/suites#list-check-suites-for-a-git-reference
+// GitHub API docs: https://docs.github.com/rest/checks/suites?apiVersion=2022-11-28#list-check-suites-for-a-git-reference
 //
 //meta:operation GET /repos/{owner}/{repo}/commits/{ref}/check-suites
 func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo, ref string, opts *ListCheckSuiteOptions) (*ListCheckSuiteResults, *Response, error) {
@@ -412,7 +412,7 @@ type PreferenceList struct {
 
 // SetCheckSuitePreferences changes the default automatic flow when creating check suites.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/suites#update-repository-preferences-for-check-suites
+// GitHub API docs: https://docs.github.com/rest/checks/suites?apiVersion=2022-11-28#update-repository-preferences-for-check-suites
 //
 //meta:operation PATCH /repos/{owner}/{repo}/check-suites/preferences
 func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, repo string, opts CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
@@ -441,7 +441,7 @@ type CreateCheckSuiteOptions struct {
 
 // CreateCheckSuite manually creates a check suite for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/suites#create-a-check-suite
+// GitHub API docs: https://docs.github.com/rest/checks/suites?apiVersion=2022-11-28#create-a-check-suite
 //
 //meta:operation POST /repos/{owner}/{repo}/check-suites
 func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string, opts CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
@@ -464,7 +464,7 @@ func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string
 
 // ReRequestCheckSuite triggers GitHub to rerequest an existing check suite, without pushing new code to a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/checks/suites#rerequest-a-check-suite
+// GitHub API docs: https://docs.github.com/rest/checks/suites?apiVersion=2022-11-28#rerequest-a-check-suite
 //
 //meta:operation POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest
 func (s *ChecksService) ReRequestCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64) (*Response, error) {

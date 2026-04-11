@@ -12,7 +12,7 @@ import (
 
 // ListEvents drinks from the firehose of all public events across GitHub.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/events#list-public-events
+// GitHub API docs: https://docs.github.com/rest/activity/events?apiVersion=2022-11-28#list-public-events
 //
 //meta:operation GET /events
 func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]*Event, *Response, error) {
@@ -37,7 +37,7 @@ func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]
 
 // ListRepositoryEvents lists events for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/events#list-repository-events
+// GitHub API docs: https://docs.github.com/rest/activity/events?apiVersion=2022-11-28#list-repository-events
 //
 //meta:operation GET /repos/{owner}/{repo}/events
 func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
@@ -63,7 +63,7 @@ func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo 
 
 // ListIssueEventsForRepository lists issue events for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/events#list-issue-events-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/issues/events?apiVersion=2022-11-28#list-issue-events-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/events
 func (s *ActivityService) ListIssueEventsForRepository(ctx context.Context, owner, repo string, opts *ListOptions) ([]*IssueEvent, *Response, error) {
@@ -89,7 +89,7 @@ func (s *ActivityService) ListIssueEventsForRepository(ctx context.Context, owne
 
 // ListEventsForRepoNetwork lists public events for a network of repositories.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/events#list-public-events-for-a-network-of-repositories
+// GitHub API docs: https://docs.github.com/rest/activity/events?apiVersion=2022-11-28#list-public-events-for-a-network-of-repositories
 //
 //meta:operation GET /networks/{owner}/{repo}/events
 func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Event, *Response, error) {
@@ -115,7 +115,7 @@ func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, r
 
 // ListEventsForOrganization lists public events for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/events#list-public-organization-events
+// GitHub API docs: https://docs.github.com/rest/activity/events?apiVersion=2022-11-28#list-public-organization-events
 //
 //meta:operation GET /orgs/{org}/events
 func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org string, opts *ListOptions) ([]*Event, *Response, error) {
@@ -142,9 +142,9 @@ func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org str
 // ListEventsPerformedByUser lists the events performed by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/events#list-events-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/activity/events?apiVersion=2022-11-28#list-events-for-the-authenticated-user
 //
-// GitHub API docs: https://docs.github.com/rest/activity/events#list-public-events-for-a-user
+// GitHub API docs: https://docs.github.com/rest/activity/events?apiVersion=2022-11-28#list-public-events-for-a-user
 //
 //meta:operation GET /users/{username}/events
 //meta:operation GET /users/{username}/events/public
@@ -177,9 +177,9 @@ func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user st
 // ListEventsReceivedByUser lists the events received by a user. If publicOnly is
 // true, only public events will be returned.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/events#list-events-received-by-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/activity/events?apiVersion=2022-11-28#list-events-received-by-the-authenticated-user
 //
-// GitHub API docs: https://docs.github.com/rest/activity/events#list-public-events-received-by-a-user
+// GitHub API docs: https://docs.github.com/rest/activity/events?apiVersion=2022-11-28#list-public-events-received-by-a-user
 //
 //meta:operation GET /users/{username}/received_events
 //meta:operation GET /users/{username}/received_events/public
@@ -212,7 +212,7 @@ func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user str
 // ListUserEventsForOrganization provides the user’s organization dashboard. You
 // must be authenticated as the user to view this.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/events#list-organization-events-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/activity/events?apiVersion=2022-11-28#list-organization-events-for-the-authenticated-user
 //
 //meta:operation GET /users/{username}/events/orgs/{org}
 func (s *ActivityService) ListUserEventsForOrganization(ctx context.Context, org, user string, opts *ListOptions) ([]*Event, *Response, error) {

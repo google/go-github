@@ -21,7 +21,7 @@ type CreateOrUpdateIssueTypesOptions struct {
 
 // ListIssueTypes lists all issue types for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/issue-types#list-issue-types-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/issue-types?apiVersion=2022-11-28#list-issue-types-for-an-organization
 //
 //meta:operation GET /orgs/{org}/issue-types
 func (s *OrganizationsService) ListIssueTypes(ctx context.Context, org string) ([]*IssueType, *Response, error) {
@@ -43,7 +43,7 @@ func (s *OrganizationsService) ListIssueTypes(ctx context.Context, org string) (
 
 // CreateIssueType creates a new issue type for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/issue-types#create-issue-type-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/issue-types?apiVersion=2022-11-28#create-issue-type-for-an-organization
 //
 //meta:operation POST /orgs/{org}/issue-types
 func (s *OrganizationsService) CreateIssueType(ctx context.Context, org string, opts *CreateOrUpdateIssueTypesOptions) (*IssueType, *Response, error) {
@@ -64,7 +64,7 @@ func (s *OrganizationsService) CreateIssueType(ctx context.Context, org string, 
 
 // UpdateIssueType updates GitHub Pages for the named repo.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/issue-types#update-issue-type-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/issue-types?apiVersion=2022-11-28#update-issue-type-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/issue-types/{issue_type_id}
 func (s *OrganizationsService) UpdateIssueType(ctx context.Context, org string, issueTypeID int64, opts *CreateOrUpdateIssueTypesOptions) (*IssueType, *Response, error) {
@@ -85,7 +85,7 @@ func (s *OrganizationsService) UpdateIssueType(ctx context.Context, org string, 
 
 // DeleteIssueType deletes an issue type for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/issue-types#delete-issue-type-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/issue-types?apiVersion=2022-11-28#delete-issue-type-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/issue-types/{issue_type_id}
 func (s *OrganizationsService) DeleteIssueType(ctx context.Context, org string, issueTypeID int64) (*Response, error) {

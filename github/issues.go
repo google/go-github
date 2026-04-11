@@ -14,7 +14,7 @@ import (
 // IssuesService handles communication with the issue related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/
+// GitHub API docs: https://docs.github.com/rest/issues?apiVersion=2022-11-28
 type IssuesService service
 
 // Issue represents a GitHub issue on a repository.
@@ -38,7 +38,7 @@ type Issue struct {
 	//
 	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
 	// Use the Issues REST API endpoint to retrieve this information.
-	// See: https://docs.github.com/rest/issues/issues#get-an-issue
+	// See: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
 	AuthorAssociation *string           `json:"author_association,omitempty"`
 	User              *User             `json:"user,omitempty"`
 	Labels            []*Label          `json:"labels,omitempty"`
@@ -159,7 +159,7 @@ type ListAllIssuesOptions struct {
 // member repositories, and organization repositories.
 // You can use the filter query parameter to fetch issues that are not necessarily assigned to you.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#list-issues-assigned-to-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#list-issues-assigned-to-the-authenticated-user
 //
 //meta:operation GET /issues
 func (s *IssuesService) ListAllIssues(ctx context.Context, opts *ListAllIssuesOptions) ([]*Issue, *Response, error) {
@@ -215,7 +215,7 @@ type ListUserIssuesOptions struct {
 
 // ListUserIssues gets issues across owned and member repositories assigned to the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#list-user-account-issues-assigned-to-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#list-user-account-issues-assigned-to-the-authenticated-user
 //
 //meta:operation GET /user/issues
 func (s *IssuesService) ListUserIssues(ctx context.Context, opts *ListUserIssuesOptions) ([]*Issue, *Response, error) {
@@ -275,7 +275,7 @@ type IssueListByOrgOptions struct {
 // ListByOrg fetches the issues in the specified organization for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#list-organization-issues-assigned-to-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#list-organization-issues-assigned-to-the-authenticated-user
 //
 //meta:operation GET /orgs/{org}/issues
 func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueListByOrgOptions) ([]*Issue, *Response, error) {
@@ -353,7 +353,7 @@ type IssueListByRepoOptions struct {
 
 // ListByRepo lists the issues for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#list-repository-issues
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#list-repository-issues
 //
 //meta:operation GET /repos/{owner}/{repo}/issues
 func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts *IssueListByRepoOptions) ([]*Issue, *Response, error) {
@@ -381,7 +381,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts
 
 // Get a single issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#get-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}
 func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int) (*Issue, *Response, error) {
@@ -404,7 +404,7 @@ func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int)
 
 // Create a new issue on the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#create-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues
 func (s *IssuesService) Create(ctx context.Context, owner, repo string, issue *IssueRequest) (*Issue, *Response, error) {
@@ -425,7 +425,7 @@ func (s *IssuesService) Create(ctx context.Context, owner, repo string, issue *I
 
 // Edit (update) an issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#update-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#update-an-issue
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
 func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
@@ -448,7 +448,7 @@ func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int
 //
 // This is a helper method to explicitly update an issue with a `null` milestone, thereby removing it.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#update-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#update-an-issue
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
 func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string, issueNumber int) (*Issue, *Response, error) {
@@ -480,7 +480,7 @@ type LockIssueOptions struct {
 
 // Lock an issue's conversation.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#lock-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#lock-an-issue
 //
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/lock
 func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, opts *LockIssueOptions) (*Response, error) {
@@ -495,7 +495,7 @@ func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int
 
 // Unlock an issue's conversation.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#unlock-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#unlock-an-issue
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock
 func (s *IssuesService) Unlock(ctx context.Context, owner, repo string, number int) (*Response, error) {

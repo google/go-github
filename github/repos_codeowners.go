@@ -36,7 +36,7 @@ type CodeownersError struct {
 
 // GetCodeownersErrors lists any syntax errors that are detected in the CODEOWNERS file.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/repos#list-codeowners-errors
+// GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#list-codeowners-errors
 //
 //meta:operation GET /repos/{owner}/{repo}/codeowners/errors
 func (s *RepositoriesService) GetCodeownersErrors(ctx context.Context, owner, repo string, opts *GetCodeownersErrorsOptions) (*CodeownersErrors, *Response, error) {

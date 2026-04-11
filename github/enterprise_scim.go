@@ -28,7 +28,7 @@ const SCIMSchemasURINamespacesPatchOp = "urn:ietf:params:scim:api:messages:2.0:P
 
 // SCIMEnterpriseGroupAttributes represents supported SCIM Enterprise group attributes, and represents the result of calling UpdateSCIMGroupAttribute.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#supported-scim-group-attributes
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#supported-scim-group-attributes
 type SCIMEnterpriseGroupAttributes struct {
 	DisplayName *string                           `json:"displayName,omitempty"` // Human-readable name for a group.
 	Members     []*SCIMEnterpriseDisplayReference `json:"members,omitempty"`     // List of members who are assigned to the group in SCIM provider
@@ -65,7 +65,7 @@ type SCIMEnterpriseGroups struct {
 
 // ListProvisionedSCIMGroupsEnterpriseOptions represents query parameters for ListProvisionedSCIMGroups.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise--parameters
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#list-provisioned-scim-groups-for-an-enterprise--parameters
 type ListProvisionedSCIMGroupsEnterpriseOptions struct {
 	// If specified, only results that match the specified filter will be returned.
 	// Possible filters are `externalId`, `id`, and `displayName`. For example, `externalId eq "a123"`.
@@ -82,7 +82,7 @@ type ListProvisionedSCIMGroupsEnterpriseOptions struct {
 
 // GetProvisionedSCIMGroupEnterpriseOptions represents query parameters for GetProvisionedSCIMGroup.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#get-scim-provisioning-information-for-an-enterprise-group
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#get-scim-provisioning-information-for-an-enterprise-group
 type GetProvisionedSCIMGroupEnterpriseOptions struct {
 	// Excludes the specified attributes from being returned in the results.
 	ExcludedAttributes *string `url:"excludedAttributes,omitempty"`
@@ -90,7 +90,7 @@ type GetProvisionedSCIMGroupEnterpriseOptions struct {
 
 // SCIMEnterpriseUserAttributes represents supported SCIM enterprise user attributes, and represents the result of calling UpdateSCIMUserAttribute.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#supported-scim-user-attributes
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#supported-scim-user-attributes
 type SCIMEnterpriseUserAttributes struct {
 	DisplayName string                     `json:"displayName"`     // Human-readable name for a user
 	Name        *SCIMEnterpriseUserName    `json:"name,omitempty"`  // The user's full name
@@ -140,7 +140,7 @@ type SCIMEnterpriseUsers struct {
 
 // ListProvisionedSCIMUsersEnterpriseOptions represents query parameters for ListProvisionedSCIMUsers.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-scim-provisioned-identities-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#list-scim-provisioned-identities-for-an-enterprise
 type ListProvisionedSCIMUsersEnterpriseOptions struct {
 	// If specified, only results that match the specified filter will be returned.
 	// Possible filters are `userName`, `externalId`, `id`, and `displayName`. For example, `externalId eq "a123"`.
@@ -155,7 +155,7 @@ type ListProvisionedSCIMUsersEnterpriseOptions struct {
 
 // SCIMEnterpriseAttribute represents attribute operations for UpdateSCIMGroupAttribute or UpdateSCIMUserAttribute.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-group
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#update-an-attribute-for-a-scim-enterprise-group
 type SCIMEnterpriseAttribute struct {
 	Schemas    []string                            `json:"schemas"`    // The URIs that are used to indicate the namespaces for a SCIM patch operation.
 	Operations []*SCIMEnterpriseAttributeOperation `json:"Operations"` // Set of operations to be performed.
@@ -174,7 +174,7 @@ type SCIMEnterpriseAttributeOperation struct {
 // exclude the specified attributes, e.g. `members` to exclude members from the
 // response.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#list-provisioned-scim-groups-for-an-enterprise
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Groups
 func (s *EnterpriseService) ListProvisionedSCIMGroups(ctx context.Context, enterprise string, opts *ListProvisionedSCIMGroupsEnterpriseOptions) (*SCIMEnterpriseGroups, *Response, error) {
@@ -205,7 +205,7 @@ func (s *EnterpriseService) ListProvisionedSCIMGroups(ctx context.Context, enter
 // as external group members. Providers are responsible for maintaining a
 // mapping between the `externalId` and `id` for each user.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#list-scim-provisioned-identities-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#list-scim-provisioned-identities-for-an-enterprise
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Users
 func (s *EnterpriseService) ListProvisionedSCIMUsers(ctx context.Context, enterprise string, opts *ListProvisionedSCIMUsersEnterpriseOptions) (*SCIMEnterpriseUsers, *Response, error) {
@@ -236,7 +236,7 @@ func (s *EnterpriseService) ListProvisionedSCIMUsers(ctx context.Context, enterp
 // existing group information that you don't provide will be removed, including group membership. To update only
 // specific attributes, refer to the `Enterprise.UpdateSCIMGroupAttribute()` method.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#set-scim-information-for-a-provisioned-enterprise-group
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#set-scim-information-for-a-provisioned-enterprise-group
 //
 //meta:operation PUT /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
 func (s *EnterpriseService) SetProvisionedSCIMGroup(ctx context.Context, enterprise, scimGroupID string, group SCIMEnterpriseGroupAttributes) (*SCIMEnterpriseGroupAttributes, *Response, error) {
@@ -264,7 +264,7 @@ func (s *EnterpriseService) SetProvisionedSCIMGroup(ctx context.Context, enterpr
 //
 // **Warning**: Setting `active: false` will suspend a user, and their handle and email will be obfuscated.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#set-scim-information-for-a-provisioned-enterprise-user
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#set-scim-information-for-a-provisioned-enterprise-user
 //
 //meta:operation PUT /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
 func (s *EnterpriseService) SetProvisionedSCIMUser(ctx context.Context, enterprise, scimUserID string, user SCIMEnterpriseUserAttributes) (*SCIMEnterpriseUserAttributes, *Response, error) {
@@ -294,7 +294,7 @@ func (s *EnterpriseService) SetProvisionedSCIMUser(ctx context.Context, enterpri
 // You can submit group memberships individually or in batches for improved
 // efficiency.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-group
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#update-an-attribute-for-a-scim-enterprise-group
 //
 //meta:operation PATCH /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
 func (s *EnterpriseService) UpdateSCIMGroupAttribute(ctx context.Context, enterprise, scimGroupID string, attribute SCIMEnterpriseAttribute) (*SCIMEnterpriseGroupAttributes, *Response, error) {
@@ -326,7 +326,7 @@ func (s *EnterpriseService) UpdateSCIMGroupAttribute(ctx context.Context, enterp
 // Warning: Setting `active: false` will suspend a user, and their handle and
 // email will be obfuscated.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#update-an-attribute-for-a-scim-enterprise-user
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#update-an-attribute-for-a-scim-enterprise-user
 //
 //meta:operation PATCH /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
 func (s *EnterpriseService) UpdateSCIMUserAttribute(ctx context.Context, enterprise, scimUserID string, attribute SCIMEnterpriseAttribute) (*SCIMEnterpriseUserAttributes, *Response, error) {
@@ -348,7 +348,7 @@ func (s *EnterpriseService) UpdateSCIMUserAttribute(ctx context.Context, enterpr
 
 // ProvisionSCIMGroup creates a SCIM group for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#provision-a-scim-enterprise-group
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#provision-a-scim-enterprise-group
 //
 //meta:operation POST /scim/v2/enterprises/{enterprise}/Groups
 func (s *EnterpriseService) ProvisionSCIMGroup(ctx context.Context, enterprise string, group SCIMEnterpriseGroupAttributes) (*SCIMEnterpriseGroupAttributes, *Response, error) {
@@ -370,7 +370,7 @@ func (s *EnterpriseService) ProvisionSCIMGroup(ctx context.Context, enterprise s
 
 // ProvisionSCIMUser creates an external identity for a new SCIM enterprise user.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#provision-a-scim-enterprise-user
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#provision-a-scim-enterprise-user
 //
 //meta:operation POST /scim/v2/enterprises/{enterprise}/Users
 func (s *EnterpriseService) ProvisionSCIMUser(ctx context.Context, enterprise string, user SCIMEnterpriseUserAttributes) (*SCIMEnterpriseUserAttributes, *Response, error) {
@@ -396,7 +396,7 @@ func (s *EnterpriseService) ProvisionSCIMUser(ctx context.Context, enterprise st
 // attributes from being returned in the results. Using this parameter can
 // speed up response time.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#get-scim-provisioning-information-for-an-enterprise-group
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#get-scim-provisioning-information-for-an-enterprise-group
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
 func (s *EnterpriseService) GetProvisionedSCIMGroup(ctx context.Context, enterprise, scimGroupID string, opts *GetProvisionedSCIMGroupEnterpriseOptions) (*SCIMEnterpriseGroupAttributes, *Response, error) {
@@ -423,7 +423,7 @@ func (s *EnterpriseService) GetProvisionedSCIMGroup(ctx context.Context, enterpr
 
 // GetProvisionedSCIMUser gets information about a SCIM user.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#get-scim-provisioning-information-for-an-enterprise-user
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#get-scim-provisioning-information-for-an-enterprise-user
 //
 //meta:operation GET /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
 func (s *EnterpriseService) GetProvisionedSCIMUser(ctx context.Context, enterprise, scimUserID string) (*SCIMEnterpriseUserAttributes, *Response, error) {
@@ -446,7 +446,7 @@ func (s *EnterpriseService) GetProvisionedSCIMUser(ctx context.Context, enterpri
 
 // DeleteSCIMGroup deletes a SCIM group from an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#delete-a-scim-group-from-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#delete-a-scim-group-from-an-enterprise
 //
 //meta:operation DELETE /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
 func (s *EnterpriseService) DeleteSCIMGroup(ctx context.Context, enterprise, scimGroupID string) (*Response, error) {
@@ -467,7 +467,7 @@ func (s *EnterpriseService) DeleteSCIMGroup(ctx context.Context, enterprise, sci
 // avatar, PATs, SSH keys, OAuth authorizations, GPG keys, and SAML mappings.
 // This action is irreversible.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim#delete-a-scim-user-from-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#delete-a-scim-user-from-an-enterprise
 //
 //meta:operation DELETE /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
 func (s *EnterpriseService) DeleteSCIMUser(ctx context.Context, enterprise, scimUserID string) (*Response, error) {
