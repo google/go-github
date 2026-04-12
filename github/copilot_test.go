@@ -2909,7 +2909,7 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 		fmt.Fprint(w, `[{invalid JSON`)
 	})
 	urlBadJSON := client.BaseURL.String() + "path/to/download/badjson"
-	_, _, err = client.Copilot.DownloadCopilotMetrics(ctx, urlBadJson)
+	_, _, err = client.Copilot.DownloadCopilotMetrics(ctx, urlBadJSON)
 	if err == nil {
 		t.Error("Copilot.DownloadCopilotMetrics expected error for bad JSON, got none")
 	}
