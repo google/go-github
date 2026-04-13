@@ -551,6 +551,27 @@ func WithVersion(version string) RequestOption {
 	}
 }
 
+// containsDotDotPathSegment reports whether urlStr contains ".." as a path
+// segment (e.g. "a/../b"). It does not match ".." embedded within a segment
+// (e.g. "file..txt"). The check is performed only on the path portion of the
+// URL, ignoring any query string.
+func containsDotDotPathSegment(urlStr string) bool {
+	if !strings.Contains(urlStr, "..") {
+		return false
+	}
+	// Only check the path portion, ignore query string.
+	path := urlStr
+	if i := strings.IndexByte(path, '?'); i >= 0 {
+		path = path[:i]
+	}
+	for _, seg := range strings.Split(path, "/") {
+		if seg == ".." {
+			return true
+		}
+	}
+	return false
+}
+
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash. If
@@ -559,6 +580,10 @@ func WithVersion(version string) RequestOption {
 func (c *Client) NewRequest(method, urlStr string, body any, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
+	}
+
+	if containsDotDotPathSegment(urlStr) {
+		return nil, ErrPathForbidden
 	}
 
 	u, err := c.BaseURL.Parse(urlStr)
@@ -607,6 +632,10 @@ func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOp
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 
+	if containsDotDotPathSegment(urlStr) {
+		return nil, ErrPathForbidden
+	}
+
 	u, err := c.BaseURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
@@ -638,6 +667,11 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 	if !strings.HasSuffix(c.UploadURL.Path, "/") {
 		return nil, fmt.Errorf("uploadURL must have a trailing slash, but %q does not", c.UploadURL)
 	}
+
+	if containsDotDotPathSegment(urlStr) {
+		return nil, ErrPathForbidden
+	}
+
 	u, err := c.UploadURL.Parse(urlStr)
 	if err != nil {
 		return nil, err

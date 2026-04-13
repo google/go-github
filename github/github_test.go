@@ -786,6 +786,72 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 	}
 }
 
+func TestContainsDotDotPathSegment(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		input string
+		want  bool
+	}{
+		{"repos/o/r/contents/file.txt", false},
+		{"repos/o/r/contents/dir/file.txt", false},
+		{"repos/o/r/contents/file..txt", false},
+		{"repos/o/r?q=a..b", false},
+		{"repos/../admin/users", true},
+		{"repos/x/../../../admin", true},
+		{"../admin", true},
+		{"repos/o/r/contents/..", true},
+		{"repos/o/r/contents/../secrets", true},
+	}
+	for _, tt := range tests {
+		if got := containsDotDotPathSegment(tt.input); got != tt.want {
+			t.Errorf("containsDotDotPathSegment(%q) = %v, want %v", tt.input, got, tt.want)
+		}
+	}
+}
+
+func TestNewRequest_pathTraversal(t *testing.T) {
+	t.Parallel()
+	c := NewClient(nil)
+
+	tests := []struct {
+		urlStr    string
+		wantError bool
+	}{
+		{"repos/o/r/readme", false},
+		{"repos/o/r/contents/file..txt", false},
+		{"repos/x/../../../admin/users", true},
+		{"repos/../admin", true},
+	}
+	for _, tt := range tests {
+		_, err := c.NewRequest("GET", tt.urlStr, nil)
+		if tt.wantError && !errors.Is(err, ErrPathForbidden) {
+			t.Errorf("NewRequest(%q): want ErrPathForbidden, got %v", tt.urlStr, err)
+		} else if !tt.wantError && err != nil {
+			t.Errorf("NewRequest(%q): unexpected error: %v", tt.urlStr, err)
+		}
+	}
+}
+
+func TestNewFormRequest_pathTraversal(t *testing.T) {
+	t.Parallel()
+	c := NewClient(nil)
+
+	_, err := c.NewFormRequest("repos/x/../../../admin", nil)
+	if !errors.Is(err, ErrPathForbidden) {
+		t.Fatalf("NewFormRequest with path traversal: want ErrPathForbidden, got %v", err)
+	}
+}
+
+func TestNewUploadRequest_pathTraversal(t *testing.T) {
+	t.Parallel()
+	c := NewClient(nil)
+
+	_, err := c.NewUploadRequest("repos/x/../../../admin", nil, 0, "")
+	if !errors.Is(err, ErrPathForbidden) {
+		t.Fatalf("NewUploadRequest with path traversal: want ErrPathForbidden, got %v", err)
+	}
+}
+
 func TestNewFormRequest(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
