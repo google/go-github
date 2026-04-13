@@ -547,4 +547,5 @@ var skipServiceMethod = map[string]bool{
 	"BillingService.GetOrganizationStorageBilling":  true,
 	"BillingService.GetPackagesBilling":             true,
 	"BillingService.GetStorageBilling":              true,
+	"CopilotService.DownloadCopilotMetrics":         true,
 }

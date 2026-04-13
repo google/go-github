@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"time"
 )
 
@@ -799,4 +800,33 @@ func (s *CopilotService) GetOrganizationUsersMetricsReport(ctx context.Context, 
 	}
 
 	return report, resp, nil
+}
+
+// DownloadCopilotMetrics downloads a Copilot metrics report from the provided download link
+// and returns the metric data. This can be used to download metrics from a link returned by
+// GetEnterpriseDailyMetricsReport, GetEnterpriseMetricsReport, GetEnterpriseUsersDailyMetricsReport,
+// GetEnterpriseUsersMetricsReport, GetOrganizationDailyMetricsReport, GetOrganizationMetricsReport,
+// GetOrganizationUsersDailyMetricsReport, GetOrganizationUsersMetricsReport.
+func (s *CopilotService) DownloadCopilotMetrics(ctx context.Context, url string) ([]*CopilotMetrics, *Response, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	resp, err := s.client.client.Do(req)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer resp.Body.Close()
+
+	if err := CheckResponse(resp); err != nil {
+		return nil, newResponse(resp), err
+	}
+
+	var metrics []*CopilotMetrics
+	if err := json.NewDecoder(resp.Body).Decode(&metrics); err != nil {
+		return nil, newResponse(resp), err
+	}
+
+	return metrics, newResponse(resp), nil
 }
