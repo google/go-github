@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -564,12 +565,7 @@ func containsDotDotPathSegment(urlStr string) bool {
 	if i := strings.IndexByte(path, '?'); i >= 0 {
 		path = path[:i]
 	}
-	for _, seg := range strings.Split(path, "/") {
-		if seg == ".." {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(strings.Split(path, "/"), "..")
 }
 
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
