@@ -1873,3 +1873,8 @@ func (e *DeploymentProtectionRuleEvent) GetRunID() (int64, error) {
 	}
 	return runID, nil
 }
+
+// withContext returns a shallow copy of req with its context changed to ctx.
+func withContext(ctx context.Context, req *http.Request) *http.Request {
+	return req.WithContext(ctx)
+}
