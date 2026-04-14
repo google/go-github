@@ -786,41 +786,36 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 	}
 }
 
-func TestUrlContainsDotDotPathSegment(t *testing.T) {
+func TestCheckURLPathTraversal(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
 		input   string
-		want    bool
-		wantErr bool
+		wantErr error
 	}{
-		{"repos/o/r/contents/file.txt", false, false},
-		{"repos/o/r/contents/dir/file.txt", false, false},
-		{"repos/o/r/contents/file..txt", false, false},
-		{"repos/o/r?q=a..b", false, false},
-		{"repos/../admin/users", true, false},
-		{"repos/x/../../../admin", true, false},
-		{"../admin", true, false},
-		{"repos/o/r/contents/..", true, false},
-		{"repos/o/r/contents/../secrets", true, false},
+		{"repos/o/r/contents/file.txt", nil},
+		{"repos/o/r/contents/dir/file.txt", nil},
+		{"repos/o/r/contents/file..txt", nil},
+		{"repos/o/r?q=a..b", nil},
+		{"repos/../admin/users", ErrPathForbidden},
+		{"repos/x/../../../admin", ErrPathForbidden},
+		{"../admin", ErrPathForbidden},
+		{"repos/o/r/contents/..", ErrPathForbidden},
+		{"repos/o/r/contents/../secrets", ErrPathForbidden},
 		// Full URLs with scheme.
-		{"https://api.github.com/repos/../admin", true, false},
-		{"https://api.github.com/repos/o/r/contents/file.txt", false, false},
-		{"https://api.github.com/repos/o/r/contents/file..txt", false, false},
+		{"https://api.github.com/repos/../admin", ErrPathForbidden},
+		{"https://api.github.com/repos/o/r/contents/file.txt", nil},
+		{"https://api.github.com/repos/o/r/contents/file..txt", nil},
 		// URL with fragment.
-		{"repos/o/r/contents/file.txt#section", false, false},
-		{"repos/../admin#frag", true, false},
+		{"repos/o/r/contents/file.txt#section", nil},
+		{"repos/../admin#frag", ErrPathForbidden},
 		// URL with userinfo.
-		{"https://user:pass@api.github.com/repos/../admin", true, false},
-		{"https://user:pass@api.github.com/repos/o/r", false, false},
+		{"https://user:pass@api.github.com/repos/../admin", ErrPathForbidden},
+		{"https://user:pass@api.github.com/repos/o/r", nil},
 	}
 	for _, tt := range tests {
-		got, err := urlContainsDotDotPathSegment(tt.input)
-		if (err != nil) != tt.wantErr {
-			t.Errorf("urlContainsDotDotPathSegment(%q) error = %v, wantErr %v", tt.input, err, tt.wantErr)
-			continue
-		}
-		if got != tt.want {
-			t.Errorf("urlContainsDotDotPathSegment(%q) = %v, want %v", tt.input, got, tt.want)
+		err := checkURLPathTraversal(tt.input)
+		if !errors.Is(err, tt.wantErr) {
+			t.Errorf("checkURLPathTraversal(%q) = %v, want %v", tt.input, err, tt.wantErr)
 		}
 	}
 }

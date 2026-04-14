@@ -702,36 +702,6 @@ func TestRepositoriesService_GetContents_Directory(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_CreateFile_PathWithParent(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-	ctx := t.Context()
-	_, _, err := client.Repositories.CreateFile(ctx, "o", "r", "some/../other", nil)
-	if err == nil {
-		t.Fatal("Repositories.CreateFile expected error for path with '..' but got none")
-	}
-}
-
-func TestRepositoriesService_UpdateFile_PathWithParent(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-	ctx := t.Context()
-	_, _, err := client.Repositories.UpdateFile(ctx, "o", "r", "some/../other", nil)
-	if err == nil {
-		t.Fatal("Repositories.UpdateFile expected error for path with '..' but got none")
-	}
-}
-
-func TestRepositoriesService_DeleteFile_PathWithParent(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-	ctx := t.Context()
-	_, _, err := client.Repositories.DeleteFile(ctx, "o", "r", "some/../other", nil)
-	if err == nil {
-		t.Fatal("Repositories.DeleteFile expected error for path with '..' but got none")
-	}
-}
-
 func TestRepositoriesService_CreateFile(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
