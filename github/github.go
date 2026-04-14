@@ -552,20 +552,19 @@ func WithVersion(version string) RequestOption {
 	}
 }
 
-// containsDotDotPathSegment reports whether urlStr contains ".." as a path
+// urlContainsDotDotPathSegment reports whether urlStr contains ".." as a path
 // segment (e.g. "a/../b"). It does not match ".." embedded within a segment
 // (e.g. "file..txt"). The check is performed only on the path portion of the
-// URL, ignoring any query string.
-func containsDotDotPathSegment(urlStr string) bool {
+// URL, ignoring any query string or fragment.
+func urlContainsDotDotPathSegment(urlStr string) (bool, error) {
 	if !strings.Contains(urlStr, "..") {
-		return false
+		return false, nil
 	}
-	// Only check the path portion, ignore query string.
-	path := urlStr
-	if i := strings.IndexByte(path, '?'); i >= 0 {
-		path = path[:i]
+	u, err := url.Parse(urlStr)
+	if err != nil {
+		return false, err
 	}
-	return slices.Contains(strings.Split(path, "/"), "..")
+	return slices.Contains(strings.Split(u.Path, "/"), ".."), nil
 }
 
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
@@ -578,7 +577,9 @@ func (c *Client) NewRequest(method, urlStr string, body any, opts ...RequestOpti
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 
-	if containsDotDotPathSegment(urlStr) {
+	if hasDotDot, err := urlContainsDotDotPathSegment(urlStr); err != nil {
+		return nil, err
+	} else if hasDotDot {
 		return nil, ErrPathForbidden
 	}
 
@@ -628,7 +629,9 @@ func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOp
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 
-	if containsDotDotPathSegment(urlStr) {
+	if hasDotDot, err := urlContainsDotDotPathSegment(urlStr); err != nil {
+		return nil, err
+	} else if hasDotDot {
 		return nil, ErrPathForbidden
 	}
 
@@ -664,7 +667,9 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 		return nil, fmt.Errorf("uploadURL must have a trailing slash, but %q does not", c.UploadURL)
 	}
 
-	if containsDotDotPathSegment(urlStr) {
+	if hasDotDot, err := urlContainsDotDotPathSegment(urlStr); err != nil {
+		return nil, err
+	} else if hasDotDot {
 		return nil, ErrPathForbidden
 	}
 

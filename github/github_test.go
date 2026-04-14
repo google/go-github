@@ -786,25 +786,41 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 	}
 }
 
-func TestContainsDotDotPathSegment(t *testing.T) {
+func TestUrlContainsDotDotPathSegment(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
-		input string
-		want  bool
+		input   string
+		want    bool
+		wantErr bool
 	}{
-		{"repos/o/r/contents/file.txt", false},
-		{"repos/o/r/contents/dir/file.txt", false},
-		{"repos/o/r/contents/file..txt", false},
-		{"repos/o/r?q=a..b", false},
-		{"repos/../admin/users", true},
-		{"repos/x/../../../admin", true},
-		{"../admin", true},
-		{"repos/o/r/contents/..", true},
-		{"repos/o/r/contents/../secrets", true},
+		{"repos/o/r/contents/file.txt", false, false},
+		{"repos/o/r/contents/dir/file.txt", false, false},
+		{"repos/o/r/contents/file..txt", false, false},
+		{"repos/o/r?q=a..b", false, false},
+		{"repos/../admin/users", true, false},
+		{"repos/x/../../../admin", true, false},
+		{"../admin", true, false},
+		{"repos/o/r/contents/..", true, false},
+		{"repos/o/r/contents/../secrets", true, false},
+		// Full URLs with scheme.
+		{"https://api.github.com/repos/../admin", true, false},
+		{"https://api.github.com/repos/o/r/contents/file.txt", false, false},
+		{"https://api.github.com/repos/o/r/contents/file..txt", false, false},
+		// URL with fragment.
+		{"repos/o/r/contents/file.txt#section", false, false},
+		{"repos/../admin#frag", true, false},
+		// URL with userinfo.
+		{"https://user:pass@api.github.com/repos/../admin", true, false},
+		{"https://user:pass@api.github.com/repos/o/r", false, false},
 	}
 	for _, tt := range tests {
-		if got := containsDotDotPathSegment(tt.input); got != tt.want {
-			t.Errorf("containsDotDotPathSegment(%q) = %v, want %v", tt.input, got, tt.want)
+		got, err := urlContainsDotDotPathSegment(tt.input)
+		if (err != nil) != tt.wantErr {
+			t.Errorf("urlContainsDotDotPathSegment(%q) error = %v, wantErr %v", tt.input, err, tt.wantErr)
+			continue
+		}
+		if got != tt.want {
+			t.Errorf("urlContainsDotDotPathSegment(%q) = %v, want %v", tt.input, got, tt.want)
 		}
 	}
 }
