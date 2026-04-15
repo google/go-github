@@ -612,7 +612,7 @@ func (s *CopilotService) GetOrganizationTeamMetrics(ctx context.Context, org, te
 
 // GetEnterpriseDailyMetricsReport gets a report containing Copilot metrics for a single day for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-enterprise-usage-metrics-for-a-specific-day
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-enterprise-usage-metrics-for-a-specific-day
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-1-day
 func (s *CopilotService) GetEnterpriseDailyMetricsReport(ctx context.Context, enterprise string, opts *CopilotMetricsReportOptions) (*CopilotDailyMetricsReport, *Response, error) {
@@ -638,7 +638,7 @@ func (s *CopilotService) GetEnterpriseDailyMetricsReport(ctx context.Context, en
 
 // GetEnterpriseMetricsReport gets a report containing Copilot metrics for a 28-day rolling window for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-enterprise-usage-metrics
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-enterprise-usage-metrics
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-28-day/latest
 func (s *CopilotService) GetEnterpriseMetricsReport(ctx context.Context, enterprise string) (*CopilotMetricsReport, *Response, error) {
@@ -660,7 +660,7 @@ func (s *CopilotService) GetEnterpriseMetricsReport(ctx context.Context, enterpr
 
 // GetEnterpriseUsersDailyMetricsReport gets a report containing Copilot user metrics for a single day for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-users-usage-metrics-for-a-specific-day
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-users-usage-metrics-for-a-specific-day
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/users-1-day
 func (s *CopilotService) GetEnterpriseUsersDailyMetricsReport(ctx context.Context, enterprise string, opts *CopilotMetricsReportOptions) (*CopilotDailyMetricsReport, *Response, error) {
@@ -686,7 +686,7 @@ func (s *CopilotService) GetEnterpriseUsersDailyMetricsReport(ctx context.Contex
 
 // GetEnterpriseUsersMetricsReport gets a report containing Copilot user metrics for a 28-day rolling window for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-users-usage-metrics
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-users-usage-metrics
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/users-28-day/latest
 func (s *CopilotService) GetEnterpriseUsersMetricsReport(ctx context.Context, enterprise string) (*CopilotMetricsReport, *Response, error) {
@@ -708,7 +708,7 @@ func (s *CopilotService) GetEnterpriseUsersMetricsReport(ctx context.Context, en
 
 // GetOrganizationDailyMetricsReport gets a report containing Copilot metrics for a single day for an organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-usage-metrics-for-a-specific-day
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-usage-metrics-for-a-specific-day
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/organization-1-day
 func (s *CopilotService) GetOrganizationDailyMetricsReport(ctx context.Context, org string, opts *CopilotMetricsReportOptions) (*CopilotDailyMetricsReport, *Response, error) {
@@ -734,7 +734,7 @@ func (s *CopilotService) GetOrganizationDailyMetricsReport(ctx context.Context, 
 
 // GetOrganizationMetricsReport gets a report containing Copilot metrics for a 28-day rolling window for an organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-usage-metrics
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-usage-metrics
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/organization-28-day/latest
 func (s *CopilotService) GetOrganizationMetricsReport(ctx context.Context, org string) (*CopilotMetricsReport, *Response, error) {
@@ -756,7 +756,7 @@ func (s *CopilotService) GetOrganizationMetricsReport(ctx context.Context, org s
 
 // GetOrganizationUsersDailyMetricsReport gets a report containing Copilot user metrics for a single day for an organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-users-usage-metrics-for-a-specific-day
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-users-usage-metrics-for-a-specific-day
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/users-1-day
 func (s *CopilotService) GetOrganizationUsersDailyMetricsReport(ctx context.Context, org string, opts *CopilotMetricsReportOptions) (*CopilotDailyMetricsReport, *Response, error) {
@@ -782,7 +782,7 @@ func (s *CopilotService) GetOrganizationUsersDailyMetricsReport(ctx context.Cont
 
 // GetOrganizationUsersMetricsReport gets a report containing Copilot user metrics for a 28-day rolling window for an organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-users-usage-metrics
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-users-usage-metrics
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/users-28-day/latest
 func (s *CopilotService) GetOrganizationUsersMetricsReport(ctx context.Context, org string) (*CopilotMetricsReport, *Response, error) {

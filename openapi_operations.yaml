@@ -27,7 +27,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 4e819bd9aa9411232e1c34e7d1ffaaffc224e94b
+openapi_commit: 2b6e93c2823a6f5dc1f6a3727b6b53eafa407fb2
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -586,6 +586,21 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/oidc#set-the-github-actions-oidc-custom-issuer-policy-for-an-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/actions/oidc/customization/properties/repo
+    documentation_url: https://docs.github.com/rest/actions/oidc#list-oidc-custom-property-inclusions-for-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/actions/oidc/customization/properties/repo
+    documentation_url: https://docs.github.com/rest/actions/oidc#create-an-oidc-custom-property-inclusion-for-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /enterprises/{enterprise}/actions/oidc/customization/properties/repo/{custom_property_name}
+    documentation_url: https://docs.github.com/rest/actions/oidc#delete-an-oidc-custom-property-inclusion-for-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/actions/permissions
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/actions/permissions#get-github-actions-permissions-for-an-enterprise
     openapi_files:
@@ -1025,20 +1040,39 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-1-day
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-usage-metrics#get-copilot-enterprise-usage-metrics-for-a-specific-day
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-enterprise-usage-metrics-for-a-specific-day
     openapi_files:
+      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-28-day/latest
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-usage-metrics#get-copilot-enterprise-usage-metrics
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-enterprise-usage-metrics
     openapi_files:
+      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/metrics/reports/users-1-day
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-usage-metrics#get-copilot-users-usage-metrics-for-a-specific-day
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-users-usage-metrics-for-a-specific-day
     openapi_files:
+      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/metrics/reports/users-28-day/latest
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-usage-metrics#get-copilot-users-usage-metrics
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-users-usage-metrics
     openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /enterprises/{enterprise}/copilot/policies/coding_agent
+    documentation_url: https://docs.github.com/rest/copilot/copilot-coding-agent-management#set-the-coding-agent-policy-for-an-enterprise
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /enterprises/{enterprise}/copilot/policies/coding_agent/organizations
+    documentation_url: https://docs.github.com/rest/copilot/copilot-coding-agent-management#remove-organizations-from-the-enterprise-coding-agent-policy
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/copilot/policies/coding_agent/organizations
+    documentation_url: https://docs.github.com/rest/copilot/copilot-coding-agent-management#add-organizations-to-the-enterprise-coding-agent-policy
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/dependabot/alerts
     documentation_url: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-an-enterprise
@@ -1046,6 +1080,10 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.20/ghes-3.20.json
+  - name: GET /enterprises/{enterprise}/dismissal-requests/secret-scanning
+    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/secret-scanning/alert-dismissal-requests#list-alert-dismissal-requests-for-secret-scanning-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/enterprise-roles
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/enterprise-admin/enterprise-roles#get-all-enterprise-roles-for-an-enterprise
     openapi_files:
@@ -1791,24 +1829,6 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
-  - name: GET /organizations/{org}/dependabot/repository-access
-    documentation_url: https://docs.github.com/rest/dependabot/repository-access#lists-the-repositories-dependabot-can-access-in-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.20/ghes-3.20.json
-  - name: PATCH /organizations/{org}/dependabot/repository-access
-    documentation_url: https://docs.github.com/rest/dependabot/repository-access#updates-dependabots-repository-access-list-for-an-organization
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.20/ghes-3.20.json
-  - name: PUT /organizations/{org}/dependabot/repository-access/default-level
-    documentation_url: https://docs.github.com/rest/dependabot/repository-access#set-the-default-repository-access-level-for-dependabot
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-      - descriptions/ghes-3.20/ghes-3.20.json
   - name: GET /organizations/{org}/org-properties/values
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/orgs/custom-properties-for-orgs#get-all-custom-property-values-for-an-organization
     openapi_files:
@@ -1952,6 +1972,21 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: PATCH /orgs/{org}/actions/hosted-runners/{hosted_runner_id}
     documentation_url: https://docs.github.com/rest/actions/hosted-runners#update-a-github-hosted-runner-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/actions/oidc/customization/properties/repo
+    documentation_url: https://docs.github.com/rest/actions/oidc#list-oidc-custom-property-inclusions-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/actions/oidc/customization/properties/repo
+    documentation_url: https://docs.github.com/rest/actions/oidc#create-an-oidc-custom-property-inclusion-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/actions/oidc/customization/properties/repo/{custom_property_name}
+    documentation_url: https://docs.github.com/rest/actions/oidc#delete-an-oidc-custom-property-inclusion-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -2653,6 +2688,36 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/copilot/coding-agent/permissions
+    documentation_url: https://docs.github.com/rest/copilot/copilot-coding-agent-management#get-copilot-coding-agent-permissions-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/copilot/coding-agent/permissions
+    documentation_url: https://docs.github.com/rest/copilot/copilot-coding-agent-management#set-copilot-coding-agent-permissions-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/copilot/coding-agent/permissions/repositories
+    documentation_url: https://docs.github.com/rest/copilot/copilot-coding-agent-management#list-repositories-enabled-for-copilot-coding-agent-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/copilot/coding-agent/permissions/repositories
+    documentation_url: https://docs.github.com/rest/copilot/copilot-coding-agent-management#set-selected-repositories-for-copilot-coding-agent-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /orgs/{org}/copilot/coding-agent/permissions/repositories/{repository_id}
+    documentation_url: https://docs.github.com/rest/copilot/copilot-coding-agent-management#disable-a-repository-for-copilot-coding-agent-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /orgs/{org}/copilot/coding-agent/permissions/repositories/{repository_id}
+    documentation_url: https://docs.github.com/rest/copilot/copilot-coding-agent-management#enable-a-repository-for-copilot-coding-agent-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/copilot/content_exclusion
     documentation_url: https://docs.github.com/rest/copilot/copilot-content-exclusion-management#get-copilot-content-exclusion-rules-for-an-organization
     openapi_files:
@@ -2669,20 +2734,24 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/copilot/metrics/reports/organization-1-day
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-usage-metrics#get-copilot-organization-usage-metrics-for-a-specific-day
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-organization-usage-metrics-for-a-specific-day
     openapi_files:
+      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/copilot/metrics/reports/organization-28-day/latest
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-usage-metrics#get-copilot-organization-usage-metrics
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-organization-usage-metrics
     openapi_files:
+      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/copilot/metrics/reports/users-1-day
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-usage-metrics#get-copilot-organization-users-usage-metrics-for-a-specific-day
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-organization-users-usage-metrics-for-a-specific-day
     openapi_files:
+      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/copilot/metrics/reports/users-28-day/latest
-    documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/copilot/copilot-usage-metrics#get-copilot-organization-users-usage-metrics
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-organization-users-usage-metrics
     openapi_files:
+      - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/credential-authorizations
     documentation_url: https://docs.github.com/enterprise-cloud@latest//rest/orgs/orgs#list-saml-sso-authorizations-for-an-organization
@@ -2735,6 +2804,24 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/dependabot/alerts
     documentation_url: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+      - descriptions/ghes-3.20/ghes-3.20.json
+  - name: GET /orgs/{org}/dependabot/repository-access
+    documentation_url: https://docs.github.com/rest/dependabot/repository-access#lists-the-repositories-dependabot-can-access-in-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+      - descriptions/ghes-3.20/ghes-3.20.json
+  - name: PATCH /orgs/{org}/dependabot/repository-access
+    documentation_url: https://docs.github.com/rest/dependabot/repository-access#updates-dependabots-repository-access-list-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+      - descriptions/ghes-3.20/ghes-3.20.json
+  - name: PUT /orgs/{org}/dependabot/repository-access/default-level
+    documentation_url: https://docs.github.com/rest/dependabot/repository-access#set-the-default-repository-access-level-for-dependabot
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -5309,6 +5396,16 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.20/ghes-3.20.json
+  - name: GET /repos/{owner}/{repo}/dependency-graph/sbom/fetch-report/{sbom_uuid}
+    documentation_url: https://docs.github.com/rest/dependency-graph/sboms#fetch-a-software-bill-of-materials-sbom-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/dependency-graph/sbom/generate-report
+    documentation_url: https://docs.github.com/rest/dependency-graph/sboms#request-generation-of-a-software-bill-of-materials-sbom-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: POST /repos/{owner}/{repo}/dependency-graph/snapshots
     documentation_url: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
     openapi_files:
