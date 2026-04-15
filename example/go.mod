@@ -14,7 +14,6 @@ require (
 	go.opentelemetry.io/otel/sdk v1.43.0
 	golang.org/x/crypto v0.50.0
 	golang.org/x/term v0.42.0
-	google.golang.org/appengine v1.6.8
 )
 
 require (
@@ -51,7 +50,6 @@ require (
 	github.com/go-openapi/validate v0.25.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/certificate-transparency-go v1.3.2 // indirect
 	github.com/google/go-containerregistry v0.20.7 // indirect
 	github.com/google/go-querystring v1.2.0 // indirect
