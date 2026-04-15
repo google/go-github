@@ -200,6 +200,7 @@ type SecurityAndAnalysis struct {
 	SecretScanningPushProtection *SecretScanningPushProtection `json:"secret_scanning_push_protection,omitempty"`
 	DependabotSecurityUpdates    *DependabotSecurityUpdates    `json:"dependabot_security_updates,omitempty"`
 	SecretScanningValidityChecks *SecretScanningValidityChecks `json:"secret_scanning_validity_checks,omitempty"`
+	CodeSecurity                 *CodeSecurity                 `json:"code_security,omitempty"`
 }
 
 // RepositoryPermissions represents the permissions a user has for a repository.
@@ -263,6 +264,11 @@ func (d DependabotSecurityUpdates) String() string {
 //
 // GitHub API docs: https://docs.github.com/en/enterprise-cloud@latest/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-security-and-analysis-settings-for-your-repository#allowing-validity-checks-for-partner-patterns-in-a-repository
 type SecretScanningValidityChecks struct {
+	Status *string `json:"status,omitempty"`
+}
+
+// CodeSecurity represents the state of code security on a repository.
+type CodeSecurity struct {
 	Status *string `json:"status,omitempty"`
 }
 

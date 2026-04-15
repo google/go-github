@@ -18215,6 +18215,9 @@ func TestSecurityAndAnalysisEvent_Marshal(t *testing.T) {
 					DependabotSecurityUpdates: &DependabotSecurityUpdates{
 						Status: Ptr("enabled"),
 					},
+					CodeSecurity: &CodeSecurity{
+						Status: Ptr("enabled"),
+					},
 				},
 			},
 		},
@@ -18376,6 +18379,9 @@ func TestSecurityAndAnalysisEvent_Marshal(t *testing.T) {
 						"status": "enabled"
 					},
 					"dependabot_security_updates": {
+						"status": "enabled"
+					},
+					"code_security": {
 						"status": "enabled"
 					}
 				}

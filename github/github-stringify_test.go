@@ -2201,8 +2201,9 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 		SecretScanningPushProtection: &SecretScanningPushProtection{},
 		DependabotSecurityUpdates:    &DependabotSecurityUpdates{},
 		SecretScanningValidityChecks: &SecretScanningValidityChecks{},
+		CodeSecurity:                 &CodeSecurity{},
 	}
-	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}, SecretScanningPushProtection:github.SecretScanningPushProtection{}, DependabotSecurityUpdates:github.DependabotSecurityUpdates{}, SecretScanningValidityChecks:github.SecretScanningValidityChecks{}}`
+	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}, SecretScanningPushProtection:github.SecretScanningPushProtection{}, DependabotSecurityUpdates:github.DependabotSecurityUpdates{}, SecretScanningValidityChecks:github.SecretScanningValidityChecks{}, CodeSecurity:github.CodeSecurity{}}`
 	if got := v.String(); got != want {
 		t.Errorf("SecurityAndAnalysis.String = %v, want %v", got, want)
 	}
