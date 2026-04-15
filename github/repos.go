@@ -268,8 +268,14 @@ type SecretScanningValidityChecks struct {
 }
 
 // CodeSecurity represents the state of code security on a repository.
+//
+// GitHub API docs: https://docs.github.com/en/code-security/getting-started/github-security-features#available-with-github-code-security
 type CodeSecurity struct {
 	Status *string `json:"status,omitempty"`
+}
+
+func (c CodeSecurity) String() string {
+	return Stringify(c)
 }
 
 // List calls either RepositoriesService.ListByUser or RepositoriesService.ListByAuthenticatedUser

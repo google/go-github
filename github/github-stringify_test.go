@@ -355,6 +355,17 @@ func TestCodeResult_String(t *testing.T) {
 	}
 }
 
+func TestCodeSecurity_String(t *testing.T) {
+	t.Parallel()
+	v := CodeSecurity{
+		Status: Ptr(""),
+	}
+	want := `github.CodeSecurity{Status:""}`
+	if got := v.String(); got != want {
+		t.Errorf("CodeSecurity.String = %v, want %v", got, want)
+	}
+}
+
 func TestCombinedStatus_String(t *testing.T) {
 	t.Parallel()
 	v := CombinedStatus{
