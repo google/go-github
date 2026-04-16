@@ -3,67 +3,72 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// The commitpr command utilizes go-github as a CLI tool for
-// pushing files to a branch and creating a pull request from it.
-// It takes an auth token as an environment variable and creates
-// the commit and the PR under the account affiliated with that token.
-//
-// The purpose of this example is to show how to use refs, trees and commits to
-// create commits and pull requests.
-//
-// Note, if you want to push a single file, you probably prefer to use the
-// content API. An example is available here:
-// https://pkg.go.dev/github.com/google/go-github/v84/github#example-RepositoriesService-CreateFile
-//
-// Note, for this to work at least 1 commit is needed, so you if you use this
-// after creating a repository you might want to make sure you set `AutoInit` to
-// `true`.
+// The contents command utilizes go-github as a CLI tool for
+// downloading the contents of a file in a repository.
+// It takes an inputs of the repository owner, repository name, path to the
+// file in the repository, reference (branch, tag or commit SHA), and output
+// path for the downloaded file. It then uses the Repositories.DownloadContents
+// method to download the file and saves it to the specified output path.
 package main
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/google/go-github/v84/github"
 )
 
-// downloadContents downloads the contents of a file in a repository and returns it as a byte slice.
-func downloadContents(ctx context.Context, client *github.Client, owner, repo, path, ref string) ([]byte, error) {
-	rc, _, err := client.Repositories.DownloadContents(ctx, owner, repo, path, &github.RepositoryContentGetOptions{Ref: ref})
+func main() {
+	fmt.Println("This example will download the contents of a file from a GitHub repository.")
+
+	r := bufio.NewReader(os.Stdin)
+
+	fmt.Print("Repository Owner: ")
+	owner, _ := r.ReadString('\n')
+	owner = strings.TrimSpace(owner)
+
+	fmt.Print("Repository Name: ")
+	repo, _ := r.ReadString('\n')
+	repo = strings.TrimSpace(repo)
+
+	fmt.Print("Repository Path: ")
+	repoPath, _ := r.ReadString('\n')
+	repoPath = strings.TrimSpace(repoPath)
+
+	fmt.Print("Reference (branch, tag or commit SHA): ")
+	ref, _ := r.ReadString('\n')
+	ref = strings.TrimSpace(ref)
+
+	fmt.Print("Output Path: ")
+	outputPath, _ := r.ReadString('\n')
+	outputPath = strings.TrimSpace(outputPath)
+
+	fmt.Printf("\nDownloading %v/%v/%v at ref %v to %v...\n", owner, repo, repoPath, ref, outputPath)
+
+	client := github.NewClient(nil)
+
+	rc, _, err := client.Repositories.DownloadContents(context.Background(), owner, repo, repoPath, &github.RepositoryContentGetOptions{Ref: ref})
 	if err != nil {
-		return nil, err
+		fmt.Printf("Error: %v\n", err)
+		os.Exit(1)
 	}
 	defer rc.Close()
 
-	by, err := io.ReadAll(rc)
+	f, err := os.Create(outputPath)
 	if err != nil {
-		return nil, err
+		fmt.Printf("Error: %v\n", err)
+		os.Exit(1)
+	}
+	defer f.Close()
+
+	if _, err := io.Copy(f, rc); err != nil {
+		fmt.Printf("Error: %v\n", err)
+		os.Exit(1)
 	}
 
-	fmt.Printf("Downloaded %v/%v/%v as %d bytes\n", owner, repo, path, len(by))
-	return by, nil
-}
-
-func main() {
-	client := github.NewClient(nil)
-
-	t := []struct {
-		owner string
-		repo  string
-		path  string
-		ref   string
-	}{
-		{"google", "go-github", "README.md", "master"},
-		{"github", "rest-api-description", "descriptions/api.github.com/api.github.com.2026-03-10.yaml", "main"},
-		{"ScoopInstaller", "Main", "bucket/yq.json", "master"},
-	}
-
-	for _, v := range t {
-		if _, err := downloadContents(context.Background(), client, v.owner, v.repo, v.path, v.ref); err != nil {
-			fmt.Printf("Error: %v\n", err)
-			os.Exit(1)
-		}
-	}
+	fmt.Println("Download completed.")
 }
