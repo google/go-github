@@ -479,7 +479,7 @@ documentation for details on preview functionality.
 
 ### Calendar Versioning ###
 
-As of 2022-11-28, GitHub [has announced](https://github.blog/2022-11-28-to-infinity-and-beyond-enabling-the-future-of-githubs-rest-api-with-api-versioning/)
+As of 2022-11-28, GitHub [has announced](https://github.blog/developer-skills/github/to-infinity-and-beyond-enabling-the-future-of-githubs-rest-api-with-api-versioning/)
 that they are starting to version their v3 API based on "calendar-versioning".
 
 In practice, our goal is to make per-method version overrides (at
