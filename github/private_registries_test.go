@@ -93,8 +93,8 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 		RegistryType:          "maven_repository",
 		URL:                   "https://maven.pkg.github.com/OWNER/REPOSITORY",
 		Username:              Ptr("monalisa"),
-		EncryptedValue:        "encrypted_value",
-		KeyID:                 "key_id",
+		EncryptedValue:        Ptr("encrypted_value"),
+		KeyID:                 Ptr("key_id"),
 		Visibility:            PrivateRegistryVisibilitySelected,
 		SelectedRepositoryIDs: []int64{1, 2, 3},
 	}
@@ -108,13 +108,15 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
+		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
   "name": "MAVEN_REPOSITORY_SECRET",
   "registry_type": "maven_repository",
   "username": "monalisa",
+  "visibility": "selected",
+  "selected_repository_ids": [1, 2, 3],
   "created_at": "2019-08-10T14:59:22Z",
-  "updated_at": "2020-01-10T14:59:22Z",
-  "visibility": "selected"
+  "updated_at": "2020-01-10T14:59:22Z"
 }`)
 	})
 
@@ -125,12 +127,13 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	}
 
 	want := &PrivateRegistry{
-		Name:         Ptr("MAVEN_REPOSITORY_SECRET"),
-		RegistryType: Ptr("maven_repository"),
-		Username:     Ptr("monalisa"),
-		CreatedAt:    &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
-		UpdatedAt:    &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
-		Visibility:   Ptr(PrivateRegistryVisibilitySelected),
+		Name:                  Ptr("MAVEN_REPOSITORY_SECRET"),
+		RegistryType:          Ptr("maven_repository"),
+		Username:              Ptr("monalisa"),
+		CreatedAt:             &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
+		UpdatedAt:             &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
+		Visibility:            Ptr(PrivateRegistryVisibilitySelected),
+		SelectedRepositoryIDs: []int64{1, 2, 3},
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
 		t.Errorf("PrivateRegistries.CreateOrganizationPrivateRegistries mismatch (-want +got):\\n%v", diff)
@@ -258,46 +261,23 @@ func TestPrivateRegistries_UpdateOrganizationPrivateRegistry(t *testing.T) {
 			t.Errorf("Request body = %+v, want %+v", v, input)
 		}
 
-		fmt.Fprint(w, `{
-  "name": "MAVEN_REPOSITORY_SECRET",
-  "registry_type": "maven_repository",
-  "username": "monalisa",
-  "created_at": "2019-08-10T14:59:22Z",
-  "updated_at": "2020-01-10T14:59:22Z",
-  "visibility": "selected"
-}`)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
-	privateRegistry, _, err := client.PrivateRegistries.UpdateOrganizationPrivateRegistry(ctx, "o", "MAVEN_REPOSITORY_SECRET", *input)
+	_, err := client.PrivateRegistries.UpdateOrganizationPrivateRegistry(ctx, "o", "MAVEN_REPOSITORY_SECRET", *input)
 	if err != nil {
 		t.Fatalf("PrivateRegistries.UpdateOrganizationPrivateRegistry returned error: %v", err)
 	}
 
-	want := &PrivateRegistry{
-		Name:         Ptr("MAVEN_REPOSITORY_SECRET"),
-		RegistryType: Ptr("maven_repository"),
-		Username:     Ptr("monalisa"),
-		CreatedAt:    &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
-		UpdatedAt:    &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
-		Visibility:   Ptr(PrivateRegistryVisibilitySelected),
-	}
-	if diff := cmp.Diff(want, privateRegistry); diff != "" {
-		t.Errorf("PrivateRegistries.UpdateOrganizationPrivateRegistry mismatch (-want +got):\\n%v", diff)
-	}
-
 	const methodName = "UpdateOrganizationPrivateRegistry"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.PrivateRegistries.UpdateOrganizationPrivateRegistry(ctx, "\n", "MAVEN_REPOSITORY_SECRET", *input)
+		_, err = client.PrivateRegistries.UpdateOrganizationPrivateRegistry(ctx, "\n", "MAVEN_REPOSITORY_SECRET", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.PrivateRegistries.UpdateOrganizationPrivateRegistry(ctx, "o", "MAVEN_REPOSITORY_SECRET", *input)
-		if got != nil {
-			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
-		}
-		return resp, err
+		return client.PrivateRegistries.UpdateOrganizationPrivateRegistry(ctx, "o", "MAVEN_REPOSITORY_SECRET", *input)
 	})
 }
 

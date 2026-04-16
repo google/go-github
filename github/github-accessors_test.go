@@ -12090,17 +12090,122 @@ func TestCreateHostedRunnerRequest_GetSize(tt *testing.T) {
 	c.GetSize()
 }
 
+func TestCreateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{AccountID: &zeroValue}
+	c.GetAccountID()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetAccountID()
+	c = nil
+	c.GetAccountID()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetAudience(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{Audience: &zeroValue}
+	c.GetAudience()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetAudience()
+	c = nil
+	c.GetAudience()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetAuthType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{AuthType: &zeroValue}
+	c.GetAuthType()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetAuthType()
+	c = nil
+	c.GetAuthType()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetAwsRegion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{AwsRegion: &zeroValue}
+	c.GetAwsRegion()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetAwsRegion()
+	c = nil
+	c.GetAwsRegion()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetClientID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{ClientID: &zeroValue}
+	c.GetClientID()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetClientID()
+	c = nil
+	c.GetClientID()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetDomain(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{Domain: &zeroValue}
+	c.GetDomain()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetDomain()
+	c = nil
+	c.GetDomain()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetDomainOwner(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{DomainOwner: &zeroValue}
+	c.GetDomainOwner()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetDomainOwner()
+	c = nil
+	c.GetDomainOwner()
+}
+
 func TestCreateOrganizationPrivateRegistry_GetEncryptedValue(tt *testing.T) {
 	tt.Parallel()
-	c := &CreateOrganizationPrivateRegistry{}
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{EncryptedValue: &zeroValue}
+	c.GetEncryptedValue()
+	c = &CreateOrganizationPrivateRegistry{}
 	c.GetEncryptedValue()
 	c = nil
 	c.GetEncryptedValue()
 }
 
+func TestCreateOrganizationPrivateRegistry_GetIdentityMappingName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{IdentityMappingName: &zeroValue}
+	c.GetIdentityMappingName()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetIdentityMappingName()
+	c = nil
+	c.GetIdentityMappingName()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetJfrogOidcProviderName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{JfrogOidcProviderName: &zeroValue}
+	c.GetJfrogOidcProviderName()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetJfrogOidcProviderName()
+	c = nil
+	c.GetJfrogOidcProviderName()
+}
+
 func TestCreateOrganizationPrivateRegistry_GetKeyID(tt *testing.T) {
 	tt.Parallel()
-	c := &CreateOrganizationPrivateRegistry{}
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{KeyID: &zeroValue}
+	c.GetKeyID()
+	c = &CreateOrganizationPrivateRegistry{}
 	c.GetKeyID()
 	c = nil
 	c.GetKeyID()
@@ -12114,6 +12219,28 @@ func TestCreateOrganizationPrivateRegistry_GetRegistryType(tt *testing.T) {
 	c.GetRegistryType()
 }
 
+func TestCreateOrganizationPrivateRegistry_GetReplacesBase(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateOrganizationPrivateRegistry{ReplacesBase: &zeroValue}
+	c.GetReplacesBase()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetReplacesBase()
+	c = nil
+	c.GetReplacesBase()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetRoleName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{RoleName: &zeroValue}
+	c.GetRoleName()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetRoleName()
+	c = nil
+	c.GetRoleName()
+}
+
 func TestCreateOrganizationPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []int64{}
@@ -12123,6 +12250,17 @@ func TestCreateOrganizationPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.
 	c.GetSelectedRepositoryIDs()
 	c = nil
 	c.GetSelectedRepositoryIDs()
+}
+
+func TestCreateOrganizationPrivateRegistry_GetTenantID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationPrivateRegistry{TenantID: &zeroValue}
+	c.GetTenantID()
+	c = &CreateOrganizationPrivateRegistry{}
+	c.GetTenantID()
+	c = nil
+	c.GetTenantID()
 }
 
 func TestCreateOrganizationPrivateRegistry_GetURL(tt *testing.T) {
@@ -32917,6 +33055,17 @@ func TestPrivateRegistry_GetRegistryType(tt *testing.T) {
 	p.GetRegistryType()
 }
 
+func TestPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	p := &PrivateRegistry{SelectedRepositoryIDs: zeroValue}
+	p.GetSelectedRepositoryIDs()
+	p = &PrivateRegistry{}
+	p.GetSelectedRepositoryIDs()
+	p = nil
+	p.GetSelectedRepositoryIDs()
+}
+
 func TestPrivateRegistry_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -49829,6 +49978,83 @@ func TestUpdateHostedRunnerRequest_GetSize(tt *testing.T) {
 	u.GetSize()
 }
 
+func TestUpdateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{AccountID: &zeroValue}
+	u.GetAccountID()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetAccountID()
+	u = nil
+	u.GetAccountID()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetAudience(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{Audience: &zeroValue}
+	u.GetAudience()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetAudience()
+	u = nil
+	u.GetAudience()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetAuthType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{AuthType: &zeroValue}
+	u.GetAuthType()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetAuthType()
+	u = nil
+	u.GetAuthType()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetAwsRegion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{AwsRegion: &zeroValue}
+	u.GetAwsRegion()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetAwsRegion()
+	u = nil
+	u.GetAwsRegion()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetClientID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{ClientID: &zeroValue}
+	u.GetClientID()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetClientID()
+	u = nil
+	u.GetClientID()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetDomain(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{Domain: &zeroValue}
+	u.GetDomain()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetDomain()
+	u = nil
+	u.GetDomain()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetDomainOwner(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{DomainOwner: &zeroValue}
+	u.GetDomainOwner()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetDomainOwner()
+	u = nil
+	u.GetDomainOwner()
+}
+
 func TestUpdateOrganizationPrivateRegistry_GetEncryptedValue(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -49838,6 +50064,28 @@ func TestUpdateOrganizationPrivateRegistry_GetEncryptedValue(tt *testing.T) {
 	u.GetEncryptedValue()
 	u = nil
 	u.GetEncryptedValue()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetIdentityMappingName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{IdentityMappingName: &zeroValue}
+	u.GetIdentityMappingName()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetIdentityMappingName()
+	u = nil
+	u.GetIdentityMappingName()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetJfrogOidcProviderName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{JfrogOidcProviderName: &zeroValue}
+	u.GetJfrogOidcProviderName()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetJfrogOidcProviderName()
+	u = nil
+	u.GetJfrogOidcProviderName()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetKeyID(tt *testing.T) {
@@ -49862,6 +50110,28 @@ func TestUpdateOrganizationPrivateRegistry_GetRegistryType(tt *testing.T) {
 	u.GetRegistryType()
 }
 
+func TestUpdateOrganizationPrivateRegistry_GetReplacesBase(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateOrganizationPrivateRegistry{ReplacesBase: &zeroValue}
+	u.GetReplacesBase()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetReplacesBase()
+	u = nil
+	u.GetReplacesBase()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetRoleName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{RoleName: &zeroValue}
+	u.GetRoleName()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetRoleName()
+	u = nil
+	u.GetRoleName()
+}
+
 func TestUpdateOrganizationPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []int64{}
@@ -49871,6 +50141,17 @@ func TestUpdateOrganizationPrivateRegistry_GetSelectedRepositoryIDs(tt *testing.
 	u.GetSelectedRepositoryIDs()
 	u = nil
 	u.GetSelectedRepositoryIDs()
+}
+
+func TestUpdateOrganizationPrivateRegistry_GetTenantID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationPrivateRegistry{TenantID: &zeroValue}
+	u.GetTenantID()
+	u = &UpdateOrganizationPrivateRegistry{}
+	u.GetTenantID()
+	u = nil
+	u.GetTenantID()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetURL(tt *testing.T) {

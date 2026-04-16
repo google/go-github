@@ -9518,20 +9518,92 @@ func (c *CreateHostedRunnerRequest) GetSize() string {
 	return c.Size
 }
 
-// GetEncryptedValue returns the EncryptedValue field.
-func (c *CreateOrganizationPrivateRegistry) GetEncryptedValue() string {
-	if c == nil {
+// GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetAccountID() string {
+	if c == nil || c.AccountID == nil {
 		return ""
 	}
-	return c.EncryptedValue
+	return *c.AccountID
 }
 
-// GetKeyID returns the KeyID field.
-func (c *CreateOrganizationPrivateRegistry) GetKeyID() string {
-	if c == nil {
+// GetAudience returns the Audience field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetAudience() string {
+	if c == nil || c.Audience == nil {
 		return ""
 	}
-	return c.KeyID
+	return *c.Audience
+}
+
+// GetAuthType returns the AuthType field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetAuthType() string {
+	if c == nil || c.AuthType == nil {
+		return ""
+	}
+	return *c.AuthType
+}
+
+// GetAwsRegion returns the AwsRegion field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetAwsRegion() string {
+	if c == nil || c.AwsRegion == nil {
+		return ""
+	}
+	return *c.AwsRegion
+}
+
+// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetClientID() string {
+	if c == nil || c.ClientID == nil {
+		return ""
+	}
+	return *c.ClientID
+}
+
+// GetDomain returns the Domain field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetDomain() string {
+	if c == nil || c.Domain == nil {
+		return ""
+	}
+	return *c.Domain
+}
+
+// GetDomainOwner returns the DomainOwner field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetDomainOwner() string {
+	if c == nil || c.DomainOwner == nil {
+		return ""
+	}
+	return *c.DomainOwner
+}
+
+// GetEncryptedValue returns the EncryptedValue field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetEncryptedValue() string {
+	if c == nil || c.EncryptedValue == nil {
+		return ""
+	}
+	return *c.EncryptedValue
+}
+
+// GetIdentityMappingName returns the IdentityMappingName field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetIdentityMappingName() string {
+	if c == nil || c.IdentityMappingName == nil {
+		return ""
+	}
+	return *c.IdentityMappingName
+}
+
+// GetJfrogOidcProviderName returns the JfrogOidcProviderName field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetJfrogOidcProviderName() string {
+	if c == nil || c.JfrogOidcProviderName == nil {
+		return ""
+	}
+	return *c.JfrogOidcProviderName
+}
+
+// GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetKeyID() string {
+	if c == nil || c.KeyID == nil {
+		return ""
+	}
+	return *c.KeyID
 }
 
 // GetRegistryType returns the RegistryType field.
@@ -9542,12 +9614,36 @@ func (c *CreateOrganizationPrivateRegistry) GetRegistryType() string {
 	return c.RegistryType
 }
 
+// GetReplacesBase returns the ReplacesBase field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetReplacesBase() bool {
+	if c == nil || c.ReplacesBase == nil {
+		return false
+	}
+	return *c.ReplacesBase
+}
+
+// GetRoleName returns the RoleName field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetRoleName() string {
+	if c == nil || c.RoleName == nil {
+		return ""
+	}
+	return *c.RoleName
+}
+
 // GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
 func (c *CreateOrganizationPrivateRegistry) GetSelectedRepositoryIDs() []int64 {
 	if c == nil || c.SelectedRepositoryIDs == nil {
 		return nil
 	}
 	return c.SelectedRepositoryIDs
+}
+
+// GetTenantID returns the TenantID field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetTenantID() string {
+	if c == nil || c.TenantID == nil {
+		return ""
+	}
+	return *c.TenantID
 }
 
 // GetURL returns the URL field.
@@ -26046,6 +26142,14 @@ func (p *PrivateRegistry) GetRegistryType() string {
 	return *p.RegistryType
 }
 
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
+func (p *PrivateRegistry) GetSelectedRepositoryIDs() []int64 {
+	if p == nil || p.SelectedRepositoryIDs == nil {
+		return nil
+	}
+	return p.SelectedRepositoryIDs
+}
+
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (p *PrivateRegistry) GetUpdatedAt() Timestamp {
 	if p == nil || p.UpdatedAt == nil {
@@ -39646,12 +39750,84 @@ func (u *UpdateHostedRunnerRequest) GetSize() string {
 	return *u.Size
 }
 
+// GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetAccountID() string {
+	if u == nil || u.AccountID == nil {
+		return ""
+	}
+	return *u.AccountID
+}
+
+// GetAudience returns the Audience field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetAudience() string {
+	if u == nil || u.Audience == nil {
+		return ""
+	}
+	return *u.Audience
+}
+
+// GetAuthType returns the AuthType field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetAuthType() string {
+	if u == nil || u.AuthType == nil {
+		return ""
+	}
+	return *u.AuthType
+}
+
+// GetAwsRegion returns the AwsRegion field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetAwsRegion() string {
+	if u == nil || u.AwsRegion == nil {
+		return ""
+	}
+	return *u.AwsRegion
+}
+
+// GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetClientID() string {
+	if u == nil || u.ClientID == nil {
+		return ""
+	}
+	return *u.ClientID
+}
+
+// GetDomain returns the Domain field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetDomain() string {
+	if u == nil || u.Domain == nil {
+		return ""
+	}
+	return *u.Domain
+}
+
+// GetDomainOwner returns the DomainOwner field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetDomainOwner() string {
+	if u == nil || u.DomainOwner == nil {
+		return ""
+	}
+	return *u.DomainOwner
+}
+
 // GetEncryptedValue returns the EncryptedValue field if it's non-nil, zero value otherwise.
 func (u *UpdateOrganizationPrivateRegistry) GetEncryptedValue() string {
 	if u == nil || u.EncryptedValue == nil {
 		return ""
 	}
 	return *u.EncryptedValue
+}
+
+// GetIdentityMappingName returns the IdentityMappingName field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetIdentityMappingName() string {
+	if u == nil || u.IdentityMappingName == nil {
+		return ""
+	}
+	return *u.IdentityMappingName
+}
+
+// GetJfrogOidcProviderName returns the JfrogOidcProviderName field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetJfrogOidcProviderName() string {
+	if u == nil || u.JfrogOidcProviderName == nil {
+		return ""
+	}
+	return *u.JfrogOidcProviderName
 }
 
 // GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
@@ -39670,12 +39846,36 @@ func (u *UpdateOrganizationPrivateRegistry) GetRegistryType() string {
 	return *u.RegistryType
 }
 
+// GetReplacesBase returns the ReplacesBase field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetReplacesBase() bool {
+	if u == nil || u.ReplacesBase == nil {
+		return false
+	}
+	return *u.ReplacesBase
+}
+
+// GetRoleName returns the RoleName field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetRoleName() string {
+	if u == nil || u.RoleName == nil {
+		return ""
+	}
+	return *u.RoleName
+}
+
 // GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
 func (u *UpdateOrganizationPrivateRegistry) GetSelectedRepositoryIDs() []int64 {
 	if u == nil || u.SelectedRepositoryIDs == nil {
 		return nil
 	}
 	return u.SelectedRepositoryIDs
+}
+
+// GetTenantID returns the TenantID field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetTenantID() string {
+	if u == nil || u.TenantID == nil {
+		return ""
+	}
+	return *u.TenantID
 }
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
