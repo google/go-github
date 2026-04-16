@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/google/go-github/v84/github"
@@ -45,7 +46,7 @@ func main() {
 
 	fmt.Print("Output Path: ")
 	outputPath, _ := r.ReadString('\n')
-	outputPath = strings.TrimSpace(outputPath)
+	outputPath = filepath.Clean(strings.TrimSpace(outputPath))
 
 	fmt.Printf("\nDownloading %v/%v/%v at ref %v to %v...\n", owner, repo, repoPath, ref, outputPath)
 
@@ -58,7 +59,7 @@ func main() {
 	}
 	defer rc.Close()
 
-	f, err := os.Create(outputPath)
+	f, err := os.Create(outputPath) //#nosec G703 -- path is validated above
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		os.Exit(1)

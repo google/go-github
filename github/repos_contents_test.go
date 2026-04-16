@@ -321,6 +321,34 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_DownloadContents_NotFile(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+  "type": "file",
+  "name": "f",
+  "content": ""
+}]`)
+	})
+
+	ctx := t.Context()
+	reader, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d", nil)
+	if err == nil {
+		t.Error("Repositories.DownloadContents did not return expected error")
+	}
+
+	if resp == nil {
+		t.Error("Repositories.DownloadContents did not return expected response")
+	}
+
+	if reader != nil {
+		t.Error("Repositories.DownloadContents did not return expected reader")
+	}
+}
+
 func TestRepositoriesService_DownloadContentsWithMeta_SuccessWithContent(t *testing.T) {
 	t.Parallel()
 	client, mux, serverURL := setup(t)
@@ -518,6 +546,30 @@ func TestRepositoriesService_DownloadContentsWithMeta_NoFile(t *testing.T) {
 
 	ctx := t.Context()
 	_, _, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
+	if err == nil {
+		t.Error("Repositories.DownloadContentsWithMeta did not return expected error")
+	}
+
+	if resp == nil {
+		t.Error("Repositories.DownloadContentsWithMeta did not return expected response")
+	}
+}
+
+func TestRepositoriesService_DownloadContentsWithMeta_NotFile(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+  "type": "file",
+  "name": "f",
+  "content": ""
+}]`)
+	})
+
+	ctx := t.Context()
+	_, _, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d", nil)
 	if err == nil {
 		t.Error("Repositories.DownloadContentsWithMeta did not return expected error")
 	}
