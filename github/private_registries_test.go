@@ -154,6 +154,145 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	})
 }
 
+func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDC(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &CreateOrganizationPrivateRegistry{
+		RegistryType:          "maven_repository",
+		URL:                   "https://maven.pkg.github.com/OWNER/REPOSITORY",
+		AuthType:              Ptr("oidc_azure"),
+		TenantID:              Ptr("my-tenant-id"),
+		ClientID:              Ptr("my-client-id"),
+		ReplacesBase:          Ptr(true),
+		Visibility:            PrivateRegistryVisibilitySelected,
+		SelectedRepositoryIDs: []int64{1, 2, 3},
+	}
+
+	mux.HandleFunc("/orgs/o/private-registries", func(w http.ResponseWriter, r *http.Request) {
+		var v *CreateOrganizationPrivateRegistry
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, `{
+  "name": "MAVEN_REPOSITORY_SECRET",
+  "registry_type": "maven_repository",
+  "visibility": "selected",
+  "selected_repository_ids": [1, 2, 3],
+  "created_at": "2019-08-10T14:59:22Z",
+  "updated_at": "2020-01-10T14:59:22Z"
+}`)
+	})
+
+	ctx := t.Context()
+	privateRegistry, _, err := client.PrivateRegistries.CreateOrganizationPrivateRegistry(ctx, "o", *input)
+	if err != nil {
+		t.Fatalf("PrivateRegistries.CreateOrganizationPrivateRegistry (OIDC) returned error: %v", err)
+	}
+
+	want := &PrivateRegistry{
+		Name:                  Ptr("MAVEN_REPOSITORY_SECRET"),
+		RegistryType:          Ptr("maven_repository"),
+		CreatedAt:             &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
+		UpdatedAt:             &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
+		Visibility:            Ptr(PrivateRegistryVisibilitySelected),
+		SelectedRepositoryIDs: []int64{1, 2, 3},
+	}
+	if diff := cmp.Diff(want, privateRegistry); diff != "" {
+		t.Errorf("PrivateRegistries.CreateOrganizationPrivateRegistry (OIDC) mismatch (-want +got):\\n%v", diff)
+	}
+}
+
+func TestPrivateRegistries_UpdateOrganizationPrivateRegistry_OIDC(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &UpdateOrganizationPrivateRegistry{
+		AuthType:    Ptr("oidc_aws"),
+		AwsRegion:   Ptr("us-east-1"),
+		AccountID:   Ptr("123456789012"),
+		RoleName:    Ptr("my-role"),
+		Domain:      Ptr("my-domain"),
+		DomainOwner: Ptr("123456789012"),
+		Audience:    Ptr("sts.amazonaws.com"),
+		Visibility:  Ptr(PrivateRegistryVisibilitySelected),
+	}
+
+	mux.HandleFunc("/orgs/o/private-registries/AWS_REGISTRY_SECRET", func(w http.ResponseWriter, r *http.Request) {
+		var v *UpdateOrganizationPrivateRegistry
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+
+		testMethod(t, r, "PATCH")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	_, err := client.PrivateRegistries.UpdateOrganizationPrivateRegistry(ctx, "o", "AWS_REGISTRY_SECRET", *input)
+	if err != nil {
+		t.Fatalf("PrivateRegistries.UpdateOrganizationPrivateRegistry (OIDC) returned error: %v", err)
+	}
+}
+
+func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDCJFrog(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &CreateOrganizationPrivateRegistry{
+		RegistryType:          "npm_registry",
+		URL:                   "https://my.jfrog.io/artifactory/api/npm/npm-remote",
+		AuthType:              Ptr("oidc_jfrog"),
+		JfrogOidcProviderName: Ptr("my-jfrog-provider"),
+		Audience:              Ptr("jfrog"),
+		IdentityMappingName:   Ptr("my-identity-mapping"),
+		Visibility:            PrivateRegistryVisibilityPrivate,
+	}
+
+	mux.HandleFunc("/orgs/o/private-registries", func(w http.ResponseWriter, r *http.Request) {
+		var v *CreateOrganizationPrivateRegistry
+		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
+
+		testMethod(t, r, "POST")
+		if !cmp.Equal(v, input) {
+			t.Errorf("Request body = %+v, want %+v", v, input)
+		}
+
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprint(w, `{
+  "name": "NPM_REGISTRY_SECRET",
+  "registry_type": "npm_registry",
+  "visibility": "private",
+  "created_at": "2019-08-10T14:59:22Z",
+  "updated_at": "2020-01-10T14:59:22Z"
+}`)
+	})
+
+	ctx := t.Context()
+	privateRegistry, _, err := client.PrivateRegistries.CreateOrganizationPrivateRegistry(ctx, "o", *input)
+	if err != nil {
+		t.Fatalf("PrivateRegistries.CreateOrganizationPrivateRegistry (OIDC JFrog) returned error: %v", err)
+	}
+
+	want := &PrivateRegistry{
+		Name:         Ptr("NPM_REGISTRY_SECRET"),
+		RegistryType: Ptr("npm_registry"),
+		CreatedAt:    &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
+		UpdatedAt:    &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
+		Visibility:   Ptr(PrivateRegistryVisibilityPrivate),
+	}
+	if diff := cmp.Diff(want, privateRegistry); diff != "" {
+		t.Errorf("PrivateRegistries.CreateOrganizationPrivateRegistry (OIDC JFrog) mismatch (-want +got):\\n%v", diff)
+	}
+}
+
 func TestPrivateRegistriesService_GetOrganizationPrivateRegistriesPublicKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
