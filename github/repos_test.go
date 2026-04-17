@@ -411,7 +411,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"},"security_and_analysis":{"advanced_security":{"status":"enabled"},"secret_scanning":{"status":"enabled"},"secret_scanning_push_protection":{"status":"enabled"},"dependabot_security_updates":{"status": "enabled"}, "secret_scanning_validity_checks":{"status":"enabled"}}}`)
+		fmt.Fprint(w, `{"id":1,"name":"n","description":"d","owner":{"login":"l"},"license":{"key":"mit"},"security_and_analysis":{"advanced_security":{"status":"enabled"},"secret_scanning":{"status":"enabled"},"secret_scanning_push_protection":{"status":"enabled"},"dependabot_security_updates":{"status": "enabled"}, "secret_scanning_validity_checks":{"status":"enabled"}, "code_security":{"status":"enabled"}}}`)
 	})
 
 	ctx := t.Context()
@@ -420,7 +420,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 		t.Errorf("Repositories.Get returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), Owner: &User{Login: Ptr("l")}, License: &License{Key: Ptr("mit")}, SecurityAndAnalysis: &SecurityAndAnalysis{AdvancedSecurity: &AdvancedSecurity{Status: Ptr("enabled")}, SecretScanning: &SecretScanning{Ptr("enabled")}, SecretScanningPushProtection: &SecretScanningPushProtection{Ptr("enabled")}, DependabotSecurityUpdates: &DependabotSecurityUpdates{Ptr("enabled")}, SecretScanningValidityChecks: &SecretScanningValidityChecks{Ptr("enabled")}}}
+	want := &Repository{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), Owner: &User{Login: Ptr("l")}, License: &License{Key: Ptr("mit")}, SecurityAndAnalysis: &SecurityAndAnalysis{AdvancedSecurity: &AdvancedSecurity{Status: Ptr("enabled")}, SecretScanning: &SecretScanning{Ptr("enabled")}, SecretScanningPushProtection: &SecretScanningPushProtection{Ptr("enabled")}, DependabotSecurityUpdates: &DependabotSecurityUpdates{Ptr("enabled")}, SecretScanningValidityChecks: &SecretScanningValidityChecks{Ptr("enabled")}, CodeSecurity: &CodeSecurity{Ptr("enabled")}}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.Get returned %+v, want %+v", got, want)
 	}

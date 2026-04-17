@@ -6362,6 +6362,17 @@ func TestCodeSearchResult_GetTotal(tt *testing.T) {
 	c.GetTotal()
 }
 
+func TestCodeSecurity_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurity{Status: &zeroValue}
+	c.GetStatus()
+	c = &CodeSecurity{}
+	c.GetStatus()
+	c = nil
+	c.GetStatus()
+}
+
 func TestCodeSecurityConfiguration_GetAdvancedSecurity(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -46364,6 +46375,14 @@ func TestSecurityAndAnalysis_GetAdvancedSecurity(tt *testing.T) {
 	s.GetAdvancedSecurity()
 	s = nil
 	s.GetAdvancedSecurity()
+}
+
+func TestSecurityAndAnalysis_GetCodeSecurity(tt *testing.T) {
+	tt.Parallel()
+	s := &SecurityAndAnalysis{}
+	s.GetCodeSecurity()
+	s = nil
+	s.GetCodeSecurity()
 }
 
 func TestSecurityAndAnalysis_GetDependabotSecurityUpdates(tt *testing.T) {

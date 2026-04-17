@@ -4990,6 +4990,14 @@ func (c *CodeSearchResult) GetTotal() int {
 	return *c.Total
 }
 
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (c *CodeSecurity) GetStatus() string {
+	if c == nil || c.Status == nil {
+		return ""
+	}
+	return *c.Status
+}
+
 // GetAdvancedSecurity returns the AdvancedSecurity field if it's non-nil, zero value otherwise.
 func (c *CodeSecurityConfiguration) GetAdvancedSecurity() string {
 	if c == nil || c.AdvancedSecurity == nil {
@@ -36892,6 +36900,14 @@ func (s *SecurityAndAnalysis) GetAdvancedSecurity() *AdvancedSecurity {
 		return nil
 	}
 	return s.AdvancedSecurity
+}
+
+// GetCodeSecurity returns the CodeSecurity field.
+func (s *SecurityAndAnalysis) GetCodeSecurity() *CodeSecurity {
+	if s == nil {
+		return nil
+	}
+	return s.CodeSecurity
 }
 
 // GetDependabotSecurityUpdates returns the DependabotSecurityUpdates field.

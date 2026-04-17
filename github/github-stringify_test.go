@@ -355,6 +355,17 @@ func TestCodeResult_String(t *testing.T) {
 	}
 }
 
+func TestCodeSecurity_String(t *testing.T) {
+	t.Parallel()
+	v := CodeSecurity{
+		Status: Ptr(""),
+	}
+	want := `github.CodeSecurity{Status:""}`
+	if got := v.String(); got != want {
+		t.Errorf("CodeSecurity.String = %v, want %v", got, want)
+	}
+}
+
 func TestCombinedStatus_String(t *testing.T) {
 	t.Parallel()
 	v := CombinedStatus{
@@ -2201,8 +2212,9 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 		SecretScanningPushProtection: &SecretScanningPushProtection{},
 		DependabotSecurityUpdates:    &DependabotSecurityUpdates{},
 		SecretScanningValidityChecks: &SecretScanningValidityChecks{},
+		CodeSecurity:                 &CodeSecurity{},
 	}
-	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}, SecretScanningPushProtection:github.SecretScanningPushProtection{}, DependabotSecurityUpdates:github.DependabotSecurityUpdates{}, SecretScanningValidityChecks:github.SecretScanningValidityChecks{}}`
+	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}, SecretScanningPushProtection:github.SecretScanningPushProtection{}, DependabotSecurityUpdates:github.DependabotSecurityUpdates{}, SecretScanningValidityChecks:github.SecretScanningValidityChecks{}, CodeSecurity:github.CodeSecurity{}}`
 	if got := v.String(); got != want {
 		t.Errorf("SecurityAndAnalysis.String = %v, want %v", got, want)
 	}
