@@ -26118,14 +26118,6 @@ func (p *PrivateRegistries) GetTotalCount() int {
 	return *p.TotalCount
 }
 
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (p *PrivateRegistry) GetCreatedAt() Timestamp {
-	if p == nil || p.CreatedAt == nil {
-		return Timestamp{}
-	}
-	return *p.CreatedAt
-}
-
 // GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.
 func (p *PrivateRegistry) GetAccountID() string {
 	if p == nil || p.AccountID == nil {
@@ -26142,12 +26134,12 @@ func (p *PrivateRegistry) GetAudience() string {
 	return *p.Audience
 }
 
-// GetAuthType returns the AuthType field if it's non-nil, zero value otherwise.
-func (p *PrivateRegistry) GetAuthType() PrivateRegistryAuthType {
-	if p == nil || p.AuthType == nil {
-		return ""
+// GetAuthType returns the AuthType field.
+func (p *PrivateRegistry) GetAuthType() *PrivateRegistryAuthType {
+	if p == nil {
+		return nil
 	}
-	return *p.AuthType
+	return p.AuthType
 }
 
 // GetAwsRegion returns the AwsRegion field if it's non-nil, zero value otherwise.
@@ -26164,6 +26156,14 @@ func (p *PrivateRegistry) GetClientID() string {
 		return ""
 	}
 	return *p.ClientID
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistry) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
 }
 
 // GetDomain returns the Domain field if it's non-nil, zero value otherwise.
@@ -26206,20 +26206,12 @@ func (p *PrivateRegistry) GetName() string {
 	return *p.Name
 }
 
-// GetRegistryType returns the RegistryType field if it's non-nil, zero value otherwise.
-func (p *PrivateRegistry) GetRegistryType() PrivateRegistryType {
-	if p == nil || p.RegistryType == nil {
-		return ""
-	}
-	return *p.RegistryType
-}
-
-// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
-func (p *PrivateRegistry) GetSelectedRepositoryIDs() []int64 {
-	if p == nil || p.SelectedRepositoryIDs == nil {
+// GetRegistryType returns the RegistryType field.
+func (p *PrivateRegistry) GetRegistryType() *PrivateRegistryType {
+	if p == nil {
 		return nil
 	}
-	return p.SelectedRepositoryIDs
+	return p.RegistryType
 }
 
 // GetReplacesBase returns the ReplacesBase field if it's non-nil, zero value otherwise.
@@ -26238,6 +26230,14 @@ func (p *PrivateRegistry) GetRoleName() string {
 	return *p.RoleName
 }
 
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
+func (p *PrivateRegistry) GetSelectedRepositoryIDs() []int64 {
+	if p == nil || p.SelectedRepositoryIDs == nil {
+		return nil
+	}
+	return p.SelectedRepositoryIDs
+}
+
 // GetTenantID returns the TenantID field if it's non-nil, zero value otherwise.
 func (p *PrivateRegistry) GetTenantID() string {
 	if p == nil || p.TenantID == nil {
@@ -26246,20 +26246,20 @@ func (p *PrivateRegistry) GetTenantID() string {
 	return *p.TenantID
 }
 
-// GetURL returns the URL field if it's non-nil, zero value otherwise.
-func (p *PrivateRegistry) GetURL() string {
-	if p == nil || p.URL == nil {
-		return ""
-	}
-	return *p.URL
-}
-
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (p *PrivateRegistry) GetUpdatedAt() Timestamp {
 	if p == nil || p.UpdatedAt == nil {
 		return Timestamp{}
 	}
 	return *p.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistry) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
 }
 
 // GetUsername returns the Username field if it's non-nil, zero value otherwise.
@@ -39942,12 +39942,12 @@ func (u *UpdateOrganizationPrivateRegistry) GetKeyID() string {
 	return *u.KeyID
 }
 
-// GetRegistryType returns the RegistryType field if it's non-nil, zero value otherwise.
-func (u *UpdateOrganizationPrivateRegistry) GetRegistryType() PrivateRegistryType {
-	if u == nil || u.RegistryType == nil {
-		return ""
+// GetRegistryType returns the RegistryType field.
+func (u *UpdateOrganizationPrivateRegistry) GetRegistryType() *PrivateRegistryType {
+	if u == nil {
+		return nil
 	}
-	return *u.RegistryType
+	return u.RegistryType
 }
 
 // GetReplacesBase returns the ReplacesBase field if it's non-nil, zero value otherwise.
