@@ -786,6 +786,83 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 	}
 }
 
+func TestCheckURLPathTraversal(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		input   string
+		wantErr error
+	}{
+		{"repos/o/r/contents/file.txt", nil},
+		{"repos/o/r/contents/dir/file.txt", nil},
+		{"repos/o/r/contents/file..txt", nil},
+		{"repos/o/r?q=a..b", nil},
+		{"repos/../admin/users", ErrPathForbidden},
+		{"repos/x/../../../admin", ErrPathForbidden},
+		{"../admin", ErrPathForbidden},
+		{"repos/o/r/contents/..", ErrPathForbidden},
+		{"repos/o/r/contents/../secrets", ErrPathForbidden},
+		// Full URLs with scheme.
+		{"https://api.github.com/repos/../admin", ErrPathForbidden},
+		{"https://api.github.com/repos/o/r/contents/file.txt", nil},
+		{"https://api.github.com/repos/o/r/contents/file..txt", nil},
+		// URL with fragment.
+		{"repos/o/r/contents/file.txt#section", nil},
+		{"repos/../admin#frag", ErrPathForbidden},
+		// URL with userinfo.
+		{"https://user:pass@api.github.com/repos/../admin", ErrPathForbidden},
+		{"https://user:pass@api.github.com/repos/o/r", nil},
+	}
+	for _, tt := range tests {
+		err := checkURLPathTraversal(tt.input)
+		if !errors.Is(err, tt.wantErr) {
+			t.Errorf("checkURLPathTraversal(%q) = %v, want %v", tt.input, err, tt.wantErr)
+		}
+	}
+}
+
+func TestNewRequest_pathTraversal(t *testing.T) {
+	t.Parallel()
+	c := NewClient(nil)
+
+	tests := []struct {
+		urlStr    string
+		wantError bool
+	}{
+		{"repos/o/r/readme", false},
+		{"repos/o/r/contents/file..txt", false},
+		{"repos/x/../../../admin/users", true},
+		{"repos/../admin", true},
+	}
+	for _, tt := range tests {
+		_, err := c.NewRequest("GET", tt.urlStr, nil)
+		if tt.wantError && !errors.Is(err, ErrPathForbidden) {
+			t.Errorf("NewRequest(%q): want ErrPathForbidden, got %v", tt.urlStr, err)
+		} else if !tt.wantError && err != nil {
+			t.Errorf("NewRequest(%q): unexpected error: %v", tt.urlStr, err)
+		}
+	}
+}
+
+func TestNewFormRequest_pathTraversal(t *testing.T) {
+	t.Parallel()
+	c := NewClient(nil)
+
+	_, err := c.NewFormRequest("repos/x/../../../admin", nil)
+	if !errors.Is(err, ErrPathForbidden) {
+		t.Fatalf("NewFormRequest with path traversal: want ErrPathForbidden, got %v", err)
+	}
+}
+
+func TestNewUploadRequest_pathTraversal(t *testing.T) {
+	t.Parallel()
+	c := NewClient(nil)
+
+	_, err := c.NewUploadRequest("repos/x/../../../admin", nil, 0, "")
+	if !errors.Is(err, ErrPathForbidden) {
+		t.Fatalf("NewUploadRequest with path traversal: want ErrPathForbidden, got %v", err)
+	}
+}
+
 func TestNewFormRequest(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)

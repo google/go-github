@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -156,6 +157,10 @@ const (
 )
 
 var errNonNilContext = errors.New("context must be non-nil")
+
+// ErrPathForbidden is returned when a URL path contains ".." as a path
+// segment, which could allow path traversal attacks.
+var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulnerability issue")
 
 // A Client manages communication with the GitHub API.
 type Client struct {
@@ -561,6 +566,10 @@ func (c *Client) NewRequest(method, urlStr string, body any, opts ...RequestOpti
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 
+	if err := checkURLPathTraversal(urlStr); err != nil {
+		return nil, err
+	}
+
 	u, err := c.BaseURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
@@ -607,6 +616,10 @@ func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOp
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 
+	if err := checkURLPathTraversal(urlStr); err != nil {
+		return nil, err
+	}
+
 	u, err := c.BaseURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
@@ -631,6 +644,25 @@ func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOp
 	return req, nil
 }
 
+// checkURLPathTraversal returns ErrPathForbidden if urlStr contains ".." as a
+// path segment (e.g. "a/../b"), preventing path traversal attacks. It does not
+// match ".." embedded within a segment (e.g. "file..txt"). The check is
+// performed only on the path portion of the URL, ignoring any query string or
+// fragment.
+func checkURLPathTraversal(urlStr string) error {
+	if !strings.Contains(urlStr, "..") {
+		return nil
+	}
+	u, err := url.Parse(urlStr)
+	if err != nil {
+		return err
+	}
+	if slices.Contains(strings.Split(u.Path, "/"), "..") {
+		return ErrPathForbidden
+	}
+	return nil
+}
+
 // NewUploadRequest creates an upload request. A relative URL can be provided in
 // urlStr, in which case it is resolved relative to the UploadURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
@@ -638,6 +670,11 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 	if !strings.HasSuffix(c.UploadURL.Path, "/") {
 		return nil, fmt.Errorf("uploadURL must have a trailing slash, but %q does not", c.UploadURL)
 	}
+
+	if err := checkURLPathTraversal(urlStr); err != nil {
+		return nil, err
+	}
+
 	u, err := c.UploadURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
