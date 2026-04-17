@@ -222,7 +222,7 @@ func TestPrivateRegistries_UpdateOrganizationPrivateRegistry_OIDC(t *testing.T) 
 		RoleName:    Ptr("my-role"),
 		Domain:      Ptr("my-domain"),
 		DomainOwner: Ptr("123456789012"),
-		Audience:    Ptr("sts.amazonaws.com"),
+		Audience:    Ptr("example.com"),
 		Visibility:  Ptr(PrivateRegistryVisibilitySelected),
 	}
 
