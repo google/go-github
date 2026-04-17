@@ -17,7 +17,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"path"
 	"strings"
 )
 
@@ -137,40 +136,8 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *Response, error) {
-	dir := path.Dir(filepath)
-	filename := path.Base(filepath)
-	fileContent, _, resp, err := s.GetContents(ctx, owner, repo, filepath, opts)
-	if err == nil && fileContent != nil {
-		content, err := fileContent.GetContent()
-		if err == nil && content != "" {
-			return io.NopCloser(strings.NewReader(content)), resp, nil
-		}
-	}
-
-	_, dirContents, resp, err := s.GetContents(ctx, owner, repo, dir, opts)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	for _, contents := range dirContents {
-		if contents.GetName() == filename {
-			if contents.GetDownloadURL() == "" {
-				return nil, resp, fmt.Errorf("no download link found for %v", filepath)
-			}
-			dlReq, err := http.NewRequestWithContext(ctx, "GET", *contents.DownloadURL, nil)
-			if err != nil {
-				return nil, resp, err
-			}
-			dlResp, err := s.client.client.Do(dlReq)
-			if err != nil {
-				return nil, &Response{Response: dlResp}, err
-			}
-
-			return dlResp.Body, &Response{Response: dlResp}, nil
-		}
-	}
-
-	return nil, resp, fmt.Errorf("no file named %v found in %v", filename, dir)
+	rc, _, resp, err := s.DownloadContentsWithMeta(ctx, owner, repo, filepath, opts)
+	return rc, resp, err
 }
 
 // DownloadContentsWithMeta is identical to DownloadContents but additionally
@@ -186,40 +153,36 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *RepositoryContent, *Response, error) {
-	dir := path.Dir(filepath)
-	filename := path.Base(filepath)
 	fileContent, _, resp, err := s.GetContents(ctx, owner, repo, filepath, opts)
-	if err == nil && fileContent != nil {
-		content, err := fileContent.GetContent()
-		if err == nil && content != "" {
-			return io.NopCloser(strings.NewReader(content)), fileContent, resp, nil
-		}
-	}
-
-	_, dirContents, resp, err := s.GetContents(ctx, owner, repo, dir, opts)
 	if err != nil {
 		return nil, nil, resp, err
 	}
 
-	for _, contents := range dirContents {
-		if contents.GetName() == filename {
-			if contents.GetDownloadURL() == "" {
-				return nil, contents, resp, fmt.Errorf("no download link found for %v", filepath)
-			}
-			dlReq, err := http.NewRequestWithContext(ctx, "GET", *contents.DownloadURL, nil)
-			if err != nil {
-				return nil, contents, resp, err
-			}
-			dlResp, err := s.client.client.Do(dlReq)
-			if err != nil {
-				return nil, contents, &Response{Response: dlResp}, err
-			}
-
-			return dlResp.Body, contents, &Response{Response: dlResp}, nil
-		}
+	if fileContent == nil {
+		return nil, nil, resp, errors.New("no file content found")
 	}
 
-	return nil, nil, resp, fmt.Errorf("no file named %v found in %v", filename, dir)
+	content, err := fileContent.GetContent()
+	if err == nil && content != "" {
+		return io.NopCloser(strings.NewReader(content)), fileContent, resp, nil
+	}
+
+	downloadURL := fileContent.GetDownloadURL()
+	if downloadURL == "" {
+		return nil, fileContent, resp, errors.New("download url is empty")
+	}
+
+	dlReq, err := http.NewRequestWithContext(ctx, "GET", downloadURL, nil)
+	if err != nil {
+		return nil, fileContent, resp, err
+	}
+
+	dlResp, err := s.client.client.Do(dlReq)
+	if err != nil {
+		return nil, fileContent, &Response{Response: dlResp}, err
+	}
+
+	return dlResp.Body, fileContent, &Response{Response: dlResp}, nil
 }
 
 // GetContents can return either the metadata and content of a single file

@@ -126,18 +126,18 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_DownloadContents_SuccessForFile(t *testing.T) {
+func TestRepositoriesService_DownloadContents_SuccessWithContent(t *testing.T) {
 	t.Parallel()
 	client, mux, serverURL := setup(t)
 
 	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-		  "type": "file",
-		  "name": "f",
-          "content": "foo",
-		  "download_url": "`+serverURL+baseURLPath+`/download/f"
-		}`)
+		fmt.Fprintf(w, `{
+  "type": "file",
+  "name": "f",
+  "content": "foo",
+  "download_url": "%v/download/f"
+}`, serverURL+baseURLPath)
 	})
 
 	ctx := t.Context()
@@ -175,25 +175,20 @@ func TestRepositoriesService_DownloadContents_SuccessForFile(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_DownloadContents_SuccessForDirectory(t *testing.T) {
+func TestRepositoriesService_DownloadContents_SuccessByDownload(t *testing.T) {
 	t.Parallel()
 	client, mux, serverURL := setup(t)
 
 	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-		  "type": "file",
-		  "name": "f"
-		}`)
+		fmt.Fprintf(w, `{
+  "type": "file",
+  "name": "f",
+  "content": "",
+  "download_url": "%v/download/f"
+}`, serverURL+baseURLPath)
 	})
-	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{
-		  "type": "file",
-		  "name": "f",
-		  "download_url": "`+serverURL+baseURLPath+`/download/f"
-		}]`)
-	})
+
 	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, "foo")
@@ -240,18 +235,12 @@ func TestRepositoriesService_DownloadContents_FailedResponse(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-			"type": "file",
-			"name": "f"
-		  }`)
-	})
-	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{
-			"type": "file",
-			"name": "f",
-			"download_url": "`+serverURL+baseURLPath+`/download/f"
-		  }]`)
+		fmt.Fprintf(w, `{
+  "type": "file",
+  "name": "f",
+  "content": "",
+  "download_url": "%v/download/f"
+}`, serverURL+baseURLPath)
 	})
 	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
@@ -287,18 +276,10 @@ func TestRepositoriesService_DownloadContents_NoDownloadURL(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
-		  "type": "file",
-		  "name": "f",
-		  "content": ""
-		}`)
-	})
-	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{
-		  "type": "file",
-		  "name": "f",
-		  "content": ""
-		}]`)
+  "type": "file",
+  "name": "f",
+  "content": ""
+}`)
 	})
 
 	ctx := t.Context()
@@ -322,16 +303,7 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-		  "type": "file",
-		  "name": "f",
-		  "content": ""
-		}`)
-	})
-
-	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[]`)
+		w.WriteHeader(http.StatusNotFound)
 	})
 
 	ctx := t.Context()
@@ -349,18 +321,46 @@ func TestRepositoriesService_DownloadContents_NoFile(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_DownloadContentsWithMeta_SuccessForFile(t *testing.T) {
+func TestRepositoriesService_DownloadContents_NotFile(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+  "type": "file",
+  "name": "f",
+  "content": ""
+}]`)
+	})
+
+	ctx := t.Context()
+	reader, resp, err := client.Repositories.DownloadContents(ctx, "o", "r", "d", nil)
+	if err == nil {
+		t.Error("Repositories.DownloadContents did not return expected error")
+	}
+
+	if resp == nil {
+		t.Error("Repositories.DownloadContents did not return expected response")
+	}
+
+	if reader != nil {
+		t.Error("Repositories.DownloadContents did not return expected reader")
+	}
+}
+
+func TestRepositoriesService_DownloadContentsWithMeta_SuccessWithContent(t *testing.T) {
 	t.Parallel()
 	client, mux, serverURL := setup(t)
 
 	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-		  "type": "file",
-		  "name": "f",
-		  "download_url": "`+serverURL+baseURLPath+`/download/f",
-          "content": "foo"
-		}`)
+		fmt.Fprintf(w, `{
+  "type": "file",
+  "name": "f",
+  "content": "foo",
+  "download_url": "%v/download/f"
+}`, serverURL+baseURLPath)
 	})
 
 	ctx := t.Context()
@@ -409,18 +409,19 @@ func TestRepositoriesService_DownloadContentsWithMeta_SuccessForFile(t *testing.
 	})
 }
 
-func TestRepositoriesService_DownloadContentsWithMeta_SuccessForDirectory(t *testing.T) {
+func TestRepositoriesService_DownloadContentsWithMeta_SuccessByDownload(t *testing.T) {
 	t.Parallel()
 	client, mux, serverURL := setup(t)
 
-	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{
-		  "type": "file",
-		  "name": "f",
-		  "download_url": "`+serverURL+baseURLPath+`/download/f"
-		}]`)
+		fmt.Fprintf(w, `{
+  "type": "file",
+  "name": "f",
+  "download_url": "%v/download/f"
+}`, serverURL+baseURLPath)
 	})
+
 	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, "foo")
@@ -459,28 +460,18 @@ func TestRepositoriesService_DownloadContentsWithMeta_FailedResponse(t *testing.
 	t.Parallel()
 	client, mux, serverURL := setup(t)
 
-	downloadURL := fmt.Sprintf("%v%v/download/f", serverURL, baseURLPath)
-
 	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{
-			"type": "file",
-			"name": "f",
-			"download_url": "`+downloadURL+`"
-		  }`)
+		fmt.Fprintf(w, `{
+  "type": "file",
+  "name": "f",
+  "download_url": "%v/download/f"
+}`, serverURL+baseURLPath)
 	})
 	mux.HandleFunc("/download/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, "foo error")
-	})
-	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{
-			"type": "file",
-			"name": "f",
-			"download_url": "`+downloadURL+`"
-		  }]`)
 	})
 
 	ctx := t.Context()
@@ -519,17 +510,10 @@ func TestRepositoriesService_DownloadContentsWithMeta_NoDownloadURL(t *testing.T
 	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
-		  "type": "file",
-		  "name": "f",
-		}`)
-	})
-	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{
-		  "type": "file",
-		  "name": "f",
-		  "content": ""
-		}]`)
+  "type": "file",
+  "name": "f",
+  "content": ""
+}`)
 	})
 
 	ctx := t.Context()
@@ -555,13 +539,37 @@ func TestRepositoriesService_DownloadContentsWithMeta_NoFile(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/contents/d/f", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[]`)
+		w.WriteHeader(http.StatusNotFound)
 	})
 
 	ctx := t.Context()
 	_, _, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d/f", nil)
+	if err == nil {
+		t.Error("Repositories.DownloadContentsWithMeta did not return expected error")
+	}
+
+	if resp == nil {
+		t.Error("Repositories.DownloadContentsWithMeta did not return expected response")
+	}
+}
+
+func TestRepositoriesService_DownloadContentsWithMeta_NotFile(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/contents/d", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `[{
+  "type": "file",
+  "name": "f",
+  "content": ""
+}]`)
+	})
+
+	ctx := t.Context()
+	_, _, resp, err := client.Repositories.DownloadContentsWithMeta(ctx, "o", "r", "d", nil)
 	if err == nil {
 		t.Error("Repositories.DownloadContentsWithMeta did not return expected error")
 	}
