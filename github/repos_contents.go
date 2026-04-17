@@ -159,7 +159,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 	}
 
 	if fileContent == nil {
-		return nil, nil, resp, fmt.Errorf("no file content found")
+		return nil, nil, resp, errors.New("no file content found")
 	}
 
 	content, err := fileContent.GetContent()
@@ -169,7 +169,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 
 	downloadURL := fileContent.GetDownloadURL()
 	if downloadURL == "" {
-		return nil, fileContent, resp, fmt.Errorf("download url is empty")
+		return nil, fileContent, resp, errors.New("download url is empty")
 	}
 
 	dlReq, err := http.NewRequestWithContext(ctx, "GET", downloadURL, nil)
