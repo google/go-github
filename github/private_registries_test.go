@@ -53,7 +53,7 @@ func TestPrivateRegistriesService_ListOrganizationPrivateRegistries(t *testing.T
 		Configurations: []*PrivateRegistry{
 			{
 				Name:         Ptr("MAVEN_REPOSITORY_SECRET"),
-				RegistryType: Ptr("maven_repository"),
+				RegistryType: Ptr(PrivateRegistryTypeMavenRepository),
 				Username:     Ptr("monalisa"),
 				CreatedAt:    &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
 				UpdatedAt:    &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
@@ -91,7 +91,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	client, mux, _ := setup(t)
 
 	input := &CreateOrganizationPrivateRegistry{
-		RegistryType:          "maven_repository",
+		RegistryType:          PrivateRegistryTypeMavenRepository,
 		URL:                   "https://maven.pkg.github.com/OWNER/REPOSITORY",
 		Username:              Ptr("monalisa"),
 		EncryptedValue:        Ptr("encrypted_value"),
@@ -130,7 +130,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 
 	want := &PrivateRegistry{
 		Name:                  Ptr("MAVEN_REPOSITORY_SECRET"),
-		RegistryType:          Ptr("maven_repository"),
+		RegistryType:          Ptr(PrivateRegistryTypeMavenRepository),
 		Username:              Ptr("monalisa"),
 		CreatedAt:             &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
 		UpdatedAt:             &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
@@ -161,8 +161,8 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDC(t *test
 	client, mux, _ := setup(t)
 
 	input := &CreateOrganizationPrivateRegistry{
-		RegistryType:          "maven_repository",
-		URL:                   "https://maven.pkg.github.com/OWNER/REPOSITORY",
+		RegistryType:          PrivateRegistryTypeMavenRepository,
+		URL:                   "https://example.com/maven",
 		AuthType:              Ptr("oidc_azure"),
 		TenantID:              Ptr("my-tenant-id"),
 		ClientID:              Ptr("my-client-id"),
@@ -200,7 +200,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDC(t *test
 
 	want := &PrivateRegistry{
 		Name:                  Ptr("MAVEN_REPOSITORY_SECRET"),
-		RegistryType:          Ptr("maven_repository"),
+		RegistryType:          Ptr(PrivateRegistryTypeMavenRepository),
 		CreatedAt:             &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
 		UpdatedAt:             &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
 		Visibility:            Ptr(PrivateRegistryVisibilitySelected),
@@ -251,8 +251,8 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDCJFrog(t 
 	client, mux, _ := setup(t)
 
 	input := &CreateOrganizationPrivateRegistry{
-		RegistryType:          "npm_registry",
-		URL:                   "https://my.jfrog.io/artifactory/api/npm/npm-remote",
+		RegistryType:          PrivateRegistryTypeNpmRegistry,
+		URL:                   "https://example.com/npm",
 		AuthType:              Ptr("oidc_jfrog"),
 		JfrogOidcProviderName: Ptr("my-jfrog-provider"),
 		Audience:              Ptr("jfrog"),
@@ -288,7 +288,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDCJFrog(t 
 
 	want := &PrivateRegistry{
 		Name:         Ptr("NPM_REGISTRY_SECRET"),
-		RegistryType: Ptr("npm_registry"),
+		RegistryType: Ptr(PrivateRegistryTypeNpmRegistry),
 		CreatedAt:    &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
 		UpdatedAt:    &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},
 		Visibility:   Ptr(PrivateRegistryVisibilityPrivate),
@@ -363,7 +363,7 @@ func TestPrivateRegistriesService_GetOrganizationPrivateRegistry(t *testing.T) {
 
 	want := &PrivateRegistry{
 		Name:         Ptr("MAVEN_REPOSITORY_SECRET"),
-		RegistryType: Ptr("maven_repository"),
+		RegistryType: Ptr(PrivateRegistryTypeMavenRepository),
 		Username:     Ptr("monalisa"),
 		CreatedAt:    &Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)},
 		UpdatedAt:    &Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)},

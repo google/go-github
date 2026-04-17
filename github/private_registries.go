@@ -62,18 +62,44 @@ type PrivateRegistry struct {
 	// Name of the private registry.
 	Name *string `json:"name,omitempty"`
 	// RegistryType is the type of private registry. You can find the list of supported types in PrivateRegistryType.
-	RegistryType *string `json:"registry_type,omitempty"`
+	RegistryType *PrivateRegistryType `json:"registry_type,omitempty"`
+	// AuthType is the authentication type for the private registry.
+	AuthType *PrivateRegistryAuthType `json:"auth_type,omitempty"`
+	// URL is the URL of the private registry.
+	URL *string `json:"url,omitempty"`
 	// Username to use when authenticating with the private registry.
 	// This field is omitted if the private registry does not require a username for authentication.
 	Username *string `json:"username,omitempty"`
-	// CreatedAt is the timestamp when the private registry was created.
-	CreatedAt *Timestamp `json:"created_at,omitempty"`
-	// UpdatedAt is the timestamp when the private registry was last updated.
-	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+	// ReplacesBase indicates whether this private registry should replace the base registry.
+	ReplacesBase *bool `json:"replaces_base,omitempty"`
 	// Visibility is the visibility of the private registry. Possible values are: "private", "all", and "selected".
 	Visibility *PrivateRegistryVisibility `json:"visibility,omitempty"`
 	// SelectedRepositoryIDs is an array of repository IDs that can access the organization private registry.
 	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
+	// TenantID is the tenant ID of the Azure AD application.
+	TenantID *string `json:"tenant_id,omitempty"`
+	// ClientID is the client ID of the Azure AD application.
+	ClientID *string `json:"client_id,omitempty"`
+	// AwsRegion is the AWS region.
+	AwsRegion *string `json:"aws_region,omitempty"`
+	// AccountID is the AWS account ID.
+	AccountID *string `json:"account_id,omitempty"`
+	// RoleName is the AWS IAM role name.
+	RoleName *string `json:"role_name,omitempty"`
+	// Domain is the CodeArtifact domain.
+	Domain *string `json:"domain,omitempty"`
+	// DomainOwner is the CodeArtifact domain owner.
+	DomainOwner *string `json:"domain_owner,omitempty"`
+	// JfrogOidcProviderName is the JFrog OIDC provider name.
+	JfrogOidcProviderName *string `json:"jfrog_oidc_provider_name,omitempty"`
+	// Audience is the OIDC audience.
+	Audience *string `json:"audience,omitempty"`
+	// IdentityMappingName is the JFrog identity mapping name.
+	IdentityMappingName *string `json:"identity_mapping_name,omitempty"`
+	// CreatedAt is the timestamp when the private registry was created.
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	// UpdatedAt is the timestamp when the private registry was last updated.
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
 }
 
 // PrivateRegistries represents a list of private registries.
@@ -88,7 +114,7 @@ type PrivateRegistries struct {
 type CreateOrganizationPrivateRegistry struct {
 	// RegistryType is the type of private registry.
 	// You can find the list of supported types in PrivateRegistryType.
-	RegistryType string `json:"registry_type"`
+	RegistryType PrivateRegistryType `json:"registry_type"`
 
 	// URL is the URL of the private registry.
 	URL string `json:"url"`
@@ -150,7 +176,7 @@ type CreateOrganizationPrivateRegistry struct {
 type UpdateOrganizationPrivateRegistry struct {
 	// RegistryType is the type of private registry.
 	// You can find the list of supported types in PrivateRegistryType.
-	RegistryType *string `json:"registry_type,omitempty"`
+	RegistryType *PrivateRegistryType `json:"registry_type,omitempty"`
 
 	// URL is the URL of the private registry.
 	URL *string `json:"url,omitempty"`
