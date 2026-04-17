@@ -365,36 +365,27 @@ func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, r
 	}
 	req.Header.Set("Accept", defaultMediaType)
 
-	s.client.clientMu.Lock()
-	defer s.client.clientMu.Unlock()
-
-	var loc string
-	saveRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, _ []*http.Request) error {
-		loc = req.URL.String()
-		return errors.New("disable redirect")
-	}
-	defer func() { s.client.client.CheckRedirect = saveRedirect }()
-
-	req = withContext(ctx, req)
-	resp, err := s.client.client.Do(req)
+	loc, resp, err := s.client.bareDoUntilFound(ctx, req, 10)
 	if err != nil {
-		if !strings.Contains(err.Error(), "disable redirect") {
-			return nil, "", err
-		}
-		if followRedirectsClient != nil {
-			rc, err := s.downloadReleaseAssetFromURL(ctx, followRedirectsClient, loc)
-			return rc, "", err
-		}
-		return nil, loc, nil // Intentionally return no error with valid redirect URL.
-	}
-
-	if err := CheckResponse(resp); err != nil {
-		_ = resp.Body.Close()
 		return nil, "", err
 	}
 
-	return resp.Body, "", nil
+	// No redirect, stream the response body directly.
+	if loc == nil {
+		return resp.Body, "", nil
+	}
+
+	// Close body as it's not needed when following redirects or returning the redirect URL.
+	_ = resp.Body.Close()
+
+	// Got a redirect URL.
+	redirectStr := loc.String()
+	if followRedirectsClient != nil {
+		rc, err := s.downloadReleaseAssetFromURL(ctx, followRedirectsClient, redirectStr)
+		return rc, "", err
+	}
+
+	return nil, redirectStr, nil
 }
 
 func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, followRedirectsClient *http.Client, url string) (rc io.ReadCloser, err error) {

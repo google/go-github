@@ -164,7 +164,7 @@ var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulner
 
 // A Client manages communication with the GitHub API.
 type Client struct {
-	clientMu              sync.Mutex   // clientMu protects the client during calls that modify the CheckRedirect func.
+	clientMu              sync.Mutex   // clientMu protects the client fields during copy and Client calls.
 	client                *http.Client // HTTP client used to communicate with the API.
 	clientIgnoreRedirects *http.Client // HTTP client used to communicate with the API on endpoints where we don't want to follow redirects.
 

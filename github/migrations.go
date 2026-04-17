@@ -9,8 +9,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"strings"
 )
 
 // MigrationService provides access to the migration related functions
@@ -186,29 +184,18 @@ func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, 
 	if err != nil {
 		return "", err
 	}
-
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	s.client.clientMu.Lock()
-	defer s.client.clientMu.Unlock()
-
-	// Disable the redirect mechanism because AWS fails if the GitHub auth token is provided.
-	var loc string
-	saveRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, _ []*http.Request) error {
-		loc = req.URL.String()
-		return errors.New("disable redirect")
-	}
-	defer func() { s.client.client.CheckRedirect = saveRedirect }()
-
-	_, err = s.client.Do(ctx, req, nil) // expect error from disable redirect
-	if err == nil {
-		return "", errors.New("expected redirect, none provided")
-	}
-	if !strings.Contains(err.Error(), "disable redirect") {
+	loc, _, err := s.client.bareDoUntilFound(ctx, req, 10)
+	if err != nil {
 		return "", err
 	}
-	return loc, nil
+
+	if loc == nil {
+		return "", errors.New("expected redirect, none provided")
+	}
+
+	return loc.String(), nil
 }
 
 // DeleteMigration deletes a previous migration archive.
