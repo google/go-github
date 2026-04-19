@@ -2256,6 +2256,80 @@ func TestBareDoUntilFound_UnexpectedRedirection(t *testing.T) {
 	}
 }
 
+// TestBareDoUntilFound_RejectsCrossHostRedirect verifies that bareDoUntilFound
+// refuses to follow a 301 redirect whose Location points to a different host,
+// which would otherwise leak the Authorization header (added by the auth
+// transport) to an attacker-controlled server.
+func TestBareDoUntilFound_RejectsCrossHostRedirect(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Location", "https://evil.example.com/steal")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	_, _, err := client.bareDoUntilFound(t.Context(), req, 1)
+	if err == nil {
+		t.Fatal("Expected cross-host redirect to be rejected, got nil error.")
+	}
+	if !strings.Contains(err.Error(), "cross-host redirect") {
+		t.Errorf("Expected cross-host redirect error, got: %v", err)
+	}
+}
+
+// TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect verifies
+// that roundTripWithOptionalFollowRedirect refuses to follow a 301 redirect to
+// a different host, preventing Authorization-header leakage to attacker-
+// controlled servers via a malicious or compromised API response.
+func TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Location", "https://evil.example.com/steal")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	_, err := client.roundTripWithOptionalFollowRedirect(t.Context(), ".", 1)
+	if err == nil {
+		t.Fatal("Expected cross-host redirect to be rejected, got nil error.")
+	}
+	if !strings.Contains(err.Error(), "cross-host redirect") {
+		t.Errorf("Expected cross-host redirect error, got: %v", err)
+	}
+}
+
+// TestRoundTripWithOptionalFollowRedirect_AllowsSameHostRedirect ensures the
+// cross-host check does not break legitimate same-host 301 follow behavior
+// (the path that rate-limit redirection relies on).
+func TestRoundTripWithOptionalFollowRedirect_AllowsSameHostRedirect(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	var followed atomic.Bool
+	mux.HandleFunc("/archive", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Location", baseURLPath+"/archive-target")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+	mux.HandleFunc("/archive-target", func(w http.ResponseWriter, _ *http.Request) {
+		followed.Store(true)
+		w.WriteHeader(http.StatusOK)
+	})
+
+	resp, err := client.roundTripWithOptionalFollowRedirect(t.Context(), "archive", 2)
+	if err != nil {
+		t.Fatalf("Unexpected error on same-host redirect: %v", err)
+	}
+	if resp != nil && resp.Body != nil {
+		resp.Body.Close()
+	}
+	if !followed.Load() {
+		t.Error("Expected same-host redirect to be followed.")
+	}
+}
+
 func TestSanitizeURL(t *testing.T) {
 	t.Parallel()
 	tests := []struct {

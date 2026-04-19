@@ -1090,6 +1090,12 @@ func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRed
 					return nil, nil, errInvalidLocation
 				}
 				newURL := c.BaseURL.ResolveReference(rerr.Location)
+				// Refuse to follow a permanent redirect to a different host:
+				// req.Clone preserves Authorization headers added by the auth
+				// transport, so a cross-host target would leak credentials.
+				if newURL.Host != c.BaseURL.Host {
+					return nil, response, fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.BaseURL.Host, newURL.Host)
+				}
 				newRequest := req.Clone(ctx)
 				newRequest.URL = newURL
 				return c.bareDoUntilFound(ctx, newRequest, maxRedirects-1)
@@ -1846,9 +1852,33 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 	if maxRedirects > 0 && resp.StatusCode == http.StatusMovedPermanently {
 		_ = resp.Body.Close()
 		u = resp.Header.Get("Location")
+		if err := c.checkRedirectHost(u); err != nil {
+			return nil, err
+		}
 		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects-1, opts...)
 	}
 	return resp, err
+}
+
+// checkRedirectHost returns an error if the redirect target is on a different
+// host than the client's configured BaseURL. This prevents credentials attached
+// by the auth transport from being sent to an attacker-controlled host when a
+// compromised or malicious API response returns a cross-origin Location header.
+// An empty Location is also rejected.
+func (c *Client) checkRedirectHost(location string) error {
+	if location == "" {
+		return errInvalidLocation
+	}
+	target, err := url.Parse(location)
+	if err != nil {
+		return fmt.Errorf("invalid redirect location %q: %w", location, err)
+	}
+	// Resolve relative locations against BaseURL so relative paths are allowed.
+	target = c.BaseURL.ResolveReference(target)
+	if target.Host != c.BaseURL.Host {
+		return fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.BaseURL.Host, target.Host)
+	}
+	return nil
 }
 
 // Ptr is a helper routine that allocates a new T value
