@@ -12123,15 +12123,15 @@ func TestCreateOrganizationPrivateRegistry_GetAuthType(tt *testing.T) {
 	c.GetAuthType()
 }
 
-func TestCreateOrganizationPrivateRegistry_GetAwsRegion(tt *testing.T) {
+func TestCreateOrganizationPrivateRegistry_GetAWSRegion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateOrganizationPrivateRegistry{AwsRegion: &zeroValue}
-	c.GetAwsRegion()
+	c := &CreateOrganizationPrivateRegistry{AWSRegion: &zeroValue}
+	c.GetAWSRegion()
 	c = &CreateOrganizationPrivateRegistry{}
-	c.GetAwsRegion()
+	c.GetAWSRegion()
 	c = nil
-	c.GetAwsRegion()
+	c.GetAWSRegion()
 }
 
 func TestCreateOrganizationPrivateRegistry_GetClientID(tt *testing.T) {
@@ -12189,15 +12189,15 @@ func TestCreateOrganizationPrivateRegistry_GetIdentityMappingName(tt *testing.T)
 	c.GetIdentityMappingName()
 }
 
-func TestCreateOrganizationPrivateRegistry_GetJfrogOidcProviderName(tt *testing.T) {
+func TestCreateOrganizationPrivateRegistry_GetJFrogOIDCProviderName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateOrganizationPrivateRegistry{JfrogOidcProviderName: &zeroValue}
-	c.GetJfrogOidcProviderName()
+	c := &CreateOrganizationPrivateRegistry{JFrogOIDCProviderName: &zeroValue}
+	c.GetJFrogOIDCProviderName()
 	c = &CreateOrganizationPrivateRegistry{}
-	c.GetJfrogOidcProviderName()
+	c.GetJFrogOIDCProviderName()
 	c = nil
-	c.GetJfrogOidcProviderName()
+	c.GetJFrogOIDCProviderName()
 }
 
 func TestCreateOrganizationPrivateRegistry_GetKeyID(tt *testing.T) {
@@ -33052,15 +33052,15 @@ func TestPrivateRegistry_GetAuthType(tt *testing.T) {
 	p.GetAuthType()
 }
 
-func TestPrivateRegistry_GetAwsRegion(tt *testing.T) {
+func TestPrivateRegistry_GetAWSRegion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	p := &PrivateRegistry{AwsRegion: &zeroValue}
-	p.GetAwsRegion()
+	p := &PrivateRegistry{AWSRegion: &zeroValue}
+	p.GetAWSRegion()
 	p = &PrivateRegistry{}
-	p.GetAwsRegion()
+	p.GetAWSRegion()
 	p = nil
-	p.GetAwsRegion()
+	p.GetAWSRegion()
 }
 
 func TestPrivateRegistry_GetClientID(tt *testing.T) {
@@ -33118,15 +33118,15 @@ func TestPrivateRegistry_GetIdentityMappingName(tt *testing.T) {
 	p.GetIdentityMappingName()
 }
 
-func TestPrivateRegistry_GetJfrogOidcProviderName(tt *testing.T) {
+func TestPrivateRegistry_GetJFrogOIDCProviderName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	p := &PrivateRegistry{JfrogOidcProviderName: &zeroValue}
-	p.GetJfrogOidcProviderName()
+	p := &PrivateRegistry{JFrogOIDCProviderName: &zeroValue}
+	p.GetJFrogOIDCProviderName()
 	p = &PrivateRegistry{}
-	p.GetJfrogOidcProviderName()
+	p.GetJFrogOIDCProviderName()
 	p = nil
-	p.GetJfrogOidcProviderName()
+	p.GetJFrogOIDCProviderName()
 }
 
 func TestPrivateRegistry_GetName(tt *testing.T) {
@@ -50148,15 +50148,15 @@ func TestUpdateOrganizationPrivateRegistry_GetAuthType(tt *testing.T) {
 	u.GetAuthType()
 }
 
-func TestUpdateOrganizationPrivateRegistry_GetAwsRegion(tt *testing.T) {
+func TestUpdateOrganizationPrivateRegistry_GetAWSRegion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateOrganizationPrivateRegistry{AwsRegion: &zeroValue}
-	u.GetAwsRegion()
+	u := &UpdateOrganizationPrivateRegistry{AWSRegion: &zeroValue}
+	u.GetAWSRegion()
 	u = &UpdateOrganizationPrivateRegistry{}
-	u.GetAwsRegion()
+	u.GetAWSRegion()
 	u = nil
-	u.GetAwsRegion()
+	u.GetAWSRegion()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetClientID(tt *testing.T) {
@@ -50214,15 +50214,15 @@ func TestUpdateOrganizationPrivateRegistry_GetIdentityMappingName(tt *testing.T)
 	u.GetIdentityMappingName()
 }
 
-func TestUpdateOrganizationPrivateRegistry_GetJfrogOidcProviderName(tt *testing.T) {
+func TestUpdateOrganizationPrivateRegistry_GetJFrogOIDCProviderName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateOrganizationPrivateRegistry{JfrogOidcProviderName: &zeroValue}
-	u.GetJfrogOidcProviderName()
+	u := &UpdateOrganizationPrivateRegistry{JFrogOIDCProviderName: &zeroValue}
+	u.GetJFrogOIDCProviderName()
 	u = &UpdateOrganizationPrivateRegistry{}
-	u.GetJfrogOidcProviderName()
+	u.GetJFrogOIDCProviderName()
 	u = nil
-	u.GetJfrogOidcProviderName()
+	u.GetJFrogOIDCProviderName()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetKeyID(tt *testing.T) {

@@ -80,8 +80,8 @@ type PrivateRegistry struct {
 	TenantID *string `json:"tenant_id,omitempty"`
 	// ClientID is the client ID of the Azure AD application.
 	ClientID *string `json:"client_id,omitempty"`
-	// AwsRegion is the AWS region.
-	AwsRegion *string `json:"aws_region,omitempty"`
+	// AWSRegion is the AWS region.
+	AWSRegion *string `json:"aws_region,omitempty"`
 	// AccountID is the AWS account ID.
 	AccountID *string `json:"account_id,omitempty"`
 	// RoleName is the AWS IAM role name.
@@ -90,8 +90,8 @@ type PrivateRegistry struct {
 	Domain *string `json:"domain,omitempty"`
 	// DomainOwner is the CodeArtifact domain owner.
 	DomainOwner *string `json:"domain_owner,omitempty"`
-	// JfrogOidcProviderName is the JFrog OIDC provider name.
-	JfrogOidcProviderName *string `json:"jfrog_oidc_provider_name,omitempty"`
+	// JFrogOIDCProviderName is the JFrog OIDC provider name.
+	JFrogOIDCProviderName *string `json:"jfrog_oidc_provider_name,omitempty"`
 	// Audience is the OIDC audience.
 	Audience *string `json:"audience,omitempty"`
 	// IdentityMappingName is the JFrog identity mapping name.
@@ -152,8 +152,8 @@ type CreateOrganizationPrivateRegistry struct {
 	// ClientID is the client ID of the Azure AD application. Required when AuthType is "oidc_azure".
 	ClientID *string `json:"client_id,omitempty"`
 
-	// AwsRegion is the AWS region. Required when AuthType is "oidc_aws".
-	AwsRegion *string `json:"aws_region,omitempty"`
+	// AWSRegion is the AWS region. Required when AuthType is "oidc_aws".
+	AWSRegion *string `json:"aws_region,omitempty"`
 	// AccountID is the AWS account ID. Required when AuthType is "oidc_aws".
 	AccountID *string `json:"account_id,omitempty"`
 	// RoleName is the AWS IAM role name. Required when AuthType is "oidc_aws".
@@ -163,8 +163,8 @@ type CreateOrganizationPrivateRegistry struct {
 	// DomainOwner is the CodeArtifact domain owner (AWS account ID). Required when AuthType is "oidc_aws".
 	DomainOwner *string `json:"domain_owner,omitempty"`
 
-	// JfrogOidcProviderName is the JFrog OIDC provider name. Required when AuthType is "oidc_jfrog".
-	JfrogOidcProviderName *string `json:"jfrog_oidc_provider_name,omitempty"`
+	// JFrogOIDCProviderName is the JFrog OIDC provider name. Required when AuthType is "oidc_jfrog".
+	JFrogOIDCProviderName *string `json:"jfrog_oidc_provider_name,omitempty"`
 
 	// Audience is the OIDC audience. Optional for "oidc_aws" and "oidc_jfrog" auth types.
 	Audience *string `json:"audience,omitempty"`
@@ -212,8 +212,8 @@ type UpdateOrganizationPrivateRegistry struct {
 	// ClientID is the client ID of the Azure AD application. Required when AuthType is "oidc_azure".
 	ClientID *string `json:"client_id,omitempty"`
 
-	// AwsRegion is the AWS region. Required when AuthType is "oidc_aws".
-	AwsRegion *string `json:"aws_region,omitempty"`
+	// AWSRegion is the AWS region. Required when AuthType is "oidc_aws".
+	AWSRegion *string `json:"aws_region,omitempty"`
 	// AccountID is the AWS account ID. Required when AuthType is "oidc_aws".
 	AccountID *string `json:"account_id,omitempty"`
 	// RoleName is the AWS IAM role name. Required when AuthType is "oidc_aws".
@@ -223,8 +223,8 @@ type UpdateOrganizationPrivateRegistry struct {
 	// DomainOwner is the CodeArtifact domain owner (AWS account ID). Required when AuthType is "oidc_aws".
 	DomainOwner *string `json:"domain_owner,omitempty"`
 
-	// JfrogOidcProviderName is the JFrog OIDC provider name. Required when AuthType is "oidc_jfrog".
-	JfrogOidcProviderName *string `json:"jfrog_oidc_provider_name,omitempty"`
+	// JFrogOIDCProviderName is the JFrog OIDC provider name. Required when AuthType is "oidc_jfrog".
+	JFrogOIDCProviderName *string `json:"jfrog_oidc_provider_name,omitempty"`
 
 	// Audience is the OIDC audience. Optional for "oidc_aws" and "oidc_jfrog" auth types.
 	Audience *string `json:"audience,omitempty"`

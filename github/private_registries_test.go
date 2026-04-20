@@ -217,7 +217,7 @@ func TestPrivateRegistries_UpdateOrganizationPrivateRegistry_OIDC(t *testing.T) 
 
 	input := &UpdateOrganizationPrivateRegistry{
 		AuthType:    Ptr("oidc_aws"),
-		AwsRegion:   Ptr("us-east-1"),
+		AWSRegion:   Ptr("us-east-1"),
 		AccountID:   Ptr("123456789012"),
 		RoleName:    Ptr("my-role"),
 		Domain:      Ptr("my-domain"),
@@ -254,7 +254,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDCJFrog(t 
 		RegistryType:          PrivateRegistryTypeNpmRegistry,
 		URL:                   "https://example.com/npm",
 		AuthType:              Ptr("oidc_jfrog"),
-		JfrogOidcProviderName: Ptr("my-jfrog-provider"),
+		JFrogOIDCProviderName: Ptr("my-jfrog-provider"),
 		Audience:              Ptr("jfrog"),
 		IdentityMappingName:   Ptr("my-identity-mapping"),
 		Visibility:            PrivateRegistryVisibilityPrivate,

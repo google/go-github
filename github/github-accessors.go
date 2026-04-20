@@ -9542,12 +9542,12 @@ func (c *CreateOrganizationPrivateRegistry) GetAuthType() string {
 	return *c.AuthType
 }
 
-// GetAwsRegion returns the AwsRegion field if it's non-nil, zero value otherwise.
-func (c *CreateOrganizationPrivateRegistry) GetAwsRegion() string {
-	if c == nil || c.AwsRegion == nil {
+// GetAWSRegion returns the AWSRegion field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetAWSRegion() string {
+	if c == nil || c.AWSRegion == nil {
 		return ""
 	}
-	return *c.AwsRegion
+	return *c.AWSRegion
 }
 
 // GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
@@ -9590,12 +9590,12 @@ func (c *CreateOrganizationPrivateRegistry) GetIdentityMappingName() string {
 	return *c.IdentityMappingName
 }
 
-// GetJfrogOidcProviderName returns the JfrogOidcProviderName field if it's non-nil, zero value otherwise.
-func (c *CreateOrganizationPrivateRegistry) GetJfrogOidcProviderName() string {
-	if c == nil || c.JfrogOidcProviderName == nil {
+// GetJFrogOIDCProviderName returns the JFrogOIDCProviderName field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationPrivateRegistry) GetJFrogOIDCProviderName() string {
+	if c == nil || c.JFrogOIDCProviderName == nil {
 		return ""
 	}
-	return *c.JfrogOidcProviderName
+	return *c.JFrogOIDCProviderName
 }
 
 // GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
@@ -26142,12 +26142,12 @@ func (p *PrivateRegistry) GetAuthType() *PrivateRegistryAuthType {
 	return p.AuthType
 }
 
-// GetAwsRegion returns the AwsRegion field if it's non-nil, zero value otherwise.
-func (p *PrivateRegistry) GetAwsRegion() string {
-	if p == nil || p.AwsRegion == nil {
+// GetAWSRegion returns the AWSRegion field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistry) GetAWSRegion() string {
+	if p == nil || p.AWSRegion == nil {
 		return ""
 	}
-	return *p.AwsRegion
+	return *p.AWSRegion
 }
 
 // GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
@@ -26190,12 +26190,12 @@ func (p *PrivateRegistry) GetIdentityMappingName() string {
 	return *p.IdentityMappingName
 }
 
-// GetJfrogOidcProviderName returns the JfrogOidcProviderName field if it's non-nil, zero value otherwise.
-func (p *PrivateRegistry) GetJfrogOidcProviderName() string {
-	if p == nil || p.JfrogOidcProviderName == nil {
+// GetJFrogOIDCProviderName returns the JFrogOIDCProviderName field if it's non-nil, zero value otherwise.
+func (p *PrivateRegistry) GetJFrogOIDCProviderName() string {
+	if p == nil || p.JFrogOIDCProviderName == nil {
 		return ""
 	}
-	return *p.JfrogOidcProviderName
+	return *p.JFrogOIDCProviderName
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -39878,12 +39878,12 @@ func (u *UpdateOrganizationPrivateRegistry) GetAuthType() string {
 	return *u.AuthType
 }
 
-// GetAwsRegion returns the AwsRegion field if it's non-nil, zero value otherwise.
-func (u *UpdateOrganizationPrivateRegistry) GetAwsRegion() string {
-	if u == nil || u.AwsRegion == nil {
+// GetAWSRegion returns the AWSRegion field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetAWSRegion() string {
+	if u == nil || u.AWSRegion == nil {
 		return ""
 	}
-	return *u.AwsRegion
+	return *u.AWSRegion
 }
 
 // GetClientID returns the ClientID field if it's non-nil, zero value otherwise.
@@ -39926,12 +39926,12 @@ func (u *UpdateOrganizationPrivateRegistry) GetIdentityMappingName() string {
 	return *u.IdentityMappingName
 }
 
-// GetJfrogOidcProviderName returns the JfrogOidcProviderName field if it's non-nil, zero value otherwise.
-func (u *UpdateOrganizationPrivateRegistry) GetJfrogOidcProviderName() string {
-	if u == nil || u.JfrogOidcProviderName == nil {
+// GetJFrogOIDCProviderName returns the JFrogOIDCProviderName field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationPrivateRegistry) GetJFrogOIDCProviderName() string {
+	if u == nil || u.JFrogOIDCProviderName == nil {
 		return ""
 	}
-	return *u.JfrogOidcProviderName
+	return *u.JFrogOIDCProviderName
 }
 
 // GetKeyID returns the KeyID field if it's non-nil, zero value otherwise.
