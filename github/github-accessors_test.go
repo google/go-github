@@ -23038,10 +23038,7 @@ func TestIssueCommentEvent_GetSender(tt *testing.T) {
 
 func TestIssueDependenciesSummary_GetBlockedBy(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	i := &IssueDependenciesSummary{BlockedBy: &zeroValue}
-	i.GetBlockedBy()
-	i = &IssueDependenciesSummary{}
+	i := &IssueDependenciesSummary{}
 	i.GetBlockedBy()
 	i = nil
 	i.GetBlockedBy()
@@ -23049,10 +23046,7 @@ func TestIssueDependenciesSummary_GetBlockedBy(tt *testing.T) {
 
 func TestIssueDependenciesSummary_GetBlocking(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	i := &IssueDependenciesSummary{Blocking: &zeroValue}
-	i.GetBlocking()
-	i = &IssueDependenciesSummary{}
+	i := &IssueDependenciesSummary{}
 	i.GetBlocking()
 	i = nil
 	i.GetBlocking()
@@ -23060,10 +23054,7 @@ func TestIssueDependenciesSummary_GetBlocking(tt *testing.T) {
 
 func TestIssueDependenciesSummary_GetTotalBlockedBy(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	i := &IssueDependenciesSummary{TotalBlockedBy: &zeroValue}
-	i.GetTotalBlockedBy()
-	i = &IssueDependenciesSummary{}
+	i := &IssueDependenciesSummary{}
 	i.GetTotalBlockedBy()
 	i = nil
 	i.GetTotalBlockedBy()
@@ -23071,10 +23062,7 @@ func TestIssueDependenciesSummary_GetTotalBlockedBy(tt *testing.T) {
 
 func TestIssueDependenciesSummary_GetTotalBlocking(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	i := &IssueDependenciesSummary{TotalBlocking: &zeroValue}
-	i.GetTotalBlocking()
-	i = &IssueDependenciesSummary{}
+	i := &IssueDependenciesSummary{}
 	i.GetTotalBlocking()
 	i = nil
 	i.GetTotalBlocking()
@@ -23268,10 +23256,7 @@ func TestIssueEvent_GetURL(tt *testing.T) {
 
 func TestIssueFieldSelectOption_GetColor(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldSelectOption{Color: &zeroValue}
-	i.GetColor()
-	i = &IssueFieldSelectOption{}
+	i := &IssueFieldSelectOption{}
 	i.GetColor()
 	i = nil
 	i.GetColor()
@@ -23279,10 +23264,7 @@ func TestIssueFieldSelectOption_GetColor(tt *testing.T) {
 
 func TestIssueFieldSelectOption_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	i := &IssueFieldSelectOption{ID: &zeroValue}
-	i.GetID()
-	i = &IssueFieldSelectOption{}
+	i := &IssueFieldSelectOption{}
 	i.GetID()
 	i = nil
 	i.GetID()
@@ -23290,10 +23272,7 @@ func TestIssueFieldSelectOption_GetID(tt *testing.T) {
 
 func TestIssueFieldSelectOption_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldSelectOption{Name: &zeroValue}
-	i.GetName()
-	i = &IssueFieldSelectOption{}
+	i := &IssueFieldSelectOption{}
 	i.GetName()
 	i = nil
 	i.GetName()
@@ -23301,10 +23280,7 @@ func TestIssueFieldSelectOption_GetName(tt *testing.T) {
 
 func TestIssueFieldValue_GetDataType(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldValue{DataType: &zeroValue}
-	i.GetDataType()
-	i = &IssueFieldValue{}
+	i := &IssueFieldValue{}
 	i.GetDataType()
 	i = nil
 	i.GetDataType()
@@ -23312,10 +23288,7 @@ func TestIssueFieldValue_GetDataType(tt *testing.T) {
 
 func TestIssueFieldValue_GetIssueFieldID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	i := &IssueFieldValue{IssueFieldID: &zeroValue}
-	i.GetIssueFieldID()
-	i = &IssueFieldValue{}
+	i := &IssueFieldValue{}
 	i.GetIssueFieldID()
 	i = nil
 	i.GetIssueFieldID()
@@ -23323,10 +23296,7 @@ func TestIssueFieldValue_GetIssueFieldID(tt *testing.T) {
 
 func TestIssueFieldValue_GetNodeID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldValue{NodeID: &zeroValue}
-	i.GetNodeID()
-	i = &IssueFieldValue{}
+	i := &IssueFieldValue{}
 	i.GetNodeID()
 	i = nil
 	i.GetNodeID()
@@ -47618,10 +47588,7 @@ func TestSubIssueRequest_GetSubIssueID(tt *testing.T) {
 
 func TestSubIssuesSummary_GetCompleted(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	s := &SubIssuesSummary{Completed: &zeroValue}
-	s.GetCompleted()
-	s = &SubIssuesSummary{}
+	s := &SubIssuesSummary{}
 	s.GetCompleted()
 	s = nil
 	s.GetCompleted()
@@ -47629,10 +47596,7 @@ func TestSubIssuesSummary_GetCompleted(tt *testing.T) {
 
 func TestSubIssuesSummary_GetPercentCompleted(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	s := &SubIssuesSummary{PercentCompleted: &zeroValue}
-	s.GetPercentCompleted()
-	s = &SubIssuesSummary{}
+	s := &SubIssuesSummary{}
 	s.GetPercentCompleted()
 	s = nil
 	s.GetPercentCompleted()
@@ -47640,10 +47604,7 @@ func TestSubIssuesSummary_GetPercentCompleted(tt *testing.T) {
 
 func TestSubIssuesSummary_GetTotal(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	s := &SubIssuesSummary{Total: &zeroValue}
-	s.GetTotal()
-	s = &SubIssuesSummary{}
+	s := &SubIssuesSummary{}
 	s.GetTotal()
 	s = nil
 	s.GetTotal()

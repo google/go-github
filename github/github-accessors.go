@@ -18214,36 +18214,36 @@ func (i *IssueCommentEvent) GetSender() *User {
 	return i.Sender
 }
 
-// GetBlockedBy returns the BlockedBy field if it's non-nil, zero value otherwise.
+// GetBlockedBy returns the BlockedBy field.
 func (i *IssueDependenciesSummary) GetBlockedBy() int {
-	if i == nil || i.BlockedBy == nil {
+	if i == nil {
 		return 0
 	}
-	return *i.BlockedBy
+	return i.BlockedBy
 }
 
-// GetBlocking returns the Blocking field if it's non-nil, zero value otherwise.
+// GetBlocking returns the Blocking field.
 func (i *IssueDependenciesSummary) GetBlocking() int {
-	if i == nil || i.Blocking == nil {
+	if i == nil {
 		return 0
 	}
-	return *i.Blocking
+	return i.Blocking
 }
 
-// GetTotalBlockedBy returns the TotalBlockedBy field if it's non-nil, zero value otherwise.
+// GetTotalBlockedBy returns the TotalBlockedBy field.
 func (i *IssueDependenciesSummary) GetTotalBlockedBy() int {
-	if i == nil || i.TotalBlockedBy == nil {
+	if i == nil {
 		return 0
 	}
-	return *i.TotalBlockedBy
+	return i.TotalBlockedBy
 }
 
-// GetTotalBlocking returns the TotalBlocking field if it's non-nil, zero value otherwise.
+// GetTotalBlocking returns the TotalBlocking field.
 func (i *IssueDependenciesSummary) GetTotalBlocking() int {
-	if i == nil || i.TotalBlocking == nil {
+	if i == nil {
 		return 0
 	}
-	return *i.TotalBlocking
+	return i.TotalBlocking
 }
 
 // GetIssueID returns the IssueID field.
@@ -18414,52 +18414,52 @@ func (i *IssueEvent) GetURL() string {
 	return *i.URL
 }
 
-// GetColor returns the Color field if it's non-nil, zero value otherwise.
+// GetColor returns the Color field.
 func (i *IssueFieldSelectOption) GetColor() string {
-	if i == nil || i.Color == nil {
+	if i == nil {
 		return ""
 	}
-	return *i.Color
+	return i.Color
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (i *IssueFieldSelectOption) GetID() int64 {
-	if i == nil || i.ID == nil {
+	if i == nil {
 		return 0
 	}
-	return *i.ID
+	return i.ID
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (i *IssueFieldSelectOption) GetName() string {
-	if i == nil || i.Name == nil {
+	if i == nil {
 		return ""
 	}
-	return *i.Name
+	return i.Name
 }
 
-// GetDataType returns the DataType field if it's non-nil, zero value otherwise.
+// GetDataType returns the DataType field.
 func (i *IssueFieldValue) GetDataType() string {
-	if i == nil || i.DataType == nil {
+	if i == nil {
 		return ""
 	}
-	return *i.DataType
+	return i.DataType
 }
 
-// GetIssueFieldID returns the IssueFieldID field if it's non-nil, zero value otherwise.
+// GetIssueFieldID returns the IssueFieldID field.
 func (i *IssueFieldValue) GetIssueFieldID() int64 {
-	if i == nil || i.IssueFieldID == nil {
+	if i == nil {
 		return 0
 	}
-	return *i.IssueFieldID
+	return i.IssueFieldID
 }
 
-// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+// GetNodeID returns the NodeID field.
 func (i *IssueFieldValue) GetNodeID() string {
-	if i == nil || i.NodeID == nil {
+	if i == nil {
 		return ""
 	}
-	return *i.NodeID
+	return i.NodeID
 }
 
 // GetSingleSelectOption returns the SingleSelectOption field.
@@ -37934,28 +37934,28 @@ func (s *SubIssueRequest) GetSubIssueID() int64 {
 	return s.SubIssueID
 }
 
-// GetCompleted returns the Completed field if it's non-nil, zero value otherwise.
+// GetCompleted returns the Completed field.
 func (s *SubIssuesSummary) GetCompleted() int {
-	if s == nil || s.Completed == nil {
+	if s == nil {
 		return 0
 	}
-	return *s.Completed
+	return s.Completed
 }
 
-// GetPercentCompleted returns the PercentCompleted field if it's non-nil, zero value otherwise.
+// GetPercentCompleted returns the PercentCompleted field.
 func (s *SubIssuesSummary) GetPercentCompleted() int {
-	if s == nil || s.PercentCompleted == nil {
+	if s == nil {
 		return 0
 	}
-	return *s.PercentCompleted
+	return s.PercentCompleted
 }
 
-// GetTotal returns the Total field if it's non-nil, zero value otherwise.
+// GetTotal returns the Total field.
 func (s *SubIssuesSummary) GetTotal() int {
-	if s == nil || s.Total == nil {
+	if s == nil {
 		return 0
 	}
-	return *s.Total
+	return s.Total
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
