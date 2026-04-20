@@ -27,7 +27,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 2b6e93c2823a6f5dc1f6a3727b6b53eafa407fb2
+openapi_commit: f36e195596ae01265fd31528bad607aa2bffd1c8
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -6078,6 +6078,21 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.20/ghes-3.20.json
+  - name: POST /repos/{owner}/{repo}/issues/{issue_number}/issue-field-values
+    documentation_url: https://docs.github.com/rest/issues/issue-field-values#add-issue-field-values-to-an-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /repos/{owner}/{repo}/issues/{issue_number}/issue-field-values
+    documentation_url: https://docs.github.com/rest/issues/issue-field-values#set-issue-field-values-for-an-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: DELETE /repos/{owner}/{repo}/issues/{issue_number}/issue-field-values/{issue_field_id}
+    documentation_url: https://docs.github.com/rest/issues/issue-field-values#delete-an-issue-field-value-from-an-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels
     documentation_url: https://docs.github.com/rest/issues/labels#remove-all-labels-from-an-issue
     openapi_files:
@@ -6497,6 +6512,16 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.20/ghes-3.20.json
+  - name: DELETE /repos/{owner}/{repo}/pulls/{pull_number}/archive
+    documentation_url: https://docs.github.com/rest/pulls/pulls#unarchive-a-pull-request
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PUT /repos/{owner}/{repo}/pulls/{pull_number}/archive
+    documentation_url: https://docs.github.com/rest/pulls/pulls#archive-a-pull-request
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces
     documentation_url: https://docs.github.com/rest/codespaces/codespaces#create-a-codespace-from-a-pull-request
     openapi_files:
@@ -7049,21 +7074,6 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.7/rest/actions/secrets#create-or-update-an-environment-secret
     openapi_files:
       - descriptions/ghes-3.7/ghes-3.7.json
-  - name: POST /repositories/{repository_id}/issues/{issue_number}/issue-field-values
-    documentation_url: https://docs.github.com/rest/issues/issue-field-values#add-issue-field-values-to-an-issue
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: PUT /repositories/{repository_id}/issues/{issue_number}/issue-field-values
-    documentation_url: https://docs.github.com/rest/issues/issue-field-values#set-issue-field-values-for-an-issue
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: DELETE /repositories/{repository_id}/issues/{issue_number}/issue-field-values/{issue_field_id}
-    documentation_url: https://docs.github.com/rest/issues/issue-field-values#delete-an-issue-field-value-from-an-issue
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
   - name: GET /scim/v2/Groups
     documentation_url: https://docs.github.com/enterprise-server@3.7/rest/enterprise-admin/scim#list-provisioned-scim-groups-for-an-enterprise
     openapi_files:
