@@ -19,32 +19,33 @@ type IssuesService service
 
 // IssueDependenciesSummary represents a summary of issue dependency counts.
 type IssueDependenciesSummary struct {
-	BlockedBy      *int `json:"blocked_by,omitempty"`
-	Blocking       *int `json:"blocking,omitempty"`
-	TotalBlockedBy *int `json:"total_blocked_by,omitempty"`
-	TotalBlocking  *int `json:"total_blocking,omitempty"`
+	BlockedBy      int `json:"blocked_by"`
+	Blocking       int `json:"blocking"`
+	TotalBlockedBy int `json:"total_blocked_by"`
+	TotalBlocking  int `json:"total_blocking"`
 }
 
 // SubIssuesSummary represents a summary of sub-issue progress.
 type SubIssuesSummary struct {
-	Total            *int `json:"total,omitempty"`
-	Completed        *int `json:"completed,omitempty"`
-	PercentCompleted *int `json:"percent_completed,omitempty"`
+	Total            int `json:"total"`
+	Completed        int `json:"completed"`
+	PercentCompleted int `json:"percent_completed"`
 }
 
 // IssueFieldSelectOption represents a selected option for a single_select issue field.
 type IssueFieldSelectOption struct {
-	ID    *int64  `json:"id,omitempty"`
-	Name  *string `json:"name,omitempty"`
-	Color *string `json:"color,omitempty"`
+	ID    int64  `json:"id"`
+	Name  string `json:"name"`
+	Color string `json:"color"`
 }
 
 // IssueFieldValue represents a value assigned to an issue field.
 type IssueFieldValue struct {
-	IssueFieldID       *int64                  `json:"issue_field_id,omitempty"`
-	NodeID             *string                 `json:"node_id,omitempty"`
-	DataType           *string                 `json:"data_type,omitempty"`
-	Value              any                     `json:"value,omitempty"`
+	IssueFieldID       int64                   `json:"issue_field_id"`
+	NodeID             string                  `json:"node_id"`
+	DataType           string                  `json:"data_type"`
+	// Value can be a string, number, or integer.
+	Value              any                     `json:"value"`
 	SingleSelectOption *IssueFieldSelectOption `json:"single_select_option,omitempty"`
 }
 
