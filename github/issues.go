@@ -41,9 +41,9 @@ type IssueFieldSelectOption struct {
 
 // IssueFieldValue represents a value assigned to an issue field.
 type IssueFieldValue struct {
-	IssueFieldID       int64                   `json:"issue_field_id"`
-	NodeID             string                  `json:"node_id"`
-	DataType           string                  `json:"data_type"`
+	IssueFieldID int64  `json:"issue_field_id"`
+	NodeID       string `json:"node_id"`
+	DataType     string `json:"data_type"`
 	// Value can be a string, number, or integer.
 	Value              any                     `json:"value"`
 	SingleSelectOption *IssueFieldSelectOption `json:"single_select_option,omitempty"`
