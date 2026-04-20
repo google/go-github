@@ -3439,37 +3439,37 @@ openapi_operations:
     openapi_files:
       - descriptions/ghes-3.20/ghes-3.20.json
   - name: GET /orgs/{org}/private-registries
-    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#list-private-registries-for-an-organization
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#list-private-registries-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.20/ghes-3.20.json
   - name: POST /orgs/{org}/private-registries
-    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#create-a-private-registry-for-an-organization
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#create-a-private-registry-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.20/ghes-3.20.json
   - name: GET /orgs/{org}/private-registries/public-key
-    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#get-private-registries-public-key-for-an-organization
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#get-private-registries-public-key-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.20/ghes-3.20.json
   - name: DELETE /orgs/{org}/private-registries/{secret_name}
-    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#delete-a-private-registry-for-an-organization
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#delete-a-private-registry-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.20/ghes-3.20.json
   - name: GET /orgs/{org}/private-registries/{secret_name}
-    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#get-a-private-registry-for-an-organization
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#get-a-private-registry-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.20/ghes-3.20.json
   - name: PATCH /orgs/{org}/private-registries/{secret_name}
-    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations#update-a-private-registry-for-an-organization
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#update-a-private-registry-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
