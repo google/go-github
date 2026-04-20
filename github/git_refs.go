@@ -52,7 +52,7 @@ type UpdateRef struct {
 // GetRef fetches a single reference in a repository.
 // The ref must be formatted as `heads/<branch name>` for branches and `tags/<tag name>` for tags.
 //
-// GitHub API docs: https://docs.github.com/rest/git/refs#get-a-reference
+// GitHub API docs: https://docs.github.com/rest/git/refs?apiVersion=2022-11-28#get-a-reference
 //
 //meta:operation GET /repos/{owner}/{repo}/git/ref/{ref}
 func (s *GitService) GetRef(ctx context.Context, owner, repo, ref string) (*Reference, *Response, error) {
@@ -87,7 +87,7 @@ func refURLEscape(ref string) string {
 // If the ref doesn't exist in the repository, but existing refs start with ref, they will be returned as an array.
 // Use an empty ref to list all references.
 //
-// GitHub API docs: https://docs.github.com/rest/git/refs#list-matching-references
+// GitHub API docs: https://docs.github.com/rest/git/refs?apiVersion=2022-11-28#list-matching-references
 //
 //meta:operation GET /repos/{owner}/{repo}/git/matching-refs/{ref}
 func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo, ref string) ([]*Reference, *Response, error) {
@@ -110,7 +110,7 @@ func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo, ref stri
 
 // CreateRef creates a new ref in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/git/refs#create-a-reference
+// GitHub API docs: https://docs.github.com/rest/git/refs?apiVersion=2022-11-28#create-a-reference
 //
 //meta:operation POST /repos/{owner}/{repo}/git/refs
 func (s *GitService) CreateRef(ctx context.Context, owner, repo string, ref CreateRef) (*Reference, *Response, error) {
@@ -142,7 +142,7 @@ func (s *GitService) CreateRef(ctx context.Context, owner, repo string, ref Crea
 
 // UpdateRef updates an existing ref in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/git/refs#update-a-reference
+// GitHub API docs: https://docs.github.com/rest/git/refs?apiVersion=2022-11-28#update-a-reference
 //
 //meta:operation PATCH /repos/{owner}/{repo}/git/refs/{ref}
 func (s *GitService) UpdateRef(ctx context.Context, owner, repo, ref string, updateRef UpdateRef) (*Reference, *Response, error) {
@@ -172,7 +172,7 @@ func (s *GitService) UpdateRef(ctx context.Context, owner, repo, ref string, upd
 
 // DeleteRef deletes a ref from a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/git/refs#delete-a-reference
+// GitHub API docs: https://docs.github.com/rest/git/refs?apiVersion=2022-11-28#delete-a-reference
 //
 //meta:operation DELETE /repos/{owner}/{repo}/git/refs/{ref}
 func (s *GitService) DeleteRef(ctx context.Context, owner, repo, ref string) (*Response, error) {

@@ -12,7 +12,7 @@ import (
 
 // ActionsPermissionsRepository represents a policy for repositories and allowed actions in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28
 type ActionsPermissionsRepository struct {
 	Enabled            *bool   `json:"enabled,omitempty"`
 	AllowedActions     *string `json:"allowed_actions,omitempty"`
@@ -26,7 +26,7 @@ func (a ActionsPermissionsRepository) String() string {
 
 // DefaultWorkflowPermissionRepository represents the default permissions for GitHub Actions workflows for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28
 type DefaultWorkflowPermissionRepository struct {
 	DefaultWorkflowPermissions   *string `json:"default_workflow_permissions,omitempty"`
 	CanApprovePullRequestReviews *bool   `json:"can_approve_pull_request_reviews,omitempty"`
@@ -34,7 +34,7 @@ type DefaultWorkflowPermissionRepository struct {
 
 // GetActionsPermissions gets the GitHub Actions permissions policy for repositories and allowed actions in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-github-actions-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#get-github-actions-permissions-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/permissions
 func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, repo string) (*ActionsPermissionsRepository, *Response, error) {
@@ -56,7 +56,7 @@ func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, 
 
 // UpdateActionsPermissions sets the permissions policy for repositories and allowed actions in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-github-actions-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-github-actions-permissions-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions
 func (s *RepositoriesService) UpdateActionsPermissions(ctx context.Context, owner, repo string, actionsPermissionsRepository ActionsPermissionsRepository) (*ActionsPermissionsRepository, *Response, error) {
@@ -77,7 +77,7 @@ func (s *RepositoriesService) UpdateActionsPermissions(ctx context.Context, owne
 
 // GetDefaultWorkflowPermissions gets the GitHub Actions default workflow permissions in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-default-workflow-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#get-default-workflow-permissions-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/permissions/workflow
 func (s *RepositoriesService) GetDefaultWorkflowPermissions(ctx context.Context, owner, repo string) (*DefaultWorkflowPermissionRepository, *Response, error) {
@@ -99,7 +99,7 @@ func (s *RepositoriesService) GetDefaultWorkflowPermissions(ctx context.Context,
 
 // UpdateDefaultWorkflowPermissions sets the GitHub Actions default workflow permissions in a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-default-workflow-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-default-workflow-permissions-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/workflow
 func (s *RepositoriesService) UpdateDefaultWorkflowPermissions(ctx context.Context, owner, repo string, permissions DefaultWorkflowPermissionRepository) (*DefaultWorkflowPermissionRepository, *Response, error) {
@@ -120,7 +120,7 @@ func (s *RepositoriesService) UpdateDefaultWorkflowPermissions(ctx context.Conte
 
 // GetArtifactAndLogRetentionPeriod gets the artifact and log retention period for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-artifact-and-log-retention-settings-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#get-artifact-and-log-retention-settings-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/permissions/artifact-and-log-retention
 func (s *RepositoriesService) GetArtifactAndLogRetentionPeriod(ctx context.Context, owner, repo string) (*ArtifactPeriod, *Response, error) {
@@ -142,7 +142,7 @@ func (s *RepositoriesService) GetArtifactAndLogRetentionPeriod(ctx context.Conte
 
 // UpdateArtifactAndLogRetentionPeriod sets the artifact and log retention period for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-artifact-and-log-retention-settings-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-artifact-and-log-retention-settings-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/artifact-and-log-retention
 func (s *RepositoriesService) UpdateArtifactAndLogRetentionPeriod(ctx context.Context, owner, repo string, period ArtifactPeriodOpt) (*Response, error) {
@@ -157,7 +157,7 @@ func (s *RepositoriesService) UpdateArtifactAndLogRetentionPeriod(ctx context.Co
 
 // GetPrivateRepoForkPRWorkflowSettings gets the settings for whether workflows from fork pull requests can run on a private repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-private-repo-fork-pr-workflow-settings-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#get-private-repo-fork-pr-workflow-settings-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos
 func (s *RepositoriesService) GetPrivateRepoForkPRWorkflowSettings(ctx context.Context, owner, repo string) (*WorkflowsPermissions, *Response, error) {
@@ -179,7 +179,7 @@ func (s *RepositoriesService) GetPrivateRepoForkPRWorkflowSettings(ctx context.C
 
 // UpdatePrivateRepoForkPRWorkflowSettings sets the settings for whether workflows from fork pull requests can run on a private repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-private-repo-fork-pr-workflow-settings-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-private-repo-fork-pr-workflow-settings-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos
 func (s *RepositoriesService) UpdatePrivateRepoForkPRWorkflowSettings(ctx context.Context, owner, repo string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
@@ -194,7 +194,7 @@ func (s *RepositoriesService) UpdatePrivateRepoForkPRWorkflowSettings(ctx contex
 
 // GetForkPRContributorApprovalPermissions gets the fork PR contributor approval policy for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-fork-pr-contributor-approval-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#get-fork-pr-contributor-approval-permissions-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval
 func (s *ActionsService) GetForkPRContributorApprovalPermissions(ctx context.Context, owner, repo string) (*ContributorApprovalPermissions, *Response, error) {
@@ -216,7 +216,7 @@ func (s *ActionsService) GetForkPRContributorApprovalPermissions(ctx context.Con
 
 // UpdateForkPRContributorApprovalPermissions sets the fork PR contributor approval policy for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-fork-pr-contributor-approval-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-fork-pr-contributor-approval-permissions-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval
 func (s *ActionsService) UpdateForkPRContributorApprovalPermissions(ctx context.Context, owner, repo string, policy ContributorApprovalPermissions) (*Response, error) {

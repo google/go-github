@@ -13,7 +13,7 @@ import (
 // GitignoresService provides access to the gitignore related functions in the
 // GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/gitignore/
+// GitHub API docs: https://docs.github.com/rest/gitignore?apiVersion=2022-11-28
 type GitignoresService service
 
 // Gitignore represents a .gitignore file as returned by the GitHub API.
@@ -28,7 +28,7 @@ func (g Gitignore) String() string {
 
 // List all available Gitignore templates.
 //
-// GitHub API docs: https://docs.github.com/rest/gitignore/gitignore#get-all-gitignore-templates
+// GitHub API docs: https://docs.github.com/rest/gitignore/gitignore?apiVersion=2022-11-28#get-all-gitignore-templates
 //
 //meta:operation GET /gitignore/templates
 func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, error) {
@@ -48,7 +48,7 @@ func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, erro
 
 // Get a Gitignore by name.
 //
-// GitHub API docs: https://docs.github.com/rest/gitignore/gitignore#get-a-gitignore-template
+// GitHub API docs: https://docs.github.com/rest/gitignore/gitignore?apiVersion=2022-11-28#get-a-gitignore-template
 //
 //meta:operation GET /gitignore/templates/{name}
 func (s *GitignoresService) Get(ctx context.Context, name string) (*Gitignore, *Response, error) {

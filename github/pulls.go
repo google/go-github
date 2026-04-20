@@ -15,7 +15,7 @@ import (
 // PullRequestsService handles communication with the pull request related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/
+// GitHub API docs: https://docs.github.com/rest/pulls?apiVersion=2022-11-28
 type PullRequestsService service
 
 // PullRequestAutoMerge represents the "auto_merge" response for a PullRequest.
@@ -59,7 +59,7 @@ type PullRequest struct {
 	//
 	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
 	// Use the Pull Requests REST API endpoint to retrieve this information.
-	// See: https://docs.github.com/rest/pulls/pulls#get-a-pull-request
+	// See: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#get-a-pull-request
 	AuthorAssociation  *string               `json:"author_association,omitempty"`
 	NodeID             *string               `json:"node_id,omitempty"`
 	RequestedReviewers []*User               `json:"requested_reviewers,omitempty"`
@@ -151,7 +151,7 @@ type PullRequestListOptions struct {
 
 // List the pull requests for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/pulls#list-pull-requests
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls
 func (s *PullRequestsService) List(ctx context.Context, owner, repo string, opts *PullRequestListOptions) ([]*PullRequest, *Response, error) {
@@ -182,7 +182,7 @@ func (s *PullRequestsService) List(ctx context.Context, owner, repo string, opts
 // not present in the repository's default branch, the result will only include
 // open pull requests.
 //
-// GitHub API docs: https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit
+// GitHub API docs: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#list-pull-requests-associated-with-a-commit
 //
 //meta:operation GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls
 func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, owner, repo, sha string, opts *ListOptions) ([]*PullRequest, *Response, error) {
@@ -209,7 +209,7 @@ func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, ow
 
 // Get a single pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/pulls#get-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#get-a-pull-request
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}
 func (s *PullRequestsService) Get(ctx context.Context, owner, repo string, number int) (*PullRequest, *Response, error) {
@@ -230,7 +230,7 @@ func (s *PullRequestsService) Get(ctx context.Context, owner, repo string, numbe
 
 // GetRaw gets a single pull request in raw (diff or patch) format.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/pulls#get-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#get-a-pull-request
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}
 func (s *PullRequestsService) GetRaw(ctx context.Context, owner, repo string, number int, opts RawOptions) (string, *Response, error) {
@@ -279,7 +279,7 @@ type NewPullRequest struct {
 
 // Create a new pull request on the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/pulls#create-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#create-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls
 func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, pull *NewPullRequest) (*PullRequest, *Response, error) {
@@ -320,7 +320,7 @@ type PullRequestBranchUpdateResponse struct {
 // A follow up request, after a delay of a second or so, should result
 // in a successful request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/pulls#update-a-pull-request-branch
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#update-a-pull-request-branch
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch
 func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullRequestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error) {
@@ -356,7 +356,7 @@ type pullRequestUpdate struct {
 // The following fields are editable: Title, Body, State, Base.Ref and MaintainerCanModify.
 // Base.Ref updates the base branch of the pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/pulls#update-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#update-a-pull-request
 //
 //meta:operation PATCH /repos/{owner}/{repo}/pulls/{pull_number}
 func (s *PullRequestsService) Edit(ctx context.Context, owner, repo string, number int, pull *PullRequest) (*PullRequest, *Response, error) {
@@ -395,7 +395,7 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner, repo string, numb
 
 // ListCommits lists the commits in a pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/pulls#list-commits-on-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#list-commits-on-a-pull-request
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/commits
 func (s *PullRequestsService) ListCommits(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*RepositoryCommit, *Response, error) {
@@ -421,7 +421,7 @@ func (s *PullRequestsService) ListCommits(ctx context.Context, owner, repo strin
 
 // ListFiles lists the files in a pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/pulls#list-pull-requests-files
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests-files
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/files
 func (s *PullRequestsService) ListFiles(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*CommitFile, *Response, error) {
@@ -447,7 +447,7 @@ func (s *PullRequestsService) ListFiles(ctx context.Context, owner, repo string,
 
 // IsMerged checks if a pull request has been merged.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/pulls#check-if-a-pull-request-has-been-merged
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#check-if-a-pull-request-has-been-merged
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/merge
 func (s *PullRequestsService) IsMerged(ctx context.Context, owner, repo string, number int) (bool, *Response, error) {
@@ -491,7 +491,7 @@ type pullRequestMergeRequest struct {
 // Merge a pull request.
 // commitMessage is an extra detail to append to automatic commit message.
 //
-// GitHub API docs: https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#merge-a-pull-request
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge
 func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, number int, commitMessage string, options *PullRequestOptions) (*PullRequestMergeResult, *Response, error) {

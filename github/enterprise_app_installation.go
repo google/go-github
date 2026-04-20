@@ -37,7 +37,7 @@ type InstallAppRequest struct {
 
 // ListAppInstallableOrganizations lists the organizations in an enterprise that are installable for an app.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#get-enterprise-owned-organizations-that-can-have-github-apps-installed
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#get-enterprise-owned-organizations-that-can-have-github-apps-installed
 //
 //meta:operation GET /enterprises/{enterprise}/apps/installable_organizations
 func (s *EnterpriseService) ListAppInstallableOrganizations(ctx context.Context, enterprise string, opts *ListOptions) ([]*InstallableOrganization, *Response, error) {
@@ -64,7 +64,7 @@ func (s *EnterpriseService) ListAppInstallableOrganizations(ctx context.Context,
 
 // ListAppAccessibleOrganizationRepositories lists the repositories accessible to an app in an enterprise-owned organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#get-repositories-belonging-to-an-enterprise-owned-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#get-repositories-belonging-to-an-enterprise-owned-organization
 //
 //meta:operation GET /enterprises/{enterprise}/apps/installable_organizations/{org}/accessible_repositories
 func (s *EnterpriseService) ListAppAccessibleOrganizationRepositories(ctx context.Context, enterprise, org string, opts *ListOptions) ([]*AccessibleRepository, *Response, error) {
@@ -91,7 +91,7 @@ func (s *EnterpriseService) ListAppAccessibleOrganizationRepositories(ctx contex
 
 // ListAppInstallations lists the GitHub app installations associated with the given enterprise-owned organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#list-github-apps-installed-on-an-enterprise-owned-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#list-github-apps-installed-on-an-enterprise-owned-organization
 //
 //meta:operation GET /enterprises/{enterprise}/apps/organizations/{org}/installations
 func (s *EnterpriseService) ListAppInstallations(ctx context.Context, enterprise, org string, opts *ListOptions) ([]*Installation, *Response, error) {
@@ -119,7 +119,7 @@ func (s *EnterpriseService) ListAppInstallations(ctx context.Context, enterprise
 // InstallApp installs any valid GitHub app on the specified organization owned by the enterprise.
 // If the app is already installed on the organization, and is suspended, it will be unsuspended. If the app has a pending installation request, they will all be approved.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#install-a-github-app-on-an-enterprise-owned-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#install-a-github-app-on-an-enterprise-owned-organization
 //
 //meta:operation POST /enterprises/{enterprise}/apps/organizations/{org}/installations
 func (s *EnterpriseService) InstallApp(ctx context.Context, enterprise, org string, request InstallAppRequest) (*Installation, *Response, error) {
@@ -140,7 +140,7 @@ func (s *EnterpriseService) InstallApp(ctx context.Context, enterprise, org stri
 
 // UninstallApp uninstalls a GitHub app from an organization. Any app installed on the organization can be removed.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations#uninstall-a-github-app-from-an-enterprise-owned-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#uninstall-a-github-app-from-an-enterprise-owned-organization
 //
 //meta:operation DELETE /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}
 func (s *EnterpriseService) UninstallApp(ctx context.Context, enterprise, org string, installationID int64) (*Response, error) {

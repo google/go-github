@@ -4,7 +4,7 @@
 // license that can be found in the LICENSE file.
 
 // Repository contents API methods.
-// GitHub API docs: https://docs.github.com/rest/repos/contents/
+// GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28
 
 package github
 
@@ -17,11 +17,8 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"path"
 	"strings"
 )
-
-var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulnerability issue")
 
 // RepositoryContent represents a file or directory in a github repository.
 type RepositoryContent struct {
@@ -100,7 +97,7 @@ func (r *RepositoryContent) GetContent() (string, error) {
 
 // GetReadme gets the Readme file for the repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/contents#get-a-repository-readme
+// GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#get-a-repository-readme
 //
 //meta:operation GET /repos/{owner}/{repo}/readme
 func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string, opts *RepositoryContentGetOptions) (*RepositoryContent, *Response, error) {
@@ -133,44 +130,12 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // returned error is nil. Callers should check the returned Response status
 // code to verify the content is from a successful response.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/contents#get-repository-content
+// GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#get-repository-content
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *Response, error) {
-	dir := path.Dir(filepath)
-	filename := path.Base(filepath)
-	fileContent, _, resp, err := s.GetContents(ctx, owner, repo, filepath, opts)
-	if err == nil && fileContent != nil {
-		content, err := fileContent.GetContent()
-		if err == nil && content != "" {
-			return io.NopCloser(strings.NewReader(content)), resp, nil
-		}
-	}
-
-	_, dirContents, resp, err := s.GetContents(ctx, owner, repo, dir, opts)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	for _, contents := range dirContents {
-		if contents.GetName() == filename {
-			if contents.GetDownloadURL() == "" {
-				return nil, resp, fmt.Errorf("no download link found for %v", filepath)
-			}
-			dlReq, err := http.NewRequestWithContext(ctx, "GET", *contents.DownloadURL, nil)
-			if err != nil {
-				return nil, resp, err
-			}
-			dlResp, err := s.client.client.Do(dlReq)
-			if err != nil {
-				return nil, &Response{Response: dlResp}, err
-			}
-
-			return dlResp.Body, &Response{Response: dlResp}, nil
-		}
-	}
-
-	return nil, resp, fmt.Errorf("no file named %v found in %v", filename, dir)
+	rc, _, resp, err := s.DownloadContentsWithMeta(ctx, owner, repo, filepath, opts)
+	return rc, resp, err
 }
 
 // DownloadContentsWithMeta is identical to DownloadContents but additionally
@@ -182,44 +147,40 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 // returned error is nil. Callers should check the returned Response status
 // code to verify the content is from a successful response.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/contents#get-repository-content
+// GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#get-repository-content
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owner, repo, filepath string, opts *RepositoryContentGetOptions) (io.ReadCloser, *RepositoryContent, *Response, error) {
-	dir := path.Dir(filepath)
-	filename := path.Base(filepath)
 	fileContent, _, resp, err := s.GetContents(ctx, owner, repo, filepath, opts)
-	if err == nil && fileContent != nil {
-		content, err := fileContent.GetContent()
-		if err == nil && content != "" {
-			return io.NopCloser(strings.NewReader(content)), fileContent, resp, nil
-		}
-	}
-
-	_, dirContents, resp, err := s.GetContents(ctx, owner, repo, dir, opts)
 	if err != nil {
 		return nil, nil, resp, err
 	}
 
-	for _, contents := range dirContents {
-		if contents.GetName() == filename {
-			if contents.GetDownloadURL() == "" {
-				return nil, contents, resp, fmt.Errorf("no download link found for %v", filepath)
-			}
-			dlReq, err := http.NewRequestWithContext(ctx, "GET", *contents.DownloadURL, nil)
-			if err != nil {
-				return nil, contents, resp, err
-			}
-			dlResp, err := s.client.client.Do(dlReq)
-			if err != nil {
-				return nil, contents, &Response{Response: dlResp}, err
-			}
-
-			return dlResp.Body, contents, &Response{Response: dlResp}, nil
-		}
+	if fileContent == nil {
+		return nil, nil, resp, errors.New("no file content found")
 	}
 
-	return nil, nil, resp, fmt.Errorf("no file named %v found in %v", filename, dir)
+	content, err := fileContent.GetContent()
+	if err == nil && content != "" {
+		return io.NopCloser(strings.NewReader(content)), fileContent, resp, nil
+	}
+
+	downloadURL := fileContent.GetDownloadURL()
+	if downloadURL == "" {
+		return nil, fileContent, resp, errors.New("download url is empty")
+	}
+
+	dlReq, err := http.NewRequestWithContext(ctx, "GET", downloadURL, nil)
+	if err != nil {
+		return nil, fileContent, resp, err
+	}
+
+	dlResp, err := s.client.client.Do(dlReq)
+	if err != nil {
+		return nil, fileContent, &Response{Response: dlResp}, err
+	}
+
+	return dlResp.Body, fileContent, &Response{Response: dlResp}, nil
 }
 
 // GetContents can return either the metadata and content of a single file
@@ -229,17 +190,10 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 // as possible, both result types will be returned but only one will contain a
 // value and the other will be nil.
 //
-// Due to an auth vulnerability issue in the GitHub v3 API, ".." is not allowed
-// to appear anywhere in the "path" or this method will return an error.
-//
-// GitHub API docs: https://docs.github.com/rest/repos/contents#get-repository-content
+// GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#get-repository-content
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path string, opts *RepositoryContentGetOptions) (fileContent *RepositoryContent, directoryContent []*RepositoryContent, resp *Response, err error) {
-	if strings.Contains(path, "..") {
-		return nil, nil, nil, ErrPathForbidden
-	}
-
 	escapedPath := (&url.URL{Path: strings.TrimSuffix(path, "/")}).String()
 	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, escapedPath)
 	u, err = addOptions(u, opts)
@@ -274,7 +228,7 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 // CreateFile creates a new file in a repository at the given path and returns
 // the commit and file metadata.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/contents#create-or-update-file-contents
+// GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#create-or-update-file-contents
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
@@ -296,7 +250,7 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 // UpdateFile updates a file in a repository at the given path and returns the
 // commit and file metadata. Requires the blob SHA of the file being updated.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/contents#create-or-update-file-contents
+// GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#create-or-update-file-contents
 //
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
@@ -318,7 +272,7 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 // DeleteFile deletes a file from a repository and returns the commit.
 // Requires the blob SHA of the file to be deleted.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/contents#delete-a-file
+// GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#delete-a-file
 //
 //meta:operation DELETE /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
@@ -352,9 +306,9 @@ const (
 // repository. The archiveFormat can be specified by either the github.Tarball
 // or github.Zipball constant.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/contents#download-a-repository-archive-tar
+// GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#download-a-repository-archive-tar
 //
-// GitHub API docs: https://docs.github.com/rest/repos/contents#download-a-repository-archive-zip
+// GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#download-a-repository-archive-zip
 //
 //meta:operation GET /repos/{owner}/{repo}/tarball/{ref}
 //meta:operation GET /repos/{owner}/{repo}/zipball/{ref}

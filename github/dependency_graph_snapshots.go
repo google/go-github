@@ -12,7 +12,7 @@ import (
 
 // DependencyGraphSnapshotResolvedDependency represents a resolved dependency in a dependency graph snapshot.
 //
-// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshotResolvedDependency struct {
 	PackageURL *string `json:"package_url,omitempty"`
 	// User-defined metadata to store domain-specific information limited to 8 keys with scalar values.
@@ -39,7 +39,7 @@ type DependencyGraphSnapshotResolvedDependency struct {
 
 // DependencyGraphSnapshotJob represents the job that created the snapshot.
 //
-// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshotJob struct {
 	Correlator *string `json:"correlator,omitempty"`
 	ID         *string `json:"id,omitempty"`
@@ -48,7 +48,7 @@ type DependencyGraphSnapshotJob struct {
 
 // DependencyGraphSnapshotDetector represents a description of the detector used.
 //
-// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshotDetector struct {
 	Name    *string `json:"name,omitempty"`
 	Version *string `json:"version,omitempty"`
@@ -57,14 +57,14 @@ type DependencyGraphSnapshotDetector struct {
 
 // DependencyGraphSnapshotManifestFile represents the file declaring the repository's dependencies.
 //
-// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshotManifestFile struct {
 	SourceLocation *string `json:"source_location,omitempty"`
 }
 
 // DependencyGraphSnapshotManifest represents a collection of related dependencies declared in a file or representing a logical group of dependencies.
 //
-// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshotManifest struct {
 	Name     *string                                               `json:"name,omitempty"`
 	File     *DependencyGraphSnapshotManifestFile                  `json:"file,omitempty"`
@@ -74,7 +74,7 @@ type DependencyGraphSnapshotManifest struct {
 
 // DependencyGraphSnapshot represent a snapshot of a repository's dependencies.
 //
-// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshot struct {
 	Version   int                                         `json:"version"`
 	Sha       *string                                     `json:"sha,omitempty"`
@@ -88,7 +88,7 @@ type DependencyGraphSnapshot struct {
 
 // DependencyGraphSnapshotCreationData represents the dependency snapshot's creation result.
 //
-// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshotCreationData struct {
 	ID        int64      `json:"id"`
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
@@ -103,7 +103,7 @@ type DependencyGraphSnapshotCreationData struct {
 
 // CreateSnapshot creates a new snapshot of a repository's dependencies.
 //
-// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/dependency-graph/snapshots
 func (s *DependencyGraphService) CreateSnapshot(ctx context.Context, owner, repo string, dependencyGraphSnapshot *DependencyGraphSnapshot) (*DependencyGraphSnapshotCreationData, *Response, error) {

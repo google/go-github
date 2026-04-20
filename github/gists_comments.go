@@ -25,7 +25,7 @@ func (g GistComment) String() string {
 
 // ListComments lists all comments for a gist.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/comments#list-gist-comments
+// GitHub API docs: https://docs.github.com/rest/gists/comments?apiVersion=2022-11-28#list-gist-comments
 //
 //meta:operation GET /gists/{gist_id}/comments
 func (s *GistsService) ListComments(ctx context.Context, gistID string, opts *ListOptions) ([]*GistComment, *Response, error) {
@@ -51,7 +51,7 @@ func (s *GistsService) ListComments(ctx context.Context, gistID string, opts *Li
 
 // GetComment retrieves a single comment from a gist.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/comments#get-a-gist-comment
+// GitHub API docs: https://docs.github.com/rest/gists/comments?apiVersion=2022-11-28#get-a-gist-comment
 //
 //meta:operation GET /gists/{gist_id}/comments/{comment_id}
 func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID int64) (*GistComment, *Response, error) {
@@ -72,7 +72,7 @@ func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID 
 
 // CreateComment creates a comment for a gist.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/comments#create-a-gist-comment
+// GitHub API docs: https://docs.github.com/rest/gists/comments?apiVersion=2022-11-28#create-a-gist-comment
 //
 //meta:operation POST /gists/{gist_id}/comments
 func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment *GistComment) (*GistComment, *Response, error) {
@@ -93,7 +93,7 @@ func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment
 
 // EditComment edits an existing gist comment.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/comments#update-a-gist-comment
+// GitHub API docs: https://docs.github.com/rest/gists/comments?apiVersion=2022-11-28#update-a-gist-comment
 //
 //meta:operation PATCH /gists/{gist_id}/comments/{comment_id}
 func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID int64, comment *GistComment) (*GistComment, *Response, error) {
@@ -114,7 +114,7 @@ func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID
 
 // DeleteComment deletes a gist comment.
 //
-// GitHub API docs: https://docs.github.com/rest/gists/comments#delete-a-gist-comment
+// GitHub API docs: https://docs.github.com/rest/gists/comments?apiVersion=2022-11-28#delete-a-gist-comment
 //
 //meta:operation DELETE /gists/{gist_id}/comments/{comment_id}
 func (s *GistsService) DeleteComment(ctx context.Context, gistID string, commentID int64) (*Response, error) {

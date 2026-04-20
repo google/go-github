@@ -508,6 +508,19 @@ func TestWithAuthToken(t *testing.T) {
 			t.Error("The header 'Authorization' must not be set")
 		}
 	})
+
+	t.Run("preserves Marketplace Stubbed field", func(t *testing.T) {
+		t.Parallel()
+
+		c := NewClient(nil)
+		c.Marketplace.Stubbed = true
+
+		c2 := c.WithAuthToken("token")
+
+		if !c2.Marketplace.Stubbed {
+			t.Fatal("WithAuthToken reset Marketplace.Stubbed; want true")
+		}
+	})
 }
 
 func TestWithEnterpriseURLs(t *testing.T) {
@@ -770,6 +783,83 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewRequest returned unexpected error: %v.", err)
 		}
+	}
+}
+
+func TestCheckURLPathTraversal(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		input   string
+		wantErr error
+	}{
+		{"repos/o/r/contents/file.txt", nil},
+		{"repos/o/r/contents/dir/file.txt", nil},
+		{"repos/o/r/contents/file..txt", nil},
+		{"repos/o/r?q=a..b", nil},
+		{"repos/../admin/users", ErrPathForbidden},
+		{"repos/x/../../../admin", ErrPathForbidden},
+		{"../admin", ErrPathForbidden},
+		{"repos/o/r/contents/..", ErrPathForbidden},
+		{"repos/o/r/contents/../secrets", ErrPathForbidden},
+		// Full URLs with scheme.
+		{"https://api.github.com/repos/../admin", ErrPathForbidden},
+		{"https://api.github.com/repos/o/r/contents/file.txt", nil},
+		{"https://api.github.com/repos/o/r/contents/file..txt", nil},
+		// URL with fragment.
+		{"repos/o/r/contents/file.txt#section", nil},
+		{"repos/../admin#frag", ErrPathForbidden},
+		// URL with userinfo.
+		{"https://user:pass@api.github.com/repos/../admin", ErrPathForbidden},
+		{"https://user:pass@api.github.com/repos/o/r", nil},
+	}
+	for _, tt := range tests {
+		err := checkURLPathTraversal(tt.input)
+		if !errors.Is(err, tt.wantErr) {
+			t.Errorf("checkURLPathTraversal(%q) = %v, want %v", tt.input, err, tt.wantErr)
+		}
+	}
+}
+
+func TestNewRequest_pathTraversal(t *testing.T) {
+	t.Parallel()
+	c := NewClient(nil)
+
+	tests := []struct {
+		urlStr    string
+		wantError bool
+	}{
+		{"repos/o/r/readme", false},
+		{"repos/o/r/contents/file..txt", false},
+		{"repos/x/../../../admin/users", true},
+		{"repos/../admin", true},
+	}
+	for _, tt := range tests {
+		_, err := c.NewRequest("GET", tt.urlStr, nil)
+		if tt.wantError && !errors.Is(err, ErrPathForbidden) {
+			t.Errorf("NewRequest(%q): want ErrPathForbidden, got %v", tt.urlStr, err)
+		} else if !tt.wantError && err != nil {
+			t.Errorf("NewRequest(%q): unexpected error: %v", tt.urlStr, err)
+		}
+	}
+}
+
+func TestNewFormRequest_pathTraversal(t *testing.T) {
+	t.Parallel()
+	c := NewClient(nil)
+
+	_, err := c.NewFormRequest("repos/x/../../../admin", nil)
+	if !errors.Is(err, ErrPathForbidden) {
+		t.Fatalf("NewFormRequest with path traversal: want ErrPathForbidden, got %v", err)
+	}
+}
+
+func TestNewUploadRequest_pathTraversal(t *testing.T) {
+	t.Parallel()
+	c := NewClient(nil)
+
+	_, err := c.NewUploadRequest("repos/x/../../../admin", nil, 0, "")
+	if !errors.Is(err, ErrPathForbidden) {
+		t.Fatalf("NewUploadRequest with path traversal: want ErrPathForbidden, got %v", err)
 	}
 }
 
@@ -2166,6 +2256,80 @@ func TestBareDoUntilFound_UnexpectedRedirection(t *testing.T) {
 	}
 }
 
+// TestBareDoUntilFound_RejectsCrossHostRedirect verifies that bareDoUntilFound
+// refuses to follow a 301 redirect whose Location points to a different host,
+// which would otherwise leak the Authorization header (added by the auth
+// transport) to an attacker-controlled server.
+func TestBareDoUntilFound_RejectsCrossHostRedirect(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Location", "https://evil.example.com/steal")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	req, _ := client.NewRequest("GET", ".", nil)
+	_, _, err := client.bareDoUntilFound(t.Context(), req, 1)
+	if err == nil {
+		t.Fatal("Expected cross-host redirect to be rejected, got nil error.")
+	}
+	if !strings.Contains(err.Error(), "cross-host redirect") {
+		t.Errorf("Expected cross-host redirect error, got: %v", err)
+	}
+}
+
+// TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect verifies
+// that roundTripWithOptionalFollowRedirect refuses to follow a 301 redirect to
+// a different host, preventing Authorization-header leakage to attacker-
+// controlled servers via a malicious or compromised API response.
+func TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Location", "https://evil.example.com/steal")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	_, err := client.roundTripWithOptionalFollowRedirect(t.Context(), ".", 1)
+	if err == nil {
+		t.Fatal("Expected cross-host redirect to be rejected, got nil error.")
+	}
+	if !strings.Contains(err.Error(), "cross-host redirect") {
+		t.Errorf("Expected cross-host redirect error, got: %v", err)
+	}
+}
+
+// TestRoundTripWithOptionalFollowRedirect_AllowsSameHostRedirect ensures the
+// cross-host check does not break legitimate same-host 301 follow behavior
+// (the path that rate-limit redirection relies on).
+func TestRoundTripWithOptionalFollowRedirect_AllowsSameHostRedirect(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	var followed atomic.Bool
+	mux.HandleFunc("/archive", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Location", baseURLPath+"/archive-target")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+	mux.HandleFunc("/archive-target", func(w http.ResponseWriter, _ *http.Request) {
+		followed.Store(true)
+		w.WriteHeader(http.StatusOK)
+	})
+
+	resp, err := client.roundTripWithOptionalFollowRedirect(t.Context(), "archive", 2)
+	if err != nil {
+		t.Fatalf("Unexpected error on same-host redirect: %v", err)
+	}
+	if resp != nil && resp.Body != nil {
+		resp.Body.Close()
+	}
+	if !followed.Load() {
+		t.Error("Expected same-host redirect to be followed.")
+	}
+}
+
 func TestSanitizeURL(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
@@ -2278,7 +2442,7 @@ func TestCheckResponse_AbuseRateLimit(t *testing.T) {
 // TestCheckResponse_RateLimit_TooManyRequests tests that HTTP 429 with
 // X-RateLimit-Remaining: 0 is correctly detected as RateLimitError.
 // GitHub API can return either 403 or 429 for rate limiting.
-// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
+// See: https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28
 func TestCheckResponse_RateLimit_TooManyRequests(t *testing.T) {
 	t.Parallel()
 	res := &http.Response{
@@ -2314,7 +2478,7 @@ func TestCheckResponse_RateLimit_TooManyRequests(t *testing.T) {
 // TestCheckResponse_AbuseRateLimit_TooManyRequests tests that HTTP 429 with
 // secondary rate limit documentation_url is correctly detected as AbuseRateLimitError.
 // GitHub API can return either 403 or 429 for secondary rate limits.
-// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits
+// See: https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits
 func TestCheckResponse_AbuseRateLimit_TooManyRequests(t *testing.T) {
 	t.Parallel()
 	res := &http.Response{

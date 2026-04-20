@@ -54,7 +54,7 @@ type MilestoneListOptions struct {
 
 // ListMilestones lists all milestones for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/milestones#list-milestones
+// GitHub API docs: https://docs.github.com/rest/issues/milestones?apiVersion=2022-11-28#list-milestones
 //
 //meta:operation GET /repos/{owner}/{repo}/milestones
 func (s *IssuesService) ListMilestones(ctx context.Context, owner, repo string, opts *MilestoneListOptions) ([]*Milestone, *Response, error) {
@@ -80,7 +80,7 @@ func (s *IssuesService) ListMilestones(ctx context.Context, owner, repo string, 
 
 // GetMilestone gets a single milestone.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/milestones#get-a-milestone
+// GitHub API docs: https://docs.github.com/rest/issues/milestones?apiVersion=2022-11-28#get-a-milestone
 //
 //meta:operation GET /repos/{owner}/{repo}/milestones/{milestone_number}
 func (s *IssuesService) GetMilestone(ctx context.Context, owner, repo string, number int) (*Milestone, *Response, error) {
@@ -101,7 +101,7 @@ func (s *IssuesService) GetMilestone(ctx context.Context, owner, repo string, nu
 
 // CreateMilestone creates a new milestone on the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/milestones#create-a-milestone
+// GitHub API docs: https://docs.github.com/rest/issues/milestones?apiVersion=2022-11-28#create-a-milestone
 //
 //meta:operation POST /repos/{owner}/{repo}/milestones
 func (s *IssuesService) CreateMilestone(ctx context.Context, owner, repo string, milestone *Milestone) (*Milestone, *Response, error) {
@@ -122,7 +122,7 @@ func (s *IssuesService) CreateMilestone(ctx context.Context, owner, repo string,
 
 // EditMilestone edits a milestone.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/milestones#update-a-milestone
+// GitHub API docs: https://docs.github.com/rest/issues/milestones?apiVersion=2022-11-28#update-a-milestone
 //
 //meta:operation PATCH /repos/{owner}/{repo}/milestones/{milestone_number}
 func (s *IssuesService) EditMilestone(ctx context.Context, owner, repo string, number int, milestone *Milestone) (*Milestone, *Response, error) {
@@ -143,7 +143,7 @@ func (s *IssuesService) EditMilestone(ctx context.Context, owner, repo string, n
 
 // DeleteMilestone deletes a milestone.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/milestones#delete-a-milestone
+// GitHub API docs: https://docs.github.com/rest/issues/milestones?apiVersion=2022-11-28#delete-a-milestone
 //
 //meta:operation DELETE /repos/{owner}/{repo}/milestones/{milestone_number}
 func (s *IssuesService) DeleteMilestone(ctx context.Context, owner, repo string, number int) (*Response, error) {

@@ -13,7 +13,7 @@ import (
 //
 // Deprecated: please use `client.Actions.GetActionsAllowed` instead.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#get-allowed-actions-and-reusable-workflows-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#get-allowed-actions-and-reusable-workflows-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/permissions/selected-actions
 func (s *OrganizationsService) GetActionsAllowed(ctx context.Context, org string) (*ActionsAllowed, *Response, error) {
@@ -25,7 +25,7 @@ func (s *OrganizationsService) GetActionsAllowed(ctx context.Context, org string
 //
 // Deprecated: please use `client.Actions.UpdateActionsAllowed` instead.
 //
-// GitHub API docs: https://docs.github.com/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-allowed-actions-and-reusable-workflows-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/selected-actions
 func (s *OrganizationsService) UpdateActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {

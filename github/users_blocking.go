@@ -12,7 +12,7 @@ import (
 
 // ListBlockedUsers lists all the blocked users by the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/blocking#list-users-blocked-by-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/blocking?apiVersion=2022-11-28#list-users-blocked-by-the-authenticated-user
 //
 //meta:operation GET /user/blocks
 func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) ([]*User, *Response, error) {
@@ -40,7 +40,7 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) 
 
 // IsBlocked reports whether specified user is blocked by the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/blocking#check-if-a-user-is-blocked-by-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/blocking?apiVersion=2022-11-28#check-if-a-user-is-blocked-by-the-authenticated-user
 //
 //meta:operation GET /user/blocks/{username}
 func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Response, error) {
@@ -60,7 +60,7 @@ func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Respo
 
 // BlockUser blocks specified user for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/blocking#block-a-user
+// GitHub API docs: https://docs.github.com/rest/users/blocking?apiVersion=2022-11-28#block-a-user
 //
 //meta:operation PUT /user/blocks/{username}
 func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, error) {
@@ -78,7 +78,7 @@ func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, e
 
 // UnblockUser unblocks specified user for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/blocking#unblock-a-user
+// GitHub API docs: https://docs.github.com/rest/users/blocking?apiVersion=2022-11-28#unblock-a-user
 //
 //meta:operation DELETE /user/blocks/{username}
 func (s *UsersService) UnblockUser(ctx context.Context, user string) (*Response, error) {

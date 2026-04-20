@@ -27,7 +27,7 @@ type HookConfig struct {
 
 // GetHookConfiguration returns the configuration for the specified repository webhook.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/webhooks#get-a-webhook-configuration-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks?apiVersion=2022-11-28#get-a-webhook-configuration-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/hooks/{hook_id}/config
 func (s *RepositoriesService) GetHookConfiguration(ctx context.Context, owner, repo string, id int64) (*HookConfig, *Response, error) {
@@ -48,7 +48,7 @@ func (s *RepositoriesService) GetHookConfiguration(ctx context.Context, owner, r
 
 // EditHookConfiguration updates the configuration for the specified repository webhook.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/webhooks#update-a-webhook-configuration-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/webhooks?apiVersion=2022-11-28#update-a-webhook-configuration-for-a-repository
 //
 //meta:operation PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config
 func (s *RepositoriesService) EditHookConfiguration(ctx context.Context, owner, repo string, id int64, config *HookConfig) (*HookConfig, *Response, error) {

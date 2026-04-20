@@ -12,7 +12,7 @@ import (
 
 // ListHostedRunners lists all the GitHub-hosted runners for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#list-github-hosted-runners-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#list-github-hosted-runners-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners
 func (s *EnterpriseService) ListHostedRunners(ctx context.Context, enterprise string, opts *ListOptions) (*HostedRunners, *Response, error) {
@@ -38,7 +38,7 @@ func (s *EnterpriseService) ListHostedRunners(ctx context.Context, enterprise st
 
 // CreateHostedRunner creates a GitHub-hosted runner for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#create-a-github-hosted-runner-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#create-a-github-hosted-runner-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/actions/hosted-runners
 func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise string, request CreateHostedRunnerRequest) (*HostedRunner, *Response, error) {
@@ -63,7 +63,7 @@ func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise s
 
 // GetHostedRunnerGitHubOwnedImages gets the list of GitHub-owned images available for GitHub-hosted runners for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#get-github-owned-images-for-github-hosted-runners-in-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#get-github-owned-images-for-github-hosted-runners-in-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/github-owned
 func (s *EnterpriseService) GetHostedRunnerGitHubOwnedImages(ctx context.Context, enterprise string) (*HostedRunnerImages, *Response, error) {
@@ -84,7 +84,7 @@ func (s *EnterpriseService) GetHostedRunnerGitHubOwnedImages(ctx context.Context
 
 // GetHostedRunnerPartnerImages gets the list of partner images available for GitHub-hosted runners for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#get-partner-images-for-github-hosted-runners-in-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#get-partner-images-for-github-hosted-runners-in-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/partner
 func (s *EnterpriseService) GetHostedRunnerPartnerImages(ctx context.Context, enterprise string) (*HostedRunnerImages, *Response, error) {
@@ -105,7 +105,7 @@ func (s *EnterpriseService) GetHostedRunnerPartnerImages(ctx context.Context, en
 
 // GetHostedRunnerLimits gets the GitHub-hosted runners Static public IP Limits for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#get-limits-on-github-hosted-runners-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#get-limits-on-github-hosted-runners-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/limits
 func (s *EnterpriseService) GetHostedRunnerLimits(ctx context.Context, enterprise string) (*HostedRunnerPublicIPLimits, *Response, error) {
@@ -126,7 +126,7 @@ func (s *EnterpriseService) GetHostedRunnerLimits(ctx context.Context, enterpris
 
 // GetHostedRunnerMachineSpecs gets the list of machine specs available for GitHub-hosted runners for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#get-github-hosted-runners-machine-specs-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#get-github-hosted-runners-machine-specs-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/machine-sizes
 func (s *EnterpriseService) GetHostedRunnerMachineSpecs(ctx context.Context, enterprise string) (*HostedRunnerMachineSpecs, *Response, error) {
@@ -147,7 +147,7 @@ func (s *EnterpriseService) GetHostedRunnerMachineSpecs(ctx context.Context, ent
 
 // GetHostedRunnerPlatforms gets list of platforms available for GitHub-hosted runners for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#get-platforms-for-github-hosted-runners-in-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#get-platforms-for-github-hosted-runners-in-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/platforms
 func (s *EnterpriseService) GetHostedRunnerPlatforms(ctx context.Context, enterprise string) (*HostedRunnerPlatforms, *Response, error) {
@@ -168,7 +168,7 @@ func (s *EnterpriseService) GetHostedRunnerPlatforms(ctx context.Context, enterp
 
 // GetHostedRunner gets a GitHub-hosted runner in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#get-a-github-hosted-runner-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#get-a-github-hosted-runner-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
 func (s *EnterpriseService) GetHostedRunner(ctx context.Context, enterprise string, runnerID int64) (*HostedRunner, *Response, error) {
@@ -189,7 +189,7 @@ func (s *EnterpriseService) GetHostedRunner(ctx context.Context, enterprise stri
 
 // UpdateHostedRunner updates a GitHub-hosted runner for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#update-a-github-hosted-runner-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#update-a-github-hosted-runner-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
 func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise string, runnerID int64, request UpdateHostedRunnerRequest) (*HostedRunner, *Response, error) {
@@ -210,7 +210,7 @@ func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise s
 
 // DeleteHostedRunner deletes GitHub-hosted runner from an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#delete-a-github-hosted-runner-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#delete-a-github-hosted-runner-for-an-enterprise
 //
 //meta:operation DELETE /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
 func (s *EnterpriseService) DeleteHostedRunner(ctx context.Context, enterprise string, runnerID int64) (*HostedRunner, *Response, error) {
@@ -231,7 +231,7 @@ func (s *EnterpriseService) DeleteHostedRunner(ctx context.Context, enterprise s
 
 // ListHostedRunnerCustomImages lists custom images for GitHub-hosted runners in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#list-custom-images-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#list-custom-images-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom
 func (s *EnterpriseService) ListHostedRunnerCustomImages(ctx context.Context, enterprise string) (*HostedRunnerCustomImages, *Response, error) {
@@ -252,7 +252,7 @@ func (s *EnterpriseService) ListHostedRunnerCustomImages(ctx context.Context, en
 
 // GetHostedRunnerCustomImage gets a custom image definition for GitHub-hosted runners in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#get-an-enterprise-custom-image-definition-for-github-actions-hosted-runners
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#get-an-enterprise-custom-image-definition-for-github-actions-hosted-runners
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}
 func (s *EnterpriseService) GetHostedRunnerCustomImage(ctx context.Context, enterprise string, imageDefinitionID int64) (*HostedRunnerCustomImage, *Response, error) {
@@ -273,7 +273,7 @@ func (s *EnterpriseService) GetHostedRunnerCustomImage(ctx context.Context, ente
 
 // DeleteHostedRunnerCustomImage deletes a custom image from the enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#delete-a-custom-image-from-the-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#delete-a-custom-image-from-the-enterprise
 //
 //meta:operation DELETE /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}
 func (s *EnterpriseService) DeleteHostedRunnerCustomImage(ctx context.Context, enterprise string, imageDefinitionID int64) (*Response, error) {
@@ -288,7 +288,7 @@ func (s *EnterpriseService) DeleteHostedRunnerCustomImage(ctx context.Context, e
 
 // ListHostedRunnerCustomImageVersions lists image versions of a custom image for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#list-image-versions-of-a-custom-image-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#list-image-versions-of-a-custom-image-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}/versions
 func (s *EnterpriseService) ListHostedRunnerCustomImageVersions(ctx context.Context, enterprise string, imageDefinitionID int64) (*HostedRunnerCustomImageVersions, *Response, error) {
@@ -309,7 +309,7 @@ func (s *EnterpriseService) ListHostedRunnerCustomImageVersions(ctx context.Cont
 
 // GetHostedRunnerCustomImageVersion gets an image version of a custom image for GitHub-hosted runners in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#get-an-image-version-of-an-enterprise-custom-image-for-github-actions-hosted-runners
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#get-an-image-version-of-an-enterprise-custom-image-for-github-actions-hosted-runners
 //
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}
 func (s *EnterpriseService) GetHostedRunnerCustomImageVersion(ctx context.Context, enterprise string, imageDefinitionID int64, version string) (*HostedRunnerCustomImageVersion, *Response, error) {
@@ -330,7 +330,7 @@ func (s *EnterpriseService) GetHostedRunnerCustomImageVersion(ctx context.Contex
 
 // DeleteHostedRunnerCustomImageVersion deletes an image version of a custom image from the enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners#delete-an-image-version-of-custom-image-from-the-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/hosted-runners?apiVersion=2022-11-28#delete-an-image-version-of-custom-image-from-the-enterprise
 //
 //meta:operation DELETE /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}
 func (s *EnterpriseService) DeleteHostedRunnerCustomImageVersion(ctx context.Context, enterprise string, imageDefinitionID int64, version string) (*Response, error) {

@@ -101,7 +101,7 @@ type NetworkConfigurationRequest struct {
 
 // ListNetworkConfigurations lists all hosted compute network configurations configured in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#list-hosted-compute-network-configurations-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations?apiVersion=2022-11-28#list-hosted-compute-network-configurations-for-an-organization
 //
 //meta:operation GET /orgs/{org}/settings/network-configurations
 func (s *OrganizationsService) ListNetworkConfigurations(ctx context.Context, org string, opts *ListOptions) (*NetworkConfigurations, *Response, error) {
@@ -127,7 +127,7 @@ func (s *OrganizationsService) ListNetworkConfigurations(ctx context.Context, or
 
 // CreateNetworkConfiguration creates a hosted compute network configuration for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#create-a-hosted-compute-network-configuration-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations?apiVersion=2022-11-28#create-a-hosted-compute-network-configuration-for-an-organization
 //
 //meta:operation POST /orgs/{org}/settings/network-configurations
 func (s *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, org string, createReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
@@ -152,7 +152,7 @@ func (s *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, o
 
 // GetNetworkConfiguration gets a hosted compute network configuration configured in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#get-a-hosted-compute-network-configuration-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations?apiVersion=2022-11-28#get-a-hosted-compute-network-configuration-for-an-organization
 //
 //meta:operation GET /orgs/{org}/settings/network-configurations/{network_configuration_id}
 func (s *OrganizationsService) GetNetworkConfiguration(ctx context.Context, org, networkID string) (*NetworkConfiguration, *Response, error) {
@@ -173,7 +173,7 @@ func (s *OrganizationsService) GetNetworkConfiguration(ctx context.Context, org,
 
 // UpdateNetworkConfiguration updates a hosted compute network configuration for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#update-a-hosted-compute-network-configuration-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations?apiVersion=2022-11-28#update-a-hosted-compute-network-configuration-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/settings/network-configurations/{network_configuration_id}
 func (s *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, org, networkID string, updateReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
@@ -198,7 +198,7 @@ func (s *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, o
 
 // DeleteNetworkConfigurations deletes a hosted compute network configuration from an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#delete-a-hosted-compute-network-configuration-from-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations?apiVersion=2022-11-28#delete-a-hosted-compute-network-configuration-from-an-organization
 //
 //meta:operation DELETE /orgs/{org}/settings/network-configurations/{network_configuration_id}
 func (s *OrganizationsService) DeleteNetworkConfigurations(ctx context.Context, org, networkID string) (*Response, error) {
@@ -219,7 +219,7 @@ func (s *OrganizationsService) DeleteNetworkConfigurations(ctx context.Context, 
 
 // GetNetworkConfigurationResource gets a hosted compute network settings resource configured for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations#get-a-hosted-compute-network-settings-resource-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/orgs/network-configurations?apiVersion=2022-11-28#get-a-hosted-compute-network-settings-resource-for-an-organization
 //
 //meta:operation GET /orgs/{org}/settings/network-settings/{network_settings_id}
 func (s *OrganizationsService) GetNetworkConfigurationResource(ctx context.Context, org, networkID string) (*NetworkSettingsResource, *Response, error) {

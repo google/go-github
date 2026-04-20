@@ -9,14 +9,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"strings"
 )
 
 // MigrationService provides access to the migration related functions
 // in the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/migration/
+// GitHub API docs: https://docs.github.com/rest/migrations?apiVersion=2022-11-28
 type MigrationService service
 
 // Migration represents a GitHub migration (archival).
@@ -90,7 +88,7 @@ type startMigration struct {
 // StartMigration starts the generation of a migration archive.
 // repos is a slice of repository names to migrate.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/orgs#start-an-organization-migration
+// GitHub API docs: https://docs.github.com/rest/migrations/orgs?apiVersion=2022-11-28#start-an-organization-migration
 //
 //meta:operation POST /orgs/{org}/migrations
 func (s *MigrationService) StartMigration(ctx context.Context, org string, repos []string, opts *MigrationOptions) (*Migration, *Response, error) {
@@ -98,9 +96,9 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 
 	body := &startMigration{Repositories: repos}
 	if opts != nil {
-		body.LockRepositories = Ptr(opts.LockRepositories)
-		body.ExcludeAttachments = Ptr(opts.ExcludeAttachments)
-		body.ExcludeReleases = Ptr(opts.ExcludeReleases)
+		body.LockRepositories = &opts.LockRepositories
+		body.ExcludeAttachments = &opts.ExcludeAttachments
+		body.ExcludeReleases = &opts.ExcludeReleases
 		body.Exclude = append(body.Exclude, opts.Exclude...)
 	}
 
@@ -122,7 +120,7 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 
 // ListMigrations lists the most recent migrations.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/orgs#list-organization-migrations
+// GitHub API docs: https://docs.github.com/rest/migrations/orgs?apiVersion=2022-11-28#list-organization-migrations
 //
 //meta:operation GET /orgs/{org}/migrations
 func (s *MigrationService) ListMigrations(ctx context.Context, org string, opts *ListOptions) ([]*Migration, *Response, error) {
@@ -151,7 +149,7 @@ func (s *MigrationService) ListMigrations(ctx context.Context, org string, opts 
 // MigrationStatus gets the status of a specific migration archive.
 // id is the migration ID.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/orgs#get-an-organization-migration-status
+// GitHub API docs: https://docs.github.com/rest/migrations/orgs?apiVersion=2022-11-28#get-an-organization-migration-status
 //
 //meta:operation GET /orgs/{org}/migrations/{migration_id}
 func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id int64) (*Migration, *Response, error) {
@@ -176,7 +174,7 @@ func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id i
 // MigrationArchiveURL fetches a migration archive URL.
 // id is the migration ID.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/orgs#download-an-organization-migration-archive
+// GitHub API docs: https://docs.github.com/rest/migrations/orgs?apiVersion=2022-11-28#download-an-organization-migration-archive
 //
 //meta:operation GET /orgs/{org}/migrations/{migration_id}/archive
 func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, id int64) (url string, err error) {
@@ -186,35 +184,24 @@ func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, 
 	if err != nil {
 		return "", err
 	}
-
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	s.client.clientMu.Lock()
-	defer s.client.clientMu.Unlock()
-
-	// Disable the redirect mechanism because AWS fails if the GitHub auth token is provided.
-	var loc string
-	saveRedirect := s.client.client.CheckRedirect
-	s.client.client.CheckRedirect = func(req *http.Request, _ []*http.Request) error {
-		loc = req.URL.String()
-		return errors.New("disable redirect")
-	}
-	defer func() { s.client.client.CheckRedirect = saveRedirect }()
-
-	_, err = s.client.Do(ctx, req, nil) // expect error from disable redirect
-	if err == nil {
-		return "", errors.New("expected redirect, none provided")
-	}
-	if !strings.Contains(err.Error(), "disable redirect") {
+	loc, _, err := s.client.bareDoUntilFound(ctx, req, 10)
+	if err != nil {
 		return "", err
 	}
-	return loc, nil
+
+	if loc == nil {
+		return "", errors.New("expected redirect, none provided")
+	}
+
+	return loc.String(), nil
 }
 
 // DeleteMigration deletes a previous migration archive.
 // id is the migration ID.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/orgs#delete-an-organization-migration-archive
+// GitHub API docs: https://docs.github.com/rest/migrations/orgs?apiVersion=2022-11-28#delete-an-organization-migration-archive
 //
 //meta:operation DELETE /orgs/{org}/migrations/{migration_id}/archive
 func (s *MigrationService) DeleteMigration(ctx context.Context, org string, id int64) (*Response, error) {
@@ -235,7 +222,7 @@ func (s *MigrationService) DeleteMigration(ctx context.Context, org string, id i
 // You should unlock each migrated repository and delete them when the migration
 // is complete and you no longer need the source data.
 //
-// GitHub API docs: https://docs.github.com/rest/migrations/orgs#unlock-an-organization-repository
+// GitHub API docs: https://docs.github.com/rest/migrations/orgs?apiVersion=2022-11-28#unlock-an-organization-repository
 //
 //meta:operation DELETE /orgs/{org}/migrations/{migration_id}/repos/{repo_name}/lock
 func (s *MigrationService) UnlockRepo(ctx context.Context, org string, id int64, repo string) (*Response, error) {

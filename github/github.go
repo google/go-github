@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -157,9 +158,13 @@ const (
 
 var errNonNilContext = errors.New("context must be non-nil")
 
+// ErrPathForbidden is returned when a URL path contains ".." as a path
+// segment, which could allow path traversal attacks.
+var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulnerability issue")
+
 // A Client manages communication with the GitHub API.
 type Client struct {
-	clientMu              sync.Mutex   // clientMu protects the client during calls that modify the CheckRedirect func.
+	clientMu              sync.Mutex   // clientMu protects the client fields during copy and Client calls.
 	client                *http.Client // HTTP client used to communicate with the API.
 	clientIgnoreRedirects *http.Client // HTTP client used to communicate with the API on endpoints where we don't want to follow redirects.
 
@@ -467,7 +472,11 @@ func (c *Client) initialize() {
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
 	c.Markdown = (*MarkdownService)(&c.common)
-	c.Marketplace = &MarketplaceService{client: c}
+	var marketplaceStubbed bool
+	if c.Marketplace != nil {
+		marketplaceStubbed = c.Marketplace.Stubbed
+	}
+	c.Marketplace = &MarketplaceService{client: c, Stubbed: marketplaceStubbed}
 	c.Meta = (*MetaService)(&c.common)
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
@@ -498,6 +507,9 @@ func (c *Client) copy() *Client {
 		RateLimitRedirectionalEndpoints: c.RateLimitRedirectionalEndpoints,
 		secondaryRateLimitReset:         c.secondaryRateLimitReset,
 	}
+	if c.Marketplace != nil {
+		clone.Marketplace = &MarketplaceService{Stubbed: c.Marketplace.Stubbed}
+	}
 	c.clientMu.Unlock()
 	if c.client != nil {
 		clone.client.Transport = c.client.Transport
@@ -506,7 +518,7 @@ func (c *Client) copy() *Client {
 		clone.client.Timeout = c.client.Timeout
 	}
 	c.rateMu.Lock()
-	copy(clone.rateLimits[:], c.rateLimits[:])
+	clone.rateLimits = c.rateLimits
 	c.rateMu.Unlock()
 	return &clone
 }
@@ -552,6 +564,10 @@ func WithVersion(version string) RequestOption {
 func (c *Client) NewRequest(method, urlStr string, body any, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
+	}
+
+	if err := checkURLPathTraversal(urlStr); err != nil {
+		return nil, err
 	}
 
 	u, err := c.BaseURL.Parse(urlStr)
@@ -600,6 +616,10 @@ func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOp
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 
+	if err := checkURLPathTraversal(urlStr); err != nil {
+		return nil, err
+	}
+
 	u, err := c.BaseURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
@@ -624,6 +644,25 @@ func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOp
 	return req, nil
 }
 
+// checkURLPathTraversal returns ErrPathForbidden if urlStr contains ".." as a
+// path segment (e.g. "a/../b"), preventing path traversal attacks. It does not
+// match ".." embedded within a segment (e.g. "file..txt"). The check is
+// performed only on the path portion of the URL, ignoring any query string or
+// fragment.
+func checkURLPathTraversal(urlStr string) error {
+	if !strings.Contains(urlStr, "..") {
+		return nil
+	}
+	u, err := url.Parse(urlStr)
+	if err != nil {
+		return err
+	}
+	if slices.Contains(strings.Split(u.Path, "/"), "..") {
+		return ErrPathForbidden
+	}
+	return nil
+}
+
 // NewUploadRequest creates an upload request. A relative URL can be provided in
 // urlStr, in which case it is resolved relative to the UploadURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
@@ -631,6 +670,11 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 	if !strings.HasSuffix(c.UploadURL.Path, "/") {
 		return nil, fmt.Errorf("uploadURL must have a trailing slash, but %q does not", c.UploadURL)
 	}
+
+	if err := checkURLPathTraversal(urlStr); err != nil {
+		return nil, err
+	}
+
 	u, err := c.UploadURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
@@ -1046,6 +1090,12 @@ func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRed
 					return nil, nil, errInvalidLocation
 				}
 				newURL := c.BaseURL.ResolveReference(rerr.Location)
+				// Refuse to follow a permanent redirect to a different host:
+				// req.Clone preserves Authorization headers added by the auth
+				// transport, so a cross-host target would leak credentials.
+				if newURL.Host != c.BaseURL.Host {
+					return nil, response, fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.BaseURL.Host, newURL.Host)
+				}
 				newRequest := req.Clone(ctx)
 				newRequest.URL = newURL
 				return c.bareDoUntilFound(ctx, newRequest, maxRedirects-1)
@@ -1180,7 +1230,7 @@ func compareHTTPResponse(r1, r2 *http.Response) bool {
 /*
 An ErrorResponse reports one or more errors caused by an API request.
 
-GitHub API docs: https://docs.github.com/rest/#client-errors
+GitHub API docs: https://docs.github.com/rest?apiVersion=2022-11-28#client-errors
 */
 type ErrorResponse struct {
 	Response *http.Response `json:"-"`       // HTTP response that caused this error
@@ -1191,7 +1241,7 @@ type ErrorResponse struct {
 	Block *ErrorBlock `json:"block,omitempty"`
 	// Most errors will also include a documentation_url field pointing
 	// to some content that might help you resolve the error, see
-	// https://docs.github.com/rest/#client-errors
+	// https://docs.github.com/rest?apiVersion=2022-11-28#client-errors
 	DocumentationURL string `json:"documentation_url,omitempty"`
 }
 
@@ -1319,7 +1369,7 @@ func (ae *AcceptedError) Is(target error) bool {
 }
 
 // AbuseRateLimitError occurs when GitHub returns 403 Forbidden response with the
-// "documentation_url" field value equal to "https://docs.github.com/rest/overview/rate-limits-for-the-rest-api#about-secondary-rate-limits".
+// "documentation_url" field value equal to "https://docs.github.com/rest/overview/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits".
 type AbuseRateLimitError struct {
 	Response *http.Response // HTTP response that caused this error
 	Message  string         `json:"message"` // error message
@@ -1424,7 +1474,7 @@ GitHub error responses structure are often undocumented and inconsistent.
 Sometimes error is just a simple string (Issue #540).
 In such cases, Message represents an error message as a workaround.
 
-GitHub API docs: https://docs.github.com/rest/#client-errors
+GitHub API docs: https://docs.github.com/rest?apiVersion=2022-11-28#client-errors
 */
 type Error struct {
 	Resource string `json:"resource"` // resource on which the error occurred
@@ -1482,7 +1532,7 @@ func CheckResponse(r *http.Response) error {
 	case r.StatusCode == http.StatusUnauthorized && strings.HasPrefix(r.Header.Get(headerOTP), "required"):
 		return (*TwoFactorAuthError)(errorResponse)
 	// Primary rate limit exceeded: GitHub returns 403 or 429 with X-RateLimit-Remaining: 0
-	// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api
+	// See: https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28
 	case (r.StatusCode == http.StatusForbidden || r.StatusCode == http.StatusTooManyRequests) &&
 		r.Header.Get(HeaderRateRemaining) == "0":
 		return &RateLimitError{
@@ -1491,7 +1541,7 @@ func CheckResponse(r *http.Response) error {
 			Message:  errorResponse.Message,
 		}
 	// Secondary rate limit exceeded: GitHub returns 403 or 429 with specific documentation_url
-	// See: https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#about-secondary-rate-limits
+	// See: https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#about-secondary-rate-limits
 	case (r.StatusCode == http.StatusForbidden || r.StatusCode == http.StatusTooManyRequests) &&
 		(strings.HasSuffix(errorResponse.DocumentationURL, "#abuse-rate-limits") ||
 			strings.HasSuffix(errorResponse.DocumentationURL, "secondary-rate-limits")):
@@ -1570,13 +1620,13 @@ const (
 // GetRateLimitCategory returns the rate limit RateLimitCategory of the endpoint, determined by HTTP method and Request.URL.Path.
 func GetRateLimitCategory(method, path string) RateLimitCategory {
 	switch {
-	// https://docs.github.com/rest/rate-limit#about-rate-limits
+	// https://docs.github.com/rest/rate-limit?apiVersion=2022-11-28#about-rate-limits
 	default:
 		// NOTE: coreCategory is returned for actionsRunnerRegistrationCategory too,
 		// because no API found for this category.
 		return CoreCategory
 
-	// https://docs.github.com/en/rest/search/search#search-code
+	// https://docs.github.com/rest/search/search?apiVersion=2022-11-28#search-code
 	case strings.HasPrefix(path, "/search/code") &&
 		method == "GET":
 		return CodeSearchCategory
@@ -1590,31 +1640,31 @@ func GetRateLimitCategory(method, path string) RateLimitCategory {
 		method == "POST":
 		return IntegrationManifestCategory
 
-	// https://docs.github.com/rest/migrations/source-imports#start-an-import
+	// https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#start-an-import
 	case strings.HasPrefix(path, "/repos/") &&
 		strings.HasSuffix(path, "/import") &&
 		method == "PUT":
 		return SourceImportCategory
 
-	// https://docs.github.com/rest/code-scanning#upload-an-analysis-as-sarif-data
+	// https://docs.github.com/rest/code-scanning?apiVersion=2022-11-28#upload-an-analysis-as-sarif-data
 	case strings.HasSuffix(path, "/code-scanning/sarifs"):
 		return CodeScanningUploadCategory
 
-	// https://docs.github.com/enterprise-cloud@latest/rest/scim
+	// https://docs.github.com/enterprise-cloud@latest/rest/scim?apiVersion=2022-11-28
 	case strings.HasPrefix(path, "/scim/"):
 		return ScimCategory
 
-	// https://docs.github.com/en/rest/dependency-graph/dependency-submission#create-a-snapshot-of-dependencies-for-a-repository
+	// https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 	case strings.HasPrefix(path, "/repos/") &&
 		strings.HasSuffix(path, "/dependency-graph/snapshots") &&
 		method == "POST":
 		return DependencySnapshotsCategory
 
-	// https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#get-the-audit-log-for-an-organization
+	// https://docs.github.com/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#get-the-audit-log-for-an-organization
 	case strings.HasSuffix(path, "/audit-log"):
 		return AuditLogCategory
 
-	// https://docs.github.com/en/rest/dependency-graph/sboms?apiVersion=2022-11-28#export-a-software-bill-of-materials-sbom-for-a-repository
+	// https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28#export-a-software-bill-of-materials-sbom-for-a-repository
 	case strings.HasPrefix(path, "/repos/") &&
 		strings.HasSuffix(path, "/dependency-graph/sbom"):
 		return DependencySBOMCategory
@@ -1658,7 +1708,7 @@ that need to use a higher rate limit associated with your OAuth application.
 This will add the client id and secret as a base64-encoded string in the format
 ClientID:ClientSecret and apply it as an "Authorization": "Basic" header.
 
-See https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#primary-rate-limit-for-oauth-apps
+See https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#primary-rate-limit-for-oauth-apps
 for more information.
 */
 type UnauthenticatedRateLimitedTransport struct {
@@ -1802,9 +1852,33 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 	if maxRedirects > 0 && resp.StatusCode == http.StatusMovedPermanently {
 		_ = resp.Body.Close()
 		u = resp.Header.Get("Location")
+		if err := c.checkRedirectHost(u); err != nil {
+			return nil, err
+		}
 		resp, err = c.roundTripWithOptionalFollowRedirect(ctx, u, maxRedirects-1, opts...)
 	}
 	return resp, err
+}
+
+// checkRedirectHost returns an error if the redirect target is on a different
+// host than the client's configured BaseURL. This prevents credentials attached
+// by the auth transport from being sent to an attacker-controlled host when a
+// compromised or malicious API response returns a cross-origin Location header.
+// An empty Location is also rejected.
+func (c *Client) checkRedirectHost(location string) error {
+	if location == "" {
+		return errInvalidLocation
+	}
+	target, err := url.Parse(location)
+	if err != nil {
+		return fmt.Errorf("invalid redirect location %q: %w", location, err)
+	}
+	// Resolve relative locations against BaseURL so relative paths are allowed.
+	target = c.BaseURL.ResolveReference(target)
+	if target.Host != c.BaseURL.Host {
+		return fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.BaseURL.Host, target.Host)
+	}
+	return nil
 }
 
 // Ptr is a helper routine that allocates a new T value
@@ -1865,4 +1939,9 @@ func (e *DeploymentProtectionRuleEvent) GetRunID() (int64, error) {
 		return -1, err
 	}
 	return runID, nil
+}
+
+// withContext returns a shallow copy of req with its context changed to ctx.
+func withContext(ctx context.Context, req *http.Request) *http.Request {
+	return req.WithContext(ctx)
 }

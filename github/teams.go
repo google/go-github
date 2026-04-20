@@ -14,7 +14,7 @@ import (
 // TeamsService provides access to the team-related functions
 // in the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/
+// GitHub API docs: https://docs.github.com/rest/teams?apiVersion=2022-11-28
 type TeamsService service
 
 // Team represents a team within a GitHub organization. Teams are used to
@@ -92,7 +92,7 @@ func (i Invitation) String() string {
 
 // ListTeams lists all of the teams for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#list-teams
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#list-teams
 //
 //meta:operation GET /orgs/{org}/teams
 func (s *TeamsService) ListTeams(ctx context.Context, org string, opts *ListOptions) ([]*Team, *Response, error) {
@@ -120,7 +120,7 @@ func (s *TeamsService) ListTeams(ctx context.Context, org string, opts *ListOpti
 //
 // Deprecated: Use GetTeamBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#get-a-team-by-name
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#get-a-team-by-name
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) GetTeamByID(ctx context.Context, orgID, teamID int64) (*Team, *Response, error) {
@@ -141,7 +141,7 @@ func (s *TeamsService) GetTeamByID(ctx context.Context, orgID, teamID int64) (*T
 
 // GetTeamBySlug fetches a team, given a specified organization name, by slug.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#get-a-team-by-name
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#get-a-team-by-name
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) GetTeamBySlug(ctx context.Context, org, slug string) (*Team, *Response, error) {
@@ -196,7 +196,7 @@ func (s NewTeam) String() string {
 
 // CreateTeam creates a new team within an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#create-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#create-a-team
 //
 //meta:operation POST /orgs/{org}/teams
 func (s *TeamsService) CreateTeam(ctx context.Context, org string, team NewTeam) (*Team, *Response, error) {
@@ -248,7 +248,7 @@ func copyNewTeamWithoutParent(team *NewTeam) *newTeamNoParent {
 //
 // Deprecated: Use EditTeamBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#update-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#update-a-team
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, team NewTeam, removeParent bool) (*Team, *Response, error) {
@@ -277,7 +277,7 @@ func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, te
 
 // EditTeamBySlug edits a team, given an organization name, by slug.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#update-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#update-a-team
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) EditTeamBySlug(ctx context.Context, org, slug string, team NewTeam, removeParent bool) (*Team, *Response, error) {
@@ -308,7 +308,7 @@ func (s *TeamsService) EditTeamBySlug(ctx context.Context, org, slug string, tea
 //
 // Deprecated: Use DeleteTeamBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#delete-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#delete-a-team
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) DeleteTeamByID(ctx context.Context, orgID, teamID int64) (*Response, error) {
@@ -323,7 +323,7 @@ func (s *TeamsService) DeleteTeamByID(ctx context.Context, orgID, teamID int64) 
 
 // DeleteTeamBySlug deletes a team reference by slug.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#delete-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#delete-a-team
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) DeleteTeamBySlug(ctx context.Context, org, slug string) (*Response, error) {
@@ -340,7 +340,7 @@ func (s *TeamsService) DeleteTeamBySlug(ctx context.Context, org, slug string) (
 //
 // Deprecated: Use ListChildTeamsByParentSlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#list-child-teams
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#list-child-teams
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/teams
 func (s *TeamsService) ListChildTeamsByParentID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Team, *Response, error) {
@@ -366,7 +366,7 @@ func (s *TeamsService) ListChildTeamsByParentID(ctx context.Context, orgID, team
 
 // ListChildTeamsByParentSlug lists child teams for a parent team given parent slug.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#list-child-teams
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#list-child-teams
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/teams
 func (s *TeamsService) ListChildTeamsByParentSlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Team, *Response, error) {
@@ -394,7 +394,7 @@ func (s *TeamsService) ListChildTeamsByParentSlug(ctx context.Context, org, slug
 //
 // Deprecated: Use ListTeamReposBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#list-team-repositories
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#list-team-repositories
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/repos
 func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Repository, *Response, error) {
@@ -422,7 +422,7 @@ func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int6
 
 // ListTeamReposBySlug lists the repositories given a team slug that the specified team has access to.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#list-team-repositories
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#list-team-repositories
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/repos
 func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Repository, *Response, error) {
@@ -454,7 +454,7 @@ func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string
 //
 // Deprecated: Use IsTeamRepoBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#check-team-permissions-for-a-repository
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) IsTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Repository, *Response, error) {
@@ -479,7 +479,7 @@ func (s *TeamsService) IsTeamRepoByID(ctx context.Context, orgID, teamID int64, 
 // repository is managed by team, a Repository is returned which includes the
 // permissions team has for that repo.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#check-team-permissions-for-a-repository
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) IsTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string) (*Repository, *Response, error) {
@@ -521,7 +521,7 @@ type TeamAddTeamRepoOptions struct {
 //
 // Deprecated: Use AddTeamRepoBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#add-or-update-team-repository-permissions
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#add-or-update-team-repository-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
@@ -538,7 +538,7 @@ func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64,
 // The specified repository must be owned by the organization to which the team
 // belongs, or a direct fork of a repository owned by the organization.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#add-or-update-team-repository-permissions
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#add-or-update-team-repository-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
@@ -557,7 +557,7 @@ func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, 
 //
 // Deprecated: Use RemoveTeamRepoBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#remove-a-repository-from-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#remove-a-repository-from-a-team
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Response, error) {
@@ -574,7 +574,7 @@ func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int
 // team given the team slug. Note that this does not delete the repository, it
 // just removes it from the team.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#remove-a-repository-from-a-team
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#remove-a-repository-from-a-team
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) RemoveTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string) (*Response, error) {
@@ -589,7 +589,7 @@ func (s *TeamsService) RemoveTeamRepoBySlug(ctx context.Context, org, slug, owne
 
 // ListUserTeams lists a user's teams
 //
-// GitHub API docs: https://docs.github.com/rest/teams/teams#list-teams-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#list-teams-for-the-authenticated-user
 //
 //meta:operation GET /user/teams
 func (s *TeamsService) ListUserTeams(ctx context.Context, opts *ListOptions) ([]*Team, *Response, error) {
@@ -833,7 +833,7 @@ type IDPGroup struct {
 
 // ListIDPGroupsInOrganization lists IDP groups available in an organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#list-idp-groups-for-an-organization
 //
 //meta:operation GET /orgs/{org}/team-sync/groups
 func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org string, opts *ListIDPGroupsOptions) (*IDPGroupList, *Response, error) {
@@ -862,7 +862,7 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 //
 // Deprecated: Use ListIDPGroupsForTeamBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-a-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#list-idp-groups-for-a-team
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
 func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, teamID int64) (*IDPGroupList, *Response, error) {
@@ -885,7 +885,7 @@ func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, team
 // ListIDPGroupsForTeamBySlug lists IDP groups connected to a team on GitHub
 // given organization name and team slug.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-a-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#list-idp-groups-for-a-team
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
 func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug string) (*IDPGroupList, *Response, error) {
@@ -910,7 +910,7 @@ func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug
 //
 // Deprecated: Use CreateOrUpdateIDPGroupConnectionsBySlug instead.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#create-or-update-idp-group-connections
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#create-or-update-idp-group-connections
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
 func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context, orgID, teamID int64, opts IDPGroupList) (*IDPGroupList, *Response, error) {
@@ -933,7 +933,7 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context
 // CreateOrUpdateIDPGroupConnectionsBySlug creates, updates, or removes a connection
 // between a team and an IDP group given organization name and team slug.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#create-or-update-idp-group-connections
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#create-or-update-idp-group-connections
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
 func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Context, org, slug string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
@@ -983,7 +983,7 @@ type ExternalGroupList struct {
 
 // GetExternalGroup fetches an external group.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#get-an-external-group
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups?apiVersion=2022-11-28#get-an-external-group
 //
 //meta:operation GET /orgs/{org}/external-group/{group_id}
 func (s *TeamsService) GetExternalGroup(ctx context.Context, org string, groupID int64) (*ExternalGroup, *Response, error) {
@@ -1012,7 +1012,7 @@ type ListExternalGroupsOptions struct {
 
 // ListExternalGroups lists external groups in an organization on GitHub.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#list-external-groups-available-to-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups?apiVersion=2022-11-28#list-external-groups-available-to-an-organization
 //
 //meta:operation GET /orgs/{org}/external-groups
 func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts *ListExternalGroupsOptions) (*ExternalGroupList, *Response, error) {
@@ -1038,7 +1038,7 @@ func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts 
 
 // ListExternalGroupsForTeamBySlug lists external groups connected to a team on GitHub.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#list-a-connection-between-an-external-group-and-a-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups?apiVersion=2022-11-28#list-a-connection-between-an-external-group-and-a-team
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/external-groups
 func (s *TeamsService) ListExternalGroupsForTeamBySlug(ctx context.Context, org, slug string) (*ExternalGroupList, *Response, error) {
@@ -1060,7 +1060,7 @@ func (s *TeamsService) ListExternalGroupsForTeamBySlug(ctx context.Context, org,
 
 // UpdateConnectedExternalGroup updates the connection between an external group and a team.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#update-the-connection-between-an-external-group-and-a-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups?apiVersion=2022-11-28#update-the-connection-between-an-external-group-and-a-team
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/external-groups
 func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, slug string, eg *ExternalGroup) (*ExternalGroup, *Response, error) {
@@ -1082,7 +1082,7 @@ func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, sl
 
 // RemoveConnectedExternalGroup removes the connection between an external group and a team.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups#remove-the-connection-between-an-external-group-and-a-team
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups?apiVersion=2022-11-28#remove-the-connection-between-an-external-group-and-a-team
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/external-groups
 func (s *TeamsService) RemoveConnectedExternalGroup(ctx context.Context, org, slug string) (*Response, error) {

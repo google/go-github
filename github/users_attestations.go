@@ -14,7 +14,7 @@ import (
 // with a given subject digest that are associated with repositories
 // owned by a user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/attestations#list-attestations
+// GitHub API docs: https://docs.github.com/rest/users/attestations?apiVersion=2022-11-28#list-attestations
 //
 //meta:operation GET /users/{username}/attestations/{subject_digest}
 func (s *UsersService) ListAttestations(ctx context.Context, user, subjectDigest string, opts *ListOptions) (*AttestationsResponse, *Response, error) {

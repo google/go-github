@@ -125,7 +125,7 @@ func (s *DependabotService) listAlerts(ctx context.Context, url string, opts *Li
 
 // ListRepoAlerts lists all Dependabot alerts of a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/dependabot/alerts?apiVersion=2022-11-28#list-dependabot-alerts-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/dependabot/alerts
 func (s *DependabotService) ListRepoAlerts(ctx context.Context, owner, repo string, opts *ListAlertsOptions) ([]*DependabotAlert, *Response, error) {
@@ -135,7 +135,7 @@ func (s *DependabotService) ListRepoAlerts(ctx context.Context, owner, repo stri
 
 // ListOrgAlerts lists all Dependabot alerts of an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/dependabot/alerts?apiVersion=2022-11-28#list-dependabot-alerts-for-an-organization
 //
 //meta:operation GET /orgs/{org}/dependabot/alerts
 func (s *DependabotService) ListOrgAlerts(ctx context.Context, org string, opts *ListAlertsOptions) ([]*DependabotAlert, *Response, error) {
@@ -145,7 +145,7 @@ func (s *DependabotService) ListOrgAlerts(ctx context.Context, org string, opts 
 
 // GetRepoAlert gets a single repository Dependabot alert.
 //
-// GitHub API docs: https://docs.github.com/rest/dependabot/alerts#get-a-dependabot-alert
+// GitHub API docs: https://docs.github.com/rest/dependabot/alerts?apiVersion=2022-11-28#get-a-dependabot-alert
 //
 //meta:operation GET /repos/{owner}/{repo}/dependabot/alerts/{alert_number}
 func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string, number int) (*DependabotAlert, *Response, error) {
@@ -166,7 +166,7 @@ func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string
 
 // UpdateAlert updates a Dependabot alert.
 //
-// GitHub API docs: https://docs.github.com/rest/dependabot/alerts#update-a-dependabot-alert
+// GitHub API docs: https://docs.github.com/rest/dependabot/alerts?apiVersion=2022-11-28#update-a-dependabot-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/dependabot/alerts/{alert_number}
 func (s *DependabotService) UpdateAlert(ctx context.Context, owner, repo string, number int, stateInfo *DependabotAlertState) (*DependabotAlert, *Response, error) {

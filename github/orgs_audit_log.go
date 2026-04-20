@@ -119,7 +119,7 @@ func (a *AuditEntry) MarshalJSON() ([]byte, error) {
 
 // GetAuditLog gets the audit-log entries for an organization.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/orgs#get-the-audit-log-for-an-organization
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/orgs?apiVersion=2022-11-28#get-the-audit-log-for-an-organization
 //
 //meta:operation GET /orgs/{org}/audit-log
 func (s *OrganizationsService) GetAuditLog(ctx context.Context, org string, opts *GetAuditLogOptions) ([]*AuditEntry, *Response, error) {

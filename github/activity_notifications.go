@@ -19,7 +19,7 @@ type Notification struct {
 
 	// Reason identifies the event that triggered the notification.
 	//
-	// GitHub API docs: https://docs.github.com/rest/activity#notification-reasons
+	// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#notification-reasons
 	Reason *string `json:"reason,omitempty"`
 
 	Unread     *bool      `json:"unread,omitempty"`
@@ -49,7 +49,7 @@ type NotificationListOptions struct {
 
 // ListNotifications lists all notifications for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/notifications#list-notifications-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#list-notifications-for-the-authenticated-user
 //
 //meta:operation GET /notifications
 func (s *ActivityService) ListNotifications(ctx context.Context, opts *NotificationListOptions) ([]*Notification, *Response, error) {
@@ -76,7 +76,7 @@ func (s *ActivityService) ListNotifications(ctx context.Context, opts *Notificat
 // ListRepositoryNotifications lists all notifications in a given repository
 // for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/notifications#list-repository-notifications-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#list-repository-notifications-for-the-authenticated-user
 //
 //meta:operation GET /repos/{owner}/{repo}/notifications
 func (s *ActivityService) ListRepositoryNotifications(ctx context.Context, owner, repo string, opts *NotificationListOptions) ([]*Notification, *Response, error) {
@@ -107,7 +107,7 @@ type markReadOptions struct {
 // MarkNotificationsRead marks all notifications up to lastRead as read.
 // If lastRead is the zero value, all notifications in the repository are marked as read.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/notifications#mark-notifications-as-read
+// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#mark-notifications-as-read
 //
 //meta:operation PUT /notifications
 func (s *ActivityService) MarkNotificationsRead(ctx context.Context, lastRead Timestamp) (*Response, error) {
@@ -126,7 +126,7 @@ func (s *ActivityService) MarkNotificationsRead(ctx context.Context, lastRead Ti
 // the specified repository as read.
 // If lastRead is the zero value, all notifications in the repository are marked as read.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/notifications#mark-repository-notifications-as-read
+// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#mark-repository-notifications-as-read
 //
 //meta:operation PUT /repos/{owner}/{repo}/notifications
 func (s *ActivityService) MarkRepositoryNotificationsRead(ctx context.Context, owner, repo string, lastRead Timestamp) (*Response, error) {
@@ -144,7 +144,7 @@ func (s *ActivityService) MarkRepositoryNotificationsRead(ctx context.Context, o
 
 // GetThread gets the specified notification thread.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/notifications#get-a-thread
+// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#get-a-thread
 //
 //meta:operation GET /notifications/threads/{thread_id}
 func (s *ActivityService) GetThread(ctx context.Context, id string) (*Notification, *Response, error) {
@@ -166,7 +166,7 @@ func (s *ActivityService) GetThread(ctx context.Context, id string) (*Notificati
 
 // MarkThreadRead marks the specified thread as read.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/notifications#mark-a-thread-as-read
+// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#mark-a-thread-as-read
 //
 //meta:operation PATCH /notifications/threads/{thread_id}
 func (s *ActivityService) MarkThreadRead(ctx context.Context, id string) (*Response, error) {
@@ -183,7 +183,7 @@ func (s *ActivityService) MarkThreadRead(ctx context.Context, id string) (*Respo
 // MarkThreadDone marks the specified thread as done.
 // Marking a thread as "done" is equivalent to marking a notification in your notification inbox on GitHub as done.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/notifications#mark-a-thread-as-done
+// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#mark-a-thread-as-done
 //
 //meta:operation DELETE /notifications/threads/{thread_id}
 func (s *ActivityService) MarkThreadDone(ctx context.Context, id string) (*Response, error) {
@@ -200,7 +200,7 @@ func (s *ActivityService) MarkThreadDone(ctx context.Context, id string) (*Respo
 // GetThreadSubscription checks to see if the authenticated user is subscribed
 // to a thread.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/notifications#get-a-thread-subscription-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#get-a-thread-subscription-for-the-authenticated-user
 //
 //meta:operation GET /notifications/threads/{thread_id}/subscription
 func (s *ActivityService) GetThreadSubscription(ctx context.Context, id string) (*Subscription, *Response, error) {
@@ -223,7 +223,7 @@ func (s *ActivityService) GetThreadSubscription(ctx context.Context, id string) 
 // SetThreadSubscription sets the subscription for the specified thread for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/notifications#set-a-thread-subscription
+// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#set-a-thread-subscription
 //
 //meta:operation PUT /notifications/threads/{thread_id}/subscription
 func (s *ActivityService) SetThreadSubscription(ctx context.Context, id string, subscription *Subscription) (*Subscription, *Response, error) {
@@ -246,7 +246,7 @@ func (s *ActivityService) SetThreadSubscription(ctx context.Context, id string, 
 // DeleteThreadSubscription deletes the subscription for the specified thread
 // for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/activity/notifications#delete-a-thread-subscription
+// GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#delete-a-thread-subscription
 //
 //meta:operation DELETE /notifications/threads/{thread_id}/subscription
 func (s *ActivityService) DeleteThreadSubscription(ctx context.Context, id string) (*Response, error) {

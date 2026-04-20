@@ -13,7 +13,7 @@ import (
 // ListAttestations returns a collection of artifact attestations
 // with a given subject digest that are associated with a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/attestations#list-attestations
+// GitHub API docs: https://docs.github.com/rest/repos/attestations?apiVersion=2022-11-28#list-attestations
 //
 //meta:operation GET /repos/{owner}/{repo}/attestations/{subject_digest}
 func (s *RepositoriesService) ListAttestations(ctx context.Context, owner, repo, subjectDigest string, opts *ListOptions) (*AttestationsResponse, *Response, error) {

@@ -40,7 +40,7 @@ type EnterpriseTeamCreateOrUpdateRequest struct {
 
 // ListTeams lists all teams in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#list-enterprise-teams
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams?apiVersion=2022-11-28#list-enterprise-teams
 //
 //meta:operation GET /enterprises/{enterprise}/teams
 func (s *EnterpriseService) ListTeams(ctx context.Context, enterprise string, opts *ListOptions) ([]*EnterpriseTeam, *Response, error) {
@@ -66,7 +66,7 @@ func (s *EnterpriseService) ListTeams(ctx context.Context, enterprise string, op
 
 // CreateTeam creates a new team in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#create-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams?apiVersion=2022-11-28#create-an-enterprise-team
 //
 //meta:operation POST /enterprises/{enterprise}/teams
 func (s *EnterpriseService) CreateTeam(ctx context.Context, enterprise string, team EnterpriseTeamCreateOrUpdateRequest) (*EnterpriseTeam, *Response, error) {
@@ -88,7 +88,7 @@ func (s *EnterpriseService) CreateTeam(ctx context.Context, enterprise string, t
 
 // GetTeam retrieves a team in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#get-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams?apiVersion=2022-11-28#get-an-enterprise-team
 //
 //meta:operation GET /enterprises/{enterprise}/teams/{team_slug}
 func (s *EnterpriseService) GetTeam(ctx context.Context, enterprise, teamSlug string) (*EnterpriseTeam, *Response, error) {
@@ -110,7 +110,7 @@ func (s *EnterpriseService) GetTeam(ctx context.Context, enterprise, teamSlug st
 
 // UpdateTeam updates a team in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#update-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams?apiVersion=2022-11-28#update-an-enterprise-team
 //
 //meta:operation PATCH /enterprises/{enterprise}/teams/{team_slug}
 func (s *EnterpriseService) UpdateTeam(ctx context.Context, enterprise, teamSlug string, team EnterpriseTeamCreateOrUpdateRequest) (*EnterpriseTeam, *Response, error) {
@@ -132,7 +132,7 @@ func (s *EnterpriseService) UpdateTeam(ctx context.Context, enterprise, teamSlug
 
 // DeleteTeam deletes a team in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams#delete-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams?apiVersion=2022-11-28#delete-an-enterprise-team
 //
 //meta:operation DELETE /enterprises/{enterprise}/teams/{team_slug}
 func (s *EnterpriseService) DeleteTeam(ctx context.Context, enterprise, teamSlug string) (*Response, error) {
@@ -153,7 +153,7 @@ func (s *EnterpriseService) DeleteTeam(ctx context.Context, enterprise, teamSlug
 
 // ListTeamMembers lists all members of an enterprise team.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#list-members-in-an-enterprise-team
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members?apiVersion=2022-11-28#list-members-in-an-enterprise-team
 //
 //meta:operation GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships
 func (s *EnterpriseService) ListTeamMembers(ctx context.Context, enterprise, enterpriseTeam string, opts *ListOptions) ([]*User, *Response, error) {
@@ -179,7 +179,7 @@ func (s *EnterpriseService) ListTeamMembers(ctx context.Context, enterprise, ent
 
 // BulkAddTeamMembers adds multiple members to an enterprise team.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#bulk-add-team-members
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members?apiVersion=2022-11-28#bulk-add-team-members
 //
 //meta:operation POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/add
 func (s *EnterpriseService) BulkAddTeamMembers(ctx context.Context, enterprise, enterpriseTeam string, username []string) ([]*User, *Response, error) {
@@ -200,7 +200,7 @@ func (s *EnterpriseService) BulkAddTeamMembers(ctx context.Context, enterprise, 
 
 // BulkRemoveTeamMembers removes multiple members from an enterprise team.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#bulk-remove-team-members
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members?apiVersion=2022-11-28#bulk-remove-team-members
 //
 //meta:operation POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove
 func (s *EnterpriseService) BulkRemoveTeamMembers(ctx context.Context, enterprise, enterpriseTeam string, username []string) ([]*User, *Response, error) {
@@ -221,7 +221,7 @@ func (s *EnterpriseService) BulkRemoveTeamMembers(ctx context.Context, enterpris
 
 // GetTeamMembership retrieves a team membership for a user in an enterprise team.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#get-enterprise-team-membership
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members?apiVersion=2022-11-28#get-enterprise-team-membership
 //
 //meta:operation GET /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}
 func (s *EnterpriseService) GetTeamMembership(ctx context.Context, enterprise, enterpriseTeam, username string) (*User, *Response, error) {
@@ -243,7 +243,7 @@ func (s *EnterpriseService) GetTeamMembership(ctx context.Context, enterprise, e
 
 // AddTeamMember adds a member to an enterprise team.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#add-team-member
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members?apiVersion=2022-11-28#add-team-member
 //
 //meta:operation PUT /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}
 func (s *EnterpriseService) AddTeamMember(ctx context.Context, enterprise, enterpriseTeam, username string) (*User, *Response, error) {
@@ -265,7 +265,7 @@ func (s *EnterpriseService) AddTeamMember(ctx context.Context, enterprise, enter
 
 // RemoveTeamMember removes a member from an enterprise team.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members#remove-team-membership
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-members?apiVersion=2022-11-28#remove-team-membership
 //
 //meta:operation DELETE /enterprises/{enterprise}/teams/{enterprise-team}/memberships/{username}
 func (s *EnterpriseService) RemoveTeamMember(ctx context.Context, enterprise, enterpriseTeam, username string) (*Response, error) {
@@ -286,7 +286,7 @@ func (s *EnterpriseService) RemoveTeamMember(ctx context.Context, enterprise, en
 
 // ListAssignments gets all organizations assigned to an enterprise team.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#get-organization-assignments
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations?apiVersion=2022-11-28#get-organization-assignments
 //
 //meta:operation GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations
 func (s *EnterpriseService) ListAssignments(ctx context.Context, enterprise, enterpriseTeam string, opts *ListOptions) ([]*Organization, *Response, error) {
@@ -312,7 +312,7 @@ func (s *EnterpriseService) ListAssignments(ctx context.Context, enterprise, ent
 
 // AddMultipleAssignments assigns an enterprise team to multiple organizations.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#add-organization-assignments
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations?apiVersion=2022-11-28#add-organization-assignments
 //
 //meta:operation POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/add
 func (s *EnterpriseService) AddMultipleAssignments(ctx context.Context, enterprise, enterpriseTeam string, organizationSlugs []string) ([]*Organization, *Response, error) {
@@ -334,7 +334,7 @@ func (s *EnterpriseService) AddMultipleAssignments(ctx context.Context, enterpri
 
 // RemoveMultipleAssignments unassigns an enterprise team from multiple organizations.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#remove-organization-assignments
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations?apiVersion=2022-11-28#remove-organization-assignments
 //
 //meta:operation POST /enterprises/{enterprise}/teams/{enterprise-team}/organizations/remove
 func (s *EnterpriseService) RemoveMultipleAssignments(ctx context.Context, enterprise, enterpriseTeam string, organizationSlugs []string) ([]*Organization, *Response, error) {
@@ -356,7 +356,7 @@ func (s *EnterpriseService) RemoveMultipleAssignments(ctx context.Context, enter
 
 // GetAssignment checks if an enterprise team is assigned to an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#get-organization-assignment
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations?apiVersion=2022-11-28#get-organization-assignment
 //
 //meta:operation GET /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}
 func (s *EnterpriseService) GetAssignment(ctx context.Context, enterprise, enterpriseTeam, org string) (*Organization, *Response, error) {
@@ -378,7 +378,7 @@ func (s *EnterpriseService) GetAssignment(ctx context.Context, enterprise, enter
 
 // AddAssignment assigns an enterprise team to an organizations.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#add-an-organization-assignment
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations?apiVersion=2022-11-28#add-an-organization-assignment
 //
 //meta:operation PUT /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}
 func (s *EnterpriseService) AddAssignment(ctx context.Context, enterprise, enterpriseTeam, org string) (*Organization, *Response, error) {
@@ -400,7 +400,7 @@ func (s *EnterpriseService) AddAssignment(ctx context.Context, enterprise, enter
 
 // RemoveAssignment unassigns an enterprise team from an organizations.
 //
-// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations#delete-an-organization-assignment
+// GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-team-organizations?apiVersion=2022-11-28#delete-an-organization-assignment
 //
 //meta:operation DELETE /enterprises/{enterprise}/teams/{enterprise-team}/organizations/{org}
 func (s *EnterpriseService) RemoveAssignment(ctx context.Context, enterprise, enterpriseTeam, org string) (*Response, error) {

@@ -363,12 +363,10 @@ func newTestServer(t *testing.T, ref string, files map[string]any) *httptest.Ser
 			Name: github.Ptr(path.Base(path.Dir(name))),
 		})
 		mux.HandleFunc(
-			path.Join(repoPath, "contents/descriptions", path.Dir(name)),
-			jsonHandler(refQuery, []*github.RepositoryContent{
-				{
-					Name:        github.Ptr(path.Base(name)),
-					DownloadURL: github.Ptr(server.URL + "/dl/" + name),
-				},
+			path.Join(repoPath, "contents/descriptions", name),
+			jsonHandler(refQuery, &github.RepositoryContent{
+				Name:        github.Ptr(path.Base(name)),
+				DownloadURL: github.Ptr(server.URL + "/dl/" + name),
 			}),
 		)
 		mux.HandleFunc(

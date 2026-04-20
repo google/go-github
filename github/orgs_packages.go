@@ -13,7 +13,7 @@ import (
 
 // ListPackages lists the packages for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#list-packages-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#list-packages-for-an-organization
 //
 //meta:operation GET /orgs/{org}/packages
 func (s *OrganizationsService) ListPackages(ctx context.Context, org string, opts *PackageListOptions) ([]*Package, *Response, error) {
@@ -41,7 +41,7 @@ func (s *OrganizationsService) ListPackages(ctx context.Context, org string, opt
 //
 // Note that packageName is escaped for the URL path so that you don't need to.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#get-a-package-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#get-a-package-for-an-organization
 //
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}
 func (s *OrganizationsService) GetPackage(ctx context.Context, org, packageType, packageName string) (*Package, *Response, error) {
@@ -64,7 +64,7 @@ func (s *OrganizationsService) GetPackage(ctx context.Context, org, packageType,
 //
 // Note that packageName is escaped for the URL path so that you don't need to.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#delete-a-package-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#delete-a-package-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/packages/{package_type}/{package_name}
 func (s *OrganizationsService) DeletePackage(ctx context.Context, org, packageType, packageName string) (*Response, error) {
@@ -81,7 +81,7 @@ func (s *OrganizationsService) DeletePackage(ctx context.Context, org, packageTy
 //
 // Note that packageName is escaped for the URL path so that you don't need to.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#restore-a-package-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#restore-a-package-for-an-organization
 //
 //meta:operation POST /orgs/{org}/packages/{package_type}/{package_name}/restore
 func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageType, packageName string) (*Response, error) {
@@ -98,7 +98,7 @@ func (s *OrganizationsService) RestorePackage(ctx context.Context, org, packageT
 //
 // Note that packageName is escaped for the URL path so that you don't need to.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#list-package-versions-for-a-package-owned-by-an-organization
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#list-package-versions-for-a-package-owned-by-an-organization
 //
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}/versions
 func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, packageType, packageName string, opts *PackageListOptions) ([]*PackageVersion, *Response, error) {
@@ -126,7 +126,7 @@ func (s *OrganizationsService) PackageGetAllVersions(ctx context.Context, org, p
 //
 // Note that packageName is escaped for the URL path so that you don't need to.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#get-a-package-version-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#get-a-package-version-for-an-organization
 //
 //meta:operation GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}
 func (s *OrganizationsService) PackageGetVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*PackageVersion, *Response, error) {
@@ -149,7 +149,7 @@ func (s *OrganizationsService) PackageGetVersion(ctx context.Context, org, packa
 //
 // Note that packageName is escaped for the URL path so that you don't need to.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#delete-package-version-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#delete-package-version-for-an-organization
 //
 //meta:operation DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}
 func (s *OrganizationsService) PackageDeleteVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*Response, error) {
@@ -166,7 +166,7 @@ func (s *OrganizationsService) PackageDeleteVersion(ctx context.Context, org, pa
 //
 // Note that packageName is escaped for the URL path so that you don't need to.
 //
-// GitHub API docs: https://docs.github.com/rest/packages/packages#restore-package-version-for-an-organization
+// GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#restore-package-version-for-an-organization
 //
 //meta:operation POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore
 func (s *OrganizationsService) PackageRestoreVersion(ctx context.Context, org, packageType, packageName string, packageVersionID int64) (*Response, error) {

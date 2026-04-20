@@ -355,6 +355,17 @@ func TestCodeResult_String(t *testing.T) {
 	}
 }
 
+func TestCodeSecurity_String(t *testing.T) {
+	t.Parallel()
+	v := CodeSecurity{
+		Status: Ptr(""),
+	}
+	want := `github.CodeSecurity{Status:""}`
+	if got := v.String(); got != want {
+		t.Errorf("CodeSecurity.String = %v, want %v", got, want)
+	}
+}
+
 func TestCombinedStatus_String(t *testing.T) {
 	t.Parallel()
 	v := CombinedStatus{
@@ -2205,8 +2216,9 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 		SecretScanningPushProtection: &SecretScanningPushProtection{},
 		DependabotSecurityUpdates:    &DependabotSecurityUpdates{},
 		SecretScanningValidityChecks: &SecretScanningValidityChecks{},
+		CodeSecurity:                 &CodeSecurity{},
 	}
-	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}, SecretScanningPushProtection:github.SecretScanningPushProtection{}, DependabotSecurityUpdates:github.DependabotSecurityUpdates{}, SecretScanningValidityChecks:github.SecretScanningValidityChecks{}}`
+	want := `github.SecurityAndAnalysis{AdvancedSecurity:github.AdvancedSecurity{}, SecretScanning:github.SecretScanning{}, SecretScanningPushProtection:github.SecretScanningPushProtection{}, DependabotSecurityUpdates:github.DependabotSecurityUpdates{}, SecretScanningValidityChecks:github.SecretScanningValidityChecks{}, CodeSecurity:github.CodeSecurity{}}`
 	if got := v.String(); got != want {
 		t.Errorf("SecurityAndAnalysis.String = %v, want %v", got, want)
 	}
@@ -2377,6 +2389,7 @@ func TestUser_String(t *testing.T) {
 	v := User{
 		Login:                   Ptr(""),
 		ID:                      Ptr(int64(0)),
+		UserViewType:            Ptr(""),
 		NodeID:                  Ptr(""),
 		AvatarURL:               Ptr(""),
 		HTMLURL:                 Ptr(""),
@@ -2386,6 +2399,7 @@ func TestUser_String(t *testing.T) {
 		Blog:                    Ptr(""),
 		Location:                Ptr(""),
 		Email:                   Ptr(""),
+		NotificationEmail:       Ptr(""),
 		Hireable:                Ptr(false),
 		Bio:                     Ptr(""),
 		TwitterUsername:         Ptr(""),
@@ -2405,6 +2419,7 @@ func TestUser_String(t *testing.T) {
 		Collaborators:           Ptr(0),
 		TwoFactorAuthentication: Ptr(false),
 		Plan:                    &Plan{},
+		BusinessPlus:            Ptr(false),
 		LdapDn:                  Ptr(""),
 		URL:                     Ptr(""),
 		EventsURL:               Ptr(""),
@@ -2420,7 +2435,7 @@ func TestUser_String(t *testing.T) {
 		RoleName:                Ptr(""),
 		Assignment:              Ptr(""),
 	}
-	want := `github.User{Login:"", ID:0, NodeID:"", AvatarURL:"", HTMLURL:"", GravatarID:"", Name:"", Company:"", Blog:"", Location:"", Email:"", Hireable:false, Bio:"", TwitterUsername:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Type:"", SiteAdmin:false, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, TwoFactorAuthentication:false, Plan:github.Plan{}, LdapDn:"", URL:"", EventsURL:"", FollowingURL:"", FollowersURL:"", GistsURL:"", OrganizationsURL:"", ReceivedEventsURL:"", ReposURL:"", StarredURL:"", SubscriptionsURL:"", Permissions:github.RepositoryPermissions{}, RoleName:"", Assignment:""}`
+	want := `github.User{Login:"", ID:0, UserViewType:"", NodeID:"", AvatarURL:"", HTMLURL:"", GravatarID:"", Name:"", Company:"", Blog:"", Location:"", Email:"", NotificationEmail:"", Hireable:false, Bio:"", TwitterUsername:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Type:"", SiteAdmin:false, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, TwoFactorAuthentication:false, Plan:github.Plan{}, BusinessPlus:false, LdapDn:"", URL:"", EventsURL:"", FollowingURL:"", FollowersURL:"", GistsURL:"", OrganizationsURL:"", ReceivedEventsURL:"", ReposURL:"", StarredURL:"", SubscriptionsURL:"", Permissions:github.RepositoryPermissions{}, RoleName:"", Assignment:""}`
 	if got := v.String(); got != want {
 		t.Errorf("User.String = %v, want %v", got, want)
 	}

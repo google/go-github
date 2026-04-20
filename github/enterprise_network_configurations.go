@@ -12,7 +12,7 @@ import (
 
 // ListEnterpriseNetworkConfigurations lists all hosted compute network configurations configured in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#list-hosted-compute-network-configurations-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations?apiVersion=2022-11-28#list-hosted-compute-network-configurations-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/network-configurations
 func (s *EnterpriseService) ListEnterpriseNetworkConfigurations(ctx context.Context, enterprise string, opts *ListOptions) (*NetworkConfigurations, *Response, error) {
@@ -38,7 +38,7 @@ func (s *EnterpriseService) ListEnterpriseNetworkConfigurations(ctx context.Cont
 
 // CreateEnterpriseNetworkConfiguration creates a hosted compute network configuration for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#create-a-hosted-compute-network-configuration-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations?apiVersion=2022-11-28#create-a-hosted-compute-network-configuration-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/network-configurations
 func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Context, enterprise string, createReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
@@ -63,7 +63,7 @@ func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Con
 
 // GetEnterpriseNetworkConfiguration gets a hosted compute network configuration configured in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#get-a-hosted-compute-network-configuration-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations?apiVersion=2022-11-28#get-a-hosted-compute-network-configuration-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/network-configurations/{network_configuration_id}
 func (s *EnterpriseService) GetEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string) (*NetworkConfiguration, *Response, error) {
@@ -84,7 +84,7 @@ func (s *EnterpriseService) GetEnterpriseNetworkConfiguration(ctx context.Contex
 
 // UpdateEnterpriseNetworkConfiguration updates a hosted compute network configuration for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#update-a-hosted-compute-network-configuration-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations?apiVersion=2022-11-28#update-a-hosted-compute-network-configuration-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/network-configurations/{network_configuration_id}
 func (s *EnterpriseService) UpdateEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string, updateReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
@@ -109,7 +109,7 @@ func (s *EnterpriseService) UpdateEnterpriseNetworkConfiguration(ctx context.Con
 
 // DeleteEnterpriseNetworkConfiguration deletes a hosted compute network configuration from an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#delete-a-hosted-compute-network-configuration-from-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations?apiVersion=2022-11-28#delete-a-hosted-compute-network-configuration-from-an-enterprise
 //
 //meta:operation DELETE /enterprises/{enterprise}/network-configurations/{network_configuration_id}
 func (s *EnterpriseService) DeleteEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string) (*Response, error) {
@@ -124,7 +124,7 @@ func (s *EnterpriseService) DeleteEnterpriseNetworkConfiguration(ctx context.Con
 
 // GetEnterpriseNetworkSettingsResource gets a hosted compute network settings resource configured for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations#get-a-hosted-compute-network-settings-resource-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations?apiVersion=2022-11-28#get-a-hosted-compute-network-settings-resource-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/network-settings/{network_settings_id}
 func (s *EnterpriseService) GetEnterpriseNetworkSettingsResource(ctx context.Context, enterprise, networkID string) (*NetworkSettingsResource, *Response, error) {

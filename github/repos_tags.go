@@ -24,7 +24,7 @@ type tagProtectionRequest struct {
 
 // ListTagProtection lists tag protection of the specified repository.
 //
-// Deprecated: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules#get-all-repository-rulesets
+// Deprecated: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#get-all-repository-rulesets
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/repos/tags#closing-down---list-tag-protection-states-for-a-repository
 //
@@ -48,7 +48,7 @@ func (s *RepositoriesService) ListTagProtection(ctx context.Context, owner, repo
 
 // CreateTagProtection creates the tag protection of the specified repository.
 //
-// Deprecated: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules#create-a-repository-ruleset
+// Deprecated: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#create-a-repository-ruleset
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/repos/tags#closing-down---create-a-tag-protection-state-for-a-repository
 //
@@ -72,7 +72,7 @@ func (s *RepositoriesService) CreateTagProtection(ctx context.Context, owner, re
 
 // DeleteTagProtection deletes a tag protection from the specified repository.
 //
-// Deprecated: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules#delete-a-repository-ruleset
+// Deprecated: This operation is deprecated and will be removed after August 30, 2024. Use the "Repository Rulesets" endpoint instead: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#delete-a-repository-ruleset
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/repos/tags#closing-down---delete-a-tag-protection-state-for-a-repository
 //

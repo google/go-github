@@ -109,7 +109,7 @@ type ArtifactStorageResponse struct {
 
 // CreateArtifactDeploymentRecord creates or updates deployment records for an artifact associated with an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#create-an-artifact-deployment-record
+// GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata?apiVersion=2022-11-28#create-an-artifact-deployment-record
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/deployment-record
 func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Context, org string, record CreateArtifactDeploymentRequest) (*ArtifactDeploymentResponse, *Response, error) {
@@ -130,7 +130,7 @@ func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Contex
 
 // SetClusterDeploymentRecords sets deployment records for a given cluster.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#set-cluster-deployment-records
+// GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata?apiVersion=2022-11-28#set-cluster-deployment-records
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}
 func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, org, cluster string, request ClusterDeploymentRecordsRequest) (*ArtifactDeploymentResponse, *Response, error) {
@@ -151,7 +151,7 @@ func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, 
 
 // CreateArtifactStorageRecord creates metadata storage records for artifacts.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#create-artifact-metadata-storage-record
+// GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata?apiVersion=2022-11-28#create-artifact-metadata-storage-record
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/storage-record
 func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, org string, record CreateArtifactStorageRequest) (*ArtifactStorageResponse, *Response, error) {
@@ -174,7 +174,7 @@ func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, 
 //
 // subjectDigest is SHA256 digest of the artifact, in the form sha256:HEX_DIGEST.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#list-artifact-deployment-records
+// GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata?apiVersion=2022-11-28#list-artifact-deployment-records
 //
 //meta:operation GET /orgs/{org}/artifacts/{subject_digest}/metadata/deployment-records
 func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context, org, subjectDigest string) (*ArtifactDeploymentResponse, *Response, error) {
@@ -198,7 +198,7 @@ func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context
 //
 // subjectDigest is SHA256 digest of the artifact, in the form sha256:HEX_DIGEST.
 //
-// GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata#list-artifact-storage-records
+// GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata?apiVersion=2022-11-28#list-artifact-storage-records
 //
 //meta:operation GET /orgs/{org}/artifacts/{subject_digest}/metadata/storage-records
 func (s *OrganizationsService) ListArtifactStorageRecords(ctx context.Context, org, subjectDigest string) (*ArtifactStorageResponse, *Response, error) {

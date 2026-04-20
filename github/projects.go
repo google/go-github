@@ -14,7 +14,7 @@ import (
 // ProjectsService handles communication with the project V2
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/projects
+// GitHub API docs: https://docs.github.com/rest/projects?apiVersion=2022-11-28
 type ProjectsService service
 
 // ProjectV2ItemContentType represents the type of content in a ProjectV2Item.
@@ -116,7 +116,7 @@ type ListProjectsOptions struct {
 // ProjectV2TextContent represents text content in a project field option or iteration.
 // It includes both HTML and raw text representations.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/fields
+// GitHub API docs: https://docs.github.com/rest/projects/fields?apiVersion=2022-11-28
 type ProjectV2TextContent struct {
 	HTML *string `json:"html,omitempty"`
 	Raw  *string `json:"raw,omitempty"`
@@ -125,7 +125,7 @@ type ProjectV2TextContent struct {
 // ProjectV2FieldOption represents an option for a project field of type single_select or multi_select.
 // It defines the available choices that can be selected for dropdown-style fields.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/fields
+// GitHub API docs: https://docs.github.com/rest/projects/fields?apiVersion=2022-11-28
 type ProjectV2FieldOption struct {
 	ID          *string               `json:"id,omitempty"`          // The unique identifier for this option.
 	Color       *string               `json:"color,omitempty"`       // The color associated with this option (e.g., "blue", "red").
@@ -136,7 +136,7 @@ type ProjectV2FieldOption struct {
 // ProjectV2FieldIteration represents an iteration within a project field of type iteration.
 // It defines a specific time-bound period that can be associated with project items.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/fields
+// GitHub API docs: https://docs.github.com/rest/projects/fields?apiVersion=2022-11-28
 type ProjectV2FieldIteration struct {
 	ID        *string               `json:"id,omitempty"`         // The unique identifier for the iteration.
 	Title     *ProjectV2TextContent `json:"title,omitempty"`      // The title of the iteration.
@@ -147,7 +147,7 @@ type ProjectV2FieldIteration struct {
 // ProjectV2FieldConfiguration represents the configuration for a project field of type iteration.
 // It defines settings such as duration and start day for iterations within the project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/fields
+// GitHub API docs: https://docs.github.com/rest/projects/fields?apiVersion=2022-11-28
 type ProjectV2FieldConfiguration struct {
 	Duration   *int                       `json:"duration,omitempty"`   // The duration of the iteration field in seconds.
 	StartDay   *int                       `json:"start_day,omitempty"`  // The start day for the iteration.
@@ -238,7 +238,7 @@ func (p *ProjectV2Item) UnmarshalJSON(data []byte) error {
 // ProjectV2Field represents a field in a GitHub Projects V2 project.
 // Fields define the structure and data types for project items.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/fields
+// GitHub API docs: https://docs.github.com/rest/projects/fields?apiVersion=2022-11-28
 type ProjectV2Field struct {
 	ID            *int64                       `json:"id,omitempty"`
 	NodeID        *string                      `json:"node_id,omitempty"`
@@ -275,7 +275,7 @@ type ProjectV2ItemFieldValue struct {
 
 // ListOrganizationProjects lists Projects V2 for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/projects#list-projects-for-organization
+// GitHub API docs: https://docs.github.com/rest/projects/projects?apiVersion=2022-11-28#list-projects-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2
 func (s *ProjectsService) ListOrganizationProjects(ctx context.Context, org string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
@@ -301,7 +301,7 @@ func (s *ProjectsService) ListOrganizationProjects(ctx context.Context, org stri
 
 // GetOrganizationProject gets a Projects V2 project for an organization by ID.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-organization
+// GitHub API docs: https://docs.github.com/rest/projects/projects?apiVersion=2022-11-28#get-project-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}
 func (s *ProjectsService) GetOrganizationProject(ctx context.Context, org string, projectNumber int) (*ProjectV2, *Response, error) {
@@ -322,7 +322,7 @@ func (s *ProjectsService) GetOrganizationProject(ctx context.Context, org string
 
 // ListUserProjects lists Projects V2 for a user.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/projects#list-projects-for-user
+// GitHub API docs: https://docs.github.com/rest/projects/projects?apiVersion=2022-11-28#list-projects-for-user
 //
 //meta:operation GET /users/{username}/projectsV2
 func (s *ProjectsService) ListUserProjects(ctx context.Context, username string, opts *ListProjectsOptions) ([]*ProjectV2, *Response, error) {
@@ -347,7 +347,7 @@ func (s *ProjectsService) ListUserProjects(ctx context.Context, username string,
 
 // GetUserProject gets a Projects V2 project for a user by ID.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/projects#get-project-for-user
+// GitHub API docs: https://docs.github.com/rest/projects/projects?apiVersion=2022-11-28#get-project-for-user
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}
 func (s *ProjectsService) GetUserProject(ctx context.Context, username string, projectNumber int) (*ProjectV2, *Response, error) {
@@ -368,7 +368,7 @@ func (s *ProjectsService) GetUserProject(ctx context.Context, username string, p
 
 // ListOrganizationProjectFields lists Projects V2 for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/fields#list-project-fields-for-organization
+// GitHub API docs: https://docs.github.com/rest/projects/fields?apiVersion=2022-11-28#list-project-fields-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields
 func (s *ProjectsService) ListOrganizationProjectFields(ctx context.Context, org string, projectNumber int, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
@@ -394,7 +394,7 @@ func (s *ProjectsService) ListOrganizationProjectFields(ctx context.Context, org
 
 // ListUserProjectFields lists Projects V2 for a user.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/fields#list-project-fields-for-user
+// GitHub API docs: https://docs.github.com/rest/projects/fields?apiVersion=2022-11-28#list-project-fields-for-user
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/fields
 func (s *ProjectsService) ListUserProjectFields(ctx context.Context, user string, projectNumber int, opts *ListProjectsOptions) ([]*ProjectV2Field, *Response, error) {
@@ -420,7 +420,7 @@ func (s *ProjectsService) ListUserProjectFields(ctx context.Context, user string
 
 // GetOrganizationProjectField gets a single project field from an organization owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/fields#get-project-field-for-organization
+// GitHub API docs: https://docs.github.com/rest/projects/fields?apiVersion=2022-11-28#get-project-field-for-organization
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields/{field_id}
 func (s *ProjectsService) GetOrganizationProjectField(ctx context.Context, org string, projectNumber int, fieldID int64) (*ProjectV2Field, *Response, error) {
@@ -441,7 +441,7 @@ func (s *ProjectsService) GetOrganizationProjectField(ctx context.Context, org s
 
 // GetUserProjectField gets a single project field from a user owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/fields#get-project-field-for-user
+// GitHub API docs: https://docs.github.com/rest/projects/fields?apiVersion=2022-11-28#get-project-field-for-user
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/fields/{field_id}
 func (s *ProjectsService) GetUserProjectField(ctx context.Context, user string, projectNumber int, fieldID int64) (*ProjectV2Field, *Response, error) {
@@ -486,7 +486,7 @@ type AddProjectItemOptions struct {
 
 // UpdateProjectV2Field represents a field update for a project item.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#update-project-item-for-organization
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#update-project-item-for-organization
 type UpdateProjectV2Field struct {
 	// ID is the field ID to update.
 	ID int64 `json:"id"`
@@ -513,7 +513,7 @@ type UpdateProjectItemOptions struct {
 
 // ListOrganizationProjectItems lists items for an organization owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#list-items-for-an-organization-owned-project
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#list-items-for-an-organization-owned-project
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/items
 func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org string, projectNumber int, opts *ListProjectItemsOptions) ([]*ProjectV2Item, *Response, error) {
@@ -539,7 +539,7 @@ func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org 
 
 // AddOrganizationProjectItem adds an issue or pull request item to an organization owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#add-item-to-organization-owned-project
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#add-item-to-organization-owned-project
 //
 //meta:operation POST /orgs/{org}/projectsV2/{project_number}/items
 func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org string, projectNumber int, opts *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
@@ -560,7 +560,7 @@ func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org st
 
 // GetOrganizationProjectItem gets a single item from an organization owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#get-an-item-for-an-organization-owned-project
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#get-an-item-for-an-organization-owned-project
 //
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2Item, *Response, error) {
@@ -586,7 +586,7 @@ func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org st
 
 // UpdateOrganizationProjectItem updates an item in an organization owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#update-project-item-for-organization
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#update-project-item-for-organization
 //
 //meta:operation PATCH /orgs/{org}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
@@ -607,7 +607,7 @@ func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org
 
 // DeleteOrganizationProjectItem deletes an item from an organization owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#delete-project-item-for-organization
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#delete-project-item-for-organization
 //
 //meta:operation DELETE /orgs/{org}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) DeleteOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64) (*Response, error) {
@@ -622,7 +622,7 @@ func (s *ProjectsService) DeleteOrganizationProjectItem(ctx context.Context, org
 
 // ListUserProjectItems lists items for a user owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#list-items-for-a-user-owned-project
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#list-items-for-a-user-owned-project
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/items
 func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username string, projectNumber int, opts *ListProjectItemsOptions) ([]*ProjectV2Item, *Response, error) {
@@ -648,7 +648,7 @@ func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username str
 
 // AddUserProjectItem adds an issue or pull request item to a user owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#add-item-to-user-owned-project
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#add-item-to-user-owned-project
 //
 //meta:operation POST /users/{username}/projectsV2/{project_number}/items
 func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username string, projectNumber int, opts *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
@@ -669,7 +669,7 @@ func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username strin
 
 // GetUserProjectItem gets a single item from a user owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#get-an-item-for-a-user-owned-project
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#get-an-item-for-a-user-owned-project
 //
 //meta:operation GET /users/{username}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *GetProjectItemOptions) (*ProjectV2Item, *Response, error) {
@@ -695,7 +695,7 @@ func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username strin
 
 // UpdateUserProjectItem updates an item in a user owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#update-project-item-for-user
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#update-project-item-for-user
 //
 //meta:operation PATCH /users/{username}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
@@ -716,7 +716,7 @@ func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username st
 
 // DeleteUserProjectItem deletes an item from a user owned project.
 //
-// GitHub API docs: https://docs.github.com/rest/projects/items#delete-project-item-for-user
+// GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#delete-project-item-for-user
 //
 //meta:operation DELETE /users/{username}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) DeleteUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64) (*Response, error) {

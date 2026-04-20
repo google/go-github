@@ -128,7 +128,7 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 	})
 }
 
-func TestMigrationService_MigrationArchiveURL(t *testing.T) {
+func TestMigrationService_MigrationArchiveURL_Redirect(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -159,6 +159,28 @@ func TestMigrationService_MigrationArchiveURL(t *testing.T) {
 		_, err = client.Migrations.MigrationArchiveURL(ctx, "\n", -1)
 		return err
 	})
+}
+
+func TestMigrationService_MigrationArchiveURL_NoRedirect(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/migrations/1/archive", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeMigrationsPreview)
+
+		w.WriteHeader(http.StatusOK)
+		assertWrite(t, w, []byte("0123456789abcdef"))
+	})
+
+	ctx := t.Context()
+	got, err := client.Migrations.MigrationArchiveURL(ctx, "o", 1)
+	if err == nil {
+		t.Error("Migrations.MigrationArchiveURL did not return expected error")
+	}
+	if got != "" {
+		t.Errorf("MigrationArchiveURL = %+v, want %+v", got, "")
+	}
 }
 
 func TestMigrationService_DeleteMigration(t *testing.T) {

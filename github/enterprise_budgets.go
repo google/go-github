@@ -89,7 +89,7 @@ type EnterpriseDeleteBudgetResponse struct {
 
 // ListBudgets gets all budgets for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#get-all-budgets
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#get-all-budgets
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/budgets
 func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) (*EnterpriseListBudgets, *Response, error) {
@@ -111,7 +111,7 @@ func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) 
 
 // CreateBudget creates a new budget for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#create-a-budget
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#create-a-budget
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/budgets
 func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string, budget EnterpriseCreateBudget) (*EnterpriseCreateOrUpdateBudgetResponse, *Response, error) {
@@ -133,7 +133,7 @@ func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string,
 
 // GetBudget gets a budget by ID for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#get-a-budget-by-id
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#get-a-budget-by-id
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
 func (s *EnterpriseService) GetBudget(ctx context.Context, enterprise, budgetID string) (*EnterpriseBudget, *Response, error) {
@@ -155,7 +155,7 @@ func (s *EnterpriseService) GetBudget(ctx context.Context, enterprise, budgetID 
 
 // UpdateBudget updates an existing budget for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#update-a-budget
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#update-a-budget
 //
 //meta:operation PATCH /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
 func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, budget EnterpriseUpdateBudget) (*EnterpriseCreateOrUpdateBudgetResponse, *Response, error) {
@@ -177,7 +177,7 @@ func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budget
 
 // DeleteBudget deletes a budget by ID for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#delete-a-budget
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#delete-a-budget
 //
 //meta:operation DELETE /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
 func (s *EnterpriseService) DeleteBudget(ctx context.Context, enterprise, budgetID string) (*EnterpriseDeleteBudgetResponse, *Response, error) {

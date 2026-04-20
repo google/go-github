@@ -24,7 +24,7 @@ type RepositoryListForksOptions struct {
 
 // ListForks lists the forks of the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/forks#list-forks
+// GitHub API docs: https://docs.github.com/rest/repos/forks?apiVersion=2022-11-28#list-forks
 //
 //meta:operation GET /repos/{owner}/{repo}/forks
 func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string, opts *RepositoryListForksOptions) ([]*Repository, *Response, error) {
@@ -68,7 +68,7 @@ type RepositoryCreateForkOptions struct {
 // A follow up request, after a delay of a second or so, should result
 // in a successful request.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/forks#create-a-fork
+// GitHub API docs: https://docs.github.com/rest/repos/forks?apiVersion=2022-11-28#create-a-fork
 //
 //meta:operation POST /repos/{owner}/{repo}/forks
 func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string, opts *RepositoryCreateForkOptions) (*Repository, *Response, error) {

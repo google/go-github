@@ -14,7 +14,7 @@ import (
 
 // ListKeys lists the deploy keys for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys#list-deploy-keys
+// GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys?apiVersion=2022-11-28#list-deploy-keys
 //
 //meta:operation GET /repos/{owner}/{repo}/keys
 func (s *RepositoriesService) ListKeys(ctx context.Context, owner, repo string, opts *ListOptions) ([]*Key, *Response, error) {
@@ -40,7 +40,7 @@ func (s *RepositoriesService) ListKeys(ctx context.Context, owner, repo string, 
 
 // GetKey fetches a single deploy key.
 //
-// GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys#get-a-deploy-key
+// GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys?apiVersion=2022-11-28#get-a-deploy-key
 //
 //meta:operation GET /repos/{owner}/{repo}/keys/{key_id}
 func (s *RepositoriesService) GetKey(ctx context.Context, owner, repo string, id int64) (*Key, *Response, error) {
@@ -62,7 +62,7 @@ func (s *RepositoriesService) GetKey(ctx context.Context, owner, repo string, id
 
 // CreateKey adds a deploy key for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys#create-a-deploy-key
+// GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys?apiVersion=2022-11-28#create-a-deploy-key
 //
 //meta:operation POST /repos/{owner}/{repo}/keys
 func (s *RepositoriesService) CreateKey(ctx context.Context, owner, repo string, key *Key) (*Key, *Response, error) {
@@ -84,7 +84,7 @@ func (s *RepositoriesService) CreateKey(ctx context.Context, owner, repo string,
 
 // DeleteKey deletes a deploy key.
 //
-// GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys#delete-a-deploy-key
+// GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys?apiVersion=2022-11-28#delete-a-deploy-key
 //
 //meta:operation DELETE /repos/{owner}/{repo}/keys/{key_id}
 func (s *RepositoriesService) DeleteKey(ctx context.Context, owner, repo string, id int64) (*Response, error) {

@@ -359,7 +359,7 @@ type CommentDiscussion struct {
 	//
 	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
 	// Use the Discussions REST API endpoint to retrieve this information.
-	// See: https://docs.github.com/rest/discussions/comments#get-a-discussion-comment
+	// See: https://docs.github.com/rest/discussions/comments?apiVersion=2022-11-28#get-a-discussion-comment
 	AuthorAssociation *string    `json:"author_association,omitempty"`
 	Body              *string    `json:"body,omitempty"`
 	ChildCommentCount *int       `json:"child_comment_count,omitempty"`
@@ -414,7 +414,7 @@ type Discussion struct {
 	//
 	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
 	// Use the Discussions REST API endpoint to retrieve this information.
-	// See: https://docs.github.com/rest/discussions/discussions#get-a-discussion
+	// See: https://docs.github.com/rest/discussions/discussions?apiVersion=2022-11-28#get-a-discussion
 	AuthorAssociation *string `json:"author_association,omitempty"`
 	ActiveLockReason  *string `json:"active_lock_reason,omitempty"`
 	Body              *string `json:"body,omitempty"`
@@ -1332,21 +1332,21 @@ type PushEvent struct {
 	//
 	// Deprecated: GitHub will remove commit counts from Events API payloads on October 7, 2025.
 	// Use the Commits REST API endpoint to get commit information.
-	// See: https://docs.github.com/rest/commits/commits#list-commits
+	// See: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#list-commits
 	Size *int `json:"size,omitempty"`
 	// Commits is the list of commits in the push event.
 	//
 	// This field is only populated for webhook events.
 	// It has been removed from Events API payloads on October 7, 2025.
 	// Use the Commits REST API endpoint to get detailed commit information.
-	// See: https://docs.github.com/rest/commits/commits#list-commits
+	// See: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#list-commits
 	Commits []*HeadCommit `json:"commits,omitempty"`
 	Before  *string       `json:"before,omitempty"`
 	// DistinctSize is the number of distinct commits in the push.
 	//
 	// Deprecated: GitHub will remove commit counts from Events API payloads on October 7, 2025.
 	// Use the Compare REST API endpoint to get detailed comparison information.
-	// See: https://docs.github.com/rest/commits/commits#compare-two-commits
+	// See: https://docs.github.com/rest/commits/commits?apiVersion=2022-11-28#compare-two-commits
 	DistinctSize *int `json:"distinct_size,omitempty"`
 
 	// The following fields are only populated by Webhook events.
@@ -1934,8 +1934,8 @@ type AdvisoryVulnerability struct {
 	FirstPatchedVersion    *FirstPatchedVersion  `json:"first_patched_version,omitempty"`
 
 	// PatchedVersions and VulnerableFunctions are used in the following APIs:
-	// - https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories-for-an-organization
-	// - https://docs.github.com/rest/security-advisories/repository-advisories#list-repository-security-advisories
+	// - https://docs.github.com/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories-for-an-organization
+	// - https://docs.github.com/rest/security-advisories/repository-advisories?apiVersion=2022-11-28#list-repository-security-advisories
 	PatchedVersions     *string  `json:"patched_versions,omitempty"`
 	VulnerableFunctions []string `json:"vulnerable_functions,omitempty"`
 }
@@ -1984,7 +1984,7 @@ type CodeScanningAlertEvent struct {
 
 // SponsorshipEvent represents a sponsorship event in GitHub.
 //
-// GitHub API docs: https://docs.github.com/en/rest/overview/github-event-types?apiVersion=2022-11-28#sponsorshipevent
+// GitHub API docs: https://docs.github.com/rest/overview/github-event-types?apiVersion=2022-11-28#sponsorshipevent
 type SponsorshipEvent struct {
 	Action        *string             `json:"action,omitempty"`
 	EffectiveDate *string             `json:"effective_date,omitempty"`

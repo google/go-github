@@ -13,13 +13,14 @@ import (
 // UsersService handles communication with the user related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/users/
+// GitHub API docs: https://docs.github.com/rest/users?apiVersion=2022-11-28
 type UsersService service
 
 // User represents a GitHub user.
 type User struct {
 	Login                   *string    `json:"login,omitempty"`
 	ID                      *int64     `json:"id,omitempty"`
+	UserViewType            *string    `json:"user_view_type,omitempty"`
 	NodeID                  *string    `json:"node_id,omitempty"`
 	AvatarURL               *string    `json:"avatar_url,omitempty"`
 	HTMLURL                 *string    `json:"html_url,omitempty"`
@@ -29,6 +30,7 @@ type User struct {
 	Blog                    *string    `json:"blog,omitempty"`
 	Location                *string    `json:"location,omitempty"`
 	Email                   *string    `json:"email,omitempty"`
+	NotificationEmail       *string    `json:"notification_email,omitempty"`
 	Hireable                *bool      `json:"hireable,omitempty"`
 	Bio                     *string    `json:"bio,omitempty"`
 	TwitterUsername         *string    `json:"twitter_username,omitempty"`
@@ -48,6 +50,7 @@ type User struct {
 	Collaborators           *int       `json:"collaborators,omitempty"`
 	TwoFactorAuthentication *bool      `json:"two_factor_authentication,omitempty"`
 	Plan                    *Plan      `json:"plan,omitempty"`
+	BusinessPlus            *bool      `json:"business_plus,omitempty"`
 	LdapDn                  *string    `json:"ldap_dn,omitempty"`
 
 	// API URLs
@@ -63,7 +66,7 @@ type User struct {
 	SubscriptionsURL  *string `json:"subscriptions_url,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
-	// See: search.go and https://docs.github.com/rest/search/#text-match-metadata
+	// See: search.go and https://docs.github.com/rest/search?apiVersion=2022-11-28#text-match-metadata
 	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
 	// Permissions and RoleName identify the permissions and role that a user has on a given
@@ -87,9 +90,9 @@ func (u User) String() string {
 // Get fetches a user. Passing the empty string will fetch the authenticated
 // user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/users#get-a-user
+// GitHub API docs: https://docs.github.com/rest/users/users?apiVersion=2022-11-28#get-a-user
 //
-// GitHub API docs: https://docs.github.com/rest/users/users#get-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/users?apiVersion=2022-11-28#get-the-authenticated-user
 //
 //meta:operation GET /user
 //meta:operation GET /users/{username}
@@ -116,7 +119,7 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 
 // GetByID fetches a user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/users#get-a-user-using-their-id
+// GitHub API docs: https://docs.github.com/rest/users/users?apiVersion=2022-11-28#get-a-user-using-their-id
 //
 //meta:operation GET /user/{account_id}
 func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response, error) {
@@ -137,7 +140,7 @@ func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response,
 
 // Edit the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/users#update-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/users/users?apiVersion=2022-11-28#update-the-authenticated-user
 //
 //meta:operation PATCH /user
 func (s *UsersService) Edit(ctx context.Context, user *User) (*User, *Response, error) {
@@ -181,7 +184,7 @@ type UserContext struct {
 // GetHovercard fetches contextual information about user. It requires authentication
 // via Basic Auth or via OAuth with the repo scope.
 //
-// GitHub API docs: https://docs.github.com/rest/users/users#get-contextual-information-for-a-user
+// GitHub API docs: https://docs.github.com/rest/users/users?apiVersion=2022-11-28#get-contextual-information-for-a-user
 //
 //meta:operation GET /users/{username}/hovercard
 func (s *UsersService) GetHovercard(ctx context.Context, user string, opts *HovercardOptions) (*Hovercard, *Response, error) {
@@ -217,7 +220,7 @@ type UserListOptions struct {
 //
 // To paginate through all users, populate 'Since' with the ID of the last user.
 //
-// GitHub API docs: https://docs.github.com/rest/users/users#list-users
+// GitHub API docs: https://docs.github.com/rest/users/users?apiVersion=2022-11-28#list-users
 //
 //meta:operation GET /users
 func (s *UsersService) ListAll(ctx context.Context, opts *UserListOptions) ([]*User, *Response, error) {
@@ -243,7 +246,7 @@ func (s *UsersService) ListAll(ctx context.Context, opts *UserListOptions) ([]*U
 // ListInvitations lists all currently-open repository invitations for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/collaborators/invitations#list-repository-invitations-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/collaborators/invitations?apiVersion=2022-11-28#list-repository-invitations-for-the-authenticated-user
 //
 //meta:operation GET /user/repository_invitations
 func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) ([]*RepositoryInvitation, *Response, error) {
@@ -269,7 +272,7 @@ func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) (
 // AcceptInvitation accepts the currently-open repository invitation for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/collaborators/invitations#accept-a-repository-invitation
+// GitHub API docs: https://docs.github.com/rest/collaborators/invitations?apiVersion=2022-11-28#accept-a-repository-invitation
 //
 //meta:operation PATCH /user/repository_invitations/{invitation_id}
 func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64) (*Response, error) {
@@ -285,7 +288,7 @@ func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64)
 // DeclineInvitation declines the currently-open repository invitation for the
 // authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/collaborators/invitations#decline-a-repository-invitation
+// GitHub API docs: https://docs.github.com/rest/collaborators/invitations?apiVersion=2022-11-28#decline-a-repository-invitation
 //
 //meta:operation DELETE /user/repository_invitations/{invitation_id}
 func (s *UsersService) DeclineInvitation(ctx context.Context, invitationID int64) (*Response, error) {

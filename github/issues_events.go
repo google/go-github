@@ -104,7 +104,7 @@ type DismissedReview struct {
 
 // ListIssueEvents lists events for the specified issue.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/events#list-issue-events
+// GitHub API docs: https://docs.github.com/rest/issues/events?apiVersion=2022-11-28#list-issue-events
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/events
 func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string, number int, opts *ListOptions) ([]*IssueEvent, *Response, error) {
@@ -132,7 +132,7 @@ func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string,
 
 // ListRepositoryEvents lists events for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/events#list-issue-events-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/issues/events?apiVersion=2022-11-28#list-issue-events-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/events
 func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo string, opts *ListOptions) ([]*IssueEvent, *Response, error) {
@@ -158,7 +158,7 @@ func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo st
 
 // GetEvent returns the specified issue event.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/events#get-an-issue-event
+// GitHub API docs: https://docs.github.com/rest/issues/events?apiVersion=2022-11-28#get-an-issue-event
 //
 //meta:operation GET /repos/{owner}/{repo}/issues/events/{event_id}
 func (s *IssuesService) GetEvent(ctx context.Context, owner, repo string, id int64) (*IssueEvent, *Response, error) {

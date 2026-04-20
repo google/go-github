@@ -23,7 +23,7 @@ type TeamListTeamMembersOptions struct {
 // ListTeamMembersByID lists all of the users who are members of a team, given a specified
 // organization ID, by team ID.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members#list-team-members
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-team-members
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/members
 func (s *TeamsService) ListTeamMembersByID(ctx context.Context, orgID, teamID int64, opts *TeamListTeamMembersOptions) ([]*User, *Response, error) {
@@ -50,7 +50,7 @@ func (s *TeamsService) ListTeamMembersByID(ctx context.Context, orgID, teamID in
 // ListTeamMembersBySlug lists all of the users who are members of a team, given a specified
 // organization name, by team slug.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members#list-team-members
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-team-members
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/members
 func (s *TeamsService) ListTeamMembersBySlug(ctx context.Context, org, slug string, opts *TeamListTeamMembersOptions) ([]*User, *Response, error) {
@@ -77,7 +77,7 @@ func (s *TeamsService) ListTeamMembersBySlug(ctx context.Context, org, slug stri
 // GetTeamMembershipByID returns the membership status for a user in a team, given a specified
 // organization ID, by team ID.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members#list-team-members
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-team-members
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/members
 func (s *TeamsService) GetTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Membership, *Response, error) {
@@ -99,7 +99,7 @@ func (s *TeamsService) GetTeamMembershipByID(ctx context.Context, orgID, teamID 
 // GetTeamMembershipBySlug returns the membership status for a user in a team, given a specified
 // organization name, by team slug.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members#get-team-membership-for-a-user
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#get-team-membership-for-a-user
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/memberships/{username}
 func (s *TeamsService) GetTeamMembershipBySlug(ctx context.Context, org, slug, user string) (*Membership, *Response, error) {
@@ -135,7 +135,7 @@ type TeamAddTeamMembershipOptions struct {
 // AddTeamMembershipByID adds or invites a user to a team, given a specified
 // organization ID, by team ID.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members#add-or-update-team-membership-for-a-user
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/memberships/{username}
 func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
@@ -157,7 +157,7 @@ func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID 
 // AddTeamMembershipBySlug adds or invites a user to a team, given a specified
 // organization name, by team slug.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members#add-or-update-team-membership-for-a-user
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/memberships/{username}
 func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
@@ -179,7 +179,7 @@ func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, u
 // RemoveTeamMembershipByID removes a user from a team, given a specified
 // organization ID, by team ID.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members#remove-team-membership-for-a-user
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#remove-team-membership-for-a-user
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}
 func (s *TeamsService) RemoveTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Response, error) {
@@ -195,7 +195,7 @@ func (s *TeamsService) RemoveTeamMembershipByID(ctx context.Context, orgID, team
 // RemoveTeamMembershipBySlug removes a user from a team, given a specified
 // organization name, by team slug.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members#remove-team-membership-for-a-user
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#remove-team-membership-for-a-user
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}
 func (s *TeamsService) RemoveTeamMembershipBySlug(ctx context.Context, org, slug, user string) (*Response, error) {
@@ -211,7 +211,7 @@ func (s *TeamsService) RemoveTeamMembershipBySlug(ctx context.Context, org, slug
 // ListPendingTeamInvitationsByID gets pending invitation list of a team, given a specified
 // organization ID, by team ID.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members#list-pending-team-invitations
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-pending-team-invitations
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/invitations
 func (s *TeamsService) ListPendingTeamInvitationsByID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Invitation, *Response, error) {
@@ -238,7 +238,7 @@ func (s *TeamsService) ListPendingTeamInvitationsByID(ctx context.Context, orgID
 // ListPendingTeamInvitationsBySlug get pending invitation list of a team, given a specified
 // organization name, by team slug.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members#list-pending-team-invitations
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-pending-team-invitations
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/invitations
 func (s *TeamsService) ListPendingTeamInvitationsBySlug(ctx context.Context, org, slug string, opts *ListOptions) ([]*Invitation, *Response, error) {

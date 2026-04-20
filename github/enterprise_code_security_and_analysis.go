@@ -21,7 +21,7 @@ type EnterpriseSecurityAnalysisSettings struct {
 
 // GetCodeSecurityAndAnalysis gets code security and analysis features for an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis#get-code-security-and-analysis-features-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#get-code-security-and-analysis-features-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code_security_and_analysis
 func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, enterprise string) (*EnterpriseSecurityAnalysisSettings, *Response, error) {
@@ -43,7 +43,7 @@ func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, ente
 
 // UpdateCodeSecurityAndAnalysis updates code security and analysis features for new repositories in an enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis#update-code-security-and-analysis-features-for-an-enterprise
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#update-code-security-and-analysis-features-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/code_security_and_analysis
 func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, enterprise string, settings *EnterpriseSecurityAnalysisSettings) (*Response, error) {
@@ -66,7 +66,7 @@ func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, e
 // Valid values for securityProduct: "advanced_security", "secret_scanning", "secret_scanning_push_protection".
 // Valid values for enablement:  "enable_all", "disable_all".
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis#enable-or-disable-a-security-feature
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#enable-or-disable-a-security-feature
 //
 //meta:operation POST /enterprises/{enterprise}/{security_product}/{enablement}
 func (s *EnterpriseService) EnableDisableSecurityFeature(ctx context.Context, enterprise, securityProduct, enablement string) (*Response, error) {

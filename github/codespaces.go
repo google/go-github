@@ -13,12 +13,12 @@ import (
 // CodespacesService handles communication with the Codespaces related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/
+// GitHub API docs: https://docs.github.com/rest/codespaces?apiVersion=2022-11-28
 type CodespacesService service
 
 // Codespace represents a codespace.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces
+// GitHub API docs: https://docs.github.com/rest/codespaces?apiVersion=2022-11-28
 type Codespace struct {
 	ID                             *int64                        `json:"id,omitempty"`
 	Name                           *string                       `json:"name,omitempty"`
@@ -90,7 +90,7 @@ type ListCodespaces struct {
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have read access to the codespaces repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#list-codespaces-in-a-repository-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#list-codespaces-in-a-repository-for-the-authenticated-user
 //
 //meta:operation GET /repos/{owner}/{repo}/codespaces
 func (s *CodespacesService) ListInRepo(ctx context.Context, owner, repo string, opts *ListOptions) (*ListCodespaces, *Response, error) {
@@ -126,7 +126,7 @@ type ListCodespacesOptions struct {
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have read access to the codespaces repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#list-codespaces-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#list-codespaces-for-the-authenticated-user
 //
 //meta:operation GET /user/codespaces
 func (s *CodespacesService) List(ctx context.Context, opts *ListCodespacesOptions) (*ListCodespaces, *Response, error) {
@@ -270,7 +270,7 @@ type CodespacePermissions struct {
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have write access to the codespaces repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-codespace-in-a-repository
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-codespace-in-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/codespaces
 func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string, request *CreateCodespaceOptions) (*Codespace, *Response, error) {
@@ -294,7 +294,7 @@ func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have write access to the codespaces_lifecycle_admin repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#start-a-codespace-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#start-a-codespace-for-the-authenticated-user
 //
 //meta:operation POST /user/codespaces/{codespace_name}/start
 func (s *CodespacesService) Start(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
@@ -318,7 +318,7 @@ func (s *CodespacesService) Start(ctx context.Context, codespaceName string) (*C
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have write access to the codespaces_lifecycle_admin repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#stop-a-codespace-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#stop-a-codespace-for-the-authenticated-user
 //
 //meta:operation POST /user/codespaces/{codespace_name}/stop
 func (s *CodespacesService) Stop(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
@@ -342,7 +342,7 @@ func (s *CodespacesService) Stop(ctx context.Context, codespaceName string) (*Co
 // You must authenticate using an access token with the codespace scope to use this endpoint.
 // GitHub Apps must have write access to the codespaces repository permission to use this endpoint.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#delete-a-codespace-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#delete-a-codespace-for-the-authenticated-user
 //
 //meta:operation DELETE /user/codespaces/{codespace_name}
 func (s *CodespacesService) Delete(ctx context.Context, codespaceName string) (*Response, error) {
@@ -357,7 +357,7 @@ func (s *CodespacesService) Delete(ctx context.Context, codespaceName string) (*
 
 // ListDevContainerConfigurations lists devcontainer configurations in a repository for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#list-devcontainer-configurations-in-a-repository-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#list-devcontainer-configurations-in-a-repository-for-the-authenticated-user
 //
 //meta:operation GET /repos/{owner}/{repo}/codespaces/devcontainers
 func (s *CodespacesService) ListDevContainerConfigurations(ctx context.Context, owner, repo string, opts *ListOptions) (*DevContainerConfigurations, *Response, error) {
@@ -383,7 +383,7 @@ func (s *CodespacesService) ListDevContainerConfigurations(ctx context.Context, 
 
 // GetDefaultAttributes gets the default attributes for codespaces created by the user with the repository.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#get-default-attributes-for-a-codespace
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#get-default-attributes-for-a-codespace
 //
 //meta:operation GET /repos/{owner}/{repo}/codespaces/new
 func (s *CodespacesService) GetDefaultAttributes(ctx context.Context, owner, repo string, opts *CodespaceGetDefaultAttributesOptions) (*CodespaceDefaultAttributes, *Response, error) {
@@ -409,7 +409,7 @@ func (s *CodespacesService) GetDefaultAttributes(ctx context.Context, owner, rep
 
 // CheckPermissions checks whether the permissions defined by a given devcontainer configuration have been accepted by the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#check-if-permissions-defined-by-a-devcontainer-have-been-accepted-by-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#check-if-permissions-defined-by-a-devcontainer-have-been-accepted-by-the-authenticated-user
 //
 //meta:operation GET /repos/{owner}/{repo}/codespaces/permissions_check
 func (s *CodespacesService) CheckPermissions(ctx context.Context, owner, repo, ref, devcontainerPath string) (*CodespacePermissions, *Response, error) {
@@ -441,7 +441,7 @@ func (s *CodespacesService) CheckPermissions(ctx context.Context, owner, repo, r
 
 // CreateFromPullRequest creates a codespace owned by the authenticated user for the specified pull request.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-codespace-from-a-pull-request
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-codespace-from-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces
 func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, repo string, pullNumber int, request *CreateCodespaceOptions) (*Codespace, *Response, error) {
@@ -464,7 +464,7 @@ func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, re
 //
 // This method requires either RepositoryId OR a PullRequest but not both.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-codespace-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-codespace-for-the-authenticated-user
 //
 //meta:operation POST /user/codespaces
 func (s *CodespacesService) Create(ctx context.Context, opts *CodespaceCreateForUserOptions) (*Codespace, *Response, error) {
@@ -485,7 +485,7 @@ func (s *CodespacesService) Create(ctx context.Context, opts *CodespaceCreateFor
 
 // Get gets information about a user's codespace.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#get-a-codespace-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#get-a-codespace-for-the-authenticated-user
 //
 //meta:operation GET /user/codespaces/{codespace_name}
 func (s *CodespacesService) Get(ctx context.Context, codespaceName string) (*Codespace, *Response, error) {
@@ -508,7 +508,7 @@ func (s *CodespacesService) Get(ctx context.Context, codespaceName string) (*Cod
 //
 // Only the codespace's machine type and recent folders can be modified using this endpoint.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#update-a-codespace-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#update-a-codespace-for-the-authenticated-user
 //
 //meta:operation PATCH /user/codespaces/{codespace_name}
 func (s *CodespacesService) Update(ctx context.Context, codespaceName string, opts *UpdateCodespaceOptions) (*Codespace, *Response, error) {
@@ -529,7 +529,7 @@ func (s *CodespacesService) Update(ctx context.Context, codespaceName string, op
 
 // ExportCodespace triggers an export of the specified codespace and returns a URL and ID where the status of the export can be monitored.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#export-a-codespace-for-the-authenticated-user
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#export-a-codespace-for-the-authenticated-user
 //
 //meta:operation POST /user/codespaces/{codespace_name}/exports
 func (s *CodespacesService) ExportCodespace(ctx context.Context, codespaceName string) (*CodespaceExport, *Response, error) {
@@ -550,7 +550,7 @@ func (s *CodespacesService) ExportCodespace(ctx context.Context, codespaceName s
 
 // GetLatestCodespaceExport gets information about an export of a codespace.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#get-details-about-a-codespace-export
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#get-details-about-a-codespace-export
 //
 //meta:operation GET /user/codespaces/{codespace_name}/exports/{export_id}
 func (s *CodespacesService) GetLatestCodespaceExport(ctx context.Context, codespaceName string) (*CodespaceExport, *Response, error) {
@@ -571,7 +571,7 @@ func (s *CodespacesService) GetLatestCodespaceExport(ctx context.Context, codesp
 
 // Publish publishes an unpublished codespace, creating a new repository and assigning it to the codespace.
 //
-// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces#create-a-repository-from-an-unpublished-codespace
+// GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-repository-from-an-unpublished-codespace
 //
 //meta:operation POST /user/codespaces/{codespace_name}/publish
 func (s *CodespacesService) Publish(ctx context.Context, codespaceName string, opts *PublishCodespaceOptions) (*Codespace, *Response, error) {

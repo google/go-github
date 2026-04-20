@@ -12,7 +12,7 @@ import (
 
 // GetAllCustomPropertyValues gets all custom property values that are set for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/custom-properties#get-all-custom-property-values-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/custom-properties?apiVersion=2022-11-28#get-all-custom-property-values-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/properties/values
 func (s *RepositoriesService) GetAllCustomPropertyValues(ctx context.Context, org, repo string) ([]*CustomPropertyValue, *Response, error) {
@@ -34,7 +34,7 @@ func (s *RepositoriesService) GetAllCustomPropertyValues(ctx context.Context, or
 
 // CreateOrUpdateCustomProperties creates new or updates existing custom property values for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/repos/custom-properties#create-or-update-custom-property-values-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/repos/custom-properties?apiVersion=2022-11-28#create-or-update-custom-property-values-for-a-repository
 //
 //meta:operation PATCH /repos/{owner}/{repo}/properties/values
 func (s *RepositoriesService) CreateOrUpdateCustomProperties(ctx context.Context, org, repo string, customPropertyValues []*CustomPropertyValue) (*Response, error) {

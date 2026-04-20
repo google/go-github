@@ -28,7 +28,7 @@ Some API methods have optional parameters that can be passed. For example:
 
 The services of a client divide the API into logical chunks and correspond to
 the structure of the GitHub API documentation at
-https://docs.github.com/rest .
+https://docs.github.com/rest?apiVersion=2022-11-28.
 
 NOTE: Using the [context] package, one can easily
 pass cancellation signals and deadlines to various services of the client for
@@ -118,7 +118,7 @@ For secondary rate limits, you can check if its type is *[AbuseRateLimitError]:
 	}
 
 Learn more about GitHub rate limiting at
-https://docs.github.com/rest/rate-limit .
+https://docs.github.com/rest/rate-limit?apiVersion=2022-11-28.
 
 # Accepted Status
 
@@ -150,7 +150,7 @@ recommended when making requests using short-lived credentials such as a
 GitHub App installation token.
 
 Learn more about GitHub conditional requests at
-https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api?apiVersion=2022-11-28#use-conditional-requests-if-appropriate.
+https://docs.github.com/rest/using-the-rest-api/best-practices-for-using-the-rest-api?apiVersion=2022-11-28#use-conditional-requests-if-appropriate.
 
 # Creating and Updating Resources
 
