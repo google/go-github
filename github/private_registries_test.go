@@ -92,7 +92,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 
 	input := &CreateOrganizationPrivateRegistry{
 		RegistryType:          PrivateRegistryTypeMavenRepository,
-		URL:                   "https://maven.pkg.github.com/OWNER/REPOSITORY",
+		URL:                   "https://example.com/OWNER/REPOSITORY",
 		Username:              Ptr("monalisa"),
 		EncryptedValue:        Ptr("encrypted_value"),
 		KeyID:                 Ptr("key_id"),
