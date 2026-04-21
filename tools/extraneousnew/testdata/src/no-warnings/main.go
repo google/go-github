@@ -5,17 +5,13 @@
 
 package main
 
-import (
-	"context"
-)
-
 type T struct {
 	Field string
 }
 
 type Client struct{}
 
-func (c *Client) Do(ctx context.Context, req any, v any) (any, error) {
+func (c *Client) Do(req any, v any) (any, error) {
 	return nil, nil
 }
 
@@ -23,7 +19,7 @@ type Receiver struct {
 	client *Client
 }
 
-func (s *Receiver) TestMethod(ctx context.Context, req any) {
+func (s *Receiver) TestMethod(req any) {
 	// Proper usage: var pointer and pass &v
 	var v1 *T
 	s.client.Do(req, &v1)
@@ -44,12 +40,12 @@ func (s *Receiver) TestMethod(ctx context.Context, req any) {
 	s.client.Do(req, &v11)
 }
 
-func (s *Receiver) MethodNameToIgnore(ctx context.Context, req any) {
+func (s *Receiver) MethodNameToIgnore(req any) {
 	v := new(T)
 	s.client.Do(req, v)
 }
 
-func (s *Receiver) unexportedMethod(ctx context.Context, req any) {
+func (s *Receiver) unexportedMethod(req any) {
 	v := new(T)
 	s.client.Do(req, v) // Should be ignored because unexported.
 }

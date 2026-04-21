@@ -6,7 +6,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 	"testing"
@@ -18,7 +17,7 @@ type T struct {
 
 type Client struct{}
 
-func (c *Client) Do(ctx context.Context, req any, v any) (any, error) {
+func (c *Client) Do(req any, v any) (any, error) {
 	return nil, nil
 }
 
@@ -28,7 +27,7 @@ type Service struct {
 
 func assertNilError(t *testing.T, err error) {}
 
-func (s *Service) TestMethod(ctx context.Context, req any, r *http.Request, t *testing.T) {
+func (s *Service) TestMethod(req any, r *http.Request, t *testing.T) {
 	v1 := new(T)
 	s.client.Do(req, v1) // want "use 'var v1 [*]T' and pass '&v1' instead"
 
