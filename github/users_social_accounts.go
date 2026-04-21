@@ -33,13 +33,13 @@ func (s *UsersService) ListSocialAccounts(ctx context.Context, opts *ListOptions
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var socialAccounts []*SocialAccount
-	resp, err := s.client.Do(ctx, req, &socialAccounts)
+	resp, err := s.client.Do(req, &socialAccounts)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -54,13 +54,13 @@ func (s *UsersService) ListSocialAccounts(ctx context.Context, opts *ListOptions
 //meta:operation POST /user/social_accounts
 func (s *UsersService) AddSocialAccounts(ctx context.Context, accountURLs []string) ([]*SocialAccount, *Response, error) {
 	u := "user/social_accounts"
-	req, err := s.client.NewRequest("POST", u, &socialAccountsRequest{AccountURLs: accountURLs})
+	req, err := s.client.NewRequest(ctx, "POST", u, &socialAccountsRequest{AccountURLs: accountURLs})
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var accounts []*SocialAccount
-	resp, err := s.client.Do(ctx, req, &accounts)
+	resp, err := s.client.Do(req, &accounts)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -75,12 +75,12 @@ func (s *UsersService) AddSocialAccounts(ctx context.Context, accountURLs []stri
 //meta:operation DELETE /user/social_accounts
 func (s *UsersService) DeleteSocialAccounts(ctx context.Context, accountURLs []string) (*Response, error) {
 	u := "user/social_accounts"
-	req, err := s.client.NewRequest("DELETE", u, &socialAccountsRequest{AccountURLs: accountURLs})
+	req, err := s.client.NewRequest(ctx, "DELETE", u, &socialAccountsRequest{AccountURLs: accountURLs})
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListUserSocialAccounts lists all social accounts for a user.
@@ -95,13 +95,13 @@ func (s *UsersService) ListUserSocialAccounts(ctx context.Context, username stri
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var addedAccounts []*SocialAccount
-	resp, err := s.client.Do(ctx, req, &addedAccounts)
+	resp, err := s.client.Do(req, &addedAccounts)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -37,13 +37,13 @@ func (s *EnterpriseService) ListRepositoriesForOrgAppInstallation(ctx context.Co
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r []*AccessibleRepository
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -59,13 +59,13 @@ func (s *EnterpriseService) ListRepositoriesForOrgAppInstallation(ctx context.Co
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories
 func (s *EnterpriseService) UpdateAppInstallationRepositories(ctx context.Context, enterprise, org string, installationID int64, opts UpdateAppInstallationRepositoriesOptions) (*Installation, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories", enterprise, org, installationID)
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *Installation
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -80,13 +80,13 @@ func (s *EnterpriseService) UpdateAppInstallationRepositories(ctx context.Contex
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories/add
 func (s *EnterpriseService) AddRepositoriesToAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts AppInstallationRepositoriesOptions) ([]*AccessibleRepository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories/add", enterprise, org, installationID)
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r []*AccessibleRepository
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -101,13 +101,13 @@ func (s *EnterpriseService) AddRepositoriesToAppInstallation(ctx context.Context
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories/remove
 func (s *EnterpriseService) RemoveRepositoriesFromAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts AppInstallationRepositoriesOptions) ([]*AccessibleRepository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories/remove", enterprise, org, installationID)
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r []*AccessibleRepository
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}

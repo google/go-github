@@ -54,13 +54,13 @@ func (s *MarkdownService) Render(ctx context.Context, text string, opts *Markdow
 		}
 	}
 
-	req, err := s.client.NewRequest("POST", "markdown", request)
+	req, err := s.client.NewRequest(ctx, "POST", "markdown", request)
 	if err != nil {
 		return "", nil, err
 	}
 
 	var buf bytes.Buffer
-	resp, err := s.client.Do(ctx, req, &buf)
+	resp, err := s.client.Do(req, &buf)
 	if err != nil {
 		return "", resp, err
 	}

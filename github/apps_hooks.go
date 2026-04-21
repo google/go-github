@@ -16,13 +16,13 @@ import (
 //
 //meta:operation GET /app/hook/config
 func (s *AppsService) GetHookConfig(ctx context.Context) (*HookConfig, *Response, error) {
-	req, err := s.client.NewRequest("GET", "app/hook/config", nil)
+	req, err := s.client.NewRequest(ctx, "GET", "app/hook/config", nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var config *HookConfig
-	resp, err := s.client.Do(ctx, req, &config)
+	resp, err := s.client.Do(req, &config)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -37,13 +37,13 @@ func (s *AppsService) GetHookConfig(ctx context.Context) (*HookConfig, *Response
 //
 //meta:operation PATCH /app/hook/config
 func (s *AppsService) UpdateHookConfig(ctx context.Context, config *HookConfig) (*HookConfig, *Response, error) {
-	req, err := s.client.NewRequest("PATCH", "app/hook/config", config)
+	req, err := s.client.NewRequest(ctx, "PATCH", "app/hook/config", config)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var c *HookConfig
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}

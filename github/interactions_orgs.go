@@ -17,7 +17,7 @@ import (
 //meta:operation GET /orgs/{org}/interaction-limits
 func (s *InteractionsService) GetRestrictionsForOrg(ctx context.Context, organization string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/interaction-limits", organization)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -25,7 +25,7 @@ func (s *InteractionsService) GetRestrictionsForOrg(ctx context.Context, organiz
 	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
 	var organizationInteractions *InteractionRestriction
-	resp, err := s.client.Do(ctx, req, &organizationInteractions)
+	resp, err := s.client.Do(req, &organizationInteractions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -47,7 +47,7 @@ func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, orga
 
 	interaction := &InteractionRestriction{Limit: &limit}
 
-	req, err := s.client.NewRequest("PUT", u, interaction)
+	req, err := s.client.NewRequest(ctx, "PUT", u, interaction)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -55,7 +55,7 @@ func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, orga
 	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
 	var organizationInteractions *InteractionRestriction
-	resp, err := s.client.Do(ctx, req, &organizationInteractions)
+	resp, err := s.client.Do(req, &organizationInteractions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -70,12 +70,12 @@ func (s *InteractionsService) UpdateRestrictionsForOrg(ctx context.Context, orga
 //meta:operation DELETE /orgs/{org}/interaction-limits
 func (s *InteractionsService) RemoveRestrictionsFromOrg(ctx context.Context, organization string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/interaction-limits", organization)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

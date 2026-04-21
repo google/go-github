@@ -110,13 +110,13 @@ func (s *GitService) GetTree(ctx context.Context, owner, repo, sha string, recur
 		u += "?recursive=1"
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Tree
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -165,13 +165,13 @@ func (s *GitService) CreateTree(ctx context.Context, owner, repo, baseTree strin
 		BaseTree: baseTree,
 		Entries:  newEntries,
 	}
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Tree
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}

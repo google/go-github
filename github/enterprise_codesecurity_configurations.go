@@ -42,13 +42,13 @@ func (s *EnterpriseService) ListCodeSecurityConfigurations(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configurations []*CodeSecurityConfiguration
-	resp, err := s.client.Do(ctx, req, &configurations)
+	resp, err := s.client.Do(req, &configurations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -63,13 +63,13 @@ func (s *EnterpriseService) ListCodeSecurityConfigurations(ctx context.Context, 
 func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context, enterprise string, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations", enterprise)
 
-	req, err := s.client.NewRequest("POST", u, config)
+	req, err := s.client.NewRequest(ctx, "POST", u, config)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configuration *CodeSecurityConfiguration
-	resp, err := s.client.Do(ctx, req, &configuration)
+	resp, err := s.client.Do(req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -84,13 +84,13 @@ func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context,
 func (s *EnterpriseService) ListDefaultCodeSecurityConfigurations(ctx context.Context, enterprise string) ([]*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/defaults", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configurations []*CodeSecurityConfigurationWithDefaultForNewRepos
-	resp, err := s.client.Do(ctx, req, &configurations)
+	resp, err := s.client.Do(req, &configurations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -105,13 +105,13 @@ func (s *EnterpriseService) ListDefaultCodeSecurityConfigurations(ctx context.Co
 func (s *EnterpriseService) GetCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, configurationID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configuration *CodeSecurityConfiguration
-	resp, err := s.client.Do(ctx, req, &configuration)
+	resp, err := s.client.Do(req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -126,13 +126,13 @@ func (s *EnterpriseService) GetCodeSecurityConfiguration(ctx context.Context, en
 func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, configurationID)
 
-	req, err := s.client.NewRequest("PATCH", u, config)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, config)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configuration *CodeSecurityConfiguration
-	resp, err := s.client.Do(ctx, req, &configuration)
+	resp, err := s.client.Do(req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -147,11 +147,11 @@ func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context,
 func (s *EnterpriseService) DeleteCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, configurationID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -171,11 +171,11 @@ func (s *EnterpriseService) AttachCodeSecurityConfigurationToRepositories(ctx co
 		Scope string `json:"scope"`
 	}
 
-	req, err := s.client.NewRequest("POST", u, scopeType{Scope: scope})
+	req, err := s.client.NewRequest(ctx, "POST", u, scopeType{Scope: scope})
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil && resp.StatusCode != http.StatusAccepted { // StatusAccepted(202) is the expected status code as job is queued for processing
 		return resp, err
 	}
@@ -195,12 +195,12 @@ func (s *EnterpriseService) SetDefaultCodeSecurityConfiguration(ctx context.Cont
 		DefaultForNewRepos string `json:"default_for_new_repos"`
 	}
 
-	req, err := s.client.NewRequest("PUT", u, configParam{DefaultForNewRepos: defaultForNewRepos})
+	req, err := s.client.NewRequest(ctx, "PUT", u, configParam{DefaultForNewRepos: defaultForNewRepos})
 	if err != nil {
 		return nil, nil, err
 	}
 	var config *CodeSecurityConfigurationWithDefaultForNewRepos
-	resp, err := s.client.Do(ctx, req, &config)
+	resp, err := s.client.Do(req, &config)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -219,12 +219,12 @@ func (s *EnterpriseService) ListCodeSecurityConfigurationRepositories(ctx contex
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 	var attachments []*RepositoryAttachment
-	resp, err := s.client.Do(ctx, req, &attachments)
+	resp, err := s.client.Do(req, &attachments)
 	if err != nil {
 		return nil, resp, err
 	}

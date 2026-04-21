@@ -50,13 +50,13 @@ func (s *EnterpriseService) ListTeams(ctx context.Context, enterprise string, op
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teams []*EnterpriseTeam
-	resp, err := s.client.Do(ctx, req, &teams)
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -72,13 +72,13 @@ func (s *EnterpriseService) ListTeams(ctx context.Context, enterprise string, op
 func (s *EnterpriseService) CreateTeam(ctx context.Context, enterprise string, team EnterpriseTeamCreateOrUpdateRequest) (*EnterpriseTeam, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams", enterprise)
 
-	req, err := s.client.NewRequest("POST", u, team)
+	req, err := s.client.NewRequest(ctx, "POST", u, team)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var createdTeam *EnterpriseTeam
-	resp, err := s.client.Do(ctx, req, &createdTeam)
+	resp, err := s.client.Do(req, &createdTeam)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -94,13 +94,13 @@ func (s *EnterpriseService) CreateTeam(ctx context.Context, enterprise string, t
 func (s *EnterpriseService) GetTeam(ctx context.Context, enterprise, teamSlug string) (*EnterpriseTeam, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v", enterprise, teamSlug)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var team *EnterpriseTeam
-	resp, err := s.client.Do(ctx, req, &team)
+	resp, err := s.client.Do(req, &team)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -116,13 +116,13 @@ func (s *EnterpriseService) GetTeam(ctx context.Context, enterprise, teamSlug st
 func (s *EnterpriseService) UpdateTeam(ctx context.Context, enterprise, teamSlug string, team EnterpriseTeamCreateOrUpdateRequest) (*EnterpriseTeam, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v", enterprise, teamSlug)
 
-	req, err := s.client.NewRequest("PATCH", u, team)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, team)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var updatedTeam *EnterpriseTeam
-	resp, err := s.client.Do(ctx, req, &updatedTeam)
+	resp, err := s.client.Do(req, &updatedTeam)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -138,12 +138,12 @@ func (s *EnterpriseService) UpdateTeam(ctx context.Context, enterprise, teamSlug
 func (s *EnterpriseService) DeleteTeam(ctx context.Context, enterprise, teamSlug string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v", enterprise, teamSlug)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -163,13 +163,13 @@ func (s *EnterpriseService) ListTeamMembers(ctx context.Context, enterprise, ent
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var members []*User
-	resp, err := s.client.Do(ctx, req, &members)
+	resp, err := s.client.Do(req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -184,13 +184,13 @@ func (s *EnterpriseService) ListTeamMembers(ctx context.Context, enterprise, ent
 //meta:operation POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/add
 func (s *EnterpriseService) BulkAddTeamMembers(ctx context.Context, enterprise, enterpriseTeam string, username []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships/add", enterprise, enterpriseTeam)
-	req, err := s.client.NewRequest("POST", u, map[string][]string{"usernames": username})
+	req, err := s.client.NewRequest(ctx, "POST", u, map[string][]string{"usernames": username})
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var members []*User
-	resp, err := s.client.Do(ctx, req, &members)
+	resp, err := s.client.Do(req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -205,13 +205,13 @@ func (s *EnterpriseService) BulkAddTeamMembers(ctx context.Context, enterprise, 
 //meta:operation POST /enterprises/{enterprise}/teams/{enterprise-team}/memberships/remove
 func (s *EnterpriseService) BulkRemoveTeamMembers(ctx context.Context, enterprise, enterpriseTeam string, username []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships/remove", enterprise, enterpriseTeam)
-	req, err := s.client.NewRequest("POST", u, map[string][]string{"usernames": username})
+	req, err := s.client.NewRequest(ctx, "POST", u, map[string][]string{"usernames": username})
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var members []*User
-	resp, err := s.client.Do(ctx, req, &members)
+	resp, err := s.client.Do(req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -227,13 +227,13 @@ func (s *EnterpriseService) BulkRemoveTeamMembers(ctx context.Context, enterpris
 func (s *EnterpriseService) GetTeamMembership(ctx context.Context, enterprise, enterpriseTeam, username string) (*User, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships/%v", enterprise, enterpriseTeam, username)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var membership *User
-	resp, err := s.client.Do(ctx, req, &membership)
+	resp, err := s.client.Do(req, &membership)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -249,13 +249,13 @@ func (s *EnterpriseService) GetTeamMembership(ctx context.Context, enterprise, e
 func (s *EnterpriseService) AddTeamMember(ctx context.Context, enterprise, enterpriseTeam, username string) (*User, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships/%v", enterprise, enterpriseTeam, username)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var member *User
-	resp, err := s.client.Do(ctx, req, &member)
+	resp, err := s.client.Do(req, &member)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -271,12 +271,12 @@ func (s *EnterpriseService) AddTeamMember(ctx context.Context, enterprise, enter
 func (s *EnterpriseService) RemoveTeamMember(ctx context.Context, enterprise, enterpriseTeam, username string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/memberships/%v", enterprise, enterpriseTeam, username)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -296,13 +296,13 @@ func (s *EnterpriseService) ListAssignments(ctx context.Context, enterprise, ent
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var orgs []*Organization
-	resp, err := s.client.Do(ctx, req, &orgs)
+	resp, err := s.client.Do(req, &orgs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -318,13 +318,13 @@ func (s *EnterpriseService) ListAssignments(ctx context.Context, enterprise, ent
 func (s *EnterpriseService) AddMultipleAssignments(ctx context.Context, enterprise, enterpriseTeam string, organizationSlugs []string) ([]*Organization, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations/add", enterprise, enterpriseTeam)
 
-	req, err := s.client.NewRequest("POST", u, map[string][]string{"organization_slugs": organizationSlugs})
+	req, err := s.client.NewRequest(ctx, "POST", u, map[string][]string{"organization_slugs": organizationSlugs})
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var orgs []*Organization
-	resp, err := s.client.Do(ctx, req, &orgs)
+	resp, err := s.client.Do(req, &orgs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -340,13 +340,13 @@ func (s *EnterpriseService) AddMultipleAssignments(ctx context.Context, enterpri
 func (s *EnterpriseService) RemoveMultipleAssignments(ctx context.Context, enterprise, enterpriseTeam string, organizationSlugs []string) ([]*Organization, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations/remove", enterprise, enterpriseTeam)
 
-	req, err := s.client.NewRequest("POST", u, map[string][]string{"organization_slugs": organizationSlugs})
+	req, err := s.client.NewRequest(ctx, "POST", u, map[string][]string{"organization_slugs": organizationSlugs})
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var orgs []*Organization
-	resp, err := s.client.Do(ctx, req, &orgs)
+	resp, err := s.client.Do(req, &orgs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -362,13 +362,13 @@ func (s *EnterpriseService) RemoveMultipleAssignments(ctx context.Context, enter
 func (s *EnterpriseService) GetAssignment(ctx context.Context, enterprise, enterpriseTeam, org string) (*Organization, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations/%v", enterprise, enterpriseTeam, org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var organization *Organization
-	resp, err := s.client.Do(ctx, req, &organization)
+	resp, err := s.client.Do(req, &organization)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -384,13 +384,13 @@ func (s *EnterpriseService) GetAssignment(ctx context.Context, enterprise, enter
 func (s *EnterpriseService) AddAssignment(ctx context.Context, enterprise, enterpriseTeam, org string) (*Organization, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations/%v", enterprise, enterpriseTeam, org)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var organization *Organization
-	resp, err := s.client.Do(ctx, req, &organization)
+	resp, err := s.client.Do(req, &organization)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -406,12 +406,12 @@ func (s *EnterpriseService) AddAssignment(ctx context.Context, enterprise, enter
 func (s *EnterpriseService) RemoveAssignment(ctx context.Context, enterprise, enterpriseTeam, org string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v/organizations/%v", enterprise, enterpriseTeam, org)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

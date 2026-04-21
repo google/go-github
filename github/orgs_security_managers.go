@@ -20,13 +20,13 @@ import (
 func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/security-managers", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -43,12 +43,12 @@ func (s *OrganizationsService) ListSecurityManagerTeams(ctx context.Context, org
 //meta:operation PUT /orgs/{org}/security-managers/teams/{team_slug}
 func (s *OrganizationsService) AddSecurityManagerTeam(ctx context.Context, org, team string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/security-managers/teams/%v", org, team)
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RemoveSecurityManagerTeam removes a team from the list of security managers for an organization.
@@ -60,10 +60,10 @@ func (s *OrganizationsService) AddSecurityManagerTeam(ctx context.Context, org, 
 //meta:operation DELETE /orgs/{org}/security-managers/teams/{team_slug}
 func (s *OrganizationsService) RemoveSecurityManagerTeam(ctx context.Context, org, team string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/security-managers/teams/%v", org, team)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

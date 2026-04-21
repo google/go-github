@@ -22,7 +22,7 @@ func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -30,7 +30,7 @@ func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string,
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
 	var blockedUsers []*User
-	resp, err := s.client.Do(ctx, req, &blockedUsers)
+	resp, err := s.client.Do(req, &blockedUsers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -46,14 +46,14 @@ func (s *OrganizationsService) ListBlockedUsers(ctx context.Context, org string,
 func (s *OrganizationsService) IsBlocked(ctx context.Context, org, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	isBlocked, err := parseBoolResponse(err)
 	return isBlocked, resp, err
 }
@@ -66,14 +66,14 @@ func (s *OrganizationsService) IsBlocked(ctx context.Context, org, user string) 
 func (s *OrganizationsService) BlockUser(ctx context.Context, org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UnblockUser unblocks specified user from an organization.
@@ -84,12 +84,12 @@ func (s *OrganizationsService) BlockUser(ctx context.Context, org, user string) 
 func (s *OrganizationsService) UnblockUser(ctx context.Context, org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/blocks/%v", org, user)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

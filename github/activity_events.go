@@ -21,13 +21,13 @@ func (s *ActivityService) ListEvents(ctx context.Context, opts *ListOptions) ([]
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -47,13 +47,13 @@ func (s *ActivityService) ListRepositoryEvents(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -73,13 +73,13 @@ func (s *ActivityService) ListIssueEventsForRepository(ctx context.Context, owne
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var events []*IssueEvent
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -99,13 +99,13 @@ func (s *ActivityService) ListEventsForRepoNetwork(ctx context.Context, owner, r
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -125,13 +125,13 @@ func (s *ActivityService) ListEventsForOrganization(ctx context.Context, org str
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -160,13 +160,13 @@ func (s *ActivityService) ListEventsPerformedByUser(ctx context.Context, user st
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -195,13 +195,13 @@ func (s *ActivityService) ListEventsReceivedByUser(ctx context.Context, user str
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -222,13 +222,13 @@ func (s *ActivityService) ListUserEventsForOrganization(ctx context.Context, org
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var events []*Event
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}

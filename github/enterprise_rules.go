@@ -18,13 +18,13 @@ import (
 func (s *EnterpriseService) CreateRepositoryRuleset(ctx context.Context, enterprise string, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets", enterprise)
 
-	req, err := s.client.NewRequest("POST", u, ruleset)
+	req, err := s.client.NewRequest(ctx, "POST", u, ruleset)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var rs *RepositoryRuleset
-	resp, err := s.client.Do(ctx, req, &rs)
+	resp, err := s.client.Do(req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -40,13 +40,13 @@ func (s *EnterpriseService) CreateRepositoryRuleset(ctx context.Context, enterpr
 func (s *EnterpriseService) GetRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64) (*RepositoryRuleset, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var ruleset *RepositoryRuleset
-	resp, err := s.client.Do(ctx, req, &ruleset)
+	resp, err := s.client.Do(req, &ruleset)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -62,13 +62,13 @@ func (s *EnterpriseService) GetRepositoryRuleset(ctx context.Context, enterprise
 func (s *EnterpriseService) UpdateRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
-	req, err := s.client.NewRequest("PUT", u, ruleset)
+	req, err := s.client.NewRequest(ctx, "PUT", u, ruleset)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var rs *RepositoryRuleset
-	resp, err := s.client.Do(ctx, req, &rs)
+	resp, err := s.client.Do(req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -84,10 +84,10 @@ func (s *EnterpriseService) UpdateRepositoryRuleset(ctx context.Context, enterpr
 func (s *EnterpriseService) DeleteRepositoryRuleset(ctx context.Context, enterprise string, rulesetID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/rulesets/%v", enterprise, rulesetID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

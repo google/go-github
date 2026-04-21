@@ -62,13 +62,13 @@ type FeedLinks struct {
 //
 //meta:operation GET /feeds
 func (s *ActivityService) ListFeeds(ctx context.Context) (*Feeds, *Response, error) {
-	req, err := s.client.NewRequest("GET", "feeds", nil)
+	req, err := s.client.NewRequest(ctx, "GET", "feeds", nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var f *Feeds
-	resp, err := s.client.Do(ctx, req, &f)
+	resp, err := s.client.Do(req, &f)
 	if err != nil {
 		return nil, resp, err
 	}

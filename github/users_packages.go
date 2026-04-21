@@ -32,13 +32,13 @@ func (s *UsersService) ListPackages(ctx context.Context, user string, opts *Pack
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var packages []*Package
-	resp, err := s.client.Do(ctx, req, &packages)
+	resp, err := s.client.Do(req, &packages)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -63,13 +63,13 @@ func (s *UsersService) GetPackage(ctx context.Context, user, packageType, packag
 		u = fmt.Sprintf("user/packages/%v/%v", packageType, url.PathEscape(packageName))
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pack *Package
-	resp, err := s.client.Do(ctx, req, &pack)
+	resp, err := s.client.Do(req, &pack)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -94,12 +94,12 @@ func (s *UsersService) DeletePackage(ctx context.Context, user, packageType, pac
 		u = fmt.Sprintf("user/packages/%v/%v", packageType, packageName)
 	}
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RestorePackage restores a package to a user. Passing the empty string for "user" will
@@ -119,12 +119,12 @@ func (s *UsersService) RestorePackage(ctx context.Context, user, packageType, pa
 		u = fmt.Sprintf("user/packages/%v/%v/restore", packageType, packageName)
 	}
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListPackageVersionsOptions specifies the optional parameters to the UsersService.ListPackageVersions.
@@ -147,13 +147,13 @@ func (s *UsersService) ListPackageVersions(ctx context.Context, packageType, pac
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var versions []*PackageVersion
-	resp, err := s.client.Do(ctx, req, &versions)
+	resp, err := s.client.Do(req, &versions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -169,13 +169,13 @@ func (s *UsersService) ListPackageVersions(ctx context.Context, packageType, pac
 func (s *UsersService) ListUserPackageVersions(ctx context.Context, user, packageType, packageName string) ([]*PackageVersion, *Response, error) {
 	u := fmt.Sprintf("users/%v/packages/%v/%v/versions", user, packageType, packageName)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var versions []*PackageVersion
-	resp, err := s.client.Do(ctx, req, &versions)
+	resp, err := s.client.Do(req, &versions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -200,13 +200,13 @@ func (s *UsersService) PackageGetVersion(ctx context.Context, user, packageType,
 		u = fmt.Sprintf("user/packages/%v/%v/versions/%v", packageType, packageName, packageVersionID)
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var version *PackageVersion
-	resp, err := s.client.Do(ctx, req, &version)
+	resp, err := s.client.Do(req, &version)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -231,12 +231,12 @@ func (s *UsersService) PackageDeleteVersion(ctx context.Context, user, packageTy
 		u = fmt.Sprintf("user/packages/%v/%v/versions/%v", packageType, packageName, packageVersionID)
 	}
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // PackageRestoreVersion restores a package version to a user. Passing the empty string for "user" will
@@ -256,10 +256,10 @@ func (s *UsersService) PackageRestoreVersion(ctx context.Context, user, packageT
 		u = fmt.Sprintf("user/packages/%v/%v/versions/%v/restore", packageType, packageName, packageVersionID)
 	}
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

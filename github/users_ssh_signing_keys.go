@@ -43,13 +43,13 @@ func (s *UsersService) ListSSHSigningKeys(ctx context.Context, user string, opts
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var keys []*SSHSigningKey
-	resp, err := s.client.Do(ctx, req, &keys)
+	resp, err := s.client.Do(req, &keys)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -65,13 +65,13 @@ func (s *UsersService) ListSSHSigningKeys(ctx context.Context, user string, opts
 func (s *UsersService) GetSSHSigningKey(ctx context.Context, id int64) (*SSHSigningKey, *Response, error) {
 	u := fmt.Sprintf("user/ssh_signing_keys/%v", id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var key *SSHSigningKey
-	resp, err := s.client.Do(ctx, req, &key)
+	resp, err := s.client.Do(req, &key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -87,13 +87,13 @@ func (s *UsersService) GetSSHSigningKey(ctx context.Context, id int64) (*SSHSign
 func (s *UsersService) CreateSSHSigningKey(ctx context.Context, key *Key) (*SSHSigningKey, *Response, error) {
 	u := "user/ssh_signing_keys"
 
-	req, err := s.client.NewRequest("POST", u, key)
+	req, err := s.client.NewRequest(ctx, "POST", u, key)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var k *SSHSigningKey
-	resp, err := s.client.Do(ctx, req, &k)
+	resp, err := s.client.Do(req, &k)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -109,10 +109,10 @@ func (s *UsersService) CreateSSHSigningKey(ctx context.Context, key *Key) (*SSHS
 func (s *UsersService) DeleteSSHSigningKey(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("user/ssh_signing_keys/%v", id)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

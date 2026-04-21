@@ -177,13 +177,13 @@ type PremiumRequestUsageReport struct {
 // See https://github.com/google/go-github/issues/3894 for details.
 func (s *BillingService) GetOrganizationPackagesBilling(ctx context.Context, org string) (*PackagesBilling, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/packages", org)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *PackagesBilling
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -198,13 +198,13 @@ func (s *BillingService) GetOrganizationPackagesBilling(ctx context.Context, org
 // See https://github.com/google/go-github/issues/3894 for details.
 func (s *BillingService) GetOrganizationStorageBilling(ctx context.Context, org string) (*StorageBilling, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/shared-storage", org)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *StorageBilling
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -224,13 +224,13 @@ func (s *BillingService) GetOrganizationAdvancedSecurityActiveCommitters(ctx con
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *ActiveCommitters
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -244,13 +244,13 @@ func (s *BillingService) GetOrganizationAdvancedSecurityActiveCommitters(ctx con
 // See https://github.com/google/go-github/issues/3894 for details.
 func (s *BillingService) GetPackagesBilling(ctx context.Context, user string) (*PackagesBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/packages", user)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var packagesUserBilling *PackagesBilling
-	resp, err := s.client.Do(ctx, req, &packagesUserBilling)
+	resp, err := s.client.Do(req, &packagesUserBilling)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -265,13 +265,13 @@ func (s *BillingService) GetPackagesBilling(ctx context.Context, user string) (*
 // See https://github.com/google/go-github/issues/3894 for details.
 func (s *BillingService) GetStorageBilling(ctx context.Context, user string) (*StorageBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/shared-storage", user)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var storageUserBilling *StorageBilling
-	resp, err := s.client.Do(ctx, req, &storageUserBilling)
+	resp, err := s.client.Do(req, &storageUserBilling)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -293,13 +293,13 @@ func (s *BillingService) GetOrganizationUsageReport(ctx context.Context, org str
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var usageReport *UsageReport
-	resp, err := s.client.Do(ctx, req, &usageReport)
+	resp, err := s.client.Do(req, &usageReport)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -321,13 +321,13 @@ func (s *BillingService) GetUsageReport(ctx context.Context, user string, opts *
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var usageReport *UsageReport
-	resp, err := s.client.Do(ctx, req, &usageReport)
+	resp, err := s.client.Do(req, &usageReport)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -350,13 +350,13 @@ func (s *BillingService) GetOrganizationPremiumRequestUsageReport(ctx context.Co
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var premiumRequestUsageReport *PremiumRequestUsageReport
-	resp, err := s.client.Do(ctx, req, &premiumRequestUsageReport)
+	resp, err := s.client.Do(req, &premiumRequestUsageReport)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -379,13 +379,13 @@ func (s *BillingService) GetPremiumRequestUsageReport(ctx context.Context, user 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var premiumRequestUsageReport *PremiumRequestUsageReport
-	resp, err := s.client.Do(ctx, req, &premiumRequestUsageReport)
+	resp, err := s.client.Do(req, &premiumRequestUsageReport)
 	if err != nil {
 		return nil, resp, err
 	}

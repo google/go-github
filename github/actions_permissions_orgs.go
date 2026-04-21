@@ -74,13 +74,13 @@ type SelfHostedRunnersSettingsOrganizationOpt struct {
 func (s *ActionsService) GetActionsPermissions(ctx context.Context, org string) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *ActionsPermissions
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -95,13 +95,13 @@ func (s *ActionsService) GetActionsPermissions(ctx context.Context, org string) 
 //meta:operation PUT /orgs/{org}/actions/permissions
 func (s *ActionsService) UpdateActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
-	req, err := s.client.NewRequest("PUT", u, actionsPermissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, actionsPermissions)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *ActionsPermissions
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -121,13 +121,13 @@ func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repos *ActionsEnabledOnOrgRepos
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -143,14 +143,14 @@ func (s *ActionsService) ListEnabledReposInOrg(ctx context.Context, owner string
 func (s *ActionsService) SetEnabledReposInOrg(ctx context.Context, owner string, repositoryIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories", owner)
 
-	req, err := s.client.NewRequest("PUT", u, struct {
+	req, err := s.client.NewRequest(ctx, "PUT", u, struct {
 		IDs []int64 `json:"selected_repository_ids"`
 	}{IDs: repositoryIDs})
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -166,12 +166,12 @@ func (s *ActionsService) SetEnabledReposInOrg(ctx context.Context, owner string,
 func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -187,12 +187,12 @@ func (s *ActionsService) AddEnabledReposInOrg(ctx context.Context, owner string,
 func (s *ActionsService) RemoveEnabledReposInOrg(ctx context.Context, owner string, repositoryID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/repositories/%v", owner, repositoryID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -208,13 +208,13 @@ func (s *ActionsService) RemoveEnabledReposInOrg(ctx context.Context, owner stri
 func (s *ActionsService) GetActionsAllowed(ctx context.Context, org string) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var actionsAllowed *ActionsAllowed
-	resp, err := s.client.Do(ctx, req, &actionsAllowed)
+	resp, err := s.client.Do(req, &actionsAllowed)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -229,13 +229,13 @@ func (s *ActionsService) GetActionsAllowed(ctx context.Context, org string) (*Ac
 //meta:operation PUT /orgs/{org}/actions/permissions/selected-actions
 func (s *ActionsService) UpdateActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
-	req, err := s.client.NewRequest("PUT", u, actionsAllowed)
+	req, err := s.client.NewRequest(ctx, "PUT", u, actionsAllowed)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *ActionsAllowed
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -251,13 +251,13 @@ func (s *ActionsService) UpdateActionsAllowed(ctx context.Context, org string, a
 func (s *ActionsService) GetDefaultWorkflowPermissionsInOrganization(ctx context.Context, org string) (*DefaultWorkflowPermissionOrganization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/workflow", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *DefaultWorkflowPermissionOrganization
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -272,13 +272,13 @@ func (s *ActionsService) GetDefaultWorkflowPermissionsInOrganization(ctx context
 //meta:operation PUT /orgs/{org}/actions/permissions/workflow
 func (s *ActionsService) UpdateDefaultWorkflowPermissionsInOrganization(ctx context.Context, org string, permissions DefaultWorkflowPermissionOrganization) (*DefaultWorkflowPermissionOrganization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/workflow", org)
-	req, err := s.client.NewRequest("PUT", u, permissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, permissions)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *DefaultWorkflowPermissionOrganization
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -294,13 +294,13 @@ func (s *ActionsService) UpdateDefaultWorkflowPermissionsInOrganization(ctx cont
 func (s *ActionsService) GetArtifactAndLogRetentionPeriodInOrganization(ctx context.Context, org string) (*ArtifactPeriod, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/artifact-and-log-retention", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var arp *ArtifactPeriod
-	resp, err := s.client.Do(ctx, req, &arp)
+	resp, err := s.client.Do(req, &arp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -315,12 +315,12 @@ func (s *ActionsService) GetArtifactAndLogRetentionPeriodInOrganization(ctx cont
 //meta:operation PUT /orgs/{org}/actions/permissions/artifact-and-log-retention
 func (s *ActionsService) UpdateArtifactAndLogRetentionPeriodInOrganization(ctx context.Context, org string, period ArtifactPeriodOpt) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/artifact-and-log-retention", org)
-	req, err := s.client.NewRequest("PUT", u, period)
+	req, err := s.client.NewRequest(ctx, "PUT", u, period)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetSelfHostedRunnersSettingsInOrganization gets the self-hosted runners permissions settings for repositories in an organization.
@@ -331,13 +331,13 @@ func (s *ActionsService) UpdateArtifactAndLogRetentionPeriodInOrganization(ctx c
 func (s *ActionsService) GetSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string) (*SelfHostedRunnersSettingsOrganization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var settings *SelfHostedRunnersSettingsOrganization
-	resp, err := s.client.Do(ctx, req, &settings)
+	resp, err := s.client.Do(req, &settings)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -353,12 +353,12 @@ func (s *ActionsService) GetSelfHostedRunnersSettingsInOrganization(ctx context.
 func (s *ActionsService) UpdateSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string, opt SelfHostedRunnersSettingsOrganizationOpt) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners", org)
 
-	req, err := s.client.NewRequest("PUT", u, opt)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opt)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // SelfHostedRunnersAllowedRepos represents the repositories that are allowed to use self-hosted runners in an organization.
@@ -379,13 +379,13 @@ func (s *ActionsService) ListRepositoriesSelfHostedRunnersAllowedInOrganization(
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var settings *SelfHostedRunnersAllowedRepos
-	resp, err := s.client.Do(ctx, req, &settings)
+	resp, err := s.client.Do(req, &settings)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -401,14 +401,14 @@ func (s *ActionsService) ListRepositoriesSelfHostedRunnersAllowedInOrganization(
 func (s *ActionsService) SetRepositoriesSelfHostedRunnersAllowedInOrganization(ctx context.Context, org string, repositoryIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners/repositories", org)
 
-	req, err := s.client.NewRequest("PUT", u, struct {
+	req, err := s.client.NewRequest(ctx, "PUT", u, struct {
 		IDs []int64 `json:"selected_repository_ids"`
 	}{IDs: repositoryIDs})
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // AddRepositorySelfHostedRunnersAllowedInOrganization adds a repository to the list of repositories that are allowed to use self-hosted runners in an organization.
@@ -419,12 +419,12 @@ func (s *ActionsService) SetRepositoriesSelfHostedRunnersAllowedInOrganization(c
 func (s *ActionsService) AddRepositorySelfHostedRunnersAllowedInOrganization(ctx context.Context, org string, repositoryID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners/repositories/%v", org, repositoryID)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RemoveRepositorySelfHostedRunnersAllowedInOrganization removes a repository from the list of repositories that are allowed to use self-hosted runners in an organization.
@@ -435,12 +435,12 @@ func (s *ActionsService) AddRepositorySelfHostedRunnersAllowedInOrganization(ctx
 func (s *ActionsService) RemoveRepositorySelfHostedRunnersAllowedInOrganization(ctx context.Context, org string, repositoryID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners/repositories/%v", org, repositoryID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -456,13 +456,13 @@ func (s *ActionsService) RemoveRepositorySelfHostedRunnersAllowedInOrganization(
 func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string) (*WorkflowsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-workflows-private-repos", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *WorkflowsPermissions
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -477,12 +477,12 @@ func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInOrganization(ctx 
 //meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos
 func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-workflows-private-repos", org)
-	req, err := s.client.NewRequest("PUT", u, permissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, permissions)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetOrganizationForkPRContributorApprovalPermissions gets the fork PR contributor approval policy for an organization.
@@ -493,13 +493,13 @@ func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(c
 func (s *ActionsService) GetOrganizationForkPRContributorApprovalPermissions(ctx context.Context, org string) (*ContributorApprovalPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var policy *ContributorApprovalPermissions
-	resp, err := s.client.Do(ctx, req, &policy)
+	resp, err := s.client.Do(req, &policy)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -514,10 +514,10 @@ func (s *ActionsService) GetOrganizationForkPRContributorApprovalPermissions(ctx
 //meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-contributor-approval
 func (s *ActionsService) UpdateOrganizationForkPRContributorApprovalPermissions(ctx context.Context, org string, policy ContributorApprovalPermissions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
-	req, err := s.client.NewRequest("PUT", u, policy)
+	req, err := s.client.NewRequest(ctx, "PUT", u, policy)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

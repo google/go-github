@@ -34,7 +34,7 @@ func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -42,7 +42,7 @@ func (s *RepositoriesService) ListForks(ctx context.Context, owner, repo string,
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	var repos []*Repository
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -74,13 +74,13 @@ type RepositoryCreateForkOptions struct {
 func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string, opts *RepositoryCreateForkOptions) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var fork Repository
-	resp, err := s.client.Do(ctx, req, &fork)
+	resp, err := s.client.Do(req, &fork)
 	if err != nil {
 		// Persist AcceptedError's metadata to the Repository object.
 		var aerr *AcceptedError

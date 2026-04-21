@@ -139,13 +139,13 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var privateRegistries PrivateRegistries
-	resp, err := s.client.Do(ctx, req, &privateRegistries)
+	resp, err := s.client.Do(req, &privateRegistries)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -160,13 +160,13 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context
 func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context.Context, org string, privateRegistry CreateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries", org)
 
-	req, err := s.client.NewRequest("POST", u, privateRegistry)
+	req, err := s.client.NewRequest(ctx, "POST", u, privateRegistry)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result PrivateRegistry
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -181,13 +181,13 @@ func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context
 func (s *PrivateRegistriesService) GetOrganizationPrivateRegistriesPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries/public-key", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var publicKey PublicKey
-	resp, err := s.client.Do(ctx, req, &publicKey)
+	resp, err := s.client.Do(req, &publicKey)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -203,13 +203,13 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistriesPublicKey(ctx
 func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Context, org, secretName string) (*PrivateRegistry, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, secretName)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var privateRegistry PrivateRegistry
-	resp, err := s.client.Do(ctx, req, &privateRegistry)
+	resp, err := s.client.Do(req, &privateRegistry)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -226,13 +226,13 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Co
 func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context.Context, org, secretName string, privateRegistry UpdateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, secretName)
 
-	req, err := s.client.NewRequest("PATCH", u, privateRegistry)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, privateRegistry)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var updatedRegistry PrivateRegistry
-	resp, err := s.client.Do(ctx, req, &updatedRegistry)
+	resp, err := s.client.Do(req, &updatedRegistry)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -249,12 +249,12 @@ func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context
 func (s *PrivateRegistriesService) DeleteOrganizationPrivateRegistry(ctx context.Context, org, secretName string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, secretName)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

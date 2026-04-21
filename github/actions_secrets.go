@@ -49,13 +49,13 @@ func (p *PublicKey) UnmarshalJSON(data []byte) error {
 }
 
 func (s *ActionsService) getPublicKey(ctx context.Context, url string) (*PublicKey, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pubKey *PublicKey
-	resp, err := s.client.Do(ctx, req, &pubKey)
+	resp, err := s.client.Do(req, &pubKey)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -114,13 +114,13 @@ func (s *ActionsService) listSecrets(ctx context.Context, url string, opts *List
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var secrets *Secrets
-	resp, err := s.client.Do(ctx, req, &secrets)
+	resp, err := s.client.Do(req, &secrets)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -172,13 +172,13 @@ func (s *ActionsService) ListEnvSecrets(ctx context.Context, repoID int, env str
 }
 
 func (s *ActionsService) getSecret(ctx context.Context, url string) (*Secret, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var secret *Secret
-	resp, err := s.client.Do(ctx, req, &secret)
+	resp, err := s.client.Do(req, &secret)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -233,12 +233,12 @@ type EncryptedSecret struct {
 }
 
 func (s *ActionsService) putSecret(ctx context.Context, url string, eSecret *EncryptedSecret) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, eSecret)
+	req, err := s.client.NewRequest(ctx, "PUT", url, eSecret)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // CreateOrUpdateRepoSecret creates or updates a repository secret with an encrypted value.
@@ -284,12 +284,12 @@ func (s *ActionsService) CreateOrUpdateEnvSecret(ctx context.Context, repoID int
 }
 
 func (s *ActionsService) deleteSecret(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteRepoSecret deletes a secret in a repository using the secret name.
@@ -334,13 +334,13 @@ func (s *ActionsService) listSelectedReposForSecret(ctx context.Context, url str
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *SelectedReposList
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -363,12 +363,12 @@ func (s *ActionsService) setSelectedReposForSecret(ctx context.Context, url stri
 		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
 	}
 
-	req, err := s.client.NewRequest("PUT", url, repoIDs{SelectedIDs: ids})
+	req, err := s.client.NewRequest(ctx, "PUT", url, repoIDs{SelectedIDs: ids})
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // SetSelectedReposForOrgSecret sets the repositories that have access to a secret.
@@ -382,12 +382,12 @@ func (s *ActionsService) SetSelectedReposForOrgSecret(ctx context.Context, org, 
 }
 
 func (s *ActionsService) addSelectedRepoToSecret(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // AddSelectedRepoToOrgSecret adds a repository to an organization secret.
@@ -405,12 +405,12 @@ func (s *ActionsService) AddSelectedRepoToOrgSecret(ctx context.Context, org, na
 }
 
 func (s *ActionsService) removeSelectedRepoFromSecret(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RemoveSelectedRepoFromOrgSecret removes a repository from an organization secret.

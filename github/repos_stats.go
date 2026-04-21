@@ -50,13 +50,13 @@ func (w WeeklyStats) String() string {
 //meta:operation GET /repos/{owner}/{repo}/stats/contributors
 func (s *RepositoriesService) ListContributorsStats(ctx context.Context, owner, repo string) ([]*ContributorStats, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/contributors", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var contributorStats []*ContributorStats
-	resp, err := s.client.Do(ctx, req, &contributorStats)
+	resp, err := s.client.Do(req, &contributorStats)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -91,13 +91,13 @@ func (w WeeklyCommitActivity) String() string {
 //meta:operation GET /repos/{owner}/{repo}/stats/commit_activity
 func (s *RepositoriesService) ListCommitActivity(ctx context.Context, owner, repo string) ([]*WeeklyCommitActivity, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/commit_activity", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var weeklyCommitActivity []*WeeklyCommitActivity
-	resp, err := s.client.Do(ctx, req, &weeklyCommitActivity)
+	resp, err := s.client.Do(req, &weeklyCommitActivity)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -120,13 +120,13 @@ func (s *RepositoriesService) ListCommitActivity(ctx context.Context, owner, rep
 //meta:operation GET /repos/{owner}/{repo}/stats/code_frequency
 func (s *RepositoriesService) ListCodeFrequency(ctx context.Context, owner, repo string) ([]*WeeklyStats, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/code_frequency", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var weeks [][]int
-	resp, err := s.client.Do(ctx, req, &weeks)
+	resp, err := s.client.Do(req, &weeks)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -178,13 +178,13 @@ func (r RepositoryParticipation) String() string {
 //meta:operation GET /repos/{owner}/{repo}/stats/participation
 func (s *RepositoriesService) ListParticipation(ctx context.Context, owner, repo string) (*RepositoryParticipation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/participation", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var participation *RepositoryParticipation
-	resp, err := s.client.Do(ctx, req, &participation)
+	resp, err := s.client.Do(req, &participation)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -213,13 +213,13 @@ type PunchCard struct {
 //meta:operation GET /repos/{owner}/{repo}/stats/punch_card
 func (s *RepositoriesService) ListPunchCard(ctx context.Context, owner, repo string) ([]*PunchCard, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stats/punch_card", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var results [][]int
-	resp, err := s.client.Do(ctx, req, &results)
+	resp, err := s.client.Do(req, &results)
 	if err != nil {
 		return nil, resp, err
 	}

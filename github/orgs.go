@@ -175,13 +175,13 @@ func (s *OrganizationsService) ListAll(ctx context.Context, opts *OrganizationsL
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	orgs := []*Organization{}
-	resp, err := s.client.Do(ctx, req, &orgs)
+	resp, err := s.client.Do(req, &orgs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -209,13 +209,13 @@ func (s *OrganizationsService) List(ctx context.Context, user string, opts *List
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var orgs []*Organization
-	resp, err := s.client.Do(ctx, req, &orgs)
+	resp, err := s.client.Do(req, &orgs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -230,7 +230,7 @@ func (s *OrganizationsService) List(ctx context.Context, user string, opts *List
 //meta:operation GET /orgs/{org}
 func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", org)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -238,7 +238,7 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 	req.Header.Set("Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 
 	var o *Organization
-	resp, err := s.client.Do(ctx, req, &o)
+	resp, err := s.client.Do(req, &o)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -253,13 +253,13 @@ func (s *OrganizationsService) Get(ctx context.Context, org string) (*Organizati
 //meta:operation GET /organizations/{organization_id}
 func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organization, *Response, error) {
 	u := fmt.Sprintf("organizations/%v", id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var org *Organization
-	resp, err := s.client.Do(ctx, req, &org)
+	resp, err := s.client.Do(req, &org)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -274,7 +274,7 @@ func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organiza
 //meta:operation PATCH /orgs/{org}
 func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organization) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", name)
-	req, err := s.client.NewRequest("PATCH", u, org)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, org)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -282,7 +282,7 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 	req.Header.Set("Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 
 	var o *Organization
-	resp, err := s.client.Do(ctx, req, &o)
+	resp, err := s.client.Do(req, &o)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -297,12 +297,12 @@ func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organ
 //meta:operation DELETE /orgs/{org}
 func (s *OrganizationsService) Delete(ctx context.Context, org string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v", org)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListInstallations lists installations for an organization.
@@ -318,13 +318,13 @@ func (s *OrganizationsService) ListInstallations(ctx context.Context, org string
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *OrganizationInstallations
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -39,13 +39,13 @@ func (s *EnterpriseService) DeleteSSHKey(ctx context.Context, key string) ([]*SS
 	opts := &SSHKeyOptions{
 		Key: key,
 	}
-	req, err := s.client.NewRequest("DELETE", u, opts)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var sshStatus []*SSHKeyStatus
-	resp, err := s.client.Do(ctx, req, &sshStatus)
+	resp, err := s.client.Do(req, &sshStatus)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -60,13 +60,13 @@ func (s *EnterpriseService) DeleteSSHKey(ctx context.Context, key string) ([]*SS
 //meta:operation GET /manage/v1/access/ssh
 func (s *EnterpriseService) GetSSHKey(ctx context.Context) ([]*ClusterSSHKey, *Response, error) {
 	u := "manage/v1/access/ssh"
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var sshKeys []*ClusterSSHKey
-	resp, err := s.client.Do(ctx, req, &sshKeys)
+	resp, err := s.client.Do(req, &sshKeys)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -84,13 +84,13 @@ func (s *EnterpriseService) CreateSSHKey(ctx context.Context, key string) ([]*SS
 	opts := &SSHKeyOptions{
 		Key: key,
 	}
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var sshKeyResponse []*SSHKeyStatus
-	resp, err := s.client.Do(ctx, req, &sshKeyResponse)
+	resp, err := s.client.Do(req, &sshKeyResponse)
 	if err != nil {
 		return nil, resp, err
 	}

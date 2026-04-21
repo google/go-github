@@ -26,30 +26,30 @@ type Receiver struct {
 func (s *Receiver) TestMethod(ctx context.Context, req any) {
 	// Proper usage: var pointer and pass &v
 	var v1 *T
-	s.client.Do(ctx, req, &v1)
+	s.client.Do(req, &v1)
 
 	// Literal with fields
 	v2 := &T{Field: "something"}
-	s.client.Do(ctx, req, v2)
+	s.client.Do(req, v2)
 
 	// new(T) but used for something else first
 	v3 := new(T)
 	v3.Field = "set"
-	s.client.Do(ctx, req, v3)
+	s.client.Do(req, v3)
 
 	// Anonymous struct
 	var v11 *struct {
 		F string
 	}
-	s.client.Do(ctx, req, &v11)
+	s.client.Do(req, &v11)
 }
 
 func (s *Receiver) MethodNameToIgnore(ctx context.Context, req any) {
 	v := new(T)
-	s.client.Do(ctx, req, v)
+	s.client.Do(req, v)
 }
 
 func (s *Receiver) unexportedMethod(ctx context.Context, req any) {
 	v := new(T)
-	s.client.Do(ctx, req, v) // Should be ignored because unexported.
+	s.client.Do(req, v) // Should be ignored because unexported.
 }

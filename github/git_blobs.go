@@ -28,13 +28,13 @@ type Blob struct {
 //meta:operation GET /repos/{owner}/{repo}/git/blobs/{file_sha}
 func (s *GitService) GetBlob(ctx context.Context, owner, repo, sha string) (*Blob, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/blobs/%v", owner, repo, sha)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var blob *Blob
-	resp, err := s.client.Do(ctx, req, &blob)
+	resp, err := s.client.Do(req, &blob)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -50,7 +50,7 @@ func (s *GitService) GetBlob(ctx context.Context, owner, repo, sha string) (*Blo
 //meta:operation GET /repos/{owner}/{repo}/git/blobs/{file_sha}
 func (s *GitService) GetBlobRaw(ctx context.Context, owner, repo, sha string) ([]byte, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/blobs/%v", owner, repo, sha)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -58,7 +58,7 @@ func (s *GitService) GetBlobRaw(ctx context.Context, owner, repo, sha string) ([
 	req.Header.Set("Accept", "application/vnd.github.v3.raw")
 
 	var buf bytes.Buffer
-	resp, err := s.client.Do(ctx, req, &buf)
+	resp, err := s.client.Do(req, &buf)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -73,13 +73,13 @@ func (s *GitService) GetBlobRaw(ctx context.Context, owner, repo, sha string) ([
 //meta:operation POST /repos/{owner}/{repo}/git/blobs
 func (s *GitService) CreateBlob(ctx context.Context, owner, repo string, blob Blob) (*Blob, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/blobs", owner, repo)
-	req, err := s.client.NewRequest("POST", u, blob)
+	req, err := s.client.NewRequest(ctx, "POST", u, blob)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var v *Blob
-	resp, err := s.client.Do(ctx, req, &v)
+	resp, err := s.client.Do(req, &v)
 	if err != nil {
 		return nil, resp, err
 	}

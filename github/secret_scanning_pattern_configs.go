@@ -84,13 +84,13 @@ type SecretScanningCustomPatternSetting struct {
 func (s *SecretScanningService) ListPatternConfigsForEnterprise(ctx context.Context, enterprise string) (*SecretScanningPatternConfigs, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/secret-scanning/pattern-configurations", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var patternConfigs *SecretScanningPatternConfigs
-	resp, err := s.client.Do(ctx, req, &patternConfigs)
+	resp, err := s.client.Do(req, &patternConfigs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -106,13 +106,13 @@ func (s *SecretScanningService) ListPatternConfigsForEnterprise(ctx context.Cont
 func (s *SecretScanningService) ListPatternConfigsForOrg(ctx context.Context, org string) (*SecretScanningPatternConfigs, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/secret-scanning/pattern-configurations", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var patternConfigs *SecretScanningPatternConfigs
-	resp, err := s.client.Do(ctx, req, &patternConfigs)
+	resp, err := s.client.Do(req, &patternConfigs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -128,13 +128,13 @@ func (s *SecretScanningService) ListPatternConfigsForOrg(ctx context.Context, or
 func (s *SecretScanningService) UpdatePatternConfigsForEnterprise(ctx context.Context, enterprise string, opts *SecretScanningPatternConfigsUpdateOptions) (*SecretScanningPatternConfigsUpdate, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/secret-scanning/pattern-configurations", enterprise)
 
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var patternConfigsUpdate *SecretScanningPatternConfigsUpdate
-	resp, err := s.client.Do(ctx, req, &patternConfigsUpdate)
+	resp, err := s.client.Do(req, &patternConfigsUpdate)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -150,13 +150,13 @@ func (s *SecretScanningService) UpdatePatternConfigsForEnterprise(ctx context.Co
 func (s *SecretScanningService) UpdatePatternConfigsForOrg(ctx context.Context, org string, opts *SecretScanningPatternConfigsUpdateOptions) (*SecretScanningPatternConfigsUpdate, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/secret-scanning/pattern-configurations", org)
 
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var patternConfigsUpdate *SecretScanningPatternConfigsUpdate
-	resp, err := s.client.Do(ctx, req, &patternConfigsUpdate)
+	resp, err := s.client.Do(req, &patternConfigsUpdate)
 	if err != nil {
 		return nil, resp, err
 	}

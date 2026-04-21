@@ -35,7 +35,7 @@ func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -43,7 +43,7 @@ func (s *ActivityService) ListStargazers(ctx context.Context, owner, repo string
 	req.Header.Set("Accept", mediaTypeStarring)
 
 	var stargazers []*Stargazer
-	resp, err := s.client.Do(ctx, req, &stargazers)
+	resp, err := s.client.Do(req, &stargazers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -86,7 +86,7 @@ func (s *ActivityService) ListStarred(ctx context.Context, user string, opts *Ac
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -95,7 +95,7 @@ func (s *ActivityService) ListStarred(ctx context.Context, user string, opts *Ac
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var repos []*StarredRepository
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -110,12 +110,12 @@ func (s *ActivityService) ListStarred(ctx context.Context, user string, opts *Ac
 //meta:operation GET /user/starred/{owner}/{repo}
 func (s *ActivityService) IsStarred(ctx context.Context, owner, repo string) (bool, *Response, error) {
 	u := fmt.Sprintf("user/starred/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	starred, err := parseBoolResponse(err)
 	return starred, resp, err
 }
@@ -127,12 +127,12 @@ func (s *ActivityService) IsStarred(ctx context.Context, owner, repo string) (bo
 //meta:operation PUT /user/starred/{owner}/{repo}
 func (s *ActivityService) Star(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("user/starred/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // Unstar a repository as the authenticated user.
@@ -142,10 +142,10 @@ func (s *ActivityService) Star(ctx context.Context, owner, repo string) (*Respon
 //meta:operation DELETE /user/starred/{owner}/{repo}
 func (s *ActivityService) Unstar(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("user/starred/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

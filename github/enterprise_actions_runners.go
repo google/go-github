@@ -17,13 +17,13 @@ import (
 //meta:operation GET /enterprises/{enterprise}/actions/runners/downloads
 func (s *EnterpriseService) ListRunnerApplicationDownloads(ctx context.Context, enterprise string) ([]*RunnerApplicationDownload, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/downloads", enterprise)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var rads []*RunnerApplicationDownload
-	resp, err := s.client.Do(ctx, req, &rads)
+	resp, err := s.client.Do(req, &rads)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -39,13 +39,13 @@ func (s *EnterpriseService) ListRunnerApplicationDownloads(ctx context.Context, 
 func (s *EnterpriseService) GenerateEnterpriseJITConfig(ctx context.Context, enterprise string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/generate-jitconfig", enterprise)
 
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var jitConfig *JITRunnerConfig
-	resp, err := s.client.Do(ctx, req, &jitConfig)
+	resp, err := s.client.Do(req, &jitConfig)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -61,13 +61,13 @@ func (s *EnterpriseService) GenerateEnterpriseJITConfig(ctx context.Context, ent
 func (s *EnterpriseService) CreateRegistrationToken(ctx context.Context, enterprise string) (*RegistrationToken, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/registration-token", enterprise)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var registrationToken *RegistrationToken
-	resp, err := s.client.Do(ctx, req, &registrationToken)
+	resp, err := s.client.Do(req, &registrationToken)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -87,13 +87,13 @@ func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var runners *Runners
-	resp, err := s.client.Do(ctx, req, &runners)
+	resp, err := s.client.Do(req, &runners)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -108,13 +108,13 @@ func (s *EnterpriseService) ListRunners(ctx context.Context, enterprise string, 
 //meta:operation GET /enterprises/{enterprise}/actions/runners/{runner_id}
 func (s *EnterpriseService) GetRunner(ctx context.Context, enterprise string, runnerID int64) (*Runner, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/%v", enterprise, runnerID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var runner *Runner
-	resp, err := s.client.Do(ctx, req, &runner)
+	resp, err := s.client.Do(req, &runner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -130,10 +130,10 @@ func (s *EnterpriseService) GetRunner(ctx context.Context, enterprise string, ru
 func (s *EnterpriseService) RemoveRunner(ctx context.Context, enterprise string, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/%v", enterprise, runnerID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

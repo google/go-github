@@ -79,13 +79,13 @@ type ReleaseVersion struct {
 //meta:operation GET /manage/v1/checks/system-requirements
 func (s *EnterpriseService) CheckSystemRequirements(ctx context.Context) (*SystemRequirements, *Response, error) {
 	u := "manage/v1/checks/system-requirements"
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var systemRequirements *SystemRequirements
-	resp, err := s.client.Do(ctx, req, &systemRequirements)
+	resp, err := s.client.Do(req, &systemRequirements)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -100,13 +100,13 @@ func (s *EnterpriseService) CheckSystemRequirements(ctx context.Context) (*Syste
 //meta:operation GET /manage/v1/cluster/status
 func (s *EnterpriseService) ClusterStatus(ctx context.Context) (*ClusterStatus, *Response, error) {
 	u := "manage/v1/cluster/status"
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var clusterStatus *ClusterStatus
-	resp, err := s.client.Do(ctx, req, &clusterStatus)
+	resp, err := s.client.Do(req, &clusterStatus)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -124,13 +124,13 @@ func (s *EnterpriseService) ReplicationStatus(ctx context.Context, opts *NodeQue
 	if err != nil {
 		return nil, nil, err
 	}
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var status *ClusterStatus
-	resp, err := s.client.Do(ctx, req, &status)
+	resp, err := s.client.Do(req, &status)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -148,13 +148,13 @@ func (s *EnterpriseService) GetNodeReleaseVersions(ctx context.Context, opts *No
 	if err != nil {
 		return nil, nil, err
 	}
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var releaseVersions []*NodeReleaseVersion
-	resp, err := s.client.Do(ctx, req, &releaseVersions)
+	resp, err := s.client.Do(req, &releaseVersions)
 	if err != nil {
 		return nil, resp, err
 	}

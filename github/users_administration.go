@@ -18,12 +18,12 @@ import (
 func (s *UsersService) PromoteSiteAdmin(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("users/%v/site_admin", user)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DemoteSiteAdmin demotes a user from site administrator of a GitHub Enterprise instance.
@@ -34,12 +34,12 @@ func (s *UsersService) PromoteSiteAdmin(ctx context.Context, user string) (*Resp
 func (s *UsersService) DemoteSiteAdmin(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("users/%v/site_admin", user)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UserSuspendOptions represents the reason to suspend a user.
@@ -55,12 +55,12 @@ type UserSuspendOptions struct {
 func (s *UsersService) Suspend(ctx context.Context, user string, opts *UserSuspendOptions) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
 
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // Unsuspend a user on a GitHub Enterprise instance.
@@ -71,10 +71,10 @@ func (s *UsersService) Suspend(ctx context.Context, user string, opts *UserSuspe
 func (s *UsersService) Unsuspend(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

@@ -55,13 +55,13 @@ func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var statuses []*RepoStatus
-	resp, err := s.client.Do(ctx, req, &statuses)
+	resp, err := s.client.Do(req, &statuses)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -77,13 +77,13 @@ func (s *RepositoriesService) ListStatuses(ctx context.Context, owner, repo, ref
 //meta:operation POST /repos/{owner}/{repo}/statuses/{sha}
 func (s *RepositoriesService) CreateStatus(ctx context.Context, owner, repo, ref string, status RepoStatus) (*RepoStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/statuses/%v", owner, repo, refURLEscape(ref))
-	req, err := s.client.NewRequest("POST", u, &status)
+	req, err := s.client.NewRequest(ctx, "POST", u, &status)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repoStatus *RepoStatus
-	resp, err := s.client.Do(ctx, req, &repoStatus)
+	resp, err := s.client.Do(req, &repoStatus)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -123,13 +123,13 @@ func (s *RepositoriesService) GetCombinedStatus(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var status *CombinedStatus
-	resp, err := s.client.Do(ctx, req, &status)
+	resp, err := s.client.Do(req, &status)
 	if err != nil {
 		return nil, resp, err
 	}

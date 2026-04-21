@@ -59,13 +59,13 @@ func (s *ActivityService) ListNotifications(ctx context.Context, opts *Notificat
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var notifications []*Notification
-	resp, err := s.client.Do(ctx, req, &notifications)
+	resp, err := s.client.Do(req, &notifications)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -86,13 +86,13 @@ func (s *ActivityService) ListRepositoryNotifications(ctx context.Context, owner
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var notifications []*Notification
-	resp, err := s.client.Do(ctx, req, &notifications)
+	resp, err := s.client.Do(req, &notifications)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -114,12 +114,12 @@ func (s *ActivityService) MarkNotificationsRead(ctx context.Context, lastRead Ti
 	opts := &markReadOptions{
 		LastReadAt: lastRead,
 	}
-	req, err := s.client.NewRequest("PUT", "notifications", opts)
+	req, err := s.client.NewRequest(ctx, "PUT", "notifications", opts)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // MarkRepositoryNotificationsRead marks all notifications up to lastRead in
@@ -134,12 +134,12 @@ func (s *ActivityService) MarkRepositoryNotificationsRead(ctx context.Context, o
 		LastReadAt: lastRead,
 	}
 	u := fmt.Sprintf("repos/%v/%v/notifications", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetThread gets the specified notification thread.
@@ -150,13 +150,13 @@ func (s *ActivityService) MarkRepositoryNotificationsRead(ctx context.Context, o
 func (s *ActivityService) GetThread(ctx context.Context, id string) (*Notification, *Response, error) {
 	u := fmt.Sprintf("notifications/threads/%v", id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var notification *Notification
-	resp, err := s.client.Do(ctx, req, &notification)
+	resp, err := s.client.Do(req, &notification)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -172,12 +172,12 @@ func (s *ActivityService) GetThread(ctx context.Context, id string) (*Notificati
 func (s *ActivityService) MarkThreadRead(ctx context.Context, id string) (*Response, error) {
 	u := fmt.Sprintf("notifications/threads/%v", id)
 
-	req, err := s.client.NewRequest("PATCH", u, nil)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // MarkThreadDone marks the specified thread as done.
@@ -189,12 +189,12 @@ func (s *ActivityService) MarkThreadRead(ctx context.Context, id string) (*Respo
 func (s *ActivityService) MarkThreadDone(ctx context.Context, id string) (*Response, error) {
 	u := fmt.Sprintf("notifications/threads/%v", id)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetThreadSubscription checks to see if the authenticated user is subscribed
@@ -206,13 +206,13 @@ func (s *ActivityService) MarkThreadDone(ctx context.Context, id string) (*Respo
 func (s *ActivityService) GetThreadSubscription(ctx context.Context, id string) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("notifications/threads/%v/subscription", id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var sub *Subscription
-	resp, err := s.client.Do(ctx, req, &sub)
+	resp, err := s.client.Do(req, &sub)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -229,13 +229,13 @@ func (s *ActivityService) GetThreadSubscription(ctx context.Context, id string) 
 func (s *ActivityService) SetThreadSubscription(ctx context.Context, id string, subscription *Subscription) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("notifications/threads/%v/subscription", id)
 
-	req, err := s.client.NewRequest("PUT", u, subscription)
+	req, err := s.client.NewRequest(ctx, "PUT", u, subscription)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var sub *Subscription
-	resp, err := s.client.Do(ctx, req, &sub)
+	resp, err := s.client.Do(req, &sub)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -251,10 +251,10 @@ func (s *ActivityService) SetThreadSubscription(ctx context.Context, id string, 
 //meta:operation DELETE /notifications/threads/{thread_id}/subscription
 func (s *ActivityService) DeleteThreadSubscription(ctx context.Context, id string) (*Response, error) {
 	u := fmt.Sprintf("notifications/threads/%v/subscription", id)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

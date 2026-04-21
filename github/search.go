@@ -316,7 +316,7 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 	params.Set("q", parameters.Query)
 	u := fmt.Sprintf("search/%v?%v", searchType, params.Encode())
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -340,5 +340,5 @@ func (s *SearchService) search(ctx context.Context, searchType string, parameter
 	}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
-	return s.client.Do(ctx, req, result)
+	return s.client.Do(req, result)
 }

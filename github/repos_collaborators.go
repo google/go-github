@@ -58,13 +58,13 @@ func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	resp, err := s.client.Do(req, &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -82,12 +82,12 @@ func (s *RepositoriesService) ListCollaborators(ctx context.Context, owner, repo
 //meta:operation GET /repos/{owner}/{repo}/collaborators/{username}
 func (s *RepositoriesService) IsCollaborator(ctx context.Context, owner, repo, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	isCollab, err := parseBoolResponse(err)
 	return isCollab, resp, err
 }
@@ -110,13 +110,13 @@ type RepositoryPermissionLevel struct {
 //meta:operation GET /repos/{owner}/{repo}/collaborators/{username}/permission
 func (s *RepositoriesService) GetPermissionLevel(ctx context.Context, owner, repo, user string) (*RepositoryPermissionLevel, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v/permission", owner, repo, user)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var rpl *RepositoryPermissionLevel
-	resp, err := s.client.Do(ctx, req, &rpl)
+	resp, err := s.client.Do(req, &rpl)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -147,13 +147,13 @@ type RepositoryAddCollaboratorOptions struct {
 //meta:operation PUT /repos/{owner}/{repo}/collaborators/{username}
 func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, opts *RepositoryAddCollaboratorOptions) (*CollaboratorInvitation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var acr *CollaboratorInvitation
-	resp, err := s.client.Do(ctx, req, &acr)
+	resp, err := s.client.Do(req, &acr)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -169,10 +169,10 @@ func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, 
 //meta:operation DELETE /repos/{owner}/{repo}/collaborators/{username}
 func (s *RepositoriesService) RemoveCollaborator(ctx context.Context, owner, repo, user string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

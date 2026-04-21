@@ -25,13 +25,13 @@ func (s *OrganizationsService) ListAttestations(ctx context.Context, org, subjec
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var attestations *AttestationsResponse
-	resp, err := s.client.Do(ctx, req, &attestations)
+	resp, err := s.client.Do(req, &attestations)
 	if err != nil {
 		return nil, resp, err
 	}
