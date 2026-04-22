@@ -13,6 +13,18 @@ operations:
 operation_overrides:
   - name: GET /meta
     documentation_url: https://docs.github.com/rest/meta/meta#get-github-meta-information
+  - name: GET /orgs/{org}/private-registries
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#list-private-registries-for-an-organization
+  - name: POST /orgs/{org}/private-registries
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#create-a-private-registry-for-an-organization
+  - name: GET /orgs/{org}/private-registries/public-key
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#get-private-registries-public-key-for-an-organization
+  - name: DELETE /orgs/{org}/private-registries/{secret_name}
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#delete-a-private-registry-for-an-organization
+  - name: GET /orgs/{org}/private-registries/{secret_name}
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#get-a-private-registry-for-an-organization
+  - name: PATCH /orgs/{org}/private-registries/{secret_name}
+    documentation_url: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#update-a-private-registry-for-an-organization
   - name: DELETE /repos/{owner}/{repo}/pages
     documentation_url: https://docs.github.com/rest/pages/pages#delete-a-github-pages-site
   - name: GET /repos/{owner}/{repo}/pages

@@ -502,7 +502,9 @@ func normalizeDocURL(docURL string) string {
 
 	u.Path = cleanPath
 	q := u.Query()
-	q.Set("apiVersion", metadataDocsAPIVersion)
+	if q.Get("apiVersion") == "" {
+		q.Set("apiVersion", metadataDocsAPIVersion)
+	}
 	u.RawQuery = q.Encode()
 	return u.String()
 }
