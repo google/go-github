@@ -1037,9 +1037,6 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 // are supposed to read and close the response's Body. If rate limit is exceeded
 // and reset time is in the future, BareDo returns *RateLimitError immediately
 // without making a network API call.
-//
-// The provided ctx must be non-nil, if it is nil an error is returned. If it is
-// canceled or times out, ctx.Err() will be returned.
 func (c *Client) BareDo(req *http.Request) (*Response, error) {
 	return c.bareDo(c.client, req)
 }
@@ -1047,9 +1044,6 @@ func (c *Client) BareDo(req *http.Request) (*Response, error) {
 // bareDoIgnoreRedirects has the exact same behavior as BareDo but stops at the first
 // redirection code returned by the API. If a redirection is returned by the api, bareDoIgnoreRedirects
 // returns a *RedirectionError.
-//
-// The provided ctx must be non-nil, if it is nil an error is returned. If it is
-// canceled or times out, ctx.Err() will be returned.
 func (c *Client) bareDoIgnoreRedirects(req *http.Request) (*Response, error) {
 	return c.bareDo(c.clientIgnoreRedirects, req)
 }
@@ -1060,9 +1054,6 @@ var errInvalidLocation = errors.New("invalid or empty Location header in redirec
 // a 302, it will parse the Location header into a *url.URL and return that.
 // This is useful for endpoints that return a 302 in successful cases but still might return 301s for
 // permanent redirections.
-//
-// The provided ctx must be non-nil, if it is nil an error is returned. If it is
-// canceled or times out, ctx.Err() will be returned.
 func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL, *Response, error) {
 	response, err := c.bareDoIgnoreRedirects(req)
 	if err != nil {
@@ -1111,9 +1102,6 @@ func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL
 // decode it. If v is nil, and no error happens, the response is returned as is.
 // If rate limit is exceeded and reset time is in the future, Do returns
 // *RateLimitError immediately without making a network API call.
-//
-// The provided ctx must be non-nil, if it is nil an error is returned. If it
-// is canceled or times out, ctx.Err() will be returned.
 func (c *Client) Do(req *http.Request, v any) (*Response, error) {
 	resp, err := c.BareDo(req)
 	if err != nil {
