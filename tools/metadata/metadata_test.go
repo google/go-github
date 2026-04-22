@@ -53,9 +53,14 @@ func Test_normalizeDocURL(t *testing.T) {
 			want:   "https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28&foo=bar",
 		},
 		{
-			name:   "replace existing api version",
+			name:   "preserve existing api version",
 			docURL: "https://docs.github.com/rest/repos/repos?apiVersion=2021-01-01&foo=bar",
-			want:   "https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28&foo=bar",
+			want:   "https://docs.github.com/rest/repos/repos?apiVersion=2021-01-01&foo=bar",
+		},
+		{
+			name:   "preserve non-default api version",
+			docURL: "https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#list-private-registries-for-an-organization",
+			want:   "https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#list-private-registries-for-an-organization",
 		},
 		{
 			name:   "enterprise cloud latest rest is normalized",
