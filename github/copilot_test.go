@@ -2977,7 +2977,7 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 	want := &CopilotDailyMetrics{
 		Day:                 "2026-04-01",
 		OrganizationID:      "123",
-		DailyActiveCliUsers: 2,
+		DailyActiveCLIUsers: 2,
 		DailyActiveUsers:    10,
 		WeeklyActiveUsers:   20,
 		MonthlyActiveUsers:  30,
@@ -2996,11 +2996,11 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 		TotalsByModelFeature: []*CopilotMetricsModelFeature{
 			{Model: "m1", Feature: "completion", UserInitiatedInteractionCount: 5},
 		},
-		TotalsByCli: &CopilotMetricsCli{
+		TotalsByCLI: &CopilotMetricsCLI{
 			SessionCount: 3,
 			RequestCount: 4,
 			PromptCount:  2,
-			TokenUsage: &CopilotMetricsCliTokenUsage{
+			TokenUsage: &CopilotMetricsCLITokenUsage{
 				AvgTokensPerRequest: 4123.5,
 				OutputTokensSum:     7000,
 				PromptTokensSum:     9494,
@@ -3098,13 +3098,13 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 		DayTotals: []*CopilotDailyMetrics{
 			{
 				Day:                 "2026-03-05",
-				DailyActiveCliUsers: 2,
+				DailyActiveCLIUsers: 2,
 				DailyActiveUsers:    5,
-				TotalsByCli: &CopilotMetricsCli{
+				TotalsByCLI: &CopilotMetricsCLI{
 					SessionCount: 1,
 					RequestCount: 2,
 					PromptCount:  1,
-					TokenUsage: &CopilotMetricsCliTokenUsage{
+					TokenUsage: &CopilotMetricsCLITokenUsage{
 						AvgTokensPerRequest: 4000.0,
 						OutputTokensSum:     5000,
 						PromptTokensSum:     3000,
@@ -3175,15 +3175,15 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 			Day:                           "2026-04-01",
 			UserInitiatedInteractionCount: 5,
 			UsedChat:                      true,
-			UsedCli:                       true,
+			UsedCLI:                       true,
 			UsedCopilotCodeReviewActive:   true,
-			TotalsByCli: &CopilotMetricsCli{
+			TotalsByCLI: &CopilotMetricsCLI{
 				SessionCount: 2,
 				RequestCount: 2,
 				PromptCount:  1,
-				LastKnownCliVersion: &CopilotMetricsCliVersion{
+				LastKnownCLIVersion: &CopilotMetricsCLIVersion{
 					SampledAt:  &Timestamp{time.Date(2026, 4, 1, 12, 30, 0, 0, time.UTC)},
-					CliVersion: "1.0.8",
+					CLIVersion: "1.0.8",
 				},
 			},
 			TotalsByIDE: []*CopilotUserMetricsIDE{
@@ -3288,14 +3288,14 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 			Day:                          "2026-03-06",
 			UserID:                       1,
 			UserLogin:                    "alice",
-			UsedCli:                      true,
+			UsedCLI:                      true,
 			UsedCopilotCodeReviewPassive: true,
 			UsedCopilotCodingAgent:       true,
-			TotalsByCli: &CopilotMetricsCli{
+			TotalsByCLI: &CopilotMetricsCLI{
 				SessionCount: 1,
 				RequestCount: 3,
 				PromptCount:  2,
-				TokenUsage: &CopilotMetricsCliTokenUsage{
+				TokenUsage: &CopilotMetricsCLITokenUsage{
 					AvgTokensPerRequest: 1200.5,
 					OutputTokensSum:     2400,
 					PromptTokensSum:     1201,

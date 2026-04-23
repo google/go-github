@@ -10540,12 +10540,12 @@ func TestCopilotDailyMetrics_GetCodeGenerationActivityCount(tt *testing.T) {
 	c.GetCodeGenerationActivityCount()
 }
 
-func TestCopilotDailyMetrics_GetDailyActiveCliUsers(tt *testing.T) {
+func TestCopilotDailyMetrics_GetDailyActiveCLIUsers(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotDailyMetrics{}
-	c.GetDailyActiveCliUsers()
+	c.GetDailyActiveCLIUsers()
 	c = nil
-	c.GetDailyActiveCliUsers()
+	c.GetDailyActiveCLIUsers()
 }
 
 func TestCopilotDailyMetrics_GetDailyActiveCopilotCloudAgentUsers(tt *testing.T) {
@@ -10660,12 +10660,12 @@ func TestCopilotDailyMetrics_GetPullRequests(tt *testing.T) {
 	c.GetPullRequests()
 }
 
-func TestCopilotDailyMetrics_GetTotalsByCli(tt *testing.T) {
+func TestCopilotDailyMetrics_GetTotalsByCLI(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotDailyMetrics{}
-	c.GetTotalsByCli()
+	c.GetTotalsByCLI()
 	c = nil
-	c.GetTotalsByCli()
+	c.GetTotalsByCLI()
 }
 
 func TestCopilotDailyMetrics_GetTotalsByFeature(tt *testing.T) {
@@ -11251,84 +11251,84 @@ func TestCopilotMetrics_GetTotalEngagedUsers(tt *testing.T) {
 	c.GetTotalEngagedUsers()
 }
 
-func TestCopilotMetricsCli_GetLastKnownCliVersion(tt *testing.T) {
+func TestCopilotMetricsCLI_GetLastKnownCLIVersion(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsCli{}
-	c.GetLastKnownCliVersion()
+	c := &CopilotMetricsCLI{}
+	c.GetLastKnownCLIVersion()
 	c = nil
-	c.GetLastKnownCliVersion()
+	c.GetLastKnownCLIVersion()
 }
 
-func TestCopilotMetricsCli_GetPromptCount(tt *testing.T) {
+func TestCopilotMetricsCLI_GetPromptCount(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsCli{}
+	c := &CopilotMetricsCLI{}
 	c.GetPromptCount()
 	c = nil
 	c.GetPromptCount()
 }
 
-func TestCopilotMetricsCli_GetRequestCount(tt *testing.T) {
+func TestCopilotMetricsCLI_GetRequestCount(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsCli{}
+	c := &CopilotMetricsCLI{}
 	c.GetRequestCount()
 	c = nil
 	c.GetRequestCount()
 }
 
-func TestCopilotMetricsCli_GetSessionCount(tt *testing.T) {
+func TestCopilotMetricsCLI_GetSessionCount(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsCli{}
+	c := &CopilotMetricsCLI{}
 	c.GetSessionCount()
 	c = nil
 	c.GetSessionCount()
 }
 
-func TestCopilotMetricsCli_GetTokenUsage(tt *testing.T) {
+func TestCopilotMetricsCLI_GetTokenUsage(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsCli{}
+	c := &CopilotMetricsCLI{}
 	c.GetTokenUsage()
 	c = nil
 	c.GetTokenUsage()
 }
 
-func TestCopilotMetricsCliTokenUsage_GetAvgTokensPerRequest(tt *testing.T) {
+func TestCopilotMetricsCLITokenUsage_GetAvgTokensPerRequest(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsCliTokenUsage{}
+	c := &CopilotMetricsCLITokenUsage{}
 	c.GetAvgTokensPerRequest()
 	c = nil
 	c.GetAvgTokensPerRequest()
 }
 
-func TestCopilotMetricsCliTokenUsage_GetOutputTokensSum(tt *testing.T) {
+func TestCopilotMetricsCLITokenUsage_GetOutputTokensSum(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsCliTokenUsage{}
+	c := &CopilotMetricsCLITokenUsage{}
 	c.GetOutputTokensSum()
 	c = nil
 	c.GetOutputTokensSum()
 }
 
-func TestCopilotMetricsCliTokenUsage_GetPromptTokensSum(tt *testing.T) {
+func TestCopilotMetricsCLITokenUsage_GetPromptTokensSum(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsCliTokenUsage{}
+	c := &CopilotMetricsCLITokenUsage{}
 	c.GetPromptTokensSum()
 	c = nil
 	c.GetPromptTokensSum()
 }
 
-func TestCopilotMetricsCliVersion_GetCliVersion(tt *testing.T) {
+func TestCopilotMetricsCLIVersion_GetCLIVersion(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsCliVersion{}
-	c.GetCliVersion()
+	c := &CopilotMetricsCLIVersion{}
+	c.GetCLIVersion()
 	c = nil
-	c.GetCliVersion()
+	c.GetCLIVersion()
 }
 
-func TestCopilotMetricsCliVersion_GetSampledAt(tt *testing.T) {
+func TestCopilotMetricsCLIVersion_GetSampledAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
-	c := &CopilotMetricsCliVersion{SampledAt: &zeroValue}
+	c := &CopilotMetricsCLIVersion{SampledAt: &zeroValue}
 	c.GetSampledAt()
-	c = &CopilotMetricsCliVersion{}
+	c = &CopilotMetricsCLIVersion{}
 	c.GetSampledAt()
 	c = nil
 	c.GetSampledAt()
@@ -12119,12 +12119,12 @@ func TestCopilotUserDailyMetrics_GetOrganizationID(tt *testing.T) {
 	c.GetOrganizationID()
 }
 
-func TestCopilotUserDailyMetrics_GetTotalsByCli(tt *testing.T) {
+func TestCopilotUserDailyMetrics_GetTotalsByCLI(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserDailyMetrics{}
-	c.GetTotalsByCli()
+	c.GetTotalsByCLI()
 	c = nil
-	c.GetTotalsByCli()
+	c.GetTotalsByCLI()
 }
 
 func TestCopilotUserDailyMetrics_GetTotalsByFeature(tt *testing.T) {
@@ -12198,12 +12198,12 @@ func TestCopilotUserDailyMetrics_GetUsedChat(tt *testing.T) {
 	c.GetUsedChat()
 }
 
-func TestCopilotUserDailyMetrics_GetUsedCli(tt *testing.T) {
+func TestCopilotUserDailyMetrics_GetUsedCLI(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserDailyMetrics{}
-	c.GetUsedCli()
+	c.GetUsedCLI()
 	c = nil
-	c.GetUsedCli()
+	c.GetUsedCLI()
 }
 
 func TestCopilotUserDailyMetrics_GetUsedCopilotCodeReviewActive(tt *testing.T) {
@@ -12468,12 +12468,12 @@ func TestCopilotUserPeriodicMetrics_GetReportStartDay(tt *testing.T) {
 	c.GetReportStartDay()
 }
 
-func TestCopilotUserPeriodicMetrics_GetTotalsByCli(tt *testing.T) {
+func TestCopilotUserPeriodicMetrics_GetTotalsByCLI(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserPeriodicMetrics{}
-	c.GetTotalsByCli()
+	c.GetTotalsByCLI()
 	c = nil
-	c.GetTotalsByCli()
+	c.GetTotalsByCLI()
 }
 
 func TestCopilotUserPeriodicMetrics_GetTotalsByFeature(tt *testing.T) {
@@ -12547,12 +12547,12 @@ func TestCopilotUserPeriodicMetrics_GetUsedChat(tt *testing.T) {
 	c.GetUsedChat()
 }
 
-func TestCopilotUserPeriodicMetrics_GetUsedCli(tt *testing.T) {
+func TestCopilotUserPeriodicMetrics_GetUsedCLI(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserPeriodicMetrics{}
-	c.GetUsedCli()
+	c.GetUsedCLI()
 	c = nil
-	c.GetUsedCli()
+	c.GetUsedCLI()
 }
 
 func TestCopilotUserPeriodicMetrics_GetUsedCopilotCodeReviewActive(tt *testing.T) {

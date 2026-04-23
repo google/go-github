@@ -8214,12 +8214,12 @@ func (c *CopilotDailyMetrics) GetCodeGenerationActivityCount() int {
 	return c.CodeGenerationActivityCount
 }
 
-// GetDailyActiveCliUsers returns the DailyActiveCliUsers field.
-func (c *CopilotDailyMetrics) GetDailyActiveCliUsers() int {
+// GetDailyActiveCLIUsers returns the DailyActiveCLIUsers field.
+func (c *CopilotDailyMetrics) GetDailyActiveCLIUsers() int {
 	if c == nil {
 		return 0
 	}
-	return c.DailyActiveCliUsers
+	return c.DailyActiveCLIUsers
 }
 
 // GetDailyActiveCopilotCloudAgentUsers returns the DailyActiveCopilotCloudAgentUsers field.
@@ -8334,12 +8334,12 @@ func (c *CopilotDailyMetrics) GetPullRequests() *CopilotMetricsPullRequests {
 	return c.PullRequests
 }
 
-// GetTotalsByCli returns the TotalsByCli field.
-func (c *CopilotDailyMetrics) GetTotalsByCli() *CopilotMetricsCli {
+// GetTotalsByCLI returns the TotalsByCLI field.
+func (c *CopilotDailyMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 	if c == nil {
 		return nil
 	}
-	return c.TotalsByCli
+	return c.TotalsByCLI
 }
 
 // GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
@@ -8862,16 +8862,16 @@ func (c *CopilotMetrics) GetTotalEngagedUsers() int {
 	return *c.TotalEngagedUsers
 }
 
-// GetLastKnownCliVersion returns the LastKnownCliVersion field.
-func (c *CopilotMetricsCli) GetLastKnownCliVersion() *CopilotMetricsCliVersion {
+// GetLastKnownCLIVersion returns the LastKnownCLIVersion field.
+func (c *CopilotMetricsCLI) GetLastKnownCLIVersion() *CopilotMetricsCLIVersion {
 	if c == nil {
 		return nil
 	}
-	return c.LastKnownCliVersion
+	return c.LastKnownCLIVersion
 }
 
 // GetPromptCount returns the PromptCount field.
-func (c *CopilotMetricsCli) GetPromptCount() int {
+func (c *CopilotMetricsCLI) GetPromptCount() int {
 	if c == nil {
 		return 0
 	}
@@ -8879,7 +8879,7 @@ func (c *CopilotMetricsCli) GetPromptCount() int {
 }
 
 // GetRequestCount returns the RequestCount field.
-func (c *CopilotMetricsCli) GetRequestCount() int {
+func (c *CopilotMetricsCLI) GetRequestCount() int {
 	if c == nil {
 		return 0
 	}
@@ -8887,7 +8887,7 @@ func (c *CopilotMetricsCli) GetRequestCount() int {
 }
 
 // GetSessionCount returns the SessionCount field.
-func (c *CopilotMetricsCli) GetSessionCount() int {
+func (c *CopilotMetricsCLI) GetSessionCount() int {
 	if c == nil {
 		return 0
 	}
@@ -8895,7 +8895,7 @@ func (c *CopilotMetricsCli) GetSessionCount() int {
 }
 
 // GetTokenUsage returns the TokenUsage field.
-func (c *CopilotMetricsCli) GetTokenUsage() *CopilotMetricsCliTokenUsage {
+func (c *CopilotMetricsCLI) GetTokenUsage() *CopilotMetricsCLITokenUsage {
 	if c == nil {
 		return nil
 	}
@@ -8903,7 +8903,7 @@ func (c *CopilotMetricsCli) GetTokenUsage() *CopilotMetricsCliTokenUsage {
 }
 
 // GetAvgTokensPerRequest returns the AvgTokensPerRequest field.
-func (c *CopilotMetricsCliTokenUsage) GetAvgTokensPerRequest() float64 {
+func (c *CopilotMetricsCLITokenUsage) GetAvgTokensPerRequest() float64 {
 	if c == nil {
 		return 0
 	}
@@ -8911,7 +8911,7 @@ func (c *CopilotMetricsCliTokenUsage) GetAvgTokensPerRequest() float64 {
 }
 
 // GetOutputTokensSum returns the OutputTokensSum field.
-func (c *CopilotMetricsCliTokenUsage) GetOutputTokensSum() int {
+func (c *CopilotMetricsCLITokenUsage) GetOutputTokensSum() int {
 	if c == nil {
 		return 0
 	}
@@ -8919,23 +8919,23 @@ func (c *CopilotMetricsCliTokenUsage) GetOutputTokensSum() int {
 }
 
 // GetPromptTokensSum returns the PromptTokensSum field.
-func (c *CopilotMetricsCliTokenUsage) GetPromptTokensSum() int {
+func (c *CopilotMetricsCLITokenUsage) GetPromptTokensSum() int {
 	if c == nil {
 		return 0
 	}
 	return c.PromptTokensSum
 }
 
-// GetCliVersion returns the CliVersion field.
-func (c *CopilotMetricsCliVersion) GetCliVersion() string {
+// GetCLIVersion returns the CLIVersion field.
+func (c *CopilotMetricsCLIVersion) GetCLIVersion() string {
 	if c == nil {
 		return ""
 	}
-	return c.CliVersion
+	return c.CLIVersion
 }
 
 // GetSampledAt returns the SampledAt field if it's non-nil, zero value otherwise.
-func (c *CopilotMetricsCliVersion) GetSampledAt() Timestamp {
+func (c *CopilotMetricsCLIVersion) GetSampledAt() Timestamp {
 	if c == nil || c.SampledAt == nil {
 		return Timestamp{}
 	}
@@ -9694,12 +9694,12 @@ func (c *CopilotUserDailyMetrics) GetOrganizationID() string {
 	return c.OrganizationID
 }
 
-// GetTotalsByCli returns the TotalsByCli field.
-func (c *CopilotUserDailyMetrics) GetTotalsByCli() *CopilotMetricsCli {
+// GetTotalsByCLI returns the TotalsByCLI field.
+func (c *CopilotUserDailyMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 	if c == nil {
 		return nil
 	}
-	return c.TotalsByCli
+	return c.TotalsByCLI
 }
 
 // GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
@@ -9758,12 +9758,12 @@ func (c *CopilotUserDailyMetrics) GetUsedChat() bool {
 	return c.UsedChat
 }
 
-// GetUsedCli returns the UsedCli field.
-func (c *CopilotUserDailyMetrics) GetUsedCli() bool {
+// GetUsedCLI returns the UsedCLI field.
+func (c *CopilotUserDailyMetrics) GetUsedCLI() bool {
 	if c == nil {
 		return false
 	}
-	return c.UsedCli
+	return c.UsedCLI
 }
 
 // GetUsedCopilotCodeReviewActive returns the UsedCopilotCodeReviewActive field.
@@ -10022,12 +10022,12 @@ func (c *CopilotUserPeriodicMetrics) GetReportStartDay() string {
 	return c.ReportStartDay
 }
 
-// GetTotalsByCli returns the TotalsByCli field.
-func (c *CopilotUserPeriodicMetrics) GetTotalsByCli() *CopilotMetricsCli {
+// GetTotalsByCLI returns the TotalsByCLI field.
+func (c *CopilotUserPeriodicMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 	if c == nil {
 		return nil
 	}
-	return c.TotalsByCli
+	return c.TotalsByCLI
 }
 
 // GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
@@ -10086,12 +10086,12 @@ func (c *CopilotUserPeriodicMetrics) GetUsedChat() bool {
 	return c.UsedChat
 }
 
-// GetUsedCli returns the UsedCli field.
-func (c *CopilotUserPeriodicMetrics) GetUsedCli() bool {
+// GetUsedCLI returns the UsedCLI field.
+func (c *CopilotUserPeriodicMetrics) GetUsedCLI() bool {
 	if c == nil {
 		return false
 	}
-	return c.UsedCli
+	return c.UsedCLI
 }
 
 // GetUsedCopilotCodeReviewActive returns the UsedCopilotCodeReviewActive field.
