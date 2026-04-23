@@ -25709,6 +25709,25 @@ func TestListOptions_GetPerPage(tt *testing.T) {
 	l.GetPerPage()
 }
 
+func TestListOrganizationCopilotCodingAgentRepositoriesResponse_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*Repository{}
+	l := &ListOrganizationCopilotCodingAgentRepositoriesResponse{Repositories: zeroValue}
+	l.GetRepositories()
+	l = &ListOrganizationCopilotCodingAgentRepositoriesResponse{}
+	l.GetRepositories()
+	l = nil
+	l.GetRepositories()
+}
+
+func TestListOrganizationCopilotCodingAgentRepositoriesResponse_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	l := &ListOrganizationCopilotCodingAgentRepositoriesResponse{}
+	l.GetTotalCount()
+	l = nil
+	l.GetTotalCount()
+}
+
 func TestListOrganizations_GetOrganizations(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*Organization{}
