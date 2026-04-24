@@ -137,12 +137,12 @@ type Credit struct {
 func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo, ghsaID string) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/security-advisories/%v/cve", owner, repo, ghsaID)
 
-	req, err := s.client.NewRequest("POST", url, nil)
+	req, err := s.client.NewRequest(ctx, "POST", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		if errors.As(err, new(*AcceptedError)) {
 			return resp, nil
@@ -163,13 +163,13 @@ func (s *SecurityAdvisoriesService) RequestCVE(ctx context.Context, owner, repo,
 func (s *SecurityAdvisoriesService) CreateTemporaryPrivateFork(ctx context.Context, owner, repo, ghsaID string) (*Repository, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/security-advisories/%v/forks", owner, repo, ghsaID)
 
-	req, err := s.client.NewRequest("POST", url, nil)
+	req, err := s.client.NewRequest(ctx, "POST", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var fork Repository
-	resp, err := s.client.Do(ctx, req, &fork)
+	resp, err := s.client.Do(req, &fork)
 	if err != nil {
 		var aerr *AcceptedError
 		if errors.As(err, &aerr) {
@@ -197,13 +197,13 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrg(ctx c
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var advisories []*SecurityAdvisory
-	resp, err := s.client.Do(ctx, req, &advisories)
+	resp, err := s.client.Do(req, &advisories)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -223,13 +223,13 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisories(ctx context
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var advisories []*SecurityAdvisory
-	resp, err := s.client.Do(ctx, req, &advisories)
+	resp, err := s.client.Do(req, &advisories)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -249,13 +249,13 @@ func (s *SecurityAdvisoriesService) ListGlobalSecurityAdvisories(ctx context.Con
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var advisories []*GlobalSecurityAdvisory
-	resp, err := s.client.Do(ctx, req, &advisories)
+	resp, err := s.client.Do(req, &advisories)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -270,13 +270,13 @@ func (s *SecurityAdvisoriesService) ListGlobalSecurityAdvisories(ctx context.Con
 //meta:operation GET /advisories/{ghsa_id}
 func (s *SecurityAdvisoriesService) GetGlobalSecurityAdvisories(ctx context.Context, ghsaID string) (*GlobalSecurityAdvisory, *Response, error) {
 	url := fmt.Sprintf("advisories/%v", ghsaID)
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var advisory *GlobalSecurityAdvisory
-	resp, err := s.client.Do(ctx, req, &advisory)
+	resp, err := s.client.Do(req, &advisory)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -38,13 +38,13 @@ func (s *RepositoriesService) ListInvitations(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	invites := []*RepositoryInvitation{}
-	resp, err := s.client.Do(ctx, req, &invites)
+	resp, err := s.client.Do(req, &invites)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -59,12 +59,12 @@ func (s *RepositoriesService) ListInvitations(ctx context.Context, owner, repo s
 //meta:operation DELETE /repos/{owner}/{repo}/invitations/{invitation_id}
 func (s *RepositoriesService) DeleteInvitation(ctx context.Context, owner, repo string, invitationID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/invitations/%v", owner, repo, invitationID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UpdateInvitation updates the permissions associated with a repository
@@ -81,13 +81,13 @@ func (s *RepositoriesService) UpdateInvitation(ctx context.Context, owner, repo 
 		Permissions string `json:"permissions"`
 	}{Permissions: permissions}
 	u := fmt.Sprintf("repos/%v/%v/invitations/%v", owner, repo, invitationID)
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var invite *RepositoryInvitation
-	resp, err := s.client.Do(ctx, req, &invite)
+	resp, err := s.client.Do(req, &invite)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -18,13 +18,13 @@ type EmojisService service
 //
 //meta:operation GET /emojis
 func (s *EmojisService) List(ctx context.Context) (map[string]string, *Response, error) {
-	req, err := s.client.NewRequest("GET", "emojis", nil)
+	req, err := s.client.NewRequest(ctx, "GET", "emojis", nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var emoji map[string]string
-	resp, err := s.client.Do(ctx, req, &emoji)
+	resp, err := s.client.Do(req, &emoji)
 	if err != nil {
 		return nil, resp, err
 	}

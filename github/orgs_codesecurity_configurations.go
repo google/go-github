@@ -152,13 +152,13 @@ func (s *OrganizationsService) ListCodeSecurityConfigurations(ctx context.Contex
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configurations []*CodeSecurityConfiguration
-	resp, err := s.client.Do(ctx, req, &configurations)
+	resp, err := s.client.Do(req, &configurations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -173,13 +173,13 @@ func (s *OrganizationsService) ListCodeSecurityConfigurations(ctx context.Contex
 func (s *OrganizationsService) CreateCodeSecurityConfiguration(ctx context.Context, org string, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations", org)
 
-	req, err := s.client.NewRequest("POST", u, config)
+	req, err := s.client.NewRequest(ctx, "POST", u, config)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configuration *CodeSecurityConfiguration
-	resp, err := s.client.Do(ctx, req, &configuration)
+	resp, err := s.client.Do(req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -194,13 +194,13 @@ func (s *OrganizationsService) CreateCodeSecurityConfiguration(ctx context.Conte
 func (s *OrganizationsService) ListDefaultCodeSecurityConfigurations(ctx context.Context, org string) ([]*CodeSecurityConfigurationWithDefaultForNewRepos, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/defaults", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configurations []*CodeSecurityConfigurationWithDefaultForNewRepos
-	resp, err := s.client.Do(ctx, req, &configurations)
+	resp, err := s.client.Do(req, &configurations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -217,11 +217,11 @@ func (s *OrganizationsService) DetachCodeSecurityConfigurationsFromRepositories(
 	type selectedRepoIDs struct {
 		SelectedIDs []int64 `json:"selected_repository_ids"`
 	}
-	req, err := s.client.NewRequest("DELETE", u, selectedRepoIDs{SelectedIDs: repoIDs})
+	req, err := s.client.NewRequest(ctx, "DELETE", u, selectedRepoIDs{SelectedIDs: repoIDs})
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -236,13 +236,13 @@ func (s *OrganizationsService) DetachCodeSecurityConfigurationsFromRepositories(
 func (s *OrganizationsService) GetCodeSecurityConfiguration(ctx context.Context, org string, configurationID int64) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/%v", org, configurationID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configuration *CodeSecurityConfiguration
-	resp, err := s.client.Do(ctx, req, &configuration)
+	resp, err := s.client.Do(req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -257,13 +257,13 @@ func (s *OrganizationsService) GetCodeSecurityConfiguration(ctx context.Context,
 func (s *OrganizationsService) UpdateCodeSecurityConfiguration(ctx context.Context, org string, configurationID int64, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/%v", org, configurationID)
 
-	req, err := s.client.NewRequest("PATCH", u, config)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, config)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configuration *CodeSecurityConfiguration
-	resp, err := s.client.Do(ctx, req, &configuration)
+	resp, err := s.client.Do(req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -278,11 +278,11 @@ func (s *OrganizationsService) UpdateCodeSecurityConfiguration(ctx context.Conte
 func (s *OrganizationsService) DeleteCodeSecurityConfiguration(ctx context.Context, org string, configurationID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/code-security/configurations/%v", org, configurationID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -300,11 +300,11 @@ func (s *OrganizationsService) AttachCodeSecurityConfigurationToRepositories(ctx
 		Scope       string  `json:"scope"`
 		SelectedIDs []int64 `json:"selected_repository_ids,omitempty"`
 	}
-	req, err := s.client.NewRequest("POST", u, selectedRepoIDs{Scope: scope, SelectedIDs: repoIDs})
+	req, err := s.client.NewRequest(ctx, "POST", u, selectedRepoIDs{Scope: scope, SelectedIDs: repoIDs})
 	if err != nil {
 		return nil, err
 	}
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil && resp.StatusCode != http.StatusAccepted { // StatusAccepted(202) is the expected status code as job is queued for processing
 		return resp, err
 	}
@@ -321,12 +321,12 @@ func (s *OrganizationsService) SetDefaultCodeSecurityConfiguration(ctx context.C
 	type configParam struct {
 		DefaultForNewRepos string `json:"default_for_new_repos"`
 	}
-	req, err := s.client.NewRequest("PUT", u, configParam{DefaultForNewRepos: newReposParam})
+	req, err := s.client.NewRequest(ctx, "PUT", u, configParam{DefaultForNewRepos: newReposParam})
 	if err != nil {
 		return nil, nil, err
 	}
 	var config *CodeSecurityConfigurationWithDefaultForNewRepos
-	resp, err := s.client.Do(ctx, req, &config)
+	resp, err := s.client.Do(req, &config)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -345,13 +345,13 @@ func (s *OrganizationsService) ListCodeSecurityConfigurationRepositories(ctx con
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var attachments []*RepositoryAttachment
-	resp, err := s.client.Do(ctx, req, &attachments)
+	resp, err := s.client.Do(req, &attachments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -367,12 +367,12 @@ func (s *OrganizationsService) ListCodeSecurityConfigurationRepositories(ctx con
 func (s *OrganizationsService) GetCodeSecurityConfigurationForRepository(ctx context.Context, org, repo string) (*RepositoryCodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-security-configuration", org, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 	var repoConfig *RepositoryCodeSecurityConfiguration
-	resp, err := s.client.Do(ctx, req, &repoConfig)
+	resp, err := s.client.Do(req, &repoConfig)
 	if err != nil {
 		return nil, resp, err
 	}

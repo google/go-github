@@ -119,7 +119,7 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 		Source:    pages.Source,
 	}
 
-	req, err := s.client.NewRequest("POST", u, pagesReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, pagesReq)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -127,7 +127,7 @@ func (s *RepositoriesService) EnablePages(ctx context.Context, owner, repo strin
 	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
 
 	var enable *Pages
-	resp, err := s.client.Do(ctx, req, &enable)
+	resp, err := s.client.Do(req, &enable)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -166,12 +166,12 @@ type PagesUpdate struct {
 func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *PagesUpdate) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -195,12 +195,12 @@ type PagesUpdateWithoutCNAME struct {
 func (s *RepositoriesService) UpdatePagesGHES(ctx context.Context, owner, repo string, opts *PagesUpdateWithoutCNAME) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -214,14 +214,14 @@ func (s *RepositoriesService) UpdatePagesGHES(ctx context.Context, owner, repo s
 //meta:operation DELETE /repos/{owner}/{repo}/pages
 func (s *RepositoriesService) DisablePages(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeEnablePagesAPIPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetPagesInfo fetches information about a GitHub Pages site.
@@ -231,13 +231,13 @@ func (s *RepositoriesService) DisablePages(ctx context.Context, owner, repo stri
 //meta:operation GET /repos/{owner}/{repo}/pages
 func (s *RepositoriesService) GetPagesInfo(ctx context.Context, owner, repo string) (*Pages, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var site *Pages
-	resp, err := s.client.Do(ctx, req, &site)
+	resp, err := s.client.Do(req, &site)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -257,13 +257,13 @@ func (s *RepositoriesService) ListPagesBuilds(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pages []*PagesBuild
-	resp, err := s.client.Do(ctx, req, &pages)
+	resp, err := s.client.Do(req, &pages)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -278,13 +278,13 @@ func (s *RepositoriesService) ListPagesBuilds(ctx context.Context, owner, repo s
 //meta:operation GET /repos/{owner}/{repo}/pages/builds/latest
 func (s *RepositoriesService) GetLatestPagesBuild(ctx context.Context, owner, repo string) (*PagesBuild, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/builds/latest", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var build *PagesBuild
-	resp, err := s.client.Do(ctx, req, &build)
+	resp, err := s.client.Do(req, &build)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -299,13 +299,13 @@ func (s *RepositoriesService) GetLatestPagesBuild(ctx context.Context, owner, re
 //meta:operation GET /repos/{owner}/{repo}/pages/builds/{build_id}
 func (s *RepositoriesService) GetPageBuild(ctx context.Context, owner, repo string, id int64) (*PagesBuild, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/builds/%v", owner, repo, id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var build *PagesBuild
-	resp, err := s.client.Do(ctx, req, &build)
+	resp, err := s.client.Do(req, &build)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -320,13 +320,13 @@ func (s *RepositoriesService) GetPageBuild(ctx context.Context, owner, repo stri
 //meta:operation POST /repos/{owner}/{repo}/pages/builds
 func (s *RepositoriesService) RequestPageBuild(ctx context.Context, owner, repo string) (*PagesBuild, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/builds", owner, repo)
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var build *PagesBuild
-	resp, err := s.client.Do(ctx, req, &build)
+	resp, err := s.client.Do(req, &build)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -341,13 +341,13 @@ func (s *RepositoriesService) RequestPageBuild(ctx context.Context, owner, repo 
 //meta:operation GET /repos/{owner}/{repo}/pages/health
 func (s *RepositoriesService) GetPageHealthCheck(ctx context.Context, owner, repo string) (*PagesHealthCheckResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages/health", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var healthCheckResponse *PagesHealthCheckResponse
-	resp, err := s.client.Do(ctx, req, &healthCheckResponse)
+	resp, err := s.client.Do(req, &healthCheckResponse)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -230,13 +230,13 @@ func (s *AppsService) Get(ctx context.Context, appSlug string) (*App, *Response,
 		u = "app"
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var app *App
-	resp, err := s.client.Do(ctx, req, &app)
+	resp, err := s.client.Do(req, &app)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -255,13 +255,13 @@ func (s *AppsService) ListInstallationRequests(ctx context.Context, opts *ListOp
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var i []*InstallationRequest
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -280,13 +280,13 @@ func (s *AppsService) ListInstallations(ctx context.Context, opts *ListOptions) 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var i []*Installation
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -314,7 +314,7 @@ func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptio
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -322,7 +322,7 @@ func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptio
 	var i struct {
 		Installations []*Installation `json:"installations"`
 	}
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -338,12 +338,12 @@ func (s *AppsService) ListUserInstallations(ctx context.Context, opts *ListOptio
 func (s *AppsService) SuspendInstallation(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("app/installations/%v/suspended", id)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UnsuspendInstallation unsuspends the specified installation.
@@ -354,12 +354,12 @@ func (s *AppsService) SuspendInstallation(ctx context.Context, id int64) (*Respo
 func (s *AppsService) UnsuspendInstallation(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("app/installations/%v/suspended", id)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteInstallation deletes the specified installation.
@@ -370,12 +370,12 @@ func (s *AppsService) UnsuspendInstallation(ctx context.Context, id int64) (*Res
 func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("app/installations/%v", id)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // CreateInstallationToken creates a new installation token.
@@ -386,13 +386,13 @@ func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Respon
 func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opts *InstallationTokenOptions) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *InstallationToken
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -410,13 +410,13 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt
 func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id int64, opts *InstallationTokenListRepoOptions) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *InstallationToken
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -432,7 +432,7 @@ func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id i
 func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID int64, title, body string) (*Attachment, *Response, error) {
 	u := fmt.Sprintf("content_references/%v/attachments", contentReferenceID)
 	payload := &Attachment{Title: &title, Body: &body}
-	req, err := s.client.NewRequest("POST", u, payload)
+	req, err := s.client.NewRequest(ctx, "POST", u, payload)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -440,7 +440,7 @@ func (s *AppsService) CreateAttachment(ctx context.Context, contentReferenceID i
 	req.Header.Set("Accept", mediaTypeContentAttachmentsPreview)
 
 	var m *Attachment
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -485,13 +485,13 @@ func (s *AppsService) FindUserInstallation(ctx context.Context, user string) (*I
 }
 
 func (s *AppsService) getInstallation(ctx context.Context, url string) (*Installation, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var i *Installation
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}

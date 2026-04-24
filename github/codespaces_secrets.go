@@ -61,13 +61,13 @@ func (s *CodespacesService) ListRepoSecrets(ctx context.Context, owner, repo str
 }
 
 func (s *CodespacesService) listSecrets(ctx context.Context, url string) (*Secrets, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var secrets *Secrets
-	resp, err := s.client.Do(ctx, req, &secrets)
+	resp, err := s.client.Do(req, &secrets)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -111,13 +111,13 @@ func (s *CodespacesService) GetRepoPublicKey(ctx context.Context, owner, repo st
 }
 
 func (s *CodespacesService) getPublicKey(ctx context.Context, url string) (*PublicKey, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var publicKey *PublicKey
-	resp, err := s.client.Do(ctx, req, &publicKey)
+	resp, err := s.client.Do(req, &publicKey)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -164,13 +164,13 @@ func (s *CodespacesService) GetRepoSecret(ctx context.Context, owner, repo, name
 }
 
 func (s *CodespacesService) getSecret(ctx context.Context, url string) (*Secret, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var secret *Secret
-	resp, err := s.client.Do(ctx, req, &secret)
+	resp, err := s.client.Do(req, &secret)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -229,12 +229,12 @@ func (s *CodespacesService) CreateOrUpdateRepoSecret(ctx context.Context, owner,
 }
 
 func (s *CodespacesService) createOrUpdateSecret(ctx context.Context, url string, eSecret *EncryptedSecret) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, eSecret)
+	req, err := s.client.NewRequest(ctx, "PUT", url, eSecret)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -281,12 +281,12 @@ func (s *CodespacesService) DeleteRepoSecret(ctx context.Context, owner, repo, n
 }
 
 func (s *CodespacesService) deleteSecret(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -330,13 +330,13 @@ func (s *CodespacesService) ListSelectedReposForOrgSecret(ctx context.Context, o
 }
 
 func (s *CodespacesService) listSelectedReposForSecret(ctx context.Context, url string) (*SelectedReposList, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repositories *SelectedReposList
-	resp, err := s.client.Do(ctx, req, &repositories)
+	resp, err := s.client.Do(req, &repositories)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -374,12 +374,12 @@ func (s *CodespacesService) setSelectedRepoForSecret(ctx context.Context, url st
 		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
 	}
 
-	req, err := s.client.NewRequest("PUT", url, repoIDs{SelectedIDs: ids})
+	req, err := s.client.NewRequest(ctx, "PUT", url, repoIDs{SelectedIDs: ids})
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -426,12 +426,12 @@ func (s *CodespacesService) AddSelectedRepoToOrgSecret(ctx context.Context, org,
 }
 
 func (s *CodespacesService) addSelectedRepoToSecret(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -478,12 +478,12 @@ func (s *CodespacesService) RemoveSelectedRepoFromOrgSecret(ctx context.Context,
 }
 
 func (s *CodespacesService) removeSelectedRepoFromSecret(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

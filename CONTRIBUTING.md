@@ -164,7 +164,7 @@ Every exported method and type needs to have code comments that follow
 //meta:operation GET /repos/{owner}/{repo}
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
     u := fmt.Sprintf("repos/%v/%v", owner, repo)
-    req, err := s.client.NewRequest("GET", u, nil)
+    req, err := s.client.NewRequest(ctx, "GET", u, nil)
     ...
 }
 ```

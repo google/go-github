@@ -114,13 +114,13 @@ func (s *GistsService) List(ctx context.Context, user string, opts *GistListOpti
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var gists []*Gist
-	resp, err := s.client.Do(ctx, req, &gists)
+	resp, err := s.client.Do(req, &gists)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -139,13 +139,13 @@ func (s *GistsService) ListAll(ctx context.Context, opts *GistListOptions) ([]*G
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var gists []*Gist
-	resp, err := s.client.Do(ctx, req, &gists)
+	resp, err := s.client.Do(req, &gists)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -164,13 +164,13 @@ func (s *GistsService) ListStarred(ctx context.Context, opts *GistListOptions) (
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var gists []*Gist
-	resp, err := s.client.Do(ctx, req, &gists)
+	resp, err := s.client.Do(req, &gists)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -185,13 +185,13 @@ func (s *GistsService) ListStarred(ctx context.Context, opts *GistListOptions) (
 //meta:operation GET /gists/{gist_id}
 func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var gist *Gist
-	resp, err := s.client.Do(ctx, req, &gist)
+	resp, err := s.client.Do(req, &gist)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -206,13 +206,13 @@ func (s *GistsService) Get(ctx context.Context, id string) (*Gist, *Response, er
 //meta:operation GET /gists/{gist_id}/{sha}
 func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v/%v", id, sha)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var gist *Gist
-	resp, err := s.client.Do(ctx, req, &gist)
+	resp, err := s.client.Do(req, &gist)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -227,13 +227,13 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 //meta:operation POST /gists
 func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response, error) {
 	u := "gists"
-	req, err := s.client.NewRequest("POST", u, gist)
+	req, err := s.client.NewRequest(ctx, "POST", u, gist)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var g *Gist
-	resp, err := s.client.Do(ctx, req, &g)
+	resp, err := s.client.Do(req, &g)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -248,13 +248,13 @@ func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response
 //meta:operation PATCH /gists/{gist_id}
 func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
-	req, err := s.client.NewRequest("PATCH", u, gist)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, gist)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var g *Gist
-	resp, err := s.client.Do(ctx, req, &g)
+	resp, err := s.client.Do(req, &g)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -274,13 +274,13 @@ func (s *GistsService) ListCommits(ctx context.Context, id string, opts *ListOpt
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var gistCommits []*GistCommit
-	resp, err := s.client.Do(ctx, req, &gistCommits)
+	resp, err := s.client.Do(req, &gistCommits)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -295,12 +295,12 @@ func (s *GistsService) ListCommits(ctx context.Context, id string, opts *ListOpt
 //meta:operation DELETE /gists/{gist_id}
 func (s *GistsService) Delete(ctx context.Context, id string) (*Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // Star a gist on behalf of authenticated user.
@@ -310,12 +310,12 @@ func (s *GistsService) Delete(ctx context.Context, id string) (*Response, error)
 //meta:operation PUT /gists/{gist_id}/star
 func (s *GistsService) Star(ctx context.Context, id string) (*Response, error) {
 	u := fmt.Sprintf("gists/%v/star", id)
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // Unstar a gist on a behalf of authenticated user.
@@ -325,12 +325,12 @@ func (s *GistsService) Star(ctx context.Context, id string) (*Response, error) {
 //meta:operation DELETE /gists/{gist_id}/star
 func (s *GistsService) Unstar(ctx context.Context, id string) (*Response, error) {
 	u := fmt.Sprintf("gists/%v/star", id)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // IsStarred checks if a gist is starred by authenticated user.
@@ -340,12 +340,12 @@ func (s *GistsService) Unstar(ctx context.Context, id string) (*Response, error)
 //meta:operation GET /gists/{gist_id}/star
 func (s *GistsService) IsStarred(ctx context.Context, id string) (bool, *Response, error) {
 	u := fmt.Sprintf("gists/%v/star", id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	starred, err := parseBoolResponse(err)
 	return starred, resp, err
 }
@@ -357,13 +357,13 @@ func (s *GistsService) IsStarred(ctx context.Context, id string) (bool, *Respons
 //meta:operation POST /gists/{gist_id}/forks
 func (s *GistsService) Fork(ctx context.Context, id string) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v/forks", id)
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var g *Gist
-	resp, err := s.client.Do(ctx, req, &g)
+	resp, err := s.client.Do(req, &g)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -383,13 +383,13 @@ func (s *GistsService) ListForks(ctx context.Context, id string, opts *ListOptio
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var gistForks []*GistFork
-	resp, err := s.client.Do(ctx, req, &gistForks)
+	resp, err := s.client.Do(req, &gistForks)
 	if err != nil {
 		return nil, resp, err
 	}

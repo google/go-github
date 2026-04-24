@@ -285,13 +285,13 @@ func (s *ProjectsService) ListOrganizationProjects(ctx context.Context, org stri
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var projects []*ProjectV2
-	resp, err := s.client.Do(ctx, req, &projects)
+	resp, err := s.client.Do(req, &projects)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -306,13 +306,13 @@ func (s *ProjectsService) ListOrganizationProjects(ctx context.Context, org stri
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}
 func (s *ProjectsService) GetOrganizationProject(ctx context.Context, org string, projectNumber int) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v", org, projectNumber)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var project *ProjectV2
-	resp, err := s.client.Do(ctx, req, &project)
+	resp, err := s.client.Do(req, &project)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -331,13 +331,13 @@ func (s *ProjectsService) ListUserProjects(ctx context.Context, username string,
 	if err != nil {
 		return nil, nil, err
 	}
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var projects []*ProjectV2
-	resp, err := s.client.Do(ctx, req, &projects)
+	resp, err := s.client.Do(req, &projects)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -352,13 +352,13 @@ func (s *ProjectsService) ListUserProjects(ctx context.Context, username string,
 //meta:operation GET /users/{username}/projectsV2/{project_number}
 func (s *ProjectsService) GetUserProject(ctx context.Context, username string, projectNumber int) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v", username, projectNumber)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var project *ProjectV2
-	resp, err := s.client.Do(ctx, req, &project)
+	resp, err := s.client.Do(req, &project)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -378,13 +378,13 @@ func (s *ProjectsService) ListOrganizationProjectFields(ctx context.Context, org
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var fields []*ProjectV2Field
-	resp, err := s.client.Do(ctx, req, &fields)
+	resp, err := s.client.Do(req, &fields)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -404,13 +404,13 @@ func (s *ProjectsService) ListUserProjectFields(ctx context.Context, user string
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var fields []*ProjectV2Field
-	resp, err := s.client.Do(ctx, req, &fields)
+	resp, err := s.client.Do(req, &fields)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -425,13 +425,13 @@ func (s *ProjectsService) ListUserProjectFields(ctx context.Context, user string
 //meta:operation GET /orgs/{org}/projectsV2/{project_number}/fields/{field_id}
 func (s *ProjectsService) GetOrganizationProjectField(ctx context.Context, org string, projectNumber int, fieldID int64) (*ProjectV2Field, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/fields/%v", org, projectNumber, fieldID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var field *ProjectV2Field
-	resp, err := s.client.Do(ctx, req, &field)
+	resp, err := s.client.Do(req, &field)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -446,13 +446,13 @@ func (s *ProjectsService) GetOrganizationProjectField(ctx context.Context, org s
 //meta:operation GET /users/{username}/projectsV2/{project_number}/fields/{field_id}
 func (s *ProjectsService) GetUserProjectField(ctx context.Context, user string, projectNumber int, fieldID int64) (*ProjectV2Field, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/fields/%v", user, projectNumber, fieldID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var field *ProjectV2Field
-	resp, err := s.client.Do(ctx, req, &field)
+	resp, err := s.client.Do(req, &field)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -523,13 +523,13 @@ func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var items []*ProjectV2Item
-	resp, err := s.client.Do(ctx, req, &items)
+	resp, err := s.client.Do(req, &items)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -544,13 +544,13 @@ func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org 
 //meta:operation POST /orgs/{org}/projectsV2/{project_number}/items
 func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org string, projectNumber int, opts *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items", org, projectNumber)
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var item *ProjectV2Item
-	resp, err := s.client.Do(ctx, req, &item)
+	resp, err := s.client.Do(req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -570,13 +570,13 @@ func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org st
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var item *ProjectV2Item
-	resp, err := s.client.Do(ctx, req, &item)
+	resp, err := s.client.Do(req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -591,13 +591,13 @@ func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org st
 //meta:operation PATCH /orgs/{org}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items/%v", org, projectNumber, itemID)
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var item *ProjectV2Item
-	resp, err := s.client.Do(ctx, req, &item)
+	resp, err := s.client.Do(req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -612,12 +612,12 @@ func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org
 //meta:operation DELETE /orgs/{org}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) DeleteOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items/%v", org, projectNumber, itemID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListUserProjectItems lists items for a user owned project.
@@ -632,13 +632,13 @@ func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username str
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var items []*ProjectV2Item
-	resp, err := s.client.Do(ctx, req, &items)
+	resp, err := s.client.Do(req, &items)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -653,13 +653,13 @@ func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username str
 //meta:operation POST /users/{username}/projectsV2/{project_number}/items
 func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username string, projectNumber int, opts *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items", username, projectNumber)
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var item *ProjectV2Item
-	resp, err := s.client.Do(ctx, req, &item)
+	resp, err := s.client.Do(req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -679,13 +679,13 @@ func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username strin
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var item *ProjectV2Item
-	resp, err := s.client.Do(ctx, req, &item)
+	resp, err := s.client.Do(req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -700,13 +700,13 @@ func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username strin
 //meta:operation PATCH /users/{username}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items/%v", username, projectNumber, itemID)
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var item *ProjectV2Item
-	resp, err := s.client.Do(ctx, req, &item)
+	resp, err := s.client.Do(req, &item)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -721,10 +721,10 @@ func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username st
 //meta:operation DELETE /users/{username}/projectsV2/{project_number}/items/{item_id}
 func (s *ProjectsService) DeleteUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64) (*Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items/%v", username, projectNumber, itemID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

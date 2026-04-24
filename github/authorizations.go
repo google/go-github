@@ -153,14 +153,14 @@ func (s *AuthorizationsService) Check(ctx context.Context, clientID, accessToken
 		AccessToken string `json:"access_token"`
 	}{AccessToken: accessToken}
 
-	req, err := s.client.NewRequest("POST", u, reqBody)
+	req, err := s.client.NewRequest(ctx, "POST", u, reqBody)
 	if err != nil {
 		return nil, nil, err
 	}
 	req.Header.Set("Accept", mediaTypeOAuthAppPreview)
 
 	var a *Authorization
-	resp, err := s.client.Do(ctx, req, &a)
+	resp, err := s.client.Do(req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -188,14 +188,14 @@ func (s *AuthorizationsService) Reset(ctx context.Context, clientID, accessToken
 		AccessToken string `json:"access_token"`
 	}{AccessToken: accessToken}
 
-	req, err := s.client.NewRequest("PATCH", u, reqBody)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, reqBody)
 	if err != nil {
 		return nil, nil, err
 	}
 	req.Header.Set("Accept", mediaTypeOAuthAppPreview)
 
 	var a *Authorization
-	resp, err := s.client.Do(ctx, req, &a)
+	resp, err := s.client.Do(req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -219,13 +219,13 @@ func (s *AuthorizationsService) Revoke(ctx context.Context, clientID, accessToke
 		AccessToken string `json:"access_token"`
 	}{AccessToken: accessToken}
 
-	req, err := s.client.NewRequest("DELETE", u, reqBody)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, reqBody)
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Set("Accept", mediaTypeOAuthAppPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteGrant deletes an OAuth application grant. Deleting an application's
@@ -242,13 +242,13 @@ func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, acces
 		AccessToken string `json:"access_token"`
 	}{AccessToken: accessToken}
 
-	req, err := s.client.NewRequest("DELETE", u, reqBody)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, reqBody)
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Set("Accept", mediaTypeOAuthAppPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // CreateImpersonation creates an impersonation OAuth token.
@@ -262,13 +262,13 @@ func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, acces
 //meta:operation POST /admin/users/{username}/authorizations
 func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, username string, authReq *AuthorizationRequest) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
-	req, err := s.client.NewRequest("POST", u, authReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, authReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var a *Authorization
-	resp, err := s.client.Do(ctx, req, &a)
+	resp, err := s.client.Do(req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -284,10 +284,10 @@ func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, usernam
 //meta:operation DELETE /admin/users/{username}/authorizations
 func (s *AuthorizationsService) DeleteImpersonation(ctx context.Context, username string) (*Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

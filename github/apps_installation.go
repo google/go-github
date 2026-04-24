@@ -27,13 +27,13 @@ func (s *AppsService) ListRepos(ctx context.Context, opts *ListOptions) (*ListRe
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *ListRepositories
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -54,13 +54,13 @@ func (s *AppsService) ListUserRepos(ctx context.Context, id int64, opts *ListOpt
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *ListRepositories
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -75,13 +75,13 @@ func (s *AppsService) ListUserRepos(ctx context.Context, id int64, opts *ListOpt
 //meta:operation PUT /user/installations/{installation_id}/repositories/{repository_id}
 func (s *AppsService) AddRepository(ctx context.Context, instID, repoID int64) (*Repository, *Response, error) {
 	u := fmt.Sprintf("user/installations/%v/repositories/%v", instID, repoID)
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *Repository
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -96,12 +96,12 @@ func (s *AppsService) AddRepository(ctx context.Context, instID, repoID int64) (
 //meta:operation DELETE /user/installations/{installation_id}/repositories/{repository_id}
 func (s *AppsService) RemoveRepository(ctx context.Context, instID, repoID int64) (*Response, error) {
 	u := fmt.Sprintf("user/installations/%v/repositories/%v", instID, repoID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RevokeInstallationToken revokes an installation token.
@@ -111,10 +111,10 @@ func (s *AppsService) RemoveRepository(ctx context.Context, instID, repoID int64
 //meta:operation DELETE /installation/token
 func (s *AppsService) RevokeInstallationToken(ctx context.Context) (*Response, error) {
 	u := "installation/token"
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

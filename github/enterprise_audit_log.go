@@ -22,13 +22,13 @@ func (s *EnterpriseService) GetAuditLog(ctx context.Context, enterprise string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var auditEntries []*AuditEntry
-	resp, err := s.client.Do(ctx, req, &auditEntries)
+	resp, err := s.client.Do(req, &auditEntries)
 	if err != nil {
 		return nil, resp, err
 	}

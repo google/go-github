@@ -102,13 +102,13 @@ func (s *MarketplaceService) ListPlans(ctx context.Context, opts *ListOptions) (
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var plans []*MarketplacePlan
-	resp, err := s.client.Do(ctx, req, &plans)
+	resp, err := s.client.Do(req, &plans)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -131,13 +131,13 @@ func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var accounts []*MarketplacePlanAccount
-	resp, err := s.client.Do(ctx, req, &accounts)
+	resp, err := s.client.Do(req, &accounts)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -156,13 +156,13 @@ func (s *MarketplaceService) ListPlanAccountsForPlan(ctx context.Context, planID
 func (s *MarketplaceService) GetPlanAccountForAccount(ctx context.Context, accountID int64) (*MarketplacePlanAccount, *Response, error) {
 	uri := s.marketplaceURI(fmt.Sprintf("accounts/%v", accountID))
 
-	req, err := s.client.NewRequest("GET", uri, nil)
+	req, err := s.client.NewRequest(ctx, "GET", uri, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var account *MarketplacePlanAccount
-	resp, err := s.client.Do(ctx, req, &account)
+	resp, err := s.client.Do(req, &account)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -189,13 +189,13 @@ func (s *MarketplaceService) ListMarketplacePurchasesForUser(ctx context.Context
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var purchases []*MarketplacePurchase
-	resp, err := s.client.Do(ctx, req, &purchases)
+	resp, err := s.client.Do(req, &purchases)
 	if err != nil {
 		return nil, resp, err
 	}

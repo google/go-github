@@ -107,13 +107,13 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var readme *RepositoryContent
-	resp, err := s.client.Do(ctx, req, &readme)
+	resp, err := s.client.Do(req, &readme)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -201,13 +201,13 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 		return nil, nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, nil, err
 	}
 
 	var rawJSON json.RawMessage
-	resp, err = s.client.Do(ctx, req, &rawJSON)
+	resp, err = s.client.Do(req, &rawJSON)
 	if err != nil {
 		return nil, nil, resp, err
 	}
@@ -233,13 +233,13 @@ func (s *RepositoriesService) GetContents(ctx context.Context, owner, repo, path
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var createResponse *RepositoryContentResponse
-	resp, err := s.client.Do(ctx, req, &createResponse)
+	resp, err := s.client.Do(req, &createResponse)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -255,13 +255,13 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, owner, repo, path 
 //meta:operation PUT /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var updateResponse *RepositoryContentResponse
-	resp, err := s.client.Do(ctx, req, &updateResponse)
+	resp, err := s.client.Do(req, &updateResponse)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -277,13 +277,13 @@ func (s *RepositoriesService) UpdateFile(ctx context.Context, owner, repo, path 
 //meta:operation DELETE /repos/{owner}/{repo}/contents/{path}
 func (s *RepositoriesService) DeleteFile(ctx context.Context, owner, repo, path string, opts *RepositoryContentFileOptions) (*RepositoryContentResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/contents/%v", owner, repo, path)
-	req, err := s.client.NewRequest("DELETE", u, opts)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var deleteResponse *RepositoryContentResponse
-	resp, err := s.client.Do(ctx, req, &deleteResponse)
+	resp, err := s.client.Do(req, &deleteResponse)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -345,12 +345,12 @@ func (s *RepositoriesService) getArchiveLinkWithoutRateLimit(ctx context.Context
 }
 
 func (s *RepositoriesService) getArchiveLinkWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	url, resp, err := s.client.bareDoUntilFound(req, maxRedirects)
 	if err != nil {
 		return nil, resp, err
 	}

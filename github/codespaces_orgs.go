@@ -32,13 +32,13 @@ func (s *CodespacesService) ListInOrg(ctx context.Context, org string, opts *Lis
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var codespaces *ListCodespaces
-	resp, err := s.client.Do(ctx, req, &codespaces)
+	resp, err := s.client.Do(req, &codespaces)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -53,12 +53,12 @@ func (s *CodespacesService) ListInOrg(ctx context.Context, org string, opts *Lis
 //meta:operation PUT /orgs/{org}/codespaces/access
 func (s *CodespacesService) SetOrgAccessControl(ctx context.Context, org string, request CodespacesOrgAccessControlRequest) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/access", org)
-	req, err := s.client.NewRequest("PUT", u, request)
+	req, err := s.client.NewRequest(ctx, "PUT", u, request)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -73,12 +73,12 @@ func (s *CodespacesService) SetOrgAccessControl(ctx context.Context, org string,
 //meta:operation POST /orgs/{org}/codespaces/access/selected_users
 func (s *CodespacesService) AddUsersToOrgAccess(ctx context.Context, org string, usernames []string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/access/selected_users", org)
-	req, err := s.client.NewRequest("POST", u, map[string][]string{"selected_usernames": usernames})
+	req, err := s.client.NewRequest(ctx, "POST", u, map[string][]string{"selected_usernames": usernames})
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -93,12 +93,12 @@ func (s *CodespacesService) AddUsersToOrgAccess(ctx context.Context, org string,
 //meta:operation DELETE /orgs/{org}/codespaces/access/selected_users
 func (s *CodespacesService) RemoveUsersFromOrgAccess(ctx context.Context, org string, usernames []string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/access/selected_users", org)
-	req, err := s.client.NewRequest("DELETE", u, map[string][]string{"selected_usernames": usernames})
+	req, err := s.client.NewRequest(ctx, "DELETE", u, map[string][]string{"selected_usernames": usernames})
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -118,13 +118,13 @@ func (s *CodespacesService) ListUserCodespacesInOrg(ctx context.Context, org, us
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var codespaces *ListCodespaces
-	resp, err := s.client.Do(ctx, req, &codespaces)
+	resp, err := s.client.Do(req, &codespaces)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -139,12 +139,12 @@ func (s *CodespacesService) ListUserCodespacesInOrg(ctx context.Context, org, us
 //meta:operation DELETE /orgs/{org}/members/{username}/codespaces/{codespace_name}
 func (s *CodespacesService) DeleteUserCodespaceInOrg(ctx context.Context, org, username, codespaceName string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/members/%v/codespaces/%v", org, username, codespaceName)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -159,12 +159,12 @@ func (s *CodespacesService) DeleteUserCodespaceInOrg(ctx context.Context, org, u
 //meta:operation POST /orgs/{org}/members/{username}/codespaces/{codespace_name}/stop
 func (s *CodespacesService) StopUserCodespaceInOrg(ctx context.Context, org, username, codespaceName string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/members/%v/codespaces/%v/stop", org, username, codespaceName)
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

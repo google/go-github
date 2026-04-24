@@ -23,13 +23,13 @@ func (s *IssuesService) ListAssignees(ctx context.Context, owner, repo string, o
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var assignees []*User
-	resp, err := s.client.Do(ctx, req, &assignees)
+	resp, err := s.client.Do(req, &assignees)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -44,12 +44,12 @@ func (s *IssuesService) ListAssignees(ctx context.Context, owner, repo string, o
 //meta:operation GET /repos/{owner}/{repo}/assignees/{assignee}
 func (s *IssuesService) IsAssignee(ctx context.Context, owner, repo, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/assignees/%v", owner, repo, user)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	assignee, err := parseBoolResponse(err)
 	return assignee, resp, err
 }
@@ -64,13 +64,13 @@ func (s *IssuesService) AddAssignees(ctx context.Context, owner, repo string, nu
 		Assignees []string `json:"assignees,omitempty"`
 	}{Assignees: assignees}
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/assignees", owner, repo, number)
-	req, err := s.client.NewRequest("POST", u, users)
+	req, err := s.client.NewRequest(ctx, "POST", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var issue *Issue
-	resp, err := s.client.Do(ctx, req, &issue)
+	resp, err := s.client.Do(req, &issue)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -88,13 +88,13 @@ func (s *IssuesService) RemoveAssignees(ctx context.Context, owner, repo string,
 		Assignees []string `json:"assignees,omitempty"`
 	}{Assignees: assignees}
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/assignees", owner, repo, number)
-	req, err := s.client.NewRequest("DELETE", u, users)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var issue *Issue
-	resp, err := s.client.Do(ctx, req, &issue)
+	resp, err := s.client.Do(req, &issue)
 	if err != nil {
 		return nil, resp, err
 	}

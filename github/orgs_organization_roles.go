@@ -60,13 +60,13 @@ type OrganizationFineGrainedPermission struct {
 func (s *OrganizationsService) ListRoles(ctx context.Context, org string) (*OrganizationCustomRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customRepoRoles *OrganizationCustomRoles
-	resp, err := s.client.Do(ctx, req, &customRepoRoles)
+	resp, err := s.client.Do(req, &customRepoRoles)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -83,13 +83,13 @@ func (s *OrganizationsService) ListRoles(ctx context.Context, org string) (*Orga
 func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleID int64) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var resultingRole *CustomOrgRole
-	resp, err := s.client.Do(ctx, req, &resultingRole)
+	resp, err := s.client.Do(req, &resultingRole)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -106,13 +106,13 @@ func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleI
 func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, request CreateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles", org)
 
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var resultingRole *CustomOrgRole
-	resp, err := s.client.Do(ctx, req, &resultingRole)
+	resp, err := s.client.Do(req, &resultingRole)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -129,13 +129,13 @@ func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org stri
 func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, request UpdateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
-	req, err := s.client.NewRequest("PATCH", u, request)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var resultingRole *CustomOrgRole
-	resp, err := s.client.Do(ctx, req, &resultingRole)
+	resp, err := s.client.Do(req, &resultingRole)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -152,13 +152,13 @@ func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org stri
 func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	var resultingRole *CustomOrgRole
-	resp, err := s.client.Do(ctx, req, &resultingRole)
+	resp, err := s.client.Do(req, &resultingRole)
 	if err != nil {
 		return resp, err
 	}
@@ -175,12 +175,12 @@ func (s *OrganizationsService) DeleteCustomOrgRole(ctx context.Context, org stri
 func (s *OrganizationsService) AssignOrgRoleToTeam(ctx context.Context, org, teamSlug string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/teams/%v/%v", org, teamSlug, roleID)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -197,12 +197,12 @@ func (s *OrganizationsService) AssignOrgRoleToTeam(ctx context.Context, org, tea
 func (s *OrganizationsService) RemoveOrgRoleFromTeam(ctx context.Context, org, teamSlug string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/teams/%v/%v", org, teamSlug, roleID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -219,12 +219,12 @@ func (s *OrganizationsService) RemoveOrgRoleFromTeam(ctx context.Context, org, t
 func (s *OrganizationsService) AssignOrgRoleToUser(ctx context.Context, org, username string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/users/%v/%v", org, username, roleID)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -241,12 +241,12 @@ func (s *OrganizationsService) AssignOrgRoleToUser(ctx context.Context, org, use
 func (s *OrganizationsService) RemoveOrgRoleFromUser(ctx context.Context, org, username string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/users/%v/%v", org, username, roleID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -267,13 +267,13 @@ func (s *OrganizationsService) ListTeamsAssignedToOrgRole(ctx context.Context, o
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -294,13 +294,13 @@ func (s *OrganizationsService) ListUsersAssignedToOrgRole(ctx context.Context, o
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	resp, err := s.client.Do(req, &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -322,13 +322,13 @@ func (s *OrganizationsService) ListUsersAssignedToOrgRole(ctx context.Context, o
 func (s *OrganizationsService) ListFineGrainedPermissions(ctx context.Context, org string) ([]*OrganizationFineGrainedPermission, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-fine-grained-permissions", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions []*OrganizationFineGrainedPermission
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}

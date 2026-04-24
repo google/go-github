@@ -41,13 +41,13 @@ type setImmutableReleasesRepositoriesOptions struct {
 func (s *OrganizationsService) GetImmutableReleasesSettings(ctx context.Context, org string) (*ImmutableReleaseSettings, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/immutable-releases", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var settings *ImmutableReleaseSettings
-	resp, err := s.client.Do(ctx, req, &settings)
+	resp, err := s.client.Do(req, &settings)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -63,12 +63,12 @@ func (s *OrganizationsService) GetImmutableReleasesSettings(ctx context.Context,
 func (s *OrganizationsService) UpdateImmutableReleasesSettings(ctx context.Context, org string, opts ImmutableReleasePolicy) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/immutable-releases", org)
 
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -89,13 +89,13 @@ func (s *OrganizationsService) ListImmutableReleaseRepositories(ctx context.Cont
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repositories *ListRepositories
-	resp, err := s.client.Do(ctx, req, &repositories)
+	resp, err := s.client.Do(req, &repositories)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -116,12 +116,12 @@ func (s *OrganizationsService) SetImmutableReleaseRepositories(ctx context.Conte
 		SelectedRepositoryIDs: repositoryIDs,
 	}
 
-	req, err := s.client.NewRequest("PUT", u, body)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -138,12 +138,12 @@ func (s *OrganizationsService) SetImmutableReleaseRepositories(ctx context.Conte
 func (s *OrganizationsService) EnableRepositoryForImmutableRelease(ctx context.Context, org string, repoID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/immutable-releases/repositories/%v", org, repoID)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -160,12 +160,12 @@ func (s *OrganizationsService) EnableRepositoryForImmutableRelease(ctx context.C
 func (s *OrganizationsService) DisableRepositoryForImmutableRelease(ctx context.Context, org string, repoID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/immutable-releases/repositories/%v", org, repoID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

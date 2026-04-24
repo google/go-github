@@ -67,16 +67,17 @@ func main() {
 // testType fetches the JSON resource at urlStr and compares its keys to the
 // struct fields of typ.
 func testType(urlStr string, typ any) error {
+	ctx := context.Background()
 	slice := reflect.Indirect(reflect.ValueOf(typ)).Kind() == reflect.Slice
 
-	req, err := client.NewRequest("GET", urlStr, nil)
+	req, err := client.NewRequest(ctx, "GET", urlStr, nil)
 	if err != nil {
 		return err
 	}
 
 	// start with a json.RawMessage so we can decode multiple ways below
 	raw := new(json.RawMessage)
-	_, err = client.Do(context.Background(), req, raw)
+	_, err = client.Do(req, raw)
 	if err != nil {
 		return err
 	}

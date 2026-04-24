@@ -22,13 +22,13 @@ func (s *EnterpriseService) ListHostedRunners(ctx context.Context, enterprise st
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var runners *HostedRunners
-	resp, err := s.client.Do(ctx, req, &runners)
+	resp, err := s.client.Do(req, &runners)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -47,13 +47,13 @@ func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise s
 	}
 
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners", enterprise)
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var hostedRunner *HostedRunner
-	resp, err := s.client.Do(ctx, req, &hostedRunner)
+	resp, err := s.client.Do(req, &hostedRunner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -68,13 +68,13 @@ func (s *EnterpriseService) CreateHostedRunner(ctx context.Context, enterprise s
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/github-owned
 func (s *EnterpriseService) GetHostedRunnerGitHubOwnedImages(ctx context.Context, enterprise string) (*HostedRunnerImages, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/github-owned", enterprise)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var hostedRunnerImages *HostedRunnerImages
-	resp, err := s.client.Do(ctx, req, &hostedRunnerImages)
+	resp, err := s.client.Do(req, &hostedRunnerImages)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -89,13 +89,13 @@ func (s *EnterpriseService) GetHostedRunnerGitHubOwnedImages(ctx context.Context
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/partner
 func (s *EnterpriseService) GetHostedRunnerPartnerImages(ctx context.Context, enterprise string) (*HostedRunnerImages, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/partner", enterprise)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var hostedRunnerImages *HostedRunnerImages
-	resp, err := s.client.Do(ctx, req, &hostedRunnerImages)
+	resp, err := s.client.Do(req, &hostedRunnerImages)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -110,13 +110,13 @@ func (s *EnterpriseService) GetHostedRunnerPartnerImages(ctx context.Context, en
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/limits
 func (s *EnterpriseService) GetHostedRunnerLimits(ctx context.Context, enterprise string) (*HostedRunnerPublicIPLimits, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/limits", enterprise)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var publicIPLimits *HostedRunnerPublicIPLimits
-	resp, err := s.client.Do(ctx, req, &publicIPLimits)
+	resp, err := s.client.Do(req, &publicIPLimits)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -131,13 +131,13 @@ func (s *EnterpriseService) GetHostedRunnerLimits(ctx context.Context, enterpris
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/machine-sizes
 func (s *EnterpriseService) GetHostedRunnerMachineSpecs(ctx context.Context, enterprise string) (*HostedRunnerMachineSpecs, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/machine-sizes", enterprise)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var machineSpecs *HostedRunnerMachineSpecs
-	resp, err := s.client.Do(ctx, req, &machineSpecs)
+	resp, err := s.client.Do(req, &machineSpecs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -152,13 +152,13 @@ func (s *EnterpriseService) GetHostedRunnerMachineSpecs(ctx context.Context, ent
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/platforms
 func (s *EnterpriseService) GetHostedRunnerPlatforms(ctx context.Context, enterprise string) (*HostedRunnerPlatforms, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/platforms", enterprise)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var platforms *HostedRunnerPlatforms
-	resp, err := s.client.Do(ctx, req, &platforms)
+	resp, err := s.client.Do(req, &platforms)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -173,13 +173,13 @@ func (s *EnterpriseService) GetHostedRunnerPlatforms(ctx context.Context, enterp
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
 func (s *EnterpriseService) GetHostedRunner(ctx context.Context, enterprise string, runnerID int64) (*HostedRunner, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/%v", enterprise, runnerID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var hostedRunner *HostedRunner
-	resp, err := s.client.Do(ctx, req, &hostedRunner)
+	resp, err := s.client.Do(req, &hostedRunner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -194,13 +194,13 @@ func (s *EnterpriseService) GetHostedRunner(ctx context.Context, enterprise stri
 //meta:operation PATCH /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
 func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise string, runnerID int64, request UpdateHostedRunnerRequest) (*HostedRunner, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/%v", enterprise, runnerID)
-	req, err := s.client.NewRequest("PATCH", u, request)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var hostedRunner *HostedRunner
-	resp, err := s.client.Do(ctx, req, &hostedRunner)
+	resp, err := s.client.Do(req, &hostedRunner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -215,13 +215,13 @@ func (s *EnterpriseService) UpdateHostedRunner(ctx context.Context, enterprise s
 //meta:operation DELETE /enterprises/{enterprise}/actions/hosted-runners/{hosted_runner_id}
 func (s *EnterpriseService) DeleteHostedRunner(ctx context.Context, enterprise string, runnerID int64) (*HostedRunner, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/%v", enterprise, runnerID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var hostedRunner *HostedRunner
-	resp, err := s.client.Do(ctx, req, &hostedRunner)
+	resp, err := s.client.Do(req, &hostedRunner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -236,13 +236,13 @@ func (s *EnterpriseService) DeleteHostedRunner(ctx context.Context, enterprise s
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom
 func (s *EnterpriseService) ListHostedRunnerCustomImages(ctx context.Context, enterprise string) (*HostedRunnerCustomImages, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom", enterprise)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var images *HostedRunnerCustomImages
-	resp, err := s.client.Do(ctx, req, &images)
+	resp, err := s.client.Do(req, &images)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -257,13 +257,13 @@ func (s *EnterpriseService) ListHostedRunnerCustomImages(ctx context.Context, en
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}
 func (s *EnterpriseService) GetHostedRunnerCustomImage(ctx context.Context, enterprise string, imageDefinitionID int64) (*HostedRunnerCustomImage, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom/%v", enterprise, imageDefinitionID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var image *HostedRunnerCustomImage
-	resp, err := s.client.Do(ctx, req, &image)
+	resp, err := s.client.Do(req, &image)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -278,12 +278,12 @@ func (s *EnterpriseService) GetHostedRunnerCustomImage(ctx context.Context, ente
 //meta:operation DELETE /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}
 func (s *EnterpriseService) DeleteHostedRunnerCustomImage(ctx context.Context, enterprise string, imageDefinitionID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom/%v", enterprise, imageDefinitionID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListHostedRunnerCustomImageVersions lists image versions of a custom image for an enterprise.
@@ -293,13 +293,13 @@ func (s *EnterpriseService) DeleteHostedRunnerCustomImage(ctx context.Context, e
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}/versions
 func (s *EnterpriseService) ListHostedRunnerCustomImageVersions(ctx context.Context, enterprise string, imageDefinitionID int64) (*HostedRunnerCustomImageVersions, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom/%v/versions", enterprise, imageDefinitionID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var versions *HostedRunnerCustomImageVersions
-	resp, err := s.client.Do(ctx, req, &versions)
+	resp, err := s.client.Do(req, &versions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -314,13 +314,13 @@ func (s *EnterpriseService) ListHostedRunnerCustomImageVersions(ctx context.Cont
 //meta:operation GET /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}
 func (s *EnterpriseService) GetHostedRunnerCustomImageVersion(ctx context.Context, enterprise string, imageDefinitionID int64, version string) (*HostedRunnerCustomImageVersion, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom/%v/versions/%v", enterprise, imageDefinitionID, version)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var imageVersion *HostedRunnerCustomImageVersion
-	resp, err := s.client.Do(ctx, req, &imageVersion)
+	resp, err := s.client.Do(req, &imageVersion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -335,10 +335,10 @@ func (s *EnterpriseService) GetHostedRunnerCustomImageVersion(ctx context.Contex
 //meta:operation DELETE /enterprises/{enterprise}/actions/hosted-runners/images/custom/{image_definition_id}/versions/{version}
 func (s *EnterpriseService) DeleteHostedRunnerCustomImageVersion(ctx context.Context, enterprise string, imageDefinitionID int64, version string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/hosted-runners/images/custom/%v/versions/%v", enterprise, imageDefinitionID, version)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

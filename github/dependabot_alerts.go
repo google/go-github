@@ -109,13 +109,13 @@ func (s *DependabotService) listAlerts(ctx context.Context, url string, opts *Li
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alerts []*DependabotAlert
-	resp, err := s.client.Do(ctx, req, &alerts)
+	resp, err := s.client.Do(req, &alerts)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -150,13 +150,13 @@ func (s *DependabotService) ListOrgAlerts(ctx context.Context, org string, opts 
 //meta:operation GET /repos/{owner}/{repo}/dependabot/alerts/{alert_number}
 func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string, number int) (*DependabotAlert, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts/%v", owner, repo, number)
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alert *DependabotAlert
-	resp, err := s.client.Do(ctx, req, &alert)
+	resp, err := s.client.Do(req, &alert)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -171,13 +171,13 @@ func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string
 //meta:operation PATCH /repos/{owner}/{repo}/dependabot/alerts/{alert_number}
 func (s *DependabotService) UpdateAlert(ctx context.Context, owner, repo string, number int, stateInfo *DependabotAlertState) (*DependabotAlert, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts/%v", owner, repo, number)
-	req, err := s.client.NewRequest("PATCH", url, stateInfo)
+	req, err := s.client.NewRequest(ctx, "PATCH", url, stateInfo)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alert *DependabotAlert
-	resp, err := s.client.Do(ctx, req, &alert)
+	resp, err := s.client.Do(req, &alert)
 	if err != nil {
 		return nil, resp, err
 	}

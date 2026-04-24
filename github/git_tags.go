@@ -38,13 +38,13 @@ type CreateTag struct {
 //meta:operation GET /repos/{owner}/{repo}/git/tags/{tag_sha}
 func (s *GitService) GetTag(ctx context.Context, owner, repo, sha string) (*Tag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/tags/%v", owner, repo, sha)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var tag *Tag
-	resp, err := s.client.Do(ctx, req, &tag)
+	resp, err := s.client.Do(req, &tag)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -60,13 +60,13 @@ func (s *GitService) GetTag(ctx context.Context, owner, repo, sha string) (*Tag,
 func (s *GitService) CreateTag(ctx context.Context, owner, repo string, tag CreateTag) (*Tag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/tags", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, tag)
+	req, err := s.client.NewRequest(ctx, "POST", u, tag)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Tag
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}

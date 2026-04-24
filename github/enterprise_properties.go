@@ -18,13 +18,13 @@ import (
 func (s *EnterpriseService) GetAllCustomProperties(ctx context.Context, enterprise string) ([]*CustomProperty, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/properties/schema", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customProperties []*CustomProperty
-	resp, err := s.client.Do(ctx, req, &customProperties)
+	resp, err := s.client.Do(req, &customProperties)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -46,13 +46,13 @@ func (s *EnterpriseService) CreateOrUpdateCustomProperties(ctx context.Context, 
 		Properties: properties,
 	}
 
-	req, err := s.client.NewRequest("PATCH", u, params)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, params)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customProperties []*CustomProperty
-	resp, err := s.client.Do(ctx, req, &customProperties)
+	resp, err := s.client.Do(req, &customProperties)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -68,13 +68,13 @@ func (s *EnterpriseService) CreateOrUpdateCustomProperties(ctx context.Context, 
 func (s *EnterpriseService) GetCustomProperty(ctx context.Context, enterprise, customPropertyName string) (*CustomProperty, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/properties/schema/%v", enterprise, customPropertyName)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customProperty *CustomProperty
-	resp, err := s.client.Do(ctx, req, &customProperty)
+	resp, err := s.client.Do(req, &customProperty)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -90,13 +90,13 @@ func (s *EnterpriseService) GetCustomProperty(ctx context.Context, enterprise, c
 func (s *EnterpriseService) CreateOrUpdateCustomProperty(ctx context.Context, enterprise, customPropertyName string, property *CustomProperty) (*CustomProperty, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/properties/schema/%v", enterprise, customPropertyName)
 
-	req, err := s.client.NewRequest("PUT", u, property)
+	req, err := s.client.NewRequest(ctx, "PUT", u, property)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customProperty *CustomProperty
-	resp, err := s.client.Do(ctx, req, &customProperty)
+	resp, err := s.client.Do(req, &customProperty)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -112,10 +112,10 @@ func (s *EnterpriseService) CreateOrUpdateCustomProperty(ctx context.Context, en
 func (s *EnterpriseService) RemoveCustomProperty(ctx context.Context, enterprise, customPropertyName string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/properties/schema/%v", enterprise, customPropertyName)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

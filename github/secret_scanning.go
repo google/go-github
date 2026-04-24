@@ -182,13 +182,13 @@ func (s *SecretScanningService) ListAlertsForEnterprise(ctx context.Context, ent
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alerts []*SecretScanningAlert
-	resp, err := s.client.Do(ctx, req, &alerts)
+	resp, err := s.client.Do(req, &alerts)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -211,13 +211,13 @@ func (s *SecretScanningService) ListAlertsForOrg(ctx context.Context, org string
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alerts []*SecretScanningAlert
-	resp, err := s.client.Do(ctx, req, &alerts)
+	resp, err := s.client.Do(req, &alerts)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -240,13 +240,13 @@ func (s *SecretScanningService) ListAlertsForRepo(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alerts []*SecretScanningAlert
-	resp, err := s.client.Do(ctx, req, &alerts)
+	resp, err := s.client.Do(req, &alerts)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -265,13 +265,13 @@ func (s *SecretScanningService) ListAlertsForRepo(ctx context.Context, owner, re
 func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string, number int64) (*SecretScanningAlert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alert *SecretScanningAlert
-	resp, err := s.client.Do(ctx, req, &alert)
+	resp, err := s.client.Do(req, &alert)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -290,13 +290,13 @@ func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string
 func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo string, number int64, opts *SecretScanningAlertUpdateOptions) (*SecretScanningAlert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
 
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alert *SecretScanningAlert
-	resp, err := s.client.Do(ctx, req, &alert)
+	resp, err := s.client.Do(req, &alert)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -319,13 +319,13 @@ func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var locations []*SecretScanningAlertLocation
-	resp, err := s.client.Do(ctx, req, &locations)
+	resp, err := s.client.Do(req, &locations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -344,13 +344,13 @@ func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner
 func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, owner, repo string, request PushProtectionBypassRequest) (*PushProtectionBypass, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pushProtectionBypass *PushProtectionBypass
-	resp, err := s.client.Do(ctx, req, &pushProtectionBypass)
+	resp, err := s.client.Do(req, &pushProtectionBypass)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -368,13 +368,13 @@ func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, 
 func (s *SecretScanningService) GetScanHistory(ctx context.Context, owner, repo string) (*SecretScanningScanHistory, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/scan-history", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var secretScanningHistory *SecretScanningScanHistory
-	resp, err := s.client.Do(ctx, req, &secretScanningHistory)
+	resp, err := s.client.Do(req, &secretScanningHistory)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -17,7 +17,7 @@ import (
 //meta:operation GET /repos/{owner}/{repo}/interaction-limits
 func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner, repo string) (*InteractionRestriction, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -25,7 +25,7 @@ func (s *InteractionsService) GetRestrictionsForRepo(ctx context.Context, owner,
 	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
 	var repositoryInteractions *InteractionRestriction
-	resp, err := s.client.Do(ctx, req, &repositoryInteractions)
+	resp, err := s.client.Do(req, &repositoryInteractions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -47,7 +47,7 @@ func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, own
 
 	interaction := &InteractionRestriction{Limit: &limit}
 
-	req, err := s.client.NewRequest("PUT", u, interaction)
+	req, err := s.client.NewRequest(ctx, "PUT", u, interaction)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -55,7 +55,7 @@ func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, own
 	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
 	var repositoryInteractions *InteractionRestriction
-	resp, err := s.client.Do(ctx, req, &repositoryInteractions)
+	resp, err := s.client.Do(req, &repositoryInteractions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -70,12 +70,12 @@ func (s *InteractionsService) UpdateRestrictionsForRepo(ctx context.Context, own
 //meta:operation DELETE /repos/{owner}/{repo}/interaction-limits
 func (s *InteractionsService) RemoveRestrictionsFromRepo(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/interaction-limits", owner, repo)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeInteractionRestrictionsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

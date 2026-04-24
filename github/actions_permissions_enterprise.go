@@ -54,13 +54,13 @@ func (a SelfHostRunnerPermissionsEnterprise) String() string {
 func (s *ActionsService) GetActionsPermissionsInEnterprise(ctx context.Context, enterprise string) (*ActionsPermissionsEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *ActionsPermissionsEnterprise
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -75,13 +75,13 @@ func (s *ActionsService) GetActionsPermissionsInEnterprise(ctx context.Context, 
 //meta:operation PUT /enterprises/{enterprise}/actions/permissions
 func (s *ActionsService) UpdateActionsPermissionsInEnterprise(ctx context.Context, enterprise string, actionsPermissionsEnterprise ActionsPermissionsEnterprise) (*ActionsPermissionsEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions", enterprise)
-	req, err := s.client.NewRequest("PUT", u, actionsPermissionsEnterprise)
+	req, err := s.client.NewRequest(ctx, "PUT", u, actionsPermissionsEnterprise)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *ActionsPermissionsEnterprise
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -101,13 +101,13 @@ func (s *ActionsService) ListEnabledOrgsInEnterprise(ctx context.Context, owner 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var orgs *ActionsEnabledOnEnterpriseRepos
-	resp, err := s.client.Do(ctx, req, &orgs)
+	resp, err := s.client.Do(req, &orgs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -123,14 +123,14 @@ func (s *ActionsService) ListEnabledOrgsInEnterprise(ctx context.Context, owner 
 func (s *ActionsService) SetEnabledOrgsInEnterprise(ctx context.Context, owner string, organizationIDs []int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations", owner)
 
-	req, err := s.client.NewRequest("PUT", u, struct {
+	req, err := s.client.NewRequest(ctx, "PUT", u, struct {
 		IDs []int64 `json:"selected_organization_ids"`
 	}{IDs: organizationIDs})
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -146,12 +146,12 @@ func (s *ActionsService) SetEnabledOrgsInEnterprise(ctx context.Context, owner s
 func (s *ActionsService) AddEnabledOrgInEnterprise(ctx context.Context, owner string, organizationID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations/%v", owner, organizationID)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -167,12 +167,12 @@ func (s *ActionsService) AddEnabledOrgInEnterprise(ctx context.Context, owner st
 func (s *ActionsService) RemoveEnabledOrgInEnterprise(ctx context.Context, owner string, organizationID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/organizations/%v", owner, organizationID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -188,13 +188,13 @@ func (s *ActionsService) RemoveEnabledOrgInEnterprise(ctx context.Context, owner
 func (s *ActionsService) GetActionsAllowedInEnterprise(ctx context.Context, enterprise string) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/selected-actions", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var actionsAllowed *ActionsAllowed
-	resp, err := s.client.Do(ctx, req, &actionsAllowed)
+	resp, err := s.client.Do(req, &actionsAllowed)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -209,13 +209,13 @@ func (s *ActionsService) GetActionsAllowedInEnterprise(ctx context.Context, ente
 //meta:operation PUT /enterprises/{enterprise}/actions/permissions/selected-actions
 func (s *ActionsService) UpdateActionsAllowedInEnterprise(ctx context.Context, enterprise string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/selected-actions", enterprise)
-	req, err := s.client.NewRequest("PUT", u, actionsAllowed)
+	req, err := s.client.NewRequest(ctx, "PUT", u, actionsAllowed)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *ActionsAllowed
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -231,13 +231,13 @@ func (s *ActionsService) UpdateActionsAllowedInEnterprise(ctx context.Context, e
 func (s *ActionsService) GetDefaultWorkflowPermissionsInEnterprise(ctx context.Context, enterprise string) (*DefaultWorkflowPermissionEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/workflow", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *DefaultWorkflowPermissionEnterprise
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -252,13 +252,13 @@ func (s *ActionsService) GetDefaultWorkflowPermissionsInEnterprise(ctx context.C
 //meta:operation PUT /enterprises/{enterprise}/actions/permissions/workflow
 func (s *ActionsService) UpdateDefaultWorkflowPermissionsInEnterprise(ctx context.Context, enterprise string, permissions DefaultWorkflowPermissionEnterprise) (*DefaultWorkflowPermissionEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/workflow", enterprise)
-	req, err := s.client.NewRequest("PUT", u, permissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, permissions)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *DefaultWorkflowPermissionEnterprise
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -274,13 +274,13 @@ func (s *ActionsService) UpdateDefaultWorkflowPermissionsInEnterprise(ctx contex
 func (s *ActionsService) GetArtifactAndLogRetentionPeriodInEnterprise(ctx context.Context, enterprise string) (*ArtifactPeriod, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/artifact-and-log-retention", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var arp *ArtifactPeriod
-	resp, err := s.client.Do(ctx, req, &arp)
+	resp, err := s.client.Do(req, &arp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -295,12 +295,12 @@ func (s *ActionsService) GetArtifactAndLogRetentionPeriodInEnterprise(ctx contex
 //meta:operation PUT /enterprises/{enterprise}/actions/permissions/artifact-and-log-retention
 func (s *ActionsService) UpdateArtifactAndLogRetentionPeriodInEnterprise(ctx context.Context, enterprise string, period ArtifactPeriodOpt) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/artifact-and-log-retention", enterprise)
-	req, err := s.client.NewRequest("PUT", u, period)
+	req, err := s.client.NewRequest(ctx, "PUT", u, period)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetSelfHostedRunnerPermissionsInEnterprise gets the self-hosted runner permissions for an enterprise.
@@ -310,13 +310,13 @@ func (s *ActionsService) UpdateArtifactAndLogRetentionPeriodInEnterprise(ctx con
 //meta:operation GET /enterprises/{enterprise}/actions/permissions/self-hosted-runners
 func (s *ActionsService) GetSelfHostedRunnerPermissionsInEnterprise(ctx context.Context, enterprise string) (*SelfHostRunnerPermissionsEnterprise, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/self-hosted-runners", enterprise)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *SelfHostRunnerPermissionsEnterprise
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -331,12 +331,12 @@ func (s *ActionsService) GetSelfHostedRunnerPermissionsInEnterprise(ctx context.
 //meta:operation PUT /enterprises/{enterprise}/actions/permissions/self-hosted-runners
 func (s *ActionsService) UpdateSelfHostedRunnerPermissionsInEnterprise(ctx context.Context, enterprise string, permissions SelfHostRunnerPermissionsEnterprise) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/self-hosted-runners", enterprise)
-	req, err := s.client.NewRequest("PUT", u, permissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, permissions)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetPrivateRepoForkPRWorkflowSettingsInEnterprise gets the settings for whether workflows from fork pull requests can run on private repositories in an enterprise.
@@ -347,13 +347,13 @@ func (s *ActionsService) UpdateSelfHostedRunnerPermissionsInEnterprise(ctx conte
 func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx context.Context, enterprise string) (*WorkflowsPermissions, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/fork-pr-workflows-private-repos", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *WorkflowsPermissions
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -368,12 +368,12 @@ func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInEnterprise(ctx co
 //meta:operation PUT /enterprises/{enterprise}/actions/permissions/fork-pr-workflows-private-repos
 func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(ctx context.Context, enterprise string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/fork-pr-workflows-private-repos", enterprise)
-	req, err := s.client.NewRequest("PUT", u, permissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, permissions)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetEnterpriseForkPRContributorApprovalPermissions gets the fork PR contributor approval policy for an enterprise.
@@ -384,13 +384,13 @@ func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(ctx
 func (s *ActionsService) GetEnterpriseForkPRContributorApprovalPermissions(ctx context.Context, enterprise string) (*ContributorApprovalPermissions, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/fork-pr-contributor-approval", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var policy *ContributorApprovalPermissions
-	resp, err := s.client.Do(ctx, req, &policy)
+	resp, err := s.client.Do(req, &policy)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -405,10 +405,10 @@ func (s *ActionsService) GetEnterpriseForkPRContributorApprovalPermissions(ctx c
 //meta:operation PUT /enterprises/{enterprise}/actions/permissions/fork-pr-contributor-approval
 func (s *ActionsService) UpdateEnterpriseForkPRContributorApprovalPermissions(ctx context.Context, enterprise string, policy ContributorApprovalPermissions) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/permissions/fork-pr-contributor-approval", enterprise)
-	req, err := s.client.NewRequest("PUT", u, policy)
+	req, err := s.client.NewRequest(ctx, "PUT", u, policy)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

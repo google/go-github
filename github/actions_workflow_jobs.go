@@ -80,13 +80,13 @@ func (s *ActionsService) ListWorkflowJobs(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var jobs *Jobs
-	resp, err := s.client.Do(ctx, req, &jobs)
+	resp, err := s.client.Do(req, &jobs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -106,13 +106,13 @@ func (s *ActionsService) ListWorkflowJobsAttempt(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var jobs *Jobs
-	resp, err := s.client.Do(ctx, req, &jobs)
+	resp, err := s.client.Do(req, &jobs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -128,13 +128,13 @@ func (s *ActionsService) ListWorkflowJobsAttempt(ctx context.Context, owner, rep
 func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo string, jobID int64) (*WorkflowJob, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v", owner, repo, jobID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var job *WorkflowJob
-	resp, err := s.client.Do(ctx, req, &job)
+	resp, err := s.client.Do(req, &job)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -173,12 +173,12 @@ func (s *ActionsService) getWorkflowJobLogsWithoutRateLimit(ctx context.Context,
 }
 
 func (s *ActionsService) getWorkflowJobLogsWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	url, resp, err := s.client.bareDoUntilFound(req, maxRedirects)
 	if err != nil {
 		return nil, resp, err
 	}

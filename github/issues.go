@@ -169,7 +169,7 @@ func (s *IssuesService) ListAllIssues(ctx context.Context, opts *ListAllIssuesOp
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -177,7 +177,7 @@ func (s *IssuesService) ListAllIssues(ctx context.Context, opts *ListAllIssuesOp
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -225,7 +225,7 @@ func (s *IssuesService) ListUserIssues(ctx context.Context, opts *ListUserIssues
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -233,7 +233,7 @@ func (s *IssuesService) ListUserIssues(ctx context.Context, opts *ListUserIssues
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -285,7 +285,7 @@ func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueLi
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -293,7 +293,7 @@ func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueLi
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -363,7 +363,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -371,7 +371,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -386,7 +386,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}
 func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, number)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -394,7 +394,7 @@ func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int)
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issue *Issue
-	resp, err := s.client.Do(ctx, req, &issue)
+	resp, err := s.client.Do(req, &issue)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -409,13 +409,13 @@ func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int)
 //meta:operation POST /repos/{owner}/{repo}/issues
 func (s *IssuesService) Create(ctx context.Context, owner, repo string, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
-	req, err := s.client.NewRequest("POST", u, issue)
+	req, err := s.client.NewRequest(ctx, "POST", u, issue)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var i *Issue
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -430,13 +430,13 @@ func (s *IssuesService) Create(ctx context.Context, owner, repo string, issue *I
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
 func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, number)
-	req, err := s.client.NewRequest("PATCH", u, issue)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, issue)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var i *Issue
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -453,7 +453,7 @@ func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
 func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string, issueNumber int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, issueNumber)
-	req, err := s.client.NewRequest("PATCH", u, &struct {
+	req, err := s.client.NewRequest(ctx, "PATCH", u, &struct {
 		Milestone *Milestone `json:"milestone"`
 	}{})
 	if err != nil {
@@ -461,7 +461,7 @@ func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string,
 	}
 
 	var i *Issue
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -485,12 +485,12 @@ type LockIssueOptions struct {
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/lock
 func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, opts *LockIssueOptions) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/lock", owner, repo, number)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // Unlock an issue's conversation.
@@ -500,10 +500,10 @@ func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock
 func (s *IssuesService) Unlock(ctx context.Context, owner, repo string, number int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/lock", owner, repo, number)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

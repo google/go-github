@@ -344,13 +344,13 @@ func (s *RepositoriesService) ListByUser(ctx context.Context, user string, opts 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repos []*Repository
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -407,13 +407,13 @@ func (s *RepositoriesService) ListByAuthenticatedUser(ctx context.Context, opts 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repos []*Repository
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -451,7 +451,7 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opts *R
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -460,7 +460,7 @@ func (s *RepositoriesService) ListByOrg(ctx context.Context, org string, opts *R
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var repos []*Repository
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -486,13 +486,13 @@ func (s *RepositoriesService) ListAll(ctx context.Context, opts *RepositoryListA
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repos []*Repository
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -600,7 +600,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		CustomProperties:          repo.CustomProperties,
 	}
 
-	req, err := s.client.NewRequest("POST", u, repoReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, repoReq)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -608,7 +608,7 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 	acceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 	var r *Repository
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -635,14 +635,14 @@ type TemplateRepoRequest struct {
 func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOwner, templateRepo string, templateRepoReq *TemplateRepoRequest) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/generate", templateOwner, templateRepo)
 
-	req, err := s.client.NewRequest("POST", u, templateRepoReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, templateRepoReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeRepositoryTemplatePreview)
 	var r *Repository
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -657,7 +657,7 @@ func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOw
 //meta:operation GET /repos/{owner}/{repo}
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -672,7 +672,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var repository *Repository
-	resp, err := s.client.Do(ctx, req, &repository)
+	resp, err := s.client.Do(req, &repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -689,7 +689,7 @@ func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Rep
 //meta:operation GET /repos/{owner}/{repo}
 func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -697,7 +697,7 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
 	var r *Repository
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -712,13 +712,13 @@ func (s *RepositoriesService) GetCodeOfConduct(ctx context.Context, owner, repo 
 //meta:operation GET /repositories/{repository_id}
 func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repositories/%v", id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repository *Repository
-	resp, err := s.client.Do(ctx, req, &repository)
+	resp, err := s.client.Do(req, &repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -733,7 +733,7 @@ func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repositor
 //meta:operation PATCH /repos/{owner}/{repo}
 func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repository *Repository) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("PATCH", u, repository)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, repository)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -741,7 +741,7 @@ func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repo
 	acceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 	var r *Repository
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -756,12 +756,12 @@ func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repo
 //meta:operation DELETE /repos/{owner}/{repo}
 func (s *RepositoriesService) Delete(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // Contributor represents a repository contributor.
@@ -806,14 +806,14 @@ type ListContributorsOptions struct {
 func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner, repository string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/vulnerability-alerts", owner, repository)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	vulnerabilityAlertsEnabled, err := parseBoolResponse(err)
 	return vulnerabilityAlertsEnabled, resp, err
 }
@@ -826,14 +826,14 @@ func (s *RepositoriesService) GetVulnerabilityAlerts(ctx context.Context, owner,
 func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, owner, repository string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/vulnerability-alerts", owner, repository)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DisableVulnerabilityAlerts disables vulnerability alerts and the dependency graph for a repository.
@@ -844,14 +844,14 @@ func (s *RepositoriesService) EnableVulnerabilityAlerts(ctx context.Context, own
 func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, owner, repository string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/vulnerability-alerts", owner, repository)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeRequiredVulnerabilityAlertsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetAutomatedSecurityFixes checks if the automated security fixes for a repository are enabled.
@@ -862,13 +862,13 @@ func (s *RepositoriesService) DisableVulnerabilityAlerts(ctx context.Context, ow
 func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*AutomatedSecurityFixes, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *AutomatedSecurityFixes
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -883,12 +883,12 @@ func (s *RepositoriesService) GetAutomatedSecurityFixes(ctx context.Context, own
 func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DisableAutomatedSecurityFixes disables vulnerability alerts and the dependency graph for a repository.
@@ -899,12 +899,12 @@ func (s *RepositoriesService) EnableAutomatedSecurityFixes(ctx context.Context, 
 func (s *RepositoriesService) DisableAutomatedSecurityFixes(ctx context.Context, owner, repository string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/automated-security-fixes", owner, repository)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListContributors lists contributors for a repository.
@@ -919,13 +919,13 @@ func (s *RepositoriesService) ListContributors(ctx context.Context, owner, repos
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var contributor []*Contributor
-	resp, err := s.client.Do(ctx, req, &contributor)
+	resp, err := s.client.Do(req, &contributor)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -947,13 +947,13 @@ func (s *RepositoriesService) ListContributors(ctx context.Context, owner, repos
 //meta:operation GET /repos/{owner}/{repo}/languages
 func (s *RepositoriesService) ListLanguages(ctx context.Context, owner, repo string) (map[string]int, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/languages", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	languages := make(map[string]int)
-	resp, err := s.client.Do(ctx, req, &languages)
+	resp, err := s.client.Do(req, &languages)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -973,13 +973,13 @@ func (s *RepositoriesService) ListTeams(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1007,13 +1007,13 @@ func (s *RepositoriesService) ListTags(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var tags []*RepositoryTag
-	resp, err := s.client.Do(ctx, req, &tags)
+	resp, err := s.client.Do(req, &tags)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1441,13 +1441,13 @@ func (s *RepositoriesService) ListBranches(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var branches []*Branch
-	resp, err := s.client.Do(ctx, req, &branches)
+	resp, err := s.client.Do(req, &branches)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1498,13 +1498,13 @@ type renameBranchRequest struct {
 func (s *RepositoriesService) RenameBranch(ctx context.Context, owner, repo, branch, newName string) (*Branch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/rename", owner, repo, url.PathEscape(branch))
 	r := &renameBranchRequest{NewName: newName}
-	req, err := s.client.NewRequest("POST", u, r)
+	req, err := s.client.NewRequest(ctx, "POST", u, r)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var b *Branch
-	resp, err := s.client.Do(ctx, req, &b)
+	resp, err := s.client.Do(req, &b)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1521,7 +1521,7 @@ func (s *RepositoriesService) RenameBranch(ctx context.Context, owner, repo, bra
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection
 func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, repo, branch string) (*Protection, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1529,7 +1529,7 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	var p *Protection
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		if isBranchNotProtected(err) {
 			err = ErrBranchNotProtected
@@ -1549,13 +1549,13 @@ func (s *RepositoriesService) GetBranchProtection(ctx context.Context, owner, re
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks
 func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*RequiredStatusChecks, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *RequiredStatusChecks
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		if isBranchNotProtected(err) {
 			err = ErrBranchNotProtected
@@ -1575,12 +1575,12 @@ func (s *RepositoriesService) GetRequiredStatusChecks(ctx context.Context, owner
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts
 func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Context, owner, repo, branch string) (contexts []string, resp *Response, err error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks/contexts", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	resp, err = s.client.Do(ctx, req, &contexts)
+	resp, err = s.client.Do(req, &contexts)
 	if err != nil {
 		if isBranchNotProtected(err) {
 			err = ErrBranchNotProtected
@@ -1600,7 +1600,7 @@ func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Conte
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection
 func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string, preq *ProtectionRequest) (*Protection, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("PUT", u, preq)
+	req, err := s.client.NewRequest(ctx, "PUT", u, preq)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1608,7 +1608,7 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	var p *Protection
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1625,12 +1625,12 @@ func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner,
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection
 func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetSignaturesProtectedBranch gets required signatures of protected branch.
@@ -1642,7 +1642,7 @@ func (s *RepositoriesService) RemoveBranchProtection(ctx context.Context, owner,
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures
 func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1650,7 +1650,7 @@ func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, 
 	req.Header.Set("Accept", mediaTypeSignaturePreview)
 
 	var p *SignaturesProtectedBranch
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		if isBranchNotProtected(err) {
 			err = ErrBranchNotProtected
@@ -1671,7 +1671,7 @@ func (s *RepositoriesService) GetSignaturesProtectedBranch(ctx context.Context, 
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures
 func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*SignaturesProtectedBranch, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1679,7 +1679,7 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 	req.Header.Set("Accept", mediaTypeSignaturePreview)
 
 	var r *SignaturesProtectedBranch
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1696,14 +1696,14 @@ func (s *RepositoriesService) RequireSignaturesOnProtectedBranch(ctx context.Con
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures
 func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_signatures", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeSignaturePreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UpdateRequiredStatusChecks updates the required status checks for a given protected branch.
@@ -1715,13 +1715,13 @@ func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Co
 //meta:operation PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks
 func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, owner, repo, branch string, sreq *RequiredStatusChecksRequest) (*RequiredStatusChecks, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("PATCH", u, sreq)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, sreq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var sc *RequiredStatusChecks
-	resp, err := s.client.Do(ctx, req, &sc)
+	resp, err := s.client.Do(req, &sc)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1738,12 +1738,12 @@ func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, ow
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks
 func (s *RepositoriesService) RemoveRequiredStatusChecks(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // License gets the contents of a repository's license if one is detected.
@@ -1753,13 +1753,13 @@ func (s *RepositoriesService) RemoveRequiredStatusChecks(ctx context.Context, ow
 //meta:operation GET /repos/{owner}/{repo}/license
 func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (*RepositoryLicense, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/license", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *RepositoryLicense
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1776,7 +1776,7 @@ func (s *RepositoriesService) License(ctx context.Context, owner, repo string) (
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews
 func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*PullRequestReviewsEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1784,7 +1784,7 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	var r *PullRequestReviewsEnforcement
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1802,7 +1802,7 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 //meta:operation PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews
 func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, patch *PullRequestReviewsEnforcementUpdate) (*PullRequestReviewsEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("PATCH", u, patch)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, patch)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1810,7 +1810,7 @@ func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Con
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	var r *PullRequestReviewsEnforcement
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1833,7 +1833,7 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 		DismissalRestrictionsRequest `json:"dismissal_restrictions"`
 	})
 
-	req, err := s.client.NewRequest("PATCH", u, data)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, data)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1841,7 +1841,7 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 	req.Header.Set("Accept", mediaTypeRequiredApprovingReviewsPreview)
 
 	var r *PullRequestReviewsEnforcement
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1858,12 +1858,12 @@ func (s *RepositoriesService) DisableDismissalRestrictions(ctx context.Context, 
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews
 func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetAdminEnforcement gets admin enforcement information of a protected branch.
@@ -1875,13 +1875,13 @@ func (s *RepositoriesService) RemovePullRequestReviewEnforcement(ctx context.Con
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins
 func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *AdminEnforcement
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1899,13 +1899,13 @@ func (s *RepositoriesService) GetAdminEnforcement(ctx context.Context, owner, re
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins
 func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, repo, branch string) (*AdminEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *AdminEnforcement
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1922,12 +1922,12 @@ func (s *RepositoriesService) AddAdminEnforcement(ctx context.Context, owner, re
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins
 func (s *RepositoriesService) RemoveAdminEnforcement(ctx context.Context, owner, repo, branch string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/enforce_admins", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // repositoryTopics represents a collection of repository topics.
@@ -1947,7 +1947,7 @@ func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo str
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1955,7 +1955,7 @@ func (s *RepositoriesService) ListAllTopics(ctx context.Context, owner, repo str
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	var topics *repositoryTopics
-	resp, err := s.client.Do(ctx, req, &topics)
+	resp, err := s.client.Do(req, &topics)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1976,7 +1976,7 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 	if t.Names == nil {
 		t.Names = []string{}
 	}
-	req, err := s.client.NewRequest("PUT", u, t)
+	req, err := s.client.NewRequest(ctx, "PUT", u, t)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1984,7 +1984,7 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	t = new(repositoryTopics)
-	resp, err := s.client.Do(ctx, req, t)
+	resp, err := s.client.Do(req, t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2004,13 +2004,13 @@ func (s *RepositoriesService) ReplaceAllTopics(ctx context.Context, owner, repo 
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
 func (s *RepositoriesService) ListApps(ctx context.Context, owner, repo, branch string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var apps []*App
-	resp, err := s.client.Do(ctx, req, &apps)
+	resp, err := s.client.Do(req, &apps)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2043,13 +2043,13 @@ func (s *RepositoriesService) ListAppRestrictions(ctx context.Context, owner, re
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
 func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("PUT", u, apps)
+	req, err := s.client.NewRequest(ctx, "PUT", u, apps)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var newApps []*App
-	resp, err := s.client.Do(ctx, req, &newApps)
+	resp, err := s.client.Do(req, &newApps)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2069,13 +2069,13 @@ func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner,
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
 func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("POST", u, apps)
+	req, err := s.client.NewRequest(ctx, "POST", u, apps)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var newApps []*App
-	resp, err := s.client.Do(ctx, req, &newApps)
+	resp, err := s.client.Do(req, &newApps)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2095,13 +2095,13 @@ func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, rep
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
 func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("DELETE", u, apps)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, apps)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var newApps []*App
-	resp, err := s.client.Do(ctx, req, &newApps)
+	resp, err := s.client.Do(req, &newApps)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2119,13 +2119,13 @@ func (s *RepositoriesService) RemoveAppRestrictions(ctx context.Context, owner, 
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams
 func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, repo, branch string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2146,13 +2146,13 @@ func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, r
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams
 func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("PUT", u, teams)
+	req, err := s.client.NewRequest(ctx, "PUT", u, teams)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var newTeams []*Team
-	resp, err := s.client.Do(ctx, req, &newTeams)
+	resp, err := s.client.Do(req, &newTeams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2172,13 +2172,13 @@ func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams
 func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("POST", u, teams)
+	req, err := s.client.NewRequest(ctx, "POST", u, teams)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var newTeams []*Team
-	resp, err := s.client.Do(ctx, req, &newTeams)
+	resp, err := s.client.Do(req, &newTeams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2198,13 +2198,13 @@ func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, re
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams
 func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("DELETE", u, teams)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, teams)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var newTeams []*Team
-	resp, err := s.client.Do(ctx, req, &newTeams)
+	resp, err := s.client.Do(req, &newTeams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2222,13 +2222,13 @@ func (s *RepositoriesService) RemoveTeamRestrictions(ctx context.Context, owner,
 //meta:operation GET /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users
 func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, repo, branch string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	resp, err := s.client.Do(req, &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2249,13 +2249,13 @@ func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, r
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users
 func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("PUT", u, users)
+	req, err := s.client.NewRequest(ctx, "PUT", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var newUsers []*User
-	resp, err := s.client.Do(ctx, req, &newUsers)
+	resp, err := s.client.Do(req, &newUsers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2275,13 +2275,13 @@ func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users
 func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("POST", u, users)
+	req, err := s.client.NewRequest(ctx, "POST", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var newUsers []*User
-	resp, err := s.client.Do(ctx, req, &newUsers)
+	resp, err := s.client.Do(req, &newUsers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2301,13 +2301,13 @@ func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, re
 //meta:operation DELETE /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users
 func (s *RepositoriesService) RemoveUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest("DELETE", u, users)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, users)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var newUsers []*User
-	resp, err := s.client.Do(ctx, req, &newUsers)
+	resp, err := s.client.Do(req, &newUsers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2336,13 +2336,13 @@ type TransferRequest struct {
 func (s *RepositoriesService) Transfer(ctx context.Context, owner, repo string, transfer TransferRequest) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/transfer", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, &transfer)
+	req, err := s.client.NewRequest(ctx, "POST", u, &transfer)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *Repository
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2367,13 +2367,13 @@ type DispatchRequestOptions struct {
 func (s *RepositoriesService) Dispatch(ctx context.Context, owner, repo string, opts DispatchRequestOptions) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/dispatches", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, &opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, &opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *Repository
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2397,12 +2397,12 @@ func isBranchNotProtected(err error) bool {
 func (s *RepositoriesService) EnablePrivateReporting(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/private-vulnerability-reporting", owner, repo)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -2419,12 +2419,12 @@ func (s *RepositoriesService) EnablePrivateReporting(ctx context.Context, owner,
 func (s *RepositoriesService) DisablePrivateReporting(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/private-vulnerability-reporting", owner, repo)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -2446,13 +2446,13 @@ type checkPrivateReporting struct {
 func (s *RepositoriesService) IsPrivateReportingEnabled(ctx context.Context, owner, repo string) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/private-vulnerability-reporting", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
 	var privateReporting checkPrivateReporting
-	resp, err := s.client.Do(ctx, req, &privateReporting)
+	resp, err := s.client.Do(req, &privateReporting)
 	return privateReporting.Enabled, resp, err
 }
 
@@ -2538,13 +2538,13 @@ func (s *RepositoriesService) ListRepositoryActivities(ctx context.Context, owne
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var activities []*RepositoryActivity
-	resp, err := s.client.Do(ctx, req, &activities)
+	resp, err := s.client.Do(req, &activities)
 	if err != nil {
 		return nil, resp, err
 	}

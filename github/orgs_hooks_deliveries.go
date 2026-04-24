@@ -22,13 +22,13 @@ func (s *OrganizationsService) ListHookDeliveries(ctx context.Context, org strin
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	deliveries := []*HookDelivery{}
-	resp, err := s.client.Do(ctx, req, &deliveries)
+	resp, err := s.client.Do(req, &deliveries)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -43,13 +43,13 @@ func (s *OrganizationsService) ListHookDeliveries(ctx context.Context, org strin
 //meta:operation GET /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}
 func (s *OrganizationsService) GetHookDelivery(ctx context.Context, owner string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/hooks/%v/deliveries/%v", owner, hookID, deliveryID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var h *HookDelivery
-	resp, err := s.client.Do(ctx, req, &h)
+	resp, err := s.client.Do(req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -64,13 +64,13 @@ func (s *OrganizationsService) GetHookDelivery(ctx context.Context, owner string
 //meta:operation POST /orgs/{org}/hooks/{hook_id}/deliveries/{delivery_id}/attempts
 func (s *OrganizationsService) RedeliverHookDelivery(ctx context.Context, owner string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/hooks/%v/deliveries/%v/attempts", owner, hookID, deliveryID)
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var h *HookDelivery
-	resp, err := s.client.Do(ctx, req, &h)
+	resp, err := s.client.Do(req, &h)
 	if err != nil {
 		return nil, resp, err
 	}

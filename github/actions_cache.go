@@ -87,13 +87,13 @@ func (s *ActionsService) ListCaches(ctx context.Context, owner, repo string, opt
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var actionCacheList *ActionsCacheList
-	resp, err := s.client.Do(ctx, req, &actionCacheList)
+	resp, err := s.client.Do(req, &actionCacheList)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -119,12 +119,12 @@ func (s *ActionsService) DeleteCachesByKey(ctx context.Context, owner, repo, key
 		return nil, err
 	}
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteCachesByID deletes a GitHub Actions cache for a repository, using a cache ID.
@@ -136,12 +136,12 @@ func (s *ActionsService) DeleteCachesByKey(ctx context.Context, owner, repo, key
 //meta:operation DELETE /repos/{owner}/{repo}/actions/caches/{cache_id}
 func (s *ActionsService) DeleteCachesByID(ctx context.Context, owner, repo string, cacheID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/caches/%v", owner, repo, cacheID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetCacheUsageForRepo gets GitHub Actions cache usage for a repository. The data fetched using this API is refreshed approximately every 5 minutes,
@@ -155,13 +155,13 @@ func (s *ActionsService) DeleteCachesByID(ctx context.Context, owner, repo strin
 //meta:operation GET /repos/{owner}/{repo}/actions/cache/usage
 func (s *ActionsService) GetCacheUsageForRepo(ctx context.Context, owner, repo string) (*ActionsCacheUsage, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/cache/usage", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var cacheUsage *ActionsCacheUsage
-	res, err := s.client.Do(ctx, req, &cacheUsage)
+	res, err := s.client.Do(req, &cacheUsage)
 	if err != nil {
 		return nil, res, err
 	}
@@ -185,13 +185,13 @@ func (s *ActionsService) ListCacheUsageByRepoForOrg(ctx context.Context, org str
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var cacheUsage *ActionsCacheUsageList
-	res, err := s.client.Do(ctx, req, &cacheUsage)
+	res, err := s.client.Do(req, &cacheUsage)
 	if err != nil {
 		return nil, res, err
 	}
@@ -210,13 +210,13 @@ func (s *ActionsService) ListCacheUsageByRepoForOrg(ctx context.Context, org str
 //meta:operation GET /orgs/{org}/actions/cache/usage
 func (s *ActionsService) GetTotalCacheUsageForOrg(ctx context.Context, org string) (*TotalCacheUsage, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/cache/usage", org)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var cacheUsage *TotalCacheUsage
-	res, err := s.client.Do(ctx, req, &cacheUsage)
+	res, err := s.client.Do(req, &cacheUsage)
 	if err != nil {
 		return nil, res, err
 	}
@@ -234,13 +234,13 @@ func (s *ActionsService) GetTotalCacheUsageForOrg(ctx context.Context, org strin
 //meta:operation GET /enterprises/{enterprise}/actions/cache/usage
 func (s *ActionsService) GetTotalCacheUsageForEnterprise(ctx context.Context, enterprise string) (*TotalCacheUsage, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/cache/usage", enterprise)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var cacheUsage *TotalCacheUsage
-	res, err := s.client.Do(ctx, req, &cacheUsage)
+	res, err := s.client.Do(req, &cacheUsage)
 	if err != nil {
 		return nil, res, err
 	}

@@ -39,13 +39,13 @@ type RepoMergeUpstreamResult struct {
 //meta:operation POST /repos/{owner}/{repo}/merges
 func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, request *RepositoryMergeRequest) (*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/merges", owner, repo)
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var commit *RepositoryCommit
-	resp, err := s.client.Do(ctx, req, &commit)
+	resp, err := s.client.Do(req, &commit)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -61,13 +61,13 @@ func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, req
 //meta:operation POST /repos/{owner}/{repo}/merge-upstream
 func (s *RepositoriesService) MergeUpstream(ctx context.Context, owner, repo string, request *RepoMergeUpstreamRequest) (*RepoMergeUpstreamResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/merge-upstream", owner, repo)
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *RepoMergeUpstreamResult
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}

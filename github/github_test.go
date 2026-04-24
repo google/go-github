@@ -664,7 +664,7 @@ func TestNewRequest(t *testing.T) {
 
 	inURL, outURL := "/foo", defaultBaseURL+"foo"
 	inBody, outBody := &User{Login: Ptr("l")}, `{"login":"l"}`+"\n"
-	req, _ := c.NewRequest("GET", inURL, inBody)
+	req, _ := c.NewRequest(t.Context(), "GET", inURL, inBody)
 
 	// test that relative URL was expanded
 	if got, want := req.URL.String(), outURL; got != want {
@@ -693,7 +693,7 @@ func TestNewRequest(t *testing.T) {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
-	req, _ = c.NewRequest("GET", inURL, inBody, WithVersion("2022-11-29"))
+	req, _ = c.NewRequest(t.Context(), "GET", inURL, inBody, WithVersion("2022-11-29"))
 	apiVersion = req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, "2022-11-29"; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
@@ -707,7 +707,7 @@ func TestNewRequest_invalidJSON(t *testing.T) {
 	type T struct {
 		F func()
 	}
-	_, err := c.NewRequest("GET", ".", &T{})
+	_, err := c.NewRequest(t.Context(), "GET", ".", &T{})
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -717,14 +717,14 @@ func TestNewRequest_invalidJSON(t *testing.T) {
 func TestNewRequest_badURL(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
-	_, err := c.NewRequest("GET", ":", nil)
+	_, err := c.NewRequest(t.Context(), "GET", ":", nil)
 	testURLParseError(t, err)
 }
 
 func TestNewRequest_badMethod(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
-	if _, err := c.NewRequest("BOGUS\nMETHOD", ".", nil); err == nil {
+	if _, err := c.NewRequest(t.Context(), "BOGUS\nMETHOD", ".", nil); err == nil {
 		t.Fatal("NewRequest returned nil; expected error")
 	}
 }
@@ -735,7 +735,7 @@ func TestNewRequest_emptyUserAgent(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
 	c.UserAgent = ""
-	req, err := c.NewRequest("GET", ".", nil)
+	req, err := c.NewRequest(t.Context(), "GET", ".", nil)
 	if err != nil {
 		t.Fatalf("NewRequest returned unexpected error: %v", err)
 	}
@@ -753,7 +753,7 @@ func TestNewRequest_emptyUserAgent(t *testing.T) {
 func TestNewRequest_emptyBody(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
-	req, err := c.NewRequest("GET", ".", nil)
+	req, err := c.NewRequest(t.Context(), "GET", ".", nil)
 	if err != nil {
 		t.Fatalf("NewRequest returned unexpected error: %v", err)
 	}
@@ -778,7 +778,7 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 			t.Fatalf("url.Parse returned unexpected error: %v.", err)
 		}
 		c.BaseURL = u
-		if _, err := c.NewRequest("GET", "test", nil); test.wantError && err == nil {
+		if _, err := c.NewRequest(t.Context(), "GET", "test", nil); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewRequest returned unexpected error: %v.", err)
@@ -834,7 +834,7 @@ func TestNewRequest_pathTraversal(t *testing.T) {
 		{"repos/../admin", true},
 	}
 	for _, tt := range tests {
-		_, err := c.NewRequest("GET", tt.urlStr, nil)
+		_, err := c.NewRequest(t.Context(), "GET", tt.urlStr, nil)
 		if tt.wantError && !errors.Is(err, ErrPathForbidden) {
 			t.Errorf("NewRequest(%q): want ErrPathForbidden, got %v", tt.urlStr, err)
 		} else if !tt.wantError && err != nil {
@@ -847,7 +847,7 @@ func TestNewFormRequest_pathTraversal(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
 
-	_, err := c.NewFormRequest("repos/x/../../../admin", nil)
+	_, err := c.NewFormRequest(t.Context(), "repos/x/../../../admin", nil)
 	if !errors.Is(err, ErrPathForbidden) {
 		t.Fatalf("NewFormRequest with path traversal: want ErrPathForbidden, got %v", err)
 	}
@@ -857,7 +857,7 @@ func TestNewUploadRequest_pathTraversal(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
 
-	_, err := c.NewUploadRequest("repos/x/../../../admin", nil, 0, "")
+	_, err := c.NewUploadRequest(t.Context(), "repos/x/../../../admin", nil, 0, "")
 	if !errors.Is(err, ErrPathForbidden) {
 		t.Fatalf("NewUploadRequest with path traversal: want ErrPathForbidden, got %v", err)
 	}
@@ -871,7 +871,7 @@ func TestNewFormRequest(t *testing.T) {
 	form := url.Values{}
 	form.Add("login", "l")
 	inBody, outBody := strings.NewReader(form.Encode()), "login=l"
-	req, err := c.NewFormRequest(inURL, inBody)
+	req, err := c.NewFormRequest(t.Context(), inURL, inBody)
 	if err != nil {
 		t.Fatalf("NewFormRequest returned unexpected error: %v", err)
 	}
@@ -900,7 +900,7 @@ func TestNewFormRequest(t *testing.T) {
 		t.Errorf("NewFormRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
-	req, err = c.NewFormRequest(inURL, inBody, WithVersion("2022-11-29"))
+	req, err = c.NewFormRequest(t.Context(), inURL, inBody, WithVersion("2022-11-29"))
 	if err != nil {
 		t.Fatalf("NewFormRequest with WithVersion returned unexpected error: %v", err)
 	}
@@ -913,7 +913,7 @@ func TestNewFormRequest(t *testing.T) {
 func TestNewFormRequest_badURL(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
-	_, err := c.NewFormRequest(":", nil)
+	_, err := c.NewFormRequest(t.Context(), ":", nil)
 	testURLParseError(t, err)
 }
 
@@ -921,7 +921,7 @@ func TestNewFormRequest_emptyUserAgent(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
 	c.UserAgent = ""
-	req, err := c.NewFormRequest(".", nil)
+	req, err := c.NewFormRequest(t.Context(), ".", nil)
 	if err != nil {
 		t.Fatalf("NewFormRequest returned unexpected error: %v", err)
 	}
@@ -933,7 +933,7 @@ func TestNewFormRequest_emptyUserAgent(t *testing.T) {
 func TestNewFormRequest_emptyBody(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
-	req, err := c.NewFormRequest(".", nil)
+	req, err := c.NewFormRequest(t.Context(), ".", nil)
 	if err != nil {
 		t.Fatalf("NewFormRequest returned unexpected error: %v", err)
 	}
@@ -958,7 +958,7 @@ func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
 			t.Fatalf("url.Parse returned unexpected error: %v.", err)
 		}
 		c.BaseURL = u
-		if _, err := c.NewFormRequest("test", nil); test.wantError && err == nil {
+		if _, err := c.NewFormRequest(t.Context(), "test", nil); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewFormRequest returned unexpected error: %v.", err)
@@ -969,14 +969,14 @@ func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
 func TestNewUploadRequest_WithVersion(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
-	req, _ := c.NewUploadRequest("https://example.com/", nil, 0, "")
+	req, _ := c.NewUploadRequest(t.Context(), "https://example.com/", nil, 0, "")
 
 	apiVersion := req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, defaultAPIVersion; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
-	req, _ = c.NewUploadRequest("https://example.com/", nil, 0, "", WithVersion("2022-11-29"))
+	req, _ = c.NewUploadRequest(t.Context(), "https://example.com/", nil, 0, "", WithVersion("2022-11-29"))
 	apiVersion = req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, "2022-11-29"; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
@@ -986,12 +986,12 @@ func TestNewUploadRequest_WithVersion(t *testing.T) {
 func TestNewUploadRequest_badURL(t *testing.T) {
 	t.Parallel()
 	c := NewClient(nil)
-	_, err := c.NewUploadRequest(":", nil, 0, "")
+	_, err := c.NewUploadRequest(t.Context(), ":", nil, 0, "")
 	testURLParseError(t, err)
 
 	const methodName = "NewUploadRequest"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = c.NewUploadRequest("\n", nil, -1, "\n")
+		_, err = c.NewUploadRequest(t.Context(), "\n", nil, -1, "\n")
 		return err
 	})
 }
@@ -1012,7 +1012,7 @@ func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
 			t.Fatalf("url.Parse returned unexpected error: %v.", err)
 		}
 		c.UploadURL = u
-		if _, err = c.NewUploadRequest("test", nil, 0, ""); test.wantError && err == nil {
+		if _, err = c.NewUploadRequest(t.Context(), "test", nil, 0, ""); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewUploadRequest returned unexpected error: %v.", err)
@@ -1285,26 +1285,14 @@ func TestDo(t *testing.T) {
 		fmt.Fprint(w, `{"A":"a"}`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
 	var body *foo
-	_, err := client.Do(t.Context(), req, &body)
+	_, err := client.Do(req, &body)
 	assertNilError(t, err)
 
 	want := &foo{"a"}
 	if !cmp.Equal(body, want) {
 		t.Errorf("Response body = %v, want %v", body, want)
-	}
-}
-
-func TestDo_nilContext(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(nil, req, nil)
-
-	if !errors.Is(err, errNonNilContext) {
-		t.Error("Expected context must be non-nil error")
 	}
 }
 
@@ -1316,8 +1304,8 @@ func TestDo_httpError(t *testing.T) {
 		http.Error(w, "Bad Request", 400)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Fatal("Expected HTTP 400 error, got no error.")
@@ -1338,8 +1326,8 @@ func TestDo_redirectLoop(t *testing.T) {
 		http.Redirect(w, r, baseURLPath, http.StatusFound)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -1362,10 +1350,10 @@ func TestDo_preservesResponseInHTTPError(t *testing.T) {
 		}`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
 	var resp *Response
 	var data any
-	resp, err := client.Do(t.Context(), req, &data)
+	resp, err := client.Do(req, &data)
 
 	if err == nil {
 		t.Fatal("Expected error response")
@@ -1404,11 +1392,11 @@ func TestDo_sanitizeURL(t *testing.T) {
 	}
 	unauthedClient := NewClient(tp.Client())
 	unauthedClient.BaseURL = &url.URL{Scheme: "http", Host: "127.0.0.1:0", Path: "/"} // Use port 0 on purpose to trigger a dial TCP error, expect to get "dial tcp 127.0.0.1:0: connect: can't assign requested address".
-	req, err := unauthedClient.NewRequest("GET", ".", nil)
+	req, err := unauthedClient.NewRequest(t.Context(), "GET", ".", nil)
 	if err != nil {
 		t.Fatalf("NewRequest returned unexpected error: %v", err)
 	}
-	_, err = unauthedClient.Do(t.Context(), req, nil)
+	_, err = unauthedClient.Do(req, nil)
 	if err == nil {
 		t.Fatal("Expected error to be returned.")
 	}
@@ -1429,8 +1417,8 @@ func TestDo_rateLimit(t *testing.T) {
 		w.Header().Set(HeaderRateResource, "core")
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -1548,8 +1536,8 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 		http.Error(w, "Bad Request", 400)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
@@ -1593,8 +1581,8 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -1648,16 +1636,16 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	})
 
 	// First request is made, and it makes the client aware of rate reset time being in the future.
-	req, _ := client.NewRequest("GET", "first", nil)
-	ctx := t.Context()
-	_, err := client.Do(ctx, req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", "first", nil)
+
+	_, err := client.Do(req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 
 	// Second request should not cause a network call to be made, since client can predict a rate limit error.
-	req, _ = client.NewRequest("GET", "second", nil)
-	_, err = client.Do(ctx, req, nil)
+	req, _ = client.NewRequest(t.Context(), "GET", "second", nil)
+	_, err = client.Do(req, nil)
 
 	if madeNetworkCall {
 		t.Fatal("Network call was made, even though rate limit is known to still be exceeded.")
@@ -1716,16 +1704,15 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 	})
 
 	// First request is made so afterwards we can check the returned rate limit headers were ignored.
-	req, _ := client.NewRequest("GET", "first", nil)
-	ctx := t.Context()
-	_, err := client.Do(ctx, req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", "first", nil)
+	_, err := client.Do(req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 
 	// Second request should not be hindered by rate limits.
-	req, _ = client.NewRequest("GET", "second", nil)
-	_, err = client.Do(ctx, req, nil)
+	req, _ = client.NewRequest(t.Context(), "GET", "second", nil)
+	_, err = client.Do(req, nil)
 	if err != nil {
 		t.Fatalf("Second request failed, even though the rate limits from the cache should've been ignored: %v", err)
 	}
@@ -1768,8 +1755,8 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 		fmt.Fprintln(w, `{}`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	req, _ := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -1801,8 +1788,8 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	req, _ := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
@@ -1830,8 +1817,8 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
 	})
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	req, _ := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -1866,10 +1853,11 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
 	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Millisecond)
 	defer cancel()
-	_, err := client.Do(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+
+	req, _ := client.NewRequest(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 	if !errors.Is(err, context.DeadlineExceeded) {
 		t.Error("Expected context deadline exceeded error.")
 	}
@@ -1897,10 +1885,10 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
 	})
-	req, _ := client.NewRequest("GET", ".", nil)
 	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Millisecond)
 	defer cancel()
-	_, err := client.Do(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	req, _ := client.NewRequest(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 	var rateLimitError *RateLimitError
 	if !errors.As(err, &rateLimitError) {
 		t.Fatalf("Expected a *rateLimitError error; got %#v.", err)
@@ -1930,8 +1918,8 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -1964,8 +1952,8 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -1995,9 +1983,8 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 }`)
 		})
 
-		req, _ := client.NewRequest("GET", ".", nil)
-		ctx := t.Context()
-		_, err := client.Do(ctx, req, nil)
+		req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+		_, err := client.Do(req, nil)
 
 		if err == nil {
 			t.Error("Expected error to be returned.")
@@ -2014,7 +2001,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 		}
 
 		// expect prevention of a following request
-		if _, err = client.Do(ctx, req, nil); err == nil {
+		if _, err = client.Do(req, nil); err == nil {
 			t.Error("Expected error to be returned.")
 		}
 		if !errors.As(err, &abuseRateLimitErr) {
@@ -2052,9 +2039,8 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 }`)
 		})
 
-		req, _ := client.NewRequest("GET", ".", nil)
-		ctx := t.Context()
-		_, err := client.Do(ctx, req, nil)
+		req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+		_, err := client.Do(req, nil)
 
 		if err == nil {
 			t.Error("Expected error to be returned.")
@@ -2072,7 +2058,7 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 		}
 
 		// expect prevention of a following request
-		if _, err = client.Do(ctx, req, nil); err == nil {
+		if _, err = client.Do(req, nil); err == nil {
 			t.Error("Expected error to be returned.")
 		}
 		if !errors.As(err, &abuseRateLimitErr) {
@@ -2111,8 +2097,8 @@ func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -2150,8 +2136,8 @@ func TestDo_rateLimit_disableRateLimitCheck(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
 	})
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -2185,8 +2171,8 @@ func TestDo_rateLimit_bypassRateLimitCheck(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
 	})
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(context.WithValue(t.Context(), BypassRateLimitCheck, true), req, nil)
+	req, _ := client.NewRequest(context.WithValue(t.Context(), BypassRateLimitCheck, true), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -2211,8 +2197,8 @@ func TestDo_noContent(t *testing.T) {
 
 	var body json.RawMessage
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, &body)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, &body)
 	if err != nil {
 		t.Fatalf("Do returned unexpected error: %v", err)
 	}
@@ -2226,8 +2212,8 @@ func TestBareDoUntilFound_redirectLoop(t *testing.T) {
 		http.Redirect(w, r, baseURLPath, http.StatusMovedPermanently)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, _, err := client.bareDoUntilFound(t.Context(), req, 1)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, _, err := client.bareDoUntilFound(req, 1)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -2245,8 +2231,8 @@ func TestBareDoUntilFound_UnexpectedRedirection(t *testing.T) {
 		http.Redirect(w, r, baseURLPath, http.StatusSeeOther)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, _, err := client.bareDoUntilFound(t.Context(), req, 1)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, _, err := client.bareDoUntilFound(req, 1)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -2269,8 +2255,8 @@ func TestBareDoUntilFound_RejectsCrossHostRedirect(t *testing.T) {
 		w.WriteHeader(http.StatusMovedPermanently)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, _, err := client.bareDoUntilFound(t.Context(), req, 1)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, _, err := client.bareDoUntilFound(req, 1)
 	if err == nil {
 		t.Fatal("Expected cross-host redirect to be rejected, got nil error.")
 	}
@@ -3091,8 +3077,8 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 	}
 	unauthedClient := NewClient(tp.Client())
 	unauthedClient.BaseURL = client.BaseURL
-	req, _ := unauthedClient.NewRequest("GET", ".", nil)
-	_, err := unauthedClient.Do(t.Context(), req, nil)
+	req, _ := unauthedClient.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := unauthedClient.Do(req, nil)
 	assertNilError(t, err)
 }
 
@@ -3168,8 +3154,8 @@ func TestBasicAuthTransport(t *testing.T) {
 	}
 	basicAuthClient := NewClient(tp.Client())
 	basicAuthClient.BaseURL = client.BaseURL
-	req, _ := basicAuthClient.NewRequest("GET", ".", nil)
-	_, err := basicAuthClient.Do(t.Context(), req, nil)
+	req, _ := basicAuthClient.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := basicAuthClient.Do(req, nil)
 	assertNilError(t, err)
 }
 
@@ -3314,12 +3300,12 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 		fmt.Fprint(w, expectedBody)
 	})
 
-	req, err := client.NewRequest("GET", "test-url", nil)
+	req, err := client.NewRequest(t.Context(), "GET", "test-url", nil)
 	if err != nil {
 		t.Fatalf("client.NewRequest returned error: %v", err)
 	}
 
-	resp, err := client.BareDo(t.Context(), req)
+	resp, err := client.BareDo(req)
 	if err != nil {
 		t.Fatalf("client.BareDo returned error: %v", err)
 	}

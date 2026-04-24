@@ -34,13 +34,13 @@ type Autolink struct {
 func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo string) ([]*Autolink, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var autolinks []*Autolink
-	resp, err := s.client.Do(ctx, req, &autolinks)
+	resp, err := s.client.Do(req, &autolinks)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -56,13 +56,13 @@ func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo str
 //meta:operation POST /repos/{owner}/{repo}/autolinks
 func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo string, opts *AutolinkOptions) (*Autolink, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks", owner, repo)
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var al *Autolink
-	resp, err := s.client.Do(ctx, req, &al)
+	resp, err := s.client.Do(req, &al)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -78,13 +78,13 @@ func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo strin
 func (s *RepositoriesService) GetAutolink(ctx context.Context, owner, repo string, id int64) (*Autolink, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var autolink *Autolink
-	resp, err := s.client.Do(ctx, req, &autolink)
+	resp, err := s.client.Do(req, &autolink)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -100,9 +100,9 @@ func (s *RepositoriesService) GetAutolink(ctx context.Context, owner, repo strin
 //meta:operation DELETE /repos/{owner}/{repo}/autolinks/{autolink_id}
 func (s *RepositoriesService) DeleteAutolink(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks/%v", owner, repo, id)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
