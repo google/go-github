@@ -386,6 +386,48 @@ func TestRateLimits_overQuota(t *testing.T) {
 	}
 }
 
+func TestRateLimits_bypassRateLimitCheckContext(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name                  string
+		disableRateLimitCheck bool
+		wantBypassValue       any
+	}{
+		{
+			name:                  "DisableRateLimitCheck disabled",
+			disableRateLimitCheck: false,
+			wantBypassValue:       true,
+		},
+		{
+			name:                  "DisableRateLimitCheck enabled",
+			disableRateLimitCheck: true,
+			wantBypassValue:       nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			client.DisableRateLimitCheck = tt.disableRateLimitCheck
+
+			mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				fmt.Fprint(w, `{"resources":{}}`)
+			})
+
+			_, resp, err := client.RateLimit.Get(t.Context())
+			if err != nil {
+				t.Errorf("RateLimits returned error: %v", err)
+			}
+
+			if got, want := resp.Request.Context().Value(BypassRateLimitCheck), tt.wantBypassValue; got != want {
+				t.Errorf("Request context bypass value = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
 func TestRateLimits_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &RateLimits{}, `{
