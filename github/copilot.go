@@ -375,13 +375,13 @@ func (s *CopilotService) ListOrganizationCodingAgentRepositories(ctx context.Con
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *ListOrganizationCopilotCodingAgentRepositoriesResponse
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -402,13 +402,13 @@ type CopilotOrganizationContentExclusionDetails map[string][]string
 func (s *CopilotService) GetOrganizationContentExclusionDetails(ctx context.Context, org string) (CopilotOrganizationContentExclusionDetails, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/content_exclusion", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	details := CopilotOrganizationContentExclusionDetails{}
-	resp, err := s.client.Do(ctx, req, &details)
+	resp, err := s.client.Do(req, &details)
 	if err != nil {
 		return nil, resp, err
 	}
