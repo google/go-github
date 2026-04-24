@@ -1233,6 +1233,11 @@ func TestRulesetReviewer_UnmarshalJSON(t *testing.T) {
 			json:    `{"id": {}, "type": "Team"}`,
 			wantErr: true,
 		},
+		{
+			name:    "malformed_json",
+			json:    `{"id":`,
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {
