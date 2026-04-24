@@ -36,6 +36,7 @@ type Organization struct {
 	Following                   *int       `json:"following,omitempty"`
 	CreatedAt                   *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt                   *Timestamp `json:"updated_at,omitempty"`
+	ArchivedAt                  *Timestamp `json:"archived_at,omitempty"`
 	TotalPrivateRepos           *int64     `json:"total_private_repos,omitempty"`
 	OwnedPrivateRepos           *int64     `json:"owned_private_repos,omitempty"`
 	PrivateGists                *int       `json:"private_gists,omitempty"`

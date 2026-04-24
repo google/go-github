@@ -28940,6 +28940,17 @@ func TestOrganization_GetAdvancedSecurityEnabledForNewRepos(tt *testing.T) {
 	o.GetAdvancedSecurityEnabledForNewRepos()
 }
 
+func TestOrganization_GetArchivedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	o := &Organization{ArchivedAt: &zeroValue}
+	o.GetArchivedAt()
+	o = &Organization{}
+	o.GetArchivedAt()
+	o = nil
+	o.GetArchivedAt()
+}
+
 func TestOrganization_GetAvatarURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
