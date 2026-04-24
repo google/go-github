@@ -20350,6 +20350,22 @@ func (l *ListOptions) GetPerPage() int {
 	return l.PerPage
 }
 
+// GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
+func (l *ListOrganizationCopilotCodingAgentRepositoriesResponse) GetRepositories() []*Repository {
+	if l == nil || l.Repositories == nil {
+		return nil
+	}
+	return l.Repositories
+}
+
+// GetTotalCount returns the TotalCount field.
+func (l *ListOrganizationCopilotCodingAgentRepositoriesResponse) GetTotalCount() int {
+	if l == nil {
+		return 0
+	}
+	return l.TotalCount
+}
+
 // GetOrganizations returns the Organizations slice if it's non-nil, nil otherwise.
 func (l *ListOrganizations) GetOrganizations() []*Organization {
 	if l == nil || l.Organizations == nil {

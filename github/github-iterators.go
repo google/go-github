@@ -2467,6 +2467,41 @@ func (s *CopilotService) ListCopilotSeatsIter(ctx context.Context, org string, o
 	}
 }
 
+// ListOrganizationCodingAgentRepositoriesIter returns an iterator that paginates through all results of ListOrganizationCodingAgentRepositories.
+func (s *CopilotService) ListOrganizationCodingAgentRepositoriesIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*Repository, error] {
+	return func(yield func(*Repository, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListOrganizationCodingAgentRepositories(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*Repository
+			if results != nil {
+				iterItems = results.Repositories
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListOrgAlertsIter returns an iterator that paginates through all results of ListOrgAlerts.
 func (s *DependabotService) ListOrgAlertsIter(ctx context.Context, org string, opts *ListAlertsOptions) iter.Seq2[*DependabotAlert, error] {
 	return func(yield func(*DependabotAlert, error) bool) {

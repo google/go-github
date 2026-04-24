@@ -356,6 +356,66 @@ func (s *CopilotService) ListCopilotEnterpriseSeats(ctx context.Context, enterpr
 	return copilotSeats, resp, nil
 }
 
+// ListOrganizationCopilotCodingAgentRepositoriesResponse represents the response from listing
+// repositories enabled for the Copilot coding agent in an organization.
+type ListOrganizationCopilotCodingAgentRepositoriesResponse struct {
+	TotalCount   int           `json:"total_count"`
+	Repositories []*Repository `json:"repositories"`
+}
+
+// ListOrganizationCodingAgentRepositories lists repositories enabled for the Copilot coding agent in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-coding-agent-management?apiVersion=2022-11-28#list-repositories-enabled-for-copilot-coding-agent-in-an-organization
+//
+//meta:operation GET /orgs/{org}/copilot/coding-agent/permissions/repositories
+func (s *CopilotService) ListOrganizationCodingAgentRepositories(ctx context.Context, org string, opts *ListOptions) (*ListOrganizationCopilotCodingAgentRepositoriesResponse, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/coding-agent/permissions/repositories", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var result *ListOrganizationCopilotCodingAgentRepositoriesResponse
+	resp, err := s.client.Do(ctx, req, &result)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
+}
+
+// CopilotOrganizationContentExclusionDetails lists all Copilot content exclusion
+// rules for an organization, keyed by repository full name. Each value is the
+// list of file paths excluded from Copilot for that repository.
+type CopilotOrganizationContentExclusionDetails map[string][]string
+
+// GetOrganizationContentExclusionDetails gets the Copilot content exclusion rules for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-content-exclusion-management?apiVersion=2022-11-28#get-copilot-content-exclusion-rules-for-an-organization
+//
+//meta:operation GET /orgs/{org}/copilot/content_exclusion
+func (s *CopilotService) GetOrganizationContentExclusionDetails(ctx context.Context, org string) (CopilotOrganizationContentExclusionDetails, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/content_exclusion", org)
+
+	req, err := s.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	details := CopilotOrganizationContentExclusionDetails{}
+	resp, err := s.client.Do(ctx, req, &details)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return details, resp, nil
+}
+
 // AddCopilotTeams adds teams to the Copilot for Business subscription for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-user-management?apiVersion=2022-11-28#add-teams-to-the-copilot-subscription-for-an-organization
