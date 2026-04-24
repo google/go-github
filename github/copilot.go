@@ -870,52 +870,44 @@ type CopilotMetricsPullRequests struct {
 	TotalMergedReviewedByCopilot        int     `json:"total_merged_reviewed_by_copilot"`
 }
 
+// CopilotMetricsCodeActivity captures the code-generation activity counts and lines-of-code (LOC)
+// suggestion totals shared across the per-IDE, per-feature, per-language, and per-model breakdowns
+// in a Copilot metrics report.
+type CopilotMetricsCodeActivity struct {
+	CodeGenerationActivityCount int `json:"code_generation_activity_count"`
+	CodeAcceptanceActivityCount int `json:"code_acceptance_activity_count"`
+	LOCSuggestedToAddSum        int `json:"loc_suggested_to_add_sum"`
+	LOCSuggestedToDeleteSum     int `json:"loc_suggested_to_delete_sum"`
+	LOCAddedSum                 int `json:"loc_added_sum"`
+	LOCDeletedSum               int `json:"loc_deleted_sum"`
+}
+
 // CopilotMetricsIDE represents per-IDE aggregate totals in a Copilot metrics report.
 type CopilotMetricsIDE struct {
 	IDE                           string `json:"ide"`
 	UserInitiatedInteractionCount int    `json:"user_initiated_interaction_count"`
-	CodeGenerationActivityCount   int    `json:"code_generation_activity_count"`
-	CodeAcceptanceActivityCount   int    `json:"code_acceptance_activity_count"`
-	LocSuggestedToAddSum          int    `json:"loc_suggested_to_add_sum"`
-	LocSuggestedToDeleteSum       int    `json:"loc_suggested_to_delete_sum"`
-	LocAddedSum                   int    `json:"loc_added_sum"`
-	LocDeletedSum                 int    `json:"loc_deleted_sum"`
+	CopilotMetricsCodeActivity
 }
 
 // CopilotMetricsFeature represents per-feature aggregate totals in a Copilot metrics report.
 type CopilotMetricsFeature struct {
 	Feature                       string `json:"feature"`
 	UserInitiatedInteractionCount int    `json:"user_initiated_interaction_count"`
-	CodeGenerationActivityCount   int    `json:"code_generation_activity_count"`
-	CodeAcceptanceActivityCount   int    `json:"code_acceptance_activity_count"`
-	LocSuggestedToAddSum          int    `json:"loc_suggested_to_add_sum"`
-	LocSuggestedToDeleteSum       int    `json:"loc_suggested_to_delete_sum"`
-	LocAddedSum                   int    `json:"loc_added_sum"`
-	LocDeletedSum                 int    `json:"loc_deleted_sum"`
+	CopilotMetricsCodeActivity
 }
 
 // CopilotMetricsLanguageFeature represents per-language-feature totals in a Copilot metrics report.
 type CopilotMetricsLanguageFeature struct {
-	Language                    string `json:"language"`
-	Feature                     string `json:"feature"`
-	CodeGenerationActivityCount int    `json:"code_generation_activity_count"`
-	CodeAcceptanceActivityCount int    `json:"code_acceptance_activity_count"`
-	LocSuggestedToAddSum        int    `json:"loc_suggested_to_add_sum"`
-	LocSuggestedToDeleteSum     int    `json:"loc_suggested_to_delete_sum"`
-	LocAddedSum                 int    `json:"loc_added_sum"`
-	LocDeletedSum               int    `json:"loc_deleted_sum"`
+	Language string `json:"language"`
+	Feature  string `json:"feature"`
+	CopilotMetricsCodeActivity
 }
 
 // CopilotMetricsLanguageModel represents per-language-model totals in a Copilot metrics report.
 type CopilotMetricsLanguageModel struct {
-	Language                    string `json:"language"`
-	Model                       string `json:"model"`
-	CodeGenerationActivityCount int    `json:"code_generation_activity_count"`
-	CodeAcceptanceActivityCount int    `json:"code_acceptance_activity_count"`
-	LocSuggestedToAddSum        int    `json:"loc_suggested_to_add_sum"`
-	LocSuggestedToDeleteSum     int    `json:"loc_suggested_to_delete_sum"`
-	LocAddedSum                 int    `json:"loc_added_sum"`
-	LocDeletedSum               int    `json:"loc_deleted_sum"`
+	Language string `json:"language"`
+	Model    string `json:"model"`
+	CopilotMetricsCodeActivity
 }
 
 // CopilotMetricsModelFeature represents per-model-feature totals in a Copilot metrics report.
@@ -923,12 +915,7 @@ type CopilotMetricsModelFeature struct {
 	Model                         string `json:"model"`
 	Feature                       string `json:"feature"`
 	UserInitiatedInteractionCount int    `json:"user_initiated_interaction_count"`
-	CodeGenerationActivityCount   int    `json:"code_generation_activity_count"`
-	CodeAcceptanceActivityCount   int    `json:"code_acceptance_activity_count"`
-	LocSuggestedToAddSum          int    `json:"loc_suggested_to_add_sum"`
-	LocSuggestedToDeleteSum       int    `json:"loc_suggested_to_delete_sum"`
-	LocAddedSum                   int    `json:"loc_added_sum"`
-	LocDeletedSum                 int    `json:"loc_deleted_sum"`
+	CopilotMetricsCodeActivity
 }
 
 // CopilotMetricsCLIVersion represents the last known Copilot CLI version seen in a metrics report.
@@ -976,10 +963,10 @@ type CopilotDailyMetrics struct {
 	TotalsByLanguageModel               []*CopilotMetricsLanguageModel   `json:"totals_by_language_model,omitempty"`
 	TotalsByModelFeature                []*CopilotMetricsModelFeature    `json:"totals_by_model_feature,omitempty"`
 	TotalsByCLI                         *CopilotMetricsCLI               `json:"totals_by_cli,omitempty"`
-	LocSuggestedToAddSum                int                              `json:"loc_suggested_to_add_sum"`
-	LocSuggestedToDeleteSum             int                              `json:"loc_suggested_to_delete_sum"`
-	LocAddedSum                         int                              `json:"loc_added_sum"`
-	LocDeletedSum                       int                              `json:"loc_deleted_sum"`
+	LOCSuggestedToAddSum                int                              `json:"loc_suggested_to_add_sum"`
+	LOCSuggestedToDeleteSum             int                              `json:"loc_suggested_to_delete_sum"`
+	LOCAddedSum                         int                              `json:"loc_added_sum"`
+	LOCDeletedSum                       int                              `json:"loc_deleted_sum"`
 	PullRequests                        *CopilotMetricsPullRequests      `json:"pull_requests,omitempty"`
 }
 
@@ -1011,16 +998,11 @@ type CopilotUserMetricsIDEVersion struct {
 
 // CopilotUserMetricsIDE represents per-IDE totals for a single Copilot user in a user metrics report.
 type CopilotUserMetricsIDE struct {
-	IDE                           string                           `json:"ide"`
-	UserInitiatedInteractionCount int                              `json:"user_initiated_interaction_count"`
-	CodeGenerationActivityCount   int                              `json:"code_generation_activity_count"`
-	CodeAcceptanceActivityCount   int                              `json:"code_acceptance_activity_count"`
-	LocSuggestedToAddSum          int                              `json:"loc_suggested_to_add_sum"`
-	LocSuggestedToDeleteSum       int                              `json:"loc_suggested_to_delete_sum"`
-	LocAddedSum                   int                              `json:"loc_added_sum"`
-	LocDeletedSum                 int                              `json:"loc_deleted_sum"`
-	LastKnownPluginVersion        *CopilotUserMetricsPluginVersion `json:"last_known_plugin_version,omitempty"`
-	LastKnownIDEVersion           *CopilotUserMetricsIDEVersion    `json:"last_known_ide_version,omitempty"`
+	IDE                           string `json:"ide"`
+	UserInitiatedInteractionCount int    `json:"user_initiated_interaction_count"`
+	CopilotMetricsCodeActivity
+	LastKnownPluginVersion *CopilotUserMetricsPluginVersion `json:"last_known_plugin_version,omitempty"`
+	LastKnownIDEVersion    *CopilotUserMetricsIDEVersion    `json:"last_known_ide_version,omitempty"`
 }
 
 // CopilotUserDailyMetrics represents a single user's per-day Copilot usage metrics record from a
@@ -1046,10 +1028,10 @@ type CopilotUserDailyMetrics struct {
 	UsedCopilotCodeReviewActive   bool                             `json:"used_copilot_code_review_active"`
 	UsedCopilotCodeReviewPassive  bool                             `json:"used_copilot_code_review_passive"`
 	UsedCopilotCodingAgent        bool                             `json:"used_copilot_coding_agent"`
-	LocSuggestedToAddSum          int                              `json:"loc_suggested_to_add_sum"`
-	LocSuggestedToDeleteSum       int                              `json:"loc_suggested_to_delete_sum"`
-	LocAddedSum                   int                              `json:"loc_added_sum"`
-	LocDeletedSum                 int                              `json:"loc_deleted_sum"`
+	LOCSuggestedToAddSum          int                              `json:"loc_suggested_to_add_sum"`
+	LOCSuggestedToDeleteSum       int                              `json:"loc_suggested_to_delete_sum"`
+	LOCAddedSum                   int                              `json:"loc_added_sum"`
+	LOCDeletedSum                 int                              `json:"loc_deleted_sum"`
 }
 
 // CopilotUserPeriodicMetrics represents a single user's per-day Copilot usage metrics record from a
@@ -1078,10 +1060,10 @@ type CopilotUserPeriodicMetrics struct {
 	UsedCopilotCodeReviewActive   bool                             `json:"used_copilot_code_review_active"`
 	UsedCopilotCodeReviewPassive  bool                             `json:"used_copilot_code_review_passive"`
 	UsedCopilotCodingAgent        bool                             `json:"used_copilot_coding_agent"`
-	LocSuggestedToAddSum          int                              `json:"loc_suggested_to_add_sum"`
-	LocSuggestedToDeleteSum       int                              `json:"loc_suggested_to_delete_sum"`
-	LocAddedSum                   int                              `json:"loc_added_sum"`
-	LocDeletedSum                 int                              `json:"loc_deleted_sum"`
+	LOCSuggestedToAddSum          int                              `json:"loc_suggested_to_add_sum"`
+	LOCSuggestedToDeleteSum       int                              `json:"loc_suggested_to_delete_sum"`
+	LOCAddedSum                   int                              `json:"loc_added_sum"`
+	LOCDeletedSum                 int                              `json:"loc_deleted_sum"`
 }
 
 // fetchMetricsReport performs a GET against the provided download URL and returns the raw

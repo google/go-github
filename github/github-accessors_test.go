@@ -10580,36 +10580,36 @@ func TestCopilotDailyMetrics_GetEnterpriseID(tt *testing.T) {
 	c.GetEnterpriseID()
 }
 
-func TestCopilotDailyMetrics_GetLocAddedSum(tt *testing.T) {
+func TestCopilotDailyMetrics_GetLOCAddedSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotDailyMetrics{}
-	c.GetLocAddedSum()
+	c.GetLOCAddedSum()
 	c = nil
-	c.GetLocAddedSum()
+	c.GetLOCAddedSum()
 }
 
-func TestCopilotDailyMetrics_GetLocDeletedSum(tt *testing.T) {
+func TestCopilotDailyMetrics_GetLOCDeletedSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotDailyMetrics{}
-	c.GetLocDeletedSum()
+	c.GetLOCDeletedSum()
 	c = nil
-	c.GetLocDeletedSum()
+	c.GetLOCDeletedSum()
 }
 
-func TestCopilotDailyMetrics_GetLocSuggestedToAddSum(tt *testing.T) {
+func TestCopilotDailyMetrics_GetLOCSuggestedToAddSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotDailyMetrics{}
-	c.GetLocSuggestedToAddSum()
+	c.GetLOCSuggestedToAddSum()
 	c = nil
-	c.GetLocSuggestedToAddSum()
+	c.GetLOCSuggestedToAddSum()
 }
 
-func TestCopilotDailyMetrics_GetLocSuggestedToDeleteSum(tt *testing.T) {
+func TestCopilotDailyMetrics_GetLOCSuggestedToDeleteSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotDailyMetrics{}
-	c.GetLocSuggestedToDeleteSum()
+	c.GetLOCSuggestedToDeleteSum()
 	c = nil
-	c.GetLocSuggestedToDeleteSum()
+	c.GetLOCSuggestedToDeleteSum()
 }
 
 func TestCopilotDailyMetrics_GetMonthlyActiveAgentUsers(tt *testing.T) {
@@ -11334,20 +11334,52 @@ func TestCopilotMetricsCLIVersion_GetSampledAt(tt *testing.T) {
 	c.GetSampledAt()
 }
 
-func TestCopilotMetricsFeature_GetCodeAcceptanceActivityCount(tt *testing.T) {
+func TestCopilotMetricsCodeActivity_GetCodeAcceptanceActivityCount(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsFeature{}
+	c := &CopilotMetricsCodeActivity{}
 	c.GetCodeAcceptanceActivityCount()
 	c = nil
 	c.GetCodeAcceptanceActivityCount()
 }
 
-func TestCopilotMetricsFeature_GetCodeGenerationActivityCount(tt *testing.T) {
+func TestCopilotMetricsCodeActivity_GetCodeGenerationActivityCount(tt *testing.T) {
 	tt.Parallel()
-	c := &CopilotMetricsFeature{}
+	c := &CopilotMetricsCodeActivity{}
 	c.GetCodeGenerationActivityCount()
 	c = nil
 	c.GetCodeGenerationActivityCount()
+}
+
+func TestCopilotMetricsCodeActivity_GetLOCAddedSum(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsCodeActivity{}
+	c.GetLOCAddedSum()
+	c = nil
+	c.GetLOCAddedSum()
+}
+
+func TestCopilotMetricsCodeActivity_GetLOCDeletedSum(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsCodeActivity{}
+	c.GetLOCDeletedSum()
+	c = nil
+	c.GetLOCDeletedSum()
+}
+
+func TestCopilotMetricsCodeActivity_GetLOCSuggestedToAddSum(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsCodeActivity{}
+	c.GetLOCSuggestedToAddSum()
+	c = nil
+	c.GetLOCSuggestedToAddSum()
+}
+
+func TestCopilotMetricsCodeActivity_GetLOCSuggestedToDeleteSum(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsCodeActivity{}
+	c.GetLOCSuggestedToDeleteSum()
+	c = nil
+	c.GetLOCSuggestedToDeleteSum()
 }
 
 func TestCopilotMetricsFeature_GetFeature(tt *testing.T) {
@@ -11358,60 +11390,12 @@ func TestCopilotMetricsFeature_GetFeature(tt *testing.T) {
 	c.GetFeature()
 }
 
-func TestCopilotMetricsFeature_GetLocAddedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsFeature{}
-	c.GetLocAddedSum()
-	c = nil
-	c.GetLocAddedSum()
-}
-
-func TestCopilotMetricsFeature_GetLocDeletedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsFeature{}
-	c.GetLocDeletedSum()
-	c = nil
-	c.GetLocDeletedSum()
-}
-
-func TestCopilotMetricsFeature_GetLocSuggestedToAddSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsFeature{}
-	c.GetLocSuggestedToAddSum()
-	c = nil
-	c.GetLocSuggestedToAddSum()
-}
-
-func TestCopilotMetricsFeature_GetLocSuggestedToDeleteSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsFeature{}
-	c.GetLocSuggestedToDeleteSum()
-	c = nil
-	c.GetLocSuggestedToDeleteSum()
-}
-
 func TestCopilotMetricsFeature_GetUserInitiatedInteractionCount(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotMetricsFeature{}
 	c.GetUserInitiatedInteractionCount()
 	c = nil
 	c.GetUserInitiatedInteractionCount()
-}
-
-func TestCopilotMetricsIDE_GetCodeAcceptanceActivityCount(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsIDE{}
-	c.GetCodeAcceptanceActivityCount()
-	c = nil
-	c.GetCodeAcceptanceActivityCount()
-}
-
-func TestCopilotMetricsIDE_GetCodeGenerationActivityCount(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsIDE{}
-	c.GetCodeGenerationActivityCount()
-	c = nil
-	c.GetCodeGenerationActivityCount()
 }
 
 func TestCopilotMetricsIDE_GetIDE(tt *testing.T) {
@@ -11422,60 +11406,12 @@ func TestCopilotMetricsIDE_GetIDE(tt *testing.T) {
 	c.GetIDE()
 }
 
-func TestCopilotMetricsIDE_GetLocAddedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsIDE{}
-	c.GetLocAddedSum()
-	c = nil
-	c.GetLocAddedSum()
-}
-
-func TestCopilotMetricsIDE_GetLocDeletedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsIDE{}
-	c.GetLocDeletedSum()
-	c = nil
-	c.GetLocDeletedSum()
-}
-
-func TestCopilotMetricsIDE_GetLocSuggestedToAddSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsIDE{}
-	c.GetLocSuggestedToAddSum()
-	c = nil
-	c.GetLocSuggestedToAddSum()
-}
-
-func TestCopilotMetricsIDE_GetLocSuggestedToDeleteSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsIDE{}
-	c.GetLocSuggestedToDeleteSum()
-	c = nil
-	c.GetLocSuggestedToDeleteSum()
-}
-
 func TestCopilotMetricsIDE_GetUserInitiatedInteractionCount(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotMetricsIDE{}
 	c.GetUserInitiatedInteractionCount()
 	c = nil
 	c.GetUserInitiatedInteractionCount()
-}
-
-func TestCopilotMetricsLanguageFeature_GetCodeAcceptanceActivityCount(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageFeature{}
-	c.GetCodeAcceptanceActivityCount()
-	c = nil
-	c.GetCodeAcceptanceActivityCount()
-}
-
-func TestCopilotMetricsLanguageFeature_GetCodeGenerationActivityCount(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageFeature{}
-	c.GetCodeGenerationActivityCount()
-	c = nil
-	c.GetCodeGenerationActivityCount()
 }
 
 func TestCopilotMetricsLanguageFeature_GetFeature(tt *testing.T) {
@@ -11494,92 +11430,12 @@ func TestCopilotMetricsLanguageFeature_GetLanguage(tt *testing.T) {
 	c.GetLanguage()
 }
 
-func TestCopilotMetricsLanguageFeature_GetLocAddedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageFeature{}
-	c.GetLocAddedSum()
-	c = nil
-	c.GetLocAddedSum()
-}
-
-func TestCopilotMetricsLanguageFeature_GetLocDeletedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageFeature{}
-	c.GetLocDeletedSum()
-	c = nil
-	c.GetLocDeletedSum()
-}
-
-func TestCopilotMetricsLanguageFeature_GetLocSuggestedToAddSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageFeature{}
-	c.GetLocSuggestedToAddSum()
-	c = nil
-	c.GetLocSuggestedToAddSum()
-}
-
-func TestCopilotMetricsLanguageFeature_GetLocSuggestedToDeleteSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageFeature{}
-	c.GetLocSuggestedToDeleteSum()
-	c = nil
-	c.GetLocSuggestedToDeleteSum()
-}
-
-func TestCopilotMetricsLanguageModel_GetCodeAcceptanceActivityCount(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageModel{}
-	c.GetCodeAcceptanceActivityCount()
-	c = nil
-	c.GetCodeAcceptanceActivityCount()
-}
-
-func TestCopilotMetricsLanguageModel_GetCodeGenerationActivityCount(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageModel{}
-	c.GetCodeGenerationActivityCount()
-	c = nil
-	c.GetCodeGenerationActivityCount()
-}
-
 func TestCopilotMetricsLanguageModel_GetLanguage(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotMetricsLanguageModel{}
 	c.GetLanguage()
 	c = nil
 	c.GetLanguage()
-}
-
-func TestCopilotMetricsLanguageModel_GetLocAddedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageModel{}
-	c.GetLocAddedSum()
-	c = nil
-	c.GetLocAddedSum()
-}
-
-func TestCopilotMetricsLanguageModel_GetLocDeletedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageModel{}
-	c.GetLocDeletedSum()
-	c = nil
-	c.GetLocDeletedSum()
-}
-
-func TestCopilotMetricsLanguageModel_GetLocSuggestedToAddSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageModel{}
-	c.GetLocSuggestedToAddSum()
-	c = nil
-	c.GetLocSuggestedToAddSum()
-}
-
-func TestCopilotMetricsLanguageModel_GetLocSuggestedToDeleteSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsLanguageModel{}
-	c.GetLocSuggestedToDeleteSum()
-	c = nil
-	c.GetLocSuggestedToDeleteSum()
 }
 
 func TestCopilotMetricsLanguageModel_GetModel(tt *testing.T) {
@@ -11612,60 +11468,12 @@ func TestCopilotMetricsListOptions_GetUntil(tt *testing.T) {
 	c.GetUntil()
 }
 
-func TestCopilotMetricsModelFeature_GetCodeAcceptanceActivityCount(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsModelFeature{}
-	c.GetCodeAcceptanceActivityCount()
-	c = nil
-	c.GetCodeAcceptanceActivityCount()
-}
-
-func TestCopilotMetricsModelFeature_GetCodeGenerationActivityCount(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsModelFeature{}
-	c.GetCodeGenerationActivityCount()
-	c = nil
-	c.GetCodeGenerationActivityCount()
-}
-
 func TestCopilotMetricsModelFeature_GetFeature(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotMetricsModelFeature{}
 	c.GetFeature()
 	c = nil
 	c.GetFeature()
-}
-
-func TestCopilotMetricsModelFeature_GetLocAddedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsModelFeature{}
-	c.GetLocAddedSum()
-	c = nil
-	c.GetLocAddedSum()
-}
-
-func TestCopilotMetricsModelFeature_GetLocDeletedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsModelFeature{}
-	c.GetLocDeletedSum()
-	c = nil
-	c.GetLocDeletedSum()
-}
-
-func TestCopilotMetricsModelFeature_GetLocSuggestedToAddSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsModelFeature{}
-	c.GetLocSuggestedToAddSum()
-	c = nil
-	c.GetLocSuggestedToAddSum()
-}
-
-func TestCopilotMetricsModelFeature_GetLocSuggestedToDeleteSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotMetricsModelFeature{}
-	c.GetLocSuggestedToDeleteSum()
-	c = nil
-	c.GetLocSuggestedToDeleteSum()
 }
 
 func TestCopilotMetricsModelFeature_GetModel(tt *testing.T) {
@@ -12079,36 +11887,36 @@ func TestCopilotUserDailyMetrics_GetEnterpriseID(tt *testing.T) {
 	c.GetEnterpriseID()
 }
 
-func TestCopilotUserDailyMetrics_GetLocAddedSum(tt *testing.T) {
+func TestCopilotUserDailyMetrics_GetLOCAddedSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserDailyMetrics{}
-	c.GetLocAddedSum()
+	c.GetLOCAddedSum()
 	c = nil
-	c.GetLocAddedSum()
+	c.GetLOCAddedSum()
 }
 
-func TestCopilotUserDailyMetrics_GetLocDeletedSum(tt *testing.T) {
+func TestCopilotUserDailyMetrics_GetLOCDeletedSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserDailyMetrics{}
-	c.GetLocDeletedSum()
+	c.GetLOCDeletedSum()
 	c = nil
-	c.GetLocDeletedSum()
+	c.GetLOCDeletedSum()
 }
 
-func TestCopilotUserDailyMetrics_GetLocSuggestedToAddSum(tt *testing.T) {
+func TestCopilotUserDailyMetrics_GetLOCSuggestedToAddSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserDailyMetrics{}
-	c.GetLocSuggestedToAddSum()
+	c.GetLOCSuggestedToAddSum()
 	c = nil
-	c.GetLocSuggestedToAddSum()
+	c.GetLOCSuggestedToAddSum()
 }
 
-func TestCopilotUserDailyMetrics_GetLocSuggestedToDeleteSum(tt *testing.T) {
+func TestCopilotUserDailyMetrics_GetLOCSuggestedToDeleteSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserDailyMetrics{}
-	c.GetLocSuggestedToDeleteSum()
+	c.GetLOCSuggestedToDeleteSum()
 	c = nil
-	c.GetLocSuggestedToDeleteSum()
+	c.GetLOCSuggestedToDeleteSum()
 }
 
 func TestCopilotUserDailyMetrics_GetOrganizationID(tt *testing.T) {
@@ -12254,22 +12062,6 @@ func TestCopilotUserDailyMetrics_GetUserLogin(tt *testing.T) {
 	c.GetUserLogin()
 }
 
-func TestCopilotUserMetricsIDE_GetCodeAcceptanceActivityCount(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotUserMetricsIDE{}
-	c.GetCodeAcceptanceActivityCount()
-	c = nil
-	c.GetCodeAcceptanceActivityCount()
-}
-
-func TestCopilotUserMetricsIDE_GetCodeGenerationActivityCount(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotUserMetricsIDE{}
-	c.GetCodeGenerationActivityCount()
-	c = nil
-	c.GetCodeGenerationActivityCount()
-}
-
 func TestCopilotUserMetricsIDE_GetIDE(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserMetricsIDE{}
@@ -12292,38 +12084,6 @@ func TestCopilotUserMetricsIDE_GetLastKnownPluginVersion(tt *testing.T) {
 	c.GetLastKnownPluginVersion()
 	c = nil
 	c.GetLastKnownPluginVersion()
-}
-
-func TestCopilotUserMetricsIDE_GetLocAddedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotUserMetricsIDE{}
-	c.GetLocAddedSum()
-	c = nil
-	c.GetLocAddedSum()
-}
-
-func TestCopilotUserMetricsIDE_GetLocDeletedSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotUserMetricsIDE{}
-	c.GetLocDeletedSum()
-	c = nil
-	c.GetLocDeletedSum()
-}
-
-func TestCopilotUserMetricsIDE_GetLocSuggestedToAddSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotUserMetricsIDE{}
-	c.GetLocSuggestedToAddSum()
-	c = nil
-	c.GetLocSuggestedToAddSum()
-}
-
-func TestCopilotUserMetricsIDE_GetLocSuggestedToDeleteSum(tt *testing.T) {
-	tt.Parallel()
-	c := &CopilotUserMetricsIDE{}
-	c.GetLocSuggestedToDeleteSum()
-	c = nil
-	c.GetLocSuggestedToDeleteSum()
 }
 
 func TestCopilotUserMetricsIDE_GetUserInitiatedInteractionCount(tt *testing.T) {
@@ -12412,36 +12172,36 @@ func TestCopilotUserPeriodicMetrics_GetEnterpriseID(tt *testing.T) {
 	c.GetEnterpriseID()
 }
 
-func TestCopilotUserPeriodicMetrics_GetLocAddedSum(tt *testing.T) {
+func TestCopilotUserPeriodicMetrics_GetLOCAddedSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserPeriodicMetrics{}
-	c.GetLocAddedSum()
+	c.GetLOCAddedSum()
 	c = nil
-	c.GetLocAddedSum()
+	c.GetLOCAddedSum()
 }
 
-func TestCopilotUserPeriodicMetrics_GetLocDeletedSum(tt *testing.T) {
+func TestCopilotUserPeriodicMetrics_GetLOCDeletedSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserPeriodicMetrics{}
-	c.GetLocDeletedSum()
+	c.GetLOCDeletedSum()
 	c = nil
-	c.GetLocDeletedSum()
+	c.GetLOCDeletedSum()
 }
 
-func TestCopilotUserPeriodicMetrics_GetLocSuggestedToAddSum(tt *testing.T) {
+func TestCopilotUserPeriodicMetrics_GetLOCSuggestedToAddSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserPeriodicMetrics{}
-	c.GetLocSuggestedToAddSum()
+	c.GetLOCSuggestedToAddSum()
 	c = nil
-	c.GetLocSuggestedToAddSum()
+	c.GetLOCSuggestedToAddSum()
 }
 
-func TestCopilotUserPeriodicMetrics_GetLocSuggestedToDeleteSum(tt *testing.T) {
+func TestCopilotUserPeriodicMetrics_GetLOCSuggestedToDeleteSum(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserPeriodicMetrics{}
-	c.GetLocSuggestedToDeleteSum()
+	c.GetLOCSuggestedToDeleteSum()
 	c = nil
-	c.GetLocSuggestedToDeleteSum()
+	c.GetLOCSuggestedToDeleteSum()
 }
 
 func TestCopilotUserPeriodicMetrics_GetOrganizationID(tt *testing.T) {

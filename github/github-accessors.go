@@ -8254,36 +8254,36 @@ func (c *CopilotDailyMetrics) GetEnterpriseID() string {
 	return c.EnterpriseID
 }
 
-// GetLocAddedSum returns the LocAddedSum field.
-func (c *CopilotDailyMetrics) GetLocAddedSum() int {
+// GetLOCAddedSum returns the LOCAddedSum field.
+func (c *CopilotDailyMetrics) GetLOCAddedSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocAddedSum
+	return c.LOCAddedSum
 }
 
-// GetLocDeletedSum returns the LocDeletedSum field.
-func (c *CopilotDailyMetrics) GetLocDeletedSum() int {
+// GetLOCDeletedSum returns the LOCDeletedSum field.
+func (c *CopilotDailyMetrics) GetLOCDeletedSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocDeletedSum
+	return c.LOCDeletedSum
 }
 
-// GetLocSuggestedToAddSum returns the LocSuggestedToAddSum field.
-func (c *CopilotDailyMetrics) GetLocSuggestedToAddSum() int {
+// GetLOCSuggestedToAddSum returns the LOCSuggestedToAddSum field.
+func (c *CopilotDailyMetrics) GetLOCSuggestedToAddSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocSuggestedToAddSum
+	return c.LOCSuggestedToAddSum
 }
 
-// GetLocSuggestedToDeleteSum returns the LocSuggestedToDeleteSum field.
-func (c *CopilotDailyMetrics) GetLocSuggestedToDeleteSum() int {
+// GetLOCSuggestedToDeleteSum returns the LOCSuggestedToDeleteSum field.
+func (c *CopilotDailyMetrics) GetLOCSuggestedToDeleteSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocSuggestedToDeleteSum
+	return c.LOCSuggestedToDeleteSum
 }
 
 // GetMonthlyActiveAgentUsers returns the MonthlyActiveAgentUsers field.
@@ -8943,7 +8943,7 @@ func (c *CopilotMetricsCLIVersion) GetSampledAt() Timestamp {
 }
 
 // GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field.
-func (c *CopilotMetricsFeature) GetCodeAcceptanceActivityCount() int {
+func (c *CopilotMetricsCodeActivity) GetCodeAcceptanceActivityCount() int {
 	if c == nil {
 		return 0
 	}
@@ -8951,11 +8951,43 @@ func (c *CopilotMetricsFeature) GetCodeAcceptanceActivityCount() int {
 }
 
 // GetCodeGenerationActivityCount returns the CodeGenerationActivityCount field.
-func (c *CopilotMetricsFeature) GetCodeGenerationActivityCount() int {
+func (c *CopilotMetricsCodeActivity) GetCodeGenerationActivityCount() int {
 	if c == nil {
 		return 0
 	}
 	return c.CodeGenerationActivityCount
+}
+
+// GetLOCAddedSum returns the LOCAddedSum field.
+func (c *CopilotMetricsCodeActivity) GetLOCAddedSum() int {
+	if c == nil {
+		return 0
+	}
+	return c.LOCAddedSum
+}
+
+// GetLOCDeletedSum returns the LOCDeletedSum field.
+func (c *CopilotMetricsCodeActivity) GetLOCDeletedSum() int {
+	if c == nil {
+		return 0
+	}
+	return c.LOCDeletedSum
+}
+
+// GetLOCSuggestedToAddSum returns the LOCSuggestedToAddSum field.
+func (c *CopilotMetricsCodeActivity) GetLOCSuggestedToAddSum() int {
+	if c == nil {
+		return 0
+	}
+	return c.LOCSuggestedToAddSum
+}
+
+// GetLOCSuggestedToDeleteSum returns the LOCSuggestedToDeleteSum field.
+func (c *CopilotMetricsCodeActivity) GetLOCSuggestedToDeleteSum() int {
+	if c == nil {
+		return 0
+	}
+	return c.LOCSuggestedToDeleteSum
 }
 
 // GetFeature returns the Feature field.
@@ -8966,60 +8998,12 @@ func (c *CopilotMetricsFeature) GetFeature() string {
 	return c.Feature
 }
 
-// GetLocAddedSum returns the LocAddedSum field.
-func (c *CopilotMetricsFeature) GetLocAddedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocAddedSum
-}
-
-// GetLocDeletedSum returns the LocDeletedSum field.
-func (c *CopilotMetricsFeature) GetLocDeletedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocDeletedSum
-}
-
-// GetLocSuggestedToAddSum returns the LocSuggestedToAddSum field.
-func (c *CopilotMetricsFeature) GetLocSuggestedToAddSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToAddSum
-}
-
-// GetLocSuggestedToDeleteSum returns the LocSuggestedToDeleteSum field.
-func (c *CopilotMetricsFeature) GetLocSuggestedToDeleteSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToDeleteSum
-}
-
 // GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field.
 func (c *CopilotMetricsFeature) GetUserInitiatedInteractionCount() int {
 	if c == nil {
 		return 0
 	}
 	return c.UserInitiatedInteractionCount
-}
-
-// GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field.
-func (c *CopilotMetricsIDE) GetCodeAcceptanceActivityCount() int {
-	if c == nil {
-		return 0
-	}
-	return c.CodeAcceptanceActivityCount
-}
-
-// GetCodeGenerationActivityCount returns the CodeGenerationActivityCount field.
-func (c *CopilotMetricsIDE) GetCodeGenerationActivityCount() int {
-	if c == nil {
-		return 0
-	}
-	return c.CodeGenerationActivityCount
 }
 
 // GetIDE returns the IDE field.
@@ -9030,60 +9014,12 @@ func (c *CopilotMetricsIDE) GetIDE() string {
 	return c.IDE
 }
 
-// GetLocAddedSum returns the LocAddedSum field.
-func (c *CopilotMetricsIDE) GetLocAddedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocAddedSum
-}
-
-// GetLocDeletedSum returns the LocDeletedSum field.
-func (c *CopilotMetricsIDE) GetLocDeletedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocDeletedSum
-}
-
-// GetLocSuggestedToAddSum returns the LocSuggestedToAddSum field.
-func (c *CopilotMetricsIDE) GetLocSuggestedToAddSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToAddSum
-}
-
-// GetLocSuggestedToDeleteSum returns the LocSuggestedToDeleteSum field.
-func (c *CopilotMetricsIDE) GetLocSuggestedToDeleteSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToDeleteSum
-}
-
 // GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field.
 func (c *CopilotMetricsIDE) GetUserInitiatedInteractionCount() int {
 	if c == nil {
 		return 0
 	}
 	return c.UserInitiatedInteractionCount
-}
-
-// GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field.
-func (c *CopilotMetricsLanguageFeature) GetCodeAcceptanceActivityCount() int {
-	if c == nil {
-		return 0
-	}
-	return c.CodeAcceptanceActivityCount
-}
-
-// GetCodeGenerationActivityCount returns the CodeGenerationActivityCount field.
-func (c *CopilotMetricsLanguageFeature) GetCodeGenerationActivityCount() int {
-	if c == nil {
-		return 0
-	}
-	return c.CodeGenerationActivityCount
 }
 
 // GetFeature returns the Feature field.
@@ -9102,92 +9038,12 @@ func (c *CopilotMetricsLanguageFeature) GetLanguage() string {
 	return c.Language
 }
 
-// GetLocAddedSum returns the LocAddedSum field.
-func (c *CopilotMetricsLanguageFeature) GetLocAddedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocAddedSum
-}
-
-// GetLocDeletedSum returns the LocDeletedSum field.
-func (c *CopilotMetricsLanguageFeature) GetLocDeletedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocDeletedSum
-}
-
-// GetLocSuggestedToAddSum returns the LocSuggestedToAddSum field.
-func (c *CopilotMetricsLanguageFeature) GetLocSuggestedToAddSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToAddSum
-}
-
-// GetLocSuggestedToDeleteSum returns the LocSuggestedToDeleteSum field.
-func (c *CopilotMetricsLanguageFeature) GetLocSuggestedToDeleteSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToDeleteSum
-}
-
-// GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field.
-func (c *CopilotMetricsLanguageModel) GetCodeAcceptanceActivityCount() int {
-	if c == nil {
-		return 0
-	}
-	return c.CodeAcceptanceActivityCount
-}
-
-// GetCodeGenerationActivityCount returns the CodeGenerationActivityCount field.
-func (c *CopilotMetricsLanguageModel) GetCodeGenerationActivityCount() int {
-	if c == nil {
-		return 0
-	}
-	return c.CodeGenerationActivityCount
-}
-
 // GetLanguage returns the Language field.
 func (c *CopilotMetricsLanguageModel) GetLanguage() string {
 	if c == nil {
 		return ""
 	}
 	return c.Language
-}
-
-// GetLocAddedSum returns the LocAddedSum field.
-func (c *CopilotMetricsLanguageModel) GetLocAddedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocAddedSum
-}
-
-// GetLocDeletedSum returns the LocDeletedSum field.
-func (c *CopilotMetricsLanguageModel) GetLocDeletedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocDeletedSum
-}
-
-// GetLocSuggestedToAddSum returns the LocSuggestedToAddSum field.
-func (c *CopilotMetricsLanguageModel) GetLocSuggestedToAddSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToAddSum
-}
-
-// GetLocSuggestedToDeleteSum returns the LocSuggestedToDeleteSum field.
-func (c *CopilotMetricsLanguageModel) GetLocSuggestedToDeleteSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToDeleteSum
 }
 
 // GetModel returns the Model field.
@@ -9214,60 +9070,12 @@ func (c *CopilotMetricsListOptions) GetUntil() time.Time {
 	return *c.Until
 }
 
-// GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field.
-func (c *CopilotMetricsModelFeature) GetCodeAcceptanceActivityCount() int {
-	if c == nil {
-		return 0
-	}
-	return c.CodeAcceptanceActivityCount
-}
-
-// GetCodeGenerationActivityCount returns the CodeGenerationActivityCount field.
-func (c *CopilotMetricsModelFeature) GetCodeGenerationActivityCount() int {
-	if c == nil {
-		return 0
-	}
-	return c.CodeGenerationActivityCount
-}
-
 // GetFeature returns the Feature field.
 func (c *CopilotMetricsModelFeature) GetFeature() string {
 	if c == nil {
 		return ""
 	}
 	return c.Feature
-}
-
-// GetLocAddedSum returns the LocAddedSum field.
-func (c *CopilotMetricsModelFeature) GetLocAddedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocAddedSum
-}
-
-// GetLocDeletedSum returns the LocDeletedSum field.
-func (c *CopilotMetricsModelFeature) GetLocDeletedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocDeletedSum
-}
-
-// GetLocSuggestedToAddSum returns the LocSuggestedToAddSum field.
-func (c *CopilotMetricsModelFeature) GetLocSuggestedToAddSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToAddSum
-}
-
-// GetLocSuggestedToDeleteSum returns the LocSuggestedToDeleteSum field.
-func (c *CopilotMetricsModelFeature) GetLocSuggestedToDeleteSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToDeleteSum
 }
 
 // GetModel returns the Model field.
@@ -9654,36 +9462,36 @@ func (c *CopilotUserDailyMetrics) GetEnterpriseID() string {
 	return c.EnterpriseID
 }
 
-// GetLocAddedSum returns the LocAddedSum field.
-func (c *CopilotUserDailyMetrics) GetLocAddedSum() int {
+// GetLOCAddedSum returns the LOCAddedSum field.
+func (c *CopilotUserDailyMetrics) GetLOCAddedSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocAddedSum
+	return c.LOCAddedSum
 }
 
-// GetLocDeletedSum returns the LocDeletedSum field.
-func (c *CopilotUserDailyMetrics) GetLocDeletedSum() int {
+// GetLOCDeletedSum returns the LOCDeletedSum field.
+func (c *CopilotUserDailyMetrics) GetLOCDeletedSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocDeletedSum
+	return c.LOCDeletedSum
 }
 
-// GetLocSuggestedToAddSum returns the LocSuggestedToAddSum field.
-func (c *CopilotUserDailyMetrics) GetLocSuggestedToAddSum() int {
+// GetLOCSuggestedToAddSum returns the LOCSuggestedToAddSum field.
+func (c *CopilotUserDailyMetrics) GetLOCSuggestedToAddSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocSuggestedToAddSum
+	return c.LOCSuggestedToAddSum
 }
 
-// GetLocSuggestedToDeleteSum returns the LocSuggestedToDeleteSum field.
-func (c *CopilotUserDailyMetrics) GetLocSuggestedToDeleteSum() int {
+// GetLOCSuggestedToDeleteSum returns the LOCSuggestedToDeleteSum field.
+func (c *CopilotUserDailyMetrics) GetLOCSuggestedToDeleteSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocSuggestedToDeleteSum
+	return c.LOCSuggestedToDeleteSum
 }
 
 // GetOrganizationID returns the OrganizationID field.
@@ -9814,22 +9622,6 @@ func (c *CopilotUserDailyMetrics) GetUserLogin() string {
 	return c.UserLogin
 }
 
-// GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field.
-func (c *CopilotUserMetricsIDE) GetCodeAcceptanceActivityCount() int {
-	if c == nil {
-		return 0
-	}
-	return c.CodeAcceptanceActivityCount
-}
-
-// GetCodeGenerationActivityCount returns the CodeGenerationActivityCount field.
-func (c *CopilotUserMetricsIDE) GetCodeGenerationActivityCount() int {
-	if c == nil {
-		return 0
-	}
-	return c.CodeGenerationActivityCount
-}
-
 // GetIDE returns the IDE field.
 func (c *CopilotUserMetricsIDE) GetIDE() string {
 	if c == nil {
@@ -9852,38 +9644,6 @@ func (c *CopilotUserMetricsIDE) GetLastKnownPluginVersion() *CopilotUserMetricsP
 		return nil
 	}
 	return c.LastKnownPluginVersion
-}
-
-// GetLocAddedSum returns the LocAddedSum field.
-func (c *CopilotUserMetricsIDE) GetLocAddedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocAddedSum
-}
-
-// GetLocDeletedSum returns the LocDeletedSum field.
-func (c *CopilotUserMetricsIDE) GetLocDeletedSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocDeletedSum
-}
-
-// GetLocSuggestedToAddSum returns the LocSuggestedToAddSum field.
-func (c *CopilotUserMetricsIDE) GetLocSuggestedToAddSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToAddSum
-}
-
-// GetLocSuggestedToDeleteSum returns the LocSuggestedToDeleteSum field.
-func (c *CopilotUserMetricsIDE) GetLocSuggestedToDeleteSum() int {
-	if c == nil {
-		return 0
-	}
-	return c.LocSuggestedToDeleteSum
 }
 
 // GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field.
@@ -9966,36 +9726,36 @@ func (c *CopilotUserPeriodicMetrics) GetEnterpriseID() string {
 	return c.EnterpriseID
 }
 
-// GetLocAddedSum returns the LocAddedSum field.
-func (c *CopilotUserPeriodicMetrics) GetLocAddedSum() int {
+// GetLOCAddedSum returns the LOCAddedSum field.
+func (c *CopilotUserPeriodicMetrics) GetLOCAddedSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocAddedSum
+	return c.LOCAddedSum
 }
 
-// GetLocDeletedSum returns the LocDeletedSum field.
-func (c *CopilotUserPeriodicMetrics) GetLocDeletedSum() int {
+// GetLOCDeletedSum returns the LOCDeletedSum field.
+func (c *CopilotUserPeriodicMetrics) GetLOCDeletedSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocDeletedSum
+	return c.LOCDeletedSum
 }
 
-// GetLocSuggestedToAddSum returns the LocSuggestedToAddSum field.
-func (c *CopilotUserPeriodicMetrics) GetLocSuggestedToAddSum() int {
+// GetLOCSuggestedToAddSum returns the LOCSuggestedToAddSum field.
+func (c *CopilotUserPeriodicMetrics) GetLOCSuggestedToAddSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocSuggestedToAddSum
+	return c.LOCSuggestedToAddSum
 }
 
-// GetLocSuggestedToDeleteSum returns the LocSuggestedToDeleteSum field.
-func (c *CopilotUserPeriodicMetrics) GetLocSuggestedToDeleteSum() int {
+// GetLOCSuggestedToDeleteSum returns the LOCSuggestedToDeleteSum field.
+func (c *CopilotUserPeriodicMetrics) GetLOCSuggestedToDeleteSum() int {
 	if c == nil {
 		return 0
 	}
-	return c.LocSuggestedToDeleteSum
+	return c.LOCSuggestedToDeleteSum
 }
 
 // GetOrganizationID returns the OrganizationID field.

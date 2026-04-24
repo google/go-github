@@ -2982,16 +2982,16 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 		WeeklyActiveUsers:   20,
 		MonthlyActiveUsers:  30,
 		TotalsByIDE: []*CopilotMetricsIDE{
-			{IDE: "vscode", UserInitiatedInteractionCount: 5, LocAddedSum: 100},
+			{IDE: "vscode", UserInitiatedInteractionCount: 5, CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: 100}},
 		},
 		TotalsByFeature: []*CopilotMetricsFeature{
 			{Feature: "completion", UserInitiatedInteractionCount: 5},
 		},
 		TotalsByLanguageFeature: []*CopilotMetricsLanguageFeature{
-			{Language: "go", Feature: "completion", CodeGenerationActivityCount: 3},
+			{Language: "go", Feature: "completion", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: 3}},
 		},
 		TotalsByLanguageModel: []*CopilotMetricsLanguageModel{
-			{Language: "go", Model: "m1", CodeGenerationActivityCount: 3},
+			{Language: "go", Model: "m1", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: 3}},
 		},
 		TotalsByModelFeature: []*CopilotMetricsModelFeature{
 			{Model: "m1", Feature: "completion", UserInitiatedInteractionCount: 5},
@@ -3006,7 +3006,7 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 				PromptTokensSum:     9494,
 			},
 		},
-		LocAddedSum: 100,
+		LOCAddedSum: 100,
 		PullRequests: &CopilotMetricsPullRequests{
 			TotalReviewed:                       1,
 			TotalCreated:                        2,
