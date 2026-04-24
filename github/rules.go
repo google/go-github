@@ -490,7 +490,7 @@ type RulesetReviewer struct {
 // UnmarshalJSON implements the json.Unmarshaler interface.
 func (r *RulesetReviewer) UnmarshalJSON(data []byte) error {
 	var aux struct {
-		ID   any                 `json:"id,omitempty"`
+		ID   any                  `json:"id,omitempty"`
 		Type *RulesetReviewerType `json:"type,omitempty"`
 	}
 
