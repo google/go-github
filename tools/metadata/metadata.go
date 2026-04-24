@@ -26,7 +26,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/go-github/v84/github"
+	"github.com/google/go-github/v85/github"
 	"go.yaml.in/yaml/v3"
 )
 
@@ -502,7 +502,9 @@ func normalizeDocURL(docURL string) string {
 
 	u.Path = cleanPath
 	q := u.Query()
-	q.Set("apiVersion", metadataDocsAPIVersion)
+	if q.Get("apiVersion") == "" {
+		q.Set("apiVersion", metadataDocsAPIVersion)
+	}
 	u.RawQuery = q.Encode()
 	return u.String()
 }

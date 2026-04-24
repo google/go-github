@@ -410,7 +410,7 @@ func tagNameToPascal(tagName string) (want, alternate string) {
 
 // Common Go initialisms that should be all caps.
 var initialisms = map[string]bool{
-	"API": true, "ASCII": true,
+	"API": true, "ASCII": true, "AWS": true,
 	"CAA": true, "CAS": true, "CNAME": true, "CPU": true,
 	"CSS": true, "CWE": true, "CVE": true, "CVSS": true,
 	"DN": true, "DNS": true,
@@ -419,6 +419,7 @@ var initialisms = map[string]bool{
 	"HTML": true, "HTTP": true, "HTTPS": true,
 	"ID": true, "IDE": true, "IDP": true, "IP": true, "JIT": true,
 	"JSON": true,
+	"OIDC": true,
 	"LDAP": true, "LFS": true, "LHS": true,
 	"MD5": true, "MS": true, "MX": true,
 	"NPM": true, "NTP": true, "NVD": true,
@@ -440,6 +441,7 @@ var initialisms = map[string]bool{
 var specialCases = map[string]string{
 	"CPUS":    "CPUs",
 	"CWES":    "CWEs",
+	"JFROG":   "JFrog",
 	"GRAPHQL": "GraphQL",
 	"HREF":    "HRef",
 	"IDS":     "IDs",
