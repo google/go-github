@@ -848,6 +848,35 @@ func TestRepositoryRule(t *testing.T) {
 			`{"type":"pull_request","parameters":{"allowed_merge_methods":["merge","squash","rebase"],"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":0,"required_reviewers":[{"minimum_approvals":1,"file_patterns":["*"],"reviewer":{"id":123456,"type":"Team"}}],"required_review_thread_resolution":false}}`,
 		},
 		{
+			"pull_request_string_id",
+			&RepositoryRule{
+				Type: RulesetRuleTypePullRequest,
+				Parameters: &PullRequestRuleParameters{
+					AllowedMergeMethods: []PullRequestMergeMethod{
+						PullRequestMergeMethodMerge,
+						PullRequestMergeMethodSquash,
+						PullRequestMergeMethodRebase,
+					},
+					DismissStaleReviewsOnPush:      false,
+					RequireCodeOwnerReview:         false,
+					RequireLastPushApproval:        false,
+					RequiredApprovingReviewCount:   0,
+					RequiredReviewThreadResolution: false,
+					RequiredReviewers: []*RulesetRequiredReviewer{
+						{
+							MinimumApprovals: Ptr(1),
+							FilePatterns:     []string{"*"},
+							Reviewer: &RulesetReviewer{
+								ID:   Ptr(int64(123456)),
+								Type: Ptr(RulesetReviewerTypeTeam),
+							},
+						},
+					},
+				},
+			},
+			`{"type":"pull_request","parameters":{"allowed_merge_methods":["merge","squash","rebase"],"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":0,"required_reviewers":[{"minimum_approvals":1,"file_patterns":["*"],"reviewer":{"id":"123456","type":"Team"}}],"required_review_thread_resolution":false}}`,
+		},
+		{
 			"required_status_checks",
 			&RepositoryRule{
 				Type: RulesetRuleTypeRequiredStatusChecks,
@@ -1171,4 +1200,65 @@ func TestRepositoryRule(t *testing.T) {
 			})
 		}
 	})
+}
+
+func TestRulesetReviewer_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name    string
+		json    string
+		wantID  int64
+		wantErr bool
+	}{
+		{
+			name:    "integer_id",
+			json:    `{"id": 123456, "type": "Team"}`,
+			wantID:  123456,
+			wantErr: false,
+		},
+		{
+			name:    "string_id",
+			json:    `{"id": "123456", "type": "Team"}`,
+			wantID:  123456,
+			wantErr: false,
+		},
+		{
+			name:    "invalid_string_id",
+			json:    `{"id": "not-a-number", "type": "Team"}`,
+			wantErr: true,
+		},
+		{
+			name:    "invalid_type_id",
+			json:    `{"id": {}, "type": "Team"}`,
+			wantErr: true,
+		},
+		{
+			name:    "malformed_json",
+			json:    `{"id":`,
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			var got RulesetReviewer
+			err := json.Unmarshal([]byte(tt.json), &got)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("UnmarshalJSON() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			if !tt.wantErr {
+				if got.GetID() != tt.wantID {
+					t.Errorf("UnmarshalJSON() got ID = %v, want %v", got.GetID(), tt.wantID)
+				}
+				if got.GetType() == nil || *got.GetType() != RulesetReviewerTypeTeam {
+					t.Errorf("UnmarshalJSON() got Type = %v, want %v", got.GetType(), RulesetReviewerTypeTeam)
+				}
+			}
+		})
+	}
 }
