@@ -102,7 +102,7 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 		body.Exclude = append(body.Exclude, opts.Exclude...)
 	}
 
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -110,7 +110,7 @@ func (s *MigrationService) StartMigration(ctx context.Context, org string, repos
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	var m *Migration
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -130,7 +130,7 @@ func (s *MigrationService) ListMigrations(ctx context.Context, org string, opts 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -138,7 +138,7 @@ func (s *MigrationService) ListMigrations(ctx context.Context, org string, opts 
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	var m []*Migration
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -155,7 +155,7 @@ func (s *MigrationService) ListMigrations(ctx context.Context, org string, opts 
 func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id int64) (*Migration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/migrations/%v", org, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -163,7 +163,7 @@ func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id i
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	var m *Migration
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -180,13 +180,13 @@ func (s *MigrationService) MigrationStatus(ctx context.Context, org string, id i
 func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, id int64) (url string, err error) {
 	u := fmt.Sprintf("orgs/%v/migrations/%v/archive", org, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return "", err
 	}
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	loc, _, err := s.client.bareDoUntilFound(ctx, req, 10)
+	loc, _, err := s.client.bareDoUntilFound(req, 10)
 	if err != nil {
 		return "", err
 	}
@@ -207,14 +207,14 @@ func (s *MigrationService) MigrationArchiveURL(ctx context.Context, org string, 
 func (s *MigrationService) DeleteMigration(ctx context.Context, org string, id int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/migrations/%v/archive", org, id)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UnlockRepo unlocks a repository that was locked for migration.
@@ -228,12 +228,12 @@ func (s *MigrationService) DeleteMigration(ctx context.Context, org string, id i
 func (s *MigrationService) UnlockRepo(ctx context.Context, org string, id int64, repo string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/migrations/%v/repos/%v/lock", org, id, repo)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

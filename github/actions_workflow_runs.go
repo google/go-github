@@ -144,13 +144,13 @@ func (s *ActionsService) listWorkflowRuns(ctx context.Context, endpoint string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var runs *WorkflowRuns
-	resp, err := s.client.Do(ctx, req, &runs)
+	resp, err := s.client.Do(req, &runs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -190,13 +190,13 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var runs *WorkflowRuns
-	resp, err := s.client.Do(ctx, req, &runs)
+	resp, err := s.client.Do(req, &runs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -213,13 +213,13 @@ func (s *ActionsService) ListRepositoryWorkflowRuns(ctx context.Context, owner, 
 func (s *ActionsService) GetWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v", owner, repo, runID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var run *WorkflowRun
-	resp, err := s.client.Do(ctx, req, &run)
+	resp, err := s.client.Do(req, &run)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -240,13 +240,13 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var run *WorkflowRun
-	resp, err := s.client.Do(ctx, req, &run)
+	resp, err := s.client.Do(req, &run)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -286,12 +286,12 @@ func (s *ActionsService) getWorkflowRunAttemptLogsWithoutRateLimit(ctx context.C
 }
 
 func (s *ActionsService) getWorkflowRunAttemptLogsWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	url, resp, err := s.client.bareDoUntilFound(req, maxRedirects)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -314,12 +314,12 @@ func (s *ActionsService) getWorkflowRunAttemptLogsWithRateLimit(ctx context.Cont
 func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/rerun", owner, repo, runID)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RerunFailedJobsByID re-runs all of the failed jobs and their dependent jobs in a workflow run by ID.
@@ -331,12 +331,12 @@ func (s *ActionsService) RerunWorkflowByID(ctx context.Context, owner, repo stri
 func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/rerun-failed-jobs", owner, repo, runID)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RerunJobByID re-runs a job and its dependent jobs in a workflow run by ID.
@@ -349,12 +349,12 @@ func (s *ActionsService) RerunFailedJobsByID(ctx context.Context, owner, repo st
 func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, jobID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/rerun", owner, repo, jobID)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // CancelWorkflowRunByID cancels a workflow run by ID.
@@ -366,12 +366,12 @@ func (s *ActionsService) RerunJobByID(ctx context.Context, owner, repo string, j
 func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/cancel", owner, repo, runID)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetWorkflowRunLogs gets a redirect URL to download a plain text file of logs for a workflow run.
@@ -406,12 +406,12 @@ func (s *ActionsService) getWorkflowRunLogsWithoutRateLimit(ctx context.Context,
 }
 
 func (s *ActionsService) getWorkflowRunLogsWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	url, resp, err := s.client.bareDoUntilFound(req, maxRedirects)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -434,12 +434,12 @@ func (s *ActionsService) getWorkflowRunLogsWithRateLimit(ctx context.Context, u 
 func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v", owner, repo, runID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteWorkflowRunLogs deletes all logs for a workflow run.
@@ -451,12 +451,12 @@ func (s *ActionsService) DeleteWorkflowRun(ctx context.Context, owner, repo stri
 func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetWorkflowRunUsageByID gets a specific workflow usage run by run ID in the unit of billable milliseconds.
@@ -468,13 +468,13 @@ func (s *ActionsService) DeleteWorkflowRunLogs(ctx context.Context, owner, repo 
 func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, repo string, runID int64) (*WorkflowRunUsage, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/timing", owner, repo, runID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var workflowRunUsage *WorkflowRunUsage
-	resp, err := s.client.Do(ctx, req, &workflowRunUsage)
+	resp, err := s.client.Do(req, &workflowRunUsage)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -491,13 +491,13 @@ func (s *ActionsService) GetWorkflowRunUsageByID(ctx context.Context, owner, rep
 func (s *ActionsService) GetPendingDeployments(ctx context.Context, owner, repo string, runID int64) ([]*PendingDeployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/pending_deployments", owner, repo, runID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var deployments []*PendingDeployment
-	resp, err := s.client.Do(ctx, req, &deployments)
+	resp, err := s.client.Do(req, &deployments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -514,13 +514,13 @@ func (s *ActionsService) GetPendingDeployments(ctx context.Context, owner, repo 
 func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo string, runID int64, request *PendingDeploymentsRequest) ([]*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/pending_deployments", owner, repo, runID)
 
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var deployments []*Deployment
-	resp, err := s.client.Do(ctx, req, &deployments)
+	resp, err := s.client.Do(req, &deployments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -537,11 +537,11 @@ func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo str
 func (s *ActionsService) ReviewCustomDeploymentProtectionRule(ctx context.Context, owner, repo string, runID int64, request *ReviewCustomDeploymentProtectionRuleRequest) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/deployment_protection_rule", owner, repo, runID)
 
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	return resp, err
 }

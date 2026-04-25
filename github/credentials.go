@@ -28,10 +28,10 @@ func (s *CredentialsService) Revoke(ctx context.Context, credentials []string) (
 
 	reqBody := &revokeCredentialsRequest{Credentials: credentials}
 
-	req, err := s.client.NewRequest("POST", u, reqBody)
+	req, err := s.client.NewRequest(ctx, "POST", u, reqBody)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

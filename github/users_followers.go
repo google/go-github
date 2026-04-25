@@ -31,13 +31,13 @@ func (s *UsersService) ListFollowers(ctx context.Context, user string, opts *Lis
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	resp, err := s.client.Do(req, &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -66,13 +66,13 @@ func (s *UsersService) ListFollowing(ctx context.Context, user string, opts *Lis
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	resp, err := s.client.Do(req, &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -97,12 +97,12 @@ func (s *UsersService) IsFollowing(ctx context.Context, user, target string) (bo
 		u = fmt.Sprintf("user/following/%v", target)
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	following, err := parseBoolResponse(err)
 	return following, resp, err
 }
@@ -114,12 +114,12 @@ func (s *UsersService) IsFollowing(ctx context.Context, user, target string) (bo
 //meta:operation PUT /user/following/{username}
 func (s *UsersService) Follow(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("user/following/%v", user)
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // Unfollow will cause the authenticated user to unfollow the specified user.
@@ -129,10 +129,10 @@ func (s *UsersService) Follow(ctx context.Context, user string) (*Response, erro
 //meta:operation DELETE /user/following/{username}
 func (s *UsersService) Unfollow(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("user/following/%v", user)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

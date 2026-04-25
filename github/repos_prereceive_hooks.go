@@ -34,7 +34,7 @@ func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -42,7 +42,7 @@ func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, re
 	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
 	var hooks []*PreReceiveHook
-	resp, err := s.client.Do(ctx, req, &hooks)
+	resp, err := s.client.Do(req, &hooks)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -57,7 +57,7 @@ func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, re
 //meta:operation GET /repos/{owner}/{repo}/pre-receive-hooks/{pre_receive_hook_id}
 func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo string, id int64) (*PreReceiveHook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%v", owner, repo, id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -65,7 +65,7 @@ func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo
 	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
 	var h *PreReceiveHook
-	resp, err := s.client.Do(ctx, req, &h)
+	resp, err := s.client.Do(req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -80,7 +80,7 @@ func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo
 //meta:operation PATCH /repos/{owner}/{repo}/pre-receive-hooks/{pre_receive_hook_id}
 func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, repo string, id int64, hook *PreReceiveHook) (*PreReceiveHook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%v", owner, repo, id)
-	req, err := s.client.NewRequest("PATCH", u, hook)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, hook)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -88,7 +88,7 @@ func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, r
 	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
 	var h *PreReceiveHook
-	resp, err := s.client.Do(ctx, req, &h)
+	resp, err := s.client.Do(req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -103,12 +103,12 @@ func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, r
 //meta:operation DELETE /repos/{owner}/{repo}/pre-receive-hooks/{pre_receive_hook_id}
 func (s *RepositoriesService) DeletePreReceiveHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%v", owner, repo, id)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

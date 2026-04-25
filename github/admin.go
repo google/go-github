@@ -87,13 +87,13 @@ func (m Enterprise) String() string {
 //meta:operation PATCH /admin/ldap/users/{username}/mapping
 func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, mapping *UserLDAPMapping) (*UserLDAPMapping, *Response, error) {
 	u := fmt.Sprintf("admin/ldap/users/%v/mapping", user)
-	req, err := s.client.NewRequest("PATCH", u, mapping)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, mapping)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var m *UserLDAPMapping
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -108,13 +108,13 @@ func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, m
 //meta:operation PATCH /admin/ldap/teams/{team_id}/mapping
 func (s *AdminService) UpdateTeamLDAPMapping(ctx context.Context, team int64, mapping *TeamLDAPMapping) (*TeamLDAPMapping, *Response, error) {
 	u := fmt.Sprintf("admin/ldap/teams/%v/mapping", team)
-	req, err := s.client.NewRequest("PATCH", u, mapping)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, mapping)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var m *TeamLDAPMapping
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

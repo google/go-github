@@ -54,13 +54,13 @@ func (s *EnterpriseService) GetMaintenanceStatus(ctx context.Context, opts *Node
 	if err != nil {
 		return nil, nil, err
 	}
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var status []*MaintenanceStatus
-	resp, err := s.client.Do(ctx, req, &status)
+	resp, err := s.client.Do(req, &status)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -79,13 +79,13 @@ func (s *EnterpriseService) CreateMaintenance(ctx context.Context, enable bool, 
 
 	opts.Enabled = enable
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var i []*MaintenanceOperationStatus
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}

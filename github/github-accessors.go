@@ -22846,6 +22846,14 @@ func (o *Organization) GetAdvancedSecurityEnabledForNewRepos() bool {
 	return *o.AdvancedSecurityEnabledForNewRepos
 }
 
+// GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.
+func (o *Organization) GetArchivedAt() Timestamp {
+	if o == nil || o.ArchivedAt == nil {
+		return Timestamp{}
+	}
+	return *o.ArchivedAt
+}
+
 // GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
 func (o *Organization) GetAvatarURL() string {
 	if o == nil || o.AvatarURL == nil {

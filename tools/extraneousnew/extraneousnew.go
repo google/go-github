@@ -196,8 +196,8 @@ func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
 			}
 
 			var targetArg ast.Expr
-			if fnName == "Do" && len(call.Args) == 3 {
-				targetArg = call.Args[2]
+			if fnName == "Do" && len(call.Args) == 2 {
+				targetArg = call.Args[1]
 			} else if fnName == "Decode" && len(call.Args) == 1 {
 				targetArg = call.Args[0]
 			}
@@ -251,8 +251,8 @@ func lookAhead(pass *analysis.Pass, block *ast.BlockStmt, startIndex int, lhsIde
 
 				fnName := getFunctionName(call.Fun)
 				var targetArg ast.Expr
-				if fnName == "Do" && len(call.Args) == 3 {
-					targetArg = call.Args[2]
+				if fnName == "Do" && len(call.Args) == 2 {
+					targetArg = call.Args[1]
 				} else if fnName == "Decode" && len(call.Args) == 1 {
 					targetArg = call.Args[0]
 				}

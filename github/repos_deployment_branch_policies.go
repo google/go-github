@@ -42,13 +42,13 @@ func (s *RepositoriesService) ListDeploymentBranchPolicies(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var list *DeploymentBranchPolicyResponse
-	resp, err := s.client.Do(ctx, req, &list)
+	resp, err := s.client.Do(req, &list)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -64,13 +64,13 @@ func (s *RepositoriesService) ListDeploymentBranchPolicies(ctx context.Context, 
 func (s *RepositoriesService) GetDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, branchPolicyID int64) (*DeploymentBranchPolicy, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var policy *DeploymentBranchPolicy
-	resp, err := s.client.Do(ctx, req, &policy)
+	resp, err := s.client.Do(req, &policy)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -86,13 +86,13 @@ func (s *RepositoriesService) GetDeploymentBranchPolicy(ctx context.Context, own
 func (s *RepositoriesService) CreateDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, request *DeploymentBranchPolicyRequest) (*DeploymentBranchPolicy, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies", owner, repo, environment)
 
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var policy *DeploymentBranchPolicy
-	resp, err := s.client.Do(ctx, req, &policy)
+	resp, err := s.client.Do(req, &policy)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -108,13 +108,13 @@ func (s *RepositoriesService) CreateDeploymentBranchPolicy(ctx context.Context, 
 func (s *RepositoriesService) UpdateDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, branchPolicyID int64, request *DeploymentBranchPolicyRequest) (*DeploymentBranchPolicy, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
 
-	req, err := s.client.NewRequest("PUT", u, request)
+	req, err := s.client.NewRequest(ctx, "PUT", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var policy *DeploymentBranchPolicy
-	resp, err := s.client.Do(ctx, req, &policy)
+	resp, err := s.client.Do(req, &policy)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -130,10 +130,10 @@ func (s *RepositoriesService) UpdateDeploymentBranchPolicy(ctx context.Context, 
 func (s *RepositoriesService) DeleteDeploymentBranchPolicy(ctx context.Context, owner, repo, environment string, branchPolicyID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment-branch-policies/%v", owner, repo, environment, branchPolicyID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

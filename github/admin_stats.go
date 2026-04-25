@@ -157,13 +157,13 @@ func (s RepoStats) String() string {
 //meta:operation GET /enterprise/stats/all
 func (s *AdminService) GetAdminStats(ctx context.Context) (*AdminStats, *Response, error) {
 	u := "enterprise/stats/all"
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var m *AdminStats
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

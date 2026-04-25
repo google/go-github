@@ -76,7 +76,12 @@ func (r RateLimits) String() string {
 //
 //meta:operation GET /rate_limit
 func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, error) {
-	req, err := s.client.NewRequest("GET", "rate_limit", nil)
+	// This resource is not subject to rate limits.
+	if !s.client.DisableRateLimitCheck {
+		ctx = context.WithValue(ctx, BypassRateLimitCheck, true)
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", "rate_limit", nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -85,9 +90,7 @@ func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, err
 		Resources *RateLimits `json:"resources"`
 	})
 
-	// This resource is not subject to rate limits.
-	ctx = context.WithValue(ctx, BypassRateLimitCheck, true)
-	resp, err := s.client.Do(ctx, req, response)
+	resp, err := s.client.Do(req, response)
 	if err != nil {
 		return nil, resp, err
 	}

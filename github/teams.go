@@ -102,13 +102,13 @@ func (s *TeamsService) ListTeams(ctx context.Context, org string, opts *ListOpti
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -125,13 +125,13 @@ func (s *TeamsService) ListTeams(ctx context.Context, org string, opts *ListOpti
 //meta:operation GET /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) GetTeamByID(ctx context.Context, orgID, teamID int64) (*Team, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Team
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -146,13 +146,13 @@ func (s *TeamsService) GetTeamByID(ctx context.Context, orgID, teamID int64) (*T
 //meta:operation GET /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) GetTeamBySlug(ctx context.Context, org, slug string) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v", org, slug)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Team
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -201,13 +201,13 @@ func (s NewTeam) String() string {
 //meta:operation POST /orgs/{org}/teams
 func (s *TeamsService) CreateTeam(ctx context.Context, org string, team NewTeam) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
-	req, err := s.client.NewRequest("POST", u, team)
+	req, err := s.client.NewRequest(ctx, "POST", u, team)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Team
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -258,16 +258,16 @@ func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, te
 	var err error
 	if removeParent {
 		teamRemoveParent := copyNewTeamWithoutParent(&team)
-		req, err = s.client.NewRequest("PATCH", u, teamRemoveParent)
+		req, err = s.client.NewRequest(ctx, "PATCH", u, teamRemoveParent)
 	} else {
-		req, err = s.client.NewRequest("PATCH", u, team)
+		req, err = s.client.NewRequest(ctx, "PATCH", u, team)
 	}
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Team
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -287,16 +287,16 @@ func (s *TeamsService) EditTeamBySlug(ctx context.Context, org, slug string, tea
 	var err error
 	if removeParent {
 		teamRemoveParent := copyNewTeamWithoutParent(&team)
-		req, err = s.client.NewRequest("PATCH", u, teamRemoveParent)
+		req, err = s.client.NewRequest(ctx, "PATCH", u, teamRemoveParent)
 	} else {
-		req, err = s.client.NewRequest("PATCH", u, team)
+		req, err = s.client.NewRequest(ctx, "PATCH", u, team)
 	}
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Team
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -313,12 +313,12 @@ func (s *TeamsService) EditTeamBySlug(ctx context.Context, org, slug string, tea
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) DeleteTeamByID(ctx context.Context, orgID, teamID int64) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteTeamBySlug deletes a team reference by slug.
@@ -328,12 +328,12 @@ func (s *TeamsService) DeleteTeamByID(ctx context.Context, orgID, teamID int64) 
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) DeleteTeamBySlug(ctx context.Context, org, slug string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v", org, slug)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListChildTeamsByParentID lists child teams for a parent team given parent ID.
@@ -350,13 +350,13 @@ func (s *TeamsService) ListChildTeamsByParentID(ctx context.Context, orgID, team
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -376,13 +376,13 @@ func (s *TeamsService) ListChildTeamsByParentSlug(ctx context.Context, org, slug
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -404,7 +404,7 @@ func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int6
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -412,7 +412,7 @@ func (s *TeamsService) ListTeamReposByID(ctx context.Context, orgID, teamID int6
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	var repos []*Repository
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -432,7 +432,7 @@ func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -440,7 +440,7 @@ func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string
 	req.Header.Set("Accept", mediaTypeTopicsPreview)
 
 	var repos []*Repository
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -459,7 +459,7 @@ func (s *TeamsService) ListTeamReposBySlug(ctx context.Context, org, slug string
 //meta:operation GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) IsTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -467,7 +467,7 @@ func (s *TeamsService) IsTeamRepoByID(ctx context.Context, orgID, teamID int64, 
 	req.Header.Set("Accept", mediaTypeOrgPermissionRepo)
 
 	var repository *Repository
-	resp, err := s.client.Do(ctx, req, &repository)
+	resp, err := s.client.Do(req, &repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -484,7 +484,7 @@ func (s *TeamsService) IsTeamRepoByID(ctx context.Context, orgID, teamID int64, 
 //meta:operation GET /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) IsTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -492,7 +492,7 @@ func (s *TeamsService) IsTeamRepoBySlug(ctx context.Context, org, slug, owner, r
 	req.Header.Set("Accept", mediaTypeOrgPermissionRepo)
 
 	var repository *Repository
-	resp, err := s.client.Do(ctx, req, &repository)
+	resp, err := s.client.Do(req, &repository)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -526,12 +526,12 @@ type TeamAddTeamRepoOptions struct {
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // AddTeamRepoBySlug adds a repository to be managed by the specified team given the team slug.
@@ -543,12 +543,12 @@ func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64,
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RemoveTeamRepoByID removes a repository from being managed by the specified
@@ -562,12 +562,12 @@ func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, 
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RemoveTeamRepoBySlug removes a repository from being managed by the specified
@@ -579,12 +579,12 @@ func (s *TeamsService) RemoveTeamRepoByID(ctx context.Context, orgID, teamID int
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
 func (s *TeamsService) RemoveTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListUserTeams lists a user's teams
@@ -599,13 +599,13 @@ func (s *TeamsService) ListUserTeams(ctx context.Context, opts *ListOptions) ([]
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teams []*Team
-	resp, err := s.client.Do(ctx, req, &teams)
+	resp, err := s.client.Do(req, &teams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -623,7 +623,7 @@ func (s *TeamsService) ListUserTeams(ctx context.Context, opts *ListOptions) ([]
 func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID int64) ([]*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects", orgID, teamID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -631,7 +631,7 @@ func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID i
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	var projects []*ProjectV2
-	resp, err := s.client.Do(ctx, req, &projects)
+	resp, err := s.client.Do(req, &projects)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -647,7 +647,7 @@ func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID i
 func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug string) ([]*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects", org, slug)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -655,7 +655,7 @@ func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug str
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	var projects []*ProjectV2
-	resp, err := s.client.Do(ctx, req, &projects)
+	resp, err := s.client.Do(req, &projects)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -673,7 +673,7 @@ func (s *TeamsService) ListTeamProjectsBySlug(ctx context.Context, org, slug str
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID, projectID int64) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -681,7 +681,7 @@ func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	var projects *ProjectV2
-	resp, err := s.client.Do(ctx, req, &projects)
+	resp, err := s.client.Do(req, &projects)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -697,7 +697,7 @@ func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug string, projectID int64) (*ProjectV2, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects/%v", org, slug, projectID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -705,7 +705,7 @@ func (s *TeamsService) ReviewTeamProjectsBySlug(ctx context.Context, org, slug s
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
 	var projects *ProjectV2
-	resp, err := s.client.Do(ctx, req, &projects)
+	resp, err := s.client.Do(req, &projects)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -736,14 +736,14 @@ type TeamProjectOptions struct {
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, opts *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // AddTeamProjectBySlug adds an organization project to a team given the team slug.
@@ -755,14 +755,14 @@ func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, pr
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64, opts *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects/%v", org, slug, projectID)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RemoveTeamProjectByID removes an organization project from a team given team ID.
@@ -779,14 +779,14 @@ func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug strin
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RemoveTeamProjectBySlug removes an organization project from a team given team slug.
@@ -801,14 +801,14 @@ func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID,
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}
 func (s *TeamsService) RemoveTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects/%v", org, slug, projectID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeProjectsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListIDPGroupsOptions specifies the optional parameters to the ListIDPGroupsInOrganization method.
@@ -843,13 +843,13 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var groups *IDPGroupList
-	resp, err := s.client.Do(ctx, req, &groups)
+	resp, err := s.client.Do(req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -868,13 +868,13 @@ func (s *TeamsService) ListIDPGroupsInOrganization(ctx context.Context, org stri
 func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, teamID int64) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var groups *IDPGroupList
-	resp, err := s.client.Do(ctx, req, &groups)
+	resp, err := s.client.Do(req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -891,13 +891,13 @@ func (s *TeamsService) ListIDPGroupsForTeamByID(ctx context.Context, orgID, team
 func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug string) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var groups *IDPGroupList
-	resp, err := s.client.Do(ctx, req, &groups)
+	resp, err := s.client.Do(req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -916,13 +916,13 @@ func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug
 func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context, orgID, teamID int64, opts IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
 
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var groups *IDPGroupList
-	resp, err := s.client.Do(ctx, req, &groups)
+	resp, err := s.client.Do(req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -939,13 +939,13 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context
 func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Context, org, slug string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
 
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var groups *IDPGroupList
-	resp, err := s.client.Do(ctx, req, &groups)
+	resp, err := s.client.Do(req, &groups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -988,13 +988,13 @@ type ExternalGroupList struct {
 //meta:operation GET /orgs/{org}/external-group/{group_id}
 func (s *TeamsService) GetExternalGroup(ctx context.Context, org string, groupID int64) (*ExternalGroup, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/external-group/%v", org, groupID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var externalGroup *ExternalGroup
-	resp, err := s.client.Do(ctx, req, &externalGroup)
+	resp, err := s.client.Do(req, &externalGroup)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1022,13 +1022,13 @@ func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var externalGroups *ExternalGroupList
-	resp, err := s.client.Do(ctx, req, &externalGroups)
+	resp, err := s.client.Do(req, &externalGroups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1044,13 +1044,13 @@ func (s *TeamsService) ListExternalGroups(ctx context.Context, org string, opts 
 func (s *TeamsService) ListExternalGroupsForTeamBySlug(ctx context.Context, org, slug string) (*ExternalGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/external-groups", org, slug)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var externalGroups *ExternalGroupList
-	resp, err := s.client.Do(ctx, req, &externalGroups)
+	resp, err := s.client.Do(req, &externalGroups)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1066,13 +1066,13 @@ func (s *TeamsService) ListExternalGroupsForTeamBySlug(ctx context.Context, org,
 func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, slug string, eg *ExternalGroup) (*ExternalGroup, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/external-groups", org, slug)
 
-	req, err := s.client.NewRequest("PATCH", u, eg)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, eg)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var externalGroup *ExternalGroup
-	resp, err := s.client.Do(ctx, req, &externalGroup)
+	resp, err := s.client.Do(req, &externalGroup)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1088,10 +1088,10 @@ func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, sl
 func (s *TeamsService) RemoveConnectedExternalGroup(ctx context.Context, org, slug string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/external-groups", org, slug)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

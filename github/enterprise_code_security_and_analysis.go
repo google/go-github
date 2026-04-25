@@ -27,13 +27,13 @@ type EnterpriseSecurityAnalysisSettings struct {
 func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, enterprise string) (*EnterpriseSecurityAnalysisSettings, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code_security_and_analysis", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var settings *EnterpriseSecurityAnalysisSettings
-	resp, err := s.client.Do(ctx, req, &settings)
+	resp, err := s.client.Do(req, &settings)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -48,12 +48,12 @@ func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, ente
 //meta:operation PATCH /enterprises/{enterprise}/code_security_and_analysis
 func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, enterprise string, settings *EnterpriseSecurityAnalysisSettings) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code_security_and_analysis", enterprise)
-	req, err := s.client.NewRequest("PATCH", u, settings)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, settings)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -71,12 +71,12 @@ func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, e
 //meta:operation POST /enterprises/{enterprise}/{security_product}/{enablement}
 func (s *EnterpriseService) EnableDisableSecurityFeature(ctx context.Context, enterprise, securityProduct, enablement string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/%v/%v", enterprise, securityProduct, enablement)
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

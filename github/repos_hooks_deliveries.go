@@ -94,13 +94,13 @@ func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	deliveries := []*HookDelivery{}
-	resp, err := s.client.Do(ctx, req, &deliveries)
+	resp, err := s.client.Do(req, &deliveries)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -115,13 +115,13 @@ func (s *RepositoriesService) ListHookDeliveries(ctx context.Context, owner, rep
 //meta:operation GET /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}
 func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries/%v", owner, repo, hookID, deliveryID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var h *HookDelivery
-	resp, err := s.client.Do(ctx, req, &h)
+	resp, err := s.client.Do(req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -136,13 +136,13 @@ func (s *RepositoriesService) GetHookDelivery(ctx context.Context, owner, repo s
 //meta:operation POST /repos/{owner}/{repo}/hooks/{hook_id}/deliveries/{delivery_id}/attempts
 func (s *RepositoriesService) RedeliverHookDelivery(ctx context.Context, owner, repo string, hookID, deliveryID int64) (*HookDelivery, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v/deliveries/%v/attempts", owner, repo, hookID, deliveryID)
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var h *HookDelivery
-	resp, err := s.client.Do(ctx, req, &h)
+	resp, err := s.client.Do(req, &h)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -166,13 +166,13 @@ func NewDatadogStreamConfig(enabled bool, cfg *DatadogConfig) *AuditLogStreamCon
 func (s *EnterpriseService) GetAuditLogStreamKey(ctx context.Context, enterprise string) (*AuditLogStreamKey, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/stream-key", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var key *AuditLogStreamKey
-	resp, err := s.client.Do(ctx, req, &key)
+	resp, err := s.client.Do(req, &key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -188,13 +188,13 @@ func (s *EnterpriseService) GetAuditLogStreamKey(ctx context.Context, enterprise
 func (s *EnterpriseService) ListAuditLogStreams(ctx context.Context, enterprise string) ([]*AuditLogStream, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/streams", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var streams []*AuditLogStream
-	resp, err := s.client.Do(ctx, req, &streams)
+	resp, err := s.client.Do(req, &streams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -210,13 +210,13 @@ func (s *EnterpriseService) ListAuditLogStreams(ctx context.Context, enterprise 
 func (s *EnterpriseService) GetAuditLogStream(ctx context.Context, enterprise string, streamID int64) (*AuditLogStream, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/streams/%v", enterprise, streamID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var stream *AuditLogStream
-	resp, err := s.client.Do(ctx, req, &stream)
+	resp, err := s.client.Do(req, &stream)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -233,13 +233,13 @@ func (s *EnterpriseService) GetAuditLogStream(ctx context.Context, enterprise st
 func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise string, config AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/streams", enterprise)
 
-	req, err := s.client.NewRequest("POST", u, config)
+	req, err := s.client.NewRequest(ctx, "POST", u, config)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var stream *AuditLogStream
-	resp, err := s.client.Do(ctx, req, &stream)
+	resp, err := s.client.Do(req, &stream)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -256,13 +256,13 @@ func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise
 func (s *EnterpriseService) UpdateAuditLogStream(ctx context.Context, enterprise string, streamID int64, config AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/streams/%v", enterprise, streamID)
 
-	req, err := s.client.NewRequest("PUT", u, config)
+	req, err := s.client.NewRequest(ctx, "PUT", u, config)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var stream *AuditLogStream
-	resp, err := s.client.Do(ctx, req, &stream)
+	resp, err := s.client.Do(req, &stream)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -278,10 +278,10 @@ func (s *EnterpriseService) UpdateAuditLogStream(ctx context.Context, enterprise
 func (s *EnterpriseService) DeleteAuditLogStream(ctx context.Context, enterprise string, streamID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/streams/%v", enterprise, streamID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

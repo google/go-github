@@ -60,13 +60,13 @@ type TrafficBreakdownOptions struct {
 func (s *RepositoriesService) ListTrafficReferrers(ctx context.Context, owner, repo string) ([]*TrafficReferrer, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/popular/referrers", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var trafficReferrers []*TrafficReferrer
-	resp, err := s.client.Do(ctx, req, &trafficReferrers)
+	resp, err := s.client.Do(req, &trafficReferrers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -82,13 +82,13 @@ func (s *RepositoriesService) ListTrafficReferrers(ctx context.Context, owner, r
 func (s *RepositoriesService) ListTrafficPaths(ctx context.Context, owner, repo string) ([]*TrafficPath, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/traffic/popular/paths", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var paths []*TrafficPath
-	resp, err := s.client.Do(ctx, req, &paths)
+	resp, err := s.client.Do(req, &paths)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -108,13 +108,13 @@ func (s *RepositoriesService) ListTrafficViews(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var trafficViews *TrafficViews
-	resp, err := s.client.Do(ctx, req, &trafficViews)
+	resp, err := s.client.Do(req, &trafficViews)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -134,13 +134,13 @@ func (s *RepositoriesService) ListTrafficClones(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var trafficClones *TrafficClones
-	resp, err := s.client.Do(ctx, req, &trafficClones)
+	resp, err := s.client.Do(req, &trafficClones)
 	if err != nil {
 		return nil, resp, err
 	}

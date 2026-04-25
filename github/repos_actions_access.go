@@ -28,13 +28,13 @@ type RepositoryActionsAccessLevel struct {
 //meta:operation GET /repos/{owner}/{repo}/actions/permissions/access
 func (s *RepositoriesService) GetActionsAccessLevel(ctx context.Context, owner, repo string) (*RepositoryActionsAccessLevel, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/access", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var raal *RepositoryActionsAccessLevel
-	resp, err := s.client.Do(ctx, req, &raal)
+	resp, err := s.client.Do(req, &raal)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -50,10 +50,10 @@ func (s *RepositoriesService) GetActionsAccessLevel(ctx context.Context, owner, 
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/access
 func (s *RepositoriesService) EditActionsAccessLevel(ctx context.Context, owner, repo string, repositoryActionsAccessLevel RepositoryActionsAccessLevel) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/access", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, repositoryActionsAccessLevel)
+	req, err := s.client.NewRequest(ctx, "PUT", u, repositoryActionsAccessLevel)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

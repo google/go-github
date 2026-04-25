@@ -22,7 +22,7 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -30,7 +30,7 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) 
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
 	var blockedUsers []*User
-	resp, err := s.client.Do(ctx, req, &blockedUsers)
+	resp, err := s.client.Do(req, &blockedUsers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -46,14 +46,14 @@ func (s *UsersService) ListBlockedUsers(ctx context.Context, opts *ListOptions) 
 func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("user/blocks/%v", user)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	isBlocked, err := parseBoolResponse(err)
 	return isBlocked, resp, err
 }
@@ -66,14 +66,14 @@ func (s *UsersService) IsBlocked(ctx context.Context, user string) (bool, *Respo
 func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("user/blocks/%v", user)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UnblockUser unblocks specified user for the authenticated user.
@@ -84,12 +84,12 @@ func (s *UsersService) BlockUser(ctx context.Context, user string) (*Response, e
 func (s *UsersService) UnblockUser(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("user/blocks/%v", user)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeBlockUsersPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

@@ -48,13 +48,13 @@ func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOpti
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var keys []*Key
-	resp, err := s.client.Do(ctx, req, &keys)
+	resp, err := s.client.Do(req, &keys)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -70,13 +70,13 @@ func (s *UsersService) ListKeys(ctx context.Context, user string, opts *ListOpti
 func (s *UsersService) GetKey(ctx context.Context, id int64) (*Key, *Response, error) {
 	u := fmt.Sprintf("user/keys/%v", id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var key *Key
-	resp, err := s.client.Do(ctx, req, &key)
+	resp, err := s.client.Do(req, &key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -92,13 +92,13 @@ func (s *UsersService) GetKey(ctx context.Context, id int64) (*Key, *Response, e
 func (s *UsersService) CreateKey(ctx context.Context, key *Key) (*Key, *Response, error) {
 	u := "user/keys"
 
-	req, err := s.client.NewRequest("POST", u, key)
+	req, err := s.client.NewRequest(ctx, "POST", u, key)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var k *Key
-	resp, err := s.client.Do(ctx, req, &k)
+	resp, err := s.client.Do(req, &k)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -114,10 +114,10 @@ func (s *UsersService) CreateKey(ctx context.Context, key *Key) (*Key, *Response
 func (s *UsersService) DeleteKey(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("user/keys/%v", id)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

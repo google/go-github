@@ -12,13 +12,13 @@ import (
 )
 
 func (s *DependabotService) getPublicKey(ctx context.Context, url string) (*PublicKey, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pubKey *PublicKey
-	resp, err := s.client.Do(ctx, req, &pubKey)
+	resp, err := s.client.Do(req, &pubKey)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -52,13 +52,13 @@ func (s *DependabotService) listSecrets(ctx context.Context, url string, opts *L
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var secrets *Secrets
-	resp, err := s.client.Do(ctx, req, &secrets)
+	resp, err := s.client.Do(req, &secrets)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -89,13 +89,13 @@ func (s *DependabotService) ListOrgSecrets(ctx context.Context, org string, opts
 }
 
 func (s *DependabotService) getSecret(ctx context.Context, url string) (*Secret, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var secret *Secret
-	resp, err := s.client.Do(ctx, req, &secret)
+	resp, err := s.client.Do(req, &secret)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -137,12 +137,12 @@ type DependabotEncryptedSecret struct {
 }
 
 func (s *DependabotService) putSecret(ctx context.Context, url string, eSecret *DependabotEncryptedSecret) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, eSecret)
+	req, err := s.client.NewRequest(ctx, "PUT", url, eSecret)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // CreateOrUpdateRepoSecret creates or updates a repository Dependabot secret with an encrypted value.
@@ -182,21 +182,21 @@ func (s *DependabotService) CreateOrUpdateOrgSecret(ctx context.Context, org str
 	}
 
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v", org, eSecret.Name)
-	req, err := s.client.NewRequest("PUT", url, params)
+	req, err := s.client.NewRequest(ctx, "PUT", url, params)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 func (s *DependabotService) deleteSecret(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteRepoSecret deletes a Dependabot secret in a repository using the secret name.
@@ -231,13 +231,13 @@ func (s *DependabotService) ListSelectedReposForOrgSecret(ctx context.Context, o
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *SelectedReposList
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -259,12 +259,12 @@ func (s *DependabotService) SetSelectedReposForOrgSecret(ctx context.Context, or
 		SelectedIDs DependabotSecretsSelectedRepoIDs `json:"selected_repository_ids"`
 	}
 
-	req, err := s.client.NewRequest("PUT", url, repoIDs{SelectedIDs: ids})
+	req, err := s.client.NewRequest(ctx, "PUT", url, repoIDs{SelectedIDs: ids})
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // AddSelectedRepoToOrgSecret adds a repository to an organization Dependabot secret.
@@ -281,12 +281,12 @@ func (s *DependabotService) AddSelectedRepoToOrgSecret(ctx context.Context, org,
 	}
 
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories/%v", org, name, *repo.ID)
-	req, err := s.client.NewRequest("PUT", url, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RemoveSelectedRepoFromOrgSecret removes a repository from an organization Dependabot secret.
@@ -303,10 +303,10 @@ func (s *DependabotService) RemoveSelectedRepoFromOrgSecret(ctx context.Context,
 	}
 
 	url := fmt.Sprintf("orgs/%v/dependabot/secrets/%v/repositories/%v", org, name, *repo.ID)
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

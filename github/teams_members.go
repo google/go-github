@@ -33,13 +33,13 @@ func (s *TeamsService) ListTeamMembersByID(ctx context.Context, orgID, teamID in
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var members []*User
-	resp, err := s.client.Do(ctx, req, &members)
+	resp, err := s.client.Do(req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -60,13 +60,13 @@ func (s *TeamsService) ListTeamMembersBySlug(ctx context.Context, org, slug stri
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var members []*User
-	resp, err := s.client.Do(ctx, req, &members)
+	resp, err := s.client.Do(req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -82,13 +82,13 @@ func (s *TeamsService) ListTeamMembersBySlug(ctx context.Context, org, slug stri
 //meta:operation GET /orgs/{org}/teams/{team_slug}/members
 func (s *TeamsService) GetTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Membership, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Membership
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -104,13 +104,13 @@ func (s *TeamsService) GetTeamMembershipByID(ctx context.Context, orgID, teamID 
 //meta:operation GET /orgs/{org}/teams/{team_slug}/memberships/{username}
 func (s *TeamsService) GetTeamMembershipBySlug(ctx context.Context, org, slug, user string) (*Membership, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Membership
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -140,13 +140,13 @@ type TeamAddTeamMembershipOptions struct {
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/memberships/{username}
 func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Membership
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -162,13 +162,13 @@ func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID 
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/memberships/{username}
 func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var t *Membership
-	resp, err := s.client.Do(ctx, req, &t)
+	resp, err := s.client.Do(req, &t)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -184,12 +184,12 @@ func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, u
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}
 func (s *TeamsService) RemoveTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RemoveTeamMembershipBySlug removes a user from a team, given a specified
@@ -200,12 +200,12 @@ func (s *TeamsService) RemoveTeamMembershipByID(ctx context.Context, orgID, team
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}
 func (s *TeamsService) RemoveTeamMembershipBySlug(ctx context.Context, org, slug, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListPendingTeamInvitationsByID gets pending invitation list of a team, given a specified
@@ -221,13 +221,13 @@ func (s *TeamsService) ListPendingTeamInvitationsByID(ctx context.Context, orgID
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pendingInvitations []*Invitation
-	resp, err := s.client.Do(ctx, req, &pendingInvitations)
+	resp, err := s.client.Do(req, &pendingInvitations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -248,13 +248,13 @@ func (s *TeamsService) ListPendingTeamInvitationsBySlug(ctx context.Context, org
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pendingInvitations []*Invitation
-	resp, err := s.client.Do(ctx, req, &pendingInvitations)
+	resp, err := s.client.Do(req, &pendingInvitations)
 	if err != nil {
 		return nil, resp, err
 	}

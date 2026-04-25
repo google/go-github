@@ -26,13 +26,13 @@ type CreateUserRequest struct {
 func (s *AdminService) CreateUser(ctx context.Context, userReq CreateUserRequest) (*User, *Response, error) {
 	u := "admin/users"
 
-	req, err := s.client.NewRequest("POST", u, userReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, userReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var user User
-	resp, err := s.client.Do(ctx, req, &user)
+	resp, err := s.client.Do(req, &user)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -48,12 +48,12 @@ func (s *AdminService) CreateUser(ctx context.Context, userReq CreateUserRequest
 func (s *AdminService) DeleteUser(ctx context.Context, username string) (*Response, error) {
 	u := "admin/users/" + username
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -101,13 +101,13 @@ type UserAuthorization struct {
 func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, opts *ImpersonateUserOptions) (*UserAuthorization, *Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var a *UserAuthorization
-	resp, err := s.client.Do(ctx, req, &a)
+	resp, err := s.client.Do(req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -123,12 +123,12 @@ func (s *AdminService) CreateUserImpersonation(ctx context.Context, username str
 func (s *AdminService) DeleteUserImpersonation(ctx context.Context, username string) (*Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

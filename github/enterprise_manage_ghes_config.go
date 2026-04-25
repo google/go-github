@@ -313,13 +313,13 @@ func (s *EnterpriseService) ConfigApplyEvents(ctx context.Context, opts *ConfigA
 	if err != nil {
 		return nil, nil, err
 	}
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configApplyEvents *ConfigApplyEvents
-	resp, err := s.client.Do(ctx, req, &configApplyEvents)
+	resp, err := s.client.Do(req, &configApplyEvents)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -341,12 +341,12 @@ func (s *EnterpriseService) InitialConfig(ctx context.Context, license, password
 		Password: password,
 	}
 
-	req, err := s.client.NewRequest("POST", u, payload)
+	req, err := s.client.NewRequest(ctx, "POST", u, payload)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // License gets the current license information for the GitHub Enterprise instance.
@@ -356,13 +356,13 @@ func (s *EnterpriseService) InitialConfig(ctx context.Context, license, password
 //meta:operation GET /manage/v1/config/license
 func (s *EnterpriseService) License(ctx context.Context) ([]*LicenseStatus, *Response, error) {
 	u := "manage/v1/config/license"
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var licenseStatus []*LicenseStatus
-	resp, err := s.client.Do(ctx, req, &licenseStatus)
+	resp, err := s.client.Do(req, &licenseStatus)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -380,12 +380,12 @@ func (s *EnterpriseService) UploadLicense(ctx context.Context, license string) (
 	opts := &UploadLicenseOptions{
 		License: license,
 	}
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // LicenseStatus gets the current license status for the GitHub Enterprise instance.
@@ -395,13 +395,13 @@ func (s *EnterpriseService) UploadLicense(ctx context.Context, license string) (
 //meta:operation GET /manage/v1/config/license/check
 func (s *EnterpriseService) LicenseStatus(ctx context.Context) ([]*LicenseCheck, *Response, error) {
 	u := "manage/v1/config/license/check"
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var checks []*LicenseCheck
-	resp, err := s.client.Do(ctx, req, &checks)
+	resp, err := s.client.Do(req, &checks)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -420,13 +420,13 @@ func (s *EnterpriseService) NodeMetadata(ctx context.Context, opts *NodeQueryOpt
 	if err != nil {
 		return nil, nil, err
 	}
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var status *NodeMetadataStatus
-	resp, err := s.client.Do(ctx, req, &status)
+	resp, err := s.client.Do(req, &status)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -441,13 +441,13 @@ func (s *EnterpriseService) NodeMetadata(ctx context.Context, opts *NodeQueryOpt
 //meta:operation GET /manage/v1/config/settings
 func (s *EnterpriseService) Settings(ctx context.Context) (*ConfigSettings, *Response, error) {
 	u := "manage/v1/config/settings"
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configSettings *ConfigSettings
-	resp, err := s.client.Do(ctx, req, &configSettings)
+	resp, err := s.client.Do(req, &configSettings)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -466,12 +466,12 @@ func (s *EnterpriseService) UpdateSettings(ctx context.Context, opts *ConfigSett
 	if opts == nil {
 		return nil, errors.New("opts should not be nil")
 	}
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ConfigApply triggers a configuration apply run on the GitHub Enterprise instance.
@@ -481,13 +481,13 @@ func (s *EnterpriseService) UpdateSettings(ctx context.Context, opts *ConfigSett
 //meta:operation POST /manage/v1/config/apply
 func (s *EnterpriseService) ConfigApply(ctx context.Context, opts *ConfigApplyOptions) (*ConfigApplyOptions, *Response, error) {
 	u := "manage/v1/config/apply"
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configApplyOptions *ConfigApplyOptions
-	resp, err := s.client.Do(ctx, req, &configApplyOptions)
+	resp, err := s.client.Do(req, &configApplyOptions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -502,13 +502,13 @@ func (s *EnterpriseService) ConfigApply(ctx context.Context, opts *ConfigApplyOp
 //meta:operation GET /manage/v1/config/apply
 func (s *EnterpriseService) ConfigApplyStatus(ctx context.Context, opts *ConfigApplyOptions) (*ConfigApplyStatus, *Response, error) {
 	u := "manage/v1/config/apply"
-	req, err := s.client.NewRequest("GET", u, opts)
+	req, err := s.client.NewRequest(ctx, "GET", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var status *ConfigApplyStatus
-	resp, err := s.client.Do(ctx, req, &status)
+	resp, err := s.client.Do(req, &status)
 	if err != nil {
 		return nil, resp, err
 	}

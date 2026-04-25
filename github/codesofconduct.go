@@ -31,7 +31,7 @@ func (c *CodeOfConduct) String() string {
 //
 //meta:operation GET /codes_of_conduct
 func (s *CodesOfConductService) List(ctx context.Context) ([]*CodeOfConduct, *Response, error) {
-	req, err := s.client.NewRequest("GET", "codes_of_conduct", nil)
+	req, err := s.client.NewRequest(ctx, "GET", "codes_of_conduct", nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -39,7 +39,7 @@ func (s *CodesOfConductService) List(ctx context.Context) ([]*CodeOfConduct, *Re
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
 	var cs []*CodeOfConduct
-	resp, err := s.client.Do(ctx, req, &cs)
+	resp, err := s.client.Do(req, &cs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -61,7 +61,7 @@ func (c *Client) ListCodesOfConduct(ctx context.Context) ([]*CodeOfConduct, *Res
 //meta:operation GET /codes_of_conduct/{key}
 func (s *CodesOfConductService) Get(ctx context.Context, key string) (*CodeOfConduct, *Response, error) {
 	u := fmt.Sprintf("codes_of_conduct/%v", key)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -69,7 +69,7 @@ func (s *CodesOfConductService) Get(ctx context.Context, key string) (*CodeOfCon
 	req.Header.Set("Accept", mediaTypeCodesOfConductPreview)
 
 	var coc *CodeOfConduct
-	resp, err := s.client.Do(ctx, req, &coc)
+	resp, err := s.client.Do(req, &coc)
 	if err != nil {
 		return nil, resp, err
 	}

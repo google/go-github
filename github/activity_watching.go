@@ -37,13 +37,13 @@ func (s *ActivityService) ListWatchers(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var watchers []*User
-	resp, err := s.client.Do(ctx, req, &watchers)
+	resp, err := s.client.Do(req, &watchers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -72,13 +72,13 @@ func (s *ActivityService) ListWatched(ctx context.Context, user string, opts *Li
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var watched []*Repository
-	resp, err := s.client.Do(ctx, req, &watched)
+	resp, err := s.client.Do(req, &watched)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -96,13 +96,13 @@ func (s *ActivityService) ListWatched(ctx context.Context, user string, opts *Li
 func (s *ActivityService) GetRepositorySubscription(ctx context.Context, owner, repo string) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/subscription", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var sub *Subscription
-	resp, err := s.client.Do(ctx, req, &sub)
+	resp, err := s.client.Do(req, &sub)
 	if err != nil {
 		// if it's just a 404, don't return that as an error
 		_, err = parseBoolResponse(err)
@@ -125,13 +125,13 @@ func (s *ActivityService) GetRepositorySubscription(ctx context.Context, owner, 
 func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, repo string, subscription *Subscription) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/subscription", owner, repo)
 
-	req, err := s.client.NewRequest("PUT", u, subscription)
+	req, err := s.client.NewRequest(ctx, "PUT", u, subscription)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var sub *Subscription
-	resp, err := s.client.Do(ctx, req, &sub)
+	resp, err := s.client.Do(req, &sub)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -150,10 +150,10 @@ func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, 
 //meta:operation DELETE /repos/{owner}/{repo}/subscription
 func (s *ActivityService) DeleteRepositorySubscription(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/subscription", owner, repo)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

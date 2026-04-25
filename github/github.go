@@ -156,8 +156,6 @@ const (
 	mediaTypeContentAttachmentsPreview = "application/vnd.github.corsair-preview+json"
 )
 
-var errNonNilContext = errors.New("context must be non-nil")
-
 // ErrPathForbidden is returned when a URL path contains ".." as a path
 // segment, which could allow path traversal attacks.
 var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulnerability issue")
@@ -561,7 +559,7 @@ func WithVersion(version string) RequestOption {
 // Relative URLs should always be specified without a preceding slash. If
 // specified, the value pointed to by body is JSON encoded and included as the
 // request body.
-func (c *Client) NewRequest(method, urlStr string, body any, opts ...RequestOption) (*http.Request, error) {
+func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body any, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
@@ -586,7 +584,7 @@ func (c *Client) NewRequest(method, urlStr string, body any, opts ...RequestOpti
 		}
 	}
 
-	req, err := http.NewRequest(method, u.String(), buf)
+	req, err := http.NewRequestWithContext(ctx, method, u.String(), buf)
 	if err != nil {
 		return nil, err
 	}
@@ -611,7 +609,7 @@ func (c *Client) NewRequest(method, urlStr string, body any, opts ...RequestOpti
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
 // Body is sent with Content-Type: application/x-www-form-urlencoded.
-func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOption) (*http.Request, error) {
+func (c *Client) NewFormRequest(ctx context.Context, urlStr string, body io.Reader, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
@@ -625,7 +623,7 @@ func (c *Client) NewFormRequest(urlStr string, body io.Reader, opts ...RequestOp
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", u.String(), body)
+	req, err := http.NewRequestWithContext(ctx, "POST", u.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -666,7 +664,7 @@ func checkURLPathTraversal(urlStr string) error {
 // NewUploadRequest creates an upload request. A relative URL can be provided in
 // urlStr, in which case it is resolved relative to the UploadURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
-func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, mediaType string, opts ...RequestOption) (*http.Request, error) {
+func (c *Client) NewUploadRequest(ctx context.Context, urlStr string, reader io.Reader, size int64, mediaType string, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.UploadURL.Path, "/") {
 		return nil, fmt.Errorf("uploadURL must have a trailing slash, but %q does not", c.UploadURL)
 	}
@@ -693,7 +691,7 @@ func (c *Client) NewUploadRequest(urlStr string, reader io.Reader, size int64, m
 		requestBody = uploadRequestBodyReader{Reader: reader}
 	}
 
-	req, err := http.NewRequest("POST", u.String(), requestBody)
+	req, err := http.NewRequestWithContext(ctx, "POST", u.String(), requestBody)
 	if err != nil {
 		return nil, err
 	}
@@ -927,15 +925,8 @@ const (
 // will contain more information. Otherwise, you are supposed to read and close the
 // response's Body. If rate limit is exceeded and reset time is in the future,
 // bareDo returns *RateLimitError immediately without making a network API call.
-//
-// The provided ctx must be non-nil, if it is nil an error is returned. If it is
-// canceled or times out, ctx.Err() will be returned.
-func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Request) (*Response, error) {
-	if ctx == nil {
-		return nil, errNonNilContext
-	}
-
-	req = withContext(ctx, req)
+func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, error) {
+	ctx := req.Context()
 
 	rateLimitCategory := CoreCategory
 
@@ -1017,12 +1008,13 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 
 		var rateLimitError *RateLimitError
 		if errors.As(err, &rateLimitError) &&
-			req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
-			if err := sleepUntilResetWithBuffer(req.Context(), rateLimitError.Rate.Reset.Time); err != nil {
+			ctx.Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+			if err := sleepUntilResetWithBuffer(ctx, rateLimitError.Rate.Reset.Time); err != nil {
 				return response, err
 			}
-			// retry the request once when the rate limit has reset
-			return c.bareDo(context.WithValue(req.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, nil), caller, req)
+			// retry the request now the rate limit should have been reset
+			newReq := req.Clone(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, nil))
+			return c.bareDo(caller, newReq)
 		}
 
 		// Update the secondary rate limit if we hit it.
@@ -1045,21 +1037,15 @@ func (c *Client) bareDo(ctx context.Context, caller *http.Client, req *http.Requ
 // are supposed to read and close the response's Body. If rate limit is exceeded
 // and reset time is in the future, BareDo returns *RateLimitError immediately
 // without making a network API call.
-//
-// The provided ctx must be non-nil, if it is nil an error is returned. If it is
-// canceled or times out, ctx.Err() will be returned.
-func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, error) {
-	return c.bareDo(ctx, c.client, req)
+func (c *Client) BareDo(req *http.Request) (*Response, error) {
+	return c.bareDo(c.client, req)
 }
 
 // bareDoIgnoreRedirects has the exact same behavior as BareDo but stops at the first
 // redirection code returned by the API. If a redirection is returned by the api, bareDoIgnoreRedirects
 // returns a *RedirectionError.
-//
-// The provided ctx must be non-nil, if it is nil an error is returned. If it is
-// canceled or times out, ctx.Err() will be returned.
-func (c *Client) bareDoIgnoreRedirects(ctx context.Context, req *http.Request) (*Response, error) {
-	return c.bareDo(ctx, c.clientIgnoreRedirects, req)
+func (c *Client) bareDoIgnoreRedirects(req *http.Request) (*Response, error) {
+	return c.bareDo(c.clientIgnoreRedirects, req)
 }
 
 var errInvalidLocation = errors.New("invalid or empty Location header in redirection response")
@@ -1068,11 +1054,8 @@ var errInvalidLocation = errors.New("invalid or empty Location header in redirec
 // a 302, it will parse the Location header into a *url.URL and return that.
 // This is useful for endpoints that return a 302 in successful cases but still might return 301s for
 // permanent redirections.
-//
-// The provided ctx must be non-nil, if it is nil an error is returned. If it is
-// canceled or times out, ctx.Err() will be returned.
-func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRedirects int) (*url.URL, *Response, error) {
-	response, err := c.bareDoIgnoreRedirects(ctx, req)
+func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL, *Response, error) {
+	response, err := c.bareDoIgnoreRedirects(req)
 	if err != nil {
 		var rerr *RedirectionError
 		if errors.As(err, &rerr) {
@@ -1096,9 +1079,9 @@ func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRed
 				if newURL.Host != c.BaseURL.Host {
 					return nil, response, fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.BaseURL.Host, newURL.Host)
 				}
-				newRequest := req.Clone(ctx)
+				newRequest := req.Clone(req.Context())
 				newRequest.URL = newURL
-				return c.bareDoUntilFound(ctx, newRequest, maxRedirects-1)
+				return c.bareDoUntilFound(newRequest, maxRedirects-1)
 			}
 			// If we reached the maximum amount of redirections, return an error
 			if maxRedirects <= 0 && rerr.StatusCode == http.StatusMovedPermanently {
@@ -1119,11 +1102,8 @@ func (c *Client) bareDoUntilFound(ctx context.Context, req *http.Request, maxRed
 // decode it. If v is nil, and no error happens, the response is returned as is.
 // If rate limit is exceeded and reset time is in the future, Do returns
 // *RateLimitError immediately without making a network API call.
-//
-// The provided ctx must be non-nil, if it is nil an error is returned. If it
-// is canceled or times out, ctx.Err() will be returned.
-func (c *Client) Do(ctx context.Context, req *http.Request, v any) (*Response, error) {
-	resp, err := c.BareDo(ctx, req)
+func (c *Client) Do(req *http.Request, v any) (*Response, error) {
+	resp, err := c.BareDo(req)
 	if err != nil {
 		return resp, err
 	}
@@ -1150,6 +1130,8 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v any) (*Response, e
 // from Client.Do, and if so, returns it so that Client.Do can skip making a network API call unnecessarily.
 // Otherwise it returns nil, and Client.Do should proceed normally.
 func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory RateLimitCategory) *RateLimitError {
+	ctx := req.Context()
+
 	c.rateMu.Lock()
 	rate := c.rateLimits[rateLimitCategory]
 	c.rateMu.Unlock()
@@ -1163,8 +1145,8 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory Rat
 			Body:       io.NopCloser(strings.NewReader("")),
 		}
 
-		if req.Context().Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
-			if err := sleepUntilResetWithBuffer(req.Context(), rate.Reset.Time); err == nil {
+		if ctx.Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+			if err := sleepUntilResetWithBuffer(ctx, rate.Reset.Time); err == nil {
 				return nil
 			}
 			return &RateLimitError{
@@ -1831,14 +1813,13 @@ func sleepUntilResetWithBuffer(ctx context.Context, reset time.Time) error {
 // When using roundTripWithOptionalFollowRedirect, note that it
 // is the responsibility of the caller to close the response body.
 func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u string, maxRedirects int, opts ...RequestOption) (*http.Response, error) {
-	req, err := c.NewRequest("GET", u, nil, opts...)
+	req, err := c.NewRequest(ctx, "GET", u, nil, opts...)
 	if err != nil {
 		return nil, err
 	}
 
 	var resp *http.Response
 	// Use http.DefaultTransport if no custom Transport is configured
-	req = withContext(ctx, req)
 	if c.client.Transport == nil {
 		resp, err = http.DefaultTransport.RoundTrip(req)
 	} else {
@@ -1939,9 +1920,4 @@ func (e *DeploymentProtectionRuleEvent) GetRunID() (int64, error) {
 		return -1, err
 	}
 	return runID, nil
-}
-
-// withContext returns a shallow copy of req with its context changed to ctx.
-func withContext(ctx context.Context, req *http.Request) *http.Request {
-	return req.WithContext(ctx)
 }

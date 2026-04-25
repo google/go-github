@@ -69,7 +69,7 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -77,7 +77,7 @@ func (s *ReactionsService) ListCommentReactions(ctx context.Context, owner, repo
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -97,7 +97,7 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 	u := fmt.Sprintf("repos/%v/%v/comments/%v/reactions", owner, repo, id)
 
 	body := &Reaction{Content: &content}
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -105,7 +105,7 @@ func (s *ReactionsService) CreateCommentReaction(ctx context.Context, owner, rep
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m *Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -147,7 +147,7 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -155,7 +155,7 @@ func (s *ReactionsService) ListIssueReactions(ctx context.Context, owner, repo s
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -175,7 +175,7 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/reactions", owner, repo, number)
 
 	body := &Reaction{Content: &content}
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -183,7 +183,7 @@ func (s *ReactionsService) CreateIssueReaction(ctx context.Context, owner, repo 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m *Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -225,7 +225,7 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -233,7 +233,7 @@ func (s *ReactionsService) ListIssueCommentReactions(ctx context.Context, owner,
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -253,7 +253,7 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v/reactions", owner, repo, id)
 
 	body := &Reaction{Content: &content}
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -261,7 +261,7 @@ func (s *ReactionsService) CreateIssueCommentReaction(ctx context.Context, owner
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m *Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -303,7 +303,7 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -311,7 +311,7 @@ func (s *ReactionsService) ListPullRequestCommentReactions(ctx context.Context, 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -331,7 +331,7 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v/reactions", owner, repo, id)
 
 	body := &Reaction{Content: &content}
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -339,7 +339,7 @@ func (s *ReactionsService) CreatePullRequestCommentReaction(ctx context.Context,
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m *Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -381,7 +381,7 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -389,7 +389,7 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -407,7 +407,7 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 	u := fmt.Sprintf("teams/%v/discussions/%v/reactions", teamID, discussionNumber)
 
 	body := &Reaction{Content: &content}
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -415,7 +415,7 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m *Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -457,7 +457,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -465,7 +465,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -482,7 +482,7 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 	u := fmt.Sprintf("teams/%v/discussions/%v/comments/%v/reactions", teamID, discussionNumber, commentNumber)
 
 	body := &Reaction{Content: &content}
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -490,7 +490,7 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m *Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -521,14 +521,14 @@ func (s *ReactionsService) DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(c
 }
 
 func (s *ReactionsService) deleteReaction(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // CreateReleaseReaction creates a reaction to a release.
@@ -543,7 +543,7 @@ func (s *ReactionsService) CreateReleaseReaction(ctx context.Context, owner, rep
 	u := fmt.Sprintf("repos/%v/%v/releases/%v/reactions", owner, repo, releaseID)
 
 	body := &Reaction{Content: &content}
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -551,7 +551,7 @@ func (s *ReactionsService) CreateReleaseReaction(ctx context.Context, owner, rep
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m *Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -571,7 +571,7 @@ func (s *ReactionsService) ListReleaseReactions(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -579,7 +579,7 @@ func (s *ReactionsService) ListReleaseReactions(ctx context.Context, owner, repo
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var m []*Reaction
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

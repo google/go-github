@@ -89,13 +89,13 @@ func (s *OrganizationsService) ListMembers(ctx context.Context, org string, opts
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var members []*User
-	resp, err := s.client.Do(ctx, req, &members)
+	resp, err := s.client.Do(req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -110,12 +110,12 @@ func (s *OrganizationsService) ListMembers(ctx context.Context, org string, opts
 //meta:operation GET /orgs/{org}/members/{username}
 func (s *OrganizationsService) IsMember(ctx context.Context, org, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/members/%v", org, user)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	member, err := parseBoolResponse(err)
 	return member, resp, err
 }
@@ -127,12 +127,12 @@ func (s *OrganizationsService) IsMember(ctx context.Context, org, user string) (
 //meta:operation GET /orgs/{org}/public_members/{username}
 func (s *OrganizationsService) IsPublicMember(ctx context.Context, org, user string) (bool, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	member, err := parseBoolResponse(err)
 	return member, resp, err
 }
@@ -144,12 +144,12 @@ func (s *OrganizationsService) IsPublicMember(ctx context.Context, org, user str
 //meta:operation DELETE /orgs/{org}/members/{username}
 func (s *OrganizationsService) RemoveMember(ctx context.Context, org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/members/%v", org, user)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // CancelInvite cancels an organization invitation.
@@ -159,11 +159,11 @@ func (s *OrganizationsService) RemoveMember(ctx context.Context, org, user strin
 //meta:operation DELETE /orgs/{org}/invitations/{invitation_id}
 func (s *OrganizationsService) CancelInvite(ctx context.Context, org string, invitationID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/invitations/%v", org, invitationID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // PublicizeMembership publicizes a user's membership in an organization. (A
@@ -174,12 +174,12 @@ func (s *OrganizationsService) CancelInvite(ctx context.Context, org string, inv
 //meta:operation PUT /orgs/{org}/public_members/{username}
 func (s *OrganizationsService) PublicizeMembership(ctx context.Context, org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ConcealMembership conceals a user's membership in an organization.
@@ -189,12 +189,12 @@ func (s *OrganizationsService) PublicizeMembership(ctx context.Context, org, use
 //meta:operation DELETE /orgs/{org}/public_members/{username}
 func (s *OrganizationsService) ConcealMembership(ctx context.Context, org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/public_members/%v", org, user)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListOrgMembershipsOptions specifies optional parameters to the
@@ -219,13 +219,13 @@ func (s *OrganizationsService) ListOrgMemberships(ctx context.Context, opts *Lis
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var memberships []*Membership
-	resp, err := s.client.Do(ctx, req, &memberships)
+	resp, err := s.client.Do(req, &memberships)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -251,13 +251,13 @@ func (s *OrganizationsService) GetOrgMembership(ctx context.Context, user, org s
 		u = fmt.Sprintf("user/memberships/orgs/%v", org)
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var membership *Membership
-	resp, err := s.client.Do(ctx, req, &membership)
+	resp, err := s.client.Do(req, &membership)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -285,13 +285,13 @@ func (s *OrganizationsService) EditOrgMembership(ctx context.Context, user, org 
 		method = "PATCH"
 	}
 
-	req, err := s.client.NewRequest(method, u, membership)
+	req, err := s.client.NewRequest(ctx, method, u, membership)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var m *Membership
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -307,12 +307,12 @@ func (s *OrganizationsService) EditOrgMembership(ctx context.Context, user, org 
 //meta:operation DELETE /orgs/{org}/memberships/{username}
 func (s *OrganizationsService) RemoveOrgMembership(ctx context.Context, user, org string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/memberships/%v", org, user)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListPendingOrgInvitations returns a list of pending invitations.
@@ -327,13 +327,13 @@ func (s *OrganizationsService) ListPendingOrgInvitations(ctx context.Context, or
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pendingInvitations []*Invitation
-	resp, err := s.client.Do(ctx, req, &pendingInvitations)
+	resp, err := s.client.Do(req, &pendingInvitations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -371,13 +371,13 @@ type CreateOrgInvitationOptions struct {
 func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org string, opts *CreateOrgInvitationOptions) (*Invitation, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/invitations", org)
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var invitation *Invitation
-	resp, err := s.client.Do(ctx, req, &invitation)
+	resp, err := s.client.Do(req, &invitation)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -398,13 +398,13 @@ func (s *OrganizationsService) ListOrgInvitationTeams(ctx context.Context, org, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var orgInvitationTeams []*Team
-	resp, err := s.client.Do(ctx, req, &orgInvitationTeams)
+	resp, err := s.client.Do(req, &orgInvitationTeams)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -424,13 +424,13 @@ func (s *OrganizationsService) ListFailedOrgInvitations(ctx context.Context, org
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var failedInvitations []*Invitation
-	resp, err := s.client.Do(ctx, req, &failedInvitations)
+	resp, err := s.client.Do(req, &failedInvitations)
 	if err != nil {
 		return nil, resp, err
 	}

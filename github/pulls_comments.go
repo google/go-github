@@ -90,7 +90,7 @@ func (s *PullRequestsService) ListComments(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -99,7 +99,7 @@ func (s *PullRequestsService) ListComments(ctx context.Context, owner, repo stri
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var comments []*PullRequestComment
-	resp, err := s.client.Do(ctx, req, &comments)
+	resp, err := s.client.Do(req, &comments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -114,7 +114,7 @@ func (s *PullRequestsService) ListComments(ctx context.Context, owner, repo stri
 //meta:operation GET /repos/{owner}/{repo}/pulls/comments/{comment_id}
 func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string, commentID int64) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v", owner, repo, commentID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -123,7 +123,7 @@ func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var comment *PullRequestComment
-	resp, err := s.client.Do(ctx, req, &comment)
+	resp, err := s.client.Do(req, &comment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -138,7 +138,7 @@ func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/comments
 func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo string, number int, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/comments", owner, repo, number)
-	req, err := s.client.NewRequest("POST", u, comment)
+	req, err := s.client.NewRequest(ctx, "POST", u, comment)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -146,7 +146,7 @@ func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo str
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var c *PullRequestComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -168,13 +168,13 @@ func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner,
 		InReplyTo: commentID,
 	}
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/comments", owner, repo, number)
-	req, err := s.client.NewRequest("POST", u, comment)
+	req, err := s.client.NewRequest(ctx, "POST", u, comment)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var c *PullRequestComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -190,13 +190,13 @@ func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner,
 //meta:operation PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}
 func (s *PullRequestsService) EditComment(ctx context.Context, owner, repo string, commentID int64, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v", owner, repo, commentID)
-	req, err := s.client.NewRequest("PATCH", u, comment)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var c *PullRequestComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -211,10 +211,10 @@ func (s *PullRequestsService) EditComment(ctx context.Context, owner, repo strin
 //meta:operation DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}
 func (s *PullRequestsService) DeleteComment(ctx context.Context, owner, repo string, commentID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v", owner, repo, commentID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

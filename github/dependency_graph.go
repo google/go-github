@@ -114,13 +114,13 @@ func (s SBOM) String() string {
 func (s *DependencyGraphService) GetSBOM(ctx context.Context, owner, repo string) (*SBOM, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/dependency-graph/sbom", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var sbom *SBOM
-	resp, err := s.client.Do(ctx, req, &sbom)
+	resp, err := s.client.Do(req, &sbom)
 	if err != nil {
 		return nil, resp, err
 	}

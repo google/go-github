@@ -34,13 +34,13 @@ func (s *AdminService) CreateOrg(ctx context.Context, org *Organization, admin s
 		Admin: &admin,
 	}
 
-	req, err := s.client.NewRequest("POST", u, orgReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, orgReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var o *Organization
-	resp, err := s.client.Do(ctx, req, &o)
+	resp, err := s.client.Do(req, &o)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -88,13 +88,13 @@ func (s *AdminService) RenameOrgByName(ctx context.Context, org, newName string)
 		Login: &newName,
 	}
 
-	req, err := s.client.NewRequest("PATCH", u, orgReq)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, orgReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var o *RenameOrgResponse
-	resp, err := s.client.Do(ctx, req, &o)
+	resp, err := s.client.Do(req, &o)
 	if err != nil {
 		return nil, resp, err
 	}

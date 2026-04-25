@@ -35,13 +35,13 @@ func (s *GistsService) ListComments(ctx context.Context, gistID string, opts *Li
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var comments []*GistComment
-	resp, err := s.client.Do(ctx, req, &comments)
+	resp, err := s.client.Do(req, &comments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -56,13 +56,13 @@ func (s *GistsService) ListComments(ctx context.Context, gistID string, opts *Li
 //meta:operation GET /gists/{gist_id}/comments/{comment_id}
 func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID int64) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var c *GistComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -77,13 +77,13 @@ func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID 
 //meta:operation POST /gists/{gist_id}/comments
 func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment *GistComment) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments", gistID)
-	req, err := s.client.NewRequest("POST", u, comment)
+	req, err := s.client.NewRequest(ctx, "POST", u, comment)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var c *GistComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -98,13 +98,13 @@ func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment
 //meta:operation PATCH /gists/{gist_id}/comments/{comment_id}
 func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID int64, comment *GistComment) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
-	req, err := s.client.NewRequest("PATCH", u, comment)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var c *GistComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -119,10 +119,10 @@ func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID
 //meta:operation DELETE /gists/{gist_id}/comments/{comment_id}
 func (s *GistsService) DeleteComment(ctx context.Context, gistID string, commentID int64) (*Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
