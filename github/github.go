@@ -1363,9 +1363,13 @@ type AbuseRateLimitError struct {
 }
 
 func (r *AbuseRateLimitError) Error() string {
-	return fmt.Sprintf("%v %v: %v %v",
+	retryInfo := ""
+	if r.RetryAfter != nil && *r.RetryAfter > 0 {
+		retryInfo = fmt.Sprintf(" [retry after %v]", r.RetryAfter.Round(time.Second))
+	}
+	return fmt.Sprintf("%v %v: %v %v%v",
 		r.Response.Request.Method, sanitizeURL(r.Response.Request.URL),
-		r.Response.StatusCode, r.Message)
+		r.Response.StatusCode, r.Message, retryInfo)
 }
 
 // Is returns whether the provided error equals this error.
