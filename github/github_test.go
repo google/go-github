@@ -3277,16 +3277,51 @@ func TestAbuseRateLimitError(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	r := &AbuseRateLimitError{
-		Response: &http.Response{
-			Request:    &http.Request{Method: "PUT", URL: u},
-			StatusCode: http.StatusTooManyRequests,
-		},
-		Message: "<msg>",
-	}
-	if got, want := r.Error(), "PUT https://example.com: 429 <msg>"; got != want {
-		t.Errorf("AbuseRateLimitError = %q, want %q", got, want)
-	}
+	t.Run("nil RetryAfter", func(t *testing.T) {
+		t.Parallel()
+		r := &AbuseRateLimitError{
+			Response: &http.Response{
+				Request:    &http.Request{Method: "PUT", URL: u},
+				StatusCode: http.StatusTooManyRequests,
+			},
+			Message: "<msg>",
+		}
+		if got, want := r.Error(), "PUT https://example.com: 429 <msg>"; got != want {
+			t.Errorf("AbuseRateLimitError = %q, want %q", got, want)
+		}
+	})
+
+	t.Run("with RetryAfter", func(t *testing.T) {
+		t.Parallel()
+		d := 60 * time.Second
+		r := &AbuseRateLimitError{
+			Response: &http.Response{
+				Request:    &http.Request{Method: "GET", URL: u},
+				StatusCode: http.StatusForbidden,
+			},
+			Message:    "rate limited",
+			RetryAfter: &d,
+		}
+		if got, want := r.Error(), "GET https://example.com: 403 rate limited [retry after 1m0s]"; got != want {
+			t.Errorf("AbuseRateLimitError = %q, want %q", got, want)
+		}
+	})
+
+	t.Run("zero RetryAfter", func(t *testing.T) {
+		t.Parallel()
+		d := 0 * time.Second
+		r := &AbuseRateLimitError{
+			Response: &http.Response{
+				Request:    &http.Request{Method: "POST", URL: u},
+				StatusCode: http.StatusForbidden,
+			},
+			Message:    "rate limited",
+			RetryAfter: &d,
+		}
+		if got, want := r.Error(), "POST https://example.com: 403 rate limited"; got != want {
+			t.Errorf("AbuseRateLimitError = %q, want %q", got, want)
+		}
+	})
 }
 
 func TestBareDo_returnsOpenBody(t *testing.T) {
