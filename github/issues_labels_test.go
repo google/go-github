@@ -111,7 +111,7 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"name":"n"}`+"\n")
+		testJSONBody(t, r, `{"name":"n"}`)
 
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
@@ -159,7 +159,7 @@ func TestIssuesService_EditLabel(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"z"}`+"\n")
+		testJSONBody(t, r, `{"name":"z"}`)
 
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
@@ -290,7 +290,7 @@ func TestIssuesService_AddLabelsToIssue(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `["a","b"]`+"\n")
+		testJSONBody(t, r, `["a","b"]`)
 
 		fmt.Fprint(w, `[{"url":"u"}]`)
 	})
@@ -372,7 +372,7 @@ func TestIssuesService_ReplaceLabelsForIssue(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `["a","b"]`+"\n")
+		testJSONBody(t, r, `["a","b"]`)
 
 		fmt.Fprint(w, `[{"url":"u"}]`)
 	})

@@ -58,7 +58,7 @@ func TestInteractionsService_UpdateRestrictionsForRepo(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeInteractionRestrictionsPreview)
-		testBody(t, r, `{"limit":"existing_users"}`+"\n")
+		testJSONBody(t, r, `{"limit":"existing_users"}`)
 
 		fmt.Fprint(w, `{"origin":"repository"}`)
 	})

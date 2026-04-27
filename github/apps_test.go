@@ -450,7 +450,7 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"repository_ids":[1234],"repositories":["foo"],"permissions":{"contents":"write","issues":"read"}}`+"\n")
+		testJSONBody(t, r, `{"repository_ids":[1234],"repositories":["foo"],"permissions":{"contents":"write","issues":"read"}}`)
 
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
@@ -481,7 +481,7 @@ func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"repository_ids":null,"repositories":["foo"],"permissions":{"contents":"write","issues":"read"}}`+"\n")
+		testJSONBody(t, r, `{"repository_ids":null,"repositories":["foo"],"permissions":{"contents":"write","issues":"read"}}`)
 
 		fmt.Fprint(w, `{"token":"t"}`)
 	})

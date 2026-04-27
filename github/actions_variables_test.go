@@ -147,7 +147,7 @@ func TestActionsService_CreateRepoVariable(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE"}`+"\n")
+		testJSONBody(t, r, `{"name":"NAME","value":"VALUE"}`)
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -179,7 +179,7 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE"}`+"\n")
+		testJSONBody(t, r, `{"name":"NAME","value":"VALUE"}`)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -326,7 +326,7 @@ func TestActionsService_CreateOrgVariable(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
+		testJSONBody(t, r, `{"name":"NAME","value":"VALUE","visibility":"selected","selected_repository_ids":[1296269,1269280]}`)
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -360,7 +360,7 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
+		testJSONBody(t, r, `{"name":"NAME","value":"VALUE","visibility":"selected","selected_repository_ids":[1296269,1269280]}`)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -439,7 +439,7 @@ func TestActionsService_SetSelectedReposForOrgSVariable(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/variables/NAME/repositories", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
+		testJSONBody(t, r, `{"selected_repository_ids":[64780797]}`)
 	})
 
 	ctx := t.Context()
@@ -642,7 +642,7 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 	mux.HandleFunc("/repos/usr/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"variable","value":"VAR"}`+"\n")
+		testJSONBody(t, r, `{"name":"variable","value":"VAR"}`)
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -674,7 +674,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"variable","value":"VAR"}`+"\n")
+		testJSONBody(t, r, `{"name":"variable","value":"VAR"}`)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

@@ -21,7 +21,7 @@ func TestSubIssuesService_Add(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"sub_issue_id":42}`+"\n")
+		testJSONBody(t, r, `{"sub_issue_id":42}`)
 
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
@@ -99,7 +99,7 @@ func TestSubIssuesService_Remove(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issue", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"sub_issue_id":42}`+"\n")
+		testJSONBody(t, r, `{"sub_issue_id":42}`)
 
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
@@ -133,7 +133,7 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues/priority", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"sub_issue_id":42,"after_id":5}`+"\n")
+		testJSONBody(t, r, `{"sub_issue_id":42,"after_id":5}`)
 
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})

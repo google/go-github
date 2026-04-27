@@ -55,7 +55,7 @@ func TestOrganizationsService_UpdateActionsPermissions(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"enabled_repositories":"all","allowed_actions":"selected"}`+"\n")
+		testJSONBody(t, r, `{"enabled_repositories":"all","allowed_actions":"selected"}`)
 
 		fmt.Fprint(w, `{"enabled_repositories": "all", "allowed_actions": "selected"}`)
 	})

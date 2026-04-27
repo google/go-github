@@ -294,7 +294,7 @@ func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`+"\n")
+		testJSONBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`)
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -476,7 +476,7 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv=","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
+		testJSONBody(t, r, `{"key_id":"1234","encrypted_value":"QIv=","visibility":"selected","selected_repository_ids":[1296269,1269280]}`)
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -556,7 +556,7 @@ func TestActionsService_SetSelectedReposForOrgSecret(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
+		testJSONBody(t, r, `{"selected_repository_ids":[64780797]}`)
 	})
 
 	ctx := t.Context()
@@ -820,7 +820,7 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`+"\n")
+		testJSONBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`)
 		w.WriteHeader(http.StatusCreated)
 	})
 

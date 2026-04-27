@@ -90,7 +90,7 @@ func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"include_claim_keys":["repo","context"]}`+"\n")
+		testJSONBody(t, r, `{"include_claim_keys":["repo","context"]}`)
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -122,7 +122,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"use_default":false,"include_claim_keys":["repo","context"]}`+"\n")
+		testJSONBody(t, r, `{"use_default":false,"include_claim_keys":["repo","context"]}`)
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -155,7 +155,7 @@ func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"use_default":true}`+"\n")
+		testJSONBody(t, r, `{"use_default":true}`)
 		w.WriteHeader(http.StatusCreated)
 	})
 

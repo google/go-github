@@ -25,7 +25,7 @@ func TestRepositoriesService_Merge(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/merges", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"base":"b","head":"h","commit_message":"c"}`+"\n")
+		testJSONBody(t, r, `{"base":"b","head":"h","commit_message":"c"}`)
 
 		fmt.Fprint(w, `{"sha":"s"}`)
 	})
@@ -85,7 +85,7 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/merge-upstream", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"branch":"b"}`+"\n")
+		testJSONBody(t, r, `{"branch":"b"}`)
 
 		fmt.Fprint(w, `{"merge_type":"m"}`)
 	})

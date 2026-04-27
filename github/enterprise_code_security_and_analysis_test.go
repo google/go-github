@@ -78,7 +78,7 @@ func TestEnterpriseService_UpdateCodeSecurityAndAnalysis(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/code_security_and_analysis", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"advanced_security_enabled_for_new_repositories":true,"secret_scanning_enabled_for_new_repositories":true,"secret_scanning_push_protection_enabled_for_new_repositories":true,"secret_scanning_push_protection_custom_link":"https://github.com/test-org/test-repo/blob/main/README.md","secret_scanning_validity_checks_enabled":true}`+"\n")
+		testJSONBody(t, r, `{"advanced_security_enabled_for_new_repositories":true,"secret_scanning_enabled_for_new_repositories":true,"secret_scanning_push_protection_enabled_for_new_repositories":true,"secret_scanning_push_protection_custom_link":"https://github.com/test-org/test-repo/blob/main/README.md","secret_scanning_validity_checks_enabled":true}`)
 	})
 
 	ctx := t.Context()

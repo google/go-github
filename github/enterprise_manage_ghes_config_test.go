@@ -598,7 +598,7 @@ func TestEnterpriseService_InitialConfig(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/config/init", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"license":"1234-1234","password":"password"}`+"\n")
+		testJSONBody(t, r, `{"license":"1234-1234","password":"password"}`)
 	})
 
 	ctx := t.Context()
@@ -618,7 +618,7 @@ func TestEnterpriseService_ConfigApply(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"run_id":"1234"}`+"\n")
+		testJSONBody(t, r, `{"run_id":"1234"}`)
 
 		fmt.Fprint(w, `{ "run_id": "1234" }`)
 	})
@@ -655,7 +655,7 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testBody(t, r, `{"run_id":"1234"}`+"\n")
+		testJSONBody(t, r, `{"run_id":"1234"}`)
 
 		fmt.Fprint(w, `{
 			"running": true,

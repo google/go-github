@@ -57,7 +57,7 @@ func TestUsersService_AddEmails(t *testing.T) {
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `["new@example.com"]`+"\n")
+		testJSONBody(t, r, `["new@example.com"]`)
 
 		fmt.Fprint(w, `[{"email":"old@example.com"}, {"email":"new@example.com"}]`)
 	})
@@ -93,7 +93,7 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 	input := []string{"user@example.com"}
 
 	mux.HandleFunc("/user/emails", func(_ http.ResponseWriter, r *http.Request) {
-		testBody(t, r, `["user@example.com"]`+"\n")
+		testJSONBody(t, r, `["user@example.com"]`)
 	})
 
 	ctx := t.Context()
@@ -135,7 +135,7 @@ func TestUsersService_SetEmailVisibility(t *testing.T) {
 
 	mux.HandleFunc("/user/email/visibility", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"visibility":"private"}`+"\n")
+		testJSONBody(t, r, `{"visibility":"private"}`)
 
 		fmt.Fprint(w, `[{
 			"email": "user@example.com",

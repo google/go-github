@@ -115,7 +115,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
-		testBody(t, r, `{"name":"config1","description":"desc1","code_scanning_default_setup":"enabled"}`+"\n")
+		testJSONBody(t, r, `{"name":"config1","description":"desc1","code_scanning_default_setup":"enabled"}`)
 
 		fmt.Fprint(w, `{
 			"id":1,
@@ -177,7 +177,7 @@ func TestOrganizationsService_CreateCodeSecurityConfigurationWithDelegatedBypass
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
-		testBody(t, r, `{"name":"config1","description":"desc1","secret_scanning":"enabled","secret_scanning_push_protection":"enabled","secret_scanning_delegated_bypass":"enabled","secret_scanning_delegated_bypass_options":{"reviewers":[{"reviewer_id":456,"reviewer_type":"TEAM"},{"reviewer_id":789,"reviewer_type":"ROLE"}]},"secret_protection":"enabled"}`+"\n")
+		testJSONBody(t, r, `{"name":"config1","description":"desc1","secret_scanning":"enabled","secret_scanning_push_protection":"enabled","secret_scanning_delegated_bypass":"enabled","secret_scanning_delegated_bypass_options":{"reviewers":[{"reviewer_id":456,"reviewer_type":"TEAM"},{"reviewer_id":789,"reviewer_type":"ROLE"}]},"secret_protection":"enabled"}`)
 
 		fmt.Fprint(w, `{
 			"id":123,
@@ -352,7 +352,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
-		testBody(t, r, `{"name":"config1","description":"desc1","code_scanning_default_setup":"enabled"}`+"\n")
+		testJSONBody(t, r, `{"name":"config1","description":"desc1","code_scanning_default_setup":"enabled"}`)
 
 		fmt.Fprint(w, `{
 			"id":1,
@@ -426,7 +426,7 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationToRepositories(t *t
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/attach", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"scope":"selected","selected_repository_ids":[5,20]}`+"\n")
+		testJSONBody(t, r, `{"scope":"selected","selected_repository_ids":[5,20]}`)
 
 		w.WriteHeader(http.StatusAccepted)
 	})

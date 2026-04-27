@@ -22,7 +22,7 @@ func TestEnterpriseService_GenerateEnterpriseJITConfig(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"name":"test","runner_group_id":1,"labels":["one","two"]}`+"\n")
+		testJSONBody(t, r, `{"name":"test","runner_group_id":1,"labels":["one","two"]}`)
 
 		fmt.Fprint(w, `{"encoded_jit_config":"foo"}`)
 	})

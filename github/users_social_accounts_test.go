@@ -58,7 +58,7 @@ func TestUsersService_AddSocialAccounts(t *testing.T) {
 
 	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"account_urls":["https://example.com"]}`+"\n")
+		testJSONBody(t, r, `{"account_urls":["https://example.com"]}`)
 		fmt.Fprint(w, `[{"provider":"example","url":"https://example.com"}]`)
 	})
 
@@ -94,7 +94,7 @@ func TestUsersService_DeleteSocialAccounts(t *testing.T) {
 
 	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"account_urls":["https://example.com"]}`+"\n")
+		testJSONBody(t, r, `{"account_urls":["https://example.com"]}`)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

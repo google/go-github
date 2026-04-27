@@ -115,7 +115,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/commits/s/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"body":"b"}`+"\n")
+		testJSONBody(t, r, `{"body":"b"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -208,7 +208,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"body":"b"}`+"\n")
+		testJSONBody(t, r, `{"body":"b"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

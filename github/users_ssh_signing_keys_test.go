@@ -123,7 +123,7 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 
 	mux.HandleFunc("/user/ssh_signing_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"key":"k","title":"t"}`+"\n")
+		testJSONBody(t, r, `{"key":"k","title":"t"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

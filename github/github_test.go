@@ -200,6 +200,28 @@ func testBody(t *testing.T, r *http.Request, want string) {
 	}
 }
 
+func testJSONBody(t *testing.T, r *http.Request, want string) {
+	t.Helper()
+	b, err := io.ReadAll(r.Body)
+	if err != nil {
+		t.Errorf("Error reading request body: %v", err)
+	}
+
+	var gotAny any
+	if err := json.Unmarshal(b, &gotAny); err != nil {
+		t.Fatalf("request body is not valid JSON %q: %v", b, err)
+	}
+
+	var wantAny any
+	if err := json.Unmarshal([]byte(want), &wantAny); err != nil {
+		t.Fatalf("expected body is not valid JSON %q: %v", want, err)
+	}
+
+	if diff := cmp.Diff(wantAny, gotAny); diff != "" {
+		t.Errorf("request body mismatch (-want +got):\n%v", diff)
+	}
+}
+
 // testJSONMarshal tests both JSON marshaling and unmarshaling of a value by comparing
 // the marshaled output with the expected JSON string.
 //

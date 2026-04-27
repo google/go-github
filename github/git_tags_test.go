@@ -61,7 +61,7 @@ func TestGitService_CreateTag(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/tags", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"tag":"t","message":"test message","object":"s","type":"commit"}`+"\n")
+		testJSONBody(t, r, `{"tag":"t","message":"test message","object":"s","type":"commit"}`)
 
 		fmt.Fprint(w, `{"tag": "t"}`)
 	})

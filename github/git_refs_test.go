@@ -340,7 +340,7 @@ func TestGitService_CreateRef(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"ref":"refs/heads/b","sha":"aa218f56b14c9653891f9e74264a383fa43fefbd"}`+"\n")
+		testJSONBody(t, r, `{"ref":"refs/heads/b","sha":"aa218f56b14c9653891f9e74264a383fa43fefbd"}`)
 
 		fmt.Fprint(w, `
 		  {
@@ -416,7 +416,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"sha":"aa218f56b14c9653891f9e74264a383fa43fefbd","force":true}`+"\n")
+		testJSONBody(t, r, `{"sha":"aa218f56b14c9653891f9e74264a383fa43fefbd","force":true}`)
 
 		fmt.Fprint(w, `
 		  {
@@ -568,7 +568,7 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b#1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"sha":"aa218f56b14c9653891f9e74264a383fa43fefbd","force":true}`+"\n")
+		testJSONBody(t, r, `{"sha":"aa218f56b14c9653891f9e74264a383fa43fefbd","force":true}`)
 
 		fmt.Fprint(w, `
 		  {

@@ -245,7 +245,7 @@ func TestTeamsService_CreateComment(t *testing.T) {
 
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"body":"c"}`+"\n")
+		testJSONBody(t, r, `{"body":"c"}`)
 
 		fmt.Fprint(w, `{"number":4}`)
 	}
@@ -312,7 +312,7 @@ func TestTeamsService_EditComment(t *testing.T) {
 	input := DiscussionComment{Body: Ptr("e")}
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"body":"e"}`+"\n")
+		testJSONBody(t, r, `{"body":"e"}`)
 
 		fmt.Fprint(w, `{"number":4}`)
 	}

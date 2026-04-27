@@ -469,7 +469,7 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 
 	mux.HandleFunc("/user/memberships/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"state":"active"}`+"\n")
+		testJSONBody(t, r, `{"state":"active"}`)
 
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
@@ -508,7 +508,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"state":"active"}`+"\n")
+		testJSONBody(t, r, `{"state":"active"}`)
 
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
@@ -663,7 +663,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/invitations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"email":"octocat@github.com","role":"direct_member","team_ids":[12,26]}`+"\n")
+		testJSONBody(t, r, `{"email":"octocat@github.com","role":"direct_member","team_ids":[12,26]}`)
 
 		fmt.Fprintln(w, `{"email": "octocat@github.com"}`)
 	})

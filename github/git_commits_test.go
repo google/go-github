@@ -182,7 +182,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"message":"Commit Message.","tree":"t","parents":["p"]}`+"\n")
+		testJSONBody(t, r, `{"message":"Commit Message.","tree":"t","parents":["p"]}`)
 
 		fmt.Fprint(w, `{"sha":"s"}`)
 	})
@@ -230,7 +230,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"message":"Commit Message.","tree":"t","parents":["p"],"signature":"----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"}`+"\n")
+		testJSONBody(t, r, `{"message":"Commit Message.","tree":"t","parents":["p"],"signature":"----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"}`)
 
 		fmt.Fprint(w, `{"sha":"commitSha"}`)
 	})
@@ -302,7 +302,7 @@ Commit Message.`
 	}
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"author":{"date":"2017-05-04T00:03:43+02:00","name":"go-github","email":"go-github@github.com"},"message":"Commit Message.","tree":"t","parents":["p"],"signature":"my voice is my password"}`+"\n")
+		testJSONBody(t, r, `{"author":{"date":"2017-05-04T00:03:43+02:00","name":"go-github","email":"go-github@github.com"},"message":"Commit Message.","tree":"t","parents":["p"],"signature":"my voice is my password"}`)
 
 		fmt.Fprintf(w, `{"sha":"%v"}`, sha)
 	})

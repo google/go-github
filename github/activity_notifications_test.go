@@ -99,7 +99,7 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"last_read_at":"2006-01-02T15:04:05Z"}`+"\n")
+		testJSONBody(t, r, `{"last_read_at":"2006-01-02T15:04:05Z"}`)
 
 		w.WriteHeader(http.StatusResetContent)
 	})
@@ -123,7 +123,7 @@ func TestActivityService_MarkNotificationsRead_EmptyLastReadAt(t *testing.T) {
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{}`+"\n")
+		testJSONBody(t, r, `{}`)
 
 		w.WriteHeader(http.StatusResetContent)
 	})
@@ -142,7 +142,7 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"last_read_at":"2006-01-02T15:04:05Z"}`+"\n")
+		testJSONBody(t, r, `{"last_read_at":"2006-01-02T15:04:05Z"}`)
 
 		w.WriteHeader(http.StatusResetContent)
 	})
@@ -171,7 +171,7 @@ func TestActivityService_MarkRepositoryNotificationsRead_EmptyLastReadAt(t *test
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{}`+"\n")
+		testJSONBody(t, r, `{}`)
 
 		w.WriteHeader(http.StatusResetContent)
 	})
@@ -313,7 +313,7 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 
 	mux.HandleFunc("/notifications/threads/1/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"subscribed":true}`+"\n")
+		testJSONBody(t, r, `{"subscribed":true}`)
 
 		fmt.Fprint(w, `{"ignored":true}`)
 	})

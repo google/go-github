@@ -55,7 +55,7 @@ func TestActionsService_UpdateActionsPermissionsInEnterprise(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"enabled_organizations":"all","allowed_actions":"selected"}`+"\n")
+		testJSONBody(t, r, `{"enabled_organizations":"all","allowed_actions":"selected"}`)
 
 		fmt.Fprint(w, `{"enabled_organizations": "all", "allowed_actions": "selected"}`)
 	})
@@ -137,7 +137,7 @@ func TestActionsService_SetEnabledOrgsInEnterprise(t *testing.T) {
 	mux.HandleFunc("/enterprises/e/actions/permissions/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"selected_organization_ids":[123,1234]}`+"\n")
+		testJSONBody(t, r, `{"selected_organization_ids":[123,1234]}`)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -255,7 +255,7 @@ func TestActionsService_UpdateActionsAllowedInEnterprise(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"github_owned_allowed":true,"verified_allowed":false,"patterns_allowed":["a/b"]}`+"\n")
+		testJSONBody(t, r, `{"github_owned_allowed":true,"verified_allowed":false,"patterns_allowed":["a/b"]}`)
 
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
@@ -328,7 +328,7 @@ func TestActionsService_UpdateDefaultWorkflowPermissionsInEnterprise(t *testing.
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"default_workflow_permissions":"read","can_approve_pull_request_reviews":true}`+"\n")
+		testJSONBody(t, r, `{"default_workflow_permissions":"read","can_approve_pull_request_reviews":true}`)
 
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
@@ -405,7 +405,7 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInEnterprise(t *testi
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"days":90}`+"\n")
+		testJSONBody(t, r, `{"days":90}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -473,7 +473,7 @@ func TestActionsService_UpdateSelfHostedRunnerPermissionsInEnterprise(t *testing
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"disable_self_hosted_runners_for_all_orgs":false}`+"\n")
+		testJSONBody(t, r, `{"disable_self_hosted_runners_for_all_orgs":false}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -550,7 +550,7 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(t *t
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"run_workflows_from_fork_pull_requests":true,"send_write_tokens_to_workflows":false,"send_secrets_and_variables":true}`+"\n")
+		testJSONBody(t, r, `{"run_workflows_from_fork_pull_requests":true,"send_write_tokens_to_workflows":false,"send_secrets_and_variables":true}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -618,7 +618,7 @@ func TestActionsService_UpdateEnterpriseForkPRContributorApprovalPermissions(t *
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"approval_policy":"require_approval"}`+"\n")
+		testJSONBody(t, r, `{"approval_policy":"require_approval"}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

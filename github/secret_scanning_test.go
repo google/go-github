@@ -353,7 +353,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"state":"resolved","resolution":"used_in_tests"}`+"\n")
+		testJSONBody(t, r, `{"state":"resolved","resolution":"used_in_tests"}`)
 
 		fmt.Fprint(w, `{
 			"number": 1,
@@ -617,7 +617,7 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 
 	mux.HandleFunc(fmt.Sprintf("/repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"reason":"valid reason","placeholder_id":"bypass-123"}`+"\n")
+		testJSONBody(t, r, `{"reason":"valid reason","placeholder_id":"bypass-123"}`)
 
 		fmt.Fprint(w, `{
 			"reason": "valid reason",

@@ -268,7 +268,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		testHeader(t, r, "Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"login":"l"}`+"\n")
+		testJSONBody(t, r, `{"login":"l"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

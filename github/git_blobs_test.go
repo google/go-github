@@ -116,7 +116,7 @@ func TestGitService_CreateBlob(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/blobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"content":"blob content","encoding":"utf-8","sha":"s","size":12}`+"\n")
+		testJSONBody(t, r, `{"content":"blob content","encoding":"utf-8","sha":"s","size":12}`)
 
 		fmt.Fprint(w, `{
 		 "sha": "s",

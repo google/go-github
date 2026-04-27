@@ -95,7 +95,7 @@ func TestEnterpriseService_CreateMaintenance(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/maintenance", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"enabled":true,"uuid":"1234-1234","when":"now","ip_exception_list":["1.1.1.1"],"maintenance_mode_message":"Scheduled maintenance for upgrading."}`+"\n")
+		testJSONBody(t, r, `{"enabled":true,"uuid":"1234-1234","when":"now","ip_exception_list":["1.1.1.1"],"maintenance_mode_message":"Scheduled maintenance for upgrading."}`)
 
 		fmt.Fprint(w, `[ { "hostname": "primary", "uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb", "message": "Scheduled maintenance for upgrading." } ]`)
 	})

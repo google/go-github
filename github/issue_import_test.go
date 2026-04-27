@@ -38,7 +38,7 @@ func TestIssueImportService_Create(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		testBody(t, r, `{"issue":{"title":"Dummy Issue","body":"Dummy description","created_at":"2020-08-11T15:30:00Z","assignee":"developer","milestone":1,"labels":["l1","l2"]},"comments":[{"created_at":"2020-08-11T15:30:00Z","body":"Comment body"}]}`+"\n")
+		testJSONBody(t, r, `{"issue":{"title":"Dummy Issue","body":"Dummy description","created_at":"2020-08-11T15:30:00Z","assignee":"developer","milestone":1,"labels":["l1","l2"]},"comments":[{"created_at":"2020-08-11T15:30:00Z","body":"Comment body"}]}`)
 
 		assertWrite(t, w, issueImportResponseJSON)
 	})
@@ -92,7 +92,7 @@ func TestIssueImportService_Create_deferred(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		testBody(t, r, `{"issue":{"title":"Dummy Issue","body":"Dummy description","created_at":"2020-08-11T15:30:00Z","assignee":"developer","milestone":1,"labels":["l1","l2"]},"comments":[{"created_at":"2020-08-11T15:30:00Z","body":"Comment body"}]}`+"\n")
+		testJSONBody(t, r, `{"issue":{"title":"Dummy Issue","body":"Dummy description","created_at":"2020-08-11T15:30:00Z","assignee":"developer","milestone":1,"labels":["l1","l2"]},"comments":[{"created_at":"2020-08-11T15:30:00Z","body":"Comment body"}]}`)
 
 		w.WriteHeader(http.StatusAccepted)
 		assertWrite(t, w, issueImportResponseJSON)
@@ -134,7 +134,7 @@ func TestIssueImportService_Create_badResponse(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		testBody(t, r, `{"issue":{"title":"Dummy Issue","body":"Dummy description","created_at":"2020-08-11T15:30:00Z","assignee":"developer","milestone":1,"labels":["l1","l2"]},"comments":[{"created_at":"2020-08-11T15:30:00Z","body":"Comment body"}]}`+"\n")
+		testJSONBody(t, r, `{"issue":{"title":"Dummy Issue","body":"Dummy description","created_at":"2020-08-11T15:30:00Z","assignee":"developer","milestone":1,"labels":["l1","l2"]},"comments":[{"created_at":"2020-08-11T15:30:00Z","body":"Comment body"}]}`)
 
 		w.WriteHeader(http.StatusAccepted)
 		assertWrite(t, w, []byte("{[}"))

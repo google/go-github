@@ -172,7 +172,7 @@ func TestIssuesService_AddAssignees(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"assignees":["user1","user2"]}`+"\n")
+		testJSONBody(t, r, `{"assignees":["user1","user2"]}`)
 
 		fmt.Fprint(w, `{"number":1,"assignees":[{"login":"user1"},{"login":"user2"}]}`)
 	})
@@ -209,7 +209,7 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"assignees":["user1","user2"]}`+"\n")
+		testJSONBody(t, r, `{"assignees":["user1","user2"]}`)
 
 		fmt.Fprint(w, `{"number":1,"assignees":[]}`)
 	})

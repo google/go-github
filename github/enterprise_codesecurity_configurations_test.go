@@ -115,7 +115,7 @@ func TestEnterpriseService_CreateCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	mux.HandleFunc("/enterprises/e/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
-		testBody(t, r, `{"name":"config1","description":"desc1","code_scanning_default_setup":"enabled"}`+"\n")
+		testJSONBody(t, r, `{"name":"config1","description":"desc1","code_scanning_default_setup":"enabled"}`)
 
 		fmt.Fprint(w, `{
 			"id":1,
@@ -219,7 +219,7 @@ func TestEnterpriseService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	mux.HandleFunc("/enterprises/e/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
-		testBody(t, r, `{"name":"config1","description":"desc1","code_scanning_default_setup":"enabled"}`+"\n")
+		testJSONBody(t, r, `{"name":"config1","description":"desc1","code_scanning_default_setup":"enabled"}`)
 
 		fmt.Fprint(w, `{
 			"id":1,
@@ -293,7 +293,7 @@ func TestEnterpriseService_AttachCodeSecurityConfigurationToRepositories(t *test
 
 	mux.HandleFunc("/enterprises/e/code-security/configurations/1/attach", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"scope":"all_without_configurations"}`+"\n")
+		testJSONBody(t, r, `{"scope":"all_without_configurations"}`)
 
 		w.WriteHeader(http.StatusAccepted)
 	})

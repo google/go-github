@@ -478,7 +478,7 @@ func TestEnterpriseService_SetProvisionedSCIMGroup(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/abcd", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"dn","externalId":"8aa1","schemas":["`+SCIMSchemasURINamespacesGroups+`"]}`+"\n")
+		testJSONBody(t, r, `{"displayName":"dn","externalId":"8aa1","schemas":["`+SCIMSchemasURINamespacesGroups+`"]}`)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
@@ -542,7 +542,7 @@ func TestEnterpriseService_SetProvisionedSCIMUser(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Users/7fce", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"John Doe","userName":"e123","emails":[{"value":"john@example.com","primary":true,"type":"work"}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`+"\n")
+		testJSONBody(t, r, `{"displayName":"John Doe","userName":"e123","emails":[{"value":"john@example.com","primary":true,"type":"work"}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
@@ -627,7 +627,7 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/abcd", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"schemas":["`+SCIMSchemasURINamespacesPatchOp+`"],"Operations":[{"op":"replace","path":"displayName","value":"Employees"}]}`+"\n")
+		testJSONBody(t, r, `{"schemas":["`+SCIMSchemasURINamespacesPatchOp+`"],"Operations":[{"op":"replace","path":"displayName","value":"Employees"}]}`)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
@@ -704,7 +704,7 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Users/7fce", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"schemas":["`+SCIMSchemasURINamespacesPatchOp+`"],"Operations":[{"op":"replace","path":"emails[type eq 'work'].value","value":"updatedEmail@example.com"},{"op":"replace","path":"name.familyName","value":"updatedFamilyName"}]}`+"\n")
+		testJSONBody(t, r, `{"schemas":["`+SCIMSchemasURINamespacesPatchOp+`"],"Operations":[{"op":"replace","path":"emails[type eq 'work'].value","value":"updatedEmail@example.com"},{"op":"replace","path":"name.familyName","value":"updatedFamilyName"}]}`)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
@@ -809,7 +809,7 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"dn","members":[{"value":"879d","display":"d1"},{"value":"0db5","display":"d2"}],"externalId":"8aa1","schemas":["`+SCIMSchemasURINamespacesGroups+`"]}`+"\n")
+		testJSONBody(t, r, `{"displayName":"dn","members":[{"value":"879d","display":"d1"},{"value":"0db5","display":"d2"}],"externalId":"8aa1","schemas":["`+SCIMSchemasURINamespacesGroups+`"]}`)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
@@ -901,7 +901,7 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 	mux.HandleFunc("/scim/v2/enterprises/ee/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"DOE John","name":{"givenName":"John","familyName":"Doe","formatted":"John Doe"},"userName":"e123","emails":[{"value":"john@example.com","primary":true,"type":"work"}],"roles":[{"value":"User","primary":false}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`+"\n")
+		testJSONBody(t, r, `{"displayName":"DOE John","name":{"givenName":"John","familyName":"Doe","formatted":"John Doe"},"userName":"e123","emails":[{"value":"john@example.com","primary":true,"type":"work"}],"roles":[{"value":"User","primary":false}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],

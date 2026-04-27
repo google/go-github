@@ -59,7 +59,7 @@ func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) 
 
 	mux.HandleFunc("/repos/o/r/environments/e/deployment_protection_rules", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"integration_id":5}`+"\n")
+		testJSONBody(t, r, `{"integration_id":5}`)
 
 		fmt.Fprint(w, `{"id":3, "node_id": "IEH37kRlcGxveW1lbnRTdGF0ddiv", "enabled": true, "app": {"id": 1, "node_id": "GHT58kRlcGxveW1lbnRTdTY!bbcy", "slug": "a-custom-app", "integration_url": "https://api.github.com/apps/a-custom-app"}}`)
 	})

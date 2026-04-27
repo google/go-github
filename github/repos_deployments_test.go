@@ -98,7 +98,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 		testMethod(t, r, "POST")
 		wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		testBody(t, r, `{"ref":"1111","task":"deploy","transient_environment":true}`+"\n")
+		testJSONBody(t, r, `{"ref":"1111","task":"deploy","transient_environment":true}`)
 
 		fmt.Fprint(w, `{"ref": "1111", "task": "deploy"}`)
 	})
@@ -252,7 +252,7 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 		testMethod(t, r, "POST")
 		wantAcceptHeaders := []string{mediaTypeDeploymentStatusPreview, mediaTypeExpandDeploymentStatusPreview}
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		testBody(t, r, `{"state":"inactive","description":"deploy","auto_inactive":false}`+"\n")
+		testJSONBody(t, r, `{"state":"inactive","description":"deploy","auto_inactive":false}`)
 
 		fmt.Fprint(w, `{"state": "inactive", "description": "deploy"}`)
 	})

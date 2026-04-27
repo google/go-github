@@ -59,7 +59,7 @@ func TestCodespacesService_SetOrgAccessControl(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o1/codespaces/access", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"visibility":"selected_members","selected_usernames":["u1","u2"]}`+"\n")
+		testJSONBody(t, r, `{"visibility":"selected_members","selected_usernames":["u1","u2"]}`)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -90,7 +90,7 @@ func TestEnterpriseService_AddUsersToOrgAccess(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o1/codespaces/access/selected_users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"selected_usernames":["u1"]}`+"\n")
+		testJSONBody(t, r, `{"selected_usernames":["u1"]}`)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -120,7 +120,7 @@ func TestEnterpriseService_RemoveUsersFromOrgAccess(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o1/codespaces/access/selected_users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"selected_usernames":["u1"]}`+"\n")
+		testJSONBody(t, r, `{"selected_usernames":["u1"]}`)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

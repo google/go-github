@@ -125,7 +125,7 @@ func TestRequestReviewers(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"reviewers":["octocat","googlebot"],"team_reviewers":["justice-league","injustice-league"]}`+"\n")
+		testJSONBody(t, r, `{"reviewers":["octocat","googlebot"],"team_reviewers":["justice-league","injustice-league"]}`)
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
@@ -156,7 +156,7 @@ func TestRemoveReviewers(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"reviewers":["octocat","googlebot"],"team_reviewers":["justice-league"]}`+"\n")
+		testJSONBody(t, r, `{"reviewers":["octocat","googlebot"],"team_reviewers":["justice-league"]}`)
 	})
 
 	ctx := t.Context()
@@ -177,7 +177,7 @@ func TestRemoveReviewers_teamsOnly(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"reviewers":[],"team_reviewers":["justice-league"]}`+"\n")
+		testJSONBody(t, r, `{"reviewers":[],"team_reviewers":["justice-league"]}`)
 	})
 
 	ctx := t.Context()

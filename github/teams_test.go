@@ -190,7 +190,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"name":"n","repo_names":["r"],"privacy":"closed"}`+"\n")
+		testJSONBody(t, r, `{"name":"n","repo_names":["r"],"privacy":"closed"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -238,7 +238,7 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"n","privacy":"closed"}`+"\n")
+		testJSONBody(t, r, `{"name":"n","privacy":"closed"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -277,7 +277,7 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"n","parent_team_id":null,"notification_setting":"notifications_enabled","privacy":"closed"}`+"\n")
+		testJSONBody(t, r, `{"name":"n","parent_team_id":null,"notification_setting":"notifications_enabled","privacy":"closed"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -302,7 +302,7 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"n","privacy":"closed"}`+"\n")
+		testJSONBody(t, r, `{"name":"n","privacy":"closed"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -341,7 +341,7 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"n","parent_team_id":null,"notification_setting":"notifications_disabled","privacy":"closed"}`+"\n")
+		testJSONBody(t, r, `{"name":"n","parent_team_id":null,"notification_setting":"notifications_disabled","privacy":"closed"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -744,7 +744,7 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"permission":"admin"}`+"\n")
+		testJSONBody(t, r, `{"permission":"admin"}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -774,7 +774,7 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"permission":"admin"}`+"\n")
+		testJSONBody(t, r, `{"permission":"admin"}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -1103,7 +1103,7 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 	mux.HandleFunc("/organizations/1/team/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
-		testBody(t, r, `{"permission":"admin"}`+"\n")
+		testJSONBody(t, r, `{"permission":"admin"}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -1136,7 +1136,7 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
-		testBody(t, r, `{"permission":"admin"}`+"\n")
+		testJSONBody(t, r, `{"permission":"admin"}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

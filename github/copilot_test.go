@@ -906,7 +906,7 @@ func TestCopilotService_AddCopilotTeams(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"selected_teams":["team1","team2"]}`+"\n")
+		testJSONBody(t, r, `{"selected_teams":["team1","team2"]}`)
 		fmt.Fprint(w, `{"seats_created": 2}`)
 	})
 
@@ -944,7 +944,7 @@ func TestCopilotService_RemoveCopilotTeams(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"selected_teams":["team1","team2"]}`+"\n")
+		testJSONBody(t, r, `{"selected_teams":["team1","team2"]}`)
 		fmt.Fprint(w, `{"seats_cancelled": 2}`)
 	})
 
@@ -982,7 +982,7 @@ func TestCopilotService_AddCopilotUsers(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"selected_usernames":["user1","user2"]}`+"\n")
+		testJSONBody(t, r, `{"selected_usernames":["user1","user2"]}`)
 		fmt.Fprint(w, `{"seats_created": 2}`)
 	})
 
@@ -1020,7 +1020,7 @@ func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/copilot/billing/selected_users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"selected_usernames":["user1","user2"]}`+"\n")
+		testJSONBody(t, r, `{"selected_usernames":["user1","user2"]}`)
 		fmt.Fprint(w, `{"seats_cancelled": 2}`)
 	})
 

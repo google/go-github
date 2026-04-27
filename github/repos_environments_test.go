@@ -186,7 +186,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"wait_timer":30,"reviewers":null,"can_admins_bypass":true,"deployment_branch_policy":null}`+"\n")
+		testJSONBody(t, r, `{"wait_timer":30,"reviewers":null,"can_admins_bypass":true,"deployment_branch_policy":null}`)
 
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "type": "wait_timer", "wait_timer": 30}]}`)
 	})
@@ -228,11 +228,11 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 		testMethod(t, r, "PUT")
 
 		if callCount == 0 {
-			testBody(t, r, `{"wait_timer":0,"reviewers":null,"can_admins_bypass":true,"deployment_branch_policy":null}`+"\n")
+			testJSONBody(t, r, `{"wait_timer":0,"reviewers":null,"can_admins_bypass":true,"deployment_branch_policy":null}`)
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			callCount++
 		} else {
-			testBody(t, r, `{"deployment_branch_policy":null}`+"\n")
+			testJSONBody(t, r, `{"deployment_branch_policy":null}`)
 			fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": []}`)
 		}
 	})
@@ -262,7 +262,7 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"deployment_branch_policy":{"protected_branches":true,"custom_branch_policies":false}}`+"\n")
+		testJSONBody(t, r, `{"deployment_branch_policy":{"protected_branches":true,"custom_branch_policies":false}}`)
 
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "node_id": "id", "type": "branch_policy"}], "deployment_branch_policy": {"protected_branches": true, "custom_branch_policies": false}}`)
 	})

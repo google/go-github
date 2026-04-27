@@ -72,7 +72,7 @@ func TestRepositoriesService_EditHookConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/hooks/1/config", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"content_type":"xml"}`+"\n")
+		testJSONBody(t, r, `{"content_type":"xml"}`)
 
 		fmt.Fprint(w, `{"content_type": "json", "insecure_ssl": "0", "secret": "********", "url": "https://example.com/webhook"}`)
 	})

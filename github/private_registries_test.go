@@ -103,7 +103,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	mux.HandleFunc("/orgs/o/private-registries", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
-		testBody(t, r, `{"registry_type":"maven_repository","url":"https://example.com/OWNER/REPOSITORY","username":"monalisa","encrypted_value":"encrypted_value","key_id":"key_id","visibility":"selected","selected_repository_ids":[1,2,3]}`+"\n")
+		testJSONBody(t, r, `{"registry_type":"maven_repository","url":"https://example.com/OWNER/REPOSITORY","username":"monalisa","encrypted_value":"encrypted_value","key_id":"key_id","visibility":"selected","selected_repository_ids":[1,2,3]}`)
 
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
@@ -396,7 +396,7 @@ func TestPrivateRegistries_UpdateOrganizationPrivateRegistry(t *testing.T) {
 	mux.HandleFunc("/orgs/o/private-registries/MAVEN_REPOSITORY_SECRET", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
-		testBody(t, r, `{"username":"monalisa","encrypted_value":"encrypted_value","key_id":"key_id","visibility":"selected"}`+"\n")
+		testJSONBody(t, r, `{"username":"monalisa","encrypted_value":"encrypted_value","key_id":"key_id","visibility":"selected"}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

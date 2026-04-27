@@ -242,7 +242,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"ref":"d4cfb6e7","inputs":{"key":"value"},"return_run_details":true}`+"\n")
+		testJSONBody(t, r, `{"ref":"d4cfb6e7","inputs":{"key":"value"},"return_run_details":true}`)
 
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{"workflow_run_id":1,"run_url":"https://api.github.com/repos/o/r/actions/runs/1","html_url":"https://github.com/o/r/actions/runs/1"}`)
@@ -298,7 +298,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"ref":"d4cfb6e7","inputs":{"key":"value"},"return_run_details":true}`+"\n")
+		testJSONBody(t, r, `{"ref":"d4cfb6e7","inputs":{"key":"value"},"return_run_details":true}`)
 
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{"workflow_run_id":1,"run_url":"https://api.github.com/repos/o/r/actions/runs/1","html_url":"https://github.com/o/r/actions/runs/1"}`)
@@ -353,7 +353,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID_noRunDetails(t *testing.
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"ref":"d4cfb6e7","inputs":{"key":"value"}}`+"\n")
+		testJSONBody(t, r, `{"ref":"d4cfb6e7","inputs":{"key":"value"}}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -381,7 +381,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName_noRunDetails(t *te
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"ref":"d4cfb6e7","inputs":{"key":"value"}}`+"\n")
+		testJSONBody(t, r, `{"ref":"d4cfb6e7","inputs":{"key":"value"}}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

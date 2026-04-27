@@ -227,7 +227,7 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 				mux.HandleFunc("/user/codespaces/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "PUT")
 					testHeader(t, r, "Content-Type", "application/json")
-					testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`+"\n")
+					testJSONBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`)
 					w.WriteHeader(http.StatusCreated)
 				})
 			},
@@ -245,7 +245,7 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 				mux.HandleFunc("/orgs/o/codespaces/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "PUT")
 					testHeader(t, r, "Content-Type", "application/json")
-					testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`+"\n")
+					testJSONBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`)
 					w.WriteHeader(http.StatusCreated)
 				})
 			},
@@ -263,7 +263,7 @@ func TestCodespacesService_CreateOrUpdateSecret(t *testing.T) {
 				mux.HandleFunc("/repos/o/r/codespaces/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "PUT")
 					testHeader(t, r, "Content-Type", "application/json")
-					testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`+"\n")
+					testJSONBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`)
 					w.WriteHeader(http.StatusCreated)
 				})
 			},
@@ -585,7 +585,7 @@ func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
 				mux.HandleFunc("/user/codespaces/secrets/NAME/repositories", func(_ http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "PUT")
 					testHeader(t, r, "Content-Type", "application/json")
-					testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
+					testJSONBody(t, r, `{"selected_repository_ids":[64780797]}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*Response, error) {
@@ -599,7 +599,7 @@ func TestCodespacesService_SetSelectedReposForSecret(t *testing.T) {
 				mux.HandleFunc("/orgs/o/codespaces/secrets/NAME/repositories", func(_ http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "PUT")
 					testHeader(t, r, "Content-Type", "application/json")
-					testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
+					testJSONBody(t, r, `{"selected_repository_ids":[64780797]}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*Response, error) {

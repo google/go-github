@@ -231,7 +231,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		testBody(t, r, `{"name":"n"}`+"\n")
+		testJSONBody(t, r, `{"name":"n"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -279,7 +279,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		testBody(t, r, `{"name":"n"}`+"\n")
+		testJSONBody(t, r, `{"name":"n"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -313,7 +313,7 @@ func TestRepositoriesService_Create_withCustomProperties(t *testing.T) {
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		testBody(t, r, `{"name":"n","custom_properties":{"environment":"production","priority":1,"team":"backend"}}`+"\n")
+		testJSONBody(t, r, `{"name":"n","custom_properties":{"environment":"production","priority":1,"team":"backend"}}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -341,7 +341,7 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 	mux.HandleFunc("/repos/to/tr/generate", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
-		testBody(t, r, `{"name":"n"}`+"\n")
+		testJSONBody(t, r, `{"name":"n"}`)
 
 		fmt.Fprint(w, `{"id":1,"name":"n"}`)
 	})
@@ -499,7 +499,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		testBody(t, r, `{"has_issues":true}`+"\n")
+		testJSONBody(t, r, `{"has_issues":true}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -1114,7 +1114,7 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "POST")
-				testBody(t, r, `{"new_name":"nn"}`+"\n")
+				testJSONBody(t, r, `{"new_name":"nn"}`)
 
 				fmt.Fprint(w, `{"protected":true,"name":"nn"}`)
 			})
@@ -1473,7 +1473,7 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PUT")
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				testBody(t, r, `{"required_status_checks":{"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"bypass_pull_request_allowances":{"users":["uuu"],"teams":["ttt"],"apps":["aaa"]},"dismissal_restrictions":{"users":["uu"],"teams":["tt"],"apps":["aa"]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0},"enforce_admins":false,"restrictions":{"users":["u"],"teams":["t"],"apps":["a"]},"block_creations":true,"lock_branch":true,"allow_fork_syncing":true}`+"\n")
+				testJSONBody(t, r, `{"required_status_checks":{"strict":true,"contexts":["continuous-integration"]},"required_pull_request_reviews":{"bypass_pull_request_allowances":{"users":["uuu"],"teams":["ttt"],"apps":["aaa"]},"dismissal_restrictions":{"users":["uu"],"teams":["tt"],"apps":["aa"]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0},"enforce_admins":false,"restrictions":{"users":["u"],"teams":["t"],"apps":["a"]},"block_creations":true,"lock_branch":true,"allow_fork_syncing":true}`)
 
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -1656,7 +1656,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PUT")
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				testBody(t, r, `{"required_status_checks":{"strict":true,"contexts":[]},"required_pull_request_reviews":{"bypass_pull_request_allowances":{"users":["uuu"],"teams":["ttt"],"apps":["aaa"]},"dismissal_restrictions":{"users":["uu"],"teams":["tt"],"apps":["aa"]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0},"enforce_admins":false,"restrictions":{"users":["u"],"teams":["t"],"apps":["a"]},"block_creations":true,"lock_branch":true,"allow_fork_syncing":true}`+"\n")
+				testJSONBody(t, r, `{"required_status_checks":{"strict":true,"contexts":[]},"required_pull_request_reviews":{"bypass_pull_request_allowances":{"users":["uuu"],"teams":["ttt"],"apps":["aaa"]},"dismissal_restrictions":{"users":["uu"],"teams":["tt"],"apps":["aa"]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0},"enforce_admins":false,"restrictions":{"users":["u"],"teams":["t"],"apps":["a"]},"block_creations":true,"lock_branch":true,"allow_fork_syncing":true}`)
 
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -1830,7 +1830,7 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PUT")
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				testBody(t, r, `{"required_status_checks":{"strict":true,"checks":[{"context":"continuous-integration"}]},"required_pull_request_reviews":{"bypass_pull_request_allowances":{"users":["uuu"],"teams":["ttt"],"apps":["aaa"]},"dismissal_restrictions":{"users":["uu"],"teams":["tt"],"apps":["aa"]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0},"enforce_admins":false,"restrictions":{"users":["u"],"teams":["t"],"apps":["a"]}}`+"\n")
+				testJSONBody(t, r, `{"required_status_checks":{"strict":true,"checks":[{"context":"continuous-integration"}]},"required_pull_request_reviews":{"bypass_pull_request_allowances":{"users":["uuu"],"teams":["ttt"],"apps":["aaa"]},"dismissal_restrictions":{"users":["uu"],"teams":["tt"],"apps":["aa"]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0},"enforce_admins":false,"restrictions":{"users":["u"],"teams":["t"],"apps":["a"]}}`)
 
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -1978,7 +1978,7 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PUT")
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				testBody(t, r, `{"required_status_checks":{"strict":true,"checks":[]},"required_pull_request_reviews":{"bypass_pull_request_allowances":{"users":["uuu"],"teams":["ttt"],"apps":["aaa"]},"dismissal_restrictions":{"users":["uu"],"teams":["tt"],"apps":["aa"]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0},"enforce_admins":false,"restrictions":{"users":["u"],"teams":["t"],"apps":["a"]}}`+"\n")
+				testJSONBody(t, r, `{"required_status_checks":{"strict":true,"checks":[]},"required_pull_request_reviews":{"bypass_pull_request_allowances":{"users":["uuu"],"teams":["ttt"],"apps":["aaa"]},"dismissal_restrictions":{"users":["uu"],"teams":["tt"],"apps":["aa"]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0},"enforce_admins":false,"restrictions":{"users":["u"],"teams":["t"],"apps":["a"]}}`)
 
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -2115,7 +2115,7 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PUT")
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				testBody(t, r, `{"required_status_checks":{"strict":true},"required_pull_request_reviews":{"bypass_pull_request_allowances":{"users":["uuu"],"teams":["ttt"],"apps":["aaa"]},"dismissal_restrictions":{"users":["uu"],"teams":["tt"],"apps":["aa"]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0},"enforce_admins":false,"restrictions":{"users":["u"],"teams":["t"],"apps":["a"]}}`+"\n")
+				testJSONBody(t, r, `{"required_status_checks":{"strict":true},"required_pull_request_reviews":{"bypass_pull_request_allowances":{"users":["uuu"],"teams":["ttt"],"apps":["aaa"]},"dismissal_restrictions":{"users":["uu"],"teams":["tt"],"apps":["aa"]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":0},"enforce_admins":false,"restrictions":{"users":["u"],"teams":["t"],"apps":["a"]}}`)
 
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -2233,7 +2233,7 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PUT")
-				testBody(t, r, `{"required_status_checks":null,"required_pull_request_reviews":{"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0,"require_last_push_approval":true},"enforce_admins":false,"restrictions":null}`+"\n")
+				testJSONBody(t, r, `{"required_status_checks":null,"required_pull_request_reviews":{"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0,"require_last_push_approval":true},"enforce_admins":false,"restrictions":null}`)
 
 				fmt.Fprint(w, `{
 					"required_pull_request_reviews":{
@@ -2495,7 +2495,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PATCH")
 				testHeader(t, r, "Accept", mediaTypeV3)
-				testBody(t, r, `{"strict":true,"contexts":["continuous-integration"]}`+"\n")
+				testJSONBody(t, r, `{"strict":true,"contexts":["continuous-integration"]}`)
 
 				fmt.Fprint(w, `{
 					"strict":true,
@@ -2582,7 +2582,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PATCH")
 				testHeader(t, r, "Accept", mediaTypeV3)
-				testBody(t, r, `{"strict":true,"checks":[{"context":"continuous-integration"},{"context":"continuous-integration2","app_id":123},{"context":"continuous-integration3","app_id":-1}]}`+"\n")
+				testJSONBody(t, r, `{"strict":true,"checks":[{"context":"continuous-integration"},{"context":"continuous-integration2","app_id":123},{"context":"continuous-integration3","app_id":-1}]}`)
 
 				fmt.Fprint(w, `{
 					"strict":true,
@@ -2860,7 +2860,7 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PATCH")
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				testBody(t, r, `{"dismissal_restrictions":{"users":["u"],"teams":["t"],"apps":["a"]},"required_approving_review_count":0}`+"\n")
+				testJSONBody(t, r, `{"dismissal_restrictions":{"users":["u"],"teams":["t"],"apps":["a"]},"required_approving_review_count":0}`)
 
 				fmt.Fprint(w, `{
 					"dismissal_restrictions":{
@@ -2935,7 +2935,7 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PATCH")
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				testBody(t, r, `{"dismissal_restrictions":{}}`+"\n")
+				testJSONBody(t, r, `{"dismissal_restrictions":{}}`)
 				fmt.Fprint(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
 			})
 
@@ -3492,7 +3492,7 @@ func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
-		testBody(t, r, `{"names":[]}`+"\n")
+		testJSONBody(t, r, `{"names":[]}`)
 		fmt.Fprint(w, `{"names":[]}`)
 	})
 
@@ -3515,7 +3515,7 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
-		testBody(t, r, `{"names":[]}`+"\n")
+		testJSONBody(t, r, `{"names":[]}`)
 		fmt.Fprint(w, `{"names":[]}`)
 	})
 
@@ -4112,7 +4112,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/transfer", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"new_owner":"a","new_name":"b","team_ids":[123]}`+"\n")
+		testJSONBody(t, r, `{"new_owner":"a","new_name":"b","team_ids":[123]}`)
 
 		fmt.Fprint(w, `{"owner":{"login":"a"}}`)
 	})
@@ -4177,13 +4177,13 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 			testMethod(t, r, "POST")
 			switch input.EventType {
 			case "go1":
-				testBody(t, r, `{"event_type":"go1"}`+"\n")
+				testJSONBody(t, r, `{"event_type":"go1"}`)
 			case "go2":
-				testBody(t, r, `{"event_type":"go2","client_payload":{"Foo":"test"}}`+"\n")
+				testJSONBody(t, r, `{"event_type":"go2","client_payload":{"Foo":"test"}}`)
 			case "go3":
-				testBody(t, r, `{"event_type":"go3","client_payload":{"Bar":42}}`+"\n")
+				testJSONBody(t, r, `{"event_type":"go3","client_payload":{"Bar":42}}`)
 			case "go4":
-				testBody(t, r, `{"event_type":"go4","client_payload":{"Foo":"test","Bar":42,"Baz":false}}`+"\n")
+				testJSONBody(t, r, `{"event_type":"go4","client_payload":{"Foo":"test","Bar":42,"Baz":false}}`)
 			}
 
 			fmt.Fprint(w, `{"owner":{"login":"a"}}`)

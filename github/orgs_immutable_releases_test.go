@@ -67,7 +67,7 @@ func TestOrganizationsService_UpdateImmutableReleasesSettings(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/settings/immutable-releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"enforced_repositories":"selected"}`+"\n")
+		testJSONBody(t, r, `{"enforced_repositories":"selected"}`)
 
 		w.WriteHeader(http.StatusNoContent)
 		fmt.Fprint(w, `{"enforced_repositories":"selected"}`)
@@ -155,7 +155,7 @@ func TestOrganizationsService_SetImmutableReleaseRepositories(t *testing.T) {
 	input := []int64{1, 2, 3}
 	mux.HandleFunc("/orgs/o/settings/immutable-releases/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"selected_repository_ids":[1,2,3]}`+"\n")
+		testJSONBody(t, r, `{"selected_repository_ids":[1,2,3]}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

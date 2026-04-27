@@ -66,7 +66,7 @@ func TestRepositoriesService_CreateTagProtection(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/tags/protection", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"pattern":"tag*"}`+"\n")
+		testJSONBody(t, r, `{"pattern":"tag*"}`)
 
 		fmt.Fprint(w, `{"id":1,"pattern":"tag*"}`)
 	})

@@ -96,7 +96,7 @@ func TestUsersServiceReason_Suspend(t *testing.T) {
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"reason":"test"}`+"\n")
+		testJSONBody(t, r, `{"reason":"test"}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

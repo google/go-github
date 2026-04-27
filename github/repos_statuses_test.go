@@ -67,7 +67,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/statuses/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"state":"s","target_url":"t","description":"d"}`+"\n")
+		testJSONBody(t, r, `{"state":"s","target_url":"t","description":"d"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

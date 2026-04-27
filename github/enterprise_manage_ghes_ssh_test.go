@@ -55,7 +55,7 @@ func TestEnterpriseService_DeleteSSHKey(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/access/ssh", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"key":"ssh-rsa 1234"}`+"\n")
+		testJSONBody(t, r, `{"key":"ssh-rsa 1234"}`)
 
 		fmt.Fprint(w, `[ { "hostname": "primary", "uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb", "message": "SSH key removed successfully" } ]`)
 	})
@@ -87,7 +87,7 @@ func TestEnterpriseService_CreateSSHKey(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/access/ssh", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"key":"ssh-rsa 1234"}`+"\n")
+		testJSONBody(t, r, `{"key":"ssh-rsa 1234"}`)
 
 		fmt.Fprint(w, `[ { "hostname": "primary", "uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb", "message": "SSH key added successfully", "modified": true } ]`)
 	})

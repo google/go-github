@@ -20,7 +20,7 @@ func TestAdminUsers_Create(t *testing.T) {
 
 	mux.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"login":"github","email":"email@example.com","suspended":false}`+"\n")
+		testJSONBody(t, r, `{"login":"github","email":"email@example.com","suspended":false}`)
 
 		fmt.Fprint(w, `{"login":"github","id":1}`)
 	})
@@ -85,7 +85,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"scopes":["repo"]}`+"\n")
+		testJSONBody(t, r, `{"scopes":["repo"]}`)
 		fmt.Fprint(w, `{"id": 1234,
 		"url": "https://example.com/authorizations",
 		"app": {

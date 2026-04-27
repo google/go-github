@@ -19,7 +19,7 @@ func TestAuthorizationsService_Check(t *testing.T) {
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"access_token":"a"}`+"\n")
+		testJSONBody(t, r, `{"access_token":"a"}`)
 		testHeader(t, r, "Accept", mediaTypeOAuthAppPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -56,7 +56,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"access_token":"a"}`+"\n")
+		testJSONBody(t, r, `{"access_token":"a"}`)
 		testHeader(t, r, "Accept", mediaTypeOAuthAppPreview)
 		fmt.Fprint(w, `{"ID":1}`)
 	})
@@ -93,7 +93,7 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"access_token":"a"}`+"\n")
+		testJSONBody(t, r, `{"access_token":"a"}`)
 		testHeader(t, r, "Accept", mediaTypeOAuthAppPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -121,7 +121,7 @@ func TestDeleteGrant(t *testing.T) {
 
 	mux.HandleFunc("/applications/id/grant", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"access_token":"a"}`+"\n")
+		testJSONBody(t, r, `{"access_token":"a"}`)
 		testHeader(t, r, "Accept", mediaTypeOAuthAppPreview)
 	})
 

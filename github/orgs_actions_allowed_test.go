@@ -55,7 +55,7 @@ func TestOrganizationsService_UpdateActionsAllowed(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"github_owned_allowed":true,"verified_allowed":false,"patterns_allowed":["a/b"]}`+"\n")
+		testJSONBody(t, r, `{"github_owned_allowed":true,"verified_allowed":false,"patterns_allowed":["a/b"]}`)
 
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})

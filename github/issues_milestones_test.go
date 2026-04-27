@@ -116,7 +116,7 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/milestones", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"title":"t"}`+"\n")
+		testJSONBody(t, r, `{"title":"t"}`)
 
 		fmt.Fprint(w, `{"number":1}`)
 	})
@@ -164,7 +164,7 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"title":"t"}`+"\n")
+		testJSONBody(t, r, `{"title":"t"}`)
 
 		fmt.Fprint(w, `{"number":1}`)
 	})

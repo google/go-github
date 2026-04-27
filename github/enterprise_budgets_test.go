@@ -97,7 +97,7 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"budget_amount":200,"prevent_further_usage":true,"budget_alerting":{},"budget_scope":"enterprise","budget_type":"ProductPricing","budget_product_sku":"actions"}`+"\n")
+		testJSONBody(t, r, `{"budget_amount":200,"prevent_further_usage":true,"budget_alerting":{},"budget_scope":"enterprise","budget_type":"ProductPricing","budget_product_sku":"actions"}`)
 		fmt.Fprint(w, `{
 			"message": "Budget successfully created.",
 			"budget": {
@@ -223,7 +223,7 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets/b-123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"budget_amount":10,"prevent_further_usage":false}`+"\n")
+		testJSONBody(t, r, `{"budget_amount":10,"prevent_further_usage":false}`)
 		fmt.Fprint(w, `{
 			"message": "Budget successfully updated.",
 			"budget": {

@@ -58,7 +58,7 @@ func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases/generate-notes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"tag_name":"v1.0.0"}`+"\n")
+		testJSONBody(t, r, `{"tag_name":"v1.0.0"}`)
 		fmt.Fprint(w, `{"name":"v1.0.0","body":"**Full Changelog**: https://github.com/o/r/compare/v0.9.0...v1.0.0"}`)
 	})
 
@@ -224,7 +224,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"name":"v1.0","generate_release_notes":true,"discussion_category_name":"General"}`+"\n")
+		testJSONBody(t, r, `{"name":"v1.0","generate_release_notes":true,"discussion_category_name":"General"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -285,7 +285,7 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"n","discussion_category_name":"General"}`+"\n")
+		testJSONBody(t, r, `{"name":"n","discussion_category_name":"General"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -609,7 +609,7 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"n"}`+"\n")
+		testJSONBody(t, r, `{"name":"n"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

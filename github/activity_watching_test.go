@@ -194,7 +194,7 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"subscribed":true}`+"\n")
+		testJSONBody(t, r, `{"subscribed":true}`)
 
 		fmt.Fprint(w, `{"ignored":true}`)
 	})

@@ -116,7 +116,7 @@ func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"id":1}`+"\n")
+		testJSONBody(t, r, `{"id":1}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

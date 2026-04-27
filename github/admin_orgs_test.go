@@ -23,7 +23,7 @@ func TestAdminOrgs_Create(t *testing.T) {
 
 	mux.HandleFunc("/admin/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"login":"github","admin":"ghAdmin"}`+"\n")
+		testJSONBody(t, r, `{"login":"github","admin":"ghAdmin"}`)
 
 		fmt.Fprint(w, `{"login":"github","id":1}`)
 	})
@@ -59,7 +59,7 @@ func TestAdminOrgs_Rename(t *testing.T) {
 
 	mux.HandleFunc("/admin/organizations/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"login":"the-new-octocats"}`+"\n")
+		testJSONBody(t, r, `{"login":"the-new-octocats"}`)
 
 		fmt.Fprint(w, `{"message":"Job queued to rename organization. It may take a few minutes to complete.","url":"https://<hostname>/api/v3/organizations/1"}`)
 	})
@@ -100,7 +100,7 @@ func TestAdminOrgs_RenameByName(t *testing.T) {
 
 	mux.HandleFunc("/admin/organizations/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"login":"the-new-octocats"}`+"\n")
+		testJSONBody(t, r, `{"login":"the-new-octocats"}`)
 
 		fmt.Fprint(w, `{"message":"Job queued to rename organization. It may take a few minutes to complete.","url":"https://<hostname>/api/v3/organizations/1"}`)
 	})

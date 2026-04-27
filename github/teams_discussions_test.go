@@ -322,7 +322,7 @@ func TestTeamsService_CreateDiscussionByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/2/discussions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"body":"c_b","title":"c_t"}`+"\n")
+		testJSONBody(t, r, `{"body":"c_b","title":"c_t"}`)
 
 		fmt.Fprint(w, `{"number":3}`)
 	})
@@ -361,7 +361,7 @@ func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"body":"c_b","title":"c_t"}`+"\n")
+		testJSONBody(t, r, `{"body":"c_b","title":"c_t"}`)
 
 		fmt.Fprint(w, `{"number":3}`)
 	})
@@ -400,7 +400,7 @@ func TestTeamsService_EditDiscussionByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"body":"e_b","title":"e_t"}`+"\n")
+		testJSONBody(t, r, `{"body":"e_b","title":"e_t"}`)
 
 		fmt.Fprint(w, `{"number":3}`)
 	})
@@ -439,7 +439,7 @@ func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"body":"e_b","title":"e_t"}`+"\n")
+		testJSONBody(t, r, `{"body":"e_b","title":"e_t"}`)
 
 		fmt.Fprint(w, `{"number":3}`)
 	})

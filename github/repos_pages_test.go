@@ -29,7 +29,7 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
-		testBody(t, r, `{"build_type":"legacy","source":{"branch":"master","path":"/"}}`+"\n")
+		testJSONBody(t, r, `{"build_type":"legacy","source":{"branch":"master","path":"/"}}`)
 
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","build_type": "legacy","source": {"branch":"master", "path":"/"}}`)
 	})
@@ -77,7 +77,7 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
-		testBody(t, r, `{"build_type":"workflow"}`+"\n")
+		testJSONBody(t, r, `{"build_type":"workflow"}`)
 
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","build_type": "workflow"}`)
 	})
@@ -121,7 +121,7 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"cname":"www.example.com","build_type":"legacy","source":{"branch":"gh-pages"}}`+"\n")
+		testJSONBody(t, r, `{"cname":"www.example.com","build_type":"legacy","source":{"branch":"gh-pages"}}`)
 
 		fmt.Fprint(w, `{"cname":"www.example.com","build_type":"legacy","source":{"branch":"gh-pages"}}`)
 	})
@@ -154,7 +154,7 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"cname":"www.example.com","build_type":"workflow"}`+"\n")
+		testJSONBody(t, r, `{"cname":"www.example.com","build_type":"workflow"}`)
 
 		fmt.Fprint(w, `{"cname":"www.example.com","build_type":"workflow"}`)
 	})
@@ -186,7 +186,7 @@ func TestRepositoriesService_UpdatePagesGHES(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"build_type":"workflow"}`+"\n")
+		testJSONBody(t, r, `{"build_type":"workflow"}`)
 
 		fmt.Fprint(w, `{"build_type":"workflow"}`)
 	})
@@ -218,7 +218,7 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		want := `{"cname":null,"source":{"branch":"gh-pages"}}` + "\n"
-		testBody(t, r, want)
+		testJSONBody(t, r, want)
 
 		fmt.Fprint(w, `{"cname":null,"source":{"branch":"gh-pages"}}`)
 	})

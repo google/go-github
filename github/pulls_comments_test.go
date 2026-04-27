@@ -269,7 +269,7 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"body":"b"}`+"\n")
+		testJSONBody(t, r, `{"body":"b"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -315,7 +315,7 @@ func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"body":"b","in_reply_to":2}`+"\n")
+		testJSONBody(t, r, `{"body":"b","in_reply_to":2}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -354,7 +354,7 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"body":"b"}`+"\n")
+		testJSONBody(t, r, `{"body":"b"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

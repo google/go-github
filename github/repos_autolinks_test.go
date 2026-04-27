@@ -63,7 +63,7 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 	}
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"key_prefix":"TICKET-","url_template":"https://example.com/TICKET?query=<num>","is_alphanumeric":true}`+"\n")
+		testJSONBody(t, r, `{"key_prefix":"TICKET-","url_template":"https://example.com/TICKET?query=<num>","is_alphanumeric":true}`)
 
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`

@@ -23,7 +23,7 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 
 	mux.HandleFunc("/admin/ldap/users/u/mapping", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"ldap_dn":"uid=asdf,ou=users,dc=github,dc=com"}`+"\n")
+		testJSONBody(t, r, `{"ldap_dn":"uid=asdf,ou=users,dc=github,dc=com"}`)
 
 		fmt.Fprint(w, `{"id":1,"ldap_dn":"uid=asdf,ou=users,dc=github,dc=com"}`)
 	})
@@ -67,7 +67,7 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 
 	mux.HandleFunc("/admin/ldap/teams/1/mapping", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"ldap_dn":"cn=Enterprise Ops,ou=teams,dc=github,dc=com"}`+"\n")
+		testJSONBody(t, r, `{"ldap_dn":"cn=Enterprise Ops,ou=teams,dc=github,dc=com"}`)
 
 		fmt.Fprint(w, `{"id":1,"ldap_dn":"cn=Enterprise Ops,ou=teams,dc=github,dc=com"}`)
 	})

@@ -129,7 +129,7 @@ func TestEnterpriseService_CreateCostCenter(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/settings/billing/cost-centers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"name":"Engineering Team"}`+"\n")
+		testJSONBody(t, r, `{"name":"Engineering Team"}`)
 		fmt.Fprint(w, `{
 			"id": "abc123",
 			"name": "Engineering Team",
@@ -259,7 +259,7 @@ func TestEnterpriseService_UpdateCostCenter(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/settings/billing/cost-centers/2eeb8ffe-6903-11ee-8c99-0242ac120002", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"Updated Cost Center Name"}`+"\n")
+		testJSONBody(t, r, `{"name":"Updated Cost Center Name"}`)
 		fmt.Fprint(w, `{
 			"id": "2eeb8ffe-6903-11ee-8c99-0242ac120002",
 			"name": "Updated Cost Center Name",
@@ -391,7 +391,7 @@ func TestEnterpriseService_AddResourcesToCostCenter(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/settings/billing/cost-centers/2eeb8ffe-6903-11ee-8c99-0242ac120002/resource", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"users":["monalisa"]}`+"\n")
+		testJSONBody(t, r, `{"users":["monalisa"]}`)
 		fmt.Fprint(w, `{
 			"message": "Resources successfully added to the cost center.",
 			"reassigned_resources": [
@@ -477,7 +477,7 @@ func TestEnterpriseService_RemoveResourcesFromCostCenter(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/settings/billing/cost-centers/2eeb8ffe-6903-11ee-8c99-0242ac120002/resource", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"users":["monalisa"]}`+"\n")
+		testJSONBody(t, r, `{"users":["monalisa"]}`)
 		fmt.Fprint(w, `{
 			"message": "Resources successfully removed from the cost center."
 		}`)

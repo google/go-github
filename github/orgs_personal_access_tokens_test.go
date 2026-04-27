@@ -344,7 +344,7 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/personal-access-token-requests/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"action":"a","reason":"r"}`+"\n")
+		testJSONBody(t, r, `{"action":"a","reason":"r"}`)
 
 		w.WriteHeader(http.StatusNoContent)
 	})

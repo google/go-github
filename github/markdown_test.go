@@ -17,7 +17,7 @@ func TestMarkdownService_Markdown(t *testing.T) {
 
 	mux.HandleFunc("/markdown", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"text":"# text #","mode":"gfm","context":"google/go-github"}`+"\n")
+		testJSONBody(t, r, `{"text":"# text #","mode":"gfm","context":"google/go-github"}`)
 
 		fmt.Fprint(w, `<h1>text</h1>`)
 	})

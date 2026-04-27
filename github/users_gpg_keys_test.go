@@ -130,7 +130,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 
 	mux.HandleFunc("/user/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"armored_public_key":"\n-----BEGIN PGP PUBLIC KEY BLOCK-----\nComment: GPGTools - https://gpgtools.org\n\nmQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f\n...\n=tqfb\n-----END PGP PUBLIC KEY BLOCK-----"}`+"\n")
+		testJSONBody(t, r, `{"armored_public_key":"\n-----BEGIN PGP PUBLIC KEY BLOCK-----\nComment: GPGTools - https://gpgtools.org\n\nmQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f\n...\n=tqfb\n-----END PGP PUBLIC KEY BLOCK-----"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

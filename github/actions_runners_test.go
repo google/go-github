@@ -63,7 +63,7 @@ func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"name":"test","runner_group_id":1,"labels":["one","two"]}`+"\n")
+		testJSONBody(t, r, `{"name":"test","runner_group_id":1,"labels":["one","two"]}`)
 
 		fmt.Fprint(w, `{"encoded_jit_config":"foo"}`)
 	})
@@ -102,7 +102,7 @@ func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"name":"test","runner_group_id":1,"labels":["one","two"]}`+"\n")
+		testJSONBody(t, r, `{"name":"test","runner_group_id":1,"labels":["one","two"]}`)
 
 		fmt.Fprint(w, `{"encoded_jit_config":"foo"}`)
 	})

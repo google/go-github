@@ -366,7 +366,7 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"commit_id":"commit_id","body":"b","event":"APPROVE"}`+"\n")
+		testJSONBody(t, r, `{"commit_id":"commit_id","body":"b","event":"APPROVE"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -465,7 +465,7 @@ func TestPullRequestsService_CreateReview_addHeader(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"comments":[{"path":"path/to/file.go","body":"this is a comment body","side":"RIGHT","line":11},{"path":"path/to/file.go","body":"this is a comment body","side":"LEFT","line":22},{"path":"path/to/file.go","body":"this is a comment body","side":"RIGHT","line":33}]}`+"\n")
+		testJSONBody(t, r, `{"comments":[{"path":"path/to/file.go","body":"this is a comment body","side":"RIGHT","line":11},{"path":"path/to/file.go","body":"this is a comment body","side":"LEFT","line":22},{"path":"path/to/file.go","body":"this is a comment body","side":"RIGHT","line":33}]}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -524,7 +524,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/events", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"body":"b","event":"APPROVE"}`+"\n")
+		testJSONBody(t, r, `{"body":"b","event":"APPROVE"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -572,7 +572,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/dismissals", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"message":"m"}`+"\n")
+		testJSONBody(t, r, `{"message":"m"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

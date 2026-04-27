@@ -307,7 +307,7 @@ func TestIssuesService_Create(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"title":"t","body":"b","labels":["l1","l2"],"assignee":"a"}`+"\n")
+		testJSONBody(t, r, `{"title":"t","body":"b","labels":["l1","l2"],"assignee":"a"}`)
 
 		fmt.Fprint(w, `{"number":1}`)
 	})
@@ -355,7 +355,7 @@ func TestIssuesService_Edit(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"title":"t","type":"bug"}`+"\n")
+		testJSONBody(t, r, `{"title":"t","type":"bug"}`)
 
 		fmt.Fprint(w, `{"number":1, "type": {"name": "bug"}}`)
 	})

@@ -169,7 +169,7 @@ func TestGistsService_CreateComment(t *testing.T) {
 
 	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"id":1,"body":"b"}`+"\n")
+		testJSONBody(t, r, `{"id":1,"body":"b"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -217,7 +217,7 @@ func TestGistsService_EditComment(t *testing.T) {
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"id":1,"body":"b"}`+"\n")
+		testJSONBody(t, r, `{"id":1,"body":"b"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

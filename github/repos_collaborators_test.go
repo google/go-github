@@ -266,7 +266,7 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 	opt := &RepositoryAddCollaboratorOptions{Permission: "admin"}
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"permission":"admin"}`+"\n")
+		testJSONBody(t, r, `{"permission":"admin"}`)
 
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`{"permissions": "write","url": "https://api.github.com/user/repository_invitations/1296269","html_url": "https://github.com/octocat/Hello-World/invitations","id":1,"permissions":"write","repository":{"url":"s","name":"r","id":1},"invitee":{"login":"u"},"inviter":{"login":"o"}}`))

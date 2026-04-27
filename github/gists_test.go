@@ -485,7 +485,7 @@ func TestGistsService_Create(t *testing.T) {
 
 	mux.HandleFunc("/gists", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"description":"Gist description","public":false,"files":{"test.txt":{"content":"Gist file content"}}}`+"\n")
+		testJSONBody(t, r, `{"description":"Gist description","public":false,"files":{"test.txt":{"content":"Gist file content"}}}`)
 
 		fmt.Fprint(w,
 			`
@@ -542,7 +542,7 @@ func TestGistsService_Edit(t *testing.T) {
 
 	mux.HandleFunc("/gists/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"description":"New description","files":{"new.txt":{"content":"new file content"}}}`+"\n")
+		testJSONBody(t, r, `{"description":"New description","files":{"new.txt":{"content":"new file content"}}}`)
 
 		fmt.Fprint(w,
 			`

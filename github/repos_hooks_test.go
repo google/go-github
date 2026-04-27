@@ -21,7 +21,7 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"name":"web"}`+"\n")
+		testJSONBody(t, r, `{"name":"web"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -167,7 +167,7 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/hooks/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"web"}`+"\n")
+		testJSONBody(t, r, `{"name":"web"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

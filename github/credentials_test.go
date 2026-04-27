@@ -25,7 +25,7 @@ func TestCredentialsService_Revoke(t *testing.T) {
 
 	mux.HandleFunc("/credentials/revoke", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, expectedBody)
+		testJSONBody(t, r, expectedBody)
 		w.WriteHeader(http.StatusAccepted)
 	})
 

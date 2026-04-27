@@ -800,7 +800,7 @@ func TestProjectsService_AddOrganizationProjectItem(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/projectsV2/1/items", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"type":"Issue","id":99}`+"\n")
+		testJSONBody(t, r, `{"type":"Issue","id":99}`)
 
 		fmt.Fprint(w, `{"id":99,"node_id":"PVTI_new"}`)
 	})
@@ -917,7 +917,7 @@ func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"archived":true}`+"\n")
+		testJSONBody(t, r, `{"archived":true}`)
 
 		fmt.Fprint(w, `{"id":17}`)
 	})
@@ -956,7 +956,7 @@ func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testi
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"fields":[{"id":123,"value":"Updated text value"},{"id":456,"value":"Done"}]}`+"\n")
+		testJSONBody(t, r, `{"fields":[{"id":123,"value":"Updated text value"},{"id":456,"value":"Done"}]}`)
 
 		fmt.Fprint(w, `{"id":17,"node_id":"PVTI_node_updated"}`)
 	})
@@ -1062,7 +1062,7 @@ func TestProjectsService_AddUserProjectItem(t *testing.T) {
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"type":"PullRequest","id":123}`+"\n")
+		testJSONBody(t, r, `{"type":"PullRequest","id":123}`)
 
 		fmt.Fprint(w, `{"id":123,"node_id":"PVTI_new_user"}`)
 	})
@@ -1177,7 +1177,7 @@ func TestProjectsService_UpdateUserProjectItem(t *testing.T) {
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"archived":false}`+"\n")
+		testJSONBody(t, r, `{"archived":false}`)
 
 		fmt.Fprint(w, `{"id":55}`)
 	})
@@ -1216,7 +1216,7 @@ func TestProjectsService_UpdateUserProjectItem_WithFieldUpdates(t *testing.T) {
 	client, mux, _ := setup(t)
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"fields":[{"id":100,"value":"In Progress"},{"id":200,"value":5}]}`+"\n")
+		testJSONBody(t, r, `{"fields":[{"id":100,"value":"In Progress"},{"id":200,"value":5}]}`)
 
 		fmt.Fprint(w, `{"id":55,"node_id":"PVTI_user_updated"}`)
 	})

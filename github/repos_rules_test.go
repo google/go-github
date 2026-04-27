@@ -69,7 +69,7 @@ func TestRepositoriesService_UpdateRuleset_OmitZero_Nil(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"name":"ruleset","source":"","enforcement":"active"}`+"\n")
+		testJSONBody(t, r, `{"name":"ruleset","source":"","enforcement":"active"}`)
 
 		fmt.Fprint(w, `{
 			"id": 42,
@@ -100,7 +100,7 @@ func TestRepositoriesService_UpdateRuleset_OmitZero_EmptySlice(t *testing.T) {
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 
-		testBody(t, r, `{"name":"ruleset","source":"","enforcement":"active","bypass_actors":[]}`+"\n")
+		testJSONBody(t, r, `{"name":"ruleset","source":"","enforcement":"active","bypass_actors":[]}`)
 
 		fmt.Fprint(w, `{
 			"id": 42,

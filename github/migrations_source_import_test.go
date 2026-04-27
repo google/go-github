@@ -26,7 +26,7 @@ func TestMigrationService_StartImport(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"vcs_url":"url","vcs":"git","vcs_username":"u","vcs_password":"p"}`+"\n")
+		testJSONBody(t, r, `{"vcs_url":"url","vcs":"git","vcs_username":"u","vcs_password":"p"}`)
 
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"status":"importing"}`)
@@ -104,7 +104,7 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"vcs_url":"url","vcs":"git","vcs_username":"u","vcs_password":"p"}`+"\n")
+		testJSONBody(t, r, `{"vcs_url":"url","vcs":"git","vcs_username":"u","vcs_password":"p"}`)
 
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"status":"importing"}`)
@@ -180,7 +180,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import/authors/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"email":"e","name":"n"}`+"\n")
+		testJSONBody(t, r, `{"email":"e","name":"n"}`)
 
 		fmt.Fprint(w, `{"id": 1}`)
 	})
@@ -218,7 +218,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/import/lfs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"use_lfs":"opt_in"}`+"\n")
+		testJSONBody(t, r, `{"use_lfs":"opt_in"}`)
 
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"status":"importing"}`)

@@ -331,7 +331,7 @@ func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"role":"maintainer"}`+"\n")
+		testJSONBody(t, r, `{"role":"maintainer"}`)
 
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
@@ -370,7 +370,7 @@ func TestTeamsService__AddTeamMembershipByID_notFound(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"role":"maintainer"}`+"\n")
+		testJSONBody(t, r, `{"role":"maintainer"}`)
 
 		w.WriteHeader(http.StatusNotFound)
 	})
@@ -410,7 +410,7 @@ func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"role":"maintainer"}`+"\n")
+		testJSONBody(t, r, `{"role":"maintainer"}`)
 
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
@@ -449,7 +449,7 @@ func TestTeamsService__AddTeamMembershipBySlug_notFound(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"role":"maintainer"}`+"\n")
+		testJSONBody(t, r, `{"role":"maintainer"}`)
 
 		w.WriteHeader(http.StatusNotFound)
 	})

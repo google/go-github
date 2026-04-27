@@ -1604,7 +1604,7 @@ func TestActionService_PendingDeployments(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"environment_ids":[3,4],"state":"approved","comment":""}`+"\n")
+		testJSONBody(t, r, `{"environment_ids":[3,4],"state":"approved","comment":""}`)
 
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})

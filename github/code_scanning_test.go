@@ -64,7 +64,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"commit_sha":"abc","ref":"ref/head/main","sarif":"abc","checkout_uri":"uri","started_at":"2006-01-02T15:04:05Z","tool_name":"codeql-cli"}`+"\n")
+		testJSONBody(t, r, `{"commit_sha":"abc","ref":"ref/head/main","sarif":"abc","checkout_uri":"uri","started_at":"2006-01-02T15:04:05Z","tool_name":"codeql-cli"}`)
 
 		w.WriteHeader(http.StatusAccepted)
 		fmt.Fprint(w, `{"id":"testid","url":"https://example.com/testurl"}`)

@@ -257,7 +257,7 @@ func TestUsersService_Edit(t *testing.T) {
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"n"}`+"\n")
+		testJSONBody(t, r, `{"name":"n"}`)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

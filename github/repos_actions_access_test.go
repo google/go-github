@@ -55,7 +55,7 @@ func TestRepositoriesService_EditActionsAccessLevel(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/access", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, `{"access_level":"organization"}`+"\n")
+		testJSONBody(t, r, `{"access_level":"organization"}`)
 	})
 
 	ctx := t.Context()
