@@ -22,13 +22,13 @@ func (s *EnterpriseService) ListEnterpriseNetworkConfigurations(ctx context.Cont
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var networks *NetworkConfigurations
-	resp, err := s.client.Do(ctx, req, &networks)
+	resp, err := s.client.Do(req, &networks)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -47,13 +47,13 @@ func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Con
 	}
 
 	u := fmt.Sprintf("enterprises/%v/network-configurations", enterprise)
-	req, err := s.client.NewRequest("POST", u, createReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, createReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var network *NetworkConfiguration
-	resp, err := s.client.Do(ctx, req, &network)
+	resp, err := s.client.Do(req, &network)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -68,13 +68,13 @@ func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Con
 //meta:operation GET /enterprises/{enterprise}/network-configurations/{network_configuration_id}
 func (s *EnterpriseService) GetEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string) (*NetworkConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/network-configurations/%v", enterprise, networkID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var network *NetworkConfiguration
-	resp, err := s.client.Do(ctx, req, &network)
+	resp, err := s.client.Do(req, &network)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -93,13 +93,13 @@ func (s *EnterpriseService) UpdateEnterpriseNetworkConfiguration(ctx context.Con
 	}
 
 	u := fmt.Sprintf("enterprises/%v/network-configurations/%v", enterprise, networkID)
-	req, err := s.client.NewRequest("PATCH", u, updateReq)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, updateReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var network *NetworkConfiguration
-	resp, err := s.client.Do(ctx, req, &network)
+	resp, err := s.client.Do(req, &network)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -114,12 +114,12 @@ func (s *EnterpriseService) UpdateEnterpriseNetworkConfiguration(ctx context.Con
 //meta:operation DELETE /enterprises/{enterprise}/network-configurations/{network_configuration_id}
 func (s *EnterpriseService) DeleteEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/network-configurations/%v", enterprise, networkID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetEnterpriseNetworkSettingsResource gets a hosted compute network settings resource configured for an enterprise.
@@ -129,13 +129,13 @@ func (s *EnterpriseService) DeleteEnterpriseNetworkConfiguration(ctx context.Con
 //meta:operation GET /enterprises/{enterprise}/network-settings/{network_settings_id}
 func (s *EnterpriseService) GetEnterpriseNetworkSettingsResource(ctx context.Context, enterprise, networkID string) (*NetworkSettingsResource, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/network-settings/%v", enterprise, networkID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var resource *NetworkSettingsResource
-	resp, err := s.client.Do(ctx, req, &resource)
+	resp, err := s.client.Do(req, &resource)
 	if err != nil {
 		return nil, resp, err
 	}

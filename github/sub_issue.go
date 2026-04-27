@@ -52,13 +52,13 @@ type SubIssueRequest struct {
 func (s *SubIssueService) Remove(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issue", owner, repo, issueNumber)
 
-	req, err := s.client.NewRequest("DELETE", u, subIssue)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, subIssue)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var si *SubIssue
-	resp, err := s.client.Do(ctx, req, &si)
+	resp, err := s.client.Do(req, &si)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -78,13 +78,13 @@ func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, i
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var subIssues []*SubIssue
-	resp, err := s.client.Do(ctx, req, &subIssues)
+	resp, err := s.client.Do(req, &subIssues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -102,13 +102,13 @@ func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, i
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
 func (s *SubIssueService) Add(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues", owner, repo, issueNumber)
-	req, err := s.client.NewRequest("POST", u, subIssue)
+	req, err := s.client.NewRequest(ctx, "POST", u, subIssue)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var si *SubIssue
-	resp, err := s.client.Do(ctx, req, &si)
+	resp, err := s.client.Do(req, &si)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -125,13 +125,13 @@ func (s *SubIssueService) Add(ctx context.Context, owner, repo string, issueNumb
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority
 func (s *SubIssueService) Reprioritize(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues/priority", owner, repo, issueNumber)
-	req, err := s.client.NewRequest("PATCH", u, subIssue)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, subIssue)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var si *SubIssue
-	resp, err := s.client.Do(ctx, req, &si)
+	resp, err := s.client.Do(req, &si)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -8,6 +8,7 @@ package github
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 // RulesetTarget represents a GitHub ruleset target.
@@ -484,6 +485,37 @@ type RulesetRequiredReviewer struct {
 type RulesetReviewer struct {
 	ID   *int64               `json:"id,omitempty"`
 	Type *RulesetReviewerType `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is a custom JSON unmarshaler for RulesetReviewer.
+func (r *RulesetReviewer) UnmarshalJSON(data []byte) error {
+	var aux struct {
+		ID   any                  `json:"id,omitempty"`
+		Type *RulesetReviewerType `json:"type,omitempty"`
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	r.Type = aux.Type
+
+	if aux.ID != nil {
+		switch id := aux.ID.(type) {
+		case float64:
+			r.ID = Ptr(int64(id))
+		case string:
+			i, err := strconv.ParseInt(id, 10, 64)
+			if err != nil {
+				return err
+			}
+			r.ID = &i
+		default:
+			return fmt.Errorf("unexpected type for reviewer.ID: %T", id)
+		}
+	}
+
+	return nil
 }
 
 // RequiredStatusChecksRuleParameters represents the required status checks rule parameters.

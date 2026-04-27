@@ -114,7 +114,7 @@ func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -122,7 +122,7 @@ func (s *IssuesService) ListIssueEvents(ctx context.Context, owner, repo string,
 	req.Header.Set("Accept", mediaTypeProjectCardDetailsPreview)
 
 	var events []*IssueEvent
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -142,13 +142,13 @@ func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo st
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var events []*IssueEvent
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -164,13 +164,13 @@ func (s *IssuesService) ListRepositoryEvents(ctx context.Context, owner, repo st
 func (s *IssuesService) GetEvent(ctx context.Context, owner, repo string, id int64) (*IssueEvent, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/events/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var event *IssueEvent
-	resp, err := s.client.Do(ctx, req, &event)
+	resp, err := s.client.Do(req, &event)
 	if err != nil {
 		return nil, resp, err
 	}

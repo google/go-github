@@ -111,13 +111,13 @@ func (s *OrganizationsService) ListNetworkConfigurations(ctx context.Context, or
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configurations *NetworkConfigurations
-	resp, err := s.client.Do(ctx, req, &configurations)
+	resp, err := s.client.Do(req, &configurations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -136,13 +136,13 @@ func (s *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, o
 	}
 
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations", org)
-	req, err := s.client.NewRequest("POST", u, createReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, createReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configuration *NetworkConfiguration
-	resp, err := s.client.Do(ctx, req, &configuration)
+	resp, err := s.client.Do(req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -157,13 +157,13 @@ func (s *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, o
 //meta:operation GET /orgs/{org}/settings/network-configurations/{network_configuration_id}
 func (s *OrganizationsService) GetNetworkConfiguration(ctx context.Context, org, networkID string) (*NetworkConfiguration, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations/%v", org, networkID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configuration *NetworkConfiguration
-	resp, err := s.client.Do(ctx, req, &configuration)
+	resp, err := s.client.Do(req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -182,13 +182,13 @@ func (s *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, o
 	}
 
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations/%v", org, networkID)
-	req, err := s.client.NewRequest("PATCH", u, updateReq)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, updateReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var configuration *NetworkConfiguration
-	resp, err := s.client.Do(ctx, req, &configuration)
+	resp, err := s.client.Do(req, &configuration)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -203,13 +203,13 @@ func (s *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, o
 //meta:operation DELETE /orgs/{org}/settings/network-configurations/{network_configuration_id}
 func (s *OrganizationsService) DeleteNetworkConfigurations(ctx context.Context, org, networkID string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations/%v", org, networkID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	var configuration *NetworkConfiguration
-	resp, err := s.client.Do(ctx, req, &configuration)
+	resp, err := s.client.Do(req, &configuration)
 	if err != nil {
 		return resp, err
 	}
@@ -224,13 +224,13 @@ func (s *OrganizationsService) DeleteNetworkConfigurations(ctx context.Context, 
 //meta:operation GET /orgs/{org}/settings/network-settings/{network_settings_id}
 func (s *OrganizationsService) GetNetworkConfigurationResource(ctx context.Context, org, networkID string) (*NetworkSettingsResource, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/network-settings/%v", org, networkID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var resource *NetworkSettingsResource
-	resp, err := s.client.Do(ctx, req, &resource)
+	resp, err := s.client.Do(req, &resource)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -161,13 +161,13 @@ func (s *PullRequestsService) List(ctx context.Context, owner, repo string, opts
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pulls []*PullRequest
-	resp, err := s.client.Do(ctx, req, &pulls)
+	resp, err := s.client.Do(req, &pulls)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -192,14 +192,14 @@ func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, ow
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeListPullsOrBranchesForCommitPreview)
 	var pulls []*PullRequest
-	resp, err := s.client.Do(ctx, req, &pulls)
+	resp, err := s.client.Do(req, &pulls)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -214,13 +214,13 @@ func (s *PullRequestsService) ListPullRequestsWithCommit(ctx context.Context, ow
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}
 func (s *PullRequestsService) Get(ctx context.Context, owner, repo string, number int) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v", owner, repo, number)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pull *PullRequest
-	resp, err := s.client.Do(ctx, req, &pull)
+	resp, err := s.client.Do(req, &pull)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -235,7 +235,7 @@ func (s *PullRequestsService) Get(ctx context.Context, owner, repo string, numbe
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}
 func (s *PullRequestsService) GetRaw(ctx context.Context, owner, repo string, number int, opts RawOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v", owner, repo, number)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return "", nil, err
 	}
@@ -250,7 +250,7 @@ func (s *PullRequestsService) GetRaw(ctx context.Context, owner, repo string, nu
 	}
 
 	var buf bytes.Buffer
-	resp, err := s.client.Do(ctx, req, &buf)
+	resp, err := s.client.Do(req, &buf)
 	if err != nil {
 		return "", resp, err
 	}
@@ -284,13 +284,13 @@ type NewPullRequest struct {
 //meta:operation POST /repos/{owner}/{repo}/pulls
 func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, pull *NewPullRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
-	req, err := s.client.NewRequest("POST", u, pull)
+	req, err := s.client.NewRequest(ctx, "POST", u, pull)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *PullRequest
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -326,7 +326,7 @@ type PullRequestBranchUpdateResponse struct {
 func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullRequestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/update-branch", owner, repo, number)
 
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -334,7 +334,7 @@ func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo stri
 	req.Header.Set("Accept", mediaTypeUpdatePullRequestBranchPreview)
 
 	var p *PullRequestBranchUpdateResponse
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -379,13 +379,13 @@ func (s *PullRequestsService) Edit(ctx context.Context, owner, repo string, numb
 		update.Base = pull.Base.Ref
 	}
 
-	req, err := s.client.NewRequest("PATCH", u, update)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, update)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *PullRequest
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -405,13 +405,13 @@ func (s *PullRequestsService) ListCommits(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var commits []*RepositoryCommit
-	resp, err := s.client.Do(ctx, req, &commits)
+	resp, err := s.client.Do(req, &commits)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -431,13 +431,13 @@ func (s *PullRequestsService) ListFiles(ctx context.Context, owner, repo string,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var commitFiles []*CommitFile
-	resp, err := s.client.Do(ctx, req, &commitFiles)
+	resp, err := s.client.Do(req, &commitFiles)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -452,12 +452,12 @@ func (s *PullRequestsService) ListFiles(ctx context.Context, owner, repo string,
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/merge
 func (s *PullRequestsService) IsMerged(ctx context.Context, owner, repo string, number int) (bool, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/merge", owner, repo, number)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return false, nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	merged, err := parseBoolResponse(err)
 	return merged, resp, err
 }
@@ -509,13 +509,13 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, num
 			pullRequestBody.CommitMessage = &commitMessage
 		}
 	}
-	req, err := s.client.NewRequest("PUT", u, &pullRequestBody)
+	req, err := s.client.NewRequest(ctx, "PUT", u, &pullRequestBody)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var mergeResult *PullRequestMergeResult
-	resp, err := s.client.Do(ctx, req, &mergeResult)
+	resp, err := s.client.Do(req, &mergeResult)
 	if err != nil {
 		return nil, resp, err
 	}

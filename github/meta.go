@@ -118,13 +118,13 @@ type APIMetaArtifactAttestations struct {
 //
 //meta:operation GET /meta
 func (s *MetaService) Get(ctx context.Context) (*APIMeta, *Response, error) {
-	req, err := s.client.NewRequest("GET", "meta", nil)
+	req, err := s.client.NewRequest(ctx, "GET", "meta", nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var meta *APIMeta
-	resp, err := s.client.Do(ctx, req, &meta)
+	resp, err := s.client.Do(req, &meta)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -151,13 +151,13 @@ func (s *MetaService) Octocat(ctx context.Context, message string) (string, *Res
 		u = fmt.Sprintf("%v?s=%v", u, url.QueryEscape(message))
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return "", nil, err
 	}
 
 	var buf bytes.Buffer
-	resp, err := s.client.Do(ctx, req, &buf)
+	resp, err := s.client.Do(req, &buf)
 	if err != nil {
 		return "", resp, err
 	}
@@ -181,13 +181,13 @@ func (c *Client) Octocat(ctx context.Context, message string) (string, *Response
 //
 //meta:operation GET /zen
 func (s *MetaService) Zen(ctx context.Context) (string, *Response, error) {
-	req, err := s.client.NewRequest("GET", "zen", nil)
+	req, err := s.client.NewRequest(ctx, "GET", "zen", nil)
 	if err != nil {
 		return "", nil, err
 	}
 
 	var buf bytes.Buffer
-	resp, err := s.client.Do(ctx, req, &buf)
+	resp, err := s.client.Do(req, &buf)
 	if err != nil {
 		return "", resp, err
 	}

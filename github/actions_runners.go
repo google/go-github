@@ -27,13 +27,13 @@ type RunnerApplicationDownload struct {
 //meta:operation GET /repos/{owner}/{repo}/actions/runners/downloads
 func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, owner, repo string) ([]*RunnerApplicationDownload, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/downloads", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var rads []*RunnerApplicationDownload
-	resp, err := s.client.Do(ctx, req, &rads)
+	resp, err := s.client.Do(req, &rads)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -65,13 +65,13 @@ type JITRunnerConfig struct {
 //meta:operation POST /orgs/{org}/actions/runners/generate-jitconfig
 func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, org string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/generate-jitconfig", org)
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var jitConfig *JITRunnerConfig
-	resp, err := s.client.Do(ctx, req, &jitConfig)
+	resp, err := s.client.Do(req, &jitConfig)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -86,13 +86,13 @@ func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, org string, r
 //meta:operation POST /repos/{owner}/{repo}/actions/runners/generate-jitconfig
 func (s *ActionsService) GenerateRepoJITConfig(ctx context.Context, owner, repo string, request *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/generate-jitconfig", owner, repo)
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var jitConfig *JITRunnerConfig
-	resp, err := s.client.Do(ctx, req, &jitConfig)
+	resp, err := s.client.Do(req, &jitConfig)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -114,13 +114,13 @@ type RegistrationToken struct {
 func (s *ActionsService) CreateRegistrationToken(ctx context.Context, owner, repo string) (*RegistrationToken, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/registration-token", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var registrationToken *RegistrationToken
-	resp, err := s.client.Do(ctx, req, &registrationToken)
+	resp, err := s.client.Do(req, &registrationToken)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -169,13 +169,13 @@ func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, op
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var runners *Runners
-	resp, err := s.client.Do(ctx, req, &runners)
+	resp, err := s.client.Do(req, &runners)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -190,13 +190,13 @@ func (s *ActionsService) ListRunners(ctx context.Context, owner, repo string, op
 //meta:operation GET /repos/{owner}/{repo}/actions/runners/{runner_id}
 func (s *ActionsService) GetRunner(ctx context.Context, owner, repo string, runnerID int64) (*Runner, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/%v", owner, repo, runnerID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var runner *Runner
-	resp, err := s.client.Do(ctx, req, &runner)
+	resp, err := s.client.Do(req, &runner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -218,13 +218,13 @@ type RemoveToken struct {
 func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo string) (*RemoveToken, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/remove-token", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var removeToken *RemoveToken
-	resp, err := s.client.Do(ctx, req, &removeToken)
+	resp, err := s.client.Do(req, &removeToken)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -240,12 +240,12 @@ func (s *ActionsService) CreateRemoveToken(ctx context.Context, owner, repo stri
 func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/%v", owner, repo, runnerID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListOrganizationRunnerApplicationDownloads lists self-hosted runner application binaries that can be downloaded and run.
@@ -255,13 +255,13 @@ func (s *ActionsService) RemoveRunner(ctx context.Context, owner, repo string, r
 //meta:operation GET /orgs/{org}/actions/runners/downloads
 func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.Context, org string) ([]*RunnerApplicationDownload, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/downloads", org)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var rads []*RunnerApplicationDownload
-	resp, err := s.client.Do(ctx, req, &rads)
+	resp, err := s.client.Do(req, &rads)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -277,13 +277,13 @@ func (s *ActionsService) ListOrganizationRunnerApplicationDownloads(ctx context.
 func (s *ActionsService) CreateOrganizationRegistrationToken(ctx context.Context, org string) (*RegistrationToken, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/registration-token", org)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var registrationToken *RegistrationToken
-	resp, err := s.client.Do(ctx, req, &registrationToken)
+	resp, err := s.client.Do(req, &registrationToken)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -303,13 +303,13 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, org string
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var runners *Runners
-	resp, err := s.client.Do(ctx, req, &runners)
+	resp, err := s.client.Do(req, &runners)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -324,13 +324,13 @@ func (s *ActionsService) ListOrganizationRunners(ctx context.Context, org string
 //meta:operation GET /orgs/{org}/actions/runners/{runner_id}
 func (s *ActionsService) GetOrganizationRunner(ctx context.Context, org string, runnerID int64) (*Runner, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/%v", org, runnerID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var runner *Runner
-	resp, err := s.client.Do(ctx, req, &runner)
+	resp, err := s.client.Do(req, &runner)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -346,13 +346,13 @@ func (s *ActionsService) GetOrganizationRunner(ctx context.Context, org string, 
 func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, org string) (*RemoveToken, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/remove-token", org)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var removeToken *RemoveToken
-	resp, err := s.client.Do(ctx, req, &removeToken)
+	resp, err := s.client.Do(req, &removeToken)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -368,10 +368,10 @@ func (s *ActionsService) CreateOrganizationRemoveToken(ctx context.Context, org 
 func (s *ActionsService) RemoveOrganizationRunner(ctx context.Context, org string, runnerID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/%v", org, runnerID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

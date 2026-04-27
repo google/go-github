@@ -151,13 +151,13 @@ func (f LargeFile) String() string {
 //meta:operation PUT /repos/{owner}/{repo}/import
 func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, in)
+	req, err := s.client.NewRequest(ctx, "PUT", u, in)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var out *Import
-	resp, err := s.client.Do(ctx, req, &out)
+	resp, err := s.client.Do(req, &out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -172,13 +172,13 @@ func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, 
 //meta:operation GET /repos/{owner}/{repo}/import
 func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo string) (*Import, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var out *Import
-	resp, err := s.client.Do(ctx, req, &out)
+	resp, err := s.client.Do(req, &out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -193,13 +193,13 @@ func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo strin
 //meta:operation PATCH /repos/{owner}/{repo}/import
 func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
-	req, err := s.client.NewRequest("PATCH", u, in)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, in)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var out *Import
-	resp, err := s.client.Do(ctx, req, &out)
+	resp, err := s.client.Do(req, &out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -224,13 +224,13 @@ func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string,
 //meta:operation GET /repos/{owner}/{repo}/import/authors
 func (s *MigrationService) CommitAuthors(ctx context.Context, owner, repo string) ([]*SourceImportAuthor, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/authors", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var authors []*SourceImportAuthor
-	resp, err := s.client.Do(ctx, req, &authors)
+	resp, err := s.client.Do(req, &authors)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -247,13 +247,13 @@ func (s *MigrationService) CommitAuthors(ctx context.Context, owner, repo string
 //meta:operation PATCH /repos/{owner}/{repo}/import/authors/{author_id}
 func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo string, id int64, author *SourceImportAuthor) (*SourceImportAuthor, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/authors/%v", owner, repo, id)
-	req, err := s.client.NewRequest("PATCH", u, author)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, author)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var out *SourceImportAuthor
-	resp, err := s.client.Do(ctx, req, &out)
+	resp, err := s.client.Do(req, &out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -270,13 +270,13 @@ func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo stri
 //meta:operation PATCH /repos/{owner}/{repo}/import/lfs
 func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/lfs", owner, repo)
-	req, err := s.client.NewRequest("PATCH", u, in)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, in)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var out *Import
-	resp, err := s.client.Do(ctx, req, &out)
+	resp, err := s.client.Do(req, &out)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -291,13 +291,13 @@ func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo str
 //meta:operation GET /repos/{owner}/{repo}/import/large_files
 func (s *MigrationService) LargeFiles(ctx context.Context, owner, repo string) ([]*LargeFile, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/large_files", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var files []*LargeFile
-	resp, err := s.client.Do(ctx, req, &files)
+	resp, err := s.client.Do(req, &files)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -312,10 +312,10 @@ func (s *MigrationService) LargeFiles(ctx context.Context, owner, repo string) (
 //meta:operation DELETE /repos/{owner}/{repo}/import
 func (s *MigrationService) CancelImport(ctx context.Context, owner, repo string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

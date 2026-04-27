@@ -37,13 +37,13 @@ func (s *IssuesService) ListLabels(ctx context.Context, owner, repo string, opts
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var labels []*Label
-	resp, err := s.client.Do(ctx, req, &labels)
+	resp, err := s.client.Do(req, &labels)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -58,13 +58,13 @@ func (s *IssuesService) ListLabels(ctx context.Context, owner, repo string, opts
 //meta:operation GET /repos/{owner}/{repo}/labels/{name}
 func (s *IssuesService) GetLabel(ctx context.Context, owner, repo, name string) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var label *Label
-	resp, err := s.client.Do(ctx, req, &label)
+	resp, err := s.client.Do(req, &label)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -79,13 +79,13 @@ func (s *IssuesService) GetLabel(ctx context.Context, owner, repo, name string) 
 //meta:operation POST /repos/{owner}/{repo}/labels
 func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, label *Label) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels", owner, repo)
-	req, err := s.client.NewRequest("POST", u, label)
+	req, err := s.client.NewRequest(ctx, "POST", u, label)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var l *Label
-	resp, err := s.client.Do(ctx, req, &l)
+	resp, err := s.client.Do(req, &l)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -100,13 +100,13 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, lab
 //meta:operation PATCH /repos/{owner}/{repo}/labels/{name}
 func (s *IssuesService) EditLabel(ctx context.Context, owner, repo, name string, label *Label) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
-	req, err := s.client.NewRequest("PATCH", u, label)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, label)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var l *Label
-	resp, err := s.client.Do(ctx, req, &l)
+	resp, err := s.client.Do(req, &l)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -121,11 +121,11 @@ func (s *IssuesService) EditLabel(ctx context.Context, owner, repo, name string,
 //meta:operation DELETE /repos/{owner}/{repo}/labels/{name}
 func (s *IssuesService) DeleteLabel(ctx context.Context, owner, repo, name string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListLabelsByIssue lists all labels for an issue.
@@ -140,13 +140,13 @@ func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var labels []*Label
-	resp, err := s.client.Do(ctx, req, &labels)
+	resp, err := s.client.Do(req, &labels)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -161,13 +161,13 @@ func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner, repo strin
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner, repo string, number int, labels []string) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels", owner, repo, number)
-	req, err := s.client.NewRequest("POST", u, labels)
+	req, err := s.client.NewRequest(ctx, "POST", u, labels)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var l []*Label
-	resp, err := s.client.Do(ctx, req, &l)
+	resp, err := s.client.Do(req, &l)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -182,12 +182,12 @@ func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner, repo string
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels/{name}
 func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner, repo string, number int, label string) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels/%v", owner, repo, number, label)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ReplaceLabelsForIssue replaces all labels for an issue.
@@ -197,13 +197,13 @@ func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner, repo str
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner, repo string, number int, labels []string) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels", owner, repo, number)
-	req, err := s.client.NewRequest("PUT", u, labels)
+	req, err := s.client.NewRequest(ctx, "PUT", u, labels)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var l []*Label
-	resp, err := s.client.Do(ctx, req, &l)
+	resp, err := s.client.Do(req, &l)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -218,12 +218,12 @@ func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner, repo s
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/labels
 func (s *IssuesService) RemoveLabelsForIssue(ctx context.Context, owner, repo string, number int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels", owner, repo, number)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListLabelsForMilestone lists labels for every issue in a milestone.
@@ -238,13 +238,13 @@ func (s *IssuesService) ListLabelsForMilestone(ctx context.Context, owner, repo 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var labels []*Label
-	resp, err := s.client.Do(ctx, req, &labels)
+	resp, err := s.client.Do(req, &labels)
 	if err != nil {
 		return nil, resp, err
 	}

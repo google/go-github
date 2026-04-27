@@ -48,13 +48,13 @@ func (s *EnterpriseService) ListAppInstallableOrganizations(ctx context.Context,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var orgs []*InstallableOrganization
-	resp, err := s.client.Do(ctx, req, &orgs)
+	resp, err := s.client.Do(req, &orgs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -75,13 +75,13 @@ func (s *EnterpriseService) ListAppAccessibleOrganizationRepositories(ctx contex
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repos []*AccessibleRepository
-	resp, err := s.client.Do(ctx, req, &repos)
+	resp, err := s.client.Do(req, &repos)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -102,13 +102,13 @@ func (s *EnterpriseService) ListAppInstallations(ctx context.Context, enterprise
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var installation []*Installation
-	resp, err := s.client.Do(ctx, req, &installation)
+	resp, err := s.client.Do(req, &installation)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -124,13 +124,13 @@ func (s *EnterpriseService) ListAppInstallations(ctx context.Context, enterprise
 //meta:operation POST /enterprises/{enterprise}/apps/organizations/{org}/installations
 func (s *EnterpriseService) InstallApp(ctx context.Context, enterprise, org string, request InstallAppRequest) (*Installation, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations", enterprise, org)
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var installation *Installation
-	resp, err := s.client.Do(ctx, req, &installation)
+	resp, err := s.client.Do(req, &installation)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -145,12 +145,12 @@ func (s *EnterpriseService) InstallApp(ctx context.Context, enterprise, org stri
 //meta:operation DELETE /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}
 func (s *EnterpriseService) UninstallApp(ctx context.Context, enterprise, org string, installationID int64) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v", enterprise, org, installationID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

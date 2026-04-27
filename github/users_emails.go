@@ -27,13 +27,13 @@ func (s *UsersService) ListEmails(ctx context.Context, opts *ListOptions) ([]*Us
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var emails []*UserEmail
-	resp, err := s.client.Do(ctx, req, &emails)
+	resp, err := s.client.Do(req, &emails)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -48,13 +48,13 @@ func (s *UsersService) ListEmails(ctx context.Context, opts *ListOptions) ([]*Us
 //meta:operation POST /user/emails
 func (s *UsersService) AddEmails(ctx context.Context, emails []string) ([]*UserEmail, *Response, error) {
 	u := "user/emails"
-	req, err := s.client.NewRequest("POST", u, emails)
+	req, err := s.client.NewRequest(ctx, "POST", u, emails)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var e []*UserEmail
-	resp, err := s.client.Do(ctx, req, &e)
+	resp, err := s.client.Do(req, &e)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -69,12 +69,12 @@ func (s *UsersService) AddEmails(ctx context.Context, emails []string) ([]*UserE
 //meta:operation DELETE /user/emails
 func (s *UsersService) DeleteEmails(ctx context.Context, emails []string) (*Response, error) {
 	u := "user/emails"
-	req, err := s.client.NewRequest("DELETE", u, emails)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, emails)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // SetEmailVisibility sets the visibility for the primary email address of the authenticated user.
@@ -90,13 +90,13 @@ func (s *UsersService) SetEmailVisibility(ctx context.Context, visibility string
 		Visibility: &visibility,
 	}
 
-	req, err := s.client.NewRequest("PATCH", u, updateVisibilityReq)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, updateVisibilityReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var e []*UserEmail
-	resp, err := s.client.Do(ctx, req, &e)
+	resp, err := s.client.Do(req, &e)
 	if err != nil {
 		return nil, resp, err
 	}

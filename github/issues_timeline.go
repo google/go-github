@@ -183,7 +183,7 @@ func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -192,7 +192,7 @@ func (s *IssuesService) ListIssueTimeline(ctx context.Context, owner, repo strin
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var events []*Timeline
-	resp, err := s.client.Do(ctx, req, &events)
+	resp, err := s.client.Do(req, &events)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -104,14 +104,14 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokens(ctx context.C
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, opts)
+	req, err := s.client.NewRequest(ctx, "GET", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pats []*PersonalAccessToken
 
-	resp, err := s.client.Do(ctx, req, &pats)
+	resp, err := s.client.Do(req, &pats)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -174,13 +174,13 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokenRequests(ctx co
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, opts)
+	req, err := s.client.NewRequest(ctx, "GET", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var pats []*FineGrainedPersonalAccessTokenRequest
-	resp, err := s.client.Do(ctx, req, &pats)
+	resp, err := s.client.Do(req, &pats)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -204,12 +204,12 @@ type ReviewPersonalAccessTokenRequestOptions struct {
 func (s *OrganizationsService) ReviewPersonalAccessTokenRequest(ctx context.Context, org string, requestID int64, opts ReviewPersonalAccessTokenRequestOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/personal-access-token-requests/%v", org, requestID)
 
-	req, err := s.client.NewRequest("POST", u, &opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, &opts)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // addListFineGrainedPATOptions adds the owner and token_id parameters to the URL query string with the correct format if they are set.

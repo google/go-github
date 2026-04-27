@@ -286,13 +286,13 @@ func (cp *CopilotSeatDetails) GetOrganization() (*Organization, bool) {
 func (s *CopilotService) GetCopilotBilling(ctx context.Context, org string) (*CopilotOrganizationDetails, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/billing", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var copilotDetails *CopilotOrganizationDetails
-	resp, err := s.client.Do(ctx, req, &copilotDetails)
+	resp, err := s.client.Do(req, &copilotDetails)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -314,13 +314,13 @@ func (s *CopilotService) ListCopilotSeats(ctx context.Context, org string, opts 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var copilotSeats *ListCopilotSeatsResponse
-	resp, err := s.client.Do(ctx, req, &copilotSeats)
+	resp, err := s.client.Do(req, &copilotSeats)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -342,18 +342,78 @@ func (s *CopilotService) ListCopilotEnterpriseSeats(ctx context.Context, enterpr
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var copilotSeats *ListCopilotSeatsResponse
-	resp, err := s.client.Do(ctx, req, &copilotSeats)
+	resp, err := s.client.Do(req, &copilotSeats)
 	if err != nil {
 		return nil, resp, err
 	}
 
 	return copilotSeats, resp, nil
+}
+
+// ListOrganizationCopilotCodingAgentRepositoriesResponse represents the response from listing
+// repositories enabled for the Copilot coding agent in an organization.
+type ListOrganizationCopilotCodingAgentRepositoriesResponse struct {
+	TotalCount   int           `json:"total_count"`
+	Repositories []*Repository `json:"repositories"`
+}
+
+// ListOrganizationCodingAgentRepositories lists repositories enabled for the Copilot coding agent in an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-coding-agent-management?apiVersion=2022-11-28#list-repositories-enabled-for-copilot-coding-agent-in-an-organization
+//
+//meta:operation GET /orgs/{org}/copilot/coding-agent/permissions/repositories
+func (s *CopilotService) ListOrganizationCodingAgentRepositories(ctx context.Context, org string, opts *ListOptions) (*ListOrganizationCopilotCodingAgentRepositoriesResponse, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/coding-agent/permissions/repositories", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var result *ListOrganizationCopilotCodingAgentRepositoriesResponse
+	resp, err := s.client.Do(req, &result)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
+}
+
+// CopilotOrganizationContentExclusionDetails lists all Copilot content exclusion
+// rules for an organization, keyed by repository full name. Each value is the
+// list of file paths excluded from Copilot for that repository.
+type CopilotOrganizationContentExclusionDetails map[string][]string
+
+// GetOrganizationContentExclusionDetails gets the Copilot content exclusion rules for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-content-exclusion-management?apiVersion=2022-11-28#get-copilot-content-exclusion-rules-for-an-organization
+//
+//meta:operation GET /orgs/{org}/copilot/content_exclusion
+func (s *CopilotService) GetOrganizationContentExclusionDetails(ctx context.Context, org string) (CopilotOrganizationContentExclusionDetails, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/content_exclusion", org)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	details := CopilotOrganizationContentExclusionDetails{}
+	resp, err := s.client.Do(req, &details)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return details, resp, nil
 }
 
 // AddCopilotTeams adds teams to the Copilot for Business subscription for an organization.
@@ -370,13 +430,13 @@ func (s *CopilotService) AddCopilotTeams(ctx context.Context, org string, teamNa
 		SelectedTeams: teamNames,
 	}
 
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var seatAssignments *SeatAssignments
-	resp, err := s.client.Do(ctx, req, &seatAssignments)
+	resp, err := s.client.Do(req, &seatAssignments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -398,13 +458,13 @@ func (s *CopilotService) RemoveCopilotTeams(ctx context.Context, org string, tea
 		SelectedTeams: teamNames,
 	}
 
-	req, err := s.client.NewRequest("DELETE", u, body)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var seatCancellations *SeatCancellations
-	resp, err := s.client.Do(ctx, req, &seatCancellations)
+	resp, err := s.client.Do(req, &seatCancellations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -426,13 +486,13 @@ func (s *CopilotService) AddCopilotUsers(ctx context.Context, org string, users 
 		SelectedUsernames: users,
 	}
 
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var seatAssignments *SeatAssignments
-	resp, err := s.client.Do(ctx, req, &seatAssignments)
+	resp, err := s.client.Do(req, &seatAssignments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -454,13 +514,13 @@ func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, use
 		SelectedUsernames: users,
 	}
 
-	req, err := s.client.NewRequest("DELETE", u, body)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var seatCancellations *SeatCancellations
-	resp, err := s.client.Do(ctx, req, &seatCancellations)
+	resp, err := s.client.Do(req, &seatCancellations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -476,13 +536,13 @@ func (s *CopilotService) RemoveCopilotUsers(ctx context.Context, org string, use
 func (s *CopilotService) GetSeatDetails(ctx context.Context, org, user string) (*CopilotSeatDetails, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/members/%v/copilot", org, user)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var seatDetails *CopilotSeatDetails
-	resp, err := s.client.Do(ctx, req, &seatDetails)
+	resp, err := s.client.Do(req, &seatDetails)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -506,13 +566,13 @@ func (s *CopilotService) GetEnterpriseMetrics(ctx context.Context, enterprise st
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var metrics []*CopilotMetrics
-	resp, err := s.client.Do(ctx, req, &metrics)
+	resp, err := s.client.Do(req, &metrics)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -536,13 +596,13 @@ func (s *CopilotService) GetEnterpriseTeamMetrics(ctx context.Context, enterpris
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var metrics []*CopilotMetrics
-	resp, err := s.client.Do(ctx, req, &metrics)
+	resp, err := s.client.Do(req, &metrics)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -566,13 +626,13 @@ func (s *CopilotService) GetOrganizationMetrics(ctx context.Context, org string,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var metrics []*CopilotMetrics
-	resp, err := s.client.Do(ctx, req, &metrics)
+	resp, err := s.client.Do(req, &metrics)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -596,13 +656,13 @@ func (s *CopilotService) GetOrganizationTeamMetrics(ctx context.Context, org, te
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var metrics []*CopilotMetrics
-	resp, err := s.client.Do(ctx, req, &metrics)
+	resp, err := s.client.Do(req, &metrics)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -622,13 +682,13 @@ func (s *CopilotService) GetEnterpriseDailyMetricsReport(ctx context.Context, en
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var report *CopilotDailyMetricsReport
-	resp, err := s.client.Do(ctx, req, &report)
+	resp, err := s.client.Do(req, &report)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -644,13 +704,13 @@ func (s *CopilotService) GetEnterpriseDailyMetricsReport(ctx context.Context, en
 func (s *CopilotService) GetEnterpriseMetricsReport(ctx context.Context, enterprise string) (*CopilotMetricsReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/copilot/metrics/reports/enterprise-28-day/latest", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var report *CopilotMetricsReport
-	resp, err := s.client.Do(ctx, req, &report)
+	resp, err := s.client.Do(req, &report)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -670,13 +730,13 @@ func (s *CopilotService) GetEnterpriseUsersDailyMetricsReport(ctx context.Contex
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var report *CopilotDailyMetricsReport
-	resp, err := s.client.Do(ctx, req, &report)
+	resp, err := s.client.Do(req, &report)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -692,13 +752,13 @@ func (s *CopilotService) GetEnterpriseUsersDailyMetricsReport(ctx context.Contex
 func (s *CopilotService) GetEnterpriseUsersMetricsReport(ctx context.Context, enterprise string) (*CopilotMetricsReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/copilot/metrics/reports/users-28-day/latest", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var report *CopilotMetricsReport
-	resp, err := s.client.Do(ctx, req, &report)
+	resp, err := s.client.Do(req, &report)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -718,13 +778,13 @@ func (s *CopilotService) GetOrganizationDailyMetricsReport(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var report *CopilotDailyMetricsReport
-	resp, err := s.client.Do(ctx, req, &report)
+	resp, err := s.client.Do(req, &report)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -740,13 +800,13 @@ func (s *CopilotService) GetOrganizationDailyMetricsReport(ctx context.Context, 
 func (s *CopilotService) GetOrganizationMetricsReport(ctx context.Context, org string) (*CopilotMetricsReport, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/metrics/reports/organization-28-day/latest", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var report *CopilotMetricsReport
-	resp, err := s.client.Do(ctx, req, &report)
+	resp, err := s.client.Do(req, &report)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -766,13 +826,13 @@ func (s *CopilotService) GetOrganizationUsersDailyMetricsReport(ctx context.Cont
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var report *CopilotDailyMetricsReport
-	resp, err := s.client.Do(ctx, req, &report)
+	resp, err := s.client.Do(req, &report)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -788,13 +848,13 @@ func (s *CopilotService) GetOrganizationUsersDailyMetricsReport(ctx context.Cont
 func (s *CopilotService) GetOrganizationUsersMetricsReport(ctx context.Context, org string) (*CopilotMetricsReport, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot/metrics/reports/users-28-day/latest", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var report *CopilotMetricsReport
-	resp, err := s.client.Do(ctx, req, &report)
+	resp, err := s.client.Do(req, &report)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -813,20 +873,16 @@ func (s *CopilotService) DownloadCopilotMetrics(ctx context.Context, url string)
 		return nil, nil, err
 	}
 
-	resp, err := s.client.client.Do(req)
+	resp, err := s.client.BareDo(req)
 	if err != nil {
 		return nil, nil, err
 	}
 	defer resp.Body.Close()
 
-	if err := CheckResponse(resp); err != nil {
-		return nil, newResponse(resp), err
-	}
-
 	var metrics []*CopilotMetrics
 	if err := json.NewDecoder(resp.Body).Decode(&metrics); err != nil {
-		return nil, newResponse(resp), err
+		return nil, resp, err
 	}
 
-	return metrics, newResponse(resp), nil
+	return metrics, resp, nil
 }

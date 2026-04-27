@@ -103,13 +103,13 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 	} else {
 		u = "user"
 	}
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var uResp *User
-	resp, err := s.client.Do(ctx, req, &uResp)
+	resp, err := s.client.Do(req, &uResp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -124,13 +124,13 @@ func (s *UsersService) Get(ctx context.Context, user string) (*User, *Response, 
 //meta:operation GET /user/{account_id}
 func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response, error) {
 	u := fmt.Sprintf("user/%v", id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var user *User
-	resp, err := s.client.Do(ctx, req, &user)
+	resp, err := s.client.Do(req, &user)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -145,13 +145,13 @@ func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response,
 //meta:operation PATCH /user
 func (s *UsersService) Edit(ctx context.Context, user *User) (*User, *Response, error) {
 	u := "user"
-	req, err := s.client.NewRequest("PATCH", u, user)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, user)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var uResp *User
-	resp, err := s.client.Do(ctx, req, &uResp)
+	resp, err := s.client.Do(req, &uResp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -194,13 +194,13 @@ func (s *UsersService) GetHovercard(ctx context.Context, user string, opts *Hove
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var hc *Hovercard
-	resp, err := s.client.Do(ctx, req, &hc)
+	resp, err := s.client.Do(req, &hc)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -229,13 +229,13 @@ func (s *UsersService) ListAll(ctx context.Context, opts *UserListOptions) ([]*U
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var users []*User
-	resp, err := s.client.Do(ctx, req, &users)
+	resp, err := s.client.Do(req, &users)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -255,13 +255,13 @@ func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) (
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	invites := []*RepositoryInvitation{}
-	resp, err := s.client.Do(ctx, req, &invites)
+	resp, err := s.client.Do(req, &invites)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -277,12 +277,12 @@ func (s *UsersService) ListInvitations(ctx context.Context, opts *ListOptions) (
 //meta:operation PATCH /user/repository_invitations/{invitation_id}
 func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64) (*Response, error) {
 	u := fmt.Sprintf("user/repository_invitations/%v", invitationID)
-	req, err := s.client.NewRequest("PATCH", u, nil)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeclineInvitation declines the currently-open repository invitation for the
@@ -293,10 +293,10 @@ func (s *UsersService) AcceptInvitation(ctx context.Context, invitationID int64)
 //meta:operation DELETE /user/repository_invitations/{invitation_id}
 func (s *UsersService) DeclineInvitation(ctx context.Context, invitationID int64) (*Response, error) {
 	u := fmt.Sprintf("user/repository_invitations/%v", invitationID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

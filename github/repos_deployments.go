@@ -73,13 +73,13 @@ func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var deployments []*Deployment
-	resp, err := s.client.Do(ctx, req, &deployments)
+	resp, err := s.client.Do(req, &deployments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -95,13 +95,13 @@ func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo s
 func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var deployment *Deployment
-	resp, err := s.client.Do(ctx, req, &deployment)
+	resp, err := s.client.Do(req, &deployment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -117,7 +117,7 @@ func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo str
 func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo string, request *DeploymentRequest) (*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -126,7 +126,7 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var d *Deployment
-	resp, err := s.client.Do(ctx, req, &d)
+	resp, err := s.client.Do(req, &d)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -141,11 +141,11 @@ func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo 
 //meta:operation DELETE /repos/{owner}/{repo}/deployments/{deployment_id}
 func (s *RepositoriesService) DeleteDeployment(ctx context.Context, owner, repo string, deploymentID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v", owner, repo, deploymentID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeploymentStatus represents the status of a
@@ -192,7 +192,7 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -201,7 +201,7 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var statuses []*DeploymentStatus
-	resp, err := s.client.Do(ctx, req, &statuses)
+	resp, err := s.client.Do(req, &statuses)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -217,7 +217,7 @@ func (s *RepositoriesService) ListDeploymentStatuses(ctx context.Context, owner,
 func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, repo string, deploymentID, deploymentStatusID int64) (*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses/%v", owner, repo, deploymentID, deploymentStatusID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -226,7 +226,7 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var d *DeploymentStatus
-	resp, err := s.client.Do(ctx, req, &d)
+	resp, err := s.client.Do(req, &d)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -242,7 +242,7 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner, repo string, deployment int64, request *DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
 
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, request)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -251,7 +251,7 @@ func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner,
 	req.Header.Set("Accept", strings.Join(acceptHeaders, ", "))
 
 	var d *DeploymentStatus
-	resp, err := s.client.Do(ctx, req, &d)
+	resp, err := s.client.Do(req, &d)
 	if err != nil {
 		return nil, resp, err
 	}

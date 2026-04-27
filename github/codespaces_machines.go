@@ -38,13 +38,13 @@ func (s *CodespacesService) ListRepositoryMachineTypes(ctx context.Context, owne
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var machines *CodespacesMachines
-	resp, err := s.client.Do(ctx, req, &machines)
+	resp, err := s.client.Do(req, &machines)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -59,13 +59,13 @@ func (s *CodespacesService) ListRepositoryMachineTypes(ctx context.Context, owne
 //meta:operation GET /user/codespaces/{codespace_name}/machines
 func (s *CodespacesService) ListCodespaceMachineTypes(ctx context.Context, codespaceName string) (*CodespacesMachines, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/machines", codespaceName)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var machines *CodespacesMachines
-	resp, err := s.client.Do(ctx, req, &machines)
+	resp, err := s.client.Do(req, &machines)
 	if err != nil {
 		return nil, resp, err
 	}

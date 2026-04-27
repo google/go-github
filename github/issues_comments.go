@@ -72,7 +72,7 @@ func (s *IssuesService) ListComments(ctx context.Context, owner, repo string, nu
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -80,7 +80,7 @@ func (s *IssuesService) ListComments(ctx context.Context, owner, repo string, nu
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var comments []*IssueComment
-	resp, err := s.client.Do(ctx, req, &comments)
+	resp, err := s.client.Do(req, &comments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -96,7 +96,7 @@ func (s *IssuesService) ListComments(ctx context.Context, owner, repo string, nu
 func (s *IssuesService) GetComment(ctx context.Context, owner, repo string, commentID int64) (*IssueComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v", owner, repo, commentID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -104,7 +104,7 @@ func (s *IssuesService) GetComment(ctx context.Context, owner, repo string, comm
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var comment *IssueComment
-	resp, err := s.client.Do(ctx, req, &comment)
+	resp, err := s.client.Do(req, &comment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -119,12 +119,12 @@ func (s *IssuesService) GetComment(ctx context.Context, owner, repo string, comm
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/comments
 func (s *IssuesService) CreateComment(ctx context.Context, owner, repo string, number int, comment *IssueComment) (*IssueComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/comments", owner, repo, number)
-	req, err := s.client.NewRequest("POST", u, comment)
+	req, err := s.client.NewRequest(ctx, "POST", u, comment)
 	if err != nil {
 		return nil, nil, err
 	}
 	var c *IssueComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -140,12 +140,12 @@ func (s *IssuesService) CreateComment(ctx context.Context, owner, repo string, n
 //meta:operation PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}
 func (s *IssuesService) EditComment(ctx context.Context, owner, repo string, commentID int64, comment *IssueComment) (*IssueComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v", owner, repo, commentID)
-	req, err := s.client.NewRequest("PATCH", u, comment)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, comment)
 	if err != nil {
 		return nil, nil, err
 	}
 	var c *IssueComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -160,9 +160,9 @@ func (s *IssuesService) EditComment(ctx context.Context, owner, repo string, com
 //meta:operation DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}
 func (s *IssuesService) DeleteComment(ctx context.Context, owner, repo string, commentID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v", owner, repo, commentID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

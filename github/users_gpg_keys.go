@@ -62,13 +62,13 @@ func (s *UsersService) ListGPGKeys(ctx context.Context, user string, opts *ListO
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var keys []*GPGKey
-	resp, err := s.client.Do(ctx, req, &keys)
+	resp, err := s.client.Do(req, &keys)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -84,13 +84,13 @@ func (s *UsersService) ListGPGKeys(ctx context.Context, user string, opts *ListO
 //meta:operation GET /user/gpg_keys/{gpg_key_id}
 func (s *UsersService) GetGPGKey(ctx context.Context, id int64) (*GPGKey, *Response, error) {
 	u := fmt.Sprintf("user/gpg_keys/%v", id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var key *GPGKey
-	resp, err := s.client.Do(ctx, req, &key)
+	resp, err := s.client.Do(req, &key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -108,13 +108,13 @@ func (s *UsersService) CreateGPGKey(ctx context.Context, armoredPublicKey string
 	gpgKey := &struct {
 		ArmoredPublicKey string `json:"armored_public_key"`
 	}{ArmoredPublicKey: armoredPublicKey}
-	req, err := s.client.NewRequest("POST", "user/gpg_keys", gpgKey)
+	req, err := s.client.NewRequest(ctx, "POST", "user/gpg_keys", gpgKey)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var key *GPGKey
-	resp, err := s.client.Do(ctx, req, &key)
+	resp, err := s.client.Do(req, &key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -130,10 +130,10 @@ func (s *UsersService) CreateGPGKey(ctx context.Context, armoredPublicKey string
 //meta:operation DELETE /user/gpg_keys/{gpg_key_id}
 func (s *UsersService) DeleteGPGKey(ctx context.Context, id int64) (*Response, error) {
 	u := fmt.Sprintf("user/gpg_keys/%v", id)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

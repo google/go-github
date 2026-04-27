@@ -37,13 +37,13 @@ func (s *ActionsService) GetRepoOIDCSubjectClaimCustomTemplate(ctx context.Conte
 }
 
 func (s *ActionsService) getOIDCSubjectClaimCustomTemplate(ctx context.Context, url string) (*OIDCSubjectClaimCustomTemplate, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var tmpl *OIDCSubjectClaimCustomTemplate
-	resp, err := s.client.Do(ctx, req, &tmpl)
+	resp, err := s.client.Do(req, &tmpl)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -72,10 +72,10 @@ func (s *ActionsService) SetRepoOIDCSubjectClaimCustomTemplate(ctx context.Conte
 }
 
 func (s *ActionsService) setOIDCSubjectClaimCustomTemplate(ctx context.Context, url string, template *OIDCSubjectClaimCustomTemplate) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, template)
+	req, err := s.client.NewRequest(ctx, "PUT", url, template)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

@@ -101,13 +101,13 @@ func (s *EnterpriseService) GetConsumedLicenses(ctx context.Context, enterprise 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var consumedLicenses *EnterpriseConsumedLicenses
-	resp, err := s.client.Do(ctx, req, &consumedLicenses)
+	resp, err := s.client.Do(req, &consumedLicenses)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -123,13 +123,13 @@ func (s *EnterpriseService) GetConsumedLicenses(ctx context.Context, enterprise 
 func (s *EnterpriseService) GetLicenseSyncStatus(ctx context.Context, enterprise string) (*EnterpriseLicenseSyncStatus, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/license-sync-status", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var syncStatus *EnterpriseLicenseSyncStatus
-	resp, err := s.client.Do(ctx, req, &syncStatus)
+	resp, err := s.client.Do(req, &syncStatus)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -77,13 +77,13 @@ func (s *OrganizationsService) ListCredentialAuthorizations(ctx context.Context,
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var creds []*CredentialAuthorization
-	resp, err := s.client.Do(ctx, req, &creds)
+	resp, err := s.client.Do(req, &creds)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -99,10 +99,10 @@ func (s *OrganizationsService) ListCredentialAuthorizations(ctx context.Context,
 //meta:operation DELETE /orgs/{org}/credential-authorizations/{credential_id}
 func (s *OrganizationsService) RemoveCredentialAuthorization(ctx context.Context, org string, credentialID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/credential-authorizations/%v", org, credentialID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

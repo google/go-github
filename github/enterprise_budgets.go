@@ -95,13 +95,13 @@ type EnterpriseDeleteBudgetResponse struct {
 func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) (*EnterpriseListBudgets, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var budgets *EnterpriseListBudgets
-	resp, err := s.client.Do(ctx, req, &budgets)
+	resp, err := s.client.Do(req, &budgets)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -117,13 +117,13 @@ func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) 
 func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string, budget EnterpriseCreateBudget) (*EnterpriseCreateOrUpdateBudgetResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets", enterprise)
 
-	req, err := s.client.NewRequest("POST", u, budget)
+	req, err := s.client.NewRequest(ctx, "POST", u, budget)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var createBudgetResponse *EnterpriseCreateOrUpdateBudgetResponse
-	resp, err := s.client.Do(ctx, req, &createBudgetResponse)
+	resp, err := s.client.Do(req, &createBudgetResponse)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -139,13 +139,13 @@ func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string,
 func (s *EnterpriseService) GetBudget(ctx context.Context, enterprise, budgetID string) (*EnterpriseBudget, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var budget *EnterpriseBudget
-	resp, err := s.client.Do(ctx, req, &budget)
+	resp, err := s.client.Do(req, &budget)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -161,13 +161,13 @@ func (s *EnterpriseService) GetBudget(ctx context.Context, enterprise, budgetID 
 func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, budget EnterpriseUpdateBudget) (*EnterpriseCreateOrUpdateBudgetResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 
-	req, err := s.client.NewRequest("PATCH", u, budget)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, budget)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var updateBudgetResponse *EnterpriseCreateOrUpdateBudgetResponse
-	resp, err := s.client.Do(ctx, req, &updateBudgetResponse)
+	resp, err := s.client.Do(req, &updateBudgetResponse)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -183,13 +183,13 @@ func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budget
 func (s *EnterpriseService) DeleteBudget(ctx context.Context, enterprise, budgetID string) (*EnterpriseDeleteBudgetResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var deleteBudgetResponse *EnterpriseDeleteBudgetResponse
-	resp, err := s.client.Do(ctx, req, &deleteBudgetResponse)
+	resp, err := s.client.Do(req, &deleteBudgetResponse)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -36,13 +36,13 @@ type AppConfig struct {
 //meta:operation POST /app-manifests/{code}/conversions
 func (s *AppsService) CompleteAppManifest(ctx context.Context, code string) (*AppConfig, *Response, error) {
 	u := fmt.Sprintf("app-manifests/%v/conversions", code)
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var cfg *AppConfig
-	resp, err := s.client.Do(ctx, req, &cfg)
+	resp, err := s.client.Do(req, &cfg)
 	if err != nil {
 		return nil, resp, err
 	}

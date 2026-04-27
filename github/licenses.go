@@ -77,13 +77,13 @@ func (s *LicensesService) List(ctx context.Context, opts *ListLicensesOptions) (
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var licenses []*License
-	resp, err := s.client.Do(ctx, req, &licenses)
+	resp, err := s.client.Do(req, &licenses)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -99,13 +99,13 @@ func (s *LicensesService) List(ctx context.Context, opts *ListLicensesOptions) (
 func (s *LicensesService) Get(ctx context.Context, licenseName string) (*License, *Response, error) {
 	u := fmt.Sprintf("licenses/%v", licenseName)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var license *License
-	resp, err := s.client.Do(ctx, req, &license)
+	resp, err := s.client.Do(req, &license)
 	if err != nil {
 		return nil, resp, err
 	}

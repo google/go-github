@@ -24,13 +24,13 @@ func (s *RepositoriesService) ListKeys(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var keys []*Key
-	resp, err := s.client.Do(ctx, req, &keys)
+	resp, err := s.client.Do(req, &keys)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -46,13 +46,13 @@ func (s *RepositoriesService) ListKeys(ctx context.Context, owner, repo string, 
 func (s *RepositoriesService) GetKey(ctx context.Context, owner, repo string, id int64) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var key *Key
-	resp, err := s.client.Do(ctx, req, &key)
+	resp, err := s.client.Do(req, &key)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -68,13 +68,13 @@ func (s *RepositoriesService) GetKey(ctx context.Context, owner, repo string, id
 func (s *RepositoriesService) CreateKey(ctx context.Context, owner, repo string, key *Key) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, key)
+	req, err := s.client.NewRequest(ctx, "POST", u, key)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var k *Key
-	resp, err := s.client.Do(ctx, req, &k)
+	resp, err := s.client.Do(req, &k)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -90,10 +90,10 @@ func (s *RepositoriesService) CreateKey(ctx context.Context, owner, repo string,
 func (s *RepositoriesService) DeleteKey(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

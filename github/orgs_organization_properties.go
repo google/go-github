@@ -24,13 +24,13 @@ type OrganizationCustomPropertyValues struct {
 func (s *OrganizationsService) GetOrganizationCustomPropertyValues(ctx context.Context, org string) ([]*CustomPropertyValue, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/org-properties/values", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var values []*CustomPropertyValue
-	resp, err := s.client.Do(ctx, req, &values)
+	resp, err := s.client.Do(req, &values)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -46,12 +46,12 @@ func (s *OrganizationsService) GetOrganizationCustomPropertyValues(ctx context.C
 //meta:operation PATCH /organizations/{org}/org-properties/values
 func (s *OrganizationsService) CreateOrUpdateOrganizationCustomPropertyValues(ctx context.Context, org string, values OrganizationCustomPropertyValues) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/org-properties/values", org)
-	req, err := s.client.NewRequest("PATCH", u, values)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, values)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

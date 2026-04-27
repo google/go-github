@@ -100,13 +100,13 @@ func (s *RepositoriesService) ListReleases(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var releases []*RepositoryRelease
-	resp, err := s.client.Do(ctx, req, &releases)
+	resp, err := s.client.Do(req, &releases)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -150,13 +150,13 @@ func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, 
 //meta:operation POST /repos/{owner}/{repo}/releases/generate-notes
 func (s *RepositoriesService) GenerateReleaseNotes(ctx context.Context, owner, repo string, opts *GenerateNotesOptions) (*RepositoryReleaseNotes, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/generate-notes", owner, repo)
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *RepositoryReleaseNotes
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -165,13 +165,13 @@ func (s *RepositoriesService) GenerateReleaseNotes(ctx context.Context, owner, r
 }
 
 func (s *RepositoriesService) getSingleRelease(ctx context.Context, url string) (*RepositoryRelease, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var release *RepositoryRelease
-	resp, err := s.client.Do(ctx, req, &release)
+	resp, err := s.client.Do(req, &release)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -224,13 +224,13 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 		GenerateReleaseNotes:   release.GenerateReleaseNotes,
 	}
 
-	req, err := s.client.NewRequest("POST", u, releaseReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, releaseReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *RepositoryRelease
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -264,13 +264,13 @@ func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo strin
 		DiscussionCategoryName: release.DiscussionCategoryName,
 	}
 
-	req, err := s.client.NewRequest("PATCH", u, releaseReq)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, releaseReq)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *RepositoryRelease
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -286,11 +286,11 @@ func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo strin
 func (s *RepositoriesService) DeleteRelease(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListReleaseAssets lists the release's assets.
@@ -305,13 +305,13 @@ func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var assets []*ReleaseAsset
-	resp, err := s.client.Do(ctx, req, &assets)
+	resp, err := s.client.Do(req, &assets)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -326,13 +326,13 @@ func (s *RepositoriesService) ListReleaseAssets(ctx context.Context, owner, repo
 func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo string, id int64) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/assets/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var asset *ReleaseAsset
-	resp, err := s.client.Do(ctx, req, &asset)
+	resp, err := s.client.Do(req, &asset)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -359,13 +359,13 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, repo string, id int64, followRedirectsClient *http.Client) (rc io.ReadCloser, redirectURL string, err error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/assets/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, "", err
 	}
 	req.Header.Set("Accept", defaultMediaType)
 
-	loc, resp, err := s.client.bareDoUntilFound(ctx, req, 10)
+	loc, resp, err := s.client.bareDoUntilFound(req, 10)
 	if err != nil {
 		return nil, "", err
 	}
@@ -389,11 +389,10 @@ func (s *RepositoriesService) DownloadReleaseAsset(ctx context.Context, owner, r
 }
 
 func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, followRedirectsClient *http.Client, url string) (rc io.ReadCloser, err error) {
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
-	req = withContext(ctx, req)
 	req.Header.Set("Accept", defaultMediaType)
 	resp, err := followRedirectsClient.Do(req)
 	if err != nil {
@@ -414,13 +413,13 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, f
 func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo string, id int64, release *ReleaseAsset) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/assets/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("PATCH", u, release)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, release)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var asset *ReleaseAsset
-	resp, err := s.client.Do(ctx, req, &asset)
+	resp, err := s.client.Do(req, &asset)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -436,11 +435,11 @@ func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo 
 func (s *RepositoriesService) DeleteReleaseAsset(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/assets/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UploadReleaseAsset creates an asset by uploading a file into a release repository.
@@ -473,13 +472,13 @@ func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, rep
 		mediaType = opts.MediaType
 	}
 
-	req, err := s.client.NewUploadRequest(u, file, stat.Size(), mediaType)
+	req, err := s.client.NewUploadRequest(ctx, u, file, stat.Size(), mediaType)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var asset *ReleaseAsset
-	resp, err := s.client.Do(ctx, req, &asset)
+	resp, err := s.client.Do(req, &asset)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -547,13 +546,13 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(
 		}
 	}
 
-	req, err := s.client.NewUploadRequest(u, reader, size, mediaType)
+	req, err := s.client.NewUploadRequest(ctx, u, reader, size, mediaType)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var asset *ReleaseAsset
-	resp, err := s.client.Do(ctx, req, &asset)
+	resp, err := s.client.Do(req, &asset)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -91,13 +91,13 @@ func (s *ActionsService) ListArtifacts(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var artifactList *ArtifactList
-	resp, err := s.client.Do(ctx, req, &artifactList)
+	resp, err := s.client.Do(req, &artifactList)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -117,13 +117,13 @@ func (s *ActionsService) ListWorkflowRunArtifacts(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var artifactList *ArtifactList
-	resp, err := s.client.Do(ctx, req, &artifactList)
+	resp, err := s.client.Do(req, &artifactList)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -139,13 +139,13 @@ func (s *ActionsService) ListWorkflowRunArtifacts(ctx context.Context, owner, re
 func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Artifact, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v", owner, repo, artifactID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var artifact *Artifact
-	resp, err := s.client.Do(ctx, req, &artifact)
+	resp, err := s.client.Do(req, &artifact)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -188,12 +188,12 @@ func (s *ActionsService) downloadArtifactWithoutRateLimit(ctx context.Context, u
 }
 
 func (s *ActionsService) downloadArtifactWithRateLimit(ctx context.Context, u string, maxRedirects int) (*url.URL, *Response, error) {
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	url, resp, err := s.client.bareDoUntilFound(ctx, req, maxRedirects)
+	url, resp, err := s.client.bareDoUntilFound(req, maxRedirects)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -215,10 +215,10 @@ func (s *ActionsService) downloadArtifactWithRateLimit(ctx context.Context, u st
 func (s *ActionsService) DeleteArtifact(ctx context.Context, owner, repo string, artifactID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v", owner, repo, artifactID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
