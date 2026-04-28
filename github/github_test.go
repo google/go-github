@@ -200,6 +200,8 @@ func testBody(t *testing.T, r *http.Request, want string) {
 	}
 }
 
+// testJSONBody checks that the request body matches the expected JSON string, ignoring
+// differences in formatting, key ordering, and numeric types.
 func testJSONBody(t *testing.T, r *http.Request, want string) {
 	t.Helper()
 	b, err := io.ReadAll(r.Body)

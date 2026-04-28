@@ -480,7 +480,7 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		madeRequest := false
 		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v", i), func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PATCH")
-			testJSONBody(t, r, tt.wantUpdate+"\n")
+			testJSONBody(t, r, tt.wantUpdate)
 			_, err := io.WriteString(w, tt.sendResponse)
 			assertNilError(t, err)
 			madeRequest = true
@@ -798,7 +798,7 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 		madeRequest := false
 		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v/merge", i), func(_ http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PUT")
-			testJSONBody(t, r, test.wantBody+"\n")
+			testJSONBody(t, r, test.wantBody)
 			madeRequest = true
 		})
 		ctx := t.Context()
@@ -817,7 +817,7 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 	expectedBody := ""
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testJSONBody(t, r, expectedBody+"\n")
+		testJSONBody(t, r, expectedBody)
 		madeRequest = true
 	})
 

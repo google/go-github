@@ -105,8 +105,7 @@ func TestGitService_CreateTree(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		want := `{"base_tree":"b","tree":[{"sha":"7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b","path":"file.rb","mode":"100644","type":"blob"}]}` + "\n"
-		testJSONBody(t, r, want)
+		testJSONBody(t, r, `{"base_tree":"b","tree":[{"sha":"7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b","path":"file.rb","mode":"100644","type":"blob"}]}`)
 
 		fmt.Fprint(w, `{
 		  "sha": "cd8274d15fa3ae2ab983129fb037999f264ba9a7",
@@ -176,8 +175,7 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 
-		want := `{"base_tree":"b","tree":[{"path":"content.md","mode":"100644","content":"file content"}]}` + "\n"
-		testJSONBody(t, r, want)
+		testJSONBody(t, r, `{"base_tree":"b","tree":[{"path":"content.md","mode":"100644","content":"file content"}]}`)
 
 		fmt.Fprint(w, `{
 		  "sha": "5c6780ad2c68743383b740fd1dab6f6a33202b11",
@@ -249,8 +247,7 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/git/trees", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 
-		want := `{"base_tree":"b","tree":[{"sha":null,"path":"content.md","mode":"100644"}]}` + "\n"
-		testJSONBody(t, r, want)
+		testJSONBody(t, r, `{"base_tree":"b","tree":[{"sha":null,"path":"content.md","mode":"100644"}]}`)
 
 		fmt.Fprint(w, `{
 		  "sha": "5c6780ad2c68743383b740fd1dab6f6a33202b11",

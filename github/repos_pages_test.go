@@ -217,8 +217,7 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		want := `{"cname":null,"source":{"branch":"gh-pages"}}` + "\n"
-		testJSONBody(t, r, want)
+		testJSONBody(t, r, `{"cname":null,"source":{"branch":"gh-pages"}}`)
 
 		fmt.Fprint(w, `{"cname":null,"source":{"branch":"gh-pages"}}`)
 	})
