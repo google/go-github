@@ -189,7 +189,8 @@ func testURLParseError(t *testing.T, err error) {
 	}
 }
 
-func testBody(t *testing.T, r *http.Request, want string) {
+// testPlainBody checks that the request body matches the expected string exactly.
+func testPlainBody(t *testing.T, r *http.Request, want string) {
 	t.Helper()
 	b, err := io.ReadAll(r.Body)
 	if err != nil {
