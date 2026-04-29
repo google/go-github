@@ -87,16 +87,17 @@ func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"include_claim_keys":["repo","context"]}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &OIDCSubjectClaimCustomTemplate{
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
+
+	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.SetOrgOIDCSubjectClaimCustomTemplate(ctx, "o", input)
 	if err != nil {
@@ -119,17 +120,18 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"use_default":false,"include_claim_keys":["repo","context"]}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &OIDCSubjectClaimCustomTemplate{
 		UseDefault:       Ptr(false),
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
+
+	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
 	if err != nil {
@@ -152,16 +154,17 @@ func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"use_default":true}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &OIDCSubjectClaimCustomTemplate{
 		UseDefault: Ptr(true),
 	}
+
+	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
 	if err != nil {

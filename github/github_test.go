@@ -212,6 +212,7 @@ func testJSONBody[T any](t *testing.T, r *http.Request, want T) {
 	if err := json.Unmarshal(b, &got); err != nil {
 		t.Errorf("Error unmarshaling request body JSON: %v", err)
 	}
+
 	if diff := cmp.Diff(want, got); diff != "" {
 		t.Errorf("request JSON body mismatch (-want +got):\n%v", diff)
 	}
