@@ -200,6 +200,23 @@ func testBody(t *testing.T, r *http.Request, want string) {
 	}
 }
 
+func testJSONBody[T any](t *testing.T, r *http.Request, want T) {
+	t.Helper()
+	b, err := io.ReadAll(r.Body)
+	if err != nil {
+		t.Errorf("Error reading request body: %v", err)
+	}
+
+	var got T
+
+	if err := json.Unmarshal(b, &got); err != nil {
+		t.Errorf("Error unmarshaling request body JSON: %v", err)
+	}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("request JSON body mismatch (-want +got):\n%v", diff)
+	}
+}
+
 // testJSONMarshal tests both JSON marshaling and unmarshaling of a value by comparing
 // the marshaled output with the expected JSON string.
 //
