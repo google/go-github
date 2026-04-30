@@ -105,11 +105,16 @@ func TestRepositoriesService_UpdateRuleset_OmitZero_EmptySlice(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := RepositoryRuleset{
+		Name:         "ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: []*BypassActor{},
+	}
+
 	// Scenario 2: User passes empty slice (non-zero value).
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-
-		testBody(t, r, `{"name":"ruleset","source":"","enforcement":"active","bypass_actors":[]}`+"\n")
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{
 			"id": 42,
@@ -121,12 +126,6 @@ func TestRepositoriesService_UpdateRuleset_OmitZero_EmptySlice(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	input := RepositoryRuleset{
-		Name:         "ruleset",
-		Enforcement:  RulesetEnforcementActive,
-		BypassActors: []*BypassActor{},
-	}
-
 	_, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, input)
 	if err != nil {
 		t.Errorf("Repositories.UpdateRuleset returned error: %v", err)

@@ -95,9 +95,18 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	req := EnterpriseCreateBudget{
+		BudgetAmount:        200,
+		PreventFurtherUsage: true,
+		BudgetScope:         BudgetScopeEnterprise,
+		BudgetType:          BudgetTypeProductPricing,
+		BudgetProductSKU:    Ptr("actions"),
+		BudgetAlerting:      &EnterpriseBudgetAlerting{},
+	}
+
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"budget_amount":200,"prevent_further_usage":true,"budget_alerting":{},"budget_scope":"enterprise","budget_type":"ProductPricing","budget_product_sku":"actions"}`+"\n")
+		testJSONBody(t, r, req)
 		fmt.Fprint(w, `{
 			"message": "Budget successfully created.",
 			"budget": {
@@ -109,15 +118,6 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	req := EnterpriseCreateBudget{
-		BudgetAmount:        200,
-		PreventFurtherUsage: true,
-		BudgetScope:         BudgetScopeEnterprise,
-		BudgetType:          BudgetTypeProductPricing,
-		BudgetProductSKU:    Ptr("actions"),
-		BudgetAlerting:      &EnterpriseBudgetAlerting{},
-	}
-
 	resp, _, err := client.Enterprise.CreateBudget(ctx, "e", req)
 	if err != nil {
 		t.Errorf("Enterprise.CreateBudget returned error: %v", err)
@@ -221,9 +221,14 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	req := EnterpriseUpdateBudget{
+		BudgetAmount:        Ptr(10),
+		PreventFurtherUsage: Ptr(false),
+	}
+
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets/b-123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"budget_amount":10,"prevent_further_usage":false}`+"\n")
+		testJSONBody(t, r, req)
 		fmt.Fprint(w, `{
 			"message": "Budget successfully updated.",
 			"budget": {
@@ -235,11 +240,6 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	req := EnterpriseUpdateBudget{
-		BudgetAmount:        Ptr(10),
-		PreventFurtherUsage: Ptr(false),
-	}
-
 	resp, _, err := client.Enterprise.UpdateBudget(ctx, "e", "b-123", req)
 	if err != nil {
 		t.Errorf("Enterprise.UpdateBudget returned error: %v", err)

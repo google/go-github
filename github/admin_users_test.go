@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -19,25 +18,16 @@ func TestAdminUsers_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := CreateUserRequest{Login: "github", Email: Ptr("email@example.com"), Suspended: Ptr(false)}
+
 	mux.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateUserRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		want := &CreateUserRequest{Login: "github", Email: Ptr("email@example.com"), Suspended: Ptr(false)}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"login":"github","id":1}`)
 	})
 
 	ctx := t.Context()
-	org, _, err := client.Admin.CreateUser(ctx, CreateUserRequest{
-		Login:     "github",
-		Email:     Ptr("email@example.com"),
-		Suspended: Ptr(false),
-	})
+	org, _, err := client.Admin.CreateUser(ctx, input)
 	if err != nil {
 		t.Errorf("Admin.CreateUser returned error: %v", err)
 	}
@@ -49,11 +39,7 @@ func TestAdminUsers_Create(t *testing.T) {
 
 	const methodName = "CreateUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Admin.CreateUser(ctx, CreateUserRequest{
-			Login:     "github",
-			Email:     Ptr("email@example.com"),
-			Suspended: Ptr(false),
-		})
+		got, resp, err := client.Admin.CreateUser(ctx, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -90,9 +76,11 @@ func TestUserImpersonation_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	opt := &ImpersonateUserOptions{Scopes: []string{"repo"}}
+
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"scopes":["repo"]}`+"\n")
+		testJSONBody(t, r, opt)
 		fmt.Fprint(w, `{"id": 1234,
 		"url": "https://example.com/authorizations",
 		"app": {
@@ -113,7 +101,6 @@ func TestUserImpersonation_Create(t *testing.T) {
 		"fingerprint": null}`)
 	})
 
-	opt := &ImpersonateUserOptions{Scopes: []string{"repo"}}
 	ctx := t.Context()
 	auth, _, err := client.Admin.CreateUserImpersonation(ctx, "github", opt)
 	if err != nil {

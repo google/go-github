@@ -146,12 +146,14 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	req := &AuthorizationRequest{Scopes: []Scope{ScopePublicRepo}}
+
 	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
+		testJSONBody(t, r, req)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	req := &AuthorizationRequest{Scopes: []Scope{ScopePublicRepo}}
 	ctx := t.Context()
 	got, _, err := client.Authorizations.CreateImpersonation(ctx, "u", req)
 	if err != nil {

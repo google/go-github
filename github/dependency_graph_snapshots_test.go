@@ -18,13 +18,6 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/dependency-graph/snapshots", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, `{"version":0,"sha":"ce587453ced02b1526dfb4cb910479d431683101","ref":"refs/heads/main","job":{"correlator":"yourworkflowname_youractionname","id":"yourrunid","html_url":"https://example.com"},"detector":{"name":"octo-detector","version":"0.0.1","url":"https://github.com/octo-org/octo-repo"},"scanned":"2022-06-14T20:25:00Z","metadata":{"key1":"value1","key2":"value2"},"manifests":{"package-lock.json":{"name":"package-lock.json","file":{"source_location":"src/package-lock.json"},"metadata":{"key1":"value1","key2":"value2"},"resolved":{"@actions/core":{"package_url":"pkg:/npm/%40actions/core@1.1.9","metadata":{"licenses":"MIT"},"relationship":"direct","scope":"runtime","dependencies":["@actions/http-client"]},"@actions/http-client":{"package_url":"pkg:/npm/%40actions/http-client@1.0.7","relationship":"indirect","scope":"runtime","dependencies":["tunnel"]},"tunnel":{"package_url":"pkg:/npm/tunnel@0.0.6","relationship":"indirect","scope":"runtime"}}}}}`+"\n")
-		fmt.Fprint(w, `{"id":12345,"created_at":"2022-06-14T20:25:01Z","message":"Dependency results for the repo have been successfully updated.","result":"SUCCESS"}`)
-	})
-
-	ctx := t.Context()
 	snapshot := &DependencyGraphSnapshot{
 		Version: 0,
 		Sha:     Ptr("ce587453ced02b1526dfb4cb910479d431683101"),
@@ -78,6 +71,13 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 		},
 	}
 
+	mux.HandleFunc("/repos/o/r/dependency-graph/snapshots", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, snapshot)
+		fmt.Fprint(w, `{"id":12345,"created_at":"2022-06-14T20:25:01Z","message":"Dependency results for the repo have been successfully updated.","result":"SUCCESS"}`)
+	})
+
+	ctx := t.Context()
 	snapshotCreationData, _, err := client.DependencyGraph.CreateSnapshot(ctx, "o", "r", snapshot)
 	if err != nil {
 		t.Errorf("DependencyGraph.CreateSnapshot returned error: %v", err)

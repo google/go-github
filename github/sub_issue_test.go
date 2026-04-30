@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -21,14 +20,8 @@ func TestSubIssuesService_Add(t *testing.T) {
 	input := &SubIssueRequest{SubIssueID: 42}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues", func(w http.ResponseWriter, r *http.Request) {
-		var v *SubIssueRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
 
@@ -104,14 +97,8 @@ func TestSubIssuesService_Remove(t *testing.T) {
 	input := &SubIssueRequest{SubIssueID: 42}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issue", func(w http.ResponseWriter, r *http.Request) {
-		var v *SubIssueRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "DELETE")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
 
@@ -144,15 +131,7 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues/priority", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-
-		var v *SubIssueRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
 

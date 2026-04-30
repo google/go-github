@@ -146,18 +146,20 @@ func TestCodespacesService_CreateInRepo(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/owner/repo/codespaces", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"ref":"main","geo":"WestUs2","machine":"standardLinux","idle_timeout_minutes":60}`+"\n")
-		fmt.Fprint(w, `{"id":1, "repository": {"id": 1296269}}`)
-	})
 	input := &CreateCodespaceOptions{
 		Ref:                Ptr("main"),
 		Geo:                Ptr("WestUs2"),
 		Machine:            Ptr("standardLinux"),
 		IdleTimeoutMinutes: Ptr(60),
 	}
+
+	mux.HandleFunc("/repos/owner/repo/codespaces", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"id":1, "repository": {"id": 1296269}}`)
+	})
+
 	ctx := t.Context()
 	codespace, _, err := client.Codespaces.CreateInRepo(ctx, "owner", "repo", input)
 	if err != nil {
@@ -450,15 +452,17 @@ func TestCodespacesService_CreateFromPullRequest(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/owner/repo/pulls/42/codespaces", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, `{"machine":"standardLinux","idle_timeout_minutes":60}`+"\n")
-		fmt.Fprint(w, `{"id":1, "repository": {"id": 1}}`)
-	})
 	input := &CreateCodespaceOptions{
 		Machine:            Ptr("standardLinux"),
 		IdleTimeoutMinutes: Ptr(60),
 	}
+
+	mux.HandleFunc("/repos/owner/repo/pulls/42/codespaces", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"id":1, "repository": {"id": 1}}`)
+	})
+
 	ctx := t.Context()
 	codespace, _, err := client.Codespaces.CreateFromPullRequest(ctx, "owner", "repo", 42, input)
 	if err != nil {
@@ -494,16 +498,6 @@ func TestCodespacesService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/codespaces", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(
-			t,
-			r,
-			`{"pull_request":null,"repository_id":111,"ref":"main","geo":"WestUs2","machine":"standardLinux","idle_timeout_minutes":60}`+"\n",
-		)
-		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
-	})
-
 	opt := &CodespaceCreateForUserOptions{
 		Ref:                Ptr("main"),
 		Geo:                Ptr("WestUs2"),
@@ -512,6 +506,12 @@ func TestCodespacesService_Create(t *testing.T) {
 		RepositoryID:       int64(111),
 		PullRequest:        nil,
 	}
+
+	mux.HandleFunc("/user/codespaces", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, opt)
+		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
+	})
 
 	ctx := t.Context()
 	codespace, _, err := client.Codespaces.Create(
@@ -586,16 +586,6 @@ func TestCodespacesService_Update(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/codespaces/codespace_1", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testBody(
-			t,
-			r,
-			`{"machine":"standardLinux","recent_folders":["folder1","folder2"]}`+"\n",
-		)
-		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
-	})
-
 	opt := &UpdateCodespaceOptions{
 		Machine: Ptr("standardLinux"),
 		RecentFolders: []string{
@@ -603,6 +593,12 @@ func TestCodespacesService_Update(t *testing.T) {
 			"folder2",
 		},
 	}
+
+	mux.HandleFunc("/user/codespaces/codespace_1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testJSONBody(t, r, opt)
+		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
+	})
 
 	ctx := t.Context()
 	codespace, _, err := client.Codespaces.Update(
@@ -725,20 +721,16 @@ func TestCodespacesService_Publish(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/user/codespaces/codespace_1/publish", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(
-			t,
-			r,
-			`{"name":"repo","private":true}`+"\n",
-		)
-		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
-	})
-
 	opt := &PublishCodespaceOptions{
 		Name:    Ptr("repo"),
 		Private: Ptr(true),
 	}
+
+	mux.HandleFunc("/user/codespaces/codespace_1/publish", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, opt)
+		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
+	})
 
 	ctx := t.Context()
 	repo, _, err := client.Codespaces.Publish(

@@ -130,9 +130,25 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := struct {
+		Properties []*CustomProperty `json:"properties"`
+	}{
+		Properties: []*CustomProperty{
+			{
+				PropertyName: Ptr("name"),
+				ValueType:    PropertyValueTypeSingleSelect,
+				Required:     Ptr(true),
+			},
+			{
+				PropertyName: Ptr("service"),
+				ValueType:    PropertyValueTypeString,
+			},
+		},
+	}
+
 	mux.HandleFunc("/orgs/o/properties/schema", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"properties":[{"property_name":"name","value_type":"single_select","required":true},{"property_name":"service","value_type":"string"}]}`+"\n")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `[
 		{
           "property_name": "name",
@@ -147,17 +163,7 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	properties, _, err := client.Organizations.CreateOrUpdateCustomProperties(ctx, "o", []*CustomProperty{
-		{
-			PropertyName: Ptr("name"),
-			ValueType:    PropertyValueTypeSingleSelect,
-			Required:     Ptr(true),
-		},
-		{
-			PropertyName: Ptr("service"),
-			ValueType:    PropertyValueTypeString,
-		},
-	})
+	properties, _, err := client.Organizations.CreateOrUpdateCustomProperties(ctx, "o", input.Properties)
 	if err != nil {
 		t.Errorf("Organizations.CreateOrUpdateCustomProperties returned error: %v", err)
 	}
@@ -489,18 +495,26 @@ func TestOrganizationsService_CreateOrUpdateRepoCustomPropertyValues(t *testing.
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := struct {
+		RepositoryNames []string               `json:"repository_names"`
+		Properties      []*CustomPropertyValue `json:"properties"`
+	}{
+		RepositoryNames: []string{"repo"},
+		Properties: []*CustomPropertyValue{
+			{
+				PropertyName: "service",
+				Value:        "string",
+			},
+		},
+	}
+
 	mux.HandleFunc("/orgs/o/properties/values", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"repository_names":["repo"],"properties":[{"property_name":"service","value":"string"}]}`+"\n")
+		testJSONBody(t, r, input)
 	})
 
 	ctx := t.Context()
-	_, err := client.Organizations.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", []string{"repo"}, []*CustomPropertyValue{
-		{
-			PropertyName: "service",
-			Value:        Ptr("string"),
-		},
-	})
+	_, err := client.Organizations.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", input.RepositoryNames, input.Properties)
 	if err != nil {
 		t.Errorf("Organizations.CreateOrUpdateCustomPropertyValuesForRepos returned error: %v", err)
 	}

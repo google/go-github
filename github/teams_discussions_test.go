@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -322,14 +321,8 @@ func TestTeamsService_CreateDiscussionByID(t *testing.T) {
 	input := TeamDiscussion{Title: Ptr("c_t"), Body: Ptr("c_b")}
 
 	mux.HandleFunc("/organizations/1/team/2/discussions", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamDiscussion
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
@@ -366,14 +359,8 @@ func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
 	input := TeamDiscussion{Title: Ptr("c_t"), Body: Ptr("c_b")}
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamDiscussion
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
@@ -410,14 +397,8 @@ func TestTeamsService_EditDiscussionByID(t *testing.T) {
 	input := TeamDiscussion{Title: Ptr("e_t"), Body: Ptr("e_b")}
 
 	mux.HandleFunc("/organizations/1/team/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamDiscussion
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
@@ -454,14 +435,8 @@ func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
 	input := TeamDiscussion{Title: Ptr("e_t"), Body: Ptr("e_b")}
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions/3", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamDiscussion
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":3}`)
 	})
 

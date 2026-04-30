@@ -7,7 +7,6 @@ package github
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -116,16 +115,8 @@ func TestGitService_CreateBlob(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/blobs", func(w http.ResponseWriter, r *http.Request) {
-		var v *Blob
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-
-		want := input
-		if !cmp.Equal(*v, want) {
-			t.Errorf("Git.CreateBlob request body: %+v, want %+v", *v, want)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 		 "sha": "s",
 		 "content": "blob content",

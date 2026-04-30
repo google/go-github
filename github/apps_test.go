@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -450,14 +449,8 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 	}
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
-		var v *InstallationTokenOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		if !cmp.Equal(v, installationTokenOptions) {
-			t.Errorf("request sent %+v, want %+v", v, installationTokenOptions)
-		}
-
 		testMethod(t, r, "POST")
+		testJSONBody(t, r, installationTokenOptions)
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
@@ -486,14 +479,8 @@ func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
 	}
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
-		var v *InstallationTokenListRepoOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		if !cmp.Equal(v, installationTokenListRepoOptions) {
-			t.Errorf("request sent %+v, want %+v", v, installationTokenListRepoOptions)
-		}
-
 		testMethod(t, r, "POST")
+		testJSONBody(t, r, installationTokenListRepoOptions)
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 

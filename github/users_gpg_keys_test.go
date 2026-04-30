@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -130,15 +129,13 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 -----END PGP PUBLIC KEY BLOCK-----`
 
 	mux.HandleFunc("/user/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
-		var gpgKey struct {
+		gpgKey := struct {
 			ArmoredPublicKey *string `json:"armored_public_key,omitempty"`
+		}{
+			ArmoredPublicKey: &input,
 		}
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&gpgKey))
-
 		testMethod(t, r, "POST")
-		if gpgKey.ArmoredPublicKey == nil || *gpgKey.ArmoredPublicKey != input {
-			t.Errorf("gpgKey = %+v, want %q", gpgKey, input)
-		}
+		testJSONBody(t, r, gpgKey)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

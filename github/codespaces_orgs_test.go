@@ -57,18 +57,18 @@ func TestCodespacesService_SetOrgAccessControl(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o1/codespaces/access", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testBody(t, r, `{"visibility":"selected_members","selected_usernames":["u1","u2"]}`+"\n")
-		w.WriteHeader(http.StatusNoContent)
-	})
-
-	ctx := t.Context()
 	req := CodespacesOrgAccessControlRequest{
 		Visibility:        "selected_members",
 		SelectedUsernames: []string{"u1", "u2"},
 	}
 
+	mux.HandleFunc("/orgs/o1/codespaces/access", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, req)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
 	_, err := client.Codespaces.SetOrgAccessControl(ctx, "o1", req)
 	if err != nil {
 		t.Fatalf("Codespaces.SetOrgAccessControl returned error: %v", err)

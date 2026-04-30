@@ -83,7 +83,7 @@ func TestEnterpriseService_CreateTeam(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"name":"New Team"}`+"\n")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"id": 10,
 			"name": "New Team",
@@ -172,7 +172,7 @@ func TestEnterpriseService_UpdateTeam(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/teams/t1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"Updated Team"}`+"\n")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"id": 3,
 			"name": "Updated Team",

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -408,13 +407,8 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInEnterprise(t *testi
 	input := &ArtifactPeriodOpt{Days: Ptr(90)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
-		var v *ArtifactPeriodOpt
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

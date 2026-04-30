@@ -475,10 +475,16 @@ func TestEnterpriseService_SetProvisionedSCIMGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := SCIMEnterpriseGroupAttributes{
+		Schemas:     []string{SCIMSchemasURINamespacesGroups},
+		ExternalID:  Ptr("8aa1"),
+		DisplayName: Ptr("dn"),
+	}
+
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/abcd", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"dn","externalId":"8aa1","schemas":["`+SCIMSchemasURINamespacesGroups+`"]}`+"\n")
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
@@ -507,11 +513,6 @@ func TestEnterpriseService_SetProvisionedSCIMGroup(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	input := SCIMEnterpriseGroupAttributes{
-		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  Ptr("8aa1"),
-		DisplayName: Ptr("dn"),
-	}
 	got, _, err := client.Enterprise.SetProvisionedSCIMGroup(ctx, "ee", "abcd", input)
 	if err != nil {
 		t.Fatalf("Enterprise.SetProvisionedSCIMGroup returned unexpected error: %v", err)
@@ -539,10 +540,23 @@ func TestEnterpriseService_SetProvisionedSCIMUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := SCIMEnterpriseUserAttributes{
+		Schemas:     []string{SCIMSchemasURINamespacesUser},
+		ExternalID:  "e123",
+		Active:      true,
+		UserName:    "e123",
+		DisplayName: "John Doe",
+		Emails: []*SCIMEnterpriseUserEmail{{
+			Value:   "john@example.com",
+			Type:    "work",
+			Primary: true,
+		}},
+	}
+
 	mux.HandleFunc("/scim/v2/enterprises/ee/Users/7fce", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"John Doe","userName":"e123","emails":[{"value":"john@example.com","primary":true,"type":"work"}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`+"\n")
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
@@ -585,18 +599,6 @@ func TestEnterpriseService_SetProvisionedSCIMUser(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	input := SCIMEnterpriseUserAttributes{
-		Schemas:     []string{SCIMSchemasURINamespacesUser},
-		ExternalID:  "e123",
-		Active:      true,
-		UserName:    "e123",
-		DisplayName: "John Doe",
-		Emails: []*SCIMEnterpriseUserEmail{{
-			Value:   "john@example.com",
-			Type:    "work",
-			Primary: true,
-		}},
-	}
 	got, _, err := client.Enterprise.SetProvisionedSCIMUser(ctx, "ee", "7fce", input)
 	if err != nil {
 		t.Fatalf("Enterprise.SetProvisionedSCIMUser returned unexpected error: %v", err)
@@ -624,10 +626,19 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := SCIMEnterpriseAttribute{
+		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
+		Operations: []*SCIMEnterpriseAttributeOperation{{
+			Op:    "replace",
+			Path:  Ptr("displayName"),
+			Value: "Employees",
+		}},
+	}
+
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/abcd", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"schemas":["`+SCIMSchemasURINamespacesPatchOp+`"],"Operations":[{"op":"replace","path":"displayName","value":"Employees"}]}`+"\n")
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
@@ -666,14 +677,6 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	input := SCIMEnterpriseAttribute{
-		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
-		Operations: []*SCIMEnterpriseAttributeOperation{{
-			Op:    "replace",
-			Path:  Ptr("displayName"),
-			Value: Ptr("Employees"),
-		}},
-	}
 	got, _, err := client.Enterprise.UpdateSCIMGroupAttribute(ctx, "ee", "abcd", input)
 	if err != nil {
 		t.Fatalf("Enterprise.UpdateSCIMGroupAttribute returned unexpected error: %v", err)
@@ -701,10 +704,23 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := SCIMEnterpriseAttribute{
+		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
+		Operations: []*SCIMEnterpriseAttributeOperation{{
+			Op:    "replace",
+			Path:  Ptr("emails[type eq 'work'].value"),
+			Value: "updatedEmail@example.com",
+		}, {
+			Op:    "replace",
+			Path:  Ptr("name.familyName"),
+			Value: "updatedFamilyName",
+		}},
+	}
+
 	mux.HandleFunc("/scim/v2/enterprises/ee/Users/7fce", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"schemas":["`+SCIMSchemasURINamespacesPatchOp+`"],"Operations":[{"op":"replace","path":"emails[type eq 'work'].value","value":"updatedEmail@example.com"},{"op":"replace","path":"name.familyName","value":"updatedFamilyName"}]}`+"\n")
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
@@ -767,18 +783,6 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	input := SCIMEnterpriseAttribute{
-		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
-		Operations: []*SCIMEnterpriseAttributeOperation{{
-			Op:    "replace",
-			Path:  Ptr("emails[type eq 'work'].value"),
-			Value: Ptr("updatedEmail@example.com"),
-		}, {
-			Op:    "replace",
-			Path:  Ptr("name.familyName"),
-			Value: Ptr("updatedFamilyName"),
-		}},
-	}
 	got, _, err := client.Enterprise.UpdateSCIMUserAttribute(ctx, "ee", "7fce", input)
 	if err != nil {
 		t.Fatalf("Enterprise.UpdateSCIMUserAttribute returned unexpected error: %v", err)
@@ -806,10 +810,23 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := SCIMEnterpriseGroupAttributes{
+		Schemas:     []string{SCIMSchemasURINamespacesGroups},
+		ExternalID:  Ptr("8aa1"),
+		DisplayName: Ptr("dn"),
+		Members: []*SCIMEnterpriseDisplayReference{{
+			Value:   "879d",
+			Display: Ptr("d1"),
+		}, {
+			Value:   "0db5",
+			Display: Ptr("d2"),
+		}},
+	}
+
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"dn","members":[{"value":"879d","display":"d1"},{"value":"0db5","display":"d2"}],"externalId":"8aa1","schemas":["`+SCIMSchemasURINamespacesGroups+`"]}`+"\n")
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesGroups+`"],
@@ -859,18 +876,6 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	input := SCIMEnterpriseGroupAttributes{
-		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  Ptr("8aa1"),
-		DisplayName: Ptr("dn"),
-		Members: []*SCIMEnterpriseDisplayReference{{
-			Value:   "879d",
-			Display: Ptr("d1"),
-		}, {
-			Value:   "0db5",
-			Display: Ptr("d2"),
-		}},
-	}
 	got, _, err := client.Enterprise.ProvisionSCIMGroup(ctx, "ee", input)
 	if err != nil {
 		t.Fatalf("Enterprise.ProvisionSCIMGroup returned unexpected error: %v", err)
@@ -898,10 +903,32 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := SCIMEnterpriseUserAttributes{
+		Schemas:    []string{SCIMSchemasURINamespacesUser},
+		ExternalID: "e123",
+		Active:     true,
+		UserName:   "e123",
+		Name: &SCIMEnterpriseUserName{
+			Formatted:  Ptr("John Doe"),
+			FamilyName: "Doe",
+			GivenName:  "John",
+		},
+		DisplayName: "DOE John",
+		Emails: []*SCIMEnterpriseUserEmail{{
+			Value:   "john@example.com",
+			Type:    "work",
+			Primary: true,
+		}},
+		Roles: []*SCIMEnterpriseUserRole{{
+			Value:   "User",
+			Primary: Ptr(false),
+		}},
+	}
+
 	mux.HandleFunc("/scim/v2/enterprises/ee/Users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeSCIM)
-		testBody(t, r, `{"displayName":"DOE John","name":{"givenName":"John","familyName":"Doe","formatted":"John Doe"},"userName":"e123","emails":[{"value":"john@example.com","primary":true,"type":"work"}],"roles":[{"value":"User","primary":false}],"externalId":"e123","active":true,"schemas":["`+SCIMSchemasURINamespacesUser+`"]}`+"\n")
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
 			"schemas": ["`+SCIMSchemasURINamespacesUser+`"],
@@ -962,27 +989,6 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	input := SCIMEnterpriseUserAttributes{
-		Schemas:    []string{SCIMSchemasURINamespacesUser},
-		ExternalID: "e123",
-		Active:     true,
-		UserName:   "e123",
-		Name: &SCIMEnterpriseUserName{
-			Formatted:  Ptr("John Doe"),
-			FamilyName: "Doe",
-			GivenName:  "John",
-		},
-		DisplayName: "DOE John",
-		Emails: []*SCIMEnterpriseUserEmail{{
-			Value:   "john@example.com",
-			Type:    "work",
-			Primary: true,
-		}},
-		Roles: []*SCIMEnterpriseUserRole{{
-			Value:   "User",
-			Primary: Ptr(false),
-		}},
-	}
 	got, _, err := client.Enterprise.ProvisionSCIMUser(ctx, "ee", input)
 	if err != nil {
 		t.Fatalf("Enterprise.ProvisionSCIMUser returned unexpected error: %v", err)

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -37,14 +36,9 @@ func TestIssueImportService_Create(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueImportRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		assertWrite(t, w, issueImportResponseJSON)
 	})
 
@@ -95,14 +89,9 @@ func TestIssueImportService_Create_deferred(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueImportRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusAccepted)
 		assertWrite(t, w, issueImportResponseJSON)
 	})
@@ -141,14 +130,9 @@ func TestIssueImportService_Create_badResponse(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueImportRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusAccepted)
 		assertWrite(t, w, []byte("{[}"))
 	})

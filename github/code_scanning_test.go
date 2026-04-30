@@ -63,22 +63,17 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 		URL: Ptr("https://example.com/testurl"),
 	}
 
-	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
-		var v *SarifAnalysis
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-		testMethod(t, r, "POST")
-		want := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+	sarifAnalysis := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
 
+	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, sarifAnalysis)
 		w.WriteHeader(http.StatusAccepted)
 		respBody, _ := json.Marshal(expectedSarifID)
 		_, _ = w.Write(respBody)
 	})
 
 	ctx := t.Context()
-	sarifAnalysis := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
 	respSarifID, _, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
 	if err != nil {
 		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)

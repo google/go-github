@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -170,23 +169,20 @@ func TestIssuesService_IsAssignee_invalidOwner(t *testing.T) {
 func TestIssuesService_AddAssignees(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	assignees := struct {
+		Assignees []string `json:"assignees,omitempty"`
+	}{
+		Assignees: []string{"user1", "user2"},
+	}
 
 	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {
-		var assignees struct {
-			Assignees []string `json:"assignees,omitempty"`
-		}
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&assignees))
-
 		testMethod(t, r, "POST")
-		want := []string{"user1", "user2"}
-		if !cmp.Equal(assignees.Assignees, want) {
-			t.Errorf("assignees = %+v, want %+v", assignees, want)
-		}
+		testJSONBody(t, r, assignees)
 		fmt.Fprint(w, `{"number":1,"assignees":[{"login":"user1"},{"login":"user2"}]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Issues.AddAssignees(ctx, "o", "r", 1, []string{"user1", "user2"})
+	got, _, err := client.Issues.AddAssignees(ctx, "o", "r", 1, assignees.Assignees)
 	if err != nil {
 		t.Errorf("Issues.AddAssignees returned error: %v", err)
 	}
@@ -215,22 +211,20 @@ func TestIssuesService_RemoveAssignees(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {
-		var assignees struct {
-			Assignees []string `json:"assignees,omitempty"`
-		}
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&assignees))
+	assignees := struct {
+		Assignees []string `json:"assignees,omitempty"`
+	}{
+		Assignees: []string{"user1", "user2"},
+	}
 
+	mux.HandleFunc("/repos/o/r/issues/1/assignees", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		want := []string{"user1", "user2"}
-		if !cmp.Equal(assignees.Assignees, want) {
-			t.Errorf("assignees = %+v, want %+v", assignees, want)
-		}
+		testJSONBody(t, r, assignees)
 		fmt.Fprint(w, `{"number":1,"assignees":[]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Issues.RemoveAssignees(ctx, "o", "r", 1, []string{"user1", "user2"})
+	got, _, err := client.Issues.RemoveAssignees(ctx, "o", "r", 1, assignees.Assignees)
 	if err != nil {
 		t.Errorf("Issues.RemoveAssignees returned error: %v", err)
 	}

@@ -182,19 +182,13 @@ func TestGitService_CreateCommit(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
-		var v *createCommit
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-
-		want := &createCommit{
+		want := createCommit{
 			Message: input.Message,
-			Tree:    Ptr("t"),
-			Parents: []string{"p"},
+			Tree:    input.Tree.SHA,
+			Parents: []string{*input.Parents[0].SHA},
 		}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"sha":"s"}`)
 	})
 
@@ -240,20 +234,19 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
-		var v *createCommit
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-
-		want := &createCommit{
+		want := struct {
+			Message   *string  `json:"message,omitempty"`
+			Tree      *string  `json:"tree,omitempty"`
+			Parents   []string `json:"parents,omitempty"`
+			Signature *string  `json:"signature,omitempty"`
+		}{
 			Message:   input.Message,
-			Tree:      Ptr("t"),
-			Parents:   []string{"p"},
-			Signature: &signature,
+			Tree:      input.Tree.SHA,
+			Parents:   []string{*input.Parents[0].SHA},
+			Signature: input.Verification.Signature,
 		}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"sha":"commitSha"}`)
 	})
 

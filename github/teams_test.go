@@ -192,14 +192,8 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 	input := NewTeam{Name: "n", Privacy: Ptr("closed"), RepoNames: []string{"r"}}
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
-		var v *NewTeam
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -245,14 +239,8 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 	input := NewTeam{Name: "n", Privacy: Ptr("closed")}
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *NewTeam
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -329,14 +317,8 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 	input := NewTeam{Name: "n", Privacy: Ptr("closed")}
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
-		var v *NewTeam
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -791,14 +773,8 @@ func TestTeamsService_AddTeamRepoByID(t *testing.T) {
 	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
 
 	mux.HandleFunc("/organizations/1/team/1/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamAddTeamRepoOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, opt) {
-			t.Errorf("Request body = %+v, want %+v", v, opt)
-		}
-
+		testJSONBody(t, r, opt)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -826,14 +802,8 @@ func TestTeamsService_AddTeamRepoBySlug(t *testing.T) {
 	opt := &TeamAddTeamRepoOptions{Permission: "admin"}
 
 	mux.HandleFunc("/orgs/org/teams/slug/repos/owner/repo", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamAddTeamRepoOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, opt) {
-			t.Errorf("Request body = %+v, want %+v", v, opt)
-		}
-
+		testJSONBody(t, r, opt)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -1161,13 +1131,7 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 	mux.HandleFunc("/organizations/1/team/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
-
-		var v *TeamProjectOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-		if !cmp.Equal(v, opt) {
-			t.Errorf("Request body = %+v, want %+v", v, opt)
-		}
-
+		testJSONBody(t, r, opt)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -1199,13 +1163,7 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeProjectsPreview)
-
-		var v *TeamProjectOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-		if !cmp.Equal(v, opt) {
-			t.Errorf("Request body = %+v, want %+v", v, opt)
-		}
-
+		testJSONBody(t, r, opt)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

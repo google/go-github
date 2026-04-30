@@ -6,12 +6,9 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
-
-	"github.com/google/go-cmp/cmp"
 )
 
 func TestMarkdownService_Markdown(t *testing.T) {
@@ -24,13 +21,8 @@ func TestMarkdownService_Markdown(t *testing.T) {
 		Context: Ptr("google/go-github"),
 	}
 	mux.HandleFunc("/markdown", func(w http.ResponseWriter, r *http.Request) {
-		var v *markdownRenderRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `<h1>text</h1>`)
 	})
 

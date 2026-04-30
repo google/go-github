@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -55,13 +54,8 @@ func TestRepositoriesService_EditActionsAccessLevel(t *testing.T) {
 	input := &RepositoryActionsAccessLevel{AccessLevel: Ptr("organization")}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/access", func(_ http.ResponseWriter, r *http.Request) {
-		var v *RepositoryActionsAccessLevel
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 	})
 
 	ctx := t.Context()

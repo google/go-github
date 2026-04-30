@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -57,14 +56,8 @@ func TestUsersService_AddEmails(t *testing.T) {
 	input := []string{"new@example.com"}
 
 	mux.HandleFunc("/user/emails", func(w http.ResponseWriter, r *http.Request) {
-		var v []string
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `[{"email":"old@example.com"}, {"email":"new@example.com"}]`)
 	})
 
@@ -99,13 +92,8 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 	input := []string{"user@example.com"}
 
 	mux.HandleFunc("/user/emails", func(_ http.ResponseWriter, r *http.Request) {
-		var v []string
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "DELETE")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 	})
 
 	ctx := t.Context()
@@ -148,14 +136,8 @@ func TestUsersService_SetEmailVisibility(t *testing.T) {
 	input := &UserEmail{Visibility: Ptr("private")}
 
 	mux.HandleFunc("/user/email/visibility", func(w http.ResponseWriter, r *http.Request) {
-		var v *UserEmail
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `[{
 			"email": "user@example.com",
 			"verified": false,

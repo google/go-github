@@ -1630,10 +1630,15 @@ func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_EmptySlice(t *tes
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := RepositoryRuleset{
+		Name:         "test ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: []*BypassActor{},
+	}
+
 	mux.HandleFunc("/orgs/o/rulesets/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-
-		testBody(t, r, `{"name":"test ruleset","source":"","enforcement":"active","bypass_actors":[]}`+"\n")
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{
 			"id": 21,
@@ -1646,12 +1651,6 @@ func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_EmptySlice(t *tes
 	})
 
 	ctx := t.Context()
-	input := RepositoryRuleset{
-		Name:         "test ruleset",
-		Enforcement:  RulesetEnforcementActive,
-		BypassActors: []*BypassActor{},
-	}
-
 	_, _, err := client.Organizations.UpdateRepositoryRuleset(ctx, "o", 21, input)
 	if err != nil {
 		t.Errorf("Organizations.UpdateRepositoryRuleset returned error: %v", err)

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -331,14 +330,8 @@ func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
 	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamAddTeamMembershipOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, opt) {
-			t.Errorf("Request body = %+v, want %+v", v, opt)
-		}
-
+		testJSONBody(t, r, opt)
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
@@ -375,14 +368,8 @@ func TestTeamsService__AddTeamMembershipByID_notFound(t *testing.T) {
 	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
 
 	mux.HandleFunc("/organizations/1/team/2/memberships/u", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamAddTeamMembershipOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, opt) {
-			t.Errorf("Request body = %+v, want %+v", v, opt)
-		}
-
+		testJSONBody(t, r, opt)
 		w.WriteHeader(http.StatusNotFound)
 	})
 
@@ -420,14 +407,8 @@ func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
 	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamAddTeamMembershipOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, opt) {
-			t.Errorf("Request body = %+v, want %+v", v, opt)
-		}
-
+		testJSONBody(t, r, opt)
 		fmt.Fprint(w, `{"url":"u", "state":"pending"}`)
 	})
 
@@ -464,14 +445,8 @@ func TestTeamsService__AddTeamMembershipBySlug_notFound(t *testing.T) {
 	opt := &TeamAddTeamMembershipOptions{Role: "maintainer"}
 
 	mux.HandleFunc("/orgs/o/teams/s/memberships/u", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamAddTeamMembershipOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, opt) {
-			t.Errorf("Request body = %+v, want %+v", v, opt)
-		}
-
+		testJSONBody(t, r, opt)
 		w.WriteHeader(http.StatusNotFound)
 	})
 
