@@ -822,11 +822,12 @@ func (s *CopilotService) GetOrganizationUsersMetricsReport(ctx context.Context, 
 // DownloadCopilotMetrics downloads a Copilot metrics report from the provided download link
 // and decodes it as a []*CopilotMetrics.
 //
-// Deprecated: the payloads served at the download links returned by the new
+// Deprecated: Use DownloadDailyMetrics,
+// DownloadPeriodicMetrics, DownloadUserDailyMetrics, DownloadUserPeriodicMetrics instead.
+// The payloads served at the download links returned by the new
 // Get*MetricsReport endpoints on GitHub.com do not match the CopilotMetrics shape
-// (see https://github.com/google/go-github/issues/4136). Use DownloadDailyMetrics,
-// DownloadPeriodicMetrics, DownloadUserDailyMetrics, or DownloadUserPeriodicMetrics
-// depending on which Get*MetricsReport produced the link. This method is retained
+// (see https://github.com/google/go-github/issues/4136).
+// This method is retained
 // for GitHub Enterprise Server installations that may still serve the legacy shape.
 func (s *CopilotService) DownloadCopilotMetrics(ctx context.Context, url string) ([]*CopilotMetrics, *Response, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
