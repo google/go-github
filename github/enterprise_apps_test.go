@@ -57,7 +57,7 @@ func TestEnterpriseService_UpdateAppInstallationRepositories(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/apps/organizations/o/installations/1/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"repository_selection":"selected","selected_repository_ids":[1,2]}`+"\n")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1, "repository_selection":"selected"}`)
 	})
 
@@ -92,7 +92,7 @@ func TestEnterpriseService_AddRepositoriesToAppInstallation(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/apps/organizations/o/installations/1/repositories/add", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"selected_repository_ids":[1,2]}`+"\n")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 
@@ -127,7 +127,7 @@ func TestEnterpriseService_RemoveRepositoriesFromAppInstallation(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/apps/organizations/o/installations/1/repositories/remove", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"selected_repository_ids":[1,2]}`+"\n")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `[{"id":1},{"id":2}]`)
 	})
 

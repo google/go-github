@@ -515,17 +515,19 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/check-suites/preferences", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
-		testBody(t, r, `{"auto_trigger_checks":[{"app_id":2,"setting":false}]}`+"\n")
-		fmt.Fprint(w, `{"preferences":{"auto_trigger_checks":[{"app_id": 2,"setting": false}]}}`)
-	})
 	a := []*AutoTriggerCheck{{
 		AppID:   Ptr(int64(2)),
 		Setting: Ptr(false),
 	}}
 	opt := CheckSuitePreferenceOptions{AutoTriggerChecks: a}
+
+	mux.HandleFunc("/repos/o/r/check-suites/preferences", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Accept", mediaTypeCheckRunsPreview)
+		testJSONBody(t, r, opt)
+		fmt.Fprint(w, `{"preferences":{"auto_trigger_checks":[{"app_id": 2,"setting": false}]}}`)
+	})
+
 	ctx := t.Context()
 	prefResults, _, err := client.Checks.SetCheckSuitePreferences(ctx, "o", "r", opt)
 	if err != nil {

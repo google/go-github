@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -26,14 +25,8 @@ func TestMigrationService_StartImport(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
-		var v *Import
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"status":"importing"}`)
 	})
@@ -109,14 +102,8 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
-		var v *Import
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"status":"importing"}`)
 	})
@@ -190,14 +177,8 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 	input := &SourceImportAuthor{Name: Ptr("n"), Email: Ptr("e")}
 
 	mux.HandleFunc("/repos/o/r/import/authors/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *SourceImportAuthor
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id": 1}`)
 	})
 
@@ -233,14 +214,8 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 	input := &Import{UseLFS: Ptr("opt_in")}
 
 	mux.HandleFunc("/repos/o/r/import/lfs", func(w http.ResponseWriter, r *http.Request) {
-		var v *Import
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"status":"importing"}`)
 	})

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -344,14 +343,8 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/personal-access-token-requests/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *ReviewPersonalAccessTokenRequestOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

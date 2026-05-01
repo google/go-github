@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -21,15 +20,9 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 	input := &Hook{CreatedAt: &Timestamp{referenceTime}}
 
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
-		var v *createHookRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		want := &createHookRequest{Name: "web"}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -171,13 +164,8 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 	input := &Hook{}
 
 	mux.HandleFunc("/repos/o/r/hooks/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *Hook
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

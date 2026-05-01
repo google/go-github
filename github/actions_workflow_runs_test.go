@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -1604,14 +1603,8 @@ func TestActionService_PendingDeployments(t *testing.T) {
 	input := &PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: "approved", Comment: ""}
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
-		var v *PendingDeploymentsRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
 	})
 

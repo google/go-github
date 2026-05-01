@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -97,14 +96,8 @@ func TestOrganizationsService_CreateIssueType(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/issue-types", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateOrUpdateIssueTypesOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 				"id": 410,
 				"node_id": "IT_kwDNAd3NAZo",
@@ -161,14 +154,8 @@ func TestOrganizationsService_UpdateIssueType(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/issue-types/410", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateOrUpdateIssueTypesOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 				"id": 410,
 				"node_id": "IT_kwDNAd3NAZo",

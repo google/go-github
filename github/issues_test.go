@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -307,14 +306,8 @@ func TestIssuesService_Create(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
@@ -360,14 +353,8 @@ func TestIssuesService_Edit(t *testing.T) {
 	input := &IssueRequest{Title: Ptr("t"), Type: Ptr("bug")}
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":1, "type": {"name": "bug"}}`)
 	})
 

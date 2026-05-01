@@ -135,17 +135,17 @@ func TestEnterpriseService_InstallApp(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/apps/organizations/org1/installations", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, `{"client_id":"cid","repository_selection":"selected","repositories":["r1","r2"]}`+"\n")
-		fmt.Fprint(w, `{"id":555}`)
-	})
-
 	req := InstallAppRequest{
 		ClientID:            "cid",
 		RepositorySelection: "selected",
 		Repositories:        []string{"r1", "r2"},
 	}
+
+	mux.HandleFunc("/enterprises/e/apps/organizations/org1/installations", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, req)
+		fmt.Fprint(w, `{"id":555}`)
+	})
 
 	ctx := t.Context()
 	installation, _, err := client.Enterprise.InstallApp(ctx, "e", "org1", req)

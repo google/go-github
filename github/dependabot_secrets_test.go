@@ -170,18 +170,23 @@ func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &DependabotEncryptedSecret{
 		Name:           "NAME",
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
 	}
+
+	mux.HandleFunc("/repos/o/r/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		want := DependabotEncryptedSecret{
+			EncryptedValue: input.EncryptedValue,
+			KeyID:          input.KeyID,
+		}
+		testJSONBody(t, r, want)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Dependabot.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
 	if err != nil {
@@ -352,13 +357,6 @@ func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv=","visibility":"selected","selected_repository_ids":["1296269","1269280"]}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &DependabotEncryptedSecret{
 		Name:                  "NAME",
 		EncryptedValue:        "QIv=",
@@ -366,6 +364,25 @@ func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 		Visibility:            "selected",
 		SelectedRepositoryIDs: DependabotSecretsSelectedRepoIDs{1296269, 1269280},
 	}
+
+	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		want := DependabotEncryptedSecret{
+			EncryptedValue: input.EncryptedValue,
+			KeyID:          input.KeyID,
+			Visibility:     input.Visibility,
+		}
+		testJSONBody(t, r, struct {
+			*DependabotEncryptedSecret
+			SelectedRepositoryIDs []string `json:"selected_repository_ids,omitempty"`
+		}{
+			DependabotEncryptedSecret: &want,
+			SelectedRepositoryIDs:     []string{"1296269", "1269280"},
+		})
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", input)
 	if err != nil {
@@ -432,26 +449,32 @@ func TestDependabotService_SetSelectedReposForOrgSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := DependabotSecretsSelectedRepoIDs{64780797}
+
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME/repositories", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
+		testJSONBody(t, r, struct {
+			SelectedIDs DependabotSecretsSelectedRepoIDs `json:"selected_repository_ids"`
+		}{
+			SelectedIDs: input,
+		})
 	})
 
 	ctx := t.Context()
-	_, err := client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", DependabotSecretsSelectedRepoIDs{64780797})
+	_, err := client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", input)
 	if err != nil {
 		t.Errorf("Dependabot.SetSelectedReposForOrgSecret returned error: %v", err)
 	}
 
 	const methodName = "SetSelectedReposForOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.SetSelectedReposForOrgSecret(ctx, "\n", "\n", DependabotSecretsSelectedRepoIDs{64780797})
+		_, err = client.Dependabot.SetSelectedReposForOrgSecret(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", DependabotSecretsSelectedRepoIDs{64780797})
+		return client.Dependabot.SetSelectedReposForOrgSecret(ctx, "o", "NAME", input)
 	})
 }
 

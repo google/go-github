@@ -19,7 +19,11 @@ func TestAuthorizationsService_Check(t *testing.T) {
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"access_token":"a"}`+"\n")
+		testJSONBody(t, r, struct {
+			AccessToken string `json:"access_token"`
+		}{
+			AccessToken: "a",
+		})
 		testHeader(t, r, "Accept", mediaTypeOAuthAppPreview)
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -56,7 +60,11 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"access_token":"a"}`+"\n")
+		testJSONBody(t, r, struct {
+			AccessToken string `json:"access_token"`
+		}{
+			AccessToken: "a",
+		})
 		testHeader(t, r, "Accept", mediaTypeOAuthAppPreview)
 		fmt.Fprint(w, `{"ID":1}`)
 	})
@@ -93,7 +101,11 @@ func TestAuthorizationsService_Revoke(t *testing.T) {
 
 	mux.HandleFunc("/applications/id/token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"access_token":"a"}`+"\n")
+		testJSONBody(t, r, struct {
+			AccessToken string `json:"access_token"`
+		}{
+			AccessToken: "a",
+		})
 		testHeader(t, r, "Accept", mediaTypeOAuthAppPreview)
 		w.WriteHeader(http.StatusNoContent)
 	})
@@ -121,7 +133,11 @@ func TestDeleteGrant(t *testing.T) {
 
 	mux.HandleFunc("/applications/id/grant", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"access_token":"a"}`+"\n")
+		testJSONBody(t, r, struct {
+			AccessToken string `json:"access_token"`
+		}{
+			AccessToken: "a",
+		})
 		testHeader(t, r, "Accept", mediaTypeOAuthAppPreview)
 	})
 
@@ -146,12 +162,14 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	req := &AuthorizationRequest{Scopes: []Scope{ScopePublicRepo}}
+
 	mux.HandleFunc("/admin/users/u/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
+		testJSONBody(t, r, req)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
-	req := &AuthorizationRequest{Scopes: []Scope{ScopePublicRepo}}
 	ctx := t.Context()
 	got, _, err := client.Authorizations.CreateImpersonation(ctx, "u", req)
 	if err != nil {

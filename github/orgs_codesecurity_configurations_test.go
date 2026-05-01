@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -116,13 +115,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
-		var v CodeSecurityConfiguration
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		if !cmp.Equal(v, input) {
-			t.Errorf("Organizations.CreateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"id":1,
 			"name":"config1",
@@ -183,13 +176,7 @@ func TestOrganizationsService_CreateCodeSecurityConfigurationWithDelegatedBypass
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
-		var v CodeSecurityConfiguration
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		if !cmp.Equal(v, input) {
-			t.Errorf("Organizations.CreateCodeSecurityConfiguration with Bypass request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"id":123,
 			"name":"config1",
@@ -363,13 +350,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
-		var v CodeSecurityConfiguration
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		if !cmp.Equal(v, input) {
-			t.Errorf("Organizations.UpdateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"id":1,
 			"name":"config1",
@@ -440,20 +421,17 @@ func TestOrganizationsService_AttachCodeSecurityConfigurationToRepositories(t *t
 	ctx := t.Context()
 	client, mux, _ := setup(t)
 
+	request := struct {
+		Scope                 string  `json:"scope"`
+		SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
+	}{
+		Scope:                 "selected",
+		SelectedRepositoryIDs: []int64{5, 20},
+	}
+
 	mux.HandleFunc("/orgs/o/code-security/configurations/1/attach", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		type request struct {
-			Scope                 string  `json:"scope"`
-			SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
-		}
-		var v *request
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-		if v.Scope != "selected" {
-			t.Errorf("Organizations.AttachCodeSecurityConfigurationToRepositories request body scope = %v, want selected", v.Scope)
-		}
-		if !cmp.Equal(v.SelectedRepositoryIDs, []int64{5, 20}) {
-			t.Errorf("Organizations.AttachCodeSecurityConfigurationToRepositories request body selected_repository_ids = %+v, want %+v", v.SelectedRepositoryIDs, []int64{5, 20})
-		}
+		testJSONBody(t, r, request)
 		w.WriteHeader(http.StatusAccepted)
 	})
 

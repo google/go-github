@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -116,13 +115,8 @@ func TestEnterpriseService_CreateCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	mux.HandleFunc("/enterprises/e/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
-		var v CodeSecurityConfiguration
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		if !cmp.Equal(v, input) {
-			t.Errorf("Enterprise.CreateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
-		}
-
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"id":1,
 			"name":"config1",
@@ -225,13 +219,8 @@ func TestEnterpriseService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	}
 
 	mux.HandleFunc("/enterprises/e/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
-		var v CodeSecurityConfiguration
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		if !cmp.Equal(v, input) {
-			t.Errorf("Enterprise.UpdateCodeSecurityConfiguration request body = %+v, want %+v", v, input)
-		}
-
+		testMethod(t, r, "PATCH")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"id":1,
 			"name":"config1",
@@ -301,21 +290,18 @@ func TestEnterpriseService_AttachCodeSecurityConfigurationToRepositories(t *test
 	t.Parallel()
 	ctx := t.Context()
 	client, mux, _ := setup(t)
-
+	input := struct {
+		Scope string `json:"scope"`
+	}{
+		Scope: "all_without_configurations",
+	}
 	mux.HandleFunc("/enterprises/e/code-security/configurations/1/attach", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		type request struct {
-			Scope string `json:"scope"`
-		}
-		var v *request
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-		if v.Scope != "all_without_configurations" {
-			t.Errorf("Enterprise.AttachCodeSecurityConfigurationToRepositories request body scope = %v, want selected", v.Scope)
-		}
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusAccepted)
 	})
 
-	resp, err := client.Enterprise.AttachCodeSecurityConfigurationToRepositories(ctx, "e", int64(1), "all_without_configurations")
+	resp, err := client.Enterprise.AttachCodeSecurityConfigurationToRepositories(ctx, "e", int64(1), input.Scope)
 	if err != nil {
 		t.Errorf("Enterprise.AttachCodeSecurityConfigurationToRepositories returned error: %v", err)
 	}
@@ -332,7 +318,7 @@ func TestEnterpriseService_AttachCodeSecurityConfigurationToRepositories(t *test
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		resp, err := client.Enterprise.AttachCodeSecurityConfigurationToRepositories(ctx, "e", 1, "all_without_configurations")
+		resp, err := client.Enterprise.AttachCodeSecurityConfigurationToRepositories(ctx, "e", 1, input.Scope)
 		return resp, err
 	})
 }

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -68,18 +67,7 @@ func TestOrganizationsService_UpdateImmutableReleasesSettings(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/settings/immutable-releases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-
-		var gotBody map[string]any
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&gotBody))
-
-		wantBody := map[string]any{
-			"enforced_repositories": "selected",
-		}
-
-		if !cmp.Equal(gotBody, wantBody) {
-			t.Errorf("Request body = %+v, want %+v", gotBody, wantBody)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 		fmt.Fprint(w, `{"enforced_repositories":"selected"}`)
 	})
@@ -166,16 +154,8 @@ func TestOrganizationsService_SetImmutableReleaseRepositories(t *testing.T) {
 	input := []int64{1, 2, 3}
 	mux.HandleFunc("/orgs/o/settings/immutable-releases/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-
-		var gotBody setImmutableReleasesRepositoriesOptions
-		if err := json.NewDecoder(r.Body).Decode(&gotBody); err != nil {
-			t.Fatalf("Failed to decode request body: %v", err)
-		}
-
-		if !cmp.Equal(gotBody.SelectedRepositoryIDs, input) {
-			t.Errorf("Request body = %+v, want %+v", gotBody.SelectedRepositoryIDs, input)
-		}
-
+		want := setImmutableReleasesRepositoriesOptions{SelectedRepositoryIDs: input}
+		testJSONBody(t, r, want)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

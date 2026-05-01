@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -352,18 +351,11 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
+
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-
-		var v *SecretScanningAlertUpdateOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		want := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
-
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, opts)
 		fmt.Fprint(w, `{
 			"number": 1,
 			"created_at": "1996-06-20T00:00:00Z",
@@ -381,8 +373,6 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
-
 	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("SecretScanning.UpdateAlert returned error: %v", err)
@@ -623,16 +613,11 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 
 	owner := "o"
 	repo := "r"
+	opts := PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
 
 	mux.HandleFunc(fmt.Sprintf("/repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		var v *PushProtectionBypassRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-		want := &PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, opts)
 		fmt.Fprint(w, `{
 			"reason": "valid reason",
 			"expire_at": "2018-01-01T00:00:00Z",
@@ -641,7 +626,6 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
 
 	bypass, _, err := client.SecretScanning.CreatePushProtectionBypass(ctx, owner, repo, opts)
 	if err != nil {

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -55,14 +54,8 @@ func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 	input := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("selected"), SHAPinningRequired: Ptr(true)}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
-		var v *ActionsPermissionsRepository
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"enabled": true, "allowed_actions": "selected", "sha_pinning_required": true}`)
 	})
 
@@ -154,14 +147,8 @@ func TestRepositoriesService_UpdateDefaultWorkflowPermissions(t *testing.T) {
 	input := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
-		var v *DefaultWorkflowPermissionRepository
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
 
@@ -236,13 +223,8 @@ func TestRepositoriesService_UpdateArtifactAndLogRetentionPeriod(t *testing.T) {
 	input := &ArtifactPeriodOpt{Days: Ptr(90)}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
-		var v *ArtifactPeriodOpt
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -317,13 +299,8 @@ func TestRepositoriesService_UpdatePrivateRepoForkPRWorkflowSettings(t *testing.
 	}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {
-		var v *WorkflowsPermissionsOpt
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -389,13 +366,8 @@ func TestActionsService_UpdateForkPRContributorApprovalPermissions(t *testing.T)
 	input := ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
-		var v *ContributorApprovalPermissions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, &input)
-		}
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

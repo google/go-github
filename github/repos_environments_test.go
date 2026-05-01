@@ -185,14 +185,9 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateUpdateEnvironment
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
 		want := &CreateUpdateEnvironment{WaitTimer: Ptr(30), CanAdminsBypass: Ptr(true)}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "type": "wait_timer", "wait_timer": 30}]}`)
 	})
 
@@ -230,18 +225,13 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 	callCount := 0
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateUpdateEnvironment
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
 		if callCount == 0 {
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			callCount++
 		} else {
 			want := &CreateUpdateEnvironment{}
-			if !cmp.Equal(v, want) {
-				t.Errorf("Request body = %+v, want %+v", v, want)
-			}
+			testJSONBody(t, r, want)
 			fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": []}`)
 		}
 	})
@@ -270,19 +260,8 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
-		var v *createUpdateEnvironmentNoEnterprise
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		want := &createUpdateEnvironmentNoEnterprise{
-			DeploymentBranchPolicy: &BranchPolicy{
-				ProtectedBranches:    Ptr(true),
-				CustomBranchPolicies: Ptr(false),
-			},
-		}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "node_id": "id", "type": "branch_policy"}], "deployment_branch_policy": {"protected_branches": true, "custom_branch_policies": false}}`)
 	})
 

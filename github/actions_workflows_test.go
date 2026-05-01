@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -242,14 +241,8 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 		},
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v CreateWorkflowDispatchEventRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, event) {
-			t.Errorf("Request body = %+v, want %+v", v, event)
-		}
-
+		testJSONBody(t, r, event)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{"workflow_run_id":1,"run_url":"https://api.github.com/repos/o/r/actions/runs/1","html_url":"https://github.com/o/r/actions/runs/1"}`)
 	})
@@ -303,14 +296,8 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 		},
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v CreateWorkflowDispatchEventRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, event) {
-			t.Errorf("Request body = %+v, want %+v", v, event)
-		}
-
+		testJSONBody(t, r, event)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{"workflow_run_id":1,"run_url":"https://api.github.com/repos/o/r/actions/runs/1","html_url":"https://github.com/o/r/actions/runs/1"}`)
 	})
@@ -363,14 +350,8 @@ func TestActionsService_CreateWorkflowDispatchEventByID_noRunDetails(t *testing.
 		},
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v CreateWorkflowDispatchEventRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, event) {
-			t.Errorf("Request body = %+v, want %+v", v, event)
-		}
-
+		testJSONBody(t, r, event)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -396,14 +377,8 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName_noRunDetails(t *te
 		},
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v CreateWorkflowDispatchEventRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, event) {
-			t.Errorf("Request body = %+v, want %+v", v, event)
-		}
-
+		testJSONBody(t, r, event)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

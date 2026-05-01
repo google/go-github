@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -345,13 +344,8 @@ func TestGitService_CreateRef(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateRef
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(*v, args) {
-			t.Errorf("Request body = %+v, want %+v", *v, args)
-		}
+		testJSONBody(t, r, args)
 		fmt.Fprint(w, `
 		  {
 		    "ref": "refs/heads/b",
@@ -430,13 +424,8 @@ func TestGitService_UpdateRef(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
-		var v *UpdateRef
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(*v, args) {
-			t.Errorf("Request body = %+v, want %+v", *v, args)
-		}
+		testJSONBody(t, r, args)
 		fmt.Fprint(w, `
 		  {
 		    "ref": "refs/heads/b",
@@ -591,13 +580,8 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b#1", func(w http.ResponseWriter, r *http.Request) {
-		var v *UpdateRef
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(*v, args) {
-			t.Errorf("Request body = %+v, want %+v", *v, args)
-		}
+		testJSONBody(t, r, args)
 		fmt.Fprint(w, `
 		  {
 		    "ref": "refs/heads/b#1",

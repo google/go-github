@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -169,14 +168,8 @@ func TestGistsService_CreateComment(t *testing.T) {
 	input := &GistComment{ID: Ptr(int64(1)), Body: Ptr("b")}
 
 	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
-		var v *GistComment
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -222,14 +215,8 @@ func TestGistsService_EditComment(t *testing.T) {
 	input := &GistComment{ID: Ptr(int64(1)), Body: Ptr("b")}
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
-		var v *GistComment
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 

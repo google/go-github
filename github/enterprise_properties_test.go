@@ -89,9 +89,25 @@ func TestEnterpriseService_CreateOrUpdateCustomProperties(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	properties := []*CustomProperty{
+		{
+			PropertyName: Ptr("name"),
+			ValueType:    PropertyValueTypeSingleSelect,
+			Required:     Ptr(true),
+		},
+		{
+			PropertyName: Ptr("service"),
+			ValueType:    PropertyValueTypeString,
+		},
+	}
+
 	mux.HandleFunc("/enterprises/e/properties/schema", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"properties":[{"property_name":"name","value_type":"single_select","required":true},{"property_name":"service","value_type":"string"}]}`+"\n")
+		testJSONBody(t, r, struct {
+			Properties []*CustomProperty `json:"properties"`
+		}{
+			Properties: properties,
+		})
 		fmt.Fprint(w, `[
 		{
           "property_name": "name",
@@ -106,17 +122,7 @@ func TestEnterpriseService_CreateOrUpdateCustomProperties(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	properties, _, err := client.Enterprise.CreateOrUpdateCustomProperties(ctx, "e", []*CustomProperty{
-		{
-			PropertyName: Ptr("name"),
-			ValueType:    PropertyValueTypeSingleSelect,
-			Required:     Ptr(true),
-		},
-		{
-			PropertyName: Ptr("service"),
-			ValueType:    PropertyValueTypeString,
-		},
-	})
+	properties, _, err := client.Enterprise.CreateOrUpdateCustomProperties(ctx, "e", properties)
 	if err != nil {
 		t.Errorf("Enterprise.CreateOrUpdateCustomProperties returned error: %v", err)
 	}

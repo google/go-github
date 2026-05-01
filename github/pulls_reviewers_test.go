@@ -123,15 +123,17 @@ func TestRequestReviewers(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}}
+
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"reviewers":["octocat","googlebot"],"team_reviewers":["justice-league","injustice-league"]}`+"\n")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
 	// This returns a PR, unmarshaling of which is tested elsewhere
 	ctx := t.Context()
-	got, _, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
+	got, _, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
 	}
@@ -142,7 +144,7 @@ func TestRequestReviewers(t *testing.T) {
 
 	const methodName = "RequestReviewers"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
+		got, resp, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -154,20 +156,22 @@ func TestRemoveReviewers(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league"}}
+
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"reviewers":["octocat","googlebot"],"team_reviewers":["justice-league"]}`+"\n")
+		testJSONBody(t, r, input)
 	})
 
 	ctx := t.Context()
-	_, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league"}})
+	_, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.RemoveReviewers returned error: %v", err)
 	}
 
 	const methodName = "RemoveReviewers"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league"}})
+		return client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, input)
 	})
 }
 
@@ -175,20 +179,27 @@ func TestRemoveReviewers_teamsOnly(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := ReviewersRequest{TeamReviewers: []string{"justice-league"}}
+
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"reviewers":[],"team_reviewers":["justice-league"]}`+"\n")
+		want := ReviewersRequest{
+			NodeID:        nil,
+			Reviewers:     []string{},
+			TeamReviewers: input.TeamReviewers,
+		}
+		testJSONBody(t, r, want)
 	})
 
 	ctx := t.Context()
-	_, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{TeamReviewers: []string{"justice-league"}})
+	_, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.RemoveReviewers returned error: %v", err)
 	}
 
 	const methodName = "RemoveReviewers"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{TeamReviewers: []string{"justice-league"}})
+		return client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, input)
 	})
 }
 

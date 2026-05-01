@@ -66,7 +66,7 @@ func TestAppsService_UpdateHookConfig(t *testing.T) {
 
 	mux.HandleFunc("/app/hook/config", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"content_type":"json","insecure_ssl":"1","url":"u","secret":"s"}`+"\n")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"content_type": "json",
 			"insecure_ssl": "1",

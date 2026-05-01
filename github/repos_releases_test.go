@@ -7,7 +7,6 @@ package github
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -57,15 +56,16 @@ func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/releases/generate-notes", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testBody(t, r, `{"tag_name":"v1.0.0"}`+"\n")
-		fmt.Fprint(w, `{"name":"v1.0.0","body":"**Full Changelog**: https://github.com/o/r/compare/v0.9.0...v1.0.0"}`)
-	})
-
 	opt := &GenerateNotesOptions{
 		TagName: "v1.0.0",
 	}
+
+	mux.HandleFunc("/repos/o/r/releases/generate-notes", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, opt)
+		fmt.Fprint(w, `{"name":"v1.0.0","body":"**Full Changelog**: https://github.com/o/r/compare/v0.9.0...v1.0.0"}`)
+	})
+
 	ctx := t.Context()
 	releases, _, err := client.Repositories.GenerateReleaseNotes(ctx, "o", "r", opt)
 	if err != nil {
@@ -224,18 +224,13 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
-		var v *repositoryReleaseRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		want := &repositoryReleaseRequest{
 			Name:                   Ptr("v1.0"),
 			DiscussionCategoryName: Ptr("General"),
 			GenerateReleaseNotes:   Ptr(true),
 		}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -294,17 +289,12 @@ func TestRepositoriesService_EditRelease(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *repositoryReleaseRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
 		want := &repositoryReleaseRequest{
 			Name:                   Ptr("n"),
 			DiscussionCategoryName: Ptr("General"),
 		}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -626,13 +616,8 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 	input := &ReleaseAsset{Name: Ptr("n")}
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *ReleaseAsset
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -752,7 +737,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 			testHeader(t, r, "Content-Type", test.expectedMediaType)
 			testHeader(t, r, "Content-Length", "12")
 			testFormValues(t, r, test.expectedFormValues)
-			testBody(t, r, "Upload me !\n")
+			testPlainBody(t, r, "Upload me !\n")
 
 			fmt.Fprint(w, `{"id":1}`)
 		})
@@ -957,7 +942,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
 		testHeader(t, r, "Content-Type", mediaTypeTextPlain)
 		testHeader(t, r, "Content-Length", "12")
 		testFormValues(t, r, defaultExpectedFormValue)
-		testBody(t, r, "Upload me !\n")
+		testPlainBody(t, r, "Upload me !\n")
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -1078,7 +1063,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NoOpts(t *testing.T) 
 	// No opts: we just assert that the handler is hit and body is as expected.
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, "Upload me !\n")
+		testPlainBody(t, r, "Upload me !\n")
 		fmt.Fprint(w, `{"id":1}`)
 	})
 

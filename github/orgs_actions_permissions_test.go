@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -55,14 +54,8 @@ func TestOrganizationsService_UpdateActionsPermissions(t *testing.T) {
 	input := &ActionsPermissions{EnabledRepositories: Ptr("all"), AllowedActions: Ptr("selected")}
 
 	mux.HandleFunc("/orgs/o/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
-		var v *ActionsPermissions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"enabled_repositories": "all", "allowed_actions": "selected"}`)
 	})
 

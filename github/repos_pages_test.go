@@ -7,7 +7,6 @@ package github
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -30,15 +29,10 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		var v *createPagesRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 		want := &createPagesRequest{BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("master"), Path: Ptr("/")}}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","build_type": "legacy","source": {"branch":"master", "path":"/"}}`)
 	})
@@ -84,16 +78,10 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		var v *createPagesRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 		want := &createPagesRequest{BuildType: Ptr("workflow")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","build_type": "workflow"}`)
 	})
 
@@ -135,15 +123,8 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		var v *PagesUpdate
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{CNAME: Ptr("www.example.com"), BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("gh-pages")}}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"cname":"www.example.com","build_type":"legacy","source":{"branch":"gh-pages"}}`)
 	})
 
@@ -174,15 +155,8 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		var v *PagesUpdate
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{CNAME: Ptr("www.example.com"), BuildType: Ptr("workflow")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"cname":"www.example.com","build_type":"workflow"}`)
 	})
 
@@ -212,15 +186,8 @@ func TestRepositoriesService_UpdatePagesGHES(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		var v *PagesUpdate
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{BuildType: Ptr("workflow")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"build_type":"workflow"}`)
 	})
 
