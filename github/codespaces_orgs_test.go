@@ -88,14 +88,19 @@ func TestEnterpriseService_AddUsersToOrgAccess(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	req := []string{"u1"}
+
 	mux.HandleFunc("/orgs/o1/codespaces/access/selected_users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"selected_usernames":["u1"]}`+"\n")
+		testJSONBody(t, r, struct {
+			SelectedUsernames []string `json:"selected_usernames"`
+		}{
+			SelectedUsernames: req,
+		})
 		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
-	req := []string{"u1"}
 	resp, err := client.Codespaces.AddUsersToOrgAccess(ctx, "o1", req)
 	if err != nil {
 		t.Fatalf("AddUsersToOrgAccess returned error: %v", err)
@@ -118,14 +123,19 @@ func TestEnterpriseService_RemoveUsersFromOrgAccess(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	req := []string{"u1"}
+
 	mux.HandleFunc("/orgs/o1/codespaces/access/selected_users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"selected_usernames":["u1"]}`+"\n")
+		testJSONBody(t, r, struct {
+			SelectedUsernames []string `json:"selected_usernames"`
+		}{
+			SelectedUsernames: req,
+		})
 		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
-	req := []string{"u1"}
 	resp, err := client.Codespaces.RemoveUsersFromOrgAccess(ctx, "o1", req)
 	if err != nil {
 		t.Fatalf("RemoveUsersFromOrgAccess returned error: %v", err)

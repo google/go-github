@@ -2936,7 +2936,11 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PATCH")
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				testBody(t, r, `{"dismissal_restrictions":{}}`+"\n")
+				testJSONBody(t, r, struct {
+					DismissalRestrictionsRequest DismissalRestrictionsRequest `json:"dismissal_restrictions"`
+				}{
+					DismissalRestrictionsRequest: DismissalRestrictionsRequest{},
+				})
 				fmt.Fprint(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
 			})
 
@@ -3493,7 +3497,10 @@ func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
-		testBody(t, r, `{"names":[]}`+"\n")
+		want := repositoryTopics{
+			Names: nil,
+		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"names":[]}`)
 	})
 
@@ -3513,15 +3520,20 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := []string{}
+
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
-		testBody(t, r, `{"names":[]}`+"\n")
+		want := repositoryTopics{
+			Names: input,
+		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"names":[]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Repositories.ReplaceAllTopics(ctx, "o", "r", []string{})
+	got, _, err := client.Repositories.ReplaceAllTopics(ctx, "o", "r", input)
 	if err != nil {
 		t.Fatalf("Repositories.ReplaceAllTopics returned error: %v", err)
 	}

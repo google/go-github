@@ -154,8 +154,8 @@ func TestOrganizationsService_SetImmutableReleaseRepositories(t *testing.T) {
 	input := []int64{1, 2, 3}
 	mux.HandleFunc("/orgs/o/settings/immutable-releases/repositories", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		gotBody := setImmutableReleasesRepositoriesOptions{SelectedRepositoryIDs: input}
-		testJSONBody(t, r, gotBody)
+		want := setImmutableReleasesRepositoriesOptions{SelectedRepositoryIDs: input}
+		testJSONBody(t, r, want)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

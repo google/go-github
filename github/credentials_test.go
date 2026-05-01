@@ -19,11 +19,10 @@ func TestCredentialsService_Revoke(t *testing.T) {
 		"ghp_1234567890abcdef1234567890abcdef12345678",
 		"ghp_abcdef1234567890abcdef1234567890abcdef12",
 	}
-	expectedBodyBytes := map[string][]string{"credentials": creds}
 
 	mux.HandleFunc("/credentials/revoke", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, expectedBodyBytes)
+		testJSONBody(t, r, &revokeCredentialsRequest{Credentials: creds})
 		w.WriteHeader(http.StatusAccepted)
 	})
 

@@ -460,24 +460,27 @@ func TestPullRequestsService_Edit(t *testing.T) {
 	tests := []struct {
 		input        *PullRequest
 		sendResponse string
-
-		wantUpdate string
-		want       *PullRequest
+		want         *PullRequest
+		wantUpdate   *pullRequestUpdate
 	}{
 		{
 			input:        &PullRequest{Title: Ptr("t")},
 			sendResponse: `{"number":1}`,
-			wantUpdate:   `{"title":"t"}`,
 			want:         &PullRequest{Number: Ptr(1)},
+			wantUpdate: &pullRequestUpdate{
+				Title: Ptr("t"),
+			},
 		},
 		{
 			// base update
 			input:        &PullRequest{Base: &PullRequestBranch{Ref: Ptr("master")}},
 			sendResponse: `{"number":1,"base":{"ref":"master"}}`,
-			wantUpdate:   `{"base":"master"}`,
 			want: &PullRequest{
 				Number: Ptr(1),
 				Base:   &PullRequestBranch{Ref: Ptr("master")},
+			},
+			wantUpdate: &pullRequestUpdate{
+				Base: Ptr("master"),
 			},
 		},
 	}
@@ -486,7 +489,7 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		madeRequest := false
 		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v", i), func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PATCH")
-			testBody(t, r, tt.wantUpdate+"\n")
+			testJSONBody(t, r, tt.wantUpdate)
 			_, err := io.WriteString(w, tt.sendResponse)
 			assertNilError(t, err)
 			madeRequest = true
@@ -765,24 +768,34 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	tests := []struct {
-		options  *PullRequestOptions
-		wantBody string
+		options *PullRequestOptions
+		want    pullRequestMergeRequest
 	}{
 		{
-			options:  nil,
-			wantBody: `{"commit_message":"merging pull request"}`,
+			options: nil,
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+			},
 		},
 		{
-			options:  &PullRequestOptions{},
-			wantBody: `{"commit_message":"merging pull request"}`,
+			options: &PullRequestOptions{},
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+			},
 		},
 		{
-			options:  &PullRequestOptions{MergeMethod: "rebase"},
-			wantBody: `{"commit_message":"merging pull request","merge_method":"rebase"}`,
+			options: &PullRequestOptions{MergeMethod: "rebase"},
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+				MergeMethod:   "rebase",
+			},
 		},
 		{
-			options:  &PullRequestOptions{SHA: "6dcb09b5b57875f334f61aebed695e2e4193db5e"},
-			wantBody: `{"commit_message":"merging pull request","sha":"6dcb09b5b57875f334f61aebed695e2e4193db5e"}`,
+			options: &PullRequestOptions{SHA: "6dcb09b5b57875f334f61aebed695e2e4193db5e"},
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+				SHA:           "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+			},
 		},
 		{
 			options: &PullRequestOptions{
@@ -790,13 +803,20 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 				SHA:         "6dcb09b5b57875f334f61aebed695e2e4193db5e",
 				MergeMethod: "squash",
 			},
-			wantBody: `{"commit_message":"merging pull request","commit_title":"Extra detail","merge_method":"squash","sha":"6dcb09b5b57875f334f61aebed695e2e4193db5e"}`,
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+				SHA:           "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+				CommitTitle:   "Extra detail",
+				MergeMethod:   "squash",
+			},
 		},
 		{
 			options: &PullRequestOptions{
 				DontDefaultIfBlank: true,
 			},
-			wantBody: `{"commit_message":"merging pull request"}`,
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+			},
 		},
 	}
 
@@ -804,7 +824,7 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 		madeRequest := false
 		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v/merge", i), func(_ http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PUT")
-			testBody(t, r, test.wantBody+"\n")
+			testJSONBody(t, r, test.want)
 			madeRequest = true
 		})
 		ctx := t.Context()
@@ -820,15 +840,14 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	madeRequest := false
-	expectedBody := ""
+	want := &pullRequestMergeRequest{}
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, expectedBody+"\n")
+		testJSONBody(t, r, want)
 		madeRequest = true
 	})
 
 	ctx := t.Context()
-	expectedBody = `{}`
 	_, _, _ = client.PullRequests.Merge(ctx, "o", "r", 1, "", nil)
 	if !madeRequest {
 		t.Error("TestPullRequestsService_Merge_Blank_Message #1 did not make request")
@@ -838,7 +857,9 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 	opts := PullRequestOptions{
 		DontDefaultIfBlank: true,
 	}
-	expectedBody = `{"commit_message":""}`
+	want = &pullRequestMergeRequest{
+		CommitMessage: Ptr(""),
+	}
 	_, _, _ = client.PullRequests.Merge(ctx, "o", "r", 1, "", &opts)
 	if !madeRequest {
 		t.Error("TestPullRequestsService_Merge_Blank_Message #2 did not make request")

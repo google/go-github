@@ -737,7 +737,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 			testHeader(t, r, "Content-Type", test.expectedMediaType)
 			testHeader(t, r, "Content-Length", "12")
 			testFormValues(t, r, test.expectedFormValues)
-			testBody(t, r, "Upload me !\n")
+			testPlainBody(t, r, "Upload me !\n")
 
 			fmt.Fprint(w, `{"id":1}`)
 		})
@@ -942,7 +942,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
 		testHeader(t, r, "Content-Type", mediaTypeTextPlain)
 		testHeader(t, r, "Content-Length", "12")
 		testFormValues(t, r, defaultExpectedFormValue)
-		testBody(t, r, "Upload me !\n")
+		testPlainBody(t, r, "Upload me !\n")
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -1063,7 +1063,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NoOpts(t *testing.T) 
 	// No opts: we just assert that the handler is hit and body is as expected.
 	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, "Upload me !\n")
+		testPlainBody(t, r, "Upload me !\n")
 		fmt.Fprint(w, `{"id":1}`)
 	})
 

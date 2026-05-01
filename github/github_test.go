@@ -189,7 +189,7 @@ func testURLParseError(t *testing.T, err error) {
 	}
 }
 
-func testBody(t *testing.T, r *http.Request, want string) {
+func testPlainBody(t *testing.T, r *http.Request, want string) {
 	t.Helper()
 	b, err := io.ReadAll(r.Body)
 	if err != nil {
