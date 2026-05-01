@@ -1,4 +1,4 @@
-module github.com/google/go-github/v85/otel
+module github.com/google/go-github/otel/v85
 
 go 1.25.0
 
