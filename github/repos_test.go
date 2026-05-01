@@ -3498,7 +3498,7 @@ func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
 		want := repositoryTopics{
-			Names: nil,
+			Names: []string{},
 		}
 		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"names":[]}`)
