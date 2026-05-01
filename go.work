@@ -1,0 +1,16 @@
+go 1.25.5
+
+use .
+
+use (
+	./example
+	./otel
+	./scrape
+	./tools
+	./tools/check-structfield-settings
+	./tools/extraneousnew
+	./tools/fmtpercentv
+	./tools/redundantptr
+	./tools/sliceofpointers
+	./tools/structfield
+)
