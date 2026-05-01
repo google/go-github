@@ -1102,6 +1102,24 @@ func (s *CopilotService) fetchMetricsReport(ctx context.Context, url string) (*h
 	return resp, newResponse(resp), nil
 }
 
+// decodeNDJSONMetrics streams a newline-delimited JSON response body into a slice of *T,
+// returning a nil slice when the body is empty.
+func decodeNDJSONMetrics[T any](r io.Reader) ([]*T, error) {
+	var records []*T
+	dec := json.NewDecoder(r)
+	for {
+		var rec *T
+		if err := dec.Decode(&rec); err != nil {
+			if errors.Is(err, io.EOF) {
+				break
+			}
+			return nil, err
+		}
+		records = append(records, rec)
+	}
+	return records, nil
+}
+
 // DownloadDailyMetrics downloads the payload of a 1-day Copilot usage metrics report from a
 // download link returned by GetEnterpriseDailyMetricsReport or GetOrganizationDailyMetricsReport.
 func (s *CopilotService) DownloadDailyMetrics(ctx context.Context, url string) (*CopilotDailyMetrics, *Response, error) {
@@ -1149,19 +1167,10 @@ func (s *CopilotService) DownloadUserDailyMetrics(ctx context.Context, url strin
 	}
 	defer resp.Body.Close()
 
-	var records []*CopilotUserDailyMetrics
-	dec := json.NewDecoder(resp.Body)
-	for {
-		var rec *CopilotUserDailyMetrics
-		if err := dec.Decode(&rec); err != nil {
-			if errors.Is(err, io.EOF) {
-				break
-			}
-			return nil, r, err
-		}
-		records = append(records, rec)
+	records, err := decodeNDJSONMetrics[CopilotUserDailyMetrics](resp.Body)
+	if err != nil {
+		return nil, r, err
 	}
-
 	return records, r, nil
 }
 
@@ -1178,18 +1187,9 @@ func (s *CopilotService) DownloadUserPeriodicMetrics(ctx context.Context, url st
 	}
 	defer resp.Body.Close()
 
-	var records []*CopilotUserPeriodicMetrics
-	dec := json.NewDecoder(resp.Body)
-	for {
-		var rec *CopilotUserPeriodicMetrics
-		if err := dec.Decode(&rec); err != nil {
-			if errors.Is(err, io.EOF) {
-				break
-			}
-			return nil, r, err
-		}
-		records = append(records, rec)
+	records, err := decodeNDJSONMetrics[CopilotUserPeriodicMetrics](resp.Body)
+	if err != nil {
+		return nil, r, err
 	}
-
 	return records, r, nil
 }
