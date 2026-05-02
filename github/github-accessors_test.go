@@ -28936,6 +28936,17 @@ func TestOrganization_GetDependencyGraphEnabledForNewRepos(tt *testing.T) {
 	o.GetDependencyGraphEnabledForNewRepos()
 }
 
+func TestOrganization_GetDeployKeysEnabledForRepositories(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &Organization{DeployKeysEnabledForRepositories: &zeroValue}
+	o.GetDeployKeysEnabledForRepositories()
+	o = &Organization{}
+	o.GetDeployKeysEnabledForRepositories()
+	o = nil
+	o.GetDeployKeysEnabledForRepositories()
+}
+
 func TestOrganization_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -29404,6 +29415,28 @@ func TestOrganization_GetSecretScanningEnabledForNewRepos(tt *testing.T) {
 	o.GetSecretScanningEnabledForNewRepos()
 	o = nil
 	o.GetSecretScanningEnabledForNewRepos()
+}
+
+func TestOrganization_GetSecretScanningPushProtectionCustomLink(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	o := &Organization{SecretScanningPushProtectionCustomLink: &zeroValue}
+	o.GetSecretScanningPushProtectionCustomLink()
+	o = &Organization{}
+	o.GetSecretScanningPushProtectionCustomLink()
+	o = nil
+	o.GetSecretScanningPushProtectionCustomLink()
+}
+
+func TestOrganization_GetSecretScanningPushProtectionCustomLinkEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &Organization{SecretScanningPushProtectionCustomLinkEnabled: &zeroValue}
+	o.GetSecretScanningPushProtectionCustomLinkEnabled()
+	o = &Organization{}
+	o.GetSecretScanningPushProtectionCustomLinkEnabled()
+	o = nil
+	o.GetSecretScanningPushProtectionCustomLinkEnabled()
 }
 
 func TestOrganization_GetSecretScanningPushProtectionEnabledForNewRepos(tt *testing.T) {

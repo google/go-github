@@ -1256,6 +1256,7 @@ func TestOrganization_String(t *testing.T) {
 		MembersCanCreatePrivateRepos:         Ptr(false),
 		MembersCanCreateInternalRepos:        Ptr(false),
 		MembersCanForkPrivateRepos:           Ptr(false),
+		DeployKeysEnabledForRepositories:     Ptr(false),
 		MembersAllowedRepositoryCreationType: Ptr(""),
 		MembersCanCreatePages:                Ptr(false),
 		MembersCanCreatePublicPages:          Ptr(false),
@@ -1268,6 +1269,8 @@ func TestOrganization_String(t *testing.T) {
 		SecretScanningEnabledForNewRepos:               Ptr(false),
 		SecretScanningPushProtectionEnabledForNewRepos: Ptr(false),
 		SecretScanningValidityChecksEnabled:            Ptr(false),
+		SecretScanningPushProtectionCustomLinkEnabled:  Ptr(false),
+		SecretScanningPushProtectionCustomLink:         Ptr(""),
 		MembersCanDeleteRepositories:                   Ptr(false),
 		MembersCanChangeRepoVisibility:                 Ptr(false),
 		MembersCanInviteOutsideCollaborators:           Ptr(false),
@@ -1285,7 +1288,7 @@ func TestOrganization_String(t *testing.T) {
 		PublicMembersURL:                               Ptr(""),
 		ReposURL:                                       Ptr(""),
 	}
-	want := `github.Organization{Login:"", ID:0, NodeID:"", AvatarURL:"", HTMLURL:"", Name:"", Company:"", Blog:"", Location:"", Email:"", TwitterUsername:"", Description:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ArchivedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, BillingEmail:"", Type:"", Plan:github.Plan{}, TwoFactorRequirementEnabled:false, IsVerified:false, HasOrganizationProjects:false, HasRepositoryProjects:false, DefaultRepoPermission:"", DefaultRepoSettings:"", MembersCanCreateRepos:false, MembersCanCreatePublicRepos:false, MembersCanCreatePrivateRepos:false, MembersCanCreateInternalRepos:false, MembersCanForkPrivateRepos:false, MembersAllowedRepositoryCreationType:"", MembersCanCreatePages:false, MembersCanCreatePublicPages:false, MembersCanCreatePrivatePages:false, WebCommitSignoffRequired:false, AdvancedSecurityEnabledForNewRepos:false, DependabotAlertsEnabledForNewRepos:false, DependabotSecurityUpdatesEnabledForNewRepos:false, DependencyGraphEnabledForNewRepos:false, SecretScanningEnabledForNewRepos:false, SecretScanningPushProtectionEnabledForNewRepos:false, SecretScanningValidityChecksEnabled:false, MembersCanDeleteRepositories:false, MembersCanChangeRepoVisibility:false, MembersCanInviteOutsideCollaborators:false, MembersCanDeleteIssues:false, DisplayCommenterFullNameSettingEnabled:false, ReadersCanCreateDiscussions:false, MembersCanCreateTeams:false, MembersCanViewDependencyInsights:false, DefaultRepositoryBranch:"", URL:"", EventsURL:"", HooksURL:"", IssuesURL:"", MembersURL:"", PublicMembersURL:"", ReposURL:""}`
+	want := `github.Organization{Login:"", ID:0, NodeID:"", AvatarURL:"", HTMLURL:"", Name:"", Company:"", Blog:"", Location:"", Email:"", TwitterUsername:"", Description:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ArchivedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, BillingEmail:"", Type:"", Plan:github.Plan{}, TwoFactorRequirementEnabled:false, IsVerified:false, HasOrganizationProjects:false, HasRepositoryProjects:false, DefaultRepoPermission:"", DefaultRepoSettings:"", MembersCanCreateRepos:false, MembersCanCreatePublicRepos:false, MembersCanCreatePrivateRepos:false, MembersCanCreateInternalRepos:false, MembersCanForkPrivateRepos:false, DeployKeysEnabledForRepositories:false, MembersAllowedRepositoryCreationType:"", MembersCanCreatePages:false, MembersCanCreatePublicPages:false, MembersCanCreatePrivatePages:false, WebCommitSignoffRequired:false, AdvancedSecurityEnabledForNewRepos:false, DependabotAlertsEnabledForNewRepos:false, DependabotSecurityUpdatesEnabledForNewRepos:false, DependencyGraphEnabledForNewRepos:false, SecretScanningEnabledForNewRepos:false, SecretScanningPushProtectionEnabledForNewRepos:false, SecretScanningValidityChecksEnabled:false, SecretScanningPushProtectionCustomLinkEnabled:false, SecretScanningPushProtectionCustomLink:"", MembersCanDeleteRepositories:false, MembersCanChangeRepoVisibility:false, MembersCanInviteOutsideCollaborators:false, MembersCanDeleteIssues:false, DisplayCommenterFullNameSettingEnabled:false, ReadersCanCreateDiscussions:false, MembersCanCreateTeams:false, MembersCanViewDependencyInsights:false, DefaultRepositoryBranch:"", URL:"", EventsURL:"", HooksURL:"", IssuesURL:"", MembersURL:"", PublicMembersURL:"", ReposURL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Organization.String = %v, want %v", got, want)
 	}
