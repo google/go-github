@@ -22950,6 +22950,14 @@ func (o *Organization) GetDependencyGraphEnabledForNewRepos() bool {
 	return *o.DependencyGraphEnabledForNewRepos
 }
 
+// GetDeployKeysEnabledForRepositories returns the DeployKeysEnabledForRepositories field if it's non-nil, zero value otherwise.
+func (o *Organization) GetDeployKeysEnabledForRepositories() bool {
+	if o == nil || o.DeployKeysEnabledForRepositories == nil {
+		return false
+	}
+	return *o.DeployKeysEnabledForRepositories
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (o *Organization) GetDescription() string {
 	if o == nil || o.Description == nil {
@@ -23292,6 +23300,22 @@ func (o *Organization) GetSecretScanningEnabledForNewRepos() bool {
 		return false
 	}
 	return *o.SecretScanningEnabledForNewRepos
+}
+
+// GetSecretScanningPushProtectionCustomLink returns the SecretScanningPushProtectionCustomLink field if it's non-nil, zero value otherwise.
+func (o *Organization) GetSecretScanningPushProtectionCustomLink() string {
+	if o == nil || o.SecretScanningPushProtectionCustomLink == nil {
+		return ""
+	}
+	return *o.SecretScanningPushProtectionCustomLink
+}
+
+// GetSecretScanningPushProtectionCustomLinkEnabled returns the SecretScanningPushProtectionCustomLinkEnabled field if it's non-nil, zero value otherwise.
+func (o *Organization) GetSecretScanningPushProtectionCustomLinkEnabled() bool {
+	if o == nil || o.SecretScanningPushProtectionCustomLinkEnabled == nil {
+		return false
+	}
+	return *o.SecretScanningPushProtectionCustomLinkEnabled
 }
 
 // GetSecretScanningPushProtectionEnabledForNewRepos returns the SecretScanningPushProtectionEnabledForNewRepos field if it's non-nil, zero value otherwise.

@@ -68,6 +68,9 @@ type Organization struct {
 	// MembersCanForkPrivateRepos toggles whether organization members can fork private organization repositories.
 	MembersCanForkPrivateRepos *bool `json:"members_can_fork_private_repositories,omitempty"`
 
+	// DeployKeysEnabledForRepositories toggles whether deploy keys may be added and used for repositories in the organization.
+	DeployKeysEnabledForRepositories *bool `json:"deploy_keys_enabled_for_repositories,omitempty"`
+
 	// MembersAllowedRepositoryCreationType denotes if organization members can create repositories
 	// and the type of repositories they can create. Possible values are: "all", "private", or "none".
 	//
@@ -98,6 +101,10 @@ type Organization struct {
 	SecretScanningPushProtectionEnabledForNewRepos *bool `json:"secret_scanning_push_protection_enabled_for_new_repositories,omitempty"`
 	// SecretScanningValidityChecksEnabled toggles whether secret scanning validity check is enabled.
 	SecretScanningValidityChecksEnabled *bool `json:"secret_scanning_validity_checks_enabled,omitempty"`
+	// SecretScanningPushProtectionCustomLinkEnabled toggles whether a custom link is shown to contributors blocked by secret scanning push protection.
+	SecretScanningPushProtectionCustomLinkEnabled *bool `json:"secret_scanning_push_protection_custom_link_enabled,omitempty"`
+	// SecretScanningPushProtectionCustomLink is the URL displayed to contributors blocked by secret scanning push protection.
+	SecretScanningPushProtectionCustomLink *string `json:"secret_scanning_push_protection_custom_link,omitempty"`
 	// MembersCanDeleteRepositories toggles whether members with admin permissions can delete a repository.
 	MembersCanDeleteRepositories *bool `json:"members_can_delete_repositories,omitempty"`
 	// MembersCanChangeRepoVisibility toggles whether members with admin permissions can change the visibility for a repository.
