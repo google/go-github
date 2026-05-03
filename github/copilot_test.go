@@ -3062,3 +3062,440 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 		t.Error("Copilot.DownloadCopilotMetrics expected error for bad JSON, got none")
 	}
 }
+
+func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/daily", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"day": "2026-04-01",
+			"organization_id": "123",
+			"daily_active_cli_users": 2,
+			"daily_active_users": 10,
+			"weekly_active_users": 20,
+			"monthly_active_users": 30,
+			"chat_panel_ask_mode": 4,
+			"totals_by_ide": [
+				{"ide": "vscode", "user_initiated_interaction_count": 5, "loc_added_sum": 100}
+			],
+			"totals_by_feature": [
+				{"feature": "completion", "user_initiated_interaction_count": 5},
+				{"feature": "agent_edit", "loc_added_sum": 7, "loc_deleted_sum": 2}
+			],
+			"totals_by_language_feature": [
+				{"language": "go", "feature": "completion", "code_generation_activity_count": 3}
+			],
+			"totals_by_language_model": [
+				{"language": "go", "model": "m1", "code_generation_activity_count": 3}
+			],
+			"totals_by_model_feature": [
+				{"model": "m1", "feature": "completion", "user_initiated_interaction_count": 5}
+			],
+			"totals_by_cli": {
+				"session_count": 3,
+				"request_count": 4,
+				"prompt_count": 2,
+				"token_usage": {
+					"avg_tokens_per_request": 4123.5,
+					"output_tokens_sum": 7000,
+					"prompt_tokens_sum": 9494
+				}
+			},
+			"loc_added_sum": 100,
+			"pull_requests": {
+				"total_reviewed": 1,
+				"total_created": 2,
+				"median_minutes_to_merge": 12.5,
+				"median_minutes_to_merge_copilot_authored": 4.5,
+				"median_minutes_to_merge_copilot_reviewed": 6.5
+			}
+		}`)
+	})
+
+	ctx := t.Context()
+	url := client.BaseURL.String() + "path/to/daily"
+	got, resp, err := client.Copilot.DownloadDailyMetrics(ctx, url)
+	if err != nil {
+		t.Errorf("Copilot.DownloadDailyMetrics returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Copilot.DownloadDailyMetrics returned status code: %v", resp.StatusCode)
+	}
+
+	want := &CopilotDailyMetrics{
+		Day:                 "2026-04-01",
+		OrganizationID:      String("123"),
+		DailyActiveCLIUsers: Int(2),
+		DailyActiveUsers:    Int(10),
+		WeeklyActiveUsers:   Int(20),
+		MonthlyActiveUsers:  Int(30),
+		CopilotMetricsChatPanel: CopilotMetricsChatPanel{
+			ChatPanelAskMode: Int(4),
+		},
+		TotalsByIDE: []*CopilotMetricsIDE{
+			{IDE: "vscode", UserInitiatedInteractionCount: Int(5), CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: Int(100)}},
+		},
+		TotalsByFeature: []*CopilotMetricsFeature{
+			{Feature: "completion", UserInitiatedInteractionCount: Int(5)},
+			{Feature: "agent_edit", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: Int(7), LOCDeletedSum: Int(2)}},
+		},
+		TotalsByLanguageFeature: []*CopilotMetricsLanguageFeature{
+			{Language: "go", Feature: "completion", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: Int(3)}},
+		},
+		TotalsByLanguageModel: []*CopilotMetricsLanguageModel{
+			{Language: "go", Model: "m1", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: Int(3)}},
+		},
+		TotalsByModelFeature: []*CopilotMetricsModelFeature{
+			{Model: "m1", Feature: "completion", UserInitiatedInteractionCount: Int(5)},
+		},
+		TotalsByCLI: &CopilotMetricsCLI{
+			SessionCount: Int(3),
+			RequestCount: Int(4),
+			PromptCount:  Int(2),
+			TokenUsage: &CopilotMetricsCLITokenUsage{
+				AvgTokensPerRequest: Ptr(4123.5),
+				OutputTokensSum:     Int(7000),
+				PromptTokensSum:     Int(9494),
+			},
+		},
+		LOCAddedSum: Int(100),
+		PullRequests: &CopilotMetricsPullRequests{
+			TotalReviewed:                       Int(1),
+			TotalCreated:                        Int(2),
+			MedianMinutesToMerge:                Ptr(12.5),
+			MedianMinutesToMergeCopilotAuthored: Ptr(4.5),
+			MedianMinutesToMergeCopilotReviewed: Ptr(6.5),
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.DownloadDailyMetrics returned %+v, want %+v", got, want)
+	}
+
+	mux.HandleFunc("/path/to/daily/error", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, client.BaseURL.String()+"path/to/daily/error"); err == nil {
+		t.Error("Copilot.DownloadDailyMetrics expected error but got none")
+	}
+	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, "\n"); err == nil {
+		t.Error("Copilot.DownloadDailyMetrics expected error for invalid URL, got none")
+	}
+	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, "invalid-scheme://test"); err == nil {
+		t.Error("Copilot.DownloadDailyMetrics expected error for invalid scheme, got none")
+	}
+
+	mux.HandleFunc("/path/to/daily/badjson", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{invalid`)
+	})
+	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, client.BaseURL.String()+"path/to/daily/badjson"); err == nil {
+		t.Error("Copilot.DownloadDailyMetrics expected error for bad JSON, got none")
+	}
+}
+
+func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/periodic", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"report_start_day": "2026-03-05",
+			"report_end_day": "2026-04-01",
+			"organization_id": "123",
+			"created_at": "2026-04-02T00:00:00Z",
+			"day_totals": [
+				{
+					"day": "2026-03-05",
+					"daily_active_cli_users": 2,
+					"daily_active_users": 5,
+					"totals_by_cli": {
+						"session_count": 1,
+						"request_count": 2,
+						"prompt_count": 1,
+						"token_usage": {
+							"avg_tokens_per_request": 4000.0,
+							"output_tokens_sum": 5000,
+							"prompt_tokens_sum": 3000
+						}
+					},
+					"pull_requests": {
+						"median_minutes_to_merge": 8.5,
+						"median_minutes_to_merge_copilot_authored": 5.0,
+						"median_minutes_to_merge_copilot_reviewed": 7.0
+					}
+				},
+				{"day": "2026-03-06", "daily_active_users": 7}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	url := client.BaseURL.String() + "path/to/periodic"
+	got, resp, err := client.Copilot.DownloadPeriodicMetrics(ctx, url)
+	if err != nil {
+		t.Errorf("Copilot.DownloadPeriodicMetrics returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Copilot.DownloadPeriodicMetrics returned status code: %v", resp.StatusCode)
+	}
+
+	want := &CopilotPeriodicMetrics{
+		ReportStartDay: "2026-03-05",
+		ReportEndDay:   "2026-04-01",
+		OrganizationID: String("123"),
+		CreatedAt:      &Timestamp{time.Date(2026, 4, 2, 0, 0, 0, 0, time.UTC)},
+		DayTotals: []*CopilotDailyMetrics{
+			{
+				Day:                 "2026-03-05",
+				DailyActiveCLIUsers: Int(2),
+				DailyActiveUsers:    Int(5),
+				TotalsByCLI: &CopilotMetricsCLI{
+					SessionCount: Int(1),
+					RequestCount: Int(2),
+					PromptCount:  Int(1),
+					TokenUsage: &CopilotMetricsCLITokenUsage{
+						AvgTokensPerRequest: Ptr(4000.0),
+						OutputTokensSum:     Int(5000),
+						PromptTokensSum:     Int(3000),
+					},
+				},
+				PullRequests: &CopilotMetricsPullRequests{
+					MedianMinutesToMerge:                Ptr(8.5),
+					MedianMinutesToMergeCopilotAuthored: Ptr(5.0),
+					MedianMinutesToMergeCopilotReviewed: Ptr(7.0),
+				},
+			},
+			{Day: "2026-03-06", DailyActiveUsers: Int(7)},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.DownloadPeriodicMetrics returned %+v, want %+v", got, want)
+	}
+
+	mux.HandleFunc("/path/to/periodic/error", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+	if _, _, err := client.Copilot.DownloadPeriodicMetrics(ctx, client.BaseURL.String()+"path/to/periodic/error"); err == nil {
+		t.Error("Copilot.DownloadPeriodicMetrics expected error but got none")
+	}
+	if _, _, err := client.Copilot.DownloadPeriodicMetrics(ctx, "\n"); err == nil {
+		t.Error("Copilot.DownloadPeriodicMetrics expected error for invalid URL, got none")
+	}
+	if _, _, err := client.Copilot.DownloadPeriodicMetrics(ctx, "invalid-scheme://test"); err == nil {
+		t.Error("Copilot.DownloadPeriodicMetrics expected error for invalid scheme, got none")
+	}
+
+	mux.HandleFunc("/path/to/periodic/badjson", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{invalid`)
+	})
+	if _, _, err := client.Copilot.DownloadPeriodicMetrics(ctx, client.BaseURL.String()+"path/to/periodic/badjson"); err == nil {
+		t.Error("Copilot.DownloadPeriodicMetrics expected error for bad JSON, got none")
+	}
+}
+
+func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/users-daily", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_code_review_active":true,"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":"2026-04-01T12:30:00Z","cli_version":"1.0.8"}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":"2026-04-01T12:00:00Z","plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":"2026-04-01T12:00:00Z","ide_version":"1.90"}}]}
+{"user_id":2,"user_login":"bob","day":"2026-04-01","used_agent":true,"used_copilot_code_review_passive":true}
+`)
+	})
+
+	ctx := t.Context()
+	url := client.BaseURL.String() + "path/to/users-daily"
+	got, resp, err := client.Copilot.DownloadUserDailyMetrics(ctx, url)
+	if err != nil {
+		t.Errorf("Copilot.DownloadUserDailyMetrics returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Copilot.DownloadUserDailyMetrics returned status code: %v", resp.StatusCode)
+	}
+
+	want := []*CopilotUserDailyMetrics{
+		{
+			UserID:                        1,
+			UserLogin:                     "alice",
+			Day:                           "2026-04-01",
+			UserInitiatedInteractionCount: Int(5),
+			CopilotMetricsChatPanel: CopilotMetricsChatPanel{
+				ChatPanelEditMode: Int(2),
+			},
+			UsedChat:                    Bool(true),
+			UsedCLI:                     Bool(true),
+			UsedCopilotCodeReviewActive: Bool(true),
+			TotalsByCLI: &CopilotMetricsCLI{
+				SessionCount: Int(2),
+				RequestCount: Int(2),
+				PromptCount:  Int(1),
+				LastKnownCLIVersion: &CopilotMetricsCLIVersion{
+					SampledAt:  &Timestamp{time.Date(2026, 4, 1, 12, 30, 0, 0, time.UTC)},
+					CLIVersion: "1.0.8",
+				},
+			},
+			TotalsByIDE: []*CopilotUserMetricsIDE{
+				{
+					IDE:                           "vscode",
+					UserInitiatedInteractionCount: Int(5),
+					LastKnownPluginVersion: &CopilotUserMetricsPluginVersion{
+						SampledAt:     &Timestamp{time.Date(2026, 4, 1, 12, 0, 0, 0, time.UTC)},
+						Plugin:        "copilot",
+						PluginVersion: "1.0.0",
+					},
+					LastKnownIDEVersion: &CopilotUserMetricsIDEVersion{
+						SampledAt:  &Timestamp{time.Date(2026, 4, 1, 12, 0, 0, 0, time.UTC)},
+						IDEVersion: "1.90",
+					},
+				},
+			},
+		},
+		{
+			UserID:                       2,
+			UserLogin:                    "bob",
+			Day:                          "2026-04-01",
+			UsedAgent:                    Bool(true),
+			UsedCopilotCodeReviewPassive: Bool(true),
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.DownloadUserDailyMetrics returned %+v, want %+v", got, want)
+	}
+
+	// Empty body parses to a nil slice (no records).
+	mux.HandleFunc("/path/to/users-daily/empty", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+	})
+	gotEmpty, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, client.BaseURL.String()+"path/to/users-daily/empty")
+	if err != nil {
+		t.Errorf("Copilot.DownloadUserDailyMetrics empty body returned error: %v", err)
+	}
+	if gotEmpty != nil {
+		t.Errorf("Copilot.DownloadUserDailyMetrics empty body returned %+v, want nil", gotEmpty)
+	}
+
+	mux.HandleFunc("/path/to/users-daily/error", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+	if _, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, client.BaseURL.String()+"path/to/users-daily/error"); err == nil {
+		t.Error("Copilot.DownloadUserDailyMetrics expected error but got none")
+	}
+	if _, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, "\n"); err == nil {
+		t.Error("Copilot.DownloadUserDailyMetrics expected error for invalid URL, got none")
+	}
+	if _, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, "invalid-scheme://test"); err == nil {
+		t.Error("Copilot.DownloadUserDailyMetrics expected error for invalid scheme, got none")
+	}
+
+	// A malformed line causes the stream decode to fail.
+	mux.HandleFunc("/path/to/users-daily/badjson", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "{\"user_id\":1,\"day\":\"2026-04-01\"}\n{bad\n")
+	})
+	if _, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, client.BaseURL.String()+"path/to/users-daily/badjson"); err == nil {
+		t.Error("Copilot.DownloadUserDailyMetrics expected error for bad JSON, got none")
+	}
+}
+
+func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/users-periodic", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"report_start_day":"2026-03-05","report_end_day":"2026-04-01","day":"2026-03-05","user_id":1,"user_login":"alice","user_initiated_interaction_count":3,"used_copilot_code_review_active":true}
+{"report_start_day":"2026-03-05","report_end_day":"2026-04-01","day":"2026-03-06","user_id":1,"user_login":"alice","used_cli":true,"used_copilot_code_review_passive":true,"used_copilot_coding_agent":true,"totals_by_cli":{"session_count":1,"request_count":3,"prompt_count":2,"token_usage":{"avg_tokens_per_request":1200.5,"output_tokens_sum":2400,"prompt_tokens_sum":1201}}}
+`)
+	})
+
+	ctx := t.Context()
+	url := client.BaseURL.String() + "path/to/users-periodic"
+	got, resp, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, url)
+	if err != nil {
+		t.Errorf("Copilot.DownloadUserPeriodicMetrics returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Copilot.DownloadUserPeriodicMetrics returned status code: %v", resp.StatusCode)
+	}
+
+	want := []*CopilotUserPeriodicMetrics{
+		{
+			ReportStartDay:                "2026-03-05",
+			ReportEndDay:                  "2026-04-01",
+			Day:                           "2026-03-05",
+			UserID:                        1,
+			UserLogin:                     "alice",
+			UserInitiatedInteractionCount: Int(3),
+			UsedCopilotCodeReviewActive:   Bool(true),
+		},
+		{
+			ReportStartDay:               "2026-03-05",
+			ReportEndDay:                 "2026-04-01",
+			Day:                          "2026-03-06",
+			UserID:                       1,
+			UserLogin:                    "alice",
+			UsedCLI:                      Bool(true),
+			UsedCopilotCodeReviewPassive: Bool(true),
+			UsedCopilotCodingAgent:       Bool(true),
+			TotalsByCLI: &CopilotMetricsCLI{
+				SessionCount: Int(1),
+				RequestCount: Int(3),
+				PromptCount:  Int(2),
+				TokenUsage: &CopilotMetricsCLITokenUsage{
+					AvgTokensPerRequest: Ptr(1200.5),
+					OutputTokensSum:     Int(2400),
+					PromptTokensSum:     Int(1201),
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.DownloadUserPeriodicMetrics returned %+v, want %+v", got, want)
+	}
+
+	// Empty body parses to a nil slice (no records).
+	mux.HandleFunc("/path/to/users-periodic/empty", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+	})
+	gotEmpty, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.BaseURL.String()+"path/to/users-periodic/empty")
+	if err != nil {
+		t.Errorf("Copilot.DownloadUserPeriodicMetrics empty body returned error: %v", err)
+	}
+	if gotEmpty != nil {
+		t.Errorf("Copilot.DownloadUserPeriodicMetrics empty body returned %+v, want nil", gotEmpty)
+	}
+
+	mux.HandleFunc("/path/to/users-periodic/error", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.BaseURL.String()+"path/to/users-periodic/error"); err == nil {
+		t.Error("Copilot.DownloadUserPeriodicMetrics expected error but got none")
+	}
+	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, "\n"); err == nil {
+		t.Error("Copilot.DownloadUserPeriodicMetrics expected error for invalid URL, got none")
+	}
+	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, "invalid-scheme://test"); err == nil {
+		t.Error("Copilot.DownloadUserPeriodicMetrics expected error for invalid scheme, got none")
+	}
+
+	mux.HandleFunc("/path/to/users-periodic/badjson", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "{not json\n")
+	})
+	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.BaseURL.String()+"path/to/users-periodic/badjson"); err == nil {
+		t.Error("Copilot.DownloadUserPeriodicMetrics expected error for bad JSON, got none")
+	}
+}

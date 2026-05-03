@@ -8198,6 +8198,214 @@ func (c *CopilotCodeReviewRuleParameters) GetReviewOnPush() bool {
 	return c.ReviewOnPush
 }
 
+// GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetCodeAcceptanceActivityCount() int {
+	if c == nil || c.CodeAcceptanceActivityCount == nil {
+		return 0
+	}
+	return *c.CodeAcceptanceActivityCount
+}
+
+// GetCodeGenerationActivityCount returns the CodeGenerationActivityCount field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetCodeGenerationActivityCount() int {
+	if c == nil || c.CodeGenerationActivityCount == nil {
+		return 0
+	}
+	return *c.CodeGenerationActivityCount
+}
+
+// GetDailyActiveCLIUsers returns the DailyActiveCLIUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetDailyActiveCLIUsers() int {
+	if c == nil || c.DailyActiveCLIUsers == nil {
+		return 0
+	}
+	return *c.DailyActiveCLIUsers
+}
+
+// GetDailyActiveCopilotCloudAgentUsers returns the DailyActiveCopilotCloudAgentUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetDailyActiveCopilotCloudAgentUsers() int {
+	if c == nil || c.DailyActiveCopilotCloudAgentUsers == nil {
+		return 0
+	}
+	return *c.DailyActiveCopilotCloudAgentUsers
+}
+
+// GetDailyActiveUsers returns the DailyActiveUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetDailyActiveUsers() int {
+	if c == nil || c.DailyActiveUsers == nil {
+		return 0
+	}
+	return *c.DailyActiveUsers
+}
+
+// GetDay returns the Day field.
+func (c *CopilotDailyMetrics) GetDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.Day
+}
+
+// GetEnterpriseID returns the EnterpriseID field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetEnterpriseID() string {
+	if c == nil || c.EnterpriseID == nil {
+		return ""
+	}
+	return *c.EnterpriseID
+}
+
+// GetLOCAddedSum returns the LOCAddedSum field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetLOCAddedSum() int {
+	if c == nil || c.LOCAddedSum == nil {
+		return 0
+	}
+	return *c.LOCAddedSum
+}
+
+// GetLOCDeletedSum returns the LOCDeletedSum field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetLOCDeletedSum() int {
+	if c == nil || c.LOCDeletedSum == nil {
+		return 0
+	}
+	return *c.LOCDeletedSum
+}
+
+// GetLOCSuggestedToAddSum returns the LOCSuggestedToAddSum field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetLOCSuggestedToAddSum() int {
+	if c == nil || c.LOCSuggestedToAddSum == nil {
+		return 0
+	}
+	return *c.LOCSuggestedToAddSum
+}
+
+// GetLOCSuggestedToDeleteSum returns the LOCSuggestedToDeleteSum field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetLOCSuggestedToDeleteSum() int {
+	if c == nil || c.LOCSuggestedToDeleteSum == nil {
+		return 0
+	}
+	return *c.LOCSuggestedToDeleteSum
+}
+
+// GetMonthlyActiveAgentUsers returns the MonthlyActiveAgentUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetMonthlyActiveAgentUsers() int {
+	if c == nil || c.MonthlyActiveAgentUsers == nil {
+		return 0
+	}
+	return *c.MonthlyActiveAgentUsers
+}
+
+// GetMonthlyActiveChatUsers returns the MonthlyActiveChatUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetMonthlyActiveChatUsers() int {
+	if c == nil || c.MonthlyActiveChatUsers == nil {
+		return 0
+	}
+	return *c.MonthlyActiveChatUsers
+}
+
+// GetMonthlyActiveCopilotCloudAgentUsers returns the MonthlyActiveCopilotCloudAgentUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetMonthlyActiveCopilotCloudAgentUsers() int {
+	if c == nil || c.MonthlyActiveCopilotCloudAgentUsers == nil {
+		return 0
+	}
+	return *c.MonthlyActiveCopilotCloudAgentUsers
+}
+
+// GetMonthlyActiveUsers returns the MonthlyActiveUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetMonthlyActiveUsers() int {
+	if c == nil || c.MonthlyActiveUsers == nil {
+		return 0
+	}
+	return *c.MonthlyActiveUsers
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetOrganizationID() string {
+	if c == nil || c.OrganizationID == nil {
+		return ""
+	}
+	return *c.OrganizationID
+}
+
+// GetPullRequests returns the PullRequests field.
+func (c *CopilotDailyMetrics) GetPullRequests() *CopilotMetricsPullRequests {
+	if c == nil {
+		return nil
+	}
+	return c.PullRequests
+}
+
+// GetTotalsByCLI returns the TotalsByCLI field.
+func (c *CopilotDailyMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
+	if c == nil {
+		return nil
+	}
+	return c.TotalsByCLI
+}
+
+// GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
+func (c *CopilotDailyMetrics) GetTotalsByFeature() []*CopilotMetricsFeature {
+	if c == nil || c.TotalsByFeature == nil {
+		return nil
+	}
+	return c.TotalsByFeature
+}
+
+// GetTotalsByIDE returns the TotalsByIDE slice if it's non-nil, nil otherwise.
+func (c *CopilotDailyMetrics) GetTotalsByIDE() []*CopilotMetricsIDE {
+	if c == nil || c.TotalsByIDE == nil {
+		return nil
+	}
+	return c.TotalsByIDE
+}
+
+// GetTotalsByLanguageFeature returns the TotalsByLanguageFeature slice if it's non-nil, nil otherwise.
+func (c *CopilotDailyMetrics) GetTotalsByLanguageFeature() []*CopilotMetricsLanguageFeature {
+	if c == nil || c.TotalsByLanguageFeature == nil {
+		return nil
+	}
+	return c.TotalsByLanguageFeature
+}
+
+// GetTotalsByLanguageModel returns the TotalsByLanguageModel slice if it's non-nil, nil otherwise.
+func (c *CopilotDailyMetrics) GetTotalsByLanguageModel() []*CopilotMetricsLanguageModel {
+	if c == nil || c.TotalsByLanguageModel == nil {
+		return nil
+	}
+	return c.TotalsByLanguageModel
+}
+
+// GetTotalsByModelFeature returns the TotalsByModelFeature slice if it's non-nil, nil otherwise.
+func (c *CopilotDailyMetrics) GetTotalsByModelFeature() []*CopilotMetricsModelFeature {
+	if c == nil || c.TotalsByModelFeature == nil {
+		return nil
+	}
+	return c.TotalsByModelFeature
+}
+
+// GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetUserInitiatedInteractionCount() int {
+	if c == nil || c.UserInitiatedInteractionCount == nil {
+		return 0
+	}
+	return *c.UserInitiatedInteractionCount
+}
+
+// GetWeeklyActiveCopilotCloudAgentUsers returns the WeeklyActiveCopilotCloudAgentUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetWeeklyActiveCopilotCloudAgentUsers() int {
+	if c == nil || c.WeeklyActiveCopilotCloudAgentUsers == nil {
+		return 0
+	}
+	return *c.WeeklyActiveCopilotCloudAgentUsers
+}
+
+// GetWeeklyActiveUsers returns the WeeklyActiveUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetWeeklyActiveUsers() int {
+	if c == nil || c.WeeklyActiveUsers == nil {
+		return 0
+	}
+	return *c.WeeklyActiveUsers
+}
+
 // GetDownloadLinks returns the DownloadLinks slice if it's non-nil, nil otherwise.
 func (c *CopilotDailyMetricsReport) GetDownloadLinks() []string {
 	if c == nil || c.DownloadLinks == nil {
@@ -8654,6 +8862,238 @@ func (c *CopilotMetrics) GetTotalEngagedUsers() int {
 	return *c.TotalEngagedUsers
 }
 
+// GetChatPanelAgentMode returns the ChatPanelAgentMode field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsChatPanel) GetChatPanelAgentMode() int {
+	if c == nil || c.ChatPanelAgentMode == nil {
+		return 0
+	}
+	return *c.ChatPanelAgentMode
+}
+
+// GetChatPanelAskMode returns the ChatPanelAskMode field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsChatPanel) GetChatPanelAskMode() int {
+	if c == nil || c.ChatPanelAskMode == nil {
+		return 0
+	}
+	return *c.ChatPanelAskMode
+}
+
+// GetChatPanelCustomMode returns the ChatPanelCustomMode field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsChatPanel) GetChatPanelCustomMode() int {
+	if c == nil || c.ChatPanelCustomMode == nil {
+		return 0
+	}
+	return *c.ChatPanelCustomMode
+}
+
+// GetChatPanelEditMode returns the ChatPanelEditMode field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsChatPanel) GetChatPanelEditMode() int {
+	if c == nil || c.ChatPanelEditMode == nil {
+		return 0
+	}
+	return *c.ChatPanelEditMode
+}
+
+// GetChatPanelUnknownMode returns the ChatPanelUnknownMode field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsChatPanel) GetChatPanelUnknownMode() int {
+	if c == nil || c.ChatPanelUnknownMode == nil {
+		return 0
+	}
+	return *c.ChatPanelUnknownMode
+}
+
+// GetLastKnownCLIVersion returns the LastKnownCLIVersion field.
+func (c *CopilotMetricsCLI) GetLastKnownCLIVersion() *CopilotMetricsCLIVersion {
+	if c == nil {
+		return nil
+	}
+	return c.LastKnownCLIVersion
+}
+
+// GetPromptCount returns the PromptCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCLI) GetPromptCount() int {
+	if c == nil || c.PromptCount == nil {
+		return 0
+	}
+	return *c.PromptCount
+}
+
+// GetRequestCount returns the RequestCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCLI) GetRequestCount() int {
+	if c == nil || c.RequestCount == nil {
+		return 0
+	}
+	return *c.RequestCount
+}
+
+// GetSessionCount returns the SessionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCLI) GetSessionCount() int {
+	if c == nil || c.SessionCount == nil {
+		return 0
+	}
+	return *c.SessionCount
+}
+
+// GetTokenUsage returns the TokenUsage field.
+func (c *CopilotMetricsCLI) GetTokenUsage() *CopilotMetricsCLITokenUsage {
+	if c == nil {
+		return nil
+	}
+	return c.TokenUsage
+}
+
+// GetAvgTokensPerRequest returns the AvgTokensPerRequest field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCLITokenUsage) GetAvgTokensPerRequest() float64 {
+	if c == nil || c.AvgTokensPerRequest == nil {
+		return 0
+	}
+	return *c.AvgTokensPerRequest
+}
+
+// GetOutputTokensSum returns the OutputTokensSum field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCLITokenUsage) GetOutputTokensSum() int {
+	if c == nil || c.OutputTokensSum == nil {
+		return 0
+	}
+	return *c.OutputTokensSum
+}
+
+// GetPromptTokensSum returns the PromptTokensSum field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCLITokenUsage) GetPromptTokensSum() int {
+	if c == nil || c.PromptTokensSum == nil {
+		return 0
+	}
+	return *c.PromptTokensSum
+}
+
+// GetCLIVersion returns the CLIVersion field.
+func (c *CopilotMetricsCLIVersion) GetCLIVersion() string {
+	if c == nil {
+		return ""
+	}
+	return c.CLIVersion
+}
+
+// GetSampledAt returns the SampledAt field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCLIVersion) GetSampledAt() Timestamp {
+	if c == nil || c.SampledAt == nil {
+		return Timestamp{}
+	}
+	return *c.SampledAt
+}
+
+// GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCodeActivity) GetCodeAcceptanceActivityCount() int {
+	if c == nil || c.CodeAcceptanceActivityCount == nil {
+		return 0
+	}
+	return *c.CodeAcceptanceActivityCount
+}
+
+// GetCodeGenerationActivityCount returns the CodeGenerationActivityCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCodeActivity) GetCodeGenerationActivityCount() int {
+	if c == nil || c.CodeGenerationActivityCount == nil {
+		return 0
+	}
+	return *c.CodeGenerationActivityCount
+}
+
+// GetLOCAddedSum returns the LOCAddedSum field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCodeActivity) GetLOCAddedSum() int {
+	if c == nil || c.LOCAddedSum == nil {
+		return 0
+	}
+	return *c.LOCAddedSum
+}
+
+// GetLOCDeletedSum returns the LOCDeletedSum field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCodeActivity) GetLOCDeletedSum() int {
+	if c == nil || c.LOCDeletedSum == nil {
+		return 0
+	}
+	return *c.LOCDeletedSum
+}
+
+// GetLOCSuggestedToAddSum returns the LOCSuggestedToAddSum field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCodeActivity) GetLOCSuggestedToAddSum() int {
+	if c == nil || c.LOCSuggestedToAddSum == nil {
+		return 0
+	}
+	return *c.LOCSuggestedToAddSum
+}
+
+// GetLOCSuggestedToDeleteSum returns the LOCSuggestedToDeleteSum field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCodeActivity) GetLOCSuggestedToDeleteSum() int {
+	if c == nil || c.LOCSuggestedToDeleteSum == nil {
+		return 0
+	}
+	return *c.LOCSuggestedToDeleteSum
+}
+
+// GetFeature returns the Feature field.
+func (c *CopilotMetricsFeature) GetFeature() string {
+	if c == nil {
+		return ""
+	}
+	return c.Feature
+}
+
+// GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsFeature) GetUserInitiatedInteractionCount() int {
+	if c == nil || c.UserInitiatedInteractionCount == nil {
+		return 0
+	}
+	return *c.UserInitiatedInteractionCount
+}
+
+// GetIDE returns the IDE field.
+func (c *CopilotMetricsIDE) GetIDE() string {
+	if c == nil {
+		return ""
+	}
+	return c.IDE
+}
+
+// GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsIDE) GetUserInitiatedInteractionCount() int {
+	if c == nil || c.UserInitiatedInteractionCount == nil {
+		return 0
+	}
+	return *c.UserInitiatedInteractionCount
+}
+
+// GetFeature returns the Feature field.
+func (c *CopilotMetricsLanguageFeature) GetFeature() string {
+	if c == nil {
+		return ""
+	}
+	return c.Feature
+}
+
+// GetLanguage returns the Language field.
+func (c *CopilotMetricsLanguageFeature) GetLanguage() string {
+	if c == nil {
+		return ""
+	}
+	return c.Language
+}
+
+// GetLanguage returns the Language field.
+func (c *CopilotMetricsLanguageModel) GetLanguage() string {
+	if c == nil {
+		return ""
+	}
+	return c.Language
+}
+
+// GetModel returns the Model field.
+func (c *CopilotMetricsLanguageModel) GetModel() string {
+	if c == nil {
+		return ""
+	}
+	return c.Model
+}
+
 // GetSince returns the Since field if it's non-nil, zero value otherwise.
 func (c *CopilotMetricsListOptions) GetSince() time.Time {
 	if c == nil || c.Since == nil {
@@ -8668,6 +9108,142 @@ func (c *CopilotMetricsListOptions) GetUntil() time.Time {
 		return time.Time{}
 	}
 	return *c.Until
+}
+
+// GetFeature returns the Feature field.
+func (c *CopilotMetricsModelFeature) GetFeature() string {
+	if c == nil {
+		return ""
+	}
+	return c.Feature
+}
+
+// GetModel returns the Model field.
+func (c *CopilotMetricsModelFeature) GetModel() string {
+	if c == nil {
+		return ""
+	}
+	return c.Model
+}
+
+// GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsModelFeature) GetUserInitiatedInteractionCount() int {
+	if c == nil || c.UserInitiatedInteractionCount == nil {
+		return 0
+	}
+	return *c.UserInitiatedInteractionCount
+}
+
+// GetMedianMinutesToMerge returns the MedianMinutesToMerge field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetMedianMinutesToMerge() float64 {
+	if c == nil || c.MedianMinutesToMerge == nil {
+		return 0
+	}
+	return *c.MedianMinutesToMerge
+}
+
+// GetMedianMinutesToMergeCopilotAuthored returns the MedianMinutesToMergeCopilotAuthored field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetMedianMinutesToMergeCopilotAuthored() float64 {
+	if c == nil || c.MedianMinutesToMergeCopilotAuthored == nil {
+		return 0
+	}
+	return *c.MedianMinutesToMergeCopilotAuthored
+}
+
+// GetMedianMinutesToMergeCopilotReviewed returns the MedianMinutesToMergeCopilotReviewed field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetMedianMinutesToMergeCopilotReviewed() float64 {
+	if c == nil || c.MedianMinutesToMergeCopilotReviewed == nil {
+		return 0
+	}
+	return *c.MedianMinutesToMergeCopilotReviewed
+}
+
+// GetTotalAppliedSuggestions returns the TotalAppliedSuggestions field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalAppliedSuggestions() int {
+	if c == nil || c.TotalAppliedSuggestions == nil {
+		return 0
+	}
+	return *c.TotalAppliedSuggestions
+}
+
+// GetTotalCopilotAppliedSuggestions returns the TotalCopilotAppliedSuggestions field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalCopilotAppliedSuggestions() int {
+	if c == nil || c.TotalCopilotAppliedSuggestions == nil {
+		return 0
+	}
+	return *c.TotalCopilotAppliedSuggestions
+}
+
+// GetTotalCopilotSuggestions returns the TotalCopilotSuggestions field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalCopilotSuggestions() int {
+	if c == nil || c.TotalCopilotSuggestions == nil {
+		return 0
+	}
+	return *c.TotalCopilotSuggestions
+}
+
+// GetTotalCreated returns the TotalCreated field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalCreated() int {
+	if c == nil || c.TotalCreated == nil {
+		return 0
+	}
+	return *c.TotalCreated
+}
+
+// GetTotalCreatedByCopilot returns the TotalCreatedByCopilot field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalCreatedByCopilot() int {
+	if c == nil || c.TotalCreatedByCopilot == nil {
+		return 0
+	}
+	return *c.TotalCreatedByCopilot
+}
+
+// GetTotalMerged returns the TotalMerged field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalMerged() int {
+	if c == nil || c.TotalMerged == nil {
+		return 0
+	}
+	return *c.TotalMerged
+}
+
+// GetTotalMergedCreatedByCopilot returns the TotalMergedCreatedByCopilot field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalMergedCreatedByCopilot() int {
+	if c == nil || c.TotalMergedCreatedByCopilot == nil {
+		return 0
+	}
+	return *c.TotalMergedCreatedByCopilot
+}
+
+// GetTotalMergedReviewedByCopilot returns the TotalMergedReviewedByCopilot field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalMergedReviewedByCopilot() int {
+	if c == nil || c.TotalMergedReviewedByCopilot == nil {
+		return 0
+	}
+	return *c.TotalMergedReviewedByCopilot
+}
+
+// GetTotalReviewed returns the TotalReviewed field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalReviewed() int {
+	if c == nil || c.TotalReviewed == nil {
+		return 0
+	}
+	return *c.TotalReviewed
+}
+
+// GetTotalReviewedByCopilot returns the TotalReviewedByCopilot field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalReviewedByCopilot() int {
+	if c == nil || c.TotalReviewedByCopilot == nil {
+		return 0
+	}
+	return *c.TotalReviewedByCopilot
+}
+
+// GetTotalSuggestions returns the TotalSuggestions field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsPullRequests) GetTotalSuggestions() int {
+	if c == nil || c.TotalSuggestions == nil {
+		return 0
+	}
+	return *c.TotalSuggestions
 }
 
 // GetDownloadLinks returns the DownloadLinks slice if it's non-nil, nil otherwise.
@@ -8732,6 +9308,54 @@ func (c *CopilotOrganizationDetails) GetSeatManagementSetting() string {
 		return ""
 	}
 	return c.SeatManagementSetting
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotPeriodicMetrics) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetDayTotals returns the DayTotals slice if it's non-nil, nil otherwise.
+func (c *CopilotPeriodicMetrics) GetDayTotals() []*CopilotDailyMetrics {
+	if c == nil || c.DayTotals == nil {
+		return nil
+	}
+	return c.DayTotals
+}
+
+// GetEnterpriseID returns the EnterpriseID field if it's non-nil, zero value otherwise.
+func (c *CopilotPeriodicMetrics) GetEnterpriseID() string {
+	if c == nil || c.EnterpriseID == nil {
+		return ""
+	}
+	return *c.EnterpriseID
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (c *CopilotPeriodicMetrics) GetOrganizationID() string {
+	if c == nil || c.OrganizationID == nil {
+		return ""
+	}
+	return *c.OrganizationID
+}
+
+// GetReportEndDay returns the ReportEndDay field.
+func (c *CopilotPeriodicMetrics) GetReportEndDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.ReportEndDay
+}
+
+// GetReportStartDay returns the ReportStartDay field.
+func (c *CopilotPeriodicMetrics) GetReportStartDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.ReportStartDay
 }
 
 // GetActiveThisCycle returns the ActiveThisCycle field.
@@ -8844,6 +9468,478 @@ func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
 		return Timestamp{}
 	}
 	return *c.UpdatedAt
+}
+
+// GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetCodeAcceptanceActivityCount() int {
+	if c == nil || c.CodeAcceptanceActivityCount == nil {
+		return 0
+	}
+	return *c.CodeAcceptanceActivityCount
+}
+
+// GetCodeGenerationActivityCount returns the CodeGenerationActivityCount field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetCodeGenerationActivityCount() int {
+	if c == nil || c.CodeGenerationActivityCount == nil {
+		return 0
+	}
+	return *c.CodeGenerationActivityCount
+}
+
+// GetDay returns the Day field.
+func (c *CopilotUserDailyMetrics) GetDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.Day
+}
+
+// GetEnterpriseID returns the EnterpriseID field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetEnterpriseID() string {
+	if c == nil || c.EnterpriseID == nil {
+		return ""
+	}
+	return *c.EnterpriseID
+}
+
+// GetLOCAddedSum returns the LOCAddedSum field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetLOCAddedSum() int {
+	if c == nil || c.LOCAddedSum == nil {
+		return 0
+	}
+	return *c.LOCAddedSum
+}
+
+// GetLOCDeletedSum returns the LOCDeletedSum field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetLOCDeletedSum() int {
+	if c == nil || c.LOCDeletedSum == nil {
+		return 0
+	}
+	return *c.LOCDeletedSum
+}
+
+// GetLOCSuggestedToAddSum returns the LOCSuggestedToAddSum field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetLOCSuggestedToAddSum() int {
+	if c == nil || c.LOCSuggestedToAddSum == nil {
+		return 0
+	}
+	return *c.LOCSuggestedToAddSum
+}
+
+// GetLOCSuggestedToDeleteSum returns the LOCSuggestedToDeleteSum field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetLOCSuggestedToDeleteSum() int {
+	if c == nil || c.LOCSuggestedToDeleteSum == nil {
+		return 0
+	}
+	return *c.LOCSuggestedToDeleteSum
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetOrganizationID() string {
+	if c == nil || c.OrganizationID == nil {
+		return ""
+	}
+	return *c.OrganizationID
+}
+
+// GetTotalsByCLI returns the TotalsByCLI field.
+func (c *CopilotUserDailyMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
+	if c == nil {
+		return nil
+	}
+	return c.TotalsByCLI
+}
+
+// GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
+func (c *CopilotUserDailyMetrics) GetTotalsByFeature() []*CopilotMetricsFeature {
+	if c == nil || c.TotalsByFeature == nil {
+		return nil
+	}
+	return c.TotalsByFeature
+}
+
+// GetTotalsByIDE returns the TotalsByIDE slice if it's non-nil, nil otherwise.
+func (c *CopilotUserDailyMetrics) GetTotalsByIDE() []*CopilotUserMetricsIDE {
+	if c == nil || c.TotalsByIDE == nil {
+		return nil
+	}
+	return c.TotalsByIDE
+}
+
+// GetTotalsByLanguageFeature returns the TotalsByLanguageFeature slice if it's non-nil, nil otherwise.
+func (c *CopilotUserDailyMetrics) GetTotalsByLanguageFeature() []*CopilotMetricsLanguageFeature {
+	if c == nil || c.TotalsByLanguageFeature == nil {
+		return nil
+	}
+	return c.TotalsByLanguageFeature
+}
+
+// GetTotalsByLanguageModel returns the TotalsByLanguageModel slice if it's non-nil, nil otherwise.
+func (c *CopilotUserDailyMetrics) GetTotalsByLanguageModel() []*CopilotMetricsLanguageModel {
+	if c == nil || c.TotalsByLanguageModel == nil {
+		return nil
+	}
+	return c.TotalsByLanguageModel
+}
+
+// GetTotalsByModelFeature returns the TotalsByModelFeature slice if it's non-nil, nil otherwise.
+func (c *CopilotUserDailyMetrics) GetTotalsByModelFeature() []*CopilotMetricsModelFeature {
+	if c == nil || c.TotalsByModelFeature == nil {
+		return nil
+	}
+	return c.TotalsByModelFeature
+}
+
+// GetUsedAgent returns the UsedAgent field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUsedAgent() bool {
+	if c == nil || c.UsedAgent == nil {
+		return false
+	}
+	return *c.UsedAgent
+}
+
+// GetUsedChat returns the UsedChat field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUsedChat() bool {
+	if c == nil || c.UsedChat == nil {
+		return false
+	}
+	return *c.UsedChat
+}
+
+// GetUsedCLI returns the UsedCLI field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUsedCLI() bool {
+	if c == nil || c.UsedCLI == nil {
+		return false
+	}
+	return *c.UsedCLI
+}
+
+// GetUsedCopilotCodeReviewActive returns the UsedCopilotCodeReviewActive field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUsedCopilotCodeReviewActive() bool {
+	if c == nil || c.UsedCopilotCodeReviewActive == nil {
+		return false
+	}
+	return *c.UsedCopilotCodeReviewActive
+}
+
+// GetUsedCopilotCodeReviewPassive returns the UsedCopilotCodeReviewPassive field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUsedCopilotCodeReviewPassive() bool {
+	if c == nil || c.UsedCopilotCodeReviewPassive == nil {
+		return false
+	}
+	return *c.UsedCopilotCodeReviewPassive
+}
+
+// GetUsedCopilotCodingAgent returns the UsedCopilotCodingAgent field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUsedCopilotCodingAgent() bool {
+	if c == nil || c.UsedCopilotCodingAgent == nil {
+		return false
+	}
+	return *c.UsedCopilotCodingAgent
+}
+
+// GetUserID returns the UserID field.
+func (c *CopilotUserDailyMetrics) GetUserID() int {
+	if c == nil {
+		return 0
+	}
+	return c.UserID
+}
+
+// GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUserInitiatedInteractionCount() int {
+	if c == nil || c.UserInitiatedInteractionCount == nil {
+		return 0
+	}
+	return *c.UserInitiatedInteractionCount
+}
+
+// GetUserLogin returns the UserLogin field.
+func (c *CopilotUserDailyMetrics) GetUserLogin() string {
+	if c == nil {
+		return ""
+	}
+	return c.UserLogin
+}
+
+// GetIDE returns the IDE field.
+func (c *CopilotUserMetricsIDE) GetIDE() string {
+	if c == nil {
+		return ""
+	}
+	return c.IDE
+}
+
+// GetLastKnownIDEVersion returns the LastKnownIDEVersion field.
+func (c *CopilotUserMetricsIDE) GetLastKnownIDEVersion() *CopilotUserMetricsIDEVersion {
+	if c == nil {
+		return nil
+	}
+	return c.LastKnownIDEVersion
+}
+
+// GetLastKnownPluginVersion returns the LastKnownPluginVersion field.
+func (c *CopilotUserMetricsIDE) GetLastKnownPluginVersion() *CopilotUserMetricsPluginVersion {
+	if c == nil {
+		return nil
+	}
+	return c.LastKnownPluginVersion
+}
+
+// GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotUserMetricsIDE) GetUserInitiatedInteractionCount() int {
+	if c == nil || c.UserInitiatedInteractionCount == nil {
+		return 0
+	}
+	return *c.UserInitiatedInteractionCount
+}
+
+// GetIDEVersion returns the IDEVersion field.
+func (c *CopilotUserMetricsIDEVersion) GetIDEVersion() string {
+	if c == nil {
+		return ""
+	}
+	return c.IDEVersion
+}
+
+// GetSampledAt returns the SampledAt field if it's non-nil, zero value otherwise.
+func (c *CopilotUserMetricsIDEVersion) GetSampledAt() Timestamp {
+	if c == nil || c.SampledAt == nil {
+		return Timestamp{}
+	}
+	return *c.SampledAt
+}
+
+// GetPlugin returns the Plugin field.
+func (c *CopilotUserMetricsPluginVersion) GetPlugin() string {
+	if c == nil {
+		return ""
+	}
+	return c.Plugin
+}
+
+// GetPluginVersion returns the PluginVersion field.
+func (c *CopilotUserMetricsPluginVersion) GetPluginVersion() string {
+	if c == nil {
+		return ""
+	}
+	return c.PluginVersion
+}
+
+// GetSampledAt returns the SampledAt field if it's non-nil, zero value otherwise.
+func (c *CopilotUserMetricsPluginVersion) GetSampledAt() Timestamp {
+	if c == nil || c.SampledAt == nil {
+		return Timestamp{}
+	}
+	return *c.SampledAt
+}
+
+// GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetCodeAcceptanceActivityCount() int {
+	if c == nil || c.CodeAcceptanceActivityCount == nil {
+		return 0
+	}
+	return *c.CodeAcceptanceActivityCount
+}
+
+// GetCodeGenerationActivityCount returns the CodeGenerationActivityCount field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetCodeGenerationActivityCount() int {
+	if c == nil || c.CodeGenerationActivityCount == nil {
+		return 0
+	}
+	return *c.CodeGenerationActivityCount
+}
+
+// GetDay returns the Day field.
+func (c *CopilotUserPeriodicMetrics) GetDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.Day
+}
+
+// GetEnterpriseID returns the EnterpriseID field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetEnterpriseID() string {
+	if c == nil || c.EnterpriseID == nil {
+		return ""
+	}
+	return *c.EnterpriseID
+}
+
+// GetLOCAddedSum returns the LOCAddedSum field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetLOCAddedSum() int {
+	if c == nil || c.LOCAddedSum == nil {
+		return 0
+	}
+	return *c.LOCAddedSum
+}
+
+// GetLOCDeletedSum returns the LOCDeletedSum field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetLOCDeletedSum() int {
+	if c == nil || c.LOCDeletedSum == nil {
+		return 0
+	}
+	return *c.LOCDeletedSum
+}
+
+// GetLOCSuggestedToAddSum returns the LOCSuggestedToAddSum field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetLOCSuggestedToAddSum() int {
+	if c == nil || c.LOCSuggestedToAddSum == nil {
+		return 0
+	}
+	return *c.LOCSuggestedToAddSum
+}
+
+// GetLOCSuggestedToDeleteSum returns the LOCSuggestedToDeleteSum field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetLOCSuggestedToDeleteSum() int {
+	if c == nil || c.LOCSuggestedToDeleteSum == nil {
+		return 0
+	}
+	return *c.LOCSuggestedToDeleteSum
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetOrganizationID() string {
+	if c == nil || c.OrganizationID == nil {
+		return ""
+	}
+	return *c.OrganizationID
+}
+
+// GetReportEndDay returns the ReportEndDay field.
+func (c *CopilotUserPeriodicMetrics) GetReportEndDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.ReportEndDay
+}
+
+// GetReportStartDay returns the ReportStartDay field.
+func (c *CopilotUserPeriodicMetrics) GetReportStartDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.ReportStartDay
+}
+
+// GetTotalsByCLI returns the TotalsByCLI field.
+func (c *CopilotUserPeriodicMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
+	if c == nil {
+		return nil
+	}
+	return c.TotalsByCLI
+}
+
+// GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
+func (c *CopilotUserPeriodicMetrics) GetTotalsByFeature() []*CopilotMetricsFeature {
+	if c == nil || c.TotalsByFeature == nil {
+		return nil
+	}
+	return c.TotalsByFeature
+}
+
+// GetTotalsByIDE returns the TotalsByIDE slice if it's non-nil, nil otherwise.
+func (c *CopilotUserPeriodicMetrics) GetTotalsByIDE() []*CopilotUserMetricsIDE {
+	if c == nil || c.TotalsByIDE == nil {
+		return nil
+	}
+	return c.TotalsByIDE
+}
+
+// GetTotalsByLanguageFeature returns the TotalsByLanguageFeature slice if it's non-nil, nil otherwise.
+func (c *CopilotUserPeriodicMetrics) GetTotalsByLanguageFeature() []*CopilotMetricsLanguageFeature {
+	if c == nil || c.TotalsByLanguageFeature == nil {
+		return nil
+	}
+	return c.TotalsByLanguageFeature
+}
+
+// GetTotalsByLanguageModel returns the TotalsByLanguageModel slice if it's non-nil, nil otherwise.
+func (c *CopilotUserPeriodicMetrics) GetTotalsByLanguageModel() []*CopilotMetricsLanguageModel {
+	if c == nil || c.TotalsByLanguageModel == nil {
+		return nil
+	}
+	return c.TotalsByLanguageModel
+}
+
+// GetTotalsByModelFeature returns the TotalsByModelFeature slice if it's non-nil, nil otherwise.
+func (c *CopilotUserPeriodicMetrics) GetTotalsByModelFeature() []*CopilotMetricsModelFeature {
+	if c == nil || c.TotalsByModelFeature == nil {
+		return nil
+	}
+	return c.TotalsByModelFeature
+}
+
+// GetUsedAgent returns the UsedAgent field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUsedAgent() bool {
+	if c == nil || c.UsedAgent == nil {
+		return false
+	}
+	return *c.UsedAgent
+}
+
+// GetUsedChat returns the UsedChat field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUsedChat() bool {
+	if c == nil || c.UsedChat == nil {
+		return false
+	}
+	return *c.UsedChat
+}
+
+// GetUsedCLI returns the UsedCLI field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUsedCLI() bool {
+	if c == nil || c.UsedCLI == nil {
+		return false
+	}
+	return *c.UsedCLI
+}
+
+// GetUsedCopilotCodeReviewActive returns the UsedCopilotCodeReviewActive field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUsedCopilotCodeReviewActive() bool {
+	if c == nil || c.UsedCopilotCodeReviewActive == nil {
+		return false
+	}
+	return *c.UsedCopilotCodeReviewActive
+}
+
+// GetUsedCopilotCodeReviewPassive returns the UsedCopilotCodeReviewPassive field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUsedCopilotCodeReviewPassive() bool {
+	if c == nil || c.UsedCopilotCodeReviewPassive == nil {
+		return false
+	}
+	return *c.UsedCopilotCodeReviewPassive
+}
+
+// GetUsedCopilotCodingAgent returns the UsedCopilotCodingAgent field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUsedCopilotCodingAgent() bool {
+	if c == nil || c.UsedCopilotCodingAgent == nil {
+		return false
+	}
+	return *c.UsedCopilotCodingAgent
+}
+
+// GetUserID returns the UserID field.
+func (c *CopilotUserPeriodicMetrics) GetUserID() int {
+	if c == nil {
+		return 0
+	}
+	return c.UserID
+}
+
+// GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUserInitiatedInteractionCount() int {
+	if c == nil || c.UserInitiatedInteractionCount == nil {
+		return 0
+	}
+	return *c.UserInitiatedInteractionCount
+}
+
+// GetUserLogin returns the UserLogin field.
+func (c *CopilotUserPeriodicMetrics) GetUserLogin() string {
+	if c == nil {
+		return ""
+	}
+	return c.UserLogin
 }
 
 // GetAzureSubscription returns the AzureSubscription field if it's non-nil, zero value otherwise.

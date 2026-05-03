@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 )
@@ -672,6 +673,8 @@ func (s *CopilotService) GetOrganizationTeamMetrics(ctx context.Context, org, te
 
 // GetEnterpriseDailyMetricsReport gets a report containing Copilot metrics for a single day for an enterprise.
 //
+// Use DownloadDailyMetrics to decode the payloads served at the returned download links.
+//
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-enterprise-usage-metrics-for-a-specific-day
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-1-day
@@ -698,6 +701,8 @@ func (s *CopilotService) GetEnterpriseDailyMetricsReport(ctx context.Context, en
 
 // GetEnterpriseMetricsReport gets a report containing Copilot metrics for a 28-day rolling window for an enterprise.
 //
+// Use DownloadPeriodicMetrics to decode the payloads served at the returned download links.
+//
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-enterprise-usage-metrics
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-28-day/latest
@@ -719,6 +724,8 @@ func (s *CopilotService) GetEnterpriseMetricsReport(ctx context.Context, enterpr
 }
 
 // GetEnterpriseUsersDailyMetricsReport gets a report containing Copilot user metrics for a single day for an enterprise.
+//
+// Use DownloadUserDailyMetrics to decode the payloads served at the returned download links.
 //
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-users-usage-metrics-for-a-specific-day
 //
@@ -746,6 +753,8 @@ func (s *CopilotService) GetEnterpriseUsersDailyMetricsReport(ctx context.Contex
 
 // GetEnterpriseUsersMetricsReport gets a report containing Copilot user metrics for a 28-day rolling window for an enterprise.
 //
+// Use DownloadUserPeriodicMetrics to decode the payloads served at the returned download links.
+//
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-users-usage-metrics
 //
 //meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/users-28-day/latest
@@ -767,6 +776,8 @@ func (s *CopilotService) GetEnterpriseUsersMetricsReport(ctx context.Context, en
 }
 
 // GetOrganizationDailyMetricsReport gets a report containing Copilot metrics for a single day for an organization.
+//
+// Use DownloadDailyMetrics to decode the payloads served at the returned download links.
 //
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-usage-metrics-for-a-specific-day
 //
@@ -794,6 +805,8 @@ func (s *CopilotService) GetOrganizationDailyMetricsReport(ctx context.Context, 
 
 // GetOrganizationMetricsReport gets a report containing Copilot metrics for a 28-day rolling window for an organization.
 //
+// Use DownloadPeriodicMetrics to decode the payloads served at the returned download links.
+//
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-usage-metrics
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/organization-28-day/latest
@@ -815,6 +828,8 @@ func (s *CopilotService) GetOrganizationMetricsReport(ctx context.Context, org s
 }
 
 // GetOrganizationUsersDailyMetricsReport gets a report containing Copilot user metrics for a single day for an organization.
+//
+// Use DownloadUserDailyMetrics to decode the payloads served at the returned download links.
 //
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-users-usage-metrics-for-a-specific-day
 //
@@ -842,6 +857,8 @@ func (s *CopilotService) GetOrganizationUsersDailyMetricsReport(ctx context.Cont
 
 // GetOrganizationUsersMetricsReport gets a report containing Copilot user metrics for a 28-day rolling window for an organization.
 //
+// Use DownloadUserPeriodicMetrics to decode the payloads served at the returned download links.
+//
 // GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-users-usage-metrics
 //
 //meta:operation GET /orgs/{org}/copilot/metrics/reports/users-28-day/latest
@@ -863,10 +880,15 @@ func (s *CopilotService) GetOrganizationUsersMetricsReport(ctx context.Context, 
 }
 
 // DownloadCopilotMetrics downloads a Copilot metrics report from the provided download link
-// and returns the metric data. This can be used to download metrics from a link returned by
-// GetEnterpriseDailyMetricsReport, GetEnterpriseMetricsReport, GetEnterpriseUsersDailyMetricsReport,
-// GetEnterpriseUsersMetricsReport, GetOrganizationDailyMetricsReport, GetOrganizationMetricsReport,
-// GetOrganizationUsersDailyMetricsReport, GetOrganizationUsersMetricsReport.
+// and decodes it as a []*CopilotMetrics.
+//
+// Deprecated: Use DownloadDailyMetrics,
+// DownloadPeriodicMetrics, DownloadUserDailyMetrics, DownloadUserPeriodicMetrics instead.
+// The payloads served at the download links returned by the new
+// Get*MetricsReport endpoints on GitHub.com do not match the CopilotMetrics shape
+// (see https://github.com/google/go-github/issues/4136).
+// This method is retained
+// for GitHub Enterprise Server installations that may still serve the legacy shape.
 func (s *CopilotService) DownloadCopilotMetrics(ctx context.Context, url string) ([]*CopilotMetrics, *Response, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -885,4 +907,345 @@ func (s *CopilotService) DownloadCopilotMetrics(ctx context.Context, url string)
 	}
 
 	return metrics, resp, nil
+}
+
+// CopilotMetricsPullRequests represents pull request totals in a Copilot metrics report.
+type CopilotMetricsPullRequests struct {
+	TotalReviewed                       *int     `json:"total_reviewed,omitempty"`
+	TotalCreated                        *int     `json:"total_created,omitempty"`
+	TotalCreatedByCopilot               *int     `json:"total_created_by_copilot,omitempty"`
+	TotalReviewedByCopilot              *int     `json:"total_reviewed_by_copilot,omitempty"`
+	TotalMerged                         *int     `json:"total_merged,omitempty"`
+	MedianMinutesToMerge                *float64 `json:"median_minutes_to_merge,omitempty"`
+	TotalSuggestions                    *int     `json:"total_suggestions,omitempty"`
+	TotalAppliedSuggestions             *int     `json:"total_applied_suggestions,omitempty"`
+	TotalMergedCreatedByCopilot         *int     `json:"total_merged_created_by_copilot,omitempty"`
+	MedianMinutesToMergeCopilotAuthored *float64 `json:"median_minutes_to_merge_copilot_authored,omitempty"`
+	TotalCopilotSuggestions             *int     `json:"total_copilot_suggestions,omitempty"`
+	TotalCopilotAppliedSuggestions      *int     `json:"total_copilot_applied_suggestions,omitempty"`
+	MedianMinutesToMergeCopilotReviewed *float64 `json:"median_minutes_to_merge_copilot_reviewed,omitempty"`
+	TotalMergedReviewedByCopilot        *int     `json:"total_merged_reviewed_by_copilot,omitempty"`
+}
+
+// CopilotMetricsCodeActivity captures the code-generation activity counts and lines-of-code (LOC)
+// suggestion totals shared across the per-IDE, per-feature, per-language, and per-model breakdowns
+// in a Copilot metrics report.
+type CopilotMetricsCodeActivity struct {
+	CodeGenerationActivityCount *int `json:"code_generation_activity_count,omitempty"`
+	CodeAcceptanceActivityCount *int `json:"code_acceptance_activity_count,omitempty"`
+	LOCSuggestedToAddSum        *int `json:"loc_suggested_to_add_sum,omitempty"`
+	LOCSuggestedToDeleteSum     *int `json:"loc_suggested_to_delete_sum,omitempty"`
+	LOCAddedSum                 *int `json:"loc_added_sum,omitempty"`
+	LOCDeletedSum               *int `json:"loc_deleted_sum,omitempty"`
+}
+
+// CopilotMetricsChatPanel captures per-mode chat panel interaction counts shared across daily,
+// periodic, and user metrics reports. Each field is a subset of user_initiated_interaction_count
+// attributed to that chat panel mode.
+type CopilotMetricsChatPanel struct {
+	ChatPanelAgentMode   *int `json:"chat_panel_agent_mode,omitempty"`
+	ChatPanelAskMode     *int `json:"chat_panel_ask_mode,omitempty"`
+	ChatPanelCustomMode  *int `json:"chat_panel_custom_mode,omitempty"`
+	ChatPanelEditMode    *int `json:"chat_panel_edit_mode,omitempty"`
+	ChatPanelUnknownMode *int `json:"chat_panel_unknown_mode,omitempty"`
+}
+
+// CopilotMetricsIDE represents per-IDE aggregate totals in a Copilot metrics report.
+type CopilotMetricsIDE struct {
+	IDE                           string `json:"ide"`
+	UserInitiatedInteractionCount *int   `json:"user_initiated_interaction_count,omitempty"`
+	CopilotMetricsCodeActivity
+}
+
+// CopilotMetricsFeature represents per-feature aggregate totals in a Copilot metrics report.
+type CopilotMetricsFeature struct {
+	Feature                       string `json:"feature"`
+	UserInitiatedInteractionCount *int   `json:"user_initiated_interaction_count,omitempty"`
+	CopilotMetricsCodeActivity
+}
+
+// CopilotMetricsLanguageFeature represents per-language-feature totals in a Copilot metrics report.
+type CopilotMetricsLanguageFeature struct {
+	Language string `json:"language"`
+	Feature  string `json:"feature"`
+	CopilotMetricsCodeActivity
+}
+
+// CopilotMetricsLanguageModel represents per-language-model totals in a Copilot metrics report.
+type CopilotMetricsLanguageModel struct {
+	Language string `json:"language"`
+	Model    string `json:"model"`
+	CopilotMetricsCodeActivity
+}
+
+// CopilotMetricsModelFeature represents per-model-feature totals in a Copilot metrics report.
+type CopilotMetricsModelFeature struct {
+	Model                         string `json:"model"`
+	Feature                       string `json:"feature"`
+	UserInitiatedInteractionCount *int   `json:"user_initiated_interaction_count,omitempty"`
+	CopilotMetricsCodeActivity
+}
+
+// CopilotMetricsCLIVersion represents the last known Copilot CLI version seen in a metrics report.
+type CopilotMetricsCLIVersion struct {
+	SampledAt  *Timestamp `json:"sampled_at,omitempty"`
+	CLIVersion string     `json:"cli_version"`
+}
+
+// CopilotMetricsCLITokenUsage represents Copilot CLI token totals in a metrics report.
+type CopilotMetricsCLITokenUsage struct {
+	AvgTokensPerRequest *float64 `json:"avg_tokens_per_request,omitempty"`
+	OutputTokensSum     *int     `json:"output_tokens_sum,omitempty"`
+	PromptTokensSum     *int     `json:"prompt_tokens_sum,omitempty"`
+}
+
+// CopilotMetricsCLI represents Copilot CLI totals in a metrics report.
+type CopilotMetricsCLI struct {
+	SessionCount        *int                         `json:"session_count,omitempty"`
+	RequestCount        *int                         `json:"request_count,omitempty"`
+	PromptCount         *int                         `json:"prompt_count,omitempty"`
+	TokenUsage          *CopilotMetricsCLITokenUsage `json:"token_usage,omitempty"`
+	LastKnownCLIVersion *CopilotMetricsCLIVersion    `json:"last_known_cli_version,omitempty"`
+}
+
+// CopilotDailyMetrics represents the payload downloaded from a 1-day Copilot usage metrics report.
+type CopilotDailyMetrics struct {
+	Day                                 string  `json:"day"`
+	OrganizationID                      *string `json:"organization_id,omitempty"`
+	EnterpriseID                        *string `json:"enterprise_id,omitempty"`
+	DailyActiveCLIUsers                 *int    `json:"daily_active_cli_users,omitempty"`
+	DailyActiveUsers                    *int    `json:"daily_active_users,omitempty"`
+	DailyActiveCopilotCloudAgentUsers   *int    `json:"daily_active_copilot_cloud_agent_users,omitempty"`
+	WeeklyActiveUsers                   *int    `json:"weekly_active_users,omitempty"`
+	WeeklyActiveCopilotCloudAgentUsers  *int    `json:"weekly_active_copilot_cloud_agent_users,omitempty"`
+	MonthlyActiveUsers                  *int    `json:"monthly_active_users,omitempty"`
+	MonthlyActiveChatUsers              *int    `json:"monthly_active_chat_users,omitempty"`
+	MonthlyActiveAgentUsers             *int    `json:"monthly_active_agent_users,omitempty"`
+	MonthlyActiveCopilotCloudAgentUsers *int    `json:"monthly_active_copilot_cloud_agent_users,omitempty"`
+	UserInitiatedInteractionCount       *int    `json:"user_initiated_interaction_count,omitempty"`
+	CopilotMetricsChatPanel
+	CodeGenerationActivityCount *int                             `json:"code_generation_activity_count,omitempty"`
+	CodeAcceptanceActivityCount *int                             `json:"code_acceptance_activity_count,omitempty"`
+	TotalsByIDE                 []*CopilotMetricsIDE             `json:"totals_by_ide,omitempty"`
+	TotalsByFeature             []*CopilotMetricsFeature         `json:"totals_by_feature,omitempty"`
+	TotalsByLanguageFeature     []*CopilotMetricsLanguageFeature `json:"totals_by_language_feature,omitempty"`
+	TotalsByLanguageModel       []*CopilotMetricsLanguageModel   `json:"totals_by_language_model,omitempty"`
+	TotalsByModelFeature        []*CopilotMetricsModelFeature    `json:"totals_by_model_feature,omitempty"`
+	TotalsByCLI                 *CopilotMetricsCLI               `json:"totals_by_cli,omitempty"`
+	LOCSuggestedToAddSum        *int                             `json:"loc_suggested_to_add_sum,omitempty"`
+	LOCSuggestedToDeleteSum     *int                             `json:"loc_suggested_to_delete_sum,omitempty"`
+	LOCAddedSum                 *int                             `json:"loc_added_sum,omitempty"`
+	LOCDeletedSum               *int                             `json:"loc_deleted_sum,omitempty"`
+	PullRequests                *CopilotMetricsPullRequests      `json:"pull_requests,omitempty"`
+}
+
+// CopilotPeriodicMetrics represents the payload downloaded from a multi-day (e.g. 28-day rolling)
+// Copilot usage metrics report. The DayTotals field contains one CopilotDailyMetrics entry per day
+// in the reporting window. Window-level metadata (ReportStartDay, ReportEndDay, CreatedAt) lives on
+// this parent struct; each DayTotals entry only populates fields scoped to that day.
+type CopilotPeriodicMetrics struct {
+	ReportStartDay string                 `json:"report_start_day"`
+	ReportEndDay   string                 `json:"report_end_day"`
+	OrganizationID *string                `json:"organization_id,omitempty"`
+	EnterpriseID   *string                `json:"enterprise_id,omitempty"`
+	CreatedAt      *Timestamp             `json:"created_at,omitempty"`
+	DayTotals      []*CopilotDailyMetrics `json:"day_totals,omitempty"`
+}
+
+// CopilotUserMetricsPluginVersion represents the last known plugin version used in an IDE by a Copilot user.
+type CopilotUserMetricsPluginVersion struct {
+	SampledAt     *Timestamp `json:"sampled_at,omitempty"`
+	Plugin        string     `json:"plugin"`
+	PluginVersion string     `json:"plugin_version"`
+}
+
+// CopilotUserMetricsIDEVersion represents the last known IDE version used by a Copilot user.
+type CopilotUserMetricsIDEVersion struct {
+	SampledAt  *Timestamp `json:"sampled_at,omitempty"`
+	IDEVersion string     `json:"ide_version"`
+}
+
+// CopilotUserMetricsIDE represents per-IDE totals for a single Copilot user in a user metrics report.
+type CopilotUserMetricsIDE struct {
+	IDE                           string `json:"ide"`
+	UserInitiatedInteractionCount *int   `json:"user_initiated_interaction_count,omitempty"`
+	CopilotMetricsCodeActivity
+	LastKnownPluginVersion *CopilotUserMetricsPluginVersion `json:"last_known_plugin_version,omitempty"`
+	LastKnownIDEVersion    *CopilotUserMetricsIDEVersion    `json:"last_known_ide_version,omitempty"`
+}
+
+// CopilotUserDailyMetrics represents a single user's per-day Copilot usage metrics record from a
+// 1-day user metrics report. User metrics reports are served as newline-delimited JSON.
+type CopilotUserDailyMetrics struct {
+	UserID                        int     `json:"user_id"`
+	UserLogin                     string  `json:"user_login"`
+	Day                           string  `json:"day"`
+	OrganizationID                *string `json:"organization_id,omitempty"`
+	EnterpriseID                  *string `json:"enterprise_id,omitempty"`
+	UserInitiatedInteractionCount *int    `json:"user_initiated_interaction_count,omitempty"`
+	CopilotMetricsChatPanel
+	CodeGenerationActivityCount  *int                             `json:"code_generation_activity_count,omitempty"`
+	CodeAcceptanceActivityCount  *int                             `json:"code_acceptance_activity_count,omitempty"`
+	TotalsByIDE                  []*CopilotUserMetricsIDE         `json:"totals_by_ide,omitempty"`
+	TotalsByFeature              []*CopilotMetricsFeature         `json:"totals_by_feature,omitempty"`
+	TotalsByLanguageFeature      []*CopilotMetricsLanguageFeature `json:"totals_by_language_feature,omitempty"`
+	TotalsByLanguageModel        []*CopilotMetricsLanguageModel   `json:"totals_by_language_model,omitempty"`
+	TotalsByModelFeature         []*CopilotMetricsModelFeature    `json:"totals_by_model_feature,omitempty"`
+	TotalsByCLI                  *CopilotMetricsCLI               `json:"totals_by_cli,omitempty"`
+	UsedAgent                    *bool                            `json:"used_agent,omitempty"`
+	UsedChat                     *bool                            `json:"used_chat,omitempty"`
+	UsedCLI                      *bool                            `json:"used_cli,omitempty"`
+	UsedCopilotCodeReviewActive  *bool                            `json:"used_copilot_code_review_active,omitempty"`
+	UsedCopilotCodeReviewPassive *bool                            `json:"used_copilot_code_review_passive,omitempty"`
+	UsedCopilotCodingAgent       *bool                            `json:"used_copilot_coding_agent,omitempty"`
+	LOCSuggestedToAddSum         *int                             `json:"loc_suggested_to_add_sum,omitempty"`
+	LOCSuggestedToDeleteSum      *int                             `json:"loc_suggested_to_delete_sum,omitempty"`
+	LOCAddedSum                  *int                             `json:"loc_added_sum,omitempty"`
+	LOCDeletedSum                *int                             `json:"loc_deleted_sum,omitempty"`
+}
+
+// CopilotUserPeriodicMetrics represents a single user's per-day Copilot usage metrics record from a
+// multi-day (e.g. 28-day rolling) user metrics report. User metrics reports are served as
+// newline-delimited JSON.
+type CopilotUserPeriodicMetrics struct {
+	ReportStartDay                string  `json:"report_start_day"`
+	ReportEndDay                  string  `json:"report_end_day"`
+	Day                           string  `json:"day"`
+	OrganizationID                *string `json:"organization_id,omitempty"`
+	EnterpriseID                  *string `json:"enterprise_id,omitempty"`
+	UserID                        int     `json:"user_id"`
+	UserLogin                     string  `json:"user_login"`
+	UserInitiatedInteractionCount *int    `json:"user_initiated_interaction_count,omitempty"`
+	CopilotMetricsChatPanel
+	CodeGenerationActivityCount  *int                             `json:"code_generation_activity_count,omitempty"`
+	CodeAcceptanceActivityCount  *int                             `json:"code_acceptance_activity_count,omitempty"`
+	TotalsByIDE                  []*CopilotUserMetricsIDE         `json:"totals_by_ide,omitempty"`
+	TotalsByFeature              []*CopilotMetricsFeature         `json:"totals_by_feature,omitempty"`
+	TotalsByLanguageFeature      []*CopilotMetricsLanguageFeature `json:"totals_by_language_feature,omitempty"`
+	TotalsByLanguageModel        []*CopilotMetricsLanguageModel   `json:"totals_by_language_model,omitempty"`
+	TotalsByModelFeature         []*CopilotMetricsModelFeature    `json:"totals_by_model_feature,omitempty"`
+	TotalsByCLI                  *CopilotMetricsCLI               `json:"totals_by_cli,omitempty"`
+	UsedAgent                    *bool                            `json:"used_agent,omitempty"`
+	UsedChat                     *bool                            `json:"used_chat,omitempty"`
+	UsedCLI                      *bool                            `json:"used_cli,omitempty"`
+	UsedCopilotCodeReviewActive  *bool                            `json:"used_copilot_code_review_active,omitempty"`
+	UsedCopilotCodeReviewPassive *bool                            `json:"used_copilot_code_review_passive,omitempty"`
+	UsedCopilotCodingAgent       *bool                            `json:"used_copilot_coding_agent,omitempty"`
+	LOCSuggestedToAddSum         *int                             `json:"loc_suggested_to_add_sum,omitempty"`
+	LOCSuggestedToDeleteSum      *int                             `json:"loc_suggested_to_delete_sum,omitempty"`
+	LOCAddedSum                  *int                             `json:"loc_added_sum,omitempty"`
+	LOCDeletedSum                *int                             `json:"loc_deleted_sum,omitempty"`
+}
+
+// fetchMetricsReport performs a GET against the provided download URL and returns the raw
+// http.Response. The caller is responsible for closing the body.
+func (s *CopilotService) fetchMetricsReport(ctx context.Context, url string) (*http.Response, *Response, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	resp, err := s.client.client.Do(req)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if err := CheckResponse(resp); err != nil {
+		resp.Body.Close()
+		return nil, newResponse(resp), err
+	}
+
+	return resp, newResponse(resp), nil
+}
+
+// decodeNDJSONMetrics streams a newline-delimited JSON response body into a slice of *T,
+// returning a nil slice when the body is empty.
+func decodeNDJSONMetrics[T any](r io.Reader) ([]*T, error) {
+	var records []*T
+	dec := json.NewDecoder(r)
+	for {
+		var rec *T
+		if err := dec.Decode(&rec); err != nil {
+			if errors.Is(err, io.EOF) {
+				break
+			}
+			return nil, err
+		}
+		records = append(records, rec)
+	}
+	return records, nil
+}
+
+// DownloadDailyMetrics downloads the payload of a 1-day Copilot usage metrics report from a
+// download link returned by GetEnterpriseDailyMetricsReport or GetOrganizationDailyMetricsReport.
+func (s *CopilotService) DownloadDailyMetrics(ctx context.Context, url string) (*CopilotDailyMetrics, *Response, error) {
+	resp, r, err := s.fetchMetricsReport(ctx, url)
+	if err != nil {
+		return nil, r, err
+	}
+	defer resp.Body.Close()
+
+	var metrics *CopilotDailyMetrics
+	if err := json.NewDecoder(resp.Body).Decode(&metrics); err != nil {
+		return nil, r, err
+	}
+
+	return metrics, r, nil
+}
+
+// DownloadPeriodicMetrics downloads the payload of a multi-day (e.g. 28-day rolling) Copilot
+// usage metrics report from a download link returned by GetEnterpriseMetricsReport or
+// GetOrganizationMetricsReport.
+func (s *CopilotService) DownloadPeriodicMetrics(ctx context.Context, url string) (*CopilotPeriodicMetrics, *Response, error) {
+	resp, r, err := s.fetchMetricsReport(ctx, url)
+	if err != nil {
+		return nil, r, err
+	}
+	defer resp.Body.Close()
+
+	var metrics *CopilotPeriodicMetrics
+	if err := json.NewDecoder(resp.Body).Decode(&metrics); err != nil {
+		return nil, r, err
+	}
+
+	return metrics, r, nil
+}
+
+// DownloadUserDailyMetrics downloads the payload of a 1-day Copilot user metrics report from a
+// download link returned by GetEnterpriseUsersDailyMetricsReport or
+// GetOrganizationUsersDailyMetricsReport.
+//
+// The response is newline-delimited JSON, with one CopilotUserDailyMetrics record per line.
+func (s *CopilotService) DownloadUserDailyMetrics(ctx context.Context, url string) ([]*CopilotUserDailyMetrics, *Response, error) {
+	resp, r, err := s.fetchMetricsReport(ctx, url)
+	if err != nil {
+		return nil, r, err
+	}
+	defer resp.Body.Close()
+
+	records, err := decodeNDJSONMetrics[CopilotUserDailyMetrics](resp.Body)
+	if err != nil {
+		return nil, r, err
+	}
+	return records, r, nil
+}
+
+// DownloadUserPeriodicMetrics downloads the payload of a multi-day (e.g. 28-day rolling) Copilot
+// user metrics report from a download link returned by GetEnterpriseUsersMetricsReport or
+// GetOrganizationUsersMetricsReport.
+//
+// The response is newline-delimited JSON, with one CopilotUserPeriodicMetrics record per
+// user-day in the reporting window.
+func (s *CopilotService) DownloadUserPeriodicMetrics(ctx context.Context, url string) ([]*CopilotUserPeriodicMetrics, *Response, error) {
+	resp, r, err := s.fetchMetricsReport(ctx, url)
+	if err != nil {
+		return nil, r, err
+	}
+	defer resp.Body.Close()
+
+	records, err := decodeNDJSONMetrics[CopilotUserPeriodicMetrics](resp.Body)
+	if err != nil {
+		return nil, r, err
+	}
+	return records, r, nil
 }
