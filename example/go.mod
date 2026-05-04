@@ -7,8 +7,8 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.18.0
 	github.com/gofri/go-github-pagination v1.0.1
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
+	github.com/google/go-github/otel/v85 v85.0.0
 	github.com/google/go-github/v85 v85.0.0
-	github.com/google/go-github/v85/otel v0.0.0-00010101000000-000000000000
 	github.com/sigstore/sigstore-go v1.1.4
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.43.0
 	go.opentelemetry.io/otel/sdk v1.43.0
@@ -90,4 +90,4 @@ require (
 // Use version at HEAD, not the latest published.
 replace github.com/google/go-github/v85 => ../
 
-replace github.com/google/go-github/v85/otel => ../otel
+replace github.com/google/go-github/otel/v85 => ../otel
