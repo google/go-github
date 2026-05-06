@@ -539,6 +539,67 @@ func TestWithAuthToken(t *testing.T) {
 			t.Fatal("WithAuthToken reset Marketplace.Stubbed; want true")
 		}
 	})
+
+	t.Run("cross-host redirect does not leak token", func(t *testing.T) {
+		t.Parallel()
+
+		tokenReceived := false
+		victim := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Header.Get("Authorization") != "" {
+				tokenReceived = true
+			}
+			w.WriteHeader(http.StatusOK)
+		}))
+		defer victim.Close()
+
+		redirector := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, victim.URL+"/stolen", http.StatusFound)
+		}))
+		defer redirector.Close()
+
+		c := new(Client).WithAuthToken("SECRET_TOKEN")
+		resp, err := c.Client().Get(redirector.URL + "/api")
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusFound {
+			t.Errorf("got status %d; want %d (cross-host redirect should not be followed)", resp.StatusCode, http.StatusFound)
+		}
+		if tokenReceived {
+			t.Error("token was forwarded to redirect target; cross-host redirect should have been stopped")
+		}
+	})
+
+	t.Run("same-host redirect is followed", func(t *testing.T) {
+		t.Parallel()
+
+		called := false
+		mux := http.NewServeMux()
+		mux.HandleFunc("/redirectme", func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, "/final", http.StatusFound)
+		})
+		mux.HandleFunc("/final", func(w http.ResponseWriter, r *http.Request) {
+			called = true
+			w.WriteHeader(http.StatusOK)
+		})
+		server := httptest.NewServer(mux)
+		defer server.Close()
+
+		c := new(Client).WithAuthToken("MY_TOKEN")
+		resp, err := c.Client().Get(server.URL + "/redirectme")
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		defer resp.Body.Close()
+		if !called {
+			t.Error("same-host redirect was not followed")
+		}
+		if resp.StatusCode != http.StatusOK {
+			t.Errorf("got status %d; want 200", resp.StatusCode)
+		}
+	})
 }
 
 func TestWithEnterpriseURLs(t *testing.T) {

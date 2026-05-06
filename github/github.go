@@ -373,6 +373,25 @@ func (c *Client) WithAuthToken(token string) *Client {
 			return transport.RoundTrip(req)
 		},
 	)
+	// Prevent the bearer token from being forwarded to a different host on
+	// redirect. The Transport above re-injects the Authorization header on
+	// every RoundTrip call, including the intermediate calls that http.Client
+	// makes when following redirects. Go's http.Client strips Authorization
+	// for cross-host redirects, but the Transport immediately adds it back,
+	// so the token would be sent to the redirect destination. Returning
+	// http.ErrUseLastResponse surfaces the 3xx to the caller instead.
+	callerRedirect := c2.client.CheckRedirect
+	c2.client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+		if callerRedirect != nil {
+			if err := callerRedirect(req, via); err != nil {
+				return err
+			}
+		}
+		if len(via) > 0 && req.URL.Host != via[0].URL.Host {
+			return http.ErrUseLastResponse
+		}
+		return nil
+	}
 	return c2
 }
 
