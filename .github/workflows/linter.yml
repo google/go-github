@@ -25,12 +25,12 @@ jobs:
         go-version: stable
         cache-dependency-path: "**/go.sum"
     - name: Cache golangci-lint
-      uses: actions/cache@1bd1e32a3bdc45362d1e11f2f1b493d4b8f849c7 # v4.2.0
+      uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
       with:
         path: |
           ~/.cache/golangci-lint
           ~/go/bin/custom-gcl
-        key: ${{ runner.os }}-golangci-lint-${{ hashFiles('**/.golangci.yml', '**/.custom-gcl.yml') }}
+        key: ${{ runner.os }}-golangci-lint-${{ hashFiles("**/.golangci.yml", "**/.custom-gcl.yml") }}
         restore-keys: |
           ${{ runner.os }}-golangci-lint-
     - uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.2.0
