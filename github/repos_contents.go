@@ -20,6 +20,15 @@ import (
 	"strings"
 )
 
+// ErrContentsDirectory indicates that the contents are not available for a directory.
+var ErrContentsDirectory = errors.New("contents not available for directory")
+
+// ErrContentsSubmodule indicates that the contents are not available for a submodule.
+var ErrContentsSubmodule = errors.New("contents not available for submodule")
+
+// ErrContentsNoDownloadURL indicates that the contents download URL is empty, which may occur when file size > 100 MB.
+var ErrContentsNoDownloadURL = errors.New("contents download url is empty")
+
 // RepositoryContent represents a file or directory in a github repository.
 type RepositoryContent struct {
 	Type *string `json:"type,omitempty"`
@@ -130,6 +139,10 @@ func (s *RepositoriesService) GetReadme(ctx context.Context, owner, repo string,
 // returned error is nil. Callers should check the returned Response status
 // code to verify the content is from a successful response.
 //
+// DownloadContents returns [ErrContentsDirectory] if the path references a
+// directory, [ErrContentsSubmodule] if the path references a submodule, and
+// [ErrContentsNoDownloadURL] if the file's download URL is empty.
+//
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#get-repository-content
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
@@ -147,6 +160,11 @@ func (s *RepositoriesService) DownloadContents(ctx context.Context, owner, repo,
 // returned error is nil. Callers should check the returned Response status
 // code to verify the content is from a successful response.
 //
+// DownloadContentsWithMeta returns [ErrContentsDirectory] if the path
+// references a directory, [ErrContentsSubmodule] if the path references a
+// submodule, and [ErrContentsNoDownloadURL] if the file's download URL is
+// empty.
+//
 // GitHub API docs: https://docs.github.com/rest/repos/contents?apiVersion=2022-11-28#get-repository-content
 //
 //meta:operation GET /repos/{owner}/{repo}/contents/{path}
@@ -157,7 +175,11 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 	}
 
 	if fileContent == nil {
-		return nil, nil, resp, errors.New("no file content found")
+		return nil, nil, resp, ErrContentsDirectory
+	}
+
+	if fileContent.GetType() == "submodule" {
+		return nil, fileContent, resp, ErrContentsSubmodule
 	}
 
 	content, err := fileContent.GetContent()
@@ -167,7 +189,7 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 
 	downloadURL := fileContent.GetDownloadURL()
 	if downloadURL == "" {
-		return nil, fileContent, resp, errors.New("download url is empty")
+		return nil, fileContent, resp, ErrContentsNoDownloadURL
 	}
 
 	dlReq, err := http.NewRequestWithContext(ctx, "GET", downloadURL, nil)
