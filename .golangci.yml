@@ -438,7 +438,6 @@ issues:
   max-same-issues: 0
 formatters:
   enable:
-    - gci
     - gofumpt
   settings:
     gofumpt:
