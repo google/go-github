@@ -920,6 +920,11 @@ const (
 	SleepUntilPrimaryRateLimitResetWhenRateLimited
 )
 
+// maxErrorBodySize is the maximum number of bytes read from an HTTP error
+// response body. Limits memory allocation when a server returns an
+// unexpectedly large error body.
+const maxErrorBodySize = 1 * 1024 * 1024 // 1 MiB
+
 // bareDo sends an API request using `caller` http.Client passed in the parameters
 // and lets you handle the api response. If an error or API Error occurs, the error
 // will contain more information. Otherwise, you are supposed to read and close the
@@ -997,7 +1002,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		// Issue #1022
 		var aerr *AcceptedError
 		if errors.As(err, &aerr) {
-			b, readErr := io.ReadAll(resp.Body)
+			b, readErr := io.ReadAll(io.LimitReader(resp.Body, maxErrorBodySize))
 			if readErr != nil {
 				return response, readErr
 			}
@@ -1502,7 +1507,7 @@ func CheckResponse(r *http.Response) error {
 	}
 
 	errorResponse := &ErrorResponse{Response: r}
-	data, err := io.ReadAll(r.Body)
+	data, err := io.ReadAll(io.LimitReader(r.Body, maxErrorBodySize))
 	if err == nil && data != nil {
 		err = json.Unmarshal(data, errorResponse)
 		if err != nil {
