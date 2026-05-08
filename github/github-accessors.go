@@ -19062,6 +19062,14 @@ func (i *Issue) GetID() int64 {
 	return *i.ID
 }
 
+// GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
+func (i *Issue) GetIssueFieldValues() []*IssueFieldValue {
+	if i == nil || i.IssueFieldValues == nil {
+		return nil
+	}
+	return i.IssueFieldValues
+}
+
 // GetLabels returns the Labels slice if it's non-nil, nil otherwise.
 func (i *Issue) GetLabels() []*Label {
 	if i == nil || i.Labels == nil {
@@ -19526,6 +19534,70 @@ func (i *IssueEvent) GetURL() string {
 	return *i.URL
 }
 
+// GetDataType returns the DataType field if it's non-nil, zero value otherwise.
+func (i *IssueFieldValue) GetDataType() string {
+	if i == nil || i.DataType == nil {
+		return ""
+	}
+	return *i.DataType
+}
+
+// GetIssueFieldID returns the IssueFieldID field if it's non-nil, zero value otherwise.
+func (i *IssueFieldValue) GetIssueFieldID() int64 {
+	if i == nil || i.IssueFieldID == nil {
+		return 0
+	}
+	return *i.IssueFieldID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (i *IssueFieldValue) GetNodeID() string {
+	if i == nil || i.NodeID == nil {
+		return ""
+	}
+	return *i.NodeID
+}
+
+// GetSingleSelectOption returns the SingleSelectOption field.
+func (i *IssueFieldValue) GetSingleSelectOption() *IssueFieldValueSingleSelectOption {
+	if i == nil {
+		return nil
+	}
+	return i.SingleSelectOption
+}
+
+// GetValue returns the Value field.
+func (i *IssueFieldValue) GetValue() any {
+	if i == nil {
+		return nil
+	}
+	return i.Value
+}
+
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (i *IssueFieldValueSingleSelectOption) GetColor() string {
+	if i == nil || i.Color == nil {
+		return ""
+	}
+	return *i.Color
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (i *IssueFieldValueSingleSelectOption) GetID() int64 {
+	if i == nil || i.ID == nil {
+		return 0
+	}
+	return *i.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (i *IssueFieldValueSingleSelectOption) GetName() string {
+	if i == nil || i.Name == nil {
+		return ""
+	}
+	return *i.Name
+}
+
 // GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
 func (i *IssueImport) GetAssignee() string {
 	if i == nil || i.Assignee == nil {
@@ -19916,6 +19988,14 @@ func (i *IssueRequest) GetBody() string {
 		return ""
 	}
 	return *i.Body
+}
+
+// GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
+func (i *IssueRequest) GetIssueFieldValues() []*IssueFieldValue {
+	if i == nil || i.IssueFieldValues == nil {
+		return nil
+	}
+	return i.IssueFieldValues
 }
 
 // GetLabels returns the Labels field if it's non-nil, zero value otherwise.
