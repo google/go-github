@@ -1426,7 +1426,7 @@ func TestDo_AcceptedError_LargeBodyTruncated(t *testing.T) {
 	}
 
 	if got, want := len(aerr.Raw), maxErrorBodySize; got != want {
-		t.Errorf("AcceptedError.Raw length = %d, want %d (maxErrorBodySize)", got, want)
+		t.Errorf("AcceptedError.Raw length = %v, want %v (maxErrorBodySize)", got, want)
 	}
 }
 
@@ -3040,7 +3040,7 @@ func TestCheckResponse_LargeBodyTruncated(t *testing.T) {
 		t.Fatalf("io.ReadAll on restored body: %v", err)
 	}
 	if got, want := len(restored), maxErrorBodySize; got != want {
-		t.Errorf("restored body length = %d, want %d (maxErrorBodySize)", got, want)
+		t.Errorf("restored body length = %v, want %v (maxErrorBodySize)", got, want)
 	}
 }
 
