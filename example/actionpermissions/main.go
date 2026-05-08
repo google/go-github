@@ -35,7 +35,10 @@ func main() {
 		log.Fatal("No owner: owner of repo must be given")
 	}
 	ctx := context.Background()
-	client := github.NewClient(nil).WithAuthToken(token)
+	client, err := github.NewClient(github.WithAuthToken(token))
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	actionsPermissionsRepository, _, err := client.Repositories.GetActionsPermissions(ctx, *owner, *name)
 	if err != nil {

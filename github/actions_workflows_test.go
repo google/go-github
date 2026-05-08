@@ -263,7 +263,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, _, err = client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByID err = nil, want error")
@@ -318,7 +318,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, _, err = client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByFileName err = nil, want error")
@@ -411,7 +411,7 @@ func TestActionsService_EnableWorkflowByID(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, err = client.Actions.EnableWorkflowByID(ctx, "o", "r", 72844)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' EnableWorkflowByID err = nil, want error")
@@ -446,7 +446,7 @@ func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, err = client.Actions.EnableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err == nil {
 		t.Error("client.BaseURL.Path='' EnableWorkflowByFilename err = nil, want error")
@@ -481,7 +481,7 @@ func TestActionsService_DisableWorkflowByID(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, err = client.Actions.DisableWorkflowByID(ctx, "o", "r", 72844)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' DisableWorkflowByID err = nil, want error")
@@ -516,7 +516,7 @@ func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, err = client.Actions.DisableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err == nil {
 		t.Error("client.BaseURL.Path='' DisableWorkflowByFileName err = nil, want error")

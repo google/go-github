@@ -17,7 +17,11 @@ import (
 
 // Fetch and lists all the public topics associated with the specified GitHub topic.
 func fetchTopics(topic string) (*github.TopicsSearchResult, error) {
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+	if err != nil {
+		return nil, err
+	}
+
 	topics, _, err := client.Search.Topics(context.Background(), topic, nil)
 	return topics, err
 }

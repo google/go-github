@@ -24,9 +24,20 @@ import (
 var client, auth = sync.OnceValues(func() (*github.Client, bool) {
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	if token == "" {
-		return github.NewClient(nil), false
+		c, err := github.NewClient()
+		if err != nil {
+			fmt.Printf("Error creating GitHub client: %v\n", err)
+			os.Exit(1)
+		}
+		return c, false
 	}
-	return github.NewClient(nil).WithAuthToken(token), true
+
+	c, err := github.NewClient(github.WithAuthToken(token))
+	if err != nil {
+		fmt.Printf("Error creating GitHub client with token: %v\n", err)
+		os.Exit(1)
+	}
+	return c, true
 })()
 
 func skipIfMissingAuth(t *testing.T) {

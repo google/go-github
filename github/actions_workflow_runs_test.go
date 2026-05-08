@@ -208,7 +208,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -257,7 +257,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_dontFol
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -293,7 +293,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_StatusMovedPermanently_followR
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			// Mock a redirect link, which leads to an archive link
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -351,7 +351,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_unexpectedCode(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			// Mock a redirect link, which leads to an archive link
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/attempts/2/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -519,7 +519,7 @@ func TestActionsService_GetWorkflowRunLogs(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -568,7 +568,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedi
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -604,7 +604,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			// Mock a redirect link, which leads to an archive link
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -662,7 +662,7 @@ func TestActionsService_GetWorkflowRunLogs_unexpectedCode(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			// Mock a redirect link, which leads to an archive link
 			mux.HandleFunc("/repos/o/r/actions/runs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {

@@ -17,7 +17,10 @@ import (
 
 // Fetch all the public organizations' membership of a user.
 func fetchOrganizations(username string) ([]*github.Organization, error) {
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+	if err != nil {
+		return nil, err
+	}
 	orgs, _, err := client.Organizations.List(context.Background(), username, nil)
 	return orgs, err
 }

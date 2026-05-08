@@ -37,7 +37,11 @@ func main() {
 	paginator := githubpagination.NewClient(rateLimiter,
 		githubpagination.WithPerPage(100), // default to 100 results per page
 	)
-	client := github.NewClient(paginator)
+	client, err := github.NewClient(github.WithHTTPClient(paginator))
+	if err != nil {
+		fmt.Printf("Error creating GitHub client: %v\n", err)
+		return
+	}
 
 	// Example usage of the client
 	repos, _, err := client.Repositories.ListByUser(context.Background(), username, nil)

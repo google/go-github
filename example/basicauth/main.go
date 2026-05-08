@@ -39,7 +39,11 @@ func main() {
 		Password: strings.TrimSpace(string(password)),
 	}
 
-	client := github.NewClient(tp.Client())
+	client, err := github.NewClient(github.WithHTTPClient(tp.Client()))
+	if err != nil {
+		fmt.Printf("\nerror: %v\n", err)
+		return
+	}
 	ctx := context.Background()
 	user, _, err := client.Users.Get(ctx, "")
 

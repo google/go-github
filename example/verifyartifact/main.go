@@ -78,7 +78,10 @@ func main() {
 	}
 
 	ctx := context.Background()
-	client := github.NewClient(nil).WithAuthToken(token)
+	client, err := github.NewClient(github.WithAuthToken(token))
+	if err != nil {
+		log.Fatalf("Error creating GitHub client: %v\n", err)
+	}
 
 	// Fetch attestations from the GitHub API.
 	// The attestations API doesn't differentiate between users and orgs,

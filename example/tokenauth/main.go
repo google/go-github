@@ -25,7 +25,10 @@ func main() {
 	fmt.Println()
 
 	ctx := context.Background()
-	client := github.NewClient(nil).WithAuthToken(string(token))
+	client, err := github.NewClient(github.WithAuthToken(string(token)))
+	if err != nil {
+		log.Fatalf("Error creating GitHub client: %v\n", err)
+	}
 
 	user, resp, err := client.Users.Get(ctx, "")
 	if err != nil {

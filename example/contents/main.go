@@ -50,7 +50,11 @@ func main() {
 
 	fmt.Printf("\nDownloading %v/%v/%v at ref %v to %v...\n", owner, repo, repoPath, ref, outputPath)
 
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+	if err != nil {
+		fmt.Printf("Error creating GitHub client: %v\n", err)
+		os.Exit(1)
+	}
 
 	rc, _, err := client.Repositories.DownloadContents(context.Background(), owner, repo, repoPath, &github.RepositoryContentGetOptions{Ref: ref})
 	if err != nil {

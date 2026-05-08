@@ -34,12 +34,10 @@ func main() {
 	itr.BaseURL = gitHost
 
 	// create git client with app transport
-	client, err := github.NewClient(
-		&http.Client{
-			Transport: itr,
-			Timeout:   time.Second * 30,
-		},
-	).WithEnterpriseURLs(gitHost, gitHost)
+	client, err := github.NewClient(github.WithHTTPClient(&http.Client{
+		Transport: itr,
+		Timeout:   time.Second * 30,
+	}), github.WithEnterpriseURLs(gitHost, gitHost))
 	if err != nil {
 		log.Fatalf("failed to create git client for app: %v\n", err)
 	}
@@ -64,9 +62,7 @@ func main() {
 		log.Fatalf("failed to create installation token: %v\n", err)
 	}
 
-	apiClient, err := github.NewClient(nil).WithAuthToken(
-		token.GetToken(),
-	).WithEnterpriseURLs(gitHost, gitHost)
+	apiClient, err := github.NewClient(github.WithAuthToken(token.GetToken()), github.WithEnterpriseURLs(gitHost, gitHost))
 	if err != nil {
 		log.Fatalf("failed to create new git client with token: %v\n", err)
 	}

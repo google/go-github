@@ -161,7 +161,7 @@ func (s *ActionsService) GetArtifact(ctx context.Context, owner, repo string, ar
 func (s *ActionsService) DownloadArtifact(ctx context.Context, owner, repo string, artifactID int64, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/artifacts/%v/zip", owner, repo, artifactID)
 
-	if s.client.RateLimitRedirectionalEndpoints {
+	if s.client.rateLimitRedirectionalEndpoints {
 		return s.downloadArtifactWithRateLimit(ctx, u, maxRedirects)
 	}
 
