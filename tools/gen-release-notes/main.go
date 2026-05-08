@@ -142,7 +142,8 @@ func newChangesSinceRelease(priorRelease string) string {
 
 func getPriorRelease() string {
 	cmdArgs := []string{"git", "describe", "--tags", "--abbrev=0"}
-	return runCommand(cmdArgs)
+	release := runCommand(cmdArgs)
+	return strings.ReplaceAll(release, "otel/", "")
 }
 
 const releaseNotesFmt = `

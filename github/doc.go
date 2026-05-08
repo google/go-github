@@ -8,7 +8,7 @@ Package github provides a client for using the GitHub API.
 
 Usage:
 
-	import "github.com/google/go-github/v85/github"
+	import "github.com/google/go-github/v86/github"
 
 Construct a new GitHub client, then use the various services on the client to
 access different parts of the GitHub API. For example:
