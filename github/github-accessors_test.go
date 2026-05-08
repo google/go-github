@@ -24169,6 +24169,17 @@ func TestIssue_GetID(tt *testing.T) {
 	i.GetID()
 }
 
+func TestIssue_GetIssueFieldValues(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*IssueFieldValue{}
+	i := &Issue{IssueFieldValues: zeroValue}
+	i.GetIssueFieldValues()
+	i = &Issue{}
+	i.GetIssueFieldValues()
+	i = nil
+	i.GetIssueFieldValues()
+}
+
 func TestIssue_GetLabels(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*Label{}
@@ -24720,6 +24731,88 @@ func TestIssueEvent_GetURL(tt *testing.T) {
 	i.GetURL()
 }
 
+func TestIssueFieldValue_GetDataType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueFieldValue{DataType: &zeroValue}
+	i.GetDataType()
+	i = &IssueFieldValue{}
+	i.GetDataType()
+	i = nil
+	i.GetDataType()
+}
+
+func TestIssueFieldValue_GetIssueFieldID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	i := &IssueFieldValue{IssueFieldID: &zeroValue}
+	i.GetIssueFieldID()
+	i = &IssueFieldValue{}
+	i.GetIssueFieldID()
+	i = nil
+	i.GetIssueFieldID()
+}
+
+func TestIssueFieldValue_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueFieldValue{NodeID: &zeroValue}
+	i.GetNodeID()
+	i = &IssueFieldValue{}
+	i.GetNodeID()
+	i = nil
+	i.GetNodeID()
+}
+
+func TestIssueFieldValue_GetSingleSelectOption(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueFieldValue{}
+	i.GetSingleSelectOption()
+	i = nil
+	i.GetSingleSelectOption()
+}
+
+func TestIssueFieldValue_GetValue(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueFieldValue{}
+	i.GetValue()
+	i = nil
+	i.GetValue()
+}
+
+func TestIssueFieldValueSingleSelectOption_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueFieldValueSingleSelectOption{Color: &zeroValue}
+	i.GetColor()
+	i = &IssueFieldValueSingleSelectOption{}
+	i.GetColor()
+	i = nil
+	i.GetColor()
+}
+
+func TestIssueFieldValueSingleSelectOption_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	i := &IssueFieldValueSingleSelectOption{ID: &zeroValue}
+	i.GetID()
+	i = &IssueFieldValueSingleSelectOption{}
+	i.GetID()
+	i = nil
+	i.GetID()
+}
+
+func TestIssueFieldValueSingleSelectOption_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssueFieldValueSingleSelectOption{Name: &zeroValue}
+	i.GetName()
+	i = &IssueFieldValueSingleSelectOption{}
+	i.GetName()
+	i = nil
+	i.GetName()
+}
+
 func TestIssueImport_GetAssignee(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -25203,6 +25296,17 @@ func TestIssueRequest_GetBody(tt *testing.T) {
 	i.GetBody()
 	i = nil
 	i.GetBody()
+}
+
+func TestIssueRequest_GetIssueFieldValues(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*IssueFieldValue{}
+	i := &IssueRequest{IssueFieldValues: zeroValue}
+	i.GetIssueFieldValues()
+	i = &IssueRequest{}
+	i.GetIssueFieldValues()
+	i = nil
+	i.GetIssueFieldValues()
 }
 
 func TestIssueRequest_GetLabels(tt *testing.T) {
