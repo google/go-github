@@ -1,4 +1,4 @@
-module github.com/google/go-github/v85/tools/extraneousnew
+module github.com/google/go-github/v86/tools/extraneousnew
 
 go 1.25.0
 

@@ -37,7 +37,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v86/github"
 	"golang.org/x/crypto/nacl/box"
 )
 
