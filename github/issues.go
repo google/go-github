@@ -39,30 +39,31 @@ type Issue struct {
 	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
 	// Use the Issues REST API endpoint to retrieve this information.
 	// See: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
-	AuthorAssociation *string           `json:"author_association,omitempty"`
-	User              *User             `json:"user,omitempty"`
-	Labels            []*Label          `json:"labels,omitempty"`
-	Assignee          *User             `json:"assignee,omitempty"`
-	Comments          *int              `json:"comments,omitempty"`
-	ClosedAt          *Timestamp        `json:"closed_at,omitempty"`
-	CreatedAt         *Timestamp        `json:"created_at,omitempty"`
-	UpdatedAt         *Timestamp        `json:"updated_at,omitempty"`
-	ClosedBy          *User             `json:"closed_by,omitempty"`
-	URL               *string           `json:"url,omitempty"`
-	HTMLURL           *string           `json:"html_url,omitempty"`
-	CommentsURL       *string           `json:"comments_url,omitempty"`
-	EventsURL         *string           `json:"events_url,omitempty"`
-	LabelsURL         *string           `json:"labels_url,omitempty"`
-	RepositoryURL     *string           `json:"repository_url,omitempty"`
-	ParentIssueURL    *string           `json:"parent_issue_url,omitempty"`
-	Milestone         *Milestone        `json:"milestone,omitempty"`
-	PullRequestLinks  *PullRequestLinks `json:"pull_request,omitempty"`
-	Repository        *Repository       `json:"repository,omitempty"`
-	Reactions         *Reactions        `json:"reactions,omitempty"`
-	Assignees         []*User           `json:"assignees,omitempty"`
-	NodeID            *string           `json:"node_id,omitempty"`
-	Draft             *bool             `json:"draft,omitempty"`
-	Type              *IssueType        `json:"type,omitempty"`
+	AuthorAssociation *string            `json:"author_association,omitempty"`
+	User              *User              `json:"user,omitempty"`
+	Labels            []*Label           `json:"labels,omitempty"`
+	Assignee          *User              `json:"assignee,omitempty"`
+	Comments          *int               `json:"comments,omitempty"`
+	ClosedAt          *Timestamp         `json:"closed_at,omitempty"`
+	CreatedAt         *Timestamp         `json:"created_at,omitempty"`
+	UpdatedAt         *Timestamp         `json:"updated_at,omitempty"`
+	ClosedBy          *User              `json:"closed_by,omitempty"`
+	URL               *string            `json:"url,omitempty"`
+	HTMLURL           *string            `json:"html_url,omitempty"`
+	CommentsURL       *string            `json:"comments_url,omitempty"`
+	EventsURL         *string            `json:"events_url,omitempty"`
+	LabelsURL         *string            `json:"labels_url,omitempty"`
+	RepositoryURL     *string            `json:"repository_url,omitempty"`
+	ParentIssueURL    *string            `json:"parent_issue_url,omitempty"`
+	Milestone         *Milestone         `json:"milestone,omitempty"`
+	PullRequestLinks  *PullRequestLinks  `json:"pull_request,omitempty"`
+	Repository        *Repository        `json:"repository,omitempty"`
+	Reactions         *Reactions         `json:"reactions,omitempty"`
+	Assignees         []*User            `json:"assignees,omitempty"`
+	NodeID            *string            `json:"node_id,omitempty"`
+	Draft             *bool              `json:"draft,omitempty"`
+	Type              *IssueType         `json:"type,omitempty"`
+	IssueFieldValues  []*IssueFieldValue `json:"issue_field_values,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://docs.github.com/rest/search/#text-match-metadata
@@ -94,10 +95,11 @@ type IssueRequest struct {
 	Assignee *string   `json:"assignee,omitempty"`
 	State    *string   `json:"state,omitempty"`
 	// StateReason can be 'completed' or 'not_planned'.
-	StateReason *string   `json:"state_reason,omitempty"`
-	Milestone   *int      `json:"milestone,omitempty"`
-	Assignees   *[]string `json:"assignees,omitempty"`
-	Type        *string   `json:"type,omitempty"`
+	StateReason      *string            `json:"state_reason,omitempty"`
+	Milestone        *int               `json:"milestone,omitempty"`
+	Assignees        *[]string          `json:"assignees,omitempty"`
+	Type             *string            `json:"type,omitempty"`
+	IssueFieldValues []*IssueFieldValue `json:"issue_field_values,omitempty"`
 }
 
 // PullRequestLinks object is added to the Issue object when it's an issue included
@@ -120,6 +122,28 @@ type IssueType struct {
 	Color       *string    `json:"color,omitempty"`
 	CreatedAt   *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
+}
+
+// IssueFieldValueSingleSelectOption represents a single-select option for an issue field value.
+//
+// GitHub API docs: https://docs.github.com/rest/issues/issues#get-an-issue
+type IssueFieldValueSingleSelectOption struct {
+	ID    *int64  `json:"id,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Color *string `json:"color,omitempty"`
+}
+
+// IssueFieldValue represents a custom field value attached to an issue.
+// The Value field contains a string for text, single_select, and date fields,
+// or a number for numeric fields.
+//
+// GitHub API docs: https://docs.github.com/rest/issues/issues#get-an-issue
+type IssueFieldValue struct {
+	IssueFieldID       *int64                             `json:"issue_field_id,omitempty"`
+	NodeID             *string                            `json:"node_id,omitempty"`
+	DataType           *string                            `json:"data_type,omitempty"`
+	Value              any                                `json:"value,omitempty"`
+	SingleSelectOption *IssueFieldValueSingleSelectOption `json:"single_select_option,omitempty"`
 }
 
 // ListAllIssuesOptions specifies the optional parameters to the
