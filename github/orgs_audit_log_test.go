@@ -469,3 +469,54 @@ func TestAuditEntry_UnmarshalJSON_OrgIDArray(t *testing.T) {
 		})
 	}
 }
+
+// TestAuditEntry_UnmarshalJSON_OrgIDEmptyArray verifies that an empty org_id
+// array results in a nil OrgID (not a panic or error).
+func TestAuditEntry_UnmarshalJSON_OrgIDEmptyArray(t *testing.T) {
+	t.Parallel()
+	var entry AuditEntry
+	if err := entry.UnmarshalJSON([]byte(`{"action":"test","org_id":[]}`)); err != nil {
+		t.Fatalf("UnmarshalJSON returned unexpected error: %v", err)
+	}
+	if entry.OrgID != nil {
+		t.Errorf("AuditEntry.OrgID = %d; want nil for empty array", *entry.OrgID)
+	}
+}
+
+// TestAuditEntry_UnmarshalJSON_InvalidOrgType verifies that a non-string,
+// non-array org value (e.g., a JSON object) returns an error.
+func TestAuditEntry_UnmarshalJSON_InvalidOrgType(t *testing.T) {
+	t.Parallel()
+	var entry AuditEntry
+	err := entry.UnmarshalJSON([]byte(`{"action":"test","org":{"key":"value"}}`))
+	if err == nil {
+		t.Fatal("UnmarshalJSON should have returned an error for object-typed org, got nil")
+	}
+}
+
+// TestAuditEntry_UnmarshalJSON_InvalidOrgIDType verifies that a non-integer,
+// non-array org_id value (e.g., a JSON object) returns an error.
+func TestAuditEntry_UnmarshalJSON_InvalidOrgIDType(t *testing.T) {
+	t.Parallel()
+	var entry AuditEntry
+	err := entry.UnmarshalJSON([]byte(`{"action":"test","org_id":{"key":"value"}}`))
+	if err == nil {
+		t.Fatal("UnmarshalJSON should have returned an error for object-typed org_id, got nil")
+	}
+}
+
+// TestAuditEntry_UnmarshalJSON_NullOrgFields verifies that explicit JSON null
+// values for org and org_id leave the fields as nil without error.
+func TestAuditEntry_UnmarshalJSON_NullOrgFields(t *testing.T) {
+	t.Parallel()
+	var entry AuditEntry
+	if err := entry.UnmarshalJSON([]byte(`{"action":"test","org":null,"org_id":null}`)); err != nil {
+		t.Fatalf("UnmarshalJSON returned unexpected error: %v", err)
+	}
+	if entry.Org != nil {
+		t.Errorf("AuditEntry.Org = %q; want nil for null org", *entry.Org)
+	}
+	if entry.OrgID != nil {
+		t.Errorf("AuditEntry.OrgID = %d; want nil for null org_id", *entry.OrgID)
+	}
+}
