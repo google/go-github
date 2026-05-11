@@ -5062,6 +5062,14 @@ func (c *CodeSecurityConfiguration) GetDependabotAlerts() string {
 	return *c.DependabotAlerts
 }
 
+// GetDependabotDelegatedAlertDismissal returns the DependabotDelegatedAlertDismissal field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetDependabotDelegatedAlertDismissal() string {
+	if c == nil || c.DependabotDelegatedAlertDismissal == nil {
+		return ""
+	}
+	return *c.DependabotDelegatedAlertDismissal
+}
+
 // GetDependabotSecurityUpdates returns the DependabotSecurityUpdates field if it's non-nil, zero value otherwise.
 func (c *CodeSecurityConfiguration) GetDependabotSecurityUpdates() string {
 	if c == nil || c.DependabotSecurityUpdates == nil {
@@ -5180,6 +5188,14 @@ func (c *CodeSecurityConfiguration) GetSecretScanningDelegatedBypassOptions() *S
 		return nil
 	}
 	return c.SecretScanningDelegatedBypassOptions
+}
+
+// GetSecretScanningExtendedMetadata returns the SecretScanningExtendedMetadata field if it's non-nil, zero value otherwise.
+func (c *CodeSecurityConfiguration) GetSecretScanningExtendedMetadata() string {
+	if c == nil || c.SecretScanningExtendedMetadata == nil {
+		return ""
+	}
+	return *c.SecretScanningExtendedMetadata
 }
 
 // GetSecretScanningGenericSecrets returns the SecretScanningGenericSecrets field if it's non-nil, zero value otherwise.
