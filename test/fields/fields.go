@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"reflect"
 	"strings"
@@ -42,15 +43,13 @@ func main() {
 		fmt.Print("!!! No OAuth token. Some tests won't run. !!!\n\n")
 		c, err := github.NewClient()
 		if err != nil {
-			fmt.Printf("Error creating GitHub client: %v\n", err)
-			os.Exit(1)
+			log.Fatalf("Error creating GitHub client: %v", err)
 		}
 		client = c
 	} else {
 		c, err := github.NewClient(github.WithAuthToken(token))
 		if err != nil {
-			fmt.Printf("Error creating GitHub client with token: %v\n", err)
-			os.Exit(1)
+			log.Fatalf("Error creating GitHub client with token: %v", err)
 		}
 		client = c
 	}

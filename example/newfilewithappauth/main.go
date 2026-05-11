@@ -29,7 +29,7 @@ func main() {
 
 	itr, err := ghinstallation.NewAppsTransport(http.DefaultTransport, 10, privatePem)
 	if err != nil {
-		log.Fatalf("failed to create app transport: %v\n", err)
+		log.Fatalf("failed to create app transport: %v", err)
 	}
 	itr.BaseURL = gitHost
 
@@ -39,12 +39,12 @@ func main() {
 		Timeout:   time.Second * 30,
 	}), github.WithEnterpriseURLs(gitHost, gitHost))
 	if err != nil {
-		log.Fatalf("failed to create git client for app: %v\n", err)
+		log.Fatalf("failed to create git client for app: %v", err)
 	}
 
 	installations, _, err := client.Apps.ListInstallations(context.Background(), &github.ListOptions{})
 	if err != nil {
-		log.Fatalf("failed to list installations: %v\n", err)
+		log.Fatalf("failed to list installations: %v", err)
 	}
 
 	// capture our installationId for our app
@@ -59,12 +59,12 @@ func main() {
 		installID,
 		&github.InstallationTokenOptions{})
 	if err != nil {
-		log.Fatalf("failed to create installation token: %v\n", err)
+		log.Fatalf("failed to create installation token: %v", err)
 	}
 
 	apiClient, err := github.NewClient(github.WithAuthToken(token.GetToken()), github.WithEnterpriseURLs(gitHost, gitHost))
 	if err != nil {
-		log.Fatalf("failed to create new git client with token: %v\n", err)
+		log.Fatalf("failed to create new git client with token: %v", err)
 	}
 
 	_, resp, err := apiClient.Repositories.CreateFile(
@@ -78,7 +78,7 @@ func main() {
 			SHA:     nil,
 		})
 	if err != nil {
-		log.Fatalf("failed to create new file: %v\n", err)
+		log.Fatalf("failed to create new file: %v", err)
 	}
 
 	log.Printf("file written status code: %v", resp.StatusCode)

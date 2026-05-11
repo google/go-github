@@ -12,6 +12,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/gofri/go-github-pagination/githubpagination"
 	"github.com/gofri/go-github-ratelimit/v2/github_ratelimit"
@@ -39,15 +40,13 @@ func main() {
 	)
 	client, err := github.NewClient(github.WithHTTPClient(paginator))
 	if err != nil {
-		fmt.Printf("Error creating GitHub client: %v\n", err)
-		return
+		log.Fatalf("Error creating GitHub client: %v", err)
 	}
 
 	// Example usage of the client
 	repos, _, err := client.Repositories.ListByUser(context.Background(), username, nil)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
+		log.Fatalf("Error: %v", err)
 	}
 
 	for i, repo := range repos {

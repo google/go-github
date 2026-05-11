@@ -16,6 +16,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -52,27 +53,23 @@ func main() {
 
 	client, err := github.NewClient()
 	if err != nil {
-		fmt.Printf("Error creating GitHub client: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Error creating GitHub client: %v", err)
 	}
 
 	rc, _, err := client.Repositories.DownloadContents(context.Background(), owner, repo, repoPath, &github.RepositoryContentGetOptions{Ref: ref})
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Error downloading contents: %v", err)
 	}
 	defer rc.Close()
 
 	f, err := os.Create(outputPath) //#nosec G703 -- path is validated above
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Error creating output file: %v", err)
 	}
 	defer f.Close()
 
 	if _, err := io.Copy(f, rc); err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Error writing to output file: %v", err)
 	}
 
 	fmt.Println("Download completed.")

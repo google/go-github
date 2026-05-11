@@ -9,6 +9,7 @@ package integration
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -26,16 +27,14 @@ var client, auth = sync.OnceValues(func() (*github.Client, bool) {
 	if token == "" {
 		c, err := github.NewClient()
 		if err != nil {
-			fmt.Printf("Error creating GitHub client: %v\n", err)
-			os.Exit(1)
+			log.Fatalf("Error creating GitHub client: %v", err)
 		}
 		return c, false
 	}
 
 	c, err := github.NewClient(github.WithAuthToken(token))
 	if err != nil {
-		fmt.Printf("Error creating GitHub client with token: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Error creating GitHub client with token: %v", err)
 	}
 	return c, true
 })()

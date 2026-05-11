@@ -11,6 +11,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/google/go-github/v86/github"
 )
@@ -33,8 +34,7 @@ func main() {
 
 	topics, err := fetchTopics(topic)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
+		log.Fatalf("Error: %v", err)
 	}
 
 	for _, topic := range topics.Topics {

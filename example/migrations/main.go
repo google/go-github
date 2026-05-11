@@ -11,6 +11,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/google/go-github/v86/github"
 )
@@ -29,8 +30,7 @@ func fetchAllUserMigrations() ([]*github.UserMigration, error) {
 func main() {
 	migrations, err := fetchAllUserMigrations()
 	if err != nil {
-		fmt.Printf("Error %v\n", err)
-		return
+		log.Fatalf("Error: %v", err)
 	}
 
 	for i, m := range migrations {

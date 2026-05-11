@@ -26,7 +26,7 @@ func main() {
 	ctx := context.Background()
 	client, err := github.NewClient(github.WithAuthToken(token))
 	if err != nil {
-		log.Fatalf("Error creating GitHub client: %v\n", err)
+		log.Fatalf("Error creating GitHub client: %v", err)
 	}
 
 	owner := "OWNER"

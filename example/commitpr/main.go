@@ -229,7 +229,7 @@ func main() {
 
 	ref, err := getRef()
 	if err != nil {
-		log.Fatalf("Unable to get/create the commit reference: %v\n", err)
+		log.Fatalf("Unable to get/create the commit reference: %v", err)
 	}
 	if ref == nil {
 		log.Fatal("No error where returned but the reference is nil")
@@ -237,11 +237,11 @@ func main() {
 
 	tree, err := getTree(ref)
 	if err != nil {
-		log.Fatalf("Unable to create the tree based on the provided files: %v\n", err)
+		log.Fatalf("Unable to create the tree based on the provided files: %v", err)
 	}
 
 	if err := pushCommit(ref, tree); err != nil {
-		log.Fatalf("Unable to create the commit: %v\n", err)
+		log.Fatalf("Unable to create the commit: %v", err)
 	}
 
 	if err := createPR(); err != nil {
