@@ -477,6 +477,7 @@ func TestWithAuthToken(t *testing.T) {
 			gotReq = true
 			headerVal = r.Header.Get("Authorization")
 		}))
+		defer srv.Close()
 		_, err := c.Get(srv.URL)
 		assertNilError(t, err)
 		if !gotReq {
@@ -517,6 +518,7 @@ func TestWithAuthToken(t *testing.T) {
 			gotReq = true
 			_, ifAuthorizationSet = r.Header["Authorization"]
 		}))
+		defer srv.Close()
 		_, err := c.client.Get(srv.URL)
 		assertNilError(t, err)
 		if !gotReq {
