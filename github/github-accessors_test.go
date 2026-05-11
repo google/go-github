@@ -6455,6 +6455,17 @@ func TestCodeSecurityConfiguration_GetDependabotAlerts(tt *testing.T) {
 	c.GetDependabotAlerts()
 }
 
+func TestCodeSecurityConfiguration_GetDependabotDelegatedAlertDismissal(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurityConfiguration{DependabotDelegatedAlertDismissal: &zeroValue}
+	c.GetDependabotDelegatedAlertDismissal()
+	c = &CodeSecurityConfiguration{}
+	c.GetDependabotDelegatedAlertDismissal()
+	c = nil
+	c.GetDependabotDelegatedAlertDismissal()
+}
+
 func TestCodeSecurityConfiguration_GetDependabotSecurityUpdates(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -6606,6 +6617,17 @@ func TestCodeSecurityConfiguration_GetSecretScanningDelegatedBypassOptions(tt *t
 	c.GetSecretScanningDelegatedBypassOptions()
 	c = nil
 	c.GetSecretScanningDelegatedBypassOptions()
+}
+
+func TestCodeSecurityConfiguration_GetSecretScanningExtendedMetadata(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurityConfiguration{SecretScanningExtendedMetadata: &zeroValue}
+	c.GetSecretScanningExtendedMetadata()
+	c = &CodeSecurityConfiguration{}
+	c.GetSecretScanningExtendedMetadata()
+	c = nil
+	c.GetSecretScanningExtendedMetadata()
 }
 
 func TestCodeSecurityConfiguration_GetSecretScanningGenericSecrets(tt *testing.T) {
