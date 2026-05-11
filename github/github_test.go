@@ -467,11 +467,11 @@ func TestWithHTTPClient(t *testing.T) {
 		opts := clientOptions{}
 		err := WithHTTPClient(customClient)(&opts)
 		if err != nil {
-			t.Errorf("WithHTTPClient errored: %v", err)
+			t.Fatalf("WithHTTPClient errored: %v", err)
 		}
 
 		if opts.httpClient == nil {
-			t.Error("httpClient is nil")
+			t.Fatal("httpClient is nil")
 		}
 
 		if opts.httpClient == customClient {
@@ -504,11 +504,11 @@ func TestWithTransport(t *testing.T) {
 		opts := clientOptions{}
 		err := WithTransport(customTransport)(&opts)
 		if err != nil {
-			t.Errorf("WithTransport errored: %v", err)
+			t.Fatalf("WithTransport errored: %v", err)
 		}
 
 		if opts.transport == nil {
-			t.Error("transport is nil")
+			t.Fatal("transport is nil")
 		}
 
 		if opts.transport != customTransport {
@@ -526,7 +526,7 @@ func TestWithUserAgent(t *testing.T) {
 		opts := clientOptions{}
 		err := WithUserAgent("")(&opts)
 		if err != nil {
-			t.Errorf("WithUserAgent errored: %v", err)
+			t.Fatalf("WithUserAgent errored: %v", err)
 		}
 
 		if *opts.userAgent != "" {
@@ -541,7 +541,7 @@ func TestWithUserAgent(t *testing.T) {
 		opts := clientOptions{}
 		err := WithUserAgent(customUserAgent)(&opts)
 		if err != nil {
-			t.Errorf("WithUserAgent errored: %v", err)
+			t.Fatalf("WithUserAgent errored: %v", err)
 		}
 
 		if opts.userAgent == nil || *opts.userAgent != customUserAgent {
@@ -556,7 +556,7 @@ func TestWithEnvProxy(t *testing.T) {
 	opts := clientOptions{}
 	err := WithEnvProxy()(&opts)
 	if err != nil {
-		t.Errorf("WithEnvProxy errored: %v", err)
+		t.Fatalf("WithEnvProxy errored: %v", err)
 	}
 
 	if !opts.envProxy {
@@ -584,7 +584,7 @@ func TestWithAuthToken(t *testing.T) {
 		opts := clientOptions{}
 		err := WithAuthToken(validToken)(&opts)
 		if err != nil {
-			t.Errorf("WithAuthToken errored: %v", err)
+			t.Fatalf("WithAuthToken errored: %v", err)
 		}
 
 		if opts.token == nil || *opts.token != validToken {
@@ -739,7 +739,7 @@ func TestWithDisableRateLimitCheck(t *testing.T) {
 	opts := clientOptions{}
 	err := WithDisableRateLimitCheck()(&opts)
 	if err != nil {
-		t.Errorf("WithDisableRateLimitCheck errored: %v", err)
+		t.Fatalf("WithDisableRateLimitCheck errored: %v", err)
 	}
 
 	if !opts.disableRateLimitCheck {
@@ -753,7 +753,7 @@ func TestWithRateLimitRedirectionalEndpoints(t *testing.T) {
 	opts := clientOptions{}
 	err := WithRateLimitRedirectionalEndpoints()(&opts)
 	if err != nil {
-		t.Errorf("WithRateLimitRedirectionalEndpoints errored: %v", err)
+		t.Fatalf("WithRateLimitRedirectionalEndpoints errored: %v", err)
 	}
 
 	if !opts.rateLimitRedirectionalEndpoints {
@@ -782,7 +782,7 @@ func TestWithSecondaryRateLimitOptions(t *testing.T) {
 			opts := clientOptions{}
 			err := WithSecondaryRateLimitOptions(tt.maxRetryAfterDuration)(&opts)
 			if err != nil {
-				t.Errorf("WithSecondaryRateLimitOptions errored: %v", err)
+				t.Fatalf("WithSecondaryRateLimitOptions errored: %v", err)
 			}
 			if *opts.maxSecondaryRateLimitRetryAfterDuration != tt.maxRetryAfterDuration {
 				t.Errorf("maxSecondaryRateLimitRetryAfterDuration is %v, want %v", *opts.maxSecondaryRateLimitRetryAfterDuration, tt.maxRetryAfterDuration)
@@ -894,6 +894,13 @@ func Test_newClient(t *testing.T) {
 				maxSecondaryRateLimitRetryAfterDuration: Ptr(2 * time.Minute),
 			},
 			wantErr: "",
+		},
+		{
+			name: "with_env_proxy",
+			opts: clientOptions{
+				envProxy: true,
+			},
+			wantErr: "cannot set environment proxy on non-http transport",
 		},
 		{
 			name: "with_incompatible_transport_for_env_proxy",
@@ -1018,34 +1025,72 @@ func TestClient_UserAgent(t *testing.T) {
 func TestClient_BaseURL(t *testing.T) {
 	t.Parallel()
 
-	c := mustNewClient(t)
-
-	if got, want := c.BaseURL(), defaultBaseURL; got != want {
-		t.Errorf("Client.BaseURL() = %v, want %v", got, want)
-	}
-
 	customBaseURL := "https://custom-url/api/v3/"
-	c.baseURL = mustParseURL(t, customBaseURL)
 
-	if got, want := c.BaseURL(), customBaseURL; got != want {
-		t.Errorf("Client.BaseURL() = %v, want %v", got, want)
+	for _, tt := range []struct {
+		name        string
+		client      *Client
+		wantBaseURL string
+	}{
+		{
+			name:        "default_base_url",
+			client:      mustNewClient(t),
+			wantBaseURL: defaultBaseURL,
+		},
+		{
+			name:        "custom_base_url",
+			client:      &Client{baseURL: mustParseURL(t, customBaseURL)},
+			wantBaseURL: customBaseURL,
+		},
+		{
+			name:        "missing_base_url",
+			client:      &Client{},
+			wantBaseURL: "",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			if got, want := tt.client.BaseURL(), tt.wantBaseURL; got != want {
+				t.Errorf("Client.BaseURL() = %v, want %v", got, want)
+			}
+		})
 	}
 }
 
 func TestClient_UploadURL(t *testing.T) {
 	t.Parallel()
 
-	c := mustNewClient(t)
-
-	if got, want := c.UploadURL(), uploadBaseURL; got != want {
-		t.Errorf("Client.UploadURL() = %v, want %v", got, want)
-	}
-
 	customUploadURL := "https://custom-upload-url/api/uploads/"
-	c.uploadURL = mustParseURL(t, customUploadURL)
 
-	if got, want := c.UploadURL(), customUploadURL; got != want {
-		t.Errorf("Client.UploadURL() = %v, want %v", got, want)
+	for _, tt := range []struct {
+		name          string
+		client        *Client
+		wantUploadURL string
+	}{
+		{
+			name:          "default_upload_url",
+			client:        mustNewClient(t),
+			wantUploadURL: uploadBaseURL,
+		},
+		{
+			name:          "custom_upload_url",
+			client:        &Client{uploadURL: mustParseURL(t, customUploadURL)},
+			wantUploadURL: customUploadURL,
+		},
+		{
+			name:          "missing_upload_url",
+			client:        &Client{},
+			wantUploadURL: "",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			if got, want := tt.client.UploadURL(), tt.wantUploadURL; got != want {
+				t.Errorf("Client.UploadURL() = %v, want %v", got, want)
+			}
+		})
 	}
 }
 
@@ -1059,6 +1104,32 @@ func TestClient_Clone(t *testing.T) {
 
 		_, err := c.Clone()
 		if err == nil || !errors.Is(err, errUninitialized) {
+			t.Fatalf("Client.Clone returned unexpected error: %v", err)
+		}
+	})
+
+	t.Run("initialized_client_opts_err", func(t *testing.T) {
+		t.Parallel()
+
+		c := mustNewClient(t)
+
+		_, err := c.Clone(func(_ *clientOptions) error {
+			return errors.New("test options error")
+		})
+		if err == nil || err.Error() != "test options error" {
+			t.Fatalf("Client.Clone returned unexpected error: %v", err)
+		}
+	})
+
+	t.Run("initialized_client_new_client_err", func(t *testing.T) {
+		t.Parallel()
+
+		c := mustNewClient(t)
+
+		_, err := c.Clone(WithTransport(roundTripperFunc(func(_ *http.Request) (*http.Response, error) {
+			return nil, nil
+		})), WithEnvProxy())
+		if err == nil || err.Error() != "cannot set environment proxy on non-http transport" {
 			t.Fatalf("Client.Clone returned unexpected error: %v", err)
 		}
 	})
