@@ -3126,44 +3126,44 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 
 	want := &CopilotDailyMetrics{
 		Day:                 "2026-04-01",
-		OrganizationID:      String("123"),
-		DailyActiveCLIUsers: Int(2),
-		DailyActiveUsers:    Int(10),
-		WeeklyActiveUsers:   Int(20),
-		MonthlyActiveUsers:  Int(30),
+		OrganizationID:      Ptr("123"),
+		DailyActiveCLIUsers: Ptr(2),
+		DailyActiveUsers:    Ptr(10),
+		WeeklyActiveUsers:   Ptr(20),
+		MonthlyActiveUsers:  Ptr(30),
 		CopilotMetricsChatPanel: CopilotMetricsChatPanel{
-			ChatPanelAskMode: Int(4),
+			ChatPanelAskMode: Ptr(4),
 		},
 		TotalsByIDE: []*CopilotMetricsIDE{
-			{IDE: "vscode", UserInitiatedInteractionCount: Int(5), CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: Int(100)}},
+			{IDE: "vscode", UserInitiatedInteractionCount: Ptr(5), CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: Ptr(100)}},
 		},
 		TotalsByFeature: []*CopilotMetricsFeature{
-			{Feature: "completion", UserInitiatedInteractionCount: Int(5)},
-			{Feature: "agent_edit", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: Int(7), LOCDeletedSum: Int(2)}},
+			{Feature: "completion", UserInitiatedInteractionCount: Ptr(5)},
+			{Feature: "agent_edit", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: Ptr(7), LOCDeletedSum: Ptr(2)}},
 		},
 		TotalsByLanguageFeature: []*CopilotMetricsLanguageFeature{
-			{Language: "go", Feature: "completion", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: Int(3)}},
+			{Language: "go", Feature: "completion", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: Ptr(3)}},
 		},
 		TotalsByLanguageModel: []*CopilotMetricsLanguageModel{
-			{Language: "go", Model: "m1", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: Int(3)}},
+			{Language: "go", Model: "m1", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: Ptr(3)}},
 		},
 		TotalsByModelFeature: []*CopilotMetricsModelFeature{
-			{Model: "m1", Feature: "completion", UserInitiatedInteractionCount: Int(5)},
+			{Model: "m1", Feature: "completion", UserInitiatedInteractionCount: Ptr(5)},
 		},
 		TotalsByCLI: &CopilotMetricsCLI{
-			SessionCount: Int(3),
-			RequestCount: Int(4),
-			PromptCount:  Int(2),
+			SessionCount: Ptr(3),
+			RequestCount: Ptr(4),
+			PromptCount:  Ptr(2),
 			TokenUsage: &CopilotMetricsCLITokenUsage{
 				AvgTokensPerRequest: Ptr(4123.5),
-				OutputTokensSum:     Int(7000),
-				PromptTokensSum:     Int(9494),
+				OutputTokensSum:     Ptr(7000),
+				PromptTokensSum:     Ptr(9494),
 			},
 		},
-		LOCAddedSum: Int(100),
+		LOCAddedSum: Ptr(100),
 		PullRequests: &CopilotMetricsPullRequests{
-			TotalReviewed:                       Int(1),
-			TotalCreated:                        Int(2),
+			TotalReviewed:                       Ptr(1),
+			TotalCreated:                        Ptr(2),
 			MedianMinutesToMerge:                Ptr(12.5),
 			MedianMinutesToMergeCopilotAuthored: Ptr(4.5),
 			MedianMinutesToMergeCopilotReviewed: Ptr(6.5),
@@ -3247,21 +3247,21 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 	want := &CopilotPeriodicMetrics{
 		ReportStartDay: "2026-03-05",
 		ReportEndDay:   "2026-04-01",
-		OrganizationID: String("123"),
+		OrganizationID: Ptr("123"),
 		CreatedAt:      &Timestamp{time.Date(2026, 4, 2, 0, 0, 0, 0, time.UTC)},
 		DayTotals: []*CopilotDailyMetrics{
 			{
 				Day:                 "2026-03-05",
-				DailyActiveCLIUsers: Int(2),
-				DailyActiveUsers:    Int(5),
+				DailyActiveCLIUsers: Ptr(2),
+				DailyActiveUsers:    Ptr(5),
 				TotalsByCLI: &CopilotMetricsCLI{
-					SessionCount: Int(1),
-					RequestCount: Int(2),
-					PromptCount:  Int(1),
+					SessionCount: Ptr(1),
+					RequestCount: Ptr(2),
+					PromptCount:  Ptr(1),
 					TokenUsage: &CopilotMetricsCLITokenUsage{
 						AvgTokensPerRequest: Ptr(4000.0),
-						OutputTokensSum:     Int(5000),
-						PromptTokensSum:     Int(3000),
+						OutputTokensSum:     Ptr(5000),
+						PromptTokensSum:     Ptr(3000),
 					},
 				},
 				PullRequests: &CopilotMetricsPullRequests{
@@ -3270,7 +3270,7 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 					MedianMinutesToMergeCopilotReviewed: Ptr(7.0),
 				},
 			},
-			{Day: "2026-03-06", DailyActiveUsers: Int(7)},
+			{Day: "2026-03-06", DailyActiveUsers: Ptr(7)},
 		},
 	}
 
@@ -3327,17 +3327,17 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 			UserID:                        1,
 			UserLogin:                     "alice",
 			Day:                           "2026-04-01",
-			UserInitiatedInteractionCount: Int(5),
+			UserInitiatedInteractionCount: Ptr(5),
 			CopilotMetricsChatPanel: CopilotMetricsChatPanel{
-				ChatPanelEditMode: Int(2),
+				ChatPanelEditMode: Ptr(2),
 			},
-			UsedChat:                    Bool(true),
-			UsedCLI:                     Bool(true),
-			UsedCopilotCodeReviewActive: Bool(true),
+			UsedChat:                    Ptr(true),
+			UsedCLI:                     Ptr(true),
+			UsedCopilotCodeReviewActive: Ptr(true),
 			TotalsByCLI: &CopilotMetricsCLI{
-				SessionCount: Int(2),
-				RequestCount: Int(2),
-				PromptCount:  Int(1),
+				SessionCount: Ptr(2),
+				RequestCount: Ptr(2),
+				PromptCount:  Ptr(1),
 				LastKnownCLIVersion: &CopilotMetricsCLIVersion{
 					SampledAt:  &Timestamp{time.Date(2026, 4, 1, 12, 30, 0, 0, time.UTC)},
 					CLIVersion: "1.0.8",
@@ -3346,7 +3346,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 			TotalsByIDE: []*CopilotUserMetricsIDE{
 				{
 					IDE:                           "vscode",
-					UserInitiatedInteractionCount: Int(5),
+					UserInitiatedInteractionCount: Ptr(5),
 					LastKnownPluginVersion: &CopilotUserMetricsPluginVersion{
 						SampledAt:     &Timestamp{time.Date(2026, 4, 1, 12, 0, 0, 0, time.UTC)},
 						Plugin:        "copilot",
@@ -3363,8 +3363,8 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 			UserID:                       2,
 			UserLogin:                    "bob",
 			Day:                          "2026-04-01",
-			UsedAgent:                    Bool(true),
-			UsedCopilotCodeReviewPassive: Bool(true),
+			UsedAgent:                    Ptr(true),
+			UsedCopilotCodeReviewPassive: Ptr(true),
 		},
 	}
 
@@ -3436,8 +3436,8 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 			Day:                           "2026-03-05",
 			UserID:                        1,
 			UserLogin:                     "alice",
-			UserInitiatedInteractionCount: Int(3),
-			UsedCopilotCodeReviewActive:   Bool(true),
+			UserInitiatedInteractionCount: Ptr(3),
+			UsedCopilotCodeReviewActive:   Ptr(true),
 		},
 		{
 			ReportStartDay:               "2026-03-05",
@@ -3445,17 +3445,17 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 			Day:                          "2026-03-06",
 			UserID:                       1,
 			UserLogin:                    "alice",
-			UsedCLI:                      Bool(true),
-			UsedCopilotCodeReviewPassive: Bool(true),
-			UsedCopilotCodingAgent:       Bool(true),
+			UsedCLI:                      Ptr(true),
+			UsedCopilotCodeReviewPassive: Ptr(true),
+			UsedCopilotCodingAgent:       Ptr(true),
 			TotalsByCLI: &CopilotMetricsCLI{
-				SessionCount: Int(1),
-				RequestCount: Int(3),
-				PromptCount:  Int(2),
+				SessionCount: Ptr(1),
+				RequestCount: Ptr(3),
+				PromptCount:  Ptr(2),
 				TokenUsage: &CopilotMetricsCLITokenUsage{
 					AvgTokensPerRequest: Ptr(1200.5),
-					OutputTokensSum:     Int(2400),
-					PromptTokensSum:     Int(1201),
+					OutputTokensSum:     Ptr(2400),
+					PromptTokensSum:     Ptr(1201),
 				},
 			},
 		},

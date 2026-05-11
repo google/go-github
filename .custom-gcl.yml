@@ -1,4 +1,4 @@
-version: v2.10.1 # this is the version of golangci-lint
+version: v2.12.2 # this is the version of golangci-lint
 plugins:
   - module: "github.com/google/go-github/v86/tools/extraneousnew"
     path: ./tools/extraneousnew
