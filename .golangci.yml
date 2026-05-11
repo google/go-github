@@ -424,7 +424,7 @@ linters:
       # We don't care about gosec issues in examples or internal tools.
       - linters: [gosec]
         path: ^(example|tools)\/
-        text: '(G304|G705|G706)'
+        text: '(G304|G703|G705|G706)'
 
       # We don't run parallel integration tests
       - linters: [paralleltest, tparallel]
