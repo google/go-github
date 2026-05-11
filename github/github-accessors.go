@@ -28678,12 +28678,12 @@ func (p *ProtectionRequest) GetBlockCreations() bool {
 	return *p.BlockCreations
 }
 
-// GetEnforceAdmins returns the EnforceAdmins field.
+// GetEnforceAdmins returns the EnforceAdmins field if it's non-nil, zero value otherwise.
 func (p *ProtectionRequest) GetEnforceAdmins() bool {
-	if p == nil {
+	if p == nil || p.EnforceAdmins == nil {
 		return false
 	}
-	return p.EnforceAdmins
+	return *p.EnforceAdmins
 }
 
 // GetLockBranch returns the LockBranch field if it's non-nil, zero value otherwise.

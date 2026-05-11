@@ -36226,7 +36226,10 @@ func TestProtectionRequest_GetBlockCreations(tt *testing.T) {
 
 func TestProtectionRequest_GetEnforceAdmins(tt *testing.T) {
 	tt.Parallel()
-	p := &ProtectionRequest{}
+	var zeroValue bool
+	p := &ProtectionRequest{EnforceAdmins: &zeroValue}
+	p.GetEnforceAdmins()
+	p = &ProtectionRequest{}
 	p.GetEnforceAdmins()
 	p = nil
 	p.GetEnforceAdmins()

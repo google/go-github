@@ -1204,8 +1204,9 @@ type RequireLastPushApprovalChanges struct {
 type ProtectionRequest struct {
 	RequiredStatusChecks       *RequiredStatusChecks                 `json:"required_status_checks"`
 	RequiredPullRequestReviews *PullRequestReviewsEnforcementRequest `json:"required_pull_request_reviews"`
-	EnforceAdmins              bool                                  `json:"enforce_admins"`
-	Restrictions               *BranchRestrictionsRequest            `json:"restrictions"`
+	// Set to true to enforce branch protection for admins; leave null to not enforce.
+	EnforceAdmins *bool                      `json:"enforce_admins,omitempty"`
+	Restrictions  *BranchRestrictionsRequest `json:"restrictions"`
 	// Enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch.
 	RequireLinearHistory *bool `json:"required_linear_history,omitempty"`
 	// Permits force pushes to the protected branch by anyone with write access to the repository.

@@ -94,7 +94,7 @@ func TestRepositories_EditBranches(t *testing.T) {
 		RequiredPullRequestReviews: &github.PullRequestReviewsEnforcementRequest{
 			DismissStaleReviews: true,
 		},
-		EnforceAdmins: true,
+		EnforceAdmins: github.Ptr(true),
 		// TODO: Only organization repositories can have users and team restrictions.
 		//       In order to be able to test these Restrictions, need to add support
 		//       for creating temporary organization repositories.
