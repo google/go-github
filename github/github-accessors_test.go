@@ -25300,7 +25300,7 @@ func TestIssueRequest_GetBody(tt *testing.T) {
 
 func TestIssueRequest_GetIssueFieldValues(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := []*IssueFieldValue{}
+	zeroValue := []*IssueRequestFieldValue{}
 	i := &IssueRequest{IssueFieldValues: zeroValue}
 	i.GetIssueFieldValues()
 	i = &IssueRequest{}
@@ -25373,6 +25373,22 @@ func TestIssueRequest_GetType(tt *testing.T) {
 	i.GetType()
 	i = nil
 	i.GetType()
+}
+
+func TestIssueRequestFieldValue_GetFieldID(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueRequestFieldValue{}
+	i.GetFieldID()
+	i = nil
+	i.GetFieldID()
+}
+
+func TestIssueRequestFieldValue_GetValue(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueRequestFieldValue{}
+	i.GetValue()
+	i = nil
+	i.GetValue()
 }
 
 func TestIssuesEvent_GetAction(tt *testing.T) {

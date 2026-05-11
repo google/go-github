@@ -19991,7 +19991,7 @@ func (i *IssueRequest) GetBody() string {
 }
 
 // GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
-func (i *IssueRequest) GetIssueFieldValues() []*IssueFieldValue {
+func (i *IssueRequest) GetIssueFieldValues() []*IssueRequestFieldValue {
 	if i == nil || i.IssueFieldValues == nil {
 		return nil
 	}
@@ -20044,6 +20044,22 @@ func (i *IssueRequest) GetType() string {
 		return ""
 	}
 	return *i.Type
+}
+
+// GetFieldID returns the FieldID field.
+func (i *IssueRequestFieldValue) GetFieldID() int64 {
+	if i == nil {
+		return 0
+	}
+	return i.FieldID
+}
+
+// GetValue returns the Value field.
+func (i *IssueRequestFieldValue) GetValue() any {
+	if i == nil {
+		return nil
+	}
+	return i.Value
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
