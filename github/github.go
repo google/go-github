@@ -341,6 +341,7 @@ var errUninitialized = errors.New("client is not initialized")
 type clientOptions struct {
 	httpClient                              *http.Client
 	transport                               http.RoundTripper
+	timeout                                 *time.Duration
 	userAgent                               *string
 	envProxy                                bool
 	token                                   *string
@@ -380,6 +381,21 @@ func WithTransport(transport http.RoundTripper) ClientOptionsFunc {
 		}
 
 		o.transport = transport
+		return nil
+	}
+}
+
+// WithTimeout returns a ClientOptionsFunc that sets the timeout for a Client.
+// This overrides the timeout set by [WithHTTPClient]. If not set and no HTTP
+// client is provided, the default http.Client with no timeout will be used.
+// It is recommended to provide a timeout for production environments.
+func WithTimeout(timeout time.Duration) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if timeout < 0 {
+			return errors.New("timeout must not be negative")
+		}
+
+		o.timeout = &timeout
 		return nil
 	}
 }
@@ -499,17 +515,18 @@ func WithSecondaryRateLimitOptions(maxRetryAfterDuration time.Duration) ClientOp
 
 // NewClient returns a new GitHub API client configured with the provided
 // options. The default configuration is suitable for making unauthenticated
-// requests to the public GitHub API. To make authenticated requests,
-// use [WithAuthToken] or provide an http.Client that performs authentication
-// (e.g., using golang.org/x/oauth2) to [WithHTTPClient]. For GitHub
-// Enterprise, use [WithEnterpriseURLs] to set the base and upload URLs. If no
-// http.Client is provided, a default one will be used, but it is recommended
-// to provide a custom http.Client with an appropriate timeout for production
-// environments.
+// requests to the public GitHub API.
 //
-// Note: When using a nil httpClient, the default client has no timeout set.
-// This may not be suitable for production environments. It is recommended to
-// provide a custom http.Client with an appropriate timeout.
+// For GitHub Enterprise, use [WithEnterpriseURLs] to set the base and upload
+// URLs.
+//
+// To make authenticated requests, use [WithAuthToken] or [WithHTTPClient] to
+// pass in a [http.Client] that performs authentication
+// (e.g., using golang.org/x/oauth2).
+//
+// For production usage it is recommended to provide a timeout using
+// [WithTimeout] or by providing a custom [http.Client] with an appropriate
+// timeout using [WithHTTPClient].
 func NewClient(opts ...ClientOptionsFunc) (*Client, error) {
 	o := clientOptions{}
 	for _, opt := range opts {
@@ -534,6 +551,10 @@ func newClient(opts clientOptions) (*Client, error) {
 
 	if opts.transport != nil {
 		c.client.Transport = opts.transport
+	}
+
+	if opts.timeout != nil {
+		c.client.Timeout = *opts.timeout
 	}
 
 	if opts.envProxy {
