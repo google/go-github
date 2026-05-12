@@ -128,9 +128,9 @@ type IssueType struct {
 //
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
 type IssueFieldValueSingleSelectOption struct {
-	ID    *int64  `json:"id"`
-	Name  *string `json:"name"`
-	Color *string `json:"color"`
+	ID    int64  `json:"id"`
+	Name  string `json:"name"`
+	Color string `json:"color"`
 }
 
 // IssueRequestFieldValue represents a custom field value to set on an issue.
@@ -147,9 +147,9 @@ type IssueRequestFieldValue struct {
 //
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
 type IssueFieldValue struct {
-	IssueFieldID       *int64                             `json:"issue_field_id"`
-	NodeID             *string                            `json:"node_id"`
-	DataType           *string                            `json:"data_type"`
+	IssueFieldID       int64                             `json:"issue_field_id"`
+	NodeID             string                            `json:"node_id"`
+	DataType           string                            `json:"data_type"`
 	Value              any                                `json:"value"`
 	SingleSelectOption *IssueFieldValueSingleSelectOption `json:"single_select_option,omitempty"`
 }
