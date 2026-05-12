@@ -804,31 +804,31 @@ func TestWithRateLimitRedirectionalEndpoints(t *testing.T) {
 	}
 }
 
-func TestWithSecondaryRateLimitOptions(t *testing.T) {
+func TestWithMaxSecondaryRateLimitMaxRetryAfterDuration(t *testing.T) {
 	t.Parallel()
 
 	for _, tt := range []struct {
-		name                  string
-		maxRetryAfterDuration time.Duration
+		name     string
+		duration time.Duration
 	}{
 		{
-			name:                  "maxRetryAfterDuration is 0 (default)",
-			maxRetryAfterDuration: 0,
+			name:     "duration_zero",
+			duration: 0,
 		},
 		{
-			name:                  "maxRetryAfterDuration is 1 minute",
-			maxRetryAfterDuration: time.Minute,
+			name:     "duration_set",
+			duration: time.Minute,
 		},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			opts := clientOptions{}
-			err := WithSecondaryRateLimitOptions(tt.maxRetryAfterDuration)(&opts)
+			err := WithMaxSecondaryRateLimitMaxRetryAfterDuration(tt.duration)(&opts)
 			if err != nil {
-				t.Fatalf("WithSecondaryRateLimitOptions errored: %v", err)
+				t.Fatalf("WithMaxSecondaryRateLimitMaxRetryAfterDuration errored: %v", err)
 			}
-			if *opts.maxSecondaryRateLimitRetryAfterDuration != tt.maxRetryAfterDuration {
-				t.Errorf("maxSecondaryRateLimitRetryAfterDuration is %v, want %v", *opts.maxSecondaryRateLimitRetryAfterDuration, tt.maxRetryAfterDuration)
+			if *opts.maxSecondaryRateLimitRetryAfterDuration != tt.duration {
+				t.Errorf("maxSecondaryRateLimitRetryAfterDuration is %v, want %v", *opts.maxSecondaryRateLimitRetryAfterDuration, tt.duration)
 			}
 		})
 	}

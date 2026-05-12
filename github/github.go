@@ -504,11 +504,11 @@ func WithRateLimitRedirectionalEndpoints() ClientOptionsFunc {
 	}
 }
 
-// WithSecondaryRateLimitOptions returns a ClientOptionsFunc that configures the Client
-// secondary rate limits.
-func WithSecondaryRateLimitOptions(maxRetryAfterDuration time.Duration) ClientOptionsFunc {
+// WithMaxSecondaryRateLimitMaxRetryAfterDuration returns a ClientOptionsFunc
+// that configures the Client secondary rate limit max retry after duration.
+func WithMaxSecondaryRateLimitMaxRetryAfterDuration(duration time.Duration) ClientOptionsFunc {
 	return func(o *clientOptions) error {
-		o.maxSecondaryRateLimitRetryAfterDuration = &maxRetryAfterDuration
+		o.maxSecondaryRateLimitRetryAfterDuration = &duration
 		return nil
 	}
 }
