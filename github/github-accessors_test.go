@@ -24733,10 +24733,7 @@ func TestIssueEvent_GetURL(tt *testing.T) {
 
 func TestIssueFieldValue_GetDataType(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldValue{DataType: &zeroValue}
-	i.GetDataType()
-	i = &IssueFieldValue{}
+	i := &IssueFieldValue{}
 	i.GetDataType()
 	i = nil
 	i.GetDataType()
@@ -24744,10 +24741,7 @@ func TestIssueFieldValue_GetDataType(tt *testing.T) {
 
 func TestIssueFieldValue_GetIssueFieldID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	i := &IssueFieldValue{IssueFieldID: &zeroValue}
-	i.GetIssueFieldID()
-	i = &IssueFieldValue{}
+	i := &IssueFieldValue{}
 	i.GetIssueFieldID()
 	i = nil
 	i.GetIssueFieldID()
@@ -24755,10 +24749,7 @@ func TestIssueFieldValue_GetIssueFieldID(tt *testing.T) {
 
 func TestIssueFieldValue_GetNodeID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldValue{NodeID: &zeroValue}
-	i.GetNodeID()
-	i = &IssueFieldValue{}
+	i := &IssueFieldValue{}
 	i.GetNodeID()
 	i = nil
 	i.GetNodeID()
@@ -24782,10 +24773,7 @@ func TestIssueFieldValue_GetValue(tt *testing.T) {
 
 func TestIssueFieldValueSingleSelectOption_GetColor(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldValueSingleSelectOption{Color: &zeroValue}
-	i.GetColor()
-	i = &IssueFieldValueSingleSelectOption{}
+	i := &IssueFieldValueSingleSelectOption{}
 	i.GetColor()
 	i = nil
 	i.GetColor()
@@ -24793,10 +24781,7 @@ func TestIssueFieldValueSingleSelectOption_GetColor(tt *testing.T) {
 
 func TestIssueFieldValueSingleSelectOption_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	i := &IssueFieldValueSingleSelectOption{ID: &zeroValue}
-	i.GetID()
-	i = &IssueFieldValueSingleSelectOption{}
+	i := &IssueFieldValueSingleSelectOption{}
 	i.GetID()
 	i = nil
 	i.GetID()
@@ -24804,10 +24789,7 @@ func TestIssueFieldValueSingleSelectOption_GetID(tt *testing.T) {
 
 func TestIssueFieldValueSingleSelectOption_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldValueSingleSelectOption{Name: &zeroValue}
-	i.GetName()
-	i = &IssueFieldValueSingleSelectOption{}
+	i := &IssueFieldValueSingleSelectOption{}
 	i.GetName()
 	i = nil
 	i.GetName()
