@@ -112,6 +112,12 @@ if err != nil {
 }
 ```
 
+To support more advanced use cases; you can use the `github.WithTransport` option to provide a
+custom `http.RoundTripper` that handles authentication for you, or the `github.WithHTTPClient`
+option to provide a custom `http.Client`. As an example; you can use the `oauth2.Transport`
+from the [golang.org/x/oauth2](https://pkg.go.dev/golang.org/x/oauth2) package to handle OAuth
+token refreshing for you.
+
 Note that when using an authenticated Client, all calls made by the client will
 include the specified OAuth token. Therefore, authenticated clients should
 almost never be shared between different users.

@@ -76,9 +76,9 @@ func ExampleRepositoriesService_CreateFile() {
 	// Contents API. Only 1 file per commit can be managed through that API.
 
 	// Note that authentication is needed here as you are performing a modification
-	// so you will need to modify the example to provide an oauth client to
-	// github.NewClient() instead of nil. See the following documentation for more
-	// information on how to authenticate with the client:
+	// so you will need to modify the example to provide authentication to
+	// github.NewClient(). See the following documentation for more information
+	// on how to authenticate with the client:
 	// https://pkg.go.dev/github.com/google/go-github/v86/github#hdr-Authentication
 	client, err := github.NewClient()
 	if err != nil {
@@ -126,9 +126,9 @@ func ExamplePullRequestsService_Create() {
 	// In this example we're creating a PR and displaying the HTML url at the end.
 
 	// Note that authentication is needed here as you are performing a modification
-	// so you will need to modify the example to provide an oauth client to
-	// github.NewClient() instead of nil. See the following documentation for more
-	// information on how to authenticate with the client:
+	// so you will need to modify the example to provide authentication to
+	// github.NewClient(). See the following documentation for more information
+	// on how to authenticate with the client:
 	// https://pkg.go.dev/github.com/google/go-github/v86/github#hdr-Authentication
 	client, err := github.NewClient()
 	if err != nil {
@@ -157,9 +157,9 @@ func ExampleTeamsService_ListTeams() {
 
 	// Note that authentication is needed here as you are performing a lookup on
 	// an organization's administrative configuration, so you will need to modify
-	// the example to provide an oauth client to github.NewClient() instead of nil.
-	// See the following documentation for more information on how to authenticate
-	// with the client:
+	// the example to to provide authentication to github.NewClient(). See the
+	//  following documentation for more information on how to authenticate with
+	// the client:
 	// https://pkg.go.dev/github.com/google/go-github/v86/github#hdr-Authentication
 	client, err := github.NewClient()
 	if err != nil {
