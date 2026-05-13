@@ -1592,9 +1592,9 @@ func TestProjectV2Item_Marshal_Issue(t *testing.T) {
 
 func TestProjectV2Item_Marshal_PullRequest(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ProjectV2Item{}, "{}")
+	testJSONMarshal(t, ProjectV2Item{}, "{}")
 
-	item := &ProjectV2Item{
+	item := ProjectV2Item{
 		ContentType: Ptr(ProjectV2ItemContentTypePullRequest),
 		Content: &ProjectV2ItemContent{
 			PullRequest: &PullRequest{
@@ -1661,4 +1661,63 @@ func TestProjectV2Item_Marshal_MissingContent(t *testing.T) {
 	}`
 
 	testJSONMarshal(t, item, want)
+}
+
+func TestProjectV2ItemContent_Marshal(t *testing.T) {
+	t.Parallel()
+
+	t.Run("issue", func(t *testing.T) {
+		content := ProjectV2ItemContent{
+			Issue: &Issue{
+				Number: Ptr(42),
+				Title:  Ptr("Bug report"),
+				State:  Ptr("open"),
+			},
+		}
+
+		want := `{
+			"number":42,
+			"state":"open",
+			"title":"Bug report"
+		}`
+
+		testJSONMarshalOnly(t, content, want)
+		testJSONMarshalOnly(t, &content, want)
+	})
+
+	t.Run("pull request", func(t *testing.T) {
+		content := ProjectV2ItemContent{
+			PullRequest: &PullRequest{
+				Number: Ptr(99),
+				Title:  Ptr("Feature addition"),
+				State:  Ptr("closed"),
+			},
+		}
+
+		want := `{
+			"number":99,
+			"state":"closed",
+			"title":"Feature addition"
+		}`
+
+		testJSONMarshalOnly(t, content, want)
+		testJSONMarshalOnly(t, &content, want)
+	})
+
+	t.Run("draft issue", func(t *testing.T) {
+		content := ProjectV2ItemContent{
+			DraftIssue: &ProjectV2DraftIssue{
+				Title: Ptr("Draft task"),
+				Body:  Ptr("Work in progress"),
+			},
+		}
+
+		want := `{
+			"body":"Work in progress",
+			"title":"Draft task"
+		}`
+
+		testJSONMarshalOnly(t, content, want)
+		testJSONMarshalOnly(t, &content, want)
+	})
 }
