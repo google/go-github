@@ -95,11 +95,11 @@ type IssueRequest struct {
 	Assignee *string   `json:"assignee,omitempty"`
 	State    *string   `json:"state,omitempty"`
 	// StateReason can be 'completed' or 'not_planned'.
-	StateReason      *string            `json:"state_reason,omitempty"`
-	Milestone        *int               `json:"milestone,omitempty"`
-	Assignees        *[]string          `json:"assignees,omitempty"`
-	Type             *string            `json:"type,omitempty"`
-	IssueFieldValues []*IssueFieldValue `json:"issue_field_values,omitempty"`
+	StateReason      *string                   `json:"state_reason,omitempty"`
+	Milestone        *int                      `json:"milestone,omitempty"`
+	Assignees        *[]string                 `json:"assignees,omitempty"`
+	Type             *string                   `json:"type,omitempty"`
+	IssueFieldValues []*IssueRequestFieldValue `json:"issue_field_values,omitempty"`
 }
 
 // PullRequestLinks object is added to the Issue object when it's an issue included
@@ -126,23 +126,31 @@ type IssueType struct {
 
 // IssueFieldValueSingleSelectOption represents a single-select option for an issue field value.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#get-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
 type IssueFieldValueSingleSelectOption struct {
-	ID    *int64  `json:"id,omitempty"`
-	Name  *string `json:"name,omitempty"`
-	Color *string `json:"color,omitempty"`
+	ID    int64  `json:"id"`
+	Name  string `json:"name"`
+	Color string `json:"color"`
+}
+
+// IssueRequestFieldValue represents a custom field value to set on an issue.
+//
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#update-an-issue
+type IssueRequestFieldValue struct {
+	FieldID int64 `json:"field_id"`
+	Value   any   `json:"value"`
 }
 
 // IssueFieldValue represents a custom field value attached to an issue.
 // The Value field contains a string for text, single_select, and date fields,
 // or a number for numeric fields.
 //
-// GitHub API docs: https://docs.github.com/rest/issues/issues#get-an-issue
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
 type IssueFieldValue struct {
-	IssueFieldID       *int64                             `json:"issue_field_id,omitempty"`
-	NodeID             *string                            `json:"node_id,omitempty"`
-	DataType           *string                            `json:"data_type,omitempty"`
-	Value              any                                `json:"value,omitempty"`
+	IssueFieldID       int64                              `json:"issue_field_id"`
+	NodeID             string                             `json:"node_id"`
+	DataType           string                             `json:"data_type"`
+	Value              any                                `json:"value"`
 	SingleSelectOption *IssueFieldValueSingleSelectOption `json:"single_select_option,omitempty"`
 }
 

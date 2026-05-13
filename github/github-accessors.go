@@ -19550,28 +19550,28 @@ func (i *IssueEvent) GetURL() string {
 	return *i.URL
 }
 
-// GetDataType returns the DataType field if it's non-nil, zero value otherwise.
+// GetDataType returns the DataType field.
 func (i *IssueFieldValue) GetDataType() string {
-	if i == nil || i.DataType == nil {
+	if i == nil {
 		return ""
 	}
-	return *i.DataType
+	return i.DataType
 }
 
-// GetIssueFieldID returns the IssueFieldID field if it's non-nil, zero value otherwise.
+// GetIssueFieldID returns the IssueFieldID field.
 func (i *IssueFieldValue) GetIssueFieldID() int64 {
-	if i == nil || i.IssueFieldID == nil {
+	if i == nil {
 		return 0
 	}
-	return *i.IssueFieldID
+	return i.IssueFieldID
 }
 
-// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+// GetNodeID returns the NodeID field.
 func (i *IssueFieldValue) GetNodeID() string {
-	if i == nil || i.NodeID == nil {
+	if i == nil {
 		return ""
 	}
-	return *i.NodeID
+	return i.NodeID
 }
 
 // GetSingleSelectOption returns the SingleSelectOption field.
@@ -19590,28 +19590,28 @@ func (i *IssueFieldValue) GetValue() any {
 	return i.Value
 }
 
-// GetColor returns the Color field if it's non-nil, zero value otherwise.
+// GetColor returns the Color field.
 func (i *IssueFieldValueSingleSelectOption) GetColor() string {
-	if i == nil || i.Color == nil {
+	if i == nil {
 		return ""
 	}
-	return *i.Color
+	return i.Color
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (i *IssueFieldValueSingleSelectOption) GetID() int64 {
-	if i == nil || i.ID == nil {
+	if i == nil {
 		return 0
 	}
-	return *i.ID
+	return i.ID
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (i *IssueFieldValueSingleSelectOption) GetName() string {
-	if i == nil || i.Name == nil {
+	if i == nil {
 		return ""
 	}
-	return *i.Name
+	return i.Name
 }
 
 // GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
@@ -20007,7 +20007,7 @@ func (i *IssueRequest) GetBody() string {
 }
 
 // GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
-func (i *IssueRequest) GetIssueFieldValues() []*IssueFieldValue {
+func (i *IssueRequest) GetIssueFieldValues() []*IssueRequestFieldValue {
 	if i == nil || i.IssueFieldValues == nil {
 		return nil
 	}
@@ -20060,6 +20060,22 @@ func (i *IssueRequest) GetType() string {
 		return ""
 	}
 	return *i.Type
+}
+
+// GetFieldID returns the FieldID field.
+func (i *IssueRequestFieldValue) GetFieldID() int64 {
+	if i == nil {
+		return 0
+	}
+	return i.FieldID
+}
+
+// GetValue returns the Value field.
+func (i *IssueRequestFieldValue) GetValue() any {
+	if i == nil {
+		return nil
+	}
+	return i.Value
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
