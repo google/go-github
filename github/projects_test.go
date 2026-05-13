@@ -1667,6 +1667,8 @@ func TestProjectV2ItemContent_Marshal(t *testing.T) {
 	t.Parallel()
 
 	t.Run("issue", func(t *testing.T) {
+		t.Parallel()
+
 		content := ProjectV2ItemContent{
 			Issue: &Issue{
 				Number: Ptr(42),
@@ -1686,6 +1688,8 @@ func TestProjectV2ItemContent_Marshal(t *testing.T) {
 	})
 
 	t.Run("pull request", func(t *testing.T) {
+		t.Parallel()
+
 		content := ProjectV2ItemContent{
 			PullRequest: &PullRequest{
 				Number: Ptr(99),
@@ -1705,6 +1709,8 @@ func TestProjectV2ItemContent_Marshal(t *testing.T) {
 	})
 
 	t.Run("draft issue", func(t *testing.T) {
+		t.Parallel()
+
 		content := ProjectV2ItemContent{
 			DraftIssue: &ProjectV2DraftIssue{
 				Title: Ptr("Draft task"),
