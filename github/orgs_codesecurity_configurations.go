@@ -57,6 +57,7 @@ type CodeSecurityConfiguration struct {
 	DependencyGraphAutosubmitAction        *string                                 `json:"dependency_graph_autosubmit_action,omitempty"`
 	DependencyGraphAutosubmitActionOptions *DependencyGraphAutosubmitActionOptions `json:"dependency_graph_autosubmit_action_options,omitempty"`
 	DependabotAlerts                       *string                                 `json:"dependabot_alerts,omitempty"`
+	DependabotDelegatedAlertDismissal      *string                                 `json:"dependabot_delegated_alert_dismissal,omitempty"`
 	DependabotSecurityUpdates              *string                                 `json:"dependabot_security_updates,omitempty"`
 	CodeScanningDefaultSetup               *string                                 `json:"code_scanning_default_setup,omitempty"`
 	CodeScanningDefaultSetupOptions        *CodeScanningDefaultSetupOptions        `json:"code_scanning_default_setup_options,omitempty"`
@@ -71,6 +72,7 @@ type CodeSecurityConfiguration struct {
 	SecretScanningNonProviderPatterns      *string                                 `json:"secret_scanning_non_provider_patterns,omitempty"`
 	SecretScanningGenericSecrets           *string                                 `json:"secret_scanning_generic_secrets,omitempty"`
 	SecretScanningDelegatedAlertDismissal  *string                                 `json:"secret_scanning_delegated_alert_dismissal,omitempty"`
+	SecretScanningExtendedMetadata         *string                                 `json:"secret_scanning_extended_metadata,omitempty"`
 	SecretProtection                       *string                                 `json:"secret_protection,omitempty"`
 	PrivateVulnerabilityReporting          *string                                 `json:"private_vulnerability_reporting,omitempty"`
 	Enforcement                            *string                                 `json:"enforcement,omitempty"`

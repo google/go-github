@@ -6455,6 +6455,17 @@ func TestCodeSecurityConfiguration_GetDependabotAlerts(tt *testing.T) {
 	c.GetDependabotAlerts()
 }
 
+func TestCodeSecurityConfiguration_GetDependabotDelegatedAlertDismissal(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurityConfiguration{DependabotDelegatedAlertDismissal: &zeroValue}
+	c.GetDependabotDelegatedAlertDismissal()
+	c = &CodeSecurityConfiguration{}
+	c.GetDependabotDelegatedAlertDismissal()
+	c = nil
+	c.GetDependabotDelegatedAlertDismissal()
+}
+
 func TestCodeSecurityConfiguration_GetDependabotSecurityUpdates(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -6606,6 +6617,17 @@ func TestCodeSecurityConfiguration_GetSecretScanningDelegatedBypassOptions(tt *t
 	c.GetSecretScanningDelegatedBypassOptions()
 	c = nil
 	c.GetSecretScanningDelegatedBypassOptions()
+}
+
+func TestCodeSecurityConfiguration_GetSecretScanningExtendedMetadata(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeSecurityConfiguration{SecretScanningExtendedMetadata: &zeroValue}
+	c.GetSecretScanningExtendedMetadata()
+	c = &CodeSecurityConfiguration{}
+	c.GetSecretScanningExtendedMetadata()
+	c = nil
+	c.GetSecretScanningExtendedMetadata()
 }
 
 func TestCodeSecurityConfiguration_GetSecretScanningGenericSecrets(tt *testing.T) {
@@ -24733,10 +24755,7 @@ func TestIssueEvent_GetURL(tt *testing.T) {
 
 func TestIssueFieldValue_GetDataType(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldValue{DataType: &zeroValue}
-	i.GetDataType()
-	i = &IssueFieldValue{}
+	i := &IssueFieldValue{}
 	i.GetDataType()
 	i = nil
 	i.GetDataType()
@@ -24744,10 +24763,7 @@ func TestIssueFieldValue_GetDataType(tt *testing.T) {
 
 func TestIssueFieldValue_GetIssueFieldID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	i := &IssueFieldValue{IssueFieldID: &zeroValue}
-	i.GetIssueFieldID()
-	i = &IssueFieldValue{}
+	i := &IssueFieldValue{}
 	i.GetIssueFieldID()
 	i = nil
 	i.GetIssueFieldID()
@@ -24755,10 +24771,7 @@ func TestIssueFieldValue_GetIssueFieldID(tt *testing.T) {
 
 func TestIssueFieldValue_GetNodeID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldValue{NodeID: &zeroValue}
-	i.GetNodeID()
-	i = &IssueFieldValue{}
+	i := &IssueFieldValue{}
 	i.GetNodeID()
 	i = nil
 	i.GetNodeID()
@@ -24782,10 +24795,7 @@ func TestIssueFieldValue_GetValue(tt *testing.T) {
 
 func TestIssueFieldValueSingleSelectOption_GetColor(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldValueSingleSelectOption{Color: &zeroValue}
-	i.GetColor()
-	i = &IssueFieldValueSingleSelectOption{}
+	i := &IssueFieldValueSingleSelectOption{}
 	i.GetColor()
 	i = nil
 	i.GetColor()
@@ -24793,10 +24803,7 @@ func TestIssueFieldValueSingleSelectOption_GetColor(tt *testing.T) {
 
 func TestIssueFieldValueSingleSelectOption_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	i := &IssueFieldValueSingleSelectOption{ID: &zeroValue}
-	i.GetID()
-	i = &IssueFieldValueSingleSelectOption{}
+	i := &IssueFieldValueSingleSelectOption{}
 	i.GetID()
 	i = nil
 	i.GetID()
@@ -24804,10 +24811,7 @@ func TestIssueFieldValueSingleSelectOption_GetID(tt *testing.T) {
 
 func TestIssueFieldValueSingleSelectOption_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	i := &IssueFieldValueSingleSelectOption{Name: &zeroValue}
-	i.GetName()
-	i = &IssueFieldValueSingleSelectOption{}
+	i := &IssueFieldValueSingleSelectOption{}
 	i.GetName()
 	i = nil
 	i.GetName()
@@ -25300,7 +25304,7 @@ func TestIssueRequest_GetBody(tt *testing.T) {
 
 func TestIssueRequest_GetIssueFieldValues(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := []*IssueFieldValue{}
+	zeroValue := []*IssueRequestFieldValue{}
 	i := &IssueRequest{IssueFieldValues: zeroValue}
 	i.GetIssueFieldValues()
 	i = &IssueRequest{}
@@ -25373,6 +25377,22 @@ func TestIssueRequest_GetType(tt *testing.T) {
 	i.GetType()
 	i = nil
 	i.GetType()
+}
+
+func TestIssueRequestFieldValue_GetFieldID(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueRequestFieldValue{}
+	i.GetFieldID()
+	i = nil
+	i.GetFieldID()
+}
+
+func TestIssueRequestFieldValue_GetValue(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueRequestFieldValue{}
+	i.GetValue()
+	i = nil
+	i.GetValue()
 }
 
 func TestIssuesEvent_GetAction(tt *testing.T) {
