@@ -366,7 +366,7 @@ type ListOrganizationCopilotCodingAgentRepositoriesResponse struct {
 
 // ListOrganizationCodingAgentRepositories lists repositories enabled for the Copilot coding agent in an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/copilot/copilot-coding-agent-management?apiVersion=2022-11-28#list-repositories-enabled-for-copilot-coding-agent-in-an-organization
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-coding-agent-management?apiVersion=2022-11-28#list-repositories-enabled-for-copilot-cloud-agent-in-an-organization
 //
 //meta:operation GET /orgs/{org}/copilot/coding-agent/permissions/repositories
 func (s *CopilotService) ListOrganizationCodingAgentRepositories(ctx context.Context, org string, opts *ListOptions) (*ListOrganizationCopilotCodingAgentRepositoriesResponse, *Response, error) {
