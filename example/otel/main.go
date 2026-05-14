@@ -35,15 +35,16 @@ func main() {
 		}
 	}()
 
-	// Configure HTTP client with OTel transport
-	httpClient := &http.Client{
-		Transport: otel.NewTransport(
-			http.DefaultTransport,
-			otel.WithTracerProvider(tp),
-		),
-	}
+	// Configure OTel transport
+	t := otel.NewTransport(
+		http.DefaultTransport,
+		otel.WithTracerProvider(tp),
+	)
 
-	client := github.NewClient(httpClient)
+	client, err := github.NewClient(github.WithTransport(t))
+	if err != nil {
+		log.Fatalf("Error creating GitHub client: %v", err)
+	}
 
 	// Make a request (Get Rate Limits is public and cheap)
 	limits, resp, err := client.RateLimit.Get(context.Background())

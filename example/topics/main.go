@@ -11,13 +11,18 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/google/go-github/v86/github"
 )
 
 // Fetch and lists all the public topics associated with the specified GitHub topic.
 func fetchTopics(topic string) (*github.TopicsSearchResult, error) {
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+	if err != nil {
+		return nil, err
+	}
+
 	topics, _, err := client.Search.Topics(context.Background(), topic, nil)
 	return topics, err
 }
@@ -29,8 +34,7 @@ func main() {
 
 	topics, err := fetchTopics(topic)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
+		log.Fatalf("Error: %v", err)
 	}
 
 	for _, topic := range topics.Topics {

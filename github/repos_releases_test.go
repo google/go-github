@@ -983,7 +983,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_AbsoluteTemplate(t *t
 	size := int64(len(body))
 
 	// Build an absolute URL using the test client's BaseURL.
-	absoluteUploadURL := client.BaseURL.String() + "repos/o/r/releases/1/assets{?name,label}"
+	absoluteUploadURL := client.baseURL.String() + "repos/o/r/releases/1/assets{?name,label}"
 	release := &RepositoryRelease{UploadURL: &absoluteUploadURL}
 
 	opts := &UploadOptions{Name: "abs.txt"}

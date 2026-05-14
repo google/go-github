@@ -202,7 +202,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -228,14 +228,15 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 				return err
 			})
 
-			// Add custom round tripper
-			client.client.Transport = roundTripperFunc(func(*http.Request) (*http.Response, error) {
+			// Create "bad" client with custom round tripper
+			badClient, err := client.Clone(WithTransport(roundTripperFunc(func(*http.Request) (*http.Response, error) {
 				return nil, errors.New("failed to get workflow logs")
-			})
-			// propagate custom round tripper to client without CheckRedirect
-			client.initialize()
+			})))
+			if err != nil {
+				t.Fatalf("failed to clone client: %v", err)
+			}
 			testBadOptions(t, methodName, func() (err error) {
-				_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
+				_, _, err = badClient.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
 				return err
 			})
 		})
@@ -262,7 +263,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedi
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -298,7 +299,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			// Mock a redirect link, which leads to an archive link
 			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -350,7 +351,7 @@ func TestActionsService_GetWorkflowJobLogs_unexpectedCode(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			// Mock a redirect link, which leads to an archive link
 			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {

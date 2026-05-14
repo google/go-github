@@ -162,25 +162,24 @@ var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulner
 
 // A Client manages communication with the GitHub API.
 type Client struct {
-	clientMu              sync.Mutex   // clientMu protects the client fields during copy and Client calls.
 	client                *http.Client // HTTP client used to communicate with the API.
 	clientIgnoreRedirects *http.Client // HTTP client used to communicate with the API on endpoints where we don't want to follow redirects.
 
 	// Base URL for API requests. Defaults to the public GitHub API, but can be
-	// set to a domain endpoint to use with GitHub Enterprise. BaseURL should
+	// set to a domain endpoint to use with GitHub Enterprise. baseURL should
 	// always be specified with a trailing slash.
-	BaseURL *url.URL
+	baseURL *url.URL
 
 	// Base URL for uploading files.
-	UploadURL *url.URL
+	uploadURL *url.URL
 
 	// User agent used when communicating with the GitHub API.
-	UserAgent string
+	userAgent string
 
-	// DisableRateLimitCheck stops the client checking for rate limits or tracking
+	// disableRateLimitCheck stops the client checking for rate limits or tracking
 	// them. This is different to setting BypassRateLimitCheck in the context,
 	// as that still tracks the rate limits.
-	DisableRateLimitCheck bool
+	disableRateLimitCheck bool
 
 	rateMu                  sync.Mutex
 	rateLimits              [Categories]Rate // Rate limits for the client as determined by the most recent API calls.
@@ -188,10 +187,10 @@ type Client struct {
 
 	// If specified, Client will block requests for at most this duration in case of reaching a secondary
 	// rate limit
-	MaxSecondaryRateLimitRetryAfterDuration time.Duration
+	maxSecondaryRateLimitRetryAfterDuration time.Duration
 
 	// Whether to respect rate limit headers on endpoints that return 302 redirections to artifacts
-	RateLimitRedirectionalEndpoints bool
+	rateLimitRedirectionalEndpoints bool
 
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
@@ -248,8 +247,6 @@ type service struct {
 // This should only be used for requests to the GitHub API because
 // request headers will contain an authorization token.
 func (c *Client) Client() *http.Client {
-	c.clientMu.Lock()
-	defer c.clientMu.Unlock()
 	clientCopy := *c.client
 	return &clientCopy
 }
@@ -337,113 +334,292 @@ func addOptions[P structPtr[T], T any](s string, opts P) (string, error) {
 	return u.String(), nil
 }
 
-// NewClient returns a new GitHub API client. If a nil httpClient is
-// provided, a new http.Client will be used. To use API methods which require
-// authentication, either use Client.WithAuthToken or provide NewClient with
-// an http.Client that will perform the authentication for you (such as that
-// provided by the golang.org/x/oauth2 library).
-//
-// Note: When using a nil httpClient, the default client has no timeout set.
-// This may not be suitable for production environments. It is recommended to
-// provide a custom http.Client with an appropriate timeout.
-func NewClient(httpClient *http.Client) *Client {
-	if httpClient == nil {
-		httpClient = &http.Client{}
-	}
-	httpClient2 := *httpClient
-	c := &Client{client: &httpClient2}
-	c.initialize()
-	return c
+// errUninitialized is returned when an uninitialized Client is used.
+var errUninitialized = errors.New("client is not initialized")
+
+// clientOptions holds the configuration options for a Client.
+type clientOptions struct {
+	httpClient                              *http.Client
+	transport                               http.RoundTripper
+	timeout                                 *time.Duration
+	userAgent                               *string
+	envProxy                                bool
+	token                                   *string
+	baseURL                                 *url.URL
+	uploadURL                               *url.URL
+	disableRateLimitCheck                   bool
+	rateLimitRedirectionalEndpoints         bool
+	maxSecondaryRateLimitRetryAfterDuration *time.Duration
+	marketplaceStubbed                      bool
 }
 
-// WithAuthToken returns a copy of the client configured to use the provided token for the Authorization header.
-func (c *Client) WithAuthToken(token string) *Client {
-	c2 := c.copy()
-	defer c2.initialize()
-	transport := c2.client.Transport
-	if transport == nil {
-		transport = http.DefaultTransport
+// ClientOptionsFunc is a functional option for providing configuration options
+// to a Client.
+type ClientOptionsFunc func(*clientOptions) error
+
+// WithHTTPClient returns a ClientOptionsFunc that sets the http.Client
+// for a Client. If not set, a default http.Client will be used.
+func WithHTTPClient(httpClient *http.Client) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if httpClient == nil {
+			return errors.New("http client must not be nil")
+		}
+
+		httpClient := *httpClient
+		o.httpClient = &httpClient
+		return nil
 	}
-	c2.client.Transport = roundTripperFunc(
-		func(req *http.Request) (*http.Response, error) {
-			req = req.Clone(req.Context())
-			if token != "" {
-				req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token))
-			}
-			return transport.RoundTrip(req)
-		},
-	)
-	return c2
 }
 
-// WithEnterpriseURLs returns a copy of the client configured to use the provided base and
-// upload URLs. If the base URL does not have the suffix "/api/v3/", it will be added
-// automatically. If the upload URL does not have the suffix "/api/uploads", it will be
-// added automatically.
-//
-// Note that WithEnterpriseURLs is a convenience helper only;
-// its behavior is equivalent to setting the BaseURL and UploadURL fields.
-//
-// Another important thing is that by default, the GitHub Enterprise URL format
-// should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code.
-// The upload URL format should be http(s)://[hostname]/api/uploads/.
-func (c *Client) WithEnterpriseURLs(baseURL, uploadURL string) (*Client, error) {
-	c2 := c.copy()
-	defer c2.initialize()
-	var err error
-	c2.BaseURL, err = url.Parse(baseURL)
-	if err != nil {
-		return nil, err
-	}
+// WithTransport returns a ClientOptionsFunc that sets the http.RoundTripper
+// for a Client. This overrides the transport set by [WithHTTPClient]. If not
+// set and no HTTP client is provided, the default http.RoundTripper will be used.
+func WithTransport(transport http.RoundTripper) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if transport == nil {
+			return errors.New("transport must not be nil")
+		}
 
-	if !strings.HasSuffix(c2.BaseURL.Path, "/") {
-		c2.BaseURL.Path += "/"
+		o.transport = transport
+		return nil
 	}
-	if !strings.HasSuffix(c2.BaseURL.Path, "/api/v3/") &&
-		!strings.HasPrefix(c2.BaseURL.Host, "api.") &&
-		!strings.Contains(c2.BaseURL.Host, ".api.") {
-		c2.BaseURL.Path += "api/v3/"
-	}
-
-	c2.UploadURL, err = url.Parse(uploadURL)
-	if err != nil {
-		return nil, err
-	}
-
-	if !strings.HasSuffix(c2.UploadURL.Path, "/") {
-		c2.UploadURL.Path += "/"
-	}
-	if !strings.HasSuffix(c2.UploadURL.Path, "/api/uploads/") &&
-		!strings.HasPrefix(c2.UploadURL.Host, "api.") &&
-		!strings.Contains(c2.UploadURL.Host, ".api.") &&
-		!strings.HasPrefix(c2.UploadURL.Host, "uploads.") {
-		c2.UploadURL.Path += "api/uploads/"
-	}
-	return c2, nil
 }
 
-// initialize sets default values and initializes services.
-func (c *Client) initialize() {
-	if c.client == nil {
+// WithTimeout returns a ClientOptionsFunc that sets the timeout for a Client.
+// This overrides the timeout set by [WithHTTPClient]. If not set and no HTTP
+// client is provided, the default http.Client with no timeout will be used.
+// It is recommended to provide a timeout for production environments.
+func WithTimeout(timeout time.Duration) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if timeout < 0 {
+			return errors.New("timeout must not be negative")
+		}
+
+		o.timeout = &timeout
+		return nil
+	}
+}
+
+// WithUserAgent returns a ClientOptionsFunc that sets the User-Agent header
+// for a Client. If not set, a default User-Agent will be used.
+func WithUserAgent(userAgent string) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		o.userAgent = &userAgent
+		return nil
+	}
+}
+
+// WithEnvProxy returns a ClientOptionsFunc that configures the Client to use
+// the HTTP proxy settings from the environment variables
+// (e.g., HTTP_PROXY, HTTPS_PROXY, NO_PROXY).
+// If not set, the client will not use environment proxy settings.
+func WithEnvProxy() ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		o.envProxy = true
+		return nil
+	}
+}
+
+// WithAuthToken returns a ClientOptionsFunc that sets the authentication token
+// for a Client. If not set, the client will make unauthenticated requests.
+func WithAuthToken(token string) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if token == "" {
+			return errors.New("token must not be empty")
+		}
+
+		o.token = &token
+		return nil
+	}
+}
+
+// WithEnterpriseURLs returns a ClientOptionsFunc that sets the base and upload
+// URLs for a Client.
+func WithEnterpriseURLs(baseURL, uploadURL string) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if baseURL == "" {
+			return errors.New("base url must not be empty")
+		}
+
+		if uploadURL == "" {
+			return errors.New("upload url must not be empty")
+		}
+
+		b, err := url.Parse(baseURL)
+		if err != nil {
+			return err
+		}
+
+		if !strings.HasSuffix(b.Path, "/") {
+			b.Path += "/"
+		}
+
+		if !strings.HasSuffix(b.Path, "/api/v3/") &&
+			!strings.HasPrefix(b.Host, "api.") &&
+			!strings.Contains(b.Host, ".api.") {
+			b.Path += "api/v3/"
+		}
+
+		o.baseURL = b
+
+		u, err := url.Parse(uploadURL)
+		if err != nil {
+			return err
+		}
+
+		if !strings.HasSuffix(u.Path, "/") {
+			u.Path += "/"
+		}
+		if !strings.HasSuffix(u.Path, "/api/uploads/") &&
+			!strings.HasPrefix(u.Host, "api.") &&
+			!strings.Contains(u.Host, ".api.") &&
+			!strings.HasPrefix(u.Host, "uploads.") {
+			u.Path += "api/uploads/"
+		}
+
+		o.uploadURL = u
+
+		return nil
+	}
+}
+
+// WithDisableRateLimitCheck returns a ClientOptionsFunc that disables rate
+// limit checking for a Client. If not set, the client will check for rate
+// limits and track them.
+func WithDisableRateLimitCheck() ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		o.disableRateLimitCheck = true
+		return nil
+	}
+}
+
+// WithRateLimitRedirectionalEndpoints returns a ClientOptionsFunc that
+// configures the Client to respect rate limit headers on endpoints that
+// return 302 redirection to artifacts. If not set, the client will not
+// respect rate limit headers on these endpoints.
+func WithRateLimitRedirectionalEndpoints() ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		o.rateLimitRedirectionalEndpoints = true
+		return nil
+	}
+}
+
+// WithMaxSecondaryRateLimitRetryAfterDuration returns a ClientOptionsFunc
+// that configures the Client secondary rate limit max retry after duration.
+func WithMaxSecondaryRateLimitRetryAfterDuration(duration time.Duration) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		o.maxSecondaryRateLimitRetryAfterDuration = &duration
+		return nil
+	}
+}
+
+// NewClient returns a new GitHub API client configured with the provided
+// options. The default configuration is suitable for making unauthenticated
+// requests to the public GitHub API.
+//
+// For GitHub Enterprise, use [WithEnterpriseURLs] to set the base and upload
+// URLs.
+//
+// To make authenticated requests, use [WithAuthToken] or [WithHTTPClient] to
+// pass in a [http.Client] that performs authentication
+// (e.g., using golang.org/x/oauth2).
+//
+// For production usage it is recommended to provide a timeout using
+// [WithTimeout] or by providing a custom [http.Client] with an appropriate
+// timeout using [WithHTTPClient].
+func NewClient(opts ...ClientOptionsFunc) (*Client, error) {
+	o := clientOptions{}
+	for _, opt := range opts {
+		if err := opt(&o); err != nil {
+			return nil, err
+		}
+	}
+
+	return newClient(o)
+}
+
+// newClient creates a new Client with the provided options. This is an internal
+// helper function that is called by [NewClient] and [Client.Clone].
+func newClient(opts clientOptions) (*Client, error) {
+	c := &Client{}
+
+	if opts.httpClient != nil {
+		c.client = opts.httpClient
+	} else {
 		c.client = &http.Client{}
 	}
-	// Copy the main http client into the IgnoreRedirects one, overriding the `CheckRedirect` func
-	c.clientIgnoreRedirects = &http.Client{}
-	c.clientIgnoreRedirects.Transport = c.client.Transport
-	c.clientIgnoreRedirects.Timeout = c.client.Timeout
-	c.clientIgnoreRedirects.Jar = c.client.Jar
-	c.clientIgnoreRedirects.CheckRedirect = func(*http.Request, []*http.Request) error {
-		return http.ErrUseLastResponse
+
+	if opts.transport != nil {
+		c.client.Transport = opts.transport
 	}
-	if c.BaseURL == nil {
-		c.BaseURL, _ = url.Parse(defaultBaseURL)
+
+	if opts.timeout != nil {
+		c.client.Timeout = *opts.timeout
 	}
-	if c.UploadURL == nil {
-		c.UploadURL, _ = url.Parse(uploadBaseURL)
+
+	if opts.envProxy {
+		transport := c.client.Transport
+		if transport == nil {
+			transport = http.DefaultTransport
+		}
+
+		t, ok := transport.(*http.Transport)
+		if !ok {
+			return nil, errors.New("cannot set environment proxy on non-http transport")
+		}
+
+		t2 := t.Clone()
+		t2.Proxy = http.ProxyFromEnvironment
+		c.client.Transport = t2
 	}
-	if c.UserAgent == "" {
-		c.UserAgent = defaultUserAgent
+
+	if opts.token != nil {
+		transport := c.client.Transport
+		if transport == nil {
+			transport = http.DefaultTransport
+		}
+		c.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			req = req.Clone(req.Context())
+			req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", *opts.token))
+			return transport.RoundTrip(req)
+		})
 	}
+
+	c.clientIgnoreRedirects = &http.Client{
+		Transport:     c.client.Transport,
+		Timeout:       c.client.Timeout,
+		Jar:           c.client.Jar,
+		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+	}
+
+	if opts.userAgent != nil {
+		c.userAgent = *opts.userAgent
+	} else {
+		c.userAgent = defaultUserAgent
+	}
+
+	if opts.baseURL != nil {
+		c.baseURL = opts.baseURL
+	} else {
+		c.baseURL, _ = url.Parse(defaultBaseURL)
+	}
+
+	if opts.uploadURL != nil {
+		c.uploadURL = opts.uploadURL
+	} else {
+		c.uploadURL, _ = url.Parse(uploadBaseURL)
+	}
+
+	c.disableRateLimitCheck = opts.disableRateLimitCheck
+
+	if !c.disableRateLimitCheck {
+		c.rateLimitRedirectionalEndpoints = opts.rateLimitRedirectionalEndpoints
+
+		if opts.maxSecondaryRateLimitRetryAfterDuration != nil {
+			c.maxSecondaryRateLimitRetryAfterDuration = *opts.maxSecondaryRateLimitRetryAfterDuration
+		}
+	}
+
 	c.common.client = c
 	c.Actions = (*ActionsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
@@ -470,11 +646,7 @@ func (c *Client) initialize() {
 	c.Issues = (*IssuesService)(&c.common)
 	c.Licenses = (*LicensesService)(&c.common)
 	c.Markdown = (*MarkdownService)(&c.common)
-	var marketplaceStubbed bool
-	if c.Marketplace != nil {
-		marketplaceStubbed = c.Marketplace.Stubbed
-	}
-	c.Marketplace = &MarketplaceService{client: c, Stubbed: marketplaceStubbed}
+	c.Marketplace = &MarketplaceService{client: c, Stubbed: opts.marketplaceStubbed}
 	c.Meta = (*MetaService)(&c.common)
 	c.Migrations = (*MigrationService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
@@ -491,55 +663,84 @@ func (c *Client) initialize() {
 	c.SubIssue = (*SubIssueService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
 	c.Users = (*UsersService)(&c.common)
+
+	return c, nil
 }
 
-// copy returns a copy of the current client. It must be initialized before use.
-func (c *Client) copy() *Client {
-	c.clientMu.Lock()
-	// can't use *c here because that would copy mutexes by value.
-	clone := Client{
-		client:                          &http.Client{},
-		UserAgent:                       c.UserAgent,
-		BaseURL:                         c.BaseURL,
-		UploadURL:                       c.UploadURL,
-		RateLimitRedirectionalEndpoints: c.RateLimitRedirectionalEndpoints,
-		secondaryRateLimitReset:         c.secondaryRateLimitReset,
+// UserAgent returns the User-Agent header value for the client.
+func (c *Client) UserAgent() string {
+	return c.userAgent
+}
+
+// BaseURL returns the base URL for API requests.
+func (c *Client) BaseURL() string {
+	if c.baseURL == nil {
+		return ""
 	}
+	return c.baseURL.String()
+}
+
+// UploadURL returns the base URL for upload API requests.
+func (c *Client) UploadURL() string {
+	if c.uploadURL == nil {
+		return ""
+	}
+	return c.uploadURL.String()
+}
+
+// Clone returns a copy of the client with the same configuration and services.
+// The returned client has its own http.Client but shares the client
+// configuration such as transport and timeout. The returned client starts with
+// the same rate limit information as the original client, but it is not
+// updated when the original client's rate limit information is updated.
+// The returned client is independent of the original client and can be
+// modified without affecting the original client.
+func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
+	if c.client == nil {
+		return nil, errUninitialized
+	}
+
+	o := clientOptions{
+		userAgent:                               &c.userAgent,
+		baseURL:                                 Ptr(*c.baseURL),
+		uploadURL:                               Ptr(*c.uploadURL),
+		disableRateLimitCheck:                   c.disableRateLimitCheck,
+		rateLimitRedirectionalEndpoints:         c.rateLimitRedirectionalEndpoints,
+		maxSecondaryRateLimitRetryAfterDuration: &c.maxSecondaryRateLimitRetryAfterDuration,
+	}
+
 	if c.Marketplace != nil {
-		clone.Marketplace = &MarketplaceService{Stubbed: c.Marketplace.Stubbed}
+		o.marketplaceStubbed = c.Marketplace.Stubbed
 	}
-	c.clientMu.Unlock()
-	if c.client != nil {
-		clone.client.Transport = c.client.Transport
-		clone.client.CheckRedirect = c.client.CheckRedirect
-		clone.client.Jar = c.client.Jar
-		clone.client.Timeout = c.client.Timeout
+
+	for _, opt := range opts {
+		if err := opt(&o); err != nil {
+			return nil, err
+		}
 	}
-	c.rateMu.Lock()
-	clone.rateLimits = c.rateLimits
-	c.rateMu.Unlock()
-	return &clone
-}
 
-// NewClientWithEnvProxy enhances NewClient with the HttpProxy env.
-func NewClientWithEnvProxy() *Client {
-	return NewClient(&http.Client{Transport: &http.Transport{Proxy: http.ProxyFromEnvironment}})
-}
+	if o.httpClient == nil {
+		o.httpClient = &http.Client{
+			Transport:     c.client.Transport,
+			CheckRedirect: c.client.CheckRedirect,
+			Jar:           c.client.Jar,
+			Timeout:       c.client.Timeout,
+		}
+	}
 
-// NewTokenClient returns a new GitHub API client authenticated with the provided token.
-//
-// Deprecated: Use NewClient(nil).WithAuthToken(token) instead.
-func NewTokenClient(_ context.Context, token string) *Client {
-	// This always returns a nil error.
-	return NewClient(nil).WithAuthToken(token)
-}
+	clone, err := newClient(o)
+	if err != nil {
+		return nil, err
+	}
 
-// NewEnterpriseClient returns a new GitHub API client with provided
-// base URL and upload URL (often is your GitHub Enterprise hostname).
-//
-// Deprecated: Use NewClient(httpClient).WithEnterpriseURLs(baseURL, uploadURL) instead.
-func NewEnterpriseClient(baseURL, uploadURL string, httpClient *http.Client) (*Client, error) {
-	return NewClient(httpClient).WithEnterpriseURLs(baseURL, uploadURL)
+	if !clone.disableRateLimitCheck {
+		c.rateMu.Lock()
+		clone.rateLimits = c.rateLimits
+		clone.secondaryRateLimitReset = c.secondaryRateLimitReset
+		c.rateMu.Unlock()
+	}
+
+	return clone, nil
 }
 
 // RequestOption represents an option that can modify an http.Request.
@@ -560,15 +761,15 @@ func WithVersion(version string) RequestOption {
 // specified, the value pointed to by body is JSON encoded and included as the
 // request body.
 func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body any, opts ...RequestOption) (*http.Request, error) {
-	if !strings.HasSuffix(c.BaseURL.Path, "/") {
-		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
+	if !strings.HasSuffix(c.baseURL.Path, "/") {
+		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.baseURL)
 	}
 
 	if err := checkURLPathTraversal(urlStr); err != nil {
 		return nil, err
 	}
 
-	u, err := c.BaseURL.Parse(urlStr)
+	u, err := c.baseURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
 	}
@@ -593,8 +794,8 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body any
 		req.Header.Set("Content-Type", "application/json")
 	}
 	req.Header.Set("Accept", mediaTypeV3)
-	if c.UserAgent != "" {
-		req.Header.Set("User-Agent", c.UserAgent)
+	if c.userAgent != "" {
+		req.Header.Set("User-Agent", c.userAgent)
 	}
 	req.Header.Set(headerAPIVersion, defaultAPIVersion)
 
@@ -610,15 +811,15 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body any
 // Relative URLs should always be specified without a preceding slash.
 // Body is sent with Content-Type: application/x-www-form-urlencoded.
 func (c *Client) NewFormRequest(ctx context.Context, urlStr string, body io.Reader, opts ...RequestOption) (*http.Request, error) {
-	if !strings.HasSuffix(c.BaseURL.Path, "/") {
-		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.BaseURL)
+	if !strings.HasSuffix(c.baseURL.Path, "/") {
+		return nil, fmt.Errorf("baseURL must have a trailing slash, but %q does not", c.baseURL)
 	}
 
 	if err := checkURLPathTraversal(urlStr); err != nil {
 		return nil, err
 	}
 
-	u, err := c.BaseURL.Parse(urlStr)
+	u, err := c.baseURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
 	}
@@ -630,8 +831,8 @@ func (c *Client) NewFormRequest(ctx context.Context, urlStr string, body io.Read
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", mediaTypeV3)
-	if c.UserAgent != "" {
-		req.Header.Set("User-Agent", c.UserAgent)
+	if c.userAgent != "" {
+		req.Header.Set("User-Agent", c.userAgent)
 	}
 	req.Header.Set(headerAPIVersion, defaultAPIVersion)
 
@@ -665,15 +866,15 @@ func checkURLPathTraversal(urlStr string) error {
 // urlStr, in which case it is resolved relative to the UploadURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
 func (c *Client) NewUploadRequest(ctx context.Context, urlStr string, reader io.Reader, size int64, mediaType string, opts ...RequestOption) (*http.Request, error) {
-	if !strings.HasSuffix(c.UploadURL.Path, "/") {
-		return nil, fmt.Errorf("uploadURL must have a trailing slash, but %q does not", c.UploadURL)
+	if !strings.HasSuffix(c.uploadURL.Path, "/") {
+		return nil, fmt.Errorf("uploadURL must have a trailing slash, but %q does not", c.uploadURL)
 	}
 
 	if err := checkURLPathTraversal(urlStr); err != nil {
 		return nil, err
 	}
 
-	u, err := c.UploadURL.Parse(urlStr)
+	u, err := c.uploadURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
 	}
@@ -703,7 +904,7 @@ func (c *Client) NewUploadRequest(ctx context.Context, urlStr string, reader io.
 	}
 	req.Header.Set("Content-Type", mediaType)
 	req.Header.Set("Accept", mediaTypeV3)
-	req.Header.Set("User-Agent", c.UserAgent)
+	req.Header.Set("User-Agent", c.userAgent)
 	req.Header.Set(headerAPIVersion, defaultAPIVersion)
 
 	for _, opt := range opts {
@@ -935,7 +1136,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 
 	rateLimitCategory := CoreCategory
 
-	if !c.DisableRateLimitCheck {
+	if !c.disableRateLimitCheck {
 		rateLimitCategory = GetRateLimitCategory(req.Method, req.URL.Path)
 
 		if bypass := ctx.Value(BypassRateLimitCheck); bypass == nil {
@@ -986,7 +1187,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 	// Don't update the rate limits if the client has rate limits disabled or if
 	// this was a cached response. The X-From-Cache is set by
 	// https://github.com/bartventer/httpcache if it's enabled.
-	if !c.DisableRateLimitCheck && response.Header.Get("X-From-Cache") == "" {
+	if !c.disableRateLimitCheck && response.Header.Get("X-From-Cache") == "" {
 		c.rateMu.Lock()
 		c.rateLimits[rateLimitCategory] = response.Rate
 		c.rateMu.Unlock()
@@ -1026,8 +1227,8 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		var rerr *AbuseRateLimitError
 		if errors.As(err, &rerr) && rerr.RetryAfter != nil {
 			// if a max duration is specified, make sure that we are waiting at most this duration
-			if c.MaxSecondaryRateLimitRetryAfterDuration > 0 && rerr.GetRetryAfter() > c.MaxSecondaryRateLimitRetryAfterDuration {
-				rerr.RetryAfter = &c.MaxSecondaryRateLimitRetryAfterDuration
+			if c.maxSecondaryRateLimitRetryAfterDuration > 0 && rerr.GetRetryAfter() > c.maxSecondaryRateLimitRetryAfterDuration {
+				rerr.RetryAfter = &c.maxSecondaryRateLimitRetryAfterDuration
 			}
 			c.rateMu.Lock()
 			c.secondaryRateLimitReset = time.Now().Add(*rerr.RetryAfter)
@@ -1069,7 +1270,7 @@ func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL
 				if rerr.Location == nil {
 					return nil, nil, errInvalidLocation
 				}
-				newURL := c.BaseURL.ResolveReference(rerr.Location)
+				newURL := c.baseURL.ResolveReference(rerr.Location)
 				return newURL, response, nil
 			}
 			// If permanent redirect response is returned, follow it
@@ -1077,12 +1278,12 @@ func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL
 				if rerr.Location == nil {
 					return nil, nil, errInvalidLocation
 				}
-				newURL := c.BaseURL.ResolveReference(rerr.Location)
+				newURL := c.baseURL.ResolveReference(rerr.Location)
 				// Refuse to follow a permanent redirect to a different host:
 				// req.Clone preserves Authorization headers added by the auth
 				// transport, so a cross-host target would leak credentials.
-				if newURL.Host != c.BaseURL.Host {
-					return nil, response, fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.BaseURL.Host, newURL.Host)
+				if newURL.Host != c.baseURL.Host {
+					return nil, response, fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.baseURL.Host, newURL.Host)
 				}
 				newRequest := req.Clone(req.Context())
 				newRequest.URL = newURL
@@ -1864,9 +2065,9 @@ func (c *Client) checkRedirectHost(location string) error {
 		return fmt.Errorf("invalid redirect location %q: %w", location, err)
 	}
 	// Resolve relative locations against BaseURL so relative paths are allowed.
-	target = c.BaseURL.ResolveReference(target)
-	if target.Host != c.BaseURL.Host {
-		return fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.BaseURL.Host, target.Host)
+	target = c.baseURL.ResolveReference(target)
+	if target.Host != c.baseURL.Host {
+		return fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.baseURL.Host, target.Host)
 	}
 	return nil
 }

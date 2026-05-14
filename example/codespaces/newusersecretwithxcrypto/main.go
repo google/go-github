@@ -66,7 +66,10 @@ func main() {
 	}
 
 	ctx := context.Background()
-	client := github.NewClient(nil).WithAuthToken(token)
+	client, err := github.NewClient(github.WithAuthToken(token))
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if err := addUserSecret(ctx, client, secretName, secretValue, *owner, *repo); err != nil {
 		log.Fatal(err)

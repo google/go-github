@@ -25,12 +25,14 @@ func main() {
 	fmt.Println()
 
 	ctx := context.Background()
-	client := github.NewClient(nil).WithAuthToken(string(token))
+	client, err := github.NewClient(github.WithAuthToken(string(token)))
+	if err != nil {
+		log.Fatalf("Error creating GitHub client: %v", err)
+	}
 
 	user, resp, err := client.Users.Get(ctx, "")
 	if err != nil {
-		fmt.Printf("\nerror: %v\n", err)
-		return
+		log.Fatalf("Error fetching user: %v", err)
 	}
 
 	// Rate.Limit should most likely be 5000 when authorized.

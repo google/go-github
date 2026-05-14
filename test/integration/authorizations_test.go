@@ -125,6 +125,8 @@ func failIfNotStatusCode(t *testing.T, resp *github.Response, expectedCode int) 
 //
 // See GitHub API docs: https://developer.github.com/v3/oauth_authorizations/#check-an-authorization
 func getOAuthAppClient(t *testing.T) *github.Client {
+	t.Helper()
+
 	username, ok := os.LookupEnv(envKeyClientID)
 	if !ok {
 		t.Skipf(msgEnvMissing, envKeyClientID)
@@ -140,5 +142,9 @@ func getOAuthAppClient(t *testing.T) *github.Client {
 		Password: strings.TrimSpace(password),
 	}
 
-	return github.NewClient(tp.Client())
+	c, err := github.NewClient(github.WithHTTPClient(tp.Client()))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return c
 }

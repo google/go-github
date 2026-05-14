@@ -11,13 +11,17 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/google/go-github/v86/github"
 )
 
 // Fetch all the public organizations' membership of a user.
 func fetchOrganizations(username string) ([]*github.Organization, error) {
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+	if err != nil {
+		return nil, err
+	}
 	orgs, _, err := client.Organizations.List(context.Background(), username, nil)
 	return orgs, err
 }
@@ -29,8 +33,7 @@ func main() {
 
 	organizations, err := fetchOrganizations(username)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
+		log.Fatalf("Error: %v", err)
 	}
 
 	for i, organization := range organizations {

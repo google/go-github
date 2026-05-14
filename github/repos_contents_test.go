@@ -972,7 +972,7 @@ func TestRepositoriesService_GetArchiveLink(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/tarball/yo", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -1029,7 +1029,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_dontFollowRed
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -1064,7 +1064,7 @@ func TestRepositoriesService_GetArchiveLink_StatusMovedPermanently_followRedirec
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			// Mock a redirect link, which leads to an archive link
 			mux.HandleFunc("/repos/o/r/tarball", func(w http.ResponseWriter, r *http.Request) {

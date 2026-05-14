@@ -150,7 +150,7 @@ func (s *ActionsService) GetWorkflowJobByID(ctx context.Context, owner, repo str
 func (s *ActionsService) GetWorkflowJobLogs(ctx context.Context, owner, repo string, jobID int64, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/jobs/%v/logs", owner, repo, jobID)
 
-	if s.client.RateLimitRedirectionalEndpoints {
+	if s.client.rateLimitRedirectionalEndpoints {
 		return s.getWorkflowJobLogsWithRateLimit(ctx, u, maxRedirects)
 	}
 
