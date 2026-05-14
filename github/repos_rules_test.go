@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
+func TestRepositoriesService_ListRulesForBranch(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -40,9 +40,9 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", nil)
+	rules, _, err := client.Repositories.ListRulesForBranch(ctx, "o", "repo", "branch", nil)
 	if err != nil {
-		t.Errorf("Repositories.GetRulesForBranch returned error: %v", err)
+		t.Errorf("Repositories.ListRulesForBranch returned error: %v", err)
 	}
 
 	want := &BranchRules{
@@ -51,12 +51,12 @@ func TestRepositoriesService_GetRulesForBranch(t *testing.T) {
 	}
 
 	if !cmp.Equal(rules, want) {
-		t.Errorf("Repositories.GetRulesForBranch returned %+v, want %+v", rules, want)
+		t.Errorf("Repositories.ListRulesForBranch returned %+v, want %+v", rules, want)
 	}
 
-	const methodName = "GetRulesForBranch"
+	const methodName = "ListRulesForBranch"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", nil)
+		got, resp, err := client.Repositories.ListRulesForBranch(ctx, "o", "repo", "branch", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -132,7 +132,7 @@ func TestRepositoriesService_UpdateRuleset_OmitZero_EmptySlice(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_GetRulesForBranch_ListOptions(t *testing.T) {
+func TestRepositoriesService_ListRulesForBranch_ListOptions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -152,9 +152,9 @@ func TestRepositoriesService_GetRulesForBranch_ListOptions(t *testing.T) {
 
 	opts := &ListOptions{Page: 2, PerPage: 35}
 	ctx := t.Context()
-	rules, _, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", opts)
+	rules, _, err := client.Repositories.ListRulesForBranch(ctx, "o", "repo", "branch", opts)
 	if err != nil {
-		t.Errorf("Repositories.GetRulesForBranch returned error: %v", err)
+		t.Errorf("Repositories.ListRulesForBranch returned error: %v", err)
 	}
 
 	want := &BranchRules{
@@ -162,17 +162,17 @@ func TestRepositoriesService_GetRulesForBranch_ListOptions(t *testing.T) {
 	}
 
 	if !cmp.Equal(rules, want) {
-		t.Errorf("Repositories.GetRulesForBranch returned %+v, want %+v", rules, want)
+		t.Errorf("Repositories.ListRulesForBranch returned %+v, want %+v", rules, want)
 	}
 
-	const methodName = "GetRulesForBranch"
+	const methodName = "ListRulesForBranch"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GetRulesForBranch(ctx, "\n", "\n", "\n", opts)
+		_, _, err = client.Repositories.ListRulesForBranch(ctx, "\n", "\n", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GetRulesForBranch(ctx, "o", "repo", "branch", opts)
+		got, resp, err := client.Repositories.ListRulesForBranch(ctx, "o", "repo", "branch", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

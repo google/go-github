@@ -10,12 +10,12 @@ import (
 	"fmt"
 )
 
-// GetRulesForBranch gets all the repository rules that apply to the specified branch.
+// ListRulesForBranch gets all the repository rules that apply to the specified branch.
 //
 // GitHub API docs: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#get-rules-for-a-branch
 //
 //meta:operation GET /repos/{owner}/{repo}/rules/branches/{branch}
-func (s *RepositoriesService) GetRulesForBranch(ctx context.Context, owner, repo, branch string, opts *ListOptions) (*BranchRules, *Response, error) {
+func (s *RepositoriesService) ListRulesForBranch(ctx context.Context, owner, repo, branch string, opts *ListOptions) (*BranchRules, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rules/branches/%v", owner, repo, branch)
 
 	u, err := addOptions(u, opts)
