@@ -611,7 +611,7 @@ type repositoryRulesetRuleWrapper struct {
 }
 
 // MarshalJSON is a custom JSON marshaler for RulesetRules.
-func (r *RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
+func (r RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 	var rawRules []json.RawMessage
 
 	if r.Creation != nil {

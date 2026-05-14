@@ -153,8 +153,8 @@ func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, n
 // MarshalJSON implements the json.Marshaler interface.
 // As the only way to clear a WaitTimer is to set it to 0, a missing WaitTimer object should default to 0, not null.
 // As the default value for CanAdminsBypass is true, a nil value here marshals to true.
-func (c *CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
-	type Alias CreateUpdateEnvironment
+func (c CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
+	type alias CreateUpdateEnvironment
 	if c.WaitTimer == nil {
 		c.WaitTimer = Ptr(0)
 	}
@@ -162,9 +162,9 @@ func (c *CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
 		c.CanAdminsBypass = Ptr(true)
 	}
 	return json.Marshal(&struct {
-		*Alias
+		alias
 	}{
-		Alias: (*Alias)(c),
+		alias: alias(c),
 	})
 }
 

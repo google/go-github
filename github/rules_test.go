@@ -12,7 +12,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestRulesetRules(t *testing.T) {
+func TestRepositoryRulesetRules(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
 		name  string
@@ -259,19 +259,8 @@ func TestRulesetRules(t *testing.T) {
 			t.Run(test.name, func(t *testing.T) {
 				t.Parallel()
 
-				got, err := json.Marshal(test.rules)
-				if err != nil {
-					t.Errorf("Unable to marshal JSON for %#v", test.rules)
-				}
-
-				if diff := cmp.Diff(test.json, string(got)); diff != "" {
-					t.Errorf(
-						"json.Marshal returned:\n%v\nwant:\n%v\ndiff:\n%v",
-						got,
-						test.json,
-						diff,
-					)
-				}
+				testJSONMarshalOnly(t, test.rules, test.json)
+				testJSONMarshalOnly(t, *test.rules, test.json)
 			})
 		}
 	})
