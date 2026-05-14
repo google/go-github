@@ -31,7 +31,10 @@ func main() {
 	}
 
 	ctx := context.Background()
-	client := github.NewClient(nil).WithAuthToken(token)
+	client, err := github.NewClient(github.WithAuthToken(token))
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	expectedPageSize := 2
 

@@ -77,7 +77,7 @@ func (r RateLimits) String() string {
 //meta:operation GET /rate_limit
 func (s *RateLimitService) Get(ctx context.Context) (*RateLimits, *Response, error) {
 	// This resource is not subject to rate limits.
-	if !s.client.DisableRateLimitCheck {
+	if !s.client.disableRateLimitCheck {
 		ctx = context.WithValue(ctx, BypassRateLimitCheck, true)
 	}
 

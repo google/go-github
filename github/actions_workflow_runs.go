@@ -263,7 +263,7 @@ func (s *ActionsService) GetWorkflowRunAttempt(ctx context.Context, owner, repo 
 func (s *ActionsService) GetWorkflowRunAttemptLogs(ctx context.Context, owner, repo string, runID int64, attemptNumber, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/attempts/%v/logs", owner, repo, runID, attemptNumber)
 
-	if s.client.RateLimitRedirectionalEndpoints {
+	if s.client.rateLimitRedirectionalEndpoints {
 		return s.getWorkflowRunAttemptLogsWithRateLimit(ctx, u, maxRedirects)
 	}
 
@@ -383,7 +383,7 @@ func (s *ActionsService) CancelWorkflowRunByID(ctx context.Context, owner, repo 
 func (s *ActionsService) GetWorkflowRunLogs(ctx context.Context, owner, repo string, runID int64, maxRedirects int) (*url.URL, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/logs", owner, repo, runID)
 
-	if s.client.RateLimitRedirectionalEndpoints {
+	if s.client.rateLimitRedirectionalEndpoints {
 		return s.getWorkflowRunLogsWithRateLimit(ctx, u, maxRedirects)
 	}
 

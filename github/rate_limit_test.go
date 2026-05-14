@@ -409,7 +409,7 @@ func TestRateLimits_bypassRateLimitCheckContext(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.DisableRateLimitCheck = tt.disableRateLimitCheck
+			client.disableRateLimitCheck = tt.disableRateLimitCheck
 
 			mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")

@@ -221,11 +221,15 @@ func main() {
 	if *sourceOwner == "" || *sourceRepo == "" || *commitBranch == "" || *sourceFiles == "" || *authorName == "" || *authorEmail == "" {
 		log.Fatal("You need to specify a non-empty value for the flags `-source-owner`, `-source-repo`, `-commit-branch`, `-files`, `-author-name` and `-author-email`")
 	}
-	client = github.NewClient(nil).WithAuthToken(token)
+	c, err := github.NewClient(github.WithAuthToken(token))
+	if err != nil {
+		log.Fatal(err)
+	}
+	client = c
 
 	ref, err := getRef()
 	if err != nil {
-		log.Fatalf("Unable to get/create the commit reference: %v\n", err)
+		log.Fatalf("Unable to get/create the commit reference: %v", err)
 	}
 	if ref == nil {
 		log.Fatal("No error where returned but the reference is nil")
@@ -233,11 +237,11 @@ func main() {
 
 	tree, err := getTree(ref)
 	if err != nil {
-		log.Fatalf("Unable to create the tree based on the provided files: %v\n", err)
+		log.Fatalf("Unable to create the tree based on the provided files: %v", err)
 	}
 
 	if err := pushCommit(ref, tree); err != nil {
-		log.Fatalf("Unable to create the commit: %v\n", err)
+		log.Fatalf("Unable to create the commit: %v", err)
 	}
 
 	if err := createPR(); err != nil {

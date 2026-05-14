@@ -36,7 +36,10 @@ func main() {
 		log.Fatal("No name: New repos must be given a name")
 	}
 	ctx := context.Background()
-	client := github.NewClient(nil).WithAuthToken(token)
+	client, err := github.NewClient(github.WithAuthToken(token))
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	r := &github.Repository{Name: name, Private: private, Description: description, AutoInit: autoInit}
 	repo, _, err := client.Repositories.Create(ctx, "", r)
