@@ -1067,6 +1067,399 @@ func TestAdvisoryVulnerability_GetVulnerableVersionRange(tt *testing.T) {
 	a.GetVulnerableVersionRange()
 }
 
+func TestAgentTask_GetArchivedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AgentTask{ArchivedAt: &zeroValue}
+	a.GetArchivedAt()
+	a = &AgentTask{}
+	a.GetArchivedAt()
+	a = nil
+	a.GetArchivedAt()
+}
+
+func TestAgentTask_GetArtifacts(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AgentTaskArtifact{}
+	a := &AgentTask{Artifacts: zeroValue}
+	a.GetArtifacts()
+	a = &AgentTask{}
+	a.GetArtifacts()
+	a = nil
+	a.GetArtifacts()
+}
+
+func TestAgentTask_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AgentTask{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &AgentTask{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestAgentTask_GetCreator(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTask{}
+	a.GetCreator()
+	a = nil
+	a.GetCreator()
+}
+
+func TestAgentTask_GetCreatorType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTask{CreatorType: &zeroValue}
+	a.GetCreatorType()
+	a = &AgentTask{}
+	a.GetCreatorType()
+	a = nil
+	a.GetCreatorType()
+}
+
+func TestAgentTask_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTask{HTMLURL: &zeroValue}
+	a.GetHTMLURL()
+	a = &AgentTask{}
+	a.GetHTMLURL()
+	a = nil
+	a.GetHTMLURL()
+}
+
+func TestAgentTask_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTask{ID: &zeroValue}
+	a.GetID()
+	a = &AgentTask{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAgentTask_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTask{Name: &zeroValue}
+	a.GetName()
+	a = &AgentTask{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestAgentTask_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTask{}
+	a.GetOwner()
+	a = nil
+	a.GetOwner()
+}
+
+func TestAgentTask_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTask{}
+	a.GetRepository()
+	a = nil
+	a.GetRepository()
+}
+
+func TestAgentTask_GetSessionCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AgentTask{SessionCount: &zeroValue}
+	a.GetSessionCount()
+	a = &AgentTask{}
+	a.GetSessionCount()
+	a = nil
+	a.GetSessionCount()
+}
+
+func TestAgentTask_GetSessions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AgentTaskSession{}
+	a := &AgentTask{Sessions: zeroValue}
+	a.GetSessions()
+	a = &AgentTask{}
+	a.GetSessions()
+	a = nil
+	a.GetSessions()
+}
+
+func TestAgentTask_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTask{State: &zeroValue}
+	a.GetState()
+	a = &AgentTask{}
+	a.GetState()
+	a = nil
+	a.GetState()
+}
+
+func TestAgentTask_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AgentTask{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &AgentTask{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestAgentTask_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTask{URL: &zeroValue}
+	a.GetURL()
+	a = &AgentTask{}
+	a.GetURL()
+	a = nil
+	a.GetURL()
+}
+
+func TestAgentTaskArtifact_GetData(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskArtifact{}
+	a.GetData()
+	a = nil
+	a.GetData()
+}
+
+func TestAgentTaskArtifact_GetProvider(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskArtifact{Provider: &zeroValue}
+	a.GetProvider()
+	a = &AgentTaskArtifact{}
+	a.GetProvider()
+	a = nil
+	a.GetProvider()
+}
+
+func TestAgentTaskArtifact_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskArtifact{Type: &zeroValue}
+	a.GetType()
+	a = &AgentTaskArtifact{}
+	a.GetType()
+	a = nil
+	a.GetType()
+}
+
+func TestAgentTaskList_GetTasks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AgentTask{}
+	a := &AgentTaskList{Tasks: zeroValue}
+	a.GetTasks()
+	a = &AgentTaskList{}
+	a.GetTasks()
+	a = nil
+	a.GetTasks()
+}
+
+func TestAgentTaskListByRepoOptions_GetCreatorID(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskListByRepoOptions{}
+	a.GetCreatorID()
+	a = nil
+	a.GetCreatorID()
+}
+
+func TestAgentTaskListOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskListOptions{}
+	a.GetDirection()
+	a = nil
+	a.GetDirection()
+}
+
+func TestAgentTaskListOptions_GetIsArchived(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskListOptions{}
+	a.GetIsArchived()
+	a = nil
+	a.GetIsArchived()
+}
+
+func TestAgentTaskListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	a := &AgentTaskListOptions{Since: &zeroValue}
+	a.GetSince()
+	a = &AgentTaskListOptions{}
+	a.GetSince()
+	a = nil
+	a.GetSince()
+}
+
+func TestAgentTaskListOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskListOptions{}
+	a.GetSort()
+	a = nil
+	a.GetSort()
+}
+
+func TestAgentTaskListOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskListOptions{}
+	a.GetState()
+	a = nil
+	a.GetState()
+}
+
+func TestAgentTaskSession_GetBaseRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{BaseRef: &zeroValue}
+	a.GetBaseRef()
+	a = &AgentTaskSession{}
+	a.GetBaseRef()
+	a = nil
+	a.GetBaseRef()
+}
+
+func TestAgentTaskSession_GetCompletedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AgentTaskSession{CompletedAt: &zeroValue}
+	a.GetCompletedAt()
+	a = &AgentTaskSession{}
+	a.GetCompletedAt()
+	a = nil
+	a.GetCompletedAt()
+}
+
+func TestAgentTaskSession_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AgentTaskSession{CreatedAt: &zeroValue}
+	a.GetCreatedAt()
+	a = &AgentTaskSession{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestAgentTaskSession_GetHeadRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{HeadRef: &zeroValue}
+	a.GetHeadRef()
+	a = &AgentTaskSession{}
+	a.GetHeadRef()
+	a = nil
+	a.GetHeadRef()
+}
+
+func TestAgentTaskSession_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{ID: &zeroValue}
+	a.GetID()
+	a = &AgentTaskSession{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAgentTaskSession_GetModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{Model: &zeroValue}
+	a.GetModel()
+	a = &AgentTaskSession{}
+	a.GetModel()
+	a = nil
+	a.GetModel()
+}
+
+func TestAgentTaskSession_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{Name: &zeroValue}
+	a.GetName()
+	a = &AgentTaskSession{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestAgentTaskSession_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetOwner()
+	a = nil
+	a.GetOwner()
+}
+
+func TestAgentTaskSession_GetPrompt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{Prompt: &zeroValue}
+	a.GetPrompt()
+	a = &AgentTaskSession{}
+	a.GetPrompt()
+	a = nil
+	a.GetPrompt()
+}
+
+func TestAgentTaskSession_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetRepository()
+	a = nil
+	a.GetRepository()
+}
+
+func TestAgentTaskSession_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{State: &zeroValue}
+	a.GetState()
+	a = &AgentTaskSession{}
+	a.GetState()
+	a = nil
+	a.GetState()
+}
+
+func TestAgentTaskSession_GetTaskID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{TaskID: &zeroValue}
+	a.GetTaskID()
+	a = &AgentTaskSession{}
+	a.GetTaskID()
+	a = nil
+	a.GetTaskID()
+}
+
+func TestAgentTaskSession_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AgentTaskSession{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &AgentTaskSession{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestAgentTaskSession_GetUser(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetUser()
+	a = nil
+	a.GetUser()
+}
+
 func TestAlert_GetClosedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -12795,6 +13188,47 @@ func TestCostCenters_GetCostCenters(tt *testing.T) {
 	c.GetCostCenters()
 	c = nil
 	c.GetCostCenters()
+}
+
+func TestCreateAgentTaskOptions_GetBaseRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateAgentTaskOptions{BaseRef: &zeroValue}
+	c.GetBaseRef()
+	c = &CreateAgentTaskOptions{}
+	c.GetBaseRef()
+	c = nil
+	c.GetBaseRef()
+}
+
+func TestCreateAgentTaskOptions_GetCreatePullRequest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateAgentTaskOptions{CreatePullRequest: &zeroValue}
+	c.GetCreatePullRequest()
+	c = &CreateAgentTaskOptions{}
+	c.GetCreatePullRequest()
+	c = nil
+	c.GetCreatePullRequest()
+}
+
+func TestCreateAgentTaskOptions_GetModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateAgentTaskOptions{Model: &zeroValue}
+	c.GetModel()
+	c = &CreateAgentTaskOptions{}
+	c.GetModel()
+	c = nil
+	c.GetModel()
+}
+
+func TestCreateAgentTaskOptions_GetPrompt(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateAgentTaskOptions{}
+	c.GetPrompt()
+	c = nil
+	c.GetPrompt()
 }
 
 func TestCreateArtifactDeploymentRequest_GetCluster(tt *testing.T) {

@@ -1498,6 +1498,76 @@ func (s *ActivityService) ListWatchersIter(ctx context.Context, owner string, re
 	}
 }
 
+// ListIter returns an iterator that paginates through all results of List.
+func (s *AgentTasksService) ListIter(ctx context.Context, opts *AgentTaskListOptions) iter.Seq2[*AgentTask, error] {
+	return func(yield func(*AgentTask, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &AgentTaskListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.List(ctx, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*AgentTask
+			if results != nil {
+				iterItems = results.Tasks
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
+// ListByRepoIter returns an iterator that paginates through all results of ListByRepo.
+func (s *AgentTasksService) ListByRepoIter(ctx context.Context, owner string, repo string, opts *AgentTaskListByRepoOptions) iter.Seq2[*AgentTask, error] {
+	return func(yield func(*AgentTask, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &AgentTaskListByRepoOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListByRepo(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*AgentTask
+			if results != nil {
+				iterItems = results.Tasks
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListHookDeliveriesIter returns an iterator that paginates through all results of ListHookDeliveries.
 func (s *AppsService) ListHookDeliveriesIter(ctx context.Context, opts *ListCursorOptions) iter.Seq2[*HookDelivery, error] {
 	return func(yield func(*HookDelivery, error) bool) {

@@ -1,4 +1,14 @@
 operations:
+  - name: GET /agents/repos/{owner}/{repo}/tasks
+    documentation_url: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks-for-repository
+  - name: POST /agents/repos/{owner}/{repo}/tasks
+    documentation_url: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#start-a-task
+  - name: GET /agents/repos/{owner}/{repo}/tasks/{task_id}
+    documentation_url: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-repo
+  - name: GET /agents/tasks
+    documentation_url: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks
+  - name: GET /agents/tasks/{task_id}
+    documentation_url: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-id
   - name: POST /hub
     documentation_url: https://docs.github.com/webhooks/about-webhooks-for-repositories#pubsubhubbub
   - name: GET /organizations/{organization_id}
