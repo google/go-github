@@ -164,7 +164,7 @@ type ProjectV2ItemContent struct {
 }
 
 // MarshalJSON implements custom marshaling for ProjectV2ItemContent.
-func (c *ProjectV2ItemContent) MarshalJSON() ([]byte, error) {
+func (c ProjectV2ItemContent) MarshalJSON() ([]byte, error) {
 	if c.Issue != nil {
 		return json.Marshal(c.Issue)
 	}

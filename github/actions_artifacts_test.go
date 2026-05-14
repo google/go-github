@@ -291,7 +291,7 @@ func TestActionsService_DownloadArtifact(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -318,14 +318,15 @@ func TestActionsService_DownloadArtifact(t *testing.T) {
 				return err
 			})
 
-			// Add custom round tripper
-			client.client.Transport = roundTripperFunc(func(*http.Request) (*http.Response, error) {
+			// Create "bad" client with custom round tripper
+			badClient, err := client.Clone(WithTransport(roundTripperFunc(func(*http.Request) (*http.Response, error) {
 				return nil, errors.New("failed to download artifact")
-			})
-			// propagate custom round tripper to client without CheckRedirect
-			client.initialize()
+			})))
+			if err != nil {
+				t.Fatalf("failed to clone client: %v", err)
+			}
 			testBadOptions(t, methodName, func() (err error) {
-				_, _, err = client.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
+				_, _, err = badClient.Actions.DownloadArtifact(ctx, "o", "r", 1, 1)
 				return err
 			})
 		})
@@ -352,7 +353,7 @@ func TestActionsService_DownloadArtifact_invalidOwner(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, _, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			ctx := t.Context()
 			_, _, err := client.Actions.DownloadArtifact(ctx, "%", "r", 1, 1)
@@ -381,7 +382,7 @@ func TestActionsService_DownloadArtifact_invalidRepo(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, _, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			ctx := t.Context()
 			_, _, err := client.Actions.DownloadArtifact(ctx, "o", "%", 1, 1)
@@ -410,7 +411,7 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_dontFollowRedire
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -446,7 +447,7 @@ func TestActionsService_DownloadArtifact_StatusMovedPermanently_followRedirects(
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -494,7 +495,7 @@ func TestActionsService_DownloadArtifact_unexpectedCode(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/artifacts/1/zip", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")

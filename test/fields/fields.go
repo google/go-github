@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"reflect"
 	"strings"
@@ -40,9 +41,17 @@ func main() {
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	if token == "" {
 		fmt.Print("!!! No OAuth token. Some tests won't run. !!!\n\n")
-		client = github.NewClient(nil)
+		c, err := github.NewClient()
+		if err != nil {
+			log.Fatalf("Error creating GitHub client: %v", err)
+		}
+		client = c
 	} else {
-		client = github.NewClient(nil).WithAuthToken(token)
+		c, err := github.NewClient(github.WithAuthToken(token))
+		if err != nil {
+			log.Fatalf("Error creating GitHub client with token: %v", err)
+		}
+		client = c
 	}
 
 	for _, tt := range []struct {

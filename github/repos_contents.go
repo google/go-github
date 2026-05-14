@@ -340,7 +340,7 @@ func (s *RepositoriesService) GetArchiveLink(ctx context.Context, owner, repo st
 		u += fmt.Sprintf("/%v", opts.Ref)
 	}
 
-	if s.client.RateLimitRedirectionalEndpoints {
+	if s.client.rateLimitRedirectionalEndpoints {
 		return s.getArchiveLinkWithRateLimit(ctx, u, maxRedirects)
 	}
 

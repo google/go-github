@@ -88,17 +88,11 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 
 func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
 	t.Parallel()
-	cu := &CreateUpdateEnvironment{}
-
-	got, err := cu.MarshalJSON()
-	if err != nil {
-		t.Errorf("MarshalJSON: %v", err)
-	}
+	cu := CreateUpdateEnvironment{}
 
 	want := `{"wait_timer":0,"reviewers":null,"can_admins_bypass":true,"deployment_branch_policy":null}`
-	if string(got) != want {
-		t.Errorf("MarshalJSON = %v, want %v", got, want)
-	}
+	testJSONMarshalOnly(t, cu, want)
+	testJSONMarshalOnly(t, &cu, want)
 }
 
 func TestRepositoriesService_ListEnvironments(t *testing.T) {

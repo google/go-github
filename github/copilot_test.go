@@ -2974,7 +2974,7 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	url := client.BaseURL.String() + "path/to/download"
+	url := client.baseURL.String() + "path/to/download"
 	got, resp, err := client.Copilot.DownloadCopilotMetrics(ctx, url)
 	if err != nil {
 		t.Errorf("Copilot.DownloadCopilotMetrics returned error: %v", err)
@@ -3033,7 +3033,7 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 		w.WriteHeader(http.StatusNotFound)
 	})
 
-	urlErr := client.BaseURL.String() + "path/to/download/error"
+	urlErr := client.baseURL.String() + "path/to/download/error"
 	_, _, err = client.Copilot.DownloadCopilotMetrics(ctx, urlErr)
 	if err == nil {
 		t.Error("Copilot.DownloadCopilotMetrics expected error but got none")
@@ -3056,7 +3056,7 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `[{invalid JSON`)
 	})
-	urlBadJSON := client.BaseURL.String() + "path/to/download/badjson"
+	urlBadJSON := client.baseURL.String() + "path/to/download/badjson"
 	_, _, err = client.Copilot.DownloadCopilotMetrics(ctx, urlBadJSON)
 	if err == nil {
 		t.Error("Copilot.DownloadCopilotMetrics expected error for bad JSON, got none")
@@ -3115,7 +3115,7 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	url := client.BaseURL.String() + "path/to/daily"
+	url := client.baseURL.String() + "path/to/daily"
 	got, resp, err := client.Copilot.DownloadDailyMetrics(ctx, url)
 	if err != nil {
 		t.Errorf("Copilot.DownloadDailyMetrics returned error: %v", err)
@@ -3178,7 +3178,7 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNotFound)
 	})
-	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, client.BaseURL.String()+"path/to/daily/error"); err == nil {
+	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, client.baseURL.String()+"path/to/daily/error"); err == nil {
 		t.Error("Copilot.DownloadDailyMetrics expected error but got none")
 	}
 	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, "\n"); err == nil {
@@ -3192,7 +3192,7 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{invalid`)
 	})
-	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, client.BaseURL.String()+"path/to/daily/badjson"); err == nil {
+	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, client.baseURL.String()+"path/to/daily/badjson"); err == nil {
 		t.Error("Copilot.DownloadDailyMetrics expected error for bad JSON, got none")
 	}
 }
@@ -3235,7 +3235,7 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	url := client.BaseURL.String() + "path/to/periodic"
+	url := client.baseURL.String() + "path/to/periodic"
 	got, resp, err := client.Copilot.DownloadPeriodicMetrics(ctx, url)
 	if err != nil {
 		t.Errorf("Copilot.DownloadPeriodicMetrics returned error: %v", err)
@@ -3282,7 +3282,7 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNotFound)
 	})
-	if _, _, err := client.Copilot.DownloadPeriodicMetrics(ctx, client.BaseURL.String()+"path/to/periodic/error"); err == nil {
+	if _, _, err := client.Copilot.DownloadPeriodicMetrics(ctx, client.baseURL.String()+"path/to/periodic/error"); err == nil {
 		t.Error("Copilot.DownloadPeriodicMetrics expected error but got none")
 	}
 	if _, _, err := client.Copilot.DownloadPeriodicMetrics(ctx, "\n"); err == nil {
@@ -3296,7 +3296,7 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{invalid`)
 	})
-	if _, _, err := client.Copilot.DownloadPeriodicMetrics(ctx, client.BaseURL.String()+"path/to/periodic/badjson"); err == nil {
+	if _, _, err := client.Copilot.DownloadPeriodicMetrics(ctx, client.baseURL.String()+"path/to/periodic/badjson"); err == nil {
 		t.Error("Copilot.DownloadPeriodicMetrics expected error for bad JSON, got none")
 	}
 }
@@ -3313,7 +3313,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	url := client.BaseURL.String() + "path/to/users-daily"
+	url := client.baseURL.String() + "path/to/users-daily"
 	got, resp, err := client.Copilot.DownloadUserDailyMetrics(ctx, url)
 	if err != nil {
 		t.Errorf("Copilot.DownloadUserDailyMetrics returned error: %v", err)
@@ -3376,7 +3376,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 	mux.HandleFunc("/path/to/users-daily/empty", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 	})
-	gotEmpty, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, client.BaseURL.String()+"path/to/users-daily/empty")
+	gotEmpty, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, client.baseURL.String()+"path/to/users-daily/empty")
 	if err != nil {
 		t.Errorf("Copilot.DownloadUserDailyMetrics empty body returned error: %v", err)
 	}
@@ -3388,7 +3388,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNotFound)
 	})
-	if _, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, client.BaseURL.String()+"path/to/users-daily/error"); err == nil {
+	if _, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, client.baseURL.String()+"path/to/users-daily/error"); err == nil {
 		t.Error("Copilot.DownloadUserDailyMetrics expected error but got none")
 	}
 	if _, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, "\n"); err == nil {
@@ -3403,7 +3403,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, "{\"user_id\":1,\"day\":\"2026-04-01\"}\n{bad\n")
 	})
-	if _, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, client.BaseURL.String()+"path/to/users-daily/badjson"); err == nil {
+	if _, _, err := client.Copilot.DownloadUserDailyMetrics(ctx, client.baseURL.String()+"path/to/users-daily/badjson"); err == nil {
 		t.Error("Copilot.DownloadUserDailyMetrics expected error for bad JSON, got none")
 	}
 }
@@ -3420,7 +3420,7 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	url := client.BaseURL.String() + "path/to/users-periodic"
+	url := client.baseURL.String() + "path/to/users-periodic"
 	got, resp, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, url)
 	if err != nil {
 		t.Errorf("Copilot.DownloadUserPeriodicMetrics returned error: %v", err)
@@ -3469,7 +3469,7 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 	mux.HandleFunc("/path/to/users-periodic/empty", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 	})
-	gotEmpty, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.BaseURL.String()+"path/to/users-periodic/empty")
+	gotEmpty, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.baseURL.String()+"path/to/users-periodic/empty")
 	if err != nil {
 		t.Errorf("Copilot.DownloadUserPeriodicMetrics empty body returned error: %v", err)
 	}
@@ -3481,7 +3481,7 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 		testMethod(t, r, "GET")
 		w.WriteHeader(http.StatusNotFound)
 	})
-	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.BaseURL.String()+"path/to/users-periodic/error"); err == nil {
+	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.baseURL.String()+"path/to/users-periodic/error"); err == nil {
 		t.Error("Copilot.DownloadUserPeriodicMetrics expected error but got none")
 	}
 	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, "\n"); err == nil {
@@ -3495,7 +3495,7 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, "{not json\n")
 	})
-	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.BaseURL.String()+"path/to/users-periodic/badjson"); err == nil {
+	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.baseURL.String()+"path/to/users-periodic/badjson"); err == nil {
 		t.Error("Copilot.DownloadUserPeriodicMetrics expected error for bad JSON, got none")
 	}
 }

@@ -91,9 +91,9 @@ func (a *AuditEntry) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON implements the json.Marshaler interface.
-func (a *AuditEntry) MarshalJSON() ([]byte, error) {
+func (a AuditEntry) MarshalJSON() ([]byte, error) {
 	type entryAlias AuditEntry
-	v := entryAlias(*a)
+	v := entryAlias(a)
 	defBytes, err := json.Marshal(v)
 	if err != nil {
 		return nil, err
