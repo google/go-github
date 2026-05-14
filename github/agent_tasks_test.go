@@ -314,6 +314,15 @@ func TestAgentTasksService_List(t *testing.T) {
 	})
 }
 
+func TestAgentTasksService_List_badOptions(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.AgentTasks.list(ctx, "%", &AgentTaskListOptions{})
+	testURLParseError(t, err)
+}
+
 func TestAgentTasksService_Get(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

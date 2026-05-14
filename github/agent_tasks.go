@@ -186,7 +186,10 @@ func (s *AgentTasksService) GetByRepo(ctx context.Context, owner, repo, taskID s
 //
 //meta:operation GET /agents/tasks
 func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions) (*AgentTaskList, *Response, error) {
-	u := "agents/tasks"
+	return s.list(ctx, "agents/tasks", opts)
+}
+
+func (s *AgentTasksService) list(ctx context.Context, u string, opts *AgentTaskListOptions) (*AgentTaskList, *Response, error) {
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
