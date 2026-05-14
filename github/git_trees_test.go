@@ -17,7 +17,7 @@ import (
 
 func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
 	t.Parallel()
-	te := &TreeEntry{
+	te := TreeEntry{
 		Path: Ptr("path"),
 		Mode: Ptr("mode"),
 		Type: Ptr("type"),
@@ -25,15 +25,9 @@ func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
 		URL:  Ptr("url"),
 	}
 
-	got, err := te.MarshalJSON()
-	if err != nil {
-		t.Errorf("MarshalJSON: %v", err)
-	}
-
 	want := `{"sha":null,"path":"path","mode":"mode","type":"type"}`
-	if string(got) != want {
-		t.Errorf("MarshalJSON = %v, want %v", got, want)
-	}
+	testJSONMarshalOnly(t, te, want)
+	testJSONMarshalOnly(t, &te, want)
 }
 
 func TestGitService_GetTree(t *testing.T) {

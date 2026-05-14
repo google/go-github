@@ -189,7 +189,7 @@ func TestAuditEntry_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &AuditEntry{}, "{}")
 
-	u := &AuditEntry{
+	u := AuditEntry{
 		Action:                   Ptr("a"),
 		Actor:                    Ptr("ac"),
 		ActorLocation:            &ActorLocation{CountryCode: Ptr("alcc")},
@@ -384,5 +384,6 @@ func TestAuditEntry_Marshal(t *testing.T) {
 	}`
 
 	testJSONMarshalOnly(t, u, want)
+	testJSONMarshalOnly(t, &u, want)
 	// can't unmarshal AdditionalFields back into map[string]any, so skip testJSONUnmarshalOnly
 }
