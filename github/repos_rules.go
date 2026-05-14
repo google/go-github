@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"iter"
 )
 
 // ListRulesForBranch gets all the repository rules that apply to the specified branch.
@@ -35,6 +36,147 @@ func (s *RepositoriesService) ListRulesForBranch(ctx context.Context, owner, rep
 	}
 
 	return rules, resp, nil
+}
+
+// ListRulesForBranchIter returns an iterator that paginates through all results of ListRulesForBranch.
+//
+// Note that since [BranchRules] contains a large number of slices, this iterator
+// returns type `any` and it is therefore the responsibility of the caller to perform a
+// type switch to determine what item is being returned for each iteration.
+func (s *RepositoriesService) ListRulesForBranchIter(ctx context.Context, owner, repo, branch string, opts *ListOptions) iter.Seq2[any, error] {
+	return func(yield func(any, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRulesForBranch(ctx, owner, repo, branch, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			// Now iterate through ALL possible results from [BranchRules].
+			for _, item := range results.Creation {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.Update {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.Deletion {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.RequiredLinearHistory {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.MergeQueue {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.RequiredDeployments {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.RequiredSignatures {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.PullRequest {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.RequiredStatusChecks {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.NonFastForward {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.CommitMessagePattern {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.CommitAuthorEmailPattern {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.CommitterEmailPattern {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.BranchNamePattern {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.TagNamePattern {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.Workflows {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.CodeScanning {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.CopilotCodeReview {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.FileExtensionRestriction {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.FilePathRestriction {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.MaxFilePathLength {
+				if !yield(item, nil) {
+					return
+				}
+			}
+			for _, item := range results.MaxFileSize {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
 }
 
 // RepositoryListRulesetsOptions specifies optional parameters to the
