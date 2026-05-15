@@ -10,12 +10,12 @@ import (
 	"fmt"
 )
 
-// GetAllRepositoryRulesets gets all the repository rulesets for the specified organization.
+// ListAllRepositoryRulesets gets all the repository rulesets for the specified organization.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/rules?apiVersion=2022-11-28#get-all-organization-repository-rulesets
 //
 //meta:operation GET /orgs/{org}/rulesets
-func (s *OrganizationsService) GetAllRepositoryRulesets(ctx context.Context, org string, opts *ListOptions) ([]*RepositoryRuleset, *Response, error) {
+func (s *OrganizationsService) ListAllRepositoryRulesets(ctx context.Context, org string, opts *ListOptions) ([]*RepositoryRuleset, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/rulesets", org)
 
 	u, err := addOptions(u, opts)
