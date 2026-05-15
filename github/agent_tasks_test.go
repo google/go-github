@@ -151,7 +151,7 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 			Since:       Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 			ListOptions: ListOptions{Page: 2, PerPage: 1},
 		},
-		CreatorID: 1,
+		CreatorID: Ptr(int64(1)),
 	}
 
 	ctx := t.Context()
@@ -227,7 +227,7 @@ func TestAgentTasksService_Create(t *testing.T) {
 	})
 }
 
-func TestAgentTasksService_GetByRepo(t *testing.T) {
+func TestAgentTasksService_GetByRepoAndID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -238,22 +238,22 @@ func TestAgentTasksService_GetByRepo(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	task, _, err := client.AgentTasks.GetByRepo(ctx, "o", "r", agentTaskID)
+	task, _, err := client.AgentTasks.GetByRepoAndID(ctx, "o", "r", agentTaskID)
 	if err != nil {
-		t.Fatalf("AgentTasks.GetByRepo returned error: %v", err)
+		t.Fatalf("AgentTasks.GetByRepoAndID returned error: %v", err)
 	}
 	if diff := cmp.Diff(agentTask(true), task, cmpJSONRawMessageComparator()); diff != "" {
-		t.Errorf("AgentTasks.GetByRepo mismatch (-want +got):\n%v", diff)
+		t.Errorf("AgentTasks.GetByRepoAndID mismatch (-want +got):\n%v", diff)
 	}
 
-	const methodName = "GetByRepo"
+	const methodName = "GetByRepoAndID"
 	testBadOptions(t, methodName, func() error {
-		_, _, err := client.AgentTasks.GetByRepo(ctx, "\n", "\n", "\n")
+		_, _, err := client.AgentTasks.GetByRepoAndID(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.AgentTasks.GetByRepo(ctx, "o", "r", agentTaskID)
+		got, resp, err := client.AgentTasks.GetByRepoAndID(ctx, "o", "r", agentTaskID)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

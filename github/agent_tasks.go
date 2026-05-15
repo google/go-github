@@ -158,12 +158,12 @@ func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts
 	return task, resp, nil
 }
 
-// GetByRepo gets a repository task by ID.
+// GetByRepoAndID gets a repository task by ID.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-repo
 //
 //meta:operation GET /agents/repos/{owner}/{repo}/tasks/{task_id}
-func (s *AgentTasksService) GetByRepo(ctx context.Context, owner, repo, taskID string) (*AgentTask, *Response, error) {
+func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, taskID string) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks/%v", owner, repo, taskID)
 
 	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion("2026-03-10"))

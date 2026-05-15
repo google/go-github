@@ -1014,12 +1014,12 @@ func (a *AgentTaskList) GetTasks() []*AgentTask {
 	return a.Tasks
 }
 
-// GetCreatorID returns the CreatorID field.
+// GetCreatorID returns the CreatorID field if it's non-nil, zero value otherwise.
 func (a *AgentTaskListByRepoOptions) GetCreatorID() int64 {
-	if a == nil {
+	if a == nil || a.CreatorID == nil {
 		return 0
 	}
-	return a.CreatorID
+	return *a.CreatorID
 }
 
 // GetDirection returns the Direction field.
