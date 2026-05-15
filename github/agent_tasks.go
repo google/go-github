@@ -112,7 +112,7 @@ type CreateAgentTaskOptions struct {
 
 // ListByRepo lists tasks for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#list-tasks-for-repository
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks-for-repository
 //
 //meta:operation GET /agents/repos/{owner}/{repo}/tasks
 func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, opts *AgentTaskListByRepoOptions) (*AgentTaskList, *Response, error) {
