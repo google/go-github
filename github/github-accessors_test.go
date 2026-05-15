@@ -1266,10 +1266,7 @@ func TestAgentTaskList_GetTasks(tt *testing.T) {
 
 func TestAgentTaskListByRepoOptions_GetCreatorID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	a := &AgentTaskListByRepoOptions{CreatorID: &zeroValue}
-	a.GetCreatorID()
-	a = &AgentTaskListByRepoOptions{}
+	a := &AgentTaskListByRepoOptions{}
 	a.GetCreatorID()
 	a = nil
 	a.GetCreatorID()

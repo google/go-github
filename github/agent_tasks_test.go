@@ -151,7 +151,7 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 			Since:       Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 			ListOptions: ListOptions{Page: 2, PerPage: 1},
 		},
-		CreatorID: Ptr(int64(1)),
+		CreatorID: 1,
 	}
 
 	ctx := t.Context()

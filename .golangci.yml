@@ -277,7 +277,6 @@ linters:
             - ActionsCacheListOptions.Key
             - ActionsCacheListOptions.Ref
             - ActionsCacheListOptions.Sort
-            - AgentTaskListByRepoOptions.CreatorID # TODO: AgentTasks
             - ActiveCommittersListOptions.AdvancedSecurityProduct
             - AnalysesListOptions.Ref
             - AnalysesListOptions.SarifID
