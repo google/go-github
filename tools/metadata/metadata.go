@@ -482,6 +482,10 @@ func methodOps(opsFile *operationsFile, cmap ast.CommentMap, fn *ast.FuncDecl) (
 // Keep this in sync with defaultAPIVersion in github/github.go.
 const metadataDocsAPIVersion = "2022-11-28"
 
+var previewDocsAPIVersions = map[string]string{
+	"/rest/agent-tasks/agent-tasks": "2026-03-10",
+}
+
 // normalizeDocURL cleans docURL's path and enforces metadataDocsAPIVersion for
 // https://docs.github.com/rest and
 // https://docs.github.com/enterprise-cloud@latest/rest URLs.
@@ -503,7 +507,11 @@ func normalizeDocURL(docURL string) string {
 	u.Path = cleanPath
 	q := u.Query()
 	if q.Get("apiVersion") == "" {
-		q.Set("apiVersion", metadataDocsAPIVersion)
+		apiVersion := metadataDocsAPIVersion
+		if version, ok := previewDocsAPIVersions[cleanPath]; ok {
+			apiVersion = version
+		}
+		q.Set("apiVersion", apiVersion)
 	}
 	u.RawQuery = q.Encode()
 	return u.String()

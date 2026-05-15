@@ -114,7 +114,7 @@ type CreateAgentTaskOptions struct {
 
 // ListByRepo lists tasks for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#list-tasks-for-repository
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks-for-repository
 //
 //meta:operation GET /agents/repos/{owner}/{repo}/tasks
 func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, opts *AgentTaskListByRepoOptions) (*AgentTaskList, *Response, error) {
@@ -140,7 +140,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 
 // Create starts a new Copilot cloud agent task for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#start-a-task
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#start-a-task
 //
 //meta:operation POST /agents/repos/{owner}/{repo}/tasks
 func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts *CreateAgentTaskOptions) (*AgentTask, *Response, error) {
@@ -162,7 +162,7 @@ func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts
 
 // GetByRepoAndID gets a repository task by ID.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#get-a-task-by-repo
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-repo
 //
 //meta:operation GET /agents/repos/{owner}/{repo}/tasks/{task_id}
 func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, taskID string) (*AgentTask, *Response, error) {
@@ -184,7 +184,7 @@ func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, tas
 
 // List lists tasks for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#list-tasks
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks
 //
 //meta:operation GET /agents/tasks
 func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions) (*AgentTaskList, *Response, error) {
@@ -210,7 +210,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 
 // Get gets a task by ID for the authenticated user.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#get-a-task-by-id
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-id
 //
 //meta:operation GET /agents/tasks/{task_id}
 func (s *AgentTasksService) Get(ctx context.Context, taskID string) (*AgentTask, *Response, error) {

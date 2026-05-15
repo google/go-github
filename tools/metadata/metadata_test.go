@@ -63,6 +63,11 @@ func Test_normalizeDocURL(t *testing.T) {
 			want:   "https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#list-private-registries-for-an-organization",
 		},
 		{
+			name:   "add preview api version",
+			docURL: "https://docs.github.com/rest/agent-tasks/agent-tasks#list-tasks",
+			want:   "https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks",
+		},
+		{
 			name:   "enterprise cloud latest rest is normalized",
 			docURL: "https://docs.github.com/enterprise-cloud@latest/rest/repos/repos#get-a-repository",
 			want:   "https://docs.github.com/enterprise-cloud@latest/rest/repos/repos?apiVersion=2022-11-28#get-a-repository",
