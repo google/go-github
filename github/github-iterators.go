@@ -2857,6 +2857,41 @@ func (s *EnterpriseService) ListCodeSecurityConfigurationsIter(ctx context.Conte
 	}
 }
 
+// ListConsumedLicensesIter returns an iterator that paginates through all results of ListConsumedLicenses.
+func (s *EnterpriseService) ListConsumedLicensesIter(ctx context.Context, enterprise string, opts *ListOptions) iter.Seq2[*EnterpriseLicensedUsers, error] {
+	return func(yield func(*EnterpriseLicensedUsers, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListConsumedLicenses(ctx, enterprise, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*EnterpriseLicensedUsers
+			if results != nil {
+				iterItems = results.Users
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListEnterpriseNetworkConfigurationsIter returns an iterator that paginates through all results of ListEnterpriseNetworkConfigurations.
 func (s *EnterpriseService) ListEnterpriseNetworkConfigurationsIter(ctx context.Context, enterprise string, opts *ListOptions) iter.Seq2[*NetworkConfiguration, error] {
 	return func(yield func(*NetworkConfiguration, error) bool) {

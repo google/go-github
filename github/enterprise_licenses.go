@@ -89,12 +89,12 @@ type LastLicenseSyncProperties struct {
 	Error  string     `json:"error"`
 }
 
-// GetConsumedLicenses collect information about the number of consumed licenses and a collection with all the users with consumed enterprise licenses.
+// ListConsumedLicenses collect information about the number of consumed licenses and a collection with all the users with consumed enterprise licenses.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing?apiVersion=2022-11-28#list-enterprise-consumed-licenses
 //
 //meta:operation GET /enterprises/{enterprise}/consumed-licenses
-func (s *EnterpriseService) GetConsumedLicenses(ctx context.Context, enterprise string, opts *ListOptions) (*EnterpriseConsumedLicenses, *Response, error) {
+func (s *EnterpriseService) ListConsumedLicenses(ctx context.Context, enterprise string, opts *ListOptions) (*EnterpriseConsumedLicenses, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/consumed-licenses", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
