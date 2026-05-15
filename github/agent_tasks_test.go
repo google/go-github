@@ -72,7 +72,7 @@ func agentTask(includeSessions bool) *AgentTask {
 	updatedAt := &Timestamp{time.Date(2025, time.January, 1, 1, 0, 0, 0, time.UTC)}
 
 	task := &AgentTask{
-		ID:           Ptr(agentTaskID),
+		ID:           agentTaskID,
 		URL:          Ptr("https://api.github.com/agents/repos/octocat/hello-world/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
 		HTMLURL:      Ptr("https://github.com/octocat/hello-world/copilot/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
 		Name:         Ptr("Fix the login button on the homepage"),
@@ -80,30 +80,30 @@ func agentTask(includeSessions bool) *AgentTask {
 		CreatorType:  Ptr("user"),
 		Owner:        &User{ID: Ptr(int64(2))},
 		Repository:   &Repository{ID: Ptr(int64(1296269))},
-		State:        Ptr("completed"),
+		State:        "completed",
 		SessionCount: Ptr(1),
 		Artifacts: []*AgentTaskArtifact{
 			{
-				Provider: Ptr("github"),
-				Type:     Ptr("pull"),
+				Provider: "github",
+				Type:     "pull",
 				Data:     json.RawMessage(`{"id":42}`),
 			},
 		},
-		CreatedAt: createdAt,
+		CreatedAt: *createdAt,
 		UpdatedAt: updatedAt,
 	}
 
 	if includeSessions {
 		task.Sessions = []*AgentTaskSession{
 			{
-				ID:          Ptr(agentTaskSessionID),
+				ID:          agentTaskSessionID,
 				Name:        Ptr("Fix the login button on the homepage"),
 				User:        &User{ID: Ptr(int64(1))},
 				Owner:       &User{ID: Ptr(int64(2))},
 				Repository:  &Repository{ID: Ptr(int64(1296269))},
 				TaskID:      Ptr(agentTaskID),
-				State:       Ptr("completed"),
-				CreatedAt:   createdAt,
+				State:       "completed",
+				CreatedAt:   *createdAt,
 				UpdatedAt:   updatedAt,
 				CompletedAt: updatedAt,
 				Prompt:      Ptr("Fix the login button on the homepage"),
@@ -314,15 +314,6 @@ func TestAgentTasksService_List(t *testing.T) {
 	})
 }
 
-func TestAgentTasksService_List_badOptions(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-
-	ctx := t.Context()
-	_, _, err := client.AgentTasks.list(ctx, "%", &AgentTaskListOptions{})
-	testURLParseError(t, err)
-}
-
 func TestAgentTasksService_Get(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -359,17 +350,17 @@ func TestAgentTasksService_Get(t *testing.T) {
 
 func TestAgentTask_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &AgentTask{}, "{}")
+	testJSONMarshal(t, &AgentTask{}, `{"id":"","state":"","created_at":"0001-01-01T00:00:00Z"}`)
 	testJSONMarshal(t, agentTask(true), agentTaskMarshalJSON(true), cmpJSONRawMessageComparator())
 }
 
 func TestAgentTaskArtifact_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &AgentTaskArtifact{}, "{}")
+	testJSONMarshal(t, &AgentTaskArtifact{Data: json.RawMessage("null")}, `{"provider":"","type":"","data":null}`)
 
 	u := &AgentTaskArtifact{
-		Provider: Ptr("github"),
-		Type:     Ptr("pull"),
+		Provider: "github",
+		Type:     "pull",
 		Data:     json.RawMessage(`{"id":42}`),
 	}
 	want := `{
@@ -383,7 +374,7 @@ func TestAgentTaskArtifact_Marshal(t *testing.T) {
 
 func TestAgentTaskSession_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &AgentTaskSession{}, "{}")
+	testJSONMarshal(t, &AgentTaskSession{}, `{"id":"","state":"","created_at":"0001-01-01T00:00:00Z"}`)
 
 	u := agentTask(true).Sessions[0]
 	want := `{

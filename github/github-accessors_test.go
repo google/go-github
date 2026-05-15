@@ -1091,10 +1091,7 @@ func TestAgentTask_GetArtifacts(tt *testing.T) {
 
 func TestAgentTask_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue Timestamp
-	a := &AgentTask{CreatedAt: &zeroValue}
-	a.GetCreatedAt()
-	a = &AgentTask{}
+	a := &AgentTask{}
 	a.GetCreatedAt()
 	a = nil
 	a.GetCreatedAt()
@@ -1132,10 +1129,7 @@ func TestAgentTask_GetHTMLURL(tt *testing.T) {
 
 func TestAgentTask_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &AgentTask{ID: &zeroValue}
-	a.GetID()
-	a = &AgentTask{}
+	a := &AgentTask{}
 	a.GetID()
 	a = nil
 	a.GetID()
@@ -1192,10 +1186,7 @@ func TestAgentTask_GetSessions(tt *testing.T) {
 
 func TestAgentTask_GetState(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &AgentTask{State: &zeroValue}
-	a.GetState()
-	a = &AgentTask{}
+	a := &AgentTask{}
 	a.GetState()
 	a = nil
 	a.GetState()
@@ -1233,10 +1224,7 @@ func TestAgentTaskArtifact_GetData(tt *testing.T) {
 
 func TestAgentTaskArtifact_GetProvider(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &AgentTaskArtifact{Provider: &zeroValue}
-	a.GetProvider()
-	a = &AgentTaskArtifact{}
+	a := &AgentTaskArtifact{}
 	a.GetProvider()
 	a = nil
 	a.GetProvider()
@@ -1244,10 +1232,7 @@ func TestAgentTaskArtifact_GetProvider(tt *testing.T) {
 
 func TestAgentTaskArtifact_GetType(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &AgentTaskArtifact{Type: &zeroValue}
-	a.GetType()
-	a = &AgentTaskArtifact{}
+	a := &AgentTaskArtifact{}
 	a.GetType()
 	a = nil
 	a.GetType()
@@ -1339,10 +1324,7 @@ func TestAgentTaskSession_GetCompletedAt(tt *testing.T) {
 
 func TestAgentTaskSession_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue Timestamp
-	a := &AgentTaskSession{CreatedAt: &zeroValue}
-	a.GetCreatedAt()
-	a = &AgentTaskSession{}
+	a := &AgentTaskSession{}
 	a.GetCreatedAt()
 	a = nil
 	a.GetCreatedAt()
@@ -1361,10 +1343,7 @@ func TestAgentTaskSession_GetHeadRef(tt *testing.T) {
 
 func TestAgentTaskSession_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &AgentTaskSession{ID: &zeroValue}
-	a.GetID()
-	a = &AgentTaskSession{}
+	a := &AgentTaskSession{}
 	a.GetID()
 	a = nil
 	a.GetID()
@@ -1421,10 +1400,7 @@ func TestAgentTaskSession_GetRepository(tt *testing.T) {
 
 func TestAgentTaskSession_GetState(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	a := &AgentTaskSession{State: &zeroValue}
-	a.GetState()
-	a = &AgentTaskSession{}
+	a := &AgentTaskSession{}
 	a.GetState()
 	a = nil
 	a.GetState()

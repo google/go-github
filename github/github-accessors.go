@@ -878,12 +878,12 @@ func (a *AgentTask) GetArtifacts() []*AgentTaskArtifact {
 	return a.Artifacts
 }
 
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+// GetCreatedAt returns the CreatedAt field.
 func (a *AgentTask) GetCreatedAt() Timestamp {
-	if a == nil || a.CreatedAt == nil {
+	if a == nil {
 		return Timestamp{}
 	}
-	return *a.CreatedAt
+	return a.CreatedAt
 }
 
 // GetCreator returns the Creator field.
@@ -910,12 +910,12 @@ func (a *AgentTask) GetHTMLURL() string {
 	return *a.HTMLURL
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (a *AgentTask) GetID() string {
-	if a == nil || a.ID == nil {
+	if a == nil {
 		return ""
 	}
-	return *a.ID
+	return a.ID
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -958,12 +958,12 @@ func (a *AgentTask) GetSessions() []*AgentTaskSession {
 	return a.Sessions
 }
 
-// GetState returns the State field if it's non-nil, zero value otherwise.
+// GetState returns the State field.
 func (a *AgentTask) GetState() string {
-	if a == nil || a.State == nil {
+	if a == nil {
 		return ""
 	}
-	return *a.State
+	return a.State
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
@@ -990,20 +990,20 @@ func (a *AgentTaskArtifact) GetData() json.RawMessage {
 	return a.Data
 }
 
-// GetProvider returns the Provider field if it's non-nil, zero value otherwise.
+// GetProvider returns the Provider field.
 func (a *AgentTaskArtifact) GetProvider() string {
-	if a == nil || a.Provider == nil {
+	if a == nil {
 		return ""
 	}
-	return *a.Provider
+	return a.Provider
 }
 
-// GetType returns the Type field if it's non-nil, zero value otherwise.
+// GetType returns the Type field.
 func (a *AgentTaskArtifact) GetType() string {
-	if a == nil || a.Type == nil {
+	if a == nil {
 		return ""
 	}
-	return *a.Type
+	return a.Type
 }
 
 // GetTasks returns the Tasks slice if it's non-nil, nil otherwise.
@@ -1078,12 +1078,12 @@ func (a *AgentTaskSession) GetCompletedAt() Timestamp {
 	return *a.CompletedAt
 }
 
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+// GetCreatedAt returns the CreatedAt field.
 func (a *AgentTaskSession) GetCreatedAt() Timestamp {
-	if a == nil || a.CreatedAt == nil {
+	if a == nil {
 		return Timestamp{}
 	}
-	return *a.CreatedAt
+	return a.CreatedAt
 }
 
 // GetHeadRef returns the HeadRef field if it's non-nil, zero value otherwise.
@@ -1094,12 +1094,12 @@ func (a *AgentTaskSession) GetHeadRef() string {
 	return *a.HeadRef
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (a *AgentTaskSession) GetID() string {
-	if a == nil || a.ID == nil {
+	if a == nil {
 		return ""
 	}
-	return *a.ID
+	return a.ID
 }
 
 // GetModel returns the Model field if it's non-nil, zero value otherwise.
@@ -1142,12 +1142,12 @@ func (a *AgentTaskSession) GetRepository() *Repository {
 	return a.Repository
 }
 
-// GetState returns the State field if it's non-nil, zero value otherwise.
+// GetState returns the State field.
 func (a *AgentTaskSession) GetState() string {
-	if a == nil || a.State == nil {
+	if a == nil {
 		return ""
 	}
-	return *a.State
+	return a.State
 }
 
 // GetTaskID returns the TaskID field if it's non-nil, zero value otherwise.
