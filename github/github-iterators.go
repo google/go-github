@@ -3998,6 +3998,37 @@ func (s *OrganizationsService) ListIter(ctx context.Context, user string, opts *
 	}
 }
 
+// ListAllRepositoryRulesetsIter returns an iterator that paginates through all results of ListAllRepositoryRulesets.
+func (s *OrganizationsService) ListAllRepositoryRulesetsIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*RepositoryRuleset, error] {
+	return func(yield func(*RepositoryRuleset, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListAllRepositoryRulesets(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListAttestationsIter returns an iterator that paginates through all results of ListAttestations.
 func (s *OrganizationsService) ListAttestationsIter(ctx context.Context, org string, subjectDigest string, opts *ListOptions) iter.Seq2[*Attestation, error] {
 	return func(yield func(*Attestation, error) bool) {
