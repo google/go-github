@@ -98,7 +98,7 @@ type AgentTaskListByRepoOptions struct {
 }
 
 // CreateAgentTaskOptions represents the parameters for creating an agent task.
-type CreateAgentTaskOptions struct {
+type CreateAgentTaskRequest struct {
 	// Prompt is the user's prompt for the agent.
 	Prompt string `json:"prompt"`
 
