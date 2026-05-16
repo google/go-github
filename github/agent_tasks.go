@@ -84,7 +84,7 @@ type AgentTaskListOptions struct {
 	IsArchived bool `url:"is_archived,omitempty"`
 
 	// Since filters tasks updated at or after this time.
-	Since *time.Time `url:"since,omitempty"`
+	Since time.Time `url:"since,omitempty"`
 
 	ListOptions
 }
