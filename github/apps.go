@@ -459,7 +459,7 @@ func (s *AppsService) FindOrganizationInstallation(ctx context.Context, org stri
 
 // FindEnterpriseInstallation finds the enterprise's installation information.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/apps/apps#get-an-enterprise-installation-for-the-authenticated-app
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/apps/apps?apiVersion=2022-11-28#get-an-enterprise-installation-for-the-authenticated-app
 //
 //meta:operation GET /enterprises/{enterprise}/installation
 func (s *AppsService) FindEnterpriseInstallation(ctx context.Context, enterprise string) (*Installation, *Response, error) {
