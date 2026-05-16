@@ -66,7 +66,7 @@ type AgentTaskSession struct {
 
 // AgentTaskList represents a list of agent tasks.
 type AgentTaskList struct {
-	Tasks []*AgentTask `json:"tasks,omitempty"`
+	Tasks []*AgentTask `json:"tasks"`
 }
 
 // AgentTaskListOptions specifies optional parameters to AgentTasksService.List.
