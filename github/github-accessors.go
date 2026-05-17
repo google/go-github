@@ -927,7 +927,7 @@ func (a *AgentTask) GetName() string {
 }
 
 // GetOwner returns the Owner field.
-func (a *AgentTask) GetOwner() *User {
+func (a *AgentTask) GetOwner() *AgentTaskOwner {
 	if a == nil {
 		return nil
 	}
@@ -935,7 +935,7 @@ func (a *AgentTask) GetOwner() *User {
 }
 
 // GetRepository returns the Repository field.
-func (a *AgentTask) GetRepository() *Repository {
+func (a *AgentTask) GetRepository() *AgentTaskRepository {
 	if a == nil {
 		return nil
 	}
@@ -982,6 +982,14 @@ func (a *AgentTask) GetURL() string {
 	return *a.URL
 }
 
+// GetUserCollaborators returns the UserCollaborators slice if it's non-nil, nil otherwise.
+func (a *AgentTask) GetUserCollaborators() []*User {
+	if a == nil || a.UserCollaborators == nil {
+		return nil
+	}
+	return a.UserCollaborators
+}
+
 // GetData returns the Data field.
 func (a *AgentTaskArtifact) GetData() json.RawMessage {
 	if a == nil {
@@ -1012,6 +1020,22 @@ func (a *AgentTaskList) GetTasks() []*AgentTask {
 		return nil
 	}
 	return a.Tasks
+}
+
+// GetTotalActiveCount returns the TotalActiveCount field if it's non-nil, zero value otherwise.
+func (a *AgentTaskList) GetTotalActiveCount() int {
+	if a == nil || a.TotalActiveCount == nil {
+		return 0
+	}
+	return *a.TotalActiveCount
+}
+
+// GetTotalArchivedCount returns the TotalArchivedCount field if it's non-nil, zero value otherwise.
+func (a *AgentTaskList) GetTotalArchivedCount() int {
+	if a == nil || a.TotalArchivedCount == nil {
+		return 0
+	}
+	return *a.TotalArchivedCount
 }
 
 // GetCreatorID returns the CreatorID field.
@@ -1060,6 +1084,22 @@ func (a *AgentTaskListOptions) GetState() string {
 		return ""
 	}
 	return a.State
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskOwner) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskRepository) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
 }
 
 // GetBaseRef returns the BaseRef field if it's non-nil, zero value otherwise.
@@ -1119,7 +1159,7 @@ func (a *AgentTaskSession) GetName() string {
 }
 
 // GetOwner returns the Owner field.
-func (a *AgentTaskSession) GetOwner() *User {
+func (a *AgentTaskSession) GetOwner() *AgentTaskOwner {
 	if a == nil {
 		return nil
 	}
@@ -1135,7 +1175,7 @@ func (a *AgentTaskSession) GetPrompt() string {
 }
 
 // GetRepository returns the Repository field.
-func (a *AgentTaskSession) GetRepository() *Repository {
+func (a *AgentTaskSession) GetRepository() *AgentTaskRepository {
 	if a == nil {
 		return nil
 	}
@@ -10367,7 +10407,7 @@ func (c *CostCenters) GetCostCenters() []*CostCenter {
 }
 
 // GetBaseRef returns the BaseRef field if it's non-nil, zero value otherwise.
-func (c *CreateAgentTaskOptions) GetBaseRef() string {
+func (c *CreateAgentTaskRequest) GetBaseRef() string {
 	if c == nil || c.BaseRef == nil {
 		return ""
 	}
@@ -10375,7 +10415,7 @@ func (c *CreateAgentTaskOptions) GetBaseRef() string {
 }
 
 // GetCreatePullRequest returns the CreatePullRequest field if it's non-nil, zero value otherwise.
-func (c *CreateAgentTaskOptions) GetCreatePullRequest() bool {
+func (c *CreateAgentTaskRequest) GetCreatePullRequest() bool {
 	if c == nil || c.CreatePullRequest == nil {
 		return false
 	}
@@ -10383,7 +10423,7 @@ func (c *CreateAgentTaskOptions) GetCreatePullRequest() bool {
 }
 
 // GetModel returns the Model field if it's non-nil, zero value otherwise.
-func (c *CreateAgentTaskOptions) GetModel() string {
+func (c *CreateAgentTaskRequest) GetModel() string {
 	if c == nil || c.Model == nil {
 		return ""
 	}
@@ -10391,7 +10431,7 @@ func (c *CreateAgentTaskOptions) GetModel() string {
 }
 
 // GetPrompt returns the Prompt field.
-func (c *CreateAgentTaskOptions) GetPrompt() string {
+func (c *CreateAgentTaskRequest) GetPrompt() string {
 	if c == nil {
 		return ""
 	}

@@ -28,8 +28,8 @@ type AgentTask struct {
 	Name         *string              `json:"name,omitempty"`
 	Creator      *User                `json:"creator,omitempty"`
 	CreatorType  *string              `json:"creator_type,omitempty"`
-	Owner        *User                `json:"owner,omitempty"`
-	Repository   *Repository          `json:"repository,omitempty"`
+	Owner        *AgentTaskOwner      `json:"owner,omitempty"`
+	Repository   *AgentTaskRepository `json:"repository,omitempty"`
 	State        string               `json:"state"`
 	SessionCount *int                 `json:"session_count,omitempty"`
 	Artifacts    []*AgentTaskArtifact `json:"artifacts,omitempty"`
@@ -37,6 +37,19 @@ type AgentTask struct {
 	CreatedAt    Timestamp            `json:"created_at"`
 	UpdatedAt    *Timestamp           `json:"updated_at,omitempty"`
 	Sessions     []*AgentTaskSession  `json:"sessions,omitempty"`
+
+	// Deprecated: UserCollaborators is deprecated by GitHub.
+	UserCollaborators []*User `json:"user_collaborators,omitempty"`
+}
+
+// AgentTaskOwner represents an agent task owner.
+type AgentTaskOwner struct {
+	ID *int64 `json:"id,omitempty"`
+}
+
+// AgentTaskRepository represents an agent task repository.
+type AgentTaskRepository struct {
+	ID *int64 `json:"id,omitempty"`
 }
 
 // AgentTaskArtifact represents an artifact produced by an agent task.
@@ -48,25 +61,27 @@ type AgentTaskArtifact struct {
 
 // AgentTaskSession represents a session associated with an agent task.
 type AgentTaskSession struct {
-	ID          string      `json:"id"`
-	Name        *string     `json:"name,omitempty"`
-	User        *User       `json:"user,omitempty"`
-	Owner       *User       `json:"owner,omitempty"`
-	Repository  *Repository `json:"repository,omitempty"`
-	TaskID      *string     `json:"task_id,omitempty"`
-	State       string      `json:"state"`
-	CreatedAt   Timestamp   `json:"created_at"`
-	UpdatedAt   *Timestamp  `json:"updated_at,omitempty"`
-	CompletedAt *Timestamp  `json:"completed_at,omitempty"`
-	Prompt      *string     `json:"prompt,omitempty"`
-	HeadRef     *string     `json:"head_ref,omitempty"`
-	BaseRef     *string     `json:"base_ref,omitempty"`
-	Model       *string     `json:"model,omitempty"`
+	ID          string               `json:"id"`
+	Name        *string              `json:"name,omitempty"`
+	User        *User                `json:"user,omitempty"`
+	Owner       *AgentTaskOwner      `json:"owner,omitempty"`
+	Repository  *AgentTaskRepository `json:"repository,omitempty"`
+	TaskID      *string              `json:"task_id,omitempty"`
+	State       string               `json:"state"`
+	CreatedAt   Timestamp            `json:"created_at"`
+	UpdatedAt   *Timestamp           `json:"updated_at,omitempty"`
+	CompletedAt *Timestamp           `json:"completed_at,omitempty"`
+	Prompt      *string              `json:"prompt,omitempty"`
+	HeadRef     *string              `json:"head_ref,omitempty"`
+	BaseRef     *string              `json:"base_ref,omitempty"`
+	Model       *string              `json:"model,omitempty"`
 }
 
 // AgentTaskList represents a list of agent tasks.
 type AgentTaskList struct {
-	Tasks []*AgentTask `json:"tasks"`
+	Tasks              []*AgentTask `json:"tasks"`
+	TotalActiveCount   *int         `json:"total_active_count,omitempty"`
+	TotalArchivedCount *int         `json:"total_archived_count,omitempty"`
 }
 
 // AgentTaskListOptions specifies optional parameters to AgentTasksService.List.
@@ -84,7 +99,7 @@ type AgentTaskListOptions struct {
 	IsArchived bool `url:"is_archived,omitempty"`
 
 	// Since filters tasks updated at or after this time.
-	Since time.Time `url:"since,omitempty"`
+	Since *time.Time `url:"since,omitempty"`
 
 	ListOptions
 }
@@ -97,7 +112,7 @@ type AgentTaskListByRepoOptions struct {
 	CreatorID int64 `url:"creator_id,omitempty"`
 }
 
-// CreateAgentTaskOptions represents the parameters for creating an agent task.
+// CreateAgentTaskRequest represents the parameters for creating an agent task.
 type CreateAgentTaskRequest struct {
 	// Prompt is the user's prompt for the agent.
 	Prompt string `json:"prompt"`
@@ -113,6 +128,8 @@ type CreateAgentTaskRequest struct {
 }
 
 // ListByRepo lists tasks for a repository.
+//
+// This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks-for-repository
 //
@@ -140,10 +157,12 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 
 // Create starts a new Copilot cloud agent task for a repository.
 //
+// This endpoint is in public preview and is subject to change.
+//
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#start-a-task
 //
 //meta:operation POST /agents/repos/{owner}/{repo}/tasks
-func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req CreateAgentTaskRequest) (*AgentTask, *Response, error) {
+func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts *CreateAgentTaskRequest) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks", owner, repo)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, opts, WithVersion(agentTasksAPIVersion))
@@ -162,10 +181,12 @@ func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req 
 
 // GetByRepoAndID gets a repository task by ID.
 //
+// This endpoint is in public preview and is subject to change.
+//
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-repo
 //
 //meta:operation GET /agents/repos/{owner}/{repo}/tasks/{task_id}
-func (s *AgentTasksService) GetByRepo(ctx context.Context, owner, repo, taskID string) (*AgentTask, *Response, error) {
+func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, taskID string) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks/%v", owner, repo, taskID)
 
 	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(agentTasksAPIVersion))
@@ -183,6 +204,8 @@ func (s *AgentTasksService) GetByRepo(ctx context.Context, owner, repo, taskID s
 }
 
 // List lists tasks for the authenticated user.
+//
+// This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks
 //
@@ -209,6 +232,8 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 }
 
 // Get gets a task by ID for the authenticated user.
+//
+// This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-id
 //

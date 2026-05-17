@@ -29,6 +29,7 @@ func agentTaskJSON(includeSessions bool) string {
 		"name": "Fix the login button on the homepage",
 		"creator": { "id": 1 },
 		"creator_type": "user",
+		"user_collaborators": [{ "id": 3 }],
 		"owner": { "id": 2 },
 		"repository": { "id": 1296269 },
 		"state": "completed",
@@ -72,14 +73,17 @@ func agentTask(includeSessions bool) *AgentTask {
 	updatedAt := &Timestamp{time.Date(2025, time.January, 1, 1, 0, 0, 0, time.UTC)}
 
 	task := &AgentTask{
-		ID:           agentTaskID,
-		URL:          Ptr("https://api.github.com/agents/repos/octocat/hello-world/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-		HTMLURL:      Ptr("https://github.com/octocat/hello-world/copilot/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-		Name:         Ptr("Fix the login button on the homepage"),
-		Creator:      &User{ID: Ptr(int64(1))},
-		CreatorType:  Ptr("user"),
-		Owner:        &User{ID: Ptr(int64(2))},
-		Repository:   &Repository{ID: Ptr(int64(1296269))},
+		ID:          agentTaskID,
+		URL:         Ptr("https://api.github.com/agents/repos/octocat/hello-world/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+		HTMLURL:     Ptr("https://github.com/octocat/hello-world/copilot/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+		Name:        Ptr("Fix the login button on the homepage"),
+		Creator:     &User{ID: Ptr(int64(1))},
+		CreatorType: Ptr("user"),
+		UserCollaborators: []*User{
+			{ID: Ptr(int64(3))},
+		},
+		Owner:        &AgentTaskOwner{ID: Ptr(int64(2))},
+		Repository:   &AgentTaskRepository{ID: Ptr(int64(1296269))},
 		State:        "completed",
 		SessionCount: Ptr(1),
 		Artifacts: []*AgentTaskArtifact{
@@ -99,8 +103,8 @@ func agentTask(includeSessions bool) *AgentTask {
 				ID:          agentTaskSessionID,
 				Name:        Ptr("Fix the login button on the homepage"),
 				User:        &User{ID: Ptr(int64(1))},
-				Owner:       &User{ID: Ptr(int64(2))},
-				Repository:  &Repository{ID: Ptr(int64(1296269))},
+				Owner:       &AgentTaskOwner{ID: Ptr(int64(2))},
+				Repository:  &AgentTaskRepository{ID: Ptr(int64(1296269))},
 				TaskID:      Ptr(agentTaskID),
 				State:       "completed",
 				CreatedAt:   *createdAt,
@@ -139,7 +143,7 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 			"state":       "queued,completed",
 		})
 		w.Header().Set("Link", `<https://api.github.com/agents/repos/o/r/tasks?page=3>; rel="next"`)
-		fmt.Fprintf(w, `{"tasks":[%v]}`, agentTaskJSON(false))
+		fmt.Fprintf(w, `{"tasks":[%v],"total_active_count":5,"total_archived_count":2}`, agentTaskJSON(false))
 	})
 
 	opts := &AgentTaskListByRepoOptions{
@@ -160,7 +164,11 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 		t.Fatalf("AgentTasks.ListByRepo returned error: %v", err)
 	}
 
-	want := &AgentTaskList{Tasks: []*AgentTask{agentTask(false)}}
+	want := &AgentTaskList{
+		Tasks:              []*AgentTask{agentTask(false)},
+		TotalActiveCount:   Ptr(5),
+		TotalArchivedCount: Ptr(2),
+	}
 	if diff := cmp.Diff(want, tasks, cmpJSONRawMessageComparator()); diff != "" {
 		t.Errorf("AgentTasks.ListByRepo mismatch (-want +got):\n%v", diff)
 	}
@@ -187,7 +195,7 @@ func TestAgentTasksService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CreateAgentTaskOptions{
+	input := &CreateAgentTaskRequest{
 		Prompt:            "Fix the login button on the homepage",
 		Model:             Ptr("gpt-5.3-codex"),
 		CreatePullRequest: Ptr(true),
@@ -278,7 +286,7 @@ func TestAgentTasksService_List(t *testing.T) {
 			"state":       "completed",
 		})
 		w.Header().Set("Link", `<https://api.github.com/agents/tasks?page=3>; rel="next"`)
-		fmt.Fprintf(w, `{"tasks":[%v]}`, agentTaskJSON(false))
+		fmt.Fprintf(w, `{"tasks":[%v],"total_active_count":5,"total_archived_count":2}`, agentTaskJSON(false))
 	})
 
 	opts := &AgentTaskListOptions{
@@ -296,7 +304,11 @@ func TestAgentTasksService_List(t *testing.T) {
 		t.Fatalf("AgentTasks.List returned error: %v", err)
 	}
 
-	want := &AgentTaskList{Tasks: []*AgentTask{agentTask(false)}}
+	want := &AgentTaskList{
+		Tasks:              []*AgentTask{agentTask(false)},
+		TotalActiveCount:   Ptr(5),
+		TotalArchivedCount: Ptr(2),
+	}
 	if diff := cmp.Diff(want, tasks, cmpJSONRawMessageComparator()); diff != "" {
 		t.Errorf("AgentTasks.List mismatch (-want +got):\n%v", diff)
 	}
@@ -372,6 +384,26 @@ func TestAgentTaskArtifact_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }
 
+func TestAgentTaskOwner_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &AgentTaskOwner{}, "{}")
+
+	u := &AgentTaskOwner{ID: Ptr(int64(2))}
+	want := `{"id":2}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestAgentTaskRepository_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &AgentTaskRepository{}, "{}")
+
+	u := &AgentTaskRepository{ID: Ptr(int64(1296269))}
+	want := `{"id":1296269}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestAgentTaskSession_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &AgentTaskSession{}, `{"id":"","state":"","created_at":"0001-01-01T00:00:00Z"}`)
@@ -399,19 +431,27 @@ func TestAgentTaskSession_Marshal(t *testing.T) {
 
 func TestAgentTaskList_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &AgentTaskList{}, "{}")
+	testJSONMarshal(t, &AgentTaskList{}, `{"tasks":null}`)
 
-	u := &AgentTaskList{Tasks: []*AgentTask{agentTask(false)}}
-	want := `{"tasks":[` + agentTaskMarshalJSON(false) + `]}`
+	u := &AgentTaskList{
+		Tasks:              []*AgentTask{agentTask(false)},
+		TotalActiveCount:   Ptr(5),
+		TotalArchivedCount: Ptr(2),
+	}
+	want := `{
+		"tasks":[` + agentTaskMarshalJSON(false) + `],
+		"total_active_count": 5,
+		"total_archived_count": 2
+	}`
 
 	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
 }
 
-func TestCreateAgentTaskOptions_Marshal(t *testing.T) {
+func TestCreateAgentTaskRequest_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &CreateAgentTaskOptions{}, `{"prompt": ""}`)
+	testJSONMarshal(t, &CreateAgentTaskRequest{}, `{"prompt": ""}`)
 
-	u := &CreateAgentTaskOptions{
+	u := &CreateAgentTaskRequest{
 		Prompt:            "Fix the login button on the homepage",
 		Model:             Ptr("gpt-5.3-codex"),
 		CreatePullRequest: Ptr(true),

@@ -1214,6 +1214,17 @@ func TestAgentTask_GetURL(tt *testing.T) {
 	a.GetURL()
 }
 
+func TestAgentTask_GetUserCollaborators(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	a := &AgentTask{UserCollaborators: zeroValue}
+	a.GetUserCollaborators()
+	a = &AgentTask{}
+	a.GetUserCollaborators()
+	a = nil
+	a.GetUserCollaborators()
+}
+
 func TestAgentTaskArtifact_GetData(tt *testing.T) {
 	tt.Parallel()
 	a := &AgentTaskArtifact{}
@@ -1247,6 +1258,28 @@ func TestAgentTaskList_GetTasks(tt *testing.T) {
 	a.GetTasks()
 	a = nil
 	a.GetTasks()
+}
+
+func TestAgentTaskList_GetTotalActiveCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AgentTaskList{TotalActiveCount: &zeroValue}
+	a.GetTotalActiveCount()
+	a = &AgentTaskList{}
+	a.GetTotalActiveCount()
+	a = nil
+	a.GetTotalActiveCount()
+}
+
+func TestAgentTaskList_GetTotalArchivedCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AgentTaskList{TotalArchivedCount: &zeroValue}
+	a.GetTotalArchivedCount()
+	a = &AgentTaskList{}
+	a.GetTotalArchivedCount()
+	a = nil
+	a.GetTotalArchivedCount()
 }
 
 func TestAgentTaskListByRepoOptions_GetCreatorID(tt *testing.T) {
@@ -1298,6 +1331,28 @@ func TestAgentTaskListOptions_GetState(tt *testing.T) {
 	a.GetState()
 	a = nil
 	a.GetState()
+}
+
+func TestAgentTaskOwner_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AgentTaskOwner{ID: &zeroValue}
+	a.GetID()
+	a = &AgentTaskOwner{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAgentTaskRepository_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AgentTaskRepository{ID: &zeroValue}
+	a.GetID()
+	a = &AgentTaskRepository{}
+	a.GetID()
+	a = nil
+	a.GetID()
 }
 
 func TestAgentTaskSession_GetBaseRef(tt *testing.T) {
@@ -13166,42 +13221,42 @@ func TestCostCenters_GetCostCenters(tt *testing.T) {
 	c.GetCostCenters()
 }
 
-func TestCreateAgentTaskOptions_GetBaseRef(tt *testing.T) {
+func TestCreateAgentTaskRequest_GetBaseRef(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateAgentTaskOptions{BaseRef: &zeroValue}
+	c := &CreateAgentTaskRequest{BaseRef: &zeroValue}
 	c.GetBaseRef()
-	c = &CreateAgentTaskOptions{}
+	c = &CreateAgentTaskRequest{}
 	c.GetBaseRef()
 	c = nil
 	c.GetBaseRef()
 }
 
-func TestCreateAgentTaskOptions_GetCreatePullRequest(tt *testing.T) {
+func TestCreateAgentTaskRequest_GetCreatePullRequest(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	c := &CreateAgentTaskOptions{CreatePullRequest: &zeroValue}
+	c := &CreateAgentTaskRequest{CreatePullRequest: &zeroValue}
 	c.GetCreatePullRequest()
-	c = &CreateAgentTaskOptions{}
+	c = &CreateAgentTaskRequest{}
 	c.GetCreatePullRequest()
 	c = nil
 	c.GetCreatePullRequest()
 }
 
-func TestCreateAgentTaskOptions_GetModel(tt *testing.T) {
+func TestCreateAgentTaskRequest_GetModel(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateAgentTaskOptions{Model: &zeroValue}
+	c := &CreateAgentTaskRequest{Model: &zeroValue}
 	c.GetModel()
-	c = &CreateAgentTaskOptions{}
+	c = &CreateAgentTaskRequest{}
 	c.GetModel()
 	c = nil
 	c.GetModel()
 }
 
-func TestCreateAgentTaskOptions_GetPrompt(tt *testing.T) {
+func TestCreateAgentTaskRequest_GetPrompt(tt *testing.T) {
 	tt.Parallel()
-	c := &CreateAgentTaskOptions{}
+	c := &CreateAgentTaskRequest{}
 	c.GetPrompt()
 	c = nil
 	c.GetPrompt()
