@@ -156,3 +156,33 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestSubIssuesService_GetParentIssue(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/issues/42/parent", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":1, "number":1}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.SubIssue.GetParentIssue(ctx, "o", "r", 42)
+	if err != nil {
+		t.Errorf("SubIssues.GetParentIssue returned error: %v", err)
+	}
+
+	want := &Issue{Number: Ptr(1), ID: Ptr(int64(1))}
+	if !cmp.Equal(got, want) {
+		t.Errorf("SubIssues.GetParentIssue = %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetParentIssue"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.SubIssue.GetParentIssue(ctx, "o", "r", 42)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
