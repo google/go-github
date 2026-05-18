@@ -138,3 +138,24 @@ func (s *SubIssueService) Reprioritize(ctx context.Context, owner, repo string, 
 
 	return si, resp, nil
 }
+
+// GetParentIssue gets the parent issue of a sub-issue.
+//
+// GitHub API docs: https://docs.github.com/rest/issues/sub-issues?apiVersion=2022-11-28#get-parent-issue
+//
+//meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}/parent
+func (s *SubIssueService) GetParentIssue(ctx context.Context, owner, repo string, subIssueNumber int64) (*Issue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/parent", owner, repo, subIssueNumber)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var parentIssue *Issue
+	resp, err := s.client.Do(req, &parentIssue)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return parentIssue, resp, nil
+}
