@@ -12,8 +12,6 @@ import (
 	"time"
 )
 
-const agentTasksAPIVersion = "2026-03-10"
-
 // AgentTasksService handles communication with the agent tasks
 // methods of the GitHub API.
 //
@@ -141,7 +139,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(agentTasksAPIVersion))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -165,7 +163,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts *CreateAgentTaskRequest) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts, WithVersion(agentTasksAPIVersion))
+	req, err := s.client.NewRequest(ctx, "POST", u, opts, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -189,7 +187,7 @@ func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts
 func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, taskID string) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks/%v", owner, repo, taskID)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(agentTasksAPIVersion))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -217,7 +215,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(agentTasksAPIVersion))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -241,7 +239,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 func (s *AgentTasksService) Get(ctx context.Context, taskID string) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/tasks/%v", taskID)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(agentTasksAPIVersion))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}

@@ -40,6 +40,7 @@ const (
 	HeaderRequestID     = "X-Github-Request-Id"
 
 	defaultAPIVersion = "2022-11-28"
+	api20260310       = "2026-03-10"
 	defaultBaseURL    = "https://api.github.com/"
 	defaultUserAgent  = "go-github" + "/" + Version
 	uploadBaseURL     = "https://uploads.github.com/"
