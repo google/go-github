@@ -13,7 +13,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v86/github"
+	"github.com/google/go-github/v87/github"
 )
 
 // Fetch all the public organizations' membership of a user.
