@@ -314,7 +314,7 @@ is recommended, ex:
 ```go
 import (
 	"github.com/bartventer/httpcache"
-	_ "github.com/bartventer/httpcache/store/memcache" //  Register the in-memory backend
+	_ "github.com/bartventer/httpcache/store/memcache" // Register the in-memory backend
 )
 
 client, err := github.NewClient(github.WithHTTPClient(httpcache.NewClient("memcache://")), github.WithAuthToken(os.Getenv("GITHUB_TOKEN")))
