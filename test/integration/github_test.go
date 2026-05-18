@@ -16,7 +16,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/google/go-github/v86/github"
+	"github.com/google/go-github/v87/github"
 )
 
 // client is a github.Client with the default http.Client. It is authorized if auth is true.
