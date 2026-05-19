@@ -604,6 +604,41 @@ func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 	})
 }
 
+func TestAppsService_FindEnterpriseInstallation(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/installation", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Enterprise"}`)
+	})
+
+	ctx := t.Context()
+	installation, _, err := client.Apps.FindEnterpriseInstallation(ctx, "e")
+	if err != nil {
+		t.Errorf("Apps.FindEnterpriseInstallation returned error: %v", err)
+	}
+
+	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Enterprise")}
+	if !cmp.Equal(installation, want) {
+		t.Errorf("Apps.FindEnterpriseInstallation returned %+v, want %+v", installation, want)
+	}
+
+	const methodName = "FindEnterpriseInstallation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Apps.FindEnterpriseInstallation(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Apps.FindEnterpriseInstallation(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestAppsService_FindRepositoryInstallation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

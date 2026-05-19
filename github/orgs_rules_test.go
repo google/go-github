@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
+func TestOrganizationsService_ListAllRepositoryRulesets(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -38,9 +38,9 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	rulesets, _, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", nil)
+	rulesets, _, err := client.Organizations.ListAllRepositoryRulesets(ctx, "o", nil)
 	if err != nil {
-		t.Errorf("Organizations.GetAllRepositoryRulesets returned error: %v", err)
+		t.Errorf("Organizations.ListAllRepositoryRulesets returned error: %v", err)
 	}
 
 	want := []*RepositoryRuleset{{
@@ -56,12 +56,12 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 		},
 	}}
 	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.GetAllRepositoryRulesets returned %+v, want %+v", rulesets, want)
+		t.Errorf("Organizations.ListAllRepositoryRulesets returned %+v, want %+v", rulesets, want)
 	}
 
-	const methodName = "GetAllRepositoryRulesets"
+	const methodName = "ListAllRepositoryRulesets"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", nil)
+		got, resp, err := client.Organizations.ListAllRepositoryRulesets(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -69,7 +69,7 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_GetAllRepositoryRulesets_ListOptions(t *testing.T) {
+func TestOrganizationsService_ListAllRepositoryRulesets_ListOptions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -86,26 +86,26 @@ func TestOrganizationsService_GetAllRepositoryRulesets_ListOptions(t *testing.T)
 
 	opts := &ListOptions{Page: 2, PerPage: 35}
 	ctx := t.Context()
-	rulesets, _, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", opts)
+	rulesets, _, err := client.Organizations.ListAllRepositoryRulesets(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Organizations.GetAllRepositoryRulesets returned error: %v", err)
+		t.Errorf("Organizations.ListAllRepositoryRulesets returned error: %v", err)
 	}
 
 	want := []*RepositoryRuleset{{
 		ID: Ptr(int64(21)),
 	}}
 	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.GetAllRepositoryRulesets returned %+v, want %+v", rulesets, want)
+		t.Errorf("Organizations.ListAllRepositoryRulesets returned %+v, want %+v", rulesets, want)
 	}
 
-	const methodName = "GetAllRepositoryRulesets"
+	const methodName = "ListAllRepositoryRulesets"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.GetAllRepositoryRulesets(ctx, "\n", opts)
+		_, _, err = client.Organizations.ListAllRepositoryRulesets(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", opts)
+		got, resp, err := client.Organizations.ListAllRepositoryRulesets(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

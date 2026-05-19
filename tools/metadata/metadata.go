@@ -26,7 +26,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/go-github/v86/github"
+	"github.com/google/go-github/v87/github"
 	"go.yaml.in/yaml/v3"
 )
 
@@ -482,7 +482,7 @@ func methodOps(opsFile *operationsFile, cmap ast.CommentMap, fn *ast.FuncDecl) (
 // Keep this in sync with defaultAPIVersion in github/github.go.
 const metadataDocsAPIVersion = "2022-11-28"
 
-var previewDocsAPIVersions = map[string]string{
+var customDocsAPIVersions = map[string]string{
 	"/rest/agent-tasks/agent-tasks": "2026-03-10",
 }
 
@@ -508,7 +508,7 @@ func normalizeDocURL(docURL string) string {
 	q := u.Query()
 	if q.Get("apiVersion") == "" {
 		apiVersion := metadataDocsAPIVersion
-		if version, ok := previewDocsAPIVersions[cleanPath]; ok {
+		if version, ok := customDocsAPIVersions[cleanPath]; ok {
 			apiVersion = version
 		}
 		q.Set("apiVersion", apiVersion)
