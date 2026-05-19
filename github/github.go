@@ -39,10 +39,15 @@ const (
 	HeaderRateUsed      = "X-Ratelimit-Used"
 	HeaderRequestID     = "X-Github-Request-Id"
 
-	defaultAPIVersion = "2022-11-28"
-	defaultBaseURL    = "https://api.github.com/"
-	defaultUserAgent  = "go-github" + "/" + Version
-	uploadBaseURL     = "https://uploads.github.com/"
+	// https://docs.github.com/en/rest/about-the-rest-api/api-versions#about-api-versioning
+	defaultAPIVersion = api20221128
+	latestAPIVersion  = api20260310
+	api20221128       = "2022-11-28"
+	api20260310       = "2026-03-10"
+
+	defaultBaseURL   = "https://api.github.com/"
+	defaultUserAgent = "go-github" + "/" + Version
+	uploadBaseURL    = "https://uploads.github.com/"
 
 	headerAPIVersion = "X-Github-Api-Version"
 	headerOTP        = "X-Github-Otp"
