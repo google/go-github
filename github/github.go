@@ -438,6 +438,49 @@ func WithAuthToken(token string) ClientOptionsFunc {
 	}
 }
 
+// WithURLs returns a ClientOptionsFunc that sets the base and upload URLs
+// while only validating the URL format. Nil values will be ignored and default
+// URLs will be used.
+func WithURLs(baseURL, uploadURL *string) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if baseURL != nil {
+			if *baseURL == "" {
+				return errors.New("base url must not be empty")
+			}
+
+			b, err := url.Parse(*baseURL)
+			if err != nil {
+				return fmt.Errorf("invalid base url: %w", err)
+			}
+
+			if !strings.HasSuffix(b.Path, "/") {
+				b.Path += "/"
+			}
+
+			o.baseURL = b
+		}
+
+		if uploadURL != nil {
+			if *uploadURL == "" {
+				return errors.New("upload url must not be empty")
+			}
+
+			u, err := url.Parse(*uploadURL)
+			if err != nil {
+				return fmt.Errorf("invalid upload url: %w", err)
+			}
+
+			if !strings.HasSuffix(u.Path, "/") {
+				u.Path += "/"
+			}
+
+			o.uploadURL = u
+		}
+
+		return nil
+	}
+}
+
 // WithEnterpriseURLs returns a ClientOptionsFunc that sets the base and upload
 // URLs for a Client.
 func WithEnterpriseURLs(baseURL, uploadURL string) ClientOptionsFunc {
@@ -452,7 +495,7 @@ func WithEnterpriseURLs(baseURL, uploadURL string) ClientOptionsFunc {
 
 		b, err := url.Parse(baseURL)
 		if err != nil {
-			return err
+			return fmt.Errorf("invalid base url: %w", err)
 		}
 
 		if !strings.HasSuffix(b.Path, "/") {
@@ -469,7 +512,7 @@ func WithEnterpriseURLs(baseURL, uploadURL string) ClientOptionsFunc {
 
 		u, err := url.Parse(uploadURL)
 		if err != nil {
-			return err
+			return fmt.Errorf("invalid upload url: %w", err)
 		}
 
 		if !strings.HasSuffix(u.Path, "/") {
