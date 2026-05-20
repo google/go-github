@@ -666,24 +666,24 @@ func TestWithURLs(t *testing.T) {
 		{
 			name:    "error_on_empty_base_url",
 			baseURL: Ptr(""),
-			wantErr: "base url must not be empty",
+			wantErr: "invalid base url: url cannot be empty",
 		},
 		{
 			name:    "error_on_bad_base_url",
 			baseURL: Ptr("bogus\nbase\nURL"),
-			wantErr: "invalid base url",
+			wantErr: "invalid base url: invalid url",
 		},
 		{
 			name:      "error_on_empty_upload_url",
 			baseURL:   Ptr("https://example.com/"),
 			uploadURL: Ptr(""),
-			wantErr:   "upload url must not be empty",
+			wantErr:   "invalid upload url: url cannot be empty",
 		},
 		{
 			name:      "error_on_bad_upload_url",
 			baseURL:   Ptr("https://example.com/"),
 			uploadURL: Ptr("bogus\nupload\nURL"),
-			wantErr:   "invalid upload url",
+			wantErr:   "invalid upload url: invalid url",
 		},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
@@ -693,15 +693,19 @@ func TestWithURLs(t *testing.T) {
 			err := WithURLs(tt.baseURL, tt.uploadURL)(&opts)
 			if err != nil {
 				if tt.wantErr == "" {
-					t.Fatalf("WithURLs returned unexpected error: %v", err)
+					t.Fatalf("unexpected error: %v", err)
 				}
+
 				if !strings.Contains(err.Error(), tt.wantErr) {
-					t.Fatalf("error does not contain expected string %q: %v", tt.wantErr, err)
+					t.Fatalf("expected error to contain %v, got %v", tt.wantErr, err)
 				}
+
 				return
 			}
+
 			if tt.wantErr != "" {
-				t.Fatalf("WithURLs did not return expected error containing %q", tt.wantErr)
+				t.Fatalf("expected error to contain %v, got nil", tt.wantErr)
+				return
 			}
 
 			if (opts.baseURL != nil) != (tt.wantBaseURL != nil) {
@@ -812,25 +816,25 @@ func TestWithEnterpriseURLs(t *testing.T) {
 			name:      "empty_base_url",
 			baseURL:   "",
 			uploadURL: "https://custom-upload-url/api/uploads/",
-			wantErr:   "base url must not be empty",
+			wantErr:   "invalid base url: url cannot be empty",
 		},
 		{
 			name:      "invalid_base_url",
 			baseURL:   "bogus\nbase\nURL",
 			uploadURL: "https://custom-upload-url/api/uploads/",
-			wantErr:   `invalid base url`,
+			wantErr:   `invalid base url: invalid url`,
 		},
 		{
 			name:      "empty_upload_url",
 			baseURL:   "https://custom-url/api/v3/",
 			uploadURL: "",
-			wantErr:   "upload url must not be empty",
+			wantErr:   "invalid upload url: url cannot be empty",
 		},
 		{
 			name:      "invalid_upload_url",
 			baseURL:   "https://custom-url/api/v3/",
 			uploadURL: "bogus\nupload\nURL",
-			wantErr:   `invalid upload url`,
+			wantErr:   `invalid upload url: invalid url`,
 		},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
