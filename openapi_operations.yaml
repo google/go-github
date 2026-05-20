@@ -5638,6 +5638,11 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /repos/{owner}/{repo}/copilot/cloud-agent/configuration
+    documentation_url: https://docs.github.com/rest/copilot/copilot-cloud-agent-management?apiVersion=2026-03-10#get-copilot-cloud-agent-configuration-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/dependabot/alerts
     documentation_url: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-a-repository
     openapi_files:

@@ -8190,6 +8190,54 @@ func (c *ContributorStats) GetWeeks() []*WeeklyStats {
 	return c.Weeks
 }
 
+// GetCustomAllowlist returns the CustomAllowlist slice if it's non-nil, nil otherwise.
+func (c *CopilotCloudAgentConfiguration) GetCustomAllowlist() []string {
+	if c == nil || c.CustomAllowlist == nil {
+		return nil
+	}
+	return c.CustomAllowlist
+}
+
+// GetEnabledTools returns the EnabledTools field.
+func (c *CopilotCloudAgentConfiguration) GetEnabledTools() *EnabledTools {
+	if c == nil {
+		return nil
+	}
+	return c.EnabledTools
+}
+
+// GetIsFirewallEnabled returns the IsFirewallEnabled field if it's non-nil, zero value otherwise.
+func (c *CopilotCloudAgentConfiguration) GetIsFirewallEnabled() bool {
+	if c == nil || c.IsFirewallEnabled == nil {
+		return false
+	}
+	return *c.IsFirewallEnabled
+}
+
+// GetIsFirewallRecommendedAllowlistEnabled returns the IsFirewallRecommendedAllowlistEnabled field if it's non-nil, zero value otherwise.
+func (c *CopilotCloudAgentConfiguration) GetIsFirewallRecommendedAllowlistEnabled() bool {
+	if c == nil || c.IsFirewallRecommendedAllowlistEnabled == nil {
+		return false
+	}
+	return *c.IsFirewallRecommendedAllowlistEnabled
+}
+
+// GetMcpConfiguration returns the McpConfiguration field if it's non-nil, zero value otherwise.
+func (c *CopilotCloudAgentConfiguration) GetMcpConfiguration() json.RawMessage {
+	if c == nil || c.McpConfiguration == nil {
+		return json.RawMessage{}
+	}
+	return *c.McpConfiguration
+}
+
+// GetRequireActionsWorkflowApproval returns the RequireActionsWorkflowApproval field if it's non-nil, zero value otherwise.
+func (c *CopilotCloudAgentConfiguration) GetRequireActionsWorkflowApproval() bool {
+	if c == nil || c.RequireActionsWorkflowApproval == nil {
+		return false
+	}
+	return *c.RequireActionsWorkflowApproval
+}
+
 // GetParameters returns the Parameters field.
 func (c *CopilotCodeReviewBranchRule) GetParameters() CopilotCodeReviewRuleParameters {
 	if c == nil {
@@ -14068,6 +14116,38 @@ func (e *EditTopics) GetFrom() []string {
 		return nil
 	}
 	return e.From
+}
+
+// GetCodeql returns the Codeql field if it's non-nil, zero value otherwise.
+func (e *EnabledTools) GetCodeql() bool {
+	if e == nil || e.Codeql == nil {
+		return false
+	}
+	return *e.Codeql
+}
+
+// GetCopilotCodeReview returns the CopilotCodeReview field if it's non-nil, zero value otherwise.
+func (e *EnabledTools) GetCopilotCodeReview() bool {
+	if e == nil || e.CopilotCodeReview == nil {
+		return false
+	}
+	return *e.CopilotCodeReview
+}
+
+// GetDependencyVulnerabilityChecks returns the DependencyVulnerabilityChecks field if it's non-nil, zero value otherwise.
+func (e *EnabledTools) GetDependencyVulnerabilityChecks() bool {
+	if e == nil || e.DependencyVulnerabilityChecks == nil {
+		return false
+	}
+	return *e.DependencyVulnerabilityChecks
+}
+
+// GetSecretScanning returns the SecretScanning field if it's non-nil, zero value otherwise.
+func (e *EnabledTools) GetSecretScanning() bool {
+	if e == nil || e.SecretScanning == nil {
+		return false
+	}
+	return *e.SecretScanning
 }
 
 // GetEncryptedValue returns the EncryptedValue field.
