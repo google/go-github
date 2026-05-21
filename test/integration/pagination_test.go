@@ -10,7 +10,7 @@ package integration
 import (
 	"testing"
 
-	"github.com/google/go-github/v87/github"
+	"github.com/google/go-github/v88/github"
 )
 
 func TestSecurityAdvisories_ListGlobalSecurityAdvisories(t *testing.T) {
