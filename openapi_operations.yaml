@@ -39,7 +39,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 911b11fa051e0cb0af96e0e52eec5627415138f4
+openapi_commit: 133d385dfbee06825d4d4136a82dd2b4c79813ba
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -1083,6 +1083,11 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/metrics/reports/enterprise-28-day/latest
     documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-enterprise-usage-metrics
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/copilot/metrics/reports/user-teams-1-day
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-enterprise-user-teams-report-for-a-specific-day
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -2967,6 +2972,11 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/copilot/metrics/reports/organization-28-day/latest
     documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-organization-usage-metrics
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/copilot/metrics/reports/user-teams-1-day
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-organization-user-teams-report-for-a-specific-day
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -5289,6 +5299,14 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /repos/{owner}/{repo}/code-quality/setup
+    documentation_url: https://docs.github.com/rest/code-quality/code-quality#get-a-code-quality-setup-configuration
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+  - name: PATCH /repos/{owner}/{repo}/code-quality/setup
+    documentation_url: https://docs.github.com/rest/code-quality/code-quality#update-a-code-quality-setup-configuration
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
   - name: GET /repos/{owner}/{repo}/code-scanning/alerts
     documentation_url: https://docs.github.com/rest/code-scanning/code-scanning#list-code-scanning-alerts-for-a-repository
     openapi_files:
@@ -5638,6 +5656,11 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /repos/{owner}/{repo}/copilot/cloud-agent/configuration
+    documentation_url: https://docs.github.com/rest/copilot/copilot-cloud-agent-management#get-copilot-cloud-agent-configuration-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/dependabot/alerts
     documentation_url: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-a-repository
     openapi_files:
@@ -6816,16 +6839,6 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
-  - name: DELETE /repos/{owner}/{repo}/pulls/{pull_number}/archive
-    documentation_url: https://docs.github.com/rest/pulls/pulls#unarchive-a-pull-request
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
-  - name: PUT /repos/{owner}/{repo}/pulls/{pull_number}/archive
-    documentation_url: https://docs.github.com/rest/pulls/pulls#archive-a-pull-request
-    openapi_files:
-      - descriptions/api.github.com/api.github.com.json
-      - descriptions/ghec/ghec.json
   - name: POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces
     documentation_url: https://docs.github.com/rest/codespaces/codespaces#create-a-codespace-from-a-pull-request
     openapi_files:
