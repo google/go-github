@@ -33,7 +33,7 @@ type EnabledTools struct {
 
 // GetCopilotCloudAgentConfiguration gets the Copilot cloud agent configuration for a repository.
 //
-// GitHub API docs: https://docs.github.com/rest/copilot/copilot-cloud-agent-management?apiVersion=2026-03-10#get-copilot-cloud-agent-configuration-for-a-repository
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-cloud-agent-management?apiVersion=2022-11-28#get-copilot-cloud-agent-configuration-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/copilot/cloud-agent/configuration
 func (s *CopilotService) GetCopilotCloudAgentConfiguration(ctx context.Context, owner, repo string) (*CopilotCloudAgentConfiguration, *Response, error) {
@@ -44,11 +44,11 @@ func (s *CopilotService) GetCopilotCloudAgentConfiguration(ctx context.Context, 
 		return nil, nil, err
 	}
 
-	var config CopilotCloudAgentConfiguration
+	var config *CopilotCloudAgentConfiguration
 	resp, err := s.client.Do(req, &config)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return &config, resp, nil
+	return config, resp, nil
 }
