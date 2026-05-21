@@ -569,7 +569,7 @@ func TestAppsService_CreateAttachment(t *testing.T) {
 	})
 }
 
-func TestAppsService_FindOrganizationInstallation(t *testing.T) {
+func TestAppsService_GetOrganizationInstallation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -579,24 +579,24 @@ func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	installation, _, err := client.Apps.FindOrganizationInstallation(ctx, "o")
+	installation, _, err := client.Apps.GetOrganizationInstallation(ctx, "o")
 	if err != nil {
-		t.Errorf("Apps.FindOrganizationInstallation returned error: %v", err)
+		t.Errorf("Apps.GetOrganizationInstallation returned error: %v", err)
 	}
 
 	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
 	if !cmp.Equal(installation, want) {
-		t.Errorf("Apps.FindOrganizationInstallation returned %+v, want %+v", installation, want)
+		t.Errorf("Apps.GetOrganizationInstallation returned %+v, want %+v", installation, want)
 	}
 
-	const methodName = "FindOrganizationInstallation"
+	const methodName = "GetOrganizationInstallation"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.FindOrganizationInstallation(ctx, "\n")
+		_, _, err = client.Apps.GetOrganizationInstallation(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.FindOrganizationInstallation(ctx, "o")
+		got, resp, err := client.Apps.GetOrganizationInstallation(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -604,7 +604,7 @@ func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 	})
 }
 
-func TestAppsService_FindEnterpriseInstallation(t *testing.T) {
+func TestAppsService_GetEnterpriseInstallation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -614,24 +614,24 @@ func TestAppsService_FindEnterpriseInstallation(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	installation, _, err := client.Apps.FindEnterpriseInstallation(ctx, "e")
+	installation, _, err := client.Apps.GetEnterpriseInstallation(ctx, "e")
 	if err != nil {
-		t.Errorf("Apps.FindEnterpriseInstallation returned error: %v", err)
+		t.Errorf("Apps.GetEnterpriseInstallation returned error: %v", err)
 	}
 
 	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Enterprise")}
 	if !cmp.Equal(installation, want) {
-		t.Errorf("Apps.FindEnterpriseInstallation returned %+v, want %+v", installation, want)
+		t.Errorf("Apps.GetEnterpriseInstallation returned %+v, want %+v", installation, want)
 	}
 
-	const methodName = "FindEnterpriseInstallation"
+	const methodName = "GetEnterpriseInstallation"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.FindEnterpriseInstallation(ctx, "\n")
+		_, _, err = client.Apps.GetEnterpriseInstallation(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.FindEnterpriseInstallation(ctx, "e")
+		got, resp, err := client.Apps.GetEnterpriseInstallation(ctx, "e")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -639,7 +639,7 @@ func TestAppsService_FindEnterpriseInstallation(t *testing.T) {
 	})
 }
 
-func TestAppsService_FindRepositoryInstallation(t *testing.T) {
+func TestAppsService_GetRepositoryInstallation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -649,24 +649,24 @@ func TestAppsService_FindRepositoryInstallation(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	installation, _, err := client.Apps.FindRepositoryInstallation(ctx, "o", "r")
+	installation, _, err := client.Apps.GetRepositoryInstallation(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Apps.FindRepositoryInstallation returned error: %v", err)
+		t.Errorf("Apps.GetRepositoryInstallation returned error: %v", err)
 	}
 
 	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
 	if !cmp.Equal(installation, want) {
-		t.Errorf("Apps.FindRepositoryInstallation returned %+v, want %+v", installation, want)
+		t.Errorf("Apps.GetRepositoryInstallation returned %+v, want %+v", installation, want)
 	}
 
-	const methodName = "FindRepositoryInstallation"
+	const methodName = "GetRepositoryInstallation"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.FindRepositoryInstallation(ctx, "\n", "\n")
+		_, _, err = client.Apps.GetRepositoryInstallation(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.FindRepositoryInstallation(ctx, "o", "r")
+		got, resp, err := client.Apps.GetRepositoryInstallation(ctx, "o", "r")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -674,7 +674,7 @@ func TestAppsService_FindRepositoryInstallation(t *testing.T) {
 	})
 }
 
-func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
+func TestAppsService_GetRepositoryInstallationByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -684,24 +684,24 @@ func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	installation, _, err := client.Apps.FindRepositoryInstallationByID(ctx, 1)
+	installation, _, err := client.Apps.GetRepositoryInstallationByID(ctx, 1)
 	if err != nil {
-		t.Errorf("Apps.FindRepositoryInstallationByID returned error: %v", err)
+		t.Errorf("Apps.GetRepositoryInstallationByID returned error: %v", err)
 	}
 
 	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
 	if !cmp.Equal(installation, want) {
-		t.Errorf("Apps.FindRepositoryInstallationByID returned %+v, want %+v", installation, want)
+		t.Errorf("Apps.GetRepositoryInstallationByID returned %+v, want %+v", installation, want)
 	}
 
-	const methodName = "FindRepositoryInstallationByID"
+	const methodName = "GetRepositoryInstallationByID"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.FindRepositoryInstallationByID(ctx, -1)
+		_, _, err = client.Apps.GetRepositoryInstallationByID(ctx, -1)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.FindRepositoryInstallationByID(ctx, 1)
+		got, resp, err := client.Apps.GetRepositoryInstallationByID(ctx, 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -709,7 +709,7 @@ func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
 	})
 }
 
-func TestAppsService_FindUserInstallation(t *testing.T) {
+func TestAppsService_GetUserInstallation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -719,24 +719,24 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	installation, _, err := client.Apps.FindUserInstallation(ctx, "u")
+	installation, _, err := client.Apps.GetUserInstallation(ctx, "u")
 	if err != nil {
-		t.Errorf("Apps.FindUserInstallation returned error: %v", err)
+		t.Errorf("Apps.GetUserInstallation returned error: %v", err)
 	}
 
 	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("User")}
 	if !cmp.Equal(installation, want) {
-		t.Errorf("Apps.FindUserInstallation returned %+v, want %+v", installation, want)
+		t.Errorf("Apps.GetUserInstallation returned %+v, want %+v", installation, want)
 	}
 
-	const methodName = "FindUserInstallation"
+	const methodName = "GetUserInstallation"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.FindUserInstallation(ctx, "\n")
+		_, _, err = client.Apps.GetUserInstallation(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.FindUserInstallation(ctx, "u")
+		got, resp, err := client.Apps.GetUserInstallation(ctx, "u")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
