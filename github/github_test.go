@@ -636,6 +636,95 @@ func TestWithAuthToken(t *testing.T) {
 	})
 }
 
+func TestWithURLs(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name          string
+		baseURL       *string
+		wantBaseURL   *string
+		uploadURL     *string
+		wantUploadURL *string
+		wantErr       string
+	}{
+		{
+			name:          "does_not_modify_urls_with_trailing_slash",
+			baseURL:       Ptr("https://example.com/"),
+			wantBaseURL:   Ptr("https://example.com/"),
+			uploadURL:     Ptr("https://upload.example.com/"),
+			wantUploadURL: Ptr("https://upload.example.com/"),
+		},
+		{
+			name:          "adds_trailing_slash",
+			baseURL:       Ptr("https://example.com"),
+			wantBaseURL:   Ptr("https://example.com/"),
+			uploadURL:     Ptr("https://upload.example.com"),
+			wantUploadURL: Ptr("https://upload.example.com/"),
+		},
+		{
+			name: "skips_unset",
+		},
+		{
+			name:    "error_on_empty_base_url",
+			baseURL: Ptr(""),
+			wantErr: "invalid base url: url cannot be empty",
+		},
+		{
+			name:    "error_on_bad_base_url",
+			baseURL: Ptr("bogus\nbase\nURL"),
+			wantErr: "invalid base url: invalid url",
+		},
+		{
+			name:      "error_on_empty_upload_url",
+			baseURL:   Ptr("https://example.com/"),
+			uploadURL: Ptr(""),
+			wantErr:   "invalid upload url: url cannot be empty",
+		},
+		{
+			name:      "error_on_bad_upload_url",
+			baseURL:   Ptr("https://example.com/"),
+			uploadURL: Ptr("bogus\nupload\nURL"),
+			wantErr:   "invalid upload url: invalid url",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			opts := clientOptions{}
+			err := WithURLs(tt.baseURL, tt.uploadURL)(&opts)
+			if err != nil {
+				if tt.wantErr == "" {
+					t.Fatalf("unexpected error: %v", err)
+				}
+
+				if !strings.Contains(err.Error(), tt.wantErr) {
+					t.Fatalf("expected error to contain %v, got %v", tt.wantErr, err)
+				}
+
+				return
+			}
+
+			if tt.wantErr != "" {
+				t.Fatalf("expected error to contain %v, got nil", tt.wantErr)
+				return
+			}
+
+			if (opts.baseURL != nil) != (tt.wantBaseURL != nil) {
+				t.Errorf("BaseURL set = %v, want %v", opts.baseURL != nil, tt.wantBaseURL != nil)
+			}
+			if opts.baseURL != nil && opts.baseURL.String() != *tt.wantBaseURL {
+				t.Errorf("BaseURL is %v, want %v", opts.baseURL.String(), *tt.wantBaseURL)
+			}
+
+			if (opts.uploadURL != nil) != (tt.wantUploadURL != nil) {
+				t.Errorf("UploadURL set = %v, want %v", opts.uploadURL != nil, tt.wantUploadURL != nil)
+			}
+			if opts.uploadURL != nil && opts.uploadURL.String() != *tt.wantUploadURL {
+				t.Errorf("UploadURL is %v, want %v", opts.uploadURL.String(), *tt.wantUploadURL)
+			}
+		})
+	}
+}
+
 func TestWithEnterpriseURLs(t *testing.T) {
 	t.Parallel()
 	for _, tt := range []struct {
@@ -647,105 +736,105 @@ func TestWithEnterpriseURLs(t *testing.T) {
 		wantErr       string
 	}{
 		{
-			name:          "does not modify properly formed URLs",
+			name:          "does_not_modify_properly_formed_urls",
 			baseURL:       "https://custom-url/api/v3/",
 			wantBaseURL:   "https://custom-url/api/v3/",
 			uploadURL:     "https://custom-upload-url/api/uploads/",
 			wantUploadURL: "https://custom-upload-url/api/uploads/",
 		},
 		{
-			name:          "adds trailing slash",
+			name:          "adds_trailing_slash",
 			baseURL:       "https://custom-url/api/v3",
 			wantBaseURL:   "https://custom-url/api/v3/",
 			uploadURL:     "https://custom-upload-url/api/uploads",
 			wantUploadURL: "https://custom-upload-url/api/uploads/",
 		},
 		{
-			name:          "adds enterprise suffix",
+			name:          "adds_enterprise_suffix",
 			baseURL:       "https://custom-url/",
 			wantBaseURL:   "https://custom-url/api/v3/",
 			uploadURL:     "https://custom-upload-url/",
 			wantUploadURL: "https://custom-upload-url/api/uploads/",
 		},
 		{
-			name:          "adds enterprise suffix and trailing slash",
+			name:          "adds_enterprise_suffix_and_trailing_slash",
 			baseURL:       "https://custom-url",
 			wantBaseURL:   "https://custom-url/api/v3/",
 			uploadURL:     "https://custom-upload-url",
 			wantUploadURL: "https://custom-upload-url/api/uploads/",
 		},
 		{
-			name:      "bad base URL",
-			baseURL:   "bogus\nbase\nURL",
-			uploadURL: "https://custom-upload-url/api/uploads/",
-			wantErr:   `invalid control character in URL`,
-		},
-		{
-			name:      "bad upload URL",
-			baseURL:   "https://custom-url/api/v3/",
-			uploadURL: "bogus\nupload\nURL",
-			wantErr:   `invalid control character in URL`,
-		},
-		{
-			name:          "URL has existing API prefix, adds trailing slash",
+			name:          "url_has_existing_api_prefix_adds_trailing_slash",
 			baseURL:       "https://api.custom-url",
 			wantBaseURL:   "https://api.custom-url/",
 			uploadURL:     "https://api.custom-upload-url",
 			wantUploadURL: "https://api.custom-upload-url/",
 		},
 		{
-			name:          "URL has existing API prefix and trailing slash",
+			name:          "url_has_existing_api_prefix_and_trailing_slash",
 			baseURL:       "https://api.custom-url/",
 			wantBaseURL:   "https://api.custom-url/",
 			uploadURL:     "https://api.custom-upload-url/",
 			wantUploadURL: "https://api.custom-upload-url/",
 		},
 		{
-			name:          "URL has API subdomain, adds trailing slash",
+			name:          "url_has_api_subdomain_adds_trailing_slash",
 			baseURL:       "https://catalog.api.custom-url",
 			wantBaseURL:   "https://catalog.api.custom-url/",
 			uploadURL:     "https://catalog.api.custom-upload-url",
 			wantUploadURL: "https://catalog.api.custom-upload-url/",
 		},
 		{
-			name:          "URL has API subdomain and trailing slash",
+			name:          "url_has_api_subdomain_and_trailing_slash",
 			baseURL:       "https://catalog.api.custom-url/",
 			wantBaseURL:   "https://catalog.api.custom-url/",
 			uploadURL:     "https://catalog.api.custom-upload-url/",
 			wantUploadURL: "https://catalog.api.custom-upload-url/",
 		},
 		{
-			name:          "URL is not a proper API subdomain, adds enterprise suffix and slash",
+			name:          "url_is_not_a_proper_api_subdomain_adds_enterprise_suffix_and_trailing_slash",
 			baseURL:       "https://cloud-api.custom-url",
 			wantBaseURL:   "https://cloud-api.custom-url/api/v3/",
 			uploadURL:     "https://cloud-api.custom-upload-url",
 			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
 		},
 		{
-			name:          "URL is not a proper API subdomain, adds enterprise suffix",
+			name:          "url_is_not_a_proper_api_subdomain_adds_enterprise_suffix",
 			baseURL:       "https://cloud-api.custom-url/",
 			wantBaseURL:   "https://cloud-api.custom-url/api/v3/",
 			uploadURL:     "https://cloud-api.custom-upload-url/",
 			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
 		},
 		{
-			name:          "URL has uploads subdomain, does not modify",
+			name:          "url_has_uploads_subdomain_does_not_modify",
 			baseURL:       "https://api.custom-url/",
 			wantBaseURL:   "https://api.custom-url/",
 			uploadURL:     "https://uploads.custom-upload-url/",
 			wantUploadURL: "https://uploads.custom-upload-url/",
 		},
 		{
-			name:      "missing_base_url",
+			name:      "empty_base_url",
 			baseURL:   "",
 			uploadURL: "https://custom-upload-url/api/uploads/",
-			wantErr:   "base url must not be empty",
+			wantErr:   "invalid base url: url cannot be empty",
 		},
 		{
-			name:      "missing_upload_url",
+			name:      "invalid_base_url",
+			baseURL:   "bogus\nbase\nURL",
+			uploadURL: "https://custom-upload-url/api/uploads/",
+			wantErr:   `invalid base url: invalid url`,
+		},
+		{
+			name:      "empty_upload_url",
 			baseURL:   "https://custom-url/api/v3/",
 			uploadURL: "",
-			wantErr:   "upload url must not be empty",
+			wantErr:   "invalid upload url: url cannot be empty",
+		},
+		{
+			name:      "invalid_upload_url",
+			baseURL:   "https://custom-url/api/v3/",
+			uploadURL: "bogus\nupload\nURL",
+			wantErr:   `invalid upload url: invalid url`,
 		},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
@@ -4417,7 +4506,7 @@ func TestClientCopy_leak_transport(t *testing.T) {
 		accessToken := r.Header.Get("Authorization")
 		_, _ = fmt.Fprintf(w, `{"login": "%v"}`, accessToken)
 	}))
-	clientPreconfiguredWithURLs := mustNewClient(t, WithEnterpriseURLs(srv.URL, srv.URL))
+	clientPreconfiguredWithURLs := mustNewClient(t, WithURLs(&srv.URL, &srv.URL))
 
 	aliceClient, err := clientPreconfiguredWithURLs.Clone(WithAuthToken("alice"))
 	if err != nil {
