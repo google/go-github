@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v87/github"
+	"github.com/google/go-github/v88/github"
 )
 
 func ExampleRepositoriesService_ListByUserIter() {

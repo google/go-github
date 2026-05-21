@@ -18,7 +18,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v87/github"
+	"github.com/google/go-github/v88/github"
 	"github.com/sigstore/sigstore-go/pkg/bundle"
 	"github.com/sigstore/sigstore-go/pkg/root"
 	"github.com/sigstore/sigstore-go/pkg/verify"

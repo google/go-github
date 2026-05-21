@@ -1,4 +1,4 @@
-module github.com/google/go-github/v87/tools/structfield
+module github.com/google/go-github/v88/tools/structfield
 
 go 1.25.0
 
