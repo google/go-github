@@ -161,6 +161,9 @@ const (
 	mediaTypeContentAttachmentsPreview = "application/vnd.github.corsair-preview+json"
 )
 
+// apiVersionRegexp is a regular expression to validate API version strings.
+var apiVersionRegexp = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`)
+
 // ErrPathForbidden is returned when a URL path contains ".." as a path
 // segment, which could allow path traversal attacks.
 var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulnerability issue")
@@ -177,6 +180,9 @@ type Client struct {
 
 	// Base URL for uploading files.
 	uploadURL *url.URL
+
+	// API version to set in the X-Github-Api-Version header.
+	apiVersion string
 
 	// User agent used when communicating with the GitHub API.
 	userAgent string
@@ -347,6 +353,7 @@ type clientOptions struct {
 	httpClient                              *http.Client
 	transport                               http.RoundTripper
 	timeout                                 *time.Duration
+	apiVersion                              *string
 	userAgent                               *string
 	envProxy                                bool
 	token                                   *string
@@ -401,6 +408,27 @@ func WithTimeout(timeout time.Duration) ClientOptionsFunc {
 		}
 
 		o.timeout = &timeout
+		return nil
+	}
+}
+
+// WithAPIVersion returns a ClientOptionsFunc that sets the API version for a
+// Client. The API version should be in the format "YYYY-MM-DD" as specified by
+// GitHub's API versioning scheme. If not set, the default API version will be
+// used.
+// Warning: Setting the API version to anything other than [defaultAPIVersion]
+// is not recommended and may cause compatibility issues with this package.
+func WithAPIVersion(apiVersion string) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if apiVersion == "" {
+			return errors.New("api version must not be empty")
+		}
+
+		if !apiVersionRegexp.MatchString(apiVersion) {
+			return errors.New("invalid api version")
+		}
+
+		o.apiVersion = &apiVersion
 		return nil
 	}
 }
@@ -609,6 +637,12 @@ func newClient(opts clientOptions) (*Client, error) {
 		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
 	}
 
+	if opts.apiVersion != nil {
+		c.apiVersion = *opts.apiVersion
+	} else {
+		c.apiVersion = defaultAPIVersion
+	}
+
 	if opts.userAgent != nil {
 		c.userAgent = *opts.userAgent
 	} else {
@@ -684,6 +718,18 @@ func newClient(opts clientOptions) (*Client, error) {
 	return c, nil
 }
 
+// APIVersion returns the API version set in the X-Github-Api-Version header
+// for the client.
+func (c *Client) APIVersion() string {
+	return c.apiVersion
+}
+
+// CheckAPIVersion checks if the client's API version is compatible with the
+// provided minimum version.
+func (c *Client) CheckAPIVersion(minVersion string) bool {
+	return minVersion <= c.apiVersion
+}
+
 // UserAgent returns the User-Agent header value for the client.
 func (c *Client) UserAgent() string {
 	return c.userAgent
@@ -718,6 +764,7 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 	}
 
 	o := clientOptions{
+		apiVersion:                              &c.apiVersion,
 		userAgent:                               &c.userAgent,
 		baseURL:                                 Ptr(*c.baseURL),
 		uploadURL:                               Ptr(*c.uploadURL),
@@ -814,7 +861,7 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body any
 	if c.userAgent != "" {
 		req.Header.Set("User-Agent", c.userAgent)
 	}
-	req.Header.Set(headerAPIVersion, defaultAPIVersion)
+	req.Header.Set(headerAPIVersion, c.apiVersion)
 
 	for _, opt := range opts {
 		opt(req)
@@ -851,7 +898,7 @@ func (c *Client) NewFormRequest(ctx context.Context, urlStr string, body io.Read
 	if c.userAgent != "" {
 		req.Header.Set("User-Agent", c.userAgent)
 	}
-	req.Header.Set(headerAPIVersion, defaultAPIVersion)
+	req.Header.Set(headerAPIVersion, c.apiVersion)
 
 	for _, opt := range opts {
 		opt(req)
@@ -922,7 +969,7 @@ func (c *Client) NewUploadRequest(ctx context.Context, urlStr string, reader io.
 	req.Header.Set("Content-Type", mediaType)
 	req.Header.Set("Accept", mediaTypeV3)
 	req.Header.Set("User-Agent", c.userAgent)
-	req.Header.Set(headerAPIVersion, defaultAPIVersion)
+	req.Header.Set(headerAPIVersion, c.apiVersion)
 
 	for _, opt := range opts {
 		opt(req)

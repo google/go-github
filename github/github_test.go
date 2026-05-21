@@ -560,6 +560,57 @@ func TestWithTimeout(t *testing.T) {
 	})
 }
 
+func TestWithAPIVersion(t *testing.T) {
+	t.Parallel()
+
+	for _, tt := range []struct {
+		name        string
+		version     string
+		wantVersion string
+		wantErr     string
+	}{
+		{
+			name:    "empty_version",
+			version: "",
+			wantErr: "api version must not be empty",
+		},
+		{
+			name:    "invalid_version",
+			version: "1.0.0",
+			wantErr: "invalid api version",
+		},
+		{
+			name:        "valid_version",
+			version:     defaultAPIVersion,
+			wantVersion: defaultAPIVersion,
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			opts := clientOptions{}
+			err := WithAPIVersion(tt.version)(&opts)
+			if err != nil {
+				if tt.wantErr == "" {
+					t.Fatalf("unexpected error: %v", err)
+				}
+				if err.Error() != tt.wantErr {
+					t.Fatalf("want error %v, got %v", tt.wantErr, err)
+				}
+				return
+			}
+
+			if tt.wantErr != "" {
+				t.Fatalf("want error %v, got nil", tt.wantErr)
+			}
+
+			if opts.apiVersion != nil && *opts.apiVersion != tt.wantVersion {
+				t.Errorf("want apiVersion %v, got %v", tt.wantVersion, *opts.apiVersion)
+			}
+		})
+	}
+}
+
 func TestWithUserAgent(t *testing.T) {
 	t.Parallel()
 
@@ -1010,6 +1061,7 @@ func Test_newClient(t *testing.T) {
 				httpClient:                              &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
 				transport:                               &http.Transport{IdleConnTimeout: 10 * time.Second},
 				timeout:                                 Ptr(15 * time.Second),
+				apiVersion:                              Ptr(latestAPIVersion),
 				userAgent:                               Ptr("CustomUserAgent/1.0"),
 				baseURL:                                 mustParseURL(t, "https://custom-url/api/v3/"),
 				uploadURL:                               mustParseURL(t, "https://custom-upload-url/api/uploads/"),
@@ -1092,6 +1144,13 @@ func Test_newClient(t *testing.T) {
 				t.Error("newClient http.Client used for redirects should have a CheckRedirect function")
 			}
 
+			if tt.opts.apiVersion != nil && c.apiVersion != *tt.opts.apiVersion {
+				t.Errorf("newClient apiVersion is %v, want %v", c.apiVersion, *tt.opts.apiVersion)
+			}
+			if tt.opts.apiVersion == nil && c.apiVersion != defaultAPIVersion {
+				t.Errorf("newClient apiVersion is %v, want %v", c.apiVersion, defaultAPIVersion)
+			}
+
 			if tt.opts.userAgent != nil && c.userAgent != *tt.opts.userAgent {
 				t.Errorf("newClient userAgent is %v, want %v", c.userAgent, *tt.opts.userAgent)
 			}
@@ -1136,6 +1195,58 @@ func Test_newClient(t *testing.T) {
 
 			if c.Marketplace.Stubbed != tt.opts.marketplaceStubbed {
 				t.Errorf("newClient marketplaceStubbed is %v, want %v", c.Marketplace.Stubbed, tt.opts.marketplaceStubbed)
+			}
+		})
+	}
+}
+
+func TestClient_APIVersion(t *testing.T) {
+	t.Parallel()
+
+	c := mustNewClient(t)
+	c.apiVersion = defaultAPIVersion
+
+	if got, want := c.APIVersion(), defaultAPIVersion; got != want {
+		t.Errorf("got %v, want %v", got, want)
+	}
+}
+
+func TestClient_CheckAPIVersion(t *testing.T) {
+	t.Parallel()
+
+	for _, tt := range []struct {
+		name       string
+		apiVersion string
+		minVersion string
+		want       bool
+	}{
+		{
+			name:       "version_equal_to_min",
+			apiVersion: defaultAPIVersion,
+			minVersion: defaultAPIVersion,
+			want:       true,
+		},
+		{
+			name:       "version_greater_than_min",
+			apiVersion: latestAPIVersion,
+			minVersion: defaultAPIVersion,
+			want:       true,
+		},
+		{
+			name:       "version_less_than_min",
+			apiVersion: defaultAPIVersion,
+			minVersion: latestAPIVersion,
+			want:       false,
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			c := mustNewClient(t)
+			c.apiVersion = tt.apiVersion
+
+			if got := c.CheckAPIVersion(tt.minVersion); got != tt.want {
+				t.Errorf("got %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -1274,6 +1385,7 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
+		c.apiVersion = latestAPIVersion
 		c.userAgent = "CustomUserAgent/1.0"
 		c.baseURL.Path = "/custom/"
 		c.uploadURL.Path = "/custom-upload/"
