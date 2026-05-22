@@ -133,7 +133,7 @@ func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
 							for _, name := range vSpec.Names {
 								nilPointers[name.Name] = name
 							}
-						} else if typeIdent, ok := vSpec.Type.(*ast.Ident); ok && len(vSpec.Values) == 0 && isStructTypeName(typeIdent.Name) {
+						} else if typeIdent, ok := vSpec.Type.(*ast.Ident); ok && len(vSpec.Values) == 0 && token.IsExported(typeIdent.Name) {
 							for _, name := range vSpec.Names {
 								valueVars[name.Name] = &valueVarInfo{
 									ident:     name,
@@ -278,39 +278,6 @@ func getFunctionName(expr ast.Expr) string {
 		return f.Name
 	}
 	return ""
-}
-
-// nonStructTypes lists built-in and predeclared types that are not structs
-// and should not trigger the value-type var warning.
-var nonStructTypes = map[string]bool{
-	"any":        true,
-	"bool":       true,
-	"byte":       true,
-	"comparable": true,
-	"complex64":  true,
-	"complex128": true,
-	"error":      true,
-	"float32":    true,
-	"float64":    true,
-	"int":        true,
-	"int8":       true,
-	"int16":      true,
-	"int32":      true,
-	"int64":      true,
-	"rune":       true,
-	"string":     true,
-	"uint":       true,
-	"uint8":      true,
-	"uint16":     true,
-	"uint32":     true,
-	"uint64":     true,
-	"uintptr":    true,
-}
-
-// isStructTypeName returns true if the given type name is a user-defined
-// struct type and not a built-in or predeclared non-struct type.
-func isStructTypeName(name string) bool {
-	return !nonStructTypes[name]
 }
 
 func lookAhead(pass *analysis.Pass, block *ast.BlockStmt, startIndex int, lhsIdent *ast.Ident, typeName string) {
