@@ -620,6 +620,14 @@ func newClient(opts clientOptions) (*Client, error) {
 		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
 	}
 
+	if opts.apiVersionMin != nil {
+		c.apiVersionMin = *opts.apiVersionMin
+	}
+
+	if opts.apiVersionMax != nil {
+		c.apiVersionMax = *opts.apiVersionMax
+	}
+
 	if opts.userAgent != nil {
 		c.userAgent = *opts.userAgent
 	} else {
