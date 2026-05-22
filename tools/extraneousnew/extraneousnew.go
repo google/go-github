@@ -133,11 +133,11 @@ func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
 							for _, name := range vSpec.Names {
 								nilPointers[name.Name] = name
 							}
-						} else if _, ok := vSpec.Type.(*ast.Ident); ok && len(vSpec.Values) == 0 {
+						} else if typeIdent, ok := vSpec.Type.(*ast.Ident); ok && len(vSpec.Values) == 0 && isStructTypeName(typeIdent.Name) {
 							for _, name := range vSpec.Names {
 								valueVars[name.Name] = &valueVarInfo{
 									ident:     name,
-									typeName:  vSpec.Type.(*ast.Ident).Name,
+									typeName:  typeIdent.Name,
 									stmtIndex: i,
 								}
 							}
@@ -250,7 +250,7 @@ func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
 			if ident, ok := targetArg.(*ast.Ident); ok {
 				if info, isValue := valueVars[ident.Name]; isValue {
 					delete(valueVars, ident.Name)
-					if !isUsedElsewhere(block, info.stmtIndex, i, info.ident.Name) {
+					if !isUsedElsewhere(block, info.stmtIndex, i, info.ident.Name) && !isReadAfterCall(block, i, info.ident.Name) {
 						pass.Reportf(ident.Pos(), "use 'var %v *%v' and pass '&%v' instead", ident.Name, info.typeName, ident.Name)
 					}
 				}
@@ -259,7 +259,7 @@ func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
 				if ident, ok := unary.X.(*ast.Ident); ok {
 					if info, isValue := valueVars[ident.Name]; isValue {
 						delete(valueVars, ident.Name)
-						if !isUsedElsewhere(block, info.stmtIndex, i, info.ident.Name) {
+						if !isUsedElsewhere(block, info.stmtIndex, i, info.ident.Name) && !isReadAfterCall(block, i, info.ident.Name) {
 							pass.Reportf(ident.Pos(), "use 'var %v *%v' instead", ident.Name, info.typeName)
 						}
 					}
@@ -278,6 +278,39 @@ func getFunctionName(expr ast.Expr) string {
 		return f.Name
 	}
 	return ""
+}
+
+// nonStructTypes lists built-in and predeclared types that are not structs
+// and should not trigger the value-type var warning.
+var nonStructTypes = map[string]bool{
+	"any":        true,
+	"bool":       true,
+	"byte":       true,
+	"comparable": true,
+	"complex64":  true,
+	"complex128": true,
+	"error":      true,
+	"float32":    true,
+	"float64":    true,
+	"int":        true,
+	"int8":       true,
+	"int16":      true,
+	"int32":      true,
+	"int64":      true,
+	"rune":       true,
+	"string":     true,
+	"uint":       true,
+	"uint8":      true,
+	"uint16":     true,
+	"uint32":     true,
+	"uint64":     true,
+	"uintptr":    true,
+}
+
+// isStructTypeName returns true if the given type name is a user-defined
+// struct type and not a built-in or predeclared non-struct type.
+func isStructTypeName(name string) bool {
+	return !nonStructTypes[name]
 }
 
 func lookAhead(pass *analysis.Pass, block *ast.BlockStmt, startIndex int, lhsIdent *ast.Ident, typeName string) {
@@ -387,6 +420,34 @@ func isUsedElsewhere(block *ast.BlockStmt, declIndex, useIndex int, name string)
 			return false
 		})
 		if foundOtherUse {
+			return true
+		}
+	}
+	return false
+}
+
+// isReadAfterCall checks if the variable is read (accessed via selector like v.Field)
+// in any statement after callIndex. This indicates correct zero-value usage where
+// Do/Decode fills the value and the caller reads its fields afterward.
+func isReadAfterCall(block *ast.BlockStmt, callIndex int, name string) bool {
+	for j := callIndex + 1; j < len(block.List); j++ {
+		stmt := block.List[j]
+		var found bool
+		ast.Inspect(stmt, func(un ast.Node) bool {
+			if found {
+				return false
+			}
+			sel, ok := un.(*ast.SelectorExpr)
+			if !ok {
+				return true
+			}
+			if ident, ok := sel.X.(*ast.Ident); ok && ident.Name == name {
+				found = true
+				return false
+			}
+			return true
+		})
+		if found {
 			return true
 		}
 	}

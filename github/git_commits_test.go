@@ -315,14 +315,14 @@ Commit Message.`
 		Parents: []*Commit{{SHA: Ptr("p")}},
 		Author:  &author,
 	}
-	wantBody := createCommit{
+	wantBody := &createCommit{
 		Message:   input.Message,
 		Tree:      Ptr("t"),
 		Parents:   []string{"p"},
 		Author:    &author,
 		Signature: &signature,
 	}
-	var gotBody createCommit
+	var gotBody *createCommit
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
 		assertNilError(t, json.NewDecoder(r.Body).Decode(&gotBody))
 		testMethod(t, r, "POST")
