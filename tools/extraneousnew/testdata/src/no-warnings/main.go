@@ -49,3 +49,10 @@ func (s *Receiver) unexportedMethod(req any) {
 	v := new(T)
 	s.client.Do(req, v) // Should be ignored because unexported.
 }
+
+func (s *Receiver) ValueVarMethod(req any) {
+	// Value-type var used elsewhere before Do — no warning
+	var v T
+	v.Field = "set"
+	s.client.Do(req, &v)
+}
