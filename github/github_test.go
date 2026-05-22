@@ -3159,7 +3159,7 @@ func TestClient_checkRequestAPIVersionBeforeDo(t *testing.T) {
 			version:    "",
 			versionMin: api20221128,
 			versionMax: api20260310,
-			wantErr:    true,
+			wantErr:    false,
 		},
 		{
 			name:       "version_less_than_min",

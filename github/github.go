@@ -1162,12 +1162,19 @@ var ErrUnsupportedAPIVersion = errors.New("unsupported api version")
 
 // checkRequestAPIVersionBeforeDo checks if the API version specified in the
 // request is supported by the client before making the API call. If the
-// version is not supported, it returns [ErrUnsupportedAPIVersion].
+// version is not supported, it returns [ErrUnsupportedAPIVersion]. If the
+// version is empty it returns nil.
 func (c *Client) checkRequestAPIVersionBeforeDo(req *http.Request) error {
 	reqAPIVersion := req.Header.Get(headerAPIVersion)
+
+	if reqAPIVersion == "" {
+		return nil
+	}
+
 	if reqAPIVersion < c.apiVersionMin || reqAPIVersion > c.apiVersionMax {
 		return ErrUnsupportedAPIVersion
 	}
+
 	return nil
 }
 
