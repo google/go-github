@@ -73,4 +73,18 @@ func (s *Service) TestMethod(req any, r *http.Request, t *testing.T) {
 
 	var v13 *T
 	s.client.Do(req, v13) // want "pass '&v13' instead"
+
+	// Unnecessary use of value
+	var v14 T
+	s.client.Do(req, &v14) // want "use 'var v14 [*]T' instead"
+
+	var v15 T
+	s.client.Do(req, v15) // want "use 'var v15 [*]T' and pass '&v15' instead"
+
+	// Value-type var with Decode
+	var v16 T
+	json.NewDecoder(r.Body).Decode(&v16) // want "use 'var v16 [*]T' instead"
+
+	var v17 T
+	json.NewDecoder(r.Body).Decode(v17) // want "use 'var v17 [*]T' and pass '&v17' instead"
 }

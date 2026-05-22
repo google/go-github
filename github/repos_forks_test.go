@@ -131,6 +131,29 @@ func TestRepositoriesService_CreateFork_deferred(t *testing.T) {
 	}
 }
 
+func TestRepositoriesService_CreateFork_deferred_badBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	opt := &RepositoryCreateForkOptions{Organization: "o", Name: "n", DefaultBranchOnly: true}
+
+	mux.HandleFunc("/repos/o/r/forks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, opt)
+		w.WriteHeader(http.StatusAccepted)
+		fmt.Fprint(w, `{invalid json`)
+	})
+
+	ctx := t.Context()
+	repo, _, err := client.Repositories.CreateFork(ctx, "o", "r", opt)
+	if err == nil {
+		t.Fatal("Repositories.CreateFork returned nil error")
+	}
+	if repo != nil {
+		t.Errorf("Repositories.CreateFork returned non-nil repo: %+v", repo)
+	}
+}
+
 func TestRepositoriesService_CreateFork_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
