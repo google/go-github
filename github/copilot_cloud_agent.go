@@ -25,10 +25,10 @@ type CopilotCloudAgentConfiguration struct {
 
 // EnabledTools represents the enabled review tools for Copilot cloud agent.
 type EnabledTools struct {
-	Codeql                        *bool `json:"codeql,omitempty"`
-	CopilotCodeReview             *bool `json:"copilot_code_review,omitempty"`
-	SecretScanning                *bool `json:"secret_scanning,omitempty"`
-	DependencyVulnerabilityChecks *bool `json:"dependency_vulnerability_checks,omitempty"`
+	Codeql                        *bool `json:"codeql"`
+	CopilotCodeReview             *bool `json:"copilot_code_review"`
+	SecretScanning                *bool `json:"secret_scanning"`
+	DependencyVulnerabilityChecks *bool `json:"dependency_vulnerability_checks"`
 }
 
 // GetCopilotCloudAgentConfiguration gets the Copilot cloud agent configuration for a repository.
