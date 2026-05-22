@@ -9,6 +9,10 @@ type T struct {
 	Field string
 }
 
+type CheckPrivateReporting struct {
+	Enabled bool
+}
+
 type Client struct{}
 
 func (c *Client) Do(req any, v any) (any, error) {
@@ -48,4 +52,20 @@ func (s *Receiver) MethodNameToIgnore(req any) {
 func (s *Receiver) unexportedMethod(req any) {
 	v := new(T)
 	s.client.Do(req, v) // Should be ignored because unexported.
+}
+
+func (s *Receiver) ValueVarMethod(req any) {
+	// Value-type var used elsewhere before Do — no warning
+	var v T
+	v.Field = "set"
+	s.client.Do(req, &v)
+
+	// Value-type var with non-struct type — no warning
+	var data any
+	s.client.Do(req, &data)
+
+	// Value-type var read after Do via selector — correct zero-value usage, no warning
+	var reporting CheckPrivateReporting
+	s.client.Do(req, &reporting)
+	_ = reporting.Enabled
 }

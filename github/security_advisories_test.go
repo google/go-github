@@ -513,6 +513,26 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testin
 	}
 }
 
+func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred_badBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/security-advisories/ghsa_id/forks", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		w.WriteHeader(http.StatusAccepted)
+		fmt.Fprint(w, `{invalid json`)
+	})
+
+	ctx := t.Context()
+	fork, _, err := client.SecurityAdvisories.CreateTemporaryPrivateFork(ctx, "o", "r", "ghsa_id")
+	if err == nil {
+		t.Fatal("SecurityAdvisories.CreateTemporaryPrivateFork returned nil error")
+	}
+	if fork != nil {
+		t.Errorf("SecurityAdvisories.CreateTemporaryPrivateFork returned non-nil fork: %+v", fork)
+	}
+}
+
 func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)

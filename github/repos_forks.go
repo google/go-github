@@ -79,20 +79,20 @@ func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	var fork Repository
+	var fork *Repository
 	resp, err := s.client.Do(req, &fork)
 	if err != nil {
 		// Persist AcceptedError's metadata to the Repository object.
 		var aerr *AcceptedError
 		if errors.As(err, &aerr) {
 			if err := json.Unmarshal(aerr.Raw, &fork); err != nil {
-				return &fork, resp, err
+				return fork, resp, err
 			}
 
-			return &fork, resp, err
+			return fork, resp, err
 		}
 		return nil, resp, err
 	}
 
-	return &fork, resp, nil
+	return fork, resp, nil
 }
