@@ -83,20 +83,20 @@ func (s *IssueImportService) Create(ctx context.Context, owner, repo string, iss
 
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
-	var i IssueImportResponse
+	var i *IssueImportResponse
 	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		var aerr *AcceptedError
 		if errors.As(err, &aerr) {
 			if err := json.Unmarshal(aerr.Raw, &i); err != nil {
-				return &i, resp, err
+				return i, resp, err
 			}
-			return &i, resp, err
+			return i, resp, err
 		}
 		return nil, resp, err
 	}
 
-	return &i, resp, nil
+	return i, resp, nil
 }
 
 // CheckStatus checks the status of an imported issue.
