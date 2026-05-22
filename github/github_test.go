@@ -560,57 +560,6 @@ func TestWithTimeout(t *testing.T) {
 	})
 }
 
-func TestWithAPIVersion(t *testing.T) {
-	t.Parallel()
-
-	for _, tt := range []struct {
-		name        string
-		version     string
-		wantVersion string
-		wantErr     string
-	}{
-		{
-			name:    "empty_version",
-			version: "",
-			wantErr: "api version must not be empty",
-		},
-		{
-			name:    "invalid_version",
-			version: "1.0.0",
-			wantErr: "invalid api version",
-		},
-		{
-			name:        "valid_version",
-			version:     defaultAPIVersion,
-			wantVersion: defaultAPIVersion,
-		},
-	} {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-
-			opts := clientOptions{}
-			err := WithAPIVersion(tt.version)(&opts)
-			if err != nil {
-				if tt.wantErr == "" {
-					t.Fatalf("unexpected error: %v", err)
-				}
-				if err.Error() != tt.wantErr {
-					t.Fatalf("want error %v, got %v", tt.wantErr, err)
-				}
-				return
-			}
-
-			if tt.wantErr != "" {
-				t.Fatalf("want error %v, got nil", tt.wantErr)
-			}
-
-			if opts.apiVersion != nil && *opts.apiVersion != tt.wantVersion {
-				t.Errorf("want apiVersion %v, got %v", tt.wantVersion, *opts.apiVersion)
-			}
-		})
-	}
-}
-
 func TestWithUserAgent(t *testing.T) {
 	t.Parallel()
 
@@ -1061,7 +1010,8 @@ func Test_newClient(t *testing.T) {
 				httpClient:                              &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
 				transport:                               &http.Transport{IdleConnTimeout: 10 * time.Second},
 				timeout:                                 Ptr(15 * time.Second),
-				apiVersion:                              Ptr(latestAPIVersion),
+				apiVersionMin:                           Ptr(api20221128),
+				apiVersionMax:                           Ptr(api20221128),
 				userAgent:                               Ptr("CustomUserAgent/1.0"),
 				baseURL:                                 mustParseURL(t, "https://custom-url/api/v3/"),
 				uploadURL:                               mustParseURL(t, "https://custom-upload-url/api/uploads/"),
@@ -1144,11 +1094,18 @@ func Test_newClient(t *testing.T) {
 				t.Error("newClient http.Client used for redirects should have a CheckRedirect function")
 			}
 
-			if tt.opts.apiVersion != nil && c.apiVersion != *tt.opts.apiVersion {
-				t.Errorf("newClient apiVersion is %v, want %v", c.apiVersion, *tt.opts.apiVersion)
+			if tt.opts.apiVersionMin != nil && c.apiVersionMin != *tt.opts.apiVersionMin {
+				t.Errorf("newClient apiVersionMin is %v, want %v", c.apiVersionMin, *tt.opts.apiVersionMin)
 			}
-			if tt.opts.apiVersion == nil && c.apiVersion != defaultAPIVersion {
-				t.Errorf("newClient apiVersion is %v, want %v", c.apiVersion, defaultAPIVersion)
+			if tt.opts.apiVersionMin == nil && c.apiVersionMin != api20221128 {
+				t.Errorf("newClient apiVersionMin is %v, want %v", c.apiVersionMin, api20221128)
+			}
+
+			if tt.opts.apiVersionMax != nil && c.apiVersionMax != *tt.opts.apiVersionMax {
+				t.Errorf("newClient apiVersionMax is %v, want %v", c.apiVersionMax, *tt.opts.apiVersionMax)
+			}
+			if tt.opts.apiVersionMax == nil && c.apiVersionMax != api20260310 {
+				t.Errorf("newClient apiVersionMax is %v, want %v", c.apiVersionMax, api20260310)
 			}
 
 			if tt.opts.userAgent != nil && c.userAgent != *tt.opts.userAgent {
@@ -1195,58 +1152,6 @@ func Test_newClient(t *testing.T) {
 
 			if c.Marketplace.Stubbed != tt.opts.marketplaceStubbed {
 				t.Errorf("newClient marketplaceStubbed is %v, want %v", c.Marketplace.Stubbed, tt.opts.marketplaceStubbed)
-			}
-		})
-	}
-}
-
-func TestClient_APIVersion(t *testing.T) {
-	t.Parallel()
-
-	c := mustNewClient(t)
-	c.apiVersion = defaultAPIVersion
-
-	if got, want := c.APIVersion(), defaultAPIVersion; got != want {
-		t.Errorf("got %v, want %v", got, want)
-	}
-}
-
-func TestClient_CheckAPIVersion(t *testing.T) {
-	t.Parallel()
-
-	for _, tt := range []struct {
-		name       string
-		apiVersion string
-		minVersion string
-		want       bool
-	}{
-		{
-			name:       "version_equal_to_min",
-			apiVersion: defaultAPIVersion,
-			minVersion: defaultAPIVersion,
-			want:       true,
-		},
-		{
-			name:       "version_greater_than_min",
-			apiVersion: latestAPIVersion,
-			minVersion: defaultAPIVersion,
-			want:       true,
-		},
-		{
-			name:       "version_less_than_min",
-			apiVersion: defaultAPIVersion,
-			minVersion: latestAPIVersion,
-			want:       false,
-		},
-	} {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-
-			c := mustNewClient(t)
-			c.apiVersion = tt.apiVersion
-
-			if got := c.CheckAPIVersion(tt.minVersion); got != tt.want {
-				t.Errorf("got %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -1385,7 +1290,8 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
-		c.apiVersion = latestAPIVersion
+		c.apiVersionMin = api20221128
+		c.apiVersionMax = api20221128
 		c.userAgent = "CustomUserAgent/1.0"
 		c.baseURL.Path = "/custom/"
 		c.uploadURL.Path = "/custom-upload/"
@@ -1693,7 +1599,7 @@ func TestNewRequest(t *testing.T) {
 	}
 
 	apiVersion := req.Header.Get(headerAPIVersion)
-	if got, want := apiVersion, defaultAPIVersion; got != want {
+	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
@@ -1900,7 +1806,7 @@ func TestNewFormRequest(t *testing.T) {
 	}
 
 	apiVersion := req.Header.Get(headerAPIVersion)
-	if got, want := apiVersion, defaultAPIVersion; got != want {
+	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewFormRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
@@ -1976,7 +1882,7 @@ func TestNewUploadRequest_WithVersion(t *testing.T) {
 	req, _ := c.NewUploadRequest(t.Context(), "https://example.com/", nil, 0, "")
 
 	apiVersion := req.Header.Get(headerAPIVersion)
-	if got, want := apiVersion, defaultAPIVersion; got != want {
+	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
@@ -3235,6 +3141,106 @@ func TestDo_noContent(t *testing.T) {
 	_, err := client.Do(req, &body)
 	if err != nil {
 		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+}
+
+func TestClient_checkRequestAPIVersionBeforeDo(t *testing.T) {
+	t.Parallel()
+
+	for _, tt := range []struct {
+		name       string
+		version    string
+		versionMin string
+		versionMax string
+		wantErr    bool
+	}{
+		{
+			name:       "version_not_set",
+			version:    "",
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    true,
+		},
+		{
+			name:       "version_less_than_min",
+			version:    "2022-01-01",
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    true,
+		},
+		{
+			name:       "version_equal_to_min",
+			version:    api20221128,
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_between_min_and_max",
+			version:    "2023-01-01",
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_equal_to_max",
+			version:    api20260310,
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_greater_than_max",
+			version:    api20260310,
+			versionMin: api20221128,
+			versionMax: api20221128,
+			wantErr:    true,
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			client := mustNewClient(t)
+			client.apiVersionMin = tt.versionMin
+			client.apiVersionMax = tt.versionMax
+
+			req, _ := http.NewRequestWithContext(t.Context(), "GET", ".", nil)
+			req.Header.Set(headerAPIVersion, tt.version)
+
+			err := client.checkRequestAPIVersionBeforeDo(req)
+			if tt.wantErr {
+				if err == nil {
+					t.Fatal("Expected error to be returned, got nil.")
+				}
+				if !errors.Is(err, ErrUnsupportedAPIVersion) {
+					t.Errorf("Expected ErrUnsupportedAPIVersion; got %#v.", err)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("Expected no error to be returned, got: %v", err)
+			}
+		})
+	}
+}
+
+func TestClient_bareDo_errors_with_unsupported_api_version(t *testing.T) {
+	t.Parallel()
+
+	c := mustNewClient(t)
+	c.apiVersionMin = api20221128
+	c.apiVersionMax = api20221128
+
+	req, _ := http.NewRequestWithContext(t.Context(), "GET", ".", nil)
+	req.Header.Set(headerAPIVersion, api20260310)
+
+	_, err := c.bareDo(c.client, req)
+	if err == nil {
+		t.Fatal("Expected error to be returned, got nil.")
+	}
+	if !errors.Is(err, ErrUnsupportedAPIVersion) {
+		t.Errorf("Expected ErrUnsupportedAPIVersion; got %#v.", err)
 	}
 }
 
