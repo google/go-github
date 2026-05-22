@@ -159,9 +159,6 @@ const (
 	mediaTypeContentAttachmentsPreview = "application/vnd.github.corsair-preview+json"
 )
 
-// apiVersionRegexp is a regular expression to validate API version strings.
-var apiVersionRegexp = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`)
-
 // ErrPathForbidden is returned when a URL path contains ".." as a path
 // segment, which could allow path traversal attacks.
 var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulnerability issue")
