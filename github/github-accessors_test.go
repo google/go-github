@@ -10543,10 +10543,7 @@ func TestCopilotCloudAgentConfiguration_GetEnabledTools(tt *testing.T) {
 
 func TestCopilotCloudAgentConfiguration_GetIsFirewallEnabled(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	c := &CopilotCloudAgentConfiguration{IsFirewallEnabled: &zeroValue}
-	c.GetIsFirewallEnabled()
-	c = &CopilotCloudAgentConfiguration{}
+	c := &CopilotCloudAgentConfiguration{}
 	c.GetIsFirewallEnabled()
 	c = nil
 	c.GetIsFirewallEnabled()
@@ -10554,10 +10551,7 @@ func TestCopilotCloudAgentConfiguration_GetIsFirewallEnabled(tt *testing.T) {
 
 func TestCopilotCloudAgentConfiguration_GetIsFirewallRecommendedAllowlistEnabled(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	c := &CopilotCloudAgentConfiguration{IsFirewallRecommendedAllowlistEnabled: &zeroValue}
-	c.GetIsFirewallRecommendedAllowlistEnabled()
-	c = &CopilotCloudAgentConfiguration{}
+	c := &CopilotCloudAgentConfiguration{}
 	c.GetIsFirewallRecommendedAllowlistEnabled()
 	c = nil
 	c.GetIsFirewallRecommendedAllowlistEnabled()
@@ -10576,10 +10570,7 @@ func TestCopilotCloudAgentConfiguration_GetMcpConfiguration(tt *testing.T) {
 
 func TestCopilotCloudAgentConfiguration_GetRequireActionsWorkflowApproval(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	c := &CopilotCloudAgentConfiguration{RequireActionsWorkflowApproval: &zeroValue}
-	c.GetRequireActionsWorkflowApproval()
-	c = &CopilotCloudAgentConfiguration{}
+	c := &CopilotCloudAgentConfiguration{}
 	c.GetRequireActionsWorkflowApproval()
 	c = nil
 	c.GetRequireActionsWorkflowApproval()
@@ -17895,10 +17886,7 @@ func TestEditTopics_GetFrom(tt *testing.T) {
 
 func TestEnabledTools_GetCodeql(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	e := &EnabledTools{Codeql: &zeroValue}
-	e.GetCodeql()
-	e = &EnabledTools{}
+	e := &EnabledTools{}
 	e.GetCodeql()
 	e = nil
 	e.GetCodeql()
@@ -17906,10 +17894,7 @@ func TestEnabledTools_GetCodeql(tt *testing.T) {
 
 func TestEnabledTools_GetCopilotCodeReview(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	e := &EnabledTools{CopilotCodeReview: &zeroValue}
-	e.GetCopilotCodeReview()
-	e = &EnabledTools{}
+	e := &EnabledTools{}
 	e.GetCopilotCodeReview()
 	e = nil
 	e.GetCopilotCodeReview()
@@ -17917,10 +17902,7 @@ func TestEnabledTools_GetCopilotCodeReview(tt *testing.T) {
 
 func TestEnabledTools_GetDependencyVulnerabilityChecks(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	e := &EnabledTools{DependencyVulnerabilityChecks: &zeroValue}
-	e.GetDependencyVulnerabilityChecks()
-	e = &EnabledTools{}
+	e := &EnabledTools{}
 	e.GetDependencyVulnerabilityChecks()
 	e = nil
 	e.GetDependencyVulnerabilityChecks()
@@ -17928,10 +17910,7 @@ func TestEnabledTools_GetDependencyVulnerabilityChecks(tt *testing.T) {
 
 func TestEnabledTools_GetSecretScanning(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	e := &EnabledTools{SecretScanning: &zeroValue}
-	e.GetSecretScanning()
-	e = &EnabledTools{}
+	e := &EnabledTools{}
 	e.GetSecretScanning()
 	e = nil
 	e.GetSecretScanning()

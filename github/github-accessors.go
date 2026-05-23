@@ -8199,27 +8199,27 @@ func (c *CopilotCloudAgentConfiguration) GetCustomAllowlist() []string {
 }
 
 // GetEnabledTools returns the EnabledTools field.
-func (c *CopilotCloudAgentConfiguration) GetEnabledTools() *EnabledTools {
+func (c *CopilotCloudAgentConfiguration) GetEnabledTools() EnabledTools {
 	if c == nil {
-		return nil
+		return EnabledTools{}
 	}
 	return c.EnabledTools
 }
 
-// GetIsFirewallEnabled returns the IsFirewallEnabled field if it's non-nil, zero value otherwise.
+// GetIsFirewallEnabled returns the IsFirewallEnabled field.
 func (c *CopilotCloudAgentConfiguration) GetIsFirewallEnabled() bool {
-	if c == nil || c.IsFirewallEnabled == nil {
+	if c == nil {
 		return false
 	}
-	return *c.IsFirewallEnabled
+	return c.IsFirewallEnabled
 }
 
-// GetIsFirewallRecommendedAllowlistEnabled returns the IsFirewallRecommendedAllowlistEnabled field if it's non-nil, zero value otherwise.
+// GetIsFirewallRecommendedAllowlistEnabled returns the IsFirewallRecommendedAllowlistEnabled field.
 func (c *CopilotCloudAgentConfiguration) GetIsFirewallRecommendedAllowlistEnabled() bool {
-	if c == nil || c.IsFirewallRecommendedAllowlistEnabled == nil {
+	if c == nil {
 		return false
 	}
-	return *c.IsFirewallRecommendedAllowlistEnabled
+	return c.IsFirewallRecommendedAllowlistEnabled
 }
 
 // GetMcpConfiguration returns the McpConfiguration field if it's non-nil, zero value otherwise.
@@ -8230,12 +8230,12 @@ func (c *CopilotCloudAgentConfiguration) GetMcpConfiguration() json.RawMessage {
 	return *c.McpConfiguration
 }
 
-// GetRequireActionsWorkflowApproval returns the RequireActionsWorkflowApproval field if it's non-nil, zero value otherwise.
+// GetRequireActionsWorkflowApproval returns the RequireActionsWorkflowApproval field.
 func (c *CopilotCloudAgentConfiguration) GetRequireActionsWorkflowApproval() bool {
-	if c == nil || c.RequireActionsWorkflowApproval == nil {
+	if c == nil {
 		return false
 	}
-	return *c.RequireActionsWorkflowApproval
+	return c.RequireActionsWorkflowApproval
 }
 
 // GetParameters returns the Parameters field.
@@ -14118,36 +14118,36 @@ func (e *EditTopics) GetFrom() []string {
 	return e.From
 }
 
-// GetCodeql returns the Codeql field if it's non-nil, zero value otherwise.
+// GetCodeql returns the Codeql field.
 func (e *EnabledTools) GetCodeql() bool {
-	if e == nil || e.Codeql == nil {
+	if e == nil {
 		return false
 	}
-	return *e.Codeql
+	return e.Codeql
 }
 
-// GetCopilotCodeReview returns the CopilotCodeReview field if it's non-nil, zero value otherwise.
+// GetCopilotCodeReview returns the CopilotCodeReview field.
 func (e *EnabledTools) GetCopilotCodeReview() bool {
-	if e == nil || e.CopilotCodeReview == nil {
+	if e == nil {
 		return false
 	}
-	return *e.CopilotCodeReview
+	return e.CopilotCodeReview
 }
 
-// GetDependencyVulnerabilityChecks returns the DependencyVulnerabilityChecks field if it's non-nil, zero value otherwise.
+// GetDependencyVulnerabilityChecks returns the DependencyVulnerabilityChecks field.
 func (e *EnabledTools) GetDependencyVulnerabilityChecks() bool {
-	if e == nil || e.DependencyVulnerabilityChecks == nil {
+	if e == nil {
 		return false
 	}
-	return *e.DependencyVulnerabilityChecks
+	return e.DependencyVulnerabilityChecks
 }
 
-// GetSecretScanning returns the SecretScanning field if it's non-nil, zero value otherwise.
+// GetSecretScanning returns the SecretScanning field.
 func (e *EnabledTools) GetSecretScanning() bool {
-	if e == nil || e.SecretScanning == nil {
+	if e == nil {
 		return false
 	}
-	return *e.SecretScanning
+	return e.SecretScanning
 }
 
 // GetEncryptedValue returns the EncryptedValue field.

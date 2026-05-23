@@ -15,20 +15,20 @@ import (
 //
 // GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-cloud-agent-management?apiVersion=2026-03-10#get-copilot-cloud-agent-configuration-for-a-repository
 type CopilotCloudAgentConfiguration struct {
-	McpConfiguration                      *json.RawMessage `json:"mcp_configuration,omitempty"`
-	EnabledTools                          *EnabledTools    `json:"enabled_tools,omitempty"`
-	RequireActionsWorkflowApproval        *bool            `json:"require_actions_workflow_approval,omitempty"`
-	IsFirewallEnabled                     *bool            `json:"is_firewall_enabled,omitempty"`
-	IsFirewallRecommendedAllowlistEnabled *bool            `json:"is_firewall_recommended_allowlist_enabled,omitempty"`
-	CustomAllowlist                       []string         `json:"custom_allowlist,omitempty"`
+	McpConfiguration                      *json.RawMessage `json:"mcp_configuration"`
+	EnabledTools                          EnabledTools     `json:"enabled_tools"`
+	RequireActionsWorkflowApproval        bool             `json:"require_actions_workflow_approval"`
+	IsFirewallEnabled                     bool             `json:"is_firewall_enabled"`
+	IsFirewallRecommendedAllowlistEnabled bool             `json:"is_firewall_recommended_allowlist_enabled"`
+	CustomAllowlist                       []string         `json:"custom_allowlist"`
 }
 
 // EnabledTools represents the enabled review tools for Copilot cloud agent.
 type EnabledTools struct {
-	Codeql                        *bool `json:"codeql"`
-	CopilotCodeReview             *bool `json:"copilot_code_review"`
-	SecretScanning                *bool `json:"secret_scanning"`
-	DependencyVulnerabilityChecks *bool `json:"dependency_vulnerability_checks"`
+	Codeql                        bool `json:"codeql"`
+	CopilotCodeReview             bool `json:"copilot_code_review"`
+	SecretScanning                bool `json:"secret_scanning"`
+	DependencyVulnerabilityChecks bool `json:"dependency_vulnerability_checks"`
 }
 
 // GetCopilotCloudAgentConfiguration gets the Copilot cloud agent configuration for a repository.
