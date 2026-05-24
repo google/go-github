@@ -10576,6 +10576,38 @@ func TestCopilotCloudAgentConfiguration_GetRequireActionsWorkflowApproval(tt *te
 	c.GetRequireActionsWorkflowApproval()
 }
 
+func TestCopilotCloudAgentEnabledTools_GetCodeql(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentEnabledTools{}
+	c.GetCodeql()
+	c = nil
+	c.GetCodeql()
+}
+
+func TestCopilotCloudAgentEnabledTools_GetCopilotCodeReview(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentEnabledTools{}
+	c.GetCopilotCodeReview()
+	c = nil
+	c.GetCopilotCodeReview()
+}
+
+func TestCopilotCloudAgentEnabledTools_GetDependencyVulnerabilityChecks(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentEnabledTools{}
+	c.GetDependencyVulnerabilityChecks()
+	c = nil
+	c.GetDependencyVulnerabilityChecks()
+}
+
+func TestCopilotCloudAgentEnabledTools_GetSecretScanning(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentEnabledTools{}
+	c.GetSecretScanning()
+	c = nil
+	c.GetSecretScanning()
+}
+
 func TestCopilotCodeReviewBranchRule_GetParameters(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotCodeReviewBranchRule{}
@@ -17882,38 +17914,6 @@ func TestEditTopics_GetFrom(tt *testing.T) {
 	e.GetFrom()
 	e = nil
 	e.GetFrom()
-}
-
-func TestEnabledTools_GetCodeql(tt *testing.T) {
-	tt.Parallel()
-	e := &EnabledTools{}
-	e.GetCodeql()
-	e = nil
-	e.GetCodeql()
-}
-
-func TestEnabledTools_GetCopilotCodeReview(tt *testing.T) {
-	tt.Parallel()
-	e := &EnabledTools{}
-	e.GetCopilotCodeReview()
-	e = nil
-	e.GetCopilotCodeReview()
-}
-
-func TestEnabledTools_GetDependencyVulnerabilityChecks(tt *testing.T) {
-	tt.Parallel()
-	e := &EnabledTools{}
-	e.GetDependencyVulnerabilityChecks()
-	e = nil
-	e.GetDependencyVulnerabilityChecks()
-}
-
-func TestEnabledTools_GetSecretScanning(tt *testing.T) {
-	tt.Parallel()
-	e := &EnabledTools{}
-	e.GetSecretScanning()
-	e = nil
-	e.GetSecretScanning()
 }
 
 func TestEncryptedSecret_GetEncryptedValue(tt *testing.T) {

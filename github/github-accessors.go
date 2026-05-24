@@ -8199,9 +8199,9 @@ func (c *CopilotCloudAgentConfiguration) GetCustomAllowlist() []string {
 }
 
 // GetEnabledTools returns the EnabledTools field.
-func (c *CopilotCloudAgentConfiguration) GetEnabledTools() EnabledTools {
+func (c *CopilotCloudAgentConfiguration) GetEnabledTools() *CopilotCloudAgentEnabledTools {
 	if c == nil {
-		return EnabledTools{}
+		return nil
 	}
 	return c.EnabledTools
 }
@@ -8236,6 +8236,38 @@ func (c *CopilotCloudAgentConfiguration) GetRequireActionsWorkflowApproval() boo
 		return false
 	}
 	return c.RequireActionsWorkflowApproval
+}
+
+// GetCodeql returns the Codeql field.
+func (c *CopilotCloudAgentEnabledTools) GetCodeql() bool {
+	if c == nil {
+		return false
+	}
+	return c.Codeql
+}
+
+// GetCopilotCodeReview returns the CopilotCodeReview field.
+func (c *CopilotCloudAgentEnabledTools) GetCopilotCodeReview() bool {
+	if c == nil {
+		return false
+	}
+	return c.CopilotCodeReview
+}
+
+// GetDependencyVulnerabilityChecks returns the DependencyVulnerabilityChecks field.
+func (c *CopilotCloudAgentEnabledTools) GetDependencyVulnerabilityChecks() bool {
+	if c == nil {
+		return false
+	}
+	return c.DependencyVulnerabilityChecks
+}
+
+// GetSecretScanning returns the SecretScanning field.
+func (c *CopilotCloudAgentEnabledTools) GetSecretScanning() bool {
+	if c == nil {
+		return false
+	}
+	return c.SecretScanning
 }
 
 // GetParameters returns the Parameters field.
@@ -14116,38 +14148,6 @@ func (e *EditTopics) GetFrom() []string {
 		return nil
 	}
 	return e.From
-}
-
-// GetCodeql returns the Codeql field.
-func (e *EnabledTools) GetCodeql() bool {
-	if e == nil {
-		return false
-	}
-	return e.Codeql
-}
-
-// GetCopilotCodeReview returns the CopilotCodeReview field.
-func (e *EnabledTools) GetCopilotCodeReview() bool {
-	if e == nil {
-		return false
-	}
-	return e.CopilotCodeReview
-}
-
-// GetDependencyVulnerabilityChecks returns the DependencyVulnerabilityChecks field.
-func (e *EnabledTools) GetDependencyVulnerabilityChecks() bool {
-	if e == nil {
-		return false
-	}
-	return e.DependencyVulnerabilityChecks
-}
-
-// GetSecretScanning returns the SecretScanning field.
-func (e *EnabledTools) GetSecretScanning() bool {
-	if e == nil {
-		return false
-	}
-	return e.SecretScanning
 }
 
 // GetEncryptedValue returns the EncryptedValue field.
