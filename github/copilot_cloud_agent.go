@@ -39,7 +39,7 @@ type CopilotCloudAgentEnabledTools struct {
 func (s *CopilotService) GetCloudAgentConfiguration(ctx context.Context, owner, repo string) (*CopilotCloudAgentConfiguration, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/copilot/cloud-agent/configuration", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
