@@ -237,6 +237,23 @@ func TestAdvisoryCWEs_Marshal(t *testing.T) {
 	testJSONMarshal(t, h, want)
 }
 
+func TestAdvisoryEPSS_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &AdvisoryEPSS{}, `{"percentage": 0, "percentile": 0}`)
+
+	h := &AdvisoryEPSS{
+		Percentage: 0.05,
+		Percentile: 0.5,
+	}
+
+	want := `{
+		"percentage": 0.05,
+		"percentile": 0.5
+	}`
+
+	testJSONMarshal(t, h, want)
+}
+
 func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &DependabotSecurityAdvisory{}, "{}")
@@ -389,6 +406,141 @@ func TestDependabotSecurityAdvisory_Marshal(t *testing.T) {
       ],
       "published_at": "2018-10-03T21:13:54Z",
       "updated_at": "2022-04-26T18:35:37Z"
+	}`
+
+	testJSONMarshal(t, h, want)
+}
+
+func TestDependabotAlert_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &DependabotAlert{}, "{}")
+
+	h := &DependabotAlert{
+		Number: Ptr(42),
+		State:  Ptr("dismissed"),
+		Dependency: &Dependency{
+			Package: &VulnerabilityPackage{
+				Ecosystem: Ptr("npm"),
+				Name:      Ptr("minimist"),
+			},
+			ManifestPath: Ptr("package-lock.json"),
+			Scope:        Ptr("runtime"),
+		},
+		SecurityAdvisory: &DependabotSecurityAdvisory{
+			GHSAID:   Ptr("GHSA-vh95-rmgr-6w4m"),
+			CVEID:    Ptr("CVE-2020-7598"),
+			Summary:  Ptr("Prototype pollution in minimist"),
+			Severity: Ptr("high"),
+			EPSS: &AdvisoryEPSS{
+				Percentage: 0.05,
+				Percentile: 0.5,
+			},
+		},
+		SecurityVulnerability: &AdvisoryVulnerability{
+			Package: &VulnerabilityPackage{
+				Ecosystem: Ptr("npm"),
+				Name:      Ptr("minimist"),
+			},
+			Severity:               Ptr("high"),
+			VulnerableVersionRange: Ptr("< 1.2.3"),
+			FirstPatchedVersion:    &FirstPatchedVersion{Identifier: Ptr("1.2.3")},
+			PatchedVersions:        Ptr(">= 1.2.3"),
+			VulnerableFunctions:    []string{"parse"},
+		},
+		URL:              Ptr("https://api.github.com/repos/o/r/dependabot/alerts/42"),
+		HTMLURL:          Ptr("https://github.com/o/r/security/dependabot/42"),
+		CreatedAt:        &Timestamp{referenceTime},
+		UpdatedAt:        &Timestamp{referenceTime},
+		DismissedAt:      &Timestamp{referenceTime},
+		DismissedBy:      &User{Login: Ptr("octocat"), ID: Ptr(int64(1))},
+		DismissedReason:  Ptr("tolerable_risk"),
+		DismissedComment: Ptr("risk accepted"),
+		FixedAt:          &Timestamp{referenceTime},
+		AutoDismissedAt:  &Timestamp{referenceTime},
+		Repository: &Repository{
+			Owner:    &User{Login: Ptr("o")},
+			Name:     Ptr("r"),
+			FullName: Ptr("o/r"),
+			Private:  Ptr(false),
+		},
+	}
+
+	want := `{
+		"number": 42,
+		"state": "dismissed",
+		"dependency": {
+			"package": {
+				"ecosystem": "npm",
+				"name": "minimist"
+			},
+			"manifest_path": "package-lock.json",
+			"scope": "runtime"
+		},
+		"security_advisory": {
+			"ghsa_id": "GHSA-vh95-rmgr-6w4m",
+			"cve_id": "CVE-2020-7598",
+			"summary": "Prototype pollution in minimist",
+			"severity": "high",
+			"epss": {
+				"percentage": 0.05,
+				"percentile": 0.5
+			}
+		},
+		"security_vulnerability": {
+			"package": {
+				"ecosystem": "npm",
+				"name": "minimist"
+			},
+			"severity": "high",
+			"vulnerable_version_range": "< 1.2.3",
+			"first_patched_version": {
+				"identifier": "1.2.3"
+			},
+			"patched_versions": ">= 1.2.3",
+			"vulnerable_functions": [
+				"parse"
+			]
+		},
+		"url": "https://api.github.com/repos/o/r/dependabot/alerts/42",
+		"html_url": "https://github.com/o/r/security/dependabot/42",
+		"created_at": ` + referenceTimeStr + `,
+		"updated_at": ` + referenceTimeStr + `,
+		"dismissed_at": ` + referenceTimeStr + `,
+		"dismissed_by": {
+			"login": "octocat",
+			"id": 1
+		},
+		"dismissed_reason": "tolerable_risk",
+		"dismissed_comment": "risk accepted",
+		"fixed_at": ` + referenceTimeStr + `,
+		"auto_dismissed_at": ` + referenceTimeStr + `,
+		"repository": {
+			"owner": {
+				"login": "o"
+			},
+			"name": "r",
+			"full_name": "o/r",
+			"private": false
+		}
+	}`
+
+	testJSONMarshal(t, h, want)
+}
+
+func TestDependabotAlertState_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &DependabotAlertState{}, `{"state": ""}`)
+
+	h := &DependabotAlertState{
+		State:            "dismissed",
+		DismissedReason:  Ptr("no_bandwidth"),
+		DismissedComment: Ptr("no time to fix this"),
+	}
+
+	want := `{
+		"state": "dismissed",
+		"dismissed_reason": "no_bandwidth",
+		"dismissed_comment": "no time to fix this"
 	}`
 
 	testJSONMarshal(t, h, want)
