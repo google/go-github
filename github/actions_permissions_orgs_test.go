@@ -820,3 +820,20 @@ func TestActionsService_UpdateOrganizationForkPRContributorApprovalPermissions(t
 		return client.Actions.UpdateOrganizationForkPRContributorApprovalPermissions(ctx, "o", input)
 	})
 }
+
+func TestSelfHostedRunnersSettingsOrganization_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &SelfHostedRunnersSettingsOrganization{}, "{}")
+
+	u := &SelfHostedRunnersSettingsOrganization{
+		EnabledRepositories:     Ptr("selected"),
+		SelectedRepositoriesURL: Ptr("u"),
+	}
+
+	want := `{
+		"enabled_repositories": "selected",
+		"selected_repositories_url": "u"
+	}`
+
+	testJSONMarshal(t, u, want)
+}

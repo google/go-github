@@ -709,3 +709,39 @@ func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestWorkflowsPermissions_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &WorkflowsPermissions{}, "{}")
+
+	u := &WorkflowsPermissions{
+		RunWorkflowsFromForkPullRequests:  Ptr(true),
+		SendWriteTokensToWorkflows:        Ptr(false),
+		SendSecretsAndVariables:           Ptr(true),
+		RequireApprovalForForkPRWorkflows: Ptr(false),
+	}
+
+	want := `{
+		"run_workflows_from_fork_pull_requests": true,
+		"send_write_tokens_to_workflows": false,
+		"send_secrets_and_variables": true,
+		"require_approval_for_fork_pr_workflows": false
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestContributorApprovalPermissions_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ContributorApprovalPermissions{}, `{"approval_policy": ""}`)
+
+	u := &ContributorApprovalPermissions{
+		ApprovalPolicy: "require_approval",
+	}
+
+	want := `{
+		"approval_policy": "require_approval"
+	}`
+
+	testJSONMarshal(t, u, want)
+}

@@ -642,3 +642,37 @@ func TestActionsService_UpdateEnterpriseForkPRContributorApprovalPermissions(t *
 		return client.Actions.UpdateEnterpriseForkPRContributorApprovalPermissions(ctx, "e", input)
 	})
 }
+
+func TestActionsPermissionsEnterprise_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ActionsPermissionsEnterprise{}, "{}")
+
+	u := &ActionsPermissionsEnterprise{
+		EnabledOrganizations: Ptr("selected"),
+		AllowedActions:       Ptr("selected"),
+		SelectedActionsURL:   Ptr("u"),
+	}
+
+	want := `{
+		"enabled_organizations": "selected",
+		"allowed_actions": "selected",
+		"selected_actions_url": "u"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSelfHostRunnerPermissionsEnterprise_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &SelfHostRunnerPermissionsEnterprise{}, "{}")
+
+	u := &SelfHostRunnerPermissionsEnterprise{
+		DisableSelfHostedRunnersForAllOrgs: Ptr(false),
+	}
+
+	want := `{
+		"disable_self_hosted_runners_for_all_orgs": false
+	}`
+
+	testJSONMarshal(t, u, want)
+}

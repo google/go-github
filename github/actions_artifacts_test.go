@@ -688,3 +688,20 @@ func TestArtifactList_Marshal(t *testing.T) {
 
 	testJSONMarshal(t, u, want)
 }
+
+func TestArtifactPeriod_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ArtifactPeriod{}, "{}")
+
+	u := &ArtifactPeriod{
+		Days:               Ptr(90),
+		MaximumAllowedDays: Ptr(365),
+	}
+
+	want := `{
+		"days": 90,
+		"maximum_allowed_days": 365
+	}`
+
+	testJSONMarshal(t, u, want)
+}
