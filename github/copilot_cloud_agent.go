@@ -12,8 +12,6 @@ import (
 )
 
 // CopilotCloudAgentConfiguration represents the Copilot cloud agent configuration for a repository.
-//
-// GitHub API docs: https://docs.github.com/en/rest/copilot/copilot-cloud-agent-management?apiVersion=2026-03-10#get-copilot-cloud-agent-configuration-for-a-repository
 type CopilotCloudAgentConfiguration struct {
 	McpConfiguration                      *json.RawMessage               `json:"mcp_configuration"`
 	EnabledTools                          *CopilotCloudAgentEnabledTools `json:"enabled_tools"`
@@ -39,7 +37,7 @@ type CopilotCloudAgentEnabledTools struct {
 func (s *CopilotService) GetCloudAgentConfiguration(ctx context.Context, owner, repo string) (*CopilotCloudAgentConfiguration, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/copilot/cloud-agent/configuration", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}

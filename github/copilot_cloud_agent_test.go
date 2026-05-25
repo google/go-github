@@ -66,7 +66,7 @@ func TestCopilotService_GetCloudAgentConfiguration(t *testing.T) {
 				"require_actions_workflow_approval": false,
 				"is_firewall_enabled": true,
 				"is_firewall_recommended_allowlist_enabled": true,
-				"custom_allowlist": ["192.168.0.0/16", "10.0.0.0/8"]
+				"custom_allowlist": ["example.com"]
 			}`,
 			want: &CopilotCloudAgentConfiguration{
 				McpConfiguration: nil,
@@ -79,7 +79,7 @@ func TestCopilotService_GetCloudAgentConfiguration(t *testing.T) {
 				RequireActionsWorkflowApproval:        false,
 				IsFirewallEnabled:                     true,
 				IsFirewallRecommendedAllowlistEnabled: true,
-				CustomAllowlist:                       []string{"192.168.0.0/16", "10.0.0.0/8"},
+				CustomAllowlist:                       []string{"example.com"},
 			},
 			wantErr: false,
 		},
@@ -253,9 +253,9 @@ func TestCopilotCloudAgentConfiguration_Marshal(t *testing.T) {
 				RequireActionsWorkflowApproval:        true,
 				IsFirewallEnabled:                     false,
 				IsFirewallRecommendedAllowlistEnabled: true,
-				CustomAllowlist:                       []string{"192.168.0.0/16"},
+				CustomAllowlist:                       []string{"example.com"},
 			},
-			want: `{"mcp_configuration":null,"enabled_tools":{"codeql":true,"copilot_code_review":false,"secret_scanning":true,"dependency_vulnerability_checks":false},"require_actions_workflow_approval":true,"is_firewall_enabled":false,"is_firewall_recommended_allowlist_enabled":true,"custom_allowlist":["192.168.0.0/16"]}`,
+			want: `{"mcp_configuration":null,"enabled_tools":{"codeql":true,"copilot_code_review":false,"secret_scanning":true,"dependency_vulnerability_checks":false},"require_actions_workflow_approval":true,"is_firewall_enabled":false,"is_firewall_recommended_allowlist_enabled":true,"custom_allowlist":["example.com"]}`,
 		},
 		{
 			name: "with mcp configuration",
@@ -290,9 +290,9 @@ func TestCopilotCloudAgentConfiguration_Marshal(t *testing.T) {
 				RequireActionsWorkflowApproval:        false,
 				IsFirewallEnabled:                     true,
 				IsFirewallRecommendedAllowlistEnabled: true,
-				CustomAllowlist:                       []string{"192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12"},
+				CustomAllowlist:                       []string{"example.com", "example.com", "example.com"},
 			},
-			want: `{"mcp_configuration":null,"enabled_tools":{"codeql":false,"copilot_code_review":false,"secret_scanning":false,"dependency_vulnerability_checks":false},"require_actions_workflow_approval":false,"is_firewall_enabled":true,"is_firewall_recommended_allowlist_enabled":true,"custom_allowlist":["192.168.0.0/16","10.0.0.0/8","172.16.0.0/12"]}`,
+			want: `{"mcp_configuration":null,"enabled_tools":{"codeql":false,"copilot_code_review":false,"secret_scanning":false,"dependency_vulnerability_checks":false},"require_actions_workflow_approval":false,"is_firewall_enabled":true,"is_firewall_recommended_allowlist_enabled":true,"custom_allowlist":["example.com","example.com","example.com"]}`,
 		},
 	}
 
