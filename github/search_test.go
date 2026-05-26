@@ -1069,6 +1069,39 @@ func TestUsersSearchResult_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestCodeResult_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &CodeResult{}, "{}")
+
+	u := &CodeResult{
+		Name:       Ptr("main.go"),
+		Path:       Ptr("cmd/main.go"),
+		SHA:        Ptr("abc123"),
+		HTMLURL:    Ptr("https://github.com/o/r/blob/main/cmd/main.go"),
+		Repository: &Repository{ID: Ptr(int64(1))},
+		TextMatches: []*TextMatch{
+			{ObjectURL: Ptr("https://api.github.com/search/code")},
+		},
+	}
+
+	want := `{
+		"name": "main.go",
+		"path": "cmd/main.go",
+		"sha": "abc123",
+		"html_url": "https://github.com/o/r/blob/main/cmd/main.go",
+		"repository": {
+			"id": 1
+		},
+		"text_matches": [
+			{
+				"object_url": "https://api.github.com/search/code"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestCodeSearchResult_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &CodeSearchResult{}, "{}")
