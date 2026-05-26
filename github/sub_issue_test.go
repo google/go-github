@@ -13,6 +13,48 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func TestSubIssue_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &SubIssue{}, "{}")
+
+	u := &SubIssue{
+		ID:     Ptr(int64(42)),
+		Number: Ptr(1),
+		State:  Ptr("open"),
+		Title:  Ptr("parent work item"),
+	}
+
+	want := `{
+		"id": 42,
+		"number": 1,
+		"state": "open",
+		"title": "parent work item"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSubIssueRequest_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &SubIssueRequest{}, `{"sub_issue_id":0}`)
+
+	u := &SubIssueRequest{
+		SubIssueID:    42,
+		AfterID:       Ptr(int64(40)),
+		BeforeID:      Ptr(int64(50)),
+		ReplaceParent: Ptr(true),
+	}
+
+	want := `{
+		"sub_issue_id": 42,
+		"after_id": 40,
+		"before_id": 50,
+		"replace_parent": true
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestSubIssuesService_Add(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
