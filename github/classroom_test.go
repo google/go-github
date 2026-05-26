@@ -51,6 +51,27 @@ func TestClassroom_Marshal(t *testing.T) {
 	testJSONMarshal(t, c, want)
 }
 
+func TestClassroomUser_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &ClassroomUser{}, "{}")
+
+	u := &ClassroomUser{
+		ID:        Ptr(int64(1)),
+		Login:     Ptr("octocat"),
+		AvatarURL: Ptr("https://github.com/images/error/octocat_happy.gif"),
+		HTMLURL:   Ptr("https://github.com/octocat"),
+	}
+
+	want := `{
+		"id": 1,
+		"login": "octocat",
+		"avatar_url": "https://github.com/images/error/octocat_happy.gif",
+		"html_url": "https://github.com/octocat"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestClassroomAssignment_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &ClassroomAssignment{}, "{}")
