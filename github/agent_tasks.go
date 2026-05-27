@@ -179,7 +179,7 @@ func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts
 
 // GetByRepoAndID gets a repository task by ID.
 //
-// This endpoint is in public preview and is subject to change.
+// Note: This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-repo
 //
