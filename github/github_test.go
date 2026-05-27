@@ -1010,6 +1010,8 @@ func Test_newClient(t *testing.T) {
 				httpClient:                              &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
 				transport:                               &http.Transport{IdleConnTimeout: 10 * time.Second},
 				timeout:                                 Ptr(15 * time.Second),
+				apiVersionMin:                           Ptr(api20221128),
+				apiVersionMax:                           Ptr(api20221128),
 				userAgent:                               Ptr("CustomUserAgent/1.0"),
 				baseURL:                                 mustParseURL(t, "https://custom-url/api/v3/"),
 				uploadURL:                               mustParseURL(t, "https://custom-upload-url/api/uploads/"),
@@ -1090,6 +1092,20 @@ func Test_newClient(t *testing.T) {
 			}
 			if c.clientIgnoreRedirects.CheckRedirect == nil {
 				t.Error("newClient http.Client used for redirects should have a CheckRedirect function")
+			}
+
+			if tt.opts.apiVersionMin != nil && c.apiVersionMin != *tt.opts.apiVersionMin {
+				t.Errorf("newClient apiVersionMin is %v, want %v", c.apiVersionMin, *tt.opts.apiVersionMin)
+			}
+			if tt.opts.apiVersionMin == nil && c.apiVersionMin != api20221128 {
+				t.Errorf("newClient apiVersionMin is %v, want %v", c.apiVersionMin, api20221128)
+			}
+
+			if tt.opts.apiVersionMax != nil && c.apiVersionMax != *tt.opts.apiVersionMax {
+				t.Errorf("newClient apiVersionMax is %v, want %v", c.apiVersionMax, *tt.opts.apiVersionMax)
+			}
+			if tt.opts.apiVersionMax == nil && c.apiVersionMax != api20260310 {
+				t.Errorf("newClient apiVersionMax is %v, want %v", c.apiVersionMax, api20260310)
 			}
 
 			if tt.opts.userAgent != nil && c.userAgent != *tt.opts.userAgent {
@@ -1274,6 +1290,8 @@ func TestClient_Clone(t *testing.T) {
 		t.Parallel()
 
 		c := mustNewClient(t)
+		c.apiVersionMin = api20221128
+		c.apiVersionMax = api20221128
 		c.userAgent = "CustomUserAgent/1.0"
 		c.baseURL.Path = "/custom/"
 		c.uploadURL.Path = "/custom-upload/"
@@ -1581,7 +1599,7 @@ func TestNewRequest(t *testing.T) {
 	}
 
 	apiVersion := req.Header.Get(headerAPIVersion)
-	if got, want := apiVersion, defaultAPIVersion; got != want {
+	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
@@ -1667,13 +1685,13 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 	for _, test := range tests {
 		u, err := url.Parse(test.rawurl)
 		if err != nil {
-			t.Fatalf("url.Parse returned unexpected error: %v.", err)
+			t.Fatalf("url.Parse returned unexpected error: %v", err)
 		}
 		c.baseURL = u
 		if _, err := c.NewRequest(t.Context(), "GET", "test", nil); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
-			t.Fatalf("NewRequest returned unexpected error: %v.", err)
+			t.Fatalf("NewRequest returned unexpected error: %v", err)
 		}
 	}
 }
@@ -1788,7 +1806,7 @@ func TestNewFormRequest(t *testing.T) {
 	}
 
 	apiVersion := req.Header.Get(headerAPIVersion)
-	if got, want := apiVersion, defaultAPIVersion; got != want {
+	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewFormRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
@@ -1847,13 +1865,13 @@ func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
 	for _, test := range tests {
 		u, err := url.Parse(test.rawURL)
 		if err != nil {
-			t.Fatalf("url.Parse returned unexpected error: %v.", err)
+			t.Fatalf("url.Parse returned unexpected error: %v", err)
 		}
 		c.baseURL = u
 		if _, err := c.NewFormRequest(t.Context(), "test", nil); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
-			t.Fatalf("NewFormRequest returned unexpected error: %v.", err)
+			t.Fatalf("NewFormRequest returned unexpected error: %v", err)
 		}
 	}
 }
@@ -1864,7 +1882,7 @@ func TestNewUploadRequest_WithVersion(t *testing.T) {
 	req, _ := c.NewUploadRequest(t.Context(), "https://example.com/", nil, 0, "")
 
 	apiVersion := req.Header.Get(headerAPIVersion)
-	if got, want := apiVersion, defaultAPIVersion; got != want {
+	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
@@ -1901,13 +1919,13 @@ func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
 	for _, test := range tests {
 		u, err := url.Parse(test.rawurl)
 		if err != nil {
-			t.Fatalf("url.Parse returned unexpected error: %v.", err)
+			t.Fatalf("url.Parse returned unexpected error: %v", err)
 		}
 		c.uploadURL = u
 		if _, err = c.NewUploadRequest(t.Context(), "test", nil, 0, ""); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
-			t.Fatalf("NewUploadRequest returned unexpected error: %v.", err)
+			t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
 		}
 	}
 }
@@ -2225,7 +2243,7 @@ func TestDo_redirectLoop(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	if !errors.As(err, new(*url.Error)) {
-		t.Errorf("Expected a URL error; got %#v.", err)
+		t.Errorf("Expected a URL error; got %#v", err)
 	}
 }
 
@@ -2464,7 +2482,7 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	if errors.As(err, new(*RateLimitError)) {
-		t.Errorf("Did not expect a *RateLimitError error; got %#v.", err)
+		t.Errorf("Did not expect a *RateLimitError error; got %#v", err)
 	}
 	if got, want := resp.Rate.Limit, 60; got != want {
 		t.Errorf("Client rate limit = %v, want %v", got, want)
@@ -2511,7 +2529,7 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 	}
 	var rateLimitErr *RateLimitError
 	if !errors.As(err, &rateLimitErr) {
-		t.Fatalf("Expected a *RateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *RateLimitError error; got %#v", err)
 	}
 	if got, want := rateLimitErr.Rate.Limit, 60; got != want {
 		t.Errorf("rateLimitErr rate limit = %v, want %v", got, want)
@@ -2578,7 +2596,7 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	}
 	var rateLimitErr *RateLimitError
 	if !errors.As(err, &rateLimitErr) {
-		t.Fatalf("Expected a *RateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *RateLimitError error; got %#v", err)
 	}
 	if got, want := rateLimitErr.Rate.Limit, 60; got != want {
 		t.Errorf("rateLimitErr rate limit = %v, want %v", got, want)
@@ -2813,7 +2831,7 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 	_, err := client.Do(req, nil)
 	var rateLimitError *RateLimitError
 	if !errors.As(err, &rateLimitError) {
-		t.Fatalf("Expected a *rateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *rateLimitError error; got %#v", err)
 	}
 	if got, wantSuffix := rateLimitError.Message, "Context cancelled while waiting for rate limit to reset until"; !strings.HasPrefix(got, wantSuffix) {
 		t.Errorf("Expected request to be prevented because context cancellation, got: %v.", got)
@@ -2848,7 +2866,7 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
 	if !errors.As(err, &abuseRateLimitErr) {
-		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 	}
 	if got, want := abuseRateLimitErr.RetryAfter, (*time.Duration)(nil); got != want {
 		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
@@ -2882,7 +2900,7 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
 	if !errors.As(err, &abuseRateLimitErr) {
-		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 	}
 	if got, want := abuseRateLimitErr.RetryAfter, (*time.Duration)(nil); got != want {
 		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
@@ -2913,7 +2931,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 		}
 		var abuseRateLimitErr *AbuseRateLimitError
 		if !errors.As(err, &abuseRateLimitErr) {
-			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 		}
 		if abuseRateLimitErr.RetryAfter == nil {
 			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
@@ -2927,7 +2945,7 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 			t.Error("Expected error to be returned.")
 		}
 		if !errors.As(err, &abuseRateLimitErr) {
-			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 		}
 		if abuseRateLimitErr.RetryAfter == nil {
 			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
@@ -2969,7 +2987,7 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 		}
 		var abuseRateLimitErr *AbuseRateLimitError
 		if !errors.As(err, &abuseRateLimitErr) {
-			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 		}
 		if abuseRateLimitErr.RetryAfter == nil {
 			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
@@ -2984,7 +3002,7 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 			t.Error("Expected error to be returned.")
 		}
 		if !errors.As(err, &abuseRateLimitErr) {
-			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 		}
 		if abuseRateLimitErr.RetryAfter == nil {
 			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
@@ -3027,7 +3045,7 @@ func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
 	if !errors.As(err, &abuseRateLimitErr) {
-		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
 		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
@@ -3126,6 +3144,106 @@ func TestDo_noContent(t *testing.T) {
 	}
 }
 
+func TestClient_checkRequestAPIVersionBeforeDo(t *testing.T) {
+	t.Parallel()
+
+	for _, tt := range []struct {
+		name       string
+		version    string
+		versionMin string
+		versionMax string
+		wantErr    bool
+	}{
+		{
+			name:       "version_not_set",
+			version:    "",
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_less_than_min",
+			version:    "2022-01-01",
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    true,
+		},
+		{
+			name:       "version_equal_to_min",
+			version:    api20221128,
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_between_min_and_max",
+			version:    "2023-01-01",
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_equal_to_max",
+			version:    api20260310,
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_greater_than_max",
+			version:    api20260310,
+			versionMin: api20221128,
+			versionMax: api20221128,
+			wantErr:    true,
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			client := mustNewClient(t)
+			client.apiVersionMin = tt.versionMin
+			client.apiVersionMax = tt.versionMax
+
+			req, _ := http.NewRequestWithContext(t.Context(), "GET", ".", nil)
+			req.Header.Set(headerAPIVersion, tt.version)
+
+			err := client.checkRequestAPIVersionBeforeDo(req)
+			if tt.wantErr {
+				if err == nil {
+					t.Fatal("Expected error to be returned, got nil")
+				}
+				if !errors.Is(err, ErrUnsupportedAPIVersion) {
+					t.Errorf("Expected ErrUnsupportedAPIVersion; got %#v", err)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("Expected no error to be returned, got: %v", err)
+			}
+		})
+	}
+}
+
+func TestClient_bareDo_errors_with_unsupported_api_version(t *testing.T) {
+	t.Parallel()
+
+	c := mustNewClient(t)
+	c.apiVersionMin = api20221128
+	c.apiVersionMax = api20221128
+
+	req, _ := http.NewRequestWithContext(t.Context(), "GET", ".", nil)
+	req.Header.Set(headerAPIVersion, api20260310)
+
+	_, err := c.bareDo(c.client, req)
+	if err == nil {
+		t.Fatal("Expected error to be returned, got nil")
+	}
+	if !errors.Is(err, ErrUnsupportedAPIVersion) {
+		t.Errorf("Expected ErrUnsupportedAPIVersion; got %#v", err)
+	}
+}
+
 func TestBareDoUntilFound_redirectLoop(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -3141,7 +3259,7 @@ func TestBareDoUntilFound_redirectLoop(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	if !errors.As(err, new(*RedirectionError)) {
-		t.Errorf("Expected a Redirection error; got %#v.", err)
+		t.Errorf("Expected a Redirection error; got %#v", err)
 	}
 }
 
@@ -3160,7 +3278,7 @@ func TestBareDoUntilFound_UnexpectedRedirection(t *testing.T) {
 		t.Error("Expected error to be returned.")
 	}
 	if !errors.As(err, new(*RedirectionError)) {
-		t.Errorf("Expected a Redirection error; got %#v.", err)
+		t.Errorf("Expected a Redirection error; got %#v", err)
 	}
 }
 
