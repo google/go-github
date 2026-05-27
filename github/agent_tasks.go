@@ -155,7 +155,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 
 // Create starts a new Copilot cloud agent task for a repository.
 //
-// This endpoint is in public preview and is subject to change.
+// Note: This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#start-a-task
 //
