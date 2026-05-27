@@ -231,7 +231,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 
 // Get gets a task by ID for the authenticated user.
 //
-// This endpoint is in public preview and is subject to change.
+// Note: This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-id
 //
