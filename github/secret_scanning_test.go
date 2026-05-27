@@ -607,6 +607,167 @@ func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
+func TestPushProtectionBypassRequest_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &PushProtectionBypassRequest{}, `{"reason": "", "placeholder_id": ""}`)
+
+	u := &PushProtectionBypassRequest{
+		Reason:        "will_fix_later",
+		PlaceholderID: "bypass-123",
+	}
+
+	want := `{
+		"reason": "will_fix_later",
+		"placeholder_id": "bypass-123"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestPushProtectionBypass_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &PushProtectionBypass{}, `{"reason": "", "expire_at": null, "token_type": ""}`)
+
+	u := &PushProtectionBypass{
+		Reason:    "will_fix_later",
+		ExpireAt:  &Timestamp{referenceTime},
+		TokenType: "github_token",
+	}
+
+	want := `{
+		"reason": "will_fix_later",
+		"expire_at": ` + referenceTimeStr + `,
+		"token_type": "github_token"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSecretsScan_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &SecretsScan{}, `{"type": "", "status": ""}`)
+
+	u := &SecretsScan{
+		Type:        "incremental",
+		Status:      "completed",
+		CompletedAt: &Timestamp{referenceTime},
+		StartedAt:   &Timestamp{referenceTime},
+	}
+
+	want := `{
+		"type": "incremental",
+		"status": "completed",
+		"completed_at": ` + referenceTimeStr + `,
+		"started_at": ` + referenceTimeStr + `
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestCustomPatternBackfillScan_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &CustomPatternBackfillScan{}, `{"type": "", "status": ""}`)
+
+	u := &CustomPatternBackfillScan{
+		SecretsScan: SecretsScan{
+			Type:        "custom_pattern_backfill",
+			Status:      "completed",
+			CompletedAt: &Timestamp{referenceTime},
+			StartedAt:   &Timestamp{referenceTime},
+		},
+		PatternSlug:  Ptr("my-custom-pattern"),
+		PatternScope: Ptr("repository"),
+	}
+
+	want := `{
+		"type": "custom_pattern_backfill",
+		"status": "completed",
+		"completed_at": ` + referenceTimeStr + `,
+		"started_at": ` + referenceTimeStr + `,
+		"pattern_slug": "my-custom-pattern",
+		"pattern_scope": "repository"
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestSecretScanningScanHistory_Marshal(t *testing.T) {
+	t.Parallel()
+	testJSONMarshal(t, &SecretScanningScanHistory{}, `{}`)
+
+	u := &SecretScanningScanHistory{
+		IncrementalScans: []*SecretsScan{
+			{
+				Type:        "incremental",
+				Status:      "completed",
+				CompletedAt: &Timestamp{referenceTime},
+				StartedAt:   &Timestamp{referenceTime},
+			},
+		},
+		BackfillScans: []*SecretsScan{
+			{
+				Type:      "backfill",
+				Status:    "in_progress",
+				StartedAt: &Timestamp{referenceTime},
+			},
+		},
+		PatternUpdateScans: []*SecretsScan{
+			{
+				Type:   "pattern_update",
+				Status: "pending",
+			},
+		},
+		CustomPatternBackfillScans: []*CustomPatternBackfillScan{
+			{
+				SecretsScan: SecretsScan{
+					Type:        "custom_pattern_backfill",
+					Status:      "completed",
+					CompletedAt: &Timestamp{referenceTime},
+					StartedAt:   &Timestamp{referenceTime},
+				},
+				PatternSlug:  Ptr("my-custom-pattern"),
+				PatternScope: Ptr("organization"),
+			},
+		},
+	}
+
+	want := `{
+		"incremental_scans": [
+			{
+				"type": "incremental",
+				"status": "completed",
+				"completed_at": ` + referenceTimeStr + `,
+				"started_at": ` + referenceTimeStr + `
+			}
+		],
+		"backfill_scans": [
+			{
+				"type": "backfill",
+				"status": "in_progress",
+				"started_at": ` + referenceTimeStr + `
+			}
+		],
+		"pattern_update_scans": [
+			{
+				"type": "pattern_update",
+				"status": "pending"
+			}
+		],
+		"custom_pattern_backfill_scans": [
+			{
+				"type": "custom_pattern_backfill",
+				"status": "completed",
+				"completed_at": ` + referenceTimeStr + `,
+				"started_at": ` + referenceTimeStr + `,
+				"pattern_slug": "my-custom-pattern",
+				"pattern_scope": "organization"
+			}
+		]
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
 func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
