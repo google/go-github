@@ -10522,6 +10522,89 @@ func TestContributorStats_GetWeeks(tt *testing.T) {
 	c.GetWeeks()
 }
 
+func TestCopilotCloudAgentConfiguration_GetCustomAllowlist(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CopilotCloudAgentConfiguration{CustomAllowlist: zeroValue}
+	c.GetCustomAllowlist()
+	c = &CopilotCloudAgentConfiguration{}
+	c.GetCustomAllowlist()
+	c = nil
+	c.GetCustomAllowlist()
+}
+
+func TestCopilotCloudAgentConfiguration_GetEnabledTools(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentConfiguration{}
+	c.GetEnabledTools()
+	c = nil
+	c.GetEnabledTools()
+}
+
+func TestCopilotCloudAgentConfiguration_GetIsFirewallEnabled(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentConfiguration{}
+	c.GetIsFirewallEnabled()
+	c = nil
+	c.GetIsFirewallEnabled()
+}
+
+func TestCopilotCloudAgentConfiguration_GetIsFirewallRecommendedAllowlistEnabled(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentConfiguration{}
+	c.GetIsFirewallRecommendedAllowlistEnabled()
+	c = nil
+	c.GetIsFirewallRecommendedAllowlistEnabled()
+}
+
+func TestCopilotCloudAgentConfiguration_GetMCPConfiguration(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentConfiguration{}
+	c.GetMCPConfiguration()
+	c = nil
+	c.GetMCPConfiguration()
+}
+
+func TestCopilotCloudAgentConfiguration_GetRequireActionsWorkflowApproval(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentConfiguration{}
+	c.GetRequireActionsWorkflowApproval()
+	c = nil
+	c.GetRequireActionsWorkflowApproval()
+}
+
+func TestCopilotCloudAgentEnabledTools_GetCodeql(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentEnabledTools{}
+	c.GetCodeql()
+	c = nil
+	c.GetCodeql()
+}
+
+func TestCopilotCloudAgentEnabledTools_GetCopilotCodeReview(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentEnabledTools{}
+	c.GetCopilotCodeReview()
+	c = nil
+	c.GetCopilotCodeReview()
+}
+
+func TestCopilotCloudAgentEnabledTools_GetDependencyVulnerabilityChecks(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentEnabledTools{}
+	c.GetDependencyVulnerabilityChecks()
+	c = nil
+	c.GetDependencyVulnerabilityChecks()
+}
+
+func TestCopilotCloudAgentEnabledTools_GetSecretScanning(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCloudAgentEnabledTools{}
+	c.GetSecretScanning()
+	c = nil
+	c.GetSecretScanning()
+}
+
 func TestCopilotCodeReviewBranchRule_GetParameters(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotCodeReviewBranchRule{}

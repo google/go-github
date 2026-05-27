@@ -8190,6 +8190,86 @@ func (c *ContributorStats) GetWeeks() []*WeeklyStats {
 	return c.Weeks
 }
 
+// GetCustomAllowlist returns the CustomAllowlist slice if it's non-nil, nil otherwise.
+func (c *CopilotCloudAgentConfiguration) GetCustomAllowlist() []string {
+	if c == nil || c.CustomAllowlist == nil {
+		return nil
+	}
+	return c.CustomAllowlist
+}
+
+// GetEnabledTools returns the EnabledTools field.
+func (c *CopilotCloudAgentConfiguration) GetEnabledTools() *CopilotCloudAgentEnabledTools {
+	if c == nil {
+		return nil
+	}
+	return c.EnabledTools
+}
+
+// GetIsFirewallEnabled returns the IsFirewallEnabled field.
+func (c *CopilotCloudAgentConfiguration) GetIsFirewallEnabled() bool {
+	if c == nil {
+		return false
+	}
+	return c.IsFirewallEnabled
+}
+
+// GetIsFirewallRecommendedAllowlistEnabled returns the IsFirewallRecommendedAllowlistEnabled field.
+func (c *CopilotCloudAgentConfiguration) GetIsFirewallRecommendedAllowlistEnabled() bool {
+	if c == nil {
+		return false
+	}
+	return c.IsFirewallRecommendedAllowlistEnabled
+}
+
+// GetMCPConfiguration returns the MCPConfiguration field.
+func (c *CopilotCloudAgentConfiguration) GetMCPConfiguration() any {
+	if c == nil {
+		return nil
+	}
+	return c.MCPConfiguration
+}
+
+// GetRequireActionsWorkflowApproval returns the RequireActionsWorkflowApproval field.
+func (c *CopilotCloudAgentConfiguration) GetRequireActionsWorkflowApproval() bool {
+	if c == nil {
+		return false
+	}
+	return c.RequireActionsWorkflowApproval
+}
+
+// GetCodeql returns the Codeql field.
+func (c *CopilotCloudAgentEnabledTools) GetCodeql() bool {
+	if c == nil {
+		return false
+	}
+	return c.Codeql
+}
+
+// GetCopilotCodeReview returns the CopilotCodeReview field.
+func (c *CopilotCloudAgentEnabledTools) GetCopilotCodeReview() bool {
+	if c == nil {
+		return false
+	}
+	return c.CopilotCodeReview
+}
+
+// GetDependencyVulnerabilityChecks returns the DependencyVulnerabilityChecks field.
+func (c *CopilotCloudAgentEnabledTools) GetDependencyVulnerabilityChecks() bool {
+	if c == nil {
+		return false
+	}
+	return c.DependencyVulnerabilityChecks
+}
+
+// GetSecretScanning returns the SecretScanning field.
+func (c *CopilotCloudAgentEnabledTools) GetSecretScanning() bool {
+	if c == nil {
+		return false
+	}
+	return c.SecretScanning
+}
+
 // GetParameters returns the Parameters field.
 func (c *CopilotCodeReviewBranchRule) GetParameters() CopilotCodeReviewRuleParameters {
 	if c == nil {
