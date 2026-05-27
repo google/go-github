@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -39,7 +38,43 @@ func TestCopilotService_GetCloudAgentConfiguration(t *testing.T) {
 				"custom_allowlist": []
 			}`,
 			want: &CopilotCloudAgentConfiguration{
-				McpConfiguration: nil,
+				MCPConfiguration: nil,
+				EnabledTools: &CopilotCloudAgentEnabledTools{
+					Codeql:                        true,
+					CopilotCodeReview:             true,
+					SecretScanning:                true,
+					DependencyVulnerabilityChecks: true,
+				},
+				RequireActionsWorkflowApproval:        true,
+				IsFirewallEnabled:                     true,
+				IsFirewallRecommendedAllowlistEnabled: true,
+				CustomAllowlist:                       []string{},
+			},
+			wantErr: false,
+		},
+		{
+			name: "with active mcp_configuration object",
+			responseBody: `{
+				"mcp_configuration": {
+					"type": "resource",
+					"uri": "stdio://server"
+				},
+				"enabled_tools": {
+					"codeql": true,
+					"copilot_code_review": true,
+					"secret_scanning": true,
+					"dependency_vulnerability_checks": true
+				},
+				"require_actions_workflow_approval": true,
+				"is_firewall_enabled": true,
+				"is_firewall_recommended_allowlist_enabled": true,
+				"custom_allowlist": []
+			}`,
+			want: &CopilotCloudAgentConfiguration{
+				MCPConfiguration: map[string]any{
+					"type": "resource",
+					"uri":  "stdio://server",
+				},
 				EnabledTools: &CopilotCloudAgentEnabledTools{
 					Codeql:                        true,
 					CopilotCodeReview:             true,
@@ -69,7 +104,7 @@ func TestCopilotService_GetCloudAgentConfiguration(t *testing.T) {
 				"custom_allowlist": ["example.com"]
 			}`,
 			want: &CopilotCloudAgentConfiguration{
-				McpConfiguration: nil,
+				MCPConfiguration: nil,
 				EnabledTools: &CopilotCloudAgentEnabledTools{
 					Codeql:                        false,
 					CopilotCodeReview:             true,
@@ -99,7 +134,7 @@ func TestCopilotService_GetCloudAgentConfiguration(t *testing.T) {
 				"custom_allowlist": []
 			}`,
 			want: &CopilotCloudAgentConfiguration{
-				McpConfiguration: nil,
+				MCPConfiguration: nil,
 				EnabledTools: &CopilotCloudAgentEnabledTools{
 					Codeql:                        false,
 					CopilotCodeReview:             false,
@@ -183,47 +218,23 @@ func TestCopilotService_GetCloudAgentConfiguration_InvalidRepo(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestCopilotService_GetCloudAgentConfiguration_NotFound(t *testing.T) {
+func TestCopilotService_GetCloudAgentConfiguration_MalformedJSON(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/copilot/cloud-agent/configuration", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		w.WriteHeader(http.StatusNotFound)
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{invalid json}`)
 	})
 
 	ctx := t.Context()
-	config, resp, err := client.Copilot.GetCloudAgentConfiguration(ctx, "o", "r")
+	config, _, err := client.Copilot.GetCloudAgentConfiguration(ctx, "o", "r")
 	if err == nil {
-		t.Error("Expected HTTP 404 response")
-	}
-	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("GetCloudAgentConfiguration return status %v, want %v", got, want)
+		t.Error("Expected error from malformed JSON")
 	}
 	if config != nil {
-		t.Errorf("GetCloudAgentConfiguration return %+v, want nil", config)
-	}
-}
-
-func TestCopilotService_GetCloudAgentConfiguration_Forbidden(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/repos/o/r/copilot/cloud-agent/configuration", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		w.WriteHeader(http.StatusForbidden)
-	})
-
-	ctx := t.Context()
-	config, resp, err := client.Copilot.GetCloudAgentConfiguration(ctx, "o", "r")
-	if err == nil {
-		t.Error("Expected HTTP 403 response")
-	}
-	if got, want := resp.Response.StatusCode, http.StatusForbidden; got != want {
-		t.Errorf("GetCloudAgentConfiguration return status %v, want %v", got, want)
-	}
-	if config != nil {
-		t.Errorf("GetCloudAgentConfiguration return %+v, want nil", config)
+		t.Errorf("GetCloudAgentConfiguration should return nil on error, got %+v", config)
 	}
 }
 
@@ -243,7 +254,7 @@ func TestCopilotCloudAgentConfiguration_Marshal(t *testing.T) {
 		{
 			name: "with all settings configured",
 			u: &CopilotCloudAgentConfiguration{
-				McpConfiguration: nil,
+				MCPConfiguration: nil,
 				EnabledTools: &CopilotCloudAgentEnabledTools{
 					Codeql:                        true,
 					CopilotCodeReview:             false,
@@ -260,10 +271,10 @@ func TestCopilotCloudAgentConfiguration_Marshal(t *testing.T) {
 		{
 			name: "with mcp configuration",
 			u: &CopilotCloudAgentConfiguration{
-				McpConfiguration: func() *json.RawMessage {
-					raw := json.RawMessage(`{"type":"resource","uri":"stdio://server"}`)
-					return &raw
-				}(),
+				MCPConfiguration: map[string]any{
+					"type": "resource",
+					"uri":  "stdio://server",
+				},
 				EnabledTools: &CopilotCloudAgentEnabledTools{
 					Codeql:                        true,
 					CopilotCodeReview:             true,
@@ -280,7 +291,7 @@ func TestCopilotCloudAgentConfiguration_Marshal(t *testing.T) {
 		{
 			name: "with multiple allowlist entries",
 			u: &CopilotCloudAgentConfiguration{
-				McpConfiguration: nil,
+				MCPConfiguration: nil,
 				EnabledTools: &CopilotCloudAgentEnabledTools{
 					Codeql:                        false,
 					CopilotCodeReview:             false,

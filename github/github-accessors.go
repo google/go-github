@@ -8222,12 +8222,12 @@ func (c *CopilotCloudAgentConfiguration) GetIsFirewallRecommendedAllowlistEnable
 	return c.IsFirewallRecommendedAllowlistEnabled
 }
 
-// GetMcpConfiguration returns the McpConfiguration field if it's non-nil, zero value otherwise.
-func (c *CopilotCloudAgentConfiguration) GetMcpConfiguration() json.RawMessage {
-	if c == nil || c.McpConfiguration == nil {
-		return json.RawMessage{}
+// GetMCPConfiguration returns the MCPConfiguration field.
+func (c *CopilotCloudAgentConfiguration) GetMCPConfiguration() any {
+	if c == nil {
+		return nil
 	}
-	return *c.McpConfiguration
+	return c.MCPConfiguration
 }
 
 // GetRequireActionsWorkflowApproval returns the RequireActionsWorkflowApproval field.

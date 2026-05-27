@@ -10557,15 +10557,12 @@ func TestCopilotCloudAgentConfiguration_GetIsFirewallRecommendedAllowlistEnabled
 	c.GetIsFirewallRecommendedAllowlistEnabled()
 }
 
-func TestCopilotCloudAgentConfiguration_GetMcpConfiguration(tt *testing.T) {
+func TestCopilotCloudAgentConfiguration_GetMCPConfiguration(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue json.RawMessage
-	c := &CopilotCloudAgentConfiguration{McpConfiguration: &zeroValue}
-	c.GetMcpConfiguration()
-	c = &CopilotCloudAgentConfiguration{}
-	c.GetMcpConfiguration()
+	c := &CopilotCloudAgentConfiguration{}
+	c.GetMCPConfiguration()
 	c = nil
-	c.GetMcpConfiguration()
+	c.GetMCPConfiguration()
 }
 
 func TestCopilotCloudAgentConfiguration_GetRequireActionsWorkflowApproval(tt *testing.T) {

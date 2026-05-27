@@ -7,13 +7,12 @@ package github
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 )
 
 // CopilotCloudAgentConfiguration represents the Copilot cloud agent configuration for a repository.
 type CopilotCloudAgentConfiguration struct {
-	McpConfiguration                      *json.RawMessage               `json:"mcp_configuration"`
+	MCPConfiguration                      any                            `json:"mcp_configuration"`
 	EnabledTools                          *CopilotCloudAgentEnabledTools `json:"enabled_tools"`
 	RequireActionsWorkflowApproval        bool                           `json:"require_actions_workflow_approval"`
 	IsFirewallEnabled                     bool                           `json:"is_firewall_enabled"`
@@ -21,7 +20,7 @@ type CopilotCloudAgentConfiguration struct {
 	CustomAllowlist                       []string                       `json:"custom_allowlist"`
 }
 
-// CopilotCloudAgentEnabledTools  represents the enabled review tools for Copilot cloud agent.
+// CopilotCloudAgentEnabledTools represents the enabled review tools for Copilot cloud agent.
 type CopilotCloudAgentEnabledTools struct {
 	Codeql                        bool `json:"codeql"`
 	CopilotCodeReview             bool `json:"copilot_code_review"`
