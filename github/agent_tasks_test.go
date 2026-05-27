@@ -93,7 +93,7 @@ func agentTask(includeSessions bool) *AgentTask {
 				Data:     json.RawMessage(`{"id":42}`),
 			},
 		},
-		CreatedAt: *createdAt,
+		CreatedAt: createdAt,
 		UpdatedAt: updatedAt,
 	}
 
