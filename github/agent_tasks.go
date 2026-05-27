@@ -203,7 +203,7 @@ func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, tas
 
 // List lists tasks for the authenticated user.
 //
-// This endpoint is in public preview and is subject to change.
+// Note: This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks
 //
