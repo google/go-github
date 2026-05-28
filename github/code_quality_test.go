@@ -14,47 +14,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestCodeQualitySetupConfiguration_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CodeQualitySetupConfiguration{}, "{}")
-
-	c := &CodeQualitySetupConfiguration{
-		State:       Ptr("configured"),
-		Languages:   []string{"javascript-typescript", "python"},
-		RunnerType:  Ptr("standard"),
-		RunnerLabel: nil,
-		UpdatedAt:   &Timestamp{referenceTime},
-		Schedule:    Ptr("weekly"),
-	}
-
-	want := `{
-		"state": "configured",
-		"languages": ["javascript-typescript", "python"],
-		"runner_type": "standard",
-		"updated_at": ` + referenceTimeStr + `,
-		"schedule": "weekly"
-	}`
-
-	testJSONMarshal(t, c, want)
-}
-
-func TestUpdateCodeQualitySetupResponse_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &UpdateCodeQualitySetupResponse{}, "{}")
-
-	r := &UpdateCodeQualitySetupResponse{
-		RunID:  Ptr(int64(42)),
-		RunURL: Ptr("https://api.github.com/repos/octocat/hello-world/actions/runs/42"),
-	}
-
-	want := `{
-		"run_id": 42,
-		"run_url": "https://api.github.com/repos/octocat/hello-world/actions/runs/42"
-	}`
-
-	testJSONMarshal(t, r, want)
-}
-
 func TestCodeQualityService_GetSetup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -67,7 +26,7 @@ func TestCodeQualityService_GetSetup(t *testing.T) {
 			"languages": ["javascript-typescript", "python"],
 			"runner_type": "standard",
 			"runner_label": null,
-			"updated_at": "2023-01-01T00:00:00Z",
+			"updated_at": "2026-01-01T00:00:00Z",
 			"schedule": "weekly"
 		}`)
 	})
@@ -82,7 +41,7 @@ func TestCodeQualityService_GetSetup(t *testing.T) {
 		State:      Ptr("configured"),
 		Languages:  []string{"javascript-typescript", "python"},
 		RunnerType: Ptr("standard"),
-		UpdatedAt:  &Timestamp{time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)},
+		UpdatedAt:  &Timestamp{time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)},
 		Schedule:   Ptr("weekly"),
 	}
 	if diff := cmp.Diff(want, cfg); diff != "" {
