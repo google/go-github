@@ -1030,12 +1030,12 @@ func (a *AgentTaskList) GetTotalArchivedCount() int {
 	return *a.TotalArchivedCount
 }
 
-// GetCreatorID returns the CreatorID field.
-func (a *AgentTaskListByRepoOptions) GetCreatorID() int64 {
-	if a == nil {
-		return 0
+// GetCreatorIDs returns the CreatorIDs slice if it's non-nil, nil otherwise.
+func (a *AgentTaskListByRepoOptions) GetCreatorIDs() []int64 {
+	if a == nil || a.CreatorIDs == nil {
+		return nil
 	}
-	return a.CreatorID
+	return a.CreatorIDs
 }
 
 // GetDirection returns the Direction field.
@@ -10492,6 +10492,14 @@ func (c *CreateAgentTaskRequest) GetCreatePullRequest() bool {
 		return false
 	}
 	return *c.CreatePullRequest
+}
+
+// GetHeadRef returns the HeadRef field if it's non-nil, zero value otherwise.
+func (c *CreateAgentTaskRequest) GetHeadRef() string {
+	if c == nil || c.HeadRef == nil {
+		return ""
+	}
+	return *c.HeadRef
 }
 
 // GetModel returns the Model field if it's non-nil, zero value otherwise.

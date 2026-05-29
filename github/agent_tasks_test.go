@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"testing"
 	"time"
 
@@ -105,7 +106,7 @@ func agentTask() *AgentTask {
 				Data:     json.RawMessage(`{"id":42}`),
 			},
 		},
-		CreatedAt: createdAt,
+		CreatedAt: *createdAt,
 		UpdatedAt: updatedAt,
 	}
 }
@@ -144,15 +145,15 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 	mux.HandleFunc("/agents/repos/o/r/tasks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
-		testFormValues(t, r, values{
-			"creator_id":  "1",
-			"direction":   "asc",
-			"is_archived": "true",
-			"page":        "2",
-			"per_page":    "1",
-			"since":       "2025-03-14T00:00:00Z",
-			"sort":        "created_at",
-			"state":       "queued,completed",
+		testFormValuesList(t, r, url.Values{
+			"creator_id":  {"1", "2"},
+			"direction":   {"asc"},
+			"is_archived": {"true"},
+			"page":        {"2"},
+			"per_page":    {"1"},
+			"since":       {"2025-03-14T00:00:00Z"},
+			"sort":        {"created_at"},
+			"state":       {"queued,completed"},
 		})
 		w.Header().Set("Link", `<https://api.github.com/agents/repos/o/r/tasks?page=3>; rel="next"`)
 		fmt.Fprintf(w, `{"tasks":[%v],"total_active_count":5,"total_archived_count":2}`, agentTaskJSON())
@@ -167,7 +168,7 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 			Since:       Ptr(time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)),
 			ListOptions: ListOptions{Page: 2, PerPage: 1},
 		},
-		CreatorID: 1,
+		CreatorIDs: []int64{1, 2},
 	}
 
 	ctx := t.Context()
@@ -211,6 +212,7 @@ func TestAgentTasksService_Create(t *testing.T) {
 		Prompt:            "Fix the login button on the homepage",
 		Model:             Ptr("gpt-5.3-codex"),
 		CreatePullRequest: Ptr(true),
+		HeadRef:           Ptr("copilot/fix-1"),
 		BaseRef:           Ptr("main"),
 	}
 

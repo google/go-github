@@ -1271,12 +1271,15 @@ func TestAgentTaskList_GetTotalArchivedCount(tt *testing.T) {
 	a.GetTotalArchivedCount()
 }
 
-func TestAgentTaskListByRepoOptions_GetCreatorID(tt *testing.T) {
+func TestAgentTaskListByRepoOptions_GetCreatorIDs(tt *testing.T) {
 	tt.Parallel()
-	a := &AgentTaskListByRepoOptions{}
-	a.GetCreatorID()
+	zeroValue := []int64{}
+	a := &AgentTaskListByRepoOptions{CreatorIDs: zeroValue}
+	a.GetCreatorIDs()
+	a = &AgentTaskListByRepoOptions{}
+	a.GetCreatorIDs()
 	a = nil
-	a.GetCreatorID()
+	a.GetCreatorIDs()
 }
 
 func TestAgentTaskListOptions_GetDirection(tt *testing.T) {
@@ -13313,6 +13316,17 @@ func TestCreateAgentTaskRequest_GetCreatePullRequest(tt *testing.T) {
 	c.GetCreatePullRequest()
 	c = nil
 	c.GetCreatePullRequest()
+}
+
+func TestCreateAgentTaskRequest_GetHeadRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateAgentTaskRequest{HeadRef: &zeroValue}
+	c.GetHeadRef()
+	c = &CreateAgentTaskRequest{}
+	c.GetHeadRef()
+	c = nil
+	c.GetHeadRef()
 }
 
 func TestCreateAgentTaskRequest_GetModel(tt *testing.T) {

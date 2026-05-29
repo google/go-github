@@ -103,8 +103,8 @@ type AgentTaskListOptions struct {
 type AgentTaskListByRepoOptions struct {
 	AgentTaskListOptions
 
-	// CreatorID filters tasks by creator user ID.
-	CreatorID int64 `url:"creator_id,omitempty"`
+	// CreatorIDs filters tasks by creator user IDs.
+	CreatorIDs []int64 `url:"creator_id,omitempty"`
 }
 
 // CreateAgentTaskRequest represents the parameters for creating an agent task.
@@ -117,6 +117,9 @@ type CreateAgentTaskRequest struct {
 
 	// CreatePullRequest indicates whether to create a pull request.
 	CreatePullRequest *bool `json:"create_pull_request,omitempty"`
+
+	// HeadRef is the head ref for the new branch or pull request.
+	HeadRef *string `json:"head_ref,omitempty"`
 
 	// BaseRef is the base ref for the new branch or pull request.
 	BaseRef *string `json:"base_ref,omitempty"`
@@ -157,7 +160,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#start-a-task
 //
 //meta:operation POST /agents/repos/{owner}/{repo}/tasks
-func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req CreateAgentTaskRequest) (*AgentTask, *Response, error) {
+func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts *CreateAgentTaskRequest) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks", owner, repo)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, opts, WithVersion(api20260310))
