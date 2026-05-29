@@ -13,7 +13,7 @@ import (
 // CodeQualityService handles communication with the code quality related
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/code-quality/code-quality?apiVersion=2026-03-10
+// GitHub API docs: https://docs.github.com/rest/code-quality/code-quality?apiVersion=2022-11-28
 type CodeQualityService service
 
 // CodeQualitySetupConfiguration represents a code quality setup configuration for a repository.
@@ -49,7 +49,7 @@ type UpdateCodeQualitySetupResponse struct {
 func (s *CodeQualityService) GetSetup(ctx context.Context, owner, repo string) (*CodeQualitySetupConfiguration, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-quality/setup", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -74,7 +74,7 @@ func (s *CodeQualityService) GetSetup(ctx context.Context, owner, repo string) (
 func (s *CodeQualityService) UpdateSetup(ctx context.Context, owner, repo string, opts *UpdateCodeQualitySetupOptions) (*UpdateCodeQualitySetupResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-quality/setup", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -20,7 +20,6 @@ func TestCodeQualityService_GetSetup(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/code-quality/setup", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		fmt.Fprint(w, `{
 			"state": "configured",
 			"languages": ["javascript-typescript", "python"],
@@ -74,7 +73,6 @@ func TestCodeQualityService_UpdateSetup(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/code-quality/setup", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"run_id": 42,
@@ -124,7 +122,6 @@ func TestCodeQualityService_UpdateSetup_withRunnerLabel(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/code-quality/setup", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"run_id": 99,
@@ -157,7 +154,6 @@ func TestCodeQualityService_UpdateSetup_notConfigured(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/code-quality/setup", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{}`)
