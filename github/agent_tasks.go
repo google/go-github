@@ -15,7 +15,7 @@ import (
 // AgentTasksService handles communication with the agent tasks
 // methods of the GitHub API.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28
 type AgentTasksService service
 
 // AgentTask represents a Copilot cloud agent task.
@@ -129,7 +129,7 @@ type CreateAgentTaskRequest struct {
 //
 // Note: This endpoint is in public preview and is subject to change.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks-for-repository
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#list-tasks-for-repository
 //
 //meta:operation GET /agents/repos/{owner}/{repo}/tasks
 func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, opts *AgentTaskListByRepoOptions) (*AgentTaskList, *Response, error) {
@@ -157,10 +157,10 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 //
 // Note: This endpoint is in public preview and is subject to change.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#start-a-task
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#start-a-task
 //
 //meta:operation POST /agents/repos/{owner}/{repo}/tasks
-func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req CreateAgentTaskRequest) (*AgentTask, *Response, error) {
+func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts *CreateAgentTaskRequest) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks", owner, repo)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, opts, WithVersion(api20260310))
@@ -181,7 +181,7 @@ func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req 
 //
 // Note: This endpoint is in public preview and is subject to change.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-repo
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#get-a-task-by-repo
 //
 //meta:operation GET /agents/repos/{owner}/{repo}/tasks/{task_id}
 func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, taskID string) (*AgentTask, *Response, error) {
@@ -205,7 +205,7 @@ func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, tas
 //
 // Note: This endpoint is in public preview and is subject to change.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#list-tasks
 //
 //meta:operation GET /agents/tasks
 func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions) (*AgentTaskList, *Response, error) {
@@ -233,7 +233,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 //
 // Note: This endpoint is in public preview and is subject to change.
 //
-// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-id
+// GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#get-a-task-by-id
 //
 //meta:operation GET /agents/tasks/{task_id}
 func (s *AgentTasksService) Get(ctx context.Context, taskID string) (*AgentTask, *Response, error) {
