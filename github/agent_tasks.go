@@ -124,7 +124,7 @@ type CreateAgentTaskRequest struct {
 
 // ListByRepo lists tasks for a repository.
 //
-// This endpoint is in public preview and is subject to change.
+// Note: This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks-for-repository
 //
@@ -152,7 +152,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 
 // Create starts a new Copilot cloud agent task for a repository.
 //
-// This endpoint is in public preview and is subject to change.
+// Note: This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#start-a-task
 //
@@ -176,7 +176,7 @@ func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts
 
 // GetByRepoAndID gets a repository task by ID.
 //
-// This endpoint is in public preview and is subject to change.
+// Note: This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-repo
 //
@@ -200,7 +200,7 @@ func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, tas
 
 // List lists tasks for the authenticated user.
 //
-// This endpoint is in public preview and is subject to change.
+// Note: This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#list-tasks
 //
@@ -228,7 +228,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 
 // Get gets a task by ID for the authenticated user.
 //
-// This endpoint is in public preview and is subject to change.
+// Note: This endpoint is in public preview and is subject to change.
 //
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#get-a-task-by-id
 //
