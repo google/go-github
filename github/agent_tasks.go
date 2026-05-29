@@ -35,9 +35,6 @@ type AgentTask struct {
 	CreatedAt    Timestamp            `json:"created_at"`
 	UpdatedAt    *Timestamp           `json:"updated_at,omitempty"`
 	Sessions     []*AgentTaskSession  `json:"sessions,omitempty"`
-
-	// Deprecated: UserCollaborators is deprecated by GitHub.
-	UserCollaborators []*User `json:"user_collaborators,omitempty"`
 }
 
 // AgentTaskOwner represents an agent task owner.

@@ -982,14 +982,6 @@ func (a *AgentTask) GetURL() string {
 	return *a.URL
 }
 
-// GetUserCollaborators returns the UserCollaborators slice if it's non-nil, nil otherwise.
-func (a *AgentTask) GetUserCollaborators() []*User {
-	if a == nil || a.UserCollaborators == nil {
-		return nil
-	}
-	return a.UserCollaborators
-}
-
 // GetData returns the Data field.
 func (a *AgentTaskArtifact) GetData() json.RawMessage {
 	if a == nil {

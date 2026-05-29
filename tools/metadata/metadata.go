@@ -482,7 +482,9 @@ func methodOps(opsFile *operationsFile, cmap ast.CommentMap, fn *ast.FuncDecl) (
 // Keep this in sync with defaultAPIVersion in github/github.go.
 const metadataDocsAPIVersion = "2022-11-28"
 
-var customDocsAPIVersions = map[string]string{
+// previewDocsAPIVersions maps REST docs paths to preview API versions when the
+// docs page requires a version other than metadataDocsAPIVersion.
+var previewDocsAPIVersions = map[string]string{
 	"/rest/agent-tasks/agent-tasks": "2026-03-10",
 }
 
@@ -508,7 +510,7 @@ func normalizeDocURL(docURL string) string {
 	q := u.Query()
 	if q.Get("apiVersion") == "" {
 		apiVersion := metadataDocsAPIVersion
-		if version, ok := customDocsAPIVersions[cleanPath]; ok {
+		if version, ok := previewDocsAPIVersions[cleanPath]; ok {
 			apiVersion = version
 		}
 		q.Set("apiVersion", apiVersion)
