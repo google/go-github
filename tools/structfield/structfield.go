@@ -421,7 +421,7 @@ var initialisms = map[string]bool{
 	"JSON": true,
 	"OIDC": true,
 	"LDAP": true, "LFS": true, "LHS": true, "LOC": true,
-	"MD5": true, "MS": true, "MX": true,
+	"MCP": true, "MD5": true, "MS": true, "MX": true,
 	"NPM": true, "NTP": true, "NVD": true,
 	"OID": true, "OS": true,
 	"PEM": true, "PR": true, "QPS": true,

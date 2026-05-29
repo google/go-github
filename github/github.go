@@ -30,7 +30,7 @@ import (
 )
 
 const (
-	Version = "v87.0.0"
+	Version = "v88.0.0"
 
 	HeaderRateLimit     = "X-Ratelimit-Limit"
 	HeaderRateRemaining = "X-Ratelimit-Remaining"
@@ -40,10 +40,8 @@ const (
 	HeaderRequestID     = "X-Github-Request-Id"
 
 	// https://docs.github.com/en/rest/about-the-rest-api/api-versions#about-api-versioning
-	defaultAPIVersion = api20221128
-	latestAPIVersion  = api20260310
-	api20221128       = "2022-11-28"
-	api20260310       = "2026-03-10"
+	api20221128 = "2022-11-28"
+	api20260310 = "2026-03-10"
 
 	defaultBaseURL   = "https://api.github.com/"
 	defaultUserAgent = "go-github" + "/" + Version
@@ -177,6 +175,13 @@ type Client struct {
 
 	// Base URL for uploading files.
 	uploadURL *url.URL
+
+	// Default API version to set in the X-Github-Api-Version header.
+	apiVersionDefault string
+	// Minimum API version that the client can use.
+	apiVersionMin string
+	// Maximum API version that the client can use.
+	apiVersionMax string
 
 	// User agent used when communicating with the GitHub API.
 	userAgent string
@@ -348,6 +353,8 @@ type clientOptions struct {
 	httpClient                              *http.Client
 	transport                               http.RoundTripper
 	timeout                                 *time.Duration
+	apiVersionMin                           *string
+	apiVersionMax                           *string
 	userAgent                               *string
 	envProxy                                bool
 	token                                   *string
@@ -439,25 +446,40 @@ func WithAuthToken(token string) ClientOptionsFunc {
 	}
 }
 
+// WithURLs returns a ClientOptionsFunc that sets the base and upload URLs
+// while only validating the URL format. Nil values will be ignored and default
+// URLs will be used.
+func WithURLs(baseURL, uploadURL *string) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		if baseURL != nil {
+			b, err := parseURL(*baseURL)
+			if err != nil {
+				return fmt.Errorf("invalid base url: %w", err)
+			}
+
+			o.baseURL = b
+		}
+
+		if uploadURL != nil {
+			u, err := parseURL(*uploadURL)
+			if err != nil {
+				return fmt.Errorf("invalid upload url: %w", err)
+			}
+
+			o.uploadURL = u
+		}
+
+		return nil
+	}
+}
+
 // WithEnterpriseURLs returns a ClientOptionsFunc that sets the base and upload
 // URLs for a Client.
 func WithEnterpriseURLs(baseURL, uploadURL string) ClientOptionsFunc {
 	return func(o *clientOptions) error {
-		if baseURL == "" {
-			return errors.New("base url must not be empty")
-		}
-
-		if uploadURL == "" {
-			return errors.New("upload url must not be empty")
-		}
-
-		b, err := url.Parse(baseURL)
+		b, err := parseURL(baseURL)
 		if err != nil {
-			return err
-		}
-
-		if !strings.HasSuffix(b.Path, "/") {
-			b.Path += "/"
+			return fmt.Errorf("invalid base url: %w", err)
 		}
 
 		if !strings.HasSuffix(b.Path, "/api/v3/") &&
@@ -468,14 +490,11 @@ func WithEnterpriseURLs(baseURL, uploadURL string) ClientOptionsFunc {
 
 		o.baseURL = b
 
-		u, err := url.Parse(uploadURL)
+		u, err := parseURL(uploadURL)
 		if err != nil {
-			return err
+			return fmt.Errorf("invalid upload url: %w", err)
 		}
 
-		if !strings.HasSuffix(u.Path, "/") {
-			u.Path += "/"
-		}
 		if !strings.HasSuffix(u.Path, "/api/uploads/") &&
 			!strings.HasPrefix(u.Host, "api.") &&
 			!strings.Contains(u.Host, ".api.") &&
@@ -547,7 +566,11 @@ func NewClient(opts ...ClientOptionsFunc) (*Client, error) {
 // newClient creates a new Client with the provided options. This is an internal
 // helper function that is called by [NewClient] and [Client.Clone].
 func newClient(opts clientOptions) (*Client, error) {
-	c := &Client{}
+	c := &Client{
+		apiVersionDefault: api20221128,
+		apiVersionMin:     api20221128,
+		apiVersionMax:     api20260310,
+	}
 
 	if opts.httpClient != nil {
 		c.client = opts.httpClient
@@ -596,6 +619,14 @@ func newClient(opts clientOptions) (*Client, error) {
 		Timeout:       c.client.Timeout,
 		Jar:           c.client.Jar,
 		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+	}
+
+	if opts.apiVersionMin != nil {
+		c.apiVersionMin = *opts.apiVersionMin
+	}
+
+	if opts.apiVersionMax != nil {
+		c.apiVersionMax = *opts.apiVersionMax
 	}
 
 	if opts.userAgent != nil {
@@ -708,6 +739,8 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 	}
 
 	o := clientOptions{
+		apiVersionMin:                           &c.apiVersionMin,
+		apiVersionMax:                           &c.apiVersionMax,
 		userAgent:                               &c.userAgent,
 		baseURL:                                 Ptr(*c.baseURL),
 		uploadURL:                               Ptr(*c.uploadURL),
@@ -804,7 +837,7 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body any
 	if c.userAgent != "" {
 		req.Header.Set("User-Agent", c.userAgent)
 	}
-	req.Header.Set(headerAPIVersion, defaultAPIVersion)
+	req.Header.Set(headerAPIVersion, c.apiVersionDefault)
 
 	for _, opt := range opts {
 		opt(req)
@@ -841,7 +874,7 @@ func (c *Client) NewFormRequest(ctx context.Context, urlStr string, body io.Read
 	if c.userAgent != "" {
 		req.Header.Set("User-Agent", c.userAgent)
 	}
-	req.Header.Set(headerAPIVersion, defaultAPIVersion)
+	req.Header.Set(headerAPIVersion, c.apiVersionDefault)
 
 	for _, opt := range opts {
 		opt(req)
@@ -912,7 +945,7 @@ func (c *Client) NewUploadRequest(ctx context.Context, urlStr string, reader io.
 	req.Header.Set("Content-Type", mediaType)
 	req.Header.Set("Accept", mediaTypeV3)
 	req.Header.Set("User-Agent", c.userAgent)
-	req.Header.Set(headerAPIVersion, defaultAPIVersion)
+	req.Header.Set(headerAPIVersion, c.apiVersionDefault)
 
 	for _, opt := range opts {
 		opt(req)
@@ -1133,6 +1166,28 @@ const (
 // unexpectedly large error body.
 const maxErrorBodySize = 1 * 1024 * 1024 // 1 MiB
 
+// ErrUnsupportedAPIVersion is returned when the API version specified in the
+// request is not supported by the client.
+var ErrUnsupportedAPIVersion = errors.New("unsupported api version")
+
+// checkRequestAPIVersionBeforeDo checks if the API version specified in the
+// request is supported by the client before making the API call. If the
+// version is not supported, it returns [ErrUnsupportedAPIVersion]. If the
+// version is empty it returns nil.
+func (c *Client) checkRequestAPIVersionBeforeDo(req *http.Request) error {
+	reqAPIVersion := req.Header.Get(headerAPIVersion)
+
+	if reqAPIVersion == "" {
+		return nil
+	}
+
+	if reqAPIVersion < c.apiVersionMin || reqAPIVersion > c.apiVersionMax {
+		return ErrUnsupportedAPIVersion
+	}
+
+	return nil
+}
+
 // bareDo sends an API request using `caller` http.Client passed in the parameters
 // and lets you handle the api response. If an error or API Error occurs, the error
 // will contain more information. Otherwise, you are supposed to read and close the
@@ -1140,6 +1195,10 @@ const maxErrorBodySize = 1 * 1024 * 1024 // 1 MiB
 // bareDo returns *RateLimitError immediately without making a network API call.
 func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, error) {
 	ctx := req.Context()
+
+	if err := c.checkRequestAPIVersionBeforeDo(req); err != nil {
+		return nil, err
+	}
 
 	rateLimitCategory := CoreCategory
 

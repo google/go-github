@@ -31,13 +31,13 @@ func (s *AdminService) CreateUser(ctx context.Context, userReq CreateUserRequest
 		return nil, nil, err
 	}
 
-	var user User
+	var user *User
 	resp, err := s.client.Do(req, &user)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return &user, resp, nil
+	return user, resp, nil
 }
 
 // DeleteUser deletes a user in GitHub Enterprise.

@@ -249,12 +249,12 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context
 		return nil, nil, err
 	}
 
-	var privateRegistries PrivateRegistries
+	var privateRegistries *PrivateRegistries
 	resp, err := s.client.Do(req, &privateRegistries)
 	if err != nil {
 		return nil, resp, err
 	}
-	return &privateRegistries, resp, nil
+	return privateRegistries, resp, nil
 }
 
 // CreateOrganizationPrivateRegistry creates a private registry configuration with an encrypted value for an organization.
@@ -270,12 +270,12 @@ func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context
 		return nil, nil, err
 	}
 
-	var result PrivateRegistry
+	var result *PrivateRegistry
 	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
-	return &result, resp, nil
+	return result, resp, nil
 }
 
 // GetOrganizationPrivateRegistriesPublicKey retrieves the public key for encrypting secrets for an organization's private registries.
@@ -291,12 +291,12 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistriesPublicKey(ctx
 		return nil, nil, err
 	}
 
-	var publicKey PublicKey
+	var publicKey *PublicKey
 	resp, err := s.client.Do(req, &publicKey)
 	if err != nil {
 		return nil, resp, err
 	}
-	return &publicKey, resp, nil
+	return publicKey, resp, nil
 }
 
 // GetOrganizationPrivateRegistry gets a specific private registry for an organization.
@@ -313,13 +313,13 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Co
 		return nil, nil, err
 	}
 
-	var privateRegistry PrivateRegistry
+	var privateRegistry *PrivateRegistry
 	resp, err := s.client.Do(req, &privateRegistry)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return &privateRegistry, resp, nil
+	return privateRegistry, resp, nil
 }
 
 // UpdateOrganizationPrivateRegistry updates a specific private registry for an organization.
