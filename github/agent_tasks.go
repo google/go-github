@@ -160,7 +160,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2026-03-10#start-a-task
 //
 //meta:operation POST /agents/repos/{owner}/{repo}/tasks
-func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts *CreateAgentTaskRequest) (*AgentTask, *Response, error) {
+func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req CreateAgentTaskRequest) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks", owner, repo)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, opts, WithVersion(api20260310))
