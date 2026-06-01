@@ -239,7 +239,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 func (s *AgentTasksService) Get(ctx context.Context, taskID string) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/tasks/%v", taskID)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
