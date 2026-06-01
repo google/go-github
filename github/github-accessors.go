@@ -983,9 +983,9 @@ func (a *AgentTask) GetURL() string {
 }
 
 // GetData returns the Data field.
-func (a *AgentTaskArtifact) GetData() json.RawMessage {
+func (a *AgentTaskArtifact) GetData() *AgentTaskArtifactData {
 	if a == nil {
-		return json.RawMessage{}
+		return nil
 	}
 	return a.Data
 }
@@ -1004,6 +1004,38 @@ func (a *AgentTaskArtifact) GetType() string {
 		return ""
 	}
 	return a.Type
+}
+
+// GetBaseRef returns the BaseRef field if it's non-nil, zero value otherwise.
+func (a *AgentTaskArtifactData) GetBaseRef() string {
+	if a == nil || a.BaseRef == nil {
+		return ""
+	}
+	return *a.BaseRef
+}
+
+// GetGlobalID returns the GlobalID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskArtifactData) GetGlobalID() string {
+	if a == nil || a.GlobalID == nil {
+		return ""
+	}
+	return *a.GlobalID
+}
+
+// GetHeadRef returns the HeadRef field if it's non-nil, zero value otherwise.
+func (a *AgentTaskArtifactData) GetHeadRef() string {
+	if a == nil || a.HeadRef == nil {
+		return ""
+	}
+	return *a.HeadRef
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskArtifactData) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
 }
 
 // GetTasks returns the Tasks slice if it's non-nil, nil otherwise.

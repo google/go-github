@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -49,9 +48,17 @@ type AgentTaskRepository struct {
 
 // AgentTaskArtifact represents an artifact produced by an agent task.
 type AgentTaskArtifact struct {
-	Provider string          `json:"provider"`
-	Type     string          `json:"type"`
-	Data     json.RawMessage `json:"data"`
+	Provider string                 `json:"provider"`
+	Type     string                 `json:"type"`
+	Data     *AgentTaskArtifactData `json:"data,omitempty"`
+}
+
+// AgentTaskArtifactData represents data associated with an agent task artifact.
+type AgentTaskArtifactData struct {
+	ID       *int64  `json:"id,omitempty"`
+	GlobalID *string `json:"global_id,omitempty"`
+	HeadRef  *string `json:"head_ref,omitempty"`
+	BaseRef  *string `json:"base_ref,omitempty"`
 }
 
 // AgentTaskSession represents a session associated with an agent task.
@@ -88,6 +95,8 @@ type AgentTaskListOptions struct {
 	Direction string `url:"direction,omitempty"`
 
 	// State is a comma-separated list of task states to filter by.
+	// Possible values are: queued, in_progress, completed, failed, idle,
+	// waiting_for_user, timed_out, cancelled.
 	State string `url:"state,omitempty"`
 
 	// IsArchived filters tasks by archived status.
@@ -104,7 +113,7 @@ type AgentTaskListByRepoOptions struct {
 	AgentTaskListOptions
 
 	// CreatorIDs filters tasks by creator user IDs.
-	CreatorID []int64 `url:"creator_id,omitempty"`
+	CreatorIDs []int64 `url:"creator_id,omitempty"`
 }
 
 // CreateAgentTaskRequest represents the parameters for creating an agent task.
@@ -139,7 +148,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -160,10 +169,10 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#start-a-task
 //
 //meta:operation POST /agents/repos/{owner}/{repo}/tasks
-func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req CreateAgentTaskRequest) (*AgentTask, *Response, error) {
+func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts *CreateAgentTaskRequest) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, opts, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -187,7 +196,7 @@ func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req 
 func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, taskID string) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks/%v", owner, repo, taskID)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -215,7 +224,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -239,7 +248,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 func (s *AgentTasksService) Get(ctx context.Context, taskID string) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/tasks/%v", taskID)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}

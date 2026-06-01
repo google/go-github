@@ -1238,6 +1238,50 @@ func TestAgentTaskArtifact_GetType(tt *testing.T) {
 	a.GetType()
 }
 
+func TestAgentTaskArtifactData_GetBaseRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskArtifactData{BaseRef: &zeroValue}
+	a.GetBaseRef()
+	a = &AgentTaskArtifactData{}
+	a.GetBaseRef()
+	a = nil
+	a.GetBaseRef()
+}
+
+func TestAgentTaskArtifactData_GetGlobalID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskArtifactData{GlobalID: &zeroValue}
+	a.GetGlobalID()
+	a = &AgentTaskArtifactData{}
+	a.GetGlobalID()
+	a = nil
+	a.GetGlobalID()
+}
+
+func TestAgentTaskArtifactData_GetHeadRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskArtifactData{HeadRef: &zeroValue}
+	a.GetHeadRef()
+	a = &AgentTaskArtifactData{}
+	a.GetHeadRef()
+	a = nil
+	a.GetHeadRef()
+}
+
+func TestAgentTaskArtifactData_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AgentTaskArtifactData{ID: &zeroValue}
+	a.GetID()
+	a = &AgentTaskArtifactData{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
 func TestAgentTaskList_GetTasks(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*AgentTask{}
