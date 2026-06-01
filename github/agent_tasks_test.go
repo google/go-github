@@ -113,9 +113,6 @@ func agentTask() *AgentTask {
 
 func agentTaskWithSessions() *AgentTask {
 	task := agentTask()
-	createdAt := &Timestamp{time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)}
-	updatedAt := &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)}
-
 	task.Sessions = []*AgentTaskSession{
 		{
 			ID:          "s1a2b3c4-d5e6-7890-abcd-ef1234567890",
@@ -125,9 +122,11 @@ func agentTaskWithSessions() *AgentTask {
 			Repository:  &AgentTaskRepository{ID: Ptr(int64(1296269))},
 			TaskID:      Ptr("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
 			State:       "completed",
-			CreatedAt:   *createdAt,
-			UpdatedAt:   updatedAt,
-			CompletedAt: updatedAt,
+			CreatedAt:   Timestamp{time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)},
+			UpdatedAt:   &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)},
+			CompletedAt: &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)},
+		},
+	}
 			Prompt:      Ptr("Fix the login button on the homepage"),
 			HeadRef:     Ptr("copilot/fix-1"),
 			BaseRef:     Ptr("main"),
