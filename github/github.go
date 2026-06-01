@@ -213,6 +213,7 @@ type Client struct {
 	Billing            *BillingService
 	Checks             *ChecksService
 	Classroom          *ClassroomService
+	CodeQuality        *CodeQualityService
 	CodeScanning       *CodeScanningService
 	CodesOfConduct     *CodesOfConductService
 	Codespaces         *CodespacesService
@@ -665,6 +666,7 @@ func newClient(opts clientOptions) (*Client, error) {
 	c.Billing = (*BillingService)(&c.common)
 	c.Checks = (*ChecksService)(&c.common)
 	c.Classroom = (*ClassroomService)(&c.common)
+	c.CodeQuality = (*CodeQualityService)(&c.common)
 	c.CodeScanning = (*CodeScanningService)(&c.common)
 	c.Codespaces = (*CodespacesService)(&c.common)
 	c.CodesOfConduct = (*CodesOfConductService)(&c.common)
