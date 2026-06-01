@@ -66,7 +66,7 @@ func TestCodeQualityService_UpdateSetup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &UpdateCodeQualitySetupOptions{
+	input := &CodeQualityUpdateSetupRequest{
 		State:     Ptr("configured"),
 		Languages: []string{"javascript-typescript", "python", "ruby"},
 	}
@@ -81,12 +81,12 @@ func TestCodeQualityService_UpdateSetup(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	result, _, err := client.CodeQuality.UpdateSetup(ctx, "o", "r", input)
+	result, _, err := client.CodeQuality.UpdateSetup(ctx, "o", "r", *input)
 	if err != nil {
 		t.Fatalf("CodeQuality.UpdateSetup returned error: %v", err)
 	}
 
-	want := &UpdateCodeQualitySetupResponse{
+	want := &CodeQualityUpdateSetupResponse{
 		RunID:  Ptr(int64(42)),
 		RunURL: Ptr("https://api.github.com/repos/octocat/hello-world/actions/runs/42"),
 	}
@@ -96,12 +96,12 @@ func TestCodeQualityService_UpdateSetup(t *testing.T) {
 
 	const methodName = "UpdateSetup"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.CodeQuality.UpdateSetup(ctx, "\n", "\n", input)
+		_, _, err = client.CodeQuality.UpdateSetup(ctx, "\n", "\n", *input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.CodeQuality.UpdateSetup(ctx, "o", "r", input)
+		got, resp, err := client.CodeQuality.UpdateSetup(ctx, "o", "r", *input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -113,7 +113,7 @@ func TestCodeQualityService_UpdateSetup_withRunnerLabel(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &UpdateCodeQualitySetupOptions{
+	input := &CodeQualityUpdateSetupRequest{
 		State:       Ptr("configured"),
 		RunnerType:  Ptr("labeled"),
 		RunnerLabel: Ptr("my-runner"),
@@ -130,12 +130,12 @@ func TestCodeQualityService_UpdateSetup_withRunnerLabel(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	result, _, err := client.CodeQuality.UpdateSetup(ctx, "o", "r", input)
+	result, _, err := client.CodeQuality.UpdateSetup(ctx, "o", "r", *input)
 	if err != nil {
 		t.Fatalf("CodeQuality.UpdateSetup returned error: %v", err)
 	}
 
-	want := &UpdateCodeQualitySetupResponse{
+	want := &CodeQualityUpdateSetupResponse{
 		RunID:  Ptr(int64(99)),
 		RunURL: Ptr("https://api.github.com/repos/octocat/hello-world/actions/runs/99"),
 	}
@@ -148,7 +148,7 @@ func TestCodeQualityService_UpdateSetup_notConfigured(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &UpdateCodeQualitySetupOptions{
+	input := &CodeQualityUpdateSetupRequest{
 		State: Ptr("not-configured"),
 	}
 
@@ -160,7 +160,7 @@ func TestCodeQualityService_UpdateSetup_notConfigured(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, _, err := client.CodeQuality.UpdateSetup(ctx, "o", "r", input)
+	_, _, err := client.CodeQuality.UpdateSetup(ctx, "o", "r", *input)
 	if err != nil {
 		t.Fatalf("CodeQuality.UpdateSetup returned error: %v", err)
 	}
@@ -180,6 +180,6 @@ func TestCodeQualityService_UpdateSetup_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.CodeQuality.UpdateSetup(ctx, "%", "r", nil)
+	_, _, err := client.CodeQuality.UpdateSetup(ctx, "%", "r", CodeQualityUpdateSetupRequest{})
 	testURLParseError(t, err)
 }

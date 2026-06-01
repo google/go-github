@@ -26,7 +26,7 @@ type CodeQualitySetupConfiguration struct {
 	Schedule    *string    `json:"schedule,omitempty"`
 }
 
-// UpdateCodeQualitySetupOptions specifies parameters to the
+// CodeQualityUpdateSetupRequest specifies parameters to the
 // CodeQualityService.UpdateSetup method.
 type CodeQualityUpdateSetupRequest struct {
 	State       *string  `json:"state,omitempty"`
@@ -35,7 +35,7 @@ type CodeQualityUpdateSetupRequest struct {
 	Languages   []string `json:"languages,omitempty"`
 }
 
-// UpdateCodeQualitySetupResponse represents a response from updating a code quality setup configuration.
+// CodeQualityUpdateSetupResponse represents a response from updating a code quality setup configuration.
 type CodeQualityUpdateSetupResponse struct {
 	RunID  *int64  `json:"run_id,omitempty"`
 	RunURL *string `json:"run_url,omitempty"`
@@ -71,16 +71,16 @@ func (s *CodeQualityService) GetSetup(ctx context.Context, owner, repo string) (
 // GitHub API docs: https://docs.github.com/rest/code-quality/code-quality?apiVersion=2022-11-28#update-a-code-quality-setup-configuration
 //
 //meta:operation PATCH /repos/{owner}/{repo}/code-quality/setup
-func (s *CodeQualityService) UpdateSetup(ctx context.Context, owner, repo string, req CodeQualityUpdateSetupRequest) (*UpdateCodeQualitySetupResponse, *Response, error) {
+func (s *CodeQualityService) UpdateSetup(ctx context.Context, owner, repo string, req CodeQualityUpdateSetupRequest) (*CodeQualityUpdateSetupResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-quality/setup", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	request, err := s.client.NewRequest(ctx, "PATCH", u, req)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var result *UpdateCodeQualitySetupResponse
-	resp, err := s.client.Do(req, &result)
+	var result *CodeQualityUpdateSetupResponse
+	resp, err := s.client.Do(request, &result)
 	if err != nil {
 		return nil, resp, err
 	}

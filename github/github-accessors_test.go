@@ -6180,6 +6180,72 @@ func TestCodeQualitySetupConfiguration_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestCodeQualityUpdateSetupRequest_GetLanguages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CodeQualityUpdateSetupRequest{Languages: zeroValue}
+	c.GetLanguages()
+	c = &CodeQualityUpdateSetupRequest{}
+	c.GetLanguages()
+	c = nil
+	c.GetLanguages()
+}
+
+func TestCodeQualityUpdateSetupRequest_GetRunnerLabel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualityUpdateSetupRequest{RunnerLabel: &zeroValue}
+	c.GetRunnerLabel()
+	c = &CodeQualityUpdateSetupRequest{}
+	c.GetRunnerLabel()
+	c = nil
+	c.GetRunnerLabel()
+}
+
+func TestCodeQualityUpdateSetupRequest_GetRunnerType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualityUpdateSetupRequest{RunnerType: &zeroValue}
+	c.GetRunnerType()
+	c = &CodeQualityUpdateSetupRequest{}
+	c.GetRunnerType()
+	c = nil
+	c.GetRunnerType()
+}
+
+func TestCodeQualityUpdateSetupRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualityUpdateSetupRequest{State: &zeroValue}
+	c.GetState()
+	c = &CodeQualityUpdateSetupRequest{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCodeQualityUpdateSetupResponse_GetRunID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CodeQualityUpdateSetupResponse{RunID: &zeroValue}
+	c.GetRunID()
+	c = &CodeQualityUpdateSetupResponse{}
+	c.GetRunID()
+	c = nil
+	c.GetRunID()
+}
+
+func TestCodeQualityUpdateSetupResponse_GetRunURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualityUpdateSetupResponse{RunURL: &zeroValue}
+	c.GetRunURL()
+	c = &CodeQualityUpdateSetupResponse{}
+	c.GetRunURL()
+	c = nil
+	c.GetRunURL()
+}
+
 func TestCodeResult_GetHTMLURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -51599,72 +51665,6 @@ func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
 	u.GetStatus()
 	u = nil
 	u.GetStatus()
-}
-
-func TestUpdateCodeQualitySetupOptions_GetLanguages(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	u := &UpdateCodeQualitySetupOptions{Languages: zeroValue}
-	u.GetLanguages()
-	u = &UpdateCodeQualitySetupOptions{}
-	u.GetLanguages()
-	u = nil
-	u.GetLanguages()
-}
-
-func TestUpdateCodeQualitySetupOptions_GetRunnerLabel(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UpdateCodeQualitySetupOptions{RunnerLabel: &zeroValue}
-	u.GetRunnerLabel()
-	u = &UpdateCodeQualitySetupOptions{}
-	u.GetRunnerLabel()
-	u = nil
-	u.GetRunnerLabel()
-}
-
-func TestUpdateCodeQualitySetupOptions_GetRunnerType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UpdateCodeQualitySetupOptions{RunnerType: &zeroValue}
-	u.GetRunnerType()
-	u = &UpdateCodeQualitySetupOptions{}
-	u.GetRunnerType()
-	u = nil
-	u.GetRunnerType()
-}
-
-func TestUpdateCodeQualitySetupOptions_GetState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UpdateCodeQualitySetupOptions{State: &zeroValue}
-	u.GetState()
-	u = &UpdateCodeQualitySetupOptions{}
-	u.GetState()
-	u = nil
-	u.GetState()
-}
-
-func TestUpdateCodeQualitySetupResponse_GetRunID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	u := &UpdateCodeQualitySetupResponse{RunID: &zeroValue}
-	u.GetRunID()
-	u = &UpdateCodeQualitySetupResponse{}
-	u.GetRunID()
-	u = nil
-	u.GetRunID()
-}
-
-func TestUpdateCodeQualitySetupResponse_GetRunURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	u := &UpdateCodeQualitySetupResponse{RunURL: &zeroValue}
-	u.GetRunURL()
-	u = &UpdateCodeQualitySetupResponse{}
-	u.GetRunURL()
-	u = nil
-	u.GetRunURL()
 }
 
 func TestUpdateCodespaceOptions_GetMachine(tt *testing.T) {

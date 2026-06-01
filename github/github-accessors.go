@@ -4838,6 +4838,54 @@ func (c *CodeQualitySetupConfiguration) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
+// GetLanguages returns the Languages slice if it's non-nil, nil otherwise.
+func (c *CodeQualityUpdateSetupRequest) GetLanguages() []string {
+	if c == nil || c.Languages == nil {
+		return nil
+	}
+	return c.Languages
+}
+
+// GetRunnerLabel returns the RunnerLabel field if it's non-nil, zero value otherwise.
+func (c *CodeQualityUpdateSetupRequest) GetRunnerLabel() string {
+	if c == nil || c.RunnerLabel == nil {
+		return ""
+	}
+	return *c.RunnerLabel
+}
+
+// GetRunnerType returns the RunnerType field if it's non-nil, zero value otherwise.
+func (c *CodeQualityUpdateSetupRequest) GetRunnerType() string {
+	if c == nil || c.RunnerType == nil {
+		return ""
+	}
+	return *c.RunnerType
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (c *CodeQualityUpdateSetupRequest) GetState() string {
+	if c == nil || c.State == nil {
+		return ""
+	}
+	return *c.State
+}
+
+// GetRunID returns the RunID field if it's non-nil, zero value otherwise.
+func (c *CodeQualityUpdateSetupResponse) GetRunID() int64 {
+	if c == nil || c.RunID == nil {
+		return 0
+	}
+	return *c.RunID
+}
+
+// GetRunURL returns the RunURL field if it's non-nil, zero value otherwise.
+func (c *CodeQualityUpdateSetupResponse) GetRunURL() string {
+	if c == nil || c.RunURL == nil {
+		return ""
+	}
+	return *c.RunURL
+}
+
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
 func (c *CodeResult) GetHTMLURL() string {
 	if c == nil || c.HTMLURL == nil {
@@ -41044,54 +41092,6 @@ func (u *UpdateCheckRunOptions) GetStatus() string {
 		return ""
 	}
 	return *u.Status
-}
-
-// GetLanguages returns the Languages slice if it's non-nil, nil otherwise.
-func (u *UpdateCodeQualitySetupOptions) GetLanguages() []string {
-	if u == nil || u.Languages == nil {
-		return nil
-	}
-	return u.Languages
-}
-
-// GetRunnerLabel returns the RunnerLabel field if it's non-nil, zero value otherwise.
-func (u *UpdateCodeQualitySetupOptions) GetRunnerLabel() string {
-	if u == nil || u.RunnerLabel == nil {
-		return ""
-	}
-	return *u.RunnerLabel
-}
-
-// GetRunnerType returns the RunnerType field if it's non-nil, zero value otherwise.
-func (u *UpdateCodeQualitySetupOptions) GetRunnerType() string {
-	if u == nil || u.RunnerType == nil {
-		return ""
-	}
-	return *u.RunnerType
-}
-
-// GetState returns the State field if it's non-nil, zero value otherwise.
-func (u *UpdateCodeQualitySetupOptions) GetState() string {
-	if u == nil || u.State == nil {
-		return ""
-	}
-	return *u.State
-}
-
-// GetRunID returns the RunID field if it's non-nil, zero value otherwise.
-func (u *UpdateCodeQualitySetupResponse) GetRunID() int64 {
-	if u == nil || u.RunID == nil {
-		return 0
-	}
-	return *u.RunID
-}
-
-// GetRunURL returns the RunURL field if it's non-nil, zero value otherwise.
-func (u *UpdateCodeQualitySetupResponse) GetRunURL() string {
-	if u == nil || u.RunURL == nil {
-		return ""
-	}
-	return *u.RunURL
 }
 
 // GetMachine returns the Machine field if it's non-nil, zero value otherwise.
