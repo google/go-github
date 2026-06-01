@@ -106,8 +106,8 @@ func agentTask() *AgentTask {
 				Data:     json.RawMessage(`{"id":42}`),
 			},
 		},
-		CreatedAt: *createdAt,
-		UpdatedAt: updatedAt,
+		CreatedAt: Timestamp{time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)},
 	}
 }
 
