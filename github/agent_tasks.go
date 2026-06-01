@@ -163,7 +163,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts *CreateAgentTaskRequest) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "POST", u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
