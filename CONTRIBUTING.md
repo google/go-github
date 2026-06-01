@@ -317,9 +317,10 @@ any suffix:
 
 ```go
 type Repository struct {
-	ID *int64 `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	FullName *string `json:"full_name,omitempty"`
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
+	// Optional fields use pointers with omitempty:
+	FullName    *string `json:"full_name,omitempty"`
 	Description *string `json:"description,omitempty"`
 	// ...
 }
@@ -447,9 +448,9 @@ type CreateHostedRunnerRequest struct {
 	RunnerGroupId int64 `json:"runner_group_id"`
 }
 
-// Response body — optional ID
+// Response body — required ID
 type Repository struct {
-	ID *int64 `json:"id,omitempty"`
+	ID int64 `json:"id"`
 	// ...
 }
 ```
@@ -465,6 +466,10 @@ type Repository struct {
 	// ...
 }
 ```
+
+Note: some older structs still use `*string` with `omitempty` for `NodeID`,
+but new types should prefer the non-pointer form as the GitHub API always
+returns `node_id` in response bodies.
 
 #### Timestamp Fields
 
