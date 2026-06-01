@@ -187,7 +187,7 @@ func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts
 func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, taskID string) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks/%v", owner, repo, taskID)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
