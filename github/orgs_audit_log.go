@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 // GetAuditLogOptions sets up optional parameters to query audit-log endpoint.
@@ -57,11 +58,42 @@ type AuditEntry struct {
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
+//
+// GitHub's audit-log API occasionally returns "org" as a JSON array of strings
+// and "org_id" as a JSON array of integers instead of the documented scalar
+// types.  This implementation normalises both fields to their scalar forms
+// (joining multiple org names with a comma, and using the first org_id) so
+// callers always receive a consistent type regardless of the API response shape.
 func (a *AuditEntry) UnmarshalJSON(data []byte) error {
+	// rawEntry shadows Org and OrgID so we can inspect their raw JSON tokens
+	// before deciding how to decode them.
 	type entryAlias AuditEntry
-	var v entryAlias
-	if err := json.Unmarshal(data, &v); err != nil {
+	var raw struct {
+		entryAlias
+		Org   json.RawMessage `json:"org,omitempty"`
+		OrgID json.RawMessage `json:"org_id,omitempty"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
+	}
+	v := raw.entryAlias
+
+	// Normalise "org": accept both "string" and ["string", ...].
+	if len(raw.Org) > 0 && string(raw.Org) != "null" {
+		org, err := unmarshalStringOrStringArray(raw.Org)
+		if err != nil {
+			return fmt.Errorf("AuditEntry.Org: %w", err)
+		}
+		v.Org = org
+	}
+
+	// Normalise "org_id": accept both integer and [integer, ...].
+	if len(raw.OrgID) > 0 && string(raw.OrgID) != "null" {
+		orgID, err := unmarshalInt64OrInt64Array(raw.OrgID)
+		if err != nil {
+			return fmt.Errorf("AuditEntry.OrgID: %w", err)
+		}
+		v.OrgID = orgID
 	}
 
 	rawDefinedFields, err := json.Marshal(v)
@@ -88,6 +120,42 @@ func (a *AuditEntry) UnmarshalJSON(data []byte) error {
 		a.AdditionalFields = nil
 	}
 	return nil
+}
+
+// unmarshalStringOrStringArray decodes a JSON value that is either a plain
+// string or an array of strings.  Arrays are joined with ", ".
+func unmarshalStringOrStringArray(raw json.RawMessage) (*string, error) {
+	// Try scalar string first (the common case).
+	var s string
+	if err := json.Unmarshal(raw, &s); err == nil {
+		return &s, nil
+	}
+	// Fall back to array of strings.
+	var arr []string
+	if err := json.Unmarshal(raw, &arr); err != nil {
+		return nil, err
+	}
+	joined := strings.Join(arr, ", ")
+	return &joined, nil
+}
+
+// unmarshalInt64OrInt64Array decodes a JSON value that is either a plain
+// integer or an array of integers.  Arrays use the first element.
+func unmarshalInt64OrInt64Array(raw json.RawMessage) (*int64, error) {
+	// Try scalar integer first (the common case).
+	var n int64
+	if err := json.Unmarshal(raw, &n); err == nil {
+		return &n, nil
+	}
+	// Fall back to array of integers; use the first element.
+	var arr []int64
+	if err := json.Unmarshal(raw, &arr); err != nil {
+		return nil, err
+	}
+	if len(arr) == 0 {
+		return nil, nil
+	}
+	return &arr[0], nil
 }
 
 // MarshalJSON implements the json.Marshaler interface.

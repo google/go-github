@@ -387,3 +387,137 @@ func TestAuditEntry_Marshal(t *testing.T) {
 	testJSONMarshalOnly(t, &u, want)
 	// can't unmarshal AdditionalFields back into map[string]any, so skip testJSONUnmarshalOnly
 }
+
+// TestAuditEntry_UnmarshalJSON_OrgArray verifies that the GitHub Enterprise
+// audit-log API's non-standard behaviour of returning "org" as a JSON array
+// of strings (instead of a single string) is handled gracefully.
+// See: https://github.com/google/go-github/issues/3488
+func TestAuditEntry_UnmarshalJSON_OrgArray(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name    string
+		payload string
+		wantOrg string
+	}{
+		{
+			name:    "org_as_scalar_string",
+			payload: `{"action":"test","org":"myorg","org_id":42}`,
+			wantOrg: "myorg",
+		},
+		{
+			name:    "org_as_single_element_array",
+			payload: `{"action":"test","org":["myorg"],"org_id":[42]}`,
+			wantOrg: "myorg",
+		},
+		{
+			name:    "org_as_multi_element_array",
+			payload: `{"action":"test","org":["org1","org2","org3"],"org_id":[1,2,3]}`,
+			wantOrg: "org1, org2, org3",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			var entry AuditEntry
+			if err := entry.UnmarshalJSON([]byte(tc.payload)); err != nil {
+				t.Fatalf("UnmarshalJSON(%q) returned unexpected error: %v", tc.payload, err)
+			}
+			if entry.Org == nil {
+				t.Fatal("AuditEntry.Org is nil; want non-nil")
+			}
+			if *entry.Org != tc.wantOrg {
+				t.Errorf("AuditEntry.Org = %q; want %q", *entry.Org, tc.wantOrg)
+			}
+		})
+	}
+}
+
+// TestAuditEntry_UnmarshalJSON_OrgIDArray verifies that the "org_id" field is
+// correctly decoded when returned as a JSON array of integers.
+func TestAuditEntry_UnmarshalJSON_OrgIDArray(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name      string
+		payload   string
+		wantOrgID int64
+	}{
+		{
+			name:      "org_id_as_scalar",
+			payload:   `{"action":"test","org_id":42}`,
+			wantOrgID: 42,
+		},
+		{
+			name:      "org_id_as_array",
+			payload:   `{"action":"test","org_id":[42,43,44]}`,
+			wantOrgID: 42, // first element
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			var entry AuditEntry
+			if err := entry.UnmarshalJSON([]byte(tc.payload)); err != nil {
+				t.Fatalf("UnmarshalJSON(%q) returned unexpected error: %v", tc.payload, err)
+			}
+			if entry.OrgID == nil {
+				t.Fatal("AuditEntry.OrgID is nil; want non-nil")
+			}
+			if *entry.OrgID != tc.wantOrgID {
+				t.Errorf("AuditEntry.OrgID = %d; want %d", *entry.OrgID, tc.wantOrgID)
+			}
+		})
+	}
+}
+
+// TestAuditEntry_UnmarshalJSON_OrgIDEmptyArray verifies that an empty org_id
+// array results in a nil OrgID (not a panic or error).
+func TestAuditEntry_UnmarshalJSON_OrgIDEmptyArray(t *testing.T) {
+	t.Parallel()
+	var entry AuditEntry
+	if err := entry.UnmarshalJSON([]byte(`{"action":"test","org_id":[]}`)); err != nil {
+		t.Fatalf("UnmarshalJSON returned unexpected error: %v", err)
+	}
+	if entry.OrgID != nil {
+		t.Errorf("AuditEntry.OrgID = %d; want nil for empty array", *entry.OrgID)
+	}
+}
+
+// TestAuditEntry_UnmarshalJSON_InvalidOrgType verifies that a non-string,
+// non-array org value (e.g., a JSON object) returns an error.
+func TestAuditEntry_UnmarshalJSON_InvalidOrgType(t *testing.T) {
+	t.Parallel()
+	var entry AuditEntry
+	err := entry.UnmarshalJSON([]byte(`{"action":"test","org":{"key":"value"}}`))
+	if err == nil {
+		t.Fatal("UnmarshalJSON should have returned an error for object-typed org, got nil")
+	}
+}
+
+// TestAuditEntry_UnmarshalJSON_InvalidOrgIDType verifies that a non-integer,
+// non-array org_id value (e.g., a JSON object) returns an error.
+func TestAuditEntry_UnmarshalJSON_InvalidOrgIDType(t *testing.T) {
+	t.Parallel()
+	var entry AuditEntry
+	err := entry.UnmarshalJSON([]byte(`{"action":"test","org_id":{"key":"value"}}`))
+	if err == nil {
+		t.Fatal("UnmarshalJSON should have returned an error for object-typed org_id, got nil")
+	}
+}
+
+// TestAuditEntry_UnmarshalJSON_NullOrgFields verifies that explicit JSON null
+// values for org and org_id leave the fields as nil without error.
+func TestAuditEntry_UnmarshalJSON_NullOrgFields(t *testing.T) {
+	t.Parallel()
+	var entry AuditEntry
+	if err := entry.UnmarshalJSON([]byte(`{"action":"test","org":null,"org_id":null}`)); err != nil {
+		t.Fatalf("UnmarshalJSON returned unexpected error: %v", err)
+	}
+	if entry.Org != nil {
+		t.Errorf("AuditEntry.Org = %q; want nil for null org", *entry.Org)
+	}
+	if entry.OrgID != nil {
+		t.Errorf("AuditEntry.OrgID = %d; want nil for null org_id", *entry.OrgID)
+	}
+}
