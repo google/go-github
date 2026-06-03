@@ -85,16 +85,18 @@ type Repository struct {
 	License *License `json:"license,omitempty"`
 
 	// Additional mutable fields when creating and editing a repository
-	Private           *bool   `json:"private,omitempty"`
-	HasIssues         *bool   `json:"has_issues,omitempty"`
-	HasWiki           *bool   `json:"has_wiki,omitempty"`
-	HasPages          *bool   `json:"has_pages,omitempty"`
-	HasProjects       *bool   `json:"has_projects,omitempty"`
-	HasDownloads      *bool   `json:"has_downloads,omitempty"`
-	HasDiscussions    *bool   `json:"has_discussions,omitempty"`
-	IsTemplate        *bool   `json:"is_template,omitempty"`
-	LicenseTemplate   *string `json:"license_template,omitempty"`
-	GitignoreTemplate *string `json:"gitignore_template,omitempty"`
+	Private                   *bool   `json:"private,omitempty"`
+	HasIssues                 *bool   `json:"has_issues,omitempty"`
+	HasWiki                   *bool   `json:"has_wiki,omitempty"`
+	HasPages                  *bool   `json:"has_pages,omitempty"`
+	HasProjects               *bool   `json:"has_projects,omitempty"`
+	HasDownloads              *bool   `json:"has_downloads,omitempty"`
+	HasDiscussions            *bool   `json:"has_discussions,omitempty"`
+	HasPullRequests           *bool   `json:"has_pull_requests,omitempty"`
+	PullRequestCreationPolicy *string `json:"pull_request_creation_policy,omitempty"` // Can be one of: "all", "collaborators_only"
+	IsTemplate                *bool   `json:"is_template,omitempty"`
+	LicenseTemplate           *string `json:"license_template,omitempty"`
+	GitignoreTemplate         *string `json:"gitignore_template,omitempty"`
 
 	// Options for configuring Advanced Security and Secret Scanning
 	SecurityAndAnalysis *SecurityAndAnalysis `json:"security_and_analysis,omitempty"`
@@ -511,13 +513,15 @@ type createRepoRequest struct {
 	Description *string `json:"description,omitempty"`
 	Homepage    *string `json:"homepage,omitempty"`
 
-	Private        *bool   `json:"private,omitempty"`
-	Visibility     *string `json:"visibility,omitempty"`
-	HasIssues      *bool   `json:"has_issues,omitempty"`
-	HasProjects    *bool   `json:"has_projects,omitempty"`
-	HasWiki        *bool   `json:"has_wiki,omitempty"`
-	HasDiscussions *bool   `json:"has_discussions,omitempty"`
-	IsTemplate     *bool   `json:"is_template,omitempty"`
+	Private                   *bool   `json:"private,omitempty"`
+	Visibility                *string `json:"visibility,omitempty"`
+	HasIssues                 *bool   `json:"has_issues,omitempty"`
+	HasProjects               *bool   `json:"has_projects,omitempty"`
+	HasWiki                   *bool   `json:"has_wiki,omitempty"`
+	HasDiscussions            *bool   `json:"has_discussions,omitempty"`
+	HasPullRequests           *bool   `json:"has_pull_requests,omitempty"`
+	PullRequestCreationPolicy *string `json:"pull_request_creation_policy,omitempty"`
+	IsTemplate                *bool   `json:"is_template,omitempty"`
 
 	// Creating an organization repository. Required for non-owners.
 	TeamID *int64 `json:"team_id,omitempty"`
@@ -580,6 +584,8 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		HasProjects:               repo.HasProjects,
 		HasWiki:                   repo.HasWiki,
 		HasDiscussions:            repo.HasDiscussions,
+		HasPullRequests:           repo.HasPullRequests,
+		PullRequestCreationPolicy: repo.PullRequestCreationPolicy,
 		IsTemplate:                repo.IsTemplate,
 		TeamID:                    repo.TeamID,
 		AutoInit:                  repo.AutoInit,
