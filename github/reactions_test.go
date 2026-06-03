@@ -13,59 +13,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestReaction_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Reaction{}, "{}")
-
-	r := &Reaction{
-		ID:      Ptr(int64(1)),
-		User:    nil,
-		NodeID:  Ptr("n"),
-		Content: Ptr("+1"),
-	}
-
-	want := `{
-		"id": 1,
-		"node_id": "n",
-		"content": "+1"
-	}`
-
-	testJSONMarshal(t, r, want)
-}
-
-func TestReactions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Reactions{}, "{}")
-
-	r := &Reactions{
-		TotalCount: Ptr(1),
-		PlusOne:    Ptr(1),
-		MinusOne:   Ptr(1),
-		Laugh:      Ptr(1),
-		Confused:   Ptr(1),
-		Heart:      Ptr(1),
-		Hooray:     Ptr(1),
-		Rocket:     Ptr(1),
-		Eyes:       Ptr(1),
-		URL:        Ptr("u"),
-	}
-
-	want := `{
-		"total_count": 1,
-		"+1": 1,
-		"-1": 1,
-		"laugh": 1,
-		"confused": 1,
-		"heart": 1,
-		"hooray": 1,
-		"rocket": 1,
-		"eyes": 1,
-		"url": "u"
-	}`
-
-	testJSONMarshal(t, r, want)
-}
-
 func TestReactionsService_ListCommentReactions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

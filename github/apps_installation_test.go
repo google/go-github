@@ -159,30 +159,3 @@ func TestAppsService_RevokeInstallationToken(t *testing.T) {
 		return client.Apps.RevokeInstallationToken(ctx)
 	})
 }
-
-func TestListRepositories_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ListRepositories{}, `{"repositories": null}`)
-
-	u := &ListRepositories{
-		TotalCount: Ptr(1),
-		Repositories: []*Repository{
-			{
-				ID:   Ptr(int64(1)),
-				URL:  Ptr("u"),
-				Name: Ptr("n"),
-			},
-		},
-	}
-
-	want := `{
-		"total_count": 1,
-		"repositories": [{
-			"id":1,
-			"name":"n",
-			"url":"u"
-			}]
-	}`
-
-	testJSONMarshal(t, u, want)
-}

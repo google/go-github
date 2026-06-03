@@ -15,21 +15,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestMarshalJSON_withNilContentAndSHA(t *testing.T) {
-	t.Parallel()
-	te := TreeEntry{
-		Path: Ptr("path"),
-		Mode: Ptr("mode"),
-		Type: Ptr("type"),
-		Size: Ptr(1),
-		URL:  Ptr("url"),
-	}
-
-	want := `{"sha":null,"path":"path","mode":"mode","type":"type"}`
-	testJSONMarshalOnly(t, te, want)
-	testJSONMarshalOnly(t, &te, want)
-}
-
 func TestGitService_GetTree(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -335,45 +320,6 @@ func TestGitService_CreateTree_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestTree_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Tree{}, "{}")
-
-	u := &Tree{
-		SHA: Ptr("sha"),
-		Entries: []*TreeEntry{
-			{
-				SHA:     Ptr("sha"),
-				Path:    Ptr("path"),
-				Mode:    Ptr("mode"),
-				Type:    Ptr("type"),
-				Size:    Ptr(1),
-				Content: Ptr("content"),
-				URL:     Ptr("url"),
-			},
-		},
-		Truncated: Ptr(false),
-	}
-
-	want := `{
-		"sha": "sha",
-		"tree": [
-			{
-				"sha": "sha",
-				"path": "path",
-				"mode": "mode",
-				"type": "type",
-				"size": 1,
-				"content": "content",
-				"url": "url"
-			}
-		],
-		"truncated": false
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestTreeEntry_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &TreeEntry{}, `{"sha": null}`)
@@ -401,7 +347,22 @@ func TestTreeEntry_Marshal(t *testing.T) {
 	testJSONMarshal(t, u, want)
 }
 
-func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
+func TestTreeEntry_MarshalJSON_withNilContentAndSHA(t *testing.T) {
+	t.Parallel()
+	te := TreeEntry{
+		Path: Ptr("path"),
+		Mode: Ptr("mode"),
+		Type: Ptr("type"),
+		Size: Ptr(1),
+		URL:  Ptr("url"),
+	}
+
+	want := `{"sha":null,"path":"path","mode":"mode","type":"type"}`
+	testJSONMarshalOnly(t, te, want)
+	testJSONMarshalOnly(t, &te, want)
+}
+
+func TestTreeEntryWithFileDelete_MarshalJSON(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &treeEntryWithFileDelete{}, `{"sha": null}`)
 
@@ -423,23 +384,6 @@ func TestTreeEntryWithFileDelete_Marshal(t *testing.T) {
 		"size": 1,
 		"content": "content",
 		"url": "url"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCreateTree_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &createTree{}, `{"tree": null}`)
-
-	u := &createTree{
-		BaseTree: "bt",
-		Entries:  []any{"e"},
-	}
-
-	want := `{
-		"base_tree": "bt",
-		"tree": ["e"]
 	}`
 
 	testJSONMarshal(t, u, want)

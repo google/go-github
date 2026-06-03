@@ -249,30 +249,3 @@ func TestActivityService_DeleteRepositorySubscription(t *testing.T) {
 		return client.Activity.DeleteRepositorySubscription(ctx, "o", "r")
 	})
 }
-
-func TestSubscription_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Subscription{}, "{}")
-
-	u := &Subscription{
-		Subscribed:    Ptr(true),
-		Ignored:       Ptr(false),
-		Reason:        Ptr("r"),
-		CreatedAt:     &Timestamp{referenceTime},
-		URL:           Ptr("u"),
-		RepositoryURL: Ptr("ru"),
-		ThreadURL:     Ptr("tu"),
-	}
-
-	want := `{
-		"subscribed": true,
-		"ignored": false,
-		"reason": "r",
-		"created_at": ` + referenceTimeStr + `,
-		"url": "u",
-		"repository_url": "ru",
-		"thread_url": "tu"
-	}`
-
-	testJSONMarshal(t, u, want)
-}

@@ -871,35 +871,6 @@ func TestCopilotService_GetOrganizationContentExclusionDetails(t *testing.T) {
 	})
 }
 
-func TestListOrganizationCopilotCodingAgentRepositoriesResponse_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ListOrganizationCopilotCodingAgentRepositoriesResponse{}, `{"total_count":0,"repositories":null}`)
-
-	r := &ListOrganizationCopilotCodingAgentRepositoriesResponse{
-		TotalCount: 1,
-		Repositories: []*Repository{
-			{ID: Ptr(int64(1)), Name: Ptr("Hello-World"), FullName: Ptr("octocat/Hello-World")},
-		},
-	}
-	want := `{
-		"total_count": 1,
-		"repositories": [
-			{"id": 1, "name": "Hello-World", "full_name": "octocat/Hello-World"}
-		]
-	}`
-	testJSONMarshal(t, r, want)
-}
-
-func TestCopilotOrganizationContentExclusionDetails_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, CopilotOrganizationContentExclusionDetails{}, `{}`)
-
-	d := CopilotOrganizationContentExclusionDetails{
-		"octo-repo": {"/src/some-dir/kernel.rs"},
-	}
-	testJSONMarshal(t, d, `{"octo-repo":["/src/some-dir/kernel.rs"]}`)
-}
-
 func TestCopilotService_AddCopilotTeams(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

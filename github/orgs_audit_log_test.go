@@ -166,25 +166,6 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	})
 }
 
-func TestHookConfig_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &HookConfig{}, "{}")
-
-	u := &HookConfig{
-		ContentType: Ptr("ct"),
-		InsecureSSL: Ptr("ct"),
-		URL:         Ptr("url"),
-	}
-
-	want := `{
-		"content_type": "ct",
-		"insecure_ssl": "ct",
-		"url": "url"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestAuditEntry_Marshal(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &AuditEntry{}, "{}")

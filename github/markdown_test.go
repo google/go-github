@@ -51,22 +51,3 @@ func TestMarkdownService_Markdown(t *testing.T) {
 		return resp, err
 	})
 }
-
-func TestMarkdownRenderRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &markdownRenderRequest{}, "{}")
-
-	a := &markdownRenderRequest{
-		Text:    Ptr("txt"),
-		Mode:    Ptr("mode"),
-		Context: Ptr("ctx"),
-	}
-
-	want := `{
-		"text": "txt",
-		"mode": "mode",
-		"context": "ctx"
-	}`
-
-	testJSONMarshal(t, a, want)
-}

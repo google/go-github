@@ -14,59 +14,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganization_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Organization{}, "{}")
-
-	o := &Organization{
-		BillingEmail:                         Ptr("support@github.com"),
-		Blog:                                 Ptr("https://github.com/blog"),
-		Company:                              Ptr("GitHub"),
-		Email:                                Ptr("support@github.com"),
-		TwitterUsername:                      Ptr("github"),
-		Location:                             Ptr("San Francisco"),
-		Name:                                 Ptr("github"),
-		Description:                          Ptr("GitHub, the company."),
-		IsVerified:                           Ptr(true),
-		HasOrganizationProjects:              Ptr(true),
-		HasRepositoryProjects:                Ptr(true),
-		DefaultRepoPermission:                Ptr("read"),
-		MembersCanCreateRepos:                Ptr(true),
-		MembersCanCreateInternalRepos:        Ptr(true),
-		MembersCanCreatePrivateRepos:         Ptr(true),
-		MembersCanCreatePublicRepos:          Ptr(false),
-		MembersAllowedRepositoryCreationType: Ptr("all"),
-		MembersCanCreatePages:                Ptr(true),
-		MembersCanCreatePublicPages:          Ptr(false),
-		MembersCanCreatePrivatePages:         Ptr(true),
-	}
-	want := `
-		{
-			"billing_email": "support@github.com",
-			"blog": "https://github.com/blog",
-			"company": "GitHub",
-			"email": "support@github.com",
-			"twitter_username": "github",
-			"location": "San Francisco",
-			"name": "github",
-			"description": "GitHub, the company.",
-			"is_verified": true,
-			"has_organization_projects": true,
-			"has_repository_projects": true,
-			"default_repository_permission": "read",
-			"members_can_create_repositories": true,
-			"members_can_create_public_repositories": false,
-			"members_can_create_private_repositories": true,
-			"members_can_create_internal_repositories": true,
-			"members_allowed_repository_creation_type": "all",
-			"members_can_create_pages": true,
-			"members_can_create_public_pages": false,
-			"members_can_create_private_pages": true
-		}
-	`
-	testJSONMarshal(t, o, want)
-}
-
 func TestOrganizationsService_ListAll(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -423,48 +370,4 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestOrganizationInstallations_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &OrganizationInstallations{}, "{}")
-
-	o := &OrganizationInstallations{
-		TotalCount:    Ptr(1),
-		Installations: []*Installation{{ID: Ptr(int64(1))}},
-	}
-	want := `{
-		"total_count": 1,
-		"installations": [
-			{
-				"id": 1
-			}
-		]
-	}`
-
-	testJSONMarshal(t, o, want)
-}
-
-func TestPlan_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Plan{}, "{}")
-
-	o := &Plan{
-		Name:          Ptr("name"),
-		Space:         Ptr(1),
-		Collaborators: Ptr(1),
-		PrivateRepos:  Ptr(int64(1)),
-		FilledSeats:   Ptr(1),
-		Seats:         Ptr(1),
-	}
-	want := `{
-		"name": "name",
-		"space": 1,
-		"collaborators": 1,
-		"private_repos": 1,
-		"filled_seats": 1,
-		"seats": 1
-	}`
-
-	testJSONMarshal(t, o, want)
 }

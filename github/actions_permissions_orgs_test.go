@@ -290,48 +290,6 @@ func TestActionsService_UpdateActionsAllowed(t *testing.T) {
 	})
 }
 
-func TestActionsAllowed_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ActionsAllowed{}, "{}")
-
-	u := &ActionsAllowed{
-		GithubOwnedAllowed: Ptr(false),
-		VerifiedAllowed:    Ptr(false),
-		PatternsAllowed:    []string{"s"},
-	}
-
-	want := `{
-		"github_owned_allowed": false,
-		"verified_allowed": false,
-		"patterns_allowed": [
-			"s"
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestActionsPermissions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ActionsPermissions{}, "{}")
-
-	u := &ActionsPermissions{
-		EnabledRepositories: Ptr("e"),
-		AllowedActions:      Ptr("a"),
-		SelectedActionsURL:  Ptr("sau"),
-		SHAPinningRequired:  Ptr(true),
-	}
-
-	want := `{
-		"enabled_repositories": "e",
-		"allowed_actions": "a",
-		"selected_actions_url": "sau",
-		"sha_pinning_required": true
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

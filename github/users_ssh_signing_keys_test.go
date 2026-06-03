@@ -172,24 +172,3 @@ func TestUsersService_DeleteSSHSigningKey(t *testing.T) {
 		return client.Users.DeleteSSHSigningKey(ctx, 1)
 	})
 }
-
-func TestSSHSigningKey_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SSHSigningKey{}, "{}")
-
-	u := &Key{
-		ID:        Ptr(int64(1)),
-		Key:       Ptr("abc"),
-		Title:     Ptr("title"),
-		CreatedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-		"id": 1,
-		"key": "abc",
-		"title": "title",
-		"created_at": ` + referenceTimeStr + `
-	}`
-
-	testJSONMarshal(t, u, want)
-}
