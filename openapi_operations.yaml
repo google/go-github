@@ -39,7 +39,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 133d385dfbee06825d4d4136a82dd2b4c79813ba
+openapi_commit: c4a52d9b0b4f5db4e7de178c9f8f90b5f6360563
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -1334,6 +1334,10 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /enterprises/{enterprise}/settings/billing/ai_credit/usage
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/billing/usage#get-billing-ai-credit-usage-report-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/settings/billing/budgets
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets#get-all-budgets
     openapi_files:
@@ -1909,6 +1913,10 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /organizations/{org}/settings/billing/ai_credit/usage
+    documentation_url: https://docs.github.com/rest/billing/usage#get-billing-ai-credit-usage-report-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
   - name: GET /organizations/{org}/settings/billing/budgets
     documentation_url: https://docs.github.com/rest/billing/budgets#get-all-budgets-for-an-organization
     openapi_files:
@@ -6080,6 +6088,11 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /repos/{owner}/{repo}/hash-algorithm
+    documentation_url: https://docs.github.com/rest/repos/repos#get-the-hash-algorithm-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/hooks
     documentation_url: https://docs.github.com/rest/repos/webhooks#list-repository-webhooks
     openapi_files:
@@ -8646,6 +8659,10 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /users/{username}/settings/billing/ai_credit/usage
+    documentation_url: https://docs.github.com/rest/billing/usage#get-billing-ai-credit-usage-report-for-a-user
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
   - name: GET /users/{username}/settings/billing/premium_request/usage
     documentation_url: https://docs.github.com/rest/billing/usage#get-billing-premium-request-usage-report-for-a-user
     openapi_files:
