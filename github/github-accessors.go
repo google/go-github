@@ -862,6 +862,134 @@ func (a *AdvisoryVulnerability) GetVulnerableVersionRange() string {
 	return *a.VulnerableVersionRange
 }
 
+// GetMonth returns the Month field.
+func (a *AICreditTimePeriod) GetMonth() int {
+	if a == nil {
+		return 0
+	}
+	return a.Month
+}
+
+// GetYear returns the Year field.
+func (a *AICreditTimePeriod) GetYear() int {
+	if a == nil {
+		return 0
+	}
+	return a.Year
+}
+
+// GetOrganization returns the Organization field.
+func (a *AICreditUsage) GetOrganization() string {
+	if a == nil {
+		return ""
+	}
+	return a.Organization
+}
+
+// GetTimePeriod returns the TimePeriod field.
+func (a *AICreditUsage) GetTimePeriod() AICreditTimePeriod {
+	if a == nil {
+		return AICreditTimePeriod{}
+	}
+	return a.TimePeriod
+}
+
+// GetUsageItems returns the UsageItems slice if it's non-nil, nil otherwise.
+func (a *AICreditUsage) GetUsageItems() []*AICreditUsageItem {
+	if a == nil || a.UsageItems == nil {
+		return nil
+	}
+	return a.UsageItems
+}
+
+// GetDiscountAmount returns the DiscountAmount field.
+func (a *AICreditUsageItem) GetDiscountAmount() float64 {
+	if a == nil {
+		return 0
+	}
+	return a.DiscountAmount
+}
+
+// GetDiscountQuantity returns the DiscountQuantity field.
+func (a *AICreditUsageItem) GetDiscountQuantity() float64 {
+	if a == nil {
+		return 0
+	}
+	return a.DiscountQuantity
+}
+
+// GetGrossAmount returns the GrossAmount field.
+func (a *AICreditUsageItem) GetGrossAmount() float64 {
+	if a == nil {
+		return 0
+	}
+	return a.GrossAmount
+}
+
+// GetGrossQuantity returns the GrossQuantity field.
+func (a *AICreditUsageItem) GetGrossQuantity() float64 {
+	if a == nil {
+		return 0
+	}
+	return a.GrossQuantity
+}
+
+// GetModel returns the Model field.
+func (a *AICreditUsageItem) GetModel() string {
+	if a == nil {
+		return ""
+	}
+	return a.Model
+}
+
+// GetNetAmount returns the NetAmount field.
+func (a *AICreditUsageItem) GetNetAmount() float64 {
+	if a == nil {
+		return 0
+	}
+	return a.NetAmount
+}
+
+// GetNetQuantity returns the NetQuantity field.
+func (a *AICreditUsageItem) GetNetQuantity() float64 {
+	if a == nil {
+		return 0
+	}
+	return a.NetQuantity
+}
+
+// GetPricePerUnit returns the PricePerUnit field.
+func (a *AICreditUsageItem) GetPricePerUnit() float64 {
+	if a == nil {
+		return 0
+	}
+	return a.PricePerUnit
+}
+
+// GetProduct returns the Product field.
+func (a *AICreditUsageItem) GetProduct() string {
+	if a == nil {
+		return ""
+	}
+	return a.Product
+}
+
+// GetSKU returns the SKU field.
+func (a *AICreditUsageItem) GetSKU() string {
+	if a == nil {
+		return ""
+	}
+	return a.SKU
+}
+
+// GetUnitType returns the UnitType field.
+func (a *AICreditUsageItem) GetUnitType() string {
+	if a == nil {
+		return ""
+	}
+	return a.UnitType
+}
+
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
 func (a *Alert) GetClosedAt() Timestamp {
 	if a == nil || a.ClosedAt == nil {
