@@ -4388,7 +4388,7 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 	}
 }
 
-func TestError_Marshal(t *testing.T) {
+func TestError_UnmarshalJSON(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &Error{}, `{
 		"resource": "",

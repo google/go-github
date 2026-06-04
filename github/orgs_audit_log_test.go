@@ -166,7 +166,7 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	})
 }
 
-func TestAuditEntry_Marshal(t *testing.T) {
+func TestAuditEntry_MarshalJSON(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &AuditEntry{}, "{}")
 

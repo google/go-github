@@ -549,9 +549,6 @@ func TestProjectsService_ListOrganizationProjects_pagination(t *testing.T) {
 	}
 }
 
-// Marshal test ensures V2 fields marshal correctly.
-// Marshal test ensures V2 field structures marshal correctly.
-// Marshal test ensures ProjectV2FieldConfiguration marshals correctly.
 func TestProjectsService_ListOrganizationProjectItems(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

@@ -320,7 +320,7 @@ func TestGitService_CreateTree_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestTreeEntry_Marshal(t *testing.T) {
+func TestTreeEntry_MarshalJSON(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &TreeEntry{}, `{"sha": null}`)
 
