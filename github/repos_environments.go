@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 )
@@ -82,6 +83,10 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 	}
 
 	r.Type = reviewer.Type
+	if reviewer.Type == nil {
+		r.Reviewer = nil
+		return errors.New("reviewer.Type is nil, not a string of 'User' or 'Team', unable to unmarshal")
+	}
 
 	switch *reviewer.Type {
 	case "User":
