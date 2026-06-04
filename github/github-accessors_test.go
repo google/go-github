@@ -1067,9 +1067,23 @@ func TestAdvisoryVulnerability_GetVulnerableVersionRange(tt *testing.T) {
 	a.GetVulnerableVersionRange()
 }
 
+func TestAICreditTimePeriod_GetDay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AICreditTimePeriod{Day: &zeroValue}
+	a.GetDay()
+	a = &AICreditTimePeriod{}
+	a.GetDay()
+	a = nil
+	a.GetDay()
+}
+
 func TestAICreditTimePeriod_GetMonth(tt *testing.T) {
 	tt.Parallel()
-	a := &AICreditTimePeriod{}
+	var zeroValue int
+	a := &AICreditTimePeriod{Month: &zeroValue}
+	a.GetMonth()
+	a = &AICreditTimePeriod{}
 	a.GetMonth()
 	a = nil
 	a.GetMonth()
@@ -1196,6 +1210,54 @@ func TestAICreditUsageItem_GetUnitType(tt *testing.T) {
 	a.GetUnitType()
 	a = nil
 	a.GetUnitType()
+}
+
+func TestAICreditUsageOptions_GetDay(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageOptions{}
+	a.GetDay()
+	a = nil
+	a.GetDay()
+}
+
+func TestAICreditUsageOptions_GetModel(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageOptions{}
+	a.GetModel()
+	a = nil
+	a.GetModel()
+}
+
+func TestAICreditUsageOptions_GetMonth(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageOptions{}
+	a.GetMonth()
+	a = nil
+	a.GetMonth()
+}
+
+func TestAICreditUsageOptions_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageOptions{}
+	a.GetProduct()
+	a = nil
+	a.GetProduct()
+}
+
+func TestAICreditUsageOptions_GetUser(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageOptions{}
+	a.GetUser()
+	a = nil
+	a.GetUser()
+}
+
+func TestAICreditUsageOptions_GetYear(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageOptions{}
+	a.GetYear()
+	a = nil
+	a.GetYear()
 }
 
 func TestAlert_GetClosedAt(tt *testing.T) {

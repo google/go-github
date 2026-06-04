@@ -17,8 +17,17 @@ func TestBillingService_GetAICreditUsage(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	opts := &AICreditUsageOptions{
+		Year:  2026,
+		Month: 6,
+	}
+
 	mux.HandleFunc("/organizations/o/settings/billing/ai_credit/usage", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"year":  "2026",
+			"month": "6",
+		})
 		fmt.Fprint(w, `{
 			"timePeriod": {
 				"year": 2026,
@@ -57,15 +66,16 @@ func TestBillingService_GetAICreditUsage(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	usage, _, err := client.Billing.GetAICreditUsage(ctx, "o")
+	usage, _, err := client.Billing.GetAICreditUsage(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Billing.GetAICreditUsage returned error: %v", err)
 	}
 
+	month := 6
 	want := &AICreditUsage{
 		TimePeriod: AICreditTimePeriod{
 			Year:  2026,
-			Month: 6,
+			Month: &month,
 		},
 		Organization: "o",
 		UsageItems: []*AICreditUsageItem{
@@ -103,12 +113,12 @@ func TestBillingService_GetAICreditUsage(t *testing.T) {
 
 	const methodName = "GetAICreditUsage"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Billing.GetAICreditUsage(ctx, "\n")
+		_, _, err = client.Billing.GetAICreditUsage(ctx, "\n", nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Billing.GetAICreditUsage(ctx, "o")
+		got, resp, err := client.Billing.GetAICreditUsage(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -121,22 +131,78 @@ func TestBillingService_GetAICreditUsage_invalidOrg(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetAICreditUsage(ctx, "%")
+	_, _, err := client.Billing.GetAICreditUsage(ctx, "%", nil)
 	testURLParseError(t, err)
+}
+
+func TestBillingService_GetAICreditUsage_WithOptionalParams(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	opts := &AICreditUsageOptions{
+		Year:  2026,
+		Model: "Claude Sonnet 4.6",
+	}
+
+	mux.HandleFunc("/organizations/o/settings/billing/ai_credit/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"year":  "2026",
+			"model": "Claude Sonnet 4.6",
+		})
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2026,
+				"month": 6
+			},
+			"organization": "o",
+			"usageItems": []
+		}`)
+	})
+
+	ctx := t.Context()
+	usage, _, err := client.Billing.GetAICreditUsage(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Billing.GetAICreditUsage with optional params returned error: %v", err)
+	}
+
+	if usage.Organization != "o" {
+		t.Errorf("Expected organization 'o', got %v", usage.Organization)
+	}
 }
 
 func TestAICreditTimePeriod_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &AICreditTimePeriod{}, `{"year":0,"month":0}`)
+	testJSONMarshal(t, &AICreditTimePeriod{}, `{"year":0}`)
 
+	month := 6
 	u := &AICreditTimePeriod{
 		Year:  2026,
-		Month: 6,
+		Month: &month,
 	}
 
 	want := `{
 		"year": 2026,
 		"month": 6
+	}`
+
+	testJSONMarshal(t, u, want)
+}
+
+func TestAICreditTimePeriod_Marshal_WithDay(t *testing.T) {
+	t.Parallel()
+	month := 6
+	day := 15
+	u := &AICreditTimePeriod{
+		Year:  2026,
+		Month: &month,
+		Day:   &day,
+	}
+
+	want := `{
+		"year": 2026,
+		"month": 6,
+		"day": 15
 	}`
 
 	testJSONMarshal(t, u, want)
@@ -179,12 +245,13 @@ func TestAICreditUsageItem_Marshal(t *testing.T) {
 
 func TestAICreditUsage_Marshal(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &AICreditUsage{}, `{"timePeriod":{"year":0,"month":0},"organization":""}`)
+	testJSONMarshal(t, &AICreditUsage{}, `{"timePeriod":{"year":0},"organization":""}`)
 
+	month := 6
 	u := &AICreditUsage{
 		TimePeriod: AICreditTimePeriod{
 			Year:  2026,
-			Month: 6,
+			Month: &month,
 		},
 		Organization: "test-org",
 		UsageItems: []*AICreditUsageItem{
@@ -205,27 +272,27 @@ func TestAICreditUsage_Marshal(t *testing.T) {
 	}
 
 	want := `{
-        "timePeriod": {
-            "year": 2026,
-            "month": 6
-        },
-        "organization": "test-org",
-        "usageItems": [
-            {
-                "product": "Copilot",
-                "sku": "Copilot AI Credits",
-                "model": "Auto: Claude Haiku 4.5",
-                "unitType": "ai-credits",
-                "pricePerUnit": 0.01,
-                "grossQuantity": 3956.1799545,
-                "grossAmount": 39.561799545,
-                "discountQuantity": 3956.1799545,
-                "discountAmount": 39.561799545,
-                "netQuantity": 0,
-                "netAmount": 0
-            }
-        ]
-    }`
+		"timePeriod": {
+			"year": 2026,
+			"month": 6
+		},
+		"organization": "test-org",
+		"usageItems": [
+			{
+				"product": "Copilot",
+				"sku": "Copilot AI Credits",
+				"model": "Auto: Claude Haiku 4.5",
+				"unitType": "ai-credits",
+				"pricePerUnit": 0.01,
+				"grossQuantity": 3956.1799545,
+				"grossAmount": 39.561799545,
+				"discountQuantity": 3956.1799545,
+				"discountAmount": 39.561799545,
+				"netQuantity": 0,
+				"netAmount": 0
+			}
+		]
+	}`
 
 	testJSONMarshal(t, u, want)
 }

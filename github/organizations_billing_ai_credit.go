@@ -12,8 +12,9 @@ import (
 
 // AICreditTimePeriod represents the billing time period for AI credit usage.
 type AICreditTimePeriod struct {
-	Year  int `json:"year"`
-	Month int `json:"month"`
+	Year  int  `json:"year"`
+	Month *int `json:"month,omitempty"`
+	Day   *int `json:"day,omitempty"`
 }
 
 // AICreditUsageItem represents a single line item in the AI credit usage report.
@@ -35,14 +36,32 @@ type AICreditUsageItem struct {
 type AICreditUsage struct {
 	TimePeriod   AICreditTimePeriod   `json:"timePeriod"`
 	Organization string               `json:"organization"`
-	UsageItems   []*AICreditUsageItem `json:"usageItems,omitempty"`
+	UsageItems   []*AICreditUsageItem `json:"usageItems"`
+}
+
+// AICreditUsageOptions specifies the optional parameters to the
+// BillingService.GetAICreditUsage endpoint.
+type AICreditUsageOptions struct {
+	Year    int    `url:"year,omitempty"`
+	Month   int    `url:"month,omitempty"`
+	Day     int    `url:"day,omitempty"`
+	User    string `url:"user,omitempty"`
+	Model   string `url:"model,omitempty"`
+	Product string `url:"product,omitempty"`
 }
 
 // GetAICreditUsage returns the AI credit billing usage for an organization.
 //
+// GitHub API docs: https://docs.github.com/rest/billing/usage?apiVersion=2022-11-28#get-billing-ai-credit-usage-report-for-an-organization
+//
 //meta:operation GET /organizations/{org}/settings/billing/ai_credit/usage
-func (s *BillingService) GetAICreditUsage(ctx context.Context, org string) (*AICreditUsage, *Response, error) {
-	u := fmt.Sprintf("organizations/%v/settings/billing/ai_credit/usage", org)
+func (s *BillingService) GetAICreditUsage(ctx context.Context, org string, opts *AICreditUsageOptions) (*AICreditUsage, *Response, error) {
+	u := fmt.Sprintf("/organizations/%v/settings/billing/ai_credit/usage", org)
+
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {

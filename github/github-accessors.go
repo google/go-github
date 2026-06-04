@@ -862,12 +862,20 @@ func (a *AdvisoryVulnerability) GetVulnerableVersionRange() string {
 	return *a.VulnerableVersionRange
 }
 
-// GetMonth returns the Month field.
-func (a *AICreditTimePeriod) GetMonth() int {
-	if a == nil {
+// GetDay returns the Day field if it's non-nil, zero value otherwise.
+func (a *AICreditTimePeriod) GetDay() int {
+	if a == nil || a.Day == nil {
 		return 0
 	}
-	return a.Month
+	return *a.Day
+}
+
+// GetMonth returns the Month field if it's non-nil, zero value otherwise.
+func (a *AICreditTimePeriod) GetMonth() int {
+	if a == nil || a.Month == nil {
+		return 0
+	}
+	return *a.Month
 }
 
 // GetYear returns the Year field.
@@ -988,6 +996,54 @@ func (a *AICreditUsageItem) GetUnitType() string {
 		return ""
 	}
 	return a.UnitType
+}
+
+// GetDay returns the Day field.
+func (a *AICreditUsageOptions) GetDay() int {
+	if a == nil {
+		return 0
+	}
+	return a.Day
+}
+
+// GetModel returns the Model field.
+func (a *AICreditUsageOptions) GetModel() string {
+	if a == nil {
+		return ""
+	}
+	return a.Model
+}
+
+// GetMonth returns the Month field.
+func (a *AICreditUsageOptions) GetMonth() int {
+	if a == nil {
+		return 0
+	}
+	return a.Month
+}
+
+// GetProduct returns the Product field.
+func (a *AICreditUsageOptions) GetProduct() string {
+	if a == nil {
+		return ""
+	}
+	return a.Product
+}
+
+// GetUser returns the User field.
+func (a *AICreditUsageOptions) GetUser() string {
+	if a == nil {
+		return ""
+	}
+	return a.User
+}
+
+// GetYear returns the Year field.
+func (a *AICreditUsageOptions) GetYear() int {
+	if a == nil {
+		return 0
+	}
+	return a.Year
 }
 
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
