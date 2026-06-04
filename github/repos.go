@@ -513,15 +513,13 @@ type createRepoRequest struct {
 	Description *string `json:"description,omitempty"`
 	Homepage    *string `json:"homepage,omitempty"`
 
-	Private                   *bool   `json:"private,omitempty"`
-	Visibility                *string `json:"visibility,omitempty"`
-	HasIssues                 *bool   `json:"has_issues,omitempty"`
-	HasProjects               *bool   `json:"has_projects,omitempty"`
-	HasWiki                   *bool   `json:"has_wiki,omitempty"`
-	HasDiscussions            *bool   `json:"has_discussions,omitempty"`
-	HasPullRequests           *bool   `json:"has_pull_requests,omitempty"`
-	PullRequestCreationPolicy *string `json:"pull_request_creation_policy,omitempty"`
-	IsTemplate                *bool   `json:"is_template,omitempty"`
+	Private        *bool   `json:"private,omitempty"`
+	Visibility     *string `json:"visibility,omitempty"`
+	HasIssues      *bool   `json:"has_issues,omitempty"`
+	HasProjects    *bool   `json:"has_projects,omitempty"`
+	HasWiki        *bool   `json:"has_wiki,omitempty"`
+	HasDiscussions *bool   `json:"has_discussions,omitempty"`
+	IsTemplate     *bool   `json:"is_template,omitempty"`
 
 	// Creating an organization repository. Required for non-owners.
 	TeamID *int64 `json:"team_id,omitempty"`
@@ -584,8 +582,6 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 		HasProjects:               repo.HasProjects,
 		HasWiki:                   repo.HasWiki,
 		HasDiscussions:            repo.HasDiscussions,
-		HasPullRequests:           repo.HasPullRequests,
-		PullRequestCreationPolicy: repo.PullRequestCreationPolicy,
 		IsTemplate:                repo.IsTemplate,
 		TeamID:                    repo.TeamID,
 		AutoInit:                  repo.AutoInit,
