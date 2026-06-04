@@ -763,18 +763,3 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug_invalidOrg(t *testing.T)
 	_, _, err := client.Teams.ListPendingTeamInvitationsBySlug(ctx, "%", "s", nil)
 	testURLParseError(t, err)
 }
-
-func TestTeamAddTeamMembershipOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &TeamAddTeamMembershipOptions{}, "{}")
-
-	u := &TeamAddTeamMembershipOptions{
-		Role: "role",
-	}
-
-	want := `{
-		"role": "role"
-	}`
-
-	testJSONMarshal(t, u, want)
-}

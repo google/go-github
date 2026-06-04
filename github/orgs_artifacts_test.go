@@ -17,7 +17,7 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CreateArtifactDeploymentRequest{
+	input := CreateArtifactDeploymentRequest{
 		Name:               "test-n",
 		Digest:             "sha256:123",
 		Version:            Ptr("v1.0.0"),
@@ -33,12 +33,12 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONMarshal(t, input, `{"name":"test-n","digest":"sha256:123","version":"v1.0.0","status":"deployed","logical_environment":"prod","deployment_name":"dep-1","tags":{"data-access":"sensitive"},"runtime_risks":["critical-resource","internet-exposed"],"github_repository":"octo-org/octo-repo"}`)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":1}]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "o", *input)
+	got, _, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "o", input)
 	if err != nil {
 		t.Errorf("CreateArtifactDeploymentRecord returned error: %v", err)
 	}
@@ -54,12 +54,12 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 
 	const methodName = "CreateArtifactDeploymentRecord"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.CreateArtifactDeploymentRecord(ctx, "\n", *input)
+		_, _, err = client.Organizations.CreateArtifactDeploymentRecord(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "o", *input)
+		got, resp, err := client.Organizations.CreateArtifactDeploymentRecord(ctx, "o", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -71,7 +71,7 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ClusterDeploymentRecordsRequest{
+	input := ClusterDeploymentRecordsRequest{
 		LogicalEnvironment:  "prod",
 		PhysicalEnvironment: Ptr("pacific-east"),
 		Deployments: []*ClusterArtifactDeployment{
@@ -87,12 +87,12 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/deployment-record/cluster/c1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONMarshal(t, input, `{"logical_environment":"prod","physical_environment":"pacific-east","deployments":[{"name":"awesome-image","digest":"sha256:abc","version":"v2.0","status":"deployed","deployment_name":"dep-1"}]}`)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"total_count":1,"deployment_records":[{"id":2}]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.SetClusterDeploymentRecords(ctx, "o", "c1", *input)
+	got, _, err := client.Organizations.SetClusterDeploymentRecords(ctx, "o", "c1", input)
 	if err != nil {
 		t.Errorf("SetClusterDeploymentRecords returned error: %v", err)
 	}
@@ -107,12 +107,12 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 
 	const methodName = "SetClusterDeploymentRecords"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.SetClusterDeploymentRecords(ctx, "\n", "\n", *input)
+		_, _, err = client.Organizations.SetClusterDeploymentRecords(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.SetClusterDeploymentRecords(ctx, "o", "c1", *input)
+		got, resp, err := client.Organizations.SetClusterDeploymentRecords(ctx, "o", "c1", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -124,7 +124,7 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CreateArtifactStorageRequest{
+	input := CreateArtifactStorageRequest{
 		Name:             "libfoo",
 		Digest:           "sha256:123",
 		Version:          Ptr("v1.2.3"),
@@ -136,12 +136,12 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/storage-record", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONMarshal(t, input, `{"name":"libfoo","digest":"sha256:123","version":"v1.2.3","path":"target/libs","registry_url":"https://reg.example.com","status":"active","github_repository":"org/repo"}`)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"total_count":1,"storage_records":[{"name":"libfoo"}]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Organizations.CreateArtifactStorageRecord(ctx, "o", *input)
+	got, _, err := client.Organizations.CreateArtifactStorageRecord(ctx, "o", input)
 	if err != nil {
 		t.Errorf("CreateArtifactStorageRecord returned error: %v", err)
 	}
@@ -157,12 +157,12 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 
 	const methodName = "CreateArtifactStorageRecord"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.CreateArtifactStorageRecord(ctx, "\n", *input)
+		_, _, err = client.Organizations.CreateArtifactStorageRecord(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateArtifactStorageRecord(ctx, "o", *input)
+		got, resp, err := client.Organizations.CreateArtifactStorageRecord(ctx, "o", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

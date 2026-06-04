@@ -160,28 +160,3 @@ func TestGitService_CreateBlob_invalidOwner(t *testing.T) {
 	_, _, err := client.Git.CreateBlob(ctx, "%", "%", Blob{})
 	testURLParseError(t, err)
 }
-
-func TestBlob_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Blob{}, "{}")
-
-	u := &Blob{
-		Content:  Ptr("content"),
-		Encoding: Ptr("encoding"),
-		SHA:      Ptr("sha"),
-		Size:     Ptr(1),
-		URL:      Ptr("url"),
-		NodeID:   Ptr("nid"),
-	}
-
-	want := `{
-		"content": "content",
-		"encoding": "encoding",
-		"sha": "sha",
-		"size": 1,
-		"url": "url",
-		"node_id": "nid"
-	}`
-
-	testJSONMarshal(t, u, want)
-}

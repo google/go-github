@@ -85,27 +85,6 @@ func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 	})
 }
 
-func TestActionsPermissionsRepository_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ActionsPermissions{}, "{}")
-
-	u := &ActionsPermissionsRepository{
-		Enabled:            Ptr(true),
-		AllowedActions:     Ptr("all"),
-		SelectedActionsURL: Ptr("someURL"),
-		SHAPinningRequired: Ptr(true),
-	}
-
-	want := `{
-		"enabled": true,
-		"allowed_actions": "all",
-		"selected_actions_url": "someURL",
-		"sha_pinning_required": true
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

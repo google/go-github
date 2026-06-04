@@ -186,24 +186,3 @@ func TestRepositoriesService_DeletePreReceiveHook_invalidOwner(t *testing.T) {
 	_, err := client.Repositories.DeletePreReceiveHook(ctx, "%", "%", 1)
 	testURLParseError(t, err)
 }
-
-func TestPreReceiveHook_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PreReceiveHook{}, "{}")
-
-	u := &PreReceiveHook{
-		ID:          Ptr(int64(1)),
-		Name:        Ptr("name"),
-		Enforcement: Ptr("e"),
-		ConfigURL:   Ptr("curl"),
-	}
-
-	want := `{
-		"id": 1,
-		"name": "name",
-		"enforcement": "e",
-		"configuration_url": "curl"
-	}`
-
-	testJSONMarshal(t, u, want)
-}

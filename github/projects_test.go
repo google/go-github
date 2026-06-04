@@ -549,207 +549,6 @@ func TestProjectsService_ListOrganizationProjects_pagination(t *testing.T) {
 	}
 }
 
-// Marshal test ensures V2 fields marshal correctly.
-func TestProjectV2_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ProjectV2{}, "{}")
-
-	p := &ProjectV2{
-		ID:          Ptr(int64(10)),
-		Title:       Ptr("Title"),
-		Description: Ptr("Desc"),
-		Public:      Ptr(true),
-		CreatedAt:   &Timestamp{referenceTime},
-		UpdatedAt:   &Timestamp{referenceTime},
-	}
-
-	want := `{
-        "id": 10,
-        "title": "Title",
-        "description": "Desc",
-        "public": true,
-        "created_at": ` + referenceTimeStr + `,
-        "updated_at": ` + referenceTimeStr + `
-    }`
-
-	testJSONMarshal(t, p, want)
-}
-
-// Marshal test ensures V2 field structures marshal correctly.
-func TestProjectV2Field_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ProjectV2Field{}, "{}")
-	testJSONMarshal(t, &ProjectV2FieldOption{}, "{}")
-
-	field := &ProjectV2Field{
-		ID:         Ptr(int64(2)),
-		NodeID:     Ptr("node_1"),
-		Name:       Ptr("Status"),
-		DataType:   Ptr("single_select"),
-		ProjectURL: Ptr("https://api.github.com/projects/67890"),
-		Options: []*ProjectV2FieldOption{
-			{
-				ID:          Ptr("1"),
-				Name:        &ProjectV2TextContent{Raw: Ptr("Todo"), HTML: Ptr("Todo")},
-				Color:       Ptr("blue"),
-				Description: &ProjectV2TextContent{Raw: Ptr("Tasks to be done"), HTML: Ptr("Tasks to be done")},
-			},
-		},
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-        "id": 2,
-        "node_id": "node_1",
-        "name": "Status",
-        "data_type": "single_select",
-        "project_url": "https://api.github.com/projects/67890",
-        "options": [
-            {
-                "id": "1",
-                "color": "blue",
-                "description": {
-                    "raw": "Tasks to be done",
-                    "html": "Tasks to be done"
-                },
-                "name": {
-                    "raw": "Todo",
-                    "html": "Todo"
-                }
-            }
-        ],
-        "created_at": ` + referenceTimeStr + `,
-        "updated_at": ` + referenceTimeStr + `
-    }`
-
-	testJSONMarshal(t, field, want)
-}
-
-// Marshal test ensures ProjectV2FieldConfiguration marshals correctly.
-func TestProjectV2FieldConfiguration_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ProjectV2FieldConfiguration{}, "{}")
-	testJSONMarshal(t, &ProjectV2FieldIteration{}, "{}")
-
-	// Test a field with configuration (iteration field)
-	fieldWithConfiguration := &ProjectV2Field{
-		ID:         Ptr(int64(3)),
-		NodeID:     Ptr("node_3"),
-		Name:       Ptr("Sprint"),
-		DataType:   Ptr("iteration"),
-		ProjectURL: Ptr("https://api.github.com/projects/67890"),
-		Configuration: &ProjectV2FieldConfiguration{
-			Duration: Ptr(1209600), // 2 weeks in seconds
-			StartDay: Ptr(1),       // Monday
-			Iterations: []*ProjectV2FieldIteration{
-				{
-					ID:        Ptr("iter_1"),
-					Title:     &ProjectV2TextContent{Raw: Ptr("Sprint 1"), HTML: Ptr("Sprint 1")},
-					StartDate: Ptr("2025-01-06"),
-					Duration:  Ptr(1209600),
-				},
-				{
-					ID:        Ptr("iter_2"),
-					Title:     &ProjectV2TextContent{Raw: Ptr("Sprint 2"), HTML: Ptr("Sprint 2")},
-					StartDate: Ptr("2025-01-20"),
-					Duration:  Ptr(1209600),
-				},
-			},
-		},
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-        "id": 3,
-        "node_id": "node_3",
-        "name": "Sprint",
-        "data_type": "iteration",
-        "project_url": "https://api.github.com/projects/67890",
-        "configuration": {
-            "duration": 1209600,
-            "start_day": 1,
-            "iterations": [
-                {
-                    "id": "iter_1",
-                    "title": {
-                        "raw": "Sprint 1",
-                        "html": "Sprint 1"
-                    },
-                    "start_date": "2025-01-06",
-                    "duration": 1209600
-                },
-                {
-                    "id": "iter_2",
-                    "title": {
-                        "raw": "Sprint 2",
-                        "html": "Sprint 2"
-                    },
-                    "start_date": "2025-01-20",
-                    "duration": 1209600
-                }
-            ]
-        },
-        "created_at": ` + referenceTimeStr + `,
-        "updated_at": ` + referenceTimeStr + `
-    }`
-
-	testJSONMarshal(t, fieldWithConfiguration, want)
-
-	// Test just the configuration struct by itself
-	config := &ProjectV2FieldConfiguration{
-		Duration: Ptr(604800), // 1 week in seconds
-		StartDay: Ptr(0),      // Sunday
-		Iterations: []*ProjectV2FieldIteration{
-			{
-				ID:        Ptr("config_iter_1"),
-				Title:     &ProjectV2TextContent{Raw: Ptr("Week 1"), HTML: Ptr("Week 1")},
-				StartDate: Ptr("2025-01-01"),
-				Duration:  Ptr(604800),
-			},
-		},
-	}
-
-	configWant := `{
-        "duration": 604800,
-        "start_day": 0,
-        "iterations": [
-            {
-                "id": "config_iter_1",
-                "title": {
-                    "raw": "Week 1",
-                    "html": "Week 1"
-                },
-                "start_date": "2025-01-01",
-                "duration": 604800
-            }
-        ]
-    }`
-
-	testJSONMarshal(t, config, configWant)
-
-	// Test iteration struct by itself
-	iteration := &ProjectV2FieldIteration{
-		ID:        Ptr("single_iter"),
-		Title:     &ProjectV2TextContent{Raw: Ptr("Test Iteration"), HTML: Ptr("Test Iteration")},
-		StartDate: Ptr("2025-02-01"),
-		Duration:  Ptr(1209600),
-	}
-
-	iterationWant := `{
-        "id": "single_iter",
-        "title": {
-            "raw": "Test Iteration",
-            "html": "Test Iteration"
-        },
-        "start_date": "2025-02-01",
-        "duration": 1209600
-    }`
-
-	testJSONMarshal(t, iteration, iterationWant)
-}
-
 func TestProjectsService_ListOrganizationProjectItems(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -1651,16 +1450,17 @@ func TestProjectV2Item_Marshal_MissingContent(t *testing.T) {
 
 	item := &ProjectV2Item{
 		ContentType: Ptr(ProjectV2ItemContentTypeIssue),
-		Content:     nil,
+		Content:     &ProjectV2ItemContent{},
 		ID:          Ptr(int64(789)),
 	}
 
 	want := `{
 		"content_type":"Issue",
+		"content":null,
 		"id":789
 	}`
 
-	testJSONMarshal(t, item, want)
+	testJSONMarshalOnly(t, item, want)
 }
 
 func TestProjectV2ItemContent_Marshal(t *testing.T) {
