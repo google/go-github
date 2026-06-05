@@ -1067,6 +1067,235 @@ func TestAdvisoryVulnerability_GetVulnerableVersionRange(tt *testing.T) {
 	a.GetVulnerableVersionRange()
 }
 
+func TestAICreditUsageItem_GetDiscountAmount(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetDiscountAmount()
+	a = nil
+	a.GetDiscountAmount()
+}
+
+func TestAICreditUsageItem_GetDiscountQuantity(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetDiscountQuantity()
+	a = nil
+	a.GetDiscountQuantity()
+}
+
+func TestAICreditUsageItem_GetGrossAmount(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetGrossAmount()
+	a = nil
+	a.GetGrossAmount()
+}
+
+func TestAICreditUsageItem_GetGrossQuantity(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetGrossQuantity()
+	a = nil
+	a.GetGrossQuantity()
+}
+
+func TestAICreditUsageItem_GetModel(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetModel()
+	a = nil
+	a.GetModel()
+}
+
+func TestAICreditUsageItem_GetNetAmount(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetNetAmount()
+	a = nil
+	a.GetNetAmount()
+}
+
+func TestAICreditUsageItem_GetNetQuantity(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetNetQuantity()
+	a = nil
+	a.GetNetQuantity()
+}
+
+func TestAICreditUsageItem_GetPricePerUnit(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetPricePerUnit()
+	a = nil
+	a.GetPricePerUnit()
+}
+
+func TestAICreditUsageItem_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetProduct()
+	a = nil
+	a.GetProduct()
+}
+
+func TestAICreditUsageItem_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetSKU()
+	a = nil
+	a.GetSKU()
+}
+
+func TestAICreditUsageItem_GetUnitType(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageItem{}
+	a.GetUnitType()
+	a = nil
+	a.GetUnitType()
+}
+
+func TestAICreditUsageReport_GetModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AICreditUsageReport{Model: &zeroValue}
+	a.GetModel()
+	a = &AICreditUsageReport{}
+	a.GetModel()
+	a = nil
+	a.GetModel()
+}
+
+func TestAICreditUsageReport_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AICreditUsageReport{Organization: &zeroValue}
+	a.GetOrganization()
+	a = &AICreditUsageReport{}
+	a.GetOrganization()
+	a = nil
+	a.GetOrganization()
+}
+
+func TestAICreditUsageReport_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AICreditUsageReport{Product: &zeroValue}
+	a.GetProduct()
+	a = &AICreditUsageReport{}
+	a.GetProduct()
+	a = nil
+	a.GetProduct()
+}
+
+func TestAICreditUsageReport_GetTimePeriod(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageReport{}
+	a.GetTimePeriod()
+	a = nil
+	a.GetTimePeriod()
+}
+
+func TestAICreditUsageReport_GetUsageItems(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AICreditUsageItem{}
+	a := &AICreditUsageReport{UsageItems: zeroValue}
+	a.GetUsageItems()
+	a = &AICreditUsageReport{}
+	a.GetUsageItems()
+	a = nil
+	a.GetUsageItems()
+}
+
+func TestAICreditUsageReport_GetUser(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AICreditUsageReport{User: &zeroValue}
+	a.GetUser()
+	a = &AICreditUsageReport{}
+	a.GetUser()
+	a = nil
+	a.GetUser()
+}
+
+func TestAICreditUsageReportOptions_GetDay(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageReportOptions{}
+	a.GetDay()
+	a = nil
+	a.GetDay()
+}
+
+func TestAICreditUsageReportOptions_GetModel(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageReportOptions{}
+	a.GetModel()
+	a = nil
+	a.GetModel()
+}
+
+func TestAICreditUsageReportOptions_GetMonth(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageReportOptions{}
+	a.GetMonth()
+	a = nil
+	a.GetMonth()
+}
+
+func TestAICreditUsageReportOptions_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageReportOptions{}
+	a.GetProduct()
+	a = nil
+	a.GetProduct()
+}
+
+func TestAICreditUsageReportOptions_GetUser(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageReportOptions{}
+	a.GetUser()
+	a = nil
+	a.GetUser()
+}
+
+func TestAICreditUsageReportOptions_GetYear(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageReportOptions{}
+	a.GetYear()
+	a = nil
+	a.GetYear()
+}
+
+func TestAICreditUsageTimePeriod_GetDay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AICreditUsageTimePeriod{Day: &zeroValue}
+	a.GetDay()
+	a = &AICreditUsageTimePeriod{}
+	a.GetDay()
+	a = nil
+	a.GetDay()
+}
+
+func TestAICreditUsageTimePeriod_GetMonth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AICreditUsageTimePeriod{Month: &zeroValue}
+	a.GetMonth()
+	a = &AICreditUsageTimePeriod{}
+	a.GetMonth()
+	a = nil
+	a.GetMonth()
+}
+
+func TestAICreditUsageTimePeriod_GetYear(tt *testing.T) {
+	tt.Parallel()
+	a := &AICreditUsageTimePeriod{}
+	a.GetYear()
+	a = nil
+	a.GetYear()
+}
+
 func TestAlert_GetClosedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
