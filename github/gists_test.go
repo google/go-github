@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -273,13 +272,8 @@ func TestGistsService_Create(t *testing.T) {
 	}
 
 	mux.HandleFunc("/gists", func(w http.ResponseWriter, r *http.Request) {
-		var v *Gist
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w,
 			`
@@ -335,13 +329,8 @@ func TestGistsService_Edit(t *testing.T) {
 	}
 
 	mux.HandleFunc("/gists/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *Gist
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w,
 			`

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -359,13 +358,8 @@ func TestPullRequestsService_Create(t *testing.T) {
 	input := &NewPullRequest{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
-		var v *NewPullRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"number":1}`)
 	})

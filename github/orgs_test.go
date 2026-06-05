@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -214,14 +213,9 @@ func TestOrganizationsService_Edit(t *testing.T) {
 	input := &Organization{Login: Ptr("l")}
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
-		var v *Organization
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testHeader(t, r, "Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})

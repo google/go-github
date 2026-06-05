@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -138,17 +137,15 @@ func TestRepositoriesService_UpdateRuleset_OmitZero_Nil(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := RepositoryRuleset{
+		Name:         "ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: nil,
+	}
+
 	mux.HandleFunc("/repos/o/repo/rulesets/42", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-
-		var v map[string]any
-		if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
-			t.Errorf("could not decode body: %v", err)
-		}
-
-		if _, ok := v["bypass_actors"]; ok {
-			t.Error("Request body contained 'bypass_actors', expected it to be omitted for nil input")
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{
 			"id": 42,
@@ -159,11 +156,6 @@ func TestRepositoriesService_UpdateRuleset_OmitZero_Nil(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	input := RepositoryRuleset{
-		Name:         "ruleset",
-		Enforcement:  RulesetEnforcementActive,
-		BypassActors: nil,
-	}
 
 	_, _, err := client.Repositories.UpdateRuleset(ctx, "o", "repo", 42, input)
 	if err != nil {
