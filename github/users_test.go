@@ -197,7 +197,7 @@ func TestUsersService_ListAll(t *testing.T) {
 	ctx := t.Context()
 	users, _, err := client.Users.ListAll(ctx, opt)
 	if err != nil {
-		t.Errorf("Users.Get returned error: %v", err)
+		t.Errorf("Users.ListAll returned error: %v", err)
 	}
 
 	want := []*User{{ID: Ptr(int64(2))}}

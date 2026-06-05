@@ -516,10 +516,10 @@ func TestOrganizationsService_CreateOrUpdateRepoCustomPropertyValues(t *testing.
 	ctx := t.Context()
 	_, err := client.Organizations.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", input.RepositoryNames, input.Properties)
 	if err != nil {
-		t.Errorf("Organizations.CreateOrUpdateCustomPropertyValuesForRepos returned error: %v", err)
+		t.Errorf("Organizations.CreateOrUpdateRepoCustomPropertyValues returned error: %v", err)
 	}
 
-	const methodName = "CreateOrUpdateCustomPropertyValuesForRepos"
+	const methodName = "CreateOrUpdateRepoCustomPropertyValues"
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Organizations.CreateOrUpdateRepoCustomPropertyValues(ctx, "o", nil, nil)

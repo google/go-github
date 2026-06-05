@@ -129,7 +129,7 @@ func TestCodespacesService_List(t *testing.T) {
 		},
 	}}
 	if !cmp.Equal(codespaces, want) {
-		t.Errorf("Codespaces.ListInRepo returned %+v, want %+v", codespaces, want)
+		t.Errorf("Codespaces.List returned %+v, want %+v", codespaces, want)
 	}
 
 	const methodName = "List"

@@ -664,10 +664,10 @@ func TestTeamsService_IsTeamRepoBySlug_false(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.IsTeamRepoByID returned status %v, want %v", got, want)
+		t.Errorf("Teams.IsTeamRepoBySlug returned status %v, want %v", got, want)
 	}
 	if repo != nil {
-		t.Errorf("Teams.IsTeamRepoByID returned %+v, want nil", repo)
+		t.Errorf("Teams.IsTeamRepoBySlug returned %+v, want nil", repo)
 	}
 }
 
@@ -1924,6 +1924,6 @@ func TestTeamsService_RemoveConnectedExternalGroup_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetExternalGroup returned status %v, want %v", got, want)
+		t.Errorf("Teams.RemoveConnectedExternalGroup returned status %v, want %v", got, want)
 	}
 }

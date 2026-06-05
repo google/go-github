@@ -114,7 +114,7 @@ func TestActionsService_GetOrganizationRunnerGroup(t *testing.T) {
 	ctx := t.Context()
 	group, _, err := client.Actions.GetOrganizationRunnerGroup(ctx, "o", 2)
 	if err != nil {
-		t.Errorf("Actions.ListOrganizationRunnerGroups returned error: %v", err)
+		t.Errorf("Actions.GetOrganizationRunnerGroup returned error: %v", err)
 	}
 
 	want := &RunnerGroup{

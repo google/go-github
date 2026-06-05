@@ -747,11 +747,11 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		ctx := t.Context()
 		asset, _, err := client.Repositories.UploadReleaseAsset(ctx, "o", "r", int64(key), test.uploadOpts, file)
 		if err != nil {
-			t.Errorf("Repositories.UploadReleaseAssert returned error: %v", err)
+			t.Errorf("Repositories.UploadReleaseAsset returned error: %v", err)
 		}
 		want := &ReleaseAsset{ID: Ptr(int64(1))}
 		if !cmp.Equal(asset, want) {
-			t.Errorf("Repositories.UploadReleaseAssert returned %+v, want %+v", asset, want)
+			t.Errorf("Repositories.UploadReleaseAsset returned %+v, want %+v", asset, want)
 		}
 
 		const methodName = "UploadReleaseAsset"

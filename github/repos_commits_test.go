@@ -546,11 +546,11 @@ func TestRepositoriesService_CompareCommitsRaw_diff(t *testing.T) {
 			ctx := t.Context()
 			got, _, err := client.Repositories.CompareCommitsRaw(ctx, "o", "r", base, head, RawOptions{Type: Diff})
 			if err != nil {
-				t.Fatalf("Repositories.GetCommitRaw returned error: %v", err)
+				t.Fatalf("Repositories.CompareCommitsRaw returned error: %v", err)
 			}
 			want := rawStr
 			if got != want {
-				t.Errorf("Repositories.GetCommitRaw returned %v want %v", got, want)
+				t.Errorf("Repositories.CompareCommitsRaw returned %v want %v", got, want)
 			}
 
 			const methodName = "CompareCommitsRaw"
@@ -604,11 +604,11 @@ func TestRepositoriesService_CompareCommitsRaw_patch(t *testing.T) {
 			ctx := t.Context()
 			got, _, err := client.Repositories.CompareCommitsRaw(ctx, "o", "r", base, head, RawOptions{Type: Patch})
 			if err != nil {
-				t.Fatalf("Repositories.GetCommitRaw returned error: %v", err)
+				t.Fatalf("Repositories.CompareCommitsRaw returned error: %v", err)
 			}
 			want := rawStr
 			if got != want {
-				t.Errorf("Repositories.GetCommitRaw returned %v want %v", got, want)
+				t.Errorf("Repositories.CompareCommitsRaw returned %v want %v", got, want)
 			}
 		})
 	}

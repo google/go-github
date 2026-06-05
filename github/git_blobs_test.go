@@ -39,7 +39,7 @@ func TestGitService_GetBlob(t *testing.T) {
 	}
 
 	if !cmp.Equal(*blob, want) {
-		t.Errorf("Blob.Get returned %+v, want %+v", *blob, want)
+		t.Errorf("Git.GetBlob returned %+v, want %+v", *blob, want)
 	}
 
 	const methodName = "GetBlob"

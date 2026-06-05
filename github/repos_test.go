@@ -30,7 +30,7 @@ func TestRepositoriesService_ListByAuthenticatedUser(t *testing.T) {
 	ctx := t.Context()
 	got, _, err := client.Repositories.ListByAuthenticatedUser(ctx, nil)
 	if err != nil {
-		t.Errorf("Repositories.List returned error: %v", err)
+		t.Errorf("Repositories.ListByAuthenticatedUser returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
@@ -71,7 +71,7 @@ func TestRepositoriesService_ListByUser(t *testing.T) {
 	ctx := t.Context()
 	repos, _, err := client.Repositories.ListByUser(ctx, "u", opt)
 	if err != nil {
-		t.Errorf("Repositories.List returned error: %v", err)
+		t.Errorf("Repositories.ListByUser returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Ptr(int64(1))}}
