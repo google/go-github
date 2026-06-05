@@ -116,6 +116,35 @@ type PremiumRequestUsageReportOptions struct {
 	Product *string `url:"product,omitempty"`
 }
 
+// AICreditUsageReportOptions specifies optional parameters
+// for the enhanced billing platform AI credit usage report.
+type AICreditUsageReportOptions struct {
+	// If specified, only return results for a single year.
+	// The value of year is an integer with four digits representing a year. For example, 2025.
+	// Default value is the current year.
+	Year int `url:"year,omitempty"`
+
+	// If specified, only return results for a single month.
+	// The value of month is an integer between 1 and 12. Default value is the current month.
+	// If no year is specified the default year is used.
+	Month int `url:"month,omitempty"`
+
+	// If specified, only return results for a single day.
+	// The value of day is an integer between 1 and 31.
+	// If no year or month is specified, the default year and month are used.
+	Day int `url:"day,omitempty"`
+
+	// The user name to query usage for. The name is not case-sensitive.
+	// This parameter is only supported for organization-level reports.
+	User string `url:"user,omitempty"`
+
+	// The model name to query usage for. The name is not case-sensitive.
+	Model string `url:"model,omitempty"`
+
+	// The product name to query usage for. The name is not case-sensitive.
+	Product string `url:"product,omitempty"`
+}
+
 // UsageItem represents a single usage item in the enhanced billing platform report.
 type UsageItem struct {
 	Date           string  `json:"date"`
@@ -169,6 +198,40 @@ type PremiumRequestUsageReport struct {
 	Product    *string                    `json:"product,omitempty"`
 	Model      *string                    `json:"model,omitempty"`
 	UsageItems []*PremiumRequestUsageItem `json:"usageItems"`
+}
+
+// AICreditUsageItem represents a single usage line item in AI credit usage reports.
+type AICreditUsageItem struct {
+	Product          string  `json:"product"`
+	SKU              string  `json:"sku"`
+	Model            string  `json:"model"`
+	UnitType         string  `json:"unitType"`
+	PricePerUnit     float64 `json:"pricePerUnit"`
+	GrossQuantity    float64 `json:"grossQuantity"`
+	GrossAmount      float64 `json:"grossAmount"`
+	DiscountQuantity float64 `json:"discountQuantity"`
+	DiscountAmount   float64 `json:"discountAmount"`
+	NetQuantity      float64 `json:"netQuantity"`
+	NetAmount        float64 `json:"netAmount"`
+}
+
+// AICreditUsageTimePeriod represents a time period for AI credit usage reports.
+type AICreditUsageTimePeriod struct {
+	Year  int  `json:"year"`
+	Month *int `json:"month,omitempty"`
+	Day   *int `json:"day,omitempty"`
+}
+
+// AICreditUsageReport represents the AI credit usage report response.
+type AICreditUsageReport struct {
+	TimePeriod AICreditUsageTimePeriod `json:"timePeriod"`
+	// Organization is only set for organization-level reports.
+	Organization *string `json:"organization,omitempty"`
+	// User is only set for user-level reports.
+	User       *string              `json:"user,omitempty"`
+	Product    *string              `json:"product,omitempty"`
+	Model      *string              `json:"model,omitempty"`
+	UsageItems []*AICreditUsageItem `json:"usageItems"`
 }
 
 // GetOrganizationPackagesBilling returns the free and paid storage used for GitHub Packages in gigabytes for an Org.
@@ -391,4 +454,62 @@ func (s *BillingService) GetPremiumRequestUsageReport(ctx context.Context, user 
 	}
 
 	return premiumRequestUsageReport, resp, nil
+}
+
+// GetOrganizationAICreditUsageReport returns a report of the AI credit
+// usage for an organization using the enhanced billing platform.
+//
+// Note: Only data from the past 24 months is accessible via this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/billing/usage?apiVersion=2022-11-28#get-billing-ai-credit-usage-report-for-an-organization
+//
+//meta:operation GET /organizations/{org}/settings/billing/ai_credit/usage
+func (s *BillingService) GetOrganizationAICreditUsageReport(ctx context.Context, org string, opts *AICreditUsageReportOptions) (*AICreditUsageReport, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/settings/billing/ai_credit/usage", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var aiCreditUsageReport *AICreditUsageReport
+	resp, err := s.client.Do(req, &aiCreditUsageReport)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return aiCreditUsageReport, resp, nil
+}
+
+// GetAICreditUsageReport returns a report of the AI credit
+// usage for a user using the enhanced billing platform.
+//
+// Note: Only data from the past 24 months is accessible via this endpoint.
+//
+// GitHub API docs: https://docs.github.com/rest/billing/usage?apiVersion=2022-11-28#get-billing-ai-credit-usage-report-for-a-user
+//
+//meta:operation GET /users/{username}/settings/billing/ai_credit/usage
+func (s *BillingService) GetAICreditUsageReport(ctx context.Context, user string, opts *AICreditUsageReportOptions) (*AICreditUsageReport, *Response, error) {
+	u := fmt.Sprintf("users/%v/settings/billing/ai_credit/usage", user)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var aiCreditUsageReport *AICreditUsageReport
+	resp, err := s.client.Do(req, &aiCreditUsageReport)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return aiCreditUsageReport, resp, nil
 }
