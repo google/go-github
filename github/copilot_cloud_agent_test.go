@@ -237,3 +237,70 @@ func TestCopilotService_GetCloudAgentConfiguration_MalformedJSON(t *testing.T) {
 		t.Errorf("GetCloudAgentConfiguration should return nil on error, got %+v", config)
 	}
 }
+
+func TestCopilotService_UpdateCloudAgentConfiguration(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &CopilotCloudAgentConfiguration{
+		MCPConfiguration: map[string]any{
+			"type": "resource",
+			"uri":  "stdio://server",
+		},
+		EnabledTools: &CopilotCloudAgentEnabledTools{
+			Codeql:            true,
+			CopilotCodeReview: true,
+		},
+		RequireActionsWorkflowApproval:        true,
+		IsFirewallEnabled:                     true,
+		IsFirewallRecommendedAllowlistEnabled: true,
+		CustomAllowlist:                       []string{"example.com"},
+	}
+
+	mux.HandleFunc("/repos/o/r/copilot/cloud-agent/configuration", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{
+			"mcp_configuration": {
+				"type": "resource",
+				"uri": "stdio://server"
+			},
+			"enabled_tools": {
+				"codeql": true,
+				"copilot_code_review": true,
+				"secret_scanning": false,
+				"dependency_vulnerability_checks": false
+			},
+			"require_actions_workflow_approval": true,
+			"is_firewall_enabled": true,
+			"is_firewall_recommended_allowlist_enabled": true,
+			"custom_allowlist": ["example.com"]
+		}`)
+	})
+
+	ctx := t.Context()
+	config, _, err := client.Copilot.UpdateCloudAgentConfiguration(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("UpdateCloudAgentConfiguration returned error: %v", err)
+	}
+
+	want := &CopilotCloudAgentConfiguration{
+		MCPConfiguration: map[string]any{
+			"type": "resource",
+			"uri":  "stdio://server",
+		},
+		EnabledTools: &CopilotCloudAgentEnabledTools{
+			Codeql:            true,
+			CopilotCodeReview: true,
+		},
+		RequireActionsWorkflowApproval:        true,
+		IsFirewallEnabled:                     true,
+		IsFirewallRecommendedAllowlistEnabled: true,
+		CustomAllowlist:                       []string{"example.com"},
+	}
+
+	if !cmp.Equal(config, want) {
+		t.Errorf("UpdateCloudAgentConfiguration returned %+v, want %+v", config, want)
+	}
+}
+

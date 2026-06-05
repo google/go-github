@@ -49,3 +49,26 @@ func (s *CopilotService) GetCloudAgentConfiguration(ctx context.Context, owner, 
 
 	return config, resp, nil
 }
+
+// UpdateCloudAgentConfiguration updates the Copilot cloud agent configuration for a repository.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-cloud-agent-management?apiVersion=2022-11-28#update-copilot-cloud-agent-configuration-for-a-repository
+//
+//meta:operation PATCH /repos/{owner}/{repo}/copilot/cloud-agent/configuration
+func (s *CopilotService) UpdateCloudAgentConfiguration(ctx context.Context, owner, repo string, opts *CopilotCloudAgentConfiguration) (*CopilotCloudAgentConfiguration, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/copilot/cloud-agent/configuration", owner, repo)
+
+	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var config *CopilotCloudAgentConfiguration
+	resp, err := s.client.Do(req, &config)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return config, resp, nil
+}
+
