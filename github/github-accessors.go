@@ -32550,6 +32550,14 @@ func (r *Repository) GetHasProjects() bool {
 	return *r.HasProjects
 }
 
+// GetHasPullRequests returns the HasPullRequests field if it's non-nil, zero value otherwise.
+func (r *Repository) GetHasPullRequests() bool {
+	if r == nil || r.HasPullRequests == nil {
+		return false
+	}
+	return *r.HasPullRequests
+}
+
 // GetHasWiki returns the HasWiki field if it's non-nil, zero value otherwise.
 func (r *Repository) GetHasWiki() bool {
 	if r == nil || r.HasWiki == nil {
@@ -32804,6 +32812,14 @@ func (r *Repository) GetPrivate() bool {
 		return false
 	}
 	return *r.Private
+}
+
+// GetPullRequestCreationPolicy returns the PullRequestCreationPolicy field if it's non-nil, zero value otherwise.
+func (r *Repository) GetPullRequestCreationPolicy() string {
+	if r == nil || r.PullRequestCreationPolicy == nil {
+		return ""
+	}
+	return *r.PullRequestCreationPolicy
 }
 
 // GetPullsURL returns the PullsURL field if it's non-nil, zero value otherwise.

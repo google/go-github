@@ -41047,6 +41047,17 @@ func TestRepository_GetHasProjects(tt *testing.T) {
 	r.GetHasProjects()
 }
 
+func TestRepository_GetHasPullRequests(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &Repository{HasPullRequests: &zeroValue}
+	r.GetHasPullRequests()
+	r = &Repository{}
+	r.GetHasPullRequests()
+	r = nil
+	r.GetHasPullRequests()
+}
+
 func TestRepository_GetHasWiki(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -41382,6 +41393,17 @@ func TestRepository_GetPrivate(tt *testing.T) {
 	r.GetPrivate()
 	r = nil
 	r.GetPrivate()
+}
+
+func TestRepository_GetPullRequestCreationPolicy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &Repository{PullRequestCreationPolicy: &zeroValue}
+	r.GetPullRequestCreationPolicy()
+	r = &Repository{}
+	r.GetPullRequestCreationPolicy()
+	r = nil
+	r.GetPullRequestCreationPolicy()
 }
 
 func TestRepository_GetPullsURL(tt *testing.T) {
