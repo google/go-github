@@ -392,3 +392,29 @@ func (s *BillingService) GetPremiumRequestUsageReport(ctx context.Context, user 
 
 	return premiumRequestUsageReport, resp, nil
 }
+
+// GetAICreditUsage returns a report of the AI credit usage for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/billing/usage?apiVersion=2022-11-28#get-billing-ai-credit-usage-report-for-an-organization
+//
+//meta:operation GET /organizations/{org}/settings/billing/ai_credit/usage
+func (s *BillingService) GetAICreditUsage(ctx context.Context, org string, opts *PremiumRequestUsageReportOptions) (*PremiumRequestUsageReport, *Response, error) {
+	u := fmt.Sprintf("organizations/%v/settings/billing/ai_credit/usage", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var aiCreditUsage *PremiumRequestUsageReport
+	resp, err := s.client.Do(req, &aiCreditUsage)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return aiCreditUsage, resp, nil
+}
