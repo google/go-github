@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestTeamsService__ListTeamMembersByID(t *testing.T) {
+func TestTeamsService_ListTeamMembersByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -50,7 +50,7 @@ func TestTeamsService__ListTeamMembersByID(t *testing.T) {
 	})
 }
 
-func TestTeamsService__ListTeamMembersByID_notFound(t *testing.T) {
+func TestTeamsService_ListTeamMembersByID_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -88,7 +88,7 @@ func TestTeamsService__ListTeamMembersByID_notFound(t *testing.T) {
 	})
 }
 
-func TestTeamsService__ListTeamMembersBySlug(t *testing.T) {
+func TestTeamsService_ListTeamMembersBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -125,7 +125,7 @@ func TestTeamsService__ListTeamMembersBySlug(t *testing.T) {
 	})
 }
 
-func TestTeamsService__ListTeamMembersBySlug_notFound(t *testing.T) {
+func TestTeamsService_ListTeamMembersBySlug_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -163,7 +163,7 @@ func TestTeamsService__ListTeamMembersBySlug_notFound(t *testing.T) {
 	})
 }
 
-func TestTeamsService__ListTeamMembersBySlug_invalidOrg(t *testing.T) {
+func TestTeamsService_ListTeamMembersBySlug_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
@@ -172,7 +172,7 @@ func TestTeamsService__ListTeamMembersBySlug_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestTeamsService__GetTeamMembershipByID(t *testing.T) {
+func TestTeamsService_GetTeamMembershipByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -207,7 +207,7 @@ func TestTeamsService__GetTeamMembershipByID(t *testing.T) {
 	})
 }
 
-func TestTeamsService__GetTeamMembershipByID_notFound(t *testing.T) {
+func TestTeamsService_GetTeamMembershipByID_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -243,7 +243,7 @@ func TestTeamsService__GetTeamMembershipByID_notFound(t *testing.T) {
 	})
 }
 
-func TestTeamsService__GetTeamMembershipBySlug(t *testing.T) {
+func TestTeamsService_GetTeamMembershipBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -278,7 +278,7 @@ func TestTeamsService__GetTeamMembershipBySlug(t *testing.T) {
 	})
 }
 
-func TestTeamsService__GetTeamMembershipBySlug_notFound(t *testing.T) {
+func TestTeamsService_GetTeamMembershipBySlug_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -314,7 +314,7 @@ func TestTeamsService__GetTeamMembershipBySlug_notFound(t *testing.T) {
 	})
 }
 
-func TestTeamsService__GetTeamMembershipBySlug_invalidOrg(t *testing.T) {
+func TestTeamsService_GetTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
@@ -323,7 +323,7 @@ func TestTeamsService__GetTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
+func TestTeamsService_AddTeamMembershipByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -361,7 +361,7 @@ func TestTeamsService__AddTeamMembershipByID(t *testing.T) {
 	})
 }
 
-func TestTeamsService__AddTeamMembershipByID_notFound(t *testing.T) {
+func TestTeamsService_AddTeamMembershipByID_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -400,7 +400,7 @@ func TestTeamsService__AddTeamMembershipByID_notFound(t *testing.T) {
 	})
 }
 
-func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
+func TestTeamsService_AddTeamMembershipBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -438,7 +438,7 @@ func TestTeamsService__AddTeamMembershipBySlug(t *testing.T) {
 	})
 }
 
-func TestTeamsService__AddTeamMembershipBySlug_notFound(t *testing.T) {
+func TestTeamsService_AddTeamMembershipBySlug_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -477,7 +477,7 @@ func TestTeamsService__AddTeamMembershipBySlug_notFound(t *testing.T) {
 	})
 }
 
-func TestTeamsService__AddTeamMembershipBySlug_invalidOrg(t *testing.T) {
+func TestTeamsService_AddTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
@@ -486,7 +486,7 @@ func TestTeamsService__AddTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestTeamsService__RemoveTeamMembershipByID(t *testing.T) {
+func TestTeamsService_RemoveTeamMembershipByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -512,7 +512,7 @@ func TestTeamsService__RemoveTeamMembershipByID(t *testing.T) {
 	})
 }
 
-func TestTeamsService__RemoveTeamMembershipByID_notFound(t *testing.T) {
+func TestTeamsService_RemoveTeamMembershipByID_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -541,7 +541,7 @@ func TestTeamsService__RemoveTeamMembershipByID_notFound(t *testing.T) {
 	})
 }
 
-func TestTeamsService__RemoveTeamMembershipBySlug(t *testing.T) {
+func TestTeamsService_RemoveTeamMembershipBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -567,7 +567,7 @@ func TestTeamsService__RemoveTeamMembershipBySlug(t *testing.T) {
 	})
 }
 
-func TestTeamsService__RemoveTeamMembershipBySlug_notFound(t *testing.T) {
+func TestTeamsService_RemoveTeamMembershipBySlug_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -596,7 +596,7 @@ func TestTeamsService__RemoveTeamMembershipBySlug_notFound(t *testing.T) {
 	})
 }
 
-func TestTeamsService__RemoveTeamMembershipBySlug_invalidOrg(t *testing.T) {
+func TestTeamsService_RemoveTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
@@ -605,7 +605,7 @@ func TestTeamsService__RemoveTeamMembershipBySlug_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestTeamsService__ListPendingTeamInvitationsByID(t *testing.T) {
+func TestTeamsService_ListPendingTeamInvitationsByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -642,7 +642,7 @@ func TestTeamsService__ListPendingTeamInvitationsByID(t *testing.T) {
 	})
 }
 
-func TestTeamsService__ListPendingTeamInvitationsByID_notFound(t *testing.T) {
+func TestTeamsService_ListPendingTeamInvitationsByID_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -680,7 +680,7 @@ func TestTeamsService__ListPendingTeamInvitationsByID_notFound(t *testing.T) {
 	})
 }
 
-func TestTeamsService__ListPendingTeamInvitationsBySlug(t *testing.T) {
+func TestTeamsService_ListPendingTeamInvitationsBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -717,7 +717,7 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug(t *testing.T) {
 	})
 }
 
-func TestTeamsService__ListPendingTeamInvitationsBySlug_notFound(t *testing.T) {
+func TestTeamsService_ListPendingTeamInvitationsBySlug_notFound(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -755,7 +755,7 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug_notFound(t *testing.T) {
 	})
 }
 
-func TestTeamsService__ListPendingTeamInvitationsBySlug_invalidOrg(t *testing.T) {
+func TestTeamsService_ListPendingTeamInvitationsBySlug_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
