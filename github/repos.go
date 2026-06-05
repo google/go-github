@@ -85,16 +85,18 @@ type Repository struct {
 	License *License `json:"license,omitempty"`
 
 	// Additional mutable fields when creating and editing a repository
-	Private           *bool   `json:"private,omitempty"`
-	HasIssues         *bool   `json:"has_issues,omitempty"`
-	HasWiki           *bool   `json:"has_wiki,omitempty"`
-	HasPages          *bool   `json:"has_pages,omitempty"`
-	HasProjects       *bool   `json:"has_projects,omitempty"`
-	HasDownloads      *bool   `json:"has_downloads,omitempty"`
-	HasDiscussions    *bool   `json:"has_discussions,omitempty"`
-	IsTemplate        *bool   `json:"is_template,omitempty"`
-	LicenseTemplate   *string `json:"license_template,omitempty"`
-	GitignoreTemplate *string `json:"gitignore_template,omitempty"`
+	Private                   *bool   `json:"private,omitempty"`
+	HasIssues                 *bool   `json:"has_issues,omitempty"`
+	HasWiki                   *bool   `json:"has_wiki,omitempty"`
+	HasPages                  *bool   `json:"has_pages,omitempty"`
+	HasProjects               *bool   `json:"has_projects,omitempty"`
+	HasDownloads              *bool   `json:"has_downloads,omitempty"`
+	HasDiscussions            *bool   `json:"has_discussions,omitempty"`
+	HasPullRequests           *bool   `json:"has_pull_requests,omitempty"`
+	PullRequestCreationPolicy *string `json:"pull_request_creation_policy,omitempty"` // Can be one of: "all", "collaborators_only"
+	IsTemplate                *bool   `json:"is_template,omitempty"`
+	LicenseTemplate           *string `json:"license_template,omitempty"`
+	GitignoreTemplate         *string `json:"gitignore_template,omitempty"`
 
 	// Options for configuring Advanced Security and Secret Scanning
 	SecurityAndAnalysis *SecurityAndAnalysis `json:"security_and_analysis,omitempty"`
