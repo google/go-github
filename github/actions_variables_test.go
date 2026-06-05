@@ -221,7 +221,7 @@ func TestActionsService_DeleteRepoVariable(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Actions.DeleteRepoVariable(ctx, "o", "r", "NAME")
 	if err != nil {
-		t.Errorf("Actions.( returned error: %v", err)
+		t.Errorf("Actions.DeleteRepoVariable returned error: %v", err)
 	}
 
 	const methodName = "DeleteRepoVariable"
@@ -408,7 +408,7 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 	ctx := t.Context()
 	repos, _, err := client.Actions.ListSelectedReposForOrgVariable(ctx, "o", "NAME", opts)
 	if err != nil {
-		t.Errorf("Actions.( returned error: %v", err)
+		t.Errorf("Actions.ListSelectedReposForOrgVariable returned error: %v", err)
 	}
 
 	want := &SelectedReposList{
@@ -418,7 +418,7 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(repos, want) {
-		t.Errorf("Actions.( returned %+v, want %+v", repos, want)
+		t.Errorf("Actions.ListSelectedReposForOrgVariable returned %+v, want %+v", repos, want)
 	}
 
 	const methodName = "ListSelectedReposForOrgVariable"
@@ -436,7 +436,7 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 	})
 }
 
-func TestActionsService_SetSelectedReposForOrgSVariable(t *testing.T) {
+func TestActionsService_SetSelectedReposForOrgVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -455,7 +455,7 @@ func TestActionsService_SetSelectedReposForOrgSVariable(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Actions.SetSelectedReposForOrgVariable(ctx, "o", "NAME", input)
 	if err != nil {
-		t.Errorf("Actions.( returned error: %v", err)
+		t.Errorf("Actions.SetSelectedReposForOrgVariable returned error: %v", err)
 	}
 
 	const methodName = "SetSelectedReposForOrgVariable"

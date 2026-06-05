@@ -27,7 +27,7 @@ func TestGistsService_ListComments(t *testing.T) {
 	ctx := t.Context()
 	comments, _, err := client.Gists.ListComments(ctx, "1", opt)
 	if err != nil {
-		t.Errorf("Gists.Comments returned error: %v", err)
+		t.Errorf("Gists.ListComments returned error: %v", err)
 	}
 
 	want := []*GistComment{{ID: Ptr(int64(1))}}
@@ -208,7 +208,7 @@ func TestGistsService_DeleteComment(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Gists.DeleteComment(ctx, "1", 2)
 	if err != nil {
-		t.Errorf("Gists.Delete returned error: %v", err)
+		t.Errorf("Gists.DeleteComment returned error: %v", err)
 	}
 
 	const methodName = "DeleteComment"

@@ -93,7 +93,7 @@ func TestAppsService_ListInstallationRequests(t *testing.T) {
 	ctx := t.Context()
 	installationRequests, _, err := client.Apps.ListInstallationRequests(ctx, opt)
 	if err != nil {
-		t.Errorf("Apps.ListInstallations returned error: %v", err)
+		t.Errorf("Apps.ListInstallationRequests returned error: %v", err)
 	}
 
 	date := Timestamp{Time: time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}

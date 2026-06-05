@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -232,10 +231,9 @@ Commit Message.`
 		Author:    &author,
 		Signature: &signature,
 	}
-	var gotBody *createCommit
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&gotBody))
 		testMethod(t, r, "POST")
+		testJSONBody(t, r, wantBody)
 		fmt.Fprintf(w, `{"sha":"%v"}`, sha)
 	})
 	ctx := t.Context()
@@ -243,9 +241,6 @@ Commit Message.`
 	opts := CreateCommitOptions{Signer: mockSigner(t, signature, nil, wantMessage)}
 	commit, _, err := client.Git.CreateCommit(ctx, "o", "r", input, &opts)
 	assertNilError(t, err)
-	if cmp.Diff(gotBody, wantBody) != "" {
-		t.Errorf("Request body = %+v, want %+v\n%v", gotBody, wantBody, cmp.Diff(gotBody, wantBody))
-	}
 	if cmp.Diff(commit, wantCommit) != "" {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v\n%v", commit, wantCommit, cmp.Diff(commit, wantCommit))
 	}

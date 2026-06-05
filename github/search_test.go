@@ -126,7 +126,7 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 	ctx := t.Context()
 	result, _, err := client.Search.Repositories(ctx, "blah", opts)
 	if err != nil {
-		t.Errorf("Search.Code returned error: %v", err)
+		t.Errorf("Search.Repositories returned error: %v", err)
 	}
 
 	wantedRepoResult := &Repository{
@@ -443,7 +443,7 @@ func TestSearchService_Users(t *testing.T) {
 	ctx := t.Context()
 	result, _, err := client.Search.Users(ctx, "blah", opts)
 	if err != nil {
-		t.Errorf("Search.Issues returned error: %v", err)
+		t.Errorf("Search.Users returned error: %v", err)
 	}
 
 	want := &UsersSearchResult{
@@ -617,7 +617,7 @@ func TestSearchService_Labels(t *testing.T) {
 	ctx := t.Context()
 	result, _, err := client.Search.Labels(ctx, 1234, "blah", opts)
 	if err != nil {
-		t.Errorf("Search.Code returned error: %v", err)
+		t.Errorf("Search.Labels returned error: %v", err)
 	}
 
 	want := &LabelsSearchResult{

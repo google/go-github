@@ -29,7 +29,7 @@ func TestRepositoriesService_ListPreReceiveHooks(t *testing.T) {
 	ctx := t.Context()
 	hooks, _, err := client.Repositories.ListPreReceiveHooks(ctx, "o", "r", opt)
 	if err != nil {
-		t.Errorf("Repositories.ListHooks returned error: %v", err)
+		t.Errorf("Repositories.ListPreReceiveHooks returned error: %v", err)
 	}
 
 	want := []*PreReceiveHook{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}

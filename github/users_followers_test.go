@@ -361,7 +361,7 @@ func TestUsersService_Unfollow(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Users.Unfollow(ctx, "u")
 	if err != nil {
-		t.Errorf("Users.Follow returned error: %v", err)
+		t.Errorf("Users.Unfollow returned error: %v", err)
 	}
 
 	const methodName = "Unfollow"

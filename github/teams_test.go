@@ -6,10 +6,7 @@
 package github
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"testing"
 
@@ -275,21 +272,10 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := NewTeam{Name: "n", NotificationSetting: Ptr("notifications_enabled"), Privacy: Ptr("closed")}
-	var body string
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			t.Errorf("Unable to read body: %v", err)
-		}
-		body = string(buf)
-		var v *NewTeam
-		assertNilError(t, json.NewDecoder(bytes.NewBuffer(buf)).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -303,10 +289,6 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 	want := &Team{ID: Ptr(int64(1))}
 	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
-	}
-
-	if want := `{"name":"n","parent_team_id":null,"notification_setting":"notifications_enabled","privacy":"closed"}` + "\n"; body != want {
-		t.Errorf("Teams.EditTeamByID body = %+v, want %+v", body, want)
 	}
 }
 
@@ -353,21 +335,10 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := NewTeam{Name: "n", NotificationSetting: Ptr("notifications_disabled"), Privacy: Ptr("closed")}
-	var body string
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			t.Errorf("Unable to read body: %v", err)
-		}
-		body = string(buf)
-		var v *NewTeam
-		assertNilError(t, json.NewDecoder(bytes.NewBuffer(buf)).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -375,16 +346,12 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 	ctx := t.Context()
 	team, _, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, true)
 	if err != nil {
-		t.Errorf("Teams.EditTeam returned error: %v", err)
+		t.Errorf("Teams.EditTeamBySlug returned error: %v", err)
 	}
 
 	want := &Team{ID: Ptr(int64(1))}
 	if !cmp.Equal(team, want) {
-		t.Errorf("Teams.EditTeam returned %+v, want %+v", team, want)
-	}
-
-	if want := `{"name":"n","parent_team_id":null,"notification_setting":"notifications_disabled","privacy":"closed"}` + "\n"; body != want {
-		t.Errorf("Teams.EditTeam body = %+v, want %+v", body, want)
+		t.Errorf("Teams.EditTeamBySlug returned %+v, want %+v", team, want)
 	}
 }
 
@@ -697,10 +664,10 @@ func TestTeamsService_IsTeamRepoBySlug_false(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.IsTeamRepoByID returned status %v, want %v", got, want)
+		t.Errorf("Teams.IsTeamRepoBySlug returned status %v, want %v", got, want)
 	}
 	if repo != nil {
-		t.Errorf("Teams.IsTeamRepoByID returned %+v, want nil", repo)
+		t.Errorf("Teams.IsTeamRepoBySlug returned %+v, want nil", repo)
 	}
 }
 
@@ -1957,6 +1924,6 @@ func TestTeamsService_RemoveConnectedExternalGroup_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetExternalGroup returned status %v, want %v", got, want)
+		t.Errorf("Teams.RemoveConnectedExternalGroup returned status %v, want %v", got, want)
 	}
 }

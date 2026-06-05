@@ -24,7 +24,7 @@ const (
 `
 )
 
-func TestGetConfig(t *testing.T) {
+func TestAppsService_CompleteAppManifest(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -36,7 +36,7 @@ func TestGetConfig(t *testing.T) {
 	ctx := t.Context()
 	cfg, _, err := client.Apps.CompleteAppManifest(ctx, "code")
 	if err != nil {
-		t.Errorf("AppManifest.GetConfig returned error: %v", err)
+		t.Errorf("Apps.CompleteAppManifest returned error: %v", err)
 	}
 
 	want := &AppConfig{
@@ -48,7 +48,7 @@ func TestGetConfig(t *testing.T) {
 	}
 
 	if !cmp.Equal(cfg, want) {
-		t.Errorf("GetConfig returned %+v, want %+v", cfg, want)
+		t.Errorf("Apps.CompleteAppManifest returned %+v, want %+v", cfg, want)
 	}
 
 	const methodName = "CompleteAppManifest"

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -228,12 +227,12 @@ func TestGistsService_GetRevision(t *testing.T) {
 	ctx := t.Context()
 	gist, _, err := client.Gists.GetRevision(ctx, "1", "s")
 	if err != nil {
-		t.Errorf("Gists.Get returned error: %v", err)
+		t.Errorf("Gists.GetRevision returned error: %v", err)
 	}
 
 	want := &Gist{ID: Ptr("1")}
 	if !cmp.Equal(gist, want) {
-		t.Errorf("Gists.Get returned %+v, want %+v", gist, want)
+		t.Errorf("Gists.GetRevision returned %+v, want %+v", gist, want)
 	}
 
 	const methodName = "GetRevision"
@@ -273,13 +272,8 @@ func TestGistsService_Create(t *testing.T) {
 	}
 
 	mux.HandleFunc("/gists", func(w http.ResponseWriter, r *http.Request) {
-		var v *Gist
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w,
 			`
@@ -335,13 +329,8 @@ func TestGistsService_Edit(t *testing.T) {
 	}
 
 	mux.HandleFunc("/gists/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *Gist
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w,
 			`
@@ -622,10 +611,10 @@ func TestGistsService_IsStarred_hasStar(t *testing.T) {
 	ctx := t.Context()
 	star, _, err := client.Gists.IsStarred(ctx, "1")
 	if err != nil {
-		t.Errorf("Gists.Starred returned error: %v", err)
+		t.Errorf("Gists.IsStarred returned error: %v", err)
 	}
 	if want := true; star != want {
-		t.Errorf("Gists.Starred returned %+v, want %+v", star, want)
+		t.Errorf("Gists.IsStarred returned %+v, want %+v", star, want)
 	}
 
 	const methodName = "IsStarred"
@@ -655,10 +644,10 @@ func TestGistsService_IsStarred_noStar(t *testing.T) {
 	ctx := t.Context()
 	star, _, err := client.Gists.IsStarred(ctx, "1")
 	if err != nil {
-		t.Errorf("Gists.Starred returned error: %v", err)
+		t.Errorf("Gists.IsStarred returned error: %v", err)
 	}
 	if want := false; star != want {
-		t.Errorf("Gists.Starred returned %+v, want %+v", star, want)
+		t.Errorf("Gists.IsStarred returned %+v, want %+v", star, want)
 	}
 
 	const methodName = "IsStarred"
