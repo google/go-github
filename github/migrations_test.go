@@ -107,7 +107,7 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 	ctx := t.Context()
 	got, _, err := client.Migrations.MigrationStatus(ctx, "o", 1)
 	if err != nil {
-		t.Errorf("MigrationStatus returned error: %v", err)
+		t.Errorf("Migrations.MigrationStatus returned error: %v", err)
 	}
 	if want := wantMigration; !cmp.Equal(got, want) {
 		t.Errorf("MigrationStatus = %+v, want %+v", got, want)
@@ -148,7 +148,7 @@ func TestMigrationService_MigrationArchiveURL_Redirect(t *testing.T) {
 	ctx := t.Context()
 	got, err := client.Migrations.MigrationArchiveURL(ctx, "o", 1)
 	if err != nil {
-		t.Errorf("MigrationStatus returned error: %v", err)
+		t.Errorf("Migrations.MigrationArchiveURL returned error: %v", err)
 	}
 	if want := "/yo"; !strings.HasSuffix(got, want) {
 		t.Errorf("MigrationArchiveURL = %+v, want %+v", got, want)

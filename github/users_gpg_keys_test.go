@@ -143,7 +143,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 	ctx := t.Context()
 	gpgKey, _, err := client.Users.CreateGPGKey(ctx, input)
 	if err != nil {
-		t.Errorf("Users.GetGPGKey returned error: %v", err)
+		t.Errorf("Users.CreateGPGKey returned error: %v", err)
 	}
 
 	want := &GPGKey{ID: Ptr(int64(1))}

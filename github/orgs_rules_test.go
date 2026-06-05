@@ -1242,7 +1242,7 @@ func TestOrganizationsService_GetRepositoryRuleset(t *testing.T) {
 	ctx := t.Context()
 	rulesets, _, err := client.Organizations.GetRepositoryRuleset(ctx, "o", 21)
 	if err != nil {
-		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned error: %v", err)
+		t.Errorf("Organizations.GetRepositoryRuleset returned error: %v", err)
 	}
 
 	want := &RepositoryRuleset{
@@ -1329,7 +1329,7 @@ func TestOrganizationsService_GetRepositoryRulesetWithRepoPropCondition(t *testi
 	ctx := t.Context()
 	rulesets, _, err := client.Organizations.GetRepositoryRuleset(ctx, "o", 21)
 	if err != nil {
-		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned error: %v", err)
+		t.Errorf("Organizations.GetRepositoryRuleset returned error: %v", err)
 	}
 
 	want := &RepositoryRuleset{

@@ -118,12 +118,12 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 	ctx := t.Context()
 	key, _, err := client.Repositories.CreateKey(ctx, "o", "r", input)
 	if err != nil {
-		t.Errorf("Repositories.GetKey returned error: %v", err)
+		t.Errorf("Repositories.CreateKey returned error: %v", err)
 	}
 
 	want := &Key{ID: Ptr(int64(1))}
 	if !cmp.Equal(key, want) {
-		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
+		t.Errorf("Repositories.CreateKey returned %+v, want %+v", key, want)
 	}
 
 	const methodName = "CreateKey"

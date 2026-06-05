@@ -42,7 +42,7 @@ func TestGitService_GetTree(t *testing.T) {
 		Truncated: Ptr(true),
 	}
 	if !cmp.Equal(*tree, want) {
-		t.Errorf("Tree.Get returned %+v, want %+v", *tree, want)
+		t.Errorf("Git.GetTree returned %+v, want %+v", *tree, want)
 	}
 
 	const methodName = "GetTree"

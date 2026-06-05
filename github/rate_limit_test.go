@@ -61,7 +61,7 @@ func TestRateLimits(t *testing.T) {
 	ctx := t.Context()
 	rate, _, err := client.RateLimit.Get(ctx)
 	if err != nil {
-		t.Errorf("RateLimits returned error: %v", err)
+		t.Errorf("RateLimit.Get returned error: %v", err)
 	}
 
 	want := &RateLimits{
@@ -245,7 +245,7 @@ func TestRateLimits_overQuota(t *testing.T) {
 	ctx := t.Context()
 	rate, _, err := client.RateLimit.Get(ctx)
 	if err != nil {
-		t.Errorf("RateLimits returned error: %v", err)
+		t.Errorf("RateLimit.Get returned error: %v", err)
 	}
 
 	want := &RateLimits{
@@ -418,7 +418,7 @@ func TestRateLimits_bypassRateLimitCheckContext(t *testing.T) {
 
 			_, resp, err := client.RateLimit.Get(t.Context())
 			if err != nil {
-				t.Errorf("RateLimits returned error: %v", err)
+				t.Errorf("RateLimit.Get returned error: %v", err)
 			}
 
 			if got, want := resp.Request.Context().Value(BypassRateLimitCheck), tt.wantBypassValue; got != want {

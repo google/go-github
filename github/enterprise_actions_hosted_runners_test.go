@@ -452,7 +452,7 @@ func TestEnterpriseService_GetHostedRunnerLimits(t *testing.T) {
 	ctx := t.Context()
 	publicIPLimits, _, err := client.Enterprise.GetHostedRunnerLimits(ctx, "o")
 	if err != nil {
-		t.Errorf("Enterprise.GetPartnerImages returned error: %v", err)
+		t.Errorf("Enterprise.GetHostedRunnerLimits returned error: %v", err)
 	}
 
 	want := &HostedRunnerPublicIPLimits{
@@ -807,7 +807,7 @@ func TestEnterpriseService_DeleteHostedRunner(t *testing.T) {
 	ctx := t.Context()
 	hostedRunner, _, err := client.Enterprise.DeleteHostedRunner(ctx, "o", 23)
 	if err != nil {
-		t.Errorf("Enterprise.GetHostedRunner returned error: %v", err)
+		t.Errorf("Enterprise.DeleteHostedRunner returned error: %v", err)
 	}
 
 	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}

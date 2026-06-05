@@ -65,7 +65,7 @@ func TestActionsService_GetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 
 	want := &OIDCSubjectClaimCustomTemplate{UseDefault: Ptr(false), IncludeClaimKeys: []string{"repo", "context"}}
 	if !cmp.Equal(template, want) {
-		t.Errorf("Actions.GetOrgOIDCSubjectClaimCustomTemplate returned %+v, want %+v", template, want)
+		t.Errorf("Actions.GetRepoOIDCSubjectClaimCustomTemplate returned %+v, want %+v", template, want)
 	}
 
 	const methodName = "GetRepoOIDCSubjectClaimCustomTemplate"
@@ -150,7 +150,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	})
 }
 
-func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing.T) {
+func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 

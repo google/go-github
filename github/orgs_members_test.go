@@ -673,7 +673,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 
 	want := &Invitation{Email: Ptr("octocat@github.com")}
 	if !cmp.Equal(invitations, want) {
-		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
+		t.Errorf("Organizations.CreateOrgInvitation returned %+v, want %+v", invitations, want)
 	}
 
 	const methodName = "CreateOrgInvitation"

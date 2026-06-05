@@ -31,7 +31,7 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 	ctx := t.Context()
 	runs, _, err := client.Actions.ListWorkflowRunsByID(ctx, "o", "r", 29679449, opts)
 	if err != nil {
-		t.Errorf("Actions.ListWorkFlowRunsByID returned error: %v", err)
+		t.Errorf("Actions.ListWorkflowRunsByID returned error: %v", err)
 	}
 
 	want := &WorkflowRuns{
@@ -74,7 +74,7 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 	ctx := t.Context()
 	runs, _, err := client.Actions.ListWorkflowRunsByFileName(ctx, "o", "r", "29679449", opts)
 	if err != nil {
-		t.Errorf("Actions.ListWorkFlowRunsByFileName returned error: %v", err)
+		t.Errorf("Actions.ListWorkflowRunsByFileName returned error: %v", err)
 	}
 
 	want := &WorkflowRuns{
@@ -383,7 +383,7 @@ func TestActionsService_GetWorkflowRunAttemptLogs_unexpectedCode(t *testing.T) {
 	}
 }
 
-func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
+func TestActionsService_RerunWorkflowByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -398,7 +398,7 @@ func TestActionsService_RerunWorkflowRunByID(t *testing.T) {
 		t.Errorf("Actions.RerunWorkflowByID returned error: %v", err)
 	}
 	if resp.StatusCode != http.StatusCreated {
-		t.Errorf("Actions.RerunWorkflowRunByID returned status: %v, want %v", resp.StatusCode, http.StatusCreated)
+		t.Errorf("Actions.RerunWorkflowByID returned status: %v, want %v", resp.StatusCode, http.StatusCreated)
 	}
 
 	const methodName = "RerunWorkflowByID"
@@ -578,7 +578,7 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_dontFollowRedi
 			ctx := t.Context()
 			_, resp, _ := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 0)
 			if resp.StatusCode != http.StatusMovedPermanently {
-				t.Errorf("Actions.GetWorkflowJobLogs returned status: %v, want %v", resp.StatusCode, http.StatusMovedPermanently)
+				t.Errorf("Actions.GetWorkflowRunLogs returned status: %v, want %v", resp.StatusCode, http.StatusMovedPermanently)
 			}
 		})
 	}
@@ -621,16 +621,16 @@ func TestActionsService_GetWorkflowRunLogs_StatusMovedPermanently_followRedirect
 			ctx := t.Context()
 			url, resp, err := client.Actions.GetWorkflowRunLogs(ctx, "o", "r", 399444496, 1)
 			if err != nil {
-				t.Errorf("Actions.GetWorkflowJobLogs returned error: %v", err)
+				t.Errorf("Actions.GetWorkflowRunLogs returned error: %v", err)
 			}
 
 			if resp.StatusCode != http.StatusFound {
-				t.Errorf("Actions.GetWorkflowJobLogs returned status: %v, want %v", resp.StatusCode, http.StatusFound)
+				t.Errorf("Actions.GetWorkflowRunLogs returned status: %v, want %v", resp.StatusCode, http.StatusFound)
 			}
 
 			want := "https://github.com/a"
 			if url.String() != want {
-				t.Errorf("Actions.GetWorkflowJobLogs returned %+v, want %+v", url, want)
+				t.Errorf("Actions.GetWorkflowRunLogs returned %+v, want %+v", url, want)
 			}
 
 			const methodName = "GetWorkflowRunLogs"
@@ -694,7 +694,7 @@ func TestActionsService_GetWorkflowRunLogs_unexpectedCode(t *testing.T) {
 	}
 }
 
-func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
+func TestActionsService_ListRepositoryWorkflowRuns(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -743,7 +743,7 @@ func TestActionService_ListRepositoryWorkflowRuns(t *testing.T) {
 	})
 }
 
-func TestActionService_DeleteWorkflowRun(t *testing.T) {
+func TestActionsService_DeleteWorkflowRun(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -769,7 +769,7 @@ func TestActionService_DeleteWorkflowRun(t *testing.T) {
 	})
 }
 
-func TestActionService_DeleteWorkflowRunLogs(t *testing.T) {
+func TestActionsService_DeleteWorkflowRunLogs(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -895,7 +895,7 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 	})
 }
 
-func TestActionService_PendingDeployments(t *testing.T) {
+func TestActionsService_PendingDeployments(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -933,7 +933,7 @@ func TestActionService_PendingDeployments(t *testing.T) {
 	})
 }
 
-func TestActionService_GetPendingDeployments(t *testing.T) {
+func TestActionsService_GetPendingDeployments(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 

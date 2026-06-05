@@ -659,10 +659,10 @@ func TestTeamsService__ListPendingTeamInvitationsByID_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.RemoveTeamMembershipByID returned status %v, want %v", got, want)
+		t.Errorf("Teams.ListPendingTeamInvitationsByID returned status %v, want %v", got, want)
 	}
 	if invitations != nil {
-		t.Errorf("Teams.RemoveTeamMembershipByID returned %+v, want nil", invitations)
+		t.Errorf("Teams.ListPendingTeamInvitationsByID returned %+v, want nil", invitations)
 	}
 
 	const methodName = "ListPendingTeamInvitationsByID"
@@ -694,12 +694,12 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug(t *testing.T) {
 	ctx := t.Context()
 	invitations, _, err := client.Teams.ListPendingTeamInvitationsBySlug(ctx, "o", "s", opt)
 	if err != nil {
-		t.Errorf("Teams.ListPendingTeamInvitationsByID returned error: %v", err)
+		t.Errorf("Teams.ListPendingTeamInvitationsBySlug returned error: %v", err)
 	}
 
 	want := []*Invitation{{ID: Ptr(int64(1))}}
 	if !cmp.Equal(invitations, want) {
-		t.Errorf("Teams.ListPendingTeamInvitationsByID returned %+v, want %+v", invitations, want)
+		t.Errorf("Teams.ListPendingTeamInvitationsBySlug returned %+v, want %+v", invitations, want)
 	}
 
 	const methodName = "ListPendingTeamInvitationsBySlug"
@@ -734,10 +734,10 @@ func TestTeamsService__ListPendingTeamInvitationsBySlug_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.RemoveTeamMembershipByID returned status %v, want %v", got, want)
+		t.Errorf("Teams.ListPendingTeamInvitationsBySlug returned status %v, want %v", got, want)
 	}
 	if invitations != nil {
-		t.Errorf("Teams.RemoveTeamMembershipByID returned %+v, want nil", invitations)
+		t.Errorf("Teams.ListPendingTeamInvitationsBySlug returned %+v, want nil", invitations)
 	}
 
 	const methodName = "ListPendingTeamInvitationsBySlug"

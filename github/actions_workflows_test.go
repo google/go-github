@@ -428,7 +428,7 @@ func TestActionsService_EnableWorkflowByID(t *testing.T) {
 	})
 }
 
-func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
+func TestActionsService_EnableWorkflowByFileName(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -442,14 +442,14 @@ func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Actions.EnableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err != nil {
-		t.Errorf("Actions.EnableWorkflowByFilename returned error: %v", err)
+		t.Errorf("Actions.EnableWorkflowByFileName returned error: %v", err)
 	}
 
 	// Test s.client.NewRequest failure
 	client.baseURL.Path = ""
 	_, err = client.Actions.EnableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err == nil {
-		t.Error("client.BaseURL.Path='' EnableWorkflowByFilename err = nil, want error")
+		t.Error("client.BaseURL.Path='' EnableWorkflowByFileName err = nil, want error")
 	}
 
 	const methodName = "EnableWorkflowByFileName"
