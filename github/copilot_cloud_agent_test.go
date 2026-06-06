@@ -157,6 +157,7 @@ func TestCopilotService_GetCloudAgentConfiguration(t *testing.T) {
 
 			mux.HandleFunc("/repos/o/r/copilot/cloud-agent/configuration", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
+				testHeader(t, r, "X-Github-Api-Version", api20260310)
 				fmt.Fprint(w, tt.responseBody)
 			})
 
@@ -259,6 +260,7 @@ func TestCopilotService_UpdateCloudAgentConfiguration(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/copilot/cloud-agent/configuration", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
+		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"mcp_configuration": {
@@ -304,3 +306,47 @@ func TestCopilotService_UpdateCloudAgentConfiguration(t *testing.T) {
 	}
 }
 
+func TestCopilotService_UpdateCloudAgentConfiguration_BadOptions(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	const methodName = "UpdateCloudAgentConfiguration"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.UpdateCloudAgentConfiguration(ctx, "\n", "\n", nil)
+		return err
+	})
+}
+
+func TestCopilotService_UpdateCloudAgentConfiguration_NewRequestFailure(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	const methodName = "UpdateCloudAgentConfiguration"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		ctx := t.Context()
+		got, resp, err := client.Copilot.UpdateCloudAgentConfiguration(ctx, "o", "r", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_UpdateCloudAgentConfiguration_InvalidOwner(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Copilot.UpdateCloudAgentConfiguration(ctx, "%", "r", nil)
+	testURLParseError(t, err)
+}
+
+func TestCopilotService_UpdateCloudAgentConfiguration_InvalidRepo(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Copilot.UpdateCloudAgentConfiguration(ctx, "o", "%", nil)
+	testURLParseError(t, err)
+}
