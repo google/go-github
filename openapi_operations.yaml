@@ -10,11 +10,7 @@ operations:
     documentation_url: https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
   - name: GET /repositories/{repository_id}
   - name: GET /repositories/{repository_id}/installation
-  - name: PATCH /repos/{owner}/{repo}/copilot/cloud-agent/configuration
-    documentation_url: https://docs.github.com/rest/copilot/copilot-cloud-agent-repository-management?apiVersion=2026-03-10#update-copilot-cloud-agent-configuration-for-a-repository
 operation_overrides:
-  - name: GET /repos/{owner}/{repo}/copilot/cloud-agent/configuration
-    documentation_url: https://docs.github.com/rest/copilot/copilot-cloud-agent-repository-management?apiVersion=2026-03-10#get-copilot-cloud-agent-configuration-for-a-repository
   - name: GET /meta
     documentation_url: https://docs.github.com/rest/meta/meta#get-github-meta-information
   - name: GET /orgs/{org}/private-registries

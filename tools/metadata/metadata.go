@@ -554,4 +554,5 @@ var skipServiceMethod = map[string]bool{
 	"CopilotService.DownloadPeriodicMetrics":        true,
 	"CopilotService.DownloadUserDailyMetrics":       true,
 	"CopilotService.DownloadUserPeriodicMetrics":    true,
+	"CopilotService.UpdateCloudAgentConfiguration":  true,
 }
