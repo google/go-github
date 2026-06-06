@@ -146,6 +146,8 @@ func (f LargeFile) String() string {
 
 // StartImport initiates a repository import.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#start-an-import
 //
 //meta:operation PUT /repos/{owner}/{repo}/import
@@ -167,6 +169,8 @@ func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, 
 
 // ImportProgress queries for the status and progress of an ongoing repository import.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#get-an-import-status
 //
 //meta:operation GET /repos/{owner}/{repo}/import
@@ -187,6 +191,8 @@ func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo strin
 }
 
 // UpdateImport initiates a repository import.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#update-an-import
 //
@@ -219,6 +225,8 @@ func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string,
 // This method and MapCommitAuthor allow you to provide correct Git author
 // information.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#get-commit-authors
 //
 //meta:operation GET /repos/{owner}/{repo}/import/authors
@@ -241,6 +249,8 @@ func (s *MigrationService) CommitAuthors(ctx context.Context, owner, repo string
 // MapCommitAuthor updates an author's identity for the import. Your
 // application can continue updating authors any time before you push new
 // commits to the repository.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#map-a-commit-author
 //
@@ -265,6 +275,8 @@ func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo stri
 // files larger than 100MB. Only the UseLFS field on the provided Import is
 // used.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#update-git-lfs-preference
 //
 //meta:operation PATCH /repos/{owner}/{repo}/import/lfs
@@ -286,6 +298,8 @@ func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo str
 
 // LargeFiles lists files larger than 100MB found during the import.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#get-large-files
 //
 //meta:operation GET /repos/{owner}/{repo}/import/large_files
@@ -306,6 +320,8 @@ func (s *MigrationService) LargeFiles(ctx context.Context, owner, repo string) (
 }
 
 // CancelImport stops an import for a repository.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#cancel-an-import
 //

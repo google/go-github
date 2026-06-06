@@ -34,10 +34,11 @@ type operation struct {
 	Name             string   `yaml:"name,omitempty" json:"name,omitempty"`
 	DocumentationURL string   `yaml:"documentation_url,omitempty" json:"documentation_url,omitempty"`
 	OpenAPIFiles     []string `yaml:"openapi_files,omitempty" json:"openapi_files,omitempty"`
+	Deprecated       bool     `yaml:"deprecated,omitempty" json:"deprecated,omitempty"`
 }
 
 func (o *operation) equal(other *operation) bool {
-	if o.Name != other.Name || o.DocumentationURL != other.DocumentationURL {
+	if o.Name != other.Name || o.DocumentationURL != other.DocumentationURL || o.Deprecated != other.Deprecated {
 		return false
 	}
 	if len(o.OpenAPIFiles) != len(other.OpenAPIFiles) {
@@ -56,6 +57,7 @@ func (o *operation) clone() *operation {
 		Name:             o.Name,
 		DocumentationURL: o.DocumentationURL,
 		OpenAPIFiles:     append([]string{}, o.OpenAPIFiles...),
+		Deprecated:       o.Deprecated,
 	}
 }
 
@@ -211,7 +213,7 @@ func loadOperationsFile(filename string) (*operationsFile, error) {
 	return &opsFile, nil
 }
 
-func addOperation(ops []*operation, filename, opName, docURL string) []*operation {
+func addOperation(ops []*operation, filename, opName, docURL string, deprecated bool) []*operation {
 	for _, op := range ops {
 		if opName != op.Name {
 			continue
@@ -219,11 +221,13 @@ func addOperation(ops []*operation, filename, opName, docURL string) []*operatio
 		if len(op.OpenAPIFiles) == 0 {
 			op.OpenAPIFiles = append(op.OpenAPIFiles, filename)
 			op.DocumentationURL = docURL
+			op.Deprecated = deprecated
 			return ops
 		}
 		// just append to files, but only add the first ghes file
 		if !strings.Contains(filename, "/ghes") {
 			op.OpenAPIFiles = append(op.OpenAPIFiles, filename)
+			op.Deprecated = op.Deprecated || deprecated
 			return ops
 		}
 		for _, f := range op.OpenAPIFiles {
@@ -232,12 +236,14 @@ func addOperation(ops []*operation, filename, opName, docURL string) []*operatio
 			}
 		}
 		op.OpenAPIFiles = append(op.OpenAPIFiles, filename)
+		op.Deprecated = op.Deprecated || deprecated
 		return ops
 	}
 	return append(ops, &operation{
 		Name:             opName,
 		OpenAPIFiles:     []string{filename},
 		DocumentationURL: docURL,
+		Deprecated:       deprecated,
 	})
 }
 
@@ -308,15 +314,27 @@ func updateDocsVisitor(opsFile *operationsFile) nodeVisitor {
 			cmap[fn] = append(cmap[fn], group)
 		}
 
+		hasCustomDeprecated := slices.ContainsFunc(group.List, func(comment *ast.Comment) bool {
+			return anyDeprecatedRE.MatchString(comment.Text) && !deprecatedRE.MatchString(comment.Text)
+		})
+
 		origList := group.List
 		group.List = nil
 		for _, comment := range origList {
 			if metaOpRe.MatchString(comment.Text) ||
 				docLineRE.MatchString(comment.Text) ||
-				undocRE.MatchString(comment.Text) {
+				undocRE.MatchString(comment.Text) ||
+				deprecatedRE.MatchString(comment.Text) {
 				continue
 			}
 			group.List = append(group.List, comment)
+		}
+
+		isDeprecated := slices.ContainsFunc(ops, func(op *operation) bool {
+			return op.Deprecated
+		})
+		if isDeprecated && !hasCustomDeprecated {
+			group.List = append(group.List, &ast.Comment{Text: "// Deprecated: This endpoint has been deprecated by GitHub."}, &ast.Comment{Text: "//"})
 		}
 
 		// add an empty line before adding doc links
@@ -429,9 +447,11 @@ func visitFileMethods(updateFile bool, filename string, visit nodeVisitor) error
 }
 
 var (
-	metaOpRe  = regexp.MustCompile(`(?i)\s*//\s*meta:operation\s+(\S.+)`)
-	undocRE   = regexp.MustCompile(`(?i)\s*//\s*Note:\s+\S.+ uses the undocumented GitHub API endpoint`)
-	docLineRE = regexp.MustCompile(`(?i)\s*//\s*GitHub\s+API\s+docs:`)
+	metaOpRe        = regexp.MustCompile(`(?i)\s*//\s*meta:operation\s+(\S.+)`)
+	undocRE         = regexp.MustCompile(`(?i)\s*//\s*Note:\s+\S.+ uses the undocumented GitHub API endpoint`)
+	docLineRE       = regexp.MustCompile(`(?i)\s*//\s*GitHub\s+API\s+docs:`)
+	deprecatedRE    = regexp.MustCompile(`(?i)\s*//\s*Deprecated: This endpoint has been deprecated by GitHub\.`)
+	anyDeprecatedRE = regexp.MustCompile(`(?i)\s*//\s*Deprecated:`) // Avoid previously tagged Deprecated endpoints
 )
 
 // methodOps parses a method's comments for //meta:operation lines and returns the corresponding operations.

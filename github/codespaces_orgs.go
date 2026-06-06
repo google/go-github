@@ -48,6 +48,8 @@ func (s *CodespacesService) ListInOrg(ctx context.Context, org string, opts *Lis
 
 // SetOrgAccessControl sets which users can access codespaces in an organization.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#manage-access-control-for-organization-codespaces
 //
 //meta:operation PUT /orgs/{org}/codespaces/access
@@ -68,6 +70,8 @@ func (s *CodespacesService) SetOrgAccessControl(ctx context.Context, org string,
 
 // AddUsersToOrgAccess adds users to Codespaces access for an organization.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#add-users-to-codespaces-access-for-an-organization
 //
 //meta:operation POST /orgs/{org}/codespaces/access/selected_users
@@ -87,6 +91,8 @@ func (s *CodespacesService) AddUsersToOrgAccess(ctx context.Context, org string,
 }
 
 // RemoveUsersFromOrgAccess removes users from Codespaces access for an organization.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#remove-users-from-codespaces-access-for-an-organization
 //
