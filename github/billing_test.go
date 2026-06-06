@@ -720,3 +720,335 @@ func TestBillingService_PremiumRequestUsageItem_FloatQuantities(t *testing.T) {
 		t.Errorf("Billing.GetOrganizationPremiumRequestUsageReport returned %+v, want %+v", report, want)
 	}
 }
+
+func TestBillingService_GetOrgAICreditUsage(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/organizations/o/settings/billing/ai_credit/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"year":  "2025",
+			"month": "6",
+			"user":  "testuser",
+		})
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2025,
+				"month": 6
+			},
+			"organization": "GitHub",
+			"user": "testuser",
+			"product": "Copilot",
+			"model": "GPT-5",
+			"usageItems": [
+				{
+					"product": "Copilot",
+					"sku": "Copilot AI Credits",
+					"model": "GPT-5",
+					"unitType": "credits",
+					"pricePerUnit": 0.01,
+					"grossQuantity": 100,
+					"grossAmount": 1.0,
+					"discountQuantity": 0,
+					"discountAmount": 0.0,
+					"netQuantity": 100,
+					"netAmount": 1.0
+				}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &PremiumRequestUsageReportOptions{
+		Year:  Ptr(2025),
+		Month: Ptr(6),
+		User:  Ptr("testuser"),
+	}
+	report, _, err := client.Billing.GetOrgAICreditUsage(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Billing.GetOrgAICreditUsage returned error: %v", err)
+	}
+
+	want := &PremiumRequestUsageReport{
+		TimePeriod: PremiumRequestUsageTimePeriod{
+			Year:  2025,
+			Month: Ptr(6),
+		},
+		Organization: Ptr("GitHub"),
+		User:         Ptr("testuser"),
+		Product:      Ptr("Copilot"),
+		Model:        Ptr("GPT-5"),
+		UsageItems: []*PremiumRequestUsageItem{
+			{
+				Product:          "Copilot",
+				SKU:              "Copilot AI Credits",
+				Model:            "GPT-5",
+				UnitType:         "credits",
+				PricePerUnit:     0.01,
+				GrossQuantity:    100.0,
+				GrossAmount:      1.0,
+				DiscountQuantity: 0.0,
+				DiscountAmount:   0.0,
+				NetQuantity:      100.0,
+				NetAmount:        1.0,
+			},
+		},
+	}
+	if !cmp.Equal(report, want) {
+		t.Errorf("Billing.GetOrgAICreditUsage returned %+v, want %+v", report, want)
+	}
+
+	const methodName = "GetOrgAICreditUsage"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Billing.GetOrgAICreditUsage(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetOrgAICreditUsage(ctx, "o", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestBillingService_GetOrgAICreditUsage_invalidOrg(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Billing.GetOrgAICreditUsage(ctx, "%", nil)
+	testURLParseError(t, err)
+}
+
+func TestBillingService_GetOrgAICreditUsage_FloatQuantities(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/organizations/o/settings/billing/ai_credit/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2025,
+				"month": 6,
+				"day": 15
+			},
+			"organization": "testorg",
+			"usageItems": [
+				{
+					"product": "Copilot",
+					"sku": "Copilot AI Credits",
+					"model": "GPT-5",
+					"unitType": "credits",
+					"pricePerUnit": 0.01,
+					"grossQuantity": 1500.5,
+					"grossAmount": 15.005,
+					"discountQuantity": 100.5,
+					"discountAmount": 1.005,
+					"netQuantity": 1400.0,
+					"netAmount": 14.0
+				}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	report, _, err := client.Billing.GetOrgAICreditUsage(ctx, "o", nil)
+	if err != nil {
+		t.Fatalf("Billing.GetOrgAICreditUsage returned error: %v", err)
+	}
+
+	want := &PremiumRequestUsageReport{
+		TimePeriod: PremiumRequestUsageTimePeriod{
+			Year:  2025,
+			Month: Ptr(6),
+			Day:   Ptr(15),
+		},
+		Organization: Ptr("testorg"),
+		UsageItems: []*PremiumRequestUsageItem{
+			{
+				Product:          "Copilot",
+				SKU:              "Copilot AI Credits",
+				Model:            "GPT-5",
+				UnitType:         "credits",
+				PricePerUnit:     0.01,
+				GrossQuantity:    1500.5,
+				GrossAmount:      15.005,
+				DiscountQuantity: 100.5,
+				DiscountAmount:   1.005,
+				NetQuantity:      1400.0,
+				NetAmount:        14.0,
+			},
+		},
+	}
+	if !cmp.Equal(report, want) {
+		t.Errorf("Billing.GetOrgAICreditUsage returned %+v, want %+v", report, want)
+	}
+}
+
+func TestBillingService_GetUserAICreditUsage(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/settings/billing/ai_credit/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"year":  "2025",
+			"month": "6",
+			"user":  "testuser",
+		})
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2025,
+				"month": 6
+			},
+			"user": "testuser",
+			"product": "Copilot",
+			"model": "GPT-5",
+			"usageItems": [
+				{
+					"product": "Copilot",
+					"sku": "Copilot AI Credits",
+					"model": "GPT-5",
+					"unitType": "credits",
+					"pricePerUnit": 0.01,
+					"grossQuantity": 100,
+					"grossAmount": 1.0,
+					"discountQuantity": 0,
+					"discountAmount": 0.0,
+					"netQuantity": 100,
+					"netAmount": 1.0
+				}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &PremiumRequestUsageReportOptions{
+		Year:  Ptr(2025),
+		Month: Ptr(6),
+		User:  Ptr("testuser"),
+	}
+	report, _, err := client.Billing.GetUserAICreditUsage(ctx, "u", opts)
+	if err != nil {
+		t.Errorf("Billing.GetUserAICreditUsage returned error: %v", err)
+	}
+
+	want := &PremiumRequestUsageReport{
+		TimePeriod: PremiumRequestUsageTimePeriod{
+			Year:  2025,
+			Month: Ptr(6),
+		},
+		User:    Ptr("testuser"),
+		Product: Ptr("Copilot"),
+		Model:   Ptr("GPT-5"),
+		UsageItems: []*PremiumRequestUsageItem{
+			{
+				Product:          "Copilot",
+				SKU:              "Copilot AI Credits",
+				Model:            "GPT-5",
+				UnitType:         "credits",
+				PricePerUnit:     0.01,
+				GrossQuantity:    100.0,
+				GrossAmount:      1.0,
+				DiscountQuantity: 0.0,
+				DiscountAmount:   0.0,
+				NetQuantity:      100.0,
+				NetAmount:        1.0,
+			},
+		},
+	}
+	if !cmp.Equal(report, want) {
+		t.Errorf("Billing.GetUserAICreditUsage returned %+v, want %+v", report, want)
+	}
+
+	const methodName = "GetUserAICreditUsage"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Billing.GetUserAICreditUsage(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetUserAICreditUsage(ctx, "u", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestBillingService_GetUserAICreditUsage_invalidUser(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Billing.GetUserAICreditUsage(ctx, "%", nil)
+	testURLParseError(t, err)
+}
+
+func TestBillingService_GetUserAICreditUsage_FloatQuantities(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/settings/billing/ai_credit/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2025,
+				"month": 6,
+				"day": 15
+			},
+			"user": "testuser",
+			"usageItems": [
+				{
+					"product": "Copilot",
+					"sku": "Copilot AI Credits",
+					"model": "GPT-5",
+					"unitType": "credits",
+					"pricePerUnit": 0.01,
+					"grossQuantity": 1500.5,
+					"grossAmount": 15.005,
+					"discountQuantity": 100.5,
+					"discountAmount": 1.005,
+					"netQuantity": 1400.0,
+					"netAmount": 14.0
+				}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	report, _, err := client.Billing.GetUserAICreditUsage(ctx, "u", nil)
+	if err != nil {
+		t.Fatalf("Billing.GetUserAICreditUsage returned error: %v", err)
+	}
+
+	want := &PremiumRequestUsageReport{
+		TimePeriod: PremiumRequestUsageTimePeriod{
+			Year:  2025,
+			Month: Ptr(6),
+			Day:   Ptr(15),
+		},
+		User: Ptr("testuser"),
+		UsageItems: []*PremiumRequestUsageItem{
+			{
+				Product:          "Copilot",
+				SKU:              "Copilot AI Credits",
+				Model:            "GPT-5",
+				UnitType:         "credits",
+				PricePerUnit:     0.01,
+				GrossQuantity:    1500.5,
+				GrossAmount:      15.005,
+				DiscountQuantity: 100.5,
+				DiscountAmount:   1.005,
+				NetQuantity:      1400.0,
+				NetAmount:        14.0,
+			},
+		},
+	}
+	if !cmp.Equal(report, want) {
+		t.Errorf("Billing.GetUserAICreditUsage returned %+v, want %+v", report, want)
+	}
+}
