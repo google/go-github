@@ -47,7 +47,7 @@ func getOpsFromGithub(ctx context.Context, client *github.Client, gitRef string)
 				if op.ExternalDocs != nil {
 					docURL = op.ExternalDocs.URL
 				}
-				ops = addOperation(ops, desc.filename, method+" "+p, docURL)
+				ops = addOperation(ops, desc.filename, method+" "+p, docURL, op.Deprecated)
 			}
 		}
 	}

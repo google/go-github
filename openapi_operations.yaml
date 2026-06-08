@@ -39,7 +39,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: c4a52d9b0b4f5db4e7de178c9f8f90b5f6360563
+openapi_commit: 1d6267568cc63a85b07f84d1d0afa9b374fd782f
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -304,14 +304,17 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#list-your-grants
     openapi_files:
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: DELETE /applications/grants/{grant_id}
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#delete-a-grant
     openapi_files:
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /applications/grants/{grant_id}
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#get-a-single-grant
     openapi_files:
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: DELETE /applications/{client_id}/grant
     documentation_url: https://docs.github.com/rest/apps/oauth-applications#delete-an-app-authorization
     openapi_files:
@@ -322,6 +325,7 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.3/rest/reference/apps#revoke-a-grant-for-an-application
     openapi_files:
       - descriptions/ghes-3.3/ghes-3.3.json
+    deprecated: true
   - name: DELETE /applications/{client_id}/token
     documentation_url: https://docs.github.com/rest/apps/oauth-applications#delete-an-app-token
     openapi_files:
@@ -350,14 +354,17 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.3/rest/reference/apps#revoke-an-authorization-for-an-application
     openapi_files:
       - descriptions/ghes-3.3/ghes-3.3.json
+    deprecated: true
   - name: GET /applications/{client_id}/tokens/{access_token}
     documentation_url: https://docs.github.com/enterprise-server@3.3/rest/reference/apps#check-an-authorization
     openapi_files:
       - descriptions/ghes-3.3/ghes-3.3.json
+    deprecated: true
   - name: POST /applications/{client_id}/tokens/{access_token}
     documentation_url: https://docs.github.com/enterprise-server@3.3/rest/reference/apps#reset-an-authorization
     openapi_files:
       - descriptions/ghes-3.3/ghes-3.3.json
+    deprecated: true
   - name: GET /apps/{app_slug}
     documentation_url: https://docs.github.com/rest/apps/apps#get-an-app
     openapi_files:
@@ -383,30 +390,37 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#list-your-authorizations
     openapi_files:
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: POST /authorizations
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#create-a-new-authorization
     openapi_files:
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: PUT /authorizations/clients/{client_id}
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#get-or-create-an-authorization-for-a-specific-app
     openapi_files:
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: PUT /authorizations/clients/{client_id}/{fingerprint}
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#get-or-create-an-authorization-for-a-specific-app-and-fingerprint
     openapi_files:
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: DELETE /authorizations/{authorization_id}
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#delete-an-authorization
     openapi_files:
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /authorizations/{authorization_id}
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#get-a-single-authorization
     openapi_files:
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: PATCH /authorizations/{authorization_id}
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#update-an-existing-authorization
     openapi_files:
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /classrooms
     documentation_url: https://docs.github.com/rest/classroom/classroom#list-classrooms
     openapi_files:
@@ -1019,11 +1033,13 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: PATCH /enterprises/{enterprise}/code_security_and_analysis
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis#update-code-security-and-analysis-features-for-an-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /enterprises/{enterprise}/consumed-licenses
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing#list-enterprise-consumed-licenses
     openapi_files:
@@ -1520,6 +1536,7 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /events
     documentation_url: https://docs.github.com/rest/activity/events#list-public-events
     openapi_files:
@@ -1883,6 +1900,7 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /organizations/{org}/actions/cache/retention-limit
     documentation_url: https://docs.github.com/rest/actions/cache#get-github-actions-cache-retention-limit-for-an-organization
     openapi_files:
@@ -1919,6 +1937,10 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
   - name: GET /organizations/{org}/settings/billing/budgets
     documentation_url: https://docs.github.com/rest/billing/budgets#get-all-budgets-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+  - name: POST /organizations/{org}/settings/billing/budgets
+    documentation_url: https://docs.github.com/rest/billing/budgets#create-a-budget-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
   - name: DELETE /organizations/{org}/settings/billing/budgets/{budget_id}
@@ -2773,16 +2795,19 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: DELETE /orgs/{org}/codespaces/access/selected_users
     documentation_url: https://docs.github.com/rest/codespaces/organizations#remove-users-from-codespaces-access-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: POST /orgs/{org}/codespaces/access/selected_users
     documentation_url: https://docs.github.com/rest/codespaces/organizations#add-users-to-codespaces-access-for-an-organization
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /orgs/{org}/codespaces/secrets
     documentation_url: https://docs.github.com/rest/codespaces/organization-secrets#list-organization-secrets
     openapi_files:
@@ -3035,18 +3060,22 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#closing-down---create-a-custom-role
     openapi_files:
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: DELETE /orgs/{org}/custom_roles/{role_id}
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#closing-down---delete-a-custom-role
     openapi_files:
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /orgs/{org}/custom_roles/{role_id}
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#closing-down---get-a-custom-role
     openapi_files:
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: PATCH /orgs/{org}/custom_roles/{role_id}
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#closing-down---update-a-custom-role
     openapi_files:
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /orgs/{org}/dependabot/alerts
     documentation_url: https://docs.github.com/rest/dependabot/alerts#list-dependabot-alerts-for-an-organization
     openapi_files:
@@ -3171,6 +3200,7 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles#closing-down---list-fine-grained-permissions-for-an-organization
     openapi_files:
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /orgs/{org}/hooks
     documentation_url: https://docs.github.com/rest/orgs/webhooks#list-organization-webhooks
     openapi_files:
@@ -3723,10 +3753,12 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/projects#list-organization-projects
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: POST /orgs/{org}/projects
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/projects#create-an-organization-project
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /orgs/{org}/projectsV2
     documentation_url: https://docs.github.com/rest/projects/projects#list-projects-for-organization
     openapi_files:
@@ -3971,18 +4003,21 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: DELETE /orgs/{org}/security-managers/teams/{team_slug}
     documentation_url: https://docs.github.com/rest/orgs/security-managers#remove-a-security-manager-team
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: PUT /orgs/{org}/security-managers/teams/{team_slug}
     documentation_url: https://docs.github.com/rest/orgs/security-managers#add-a-security-manager-team
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /orgs/{org}/settings/billing/advanced-security
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/billing/billing#get-github-advanced-security-active-committers-for-an-organization
     openapi_files:
@@ -4205,18 +4240,22 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#list-team-projects
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: DELETE /orgs/{org}/teams/{team_slug}/projects/{project_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#remove-a-project-from-a-team
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /orgs/{org}/teams/{team_slug}/projects/{project_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#check-team-permissions-for-a-project
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /orgs/{org}/teams/{team_slug}/repos
     documentation_url: https://docs.github.com/rest/teams/teams#list-team-repositories
     openapi_files:
@@ -4261,82 +4300,102 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: DELETE /projects/columns/cards/{card_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/cards#delete-a-project-card
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /projects/columns/cards/{card_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/cards#get-a-project-card
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: PATCH /projects/columns/cards/{card_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/cards#update-an-existing-project-card
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: POST /projects/columns/cards/{card_id}/moves
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/cards#move-a-project-card
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: DELETE /projects/columns/{column_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/columns#delete-a-project-column
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /projects/columns/{column_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/columns#get-a-project-column
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: PATCH /projects/columns/{column_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/columns#update-an-existing-project-column
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /projects/columns/{column_id}/cards
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/cards#list-project-cards
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: POST /projects/columns/{column_id}/cards
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/cards#create-a-project-card
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: POST /projects/columns/{column_id}/moves
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/columns#move-a-project-column
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: DELETE /projects/{project_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/projects#delete-a-project
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /projects/{project_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/projects#get-a-project
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: PATCH /projects/{project_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/projects#update-a-project
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /projects/{project_id}/collaborators
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/collaborators#list-project-collaborators
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: DELETE /projects/{project_id}/collaborators/{username}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/collaborators#remove-user-as-a-collaborator
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: PUT /projects/{project_id}/collaborators/{username}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/collaborators#add-project-collaborator
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /projects/{project_id}/collaborators/{username}/permission
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/collaborators#get-project-permission-for-a-user
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /projects/{project_id}/columns
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/columns#list-project-columns
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: POST /projects/{project_id}/columns
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/columns#create-a-project-column
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /rate_limit
     documentation_url: https://docs.github.com/rest/rate-limit/rate-limit#get-rate-limit-status-for-the-authenticated-user
     openapi_files:
@@ -4347,6 +4406,7 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.4/rest/reference/reactions/#delete-a-reaction-legacy
     openapi_files:
       - descriptions/ghes-3.4/ghes-3.4.json
+    deprecated: true
   - name: DELETE /repos/{owner}/{repo}
     documentation_url: https://docs.github.com/rest/repos/repos#delete-a-repository
     openapi_files:
@@ -6188,41 +6248,49 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /repos/{owner}/{repo}/import
     documentation_url: https://docs.github.com/rest/migrations/source-imports#get-an-import-status
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: PATCH /repos/{owner}/{repo}/import
     documentation_url: https://docs.github.com/rest/migrations/source-imports#update-an-import
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: PUT /repos/{owner}/{repo}/import
     documentation_url: https://docs.github.com/rest/migrations/source-imports#start-an-import
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /repos/{owner}/{repo}/import/authors
     documentation_url: https://docs.github.com/rest/migrations/source-imports#get-commit-authors
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: PATCH /repos/{owner}/{repo}/import/authors/{author_id}
     documentation_url: https://docs.github.com/rest/migrations/source-imports#map-a-commit-author
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /repos/{owner}/{repo}/import/large_files
     documentation_url: https://docs.github.com/rest/migrations/source-imports#get-large-files
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: PATCH /repos/{owner}/{repo}/import/lfs
     documentation_url: https://docs.github.com/rest/migrations/source-imports#update-git-lfs-preference
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /repos/{owner}/{repo}/installation
     documentation_url: https://docs.github.com/rest/apps/apps#get-a-repository-installation-for-the-authenticated-app
     openapi_files:
@@ -6770,10 +6838,12 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/projects#list-repository-projects
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: POST /repos/{owner}/{repo}/projects
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/projects#create-a-repository-project
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /repos/{owner}/{repo}/properties/values
     documentation_url: https://docs.github.com/rest/repos/custom-properties#get-all-custom-property-values-for-a-repository
     openapi_files:
@@ -7290,14 +7360,17 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.20/rest/repos/tags#closing-down---list-tag-protection-states-for-a-repository
     openapi_files:
       - descriptions/ghes-3.20/ghes-3.20.json
+    deprecated: true
   - name: POST /repos/{owner}/{repo}/tags/protection
     documentation_url: https://docs.github.com/enterprise-server@3.20/rest/repos/tags#closing-down---create-a-tag-protection-state-for-a-repository
     openapi_files:
       - descriptions/ghes-3.20/ghes-3.20.json
+    deprecated: true
   - name: DELETE /repos/{owner}/{repo}/tags/protection/{tag_protection_id}
     documentation_url: https://docs.github.com/enterprise-server@3.20/rest/repos/tags#closing-down---delete-a-tag-protection-state-for-a-repository
     openapi_files:
       - descriptions/ghes-3.20/ghes-3.20.json
+    deprecated: true
   - name: GET /repos/{owner}/{repo}/tarball/{ref}
     documentation_url: https://docs.github.com/rest/repos/contents#download-a-repository-archive-tar
     openapi_files:
@@ -7628,175 +7701,211 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /teams/{team_id}
     documentation_url: https://docs.github.com/rest/teams/teams#get-a-team-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: PATCH /teams/{team_id}
     documentation_url: https://docs.github.com/rest/teams/teams#update-a-team-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /teams/{team_id}/discussions
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#list-discussions-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: POST /teams/{team_id}/discussions
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#create-a-discussion-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: DELETE /teams/{team_id}/discussions/{discussion_number}
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#delete-a-discussion-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: GET /teams/{team_id}/discussions/{discussion_number}
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#get-a-discussion-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: PATCH /teams/{team_id}/discussions/{discussion_number}
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#update-a-discussion-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: GET /teams/{team_id}/discussions/{discussion_number}/comments
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#list-discussion-comments-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: POST /teams/{team_id}/discussions/{discussion_number}/comments
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#create-a-discussion-comment-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: DELETE /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#delete-a-discussion-comment-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: GET /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#get-a-discussion-comment-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: PATCH /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#update-a-discussion-comment-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: GET /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#list-reactions-for-a-team-discussion-comment-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: POST /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#create-reaction-for-a-team-discussion-comment-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: GET /teams/{team_id}/discussions/{discussion_number}/reactions
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#list-reactions-for-a-team-discussion-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: POST /teams/{team_id}/discussions/{discussion_number}/reactions
     documentation_url: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#create-reaction-for-a-team-discussion-legacy
     openapi_files:
       - descriptions/ghes-3.13/ghes-3.13.json
+    deprecated: true
   - name: GET /teams/{team_id}/invitations
     documentation_url: https://docs.github.com/rest/teams/members#list-pending-team-invitations-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /teams/{team_id}/members
     documentation_url: https://docs.github.com/rest/teams/members#list-team-members-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: DELETE /teams/{team_id}/members/{username}
     documentation_url: https://docs.github.com/rest/teams/members#remove-team-member-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /teams/{team_id}/members/{username}
     documentation_url: https://docs.github.com/rest/teams/members#get-team-member-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: PUT /teams/{team_id}/members/{username}
     documentation_url: https://docs.github.com/rest/teams/members#add-team-member-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: DELETE /teams/{team_id}/memberships/{username}
     documentation_url: https://docs.github.com/rest/teams/members#remove-team-membership-for-a-user-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /teams/{team_id}/memberships/{username}
     documentation_url: https://docs.github.com/rest/teams/members#get-team-membership-for-a-user-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: PUT /teams/{team_id}/memberships/{username}
     documentation_url: https://docs.github.com/rest/teams/members#add-or-update-team-membership-for-a-user-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /teams/{team_id}/projects
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#list-team-projects-legacy
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: DELETE /teams/{team_id}/projects/{project_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#remove-a-project-from-a-team-legacy
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /teams/{team_id}/projects/{project_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#check-team-permissions-for-a-project-legacy
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: PUT /teams/{team_id}/projects/{project_id}
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions-legacy
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /teams/{team_id}/repos
     documentation_url: https://docs.github.com/rest/teams/teams#list-team-repositories-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: DELETE /teams/{team_id}/repos/{owner}/{repo}
     documentation_url: https://docs.github.com/rest/teams/teams#remove-a-repository-from-a-team-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /teams/{team_id}/repos/{owner}/{repo}
     documentation_url: https://docs.github.com/rest/teams/teams#check-team-permissions-for-a-repository-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: PUT /teams/{team_id}/repos/{owner}/{repo}
     documentation_url: https://docs.github.com/rest/teams/teams#add-or-update-team-repository-permissions-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /teams/{team_id}/team-sync/group-mappings
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#list-idp-groups-for-a-team-legacy
     openapi_files:
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: PATCH /teams/{team_id}/team-sync/group-mappings
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync#create-or-update-idp-group-connections-legacy
     openapi_files:
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /teams/{team_id}/teams
     documentation_url: https://docs.github.com/rest/teams/teams#list-child-teams-legacy
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+    deprecated: true
   - name: GET /user
     documentation_url: https://docs.github.com/rest/users/users#get-the-authenticated-user
     openapi_files:
@@ -8206,6 +8315,7 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/projects#create-a-user-project
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /user/public_emails
     documentation_url: https://docs.github.com/rest/users/emails#list-public-email-addresses-for-the-authenticated-user
     openapi_files:
@@ -8575,6 +8685,7 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-server@3.16/rest/projects-classic/projects#list-user-projects
     openapi_files:
       - descriptions/ghes-3.16/ghes-3.16.json
+    deprecated: true
   - name: GET /users/{username}/projectsV2
     documentation_url: https://docs.github.com/rest/projects/projects#list-projects-for-user
     openapi_files:

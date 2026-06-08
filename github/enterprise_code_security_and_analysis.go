@@ -21,6 +21,8 @@ type EnterpriseSecurityAnalysisSettings struct {
 
 // GetCodeSecurityAndAnalysis gets code security and analysis features for an enterprise.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#get-code-security-and-analysis-features-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code_security_and_analysis
@@ -42,6 +44,8 @@ func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, ente
 }
 
 // UpdateCodeSecurityAndAnalysis updates code security and analysis features for new repositories in an enterprise.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#update-code-security-and-analysis-features-for-an-enterprise
 //
@@ -65,6 +69,8 @@ func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, e
 //
 // Valid values for securityProduct: "advanced_security", "secret_scanning", "secret_scanning_push_protection".
 // Valid values for enablement:  "enable_all", "disable_all".
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#enable-or-disable-a-security-feature
 //
