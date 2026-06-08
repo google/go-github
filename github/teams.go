@@ -641,6 +641,8 @@ func (s *TeamsService) ListTeamProjectsByID(ctx context.Context, orgID, teamID i
 
 // ListTeamProjectsBySlug lists the organization projects for a team given the team slug.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#list-team-projects
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/projects
@@ -691,6 +693,8 @@ func (s *TeamsService) ReviewTeamProjectsByID(ctx context.Context, orgID, teamID
 
 // ReviewTeamProjectsBySlug checks whether a team, given its slug, has read, write, or admin
 // permissions for an organization project.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#check-team-permissions-for-a-project
 //
@@ -750,6 +754,8 @@ func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, pr
 // To add a project to a team or update the team's permission on a project, the
 // authenticated user must have admin permissions for the project.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
@@ -795,6 +801,8 @@ func (s *TeamsService) RemoveTeamProjectByID(ctx context.Context, orgID, teamID,
 // must have "read" access to both the team and project, or "admin" access to the team
 // or project.
 // Note: This endpoint removes the project from the team, but does not delete it.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#remove-a-project-from-a-team
 //
