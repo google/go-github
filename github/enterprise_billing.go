@@ -103,12 +103,12 @@ type EnterpriseUsageReport struct {
 	UsageItems []*EnterpriseUsageItem `json:"usageItems,omitempty"`
 }
 
-// GetEnterpriseUsageReport returns a report of the total usage for an enterprise using the enhanced billing platform.
+// GetUsageReport returns a report of the total usage for an enterprise using the enhanced billing platform.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/usage?apiVersion=2022-11-28#get-billing-usage-report-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/usage
-func (s *BillingService) GetEnterpriseUsageReport(ctx context.Context, enterprise string, opts *EnterpriseUsageReportOptions) (*EnterpriseUsageReport, *Response, error) {
+func (s *EnterpriseService) GetUsageReport(ctx context.Context, enterprise string, opts *EnterpriseUsageReportOptions) (*EnterpriseUsageReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/usage", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -129,12 +129,12 @@ func (s *BillingService) GetEnterpriseUsageReport(ctx context.Context, enterpris
 	return report, resp, nil
 }
 
-// GetEnterpriseUsageSummary returns a summary report of usage for an enterprise.
+// GetUsageSummary returns a summary report of usage for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/usage?apiVersion=2022-11-28#get-billing-usage-summary-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/usage/summary
-func (s *BillingService) GetEnterpriseUsageSummary(ctx context.Context, enterprise string, opts *EnterpriseUsageSummaryOptions) (*EnterpriseAggregatedUsageReport, *Response, error) {
+func (s *EnterpriseService) GetUsageSummary(ctx context.Context, enterprise string, opts *EnterpriseUsageSummaryOptions) (*EnterpriseAggregatedUsageReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/usage/summary", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -155,12 +155,12 @@ func (s *BillingService) GetEnterpriseUsageSummary(ctx context.Context, enterpri
 	return report, resp, nil
 }
 
-// GetEnterprisePremiumRequestUsageReport returns a report of the premium request usage for an enterprise.
+// GetPremiumRequestUsageReport returns a report of the premium request usage for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/usage?apiVersion=2022-11-28#get-billing-premium-request-usage-report-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/premium_request/usage
-func (s *BillingService) GetEnterprisePremiumRequestUsageReport(ctx context.Context, enterprise string, opts *EnterprisePremiumRequestUsageReportOptions) (*EnterpriseAggregatedUsageReport, *Response, error) {
+func (s *EnterpriseService) GetPremiumRequestUsageReport(ctx context.Context, enterprise string, opts *EnterprisePremiumRequestUsageReportOptions) (*EnterpriseAggregatedUsageReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/premium_request/usage", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -181,12 +181,12 @@ func (s *BillingService) GetEnterprisePremiumRequestUsageReport(ctx context.Cont
 	return report, resp, nil
 }
 
-// GetEnterpriseAICreditUsage returns a report of the AI credit usage for an enterprise.
+// GetAICreditUsage returns a report of the AI credit usage for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/usage?apiVersion=2022-11-28#get-billing-ai-credit-usage-report-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/ai_credit/usage
-func (s *BillingService) GetEnterpriseAICreditUsage(ctx context.Context, enterprise string, opts *EnterprisePremiumRequestUsageReportOptions) (*EnterpriseAggregatedUsageReport, *Response, error) {
+func (s *EnterpriseService) GetAICreditUsage(ctx context.Context, enterprise string, opts *EnterprisePremiumRequestUsageReportOptions) (*EnterpriseAggregatedUsageReport, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/ai_credit/usage", enterprise)
 	u, err := addOptions(u, opts)
 	if err != nil {

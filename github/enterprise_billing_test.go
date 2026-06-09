@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
@@ -13,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestBillingService_GetEnterpriseUsageReport(t *testing.T) {
+func TestEnterpriseService_GetUsageReport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -47,9 +48,13 @@ func TestBillingService_GetEnterpriseUsageReport(t *testing.T) {
 		Year:  2023,
 		Month: 8,
 	}
-	report, _, err := client.Billing.GetEnterpriseUsageReport(ctx, "test-enterprise", opts)
+	report, resp, err := client.Enterprise.GetUsageReport(ctx, "test-enterprise", opts)
 	if err != nil {
-		t.Errorf("GetEnterpriseUsageReport returned error: %v", err)
+		t.Errorf("GetUsageReport returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetUsageReport returned nil response")
 	}
 
 	want := &EnterpriseUsageReport{
@@ -70,11 +75,11 @@ func TestBillingService_GetEnterpriseUsageReport(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(report, want) {
-		t.Errorf("GetEnterpriseUsageReport returned %+v, want %+v", report, want)
+		t.Errorf("GetUsageReport returned %+v, want %+v", report, want)
 	}
 }
 
-func TestBillingService_GetEnterpriseUsageReport_WithCostCenter(t *testing.T) {
+func TestEnterpriseService_GetUsageReport_WithCostCenter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -107,9 +112,13 @@ func TestBillingService_GetEnterpriseUsageReport_WithCostCenter(t *testing.T) {
 		Year:         2023,
 		CostCenterID: "cc-123",
 	}
-	report, _, err := client.Billing.GetEnterpriseUsageReport(ctx, "test-enterprise", opts)
+	report, resp, err := client.Enterprise.GetUsageReport(ctx, "test-enterprise", opts)
 	if err != nil {
-		t.Errorf("GetEnterpriseUsageReport returned error: %v", err)
+		t.Errorf("GetUsageReport returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetUsageReport returned nil response")
 	}
 
 	if len(report.UsageItems) != 1 {
@@ -120,16 +129,74 @@ func TestBillingService_GetEnterpriseUsageReport_WithCostCenter(t *testing.T) {
 	}
 }
 
-func TestBillingService_GetEnterpriseUsageReport_InvalidEnterprise(t *testing.T) {
+func TestEnterpriseService_GetUsageReport_InvalidEnterprise(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Billing.GetEnterpriseUsageReport(ctx, "%", nil)
+	_, _, err := client.Enterprise.GetUsageReport(ctx, "%", nil)
 	testURLParseError(t, err)
 }
 
-func TestBillingService_GetEnterpriseUsageSummary(t *testing.T) {
+func TestEnterpriseService_GetUsageReport_NoOptions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/test-enterprise/settings/billing/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"usageItems": []}`)
+	})
+
+	ctx := t.Context()
+	report, resp, err := client.Enterprise.GetUsageReport(ctx, "test-enterprise", nil)
+	if err != nil {
+		t.Errorf("GetUsageReport returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetUsageReport returned nil response")
+	}
+
+	if report == nil || len(report.UsageItems) != 0 {
+		t.Error("Expected empty usage items")
+	}
+}
+
+func TestEnterpriseService_GetUsageReport_APIError(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/test-enterprise/settings/billing/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusForbidden)
+		fmt.Fprint(w, `{"message": "Forbidden"}`)
+	})
+
+	ctx := t.Context()
+	_, resp, err := client.Enterprise.GetUsageReport(ctx, "test-enterprise", nil)
+	if err == nil {
+		t.Error("GetUsageReport should return error on 403 response")
+	}
+	if resp == nil {
+		t.Error("GetUsageReport should return response even on error")
+	}
+}
+
+func TestEnterpriseService_GetUsageReport_CanceledContext(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+
+	_, resp, err := client.Enterprise.GetUsageReport(ctx, "test-enterprise", nil)
+	if err == nil {
+		t.Error("GetUsageReport should return error with canceled context")
+	}
+	_ = resp
+}
+
+func TestEnterpriseService_GetUsageSummary(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -166,9 +233,13 @@ func TestBillingService_GetEnterpriseUsageSummary(t *testing.T) {
 		Year:    2025,
 		Product: "Actions",
 	}
-	report, _, err := client.Billing.GetEnterpriseUsageSummary(ctx, "test-enterprise", opts)
+	report, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", opts)
 	if err != nil {
-		t.Errorf("GetEnterpriseUsageSummary returned error: %v", err)
+		t.Errorf("GetUsageSummary returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetUsageSummary returned nil response")
 	}
 
 	want := &EnterpriseAggregatedUsageReport{
@@ -192,11 +263,11 @@ func TestBillingService_GetEnterpriseUsageSummary(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(report, want) {
-		t.Errorf("GetEnterpriseUsageSummary returned %+v, want %+v", report, want)
+		t.Errorf("GetUsageSummary returned %+v, want %+v", report, want)
 	}
 }
 
-func TestBillingService_GetEnterpriseUsageSummary_MultipleItems(t *testing.T) {
+func TestEnterpriseService_GetUsageSummary_MultipleItems(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -243,9 +314,13 @@ func TestBillingService_GetEnterpriseUsageSummary_MultipleItems(t *testing.T) {
 	opts := &EnterpriseUsageSummaryOptions{
 		Year: 2025,
 	}
-	report, _, err := client.Billing.GetEnterpriseUsageSummary(ctx, "test-enterprise", opts)
+	report, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", opts)
 	if err != nil {
-		t.Errorf("GetEnterpriseUsageSummary returned error: %v", err)
+		t.Errorf("GetUsageSummary returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetUsageSummary returned nil response")
 	}
 
 	if len(report.UsageItems) != 2 {
@@ -259,7 +334,7 @@ func TestBillingService_GetEnterpriseUsageSummary_MultipleItems(t *testing.T) {
 	}
 }
 
-func TestBillingService_GetEnterpriseUsageSummary_WithRepository(t *testing.T) {
+func TestEnterpriseService_GetUsageSummary_WithRepository(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -273,6 +348,7 @@ func TestBillingService_GetEnterpriseUsageSummary_WithRepository(t *testing.T) {
 				"year": 2025
 			},
 			"enterprise": "GitHub",
+			"repository": "acme/api",
 			"usageItems": [
 				{
 					"product": "Actions",
@@ -294,9 +370,13 @@ func TestBillingService_GetEnterpriseUsageSummary_WithRepository(t *testing.T) {
 	opts := &EnterpriseUsageSummaryOptions{
 		Repository: "acme/api",
 	}
-	report, _, err := client.Billing.GetEnterpriseUsageSummary(ctx, "test-enterprise", opts)
+	report, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", opts)
 	if err != nil {
-		t.Errorf("GetEnterpriseUsageSummary returned error: %v", err)
+		t.Errorf("GetUsageSummary returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetUsageSummary returned nil response")
 	}
 
 	if len(report.UsageItems) != 1 {
@@ -304,7 +384,105 @@ func TestBillingService_GetEnterpriseUsageSummary_WithRepository(t *testing.T) {
 	}
 }
 
-func TestBillingService_GetEnterprisePremiumRequestUsageReport(t *testing.T) {
+func TestEnterpriseService_GetUsageSummary_WithAllFilters(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/test-enterprise/settings/billing/usage/summary", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"year":           "2025",
+			"month":          "6",
+			"day":            "15",
+			"organization":   "acme",
+			"repository":     "acme/api",
+			"product":        "Actions",
+			"sku":            "actions_linux",
+			"cost_center_id": "cc-001",
+		})
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2025,
+				"month": 6,
+				"day": 15
+			},
+			"enterprise": "GitHub",
+			"organization": "acme",
+			"repository": "acme/api",
+			"product": "Actions",
+			"usageItems": []
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &EnterpriseUsageSummaryOptions{
+		Year:         2025,
+		Month:        6,
+		Day:          15,
+		Organization: "acme",
+		Repository:   "acme/api",
+		Product:      "Actions",
+		SKU:          "actions_linux",
+		CostCenterID: "cc-001",
+	}
+	report, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", opts)
+	if err != nil {
+		t.Errorf("GetUsageSummary returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetUsageSummary returned nil response")
+	}
+
+	if report == nil {
+		t.Error("Expected non-nil report")
+	}
+}
+
+func TestEnterpriseService_GetUsageSummary_InvalidEnterprise(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Enterprise.GetUsageSummary(ctx, "%", nil)
+	testURLParseError(t, err)
+}
+
+func TestEnterpriseService_GetUsageSummary_APIError(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/test-enterprise/settings/billing/usage/summary", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprint(w, `{"message": "Not Found"}`)
+	})
+
+	ctx := t.Context()
+	_, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", nil)
+	if err == nil {
+		t.Error("GetUsageSummary should return error on 404 response")
+	}
+	if resp == nil {
+		t.Error("GetUsageSummary should return response even on error")
+	}
+}
+
+func TestEnterpriseService_GetUsageSummary_CanceledContext(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+
+	_, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", nil)
+	if err == nil {
+		t.Error("GetUsageSummary should return error with canceled context")
+	}
+	_ = resp
+}
+
+func TestEnterpriseService_GetPremiumRequestUsageReport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -349,9 +527,13 @@ func TestBillingService_GetEnterprisePremiumRequestUsageReport(t *testing.T) {
 		Month: 10,
 		User:  "testuser",
 	}
-	report, _, err := client.Billing.GetEnterprisePremiumRequestUsageReport(ctx, "test-enterprise", opts)
+	report, resp, err := client.Enterprise.GetPremiumRequestUsageReport(ctx, "test-enterprise", opts)
 	if err != nil {
-		t.Errorf("GetEnterprisePremiumRequestUsageReport returned error: %v", err)
+		t.Errorf("GetPremiumRequestUsageReport returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetPremiumRequestUsageReport returned nil response")
 	}
 
 	if report.Enterprise != "GitHub" {
@@ -365,7 +547,106 @@ func TestBillingService_GetEnterprisePremiumRequestUsageReport(t *testing.T) {
 	}
 }
 
-func TestBillingService_GetEnterpriseAICreditUsage(t *testing.T) {
+func TestEnterpriseService_GetPremiumRequestUsageReport_WithAllOptions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/test-enterprise/settings/billing/premium_request/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"year":           "2025",
+			"month":          "5",
+			"day":            "10",
+			"organization":   "acme-org",
+			"user":           "alice",
+			"model":          "GPT-4",
+			"product":        "Copilot",
+			"cost_center_id": "cc-sales",
+		})
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2025,
+				"month": 5,
+				"day": 10
+			},
+			"enterprise": "GitHub",
+			"organization": "acme-org",
+			"user": "alice",
+			"product": "Copilot",
+			"model": "GPT-4",
+			"usageItems": []
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &EnterprisePremiumRequestUsageReportOptions{
+		Year:         2025,
+		Month:        5,
+		Day:          10,
+		Organization: "acme-org",
+		User:         "alice",
+		Model:        "GPT-4",
+		Product:      "Copilot",
+		CostCenterID: "cc-sales",
+	}
+	report, resp, err := client.Enterprise.GetPremiumRequestUsageReport(ctx, "test-enterprise", opts)
+	if err != nil {
+		t.Errorf("GetPremiumRequestUsageReport returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetPremiumRequestUsageReport returned nil response")
+	}
+
+	if report == nil {
+		t.Error("Expected non-nil report")
+	}
+}
+
+func TestEnterpriseService_GetPremiumRequestUsageReport_InvalidEnterprise(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Enterprise.GetPremiumRequestUsageReport(ctx, "%", nil)
+	testURLParseError(t, err)
+}
+
+func TestEnterpriseService_GetPremiumRequestUsageReport_APIError(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/test-enterprise/settings/billing/premium_request/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusUnauthorized)
+		fmt.Fprint(w, `{"message": "Unauthorized"}`)
+	})
+
+	ctx := t.Context()
+	_, resp, err := client.Enterprise.GetPremiumRequestUsageReport(ctx, "test-enterprise", nil)
+	if err == nil {
+		t.Error("GetPremiumRequestUsageReport should return error on 401 response")
+	}
+	if resp == nil {
+		t.Error("GetPremiumRequestUsageReport should return response even on error")
+	}
+}
+
+func TestEnterpriseService_GetPremiumRequestUsageReport_CanceledContext(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+
+	_, resp, err := client.Enterprise.GetPremiumRequestUsageReport(ctx, "test-enterprise", nil)
+	if err == nil {
+		t.Error("GetPremiumRequestUsageReport should return error with canceled context")
+	}
+	_ = resp
+}
+
+func TestEnterpriseService_GetAICreditUsage(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -410,9 +691,13 @@ func TestBillingService_GetEnterpriseAICreditUsage(t *testing.T) {
 		Month: 6,
 		User:  "testuser",
 	}
-	report, _, err := client.Billing.GetEnterpriseAICreditUsage(ctx, "test-enterprise", opts)
+	report, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", opts)
 	if err != nil {
-		t.Errorf("GetEnterpriseAICreditUsage returned error: %v", err)
+		t.Errorf("GetAICreditUsage returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetAICreditUsage returned nil response")
 	}
 
 	if report.Enterprise != "GitHub" {
@@ -429,7 +714,7 @@ func TestBillingService_GetEnterpriseAICreditUsage(t *testing.T) {
 	}
 }
 
-func TestBillingService_GetEnterpriseAICreditUsage_FloatQuantities(t *testing.T) {
+func TestEnterpriseService_GetAICreditUsage_FloatQuantities(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -471,9 +756,13 @@ func TestBillingService_GetEnterpriseAICreditUsage_FloatQuantities(t *testing.T)
 		Month: 3,
 		Day:   15,
 	}
-	report, _, err := client.Billing.GetEnterpriseAICreditUsage(ctx, "test-enterprise", opts)
+	report, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", opts)
 	if err != nil {
-		t.Fatalf("GetEnterpriseAICreditUsage returned error: %v", err)
+		t.Fatalf("GetAICreditUsage returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetAICreditUsage returned nil response")
 	}
 
 	if report.UsageItems[0].GrossQuantity != 1500.5 {
@@ -484,7 +773,7 @@ func TestBillingService_GetEnterpriseAICreditUsage_FloatQuantities(t *testing.T)
 	}
 }
 
-func TestBillingService_GetEnterpriseAICreditUsage_WithCostCenter(t *testing.T) {
+func TestEnterpriseService_GetAICreditUsage_WithCostCenter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -524,9 +813,13 @@ func TestBillingService_GetEnterpriseAICreditUsage_WithCostCenter(t *testing.T) 
 	opts := &EnterprisePremiumRequestUsageReportOptions{
 		CostCenterID: "cc-engineering",
 	}
-	report, _, err := client.Billing.GetEnterpriseAICreditUsage(ctx, "test-enterprise", opts)
+	report, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", opts)
 	if err != nil {
-		t.Errorf("GetEnterpriseAICreditUsage returned error: %v", err)
+		t.Errorf("GetAICreditUsage returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetAICreditUsage returned nil response")
 	}
 
 	if report.CostCenter == nil {
@@ -540,7 +833,7 @@ func TestBillingService_GetEnterpriseAICreditUsage_WithCostCenter(t *testing.T) 
 	}
 }
 
-func TestBillingService_GetEnterpriseAICreditUsage_WithOrganization(t *testing.T) {
+func TestEnterpriseService_GetAICreditUsage_WithOrganization(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -577,12 +870,149 @@ func TestBillingService_GetEnterpriseAICreditUsage_WithOrganization(t *testing.T
 	opts := &EnterprisePremiumRequestUsageReportOptions{
 		Organization: "acme-corp",
 	}
-	report, _, err := client.Billing.GetEnterpriseAICreditUsage(ctx, "test-enterprise", opts)
+	report, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", opts)
 	if err != nil {
-		t.Errorf("GetEnterpriseAICreditUsage returned error: %v", err)
+		t.Errorf("GetAICreditUsage returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetAICreditUsage returned nil response")
 	}
 
 	if report.Organization == nil || *report.Organization != "acme-corp" {
 		t.Errorf("Expected organization acme-corp, got %v", report.Organization)
+	}
+}
+
+func TestEnterpriseService_GetAICreditUsage_InvalidEnterprise(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Enterprise.GetAICreditUsage(ctx, "%", nil)
+	testURLParseError(t, err)
+}
+
+func TestEnterpriseService_GetAICreditUsage_APIError(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/test-enterprise/settings/billing/ai_credit/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprint(w, `{"message": "Bad Request"}`)
+	})
+
+	ctx := t.Context()
+	_, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", nil)
+	if err == nil {
+		t.Error("GetAICreditUsage should return error on 400 response")
+	}
+	if resp == nil {
+		t.Error("GetAICreditUsage should return response even on error")
+	}
+}
+
+func TestEnterpriseService_GetAICreditUsage_NoItems(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/test-enterprise/settings/billing/ai_credit/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2025
+			},
+			"enterprise": "GitHub",
+			"usageItems": []
+		}`)
+	})
+
+	ctx := t.Context()
+	report, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", nil)
+	if err != nil {
+		t.Errorf("GetAICreditUsage returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetAICreditUsage returned nil response")
+	}
+
+	if len(report.UsageItems) != 0 {
+		t.Errorf("Expected 0 usage items, got %v", len(report.UsageItems))
+	}
+}
+
+func TestEnterpriseService_GetAICreditUsage_CanceledContext(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+
+	_, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", nil)
+	if err == nil {
+		t.Error("GetAICreditUsage should return error with canceled context")
+	}
+	_ = resp
+}
+
+func TestEnterpriseService_GetAICreditUsage_WithAllOptions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/test-enterprise/settings/billing/ai_credit/usage", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"year":           "2025",
+			"month":          "2",
+			"day":            "28",
+			"organization":   "tech-org",
+			"user":           "bob",
+			"model":          "GPT-4",
+			"product":        "Copilot",
+			"cost_center_id": "cc-dev",
+		})
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2025,
+				"month": 2,
+				"day": 28
+			},
+			"enterprise": "GitHub",
+			"organization": "tech-org",
+			"user": "bob",
+			"product": "Copilot",
+			"model": "GPT-4",
+			"costCenter": {
+				"id": "cc-dev",
+				"name": "Development Team"
+			},
+			"usageItems": []
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &EnterprisePremiumRequestUsageReportOptions{
+		Year:         2025,
+		Month:        2,
+		Day:          28,
+		Organization: "tech-org",
+		User:         "bob",
+		Model:        "GPT-4",
+		Product:      "Copilot",
+		CostCenterID: "cc-dev",
+	}
+	report, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", opts)
+	if err != nil {
+		t.Errorf("GetAICreditUsage returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Error("GetAICreditUsage returned nil response")
+	}
+
+	if report == nil {
+		t.Error("Expected non-nil report")
 	}
 }
