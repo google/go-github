@@ -20078,6 +20078,14 @@ func (i *IssueListByRepoOptions) GetDirection() string {
 	return i.Direction
 }
 
+// GetExcludeLabels returns the ExcludeLabels slice if it's non-nil, nil otherwise.
+func (i *IssueListByRepoOptions) GetExcludeLabels() []string {
+	if i == nil || i.ExcludeLabels == nil {
+		return nil
+	}
+	return i.ExcludeLabels
+}
+
 // GetLabels returns the Labels slice if it's non-nil, nil otherwise.
 func (i *IssueListByRepoOptions) GetLabels() []string {
 	if i == nil || i.Labels == nil {

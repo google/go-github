@@ -25392,6 +25392,17 @@ func TestIssueListByRepoOptions_GetDirection(tt *testing.T) {
 	i.GetDirection()
 }
 
+func TestIssueListByRepoOptions_GetExcludeLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	i := &IssueListByRepoOptions{ExcludeLabels: zeroValue}
+	i.GetExcludeLabels()
+	i = &IssueListByRepoOptions{}
+	i.GetExcludeLabels()
+	i = nil
+	i.GetExcludeLabels()
+}
+
 func TestIssueListByRepoOptions_GetLabels(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}

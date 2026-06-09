@@ -266,6 +266,7 @@ linters:
             - Tree.Entries
             - User.LdapDn # TODO: LDAPDN
             - UsersSearchResult.Total
+            - IssueListByRepoOptions.ExcludeLabels # url:"-labels" can't match "Labels" (already taken)
             - UsersSearchResult.Users
             - WeeklyStats.Additions
             - WeeklyStats.Commits
