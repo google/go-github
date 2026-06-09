@@ -499,8 +499,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	i := true
-	input := &Repository{HasIssues: &i}
+	input := &Repository{HasIssues: Ptr(true)}
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {

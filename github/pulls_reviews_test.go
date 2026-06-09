@@ -413,19 +413,16 @@ func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
 
 	path := "path/to/file.go"
 	body := "this is a comment body"
-	right := "RIGHT"
-	pos1 := 1
-	line1 := 11
 	badReview := &PullRequestReviewRequest{
 		Comments: []*DraftReviewComment{{
 			Path: &path,
 			Body: &body,
-			Side: &right,
-			Line: &line1,
+			Side: Ptr("RIGHT"),
+			Line: Ptr(11),
 		}, {
 			Path:     &path,
 			Body:     &body,
-			Position: &pos1,
+			Position: Ptr(1),
 		}},
 	}
 
