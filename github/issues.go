@@ -364,6 +364,10 @@ type IssueListByRepoOptions struct {
 	// Labels filters issues based on their label.
 	Labels []string `url:"labels,omitempty,comma"`
 
+	// ExcludeLabels filters issues to exclude those with the specified labels.
+	// This is an undocumented GitHub API feature.
+	ExcludeLabels []string `url:"-labels,omitempty,comma"`
+
 	// Sort specifies how to sort issues. Possible values are: created, updated,
 	// and comments. Default value is "created".
 	Sort string `url:"sort,omitempty"`

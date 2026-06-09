@@ -187,16 +187,17 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
 		testFormValues(t, r, values{
-			"milestone": "*",
-			"state":     "closed",
-			"assignee":  "a",
-			"creator":   "c",
-			"mentioned": "m",
-			"labels":    "a,b",
-			"sort":      "updated",
-			"direction": "asc",
-			"since":     referenceTime.Format(time.RFC3339),
-			"per_page":  "1",
+			"milestone":  "*",
+			"state":      "closed",
+			"assignee":   "a",
+			"creator":    "c",
+			"mentioned":  "m",
+			"labels":     "a,b",
+			"-labels":    "c,d",
+			"sort":       "updated",
+			"direction":  "asc",
+			"since":      referenceTime.Format(time.RFC3339),
+			"per_page":   "1",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)
 	})
@@ -209,6 +210,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		Creator:           "c",
 		Mentioned:         "m",
 		Labels:            []string{"a", "b"},
+		ExcludeLabels:     []string{"c", "d"},
 		Sort:              "updated",
 		Direction:         "asc",
 		Since:             referenceTime,
