@@ -3865,6 +3865,37 @@ func TestAbuseRateLimitError_Is(t *testing.T) {
 			err:        err,
 			otherError: errors.New("github"),
 		},
+		"errors are same - RetryAfter equal value but distinct pointers": {
+			wantSame: true,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors are same - RetryAfter both nil": {
+			wantSame: true,
+			err: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: nil,
+			},
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: nil,
+			},
+		},
+		"errors differ - one RetryAfter nil, other non-nil": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: nil,
+			},
+		},
 	}
 
 	for name, tc := range testcases {
