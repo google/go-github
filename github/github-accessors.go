@@ -14510,14 +14510,6 @@ func (e *EnterpriseAggregatedUsageReport) GetProduct() string {
 	return *e.Product
 }
 
-// GetRepository returns the Repository field if it's non-nil, zero value otherwise.
-func (e *EnterpriseAggregatedUsageReport) GetRepository() string {
-	if e == nil || e.Repository == nil {
-		return ""
-	}
-	return *e.Repository
-}
-
 // GetTimePeriod returns the TimePeriod field.
 func (e *EnterpriseAggregatedUsageReport) GetTimePeriod() EnterpriseUsageTimePeriod {
 	if e == nil {
@@ -14974,36 +14966,12 @@ func (e *EnterpriseListBudgets) GetTotalCount() int {
 	return *e.TotalCount
 }
 
-// GetCostCenterID returns the CostCenterID field.
-func (e *EnterprisePremiumRequestUsageReportOptions) GetCostCenterID() string {
-	if e == nil {
-		return ""
-	}
-	return e.CostCenterID
-}
-
-// GetDay returns the Day field.
-func (e *EnterprisePremiumRequestUsageReportOptions) GetDay() int {
-	if e == nil {
-		return 0
-	}
-	return e.Day
-}
-
 // GetModel returns the Model field.
 func (e *EnterprisePremiumRequestUsageReportOptions) GetModel() string {
 	if e == nil {
 		return ""
 	}
 	return e.Model
-}
-
-// GetMonth returns the Month field.
-func (e *EnterprisePremiumRequestUsageReportOptions) GetMonth() int {
-	if e == nil {
-		return 0
-	}
-	return e.Month
 }
 
 // GetOrganization returns the Organization field.
@@ -15028,14 +14996,6 @@ func (e *EnterprisePremiumRequestUsageReportOptions) GetUser() string {
 		return ""
 	}
 	return e.User
-}
-
-// GetYear returns the Year field.
-func (e *EnterprisePremiumRequestUsageReportOptions) GetYear() int {
-	if e == nil {
-		return 0
-	}
-	return e.Year
 }
 
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
@@ -15502,28 +15462,84 @@ func (e *EnterpriseUsageReportOptions) GetYear() int {
 	return e.Year
 }
 
-// GetCostCenterID returns the CostCenterID field.
-func (e *EnterpriseUsageSummaryOptions) GetCostCenterID() string {
+// GetDiscountAmount returns the DiscountAmount field.
+func (e *EnterpriseUsageSummaryItem) GetDiscountAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.DiscountAmount
+}
+
+// GetDiscountQuantity returns the DiscountQuantity field.
+func (e *EnterpriseUsageSummaryItem) GetDiscountQuantity() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.DiscountQuantity
+}
+
+// GetGrossAmount returns the GrossAmount field.
+func (e *EnterpriseUsageSummaryItem) GetGrossAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.GrossAmount
+}
+
+// GetGrossQuantity returns the GrossQuantity field.
+func (e *EnterpriseUsageSummaryItem) GetGrossQuantity() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.GrossQuantity
+}
+
+// GetNetAmount returns the NetAmount field.
+func (e *EnterpriseUsageSummaryItem) GetNetAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.NetAmount
+}
+
+// GetNetQuantity returns the NetQuantity field.
+func (e *EnterpriseUsageSummaryItem) GetNetQuantity() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.NetQuantity
+}
+
+// GetPricePerUnit returns the PricePerUnit field.
+func (e *EnterpriseUsageSummaryItem) GetPricePerUnit() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.PricePerUnit
+}
+
+// GetProduct returns the Product field.
+func (e *EnterpriseUsageSummaryItem) GetProduct() string {
 	if e == nil {
 		return ""
 	}
-	return e.CostCenterID
+	return e.Product
 }
 
-// GetDay returns the Day field.
-func (e *EnterpriseUsageSummaryOptions) GetDay() int {
+// GetSKU returns the SKU field.
+func (e *EnterpriseUsageSummaryItem) GetSKU() string {
 	if e == nil {
-		return 0
+		return ""
 	}
-	return e.Day
+	return e.SKU
 }
 
-// GetMonth returns the Month field.
-func (e *EnterpriseUsageSummaryOptions) GetMonth() int {
+// GetUnitType returns the UnitType field.
+func (e *EnterpriseUsageSummaryItem) GetUnitType() string {
 	if e == nil {
-		return 0
+		return ""
 	}
-	return e.Month
+	return e.UnitType
 }
 
 // GetOrganization returns the Organization field.
@@ -15558,12 +15574,68 @@ func (e *EnterpriseUsageSummaryOptions) GetSKU() string {
 	return e.SKU
 }
 
-// GetYear returns the Year field.
-func (e *EnterpriseUsageSummaryOptions) GetYear() int {
+// GetCostCenter returns the CostCenter field.
+func (e *EnterpriseUsageSummaryReport) GetCostCenter() *BillingCostCenter {
 	if e == nil {
-		return 0
+		return nil
 	}
-	return e.Year
+	return e.CostCenter
+}
+
+// GetEnterprise returns the Enterprise field.
+func (e *EnterpriseUsageSummaryReport) GetEnterprise() string {
+	if e == nil {
+		return ""
+	}
+	return e.Enterprise
+}
+
+// GetOrganization returns the Organization field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageSummaryReport) GetOrganization() string {
+	if e == nil || e.Organization == nil {
+		return ""
+	}
+	return *e.Organization
+}
+
+// GetProduct returns the Product field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageSummaryReport) GetProduct() string {
+	if e == nil || e.Product == nil {
+		return ""
+	}
+	return *e.Product
+}
+
+// GetRepository returns the Repository field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageSummaryReport) GetRepository() string {
+	if e == nil || e.Repository == nil {
+		return ""
+	}
+	return *e.Repository
+}
+
+// GetSKU returns the SKU field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageSummaryReport) GetSKU() string {
+	if e == nil || e.SKU == nil {
+		return ""
+	}
+	return *e.SKU
+}
+
+// GetTimePeriod returns the TimePeriod field.
+func (e *EnterpriseUsageSummaryReport) GetTimePeriod() EnterpriseUsageTimePeriod {
+	if e == nil {
+		return EnterpriseUsageTimePeriod{}
+	}
+	return e.TimePeriod
+}
+
+// GetUsageItems returns the UsageItems slice if it's non-nil, nil otherwise.
+func (e *EnterpriseUsageSummaryReport) GetUsageItems() []*EnterpriseUsageSummaryItem {
+	if e == nil || e.UsageItems == nil {
+		return nil
+	}
+	return e.UsageItems
 }
 
 // GetDay returns the Day field if it's non-nil, zero value otherwise.

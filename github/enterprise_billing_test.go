@@ -230,8 +230,8 @@ func TestEnterpriseService_GetUsageSummary(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &EnterpriseUsageSummaryOptions{
-		Year:    2025,
-		Product: "Actions",
+		EnterpriseUsageReportOptions: EnterpriseUsageReportOptions{Year: 2025},
+		Product:                      "Actions",
 	}
 	report, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", opts)
 	if err != nil {
@@ -242,12 +242,12 @@ func TestEnterpriseService_GetUsageSummary(t *testing.T) {
 		t.Error("GetUsageSummary returned nil response")
 	}
 
-	want := &EnterpriseAggregatedUsageReport{
+	want := &EnterpriseUsageSummaryReport{
 		TimePeriod: EnterpriseUsageTimePeriod{
 			Year: 2025,
 		},
 		Enterprise: "GitHub",
-		UsageItems: []*EnterpriseAggregatedUsageItem{
+		UsageItems: []*EnterpriseUsageSummaryItem{
 			{
 				Product:          "Actions",
 				SKU:              "actions_linux",
@@ -312,7 +312,7 @@ func TestEnterpriseService_GetUsageSummary_MultipleItems(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &EnterpriseUsageSummaryOptions{
-		Year: 2025,
+		EnterpriseUsageReportOptions: EnterpriseUsageReportOptions{Year: 2025},
 	}
 	report, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", opts)
 	if err != nil {
@@ -331,56 +331,6 @@ func TestEnterpriseService_GetUsageSummary_MultipleItems(t *testing.T) {
 	}
 	if report.UsageItems[1].Product != "Copilot" {
 		t.Errorf("Expected second product to be Copilot, got %v", report.UsageItems[1].Product)
-	}
-}
-
-func TestEnterpriseService_GetUsageSummary_WithRepository(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-
-	mux.HandleFunc("/enterprises/test-enterprise/settings/billing/usage/summary", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "GET")
-		testFormValues(t, r, values{
-			"repository": "acme/api",
-		})
-		fmt.Fprint(w, `{
-			"timePeriod": {
-				"year": 2025
-			},
-			"enterprise": "GitHub",
-			"repository": "acme/api",
-			"usageItems": [
-				{
-					"product": "Actions",
-					"sku": "actions_linux",
-					"unitType": "minutes",
-					"pricePerUnit": 0.008,
-					"grossQuantity": 500,
-					"grossAmount": 4.0,
-					"discountQuantity": 0,
-					"discountAmount": 0,
-					"netQuantity": 500,
-					"netAmount": 4.0
-				}
-			]
-		}`)
-	})
-
-	ctx := t.Context()
-	opts := &EnterpriseUsageSummaryOptions{
-		Repository: "acme/api",
-	}
-	report, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", opts)
-	if err != nil {
-		t.Errorf("GetUsageSummary returned error: %v", err)
-	}
-
-	if resp == nil {
-		t.Error("GetUsageSummary returned nil response")
-	}
-
-	if len(report.UsageItems) != 1 {
-		t.Errorf("Expected 1 usage item, got %v", len(report.UsageItems))
 	}
 }
 
@@ -416,14 +366,16 @@ func TestEnterpriseService_GetUsageSummary_WithAllFilters(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &EnterpriseUsageSummaryOptions{
-		Year:         2025,
-		Month:        6,
-		Day:          15,
+		EnterpriseUsageReportOptions: EnterpriseUsageReportOptions{
+			Year:         2025,
+			Month:        6,
+			Day:          15,
+			CostCenterID: "cc-001",
+		},
 		Organization: "acme",
 		Repository:   "acme/api",
 		Product:      "Actions",
 		SKU:          "actions_linux",
-		CostCenterID: "cc-001",
 	}
 	report, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", opts)
 	if err != nil {
@@ -523,9 +475,8 @@ func TestEnterpriseService_GetPremiumRequestUsageReport(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &EnterprisePremiumRequestUsageReportOptions{
-		Year:  2025,
-		Month: 10,
-		User:  "testuser",
+		EnterpriseUsageReportOptions: EnterpriseUsageReportOptions{Year: 2025, Month: 10},
+		User:                         "testuser",
 	}
 	report, resp, err := client.Enterprise.GetPremiumRequestUsageReport(ctx, "test-enterprise", opts)
 	if err != nil {
@@ -580,14 +531,16 @@ func TestEnterpriseService_GetPremiumRequestUsageReport_WithAllOptions(t *testin
 
 	ctx := t.Context()
 	opts := &EnterprisePremiumRequestUsageReportOptions{
-		Year:         2025,
-		Month:        5,
-		Day:          10,
+		EnterpriseUsageReportOptions: EnterpriseUsageReportOptions{
+			Year:         2025,
+			Month:        5,
+			Day:          10,
+			CostCenterID: "cc-sales",
+		},
 		Organization: "acme-org",
 		User:         "alice",
 		Model:        "GPT-4",
 		Product:      "Copilot",
-		CostCenterID: "cc-sales",
 	}
 	report, resp, err := client.Enterprise.GetPremiumRequestUsageReport(ctx, "test-enterprise", opts)
 	if err != nil {
@@ -687,9 +640,8 @@ func TestEnterpriseService_GetAICreditUsage(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &EnterprisePremiumRequestUsageReportOptions{
-		Year:  2025,
-		Month: 6,
-		User:  "testuser",
+		EnterpriseUsageReportOptions: EnterpriseUsageReportOptions{Year: 2025, Month: 6},
+		User:                         "testuser",
 	}
 	report, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", opts)
 	if err != nil {
@@ -752,9 +704,7 @@ func TestEnterpriseService_GetAICreditUsage_FloatQuantities(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &EnterprisePremiumRequestUsageReportOptions{
-		Year:  2025,
-		Month: 3,
-		Day:   15,
+		EnterpriseUsageReportOptions: EnterpriseUsageReportOptions{Year: 2025, Month: 3, Day: 15},
 	}
 	report, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", opts)
 	if err != nil {
@@ -811,7 +761,7 @@ func TestEnterpriseService_GetAICreditUsage_WithCostCenter(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &EnterprisePremiumRequestUsageReportOptions{
-		CostCenterID: "cc-engineering",
+		EnterpriseUsageReportOptions: EnterpriseUsageReportOptions{CostCenterID: "cc-engineering"},
 	}
 	report, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", opts)
 	if err != nil {
@@ -994,14 +944,16 @@ func TestEnterpriseService_GetAICreditUsage_WithAllOptions(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &EnterprisePremiumRequestUsageReportOptions{
-		Year:         2025,
-		Month:        2,
-		Day:          28,
+		EnterpriseUsageReportOptions: EnterpriseUsageReportOptions{
+			Year:         2025,
+			Month:        2,
+			Day:          28,
+			CostCenterID: "cc-dev",
+		},
 		Organization: "tech-org",
 		User:         "bob",
 		Model:        "GPT-4",
 		Product:      "Copilot",
-		CostCenterID: "cc-dev",
 	}
 	report, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", opts)
 	if err != nil {

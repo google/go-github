@@ -18351,17 +18351,6 @@ func TestEnterpriseAggregatedUsageReport_GetProduct(tt *testing.T) {
 	e.GetProduct()
 }
 
-func TestEnterpriseAggregatedUsageReport_GetRepository(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseAggregatedUsageReport{Repository: &zeroValue}
-	e.GetRepository()
-	e = &EnterpriseAggregatedUsageReport{}
-	e.GetRepository()
-	e = nil
-	e.GetRepository()
-}
-
 func TestEnterpriseAggregatedUsageReport_GetTimePeriod(tt *testing.T) {
 	tt.Parallel()
 	e := &EnterpriseAggregatedUsageReport{}
@@ -18926,36 +18915,12 @@ func TestEnterpriseListBudgets_GetTotalCount(tt *testing.T) {
 	e.GetTotalCount()
 }
 
-func TestEnterprisePremiumRequestUsageReportOptions_GetCostCenterID(tt *testing.T) {
-	tt.Parallel()
-	e := &EnterprisePremiumRequestUsageReportOptions{}
-	e.GetCostCenterID()
-	e = nil
-	e.GetCostCenterID()
-}
-
-func TestEnterprisePremiumRequestUsageReportOptions_GetDay(tt *testing.T) {
-	tt.Parallel()
-	e := &EnterprisePremiumRequestUsageReportOptions{}
-	e.GetDay()
-	e = nil
-	e.GetDay()
-}
-
 func TestEnterprisePremiumRequestUsageReportOptions_GetModel(tt *testing.T) {
 	tt.Parallel()
 	e := &EnterprisePremiumRequestUsageReportOptions{}
 	e.GetModel()
 	e = nil
 	e.GetModel()
-}
-
-func TestEnterprisePremiumRequestUsageReportOptions_GetMonth(tt *testing.T) {
-	tt.Parallel()
-	e := &EnterprisePremiumRequestUsageReportOptions{}
-	e.GetMonth()
-	e = nil
-	e.GetMonth()
 }
 
 func TestEnterprisePremiumRequestUsageReportOptions_GetOrganization(tt *testing.T) {
@@ -18980,14 +18945,6 @@ func TestEnterprisePremiumRequestUsageReportOptions_GetUser(tt *testing.T) {
 	e.GetUser()
 	e = nil
 	e.GetUser()
-}
-
-func TestEnterprisePremiumRequestUsageReportOptions_GetYear(tt *testing.T) {
-	tt.Parallel()
-	e := &EnterprisePremiumRequestUsageReportOptions{}
-	e.GetYear()
-	e = nil
-	e.GetYear()
 }
 
 func TestEnterpriseRunnerGroup_GetAllowsPublicRepositories(tt *testing.T) {
@@ -19553,28 +19510,84 @@ func TestEnterpriseUsageReportOptions_GetYear(tt *testing.T) {
 	e.GetYear()
 }
 
-func TestEnterpriseUsageSummaryOptions_GetCostCenterID(tt *testing.T) {
+func TestEnterpriseUsageSummaryItem_GetDiscountAmount(tt *testing.T) {
 	tt.Parallel()
-	e := &EnterpriseUsageSummaryOptions{}
-	e.GetCostCenterID()
+	e := &EnterpriseUsageSummaryItem{}
+	e.GetDiscountAmount()
 	e = nil
-	e.GetCostCenterID()
+	e.GetDiscountAmount()
 }
 
-func TestEnterpriseUsageSummaryOptions_GetDay(tt *testing.T) {
+func TestEnterpriseUsageSummaryItem_GetDiscountQuantity(tt *testing.T) {
 	tt.Parallel()
-	e := &EnterpriseUsageSummaryOptions{}
-	e.GetDay()
+	e := &EnterpriseUsageSummaryItem{}
+	e.GetDiscountQuantity()
 	e = nil
-	e.GetDay()
+	e.GetDiscountQuantity()
 }
 
-func TestEnterpriseUsageSummaryOptions_GetMonth(tt *testing.T) {
+func TestEnterpriseUsageSummaryItem_GetGrossAmount(tt *testing.T) {
 	tt.Parallel()
-	e := &EnterpriseUsageSummaryOptions{}
-	e.GetMonth()
+	e := &EnterpriseUsageSummaryItem{}
+	e.GetGrossAmount()
 	e = nil
-	e.GetMonth()
+	e.GetGrossAmount()
+}
+
+func TestEnterpriseUsageSummaryItem_GetGrossQuantity(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseUsageSummaryItem{}
+	e.GetGrossQuantity()
+	e = nil
+	e.GetGrossQuantity()
+}
+
+func TestEnterpriseUsageSummaryItem_GetNetAmount(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseUsageSummaryItem{}
+	e.GetNetAmount()
+	e = nil
+	e.GetNetAmount()
+}
+
+func TestEnterpriseUsageSummaryItem_GetNetQuantity(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseUsageSummaryItem{}
+	e.GetNetQuantity()
+	e = nil
+	e.GetNetQuantity()
+}
+
+func TestEnterpriseUsageSummaryItem_GetPricePerUnit(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseUsageSummaryItem{}
+	e.GetPricePerUnit()
+	e = nil
+	e.GetPricePerUnit()
+}
+
+func TestEnterpriseUsageSummaryItem_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseUsageSummaryItem{}
+	e.GetProduct()
+	e = nil
+	e.GetProduct()
+}
+
+func TestEnterpriseUsageSummaryItem_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseUsageSummaryItem{}
+	e.GetSKU()
+	e = nil
+	e.GetSKU()
+}
+
+func TestEnterpriseUsageSummaryItem_GetUnitType(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseUsageSummaryItem{}
+	e.GetUnitType()
+	e = nil
+	e.GetUnitType()
 }
 
 func TestEnterpriseUsageSummaryOptions_GetOrganization(tt *testing.T) {
@@ -19609,12 +19622,83 @@ func TestEnterpriseUsageSummaryOptions_GetSKU(tt *testing.T) {
 	e.GetSKU()
 }
 
-func TestEnterpriseUsageSummaryOptions_GetYear(tt *testing.T) {
+func TestEnterpriseUsageSummaryReport_GetCostCenter(tt *testing.T) {
 	tt.Parallel()
-	e := &EnterpriseUsageSummaryOptions{}
-	e.GetYear()
+	e := &EnterpriseUsageSummaryReport{}
+	e.GetCostCenter()
 	e = nil
-	e.GetYear()
+	e.GetCostCenter()
+}
+
+func TestEnterpriseUsageSummaryReport_GetEnterprise(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseUsageSummaryReport{}
+	e.GetEnterprise()
+	e = nil
+	e.GetEnterprise()
+}
+
+func TestEnterpriseUsageSummaryReport_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseUsageSummaryReport{Organization: &zeroValue}
+	e.GetOrganization()
+	e = &EnterpriseUsageSummaryReport{}
+	e.GetOrganization()
+	e = nil
+	e.GetOrganization()
+}
+
+func TestEnterpriseUsageSummaryReport_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseUsageSummaryReport{Product: &zeroValue}
+	e.GetProduct()
+	e = &EnterpriseUsageSummaryReport{}
+	e.GetProduct()
+	e = nil
+	e.GetProduct()
+}
+
+func TestEnterpriseUsageSummaryReport_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseUsageSummaryReport{Repository: &zeroValue}
+	e.GetRepository()
+	e = &EnterpriseUsageSummaryReport{}
+	e.GetRepository()
+	e = nil
+	e.GetRepository()
+}
+
+func TestEnterpriseUsageSummaryReport_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseUsageSummaryReport{SKU: &zeroValue}
+	e.GetSKU()
+	e = &EnterpriseUsageSummaryReport{}
+	e.GetSKU()
+	e = nil
+	e.GetSKU()
+}
+
+func TestEnterpriseUsageSummaryReport_GetTimePeriod(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseUsageSummaryReport{}
+	e.GetTimePeriod()
+	e = nil
+	e.GetTimePeriod()
+}
+
+func TestEnterpriseUsageSummaryReport_GetUsageItems(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*EnterpriseUsageSummaryItem{}
+	e := &EnterpriseUsageSummaryReport{UsageItems: zeroValue}
+	e.GetUsageItems()
+	e = &EnterpriseUsageSummaryReport{}
+	e.GetUsageItems()
+	e = nil
+	e.GetUsageItems()
 }
 
 func TestEnterpriseUsageTimePeriod_GetDay(tt *testing.T) {
