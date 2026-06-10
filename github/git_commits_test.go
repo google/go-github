@@ -131,14 +131,12 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	signature := "----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"
-
 	input := Commit{
 		Message: Ptr("Commit Message."),
 		Tree:    &Tree{SHA: Ptr("t")},
 		Parents: []*Commit{{SHA: Ptr("p")}},
 		Verification: &SignatureVerification{
-			Signature: &signature,
+			Signature: Ptr("----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"),
 		},
 	}
 
@@ -316,9 +314,8 @@ func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
 func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
 	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
-	emptyString := ""
 	_, err := createSignatureMessage(&createCommit{
-		Message: &emptyString,
+		Message: Ptr(""),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
 			Name:  Ptr("go-github"),

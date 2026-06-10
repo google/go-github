@@ -997,11 +997,10 @@ func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"id":55}`)
 	})
-	archived := false
 	ctx := t.Context()
 	const methodName = "UpdateUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
+		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: Ptr(false)})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

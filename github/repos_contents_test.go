@@ -806,11 +806,9 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 			}
 		}`)
 	})
-	message := "m"
-	content := []byte("c")
 	repositoryContentsOptions := &RepositoryContentFileOptions{
-		Message:   &message,
-		Content:   content,
+		Message:   Ptr("m"),
+		Content:   []byte("c"),
 		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
 	ctx := t.Context()
@@ -860,13 +858,10 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 			}
 		}`)
 	})
-	message := "m"
-	content := []byte("c")
-	sha := "f5f369044773ff9c6383c087466d12adb6fa0828"
 	repositoryContentsOptions := &RepositoryContentFileOptions{
-		Message:   &message,
-		Content:   content,
-		SHA:       &sha,
+		Message:   Ptr("m"),
+		Content:   []byte("c"),
+		SHA:       Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
 	ctx := t.Context()
@@ -914,11 +909,9 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 			}
 		}`)
 	})
-	message := "m"
-	sha := "f5f369044773ff9c6383c087466d12adb6fa0828"
 	repositoryContentsOptions := &RepositoryContentFileOptions{
-		Message:   &message,
-		SHA:       &sha,
+		Message:   Ptr("m"),
+		SHA:       Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
 	ctx := t.Context()

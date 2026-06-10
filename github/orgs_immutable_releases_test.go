@@ -31,10 +31,9 @@ func TestOrganizationsService_GetImmutableReleasesSettings(t *testing.T) {
 		t.Errorf("Organizations.GetImmutableReleasesSettings returned error: %v", err)
 	}
 
-	wantURL := "https://api.github.com/orgs/o/r"
 	want := &ImmutableReleaseSettings{
 		EnforcedRepositories:    Ptr("selected"),
-		SelectedRepositoriesURL: &wantURL,
+		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/o/r"),
 	}
 
 	if !cmp.Equal(settings, want) {
