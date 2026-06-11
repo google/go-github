@@ -884,14 +884,12 @@ func (c *Client) NewFormRequest(ctx context.Context, urlStr string, body io.Read
 }
 
 // checkURLPathTraversal returns ErrPathForbidden if urlStr contains ".." as a
-// path segment (e.g. "a/../b"), preventing path traversal attacks. It does not
-// match ".." embedded within a segment (e.g. "file..txt"). The check is
-// performed only on the path portion of the URL, ignoring any query string or
-// fragment.
+// path segment (e.g. "a/../b"), preventing path traversal attacks. Percent-
+// encoded equivalents such as "%2e%2e" are also rejected because url.Parse
+// decodes them to ".." before the check runs. It does not match ".." embedded
+// within a segment (e.g. "file..txt"). The check is performed only on the path
+// portion of the URL, ignoring any query string or fragment.
 func checkURLPathTraversal(urlStr string) error {
-	if !strings.Contains(urlStr, "..") {
-		return nil
-	}
 	u, err := url.Parse(urlStr)
 	if err != nil {
 		return err
