@@ -1282,6 +1282,17 @@ func TestAgentTaskArtifactData_GetID(tt *testing.T) {
 	a.GetID()
 }
 
+func TestAgentTaskCreator_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AgentTaskCreator{ID: &zeroValue}
+	a.GetID()
+	a = &AgentTaskCreator{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
 func TestAgentTaskList_GetTasks(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*AgentTask{}

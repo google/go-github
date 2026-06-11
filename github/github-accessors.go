@@ -887,7 +887,7 @@ func (a *AgentTask) GetCreatedAt() Timestamp {
 }
 
 // GetCreator returns the Creator field.
-func (a *AgentTask) GetCreator() *User {
+func (a *AgentTask) GetCreator() *AgentTaskCreator {
 	if a == nil {
 		return nil
 	}
@@ -1032,6 +1032,14 @@ func (a *AgentTaskArtifactData) GetHeadRef() string {
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (a *AgentTaskArtifactData) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskCreator) GetID() int64 {
 	if a == nil || a.ID == nil {
 		return 0
 	}

@@ -92,7 +92,7 @@ func agentTask() *AgentTask {
 		URL:          Ptr("https://api.github.com/agents/repos/octocat/hello-world/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
 		HTMLURL:      Ptr("https://github.com/octocat/hello-world/copilot/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
 		Name:         Ptr("Fix the login button on the homepage"),
-		Creator:      &User{ID: Ptr(int64(1))},
+		Creator:      &AgentTaskCreator{ID: Ptr(int64(1))},
 		CreatorType:  Ptr("user"),
 		Owner:        &AgentTaskOwner{ID: Ptr(int64(2))},
 		Repository:   &AgentTaskRepository{ID: Ptr(int64(1296269))},
@@ -181,7 +181,7 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 		TotalActiveCount:   Ptr(5),
 		TotalArchivedCount: Ptr(2),
 	}
-	if diff := cmp.Diff(want, tasks, cmpJSONRawMessageComparator()); diff != "" {
+	if diff := cmp.Diff(want, tasks); diff != "" {
 		t.Errorf("AgentTasks.ListByRepo mismatch (-want +got):\n%v", diff)
 	}
 	if got, want := resp.NextPage, 3; got != want {
@@ -207,7 +207,7 @@ func TestAgentTasksService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CreateAgentTaskRequest{
+	input := CreateAgentTaskRequest{
 		Prompt:            "Fix the login button on the homepage",
 		Model:             Ptr("gpt-5.3-codex"),
 		CreatePullRequest: Ptr(true),
@@ -229,7 +229,7 @@ func TestAgentTasksService_Create(t *testing.T) {
 	if err != nil {
 		t.Fatalf("AgentTasks.Create returned error: %v", err)
 	}
-	if diff := cmp.Diff(agentTask(), task, cmpJSONRawMessageComparator()); diff != "" {
+	if diff := cmp.Diff(agentTask(), task); diff != "" {
 		t.Errorf("AgentTasks.Create mismatch (-want +got):\n%v", diff)
 	}
 
@@ -264,7 +264,7 @@ func TestAgentTasksService_GetByRepoAndID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("AgentTasks.GetByRepoAndID returned error: %v", err)
 	}
-	if diff := cmp.Diff(agentTaskWithSessions(), task, cmpJSONRawMessageComparator()); diff != "" {
+	if diff := cmp.Diff(agentTaskWithSessions(), task); diff != "" {
 		t.Errorf("AgentTasks.GetByRepoAndID mismatch (-want +got):\n%v", diff)
 	}
 
@@ -323,7 +323,7 @@ func TestAgentTasksService_List(t *testing.T) {
 		TotalActiveCount:   Ptr(5),
 		TotalArchivedCount: Ptr(2),
 	}
-	if diff := cmp.Diff(want, tasks, cmpJSONRawMessageComparator()); diff != "" {
+	if diff := cmp.Diff(want, tasks); diff != "" {
 		t.Errorf("AgentTasks.List mismatch (-want +got):\n%v", diff)
 	}
 	if got, want := resp.NextPage, 3; got != want {
@@ -356,7 +356,7 @@ func TestAgentTasksService_Get(t *testing.T) {
 	if err != nil {
 		t.Fatalf("AgentTasks.Get returned error: %v", err)
 	}
-	if diff := cmp.Diff(agentTaskWithSessions(), task, cmpJSONRawMessageComparator()); diff != "" {
+	if diff := cmp.Diff(agentTaskWithSessions(), task); diff != "" {
 		t.Errorf("AgentTasks.Get mismatch (-want +got):\n%v", diff)
 	}
 

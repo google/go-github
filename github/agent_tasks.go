@@ -23,7 +23,7 @@ type AgentTask struct {
 	URL          *string              `json:"url,omitempty"`
 	HTMLURL      *string              `json:"html_url,omitempty"`
 	Name         *string              `json:"name,omitempty"`
-	Creator      *User                `json:"creator,omitempty"`
+	Creator      *AgentTaskCreator    `json:"creator,omitempty"`
 	CreatorType  *string              `json:"creator_type,omitempty"`
 	Owner        *AgentTaskOwner      `json:"owner,omitempty"`
 	Repository   *AgentTaskRepository `json:"repository,omitempty"`
@@ -34,6 +34,11 @@ type AgentTask struct {
 	CreatedAt    Timestamp            `json:"created_at"`
 	UpdatedAt    *Timestamp           `json:"updated_at,omitempty"`
 	Sessions     []*AgentTaskSession  `json:"sessions,omitempty"`
+}
+
+// AgentTaskCreator represents an agent task creator.
+type AgentTaskCreator struct {
+	ID *int64 `json:"id,omitempty"`
 }
 
 // AgentTaskOwner represents an agent task owner.
@@ -169,16 +174,16 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/rest/agent-tasks/agent-tasks?apiVersion=2022-11-28#start-a-task
 //
 //meta:operation POST /agents/repos/{owner}/{repo}/tasks
-func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, opts *CreateAgentTaskRequest) (*AgentTask, *Response, error) {
+func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req CreateAgentTaskRequest) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts, WithVersion(api20260310))
+	request, err := s.client.NewRequest(ctx, "POST", u, req, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var task *AgentTask
-	resp, err := s.client.Do(req, &task)
+	resp, err := s.client.Do(request, &task)
 	if err != nil {
 		return nil, resp, err
 	}
