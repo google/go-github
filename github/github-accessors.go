@@ -1070,12 +1070,12 @@ func (a *AgentTaskList) GetTotalArchivedCount() int {
 	return *a.TotalArchivedCount
 }
 
-// GetCreatorIDs returns the CreatorIDs slice if it's non-nil, nil otherwise.
-func (a *AgentTaskListByRepoOptions) GetCreatorIDs() []int64 {
-	if a == nil || a.CreatorIDs == nil {
+// GetCreatorID returns the CreatorID slice if it's non-nil, nil otherwise.
+func (a *AgentTaskListByRepoOptions) GetCreatorID() []int64 {
+	if a == nil || a.CreatorID == nil {
 		return nil
 	}
-	return a.CreatorIDs
+	return a.CreatorID
 }
 
 // GetDirection returns the Direction field.
@@ -1094,12 +1094,12 @@ func (a *AgentTaskListOptions) GetIsArchived() bool {
 	return a.IsArchived
 }
 
-// GetSince returns the Since field if it's non-nil, zero value otherwise.
+// GetSince returns the Since field.
 func (a *AgentTaskListOptions) GetSince() time.Time {
-	if a == nil || a.Since == nil {
+	if a == nil {
 		return time.Time{}
 	}
-	return *a.Since
+	return a.Since
 }
 
 // GetSort returns the Sort field.

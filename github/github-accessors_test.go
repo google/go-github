@@ -1326,15 +1326,15 @@ func TestAgentTaskList_GetTotalArchivedCount(tt *testing.T) {
 	a.GetTotalArchivedCount()
 }
 
-func TestAgentTaskListByRepoOptions_GetCreatorIDs(tt *testing.T) {
+func TestAgentTaskListByRepoOptions_GetCreatorID(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []int64{}
-	a := &AgentTaskListByRepoOptions{CreatorIDs: zeroValue}
-	a.GetCreatorIDs()
+	a := &AgentTaskListByRepoOptions{CreatorID: zeroValue}
+	a.GetCreatorID()
 	a = &AgentTaskListByRepoOptions{}
-	a.GetCreatorIDs()
+	a.GetCreatorID()
 	a = nil
-	a.GetCreatorIDs()
+	a.GetCreatorID()
 }
 
 func TestAgentTaskListOptions_GetDirection(tt *testing.T) {
@@ -1355,10 +1355,7 @@ func TestAgentTaskListOptions_GetIsArchived(tt *testing.T) {
 
 func TestAgentTaskListOptions_GetSince(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue time.Time
-	a := &AgentTaskListOptions{Since: &zeroValue}
-	a.GetSince()
-	a = &AgentTaskListOptions{}
+	a := &AgentTaskListOptions{}
 	a.GetSince()
 	a = nil
 	a.GetSince()

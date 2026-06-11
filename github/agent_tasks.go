@@ -108,7 +108,7 @@ type AgentTaskListOptions struct {
 	IsArchived bool `url:"is_archived,omitempty"`
 
 	// Since filters tasks updated at or after this time.
-	Since *time.Time `url:"since,omitempty"`
+	Since time.Time `url:"since,omitempty"`
 
 	ListOptions
 }
@@ -117,7 +117,7 @@ type AgentTaskListOptions struct {
 type AgentTaskListByRepoOptions struct {
 	AgentTaskListOptions
 
-	// CreatorIDs filters tasks by creator user IDs.
+	// CreatorID filters tasks by creator user IDs.
 	CreatorID []int64 `url:"creator_id,omitempty"`
 }
 

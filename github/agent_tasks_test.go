@@ -84,9 +84,6 @@ func agentTaskWithSessionsJSON() string {
 }
 
 func agentTask() *AgentTask {
-	createdAt := &Timestamp{time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)}
-	updatedAt := &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)}
-
 	return &AgentTask{
 		ID:           "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
 		URL:          Ptr("https://api.github.com/agents/repos/octocat/hello-world/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
@@ -105,15 +102,13 @@ func agentTask() *AgentTask {
 				Data:     &AgentTaskArtifactData{ID: Ptr(int64(42))},
 			},
 		},
-		CreatedAt: *createdAt,
-		UpdatedAt: updatedAt,
+		CreatedAt: Timestamp{time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)},
+		UpdatedAt: &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)},
 	}
 }
 
 func agentTaskWithSessions() *AgentTask {
 	task := agentTask()
-	createdAt := &Timestamp{time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)}
-	updatedAt := &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)}
 
 	task.Sessions = []*AgentTaskSession{
 		{
@@ -128,9 +123,9 @@ func agentTaskWithSessions() *AgentTask {
 			HeadRef:     Ptr("copilot/fix-1"),
 			BaseRef:     Ptr("main"),
 			Model:       Ptr("claude-sonnet-4.6"),
-			CreatedAt:   *createdAt,
-			UpdatedAt:   updatedAt,
-			CompletedAt: updatedAt,
+			CreatedAt:   Timestamp{time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)},
+			UpdatedAt:   &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)},
+			CompletedAt: &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)},
 		},
 	}
 
@@ -164,10 +159,10 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 			Direction:   "asc",
 			State:       "queued,completed",
 			IsArchived:  true,
-			Since:       Ptr(time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)),
+			Since:       time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC),
 			ListOptions: ListOptions{Page: 2, PerPage: 1},
 		},
-		CreatorIDs: []int64{1, 2},
+		CreatorID: []int64{1, 2},
 	}
 
 	ctx := t.Context()
@@ -308,7 +303,7 @@ func TestAgentTasksService_List(t *testing.T) {
 		Direction:   "desc",
 		State:       "completed",
 		IsArchived:  true,
-		Since:       Ptr(time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)),
+		Since:       time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC),
 		ListOptions: ListOptions{Page: 2, PerPage: 1},
 	}
 
