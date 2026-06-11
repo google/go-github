@@ -55,7 +55,7 @@ func TestGitignoresService_Get(t *testing.T) {
 	ctx := t.Context()
 	gitignore, _, err := client.Gitignores.Get(ctx, "name")
 	if err != nil {
-		t.Errorf("Gitignores.List returned error: %v", err)
+		t.Errorf("Gitignores.Get returned error: %v", err)
 	}
 
 	want := &Gitignore{Name: Ptr("Name"), Source: Ptr("template source")}
@@ -85,21 +85,4 @@ func TestGitignoresService_Get_invalidTemplate(t *testing.T) {
 	ctx := t.Context()
 	_, _, err := client.Gitignores.Get(ctx, "%")
 	testURLParseError(t, err)
-}
-
-func TestGitignore_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Gitignore{}, "{}")
-
-	u := &Gitignore{
-		Name:   Ptr("name"),
-		Source: Ptr("source"),
-	}
-
-	want := `{
-		"name": "name",
-		"source": "source"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

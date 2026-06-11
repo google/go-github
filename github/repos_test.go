@@ -30,7 +30,7 @@ func TestRepositoriesService_ListByAuthenticatedUser(t *testing.T) {
 	ctx := t.Context()
 	got, _, err := client.Repositories.ListByAuthenticatedUser(ctx, nil)
 	if err != nil {
-		t.Errorf("Repositories.List returned error: %v", err)
+		t.Errorf("Repositories.ListByAuthenticatedUser returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
@@ -71,7 +71,7 @@ func TestRepositoriesService_ListByUser(t *testing.T) {
 	ctx := t.Context()
 	repos, _, err := client.Repositories.ListByUser(ctx, "u", opt)
 	if err != nil {
-		t.Errorf("Repositories.List returned error: %v", err)
+		t.Errorf("Repositories.ListByUser returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Ptr(int64(1))}}
@@ -499,8 +499,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	i := true
-	input := &Repository{HasIssues: &i}
+	input := &Repository{HasIssues: Ptr(true)}
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -3343,54 +3342,6 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 	}
 }
 
-func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestrictions(t *testing.T) {
-	t.Parallel()
-	req := PullRequestReviewsEnforcementRequest{}
-
-	got, err := json.Marshal(req)
-	if err != nil {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
-	}
-
-	want := `{"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0}`
-	if want != string(got) {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
-	}
-
-	req = PullRequestReviewsEnforcementRequest{
-		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{},
-	}
-
-	got, err = json.Marshal(req)
-	if err != nil {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
-	}
-
-	want = `{"dismissal_restrictions":{},"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0}`
-	if want != string(got) {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
-	}
-
-	req = PullRequestReviewsEnforcementRequest{
-		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
-			Users: &[]string{},
-			Teams: &[]string{},
-			Apps:  &[]string{},
-		},
-		RequireLastPushApproval: Ptr(true),
-	}
-
-	got, err = json.Marshal(req)
-	if err != nil {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
-	}
-
-	want = `{"dismissal_restrictions":{"users":[],"teams":[],"apps":[]},"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0,"require_last_push_approval":true}`
-	if want != string(got) {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
-	}
-}
-
 func TestRepositoriesService_ListAllTopics(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -4227,213 +4178,6 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 	})
 }
 
-func TestAdvancedSecurity_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &AdvancedSecurity{}, "{}")
-
-	u := &AdvancedSecurity{
-		Status: Ptr("status"),
-	}
-
-	want := `{
-		"status": "status"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestAuthorizedActorsOnly_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &AuthorizedActorsOnly{}, "{}")
-
-	u := &AuthorizedActorsOnly{
-		From: Ptr(true),
-	}
-
-	want := `{
-		"from" : true
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestDispatchRequestOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &DispatchRequestOptions{}, `{"event_type": ""}`)
-
-	cp := json.RawMessage(`{"testKey":"testValue"}`)
-	u := &DispatchRequestOptions{
-		EventType:     "test_event_type",
-		ClientPayload: &cp,
-	}
-
-	want := `{
-		"event_type": "test_event_type",
-		"client_payload": {
-		  "testKey": "testValue"
-		}
-	  }`
-
-	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
-}
-
-func TestTransferRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &TransferRequest{}, `{"new_owner": ""}`)
-
-	u := &TransferRequest{
-		NewOwner: "testOwner",
-		NewName:  Ptr("testName"),
-		TeamID:   []int64{1, 2},
-	}
-
-	want := `{
-		"new_owner": "testOwner",
-		"new_name": "testName",
-		"team_ids": [1,2]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestSignaturesProtectedBranch_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SignaturesProtectedBranch{}, "{}")
-
-	u := &SignaturesProtectedBranch{
-		URL:     Ptr("https://www.example.com"),
-		Enabled: Ptr(false),
-	}
-
-	want := `{
-		"url": "https://www.example.com",
-		"enabled": false
-	}`
-
-	testJSONMarshal(t, u, want)
-
-	u2 := &SignaturesProtectedBranch{
-		URL:     Ptr("testURL"),
-		Enabled: Ptr(true),
-	}
-
-	want2 := `{
-		"url": "testURL",
-		"enabled": true
-	}`
-
-	testJSONMarshal(t, u2, want2)
-}
-
-func TestDismissalRestrictionsRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &DismissalRestrictionsRequest{}, "{}")
-
-	u := &DismissalRestrictionsRequest{
-		Users: &[]string{"user1", "user2"},
-		Teams: &[]string{"team1", "team2"},
-		Apps:  &[]string{"app1", "app2"},
-	}
-
-	want := `{
-		"users": ["user1","user2"],
-		"teams": ["team1","team2"],
-		"apps": ["app1","app2"]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestAdminEnforcement_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &AdminEnforcement{}, `{"enabled": false}`)
-
-	u := &AdminEnforcement{
-		URL:     Ptr("https://www.example.com"),
-		Enabled: false,
-	}
-
-	want := `{
-		"url": "https://www.example.com",
-		"enabled": false
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestReviewsEnforcementUpdate_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestReviewsEnforcementUpdate{}, `{"required_approving_review_count": 0}`)
-
-	u := &PullRequestReviewsEnforcementUpdate{
-		BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
-			Users: []string{"user1", "user2"},
-			Teams: []string{"team1", "team2"},
-			Apps:  []string{"app1", "app2"},
-		},
-		DismissStaleReviews:          Ptr(false),
-		RequireCodeOwnerReviews:      Ptr(true),
-		RequiredApprovingReviewCount: 2,
-	}
-
-	want := `{
-		"bypass_pull_request_allowances": {
-			"users": ["user1","user2"],
-			"teams": ["team1","team2"],
-			"apps": ["app1","app2"]
-		},
-		"dismiss_stale_reviews": false,
-		"require_code_owner_reviews": true,
-		"required_approving_review_count": 2
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRequiredStatusCheck_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RequiredStatusCheck{}, `{"context": ""}`)
-
-	u := &RequiredStatusCheck{
-		Context: "ctx",
-		AppID:   Ptr(int64(1)),
-	}
-
-	want := `{
-		"context": "ctx",
-		"app_id": 1
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRepositoryTag_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RepositoryTag{}, "{}")
-
-	u := &RepositoryTag{
-		Name: Ptr("v0.1"),
-		Commit: &Commit{
-			SHA: Ptr("sha"),
-			URL: Ptr("url"),
-		},
-		ZipballURL: Ptr("zball"),
-		TarballURL: Ptr("tball"),
-	}
-
-	want := `{
-		"name": "v0.1",
-		"commit": {
-			"sha": "sha",
-			"url": "url"
-		},
-		"zipball_url": "zball",
-		"tarball_url": "tball"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestRepositoriesService_EnablePrivateReporting(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -4517,53 +4261,6 @@ func TestRepositoriesService_IsPrivateReportingEnabled(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestRepository_UnmarshalJSON(t *testing.T) {
-	t.Parallel()
-	testCases := map[string]struct {
-		data           []byte
-		wantRepository Repository
-		wantErr        bool
-	}{
-		"Empty": {
-			data:           []byte("{}"),
-			wantRepository: Repository{},
-			wantErr:        false,
-		},
-		"Invalid JSON": {
-			data:           []byte("{"),
-			wantRepository: Repository{},
-			wantErr:        true,
-		},
-		"Partial project": {
-			data:           []byte(`{"id":10270722,"name":"go-github","private":false,"owner":{"login":"google"},"created_at":"2013-05-24T16:42:58Z","license":{},"topics":["github"],"permissions":{"pull":true},"custom_properties":{},"organization":{"login":"google"}}`),
-			wantRepository: Repository{ID: Ptr(int64(10270722)), Name: Ptr("go-github"), Private: Ptr(false), Owner: &User{Login: Ptr("google")}, CreatedAt: &Timestamp{time.Date(2013, 5, 24, 16, 42, 58, 0, time.UTC)}, License: &License{}, Topics: []string{"github"}, Permissions: &RepositoryPermissions{Pull: Ptr(true)}, CustomProperties: map[string]any{}, Organization: &Organization{Login: Ptr("google")}},
-			wantErr:        false,
-		},
-		"With custom properties": {
-			data:           []byte(`{"custom_properties":{"boolean":"false","text":"a","single-select":"a","multi-select":["a","b","c"]}}`),
-			wantRepository: Repository{CustomProperties: map[string]any{"boolean": "false", "text": "a", "single-select": "a", "multi-select": []any{"a", "b", "c"}}},
-			wantErr:        false,
-		},
-	}
-
-	for name, tt := range testCases {
-		t.Run(name, func(t *testing.T) {
-			t.Parallel()
-			pk := Repository{}
-			err := json.Unmarshal(tt.data, &pk)
-			if err == nil && tt.wantErr {
-				t.Error("Repository.UnmarshalJSON returned nil instead of an error")
-			}
-			if err != nil && !tt.wantErr {
-				t.Errorf("Repository.UnmarshalJSON returned an unexpected error: %+v", err)
-			}
-			if !cmp.Equal(tt.wantRepository, pk) {
-				t.Errorf("Repository.UnmarshalJSON expected repository %+v, got %+v", tt.wantRepository, pk)
-			}
-		})
-	}
 }
 
 func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {

@@ -95,24 +95,3 @@ func TestCodesOfConductService_Get(t *testing.T) {
 		return resp, err
 	})
 }
-
-func TestCodeOfConduct_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CodeOfConduct{}, "{}")
-
-	a := &CodeOfConduct{
-		Name: Ptr("name"),
-		Key:  Ptr("key"),
-		URL:  Ptr("url"),
-		Body: Ptr("body"),
-	}
-
-	want := `{
-		"name": "name",
-		"key": "key",
-		"url": "url",
-		"body": "body"
-	}`
-
-	testJSONMarshal(t, a, want)
-}

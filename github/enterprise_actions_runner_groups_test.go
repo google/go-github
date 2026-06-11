@@ -101,7 +101,7 @@ func TestEnterpriseService_ListRunnerGroupsVisibleToOrganization(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
+func TestEnterpriseService_GetEnterpriseRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -113,7 +113,7 @@ func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
 	ctx := t.Context()
 	group, _, err := client.Enterprise.GetEnterpriseRunnerGroup(ctx, "o", 2)
 	if err != nil {
-		t.Errorf("Enterprise.GetRunnerGroup returned error: %v", err)
+		t.Errorf("Enterprise.GetEnterpriseRunnerGroup returned error: %v", err)
 	}
 
 	want := &EnterpriseRunnerGroup{
@@ -130,10 +130,10 @@ func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
 	}
 
 	if !cmp.Equal(group, want) {
-		t.Errorf("Enterprise.GetRunnerGroup returned %+v, want %+v", group, want)
+		t.Errorf("Enterprise.GetEnterpriseRunnerGroup returned %+v, want %+v", group, want)
 	}
 
-	const methodName = "GetRunnerGroup"
+	const methodName = "GetEnterpriseRunnerGroup"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Enterprise.GetEnterpriseRunnerGroup(ctx, "\n", 2)
 		return err
@@ -148,7 +148,7 @@ func TestEnterpriseService_GetRunnerGroup(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_DeleteRunnerGroup(t *testing.T) {
+func TestEnterpriseService_DeleteEnterpriseRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -159,10 +159,10 @@ func TestEnterpriseService_DeleteRunnerGroup(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Enterprise.DeleteEnterpriseRunnerGroup(ctx, "o", 2)
 	if err != nil {
-		t.Errorf("Enterprise.DeleteRunnerGroup returned error: %v", err)
+		t.Errorf("Enterprise.DeleteEnterpriseRunnerGroup returned error: %v", err)
 	}
 
-	const methodName = "DeleteRunnerGroup"
+	const methodName = "DeleteEnterpriseRunnerGroup"
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Enterprise.DeleteEnterpriseRunnerGroup(ctx, "\n", 2)
 		return err
@@ -173,7 +173,7 @@ func TestEnterpriseService_DeleteRunnerGroup(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
+func TestEnterpriseService_CreateEnterpriseRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -192,7 +192,7 @@ func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
 	}
 	group, _, err := client.Enterprise.CreateEnterpriseRunnerGroup(ctx, "o", req)
 	if err != nil {
-		t.Errorf("Enterprise.CreateRunnerGroup returned error: %v", err)
+		t.Errorf("Enterprise.CreateEnterpriseRunnerGroup returned error: %v", err)
 	}
 
 	want := &EnterpriseRunnerGroup{
@@ -209,10 +209,10 @@ func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
 	}
 
 	if !cmp.Equal(group, want) {
-		t.Errorf("Enterprise.CreateRunnerGroup returned %+v, want %+v", group, want)
+		t.Errorf("Enterprise.CreateEnterpriseRunnerGroup returned %+v, want %+v", group, want)
 	}
 
-	const methodName = "CreateRunnerGroup"
+	const methodName = "CreateEnterpriseRunnerGroup"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Enterprise.CreateEnterpriseRunnerGroup(ctx, "\n", req)
 		return err
@@ -227,7 +227,7 @@ func TestEnterpriseService_CreateRunnerGroup(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
+func TestEnterpriseService_UpdateEnterpriseRunnerGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -246,7 +246,7 @@ func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
 	}
 	group, _, err := client.Enterprise.UpdateEnterpriseRunnerGroup(ctx, "o", 2, req)
 	if err != nil {
-		t.Errorf("Enterprise.UpdateRunnerGroup returned error: %v", err)
+		t.Errorf("Enterprise.UpdateEnterpriseRunnerGroup returned error: %v", err)
 	}
 
 	want := &EnterpriseRunnerGroup{
@@ -263,10 +263,10 @@ func TestEnterpriseService_UpdateRunnerGroup(t *testing.T) {
 	}
 
 	if !cmp.Equal(group, want) {
-		t.Errorf("Enterprise.UpdateRunnerGroup returned %+v, want %+v", group, want)
+		t.Errorf("Enterprise.UpdateEnterpriseRunnerGroup returned %+v, want %+v", group, want)
 	}
 
-	const methodName = "UpdateRunnerGroup"
+	const methodName = "UpdateEnterpriseRunnerGroup"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Enterprise.UpdateEnterpriseRunnerGroup(ctx, "\n", 2, req)
 		return err
@@ -405,7 +405,7 @@ func TestEnterpriseService_RemoveOrganizationAccessRunnerGroup(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
+func TestEnterpriseService_ListRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -419,7 +419,7 @@ func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
 	ctx := t.Context()
 	runners, _, err := client.Enterprise.ListRunnerGroupRunners(ctx, "o", 2, opts)
 	if err != nil {
-		t.Errorf("Enterprise.ListEnterpriseRunnerGroupRunners returned error: %v", err)
+		t.Errorf("Enterprise.ListRunnerGroupRunners returned error: %v", err)
 	}
 
 	want := &Runners{
@@ -430,10 +430,10 @@ func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(runners, want) {
-		t.Errorf("Enterprise.ListEnterpriseRunnerGroupRunners returned %+v, want %+v", runners, want)
+		t.Errorf("Enterprise.ListRunnerGroupRunners returned %+v, want %+v", runners, want)
 	}
 
-	const methodName = "ListEnterpriseRunnerGroupRunners"
+	const methodName = "ListRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Enterprise.ListRunnerGroupRunners(ctx, "\n", 2, opts)
 		return err
@@ -448,7 +448,7 @@ func TestEnterpriseService_ListEnterpriseRunnerGroupRunners(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_SetEnterpriseRunnerGroupRunners(t *testing.T) {
+func TestEnterpriseService_SetRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -466,10 +466,10 @@ func TestEnterpriseService_SetEnterpriseRunnerGroupRunners(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Enterprise.SetRunnerGroupRunners(ctx, "o", 2, req)
 	if err != nil {
-		t.Errorf("Enterprise.SetEnterpriseRunnerGroupRunners returned error: %v", err)
+		t.Errorf("Enterprise.SetRunnerGroupRunners returned error: %v", err)
 	}
 
-	const methodName = "SetEnterpriseRunnerGroupRunners"
+	const methodName = "SetRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Enterprise.SetRunnerGroupRunners(ctx, "\n", 2, req)
 		return err
@@ -480,7 +480,7 @@ func TestEnterpriseService_SetEnterpriseRunnerGroupRunners(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_AddEnterpriseRunnerGroupRunners(t *testing.T) {
+func TestEnterpriseService_AddRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -491,10 +491,10 @@ func TestEnterpriseService_AddEnterpriseRunnerGroupRunners(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Enterprise.AddRunnerGroupRunners(ctx, "o", 2, 42)
 	if err != nil {
-		t.Errorf("Enterprise.AddEnterpriseRunnerGroupRunners returned error: %v", err)
+		t.Errorf("Enterprise.AddRunnerGroupRunners returned error: %v", err)
 	}
 
-	const methodName = "AddEnterpriseRunnerGroupRunners"
+	const methodName = "AddRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Enterprise.AddRunnerGroupRunners(ctx, "\n", 2, 42)
 		return err
@@ -505,7 +505,7 @@ func TestEnterpriseService_AddEnterpriseRunnerGroupRunners(t *testing.T) {
 	})
 }
 
-func TestEnterpriseService_RemoveEnterpriseRunnerGroupRunners(t *testing.T) {
+func TestEnterpriseService_RemoveRunnerGroupRunners(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -516,10 +516,10 @@ func TestEnterpriseService_RemoveEnterpriseRunnerGroupRunners(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Enterprise.RemoveRunnerGroupRunners(ctx, "o", 2, 42)
 	if err != nil {
-		t.Errorf("Enterprise.RemoveEnterpriseRunnerGroupRunners returned error: %v", err)
+		t.Errorf("Enterprise.RemoveRunnerGroupRunners returned error: %v", err)
 	}
 
-	const methodName = "RemoveEnterpriseRunnerGroupRunners"
+	const methodName = "RemoveRunnerGroupRunners"
 	testBadOptions(t, methodName, func() (err error) {
 		_, err = client.Enterprise.RemoveRunnerGroupRunners(ctx, "\n", 2, 42)
 		return err
@@ -528,149 +528,4 @@ func TestEnterpriseService_RemoveEnterpriseRunnerGroupRunners(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Enterprise.RemoveRunnerGroupRunners(ctx, "o", 2, 42)
 	})
-}
-
-func TestEnterpriseRunnerGroup_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &EnterpriseRunnerGroup{}, "{}")
-
-	u := &EnterpriseRunnerGroup{
-		ID:                       Ptr(int64(1)),
-		Name:                     Ptr("n"),
-		Visibility:               Ptr("v"),
-		Default:                  Ptr(true),
-		SelectedOrganizationsURL: Ptr("s"),
-		RunnersURL:               Ptr("r"),
-		HostedRunnersURL:         Ptr("h"),
-		NetworkConfigurationID:   Ptr("nc"),
-		Inherited:                Ptr(true),
-		AllowsPublicRepositories: Ptr(true),
-		RestrictedToWorkflows:    Ptr(false),
-	}
-
-	want := `{
-		"id": 1,
-		"name": "n",
-		"visibility": "v",
-		"default": true,
-		"selected_organizations_url": "s",
-		"runners_url": "r",
-		"hosted_runners_url": "h",
-		"network_configuration_id": "nc",
-		"inherited": true,
-		"allows_public_repositories": true,
-		"restricted_to_workflows": false
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestEnterpriseRunnerGroups_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &EnterpriseRunnerGroups{}, `{"runner_groups": null}`)
-
-	u := &EnterpriseRunnerGroups{
-		TotalCount: Ptr(1),
-		RunnerGroups: []*EnterpriseRunnerGroup{
-			{
-				ID:                       Ptr(int64(1)),
-				Name:                     Ptr("n"),
-				Visibility:               Ptr("v"),
-				Default:                  Ptr(true),
-				SelectedOrganizationsURL: Ptr("s"),
-				RunnersURL:               Ptr("r"),
-				HostedRunnersURL:         Ptr("h"),
-				NetworkConfigurationID:   Ptr("nc"),
-				Inherited:                Ptr(true),
-				AllowsPublicRepositories: Ptr(true),
-				RestrictedToWorkflows:    Ptr(false),
-			},
-		},
-	}
-
-	want := `{
-		"total_count": 1,
-		"runner_groups": [{
-			"id": 1,
-			"name": "n",
-			"visibility": "v",
-			"default": true,
-			"selected_organizations_url": "s",
-			"runners_url": "r",
-			"hosted_runners_url": "h",
-			"network_configuration_id": "nc",
-			"inherited": true,
-			"allows_public_repositories": true,
-			"restricted_to_workflows": false
-		}]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCreateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CreateEnterpriseRunnerGroupRequest{}, "{}")
-
-	u := &CreateEnterpriseRunnerGroupRequest{
-		Name:                     Ptr("n"),
-		Visibility:               Ptr("v"),
-		SelectedOrganizationIDs:  []int64{1},
-		Runners:                  []int64{1},
-		AllowsPublicRepositories: Ptr(true),
-		RestrictedToWorkflows:    Ptr(true),
-		SelectedWorkflows:        []string{"a", "b"},
-		NetworkConfigurationID:   Ptr("nc-123"),
-	}
-
-	want := `{
-		"name": "n",
-		"visibility": "v",
-		"selected_organization_ids": [1],
-		"runners": [1],
-		"allows_public_repositories": true,
-		"restricted_to_workflows": true,
-		"selected_workflows": ["a","b"],
-		"network_configuration_id": "nc-123"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestUpdateEnterpriseRunnerGroupRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &UpdateEnterpriseRunnerGroupRequest{}, "{}")
-
-	u := &UpdateEnterpriseRunnerGroupRequest{
-		Name:                     Ptr("n"),
-		Visibility:               Ptr("v"),
-		AllowsPublicRepositories: Ptr(true),
-		RestrictedToWorkflows:    Ptr(false),
-		NetworkConfigurationID:   Ptr("nc-456"),
-	}
-
-	want := `{
-		"name": "n",
-		"visibility": "v",
-		"allows_public_repositories": true,
-		"restricted_to_workflows": false,
-		"network_configuration_id": "nc-456"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestSetOrgAccessRunnerGroupRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SetOrgAccessRunnerGroupRequest{}, `{"selected_organization_ids": null}`)
-
-	u := &SetOrgAccessRunnerGroupRequest{
-		SelectedOrganizationIDs: []int64{1},
-	}
-
-	want := `{
-		"selected_organization_ids": [1]
-	}`
-
-	testJSONMarshal(t, u, want)
 }

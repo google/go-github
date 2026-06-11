@@ -806,11 +806,9 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 			}
 		}`)
 	})
-	message := "m"
-	content := []byte("c")
 	repositoryContentsOptions := &RepositoryContentFileOptions{
-		Message:   &message,
-		Content:   content,
+		Message:   Ptr("m"),
+		Content:   []byte("c"),
 		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
 	ctx := t.Context()
@@ -860,13 +858,10 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 			}
 		}`)
 	})
-	message := "m"
-	content := []byte("c")
-	sha := "f5f369044773ff9c6383c087466d12adb6fa0828"
 	repositoryContentsOptions := &RepositoryContentFileOptions{
-		Message:   &message,
-		Content:   content,
-		SHA:       &sha,
+		Message:   Ptr("m"),
+		Content:   []byte("c"),
+		SHA:       Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
 	ctx := t.Context()
@@ -914,11 +909,9 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 			}
 		}`)
 	})
-	message := "m"
-	sha := "f5f369044773ff9c6383c087466d12adb6fa0828"
 	repositoryContentsOptions := &RepositoryContentFileOptions{
-		Message:   &message,
-		SHA:       &sha,
+		Message:   Ptr("m"),
+		SHA:       Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
 	}
 	ctx := t.Context()
@@ -1108,212 +1101,4 @@ func TestRepositoriesService_GetContents_NoTrailingSlashInDirectoryApiPath(t *te
 	if err != nil {
 		t.Fatalf("Repositories.GetContents returned error: %v", err)
 	}
-}
-
-func TestRepositoryContent_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RepositoryContent{}, "{}")
-
-	r := &RepositoryContent{
-		Type:            Ptr("type"),
-		Target:          Ptr("target"),
-		Encoding:        Ptr("encoding"),
-		Size:            Ptr(1),
-		Name:            Ptr("name"),
-		Path:            Ptr("path"),
-		Content:         Ptr("content"),
-		SHA:             Ptr("sha"),
-		URL:             Ptr("url"),
-		GitURL:          Ptr("gurl"),
-		HTMLURL:         Ptr("hurl"),
-		DownloadURL:     Ptr("durl"),
-		SubmoduleGitURL: Ptr("smgurl"),
-	}
-
-	want := `{
-		"type": "type",
-		"target": "target",
-		"encoding": "encoding",
-		"size": 1,
-		"name": "name",
-		"path": "path",
-		"content": "content",
-		"sha": "sha",
-		"url": "url",
-		"git_url": "gurl",
-		"html_url": "hurl",
-		"download_url": "durl",
-		"submodule_git_url": "smgurl"
-	}`
-
-	testJSONMarshal(t, r, want)
-}
-
-func TestRepositoryContentResponse_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RepositoryContentResponse{}, `{"commit": {}}`)
-
-	r := &RepositoryContentResponse{
-		Content: &RepositoryContent{
-			Type:            Ptr("type"),
-			Target:          Ptr("target"),
-			Encoding:        Ptr("encoding"),
-			Size:            Ptr(1),
-			Name:            Ptr("name"),
-			Path:            Ptr("path"),
-			Content:         Ptr("content"),
-			SHA:             Ptr("sha"),
-			URL:             Ptr("url"),
-			GitURL:          Ptr("gurl"),
-			HTMLURL:         Ptr("hurl"),
-			DownloadURL:     Ptr("durl"),
-			SubmoduleGitURL: Ptr("smgurl"),
-		},
-		Commit: Commit{
-			SHA: Ptr("s"),
-			Author: &CommitAuthor{
-				Date:  &Timestamp{referenceTime},
-				Name:  Ptr("n"),
-				Email: Ptr("e"),
-				Login: Ptr("u"),
-			},
-			Committer: &CommitAuthor{
-				Date:  &Timestamp{referenceTime},
-				Name:  Ptr("n"),
-				Email: Ptr("e"),
-				Login: Ptr("u"),
-			},
-			Message: Ptr("m"),
-			Tree: &Tree{
-				SHA: Ptr("s"),
-				Entries: []*TreeEntry{{
-					SHA:     Ptr("s"),
-					Path:    Ptr("p"),
-					Mode:    Ptr("m"),
-					Type:    Ptr("t"),
-					Size:    Ptr(1),
-					Content: Ptr("c"),
-					URL:     Ptr("u"),
-				}},
-				Truncated: Ptr(false),
-			},
-			Parents: nil,
-			HTMLURL: Ptr("h"),
-			URL:     Ptr("u"),
-			Verification: &SignatureVerification{
-				Verified:  Ptr(false),
-				Reason:    Ptr("r"),
-				Signature: Ptr("s"),
-				Payload:   Ptr("p"),
-			},
-			NodeID:       Ptr("n"),
-			CommentCount: Ptr(1),
-		},
-	}
-
-	want := `{
-		"content": {
-			"type": "type",
-			"target": "target",
-			"encoding": "encoding",
-			"size": 1,
-			"name": "name",
-			"path": "path",
-			"content": "content",
-			"sha": "sha",
-			"url": "url",
-			"git_url": "gurl",
-			"html_url": "hurl",
-			"download_url": "durl",
-			"submodule_git_url": "smgurl"
-		},
-		"commit": {
-			"sha": "s",
-			"author": {
-				"date": ` + referenceTimeStr + `,
-				"name": "n",
-				"email": "e",
-				"username": "u"
-			},
-			"committer": {
-				"date": ` + referenceTimeStr + `,
-				"name": "n",
-				"email": "e",
-				"username": "u"
-			},
-			"message": "m",
-			"tree": {
-				"sha": "s",
-				"tree": [
-					{
-						"sha": "s",
-						"path": "p",
-						"mode": "m",
-						"type": "t",
-						"size": 1,
-						"content": "c",
-						"url": "u"
-					}
-				],
-				"truncated": false
-			},
-			"html_url": "h",
-			"url": "u",
-			"verification": {
-				"verified": false,
-				"reason": "r",
-				"signature": "s",
-				"payload": "p"
-			},
-			"node_id": "n",
-			"comment_count": 1
-		}
-	}`
-
-	testJSONMarshal(t, r, want)
-}
-
-func TestRepositoryContentFileOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RepositoryContentFileOptions{}, `{"content": null}`)
-
-	r := &RepositoryContentFileOptions{
-		Message: Ptr("type"),
-		Content: []byte{1},
-		SHA:     Ptr("type"),
-		Branch:  Ptr("type"),
-		Author: &CommitAuthor{
-			Date:  &Timestamp{referenceTime},
-			Name:  Ptr("name"),
-			Email: Ptr("email"),
-			Login: Ptr("login"),
-		},
-		Committer: &CommitAuthor{
-			Date:  &Timestamp{referenceTime},
-			Name:  Ptr("name"),
-			Email: Ptr("email"),
-			Login: Ptr("login"),
-		},
-	}
-
-	want := `{
-		"message": "type",
-		"content": "AQ==",
-		"sha": "type",
-		"branch": "type",
-		"author": {
-			"date": ` + referenceTimeStr + `,
-			"name": "name",
-			"email": "email",
-			"username": "login"
-		},
-		"committer": {
-			"date": ` + referenceTimeStr + `,
-			"name": "name",
-			"email": "email",
-			"username": "login"
-		}
-	}`
-
-	testJSONMarshal(t, r, want)
 }

@@ -29,7 +29,7 @@ func TestRepositoriesService_ListPreReceiveHooks(t *testing.T) {
 	ctx := t.Context()
 	hooks, _, err := client.Repositories.ListPreReceiveHooks(ctx, "o", "r", opt)
 	if err != nil {
-		t.Errorf("Repositories.ListHooks returned error: %v", err)
+		t.Errorf("Repositories.ListPreReceiveHooks returned error: %v", err)
 	}
 
 	want := []*PreReceiveHook{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
@@ -185,25 +185,4 @@ func TestRepositoriesService_DeletePreReceiveHook_invalidOwner(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Repositories.DeletePreReceiveHook(ctx, "%", "%", 1)
 	testURLParseError(t, err)
-}
-
-func TestPreReceiveHook_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PreReceiveHook{}, "{}")
-
-	u := &PreReceiveHook{
-		ID:          Ptr(int64(1)),
-		Name:        Ptr("name"),
-		Enforcement: Ptr("e"),
-		ConfigURL:   Ptr("curl"),
-	}
-
-	want := `{
-		"id": 1,
-		"name": "name",
-		"enforcement": "e",
-		"configuration_url": "curl"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

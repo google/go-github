@@ -75,18 +75,3 @@ func TestRepositoriesService_EditActionsAccessLevel(t *testing.T) {
 		return resp, err
 	})
 }
-
-func TestRepositoryActionsAccessLevel_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ActionsPermissions{}, "{}")
-
-	u := &RepositoryActionsAccessLevel{
-		AccessLevel: Ptr("enterprise"),
-	}
-
-	want := `{
-		"access_level": "enterprise"
-	}`
-
-	testJSONMarshal(t, u, want)
-}

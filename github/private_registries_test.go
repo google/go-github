@@ -118,7 +118,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	ctx := t.Context()
 	privateRegistry, _, err := client.PrivateRegistries.CreateOrganizationPrivateRegistry(ctx, "o", *input)
 	if err != nil {
-		t.Fatalf("PrivateRegistries.CreateOrganizationPrivateRegistries returned error: %v", err)
+		t.Fatalf("PrivateRegistries.CreateOrganizationPrivateRegistry returned error: %v", err)
 	}
 
 	want := &PrivateRegistry{

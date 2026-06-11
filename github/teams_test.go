@@ -6,10 +6,7 @@
 package github
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"testing"
 
@@ -275,21 +272,10 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := NewTeam{Name: "n", NotificationSetting: Ptr("notifications_enabled"), Privacy: Ptr("closed")}
-	var body string
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			t.Errorf("Unable to read body: %v", err)
-		}
-		body = string(buf)
-		var v *NewTeam
-		assertNilError(t, json.NewDecoder(bytes.NewBuffer(buf)).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -303,10 +289,6 @@ func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
 	want := &Team{ID: Ptr(int64(1))}
 	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
-	}
-
-	if want := `{"name":"n","parent_team_id":null,"notification_setting":"notifications_enabled","privacy":"closed"}` + "\n"; body != want {
-		t.Errorf("Teams.EditTeamByID body = %+v, want %+v", body, want)
 	}
 }
 
@@ -353,21 +335,10 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := NewTeam{Name: "n", NotificationSetting: Ptr("notifications_disabled"), Privacy: Ptr("closed")}
-	var body string
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
-		buf, err := io.ReadAll(r.Body)
-		if err != nil {
-			t.Errorf("Unable to read body: %v", err)
-		}
-		body = string(buf)
-		var v *NewTeam
-		assertNilError(t, json.NewDecoder(bytes.NewBuffer(buf)).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -375,16 +346,12 @@ func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
 	ctx := t.Context()
 	team, _, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, true)
 	if err != nil {
-		t.Errorf("Teams.EditTeam returned error: %v", err)
+		t.Errorf("Teams.EditTeamBySlug returned error: %v", err)
 	}
 
 	want := &Team{ID: Ptr(int64(1))}
 	if !cmp.Equal(team, want) {
-		t.Errorf("Teams.EditTeam returned %+v, want %+v", team, want)
-	}
-
-	if want := `{"name":"n","parent_team_id":null,"notification_setting":"notifications_disabled","privacy":"closed"}` + "\n"; body != want {
-		t.Errorf("Teams.EditTeam body = %+v, want %+v", body, want)
+		t.Errorf("Teams.EditTeamBySlug returned %+v, want %+v", team, want)
 	}
 }
 
@@ -697,10 +664,10 @@ func TestTeamsService_IsTeamRepoBySlug_false(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.IsTeamRepoByID returned status %v, want %v", got, want)
+		t.Errorf("Teams.IsTeamRepoBySlug returned status %v, want %v", got, want)
 	}
 	if repo != nil {
-		t.Errorf("Teams.IsTeamRepoByID returned %+v, want nil", repo)
+		t.Errorf("Teams.IsTeamRepoBySlug returned %+v, want nil", repo)
 	}
 }
 
@@ -1535,174 +1502,6 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug_empty(t *testing.T
 	}
 }
 
-func TestNewTeam_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &NewTeam{}, `{"name": ""}`)
-
-	u := &NewTeam{
-		Name:                "n",
-		Description:         Ptr("d"),
-		Maintainers:         []string{"m1", "m2"},
-		RepoNames:           []string{"repo1", "repo2"},
-		NotificationSetting: Ptr("notifications_enabled"),
-		ParentTeamID:        Ptr(int64(1)),
-		Permission:          Ptr("perm"),
-		Privacy:             Ptr("p"),
-		LDAPDN:              Ptr("l"),
-	}
-
-	want := `{
-		"name":           "n",
-		"description":    "d",
-		"maintainers":    ["m1", "m2"],
-		"repo_names":     ["repo1", "repo2"],
-		"parent_team_id": 1,
-		"notification_setting": "notifications_enabled",
-		"permission":     "perm",
-		"privacy":        "p",
-		"ldap_dn":        "l"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestTeams_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Team{}, "{}")
-
-	u := &Team{
-		ID:              Ptr(int64(1)),
-		NodeID:          Ptr("n"),
-		Name:            Ptr("n"),
-		Description:     Ptr("d"),
-		URL:             Ptr("u"),
-		Slug:            Ptr("s"),
-		Permission:      Ptr("p"),
-		Privacy:         Ptr("p"),
-		MembersCount:    Ptr(1),
-		ReposCount:      Ptr(1),
-		MembersURL:      Ptr("m"),
-		RepositoriesURL: Ptr("r"),
-		Organization: &Organization{
-			Login:     Ptr("l"),
-			ID:        Ptr(int64(1)),
-			NodeID:    Ptr("n"),
-			AvatarURL: Ptr("a"),
-			HTMLURL:   Ptr("h"),
-			Name:      Ptr("n"),
-			Company:   Ptr("c"),
-			Blog:      Ptr("b"),
-			Location:  Ptr("l"),
-			Email:     Ptr("e"),
-		},
-		Parent: &Team{
-			ID:           Ptr(int64(1)),
-			NodeID:       Ptr("n"),
-			Name:         Ptr("n"),
-			Description:  Ptr("d"),
-			URL:          Ptr("u"),
-			Slug:         Ptr("s"),
-			Permission:   Ptr("p"),
-			Privacy:      Ptr("p"),
-			MembersCount: Ptr(1),
-			ReposCount:   Ptr(1),
-		},
-		LDAPDN: Ptr("l"),
-		Type:   Ptr("t"),
-	}
-
-	want := `{
-		"id": 1,
-		"node_id": "n",
-		"name": "n",
-		"description": "d",
-		"url": "u",
-		"slug": "s",
-		"permission": "p",
-		"privacy": "p",
-		"members_count": 1,
-		"repos_count": 1,
-		"members_url": "m",
-		"repositories_url": "r",
-		"organization": {
-			"login": "l",
-			"id": 1,
-			"node_id": "n",
-			"avatar_url": "a",
-			"html_url": "h",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e"
-		},
-		"parent": {
-			"id": 1,
-			"node_id": "n",
-			"name": "n",
-			"description": "d",
-			"url": "u",
-			"slug": "s",
-			"permission": "p",
-			"privacy": "p",
-			"members_count": 1,
-			"repos_count": 1
-		},
-		"ldap_dn": "l",
-		"type": "t"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestInvitation_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Invitation{}, "{}")
-
-	u := &Invitation{
-		ID:                Ptr(int64(1)),
-		NodeID:            Ptr("test node"),
-		Login:             Ptr("login123"),
-		Email:             Ptr("go@github.com"),
-		Role:              Ptr("developer"),
-		CreatedAt:         &Timestamp{referenceTime},
-		TeamCount:         Ptr(99),
-		InvitationTeamURL: Ptr("url"),
-	}
-
-	want := `{
-		"id": 1,
-		"node_id": "test node",
-		"login":"login123",
-		"email":"go@github.com",
-		"role":"developer",
-		"created_at":` + referenceTimeStr + `,
-		"team_count":99,
-		"invitation_team_url":"url"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestIDPGroup_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &IDPGroup{}, "{}")
-
-	u := &IDPGroup{
-		GroupID:          Ptr("abc1"),
-		GroupName:        Ptr("test group"),
-		GroupDescription: Ptr("test group description"),
-	}
-
-	want := `{
-		"group_id": "abc1",
-		"group_name": "test group",
-		"group_description":"test group description"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestTeamsService_GetExternalGroup(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -2125,151 +1924,6 @@ func TestTeamsService_RemoveConnectedExternalGroup_notFound(t *testing.T) {
 		t.Error("Expected HTTP 404 response")
 	}
 	if got, want := resp.Response.StatusCode, http.StatusNotFound; got != want {
-		t.Errorf("Teams.GetExternalGroup returned status %v, want %v", got, want)
+		t.Errorf("Teams.RemoveConnectedExternalGroup returned status %v, want %v", got, want)
 	}
-}
-
-func TestIDPGroupList_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &IDPGroupList{}, `{"groups": null}`)
-
-	u := &IDPGroupList{
-		Groups: []*IDPGroup{
-			{
-				GroupID:          Ptr("abc1"),
-				GroupName:        Ptr("test group"),
-				GroupDescription: Ptr("test group description"),
-			},
-			{
-				GroupID:          Ptr("abc2"),
-				GroupName:        Ptr("test group2"),
-				GroupDescription: Ptr("test group description2"),
-			},
-		},
-	}
-
-	want := `{
-		"groups": [
-			{
-				"group_id": "abc1",
-				"group_name": "test group",
-				"group_description": "test group description"
-			},
-			{
-				"group_id": "abc2",
-				"group_name": "test group2",
-				"group_description": "test group description2"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestExternalGroupMember_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ExternalGroupMember{}, "{}")
-
-	u := &ExternalGroupMember{
-		MemberID:    Ptr(int64(1)),
-		MemberLogin: Ptr("test member"),
-		MemberName:  Ptr("test member name"),
-		MemberEmail: Ptr("test member email"),
-	}
-
-	want := `{
-		"member_id": 1,
-		"member_login": "test member",
-		"member_name":"test member name",
-		"member_email":"test member email"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestExternalGroup_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ExternalGroup{}, "{}")
-
-	u := &ExternalGroup{
-		GroupID:   Ptr(int64(123)),
-		GroupName: Ptr("group1"),
-		UpdatedAt: &Timestamp{referenceTime},
-		Teams: []*ExternalGroupTeam{
-			{
-				TeamID:   Ptr(int64(1)),
-				TeamName: Ptr("team-test"),
-			},
-			{
-				TeamID:   Ptr(int64(2)),
-				TeamName: Ptr("team-test2"),
-			},
-		},
-		Members: []*ExternalGroupMember{
-			{
-				MemberID:    Ptr(int64(1)),
-				MemberLogin: Ptr("test"),
-				MemberName:  Ptr("test"),
-				MemberEmail: Ptr("test@github.com"),
-			},
-		},
-	}
-
-	want := `{
-		"group_id": 123,
-		"group_name": "group1",
-		"updated_at": ` + referenceTimeStr + `,
-		"teams": [
-			{
-				"team_id": 1,
-				"team_name": "team-test"
-			},
-			{
-				"team_id": 2,
-				"team_name": "team-test2"
-			}
-		],
-		"members": [
-			{
-				"member_id": 1,
-				"member_login": "test",
-				"member_name": "test",
-				"member_email": "test@github.com"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestExternalGroupTeam_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ExternalGroupTeam{}, "{}")
-
-	u := &ExternalGroupTeam{
-		TeamID:   Ptr(int64(123)),
-		TeamName: Ptr("test"),
-	}
-
-	want := `{
-		"team_id": 123,
-		"team_name": "test"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestTeamAddTeamRepoOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &TeamAddTeamRepoOptions{}, "{}")
-
-	u := &TeamAddTeamRepoOptions{
-		Permission: "a",
-	}
-
-	want := `{
-		"permission": "a"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

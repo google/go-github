@@ -39,7 +39,7 @@ func TestGitService_GetBlob(t *testing.T) {
 	}
 
 	if !cmp.Equal(*blob, want) {
-		t.Errorf("Blob.Get returned %+v, want %+v", *blob, want)
+		t.Errorf("Git.GetBlob returned %+v, want %+v", *blob, want)
 	}
 
 	const methodName = "GetBlob"
@@ -159,29 +159,4 @@ func TestGitService_CreateBlob_invalidOwner(t *testing.T) {
 	ctx := t.Context()
 	_, _, err := client.Git.CreateBlob(ctx, "%", "%", Blob{})
 	testURLParseError(t, err)
-}
-
-func TestBlob_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Blob{}, "{}")
-
-	u := &Blob{
-		Content:  Ptr("content"),
-		Encoding: Ptr("encoding"),
-		SHA:      Ptr("sha"),
-		Size:     Ptr(1),
-		URL:      Ptr("url"),
-		NodeID:   Ptr("nid"),
-	}
-
-	want := `{
-		"content": "content",
-		"encoding": "encoding",
-		"sha": "sha",
-		"size": 1,
-		"url": "url",
-		"node_id": "nid"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

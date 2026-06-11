@@ -6574,6 +6574,138 @@ func TestCodeQLDatabase_GetURL(tt *testing.T) {
 	c.GetURL()
 }
 
+func TestCodeQualitySetupConfiguration_GetLanguages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CodeQualitySetupConfiguration{Languages: zeroValue}
+	c.GetLanguages()
+	c = &CodeQualitySetupConfiguration{}
+	c.GetLanguages()
+	c = nil
+	c.GetLanguages()
+}
+
+func TestCodeQualitySetupConfiguration_GetRunnerLabel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualitySetupConfiguration{RunnerLabel: &zeroValue}
+	c.GetRunnerLabel()
+	c = &CodeQualitySetupConfiguration{}
+	c.GetRunnerLabel()
+	c = nil
+	c.GetRunnerLabel()
+}
+
+func TestCodeQualitySetupConfiguration_GetRunnerType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualitySetupConfiguration{RunnerType: &zeroValue}
+	c.GetRunnerType()
+	c = &CodeQualitySetupConfiguration{}
+	c.GetRunnerType()
+	c = nil
+	c.GetRunnerType()
+}
+
+func TestCodeQualitySetupConfiguration_GetSchedule(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualitySetupConfiguration{Schedule: &zeroValue}
+	c.GetSchedule()
+	c = &CodeQualitySetupConfiguration{}
+	c.GetSchedule()
+	c = nil
+	c.GetSchedule()
+}
+
+func TestCodeQualitySetupConfiguration_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualitySetupConfiguration{State: &zeroValue}
+	c.GetState()
+	c = &CodeQualitySetupConfiguration{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCodeQualitySetupConfiguration_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &CodeQualitySetupConfiguration{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CodeQualitySetupConfiguration{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCodeQualityUpdateSetupRequest_GetLanguages(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CodeQualityUpdateSetupRequest{Languages: zeroValue}
+	c.GetLanguages()
+	c = &CodeQualityUpdateSetupRequest{}
+	c.GetLanguages()
+	c = nil
+	c.GetLanguages()
+}
+
+func TestCodeQualityUpdateSetupRequest_GetRunnerLabel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualityUpdateSetupRequest{RunnerLabel: &zeroValue}
+	c.GetRunnerLabel()
+	c = &CodeQualityUpdateSetupRequest{}
+	c.GetRunnerLabel()
+	c = nil
+	c.GetRunnerLabel()
+}
+
+func TestCodeQualityUpdateSetupRequest_GetRunnerType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualityUpdateSetupRequest{RunnerType: &zeroValue}
+	c.GetRunnerType()
+	c = &CodeQualityUpdateSetupRequest{}
+	c.GetRunnerType()
+	c = nil
+	c.GetRunnerType()
+}
+
+func TestCodeQualityUpdateSetupRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualityUpdateSetupRequest{State: &zeroValue}
+	c.GetState()
+	c = &CodeQualityUpdateSetupRequest{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCodeQualityUpdateSetupResponse_GetRunID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CodeQualityUpdateSetupResponse{RunID: &zeroValue}
+	c.GetRunID()
+	c = &CodeQualityUpdateSetupResponse{}
+	c.GetRunID()
+	c = nil
+	c.GetRunID()
+}
+
+func TestCodeQualityUpdateSetupResponse_GetRunURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualityUpdateSetupResponse{RunURL: &zeroValue}
+	c.GetRunURL()
+	c = &CodeQualityUpdateSetupResponse{}
+	c.GetRunURL()
+	c = nil
+	c.GetRunURL()
+}
+
 func TestCodeResult_GetHTMLURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -41427,6 +41559,17 @@ func TestRepository_GetHasProjects(tt *testing.T) {
 	r.GetHasProjects()
 }
 
+func TestRepository_GetHasPullRequests(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &Repository{HasPullRequests: &zeroValue}
+	r.GetHasPullRequests()
+	r = &Repository{}
+	r.GetHasPullRequests()
+	r = nil
+	r.GetHasPullRequests()
+}
+
 func TestRepository_GetHasWiki(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -41762,6 +41905,17 @@ func TestRepository_GetPrivate(tt *testing.T) {
 	r.GetPrivate()
 	r = nil
 	r.GetPrivate()
+}
+
+func TestRepository_GetPullRequestCreationPolicy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &Repository{PullRequestCreationPolicy: &zeroValue}
+	r.GetPullRequestCreationPolicy()
+	r = &Repository{}
+	r.GetPullRequestCreationPolicy()
+	r = nil
+	r.GetPullRequestCreationPolicy()
 }
 
 func TestRepository_GetPullsURL(tt *testing.T) {

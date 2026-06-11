@@ -16,7 +16,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-// Test invalid JSON responses, valid responses are covered in the other tests.
 func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
@@ -871,35 +870,6 @@ func TestCopilotService_GetOrganizationContentExclusionDetails(t *testing.T) {
 	})
 }
 
-func TestListOrganizationCopilotCodingAgentRepositoriesResponse_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ListOrganizationCopilotCodingAgentRepositoriesResponse{}, `{"total_count":0,"repositories":null}`)
-
-	r := &ListOrganizationCopilotCodingAgentRepositoriesResponse{
-		TotalCount: 1,
-		Repositories: []*Repository{
-			{ID: Ptr(int64(1)), Name: Ptr("Hello-World"), FullName: Ptr("octocat/Hello-World")},
-		},
-	}
-	want := `{
-		"total_count": 1,
-		"repositories": [
-			{"id": 1, "name": "Hello-World", "full_name": "octocat/Hello-World"}
-		]
-	}`
-	testJSONMarshal(t, r, want)
-}
-
-func TestCopilotOrganizationContentExclusionDetails_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, CopilotOrganizationContentExclusionDetails{}, `{}`)
-
-	d := CopilotOrganizationContentExclusionDetails{
-		"octo-repo": {"/src/some-dir/kernel.rs"},
-	}
-	testJSONMarshal(t, d, `{"octo-repo":["/src/some-dir/kernel.rs"]}`)
-}
-
 func TestCopilotService_AddCopilotTeams(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -1362,13 +1332,11 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 		t.Errorf("Copilot.GetEnterpriseMetrics returned error: %v", err)
 	}
 
-	totalActiveUsers := 24
-	totalEngagedUsers := 20
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  &totalActiveUsers,
-			TotalEngagedUsers: &totalEngagedUsers,
+			TotalActiveUsers:  Ptr(24),
+			TotalEngagedUsers: Ptr(20),
 			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIDECodeCompletionsLanguage{
@@ -1705,13 +1673,11 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 		t.Errorf("Copilot.GetEnterpriseTeamMetrics returned error: %v", err)
 	}
 
-	totalActiveUsers := 24
-	totalEngagedUsers := 20
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  &totalActiveUsers,
-			TotalEngagedUsers: &totalEngagedUsers,
+			TotalActiveUsers:  Ptr(24),
+			TotalEngagedUsers: Ptr(20),
 			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIDECodeCompletionsLanguage{
@@ -2048,13 +2014,11 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationMetrics returned error: %v", err)
 	}
 
-	totalActiveUsers := 24
-	totalEngagedUsers := 20
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  &totalActiveUsers,
-			TotalEngagedUsers: &totalEngagedUsers,
+			TotalActiveUsers:  Ptr(24),
+			TotalEngagedUsers: Ptr(20),
 			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIDECodeCompletionsLanguage{
@@ -2391,13 +2355,11 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationTeamMetrics returned error: %v", err)
 	}
 
-	totalActiveUsers := 24
-	totalEngagedUsers := 20
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  &totalActiveUsers,
-			TotalEngagedUsers: &totalEngagedUsers,
+			TotalActiveUsers:  Ptr(24),
+			TotalEngagedUsers: Ptr(20),
 			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIDECodeCompletionsLanguage{

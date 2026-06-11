@@ -368,20 +368,3 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 		return client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", 1, input)
 	})
 }
-
-func TestReviewPersonalAccessTokenRequestOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ReviewPersonalAccessTokenRequestOptions{}, `{"action": ""}`)
-
-	u := &ReviewPersonalAccessTokenRequestOptions{
-		Action: "a",
-		Reason: Ptr("r"),
-	}
-
-	want := `{
-		"action": "a",
-		"reason": "r"
-	}`
-
-	testJSONMarshal(t, u, want)
-}

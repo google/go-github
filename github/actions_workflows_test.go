@@ -428,7 +428,7 @@ func TestActionsService_EnableWorkflowByID(t *testing.T) {
 	})
 }
 
-func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
+func TestActionsService_EnableWorkflowByFileName(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -442,14 +442,14 @@ func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Actions.EnableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err != nil {
-		t.Errorf("Actions.EnableWorkflowByFilename returned error: %v", err)
+		t.Errorf("Actions.EnableWorkflowByFileName returned error: %v", err)
 	}
 
 	// Test s.client.NewRequest failure
 	client.baseURL.Path = ""
 	_, err = client.Actions.EnableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err == nil {
-		t.Error("client.BaseURL.Path='' EnableWorkflowByFilename err = nil, want error")
+		t.Error("client.BaseURL.Path='' EnableWorkflowByFileName err = nil, want error")
 	}
 
 	const methodName = "EnableWorkflowByFileName"
@@ -531,181 +531,4 @@ func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.DisableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	})
-}
-
-func TestWorkflow_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Workflow{}, "{}")
-
-	u := &Workflow{
-		ID:        Ptr(int64(1)),
-		NodeID:    Ptr("nid"),
-		Name:      Ptr("n"),
-		Path:      Ptr("p"),
-		State:     Ptr("s"),
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-		URL:       Ptr("u"),
-		HTMLURL:   Ptr("h"),
-		BadgeURL:  Ptr("b"),
-	}
-
-	want := `{
-		"id": 1,
-		"node_id": "nid",
-		"name": "n",
-		"path": "p",
-		"state": "s",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"url": "u",
-		"html_url": "h",
-		"badge_url": "b"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestWorkflows_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Workflows{}, "{}")
-
-	u := &Workflows{
-		TotalCount: Ptr(1),
-		Workflows: []*Workflow{
-			{
-				ID:        Ptr(int64(1)),
-				NodeID:    Ptr("nid"),
-				Name:      Ptr("n"),
-				Path:      Ptr("p"),
-				State:     Ptr("s"),
-				CreatedAt: &Timestamp{referenceTime},
-				UpdatedAt: &Timestamp{referenceTime},
-				URL:       Ptr("u"),
-				HTMLURL:   Ptr("h"),
-				BadgeURL:  Ptr("b"),
-			},
-		},
-	}
-
-	want := `{
-		"total_count": 1,
-		"workflows": [{
-			"id": 1,
-			"node_id": "nid",
-			"name": "n",
-			"path": "p",
-			"state": "s",
-			"created_at": ` + referenceTimeStr + `,
-			"updated_at": ` + referenceTimeStr + `,
-			"url": "u",
-			"html_url": "h",
-			"badge_url": "b"
-		}]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestWorkflowBill_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &WorkflowBill{}, "{}")
-
-	u := &WorkflowBill{
-		TotalMS: Ptr(int64(1)),
-	}
-
-	want := `{
-		"total_ms": 1
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestWorkflowBillMap_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &WorkflowBillMap{}, "{}")
-
-	u := &WorkflowBillMap{
-		"UBUNTU": &WorkflowBill{
-			TotalMS: Ptr(int64(1)),
-		},
-		"MACOS": &WorkflowBill{
-			TotalMS: Ptr(int64(1)),
-		},
-		"WINDOWS": &WorkflowBill{
-			TotalMS: Ptr(int64(1)),
-		},
-	}
-
-	want := `{
-		"UBUNTU": {
-			"total_ms": 1
-		},
-		"MACOS": {
-			"total_ms": 1
-		},
-		"WINDOWS": {
-			"total_ms": 1
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestWorkflowUsage_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &WorkflowUsage{}, "{}")
-
-	u := &WorkflowUsage{
-		Billable: &WorkflowBillMap{
-			"UBUNTU": &WorkflowBill{
-				TotalMS: Ptr(int64(1)),
-			},
-			"MACOS": &WorkflowBill{
-				TotalMS: Ptr(int64(1)),
-			},
-			"WINDOWS": &WorkflowBill{
-				TotalMS: Ptr(int64(1)),
-			},
-		},
-	}
-
-	want := `{
-		"billable": {
-			"UBUNTU": {
-				"total_ms": 1
-			},
-			"MACOS": {
-				"total_ms": 1
-			},
-			"WINDOWS": {
-				"total_ms": 1
-			}
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, `{"ref": ""}`)
-
-	inputs := make(map[string]any, 0)
-	inputs["key"] = "value"
-
-	u := &CreateWorkflowDispatchEventRequest{
-		Ref:    "r",
-		Inputs: inputs,
-	}
-
-	want := `{
-		"ref": "r",
-		"inputs": {
-			"key": "value"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
 }

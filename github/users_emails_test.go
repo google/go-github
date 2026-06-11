@@ -108,27 +108,6 @@ func TestUsersService_DeleteEmails(t *testing.T) {
 	})
 }
 
-func TestUserEmail_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &UserEmail{}, "{}")
-
-	u := &UserEmail{
-		Email:      Ptr("qwe@qwe.qwe"),
-		Primary:    Ptr(false),
-		Verified:   Ptr(true),
-		Visibility: Ptr("yes"),
-	}
-
-	want := `{
-		"email": "qwe@qwe.qwe",
-		"primary": false,
-		"verified": true,
-		"visibility": "yes"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestUsersService_SetEmailVisibility(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

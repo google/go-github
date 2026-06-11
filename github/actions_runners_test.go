@@ -327,7 +327,7 @@ func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T)
 	ctx := t.Context()
 	downloads, _, err := client.Actions.ListOrganizationRunnerApplicationDownloads(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.ListRunnerApplicationDownloads returned error: %v", err)
+		t.Errorf("Actions.ListOrganizationRunnerApplicationDownloads returned error: %v", err)
 	}
 
 	want := []*RunnerApplicationDownload{
@@ -368,7 +368,7 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 	ctx := t.Context()
 	token, _, err := client.Actions.CreateOrganizationRegistrationToken(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.CreateRegistrationToken returned error: %v", err)
+		t.Errorf("Actions.CreateOrganizationRegistrationToken returned error: %v", err)
 	}
 
 	want := &RegistrationToken{
@@ -377,7 +377,7 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 			123000000, time.UTC)},
 	}
 	if !cmp.Equal(token, want) {
-		t.Errorf("Actions.CreateRegistrationToken returned %+v, want %+v", token, want)
+		t.Errorf("Actions.CreateOrganizationRegistrationToken returned %+v, want %+v", token, want)
 	}
 
 	const methodName = "CreateOrganizationRegistrationToken"
@@ -411,7 +411,7 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 	ctx := t.Context()
 	runners, _, err := client.Actions.ListOrganizationRunners(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Actions.ListRunners returned error: %v", err)
+		t.Errorf("Actions.ListOrganizationRunners returned error: %v", err)
 	}
 
 	want := &Runners{
@@ -422,7 +422,7 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(runners, want) {
-		t.Errorf("Actions.ListRunners returned %+v, want %+v", runners, want)
+		t.Errorf("Actions.ListOrganizationRunners returned %+v, want %+v", runners, want)
 	}
 
 	const methodName = "ListOrganizationRunners"
@@ -452,7 +452,7 @@ func TestActionsService_GetOrganizationRunner(t *testing.T) {
 	ctx := t.Context()
 	runner, _, err := client.Actions.GetOrganizationRunner(ctx, "o", 23)
 	if err != nil {
-		t.Errorf("Actions.GetRunner returned error: %v", err)
+		t.Errorf("Actions.GetOrganizationRunner returned error: %v", err)
 	}
 
 	want := &Runner{
@@ -462,7 +462,7 @@ func TestActionsService_GetOrganizationRunner(t *testing.T) {
 		Status: Ptr("online"),
 	}
 	if !cmp.Equal(runner, want) {
-		t.Errorf("Actions.GetRunner returned %+v, want %+v", runner, want)
+		t.Errorf("Actions.GetOrganizationRunner returned %+v, want %+v", runner, want)
 	}
 
 	const methodName = "GetOrganizationRunner"
@@ -492,12 +492,12 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 	ctx := t.Context()
 	token, _, err := client.Actions.CreateOrganizationRemoveToken(ctx, "o")
 	if err != nil {
-		t.Errorf("Actions.CreateRemoveToken returned error: %v", err)
+		t.Errorf("Actions.CreateOrganizationRemoveToken returned error: %v", err)
 	}
 
 	want := &RemoveToken{Token: Ptr("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
 	if !cmp.Equal(token, want) {
-		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
+		t.Errorf("Actions.CreateOrganizationRemoveToken returned %+v, want %+v", token, want)
 	}
 
 	const methodName = "CreateOrganizationRemoveToken"
@@ -538,201 +538,4 @@ func TestActionsService_RemoveOrganizationRunner(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.RemoveOrganizationRunner(ctx, "o", 21)
 	})
-}
-
-func TestRunnerApplicationDownload_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RunnerApplicationDownload{}, "{}")
-
-	u := &RunnerApplicationDownload{
-		OS:                Ptr("o"),
-		Architecture:      Ptr("a"),
-		DownloadURL:       Ptr("d"),
-		Filename:          Ptr("f"),
-		TempDownloadToken: Ptr("t"),
-		SHA256Checksum:    Ptr("s"),
-	}
-
-	want := `{
-		"os": "o",
-		"architecture": "a",
-		"download_url": "d",
-		"filename": "f",
-		"temp_download_token": "t",
-		"sha256_checksum": "s"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestActionsEnabledOnOrgRepos_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ActionsEnabledOnOrgRepos{}, `{
-		"repositories": null,
-		"total_count": 0
-	}`)
-
-	u := &ActionsEnabledOnOrgRepos{
-		TotalCount: 1,
-		Repositories: []*Repository{
-			{
-				ID:   Ptr(int64(1)),
-				URL:  Ptr("u"),
-				Name: Ptr("n"),
-			},
-		},
-	}
-
-	want := `{
-		"total_count": 1,
-		"repositories": [
-			{
-				"id": 1,
-				"url": "u",
-				"name": "n"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRegistrationToken_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RegistrationToken{}, "{}")
-
-	u := &RegistrationToken{
-		Token:     Ptr("t"),
-		ExpiresAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-		"token": "t",
-		"expires_at": ` + referenceTimeStr + `
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRunnerLabels_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RunnerLabels{}, "{}")
-
-	u := &RunnerLabels{
-		ID:   Ptr(int64(1)),
-		Name: Ptr("n"),
-		Type: Ptr("t"),
-	}
-
-	want := `{
-		"id": 1,
-		"name": "n",
-		"type": "t"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRunner_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Runner{}, "{}")
-
-	u := &Runner{
-		ID:     Ptr(int64(1)),
-		Name:   Ptr("n"),
-		OS:     Ptr("o"),
-		Status: Ptr("s"),
-		Busy:   Ptr(false),
-		Labels: []*RunnerLabels{
-			{
-				ID:   Ptr(int64(1)),
-				Name: Ptr("n"),
-				Type: Ptr("t"),
-			},
-		},
-	}
-
-	want := `{
-		"id": 1,
-		"name": "n",
-		"os": "o",
-		"status": "s",
-		"busy": false,
-		"labels": [
-			{
-				"id": 1,
-				"name": "n",
-				"type": "t"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRunners_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Runners{}, `{
-		"runners": null,
-		"total_count": 0
-	}`)
-
-	u := &Runners{
-		TotalCount: 1,
-		Runners: []*Runner{
-			{
-				ID:     Ptr(int64(1)),
-				Name:   Ptr("n"),
-				OS:     Ptr("o"),
-				Status: Ptr("s"),
-				Busy:   Ptr(false),
-				Labels: []*RunnerLabels{
-					{
-						ID:   Ptr(int64(1)),
-						Name: Ptr("n"),
-						Type: Ptr("t"),
-					},
-				},
-			},
-		},
-	}
-
-	want := `{
-		"total_count": 1,
-		"runners": [
-			{
-				"id": 1,
-		"name": "n",
-		"os": "o",
-		"status": "s",
-		"busy": false,
-		"labels": [
-			{
-				"id": 1,
-				"name": "n",
-				"type": "t"
-			}
-		]
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRemoveToken_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RemoveToken{}, "{}")
-
-	u := &RemoveToken{
-		Token:     Ptr("t"),
-		ExpiresAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-		"token": "t",
-		"expires_at": ` + referenceTimeStr + `
-	}`
-
-	testJSONMarshal(t, u, want)
 }

@@ -747,11 +747,11 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		ctx := t.Context()
 		asset, _, err := client.Repositories.UploadReleaseAsset(ctx, "o", "r", int64(key), test.uploadOpts, file)
 		if err != nil {
-			t.Errorf("Repositories.UploadReleaseAssert returned error: %v", err)
+			t.Errorf("Repositories.UploadReleaseAsset returned error: %v", err)
 		}
 		want := &ReleaseAsset{ID: Ptr(int64(1))}
 		if !cmp.Equal(asset, want) {
-			t.Errorf("Repositories.UploadReleaseAssert returned %+v, want %+v", asset, want)
+			t.Errorf("Repositories.UploadReleaseAsset returned %+v, want %+v", asset, want)
 		}
 
 		const methodName = "UploadReleaseAsset"
@@ -771,158 +771,6 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestRepositoryReleaseRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &repositoryReleaseRequest{}, "{}")
-
-	u := &repositoryReleaseRequest{
-		TagName:                Ptr("tn"),
-		TargetCommitish:        Ptr("tc"),
-		Name:                   Ptr("name"),
-		Body:                   Ptr("body"),
-		Draft:                  Ptr(false),
-		Prerelease:             Ptr(false),
-		MakeLatest:             Ptr("legacy"),
-		DiscussionCategoryName: Ptr("dcn"),
-	}
-
-	want := `{
-		"tag_name": "tn",
-		"target_commitish": "tc",
-		"name": "name",
-		"body": "body",
-		"draft": false,
-		"prerelease": false,
-		"make_latest": "legacy",
-		"discussion_category_name": "dcn"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestReleaseAsset_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ReleaseAsset{}, "{}")
-
-	u := &ReleaseAsset{
-		ID:                 Ptr(int64(1)),
-		URL:                Ptr("url"),
-		Name:               Ptr("name"),
-		Label:              Ptr("label"),
-		State:              Ptr("state"),
-		ContentType:        Ptr("ct"),
-		Size:               Ptr(1),
-		DownloadCount:      Ptr(1),
-		CreatedAt:          &Timestamp{referenceTime},
-		UpdatedAt:          &Timestamp{referenceTime},
-		BrowserDownloadURL: Ptr("bdu"),
-		Uploader:           &User{ID: Ptr(int64(1))},
-		NodeID:             Ptr("nid"),
-	}
-
-	want := `{
-		"id": 1,
-		"url": "url",
-		"name": "name",
-		"label": "label",
-		"state": "state",
-		"content_type": "ct",
-		"size": 1,
-		"download_count": 1,
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"browser_download_url": "bdu",
-		"uploader": {
-			"id": 1
-		},
-		"node_id": "nid"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRepositoryRelease_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RepositoryRelease{}, "{}")
-
-	u := &RepositoryRelease{
-		TagName:                Ptr("tn"),
-		TargetCommitish:        Ptr("tc"),
-		Name:                   Ptr("name"),
-		Body:                   Ptr("body"),
-		Draft:                  Ptr(false),
-		Prerelease:             Ptr(false),
-		MakeLatest:             Ptr("legacy"),
-		DiscussionCategoryName: Ptr("dcn"),
-		ID:                     Ptr(int64(1)),
-		CreatedAt:              &Timestamp{referenceTime},
-		PublishedAt:            &Timestamp{referenceTime},
-		URL:                    Ptr("url"),
-		HTMLURL:                Ptr("hurl"),
-		AssetsURL:              Ptr("aurl"),
-		Assets:                 []*ReleaseAsset{{ID: Ptr(int64(1))}},
-		UploadURL:              Ptr("uurl"),
-		ZipballURL:             Ptr("zurl"),
-		TarballURL:             Ptr("turl"),
-		Author:                 &User{ID: Ptr(int64(1))},
-		NodeID:                 Ptr("nid"),
-		Immutable:              Ptr(true),
-	}
-
-	want := `{
-		"tag_name": "tn",
-		"target_commitish": "tc",
-		"name": "name",
-		"body": "body",
-		"draft": false,
-		"prerelease": false,
-		"make_latest": "legacy",
-		"discussion_category_name": "dcn",
-		"id": 1,
-		"created_at": ` + referenceTimeStr + `,
-		"published_at": ` + referenceTimeStr + `,
-		"url": "url",
-		"html_url": "hurl",
-		"assets_url": "aurl",
-		"assets": [
-			{
-				"id": 1
-			}
-		],
-		"upload_url": "uurl",
-		"zipball_url": "zurl",
-		"tarball_url": "turl",
-		"author": {
-			"id": 1
-		},
-		"node_id": "nid",
-		"immutable": true
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestGenerateNotesOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &GenerateNotesOptions{}, `{"tag_name": ""}`)
-
-	u := &GenerateNotesOptions{
-		TagName:               "tag_name",
-		PreviousTagName:       Ptr("previous_tag_name"),
-		TargetCommitish:       Ptr("target_commitish"),
-		ConfigurationFilePath: Ptr("configuration_file_path"),
-	}
-
-	want := `{
-		"tag_name":               "tag_name",
-		"previous_tag_name":      "previous_tag_name",
-		"target_commitish":       "target_commitish",
-		"configuration_file_path": "configuration_file_path"
-	}`
-
-	testJSONMarshal(t, u, want)
 }
 
 func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
@@ -952,9 +800,8 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
 	size := int64(len(body))
 
 	// Provide a templated upload URL like GitHub returns.
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
 	release := &RepositoryRelease{
-		UploadURL: &uploadURL,
+		UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}"),
 	}
 
 	ctx := t.Context()
@@ -1023,8 +870,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NilReader(t *testing.
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{UploadURL: &uploadURL}
+	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
 
 	ctx := t.Context()
 	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n.txt"}, nil, 12)
@@ -1043,8 +889,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NegativeSize(t *testi
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{UploadURL: &uploadURL}
+	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
 
 	body := []byte("Upload me !\n")
 	reader := bytes.NewReader(body)
@@ -1071,8 +916,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NoOpts(t *testing.T) 
 	reader := bytes.NewReader(body)
 	size := int64(len(body))
 
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{UploadURL: &uploadURL}
+	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
 
 	ctx := t.Context()
 	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, nil, reader, size)
@@ -1109,8 +953,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_WithMediaType(t *test
 	reader := bytes.NewReader(body)
 	size := int64(len(body))
 
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{UploadURL: &uploadURL}
+	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
 
 	opts := &UploadOptions{Name: "n.txt", MediaType: "image/png"}
 

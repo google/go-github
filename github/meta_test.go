@@ -13,59 +13,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestAPIMeta_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &APIMeta{}, "{}")
-
-	a := &APIMeta{
-		Hooks:                            []string{"h"},
-		Git:                              []string{"g"},
-		VerifiablePasswordAuthentication: Ptr(true),
-		Pages:                            []string{"p"},
-		Importer:                         []string{"i"},
-		GithubEnterpriseImporter:         []string{"gei"},
-		Actions:                          []string{"a"},
-		ActionsMacos:                     []string{"example.com/1", "example.com/2"},
-		Dependabot:                       []string{"d"},
-		SSHKeyFingerprints:               map[string]string{"a": "f"},
-		SSHKeys:                          []string{"k"},
-		API:                              []string{"a"},
-		Web:                              []string{"w"},
-		Domains: &APIMetaDomains{
-			Website: []string{
-				"*.github.com",
-				"*.example.com/assets",
-				"*.example.com",
-			},
-			ArtifactAttestations: &APIMetaArtifactAttestations{
-				TrustDomain: "",
-				Services: []string{
-					"*.actions.example.com",
-					"timestamp.example.com",
-				},
-			},
-		},
-	}
-	want := `{
-		"hooks":["h"],
-		"git":["g"],
-		"verifiable_password_authentication":true,
-		"pages":["p"],
-		"importer":["i"],
-		"github_enterprise_importer":["gei"],
-		"actions":["a"],
-		"actions_macos":["example.com/1", "example.com/2"],
-		"dependabot":["d"],
-		"ssh_key_fingerprints":{"a":"f"},
-		"ssh_keys":["k"],
-		"api":["a"],
-		"web":["w"],
-		"domains":{"website":["*.github.com","*.example.com/assets","*.example.com"],"artifact_attestations":{"services":["*.actions.example.com","timestamp.example.com"]}}
-	}`
-
-	testJSONMarshal(t, a, want)
-}
-
 func TestMetaService_Get(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

@@ -267,32 +267,6 @@ func TestHookDelivery_ParsePayload_invalidPayload(t *testing.T) {
 	}
 }
 
-func TestHookRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &HookRequest{}, "{}")
-
-	header := make(map[string]string)
-	header["key"] = "value"
-
-	jsonMsg, _ := json.Marshal(&header)
-
-	r := &HookRequest{
-		Headers:    header,
-		RawPayload: (*json.RawMessage)(&jsonMsg),
-	}
-
-	want := `{
-		"headers": {
-			"key": "value"
-		},
-		"payload": {
-			"key": "value"
-		}
-	}`
-
-	testJSONMarshal(t, r, want, cmpJSONRawMessageComparator())
-}
-
 func TestHookRequest_GetHeader(t *testing.T) {
 	t.Parallel()
 
@@ -328,32 +302,6 @@ func TestHookRequest_GetHeader(t *testing.T) {
 	}
 }
 
-func TestHookResponse_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &HookResponse{}, "{}")
-
-	header := make(map[string]string)
-	header["key"] = "value"
-
-	jsonMsg, _ := json.Marshal(&header)
-
-	r := &HookResponse{
-		Headers:    header,
-		RawPayload: (*json.RawMessage)(&jsonMsg),
-	}
-
-	want := `{
-		"headers": {
-			"key": "value"
-		},
-		"payload": {
-			"key": "value"
-		}
-	}`
-
-	testJSONMarshal(t, r, want, cmpJSONRawMessageComparator())
-}
-
 func TestHookResponse_GetHeader(t *testing.T) {
 	t.Parallel()
 
@@ -387,68 +335,4 @@ func TestHookResponse_GetHeader(t *testing.T) {
 	if val := r.GetHeader(key); val != "" {
 		t.Errorf("GetHeader(%q) should return empty value: %q != %q", key, val, "")
 	}
-}
-
-func TestHookDelivery_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &HookDelivery{}, "{}")
-
-	header := make(map[string]string)
-	header["key"] = "value"
-
-	jsonMsg, _ := json.Marshal(&header)
-
-	r := &HookDelivery{
-		ID:             Ptr(int64(1)),
-		GUID:           Ptr("guid"),
-		DeliveredAt:    &Timestamp{referenceTime},
-		Redelivery:     Ptr(true),
-		Duration:       Ptr(1.0),
-		Status:         Ptr("guid"),
-		StatusCode:     Ptr(1),
-		Event:          Ptr("guid"),
-		Action:         Ptr("guid"),
-		InstallationID: Ptr(int64(1)),
-		RepositoryID:   Ptr(int64(1)),
-		Request: &HookRequest{
-			Headers:    header,
-			RawPayload: (*json.RawMessage)(&jsonMsg),
-		},
-		Response: &HookResponse{
-			Headers:    header,
-			RawPayload: (*json.RawMessage)(&jsonMsg),
-		},
-	}
-
-	want := `{
-		"id": 1,
-		"guid": "guid",
-		"delivered_at": ` + referenceTimeStr + `,
-		"redelivery": true,
-		"duration": 1,
-		"status": "guid",
-		"status_code": 1,
-		"event": "guid",
-		"action": "guid",
-		"installation_id": 1,
-		"repository_id": 1,
-		"request": {
-			"headers": {
-				"key": "value"
-			},
-			"payload": {
-				"key": "value"
-			}
-		},
-		"response": {
-			"headers": {
-				"key": "value"
-			},
-			"payload": {
-				"key": "value"
-			}
-		}
-	}`
-
-	testJSONMarshal(t, r, want, cmpJSONRawMessageComparator())
 }

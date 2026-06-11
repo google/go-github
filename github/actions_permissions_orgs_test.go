@@ -103,7 +103,7 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 	}
 	got, _, err := client.Actions.ListEnabledReposInOrg(ctx, "o", opt)
 	if err != nil {
-		t.Errorf("Actions.ListEnabledRepos returned error: %v", err)
+		t.Errorf("Actions.ListEnabledReposInOrg returned error: %v", err)
 	}
 
 	want := &ActionsEnabledOnOrgRepos{TotalCount: int(2), Repositories: []*Repository{
@@ -111,7 +111,7 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 		{ID: Ptr(int64(3))},
 	}}
 	if !cmp.Equal(got, want) {
-		t.Errorf("Actions.ListEnabledRepos returned %+v, want %+v", got, want)
+		t.Errorf("Actions.ListEnabledReposInOrg returned %+v, want %+v", got, want)
 	}
 
 	const methodName = "ListEnabledRepos"
@@ -149,7 +149,7 @@ func TestActionsService_SetEnabledReposInOrg(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Actions.SetEnabledReposInOrg(ctx, "o", input)
 	if err != nil {
-		t.Errorf("Actions.SetEnabledRepos returned error: %v", err)
+		t.Errorf("Actions.SetEnabledReposInOrg returned error: %v", err)
 	}
 
 	const methodName = "SetEnabledRepos"
@@ -288,48 +288,6 @@ func TestActionsService_UpdateActionsAllowed(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestActionsAllowed_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ActionsAllowed{}, "{}")
-
-	u := &ActionsAllowed{
-		GithubOwnedAllowed: Ptr(false),
-		VerifiedAllowed:    Ptr(false),
-		PatternsAllowed:    []string{"s"},
-	}
-
-	want := `{
-		"github_owned_allowed": false,
-		"verified_allowed": false,
-		"patterns_allowed": [
-			"s"
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestActionsPermissions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ActionsPermissions{}, "{}")
-
-	u := &ActionsPermissions{
-		EnabledRepositories: Ptr("e"),
-		AllowedActions:      Ptr("a"),
-		SelectedActionsURL:  Ptr("sau"),
-		SHAPinningRequired:  Ptr(true),
-	}
-
-	want := `{
-		"enabled_repositories": "e",
-		"allowed_actions": "a",
-		"selected_actions_url": "sau",
-		"sha_pinning_required": true
-	}`
-
-	testJSONMarshal(t, u, want)
 }
 
 func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T) {

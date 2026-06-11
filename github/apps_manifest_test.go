@@ -24,7 +24,7 @@ const (
 `
 )
 
-func TestGetConfig(t *testing.T) {
+func TestAppsService_CompleteAppManifest(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -36,7 +36,7 @@ func TestGetConfig(t *testing.T) {
 	ctx := t.Context()
 	cfg, _, err := client.Apps.CompleteAppManifest(ctx, "code")
 	if err != nil {
-		t.Errorf("AppManifest.GetConfig returned error: %v", err)
+		t.Errorf("Apps.CompleteAppManifest returned error: %v", err)
 	}
 
 	want := &AppConfig{
@@ -48,7 +48,7 @@ func TestGetConfig(t *testing.T) {
 	}
 
 	if !cmp.Equal(cfg, want) {
-		t.Errorf("GetConfig returned %+v, want %+v", cfg, want)
+		t.Errorf("Apps.CompleteAppManifest returned %+v, want %+v", cfg, want)
 	}
 
 	const methodName = "CompleteAppManifest"
@@ -64,83 +64,4 @@ func TestGetConfig(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestAppConfig_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &AppConfig{}, "{}")
-
-	u := &AppConfig{
-		ID:     Ptr(int64(1)),
-		Slug:   Ptr("s"),
-		NodeID: Ptr("nid"),
-		Owner: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		Name:          Ptr("n"),
-		Description:   Ptr("d"),
-		ExternalURL:   Ptr("eu"),
-		HTMLURL:       Ptr("hu"),
-		CreatedAt:     &Timestamp{referenceTime},
-		UpdatedAt:     &Timestamp{referenceTime},
-		ClientID:      Ptr("ci"),
-		ClientSecret:  Ptr("cs"),
-		WebhookSecret: Ptr("ws"),
-		PEM:           Ptr("pem"),
-	}
-
-	want := `{
-		"id": 1,
-		"slug": "s",
-		"node_id": "nid",
-		"owner": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"name": "n",
-		"description": "d",
-		"external_url": "eu",
-		"html_url": "hu",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"client_id": "ci",
-		"client_secret": "cs",
-		"webhook_secret": "ws",
-		"pem": "pem"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

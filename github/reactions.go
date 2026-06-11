@@ -371,6 +371,8 @@ func (s *ReactionsService) DeletePullRequestCommentReactionByID(ctx context.Cont
 
 // ListTeamDiscussionReactions lists the reactions for a team discussion.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#list-reactions-for-a-team-discussion-legacy
 //
 //meta:operation GET /teams/{team_id}/discussions/{discussion_number}/reactions
@@ -399,6 +401,8 @@ func (s *ReactionsService) ListTeamDiscussionReactions(ctx context.Context, team
 
 // CreateTeamDiscussionReaction creates a reaction for a team discussion.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#create-reaction-for-a-team-discussion-legacy
 //
@@ -447,6 +451,8 @@ func (s *ReactionsService) DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx cont
 
 // ListTeamDiscussionCommentReactions lists the reactions for a team discussion comment.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#list-reactions-for-a-team-discussion-comment-legacy
 //
 //meta:operation GET /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions
@@ -474,6 +480,8 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactions(ctx context.Contex
 
 // CreateTeamDiscussionCommentReaction creates a reaction for a team discussion comment.
 // The content should have one of the following values: "+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", or "eyes".
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#create-reaction-for-a-team-discussion-comment-legacy
 //
