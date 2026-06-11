@@ -118,7 +118,7 @@ type AgentTaskListByRepoOptions struct {
 	AgentTaskListOptions
 
 	// CreatorIDs filters tasks by creator user IDs.
-	CreatorIDs []int64 `url:"creator_id,omitempty"`
+	CreatorID []int64 `url:"creator_id,omitempty"`
 }
 
 // CreateAgentTaskRequest represents the parameters for creating an agent task.
