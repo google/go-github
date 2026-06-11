@@ -159,7 +159,7 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 			Direction:   "asc",
 			State:       "queued,completed",
 			IsArchived:  true,
-			Since:       time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC),
+			Since:       Ptr(time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)),
 			ListOptions: ListOptions{Page: 2, PerPage: 1},
 		},
 		CreatorID: []int64{1, 2},
@@ -303,7 +303,7 @@ func TestAgentTasksService_List(t *testing.T) {
 		Direction:   "desc",
 		State:       "completed",
 		IsArchived:  true,
-		Since:       time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC),
+		Since:       Ptr(time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)),
 		ListOptions: ListOptions{Page: 2, PerPage: 1},
 	}
 

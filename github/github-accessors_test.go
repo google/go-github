@@ -1355,7 +1355,10 @@ func TestAgentTaskListOptions_GetIsArchived(tt *testing.T) {
 
 func TestAgentTaskListOptions_GetSince(tt *testing.T) {
 	tt.Parallel()
-	a := &AgentTaskListOptions{}
+	var zeroValue time.Time
+	a := &AgentTaskListOptions{Since: &zeroValue}
+	a.GetSince()
+	a = &AgentTaskListOptions{}
 	a.GetSince()
 	a = nil
 	a.GetSince()

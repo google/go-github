@@ -1094,12 +1094,12 @@ func (a *AgentTaskListOptions) GetIsArchived() bool {
 	return a.IsArchived
 }
 
-// GetSince returns the Since field.
+// GetSince returns the Since field if it's non-nil, zero value otherwise.
 func (a *AgentTaskListOptions) GetSince() time.Time {
-	if a == nil {
+	if a == nil || a.Since == nil {
 		return time.Time{}
 	}
-	return a.Since
+	return *a.Since
 }
 
 // GetSort returns the Sort field.
