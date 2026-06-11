@@ -23,6 +23,7 @@ func agentTaskJSON() string {
 		"name": "Fix the login button on the homepage",
 		"creator": { "id": 1 },
 		"creator_type": "user",
+		"user_collaborators": [{ "id": 3 }],
 		"owner": { "id": 2 },
 		"repository": { "id": 1296269 },
 		"state": "completed",
@@ -48,6 +49,7 @@ func agentTaskWithSessionsJSON() string {
 		"name": "Fix the login button on the homepage",
 		"creator": { "id": 1 },
 		"creator_type": "user",
+		"user_collaborators": [{ "id": 3 }],
 		"owner": { "id": 2 },
 		"repository": { "id": 1296269 },
 		"state": "completed",
@@ -85,12 +87,15 @@ func agentTaskWithSessionsJSON() string {
 
 func agentTask() *AgentTask {
 	return &AgentTask{
-		ID:           "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-		URL:          Ptr("https://api.github.com/agents/repos/octocat/hello-world/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-		HTMLURL:      Ptr("https://github.com/octocat/hello-world/copilot/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-		Name:         Ptr("Fix the login button on the homepage"),
-		Creator:      &AgentTaskCreator{ID: Ptr(int64(1))},
-		CreatorType:  Ptr("user"),
+		ID:          "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		URL:         Ptr("https://api.github.com/agents/repos/octocat/hello-world/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+		HTMLURL:     Ptr("https://github.com/octocat/hello-world/copilot/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+		Name:        Ptr("Fix the login button on the homepage"),
+		Creator:     &AgentTaskCreator{ID: Ptr(int64(1))},
+		CreatorType: Ptr("user"),
+		UserCollaborators: []*User{
+			{ID: Ptr(int64(3))},
+		},
 		Owner:        &AgentTaskOwner{ID: Ptr(int64(2))},
 		Repository:   &AgentTaskRepository{ID: Ptr(int64(1296269))},
 		State:        "completed",

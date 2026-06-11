@@ -19,21 +19,25 @@ type AgentTasksService service
 
 // AgentTask represents a Copilot cloud agent task.
 type AgentTask struct {
-	ID           string               `json:"id"`
-	URL          *string              `json:"url,omitempty"`
-	HTMLURL      *string              `json:"html_url,omitempty"`
-	Name         *string              `json:"name,omitempty"`
-	Creator      *AgentTaskCreator    `json:"creator,omitempty"`
-	CreatorType  *string              `json:"creator_type,omitempty"`
-	Owner        *AgentTaskOwner      `json:"owner,omitempty"`
-	Repository   *AgentTaskRepository `json:"repository,omitempty"`
-	State        string               `json:"state"`
-	SessionCount *int                 `json:"session_count,omitempty"`
-	Artifacts    []*AgentTaskArtifact `json:"artifacts,omitempty"`
-	ArchivedAt   *Timestamp           `json:"archived_at,omitempty"`
-	CreatedAt    Timestamp            `json:"created_at"`
-	UpdatedAt    *Timestamp           `json:"updated_at,omitempty"`
-	Sessions     []*AgentTaskSession  `json:"sessions,omitempty"`
+	ID          string            `json:"id"`
+	URL         *string           `json:"url,omitempty"`
+	HTMLURL     *string           `json:"html_url,omitempty"`
+	Name        *string           `json:"name,omitempty"`
+	Creator     *AgentTaskCreator `json:"creator,omitempty"`
+	CreatorType *string           `json:"creator_type,omitempty"`
+	// UserCollaborators are the user objects of collaborators on this task.
+	//
+	// Deprecated: This field is deprecated by the GitHub API.
+	UserCollaborators []*User              `json:"user_collaborators,omitempty"`
+	Owner             *AgentTaskOwner      `json:"owner,omitempty"`
+	Repository        *AgentTaskRepository `json:"repository,omitempty"`
+	State             string               `json:"state"`
+	SessionCount      *int                 `json:"session_count,omitempty"`
+	Artifacts         []*AgentTaskArtifact `json:"artifacts,omitempty"`
+	ArchivedAt        *Timestamp           `json:"archived_at,omitempty"`
+	CreatedAt         Timestamp            `json:"created_at"`
+	UpdatedAt         *Timestamp           `json:"updated_at,omitempty"`
+	Sessions          []*AgentTaskSession  `json:"sessions,omitempty"`
 }
 
 // AgentTaskCreator represents an agent task creator.

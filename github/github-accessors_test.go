@@ -1214,6 +1214,17 @@ func TestAgentTask_GetURL(tt *testing.T) {
 	a.GetURL()
 }
 
+func TestAgentTask_GetUserCollaborators(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	a := &AgentTask{UserCollaborators: zeroValue}
+	a.GetUserCollaborators()
+	a = &AgentTask{}
+	a.GetUserCollaborators()
+	a = nil
+	a.GetUserCollaborators()
+}
+
 func TestAgentTaskArtifact_GetData(tt *testing.T) {
 	tt.Parallel()
 	a := &AgentTaskArtifact{}
