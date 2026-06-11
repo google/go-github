@@ -1652,8 +1652,15 @@ func (r *AbuseRateLimitError) Is(target error) bool {
 	}
 
 	return r.Message == v.Message &&
-		r.RetryAfter == v.RetryAfter &&
+		equalDurationPtr(r.RetryAfter, v.RetryAfter) &&
 		compareHTTPResponse(r.Response, v.Response)
+}
+
+func equalDurationPtr(a, b *time.Duration) bool {
+	if a == nil || b == nil {
+		return a == b
+	}
+	return *a == *b
 }
 
 // RedirectionError represents a response that returned a redirect status code:
