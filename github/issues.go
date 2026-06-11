@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -365,8 +366,9 @@ type IssueListByRepoOptions struct {
 	Labels []string `url:"labels,omitempty,comma"`
 
 	// ExcludeLabels filters issues to exclude those with the specified labels.
-	// This is an undocumented GitHub API feature.
-	ExcludeLabels []string `url:"-labels,omitempty,comma"`
+	// Filtering is done client-side after fetching, since GitHub's Issues REST API
+	// does not support server-side label exclusion.
+	ExcludeLabels []string `url:"-"`
 
 	// Sort specifies how to sort issues. Possible values are: created, updated,
 	// and comments. Default value is "created".
@@ -410,6 +412,30 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts
 	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
+	}
+
+	// Filter out issues with excluded labels client-side.
+	// The GitHub Issues REST API does not support server-side label exclusion,
+	// so we apply the filter in-memory after fetching results.
+	if len(opts.ExcludeLabels) > 0 {
+		exclude := make(map[string]bool, len(opts.ExcludeLabels))
+		for _, l := range opts.ExcludeLabels {
+			exclude[strings.ToLower(l)] = true
+		}
+		filtered := make([]*Issue, 0, len(issues))
+		for _, issue := range issues {
+			shouldExclude := false
+			for _, label := range issue.Labels {
+				if exclude[strings.ToLower(label.GetName())] {
+					shouldExclude = true
+					break
+				}
+			}
+			if !shouldExclude {
+				filtered = append(filtered, issue)
+			}
+		}
+		issues = filtered
 	}
 
 	return issues, resp, nil

@@ -192,9 +192,8 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 			"assignee":  "a",
 			"creator":   "c",
 			"mentioned": "m",
-			"labels":    "a,b",
-			"-labels":   "c,d",
-			"sort":      "updated",
+		"labels":    "a,b",
+		"sort":      "updated",
 			"direction": "asc",
 			"since":     referenceTime.Format(time.RFC3339),
 			"per_page":  "1",
@@ -241,6 +240,47 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestIssuesService_ListByRepo_ExcludeLabels(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", mediaTypeReactionsPreview)
+		// ExcludeLabels should NOT be sent as a query parameter.
+		testFormValues(t, r, values{
+			"labels": "bug",
+		})
+		// Server returns all bug-labeled issues; client-side filtering handles exclusion.
+		fmt.Fprint(w, `[
+			{"number":1, "labels":[{"name":"bug"}]},
+			{"number":2, "labels":[{"name":"bug"},{"name":"wontfix"}]},
+			{"number":3, "labels":[{"name":"bug"},{"name":"enhancement"}]},
+			{"number":4, "labels":[{"name":"bug"},{"name":"wontfix"},{"name":"duplicate"}]}
+		]`)
+	})
+
+	opt := &IssueListByRepoOptions{
+		Labels:        []string{"bug"},
+		ExcludeLabels: []string{"wontfix", "duplicate"},
+	}
+
+	ctx := t.Context()
+	issues, _, err := client.Issues.ListByRepo(ctx, "o", "r", opt)
+	if err != nil {
+		t.Errorf("Issues.ListByRepo returned error: %v", err)
+	}
+
+	// Issues #1 and #3 should remain; #2 and #4 should be excluded by client-side filter.
+	want := []*Issue{
+		{Number: Ptr(1), Labels: []*Label{{Name: Ptr("bug")}}},
+		{Number: Ptr(3), Labels: []*Label{{Name: Ptr("bug")}, {Name: Ptr("enhancement")}}},
+	}
+	if !cmp.Equal(issues, want) {
+		t.Errorf("Issues.ListByRepo returned %+v, want %+v", issues, want)
+	}
 }
 
 func TestIssuesService_Get(t *testing.T) {

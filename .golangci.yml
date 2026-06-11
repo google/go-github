@@ -228,7 +228,7 @@ linters:
             - HookResponse.RawPayload
             - Issue.PullRequestLinks # TODO: PullRequest
             - IssueImportRequest.IssueImport # TODO: Issue
-            - IssueListByRepoOptions.ExcludeLabels # url:"-labels" can't match "Labels" (already taken)
+            - IssueListByRepoOptions.ExcludeLabels # url:"-" skips query param; no matching tag
             - IssuesSearchResult.Issues # TODO: Items
             - IssuesSearchResult.Total
             - LabelsSearchResult.Labels # TODO: Items
