@@ -14414,12 +14414,12 @@ func (e *EnterpriseAggregatedUsageItem) GetGrossQuantity() float64 {
 	return e.GrossQuantity
 }
 
-// GetModel returns the Model field if it's non-nil, zero value otherwise.
+// GetModel returns the Model field.
 func (e *EnterpriseAggregatedUsageItem) GetModel() string {
-	if e == nil || e.Model == nil {
+	if e == nil {
 		return ""
 	}
-	return *e.Model
+	return e.Model
 }
 
 // GetNetAmount returns the NetAmount field.

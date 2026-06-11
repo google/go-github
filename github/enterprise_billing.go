@@ -47,7 +47,7 @@ type EnterpriseUsageTimePeriod struct {
 type EnterpriseAggregatedUsageItem struct {
 	Product          string  `json:"product"`
 	SKU              string  `json:"sku"`
-	Model            *string `json:"model,omitempty"`
+	Model            string  `json:"model"`
 	UnitType         string  `json:"unitType"`
 	PricePerUnit     float64 `json:"pricePerUnit"`
 	GrossQuantity    float64 `json:"grossQuantity"`

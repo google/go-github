@@ -77,6 +77,20 @@ func TestEnterpriseService_GetUsageReport(t *testing.T) {
 	if !cmp.Equal(report, want) {
 		t.Errorf("GetUsageReport returned %+v, want %+v", report, want)
 	}
+
+	const methodName = "GetUsageReport"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GetUsageReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetUsageReport(ctx, "test-enterprise", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestEnterpriseService_GetUsageReport_WithCostCenter(t *testing.T) {
@@ -265,6 +279,20 @@ func TestEnterpriseService_GetUsageSummary(t *testing.T) {
 	if !cmp.Equal(report, want) {
 		t.Errorf("GetUsageSummary returned %+v, want %+v", report, want)
 	}
+
+	const methodName = "GetUsageSummary"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GetUsageSummary(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetUsageSummary(ctx, "test-enterprise", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestEnterpriseService_GetUsageSummary_MultipleItems(t *testing.T) {
@@ -496,6 +524,20 @@ func TestEnterpriseService_GetPremiumRequestUsageReport(t *testing.T) {
 	if len(report.UsageItems) != 1 {
 		t.Errorf("Expected 1 usage item, got %v", len(report.UsageItems))
 	}
+
+	const methodName = "GetPremiumRequestUsageReport"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GetPremiumRequestUsageReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetPremiumRequestUsageReport(ctx, "test-enterprise", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestEnterpriseService_GetPremiumRequestUsageReport_WithAllOptions(t *testing.T) {
@@ -664,6 +706,20 @@ func TestEnterpriseService_GetAICreditUsage(t *testing.T) {
 	if report.UsageItems[0].UnitType != "credits" {
 		t.Errorf("Expected unitType credits, got %v", report.UsageItems[0].UnitType)
 	}
+
+	const methodName = "GetAICreditUsage"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GetAICreditUsage(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetAICreditUsage(ctx, "test-enterprise", opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
 }
 
 func TestEnterpriseService_GetAICreditUsage_FloatQuantities(t *testing.T) {

@@ -18245,10 +18245,7 @@ func TestEnterpriseAggregatedUsageItem_GetGrossQuantity(tt *testing.T) {
 
 func TestEnterpriseAggregatedUsageItem_GetModel(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseAggregatedUsageItem{Model: &zeroValue}
-	e.GetModel()
-	e = &EnterpriseAggregatedUsageItem{}
+	e := &EnterpriseAggregatedUsageItem{}
 	e.GetModel()
 	e = nil
 	e.GetModel()
