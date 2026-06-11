@@ -800,9 +800,8 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
 	size := int64(len(body))
 
 	// Provide a templated upload URL like GitHub returns.
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
 	release := &RepositoryRelease{
-		UploadURL: &uploadURL,
+		UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}"),
 	}
 
 	ctx := t.Context()
@@ -871,8 +870,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NilReader(t *testing.
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{UploadURL: &uploadURL}
+	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
 
 	ctx := t.Context()
 	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n.txt"}, nil, 12)
@@ -891,8 +889,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NegativeSize(t *testi
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{UploadURL: &uploadURL}
+	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
 
 	body := []byte("Upload me !\n")
 	reader := bytes.NewReader(body)
@@ -919,8 +916,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NoOpts(t *testing.T) 
 	reader := bytes.NewReader(body)
 	size := int64(len(body))
 
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{UploadURL: &uploadURL}
+	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
 
 	ctx := t.Context()
 	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, nil, reader, size)
@@ -957,8 +953,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_WithMediaType(t *test
 	reader := bytes.NewReader(body)
 	size := int64(len(body))
 
-	uploadURL := "/repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{UploadURL: &uploadURL}
+	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
 
 	opts := &UploadOptions{Name: "n.txt", MediaType: "image/png"}
 
