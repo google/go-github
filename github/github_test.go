@@ -1680,6 +1680,12 @@ func TestCheckURLPathTraversal(t *testing.T) {
 		// URL with userinfo.
 		{"https://user:pass@api.github.com/repos/../admin", ErrPathForbidden},
 		{"https://user:pass@api.github.com/repos/o/r", nil},
+		// Percent-encoded dots (%2e%2e) — url.Parse decodes them to ".." in Path.
+		{"repos/%2e%2e/admin", ErrPathForbidden},
+		{"repos/%2E%2E/admin", ErrPathForbidden},
+		{"repos/x/%2e%2e/%2e%2e/%2e%2e/admin", ErrPathForbidden},
+		{"x/%2e%2e/%2e%2e/%2e%2e/admin/users", ErrPathForbidden},
+		{"repos/o/r/contents/file%2e%2etxt", nil},
 	}
 	for _, tt := range tests {
 		err := checkURLPathTraversal(tt.input)
@@ -3864,6 +3870,37 @@ func TestAbuseRateLimitError_Is(t *testing.T) {
 			wantSame:   false,
 			err:        err,
 			otherError: errors.New("github"),
+		},
+		"errors are same - RetryAfter equal value but distinct pointers": {
+			wantSame: true,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors are same - RetryAfter both nil": {
+			wantSame: true,
+			err: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: nil,
+			},
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: nil,
+			},
+		},
+		"errors differ - one RetryAfter nil, other non-nil": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: nil,
+			},
 		},
 	}
 
