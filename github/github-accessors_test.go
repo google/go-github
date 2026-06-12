@@ -26630,7 +26630,7 @@ func TestLicenseStatus_GetSSHAllowed(tt *testing.T) {
 
 func TestLicenseStatus_GetSupportKey(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
+	var zeroValue bool
 	l := &LicenseStatus{SupportKey: &zeroValue}
 	l.GetSupportKey()
 	l = &LicenseStatus{}

@@ -87,7 +87,7 @@ type LicenseStatus struct {
 	ReferenceNumber              *string    `json:"referenceNumber,omitempty"`
 	Seats                        *int       `json:"seats,omitempty"`
 	SSHAllowed                   *bool      `json:"sshAllowed,omitempty"`
-	SupportKey                   *string    `json:"supportKey,omitempty"`
+	SupportKey                   *bool      `json:"supportKey,omitempty"`
 	UnlimitedSeating             *bool      `json:"unlimitedSeating,omitempty"`
 }
 
@@ -354,14 +354,14 @@ func (s *EnterpriseService) InitialConfig(ctx context.Context, license, password
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-enterprise-license-information
 //
 //meta:operation GET /manage/v1/config/license
-func (s *EnterpriseService) License(ctx context.Context) ([]*LicenseStatus, *Response, error) {
+func (s *EnterpriseService) License(ctx context.Context) (*LicenseStatus, *Response, error) {
 	u := "manage/v1/config/license"
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var licenseStatus []*LicenseStatus
+	var licenseStatus *LicenseStatus
 	resp, err := s.client.Do(req, &licenseStatus)
 	if err != nil {
 		return nil, resp, err
