@@ -2076,12 +2076,12 @@ func TestAppConfig_GetWebhookSecret(tt *testing.T) {
 	a.GetWebhookSecret()
 }
 
-func TestAppInstallationRepositoriesOptions_GetRepositories(tt *testing.T) {
+func TestAppInstallationRepositoriesRequest_GetRepositories(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
-	a := &AppInstallationRepositoriesOptions{Repositories: zeroValue}
+	a := &AppInstallationRepositoriesRequest{Repositories: zeroValue}
 	a.GetRepositories()
-	a = &AppInstallationRepositoriesOptions{}
+	a = &AppInstallationRepositoriesRequest{}
 	a.GetRepositories()
 	a = nil
 	a.GetRepositories()
@@ -51531,23 +51531,23 @@ func TestUnauthenticatedRateLimitedTransport_GetClientSecret(tt *testing.T) {
 	u.GetClientSecret()
 }
 
-func TestUpdateAppInstallationRepositoriesOptions_GetRepositories(tt *testing.T) {
+func TestUpdateAppInstallationRepositoriesRequest_GetRepositories(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
-	u := &UpdateAppInstallationRepositoriesOptions{Repositories: zeroValue}
+	u := &UpdateAppInstallationRepositoriesRequest{Repositories: zeroValue}
 	u.GetRepositories()
-	u = &UpdateAppInstallationRepositoriesOptions{}
+	u = &UpdateAppInstallationRepositoriesRequest{}
 	u.GetRepositories()
 	u = nil
 	u.GetRepositories()
 }
 
-func TestUpdateAppInstallationRepositoriesOptions_GetRepositorySelection(tt *testing.T) {
+func TestUpdateAppInstallationRepositoriesRequest_GetRepositorySelection(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateAppInstallationRepositoriesOptions{RepositorySelection: &zeroValue}
+	u := &UpdateAppInstallationRepositoriesRequest{RepositorySelection: &zeroValue}
 	u.GetRepositorySelection()
-	u = &UpdateAppInstallationRepositoriesOptions{}
+	u = &UpdateAppInstallationRepositoriesRequest{}
 	u.GetRepositorySelection()
 	u = nil
 	u.GetRepositorySelection()

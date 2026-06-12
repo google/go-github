@@ -1671,7 +1671,7 @@ func (a *AppConfig) GetWebhookSecret() string {
 }
 
 // GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
-func (a *AppInstallationRepositoriesOptions) GetRepositories() []string {
+func (a *AppInstallationRepositoriesRequest) GetRepositories() []string {
 	if a == nil || a.Repositories == nil {
 		return nil
 	}
@@ -40983,7 +40983,7 @@ func (u *UnauthenticatedRateLimitedTransport) GetClientSecret() string {
 }
 
 // GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
-func (u *UpdateAppInstallationRepositoriesOptions) GetRepositories() []string {
+func (u *UpdateAppInstallationRepositoriesRequest) GetRepositories() []string {
 	if u == nil || u.Repositories == nil {
 		return nil
 	}
@@ -40991,7 +40991,7 @@ func (u *UpdateAppInstallationRepositoriesOptions) GetRepositories() []string {
 }
 
 // GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
-func (u *UpdateAppInstallationRepositoriesOptions) GetRepositorySelection() string {
+func (u *UpdateAppInstallationRepositoriesRequest) GetRepositorySelection() string {
 	if u == nil || u.RepositorySelection == nil {
 		return ""
 	}
