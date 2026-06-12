@@ -2076,15 +2076,15 @@ func TestAppConfig_GetWebhookSecret(tt *testing.T) {
 	a.GetWebhookSecret()
 }
 
-func TestAppInstallationRepositoriesOptions_GetSelectedRepositoryIDs(tt *testing.T) {
+func TestAppInstallationRepositoriesOptions_GetRepositories(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := []int64{}
-	a := &AppInstallationRepositoriesOptions{SelectedRepositoryIDs: zeroValue}
-	a.GetSelectedRepositoryIDs()
+	zeroValue := []string{}
+	a := &AppInstallationRepositoriesOptions{Repositories: zeroValue}
+	a.GetRepositories()
 	a = &AppInstallationRepositoriesOptions{}
-	a.GetSelectedRepositoryIDs()
+	a.GetRepositories()
 	a = nil
-	a.GetSelectedRepositoryIDs()
+	a.GetRepositories()
 }
 
 func TestArchivedAt_GetFrom(tt *testing.T) {
@@ -51531,6 +51531,17 @@ func TestUnauthenticatedRateLimitedTransport_GetClientSecret(tt *testing.T) {
 	u.GetClientSecret()
 }
 
+func TestUpdateAppInstallationRepositoriesOptions_GetRepositories(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateAppInstallationRepositoriesOptions{Repositories: zeroValue}
+	u.GetRepositories()
+	u = &UpdateAppInstallationRepositoriesOptions{}
+	u.GetRepositories()
+	u = nil
+	u.GetRepositories()
+}
+
 func TestUpdateAppInstallationRepositoriesOptions_GetRepositorySelection(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -51540,17 +51551,6 @@ func TestUpdateAppInstallationRepositoriesOptions_GetRepositorySelection(tt *tes
 	u.GetRepositorySelection()
 	u = nil
 	u.GetRepositorySelection()
-}
-
-func TestUpdateAppInstallationRepositoriesOptions_GetSelectedRepositoryIDs(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []int64{}
-	u := &UpdateAppInstallationRepositoriesOptions{SelectedRepositoryIDs: zeroValue}
-	u.GetSelectedRepositoryIDs()
-	u = &UpdateAppInstallationRepositoriesOptions{}
-	u.GetSelectedRepositoryIDs()
-	u = nil
-	u.GetSelectedRepositoryIDs()
 }
 
 func TestUpdateAttributeForSCIMUserOperations_GetOp(tt *testing.T) {

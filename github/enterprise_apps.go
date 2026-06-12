@@ -14,14 +14,18 @@ import (
 // EnterpriseService.AddRepositoriesToAppInstallation and
 // EnterpriseService.RemoveRepositoriesFromAppInstallation.
 type AppInstallationRepositoriesOptions struct {
-	SelectedRepositoryIDs []int64 `json:"selected_repository_ids"`
+	// Repository names to add to or remove from the installation.
+	Repositories []string `json:"repositories"`
 }
 
 // UpdateAppInstallationRepositoriesOptions specifies the parameters for
 // EnterpriseService.UpdateAppInstallationRepositories.
 type UpdateAppInstallationRepositoriesOptions struct {
-	RepositorySelection   *string `json:"repository_selection,omitempty"` // Can be "all" or "selected"
-	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitempty"`
+	// Can be "all" or "selected".
+	RepositorySelection *string `json:"repository_selection,omitempty"`
+	// Repository names to grant the installation access to. Only required
+	// when RepositorySelection is "selected".
+	Repositories []string `json:"repositories,omitempty"`
 }
 
 // ListRepositoriesForOrgAppInstallation lists the repositories that an enterprise app installation

@@ -1670,12 +1670,12 @@ func (a *AppConfig) GetWebhookSecret() string {
 	return *a.WebhookSecret
 }
 
-// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
-func (a *AppInstallationRepositoriesOptions) GetSelectedRepositoryIDs() []int64 {
-	if a == nil || a.SelectedRepositoryIDs == nil {
+// GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
+func (a *AppInstallationRepositoriesOptions) GetRepositories() []string {
+	if a == nil || a.Repositories == nil {
 		return nil
 	}
-	return a.SelectedRepositoryIDs
+	return a.Repositories
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
@@ -40982,20 +40982,20 @@ func (u *UnauthenticatedRateLimitedTransport) GetClientSecret() string {
 	return u.ClientSecret
 }
 
+// GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
+func (u *UpdateAppInstallationRepositoriesOptions) GetRepositories() []string {
+	if u == nil || u.Repositories == nil {
+		return nil
+	}
+	return u.Repositories
+}
+
 // GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
 func (u *UpdateAppInstallationRepositoriesOptions) GetRepositorySelection() string {
 	if u == nil || u.RepositorySelection == nil {
 		return ""
 	}
 	return *u.RepositorySelection
-}
-
-// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
-func (u *UpdateAppInstallationRepositoriesOptions) GetSelectedRepositoryIDs() []int64 {
-	if u == nil || u.SelectedRepositoryIDs == nil {
-		return nil
-	}
-	return u.SelectedRepositoryIDs
 }
 
 // GetOp returns the Op field.
