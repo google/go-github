@@ -52,7 +52,7 @@ func agentTaskWithSessionsJSON() string {
 		"user_collaborators": [{ "id": 3 }],
 		"owner": { "id": 2 },
 		"repository": { "id": 1296269 },
-		"state": "completed",
+		"state": "failed",
 		"session_count": 1,
 		"artifacts": [
 			{
@@ -72,14 +72,15 @@ func agentTaskWithSessionsJSON() string {
 				"owner": { "id": 2 },
 				"repository": { "id": 1296269 },
 				"task_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-				"state": "completed",
+				"state": "failed",
 				"created_at": "2025-03-14T00:00:00Z",
 				"updated_at": "2025-03-14T01:00:00Z",
 				"completed_at": "2025-03-14T01:00:00Z",
 				"prompt": "Fix the login button on the homepage",
 				"head_ref": "copilot/fix-1",
 				"base_ref": "main",
-				"model": "claude-sonnet-4.6"
+				"model": "claude-sonnet-4.6",
+				"error": { "message": "agent task failed" }
 			}
 		]
 	}`
@@ -114,6 +115,7 @@ func agentTask() *AgentTask {
 
 func agentTaskWithSessions() *AgentTask {
 	task := agentTask()
+	task.State = "failed"
 
 	task.Sessions = []*AgentTaskSession{
 		{
@@ -123,11 +125,12 @@ func agentTaskWithSessions() *AgentTask {
 			Owner:       &AgentTaskOwner{ID: Ptr(int64(2))},
 			Repository:  &AgentTaskRepository{ID: Ptr(int64(1296269))},
 			TaskID:      Ptr("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-			State:       "completed",
+			State:       "failed",
 			Prompt:      Ptr("Fix the login button on the homepage"),
 			HeadRef:     Ptr("copilot/fix-1"),
 			BaseRef:     Ptr("main"),
 			Model:       Ptr("claude-sonnet-4.6"),
+			Error:       &AgentTaskSessionError{Message: Ptr("agent task failed")},
 			CreatedAt:   Timestamp{time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)},
 			UpdatedAt:   &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)},
 			CompletedAt: &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)},

@@ -72,20 +72,26 @@ type AgentTaskArtifactData struct {
 
 // AgentTaskSession represents a session associated with an agent task.
 type AgentTaskSession struct {
-	ID          string               `json:"id"`
-	Name        *string              `json:"name,omitempty"`
-	User        *User                `json:"user,omitempty"`
-	Owner       *AgentTaskOwner      `json:"owner,omitempty"`
-	Repository  *AgentTaskRepository `json:"repository,omitempty"`
-	TaskID      *string              `json:"task_id,omitempty"`
-	State       string               `json:"state"`
-	CreatedAt   Timestamp            `json:"created_at"`
-	UpdatedAt   *Timestamp           `json:"updated_at,omitempty"`
-	CompletedAt *Timestamp           `json:"completed_at,omitempty"`
-	Prompt      *string              `json:"prompt,omitempty"`
-	HeadRef     *string              `json:"head_ref,omitempty"`
-	BaseRef     *string              `json:"base_ref,omitempty"`
-	Model       *string              `json:"model,omitempty"`
+	ID          string                 `json:"id"`
+	Name        *string                `json:"name,omitempty"`
+	User        *User                  `json:"user,omitempty"`
+	Owner       *AgentTaskOwner        `json:"owner,omitempty"`
+	Repository  *AgentTaskRepository   `json:"repository,omitempty"`
+	TaskID      *string                `json:"task_id,omitempty"`
+	State       string                 `json:"state"`
+	CreatedAt   Timestamp              `json:"created_at"`
+	UpdatedAt   *Timestamp             `json:"updated_at,omitempty"`
+	CompletedAt *Timestamp             `json:"completed_at,omitempty"`
+	Prompt      *string                `json:"prompt,omitempty"`
+	HeadRef     *string                `json:"head_ref,omitempty"`
+	BaseRef     *string                `json:"base_ref,omitempty"`
+	Model       *string                `json:"model,omitempty"`
+	Error       *AgentTaskSessionError `json:"error,omitempty"`
+}
+
+// AgentTaskSessionError represents error details for a failed agent task session.
+type AgentTaskSessionError struct {
+	Message *string `json:"message,omitempty"`
 }
 
 // AgentTaskList represents a list of agent tasks.

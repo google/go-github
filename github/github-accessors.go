@@ -1166,6 +1166,14 @@ func (a *AgentTaskSession) GetCreatedAt() Timestamp {
 	return a.CreatedAt
 }
 
+// GetError returns the Error field.
+func (a *AgentTaskSession) GetError() *AgentTaskSessionError {
+	if a == nil {
+		return nil
+	}
+	return a.Error
+}
+
 // GetHeadRef returns the HeadRef field if it's non-nil, zero value otherwise.
 func (a *AgentTaskSession) GetHeadRef() string {
 	if a == nil || a.HeadRef == nil {
@@ -1252,6 +1260,14 @@ func (a *AgentTaskSession) GetUser() *User {
 		return nil
 	}
 	return a.User
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (a *AgentTaskSessionError) GetMessage() string {
+	if a == nil || a.Message == nil {
+		return ""
+	}
+	return *a.Message
 }
 
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.

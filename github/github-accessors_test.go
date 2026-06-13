@@ -1443,6 +1443,14 @@ func TestAgentTaskSession_GetCreatedAt(tt *testing.T) {
 	a.GetCreatedAt()
 }
 
+func TestAgentTaskSession_GetError(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetError()
+	a = nil
+	a.GetError()
+}
+
 func TestAgentTaskSession_GetHeadRef(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -1547,6 +1555,17 @@ func TestAgentTaskSession_GetUser(tt *testing.T) {
 	a.GetUser()
 	a = nil
 	a.GetUser()
+}
+
+func TestAgentTaskSessionError_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSessionError{Message: &zeroValue}
+	a.GetMessage()
+	a = &AgentTaskSessionError{}
+	a.GetMessage()
+	a = nil
+	a.GetMessage()
 }
 
 func TestAlert_GetClosedAt(tt *testing.T) {
