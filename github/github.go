@@ -208,6 +208,7 @@ type Client struct {
 	Actions            *ActionsService
 	Activity           *ActivityService
 	Admin              *AdminService
+	AgentTasks         *AgentTasksService
 	Apps               *AppsService
 	Authorizations     *AuthorizationsService
 	Billing            *BillingService
@@ -661,6 +662,7 @@ func newClient(opts clientOptions) (*Client, error) {
 	c.Actions = (*ActionsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
 	c.Admin = (*AdminService)(&c.common)
+	c.AgentTasks = (*AgentTasksService)(&c.common)
 	c.Apps = (*AppsService)(&c.common)
 	c.Authorizations = (*AuthorizationsService)(&c.common)
 	c.Billing = (*BillingService)(&c.common)
