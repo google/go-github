@@ -54,9 +54,9 @@ func (s *RepositoriesService) ListAutolinks(ctx context.Context, owner, repo str
 // GitHub API docs: https://docs.github.com/rest/repos/autolinks?apiVersion=2022-11-28#create-an-autolink-reference-for-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/autolinks
-func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo string, opts *AutolinkOptions) (*Autolink, *Response, error) {
+func (s *RepositoriesService) AddAutolink(ctx context.Context, owner, repo string, body *AutolinkOptions) (*Autolink, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/autolinks", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

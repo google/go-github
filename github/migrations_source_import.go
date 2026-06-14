@@ -151,9 +151,9 @@ func (f LargeFile) String() string {
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#start-an-import
 //
 //meta:operation PUT /repos/{owner}/{repo}/import
-func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
+func (s *MigrationService) StartImport(ctx context.Context, owner, repo string, body *Import) (*Import, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
-	req, err := s.client.NewRequest(ctx, "PUT", u, in)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -197,9 +197,9 @@ func (s *MigrationService) ImportProgress(ctx context.Context, owner, repo strin
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#update-an-import
 //
 //meta:operation PATCH /repos/{owner}/{repo}/import
-func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
+func (s *MigrationService) UpdateImport(ctx context.Context, owner, repo string, body *Import) (*Import, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import", owner, repo)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, in)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -255,9 +255,9 @@ func (s *MigrationService) CommitAuthors(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#map-a-commit-author
 //
 //meta:operation PATCH /repos/{owner}/{repo}/import/authors/{author_id}
-func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo string, id int64, author *SourceImportAuthor) (*SourceImportAuthor, *Response, error) {
+func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo string, id int64, body *SourceImportAuthor) (*SourceImportAuthor, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/authors/%v", owner, repo, id)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, author)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -280,9 +280,9 @@ func (s *MigrationService) MapCommitAuthor(ctx context.Context, owner, repo stri
 // GitHub API docs: https://docs.github.com/rest/migrations/source-imports?apiVersion=2022-11-28#update-git-lfs-preference
 //
 //meta:operation PATCH /repos/{owner}/{repo}/import/lfs
-func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo string, in *Import) (*Import, *Response, error) {
+func (s *MigrationService) SetLFSPreference(ctx context.Context, owner, repo string, body *Import) (*Import, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/lfs", owner, repo)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, in)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

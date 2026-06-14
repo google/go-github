@@ -237,16 +237,16 @@ func (s *PullRequestsService) ListReviewComments(ctx context.Context, owner, rep
 // GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#create-a-review-for-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews
-func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo string, number int, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) CreateReview(ctx context.Context, owner, repo string, number int, body *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews", owner, repo, number)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, review)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	// Detect which style of review comment is being used.
-	if isCF, err := review.isComfortFadePreview(); err != nil {
+	if isCF, err := body.isComfortFadePreview(); err != nil {
 		return nil, nil, err
 	} else if isCF {
 		// If the review comments are using the comfort fade preview fields,
@@ -293,10 +293,10 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 // GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#submit-a-review-for-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events
-func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, body *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews/%v/events", owner, repo, number, reviewID)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, review)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -315,10 +315,10 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 // GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#dismiss-a-review-for-a-pull-request
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals
-func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, review *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, body *PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews/%v/dismissals", owner, repo, number, reviewID)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, review)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

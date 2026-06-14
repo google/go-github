@@ -337,10 +337,10 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}
-func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, stateInfo *CodeScanningAlertState) (*Alert, *Response, error) {
+func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, body *CodeScanningAlertState) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, stateInfo)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -392,10 +392,10 @@ func (s *CodeScanningService) ListAlertInstances(ctx context.Context, owner, rep
 // GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning?apiVersion=2022-11-28#upload-an-analysis-as-sarif-data
 //
 //meta:operation POST /repos/{owner}/{repo}/code-scanning/sarifs
-func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, sarif *SarifAnalysis) (*SarifID, *Response, error) {
+func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, body *SarifAnalysis) (*SarifID, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, sarif)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -655,10 +655,10 @@ type UpdateDefaultSetupConfigurationResponse struct {
 // GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-default-setup-configuration
 //
 //meta:operation PATCH /repos/{owner}/{repo}/code-scanning/default-setup
-func (s *CodeScanningService) UpdateDefaultSetupConfiguration(ctx context.Context, owner, repo string, options *UpdateDefaultSetupConfigurationOptions) (*UpdateDefaultSetupConfigurationResponse, *Response, error) {
+func (s *CodeScanningService) UpdateDefaultSetupConfiguration(ctx context.Context, owner, repo string, body *UpdateDefaultSetupConfigurationOptions) (*UpdateDefaultSetupConfigurationResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/default-setup", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, options)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

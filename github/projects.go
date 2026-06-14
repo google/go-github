@@ -542,9 +542,9 @@ func (s *ProjectsService) ListOrganizationProjectItems(ctx context.Context, org 
 // GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#add-item-to-organization-owned-project
 //
 //meta:operation POST /orgs/{org}/projectsV2/{project_number}/items
-func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org string, projectNumber int, opts *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) AddOrganizationProjectItem(ctx context.Context, org string, projectNumber int, body *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items", org, projectNumber)
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -589,9 +589,9 @@ func (s *ProjectsService) GetOrganizationProjectItem(ctx context.Context, org st
 // GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#update-project-item-for-organization
 //
 //meta:operation PATCH /orgs/{org}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) UpdateOrganizationProjectItem(ctx context.Context, org string, projectNumber int, itemID int64, body *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/projectsV2/%v/items/%v", org, projectNumber, itemID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -651,9 +651,9 @@ func (s *ProjectsService) ListUserProjectItems(ctx context.Context, username str
 // GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#add-item-to-user-owned-project
 //
 //meta:operation POST /users/{username}/projectsV2/{project_number}/items
-func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username string, projectNumber int, opts *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) AddUserProjectItem(ctx context.Context, username string, projectNumber int, body *AddProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items", username, projectNumber)
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -698,9 +698,9 @@ func (s *ProjectsService) GetUserProjectItem(ctx context.Context, username strin
 // GitHub API docs: https://docs.github.com/rest/projects/items?apiVersion=2022-11-28#update-project-item-for-user
 //
 //meta:operation PATCH /users/{username}/projectsV2/{project_number}/items/{item_id}
-func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, opts *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
+func (s *ProjectsService) UpdateUserProjectItem(ctx context.Context, username string, projectNumber int, itemID int64, body *UpdateProjectItemOptions) (*ProjectV2Item, *Response, error) {
 	u := fmt.Sprintf("users/%v/projectsV2/%v/items/%v", username, projectNumber, itemID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

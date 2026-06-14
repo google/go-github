@@ -122,9 +122,9 @@ func (s *EnterpriseService) ListAppInstallations(ctx context.Context, enterprise
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#install-a-github-app-on-an-enterprise-owned-organization
 //
 //meta:operation POST /enterprises/{enterprise}/apps/organizations/{org}/installations
-func (s *EnterpriseService) InstallApp(ctx context.Context, enterprise, org string, request InstallAppRequest) (*Installation, *Response, error) {
+func (s *EnterpriseService) InstallApp(ctx context.Context, enterprise, org string, body InstallAppRequest) (*Installation, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations", enterprise, org)
-	req, err := s.client.NewRequest(ctx, "POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -209,9 +209,9 @@ func (s *EnterpriseService) ListRepositoriesForOrgAppInstallation(ctx context.Co
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#toggle-installation-repository-access-between-selected-and-all-repositories
 //
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories
-func (s *EnterpriseService) UpdateAppInstallationRepositories(ctx context.Context, enterprise, org string, installationID int64, opts UpdateAppInstallationRepositoriesRequest) (*Installation, *Response, error) {
+func (s *EnterpriseService) UpdateAppInstallationRepositories(ctx context.Context, enterprise, org string, installationID int64, body UpdateAppInstallationRepositoriesRequest) (*Installation, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories", enterprise, org, installationID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -230,9 +230,9 @@ func (s *EnterpriseService) UpdateAppInstallationRepositories(ctx context.Contex
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#grant-repository-access-to-an-organization-installation
 //
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories/add
-func (s *EnterpriseService) AddRepositoriesToAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts AppInstallationRepositoriesRequest) ([]*AccessibleRepository, *Response, error) {
+func (s *EnterpriseService) AddRepositoriesToAppInstallation(ctx context.Context, enterprise, org string, installationID int64, body AppInstallationRepositoriesRequest) ([]*AccessibleRepository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories/add", enterprise, org, installationID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -251,9 +251,9 @@ func (s *EnterpriseService) AddRepositoriesToAppInstallation(ctx context.Context
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/organization-installations?apiVersion=2022-11-28#remove-repository-access-from-an-organization-installation
 //
 //meta:operation PATCH /enterprises/{enterprise}/apps/organizations/{org}/installations/{installation_id}/repositories/remove
-func (s *EnterpriseService) RemoveRepositoriesFromAppInstallation(ctx context.Context, enterprise, org string, installationID int64, opts AppInstallationRepositoriesRequest) ([]*AccessibleRepository, *Response, error) {
+func (s *EnterpriseService) RemoveRepositoriesFromAppInstallation(ctx context.Context, enterprise, org string, installationID int64, body AppInstallationRepositoriesRequest) ([]*AccessibleRepository, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/apps/organizations/%v/installations/%v/repositories/remove", enterprise, org, installationID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

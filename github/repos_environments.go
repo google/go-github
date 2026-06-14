@@ -197,9 +197,9 @@ type createUpdateEnvironmentNoEnterprise struct {
 // GitHub API docs: https://docs.github.com/rest/deployments/environments?apiVersion=2022-11-28#create-or-update-an-environment
 //
 //meta:operation PUT /repos/{owner}/{repo}/environments/{environment_name}
-func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, environment *CreateUpdateEnvironment) (*Environment, *Response, error) {
+func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, body *CreateUpdateEnvironment) (*Environment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, name)
-	req, err := s.client.NewRequest(ctx, "PUT", u, environment)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -213,8 +213,8 @@ func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner
 		// For Free plan private repos the returned error code is 404.
 		// We are checking that the user didn't try to send a value for unsupported fields,
 		// and return an error if they did.
-		if resp != nil && resp.StatusCode == http.StatusUnprocessableEntity && environment != nil && len(environment.Reviewers) == 0 && environment.GetWaitTimer() == 0 {
-			return s.createNewEnvNoEnterprise(ctx, u, environment)
+		if resp != nil && resp.StatusCode == http.StatusUnprocessableEntity && body != nil && len(body.Reviewers) == 0 && body.GetWaitTimer() == 0 {
+			return s.createNewEnvNoEnterprise(ctx, u, body)
 		}
 		return nil, resp, err
 	}

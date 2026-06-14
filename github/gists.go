@@ -225,9 +225,9 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 // GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#create-a-gist
 //
 //meta:operation POST /gists
-func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response, error) {
+func (s *GistsService) Create(ctx context.Context, body *Gist) (*Gist, *Response, error) {
 	u := "gists"
-	req, err := s.client.NewRequest(ctx, "POST", u, gist)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -246,9 +246,9 @@ func (s *GistsService) Create(ctx context.Context, gist *Gist) (*Gist, *Response
 // GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#update-a-gist
 //
 //meta:operation PATCH /gists/{gist_id}
-func (s *GistsService) Edit(ctx context.Context, id string, gist *Gist) (*Gist, *Response, error) {
+func (s *GistsService) Edit(ctx context.Context, id string, body *Gist) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, gist)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -44,9 +44,9 @@ func (s *OrganizationsService) GetOrganizationCustomPropertyValues(ctx context.C
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-properties-for-orgs?apiVersion=2022-11-28#create-or-update-custom-property-values-for-an-organization
 //
 //meta:operation PATCH /organizations/{org}/org-properties/values
-func (s *OrganizationsService) CreateOrUpdateOrganizationCustomPropertyValues(ctx context.Context, org string, values OrganizationCustomPropertyValues) (*Response, error) {
+func (s *OrganizationsService) CreateOrUpdateOrganizationCustomPropertyValues(ctx context.Context, org string, body OrganizationCustomPropertyValues) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/org-properties/values", org)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, values)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, err
 	}

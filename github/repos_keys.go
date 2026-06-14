@@ -65,10 +65,10 @@ func (s *RepositoriesService) GetKey(ctx context.Context, owner, repo string, id
 // GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys?apiVersion=2022-11-28#create-a-deploy-key
 //
 //meta:operation POST /repos/{owner}/{repo}/keys
-func (s *RepositoriesService) CreateKey(ctx context.Context, owner, repo string, key *Key) (*Key, *Response, error) {
+func (s *RepositoriesService) CreateKey(ctx context.Context, owner, repo string, body *Key) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, key)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

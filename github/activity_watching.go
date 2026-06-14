@@ -122,10 +122,10 @@ func (s *ActivityService) GetRepositorySubscription(ctx context.Context, owner, 
 // GitHub API docs: https://docs.github.com/rest/activity/watching?apiVersion=2022-11-28#set-a-repository-subscription
 //
 //meta:operation PUT /repos/{owner}/{repo}/subscription
-func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, repo string, subscription *Subscription) (*Subscription, *Response, error) {
+func (s *ActivityService) SetRepositorySubscription(ctx context.Context, owner, repo string, body *Subscription) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/subscription", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, subscription)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

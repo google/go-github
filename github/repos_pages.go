@@ -163,10 +163,10 @@ type PagesUpdate struct {
 // GitHub API docs: https://docs.github.com/rest/pages/pages?apiVersion=2022-11-28#update-information-about-a-github-pages-site
 //
 //meta:operation PUT /repos/{owner}/{repo}/pages
-func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, opts *PagesUpdate) (*Response, error) {
+func (s *RepositoriesService) UpdatePages(ctx context.Context, owner, repo string, body *PagesUpdate) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -192,10 +192,10 @@ type PagesUpdateWithoutCNAME struct {
 // GitHub API docs: https://docs.github.com/rest/pages/pages?apiVersion=2022-11-28#update-information-about-a-github-pages-site
 //
 //meta:operation PUT /repos/{owner}/{repo}/pages
-func (s *RepositoriesService) UpdatePagesGHES(ctx context.Context, owner, repo string, opts *PagesUpdateWithoutCNAME) (*Response, error) {
+func (s *RepositoriesService) UpdatePagesGHES(ctx context.Context, owner, repo string, body *PagesUpdateWithoutCNAME) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pages", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}

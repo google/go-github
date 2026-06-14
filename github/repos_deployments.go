@@ -114,10 +114,10 @@ func (s *RepositoriesService) GetDeployment(ctx context.Context, owner, repo str
 // GitHub API docs: https://docs.github.com/rest/deployments/deployments?apiVersion=2022-11-28#create-a-deployment
 //
 //meta:operation POST /repos/{owner}/{repo}/deployments
-func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo string, request *DeploymentRequest) (*Deployment, *Response, error) {
+func (s *RepositoriesService) CreateDeployment(ctx context.Context, owner, repo string, body *DeploymentRequest) (*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -239,10 +239,10 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 // GitHub API docs: https://docs.github.com/rest/deployments/statuses?apiVersion=2022-11-28#create-a-deployment-status
 //
 //meta:operation POST /repos/{owner}/{repo}/deployments/{deployment_id}/statuses
-func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner, repo string, deployment int64, request *DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
+func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner, repo string, deployment int64, body *DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

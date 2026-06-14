@@ -199,9 +199,9 @@ func (s NewTeam) String() string {
 // GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#create-a-team
 //
 //meta:operation POST /orgs/{org}/teams
-func (s *TeamsService) CreateTeam(ctx context.Context, org string, team NewTeam) (*Team, *Response, error) {
+func (s *TeamsService) CreateTeam(ctx context.Context, org string, body NewTeam) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
-	req, err := s.client.NewRequest(ctx, "POST", u, team)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -251,16 +251,16 @@ func copyNewTeamWithoutParent(team *NewTeam) *newTeamNoParent {
 // GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#update-a-team
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}
-func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, team NewTeam, removeParent bool) (*Team, *Response, error) {
+func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, body NewTeam, removeParent bool) (*Team, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
 
 	var req *http.Request
 	var err error
 	if removeParent {
-		teamRemoveParent := copyNewTeamWithoutParent(&team)
+		teamRemoveParent := copyNewTeamWithoutParent(&body)
 		req, err = s.client.NewRequest(ctx, "PATCH", u, teamRemoveParent)
 	} else {
-		req, err = s.client.NewRequest(ctx, "PATCH", u, team)
+		req, err = s.client.NewRequest(ctx, "PATCH", u, body)
 	}
 	if err != nil {
 		return nil, nil, err
@@ -280,16 +280,16 @@ func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, te
 // GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#update-a-team
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}
-func (s *TeamsService) EditTeamBySlug(ctx context.Context, org, slug string, team NewTeam, removeParent bool) (*Team, *Response, error) {
+func (s *TeamsService) EditTeamBySlug(ctx context.Context, org, slug string, body NewTeam, removeParent bool) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v", org, slug)
 
 	var req *http.Request
 	var err error
 	if removeParent {
-		teamRemoveParent := copyNewTeamWithoutParent(&team)
+		teamRemoveParent := copyNewTeamWithoutParent(&body)
 		req, err = s.client.NewRequest(ctx, "PATCH", u, teamRemoveParent)
 	} else {
-		req, err = s.client.NewRequest(ctx, "PATCH", u, team)
+		req, err = s.client.NewRequest(ctx, "PATCH", u, body)
 	}
 	if err != nil {
 		return nil, nil, err
@@ -524,9 +524,9 @@ type TeamAddTeamRepoOptions struct {
 // GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#add-or-update-team-repository-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
-func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
+func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64, owner, repo string, body *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/repos/%v/%v", orgID, teamID, owner, repo)
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -541,9 +541,9 @@ func (s *TeamsService) AddTeamRepoByID(ctx context.Context, orgID, teamID int64,
 // GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#add-or-update-team-repository-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}
-func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, opts *TeamAddTeamRepoOptions) (*Response, error) {
+func (s *TeamsService) AddTeamRepoBySlug(ctx context.Context, org, slug, owner, repo string, body *TeamAddTeamRepoOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/repos/%v/%v", org, slug, owner, repo)
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -738,9 +738,9 @@ type TeamProjectOptions struct {
 // GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
-func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, opts *TeamProjectOptions) (*Response, error) {
+func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, projectID int64, body *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/projects/%v", orgID, teamID, projectID)
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -759,9 +759,9 @@ func (s *TeamsService) AddTeamProjectByID(ctx context.Context, orgID, teamID, pr
 // GitHub API docs: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/projects/{project_id}
-func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64, opts *TeamProjectOptions) (*Response, error) {
+func (s *TeamsService) AddTeamProjectBySlug(ctx context.Context, org, slug string, projectID int64, body *TeamProjectOptions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/projects/%v", org, slug, projectID)
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -921,10 +921,10 @@ func (s *TeamsService) ListIDPGroupsForTeamBySlug(ctx context.Context, org, slug
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#create-or-update-idp-group-connections
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
-func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context, orgID, teamID int64, opts IDPGroupList) (*IDPGroupList, *Response, error) {
+func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context, orgID, teamID int64, body IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/team-sync/group-mappings", orgID, teamID)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -944,10 +944,10 @@ func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsByID(ctx context.Context
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#create-or-update-idp-group-connections
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/team-sync/group-mappings
-func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Context, org, slug string, opts IDPGroupList) (*IDPGroupList, *Response, error) {
+func (s *TeamsService) CreateOrUpdateIDPGroupConnectionsBySlug(ctx context.Context, org, slug string, body IDPGroupList) (*IDPGroupList, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/team-sync/group-mappings", org, slug)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1071,10 +1071,10 @@ func (s *TeamsService) ListExternalGroupsForTeamBySlug(ctx context.Context, org,
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups?apiVersion=2022-11-28#update-the-connection-between-an-external-group-and-a-team
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/external-groups
-func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, slug string, eg *ExternalGroup) (*ExternalGroup, *Response, error) {
+func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, slug string, body *ExternalGroup) (*ExternalGroup, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/external-groups", org, slug)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, eg)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

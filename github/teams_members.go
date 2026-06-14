@@ -138,9 +138,9 @@ type TeamAddTeamMembershipOptions struct {
 // GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/memberships/{username}
-func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
+func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string, body *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -160,9 +160,9 @@ func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID 
 // GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
 //
 //meta:operation PUT /orgs/{org}/teams/{team_slug}/memberships/{username}
-func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, user string, opts *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
+func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, user string, body *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/memberships/%v", org, slug, user)
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

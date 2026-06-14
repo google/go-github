@@ -124,10 +124,10 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#provision-and-invite-a-scim-user
 //
 //meta:operation POST /scim/v2/organizations/{org}/Users
-func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, opts *SCIMUserAttributes) (*SCIMUserAttributes, *Response, error) {
+func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, body *SCIMUserAttributes) (*SCIMUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

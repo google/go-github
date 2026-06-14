@@ -368,10 +368,10 @@ type CreateOrgInvitationOptions struct {
 // GitHub API docs: https://docs.github.com/rest/orgs/members?apiVersion=2022-11-28#create-an-organization-invitation
 //
 //meta:operation POST /orgs/{org}/invitations
-func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org string, opts *CreateOrgInvitationOptions) (*Invitation, *Response, error) {
+func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org string, body *CreateOrgInvitationOptions) (*Invitation, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/invitations", org)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

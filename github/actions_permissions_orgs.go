@@ -93,9 +93,9 @@ func (s *ActionsService) GetActionsPermissions(ctx context.Context, org string) 
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-github-actions-permissions-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions
-func (s *ActionsService) UpdateActionsPermissions(ctx context.Context, org string, actionsPermissions ActionsPermissions) (*ActionsPermissions, *Response, error) {
+func (s *ActionsService) UpdateActionsPermissions(ctx context.Context, org string, body ActionsPermissions) (*ActionsPermissions, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions", org)
-	req, err := s.client.NewRequest(ctx, "PUT", u, actionsPermissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -227,9 +227,9 @@ func (s *ActionsService) GetActionsAllowed(ctx context.Context, org string) (*Ac
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-allowed-actions-and-reusable-workflows-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/selected-actions
-func (s *ActionsService) UpdateActionsAllowed(ctx context.Context, org string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
+func (s *ActionsService) UpdateActionsAllowed(ctx context.Context, org string, body ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/selected-actions", org)
-	req, err := s.client.NewRequest(ctx, "PUT", u, actionsAllowed)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -270,9 +270,9 @@ func (s *ActionsService) GetDefaultWorkflowPermissionsInOrganization(ctx context
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-default-workflow-permissions-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/workflow
-func (s *ActionsService) UpdateDefaultWorkflowPermissionsInOrganization(ctx context.Context, org string, permissions DefaultWorkflowPermissionOrganization) (*DefaultWorkflowPermissionOrganization, *Response, error) {
+func (s *ActionsService) UpdateDefaultWorkflowPermissionsInOrganization(ctx context.Context, org string, body DefaultWorkflowPermissionOrganization) (*DefaultWorkflowPermissionOrganization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/workflow", org)
-	req, err := s.client.NewRequest(ctx, "PUT", u, permissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -313,9 +313,9 @@ func (s *ActionsService) GetArtifactAndLogRetentionPeriodInOrganization(ctx cont
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-artifact-and-log-retention-settings-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/artifact-and-log-retention
-func (s *ActionsService) UpdateArtifactAndLogRetentionPeriodInOrganization(ctx context.Context, org string, period ArtifactPeriodOpt) (*Response, error) {
+func (s *ActionsService) UpdateArtifactAndLogRetentionPeriodInOrganization(ctx context.Context, org string, body ArtifactPeriodOpt) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/artifact-and-log-retention", org)
-	req, err := s.client.NewRequest(ctx, "PUT", u, period)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -350,10 +350,10 @@ func (s *ActionsService) GetSelfHostedRunnersSettingsInOrganization(ctx context.
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-self-hosted-runners-settings-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/self-hosted-runners
-func (s *ActionsService) UpdateSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string, opt SelfHostedRunnersSettingsOrganizationOpt) (*Response, error) {
+func (s *ActionsService) UpdateSelfHostedRunnersSettingsInOrganization(ctx context.Context, org string, body SelfHostedRunnersSettingsOrganizationOpt) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/self-hosted-runners", org)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, opt)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -475,9 +475,9 @@ func (s *ActionsService) GetPrivateRepoForkPRWorkflowSettingsInOrganization(ctx 
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-private-repo-fork-pr-workflow-settings-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-workflows-private-repos
-func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
+func (s *ActionsService) UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(ctx context.Context, org string, body *WorkflowsPermissionsOpt) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-workflows-private-repos", org)
-	req, err := s.client.NewRequest(ctx, "PUT", u, permissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -512,9 +512,9 @@ func (s *ActionsService) GetOrganizationForkPRContributorApprovalPermissions(ctx
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-fork-pr-contributor-approval-permissions-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/permissions/fork-pr-contributor-approval
-func (s *ActionsService) UpdateOrganizationForkPRContributorApprovalPermissions(ctx context.Context, org string, policy ContributorApprovalPermissions) (*Response, error) {
+func (s *ActionsService) UpdateOrganizationForkPRContributorApprovalPermissions(ctx context.Context, org string, body ContributorApprovalPermissions) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/permissions/fork-pr-contributor-approval", org)
-	req, err := s.client.NewRequest(ctx, "PUT", u, policy)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
