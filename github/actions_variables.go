@@ -148,9 +148,9 @@ func (s *ActionsService) postVariable(ctx context.Context, url string, body *Act
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#create-a-repository-variable
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/variables
-func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo string, variable *ActionsVariable) (*Response, error) {
+func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo string, body *ActionsVariable) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/variables", owner, repo)
-	return s.postVariable(ctx, url, variable)
+	return s.postVariable(ctx, url, body)
 }
 
 // CreateOrgVariable creates an organization variable.
@@ -158,9 +158,9 @@ func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo str
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#create-an-organization-variable
 //
 //meta:operation POST /orgs/{org}/actions/variables
-func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, variable *ActionsVariable) (*Response, error) {
+func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, body *ActionsVariable) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/variables", org)
-	return s.postVariable(ctx, url, variable)
+	return s.postVariable(ctx, url, body)
 }
 
 // CreateEnvVariable creates an environment variable.
@@ -168,9 +168,9 @@ func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, vari
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#create-an-environment-variable
 //
 //meta:operation POST /repos/{owner}/{repo}/environments/{environment_name}/variables
-func (s *ActionsService) CreateEnvVariable(ctx context.Context, owner, repo, env string, variable *ActionsVariable) (*Response, error) {
+func (s *ActionsService) CreateEnvVariable(ctx context.Context, owner, repo, env string, body *ActionsVariable) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables", owner, repo, env)
-	return s.postVariable(ctx, url, variable)
+	return s.postVariable(ctx, url, body)
 }
 
 func (s *ActionsService) patchVariable(ctx context.Context, url string, body *ActionsVariable) (*Response, error) {

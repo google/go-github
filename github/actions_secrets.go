@@ -246,13 +246,13 @@ func (s *ActionsService) putSecret(ctx context.Context, url string, body *Encryp
 // GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#create-or-update-a-repository-secret
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}
-func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
-	if eSecret == nil {
+func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, body *EncryptedSecret) (*Response, error) {
+	if body == nil {
 		return nil, errors.New("encrypted secret must be provided")
 	}
 
-	url := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, eSecret.Name)
-	return s.putSecret(ctx, url, eSecret)
+	url := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, body.Name)
+	return s.putSecret(ctx, url, body)
 }
 
 // CreateOrUpdateOrgSecret creates or updates an organization secret with an encrypted value.
@@ -260,13 +260,13 @@ func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, re
 // GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#create-or-update-an-organization-secret
 //
 //meta:operation PUT /orgs/{org}/actions/secrets/{secret_name}
-func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error) {
-	if eSecret == nil {
+func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string, body *EncryptedSecret) (*Response, error) {
+	if body == nil {
 		return nil, errors.New("encrypted secret must be provided")
 	}
 
-	url := fmt.Sprintf("orgs/%v/actions/secrets/%v", org, eSecret.Name)
-	return s.putSecret(ctx, url, eSecret)
+	url := fmt.Sprintf("orgs/%v/actions/secrets/%v", org, body.Name)
+	return s.putSecret(ctx, url, body)
 }
 
 // CreateOrUpdateEnvSecret creates or updates a single environment secret with an encrypted value.
@@ -274,13 +274,13 @@ func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string
 // GitHub API docs: https://docs.github.com/enterprise-server@3.7/rest/actions/secrets#create-or-update-an-environment-secret
 //
 //meta:operation PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}
-func (s *ActionsService) CreateOrUpdateEnvSecret(ctx context.Context, repoID int, env string, eSecret *EncryptedSecret) (*Response, error) {
-	if eSecret == nil {
+func (s *ActionsService) CreateOrUpdateEnvSecret(ctx context.Context, repoID int, env string, body *EncryptedSecret) (*Response, error) {
+	if body == nil {
 		return nil, errors.New("encrypted secret must be provided")
 	}
 
-	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, eSecret.Name)
-	return s.putSecret(ctx, url, eSecret)
+	url := fmt.Sprintf("repositories/%v/environments/%v/secrets/%v", repoID, env, body.Name)
+	return s.putSecret(ctx, url, body)
 }
 
 func (s *ActionsService) deleteSecret(ctx context.Context, url string) (*Response, error) {

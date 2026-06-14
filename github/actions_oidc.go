@@ -56,9 +56,9 @@ func (s *ActionsService) getOIDCSubjectClaimCustomTemplate(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/actions/oidc?apiVersion=2022-11-28#set-the-customization-template-for-an-oidc-subject-claim-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/oidc/customization/sub
-func (s *ActionsService) SetOrgOIDCSubjectClaimCustomTemplate(ctx context.Context, org string, template *OIDCSubjectClaimCustomTemplate) (*Response, error) {
+func (s *ActionsService) SetOrgOIDCSubjectClaimCustomTemplate(ctx context.Context, org string, body *OIDCSubjectClaimCustomTemplate) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/oidc/customization/sub", org)
-	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, template)
+	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, body)
 }
 
 // SetRepoOIDCSubjectClaimCustomTemplate sets the subject claim customization for a repository.
