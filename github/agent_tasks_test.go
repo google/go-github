@@ -146,7 +146,6 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 
 	mux.HandleFunc("/agents/repos/o/r/tasks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
 		testFormValuesList(t, r, url.Values{
 			"creator_id":  {"1", "2"},
 			"direction":   {"asc"},
@@ -221,7 +220,6 @@ func TestAgentTasksService_Create(t *testing.T) {
 	mux.HandleFunc("/agents/repos/o/r/tasks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Content-Type", "application/json")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
 		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, agentTaskJSON())
@@ -258,7 +256,6 @@ func TestAgentTasksService_GetByRepoAndID(t *testing.T) {
 
 	mux.HandleFunc("/agents/repos/o/r/tasks/"+taskID, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
 		fmt.Fprint(w, agentTaskWithSessionsJSON())
 	})
 
@@ -292,7 +289,6 @@ func TestAgentTasksService_List(t *testing.T) {
 
 	mux.HandleFunc("/agents/tasks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
 		testFormValues(t, r, values{
 			"direction":   "desc",
 			"is_archived": "true",
@@ -350,7 +346,6 @@ func TestAgentTasksService_Get(t *testing.T) {
 
 	mux.HandleFunc("/agents/tasks/"+taskID, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
 		fmt.Fprint(w, agentTaskWithSessionsJSON())
 	})
 

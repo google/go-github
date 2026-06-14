@@ -163,7 +163,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -187,7 +187,7 @@ func (s *AgentTasksService) ListByRepo(ctx context.Context, owner, repo string, 
 func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req CreateAgentTaskRequest) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks", owner, repo)
 
-	request, err := s.client.NewRequest(ctx, "POST", u, req, WithVersion(api20260310))
+	request, err := s.client.NewRequest(ctx, "POST", u, req)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -211,7 +211,7 @@ func (s *AgentTasksService) Create(ctx context.Context, owner, repo string, req 
 func (s *AgentTasksService) GetByRepoAndID(ctx context.Context, owner, repo, taskID string) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/repos/%v/%v/tasks/%v", owner, repo, taskID)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -239,7 +239,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -263,7 +263,7 @@ func (s *AgentTasksService) List(ctx context.Context, opts *AgentTaskListOptions
 func (s *AgentTasksService) Get(ctx context.Context, taskID string) (*AgentTask, *Response, error) {
 	u := fmt.Sprintf("agents/tasks/%v", taskID)
 
-	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
