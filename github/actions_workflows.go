@@ -219,8 +219,8 @@ func (s *ActionsService) CreateWorkflowDispatchEventByFileName(ctx context.Conte
 	return s.createWorkflowDispatchEvent(ctx, u, &event)
 }
 
-func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url string, event *CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
-	req, err := s.client.NewRequest(ctx, "POST", url, event)
+func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url string, body *CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
+	req, err := s.client.NewRequest(ctx, "POST", url, body)
 	if err != nil {
 		return nil, nil, err
 	}

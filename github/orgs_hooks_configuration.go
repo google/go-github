@@ -36,9 +36,9 @@ func (s *OrganizationsService) GetHookConfiguration(ctx context.Context, org str
 // GitHub API docs: https://docs.github.com/rest/orgs/webhooks?apiVersion=2022-11-28#update-a-webhook-configuration-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/hooks/{hook_id}/config
-func (s *OrganizationsService) EditHookConfiguration(ctx context.Context, org string, id int64, config *HookConfig) (*HookConfig, *Response, error) {
+func (s *OrganizationsService) EditHookConfiguration(ctx context.Context, org string, id int64, body *HookConfig) (*HookConfig, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/hooks/%v/config", org, id)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, config)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

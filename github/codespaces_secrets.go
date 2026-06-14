@@ -228,8 +228,8 @@ func (s *CodespacesService) CreateOrUpdateRepoSecret(ctx context.Context, owner,
 	return s.createOrUpdateSecret(ctx, u, eSecret)
 }
 
-func (s *CodespacesService) createOrUpdateSecret(ctx context.Context, url string, eSecret *EncryptedSecret) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "PUT", url, eSecret)
+func (s *CodespacesService) createOrUpdateSecret(ctx context.Context, url string, body *EncryptedSecret) (*Response, error) {
+	req, err := s.client.NewRequest(ctx, "PUT", url, body)
 	if err != nil {
 		return nil, err
 	}

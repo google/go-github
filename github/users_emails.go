@@ -46,9 +46,9 @@ func (s *UsersService) ListEmails(ctx context.Context, opts *ListOptions) ([]*Us
 // GitHub API docs: https://docs.github.com/rest/users/emails?apiVersion=2022-11-28#add-an-email-address-for-the-authenticated-user
 //
 //meta:operation POST /user/emails
-func (s *UsersService) AddEmails(ctx context.Context, emails []string) ([]*UserEmail, *Response, error) {
+func (s *UsersService) AddEmails(ctx context.Context, body []string) ([]*UserEmail, *Response, error) {
 	u := "user/emails"
-	req, err := s.client.NewRequest(ctx, "POST", u, emails)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -221,10 +221,10 @@ func (s *RepositoriesService) GetAllRulesets(ctx context.Context, owner, repo st
 // GitHub API docs: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#create-a-repository-ruleset
 //
 //meta:operation POST /repos/{owner}/{repo}/rulesets
-func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo string, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
+func (s *RepositoriesService) CreateRuleset(ctx context.Context, owner, repo string, body RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, ruleset)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -266,10 +266,10 @@ func (s *RepositoriesService) GetRuleset(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/repos/rules?apiVersion=2022-11-28#update-a-repository-ruleset
 //
 //meta:operation PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}
-func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo string, rulesetID int64, ruleset RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
+func (s *RepositoriesService) UpdateRuleset(ctx context.Context, owner, repo string, rulesetID int64, body RepositoryRuleset) (*RepositoryRuleset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/rulesets/%v", owner, repo, rulesetID)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, ruleset)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

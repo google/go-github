@@ -71,10 +71,10 @@ type RepositoryCreateForkOptions struct {
 // GitHub API docs: https://docs.github.com/rest/repos/forks?apiVersion=2022-11-28#create-a-fork
 //
 //meta:operation POST /repos/{owner}/{repo}/forks
-func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string, opts *RepositoryCreateForkOptions) (*Repository, *Response, error) {
+func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string, body *RepositoryCreateForkOptions) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/forks", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

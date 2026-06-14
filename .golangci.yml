@@ -28,6 +28,7 @@ linters:
     - paralleltest
     - perfsprint
     - redundantptr
+    - requestbody
     - revive
     - sliceofpointers
     - staticcheck
@@ -198,6 +199,134 @@ linters:
         type: module
         description: Reports github.Ptr(x) calls that can be replaced with &x.
         original-url: github.com/google/go-github/v88/tools/redundantptr
+      requestbody:
+        type: module
+        description: Reports miscellaneous issues for request body parameters.
+        original-url: github.com/google/go-github/v88/tools/requestbody
+        settings:
+          # Body type names exempt from the "pass by value, not by pointer" rule.
+          # TODO: fix and remove these exceptions.
+          allowed-pointer-types:
+            - ActionsVariable
+            - AddProjectItemOptions
+            - AuthorizationRequest
+            - AutolinkOptions
+            - CodeScanningAlertState
+            - CodespaceCreateForUserOptions
+            - ConfigApplyOptions
+            - ConfigSettings
+            - CreateCodespaceOptions
+            - CreateOrUpdateCustomRepoRoleOptions
+            - CreateOrUpdateIssueTypesOptions
+            - CreateOrgInvitationOptions
+            - CreateUpdateEnvironment
+            - CreateWorkflowDispatchEventRequest
+            - CustomDeploymentProtectionRuleRequest
+            - CustomProperty
+            - DependabotAlertState
+            - DependabotEncryptedSecret
+            - DependencyGraphSnapshot
+            - DeploymentBranchPolicyRequest
+            - DeploymentRequest
+            - DeploymentStatusRequest
+            - EncryptedSecret
+            - EnterpriseSecurityAnalysisSettings
+            - ExternalGroup
+            - GenerateJITConfigRequest
+            - GenerateNotesOptions
+            - Gist
+            - GistComment
+            - Hook
+            - HookConfig
+            - ImpersonateUserOptions
+            - Import
+            - InstallationTokenListRepoOptions
+            - InstallationTokenOptions
+            - IssueComment
+            - IssueImportRequest
+            - IssueRequest
+            - Key
+            - Label
+            - LockIssueOptions
+            - MaintenanceOptions
+            - Milestone
+            - NewPullRequest
+            - OIDCSubjectClaimCustomTemplate
+            - Organization
+            - PagesUpdate
+            - PagesUpdateWithoutCNAME
+            - PendingDeploymentsRequest
+            - PreReceiveHook
+            - ProtectionRequest
+            - PublishCodespaceOptions
+            - PullRequestBranchUpdateOptions
+            - PullRequestComment
+            - PullRequestReviewDismissalRequest
+            - PullRequestReviewRequest
+            - PullRequestReviewsEnforcementUpdate
+            - ReleaseAsset
+            - RepoMergeUpstreamRequest
+            - Repository
+            - RepositoryAddCollaboratorOptions
+            - RepositoryComment
+            - RepositoryContentFileOptions
+            - RepositoryCreateForkOptions
+            - RepositoryMergeRequest
+            - RequiredStatusChecksRequest
+            - ReviewCustomDeploymentProtectionRuleRequest
+            - SCIMUserAttributes
+            - SarifAnalysis
+            - SecretScanningAlertUpdateOptions
+            - SecretScanningPatternConfigsUpdateOptions
+            - SourceImportAuthor
+            - Subscription
+            - TeamAddTeamMembershipOptions
+            - TeamAddTeamRepoOptions
+            - TeamLDAPMapping
+            - TeamProjectOptions
+            - TemplateRepoRequest
+            - UpdateCodespaceOptions
+            - UpdateDefaultSetupConfigurationOptions
+            - UpdateProjectItemOptions
+            - User
+            - UserLDAPMapping
+            - UserSuspendOptions
+            - WorkflowsPermissionsOpt
+          # Body type names exempt from the "Options" suffix rule.
+          # TODO: fix and remove these exceptions.
+          allowed-wrong-names:
+            - AddProjectItemOptions
+            - AutolinkOptions
+            - CheckSuitePreferenceOptions
+            - CodespaceCreateForUserOptions
+            - ConfigApplyOptions
+            - CreateCheckRunOptions
+            - CreateCheckSuiteOptions
+            - CreateCodespaceOptions
+            - CreateOrUpdateCustomRepoRoleOptions
+            - CreateOrUpdateIssueTypesOptions
+            - CreateOrgInvitationOptions
+            - GenerateNotesOptions
+            - ImpersonateUserOptions
+            - InstallationTokenListRepoOptions
+            - InstallationTokenOptions
+            - LockIssueOptions
+            - MaintenanceOptions
+            - PublishCodespaceOptions
+            - PullRequestBranchUpdateOptions
+            - RepositoryAddCollaboratorOptions
+            - RepositoryContentFileOptions
+            - RepositoryCreateForkOptions
+            - SecretScanningAlertUpdateOptions
+            - SecretScanningPatternConfigsUpdateOptions
+            - TeamAddTeamMembershipOptions
+            - TeamAddTeamRepoOptions
+            - TeamProjectOptions
+            - UpdateCheckRunOptions
+            - UpdateCodespaceOptions
+            - UpdateDefaultSetupConfigurationOptions
+            - UpdateProjectItemOptions
+            - UserSuspendOptions
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
@@ -436,6 +565,8 @@ linters:
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
+  # requestbody reports multiple distinct issues on the same parameter line.
+  uniq-by-line: false
 formatters:
   enable:
     - gci

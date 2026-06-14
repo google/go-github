@@ -50,9 +50,9 @@ func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, ente
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#update-code-security-and-analysis-features-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/code_security_and_analysis
-func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, enterprise string, settings *EnterpriseSecurityAnalysisSettings) (*Response, error) {
+func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, enterprise string, body *EnterpriseSecurityAnalysisSettings) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code_security_and_analysis", enterprise)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, settings)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, err
 	}

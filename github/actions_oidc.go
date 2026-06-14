@@ -71,8 +71,8 @@ func (s *ActionsService) SetRepoOIDCSubjectClaimCustomTemplate(ctx context.Conte
 	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, template)
 }
 
-func (s *ActionsService) setOIDCSubjectClaimCustomTemplate(ctx context.Context, url string, template *OIDCSubjectClaimCustomTemplate) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "PUT", url, template)
+func (s *ActionsService) setOIDCSubjectClaimCustomTemplate(ctx context.Context, url string, body *OIDCSubjectClaimCustomTemplate) (*Response, error) {
+	req, err := s.client.NewRequest(ctx, "PUT", url, body)
 	if err != nil {
 		return nil, err
 	}

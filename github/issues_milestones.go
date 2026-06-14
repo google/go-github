@@ -104,9 +104,9 @@ func (s *IssuesService) GetMilestone(ctx context.Context, owner, repo string, nu
 // GitHub API docs: https://docs.github.com/rest/issues/milestones?apiVersion=2022-11-28#create-a-milestone
 //
 //meta:operation POST /repos/{owner}/{repo}/milestones
-func (s *IssuesService) CreateMilestone(ctx context.Context, owner, repo string, milestone *Milestone) (*Milestone, *Response, error) {
+func (s *IssuesService) CreateMilestone(ctx context.Context, owner, repo string, body *Milestone) (*Milestone, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/milestones", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, milestone)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -125,9 +125,9 @@ func (s *IssuesService) CreateMilestone(ctx context.Context, owner, repo string,
 // GitHub API docs: https://docs.github.com/rest/issues/milestones?apiVersion=2022-11-28#update-a-milestone
 //
 //meta:operation PATCH /repos/{owner}/{repo}/milestones/{milestone_number}
-func (s *IssuesService) EditMilestone(ctx context.Context, owner, repo string, number int, milestone *Milestone) (*Milestone, *Response, error) {
+func (s *IssuesService) EditMilestone(ctx context.Context, owner, repo string, number int, body *Milestone) (*Milestone, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/milestones/%v", owner, repo, number)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, milestone)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -100,9 +100,9 @@ func (s *OrganizationsService) CreateHook(ctx context.Context, org string, hook 
 // GitHub API docs: https://docs.github.com/rest/orgs/webhooks?apiVersion=2022-11-28#update-an-organization-webhook
 //
 //meta:operation PATCH /orgs/{org}/hooks/{hook_id}
-func (s *OrganizationsService) EditHook(ctx context.Context, org string, id int64, hook *Hook) (*Hook, *Response, error) {
+func (s *OrganizationsService) EditHook(ctx context.Context, org string, id int64, body *Hook) (*Hook, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/hooks/%v", org, id)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, hook)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

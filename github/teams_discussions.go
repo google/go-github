@@ -150,9 +150,9 @@ func (s *TeamsService) GetDiscussionBySlug(ctx context.Context, org, slug string
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#create-a-discussion
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions
-func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID int64, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID int64, body TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions", orgID, teamID)
-	req, err := s.client.NewRequest(ctx, "POST", u, discussion)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -172,9 +172,9 @@ func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID i
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#create-a-discussion
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions
-func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug string, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug string, body TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions", org, slug)
-	req, err := s.client.NewRequest(ctx, "POST", u, discussion)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -195,9 +195,9 @@ func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug str
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#update-a-discussion
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
-func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int, body TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, discussion)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -218,9 +218,9 @@ func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#update-a-discussion
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
-func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int, body TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, discussion)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

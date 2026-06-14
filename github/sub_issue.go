@@ -100,9 +100,9 @@ func (s *SubIssueService) ListByIssue(ctx context.Context, owner, repo string, i
 // GitHub API docs: https://docs.github.com/rest/issues/sub-issues?apiVersion=2022-11-28#add-sub-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues
-func (s *SubIssueService) Add(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
+func (s *SubIssueService) Add(ctx context.Context, owner, repo string, issueNumber int64, body SubIssueRequest) (*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues", owner, repo, issueNumber)
-	req, err := s.client.NewRequest(ctx, "POST", u, subIssue)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -123,9 +123,9 @@ func (s *SubIssueService) Add(ctx context.Context, owner, repo string, issueNumb
 // GitHub API docs: https://docs.github.com/rest/issues/sub-issues?apiVersion=2022-11-28#reprioritize-sub-issue
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority
-func (s *SubIssueService) Reprioritize(ctx context.Context, owner, repo string, issueNumber int64, subIssue SubIssueRequest) (*SubIssue, *Response, error) {
+func (s *SubIssueService) Reprioritize(ctx context.Context, owner, repo string, issueNumber int64, body SubIssueRequest) (*SubIssue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/sub_issues/priority", owner, repo, issueNumber)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, subIssue)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

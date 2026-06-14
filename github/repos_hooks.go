@@ -163,9 +163,9 @@ func (s *RepositoriesService) GetHook(ctx context.Context, owner, repo string, i
 // GitHub API docs: https://docs.github.com/rest/repos/webhooks?apiVersion=2022-11-28#update-a-repository-webhook
 //
 //meta:operation PATCH /repos/{owner}/{repo}/hooks/{hook_id}
-func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, id int64, hook *Hook) (*Hook, *Response, error) {
+func (s *RepositoriesService) EditHook(ctx context.Context, owner, repo string, id int64, body *Hook) (*Hook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v", owner, repo, id)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, hook)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

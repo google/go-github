@@ -57,10 +57,10 @@ func (s *GitService) GetTag(ctx context.Context, owner, repo, sha string) (*Tag,
 // GitHub API docs: https://docs.github.com/rest/git/tags?apiVersion=2022-11-28#create-a-tag-object
 //
 //meta:operation POST /repos/{owner}/{repo}/git/tags
-func (s *GitService) CreateTag(ctx context.Context, owner, repo string, tag CreateTag) (*Tag, *Response, error) {
+func (s *GitService) CreateTag(ctx context.Context, owner, repo string, body CreateTag) (*Tag, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/tags", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, tag)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

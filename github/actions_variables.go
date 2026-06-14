@@ -135,8 +135,8 @@ func (s *ActionsService) GetEnvVariable(ctx context.Context, owner, repo, env, v
 	return s.getVariable(ctx, url)
 }
 
-func (s *ActionsService) postVariable(ctx context.Context, url string, variable *ActionsVariable) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "POST", url, variable)
+func (s *ActionsService) postVariable(ctx context.Context, url string, body *ActionsVariable) (*Response, error) {
+	req, err := s.client.NewRequest(ctx, "POST", url, body)
 	if err != nil {
 		return nil, err
 	}
@@ -173,8 +173,8 @@ func (s *ActionsService) CreateEnvVariable(ctx context.Context, owner, repo, env
 	return s.postVariable(ctx, url, variable)
 }
 
-func (s *ActionsService) patchVariable(ctx context.Context, url string, variable *ActionsVariable) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "PATCH", url, variable)
+func (s *ActionsService) patchVariable(ctx context.Context, url string, body *ActionsVariable) (*Response, error) {
+	req, err := s.client.NewRequest(ctx, "PATCH", url, body)
 	if err != nil {
 		return nil, err
 	}

@@ -226,10 +226,10 @@ func (s *ActivityService) GetThreadSubscription(ctx context.Context, id string) 
 // GitHub API docs: https://docs.github.com/rest/activity/notifications?apiVersion=2022-11-28#set-a-thread-subscription
 //
 //meta:operation PUT /notifications/threads/{thread_id}/subscription
-func (s *ActivityService) SetThreadSubscription(ctx context.Context, id string, subscription *Subscription) (*Subscription, *Response, error) {
+func (s *ActivityService) SetThreadSubscription(ctx context.Context, id string, body *Subscription) (*Subscription, *Response, error) {
 	u := fmt.Sprintf("notifications/threads/%v/subscription", id)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, subscription)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

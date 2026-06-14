@@ -273,9 +273,9 @@ type CodespacePermissions struct {
 // GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-codespace-in-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/codespaces
-func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string, request *CreateCodespaceOptions) (*Codespace, *Response, error) {
+func (s *CodespacesService) CreateInRepo(ctx context.Context, owner, repo string, body *CreateCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/codespaces", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -444,9 +444,9 @@ func (s *CodespacesService) CheckPermissions(ctx context.Context, owner, repo, r
 // GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-codespace-from-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/codespaces
-func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, repo string, pullNumber int, request *CreateCodespaceOptions) (*Codespace, *Response, error) {
+func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, repo string, pullNumber int, body *CreateCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/codespaces", owner, repo, pullNumber)
-	req, err := s.client.NewRequest(ctx, "POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -467,9 +467,9 @@ func (s *CodespacesService) CreateFromPullRequest(ctx context.Context, owner, re
 // GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-codespace-for-the-authenticated-user
 //
 //meta:operation POST /user/codespaces
-func (s *CodespacesService) Create(ctx context.Context, opts *CodespaceCreateForUserOptions) (*Codespace, *Response, error) {
+func (s *CodespacesService) Create(ctx context.Context, body *CodespaceCreateForUserOptions) (*Codespace, *Response, error) {
 	u := "user/codespaces"
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -511,9 +511,9 @@ func (s *CodespacesService) Get(ctx context.Context, codespaceName string) (*Cod
 // GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#update-a-codespace-for-the-authenticated-user
 //
 //meta:operation PATCH /user/codespaces/{codespace_name}
-func (s *CodespacesService) Update(ctx context.Context, codespaceName string, opts *UpdateCodespaceOptions) (*Codespace, *Response, error) {
+func (s *CodespacesService) Update(ctx context.Context, codespaceName string, body *UpdateCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v", codespaceName)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -574,9 +574,9 @@ func (s *CodespacesService) GetLatestCodespaceExport(ctx context.Context, codesp
 // GitHub API docs: https://docs.github.com/rest/codespaces/codespaces?apiVersion=2022-11-28#create-a-repository-from-an-unpublished-codespace
 //
 //meta:operation POST /user/codespaces/{codespace_name}/publish
-func (s *CodespacesService) Publish(ctx context.Context, codespaceName string, opts *PublishCodespaceOptions) (*Codespace, *Response, error) {
+func (s *CodespacesService) Publish(ctx context.Context, codespaceName string, body *PublishCodespaceOptions) (*Codespace, *Response, error) {
 	u := fmt.Sprintf("user/codespaces/%v/publish", codespaceName)
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
