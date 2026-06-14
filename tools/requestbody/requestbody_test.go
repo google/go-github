@@ -15,9 +15,9 @@ func TestRun(t *testing.T) {
 	t.Parallel()
 	testdata := analysistest.TestData()
 	plugin, _ := New(map[string]any{
-		"allowed-pointer-types": []any{"AllowedPtr", "ActivePtr", "ObsoletePtr"},
-		"allowed-wrong-names":   []any{"AllowedOptions", "ActiveOptions", "ObsoleteOptions"},
+		"allowed-pointer-types": []any{"AllowedPtr"},
+		"allowed-wrong-names":   []any{"AllowedOptions"},
 	})
 	analyzers, _ := plugin.BuildAnalyzers()
-	analysistest.Run(t, testdata, analyzers[0], "has-warnings", "no-warnings", "unused-settings")
+	analysistest.Run(t, testdata, analyzers[0], "has-warnings", "no-warnings")
 }

@@ -83,44 +83,20 @@ func (p *RequestBodyPlugin) GetLoadMode() string {
 	return register.LoadModeSyntax
 }
 
-// usage records which body types triggered each rule within a package, so that allow-list entries that are no longer needed can be reported.
-type usage struct {
-	pointerTypes map[string]bool
-	optionsTypes map[string]bool
-}
-
 func (p *RequestBodyPlugin) run(pass *analysis.Pass) (any, error) {
-	used := usage{
-		pointerTypes: map[string]bool{},
-		optionsTypes: map[string]bool{},
-	}
-	declared := map[string]*ast.Ident{}
-
 	for _, file := range pass.Files {
 		for _, decl := range file.Decls {
-			switch d := decl.(type) {
-			case *ast.GenDecl:
-				if d.Tok != token.TYPE {
-					continue
-				}
-				for _, spec := range d.Specs {
-					if ts, ok := spec.(*ast.TypeSpec); ok {
-						declared[ts.Name.Name] = ts.Name
-					}
-				}
-			case *ast.FuncDecl:
-				if d.Body != nil {
-					p.analyzeFunc(pass, d, &used)
-				}
+			fn, ok := decl.(*ast.FuncDecl)
+			if !ok || fn.Body == nil {
+				continue
 			}
+			p.analyzeFunc(pass, fn)
 		}
 	}
-
-	p.reportUnusedSettings(pass, declared, &used)
 	return nil, nil
 }
 
-func (p *RequestBodyPlugin) analyzeFunc(pass *analysis.Pass, fn *ast.FuncDecl, used *usage) {
+func (p *RequestBodyPlugin) analyzeFunc(pass *analysis.Pass, fn *ast.FuncDecl) {
 	ast.Inspect(fn.Body, func(n ast.Node) bool {
 		call, ok := n.(*ast.CallExpr)
 		if !ok || !isClientNewRequest(call) || !isMutatingMethod(call) {
@@ -138,40 +114,10 @@ func (p *RequestBodyPlugin) analyzeFunc(pass *analysis.Pass, fn *ast.FuncDecl, u
 		}
 
 		reportRename(pass, fn, name)
-		p.reportByValue(pass, field, name, used)
-		p.reportTypeSuffix(pass, field, used)
+		p.reportByValue(pass, field, name)
+		p.reportTypeSuffix(pass, field)
 		return true
 	})
-}
-
-// reportUnusedSettings reports allow-list entries whose type is declared in this package but never triggered the rule they exempt,
-// meaning the exception can be removed.
-// Both the type declarations and their NewRequest usages live in the same package,
-// so a type declared here that is never recorded as used is genuinely no longer in violation.
-func (p *RequestBodyPlugin) reportUnusedSettings(pass *analysis.Pass, declared map[string]*ast.Ident, used *usage) {
-	for name := range p.allowedPointerTypes {
-		ident, ok := declared[name]
-		if !ok || used.pointerTypes[name] {
-			continue
-		}
-		pass.Report(analysis.Diagnostic{
-			Pos:     ident.Pos(),
-			End:     ident.End(),
-			Message: fmt.Sprintf("unused requestbody exception: type %q in allowed-pointer-types is never passed by pointer to client.NewRequest", name),
-		})
-	}
-
-	for name := range p.allowedWrongNames {
-		ident, ok := declared[name]
-		if !ok || used.optionsTypes[name] {
-			continue
-		}
-		pass.Report(analysis.Diagnostic{
-			Pos:     ident.Pos(),
-			End:     ident.End(),
-			Message: fmt.Sprintf("unused requestbody exception: type %q in allowed-wrong-names is never passed as a request body to client.NewRequest", name),
-		})
-	}
 }
 
 func reportRename(pass *analysis.Pass, fn *ast.FuncDecl, name *ast.Ident) {
@@ -195,15 +141,12 @@ func reportRename(pass *analysis.Pass, fn *ast.FuncDecl, name *ast.Ident) {
 	pass.Report(diag)
 }
 
-func (p *RequestBodyPlugin) reportByValue(pass *analysis.Pass, field *ast.Field, name *ast.Ident, used *usage) {
+func (p *RequestBodyPlugin) reportByValue(pass *analysis.Pass, field *ast.Field, name *ast.Ident) {
 	if _, ok := field.Type.(*ast.StarExpr); !ok {
 		return
 	}
-	if ident := typeNameIdent(field.Type); ident != nil {
-		used.pointerTypes[ident.Name] = true
-		if p.allowedPointerTypes[ident.Name] {
-			return
-		}
+	if ident := typeNameIdent(field.Type); ident != nil && p.allowedPointerTypes[ident.Name] {
+		return
 	}
 	pass.Report(analysis.Diagnostic{
 		Pos:     name.Pos(),
@@ -215,12 +158,11 @@ func (p *RequestBodyPlugin) reportByValue(pass *analysis.Pass, field *ast.Field,
 // reportTypeSuffix reports body parameter types whose name ends with "Options", which should use a "Request" suffix instead
 // (e.g. UserSuspendOptions -> UserSuspendRequest).
 // It is report-only because renaming a type affects its declaration and every use across the codebase.
-func (p *RequestBodyPlugin) reportTypeSuffix(pass *analysis.Pass, field *ast.Field, used *usage) {
+func (p *RequestBodyPlugin) reportTypeSuffix(pass *analysis.Pass, field *ast.Field) {
 	ident := typeNameIdent(field.Type)
 	if ident == nil || !strings.HasSuffix(ident.Name, "Options") {
 		return
 	}
-	used.optionsTypes[ident.Name] = true
 	if p.allowedWrongNames[ident.Name] {
 		return
 	}
