@@ -21567,9 +21567,9 @@ func (l *LicenseStatus) GetSSHAllowed() bool {
 }
 
 // GetSupportKey returns the SupportKey field if it's non-nil, zero value otherwise.
-func (l *LicenseStatus) GetSupportKey() string {
+func (l *LicenseStatus) GetSupportKey() bool {
 	if l == nil || l.SupportKey == nil {
-		return ""
+		return false
 	}
 	return *l.SupportKey
 }
