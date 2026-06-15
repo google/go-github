@@ -89,7 +89,9 @@ type LicenseStatus struct {
 	ReferenceNumber              *string    `json:"referenceNumber,omitempty"`
 	Seats                        *int       `json:"seats,omitempty"`
 	SSHAllowed                   *bool      `json:"sshAllowed,omitempty"`
-	SupportKey                   *bool      `json:"supportKey,omitempty"`
+	// SupportKey is documented as a string, but the actual response is a bool.
+	// TODO: Remove this note once GitHub corrects the schema documentation.
+	SupportKey       *bool `json:"supportKey,omitempty"`
 	UnlimitedSeating             *bool      `json:"unlimitedSeating,omitempty"`
 }
 
