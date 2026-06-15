@@ -70,6 +70,8 @@ type InitialConfigOptions struct {
 }
 
 // LicenseStatus is a struct to hold the response from the License API.
+// SupportKey is documented as string but is actual a bool.
+// TODO: Remove comment after github updates schema documentation
 type LicenseStatus struct {
 	AdvancedSecurityEnabled      *bool      `json:"advancedSecurityEnabled,omitempty"`
 	AdvancedSecuritySeats        *int       `json:"advancedSecuritySeats,omitempty"`
@@ -354,6 +356,8 @@ func (s *EnterpriseService) InitialConfig(ctx context.Context, license, password
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-enterprise-license-information
 //
 //meta:operation GET /manage/v1/config/license
+// Current Docs shouw incorrect return type. They list as [{...}] but actual is {...}
+// TODO: Remove comment after github updates schema documentation
 func (s *EnterpriseService) License(ctx context.Context) (*LicenseStatus, *Response, error) {
 	u := "manage/v1/config/license"
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
