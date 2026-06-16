@@ -3,7 +3,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package requestbody
+package paramcheck
 
 import (
 	"testing"
@@ -15,8 +15,8 @@ func TestRun(t *testing.T) {
 	t.Parallel()
 	testdata := analysistest.TestData()
 	plugin, _ := New(map[string]any{
-		"allowed-pointer-types": []any{"AllowedPtr"},
-		"allowed-wrong-names":   []any{"AllowedOptions"},
+		"body-allowed-pointer-types": []any{"AllowedPtr"},
+		"body-allowed-wrong-names":   []any{"AllowedOptions"},
 	})
 	analyzers, _ := plugin.BuildAnalyzers()
 	analysistest.Run(t, testdata, analyzers[0], "has-warnings", "no-warnings")

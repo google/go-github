@@ -25,6 +25,10 @@ type ListOptions struct {
 	Page int
 }
 
+type SearchOptions struct {
+	Query string
+}
+
 type AllowedPtr struct {
 	Name string
 }
@@ -63,6 +67,18 @@ func (o *other) NewRequest(ctx context.Context, method, urlStr string, body any)
 func (s *service) Other(ctx context.Context, opts *ListOptions) error {
 	var o other
 	return o.NewRequest(ctx, "POST", "u", opts)
+}
+
+func addOptions(s string, opt any) (string, error) { return s, nil }
+
+// opts named, pointer, Options-suffixed type: no warning.
+func (s *service) Search(ctx context.Context, opts *SearchOptions) ([]string, error) {
+	u, err := addOptions("search", opts)
+	if err != nil {
+		return nil, err
+	}
+	_ = u
+	return nil, nil
 }
 
 // Pointer body whose type is in allowed-pointer-types: by-value rule suppressed.

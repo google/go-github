@@ -1,4 +1,4 @@
-module tools/requestbody
+module tools/paramcheck
 
 go 1.25.0
 

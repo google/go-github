@@ -28,7 +28,7 @@ linters:
     - paralleltest
     - perfsprint
     - redundantptr
-    - requestbody
+    - paramcheck
     - revive
     - sliceofpointers
     - staticcheck
@@ -195,18 +195,14 @@ linters:
         type: module
         description: Reports usage of %d or %s in format strings.
         original-url: github.com/google/go-github/v88/tools/fmtpercentv
-      redundantptr:
+      paramcheck:
         type: module
-        description: Reports github.Ptr(x) calls that can be replaced with &x.
-        original-url: github.com/google/go-github/v88/tools/redundantptr
-      requestbody:
-        type: module
-        description: Reports miscellaneous issues for request body parameters.
-        original-url: github.com/google/go-github/v88/tools/requestbody
+        description: Reports parameter naming and type convention issues.
+        original-url: github.com/google/go-github/v88/tools/paramcheck
         settings:
           # Body type names exempt from the "pass by value, not by pointer" rule.
           # TODO: fix and remove these exceptions.
-          allowed-pointer-types:
+          body-allowed-pointer-types:
             - ActionsVariable
             - AddProjectItemOptions
             - AuthorizationRequest
@@ -294,7 +290,7 @@ linters:
             - WorkflowsPermissionsOpt
           # Body type names exempt from the "Options" suffix rule.
           # TODO: fix and remove these exceptions.
-          allowed-wrong-names:
+          body-allowed-wrong-names:
             - AddProjectItemOptions
             - AutolinkOptions
             - CheckSuitePreferenceOptions
@@ -327,6 +323,10 @@ linters:
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
             - UserSuspendOptions
+      redundantptr:
+        type: module
+        description: Reports github.Ptr(x) calls that can be replaced with &x.
+        original-url: github.com/google/go-github/v88/tools/redundantptr
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
@@ -565,7 +565,7 @@ linters:
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
-  # requestbody reports multiple distinct issues on the same parameter line.
+  # paramcheck reports multiple distinct issues on the same parameter line.
   uniq-by-line: false
 formatters:
   enable:

@@ -33,6 +33,16 @@ type ServerOptions struct {
 	Host string
 }
 
+type ListOptions struct {
+	Page int
+}
+
+type ListRequest struct {
+	Filter string
+}
+
+func addOptions(s string, opt any) (string, error) { return s, nil }
+
 // opts named, value, good type: rename only.
 func (s *service) Create(ctx context.Context, opts CreateRequest) error { // want `rename request body parameter "opts" to "body"`
 	return s.client.NewRequest(ctx, "POST", "u", opts)
@@ -51,4 +61,34 @@ func (s *service) Suspend(ctx context.Context, opts *SuspendOptions) error { // 
 // Domain-specific name, value, Options-suffixed type: rename and type suffix.
 func (s *service) Save(ctx context.Context, settings ServerOptions) error { // want `rename request body parameter "settings" to "body"` `request body type "ServerOptions" should use a "Request" suffix, not "Options"`
 	return s.client.NewRequest(ctx, "POST", "u", settings)
+}
+
+// Wrong name for addOptions parameter: rename only.
+func (s *service) List(ctx context.Context, options *ListOptions) ([]string, error) { // want `rename addOptions parameter "options" to "opts"`
+	u, err := addOptions("list", options)
+	if err != nil {
+		return nil, err
+	}
+	_ = u
+	return nil, nil
+}
+
+// addOptions parameter passed by value: by-pointer warning.
+func (s *service) Search(ctx context.Context, opts ListOptions) ([]string, error) { // want `pass query parameter "opts" by pointer, not by value`
+	u, err := addOptions("search", opts)
+	if err != nil {
+		return nil, err
+	}
+	_ = u
+	return nil, nil
+}
+
+// addOptions parameter type with Request suffix: type suffix warning.
+func (s *service) Browse(ctx context.Context, opts *ListRequest) ([]string, error) { // want `query parameter type "ListRequest" should use an "Options" suffix`
+	u, err := addOptions("browse", opts)
+	if err != nil {
+		return nil, err
+	}
+	_ = u
+	return nil, nil
 }
