@@ -4,10 +4,10 @@ plugins:
     path: ./tools/extraneousnew
   - module: "github.com/google/go-github/v88/tools/fmtpercentv"
     path: ./tools/fmtpercentv
-  - module: "github.com/google/go-github/v88/tools/redundantptr"
-    path: ./tools/redundantptr
   - module: "github.com/google/go-github/v88/tools/paramcheck"
     path: ./tools/paramcheck
+  - module: "github.com/google/go-github/v88/tools/redundantptr"
+    path: ./tools/redundantptr
   - module: "github.com/google/go-github/v88/tools/sliceofpointers"
     path: ./tools/sliceofpointers
   - module: "github.com/google/go-github/v88/tools/structfield"

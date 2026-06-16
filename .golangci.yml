@@ -26,9 +26,9 @@ linters:
     - nakedret
     - nolintlint
     - paralleltest
+    - paramcheck
     - perfsprint
     - redundantptr
-    - paramcheck
     - revive
     - sliceofpointers
     - staticcheck
