@@ -70,8 +70,6 @@ type InitialConfigOptions struct {
 }
 
 // LicenseStatus is a struct to hold the response from the License API.
-// SupportKey is documented as a string, but the actual response is a bool.
-// TODO: Remove this note once GitHub corrects the schema documentation.
 type LicenseStatus struct {
 	AdvancedSecurityEnabled      *bool      `json:"advancedSecurityEnabled,omitempty"`
 	AdvancedSecuritySeats        *int       `json:"advancedSecuritySeats,omitempty"`
@@ -89,6 +87,8 @@ type LicenseStatus struct {
 	ReferenceNumber              *string    `json:"referenceNumber,omitempty"`
 	Seats                        *int       `json:"seats,omitempty"`
 	SSHAllowed                   *bool      `json:"sshAllowed,omitempty"`
+	// SupportKey is documented as a string, but the actual response is a bool.
+	// TODO: Remove this note once GitHub corrects the schema documentation.
 	SupportKey                   *bool      `json:"supportKey,omitempty"`
 	UnlimitedSeating             *bool      `json:"unlimitedSeating,omitempty"`
 }
