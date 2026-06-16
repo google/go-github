@@ -167,7 +167,7 @@ func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, s
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#update-a-provisioned-organization-membership
 //
 //meta:operation PUT /scim/v2/organizations/{org}/Users/{scim_user_id}
-func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, scimUserID string, opts *SCIMUserAttributes) (*Response, error) {
+func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, scimUserID string, opts *SCIMUserAttributes) (*Response, error) { //nolint:paramcheck // see https://github.com/google/go-github/issues/4301
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	u, err := addOptions(u, opts)
 	if err != nil {

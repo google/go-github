@@ -46,9 +46,9 @@ type DiscussionCommentListOptions struct {
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#list-discussion-comments
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
-func (s *TeamsService) ListCommentsByID(ctx context.Context, orgID, teamID int64, discussionNumber int, options *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
+func (s *TeamsService) ListCommentsByID(ctx context.Context, orgID, teamID int64, discussionNumber int, opts *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments", orgID, teamID, discussionNumber)
-	u, err := addOptions(u, options)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -73,9 +73,9 @@ func (s *TeamsService) ListCommentsByID(ctx context.Context, orgID, teamID int64
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#list-discussion-comments
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
-func (s *TeamsService) ListCommentsBySlug(ctx context.Context, org, slug string, discussionNumber int, options *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
+func (s *TeamsService) ListCommentsBySlug(ctx context.Context, org, slug string, discussionNumber int, opts *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments", org, slug, discussionNumber)
-	u, err := addOptions(u, options)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
