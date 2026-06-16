@@ -89,7 +89,7 @@ type LicenseStatus struct {
 	ReferenceNumber              *string    `json:"referenceNumber,omitempty"`
 	Seats                        *int       `json:"seats,omitempty"`
 	SSHAllowed                   *bool      `json:"sshAllowed,omitempty"`
-	SupportKey                   *bool `json:"supportKey,omitempty"`
+	SupportKey                   *bool      `json:"supportKey,omitempty"`
 	UnlimitedSeating             *bool      `json:"unlimitedSeating,omitempty"`
 }
 
