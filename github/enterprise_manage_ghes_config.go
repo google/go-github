@@ -87,8 +87,10 @@ type LicenseStatus struct {
 	ReferenceNumber              *string    `json:"referenceNumber,omitempty"`
 	Seats                        *int       `json:"seats,omitempty"`
 	SSHAllowed                   *bool      `json:"sshAllowed,omitempty"`
-	SupportKey                   *string    `json:"supportKey,omitempty"`
-	UnlimitedSeating             *bool      `json:"unlimitedSeating,omitempty"`
+	// SupportKey is documented as a string, but the actual response is a bool.
+	// TODO: Remove this note once GitHub corrects the schema documentation.
+	SupportKey       *bool `json:"supportKey,omitempty"`
+	UnlimitedSeating *bool `json:"unlimitedSeating,omitempty"`
 }
 
 // UploadLicenseOptions is a struct to hold the options for the UploadLicense API.
@@ -351,17 +353,21 @@ func (s *EnterpriseService) InitialConfig(ctx context.Context, license, password
 
 // License gets the current license information for the GitHub Enterprise instance.
 //
+// NOTE: The GitHub documentation incorrectly shows the return type as a list ([{...}]),
+// but the actual response is a single object ({...}).
+// TODO: Remove this note once GitHub corrects the schema documentation.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-enterprise-license-information
 //
 //meta:operation GET /manage/v1/config/license
-func (s *EnterpriseService) License(ctx context.Context) ([]*LicenseStatus, *Response, error) {
+func (s *EnterpriseService) License(ctx context.Context) (*LicenseStatus, *Response, error) {
 	u := "manage/v1/config/license"
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var licenseStatus []*LicenseStatus
+	var licenseStatus *LicenseStatus
 	resp, err := s.client.Do(req, &licenseStatus)
 	if err != nil {
 		return nil, resp, err

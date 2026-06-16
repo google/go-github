@@ -407,7 +407,7 @@ func TestEnterpriseService_License(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/config/license", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{
+		fmt.Fprint(w, `{
 			"advancedSecurityEnabled": true,
 			"advancedSecuritySeats": 0,
 			"clusterSupport": false,
@@ -424,9 +424,9 @@ func TestEnterpriseService_License(t *testing.T) {
 			"referenceNumber": "32a145",
 			"seats": 0,
 			"sshAllowed": true,
-			"supportKey": "",
+			"supportKey": true,
 			"unlimitedSeating": true
-		}]`)
+		}`)
 	})
 
 	ctx := t.Context()
@@ -435,7 +435,7 @@ func TestEnterpriseService_License(t *testing.T) {
 		t.Errorf("Enterprise.License returned error: %v", err)
 	}
 
-	want := []*LicenseStatus{{
+	want := &LicenseStatus{
 		AdvancedSecurityEnabled:      Ptr(true),
 		AdvancedSecuritySeats:        Ptr(0),
 		ClusterSupport:               Ptr(false),
@@ -452,9 +452,9 @@ func TestEnterpriseService_License(t *testing.T) {
 		ReferenceNumber:              Ptr("32a145"),
 		Seats:                        Ptr(0),
 		SSHAllowed:                   Ptr(true),
-		SupportKey:                   Ptr(""),
+		SupportKey:                   Ptr(true),
 		UnlimitedSeating:             Ptr(true),
-	}}
+	}
 	if diff := cmp.Diff(want, license); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\n%v", diff)
 	}
