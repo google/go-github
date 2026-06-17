@@ -69,10 +69,10 @@ func (s *EnterpriseService) ListTeams(ctx context.Context, enterprise string, op
 // GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams?apiVersion=2022-11-28#create-an-enterprise-team
 //
 //meta:operation POST /enterprises/{enterprise}/teams
-func (s *EnterpriseService) CreateTeam(ctx context.Context, enterprise string, team EnterpriseTeamCreateOrUpdateRequest) (*EnterpriseTeam, *Response, error) {
+func (s *EnterpriseService) CreateTeam(ctx context.Context, enterprise string, body EnterpriseTeamCreateOrUpdateRequest) (*EnterpriseTeam, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams", enterprise)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, team)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -113,10 +113,10 @@ func (s *EnterpriseService) GetTeam(ctx context.Context, enterprise, teamSlug st
 // GitHub API docs: https://docs.github.com/rest/enterprise-teams/enterprise-teams?apiVersion=2022-11-28#update-an-enterprise-team
 //
 //meta:operation PATCH /enterprises/{enterprise}/teams/{team_slug}
-func (s *EnterpriseService) UpdateTeam(ctx context.Context, enterprise, teamSlug string, team EnterpriseTeamCreateOrUpdateRequest) (*EnterpriseTeam, *Response, error) {
+func (s *EnterpriseService) UpdateTeam(ctx context.Context, enterprise, teamSlug string, body EnterpriseTeamCreateOrUpdateRequest) (*EnterpriseTeam, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/teams/%v", enterprise, teamSlug)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, team)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

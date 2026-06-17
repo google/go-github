@@ -71,10 +71,10 @@ func (s *CodeQualityService) GetSetup(ctx context.Context, owner, repo string) (
 // GitHub API docs: https://docs.github.com/rest/code-quality/code-quality?apiVersion=2022-11-28#update-a-code-quality-setup-configuration
 //
 //meta:operation PATCH /repos/{owner}/{repo}/code-quality/setup
-func (s *CodeQualityService) UpdateSetup(ctx context.Context, owner, repo string, req CodeQualityUpdateSetupRequest) (*CodeQualityUpdateSetupResponse, *Response, error) {
+func (s *CodeQualityService) UpdateSetup(ctx context.Context, owner, repo string, body CodeQualityUpdateSetupRequest) (*CodeQualityUpdateSetupResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-quality/setup", owner, repo)
 
-	request, err := s.client.NewRequest(ctx, "PATCH", u, req)
+	request, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

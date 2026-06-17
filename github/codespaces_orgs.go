@@ -53,9 +53,9 @@ func (s *CodespacesService) ListInOrg(ctx context.Context, org string, opts *Lis
 // GitHub API docs: https://docs.github.com/rest/codespaces/organizations?apiVersion=2022-11-28#manage-access-control-for-organization-codespaces
 //
 //meta:operation PUT /orgs/{org}/codespaces/access
-func (s *CodespacesService) SetOrgAccessControl(ctx context.Context, org string, request CodespacesOrgAccessControlRequest) (*Response, error) {
+func (s *CodespacesService) SetOrgAccessControl(ctx context.Context, org string, body CodespacesOrgAccessControlRequest) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/codespaces/access", org)
-	req, err := s.client.NewRequest(ctx, "PUT", u, request)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}

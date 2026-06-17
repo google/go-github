@@ -287,10 +287,10 @@ func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#update-a-secret-scanning-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}
-func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo string, number int64, opts *SecretScanningAlertUpdateOptions) (*SecretScanningAlert, *Response, error) {
+func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo string, number int64, body *SecretScanningAlertUpdateOptions) (*SecretScanningAlert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -341,10 +341,10 @@ func (s *SecretScanningService) ListLocationsForAlert(ctx context.Context, owner
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#create-a-push-protection-bypass
 //
 //meta:operation POST /repos/{owner}/{repo}/secret-scanning/push-protection-bypasses
-func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, owner, repo string, request PushProtectionBypassRequest) (*PushProtectionBypass, *Response, error) {
+func (s *SecretScanningService) CreatePushProtectionBypass(ctx context.Context, owner, repo string, body PushProtectionBypassRequest) (*PushProtectionBypass, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

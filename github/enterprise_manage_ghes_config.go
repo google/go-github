@@ -466,13 +466,13 @@ func (s *EnterpriseService) Settings(ctx context.Context) (*ConfigSettings, *Res
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#set-settings
 //
 //meta:operation PUT /manage/v1/config/settings
-func (s *EnterpriseService) UpdateSettings(ctx context.Context, opts *ConfigSettings) (*Response, error) {
+func (s *EnterpriseService) UpdateSettings(ctx context.Context, body *ConfigSettings) (*Response, error) {
 	u := "manage/v1/config/settings"
 
-	if opts == nil {
+	if body == nil {
 		return nil, errors.New("opts should not be nil")
 	}
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -485,9 +485,9 @@ func (s *EnterpriseService) UpdateSettings(ctx context.Context, opts *ConfigSett
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#trigger-a-ghe-config-apply-run
 //
 //meta:operation POST /manage/v1/config/apply
-func (s *EnterpriseService) ConfigApply(ctx context.Context, opts *ConfigApplyOptions) (*ConfigApplyOptions, *Response, error) {
+func (s *EnterpriseService) ConfigApply(ctx context.Context, body *ConfigApplyOptions) (*ConfigApplyOptions, *Response, error) {
 	u := "manage/v1/config/apply"
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

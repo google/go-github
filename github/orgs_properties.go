@@ -231,10 +231,10 @@ func (s *OrganizationsService) GetCustomProperty(ctx context.Context, org, name 
 // GitHub API docs: https://docs.github.com/rest/orgs/custom-properties?apiVersion=2022-11-28#create-or-update-a-custom-property-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/properties/schema/{custom_property_name}
-func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context, org, customPropertyName string, property *CustomProperty) (*CustomProperty, *Response, error) {
+func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context, org, customPropertyName string, body *CustomProperty) (*CustomProperty, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/properties/schema/%v", org, customPropertyName)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, property)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

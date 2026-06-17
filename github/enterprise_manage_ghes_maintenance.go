@@ -74,12 +74,12 @@ func (s *EnterpriseService) GetMaintenanceStatus(ctx context.Context, opts *Node
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#set-the-status-of-maintenance-mode
 //
 //meta:operation POST /manage/v1/maintenance
-func (s *EnterpriseService) CreateMaintenance(ctx context.Context, enable bool, opts *MaintenanceOptions) ([]*MaintenanceOperationStatus, *Response, error) {
+func (s *EnterpriseService) CreateMaintenance(ctx context.Context, enable bool, body *MaintenanceOptions) ([]*MaintenanceOperationStatus, *Response, error) {
 	u := "manage/v1/maintenance"
 
-	opts.Enabled = enable
+	body.Enabled = enable
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

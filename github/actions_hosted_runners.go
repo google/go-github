@@ -140,13 +140,13 @@ func validateCreateHostedRunnerRequest(request *CreateHostedRunnerRequest) error
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#create-a-github-hosted-runner-for-an-organization
 //
 //meta:operation POST /orgs/{org}/actions/hosted-runners
-func (s *ActionsService) CreateHostedRunner(ctx context.Context, org string, request CreateHostedRunnerRequest) (*HostedRunner, *Response, error) {
-	if err := validateCreateHostedRunnerRequest(&request); err != nil {
+func (s *ActionsService) CreateHostedRunner(ctx context.Context, org string, body CreateHostedRunnerRequest) (*HostedRunner, *Response, error) {
+	if err := validateCreateHostedRunnerRequest(&body); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("orgs/%v/actions/hosted-runners", org)
-	req, err := s.client.NewRequest(ctx, "POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -362,9 +362,9 @@ func (s *ActionsService) GetHostedRunner(ctx context.Context, org string, runner
 // GitHub API docs: https://docs.github.com/rest/actions/hosted-runners?apiVersion=2022-11-28#update-a-github-hosted-runner-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/actions/hosted-runners/{hosted_runner_id}
-func (s *ActionsService) UpdateHostedRunner(ctx context.Context, org string, runnerID int64, request UpdateHostedRunnerRequest) (*HostedRunner, *Response, error) {
+func (s *ActionsService) UpdateHostedRunner(ctx context.Context, org string, runnerID int64, body UpdateHostedRunnerRequest) (*HostedRunner, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/hosted-runners/%v", org, runnerID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, request)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

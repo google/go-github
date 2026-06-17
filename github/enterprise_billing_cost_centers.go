@@ -105,10 +105,10 @@ func (s *EnterpriseService) ListCostCenters(ctx context.Context, enterprise stri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers?apiVersion=2022-11-28#create-a-new-cost-center
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/cost-centers
-func (s *EnterpriseService) CreateCostCenter(ctx context.Context, enterprise string, costCenter CostCenterRequest) (*CostCenter, *Response, error) {
+func (s *EnterpriseService) CreateCostCenter(ctx context.Context, enterprise string, body CostCenterRequest) (*CostCenter, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers", enterprise)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, costCenter)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -149,10 +149,10 @@ func (s *EnterpriseService) GetCostCenter(ctx context.Context, enterprise, costC
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers?apiVersion=2022-11-28#update-a-cost-center-name
 //
 //meta:operation PATCH /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
-func (s *EnterpriseService) UpdateCostCenter(ctx context.Context, enterprise, costCenterID string, costCenter CostCenterRequest) (*CostCenter, *Response, error) {
+func (s *EnterpriseService) UpdateCostCenter(ctx context.Context, enterprise, costCenterID string, body CostCenterRequest) (*CostCenter, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers/%v", enterprise, costCenterID)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, costCenter)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -193,10 +193,10 @@ func (s *EnterpriseService) DeleteCostCenter(ctx context.Context, enterprise, co
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers?apiVersion=2022-11-28#add-resources-to-a-cost-center
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}/resource
-func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterprise, costCenterID string, resources CostCenterResourceRequest) (*AddResourcesToCostCenterResponse, *Response, error) {
+func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterprise, costCenterID string, body CostCenterResourceRequest) (*AddResourcesToCostCenterResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers/%v/resource", enterprise, costCenterID)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, resources)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

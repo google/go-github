@@ -71,9 +71,9 @@ func (s *GitService) GetBlobRaw(ctx context.Context, owner, repo, sha string) ([
 // GitHub API docs: https://docs.github.com/rest/git/blobs?apiVersion=2022-11-28#create-a-blob
 //
 //meta:operation POST /repos/{owner}/{repo}/git/blobs
-func (s *GitService) CreateBlob(ctx context.Context, owner, repo string, blob Blob) (*Blob, *Response, error) {
+func (s *GitService) CreateBlob(ctx context.Context, owner, repo string, body Blob) (*Blob, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/git/blobs", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, blob)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

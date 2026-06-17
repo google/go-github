@@ -6782,17 +6782,17 @@ func (s *TeamsService) ListChildTeamsByParentSlugIter(ctx context.Context, org s
 }
 
 // ListCommentsByIDIter returns an iterator that paginates through all results of ListCommentsByID.
-func (s *TeamsService) ListCommentsByIDIter(ctx context.Context, orgID int64, teamID int64, discussionNumber int, options *DiscussionCommentListOptions) iter.Seq2[*DiscussionComment, error] {
+func (s *TeamsService) ListCommentsByIDIter(ctx context.Context, orgID int64, teamID int64, discussionNumber int, opts *DiscussionCommentListOptions) iter.Seq2[*DiscussionComment, error] {
 	return func(yield func(*DiscussionComment, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
-		if options == nil {
-			options = &DiscussionCommentListOptions{}
+		if opts == nil {
+			opts = &DiscussionCommentListOptions{}
 		} else {
-			options = Ptr(*options)
+			opts = Ptr(*opts)
 		}
 
 		for {
-			results, resp, err := s.ListCommentsByID(ctx, orgID, teamID, discussionNumber, options)
+			results, resp, err := s.ListCommentsByID(ctx, orgID, teamID, discussionNumber, opts)
 			if err != nil {
 				yield(nil, err)
 				return
@@ -6807,23 +6807,23 @@ func (s *TeamsService) ListCommentsByIDIter(ctx context.Context, orgID int64, te
 			if resp.NextPage == 0 {
 				break
 			}
-			options.ListOptions.Page = resp.NextPage
+			opts.ListOptions.Page = resp.NextPage
 		}
 	}
 }
 
 // ListCommentsBySlugIter returns an iterator that paginates through all results of ListCommentsBySlug.
-func (s *TeamsService) ListCommentsBySlugIter(ctx context.Context, org string, slug string, discussionNumber int, options *DiscussionCommentListOptions) iter.Seq2[*DiscussionComment, error] {
+func (s *TeamsService) ListCommentsBySlugIter(ctx context.Context, org string, slug string, discussionNumber int, opts *DiscussionCommentListOptions) iter.Seq2[*DiscussionComment, error] {
 	return func(yield func(*DiscussionComment, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
-		if options == nil {
-			options = &DiscussionCommentListOptions{}
+		if opts == nil {
+			opts = &DiscussionCommentListOptions{}
 		} else {
-			options = Ptr(*options)
+			opts = Ptr(*opts)
 		}
 
 		for {
-			results, resp, err := s.ListCommentsBySlug(ctx, org, slug, discussionNumber, options)
+			results, resp, err := s.ListCommentsBySlug(ctx, org, slug, discussionNumber, opts)
 			if err != nil {
 				yield(nil, err)
 				return
@@ -6838,7 +6838,7 @@ func (s *TeamsService) ListCommentsBySlugIter(ctx context.Context, org string, s
 			if resp.NextPage == 0 {
 				break
 			}
-			options.ListOptions.Page = resp.NextPage
+			opts.ListOptions.Page = resp.NextPage
 		}
 	}
 }

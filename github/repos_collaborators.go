@@ -145,9 +145,9 @@ type RepositoryAddCollaboratorOptions struct {
 // GitHub API docs: https://docs.github.com/rest/collaborators/collaborators?apiVersion=2022-11-28#add-a-repository-collaborator
 //
 //meta:operation PUT /repos/{owner}/{repo}/collaborators/{username}
-func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, opts *RepositoryAddCollaboratorOptions) (*CollaboratorInvitation, *Response, error) {
+func (s *RepositoriesService) AddCollaborator(ctx context.Context, owner, repo, user string, body *RepositoryAddCollaboratorOptions) (*CollaboratorInvitation, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/collaborators/%v", owner, repo, user)
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

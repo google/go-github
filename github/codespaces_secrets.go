@@ -187,13 +187,13 @@ func (s *CodespacesService) getSecret(ctx context.Context, url string) (*Secret,
 // GitHub API docs: https://docs.github.com/rest/codespaces/secrets?apiVersion=2022-11-28#create-or-update-a-secret-for-the-authenticated-user
 //
 //meta:operation PUT /user/codespaces/secrets/{secret_name}
-func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, eSecret *EncryptedSecret) (*Response, error) {
-	if eSecret == nil {
+func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, body *EncryptedSecret) (*Response, error) {
+	if body == nil {
 		return nil, errors.New("encrypted secret must be provided")
 	}
 
-	u := fmt.Sprintf("user/codespaces/secrets/%v", eSecret.Name)
-	return s.createOrUpdateSecret(ctx, u, eSecret)
+	u := fmt.Sprintf("user/codespaces/secrets/%v", body.Name)
+	return s.createOrUpdateSecret(ctx, u, body)
 }
 
 // CreateOrUpdateOrgSecret creates or updates an orgs codespace secret
@@ -203,13 +203,13 @@ func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, eSecre
 // GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets?apiVersion=2022-11-28#create-or-update-an-organization-secret
 //
 //meta:operation PUT /orgs/{org}/codespaces/secrets/{secret_name}
-func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error) {
-	if eSecret == nil {
+func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org string, body *EncryptedSecret) (*Response, error) {
+	if body == nil {
 		return nil, errors.New("encrypted secret must be provided")
 	}
 
-	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, eSecret.Name)
-	return s.createOrUpdateSecret(ctx, u, eSecret)
+	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, body.Name)
+	return s.createOrUpdateSecret(ctx, u, body)
 }
 
 // CreateOrUpdateRepoSecret creates or updates a repos codespace secret
@@ -219,17 +219,17 @@ func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org str
 // GitHub API docs: https://docs.github.com/rest/codespaces/repository-secrets?apiVersion=2022-11-28#create-or-update-a-repository-secret
 //
 //meta:operation PUT /repos/{owner}/{repo}/codespaces/secrets/{secret_name}
-func (s *CodespacesService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
-	if eSecret == nil {
+func (s *CodespacesService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, body *EncryptedSecret) (*Response, error) {
+	if body == nil {
 		return nil, errors.New("encrypted secret must be provided")
 	}
 
-	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, eSecret.Name)
-	return s.createOrUpdateSecret(ctx, u, eSecret)
+	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, body.Name)
+	return s.createOrUpdateSecret(ctx, u, body)
 }
 
-func (s *CodespacesService) createOrUpdateSecret(ctx context.Context, url string, eSecret *EncryptedSecret) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "PUT", url, eSecret)
+func (s *CodespacesService) createOrUpdateSecret(ctx context.Context, url string, body *EncryptedSecret) (*Response, error) {
+	req, err := s.client.NewRequest(ctx, "PUT", url, body)
 	if err != nil {
 		return nil, err
 	}

@@ -78,9 +78,9 @@ func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/repo-pre-receive-hooks#update-pre-receive-hook-enforcement-for-a-repository
 //
 //meta:operation PATCH /repos/{owner}/{repo}/pre-receive-hooks/{pre_receive_hook_id}
-func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, repo string, id int64, hook *PreReceiveHook) (*PreReceiveHook, *Response, error) {
+func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, repo string, id int64, body *PreReceiveHook) (*PreReceiveHook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%v", owner, repo, id)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, hook)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

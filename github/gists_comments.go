@@ -75,9 +75,9 @@ func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID 
 // GitHub API docs: https://docs.github.com/rest/gists/comments?apiVersion=2022-11-28#create-a-gist-comment
 //
 //meta:operation POST /gists/{gist_id}/comments
-func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment *GistComment) (*GistComment, *Response, error) {
+func (s *GistsService) CreateComment(ctx context.Context, gistID string, body *GistComment) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments", gistID)
-	req, err := s.client.NewRequest(ctx, "POST", u, comment)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -96,9 +96,9 @@ func (s *GistsService) CreateComment(ctx context.Context, gistID string, comment
 // GitHub API docs: https://docs.github.com/rest/gists/comments?apiVersion=2022-11-28#update-a-gist-comment
 //
 //meta:operation PATCH /gists/{gist_id}/comments/{comment_id}
-func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID int64, comment *GistComment) (*GistComment, *Response, error) {
+func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID int64, body *GistComment) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, comment)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

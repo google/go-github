@@ -60,10 +60,10 @@ func (s *OrganizationsService) GetImmutableReleasesSettings(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs?apiVersion=2022-11-28#set-immutable-releases-settings-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/settings/immutable-releases
-func (s *OrganizationsService) UpdateImmutableReleasesSettings(ctx context.Context, org string, opts ImmutableReleasePolicy) (*Response, error) {
+func (s *OrganizationsService) UpdateImmutableReleasesSettings(ctx context.Context, org string, body ImmutableReleasePolicy) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/immutable-releases", org)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}

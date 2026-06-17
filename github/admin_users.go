@@ -23,10 +23,10 @@ type CreateUserRequest struct {
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#create-a-user
 //
 //meta:operation POST /admin/users
-func (s *AdminService) CreateUser(ctx context.Context, userReq CreateUserRequest) (*User, *Response, error) {
+func (s *AdminService) CreateUser(ctx context.Context, body CreateUserRequest) (*User, *Response, error) {
 	u := "admin/users"
 
-	req, err := s.client.NewRequest(ctx, "POST", u, userReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -98,10 +98,10 @@ type UserAuthorization struct {
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#create-an-impersonation-oauth-token
 //
 //meta:operation POST /admin/users/{username}/authorizations
-func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, opts *ImpersonateUserOptions) (*UserAuthorization, *Response, error) {
+func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, body *ImpersonateUserOptions) (*UserAuthorization, *Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

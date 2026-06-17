@@ -148,9 +148,9 @@ func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, 
 // GitHub API docs: https://docs.github.com/rest/releases/releases?apiVersion=2022-11-28#generate-release-notes-content-for-a-release
 //
 //meta:operation POST /repos/{owner}/{repo}/releases/generate-notes
-func (s *RepositoriesService) GenerateReleaseNotes(ctx context.Context, owner, repo string, opts *GenerateNotesOptions) (*RepositoryReleaseNotes, *Response, error) {
+func (s *RepositoriesService) GenerateReleaseNotes(ctx context.Context, owner, repo string, body *GenerateNotesOptions) (*RepositoryReleaseNotes, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/generate-notes", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -410,10 +410,10 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, f
 // GitHub API docs: https://docs.github.com/rest/releases/assets?apiVersion=2022-11-28#update-a-release-asset
 //
 //meta:operation PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}
-func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo string, id int64, release *ReleaseAsset) (*ReleaseAsset, *Response, error) {
+func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo string, id int64, body *ReleaseAsset) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/assets/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, release)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -15096,8 +15096,8 @@ func TestTeamsService_ListCommentsByIDIter(t *testing.T) {
 		t.Errorf("client.Teams.ListCommentsByIDIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	options := &DiscussionCommentListOptions{}
-	iter = client.Teams.ListCommentsByIDIter(t.Context(), 0, 0, 0, options)
+	opts := &DiscussionCommentListOptions{}
+	iter = client.Teams.ListCommentsByIDIter(t.Context(), 0, 0, 0, opts)
 	gotItems = 0
 	for _, err := range iter {
 		gotItems++
@@ -15168,8 +15168,8 @@ func TestTeamsService_ListCommentsBySlugIter(t *testing.T) {
 		t.Errorf("client.Teams.ListCommentsBySlugIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	options := &DiscussionCommentListOptions{}
-	iter = client.Teams.ListCommentsBySlugIter(t.Context(), "", "", 0, options)
+	opts := &DiscussionCommentListOptions{}
+	iter = client.Teams.ListCommentsBySlugIter(t.Context(), "", "", 0, opts)
 	gotItems = 0
 	for _, err := range iter {
 		gotItems++

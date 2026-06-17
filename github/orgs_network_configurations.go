@@ -130,13 +130,13 @@ func (s *OrganizationsService) ListNetworkConfigurations(ctx context.Context, or
 // GitHub API docs: https://docs.github.com/rest/orgs/network-configurations?apiVersion=2022-11-28#create-a-hosted-compute-network-configuration-for-an-organization
 //
 //meta:operation POST /orgs/{org}/settings/network-configurations
-func (s *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, org string, createReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
-	if err := validateNetworkConfigurationRequest(createReq); err != nil {
+func (s *OrganizationsService) CreateNetworkConfiguration(ctx context.Context, org string, body NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
+	if err := validateNetworkConfigurationRequest(body); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations", org)
-	req, err := s.client.NewRequest(ctx, "POST", u, createReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -176,13 +176,13 @@ func (s *OrganizationsService) GetNetworkConfiguration(ctx context.Context, org,
 // GitHub API docs: https://docs.github.com/rest/orgs/network-configurations?apiVersion=2022-11-28#update-a-hosted-compute-network-configuration-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/settings/network-configurations/{network_configuration_id}
-func (s *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, org, networkID string, updateReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
-	if err := validateNetworkConfigurationRequest(updateReq); err != nil {
+func (s *OrganizationsService) UpdateNetworkConfiguration(ctx context.Context, org, networkID string, body NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
+	if err := validateNetworkConfigurationRequest(body); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("orgs/%v/settings/network-configurations/%v", org, networkID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, updateReq)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -117,9 +117,9 @@ func (s *IssuesService) GetComment(ctx context.Context, owner, repo string, comm
 // GitHub API docs: https://docs.github.com/rest/issues/comments?apiVersion=2022-11-28#create-an-issue-comment
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/comments
-func (s *IssuesService) CreateComment(ctx context.Context, owner, repo string, number int, comment *IssueComment) (*IssueComment, *Response, error) {
+func (s *IssuesService) CreateComment(ctx context.Context, owner, repo string, number int, body *IssueComment) (*IssueComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/comments", owner, repo, number)
-	req, err := s.client.NewRequest(ctx, "POST", u, comment)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -138,9 +138,9 @@ func (s *IssuesService) CreateComment(ctx context.Context, owner, repo string, n
 // GitHub API docs: https://docs.github.com/rest/issues/comments?apiVersion=2022-11-28#update-an-issue-comment
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}
-func (s *IssuesService) EditComment(ctx context.Context, owner, repo string, commentID int64, comment *IssueComment) (*IssueComment, *Response, error) {
+func (s *IssuesService) EditComment(ctx context.Context, owner, repo string, commentID int64, body *IssueComment) (*IssueComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/comments/%v", owner, repo, commentID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, comment)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

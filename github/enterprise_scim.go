@@ -239,9 +239,9 @@ func (s *EnterpriseService) ListProvisionedSCIMUsers(ctx context.Context, enterp
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#set-scim-information-for-a-provisioned-enterprise-group
 //
 //meta:operation PUT /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
-func (s *EnterpriseService) SetProvisionedSCIMGroup(ctx context.Context, enterprise, scimGroupID string, group SCIMEnterpriseGroupAttributes) (*SCIMEnterpriseGroupAttributes, *Response, error) {
+func (s *EnterpriseService) SetProvisionedSCIMGroup(ctx context.Context, enterprise, scimGroupID string, body SCIMEnterpriseGroupAttributes) (*SCIMEnterpriseGroupAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups/%v", enterprise, scimGroupID)
-	req, err := s.client.NewRequest(ctx, "PUT", u, group)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -267,9 +267,9 @@ func (s *EnterpriseService) SetProvisionedSCIMGroup(ctx context.Context, enterpr
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#set-scim-information-for-a-provisioned-enterprise-user
 //
 //meta:operation PUT /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
-func (s *EnterpriseService) SetProvisionedSCIMUser(ctx context.Context, enterprise, scimUserID string, user SCIMEnterpriseUserAttributes) (*SCIMEnterpriseUserAttributes, *Response, error) {
+func (s *EnterpriseService) SetProvisionedSCIMUser(ctx context.Context, enterprise, scimUserID string, body SCIMEnterpriseUserAttributes) (*SCIMEnterpriseUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Users/%v", enterprise, scimUserID)
-	req, err := s.client.NewRequest(ctx, "PUT", u, user)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -297,9 +297,9 @@ func (s *EnterpriseService) SetProvisionedSCIMUser(ctx context.Context, enterpri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#update-an-attribute-for-a-scim-enterprise-group
 //
 //meta:operation PATCH /scim/v2/enterprises/{enterprise}/Groups/{scim_group_id}
-func (s *EnterpriseService) UpdateSCIMGroupAttribute(ctx context.Context, enterprise, scimGroupID string, attribute SCIMEnterpriseAttribute) (*SCIMEnterpriseGroupAttributes, *Response, error) {
+func (s *EnterpriseService) UpdateSCIMGroupAttribute(ctx context.Context, enterprise, scimGroupID string, body SCIMEnterpriseAttribute) (*SCIMEnterpriseGroupAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups/%v", enterprise, scimGroupID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, attribute)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -329,9 +329,9 @@ func (s *EnterpriseService) UpdateSCIMGroupAttribute(ctx context.Context, enterp
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#update-an-attribute-for-a-scim-enterprise-user
 //
 //meta:operation PATCH /scim/v2/enterprises/{enterprise}/Users/{scim_user_id}
-func (s *EnterpriseService) UpdateSCIMUserAttribute(ctx context.Context, enterprise, scimUserID string, attribute SCIMEnterpriseAttribute) (*SCIMEnterpriseUserAttributes, *Response, error) {
+func (s *EnterpriseService) UpdateSCIMUserAttribute(ctx context.Context, enterprise, scimUserID string, body SCIMEnterpriseAttribute) (*SCIMEnterpriseUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Users/%v", enterprise, scimUserID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, attribute)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -351,9 +351,9 @@ func (s *EnterpriseService) UpdateSCIMUserAttribute(ctx context.Context, enterpr
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#provision-a-scim-enterprise-group
 //
 //meta:operation POST /scim/v2/enterprises/{enterprise}/Groups
-func (s *EnterpriseService) ProvisionSCIMGroup(ctx context.Context, enterprise string, group SCIMEnterpriseGroupAttributes) (*SCIMEnterpriseGroupAttributes, *Response, error) {
+func (s *EnterpriseService) ProvisionSCIMGroup(ctx context.Context, enterprise string, body SCIMEnterpriseGroupAttributes) (*SCIMEnterpriseGroupAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Groups", enterprise)
-	req, err := s.client.NewRequest(ctx, "POST", u, group)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -373,9 +373,9 @@ func (s *EnterpriseService) ProvisionSCIMGroup(ctx context.Context, enterprise s
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/scim?apiVersion=2022-11-28#provision-a-scim-enterprise-user
 //
 //meta:operation POST /scim/v2/enterprises/{enterprise}/Users
-func (s *EnterpriseService) ProvisionSCIMUser(ctx context.Context, enterprise string, user SCIMEnterpriseUserAttributes) (*SCIMEnterpriseUserAttributes, *Response, error) {
+func (s *EnterpriseService) ProvisionSCIMUser(ctx context.Context, enterprise string, body SCIMEnterpriseUserAttributes) (*SCIMEnterpriseUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/enterprises/%v/Users", enterprise)
-	req, err := s.client.NewRequest(ctx, "POST", u, user)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

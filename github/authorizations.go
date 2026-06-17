@@ -260,9 +260,9 @@ func (s *AuthorizationsService) DeleteGrant(ctx context.Context, clientID, acces
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#create-an-impersonation-oauth-token
 //
 //meta:operation POST /admin/users/{username}/authorizations
-func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, username string, authReq *AuthorizationRequest) (*Authorization, *Response, error) {
+func (s *AuthorizationsService) CreateImpersonation(ctx context.Context, username string, body *AuthorizationRequest) (*Authorization, *Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
-	req, err := s.client.NewRequest(ctx, "POST", u, authReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -262,10 +262,10 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context
 // GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#create-a-private-registry-for-an-organization
 //
 //meta:operation POST /orgs/{org}/private-registries
-func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context.Context, org string, privateRegistry CreateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
+func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context.Context, org string, body CreateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries", org)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, privateRegistry, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "POST", u, body, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -328,10 +328,10 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Co
 // GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#update-a-private-registry-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/private-registries/{secret_name}
-func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context.Context, org, secretName string, privateRegistry UpdateOrganizationPrivateRegistry) (*Response, error) {
+func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context.Context, org, secretName string, body UpdateOrganizationPrivateRegistry) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, secretName)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, privateRegistry, WithVersion(api20260310))
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body, WithVersion(api20260310))
 	if err != nil {
 		return nil, err
 	}
