@@ -46,7 +46,7 @@ type MaintenanceOptions struct {
 
 // GetMaintenanceStatus gets the status of maintenance mode for all nodes.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/manage-ghes#get-the-status-of-maintenance-mode
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-status-of-maintenance-mode
 //
 //meta:operation GET /manage/v1/maintenance
 func (s *EnterpriseService) GetMaintenanceStatus(ctx context.Context, opts *NodeQueryOptions) ([]*MaintenanceStatus, *Response, error) {
@@ -54,13 +54,13 @@ func (s *EnterpriseService) GetMaintenanceStatus(ctx context.Context, opts *Node
 	if err != nil {
 		return nil, nil, err
 	}
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var status []*MaintenanceStatus
-	resp, err := s.client.Do(ctx, req, &status)
+	resp, err := s.client.Do(req, &status)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -71,21 +71,21 @@ func (s *EnterpriseService) GetMaintenanceStatus(ctx context.Context, opts *Node
 // CreateMaintenance sets the maintenance mode for the instance.
 // With the enable parameter we can control to put instance into maintenance mode or not. With false we can disable the maintenance mode.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/manage-ghes#set-the-status-of-maintenance-mode
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#set-the-status-of-maintenance-mode
 //
 //meta:operation POST /manage/v1/maintenance
-func (s *EnterpriseService) CreateMaintenance(ctx context.Context, enable bool, opts *MaintenanceOptions) ([]*MaintenanceOperationStatus, *Response, error) {
+func (s *EnterpriseService) CreateMaintenance(ctx context.Context, enable bool, body *MaintenanceOptions) ([]*MaintenanceOperationStatus, *Response, error) {
 	u := "manage/v1/maintenance"
 
-	opts.Enabled = enable
+	body.Enabled = enable
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var i []*MaintenanceOperationStatus
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}

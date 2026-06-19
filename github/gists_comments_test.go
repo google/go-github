@@ -6,71 +6,12 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
-
-func TestGistComments_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &GistComment{}, "{}")
-
-	createdAt := time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)
-
-	u := &GistComment{
-		ID:   Ptr(int64(1)),
-		URL:  Ptr("u"),
-		Body: Ptr("test gist comment"),
-		User: &User{
-			Login:       Ptr("ll"),
-			ID:          Ptr(int64(123)),
-			AvatarURL:   Ptr("a"),
-			GravatarID:  Ptr("g"),
-			Name:        Ptr("n"),
-			Company:     Ptr("c"),
-			Blog:        Ptr("b"),
-			Location:    Ptr("l"),
-			Email:       Ptr("e"),
-			Hireable:    Ptr(true),
-			PublicRepos: Ptr(1),
-			Followers:   Ptr(1),
-			Following:   Ptr(1),
-			CreatedAt:   &Timestamp{referenceTime},
-			URL:         Ptr("u"),
-		},
-		CreatedAt: &Timestamp{createdAt},
-	}
-
-	want := `{
-		"id": 1,
-		"url": "u",
-		"body": "test gist comment",
-		"user": {
-			"login": "ll",
-			"id": 123,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"created_at": "2002-02-10T15:30:00Z"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
 
 func TestGistsService_ListComments(t *testing.T) {
 	t.Parallel()
@@ -86,7 +27,7 @@ func TestGistsService_ListComments(t *testing.T) {
 	ctx := t.Context()
 	comments, _, err := client.Gists.ListComments(ctx, "1", opt)
 	if err != nil {
-		t.Errorf("Gists.Comments returned error: %v", err)
+		t.Errorf("Gists.ListComments returned error: %v", err)
 	}
 
 	want := []*GistComment{{ID: Ptr(int64(1))}}
@@ -169,14 +110,8 @@ func TestGistsService_CreateComment(t *testing.T) {
 	input := &GistComment{ID: Ptr(int64(1)), Body: Ptr("b")}
 
 	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
-		var v *GistComment
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -222,14 +157,8 @@ func TestGistsService_EditComment(t *testing.T) {
 	input := &GistComment{ID: Ptr(int64(1)), Body: Ptr("b")}
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
-		var v *GistComment
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -279,7 +208,7 @@ func TestGistsService_DeleteComment(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Gists.DeleteComment(ctx, "1", 2)
 	if err != nil {
-		t.Errorf("Gists.Delete returned error: %v", err)
+		t.Errorf("Gists.DeleteComment returned error: %v", err)
 	}
 
 	const methodName = "DeleteComment"

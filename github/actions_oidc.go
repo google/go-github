@@ -37,13 +37,13 @@ func (s *ActionsService) GetRepoOIDCSubjectClaimCustomTemplate(ctx context.Conte
 }
 
 func (s *ActionsService) getOIDCSubjectClaimCustomTemplate(ctx context.Context, url string) (*OIDCSubjectClaimCustomTemplate, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var tmpl *OIDCSubjectClaimCustomTemplate
-	resp, err := s.client.Do(ctx, req, &tmpl)
+	resp, err := s.client.Do(req, &tmpl)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -56,9 +56,9 @@ func (s *ActionsService) getOIDCSubjectClaimCustomTemplate(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/actions/oidc?apiVersion=2022-11-28#set-the-customization-template-for-an-oidc-subject-claim-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/oidc/customization/sub
-func (s *ActionsService) SetOrgOIDCSubjectClaimCustomTemplate(ctx context.Context, org string, template *OIDCSubjectClaimCustomTemplate) (*Response, error) {
+func (s *ActionsService) SetOrgOIDCSubjectClaimCustomTemplate(ctx context.Context, org string, body *OIDCSubjectClaimCustomTemplate) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/oidc/customization/sub", org)
-	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, template)
+	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, body)
 }
 
 // SetRepoOIDCSubjectClaimCustomTemplate sets the subject claim customization for a repository.
@@ -71,11 +71,11 @@ func (s *ActionsService) SetRepoOIDCSubjectClaimCustomTemplate(ctx context.Conte
 	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, template)
 }
 
-func (s *ActionsService) setOIDCSubjectClaimCustomTemplate(ctx context.Context, url string, template *OIDCSubjectClaimCustomTemplate) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, template)
+func (s *ActionsService) setOIDCSubjectClaimCustomTemplate(ctx context.Context, url string, body *OIDCSubjectClaimCustomTemplate) (*Response, error) {
+	req, err := s.client.NewRequest(ctx, "PUT", url, body)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

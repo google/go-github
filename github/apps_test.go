@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -94,7 +93,7 @@ func TestAppsService_ListInstallationRequests(t *testing.T) {
 	ctx := t.Context()
 	installationRequests, _, err := client.Apps.ListInstallationRequests(ctx, opt)
 	if err != nil {
-		t.Errorf("Apps.ListInstallations returned error: %v", err)
+		t.Errorf("Apps.ListInstallationRequests returned error: %v", err)
 	}
 
 	date := Timestamp{Time: time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
@@ -450,14 +449,8 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 	}
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
-		var v *InstallationTokenOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		if !cmp.Equal(v, installationTokenOptions) {
-			t.Errorf("request sent %+v, want %+v", v, installationTokenOptions)
-		}
-
 		testMethod(t, r, "POST")
+		testJSONBody(t, r, installationTokenOptions)
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
@@ -486,14 +479,8 @@ func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
 	}
 
 	mux.HandleFunc("/app/installations/1/access_tokens", func(w http.ResponseWriter, r *http.Request) {
-		var v *InstallationTokenListRepoOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		if !cmp.Equal(v, installationTokenListRepoOptions) {
-			t.Errorf("request sent %+v, want %+v", v, installationTokenListRepoOptions)
-		}
-
 		testMethod(t, r, "POST")
+		testJSONBody(t, r, installationTokenListRepoOptions)
 		fmt.Fprint(w, `{"token":"t"}`)
 	})
 
@@ -582,7 +569,7 @@ func TestAppsService_CreateAttachment(t *testing.T) {
 	})
 }
 
-func TestAppsService_FindOrganizationInstallation(t *testing.T) {
+func TestAppsService_GetOrganizationInstallation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -592,24 +579,24 @@ func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	installation, _, err := client.Apps.FindOrganizationInstallation(ctx, "o")
+	installation, _, err := client.Apps.GetOrganizationInstallation(ctx, "o")
 	if err != nil {
-		t.Errorf("Apps.FindOrganizationInstallation returned error: %v", err)
+		t.Errorf("Apps.GetOrganizationInstallation returned error: %v", err)
 	}
 
 	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
 	if !cmp.Equal(installation, want) {
-		t.Errorf("Apps.FindOrganizationInstallation returned %+v, want %+v", installation, want)
+		t.Errorf("Apps.GetOrganizationInstallation returned %+v, want %+v", installation, want)
 	}
 
-	const methodName = "FindOrganizationInstallation"
+	const methodName = "GetOrganizationInstallation"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.FindOrganizationInstallation(ctx, "\n")
+		_, _, err = client.Apps.GetOrganizationInstallation(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.FindOrganizationInstallation(ctx, "o")
+		got, resp, err := client.Apps.GetOrganizationInstallation(ctx, "o")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -617,7 +604,42 @@ func TestAppsService_FindOrganizationInstallation(t *testing.T) {
 	})
 }
 
-func TestAppsService_FindRepositoryInstallation(t *testing.T) {
+func TestAppsService_GetEnterpriseInstallation(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/installation", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":1, "app_id":1, "target_id":1, "target_type": "Enterprise"}`)
+	})
+
+	ctx := t.Context()
+	installation, _, err := client.Apps.GetEnterpriseInstallation(ctx, "e")
+	if err != nil {
+		t.Errorf("Apps.GetEnterpriseInstallation returned error: %v", err)
+	}
+
+	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Enterprise")}
+	if !cmp.Equal(installation, want) {
+		t.Errorf("Apps.GetEnterpriseInstallation returned %+v, want %+v", installation, want)
+	}
+
+	const methodName = "GetEnterpriseInstallation"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Apps.GetEnterpriseInstallation(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Apps.GetEnterpriseInstallation(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestAppsService_GetRepositoryInstallation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -627,24 +649,24 @@ func TestAppsService_FindRepositoryInstallation(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	installation, _, err := client.Apps.FindRepositoryInstallation(ctx, "o", "r")
+	installation, _, err := client.Apps.GetRepositoryInstallation(ctx, "o", "r")
 	if err != nil {
-		t.Errorf("Apps.FindRepositoryInstallation returned error: %v", err)
+		t.Errorf("Apps.GetRepositoryInstallation returned error: %v", err)
 	}
 
 	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
 	if !cmp.Equal(installation, want) {
-		t.Errorf("Apps.FindRepositoryInstallation returned %+v, want %+v", installation, want)
+		t.Errorf("Apps.GetRepositoryInstallation returned %+v, want %+v", installation, want)
 	}
 
-	const methodName = "FindRepositoryInstallation"
+	const methodName = "GetRepositoryInstallation"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.FindRepositoryInstallation(ctx, "\n", "\n")
+		_, _, err = client.Apps.GetRepositoryInstallation(ctx, "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.FindRepositoryInstallation(ctx, "o", "r")
+		got, resp, err := client.Apps.GetRepositoryInstallation(ctx, "o", "r")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -652,7 +674,7 @@ func TestAppsService_FindRepositoryInstallation(t *testing.T) {
 	})
 }
 
-func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
+func TestAppsService_GetRepositoryInstallationByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -662,24 +684,24 @@ func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	installation, _, err := client.Apps.FindRepositoryInstallationByID(ctx, 1)
+	installation, _, err := client.Apps.GetRepositoryInstallationByID(ctx, 1)
 	if err != nil {
-		t.Errorf("Apps.FindRepositoryInstallationByID returned error: %v", err)
+		t.Errorf("Apps.GetRepositoryInstallationByID returned error: %v", err)
 	}
 
 	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
 	if !cmp.Equal(installation, want) {
-		t.Errorf("Apps.FindRepositoryInstallationByID returned %+v, want %+v", installation, want)
+		t.Errorf("Apps.GetRepositoryInstallationByID returned %+v, want %+v", installation, want)
 	}
 
-	const methodName = "FindRepositoryInstallationByID"
+	const methodName = "GetRepositoryInstallationByID"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.FindRepositoryInstallationByID(ctx, -1)
+		_, _, err = client.Apps.GetRepositoryInstallationByID(ctx, -1)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.FindRepositoryInstallationByID(ctx, 1)
+		got, resp, err := client.Apps.GetRepositoryInstallationByID(ctx, 1)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -687,7 +709,7 @@ func TestAppsService_FindRepositoryInstallationByID(t *testing.T) {
 	})
 }
 
-func TestAppsService_FindUserInstallation(t *testing.T) {
+func TestAppsService_GetUserInstallation(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -697,682 +719,27 @@ func TestAppsService_FindUserInstallation(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	installation, _, err := client.Apps.FindUserInstallation(ctx, "u")
+	installation, _, err := client.Apps.GetUserInstallation(ctx, "u")
 	if err != nil {
-		t.Errorf("Apps.FindUserInstallation returned error: %v", err)
+		t.Errorf("Apps.GetUserInstallation returned error: %v", err)
 	}
 
 	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("User")}
 	if !cmp.Equal(installation, want) {
-		t.Errorf("Apps.FindUserInstallation returned %+v, want %+v", installation, want)
+		t.Errorf("Apps.GetUserInstallation returned %+v, want %+v", installation, want)
 	}
 
-	const methodName = "FindUserInstallation"
+	const methodName = "GetUserInstallation"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Apps.FindUserInstallation(ctx, "\n")
+		_, _, err = client.Apps.GetUserInstallation(ctx, "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Apps.FindUserInstallation(ctx, "u")
+		got, resp, err := client.Apps.GetUserInstallation(ctx, "u")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})
-}
-
-func TestContentReference_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ContentReference{}, "{}")
-
-	u := &ContentReference{
-		ID:        Ptr(int64(1)),
-		NodeID:    Ptr("nid"),
-		Reference: Ptr("r"),
-	}
-
-	want := `{
-		"id": 1,
-		"node_id": "nid",
-		"reference": "r"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestAttachment_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Attachment{}, "{}")
-
-	u := &Attachment{
-		ID:    Ptr(int64(1)),
-		Title: Ptr("t"),
-		Body:  Ptr("b"),
-	}
-
-	want := `{
-		"id": 1,
-		"title": "t",
-		"body": "b"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestInstallationPermissions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &InstallationPermissions{}, "{}")
-
-	u := &InstallationPermissions{
-		Actions:                       Ptr("a"),
-		Administration:                Ptr("ad"),
-		Checks:                        Ptr("c"),
-		Contents:                      Ptr("co"),
-		ContentReferences:             Ptr("cr"),
-		Deployments:                   Ptr("d"),
-		Environments:                  Ptr("e"),
-		Issues:                        Ptr("i"),
-		Metadata:                      Ptr("md"),
-		Members:                       Ptr("m"),
-		OrganizationAdministration:    Ptr("oa"),
-		OrganizationCustomOrgRoles:    Ptr("ocr"),
-		OrganizationHooks:             Ptr("oh"),
-		OrganizationPlan:              Ptr("op"),
-		OrganizationPreReceiveHooks:   Ptr("opr"),
-		OrganizationProjects:          Ptr("op"),
-		OrganizationSecrets:           Ptr("os"),
-		OrganizationSelfHostedRunners: Ptr("osh"),
-		OrganizationUserBlocking:      Ptr("oub"),
-		Packages:                      Ptr("pkg"),
-		Pages:                         Ptr("pg"),
-		PullRequests:                  Ptr("pr"),
-		RepositoryHooks:               Ptr("rh"),
-		RepositoryProjects:            Ptr("rp"),
-		RepositoryPreReceiveHooks:     Ptr("rprh"),
-		Secrets:                       Ptr("s"),
-		SecretScanningAlerts:          Ptr("ssa"),
-		SecurityEvents:                Ptr("se"),
-		SingleFile:                    Ptr("sf"),
-		Statuses:                      Ptr("s"),
-		TeamDiscussions:               Ptr("td"),
-		VulnerabilityAlerts:           Ptr("va"),
-		Workflows:                     Ptr("w"),
-	}
-
-	want := `{
-		"actions": "a",
-		"administration": "ad",
-		"checks": "c",
-		"contents": "co",
-		"content_references": "cr",
-		"deployments": "d",
-		"environments": "e",
-		"issues": "i",
-		"metadata": "md",
-		"members": "m",
-		"organization_administration": "oa",
-		"organization_custom_org_roles": "ocr",
-		"organization_hooks": "oh",
-		"organization_plan": "op",
-		"organization_pre_receive_hooks": "opr",
-		"organization_projects": "op",
-		"organization_secrets": "os",
-		"organization_self_hosted_runners": "osh",
-		"organization_user_blocking": "oub",
-		"packages": "pkg",
-		"pages": "pg",
-		"pull_requests": "pr",
-		"repository_hooks": "rh",
-		"repository_projects": "rp",
-		"repository_pre_receive_hooks": "rprh",
-		"secrets": "s",
-		"secret_scanning_alerts": "ssa",
-		"security_events": "se",
-		"single_file": "sf",
-		"statuses": "s",
-		"team_discussions": "td",
-		"vulnerability_alerts":"va",
-		"workflows": "w"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestInstallation_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Installation{}, "{}")
-
-	u := &Installation{
-		ID:       Ptr(int64(1)),
-		NodeID:   Ptr("nid"),
-		AppID:    Ptr(int64(1)),
-		AppSlug:  Ptr("as"),
-		TargetID: Ptr(int64(1)),
-		Account: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		AccessTokensURL:     Ptr("atu"),
-		RepositoriesURL:     Ptr("ru"),
-		HTMLURL:             Ptr("hu"),
-		TargetType:          Ptr("tt"),
-		SingleFileName:      Ptr("sfn"),
-		RepositorySelection: Ptr("rs"),
-		Events:              []string{"e"},
-		SingleFilePaths:     []string{"s"},
-		Permissions: &InstallationPermissions{
-			Actions:                       Ptr("a"),
-			ActionsVariables:              Ptr("ac"),
-			Administration:                Ptr("ad"),
-			Checks:                        Ptr("c"),
-			Contents:                      Ptr("co"),
-			ContentReferences:             Ptr("cr"),
-			Deployments:                   Ptr("d"),
-			Environments:                  Ptr("e"),
-			Issues:                        Ptr("i"),
-			Metadata:                      Ptr("md"),
-			Members:                       Ptr("m"),
-			OrganizationAdministration:    Ptr("oa"),
-			OrganizationCustomOrgRoles:    Ptr("ocr"),
-			OrganizationHooks:             Ptr("oh"),
-			OrganizationPlan:              Ptr("op"),
-			OrganizationPreReceiveHooks:   Ptr("opr"),
-			OrganizationProjects:          Ptr("op"),
-			OrganizationSecrets:           Ptr("os"),
-			OrganizationSelfHostedRunners: Ptr("osh"),
-			OrganizationUserBlocking:      Ptr("oub"),
-			Packages:                      Ptr("pkg"),
-			Pages:                         Ptr("pg"),
-			PullRequests:                  Ptr("pr"),
-			RepositoryHooks:               Ptr("rh"),
-			RepositoryProjects:            Ptr("rp"),
-			RepositoryPreReceiveHooks:     Ptr("rprh"),
-			Secrets:                       Ptr("s"),
-			SecretScanningAlerts:          Ptr("ssa"),
-			SecurityEvents:                Ptr("se"),
-			SingleFile:                    Ptr("sf"),
-			Statuses:                      Ptr("s"),
-			TeamDiscussions:               Ptr("td"),
-			VulnerabilityAlerts:           Ptr("va"),
-			Workflows:                     Ptr("w"),
-		},
-		CreatedAt:              &Timestamp{referenceTime},
-		UpdatedAt:              &Timestamp{referenceTime},
-		HasMultipleSingleFiles: Ptr(false),
-		SuspendedBy: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		SuspendedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-		"id": 1,
-		"node_id": "nid",
-		"app_id": 1,
-		"app_slug": "as",
-		"target_id": 1,
-		"account": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"access_tokens_url": "atu",
-		"repositories_url": "ru",
-		"html_url": "hu",
-		"target_type": "tt",
-		"single_file_name": "sfn",
-		"repository_selection": "rs",
-		"events": [
-			"e"
-		],
-		"single_file_paths": [
-			"s"
-		],
-		"permissions": {
-			"actions": "a",
-			"actions_variables": "ac",
-			"administration": "ad",
-			"checks": "c",
-			"contents": "co",
-			"content_references": "cr",
-			"deployments": "d",
-			"environments": "e",
-			"issues": "i",
-			"metadata": "md",
-			"members": "m",
-			"organization_administration": "oa",
-			"organization_custom_org_roles": "ocr",
-			"organization_hooks": "oh",
-			"organization_plan": "op",
-			"organization_pre_receive_hooks": "opr",
-			"organization_projects": "op",
-			"organization_secrets": "os",
-			"organization_self_hosted_runners": "osh",
-			"organization_user_blocking": "oub",
-			"packages": "pkg",
-			"pages": "pg",
-			"pull_requests": "pr",
-			"repository_hooks": "rh",
-			"repository_projects": "rp",
-			"repository_pre_receive_hooks": "rprh",
-			"secrets": "s",
-			"secret_scanning_alerts": "ssa",
-			"security_events": "se",
-			"single_file": "sf",
-			"statuses": "s",
-			"team_discussions": "td",
-			"vulnerability_alerts": "va",
-			"workflows": "w"
-		},
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"has_multiple_single_files": false,
-		"suspended_by": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"suspended_at": ` + referenceTimeStr + `
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestInstallationTokenOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &InstallationTokenOptions{}, "{}")
-
-	u := &InstallationTokenOptions{
-		RepositoryIDs: []int64{1},
-		Permissions: &InstallationPermissions{
-			Actions:                       Ptr("a"),
-			ActionsVariables:              Ptr("ac"),
-			Administration:                Ptr("ad"),
-			Checks:                        Ptr("c"),
-			Contents:                      Ptr("co"),
-			ContentReferences:             Ptr("cr"),
-			Deployments:                   Ptr("d"),
-			Environments:                  Ptr("e"),
-			Issues:                        Ptr("i"),
-			Metadata:                      Ptr("md"),
-			Members:                       Ptr("m"),
-			OrganizationAdministration:    Ptr("oa"),
-			OrganizationCustomOrgRoles:    Ptr("ocr"),
-			OrganizationHooks:             Ptr("oh"),
-			OrganizationPlan:              Ptr("op"),
-			OrganizationPreReceiveHooks:   Ptr("opr"),
-			OrganizationProjects:          Ptr("op"),
-			OrganizationSecrets:           Ptr("os"),
-			OrganizationSelfHostedRunners: Ptr("osh"),
-			OrganizationUserBlocking:      Ptr("oub"),
-			Packages:                      Ptr("pkg"),
-			Pages:                         Ptr("pg"),
-			PullRequests:                  Ptr("pr"),
-			RepositoryHooks:               Ptr("rh"),
-			RepositoryProjects:            Ptr("rp"),
-			RepositoryPreReceiveHooks:     Ptr("rprh"),
-			Secrets:                       Ptr("s"),
-			SecretScanningAlerts:          Ptr("ssa"),
-			SecurityEvents:                Ptr("se"),
-			SingleFile:                    Ptr("sf"),
-			Statuses:                      Ptr("s"),
-			TeamDiscussions:               Ptr("td"),
-			VulnerabilityAlerts:           Ptr("va"),
-			Workflows:                     Ptr("w"),
-		},
-	}
-
-	want := `{
-		"repository_ids": [1],
-		"permissions": {
-			"actions": "a",
-			"actions_variables": "ac",
-			"administration": "ad",
-			"checks": "c",
-			"contents": "co",
-			"content_references": "cr",
-			"deployments": "d",
-			"environments": "e",
-			"issues": "i",
-			"metadata": "md",
-			"members": "m",
-			"organization_administration": "oa",
-			"organization_custom_org_roles": "ocr",
-			"organization_hooks": "oh",
-			"organization_plan": "op",
-			"organization_pre_receive_hooks": "opr",
-			"organization_projects": "op",
-			"organization_secrets": "os",
-			"organization_self_hosted_runners": "osh",
-			"organization_user_blocking": "oub",
-			"packages": "pkg",
-			"pages": "pg",
-			"pull_requests": "pr",
-			"repository_hooks": "rh",
-			"repository_projects": "rp",
-			"repository_pre_receive_hooks": "rprh",
-			"secrets": "s",
-			"secret_scanning_alerts": "ssa",
-			"security_events": "se",
-			"single_file": "sf",
-			"statuses": "s",
-			"team_discussions": "td",
-			"vulnerability_alerts": "va",
-			"workflows": "w"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestInstallationToken_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &InstallationToken{}, "{}")
-
-	u := &InstallationToken{
-		Token:     Ptr("t"),
-		ExpiresAt: &Timestamp{referenceTime},
-		Permissions: &InstallationPermissions{
-			Actions:                       Ptr("a"),
-			ActionsVariables:              Ptr("ac"),
-			Administration:                Ptr("ad"),
-			Checks:                        Ptr("c"),
-			Contents:                      Ptr("co"),
-			ContentReferences:             Ptr("cr"),
-			Deployments:                   Ptr("d"),
-			Environments:                  Ptr("e"),
-			Issues:                        Ptr("i"),
-			Metadata:                      Ptr("md"),
-			Members:                       Ptr("m"),
-			OrganizationAdministration:    Ptr("oa"),
-			OrganizationCustomOrgRoles:    Ptr("ocr"),
-			OrganizationHooks:             Ptr("oh"),
-			OrganizationPlan:              Ptr("op"),
-			OrganizationPreReceiveHooks:   Ptr("opr"),
-			OrganizationProjects:          Ptr("op"),
-			OrganizationSecrets:           Ptr("os"),
-			OrganizationSelfHostedRunners: Ptr("osh"),
-			OrganizationUserBlocking:      Ptr("oub"),
-			Packages:                      Ptr("pkg"),
-			Pages:                         Ptr("pg"),
-			PullRequests:                  Ptr("pr"),
-			RepositoryHooks:               Ptr("rh"),
-			RepositoryProjects:            Ptr("rp"),
-			RepositoryPreReceiveHooks:     Ptr("rprh"),
-			Secrets:                       Ptr("s"),
-			SecretScanningAlerts:          Ptr("ssa"),
-			SecurityEvents:                Ptr("se"),
-			SingleFile:                    Ptr("sf"),
-			Statuses:                      Ptr("s"),
-			TeamDiscussions:               Ptr("td"),
-			VulnerabilityAlerts:           Ptr("va"),
-			Workflows:                     Ptr("w"),
-		},
-		Repositories: []*Repository{
-			{
-				ID:   Ptr(int64(1)),
-				URL:  Ptr("u"),
-				Name: Ptr("n"),
-			},
-		},
-	}
-
-	want := `{
-		"token": "t",
-		"expires_at": ` + referenceTimeStr + `,
-		"permissions": {
-			"actions": "a",
-			"actions_variables": "ac",
-			"administration": "ad",
-			"checks": "c",
-			"contents": "co",
-			"content_references": "cr",
-			"deployments": "d",
-			"environments": "e",
-			"issues": "i",
-			"metadata": "md",
-			"members": "m",
-			"organization_administration": "oa",
-			"organization_custom_org_roles": "ocr",
-			"organization_hooks": "oh",
-			"organization_plan": "op",
-			"organization_pre_receive_hooks": "opr",
-			"organization_projects": "op",
-			"organization_secrets": "os",
-			"organization_self_hosted_runners": "osh",
-			"organization_user_blocking": "oub",
-			"packages": "pkg",
-			"pages": "pg",
-			"pull_requests": "pr",
-			"repository_hooks": "rh",
-			"repository_projects": "rp",
-			"repository_pre_receive_hooks": "rprh",
-			"secrets": "s",
-			"secret_scanning_alerts": "ssa",
-			"security_events": "se",
-			"single_file": "sf",
-			"statuses": "s",
-			"team_discussions": "td",
-			"vulnerability_alerts": "va",
-			"workflows": "w"
-		},
-		"repositories": [
-			{
-				"id": 1,
-				"url": "u",
-				"name": "n"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestApp_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &App{}, "{}")
-
-	u := &App{
-		ID:     Ptr(int64(1)),
-		Slug:   Ptr("s"),
-		NodeID: Ptr("nid"),
-		Owner: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		Name:        Ptr("n"),
-		Description: Ptr("d"),
-		ExternalURL: Ptr("eu"),
-		HTMLURL:     Ptr("hu"),
-		CreatedAt:   &Timestamp{referenceTime},
-		UpdatedAt:   &Timestamp{referenceTime},
-		Permissions: &InstallationPermissions{
-			Actions:                       Ptr("a"),
-			ActionsVariables:              Ptr("ac"),
-			Administration:                Ptr("ad"),
-			Checks:                        Ptr("c"),
-			Contents:                      Ptr("co"),
-			ContentReferences:             Ptr("cr"),
-			Deployments:                   Ptr("d"),
-			Environments:                  Ptr("e"),
-			Issues:                        Ptr("i"),
-			Metadata:                      Ptr("md"),
-			Members:                       Ptr("m"),
-			OrganizationAdministration:    Ptr("oa"),
-			OrganizationCustomOrgRoles:    Ptr("ocr"),
-			OrganizationHooks:             Ptr("oh"),
-			OrganizationPlan:              Ptr("op"),
-			OrganizationPreReceiveHooks:   Ptr("opr"),
-			OrganizationProjects:          Ptr("op"),
-			OrganizationSecrets:           Ptr("os"),
-			OrganizationSelfHostedRunners: Ptr("osh"),
-			OrganizationUserBlocking:      Ptr("oub"),
-			Packages:                      Ptr("pkg"),
-			Pages:                         Ptr("pg"),
-			PullRequests:                  Ptr("pr"),
-			RepositoryHooks:               Ptr("rh"),
-			RepositoryProjects:            Ptr("rp"),
-			RepositoryPreReceiveHooks:     Ptr("rprh"),
-			Secrets:                       Ptr("s"),
-			SecretScanningAlerts:          Ptr("ssa"),
-			SecurityEvents:                Ptr("se"),
-			SingleFile:                    Ptr("sf"),
-			Statuses:                      Ptr("s"),
-			TeamDiscussions:               Ptr("td"),
-			VulnerabilityAlerts:           Ptr("va"),
-			Workflows:                     Ptr("w"),
-		},
-		Events: []string{"s"},
-	}
-
-	want := `{
-		"id": 1,
-		"slug": "s",
-		"node_id": "nid",
-		"owner": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"name": "n",
-		"description": "d",
-		"external_url": "eu",
-		"html_url": "hu",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"permissions": {
-			"actions": "a",
-			"actions_variables": "ac",
-			"administration": "ad",
-			"checks": "c",
-			"contents": "co",
-			"content_references": "cr",
-			"deployments": "d",
-			"environments": "e",
-			"issues": "i",
-			"metadata": "md",
-			"members": "m",
-			"organization_administration": "oa",
-			"organization_custom_org_roles": "ocr",
-			"organization_hooks": "oh",
-			"organization_plan": "op",
-			"organization_pre_receive_hooks": "opr",
-			"organization_projects": "op",
-			"organization_secrets": "os",
-			"organization_self_hosted_runners": "osh",
-			"organization_user_blocking": "oub",
-			"packages": "pkg",
-			"pages": "pg",
-			"pull_requests": "pr",
-			"repository_hooks": "rh",
-			"repository_projects": "rp",
-			"repository_pre_receive_hooks": "rprh",
-			"secrets": "s",
-			"secret_scanning_alerts": "ssa",
-			"security_events": "se",
-			"single_file": "sf",
-			"statuses": "s",
-			"team_discussions": "td",
-			"vulnerability_alerts": "va",
-			"workflows": "w"
-		},
-		"events": ["s"]
-	}`
-
-	testJSONMarshal(t, u, want)
 }

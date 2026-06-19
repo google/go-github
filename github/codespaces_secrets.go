@@ -61,13 +61,13 @@ func (s *CodespacesService) ListRepoSecrets(ctx context.Context, owner, repo str
 }
 
 func (s *CodespacesService) listSecrets(ctx context.Context, url string) (*Secrets, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var secrets *Secrets
-	resp, err := s.client.Do(ctx, req, &secrets)
+	resp, err := s.client.Do(req, &secrets)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -111,13 +111,13 @@ func (s *CodespacesService) GetRepoPublicKey(ctx context.Context, owner, repo st
 }
 
 func (s *CodespacesService) getPublicKey(ctx context.Context, url string) (*PublicKey, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var publicKey *PublicKey
-	resp, err := s.client.Do(ctx, req, &publicKey)
+	resp, err := s.client.Do(req, &publicKey)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -164,13 +164,13 @@ func (s *CodespacesService) GetRepoSecret(ctx context.Context, owner, repo, name
 }
 
 func (s *CodespacesService) getSecret(ctx context.Context, url string) (*Secret, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var secret *Secret
-	resp, err := s.client.Do(ctx, req, &secret)
+	resp, err := s.client.Do(req, &secret)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -187,13 +187,13 @@ func (s *CodespacesService) getSecret(ctx context.Context, url string) (*Secret,
 // GitHub API docs: https://docs.github.com/rest/codespaces/secrets?apiVersion=2022-11-28#create-or-update-a-secret-for-the-authenticated-user
 //
 //meta:operation PUT /user/codespaces/secrets/{secret_name}
-func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, eSecret *EncryptedSecret) (*Response, error) {
-	if eSecret == nil {
+func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, body *EncryptedSecret) (*Response, error) {
+	if body == nil {
 		return nil, errors.New("encrypted secret must be provided")
 	}
 
-	u := fmt.Sprintf("user/codespaces/secrets/%v", eSecret.Name)
-	return s.createOrUpdateSecret(ctx, u, eSecret)
+	u := fmt.Sprintf("user/codespaces/secrets/%v", body.Name)
+	return s.createOrUpdateSecret(ctx, u, body)
 }
 
 // CreateOrUpdateOrgSecret creates or updates an orgs codespace secret
@@ -203,13 +203,13 @@ func (s *CodespacesService) CreateOrUpdateUserSecret(ctx context.Context, eSecre
 // GitHub API docs: https://docs.github.com/rest/codespaces/organization-secrets?apiVersion=2022-11-28#create-or-update-an-organization-secret
 //
 //meta:operation PUT /orgs/{org}/codespaces/secrets/{secret_name}
-func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org string, eSecret *EncryptedSecret) (*Response, error) {
-	if eSecret == nil {
+func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org string, body *EncryptedSecret) (*Response, error) {
+	if body == nil {
 		return nil, errors.New("encrypted secret must be provided")
 	}
 
-	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, eSecret.Name)
-	return s.createOrUpdateSecret(ctx, u, eSecret)
+	u := fmt.Sprintf("orgs/%v/codespaces/secrets/%v", org, body.Name)
+	return s.createOrUpdateSecret(ctx, u, body)
 }
 
 // CreateOrUpdateRepoSecret creates or updates a repos codespace secret
@@ -219,22 +219,22 @@ func (s *CodespacesService) CreateOrUpdateOrgSecret(ctx context.Context, org str
 // GitHub API docs: https://docs.github.com/rest/codespaces/repository-secrets?apiVersion=2022-11-28#create-or-update-a-repository-secret
 //
 //meta:operation PUT /repos/{owner}/{repo}/codespaces/secrets/{secret_name}
-func (s *CodespacesService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, eSecret *EncryptedSecret) (*Response, error) {
-	if eSecret == nil {
+func (s *CodespacesService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, body *EncryptedSecret) (*Response, error) {
+	if body == nil {
 		return nil, errors.New("encrypted secret must be provided")
 	}
 
-	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, eSecret.Name)
-	return s.createOrUpdateSecret(ctx, u, eSecret)
+	u := fmt.Sprintf("repos/%v/%v/codespaces/secrets/%v", owner, repo, body.Name)
+	return s.createOrUpdateSecret(ctx, u, body)
 }
 
-func (s *CodespacesService) createOrUpdateSecret(ctx context.Context, url string, eSecret *EncryptedSecret) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, eSecret)
+func (s *CodespacesService) createOrUpdateSecret(ctx context.Context, url string, body *EncryptedSecret) (*Response, error) {
+	req, err := s.client.NewRequest(ctx, "PUT", url, body)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -281,12 +281,12 @@ func (s *CodespacesService) DeleteRepoSecret(ctx context.Context, owner, repo, n
 }
 
 func (s *CodespacesService) deleteSecret(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -330,13 +330,13 @@ func (s *CodespacesService) ListSelectedReposForOrgSecret(ctx context.Context, o
 }
 
 func (s *CodespacesService) listSelectedReposForSecret(ctx context.Context, url string) (*SelectedReposList, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repositories *SelectedReposList
-	resp, err := s.client.Do(ctx, req, &repositories)
+	resp, err := s.client.Do(req, &repositories)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -374,12 +374,12 @@ func (s *CodespacesService) setSelectedRepoForSecret(ctx context.Context, url st
 		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
 	}
 
-	req, err := s.client.NewRequest("PUT", url, repoIDs{SelectedIDs: ids})
+	req, err := s.client.NewRequest(ctx, "PUT", url, repoIDs{SelectedIDs: ids})
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -426,12 +426,12 @@ func (s *CodespacesService) AddSelectedRepoToOrgSecret(ctx context.Context, org,
 }
 
 func (s *CodespacesService) addSelectedRepoToSecret(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -478,12 +478,12 @@ func (s *CodespacesService) RemoveSelectedRepoFromOrgSecret(ctx context.Context,
 }
 
 func (s *CodespacesService) removeSelectedRepoFromSecret(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

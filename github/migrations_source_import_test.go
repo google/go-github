@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -26,14 +25,8 @@ func TestMigrationService_StartImport(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
-		var v *Import
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"status":"importing"}`)
 	})
@@ -109,14 +102,8 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
-		var v *Import
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"status":"importing"}`)
 	})
@@ -190,14 +177,8 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 	input := &SourceImportAuthor{Name: Ptr("n"), Email: Ptr("e")}
 
 	mux.HandleFunc("/repos/o/r/import/authors/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *SourceImportAuthor
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id": 1}`)
 	})
 
@@ -233,14 +214,8 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 	input := &Import{UseLFS: Ptr("opt_in")}
 
 	mux.HandleFunc("/repos/o/r/import/lfs", func(w http.ResponseWriter, r *http.Request) {
-		var v *Import
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"status":"importing"}`)
 	})
@@ -331,115 +306,4 @@ func TestMigrationService_CancelImport(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Migrations.CancelImport(ctx, "o", "r")
 	})
-}
-
-func TestLargeFile_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &LargeFile{}, "{}")
-
-	u := &LargeFile{
-		RefName: Ptr("rn"),
-		Path:    Ptr("p"),
-		OID:     Ptr("oid"),
-		Size:    Ptr(1),
-	}
-
-	want := `{
-		"ref_name": "rn",
-		"path": "p",
-		"oid": "oid",
-		"size": 1
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestSourceImportAuthor_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SourceImportAuthor{}, "{}")
-
-	u := &SourceImportAuthor{
-		ID:         Ptr(int64(1)),
-		RemoteID:   Ptr("rid"),
-		RemoteName: Ptr("rn"),
-		Email:      Ptr("e"),
-		Name:       Ptr("n"),
-		URL:        Ptr("url"),
-		ImportURL:  Ptr("iurl"),
-	}
-
-	want := `{
-		"id": 1,
-		"remote_id": "rid",
-		"remote_name": "rn",
-		"email": "e",
-		"name": "n",
-		"url": "url",
-		"import_url": "iurl"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestImport_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Import{}, "{}")
-
-	u := &Import{
-		VCSURL:          Ptr("vcsurl"),
-		VCS:             Ptr("vcs"),
-		VCSUsername:     Ptr("vcsusr"),
-		VCSPassword:     Ptr("vcspass"),
-		TFVCProject:     Ptr("tfvcp"),
-		UseLFS:          Ptr("uselfs"),
-		HasLargeFiles:   Ptr(false),
-		LargeFilesSize:  Ptr(1),
-		LargeFilesCount: Ptr(1),
-		Status:          Ptr("status"),
-		CommitCount:     Ptr(1),
-		StatusText:      Ptr("statustxt"),
-		AuthorsCount:    Ptr(1),
-		Percent:         Ptr(1),
-		PushPercent:     Ptr(1),
-		URL:             Ptr("url"),
-		HTMLURL:         Ptr("hurl"),
-		AuthorsURL:      Ptr("aurl"),
-		RepositoryURL:   Ptr("rurl"),
-		Message:         Ptr("msg"),
-		FailedStep:      Ptr("fs"),
-		HumanName:       Ptr("hn"),
-		ProjectChoices:  []*Import{{VCSURL: Ptr("vcsurl")}},
-	}
-
-	want := `{
-		"vcs_url": "vcsurl",
-		"vcs": "vcs",
-		"vcs_username": "vcsusr",
-		"vcs_password": "vcspass",
-		"tfvc_project": "tfvcp",
-		"use_lfs": "uselfs",
-		"has_large_files": false,
-		"large_files_size": 1,
-		"large_files_count": 1,
-		"status": "status",
-		"commit_count": 1,
-		"status_text": "statustxt",
-		"authors_count": 1,
-		"percent": 1,
-		"push_percent": 1,
-		"url": "url",
-		"html_url": "hurl",
-		"authors_url": "aurl",
-		"repository_url": "rurl",
-		"message": "msg",
-		"failed_step": "fs",
-		"human_name": "hn",
-		"project_choices": [
-			{
-				"vcs_url": "vcsurl"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
 }

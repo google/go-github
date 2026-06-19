@@ -7,7 +7,6 @@ package github
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -22,7 +21,7 @@ func TestPrivateRegistriesService_ListOrganizationPrivateRegistries(t *testing.T
 
 	mux.HandleFunc("/orgs/o/private-registries", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
+		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testFormValues(t, r, values{
 			"page": "2",
 		})
@@ -101,15 +100,9 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	}
 
 	mux.HandleFunc("/orgs/o/private-registries", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateOrganizationPrivateRegistry
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testHeader(t, r, "X-Github-Api-Version", api20260310)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
   "name": "MAVEN_REPOSITORY_SECRET",
@@ -125,7 +118,7 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	ctx := t.Context()
 	privateRegistry, _, err := client.PrivateRegistries.CreateOrganizationPrivateRegistry(ctx, "o", *input)
 	if err != nil {
-		t.Fatalf("PrivateRegistries.CreateOrganizationPrivateRegistries returned error: %v", err)
+		t.Fatalf("PrivateRegistries.CreateOrganizationPrivateRegistry returned error: %v", err)
 	}
 
 	want := &PrivateRegistry{
@@ -172,15 +165,9 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDC(t *test
 	}
 
 	mux.HandleFunc("/orgs/o/private-registries", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateOrganizationPrivateRegistry
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testHeader(t, r, "X-Github-Api-Version", api20260310)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
   "name": "MAVEN_REPOSITORY_SECRET",
@@ -227,15 +214,9 @@ func TestPrivateRegistries_UpdateOrganizationPrivateRegistry_OIDC(t *testing.T) 
 	}
 
 	mux.HandleFunc("/orgs/o/private-registries/AWS_REGISTRY_SECRET", func(w http.ResponseWriter, r *http.Request) {
-		var v *UpdateOrganizationPrivateRegistry
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testHeader(t, r, "X-Github-Api-Version", api20260310)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -261,15 +242,9 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDCJFrog(t 
 	}
 
 	mux.HandleFunc("/orgs/o/private-registries", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateOrganizationPrivateRegistry
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testHeader(t, r, "X-Github-Api-Version", api20260310)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{
   "name": "NPM_REGISTRY_SECRET",
@@ -304,7 +279,7 @@ func TestPrivateRegistriesService_GetOrganizationPrivateRegistriesPublicKey(t *t
 
 	mux.HandleFunc("/orgs/o/private-registries/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
+		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		fmt.Fprint(w, `{
   "key_id": "0123456789",
   "key": "public_key"
@@ -345,7 +320,7 @@ func TestPrivateRegistriesService_GetOrganizationPrivateRegistry(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/private-registries/MAVEN_REPOSITORY_SECRET", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
+		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		fmt.Fprint(w, `{
   "name": "MAVEN_REPOSITORY_SECRET",
   "registry_type": "maven_repository",
@@ -399,15 +374,9 @@ func TestPrivateRegistries_UpdateOrganizationPrivateRegistry(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/private-registries/MAVEN_REPOSITORY_SECRET", func(w http.ResponseWriter, r *http.Request) {
-		var v *UpdateOrganizationPrivateRegistry
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testHeader(t, r, "X-Github-Api-Version", api20260310)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -434,7 +403,7 @@ func TestPrivateRegistriesService_DeleteOrganizationPrivateRegistry(t *testing.T
 
 	mux.HandleFunc("/orgs/o/private-registries/MAVEN_REPOSITORY_SECRET", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testHeader(t, r, "X-Github-Api-Version", "2026-03-10")
+		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		w.WriteHeader(http.StatusNoContent)
 	})
 	ctx := t.Context()

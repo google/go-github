@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -194,14 +193,8 @@ func TestActivityService_SetRepositorySubscription(t *testing.T) {
 	input := &Subscription{Subscribed: Ptr(true)}
 
 	mux.HandleFunc("/repos/o/r/subscription", func(w http.ResponseWriter, r *http.Request) {
-		var v *Subscription
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"ignored":true}`)
 	})
 
@@ -255,31 +248,4 @@ func TestActivityService_DeleteRepositorySubscription(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Activity.DeleteRepositorySubscription(ctx, "o", "r")
 	})
-}
-
-func TestSubscription_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Subscription{}, "{}")
-
-	u := &Subscription{
-		Subscribed:    Ptr(true),
-		Ignored:       Ptr(false),
-		Reason:        Ptr("r"),
-		CreatedAt:     &Timestamp{referenceTime},
-		URL:           Ptr("u"),
-		RepositoryURL: Ptr("ru"),
-		ThreadURL:     Ptr("tu"),
-	}
-
-	want := `{
-		"subscribed": true,
-		"ignored": false,
-		"reason": "r",
-		"created_at": ` + referenceTimeStr + `,
-		"url": "u",
-		"repository_url": "ru",
-		"thread_url": "tu"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

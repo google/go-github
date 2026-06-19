@@ -119,11 +119,12 @@ func inspectAllBlocks(pass *analysis.Pass, root ast.Node) {
 }
 
 func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
-	// Track pointers that are currently nil.
 	nilPointers := make(map[string]*ast.Ident)
+	valueVars := make(map[string]*valueVarInfo)
 
 	for i, stmt := range block.List {
-		// 1. Check for `var v *T` or `var v *struct{...}`
+		// 1. Check for `var v *T` or `var v *struct{...}` (nil pointer declarations)
+		//    and `var v T` (value-type declarations that should use a pointer instead).
 		if decl, ok := stmt.(*ast.DeclStmt); ok {
 			if gen, ok := decl.Decl.(*ast.GenDecl); ok && gen.Tok == token.VAR {
 				for _, spec := range gen.Specs {
@@ -131,6 +132,14 @@ func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
 						if _, ok := vSpec.Type.(*ast.StarExpr); ok && len(vSpec.Values) == 0 {
 							for _, name := range vSpec.Names {
 								nilPointers[name.Name] = name
+							}
+						} else if typeIdent, ok := vSpec.Type.(*ast.Ident); ok && len(vSpec.Values) == 0 && token.IsExported(typeIdent.Name) {
+							for _, name := range vSpec.Names {
+								valueVars[name.Name] = &valueVarInfo{
+									ident:     name,
+									typeName:  typeIdent.Name,
+									stmtIndex: i,
+								}
 							}
 						}
 					}
@@ -146,8 +155,9 @@ func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
 		if assign, ok := stmt.(*ast.AssignStmt); ok && len(assign.Lhs) == 1 && len(assign.Rhs) == 1 {
 			if lhs, ok := assign.Lhs[0].(*ast.Ident); ok {
 				assignLHS = lhs
-				// Any assignment to v means it's no longer a "nil pointer" for our simple tracking.
+				// Any assignment to v means it's no longer tracked as a nil pointer or value var.
 				delete(nilPointers, lhs.Name)
+				delete(valueVars, lhs.Name)
 
 				// Check for v := new(T) or v := &T{}
 				if call, ok := assign.Rhs[0].(*ast.CallExpr); ok {
@@ -174,11 +184,13 @@ func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
 			continue
 		}
 
-		// If it's a regular assignment (possibly with multiple variables), it might initialize a nil pointer.
+		// If it's a regular assignment (possibly with multiple variables), remove tracked variables
+		// since they are no longer nil pointers or uninitialized value vars.
 		if assign, ok := stmt.(*ast.AssignStmt); ok {
 			for _, lhs := range assign.Lhs {
 				if ident, ok := lhs.(*ast.Ident); ok {
 					delete(nilPointers, ident.Name)
+					delete(valueVars, ident.Name)
 				}
 			}
 		}
@@ -196,8 +208,8 @@ func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
 			}
 
 			var targetArg ast.Expr
-			if fnName == "Do" && len(call.Args) == 3 {
-				targetArg = call.Args[2]
+			if fnName == "Do" && len(call.Args) == 2 {
+				targetArg = call.Args[1]
 			} else if fnName == "Decode" && len(call.Args) == 1 {
 				targetArg = call.Args[0]
 			}
@@ -206,6 +218,50 @@ func inspectBlock(pass *analysis.Pass, block *ast.BlockStmt) {
 				if ident, ok := targetArg.(*ast.Ident); ok {
 					if _, isNil := nilPointers[ident.Name]; isNil {
 						pass.Reportf(ident.Pos(), "pass '&%v' instead", ident.Name)
+					}
+				}
+			}
+			return true
+		})
+
+		// 4. Check if a value-type var is passed to Do/Decode and could use a pointer instead.
+		ast.Inspect(stmt, func(n ast.Node) bool {
+			call, ok := n.(*ast.CallExpr)
+			if !ok {
+				return true
+			}
+
+			fnName := getFunctionName(call.Fun)
+			if fnName == "" {
+				return true
+			}
+
+			var targetArg ast.Expr
+			if fnName == "Do" && len(call.Args) == 2 {
+				targetArg = call.Args[1]
+			} else if fnName == "Decode" && len(call.Args) == 1 {
+				targetArg = call.Args[0]
+			}
+
+			if targetArg == nil {
+				return true
+			}
+
+			if ident, ok := targetArg.(*ast.Ident); ok {
+				if info, isValue := valueVars[ident.Name]; isValue {
+					delete(valueVars, ident.Name)
+					if !isUsedElsewhere(block, info.stmtIndex, i, info.ident.Name) && !isReadAfterCall(block, i, info.ident.Name) {
+						pass.Reportf(ident.Pos(), "use 'var %v *%v' and pass '&%v' instead", ident.Name, info.typeName, ident.Name)
+					}
+				}
+			}
+			if unary, ok := targetArg.(*ast.UnaryExpr); ok && unary.Op == token.AND {
+				if ident, ok := unary.X.(*ast.Ident); ok {
+					if info, isValue := valueVars[ident.Name]; isValue {
+						delete(valueVars, ident.Name)
+						if !isUsedElsewhere(block, info.stmtIndex, i, info.ident.Name) && !isReadAfterCall(block, i, info.ident.Name) {
+							pass.Reportf(ident.Pos(), "use 'var %v *%v' instead", ident.Name, info.typeName)
+						}
 					}
 				}
 			}
@@ -251,8 +307,8 @@ func lookAhead(pass *analysis.Pass, block *ast.BlockStmt, startIndex int, lhsIde
 
 				fnName := getFunctionName(call.Fun)
 				var targetArg ast.Expr
-				if fnName == "Do" && len(call.Args) == 3 {
-					targetArg = call.Args[2]
+				if fnName == "Do" && len(call.Args) == 2 {
+					targetArg = call.Args[1]
 				} else if fnName == "Decode" && len(call.Args) == 1 {
 					targetArg = call.Args[0]
 				}
@@ -282,6 +338,87 @@ func lookAhead(pass *analysis.Pass, block *ast.BlockStmt, startIndex int, lhsIde
 			break
 		}
 	}
+}
+
+type valueVarInfo struct {
+	ident     *ast.Ident
+	typeName  string
+	stmtIndex int
+}
+
+// isUsedElsewhere checks if the variable named name is used for anything other than
+// being a target argument in a Do/Decode call, between declIndex and useIndex (exclusive).
+func isUsedElsewhere(block *ast.BlockStmt, declIndex, useIndex int, name string) bool {
+	for j := declIndex + 1; j < useIndex; j++ {
+		stmt := block.List[j]
+		var foundOtherUse bool
+		ast.Inspect(stmt, func(un ast.Node) bool {
+			if foundOtherUse {
+				return false
+			}
+			ident, ok := un.(*ast.Ident)
+			if !ok || ident.Name != name {
+				return true
+			}
+
+			isTargetArg := false
+			ast.Inspect(stmt, func(n ast.Node) bool {
+				call, ok := n.(*ast.CallExpr)
+				if !ok {
+					return true
+				}
+				fnName := getFunctionName(call.Fun)
+				var targetArg ast.Expr
+				if fnName == "Do" && len(call.Args) == 2 {
+					targetArg = call.Args[1]
+				} else if fnName == "Decode" && len(call.Args) == 1 {
+					targetArg = call.Args[0]
+				}
+				if targetArg != nil && isIdentOrAddressOfIdent(targetArg, name) {
+					isTargetArg = true
+					return false
+				}
+				return true
+			})
+
+			if !isTargetArg {
+				foundOtherUse = true
+			}
+			return false
+		})
+		if foundOtherUse {
+			return true
+		}
+	}
+	return false
+}
+
+// isReadAfterCall checks if the variable is read (accessed via selector like v.Field)
+// in any statement after callIndex. This indicates correct zero-value usage where
+// Do/Decode fills the value and the caller reads its fields afterward.
+func isReadAfterCall(block *ast.BlockStmt, callIndex int, name string) bool {
+	for j := callIndex + 1; j < len(block.List); j++ {
+		stmt := block.List[j]
+		var found bool
+		ast.Inspect(stmt, func(un ast.Node) bool {
+			if found {
+				return false
+			}
+			sel, ok := un.(*ast.SelectorExpr)
+			if !ok {
+				return true
+			}
+			if ident, ok := sel.X.(*ast.Ident); ok && ident.Name == name {
+				found = true
+				return false
+			}
+			return true
+		})
+		if found {
+			return true
+		}
+	}
+	return false
 }
 
 func isIdentOrAddressOfIdent(expr ast.Expr, name string) bool {

@@ -27,13 +27,13 @@ func (s *IssuesService) ListBlockedBy(ctx context.Context, owner, repo string, i
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -46,15 +46,15 @@ func (s *IssuesService) ListBlockedBy(ctx context.Context, owner, repo string, i
 // GitHub API docs: https://docs.github.com/rest/issues/issue-dependencies?apiVersion=2022-11-28#add-a-dependency-an-issue-is-blocked-by
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by
-func (s *IssuesService) AddBlockedBy(ctx context.Context, owner, repo string, issueNumber int64, issueDepReq IssueDependencyRequest) (*Issue, *Response, error) {
+func (s *IssuesService) AddBlockedBy(ctx context.Context, owner, repo string, issueNumber int64, body IssueDependencyRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by", owner, repo, issueNumber)
-	req, err := s.client.NewRequest("POST", u, issueDepReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var issue *Issue
-	resp, err := s.client.Do(ctx, req, &issue)
+	resp, err := s.client.Do(req, &issue)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -69,13 +69,13 @@ func (s *IssuesService) AddBlockedBy(ctx context.Context, owner, repo string, is
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by/{issue_id}
 func (s *IssuesService) RemoveBlockedBy(ctx context.Context, owner, repo string, issueNumber, issueID int64) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by/%v", owner, repo, issueNumber, issueID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var issue *Issue
-	resp, err := s.client.Do(ctx, req, &issue)
+	resp, err := s.client.Do(req, &issue)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -95,13 +95,13 @@ func (s *IssuesService) ListBlocking(ctx context.Context, owner, repo string, is
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}

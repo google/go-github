@@ -53,13 +53,13 @@ type RepoFineGrainedPermission struct {
 func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org string) (*OrganizationCustomRepoRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customRepoRoles *OrganizationCustomRepoRoles
-	resp, err := s.client.Do(ctx, req, &customRepoRoles)
+	resp, err := s.client.Do(req, &customRepoRoles)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -76,13 +76,13 @@ func (s *OrganizationsService) ListCustomRepoRoles(ctx context.Context, org stri
 func (s *OrganizationsService) GetCustomRepoRole(ctx context.Context, org string, roleID int64) (*CustomRepoRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var resultingRole *CustomRepoRoles
-	resp, err := s.client.Do(ctx, req, &resultingRole)
+	resp, err := s.client.Do(req, &resultingRole)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -96,16 +96,16 @@ func (s *OrganizationsService) GetCustomRepoRole(ctx context.Context, org string
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles?apiVersion=2022-11-28#create-a-custom-repository-role
 //
 //meta:operation POST /orgs/{org}/custom-repository-roles
-func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org string, opts *CreateOrUpdateCustomRepoRoleOptions) (*CustomRepoRoles, *Response, error) {
+func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org string, body *CreateOrUpdateCustomRepoRoleOptions) (*CustomRepoRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles", org)
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var resultingRole *CustomRepoRoles
-	resp, err := s.client.Do(ctx, req, &resultingRole)
+	resp, err := s.client.Do(req, &resultingRole)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -119,16 +119,16 @@ func (s *OrganizationsService) CreateCustomRepoRole(ctx context.Context, org str
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/custom-roles?apiVersion=2022-11-28#update-a-custom-repository-role
 //
 //meta:operation PATCH /orgs/{org}/custom-repository-roles/{role_id}
-func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org string, roleID int64, opts *CreateOrUpdateCustomRepoRoleOptions) (*CustomRepoRoles, *Response, error) {
+func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org string, roleID int64, body *CreateOrUpdateCustomRepoRoleOptions) (*CustomRepoRoles, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
 
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var resultingRole *CustomRepoRoles
-	resp, err := s.client.Do(ctx, req, &resultingRole)
+	resp, err := s.client.Do(req, &resultingRole)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -145,13 +145,13 @@ func (s *OrganizationsService) UpdateCustomRepoRole(ctx context.Context, org str
 func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org string, roleID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/custom-repository-roles/%v", org, roleID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	var resultingRole *CustomRepoRoles
-	resp, err := s.client.Do(ctx, req, &resultingRole)
+	resp, err := s.client.Do(req, &resultingRole)
 	if err != nil {
 		return resp, err
 	}
@@ -168,13 +168,13 @@ func (s *OrganizationsService) DeleteCustomRepoRole(ctx context.Context, org str
 func (s *OrganizationsService) ListRepositoryFineGrainedPermissions(ctx context.Context, org string) ([]*RepoFineGrainedPermission, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/repository-fine-grained-permissions", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var perms []*RepoFineGrainedPermission
-	resp, err := s.client.Do(ctx, req, &perms)
+	resp, err := s.client.Do(req, &perms)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -48,13 +48,13 @@ type CommunityHealthMetrics struct {
 //meta:operation GET /repos/{owner}/{repo}/community/profile
 func (s *RepositoriesService) GetCommunityHealthMetrics(ctx context.Context, owner, repo string) (*CommunityHealthMetrics, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/community/profile", owner, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var metrics *CommunityHealthMetrics
-	resp, err := s.client.Do(ctx, req, &metrics)
+	resp, err := s.client.Do(req, &metrics)
 	if err != nil {
 		return nil, resp, err
 	}

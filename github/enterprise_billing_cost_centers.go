@@ -86,13 +86,13 @@ func (s *EnterpriseService) ListCostCenters(ctx context.Context, enterprise stri
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var costCenters *CostCenters
-	resp, err := s.client.Do(ctx, req, &costCenters)
+	resp, err := s.client.Do(req, &costCenters)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -105,16 +105,16 @@ func (s *EnterpriseService) ListCostCenters(ctx context.Context, enterprise stri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers?apiVersion=2022-11-28#create-a-new-cost-center
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/cost-centers
-func (s *EnterpriseService) CreateCostCenter(ctx context.Context, enterprise string, costCenter CostCenterRequest) (*CostCenter, *Response, error) {
+func (s *EnterpriseService) CreateCostCenter(ctx context.Context, enterprise string, body CostCenterRequest) (*CostCenter, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers", enterprise)
 
-	req, err := s.client.NewRequest("POST", u, costCenter)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *CostCenter
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -130,13 +130,13 @@ func (s *EnterpriseService) CreateCostCenter(ctx context.Context, enterprise str
 func (s *EnterpriseService) GetCostCenter(ctx context.Context, enterprise, costCenterID string) (*CostCenter, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers/%v", enterprise, costCenterID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var costCenter *CostCenter
-	resp, err := s.client.Do(ctx, req, &costCenter)
+	resp, err := s.client.Do(req, &costCenter)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -149,16 +149,16 @@ func (s *EnterpriseService) GetCostCenter(ctx context.Context, enterprise, costC
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers?apiVersion=2022-11-28#update-a-cost-center-name
 //
 //meta:operation PATCH /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
-func (s *EnterpriseService) UpdateCostCenter(ctx context.Context, enterprise, costCenterID string, costCenter CostCenterRequest) (*CostCenter, *Response, error) {
+func (s *EnterpriseService) UpdateCostCenter(ctx context.Context, enterprise, costCenterID string, body CostCenterRequest) (*CostCenter, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers/%v", enterprise, costCenterID)
 
-	req, err := s.client.NewRequest("PATCH", u, costCenter)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *CostCenter
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -174,13 +174,13 @@ func (s *EnterpriseService) UpdateCostCenter(ctx context.Context, enterprise, co
 func (s *EnterpriseService) DeleteCostCenter(ctx context.Context, enterprise, costCenterID string) (*DeleteCostCenterResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers/%v", enterprise, costCenterID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *DeleteCostCenterResponse
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -193,16 +193,16 @@ func (s *EnterpriseService) DeleteCostCenter(ctx context.Context, enterprise, co
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers?apiVersion=2022-11-28#add-resources-to-a-cost-center
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}/resource
-func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterprise, costCenterID string, resources CostCenterResourceRequest) (*AddResourcesToCostCenterResponse, *Response, error) {
+func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterprise, costCenterID string, body CostCenterResourceRequest) (*AddResourcesToCostCenterResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers/%v/resource", enterprise, costCenterID)
 
-	req, err := s.client.NewRequest("POST", u, resources)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *AddResourcesToCostCenterResponse
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -218,13 +218,13 @@ func (s *EnterpriseService) AddResourcesToCostCenter(ctx context.Context, enterp
 func (s *EnterpriseService) RemoveResourcesFromCostCenter(ctx context.Context, enterprise, costCenterID string, resources CostCenterResourceRequest) (*RemoveResourcesFromCostCenterResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/cost-centers/%v/resource", enterprise, costCenterID)
 
-	req, err := s.client.NewRequest("DELETE", u, resources)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, resources)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *RemoveResourcesFromCostCenterResponse
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}

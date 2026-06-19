@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -242,14 +241,8 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 		},
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v CreateWorkflowDispatchEventRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, event) {
-			t.Errorf("Request body = %+v, want %+v", v, event)
-		}
-
+		testJSONBody(t, r, event)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{"workflow_run_id":1,"run_url":"https://api.github.com/repos/o/r/actions/runs/1","html_url":"https://github.com/o/r/actions/runs/1"}`)
 	})
@@ -270,7 +263,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, _, err = client.Actions.CreateWorkflowDispatchEventByID(ctx, "o", "r", 72844, event)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByID err = nil, want error")
@@ -303,14 +296,8 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 		},
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v CreateWorkflowDispatchEventRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, event) {
-			t.Errorf("Request body = %+v, want %+v", v, event)
-		}
-
+		testJSONBody(t, r, event)
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, `{"workflow_run_id":1,"run_url":"https://api.github.com/repos/o/r/actions/runs/1","html_url":"https://github.com/o/r/actions/runs/1"}`)
 	})
@@ -331,7 +318,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, _, err = client.Actions.CreateWorkflowDispatchEventByFileName(ctx, "o", "r", "main.yml", event)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' CreateWorkflowDispatchEventByFileName err = nil, want error")
@@ -363,14 +350,8 @@ func TestActionsService_CreateWorkflowDispatchEventByID_noRunDetails(t *testing.
 		},
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v CreateWorkflowDispatchEventRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, event) {
-			t.Errorf("Request body = %+v, want %+v", v, event)
-		}
-
+		testJSONBody(t, r, event)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -396,14 +377,8 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName_noRunDetails(t *te
 		},
 	}
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v CreateWorkflowDispatchEventRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, event) {
-			t.Errorf("Request body = %+v, want %+v", v, event)
-		}
-
+		testJSONBody(t, r, event)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -436,7 +411,7 @@ func TestActionsService_EnableWorkflowByID(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, err = client.Actions.EnableWorkflowByID(ctx, "o", "r", 72844)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' EnableWorkflowByID err = nil, want error")
@@ -453,7 +428,7 @@ func TestActionsService_EnableWorkflowByID(t *testing.T) {
 	})
 }
 
-func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
+func TestActionsService_EnableWorkflowByFileName(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -467,14 +442,14 @@ func TestActionsService_EnableWorkflowByFilename(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Actions.EnableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err != nil {
-		t.Errorf("Actions.EnableWorkflowByFilename returned error: %v", err)
+		t.Errorf("Actions.EnableWorkflowByFileName returned error: %v", err)
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, err = client.Actions.EnableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err == nil {
-		t.Error("client.BaseURL.Path='' EnableWorkflowByFilename err = nil, want error")
+		t.Error("client.BaseURL.Path='' EnableWorkflowByFileName err = nil, want error")
 	}
 
 	const methodName = "EnableWorkflowByFileName"
@@ -506,7 +481,7 @@ func TestActionsService_DisableWorkflowByID(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, err = client.Actions.DisableWorkflowByID(ctx, "o", "r", 72844)
 	if err == nil {
 		t.Error("client.BaseURL.Path='' DisableWorkflowByID err = nil, want error")
@@ -541,7 +516,7 @@ func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
 	}
 
 	// Test s.client.NewRequest failure
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	_, err = client.Actions.DisableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	if err == nil {
 		t.Error("client.BaseURL.Path='' DisableWorkflowByFileName err = nil, want error")
@@ -556,181 +531,4 @@ func TestActionsService_DisableWorkflowByFileName(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.DisableWorkflowByFileName(ctx, "o", "r", "main.yml")
 	})
-}
-
-func TestWorkflow_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Workflow{}, "{}")
-
-	u := &Workflow{
-		ID:        Ptr(int64(1)),
-		NodeID:    Ptr("nid"),
-		Name:      Ptr("n"),
-		Path:      Ptr("p"),
-		State:     Ptr("s"),
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-		URL:       Ptr("u"),
-		HTMLURL:   Ptr("h"),
-		BadgeURL:  Ptr("b"),
-	}
-
-	want := `{
-		"id": 1,
-		"node_id": "nid",
-		"name": "n",
-		"path": "p",
-		"state": "s",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"url": "u",
-		"html_url": "h",
-		"badge_url": "b"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestWorkflows_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Workflows{}, "{}")
-
-	u := &Workflows{
-		TotalCount: Ptr(1),
-		Workflows: []*Workflow{
-			{
-				ID:        Ptr(int64(1)),
-				NodeID:    Ptr("nid"),
-				Name:      Ptr("n"),
-				Path:      Ptr("p"),
-				State:     Ptr("s"),
-				CreatedAt: &Timestamp{referenceTime},
-				UpdatedAt: &Timestamp{referenceTime},
-				URL:       Ptr("u"),
-				HTMLURL:   Ptr("h"),
-				BadgeURL:  Ptr("b"),
-			},
-		},
-	}
-
-	want := `{
-		"total_count": 1,
-		"workflows": [{
-			"id": 1,
-			"node_id": "nid",
-			"name": "n",
-			"path": "p",
-			"state": "s",
-			"created_at": ` + referenceTimeStr + `,
-			"updated_at": ` + referenceTimeStr + `,
-			"url": "u",
-			"html_url": "h",
-			"badge_url": "b"
-		}]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestWorkflowBill_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &WorkflowBill{}, "{}")
-
-	u := &WorkflowBill{
-		TotalMS: Ptr(int64(1)),
-	}
-
-	want := `{
-		"total_ms": 1
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestWorkflowBillMap_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &WorkflowBillMap{}, "{}")
-
-	u := &WorkflowBillMap{
-		"UBUNTU": &WorkflowBill{
-			TotalMS: Ptr(int64(1)),
-		},
-		"MACOS": &WorkflowBill{
-			TotalMS: Ptr(int64(1)),
-		},
-		"WINDOWS": &WorkflowBill{
-			TotalMS: Ptr(int64(1)),
-		},
-	}
-
-	want := `{
-		"UBUNTU": {
-			"total_ms": 1
-		},
-		"MACOS": {
-			"total_ms": 1
-		},
-		"WINDOWS": {
-			"total_ms": 1
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestWorkflowUsage_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &WorkflowUsage{}, "{}")
-
-	u := &WorkflowUsage{
-		Billable: &WorkflowBillMap{
-			"UBUNTU": &WorkflowBill{
-				TotalMS: Ptr(int64(1)),
-			},
-			"MACOS": &WorkflowBill{
-				TotalMS: Ptr(int64(1)),
-			},
-			"WINDOWS": &WorkflowBill{
-				TotalMS: Ptr(int64(1)),
-			},
-		},
-	}
-
-	want := `{
-		"billable": {
-			"UBUNTU": {
-				"total_ms": 1
-			},
-			"MACOS": {
-				"total_ms": 1
-			},
-			"WINDOWS": {
-				"total_ms": 1
-			}
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCreateWorkflowDispatchEventRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CreateWorkflowDispatchEventRequest{}, `{"ref": ""}`)
-
-	inputs := make(map[string]any, 0)
-	inputs["key"] = "value"
-
-	u := &CreateWorkflowDispatchEventRequest{
-		Ref:    "r",
-		Inputs: inputs,
-	}
-
-	want := `{
-		"ref": "r",
-		"inputs": {
-			"key": "value"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
 }

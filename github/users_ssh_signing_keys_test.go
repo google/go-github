@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -123,14 +122,8 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 	input := &Key{Key: Ptr("k"), Title: Ptr("t")}
 
 	mux.HandleFunc("/user/ssh_signing_keys", func(w http.ResponseWriter, r *http.Request) {
-		var v *Key
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -178,25 +171,4 @@ func TestUsersService_DeleteSSHSigningKey(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.DeleteSSHSigningKey(ctx, 1)
 	})
-}
-
-func TestSSHSigningKey_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SSHSigningKey{}, "{}")
-
-	u := &Key{
-		ID:        Ptr(int64(1)),
-		Key:       Ptr("abc"),
-		Title:     Ptr("title"),
-		CreatedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-		"id": 1,
-		"key": "abc",
-		"title": "title",
-		"created_at": ` + referenceTimeStr + `
-	}`
-
-	testJSONMarshal(t, u, want)
 }

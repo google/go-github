@@ -6,149 +6,12 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
-
-func TestUser_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &User{}, "{}")
-
-	u := &User{
-		Login:             Ptr("l"),
-		ID:                Ptr(int64(1)),
-		UserViewType:      Ptr("public"),
-		URL:               Ptr("u"),
-		AvatarURL:         Ptr("a"),
-		GravatarID:        Ptr("g"),
-		Name:              Ptr("n"),
-		Company:           Ptr("c"),
-		Blog:              Ptr("b"),
-		Location:          Ptr("l"),
-		Email:             Ptr("e"),
-		NotificationEmail: Ptr("ne"),
-		Hireable:          Ptr(true),
-		Bio:               Ptr("b"),
-		TwitterUsername:   Ptr("t"),
-		PublicRepos:       Ptr(1),
-		Followers:         Ptr(1),
-		Following:         Ptr(1),
-		CreatedAt:         &Timestamp{referenceTime},
-		SuspendedAt:       &Timestamp{referenceTime},
-		BusinessPlus:      Ptr(true),
-	}
-	want := `{
-		"login": "l",
-		"id": 1,
-		"user_view_type": "public",
-		"avatar_url": "a",
-		"gravatar_id": "g",
-		"name": "n",
-		"company": "c",
-		"blog": "b",
-		"location": "l",
-		"email": "e",
-		"notification_email": "ne",
-		"hireable": true,
-		"bio": "b",
-		"twitter_username": "t",
-		"public_repos": 1,
-		"followers": 1,
-		"following": 1,
-		"created_at": ` + referenceTimeStr + `,
-		"suspended_at": ` + referenceTimeStr + `,
-		"business_plus": true,
-		"url": "u"
-	}`
-	testJSONMarshal(t, u, want)
-
-	u2 := &User{
-		Login:                   Ptr("testLogin"),
-		ID:                      Ptr(int64(1)),
-		NodeID:                  Ptr("testNode123"),
-		AvatarURL:               Ptr("https://www.example.com"),
-		HTMLURL:                 Ptr("https://www.example.com"),
-		GravatarID:              Ptr("testGravatar123"),
-		Name:                    Ptr("myName"),
-		Company:                 Ptr("testCompany"),
-		Blog:                    Ptr("test Blog"),
-		Location:                Ptr("test location"),
-		Email:                   Ptr("test@example.com"),
-		Hireable:                Ptr(true),
-		Bio:                     Ptr("my good bio"),
-		TwitterUsername:         Ptr("https://www.example.com/test"),
-		PublicRepos:             Ptr(1),
-		PublicGists:             Ptr(2),
-		Followers:               Ptr(100),
-		Following:               Ptr(29),
-		CreatedAt:               &Timestamp{referenceTime},
-		UpdatedAt:               &Timestamp{referenceTime},
-		SuspendedAt:             &Timestamp{referenceTime},
-		Type:                    Ptr("test type"),
-		SiteAdmin:               Ptr(false),
-		TotalPrivateRepos:       Ptr(int64(2)),
-		OwnedPrivateRepos:       Ptr(int64(1)),
-		PrivateGists:            Ptr(1),
-		DiskUsage:               Ptr(1),
-		Collaborators:           Ptr(1),
-		TwoFactorAuthentication: Ptr(false),
-		Plan: &Plan{
-			Name:          Ptr("silver"),
-			Space:         Ptr(1024),
-			Collaborators: Ptr(10),
-			PrivateRepos:  Ptr(int64(4)),
-			FilledSeats:   Ptr(24),
-			Seats:         Ptr(1),
-		},
-		LdapDn: Ptr("test ldap"),
-	}
-
-	want2 := `{
-		"login": "testLogin",
-		"id": 1,
-		"node_id":"testNode123",
-		"avatar_url": "https://www.example.com",
-		"html_url":"https://www.example.com",
-		"gravatar_id": "testGravatar123",
-		"name": "myName",
-		"company": "testCompany",
-		"blog": "test Blog",
-		"location": "test location",
-		"email": "test@example.com",
-		"hireable": true,
-		"bio": "my good bio",
-		"twitter_username": "https://www.example.com/test",
-		"public_repos": 1,
-		"public_gists":2,
-		"followers": 100,
-		"following": 29,
-		"created_at": ` + referenceTimeStr + `,
-		"suspended_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"type": "test type",
-		"site_admin": false,
-		"total_private_repos": 2,
-		"owned_private_repos": 1,
-		"private_gists": 1,
-		"disk_usage": 1,
-		"collaborators": 1,
-		"two_factor_authentication": false,
-		"plan": {
-			"name": "silver",
-			"space": 1024,
-			"collaborators": 10,
-			"private_repos": 4,
-			"filled_seats": 24,
-			"seats": 1
-		},
-		"ldap_dn": "test ldap"
-	}`
-	testJSONMarshal(t, u2, want2)
-}
 
 func TestUsersService_Get_authenticatedUser(t *testing.T) {
 	t.Parallel()
@@ -257,14 +120,8 @@ func TestUsersService_Edit(t *testing.T) {
 	input := &User{Name: Ptr("n")}
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		var v *User
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -340,7 +197,7 @@ func TestUsersService_ListAll(t *testing.T) {
 	ctx := t.Context()
 	users, _, err := client.Users.ListAll(ctx, opt)
 	if err != nil {
-		t.Errorf("Users.Get returned error: %v", err)
+		t.Errorf("Users.ListAll returned error: %v", err)
 	}
 
 	want := []*User{{ID: Ptr(int64(2))}}
@@ -455,46 +312,4 @@ func TestUsersService_DeclineInvitation(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.DeclineInvitation(ctx, 1)
 	})
-}
-
-func TestUserContext_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &UserContext{}, "{}")
-
-	u := &UserContext{
-		Message: Ptr("message"),
-		Octicon: Ptr("message"),
-	}
-
-	want := `{
-		"message" : "message",
-		"octicon" : "message"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestHovercard_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Hovercard{}, "{}")
-
-	h := &Hovercard{
-		Contexts: []*UserContext{
-			{
-				Message: Ptr("someMessage"),
-				Octicon: Ptr("someOcticon"),
-			},
-		},
-	}
-
-	want := `{
-		"contexts" : [
-			{
-				"message" : "someMessage",
-				"octicon" : "someOcticon"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, h, want)
 }

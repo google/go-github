@@ -15,7 +15,7 @@ import (
 	"strconv"
 
 	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v88/github"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -47,7 +47,7 @@ func getOpsFromGithub(ctx context.Context, client *github.Client, gitRef string)
 				if op.ExternalDocs != nil {
 					docURL = op.ExternalDocs.URL
 				}
-				ops = addOperation(ops, desc.filename, method+" "+p, docURL)
+				ops = addOperation(ops, desc.filename, method+" "+p, docURL, op.Deprecated)
 			}
 		}
 	}

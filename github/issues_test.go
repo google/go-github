@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -307,14 +306,8 @@ func TestIssuesService_Create(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
@@ -360,14 +353,8 @@ func TestIssuesService_Edit(t *testing.T) {
 	input := &IssueRequest{Title: Ptr("t"), Type: Ptr("bug")}
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":1, "type": {"name": "bug"}}`)
 	})
 
@@ -520,178 +507,4 @@ func TestIsPullRequest(t *testing.T) {
 	if !i.IsPullRequest() {
 		t.Errorf("expected i.IsPullRequest (%v) to return true, got false", i)
 	}
-}
-
-func TestLockIssueOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &LockIssueOptions{}, "{}")
-
-	u := &LockIssueOptions{
-		LockReason: "lr",
-	}
-
-	want := `{
-		"lock_reason": "lr"
-		}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestLinks_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestLinks{}, "{}")
-
-	u := &PullRequestLinks{
-		URL:      Ptr("url"),
-		HTMLURL:  Ptr("hurl"),
-		DiffURL:  Ptr("durl"),
-		PatchURL: Ptr("purl"),
-		MergedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-		"url": "url",
-		"html_url": "hurl",
-		"diff_url": "durl",
-		"patch_url": "purl",
-		"merged_at": ` + referenceTimeStr + `
-		}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestIssueRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &IssueRequest{}, "{}")
-
-	u := &IssueRequest{
-		Title:     Ptr("url"),
-		Body:      Ptr("url"),
-		Labels:    &[]string{"l"},
-		Assignee:  Ptr("url"),
-		State:     Ptr("url"),
-		Milestone: Ptr(1),
-		Assignees: &[]string{"a"},
-		Type:      Ptr("issue_type"),
-	}
-
-	want := `{
-		"title": "url",
-		"body": "url",
-		"labels": [
-			"l"
-		],
-		"assignee": "url",
-		"state": "url",
-		"milestone": 1,
-		"assignees": [
-			"a"
-		],
-		"type": "issue_type"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestIssue_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Issue{}, "{}")
-
-	u := &Issue{
-		ID:                Ptr(int64(1)),
-		Number:            Ptr(1),
-		State:             Ptr("s"),
-		Locked:            Ptr(false),
-		Title:             Ptr("title"),
-		Body:              Ptr("body"),
-		AuthorAssociation: Ptr("aa"),
-		User:              &User{ID: Ptr(int64(1))},
-		Labels:            []*Label{{ID: Ptr(int64(1))}},
-		Assignee:          &User{ID: Ptr(int64(1))},
-		Comments:          Ptr(1),
-		ClosedAt:          &Timestamp{referenceTime},
-		CreatedAt:         &Timestamp{referenceTime},
-		UpdatedAt:         &Timestamp{referenceTime},
-		ClosedBy:          &User{ID: Ptr(int64(1))},
-		URL:               Ptr("url"),
-		HTMLURL:           Ptr("hurl"),
-		CommentsURL:       Ptr("curl"),
-		EventsURL:         Ptr("eurl"),
-		LabelsURL:         Ptr("lurl"),
-		RepositoryURL:     Ptr("rurl"),
-		ParentIssueURL:    Ptr("piurl"),
-		Milestone:         &Milestone{ID: Ptr(int64(1))},
-		PullRequestLinks:  &PullRequestLinks{URL: Ptr("url")},
-		Repository:        &Repository{ID: Ptr(int64(1))},
-		Reactions:         &Reactions{TotalCount: Ptr(1)},
-		Assignees:         []*User{{ID: Ptr(int64(1))}},
-		NodeID:            Ptr("nid"),
-		TextMatches:       []*TextMatch{{ObjectURL: Ptr("ourl")}},
-		ActiveLockReason:  Ptr("alr"),
-		Type:              &IssueType{Name: Ptr("bug")},
-	}
-
-	want := `{
-		"id": 1,
-		"number": 1,
-		"state": "s",
-		"locked": false,
-		"title": "title",
-		"body": "body",
-		"author_association": "aa",
-		"user": {
-			"id": 1
-		},
-		"labels": [
-			{
-				"id": 1
-			}
-		],
-		"assignee": {
-			"id": 1
-		},
-		"comments": 1,
-		"closed_at": ` + referenceTimeStr + `,
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"closed_by": {
-			"id": 1
-		},
-		"url": "url",
-		"html_url": "hurl",
-		"comments_url": "curl",
-		"events_url": "eurl",
-		"labels_url": "lurl",
-		"repository_url": "rurl",
-		"parent_issue_url": "piurl",
-		"milestone": {
-			"id": 1
-		},
-		"pull_request": {
-			"url": "url"
-		},
-		"repository": {
-			"id": 1
-		},
-		"reactions": {
-			"total_count": 1
-		},
-		"assignees": [
-			{
-				"id": 1
-			}
-		],
-		"node_id": "nid",
-		"text_matches": [
-			{
-				"object_url": "ourl"
-			}
-		],
-		"active_lock_reason": "alr",
-		"type": {
-			"name": "bug"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
 }

@@ -61,7 +61,7 @@ func TestRateLimits(t *testing.T) {
 	ctx := t.Context()
 	rate, _, err := client.RateLimit.Get(ctx)
 	if err != nil {
-		t.Errorf("RateLimits returned error: %v", err)
+		t.Errorf("RateLimit.Get returned error: %v", err)
 	}
 
 	want := &RateLimits{
@@ -245,7 +245,7 @@ func TestRateLimits_overQuota(t *testing.T) {
 	ctx := t.Context()
 	rate, _, err := client.RateLimit.Get(ctx)
 	if err != nil {
-		t.Errorf("RateLimits returned error: %v", err)
+		t.Errorf("RateLimit.Get returned error: %v", err)
 	}
 
 	want := &RateLimits{
@@ -386,200 +386,44 @@ func TestRateLimits_overQuota(t *testing.T) {
 	}
 }
 
-func TestRateLimits_Marshal(t *testing.T) {
+func TestRateLimits_bypassRateLimitCheckContext(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &RateLimits{}, `{
-		"core": null,
-		"search": null,
-		"graphql": null,
-		"integration_manifest": null,
-		"source_import": null,
-		"code_scanning_upload": null,
-		"actions_runner_registration": null,
-		"scim": null,
-		"dependency_snapshots": null,
-		"code_search": null,
-		"audit_log": null,
-		"dependency_sbom": null
-	}`)
-
-	u := &RateLimits{
-		Core: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
+	tests := []struct {
+		name                  string
+		disableRateLimitCheck bool
+		wantBypassValue       any
+	}{
+		{
+			name:                  "DisableRateLimitCheck disabled",
+			disableRateLimitCheck: false,
+			wantBypassValue:       true,
 		},
-		Search: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
-		},
-		GraphQL: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
-		},
-		IntegrationManifest: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
-		},
-		SourceImport: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
-		},
-		CodeScanningUpload: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
-		},
-		ActionsRunnerRegistration: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
-		},
-		SCIM: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
-		},
-		DependencySnapshots: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
-		},
-		CodeSearch: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
-		},
-		AuditLog: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
-		},
-		DependencySBOM: &Rate{
-			Limit:     1,
-			Remaining: 1,
-			Used:      0,
-			Reset:     Timestamp{referenceTime},
+		{
+			name:                  "DisableRateLimitCheck enabled",
+			disableRateLimitCheck: true,
+			wantBypassValue:       nil,
 		},
 	}
 
-	want := `{
-		"core": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"search": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"graphql": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"integration_manifest": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"source_import": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"code_scanning_upload": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"actions_runner_registration": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"scim": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"dependency_snapshots": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"code_search": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"audit_log": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		},
-		"dependency_sbom": {
-			"limit": 1,
-			"remaining": 1,
-			"used": 0,
-			"reset": ` + referenceTimeStr + `
-		}
-	}`
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+			client.disableRateLimitCheck = tt.disableRateLimitCheck
 
-	testJSONMarshal(t, u, want)
-}
+			mux.HandleFunc("/rate_limit", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				fmt.Fprint(w, `{"resources":{}}`)
+			})
 
-func TestRate_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Rate{}, `{
-		"limit": 0,
-		"remaining": 0,
-		"used": 0,
-		"reset": "0001-01-01T00:00:00Z"
-	}`)
+			_, resp, err := client.RateLimit.Get(t.Context())
+			if err != nil {
+				t.Errorf("RateLimit.Get returned error: %v", err)
+			}
 
-	u := &Rate{
-		Limit:     1,
-		Remaining: 1,
-		Used:      0,
-		Reset:     Timestamp{referenceTime},
-		Resource:  "core",
+			if got, want := resp.Request.Context().Value(BypassRateLimitCheck), tt.wantBypassValue; got != want {
+				t.Errorf("Request context bypass value = %v, want %v", got, want)
+			}
+		})
 	}
-
-	want := `{
-		"limit": 1,
-		"remaining": 1,
-		"used": 0,
-		"reset": ` + referenceTimeStr + `,
-		"resource": "core"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

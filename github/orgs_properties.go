@@ -162,13 +162,13 @@ func (cpv *CustomPropertyValue) UnmarshalJSON(data []byte) error {
 func (s *OrganizationsService) GetAllCustomProperties(ctx context.Context, org string) ([]*CustomProperty, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/properties/schema", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customProperties []*CustomProperty
-	resp, err := s.client.Do(ctx, req, &customProperties)
+	resp, err := s.client.Do(req, &customProperties)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -190,13 +190,13 @@ func (s *OrganizationsService) CreateOrUpdateCustomProperties(ctx context.Contex
 		Properties: properties,
 	}
 
-	req, err := s.client.NewRequest("PATCH", u, params)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, params)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customProperties []*CustomProperty
-	resp, err := s.client.Do(ctx, req, &customProperties)
+	resp, err := s.client.Do(req, &customProperties)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -212,13 +212,13 @@ func (s *OrganizationsService) CreateOrUpdateCustomProperties(ctx context.Contex
 func (s *OrganizationsService) GetCustomProperty(ctx context.Context, org, name string) (*CustomProperty, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/properties/schema/%v", org, name)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customProperty *CustomProperty
-	resp, err := s.client.Do(ctx, req, &customProperty)
+	resp, err := s.client.Do(req, &customProperty)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -231,16 +231,16 @@ func (s *OrganizationsService) GetCustomProperty(ctx context.Context, org, name 
 // GitHub API docs: https://docs.github.com/rest/orgs/custom-properties?apiVersion=2022-11-28#create-or-update-a-custom-property-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/properties/schema/{custom_property_name}
-func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context, org, customPropertyName string, property *CustomProperty) (*CustomProperty, *Response, error) {
+func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context, org, customPropertyName string, body *CustomProperty) (*CustomProperty, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/properties/schema/%v", org, customPropertyName)
 
-	req, err := s.client.NewRequest("PUT", u, property)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customProperty *CustomProperty
-	resp, err := s.client.Do(ctx, req, &customProperty)
+	resp, err := s.client.Do(req, &customProperty)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -256,12 +256,12 @@ func (s *OrganizationsService) CreateOrUpdateCustomProperty(ctx context.Context,
 func (s *OrganizationsService) RemoveCustomProperty(ctx context.Context, org, customPropertyName string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/properties/schema/%v", org, customPropertyName)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListCustomPropertyValues lists all custom property values for repositories in the specified organization.
@@ -276,13 +276,13 @@ func (s *OrganizationsService) ListCustomPropertyValues(ctx context.Context, org
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var repoCustomPropertyValues []*RepoCustomPropertyValue
-	resp, err := s.client.Do(ctx, req, &repoCustomPropertyValues)
+	resp, err := s.client.Do(req, &repoCustomPropertyValues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -306,10 +306,10 @@ func (s *OrganizationsService) CreateOrUpdateRepoCustomPropertyValues(ctx contex
 		Properties:      properties,
 	}
 
-	req, err := s.client.NewRequest("PATCH", u, params)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, params)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

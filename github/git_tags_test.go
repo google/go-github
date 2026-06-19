@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -61,14 +60,8 @@ func TestGitService_CreateTag(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/tags", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateTag
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(*v, inputTag) {
-			t.Errorf("Request body = %+v, want %+v", *v, inputTag)
-		}
-
+		testJSONBody(t, r, inputTag)
 		fmt.Fprint(w, `{"tag": "t"}`)
 	})
 
@@ -96,94 +89,4 @@ func TestGitService_CreateTag(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestTag_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Tag{}, "{}")
-
-	u := &Tag{
-		Tag:     Ptr("tag"),
-		SHA:     Ptr("sha"),
-		URL:     Ptr("url"),
-		Message: Ptr("msg"),
-		Tagger: &CommitAuthor{
-			Date:  &Timestamp{referenceTime},
-			Name:  Ptr("name"),
-			Email: Ptr("email"),
-			Login: Ptr("login"),
-		},
-		Object: &GitObject{
-			Type: Ptr("type"),
-			SHA:  Ptr("sha"),
-			URL:  Ptr("url"),
-		},
-		Verification: &SignatureVerification{
-			Verified:  Ptr(true),
-			Reason:    Ptr("reason"),
-			Signature: Ptr("sign"),
-			Payload:   Ptr("payload"),
-		},
-		NodeID: Ptr("nid"),
-	}
-
-	want := `{
-		"tag": "tag",
-		"sha": "sha",
-		"url": "url",
-		"message": "msg",
-		"tagger": {
-			"date": ` + referenceTimeStr + `,
-			"name": "name",
-			"email": "email",
-			"username": "login"
-		},
-		"object": {
-			"type": "type",
-			"sha": "sha",
-			"url": "url"
-		},
-		"verification": {
-			"verified": true,
-			"reason": "reason",
-			"signature": "sign",
-			"payload": "payload"
-		},
-		"node_id": "nid"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCreateTag_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, CreateTag{}, "{}")
-
-	u := CreateTag{
-		Tag:     "tag",
-		Message: "msg",
-		Object:  "obj",
-		Type:    "type",
-		Tagger: &CommitAuthor{
-			Date:  &Timestamp{referenceTime},
-			Name:  Ptr("name"),
-			Email: Ptr("email"),
-			Login: Ptr("login"),
-		},
-	}
-
-	want := `{
-		"tag": "tag",
-		"message": "msg",
-		"object": "obj",
-		"type": "type",
-		"tagger": {
-			"date": ` + referenceTimeStr + `,
-			"name": "name",
-			"email": "email",
-			"username": "login"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
 }

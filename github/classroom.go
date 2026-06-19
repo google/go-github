@@ -113,13 +113,13 @@ func (g AssignmentGrade) String() string {
 func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64) (*ClassroomAssignment, *Response, error) {
 	u := fmt.Sprintf("assignments/%v", assignmentID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var assignment *ClassroomAssignment
-	resp, err := s.client.Do(ctx, req, &assignment)
+	resp, err := s.client.Do(req, &assignment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -136,13 +136,13 @@ func (s *ClassroomService) GetAssignment(ctx context.Context, assignmentID int64
 func (s *ClassroomService) GetClassroom(ctx context.Context, classroomID int64) (*Classroom, *Response, error) {
 	u := fmt.Sprintf("classrooms/%v", classroomID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var classroom *Classroom
-	resp, err := s.client.Do(ctx, req, &classroom)
+	resp, err := s.client.Do(req, &classroom)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -162,13 +162,13 @@ func (s *ClassroomService) ListClassrooms(ctx context.Context, opts *ListOptions
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var classrooms []*Classroom
-	resp, err := s.client.Do(ctx, req, &classrooms)
+	resp, err := s.client.Do(req, &classrooms)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -189,13 +189,13 @@ func (s *ClassroomService) ListClassroomAssignments(ctx context.Context, classro
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var assignments []*ClassroomAssignment
-	resp, err := s.client.Do(ctx, req, &assignments)
+	resp, err := s.client.Do(req, &assignments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -217,13 +217,13 @@ func (s *ClassroomService) ListAcceptedAssignments(ctx context.Context, assignme
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var acceptedAssignments []*AcceptedAssignment
-	resp, err := s.client.Do(ctx, req, &acceptedAssignments)
+	resp, err := s.client.Do(req, &acceptedAssignments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -241,13 +241,13 @@ func (s *ClassroomService) ListAcceptedAssignments(ctx context.Context, assignme
 func (s *ClassroomService) GetAssignmentGrades(ctx context.Context, assignmentID int64) ([]*AssignmentGrade, *Response, error) {
 	u := fmt.Sprintf("assignments/%v/grades", assignmentID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var grades []*AssignmentGrade
-	resp, err := s.client.Do(ctx, req, &grades)
+	resp, err := s.client.Do(req, &grades)
 	if err != nil {
 		return nil, resp, err
 	}

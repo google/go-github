@@ -19,34 +19,17 @@ type IssuesService service
 
 // IssueDependenciesSummary represents a summary of issue dependency counts.
 type IssueDependenciesSummary struct {
-	BlockedBy      int `json:"blocked_by"`
-	Blocking       int `json:"blocking"`
-	TotalBlockedBy int `json:"total_blocked_by"`
-	TotalBlocking  int `json:"total_blocking"`
+	BlockedBy      *int `json:"blocked_by,omitempty"`
+	Blocking       *int `json:"blocking,omitempty"`
+	TotalBlockedBy *int `json:"total_blocked_by,omitempty"`
+	TotalBlocking  *int `json:"total_blocking,omitempty"`
 }
 
 // SubIssuesSummary represents a summary of sub-issue progress.
 type SubIssuesSummary struct {
-	Total            int `json:"total"`
-	Completed        int `json:"completed"`
-	PercentCompleted int `json:"percent_completed"`
-}
-
-// IssueFieldSelectOption represents a selected option for a single_select issue field.
-type IssueFieldSelectOption struct {
-	ID    int64  `json:"id"`
-	Name  string `json:"name"`
-	Color string `json:"color"`
-}
-
-// IssueFieldValue represents a value assigned to an issue field.
-type IssueFieldValue struct {
-	IssueFieldID int64  `json:"issue_field_id"`
-	NodeID       string `json:"node_id"`
-	DataType     string `json:"data_type"`
-	// Value can be a string, number, or integer.
-	Value              any                     `json:"value"`
-	SingleSelectOption *IssueFieldSelectOption `json:"single_select_option,omitempty"`
+	Total            *int `json:"total,omitempty"`
+	Completed        *int `json:"completed,omitempty"`
+	PercentCompleted *int `json:"percent_completed,omitempty"`
 }
 
 // Issue represents a GitHub issue on a repository.
@@ -131,10 +114,11 @@ type IssueRequest struct {
 	Assignee *string   `json:"assignee,omitempty"`
 	State    *string   `json:"state,omitempty"`
 	// StateReason can be 'completed' or 'not_planned'.
-	StateReason *string   `json:"state_reason,omitempty"`
-	Milestone   *int      `json:"milestone,omitempty"`
-	Assignees   *[]string `json:"assignees,omitempty"`
-	Type        *string   `json:"type,omitempty"`
+	StateReason      *string                   `json:"state_reason,omitempty"`
+	Milestone        *int                      `json:"milestone,omitempty"`
+	Assignees        *[]string                 `json:"assignees,omitempty"`
+	Type             *string                   `json:"type,omitempty"`
+	IssueFieldValues []*IssueRequestFieldValue `json:"issue_field_values,omitempty"`
 }
 
 // PullRequestLinks object is added to the Issue object when it's an issue included
@@ -157,6 +141,36 @@ type IssueType struct {
 	Color       *string    `json:"color,omitempty"`
 	CreatedAt   *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
+}
+
+// IssueFieldValueSingleSelectOption represents a single-select option for an issue field value.
+//
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
+type IssueFieldValueSingleSelectOption struct {
+	ID    int64  `json:"id"`
+	Name  string `json:"name"`
+	Color string `json:"color"`
+}
+
+// IssueRequestFieldValue represents a custom field value to set on an issue.
+//
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#update-an-issue
+type IssueRequestFieldValue struct {
+	FieldID int64 `json:"field_id"`
+	Value   any   `json:"value"`
+}
+
+// IssueFieldValue represents a custom field value attached to an issue.
+// The Value field contains a string for text, single_select, and date fields,
+// or a number for numeric fields.
+//
+// GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
+type IssueFieldValue struct {
+	IssueFieldID       int64                              `json:"issue_field_id"`
+	NodeID             string                             `json:"node_id"`
+	DataType           string                             `json:"data_type"`
+	Value              any                                `json:"value"`
+	SingleSelectOption *IssueFieldValueSingleSelectOption `json:"single_select_option,omitempty"`
 }
 
 // ListAllIssuesOptions specifies the optional parameters to the
@@ -206,7 +220,7 @@ func (s *IssuesService) ListAllIssues(ctx context.Context, opts *ListAllIssuesOp
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -214,7 +228,7 @@ func (s *IssuesService) ListAllIssues(ctx context.Context, opts *ListAllIssuesOp
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -262,7 +276,7 @@ func (s *IssuesService) ListUserIssues(ctx context.Context, opts *ListUserIssues
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -270,7 +284,7 @@ func (s *IssuesService) ListUserIssues(ctx context.Context, opts *ListUserIssues
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -322,7 +336,7 @@ func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueLi
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -330,7 +344,7 @@ func (s *IssuesService) ListByOrg(ctx context.Context, org string, opts *IssueLi
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -400,7 +414,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -408,7 +422,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issues []*Issue
-	resp, err := s.client.Do(ctx, req, &issues)
+	resp, err := s.client.Do(req, &issues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -423,7 +437,7 @@ func (s *IssuesService) ListByRepo(ctx context.Context, owner, repo string, opts
 //meta:operation GET /repos/{owner}/{repo}/issues/{issue_number}
 func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, number)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -431,7 +445,7 @@ func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int)
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var issue *Issue
-	resp, err := s.client.Do(ctx, req, &issue)
+	resp, err := s.client.Do(req, &issue)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -444,15 +458,15 @@ func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int)
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues
-func (s *IssuesService) Create(ctx context.Context, owner, repo string, issue *IssueRequest) (*Issue, *Response, error) {
+func (s *IssuesService) Create(ctx context.Context, owner, repo string, body *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
-	req, err := s.client.NewRequest("POST", u, issue)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var i *Issue
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -465,15 +479,15 @@ func (s *IssuesService) Create(ctx context.Context, owner, repo string, issue *I
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#update-an-issue
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
-func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
+func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int, body *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, number)
-	req, err := s.client.NewRequest("PATCH", u, issue)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var i *Issue
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -490,7 +504,7 @@ func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
 func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string, issueNumber int) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, issueNumber)
-	req, err := s.client.NewRequest("PATCH", u, &struct {
+	req, err := s.client.NewRequest(ctx, "PATCH", u, &struct {
 		Milestone *Milestone `json:"milestone"`
 	}{})
 	if err != nil {
@@ -498,7 +512,7 @@ func (s *IssuesService) RemoveMilestone(ctx context.Context, owner, repo string,
 	}
 
 	var i *Issue
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -520,14 +534,14 @@ type LockIssueOptions struct {
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#lock-an-issue
 //
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/lock
-func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, opts *LockIssueOptions) (*Response, error) {
+func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, body *LockIssueOptions) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/lock", owner, repo, number)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // Unlock an issue's conversation.
@@ -537,10 +551,10 @@ func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock
 func (s *IssuesService) Unlock(ctx context.Context, owner, repo string, number int) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/lock", owner, repo, number)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

@@ -24,7 +24,7 @@ func (p PreReceiveHook) String() string {
 
 // ListPreReceiveHooks lists all pre-receive hooks for the specified repository.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/repo-pre-receive-hooks#list-pre-receive-hooks-for-a-repository
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/repo-pre-receive-hooks#list-pre-receive-hooks-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/pre-receive-hooks
 func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, repo string, opts *ListOptions) ([]*PreReceiveHook, *Response, error) {
@@ -34,7 +34,7 @@ func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -42,7 +42,7 @@ func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, re
 	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
 	var hooks []*PreReceiveHook
-	resp, err := s.client.Do(ctx, req, &hooks)
+	resp, err := s.client.Do(req, &hooks)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -52,12 +52,12 @@ func (s *RepositoriesService) ListPreReceiveHooks(ctx context.Context, owner, re
 
 // GetPreReceiveHook returns a single specified pre-receive hook.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/repo-pre-receive-hooks#get-a-pre-receive-hook-for-a-repository
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/repo-pre-receive-hooks#get-a-pre-receive-hook-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/pre-receive-hooks/{pre_receive_hook_id}
 func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo string, id int64) (*PreReceiveHook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%v", owner, repo, id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -65,7 +65,7 @@ func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo
 	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
 	var h *PreReceiveHook
-	resp, err := s.client.Do(ctx, req, &h)
+	resp, err := s.client.Do(req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -75,12 +75,12 @@ func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo
 
 // UpdatePreReceiveHook updates a specified pre-receive hook.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/repo-pre-receive-hooks#update-pre-receive-hook-enforcement-for-a-repository
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/repo-pre-receive-hooks#update-pre-receive-hook-enforcement-for-a-repository
 //
 //meta:operation PATCH /repos/{owner}/{repo}/pre-receive-hooks/{pre_receive_hook_id}
-func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, repo string, id int64, hook *PreReceiveHook) (*PreReceiveHook, *Response, error) {
+func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, repo string, id int64, body *PreReceiveHook) (*PreReceiveHook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%v", owner, repo, id)
-	req, err := s.client.NewRequest("PATCH", u, hook)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -88,7 +88,7 @@ func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, r
 	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
 	var h *PreReceiveHook
-	resp, err := s.client.Do(ctx, req, &h)
+	resp, err := s.client.Do(req, &h)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -98,17 +98,17 @@ func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, r
 
 // DeletePreReceiveHook deletes a specified pre-receive hook.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/repo-pre-receive-hooks#remove-pre-receive-hook-enforcement-for-a-repository
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/repo-pre-receive-hooks#remove-pre-receive-hook-enforcement-for-a-repository
 //
 //meta:operation DELETE /repos/{owner}/{repo}/pre-receive-hooks/{pre_receive_hook_id}
 func (s *RepositoriesService) DeletePreReceiveHook(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%v", owner, repo, id)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypePreReceiveHooksPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

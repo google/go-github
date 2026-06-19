@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -21,14 +20,8 @@ func TestSubIssuesService_Add(t *testing.T) {
 	input := &SubIssueRequest{SubIssueID: 42}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues", func(w http.ResponseWriter, r *http.Request) {
-		var v *SubIssueRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
 
@@ -104,14 +97,8 @@ func TestSubIssuesService_Remove(t *testing.T) {
 	input := &SubIssueRequest{SubIssueID: 42}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issue", func(w http.ResponseWriter, r *http.Request) {
-		var v *SubIssueRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "DELETE")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
 
@@ -144,15 +131,7 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues/priority", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-
-		var v *SubIssueRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":42, "number":1}`)
 	})
 
@@ -171,6 +150,36 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.SubIssue.Reprioritize(ctx, "o", "r", 1, *input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestSubIssuesService_GetParentIssue(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/issues/42/parent", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"id":1, "number":1}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.SubIssue.GetParentIssue(ctx, "o", "r", 42)
+	if err != nil {
+		t.Errorf("SubIssues.GetParentIssue returned error: %v", err)
+	}
+
+	want := &Issue{Number: Ptr(1), ID: Ptr(int64(1))}
+	if !cmp.Equal(got, want) {
+		t.Errorf("SubIssues.GetParentIssue = %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetParentIssue"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.SubIssue.GetParentIssue(ctx, "o", "r", 42)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

@@ -7,7 +7,6 @@ package github
 
 import (
 	"encoding/json"
-	"fmt"
 	"testing"
 	"time"
 )
@@ -113,32 +112,6 @@ func TestTimestamp_MarshalReflexivity(t *testing.T) {
 type WrappedTimestamp struct {
 	A    int       `json:"A"`
 	Time Timestamp `json:"Time"`
-}
-
-func TestWrappedTimestamp_Marshal(t *testing.T) {
-	t.Parallel()
-	testCases := []struct {
-		desc    string
-		data    WrappedTimestamp
-		want    string
-		wantErr bool
-		equal   bool
-	}{
-		{"Reference", WrappedTimestamp{0, Timestamp{referenceTime}}, fmt.Sprintf(`{"A":0,"Time":%v}`, referenceTimeStr), false, true},
-		{"Empty", WrappedTimestamp{}, fmt.Sprintf(`{"A":0,"Time":%v}`, emptyTimeStr), false, true},
-		{"Mismatch", WrappedTimestamp{}, fmt.Sprintf(`{"A":0,"Time":%v}`, referenceTimeStr), false, false},
-	}
-	for _, tc := range testCases {
-		out, err := json.Marshal(tc.data)
-		if gotErr := err != nil; gotErr != tc.wantErr {
-			t.Errorf("%v: gotErr=%v, wantErr=%v, err=%v", tc.desc, gotErr, tc.wantErr, err)
-		}
-		got := string(out)
-		equal := got == tc.want
-		if equal != tc.equal {
-			t.Errorf("%v: got=%v, want=%v, equal=%v, want=%v", tc.desc, got, tc.want, equal, tc.equal)
-		}
-	}
 }
 
 func TestWrappedTimestamp_Unmarshal(t *testing.T) {

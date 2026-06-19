@@ -14,7 +14,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestEnterpriseService_GetConsumedLicenses(t *testing.T) {
+func TestEnterpriseService_ListConsumedLicenses(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -49,18 +49,10 @@ func TestEnterpriseService_GetConsumedLicenses(t *testing.T) {
 
 	opt := &ListOptions{Page: 2, PerPage: 10}
 	ctx := t.Context()
-	licenses, _, err := client.Enterprise.GetConsumedLicenses(ctx, "e", opt)
+	licenses, _, err := client.Enterprise.ListConsumedLicenses(ctx, "e", opt)
 	if err != nil {
-		t.Errorf("Enterprise.GetConsumedLicenses returned error: %v", err)
+		t.Errorf("Enterprise.ListConsumedLicenses returned error: %v", err)
 	}
-
-	userName := "User One"
-	serverUser := false
-	profile := "https://github.com/user1"
-	samlNameID := "saml123"
-	twoFactorAuth := true
-	licenseStatus := "active"
-	vsEmail := "user1@example.com"
 
 	want := &EnterpriseConsumedLicenses{
 		TotalSeatsConsumed:  20,
@@ -68,39 +60,39 @@ func TestEnterpriseService_GetConsumedLicenses(t *testing.T) {
 		Users: []*EnterpriseLicensedUsers{
 			{
 				GithubComLogin:                  "user1",
-				GithubComName:                   &userName,
+				GithubComName:                   Ptr("User One"),
 				EnterpriseServerUserIDs:         []string{"123", "456"},
 				GithubComUser:                   true,
-				EnterpriseServerUser:            &serverUser,
+				EnterpriseServerUser:            Ptr(false),
 				VisualStudioSubscriptionUser:    false,
 				LicenseType:                     "Enterprise",
-				GithubComProfile:                &profile,
+				GithubComProfile:                Ptr("https://github.com/user1"),
 				GithubComMemberRoles:            []string{"member"},
 				GithubComEnterpriseRoles:        []string{"member"},
 				GithubComVerifiedDomainEmails:   []string{"user1@example.com"},
-				GithubComSamlNameID:             &samlNameID,
+				GithubComSamlNameID:             Ptr("saml123"),
 				GithubComOrgsWithPendingInvites: []string{},
-				GithubComTwoFactorAuth:          &twoFactorAuth,
+				GithubComTwoFactorAuth:          Ptr(true),
 				EnterpriseServerEmails:          []string{"user1@example.com"},
-				VisualStudioLicenseStatus:       &licenseStatus,
-				VisualStudioSubscriptionEmail:   &vsEmail,
+				VisualStudioLicenseStatus:       Ptr("active"),
+				VisualStudioSubscriptionEmail:   Ptr("user1@example.com"),
 				TotalUserAccounts:               1,
 			},
 		},
 	}
 
 	if !cmp.Equal(licenses, want) {
-		t.Errorf("Enterprise.GetConsumedLicenses returned %+v, want %+v", licenses, want)
+		t.Errorf("Enterprise.ListConsumedLicenses returned %+v, want %+v", licenses, want)
 	}
 
-	const methodName = "GetConsumedLicenses"
+	const methodName = "ListConsumedLicenses"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.GetConsumedLicenses(ctx, "\n", opt)
+		_, _, err = client.Enterprise.ListConsumedLicenses(ctx, "\n", opt)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.GetConsumedLicenses(ctx, "e", opt)
+		got, resp, err := client.Enterprise.ListConsumedLicenses(ctx, "e", opt)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

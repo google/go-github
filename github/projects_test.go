@@ -9,7 +9,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"testing"
 )
@@ -549,207 +548,6 @@ func TestProjectsService_ListOrganizationProjects_pagination(t *testing.T) {
 	}
 }
 
-// Marshal test ensures V2 fields marshal correctly.
-func TestProjectV2_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ProjectV2{}, "{}")
-
-	p := &ProjectV2{
-		ID:          Ptr(int64(10)),
-		Title:       Ptr("Title"),
-		Description: Ptr("Desc"),
-		Public:      Ptr(true),
-		CreatedAt:   &Timestamp{referenceTime},
-		UpdatedAt:   &Timestamp{referenceTime},
-	}
-
-	want := `{
-        "id": 10,
-        "title": "Title",
-        "description": "Desc",
-        "public": true,
-        "created_at": ` + referenceTimeStr + `,
-        "updated_at": ` + referenceTimeStr + `
-    }`
-
-	testJSONMarshal(t, p, want)
-}
-
-// Marshal test ensures V2 field structures marshal correctly.
-func TestProjectV2Field_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ProjectV2Field{}, "{}")
-	testJSONMarshal(t, &ProjectV2FieldOption{}, "{}")
-
-	field := &ProjectV2Field{
-		ID:         Ptr(int64(2)),
-		NodeID:     Ptr("node_1"),
-		Name:       Ptr("Status"),
-		DataType:   Ptr("single_select"),
-		ProjectURL: Ptr("https://api.github.com/projects/67890"),
-		Options: []*ProjectV2FieldOption{
-			{
-				ID:          Ptr("1"),
-				Name:        &ProjectV2TextContent{Raw: Ptr("Todo"), HTML: Ptr("Todo")},
-				Color:       Ptr("blue"),
-				Description: &ProjectV2TextContent{Raw: Ptr("Tasks to be done"), HTML: Ptr("Tasks to be done")},
-			},
-		},
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-        "id": 2,
-        "node_id": "node_1",
-        "name": "Status",
-        "data_type": "single_select",
-        "project_url": "https://api.github.com/projects/67890",
-        "options": [
-            {
-                "id": "1",
-                "color": "blue",
-                "description": {
-                    "raw": "Tasks to be done",
-                    "html": "Tasks to be done"
-                },
-                "name": {
-                    "raw": "Todo",
-                    "html": "Todo"
-                }
-            }
-        ],
-        "created_at": ` + referenceTimeStr + `,
-        "updated_at": ` + referenceTimeStr + `
-    }`
-
-	testJSONMarshal(t, field, want)
-}
-
-// Marshal test ensures ProjectV2FieldConfiguration marshals correctly.
-func TestProjectV2FieldConfiguration_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ProjectV2FieldConfiguration{}, "{}")
-	testJSONMarshal(t, &ProjectV2FieldIteration{}, "{}")
-
-	// Test a field with configuration (iteration field)
-	fieldWithConfiguration := &ProjectV2Field{
-		ID:         Ptr(int64(3)),
-		NodeID:     Ptr("node_3"),
-		Name:       Ptr("Sprint"),
-		DataType:   Ptr("iteration"),
-		ProjectURL: Ptr("https://api.github.com/projects/67890"),
-		Configuration: &ProjectV2FieldConfiguration{
-			Duration: Ptr(1209600), // 2 weeks in seconds
-			StartDay: Ptr(1),       // Monday
-			Iterations: []*ProjectV2FieldIteration{
-				{
-					ID:        Ptr("iter_1"),
-					Title:     &ProjectV2TextContent{Raw: Ptr("Sprint 1"), HTML: Ptr("Sprint 1")},
-					StartDate: Ptr("2025-01-06"),
-					Duration:  Ptr(1209600),
-				},
-				{
-					ID:        Ptr("iter_2"),
-					Title:     &ProjectV2TextContent{Raw: Ptr("Sprint 2"), HTML: Ptr("Sprint 2")},
-					StartDate: Ptr("2025-01-20"),
-					Duration:  Ptr(1209600),
-				},
-			},
-		},
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-        "id": 3,
-        "node_id": "node_3",
-        "name": "Sprint",
-        "data_type": "iteration",
-        "project_url": "https://api.github.com/projects/67890",
-        "configuration": {
-            "duration": 1209600,
-            "start_day": 1,
-            "iterations": [
-                {
-                    "id": "iter_1",
-                    "title": {
-                        "raw": "Sprint 1",
-                        "html": "Sprint 1"
-                    },
-                    "start_date": "2025-01-06",
-                    "duration": 1209600
-                },
-                {
-                    "id": "iter_2",
-                    "title": {
-                        "raw": "Sprint 2",
-                        "html": "Sprint 2"
-                    },
-                    "start_date": "2025-01-20",
-                    "duration": 1209600
-                }
-            ]
-        },
-        "created_at": ` + referenceTimeStr + `,
-        "updated_at": ` + referenceTimeStr + `
-    }`
-
-	testJSONMarshal(t, fieldWithConfiguration, want)
-
-	// Test just the configuration struct by itself
-	config := &ProjectV2FieldConfiguration{
-		Duration: Ptr(604800), // 1 week in seconds
-		StartDay: Ptr(0),      // Sunday
-		Iterations: []*ProjectV2FieldIteration{
-			{
-				ID:        Ptr("config_iter_1"),
-				Title:     &ProjectV2TextContent{Raw: Ptr("Week 1"), HTML: Ptr("Week 1")},
-				StartDate: Ptr("2025-01-01"),
-				Duration:  Ptr(604800),
-			},
-		},
-	}
-
-	configWant := `{
-        "duration": 604800,
-        "start_day": 0,
-        "iterations": [
-            {
-                "id": "config_iter_1",
-                "title": {
-                    "raw": "Week 1",
-                    "html": "Week 1"
-                },
-                "start_date": "2025-01-01",
-                "duration": 604800
-            }
-        ]
-    }`
-
-	testJSONMarshal(t, config, configWant)
-
-	// Test iteration struct by itself
-	iteration := &ProjectV2FieldIteration{
-		ID:        Ptr("single_iter"),
-		Title:     &ProjectV2TextContent{Raw: Ptr("Test Iteration"), HTML: Ptr("Test Iteration")},
-		StartDate: Ptr("2025-02-01"),
-		Duration:  Ptr(1209600),
-	}
-
-	iterationWant := `{
-        "id": "single_iter",
-        "title": {
-            "raw": "Test Iteration",
-            "html": "Test Iteration"
-        },
-        "start_date": "2025-02-01",
-        "duration": 1209600
-    }`
-
-	testJSONMarshal(t, iteration, iterationWant)
-}
-
 func TestProjectsService_ListOrganizationProjectItems(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -799,18 +597,16 @@ func TestProjectsService_AddOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(99))}
+
 	mux.HandleFunc("/orgs/o/projectsV2/1/items", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		b, _ := io.ReadAll(r.Body)
-		body := string(b)
-		if body != `{"type":"Issue","id":99}`+"\n" { // encoder adds newline
-			t.Fatalf("unexpected body: %s", body)
-		}
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":99,"node_id":"PVTI_new"}`)
 	})
 
 	ctx := t.Context()
-	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(99))})
+	item, _, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, input)
 	if err != nil {
 		t.Fatalf("Projects.AddOrganizationProjectItem returned error: %v", err)
 	}
@@ -919,18 +715,14 @@ func TestProjectsService_GetOrganizationProjectItem_WithFieldsOption(t *testing.
 func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	input := &UpdateProjectItemOptions{Archived: Ptr(true)}
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		b, _ := io.ReadAll(r.Body)
-		body := string(b)
-		if body != `{"archived":true}`+"\n" {
-			t.Fatalf("unexpected body: %s", body)
-		}
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":17}`)
 	})
-	archived := true
 	ctx := t.Context()
-	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
+	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, input)
 	if err != nil {
 		t.Fatalf("UpdateOrganizationProjectItem error: %v", err)
 	}
@@ -942,15 +734,16 @@ func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 func TestProjectsService_UpdateOrganizationProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	input := &UpdateProjectItemOptions{Archived: Ptr(true)}
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":17}`)
 	})
-	archived := true
 	ctx := t.Context()
 	const methodName = "UpdateProjectItemForOrg"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, &UpdateProjectItemOptions{Archived: &archived})
+		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -961,26 +754,20 @@ func TestProjectsService_UpdateOrganizationProjectItem_error(t *testing.T) {
 func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		b, _ := io.ReadAll(r.Body)
-		body := string(b)
-		// Verify the field updates are properly formatted in the request body
-		expectedBody := `{"fields":[{"id":123,"value":"Updated text value"},{"id":456,"value":"Done"}]}`
-		if body != expectedBody+"\n" {
-			t.Fatalf("unexpected body: %s, expected: %s", body, expectedBody)
-		}
-		fmt.Fprint(w, `{"id":17,"node_id":"PVTI_node_updated"}`)
-	})
-
-	ctx := t.Context()
-	opts := &UpdateProjectItemOptions{
+	input := &UpdateProjectItemOptions{
 		Fields: []*UpdateProjectV2Field{
 			{ID: 123, Value: "Updated text value"},
 			{ID: 456, Value: "Done"},
 		},
 	}
-	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, opts)
+	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"id":17,"node_id":"PVTI_node_updated"}`)
+	})
+
+	ctx := t.Context()
+	item, _, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, input)
 	if err != nil {
 		t.Fatalf("UpdateOrganizationProjectItem error: %v", err)
 	}
@@ -990,11 +777,11 @@ func TestProjectsService_UpdateOrganizationProjectItem_WithFieldUpdates(t *testi
 
 	const methodName = "UpdateOrganizationProjectItemWithFields"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Projects.UpdateOrganizationProjectItem(ctx, "\n", 1, 17, opts)
+		_, _, err = client.Projects.UpdateOrganizationProjectItem(ctx, "\n", 1, 17, input)
 		return err
 	})
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, opts)
+		got, resp, err := client.Projects.UpdateOrganizationProjectItem(ctx, "o", 1, 17, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1072,17 +859,14 @@ func TestProjectsService_ListUserProjectItems_error(t *testing.T) {
 func TestProjectsService_AddUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	input := &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("PullRequest")), ID: Ptr(int64(123))}
 	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		b, _ := io.ReadAll(r.Body)
-		body := string(b)
-		if body != `{"type":"PullRequest","id":123}`+"\n" {
-			t.Fatalf("unexpected body: %s", body)
-		}
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":123,"node_id":"PVTI_new_user"}`)
 	})
 	ctx := t.Context()
-	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("PullRequest")), ID: Ptr(int64(123))})
+	item, _, err := client.Projects.AddUserProjectItem(ctx, "u", 2, input)
 	if err != nil {
 		t.Fatalf("AddUserProjectItem error: %v", err)
 	}
@@ -1190,18 +974,14 @@ func TestProjectsService_GetUserProjectItem_WithFieldsOption(t *testing.T) {
 func TestProjectsService_UpdateUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	input := &UpdateProjectItemOptions{Archived: Ptr(false)}
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		b, _ := io.ReadAll(r.Body)
-		body := string(b)
-		if body != `{"archived":false}`+"\n" {
-			t.Fatalf("unexpected body: %s", body)
-		}
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":55}`)
 	})
-	archived := false
 	ctx := t.Context()
-	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
+	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, input)
 	if err != nil {
 		t.Fatalf("UpdateUserProjectItem error: %v", err)
 	}
@@ -1217,11 +997,10 @@ func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
 		testMethod(t, r, "PATCH")
 		fmt.Fprint(w, `{"id":55}`)
 	})
-	archived := false
 	ctx := t.Context()
 	const methodName = "UpdateUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: &archived})
+		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: Ptr(false)})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1232,25 +1011,19 @@ func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
 func TestProjectsService_UpdateUserProjectItem_WithFieldUpdates(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+	opts := &UpdateProjectItemOptions{
+		Fields: []*UpdateProjectV2Field{
+			{ID: 100, Value: "In Progress"},
+			{ID: 200, Value: float64(5)}, // number field
+		},
+	}
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		b, _ := io.ReadAll(r.Body)
-		body := string(b)
-		// Verify the field updates are properly formatted in the request body
-		expectedBody := `{"fields":[{"id":100,"value":"In Progress"},{"id":200,"value":5}]}`
-		if body != expectedBody+"\n" {
-			t.Fatalf("unexpected body: %s, expected: %s", body, expectedBody)
-		}
+		testJSONBody(t, r, opts)
 		fmt.Fprint(w, `{"id":55,"node_id":"PVTI_user_updated"}`)
 	})
 
 	ctx := t.Context()
-	opts := &UpdateProjectItemOptions{
-		Fields: []*UpdateProjectV2Field{
-			{ID: 100, Value: "In Progress"},
-			{ID: 200, Value: 5}, // number field
-		},
-	}
 	item, _, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, opts)
 	if err != nil {
 		t.Fatalf("UpdateUserProjectItem error: %v", err)
@@ -1592,9 +1365,9 @@ func TestProjectV2Item_Marshal_Issue(t *testing.T) {
 
 func TestProjectV2Item_Marshal_PullRequest(t *testing.T) {
 	t.Parallel()
-	testJSONMarshal(t, &ProjectV2Item{}, "{}")
+	testJSONMarshal(t, ProjectV2Item{}, "{}")
 
-	item := &ProjectV2Item{
+	item := ProjectV2Item{
 		ContentType: Ptr(ProjectV2ItemContentTypePullRequest),
 		Content: &ProjectV2ItemContent{
 			PullRequest: &PullRequest{
@@ -1651,14 +1424,80 @@ func TestProjectV2Item_Marshal_MissingContent(t *testing.T) {
 
 	item := &ProjectV2Item{
 		ContentType: Ptr(ProjectV2ItemContentTypeIssue),
-		Content:     nil,
+		Content:     &ProjectV2ItemContent{},
 		ID:          Ptr(int64(789)),
 	}
 
 	want := `{
 		"content_type":"Issue",
+		"content":null,
 		"id":789
 	}`
 
-	testJSONMarshal(t, item, want)
+	testJSONMarshalOnly(t, item, want)
+}
+
+func TestProjectV2ItemContent_Marshal(t *testing.T) {
+	t.Parallel()
+
+	t.Run("issue", func(t *testing.T) {
+		t.Parallel()
+
+		content := ProjectV2ItemContent{
+			Issue: &Issue{
+				Number: Ptr(42),
+				Title:  Ptr("Bug report"),
+				State:  Ptr("open"),
+			},
+		}
+
+		want := `{
+			"number":42,
+			"state":"open",
+			"title":"Bug report"
+		}`
+
+		testJSONMarshalOnly(t, content, want)
+		testJSONMarshalOnly(t, &content, want)
+	})
+
+	t.Run("pull request", func(t *testing.T) {
+		t.Parallel()
+
+		content := ProjectV2ItemContent{
+			PullRequest: &PullRequest{
+				Number: Ptr(99),
+				Title:  Ptr("Feature addition"),
+				State:  Ptr("closed"),
+			},
+		}
+
+		want := `{
+			"number":99,
+			"state":"closed",
+			"title":"Feature addition"
+		}`
+
+		testJSONMarshalOnly(t, content, want)
+		testJSONMarshalOnly(t, &content, want)
+	})
+
+	t.Run("draft issue", func(t *testing.T) {
+		t.Parallel()
+
+		content := ProjectV2ItemContent{
+			DraftIssue: &ProjectV2DraftIssue{
+				Title: Ptr("Draft task"),
+				Body:  Ptr("Work in progress"),
+			},
+		}
+
+		want := `{
+			"body":"Work in progress",
+			"title":"Draft task"
+		}`
+
+		testJSONMarshalOnly(t, content, want)
+		testJSONMarshalOnly(t, &content, want)
+	})
 }

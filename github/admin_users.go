@@ -20,40 +20,40 @@ type CreateUserRequest struct {
 
 // CreateUser creates a new user in GitHub Enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/users#create-a-user
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#create-a-user
 //
 //meta:operation POST /admin/users
-func (s *AdminService) CreateUser(ctx context.Context, userReq CreateUserRequest) (*User, *Response, error) {
+func (s *AdminService) CreateUser(ctx context.Context, body CreateUserRequest) (*User, *Response, error) {
 	u := "admin/users"
 
-	req, err := s.client.NewRequest("POST", u, userReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var user User
-	resp, err := s.client.Do(ctx, req, &user)
+	var user *User
+	resp, err := s.client.Do(req, &user)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return &user, resp, nil
+	return user, resp, nil
 }
 
 // DeleteUser deletes a user in GitHub Enterprise.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/users#delete-a-user
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#delete-a-user
 //
 //meta:operation DELETE /admin/users/{username}
 func (s *AdminService) DeleteUser(ctx context.Context, username string) (*Response, error) {
 	u := "admin/users/" + username
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -95,19 +95,19 @@ type UserAuthorization struct {
 
 // CreateUserImpersonation creates an impersonation OAuth token.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/users#create-an-impersonation-oauth-token
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#create-an-impersonation-oauth-token
 //
 //meta:operation POST /admin/users/{username}/authorizations
-func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, opts *ImpersonateUserOptions) (*UserAuthorization, *Response, error) {
+func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, body *ImpersonateUserOptions) (*UserAuthorization, *Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var a *UserAuthorization
-	resp, err := s.client.Do(ctx, req, &a)
+	resp, err := s.client.Do(req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -117,18 +117,18 @@ func (s *AdminService) CreateUserImpersonation(ctx context.Context, username str
 
 // DeleteUserImpersonation deletes an impersonation OAuth token.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/users#delete-an-impersonation-oauth-token
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#delete-an-impersonation-oauth-token
 //
 //meta:operation DELETE /admin/users/{username}/authorizations
 func (s *AdminService) DeleteUserImpersonation(ctx context.Context, username string) (*Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

@@ -21,19 +21,21 @@ type EnterpriseSecurityAnalysisSettings struct {
 
 // GetCodeSecurityAndAnalysis gets code security and analysis features for an enterprise.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#get-code-security-and-analysis-features-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/code_security_and_analysis
 func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, enterprise string) (*EnterpriseSecurityAnalysisSettings, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code_security_and_analysis", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var settings *EnterpriseSecurityAnalysisSettings
-	resp, err := s.client.Do(ctx, req, &settings)
+	resp, err := s.client.Do(req, &settings)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -43,17 +45,19 @@ func (s *EnterpriseService) GetCodeSecurityAndAnalysis(ctx context.Context, ente
 
 // UpdateCodeSecurityAndAnalysis updates code security and analysis features for new repositories in an enterprise.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#update-code-security-and-analysis-features-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/code_security_and_analysis
-func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, enterprise string, settings *EnterpriseSecurityAnalysisSettings) (*Response, error) {
+func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, enterprise string, body *EnterpriseSecurityAnalysisSettings) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code_security_and_analysis", enterprise)
-	req, err := s.client.NewRequest("PATCH", u, settings)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -66,17 +70,19 @@ func (s *EnterpriseService) UpdateCodeSecurityAndAnalysis(ctx context.Context, e
 // Valid values for securityProduct: "advanced_security", "secret_scanning", "secret_scanning_push_protection".
 // Valid values for enablement:  "enable_all", "disable_all".
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis?apiVersion=2022-11-28#enable-or-disable-a-security-feature
 //
 //meta:operation POST /enterprises/{enterprise}/{security_product}/{enablement}
 func (s *EnterpriseService) EnableDisableSecurityFeature(ctx context.Context, enterprise, securityProduct, enablement string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/%v/%v", enterprise, securityProduct, enablement)
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

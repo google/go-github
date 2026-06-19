@@ -17,13 +17,13 @@ import (
 //meta:operation GET /orgs/{org}/hooks/{hook_id}/config
 func (s *OrganizationsService) GetHookConfiguration(ctx context.Context, org string, id int64) (*HookConfig, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/hooks/%v/config", org, id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var config *HookConfig
-	resp, err := s.client.Do(ctx, req, &config)
+	resp, err := s.client.Do(req, &config)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -36,15 +36,15 @@ func (s *OrganizationsService) GetHookConfiguration(ctx context.Context, org str
 // GitHub API docs: https://docs.github.com/rest/orgs/webhooks?apiVersion=2022-11-28#update-a-webhook-configuration-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/hooks/{hook_id}/config
-func (s *OrganizationsService) EditHookConfiguration(ctx context.Context, org string, id int64, config *HookConfig) (*HookConfig, *Response, error) {
+func (s *OrganizationsService) EditHookConfiguration(ctx context.Context, org string, id int64, body *HookConfig) (*HookConfig, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/hooks/%v/config", org, id)
-	req, err := s.client.NewRequest("PATCH", u, config)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var c *HookConfig
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}

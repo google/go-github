@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -116,14 +115,8 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 	input := &Milestone{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/milestones", func(w http.ResponseWriter, r *http.Request) {
-		var v *Milestone
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
@@ -169,14 +162,8 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 	input := &Milestone{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *Milestone
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
@@ -247,87 +234,4 @@ func TestIssuesService_DeleteMilestone_invalidOwner(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Issues.DeleteMilestone(ctx, "%", "r", 1)
 	testURLParseError(t, err)
-}
-
-func TestMilestone_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Milestone{}, "{}")
-
-	u := &Milestone{
-		URL:         Ptr("url"),
-		HTMLURL:     Ptr("hurl"),
-		LabelsURL:   Ptr("lurl"),
-		ID:          Ptr(int64(1)),
-		Number:      Ptr(1),
-		State:       Ptr("state"),
-		Title:       Ptr("title"),
-		Description: Ptr("desc"),
-		Creator: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("tu"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		OpenIssues:   Ptr(1),
-		ClosedIssues: Ptr(1),
-		CreatedAt:    &Timestamp{referenceTime},
-		UpdatedAt:    &Timestamp{referenceTime},
-		ClosedAt:     &Timestamp{referenceTime},
-		DueOn:        &Timestamp{referenceTime},
-		NodeID:       Ptr("nid"),
-	}
-
-	want := `{
-		"url": "url",
-		"html_url": "hurl",
-		"labels_url": "lurl",
-		"id": 1,
-		"number": 1,
-		"state": "state",
-		"title": "title",
-		"description": "desc",
-		"creator": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "tu",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"open_issues": 1,
-		"closed_issues": 1,
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"closed_at": ` + referenceTimeStr + `,
-		"due_on": ` + referenceTimeStr + `,
-		"node_id": "nid"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

@@ -74,29 +74,29 @@ type IssueImportError struct {
 // GitHub API docs: https://gist.github.com/jonmagic/5282384165e0f86ef105#start-an-issue-import
 //
 //meta:operation POST /repos/{owner}/{repo}/import/issues
-func (s *IssueImportService) Create(ctx context.Context, owner, repo string, issue *IssueImportRequest) (*IssueImportResponse, *Response, error) {
+func (s *IssueImportService) Create(ctx context.Context, owner, repo string, body *IssueImportRequest) (*IssueImportResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/issues", owner, repo)
-	req, err := s.client.NewRequest("POST", u, issue)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
-	var i IssueImportResponse
-	resp, err := s.client.Do(ctx, req, &i)
+	var i *IssueImportResponse
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		var aerr *AcceptedError
 		if errors.As(err, &aerr) {
 			if err := json.Unmarshal(aerr.Raw, &i); err != nil {
-				return &i, resp, err
+				return i, resp, err
 			}
-			return &i, resp, err
+			return i, resp, err
 		}
 		return nil, resp, err
 	}
 
-	return &i, resp, nil
+	return i, resp, nil
 }
 
 // CheckStatus checks the status of an imported issue.
@@ -106,7 +106,7 @@ func (s *IssueImportService) Create(ctx context.Context, owner, repo string, iss
 //meta:operation GET /repos/{owner}/{repo}/import/issues/{issue_number}
 func (s *IssueImportService) CheckStatus(ctx context.Context, owner, repo string, issueID int64) (*IssueImportResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/issues/%v", owner, repo, issueID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -114,7 +114,7 @@ func (s *IssueImportService) CheckStatus(ctx context.Context, owner, repo string
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
 	var i *IssueImportResponse
-	resp, err := s.client.Do(ctx, req, &i)
+	resp, err := s.client.Do(req, &i)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -129,7 +129,7 @@ func (s *IssueImportService) CheckStatus(ctx context.Context, owner, repo string
 //meta:operation GET /repos/{owner}/{repo}/import/issues
 func (s *IssueImportService) CheckStatusSince(ctx context.Context, owner, repo string, since Timestamp) ([]*IssueImportResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/issues?since=%v", owner, repo, since.Format("2006-01-02"))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -137,7 +137,7 @@ func (s *IssueImportService) CheckStatusSince(ctx context.Context, owner, repo s
 	req.Header.Set("Accept", mediaTypeIssueImportAPI)
 
 	var b bytes.Buffer
-	resp, err := s.client.Do(ctx, req, &b)
+	resp, err := s.client.Do(req, &b)
 	if err != nil {
 		return nil, resp, err
 	}

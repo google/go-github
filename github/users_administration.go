@@ -12,34 +12,34 @@ import (
 
 // PromoteSiteAdmin promotes a user to a site administrator of a GitHub Enterprise instance.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/users#promote-a-user-to-be-a-site-administrator
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#promote-a-user-to-be-a-site-administrator
 //
 //meta:operation PUT /users/{username}/site_admin
 func (s *UsersService) PromoteSiteAdmin(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("users/%v/site_admin", user)
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DemoteSiteAdmin demotes a user from site administrator of a GitHub Enterprise instance.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/users#demote-a-site-administrator
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#demote-a-site-administrator
 //
 //meta:operation DELETE /users/{username}/site_admin
 func (s *UsersService) DemoteSiteAdmin(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("users/%v/site_admin", user)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UserSuspendOptions represents the reason to suspend a user.
@@ -49,32 +49,32 @@ type UserSuspendOptions struct {
 
 // Suspend a user on a GitHub Enterprise instance.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/users#suspend-a-user
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#suspend-a-user
 //
 //meta:operation PUT /users/{username}/suspended
-func (s *UsersService) Suspend(ctx context.Context, user string, opts *UserSuspendOptions) (*Response, error) {
+func (s *UsersService) Suspend(ctx context.Context, user string, body *UserSuspendOptions) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
 
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // Unsuspend a user on a GitHub Enterprise instance.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/users#unsuspend-a-user
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#unsuspend-a-user
 //
 //meta:operation DELETE /users/{username}/suspended
 func (s *UsersService) Unsuspend(ctx context.Context, user string) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

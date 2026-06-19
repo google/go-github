@@ -202,7 +202,7 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -228,14 +228,15 @@ func TestActionsService_GetWorkflowJobLogs(t *testing.T) {
 				return err
 			})
 
-			// Add custom round tripper
-			client.client.Transport = roundTripperFunc(func(*http.Request) (*http.Response, error) {
+			// Create "bad" client with custom round tripper
+			badClient, err := client.Clone(WithTransport(roundTripperFunc(func(*http.Request) (*http.Response, error) {
 				return nil, errors.New("failed to get workflow logs")
-			})
-			// propagate custom round tripper to client without CheckRedirect
-			client.initialize()
+			})))
+			if err != nil {
+				t.Fatalf("failed to clone client: %v", err)
+			}
 			testBadOptions(t, methodName, func() (err error) {
-				_, _, err = client.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
+				_, _, err = badClient.Actions.GetWorkflowJobLogs(ctx, "o", "r", 399444496, 1)
 				return err
 			})
 		})
@@ -262,7 +263,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_dontFollowRedi
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, _ := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "GET")
@@ -298,7 +299,7 @@ func TestActionsService_GetWorkflowJobLogs_StatusMovedPermanently_followRedirect
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			// Mock a redirect link, which leads to an archive link
 			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -350,7 +351,7 @@ func TestActionsService_GetWorkflowJobLogs_unexpectedCode(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			client, mux, serverURL := setup(t)
-			client.RateLimitRedirectionalEndpoints = tc.respectRateLimits
+			client.rateLimitRedirectionalEndpoints = tc.respectRateLimits
 
 			// Mock a redirect link, which leads to an archive link
 			mux.HandleFunc("/repos/o/r/actions/jobs/399444496/logs", func(w http.ResponseWriter, r *http.Request) {
@@ -380,165 +381,4 @@ func TestActionsService_GetWorkflowJobLogs_unexpectedCode(t *testing.T) {
 			}
 		})
 	}
-}
-
-func TestTaskStep_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &TaskStep{}, "{}")
-
-	u := &TaskStep{
-		Name:        Ptr("n"),
-		Status:      Ptr("s"),
-		Conclusion:  Ptr("c"),
-		Number:      Ptr(int64(1)),
-		StartedAt:   &Timestamp{referenceTime},
-		CompletedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-		"name": "n",
-		"status": "s",
-		"conclusion": "c",
-		"number": 1,
-		"started_at": ` + referenceTimeStr + `,
-		"completed_at": ` + referenceTimeStr + `
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestWorkflowJob_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &WorkflowJob{}, "{}")
-
-	u := &WorkflowJob{
-		ID:          Ptr(int64(1)),
-		RunID:       Ptr(int64(1)),
-		RunURL:      Ptr("r"),
-		NodeID:      Ptr("n"),
-		HeadBranch:  Ptr("b"),
-		HeadSHA:     Ptr("h"),
-		URL:         Ptr("u"),
-		HTMLURL:     Ptr("h"),
-		Status:      Ptr("s"),
-		Conclusion:  Ptr("c"),
-		CreatedAt:   &Timestamp{referenceTime},
-		StartedAt:   &Timestamp{referenceTime},
-		CompletedAt: &Timestamp{referenceTime},
-		Name:        Ptr("n"),
-		Steps: []*TaskStep{
-			{
-				Name:        Ptr("n"),
-				Status:      Ptr("s"),
-				Conclusion:  Ptr("c"),
-				Number:      Ptr(int64(1)),
-				StartedAt:   &Timestamp{referenceTime},
-				CompletedAt: &Timestamp{referenceTime},
-			},
-		},
-		CheckRunURL:  Ptr("c"),
-		WorkflowName: Ptr("w"),
-	}
-
-	want := `{
-		"id": 1,
-		"run_id": 1,
-		"run_url": "r",
-		"node_id": "n",
-		"head_branch": "b",
-		"head_sha": "h",
-		"url": "u",
-		"html_url": "h",
-		"status": "s",
-		"conclusion": "c",
-		"created_at": ` + referenceTimeStr + `,
-		"started_at": ` + referenceTimeStr + `,
-		"completed_at": ` + referenceTimeStr + `,
-		"name": "n",
-		"steps": [{
-			"name": "n",
-			"status": "s",
-			"conclusion": "c",
-			"number": 1,
-			"started_at": ` + referenceTimeStr + `,
-			"completed_at": ` + referenceTimeStr + `
-		}],
-		"check_run_url": "c",
-		"workflow_name": "w"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestJobs_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Jobs{}, "{}")
-
-	u := &Jobs{
-		TotalCount: Ptr(1),
-		Jobs: []*WorkflowJob{
-			{
-				ID:          Ptr(int64(1)),
-				RunID:       Ptr(int64(1)),
-				RunURL:      Ptr("r"),
-				NodeID:      Ptr("n"),
-				HeadBranch:  Ptr("b"),
-				HeadSHA:     Ptr("h"),
-				URL:         Ptr("u"),
-				HTMLURL:     Ptr("h"),
-				Status:      Ptr("s"),
-				Conclusion:  Ptr("c"),
-				CreatedAt:   &Timestamp{referenceTime},
-				StartedAt:   &Timestamp{referenceTime},
-				CompletedAt: &Timestamp{referenceTime},
-				Name:        Ptr("n"),
-				Steps: []*TaskStep{
-					{
-						Name:        Ptr("n"),
-						Status:      Ptr("s"),
-						Conclusion:  Ptr("c"),
-						Number:      Ptr(int64(1)),
-						StartedAt:   &Timestamp{referenceTime},
-						CompletedAt: &Timestamp{referenceTime},
-					},
-				},
-				CheckRunURL:  Ptr("c"),
-				RunAttempt:   Ptr(int64(2)),
-				WorkflowName: Ptr("w"),
-			},
-		},
-	}
-
-	want := `{
-		"total_count": 1,
-		"jobs": [{
-			"id": 1,
-			"run_id": 1,
-			"run_url": "r",
-			"node_id": "n",
-			"head_branch": "b",
-			"head_sha": "h",
-			"url": "u",
-			"html_url": "h",
-			"status": "s",
-			"conclusion": "c",
-			"created_at": ` + referenceTimeStr + `,
-			"started_at": ` + referenceTimeStr + `,
-			"completed_at": ` + referenceTimeStr + `,
-			"name": "n",
-			"steps": [{
-				"name": "n",
-				"status": "s",
-				"conclusion": "c",
-				"number": 1,
-				"started_at": ` + referenceTimeStr + `,
-				"completed_at": ` + referenceTimeStr + `
-			}],
-			"check_run_url": "c",
-			"run_attempt": 2,
-			"workflow_name": "w"
-		}]
-	}`
-
-	testJSONMarshal(t, u, want)
 }

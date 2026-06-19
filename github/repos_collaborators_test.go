@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -266,12 +265,8 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 
 	opt := &RepositoryAddCollaboratorOptions{Permission: "admin"}
 	mux.HandleFunc("/repos/o/r/collaborators/u", func(w http.ResponseWriter, r *http.Request) {
-		var v *RepositoryAddCollaboratorOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, opt) {
-			t.Errorf("Request body = %+v, want %+v", v, opt)
-		}
+		testJSONBody(t, r, opt)
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`{"permissions": "write","url": "https://api.github.com/user/repository_invitations/1296269","html_url": "https://github.com/octocat/Hello-World/invitations","id":1,"permissions":"write","repository":{"url":"s","name":"r","id":1},"invitee":{"login":"u"},"inviter":{"login":"o"}}`))
 	})
@@ -359,187 +354,4 @@ func TestRepositoriesService_RemoveCollaborator_invalidUser(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Repositories.RemoveCollaborator(ctx, "%", "%", "%")
 	testURLParseError(t, err)
-}
-
-func TestRepositoryAddCollaboratorOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RepositoryAddCollaboratorOptions{}, "{}")
-
-	r := &RepositoryAddCollaboratorOptions{
-		Permission: "permission",
-	}
-
-	want := `{
-		"permission": "permission"
-	}`
-
-	testJSONMarshal(t, r, want)
-}
-
-func TestRepositoryPermissionLevel_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RepositoryPermissionLevel{}, "{}")
-
-	r := &RepositoryPermissionLevel{
-		Permission: Ptr("permission"),
-		User: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-	}
-
-	want := `{
-		"permission": "permission",
-		"user": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		}
-	}`
-
-	testJSONMarshal(t, r, want)
-}
-
-func TestCollaboratorInvitation_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CollaboratorInvitation{}, "{}")
-
-	r := &CollaboratorInvitation{
-		ID: Ptr(int64(1)),
-		Repo: &Repository{
-			ID:   Ptr(int64(1)),
-			URL:  Ptr("url"),
-			Name: Ptr("n"),
-		},
-		Invitee: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		Inviter: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		Permissions: Ptr("per"),
-		CreatedAt:   &Timestamp{referenceTime},
-		URL:         Ptr("url"),
-		HTMLURL:     Ptr("hurl"),
-	}
-
-	want := `{
-		"id": 1,
-		"repository": {
-			"id": 1,
-			"name": "n",
-			"url": "url"
-		},
-		"invitee": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"inviter": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"permissions": "per",
-		"created_at": ` + referenceTimeStr + `,
-		"url": "url",
-		"html_url": "hurl"
-	}`
-
-	testJSONMarshal(t, r, want)
 }

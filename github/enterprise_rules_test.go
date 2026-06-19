@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -389,27 +388,18 @@ func TestEnterpriseService_UpdateRepositoryRuleset_OmitZero_Nil(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/rulesets/84", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-
-		var v map[string]any
-		if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
-			t.Errorf("could not decode body: %v", err)
-		}
-
-		if _, ok := v["bypass_actors"]; ok {
-			t.Error("Request body contained 'bypass_actors', expected it to be omitted")
-		}
-
-		fmt.Fprint(w, `{"id": 84, "name": "test ruleset"}`)
-	})
-
-	ctx := t.Context()
 	input := RepositoryRuleset{
 		Name:         "test ruleset",
 		BypassActors: nil,
 	}
 
+	mux.HandleFunc("/enterprises/e/rulesets/84", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"id": 84, "name": "test ruleset"}`)
+	})
+
+	ctx := t.Context()
 	_, _, err := client.Enterprise.UpdateRepositoryRuleset(ctx, "e", 84, input)
 	if err != nil {
 		t.Errorf("Enterprise.UpdateRepositoryRuleset returned error: %v", err)
@@ -420,20 +410,18 @@ func TestEnterpriseService_UpdateRepositoryRuleset_OmitZero_EmptySlice(t *testin
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/enterprises/e/rulesets/84", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-
-		testBody(t, r, `{"name":"test ruleset","source":"","enforcement":"","bypass_actors":[]}`+"\n")
-
-		fmt.Fprint(w, `{"id": 84, "name": "test ruleset", "bypass_actors": []}`)
-	})
-
-	ctx := t.Context()
 	input := RepositoryRuleset{
 		Name:         "test ruleset",
 		BypassActors: []*BypassActor{},
 	}
 
+	mux.HandleFunc("/enterprises/e/rulesets/84", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"id": 84, "name": "test ruleset", "bypass_actors": []}`)
+	})
+
+	ctx := t.Context()
 	_, _, err := client.Enterprise.UpdateRepositoryRuleset(ctx, "e", 84, input)
 	if err != nil {
 		t.Errorf("Enterprise.UpdateRepositoryRuleset returned error: %v", err)

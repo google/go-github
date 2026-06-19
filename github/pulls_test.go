@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -359,13 +358,8 @@ func TestPullRequestsService_Create(t *testing.T) {
 	input := &NewPullRequest{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
-		var v *NewPullRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"number":1}`)
 	})
@@ -460,24 +454,27 @@ func TestPullRequestsService_Edit(t *testing.T) {
 	tests := []struct {
 		input        *PullRequest
 		sendResponse string
-
-		wantUpdate string
-		want       *PullRequest
+		want         *PullRequest
+		wantUpdate   *pullRequestUpdate
 	}{
 		{
 			input:        &PullRequest{Title: Ptr("t")},
 			sendResponse: `{"number":1}`,
-			wantUpdate:   `{"title":"t"}`,
 			want:         &PullRequest{Number: Ptr(1)},
+			wantUpdate: &pullRequestUpdate{
+				Title: Ptr("t"),
+			},
 		},
 		{
 			// base update
 			input:        &PullRequest{Base: &PullRequestBranch{Ref: Ptr("master")}},
 			sendResponse: `{"number":1,"base":{"ref":"master"}}`,
-			wantUpdate:   `{"base":"master"}`,
 			want: &PullRequest{
 				Number: Ptr(1),
 				Base:   &PullRequestBranch{Ref: Ptr("master")},
+			},
+			wantUpdate: &pullRequestUpdate{
+				Base: Ptr("master"),
 			},
 		},
 	}
@@ -486,7 +483,7 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		madeRequest := false
 		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v", i), func(w http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PATCH")
-			testBody(t, r, tt.wantUpdate+"\n")
+			testJSONBody(t, r, tt.wantUpdate)
 			_, err := io.WriteString(w, tt.sendResponse)
 			assertNilError(t, err)
 			madeRequest = true
@@ -765,24 +762,34 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	tests := []struct {
-		options  *PullRequestOptions
-		wantBody string
+		options *PullRequestOptions
+		want    pullRequestMergeRequest
 	}{
 		{
-			options:  nil,
-			wantBody: `{"commit_message":"merging pull request"}`,
+			options: nil,
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+			},
 		},
 		{
-			options:  &PullRequestOptions{},
-			wantBody: `{"commit_message":"merging pull request"}`,
+			options: &PullRequestOptions{},
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+			},
 		},
 		{
-			options:  &PullRequestOptions{MergeMethod: "rebase"},
-			wantBody: `{"commit_message":"merging pull request","merge_method":"rebase"}`,
+			options: &PullRequestOptions{MergeMethod: "rebase"},
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+				MergeMethod:   "rebase",
+			},
 		},
 		{
-			options:  &PullRequestOptions{SHA: "6dcb09b5b57875f334f61aebed695e2e4193db5e"},
-			wantBody: `{"commit_message":"merging pull request","sha":"6dcb09b5b57875f334f61aebed695e2e4193db5e"}`,
+			options: &PullRequestOptions{SHA: "6dcb09b5b57875f334f61aebed695e2e4193db5e"},
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+				SHA:           "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+			},
 		},
 		{
 			options: &PullRequestOptions{
@@ -790,13 +797,20 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 				SHA:         "6dcb09b5b57875f334f61aebed695e2e4193db5e",
 				MergeMethod: "squash",
 			},
-			wantBody: `{"commit_message":"merging pull request","commit_title":"Extra detail","merge_method":"squash","sha":"6dcb09b5b57875f334f61aebed695e2e4193db5e"}`,
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+				SHA:           "6dcb09b5b57875f334f61aebed695e2e4193db5e",
+				CommitTitle:   "Extra detail",
+				MergeMethod:   "squash",
+			},
 		},
 		{
 			options: &PullRequestOptions{
 				DontDefaultIfBlank: true,
 			},
-			wantBody: `{"commit_message":"merging pull request"}`,
+			want: pullRequestMergeRequest{
+				CommitMessage: Ptr("merging pull request"),
+			},
 		},
 	}
 
@@ -804,7 +818,7 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 		madeRequest := false
 		mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/%v/merge", i), func(_ http.ResponseWriter, r *http.Request) {
 			testMethod(t, r, "PUT")
-			testBody(t, r, test.wantBody+"\n")
+			testJSONBody(t, r, test.want)
 			madeRequest = true
 		})
 		ctx := t.Context()
@@ -820,15 +834,14 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	madeRequest := false
-	expectedBody := ""
+	want := &pullRequestMergeRequest{}
 	mux.HandleFunc("/repos/o/r/pulls/1/merge", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		testBody(t, r, expectedBody+"\n")
+		testJSONBody(t, r, want)
 		madeRequest = true
 	})
 
 	ctx := t.Context()
-	expectedBody = `{}`
 	_, _, _ = client.PullRequests.Merge(ctx, "o", "r", 1, "", nil)
 	if !madeRequest {
 		t.Error("TestPullRequestsService_Merge_Blank_Message #1 did not make request")
@@ -838,762 +851,11 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 	opts := PullRequestOptions{
 		DontDefaultIfBlank: true,
 	}
-	expectedBody = `{"commit_message":""}`
+	want = &pullRequestMergeRequest{
+		CommitMessage: Ptr(""),
+	}
 	_, _, _ = client.PullRequests.Merge(ctx, "o", "r", 1, "", &opts)
 	if !madeRequest {
 		t.Error("TestPullRequestsService_Merge_Blank_Message #2 did not make request")
 	}
-}
-
-func TestPullRequestMergeRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &pullRequestMergeRequest{}, "{}")
-
-	u := &pullRequestMergeRequest{
-		CommitMessage: Ptr("cm"),
-		CommitTitle:   "ct",
-		MergeMethod:   "mm",
-		SHA:           "sha",
-	}
-
-	want := `{
-		"commit_message": "cm",
-		"commit_title": "ct",
-		"merge_method": "mm",
-		"sha": "sha"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestMergeResult_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestMergeResult{}, "{}")
-
-	u := &PullRequestMergeResult{
-		SHA:     Ptr("sha"),
-		Merged:  Ptr(false),
-		Message: Ptr("msg"),
-	}
-
-	want := `{
-		"sha": "sha",
-		"merged": false,
-		"message": "msg"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestUpdate_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &pullRequestUpdate{}, "{}")
-
-	u := &pullRequestUpdate{
-		Title:               Ptr("title"),
-		Body:                Ptr("body"),
-		State:               Ptr("state"),
-		Base:                Ptr("base"),
-		MaintainerCanModify: Ptr(false),
-	}
-
-	want := `{
-		"title": "title",
-		"body": "body",
-		"state": "state",
-		"base": "base",
-		"maintainer_can_modify": false
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestBranchUpdateResponse_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestBranchUpdateResponse{}, "{}")
-
-	u := &PullRequestBranchUpdateResponse{
-		Message: Ptr("message"),
-		URL:     Ptr("url"),
-	}
-
-	want := `{
-		"message": "message",
-		"url": "url"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestBranchUpdateOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestBranchUpdateOptions{}, "{}")
-
-	u := &PullRequestBranchUpdateOptions{
-		ExpectedHeadSHA: Ptr("eh"),
-	}
-
-	want := `{
-		"expected_head_sha": "eh"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestNewPullRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &NewPullRequest{}, "{}")
-
-	u := &NewPullRequest{
-		Title:               Ptr("eh"),
-		Head:                Ptr("eh"),
-		HeadRepo:            Ptr("eh"),
-		Base:                Ptr("eh"),
-		Body:                Ptr("eh"),
-		Issue:               Ptr(1),
-		MaintainerCanModify: Ptr(false),
-		Draft:               Ptr(false),
-	}
-
-	want := `{
-		"title": "eh",
-		"head": "eh",
-		"head_repo": "eh",
-		"base": "eh",
-		"body": "eh",
-		"issue": 1,
-		"maintainer_can_modify": false,
-		"draft": false
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestBranch_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestBranch{}, "{}")
-
-	u := &PullRequestBranch{
-		Label: Ptr("label"),
-		Ref:   Ptr("ref"),
-		SHA:   Ptr("sha"),
-		Repo:  &Repository{ID: Ptr(int64(1))},
-		User: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-	}
-
-	want := `{
-		"label": "label",
-		"ref": "ref",
-		"sha": "sha",
-		"repo": {
-			"id": 1
-		},
-		"user": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPRLink_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PRLink{}, "{}")
-
-	u := &PRLink{
-		HRef: Ptr("href"),
-	}
-
-	want := `{
-		"href": "href"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPRLinks_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PRLinks{}, "{}")
-
-	u := &PRLinks{
-		Self: &PRLink{
-			HRef: Ptr("href"),
-		},
-		HTML: &PRLink{
-			HRef: Ptr("href"),
-		},
-		Issue: &PRLink{
-			HRef: Ptr("href"),
-		},
-		Comments: &PRLink{
-			HRef: Ptr("href"),
-		},
-		ReviewComments: &PRLink{
-			HRef: Ptr("href"),
-		},
-		ReviewComment: &PRLink{
-			HRef: Ptr("href"),
-		},
-		Commits: &PRLink{
-			HRef: Ptr("href"),
-		},
-		Statuses: &PRLink{
-			HRef: Ptr("href"),
-		},
-	}
-
-	want := `{
-		"self": {
-			"href": "href"
-		},
-		"html": {
-			"href": "href"
-		},
-		"issue": {
-			"href": "href"
-		},
-		"comments": {
-			"href": "href"
-		},
-		"review_comments": {
-			"href": "href"
-		},
-		"review_comment": {
-			"href": "href"
-		},
-		"commits": {
-			"href": "href"
-		},
-		"statuses": {
-			"href": "href"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestAutoMerge_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestAutoMerge{}, "{}")
-
-	u := &PullRequestAutoMerge{
-		EnabledBy: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		MergeMethod:   Ptr("mm"),
-		CommitTitle:   Ptr("ct"),
-		CommitMessage: Ptr("cm"),
-	}
-
-	want := `{
-		"enabled_by": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"merge_method": "mm",
-		"commit_title": "ct",
-		"commit_message": "cm"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequest{}, "{}")
-
-	u := &PullRequest{
-		ID:        Ptr(int64(1)),
-		Number:    Ptr(1),
-		State:     Ptr("state"),
-		Locked:    Ptr(false),
-		Title:     Ptr("title"),
-		Body:      Ptr("body"),
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-		ClosedAt:  &Timestamp{referenceTime},
-		MergedAt:  &Timestamp{referenceTime},
-		Labels:    []*Label{{ID: Ptr(int64(1))}},
-		User: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		Draft:          Ptr(false),
-		Merged:         Ptr(false),
-		Mergeable:      Ptr(false),
-		MergeableState: Ptr("ms"),
-		MergedBy: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		MergeCommitSHA:    Ptr("mcs"),
-		Rebaseable:        Ptr(false),
-		Comments:          Ptr(1),
-		Commits:           Ptr(1),
-		Additions:         Ptr(1),
-		Deletions:         Ptr(1),
-		ChangedFiles:      Ptr(1),
-		URL:               Ptr("url"),
-		HTMLURL:           Ptr("hurl"),
-		IssueURL:          Ptr("iurl"),
-		StatusesURL:       Ptr("surl"),
-		DiffURL:           Ptr("durl"),
-		PatchURL:          Ptr("purl"),
-		CommitsURL:        Ptr("curl"),
-		CommentsURL:       Ptr("comurl"),
-		ReviewCommentsURL: Ptr("rcurls"),
-		ReviewCommentURL:  Ptr("rcurl"),
-		ReviewComments:    Ptr(1),
-		Assignee: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		Assignees: []*User{
-			{
-				Login:           Ptr("l"),
-				ID:              Ptr(int64(1)),
-				URL:             Ptr("u"),
-				AvatarURL:       Ptr("a"),
-				GravatarID:      Ptr("g"),
-				Name:            Ptr("n"),
-				Company:         Ptr("c"),
-				Blog:            Ptr("b"),
-				Location:        Ptr("l"),
-				Email:           Ptr("e"),
-				Hireable:        Ptr(true),
-				Bio:             Ptr("b"),
-				TwitterUsername: Ptr("t"),
-				PublicRepos:     Ptr(1),
-				Followers:       Ptr(1),
-				Following:       Ptr(1),
-				CreatedAt:       &Timestamp{referenceTime},
-				SuspendedAt:     &Timestamp{referenceTime},
-			},
-		},
-		Milestone:           &Milestone{ID: Ptr(int64(1))},
-		MaintainerCanModify: Ptr(true),
-		AuthorAssociation:   Ptr("aa"),
-		NodeID:              Ptr("nid"),
-		RequestedReviewers: []*User{
-			{
-				Login:           Ptr("l"),
-				ID:              Ptr(int64(1)),
-				URL:             Ptr("u"),
-				AvatarURL:       Ptr("a"),
-				GravatarID:      Ptr("g"),
-				Name:            Ptr("n"),
-				Company:         Ptr("c"),
-				Blog:            Ptr("b"),
-				Location:        Ptr("l"),
-				Email:           Ptr("e"),
-				Hireable:        Ptr(true),
-				Bio:             Ptr("b"),
-				TwitterUsername: Ptr("t"),
-				PublicRepos:     Ptr(1),
-				Followers:       Ptr(1),
-				Following:       Ptr(1),
-				CreatedAt:       &Timestamp{referenceTime},
-				SuspendedAt:     &Timestamp{referenceTime},
-			},
-		},
-		AutoMerge: &PullRequestAutoMerge{
-			EnabledBy: &User{
-				Login:           Ptr("l"),
-				ID:              Ptr(int64(1)),
-				URL:             Ptr("u"),
-				AvatarURL:       Ptr("a"),
-				GravatarID:      Ptr("g"),
-				Name:            Ptr("n"),
-				Company:         Ptr("c"),
-				Blog:            Ptr("b"),
-				Location:        Ptr("l"),
-				Email:           Ptr("e"),
-				Hireable:        Ptr(true),
-				Bio:             Ptr("b"),
-				TwitterUsername: Ptr("t"),
-				PublicRepos:     Ptr(1),
-				Followers:       Ptr(1),
-				Following:       Ptr(1),
-				CreatedAt:       &Timestamp{referenceTime},
-				SuspendedAt:     &Timestamp{referenceTime},
-			},
-			MergeMethod:   Ptr("mm"),
-			CommitTitle:   Ptr("ct"),
-			CommitMessage: Ptr("cm"),
-		},
-		RequestedTeams: []*Team{{ID: Ptr(int64(1))}},
-		Links: &PRLinks{
-			Self: &PRLink{
-				HRef: Ptr("href"),
-			},
-			HTML: &PRLink{
-				HRef: Ptr("href"),
-			},
-			Issue: &PRLink{
-				HRef: Ptr("href"),
-			},
-			Comments: &PRLink{
-				HRef: Ptr("href"),
-			},
-			ReviewComments: &PRLink{
-				HRef: Ptr("href"),
-			},
-			ReviewComment: &PRLink{
-				HRef: Ptr("href"),
-			},
-			Commits: &PRLink{
-				HRef: Ptr("href"),
-			},
-			Statuses: &PRLink{
-				HRef: Ptr("href"),
-			},
-		},
-		Head: &PullRequestBranch{
-			Ref:  Ptr("r2"),
-			Repo: &Repository{ID: Ptr(int64(2))},
-		},
-		Base: &PullRequestBranch{
-			Ref:  Ptr("r2"),
-			Repo: &Repository{ID: Ptr(int64(2))},
-		},
-		ActiveLockReason: Ptr("alr"),
-	}
-
-	want := `{
-		"id": 1,
-		"number": 1,
-		"state": "state",
-		"locked": false,
-		"title": "title",
-		"body": "body",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"closed_at": ` + referenceTimeStr + `,
-		"merged_at": ` + referenceTimeStr + `,
-		"labels": [
-			{
-				"id": 1
-			}
-		],
-		"user": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"draft": false,
-		"merged": false,
-		"mergeable": false,
-		"mergeable_state": "ms",
-		"merged_by": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"merge_commit_sha": "mcs",
-		"rebaseable": false,
-		"comments": 1,
-		"commits": 1,
-		"additions": 1,
-		"deletions": 1,
-		"changed_files": 1,
-		"url": "url",
-		"html_url": "hurl",
-		"issue_url": "iurl",
-		"statuses_url": "surl",
-		"diff_url": "durl",
-		"patch_url": "purl",
-		"commits_url": "curl",
-		"comments_url": "comurl",
-		"review_comments_url": "rcurls",
-		"review_comment_url": "rcurl",
-		"review_comments": 1,
-		"assignee": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"assignees": [
-			{
-				"login": "l",
-				"id": 1,
-				"avatar_url": "a",
-				"gravatar_id": "g",
-				"name": "n",
-				"company": "c",
-				"blog": "b",
-				"location": "l",
-				"email": "e",
-				"hireable": true,
-				"bio": "b",
-				"twitter_username": "t",
-				"public_repos": 1,
-				"followers": 1,
-				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"suspended_at": ` + referenceTimeStr + `,
-				"url": "u"
-			}
-		],
-		"milestone": {
-			"id": 1
-		},
-		"maintainer_can_modify": true,
-		"author_association": "aa",
-		"node_id": "nid",
-		"requested_reviewers": [
-			{
-				"login": "l",
-				"id": 1,
-				"avatar_url": "a",
-				"gravatar_id": "g",
-				"name": "n",
-				"company": "c",
-				"blog": "b",
-				"location": "l",
-				"email": "e",
-				"hireable": true,
-				"bio": "b",
-				"twitter_username": "t",
-				"public_repos": 1,
-				"followers": 1,
-				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"suspended_at": ` + referenceTimeStr + `,
-				"url": "u"
-			}
-		],
-		"auto_merge": {
-			"enabled_by": {
-				"login": "l",
-				"id": 1,
-				"avatar_url": "a",
-				"gravatar_id": "g",
-				"name": "n",
-				"company": "c",
-				"blog": "b",
-				"location": "l",
-				"email": "e",
-				"hireable": true,
-				"bio": "b",
-				"twitter_username": "t",
-				"public_repos": 1,
-				"followers": 1,
-				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"suspended_at": ` + referenceTimeStr + `,
-				"url": "u"
-			},
-			"merge_method": "mm",
-			"commit_title": "ct",
-			"commit_message": "cm"
-		},
-		"requested_teams": [
-			{
-				"id": 1
-			}
-		],
-		"_links": {
-			"self": {
-				"href": "href"
-			},
-			"html": {
-				"href": "href"
-			},
-			"issue": {
-				"href": "href"
-			},
-			"comments": {
-				"href": "href"
-			},
-			"review_comments": {
-				"href": "href"
-			},
-			"review_comment": {
-				"href": "href"
-			},
-			"commits": {
-				"href": "href"
-			},
-			"statuses": {
-				"href": "href"
-			}
-		},
-		"head": {
-			"ref": "r2",
-			"repo": {
-				"id": 2
-			}
-		},
-		"base": {
-			"ref": "r2",
-			"repo": {
-				"id": 2
-			}
-		},
-		"active_lock_reason": "alr"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

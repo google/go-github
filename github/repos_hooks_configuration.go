@@ -32,13 +32,13 @@ type HookConfig struct {
 //meta:operation GET /repos/{owner}/{repo}/hooks/{hook_id}/config
 func (s *RepositoriesService) GetHookConfiguration(ctx context.Context, owner, repo string, id int64) (*HookConfig, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v/config", owner, repo, id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var config *HookConfig
-	resp, err := s.client.Do(ctx, req, &config)
+	resp, err := s.client.Do(req, &config)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -51,15 +51,15 @@ func (s *RepositoriesService) GetHookConfiguration(ctx context.Context, owner, r
 // GitHub API docs: https://docs.github.com/rest/repos/webhooks?apiVersion=2022-11-28#update-a-webhook-configuration-for-a-repository
 //
 //meta:operation PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config
-func (s *RepositoriesService) EditHookConfiguration(ctx context.Context, owner, repo string, id int64, config *HookConfig) (*HookConfig, *Response, error) {
+func (s *RepositoriesService) EditHookConfiguration(ctx context.Context, owner, repo string, id int64, body *HookConfig) (*HookConfig, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/hooks/%v/config", owner, repo, id)
-	req, err := s.client.NewRequest("PATCH", u, config)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var c *HookConfig
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}

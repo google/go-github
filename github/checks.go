@@ -106,7 +106,7 @@ func (c CheckSuite) String() string {
 //meta:operation GET /repos/{owner}/{repo}/check-runs/{check_run_id}
 func (s *ChecksService) GetCheckRun(ctx context.Context, owner, repo string, checkRunID int64) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -114,7 +114,7 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner, repo string, che
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	var checkRun *CheckRun
-	resp, err := s.client.Do(ctx, req, &checkRun)
+	resp, err := s.client.Do(req, &checkRun)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -129,7 +129,7 @@ func (s *ChecksService) GetCheckRun(ctx context.Context, owner, repo string, che
 //meta:operation GET /repos/{owner}/{repo}/check-suites/{check_suite_id}
 func (s *ChecksService) GetCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64) (*CheckSuite, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/%v", owner, repo, checkSuiteID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -137,7 +137,7 @@ func (s *ChecksService) GetCheckSuite(ctx context.Context, owner, repo string, c
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	var checkSuite *CheckSuite
-	resp, err := s.client.Do(ctx, req, &checkSuite)
+	resp, err := s.client.Do(req, &checkSuite)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -171,9 +171,9 @@ type CheckRunAction struct {
 // GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#create-a-check-run
 //
 //meta:operation POST /repos/{owner}/{repo}/check-runs
-func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, opts CreateCheckRunOptions) (*CheckRun, *Response, error) {
+func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, body CreateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs", owner, repo)
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -181,7 +181,7 @@ func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	var checkRun *CheckRun
-	resp, err := s.client.Do(ctx, req, &checkRun)
+	resp, err := s.client.Do(req, &checkRun)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -206,9 +206,9 @@ type UpdateCheckRunOptions struct {
 // GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#update-a-check-run
 //
 //meta:operation PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}
-func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, checkRunID int64, opts UpdateCheckRunOptions) (*CheckRun, *Response, error) {
+func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, checkRunID int64, body UpdateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -216,7 +216,7 @@ func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	var checkRun *CheckRun
-	resp, err := s.client.Do(ctx, req, &checkRun)
+	resp, err := s.client.Do(req, &checkRun)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -236,7 +236,7 @@ func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -244,7 +244,7 @@ func (s *ChecksService) ListCheckRunAnnotations(ctx context.Context, owner, repo
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	var checkRunAnnotations []*CheckRunAnnotation
-	resp, err := s.client.Do(ctx, req, &checkRunAnnotations)
+	resp, err := s.client.Do(req, &checkRunAnnotations)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -282,7 +282,7 @@ func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, re
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -290,7 +290,7 @@ func (s *ChecksService) ListCheckRunsForRef(ctx context.Context, owner, repo, re
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	var checkRunResults *ListCheckRunsResults
-	resp, err := s.client.Do(ctx, req, &checkRunResults)
+	resp, err := s.client.Do(req, &checkRunResults)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -310,7 +310,7 @@ func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -318,7 +318,7 @@ func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	var checkRunResults *ListCheckRunsResults
-	resp, err := s.client.Do(ctx, req, &checkRunResults)
+	resp, err := s.client.Do(req, &checkRunResults)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -334,14 +334,14 @@ func (s *ChecksService) ListCheckRunsCheckSuite(ctx context.Context, owner, repo
 func (s *ChecksService) ReRequestCheckRun(ctx context.Context, owner, repo string, checkRunID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v/rerequest", owner, repo, checkRunID)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ListCheckSuiteOptions represents parameters to list check suites.
@@ -372,7 +372,7 @@ func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -380,7 +380,7 @@ func (s *ChecksService) ListCheckSuitesForRef(ctx context.Context, owner, repo, 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	var checkSuiteResults *ListCheckSuiteResults
-	resp, err := s.client.Do(ctx, req, &checkSuiteResults)
+	resp, err := s.client.Do(req, &checkSuiteResults)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -415,9 +415,9 @@ type PreferenceList struct {
 // GitHub API docs: https://docs.github.com/rest/checks/suites?apiVersion=2022-11-28#update-repository-preferences-for-check-suites
 //
 //meta:operation PATCH /repos/{owner}/{repo}/check-suites/preferences
-func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, repo string, opts CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
+func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, repo string, body CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/preferences", owner, repo)
-	req, err := s.client.NewRequest("PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -425,7 +425,7 @@ func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, rep
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	var checkSuitePrefResults *CheckSuitePreferenceResults
-	resp, err := s.client.Do(ctx, req, &checkSuitePrefResults)
+	resp, err := s.client.Do(req, &checkSuitePrefResults)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -444,9 +444,9 @@ type CreateCheckSuiteOptions struct {
 // GitHub API docs: https://docs.github.com/rest/checks/suites?apiVersion=2022-11-28#create-a-check-suite
 //
 //meta:operation POST /repos/{owner}/{repo}/check-suites
-func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string, opts CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
+func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string, body CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites", owner, repo)
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -454,7 +454,7 @@ func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
 	var checkSuite *CheckSuite
-	resp, err := s.client.Do(ctx, req, &checkSuite)
+	resp, err := s.client.Do(req, &checkSuite)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -470,13 +470,13 @@ func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string
 func (s *ChecksService) ReRequestCheckSuite(ctx context.Context, owner, repo string, checkSuiteID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/%v/rerequest", owner, repo, checkSuiteID)
 
-	req, err := s.client.NewRequest("POST", u, nil)
+	req, err := s.client.NewRequest(ctx, "POST", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeCheckRunsPreview)
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	return resp, err
 }

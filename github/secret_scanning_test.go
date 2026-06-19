@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -352,18 +351,11 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
+
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-
-		var v *SecretScanningAlertUpdateOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
-		want := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
-
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, opts)
 		fmt.Fprint(w, `{
 			"number": 1,
 			"created_at": "1996-06-20T00:00:00Z",
@@ -381,8 +373,6 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: Ptr("used_in_tests")}
-
 	alert, _, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
 	if err != nil {
 		t.Errorf("SecretScanning.UpdateAlert returned error: %v", err)
@@ -487,152 +477,17 @@ func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {
 	})
 }
 
-func TestSecretScanningAlert_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SecretScanningAlert{}, `{}`)
-
-	u := &SecretScanningAlert{
-		Number:       Ptr(1),
-		CreatedAt:    &Timestamp{referenceTime},
-		URL:          Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-		HTMLURL:      Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-		LocationsURL: Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-		State:        Ptr("test_state"),
-		Resolution:   Ptr("test_resolution"),
-		ResolvedAt:   &Timestamp{referenceTime},
-		ResolvedBy: &User{
-			Login:     Ptr("test"),
-			ID:        Ptr(int64(10)),
-			NodeID:    Ptr("A123"),
-			AvatarURL: Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-		},
-		SecretType: Ptr("test"),
-		Secret:     Ptr("test"),
-	}
-
-	want := `{
-		"number": 1,
-		"created_at": ` + referenceTimeStr + `,
-		"url": "https://api.github.com/teams/2/discussions/3/comments",
-		"html_url": "https://api.github.com/teams/2/discussions/3/comments",
-		"locations_url": "https://api.github.com/teams/2/discussions/3/comments",
-		"state": "test_state",
-		"resolution": "test_resolution",
-		"resolved_at": ` + referenceTimeStr + `,
-		"resolved_by": {
-			"login": "test",
-			"id": 10,
-			"node_id": "A123",
-			"avatar_url": "https://api.github.com/teams/2/discussions/3/comments"
-		},
-		"secret_type": "test",
-		"secret": "test"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestSecretScanningAlertLocation_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SecretScanningAlertLocation{}, `{}`)
-
-	u := &SecretScanningAlertLocation{
-		Type: Ptr("test"),
-		Details: &SecretScanningAlertLocationDetails{
-			Path:        Ptr("test_path"),
-			Startline:   Ptr(10),
-			EndLine:     Ptr(20),
-			StartColumn: Ptr(30),
-			EndColumn:   Ptr(40),
-			BlobSHA:     Ptr("test_sha"),
-			BlobURL:     Ptr("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
-			CommitSHA:   Ptr("test_sha"),
-			CommitURL:   Ptr("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
-		},
-	}
-
-	want := `{
-		"type": "test",
-		"details": {
-			"path": "test_path",
-			"start_line": 10,
-			"end_line": 20,
-			"start_column": 30,
-			"end_column": 40,
-			"blob_sha": "test_sha",
-			"blob_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b",
-			"commit_sha": "test_sha",
-			"commit_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestSecretScanningAlertLocationDetails_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SecretScanningAlertLocationDetails{}, `{}`)
-
-	u := &SecretScanningAlertLocationDetails{
-		Path:        Ptr("test_path"),
-		Startline:   Ptr(10),
-		EndLine:     Ptr(20),
-		StartColumn: Ptr(30),
-		EndColumn:   Ptr(40),
-		BlobSHA:     Ptr("test_sha"),
-		BlobURL:     Ptr("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
-		CommitSHA:   Ptr("test_sha"),
-		CommitURL:   Ptr("https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"),
-	}
-
-	want := `{
-		"path": "test_path",
-		"start_line": 10,
-		"end_line": 20,
-		"start_column": 30,
-		"end_column": 40,
-		"blob_sha": "test_sha",
-		"blob_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b",
-		"commit_sha": "test_sha",
-		"commit_url": "https://api.github.com/repos/o/r/git/commits/f14d7debf9775f957cf4f1e8176da0786431f72b"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SecretScanningAlertUpdateOptions{}, `{"state": ""}`)
-
-	u := &SecretScanningAlertUpdateOptions{
-		State:      "open",
-		Resolution: Ptr("false_positive"),
-	}
-
-	want := `{
-		"state": "open",
-		"resolution": "false_positive"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	owner := "o"
 	repo := "r"
+	opts := PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
 
 	mux.HandleFunc(fmt.Sprintf("/repos/%v/%v/secret-scanning/push-protection-bypasses", owner, repo), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		var v *PushProtectionBypassRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-		want := &PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, opts)
 		fmt.Fprint(w, `{
 			"reason": "valid reason",
 			"expire_at": "2018-01-01T00:00:00Z",
@@ -641,7 +496,6 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := PushProtectionBypassRequest{Reason: "valid reason", PlaceholderID: "bypass-123"}
 
 	bypass, _, err := client.SecretScanning.CreatePushProtectionBypass(ctx, owner, repo, opts)
 	if err != nil {

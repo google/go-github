@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -19,25 +18,16 @@ func TestAdminUsers_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := CreateUserRequest{Login: "github", Email: Ptr("email@example.com"), Suspended: Ptr(false)}
+
 	mux.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateUserRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		want := &CreateUserRequest{Login: "github", Email: Ptr("email@example.com"), Suspended: Ptr(false)}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"login":"github","id":1}`)
 	})
 
 	ctx := t.Context()
-	org, _, err := client.Admin.CreateUser(ctx, CreateUserRequest{
-		Login:     "github",
-		Email:     Ptr("email@example.com"),
-		Suspended: Ptr(false),
-	})
+	org, _, err := client.Admin.CreateUser(ctx, input)
 	if err != nil {
 		t.Errorf("Admin.CreateUser returned error: %v", err)
 	}
@@ -49,11 +39,7 @@ func TestAdminUsers_Create(t *testing.T) {
 
 	const methodName = "CreateUser"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Admin.CreateUser(ctx, CreateUserRequest{
-			Login:     "github",
-			Email:     Ptr("email@example.com"),
-			Suspended: Ptr(false),
-		})
+		got, resp, err := client.Admin.CreateUser(ctx, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -90,9 +76,11 @@ func TestUserImpersonation_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	opt := &ImpersonateUserOptions{Scopes: []string{"repo"}}
+
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"scopes":["repo"]}`+"\n")
+		testJSONBody(t, r, opt)
 		fmt.Fprint(w, `{"id": 1234,
 		"url": "https://example.com/authorizations",
 		"app": {
@@ -113,7 +101,6 @@ func TestUserImpersonation_Create(t *testing.T) {
 		"fingerprint": null}`)
 	})
 
-	opt := &ImpersonateUserOptions{Scopes: []string{"repo"}}
 	ctx := t.Context()
 	auth, _, err := client.Admin.CreateUserImpersonation(ctx, "github", opt)
 	if err != nil {
@@ -181,104 +168,4 @@ func TestUserImpersonation_Delete(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Admin.DeleteUserImpersonation(ctx, "github")
 	})
-}
-
-func TestCreateUserRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CreateUserRequest{}, `{"login": ""}`)
-
-	u := &CreateUserRequest{
-		Login: "l",
-		Email: Ptr("e"),
-	}
-
-	want := `{
-		"login": "l",
-		"email": "e"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestImpersonateUserOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ImpersonateUserOptions{}, "{}")
-
-	u := &ImpersonateUserOptions{
-		Scopes: []string{
-			"s",
-		},
-	}
-
-	want := `{
-		"scopes": ["s"]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestOAuthAPP_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &OAuthAPP{}, "{}")
-
-	u := &OAuthAPP{
-		URL:      Ptr("u"),
-		Name:     Ptr("n"),
-		ClientID: Ptr("cid"),
-	}
-
-	want := `{
-		"url": "u",
-		"name": "n",
-		"client_id": "cid"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestUserAuthorization_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &UserAuthorization{}, "{}")
-
-	u := &UserAuthorization{
-		ID:  Ptr(int64(1)),
-		URL: Ptr("u"),
-		Scopes: []string{
-			"s",
-		},
-		Token:          Ptr("t"),
-		TokenLastEight: Ptr("tle"),
-		HashedToken:    Ptr("ht"),
-		App: &OAuthAPP{
-			URL:      Ptr("u"),
-			Name:     Ptr("n"),
-			ClientID: Ptr("cid"),
-		},
-		Note:        Ptr("n"),
-		NoteURL:     Ptr("nu"),
-		UpdatedAt:   &Timestamp{referenceTime},
-		CreatedAt:   &Timestamp{referenceTime},
-		Fingerprint: Ptr("f"),
-	}
-
-	want := `{
-		"id": 1,
-		"url": "u",
-		"scopes": ["s"],
-		"token": "t",
-		"token_last_eight": "tle",
-		"hashed_token": "ht",
-		"app": {
-			"url": "u",
-			"name": "n",
-			"client_id": "cid"
-		},
-		"note": "n",
-		"note_url": "nu",
-		"updated_at": ` + referenceTimeStr + `,
-		"created_at": ` + referenceTimeStr + `,
-		"fingerprint": "f"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

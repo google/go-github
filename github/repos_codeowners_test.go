@@ -136,38 +136,3 @@ func TestRepositoriesService_GetCodeownersErrors_specificRef(t *testing.T) {
 		return resp, err
 	})
 }
-
-func TestCodeownersErrors_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CodeownersErrors{}, `{"errors": null}`)
-
-	u := &CodeownersErrors{
-		Errors: []*CodeownersError{
-			{
-				Line:       1,
-				Column:     1,
-				Kind:       "Invalid pattern",
-				Source:     "***/*.rb @monalisa",
-				Suggestion: Ptr("Did you mean **/*.rb?"),
-				Message:    "Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^",
-				Path:       ".github/CODEOWNERS",
-			},
-		},
-	}
-
-	want := `{
-	  "errors": [
-		{
-		  "line": 1,
-		  "column": 1,
-		  "kind": "Invalid pattern",
-		  "source": "***/*.rb @monalisa",
-		  "suggestion": "Did you mean **/*.rb?",
-		  "message": "Invalid pattern on line 3: Did you mean **/*.rb?\n\n  ***/*.rb @monalisa\n  ^",
-		  "path": ".github/CODEOWNERS"
-		}
-	  ]
-	}
-`
-	testJSONMarshal(t, u, want)
-}

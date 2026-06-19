@@ -51,13 +51,13 @@ type CustomDeploymentProtectionRuleRequest struct {
 func (s *RepositoriesService) GetAllDeploymentProtectionRules(ctx context.Context, owner, repo, environment string) (*ListDeploymentProtectionRuleResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules", owner, repo, environment)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var list *ListDeploymentProtectionRuleResponse
-	resp, err := s.client.Do(ctx, req, &list)
+	resp, err := s.client.Do(req, &list)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -70,16 +70,16 @@ func (s *RepositoriesService) GetAllDeploymentProtectionRules(ctx context.Contex
 // GitHub API docs: https://docs.github.com/rest/deployments/protection-rules?apiVersion=2022-11-28#create-a-custom-deployment-protection-rule-on-an-environment
 //
 //meta:operation POST /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules
-func (s *RepositoriesService) CreateCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, request *CustomDeploymentProtectionRuleRequest) (*CustomDeploymentProtectionRule, *Response, error) {
+func (s *RepositoriesService) CreateCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, body *CustomDeploymentProtectionRuleRequest) (*CustomDeploymentProtectionRule, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules", owner, repo, environment)
 
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var protectionRule *CustomDeploymentProtectionRule
-	resp, err := s.client.Do(ctx, req, &protectionRule)
+	resp, err := s.client.Do(req, &protectionRule)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -99,13 +99,13 @@ func (s *RepositoriesService) ListCustomDeploymentRuleIntegrations(ctx context.C
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var list *ListCustomDeploymentRuleIntegrationsResponse
-	resp, err := s.client.Do(ctx, req, &list)
+	resp, err := s.client.Do(req, &list)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -121,13 +121,13 @@ func (s *RepositoriesService) ListCustomDeploymentRuleIntegrations(ctx context.C
 func (s *RepositoriesService) GetCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, protectionRuleID int64) (*CustomDeploymentProtectionRule, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules/%v", owner, repo, environment, protectionRuleID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var protectionRule *CustomDeploymentProtectionRule
-	resp, err := s.client.Do(ctx, req, &protectionRule)
+	resp, err := s.client.Do(req, &protectionRule)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -143,10 +143,10 @@ func (s *RepositoriesService) GetCustomDeploymentProtectionRule(ctx context.Cont
 func (s *RepositoriesService) DisableCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, protectionRuleID int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules/%v", owner, repo, environment, protectionRuleID)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

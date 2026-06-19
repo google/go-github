@@ -32,13 +32,13 @@ func (g Gitignore) String() string {
 //
 //meta:operation GET /gitignore/templates
 func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, error) {
-	req, err := s.client.NewRequest("GET", "gitignore/templates", nil)
+	req, err := s.client.NewRequest(ctx, "GET", "gitignore/templates", nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var availableTemplates []string
-	resp, err := s.client.Do(ctx, req, &availableTemplates)
+	resp, err := s.client.Do(req, &availableTemplates)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -53,13 +53,13 @@ func (s *GitignoresService) List(ctx context.Context) ([]string, *Response, erro
 //meta:operation GET /gitignore/templates/{name}
 func (s *GitignoresService) Get(ctx context.Context, name string) (*Gitignore, *Response, error) {
 	u := fmt.Sprintf("gitignore/templates/%v", name)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var gitignore *Gitignore
-	resp, err := s.client.Do(ctx, req, &gitignore)
+	resp, err := s.client.Do(req, &gitignore)
 	if err != nil {
 		return nil, resp, err
 	}

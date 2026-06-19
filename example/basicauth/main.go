@@ -19,10 +19,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v88/github"
 	"golang.org/x/term"
 )
 
@@ -39,7 +40,10 @@ func main() {
 		Password: strings.TrimSpace(string(password)),
 	}
 
-	client := github.NewClient(tp.Client())
+	client, err := github.NewClient(github.WithHTTPClient(tp.Client()))
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
 	ctx := context.Background()
 	user, _, err := client.Users.Get(ctx, "")
 
@@ -52,8 +56,7 @@ func main() {
 	}
 
 	if err != nil {
-		fmt.Printf("\nerror: %v\n", err)
-		return
+		log.Fatalf("error: %v", err)
 	}
 
 	fmt.Printf("\n%v\n", github.Stringify(user))

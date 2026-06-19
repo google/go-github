@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -469,14 +468,8 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 	input := &Membership{State: Ptr("active")}
 
 	mux.HandleFunc("/user/memberships/orgs/o", func(w http.ResponseWriter, r *http.Request) {
-		var v *Membership
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
 
@@ -513,14 +506,8 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 	input := &Membership{State: Ptr("active")}
 
 	mux.HandleFunc("/orgs/o/memberships/u", func(w http.ResponseWriter, r *http.Request) {
-		var v *Membership
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
 
@@ -673,14 +660,8 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/invitations", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateOrgInvitationOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprintln(w, `{"email": "octocat@github.com"}`)
 	})
 
@@ -692,7 +673,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 
 	want := &Invitation{Email: Ptr("octocat@github.com")}
 	if !cmp.Equal(invitations, want) {
-		t.Errorf("Organizations.ListPendingOrgInvitations returned %+v, want %+v", invitations, want)
+		t.Errorf("Organizations.CreateOrgInvitation returned %+v, want %+v", invitations, want)
 	}
 
 	const methodName = "CreateOrgInvitation"
@@ -875,110 +856,4 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestMembership_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Membership{}, "{}")
-
-	u := &Membership{
-		URL:             Ptr("url"),
-		State:           Ptr("state"),
-		Role:            Ptr("email"),
-		OrganizationURL: Ptr("orgurl"),
-		Organization: &Organization{
-			BillingEmail:                         Ptr("be"),
-			Blog:                                 Ptr("b"),
-			Company:                              Ptr("c"),
-			Email:                                Ptr("e"),
-			TwitterUsername:                      Ptr("tu"),
-			Location:                             Ptr("loc"),
-			Name:                                 Ptr("n"),
-			Description:                          Ptr("d"),
-			IsVerified:                           Ptr(true),
-			HasOrganizationProjects:              Ptr(true),
-			HasRepositoryProjects:                Ptr(true),
-			DefaultRepoPermission:                Ptr("drp"),
-			MembersCanCreateRepos:                Ptr(true),
-			MembersCanCreateInternalRepos:        Ptr(true),
-			MembersCanCreatePrivateRepos:         Ptr(true),
-			MembersCanCreatePublicRepos:          Ptr(false),
-			MembersAllowedRepositoryCreationType: Ptr("marct"),
-			MembersCanCreatePages:                Ptr(true),
-			MembersCanCreatePublicPages:          Ptr(false),
-			MembersCanCreatePrivatePages:         Ptr(true),
-		},
-		User: &User{
-			Login:     Ptr("l"),
-			ID:        Ptr(int64(1)),
-			NodeID:    Ptr("n"),
-			URL:       Ptr("u"),
-			ReposURL:  Ptr("r"),
-			EventsURL: Ptr("e"),
-			AvatarURL: Ptr("a"),
-		},
-	}
-
-	want := `{
-		"url": "url",
-		"state": "state",
-		"role": "email",
-		"organization_url": "orgurl",
-		"organization": {
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "loc",
-			"email": "e",
-			"twitter_username": "tu",
-			"description": "d",
-			"billing_email": "be",
-			"is_verified": true,
-			"has_organization_projects": true,
-			"has_repository_projects": true,
-			"default_repository_permission": "drp",
-			"members_can_create_repositories": true,
-			"members_can_create_public_repositories": false,
-			"members_can_create_private_repositories": true,
-			"members_can_create_internal_repositories": true,
-			"members_allowed_repository_creation_type": "marct",
-			"members_can_create_pages": true,
-			"members_can_create_public_pages": false,
-			"members_can_create_private_pages": true
-		},
-		"user": {
-			"login": "l",
-			"id": 1,
-			"node_id": "n",
-			"avatar_url": "a",
-			"url": "u",
-			"events_url": "e",
-			"repos_url": "r"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCreateOrgInvitationOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CreateOrgInvitationOptions{}, "{}")
-
-	u := &CreateOrgInvitationOptions{
-		InviteeID: Ptr(int64(1)),
-		Email:     Ptr("email"),
-		Role:      Ptr("role"),
-		TeamID:    []int64{1},
-	}
-
-	want := `{
-		"invitee_id": 1,
-		"email": "email",
-		"role": "role",
-		"team_ids": [
-			1
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
 }

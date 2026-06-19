@@ -105,13 +105,13 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var identities *SCIMProvisionedIdentities
-	resp, err := s.client.Do(ctx, req, &identities)
+	resp, err := s.client.Do(req, &identities)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -124,16 +124,16 @@ func (s *SCIMService) ListSCIMProvisionedIdentities(ctx context.Context, org str
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#provision-and-invite-a-scim-user
 //
 //meta:operation POST /scim/v2/organizations/{org}/Users
-func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, opts *SCIMUserAttributes) (*SCIMUserAttributes, *Response, error) {
+func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string, body *SCIMUserAttributes) (*SCIMUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users", org)
 
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var user *SCIMUserAttributes
-	resp, err := s.client.Do(ctx, req, &user)
+	resp, err := s.client.Do(req, &user)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -148,13 +148,13 @@ func (s *SCIMService) ProvisionAndInviteSCIMUser(ctx context.Context, org string
 //meta:operation GET /scim/v2/organizations/{org}/Users/{scim_user_id}
 func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, scimUserID string) (*SCIMUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var user *SCIMUserAttributes
-	resp, err := s.client.Do(ctx, req, &user)
+	resp, err := s.client.Do(req, &user)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -167,19 +167,19 @@ func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, s
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#update-a-provisioned-organization-membership
 //
 //meta:operation PUT /scim/v2/organizations/{org}/Users/{scim_user_id}
-func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, scimUserID string, opts *SCIMUserAttributes) (*Response, error) {
+func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, scimUserID string, opts *SCIMUserAttributes) (*Response, error) { //nolint:paramcheck // see https://github.com/google/go-github/issues/4301
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UpdateAttributeForSCIMUserOptions represents options for UpdateAttributeForSCIMUser.
@@ -209,12 +209,12 @@ func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimU
 		return nil, err
 	}
 
-	req, err := s.client.NewRequest("PATCH", u, nil)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteSCIMUserFromOrg deletes SCIM user from an organization.
@@ -224,10 +224,10 @@ func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimU
 //meta:operation DELETE /scim/v2/organizations/{org}/Users/{scim_user_id}
 func (s *SCIMService) DeleteSCIMUserFromOrg(ctx context.Context, org, scimUserID string) (*Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

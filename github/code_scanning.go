@@ -256,13 +256,13 @@ func (s *CodeScanningService) ListAlertsForOrg(ctx context.Context, org string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alerts []*Alert
-	resp, err := s.client.Do(ctx, req, &alerts)
+	resp, err := s.client.Do(req, &alerts)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -286,13 +286,13 @@ func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alerts []*Alert
-	resp, err := s.client.Do(ctx, req, &alerts)
+	resp, err := s.client.Do(req, &alerts)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -313,13 +313,13 @@ func (s *CodeScanningService) ListAlertsForRepo(ctx context.Context, owner, repo
 func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, id int64) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var a *Alert
-	resp, err := s.client.Do(ctx, req, &a)
+	resp, err := s.client.Do(req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -337,16 +337,16 @@ func (s *CodeScanningService) GetAlert(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}
-func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, stateInfo *CodeScanningAlertState) (*Alert, *Response, error) {
+func (s *CodeScanningService) UpdateAlert(ctx context.Context, owner, repo string, id int64, body *CodeScanningAlertState) (*Alert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/alerts/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("PATCH", u, stateInfo)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var a *Alert
-	resp, err := s.client.Do(ctx, req, &a)
+	resp, err := s.client.Do(req, &a)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -369,13 +369,13 @@ func (s *CodeScanningService) ListAlertInstances(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var alertInstances []*MostRecentInstance
-	resp, err := s.client.Do(ctx, req, &alertInstances)
+	resp, err := s.client.Do(req, &alertInstances)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -392,16 +392,16 @@ func (s *CodeScanningService) ListAlertInstances(ctx context.Context, owner, rep
 // GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning?apiVersion=2022-11-28#upload-an-analysis-as-sarif-data
 //
 //meta:operation POST /repos/{owner}/{repo}/code-scanning/sarifs
-func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, sarif *SarifAnalysis) (*SarifID, *Response, error) {
+func (s *CodeScanningService) UploadSarif(ctx context.Context, owner, repo string, body *SarifAnalysis) (*SarifID, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs", owner, repo)
 
-	req, err := s.client.NewRequest("POST", u, sarif)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	// This will always return an error without unmarshaling the data
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	// Even though there was an error, we still return the response
 	// in case the caller wants to inspect it further.
 	// However, if the error is AcceptedError, decode it below before
@@ -439,13 +439,13 @@ type SARIFUpload struct {
 func (s *CodeScanningService) GetSARIF(ctx context.Context, owner, repo, sarifID string) (*SARIFUpload, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/sarifs/%v", owner, repo, sarifID)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var sarifUpload *SARIFUpload
-	resp, err := s.client.Do(ctx, req, &sarifUpload)
+	resp, err := s.client.Do(req, &sarifUpload)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -469,13 +469,13 @@ func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var analyses []*ScanningAnalysis
-	resp, err := s.client.Do(ctx, req, &analyses)
+	resp, err := s.client.Do(req, &analyses)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -496,13 +496,13 @@ func (s *CodeScanningService) ListAnalysesForRepo(ctx context.Context, owner, re
 func (s *CodeScanningService) GetAnalysis(ctx context.Context, owner, repo string, id int64) (*ScanningAnalysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var analysis *ScanningAnalysis
-	resp, err := s.client.Do(ctx, req, &analysis)
+	resp, err := s.client.Do(req, &analysis)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -531,13 +531,13 @@ type DeleteAnalysis struct {
 func (s *CodeScanningService) DeleteAnalysis(ctx context.Context, owner, repo string, id int64) (*DeleteAnalysis, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/analyses/%v", owner, repo, id)
 
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var deleteAnalysis *DeleteAnalysis
-	resp, err := s.client.Do(ctx, req, &deleteAnalysis)
+	resp, err := s.client.Do(req, &deleteAnalysis)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -556,13 +556,13 @@ func (s *CodeScanningService) DeleteAnalysis(ctx context.Context, owner, repo st
 func (s *CodeScanningService) ListCodeQLDatabases(ctx context.Context, owner, repo string) ([]*CodeQLDatabase, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/codeql/databases", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var codeqlDatabases []*CodeQLDatabase
-	resp, err := s.client.Do(ctx, req, &codeqlDatabases)
+	resp, err := s.client.Do(req, &codeqlDatabases)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -581,13 +581,13 @@ func (s *CodeScanningService) ListCodeQLDatabases(ctx context.Context, owner, re
 func (s *CodeScanningService) GetCodeQLDatabase(ctx context.Context, owner, repo, language string) (*CodeQLDatabase, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/codeql/databases/%v", owner, repo, language)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var codeqlDatabase *CodeQLDatabase
-	resp, err := s.client.Do(ctx, req, &codeqlDatabase)
+	resp, err := s.client.Do(req, &codeqlDatabase)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -615,13 +615,13 @@ type DefaultSetupConfiguration struct {
 func (s *CodeScanningService) GetDefaultSetupConfiguration(ctx context.Context, owner, repo string) (*DefaultSetupConfiguration, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/default-setup", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var cfg *DefaultSetupConfiguration
-	resp, err := s.client.Do(ctx, req, &cfg)
+	resp, err := s.client.Do(req, &cfg)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -655,16 +655,16 @@ type UpdateDefaultSetupConfigurationResponse struct {
 // GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning?apiVersion=2022-11-28#update-a-code-scanning-default-setup-configuration
 //
 //meta:operation PATCH /repos/{owner}/{repo}/code-scanning/default-setup
-func (s *CodeScanningService) UpdateDefaultSetupConfiguration(ctx context.Context, owner, repo string, options *UpdateDefaultSetupConfigurationOptions) (*UpdateDefaultSetupConfigurationResponse, *Response, error) {
+func (s *CodeScanningService) UpdateDefaultSetupConfiguration(ctx context.Context, owner, repo string, body *UpdateDefaultSetupConfigurationOptions) (*UpdateDefaultSetupConfigurationResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/code-scanning/default-setup", owner, repo)
 
-	req, err := s.client.NewRequest("PATCH", u, options)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var a *UpdateDefaultSetupConfigurationResponse
-	resp, err := s.client.Do(ctx, req, &a)
+	resp, err := s.client.Do(req, &a)
 	if err != nil {
 		return nil, resp, err
 	}

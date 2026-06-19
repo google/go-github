@@ -18,10 +18,10 @@ again.
 ## Reporting issues
 
 Bugs, feature requests, and development-related questions should be directed to
-our [GitHub issue tracker](https://github.com/google/go-github/issues).  If
+our [GitHub issue tracker](https://github.com/google/go-github/issues). If
 reporting a bug, please try and provide as much context as possible such as
 your operating system, Go version, and anything else that might be relevant to
-the bug.  For feature requests, please explain what you're trying to do, and
+the bug. For feature requests, please explain what you're trying to do, and
 how the requested feature would help you do that.
 
 Security related bugs can either be reported in the issue tracker, or if they
@@ -163,9 +163,9 @@ Every exported method and type needs to have code comments that follow
 //
 //meta:operation GET /repos/{owner}/{repo}
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
-    u := fmt.Sprintf("repos/%v/%v", owner, repo)
-    req, err := s.client.NewRequest("GET", u, nil)
-    ...
+	u := fmt.Sprintf("repos/%v/%v", owner, repo)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	// ...
 }
 ```
 And the returned type `Repository` will have comments like this:
@@ -173,10 +173,10 @@ And the returned type `Repository` will have comments like this:
 ```go
 // Repository represents a GitHub repository.
 type Repository struct {
-    ID     *int64  `json:"id,omitempty"`
-    NodeID *string `json:"node_id,omitempty"`
-    Owner  *User   `json:"owner,omitempty"`
-    ...
+	ID     *int64  `json:"id,omitempty"`
+	NodeID *string `json:"node_id,omitempty"`
+	Owner  *User   `json:"owner,omitempty"`
+	// ...
 }
 ```
 

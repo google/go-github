@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -366,14 +365,8 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
-		var v *PullRequestReviewRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -420,19 +413,16 @@ func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
 
 	path := "path/to/file.go"
 	body := "this is a comment body"
-	right := "RIGHT"
-	pos1 := 1
-	line1 := 11
 	badReview := &PullRequestReviewRequest{
 		Comments: []*DraftReviewComment{{
 			Path: &path,
 			Body: &body,
-			Side: &right,
-			Line: &line1,
+			Side: Ptr("RIGHT"),
+			Line: Ptr(11),
 		}, {
 			Path:     &path,
 			Body:     &body,
-			Position: &pos1,
+			Position: Ptr(1),
 		}},
 	}
 
@@ -470,14 +460,8 @@ func TestPullRequestsService_CreateReview_addHeader(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
-		var v *PullRequestReviewRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -534,14 +518,8 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/events", func(w http.ResponseWriter, r *http.Request) {
-		var v *PullRequestReviewRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -587,14 +565,8 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 	input := &PullRequestReviewDismissalRequest{Message: Ptr("m")}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/dismissals", func(w http.ResponseWriter, r *http.Request) {
-		var v *PullRequestReviewDismissalRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -631,160 +603,4 @@ func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {
 	ctx := t.Context()
 	_, _, err := client.PullRequests.DismissReview(ctx, "%", "r", 1, 1, &PullRequestReviewDismissalRequest{})
 	testURLParseError(t, err)
-}
-
-func TestPullRequestReviewDismissalRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestReviewDismissalRequest{}, "{}")
-
-	u := &PullRequestReviewDismissalRequest{
-		Message: Ptr("msg"),
-	}
-
-	want := `{
-		"message": "msg"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestDraftReviewComment_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &DraftReviewComment{}, "{}")
-
-	u := &DraftReviewComment{
-		Path:      Ptr("path"),
-		Position:  Ptr(1),
-		Body:      Ptr("body"),
-		StartSide: Ptr("ss"),
-		Side:      Ptr("side"),
-		StartLine: Ptr(1),
-		Line:      Ptr(1),
-	}
-
-	want := `{
-		"path": "path",
-		"position": 1,
-		"body": "body",
-		"start_side": "ss",
-		"side": "side",
-		"start_line": 1,
-		"line": 1
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestReviewRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestReviewRequest{}, "{}")
-
-	u := &PullRequestReviewRequest{
-		NodeID:   Ptr("nodeid"),
-		CommitID: Ptr("cid"),
-		Body:     Ptr("body"),
-		Event:    Ptr("event"),
-		Comments: []*DraftReviewComment{
-			{
-				Path:      Ptr("path"),
-				Position:  Ptr(1),
-				Body:      Ptr("body"),
-				StartSide: Ptr("ss"),
-				Side:      Ptr("side"),
-				StartLine: Ptr(1),
-				Line:      Ptr(1),
-			},
-		},
-	}
-
-	want := `{
-		"node_id": "nodeid",
-		"commit_id": "cid",
-		"body": "body",
-		"event": "event",
-		"comments": [
-			{
-				"path": "path",
-				"position": 1,
-				"body": "body",
-				"start_side": "ss",
-				"side": "side",
-				"start_line": 1,
-				"line": 1
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestReview_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestReview{}, "{}")
-
-	u := &PullRequestReview{
-		ID:     Ptr(int64(1)),
-		NodeID: Ptr("nid"),
-		User: &User{
-			Login:           Ptr("l"),
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("u"),
-			AvatarURL:       Ptr("a"),
-			GravatarID:      Ptr("g"),
-			Name:            Ptr("n"),
-			Company:         Ptr("c"),
-			Blog:            Ptr("b"),
-			Location:        Ptr("l"),
-			Email:           Ptr("e"),
-			Hireable:        Ptr(true),
-			Bio:             Ptr("b"),
-			TwitterUsername: Ptr("t"),
-			PublicRepos:     Ptr(1),
-			Followers:       Ptr(1),
-			Following:       Ptr(1),
-			CreatedAt:       &Timestamp{referenceTime},
-			SuspendedAt:     &Timestamp{referenceTime},
-		},
-		Body:              Ptr("body"),
-		SubmittedAt:       &Timestamp{referenceTime},
-		CommitID:          Ptr("cid"),
-		HTMLURL:           Ptr("hurl"),
-		PullRequestURL:    Ptr("prurl"),
-		State:             Ptr("state"),
-		AuthorAssociation: Ptr("aa"),
-	}
-
-	want := `{
-		"id": 1,
-		"node_id": "nid",
-		"user": {
-			"login": "l",
-			"id": 1,
-			"avatar_url": "a",
-			"gravatar_id": "g",
-			"name": "n",
-			"company": "c",
-			"blog": "b",
-			"location": "l",
-			"email": "e",
-			"hireable": true,
-			"bio": "b",
-			"twitter_username": "t",
-			"public_repos": 1,
-			"followers": 1,
-			"following": 1,
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `,
-			"url": "u"
-		},
-		"body": "body",
-		"submitted_at": ` + referenceTimeStr + `,
-		"commit_id": "cid",
-		"html_url": "hurl",
-		"pull_request_url": "prurl",
-		"state": "state",
-		"author_association": "aa"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

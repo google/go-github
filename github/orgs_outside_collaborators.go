@@ -37,13 +37,13 @@ func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var members []*User
-	resp, err := s.client.Do(ctx, req, &members)
+	resp, err := s.client.Do(req, &members)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -59,12 +59,12 @@ func (s *OrganizationsService) ListOutsideCollaborators(ctx context.Context, org
 //meta:operation DELETE /orgs/{org}/outside_collaborators/{username}
 func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/outside_collaborators/%v", org, user)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // ConvertMemberToOutsideCollaborator reduces the permission level of a member of the
@@ -78,10 +78,10 @@ func (s *OrganizationsService) RemoveOutsideCollaborator(ctx context.Context, or
 //meta:operation PUT /orgs/{org}/outside_collaborators/{username}
 func (s *OrganizationsService) ConvertMemberToOutsideCollaborator(ctx context.Context, org, user string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/outside_collaborators/%v", org, user)
-	req, err := s.client.NewRequest("PUT", u, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

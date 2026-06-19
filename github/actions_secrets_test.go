@@ -291,18 +291,23 @@ func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &EncryptedSecret{
 		Name:           "NAME",
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
 	}
+
+	mux.HandleFunc("/repos/o/r/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		want := EncryptedSecret{
+			EncryptedValue: "QIv=",
+			KeyID:          "1234",
+		}
+		testJSONBody(t, r, want)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
 	if err != nil {
@@ -473,13 +478,6 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv=","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &EncryptedSecret{
 		Name:                  "NAME",
 		EncryptedValue:        "QIv=",
@@ -487,6 +485,20 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 		Visibility:            "selected",
 		SelectedRepositoryIDs: SelectedRepoIDs{1296269, 1269280},
 	}
+
+	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		want := EncryptedSecret{
+			EncryptedValue:        "QIv=",
+			KeyID:                 "1234",
+			Visibility:            "selected",
+			SelectedRepositoryIDs: SelectedRepoIDs{1296269, 1269280},
+		}
+		testJSONBody(t, r, want)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.CreateOrUpdateOrgSecret(ctx, "o", input)
 	if err != nil {
@@ -553,26 +565,32 @@ func TestActionsService_SetSelectedReposForOrgSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := SelectedRepoIDs{64780797}
+
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
+		testJSONBody(t, r, struct {
+			SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
+		}{
+			SelectedIDs: input,
+		})
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{64780797})
+	_, err := client.Actions.SetSelectedReposForOrgSecret(ctx, "o", "NAME", input)
 	if err != nil {
 		t.Errorf("Actions.SetSelectedReposForOrgSecret returned error: %v", err)
 	}
 
 	const methodName = "SetSelectedReposForOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetSelectedReposForOrgSecret(ctx, "\n", "\n", SelectedRepoIDs{64780797})
+		_, err = client.Actions.SetSelectedReposForOrgSecret(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetSelectedReposForOrgSecret(ctx, "o", "NAME", SelectedRepoIDs{64780797})
+		return client.Actions.SetSelectedReposForOrgSecret(ctx, "o", "NAME", input)
 	})
 }
 
@@ -817,18 +835,23 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"key_id":"1234","encrypted_value":"QIv="}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &EncryptedSecret{
 		Name:           "secret",
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
 	}
+
+	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		want := EncryptedSecret{
+			EncryptedValue: "QIv=",
+			KeyID:          "1234",
+		}
+		testJSONBody(t, r, want)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.CreateOrUpdateEnvSecret(ctx, 1, "e", input)
 	if err != nil {
@@ -873,141 +896,4 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.DeleteEnvSecret(ctx, 1, "r", "secret")
 	})
-}
-
-func TestPublicKey_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PublicKey{}, `{
-		"key": null,
-		"key_id": null
-	}`)
-
-	u := &PublicKey{
-		KeyID: Ptr("kid"),
-		Key:   Ptr("k"),
-	}
-
-	want := `{
-		"key_id": "kid",
-		"key": "k"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestSecret_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Secret{}, `{
-		"name": "",
-		"created_at": "0001-01-01T00:00:00Z",
-		"updated_at": "0001-01-01T00:00:00Z"
-	}`)
-
-	u := &Secret{
-		Name:                    "n",
-		CreatedAt:               Timestamp{referenceTime},
-		UpdatedAt:               Timestamp{referenceTime},
-		Visibility:              "v",
-		SelectedRepositoriesURL: "s",
-	}
-
-	want := `{
-		"name": "n",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"visibility": "v",
-		"selected_repositories_url": "s"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestSecrets_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Secrets{}, `{
-		"total_count": 0,
-		"secrets": null
-	}`)
-
-	u := &Secrets{
-		TotalCount: 1,
-		Secrets: []*Secret{
-			{
-				Name:                    "n",
-				CreatedAt:               Timestamp{referenceTime},
-				UpdatedAt:               Timestamp{referenceTime},
-				Visibility:              "v",
-				SelectedRepositoriesURL: "s",
-			},
-		},
-	}
-
-	want := `{
-		"total_count": 1,
-		"secrets": [
-			{
-				"name": "n",
-				"created_at": ` + referenceTimeStr + `,
-				"updated_at": ` + referenceTimeStr + `,
-				"visibility": "v",
-				"selected_repositories_url": "s"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestEncryptedSecret_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &EncryptedSecret{}, `{
-		"key_id": "",
-		"encrypted_value": ""
-	}`)
-
-	u := &EncryptedSecret{
-		Name:                  "n",
-		KeyID:                 "kid",
-		EncryptedValue:        "e",
-		Visibility:            "v",
-		SelectedRepositoryIDs: []int64{1},
-	}
-
-	want := `{
-		"key_id": "kid",
-		"encrypted_value": "e",
-		"visibility": "v",
-		"selected_repository_ids": [1]
-	}`
-
-	testJSONMarshal(t, u, want, cmpIgnoreFieldOption("Name"))
-}
-
-func TestSelectedReposList_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SelectedReposList{}, "{}")
-
-	u := &SelectedReposList{
-		TotalCount: Ptr(1),
-		Repositories: []*Repository{
-			{
-				ID:   Ptr(int64(1)),
-				URL:  Ptr("u"),
-				Name: Ptr("n"),
-			},
-		},
-	}
-
-	want := `{
-		"total_count": 1,
-		"repositories": [
-			{
-				"id": 1,
-				"url": "u",
-				"name": "n"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
 }

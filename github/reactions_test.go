@@ -13,59 +13,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestReaction_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Reaction{}, "{}")
-
-	r := &Reaction{
-		ID:      Ptr(int64(1)),
-		User:    nil,
-		NodeID:  Ptr("n"),
-		Content: Ptr("+1"),
-	}
-
-	want := `{
-		"id": 1,
-		"node_id": "n",
-		"content": "+1"
-	}`
-
-	testJSONMarshal(t, r, want)
-}
-
-func TestReactions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Reactions{}, "{}")
-
-	r := &Reactions{
-		TotalCount: Ptr(1),
-		PlusOne:    Ptr(1),
-		MinusOne:   Ptr(1),
-		Laugh:      Ptr(1),
-		Confused:   Ptr(1),
-		Heart:      Ptr(1),
-		Hooray:     Ptr(1),
-		Rocket:     Ptr(1),
-		Eyes:       Ptr(1),
-		URL:        Ptr("u"),
-	}
-
-	want := `{
-		"total_count": 1,
-		"+1": 1,
-		"-1": 1,
-		"laugh": 1,
-		"confused": 1,
-		"heart": 1,
-		"hooray": 1,
-		"rocket": 1,
-		"eyes": 1,
-		"url": "u"
-	}`
-
-	testJSONMarshal(t, r, want)
-}
-
 func TestReactionsService_ListCommentReactions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -556,7 +503,7 @@ func TestReactionService_CreateTeamDiscussionCommentReaction(t *testing.T) {
 	})
 }
 
-func TestReactionsService_DeleteCommitCommentReaction(t *testing.T) {
+func TestReactionsService_DeleteCommentReaction(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -583,7 +530,7 @@ func TestReactionsService_DeleteCommitCommentReaction(t *testing.T) {
 	})
 }
 
-func TestReactionsService_DeleteCommitCommentReactionByRepoID(t *testing.T) {
+func TestReactionsService_DeleteCommentReactionByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -596,7 +543,7 @@ func TestReactionsService_DeleteCommitCommentReactionByRepoID(t *testing.T) {
 
 	ctx := t.Context()
 	if _, err := client.Reactions.DeleteCommentReactionByID(ctx, 1, 2, 3); err != nil {
-		t.Errorf("DeleteCommentReactionByRepoID returned error: %v", err)
+		t.Errorf("Reactions.DeleteCommentReactionByID returned error: %v", err)
 	}
 
 	const methodName = "DeleteCommentReactionByID"
@@ -650,7 +597,7 @@ func TestReactionsService_DeleteIssueReactionByRepoID(t *testing.T) {
 
 	ctx := t.Context()
 	if _, err := client.Reactions.DeleteIssueReactionByID(ctx, 1, 2, 3); err != nil {
-		t.Errorf("DeleteIssueReactionByRepoID returned error: %v", err)
+		t.Errorf("Reactions.DeleteIssueReactionByID returned error: %v", err)
 	}
 
 	const methodName = "DeleteIssueReactionByID"
@@ -691,7 +638,7 @@ func TestReactionsService_DeleteIssueCommentReaction(t *testing.T) {
 	})
 }
 
-func TestReactionsService_DeleteIssueCommentReactionByRepoID(t *testing.T) {
+func TestReactionsService_DeleteIssueCommentReactionByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -704,7 +651,7 @@ func TestReactionsService_DeleteIssueCommentReactionByRepoID(t *testing.T) {
 
 	ctx := t.Context()
 	if _, err := client.Reactions.DeleteIssueCommentReactionByID(ctx, 1, 2, 3); err != nil {
-		t.Errorf("DeleteIssueCommentReactionByRepoID returned error: %v", err)
+		t.Errorf("Reactions.DeleteIssueCommentReactionByID returned error: %v", err)
 	}
 
 	const methodName = "DeleteIssueCommentReactionByID"
@@ -745,7 +692,7 @@ func TestReactionsService_DeletePullRequestCommentReaction(t *testing.T) {
 	})
 }
 
-func TestReactionsService_DeletePullRequestCommentReactionByRepoID(t *testing.T) {
+func TestReactionsService_DeletePullRequestCommentReactionByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -758,7 +705,7 @@ func TestReactionsService_DeletePullRequestCommentReactionByRepoID(t *testing.T)
 
 	ctx := t.Context()
 	if _, err := client.Reactions.DeletePullRequestCommentReactionByID(ctx, 1, 2, 3); err != nil {
-		t.Errorf("DeletePullRequestCommentReactionByRepoID returned error: %v", err)
+		t.Errorf("Reactions.DeletePullRequestCommentReactionByID returned error: %v", err)
 	}
 
 	const methodName = "DeletePullRequestCommentReactionByID"
@@ -785,7 +732,7 @@ func TestReactionsService_DeleteTeamDiscussionReaction(t *testing.T) {
 
 	ctx := t.Context()
 	if _, err := client.Reactions.DeleteTeamDiscussionReaction(ctx, "o", "s", 1, 2); err != nil {
-		t.Errorf("DeleteTeamDiscussionReaction returned error: %v", err)
+		t.Errorf("Reactions.DeleteTeamDiscussionReaction returned error: %v", err)
 	}
 
 	const methodName = "DeleteTeamDiscussionReaction"
@@ -812,7 +759,7 @@ func TestReactionsService_DeleteTeamDiscussionReactionByTeamIDAndOrgID(t *testin
 
 	ctx := t.Context()
 	if _, err := client.Reactions.DeleteTeamDiscussionReactionByOrgIDAndTeamID(ctx, 1, 2, 3, 4); err != nil {
-		t.Errorf("DeleteTeamDiscussionReactionByTeamIDAndOrgID returned error: %v", err)
+		t.Errorf("Reactions.DeleteTeamDiscussionReactionByOrgIDAndTeamID returned error: %v", err)
 	}
 
 	const methodName = "DeleteTeamDiscussionReactionByOrgIDAndTeamID"
@@ -839,7 +786,7 @@ func TestReactionsService_DeleteTeamDiscussionCommentReaction(t *testing.T) {
 
 	ctx := t.Context()
 	if _, err := client.Reactions.DeleteTeamDiscussionCommentReaction(ctx, "o", "s", 1, 2, 3); err != nil {
-		t.Errorf("DeleteTeamDiscussionCommentReaction returned error: %v", err)
+		t.Errorf("Reactions.DeleteTeamDiscussionCommentReaction returned error: %v", err)
 	}
 
 	const methodName = "DeleteTeamDiscussionCommentReaction"
@@ -853,7 +800,7 @@ func TestReactionsService_DeleteTeamDiscussionCommentReaction(t *testing.T) {
 	})
 }
 
-func TestReactionsService_DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(t *testing.T) {
+func TestReactionsService_DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -866,7 +813,7 @@ func TestReactionsService_DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID(t 
 
 	ctx := t.Context()
 	if _, err := client.Reactions.DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID(ctx, 1, 2, 3, 4, 5); err != nil {
-		t.Errorf("DeleteTeamDiscussionCommentReactionByTeamIDAndOrgID returned error: %v", err)
+		t.Errorf("Reactions.DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID returned error: %v", err)
 	}
 
 	const methodName = "DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID"
@@ -1004,7 +951,7 @@ func TestReactionsService_DeleteReleaseReactionByRepoID(t *testing.T) {
 
 	ctx := t.Context()
 	if _, err := client.Reactions.DeleteReleaseReactionByID(ctx, 1, 2, 3); err != nil {
-		t.Errorf("DeleteReleaseReactionByRepoID returned error: %v", err)
+		t.Errorf("Reactions.DeleteReleaseReactionByID returned error: %v", err)
 	}
 
 	const methodName = "DeleteReleaseReactionByID"

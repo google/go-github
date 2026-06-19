@@ -9,13 +9,14 @@ package integration
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
 	"sync"
 	"testing"
 
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v88/github"
 )
 
 // client is a github.Client with the default http.Client. It is authorized if auth is true.
@@ -24,9 +25,18 @@ import (
 var client, auth = sync.OnceValues(func() (*github.Client, bool) {
 	token := os.Getenv("GITHUB_AUTH_TOKEN")
 	if token == "" {
-		return github.NewClient(nil), false
+		c, err := github.NewClient()
+		if err != nil {
+			log.Fatalf("Error creating GitHub client: %v", err)
+		}
+		return c, false
 	}
-	return github.NewClient(nil).WithAuthToken(token), true
+
+	c, err := github.NewClient(github.WithAuthToken(token))
+	if err != nil {
+		log.Fatalf("Error creating GitHub client with token: %v", err)
+	}
+	return c, true
 })()
 
 func skipIfMissingAuth(t *testing.T) {

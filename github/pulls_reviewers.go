@@ -37,13 +37,13 @@ type removeReviewersRequest struct {
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers
 func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo string, number int, reviewers ReviewersRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/requested_reviewers", owner, repo, number)
-	req, err := s.client.NewRequest("POST", u, &reviewers)
+	req, err := s.client.NewRequest(ctx, "POST", u, &reviewers)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *PullRequest
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -59,13 +59,13 @@ func (s *PullRequestsService) RequestReviewers(ctx context.Context, owner, repo 
 func (s *PullRequestsService) ListReviewers(ctx context.Context, owner, repo string, number int) (*Reviewers, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/requested_reviewers", owner, repo, number)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var reviewers *Reviewers
-	resp, err := s.client.Do(ctx, req, &reviewers)
+	resp, err := s.client.Do(req, &reviewers)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -90,10 +90,10 @@ func (s *PullRequestsService) RemoveReviewers(ctx context.Context, owner, repo s
 	}
 
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/requested_reviewers", owner, repo, number)
-	req, err := s.client.NewRequest("DELETE", u, &removeRequest)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, &removeRequest)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

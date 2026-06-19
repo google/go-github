@@ -8,19 +8,25 @@ Package github provides a client for using the GitHub API.
 
 Usage:
 
-	import "github.com/google/go-github/v85/github"
+	import "github.com/google/go-github/v88/github"
 
-Construct a new GitHub client, then use the various services on the client to
+Construct a new GitHub client using [NewClient], then use the various services on the client to
 access different parts of the GitHub API. For example:
 
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+	if err != nil {
+		// Handle error.
+	}
 
 	// list all organizations for user "willnorris"
 	orgs, _, err := client.Organizations.List(ctx, "willnorris", nil)
 
 Some API methods have optional parameters that can be passed. For example:
 
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+	if err != nil {
+		// Handle error.
+	}
 
 	// list public repositories for org "github"
 	opt := &github.RepositoryListByOrgOptions{Type: "public"}
@@ -39,11 +45,14 @@ For more sample code snippets, head over to the https://github.com/google/go-git
 
 # Authentication
 
-Use [Client.WithAuthToken] to configure your client to authenticate using an OAuth token
+Use [WithAuthToken] to configure your client to authenticate using an OAuth token
 (for example, a personal access token). This is what is needed for a majority of use cases
 aside from GitHub Apps.
 
-	client := github.NewClient(nil).WithAuthToken("... your access token ...")
+	client, err := github.NewClient(github.WithAuthToken("... your access token ..."))
+	if err != nil {
+		// Handle error.
+	}
 
 Note that when using an authenticated [Client], all calls made by the client will
 include the specified OAuth token. Therefore, authenticated clients should
@@ -55,7 +64,7 @@ For API methods that require HTTP Basic Authentication, use the
 GitHub Apps authentication can be provided by the
 https://github.com/bradleyfalzon/ghinstallation package.
 It supports both authentication as an installation, using an installation access token,
-and as an app, using a JWT.
+and as an app, using a JWT. Use the [WithTransport] option to configure your client to use the appropriate transport.
 
 To authenticate as an installation:
 
@@ -69,7 +78,10 @@ To authenticate as an installation:
 		}
 
 		// Use installation transport with client
-		client := github.NewClient(&http.Client{Transport: itr})
+		client, err := github.NewClient(github.WithTransport(itr))
+		if err != nil {
+			// Handle error.
+		}
 
 		// Use client...
 	}
@@ -86,7 +98,10 @@ To authenticate as an app, using a JWT:
 		}
 
 		// Use app transport with client
-		client := github.NewClient(&http.Client{Transport: atr})
+		client, err := github.NewClient(github.WithTransport(atr))
+		if err != nil {
+			// Handle error.
+		}
 
 		// Use client...
 	}
@@ -177,7 +192,10 @@ embedded type of a more specific list options struct (for example
 [PullRequestListOptions]). Pages information is available via the
 [Response] struct.
 
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+	if err != nil {
+		// Handle error.
+	}
 
 	opt := &github.RepositoryListByOrgOptions{
 		ListOptions: github.ListOptions{PerPage: 10},

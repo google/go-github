@@ -74,18 +74,18 @@ type ReleaseVersion struct {
 
 // CheckSystemRequirements checks if GHES system nodes meet the system requirements.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/manage-ghes#get-the-system-requirement-check-results-for-configured-cluster-nodes
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-system-requirement-check-results-for-configured-cluster-nodes
 //
 //meta:operation GET /manage/v1/checks/system-requirements
 func (s *EnterpriseService) CheckSystemRequirements(ctx context.Context) (*SystemRequirements, *Response, error) {
 	u := "manage/v1/checks/system-requirements"
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var systemRequirements *SystemRequirements
-	resp, err := s.client.Do(ctx, req, &systemRequirements)
+	resp, err := s.client.Do(req, &systemRequirements)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -95,18 +95,18 @@ func (s *EnterpriseService) CheckSystemRequirements(ctx context.Context) (*Syste
 
 // ClusterStatus gets the status of all services running on each cluster node.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/manage-ghes#get-the-status-of-services-running-on-all-cluster-nodes
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-status-of-services-running-on-all-cluster-nodes
 //
 //meta:operation GET /manage/v1/cluster/status
 func (s *EnterpriseService) ClusterStatus(ctx context.Context) (*ClusterStatus, *Response, error) {
 	u := "manage/v1/cluster/status"
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var clusterStatus *ClusterStatus
-	resp, err := s.client.Do(ctx, req, &clusterStatus)
+	resp, err := s.client.Do(req, &clusterStatus)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -116,7 +116,7 @@ func (s *EnterpriseService) ClusterStatus(ctx context.Context) (*ClusterStatus, 
 
 // ReplicationStatus gets the status of all services running on each replica node.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/manage-ghes#get-the-status-of-services-running-on-all-replica-nodes
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-status-of-services-running-on-all-replica-nodes
 //
 //meta:operation GET /manage/v1/replication/status
 func (s *EnterpriseService) ReplicationStatus(ctx context.Context, opts *NodeQueryOptions) (*ClusterStatus, *Response, error) {
@@ -124,13 +124,13 @@ func (s *EnterpriseService) ReplicationStatus(ctx context.Context, opts *NodeQue
 	if err != nil {
 		return nil, nil, err
 	}
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var status *ClusterStatus
-	resp, err := s.client.Do(ctx, req, &status)
+	resp, err := s.client.Do(req, &status)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -140,7 +140,7 @@ func (s *EnterpriseService) ReplicationStatus(ctx context.Context, opts *NodeQue
 
 // GetNodeReleaseVersions gets the version information deployed to each node.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/manage-ghes#get-all-ghes-release-versions-for-all-nodes
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-all-ghes-release-versions-for-all-nodes
 //
 //meta:operation GET /manage/v1/version
 func (s *EnterpriseService) GetNodeReleaseVersions(ctx context.Context, opts *NodeQueryOptions) ([]*NodeReleaseVersion, *Response, error) {
@@ -148,13 +148,13 @@ func (s *EnterpriseService) GetNodeReleaseVersions(ctx context.Context, opts *No
 	if err != nil {
 		return nil, nil, err
 	}
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var releaseVersions []*NodeReleaseVersion
-	resp, err := s.client.Do(ctx, req, &releaseVersions)
+	resp, err := s.client.Do(req, &releaseVersions)
 	if err != nil {
 		return nil, resp, err
 	}

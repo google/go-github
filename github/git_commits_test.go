@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -35,96 +34,6 @@ func uncalledSigner(t *testing.T) MessageSignerFunc {
 		t.Error("MessageSignerFunc should not be called")
 		return nil
 	}
-}
-
-func TestCommit_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Commit{}, "{}")
-
-	u := &Commit{
-		SHA: Ptr("s"),
-		Author: &CommitAuthor{
-			Date:  &Timestamp{referenceTime},
-			Name:  Ptr("n"),
-			Email: Ptr("e"),
-			Login: Ptr("u"),
-		},
-		Committer: &CommitAuthor{
-			Date:  &Timestamp{referenceTime},
-			Name:  Ptr("n"),
-			Email: Ptr("e"),
-			Login: Ptr("u"),
-		},
-		Message: Ptr("m"),
-		Tree: &Tree{
-			SHA: Ptr("s"),
-			Entries: []*TreeEntry{{
-				SHA:     Ptr("s"),
-				Path:    Ptr("p"),
-				Mode:    Ptr("m"),
-				Type:    Ptr("t"),
-				Size:    Ptr(1),
-				Content: Ptr("c"),
-				URL:     Ptr("u"),
-			}},
-			Truncated: Ptr(false),
-		},
-		Parents: nil,
-		HTMLURL: Ptr("h"),
-		URL:     Ptr("u"),
-		Verification: &SignatureVerification{
-			Verified:  Ptr(false),
-			Reason:    Ptr("r"),
-			Signature: Ptr("s"),
-			Payload:   Ptr("p"),
-		},
-		NodeID:       Ptr("n"),
-		CommentCount: Ptr(1),
-	}
-
-	want := `{
-		"sha": "s",
-		"author": {
-			"date": ` + referenceTimeStr + `,
-			"name": "n",
-			"email": "e",
-			"username": "u"
-		},
-		"committer": {
-			"date": ` + referenceTimeStr + `,
-			"name": "n",
-			"email": "e",
-			"username": "u"
-		},
-		"message": "m",
-		"tree": {
-			"sha": "s",
-			"tree": [
-				{
-					"sha": "s",
-					"path": "p",
-					"mode": "m",
-					"type": "t",
-					"size": 1,
-					"content": "c",
-					"url": "u"
-				}
-			],
-			"truncated": false
-		},
-		"html_url": "h",
-		"url": "u",
-		"verification": {
-			"verified": false,
-			"reason": "r",
-			"signature": "s",
-			"payload": "p"
-		},
-		"node_id": "n",
-		"comment_count": 1
-	}`
-
-	testJSONMarshal(t, u, want)
 }
 
 func TestGitService_GetCommit(t *testing.T) {
@@ -182,19 +91,13 @@ func TestGitService_CreateCommit(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
-		var v *createCommit
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-
-		want := &createCommit{
+		want := createCommit{
 			Message: input.Message,
-			Tree:    Ptr("t"),
-			Parents: []string{"p"},
+			Tree:    input.Tree.SHA,
+			Parents: []string{*input.Parents[0].SHA},
 		}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"sha":"s"}`)
 	})
 
@@ -228,32 +131,29 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	signature := "----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"
-
 	input := Commit{
 		Message: Ptr("Commit Message."),
 		Tree:    &Tree{SHA: Ptr("t")},
 		Parents: []*Commit{{SHA: Ptr("p")}},
 		Verification: &SignatureVerification{
-			Signature: &signature,
+			Signature: Ptr("----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"),
 		},
 	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
-		var v *createCommit
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-
-		want := &createCommit{
+		want := struct {
+			Message   *string  `json:"message,omitempty"`
+			Tree      *string  `json:"tree,omitempty"`
+			Parents   []string `json:"parents,omitempty"`
+			Signature *string  `json:"signature,omitempty"`
+		}{
 			Message:   input.Message,
-			Tree:      Ptr("t"),
-			Parents:   []string{"p"},
-			Signature: &signature,
+			Tree:      input.Tree.SHA,
+			Parents:   []string{*input.Parents[0].SHA},
+			Signature: input.Verification.Signature,
 		}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"sha":"commitSha"}`)
 	})
 
@@ -322,17 +222,16 @@ Commit Message.`
 		Parents: []*Commit{{SHA: Ptr("p")}},
 		Author:  &author,
 	}
-	wantBody := createCommit{
+	wantBody := &createCommit{
 		Message:   input.Message,
 		Tree:      Ptr("t"),
 		Parents:   []string{"p"},
 		Author:    &author,
 		Signature: &signature,
 	}
-	var gotBody createCommit
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&gotBody))
 		testMethod(t, r, "POST")
+		testJSONBody(t, r, wantBody)
 		fmt.Fprintf(w, `{"sha":"%v"}`, sha)
 	})
 	ctx := t.Context()
@@ -340,9 +239,6 @@ Commit Message.`
 	opts := CreateCommitOptions{Signer: mockSigner(t, signature, nil, wantMessage)}
 	commit, _, err := client.Git.CreateCommit(ctx, "o", "r", input, &opts)
 	assertNilError(t, err)
-	if cmp.Diff(gotBody, wantBody) != "" {
-		t.Errorf("Request body = %+v, want %+v\n%v", gotBody, wantBody, cmp.Diff(gotBody, wantBody))
-	}
 	if cmp.Diff(commit, wantCommit) != "" {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v\n%v", commit, wantCommit, cmp.Diff(commit, wantCommit))
 	}
@@ -418,9 +314,8 @@ func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
 func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
 	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
-	emptyString := ""
 	_, err := createSignatureMessage(&createCommit{
-		Message: &emptyString,
+		Message: Ptr(""),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
 			Name:  Ptr("go-github"),
@@ -503,93 +398,4 @@ func TestGitService_CreateCommit_invalidOwner(t *testing.T) {
 	ctx := t.Context()
 	_, _, err := client.Git.CreateCommit(ctx, "%", "%", Commit{}, nil)
 	testURLParseError(t, err)
-}
-
-func TestSignatureVerification_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SignatureVerification{}, "{}")
-
-	u := &SignatureVerification{
-		Verified:  Ptr(true),
-		Reason:    Ptr("reason"),
-		Signature: Ptr("sign"),
-		Payload:   Ptr("payload"),
-	}
-
-	want := `{
-		"verified": true,
-		"reason": "reason",
-		"signature": "sign",
-		"payload": "payload"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCommitAuthor_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CommitAuthor{}, "{}")
-
-	u := &CommitAuthor{
-		Date:  &Timestamp{referenceTime},
-		Name:  Ptr("name"),
-		Email: Ptr("email"),
-		Login: Ptr("login"),
-	}
-
-	want := `{
-		"date": ` + referenceTimeStr + `,
-		"name": "name",
-		"email": "email",
-		"username": "login"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCreateCommit_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &createCommit{}, "{}")
-
-	u := &createCommit{
-		Author: &CommitAuthor{
-			Date:  &Timestamp{referenceTime},
-			Name:  Ptr("name"),
-			Email: Ptr("email"),
-			Login: Ptr("login"),
-		},
-		Committer: &CommitAuthor{
-			Date:  &Timestamp{referenceTime},
-			Name:  Ptr("name"),
-			Email: Ptr("email"),
-			Login: Ptr("login"),
-		},
-		Message:   Ptr("message"),
-		Tree:      Ptr("tree"),
-		Parents:   []string{"p"},
-		Signature: Ptr("sign"),
-	}
-
-	want := `{
-		"author": {
-			"date": ` + referenceTimeStr + `,
-			"name": "name",
-			"email": "email",
-			"username": "login"
-		},
-		"committer": {
-			"date": ` + referenceTimeStr + `,
-			"name": "name",
-			"email": "email",
-			"username": "login"
-		},
-		"message": "message",
-		"tree": "tree",
-		"parents": [
-			"p"
-		],
-		"signature": "sign"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

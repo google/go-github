@@ -106,16 +106,16 @@ type DependencyGraphSnapshotCreationData struct {
 // GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/dependency-graph/snapshots
-func (s *DependencyGraphService) CreateSnapshot(ctx context.Context, owner, repo string, dependencyGraphSnapshot *DependencyGraphSnapshot) (*DependencyGraphSnapshotCreationData, *Response, error) {
+func (s *DependencyGraphService) CreateSnapshot(ctx context.Context, owner, repo string, body *DependencyGraphSnapshot) (*DependencyGraphSnapshotCreationData, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependency-graph/snapshots", owner, repo)
 
-	req, err := s.client.NewRequest("POST", url, dependencyGraphSnapshot)
+	req, err := s.client.NewRequest(ctx, "POST", url, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var snapshotCreationData *DependencyGraphSnapshotCreationData
-	resp, err := s.client.Do(ctx, req, &snapshotCreationData)
+	resp, err := s.client.Do(req, &snapshotCreationData)
 	if err != nil {
 		return nil, resp, err
 	}

@@ -13,8 +13,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/google/go-github/v85/github"
-	"github.com/google/go-github/v85/otel"
+	"github.com/google/go-github/otel/v88"
+	"github.com/google/go-github/v88/github"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/sdk/trace"
 )
@@ -35,15 +35,16 @@ func main() {
 		}
 	}()
 
-	// Configure HTTP client with OTel transport
-	httpClient := &http.Client{
-		Transport: otel.NewTransport(
-			http.DefaultTransport,
-			otel.WithTracerProvider(tp),
-		),
-	}
+	// Configure OTel transport
+	t := otel.NewTransport(
+		http.DefaultTransport,
+		otel.WithTracerProvider(tp),
+	)
 
-	client := github.NewClient(httpClient)
+	client, err := github.NewClient(github.WithTransport(t))
+	if err != nil {
+		log.Fatalf("Error creating GitHub client: %v", err)
+	}
 
 	// Make a request (Get Rate Limits is public and cheap)
 	limits, resp, err := client.RateLimit.Get(context.Background())

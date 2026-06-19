@@ -112,15 +112,15 @@ type ArtifactStorageResponse struct {
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata?apiVersion=2022-11-28#create-an-artifact-deployment-record
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/deployment-record
-func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Context, org string, record CreateArtifactDeploymentRequest) (*ArtifactDeploymentResponse, *Response, error) {
+func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Context, org string, body CreateArtifactDeploymentRequest) (*ArtifactDeploymentResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/metadata/deployment-record", org)
-	req, err := s.client.NewRequest("POST", u, record)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var v *ArtifactDeploymentResponse
-	resp, err := s.client.Do(ctx, req, &v)
+	resp, err := s.client.Do(req, &v)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -133,15 +133,15 @@ func (s *OrganizationsService) CreateArtifactDeploymentRecord(ctx context.Contex
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata?apiVersion=2022-11-28#set-cluster-deployment-records
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}
-func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, org, cluster string, request ClusterDeploymentRecordsRequest) (*ArtifactDeploymentResponse, *Response, error) {
+func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, org, cluster string, body ClusterDeploymentRecordsRequest) (*ArtifactDeploymentResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/metadata/deployment-record/cluster/%v", org, cluster)
-	req, err := s.client.NewRequest("POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var v *ArtifactDeploymentResponse
-	resp, err := s.client.Do(ctx, req, &v)
+	resp, err := s.client.Do(req, &v)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -154,15 +154,15 @@ func (s *OrganizationsService) SetClusterDeploymentRecords(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/orgs/artifact-metadata?apiVersion=2022-11-28#create-artifact-metadata-storage-record
 //
 //meta:operation POST /orgs/{org}/artifacts/metadata/storage-record
-func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, org string, record CreateArtifactStorageRequest) (*ArtifactStorageResponse, *Response, error) {
+func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, org string, body CreateArtifactStorageRequest) (*ArtifactStorageResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/metadata/storage-record", org)
-	req, err := s.client.NewRequest("POST", u, record)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var v *ArtifactStorageResponse
-	resp, err := s.client.Do(ctx, req, &v)
+	resp, err := s.client.Do(req, &v)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -180,13 +180,13 @@ func (s *OrganizationsService) CreateArtifactStorageRecord(ctx context.Context, 
 func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context, org, subjectDigest string) (*ArtifactDeploymentResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/%v/metadata/deployment-records", org, subjectDigest)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var v *ArtifactDeploymentResponse
-	resp, err := s.client.Do(ctx, req, &v)
+	resp, err := s.client.Do(req, &v)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -204,13 +204,13 @@ func (s *OrganizationsService) ListArtifactDeploymentRecords(ctx context.Context
 func (s *OrganizationsService) ListArtifactStorageRecords(ctx context.Context, org, subjectDigest string) (*ArtifactStorageResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/artifacts/%v/metadata/storage-records", org, subjectDigest)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var v *ArtifactStorageResponse
-	resp, err := s.client.Do(ctx, req, &v)
+	resp, err := s.client.Do(req, &v)
 	if err != nil {
 		return nil, resp, err
 	}

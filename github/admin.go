@@ -82,18 +82,18 @@ func (m Enterprise) String() string {
 
 // UpdateUserLDAPMapping updates the mapping between a GitHub user and an LDAP user.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-user
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-user
 //
 //meta:operation PATCH /admin/ldap/users/{username}/mapping
-func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, mapping *UserLDAPMapping) (*UserLDAPMapping, *Response, error) {
+func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, body *UserLDAPMapping) (*UserLDAPMapping, *Response, error) {
 	u := fmt.Sprintf("admin/ldap/users/%v/mapping", user)
-	req, err := s.client.NewRequest("PATCH", u, mapping)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var m *UserLDAPMapping
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -103,18 +103,18 @@ func (s *AdminService) UpdateUserLDAPMapping(ctx context.Context, user string, m
 
 // UpdateTeamLDAPMapping updates the mapping between a GitHub team and an LDAP group.
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-team
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/ldap#update-ldap-mapping-for-a-team
 //
 //meta:operation PATCH /admin/ldap/teams/{team_id}/mapping
-func (s *AdminService) UpdateTeamLDAPMapping(ctx context.Context, team int64, mapping *TeamLDAPMapping) (*TeamLDAPMapping, *Response, error) {
+func (s *AdminService) UpdateTeamLDAPMapping(ctx context.Context, team int64, body *TeamLDAPMapping) (*TeamLDAPMapping, *Response, error) {
 	u := fmt.Sprintf("admin/ldap/teams/%v/mapping", team)
-	req, err := s.client.NewRequest("PATCH", u, mapping)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var m *TeamLDAPMapping
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

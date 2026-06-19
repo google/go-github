@@ -107,7 +107,7 @@ func TestMigrationService_MigrationStatus(t *testing.T) {
 	ctx := t.Context()
 	got, _, err := client.Migrations.MigrationStatus(ctx, "o", 1)
 	if err != nil {
-		t.Errorf("MigrationStatus returned error: %v", err)
+		t.Errorf("Migrations.MigrationStatus returned error: %v", err)
 	}
 	if want := wantMigration; !cmp.Equal(got, want) {
 		t.Errorf("MigrationStatus = %+v, want %+v", got, want)
@@ -148,7 +148,7 @@ func TestMigrationService_MigrationArchiveURL_Redirect(t *testing.T) {
 	ctx := t.Context()
 	got, err := client.Migrations.MigrationArchiveURL(ctx, "o", 1)
 	if err != nil {
-		t.Errorf("MigrationStatus returned error: %v", err)
+		t.Errorf("Migrations.MigrationArchiveURL returned error: %v", err)
 	}
 	if want := "/yo"; !strings.HasSuffix(got, want) {
 		t.Errorf("MigrationArchiveURL = %+v, want %+v", got, want)
@@ -273,60 +273,4 @@ var wantMigration = &Migration{
 			Description: Ptr("This your first repo!"),
 		},
 	},
-}
-
-func TestMigration_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Migration{}, "{}")
-
-	u := &Migration{
-		ID:                 Ptr(int64(1)),
-		GUID:               Ptr("guid"),
-		State:              Ptr("state"),
-		LockRepositories:   Ptr(false),
-		ExcludeAttachments: Ptr(false),
-		URL:                Ptr("url"),
-		CreatedAt:          Ptr("ca"),
-		UpdatedAt:          Ptr("ua"),
-		Repositories:       []*Repository{{ID: Ptr(int64(1))}},
-	}
-
-	want := `{
-		"id": 1,
-		"guid": "guid",
-		"state": "state",
-		"lock_repositories": false,
-		"exclude_attachments": false,
-		"url": "url",
-		"created_at": "ca",
-		"updated_at": "ua",
-		"repositories": [
-			{
-				"id": 1
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestStartMigration_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &startMigration{}, "{}")
-
-	u := &startMigration{
-		Repositories:       []string{"r"},
-		LockRepositories:   Ptr(false),
-		ExcludeAttachments: Ptr(false),
-	}
-
-	want := `{
-		"repositories": [
-			"r"
-		],
-		"lock_repositories": false,
-		"exclude_attachments": false
-	}`
-
-	testJSONMarshal(t, u, want)
 }

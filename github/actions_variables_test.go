@@ -144,17 +144,18 @@ func TestActionsService_CreateRepoVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/variables", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE"}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &ActionsVariable{
 		Name:  "NAME",
 		Value: "VALUE",
 	}
+
+	mux.HandleFunc("/repos/o/r/actions/variables", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.CreateRepoVariable(ctx, "o", "r", input)
 	if err != nil {
@@ -176,17 +177,18 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE"}`+"\n")
-		w.WriteHeader(http.StatusNoContent)
-	})
-
 	input := &ActionsVariable{
 		Name:  "NAME",
 		Value: "VALUE",
 	}
+
+	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.UpdateRepoVariable(ctx, "o", "r", input)
 	if err != nil {
@@ -219,7 +221,7 @@ func TestActionsService_DeleteRepoVariable(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Actions.DeleteRepoVariable(ctx, "o", "r", "NAME")
 	if err != nil {
-		t.Errorf("Actions.( returned error: %v", err)
+		t.Errorf("Actions.DeleteRepoVariable returned error: %v", err)
 	}
 
 	const methodName = "DeleteRepoVariable"
@@ -323,19 +325,20 @@ func TestActionsService_CreateOrgVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/variables", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &ActionsVariable{
 		Name:                  "NAME",
 		Value:                 "VALUE",
 		Visibility:            Ptr("selected"),
 		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
+
+	mux.HandleFunc("/orgs/o/actions/variables", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.CreateOrgVariable(ctx, "o", input)
 	if err != nil {
@@ -357,19 +360,20 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"NAME","value":"VALUE","visibility":"selected","selected_repository_ids":[1296269,1269280]}`+"\n")
-		w.WriteHeader(http.StatusNoContent)
-	})
-
 	input := &ActionsVariable{
 		Name:                  "NAME",
 		Value:                 "VALUE",
 		Visibility:            Ptr("selected"),
 		SelectedRepositoryIDs: &SelectedRepoIDs{1296269, 1269280},
 	}
+
+	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.UpdateOrgVariable(ctx, "o", input)
 	if err != nil {
@@ -404,7 +408,7 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 	ctx := t.Context()
 	repos, _, err := client.Actions.ListSelectedReposForOrgVariable(ctx, "o", "NAME", opts)
 	if err != nil {
-		t.Errorf("Actions.( returned error: %v", err)
+		t.Errorf("Actions.ListSelectedReposForOrgVariable returned error: %v", err)
 	}
 
 	want := &SelectedReposList{
@@ -414,7 +418,7 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(repos, want) {
-		t.Errorf("Actions.( returned %+v, want %+v", repos, want)
+		t.Errorf("Actions.ListSelectedReposForOrgVariable returned %+v, want %+v", repos, want)
 	}
 
 	const methodName = "ListSelectedReposForOrgVariable"
@@ -432,30 +436,36 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 	})
 }
 
-func TestActionsService_SetSelectedReposForOrgSVariable(t *testing.T) {
+func TestActionsService_SetSelectedReposForOrgVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
+
+	input := SelectedRepoIDs{64780797}
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME/repositories", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"selected_repository_ids":[64780797]}`+"\n")
+		testJSONBody(t, r, struct {
+			SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
+		}{
+			SelectedIDs: input,
+		})
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.SetSelectedReposForOrgVariable(ctx, "o", "NAME", SelectedRepoIDs{64780797})
+	_, err := client.Actions.SetSelectedReposForOrgVariable(ctx, "o", "NAME", input)
 	if err != nil {
-		t.Errorf("Actions.( returned error: %v", err)
+		t.Errorf("Actions.SetSelectedReposForOrgVariable returned error: %v", err)
 	}
 
 	const methodName = "SetSelectedReposForOrgVariable"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetSelectedReposForOrgVariable(ctx, "\n", "\n", SelectedRepoIDs{64780797})
+		_, err = client.Actions.SetSelectedReposForOrgVariable(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetSelectedReposForOrgVariable(ctx, "o", "NAME", SelectedRepoIDs{64780797})
+		return client.Actions.SetSelectedReposForOrgVariable(ctx, "o", "NAME", input)
 	})
 }
 
@@ -639,17 +649,18 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/usr/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"variable","value":"VAR"}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &ActionsVariable{
 		Name:  "variable",
 		Value: "VAR",
 	}
+
+	mux.HandleFunc("/repos/usr/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.CreateEnvVariable(ctx, "usr", "1", "e", input)
 	if err != nil {
@@ -671,17 +682,18 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PATCH")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"name":"variable","value":"VAR"}`+"\n")
-		w.WriteHeader(http.StatusNoContent)
-	})
-
 	input := &ActionsVariable{
 		Name:  "variable",
 		Value: "VAR",
 	}
+
+	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PATCH")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.UpdateEnvVariable(ctx, "usr", "1", "e", input)
 	if err != nil {
@@ -726,34 +738,4 @@ func TestActionsService_DeleteEnvVariable(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.DeleteEnvVariable(ctx, "usr", "1", "r", "variable")
 	})
-}
-
-func TestActionVariable_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ActionsVariable{}, `{
-		"name": "",
-		"value": ""
-	}`)
-
-	av := &ActionsVariable{
-		Name:                    "n",
-		Value:                   "v",
-		CreatedAt:               &Timestamp{referenceTime},
-		UpdatedAt:               &Timestamp{referenceTime},
-		Visibility:              Ptr("v"),
-		SelectedRepositoriesURL: Ptr("s"),
-		SelectedRepositoryIDs:   &SelectedRepoIDs{1, 2, 3},
-	}
-
-	want := fmt.Sprintf(`{
-		"name": "n",
-		"value": "v",
-		"created_at": %v,
-		"updated_at": %v,
-		"visibility": "v",
-		"selected_repositories_url": "s",
-		"selected_repository_ids": [1,2,3]
-	}`, referenceTimeStr, referenceTimeStr)
-
-	testJSONMarshal(t, av, want)
 }

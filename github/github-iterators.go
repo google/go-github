@@ -2857,6 +2857,41 @@ func (s *EnterpriseService) ListCodeSecurityConfigurationsIter(ctx context.Conte
 	}
 }
 
+// ListConsumedLicensesIter returns an iterator that paginates through all results of ListConsumedLicenses.
+func (s *EnterpriseService) ListConsumedLicensesIter(ctx context.Context, enterprise string, opts *ListOptions) iter.Seq2[*EnterpriseLicensedUsers, error] {
+	return func(yield func(*EnterpriseLicensedUsers, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListConsumedLicenses(ctx, enterprise, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*EnterpriseLicensedUsers
+			if results != nil {
+				iterItems = results.Users
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListEnterpriseNetworkConfigurationsIter returns an iterator that paginates through all results of ListEnterpriseNetworkConfigurations.
 func (s *EnterpriseService) ListEnterpriseNetworkConfigurationsIter(ctx context.Context, enterprise string, opts *ListOptions) iter.Seq2[*NetworkConfiguration, error] {
 	return func(yield func(*NetworkConfiguration, error) bool) {
@@ -4041,6 +4076,37 @@ func (s *OrganizationsService) ListIter(ctx context.Context, user string, opts *
 
 		for {
 			results, resp, err := s.List(ctx, user, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListAllRepositoryRulesetsIter returns an iterator that paginates through all results of ListAllRepositoryRulesets.
+func (s *OrganizationsService) ListAllRepositoryRulesetsIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*RepositoryRuleset, error] {
+	return func(yield func(*RepositoryRuleset, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListAllRepositoryRulesets(ctx, org, opts)
 			if err != nil {
 				yield(nil, err)
 				return
@@ -6778,17 +6844,17 @@ func (s *TeamsService) ListChildTeamsByParentSlugIter(ctx context.Context, org s
 }
 
 // ListCommentsByIDIter returns an iterator that paginates through all results of ListCommentsByID.
-func (s *TeamsService) ListCommentsByIDIter(ctx context.Context, orgID int64, teamID int64, discussionNumber int, options *DiscussionCommentListOptions) iter.Seq2[*DiscussionComment, error] {
+func (s *TeamsService) ListCommentsByIDIter(ctx context.Context, orgID int64, teamID int64, discussionNumber int, opts *DiscussionCommentListOptions) iter.Seq2[*DiscussionComment, error] {
 	return func(yield func(*DiscussionComment, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
-		if options == nil {
-			options = &DiscussionCommentListOptions{}
+		if opts == nil {
+			opts = &DiscussionCommentListOptions{}
 		} else {
-			options = Ptr(*options)
+			opts = Ptr(*opts)
 		}
 
 		for {
-			results, resp, err := s.ListCommentsByID(ctx, orgID, teamID, discussionNumber, options)
+			results, resp, err := s.ListCommentsByID(ctx, orgID, teamID, discussionNumber, opts)
 			if err != nil {
 				yield(nil, err)
 				return
@@ -6803,23 +6869,23 @@ func (s *TeamsService) ListCommentsByIDIter(ctx context.Context, orgID int64, te
 			if resp.NextPage == 0 {
 				break
 			}
-			options.ListOptions.Page = resp.NextPage
+			opts.ListOptions.Page = resp.NextPage
 		}
 	}
 }
 
 // ListCommentsBySlugIter returns an iterator that paginates through all results of ListCommentsBySlug.
-func (s *TeamsService) ListCommentsBySlugIter(ctx context.Context, org string, slug string, discussionNumber int, options *DiscussionCommentListOptions) iter.Seq2[*DiscussionComment, error] {
+func (s *TeamsService) ListCommentsBySlugIter(ctx context.Context, org string, slug string, discussionNumber int, opts *DiscussionCommentListOptions) iter.Seq2[*DiscussionComment, error] {
 	return func(yield func(*DiscussionComment, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
-		if options == nil {
-			options = &DiscussionCommentListOptions{}
+		if opts == nil {
+			opts = &DiscussionCommentListOptions{}
 		} else {
-			options = Ptr(*options)
+			opts = Ptr(*opts)
 		}
 
 		for {
-			results, resp, err := s.ListCommentsBySlug(ctx, org, slug, discussionNumber, options)
+			results, resp, err := s.ListCommentsBySlug(ctx, org, slug, discussionNumber, opts)
 			if err != nil {
 				yield(nil, err)
 				return
@@ -6834,7 +6900,7 @@ func (s *TeamsService) ListCommentsBySlugIter(ctx context.Context, org string, s
 			if resp.NextPage == 0 {
 				break
 			}
-			options.ListOptions.Page = resp.NextPage
+			opts.ListOptions.Page = resp.NextPage
 		}
 	}
 }

@@ -51,6 +51,16 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 			wantRule:  []*RequiredReviewer{{Type: nil, Reviewer: nil}},
 			wantError: true,
 		},
+		"Missing Type in Reviewer Object": {
+			data:      []byte(`[{"reviewer": {"id": 1}}]`),
+			wantRule:  []*RequiredReviewer{{Type: nil, Reviewer: nil}},
+			wantError: true,
+		},
+		"Null Type in Reviewer Object": {
+			data:      []byte(`[{"type": null, "reviewer": {"id": 1}}]`),
+			wantRule:  []*RequiredReviewer{{Type: nil, Reviewer: nil}},
+			wantError: true,
+		},
 		"Wrong ID Type in User Object": {
 			data:      []byte(`[{"type": "User", "reviewer": {"id": "string"}}]`),
 			wantRule:  []*RequiredReviewer{{Type: Ptr("User"), Reviewer: nil}},
@@ -88,17 +98,11 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 
 func TestCreateUpdateEnvironment_MarshalJSON(t *testing.T) {
 	t.Parallel()
-	cu := &CreateUpdateEnvironment{}
-
-	got, err := cu.MarshalJSON()
-	if err != nil {
-		t.Errorf("MarshalJSON: %v", err)
-	}
+	cu := CreateUpdateEnvironment{}
 
 	want := `{"wait_timer":0,"reviewers":null,"can_admins_bypass":true,"deployment_branch_policy":null}`
-	if string(got) != want {
-		t.Errorf("MarshalJSON = %v, want %v", got, want)
-	}
+	testJSONMarshalOnly(t, cu, want)
+	testJSONMarshalOnly(t, &cu, want)
 }
 
 func TestRepositoriesService_ListEnvironments(t *testing.T) {
@@ -185,14 +189,9 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateUpdateEnvironment
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
 		want := &CreateUpdateEnvironment{WaitTimer: Ptr(30), CanAdminsBypass: Ptr(true)}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "type": "wait_timer", "wait_timer": 30}]}`)
 	})
 
@@ -230,18 +229,13 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 	callCount := 0
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateUpdateEnvironment
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
 		if callCount == 0 {
 			w.WriteHeader(http.StatusUnprocessableEntity)
 			callCount++
 		} else {
 			want := &CreateUpdateEnvironment{}
-			if !cmp.Equal(v, want) {
-				t.Errorf("Request body = %+v, want %+v", v, want)
-			}
+			testJSONBody(t, r, want)
 			fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": []}`)
 		}
 	})
@@ -270,19 +264,8 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
-		var v *createUpdateEnvironmentNoEnterprise
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		want := &createUpdateEnvironmentNoEnterprise{
-			DeploymentBranchPolicy: &BranchPolicy{
-				ProtectedBranches:    Ptr(true),
-				CustomBranchPolicies: Ptr(false),
-			},
-		}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "node_id": "id", "type": "branch_policy"}], "deployment_branch_policy": {"protected_branches": true, "custom_branch_policies": false}}`)
 	})
 
@@ -349,206 +332,4 @@ func TestRepositoriesService_DeleteEnvironment(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Repositories.DeleteEnvironment(ctx, "o", "r", "e")
 	})
-}
-
-func TestRepoEnvironment_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &EnvResponse{}, "{}")
-
-	repoEnv := &EnvResponse{
-		TotalCount: Ptr(1),
-		Environments: []*Environment{
-			{
-				Owner:           Ptr("me"),
-				Repo:            Ptr("se"),
-				EnvironmentName: Ptr("dev"),
-				WaitTimer:       Ptr(123),
-				Reviewers: []*EnvReviewers{
-					{
-						Type: Ptr("main"),
-						ID:   Ptr(int64(1)),
-					},
-					{
-						Type: Ptr("rev"),
-						ID:   Ptr(int64(2)),
-					},
-				},
-				DeploymentBranchPolicy: &BranchPolicy{
-					ProtectedBranches:    Ptr(false),
-					CustomBranchPolicies: Ptr(false),
-				},
-				ID:        Ptr(int64(2)),
-				NodeID:    Ptr("star"),
-				Name:      Ptr("eg"),
-				URL:       Ptr("https://example.com"),
-				HTMLURL:   Ptr("htmlurl"),
-				CreatedAt: &Timestamp{referenceTime},
-				UpdatedAt: &Timestamp{referenceTime},
-				ProtectionRules: []*ProtectionRule{
-					{
-						ID:        Ptr(int64(21)),
-						NodeID:    Ptr("mnb"),
-						Type:      Ptr("ewq"),
-						WaitTimer: Ptr(9090),
-					},
-				},
-			},
-		},
-	}
-
-	want := `{
-		"total_count":1,
-		"environments":[
-		   {
-			  "owner":"me",
-			  "repo":"se",
-			  "environment_name":"dev",
-			  "wait_timer":123,
-			  "reviewers":[
-				 {
-					"type":"main",
-					"id":1
-				 },
-				 {
-					"type":"rev",
-					"id":2
-				 }
-			  ],
-			  "deployment_branch_policy":{
-				 "protected_branches":false,
-				 "custom_branch_policies":false
-			  },
-			  "id":2,
-			  "node_id":"star",
-			  "name":"eg",
-			  "url":"https://example.com",
-			  "html_url":"htmlurl",
-			  "created_at":` + referenceTimeStr + `,
-			  "updated_at":` + referenceTimeStr + `,
-			  "protection_rules":[
-				 {
-					"id":21,
-					"node_id":"mnb",
-					"type":"ewq",
-					"wait_timer":9090
-				 }
-			  ]
-		   }
-		]
-	 }`
-
-	testJSONMarshal(t, repoEnv, want)
-}
-
-func TestEnvReviewers_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &EnvReviewers{}, "{}")
-
-	repoEnv := &EnvReviewers{
-		Type: Ptr("main"),
-		ID:   Ptr(int64(1)),
-	}
-
-	want := `{
-		"type":"main",
-		"id":1
-	}`
-
-	testJSONMarshal(t, repoEnv, want)
-}
-
-func TestEnvironment_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Environment{}, "{}")
-
-	repoEnv := &Environment{
-		Owner:           Ptr("o"),
-		Repo:            Ptr("r"),
-		EnvironmentName: Ptr("e"),
-		WaitTimer:       Ptr(123),
-		Reviewers: []*EnvReviewers{
-			{
-				Type: Ptr("main"),
-				ID:   Ptr(int64(1)),
-			},
-			{
-				Type: Ptr("rev"),
-				ID:   Ptr(int64(2)),
-			},
-		},
-		DeploymentBranchPolicy: &BranchPolicy{
-			ProtectedBranches:    Ptr(false),
-			CustomBranchPolicies: Ptr(false),
-		},
-		ID:        Ptr(int64(2)),
-		NodeID:    Ptr("star"),
-		Name:      Ptr("eg"),
-		URL:       Ptr("https://example.com"),
-		HTMLURL:   Ptr("htmlurl"),
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-		ProtectionRules: []*ProtectionRule{
-			{
-				ID:        Ptr(int64(21)),
-				NodeID:    Ptr("mnb"),
-				Type:      Ptr("ewq"),
-				WaitTimer: Ptr(9090),
-			},
-		},
-	}
-
-	want := `{
-		"owner":"o",
-		"repo":"r",
-		"environment_name":"e",
-		"wait_timer":123,
-		"reviewers":[
-			{
-				"type":"main",
-				"id":1
-			},
-			{
-				"type":"rev",
-				"id":2
-			}
-		],
-		"deployment_branch_policy":{
-			"protected_branches":false,
-			"custom_branch_policies":false
-		},
-		"id":2,
-		"node_id":"star",
-		"name":"eg",
-		"url":"https://example.com",
-		"html_url":"htmlurl",
-		"created_at":` + referenceTimeStr + `,
-		"updated_at":` + referenceTimeStr + `,
-		"protection_rules":[
-			{
-				"id":21,
-				"node_id":"mnb",
-				"type":"ewq",
-				"wait_timer":9090
-			}
-		]
-	}`
-
-	testJSONMarshal(t, repoEnv, want)
-}
-
-func TestBranchPolicy_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &BranchPolicy{}, "{}")
-
-	bp := &BranchPolicy{
-		ProtectedBranches:    Ptr(false),
-		CustomBranchPolicies: Ptr(false),
-	}
-
-	want := `{
-		"protected_branches": false,
-		"custom_branch_policies": false
-	}`
-
-	testJSONMarshal(t, bp, want)
 }

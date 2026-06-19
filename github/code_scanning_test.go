@@ -63,22 +63,17 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 		URL: Ptr("https://example.com/testurl"),
 	}
 
-	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
-		var v *SarifAnalysis
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-		testMethod(t, r, "POST")
-		want := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+	sarifAnalysis := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
 
+	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, sarifAnalysis)
 		w.WriteHeader(http.StatusAccepted)
 		respBody, _ := json.Marshal(expectedSarifID)
 		_, _ = w.Write(respBody)
 	})
 
 	ctx := t.Context()
-	sarifAnalysis := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
 	respSarifID, _, err := client.CodeScanning.UploadSarif(ctx, "o", "r", sarifAnalysis)
 	if err != nil {
 		t.Errorf("CodeScanning.UploadSarif returned error: %v", err)
@@ -971,149 +966,6 @@ func TestCodeScanningService_GetAlert(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestAlert_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Alert{}, "{}")
-
-	u := &Alert{
-		RuleID:          Ptr("rid"),
-		RuleSeverity:    Ptr("rs"),
-		RuleDescription: Ptr("rd"),
-		Tool: &Tool{
-			Name:    Ptr("n"),
-			GUID:    Ptr("g"),
-			Version: Ptr("v"),
-		},
-		CreatedAt: &Timestamp{referenceTime},
-		State:     Ptr("fixed"),
-		ClosedBy: &User{
-			Login:     Ptr("l"),
-			ID:        Ptr(int64(1)),
-			NodeID:    Ptr("n"),
-			URL:       Ptr("u"),
-			ReposURL:  Ptr("r"),
-			EventsURL: Ptr("e"),
-			AvatarURL: Ptr("a"),
-		},
-		ClosedAt: &Timestamp{referenceTime},
-		URL:      Ptr("url"),
-		HTMLURL:  Ptr("hurl"),
-	}
-
-	want := `{
-		"rule_id": "rid",
-		"rule_severity": "rs",
-		"rule_description": "rd",
-		"tool": {
-			"name": "n",
-			"guid": "g",
-			"version": "v"
-		},
-		"created_at": ` + referenceTimeStr + `,
-		"state": "fixed",
-		"closed_by": {
-			"login": "l",
-			"id": 1,
-			"node_id": "n",
-			"avatar_url": "a",
-			"url": "u",
-			"events_url": "e",
-			"repos_url": "r"
-		},
-		"closed_at": ` + referenceTimeStr + `,
-		"url": "url",
-		"html_url": "hurl"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestLocation_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Location{}, "{}")
-
-	u := &Location{
-		Path:        Ptr("path"),
-		StartLine:   Ptr(1),
-		EndLine:     Ptr(2),
-		StartColumn: Ptr(3),
-		EndColumn:   Ptr(4),
-	}
-
-	want := `{
-		"path": "path",
-		"start_line": 1,
-		"end_line": 2,
-		"start_column": 3,
-		"end_column": 4
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRule_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Rule{}, "{}")
-
-	u := &Rule{
-		ID:                    Ptr("1"),
-		Severity:              Ptr("3"),
-		Description:           Ptr("description"),
-		Name:                  Ptr("first"),
-		SecuritySeverityLevel: Ptr("2"),
-		FullDescription:       Ptr("summary"),
-		Tags:                  []string{"tag1", "tag2"},
-		Help:                  Ptr("Help Text"),
-	}
-
-	want := `{
-		"id":                      "1",
-		"severity":                "3",
-		"description":             "description",
-		"name":                    "first",
-		"security_severity_level": "2",
-		"full_description":        "summary",
-		"tags":                    ["tag1", "tag2"],
-		"help":                    "Help Text"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestTool_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Tool{}, "{}")
-
-	u := &Tool{
-		Name:    Ptr("name"),
-		GUID:    Ptr("guid"),
-		Version: Ptr("ver"),
-	}
-
-	want := `{
-		"name": "name",
-		"guid": "guid",
-		"version": "ver"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestMessage_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Message{}, "{}")
-
-	u := &Message{
-		Text: Ptr("text"),
-	}
-
-	want := `{
-		"text": "text"
-	}`
-
-	testJSONMarshal(t, u, want)
 }
 
 func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {

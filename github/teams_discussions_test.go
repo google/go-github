@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -322,14 +321,8 @@ func TestTeamsService_CreateDiscussionByID(t *testing.T) {
 	input := TeamDiscussion{Title: Ptr("c_t"), Body: Ptr("c_b")}
 
 	mux.HandleFunc("/organizations/1/team/2/discussions", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamDiscussion
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
@@ -366,14 +359,8 @@ func TestTeamsService_CreateDiscussionBySlug(t *testing.T) {
 	input := TeamDiscussion{Title: Ptr("c_t"), Body: Ptr("c_b")}
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamDiscussion
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
@@ -410,14 +397,8 @@ func TestTeamsService_EditDiscussionByID(t *testing.T) {
 	input := TeamDiscussion{Title: Ptr("e_t"), Body: Ptr("e_b")}
 
 	mux.HandleFunc("/organizations/1/team/2/discussions/3", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamDiscussion
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
@@ -454,14 +435,8 @@ func TestTeamsService_EditDiscussionBySlug(t *testing.T) {
 	input := TeamDiscussion{Title: Ptr("e_t"), Body: Ptr("e_b")}
 
 	mux.HandleFunc("/orgs/o/teams/s/discussions/3", func(w http.ResponseWriter, r *http.Request) {
-		var v *TeamDiscussion
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":3}`)
 	})
 
@@ -539,91 +514,4 @@ func TestTeamsService_DeleteDiscussionBySlug(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Teams.DeleteDiscussionBySlug(ctx, "o", "s", 3)
 	})
-}
-
-func TestTeamDiscussion_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &TeamDiscussion{}, "{}")
-
-	u := &TeamDiscussion{
-		Author: &User{
-			Login:       Ptr("author"),
-			ID:          Ptr(int64(0)),
-			URL:         Ptr("https://api.github.com/users/author"),
-			AvatarURL:   Ptr("https://avatars1.githubusercontent.com/u/0?v=4"),
-			GravatarID:  Ptr(""),
-			CreatedAt:   &Timestamp{referenceTime},
-			SuspendedAt: &Timestamp{referenceTime},
-		},
-		Body:          Ptr("test"),
-		BodyHTML:      Ptr("<p>test</p>"),
-		BodyVersion:   Ptr("version"),
-		CommentsCount: Ptr(1),
-		CommentsURL:   Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-		CreatedAt:     &Timestamp{referenceTime},
-		LastEditedAt:  &Timestamp{referenceTime},
-		HTMLURL:       Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-		NodeID:        Ptr("A123"),
-		Number:        Ptr(10),
-		Pinned:        Ptr(true),
-		Private:       Ptr(false),
-		TeamURL:       Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-		Title:         Ptr("Test"),
-		UpdatedAt:     &Timestamp{referenceTime},
-		URL:           Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-		Reactions: &Reactions{
-			TotalCount: Ptr(1),
-			PlusOne:    Ptr(2),
-			MinusOne:   Ptr(-3),
-			Laugh:      Ptr(4),
-			Confused:   Ptr(5),
-			Heart:      Ptr(6),
-			Hooray:     Ptr(7),
-			Rocket:     Ptr(8),
-			Eyes:       Ptr(9),
-			URL:        Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-		},
-	}
-
-	want := `{
-		"author": {
-			"login": "author",
-			"id": 0,
-			"avatar_url": "https://avatars1.githubusercontent.com/u/0?v=4",
-			"gravatar_id": "",
-			"url": "https://api.github.com/users/author",
-			"created_at": ` + referenceTimeStr + `,
-			"suspended_at": ` + referenceTimeStr + `
-		},
-		"body": "test",
-		"body_html": "<p>test</p>",
-		"body_version": "version",
-		"comments_count": 1,
-		"comments_url": "https://api.github.com/teams/2/discussions/3/comments",
-		"created_at": ` + referenceTimeStr + `,
-		"last_edited_at": ` + referenceTimeStr + `,
-		"html_url": "https://api.github.com/teams/2/discussions/3/comments",
-		"node_id": "A123",
-		"number": 10,
-		"pinned": true,
-		"private": false,
-		"team_url": "https://api.github.com/teams/2/discussions/3/comments",
-		"title": "Test",
-		"updated_at": ` + referenceTimeStr + `,
-		"url": "https://api.github.com/teams/2/discussions/3/comments",
-		"reactions": {
-			"total_count": 1,
-			"+1": 2,
-			"-1": -3,
-			"laugh": 4,
-			"confused": 5,
-			"heart": 6,
-			"hooray": 7,
-			"rocket": 8,
-			"eyes": 9,
-			"url": "https://api.github.com/teams/2/discussions/3/comments"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
 }

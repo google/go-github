@@ -67,7 +67,7 @@ func TestIssuesService_AddBlockedBy(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/issues/1/dependencies/blocked_by", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"issue_id":42}`+"\n")
+		testJSONBody(t, r, input)
 
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, `{"number":42,"title":"Dependency issue"}`)

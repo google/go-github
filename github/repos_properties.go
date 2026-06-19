@@ -18,13 +18,13 @@ import (
 func (s *RepositoriesService) GetAllCustomPropertyValues(ctx context.Context, org, repo string) ([]*CustomPropertyValue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/properties/values", org, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var customPropertyValues []*CustomPropertyValue
-	resp, err := s.client.Do(ctx, req, &customPropertyValues)
+	resp, err := s.client.Do(req, &customPropertyValues)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -46,12 +46,12 @@ func (s *RepositoriesService) CreateOrUpdateCustomProperties(ctx context.Context
 		Properties: customPropertyValues,
 	}
 
-	req, err := s.client.NewRequest("PATCH", u, params)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, params)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

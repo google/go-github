@@ -134,13 +134,13 @@ func (s *RepositoriesService) ListCommits(ctx context.Context, owner, repo strin
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var commits []*RepositoryCommit
-	resp, err := s.client.Do(ctx, req, &commits)
+	resp, err := s.client.Do(req, &commits)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -160,13 +160,13 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var commit *RepositoryCommit
-	resp, err := s.client.Do(ctx, req, &commit)
+	resp, err := s.client.Do(req, &commit)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -181,7 +181,7 @@ func (s *RepositoriesService) GetCommit(ctx context.Context, owner, repo, sha st
 //meta:operation GET /repos/{owner}/{repo}/commits/{ref}
 func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner, repo, sha string, opts RawOptions) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, sha)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return "", nil, err
 	}
@@ -196,7 +196,7 @@ func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner, repo, sha
 	}
 
 	var buf bytes.Buffer
-	resp, err := s.client.Do(ctx, req, &buf)
+	resp, err := s.client.Do(req, &buf)
 	if err != nil {
 		return "", resp, err
 	}
@@ -213,7 +213,7 @@ func (s *RepositoriesService) GetCommitRaw(ctx context.Context, owner, repo, sha
 func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, ref, lastSHA string) (string, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v", owner, repo, refURLEscape(ref))
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return "", nil, err
 	}
@@ -224,7 +224,7 @@ func (s *RepositoriesService) GetCommitSHA1(ctx context.Context, owner, repo, re
 	req.Header.Set("Accept", mediaTypeV3SHA)
 
 	var buf bytes.Buffer
-	resp, err := s.client.Do(ctx, req, &buf)
+	resp, err := s.client.Do(req, &buf)
 	if err != nil {
 		return "", resp, err
 	}
@@ -247,13 +247,13 @@ func (s *RepositoriesService) CompareCommits(ctx context.Context, owner, repo, b
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var comp *CommitsComparison
-	resp, err := s.client.Do(ctx, req, &comp)
+	resp, err := s.client.Do(req, &comp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -276,7 +276,7 @@ func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo
 
 	u := fmt.Sprintf("repos/%v/%v/compare/%v...%v", owner, repo, escapedBase, escapedHead)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return "", nil, err
 	}
@@ -291,7 +291,7 @@ func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo
 	}
 
 	var buf bytes.Buffer
-	resp, err := s.client.Do(ctx, req, &buf)
+	resp, err := s.client.Do(req, &buf)
 	if err != nil {
 		return "", resp, err
 	}
@@ -308,14 +308,14 @@ func (s *RepositoriesService) CompareCommitsRaw(ctx context.Context, owner, repo
 func (s *RepositoriesService) ListBranchesHeadCommit(ctx context.Context, owner, repo, sha string) ([]*BranchCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/branches-where-head", owner, repo, sha)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeListPullsOrBranchesForCommitPreview)
 	var branchCommits []*BranchCommit
-	resp, err := s.client.Do(ctx, req, &branchCommits)
+	resp, err := s.client.Do(req, &branchCommits)
 	if err != nil {
 		return nil, resp, err
 	}

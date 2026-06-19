@@ -127,9 +127,13 @@ func TestEnterpriseService_CreateCostCenter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	req := CostCenterRequest{
+		Name: "Engineering Team",
+	}
+
 	mux.HandleFunc("/enterprises/e/settings/billing/cost-centers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"name":"Engineering Team"}`+"\n")
+		testJSONBody(t, r, req)
 		fmt.Fprint(w, `{
 			"id": "abc123",
 			"name": "Engineering Team",
@@ -138,9 +142,6 @@ func TestEnterpriseService_CreateCostCenter(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	req := CostCenterRequest{
-		Name: "Engineering Team",
-	}
 	costCenter, _, err := client.Enterprise.CreateCostCenter(ctx, "e", req)
 	if err != nil {
 		t.Errorf("Enterprise.CreateCostCenter returned error: %v", err)
@@ -257,9 +258,13 @@ func TestEnterpriseService_UpdateCostCenter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	req := CostCenterRequest{
+		Name: "Updated Cost Center Name",
+	}
+
 	mux.HandleFunc("/enterprises/e/settings/billing/cost-centers/2eeb8ffe-6903-11ee-8c99-0242ac120002", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testBody(t, r, `{"name":"Updated Cost Center Name"}`+"\n")
+		testJSONBody(t, r, req)
 		fmt.Fprint(w, `{
 			"id": "2eeb8ffe-6903-11ee-8c99-0242ac120002",
 			"name": "Updated Cost Center Name",
@@ -279,9 +284,6 @@ func TestEnterpriseService_UpdateCostCenter(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	req := CostCenterRequest{
-		Name: "Updated Cost Center Name",
-	}
 	costCenter, _, err := client.Enterprise.UpdateCostCenter(ctx, "e", "2eeb8ffe-6903-11ee-8c99-0242ac120002", req)
 	if err != nil {
 		t.Errorf("Enterprise.UpdateCostCenter returned error: %v", err)
@@ -389,9 +391,13 @@ func TestEnterpriseService_AddResourcesToCostCenter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	req := CostCenterResourceRequest{
+		Users: []string{"monalisa"},
+	}
+
 	mux.HandleFunc("/enterprises/e/settings/billing/cost-centers/2eeb8ffe-6903-11ee-8c99-0242ac120002/resource", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"users":["monalisa"]}`+"\n")
+		testJSONBody(t, r, req)
 		fmt.Fprint(w, `{
 			"message": "Resources successfully added to the cost center.",
 			"reassigned_resources": [
@@ -415,9 +421,6 @@ func TestEnterpriseService_AddResourcesToCostCenter(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	req := CostCenterResourceRequest{
-		Users: []string{"monalisa"},
-	}
 	result, _, err := client.Enterprise.AddResourcesToCostCenter(ctx, "e", "2eeb8ffe-6903-11ee-8c99-0242ac120002", req)
 	if err != nil {
 		t.Errorf("Enterprise.AddResourcesToCostCenter returned error: %v", err)
@@ -475,18 +478,19 @@ func TestEnterpriseService_RemoveResourcesFromCostCenter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	req := CostCenterResourceRequest{
+		Users: []string{"monalisa"},
+	}
+
 	mux.HandleFunc("/enterprises/e/settings/billing/cost-centers/2eeb8ffe-6903-11ee-8c99-0242ac120002/resource", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"users":["monalisa"]}`+"\n")
+		testJSONBody(t, r, req)
 		fmt.Fprint(w, `{
 			"message": "Resources successfully removed from the cost center."
 		}`)
 	})
 
 	ctx := t.Context()
-	req := CostCenterResourceRequest{
-		Users: []string{"monalisa"},
-	}
 	result, _, err := client.Enterprise.RemoveResourcesFromCostCenter(ctx, "e", "2eeb8ffe-6903-11ee-8c99-0242ac120002", req)
 	if err != nil {
 		t.Errorf("Enterprise.RemoveResourcesFromCostCenter returned error: %v", err)
@@ -521,138 +525,4 @@ func TestEnterpriseService_RemoveResourcesFromCostCenter_invalidEnterprise(t *te
 	ctx := t.Context()
 	_, _, err := client.Enterprise.RemoveResourcesFromCostCenter(ctx, "%", "2eeb8ffe-6903-11ee-8c99-0242ac120002", CostCenterResourceRequest{})
 	testURLParseError(t, err)
-}
-
-func TestCostCenter_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CostCenter{}, `{"id":"","name":"","resources":null}`)
-
-	u := &CostCenter{
-		ID:                "1",
-		Name:              "Engineering",
-		State:             Ptr("active"),
-		AzureSubscription: Ptr("sub-123"),
-		Resources: []*CostCenterResource{
-			{
-				Type: "user",
-				Name: "octocat",
-			},
-		},
-	}
-
-	want := `{
-		"id": "1",
-		"name": "Engineering",
-		"state": "active",
-		"azure_subscription": "sub-123",
-		"resources": [
-			{
-				"type": "user",
-				"name": "octocat"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCostCenterResource_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CostCenterResource{}, `{"type":"","name":""}`)
-
-	u := &CostCenterResource{
-		Type: "user",
-		Name: "octocat",
-	}
-
-	want := `{
-		"type": "user",
-		"name": "octocat"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCostCenters_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CostCenters{}, "{}")
-
-	u := &CostCenters{
-		CostCenters: []*CostCenter{
-			{
-				ID:        "1",
-				Name:      "Engineering",
-				Resources: []*CostCenterResource{},
-				State:     Ptr("active"),
-			},
-		},
-	}
-
-	want := `{
-		"costCenters": [
-			{
-				"id": "1",
-				"name": "Engineering",
-				"resources": [],
-				"state": "active"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCostCenterRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CostCenterRequest{}, `{"name": ""}`)
-
-	u := &CostCenterRequest{
-		Name: "Engineering",
-	}
-
-	want := `{
-		"name": "Engineering"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCostCenterResourceRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CostCenterResourceRequest{}, "{}")
-
-	u := &CostCenterResourceRequest{
-		Users:         []string{"octocat"},
-		Organizations: []string{"github"},
-		Repositories:  []string{"github/go-github"},
-	}
-
-	want := `{
-		"users": ["octocat"],
-		"organizations": ["github"],
-		"repositories": ["github/go-github"]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestDeleteCostCenterResponse_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &DeleteCostCenterResponse{}, `{"message":"","id":"","name":"","costCenterState":""}`)
-
-	u := &DeleteCostCenterResponse{
-		Message:         "Cost center successfully deleted.",
-		ID:              "2eeb8ffe-6903-11ee-8c99-0242ac120002",
-		Name:            "Engineering Team",
-		CostCenterState: "CostCenterArchived",
-	}
-
-	want := `{
-		"message": "Cost center successfully deleted.",
-		"id": "2eeb8ffe-6903-11ee-8c99-0242ac120002",
-		"name": "Engineering Team",
-		"costCenterState": "CostCenterArchived"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

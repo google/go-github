@@ -45,6 +45,26 @@ type raceSafeTestConn struct {
 	net.Conn
 }
 
+// mustNewClient is a helper function that creates a new Client and fails the test if there is an error.
+func mustNewClient(t *testing.T, opts ...ClientOptionsFunc) *Client {
+	t.Helper()
+	c, err := NewClient(opts...)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return c
+}
+
+// mustParseURL is a helper function that parses a URL and fails the test if there is an error.
+func mustParseURL(t *testing.T, rawurl string) *url.URL {
+	t.Helper()
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		t.Fatalf("Failed to parse URL %q: %v", rawurl, err)
+	}
+	return u
+}
+
 // setup sets up a test HTTP server along with a github.Client that is
 // configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
@@ -103,11 +123,11 @@ func setup(t *testing.T) (client *Client, mux *http.ServeMux, serverURL string) 
 	}
 	// client is the GitHub client being tested and is
 	// configured to use test server.
-	client = NewClient(httpClient)
+	client = mustNewClient(t, WithHTTPClient(httpClient))
 
 	url, _ := url.Parse(server.URL + baseURLPath + "/")
-	client.BaseURL = url
-	client.UploadURL = url
+	client.baseURL = url
+	client.uploadURL = url
 
 	t.Cleanup(server.Close)
 
@@ -189,7 +209,7 @@ func testURLParseError(t *testing.T, err error) {
 	}
 }
 
-func testBody(t *testing.T, r *http.Request, want string) {
+func testPlainBody(t *testing.T, r *http.Request, want string) {
 	t.Helper()
 	b, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -197,6 +217,24 @@ func testBody(t *testing.T, r *http.Request, want string) {
 	}
 	if got := string(b); got != want {
 		t.Errorf("request Body is %v, want %v", got, want)
+	}
+}
+
+func testJSONBody[T any](t *testing.T, r *http.Request, want T) {
+	t.Helper()
+	b, err := io.ReadAll(r.Body)
+	if err != nil {
+		t.Errorf("Error reading request body: %v", err)
+	}
+
+	var got T
+
+	if err := json.Unmarshal(b, &got); err != nil {
+		t.Errorf("Error unmarshaling request body JSON: %v", err)
+	}
+
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("request JSON body mismatch (-want +got):\n%v", diff)
 	}
 }
 
@@ -267,47 +305,6 @@ func testJSONUnmarshalOnly[T any](t *testing.T, want T, v string, opts ...cmp.Op
 	}
 }
 
-// cmpJSONRawMessageComparator returns an option for use in testJSONUnmarshalData that compares
-// json.RawMessage values by their semantic JSON content rather than byte-for-byte equality.
-func cmpJSONRawMessageComparator() cmp.Option {
-	return cmp.Comparer(func(x, y json.RawMessage) bool {
-		if len(x) == 0 && len(y) == 0 {
-			return true
-		}
-		var xVal, yVal any
-		if err := json.Unmarshal(x, &xVal); err != nil {
-			return false
-		}
-		if err := json.Unmarshal(y, &yVal); err != nil {
-			return false
-		}
-		return cmp.Equal(xVal, yVal)
-	})
-}
-
-// cmpIgnoreFieldOption returns an option for use in testJSONUnmarshalData that ignores a specific
-// field by name, but only when it's a top-level field (not nested within other structs).
-// This prevents accidentally ignoring nested struct fields with the same name.
-func cmpIgnoreFieldOption(fieldName string) cmp.Option {
-	return cmp.FilterPath(func(p cmp.Path) bool {
-		if len(p) == 0 {
-			return false
-		}
-		sf, ok := p[len(p)-1].(cmp.StructField)
-		if !ok || sf.Name() != fieldName {
-			return false
-		}
-		// Only ignore top-level fields (path contains exactly one StructField)
-		structFieldCount := 0
-		for i := range p {
-			if _, ok := p[i].(cmp.StructField); ok {
-				structFieldCount++
-			}
-		}
-		return structFieldCount == 1
-	}, cmp.Ignore())
-}
-
 // Test how bad options are handled. Method f under test should
 // return an error.
 func testBadOptions(t *testing.T, methodName string, f func() error) {
@@ -334,7 +331,7 @@ func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client 
 		t.Error("testNewRequestAndDoFailure: must supply method methodName")
 	}
 
-	client.BaseURL.Path = ""
+	client.baseURL.Path = ""
 	resp, err := f()
 	if resp != nil {
 		t.Errorf("client.BaseURL.Path='' %v resp = %#v, want nil", methodName, resp)
@@ -343,10 +340,10 @@ func testNewRequestAndDoFailureCategory(t *testing.T, methodName string, client 
 		t.Errorf("client.BaseURL.Path='' %v err = nil, want error", methodName)
 	}
 
-	client.BaseURL.Path = "/api-v3/"
+	client.baseURL.Path = "/api-v3/"
 	client.rateLimits[category].Reset.Time = time.Now().Add(10 * time.Minute)
 	resp, err = f()
-	if client.DisableRateLimitCheck {
+	if client.disableRateLimitCheck {
 		return
 	}
 	if bypass := resp.Request.Context().Value(BypassRateLimitCheck); bypass != nil {
@@ -409,123 +406,287 @@ func assertWrite(t *testing.T, w io.Writer, data []byte) {
 	assertNilError(t, err)
 }
 
-func TestNewClient(t *testing.T) {
+func TestWithHTTPClient(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
 
-	if got, want := c.BaseURL.String(), defaultBaseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
-	if got, want := c.UserAgent, defaultUserAgent; got != want {
-		t.Errorf("NewClient UserAgent is %v, want %v", got, want)
-	}
+	t.Run("nil_client", func(t *testing.T) {
+		t.Parallel()
 
-	c2 := NewClient(nil)
-	if c.client == c2.client {
-		t.Error("NewClient returned same http.Clients, but they should differ")
-	}
+		opts := clientOptions{}
+		err := WithHTTPClient(nil)(&opts)
+		if err == nil || err.Error() != "http client must not be nil" {
+			t.Errorf("WithHTTPClient errored: %v", err)
+		}
+	})
+
+	t.Run("non_nil_client", func(t *testing.T) {
+		t.Parallel()
+
+		customClient := &http.Client{Timeout: 10 * time.Second}
+		opts := clientOptions{}
+		err := WithHTTPClient(customClient)(&opts)
+		if err != nil {
+			t.Fatalf("WithHTTPClient errored: %v", err)
+		}
+
+		if opts.httpClient == nil {
+			t.Fatal("httpClient is nil")
+		}
+
+		if opts.httpClient == customClient {
+			t.Error("httpClient should be a shallow copy of the provided client, but is the same instance")
+		}
+
+		if opts.httpClient.Timeout != customClient.Timeout {
+			t.Errorf("httpClient Timeout = %v, want %v", opts.httpClient.Timeout, customClient.Timeout)
+		}
+	})
 }
 
-func TestNewClientWithEnvProxy(t *testing.T) {
+func TestWithTransport(t *testing.T) {
 	t.Parallel()
-	client := NewClientWithEnvProxy()
-	if got, want := client.BaseURL.String(), defaultBaseURL; got != want {
-		t.Errorf("NewClient BaseURL is %v, want %v", got, want)
-	}
+
+	t.Run("nil_transport", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithTransport(nil)(&opts)
+		if err == nil || err.Error() != "transport must not be nil" {
+			t.Errorf("WithTransport errored: %v", err)
+		}
+	})
+
+	t.Run("non_nil_transport", func(t *testing.T) {
+		t.Parallel()
+
+		customTransport := &http.Transport{IdleConnTimeout: 10 * time.Second}
+		opts := clientOptions{}
+		err := WithTransport(customTransport)(&opts)
+		if err != nil {
+			t.Fatalf("WithTransport errored: %v", err)
+		}
+
+		if opts.transport == nil {
+			t.Fatal("transport is nil")
+		}
+
+		if opts.transport != customTransport {
+			t.Errorf("transport = %v, want %v", opts.transport, customTransport)
+		}
+	})
 }
 
-func TestClient(t *testing.T) {
+func TestWithTimeout(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
-	c2 := c.Client()
-	if c.client == c2 {
-		t.Error("Client returned same http.Client, but should be different")
+
+	t.Run("negative_timeout", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithTimeout(-1)(&opts)
+		if err == nil || err.Error() != "timeout must not be negative" {
+			t.Errorf("WithTimeout errored: %v", err)
+		}
+	})
+
+	t.Run("zero_timeout", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithTimeout(0)(&opts)
+		if err != nil {
+			t.Fatalf("WithTimeout errored: %v", err)
+		}
+
+		if opts.timeout == nil || *opts.timeout != 0 {
+			t.Errorf("timeout = %v, want 0", opts.timeout)
+		}
+	})
+
+	t.Run("valid_timeout", func(t *testing.T) {
+		t.Parallel()
+
+		timeout := 10 * time.Second
+		opts := clientOptions{}
+		err := WithTimeout(timeout)(&opts)
+		if err != nil {
+			t.Fatalf("WithTimeout errored: %v", err)
+		}
+
+		if opts.timeout == nil || *opts.timeout != timeout {
+			t.Errorf("timeout = %v, want %v", opts.timeout, timeout)
+		}
+	})
+}
+
+func TestWithUserAgent(t *testing.T) {
+	t.Parallel()
+
+	t.Run("empty_user_agent", func(t *testing.T) {
+		t.Parallel()
+
+		opts := clientOptions{}
+		err := WithUserAgent("")(&opts)
+		if err != nil {
+			t.Fatalf("WithUserAgent errored: %v", err)
+		}
+
+		if *opts.userAgent != "" {
+			t.Errorf("userAgent = %v, want empty string", opts.userAgent)
+		}
+	})
+
+	t.Run("custom_user_agent", func(t *testing.T) {
+		t.Parallel()
+
+		customUserAgent := "MyCustomUserAgent/1.0"
+		opts := clientOptions{}
+		err := WithUserAgent(customUserAgent)(&opts)
+		if err != nil {
+			t.Fatalf("WithUserAgent errored: %v", err)
+		}
+
+		if opts.userAgent == nil || *opts.userAgent != customUserAgent {
+			t.Errorf("userAgent = %v, want %v", opts.userAgent, customUserAgent)
+		}
+	})
+}
+
+func TestWithEnvProxy(t *testing.T) {
+	t.Parallel()
+
+	opts := clientOptions{}
+	err := WithEnvProxy()(&opts)
+	if err != nil {
+		t.Fatalf("WithEnvProxy errored: %v", err)
+	}
+
+	if !opts.envProxy {
+		t.Error("envProxy is false, want true")
 	}
 }
 
 func TestWithAuthToken(t *testing.T) {
 	t.Parallel()
-	token := "gh_test_token"
 
-	validate := func(t *testing.T, c *http.Client, token string) {
-		t.Helper()
-		want := token
-		if want != "" {
-			want = "Bearer " + want
-		}
-		gotReq := false
-		headerVal := ""
-		srv := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
-			gotReq = true
-			headerVal = r.Header.Get("Authorization")
-		}))
-		_, err := c.Get(srv.URL)
-		assertNilError(t, err)
-		if !gotReq {
-			t.Error("request not sent")
-		}
-		if headerVal != want {
-			t.Errorf("Authorization header is %v, want %v", headerVal, want)
-		}
-	}
-
-	t.Run("zero-value Client", func(t *testing.T) {
+	t.Run("empty_token", func(t *testing.T) {
 		t.Parallel()
-		c := new(Client).WithAuthToken(token)
-		validate(t, c.Client(), token)
-	})
 
-	t.Run("NewClient", func(t *testing.T) {
-		t.Parallel()
-		httpClient := &http.Client{}
-		client := NewClient(httpClient).WithAuthToken(token)
-		validate(t, client.Client(), token)
-		// make sure the original client isn't setting auth headers now
-		validate(t, httpClient, "")
-	})
-
-	t.Run("NewTokenClient", func(t *testing.T) {
-		t.Parallel()
-		validate(t, NewTokenClient(t.Context(), token).Client(), token)
-	})
-
-	t.Run("do not set Authorization when empty token", func(t *testing.T) {
-		t.Parallel()
-		c := new(Client).WithAuthToken("")
-
-		gotReq := false
-		ifAuthorizationSet := false
-		srv := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
-			gotReq = true
-			_, ifAuthorizationSet = r.Header["Authorization"]
-		}))
-		_, err := c.client.Get(srv.URL)
-		assertNilError(t, err)
-		if !gotReq {
-			t.Error("request not sent")
-		}
-		if ifAuthorizationSet {
-			t.Error("The header 'Authorization' must not be set")
+		opts := clientOptions{}
+		err := WithAuthToken("")(&opts)
+		if err == nil || err.Error() != "token must not be empty" {
+			t.Error("expected error for empty token, got nil")
 		}
 	})
 
-	t.Run("preserves Marketplace Stubbed field", func(t *testing.T) {
+	t.Run("valid_token", func(t *testing.T) {
 		t.Parallel()
 
-		c := NewClient(nil)
-		c.Marketplace.Stubbed = true
+		validToken := "ghp_exampletoken1234567890"
+		opts := clientOptions{}
+		err := WithAuthToken(validToken)(&opts)
+		if err != nil {
+			t.Fatalf("WithAuthToken errored: %v", err)
+		}
 
-		c2 := c.WithAuthToken("token")
-
-		if !c2.Marketplace.Stubbed {
-			t.Fatal("WithAuthToken reset Marketplace.Stubbed; want true")
+		if opts.token == nil || *opts.token != validToken {
+			t.Errorf("token = %v, want %v", opts.token, validToken)
 		}
 	})
 }
 
+func TestWithURLs(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name          string
+		baseURL       *string
+		wantBaseURL   *string
+		uploadURL     *string
+		wantUploadURL *string
+		wantErr       string
+	}{
+		{
+			name:          "does_not_modify_urls_with_trailing_slash",
+			baseURL:       Ptr("https://example.com/"),
+			wantBaseURL:   Ptr("https://example.com/"),
+			uploadURL:     Ptr("https://upload.example.com/"),
+			wantUploadURL: Ptr("https://upload.example.com/"),
+		},
+		{
+			name:          "adds_trailing_slash",
+			baseURL:       Ptr("https://example.com"),
+			wantBaseURL:   Ptr("https://example.com/"),
+			uploadURL:     Ptr("https://upload.example.com"),
+			wantUploadURL: Ptr("https://upload.example.com/"),
+		},
+		{
+			name: "skips_unset",
+		},
+		{
+			name:    "error_on_empty_base_url",
+			baseURL: Ptr(""),
+			wantErr: "invalid base url: url cannot be empty",
+		},
+		{
+			name:    "error_on_bad_base_url",
+			baseURL: Ptr("bogus\nbase\nURL"),
+			wantErr: "invalid base url: invalid url",
+		},
+		{
+			name:      "error_on_empty_upload_url",
+			baseURL:   Ptr("https://example.com/"),
+			uploadURL: Ptr(""),
+			wantErr:   "invalid upload url: url cannot be empty",
+		},
+		{
+			name:      "error_on_bad_upload_url",
+			baseURL:   Ptr("https://example.com/"),
+			uploadURL: Ptr("bogus\nupload\nURL"),
+			wantErr:   "invalid upload url: invalid url",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			opts := clientOptions{}
+			err := WithURLs(tt.baseURL, tt.uploadURL)(&opts)
+			if err != nil {
+				if tt.wantErr == "" {
+					t.Fatalf("unexpected error: %v", err)
+				}
+
+				if !strings.Contains(err.Error(), tt.wantErr) {
+					t.Fatalf("expected error to contain %v, got %v", tt.wantErr, err)
+				}
+
+				return
+			}
+
+			if tt.wantErr != "" {
+				t.Fatalf("expected error to contain %v, got nil", tt.wantErr)
+				return
+			}
+
+			if (opts.baseURL != nil) != (tt.wantBaseURL != nil) {
+				t.Errorf("BaseURL set = %v, want %v", opts.baseURL != nil, tt.wantBaseURL != nil)
+			}
+			if opts.baseURL != nil && opts.baseURL.String() != *tt.wantBaseURL {
+				t.Errorf("BaseURL is %v, want %v", opts.baseURL.String(), *tt.wantBaseURL)
+			}
+
+			if (opts.uploadURL != nil) != (tt.wantUploadURL != nil) {
+				t.Errorf("UploadURL set = %v, want %v", opts.uploadURL != nil, tt.wantUploadURL != nil)
+			}
+			if opts.uploadURL != nil && opts.uploadURL.String() != *tt.wantUploadURL {
+				t.Errorf("UploadURL is %v, want %v", opts.uploadURL.String(), *tt.wantUploadURL)
+			}
+		})
+	}
+}
+
 func TestWithEnterpriseURLs(t *testing.T) {
 	t.Parallel()
-	for _, test := range []struct {
+	for _, tt := range []struct {
 		name          string
 		baseURL       string
 		wantBaseURL   string
@@ -534,119 +695,827 @@ func TestWithEnterpriseURLs(t *testing.T) {
 		wantErr       string
 	}{
 		{
-			name:          "does not modify properly formed URLs",
+			name:          "does_not_modify_properly_formed_urls",
 			baseURL:       "https://custom-url/api/v3/",
 			wantBaseURL:   "https://custom-url/api/v3/",
 			uploadURL:     "https://custom-upload-url/api/uploads/",
 			wantUploadURL: "https://custom-upload-url/api/uploads/",
 		},
 		{
-			name:          "adds trailing slash",
+			name:          "adds_trailing_slash",
 			baseURL:       "https://custom-url/api/v3",
 			wantBaseURL:   "https://custom-url/api/v3/",
 			uploadURL:     "https://custom-upload-url/api/uploads",
 			wantUploadURL: "https://custom-upload-url/api/uploads/",
 		},
 		{
-			name:          "adds enterprise suffix",
+			name:          "adds_enterprise_suffix",
 			baseURL:       "https://custom-url/",
 			wantBaseURL:   "https://custom-url/api/v3/",
 			uploadURL:     "https://custom-upload-url/",
 			wantUploadURL: "https://custom-upload-url/api/uploads/",
 		},
 		{
-			name:          "adds enterprise suffix and trailing slash",
+			name:          "adds_enterprise_suffix_and_trailing_slash",
 			baseURL:       "https://custom-url",
 			wantBaseURL:   "https://custom-url/api/v3/",
 			uploadURL:     "https://custom-upload-url",
 			wantUploadURL: "https://custom-upload-url/api/uploads/",
 		},
 		{
-			name:      "bad base URL",
-			baseURL:   "bogus\nbase\nURL",
-			uploadURL: "https://custom-upload-url/api/uploads/",
-			wantErr:   `invalid control character in URL`,
-		},
-		{
-			name:      "bad upload URL",
-			baseURL:   "https://custom-url/api/v3/",
-			uploadURL: "bogus\nupload\nURL",
-			wantErr:   `invalid control character in URL`,
-		},
-		{
-			name:          "URL has existing API prefix, adds trailing slash",
+			name:          "url_has_existing_api_prefix_adds_trailing_slash",
 			baseURL:       "https://api.custom-url",
 			wantBaseURL:   "https://api.custom-url/",
 			uploadURL:     "https://api.custom-upload-url",
 			wantUploadURL: "https://api.custom-upload-url/",
 		},
 		{
-			name:          "URL has existing API prefix and trailing slash",
+			name:          "url_has_existing_api_prefix_and_trailing_slash",
 			baseURL:       "https://api.custom-url/",
 			wantBaseURL:   "https://api.custom-url/",
 			uploadURL:     "https://api.custom-upload-url/",
 			wantUploadURL: "https://api.custom-upload-url/",
 		},
 		{
-			name:          "URL has API subdomain, adds trailing slash",
+			name:          "url_has_api_subdomain_adds_trailing_slash",
 			baseURL:       "https://catalog.api.custom-url",
 			wantBaseURL:   "https://catalog.api.custom-url/",
 			uploadURL:     "https://catalog.api.custom-upload-url",
 			wantUploadURL: "https://catalog.api.custom-upload-url/",
 		},
 		{
-			name:          "URL has API subdomain and trailing slash",
+			name:          "url_has_api_subdomain_and_trailing_slash",
 			baseURL:       "https://catalog.api.custom-url/",
 			wantBaseURL:   "https://catalog.api.custom-url/",
 			uploadURL:     "https://catalog.api.custom-upload-url/",
 			wantUploadURL: "https://catalog.api.custom-upload-url/",
 		},
 		{
-			name:          "URL is not a proper API subdomain, adds enterprise suffix and slash",
+			name:          "url_is_not_a_proper_api_subdomain_adds_enterprise_suffix_and_trailing_slash",
 			baseURL:       "https://cloud-api.custom-url",
 			wantBaseURL:   "https://cloud-api.custom-url/api/v3/",
 			uploadURL:     "https://cloud-api.custom-upload-url",
 			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
 		},
 		{
-			name:          "URL is not a proper API subdomain, adds enterprise suffix",
+			name:          "url_is_not_a_proper_api_subdomain_adds_enterprise_suffix",
 			baseURL:       "https://cloud-api.custom-url/",
 			wantBaseURL:   "https://cloud-api.custom-url/api/v3/",
 			uploadURL:     "https://cloud-api.custom-upload-url/",
 			wantUploadURL: "https://cloud-api.custom-upload-url/api/uploads/",
 		},
 		{
-			name:          "URL has uploads subdomain, does not modify",
+			name:          "url_has_uploads_subdomain_does_not_modify",
 			baseURL:       "https://api.custom-url/",
 			wantBaseURL:   "https://api.custom-url/",
 			uploadURL:     "https://uploads.custom-upload-url/",
 			wantUploadURL: "https://uploads.custom-upload-url/",
 		},
+		{
+			name:      "empty_base_url",
+			baseURL:   "",
+			uploadURL: "https://custom-upload-url/api/uploads/",
+			wantErr:   "invalid base url: url cannot be empty",
+		},
+		{
+			name:      "invalid_base_url",
+			baseURL:   "bogus\nbase\nURL",
+			uploadURL: "https://custom-upload-url/api/uploads/",
+			wantErr:   `invalid base url: invalid url`,
+		},
+		{
+			name:      "empty_upload_url",
+			baseURL:   "https://custom-url/api/v3/",
+			uploadURL: "",
+			wantErr:   "invalid upload url: url cannot be empty",
+		},
+		{
+			name:      "invalid_upload_url",
+			baseURL:   "https://custom-url/api/v3/",
+			uploadURL: "bogus\nupload\nURL",
+			wantErr:   `invalid upload url: invalid url`,
+		},
 	} {
-		t.Run(test.name, func(t *testing.T) {
+		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			validate := func(c *Client, err error) {
-				t.Helper()
-				if test.wantErr != "" {
-					if err == nil || !strings.Contains(err.Error(), test.wantErr) {
-						t.Fatalf("error does not contain expected string %q: %v", test.wantErr, err)
-					}
-					return
+
+			opts := clientOptions{}
+			err := WithEnterpriseURLs(tt.baseURL, tt.uploadURL)(&opts)
+			if err != nil {
+				if tt.wantErr == "" {
+					t.Fatalf("WithEnterpriseURLs returned unexpected error: %v", err)
 				}
-				if err != nil {
-					t.Fatalf("got unexpected error: %v", err)
+				if !strings.Contains(err.Error(), tt.wantErr) {
+					t.Fatalf("error does not contain expected string %q: %v", tt.wantErr, err)
 				}
-				if c.BaseURL.String() != test.wantBaseURL {
-					t.Errorf("BaseURL is %v, want %v", c.BaseURL, test.wantBaseURL)
-				}
-				if c.UploadURL.String() != test.wantUploadURL {
-					t.Errorf("UploadURL is %v, want %v", c.UploadURL, test.wantUploadURL)
-				}
+				return
 			}
-			validate(NewClient(nil).WithEnterpriseURLs(test.baseURL, test.uploadURL))
-			validate(new(Client).WithEnterpriseURLs(test.baseURL, test.uploadURL))
-			validate(NewEnterpriseClient(test.baseURL, test.uploadURL, nil))
+			if tt.wantErr != "" {
+				t.Fatalf("WithEnterpriseURLs did not return expected error containing %q", tt.wantErr)
+			}
+
+			if opts.baseURL.String() != tt.wantBaseURL {
+				t.Errorf("BaseURL is %v, want %v", opts.baseURL, tt.wantBaseURL)
+			}
+			if opts.uploadURL.String() != tt.wantUploadURL {
+				t.Errorf("UploadURL is %v, want %v", opts.uploadURL, tt.wantUploadURL)
+			}
 		})
+	}
+}
+
+func TestWithDisableRateLimitCheck(t *testing.T) {
+	t.Parallel()
+
+	opts := clientOptions{}
+	err := WithDisableRateLimitCheck()(&opts)
+	if err != nil {
+		t.Fatalf("WithDisableRateLimitCheck errored: %v", err)
+	}
+
+	if !opts.disableRateLimitCheck {
+		t.Error("disableRateLimitCheck is false, want true")
+	}
+}
+
+func TestWithRateLimitRedirectionalEndpoints(t *testing.T) {
+	t.Parallel()
+
+	opts := clientOptions{}
+	err := WithRateLimitRedirectionalEndpoints()(&opts)
+	if err != nil {
+		t.Fatalf("WithRateLimitRedirectionalEndpoints errored: %v", err)
+	}
+
+	if !opts.rateLimitRedirectionalEndpoints {
+		t.Error("rateLimitRedirectionalEndpoints is false, want true")
+	}
+}
+
+func TestWithMaxSecondaryRateLimitRetryAfterDuration(t *testing.T) {
+	t.Parallel()
+
+	for _, tt := range []struct {
+		name     string
+		duration time.Duration
+	}{
+		{
+			name:     "duration_zero",
+			duration: 0,
+		},
+		{
+			name:     "duration_set",
+			duration: time.Minute,
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			opts := clientOptions{}
+			err := WithMaxSecondaryRateLimitRetryAfterDuration(tt.duration)(&opts)
+			if err != nil {
+				t.Fatalf("WithMaxSecondaryRateLimitRetryAfterDuration errored: %v", err)
+			}
+			if *opts.maxSecondaryRateLimitRetryAfterDuration != tt.duration {
+				t.Errorf("maxSecondaryRateLimitRetryAfterDuration is %v, want %v", *opts.maxSecondaryRateLimitRetryAfterDuration, tt.duration)
+			}
+		})
+	}
+}
+
+func TestNewClient(t *testing.T) {
+	t.Parallel()
+
+	for _, tt := range []struct {
+		name    string
+		opts    []ClientOptionsFunc
+		wantErr string
+	}{
+		{
+			name:    "no_options",
+			opts:    []ClientOptionsFunc{},
+			wantErr: "",
+		},
+		{
+			name: "with_options",
+			opts: []ClientOptionsFunc{
+				WithHTTPClient(&http.Client{Timeout: 10 * time.Second}),
+			},
+			wantErr: "",
+		},
+		{
+			name: "with_bad_options",
+			opts: []ClientOptionsFunc{
+				func(_ *clientOptions) error {
+					return errors.New("bad option error")
+				},
+			},
+			wantErr: "bad option error",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			c, err := NewClient(tt.opts...)
+			if err != nil {
+				if tt.wantErr == "" {
+					t.Fatalf("NewClient returned unexpected error: %v", err)
+				}
+				if !strings.Contains(err.Error(), tt.wantErr) {
+					t.Fatalf("error does not contain expected string %q: %v", tt.wantErr, err)
+				}
+				return
+			}
+			if tt.wantErr != "" {
+				t.Fatalf("NewClient did not return expected error containing %q", tt.wantErr)
+			}
+
+			if c.client == nil {
+				t.Error("NewClient client is not initialized")
+			}
+		})
+	}
+}
+
+func Test_newClient(t *testing.T) {
+	t.Parallel()
+
+	for _, tt := range []struct {
+		name    string
+		opts    clientOptions
+		wantErr string
+	}{
+		{
+			name:    "default_options",
+			opts:    clientOptions{},
+			wantErr: "",
+		},
+		{
+			name: "with_http_client",
+			opts: clientOptions{
+				httpClient: &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
+			},
+			wantErr: "",
+		},
+		{
+			name: "with_transport",
+			opts: clientOptions{
+				transport: &http.Transport{IdleConnTimeout: 10 * time.Second},
+			},
+			wantErr: "",
+		},
+		{
+			name: "with_all_options",
+			opts: clientOptions{
+				httpClient:                              &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
+				transport:                               &http.Transport{IdleConnTimeout: 10 * time.Second},
+				timeout:                                 Ptr(15 * time.Second),
+				apiVersionMin:                           Ptr(api20221128),
+				apiVersionMax:                           Ptr(api20221128),
+				userAgent:                               Ptr("CustomUserAgent/1.0"),
+				baseURL:                                 mustParseURL(t, "https://custom-url/api/v3/"),
+				uploadURL:                               mustParseURL(t, "https://custom-upload-url/api/uploads/"),
+				disableRateLimitCheck:                   true,
+				rateLimitRedirectionalEndpoints:         true,
+				maxSecondaryRateLimitRetryAfterDuration: Ptr(2 * time.Minute),
+			},
+			wantErr: "",
+		},
+		{
+			name: "with_rate_limit_options",
+			opts: clientOptions{
+				disableRateLimitCheck:                   false,
+				rateLimitRedirectionalEndpoints:         true,
+				maxSecondaryRateLimitRetryAfterDuration: Ptr(2 * time.Minute),
+			},
+			wantErr: "",
+		},
+		{
+			name: "with_env_proxy",
+			opts: clientOptions{
+				envProxy: true,
+			},
+			wantErr: "",
+		},
+		{
+			name: "with_incompatible_transport_for_env_proxy",
+			opts: clientOptions{
+				transport: roundTripperFunc(func(_ *http.Request) (*http.Response, error) {
+					return nil, nil
+				}),
+				envProxy: true,
+			},
+			wantErr: "cannot set environment proxy on non-http transport",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			c, err := newClient(tt.opts)
+			if err != nil {
+				if tt.wantErr == "" {
+					t.Fatalf("newClient returned unexpected error: %v", err)
+				}
+				if !strings.Contains(err.Error(), tt.wantErr) {
+					t.Fatalf("error does not contain expected string %q: %v", tt.wantErr, err)
+				}
+				return
+			}
+			if tt.wantErr != "" {
+				t.Fatalf("newClient did not return expected error containing %q", tt.wantErr)
+			}
+
+			if c.client == nil {
+				t.Error("newClient http.Client is not initialized")
+			}
+			if tt.opts.httpClient != nil && c.client != tt.opts.httpClient {
+				t.Error("newClient http.Client should be the same instance as the provided httpClient option")
+			}
+			if tt.opts.transport != nil && !tt.opts.envProxy && tt.opts.token == nil && c.client.Transport != tt.opts.transport {
+				t.Error("newClient http.Client.Transport should be the same instance as the provided transport option")
+			}
+			if tt.opts.timeout != nil && c.client.Timeout != *tt.opts.timeout {
+				t.Errorf("newClient http.Client.Timeout is %v, want %v", c.client.Timeout, *tt.opts.timeout)
+			}
+
+			if c.clientIgnoreRedirects == nil {
+				t.Error("newClient http.Client used for redirects is not initialized")
+			}
+			if c.clientIgnoreRedirects.Transport != c.client.Transport {
+				t.Error("newClient http.Client and http.Client used for redirects should share the same Transport instance")
+			}
+			if c.clientIgnoreRedirects.Timeout != c.client.Timeout {
+				t.Errorf("newClient http.Client and http.Client used for redirects should have the same Timeout, got %v and %v", c.client.Timeout, c.clientIgnoreRedirects.Timeout)
+			}
+			if c.clientIgnoreRedirects.Jar != c.client.Jar {
+				t.Error("newClient http.Client and http.Client used for redirects should share the same Jar instance")
+			}
+			if c.clientIgnoreRedirects.CheckRedirect == nil {
+				t.Error("newClient http.Client used for redirects should have a CheckRedirect function")
+			}
+
+			if tt.opts.apiVersionMin != nil && c.apiVersionMin != *tt.opts.apiVersionMin {
+				t.Errorf("newClient apiVersionMin is %v, want %v", c.apiVersionMin, *tt.opts.apiVersionMin)
+			}
+			if tt.opts.apiVersionMin == nil && c.apiVersionMin != api20221128 {
+				t.Errorf("newClient apiVersionMin is %v, want %v", c.apiVersionMin, api20221128)
+			}
+
+			if tt.opts.apiVersionMax != nil && c.apiVersionMax != *tt.opts.apiVersionMax {
+				t.Errorf("newClient apiVersionMax is %v, want %v", c.apiVersionMax, *tt.opts.apiVersionMax)
+			}
+			if tt.opts.apiVersionMax == nil && c.apiVersionMax != api20260310 {
+				t.Errorf("newClient apiVersionMax is %v, want %v", c.apiVersionMax, api20260310)
+			}
+
+			if tt.opts.userAgent != nil && c.userAgent != *tt.opts.userAgent {
+				t.Errorf("newClient userAgent is %v, want %v", c.userAgent, *tt.opts.userAgent)
+			}
+			if tt.opts.userAgent == nil && c.userAgent != defaultUserAgent {
+				t.Errorf("newClient userAgent is %v, want %v", c.userAgent, defaultUserAgent)
+			}
+
+			if tt.opts.baseURL != nil && c.baseURL.String() != tt.opts.baseURL.String() {
+				t.Errorf("newClient baseURL is %v, want %v", c.baseURL.String(), tt.opts.baseURL.String())
+			}
+			if tt.opts.baseURL == nil && c.baseURL.String() != defaultBaseURL {
+				t.Errorf("newClient baseURL is %v, want %v", c.baseURL.String(), defaultBaseURL)
+			}
+
+			if tt.opts.uploadURL != nil && c.uploadURL.String() != tt.opts.uploadURL.String() {
+				t.Errorf("newClient uploadURL is %v, want %v", c.uploadURL.String(), tt.opts.uploadURL.String())
+			}
+			if tt.opts.uploadURL == nil && c.uploadURL.String() != uploadBaseURL {
+				t.Errorf("newClient uploadURL is %v, want %v", c.uploadURL.String(), uploadBaseURL)
+			}
+
+			if c.disableRateLimitCheck != tt.opts.disableRateLimitCheck {
+				t.Errorf("newClient disableRateLimitCheck is %v, want %v", c.disableRateLimitCheck, tt.opts.disableRateLimitCheck)
+			}
+			if tt.opts.disableRateLimitCheck && (c.rateLimitRedirectionalEndpoints || c.maxSecondaryRateLimitRetryAfterDuration != 0) {
+				t.Error("newClient should not set rate limit options when disableRateLimitCheck is true")
+			}
+
+			if !tt.opts.disableRateLimitCheck && c.rateLimitRedirectionalEndpoints != tt.opts.rateLimitRedirectionalEndpoints {
+				t.Errorf("newClient rateLimitRedirectionalEndpoints is %v, want %v", c.rateLimitRedirectionalEndpoints, tt.opts.rateLimitRedirectionalEndpoints)
+			}
+			if !tt.opts.disableRateLimitCheck && tt.opts.maxSecondaryRateLimitRetryAfterDuration != nil && c.maxSecondaryRateLimitRetryAfterDuration != *tt.opts.maxSecondaryRateLimitRetryAfterDuration {
+				t.Errorf("newClient maxSecondaryRateLimitRetryAfterDuration is %v, want %v", c.maxSecondaryRateLimitRetryAfterDuration, *tt.opts.maxSecondaryRateLimitRetryAfterDuration)
+			}
+
+			if c.common.client != c {
+				t.Error("newClient common.client is not initialized or does not point to the client")
+			}
+			if c.Actions == nil || c.Activity == nil || c.Admin == nil || c.Apps == nil || c.Authorizations == nil || c.Billing == nil || c.Checks == nil || c.Classroom == nil || c.CodeScanning == nil || c.CodesOfConduct == nil || c.Codespaces == nil || c.Copilot == nil || c.Credentials == nil || c.Dependabot == nil || c.DependencyGraph == nil || c.Emojis == nil || c.Enterprise == nil || c.Gists == nil || c.Git == nil || c.Gitignores == nil || c.Interactions == nil || c.IssueImport == nil || c.Issues == nil || c.Licenses == nil || c.Markdown == nil || c.Marketplace == nil || c.Meta == nil || c.Migrations == nil || c.Organizations == nil || c.PrivateRegistries == nil || c.Projects == nil || c.PullRequests == nil || c.RateLimit == nil || c.Reactions == nil || c.Repositories == nil || c.SCIM == nil || c.Search == nil || c.SecretScanning == nil || c.SecurityAdvisories == nil || c.SubIssue == nil || c.Teams == nil || c.Users == nil {
+				t.Error("newClient service fields are not all initialized")
+			}
+
+			if c.Marketplace.Stubbed != tt.opts.marketplaceStubbed {
+				t.Errorf("newClient marketplaceStubbed is %v, want %v", c.Marketplace.Stubbed, tt.opts.marketplaceStubbed)
+			}
+		})
+	}
+}
+
+func TestClient_UserAgent(t *testing.T) {
+	t.Parallel()
+
+	c := mustNewClient(t)
+
+	if got, want := c.UserAgent(), defaultUserAgent; got != want {
+		t.Errorf("Client.UserAgent() = %v, want %v", got, want)
+	}
+
+	customUserAgent := "CustomUserAgent/1.0"
+	c.userAgent = customUserAgent
+
+	if got, want := c.UserAgent(), customUserAgent; got != want {
+		t.Errorf("Client.UserAgent() = %v, want %v", got, want)
+	}
+}
+
+func TestClient_BaseURL(t *testing.T) {
+	t.Parallel()
+
+	customBaseURL := "https://custom-url/api/v3/"
+
+	for _, tt := range []struct {
+		name        string
+		client      *Client
+		wantBaseURL string
+	}{
+		{
+			name:        "default_base_url",
+			client:      mustNewClient(t),
+			wantBaseURL: defaultBaseURL,
+		},
+		{
+			name:        "custom_base_url",
+			client:      &Client{baseURL: mustParseURL(t, customBaseURL)},
+			wantBaseURL: customBaseURL,
+		},
+		{
+			name:        "missing_base_url",
+			client:      &Client{},
+			wantBaseURL: "",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			if got, want := tt.client.BaseURL(), tt.wantBaseURL; got != want {
+				t.Errorf("Client.BaseURL() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestClient_UploadURL(t *testing.T) {
+	t.Parallel()
+
+	customUploadURL := "https://custom-upload-url/api/uploads/"
+
+	for _, tt := range []struct {
+		name          string
+		client        *Client
+		wantUploadURL string
+	}{
+		{
+			name:          "default_upload_url",
+			client:        mustNewClient(t),
+			wantUploadURL: uploadBaseURL,
+		},
+		{
+			name:          "custom_upload_url",
+			client:        &Client{uploadURL: mustParseURL(t, customUploadURL)},
+			wantUploadURL: customUploadURL,
+		},
+		{
+			name:          "missing_upload_url",
+			client:        &Client{},
+			wantUploadURL: "",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			if got, want := tt.client.UploadURL(), tt.wantUploadURL; got != want {
+				t.Errorf("Client.UploadURL() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestClient_Clone(t *testing.T) {
+	t.Parallel()
+
+	t.Run("uninitialized_client", func(t *testing.T) {
+		t.Parallel()
+
+		var c Client
+
+		_, err := c.Clone()
+		if err == nil || !errors.Is(err, errUninitialized) {
+			t.Fatalf("Client.Clone returned unexpected error: %v", err)
+		}
+	})
+
+	t.Run("initialized_client_opts_err", func(t *testing.T) {
+		t.Parallel()
+
+		c := mustNewClient(t)
+
+		_, err := c.Clone(func(_ *clientOptions) error {
+			return errors.New("test options error")
+		})
+		if err == nil || err.Error() != "test options error" {
+			t.Fatalf("Client.Clone returned unexpected error: %v", err)
+		}
+	})
+
+	t.Run("initialized_client_new_client_err", func(t *testing.T) {
+		t.Parallel()
+
+		c := mustNewClient(t)
+
+		_, err := c.Clone(WithTransport(roundTripperFunc(func(_ *http.Request) (*http.Response, error) {
+			return nil, nil
+		})), WithEnvProxy())
+		if err == nil || err.Error() != "cannot set environment proxy on non-http transport" {
+			t.Fatalf("Client.Clone returned unexpected error: %v", err)
+		}
+	})
+
+	t.Run("initialized_client", func(t *testing.T) {
+		t.Parallel()
+
+		c := mustNewClient(t)
+		c.apiVersionMin = api20221128
+		c.apiVersionMax = api20221128
+		c.userAgent = "CustomUserAgent/1.0"
+		c.baseURL.Path = "/custom/"
+		c.uploadURL.Path = "/custom-upload/"
+		c.disableRateLimitCheck = false
+		c.rateLimitRedirectionalEndpoints = true
+		c.maxSecondaryRateLimitRetryAfterDuration = 2 * time.Minute
+		c.Marketplace.Stubbed = true
+		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
+		c.client.Timeout = 15 * time.Second
+		c.rateLimits[CoreCategory].Remaining = 100
+		c.secondaryRateLimitReset = time.Now().Add(30 * time.Second)
+
+		cloned, err := c.Clone()
+		if err != nil {
+			t.Fatalf("Client.Clone returned error: %v", err)
+		}
+
+		if cloned.client == c.client {
+			t.Error("Cloned Client has same http.Client instance, but should be different")
+		}
+		if cloned.client.Transport != c.client.Transport {
+			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
+		}
+		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
+			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
+		}
+		if cloned.client.Jar != c.client.Jar {
+			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
+		}
+		if cloned.client.Timeout != c.client.Timeout {
+			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
+		}
+		if got, want := cloned.userAgent, c.userAgent; got != want {
+			t.Errorf("Cloned Client userAgent is %v, want %v", got, want)
+		}
+		if got, want := cloned.baseURL.String(), c.baseURL.String(); got != want {
+			t.Errorf("Cloned Client baseURL is %v, want %v", got, want)
+		}
+		if got, want := cloned.uploadURL.String(), c.uploadURL.String(); got != want {
+			t.Errorf("Cloned Client uploadURL is %v, want %v", got, want)
+		}
+		if cloned.disableRateLimitCheck != c.disableRateLimitCheck {
+			t.Errorf("Cloned Client disableRateLimitCheck is %v, want %v", cloned.disableRateLimitCheck, c.disableRateLimitCheck)
+		}
+		if cloned.rateLimitRedirectionalEndpoints != c.rateLimitRedirectionalEndpoints {
+			t.Errorf("Cloned Client rateLimitRedirectionalEndpoints is %v, want %v", cloned.rateLimitRedirectionalEndpoints, c.rateLimitRedirectionalEndpoints)
+		}
+		if cloned.maxSecondaryRateLimitRetryAfterDuration != c.maxSecondaryRateLimitRetryAfterDuration {
+			t.Errorf("Cloned Client maxSecondaryRateLimitRetryAfterDuration is %v, want %v", cloned.maxSecondaryRateLimitRetryAfterDuration, c.maxSecondaryRateLimitRetryAfterDuration)
+		}
+		if cloned.Marketplace.Stubbed != c.Marketplace.Stubbed {
+			t.Errorf("Cloned Client Marketplace.Stubbed is %v, want %v", cloned.Marketplace.Stubbed, c.Marketplace.Stubbed)
+		}
+		if cloned.rateLimits[CoreCategory].Remaining != c.rateLimits[CoreCategory].Remaining {
+			t.Errorf("Cloned Client rateLimits[CoreCategory].Remaining is %v, want %v", cloned.rateLimits[CoreCategory].Remaining, c.rateLimits[CoreCategory].Remaining)
+		}
+		if !cloned.secondaryRateLimitReset.Equal(c.secondaryRateLimitReset) {
+			t.Errorf("Cloned Client secondaryRateLimitReset is %v, want %v", cloned.secondaryRateLimitReset, c.secondaryRateLimitReset)
+		}
+	})
+
+	t.Run("initialized_client_no_rate_limit_check", func(t *testing.T) {
+		t.Parallel()
+
+		c := mustNewClient(t)
+		c.userAgent = "CustomUserAgent/1.0"
+		c.baseURL.Path = "/custom/"
+		c.uploadURL.Path = "/custom-upload/"
+		c.disableRateLimitCheck = true
+		c.Marketplace.Stubbed = true
+		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
+		c.client.Timeout = 15 * time.Second
+		c.rateLimits[CoreCategory].Remaining = 100
+		c.secondaryRateLimitReset = time.Now().Add(30 * time.Second)
+
+		cloned, err := c.Clone()
+		if err != nil {
+			t.Fatalf("Client.Clone returned error: %v", err)
+		}
+
+		if cloned.client == c.client {
+			t.Error("Cloned Client has same http.Client instance, but should be different")
+		}
+		if cloned.client.Transport != c.client.Transport {
+			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
+		}
+		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
+			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
+		}
+		if cloned.client.Jar != c.client.Jar {
+			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
+		}
+		if cloned.client.Timeout != c.client.Timeout {
+			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
+		}
+		if got, want := cloned.userAgent, c.userAgent; got != want {
+			t.Errorf("Cloned Client userAgent is %v, want %v", got, want)
+		}
+		if got, want := cloned.baseURL.String(), c.baseURL.String(); got != want {
+			t.Errorf("Cloned Client baseURL is %v, want %v", got, want)
+		}
+		if got, want := cloned.uploadURL.String(), c.uploadURL.String(); got != want {
+			t.Errorf("Cloned Client uploadURL is %v, want %v", got, want)
+		}
+		if cloned.disableRateLimitCheck != c.disableRateLimitCheck {
+			t.Errorf("Cloned Client disableRateLimitCheck is %v, want %v", cloned.disableRateLimitCheck, c.disableRateLimitCheck)
+		}
+		if cloned.Marketplace.Stubbed != c.Marketplace.Stubbed {
+			t.Errorf("Cloned Client Marketplace.Stubbed is %v, want %v", cloned.Marketplace.Stubbed, c.Marketplace.Stubbed)
+		}
+	})
+
+	t.Run("initialized_client_with_http_client", func(t *testing.T) {
+		t.Parallel()
+
+		c := mustNewClient(t)
+		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
+		c.client.Timeout = 15 * time.Second
+
+		h := &http.Client{
+			Transport:     &http.Transport{IdleConnTimeout: 20 * time.Second},
+			CheckRedirect: func(_ *http.Request, _ []*http.Request) error { return http.ErrUseLastResponse },
+			Timeout:       25 * time.Second,
+		}
+
+		cloned, err := c.Clone(WithHTTPClient(h))
+		if err != nil {
+			t.Fatalf("Client.Clone returned error: %v", err)
+		}
+
+		if cloned.client == h {
+			t.Error("Cloned Client has same http.Client instance as provided in WithHTTPClient, but should be a different instance")
+		}
+		if cloned.client.Transport != h.Transport {
+			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
+		}
+		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", h.CheckRedirect) {
+			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
+		}
+		if cloned.client.Jar != h.Jar {
+			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
+		}
+		if cloned.client.Timeout != h.Timeout {
+			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, h.Timeout)
+		}
+	})
+
+	t.Run("initialized_client_with_transport", func(t *testing.T) {
+		t.Parallel()
+
+		c := mustNewClient(t)
+		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
+		c.client.Timeout = 15 * time.Second
+
+		tr := &http.Transport{IdleConnTimeout: 30 * time.Second}
+
+		cloned, err := c.Clone(WithTransport(tr))
+		if err != nil {
+			t.Fatalf("Client.Clone returned error: %v", err)
+		}
+
+		if cloned.client == c.client {
+			t.Error("Cloned Client has same http.Client instance, but should be different")
+		}
+		if cloned.client.Transport != tr {
+			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
+		}
+		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
+			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
+		}
+		if cloned.client.Jar != c.client.Jar {
+			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
+		}
+		if cloned.client.Timeout != c.client.Timeout {
+			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, c.client.Timeout)
+		}
+	})
+
+	t.Run("initialized_client_with_timeout", func(t *testing.T) {
+		t.Parallel()
+
+		c := mustNewClient(t)
+		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
+		c.client.Timeout = 15 * time.Second
+
+		timeout := 30 * time.Second
+
+		cloned, err := c.Clone(WithTimeout(timeout))
+		if err != nil {
+			t.Fatalf("Client.Clone returned error: %v", err)
+		}
+
+		if cloned.client == c.client {
+			t.Error("Cloned Client has same http.Client instance, but should be different")
+		}
+		if cloned.client.Transport != c.client.Transport {
+			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
+		}
+		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", c.client.CheckRedirect) {
+			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
+		}
+		if cloned.client.Jar != c.client.Jar {
+			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
+		}
+		if cloned.client.Timeout != timeout {
+			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, timeout)
+		}
+	})
+
+	t.Run("initialized_client_with_http_client_transport_timeout", func(t *testing.T) {
+		t.Parallel()
+
+		c := mustNewClient(t)
+		c.client.Transport = &http.Transport{IdleConnTimeout: 10 * time.Second}
+		c.client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return nil }
+		c.client.Timeout = 15 * time.Second
+
+		h := &http.Client{
+			Transport:     &http.Transport{IdleConnTimeout: 20 * time.Second},
+			CheckRedirect: func(_ *http.Request, _ []*http.Request) error { return http.ErrUseLastResponse },
+			Timeout:       25 * time.Second,
+		}
+
+		tr := &http.Transport{IdleConnTimeout: 30 * time.Second}
+
+		timeout := 45 * time.Second
+
+		cloned, err := c.Clone(WithHTTPClient(h), WithTransport(tr), WithTimeout(timeout))
+		if err != nil {
+			t.Fatalf("Client.Clone returned error: %v", err)
+		}
+
+		if cloned.client == h {
+			t.Error("Cloned Client has same http.Client instance as provided in WithHTTPClient, but should be a different instance")
+		}
+		if cloned.client.Transport != tr {
+			t.Error("Cloned Client http.Client.Transport is not the same instance as original")
+		}
+		if cloned.client.CheckRedirect == nil || fmt.Sprintf("%p", cloned.client.CheckRedirect) != fmt.Sprintf("%p", h.CheckRedirect) {
+			t.Error("Cloned Client http.Client.CheckRedirect is not the same function instance as original")
+		}
+		if cloned.client.Jar != h.Jar {
+			t.Error("Cloned Client http.Client.Jar is not the same instance as original")
+		}
+		if cloned.client.Timeout != timeout {
+			t.Errorf("Cloned Client http.Client.Timeout is %v, want %v", cloned.client.Timeout, timeout)
+		}
+	})
+}
+
+func TestClient_Client(t *testing.T) {
+	t.Parallel()
+	c, err := NewClient()
+	if err != nil {
+		t.Fatalf("NewClient returned error: %v", err)
+	}
+
+	c2 := c.Client()
+	if c.client == c2 {
+		t.Error("Client returned same http.Client, but should be different")
 	}
 }
 
@@ -660,11 +1529,11 @@ func TestClient_rateLimits(t *testing.T) {
 
 func TestNewRequest(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
+	c := mustNewClient(t)
 
 	inURL, outURL := "/foo", defaultBaseURL+"foo"
 	inBody, outBody := &User{Login: Ptr("l")}, `{"login":"l"}`+"\n"
-	req, _ := c.NewRequest("GET", inURL, inBody)
+	req, _ := c.NewRequest(t.Context(), "GET", inURL, inBody)
 
 	// test that relative URL was expanded
 	if got, want := req.URL.String(), outURL; got != want {
@@ -680,7 +1549,7 @@ func TestNewRequest(t *testing.T) {
 	userAgent := req.Header.Get("User-Agent")
 
 	// test that default user-agent is attached to the request
-	if got, want := userAgent, c.UserAgent; got != want {
+	if got, want := userAgent, c.userAgent; got != want {
 		t.Errorf("NewRequest() User-Agent is %v, want %v", got, want)
 	}
 
@@ -689,11 +1558,11 @@ func TestNewRequest(t *testing.T) {
 	}
 
 	apiVersion := req.Header.Get(headerAPIVersion)
-	if got, want := apiVersion, defaultAPIVersion; got != want {
+	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
-	req, _ = c.NewRequest("GET", inURL, inBody, WithVersion("2022-11-29"))
+	req, _ = c.NewRequest(t.Context(), "GET", inURL, inBody, WithVersion("2022-11-29"))
 	apiVersion = req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, "2022-11-29"; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
@@ -702,12 +1571,12 @@ func TestNewRequest(t *testing.T) {
 
 func TestNewRequest_invalidJSON(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
+	c := mustNewClient(t)
 
 	type T struct {
 		F func()
 	}
-	_, err := c.NewRequest("GET", ".", &T{})
+	_, err := c.NewRequest(t.Context(), "GET", ".", &T{})
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
@@ -716,15 +1585,15 @@ func TestNewRequest_invalidJSON(t *testing.T) {
 
 func TestNewRequest_badURL(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
-	_, err := c.NewRequest("GET", ":", nil)
+	c := mustNewClient(t)
+	_, err := c.NewRequest(t.Context(), "GET", ":", nil)
 	testURLParseError(t, err)
 }
 
 func TestNewRequest_badMethod(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
-	if _, err := c.NewRequest("BOGUS\nMETHOD", ".", nil); err == nil {
+	c := mustNewClient(t)
+	if _, err := c.NewRequest(t.Context(), "BOGUS\nMETHOD", ".", nil); err == nil {
 		t.Fatal("NewRequest returned nil; expected error")
 	}
 }
@@ -733,9 +1602,9 @@ func TestNewRequest_badMethod(t *testing.T) {
 // This caused a problem with Google's internal http client.
 func TestNewRequest_emptyUserAgent(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
-	c.UserAgent = ""
-	req, err := c.NewRequest("GET", ".", nil)
+	c := mustNewClient(t)
+	c.userAgent = ""
+	req, err := c.NewRequest(t.Context(), "GET", ".", nil)
 	if err != nil {
 		t.Fatalf("NewRequest returned unexpected error: %v", err)
 	}
@@ -752,8 +1621,8 @@ func TestNewRequest_emptyUserAgent(t *testing.T) {
 // subtle errors.
 func TestNewRequest_emptyBody(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
-	req, err := c.NewRequest("GET", ".", nil)
+	c := mustNewClient(t)
+	req, err := c.NewRequest(t.Context(), "GET", ".", nil)
 	if err != nil {
 		t.Fatalf("NewRequest returned unexpected error: %v", err)
 	}
@@ -771,17 +1640,17 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 		{rawurl: "https://example.com/api/v3", wantError: true},
 		{rawurl: "https://example.com/api/v3/", wantError: false},
 	}
-	c := NewClient(nil)
+	c := mustNewClient(t)
 	for _, test := range tests {
 		u, err := url.Parse(test.rawurl)
 		if err != nil {
-			t.Fatalf("url.Parse returned unexpected error: %v.", err)
+			t.Fatalf("url.Parse returned unexpected error: %v", err)
 		}
-		c.BaseURL = u
-		if _, err := c.NewRequest("GET", "test", nil); test.wantError && err == nil {
+		c.baseURL = u
+		if _, err := c.NewRequest(t.Context(), "GET", "test", nil); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
-			t.Fatalf("NewRequest returned unexpected error: %v.", err)
+			t.Fatalf("NewRequest returned unexpected error: %v", err)
 		}
 	}
 }
@@ -811,6 +1680,12 @@ func TestCheckURLPathTraversal(t *testing.T) {
 		// URL with userinfo.
 		{"https://user:pass@api.github.com/repos/../admin", ErrPathForbidden},
 		{"https://user:pass@api.github.com/repos/o/r", nil},
+		// Percent-encoded dots (%2e%2e) — url.Parse decodes them to ".." in Path.
+		{"repos/%2e%2e/admin", ErrPathForbidden},
+		{"repos/%2E%2E/admin", ErrPathForbidden},
+		{"repos/x/%2e%2e/%2e%2e/%2e%2e/admin", ErrPathForbidden},
+		{"x/%2e%2e/%2e%2e/%2e%2e/admin/users", ErrPathForbidden},
+		{"repos/o/r/contents/file%2e%2etxt", nil},
 	}
 	for _, tt := range tests {
 		err := checkURLPathTraversal(tt.input)
@@ -822,7 +1697,7 @@ func TestCheckURLPathTraversal(t *testing.T) {
 
 func TestNewRequest_pathTraversal(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
+	c := mustNewClient(t)
 
 	tests := []struct {
 		urlStr    string
@@ -834,7 +1709,7 @@ func TestNewRequest_pathTraversal(t *testing.T) {
 		{"repos/../admin", true},
 	}
 	for _, tt := range tests {
-		_, err := c.NewRequest("GET", tt.urlStr, nil)
+		_, err := c.NewRequest(t.Context(), "GET", tt.urlStr, nil)
 		if tt.wantError && !errors.Is(err, ErrPathForbidden) {
 			t.Errorf("NewRequest(%q): want ErrPathForbidden, got %v", tt.urlStr, err)
 		} else if !tt.wantError && err != nil {
@@ -845,9 +1720,9 @@ func TestNewRequest_pathTraversal(t *testing.T) {
 
 func TestNewFormRequest_pathTraversal(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
+	c := mustNewClient(t)
 
-	_, err := c.NewFormRequest("repos/x/../../../admin", nil)
+	_, err := c.NewFormRequest(t.Context(), "repos/x/../../../admin", nil)
 	if !errors.Is(err, ErrPathForbidden) {
 		t.Fatalf("NewFormRequest with path traversal: want ErrPathForbidden, got %v", err)
 	}
@@ -855,9 +1730,9 @@ func TestNewFormRequest_pathTraversal(t *testing.T) {
 
 func TestNewUploadRequest_pathTraversal(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
+	c := mustNewClient(t)
 
-	_, err := c.NewUploadRequest("repos/x/../../../admin", nil, 0, "")
+	_, err := c.NewUploadRequest(t.Context(), "repos/x/../../../admin", nil, 0, "")
 	if !errors.Is(err, ErrPathForbidden) {
 		t.Fatalf("NewUploadRequest with path traversal: want ErrPathForbidden, got %v", err)
 	}
@@ -865,13 +1740,13 @@ func TestNewUploadRequest_pathTraversal(t *testing.T) {
 
 func TestNewFormRequest(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
+	c := mustNewClient(t)
 
 	inURL, outURL := "/foo", defaultBaseURL+"foo"
 	form := url.Values{}
 	form.Add("login", "l")
 	inBody, outBody := strings.NewReader(form.Encode()), "login=l"
-	req, err := c.NewFormRequest(inURL, inBody)
+	req, err := c.NewFormRequest(t.Context(), inURL, inBody)
 	if err != nil {
 		t.Fatalf("NewFormRequest returned unexpected error: %v", err)
 	}
@@ -891,16 +1766,16 @@ func TestNewFormRequest(t *testing.T) {
 	}
 
 	// test that default user-agent is attached to the request
-	if got, want := req.Header.Get("User-Agent"), c.UserAgent; got != want {
+	if got, want := req.Header.Get("User-Agent"), c.userAgent; got != want {
 		t.Errorf("NewFormRequest() User-Agent is %v, want %v", got, want)
 	}
 
 	apiVersion := req.Header.Get(headerAPIVersion)
-	if got, want := apiVersion, defaultAPIVersion; got != want {
+	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewFormRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
-	req, err = c.NewFormRequest(inURL, inBody, WithVersion("2022-11-29"))
+	req, err = c.NewFormRequest(t.Context(), inURL, inBody, WithVersion("2022-11-29"))
 	if err != nil {
 		t.Fatalf("NewFormRequest with WithVersion returned unexpected error: %v", err)
 	}
@@ -912,16 +1787,16 @@ func TestNewFormRequest(t *testing.T) {
 
 func TestNewFormRequest_badURL(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
-	_, err := c.NewFormRequest(":", nil)
+	c := mustNewClient(t)
+	_, err := c.NewFormRequest(t.Context(), ":", nil)
 	testURLParseError(t, err)
 }
 
 func TestNewFormRequest_emptyUserAgent(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
-	c.UserAgent = ""
-	req, err := c.NewFormRequest(".", nil)
+	c := mustNewClient(t)
+	c.userAgent = ""
+	req, err := c.NewFormRequest(t.Context(), ".", nil)
 	if err != nil {
 		t.Fatalf("NewFormRequest returned unexpected error: %v", err)
 	}
@@ -932,8 +1807,8 @@ func TestNewFormRequest_emptyUserAgent(t *testing.T) {
 
 func TestNewFormRequest_emptyBody(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
-	req, err := c.NewFormRequest(".", nil)
+	c := mustNewClient(t)
+	req, err := c.NewFormRequest(t.Context(), ".", nil)
 	if err != nil {
 		t.Fatalf("NewFormRequest returned unexpected error: %v", err)
 	}
@@ -951,32 +1826,32 @@ func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
 		{rawURL: "https://example.com/api/v3", wantError: true},
 		{rawURL: "https://example.com/api/v3/", wantError: false},
 	}
-	c := NewClient(nil)
+	c := mustNewClient(t)
 	for _, test := range tests {
 		u, err := url.Parse(test.rawURL)
 		if err != nil {
-			t.Fatalf("url.Parse returned unexpected error: %v.", err)
+			t.Fatalf("url.Parse returned unexpected error: %v", err)
 		}
-		c.BaseURL = u
-		if _, err := c.NewFormRequest("test", nil); test.wantError && err == nil {
+		c.baseURL = u
+		if _, err := c.NewFormRequest(t.Context(), "test", nil); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
-			t.Fatalf("NewFormRequest returned unexpected error: %v.", err)
+			t.Fatalf("NewFormRequest returned unexpected error: %v", err)
 		}
 	}
 }
 
 func TestNewUploadRequest_WithVersion(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
-	req, _ := c.NewUploadRequest("https://example.com/", nil, 0, "")
+	c := mustNewClient(t)
+	req, _ := c.NewUploadRequest(t.Context(), "https://example.com/", nil, 0, "")
 
 	apiVersion := req.Header.Get(headerAPIVersion)
-	if got, want := apiVersion, defaultAPIVersion; got != want {
+	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
-	req, _ = c.NewUploadRequest("https://example.com/", nil, 0, "", WithVersion("2022-11-29"))
+	req, _ = c.NewUploadRequest(t.Context(), "https://example.com/", nil, 0, "", WithVersion("2022-11-29"))
 	apiVersion = req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, "2022-11-29"; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
@@ -985,13 +1860,13 @@ func TestNewUploadRequest_WithVersion(t *testing.T) {
 
 func TestNewUploadRequest_badURL(t *testing.T) {
 	t.Parallel()
-	c := NewClient(nil)
-	_, err := c.NewUploadRequest(":", nil, 0, "")
+	c := mustNewClient(t)
+	_, err := c.NewUploadRequest(t.Context(), ":", nil, 0, "")
 	testURLParseError(t, err)
 
 	const methodName = "NewUploadRequest"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = c.NewUploadRequest("\n", nil, -1, "\n")
+		_, err = c.NewUploadRequest(t.Context(), "\n", nil, -1, "\n")
 		return err
 	})
 }
@@ -1005,17 +1880,17 @@ func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
 		{rawurl: "https://example.com/api/uploads", wantError: true},
 		{rawurl: "https://example.com/api/uploads/", wantError: false},
 	}
-	c := NewClient(nil)
+	c := mustNewClient(t)
 	for _, test := range tests {
 		u, err := url.Parse(test.rawurl)
 		if err != nil {
-			t.Fatalf("url.Parse returned unexpected error: %v.", err)
+			t.Fatalf("url.Parse returned unexpected error: %v", err)
 		}
-		c.UploadURL = u
-		if _, err = c.NewUploadRequest("test", nil, 0, ""); test.wantError && err == nil {
+		c.uploadURL = u
+		if _, err = c.NewUploadRequest(t.Context(), "test", nil, 0, ""); test.wantError && err == nil {
 			t.Fatal("Expected error to be returned.")
 		} else if !test.wantError && err != nil {
-			t.Fatalf("NewUploadRequest returned unexpected error: %v.", err)
+			t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
 		}
 	}
 }
@@ -1285,26 +2160,14 @@ func TestDo(t *testing.T) {
 		fmt.Fprint(w, `{"A":"a"}`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
 	var body *foo
-	_, err := client.Do(t.Context(), req, &body)
+	_, err := client.Do(req, &body)
 	assertNilError(t, err)
 
 	want := &foo{"a"}
 	if !cmp.Equal(body, want) {
 		t.Errorf("Response body = %v, want %v", body, want)
-	}
-}
-
-func TestDo_nilContext(t *testing.T) {
-	t.Parallel()
-	client, _, _ := setup(t)
-
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(nil, req, nil)
-
-	if !errors.Is(err, errNonNilContext) {
-		t.Error("Expected context must be non-nil error")
 	}
 }
 
@@ -1316,8 +2179,8 @@ func TestDo_httpError(t *testing.T) {
 		http.Error(w, "Bad Request", 400)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Fatal("Expected HTTP 400 error, got no error.")
@@ -1338,14 +2201,14 @@ func TestDo_redirectLoop(t *testing.T) {
 		http.Redirect(w, r, baseURLPath, http.StatusFound)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 	if !errors.As(err, new(*url.Error)) {
-		t.Errorf("Expected a URL error; got %#v.", err)
+		t.Errorf("Expected a URL error; got %#v", err)
 	}
 }
 
@@ -1362,10 +2225,10 @@ func TestDo_preservesResponseInHTTPError(t *testing.T) {
 		}`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
 	var resp *Response
 	var data any
-	resp, err := client.Do(t.Context(), req, &data)
+	resp, err := client.Do(req, &data)
 
 	if err == nil {
 		t.Fatal("Expected error response")
@@ -1394,6 +2257,36 @@ func TestDo_preservesResponseInHTTPError(t *testing.T) {
 	}
 }
 
+// TestDo_AcceptedError_LargeBodyTruncated verifies that when the API returns a
+// 202 Accepted with a body larger than maxErrorBodySize, the client reads at
+// most maxErrorBodySize bytes into AcceptedError.Raw and does not allocate
+// unbounded memory.
+func TestDo_AcceptedError_LargeBodyTruncated(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// Serve a 202 response whose body exceeds the cap by one byte.
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusAccepted)
+		fmt.Fprint(w, strings.Repeat("x", maxErrorBodySize+1))
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
+	if err == nil {
+		t.Fatal("Expected AcceptedError, got nil")
+	}
+
+	var aerr *AcceptedError
+	if !errors.As(err, &aerr) {
+		t.Fatalf("Expected *AcceptedError, got %T: %v", err, err)
+	}
+
+	if got, want := len(aerr.Raw), maxErrorBodySize; got != want {
+		t.Errorf("AcceptedError.Raw length = %v, want %v (maxErrorBodySize)", got, want)
+	}
+}
+
 // Test that an error caused by the internal http client's Do() function
 // does not leak the client secret.
 func TestDo_sanitizeURL(t *testing.T) {
@@ -1402,13 +2295,13 @@ func TestDo_sanitizeURL(t *testing.T) {
 		ClientID:     "id",
 		ClientSecret: "secret",
 	}
-	unauthedClient := NewClient(tp.Client())
-	unauthedClient.BaseURL = &url.URL{Scheme: "http", Host: "127.0.0.1:0", Path: "/"} // Use port 0 on purpose to trigger a dial TCP error, expect to get "dial tcp 127.0.0.1:0: connect: can't assign requested address".
-	req, err := unauthedClient.NewRequest("GET", ".", nil)
+	unauthedClient := mustNewClient(t, WithHTTPClient(tp.Client()))
+	unauthedClient.baseURL = &url.URL{Scheme: "http", Host: "127.0.0.1:0", Path: "/"} // Use port 0 on purpose to trigger a dial TCP error, expect to get "dial tcp 127.0.0.1:0: connect: can't assign requested address".
+	req, err := unauthedClient.NewRequest(t.Context(), "GET", ".", nil)
 	if err != nil {
 		t.Fatalf("NewRequest returned unexpected error: %v", err)
 	}
-	_, err = unauthedClient.Do(t.Context(), req, nil)
+	_, err = unauthedClient.Do(req, nil)
 	if err == nil {
 		t.Fatal("Expected error to be returned.")
 	}
@@ -1429,8 +2322,8 @@ func TestDo_rateLimit(t *testing.T) {
 		w.Header().Set(HeaderRateResource, "core")
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -1548,13 +2441,13 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 		http.Error(w, "Bad Request", 400)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 	if errors.As(err, new(*RateLimitError)) {
-		t.Errorf("Did not expect a *RateLimitError error; got %#v.", err)
+		t.Errorf("Did not expect a *RateLimitError error; got %#v", err)
 	}
 	if got, want := resp.Rate.Limit, 60; got != want {
 		t.Errorf("Client rate limit = %v, want %v", got, want)
@@ -1593,15 +2486,15 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 	var rateLimitErr *RateLimitError
 	if !errors.As(err, &rateLimitErr) {
-		t.Fatalf("Expected a *RateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *RateLimitError error; got %#v", err)
 	}
 	if got, want := rateLimitErr.Rate.Limit, 60; got != want {
 		t.Errorf("rateLimitErr rate limit = %v, want %v", got, want)
@@ -1648,16 +2541,16 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	})
 
 	// First request is made, and it makes the client aware of rate reset time being in the future.
-	req, _ := client.NewRequest("GET", "first", nil)
-	ctx := t.Context()
-	_, err := client.Do(ctx, req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", "first", nil)
+
+	_, err := client.Do(req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 
 	// Second request should not cause a network call to be made, since client can predict a rate limit error.
-	req, _ = client.NewRequest("GET", "second", nil)
-	_, err = client.Do(ctx, req, nil)
+	req, _ = client.NewRequest(t.Context(), "GET", "second", nil)
+	_, err = client.Do(req, nil)
 
 	if madeNetworkCall {
 		t.Fatal("Network call was made, even though rate limit is known to still be exceeded.")
@@ -1668,7 +2561,7 @@ func TestDo_rateLimit_noNetworkCall(t *testing.T) {
 	}
 	var rateLimitErr *RateLimitError
 	if !errors.As(err, &rateLimitErr) {
-		t.Fatalf("Expected a *RateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *RateLimitError error; got %#v", err)
 	}
 	if got, want := rateLimitErr.Rate.Limit, 60; got != want {
 		t.Errorf("rateLimitErr rate limit = %v, want %v", got, want)
@@ -1716,16 +2609,15 @@ func TestDo_rateLimit_ignoredFromCache(t *testing.T) {
 	})
 
 	// First request is made so afterwards we can check the returned rate limit headers were ignored.
-	req, _ := client.NewRequest("GET", "first", nil)
-	ctx := t.Context()
-	_, err := client.Do(ctx, req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", "first", nil)
+	_, err := client.Do(req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 
 	// Second request should not be hindered by rate limits.
-	req, _ = client.NewRequest("GET", "second", nil)
-	_, err = client.Do(ctx, req, nil)
+	req, _ = client.NewRequest(t.Context(), "GET", "second", nil)
+	_, err = client.Do(req, nil)
 	if err != nil {
 		t.Fatalf("Second request failed, even though the rate limits from the cache should've been ignored: %v", err)
 	}
@@ -1768,8 +2660,8 @@ func TestDo_rateLimit_sleepUntilResponseResetLimit(t *testing.T) {
 		fmt.Fprintln(w, `{}`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	req, _ := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -1801,8 +2693,8 @@ func TestDo_rateLimit_sleepUntilResponseResetLimitRetryOnce(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	req, _ := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
@@ -1830,8 +2722,8 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
 	})
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	req, _ := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -1866,10 +2758,11 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
 	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Millisecond)
 	defer cancel()
-	_, err := client.Do(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+
+	req, _ := client.NewRequest(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 	if !errors.Is(err, context.DeadlineExceeded) {
 		t.Error("Expected context deadline exceeded error.")
 	}
@@ -1897,13 +2790,13 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
 	})
-	req, _ := client.NewRequest("GET", ".", nil)
 	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Millisecond)
 	defer cancel()
-	_, err := client.Do(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), req, nil)
+	req, _ := client.NewRequest(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 	var rateLimitError *RateLimitError
 	if !errors.As(err, &rateLimitError) {
-		t.Fatalf("Expected a *rateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *rateLimitError error; got %#v", err)
 	}
 	if got, wantSuffix := rateLimitError.Message, "Context cancelled while waiting for rate limit to reset until"; !strings.HasPrefix(got, wantSuffix) {
 		t.Errorf("Expected request to be prevented because context cancellation, got: %v.", got)
@@ -1930,15 +2823,15 @@ func TestDo_rateLimit_abuseRateLimitError(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
 	if !errors.As(err, &abuseRateLimitErr) {
-		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 	}
 	if got, want := abuseRateLimitErr.RetryAfter, (*time.Duration)(nil); got != want {
 		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
@@ -1964,15 +2857,15 @@ func TestDo_rateLimit_abuseRateLimitErrorEnterprise(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
 	if !errors.As(err, &abuseRateLimitErr) {
-		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 	}
 	if got, want := abuseRateLimitErr.RetryAfter, (*time.Duration)(nil); got != want {
 		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
@@ -1995,16 +2888,15 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 }`)
 		})
 
-		req, _ := client.NewRequest("GET", ".", nil)
-		ctx := t.Context()
-		_, err := client.Do(ctx, req, nil)
+		req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+		_, err := client.Do(req, nil)
 
 		if err == nil {
 			t.Error("Expected error to be returned.")
 		}
 		var abuseRateLimitErr *AbuseRateLimitError
 		if !errors.As(err, &abuseRateLimitErr) {
-			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 		}
 		if abuseRateLimitErr.RetryAfter == nil {
 			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
@@ -2014,11 +2906,11 @@ func TestDo_rateLimit_abuseRateLimitError_retryAfter(t *testing.T) {
 		}
 
 		// expect prevention of a following request
-		if _, err = client.Do(ctx, req, nil); err == nil {
+		if _, err = client.Do(req, nil); err == nil {
 			t.Error("Expected error to be returned.")
 		}
 		if !errors.As(err, &abuseRateLimitErr) {
-			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 		}
 		if abuseRateLimitErr.RetryAfter == nil {
 			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
@@ -2052,16 +2944,15 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 }`)
 		})
 
-		req, _ := client.NewRequest("GET", ".", nil)
-		ctx := t.Context()
-		_, err := client.Do(ctx, req, nil)
+		req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+		_, err := client.Do(req, nil)
 
 		if err == nil {
 			t.Error("Expected error to be returned.")
 		}
 		var abuseRateLimitErr *AbuseRateLimitError
 		if !errors.As(err, &abuseRateLimitErr) {
-			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 		}
 		if abuseRateLimitErr.RetryAfter == nil {
 			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
@@ -2072,11 +2963,11 @@ func TestDo_rateLimit_abuseRateLimitError_xRateLimitReset(t *testing.T) {
 		}
 
 		// expect prevention of a following request
-		if _, err = client.Do(ctx, req, nil); err == nil {
+		if _, err = client.Do(req, nil); err == nil {
 			t.Error("Expected error to be returned.")
 		}
 		if !errors.As(err, &abuseRateLimitErr) {
-			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+			t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 		}
 		if abuseRateLimitErr.RetryAfter == nil {
 			t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
@@ -2095,7 +2986,7 @@ func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 	// specify a max retry after duration of 1 min
-	client.MaxSecondaryRateLimitRetryAfterDuration = 60 * time.Second
+	client.maxSecondaryRateLimitRetryAfterDuration = 60 * time.Second
 
 	// x-ratelimit-reset value of 1h into the future, to make sure we are way over the max wait time duration.
 	blockUntil := time.Now().Add(1 * time.Hour).Unix()
@@ -2111,21 +3002,21 @@ func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
 }`)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, nil)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 	var abuseRateLimitErr *AbuseRateLimitError
 	if !errors.As(err, &abuseRateLimitErr) {
-		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v.", err)
+		t.Fatalf("Expected a *AbuseRateLimitError error; got %#v", err)
 	}
 	if abuseRateLimitErr.RetryAfter == nil {
 		t.Fatal("abuseRateLimitErr RetryAfter is nil, expected not-nil")
 	}
 	// check that the retry after is set to be the max allowed duration
-	if got, want := *abuseRateLimitErr.RetryAfter, client.MaxSecondaryRateLimitRetryAfterDuration; got != want {
+	if got, want := *abuseRateLimitErr.RetryAfter, client.maxSecondaryRateLimitRetryAfterDuration; got != want {
 		t.Errorf("abuseRateLimitErr RetryAfter = %v, want %v", got, want)
 	}
 }
@@ -2134,7 +3025,7 @@ func TestDo_rateLimit_abuseRateLimitError_maxDuration(t *testing.T) {
 func TestDo_rateLimit_disableRateLimitCheck(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	client.DisableRateLimitCheck = true
+	client.disableRateLimitCheck = true
 
 	reset := time.Now().UTC().Add(60 * time.Second)
 	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
@@ -2150,8 +3041,8 @@ func TestDo_rateLimit_disableRateLimitCheck(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
 	})
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(t.Context(), req, nil)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -2185,8 +3076,8 @@ func TestDo_rateLimit_bypassRateLimitCheck(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
 	})
-	req, _ := client.NewRequest("GET", ".", nil)
-	resp, err := client.Do(context.WithValue(t.Context(), BypassRateLimitCheck, true), req, nil)
+	req, _ := client.NewRequest(context.WithValue(t.Context(), BypassRateLimitCheck, true), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
 	if err != nil {
 		t.Errorf("Do returned unexpected error: %v", err)
 	}
@@ -2211,10 +3102,110 @@ func TestDo_noContent(t *testing.T) {
 
 	var body json.RawMessage
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, err := client.Do(t.Context(), req, &body)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := client.Do(req, &body)
 	if err != nil {
 		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+}
+
+func TestClient_checkRequestAPIVersionBeforeDo(t *testing.T) {
+	t.Parallel()
+
+	for _, tt := range []struct {
+		name       string
+		version    string
+		versionMin string
+		versionMax string
+		wantErr    bool
+	}{
+		{
+			name:       "version_not_set",
+			version:    "",
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_less_than_min",
+			version:    "2022-01-01",
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    true,
+		},
+		{
+			name:       "version_equal_to_min",
+			version:    api20221128,
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_between_min_and_max",
+			version:    "2023-01-01",
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_equal_to_max",
+			version:    api20260310,
+			versionMin: api20221128,
+			versionMax: api20260310,
+			wantErr:    false,
+		},
+		{
+			name:       "version_greater_than_max",
+			version:    api20260310,
+			versionMin: api20221128,
+			versionMax: api20221128,
+			wantErr:    true,
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			client := mustNewClient(t)
+			client.apiVersionMin = tt.versionMin
+			client.apiVersionMax = tt.versionMax
+
+			req, _ := http.NewRequestWithContext(t.Context(), "GET", ".", nil)
+			req.Header.Set(headerAPIVersion, tt.version)
+
+			err := client.checkRequestAPIVersionBeforeDo(req)
+			if tt.wantErr {
+				if err == nil {
+					t.Fatal("Expected error to be returned, got nil")
+				}
+				if !errors.Is(err, ErrUnsupportedAPIVersion) {
+					t.Errorf("Expected ErrUnsupportedAPIVersion; got %#v", err)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("Expected no error to be returned, got: %v", err)
+			}
+		})
+	}
+}
+
+func TestClient_bareDo_errors_with_unsupported_api_version(t *testing.T) {
+	t.Parallel()
+
+	c := mustNewClient(t)
+	c.apiVersionMin = api20221128
+	c.apiVersionMax = api20221128
+
+	req, _ := http.NewRequestWithContext(t.Context(), "GET", ".", nil)
+	req.Header.Set(headerAPIVersion, api20260310)
+
+	_, err := c.bareDo(c.client, req)
+	if err == nil {
+		t.Fatal("Expected error to be returned, got nil")
+	}
+	if !errors.Is(err, ErrUnsupportedAPIVersion) {
+		t.Errorf("Expected ErrUnsupportedAPIVersion; got %#v", err)
 	}
 }
 
@@ -2226,14 +3217,14 @@ func TestBareDoUntilFound_redirectLoop(t *testing.T) {
 		http.Redirect(w, r, baseURLPath, http.StatusMovedPermanently)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, _, err := client.bareDoUntilFound(t.Context(), req, 1)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, _, err := client.bareDoUntilFound(req, 1)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 	if !errors.As(err, new(*RedirectionError)) {
-		t.Errorf("Expected a Redirection error; got %#v.", err)
+		t.Errorf("Expected a Redirection error; got %#v", err)
 	}
 }
 
@@ -2245,14 +3236,14 @@ func TestBareDoUntilFound_UnexpectedRedirection(t *testing.T) {
 		http.Redirect(w, r, baseURLPath, http.StatusSeeOther)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, _, err := client.bareDoUntilFound(t.Context(), req, 1)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, _, err := client.bareDoUntilFound(req, 1)
 
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
 	if !errors.As(err, new(*RedirectionError)) {
-		t.Errorf("Expected a Redirection error; got %#v.", err)
+		t.Errorf("Expected a Redirection error; got %#v", err)
 	}
 }
 
@@ -2269,8 +3260,8 @@ func TestBareDoUntilFound_RejectsCrossHostRedirect(t *testing.T) {
 		w.WriteHeader(http.StatusMovedPermanently)
 	})
 
-	req, _ := client.NewRequest("GET", ".", nil)
-	_, _, err := client.bareDoUntilFound(t.Context(), req, 1)
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, _, err := client.bareDoUntilFound(req, 1)
 	if err == nil {
 		t.Fatal("Expected cross-host redirect to be rejected, got nil error.")
 	}
@@ -2880,6 +3871,37 @@ func TestAbuseRateLimitError_Is(t *testing.T) {
 			err:        err,
 			otherError: errors.New("github"),
 		},
+		"errors are same - RetryAfter equal value but distinct pointers": {
+			wantSame: true,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: &t1,
+			},
+		},
+		"errors are same - RetryAfter both nil": {
+			wantSame: true,
+			err: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: nil,
+			},
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: nil,
+			},
+		},
+		"errors differ - one RetryAfter nil, other non-nil": {
+			wantSame: false,
+			err:      err,
+			otherError: &AbuseRateLimitError{
+				Response:   &http.Response{},
+				Message:    "Github",
+				RetryAfter: nil,
+			},
+		},
 	}
 
 	for name, tc := range testcases {
@@ -2975,6 +3997,38 @@ func TestCheckResponse_unexpectedErrorStructure(t *testing.T) {
 	}
 	if got := string(data); got != httpBody {
 		t.Errorf("ErrorResponse.Response.Body = %q, want %q", got, httpBody)
+	}
+}
+
+// TestCheckResponse_LargeBodyTruncated verifies that CheckResponse reads at
+// most maxErrorBodySize bytes from an error response body, so that a
+// malicious or buggy server cannot cause the client to allocate unbounded
+// memory.
+func TestCheckResponse_LargeBodyTruncated(t *testing.T) {
+	t.Parallel()
+	// Build a body that is one byte larger than the cap.
+	body := strings.Repeat("x", maxErrorBodySize+1)
+	res := &http.Response{
+		Request:    &http.Request{},
+		StatusCode: http.StatusBadRequest,
+		Body:       io.NopCloser(strings.NewReader(body)),
+	}
+
+	// CheckResponse should not return an error from the read itself; the HTTP
+	// error status is the expected error.
+	if err := CheckResponse(res); err == nil {
+		t.Fatal("Expected error from CheckResponse, got nil")
+	}
+
+	// After CheckResponse, the body is restored with the (truncated) bytes that
+	// were actually read.  Verify the restored body is exactly maxErrorBodySize
+	// bytes — not the full maxErrorBodySize+1 that the server sent.
+	restored, err := io.ReadAll(res.Body)
+	if err != nil {
+		t.Fatalf("io.ReadAll on restored body: %v", err)
+	}
+	if got, want := len(restored), maxErrorBodySize; got != want {
+		t.Errorf("restored body length = %v, want %v (maxErrorBodySize)", got, want)
 	}
 }
 
@@ -3089,10 +4143,10 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
 	}
-	unauthedClient := NewClient(tp.Client())
-	unauthedClient.BaseURL = client.BaseURL
-	req, _ := unauthedClient.NewRequest("GET", ".", nil)
-	_, err := unauthedClient.Do(t.Context(), req, nil)
+	unauthedClient := mustNewClient(t, WithHTTPClient(tp.Client()))
+	unauthedClient.baseURL = client.baseURL
+	req, _ := unauthedClient.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := unauthedClient.Do(req, nil)
 	assertNilError(t, err)
 }
 
@@ -3166,10 +4220,10 @@ func TestBasicAuthTransport(t *testing.T) {
 		Password: password,
 		OTP:      otp,
 	}
-	basicAuthClient := NewClient(tp.Client())
-	basicAuthClient.BaseURL = client.BaseURL
-	req, _ := basicAuthClient.NewRequest("GET", ".", nil)
-	_, err := basicAuthClient.Do(t.Context(), req, nil)
+	basicAuthClient := mustNewClient(t, WithHTTPClient(tp.Client()))
+	basicAuthClient.baseURL = client.baseURL
+	req, _ := basicAuthClient.NewRequest(t.Context(), "GET", ".", nil)
+	_, err := basicAuthClient.Do(req, nil)
 	assertNilError(t, err)
 }
 
@@ -3291,16 +4345,51 @@ func TestAbuseRateLimitError(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	r := &AbuseRateLimitError{
-		Response: &http.Response{
-			Request:    &http.Request{Method: "PUT", URL: u},
-			StatusCode: http.StatusTooManyRequests,
-		},
-		Message: "<msg>",
-	}
-	if got, want := r.Error(), "PUT https://example.com: 429 <msg>"; got != want {
-		t.Errorf("AbuseRateLimitError = %q, want %q", got, want)
-	}
+	t.Run("nil RetryAfter", func(t *testing.T) {
+		t.Parallel()
+		r := &AbuseRateLimitError{
+			Response: &http.Response{
+				Request:    &http.Request{Method: "PUT", URL: u},
+				StatusCode: http.StatusTooManyRequests,
+			},
+			Message: "<msg>",
+		}
+		if got, want := r.Error(), "PUT https://example.com: 429 <msg>"; got != want {
+			t.Errorf("AbuseRateLimitError = %q, want %q", got, want)
+		}
+	})
+
+	t.Run("with RetryAfter", func(t *testing.T) {
+		t.Parallel()
+		d := 60 * time.Second
+		r := &AbuseRateLimitError{
+			Response: &http.Response{
+				Request:    &http.Request{Method: "GET", URL: u},
+				StatusCode: http.StatusForbidden,
+			},
+			Message:    "rate limited",
+			RetryAfter: &d,
+		}
+		if got, want := r.Error(), "GET https://example.com: 403 rate limited [retry after 1m0s]"; got != want {
+			t.Errorf("AbuseRateLimitError = %q, want %q", got, want)
+		}
+	})
+
+	t.Run("zero RetryAfter", func(t *testing.T) {
+		t.Parallel()
+		d := 0 * time.Second
+		r := &AbuseRateLimitError{
+			Response: &http.Response{
+				Request:    &http.Request{Method: "POST", URL: u},
+				StatusCode: http.StatusForbidden,
+			},
+			Message:    "rate limited",
+			RetryAfter: &d,
+		}
+		if got, want := r.Error(), "POST https://example.com: 403 rate limited"; got != want {
+			t.Errorf("AbuseRateLimitError = %q, want %q", got, want)
+		}
+	})
 }
 
 func TestBareDo_returnsOpenBody(t *testing.T) {
@@ -3314,12 +4403,12 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 		fmt.Fprint(w, expectedBody)
 	})
 
-	req, err := client.NewRequest("GET", "test-url", nil)
+	req, err := client.NewRequest(t.Context(), "GET", "test-url", nil)
 	if err != nil {
 		t.Fatalf("client.NewRequest returned error: %v", err)
 	}
 
-	resp, err := client.BareDo(t.Context(), req)
+	resp, err := client.BareDo(req)
 	if err != nil {
 		t.Fatalf("client.BareDo returned error: %v", err)
 	}
@@ -3336,125 +4425,7 @@ func TestBareDo_returnsOpenBody(t *testing.T) {
 	}
 }
 
-func TestErrorResponse_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ErrorResponse{}, `{
-		"message": "",
-		"errors": null
-	}`)
-
-	u := &ErrorResponse{
-		Message: "msg",
-		Errors: []Error{
-			{
-				Resource: "res",
-				Field:    "f",
-				Code:     "c",
-				Message:  "msg",
-			},
-		},
-		Block: &ErrorBlock{
-			Reason:    "reason",
-			CreatedAt: &Timestamp{referenceTime},
-		},
-		DocumentationURL: "doc",
-	}
-
-	want := `{
-		"message": "msg",
-		"errors": [
-			{
-				"resource": "res",
-				"field": "f",
-				"code": "c",
-				"message": "msg"
-			}
-		],
-		"block": {
-			"reason": "reason",
-			"created_at": ` + referenceTimeStr + `
-		},
-		"documentation_url": "doc"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestErrorBlock_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ErrorBlock{}, "{}")
-
-	u := &ErrorBlock{
-		Reason:    "reason",
-		CreatedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-		"reason": "reason",
-		"created_at": ` + referenceTimeStr + `
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRateLimitError_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RateLimitError{}, `{
-		"Rate": {
-			"limit": 0,
-			"remaining": 0,
-			"reset": `+emptyTimeStr+`,
-			"used": 0
-		},
-		"Response": null,
-		"message": ""
-	}`)
-
-	u := &RateLimitError{
-		Rate: Rate{
-			Limit:     1,
-			Remaining: 1,
-			Reset:     Timestamp{referenceTime},
-		},
-		Message: "msg",
-	}
-
-	want := `{
-		"Rate": {
-			"limit": 1,
-			"remaining": 1,
-			"reset": ` + referenceTimeStr + `,
-			"used": 0
-		},
-		"Response": null,
-		"message": "msg"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestAbuseRateLimitError_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &AbuseRateLimitError{}, `{
-		"Response": null,
-		"message": "",
-		"RetryAfter": null
-	}`)
-
-	u := &AbuseRateLimitError{
-		Message: "msg",
-	}
-
-	want := `{
-		"Response": null,
-		"message": "msg",
-		"RetryAfter": null
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestError_Marshal(t *testing.T) {
+func TestError_UnmarshalJSON(t *testing.T) {
 	t.Parallel()
 	testJSONMarshal(t, &Error{}, `{
 		"resource": "",
@@ -3531,13 +4502,16 @@ func TestClientCopy_leak_transport(t *testing.T) {
 		accessToken := r.Header.Get("Authorization")
 		_, _ = fmt.Fprintf(w, `{"login": "%v"}`, accessToken)
 	}))
-	clientPreconfiguredWithURLs, err := NewClient(nil).WithEnterpriseURLs(srv.URL, srv.URL)
+	clientPreconfiguredWithURLs := mustNewClient(t, WithURLs(&srv.URL, &srv.URL))
+
+	aliceClient, err := clientPreconfiguredWithURLs.Clone(WithAuthToken("alice"))
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	aliceClient := clientPreconfiguredWithURLs.WithAuthToken("alice")
-	bobClient := clientPreconfiguredWithURLs.WithAuthToken("bob")
+	bobClient, err := clientPreconfiguredWithURLs.Clone(WithAuthToken("bob"))
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	alice, _, err := aliceClient.Users.Get(t.Context(), "")
 	if err != nil {

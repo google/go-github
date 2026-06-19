@@ -16,7 +16,7 @@ import (
 	"path/filepath"
 
 	"github.com/alecthomas/kong"
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v88/github"
 )
 
 var helpVars = kong.Vars{
@@ -57,6 +57,7 @@ type rootCmd struct {
 
 	// for testing
 	GithubURL string `kong:"hidden,default='https://api.github.com'"`
+	UploadURL string `kong:"hidden,default='https://uploads.github.com'"`
 }
 
 func (c *rootCmd) opsFile() (string, *operationsFile, error) {
@@ -68,12 +69,12 @@ func (c *rootCmd) opsFile() (string, *operationsFile, error) {
 	return filename, opsFile, nil
 }
 
-func githubClient(apiURL string) (*github.Client, error) {
+func githubClient(apiURL, uploadURL string) (*github.Client, error) {
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
 		return nil, errors.New("GITHUB_TOKEN environment variable must be set to a GitHub personal access token with the public_repo scope")
 	}
-	return github.NewClient(nil).WithAuthToken(token).WithEnterpriseURLs(apiURL, "")
+	return github.NewClient(github.WithAuthToken(token), github.WithEnterpriseURLs(apiURL, uploadURL))
 }
 
 type updateOpenAPICmd struct {
@@ -95,7 +96,7 @@ func (c *updateOpenAPICmd) Run(root *rootCmd) error {
 	for i := range origOps {
 		origOps[i] = origOps[i].clone()
 	}
-	client, err := githubClient(root.GithubURL)
+	client, err := githubClient(root.GithubURL, root.UploadURL)
 	if err != nil {
 		return err
 	}

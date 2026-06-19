@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -25,14 +24,8 @@ func TestRepositoriesService_Merge(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/merges", func(w http.ResponseWriter, r *http.Request) {
-		var v *RepositoryMergeRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"sha":"s"}`)
 	})
 
@@ -62,25 +55,6 @@ func TestRepositoriesService_Merge(t *testing.T) {
 	})
 }
 
-func TestRepositoryMergeRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RepositoryMergeRequest{}, "{}")
-
-	u := &RepositoryMergeRequest{
-		Base:          Ptr("base"),
-		Head:          Ptr("head"),
-		CommitMessage: Ptr("cm"),
-	}
-
-	want := `{
-		"base": "base",
-		"head": "head",
-		"commit_message": "cm"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestRepositoriesService_MergeUpstream(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -90,14 +64,8 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/merge-upstream", func(w http.ResponseWriter, r *http.Request) {
-		var v *RepoMergeUpstreamRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"merge_type":"m"}`)
 	})
 
@@ -125,23 +93,4 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestRepoMergeUpstreamResult_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RepoMergeUpstreamResult{}, "{}")
-
-	u := &RepoMergeUpstreamResult{
-		Message:    Ptr("message"),
-		MergeType:  Ptr("merge_type"),
-		BaseBranch: Ptr("base_branch"),
-	}
-
-	want := `{
-		"message": "message",
-		"merge_type": "merge_type",
-		"base_branch": "base_branch"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

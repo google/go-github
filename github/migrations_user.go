@@ -79,7 +79,7 @@ func (s *MigrationService) StartUserMigration(ctx context.Context, repos []strin
 		body.ExcludeAttachments = &opts.ExcludeAttachments
 	}
 
-	req, err := s.client.NewRequest("POST", u, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -87,7 +87,7 @@ func (s *MigrationService) StartUserMigration(ctx context.Context, repos []strin
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	var m *UserMigration
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -107,7 +107,7 @@ func (s *MigrationService) ListUserMigrations(ctx context.Context, opts *ListOpt
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -115,7 +115,7 @@ func (s *MigrationService) ListUserMigrations(ctx context.Context, opts *ListOpt
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	var m []*UserMigration
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -132,7 +132,7 @@ func (s *MigrationService) ListUserMigrations(ctx context.Context, opts *ListOpt
 func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*UserMigration, *Response, error) {
 	u := fmt.Sprintf("user/migrations/%v", id)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -140,7 +140,7 @@ func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
 	var m *UserMigration
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -157,7 +157,7 @@ func (s *MigrationService) UserMigrationStatus(ctx context.Context, id int64) (*
 func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64) (string, error) {
 	url := fmt.Sprintf("user/migrations/%v/archive", id)
 
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return "", err
 	}
@@ -175,7 +175,7 @@ func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64
 	}()
 
 	var m *UserMigration
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err == nil {
 		return "", errors.New("expected redirect, none provided")
 	}
@@ -193,14 +193,14 @@ func (s *MigrationService) UserMigrationArchiveURL(ctx context.Context, id int64
 func (s *MigrationService) DeleteUserMigration(ctx context.Context, id int64) (*Response, error) {
 	url := fmt.Sprintf("user/migrations/%v/archive", id)
 
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UnlockUserRepo will unlock a repo that was locked for migration.
@@ -214,12 +214,12 @@ func (s *MigrationService) DeleteUserMigration(ctx context.Context, id int64) (*
 func (s *MigrationService) UnlockUserRepo(ctx context.Context, id int64, repo string) (*Response, error) {
 	url := fmt.Sprintf("user/migrations/%v/repos/%v/lock", id, repo)
 
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Header.Set("Accept", mediaTypeMigrationsPreview)
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

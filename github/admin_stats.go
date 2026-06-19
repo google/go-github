@@ -152,18 +152,18 @@ func (s RepoStats) String() string {
 // Please note that this is only available to site administrators,
 // otherwise it will error with a 404 not found (instead of 401 or 403).
 //
-// GitHub API docs: https://docs.github.com/enterprise-server@3.20/rest/enterprise-admin/admin-stats#get-all-statistics
+// GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/admin-stats#get-all-statistics
 //
 //meta:operation GET /enterprise/stats/all
 func (s *AdminService) GetAdminStats(ctx context.Context) (*AdminStats, *Response, error) {
 	u := "enterprise/stats/all"
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var m *AdminStats
-	resp, err := s.client.Do(ctx, req, &m)
+	resp, err := s.client.Do(req, &m)
 	if err != nil {
 		return nil, resp, err
 	}

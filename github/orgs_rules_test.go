@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -14,7 +13,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
+func TestOrganizationsService_ListAllRepositoryRulesets(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -38,9 +37,9 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	rulesets, _, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", nil)
+	rulesets, _, err := client.Organizations.ListAllRepositoryRulesets(ctx, "o", nil)
 	if err != nil {
-		t.Errorf("Organizations.GetAllRepositoryRulesets returned error: %v", err)
+		t.Errorf("Organizations.ListAllRepositoryRulesets returned error: %v", err)
 	}
 
 	want := []*RepositoryRuleset{{
@@ -56,12 +55,12 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 		},
 	}}
 	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.GetAllRepositoryRulesets returned %+v, want %+v", rulesets, want)
+		t.Errorf("Organizations.ListAllRepositoryRulesets returned %+v, want %+v", rulesets, want)
 	}
 
-	const methodName = "GetAllRepositoryRulesets"
+	const methodName = "ListAllRepositoryRulesets"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", nil)
+		got, resp, err := client.Organizations.ListAllRepositoryRulesets(ctx, "o", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -69,7 +68,7 @@ func TestOrganizationsService_GetAllRepositoryRulesets(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_GetAllRepositoryRulesets_ListOptions(t *testing.T) {
+func TestOrganizationsService_ListAllRepositoryRulesets_ListOptions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -86,26 +85,26 @@ func TestOrganizationsService_GetAllRepositoryRulesets_ListOptions(t *testing.T)
 
 	opts := &ListOptions{Page: 2, PerPage: 35}
 	ctx := t.Context()
-	rulesets, _, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", opts)
+	rulesets, _, err := client.Organizations.ListAllRepositoryRulesets(ctx, "o", opts)
 	if err != nil {
-		t.Errorf("Organizations.GetAllRepositoryRulesets returned error: %v", err)
+		t.Errorf("Organizations.ListAllRepositoryRulesets returned error: %v", err)
 	}
 
 	want := []*RepositoryRuleset{{
 		ID: Ptr(int64(21)),
 	}}
 	if !cmp.Equal(rulesets, want) {
-		t.Errorf("Organizations.GetAllRepositoryRulesets returned %+v, want %+v", rulesets, want)
+		t.Errorf("Organizations.ListAllRepositoryRulesets returned %+v, want %+v", rulesets, want)
 	}
 
-	const methodName = "GetAllRepositoryRulesets"
+	const methodName = "ListAllRepositoryRulesets"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.GetAllRepositoryRulesets(ctx, "\n", opts)
+		_, _, err = client.Organizations.ListAllRepositoryRulesets(ctx, "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.GetAllRepositoryRulesets(ctx, "o", opts)
+		got, resp, err := client.Organizations.ListAllRepositoryRulesets(ctx, "o", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1243,7 +1242,7 @@ func TestOrganizationsService_GetRepositoryRuleset(t *testing.T) {
 	ctx := t.Context()
 	rulesets, _, err := client.Organizations.GetRepositoryRuleset(ctx, "o", 21)
 	if err != nil {
-		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned error: %v", err)
+		t.Errorf("Organizations.GetRepositoryRuleset returned error: %v", err)
 	}
 
 	want := &RepositoryRuleset{
@@ -1330,7 +1329,7 @@ func TestOrganizationsService_GetRepositoryRulesetWithRepoPropCondition(t *testi
 	ctx := t.Context()
 	rulesets, _, err := client.Organizations.GetRepositoryRuleset(ctx, "o", 21)
 	if err != nil {
-		t.Errorf("Organizations.GetOrganizationRepositoryRuleset returned error: %v", err)
+		t.Errorf("Organizations.GetRepositoryRuleset returned error: %v", err)
 	}
 
 	want := &RepositoryRuleset{
@@ -1592,17 +1591,15 @@ func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_Nil(t *testing.T)
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := RepositoryRuleset{
+		Name:         "test ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: nil,
+	}
+
 	mux.HandleFunc("/orgs/o/rulesets/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-
-		var v map[string]any
-		if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
-			t.Errorf("could not decode body: %v", err)
-		}
-
-		if _, ok := v["bypass_actors"]; ok {
-			t.Error("Request body contained 'bypass_actors', expected it to be omitted for nil input")
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{
 			"id": 21,
@@ -1614,11 +1611,6 @@ func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_Nil(t *testing.T)
 	})
 
 	ctx := t.Context()
-	input := RepositoryRuleset{
-		Name:         "test ruleset",
-		Enforcement:  RulesetEnforcementActive,
-		BypassActors: nil,
-	}
 
 	_, _, err := client.Organizations.UpdateRepositoryRuleset(ctx, "o", 21, input)
 	if err != nil {
@@ -1630,10 +1622,15 @@ func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_EmptySlice(t *tes
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := RepositoryRuleset{
+		Name:         "test ruleset",
+		Enforcement:  RulesetEnforcementActive,
+		BypassActors: []*BypassActor{},
+	}
+
 	mux.HandleFunc("/orgs/o/rulesets/21", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-
-		testBody(t, r, `{"name":"test ruleset","source":"","enforcement":"active","bypass_actors":[]}`+"\n")
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{
 			"id": 21,
@@ -1646,12 +1643,6 @@ func TestOrganizationsService_UpdateRepositoryRuleset_OmitZero_EmptySlice(t *tes
 	})
 
 	ctx := t.Context()
-	input := RepositoryRuleset{
-		Name:         "test ruleset",
-		Enforcement:  RulesetEnforcementActive,
-		BypassActors: []*BypassActor{},
-	}
-
 	_, _, err := client.Organizations.UpdateRepositoryRuleset(ctx, "o", 21, input)
 	if err != nil {
 		t.Errorf("Organizations.UpdateRepositoryRuleset returned error: %v", err)

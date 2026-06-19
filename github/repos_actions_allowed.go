@@ -17,13 +17,13 @@ import (
 //meta:operation GET /repos/{owner}/{repo}/actions/permissions/selected-actions
 func (s *RepositoriesService) GetActionsAllowed(ctx context.Context, org, repo string) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/selected-actions", org, repo)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var actionsAllowed *ActionsAllowed
-	resp, err := s.client.Do(ctx, req, &actionsAllowed)
+	resp, err := s.client.Do(req, &actionsAllowed)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -36,15 +36,15 @@ func (s *RepositoriesService) GetActionsAllowed(ctx context.Context, org, repo s
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-allowed-actions-and-reusable-workflows-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/selected-actions
-func (s *RepositoriesService) EditActionsAllowed(ctx context.Context, org, repo string, actionsAllowed ActionsAllowed) (*ActionsAllowed, *Response, error) {
+func (s *RepositoriesService) EditActionsAllowed(ctx context.Context, org, repo string, body ActionsAllowed) (*ActionsAllowed, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/selected-actions", org, repo)
-	req, err := s.client.NewRequest("PUT", u, actionsAllowed)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *ActionsAllowed
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}

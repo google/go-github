@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -55,14 +54,8 @@ func TestActionsService_UpdateActionsPermissionsInEnterprise(t *testing.T) {
 	input := &ActionsPermissionsEnterprise{EnabledOrganizations: Ptr("all"), AllowedActions: Ptr("selected")}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
-		var v *ActionsPermissionsEnterprise
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"enabled_organizations": "all", "allowed_actions": "selected"}`)
 	})
 
@@ -140,15 +133,21 @@ func TestActionsService_SetEnabledOrgsInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := []int64{123, 1234}
+
 	mux.HandleFunc("/enterprises/e/actions/permissions/organizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"selected_organization_ids":[123,1234]}`+"\n")
+		testJSONBody(t, r, struct {
+			IDs []int64 `json:"selected_organization_ids"`
+		}{
+			IDs: input,
+		})
 		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.SetEnabledOrgsInEnterprise(ctx, "e", []int64{123, 1234})
+	_, err := client.Actions.SetEnabledOrgsInEnterprise(ctx, "e", input)
 	if err != nil {
 		t.Errorf("Actions.SetEnabledOrgsInEnterprise returned error: %v", err)
 	}
@@ -156,12 +155,12 @@ func TestActionsService_SetEnabledOrgsInEnterprise(t *testing.T) {
 	const methodName = "SetEnabledOrgsInEnterprise"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetEnabledOrgsInEnterprise(ctx, "\n", []int64{123, 1234})
+		_, err = client.Actions.SetEnabledOrgsInEnterprise(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetEnabledOrgsInEnterprise(ctx, "e", []int64{123, 1234})
+		return client.Actions.SetEnabledOrgsInEnterprise(ctx, "e", input)
 	})
 }
 
@@ -260,14 +259,8 @@ func TestActionsService_UpdateActionsAllowedInEnterprise(t *testing.T) {
 	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
-		var v *ActionsAllowed
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
@@ -338,14 +331,8 @@ func TestActionsService_UpdateDefaultWorkflowPermissionsInEnterprise(t *testing.
 	input := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
-		var v *DefaultWorkflowPermissionEnterprise
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{ "default_workflow_permissions": "read", "can_approve_pull_request_reviews": true }`)
 	})
 
@@ -420,13 +407,8 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInEnterprise(t *testi
 	input := &ArtifactPeriodOpt{Days: Ptr(90)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
-		var v *ArtifactPeriodOpt
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -492,13 +474,8 @@ func TestActionsService_UpdateSelfHostedRunnerPermissionsInEnterprise(t *testing
 	input := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: Ptr(false)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
-		var v *SelfHostRunnerPermissionsEnterprise
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -573,13 +550,8 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(t *t
 	}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {
-		var v *WorkflowsPermissionsOpt
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -645,13 +617,8 @@ func TestActionsService_UpdateEnterpriseForkPRContributorApprovalPermissions(t *
 	input := ContributorApprovalPermissions{ApprovalPolicy: "require_approval"}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-contributor-approval", func(w http.ResponseWriter, r *http.Request) {
-		var v *ContributorApprovalPermissions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, &input)
-		}
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 

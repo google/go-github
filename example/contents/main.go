@@ -16,11 +16,12 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v88/github"
 )
 
 func main() {
@@ -50,25 +51,25 @@ func main() {
 
 	fmt.Printf("\nDownloading %v/%v/%v at ref %v to %v...\n", owner, repo, repoPath, ref, outputPath)
 
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+	if err != nil {
+		log.Fatalf("Error creating GitHub client: %v", err)
+	}
 
 	rc, _, err := client.Repositories.DownloadContents(context.Background(), owner, repo, repoPath, &github.RepositoryContentGetOptions{Ref: ref})
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Error downloading contents: %v", err)
 	}
 	defer rc.Close()
 
 	f, err := os.Create(outputPath) //#nosec G703 -- path is validated above
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Error creating output file: %v", err)
 	}
 	defer f.Close()
 
 	if _, err := io.Copy(f, rc); err != nil {
-		fmt.Printf("Error: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Error writing to output file: %v", err)
 	}
 
 	fmt.Println("Download completed.")

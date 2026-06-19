@@ -6,10 +6,7 @@
 package github
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"testing"
 
@@ -30,15 +27,10 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		var v *createPagesRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 		want := &createPagesRequest{BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("master"), Path: Ptr("/")}}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","build_type": "legacy","source": {"branch":"master", "path":"/"}}`)
 	})
@@ -84,16 +76,10 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		var v *createPagesRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
 		want := &createPagesRequest{BuildType: Ptr("workflow")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","build_type": "workflow"}`)
 	})
 
@@ -135,15 +121,8 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		var v *PagesUpdate
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{CNAME: Ptr("www.example.com"), BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("gh-pages")}}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"cname":"www.example.com","build_type":"legacy","source":{"branch":"gh-pages"}}`)
 	})
 
@@ -174,15 +153,8 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		var v *PagesUpdate
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{CNAME: Ptr("www.example.com"), BuildType: Ptr("workflow")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"cname":"www.example.com","build_type":"workflow"}`)
 	})
 
@@ -212,15 +184,8 @@ func TestRepositoriesService_UpdatePagesGHES(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		var v *PagesUpdate
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		want := &PagesUpdate{BuildType: Ptr("workflow")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"build_type":"workflow"}`)
 	})
 
@@ -250,16 +215,8 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
-		got, err := io.ReadAll(r.Body)
-		if err != nil {
-			t.Fatalf("unable to read body: %v", err)
-		}
-
-		want := []byte(`{"cname":null,"source":{"branch":"gh-pages"}}` + "\n")
-		if !bytes.Equal(got, want) {
-			t.Errorf("Request body = %+v, want %+v", got, want)
-		}
-
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"cname":null,"source":{"branch":"gh-pages"}}`)
 	})
 
@@ -536,225 +493,4 @@ func TestRepositoriesService_GetPageHealthCheck(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestPagesSource_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PagesSource{}, "{}")
-
-	u := &PagesSource{
-		Branch: Ptr("branch"),
-		Path:   Ptr("path"),
-	}
-
-	want := `{
-		"branch": "branch",
-		"path": "path"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPagesError_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PagesError{}, "{}")
-
-	u := &PagesError{
-		Message: Ptr("message"),
-	}
-
-	want := `{
-		"message": "message"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPagesUpdate_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PagesUpdate{}, `{"cname": null}`)
-
-	u := &PagesUpdate{
-		CNAME:  Ptr("cname"),
-		Source: &PagesSource{Path: Ptr("src")},
-	}
-
-	want := `{
-		"cname": "cname",
-		"source": { "path": "src" }
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPages_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Pages{}, "{}")
-
-	u := &Pages{
-		URL:       Ptr("url"),
-		Status:    Ptr("status"),
-		CNAME:     Ptr("cname"),
-		Custom404: Ptr(false),
-		HTMLURL:   Ptr("hurl"),
-		Source: &PagesSource{
-			Branch: Ptr("branch"),
-			Path:   Ptr("path"),
-		},
-	}
-
-	want := `{
-		"url": "url",
-		"status": "status",
-		"cname": "cname",
-		"custom_404": false,
-		"html_url": "hurl",
-		"source": {
-			"branch": "branch",
-			"path": "path"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPagesBuild_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PagesBuild{}, "{}")
-
-	u := &PagesBuild{
-		URL:    Ptr("url"),
-		Status: Ptr("status"),
-		Error: &PagesError{
-			Message: Ptr("message"),
-		},
-		Pusher:    &User{ID: Ptr(int64(1))},
-		Commit:    Ptr("commit"),
-		Duration:  Ptr(1),
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-	}
-
-	want := `{
-		"url": "url",
-		"status": "status",
-		"error": {
-			"message": "message"
-		},
-		"pusher": {
-			"id": 1
-		},
-		"commit": "commit",
-		"duration": 1,
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPagesHealthCheckResponse_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PagesHealthCheckResponse{}, "{}")
-
-	u := &PagesHealthCheckResponse{
-		Domain: &PagesDomain{
-			Host:                          Ptr("example.com"),
-			URI:                           Ptr("http://example.com/"),
-			Nameservers:                   Ptr("default"),
-			DNSResolves:                   Ptr(true),
-			IsProxied:                     Ptr(false),
-			IsCloudflareIP:                Ptr(false),
-			IsFastlyIP:                    Ptr(false),
-			IsOldIPAddress:                Ptr(false),
-			IsARecord:                     Ptr(true),
-			HasCNAMERecord:                Ptr(false),
-			HasMXRecordsPresent:           Ptr(false),
-			IsValidDomain:                 Ptr(true),
-			IsApexDomain:                  Ptr(true),
-			ShouldBeARecord:               Ptr(true),
-			IsCNAMEToGithubUserDomain:     Ptr(false),
-			IsCNAMEToPagesDotGithubDotCom: Ptr(false),
-			IsCNAMEToFastly:               Ptr(false),
-			IsPointedToGithubPagesIP:      Ptr(true),
-			IsNonGithubPagesIPPresent:     Ptr(false),
-			IsPagesDomain:                 Ptr(false),
-			IsServedByPages:               Ptr(true),
-			IsValid:                       Ptr(true),
-			Reason:                        Ptr("some reason"),
-			RespondsToHTTPS:               Ptr(true),
-			EnforcesHTTPS:                 Ptr(true),
-			HTTPSError:                    Ptr("some error"),
-			IsHTTPSEligible:               Ptr(true),
-			CAAError:                      Ptr("some error"),
-		},
-		AltDomain: &PagesDomain{
-			Host:        Ptr("www.example.com"),
-			URI:         Ptr("http://www.example.com/"),
-			Nameservers: Ptr("default"),
-			DNSResolves: Ptr(true),
-		},
-	}
-
-	want := `{
-		"domain": {
-		  "host": "example.com",
-		  "uri": "http://example.com/",
-		  "nameservers": "default",
-		  "dns_resolves": true,
-		  "is_proxied": false,
-		  "is_cloudflare_ip": false,
-		  "is_fastly_ip": false,
-		  "is_old_ip_address": false,
-		  "is_a_record": true,
-		  "has_cname_record": false,
-		  "has_mx_records_present": false,
-		  "is_valid_domain": true,
-		  "is_apex_domain": true,
-		  "should_be_a_record": true,
-		  "is_cname_to_github_user_domain": false,
-		  "is_cname_to_pages_dot_github_dot_com": false,
-		  "is_cname_to_fastly": false,
-		  "is_pointed_to_github_pages_ip": true,
-		  "is_non_github_pages_ip_present": false,
-		  "is_pages_domain": false,
-		  "is_served_by_pages": true,
-		  "is_valid": true,
-		  "reason": "some reason",
-		  "responds_to_https": true,
-		  "enforces_https": true,
-		  "https_error": "some error",
-		  "is_https_eligible": true,
-		  "caa_error": "some error"
-		},
-		"alt_domain": {
-		  "host": "www.example.com",
-		  "uri": "http://www.example.com/",
-		  "nameservers": "default",
-		  "dns_resolves": true
-		}
-	  }`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCreatePagesRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &createPagesRequest{}, "{}")
-
-	u := &createPagesRequest{
-		Source: &PagesSource{
-			Branch: Ptr("branch"),
-			Path:   Ptr("path"),
-		},
-	}
-
-	want := `{
-		"source": {
-			"branch": "branch",
-			"path": "path"
-		}
-	}`
-
-	testJSONMarshal(t, u, want)
 }

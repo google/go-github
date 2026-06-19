@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -344,14 +343,8 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 	}
 
 	mux.HandleFunc("/orgs/o/personal-access-token-requests/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *ReviewPersonalAccessTokenRequestOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, &input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -374,21 +367,4 @@ func TestOrganizationsService_ReviewPersonalAccessTokenRequest(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Organizations.ReviewPersonalAccessTokenRequest(ctx, "o", 1, input)
 	})
-}
-
-func TestReviewPersonalAccessTokenRequestOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ReviewPersonalAccessTokenRequestOptions{}, `{"action": ""}`)
-
-	u := &ReviewPersonalAccessTokenRequestOptions{
-		Action: "a",
-		Reason: Ptr("r"),
-	}
-
-	want := `{
-		"action": "a",
-		"reason": "r"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

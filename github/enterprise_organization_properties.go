@@ -43,13 +43,13 @@ type EnterpriseCustomPropertyValuesRequest struct {
 func (s *EnterpriseService) GetOrganizationCustomPropertySchema(ctx context.Context, enterprise string) (*EnterpriseCustomPropertySchema, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema", enterprise)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var schema *EnterpriseCustomPropertySchema
-	resp, err := s.client.Do(ctx, req, &schema)
+	resp, err := s.client.Do(req, &schema)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -62,14 +62,14 @@ func (s *EnterpriseService) GetOrganizationCustomPropertySchema(ctx context.Cont
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs?apiVersion=2022-11-28#create-or-update-organization-custom-property-definitions-on-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/org-properties/schema
-func (s *EnterpriseService) CreateOrUpdateOrganizationCustomPropertySchema(ctx context.Context, enterprise string, schema EnterpriseCustomPropertySchema) (*Response, error) {
+func (s *EnterpriseService) CreateOrUpdateOrganizationCustomPropertySchema(ctx context.Context, enterprise string, body EnterpriseCustomPropertySchema) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema", enterprise)
-	req, err := s.client.NewRequest("PATCH", u, schema)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -85,13 +85,13 @@ func (s *EnterpriseService) CreateOrUpdateOrganizationCustomPropertySchema(ctx c
 func (s *EnterpriseService) GetOrganizationCustomProperty(ctx context.Context, enterprise, customPropertyName string) (*CustomProperty, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema/%v", enterprise, customPropertyName)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var property *CustomProperty
-	resp, err := s.client.Do(ctx, req, &property)
+	resp, err := s.client.Do(req, &property)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -104,14 +104,14 @@ func (s *EnterpriseService) GetOrganizationCustomProperty(ctx context.Context, e
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs?apiVersion=2022-11-28#create-or-update-an-organization-custom-property-definition-on-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/org-properties/schema/{custom_property_name}
-func (s *EnterpriseService) CreateOrUpdateOrganizationCustomProperty(ctx context.Context, enterprise, customPropertyName string, property CustomProperty) (*Response, error) {
+func (s *EnterpriseService) CreateOrUpdateOrganizationCustomProperty(ctx context.Context, enterprise, customPropertyName string, body CustomProperty) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema/%v", enterprise, customPropertyName)
-	req, err := s.client.NewRequest("PUT", u, property)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -126,12 +126,12 @@ func (s *EnterpriseService) CreateOrUpdateOrganizationCustomProperty(ctx context
 //meta:operation DELETE /enterprises/{enterprise}/org-properties/schema/{custom_property_name}
 func (s *EnterpriseService) DeleteOrganizationCustomProperty(ctx context.Context, enterprise, customPropertyName string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/schema/%v", enterprise, customPropertyName)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}
@@ -153,13 +153,13 @@ func (s *EnterpriseService) ListOrganizationCustomPropertyValues(ctx context.Con
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var values []*EnterpriseCustomPropertiesValues
-	resp, err := s.client.Do(ctx, req, &values)
+	resp, err := s.client.Do(req, &values)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -173,14 +173,14 @@ func (s *EnterpriseService) ListOrganizationCustomPropertyValues(ctx context.Con
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties-for-orgs?apiVersion=2022-11-28#create-or-update-custom-property-values-for-organizations-in-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/org-properties/values
-func (s *EnterpriseService) CreateOrUpdateOrganizationCustomPropertyValues(ctx context.Context, enterprise string, values EnterpriseCustomPropertyValuesRequest) (*Response, error) {
+func (s *EnterpriseService) CreateOrUpdateOrganizationCustomPropertyValues(ctx context.Context, enterprise string, body EnterpriseCustomPropertyValuesRequest) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/org-properties/values", enterprise)
-	req, err := s.client.NewRequest("PATCH", u, values)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

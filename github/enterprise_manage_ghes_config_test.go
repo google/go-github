@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -408,7 +407,7 @@ func TestEnterpriseService_License(t *testing.T) {
 
 	mux.HandleFunc("/manage/v1/config/license", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `[{
+		fmt.Fprint(w, `{
 			"advancedSecurityEnabled": true,
 			"advancedSecuritySeats": 0,
 			"clusterSupport": false,
@@ -425,9 +424,9 @@ func TestEnterpriseService_License(t *testing.T) {
 			"referenceNumber": "32a145",
 			"seats": 0,
 			"sshAllowed": true,
-			"supportKey": "",
+			"supportKey": true,
 			"unlimitedSeating": true
-		}]`)
+		}`)
 	})
 
 	ctx := t.Context()
@@ -436,7 +435,7 @@ func TestEnterpriseService_License(t *testing.T) {
 		t.Errorf("Enterprise.License returned error: %v", err)
 	}
 
-	want := []*LicenseStatus{{
+	want := &LicenseStatus{
 		AdvancedSecurityEnabled:      Ptr(true),
 		AdvancedSecuritySeats:        Ptr(0),
 		ClusterSupport:               Ptr(false),
@@ -453,9 +452,9 @@ func TestEnterpriseService_License(t *testing.T) {
 		ReferenceNumber:              Ptr("32a145"),
 		Seats:                        Ptr(0),
 		SSHAllowed:                   Ptr(true),
-		SupportKey:                   Ptr(""),
+		SupportKey:                   Ptr(true),
 		UnlimitedSeating:             Ptr(true),
-	}}
+	}
 	if diff := cmp.Diff(want, license); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\n%v", diff)
 	}
@@ -603,13 +602,8 @@ func TestEnterpriseService_InitialConfig(t *testing.T) {
 	}
 
 	mux.HandleFunc("/manage/v1/config/init", func(_ http.ResponseWriter, r *http.Request) {
-		var v *InitialConfigOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if diff := cmp.Diff(v, input); diff != "" {
-			t.Errorf("diff mismatch (-want +got):\n%v", diff)
-		}
+		testJSONBody(t, r, input)
 	})
 
 	ctx := t.Context()
@@ -627,23 +621,15 @@ func TestEnterpriseService_ConfigApply(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "POST")
-		var got *ConfigApplyOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&got))
-
-		want := &ConfigApplyOptions{
-			RunID: Ptr("1234"),
-		}
-		if diff := cmp.Diff(want, got); diff != "" {
-			t.Errorf("diff mismatch (-want +got):\n%v", diff)
-		}
-		fmt.Fprint(w, `{ "run_id": "1234" }`)
-	})
-
 	input := &ConfigApplyOptions{
 		RunID: Ptr("1234"),
 	}
+
+	mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{ "run_id": "1234" }`)
+	})
 
 	ctx := t.Context()
 	configApply, _, err := client.Enterprise.ConfigApply(ctx, input)
@@ -671,17 +657,13 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := &ConfigApplyOptions{
+		RunID: Ptr("1234"),
+	}
+
 	mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		var got *ConfigApplyOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&got))
-
-		want := &ConfigApplyOptions{
-			RunID: Ptr("1234"),
-		}
-		if diff := cmp.Diff(want, got); diff != "" {
-			t.Errorf("diff mismatch (-want +got):\n%v", diff)
-		}
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 			"running": true,
 			"successful": false,
@@ -695,9 +677,7 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 			]
 		}`)
 	})
-	input := &ConfigApplyOptions{
-		RunID: Ptr("1234"),
-	}
+
 	ctx := t.Context()
 	configApplyStatus, _, err := client.Enterprise.ConfigApplyStatus(ctx, input)
 	if err != nil {

@@ -40,13 +40,13 @@ type DefaultWorkflowPermissionRepository struct {
 func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, repo string) (*ActionsPermissionsRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *ActionsPermissionsRepository
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -59,15 +59,15 @@ func (s *RepositoriesService) GetActionsPermissions(ctx context.Context, owner, 
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-github-actions-permissions-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions
-func (s *RepositoriesService) UpdateActionsPermissions(ctx context.Context, owner, repo string, actionsPermissionsRepository ActionsPermissionsRepository) (*ActionsPermissionsRepository, *Response, error) {
+func (s *RepositoriesService) UpdateActionsPermissions(ctx context.Context, owner, repo string, body ActionsPermissionsRepository) (*ActionsPermissionsRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, actionsPermissionsRepository)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *ActionsPermissionsRepository
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -83,13 +83,13 @@ func (s *RepositoriesService) UpdateActionsPermissions(ctx context.Context, owne
 func (s *RepositoriesService) GetDefaultWorkflowPermissions(ctx context.Context, owner, repo string) (*DefaultWorkflowPermissionRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/workflow", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *DefaultWorkflowPermissionRepository
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -102,15 +102,15 @@ func (s *RepositoriesService) GetDefaultWorkflowPermissions(ctx context.Context,
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-default-workflow-permissions-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/workflow
-func (s *RepositoriesService) UpdateDefaultWorkflowPermissions(ctx context.Context, owner, repo string, permissions DefaultWorkflowPermissionRepository) (*DefaultWorkflowPermissionRepository, *Response, error) {
+func (s *RepositoriesService) UpdateDefaultWorkflowPermissions(ctx context.Context, owner, repo string, body DefaultWorkflowPermissionRepository) (*DefaultWorkflowPermissionRepository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/workflow", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, permissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var p *DefaultWorkflowPermissionRepository
-	resp, err := s.client.Do(ctx, req, &p)
+	resp, err := s.client.Do(req, &p)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -126,13 +126,13 @@ func (s *RepositoriesService) UpdateDefaultWorkflowPermissions(ctx context.Conte
 func (s *RepositoriesService) GetArtifactAndLogRetentionPeriod(ctx context.Context, owner, repo string) (*ArtifactPeriod, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/artifact-and-log-retention", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var arp *ArtifactPeriod
-	resp, err := s.client.Do(ctx, req, &arp)
+	resp, err := s.client.Do(req, &arp)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -145,14 +145,14 @@ func (s *RepositoriesService) GetArtifactAndLogRetentionPeriod(ctx context.Conte
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-artifact-and-log-retention-settings-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/artifact-and-log-retention
-func (s *RepositoriesService) UpdateArtifactAndLogRetentionPeriod(ctx context.Context, owner, repo string, period ArtifactPeriodOpt) (*Response, error) {
+func (s *RepositoriesService) UpdateArtifactAndLogRetentionPeriod(ctx context.Context, owner, repo string, body ArtifactPeriodOpt) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/artifact-and-log-retention", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, period)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetPrivateRepoForkPRWorkflowSettings gets the settings for whether workflows from fork pull requests can run on a private repository.
@@ -163,13 +163,13 @@ func (s *RepositoriesService) UpdateArtifactAndLogRetentionPeriod(ctx context.Co
 func (s *RepositoriesService) GetPrivateRepoForkPRWorkflowSettings(ctx context.Context, owner, repo string) (*WorkflowsPermissions, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/fork-pr-workflows-private-repos", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var permissions *WorkflowsPermissions
-	resp, err := s.client.Do(ctx, req, &permissions)
+	resp, err := s.client.Do(req, &permissions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -182,14 +182,14 @@ func (s *RepositoriesService) GetPrivateRepoForkPRWorkflowSettings(ctx context.C
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-private-repo-fork-pr-workflow-settings-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-workflows-private-repos
-func (s *RepositoriesService) UpdatePrivateRepoForkPRWorkflowSettings(ctx context.Context, owner, repo string, permissions *WorkflowsPermissionsOpt) (*Response, error) {
+func (s *RepositoriesService) UpdatePrivateRepoForkPRWorkflowSettings(ctx context.Context, owner, repo string, body *WorkflowsPermissionsOpt) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/fork-pr-workflows-private-repos", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, permissions)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // GetForkPRContributorApprovalPermissions gets the fork PR contributor approval policy for a repository.
@@ -200,13 +200,13 @@ func (s *RepositoriesService) UpdatePrivateRepoForkPRWorkflowSettings(ctx contex
 func (s *ActionsService) GetForkPRContributorApprovalPermissions(ctx context.Context, owner, repo string) (*ContributorApprovalPermissions, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/fork-pr-contributor-approval", owner, repo)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var policy *ContributorApprovalPermissions
-	resp, err := s.client.Do(ctx, req, &policy)
+	resp, err := s.client.Do(req, &policy)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -219,12 +219,12 @@ func (s *ActionsService) GetForkPRContributorApprovalPermissions(ctx context.Con
 // GitHub API docs: https://docs.github.com/rest/actions/permissions?apiVersion=2022-11-28#set-fork-pr-contributor-approval-permissions-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/permissions/fork-pr-contributor-approval
-func (s *ActionsService) UpdateForkPRContributorApprovalPermissions(ctx context.Context, owner, repo string, policy ContributorApprovalPermissions) (*Response, error) {
+func (s *ActionsService) UpdateForkPRContributorApprovalPermissions(ctx context.Context, owner, repo string, body ContributorApprovalPermissions) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/permissions/fork-pr-contributor-approval", owner, repo)
-	req, err := s.client.NewRequest("PUT", u, policy)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

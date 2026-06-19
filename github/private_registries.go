@@ -244,17 +244,17 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil, WithVersion("2026-03-10"))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var privateRegistries PrivateRegistries
-	resp, err := s.client.Do(ctx, req, &privateRegistries)
+	var privateRegistries *PrivateRegistries
+	resp, err := s.client.Do(req, &privateRegistries)
 	if err != nil {
 		return nil, resp, err
 	}
-	return &privateRegistries, resp, nil
+	return privateRegistries, resp, nil
 }
 
 // CreateOrganizationPrivateRegistry creates a private registry configuration with an encrypted value for an organization.
@@ -262,20 +262,20 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistries(ctx context
 // GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#create-a-private-registry-for-an-organization
 //
 //meta:operation POST /orgs/{org}/private-registries
-func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context.Context, org string, privateRegistry CreateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
+func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context.Context, org string, body CreateOrganizationPrivateRegistry) (*PrivateRegistry, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries", org)
 
-	req, err := s.client.NewRequest("POST", u, privateRegistry, WithVersion("2026-03-10"))
+	req, err := s.client.NewRequest(ctx, "POST", u, body, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var result PrivateRegistry
-	resp, err := s.client.Do(ctx, req, &result)
+	var result *PrivateRegistry
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
-	return &result, resp, nil
+	return result, resp, nil
 }
 
 // GetOrganizationPrivateRegistriesPublicKey retrieves the public key for encrypting secrets for an organization's private registries.
@@ -286,17 +286,17 @@ func (s *PrivateRegistriesService) CreateOrganizationPrivateRegistry(ctx context
 func (s *PrivateRegistriesService) GetOrganizationPrivateRegistriesPublicKey(ctx context.Context, org string) (*PublicKey, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries/public-key", org)
 
-	req, err := s.client.NewRequest("GET", u, nil, WithVersion("2026-03-10"))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var publicKey PublicKey
-	resp, err := s.client.Do(ctx, req, &publicKey)
+	var publicKey *PublicKey
+	resp, err := s.client.Do(req, &publicKey)
 	if err != nil {
 		return nil, resp, err
 	}
-	return &publicKey, resp, nil
+	return publicKey, resp, nil
 }
 
 // GetOrganizationPrivateRegistry gets a specific private registry for an organization.
@@ -308,18 +308,18 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistriesPublicKey(ctx
 func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Context, org, secretName string) (*PrivateRegistry, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, secretName)
 
-	req, err := s.client.NewRequest("GET", u, nil, WithVersion("2026-03-10"))
+	req, err := s.client.NewRequest(ctx, "GET", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var privateRegistry PrivateRegistry
-	resp, err := s.client.Do(ctx, req, &privateRegistry)
+	var privateRegistry *PrivateRegistry
+	resp, err := s.client.Do(req, &privateRegistry)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	return &privateRegistry, resp, nil
+	return privateRegistry, resp, nil
 }
 
 // UpdateOrganizationPrivateRegistry updates a specific private registry for an organization.
@@ -328,15 +328,15 @@ func (s *PrivateRegistriesService) GetOrganizationPrivateRegistry(ctx context.Co
 // GitHub API docs: https://docs.github.com/rest/private-registries/organization-configurations?apiVersion=2026-03-10#update-a-private-registry-for-an-organization
 //
 //meta:operation PATCH /orgs/{org}/private-registries/{secret_name}
-func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context.Context, org, secretName string, privateRegistry UpdateOrganizationPrivateRegistry) (*Response, error) {
+func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context.Context, org, secretName string, body UpdateOrganizationPrivateRegistry) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, secretName)
 
-	req, err := s.client.NewRequest("PATCH", u, privateRegistry, WithVersion("2026-03-10"))
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body, WithVersion(api20260310))
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteOrganizationPrivateRegistry deletes a specific private registry for an organization.
@@ -348,12 +348,12 @@ func (s *PrivateRegistriesService) UpdateOrganizationPrivateRegistry(ctx context
 func (s *PrivateRegistriesService) DeleteOrganizationPrivateRegistry(ctx context.Context, org, secretName string) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/private-registries/%v", org, secretName)
 
-	req, err := s.client.NewRequest("DELETE", u, nil, WithVersion("2026-03-10"))
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil, WithVersion(api20260310))
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.client.Do(req, nil)
 	if err != nil {
 		return resp, err
 	}

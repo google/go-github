@@ -13,7 +13,7 @@
 //
 // Note, if you want to push a single file, you probably prefer to use the
 // content API. An example is available here:
-// https://pkg.go.dev/github.com/google/go-github/v85/github#example-RepositoriesService-CreateFile
+// https://pkg.go.dev/github.com/google/go-github/v88/github#example-RepositoriesService-CreateFile
 //
 // Note, for this to work at least 1 commit is needed, so you if you use this
 // after creating a repository you might want to make sure you set `AutoInit` to
@@ -33,7 +33,7 @@ import (
 	"time"
 
 	"github.com/ProtonMail/go-crypto/openpgp"
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v88/github"
 )
 
 var (
@@ -178,7 +178,7 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 	return err
 }
 
-// createPR creates a pull request. Based on: https://pkg.go.dev/github.com/google/go-github/v85/github#example-PullRequestsService-Create
+// createPR creates a pull request. Based on: https://pkg.go.dev/github.com/google/go-github/v88/github#example-PullRequestsService-Create
 func createPR() (err error) {
 	if *prSubject == "" {
 		return errors.New("missing `-pr-title` flag; skipping PR creation")
@@ -221,11 +221,15 @@ func main() {
 	if *sourceOwner == "" || *sourceRepo == "" || *commitBranch == "" || *sourceFiles == "" || *authorName == "" || *authorEmail == "" {
 		log.Fatal("You need to specify a non-empty value for the flags `-source-owner`, `-source-repo`, `-commit-branch`, `-files`, `-author-name` and `-author-email`")
 	}
-	client = github.NewClient(nil).WithAuthToken(token)
+	c, err := github.NewClient(github.WithAuthToken(token))
+	if err != nil {
+		log.Fatal(err)
+	}
+	client = c
 
 	ref, err := getRef()
 	if err != nil {
-		log.Fatalf("Unable to get/create the commit reference: %v\n", err)
+		log.Fatalf("Unable to get/create the commit reference: %v", err)
 	}
 	if ref == nil {
 		log.Fatal("No error where returned but the reference is nil")
@@ -233,11 +237,11 @@ func main() {
 
 	tree, err := getTree(ref)
 	if err != nil {
-		log.Fatalf("Unable to create the tree based on the provided files: %v\n", err)
+		log.Fatalf("Unable to create the tree based on the provided files: %v", err)
 	}
 
 	if err := pushCommit(ref, tree); err != nil {
-		log.Fatalf("Unable to create the commit: %v\n", err)
+		log.Fatalf("Unable to create the commit: %v", err)
 	}
 
 	if err := createPR(); err != nil {

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -130,15 +129,13 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 -----END PGP PUBLIC KEY BLOCK-----`
 
 	mux.HandleFunc("/user/gpg_keys", func(w http.ResponseWriter, r *http.Request) {
-		var gpgKey struct {
+		gpgKey := struct {
 			ArmoredPublicKey *string `json:"armored_public_key,omitempty"`
+		}{
+			ArmoredPublicKey: &input,
 		}
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&gpgKey))
-
 		testMethod(t, r, "POST")
-		if gpgKey.ArmoredPublicKey == nil || *gpgKey.ArmoredPublicKey != input {
-			t.Errorf("gpgKey = %+v, want %q", gpgKey, input)
-		}
+		testJSONBody(t, r, gpgKey)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -146,7 +143,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 	ctx := t.Context()
 	gpgKey, _, err := client.Users.CreateGPGKey(ctx, input)
 	if err != nil {
-		t.Errorf("Users.GetGPGKey returned error: %v", err)
+		t.Errorf("Users.CreateGPGKey returned error: %v", err)
 	}
 
 	want := &GPGKey{ID: Ptr(int64(1))}
@@ -187,76 +184,4 @@ func TestUsersService_DeleteGPGKey(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.DeleteGPGKey(ctx, 1)
 	})
-}
-
-func TestGPGEmail_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &GPGEmail{}, "{}")
-
-	u := &GPGEmail{
-		Email:    Ptr("email@example.com"),
-		Verified: Ptr(false),
-	}
-
-	want := `{
-		"email" : "email@example.com",
-		"verified" : false
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestGPGKey_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &GPGKey{}, "{}")
-
-	ti := &Timestamp{}
-
-	g := &GPGKey{
-		ID:           Ptr(int64(1)),
-		PrimaryKeyID: Ptr(int64(1)),
-		KeyID:        Ptr("someKeyID"),
-		RawKey:       Ptr("someRawKeyID"),
-		PublicKey:    Ptr("somePublicKey"),
-		Emails: []*GPGEmail{
-			{
-				Email:    Ptr("someEmail"),
-				Verified: Ptr(true),
-			},
-		},
-		Subkeys: []*GPGKey{
-			{},
-		},
-		CanSign:           Ptr(true),
-		CanEncryptComms:   Ptr(true),
-		CanEncryptStorage: Ptr(true),
-		CanCertify:        Ptr(true),
-		CreatedAt:         ti,
-		ExpiresAt:         ti,
-	}
-
-	want := `{
-			"id":1,
-			"primary_key_id":1,
-			"key_id":"someKeyID",
-			"raw_key":"someRawKeyID",
-			"public_key":"somePublicKey",
-			"emails":[
-				{
-					"email":"someEmail",
-					"verified":true
-				}
-			],
-			"subkeys":[
-				{}
-			],
-			"can_sign":true,
-			"can_encrypt_comms":true,
-			"can_encrypt_storage":true,
-			"can_certify":true,
-			"created_at":"0001-01-01T00:00:00Z",
-			"expires_at":"0001-01-01T00:00:00Z"
-		}`
-
-	testJSONMarshal(t, g, want)
 }

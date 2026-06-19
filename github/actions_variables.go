@@ -36,13 +36,13 @@ func (s *ActionsService) listVariables(ctx context.Context, url string, opts *Li
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var variables *ActionsVariables
-	resp, err := s.client.Do(ctx, req, &variables)
+	resp, err := s.client.Do(req, &variables)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -91,13 +91,13 @@ func (s *ActionsService) ListEnvVariables(ctx context.Context, owner, repo, env 
 }
 
 func (s *ActionsService) getVariable(ctx context.Context, url string) (*ActionsVariable, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var variable *ActionsVariable
-	resp, err := s.client.Do(ctx, req, &variable)
+	resp, err := s.client.Do(req, &variable)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -135,12 +135,12 @@ func (s *ActionsService) GetEnvVariable(ctx context.Context, owner, repo, env, v
 	return s.getVariable(ctx, url)
 }
 
-func (s *ActionsService) postVariable(ctx context.Context, url string, variable *ActionsVariable) (*Response, error) {
-	req, err := s.client.NewRequest("POST", url, variable)
+func (s *ActionsService) postVariable(ctx context.Context, url string, body *ActionsVariable) (*Response, error) {
+	req, err := s.client.NewRequest(ctx, "POST", url, body)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // CreateRepoVariable creates a repository variable.
@@ -148,9 +148,9 @@ func (s *ActionsService) postVariable(ctx context.Context, url string, variable 
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#create-a-repository-variable
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/variables
-func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo string, variable *ActionsVariable) (*Response, error) {
+func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo string, body *ActionsVariable) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/actions/variables", owner, repo)
-	return s.postVariable(ctx, url, variable)
+	return s.postVariable(ctx, url, body)
 }
 
 // CreateOrgVariable creates an organization variable.
@@ -158,9 +158,9 @@ func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo str
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#create-an-organization-variable
 //
 //meta:operation POST /orgs/{org}/actions/variables
-func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, variable *ActionsVariable) (*Response, error) {
+func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, body *ActionsVariable) (*Response, error) {
 	url := fmt.Sprintf("orgs/%v/actions/variables", org)
-	return s.postVariable(ctx, url, variable)
+	return s.postVariable(ctx, url, body)
 }
 
 // CreateEnvVariable creates an environment variable.
@@ -168,17 +168,17 @@ func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, vari
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#create-an-environment-variable
 //
 //meta:operation POST /repos/{owner}/{repo}/environments/{environment_name}/variables
-func (s *ActionsService) CreateEnvVariable(ctx context.Context, owner, repo, env string, variable *ActionsVariable) (*Response, error) {
+func (s *ActionsService) CreateEnvVariable(ctx context.Context, owner, repo, env string, body *ActionsVariable) (*Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables", owner, repo, env)
-	return s.postVariable(ctx, url, variable)
+	return s.postVariable(ctx, url, body)
 }
 
-func (s *ActionsService) patchVariable(ctx context.Context, url string, variable *ActionsVariable) (*Response, error) {
-	req, err := s.client.NewRequest("PATCH", url, variable)
+func (s *ActionsService) patchVariable(ctx context.Context, url string, body *ActionsVariable) (*Response, error) {
+	req, err := s.client.NewRequest(ctx, "PATCH", url, body)
 	if err != nil {
 		return nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // UpdateRepoVariable updates a repository variable.
@@ -224,12 +224,12 @@ func (s *ActionsService) UpdateEnvVariable(ctx context.Context, owner, repo, env
 }
 
 func (s *ActionsService) deleteVariable(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteRepoVariable deletes a variable in a repository.
@@ -268,13 +268,13 @@ func (s *ActionsService) listSelectedReposForVariable(ctx context.Context, url s
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var result *SelectedReposList
-	resp, err := s.client.Do(ctx, req, &result)
+	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -297,12 +297,12 @@ func (s *ActionsService) setSelectedReposForVariable(ctx context.Context, url st
 		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
 	}
 
-	req, err := s.client.NewRequest("PUT", url, repoIDs{SelectedIDs: ids})
+	req, err := s.client.NewRequest(ctx, "PUT", url, repoIDs{SelectedIDs: ids})
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // SetSelectedReposForOrgVariable sets the repositories that have access to a variable.
@@ -316,12 +316,12 @@ func (s *ActionsService) SetSelectedReposForOrgVariable(ctx context.Context, org
 }
 
 func (s *ActionsService) addSelectedRepoToVariable(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // AddSelectedRepoToOrgVariable adds a repository to an organization variable.
@@ -342,12 +342,12 @@ func (s *ActionsService) AddSelectedRepoToOrgVariable(ctx context.Context, org, 
 }
 
 func (s *ActionsService) removeSelectedRepoFromVariable(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // RemoveSelectedRepoFromOrgVariable removes a repository from an organization variable.

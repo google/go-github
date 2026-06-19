@@ -160,12 +160,12 @@ func TestActivityService_ListEventsForRepoNetwork(t *testing.T) {
 	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsForRepoNetwork(ctx, "o", "r", opt)
 	if err != nil {
-		t.Errorf("Activities.ListEventsForRepoNetwork returned error: %v", err)
+		t.Errorf("Activity.ListEventsForRepoNetwork returned error: %v", err)
 	}
 
 	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
-		t.Errorf("Activities.ListEventsForRepoNetwork returned %+v, want %+v", events, want)
+		t.Errorf("Activity.ListEventsForRepoNetwork returned %+v, want %+v", events, want)
 	}
 
 	const methodName = "ListEventsForRepoNetwork"
@@ -208,12 +208,12 @@ func TestActivityService_ListEventsForOrganization(t *testing.T) {
 	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsForOrganization(ctx, "o", opt)
 	if err != nil {
-		t.Errorf("Activities.ListEventsForOrganization returned error: %v", err)
+		t.Errorf("Activity.ListEventsForOrganization returned error: %v", err)
 	}
 
 	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
-		t.Errorf("Activities.ListEventsForOrganization returned %+v, want %+v", events, want)
+		t.Errorf("Activity.ListEventsForOrganization returned %+v, want %+v", events, want)
 	}
 
 	const methodName = "ListEventsForOrganization"
@@ -256,12 +256,12 @@ func TestActivityService_ListEventsPerformedByUser_all(t *testing.T) {
 	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsPerformedByUser(ctx, "u", false, opt)
 	if err != nil {
-		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
+		t.Errorf("Activity.ListEventsPerformedByUser returned error: %v", err)
 	}
 
 	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
-		t.Errorf("Events.ListPerformedByUser returned %+v, want %+v", events, want)
+		t.Errorf("Activity.ListEventsPerformedByUser returned %+v, want %+v", events, want)
 	}
 
 	const methodName = "ListEventsPerformedByUser"
@@ -291,12 +291,12 @@ func TestActivityService_ListEventsPerformedByUser_publicOnly(t *testing.T) {
 	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsPerformedByUser(ctx, "u", true, nil)
 	if err != nil {
-		t.Errorf("Events.ListPerformedByUser returned error: %v", err)
+		t.Errorf("Activity.ListEventsPerformedByUser returned error: %v", err)
 	}
 
 	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
-		t.Errorf("Events.ListPerformedByUser returned %+v, want %+v", events, want)
+		t.Errorf("Activity.ListEventsPerformedByUser returned %+v, want %+v", events, want)
 	}
 }
 
@@ -325,12 +325,12 @@ func TestActivityService_ListEventsReceivedByUser_all(t *testing.T) {
 	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsReceivedByUser(ctx, "u", false, opt)
 	if err != nil {
-		t.Errorf("Events.ListReceivedByUser returned error: %v", err)
+		t.Errorf("Activity.ListEventsReceivedByUser returned error: %v", err)
 	}
 
 	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
-		t.Errorf("Events.ListReceivedUser returned %+v, want %+v", events, want)
+		t.Errorf("Activity.ListEventsReceivedByUser returned %+v, want %+v", events, want)
 	}
 
 	const methodName = "ListEventsReceivedByUser"
@@ -360,12 +360,12 @@ func TestActivityService_ListEventsReceivedByUser_publicOnly(t *testing.T) {
 	ctx := t.Context()
 	events, _, err := client.Activity.ListEventsReceivedByUser(ctx, "u", true, nil)
 	if err != nil {
-		t.Errorf("Events.ListReceivedByUser returned error: %v", err)
+		t.Errorf("Activity.ListEventsReceivedByUser returned error: %v", err)
 	}
 
 	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
-		t.Errorf("Events.ListReceivedByUser returned %+v, want %+v", events, want)
+		t.Errorf("Activity.ListEventsReceivedByUser returned %+v, want %+v", events, want)
 	}
 }
 
@@ -394,12 +394,12 @@ func TestActivityService_ListUserEventsForOrganization(t *testing.T) {
 	ctx := t.Context()
 	events, _, err := client.Activity.ListUserEventsForOrganization(ctx, "o", "u", opt)
 	if err != nil {
-		t.Errorf("Activities.ListUserEventsForOrganization returned error: %v", err)
+		t.Errorf("Activity.ListUserEventsForOrganization returned error: %v", err)
 	}
 
 	want := []*Event{{ID: Ptr("1")}, {ID: Ptr("2")}}
 	if !cmp.Equal(events, want) {
-		t.Errorf("Activities.ListUserEventsForOrganization returned %+v, want %+v", events, want)
+		t.Errorf("Activity.ListUserEventsForOrganization returned %+v, want %+v", events, want)
 	}
 
 	const methodName = "ListUserEventsForOrganization"

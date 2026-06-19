@@ -30,7 +30,7 @@ func TestRepositoriesService_ListByAuthenticatedUser(t *testing.T) {
 	ctx := t.Context()
 	got, _, err := client.Repositories.ListByAuthenticatedUser(ctx, nil)
 	if err != nil {
-		t.Errorf("Repositories.List returned error: %v", err)
+		t.Errorf("Repositories.ListByAuthenticatedUser returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
@@ -71,7 +71,7 @@ func TestRepositoriesService_ListByUser(t *testing.T) {
 	ctx := t.Context()
 	repos, _, err := client.Repositories.ListByUser(ctx, "u", opt)
 	if err != nil {
-		t.Errorf("Repositories.List returned error: %v", err)
+		t.Errorf("Repositories.ListByUser returned error: %v", err)
 	}
 
 	want := []*Repository{{ID: Ptr(int64(1))}}
@@ -229,15 +229,10 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
-		var v *createRepoRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		want := &createRepoRequest{Name: Ptr("n")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
+		testJSONBody(t, r, want)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -283,16 +278,10 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
-		var v *createRepoRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		want := &createRepoRequest{Name: Ptr("n")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -323,9 +312,6 @@ func TestRepositoriesService_Create_withCustomProperties(t *testing.T) {
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
-		var v *createRepoRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		want := &createRepoRequest{
@@ -336,10 +322,7 @@ func TestRepositoriesService_Create_withCustomProperties(t *testing.T) {
 				"priority":    float64(1), // JSON unmarshals numbers as float64
 			},
 		}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -364,16 +347,9 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/to/tr/generate", func(w http.ResponseWriter, r *http.Request) {
-		var v *TemplateRepoRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeRepositoryTemplatePreview)
-		want := &TemplateRepoRequest{Name: Ptr("n")}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, templateRepoReq)
 		fmt.Fprint(w, `{"id":1,"name":"n"}`)
 	})
 
@@ -523,19 +499,13 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	i := true
-	input := &Repository{HasIssues: &i}
+	input := &Repository{HasIssues: Ptr(true)}
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
-		var v *Repository
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -1148,15 +1118,9 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 			renameBranchReq := "nn"
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
-				var v *renameBranchRequest
-				assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 				testMethod(t, r, "POST")
 				want := &renameBranchRequest{NewName: renameBranchReq}
-				if !cmp.Equal(v, want) {
-					t.Errorf("Request body = %+v, want %+v", v, want)
-				}
-
+				testJSONBody(t, r, want)
 				fmt.Fprint(w, `{"protected":true,"name":"nn"}`)
 			})
 
@@ -1512,13 +1476,8 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
-				var v *ProtectionRequest
-				assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 				testMethod(t, r, "PUT")
-				if !cmp.Equal(v, input) {
-					t.Errorf("Request body = %+v, want %+v", v, input)
-				}
+				testJSONBody(t, r, input)
 
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
@@ -1700,13 +1659,8 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
-				var v *ProtectionRequest
-				assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 				testMethod(t, r, "PUT")
-				if !cmp.Equal(v, input) {
-					t.Errorf("Request body = %+v, want %+v", v, input)
-				}
+				testJSONBody(t, r, input)
 
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
@@ -1879,13 +1833,8 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
-				var v *ProtectionRequest
-				assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 				testMethod(t, r, "PUT")
-				if !cmp.Equal(v, input) {
-					t.Errorf("Request body = %+v, want %+v", v, input)
-				}
+				testJSONBody(t, r, input)
 
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
@@ -2032,13 +1981,8 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
-				var v *ProtectionRequest
-				assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 				testMethod(t, r, "PUT")
-				if !cmp.Equal(v, input) {
-					t.Errorf("Request body = %+v, want %+v", v, input)
-				}
+				testJSONBody(t, r, input)
 
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
@@ -2174,14 +2118,8 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
-				var v *ProtectionRequest
-				assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 				testMethod(t, r, "PUT")
-				if !cmp.Equal(v, input) {
-					t.Errorf("Request body = %+v, want %+v", v, input)
-				}
-
+				testJSONBody(t, r, input)
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
 					"required_status_checks":{
@@ -2298,14 +2236,8 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
-				var v *ProtectionRequest
-				assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 				testMethod(t, r, "PUT")
-				if !cmp.Equal(v, input) {
-					t.Errorf("Request body = %+v, want %+v", v, input)
-				}
-
+				testJSONBody(t, r, input)
 				fmt.Fprint(w, `{
 					"required_pull_request_reviews":{
 						"require_last_push_approval":true
@@ -2564,13 +2496,8 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
-				var v *RequiredStatusChecksRequest
-				assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 				testMethod(t, r, "PATCH")
-				if !cmp.Equal(v, input) {
-					t.Errorf("Request body = %+v, want %+v", v, input)
-				}
+				testJSONBody(t, r, input)
 				testHeader(t, r, "Accept", mediaTypeV3)
 				fmt.Fprint(w, `{
 					"strict":true,
@@ -2655,13 +2582,8 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
-				var v *RequiredStatusChecksRequest
-				assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 				testMethod(t, r, "PATCH")
-				if !cmp.Equal(v, input) {
-					t.Errorf("Request body = %+v, want %+v", v, input)
-				}
+				testJSONBody(t, r, input)
 				testHeader(t, r, "Accept", mediaTypeV3)
 				fmt.Fprint(w, `{
 					"strict":true,
@@ -2937,13 +2859,8 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
-				var v *PullRequestReviewsEnforcementUpdate
-				assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 				testMethod(t, r, "PATCH")
-				if !cmp.Equal(v, input) {
-					t.Errorf("Request body = %+v, want %+v", v, input)
-				}
+				testJSONBody(t, r, input)
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
 				fmt.Fprint(w, `{
 					"dismissal_restrictions":{
@@ -3018,7 +2935,11 @@ func TestRepositoriesService_DisableDismissalRestrictions(t *testing.T) {
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
 				testMethod(t, r, "PATCH")
 				testHeader(t, r, "Accept", mediaTypeRequiredApprovingReviewsPreview)
-				testBody(t, r, `{"dismissal_restrictions":{}}`+"\n")
+				testJSONBody(t, r, struct {
+					DismissalRestrictionsRequest DismissalRestrictionsRequest `json:"dismissal_restrictions"`
+				}{
+					DismissalRestrictionsRequest: DismissalRestrictionsRequest{},
+				})
 				fmt.Fprint(w, `{"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1}`)
 			})
 
@@ -3421,54 +3342,6 @@ func TestRepositoriesService_OptionalSignaturesOnProtectedBranch(t *testing.T) {
 	}
 }
 
-func TestPullRequestReviewsEnforcementRequest_MarshalJSON_nilDismissalRestrictions(t *testing.T) {
-	t.Parallel()
-	req := PullRequestReviewsEnforcementRequest{}
-
-	got, err := json.Marshal(req)
-	if err != nil {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
-	}
-
-	want := `{"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0}`
-	if want != string(got) {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
-	}
-
-	req = PullRequestReviewsEnforcementRequest{
-		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{},
-	}
-
-	got, err = json.Marshal(req)
-	if err != nil {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
-	}
-
-	want = `{"dismissal_restrictions":{},"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0}`
-	if want != string(got) {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
-	}
-
-	req = PullRequestReviewsEnforcementRequest{
-		DismissalRestrictionsRequest: &DismissalRestrictionsRequest{
-			Users: &[]string{},
-			Teams: &[]string{},
-			Apps:  &[]string{},
-		},
-		RequireLastPushApproval: Ptr(true),
-	}
-
-	got, err = json.Marshal(req)
-	if err != nil {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned error: %v", err)
-	}
-
-	want = `{"dismissal_restrictions":{"users":[],"teams":[],"apps":[]},"dismiss_stale_reviews":false,"require_code_owner_reviews":false,"required_approving_review_count":0,"require_last_push_approval":true}`
-	if want != string(got) {
-		t.Errorf("PullRequestReviewsEnforcementRequest.MarshalJSON returned %+v, want %+v", string(got), want)
-	}
-}
-
 func TestRepositoriesService_ListAllTopics(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -3575,7 +3448,10 @@ func TestRepositoriesService_ReplaceAllTopics_nilSlice(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
-		testBody(t, r, `{"names":[]}`+"\n")
+		want := repositoryTopics{
+			Names: []string{},
+		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"names":[]}`)
 	})
 
@@ -3595,15 +3471,20 @@ func TestRepositoriesService_ReplaceAllTopics_emptySlice(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := []string{}
+
 	mux.HandleFunc("/repos/o/r/topics", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Accept", mediaTypeTopicsPreview)
-		testBody(t, r, `{"names":[]}`+"\n")
+		want := repositoryTopics{
+			Names: input,
+		}
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"names":[]}`)
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Repositories.ReplaceAllTopics(ctx, "o", "r", []string{})
+	got, _, err := client.Repositories.ReplaceAllTopics(ctx, "o", "r", input)
 	if err != nil {
 		t.Fatalf("Repositories.ReplaceAllTopics returned error: %v", err)
 	}
@@ -4194,14 +4075,8 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 	input := TransferRequest{NewOwner: "a", NewName: Ptr("b"), TeamID: []int64{123}}
 
 	mux.HandleFunc("/repos/o/r/transfer", func(w http.ResponseWriter, r *http.Request) {
-		var v TransferRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"owner":{"login":"a"}}`)
 	})
 
@@ -4238,14 +4113,8 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 	var input DispatchRequestOptions
 
 	mux.HandleFunc("/repos/o/r/dispatches", func(w http.ResponseWriter, r *http.Request) {
-		var v DispatchRequestOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"owner":{"login":"a"}}`)
 	})
 
@@ -4307,213 +4176,6 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestAdvancedSecurity_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &AdvancedSecurity{}, "{}")
-
-	u := &AdvancedSecurity{
-		Status: Ptr("status"),
-	}
-
-	want := `{
-		"status": "status"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestAuthorizedActorsOnly_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &AuthorizedActorsOnly{}, "{}")
-
-	u := &AuthorizedActorsOnly{
-		From: Ptr(true),
-	}
-
-	want := `{
-		"from" : true
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestDispatchRequestOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &DispatchRequestOptions{}, `{"event_type": ""}`)
-
-	cp := json.RawMessage(`{"testKey":"testValue"}`)
-	u := &DispatchRequestOptions{
-		EventType:     "test_event_type",
-		ClientPayload: &cp,
-	}
-
-	want := `{
-		"event_type": "test_event_type",
-		"client_payload": {
-		  "testKey": "testValue"
-		}
-	  }`
-
-	testJSONMarshal(t, u, want, cmpJSONRawMessageComparator())
-}
-
-func TestTransferRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &TransferRequest{}, `{"new_owner": ""}`)
-
-	u := &TransferRequest{
-		NewOwner: "testOwner",
-		NewName:  Ptr("testName"),
-		TeamID:   []int64{1, 2},
-	}
-
-	want := `{
-		"new_owner": "testOwner",
-		"new_name": "testName",
-		"team_ids": [1,2]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestSignaturesProtectedBranch_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &SignaturesProtectedBranch{}, "{}")
-
-	u := &SignaturesProtectedBranch{
-		URL:     Ptr("https://www.example.com"),
-		Enabled: Ptr(false),
-	}
-
-	want := `{
-		"url": "https://www.example.com",
-		"enabled": false
-	}`
-
-	testJSONMarshal(t, u, want)
-
-	u2 := &SignaturesProtectedBranch{
-		URL:     Ptr("testURL"),
-		Enabled: Ptr(true),
-	}
-
-	want2 := `{
-		"url": "testURL",
-		"enabled": true
-	}`
-
-	testJSONMarshal(t, u2, want2)
-}
-
-func TestDismissalRestrictionsRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &DismissalRestrictionsRequest{}, "{}")
-
-	u := &DismissalRestrictionsRequest{
-		Users: &[]string{"user1", "user2"},
-		Teams: &[]string{"team1", "team2"},
-		Apps:  &[]string{"app1", "app2"},
-	}
-
-	want := `{
-		"users": ["user1","user2"],
-		"teams": ["team1","team2"],
-		"apps": ["app1","app2"]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestAdminEnforcement_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &AdminEnforcement{}, `{"enabled": false}`)
-
-	u := &AdminEnforcement{
-		URL:     Ptr("https://www.example.com"),
-		Enabled: false,
-	}
-
-	want := `{
-		"url": "https://www.example.com",
-		"enabled": false
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestPullRequestReviewsEnforcementUpdate_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &PullRequestReviewsEnforcementUpdate{}, `{"required_approving_review_count": 0}`)
-
-	u := &PullRequestReviewsEnforcementUpdate{
-		BypassPullRequestAllowancesRequest: &BypassPullRequestAllowancesRequest{
-			Users: []string{"user1", "user2"},
-			Teams: []string{"team1", "team2"},
-			Apps:  []string{"app1", "app2"},
-		},
-		DismissStaleReviews:          Ptr(false),
-		RequireCodeOwnerReviews:      Ptr(true),
-		RequiredApprovingReviewCount: 2,
-	}
-
-	want := `{
-		"bypass_pull_request_allowances": {
-			"users": ["user1","user2"],
-			"teams": ["team1","team2"],
-			"apps": ["app1","app2"]
-		},
-		"dismiss_stale_reviews": false,
-		"require_code_owner_reviews": true,
-		"required_approving_review_count": 2
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRequiredStatusCheck_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RequiredStatusCheck{}, `{"context": ""}`)
-
-	u := &RequiredStatusCheck{
-		Context: "ctx",
-		AppID:   Ptr(int64(1)),
-	}
-
-	want := `{
-		"context": "ctx",
-		"app_id": 1
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestRepositoryTag_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &RepositoryTag{}, "{}")
-
-	u := &RepositoryTag{
-		Name: Ptr("v0.1"),
-		Commit: &Commit{
-			SHA: Ptr("sha"),
-			URL: Ptr("url"),
-		},
-		ZipballURL: Ptr("zball"),
-		TarballURL: Ptr("tball"),
-	}
-
-	want := `{
-		"name": "v0.1",
-		"commit": {
-			"sha": "sha",
-			"url": "url"
-		},
-		"zipball_url": "zball",
-		"tarball_url": "tball"
-	}`
-
-	testJSONMarshal(t, u, want)
 }
 
 func TestRepositoriesService_EnablePrivateReporting(t *testing.T) {
@@ -4599,53 +4261,6 @@ func TestRepositoriesService_IsPrivateReportingEnabled(t *testing.T) {
 		}
 		return resp, err
 	})
-}
-
-func TestRepository_UnmarshalJSON(t *testing.T) {
-	t.Parallel()
-	testCases := map[string]struct {
-		data           []byte
-		wantRepository Repository
-		wantErr        bool
-	}{
-		"Empty": {
-			data:           []byte("{}"),
-			wantRepository: Repository{},
-			wantErr:        false,
-		},
-		"Invalid JSON": {
-			data:           []byte("{"),
-			wantRepository: Repository{},
-			wantErr:        true,
-		},
-		"Partial project": {
-			data:           []byte(`{"id":10270722,"name":"go-github","private":false,"owner":{"login":"google"},"created_at":"2013-05-24T16:42:58Z","license":{},"topics":["github"],"permissions":{"pull":true},"custom_properties":{},"organization":{"login":"google"}}`),
-			wantRepository: Repository{ID: Ptr(int64(10270722)), Name: Ptr("go-github"), Private: Ptr(false), Owner: &User{Login: Ptr("google")}, CreatedAt: &Timestamp{time.Date(2013, 5, 24, 16, 42, 58, 0, time.UTC)}, License: &License{}, Topics: []string{"github"}, Permissions: &RepositoryPermissions{Pull: Ptr(true)}, CustomProperties: map[string]any{}, Organization: &Organization{Login: Ptr("google")}},
-			wantErr:        false,
-		},
-		"With custom properties": {
-			data:           []byte(`{"custom_properties":{"boolean":"false","text":"a","single-select":"a","multi-select":["a","b","c"]}}`),
-			wantRepository: Repository{CustomProperties: map[string]any{"boolean": "false", "text": "a", "single-select": "a", "multi-select": []any{"a", "b", "c"}}},
-			wantErr:        false,
-		},
-	}
-
-	for name, tt := range testCases {
-		t.Run(name, func(t *testing.T) {
-			t.Parallel()
-			pk := Repository{}
-			err := json.Unmarshal(tt.data, &pk)
-			if err == nil && tt.wantErr {
-				t.Error("Repository.UnmarshalJSON returned nil instead of an error")
-			}
-			if err != nil && !tt.wantErr {
-				t.Errorf("Repository.UnmarshalJSON returned an unexpected error: %+v", err)
-			}
-			if !cmp.Equal(tt.wantRepository, pk) {
-				t.Errorf("Repository.UnmarshalJSON expected repository %+v, got %+v", tt.wantRepository, pk)
-			}
-		})
-	}
 }
 
 func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {

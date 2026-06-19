@@ -10,11 +10,14 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v88/github"
 )
 
 func ExampleRepositoriesService_ListByUserIter() {
-	client := github.NewClient(nil)
+	client, err := github.NewClient()
+	if err != nil {
+		log.Fatalf("Error creating GitHub client: %v", err)
+	}
 	ctx := context.Background()
 
 	// List all repositories for a user using the iterator.
@@ -23,7 +26,7 @@ func ExampleRepositoriesService_ListByUserIter() {
 	opts := &github.RepositoryListByUserOptions{Type: "public"}
 	for repo, err := range client.Repositories.ListByUserIter(ctx, "octocat", opts) {
 		if err != nil {
-			log.Fatalf("Error listing repos: %v", err)
+			log.Fatalf("Error listing repositories by user: %v", err)
 		}
 		fmt.Println(repo.GetName())
 	}

@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -66,15 +65,9 @@ func TestRepositoriesService_CreateTagProtection(t *testing.T) {
 	pattern := "tag*"
 
 	mux.HandleFunc("/repos/o/r/tags/protection", func(w http.ResponseWriter, r *http.Request) {
-		var v *tagProtectionRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		want := &tagProtectionRequest{Pattern: "tag*"}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id":1,"pattern":"tag*"}`)
 	})
 
@@ -128,24 +121,4 @@ func TestRepositoriesService_DeleteTagProtection(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Repositories.DeleteTagProtection(ctx, "o", "r", 1)
 	})
-}
-
-func TestTagProtection_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &TagProtection{}, `{
-		"id": null,
-		"pattern": null
-	}`)
-
-	u := &TagProtection{
-		ID:      Ptr(int64(1)),
-		Pattern: Ptr("pattern"),
-	}
-
-	want := `{
-		"id": 1,
-		"pattern": "pattern"
-	}`
-
-	testJSONMarshal(t, u, want)
 }

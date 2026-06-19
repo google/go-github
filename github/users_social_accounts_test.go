@@ -54,16 +54,18 @@ func TestUsersService_AddSocialAccounts(t *testing.T) {
 
 	client, mux, _ := setup(t)
 
-	input := []string{"https://example.com"}
+	input := socialAccountsRequest{
+		AccountURLs: []string{"https://example.com"},
+	}
 
 	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"account_urls":["https://example.com"]}`+"\n")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `[{"provider":"example","url":"https://example.com"}]`)
 	})
 
 	ctx := t.Context()
-	accounts, _, err := client.Users.AddSocialAccounts(ctx, input)
+	accounts, _, err := client.Users.AddSocialAccounts(ctx, input.AccountURLs)
 	if err != nil {
 		t.Errorf("Users.AddSocialAccounts returned error: %v", err)
 	}
@@ -77,7 +79,7 @@ func TestUsersService_AddSocialAccounts(t *testing.T) {
 
 	const methodName = "AddSocialAccounts"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.AddSocialAccounts(ctx, input)
+		got, resp, err := client.Users.AddSocialAccounts(ctx, input.AccountURLs)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -90,23 +92,25 @@ func TestUsersService_DeleteSocialAccounts(t *testing.T) {
 
 	client, mux, _ := setup(t)
 
-	input := []string{"https://example.com"}
+	input := socialAccountsRequest{
+		AccountURLs: []string{"https://example.com"},
+	}
 
 	mux.HandleFunc("/user/social_accounts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"account_urls":["https://example.com"]}`+"\n")
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusNoContent)
 	})
 
 	ctx := t.Context()
-	_, err := client.Users.DeleteSocialAccounts(ctx, input)
+	_, err := client.Users.DeleteSocialAccounts(ctx, input.AccountURLs)
 	if err != nil {
 		t.Errorf("Users.DeleteSocialAccounts returned error: %v", err)
 	}
 
 	const methodName = "DeleteSocialAccounts"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Users.DeleteSocialAccounts(ctx, input)
+		return client.Users.DeleteSocialAccounts(ctx, input.AccountURLs)
 	})
 }
 

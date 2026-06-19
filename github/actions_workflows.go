@@ -109,13 +109,13 @@ func (s *ActionsService) ListWorkflows(ctx context.Context, owner, repo string, 
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var workflows *Workflows
-	resp, err := s.client.Do(ctx, req, &workflows)
+	resp, err := s.client.Do(req, &workflows)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -146,13 +146,13 @@ func (s *ActionsService) GetWorkflowByFileName(ctx context.Context, owner, repo,
 }
 
 func (s *ActionsService) getWorkflow(ctx context.Context, url string) (*Workflow, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var workflow *Workflow
-	resp, err := s.client.Do(ctx, req, &workflow)
+	resp, err := s.client.Do(req, &workflow)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -183,13 +183,13 @@ func (s *ActionsService) GetWorkflowUsageByFileName(ctx context.Context, owner, 
 }
 
 func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*WorkflowUsage, *Response, error) {
-	req, err := s.client.NewRequest("GET", url, nil)
+	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var workflowUsage *WorkflowUsage
-	resp, err := s.client.Do(ctx, req, &workflowUsage)
+	resp, err := s.client.Do(req, &workflowUsage)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -202,10 +202,10 @@ func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*Wor
 // GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
-func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, owner, repo string, workflowID int64, event CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
+func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, owner, repo string, workflowID int64, body CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowID)
 
-	return s.createWorkflowDispatchEvent(ctx, u, &event)
+	return s.createWorkflowDispatchEvent(ctx, u, &body)
 }
 
 // CreateWorkflowDispatchEventByFileName manually triggers a GitHub Actions workflow run.
@@ -213,20 +213,20 @@ func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, ow
 // GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
-func (s *ActionsService) CreateWorkflowDispatchEventByFileName(ctx context.Context, owner, repo, workflowFileName string, event CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
+func (s *ActionsService) CreateWorkflowDispatchEventByFileName(ctx context.Context, owner, repo, workflowFileName string, body CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowFileName)
 
-	return s.createWorkflowDispatchEvent(ctx, u, &event)
+	return s.createWorkflowDispatchEvent(ctx, u, &body)
 }
 
-func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url string, event *CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
-	req, err := s.client.NewRequest("POST", url, event)
+func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url string, body *CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
+	req, err := s.client.NewRequest(ctx, "POST", url, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var dispatchRunDetails *WorkflowDispatchRunDetails
-	resp, err := s.client.Do(ctx, req, &dispatchRunDetails)
+	resp, err := s.client.Do(req, &dispatchRunDetails)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -275,10 +275,10 @@ func (s *ActionsService) DisableWorkflowByFileName(ctx context.Context, owner, r
 }
 
 func (s *ActionsService) doNewPutRequest(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest("PUT", url, nil)
+	req, err := s.client.NewRequest(ctx, "PUT", url, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

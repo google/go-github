@@ -91,9 +91,9 @@ func (a *AuditEntry) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON implements the json.Marshaler interface.
-func (a *AuditEntry) MarshalJSON() ([]byte, error) {
+func (a AuditEntry) MarshalJSON() ([]byte, error) {
 	type entryAlias AuditEntry
-	v := entryAlias(*a)
+	v := entryAlias(a)
 	defBytes, err := json.Marshal(v)
 	if err != nil {
 		return nil, err
@@ -129,13 +129,13 @@ func (s *OrganizationsService) GetAuditLog(ctx context.Context, org string, opts
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var auditEntries []*AuditEntry
-	resp, err := s.client.Do(ctx, req, &auditEntries)
+	resp, err := s.client.Do(req, &auditEntries)
 	if err != nil {
 		return nil, resp, err
 	}

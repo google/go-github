@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -345,13 +344,8 @@ func TestGitService_CreateRef(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs", func(w http.ResponseWriter, r *http.Request) {
-		var v *CreateRef
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
-		if !cmp.Equal(*v, args) {
-			t.Errorf("Request body = %+v, want %+v", *v, args)
-		}
+		testJSONBody(t, r, args)
 		fmt.Fprint(w, `
 		  {
 		    "ref": "refs/heads/b",
@@ -430,13 +424,8 @@ func TestGitService_UpdateRef(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
-		var v *UpdateRef
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(*v, args) {
-			t.Errorf("Request body = %+v, want %+v", *v, args)
-		}
+		testJSONBody(t, r, args)
 		fmt.Fprint(w, `
 		  {
 		    "ref": "refs/heads/b",
@@ -591,13 +580,8 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b#1", func(w http.ResponseWriter, r *http.Request) {
-		var v *UpdateRef
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(*v, args) {
-			t.Errorf("Request body = %+v, want %+v", *v, args)
-		}
+		testJSONBody(t, r, args)
 		fmt.Fprint(w, `
 		  {
 		    "ref": "refs/heads/b#1",
@@ -631,94 +615,4 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 	if !cmp.Equal(ref, want) {
 		t.Errorf("Git.UpdateRef returned %+v, want %+v", ref, want)
 	}
-}
-
-func TestReference_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Reference{}, `{
-		"ref": null,
-		"url": null,
-		"object": null
-	}`)
-
-	u := &Reference{
-		Ref: Ptr("ref"),
-		URL: Ptr("url"),
-		Object: &GitObject{
-			Type: Ptr("type"),
-			SHA:  Ptr("sha"),
-			URL:  Ptr("url"),
-		},
-		NodeID: Ptr("nid"),
-	}
-
-	want := `{
-		"ref": "ref",
-		"url": "url",
-		"object": {
-			"type": "type",
-			"sha": "sha",
-			"url": "url"
-		},
-		"node_id": "nid"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestGitObject_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &GitObject{}, `{
-		"type": null,
-		"sha": null,
-		"url": null
-	}`)
-
-	u := &GitObject{
-		Type: Ptr("type"),
-		SHA:  Ptr("sha"),
-		URL:  Ptr("url"),
-	}
-
-	want := `{
-		"type": "type",
-		"sha": "sha",
-		"url": "url"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestCreateRef_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, CreateRef{}, `{"ref":"","sha":""}`)
-
-	u := CreateRef{
-		Ref: "ref",
-		SHA: "sha",
-	}
-
-	want := `{
-		"ref": "ref",
-		"sha": "sha"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestUpdateRef_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, UpdateRef{}, `{"sha":""}`)
-
-	u := UpdateRef{
-		SHA:   "sha",
-		Force: Ptr(true),
-	}
-
-	want := `{
-		"sha": "sha",
-		"force": true
-	}`
-
-	testJSONMarshal(t, u, want)
 }

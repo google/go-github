@@ -59,13 +59,13 @@ func (s *TeamsService) ListDiscussionsByID(ctx context.Context, orgID, teamID in
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teamDiscussions []*TeamDiscussion
-	resp, err := s.client.Do(ctx, req, &teamDiscussions)
+	resp, err := s.client.Do(req, &teamDiscussions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -86,13 +86,13 @@ func (s *TeamsService) ListDiscussionsBySlug(ctx context.Context, org, slug stri
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teamDiscussions []*TeamDiscussion
-	resp, err := s.client.Do(ctx, req, &teamDiscussions)
+	resp, err := s.client.Do(req, &teamDiscussions)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -108,13 +108,13 @@ func (s *TeamsService) ListDiscussionsBySlug(ctx context.Context, org, slug stri
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
 func (s *TeamsService) GetDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teamDiscussion *TeamDiscussion
-	resp, err := s.client.Do(ctx, req, &teamDiscussion)
+	resp, err := s.client.Do(req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -130,13 +130,13 @@ func (s *TeamsService) GetDiscussionByID(ctx context.Context, orgID, teamID int6
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
 func (s *TeamsService) GetDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teamDiscussion *TeamDiscussion
-	resp, err := s.client.Do(ctx, req, &teamDiscussion)
+	resp, err := s.client.Do(req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -150,15 +150,15 @@ func (s *TeamsService) GetDiscussionBySlug(ctx context.Context, org, slug string
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#create-a-discussion
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions
-func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID int64, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID int64, body TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions", orgID, teamID)
-	req, err := s.client.NewRequest("POST", u, discussion)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teamDiscussion *TeamDiscussion
-	resp, err := s.client.Do(ctx, req, &teamDiscussion)
+	resp, err := s.client.Do(req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -172,15 +172,15 @@ func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID i
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#create-a-discussion
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions
-func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug string, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug string, body TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions", org, slug)
-	req, err := s.client.NewRequest("POST", u, discussion)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teamDiscussion *TeamDiscussion
-	resp, err := s.client.Do(ctx, req, &teamDiscussion)
+	resp, err := s.client.Do(req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -195,15 +195,15 @@ func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug str
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#update-a-discussion
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
-func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int, body TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
-	req, err := s.client.NewRequest("PATCH", u, discussion)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teamDiscussion *TeamDiscussion
-	resp, err := s.client.Do(ctx, req, &teamDiscussion)
+	resp, err := s.client.Do(req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -218,15 +218,15 @@ func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#update-a-discussion
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
-func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int, discussion TeamDiscussion) (*TeamDiscussion, *Response, error) {
+func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int, body TeamDiscussion) (*TeamDiscussion, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
-	req, err := s.client.NewRequest("PATCH", u, discussion)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var teamDiscussion *TeamDiscussion
-	resp, err := s.client.Do(ctx, req, &teamDiscussion)
+	resp, err := s.client.Do(req, &teamDiscussion)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -242,12 +242,12 @@ func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug strin
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
 func (s *TeamsService) DeleteDiscussionByID(ctx context.Context, orgID, teamID int64, discussionNumber int) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v", orgID, teamID, discussionNumber)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteDiscussionBySlug deletes a discussion from team's page given Organization name and Team's slug.
@@ -258,10 +258,10 @@ func (s *TeamsService) DeleteDiscussionByID(ctx context.Context, orgID, teamID i
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
 func (s *TeamsService) DeleteDiscussionBySlug(ctx context.Context, org, slug string, discussionNumber int) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v", org, slug, discussionNumber)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

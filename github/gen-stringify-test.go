@@ -48,28 +48,12 @@ var (
 		"RateLimits": true,
 	}
 
-	// namedStructZeroStr maps named struct type names to their Stringify output
-	// when zero-valued, for structs whose zero value is not simply "{}".
-	// Stringify always prints non-pointer value fields (ints, strings, etc.) but
-	// skips nil pointers/slices/maps, so only structs containing non-pointer
-	// value fields need an entry here.
-	namedStructZeroStr = map[string]string{
-		"IssueDependenciesSummary": `github.IssueDependenciesSummary{BlockedBy:0, Blocking:0, TotalBlockedBy:0, TotalBlocking:0}`,
-		"SubIssuesSummary":         `github.SubIssuesSummary{Total:0, Completed:0, PercentCompleted:0}`,
-	}
-
 	funcMap = template.FuncMap{
 		"isNotLast": func(index int, slice []*structField) string {
 			if index+1 < len(slice) {
 				return ", "
 			}
 			return ""
-		},
-		"namedStructStr": func(pkg, fieldType string) string {
-			if s, ok := namedStructZeroStr[fieldType]; ok {
-				return s
-			}
-			return fmt.Sprintf("%s.%s{}", pkg, fieldType)
 		},
 		"processZeroValue": func(v string) string {
 			switch v {
@@ -451,7 +435,7 @@ func Test{{ $key }}_String(t *testing.T) {
     {{ .FieldName }}: {{.ZeroValue}},{{end}}{{end}}
   }
  	want := ` + "`" + `{{ $package }}.{{ $key }}{{ $slice := . }}{
-{{- range $ind, $val := .}}{{if .NamedStruct}}{{ .FieldName }}:{{ namedStructStr $package .FieldType }}{{else}}{{ .FieldName }}:{{ processZeroValue .ZeroValue }}{{end}}{{ isNotLast $ind $slice }}{{end}}}` + "`" + `
+{{- range $ind, $val := .}}{{if .NamedStruct}}{{ .FieldName }}:{{ $package }}.{{ .FieldType }}{}{{else}}{{ .FieldName }}:{{ processZeroValue .ZeroValue }}{{end}}{{ isNotLast $ind $slice }}{{end}}}` + "`" + `
 	if got := v.String(); got != want {
 		t.Errorf("{{ $key }}.String = %v, want %v", got, want)
 	}

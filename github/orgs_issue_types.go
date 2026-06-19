@@ -27,13 +27,13 @@ type CreateOrUpdateIssueTypesOptions struct {
 func (s *OrganizationsService) ListIssueTypes(ctx context.Context, org string) ([]*IssueType, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issue-types", org)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var issueTypes []*IssueType
-	resp, err := s.client.Do(ctx, req, &issueTypes)
+	resp, err := s.client.Do(req, &issueTypes)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -46,15 +46,15 @@ func (s *OrganizationsService) ListIssueTypes(ctx context.Context, org string) (
 // GitHub API docs: https://docs.github.com/rest/orgs/issue-types?apiVersion=2022-11-28#create-issue-type-for-an-organization
 //
 //meta:operation POST /orgs/{org}/issue-types
-func (s *OrganizationsService) CreateIssueType(ctx context.Context, org string, opts *CreateOrUpdateIssueTypesOptions) (*IssueType, *Response, error) {
+func (s *OrganizationsService) CreateIssueType(ctx context.Context, org string, body *CreateOrUpdateIssueTypesOptions) (*IssueType, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issue-types", org)
-	req, err := s.client.NewRequest("POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var issueType *IssueType
-	resp, err := s.client.Do(ctx, req, &issueType)
+	resp, err := s.client.Do(req, &issueType)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -67,15 +67,15 @@ func (s *OrganizationsService) CreateIssueType(ctx context.Context, org string, 
 // GitHub API docs: https://docs.github.com/rest/orgs/issue-types?apiVersion=2022-11-28#update-issue-type-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/issue-types/{issue_type_id}
-func (s *OrganizationsService) UpdateIssueType(ctx context.Context, org string, issueTypeID int64, opts *CreateOrUpdateIssueTypesOptions) (*IssueType, *Response, error) {
+func (s *OrganizationsService) UpdateIssueType(ctx context.Context, org string, issueTypeID int64, body *CreateOrUpdateIssueTypesOptions) (*IssueType, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issue-types/%v", org, issueTypeID)
-	req, err := s.client.NewRequest("PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var issueType *IssueType
-	resp, err := s.client.Do(ctx, req, &issueType)
+	resp, err := s.client.Do(req, &issueType)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -90,10 +90,10 @@ func (s *OrganizationsService) UpdateIssueType(ctx context.Context, org string, 
 //meta:operation DELETE /orgs/{org}/issue-types/{issue_type_id}
 func (s *OrganizationsService) DeleteIssueType(ctx context.Context, org string, issueTypeID int64) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/issue-types/%v", org, issueTypeID)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

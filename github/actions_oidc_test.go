@@ -65,7 +65,7 @@ func TestActionsService_GetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 
 	want := &OIDCSubjectClaimCustomTemplate{UseDefault: Ptr(false), IncludeClaimKeys: []string{"repo", "context"}}
 	if !cmp.Equal(template, want) {
-		t.Errorf("Actions.GetOrgOIDCSubjectClaimCustomTemplate returned %+v, want %+v", template, want)
+		t.Errorf("Actions.GetRepoOIDCSubjectClaimCustomTemplate returned %+v, want %+v", template, want)
 	}
 
 	const methodName = "GetRepoOIDCSubjectClaimCustomTemplate"
@@ -87,16 +87,17 @@ func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"include_claim_keys":["repo","context"]}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &OIDCSubjectClaimCustomTemplate{
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
+
+	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.SetOrgOIDCSubjectClaimCustomTemplate(ctx, "o", input)
 	if err != nil {
@@ -119,49 +120,51 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"use_default":false,"include_claim_keys":["repo","context"]}`+"\n")
-		w.WriteHeader(http.StatusCreated)
-	})
-
 	input := &OIDCSubjectClaimCustomTemplate{
 		UseDefault:       Ptr(false),
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
-	ctx := t.Context()
-	_, err := client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
-	if err != nil {
-		t.Errorf("Actions.SetRepoOIDCSubjectClaimCustomTemplate returned error: %v", err)
-	}
-
-	const methodName = "SetRepoOIDCSubjectClaimCustomTemplate"
-
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "\n", "\n", input)
-		return err
-	})
-
-	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
-	})
-}
-
-func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
 
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		testBody(t, r, `{"use_default":true}`+"\n")
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 	})
+
+	ctx := t.Context()
+	_, err := client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
+	if err != nil {
+		t.Errorf("Actions.SetRepoOIDCSubjectClaimCustomTemplate returned error: %v", err)
+	}
+
+	const methodName = "SetRepoOIDCSubjectClaimCustomTemplate"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "\n", "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
+	})
+}
+
+func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
 
 	input := &OIDCSubjectClaimCustomTemplate{
 		UseDefault: Ptr(true),
 	}
+
+	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testHeader(t, r, "Content-Type", "application/json")
+		testJSONBody(t, r, input)
+		w.WriteHeader(http.StatusCreated)
+	})
+
 	ctx := t.Context()
 	_, err := client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
 	if err != nil {
@@ -177,23 +180,4 @@ func TestActionService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testing
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Actions.SetRepoOIDCSubjectClaimCustomTemplate(ctx, "o", "r", input)
 	})
-}
-
-func TestOIDCSubjectClaimCustomTemplate_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &OIDCSubjectClaimCustomTemplate{}, "{}")
-
-	u := &OIDCSubjectClaimCustomTemplate{
-		UseDefault:       Ptr(false),
-		IncludeClaimKeys: []string{"s"},
-	}
-
-	want := `{
-		"use_default": false,
-		"include_claim_keys": [
-			"s"
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
 }

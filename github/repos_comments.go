@@ -45,7 +45,7 @@ func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo stri
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -53,7 +53,7 @@ func (s *RepositoriesService) ListComments(ctx context.Context, owner, repo stri
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var comments []*RepositoryComment
-	resp, err := s.client.Do(ctx, req, &comments)
+	resp, err := s.client.Do(req, &comments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -73,7 +73,7 @@ func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, rep
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -81,7 +81,7 @@ func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, rep
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var comments []*RepositoryComment
-	resp, err := s.client.Do(ctx, req, &comments)
+	resp, err := s.client.Do(req, &comments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -95,15 +95,15 @@ func (s *RepositoriesService) ListCommitComments(ctx context.Context, owner, rep
 // GitHub API docs: https://docs.github.com/rest/commits/comments?apiVersion=2022-11-28#create-a-commit-comment
 //
 //meta:operation POST /repos/{owner}/{repo}/commits/{commit_sha}/comments
-func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sha string, comment *RepositoryComment) (*RepositoryComment, *Response, error) {
+func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sha string, body *RepositoryComment) (*RepositoryComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/commits/%v/comments", owner, repo, sha)
-	req, err := s.client.NewRequest("POST", u, comment)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var c *RepositoryComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -118,7 +118,7 @@ func (s *RepositoriesService) CreateComment(ctx context.Context, owner, repo, sh
 //meta:operation GET /repos/{owner}/{repo}/comments/{comment_id}
 func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string, id int64) (*RepositoryComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -126,7 +126,7 @@ func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string
 	req.Header.Set("Accept", mediaTypeReactionsPreview)
 
 	var c *RepositoryComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -139,15 +139,15 @@ func (s *RepositoriesService) GetComment(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/commits/comments?apiVersion=2022-11-28#update-a-commit-comment
 //
 //meta:operation PATCH /repos/{owner}/{repo}/comments/{comment_id}
-func (s *RepositoriesService) UpdateComment(ctx context.Context, owner, repo string, id int64, comment *RepositoryComment) (*RepositoryComment, *Response, error) {
+func (s *RepositoriesService) UpdateComment(ctx context.Context, owner, repo string, id int64, body *RepositoryComment) (*RepositoryComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
-	req, err := s.client.NewRequest("PATCH", u, comment)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var c *RepositoryComment
-	resp, err := s.client.Do(ctx, req, &c)
+	resp, err := s.client.Do(req, &c)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -162,10 +162,10 @@ func (s *RepositoriesService) UpdateComment(ctx context.Context, owner, repo str
 //meta:operation DELETE /repos/{owner}/{repo}/comments/{comment_id}
 func (s *RepositoriesService) DeleteComment(ctx context.Context, owner, repo string, id int64) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/comments/%v", owner, repo, id)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

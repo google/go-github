@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -48,36 +47,30 @@ func TestRepositoryService_GetActionsAllowed(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_UpdateActionsAllowed(t *testing.T) {
+func TestRepositoriesService_EditActionsAllowed(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
 	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
-		var v *ActionsAllowed
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PUT")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
 	})
 
 	ctx := t.Context()
 	org, _, err := client.Repositories.EditActionsAllowed(ctx, "o", "r", *input)
 	if err != nil {
-		t.Errorf("Repositories.UpdateActionsAllowed returned error: %v", err)
+		t.Errorf("Repositories.EditActionsAllowed returned error: %v", err)
 	}
 
 	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
-		t.Errorf("Repositories.UpdateActionsAllowed returned %+v, want %+v", org, want)
+		t.Errorf("Repositories.EditActionsAllowed returned %+v, want %+v", org, want)
 	}
 
-	const methodName = "UpdateActionsAllowed"
+	const methodName = "EditActionsAllowed"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Repositories.EditActionsAllowed(ctx, "\n", "\n", *input)
 		return err

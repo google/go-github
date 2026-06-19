@@ -46,20 +46,20 @@ type DiscussionCommentListOptions struct {
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#list-discussion-comments
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
-func (s *TeamsService) ListCommentsByID(ctx context.Context, orgID, teamID int64, discussionNumber int, options *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
+func (s *TeamsService) ListCommentsByID(ctx context.Context, orgID, teamID int64, discussionNumber int, opts *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments", orgID, teamID, discussionNumber)
-	u, err := addOptions(u, options)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var comments []*DiscussionComment
-	resp, err := s.client.Do(ctx, req, &comments)
+	resp, err := s.client.Do(req, &comments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -73,20 +73,20 @@ func (s *TeamsService) ListCommentsByID(ctx context.Context, orgID, teamID int64
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#list-discussion-comments
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
-func (s *TeamsService) ListCommentsBySlug(ctx context.Context, org, slug string, discussionNumber int, options *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
+func (s *TeamsService) ListCommentsBySlug(ctx context.Context, org, slug string, discussionNumber int, opts *DiscussionCommentListOptions) ([]*DiscussionComment, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments", org, slug, discussionNumber)
-	u, err := addOptions(u, options)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var comments []*DiscussionComment
-	resp, err := s.client.Do(ctx, req, &comments)
+	resp, err := s.client.Do(req, &comments)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -102,13 +102,13 @@ func (s *TeamsService) ListCommentsBySlug(ctx context.Context, org, slug string,
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}
 func (s *TeamsService) GetCommentByID(ctx context.Context, orgID, teamID int64, discussionNumber, commentNumber int) (*DiscussionComment, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments/%v", orgID, teamID, discussionNumber, commentNumber)
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var discussionComment *DiscussionComment
-	resp, err := s.client.Do(ctx, req, &discussionComment)
+	resp, err := s.client.Do(req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -125,13 +125,13 @@ func (s *TeamsService) GetCommentByID(ctx context.Context, orgID, teamID int64, 
 func (s *TeamsService) GetCommentBySlug(ctx context.Context, org, slug string, discussionNumber, commentNumber int) (*DiscussionComment, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments/%v", org, slug, discussionNumber, commentNumber)
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var discussionComment *DiscussionComment
-	resp, err := s.client.Do(ctx, req, &discussionComment)
+	resp, err := s.client.Do(req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -145,15 +145,15 @@ func (s *TeamsService) GetCommentBySlug(ctx context.Context, org, slug string, d
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#create-a-discussion-comment
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
-func (s *TeamsService) CreateCommentByID(ctx context.Context, orgID, teamID int64, discussionNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error) {
+func (s *TeamsService) CreateCommentByID(ctx context.Context, orgID, teamID int64, discussionNumber int, body DiscussionComment) (*DiscussionComment, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments", orgID, teamID, discussionNumber)
-	req, err := s.client.NewRequest("POST", u, comment)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var discussionComment *DiscussionComment
-	resp, err := s.client.Do(ctx, req, &discussionComment)
+	resp, err := s.client.Do(req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -167,15 +167,15 @@ func (s *TeamsService) CreateCommentByID(ctx context.Context, orgID, teamID int6
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#create-a-discussion-comment
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
-func (s *TeamsService) CreateCommentBySlug(ctx context.Context, org, slug string, discussionNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error) {
+func (s *TeamsService) CreateCommentBySlug(ctx context.Context, org, slug string, discussionNumber int, body DiscussionComment) (*DiscussionComment, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments", org, slug, discussionNumber)
-	req, err := s.client.NewRequest("POST", u, comment)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var discussionComment *DiscussionComment
-	resp, err := s.client.Do(ctx, req, &discussionComment)
+	resp, err := s.client.Do(req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -190,15 +190,15 @@ func (s *TeamsService) CreateCommentBySlug(ctx context.Context, org, slug string
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#update-a-discussion-comment
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}
-func (s *TeamsService) EditCommentByID(ctx context.Context, orgID, teamID int64, discussionNumber, commentNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error) {
+func (s *TeamsService) EditCommentByID(ctx context.Context, orgID, teamID int64, discussionNumber, commentNumber int, body DiscussionComment) (*DiscussionComment, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments/%v", orgID, teamID, discussionNumber, commentNumber)
-	req, err := s.client.NewRequest("PATCH", u, comment)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var discussionComment *DiscussionComment
-	resp, err := s.client.Do(ctx, req, &discussionComment)
+	resp, err := s.client.Do(req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -213,15 +213,15 @@ func (s *TeamsService) EditCommentByID(ctx context.Context, orgID, teamID int64,
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#update-a-discussion-comment
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}
-func (s *TeamsService) EditCommentBySlug(ctx context.Context, org, slug string, discussionNumber, commentNumber int, comment DiscussionComment) (*DiscussionComment, *Response, error) {
+func (s *TeamsService) EditCommentBySlug(ctx context.Context, org, slug string, discussionNumber, commentNumber int, body DiscussionComment) (*DiscussionComment, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments/%v", org, slug, discussionNumber, commentNumber)
-	req, err := s.client.NewRequest("PATCH", u, comment)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var discussionComment *DiscussionComment
-	resp, err := s.client.Do(ctx, req, &discussionComment)
+	resp, err := s.client.Do(req, &discussionComment)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -237,12 +237,12 @@ func (s *TeamsService) EditCommentBySlug(ctx context.Context, org, slug string, 
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}
 func (s *TeamsService) DeleteCommentByID(ctx context.Context, orgID, teamID int64, discussionNumber, commentNumber int) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/discussions/%v/comments/%v", orgID, teamID, discussionNumber, commentNumber)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }
 
 // DeleteCommentBySlug deletes a comment on a team discussion by team slug.
@@ -253,10 +253,10 @@ func (s *TeamsService) DeleteCommentByID(ctx context.Context, orgID, teamID int6
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}
 func (s *TeamsService) DeleteCommentBySlug(ctx context.Context, org, slug string, discussionNumber, commentNumber int) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/discussions/%v/comments/%v", org, slug, discussionNumber, commentNumber)
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

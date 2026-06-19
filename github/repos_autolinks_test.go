@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -63,12 +62,8 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 		IsAlphanumeric: Ptr(true),
 	}
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
-		var v *AutolinkOptions
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
-		if !cmp.Equal(v, opt) {
-			t.Errorf("Request body = %+v, want %+v", v, opt)
-		}
+		testJSONBody(t, r, opt)
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`
 			{
@@ -157,44 +152,4 @@ func TestRepositoriesService_DeleteAutolink(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Repositories.DeleteAutolink(ctx, "o", "r", 2)
 	})
-}
-
-func TestAutolinkOptions_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &AutolinkOptions{}, "{}")
-
-	r := &AutolinkOptions{
-		KeyPrefix:      Ptr("kp"),
-		URLTemplate:    Ptr("URLT"),
-		IsAlphanumeric: Ptr(true),
-	}
-
-	want := `{
-		"key_prefix": "kp",
-		"url_template": "URLT",
-		"is_alphanumeric": true
-	}`
-
-	testJSONMarshal(t, r, want)
-}
-
-func TestAutolink_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Autolink{}, "{}")
-
-	r := &Autolink{
-		ID:             Ptr(int64(1)),
-		KeyPrefix:      Ptr("kp"),
-		URLTemplate:    Ptr("URLT"),
-		IsAlphanumeric: Ptr(true),
-	}
-
-	want := `{
-		"id": 1,
-		"key_prefix": "kp",
-		"url_template": "URLT",
-		"is_alphanumeric": true
-	}`
-
-	testJSONMarshal(t, r, want)
 }

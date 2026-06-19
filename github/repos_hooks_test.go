@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -21,15 +20,9 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 	input := &Hook{CreatedAt: &Timestamp{referenceTime}}
 
 	mux.HandleFunc("/repos/o/r/hooks", func(w http.ResponseWriter, r *http.Request) {
-		var v *createHookRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "POST")
 		want := &createHookRequest{Name: "web"}
-		if !cmp.Equal(v, want) {
-			t.Errorf("Request body = %+v, want %+v", v, want)
-		}
-
+		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
@@ -171,13 +164,8 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 	input := &Hook{}
 
 	mux.HandleFunc("/repos/o/r/hooks/1", func(w http.ResponseWriter, r *http.Request) {
-		var v *Hook
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
-
 		testMethod(t, r, "PATCH")
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
+		testJSONBody(t, r, input)
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -308,265 +296,6 @@ func TestRepositoriesService_TestHook_invalidOwner(t *testing.T) {
 	ctx := t.Context()
 	_, err := client.Repositories.TestHook(ctx, "%", "%", 1)
 	testURLParseError(t, err)
-}
-
-func TestBranchWebHookPayload_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &WebHookPayload{}, "{}")
-
-	v := &WebHookPayload{
-		Action: Ptr("action"),
-		After:  Ptr("after"),
-		Before: Ptr("before"),
-		Commits: []*WebHookCommit{
-			{
-				Added: []string{"1", "2", "3"},
-				Author: &WebHookAuthor{
-					Email: Ptr("abc@example.com"),
-					Name:  Ptr("abc"),
-					Login: Ptr("abc_12"),
-				},
-				Committer: &WebHookAuthor{
-					Email: Ptr("abc@example.com"),
-					Name:  Ptr("abc"),
-					Login: Ptr("abc_12"),
-				},
-				ID:       Ptr("1"),
-				Message:  Ptr("WebHookCommit"),
-				Modified: []string{"abc", "efg", "erd"},
-				Removed:  []string{"cmd", "rti", "duv"},
-			},
-		},
-		Compare: Ptr("compare"),
-		Created: Ptr(true),
-		Forced:  Ptr(false),
-		HeadCommit: &WebHookCommit{
-			Added: []string{"1", "2", "3"},
-			Author: &WebHookAuthor{
-				Email: Ptr("abc@example.com"),
-				Name:  Ptr("abc"),
-				Login: Ptr("abc_12"),
-			},
-			Committer: &WebHookAuthor{
-				Email: Ptr("abc@example.com"),
-				Name:  Ptr("abc"),
-				Login: Ptr("abc_12"),
-			},
-			ID:       Ptr("1"),
-			Message:  Ptr("WebHookCommit"),
-			Modified: []string{"abc", "efg", "erd"},
-			Removed:  []string{"cmd", "rti", "duv"},
-		},
-		Installation: &Installation{
-			ID: Ptr(int64(12)),
-		},
-		Organization: &Organization{
-			ID: Ptr(int64(22)),
-		},
-		Pusher: &CommitAuthor{
-			Login: Ptr("rd@example.com"),
-		},
-		Repo: &PushEventRepository{
-			ID:     Ptr(int64(321)),
-			NodeID: Ptr("node_321"),
-		},
-		Sender: &User{
-			Login: Ptr("st@example.com"),
-			ID:    Ptr(int64(202)),
-		},
-	}
-
-	want := `{
-		"action": "action",
-		"after":  "after",
-		"before": "before",
-		"commits": [
-			{
-			"added":   ["1", "2", "3"],
-			"author":{
-				"email": "abc@example.com",
-				"name": "abc",
-				"username": "abc_12"
-			},
-			"committer": {
-				"email": "abc@example.com",
-				"name": "abc",
-				"username": "abc_12"
-			},
-			"id":       "1",
-			"message":  "WebHookCommit",
-			"modified": ["abc", "efg", "erd"],
-			"removed":  ["cmd", "rti", "duv"]
-			}
-		],
-		"compare": "compare",
-		"created": true,
-		"forced":  false,
-		"head_commit": {
-			"added":   ["1", "2", "3"],
-		"author":{
-			"email": "abc@example.com",
-			"name": "abc",
-			"username": "abc_12"
-		},
-		"committer": {
-			"email": "abc@example.com",
-			"name": "abc",
-			"username": "abc_12"
-		},
-		"id":       "1",
-		"message":  "WebHookCommit",
-		"modified": ["abc", "efg", "erd"],
-		"removed":  ["cmd", "rti", "duv"]
-		},
-		"installation": {
-			"id": 12
-		},
-		"organization": {
-			"id" : 22
-		},
-		"pusher":{
-			"username": "rd@example.com"
-		},
-		"repository":{
-			"id": 321,
-			"node_id": "node_321"
-		},
-		"sender":{
-			"login": "st@example.com",
-			"id": 202
-		}
-	}`
-
-	testJSONMarshal(t, v, want)
-}
-
-func TestBranchWebHookAuthor_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &WebHookAuthor{}, "{}")
-
-	v := &WebHookAuthor{
-		Email: Ptr("abc@example.com"),
-		Name:  Ptr("abc"),
-		Login: Ptr("abc_12"),
-	}
-
-	want := `{
-			"email": "abc@example.com",
-			"name": "abc",
-			"username": "abc_12"
-	}`
-
-	testJSONMarshal(t, v, want)
-}
-
-func TestBranchWebHookCommit_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &WebHookCommit{}, "{}")
-
-	v := &WebHookCommit{
-		Added: []string{"1", "2", "3"},
-		Author: &WebHookAuthor{
-			Email: Ptr("abc@example.com"),
-			Name:  Ptr("abc"),
-			Login: Ptr("abc_12"),
-		},
-		Committer: &WebHookAuthor{
-			Email: Ptr("abc@example.com"),
-			Name:  Ptr("abc"),
-			Login: Ptr("abc_12"),
-		},
-		ID:       Ptr("1"),
-		Message:  Ptr("WebHookCommit"),
-		Modified: []string{"abc", "efg", "erd"},
-		Removed:  []string{"cmd", "rti", "duv"},
-	}
-
-	want := `{
-		"added":   ["1", "2", "3"],
-		"author":{
-			"email": "abc@example.com",
-			"name": "abc",
-			"username": "abc_12"
-		},
-		"committer": {
-			"email": "abc@example.com",
-			"name": "abc",
-			"username": "abc_12"
-		},
-		"id":       "1",
-		"message":  "WebHookCommit",
-		"modified": ["abc", "efg", "erd"],
-		"removed":  ["cmd", "rti", "duv"]
-	}`
-
-	testJSONMarshal(t, v, want)
-}
-
-func TestBranchCreateHookRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &createHookRequest{}, `{"name": ""}`)
-
-	v := &createHookRequest{
-		Name:   "abc",
-		Events: []string{"1", "2", "3"},
-		Active: Ptr(true),
-		Config: &HookConfig{ContentType: Ptr("json")},
-	}
-
-	want := `{
-		"name": "abc",
-		"active": true,
-		"events": ["1","2","3"],
-		"config":{
-			"content_type": "json"
-		}
-	}`
-
-	testJSONMarshal(t, v, want)
-}
-
-func TestBranchHook_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Hook{}, "{}")
-
-	v := &Hook{
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-		URL:       Ptr("url"),
-		ID:        Ptr(int64(1)),
-		Type:      Ptr("type"),
-		Name:      Ptr("name"),
-		TestURL:   Ptr("testurl"),
-		PingURL:   Ptr("pingurl"),
-		LastResponse: map[string]any{
-			"item": "item",
-		},
-		Config: &HookConfig{ContentType: Ptr("json")},
-		Events: []string{"1", "2", "3"},
-		Active: Ptr(true),
-	}
-
-	want := `{
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"url": "url",
-		"id": 1,
-		"type": "type",
-		"name": "name",
-		"test_url": "testurl",
-		"ping_url": "pingurl",
-		"last_response":{
-			"item": "item"
-		},
-		"config":{
-			"content_type": "json"
-		},
-		"events": ["1","2","3"],
-		"active": true
-	}`
-
-	testJSONMarshal(t, v, want)
 }
 
 func TestRepositoriesService_Subscribe(t *testing.T) {

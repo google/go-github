@@ -37,7 +37,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/google/go-github/v85/github"
+	"github.com/google/go-github/v88/github"
 	"golang.org/x/crypto/nacl/box"
 )
 
@@ -157,7 +157,7 @@ func runDelete(args []string) {
 }
 
 func newClient(token, apiURL string) *github.Client {
-	client, err := github.NewClient(nil).WithAuthToken(token).WithEnterpriseURLs(apiURL, apiURL)
+	client, err := github.NewClient(github.WithAuthToken(token), github.WithEnterpriseURLs(apiURL, apiURL))
 	if err != nil {
 		log.Fatalf("Error creating GitHub client: %v", err)
 	}

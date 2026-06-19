@@ -6,7 +6,6 @@
 package github
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -37,14 +36,9 @@ func TestIssueImportService_Create(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueImportRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		assertWrite(t, w, issueImportResponseJSON)
 	})
 
@@ -95,14 +89,9 @@ func TestIssueImportService_Create_deferred(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueImportRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusAccepted)
 		assertWrite(t, w, issueImportResponseJSON)
 	})
@@ -141,14 +130,9 @@ func TestIssueImportService_Create_badResponse(t *testing.T) {
 	}
 
 	mux.HandleFunc("/repos/o/r/import/issues", func(w http.ResponseWriter, r *http.Request) {
-		var v *IssueImportRequest
-		assertNilError(t, json.NewDecoder(r.Body).Decode(&v))
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeIssueImportAPI)
-		if !cmp.Equal(v, input) {
-			t.Errorf("Request body = %+v, want %+v", v, input)
-		}
-
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusAccepted)
 		assertWrite(t, w, []byte("{[}"))
 	})
@@ -293,183 +277,4 @@ var wantIssueImportResponse = &IssueImportResponse{
 	URL:             Ptr("https://api.github.com/repos/o/r/import/issues/3"),
 	ImportIssuesURL: Ptr("https://api.github.com/repos/o/r/import/issues"),
 	RepositoryURL:   Ptr("https://api.github.com/repos/o/r"),
-}
-
-func TestIssueImportError_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &IssueImportError{}, "{}")
-
-	u := &IssueImportError{
-		Location: Ptr("loc"),
-		Resource: Ptr("res"),
-		Field:    Ptr("field"),
-		Value:    Ptr("value"),
-		Code:     Ptr("code"),
-	}
-
-	want := `{
-		"location": "loc",
-		"resource": "res",
-		"field": "field",
-		"value": "value",
-		"code": "code"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestIssueImportResponse_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &IssueImportResponse{}, "{}")
-
-	u := &IssueImportResponse{
-		ID:               Ptr(1),
-		Status:           Ptr("status"),
-		URL:              Ptr("url"),
-		ImportIssuesURL:  Ptr("iiu"),
-		RepositoryURL:    Ptr("ru"),
-		CreatedAt:        &Timestamp{referenceTime},
-		UpdatedAt:        &Timestamp{referenceTime},
-		Message:          Ptr("msg"),
-		DocumentationURL: Ptr("durl"),
-		Errors: []*IssueImportError{
-			{
-				Location: Ptr("loc"),
-				Resource: Ptr("res"),
-				Field:    Ptr("field"),
-				Value:    Ptr("value"),
-				Code:     Ptr("code"),
-			},
-		},
-	}
-
-	want := `{
-		"id": 1,
-		"status": "status",
-		"url": "url",
-		"import_issues_url": "iiu",
-		"repository_url": "ru",
-		"created_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"message": "msg",
-		"documentation_url": "durl",
-		"errors": [
-			{
-				"location": "loc",
-				"resource": "res",
-				"field": "field",
-				"value": "value",
-				"code": "code"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestComment_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Comment{}, `{"body": ""}`)
-
-	u := &Comment{
-		CreatedAt: &Timestamp{referenceTime},
-		Body:      "body",
-	}
-
-	want := `{
-		"created_at": ` + referenceTimeStr + `,
-		"body": "body"
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestIssueImport_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &IssueImport{}, `{
-		"title": "",
-		"body": ""
-	}`)
-
-	u := &IssueImport{
-		Title:     "title",
-		Body:      "body",
-		CreatedAt: &Timestamp{referenceTime},
-		ClosedAt:  &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
-		Assignee:  Ptr("a"),
-		Milestone: Ptr(1),
-		Closed:    Ptr(false),
-		Labels:    []string{"l"},
-	}
-
-	want := `{
-		"title": "title",
-		"body": "body",
-		"created_at": ` + referenceTimeStr + `,
-		"closed_at": ` + referenceTimeStr + `,
-		"updated_at": ` + referenceTimeStr + `,
-		"assignee": "a",
-		"milestone": 1,
-		"closed": false,
-		"labels": [
-			"l"
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestIssueImportRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &IssueImportRequest{}, `{
-		"issue": {
-			"title": "",
-			"body": ""
-		}
-	}`)
-
-	u := &IssueImportRequest{
-		IssueImport: IssueImport{
-			Title:     "title",
-			Body:      "body",
-			CreatedAt: &Timestamp{referenceTime},
-			ClosedAt:  &Timestamp{referenceTime},
-			UpdatedAt: &Timestamp{referenceTime},
-			Assignee:  Ptr("a"),
-			Milestone: Ptr(1),
-			Closed:    Ptr(false),
-			Labels:    []string{"l"},
-		},
-		Comments: []*Comment{
-			{
-				CreatedAt: &Timestamp{referenceTime},
-				Body:      "body",
-			},
-		},
-	}
-
-	want := `{
-		"issue": {
-			"title": "title",
-			"body": "body",
-			"created_at": ` + referenceTimeStr + `,
-			"closed_at": ` + referenceTimeStr + `,
-			"updated_at": ` + referenceTimeStr + `,
-			"assignee": "a",
-			"milestone": 1,
-			"closed": false,
-			"labels": [
-				"l"
-			]
-		},
-		"comments": [
-			{
-				"created_at": ` + referenceTimeStr + `,
-				"body": "body"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
 }

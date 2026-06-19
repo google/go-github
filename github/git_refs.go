@@ -58,13 +58,13 @@ type UpdateRef struct {
 func (s *GitService) GetRef(ctx context.Context, owner, repo, ref string) (*Reference, *Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/ref/%v", owner, repo, refURLEscape(ref))
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *Reference
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -94,13 +94,13 @@ func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo, ref stri
 	ref = strings.TrimPrefix(ref, "refs/") // API expects no "refs/" prefix
 	u := fmt.Sprintf("repos/%v/%v/git/matching-refs/%v", owner, repo, refURLEscape(ref))
 
-	req, err := s.client.NewRequest("GET", u, nil)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var rs []*Reference
-	resp, err := s.client.Do(ctx, req, &rs)
+	resp, err := s.client.Do(req, &rs)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -113,26 +113,26 @@ func (s *GitService) ListMatchingRefs(ctx context.Context, owner, repo, ref stri
 // GitHub API docs: https://docs.github.com/rest/git/refs?apiVersion=2022-11-28#create-a-reference
 //
 //meta:operation POST /repos/{owner}/{repo}/git/refs
-func (s *GitService) CreateRef(ctx context.Context, owner, repo string, ref CreateRef) (*Reference, *Response, error) {
-	if ref.Ref == "" {
+func (s *GitService) CreateRef(ctx context.Context, owner, repo string, body CreateRef) (*Reference, *Response, error) {
+	if body.Ref == "" {
 		return nil, nil, errors.New("ref must be provided")
 	}
 
-	if ref.SHA == "" {
+	if body.SHA == "" {
 		return nil, nil, errors.New("sha must be provided")
 	}
 
 	// ensure the 'refs/' prefix is present
-	ref.Ref = "refs/" + strings.TrimPrefix(ref.Ref, "refs/")
+	body.Ref = "refs/" + strings.TrimPrefix(body.Ref, "refs/")
 
 	u := fmt.Sprintf("repos/%v/%v/git/refs", owner, repo)
-	req, err := s.client.NewRequest("POST", u, ref)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *Reference
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -145,24 +145,24 @@ func (s *GitService) CreateRef(ctx context.Context, owner, repo string, ref Crea
 // GitHub API docs: https://docs.github.com/rest/git/refs?apiVersion=2022-11-28#update-a-reference
 //
 //meta:operation PATCH /repos/{owner}/{repo}/git/refs/{ref}
-func (s *GitService) UpdateRef(ctx context.Context, owner, repo, ref string, updateRef UpdateRef) (*Reference, *Response, error) {
+func (s *GitService) UpdateRef(ctx context.Context, owner, repo, ref string, body UpdateRef) (*Reference, *Response, error) {
 	if ref == "" {
 		return nil, nil, errors.New("ref must be provided")
 	}
 
-	if updateRef.SHA == "" {
+	if body.SHA == "" {
 		return nil, nil, errors.New("sha must be provided")
 	}
 
 	refPath := strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(refPath))
-	req, err := s.client.NewRequest("PATCH", u, updateRef)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var r *Reference
-	resp, err := s.client.Do(ctx, req, &r)
+	resp, err := s.client.Do(req, &r)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -178,10 +178,10 @@ func (s *GitService) UpdateRef(ctx context.Context, owner, repo, ref string, upd
 func (s *GitService) DeleteRef(ctx context.Context, owner, repo, ref string) (*Response, error) {
 	ref = strings.TrimPrefix(ref, "refs/")
 	u := fmt.Sprintf("repos/%v/%v/git/refs/%v", owner, repo, refURLEscape(ref))
-	req, err := s.client.NewRequest("DELETE", u, nil)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.client.Do(ctx, req, nil)
+	return s.client.Do(req, nil)
 }

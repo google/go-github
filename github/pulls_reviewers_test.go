@@ -13,125 +13,21 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestReviewersRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &ReviewersRequest{}, "{}")
-
-	u := &ReviewersRequest{
-		NodeID:        Ptr("n"),
-		Reviewers:     []string{"r"},
-		TeamReviewers: []string{"t"},
-	}
-
-	want := `{
-		"node_id": "n",
-		"reviewers": [
-			"r"
-		],
-		"team_reviewers" : [
-			"t"
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
-func TestReviewers_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &Reviewers{}, "{}")
-
-	u := &Reviewers{
-		Users: []*User{{
-			Login:       Ptr("l"),
-			ID:          Ptr(int64(1)),
-			AvatarURL:   Ptr("a"),
-			GravatarID:  Ptr("g"),
-			Name:        Ptr("n"),
-			Company:     Ptr("c"),
-			Blog:        Ptr("b"),
-			Location:    Ptr("l"),
-			Email:       Ptr("e"),
-			Hireable:    Ptr(true),
-			PublicRepos: Ptr(1),
-			Followers:   Ptr(1),
-			Following:   Ptr(1),
-			CreatedAt:   &Timestamp{referenceTime},
-			URL:         Ptr("u"),
-		}},
-		Teams: []*Team{{
-			ID:              Ptr(int64(1)),
-			NodeID:          Ptr("node"),
-			Name:            Ptr("n"),
-			Description:     Ptr("d"),
-			URL:             Ptr("u"),
-			Slug:            Ptr("s"),
-			Permission:      Ptr("p"),
-			Privacy:         Ptr("priv"),
-			MembersCount:    Ptr(1),
-			ReposCount:      Ptr(1),
-			Organization:    nil,
-			MembersURL:      Ptr("m"),
-			RepositoriesURL: Ptr("r"),
-			Parent:          nil,
-			LDAPDN:          Ptr("l"),
-		}},
-	}
-
-	want := `{
-		"users" : [
-			{
-				"login": "l",
-				"id": 1,
-				"avatar_url": "a",
-				"gravatar_id": "g",
-				"name": "n",
-				"company": "c",
-				"blog": "b",
-				"location": "l",
-				"email": "e",
-				"hireable": true,
-				"public_repos": 1,
-				"followers": 1,
-				"following": 1,
-				"created_at": ` + referenceTimeStr + `,
-				"url": "u"
-			}
-		],
-		"teams" : [
-			{
-				"id": 1,
-				"node_id": "node",
-				"name": "n",
-				"description": "d",
-				"url": "u",
-				"slug": "s",
-				"permission": "p",
-				"privacy": "priv",
-				"members_count": 1,
-				"repos_count": 1,
-				"members_url": "m",
-				"repositories_url": "r",
-				"ldap_dn": "l"
-			}
-		]
-	}`
-
-	testJSONMarshal(t, u, want)
-}
-
 func TestRequestReviewers(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}}
+
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testBody(t, r, `{"reviewers":["octocat","googlebot"],"team_reviewers":["justice-league","injustice-league"]}`+"\n")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"number":1}`)
 	})
 
 	// This returns a PR, unmarshaling of which is tested elsewhere
 	ctx := t.Context()
-	got, _, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
+	got, _, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
 	}
@@ -142,7 +38,7 @@ func TestRequestReviewers(t *testing.T) {
 
 	const methodName = "RequestReviewers"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league", "injustice-league"}})
+		got, resp, err := client.PullRequests.RequestReviewers(ctx, "o", "r", 1, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -154,20 +50,22 @@ func TestRemoveReviewers(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league"}}
+
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"reviewers":["octocat","googlebot"],"team_reviewers":["justice-league"]}`+"\n")
+		testJSONBody(t, r, input)
 	})
 
 	ctx := t.Context()
-	_, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league"}})
+	_, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.RemoveReviewers returned error: %v", err)
 	}
 
 	const methodName = "RemoveReviewers"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{Reviewers: []string{"octocat", "googlebot"}, TeamReviewers: []string{"justice-league"}})
+		return client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, input)
 	})
 }
 
@@ -175,20 +73,27 @@ func TestRemoveReviewers_teamsOnly(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := ReviewersRequest{TeamReviewers: []string{"justice-league"}}
+
 	mux.HandleFunc("/repos/o/r/pulls/1/requested_reviewers", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
-		testBody(t, r, `{"reviewers":[],"team_reviewers":["justice-league"]}`+"\n")
+		want := ReviewersRequest{
+			NodeID:        nil,
+			Reviewers:     []string{},
+			TeamReviewers: input.TeamReviewers,
+		}
+		testJSONBody(t, r, want)
 	})
 
 	ctx := t.Context()
-	_, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{TeamReviewers: []string{"justice-league"}})
+	_, err := client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("PullRequests.RemoveReviewers returned error: %v", err)
 	}
 
 	const methodName = "RemoveReviewers"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, ReviewersRequest{TeamReviewers: []string{"justice-league"}})
+		return client.PullRequests.RemoveReviewers(ctx, "o", "r", 1, input)
 	})
 }
 
