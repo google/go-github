@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -273,13 +274,7 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		w.WriteHeader(http.StatusOK)
-	})
-
-	ctx := t.Context()
-	opts := &SCIMUserAttributes{
+	body := UpdateProvisionedOrgMembershipRequest{
 		UserName: "userName",
 		Name: SCIMUserName{
 			GivenName:  "givenName",
@@ -291,19 +286,40 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 			},
 		},
 	}
-	_, err := client.SCIM.UpdateProvisionedOrgMembership(ctx, "o", "123", opts)
+
+	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, body)
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{"id":"123","userName":"userName"}`)
+	})
+
+	ctx := t.Context()
+	user, _, err := client.SCIM.UpdateProvisionedOrgMembership(ctx, "o", "123", body)
 	if err != nil {
 		t.Errorf("SCIM.UpdateProvisionedOrgMembership returned error: %v", err)
 	}
 
+	want := &SCIMUserAttributes{
+		ID:       Ptr("123"),
+		UserName: "userName",
+	}
+	if !cmp.Equal(user, want) {
+		t.Errorf("SCIM.UpdateProvisionedOrgMembership returned %+v, want %+v", user, want)
+	}
+
 	const methodName = "UpdateProvisionedOrgMembership"
-	testBadOptions(t, methodName, func() error {
-		_, err := client.SCIM.UpdateProvisionedOrgMembership(ctx, "\n", "123", opts)
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SCIM.UpdateProvisionedOrgMembership(ctx, "\n", "123", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.SCIM.UpdateProvisionedOrgMembership(ctx, "o", "123", opts)
+		got, resp, err := client.SCIM.UpdateProvisionedOrgMembership(ctx, "o", "123", body)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
@@ -311,26 +327,64 @@ func TestSCIMService_UpdateAttributeForSCIMUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	body := UpdateAttributeForSCIMUserRequest{
+		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
+		Operations: []*UpdateAttributeForSCIMUserOperations{
+			{
+				Op:    "replace",
+				Path:  Ptr("displayName"),
+				Value: json.RawMessage(`"NewDisplayName"`),
+			},
+		},
+	}
+
+	// Verify the wire format against an expected map (not the same struct) so
+	// that JSON key names are pinned. Per the SCIM PatchOp schema the request
+	// uses a capitalized "Operations" key (and lowercase "schemas").
+	wantBody := map[string]any{
+		"schemas": []any{SCIMSchemasURINamespacesPatchOp},
+		"Operations": []any{
+			map[string]any{
+				"op":    "replace",
+				"path":  "displayName",
+				"value": "NewDisplayName",
+			},
+		},
+	}
+
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		w.WriteHeader(http.StatusNoContent)
+		testJSONBody(t, r, wantBody)
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{"id":"123","userName":"userName"}`)
 	})
 
 	ctx := t.Context()
-	opts := &UpdateAttributeForSCIMUserOptions{}
-	_, err := client.SCIM.UpdateAttributeForSCIMUser(ctx, "o", "123", opts)
+	user, _, err := client.SCIM.UpdateAttributeForSCIMUser(ctx, "o", "123", body)
 	if err != nil {
 		t.Errorf("SCIM.UpdateAttributeForSCIMUser returned error: %v", err)
 	}
 
+	want := &SCIMUserAttributes{
+		ID:       Ptr("123"),
+		UserName: "userName",
+	}
+	if !cmp.Equal(user, want) {
+		t.Errorf("SCIM.UpdateAttributeForSCIMUser returned %+v, want %+v", user, want)
+	}
+
 	const methodName = "UpdateAttributeForSCIMUser"
-	testBadOptions(t, methodName, func() error {
-		_, err := client.SCIM.UpdateAttributeForSCIMUser(ctx, "\n", "123", opts)
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SCIM.UpdateAttributeForSCIMUser(ctx, "\n", "123", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.SCIM.UpdateAttributeForSCIMUser(ctx, "o", "123", opts)
+		got, resp, err := client.SCIM.UpdateAttributeForSCIMUser(ctx, "o", "123", body)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
