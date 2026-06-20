@@ -42062,14 +42062,6 @@ func (u *UpdateProvisionedOrgMembershipRequest) GetName() SCIMUserName {
 	return u.Name
 }
 
-// GetRoles returns the Roles slice if it's non-nil, nil otherwise.
-func (u *UpdateProvisionedOrgMembershipRequest) GetRoles() []*SCIMUserRole {
-	if u == nil || u.Roles == nil {
-		return nil
-	}
-	return u.Roles
-}
-
 // GetSchemas returns the Schemas slice if it's non-nil, nil otherwise.
 func (u *UpdateProvisionedOrgMembershipRequest) GetSchemas() []string {
 	if u == nil || u.Schemas == nil {

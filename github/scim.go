@@ -172,7 +172,6 @@ type UpdateProvisionedOrgMembershipRequest struct {
 	Schemas     []string         `json:"schemas,omitempty"`     // (Optional.)
 	ExternalID  *string          `json:"externalId,omitempty"`  // (Optional.)
 	Groups      []string         `json:"groups,omitempty"`      // (Optional.)
-	Roles       []*SCIMUserRole  `json:"roles,omitempty"`       // (Optional, GHES only.)
 	Active      *bool            `json:"active,omitempty"`      // (Optional.)
 }
 

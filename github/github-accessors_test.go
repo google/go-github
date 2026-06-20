@@ -52827,17 +52827,6 @@ func TestUpdateProvisionedOrgMembershipRequest_GetName(tt *testing.T) {
 	u.GetName()
 }
 
-func TestUpdateProvisionedOrgMembershipRequest_GetRoles(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []*SCIMUserRole{}
-	u := &UpdateProvisionedOrgMembershipRequest{Roles: zeroValue}
-	u.GetRoles()
-	u = &UpdateProvisionedOrgMembershipRequest{}
-	u.GetRoles()
-	u = nil
-	u.GetRoles()
-}
-
 func TestUpdateProvisionedOrgMembershipRequest_GetSchemas(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
