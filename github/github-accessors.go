@@ -31966,6 +31966,14 @@ func (r *RateLimits) GetSourceImport() *Rate {
 	return r.SourceImport
 }
 
+// GetRate returns the Rate field.
+func (r *RateLimitSleepInfo) GetRate() Rate {
+	if r == nil {
+		return Rate{}
+	}
+	return r.Rate
+}
+
 // GetType returns the Type field.
 func (r *RawOptions) GetType() RawType {
 	if r == nil {

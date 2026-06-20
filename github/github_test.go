@@ -838,6 +838,20 @@ func TestWithDisableRateLimitCheck(t *testing.T) {
 	}
 }
 
+func TestWithRateLimitSleepCallback(t *testing.T) {
+	t.Parallel()
+
+	opts := clientOptions{}
+	err := WithRateLimitSleepCallback(func(_ context.Context, _ RateLimitSleepInfo) {})(&opts)
+	if err != nil {
+		t.Fatalf("WithRateLimitSleepCallback errored: %v", err)
+	}
+
+	if opts.rateLimitSleepCallback == nil {
+		t.Error("rateLimitSleepCallback is nil, want non-nil")
+	}
+}
+
 func TestWithRateLimitRedirectionalEndpoints(t *testing.T) {
 	t.Parallel()
 
@@ -2732,6 +2746,102 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 	}
 	if got, want := int(requestCount.Load()), 1; got != want {
 		t.Errorf("Expected 1 request, got %v", got)
+	}
+}
+
+// Ensure the rate limit sleep callback is invoked before sleeping on the retry path.
+func TestDo_rateLimit_sleepCallbackOnResponseResetLimit(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	reset := time.Now().UTC().Add(time.Second)
+
+	var callbackCount int
+	var gotInfo RateLimitSleepInfo
+	client.rateLimitSleepCallback = func(_ context.Context, info RateLimitSleepInfo) {
+		callbackCount++
+		gotInfo = info
+	}
+
+	firstRequest := true
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		if firstRequest {
+			firstRequest = false
+			w.Header().Set(HeaderRateLimit, "60")
+			w.Header().Set(HeaderRateRemaining, "0")
+			w.Header().Set(HeaderRateUsed, "60")
+			w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Unix()))
+			w.Header().Set(HeaderRateResource, "core")
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			w.WriteHeader(http.StatusForbidden)
+			fmt.Fprintln(w, `{"message": "API rate limit exceeded"}`)
+			return
+		}
+		w.Header().Set(HeaderRateLimit, "5000")
+		w.Header().Set(HeaderRateRemaining, "5000")
+		w.Header().Set(HeaderRateUsed, "0")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(HeaderRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, `{}`)
+	})
+
+	req, _ := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	if _, err := client.Do(req, nil); err != nil {
+		t.Errorf("Do returned unexpected error: %v", err)
+	}
+
+	if callbackCount != 1 {
+		t.Errorf("rate limit sleep callback called %d times, want 1", callbackCount)
+	}
+	if got, want := gotInfo.Rate.Reset.Unix(), reset.Unix(); got != want {
+		t.Errorf("callback Rate.Reset = %v, want %v", got, want)
+	}
+	if gotInfo.Request == nil {
+		t.Error("callback Request is nil, want non-nil")
+	}
+}
+
+// Ensure the rate limit sleep callback is invoked before sleeping on the pre-emptive path.
+func TestDo_rateLimit_sleepCallbackOnClientResetLimit(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	reset := time.Now().UTC().Add(time.Second)
+	client.rateLimits[CoreCategory] = Rate{Limit: 5000, Remaining: 0, Reset: Timestamp{reset}}
+
+	var callbackCount int
+	var gotInfo RateLimitSleepInfo
+	client.rateLimitSleepCallback = func(_ context.Context, info RateLimitSleepInfo) {
+		callbackCount++
+		gotInfo = info
+	}
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set(HeaderRateLimit, "5000")
+		w.Header().Set(HeaderRateRemaining, "5000")
+		w.Header().Set(HeaderRateUsed, "0")
+		w.Header().Set(HeaderRateReset, fmt.Sprint(reset.Add(time.Hour).Unix()))
+		w.Header().Set(HeaderRateResource, "core")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, `{}`)
+	})
+
+	req, _ := client.NewRequest(context.WithValue(t.Context(), SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
+	if _, err := client.Do(req, nil); err != nil {
+		t.Errorf("Do returned unexpected error: %v", err)
+	}
+
+	if callbackCount != 1 {
+		t.Errorf("rate limit sleep callback called %d times, want 1", callbackCount)
+	}
+	if got, want := gotInfo.Rate.Reset.Unix(), reset.Unix(); got != want {
+		t.Errorf("callback Rate.Reset = %v, want %v", got, want)
+	}
+	if gotInfo.Request == nil {
+		t.Error("callback Request is nil, want non-nil")
 	}
 }
 

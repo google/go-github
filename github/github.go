@@ -202,6 +202,10 @@ type Client struct {
 	// Whether to respect rate limit headers on endpoints that return 302 redirections to artifacts
 	rateLimitRedirectionalEndpoints bool
 
+	// rateLimitSleepCallback, if set, is called just before the client sleeps
+	// waiting for a primary rate limit to reset.
+	rateLimitSleepCallback RateLimitSleepCallback
+
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// Services used for talking to different parts of the GitHub API.
@@ -363,6 +367,7 @@ type clientOptions struct {
 	disableRateLimitCheck                   bool
 	rateLimitRedirectionalEndpoints         bool
 	maxSecondaryRateLimitRetryAfterDuration *time.Duration
+	rateLimitSleepCallback                  RateLimitSleepCallback
 	marketplaceStubbed                      bool
 }
 
@@ -538,6 +543,33 @@ func WithMaxSecondaryRateLimitRetryAfterDuration(duration time.Duration) ClientO
 	}
 }
 
+// RateLimitSleepInfo provides information to a RateLimitSleepCallback about a
+// primary rate limit sleep that is about to happen.
+type RateLimitSleepInfo struct {
+	// Request is the request whose rate limit triggered the sleep.
+	Request *http.Request
+	// Rate is the primary rate limit that triggered the sleep. The client sleeps
+	// until shortly after Rate.Reset before continuing.
+	Rate Rate
+}
+
+// RateLimitSleepCallback is invoked just before the client sleeps waiting for a
+// primary rate limit to reset. Sleeping is enabled per request via the
+// SleepUntilPrimaryRateLimitResetWhenRateLimited context key. The callback is
+// for notification only (e.g. logging that a sleep is occurring).
+type RateLimitSleepCallback func(ctx context.Context, info RateLimitSleepInfo)
+
+// WithRateLimitSleepCallback returns a ClientOptionsFunc that sets a callback
+// invoked just before the client sleeps waiting for a primary rate limit to
+// reset. Sleeping must also be enabled per request via the
+// SleepUntilPrimaryRateLimitResetWhenRateLimited context key.
+func WithRateLimitSleepCallback(callback RateLimitSleepCallback) ClientOptionsFunc {
+	return func(o *clientOptions) error {
+		o.rateLimitSleepCallback = callback
+		return nil
+	}
+}
+
 // NewClient returns a new GitHub API client configured with the provided
 // options. The default configuration is suitable for making unauthenticated
 // requests to the public GitHub API.
@@ -648,6 +680,7 @@ func newClient(opts clientOptions) (*Client, error) {
 	}
 
 	c.disableRateLimitCheck = opts.disableRateLimitCheck
+	c.rateLimitSleepCallback = opts.rateLimitSleepCallback
 
 	if !c.disableRateLimitCheck {
 		c.rateLimitRedirectionalEndpoints = opts.rateLimitRedirectionalEndpoints
@@ -747,6 +780,7 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 		disableRateLimitCheck:                   c.disableRateLimitCheck,
 		rateLimitRedirectionalEndpoints:         c.rateLimitRedirectionalEndpoints,
 		maxSecondaryRateLimitRetryAfterDuration: &c.maxSecondaryRateLimitRetryAfterDuration,
+		rateLimitSleepCallback:                  c.rateLimitSleepCallback,
 	}
 
 	if c.Marketplace != nil {
@@ -1279,6 +1313,9 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		var rateLimitError *RateLimitError
 		if errors.As(err, &rateLimitError) &&
 			ctx.Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+			if c.rateLimitSleepCallback != nil {
+				c.rateLimitSleepCallback(ctx, RateLimitSleepInfo{Request: req, Rate: rateLimitError.Rate})
+			}
 			if err := sleepUntilResetWithBuffer(ctx, rateLimitError.Rate.Reset.Time); err != nil {
 				return response, err
 			}
@@ -1416,6 +1453,9 @@ func (c *Client) checkRateLimitBeforeDo(req *http.Request, rateLimitCategory Rat
 		}
 
 		if ctx.Value(SleepUntilPrimaryRateLimitResetWhenRateLimited) != nil {
+			if c.rateLimitSleepCallback != nil {
+				c.rateLimitSleepCallback(ctx, RateLimitSleepInfo{Request: req, Rate: rate})
+			}
 			if err := sleepUntilResetWithBuffer(ctx, rate.Reset.Time); err == nil {
 				return nil
 			}

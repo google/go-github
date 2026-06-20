@@ -264,6 +264,19 @@ method to block until the rate limit is reset.
 repos, _, err := client.Repositories.List(context.WithValue(ctx, github.SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "", nil)
 ```
 
+To be notified when such a sleep is about to happen (for example to log a
+message so it doesn't look like the program is stuck), configure the client with
+`WithRateLimitSleepCallback`. The callback is invoked just before the client
+sleeps waiting for the primary rate limit to reset.
+
+```go
+client, err := github.NewClient(github.WithRateLimitSleepCallback(
+	func(ctx context.Context, info github.RateLimitSleepInfo) {
+		log.Printf("sleeping until rate limit resets at %v\n", info.Rate.Reset)
+	},
+))
+```
+
 If you need to make a request even if the rate limit has been hit you can use
 the `BypassRateLimitCheck` method to bypass the rate limit check and make the
 request anyway.

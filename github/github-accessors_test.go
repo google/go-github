@@ -40157,6 +40157,14 @@ func TestRateLimits_GetSourceImport(tt *testing.T) {
 	r.GetSourceImport()
 }
 
+func TestRateLimitSleepInfo_GetRate(tt *testing.T) {
+	tt.Parallel()
+	r := &RateLimitSleepInfo{}
+	r.GetRate()
+	r = nil
+	r.GetRate()
+}
+
 func TestRawOptions_GetType(tt *testing.T) {
 	tt.Parallel()
 	r := &RawOptions{}
