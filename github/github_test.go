@@ -2793,7 +2793,7 @@ func TestDo_rateLimit_sleepCallbackOnResponseResetLimit(t *testing.T) {
 	}
 
 	if callbackCount != 1 {
-		t.Errorf("rate limit sleep callback called %d times, want 1", callbackCount)
+		t.Errorf("rate limit sleep callback called %v times, want 1", callbackCount)
 	}
 	if got, want := gotInfo.Rate.Reset.Unix(), reset.Unix(); got != want {
 		t.Errorf("callback Rate.Reset = %v, want %v", got, want)
@@ -2835,7 +2835,7 @@ func TestDo_rateLimit_sleepCallbackOnClientResetLimit(t *testing.T) {
 	}
 
 	if callbackCount != 1 {
-		t.Errorf("rate limit sleep callback called %d times, want 1", callbackCount)
+		t.Errorf("rate limit sleep callback called %v times, want 1", callbackCount)
 	}
 	if got, want := gotInfo.Rate.Reset.Unix(), reset.Unix(); got != want {
 		t.Errorf("callback Rate.Reset = %v, want %v", got, want)
