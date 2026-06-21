@@ -52150,20 +52150,23 @@ func TestUpdateAttributeForSCIMUserOperations_GetValue(tt *testing.T) {
 	u.GetValue()
 }
 
-func TestUpdateAttributeForSCIMUserOptions_GetOperations(tt *testing.T) {
+func TestUpdateAttributeForSCIMUserRequest_GetOperations(tt *testing.T) {
 	tt.Parallel()
-	u := &UpdateAttributeForSCIMUserOptions{}
+	zeroValue := []*UpdateAttributeForSCIMUserOperations{}
+	u := &UpdateAttributeForSCIMUserRequest{Operations: zeroValue}
+	u.GetOperations()
+	u = &UpdateAttributeForSCIMUserRequest{}
 	u.GetOperations()
 	u = nil
 	u.GetOperations()
 }
 
-func TestUpdateAttributeForSCIMUserOptions_GetSchemas(tt *testing.T) {
+func TestUpdateAttributeForSCIMUserRequest_GetSchemas(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
-	u := &UpdateAttributeForSCIMUserOptions{Schemas: zeroValue}
+	u := &UpdateAttributeForSCIMUserRequest{Schemas: zeroValue}
 	u.GetSchemas()
-	u = &UpdateAttributeForSCIMUserOptions{}
+	u = &UpdateAttributeForSCIMUserRequest{}
 	u.GetSchemas()
 	u = nil
 	u.GetSchemas()
@@ -52759,6 +52762,88 @@ func TestUpdateProjectV2Field_GetValue(tt *testing.T) {
 	u.GetValue()
 	u = nil
 	u.GetValue()
+}
+
+func TestUpdateProvisionedOrgMembershipRequest_GetActive(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateProvisionedOrgMembershipRequest{Active: &zeroValue}
+	u.GetActive()
+	u = &UpdateProvisionedOrgMembershipRequest{}
+	u.GetActive()
+	u = nil
+	u.GetActive()
+}
+
+func TestUpdateProvisionedOrgMembershipRequest_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateProvisionedOrgMembershipRequest{DisplayName: &zeroValue}
+	u.GetDisplayName()
+	u = &UpdateProvisionedOrgMembershipRequest{}
+	u.GetDisplayName()
+	u = nil
+	u.GetDisplayName()
+}
+
+func TestUpdateProvisionedOrgMembershipRequest_GetEmails(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SCIMUserEmail{}
+	u := &UpdateProvisionedOrgMembershipRequest{Emails: zeroValue}
+	u.GetEmails()
+	u = &UpdateProvisionedOrgMembershipRequest{}
+	u.GetEmails()
+	u = nil
+	u.GetEmails()
+}
+
+func TestUpdateProvisionedOrgMembershipRequest_GetExternalID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateProvisionedOrgMembershipRequest{ExternalID: &zeroValue}
+	u.GetExternalID()
+	u = &UpdateProvisionedOrgMembershipRequest{}
+	u.GetExternalID()
+	u = nil
+	u.GetExternalID()
+}
+
+func TestUpdateProvisionedOrgMembershipRequest_GetGroups(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateProvisionedOrgMembershipRequest{Groups: zeroValue}
+	u.GetGroups()
+	u = &UpdateProvisionedOrgMembershipRequest{}
+	u.GetGroups()
+	u = nil
+	u.GetGroups()
+}
+
+func TestUpdateProvisionedOrgMembershipRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateProvisionedOrgMembershipRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateProvisionedOrgMembershipRequest_GetSchemas(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateProvisionedOrgMembershipRequest{Schemas: zeroValue}
+	u.GetSchemas()
+	u = &UpdateProvisionedOrgMembershipRequest{}
+	u.GetSchemas()
+	u = nil
+	u.GetSchemas()
+}
+
+func TestUpdateProvisionedOrgMembershipRequest_GetUserName(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateProvisionedOrgMembershipRequest{}
+	u.GetUserName()
+	u = nil
+	u.GetUserName()
 }
 
 func TestUpdateRef_GetForce(tt *testing.T) {
