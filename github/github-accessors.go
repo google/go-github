@@ -19782,6 +19782,14 @@ func (i *Issue) GetID() int64 {
 	return *i.ID
 }
 
+// GetIssueDependenciesSummary returns the IssueDependenciesSummary field.
+func (i *Issue) GetIssueDependenciesSummary() *IssueDependenciesSummary {
+	if i == nil {
+		return nil
+	}
+	return i.IssueDependenciesSummary
+}
+
 // GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
 func (i *Issue) GetIssueFieldValues() []*IssueFieldValue {
 	if i == nil || i.IssueFieldValues == nil {
@@ -19846,6 +19854,22 @@ func (i *Issue) GetParentIssueURL() string {
 	return *i.ParentIssueURL
 }
 
+// GetPerformedViaGithubApp returns the PerformedViaGithubApp field.
+func (i *Issue) GetPerformedViaGithubApp() *App {
+	if i == nil {
+		return nil
+	}
+	return i.PerformedViaGithubApp
+}
+
+// GetPinnedComment returns the PinnedComment field.
+func (i *Issue) GetPinnedComment() *IssueComment {
+	if i == nil {
+		return nil
+	}
+	return i.PinnedComment
+}
+
 // GetPullRequestLinks returns the PullRequestLinks field.
 func (i *Issue) GetPullRequestLinks() *PullRequestLinks {
 	if i == nil {
@@ -19892,6 +19916,14 @@ func (i *Issue) GetStateReason() string {
 		return ""
 	}
 	return *i.StateReason
+}
+
+// GetSubIssuesSummary returns the SubIssuesSummary field.
+func (i *Issue) GetSubIssuesSummary() *SubIssuesSummary {
+	if i == nil {
+		return nil
+	}
+	return i.SubIssuesSummary
 }
 
 // GetTextMatches returns the TextMatches slice if it's non-nil, nil otherwise.
@@ -20092,6 +20124,46 @@ func (i *IssueCommentEvent) GetSender() *User {
 		return nil
 	}
 	return i.Sender
+}
+
+// GetBlockedBy returns the BlockedBy field if it's non-nil, zero value otherwise.
+func (i *IssueDependenciesSummary) GetBlockedBy() int {
+	if i == nil || i.BlockedBy == nil {
+		return 0
+	}
+	return *i.BlockedBy
+}
+
+// GetBlocking returns the Blocking field if it's non-nil, zero value otherwise.
+func (i *IssueDependenciesSummary) GetBlocking() int {
+	if i == nil || i.Blocking == nil {
+		return 0
+	}
+	return *i.Blocking
+}
+
+// GetTotalBlockedBy returns the TotalBlockedBy field if it's non-nil, zero value otherwise.
+func (i *IssueDependenciesSummary) GetTotalBlockedBy() int {
+	if i == nil || i.TotalBlockedBy == nil {
+		return 0
+	}
+	return *i.TotalBlockedBy
+}
+
+// GetTotalBlocking returns the TotalBlocking field if it's non-nil, zero value otherwise.
+func (i *IssueDependenciesSummary) GetTotalBlocking() int {
+	if i == nil || i.TotalBlocking == nil {
+		return 0
+	}
+	return *i.TotalBlocking
+}
+
+// GetIssueID returns the IssueID field.
+func (i *IssueDependencyRequest) GetIssueID() int64 {
+	if i == nil {
+		return 0
+	}
+	return i.IssueID
 }
 
 // GetAction returns the Action field.
@@ -39972,6 +40044,30 @@ func (s *SubIssueRequest) GetSubIssueID() int64 {
 		return 0
 	}
 	return s.SubIssueID
+}
+
+// GetCompleted returns the Completed field if it's non-nil, zero value otherwise.
+func (s *SubIssuesSummary) GetCompleted() int {
+	if s == nil || s.Completed == nil {
+		return 0
+	}
+	return *s.Completed
+}
+
+// GetPercentCompleted returns the PercentCompleted field if it's non-nil, zero value otherwise.
+func (s *SubIssuesSummary) GetPercentCompleted() int {
+	if s == nil || s.PercentCompleted == nil {
+		return 0
+	}
+	return *s.PercentCompleted
+}
+
+// GetTotal returns the Total field if it's non-nil, zero value otherwise.
+func (s *SubIssuesSummary) GetTotal() int {
+	if s == nil || s.Total == nil {
+		return 0
+	}
+	return *s.Total
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
