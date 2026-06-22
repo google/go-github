@@ -937,6 +937,29 @@ func (c *Client) NewUploadRequest(ctx context.Context, urlStr string, reader io.
 
 	req.ContentLength = size
 
+	// Set GetBody so HTTP/2 transports can retry the request when a stream is
+	// refused (REFUSED_STREAM / GOAWAY) after the body has been written. Without
+	// GetBody, net/http2 fails with "cannot retry ... after Request.Body was
+	// written". See https://github.com/google/go-github/issues/2113.
+	//
+	// http.Request.GetBody must return an independent copy of the body, so we
+	// require io.ReaderAt (to read without moving the original body's position)
+	// in addition to io.Seeker (to record the body's starting offset). This is
+	// satisfied by *os.File, *bytes.Reader and *strings.Reader. Readers that
+	// cannot provide an independent, rewindable view are left without GetBody so
+	// that large uploads are never buffered in memory.
+	seeker, isSeeker := reader.(io.Seeker)
+	readerAt, isReaderAt := reader.(io.ReaderAt)
+	if isSeeker && isReaderAt {
+		offset, err := seeker.Seek(0, io.SeekCurrent)
+		if err != nil {
+			return nil, err
+		}
+		req.GetBody = func() (io.ReadCloser, error) {
+			return io.NopCloser(uploadRequestBodyReader{Reader: io.NewSectionReader(readerAt, offset, size)}), nil
+		}
+	}
+
 	if mediaType == "" {
 		mediaType = defaultMediaType
 	}
