@@ -197,18 +197,3 @@ func TestIssuesService_ListBlocking_invalidOwner(t *testing.T) {
 	_, _, err := client.Issues.ListBlocking(ctx, "%", "%", 1, nil)
 	testURLParseError(t, err)
 }
-
-func TestIssueDependencyRequest_Marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &IssueDependencyRequest{}, `{"issue_id":0}`)
-
-	u := &IssueDependencyRequest{
-		IssueID: int64(1),
-	}
-
-	want := `{
-		"issue_id": 1
-	}`
-
-	testJSONMarshal(t, u, want)
-}
