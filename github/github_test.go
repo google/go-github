@@ -6,6 +6,7 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -1735,6 +1736,111 @@ func TestNewUploadRequest_pathTraversal(t *testing.T) {
 	_, err := c.NewUploadRequest(t.Context(), "repos/x/../../../admin", nil, 0, "")
 	if !errors.Is(err, ErrPathForbidden) {
 		t.Fatalf("NewUploadRequest with path traversal: want ErrPathForbidden, got %v", err)
+	}
+}
+
+func TestNewUploadRequest_setsGetBodyForSeekableReader(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	const content = "upload content"
+	file := openTestFile(t, "upload.txt", content)
+
+	req, err := c.NewUploadRequest(t.Context(), "https://example.com/", file, int64(len(content)), "text/plain")
+	if err != nil {
+		t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
+	}
+
+	// GetBody must be set for rewindable readers so HTTP/2 can retry the request
+	// after a refused stream. See issue #2113.
+	if req.GetBody == nil {
+		t.Fatal("NewUploadRequest did not set req.GetBody for a seekable/ReaderAt reader")
+	}
+
+	// Each GetBody call must return an independent copy yielding the identical
+	// body so retries send the same bytes.
+	for i := range 2 {
+		body, err := req.GetBody()
+		if err != nil {
+			t.Fatalf("GetBody call %v returned unexpected error: %v", i, err)
+		}
+		got, err := io.ReadAll(body)
+		body.Close()
+		if err != nil {
+			t.Fatalf("reading GetBody result on call %v: %v", i, err)
+		}
+		if string(got) != content {
+			t.Errorf("GetBody call %v body = %q, want %q", i, got, content)
+		}
+	}
+
+	// Reading via GetBody must not have disturbed the original body's read
+	// position: req.Body must still yield the full content.
+	gotBody, err := io.ReadAll(req.Body)
+	if err != nil {
+		t.Fatalf("reading req.Body: %v", err)
+	}
+	if string(gotBody) != content {
+		t.Errorf("req.Body after GetBody calls = %q, want %q", gotBody, content)
+	}
+}
+
+// seekerOnlyReader implements io.Reader and io.Seeker but deliberately not
+// io.ReaderAt, so it cannot provide an independent body copy.
+type seekerOnlyReader struct {
+	r *strings.Reader
+}
+
+func (s *seekerOnlyReader) Read(p []byte) (int, error) { return s.r.Read(p) }
+
+func (s *seekerOnlyReader) Seek(offset int64, whence int) (int64, error) {
+	return s.r.Seek(offset, whence)
+}
+
+func TestNewUploadRequest_noGetBodyWithoutReaderAt(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	tests := []struct {
+		name   string
+		reader io.Reader
+	}{
+		// *bytes.Buffer is neither io.Seeker nor io.ReaderAt.
+		{"non-seekable", bytes.NewBufferString("upload content")},
+		// io.Seeker alone is insufficient: without io.ReaderAt we cannot return
+		// an independent body copy, so GetBody must stay nil rather than risk
+		// disturbing the original body's read position.
+		{"seeker without ReaderAt", &seekerOnlyReader{strings.NewReader("upload content")}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			req, err := c.NewUploadRequest(t.Context(), "https://example.com/", tt.reader, 14, "text/plain")
+			if err != nil {
+				t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
+			}
+			if req.GetBody != nil {
+				t.Errorf("NewUploadRequest set req.GetBody for %v reader, want nil", tt.name)
+			}
+		})
+	}
+}
+
+func TestNewUploadRequest_returnsErrorWhenSeekFails(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	const content = "upload content"
+	file := openTestFile(t, "upload.txt", content)
+	// Closing the file makes Seek fail, exercising the GetBody offset-probe
+	// error path (issue #2113).
+	if err := file.Close(); err != nil {
+		t.Fatalf("closing test file: %v", err)
+	}
+
+	_, err := c.NewUploadRequest(t.Context(), "https://example.com/", file, int64(len(content)), "text/plain")
+	if err == nil {
+		t.Error("NewUploadRequest returned nil error when Seek failed, want error")
 	}
 }
 

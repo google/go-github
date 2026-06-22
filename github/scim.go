@@ -162,32 +162,47 @@ func (s *SCIMService) GetSCIMProvisioningInfoForUser(ctx context.Context, org, s
 	return user, resp, nil
 }
 
+// UpdateProvisionedOrgMembershipRequest represents the body of a request to
+// update a provisioned organization membership.
+type UpdateProvisionedOrgMembershipRequest struct {
+	UserName    string           `json:"userName"`              // Configured by the admin. Could be an email, login, or username. (Required.)
+	Name        SCIMUserName     `json:"name"`                  // (Required.)
+	DisplayName *string          `json:"displayName,omitempty"` // The name of the user, suitable for display to end-users. (Optional.)
+	Emails      []*SCIMUserEmail `json:"emails"`                // User emails. (Required.)
+	Schemas     []string         `json:"schemas,omitempty"`     // (Optional.)
+	ExternalID  *string          `json:"externalId,omitempty"`  // (Optional.)
+	Groups      []string         `json:"groups,omitempty"`      // (Optional.)
+	Active      *bool            `json:"active,omitempty"`      // (Optional.)
+}
+
 // UpdateProvisionedOrgMembership updates a provisioned organization membership.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#update-a-provisioned-organization-membership
 //
 //meta:operation PUT /scim/v2/organizations/{org}/Users/{scim_user_id}
-func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, scimUserID string, opts *SCIMUserAttributes) (*Response, error) { //nolint:paramcheck // see https://github.com/google/go-github/issues/4301
+func (s *SCIMService) UpdateProvisionedOrgMembership(ctx context.Context, org, scimUserID string, body UpdateProvisionedOrgMembershipRequest) (*SCIMUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
-	u, err := addOptions(u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
+	var user *SCIMUserAttributes
+	resp, err := s.client.Do(req, &user)
 	if err != nil {
-		return nil, err
+		return nil, resp, err
 	}
 
-	return s.client.Do(req, nil)
+	return user, resp, nil
 }
 
-// UpdateAttributeForSCIMUserOptions represents options for UpdateAttributeForSCIMUser.
+// UpdateAttributeForSCIMUserRequest represents the body of a request to update an
+// attribute for a SCIM user.
 //
 // GitHub API docs: https://docs.github.com/rest/scim#update-an-attribute-for-a-scim-user--parameters
-type UpdateAttributeForSCIMUserOptions struct {
-	Schemas    []string                             `json:"schemas,omitempty"` // (Optional.)
-	Operations UpdateAttributeForSCIMUserOperations `json:"operations"`        // Set of operations to be performed. (Required.)
+type UpdateAttributeForSCIMUserRequest struct {
+	Schemas    []string                                `json:"schemas,omitempty"` // (Optional.)
+	Operations []*UpdateAttributeForSCIMUserOperations `json:"Operations"`        // Set of operations to be performed. (Required.)
 }
 
 // UpdateAttributeForSCIMUserOperations represents operations for UpdateAttributeForSCIMUser.
@@ -202,19 +217,20 @@ type UpdateAttributeForSCIMUserOperations struct {
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/scim/scim?apiVersion=2022-11-28#update-an-attribute-for-a-scim-user
 //
 //meta:operation PATCH /scim/v2/organizations/{org}/Users/{scim_user_id}
-func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimUserID string, opts *UpdateAttributeForSCIMUserOptions) (*Response, error) {
+func (s *SCIMService) UpdateAttributeForSCIMUser(ctx context.Context, org, scimUserID string, body UpdateAttributeForSCIMUserRequest) (*SCIMUserAttributes, *Response, error) {
 	u := fmt.Sprintf("scim/v2/organizations/%v/Users/%v", org, scimUserID)
-	u, err := addOptions(u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, nil)
+	var user *SCIMUserAttributes
+	resp, err := s.client.Do(req, &user)
 	if err != nil {
-		return nil, err
+		return nil, resp, err
 	}
 
-	return s.client.Do(req, nil)
+	return user, resp, nil
 }
 
 // DeleteSCIMUserFromOrg deletes SCIM user from an organization.

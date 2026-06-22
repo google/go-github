@@ -41646,16 +41646,16 @@ func (u *UpdateAttributeForSCIMUserOperations) GetValue() json.RawMessage {
 	return u.Value
 }
 
-// GetOperations returns the Operations field.
-func (u *UpdateAttributeForSCIMUserOptions) GetOperations() UpdateAttributeForSCIMUserOperations {
-	if u == nil {
-		return UpdateAttributeForSCIMUserOperations{}
+// GetOperations returns the Operations slice if it's non-nil, nil otherwise.
+func (u *UpdateAttributeForSCIMUserRequest) GetOperations() []*UpdateAttributeForSCIMUserOperations {
+	if u == nil || u.Operations == nil {
+		return nil
 	}
 	return u.Operations
 }
 
 // GetSchemas returns the Schemas slice if it's non-nil, nil otherwise.
-func (u *UpdateAttributeForSCIMUserOptions) GetSchemas() []string {
+func (u *UpdateAttributeForSCIMUserRequest) GetSchemas() []string {
 	if u == nil || u.Schemas == nil {
 		return nil
 	}
@@ -42108,6 +42108,70 @@ func (u *UpdateProjectV2Field) GetValue() any {
 		return nil
 	}
 	return u.Value
+}
+
+// GetActive returns the Active field if it's non-nil, zero value otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetActive() bool {
+	if u == nil || u.Active == nil {
+		return false
+	}
+	return *u.Active
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetDisplayName() string {
+	if u == nil || u.DisplayName == nil {
+		return ""
+	}
+	return *u.DisplayName
+}
+
+// GetEmails returns the Emails slice if it's non-nil, nil otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetEmails() []*SCIMUserEmail {
+	if u == nil || u.Emails == nil {
+		return nil
+	}
+	return u.Emails
+}
+
+// GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetExternalID() string {
+	if u == nil || u.ExternalID == nil {
+		return ""
+	}
+	return *u.ExternalID
+}
+
+// GetGroups returns the Groups slice if it's non-nil, nil otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetGroups() []string {
+	if u == nil || u.Groups == nil {
+		return nil
+	}
+	return u.Groups
+}
+
+// GetName returns the Name field.
+func (u *UpdateProvisionedOrgMembershipRequest) GetName() SCIMUserName {
+	if u == nil {
+		return SCIMUserName{}
+	}
+	return u.Name
+}
+
+// GetSchemas returns the Schemas slice if it's non-nil, nil otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetSchemas() []string {
+	if u == nil || u.Schemas == nil {
+		return nil
+	}
+	return u.Schemas
+}
+
+// GetUserName returns the UserName field.
+func (u *UpdateProvisionedOrgMembershipRequest) GetUserName() string {
+	if u == nil {
+		return ""
+	}
+	return u.UserName
 }
 
 // GetForce returns the Force field if it's non-nil, zero value otherwise.
