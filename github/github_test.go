@@ -1826,6 +1826,24 @@ func TestNewUploadRequest_noGetBodyWithoutReaderAt(t *testing.T) {
 	}
 }
 
+func TestNewUploadRequest_returnsErrorWhenSeekFails(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	const content = "upload content"
+	file := openTestFile(t, "upload.txt", content)
+	// Closing the file makes Seek fail, exercising the GetBody offset-probe
+	// error path (issue #2113).
+	if err := file.Close(); err != nil {
+		t.Fatalf("closing test file: %v", err)
+	}
+
+	_, err := c.NewUploadRequest(t.Context(), "https://example.com/", file, int64(len(content)), "text/plain")
+	if err == nil {
+		t.Error("NewUploadRequest returned nil error when Seek failed, want error")
+	}
+}
+
 func TestNewFormRequest(t *testing.T) {
 	t.Parallel()
 	c := mustNewClient(t)
