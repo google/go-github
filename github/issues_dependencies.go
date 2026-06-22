@@ -67,8 +67,8 @@ func (s *IssuesService) AddBlockedBy(ctx context.Context, owner, repo string, is
 // GitHub API docs: https://docs.github.com/rest/issues/issue-dependencies?apiVersion=2022-11-28#remove-dependency-an-issue-is-blocked-by
 //
 //meta:operation DELETE /repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by/{issue_id}
-func (s *IssuesService) RemoveBlockedBy(ctx context.Context, owner, repo string, issueNumber, issueID int64) (*Issue, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by/%v", owner, repo, issueNumber, issueID)
+func (s *IssuesService) RemoveBlockedBy(ctx context.Context, owner, repo string, issueNumber, blockingIssueID int64) (*Issue, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/issues/%v/dependencies/blocked_by/%v", owner, repo, issueNumber, blockingIssueID)
 	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, nil, err
