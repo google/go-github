@@ -13700,6 +13700,17 @@ func TestCreateGistCommentRequest_GetBody(tt *testing.T) {
 	c.GetBody()
 }
 
+func TestCreateGistFile_GetContent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateGistFile{Content: &zeroValue}
+	c.GetContent()
+	c = &CreateGistFile{}
+	c.GetContent()
+	c = nil
+	c.GetContent()
+}
+
 func TestCreateGistRequest_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -13709,17 +13720,6 @@ func TestCreateGistRequest_GetDescription(tt *testing.T) {
 	c.GetDescription()
 	c = nil
 	c.GetDescription()
-}
-
-func TestCreateGistRequest_GetFiles(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := map[GistFilename]GistFileRequest{}
-	c := &CreateGistRequest{Files: zeroValue}
-	c.GetFiles()
-	c = &CreateGistRequest{}
-	c.GetFiles()
-	c = nil
-	c.GetFiles()
 }
 
 func TestCreateGistRequest_GetPublic(tt *testing.T) {
@@ -21134,28 +21134,6 @@ func TestGistFile_GetType(tt *testing.T) {
 	g.GetType()
 	g = nil
 	g.GetType()
-}
-
-func TestGistFileRequest_GetContent(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	g := &GistFileRequest{Content: &zeroValue}
-	g.GetContent()
-	g = &GistFileRequest{}
-	g.GetContent()
-	g = nil
-	g.GetContent()
-}
-
-func TestGistFileRequest_GetFilename(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	g := &GistFileRequest{Filename: &zeroValue}
-	g.GetFilename()
-	g = &GistFileRequest{}
-	g.GetFilename()
-	g = nil
-	g.GetFilename()
 }
 
 func TestGistFork_GetCreatedAt(tt *testing.T) {
@@ -52640,6 +52618,28 @@ func TestUpdateGistCommentRequest_GetBody(tt *testing.T) {
 	u.GetBody()
 }
 
+func TestUpdateGistFile_GetContent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateGistFile{Content: &zeroValue}
+	u.GetContent()
+	u = &UpdateGistFile{}
+	u.GetContent()
+	u = nil
+	u.GetContent()
+}
+
+func TestUpdateGistFile_GetFilename(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateGistFile{Filename: &zeroValue}
+	u.GetFilename()
+	u = &UpdateGistFile{}
+	u.GetFilename()
+	u = nil
+	u.GetFilename()
+}
+
 func TestUpdateGistRequest_GetDescription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -52649,17 +52649,6 @@ func TestUpdateGistRequest_GetDescription(tt *testing.T) {
 	u.GetDescription()
 	u = nil
 	u.GetDescription()
-}
-
-func TestUpdateGistRequest_GetFiles(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := map[GistFilename]GistFileRequest{}
-	u := &UpdateGistRequest{Files: zeroValue}
-	u.GetFiles()
-	u = &UpdateGistRequest{}
-	u.GetFiles()
-	u = nil
-	u.GetFiles()
 }
 
 func TestUpdateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {

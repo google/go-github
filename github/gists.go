@@ -42,14 +42,15 @@ type CreateGistRequest struct {
 	Description *string `json:"description,omitempty"`
 	Public      *bool   `json:"public,omitempty"`
 	// Files is the set of files that make up the gist, keyed by filename. (Required.)
-	Files map[GistFilename]GistFileRequest `json:"files"`
+	Files map[GistFilename]*CreateGistFile `json:"files"`
 }
 
 // UpdateGistRequest represents the input for updating a gist.
 type UpdateGistRequest struct {
 	Description *string `json:"description,omitempty"`
 	// Files is the set of files to add, change or rename, keyed by filename.
-	Files map[GistFilename]GistFileRequest `json:"files,omitempty"`
+	// Mapping a filename to a nil value deletes that file from the gist.
+	Files map[GistFilename]*UpdateGistFile `json:"files,omitempty"`
 }
 
 // GistFilename represents filename on a gist.
@@ -69,12 +70,20 @@ func (g GistFile) String() string {
 	return Stringify(g)
 }
 
-// GistFileRequest represents a file's content within a CreateGistRequest or
-// UpdateGistRequest. The gist's files are keyed by filename.
-type GistFileRequest struct {
-	// Content is the contents of the file. (Required when creating a gist.)
+// CreateGistFile represents a file within a CreateGistRequest, keyed by filename
+// in the request's Files map.
+type CreateGistFile struct {
+	// Content is the contents of the file. (Required.)
 	Content *string `json:"content,omitempty"`
-	// Filename, if set, renames the file. (Used when updating a gist.)
+}
+
+// UpdateGistFile represents a file within an UpdateGistRequest, keyed by filename
+// in the request's Files map. Mapping a filename to a nil *UpdateGistFile deletes
+// that file from the gist.
+type UpdateGistFile struct {
+	// Content is the new contents of the file.
+	Content *string `json:"content,omitempty"`
+	// Filename, if set, renames the file.
 	Filename *string `json:"filename,omitempty"`
 }
 

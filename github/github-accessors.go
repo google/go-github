@@ -10774,20 +10774,20 @@ func (c *CreateGistCommentRequest) GetBody() string {
 	return *c.Body
 }
 
+// GetContent returns the Content field if it's non-nil, zero value otherwise.
+func (c *CreateGistFile) GetContent() string {
+	if c == nil || c.Content == nil {
+		return ""
+	}
+	return *c.Content
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (c *CreateGistRequest) GetDescription() string {
 	if c == nil || c.Description == nil {
 		return ""
 	}
 	return *c.Description
-}
-
-// GetFiles returns the Files map if it's non-nil, an empty map otherwise.
-func (c *CreateGistRequest) GetFiles() map[GistFilename]GistFileRequest {
-	if c == nil || c.Files == nil {
-		return map[GistFilename]GistFileRequest{}
-	}
-	return c.Files
 }
 
 // GetPublic returns the Public field if it's non-nil, zero value otherwise.
@@ -16780,22 +16780,6 @@ func (g *GistFile) GetType() string {
 		return ""
 	}
 	return *g.Type
-}
-
-// GetContent returns the Content field if it's non-nil, zero value otherwise.
-func (g *GistFileRequest) GetContent() string {
-	if g == nil || g.Content == nil {
-		return ""
-	}
-	return *g.Content
-}
-
-// GetFilename returns the Filename field if it's non-nil, zero value otherwise.
-func (g *GistFileRequest) GetFilename() string {
-	if g == nil || g.Filename == nil {
-		return ""
-	}
-	return *g.Filename
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
@@ -41926,20 +41910,28 @@ func (u *UpdateGistCommentRequest) GetBody() string {
 	return *u.Body
 }
 
+// GetContent returns the Content field if it's non-nil, zero value otherwise.
+func (u *UpdateGistFile) GetContent() string {
+	if u == nil || u.Content == nil {
+		return ""
+	}
+	return *u.Content
+}
+
+// GetFilename returns the Filename field if it's non-nil, zero value otherwise.
+func (u *UpdateGistFile) GetFilename() string {
+	if u == nil || u.Filename == nil {
+		return ""
+	}
+	return *u.Filename
+}
+
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
 func (u *UpdateGistRequest) GetDescription() string {
 	if u == nil || u.Description == nil {
 		return ""
 	}
 	return *u.Description
-}
-
-// GetFiles returns the Files map if it's non-nil, an empty map otherwise.
-func (u *UpdateGistRequest) GetFiles() map[GistFilename]GistFileRequest {
-	if u == nil || u.Files == nil {
-		return map[GistFilename]GistFileRequest{}
-	}
-	return u.Files
 }
 
 // GetEnableStaticIP returns the EnableStaticIP field if it's non-nil, zero value otherwise.
