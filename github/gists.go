@@ -37,6 +37,19 @@ func (g Gist) String() string {
 	return Stringify(g)
 }
 
+// CreateGistRequest represents the input for creating a gist.
+type CreateGistRequest struct {
+	Description *string                   `json:"description,omitempty"`
+	Public      *bool                     `json:"public,omitempty"`
+	Files       map[GistFilename]GistFile `json:"files,omitempty"`
+}
+
+// UpdateGistRequest represents the input for updating a gist.
+type UpdateGistRequest struct {
+	Description *string                   `json:"description,omitempty"`
+	Files       map[GistFilename]GistFile `json:"files,omitempty"`
+}
+
 // GistFilename represents filename on a gist.
 type GistFilename string
 
@@ -225,7 +238,7 @@ func (s *GistsService) GetRevision(ctx context.Context, id, sha string) (*Gist, 
 // GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#create-a-gist
 //
 //meta:operation POST /gists
-func (s *GistsService) Create(ctx context.Context, body *Gist) (*Gist, *Response, error) {
+func (s *GistsService) Create(ctx context.Context, body CreateGistRequest) (*Gist, *Response, error) {
 	u := "gists"
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -241,12 +254,12 @@ func (s *GistsService) Create(ctx context.Context, body *Gist) (*Gist, *Response
 	return g, resp, nil
 }
 
-// Edit a gist.
+// Update a gist.
 //
 // GitHub API docs: https://docs.github.com/rest/gists/gists?apiVersion=2022-11-28#update-a-gist
 //
 //meta:operation PATCH /gists/{gist_id}
-func (s *GistsService) Edit(ctx context.Context, id string, body *Gist) (*Gist, *Response, error) {
+func (s *GistsService) Update(ctx context.Context, id string, body UpdateGistRequest) (*Gist, *Response, error) {
 	u := fmt.Sprintf("gists/%v", id)
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
