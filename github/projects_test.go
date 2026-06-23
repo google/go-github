@@ -1181,9 +1181,10 @@ func TestProjectV2Item_UnmarshalJSON_DraftIssue(t *testing.T) {
 		ContentType: Ptr(ProjectV2ItemContentTypeDraftIssue),
 		Content: &ProjectV2ItemContent{
 			DraftIssue: &ProjectV2DraftIssue{
-				ID:    Ptr(int64(458)),
-				Title: Ptr("Draft Issue Title"),
-				Body:  Ptr("Draft issue body content"),
+				ID:     Ptr(int64(458)),
+				NodeID: Ptr("DI_test"),
+				Title:  Ptr("Draft Issue Title"),
+				Body:   Ptr("Draft issue body content"),
 			},
 		},
 		CreatedAt: &Timestamp{time.Date(2023, 1, 3, 0, 0, 0, 0, time.UTC)},
