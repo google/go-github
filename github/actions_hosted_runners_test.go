@@ -80,8 +80,6 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 		t.Errorf("Actions.ListHostedRunners returned error: %v", err)
 	}
 
-	lastActiveOn := referenceTimestamp
-
 	want := &HostedRunners{
 		TotalCount: 2,
 		Runners: []*HostedRunner{
@@ -110,7 +108,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 						Length:  31,
 					},
 				},
-				LastActiveOn: &lastActiveOn,
+				LastActiveOn: &referenceTimestamp,
 			},
 			{
 				ID:            Ptr(int64(7)),
@@ -131,7 +129,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 				MaximumRunners:  Ptr(int64(20)),
 				PublicIPEnabled: Ptr(false),
 				PublicIPs:       []*HostedRunnerPublicIP{},
-				LastActiveOn:    &lastActiveOn,
+				LastActiveOn:    &referenceTimestamp,
 			},
 		},
 	}
@@ -209,7 +207,6 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 		t.Errorf("Actions.CreateHostedRunner returned error: %v", err)
 	}
 
-	lastActiveOn := referenceTimestamp
 	want := &HostedRunner{
 		ID:            Ptr(int64(5)),
 		Name:          Ptr("My hosted ubuntu runner"),
@@ -235,7 +232,7 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 				Length:  31,
 			},
 		},
-		LastActiveOn: &lastActiveOn,
+		LastActiveOn: &referenceTimestamp,
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
@@ -625,7 +622,6 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 		t.Errorf("Actions.GetHostedRunner returned error: %v", err)
 	}
 
-	lastActiveOn := referenceTimestamp
 	want := &HostedRunner{
 		ID:            Ptr(int64(5)),
 		Name:          Ptr("My hosted ubuntu runner"),
@@ -651,7 +647,7 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 				Length:  31,
 			},
 		},
-		LastActiveOn: &lastActiveOn,
+		LastActiveOn: &referenceTimestamp,
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
@@ -721,7 +717,6 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 		t.Errorf("Actions.UpdateHostedRunner returned error: %v", err)
 	}
 
-	lastActiveOn := referenceTimestamp
 	want := &HostedRunner{
 		ID:            Ptr(int64(5)),
 		Name:          Ptr("My hosted ubuntu runner"),
@@ -747,7 +742,7 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 				Length:  31,
 			},
 		},
-		LastActiveOn: &lastActiveOn,
+		LastActiveOn: &referenceTimestamp,
 	}
 
 	if !cmp.Equal(hostedRunner, want) {
@@ -810,7 +805,6 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 		t.Errorf("Actions.DeleteHostedRunner returned error: %v", err)
 	}
 
-	lastActiveOn := referenceTimestamp
 	want := &HostedRunner{
 		ID:            Ptr(int64(5)),
 		Name:          Ptr("My hosted ubuntu runner"),
@@ -836,7 +830,7 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 				Length:  31,
 			},
 		},
-		LastActiveOn: &lastActiveOn,
+		LastActiveOn: &referenceTimestamp,
 	}
 
 	if !cmp.Equal(hostedRunner, want) {

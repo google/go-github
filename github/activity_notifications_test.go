@@ -95,13 +95,11 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := referenceTimestamp
-
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		want := markReadOptions{
-			LastReadAt: input,
+			LastReadAt: referenceTimestamp,
 		}
 		testJSONBody(t, r, want)
 
@@ -109,14 +107,14 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Activity.MarkNotificationsRead(ctx, input)
+	_, err := client.Activity.MarkNotificationsRead(ctx, referenceTimestamp)
 	if err != nil {
 		t.Errorf("Activity.MarkNotificationsRead returned error: %v", err)
 	}
 
 	const methodName = "MarkNotificationsRead"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Activity.MarkNotificationsRead(ctx, input)
+		return client.Activity.MarkNotificationsRead(ctx, referenceTimestamp)
 	})
 }
 
@@ -124,13 +122,11 @@ func TestActivityService_MarkNotificationsRead_EmptyLastReadAt(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := referenceTimestamp
-
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		want := markReadOptions{
-			LastReadAt: input,
+			LastReadAt: referenceTimestamp,
 		}
 		testJSONBody(t, r, want)
 
@@ -138,7 +134,7 @@ func TestActivityService_MarkNotificationsRead_EmptyLastReadAt(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Activity.MarkNotificationsRead(ctx, input)
+	_, err := client.Activity.MarkNotificationsRead(ctx, referenceTimestamp)
 	if err != nil {
 		t.Errorf("Activity.MarkNotificationsRead returned error: %v", err)
 	}
@@ -148,32 +144,30 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := referenceTimestamp
-
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		want := markReadOptions{
-			LastReadAt: input,
+			LastReadAt: referenceTimestamp,
 		}
 		testJSONBody(t, r, want)
 		w.WriteHeader(http.StatusResetContent)
 	})
 
 	ctx := t.Context()
-	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", input)
+	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", referenceTimestamp)
 	if err != nil {
 		t.Errorf("Activity.MarkRepositoryNotificationsRead returned error: %v", err)
 	}
 
 	const methodName = "MarkRepositoryNotificationsRead"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Activity.MarkRepositoryNotificationsRead(ctx, "\n", "\n", input)
+		_, err = client.Activity.MarkRepositoryNotificationsRead(ctx, "\n", "\n", referenceTimestamp)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", input)
+		return client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", referenceTimestamp)
 	})
 }
 
@@ -181,13 +175,11 @@ func TestActivityService_MarkRepositoryNotificationsRead_EmptyLastReadAt(t *test
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := referenceTimestamp
-
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		want := markReadOptions{
-			LastReadAt: input,
+			LastReadAt: referenceTimestamp,
 		}
 		testJSONBody(t, r, want)
 
@@ -195,7 +187,7 @@ func TestActivityService_MarkRepositoryNotificationsRead_EmptyLastReadAt(t *test
 	})
 
 	ctx := t.Context()
-	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", input)
+	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", referenceTimestamp)
 	if err != nil {
 		t.Errorf("Activity.MarkRepositoryNotificationsRead returned error: %v", err)
 	}

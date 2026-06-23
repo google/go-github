@@ -239,7 +239,6 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 		t.Errorf("CodeScanning.ListAlertsForOrg returned error: %v", err)
 	}
 
-	date := referenceTimestamp
 	want := []*Alert{
 		{
 			Repository: &Repository{
@@ -259,7 +258,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 				FullDescription: Ptr("Expression has no effect"),
 				Help:            Ptr("Expression has no effect"),
 			},
-			CreatedAt: &date,
+			CreatedAt: &referenceTimestamp,
 			State:     Ptr("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
@@ -295,7 +294,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 				FullDescription: Ptr("Expression has no effect"),
 				Help:            Ptr("Expression has no effect"),
 			},
-			CreatedAt: &date,
+			CreatedAt: &referenceTimestamp,
 			State:     Ptr("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
@@ -401,7 +400,6 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 		t.Errorf("CodeScanning.ListAlertsForOrg returned error: %v", err)
 	}
 
-	date := referenceTimestamp
 	want := []*Alert{
 		{
 			Repository: &Repository{
@@ -421,7 +419,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 				FullDescription: Ptr("Expression has no effect"),
 				Help:            Ptr("Expression has no effect"),
 			},
-			CreatedAt: &date,
+			CreatedAt: &referenceTimestamp,
 			State:     Ptr("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
@@ -564,7 +562,6 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 		t.Errorf("CodeScanning.ListAlertsForRepo returned error: %v", err)
 	}
 
-	date := referenceTimestamp
 	want := []*Alert{
 		{
 			RuleID:          Ptr("js/trivial-conditional"),
@@ -579,7 +576,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 				FullDescription: Ptr("Expression has no effect"),
 				Help:            Ptr("Expression has no effect"),
 			},
-			CreatedAt: &date,
+			CreatedAt: &referenceTimestamp,
 			State:     Ptr("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
@@ -615,7 +612,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 				FullDescription: Ptr("Expression has no effect"),
 				Help:            Ptr("Expression has no effect"),
 			},
-			CreatedAt: &date,
+			CreatedAt: &referenceTimestamp,
 			State:     Ptr("open"),
 			ClosedBy:  nil,
 			ClosedAt:  nil,
@@ -718,7 +715,6 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 		t.Errorf("CodeScanning.UpdateAlert returned error: %v", err)
 	}
 
-	date := referenceTimestamp
 	want := &Alert{
 		RuleID:          Ptr("js/useless-expression"),
 		RuleSeverity:    Ptr("warning"),
@@ -732,7 +728,7 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 			FullDescription: Ptr("Expression has no effect"),
 			Help:            Ptr("Expression has no effect"),
 		},
-		CreatedAt:        &date,
+		CreatedAt:        &referenceTimestamp,
 		State:            state,
 		DismissedReason:  dismissedReason,
 		DismissedComment: dismissedComment,
@@ -911,7 +907,6 @@ func TestCodeScanningService_GetAlert(t *testing.T) {
 		t.Errorf("CodeScanning.GetAlert returned error: %v", err)
 	}
 
-	date := referenceTimestamp
 	want := &Alert{
 		RuleID:          Ptr("js/useless-expression"),
 		RuleSeverity:    Ptr("warning"),
@@ -925,7 +920,7 @@ func TestCodeScanningService_GetAlert(t *testing.T) {
 			FullDescription: Ptr("Expression has no effect"),
 			Help:            Ptr("Expression has no effect"),
 		},
-		CreatedAt: &date,
+		CreatedAt: &referenceTimestamp,
 		State:     Ptr("open"),
 		ClosedBy:  nil,
 		ClosedAt:  nil,

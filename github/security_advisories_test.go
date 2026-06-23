@@ -836,7 +836,6 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 		t.Errorf("SecurityAdvisories.ListGlobalSecurityAdvisories returned error: %v", err)
 	}
 
-	date := referenceTimestamp
 	want := []*GlobalSecurityAdvisory{
 		{
 			ID: Ptr(int64(1)),
@@ -858,8 +857,8 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 						Value: Ptr("CVE-xoxo-1234"),
 					},
 				},
-				PublishedAt: &date,
-				UpdatedAt:   &date,
+				PublishedAt: &referenceTimestamp,
+				UpdatedAt:   &referenceTimestamp,
 				WithdrawnAt: nil,
 				CVSS: &AdvisoryCVSS{
 					VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
@@ -887,8 +886,8 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 			RepositoryAdvisoryURL: Ptr("https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo"),
 			Type:                  Ptr("reviewed"),
 			SourceCodeLocation:    Ptr("https://github.com/project/a-package"),
-			GithubReviewedAt:      &date,
-			NVDPublishedAt:        &date,
+			GithubReviewedAt:      &referenceTimestamp,
+			NVDPublishedAt:        &referenceTimestamp,
 			Credits: []*Credit{
 				{
 					User: &User{
@@ -1018,7 +1017,6 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 		t.Errorf("SecurityAdvisories.GetGlobalSecurityAdvisories returned error: %v", err)
 	}
 
-	date := referenceTimestamp
 	want := &GlobalSecurityAdvisory{
 		ID: Ptr(int64(1)),
 		SecurityAdvisory: SecurityAdvisory{
@@ -1039,8 +1037,8 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 					Value: Ptr("CVE-xoxo-1234"),
 				},
 			},
-			PublishedAt: &date,
-			UpdatedAt:   &date,
+			PublishedAt: &referenceTimestamp,
+			UpdatedAt:   &referenceTimestamp,
 			WithdrawnAt: nil,
 			CVSS: &AdvisoryCVSS{
 				VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
@@ -1057,8 +1055,8 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 		Type:                  Ptr("reviewed"),
 		SourceCodeLocation:    Ptr("https://github.com/project/a-package"),
 		References:            []string{"https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"},
-		GithubReviewedAt:      &date,
-		NVDPublishedAt:        &date,
+		GithubReviewedAt:      &referenceTimestamp,
+		NVDPublishedAt:        &referenceTimestamp,
 
 		Vulnerabilities: []*GlobalSecurityVulnerability{
 			{
