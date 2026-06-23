@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 )
 
 func TestProjectsService_ListOrganizationProjects(t *testing.T) {
@@ -1094,7 +1093,7 @@ func TestProjectV2Item_UnmarshalJSON_Issue(t *testing.T) {
 				},
 			},
 		},
-		CreatedAt: &Timestamp{time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC)},
+		CreatedAt: &referenceTimestamp,
 	}
 
 	want := `{
@@ -1112,7 +1111,7 @@ func TestProjectV2Item_UnmarshalJSON_Issue(t *testing.T) {
 				"name": "test-repo"
 			}
 		},
-		"created_at": "2023-01-01T00:00:00Z"
+		"created_at": ` + referenceTimeStr + `
 	}`
 
 	testJSONUnmarshalOnly(t, item, want)
@@ -1143,7 +1142,7 @@ func TestProjectV2Item_UnmarshalJSON_PullRequest(t *testing.T) {
 				},
 			},
 		},
-		CreatedAt: &Timestamp{time.Date(2023, 1, 2, 0, 0, 0, 0, time.UTC)},
+		CreatedAt: &referenceTimestamp,
 	}
 
 	want := `{
@@ -1166,7 +1165,7 @@ func TestProjectV2Item_UnmarshalJSON_PullRequest(t *testing.T) {
 				"sha": "ghi789"
 			}
 		},
-		"created_at": "2023-01-02T00:00:00Z"
+		"created_at": ` + referenceTimeStr + `
 	}`
 
 	testJSONUnmarshalOnly(t, item, want)
@@ -1187,7 +1186,7 @@ func TestProjectV2Item_UnmarshalJSON_DraftIssue(t *testing.T) {
 				Body:   Ptr("Draft issue body content"),
 			},
 		},
-		CreatedAt: &Timestamp{time.Date(2023, 1, 3, 0, 0, 0, 0, time.UTC)},
+		CreatedAt: &referenceTimestamp,
 	}
 
 	want := `{
@@ -1200,7 +1199,7 @@ func TestProjectV2Item_UnmarshalJSON_DraftIssue(t *testing.T) {
 			"title": "Draft Issue Title",
 			"body": "Draft issue body content"
 		},
-		"created_at": "2023-01-03T00:00:00Z"
+		"created_at": ` + referenceTimeStr + `
 	}`
 
 	testJSONUnmarshalOnly(t, item, want)

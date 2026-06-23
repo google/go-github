@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -24,7 +23,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 
 		fmt.Fprint(w, `[{
 			"number": 1,
-			"created_at": "1996-06-20T00:00:00Z",
+			"created_at": `+referenceTimeStr+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
@@ -50,11 +49,10 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 		t.Errorf("SecretScanning.ListAlertsForEnterprise returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
-			CreatedAt:    &date,
+			CreatedAt:    &referenceTimestamp,
 			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
 			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
@@ -99,7 +97,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 
 		fmt.Fprint(w, `[{
 			"number": 1,
-			"created_at": "1996-06-20T00:00:00Z",
+			"created_at": `+referenceTimeStr+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
@@ -120,11 +118,10 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 		t.Errorf("SecretScanning.ListAlertsForOrg returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
-			CreatedAt:    &date,
+			CreatedAt:    &referenceTimestamp,
 			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
 			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
@@ -164,7 +161,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 
 		fmt.Fprint(w, `[{
 			"number": 1,
-			"created_at": "1996-06-20T00:00:00Z",
+			"created_at": `+referenceTimeStr+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
@@ -187,11 +184,10 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 		t.Errorf("SecretScanning.ListAlertsForOrg returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
-			CreatedAt:    &date,
+			CreatedAt:    &referenceTimestamp,
 			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
 			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
@@ -231,7 +227,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 
 		fmt.Fprint(w, `[{
 			"number": 1,
-			"created_at": "1996-06-20T00:00:00Z",
+			"created_at": `+referenceTimeStr+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
@@ -252,11 +248,10 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 		t.Errorf("SecretScanning.ListAlertsForRepo returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
-			CreatedAt:    &date,
+			CreatedAt:    &referenceTimestamp,
 			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
 			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
@@ -295,7 +290,7 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 
 		fmt.Fprint(w, `{
 			"number": 1,
-			"created_at": "1996-06-20T00:00:00Z",
+			"created_at": `+referenceTimeStr+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
@@ -315,10 +310,9 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 		t.Errorf("SecretScanning.GetAlert returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := &SecretScanningAlert{
 		Number:       Ptr(1),
-		CreatedAt:    &date,
+		CreatedAt:    &referenceTimestamp,
 		URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 		HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
 		LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
@@ -358,14 +352,14 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		testJSONBody(t, r, opts)
 		fmt.Fprint(w, `{
 			"number": 1,
-			"created_at": "1996-06-20T00:00:00Z",
+			"created_at": `+referenceTimeStr+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
 			"state": "resolved",
 			"resolution": "used_in_tests",
 			"resolution_comment": "resolution comment",
-			"resolved_at": "1996-06-20T00:00:00Z",
+			"resolved_at": `+referenceTimeStr+`,
 			"resolved_by": null,
 			"secret_type": "mailchimp_api_key",
 			"secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"
@@ -378,17 +372,16 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		t.Errorf("SecretScanning.UpdateAlert returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := &SecretScanningAlert{
 		Number:            Ptr(1),
-		CreatedAt:         &date,
+		CreatedAt:         &referenceTimestamp,
 		URL:               Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 		HTMLURL:           Ptr("https://github.com/o/r/security/secret-scanning/1"),
 		LocationsURL:      Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
 		State:             Ptr("resolved"),
 		Resolution:        Ptr("used_in_tests"),
 		ResolutionComment: Ptr("resolution comment"),
-		ResolvedAt:        &date,
+		ResolvedAt:        &referenceTimestamp,
 		ResolvedBy:        nil,
 		SecretType:        Ptr("mailchimp_api_key"),
 		Secret:            Ptr("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
@@ -490,7 +483,7 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 		testJSONBody(t, r, opts)
 		fmt.Fprint(w, `{
 			"reason": "valid reason",
-			"expire_at": "2018-01-01T00:00:00Z",
+			"expire_at": `+referenceTimeStr+`,
 			"token_type": "github_token"
 		}`)
 	})
@@ -502,10 +495,9 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 		t.Errorf("SecretScanning.CreatePushProtectionBypass returned error: %v", err)
 	}
 
-	expireTime := Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	want := &PushProtectionBypass{
 		Reason:    "valid reason",
-		ExpireAt:  &expireTime,
+		ExpireAt:  &referenceTimestamp,
 		TokenType: "github_token",
 	}
 
@@ -537,8 +529,8 @@ func TestSecretScanningService_GetScanHistory(t *testing.T) {
 				{
 					"type": "incremental",
 					"status": "success",
-					"completed_at": "2025-07-29T10:00:00Z",
-					"started_at": "2025-07-29T09:55:00Z"
+					"completed_at": `+referenceTimeStr+`,
+					"started_at": `+referenceTimeStr+`
 				}
 			],
 			"backfill_scans": [],
@@ -548,7 +540,7 @@ func TestSecretScanningService_GetScanHistory(t *testing.T) {
 					"type": "custom_backfill",
 					"status": "in_progress",
 					"completed_at": null,
-					"started_at": "2025-07-29T09:00:00Z",
+					"started_at": `+referenceTimeStr+`,
 					"pattern_slug": "my-custom-pattern",
 					"pattern_scope": "organization"
 				}
@@ -563,19 +555,15 @@ func TestSecretScanningService_GetScanHistory(t *testing.T) {
 		t.Errorf("SecretScanning.GetScanHistory returned error: %v", err)
 	}
 
-	incrementalScanStartAt := Timestamp{time.Date(2025, time.July, 29, 9, 55, 0, 0, time.UTC)}
-	incrementalScancompleteAt := Timestamp{time.Date(2025, time.July, 29, 10, 0, 0, 0, time.UTC)}
-	customPatternBackfillScanStartedAt := Timestamp{time.Date(2025, time.July, 29, 9, 0, 0, 0, time.UTC)}
-
 	want := &SecretScanningScanHistory{
 		IncrementalScans: []*SecretsScan{
-			{Type: "incremental", Status: "success", CompletedAt: &incrementalScancompleteAt, StartedAt: &incrementalScanStartAt},
+			{Type: "incremental", Status: "success", CompletedAt: &referenceTimestamp, StartedAt: &referenceTimestamp},
 		},
 		BackfillScans:      []*SecretsScan{},
 		PatternUpdateScans: []*SecretsScan{},
 		CustomPatternBackfillScans: []*CustomPatternBackfillScan{
 			{
-				SecretsScan:  SecretsScan{Type: "custom_backfill", Status: "in_progress", CompletedAt: nil, StartedAt: &customPatternBackfillScanStartedAt},
+				SecretsScan:  SecretsScan{Type: "custom_backfill", Status: "in_progress", CompletedAt: nil, StartedAt: &referenceTimestamp},
 				PatternSlug:  Ptr("my-custom-pattern"),
 				PatternScope: Ptr("organization"),
 			},

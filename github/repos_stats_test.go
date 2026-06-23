@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -32,7 +31,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
     "total": 135,
     "weeks": [
       {
-        "w": 1367712000,
+        "w": `+referenceUnixTimeStr+`,
         "a": 6898,
         "d": 77,
         "c": 10
@@ -58,7 +57,7 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 			Total: Ptr(135),
 			Weeks: []*WeeklyStats{
 				{
-					Week:      &Timestamp{time.Date(2013, time.May, 5, 0, 0, 0, 0, time.UTC).Local()},
+					Week:      &referenceTimestamp,
 					Additions: Ptr(6898),
 					Deletions: Ptr(77),
 					Commits:   Ptr(10),
@@ -98,7 +97,7 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
   {
     "days": [0, 3, 26, 20, 39, 1, 0],
     "total": 89,
-    "week": 1336280400
+    "week": `+referenceUnixTimeStr+`
   }
 ]
 `)
@@ -114,7 +113,7 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 		{
 			Days:  []int{0, 3, 26, 20, 39, 1, 0},
 			Total: Ptr(89),
-			Week:  &Timestamp{time.Date(2012, time.May, 6, 5, 0, 0, 0, time.UTC).Local()},
+			Week:  &referenceTimestamp,
 		},
 	}
 
@@ -144,7 +143,7 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/stats/code_frequency", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 
-		fmt.Fprint(w, `[[1302998400, 1124, -435]]`)
+		fmt.Fprint(w, `[[`+referenceUnixTimeStr+`, 1124, -435]]`)
 	})
 
 	ctx := t.Context()
@@ -154,7 +153,7 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 	}
 
 	want := []*WeeklyStats{{
-		Week:      &Timestamp{time.Date(2011, time.April, 17, 0, 0, 0, 0, time.UTC).Local()},
+		Week:      &referenceTimestamp,
 		Additions: Ptr(1124),
 		Deletions: Ptr(-435),
 	}}

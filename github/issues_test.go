@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -27,7 +26,7 @@ func TestIssuesService_ListAllIssues(t *testing.T) {
 			"labels":    "a,b",
 			"sort":      "updated",
 			"direction": "asc",
-			"since":     "2026-01-02T00:00:00Z",
+			"since":     referenceTimeRaw,
 			"collab":    "true",
 			"orgs":      "true",
 			"owned":     "true",
@@ -44,7 +43,7 @@ func TestIssuesService_ListAllIssues(t *testing.T) {
 		Labels:      []string{"a", "b"},
 		Sort:        "updated",
 		Direction:   "asc",
-		Since:       time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC),
+		Since:       referenceTime,
 		Collab:      true,
 		Orgs:        true,
 		Owned:       true,
@@ -85,7 +84,7 @@ func TestIssuesService_ListUserIssues(t *testing.T) {
 			"labels":    "a,b",
 			"sort":      "updated",
 			"direction": "asc",
-			"since":     "2026-01-02T00:00:00Z",
+			"since":     referenceTimeRaw,
 			"per_page":  "4",
 			"page":      "2",
 		})
@@ -99,7 +98,7 @@ func TestIssuesService_ListUserIssues(t *testing.T) {
 		Labels:      []string{"a", "b"},
 		Sort:        "updated",
 		Direction:   "asc",
-		Since:       time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC),
+		Since:       referenceTime,
 		ListOptions: ListOptions{Page: 2, PerPage: 4},
 	}
 	issues, _, err := client.Issues.ListUserIssues(ctx, opts)
@@ -135,7 +134,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 			"type":      "bug",
 			"sort":      "updated",
 			"direction": "asc",
-			"since":     "2026-01-02T00:00:00Z",
+			"since":     referenceTimeRaw,
 			"per_page":  "4",
 			"page":      "2",
 		})
@@ -151,7 +150,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 		Type:        "bug",
 		Sort:        "updated",
 		Direction:   "asc",
-		Since:       time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC),
+		Since:       referenceTime,
 		ListOptions: ListOptions{Page: 2, PerPage: 4},
 	}
 	issues, _, err := client.Issues.ListByOrg(ctx, "o", opts)
@@ -195,7 +194,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 			"labels":    "a,b",
 			"sort":      "updated",
 			"direction": "asc",
-			"since":     referenceTime.Format(time.RFC3339),
+			"since":     referenceTimeRaw,
 			"per_page":  "1",
 		})
 		fmt.Fprint(w, `[{"number":1}]`)

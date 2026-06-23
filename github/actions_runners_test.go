@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -137,7 +136,7 @@ func TestActionsService_CreateRegistrationToken(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/runners/registration-token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprint(w, `{"token":"LLBF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-22T12:13:35.123Z"}`)
+		fmt.Fprint(w, `{"token":"LLBF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -147,9 +146,8 @@ func TestActionsService_CreateRegistrationToken(t *testing.T) {
 	}
 
 	want := &RegistrationToken{
-		Token: Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
-		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
-			123000000, time.UTC)},
+		Token:     Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
+		ExpiresAt: &referenceTimestamp,
 	}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRegistrationToken returned %+v, want %+v", token, want)
@@ -261,7 +259,7 @@ func TestActionsService_CreateRemoveToken(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/runners/remove-token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprint(w, `{"token":"AABF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-29T12:13:35.123Z"}`)
+		fmt.Fprint(w, `{"token":"AABF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -270,7 +268,7 @@ func TestActionsService_CreateRemoveToken(t *testing.T) {
 		t.Errorf("Actions.CreateRemoveToken returned error: %v", err)
 	}
 
-	want := &RemoveToken{Token: Ptr("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
+	want := &RemoveToken{Token: Ptr("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &referenceTimestamp}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
 	}
@@ -362,7 +360,7 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/runners/registration-token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprint(w, `{"token":"LLBF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-22T12:13:35.123Z"}`)
+		fmt.Fprint(w, `{"token":"LLBF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -372,9 +370,8 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 	}
 
 	want := &RegistrationToken{
-		Token: Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
-		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
-			123000000, time.UTC)},
+		Token:     Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
+		ExpiresAt: &referenceTimestamp,
 	}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateOrganizationRegistrationToken returned %+v, want %+v", token, want)
@@ -486,7 +483,7 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/runners/remove-token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprint(w, `{"token":"AABF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-29T12:13:35.123Z"}`)
+		fmt.Fprint(w, `{"token":"AABF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -495,7 +492,7 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 		t.Errorf("Actions.CreateOrganizationRemoveToken returned error: %v", err)
 	}
 
-	want := &RemoveToken{Token: Ptr("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &Timestamp{time.Date(2020, time.January, 29, 12, 13, 35, 123000000, time.UTC)}}
+	want := &RemoveToken{Token: Ptr("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &referenceTimestamp}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateOrganizationRemoveToken returned %+v, want %+v", token, want)
 	}

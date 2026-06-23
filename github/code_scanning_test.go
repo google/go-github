@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -63,7 +62,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 		URL: Ptr("https://example.com/testurl"),
 	}
 
-	sarifAnalysis := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}, ToolName: Ptr("codeql-cli")}
+	sarifAnalysis := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &referenceTimestamp, ToolName: Ptr("codeql-cli")}
 
 	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -182,7 +181,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 						"test"
 					]
 				},
-				"created_at":"2020-05-06T12:00:00Z",
+				"created_at":`+referenceTimeStr+`,
 				"state":"open",
 				"closed_by":null,
 				"closed_at":null,
@@ -224,7 +223,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 						"test"
 					]
 				},
-				"created_at":"2020-05-06T12:00:00Z",
+				"created_at":`+referenceTimeStr+`,
 				"state":"open",
 				"closed_by":null,
 				"closed_at":null,
@@ -240,7 +239,7 @@ func TestCodeScanningService_ListAlertsForOrg(t *testing.T) {
 		t.Errorf("CodeScanning.ListAlertsForOrg returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2020, time.May, 6, 12, 0, 0, 0, time.UTC)}
+	date := referenceTimestamp
 	want := []*Alert{
 		{
 			Repository: &Repository{
@@ -386,7 +385,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 						"test"
 					]
 				},
-				"created_at":"2020-05-06T12:00:00Z",
+				"created_at":`+referenceTimeStr+`,
 				"state":"open",
 				"closed_by":null,
 				"closed_at":null,
@@ -402,7 +401,7 @@ func TestCodeScanningService_ListAlertsForOrgLisCursorOptions(t *testing.T) {
 		t.Errorf("CodeScanning.ListAlertsForOrg returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2020, time.May, 6, 12, 0, 0, 0, time.UTC)}
+	date := referenceTimestamp
 	want := []*Alert{
 		{
 			Repository: &Repository{
@@ -507,7 +506,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 						"test"
 					]
 				},
-				"created_at":"2020-05-06T12:00:00Z",
+				"created_at":`+referenceTimeStr+`,
 				"state":"open",
 				"closed_by":null,
 				"closed_at":null,
@@ -549,7 +548,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 						"test"
 					]
 				},
-				"created_at":"2020-05-06T12:00:00Z",
+				"created_at":`+referenceTimeStr+`,
 				"state":"open",
 				"closed_by":null,
 				"closed_at":null,
@@ -565,7 +564,7 @@ func TestCodeScanningService_ListAlertsForRepo(t *testing.T) {
 		t.Errorf("CodeScanning.ListAlertsForRepo returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2020, time.May, 6, 12, 0, 0, 0, time.UTC)}
+	date := referenceTimestamp
 	want := []*Alert{
 		{
 			RuleID:          Ptr("js/trivial-conditional"),
@@ -699,7 +698,7 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 						"test"
 					]
 				},
-				"created_at":"2019-01-02T15:04:05Z",
+				"created_at":`+referenceTimeStr+`,
 				"state":"dismissed",
 				"dismissed_reason": "false positive",
 				"dismissed_comment": "This alert is not actually correct as sanitizer is used",
@@ -719,7 +718,7 @@ func TestCodeScanningService_UpdateAlert(t *testing.T) {
 		t.Errorf("CodeScanning.UpdateAlert returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}
+	date := referenceTimestamp
 	want := &Alert{
 		RuleID:          Ptr("js/useless-expression"),
 		RuleSeverity:    Ptr("warning"),
@@ -897,7 +896,7 @@ func TestCodeScanningService_GetAlert(t *testing.T) {
 					"test"
 				]
 			},
-			"created_at":"2019-01-02T15:04:05Z",
+			"created_at":`+referenceTimeStr+`,
 			"state":"open",
 			"closed_by":null,
 			"closed_at":null,
@@ -912,7 +911,7 @@ func TestCodeScanningService_GetAlert(t *testing.T) {
 		t.Errorf("CodeScanning.GetAlert returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}
+	date := referenceTimestamp
 	want := &Alert{
 		RuleID:          Ptr("js/useless-expression"),
 		RuleSeverity:    Ptr("warning"),
@@ -983,7 +982,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 				"environment": "{\"language\":\"python\"}",
 				"error": "",
 				"category": ".github/workflows/codeql-analysis.yml:analyze/language:python",
-				"created_at": "2020-08-27T15:05:21Z",
+				"created_at": `+referenceTimeStr+`,
 				"results_count": 17,
 				"rules_count": 49,
 				"id": 201,
@@ -1004,7 +1003,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 				"environment": "{}",
 				"error": "",
 				"category": ".github/workflows/shiftleft.yml:build/",
-				"created_at": "2020-08-27T15:05:21Z",
+				"created_at": `+referenceTimeStr+`,
 				"results_count": 17,
 				"rules_count": 32,
 				"id": 200,
@@ -1028,7 +1027,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 		t.Errorf("CodeScanning.ListAnalysesForRepo returned error: %v", err)
 	}
 
-	date := &Timestamp{time.Date(2020, time.August, 27, 15, 5, 21, 0, time.UTC)}
+	date := &referenceTimestamp
 	want := []*ScanningAnalysis{
 		{
 			ID:           Ptr(int64(201)),
@@ -1105,7 +1104,7 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 			  "environment": "{\"language\":\"javascript\"}",
 			  "error": "",
 			  "category": ".github/workflows/codeql-analysis.yml:analyze/language:javascript",
-			  "created_at": "2021-01-13T11:55:49Z",
+			  "created_at": `+referenceTimeStr+`,
 			  "results_count": 3,
 			  "rules_count": 67,
 			  "id": 3602840,
@@ -1127,7 +1126,7 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 		t.Errorf("CodeScanning.GetAnalysis returned error: %v", err)
 	}
 
-	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
+	date := &referenceTimestamp
 	want := &ScanningAnalysis{
 		ID:           Ptr(int64(3602840)),
 		Ref:          Ptr("refs/heads/main"),
@@ -1242,8 +1241,8 @@ func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
 				},
 				"content_type": "r",
 				"size": 1024,
-				"created_at": "2021-01-13T11:55:49Z",
-				"updated_at": "2021-01-13T11:55:49Z",
+				"created_at": `+referenceTimeStr+`,
+				"updated_at": `+referenceTimeStr+`,
 				"url": "s"
 			}
 		]`)
@@ -1255,7 +1254,7 @@ func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
 		t.Errorf("CodeScanning.ListCodeQLDatabases returned error: %v", err)
 	}
 
-	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
+	date := &referenceTimestamp
 	want := []*CodeQLDatabase{
 		{
 			ID:       Ptr(int64(1)),
@@ -1340,8 +1339,8 @@ func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
 			},
 			"content_type": "r",
 			"size": 1024,
-			"created_at": "2021-01-13T11:55:49Z",
-			"updated_at": "2021-01-13T11:55:49Z",
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`,
 			"url": "s"
 		}`)
 	})
@@ -1352,7 +1351,7 @@ func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
 		t.Errorf("CodeScanning.GetCodeQLDatabase returned error: %v", err)
 	}
 
-	date := &Timestamp{time.Date(2021, time.January, 13, 11, 55, 49, 0, time.UTC)}
+	date := &referenceTimestamp
 	want := &CodeQLDatabase{
 		ID:       Ptr(int64(1)),
 		Name:     Ptr("name"),
@@ -1417,7 +1416,7 @@ func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
 			"typescript"
 		],
 		"query_suite": "default",
-		"updated_at": "2006-01-02T15:04:05Z"
+		"updated_at": `+referenceTimeStr+`
 		}`)
 		if err != nil {
 			t.Fatal(err)
@@ -1430,7 +1429,7 @@ func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
 		t.Errorf("CodeScanning.GetDefaultSetupConfiguration returned error: %v", err)
 	}
 
-	date := &Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}
+	date := &referenceTimestamp
 	want := &DefaultSetupConfiguration{
 		State:      Ptr("configured"),
 		Languages:  []string{"javascript", "javascript-typescript", "typescript"},

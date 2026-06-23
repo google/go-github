@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"net/url"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -63,9 +62,9 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 						"metadata": "read"
 					}
 				},
-				"access_granted_at": "2023-05-16T08:47:09.000-07:00",
+				"access_granted_at": `+referenceTimeStr+`,
 				"token_expired": false,
-				"token_expires_at": "2023-11-16T08:47:09.000-07:00",
+				"token_expires_at": `+referenceTimeStr+`,
 				"token_last_used_at": null
 			}
 		]`)
@@ -112,9 +111,9 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 				Org:  map[string]string{"members": "read"},
 				Repo: map[string]string{"metadata": "read"},
 			},
-			AccessGrantedAt: &Timestamp{time.Date(2023, time.May, 16, 8, 47, 9, 0, time.FixedZone("PDT", -7*60*60))},
+			AccessGrantedAt: &referenceTimestamp,
 			TokenExpired:    Ptr(false),
-			TokenExpiresAt:  &Timestamp{time.Date(2023, time.November, 16, 8, 47, 9, 0, time.FixedZone("PDT", -7*60*60))},
+			TokenExpiresAt:  &referenceTimestamp,
 			TokenLastUsedAt: nil,
 		},
 	}
@@ -210,11 +209,11 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *test
 						"metadata": "read"
 					}
 				},
-				"created_at": "2026-02-17T06:49:30Z",
+				"created_at": `+referenceTimeStr+`,
 				"token_id": 11579703,
 				"token_name": "testFineGrained",
 				"token_expired": false,
-				"token_expires_at": "2026-04-18T06:49:30Z",
+				"token_expires_at": `+referenceTimeStr+`,
 				"token_last_used_at": null
 			}
 		]`)
@@ -262,11 +261,11 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *test
 			Permissions: PersonalAccessTokenPermissions{
 				Repo: map[string]string{"metadata": "read"},
 			},
-			CreatedAt:       &Timestamp{time.Date(2026, time.February, 17, 6, 49, 30, 0, time.UTC)},
+			CreatedAt:       &referenceTimestamp,
 			TokenID:         11579703,
 			TokenName:       "testFineGrained",
 			TokenExpired:    false,
-			TokenExpiresAt:  &Timestamp{time.Date(2026, time.April, 18, 6, 49, 30, 0, time.UTC)},
+			TokenExpiresAt:  &referenceTimestamp,
 			TokenLastUsedAt: nil,
 		},
 	}

@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -26,8 +25,8 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 				"login": "l",
 				"credential_id": 1,
 				"credential_type": "t",
-				"credential_authorized_at": "2017-01-21T00:00:00Z",
-				"credential_accessed_at": "2017-01-21T00:00:00Z",
+				"credential_authorized_at": `+referenceTimeStr+`,
+				"credential_accessed_at": `+referenceTimeStr+`,
 				"authorized_credential_id": 1
 			}
 		]`)
@@ -44,14 +43,13 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 		t.Errorf("Organizations.ListCredentialAuthorizations returned error: %v", err)
 	}
 
-	ts := time.Date(2017, time.January, 21, 0, 0, 0, 0, time.UTC)
 	want := []*CredentialAuthorization{
 		{
 			Login:                  Ptr("l"),
 			CredentialID:           Ptr(int64(1)),
 			CredentialType:         Ptr("t"),
-			CredentialAuthorizedAt: &Timestamp{ts},
-			CredentialAccessedAt:   &Timestamp{ts},
+			CredentialAuthorizedAt: &referenceTimestamp,
+			CredentialAccessedAt:   &referenceTimestamp,
 			AuthorizedCredentialID: Ptr(int64(1)),
 		},
 	}

@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -32,7 +31,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 				"23456789ABDCEF1",
 				"3456789ABDCEF12"
 			  ],
-			  "created_on": "2024-04-09T17:30:15Z"
+			  "created_on": `+referenceTimeStr+`
 			},
 			{
 			  "id": "456789ABDCEF123",
@@ -42,7 +41,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 				"56789ABDCEF1234",
 				"6789ABDCEF12345"
 			  ],
-			  "created_on": "2024-11-02T4:30:30Z"
+			  "created_on": `+referenceTimeStr+`
 			},
 			{
 			  "id": "789ABDCEF123456",
@@ -52,7 +51,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 				"56789ABDCEF1234",
 				"6789ABDCEF12345"
 			  ],
-			  "created_on": "2024-12-10T19:30:45Z"
+			  "created_on": `+referenceTimeStr+`
 			}
 		  ]
 		}`)
@@ -76,7 +75,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 					"23456789ABDCEF1",
 					"3456789ABDCEF12",
 				},
-				CreatedOn: &Timestamp{time.Date(2024, 4, 9, 17, 30, 15, 0, time.UTC)},
+				CreatedOn: &referenceTimestamp,
 			},
 			{
 				ID:             Ptr("456789ABDCEF123"),
@@ -86,7 +85,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 					"56789ABDCEF1234",
 					"6789ABDCEF12345",
 				},
-				CreatedOn: &Timestamp{time.Date(2024, 11, 2, 4, 30, 30, 0, time.UTC)},
+				CreatedOn: &referenceTimestamp,
 			},
 			{
 				ID:             Ptr("789ABDCEF123456"),
@@ -96,7 +95,7 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 					"56789ABDCEF1234",
 					"6789ABDCEF12345",
 				},
-				CreatedOn: &Timestamp{time.Date(2024, 12, 10, 19, 30, 45, 0, time.UTC)},
+				CreatedOn: &referenceTimestamp,
 			},
 		},
 	}
@@ -132,7 +131,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 		  "network_settings_ids": [
 			"56789ABDCEF1234"
 		  ],
-		  "created_on": "2024-11-02T4:30:30Z"
+		  "created_on": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -158,7 +157,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 		NetworkSettingsIDs: []string{
 			"56789ABDCEF1234",
 		},
-		CreatedOn: &Timestamp{time.Date(2024, 11, 2, 4, 30, 30, 0, time.UTC)},
+		CreatedOn: &referenceTimestamp,
 	}
 
 	if !cmp.Equal(want, configuration) {
@@ -253,7 +252,7 @@ func TestOrganizationsService_GetOrgsNetworkConfiguration(t *testing.T) {
 				"56789ABDCEF1234",
 				"6789ABDCEF12345"
 			  ],
-			  "created_on": "2024-12-10T19:30:45Z"
+			  "created_on": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -271,7 +270,7 @@ func TestOrganizationsService_GetOrgsNetworkConfiguration(t *testing.T) {
 			"56789ABDCEF1234",
 			"6789ABDCEF12345",
 		},
-		CreatedOn: &Timestamp{time.Date(2024, 12, 10, 19, 30, 45, 0, time.UTC)},
+		CreatedOn: &referenceTimestamp,
 	}
 	if !cmp.Equal(want, configuration) {
 		t.Errorf("Organizations.GetNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
@@ -306,7 +305,7 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 			"56789ABDCEF1234",
 			"6789ABDCEF12345"
 		  ],
-		  "created_on": "2024-12-10T19:30:45Z"
+		  "created_on": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -332,7 +331,7 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 			"56789ABDCEF1234",
 			"6789ABDCEF12345",
 		},
-		CreatedOn: &Timestamp{time.Date(2024, 12, 10, 19, 30, 45, 0, time.UTC)},
+		CreatedOn: &referenceTimestamp,
 	}
 	if !cmp.Equal(want, configuration) {
 		t.Errorf("Organizations.UpdateNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))

@@ -12,7 +12,6 @@ import (
 	"net/url"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -24,7 +23,7 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/workflows/29679449/runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"workflow_runs":[{"id":399444496,"run_number":296,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"},{"id":399444497,"run_number":296,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}]}`)
+		fmt.Fprint(w, `{"total_count":4,"workflow_runs":[{"id":399444496,"run_number":296,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"id":399444497,"run_number":296,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
@@ -37,8 +36,8 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 	want := &WorkflowRuns{
 		TotalCount: Ptr(4),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
-			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
+			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
+			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
 		},
 	}
 	if !cmp.Equal(runs, want) {
@@ -67,7 +66,7 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/workflows/29679449/runs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"workflow_runs":[{"id":399444496,"run_number":296,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"},{"id":399444497,"run_number":296,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}]}`)
+		fmt.Fprint(w, `{"total_count":4,"workflow_runs":[{"id":399444496,"run_number":296,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"id":399444497,"run_number":296,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
@@ -80,8 +79,8 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 	want := &WorkflowRuns{
 		TotalCount: Ptr(4),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
-			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
+			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
+			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
 		},
 	}
 	if !cmp.Equal(runs, want) {
@@ -109,7 +108,7 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":399444496,"run_number":296,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
+		fmt.Fprint(w, `{"id":399444496,"run_number":296,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -121,8 +120,8 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 	want := &WorkflowRun{
 		ID:        Ptr(int64(399444496)),
 		RunNumber: Ptr(296),
-		CreatedAt: &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
+		CreatedAt: &referenceTimestamp,
+		UpdatedAt: &referenceTimestamp,
 	}
 
 	if !cmp.Equal(runs, want) {
@@ -151,7 +150,7 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/attempts/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"exclude_pull_requests": "true"})
-		fmt.Fprint(w, `{"id":399444496,"run_number":296,"run_attempt":3,"created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
+		fmt.Fprint(w, `{"id":399444496,"run_number":296,"run_attempt":3,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
 	})
 
 	opts := &WorkflowRunAttemptOptions{ExcludePullRequests: Ptr(true)}
@@ -165,8 +164,8 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 		ID:         Ptr(int64(399444496)),
 		RunNumber:  Ptr(296),
 		RunAttempt: Ptr(3),
-		CreatedAt:  &Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
-		UpdatedAt:  &Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
+		CreatedAt:  &referenceTimestamp,
+		UpdatedAt:  &referenceTimestamp,
 	}
 
 	if !cmp.Equal(runs, want) {
@@ -703,8 +702,8 @@ func TestActionsService_ListRepositoryWorkflowRuns(t *testing.T) {
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `{"total_count":2,
 		"workflow_runs":[
-			{"id":298499444,"run_number":301,"created_at":"2020-04-11T11:14:54Z","updated_at":"2020-04-11T11:14:54Z"},
-			{"id":298499445,"run_number":302,"created_at":"2020-04-11T11:14:54Z","updated_at":"2020-04-11T11:14:54Z"}]}`)
+			{"id":298499444,"run_number":301,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},
+			{"id":298499445,"run_number":302,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
 	})
 
 	opts := &ListWorkflowRunsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
@@ -717,8 +716,8 @@ func TestActionsService_ListRepositoryWorkflowRuns(t *testing.T) {
 	expected := &WorkflowRuns{
 		TotalCount: Ptr(2),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Ptr(int64(298499444)), RunNumber: Ptr(301), CreatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}},
-			{ID: Ptr(int64(298499445)), RunNumber: Ptr(302), CreatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}, UpdatedAt: &Timestamp{time.Date(2020, time.April, 11, 11, 14, 54, 0, time.UTC)}},
+			{ID: Ptr(int64(298499444)), RunNumber: Ptr(301), CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
+			{ID: Ptr(int64(298499445)), RunNumber: Ptr(302), CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
 		},
 	}
 
@@ -999,7 +998,7 @@ func TestActionsService_GetPendingDeployments(t *testing.T) {
 				HTMLURL: Ptr("hu"),
 			},
 			WaitTimer:             Ptr(int64(0)),
-			WaitTimerStartedAt:    &Timestamp{referenceTime},
+			WaitTimerStartedAt:    &referenceTimestamp,
 			CurrentUserCanApprove: Ptr(false),
 			Reviewers:             []*RequiredReviewer{},
 		},
@@ -1012,7 +1011,7 @@ func TestActionsService_GetPendingDeployments(t *testing.T) {
 				HTMLURL: Ptr("hu"),
 			},
 			WaitTimer:             Ptr(int64(13)),
-			WaitTimerStartedAt:    &Timestamp{referenceTime},
+			WaitTimerStartedAt:    &referenceTimestamp,
 			CurrentUserCanApprove: Ptr(true),
 			Reviewers: []*RequiredReviewer{
 				{

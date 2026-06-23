@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -91,7 +90,7 @@ func TestDependabotService_ListRepoSecrets(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/dependabot/secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"},{"name":"B","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}]}`)
+		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"name":"B","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -104,8 +103,8 @@ func TestDependabotService_ListRepoSecrets(t *testing.T) {
 	want := &Secrets{
 		TotalCount: 4,
 		Secrets: []*Secret{
-			{Name: "A", CreatedAt: Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
-			{Name: "B", CreatedAt: Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)}},
+			{Name: "A", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp},
+			{Name: "B", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp},
 		},
 	}
 	if !cmp.Equal(secrets, want) {
@@ -133,7 +132,7 @@ func TestDependabotService_GetRepoSecret(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"name":"NAME","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z"}`)
+		fmt.Fprint(w, `{"name":"NAME","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -144,8 +143,8 @@ func TestDependabotService_GetRepoSecret(t *testing.T) {
 
 	want := &Secret{
 		Name:      "NAME",
-		CreatedAt: Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
-		UpdatedAt: Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
+		CreatedAt: referenceTimestamp,
+		UpdatedAt: referenceTimestamp,
 	}
 	if !cmp.Equal(secret, want) {
 		t.Errorf("Dependabot.GetRepoSecret returned %+v, want %+v", secret, want)
@@ -275,7 +274,7 @@ func TestDependabotService_ListOrgSecrets(t *testing.T) {
 	mux.HandleFunc("/orgs/o/dependabot/secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":3,"secrets":[{"name":"GIST_ID","created_at":"2019-08-10T14:59:22Z","updated_at":"2020-01-10T14:59:22Z","visibility":"private"},{"name":"DEPLOY_TOKEN","created_at":"2019-08-10T14:59:22Z","updated_at":"2020-01-10T14:59:22Z","visibility":"all"},{"name":"GH_TOKEN","created_at":"2019-08-10T14:59:22Z","updated_at":"2020-01-10T14:59:22Z","visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/dependabot/secrets/SUPER_SECRET/repositories"}]}`)
+		fmt.Fprint(w, `{"total_count":3,"secrets":[{"name":"GIST_ID","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"private"},{"name":"DEPLOY_TOKEN","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"all"},{"name":"GH_TOKEN","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/dependabot/secrets/SUPER_SECRET/repositories"}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -288,9 +287,9 @@ func TestDependabotService_ListOrgSecrets(t *testing.T) {
 	want := &Secrets{
 		TotalCount: 3,
 		Secrets: []*Secret{
-			{Name: "GIST_ID", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "private"},
-			{Name: "DEPLOY_TOKEN", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "all"},
-			{Name: "GH_TOKEN", CreatedAt: Timestamp{time.Date(2019, time.August, 10, 14, 59, 22, 0, time.UTC)}, UpdatedAt: Timestamp{time.Date(2020, time.January, 10, 14, 59, 22, 0, time.UTC)}, Visibility: "selected", SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/dependabot/secrets/SUPER_SECRET/repositories"},
+			{Name: "GIST_ID", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp, Visibility: "private"},
+			{Name: "DEPLOY_TOKEN", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp, Visibility: "all"},
+			{Name: "GH_TOKEN", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp, Visibility: "selected", SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/dependabot/secrets/SUPER_SECRET/repositories"},
 		},
 	}
 	if !cmp.Equal(secrets, want) {
@@ -318,7 +317,7 @@ func TestDependabotService_GetOrgSecret(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"name":"NAME","created_at":"2019-01-02T15:04:05Z","updated_at":"2020-01-02T15:04:05Z","visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/dependabot/secrets/SUPER_SECRET/repositories"}`)
+		fmt.Fprint(w, `{"name":"NAME","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/dependabot/secrets/SUPER_SECRET/repositories"}`)
 	})
 
 	ctx := t.Context()
@@ -329,8 +328,8 @@ func TestDependabotService_GetOrgSecret(t *testing.T) {
 
 	want := &Secret{
 		Name:                    "NAME",
-		CreatedAt:               Timestamp{time.Date(2019, time.January, 2, 15, 4, 5, 0, time.UTC)},
-		UpdatedAt:               Timestamp{time.Date(2020, time.January, 2, 15, 4, 5, 0, time.UTC)},
+		CreatedAt:               referenceTimestamp,
+		UpdatedAt:               referenceTimestamp,
 		Visibility:              "selected",
 		SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/dependabot/secrets/SUPER_SECRET/repositories",
 	}

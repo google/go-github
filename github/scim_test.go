@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -53,8 +52,8 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 				"active": true,
 				"meta": {
 				  "resourceType": "User",
-				  "created": "2018-02-13T15:05:24.000-00:00",
-				  "lastModified": "2018-02-13T15:05:24.000-00:00",
+				  "created": ` + referenceTimeStr + `,
+				  "lastModified": ` + referenceTimeStr + `,
 				  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"
 				}
 			  }
@@ -73,7 +72,7 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 		t.Errorf("SCIM.ListSCIMProvisionedIdentities returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2018, time.February, 13, 15, 5, 24, 0, time.UTC)}
+	date := referenceTimestamp
 	want := SCIMProvisionedIdentities{
 		Schemas:      []string{"urn:ietf:params:scim:api:messages:2.0:ListResponse"},
 		TotalResults: Ptr(1),
@@ -209,8 +208,8 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 			"active": true,
 			"meta": {
 			  "resourceType": "User",
-			  "created": "2017-03-09T16:11:13-00:00",
-			  "lastModified": "2017-03-09T16:11:13-00:00",
+			  "created": ` + referenceTimeStr + `,
+			  "lastModified": ` + referenceTimeStr + `,
 			  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"
 			}
 		  }`))
@@ -222,7 +221,7 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 		t.Errorf("SCIM.GetSCIMProvisioningInfoForUser returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2017, time.March, 9, 16, 11, 13, 0, time.UTC)}
+	date := referenceTimestamp
 	want := SCIMUserAttributes{
 		ID: Ptr("edefdfedf-050c-11e7-8d32"),
 		Meta: &SCIMMeta{

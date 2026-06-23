@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -38,8 +37,8 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 					"location": "l",
 					"email": "e"
 				},
-				"created_at": "2024-07-21T19:33:08Z",
-				"updated_at": "2024-07-21T19:33:08Z"
+				"created_at": `+referenceTimeStr+`,
+				"updated_at": `+referenceTimeStr+`
 			}
 		  ]
 		}`)
@@ -71,8 +70,8 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 					Location:  Ptr("l"),
 					Email:     Ptr("e"),
 				},
-				CreatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
-				UpdatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
+				CreatedAt: &referenceTimestamp,
+				UpdatedAt: &referenceTimestamp,
 			},
 		},
 	}
@@ -118,8 +117,8 @@ func TestOrganizationsService_GetCustomRepoRole(t *testing.T) {
 					"location": "l",
 					"email": "e"
 				},
-				"created_at": "2024-07-21T19:33:08Z",
-				"updated_at": "2024-07-21T19:33:08Z"
+				"created_at": `+referenceTimeStr+`,
+				"updated_at": `+referenceTimeStr+`
 			}`)
 	})
 
@@ -146,8 +145,8 @@ func TestOrganizationsService_GetCustomRepoRole(t *testing.T) {
 			Location:  Ptr("l"),
 			Email:     Ptr("e"),
 		},
-		CreatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
+		CreatedAt: &referenceTimestamp,
+		UpdatedAt: &referenceTimestamp,
 	}
 	if !cmp.Equal(role, want) {
 		t.Errorf("Organizations.GetCustomRepoRole returned %+v, want %+v", role, want)

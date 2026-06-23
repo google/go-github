@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -24,7 +23,7 @@ func TestCodespacesService_ListInRepo(t *testing.T) {
 			"page":     "1",
 			"per_page": "2",
 		})
-		fmt.Fprint(w, `{"total_count":2,"codespaces":[{"id":1,"name":"monalisa-octocat-hello-world-g4wpq6h95q","environment_id":"26a7c758-7299-4a73-b978-5a92a7ae98a0","owner":{"login":"octocat"},"billable_owner":{"login":"octocat"},"repository":{"id":1296269},"machine":{"name":"standardLinux","display_name":"4 cores, 8 GB RAM, 64 GB storage","operating_system":"linux","storage_in_bytes":68719476736,"memory_in_bytes":8589934592,"cpus":4},"prebuild":false,"devcontainer_path":".devcontainer/devcontainer.json","created_at":"2021-10-14T00:53:30-06:00","updated_at":"2021-10-14T00:53:32-06:00","last_used_at":"2021-10-14T00:53:30-06:00","state":"Available","url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q","git_status":{"ahead":0,"behind":0,"has_unpushed_changes":false,"has_uncommitted_changes":false,"ref":"main"},"location":"WestUs2","idle_timeout_minutes":60,"web_url":"https://monalisa-octocat-hello-world-g4wpq6h95q.github.dev","machines_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/machines","start_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/start","stop_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/stop","recent_folders":["testfolder1","testfolder2"]},{"id":2}]}`)
+		fmt.Fprint(w, `{"total_count":2,"codespaces":[{"id":1,"name":"monalisa-octocat-hello-world-g4wpq6h95q","environment_id":"26a7c758-7299-4a73-b978-5a92a7ae98a0","owner":{"login":"octocat"},"billable_owner":{"login":"octocat"},"repository":{"id":1296269},"machine":{"name":"standardLinux","display_name":"4 cores, 8 GB RAM, 64 GB storage","operating_system":"linux","storage_in_bytes":68719476736,"memory_in_bytes":8589934592,"cpus":4},"prebuild":false,"devcontainer_path":".devcontainer/devcontainer.json","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"last_used_at":`+referenceTimeStr+`,"state":"Available","url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q","git_status":{"ahead":0,"behind":0,"has_unpushed_changes":false,"has_uncommitted_changes":false,"ref":"main"},"location":"WestUs2","idle_timeout_minutes":60,"web_url":"https://monalisa-octocat-hello-world-g4wpq6h95q.github.dev","machines_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/machines","start_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/start","stop_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/stop","recent_folders":["testfolder1","testfolder2"]},{"id":2}]}`)
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
@@ -58,9 +57,9 @@ func TestCodespacesService_ListInRepo(t *testing.T) {
 			},
 			Prebuild:         Ptr(false),
 			DevcontainerPath: Ptr(".devcontainer/devcontainer.json"),
-			CreatedAt:        &Timestamp{time.Date(2021, 10, 14, 0, 53, 30, 0, time.FixedZone("", -6*60*60))},
-			UpdatedAt:        &Timestamp{time.Date(2021, 10, 14, 0, 53, 32, 0, time.FixedZone("", -6*60*60))},
-			LastUsedAt:       &Timestamp{time.Date(2021, 10, 14, 0, 53, 30, 0, time.FixedZone("", -6*60*60))},
+			CreatedAt:        &referenceTimestamp,
+			UpdatedAt:        &referenceTimestamp,
+			LastUsedAt:       &referenceTimestamp,
 			State:            Ptr("Available"),
 			URL:              Ptr("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q"),
 			GitStatus: &CodespacesGitStatus{
@@ -643,7 +642,7 @@ func TestCodespacesService_ExportCodespace(t *testing.T) {
 		testMethod(t, r, "POST")
 		fmt.Fprint(w, `{
 			"state": "succeeded",
-			"completed_at": "2025-12-11T00:00:00Z",
+			"completed_at": `+referenceTimeStr+`,
 			"branch": "main",
 			"export_url": "https://api.github.com/user/codespaces/:name/exports/latest"
 		}`)
@@ -657,7 +656,7 @@ func TestCodespacesService_ExportCodespace(t *testing.T) {
 
 	want := &CodespaceExport{
 		State:       Ptr("succeeded"),
-		CompletedAt: Ptr(Timestamp{Time: time.Date(2025, time.December, 11, 0, 0, 0, 0, time.UTC)}),
+		CompletedAt: &referenceTimestamp,
 		Branch:      Ptr("main"),
 		ExportURL:   Ptr("https://api.github.com/user/codespaces/:name/exports/latest"),
 	}
@@ -684,7 +683,7 @@ func TestCodespacesService_GetLatestCodespaceExport(t *testing.T) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
 			"state": "succeeded",
-			"completed_at": "2025-12-11T00:00:00Z",
+			"completed_at": `+referenceTimeStr+`,
 			"branch": "main",
 			"export_url": "https://api.github.com/user/codespaces/:name/exports/latest"
 		}`)
@@ -698,7 +697,7 @@ func TestCodespacesService_GetLatestCodespaceExport(t *testing.T) {
 
 	want := &CodespaceExport{
 		State:       Ptr("succeeded"),
-		CompletedAt: Ptr(Timestamp{Time: time.Date(2025, time.December, 11, 0, 0, 0, 0, time.UTC)}),
+		CompletedAt: &referenceTimestamp,
 		Branch:      Ptr("main"),
 		ExportURL:   Ptr("https://api.github.com/user/codespaces/:name/exports/latest"),
 	}

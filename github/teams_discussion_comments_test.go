@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -66,13 +65,13 @@ func TestTeamsService_ListComments(t *testing.T) {
 					"body": "comment",
 					"body_html": "<p>comment</p>",
 					"body_version": "version",
-					"created_at": "2018-01-01T00:00:00Z",
+					"created_at": `+referenceTimeStr+`,
 					"last_edited_at": null,
 					"discussion_url": "https://api.github.com/teams/2/discussions/3",
 					"html_url": "https://github.com/orgs/1/teams/2/discussions/3/comments/4",
 					"node_id": "node",
 					"number": 4,
-					"updated_at": "2018-01-01T00:00:00Z",
+					"updated_at": `+referenceTimeStr+`,
 					"url": "https://api.github.com/teams/2/discussions/3/comments/4"
 				}
 			]`)
@@ -102,13 +101,13 @@ func TestTeamsService_ListComments(t *testing.T) {
 			Body:          Ptr("comment"),
 			BodyHTML:      Ptr("<p>comment</p>"),
 			BodyVersion:   Ptr("version"),
-			CreatedAt:     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
+			CreatedAt:     &referenceTimestamp,
 			LastEditedAt:  nil,
 			DiscussionURL: Ptr("https://api.github.com/teams/2/discussions/3"),
 			HTMLURL:       Ptr("https://github.com/orgs/1/teams/2/discussions/3/comments/4"),
 			NodeID:        Ptr("node"),
 			Number:        Ptr(4),
-			UpdatedAt:     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
+			UpdatedAt:     &referenceTimestamp,
 			URL:           Ptr("https://api.github.com/teams/2/discussions/3/comments/4"),
 		},
 	}

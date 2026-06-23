@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -23,8 +22,8 @@ func TestActivityService_ListNotification(t *testing.T) {
 		testFormValues(t, r, values{
 			"all":           "true",
 			"participating": "true",
-			"since":         "2006-01-02T15:04:05Z",
-			"before":        "2007-03-04T15:04:05Z",
+			"since":         referenceTimeRaw,
+			"before":        referenceTimeRaw,
 		})
 
 		fmt.Fprint(w, `[{"id":"1", "subject":{"title":"t"}}]`)
@@ -33,8 +32,8 @@ func TestActivityService_ListNotification(t *testing.T) {
 	opt := &NotificationListOptions{
 		All:           true,
 		Participating: true,
-		Since:         time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC),
-		Before:        time.Date(2007, time.March, 4, 15, 4, 5, 0, time.UTC),
+		Since:         referenceTime,
+		Before:        referenceTime,
 	}
 	ctx := t.Context()
 	notifications, _, err := client.Activity.ListNotifications(ctx, opt)
@@ -96,7 +95,7 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}
+	input := referenceTimestamp
 
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -125,7 +124,7 @@ func TestActivityService_MarkNotificationsRead_EmptyLastReadAt(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := Timestamp{}
+	input := referenceTimestamp
 
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -149,7 +148,7 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}
+	input := referenceTimestamp
 
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -182,7 +181,7 @@ func TestActivityService_MarkRepositoryNotificationsRead_EmptyLastReadAt(t *test
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := Timestamp{}
+	input := referenceTimestamp
 
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")

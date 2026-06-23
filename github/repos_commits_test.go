@@ -11,7 +11,6 @@ import (
 	"net/url"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -28,8 +27,8 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 				"sha":    "s",
 				"path":   "p",
 				"author": "a",
-				"since":  "2013-08-01T00:00:00Z",
-				"until":  "2013-09-03T00:00:00Z",
+				"since":  referenceTimeRaw,
+				"until":  referenceTimeRaw,
 			})
 		fmt.Fprint(w, `[{"sha": "s"}]`)
 	})
@@ -38,8 +37,8 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 		SHA:    "s",
 		Path:   "p",
 		Author: "a",
-		Since:  time.Date(2013, time.August, 1, 0, 0, 0, 0, time.UTC),
-		Until:  time.Date(2013, time.September, 3, 0, 0, 0, 0, time.UTC),
+		Since:  referenceTime,
+		Until:  referenceTime,
 	}
 	ctx := t.Context()
 	commits, _, err := client.Repositories.ListCommits(ctx, "o", "r", opt)

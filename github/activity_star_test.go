@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -26,7 +25,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 			"page": "2",
 		})
 
-		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","user":{"id":1}}]`)
+		fmt.Fprint(w, `[{"starred_at":`+referenceTimeStr+`,"user":{"id":1}}]`)
 	})
 
 	ctx := t.Context()
@@ -35,7 +34,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 		t.Errorf("Activity.ListStargazers returned error: %v", err)
 	}
 
-	want := []*Stargazer{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, User: &User{ID: Ptr(int64(1))}}}
+	want := []*Stargazer{{StarredAt: &referenceTimestamp, User: &User{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(stargazers, want) {
 		t.Errorf("Activity.ListStargazers returned %+v, want %+v", stargazers, want)
 	}
@@ -62,7 +61,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 	mux.HandleFunc("/user/starred", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "Accept", strings.Join([]string{mediaTypeStarring, mediaTypeTopicsPreview}, ", "))
-		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","repo":{"id":1}}]`)
+		fmt.Fprint(w, `[{"starred_at":`+referenceTimeStr+`,"repo":{"id":1}}]`)
 	})
 
 	ctx := t.Context()
@@ -71,7 +70,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
 	}
 
-	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Ptr(int64(1))}}}
+	want := []*StarredRepository{{StarredAt: &referenceTimestamp, Repository: &Repository{ID: Ptr(int64(1))}}}
 	if !cmp.Equal(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
@@ -103,7 +102,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 			"direction": "asc",
 			"page":      "2",
 		})
-		fmt.Fprint(w, `[{"starred_at":"2002-02-10T15:30:00Z","repo":{"id":2}}]`)
+		fmt.Fprint(w, `[{"starred_at":`+referenceTimeStr+`,"repo":{"id":2}}]`)
 	})
 
 	opt := &ActivityListStarredOptions{"created", "asc", ListOptions{Page: 2}}
@@ -113,7 +112,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
 	}
 
-	want := []*StarredRepository{{StarredAt: &Timestamp{time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC)}, Repository: &Repository{ID: Ptr(int64(2))}}}
+	want := []*StarredRepository{{StarredAt: &referenceTimestamp, Repository: &Repository{ID: Ptr(int64(2))}}}
 	if !cmp.Equal(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}

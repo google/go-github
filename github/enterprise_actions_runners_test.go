@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -58,7 +57,7 @@ func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/actions/runners/registration-token", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		fmt.Fprint(w, `{"token":"LLBF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":"2020-01-22T12:13:35.123Z"}`)
+		fmt.Fprint(w, `{"token":"LLBF3JGZDX3P5PMEXLND6TS6FCWO6","expires_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -68,9 +67,8 @@ func TestEnterpriseService_CreateRegistrationToken(t *testing.T) {
 	}
 
 	want := &RegistrationToken{
-		Token: Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
-		ExpiresAt: &Timestamp{time.Date(2020, time.January, 22, 12, 13, 35,
-			123000000, time.UTC)},
+		Token:     Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
+		ExpiresAt: &referenceTimestamp,
 	}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Enterprise.CreateRegistrationToken returned %+v, want %+v", token, want)

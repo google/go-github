@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -84,7 +83,7 @@ func TestAppsService_ListInstallationRequests(t *testing.T) {
 			"id": 1,
 			"account": { "id": 2 },
 			"requester": { "id": 3 },
-			"created_at": "2018-01-01T00:00:00Z"
+			"created_at": `+referenceTimeStr+`
 		}]`,
 		)
 	})
@@ -96,12 +95,11 @@ func TestAppsService_ListInstallationRequests(t *testing.T) {
 		t.Errorf("Apps.ListInstallationRequests returned error: %v", err)
 	}
 
-	date := Timestamp{Time: time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	want := []*InstallationRequest{{
 		ID:        Ptr(int64(1)),
 		Account:   &User{ID: Ptr(int64(2))},
 		Requester: &User{ID: Ptr(int64(3))},
-		CreatedAt: &date,
+		CreatedAt: &referenceTimestamp,
 	}}
 	if !cmp.Equal(installationRequests, want) {
 		t.Errorf("Apps.ListInstallationRequests returned %+v, want %+v", installationRequests, want)
@@ -176,8 +174,8 @@ func TestAppsService_ListInstallations(t *testing.T) {
                                   ],
                                  "single_file_name": "config.yml",
                                  "repository_selection": "selected",
-                                 "created_at": "2018-01-01T00:00:00Z",
-                                 "updated_at": "2018-01-01T00:00:00Z"}]`,
+                                 "created_at": `+referenceTimeStr+`,
+                                 "updated_at": `+referenceTimeStr+`}]`,
 		)
 	})
 
@@ -188,7 +186,6 @@ func TestAppsService_ListInstallations(t *testing.T) {
 		t.Errorf("Apps.ListInstallations returned error: %v", err)
 	}
 
-	date := Timestamp{Time: time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	want := []*Installation{{
 		ID:                  Ptr(int64(1)),
 		AppID:               Ptr(int64(1)),
@@ -235,8 +232,8 @@ func TestAppsService_ListInstallations(t *testing.T) {
 			Workflows:                               Ptr("write"),
 		},
 		Events:    []string{"push", "pull_request"},
-		CreatedAt: &date,
-		UpdatedAt: &date,
+		CreatedAt: &referenceTimestamp,
+		UpdatedAt: &referenceTimestamp,
 	}}
 	if !cmp.Equal(installations, want) {
 		t.Errorf("Apps.ListInstallations returned %+v, want %+v", installations, want)

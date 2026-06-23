@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -562,7 +561,7 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
     					"login": "monalisa",
     					"email": "octocat@github.com",
     					"role": "direct_member",
-					"created_at": "2017-01-21T00:00:00Z",
+					"created_at": `+referenceTimeStr+`,
     					"inviter": {
       						"login": "other_user",
       						"id": 1,
@@ -595,14 +594,13 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 		t.Errorf("Organizations.ListPendingOrgInvitations returned error: %v", err)
 	}
 
-	createdAt := time.Date(2017, time.January, 21, 0, 0, 0, 0, time.UTC)
 	want := []*Invitation{
 		{
 			ID:        Ptr(int64(1)),
 			Login:     Ptr("monalisa"),
 			Email:     Ptr("octocat@github.com"),
 			Role:      Ptr("direct_member"),
-			CreatedAt: &Timestamp{createdAt},
+			CreatedAt: &referenceTimestamp,
 			Inviter: &User{
 				Login:             Ptr("other_user"),
 				ID:                Ptr(int64(1)),
@@ -767,8 +765,8 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 			   "node_id":"MDQ6VXNlcjE=",
 			   "email":"octocat@github.com",
 			   "role":"direct_member",
-			   "created_at":"2016-11-30T06:46:10Z",
-			   "failed_at":"2017-01-02T01:10:00Z",
+			   "created_at":`+referenceTimeStr+`,
+			   "failed_at":`+referenceTimeStr+`,
 			   "failed_reason":"the reason",
 			   "inviter":{
 				  "login":"other_user",
@@ -803,7 +801,6 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 		t.Errorf("Organizations.ListFailedOrgInvitations returned error: %v", err)
 	}
 
-	createdAt := time.Date(2016, time.November, 30, 6, 46, 10, 0, time.UTC)
 	want := []*Invitation{
 		{
 			ID:           Ptr(int64(1)),
@@ -811,9 +808,9 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 			NodeID:       Ptr("MDQ6VXNlcjE="),
 			Email:        Ptr("octocat@github.com"),
 			Role:         Ptr("direct_member"),
-			FailedAt:     &Timestamp{time.Date(2017, time.January, 2, 1, 10, 0, 0, time.UTC)},
+			FailedAt:     &referenceTimestamp,
 			FailedReason: Ptr("the reason"),
-			CreatedAt:    &Timestamp{createdAt},
+			CreatedAt:    &referenceTimestamp,
 			Inviter: &User{
 				Login:             Ptr("other_user"),
 				ID:                Ptr(int64(1)),

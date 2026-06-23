@@ -2424,7 +2424,7 @@ func TestDo_rateLimit(t *testing.T) {
 		w.Header().Set(HeaderRateLimit, "60")
 		w.Header().Set(HeaderRateRemaining, "59")
 		w.Header().Set(HeaderRateUsed, "1")
-		w.Header().Set(HeaderRateReset, "1372700873")
+		w.Header().Set(HeaderRateReset, referenceUnixTimeStr)
 		w.Header().Set(HeaderRateResource, "core")
 	})
 
@@ -2442,9 +2442,8 @@ func TestDo_rateLimit(t *testing.T) {
 	if got, want := resp.Rate.Used, 1; got != want {
 		t.Errorf("Client rate used = %v, want %v", got, want)
 	}
-	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if !resp.Rate.Reset.UTC().Equal(reset) {
-		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset.UTC(), reset)
+	if !resp.Rate.Reset.UTC().Equal(referenceTime) {
+		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset.UTC(), referenceTime)
 	}
 	if got, want := resp.Rate.Resource, "core"; got != want {
 		t.Errorf("Client rate resource = %v, want %v", got, want)
@@ -2542,7 +2541,7 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 		w.Header().Set(HeaderRateLimit, "60")
 		w.Header().Set(HeaderRateRemaining, "59")
 		w.Header().Set(HeaderRateUsed, "1")
-		w.Header().Set(HeaderRateReset, "1372700873")
+		w.Header().Set(HeaderRateReset, referenceUnixTimeStr)
 		w.Header().Set(HeaderRateResource, "core")
 		http.Error(w, "Bad Request", 400)
 	})
@@ -2564,9 +2563,8 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	if got, want := resp.Rate.Used, 1; got != want {
 		t.Errorf("Client rate used = %v, want %v", got, want)
 	}
-	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if !resp.Rate.Reset.UTC().Equal(reset) {
-		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
+	if !resp.Rate.Reset.UTC().Equal(referenceTime) {
+		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, referenceTime)
 	}
 	if got, want := resp.Rate.Resource, "core"; got != want {
 		t.Errorf("Client rate resource = %v, want %v", got, want)
@@ -2582,7 +2580,7 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 		w.Header().Set(HeaderRateLimit, "60")
 		w.Header().Set(HeaderRateRemaining, "0")
 		w.Header().Set(HeaderRateUsed, "60")
-		w.Header().Set(HeaderRateReset, "1372700873")
+		w.Header().Set(HeaderRateReset, referenceUnixTimeStr)
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
@@ -2611,9 +2609,8 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 	if got, want := rateLimitErr.Rate.Used, 60; got != want {
 		t.Errorf("rateLimitErr rate used = %v, want %v", got, want)
 	}
-	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if !rateLimitErr.Rate.Reset.UTC().Equal(reset) {
-		t.Errorf("rateLimitErr rate reset = %v, want %v", rateLimitErr.Rate.Reset.UTC(), reset)
+	if !rateLimitErr.Rate.Reset.UTC().Equal(referenceTime) {
+		t.Errorf("rateLimitErr rate reset = %v, want %v", rateLimitErr.Rate.Reset.UTC(), referenceTime)
 	}
 	if got, want := rateLimitErr.Rate.Resource, "core"; got != want {
 		t.Errorf("rateLimitErr rate resource = %v, want %v", got, want)
@@ -3457,7 +3454,7 @@ func TestCheckResponse(t *testing.T) {
 		StatusCode: http.StatusBadRequest,
 		Body: io.NopCloser(strings.NewReader(`{"message":"m",
 			"errors": [{"resource": "r", "field": "f", "code": "c"}],
-			"block": {"reason": "dmca", "created_at": "2016-03-17T15:39:46Z"}}`)),
+			"block": {"reason": "dmca", "created_at": ` + referenceTimeStr + `}}`)),
 	}
 	var err *ErrorResponse
 	errors.As(CheckResponse(res), &err)
@@ -3472,7 +3469,7 @@ func TestCheckResponse(t *testing.T) {
 		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 		Block: &ErrorBlock{
 			Reason:    "dmca",
-			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+			CreatedAt: &referenceTimestamp,
 		},
 	}
 	if !errors.Is(err, want) {
@@ -3685,7 +3682,7 @@ func TestErrorResponse_Is(t *testing.T) {
 		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 		Block: &ErrorBlock{
 			Reason:    "r",
-			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+			CreatedAt: &referenceTimestamp,
 		},
 		DocumentationURL: "https://github.com",
 	}
@@ -3701,7 +3698,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},
@@ -3714,7 +3711,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m1",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},
@@ -3727,7 +3724,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://google.com",
 			},
@@ -3739,7 +3736,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message: "m",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},
@@ -3752,7 +3749,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},
@@ -3765,7 +3762,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},
@@ -3787,7 +3784,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m",
 				Block: &ErrorBlock{
 					Reason:    "r1",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},

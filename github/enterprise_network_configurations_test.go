@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -32,7 +31,7 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 				"23456789ABDCEF1",
 				"3456789ABDCEF12"
 			  ],
-			  "created_on": "2024-04-09T17:30:15Z"
+			  "created_on": `+referenceTimeStr+`
 			},
 			{
 			  "id": "456789ABDCEF123",
@@ -42,7 +41,7 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 				"56789ABDCEF1234",
 				"6789ABDCEF12345"
 			  ],
-			  "created_on": "2024-11-02T12:30:30Z"
+			  "created_on": `+referenceTimeStr+`
 			}
 		  ]
 		}`)
@@ -64,14 +63,14 @@ func TestEnterpriseService_ListEnterpriseNetworkConfigurations(t *testing.T) {
 				Name:               Ptr("configuration one"),
 				ComputeService:     Ptr(ComputeService("actions")),
 				NetworkSettingsIDs: []string{"23456789ABDCEF1", "3456789ABDCEF12"},
-				CreatedOn:          &Timestamp{time.Date(2024, 4, 9, 17, 30, 15, 0, time.UTC)},
+				CreatedOn:          &referenceTimestamp,
 			},
 			{
 				ID:                 Ptr("456789ABDCEF123"),
 				Name:               Ptr("configuration two"),
 				ComputeService:     Ptr(ComputeService("none")),
 				NetworkSettingsIDs: []string{"56789ABDCEF1234", "6789ABDCEF12345"},
-				CreatedOn:          &Timestamp{time.Date(2024, 11, 2, 12, 30, 30, 0, time.UTC)},
+				CreatedOn:          &referenceTimestamp,
 			},
 		},
 	}
@@ -107,7 +106,7 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 		  "network_settings_ids": [
 			"23456789ABDCEF1"
 		  ],
-		  "created_on": "2024-04-09T17:30:15Z"
+		  "created_on": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -130,7 +129,7 @@ func TestEnterpriseService_CreateEnterpriseNetworkConfiguration(t *testing.T) {
 		Name:               Ptr("configuration one"),
 		ComputeService:     Ptr(ComputeService("actions")),
 		NetworkSettingsIDs: []string{"23456789ABDCEF1"},
-		CreatedOn:          &Timestamp{time.Date(2024, 4, 9, 17, 30, 15, 0, time.UTC)},
+		CreatedOn:          &referenceTimestamp,
 	}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Enterprise.CreateEnterpriseNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
@@ -202,7 +201,7 @@ func TestEnterpriseService_GetEnterpriseNetworkConfiguration(t *testing.T) {
 			"23456789ABDCEF1",
 			"3456789ABDCEF12"
 		  ],
-		  "created_on": "2024-12-10T19:00:15Z"
+		  "created_on": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -217,7 +216,7 @@ func TestEnterpriseService_GetEnterpriseNetworkConfiguration(t *testing.T) {
 		Name:               Ptr("configuration one"),
 		ComputeService:     Ptr(ComputeService("actions")),
 		NetworkSettingsIDs: []string{"23456789ABDCEF1", "3456789ABDCEF12"},
-		CreatedOn:          &Timestamp{time.Date(2024, 12, 10, 19, 0, 15, 0, time.UTC)},
+		CreatedOn:          &referenceTimestamp,
 	}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Enterprise.GetEnterpriseNetworkConfiguration mismatch (-want +got):\n%v", cmp.Diff(want, configuration))
@@ -251,7 +250,7 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 		  "network_settings_ids": [
 			"456789ABDCEF123"
 		  ],
-		  "created_on": "2024-12-10T19:00:15Z"
+		  "created_on": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -273,7 +272,7 @@ func TestEnterpriseService_UpdateEnterpriseNetworkConfiguration(t *testing.T) {
 		Name:               Ptr("updated configuration one"),
 		ComputeService:     Ptr(ComputeService("none")),
 		NetworkSettingsIDs: []string{"456789ABDCEF123"},
-		CreatedOn:          &Timestamp{time.Date(2024, 12, 10, 19, 0, 15, 0, time.UTC)},
+		CreatedOn:          &referenceTimestamp,
 	}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Enterprise.UpdateEnterpriseNetworkConfiguration mismatch (-want +get)\n%v", cmp.Diff(want, configuration))

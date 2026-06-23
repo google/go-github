@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -48,7 +47,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 							"length": 31
 						}
 					],
-					"last_active_on": "2023-04-26T15:23:37Z"
+					"last_active_on": `+referenceTimeStr+`
 				},
 				{
 					"id": 7,
@@ -69,7 +68,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 					"maximum_runners": 20,
 					"public_ip_enabled": false,
 					"public_ips": [],
-					"last_active_on": "2023-04-26T15:23:37Z"
+					"last_active_on": `+referenceTimeStr+`
 				}
 			]
 		}`)
@@ -81,7 +80,7 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 		t.Errorf("Actions.ListHostedRunners returned error: %v", err)
 	}
 
-	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
+	lastActiveOn := referenceTimestamp
 
 	want := &HostedRunners{
 		TotalCount: 2,
@@ -186,7 +185,7 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 					"length": 31
 				}
 			],
-			"last_active_on": "2023-04-26T15:23:37Z"
+			"last_active_on": `+referenceTimeStr+`
 			}`)
 	})
 
@@ -210,7 +209,7 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 		t.Errorf("Actions.CreateHostedRunner returned error: %v", err)
 	}
 
-	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
+	lastActiveOn := referenceTimestamp
 	want := &HostedRunner{
 		ID:            Ptr(int64(5)),
 		Name:          Ptr("My hosted ubuntu runner"),
@@ -616,7 +615,7 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 				"length": 31
 				}
 			],
-			"last_active_on": "2023-04-26T15:23:37Z"
+			"last_active_on": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -626,7 +625,7 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 		t.Errorf("Actions.GetHostedRunner returned error: %v", err)
 	}
 
-	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
+	lastActiveOn := referenceTimestamp
 	want := &HostedRunner{
 		ID:            Ptr(int64(5)),
 		Name:          Ptr("My hosted ubuntu runner"),
@@ -705,7 +704,7 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 					"length": 31
 				}
 			],
-			"last_active_on": "2023-04-26T15:23:37Z"
+			"last_active_on": `+referenceTimeStr+`
 			}`)
 	})
 
@@ -722,7 +721,7 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 		t.Errorf("Actions.UpdateHostedRunner returned error: %v", err)
 	}
 
-	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
+	lastActiveOn := referenceTimestamp
 	want := &HostedRunner{
 		ID:            Ptr(int64(5)),
 		Name:          Ptr("My hosted ubuntu runner"),
@@ -801,7 +800,7 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 				"length": 31
 				}
 			],
-			"last_active_on": "2023-04-26T15:23:37Z"
+			"last_active_on": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -811,7 +810,7 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 		t.Errorf("Actions.DeleteHostedRunner returned error: %v", err)
 	}
 
-	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
+	lastActiveOn := referenceTimestamp
 	want := &HostedRunner{
 		ID:            Ptr(int64(5)),
 		Name:          Ptr("My hosted ubuntu runner"),
@@ -1036,14 +1035,14 @@ func TestActionsService_ListHostedRunnerCustomImageVersions(t *testing.T) {
 					"size_gb": 75,
 					"state": "Ready",
 					"state_details": "None",
-					"created_on": "2024-11-09T23:39:01Z"
+					"created_on": `+referenceTimeStr+`
 				},
 				{
 					"version": "1.0.0",
 					"size_gb": 75,
 					"state": "Ready",
 					"state_details": "None",
-					"created_on": "2024-11-08T20:39:01Z"
+					"created_on": `+referenceTimeStr+`
 				}
 			]
 		}`)
@@ -1063,14 +1062,14 @@ func TestActionsService_ListHostedRunnerCustomImageVersions(t *testing.T) {
 				SizeGB:       75,
 				State:        "Ready",
 				StateDetails: "None",
-				CreatedOn:    Timestamp{time.Date(2024, 11, 9, 23, 39, 1, 0, time.UTC)},
+				CreatedOn:    referenceTimestamp,
 			},
 			{
 				Version:      "1.0.0",
 				SizeGB:       75,
 				State:        "Ready",
 				StateDetails: "None",
-				CreatedOn:    Timestamp{time.Date(2024, 11, 8, 20, 39, 1, 0, time.UTC)},
+				CreatedOn:    referenceTimestamp,
 			},
 		},
 	}
@@ -1105,7 +1104,7 @@ func TestActionsService_GetHostedRunnerCustomImageVersion(t *testing.T) {
 			"size_gb": 75,
 			"state": "Ready",
 			"state_details": "None",
-			"created_on": "2024-11-08T20:39:01Z"
+			"created_on": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -1120,7 +1119,7 @@ func TestActionsService_GetHostedRunnerCustomImageVersion(t *testing.T) {
 		SizeGB:       75,
 		State:        "Ready",
 		StateDetails: "None",
-		CreatedOn:    Timestamp{time.Date(2024, 11, 8, 20, 39, 1, 0, time.UTC)},
+		CreatedOn:    referenceTimestamp,
 	}
 
 	if !cmp.Equal(version, want) {
