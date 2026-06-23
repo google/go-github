@@ -10783,9 +10783,9 @@ func (c *CreateGistRequest) GetDescription() string {
 }
 
 // GetFiles returns the Files map if it's non-nil, an empty map otherwise.
-func (c *CreateGistRequest) GetFiles() map[GistFilename]GistFile {
+func (c *CreateGistRequest) GetFiles() map[GistFilename]GistFileRequest {
 	if c == nil || c.Files == nil {
-		return map[GistFilename]GistFile{}
+		return map[GistFilename]GistFileRequest{}
 	}
 	return c.Files
 }
@@ -16780,6 +16780,22 @@ func (g *GistFile) GetType() string {
 		return ""
 	}
 	return *g.Type
+}
+
+// GetContent returns the Content field if it's non-nil, zero value otherwise.
+func (g *GistFileRequest) GetContent() string {
+	if g == nil || g.Content == nil {
+		return ""
+	}
+	return *g.Content
+}
+
+// GetFilename returns the Filename field if it's non-nil, zero value otherwise.
+func (g *GistFileRequest) GetFilename() string {
+	if g == nil || g.Filename == nil {
+		return ""
+	}
+	return *g.Filename
 }
 
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
@@ -41919,9 +41935,9 @@ func (u *UpdateGistRequest) GetDescription() string {
 }
 
 // GetFiles returns the Files map if it's non-nil, an empty map otherwise.
-func (u *UpdateGistRequest) GetFiles() map[GistFilename]GistFile {
+func (u *UpdateGistRequest) GetFiles() map[GistFilename]GistFileRequest {
 	if u == nil || u.Files == nil {
-		return map[GistFilename]GistFile{}
+		return map[GistFilename]GistFileRequest{}
 	}
 	return u.Files
 }

@@ -266,7 +266,7 @@ func TestGistsService_Create(t *testing.T) {
 	input := CreateGistRequest{
 		Description: Ptr("Gist description"),
 		Public:      Ptr(false),
-		Files: map[GistFilename]GistFile{
+		Files: map[GistFilename]GistFileRequest{
 			"test.txt": {Content: Ptr("Gist file content")},
 		},
 	}
@@ -323,7 +323,7 @@ func TestGistsService_Update(t *testing.T) {
 
 	input := UpdateGistRequest{
 		Description: Ptr("New description"),
-		Files: map[GistFilename]GistFile{
+		Files: map[GistFilename]GistFileRequest{
 			"new.txt": {Content: Ptr("new file content")},
 		},
 	}

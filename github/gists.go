@@ -39,15 +39,17 @@ func (g Gist) String() string {
 
 // CreateGistRequest represents the input for creating a gist.
 type CreateGistRequest struct {
-	Description *string                   `json:"description,omitempty"`
-	Public      *bool                     `json:"public,omitempty"`
-	Files       map[GistFilename]GistFile `json:"files,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Public      *bool   `json:"public,omitempty"`
+	// Files is the set of files that make up the gist, keyed by filename. (Required.)
+	Files map[GistFilename]GistFileRequest `json:"files"`
 }
 
 // UpdateGistRequest represents the input for updating a gist.
 type UpdateGistRequest struct {
-	Description *string                   `json:"description,omitempty"`
-	Files       map[GistFilename]GistFile `json:"files,omitempty"`
+	Description *string `json:"description,omitempty"`
+	// Files is the set of files to add, change or rename, keyed by filename.
+	Files map[GistFilename]GistFileRequest `json:"files,omitempty"`
 }
 
 // GistFilename represents filename on a gist.
@@ -65,6 +67,15 @@ type GistFile struct {
 
 func (g GistFile) String() string {
 	return Stringify(g)
+}
+
+// GistFileRequest represents a file's content within a CreateGistRequest or
+// UpdateGistRequest. The gist's files are keyed by filename.
+type GistFileRequest struct {
+	// Content is the contents of the file. (Required when creating a gist.)
+	Content *string `json:"content,omitempty"`
+	// Filename, if set, renames the file. (Used when updating a gist.)
+	Filename *string `json:"filename,omitempty"`
 }
 
 // GistCommit represents a commit on a gist.

@@ -13713,7 +13713,7 @@ func TestCreateGistRequest_GetDescription(tt *testing.T) {
 
 func TestCreateGistRequest_GetFiles(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := map[GistFilename]GistFile{}
+	zeroValue := map[GistFilename]GistFileRequest{}
 	c := &CreateGistRequest{Files: zeroValue}
 	c.GetFiles()
 	c = &CreateGistRequest{}
@@ -21134,6 +21134,28 @@ func TestGistFile_GetType(tt *testing.T) {
 	g.GetType()
 	g = nil
 	g.GetType()
+}
+
+func TestGistFileRequest_GetContent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	g := &GistFileRequest{Content: &zeroValue}
+	g.GetContent()
+	g = &GistFileRequest{}
+	g.GetContent()
+	g = nil
+	g.GetContent()
+}
+
+func TestGistFileRequest_GetFilename(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	g := &GistFileRequest{Filename: &zeroValue}
+	g.GetFilename()
+	g = &GistFileRequest{}
+	g.GetFilename()
+	g = nil
+	g.GetFilename()
 }
 
 func TestGistFork_GetCreatedAt(tt *testing.T) {
@@ -52631,7 +52653,7 @@ func TestUpdateGistRequest_GetDescription(tt *testing.T) {
 
 func TestUpdateGistRequest_GetFiles(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := map[GistFilename]GistFile{}
+	zeroValue := map[GistFilename]GistFileRequest{}
 	u := &UpdateGistRequest{Files: zeroValue}
 	u.GetFiles()
 	u = &UpdateGistRequest{}
