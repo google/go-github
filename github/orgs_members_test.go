@@ -765,8 +765,8 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 			   "node_id":"MDQ6VXNlcjE=",
 			   "email":"octocat@github.com",
 			   "role":"direct_member",
-			   "created_at":`+referenceTimeStr+`,
-			   "failed_at":`+referenceTimeStr+`,
+			   "created_at":`+refTimeStr(1136178000)+`,
+			   "failed_at":`+refTimeStr(1136178001)+`,
 			   "failed_reason":"the reason",
 			   "inviter":{
 				  "login":"other_user",
@@ -808,9 +808,9 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 			NodeID:       Ptr("MDQ6VXNlcjE="),
 			Email:        Ptr("octocat@github.com"),
 			Role:         Ptr("direct_member"),
-			FailedAt:     &referenceTimestamp,
+			CreatedAt:    refTimestamp(1136178000),
+			FailedAt:     refTimestamp(1136178001),
 			FailedReason: Ptr("the reason"),
-			CreatedAt:    &referenceTimestamp,
 			Inviter: &User{
 				Login:             Ptr("other_user"),
 				ID:                Ptr(int64(1)),
