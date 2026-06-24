@@ -23,7 +23,8 @@ const (
 var (
 	referenceTime      = time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)
 	referenceTimestamp = Timestamp{referenceTime}
-	refTimestamp       = func(unix int64) Timestamp { return Timestamp{time.Unix(unix, 0).In(time.UTC).Local()} }
+	refTimeStr         = func(unix int64) string { return `"` + refTimestamp(unix).Format(time.RFC3339) + `"` }
+	refTimestamp       = func(unix int64) *Timestamp { return &Timestamp{time.Unix(unix, 0).In(time.UTC).Local()} }
 	unixOrigin         = time.Unix(0, 0).In(time.UTC)
 )
 
