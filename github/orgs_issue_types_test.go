@@ -25,16 +25,16 @@ func TestOrganizationsService_ListIssueTypes(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZo",
 				"name": "Task",
 				"description": "A specific piece of work",
-				"created_at": `+referenceTimeStr+`,
-				"updated_at": `+referenceTimeStr+`
+				"created_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`
 			},
 			{
 				"id": 411,
 				"node_id": "IT_kwDNAd3NAZs",
 				"name": "Bug",
 				"description": "An unexpected problem or behavior",
-				"created_at": `+referenceTimeStr+`,
-				"updated_at": `+referenceTimeStr+`
+				"created_at": `+refTimeStr(1136178002)+`,
+				"updated_at": `+refTimeStr(1136178003)+`
 			}
 		]`)
 	})
@@ -51,16 +51,16 @@ func TestOrganizationsService_ListIssueTypes(t *testing.T) {
 			NodeID:      Ptr("IT_kwDNAd3NAZo"),
 			Name:        Ptr("Task"),
 			Description: Ptr("A specific piece of work"),
-			CreatedAt:   &referenceTimestamp,
-			UpdatedAt:   &referenceTimestamp,
+			CreatedAt:   refTimestamp(1136178000),
+			UpdatedAt:   refTimestamp(1136178001),
 		},
 		{
 			ID:          Ptr(int64(411)),
 			NodeID:      Ptr("IT_kwDNAd3NAZs"),
 			Name:        Ptr("Bug"),
 			Description: Ptr("An unexpected problem or behavior"),
-			CreatedAt:   &referenceTimestamp,
-			UpdatedAt:   &referenceTimestamp,
+			CreatedAt:   refTimestamp(1136178002),
+			UpdatedAt:   refTimestamp(1136178003),
 		},
 	}
 	if !cmp.Equal(issueTypes, want) {
@@ -102,8 +102,8 @@ func TestOrganizationsService_CreateIssueType(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZo",
 				"name": "Epic",
 				"description": "An issue type for a multi-week tracking of work",
-				"created_at": `+referenceTimeStr+`,
-				"updated_at": `+referenceTimeStr+`
+				"created_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`
 		}`)
 	})
 
@@ -117,8 +117,8 @@ func TestOrganizationsService_CreateIssueType(t *testing.T) {
 		NodeID:      Ptr("IT_kwDNAd3NAZo"),
 		Name:        Ptr("Epic"),
 		Description: Ptr("An issue type for a multi-week tracking of work"),
-		CreatedAt:   &referenceTimestamp,
-		UpdatedAt:   &referenceTimestamp,
+		CreatedAt:   refTimestamp(1136178000),
+		UpdatedAt:   refTimestamp(1136178001),
 	}
 
 	if !cmp.Equal(issueType, want) {
@@ -160,8 +160,8 @@ func TestOrganizationsService_UpdateIssueType(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZo",
 				"name": "Epic",
 				"description": "An issue type for a multi-week tracking of work",
-				"created_at": `+referenceTimeStr+`,
-				"updated_at": `+referenceTimeStr+`
+				"created_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`
 		}`)
 	})
 
@@ -175,8 +175,8 @@ func TestOrganizationsService_UpdateIssueType(t *testing.T) {
 		NodeID:      Ptr("IT_kwDNAd3NAZo"),
 		Name:        Ptr("Epic"),
 		Description: Ptr("An issue type for a multi-week tracking of work"),
-		CreatedAt:   &referenceTimestamp,
-		UpdatedAt:   &referenceTimestamp,
+		CreatedAt:   refTimestamp(1136178000),
+		UpdatedAt:   refTimestamp(1136178001),
 	}
 
 	if !cmp.Equal(issueType, want) {
