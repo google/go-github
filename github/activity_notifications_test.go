@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -23,7 +24,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 			"all":           "true",
 			"participating": "true",
 			"since":         referenceTimeRaw,
-			"before":        referenceTimeRaw,
+			"before":        "2007-03-04T15:04:05Z",
 		})
 
 		fmt.Fprint(w, `[{"id":"1", "subject":{"title":"t"}}]`)
@@ -33,7 +34,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 		All:           true,
 		Participating: true,
 		Since:         referenceTime,
-		Before:        referenceTime,
+		Before:        time.Date(2007, time.March, 4, 15, 4, 5, 0, time.UTC),
 	}
 	ctx := t.Context()
 	notifications, _, err := client.Activity.ListNotifications(ctx, opt)
