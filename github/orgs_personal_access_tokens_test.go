@@ -62,9 +62,9 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 						"metadata": "read"
 					}
 				},
-				"access_granted_at": `+referenceTimeStr+`,
+				"access_granted_at": `+refTimeStr(1136178000)+`,
 				"token_expired": false,
-				"token_expires_at": `+referenceTimeStr+`,
+				"token_expires_at": `+refTimeStr(1136178001)+`,
 				"token_last_used_at": null
 			}
 		]`)
@@ -111,9 +111,9 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokens(t *testing.T) 
 				Org:  map[string]string{"members": "read"},
 				Repo: map[string]string{"metadata": "read"},
 			},
-			AccessGrantedAt: &referenceTimestamp,
+			AccessGrantedAt: refTimestamp(1136178000),
 			TokenExpired:    Ptr(false),
-			TokenExpiresAt:  &referenceTimestamp,
+			TokenExpiresAt:  refTimestamp(1136178001),
 			TokenLastUsedAt: nil,
 		},
 	}
@@ -209,11 +209,11 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *test
 						"metadata": "read"
 					}
 				},
-				"created_at": `+referenceTimeStr+`,
+				"created_at": `+refTimeStr(1136178000)+`,
 				"token_id": 11579703,
 				"token_name": "testFineGrained",
 				"token_expired": false,
-				"token_expires_at": `+referenceTimeStr+`,
+				"token_expires_at": `+refTimeStr(1136178001)+`,
 				"token_last_used_at": null
 			}
 		]`)
@@ -261,11 +261,11 @@ func TestOrganizationsService_ListFineGrainedPersonalAccessTokenRequests(t *test
 			Permissions: PersonalAccessTokenPermissions{
 				Repo: map[string]string{"metadata": "read"},
 			},
-			CreatedAt:       &referenceTimestamp,
+			CreatedAt:       refTimestamp(1136178000),
 			TokenID:         11579703,
 			TokenName:       "testFineGrained",
 			TokenExpired:    false,
-			TokenExpiresAt:  &referenceTimestamp,
+			TokenExpiresAt:  refTimestamp(1136178001),
 			TokenLastUsedAt: nil,
 		},
 	}
