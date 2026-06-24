@@ -20,7 +20,7 @@ func TestActionsService_ListRepoVariables(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"variables":[{"name":"A","value":"AA","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"name":"B","value":"BB","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
+		fmt.Fprint(w, `{"total_count":4,"variables":[{"name":"A","value":"AA","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"name":"B","value":"BB","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -33,8 +33,8 @@ func TestActionsService_ListRepoVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 4,
 		Variables: []*ActionsVariable{
-			{Name: "A", Value: "AA", CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
-			{Name: "B", Value: "BB", CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
+			{Name: "A", Value: "AA", CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
+			{Name: "B", Value: "BB", CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -63,7 +63,7 @@ func TestActionsService_ListRepoOrgVariables(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/organization-variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"variables":[{"name":"A","value":"AA","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"name":"B","value":"BB","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
+		fmt.Fprint(w, `{"total_count":4,"variables":[{"name":"A","value":"AA","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"name":"B","value":"BB","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -76,8 +76,8 @@ func TestActionsService_ListRepoOrgVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 4,
 		Variables: []*ActionsVariable{
-			{Name: "A", Value: "AA", CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
-			{Name: "B", Value: "BB", CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
+			{Name: "A", Value: "AA", CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
+			{Name: "B", Value: "BB", CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -105,7 +105,7 @@ func TestActionsService_GetRepoVariable(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"name":"NAME","value":"VALUE","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
+		fmt.Fprint(w, `{"name":"NAME","value":"VALUE","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 	})
 
 	ctx := t.Context()
@@ -117,8 +117,8 @@ func TestActionsService_GetRepoVariable(t *testing.T) {
 	want := &ActionsVariable{
 		Name:      "NAME",
 		Value:     "VALUE",
-		CreatedAt: &referenceTimestamp,
-		UpdatedAt: &referenceTimestamp,
+		CreatedAt: refTimestamp(1136178000),
+		UpdatedAt: refTimestamp(1136178001),
 	}
 	if !cmp.Equal(variable, want) {
 		t.Errorf("Actions.GetRepoVariable returned %+v, want %+v", variable, want)
@@ -241,7 +241,7 @@ func TestActionsService_ListOrgVariables(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":3,"variables":[{"name":"A","value":"AA","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"private"},{"name":"B","value":"BB","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"all"},{"name":"C","value":"CC","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"}]}`)
+		fmt.Fprint(w, `{"total_count":3,"variables":[{"name":"A","value":"AA","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`,"visibility":"private"},{"name":"B","value":"BB","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`,"visibility":"all"},{"name":"C","value":"CC","created_at":`+refTimeStr(1136178004)+`,"updated_at":`+refTimeStr(1136178005)+`,"visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -254,9 +254,9 @@ func TestActionsService_ListOrgVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 3,
 		Variables: []*ActionsVariable{
-			{Name: "A", Value: "AA", CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp, Visibility: Ptr("private")},
-			{Name: "B", Value: "BB", CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp, Visibility: Ptr("all")},
-			{Name: "C", Value: "CC", CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp, Visibility: Ptr("selected"), SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories")},
+			{Name: "A", Value: "AA", CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001), Visibility: Ptr("private")},
+			{Name: "B", Value: "BB", CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003), Visibility: Ptr("all")},
+			{Name: "C", Value: "CC", CreatedAt: refTimestamp(1136178004), UpdatedAt: refTimestamp(1136178005), Visibility: Ptr("selected"), SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories")},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -284,7 +284,7 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"name":"NAME","value":"VALUE","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"}`)
+		fmt.Fprint(w, `{"name":"NAME","value":"VALUE","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`,"visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"}`)
 	})
 
 	ctx := t.Context()
@@ -296,8 +296,8 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 	want := &ActionsVariable{
 		Name:                    "NAME",
 		Value:                   "VALUE",
-		CreatedAt:               &referenceTimestamp,
-		UpdatedAt:               &referenceTimestamp,
+		CreatedAt:               refTimestamp(1136178000),
+		UpdatedAt:               refTimestamp(1136178001),
 		Visibility:              Ptr("selected"),
 		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"),
 	}
@@ -568,7 +568,7 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 	mux.HandleFunc("/repos/usr/1/environments/e/variables", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"variables":[{"name":"A","value":"AA","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"name":"B","value":"BB","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
+		fmt.Fprint(w, `{"total_count":4,"variables":[{"name":"A","value":"AA","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"name":"B","value":"BB","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -581,8 +581,8 @@ func TestActionsService_ListEnvVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 4,
 		Variables: []*ActionsVariable{
-			{Name: "A", Value: "AA", CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
-			{Name: "B", Value: "BB", CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
+			{Name: "A", Value: "AA", CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
+			{Name: "B", Value: "BB", CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -610,7 +610,7 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 
 	mux.HandleFunc("/repos/usr/1/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"name":"variable","value":"VAR","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
+		fmt.Fprint(w, `{"name":"variable","value":"VAR","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 	})
 
 	ctx := t.Context()
@@ -622,8 +622,8 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 	want := &ActionsVariable{
 		Name:      "variable",
 		Value:     "VAR",
-		CreatedAt: &referenceTimestamp,
-		UpdatedAt: &referenceTimestamp,
+		CreatedAt: refTimestamp(1136178000),
+		UpdatedAt: refTimestamp(1136178001),
 	}
 	if !cmp.Equal(variable, want) {
 		t.Errorf("Actions.GetEnvVariable returned %+v, want %+v", variable, want)
