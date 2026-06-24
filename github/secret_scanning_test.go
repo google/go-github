@@ -23,7 +23,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 
 		fmt.Fprint(w, `[{
 			"number": 1,
-			"created_at": `+referenceTimeStr+`,
+			"created_at": `+refTimeStr(1136178000)+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
@@ -52,7 +52,7 @@ func TestSecretScanningService_ListAlertsForEnterprise(t *testing.T) {
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
-			CreatedAt:    &referenceTimestamp,
+			CreatedAt:    refTimestamp(1136178000),
 			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
 			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
@@ -97,7 +97,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 
 		fmt.Fprint(w, `[{
 			"number": 1,
-			"created_at": `+referenceTimeStr+`,
+			"created_at": `+refTimeStr(1136178000)+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
@@ -121,7 +121,7 @@ func TestSecretScanningService_ListAlertsForOrg(t *testing.T) {
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
-			CreatedAt:    &referenceTimestamp,
+			CreatedAt:    refTimestamp(1136178000),
 			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
 			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
@@ -161,7 +161,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 
 		fmt.Fprint(w, `[{
 			"number": 1,
-			"created_at": `+referenceTimeStr+`,
+			"created_at": `+refTimeStr(1136178000)+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
@@ -187,7 +187,7 @@ func TestSecretScanningService_ListAlertsForOrgListOptions(t *testing.T) {
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
-			CreatedAt:    &referenceTimestamp,
+			CreatedAt:    refTimestamp(1136178000),
 			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
 			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
@@ -227,7 +227,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 
 		fmt.Fprint(w, `[{
 			"number": 1,
-			"created_at": `+referenceTimeStr+`,
+			"created_at": `+refTimeStr(1136178000)+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
@@ -251,7 +251,7 @@ func TestSecretScanningService_ListAlertsForRepo(t *testing.T) {
 	want := []*SecretScanningAlert{
 		{
 			Number:       Ptr(1),
-			CreatedAt:    &referenceTimestamp,
+			CreatedAt:    refTimestamp(1136178000),
 			URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 			HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
 			LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
@@ -290,7 +290,7 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 
 		fmt.Fprint(w, `{
 			"number": 1,
-			"created_at": `+referenceTimeStr+`,
+			"created_at": `+refTimeStr(1136178000)+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
@@ -312,7 +312,7 @@ func TestSecretScanningService_GetAlert(t *testing.T) {
 
 	want := &SecretScanningAlert{
 		Number:       Ptr(1),
-		CreatedAt:    &referenceTimestamp,
+		CreatedAt:    refTimestamp(1136178000),
 		URL:          Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 		HTMLURL:      Ptr("https://github.com/o/r/security/secret-scanning/1"),
 		LocationsURL: Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
@@ -352,14 +352,14 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		testJSONBody(t, r, opts)
 		fmt.Fprint(w, `{
 			"number": 1,
-			"created_at": `+referenceTimeStr+`,
+			"created_at": `+refTimeStr(1136178000)+`,
 			"url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1",
 			"html_url": "https://github.com/o/r/security/secret-scanning/1",
 			"locations_url": "https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations",
 			"state": "resolved",
 			"resolution": "used_in_tests",
 			"resolution_comment": "resolution comment",
-			"resolved_at": `+referenceTimeStr+`,
+			"resolved_at": `+refTimeStr(1136178001)+`,
 			"resolved_by": null,
 			"secret_type": "mailchimp_api_key",
 			"secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"
@@ -374,14 +374,14 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 
 	want := &SecretScanningAlert{
 		Number:            Ptr(1),
-		CreatedAt:         &referenceTimestamp,
+		CreatedAt:         refTimestamp(1136178000),
 		URL:               Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
 		HTMLURL:           Ptr("https://github.com/o/r/security/secret-scanning/1"),
 		LocationsURL:      Ptr("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
 		State:             Ptr("resolved"),
 		Resolution:        Ptr("used_in_tests"),
 		ResolutionComment: Ptr("resolution comment"),
-		ResolvedAt:        &referenceTimestamp,
+		ResolvedAt:        refTimestamp(1136178001),
 		ResolvedBy:        nil,
 		SecretType:        Ptr("mailchimp_api_key"),
 		Secret:            Ptr("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
@@ -483,7 +483,7 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 		testJSONBody(t, r, opts)
 		fmt.Fprint(w, `{
 			"reason": "valid reason",
-			"expire_at": `+referenceTimeStr+`,
+			"expire_at": `+refTimeStr(1136178000)+`,
 			"token_type": "github_token"
 		}`)
 	})
@@ -497,7 +497,7 @@ func TestSecretScanningService_CreatePushProtectionBypass(t *testing.T) {
 
 	want := &PushProtectionBypass{
 		Reason:    "valid reason",
-		ExpireAt:  &referenceTimestamp,
+		ExpireAt:  refTimestamp(1136178000),
 		TokenType: "github_token",
 	}
 
@@ -529,8 +529,8 @@ func TestSecretScanningService_GetScanHistory(t *testing.T) {
 				{
 					"type": "incremental",
 					"status": "success",
-					"completed_at": `+referenceTimeStr+`,
-					"started_at": `+referenceTimeStr+`
+					"completed_at": `+refTimeStr(1136178000)+`,
+					"started_at": `+refTimeStr(1136178001)+`
 				}
 			],
 			"backfill_scans": [],
@@ -540,7 +540,7 @@ func TestSecretScanningService_GetScanHistory(t *testing.T) {
 					"type": "custom_backfill",
 					"status": "in_progress",
 					"completed_at": null,
-					"started_at": `+referenceTimeStr+`,
+					"started_at": `+refTimeStr(1136178002)+`,
 					"pattern_slug": "my-custom-pattern",
 					"pattern_scope": "organization"
 				}
@@ -557,13 +557,13 @@ func TestSecretScanningService_GetScanHistory(t *testing.T) {
 
 	want := &SecretScanningScanHistory{
 		IncrementalScans: []*SecretsScan{
-			{Type: "incremental", Status: "success", CompletedAt: &referenceTimestamp, StartedAt: &referenceTimestamp},
+			{Type: "incremental", Status: "success", CompletedAt: refTimestamp(1136178000), StartedAt: refTimestamp(1136178001)},
 		},
 		BackfillScans:      []*SecretsScan{},
 		PatternUpdateScans: []*SecretsScan{},
 		CustomPatternBackfillScans: []*CustomPatternBackfillScan{
 			{
-				SecretsScan:  SecretsScan{Type: "custom_backfill", Status: "in_progress", CompletedAt: nil, StartedAt: &referenceTimestamp},
+				SecretsScan:  SecretsScan{Type: "custom_backfill", Status: "in_progress", CompletedAt: nil, StartedAt: refTimestamp(1136178002)},
 				PatternSlug:  Ptr("my-custom-pattern"),
 				PatternScope: Ptr("organization"),
 			},
