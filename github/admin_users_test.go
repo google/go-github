@@ -92,8 +92,8 @@ func TestUserImpersonation_Create(t *testing.T) {
 		"token_last_eight": "1234",
 		"note": null,
 		"note_url": null,
-		"created_at": `+referenceTimeStr+`,
-		"updated_at": `+referenceTimeStr+`,
+		"created_at": `+refTimeStr(1136178000)+`,
+		"updated_at": `+refTimeStr(1136178001)+`,
 		"scopes": [
 		  "repo"
 		],
@@ -119,8 +119,8 @@ func TestUserImpersonation_Create(t *testing.T) {
 		TokenLastEight: Ptr("1234"),
 		Note:           nil,
 		NoteURL:        nil,
-		CreatedAt:      &referenceTimestamp,
-		UpdatedAt:      &referenceTimestamp,
+		CreatedAt:      refTimestamp(1136178000),
+		UpdatedAt:      refTimestamp(1136178001),
 		Scopes:         []string{"repo"},
 		Fingerprint:    nil,
 	}
