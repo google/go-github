@@ -23,7 +23,7 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/jobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"jobs":[{"id":399444496,"run_id":29679449,"started_at":`+referenceTimeStr+`,"completed_at":`+referenceTimeStr+`},{"id":399444497,"run_id":29679449,"started_at":`+referenceTimeStr+`,"completed_at":`+referenceTimeStr+`}]}`)
+		fmt.Fprint(w, `{"total_count":4,"jobs":[{"id":399444496,"run_id":29679449,"started_at":`+refTimeStr(1136178000)+`,"completed_at":`+refTimeStr(1136178001)+`},{"id":399444497,"run_id":29679449,"started_at":`+refTimeStr(1136178002)+`,"completed_at":`+refTimeStr(1136178003)+`}]}`)
 	})
 
 	opts := &ListWorkflowJobsOptions{ListOptions: ListOptions{Page: 2, PerPage: 2}}
@@ -36,8 +36,8 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 	want := &Jobs{
 		TotalCount: Ptr(4),
 		Jobs: []*WorkflowJob{
-			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: &referenceTimestamp, CompletedAt: &referenceTimestamp},
-			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: &referenceTimestamp, CompletedAt: &referenceTimestamp},
+			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: refTimestamp(1136178000), CompletedAt: refTimestamp(1136178001)},
+			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: refTimestamp(1136178002), CompletedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(jobs, want) {
@@ -66,7 +66,7 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/jobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"filter": "all", "per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"jobs":[{"id":399444496,"run_id":29679449,"started_at":`+referenceTimeStr+`,"completed_at":`+referenceTimeStr+`},{"id":399444497,"run_id":29679449,"started_at":`+referenceTimeStr+`,"completed_at":`+referenceTimeStr+`}]}`)
+		fmt.Fprint(w, `{"total_count":4,"jobs":[{"id":399444496,"run_id":29679449,"started_at":`+refTimeStr(1136178000)+`,"completed_at":`+refTimeStr(1136178001)+`},{"id":399444497,"run_id":29679449,"started_at":`+refTimeStr(1136178002)+`,"completed_at":`+refTimeStr(1136178003)+`}]}`)
 	})
 
 	opts := &ListWorkflowJobsOptions{Filter: "all", ListOptions: ListOptions{Page: 2, PerPage: 2}}
@@ -79,8 +79,8 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 	want := &Jobs{
 		TotalCount: Ptr(4),
 		Jobs: []*WorkflowJob{
-			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: &referenceTimestamp, CompletedAt: &referenceTimestamp},
-			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: &referenceTimestamp, CompletedAt: &referenceTimestamp},
+			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: refTimestamp(1136178000), CompletedAt: refTimestamp(1136178001)},
+			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: refTimestamp(1136178002), CompletedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(jobs, want) {
@@ -95,7 +95,7 @@ func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/runs/29679449/attempts/1/jobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"jobs":[{"id":399444496,"run_id":29679449,"started_at":`+referenceTimeStr+`,"completed_at":`+referenceTimeStr+`,"run_attempt":2},{"id":399444497,"run_id":29679449,"started_at":`+referenceTimeStr+`,"completed_at":`+referenceTimeStr+`,"run_attempt":2}]}`)
+		fmt.Fprint(w, `{"total_count":4,"jobs":[{"id":399444496,"run_id":29679449,"started_at":`+refTimeStr(1136178000)+`,"completed_at":`+refTimeStr(1136178001)+`,"run_attempt":2},{"id":399444497,"run_id":29679449,"started_at":`+refTimeStr(1136178002)+`,"completed_at":`+refTimeStr(1136178003)+`,"run_attempt":2}]}`)
 	})
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := t.Context()
@@ -110,15 +110,15 @@ func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
 			{
 				ID:          Ptr(int64(399444496)),
 				RunID:       Ptr(int64(29679449)),
-				StartedAt:   &referenceTimestamp,
-				CompletedAt: &referenceTimestamp,
+				StartedAt:   refTimestamp(1136178000),
+				CompletedAt: refTimestamp(1136178001),
 				RunAttempt:  Ptr(int64(2)),
 			},
 			{
 				ID:          Ptr(int64(399444497)),
 				RunID:       Ptr(int64(29679449)),
-				StartedAt:   &referenceTimestamp,
-				CompletedAt: &referenceTimestamp,
+				StartedAt:   refTimestamp(1136178002),
+				CompletedAt: refTimestamp(1136178003),
 				RunAttempt:  Ptr(int64(2)),
 			},
 		},
@@ -148,7 +148,7 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/jobs/399444496", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":399444496,"started_at":`+referenceTimeStr+`,"completed_at":`+referenceTimeStr+`}`)
+		fmt.Fprint(w, `{"id":399444496,"started_at":`+refTimeStr(1136178000)+`,"completed_at":`+refTimeStr(1136178001)+`}`)
 	})
 
 	ctx := t.Context()
@@ -159,8 +159,8 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 
 	want := &WorkflowJob{
 		ID:          Ptr(int64(399444496)),
-		StartedAt:   &referenceTimestamp,
-		CompletedAt: &referenceTimestamp,
+		StartedAt:   refTimestamp(1136178000),
+		CompletedAt: refTimestamp(1136178001),
 	}
 	if !cmp.Equal(job, want) {
 		t.Errorf("Actions.GetWorkflowJobByID returned %+v, want %+v", job, want)
