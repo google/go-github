@@ -31,7 +31,7 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 				mux.HandleFunc("/user/codespaces/secrets", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
 					testFormValues(t, r, values{"per_page": "2", "page": "2"})
-					fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"name":"B","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
+					fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"name":"B","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*Secrets, *Response, error) {
@@ -45,7 +45,7 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 				mux.HandleFunc("/orgs/o/codespaces/secrets", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
 					testFormValues(t, r, values{"per_page": "2", "page": "2"})
-					fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"name":"B","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
+					fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"name":"B","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*Secrets, *Response, error) {
@@ -62,7 +62,7 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 				mux.HandleFunc("/repos/o/r/codespaces/secrets", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
 					testFormValues(t, r, values{"per_page": "2", "page": "2"})
-					fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"name":"B","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
+					fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"name":"B","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*Secrets, *Response, error) {
@@ -91,8 +91,8 @@ func TestCodespacesService_ListSecrets(t *testing.T) {
 			want := &Secrets{
 				TotalCount: 4,
 				Secrets: []*Secret{
-					{Name: "A", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp},
-					{Name: "B", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp},
+					{Name: "A", CreatedAt: *refTimestamp(1136178000), UpdatedAt: *refTimestamp(1136178001)},
+					{Name: "B", CreatedAt: *refTimestamp(1136178002), UpdatedAt: *refTimestamp(1136178003)},
 				},
 			}
 			if !cmp.Equal(secrets, want) {
@@ -132,7 +132,7 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 			handleFunc: func(mux *http.ServeMux) {
 				mux.HandleFunc("/user/codespaces/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
-					fmt.Fprint(w, `{"name":"A","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
+					fmt.Fprint(w, `{"name":"A","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*Secret, *Response, error) {
@@ -145,7 +145,7 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 			handleFunc: func(mux *http.ServeMux) {
 				mux.HandleFunc("/orgs/o/codespaces/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
-					fmt.Fprint(w, `{"name":"A","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
+					fmt.Fprint(w, `{"name":"A","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*Secret, *Response, error) {
@@ -161,7 +161,7 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 			handleFunc: func(mux *http.ServeMux) {
 				mux.HandleFunc("/repos/o/r/codespaces/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 					testMethod(t, r, "GET")
-					fmt.Fprint(w, `{"name":"A","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
+					fmt.Fprint(w, `{"name":"A","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 				})
 			},
 			call: func(ctx context.Context, client *Client) (*Secret, *Response, error) {
@@ -187,7 +187,7 @@ func TestCodespacesService_GetSecret(t *testing.T) {
 				t.Errorf("Codespaces.%v returned error: %v", tt.methodName, err)
 			}
 
-			want := &Secret{Name: "A", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp}
+			want := &Secret{Name: "A", CreatedAt: *refTimestamp(1136178000), UpdatedAt: *refTimestamp(1136178001)}
 			if !cmp.Equal(secret, want) {
 				t.Errorf("Codespaces.%v returned %+v, want %+v", tt.methodName, secret, want)
 			}
