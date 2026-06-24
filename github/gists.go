@@ -41,7 +41,7 @@ func (g Gist) String() string {
 type CreateGistRequest struct {
 	Description *string `json:"description,omitempty"`
 	Public      *bool   `json:"public,omitempty"`
-	// Files is the set of files that make up the gist, keyed by filename. (Required.)
+	// Files is the set of files that make up the gist, keyed by filename.
 	Files map[GistFilename]*CreateGistFile `json:"files"`
 }
 
@@ -73,8 +73,8 @@ func (g GistFile) String() string {
 // CreateGistFile represents a file within a CreateGistRequest, keyed by filename
 // in the request's Files map.
 type CreateGistFile struct {
-	// Content is the contents of the file. (Required.)
-	Content *string `json:"content,omitempty"`
+	// Content is the contents of the file.
+	Content string `json:"content"`
 }
 
 // UpdateGistFile represents a file within an UpdateGistRequest, keyed by filename

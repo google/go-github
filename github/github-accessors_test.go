@@ -13691,10 +13691,7 @@ func TestCreateEvent_GetSender(tt *testing.T) {
 
 func TestCreateGistCommentRequest_GetBody(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateGistCommentRequest{Body: &zeroValue}
-	c.GetBody()
-	c = &CreateGistCommentRequest{}
+	c := &CreateGistCommentRequest{}
 	c.GetBody()
 	c = nil
 	c.GetBody()
@@ -13702,10 +13699,7 @@ func TestCreateGistCommentRequest_GetBody(tt *testing.T) {
 
 func TestCreateGistFile_GetContent(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateGistFile{Content: &zeroValue}
-	c.GetContent()
-	c = &CreateGistFile{}
+	c := &CreateGistFile{}
 	c.GetContent()
 	c = nil
 	c.GetContent()
@@ -52609,10 +52603,7 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
 
 func TestUpdateGistCommentRequest_GetBody(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	u := &UpdateGistCommentRequest{Body: &zeroValue}
-	u.GetBody()
-	u = &UpdateGistCommentRequest{}
+	u := &UpdateGistCommentRequest{}
 	u.GetBody()
 	u = nil
 	u.GetBody()

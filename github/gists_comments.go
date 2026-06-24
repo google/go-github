@@ -25,12 +25,14 @@ func (g GistComment) String() string {
 
 // CreateGistCommentRequest represents the input for creating a gist comment.
 type CreateGistCommentRequest struct {
-	Body *string `json:"body,omitempty"`
+	// Body is the comment text.
+	Body string `json:"body"`
 }
 
 // UpdateGistCommentRequest represents the input for updating a gist comment.
 type UpdateGistCommentRequest struct {
-	Body *string `json:"body,omitempty"`
+	// Body is the comment text.
+	Body string `json:"body"`
 }
 
 // ListComments lists all comments for a gist.

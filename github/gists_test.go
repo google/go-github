@@ -267,7 +267,7 @@ func TestGistsService_Create(t *testing.T) {
 		Description: Ptr("Gist description"),
 		Public:      Ptr(false),
 		Files: map[GistFilename]*CreateGistFile{
-			"test.txt": {Content: Ptr("Gist file content")},
+			"test.txt": {Content: "Gist file content"},
 		},
 	}
 

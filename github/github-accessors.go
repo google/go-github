@@ -10766,20 +10766,20 @@ func (c *CreateEvent) GetSender() *User {
 	return c.Sender
 }
 
-// GetBody returns the Body field if it's non-nil, zero value otherwise.
+// GetBody returns the Body field.
 func (c *CreateGistCommentRequest) GetBody() string {
-	if c == nil || c.Body == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.Body
+	return c.Body
 }
 
-// GetContent returns the Content field if it's non-nil, zero value otherwise.
+// GetContent returns the Content field.
 func (c *CreateGistFile) GetContent() string {
-	if c == nil || c.Content == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.Content
+	return c.Content
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
@@ -41902,12 +41902,12 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetVisibility() string {
 	return *u.Visibility
 }
 
-// GetBody returns the Body field if it's non-nil, zero value otherwise.
+// GetBody returns the Body field.
 func (u *UpdateGistCommentRequest) GetBody() string {
-	if u == nil || u.Body == nil {
+	if u == nil {
 		return ""
 	}
-	return *u.Body
+	return u.Body
 }
 
 // GetContent returns the Content field if it's non-nil, zero value otherwise.

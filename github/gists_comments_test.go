@@ -107,7 +107,7 @@ func TestGistsService_CreateComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CreateGistCommentRequest{Body: Ptr("b")}
+	input := CreateGistCommentRequest{Body: "b"}
 
 	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -154,7 +154,7 @@ func TestGistsService_UpdateComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := UpdateGistCommentRequest{Body: Ptr("b")}
+	input := UpdateGistCommentRequest{Body: "b"}
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
