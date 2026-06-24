@@ -256,11 +256,11 @@ func TestGistsService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Gist{
+	input := CreateGistRequest{
 		Description: Ptr("Gist description"),
 		Public:      Ptr(false),
-		Files: map[GistFilename]GistFile{
-			"test.txt": {Content: Ptr("Gist file content")},
+		Files: map[GistFilename]*CreateGistFile{
+			"test.txt": {Content: "Gist file content"},
 		},
 	}
 
@@ -310,14 +310,16 @@ func TestGistsService_Create(t *testing.T) {
 	})
 }
 
-func TestGistsService_Edit(t *testing.T) {
+func TestGistsService_Update(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Gist{
+	input := UpdateGistRequest{
 		Description: Ptr("New description"),
-		Files: map[GistFilename]GistFile{
+		Files: map[GistFilename]*UpdateGistFile{
 			"new.txt": {Content: Ptr("new file content")},
+			// A nil value deletes the file from the gist.
+			"old.txt": nil,
 		},
 	}
 
@@ -343,9 +345,9 @@ func TestGistsService_Edit(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	gist, _, err := client.Gists.Edit(ctx, "1", input)
+	gist, _, err := client.Gists.Update(ctx, "1", input)
 	if err != nil {
-		t.Errorf("Gists.Edit returned error: %v", err)
+		t.Errorf("Gists.Update returned error: %v", err)
 	}
 
 	want := &Gist{
@@ -358,17 +360,17 @@ func TestGistsService_Edit(t *testing.T) {
 		},
 	}
 	if !cmp.Equal(gist, want) {
-		t.Errorf("Gists.Edit returned %+v, want %+v", gist, want)
+		t.Errorf("Gists.Update returned %+v, want %+v", gist, want)
 	}
 
-	const methodName = "Edit"
+	const methodName = "Update"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Gists.Edit(ctx, "\n", input)
+		_, _, err = client.Gists.Update(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Gists.Edit(ctx, "1", input)
+		got, resp, err := client.Gists.Update(ctx, "1", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -376,12 +378,12 @@ func TestGistsService_Edit(t *testing.T) {
 	})
 }
 
-func TestGistsService_Edit_invalidID(t *testing.T) {
+func TestGistsService_Update_invalidID(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Gists.Edit(ctx, "%", nil)
+	_, _, err := client.Gists.Update(ctx, "%", UpdateGistRequest{})
 	testURLParseError(t, err)
 }
 

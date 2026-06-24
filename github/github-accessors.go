@@ -10766,6 +10766,38 @@ func (c *CreateEvent) GetSender() *User {
 	return c.Sender
 }
 
+// GetBody returns the Body field.
+func (c *CreateGistCommentRequest) GetBody() string {
+	if c == nil {
+		return ""
+	}
+	return c.Body
+}
+
+// GetContent returns the Content field.
+func (c *CreateGistFile) GetContent() string {
+	if c == nil {
+		return ""
+	}
+	return c.Content
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateGistRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetPublic returns the Public field if it's non-nil, zero value otherwise.
+func (c *CreateGistRequest) GetPublic() bool {
+	if c == nil || c.Public == nil {
+		return false
+	}
+	return *c.Public
+}
+
 // GetEnableStaticIP returns the EnableStaticIP field if it's non-nil, zero value otherwise.
 func (c *CreateHostedRunnerRequest) GetEnableStaticIP() bool {
 	if c == nil || c.EnableStaticIP == nil {
@@ -41868,6 +41900,38 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetVisibility() string {
 		return ""
 	}
 	return *u.Visibility
+}
+
+// GetBody returns the Body field.
+func (u *UpdateGistCommentRequest) GetBody() string {
+	if u == nil {
+		return ""
+	}
+	return u.Body
+}
+
+// GetContent returns the Content field if it's non-nil, zero value otherwise.
+func (u *UpdateGistFile) GetContent() string {
+	if u == nil || u.Content == nil {
+		return ""
+	}
+	return *u.Content
+}
+
+// GetFilename returns the Filename field if it's non-nil, zero value otherwise.
+func (u *UpdateGistFile) GetFilename() string {
+	if u == nil || u.Filename == nil {
+		return ""
+	}
+	return *u.Filename
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateGistRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
 }
 
 // GetEnableStaticIP returns the EnableStaticIP field if it's non-nil, zero value otherwise.
