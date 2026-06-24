@@ -26,8 +26,8 @@ func TestEnterpriseService_ListTeams(t *testing.T) {
 			"name": "Team One",
 			"html_url": "https://example.com/html",
 			"slug": "team-one",
-			"created_at": `+referenceTimeStr+`,
-			"updated_at": `+referenceTimeStr+`,
+			"created_at": `+refTimeStr(1136178000)+`,
+			"updated_at": `+refTimeStr(1136178001)+`,
 			"group_id": "99"
 		}]`)
 	})
@@ -48,8 +48,8 @@ func TestEnterpriseService_ListTeams(t *testing.T) {
 			HTMLURL:   "https://example.com/html",
 			Slug:      "team-one",
 			GroupID:   "99",
-			CreatedAt: referenceTimestamp,
-			UpdatedAt: referenceTimestamp,
+			CreatedAt: *refTimestamp(1136178000),
+			UpdatedAt: *refTimestamp(1136178001),
 		},
 	}
 
