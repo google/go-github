@@ -25,8 +25,8 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 				"login": "l",
 				"credential_id": 1,
 				"credential_type": "t",
-				"credential_authorized_at": `+referenceTimeStr+`,
-				"credential_accessed_at": `+referenceTimeStr+`,
+				"credential_authorized_at": `+refTimeStr(1136178000)+`,
+				"credential_accessed_at": `+refTimeStr(1136178001)+`,
 				"authorized_credential_id": 1
 			}
 		]`)
@@ -48,8 +48,8 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 			Login:                  Ptr("l"),
 			CredentialID:           Ptr(int64(1)),
 			CredentialType:         Ptr("t"),
-			CredentialAuthorizedAt: &referenceTimestamp,
-			CredentialAccessedAt:   &referenceTimestamp,
+			CredentialAuthorizedAt: refTimestamp(1136178000),
+			CredentialAccessedAt:   refTimestamp(1136178001),
 			AuthorizedCredentialID: Ptr(int64(1)),
 		},
 	}
