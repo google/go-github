@@ -28,7 +28,7 @@ func TestProjectsService_ListOrganizationProjects(t *testing.T) {
 		}
 		// default expectation for main part of test
 		testFormValues(t, r, values{"q": "alpha", "after": "2", "before": "1"})
-		fmt.Fprint(w, `[{"id":1,"title":"T1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+		fmt.Fprint(w, `[{"id":1,"title":"T1","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]`)
 	})
 
 	opts := &ListProjectsOptions{Query: "alpha", ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1"}}
@@ -68,7 +68,7 @@ func TestProjectsService_GetOrganizationProject(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/projectsV2/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1,"title":"OrgProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
+		fmt.Fprint(w, `{"id":1,"title":"OrgProj","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -103,7 +103,7 @@ func TestProjectsService_ListUserProjects(t *testing.T) {
 			return
 		}
 		testFormValues(t, r, values{"q": "beta", "before": "1", "after": "2", "per_page": "2"})
-		fmt.Fprint(w, `[{"id":2,"title":"UProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+		fmt.Fprint(w, `[{"id":2,"title":"UProj","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]`)
 	})
 
 	opts := &ListProjectsOptions{Query: "beta", ListProjectsPaginationOptions: ListProjectsPaginationOptions{Before: "1", After: "2", PerPage: 2}}
@@ -144,7 +144,7 @@ func TestProjectsService_GetUserProject(t *testing.T) {
 
 	mux.HandleFunc("/users/u/projectsV2/3", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":3,"title":"UserProj","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}`)
+		fmt.Fprint(w, `{"id":3,"title":"UserProj","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -189,8 +189,8 @@ func TestProjectsService_ListOrganizationProjectFields(t *testing.T) {
 				{"id": "1", "name": {"raw": "Todo", "html": "Todo"}, "color": "blue", "description": {"raw": "Tasks to be done", "html": "Tasks to be done"}},
 				{"id": "2", "name": {"raw": "In Progress", "html": "In Progress"}, "color": "yellow"}
 			],
-			"created_at": "2011-01-02T15:04:05Z",
-			"updated_at": "2012-01-02T15:04:05Z"
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`
 		},
 		{
 			"id": 2,
@@ -198,8 +198,8 @@ func TestProjectsService_ListOrganizationProjectFields(t *testing.T) {
 			"name": "Priority",
 			"data_type": "text",
 			"url": "https://api.github.com/projects/1/fields/field2",
-			"created_at": "2011-01-02T15:04:05Z",
-			"updated_at": "2012-01-02T15:04:05Z"
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`
 		}
 		]`)
 	})
@@ -258,8 +258,8 @@ func TestProjectsService_ListUserProjectFields(t *testing.T) {
 				{"id": "1", "name": {"raw": "Todo", "html": "Todo"}, "color": "blue", "description": {"raw": "Tasks to be done", "html": "Tasks to be done"}},
 				{"id": "2", "name": {"raw": "In Progress", "html": "In Progress"}, "color": "yellow"}
 			],
-			"created_at": "2011-01-02T15:04:05Z",
-			"updated_at": "2012-01-02T15:04:05Z"
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`
 		},
 		{
 			"id": 2,
@@ -267,8 +267,8 @@ func TestProjectsService_ListUserProjectFields(t *testing.T) {
 			"name": "Priority",
 			"data_type": "text",
 			"url": "https://api.github.com/projects/1/fields/field2",
-			"created_at": "2011-01-02T15:04:05Z",
-			"updated_at": "2012-01-02T15:04:05Z"
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`
 		}
 		]`)
 	})
@@ -321,8 +321,8 @@ func TestProjectsService_GetOrganizationProjectField(t *testing.T) {
 				{"id": "1", "name": {"raw": "Todo", "html": "Todo"}, "color": "blue", "description": {"raw": "Tasks to be done", "html": "Tasks to be done"}},
 				{"id": "2", "name": {"raw": "In Progress", "html": "In Progress"}, "color": "yellow"}
 			],
-			"created_at": "2011-01-02T15:04:05Z",
-			"updated_at": "2012-01-02T15:04:05Z"
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -362,8 +362,8 @@ func TestProjectsService_GetUserProjectField(t *testing.T) {
 				{"id": "1", "name": {"raw": "Done", "html": "Done"}, "color": "red", "description": {"raw": "Done task", "html": "Done task"}},
 				{"id": "2", "name": {"raw": "In Progress", "html": "In Progress"}, "color": "yellow"}
 			],
-			"created_at": "2011-01-02T15:04:05Z",
-			"updated_at": "2012-01-02T15:04:05Z"
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`
 		}`)
 	})
 
@@ -395,12 +395,12 @@ func TestProjectsService_ListUserProjects_pagination(t *testing.T) {
 		before := q.Get("before")
 		if after == "" && before == "" {
 			w.Header().Set("Link", "<http://example.org/users/u/projectsV2?after=ucursor2>; rel=\"next\"")
-			fmt.Fprint(w, `[{"id":10,"title":"UP1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":10,"title":"UP1","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]`)
 			return
 		}
 		if after == "ucursor2" {
 			w.Header().Set("Link", "<http://example.org/users/u/projectsV2?before=ucursor2>; rel=\"prev\"")
-			fmt.Fprint(w, `[{"id":11,"title":"UP2","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":11,"title":"UP2","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]`)
 			return
 		}
 		http.Error(w, "unexpected query", http.StatusBadRequest)
@@ -465,13 +465,13 @@ func TestProjectsService_ListOrganizationProjectFields_pagination(t *testing.T) 
 		if after == "" && before == "" {
 			// first request
 			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2/1/fields?after=cursor2>; rel=\"next\"")
-			fmt.Fprint(w, `[{"id":1,"name":"Status","data_type":"single_select","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":1,"name":"Status","data_type":"single_select","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]`)
 			return
 		}
 		if after == "cursor2" {
 			// second request simulates a previous link
 			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2/1/fields?before=cursor2>; rel=\"prev\"")
-			fmt.Fprint(w, `[{"id":2,"name":"Priority","data_type":"text","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":2,"name":"Priority","data_type":"text","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]`)
 			return
 		}
 		// unexpected state
@@ -513,12 +513,12 @@ func TestProjectsService_ListOrganizationProjects_pagination(t *testing.T) {
 		before := q.Get("before")
 		if after == "" && before == "" {
 			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2?after=ocursor2>; rel=\"next\"")
-			fmt.Fprint(w, `[{"id":20,"title":"OP1","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":20,"title":"OP1","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]`)
 			return
 		}
 		if after == "ocursor2" {
 			w.Header().Set("Link", "<http://example.org/orgs/o/projectsV2?before=ocursor2>; rel=\"prev\"")
-			fmt.Fprint(w, `[{"id":21,"title":"OP2","created_at":"2011-01-02T15:04:05Z","updated_at":"2012-01-02T15:04:05Z"}]`)
+			fmt.Fprint(w, `[{"id":21,"title":"OP2","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]`)
 			return
 		}
 		http.Error(w, "unexpected query", http.StatusBadRequest)
