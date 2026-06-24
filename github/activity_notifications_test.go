@@ -23,7 +23,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 		testFormValues(t, r, values{
 			"all":           "true",
 			"participating": "true",
-			"since":         "2006-01-02T15:04:05Z",
+			"since":         referenceTimeRaw,
 			"before":        "2007-03-04T15:04:05Z",
 		})
 
@@ -33,7 +33,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 	opt := &NotificationListOptions{
 		All:           true,
 		Participating: true,
-		Since:         time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC),
+		Since:         referenceTime,
 		Before:        time.Date(2007, time.March, 4, 15, 4, 5, 0, time.UTC),
 	}
 	ctx := t.Context()
@@ -96,13 +96,11 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}
-
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		want := markReadOptions{
-			LastReadAt: input,
+			LastReadAt: referenceTimestamp,
 		}
 		testJSONBody(t, r, want)
 
@@ -110,14 +108,14 @@ func TestActivityService_MarkNotificationsRead(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Activity.MarkNotificationsRead(ctx, input)
+	_, err := client.Activity.MarkNotificationsRead(ctx, referenceTimestamp)
 	if err != nil {
 		t.Errorf("Activity.MarkNotificationsRead returned error: %v", err)
 	}
 
 	const methodName = "MarkNotificationsRead"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Activity.MarkNotificationsRead(ctx, input)
+		return client.Activity.MarkNotificationsRead(ctx, referenceTimestamp)
 	})
 }
 
@@ -125,13 +123,11 @@ func TestActivityService_MarkNotificationsRead_EmptyLastReadAt(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := Timestamp{}
-
 	mux.HandleFunc("/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		want := markReadOptions{
-			LastReadAt: input,
+			LastReadAt: referenceTimestamp,
 		}
 		testJSONBody(t, r, want)
 
@@ -139,7 +135,7 @@ func TestActivityService_MarkNotificationsRead_EmptyLastReadAt(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Activity.MarkNotificationsRead(ctx, input)
+	_, err := client.Activity.MarkNotificationsRead(ctx, referenceTimestamp)
 	if err != nil {
 		t.Errorf("Activity.MarkNotificationsRead returned error: %v", err)
 	}
@@ -149,32 +145,30 @@ func TestActivityService_MarkRepositoryNotificationsRead(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := Timestamp{time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)}
-
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		want := markReadOptions{
-			LastReadAt: input,
+			LastReadAt: referenceTimestamp,
 		}
 		testJSONBody(t, r, want)
 		w.WriteHeader(http.StatusResetContent)
 	})
 
 	ctx := t.Context()
-	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", input)
+	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", referenceTimestamp)
 	if err != nil {
 		t.Errorf("Activity.MarkRepositoryNotificationsRead returned error: %v", err)
 	}
 
 	const methodName = "MarkRepositoryNotificationsRead"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Activity.MarkRepositoryNotificationsRead(ctx, "\n", "\n", input)
+		_, err = client.Activity.MarkRepositoryNotificationsRead(ctx, "\n", "\n", referenceTimestamp)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", input)
+		return client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", referenceTimestamp)
 	})
 }
 
@@ -182,13 +176,11 @@ func TestActivityService_MarkRepositoryNotificationsRead_EmptyLastReadAt(t *test
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := Timestamp{}
-
 	mux.HandleFunc("/repos/o/r/notifications", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		want := markReadOptions{
-			LastReadAt: input,
+			LastReadAt: referenceTimestamp,
 		}
 		testJSONBody(t, r, want)
 
@@ -196,7 +188,7 @@ func TestActivityService_MarkRepositoryNotificationsRead_EmptyLastReadAt(t *test
 	})
 
 	ctx := t.Context()
-	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", input)
+	_, err := client.Activity.MarkRepositoryNotificationsRead(ctx, "o", "r", referenceTimestamp)
 	if err != nil {
 		t.Errorf("Activity.MarkRepositoryNotificationsRead returned error: %v", err)
 	}

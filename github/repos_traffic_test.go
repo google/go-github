@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -109,7 +108,7 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 		fmt.Fprint(w, `{"count": 7,
 			"uniques": 6,
 			"views": [{
-				"timestamp": "2016-05-31T16:00:00.000Z",
+				"timestamp": `+referenceTimeStr+`,
 				"count": 7,
 				"uniques": 6
 		}]}`)
@@ -123,7 +122,7 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 
 	want := &TrafficViews{
 		Views: []*TrafficData{{
-			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
+			Timestamp: &referenceTimestamp,
 			Count:     Ptr(7),
 			Uniques:   Ptr(6),
 		}},
@@ -159,7 +158,7 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 		fmt.Fprint(w, `{"count": 7,
 			"uniques": 6,
 			"clones": [{
-				"timestamp": "2016-05-31T16:00:00.00Z",
+				"timestamp": `+referenceTimeStr+`,
 				"count": 7,
 				"uniques": 6
 		}]}`)
@@ -173,7 +172,7 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 
 	want := &TrafficClones{
 		Clones: []*TrafficData{{
-			Timestamp: &Timestamp{time.Date(2016, time.May, 31, 16, 0, 0, 0, time.UTC)},
+			Timestamp: &referenceTimestamp,
 			Count:     Ptr(7),
 			Uniques:   Ptr(6),
 		}},

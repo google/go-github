@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -32,7 +31,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 			Version: Ptr("0.0.1"),
 			URL:     Ptr("https://github.com/octo-org/octo-repo"),
 		},
-		Scanned: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 0, 0, time.UTC)},
+		Scanned: &referenceTimestamp,
 		Metadata: map[string]any{
 			"key1": "value1",
 			"key2": "value2",
@@ -74,7 +73,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/dependency-graph/snapshots", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testJSONBody(t, r, snapshot)
-		fmt.Fprint(w, `{"id":12345,"created_at":"2022-06-14T20:25:01Z","message":"Dependency results for the repo have been successfully updated.","result":"SUCCESS"}`)
+		fmt.Fprint(w, `{"id":12345,"created_at":`+referenceTimeStr+`,"message":"Dependency results for the repo have been successfully updated.","result":"SUCCESS"}`)
 	})
 
 	ctx := t.Context()
@@ -85,7 +84,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 
 	want := &DependencyGraphSnapshotCreationData{
 		ID:        12345,
-		CreatedAt: &Timestamp{time.Date(2022, time.June, 14, 20, 25, 1, 0, time.UTC)},
+		CreatedAt: &referenceTimestamp,
 		Message:   Ptr("Dependency results for the repo have been successfully updated."),
 		Result:    Ptr("SUCCESS"),
 	}

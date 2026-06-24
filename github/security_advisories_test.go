@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -87,9 +86,9 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
 			"name": "repo-ghsa-xxxx-xxxx-xxxx",
 			"full_name": "owner/repo-ghsa-xxxx-xxxx-xxxx",
 			"default_branch": "master",
-			"created_at": "2023-12-08T17:22:41Z",
-			"pushed_at": "2023-12-03T11:27:08Z",
-			"updated_at": "2023-12-08T17:22:42Z",
+			"created_at": `+refTimeStr(1136178000)+`,
+			"pushed_at": `+refTimeStr(1136178001)+`,
+			"updated_at": `+refTimeStr(1136178002)+`,
 			"html_url": "https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx",
 			"clone_url": "https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git",
 			"git_url": "git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git",
@@ -196,9 +195,9 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork(t *testing.T) {
 		Name:             Ptr("repo-ghsa-xxxx-xxxx-xxxx"),
 		FullName:         Ptr("owner/repo-ghsa-xxxx-xxxx-xxxx"),
 		DefaultBranch:    Ptr("master"),
-		CreatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 41, 0, time.UTC)},
-		PushedAt:         &Timestamp{time.Date(2023, time.December, 3, 11, 27, 8, 0, time.UTC)},
-		UpdatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 42, 0, time.UTC)},
+		CreatedAt:        refTimestamp(1136178000),
+		PushedAt:         refTimestamp(1136178001),
+		UpdatedAt:        refTimestamp(1136178002),
 		HTMLURL:          Ptr("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
 		CloneURL:         Ptr("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
 		GitURL:           Ptr("git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
@@ -323,9 +322,9 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testin
 			"name": "repo-ghsa-xxxx-xxxx-xxxx",
 			"full_name": "owner/repo-ghsa-xxxx-xxxx-xxxx",
 			"default_branch": "master",
-			"created_at": "2023-12-08T17:22:41Z",
-			"pushed_at": "2023-12-03T11:27:08Z",
-			"updated_at": "2023-12-08T17:22:42Z",
+			"created_at": `+refTimeStr(1136178000)+`,
+			"pushed_at": `+refTimeStr(1136178001)+`,
+			"updated_at": `+refTimeStr(1136178002)+`,
 			"html_url": "https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx",
 			"clone_url": "https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git",
 			"git_url": "git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git",
@@ -432,9 +431,9 @@ func TestSecurityAdvisoriesService_CreateTemporaryPrivateFork_deferred(t *testin
 		Name:             Ptr("repo-ghsa-xxxx-xxxx-xxxx"),
 		FullName:         Ptr("owner/repo-ghsa-xxxx-xxxx-xxxx"),
 		DefaultBranch:    Ptr("master"),
-		CreatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 41, 0, time.UTC)},
-		PushedAt:         &Timestamp{time.Date(2023, time.December, 3, 11, 27, 8, 0, time.UTC)},
-		UpdatedAt:        &Timestamp{time.Date(2023, time.December, 8, 17, 22, 42, 0, time.UTC)},
+		CreatedAt:        refTimestamp(1136178000),
+		PushedAt:         refTimestamp(1136178001),
+		UpdatedAt:        refTimestamp(1136178002),
 		HTMLURL:          Ptr("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx"),
 		CloneURL:         Ptr("https://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
 		GitURL:           Ptr("git://github.com/owner/repo-ghsa-xxxx-xxxx-xxxx.git"),
@@ -774,10 +773,10 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 					}
 				],
 				"references": ["https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"],
-				"published_at": "1996-06-20T00:00:00Z",
-				"updated_at": "1996-06-20T00:00:00Z",
-				"github_reviewed_at": "1996-06-20T00:00:00Z",
-				"nvd_published_at": "1996-06-20T00:00:00Z",
+				"published_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`,
+				"github_reviewed_at": `+refTimeStr(1136178002)+`,
+				"nvd_published_at": `+refTimeStr(1136178003)+`,
 				"withdrawn_at": null,
 				"vulnerabilities": [
 					{
@@ -837,7 +836,6 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 		t.Errorf("SecurityAdvisories.ListGlobalSecurityAdvisories returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := []*GlobalSecurityAdvisory{
 		{
 			ID: Ptr(int64(1)),
@@ -859,8 +857,8 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 						Value: Ptr("CVE-xoxo-1234"),
 					},
 				},
-				PublishedAt: &date,
-				UpdatedAt:   &date,
+				PublishedAt: refTimestamp(1136178000),
+				UpdatedAt:   refTimestamp(1136178001),
 				WithdrawnAt: nil,
 				CVSS: &AdvisoryCVSS{
 					VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
@@ -888,8 +886,8 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 			RepositoryAdvisoryURL: Ptr("https://api.github.com/repos/project/a-package/security-advisories/GHSA-xoxo-1234-xoxo"),
 			Type:                  Ptr("reviewed"),
 			SourceCodeLocation:    Ptr("https://github.com/project/a-package"),
-			GithubReviewedAt:      &date,
-			NVDPublishedAt:        &date,
+			GithubReviewedAt:      refTimestamp(1136178002),
+			NVDPublishedAt:        refTimestamp(1136178003),
 			Credits: []*Credit{
 				{
 					User: &User{
@@ -959,10 +957,10 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 				}
 			],
 			"references": ["https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"],
-			"published_at": "1996-06-20T00:00:00Z",
-			"updated_at": "1996-06-20T00:00:00Z",
-			"github_reviewed_at": "1996-06-20T00:00:00Z",
-			"nvd_published_at": "1996-06-20T00:00:00Z",
+			"published_at": `+refTimeStr(1136178000)+`,
+			"updated_at": `+refTimeStr(1136178001)+`,
+			"github_reviewed_at": `+refTimeStr(1136178002)+`,
+			"nvd_published_at": `+refTimeStr(1136178003)+`,
 			"withdrawn_at": null,
 			"vulnerabilities": [
 				{
@@ -1019,7 +1017,6 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 		t.Errorf("SecurityAdvisories.GetGlobalSecurityAdvisories returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(1996, time.June, 20, 0, 0, 0, 0, time.UTC)}
 	want := &GlobalSecurityAdvisory{
 		ID: Ptr(int64(1)),
 		SecurityAdvisory: SecurityAdvisory{
@@ -1040,8 +1037,8 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 					Value: Ptr("CVE-xoxo-1234"),
 				},
 			},
-			PublishedAt: &date,
-			UpdatedAt:   &date,
+			PublishedAt: refTimestamp(1136178000),
+			UpdatedAt:   refTimestamp(1136178001),
 			WithdrawnAt: nil,
 			CVSS: &AdvisoryCVSS{
 				VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
@@ -1058,8 +1055,8 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 		Type:                  Ptr("reviewed"),
 		SourceCodeLocation:    Ptr("https://github.com/project/a-package"),
 		References:            []string{"https://nvd.nist.gov/vuln/detail/CVE-xoxo-1234"},
-		GithubReviewedAt:      &date,
-		NVDPublishedAt:        &date,
+		GithubReviewedAt:      refTimestamp(1136178002),
+		NVDPublishedAt:        refTimestamp(1136178003),
 
 		Vulnerabilities: []*GlobalSecurityVulnerability{
 			{

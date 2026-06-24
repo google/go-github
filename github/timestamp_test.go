@@ -13,6 +13,7 @@ import (
 
 const (
 	emptyTimeStr                     = `"0001-01-01T00:00:00Z"`
+	referenceTimeRaw                 = "2006-01-02T15:04:05Z"
 	referenceTimeStr                 = `"2006-01-02T15:04:05Z"`
 	referenceTimeStrFractional       = `"2006-01-02T15:04:05.000Z"` // This format was returned by the Projects API before October 1, 2017.
 	referenceUnixTimeStr             = `1136214245`
@@ -20,8 +21,11 @@ const (
 )
 
 var (
-	referenceTime = time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)
-	unixOrigin    = time.Unix(0, 0).In(time.UTC)
+	referenceTime      = time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC)
+	referenceTimestamp = Timestamp{referenceTime}
+	refTimeStr         = func(unix int64) string { return `"` + refTimestamp(unix).Format(time.RFC3339) + `"` }
+	refTimestamp       = func(unix int64) *Timestamp { return &Timestamp{time.Unix(unix, 0).In(time.UTC).Local()} }
+	unixOrigin         = time.Unix(0, 0).In(time.UTC)
 )
 
 func TestTimestamp_Marshal(t *testing.T) {

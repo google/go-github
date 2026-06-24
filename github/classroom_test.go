@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -37,7 +36,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 			"submitted": 40,
 			"passing": 10,
 			"language": "ruby",
-			"deadline": "2011-01-26T19:06:43Z",
+			"deadline": `+referenceTimeStr+`,
 			"starter_code_repository": {
 				"id": 1296269,
 				"full_name": "octocat/Hello-World",
@@ -78,7 +77,7 @@ func TestClassroomService_GetAssignment(t *testing.T) {
 		Submitted:                   Ptr(40),
 		Passing:                     Ptr(10),
 		Language:                    Ptr("ruby"),
-		Deadline:                    func() *Timestamp { t, _ := time.Parse(time.RFC3339, "2011-01-26T19:06:43Z"); return &Timestamp{t} }(),
+		Deadline:                    &referenceTimestamp,
 		StarterCodeRepository: &Repository{
 			ID:            Ptr(int64(1296269)),
 			FullName:      Ptr("octocat/Hello-World"),
@@ -260,7 +259,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 				"submitted": 40,
 				"passing": 10,
 				"language": "ruby",
-				"deadline": "2011-01-26T19:06:43Z",
+				"deadline": `+referenceTimeStr+`,
 				"classroom": {
 					"id": 1296269,
 					"name": "Programming Elixir",
@@ -285,7 +284,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 				"submitted": 25,
 				"passing": 20,
 				"language": "python",
-				"deadline": "2020-01-11T11:59:22Z",
+				"deadline": `+referenceTimeStr+`,
 				"classroom": {
 					"id": 1296269,
 					"name": "Programming Elixir",
@@ -321,7 +320,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 			Submitted:                   Ptr(40),
 			Passing:                     Ptr(10),
 			Language:                    Ptr("ruby"),
-			Deadline:                    func() *Timestamp { t, _ := time.Parse(time.RFC3339, "2011-01-26T19:06:43Z"); return &Timestamp{t} }(),
+			Deadline:                    &referenceTimestamp,
 			Classroom: &Classroom{
 				ID:       Ptr(int64(1296269)),
 				Name:     Ptr("Programming Elixir"),
@@ -346,7 +345,7 @@ func TestClassroomService_ListClassroomAssignments(t *testing.T) {
 			Submitted:                   Ptr(25),
 			Passing:                     Ptr(20),
 			Language:                    Ptr("python"),
-			Deadline:                    func() *Timestamp { t, _ := time.Parse(time.RFC3339, "2020-01-11T11:59:22Z"); return &Timestamp{t} }(),
+			Deadline:                    &referenceTimestamp,
 			Classroom: &Classroom{
 				ID:       Ptr(int64(1296269)),
 				Name:     Ptr("Programming Elixir"),
@@ -422,7 +421,7 @@ func TestClassroomService_ListAcceptedAssignments(t *testing.T) {
 					"submitted": 40,
 					"passing": 10,
 					"language": "ruby",
-					"deadline": "2011-01-26T19:06:43Z",
+					"deadline": `+referenceTimeStr+`,
 					"classroom": {
 						"id": 1296269,
 						"name": "Programming Elixir",
@@ -470,7 +469,7 @@ func TestClassroomService_ListAcceptedAssignments(t *testing.T) {
 					"submitted": 40,
 					"passing": 10,
 					"language": "ruby",
-					"deadline": "2011-01-26T19:06:43Z",
+					"deadline": `+referenceTimeStr+`,
 					"classroom": {
 						"id": 1296269,
 						"name": "Programming Elixir",
@@ -529,7 +528,7 @@ func TestClassroomService_ListAcceptedAssignments(t *testing.T) {
 				Submitted:                   Ptr(40),
 				Passing:                     Ptr(10),
 				Language:                    Ptr("ruby"),
-				Deadline:                    &Timestamp{time.Date(2011, 1, 26, 19, 6, 43, 0, time.UTC)},
+				Deadline:                    &referenceTimestamp,
 				Classroom: &Classroom{
 					ID:       Ptr(int64(1296269)),
 					Name:     Ptr("Programming Elixir"),
@@ -577,7 +576,7 @@ func TestClassroomService_ListAcceptedAssignments(t *testing.T) {
 				Submitted:                   Ptr(40),
 				Passing:                     Ptr(10),
 				Language:                    Ptr("ruby"),
-				Deadline:                    &Timestamp{time.Date(2011, 1, 26, 19, 6, 43, 0, time.UTC)},
+				Deadline:                    &referenceTimestamp,
 				Classroom: &Classroom{
 					ID:       Ptr(int64(1296269)),
 					Name:     Ptr("Programming Elixir"),
@@ -622,7 +621,7 @@ func TestClassroomService_GetAssignmentGrades(t *testing.T) {
 				"roster_identifier": "student123",
 				"student_repository_name": "octocat/intro-to-binaries",
 				"student_repository_url": "https://github.com/octocat/intro-to-binaries",
-				"submission_timestamp": "2011-01-26T19:06:43Z",
+				"submission_timestamp": `+referenceTimeStr+`,
 				"points_awarded": 10,
 				"points_available": 10,
 				"group_name": "Team Alpha"
@@ -635,7 +634,7 @@ func TestClassroomService_GetAssignmentGrades(t *testing.T) {
 				"roster_identifier": "student456",
 				"student_repository_name": "monalisa/intro-to-binaries",
 				"student_repository_url": "https://github.com/monalisa/intro-to-binaries",
-				"submission_timestamp": "2011-01-27T10:30:15Z",
+				"submission_timestamp": `+referenceTimeStr+`,
 				"points_awarded": 8,
 				"points_available": 10,
 				"group_name": "Team Beta"
@@ -658,7 +657,7 @@ func TestClassroomService_GetAssignmentGrades(t *testing.T) {
 			RosterIdentifier:      Ptr("student123"),
 			StudentRepositoryName: Ptr("octocat/intro-to-binaries"),
 			StudentRepositoryURL:  Ptr("https://github.com/octocat/intro-to-binaries"),
-			SubmissionTimestamp:   &Timestamp{time.Date(2011, 1, 26, 19, 6, 43, 0, time.UTC)},
+			SubmissionTimestamp:   &referenceTimestamp,
 			PointsAwarded:         Ptr(10),
 			PointsAvailable:       Ptr(10),
 			GroupName:             Ptr("Team Alpha"),
@@ -671,7 +670,7 @@ func TestClassroomService_GetAssignmentGrades(t *testing.T) {
 			RosterIdentifier:      Ptr("student456"),
 			StudentRepositoryName: Ptr("monalisa/intro-to-binaries"),
 			StudentRepositoryURL:  Ptr("https://github.com/monalisa/intro-to-binaries"),
-			SubmissionTimestamp:   &Timestamp{time.Date(2011, 1, 27, 10, 30, 15, 0, time.UTC)},
+			SubmissionTimestamp:   &referenceTimestamp,
 			PointsAwarded:         Ptr(8),
 			PointsAvailable:       Ptr(10),
 			GroupName:             Ptr("Team Beta"),

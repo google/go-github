@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -26,7 +25,7 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 		testFormValues(t, r, values{
 			"sort":      "updated",
 			"direction": "desc",
-			"since":     "2002-02-10T15:30:00Z",
+			"since":     referenceTimeRaw,
 			"page":      "2",
 		})
 		fmt.Fprint(w, `[{"id":1}]`)
@@ -35,7 +34,7 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 	opt := &PullRequestListCommentsOptions{
 		Sort:        "updated",
 		Direction:   "desc",
-		Since:       time.Date(2002, time.February, 10, 15, 30, 0, 0, time.UTC),
+		Since:       referenceTime,
 		ListOptions: ListOptions{Page: 2},
 	}
 	ctx := t.Context()

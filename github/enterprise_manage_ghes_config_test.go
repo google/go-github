@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -52,7 +51,7 @@ func TestEnterpriseService_Settings(t *testing.T) {
 				"support_key": "ssh-rsa AAAAB3N....",
 				"ssh_allowed": true,
 				"cluster_support": false,
-				"expire_at": "2018-01-01T00:00:00-00:00"
+				"expire_at": `+referenceTimeStr+`
 			},
 			"github_ssl": {
 				"enabled": false,
@@ -195,7 +194,7 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			SupportKey:       Ptr("ssh-rsa AAAAB3N...."),
 			SSHAllowed:       Ptr(true),
 			ClusterSupport:   Ptr(false),
-			ExpireAt:         &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
+			ExpireAt:         &referenceTimestamp,
 		},
 		GithubSSL: &ConfigSettingsGithubSSL{
 			Enabled: Ptr(false),
@@ -415,10 +414,10 @@ func TestEnterpriseService_License(t *testing.T) {
 			"croquetSupport": true,
 			"customTerms": true,
 			"evaluation": false,
-			"expireAt": "2018-01-01T00:00:00Z",
+			"expireAt": `+refTimeStr(1136178000)+`,
 			"insightsEnabled": true,
-			"insightsExpireAt": "2018-01-01T00:00:00Z",
-			"learningLabEvaluationExpires": "2018-01-01T00:00:00Z",
+			"insightsExpireAt": `+refTimeStr(1136178001)+`,
+			"learningLabEvaluationExpires": `+refTimeStr(1136178002)+`,
 			"learningLabSeats": 100,
 			"perpetual": false,
 			"referenceNumber": "32a145",
@@ -443,10 +442,10 @@ func TestEnterpriseService_License(t *testing.T) {
 		CroquetSupport:               Ptr(true),
 		CustomTerms:                  Ptr(true),
 		Evaluation:                   Ptr(false),
-		ExpireAt:                     &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
+		ExpireAt:                     refTimestamp(1136178000),
 		InsightsEnabled:              Ptr(true),
-		InsightsExpireAt:             &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
-		LearningLabEvaluationExpires: &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
+		InsightsExpireAt:             refTimestamp(1136178001),
+		LearningLabEvaluationExpires: refTimestamp(1136178002),
 		LearningLabSeats:             Ptr(100),
 		Perpetual:                    Ptr(false),
 		ReferenceNumber:              Ptr("32a145"),
@@ -479,7 +478,7 @@ func TestEnterpriseService_ConfigApplyEvents(t *testing.T) {
 				"node": "ghes-01.lan",
 				"last_request_id": "387cd628c06d606700e79be368e5e574:0cde553750689c76:0000000000000000",
 				"events": [{
-					"timestamp": "2018-01-01T00:00:00+00:00",
+					"timestamp": `+referenceTimeStr+`,
 					"severity_text": "INFO",
 					"body": "Validating services",
 					"event_name": "Enterprise::ConfigApply::PhaseValidation#config_phase_validation",
@@ -510,7 +509,7 @@ func TestEnterpriseService_ConfigApplyEvents(t *testing.T) {
 			Node:          Ptr("ghes-01.lan"),
 			LastRequestID: Ptr("387cd628c06d606700e79be368e5e574:0cde553750689c76:0000000000000000"),
 			Events: []*ConfigApplyEventsNodeEvent{{
-				Timestamp:    &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
+				Timestamp:    &referenceTimestamp,
 				SeverityText: Ptr("INFO"),
 				Body:         Ptr("Validating services"),
 				EventName:    Ptr("Enterprise::ConfigApply::PhaseValidation#config_phase_validation"),

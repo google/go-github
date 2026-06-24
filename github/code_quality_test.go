@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -25,7 +24,7 @@ func TestCodeQualityService_GetSetup(t *testing.T) {
 			"languages": ["javascript-typescript", "python"],
 			"runner_type": "standard",
 			"runner_label": null,
-			"updated_at": "2026-01-01T00:00:00Z",
+			"updated_at": `+referenceTimeStr+`,
 			"schedule": "weekly"
 		}`)
 	})
@@ -40,7 +39,7 @@ func TestCodeQualityService_GetSetup(t *testing.T) {
 		State:      Ptr("configured"),
 		Languages:  []string{"javascript-typescript", "python"},
 		RunnerType: Ptr("standard"),
-		UpdatedAt:  &Timestamp{time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)},
+		UpdatedAt:  &referenceTimestamp,
 		Schedule:   Ptr("weekly"),
 	}
 	if diff := cmp.Diff(want, cfg); diff != "" {

@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -28,7 +27,7 @@ func TestEnterpriseService_GetMaintenanceStatus(t *testing.T) {
 			"hostname": "primary",
 			"uuid": "1b6cf518-f97c-11ed-8544-061d81f7eedb",
 			"status": "scheduled",
-			"scheduled_time": "2018-01-01T00:00:00+00:00",
+			"scheduled_time": `+referenceTimeStr+`,
 			"connection_services": [
 			{
 				"name": "git operations",
@@ -56,7 +55,7 @@ func TestEnterpriseService_GetMaintenanceStatus(t *testing.T) {
 		Hostname:      Ptr("primary"),
 		UUID:          Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"),
 		Status:        Ptr("scheduled"),
-		ScheduledTime: &Timestamp{time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)},
+		ScheduledTime: &referenceTimestamp,
 		ConnectionServices: []*ConnectionServiceItem{{
 			Name:   Ptr("git operations"),
 			Number: Ptr(15),

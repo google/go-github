@@ -13,7 +13,6 @@ import (
 	"net/url"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -4279,7 +4278,7 @@ func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {
 				"before": "abc123def456",
 				"after": "def456ghi789",
 				"ref": "refs/heads/main",
-				"timestamp": "2023-01-01T12:00:00Z",
+				"timestamp": `+referenceTimeStr+`,
 				"activity_type": "push",
 				"actor": {
 					"login": "testuser1",
@@ -4309,7 +4308,7 @@ func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {
 				"before": "def456ghi789",
 				"after": "ghi789jkl012",
 				"ref": "refs/heads/feature",
-				"timestamp": "2023-01-01T11:30:00Z",
+				"timestamp": `+referenceTimeStr+`,
 				"activity_type": "branch_deletion",
 				"actor": {
 					"login": "testuser2",
@@ -4350,7 +4349,7 @@ func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {
 			Before:       "abc123def456",
 			After:        "def456ghi789",
 			Ref:          "refs/heads/main",
-			Timestamp:    &Timestamp{Time: time.Date(2023, 1, 1, 12, 0, 0, 0, time.UTC)},
+			Timestamp:    &referenceTimestamp,
 			ActivityType: "push",
 			Actor: &RepositoryActor{
 				Login:             Ptr("testuser1"),
@@ -4380,7 +4379,7 @@ func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {
 			Before:       "def456ghi789",
 			After:        "ghi789jkl012",
 			Ref:          "refs/heads/feature",
-			Timestamp:    &Timestamp{Time: time.Date(2023, 1, 1, 11, 30, 0, 0, time.UTC)},
+			Timestamp:    &referenceTimestamp,
 			ActivityType: "branch_deletion",
 			Actor: &RepositoryActor{
 				Login:             Ptr("testuser2"),
@@ -4433,8 +4432,8 @@ func TestRepositoriesService_ListRepositoryActivities_withOptions(t *testing.T) 
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"direction":     "desc",
-			"before":        "2023-01-01T12:00:00Z",
-			"after":         "2023-01-01T11:30:00Z",
+			"before":        refTimeStr(1136178000),
+			"after":         refTimeStr(1136178001),
 			"ref":           "refs/heads/main",
 			"actor":         "testuser1",
 			"time_period":   "day",
@@ -4448,7 +4447,7 @@ func TestRepositoriesService_ListRepositoryActivities_withOptions(t *testing.T) 
 				"before": "abc123def456",
 				"after": "def456ghi789",
 				"ref": "refs/heads/main",
-				"timestamp": "2023-01-01T12:00:00Z",
+				"timestamp": `+referenceTimeStr+`,
 				"activity_type": "push",
 				"actor": {
 					"login": "testuser1",
@@ -4477,8 +4476,8 @@ func TestRepositoriesService_ListRepositoryActivities_withOptions(t *testing.T) 
 
 	opts := &ListRepositoryActivityOptions{
 		Direction:    "desc",
-		Before:       "2023-01-01T12:00:00Z",
-		After:        "2023-01-01T11:30:00Z",
+		Before:       refTimeStr(1136178000),
+		After:        refTimeStr(1136178001),
 		Ref:          "refs/heads/main",
 		Actor:        "testuser1",
 		TimePeriod:   "day",
@@ -4498,7 +4497,7 @@ func TestRepositoriesService_ListRepositoryActivities_withOptions(t *testing.T) 
 			Before:       "abc123def456",
 			After:        "def456ghi789",
 			Ref:          "refs/heads/main",
-			Timestamp:    &Timestamp{Time: time.Date(2023, 1, 1, 12, 0, 0, 0, time.UTC)},
+			Timestamp:    &referenceTimestamp,
 			ActivityType: "push",
 			Actor: &RepositoryActor{
 				Login:             Ptr("testuser1"),

@@ -11,7 +11,6 @@ import (
 	"log"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -357,10 +356,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 				"total_seats": 4,
 				"seats": [
 					{
-						"created_at": "2021-08-03T18:00:00-06:00",
-						"updated_at": "2021-09-23T15:00:00-06:00",
+						"created_at": `+refTimeStr(1136178000)+`,
+						"updated_at": `+refTimeStr(1136178001)+`,
 						"pending_cancellation_date": null,
-						"last_activity_at": "2021-10-14T00:53:32-06:00",
+						"last_activity_at": `+refTimeStr(1136178002)+`,
 						"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
 						"assignee": {
 							"login": "octocat",
@@ -399,10 +398,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 						}
 					},
 					{
-						"created_at": "2021-09-23T18:00:00-06:00",
-						"updated_at": "2021-09-23T15:00:00-06:00",
+						"created_at": `+refTimeStr(1136178000)+`,
+						"updated_at": `+refTimeStr(1136178001)+`,
 						"pending_cancellation_date": "2021-11-01",
-						"last_activity_at": "2021-10-13T00:53:32-06:00",
+						"last_activity_at": `+refTimeStr(1136178002)+`,
 						"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
 						"assignee": {
 							"login": "octokitten",
@@ -426,10 +425,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 						}
 					},
 					{
-						"created_at": "2021-09-23T18:00:00-06:00",
-						"updated_at": "2021-09-23T15:00:00-06:00",
+						"created_at": `+refTimeStr(1136178000)+`,
+						"updated_at": `+refTimeStr(1136178001)+`,
 						"pending_cancellation_date": "2021-11-01",
-						"last_activity_at": "2021-10-13T00:53:32-06:00",
+						"last_activity_at": `+refTimeStr(1136178002)+`,
 						"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
 						"assignee": {
 							"name": "octokittens",
@@ -438,10 +437,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 						}
 					},
 					{
-						"created_at": "2021-09-23T18:00:00-06:00",
-						"updated_at": "2021-09-23T15:00:00-06:00",
+						"created_at": `+refTimeStr(1136178000)+`,
+						"updated_at": `+refTimeStr(1136178001)+`,
 						"pending_cancellation_date": "2021-11-01",
-						"last_activity_at": "2021-10-13T00:53:32-06:00",
+						"last_activity_at": `+refTimeStr(1136178002)+`,
 						"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
 						"assignee": {
 							"name": "octocats",
@@ -500,10 +499,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					Parent:              nil,
 				},
 
-				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.August, 3, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
-				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				CreatedAt:               refTimestamp(1136178000),
+				UpdatedAt:               refTimestamp(1136178001),
 				PendingCancellationDate: nil,
-				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 14, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
+				LastActivityAt:          refTimestamp(1136178002),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
@@ -528,10 +527,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					SiteAdmin:         Ptr(false),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
-				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				CreatedAt:               refTimestamp(1136178000),
+				UpdatedAt:               refTimestamp(1136178001),
 				PendingCancellationDate: Ptr("2021-11-01"),
-				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 13, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
+				LastActivityAt:          refTimestamp(1136178002),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
@@ -541,10 +540,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					Type: Ptr("Team"),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
-				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				CreatedAt:               refTimestamp(1136178000),
+				UpdatedAt:               refTimestamp(1136178001),
 				PendingCancellationDate: Ptr("2021-11-01"),
-				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 13, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
+				LastActivityAt:          refTimestamp(1136178002),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
@@ -554,10 +553,10 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 					Type: Ptr("Organization"),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
-				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				CreatedAt:               refTimestamp(1136178000),
+				UpdatedAt:               refTimestamp(1136178001),
 				PendingCancellationDate: Ptr("2021-11-01"),
-				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 13, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
+				LastActivityAt:          refTimestamp(1136178002),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 			},
 		},
@@ -595,10 +594,10 @@ func TestCopilotService_ListCopilotEnterpriseSeats(t *testing.T) {
 			"total_seats": 2,
 			"seats": [
 				{
-					"created_at": "2021-08-03T18:00:00-06:00",
-					"updated_at": "2021-09-23T15:00:00-06:00",
+					"created_at": `+refTimeStr(1136178000)+`,
+					"updated_at": `+refTimeStr(1136178001)+`,
 					"pending_cancellation_date": null,
-					"last_activity_at": "2021-10-14T00:53:32-06:00",
+					"last_activity_at": `+refTimeStr(1136178002)+`,
 					"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
 					"plan_type": "business",
 					"assignee": {
@@ -638,10 +637,10 @@ func TestCopilotService_ListCopilotEnterpriseSeats(t *testing.T) {
 					}
 				},
 				{
-					"created_at": "2021-09-23T18:00:00-06:00",
-					"updated_at": "2021-09-23T15:00:00-06:00",
+					"created_at": `+refTimeStr(1136178000)+`,
+					"updated_at": `+refTimeStr(1136178001)+`,
 					"pending_cancellation_date": "2021-11-01",
-					"last_activity_at": "2021-10-13T00:53:32-06:00",
+					"last_activity_at": `+refTimeStr(1136178002)+`,
 					"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
 					"assignee": {
 						"login": "octokitten",
@@ -714,10 +713,10 @@ func TestCopilotService_ListCopilotEnterpriseSeats(t *testing.T) {
 					RepositoriesURL:     Ptr("https://api.github.com/teams/1/repos"),
 					Parent:              nil,
 				},
-				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.August, 3, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
-				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				CreatedAt:               refTimestamp(1136178000),
+				UpdatedAt:               refTimestamp(1136178001),
 				PendingCancellationDate: nil,
-				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 14, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
+				LastActivityAt:          refTimestamp(1136178002),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 				PlanType:                Ptr("business"),
 			},
@@ -743,10 +742,10 @@ func TestCopilotService_ListCopilotEnterpriseSeats(t *testing.T) {
 					SiteAdmin:         Ptr(false),
 				},
 				AssigningTeam:           nil,
-				CreatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
-				UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+				CreatedAt:               refTimestamp(1136178000),
+				UpdatedAt:               refTimestamp(1136178001),
 				PendingCancellationDate: Ptr("2021-11-01"),
-				LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 13, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
+				LastActivityAt:          refTimestamp(1136178002),
 				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 				PlanType:                nil,
 			},
@@ -1053,10 +1052,10 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 	mux.HandleFunc("/orgs/o/members/u/copilot", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
-				"created_at": "2021-08-03T18:00:00-06:00",
-				"updated_at": "2021-09-23T15:00:00-06:00",
+				"created_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`,
 				"pending_cancellation_date": null,
-				"last_activity_at": "2021-10-14T00:53:32-06:00",
+				"last_activity_at": `+refTimeStr(1136178002)+`,
 				"last_activity_editor": "vscode/1.77.3/copilot/1.86.82",
 				"assignee": {
 					"login": "octocat",
@@ -1138,10 +1137,10 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 			RepositoriesURL:     Ptr("https://api.github.com/teams/1/repos"),
 			Parent:              nil,
 		},
-		CreatedAt:               Ptr(Timestamp{time.Date(2021, time.August, 3, 18, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
-		UpdatedAt:               Ptr(Timestamp{time.Date(2021, time.September, 23, 15, 0, 0, 0, time.FixedZone("CST", -6*3600))}),
+		CreatedAt:               refTimestamp(1136178000),
+		UpdatedAt:               refTimestamp(1136178001),
 		PendingCancellationDate: nil,
-		LastActivityAt:          Ptr(Timestamp{time.Date(2021, time.October, 14, 0, 53, 32, 0, time.FixedZone("CST", -6*3600))}),
+		LastActivityAt:          refTimestamp(1136178002),
 		LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
 	}
 
@@ -3169,7 +3168,7 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 			"report_start_day": "2026-03-05",
 			"report_end_day": "2026-04-01",
 			"organization_id": "123",
-			"created_at": "2026-04-02T00:00:00Z",
+			"created_at": `+refTimeStr(1136178000)+`,
 			"day_totals": [
 				{
 					"day": "2026-03-05",
@@ -3210,7 +3209,7 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 		ReportStartDay: "2026-03-05",
 		ReportEndDay:   "2026-04-01",
 		OrganizationID: Ptr("123"),
-		CreatedAt:      &Timestamp{time.Date(2026, 4, 2, 0, 0, 0, 0, time.UTC)},
+		CreatedAt:      refTimestamp(1136178000),
 		DayTotals: []*CopilotDailyMetrics{
 			{
 				Day:                 "2026-03-05",
@@ -3269,7 +3268,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 
 	mux.HandleFunc("/path/to/users-daily", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_code_review_active":true,"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":"2026-04-01T12:30:00Z","cli_version":"1.0.8"}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":"2026-04-01T12:00:00Z","plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":"2026-04-01T12:00:00Z","ide_version":"1.90"}}]}
+		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_code_review_active":true,"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":`+refTimeStr(1136178000)+`,"cli_version":"1.0.8"}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":`+refTimeStr(1136178001)+`,"plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":`+refTimeStr(1136178002)+`,"ide_version":"1.90"}}]}
 {"user_id":2,"user_login":"bob","day":"2026-04-01","used_agent":true,"used_copilot_code_review_passive":true}
 `)
 	})
@@ -3301,7 +3300,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 				RequestCount: Ptr(2),
 				PromptCount:  Ptr(1),
 				LastKnownCLIVersion: &CopilotMetricsCLIVersion{
-					SampledAt:  &Timestamp{time.Date(2026, 4, 1, 12, 30, 0, 0, time.UTC)},
+					SampledAt:  refTimestamp(1136178000),
 					CLIVersion: "1.0.8",
 				},
 			},
@@ -3310,12 +3309,12 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 					IDE:                           "vscode",
 					UserInitiatedInteractionCount: Ptr(5),
 					LastKnownPluginVersion: &CopilotUserMetricsPluginVersion{
-						SampledAt:     &Timestamp{time.Date(2026, 4, 1, 12, 0, 0, 0, time.UTC)},
+						SampledAt:     refTimestamp(1136178001),
 						Plugin:        "copilot",
 						PluginVersion: "1.0.0",
 					},
 					LastKnownIDEVersion: &CopilotUserMetricsIDEVersion{
-						SampledAt:  &Timestamp{time.Date(2026, 4, 1, 12, 0, 0, 0, time.UTC)},
+						SampledAt:  refTimestamp(1136178002),
 						IDEVersion: "1.90",
 					},
 				},

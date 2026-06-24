@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -18,17 +17,15 @@ func TestGistsService_List_specifiedUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	since := "2013-01-01T00:00:00Z"
-
 	mux.HandleFunc("/users/u/gists", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"since": since,
+			"since": referenceTimeRaw,
 		})
 		fmt.Fprint(w, `[{"id": "1"}]`)
 	})
 
-	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
+	opt := &GistListOptions{Since: referenceTime}
 	ctx := t.Context()
 	gists, _, err := client.Gists.List(ctx, "u", opt)
 	if err != nil {
@@ -103,17 +100,15 @@ func TestGistsService_ListAll(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	since := "2013-01-01T00:00:00Z"
-
 	mux.HandleFunc("/gists/public", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"since": since,
+			"since": referenceTimeRaw,
 		})
 		fmt.Fprint(w, `[{"id": "1"}]`)
 	})
 
-	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
+	opt := &GistListOptions{Since: referenceTime}
 	ctx := t.Context()
 	gists, _, err := client.Gists.ListAll(ctx, opt)
 	if err != nil {
@@ -139,17 +134,15 @@ func TestGistsService_ListStarred(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	since := "2013-01-01T00:00:00Z"
-
 	mux.HandleFunc("/gists/starred", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"since": since,
+			"since": referenceTimeRaw,
 		})
 		fmt.Fprint(w, `[{"id": "1"}]`)
 	})
 
-	opt := &GistListOptions{Since: time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)}
+	opt := &GistListOptions{Since: referenceTime}
 	ctx := t.Context()
 	gists, _, err := client.Gists.ListStarred(ctx, opt)
 	if err != nil {
@@ -414,7 +407,7 @@ func TestGistsService_ListCommits(t *testing.T) {
 		        "additions": 180,
 		        "total": 180
 		      },
-		      "committed_at": "2010-01-01T00:00:00Z"
+		      "committed_at": `+referenceTimeStr+`
 		    }
 		  ]
 		`)
@@ -430,7 +423,7 @@ func TestGistsService_ListCommits(t *testing.T) {
 		URL:         Ptr("https://api.github.com/gists/1/1"),
 		Version:     Ptr("1"),
 		User:        &User{ID: Ptr(int64(1))},
-		CommittedAt: &Timestamp{time.Date(2010, time.January, 1, 0, 0, 0, 0, time.UTC)},
+		CommittedAt: &referenceTimestamp,
 		ChangeStatus: &CommitStats{
 			Additions: Ptr(180),
 			Deletions: Ptr(0),
@@ -723,8 +716,8 @@ func TestGistsService_ListForks(t *testing.T) {
 		    {"url": "https://api.github.com/gists/1",
 		     "user": {"id": 1},
 		     "id": "1",
-		     "created_at": "2010-01-01T00:00:00Z",
-		     "updated_at": "2013-01-01T00:00:00Z"
+		     "created_at": `+refTimeStr(1136178000)+`,
+		     "updated_at": `+refTimeStr(1136178001)+`
 		    }
 		  ]
 		`)
@@ -740,8 +733,8 @@ func TestGistsService_ListForks(t *testing.T) {
 		URL:       Ptr("https://api.github.com/gists/1"),
 		ID:        Ptr("1"),
 		User:      &User{ID: Ptr(int64(1))},
-		CreatedAt: &Timestamp{time.Date(2010, time.January, 1, 0, 0, 0, 0, time.UTC)},
-		UpdatedAt: &Timestamp{time.Date(2013, time.January, 1, 0, 0, 0, 0, time.UTC)},
+		CreatedAt: refTimestamp(1136178000),
+		UpdatedAt: refTimestamp(1136178001),
 	}}
 
 	if !cmp.Equal(gistForks, want) {

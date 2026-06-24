@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -37,8 +36,8 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 					"location": "l",
 					"email": "e"
 				},
-				"created_at": "2024-07-21T19:33:08Z",
-				"updated_at": "2024-07-21T19:33:08Z",
+				"created_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`,
 				"source": "Organization",
 				"base_role": "admin"
 			}
@@ -71,8 +70,8 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 					Location:  Ptr("l"),
 					Email:     Ptr("e"),
 				},
-				CreatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
-				UpdatedAt: &Timestamp{time.Date(2024, time.July, 21, 19, 33, 8, 0, time.UTC)},
+				CreatedAt: refTimestamp(1136178000),
+				UpdatedAt: refTimestamp(1136178001),
 				Source:    Ptr("Organization"),
 				BaseRole:  Ptr("admin"),
 			},
@@ -109,8 +108,8 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 			"name": "all_repo_read",
 			"description": "Grants read access to all repositories in the organization.",
 			"permissions": [],
-			"created_at": `+referenceTimeStr+`,
-			"updated_at": `+referenceTimeStr+`,
+			"created_at": `+refTimeStr(1136178000)+`,
+			"updated_at": `+refTimeStr(1136178001)+`,
 			"source": "Predefined",
 			"base_role": "read"
 		}`)
@@ -128,8 +127,8 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 		Name:        Ptr("all_repo_read"),
 		Description: Ptr("Grants read access to all repositories in the organization."),
 		Permissions: []string{},
-		CreatedAt:   &Timestamp{referenceTime},
-		UpdatedAt:   &Timestamp{referenceTime},
+		CreatedAt:   refTimestamp(1136178000),
+		UpdatedAt:   refTimestamp(1136178001),
 		Source:      Ptr("Predefined"),
 		BaseRole:    Ptr("read"),
 	}
@@ -150,8 +149,8 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 				"read_organization_custom_repo_role",
 				"write_organization_custom_org_role"
 			],
-			"created_at": `+referenceTimeStr+`,
-			"updated_at": `+referenceTimeStr+`,
+			"created_at": `+refTimeStr(1136178000)+`,
+			"updated_at": `+refTimeStr(1136178001)+`,
 			"source": "Organization",
 			"base_role": null
 			}`)
@@ -171,8 +170,8 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 			"read_organization_custom_repo_role",
 			"write_organization_custom_org_role",
 		},
-		CreatedAt: &Timestamp{referenceTime},
-		UpdatedAt: &Timestamp{referenceTime},
+		CreatedAt: refTimestamp(1136178000),
+		UpdatedAt: refTimestamp(1136178001),
 		Source:    Ptr("Organization"),
 		BaseRole:  nil,
 	}
