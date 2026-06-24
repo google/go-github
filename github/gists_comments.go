@@ -23,6 +23,18 @@ func (g GistComment) String() string {
 	return Stringify(g)
 }
 
+// CreateGistCommentRequest represents the input for creating a gist comment.
+type CreateGistCommentRequest struct {
+	// Body is the comment text.
+	Body string `json:"body"`
+}
+
+// UpdateGistCommentRequest represents the input for updating a gist comment.
+type UpdateGistCommentRequest struct {
+	// Body is the comment text.
+	Body string `json:"body"`
+}
+
 // ListComments lists all comments for a gist.
 //
 // GitHub API docs: https://docs.github.com/rest/gists/comments?apiVersion=2022-11-28#list-gist-comments
@@ -75,7 +87,7 @@ func (s *GistsService) GetComment(ctx context.Context, gistID string, commentID 
 // GitHub API docs: https://docs.github.com/rest/gists/comments?apiVersion=2022-11-28#create-a-gist-comment
 //
 //meta:operation POST /gists/{gist_id}/comments
-func (s *GistsService) CreateComment(ctx context.Context, gistID string, body *GistComment) (*GistComment, *Response, error) {
+func (s *GistsService) CreateComment(ctx context.Context, gistID string, body CreateGistCommentRequest) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments", gistID)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -91,12 +103,12 @@ func (s *GistsService) CreateComment(ctx context.Context, gistID string, body *G
 	return c, resp, nil
 }
 
-// EditComment edits an existing gist comment.
+// UpdateComment updates an existing gist comment.
 //
 // GitHub API docs: https://docs.github.com/rest/gists/comments?apiVersion=2022-11-28#update-a-gist-comment
 //
 //meta:operation PATCH /gists/{gist_id}/comments/{comment_id}
-func (s *GistsService) EditComment(ctx context.Context, gistID string, commentID int64, body *GistComment) (*GistComment, *Response, error) {
+func (s *GistsService) UpdateComment(ctx context.Context, gistID string, commentID int64, body UpdateGistCommentRequest) (*GistComment, *Response, error) {
 	u := fmt.Sprintf("gists/%v/comments/%v", gistID, commentID)
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {

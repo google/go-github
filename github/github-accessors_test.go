@@ -13689,6 +13689,44 @@ func TestCreateEvent_GetSender(tt *testing.T) {
 	c.GetSender()
 }
 
+func TestCreateGistCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateGistCommentRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreateGistFile_GetContent(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateGistFile{}
+	c.GetContent()
+	c = nil
+	c.GetContent()
+}
+
+func TestCreateGistRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateGistRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateGistRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateGistRequest_GetPublic(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateGistRequest{Public: &zeroValue}
+	c.GetPublic()
+	c = &CreateGistRequest{}
+	c.GetPublic()
+	c = nil
+	c.GetPublic()
+}
+
 func TestCreateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -52561,6 +52599,47 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
+}
+
+func TestUpdateGistCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateGistCommentRequest{}
+	u.GetBody()
+	u = nil
+	u.GetBody()
+}
+
+func TestUpdateGistFile_GetContent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateGistFile{Content: &zeroValue}
+	u.GetContent()
+	u = &UpdateGistFile{}
+	u.GetContent()
+	u = nil
+	u.GetContent()
+}
+
+func TestUpdateGistFile_GetFilename(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateGistFile{Filename: &zeroValue}
+	u.GetFilename()
+	u = &UpdateGistFile{}
+	u.GetFilename()
+	u = nil
+	u.GetFilename()
+}
+
+func TestUpdateGistRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateGistRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateGistRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
 }
 
 func TestUpdateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {

@@ -230,8 +230,6 @@ linters:
             - ExternalGroup
             - GenerateJITConfigRequest
             - GenerateNotesOptions
-            - Gist
-            - GistComment
             - Hook
             - HookConfig
             - ImpersonateUserOptions
