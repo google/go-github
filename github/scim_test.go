@@ -52,8 +52,8 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 				"active": true,
 				"meta": {
 				  "resourceType": "User",
-				  "created": ` + referenceTimeStr + `,
-				  "lastModified": ` + referenceTimeStr + `,
+				  "created": ` + refTimeStr(1136178000) + `,
+				  "lastModified": ` + refTimeStr(1136178001) + `,
 				  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"
 				}
 			  }
@@ -82,8 +82,8 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 				ID: Ptr("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				Meta: &SCIMMeta{
 					ResourceType: Ptr("User"),
-					Created:      &referenceTimestamp,
-					LastModified: &referenceTimestamp,
+					Created:      refTimestamp(1136178000),
+					LastModified: refTimestamp(1136178001),
 					Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				},
 				UserName: "octocat@github.com",
@@ -207,8 +207,8 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 			"active": true,
 			"meta": {
 			  "resourceType": "User",
-			  "created": ` + referenceTimeStr + `,
-			  "lastModified": ` + referenceTimeStr + `,
+			  "created": ` + refTimeStr(1136178000) + `,
+			  "lastModified": ` + refTimeStr(1136178001) + `,
 			  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"
 			}
 		  }`))
@@ -224,8 +224,8 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 		ID: Ptr("edefdfedf-050c-11e7-8d32"),
 		Meta: &SCIMMeta{
 			ResourceType: Ptr("User"),
-			Created:      &referenceTimestamp,
-			LastModified: &referenceTimestamp,
+			Created:      refTimestamp(1136178000),
+			LastModified: refTimestamp(1136178001),
 			Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"),
 		},
 		UserName: "mona.octocat@okta.example.com",
