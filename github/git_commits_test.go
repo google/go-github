@@ -11,6 +11,7 @@ import (
 	"io"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -201,15 +202,16 @@ func TestGitService_CreateCommit_WithSigner(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	signature := "my voice is my password"
+	date := time.Date(2017, time.May, 4, 0, 3, 43, 0, time.FixedZone("CEST", 2*3600))
 	author := CommitAuthor{
 		Name:  Ptr("go-github"),
 		Email: Ptr("go-github@github.com"),
-		Date:  &referenceTimestamp,
+		Date:  &Timestamp{date},
 	}
 	wantMessage := `tree t
 parent p
-author go-github <go-github@github.com> ` + referenceUnixTimeStr + ` +0000
-committer go-github <go-github@github.com> ` + referenceUnixTimeStr + ` +0000
+author go-github <go-github@github.com> 1493849023 +0200
+committer go-github <go-github@github.com> 1493849023 +0200
 
 Commit Message.`
 	sha := "commitSha"
@@ -293,13 +295,15 @@ func TestGitService_createSignatureMessage_nilCommit(t *testing.T) {
 
 func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
 	t.Parallel()
+	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
+
 	_, err := createSignatureMessage(&createCommit{
 		Message: nil,
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
 			Name:  Ptr("go-github"),
 			Email: Ptr("go-github@github.com"),
-			Date:  &referenceTimestamp,
+			Date:  &Timestamp{date},
 		},
 	})
 	if err == nil {
@@ -309,13 +313,14 @@ func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
 
 func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
 	t.Parallel()
+	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 	_, err := createSignatureMessage(&createCommit{
 		Message: Ptr(""),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
 			Name:  Ptr("go-github"),
 			Email: Ptr("go-github@github.com"),
-			Date:  &referenceTimestamp,
+			Date:  &Timestamp{date},
 		},
 	})
 	if err == nil {
@@ -337,18 +342,20 @@ func TestGitService_createSignatureMessage_nilAuthor(t *testing.T) {
 
 func TestGitService_createSignatureMessage_withoutTree(t *testing.T) {
 	t.Parallel()
+	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
+
 	msg, _ := createSignatureMessage(&createCommit{
 		Message: Ptr("Commit Message."),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
 			Name:  Ptr("go-github"),
 			Email: Ptr("go-github@github.com"),
-			Date:  &referenceTimestamp,
+			Date:  &Timestamp{date},
 		},
 	})
 	expected := `parent p
-author go-github <go-github@github.com> ` + referenceUnixTimeStr + ` +0000
-committer go-github <go-github@github.com> ` + referenceUnixTimeStr + ` +0000
+author go-github <go-github@github.com> 1493849023 +0200
+committer go-github <go-github@github.com> 1493849023 +0200
 
 Commit Message.`
 	if msg != expected {
@@ -358,23 +365,25 @@ Commit Message.`
 
 func TestGitService_createSignatureMessage_withoutCommitter(t *testing.T) {
 	t.Parallel()
+	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
+
 	msg, _ := createSignatureMessage(&createCommit{
 		Message: Ptr("Commit Message."),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
 			Name:  Ptr("go-github"),
 			Email: Ptr("go-github@github.com"),
-			Date:  &referenceTimestamp,
+			Date:  &Timestamp{date},
 		},
 		Committer: &CommitAuthor{
 			Name:  Ptr("foo"),
 			Email: Ptr("foo@example.com"),
-			Date:  &referenceTimestamp,
+			Date:  &Timestamp{date},
 		},
 	})
 	expected := `parent p
-author go-github <go-github@github.com> ` + referenceUnixTimeStr + ` +0000
-committer foo <foo@example.com> ` + referenceUnixTimeStr + ` +0000
+author go-github <go-github@github.com> 1493849023 +0200
+committer foo <foo@example.com> 1493849023 +0200
 
 Commit Message.`
 	if msg != expected {
