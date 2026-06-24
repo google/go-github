@@ -37,8 +37,8 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 					"location": "l",
 					"email": "e"
 				},
-				"created_at": `+referenceTimeStr+`,
-				"updated_at": `+referenceTimeStr+`
+				"created_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`
 			}
 		  ]
 		}`)
@@ -70,8 +70,8 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 					Location:  Ptr("l"),
 					Email:     Ptr("e"),
 				},
-				CreatedAt: &referenceTimestamp,
-				UpdatedAt: &referenceTimestamp,
+				CreatedAt: refTimestamp(1136178000),
+				UpdatedAt: refTimestamp(1136178001),
 			},
 		},
 	}
@@ -117,8 +117,8 @@ func TestOrganizationsService_GetCustomRepoRole(t *testing.T) {
 					"location": "l",
 					"email": "e"
 				},
-				"created_at": `+referenceTimeStr+`,
-				"updated_at": `+referenceTimeStr+`
+				"created_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`
 			}`)
 	})
 
@@ -145,8 +145,8 @@ func TestOrganizationsService_GetCustomRepoRole(t *testing.T) {
 			Location:  Ptr("l"),
 			Email:     Ptr("e"),
 		},
-		CreatedAt: &referenceTimestamp,
-		UpdatedAt: &referenceTimestamp,
+		CreatedAt: refTimestamp(1136178000),
+		UpdatedAt: refTimestamp(1136178001),
 	}
 	if !cmp.Equal(role, want) {
 		t.Errorf("Organizations.GetCustomRepoRole returned %+v, want %+v", role, want)
