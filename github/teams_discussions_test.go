@@ -50,7 +50,7 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 					"body_version": "version",
 					"comments_count": 1,
 					"comments_url": "https://api.github.com/teams/2/discussions/3/comments",
-					"created_at": `+referenceTimeStr+`,
+					"created_at": `+refTimeStr(1136178000)+`,
 					"last_edited_at": null,
 					"html_url": "https://github.com/orgs/1/teams/2/discussions/3",
 					"node_id": "node",
@@ -59,7 +59,7 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 					"private": false,
 					"team_url": "https://api.github.com/teams/2",
 					"title": "test",
-					"updated_at": `+referenceTimeStr+`,
+					"updated_at": `+refTimeStr(1136178001)+`,
 					"url": "https://api.github.com/teams/2/discussions/3"
 				}
 			]`)
@@ -96,7 +96,7 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 			BodyVersion:   Ptr("version"),
 			CommentsCount: Ptr(1),
 			CommentsURL:   Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-			CreatedAt:     &referenceTimestamp,
+			CreatedAt:     refTimestamp(1136178000),
 			LastEditedAt:  nil,
 			HTMLURL:       Ptr("https://github.com/orgs/1/teams/2/discussions/3"),
 			NodeID:        Ptr("node"),
@@ -105,7 +105,7 @@ func TestTeamsService_ListDiscussionsByID(t *testing.T) {
 			Private:       Ptr(false),
 			TeamURL:       Ptr("https://api.github.com/teams/2"),
 			Title:         Ptr("test"),
-			UpdatedAt:     &referenceTimestamp,
+			UpdatedAt:     refTimestamp(1136178001),
 			URL:           Ptr("https://api.github.com/teams/2/discussions/3"),
 		},
 	}
@@ -165,7 +165,7 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 					"body_version": "version",
 					"comments_count": 1,
 					"comments_url": "https://api.github.com/teams/2/discussions/3/comments",
-					"created_at": `+referenceTimeStr+`,
+					"created_at": `+refTimeStr(1136178000)+`,
 					"last_edited_at": null,
 					"html_url": "https://github.com/orgs/1/teams/2/discussions/3",
 					"node_id": "node",
@@ -174,7 +174,7 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 					"private": false,
 					"team_url": "https://api.github.com/teams/2",
 					"title": "test",
-					"updated_at": `+referenceTimeStr+`,
+					"updated_at": `+refTimeStr(1136178001)+`,
 					"url": "https://api.github.com/teams/2/discussions/3"
 				}
 			]`)
@@ -211,7 +211,7 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 			BodyVersion:   Ptr("version"),
 			CommentsCount: Ptr(1),
 			CommentsURL:   Ptr("https://api.github.com/teams/2/discussions/3/comments"),
-			CreatedAt:     &referenceTimestamp,
+			CreatedAt:     refTimestamp(1136178000),
 			LastEditedAt:  nil,
 			HTMLURL:       Ptr("https://github.com/orgs/1/teams/2/discussions/3"),
 			NodeID:        Ptr("node"),
@@ -220,7 +220,7 @@ func TestTeamsService_ListDiscussionsBySlug(t *testing.T) {
 			Private:       Ptr(false),
 			TeamURL:       Ptr("https://api.github.com/teams/2"),
 			Title:         Ptr("test"),
-			UpdatedAt:     &referenceTimestamp,
+			UpdatedAt:     refTimestamp(1136178001),
 			URL:           Ptr("https://api.github.com/teams/2/discussions/3"),
 		},
 	}
