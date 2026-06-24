@@ -31,8 +31,8 @@ func TestPrivateRegistriesService_ListOrganizationPrivateRegistries(t *testing.T
       "name": "MAVEN_REPOSITORY_SECRET",
       "registry_type": "maven_repository",
       "username": "monalisa",
-      "created_at": `+referenceTimeStr+`,
-      "updated_at": `+referenceTimeStr+`,
+      "created_at": `+refTimeStr(1136178000)+`,
+      "updated_at": `+refTimeStr(1136178001)+`,
       "visibility": "selected"
     }
   ]
@@ -53,8 +53,8 @@ func TestPrivateRegistriesService_ListOrganizationPrivateRegistries(t *testing.T
 				Name:         Ptr("MAVEN_REPOSITORY_SECRET"),
 				RegistryType: Ptr(PrivateRegistryTypeMavenRepository),
 				Username:     Ptr("monalisa"),
-				CreatedAt:    &referenceTimestamp,
-				UpdatedAt:    &referenceTimestamp,
+				CreatedAt:    refTimestamp(1136178000),
+				UpdatedAt:    refTimestamp(1136178001),
 				Visibility:   Ptr(PrivateRegistryVisibilitySelected),
 			},
 		},
@@ -109,8 +109,8 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
   "username": "monalisa",
   "visibility": "selected",
   "selected_repository_ids": [1, 2, 3],
-  "created_at": `+referenceTimeStr+`,
-  "updated_at": `+referenceTimeStr+`
+  "created_at": `+refTimeStr(1136178000)+`,
+  "updated_at": `+refTimeStr(1136178001)+`
 }`)
 	})
 
@@ -124,8 +124,8 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 		Name:                  Ptr("MAVEN_REPOSITORY_SECRET"),
 		RegistryType:          Ptr(PrivateRegistryTypeMavenRepository),
 		Username:              Ptr("monalisa"),
-		CreatedAt:             &referenceTimestamp,
-		UpdatedAt:             &referenceTimestamp,
+		CreatedAt:             refTimestamp(1136178000),
+		UpdatedAt:             refTimestamp(1136178001),
 		Visibility:            Ptr(PrivateRegistryVisibilitySelected),
 		SelectedRepositoryIDs: []int64{1, 2, 3},
 	}
@@ -173,8 +173,8 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDC(t *test
   "registry_type": "maven_repository",
   "visibility": "selected",
   "selected_repository_ids": [1, 2, 3],
-  "created_at": `+referenceTimeStr+`,
-  "updated_at": `+referenceTimeStr+`
+  "created_at": `+refTimeStr(1136178000)+`,
+  "updated_at": `+refTimeStr(1136178001)+`
 }`)
 	})
 
@@ -187,8 +187,8 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDC(t *test
 	want := &PrivateRegistry{
 		Name:                  Ptr("MAVEN_REPOSITORY_SECRET"),
 		RegistryType:          Ptr(PrivateRegistryTypeMavenRepository),
-		CreatedAt:             &referenceTimestamp,
-		UpdatedAt:             &referenceTimestamp,
+		CreatedAt:             refTimestamp(1136178000),
+		UpdatedAt:             refTimestamp(1136178001),
 		Visibility:            Ptr(PrivateRegistryVisibilitySelected),
 		SelectedRepositoryIDs: []int64{1, 2, 3},
 	}
@@ -249,8 +249,8 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDCJFrog(t 
   "name": "NPM_REGISTRY_SECRET",
   "registry_type": "npm_registry",
   "visibility": "private",
-  "created_at": `+referenceTimeStr+`,
-  "updated_at": `+referenceTimeStr+`
+  "created_at": `+refTimeStr(1136178000)+`,
+  "updated_at": `+refTimeStr(1136178001)+`
 }`)
 	})
 
@@ -263,8 +263,8 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDCJFrog(t 
 	want := &PrivateRegistry{
 		Name:         Ptr("NPM_REGISTRY_SECRET"),
 		RegistryType: Ptr(PrivateRegistryTypeNpmRegistry),
-		CreatedAt:    &referenceTimestamp,
-		UpdatedAt:    &referenceTimestamp,
+		CreatedAt:    refTimestamp(1136178000),
+		UpdatedAt:    refTimestamp(1136178001),
 		Visibility:   Ptr(PrivateRegistryVisibilityPrivate),
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
@@ -324,8 +324,8 @@ func TestPrivateRegistriesService_GetOrganizationPrivateRegistry(t *testing.T) {
   "name": "MAVEN_REPOSITORY_SECRET",
   "registry_type": "maven_repository",
   "username": "monalisa",
-  "created_at": `+referenceTimeStr+`,
-  "updated_at": `+referenceTimeStr+`,
+  "created_at": `+refTimeStr(1136178000)+`,
+  "updated_at": `+refTimeStr(1136178001)+`,
   "visibility": "selected"
 }`)
 	})
@@ -339,8 +339,8 @@ func TestPrivateRegistriesService_GetOrganizationPrivateRegistry(t *testing.T) {
 		Name:         Ptr("MAVEN_REPOSITORY_SECRET"),
 		RegistryType: Ptr(PrivateRegistryTypeMavenRepository),
 		Username:     Ptr("monalisa"),
-		CreatedAt:    &referenceTimestamp,
-		UpdatedAt:    &referenceTimestamp,
+		CreatedAt:    refTimestamp(1136178000),
+		UpdatedAt:    refTimestamp(1136178001),
 		Visibility:   Ptr(PrivateRegistryVisibilitySelected),
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
