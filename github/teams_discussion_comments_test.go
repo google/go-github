@@ -65,13 +65,13 @@ func TestTeamsService_ListComments(t *testing.T) {
 					"body": "comment",
 					"body_html": "<p>comment</p>",
 					"body_version": "version",
-					"created_at": `+referenceTimeStr+`,
+					"created_at": `+refTimeStr(1136178000)+`,
 					"last_edited_at": null,
 					"discussion_url": "https://api.github.com/teams/2/discussions/3",
 					"html_url": "https://github.com/orgs/1/teams/2/discussions/3/comments/4",
 					"node_id": "node",
 					"number": 4,
-					"updated_at": `+referenceTimeStr+`,
+					"updated_at": `+refTimeStr(1136178001)+`,
 					"url": "https://api.github.com/teams/2/discussions/3/comments/4"
 				}
 			]`)
@@ -101,13 +101,13 @@ func TestTeamsService_ListComments(t *testing.T) {
 			Body:          Ptr("comment"),
 			BodyHTML:      Ptr("<p>comment</p>"),
 			BodyVersion:   Ptr("version"),
-			CreatedAt:     &referenceTimestamp,
+			CreatedAt:     refTimestamp(1136178000),
 			LastEditedAt:  nil,
 			DiscussionURL: Ptr("https://api.github.com/teams/2/discussions/3"),
 			HTMLURL:       Ptr("https://github.com/orgs/1/teams/2/discussions/3/comments/4"),
 			NodeID:        Ptr("node"),
 			Number:        Ptr(4),
-			UpdatedAt:     &referenceTimestamp,
+			UpdatedAt:     refTimestamp(1136178001),
 			URL:           Ptr("https://api.github.com/teams/2/discussions/3/comments/4"),
 		},
 	}
