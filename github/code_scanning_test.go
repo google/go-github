@@ -1022,7 +1022,6 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 		t.Errorf("CodeScanning.ListAnalysesForRepo returned error: %v", err)
 	}
 
-	date := &referenceTimestamp
 	want := []*ScanningAnalysis{
 		{
 			ID:           Ptr(int64(201)),
@@ -1032,7 +1031,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 			Environment:  Ptr("{\"language\":\"python\"}"),
 			Error:        Ptr(""),
 			Category:     Ptr(".github/workflows/codeql-analysis.yml:analyze/language:python"),
-			CreatedAt:    date,
+			CreatedAt:    &referenceTimestamp,
 			ResultsCount: Ptr(17),
 			RulesCount:   Ptr(49),
 			URL:          Ptr("https://api.github.com/repos/o/r/code-scanning/analyses/201"),
@@ -1053,7 +1052,7 @@ func TestCodeScanningService_ListAnalysesForRepo(t *testing.T) {
 			Environment:  Ptr("{}"),
 			Error:        Ptr(""),
 			Category:     Ptr(".github/workflows/shiftleft.yml:build/"),
-			CreatedAt:    date,
+			CreatedAt:    &referenceTimestamp,
 			ResultsCount: Ptr(17),
 			RulesCount:   Ptr(32),
 			URL:          Ptr("https://api.github.com/repos/o/r/code-scanning/analyses/200"),
@@ -1121,7 +1120,6 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 		t.Errorf("CodeScanning.GetAnalysis returned error: %v", err)
 	}
 
-	date := &referenceTimestamp
 	want := &ScanningAnalysis{
 		ID:           Ptr(int64(3602840)),
 		Ref:          Ptr("refs/heads/main"),
@@ -1130,7 +1128,7 @@ func TestCodeScanningService_GetAnalysis(t *testing.T) {
 		Environment:  Ptr("{\"language\":\"javascript\"}"),
 		Error:        Ptr(""),
 		Category:     Ptr(".github/workflows/codeql-analysis.yml:analyze/language:javascript"),
-		CreatedAt:    date,
+		CreatedAt:    &referenceTimestamp,
 		ResultsCount: Ptr(3),
 		RulesCount:   Ptr(67),
 		URL:          Ptr("https://api.github.com/repos/o/r/code-scanning/analyses/201"),
@@ -1236,8 +1234,8 @@ func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
 				},
 				"content_type": "r",
 				"size": 1024,
-				"created_at": `+referenceTimeStr+`,
-				"updated_at": `+referenceTimeStr+`,
+				"created_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`,
 				"url": "s"
 			}
 		]`)
@@ -1249,7 +1247,6 @@ func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
 		t.Errorf("CodeScanning.ListCodeQLDatabases returned error: %v", err)
 	}
 
-	date := &referenceTimestamp
 	want := []*CodeQLDatabase{
 		{
 			ID:       Ptr(int64(1)),
@@ -1277,8 +1274,8 @@ func TestCodeScanningService_ListCodeQLDatabases(t *testing.T) {
 			},
 			ContentType: Ptr("r"),
 			Size:        Ptr(int64(1024)),
-			CreatedAt:   date,
-			UpdatedAt:   date,
+			CreatedAt:   refTimestamp(1136178000),
+			UpdatedAt:   refTimestamp(1136178001),
 			URL:         Ptr("s"),
 		},
 	}
@@ -1334,8 +1331,8 @@ func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
 			},
 			"content_type": "r",
 			"size": 1024,
-			"created_at": `+referenceTimeStr+`,
-			"updated_at": `+referenceTimeStr+`,
+			"created_at": `+refTimeStr(1136178000)+`,
+			"updated_at": `+refTimeStr(1136178001)+`,
 			"url": "s"
 		}`)
 	})
@@ -1346,7 +1343,6 @@ func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
 		t.Errorf("CodeScanning.GetCodeQLDatabase returned error: %v", err)
 	}
 
-	date := &referenceTimestamp
 	want := &CodeQLDatabase{
 		ID:       Ptr(int64(1)),
 		Name:     Ptr("name"),
@@ -1373,8 +1369,8 @@ func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
 		},
 		ContentType: Ptr("r"),
 		Size:        Ptr(int64(1024)),
-		CreatedAt:   date,
-		UpdatedAt:   date,
+		CreatedAt:   refTimestamp(1136178000),
+		UpdatedAt:   refTimestamp(1136178001),
 		URL:         Ptr("s"),
 	}
 
@@ -1424,12 +1420,11 @@ func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
 		t.Errorf("CodeScanning.GetDefaultSetupConfiguration returned error: %v", err)
 	}
 
-	date := &referenceTimestamp
 	want := &DefaultSetupConfiguration{
 		State:      Ptr("configured"),
 		Languages:  []string{"javascript", "javascript-typescript", "typescript"},
 		QuerySuite: Ptr("default"),
-		UpdatedAt:  date,
+		UpdatedAt:  &referenceTimestamp,
 	}
 	if !cmp.Equal(cfg, want) {
 		t.Errorf("CodeScanning.GetDefaultSetupConfiguration returned %+v, want %+v", cfg, want)
