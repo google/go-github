@@ -23,7 +23,7 @@ func TestCodespacesService_ListInRepo(t *testing.T) {
 			"page":     "1",
 			"per_page": "2",
 		})
-		fmt.Fprint(w, `{"total_count":2,"codespaces":[{"id":1,"name":"monalisa-octocat-hello-world-g4wpq6h95q","environment_id":"26a7c758-7299-4a73-b978-5a92a7ae98a0","owner":{"login":"octocat"},"billable_owner":{"login":"octocat"},"repository":{"id":1296269},"machine":{"name":"standardLinux","display_name":"4 cores, 8 GB RAM, 64 GB storage","operating_system":"linux","storage_in_bytes":68719476736,"memory_in_bytes":8589934592,"cpus":4},"prebuild":false,"devcontainer_path":".devcontainer/devcontainer.json","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"last_used_at":`+referenceTimeStr+`,"state":"Available","url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q","git_status":{"ahead":0,"behind":0,"has_unpushed_changes":false,"has_uncommitted_changes":false,"ref":"main"},"location":"WestUs2","idle_timeout_minutes":60,"web_url":"https://monalisa-octocat-hello-world-g4wpq6h95q.github.dev","machines_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/machines","start_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/start","stop_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/stop","recent_folders":["testfolder1","testfolder2"]},{"id":2}]}`)
+		fmt.Fprint(w, `{"total_count":2,"codespaces":[{"id":1,"name":"monalisa-octocat-hello-world-g4wpq6h95q","environment_id":"26a7c758-7299-4a73-b978-5a92a7ae98a0","owner":{"login":"octocat"},"billable_owner":{"login":"octocat"},"repository":{"id":1296269},"machine":{"name":"standardLinux","display_name":"4 cores, 8 GB RAM, 64 GB storage","operating_system":"linux","storage_in_bytes":68719476736,"memory_in_bytes":8589934592,"cpus":4},"prebuild":false,"devcontainer_path":".devcontainer/devcontainer.json","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`,"last_used_at":`+refTimeStr(1136178002)+`,"state":"Available","url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q","git_status":{"ahead":0,"behind":0,"has_unpushed_changes":false,"has_uncommitted_changes":false,"ref":"main"},"location":"WestUs2","idle_timeout_minutes":60,"web_url":"https://monalisa-octocat-hello-world-g4wpq6h95q.github.dev","machines_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/machines","start_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/start","stop_url":"https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q/stop","recent_folders":["testfolder1","testfolder2"]},{"id":2}]}`)
 	})
 
 	opt := &ListOptions{Page: 1, PerPage: 2}
@@ -57,9 +57,9 @@ func TestCodespacesService_ListInRepo(t *testing.T) {
 			},
 			Prebuild:         Ptr(false),
 			DevcontainerPath: Ptr(".devcontainer/devcontainer.json"),
-			CreatedAt:        &referenceTimestamp,
-			UpdatedAt:        &referenceTimestamp,
-			LastUsedAt:       &referenceTimestamp,
+			CreatedAt:        refTimestamp(1136178000),
+			UpdatedAt:        refTimestamp(1136178001),
+			LastUsedAt:       refTimestamp(1136178002),
 			State:            Ptr("Available"),
 			URL:              Ptr("https://api.github.com/user/codespaces/monalisa-octocat-hello-world-g4wpq6h95q"),
 			GitStatus: &CodespacesGitStatus{
