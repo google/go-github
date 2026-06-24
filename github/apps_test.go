@@ -174,8 +174,8 @@ func TestAppsService_ListInstallations(t *testing.T) {
                                   ],
                                  "single_file_name": "config.yml",
                                  "repository_selection": "selected",
-                                 "created_at": `+referenceTimeStr+`,
-                                 "updated_at": `+referenceTimeStr+`}]`,
+                                 "created_at": `+refTimeStr(1136178000)+`,
+                                 "updated_at": `+refTimeStr(1136178001)+`}]`,
 		)
 	})
 
@@ -232,8 +232,8 @@ func TestAppsService_ListInstallations(t *testing.T) {
 			Workflows:                               Ptr("write"),
 		},
 		Events:    []string{"push", "pull_request"},
-		CreatedAt: &referenceTimestamp,
-		UpdatedAt: &referenceTimestamp,
+		CreatedAt: refTimestamp(1136178000),
+		UpdatedAt: refTimestamp(1136178001),
 	}}
 	if !cmp.Equal(installations, want) {
 		t.Errorf("Apps.ListInstallations returned %+v, want %+v", installations, want)
