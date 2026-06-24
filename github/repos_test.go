@@ -4432,8 +4432,8 @@ func TestRepositoriesService_ListRepositoryActivities_withOptions(t *testing.T) 
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
 			"direction":     "desc",
-			"before":        referenceTimeStr,
-			"after":         referenceTimeStr,
+			"before":        refTimeStr(1136178000),
+			"after":         refTimeStr(1136178001),
 			"ref":           "refs/heads/main",
 			"actor":         "testuser1",
 			"time_period":   "day",
@@ -4476,8 +4476,8 @@ func TestRepositoriesService_ListRepositoryActivities_withOptions(t *testing.T) 
 
 	opts := &ListRepositoryActivityOptions{
 		Direction:    "desc",
-		Before:       referenceTimeStr,
-		After:        referenceTimeStr,
+		Before:       refTimeStr(1136178000),
+		After:        refTimeStr(1136178001),
 		Ref:          "refs/heads/main",
 		Actor:        "testuser1",
 		TimePeriod:   "day",
