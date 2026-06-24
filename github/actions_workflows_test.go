@@ -20,7 +20,7 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/actions/workflows", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"workflows":[{"id":72844,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"id":72845,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
+		fmt.Fprint(w, `{"total_count":4,"workflows":[{"id":72844,"created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"id":72845,"created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -33,8 +33,8 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 	want := &Workflows{
 		TotalCount: Ptr(4),
 		Workflows: []*Workflow{
-			{ID: Ptr(int64(72844)), CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
-			{ID: Ptr(int64(72845)), CreatedAt: &referenceTimestamp, UpdatedAt: &referenceTimestamp},
+			{ID: Ptr(int64(72844)), CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
+			{ID: Ptr(int64(72845)), CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(workflows, want) {
@@ -62,7 +62,7 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/72844", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":72844,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
+		fmt.Fprint(w, `{"id":72844,"created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 	})
 
 	ctx := t.Context()
@@ -73,8 +73,8 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 
 	want := &Workflow{
 		ID:        Ptr(int64(72844)),
-		CreatedAt: &referenceTimestamp,
-		UpdatedAt: &referenceTimestamp,
+		CreatedAt: refTimestamp(1136178000),
+		UpdatedAt: refTimestamp(1136178001),
 	}
 	if !cmp.Equal(workflow, want) {
 		t.Errorf("Actions.GetWorkflowByID returned %+v, want %+v", workflow, want)
@@ -101,7 +101,7 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/workflows/main.yml", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":72844,"created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
+		fmt.Fprint(w, `{"id":72844,"created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 	})
 
 	ctx := t.Context()
@@ -112,8 +112,8 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 
 	want := &Workflow{
 		ID:        Ptr(int64(72844)),
-		CreatedAt: &referenceTimestamp,
-		UpdatedAt: &referenceTimestamp,
+		CreatedAt: refTimestamp(1136178000),
+		UpdatedAt: refTimestamp(1136178001),
 	}
 	if !cmp.Equal(workflow, want) {
 		t.Errorf("Actions.GetWorkflowByFileName returned %+v, want %+v", workflow, want)
