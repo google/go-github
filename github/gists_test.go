@@ -714,8 +714,8 @@ func TestGistsService_ListForks(t *testing.T) {
 		    {"url": "https://api.github.com/gists/1",
 		     "user": {"id": 1},
 		     "id": "1",
-		     "created_at": `+referenceTimeStr+`,
-		     "updated_at": `+referenceTimeStr+`
+		     "created_at": `+refTimeStr(1136178000)+`,
+		     "updated_at": `+refTimeStr(1136178001)+`
 		    }
 		  ]
 		`)
@@ -731,8 +731,8 @@ func TestGistsService_ListForks(t *testing.T) {
 		URL:       Ptr("https://api.github.com/gists/1"),
 		ID:        Ptr("1"),
 		User:      &User{ID: Ptr(int64(1))},
-		CreatedAt: &referenceTimestamp,
-		UpdatedAt: &referenceTimestamp,
+		CreatedAt: refTimestamp(1136178000),
+		UpdatedAt: refTimestamp(1136178001),
 	}}
 
 	if !cmp.Equal(gistForks, want) {
