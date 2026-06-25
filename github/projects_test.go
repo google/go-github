@@ -1436,7 +1436,7 @@ func TestProjectsService_CreateOrganizationProjectDraftItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CreateProjectV2DraftItemRequest{Title: Ptr("My draft"), Body: Ptr("Draft body")}
+	input := CreateProjectV2DraftItemRequest{Title: "My draft", Body: Ptr("Draft body")}
 
 	mux.HandleFunc("/orgs/o/projectsV2/1/drafts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -1471,7 +1471,7 @@ func TestProjectsService_CreateUserProjectDraftItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CreateProjectV2DraftItemRequest{Title: Ptr("My draft")}
+	input := CreateProjectV2DraftItemRequest{Title: "My draft"}
 
 	mux.HandleFunc("/user/12345/projectsV2/1/drafts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -1506,8 +1506,8 @@ func TestProjectsService_AddOrganizationProjectField(t *testing.T) {
 		Name:     Ptr("Priority"),
 		DataType: Ptr("single_select"),
 		SingleSelectOptions: []*ProjectV2FieldSingleSelectOption{
-			{Name: Ptr("High"), Color: Ptr("RED"), Description: Ptr("Urgent")},
-			{Name: Ptr("Low"), Color: Ptr("GRAY")},
+			{Name: "High", Color: Ptr("RED"), Description: Ptr("Urgent")},
+			{Name: "Low", Color: Ptr("GRAY")},
 		},
 	}
 
@@ -1590,8 +1590,8 @@ func TestProjectsService_CreateOrganizationProjectView(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := CreateProjectV2ViewRequest{
-		Name:          Ptr("My board"),
-		Layout:        Ptr("board"),
+		Name:          "My board",
+		Layout:        "board",
 		Filter:        Ptr("is:open"),
 		VisibleFields: []int64{1, 2, 3},
 	}
@@ -1646,7 +1646,7 @@ func TestProjectsService_CreateUserProjectView(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CreateProjectV2ViewRequest{Name: Ptr("My table"), Layout: Ptr("table")}
+	input := CreateProjectV2ViewRequest{Name: "My table", Layout: "table"}
 
 	mux.HandleFunc("/users/12345/projectsV2/1/views", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

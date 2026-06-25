@@ -11158,12 +11158,12 @@ func (c *CreateProjectV2DraftItemRequest) GetBody() string {
 	return *c.Body
 }
 
-// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+// GetTitle returns the Title field.
 func (c *CreateProjectV2DraftItemRequest) GetTitle() string {
-	if c == nil || c.Title == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.Title
+	return c.Title
 }
 
 // GetFilter returns the Filter field if it's non-nil, zero value otherwise.
@@ -11174,20 +11174,20 @@ func (c *CreateProjectV2ViewRequest) GetFilter() string {
 	return *c.Filter
 }
 
-// GetLayout returns the Layout field if it's non-nil, zero value otherwise.
+// GetLayout returns the Layout field.
 func (c *CreateProjectV2ViewRequest) GetLayout() string {
-	if c == nil || c.Layout == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.Layout
+	return c.Layout
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (c *CreateProjectV2ViewRequest) GetName() string {
-	if c == nil || c.Name == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.Name
+	return c.Name
 }
 
 // GetVisibleFields returns the VisibleFields slice if it's non-nil, nil otherwise.
@@ -29086,12 +29086,12 @@ func (p *ProjectV2FieldSingleSelectOption) GetDescription() string {
 	return *p.Description
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (p *ProjectV2FieldSingleSelectOption) GetName() string {
-	if p == nil || p.Name == nil {
+	if p == nil {
 		return ""
 	}
-	return *p.Name
+	return p.Name
 }
 
 // GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.

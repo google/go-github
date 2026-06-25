@@ -14194,10 +14194,7 @@ func TestCreateProjectV2DraftItemRequest_GetBody(tt *testing.T) {
 
 func TestCreateProjectV2DraftItemRequest_GetTitle(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateProjectV2DraftItemRequest{Title: &zeroValue}
-	c.GetTitle()
-	c = &CreateProjectV2DraftItemRequest{}
+	c := &CreateProjectV2DraftItemRequest{}
 	c.GetTitle()
 	c = nil
 	c.GetTitle()
@@ -14216,10 +14213,7 @@ func TestCreateProjectV2ViewRequest_GetFilter(tt *testing.T) {
 
 func TestCreateProjectV2ViewRequest_GetLayout(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateProjectV2ViewRequest{Layout: &zeroValue}
-	c.GetLayout()
-	c = &CreateProjectV2ViewRequest{}
+	c := &CreateProjectV2ViewRequest{}
 	c.GetLayout()
 	c = nil
 	c.GetLayout()
@@ -14227,10 +14221,7 @@ func TestCreateProjectV2ViewRequest_GetLayout(tt *testing.T) {
 
 func TestCreateProjectV2ViewRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CreateProjectV2ViewRequest{Name: &zeroValue}
-	c.GetName()
-	c = &CreateProjectV2ViewRequest{}
+	c := &CreateProjectV2ViewRequest{}
 	c.GetName()
 	c = nil
 	c.GetName()
@@ -36685,10 +36676,7 @@ func TestProjectV2FieldSingleSelectOption_GetDescription(tt *testing.T) {
 
 func TestProjectV2FieldSingleSelectOption_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &ProjectV2FieldSingleSelectOption{Name: &zeroValue}
-	p.GetName()
-	p = &ProjectV2FieldSingleSelectOption{}
+	p := &ProjectV2FieldSingleSelectOption{}
 	p.GetName()
 	p = nil
 	p.GetName()

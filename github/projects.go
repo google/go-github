@@ -733,7 +733,7 @@ func (s *ProjectsService) DeleteUserProjectItem(ctx context.Context, username st
 // CreateProjectV2DraftItemRequest specifies the parameters to create a draft item in a project.
 type CreateProjectV2DraftItemRequest struct {
 	// Title is the title of the draft issue item to create. (Required.)
-	Title *string `json:"title,omitempty"`
+	Title string `json:"title"`
 	// Body is the body content of the draft issue item to create. (Optional.)
 	Body *string `json:"body,omitempty"`
 }
@@ -786,7 +786,7 @@ func (s *ProjectsService) CreateUserProjectDraftItem(ctx context.Context, userID
 // ProjectV2FieldSingleSelectOption represents an option to create for a single_select project field.
 type ProjectV2FieldSingleSelectOption struct {
 	// Name is the display name of the option. (Required.)
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// Color is the color associated with the option.
 	// One of: BLUE, GRAY, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW.
 	Color *string `json:"color,omitempty"`
@@ -952,9 +952,9 @@ func (s ProjectV2ViewSortBy) MarshalJSON() ([]byte, error) {
 // CreateProjectV2ViewRequest specifies the parameters to create a project view.
 type CreateProjectV2ViewRequest struct {
 	// Name is the view's display name. (Required.)
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// Layout is the view's layout. One of: table, board, roadmap. (Required.)
-	Layout *string `json:"layout,omitempty"`
+	Layout string `json:"layout"`
 	// Filter is an optional query string to filter the items shown in the view.
 	Filter *string `json:"filter,omitempty"`
 	// VisibleFields lists the field IDs to display. Not applicable to the roadmap layout.
