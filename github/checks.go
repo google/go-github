@@ -171,9 +171,9 @@ type CheckRunAction struct {
 // GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#create-a-check-run
 //
 //meta:operation POST /repos/{owner}/{repo}/check-runs
-func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, opts CreateCheckRunOptions) (*CheckRun, *Response, error) {
+func (s *ChecksService) CreateCheckRun(ctx context.Context, owner, repo string, body CreateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -206,9 +206,9 @@ type UpdateCheckRunOptions struct {
 // GitHub API docs: https://docs.github.com/rest/checks/runs?apiVersion=2022-11-28#update-a-check-run
 //
 //meta:operation PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}
-func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, checkRunID int64, opts UpdateCheckRunOptions) (*CheckRun, *Response, error) {
+func (s *ChecksService) UpdateCheckRun(ctx context.Context, owner, repo string, checkRunID int64, body UpdateCheckRunOptions) (*CheckRun, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-runs/%v", owner, repo, checkRunID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -415,9 +415,9 @@ type PreferenceList struct {
 // GitHub API docs: https://docs.github.com/rest/checks/suites?apiVersion=2022-11-28#update-repository-preferences-for-check-suites
 //
 //meta:operation PATCH /repos/{owner}/{repo}/check-suites/preferences
-func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, repo string, opts CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
+func (s *ChecksService) SetCheckSuitePreferences(ctx context.Context, owner, repo string, body CheckSuitePreferenceOptions) (*CheckSuitePreferenceResults, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites/preferences", owner, repo)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, opts)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -444,9 +444,9 @@ type CreateCheckSuiteOptions struct {
 // GitHub API docs: https://docs.github.com/rest/checks/suites?apiVersion=2022-11-28#create-a-check-suite
 //
 //meta:operation POST /repos/{owner}/{repo}/check-suites
-func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string, opts CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
+func (s *ChecksService) CreateCheckSuite(ctx context.Context, owner, repo string, body CreateCheckSuiteOptions) (*CheckSuite, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/check-suites", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

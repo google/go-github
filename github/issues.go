@@ -17,6 +17,21 @@ import (
 // GitHub API docs: https://docs.github.com/rest/issues?apiVersion=2022-11-28
 type IssuesService service
 
+// IssueDependenciesSummary represents a summary of issue dependency counts.
+type IssueDependenciesSummary struct {
+	BlockedBy      *int `json:"blocked_by,omitempty"`
+	Blocking       *int `json:"blocking,omitempty"`
+	TotalBlockedBy *int `json:"total_blocked_by,omitempty"`
+	TotalBlocking  *int `json:"total_blocking,omitempty"`
+}
+
+// SubIssuesSummary represents a summary of sub-issue progress.
+type SubIssuesSummary struct {
+	Total            *int `json:"total,omitempty"`
+	Completed        *int `json:"completed,omitempty"`
+	PercentCompleted *int `json:"percent_completed,omitempty"`
+}
+
 // Issue represents a GitHub issue on a repository.
 //
 // Note: As far as the GitHub API is concerned, every pull request is an issue,
@@ -39,31 +54,35 @@ type Issue struct {
 	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
 	// Use the Issues REST API endpoint to retrieve this information.
 	// See: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
-	AuthorAssociation *string            `json:"author_association,omitempty"`
-	User              *User              `json:"user,omitempty"`
-	Labels            []*Label           `json:"labels,omitempty"`
-	Assignee          *User              `json:"assignee,omitempty"`
-	Comments          *int               `json:"comments,omitempty"`
-	ClosedAt          *Timestamp         `json:"closed_at,omitempty"`
-	CreatedAt         *Timestamp         `json:"created_at,omitempty"`
-	UpdatedAt         *Timestamp         `json:"updated_at,omitempty"`
-	ClosedBy          *User              `json:"closed_by,omitempty"`
-	URL               *string            `json:"url,omitempty"`
-	HTMLURL           *string            `json:"html_url,omitempty"`
-	CommentsURL       *string            `json:"comments_url,omitempty"`
-	EventsURL         *string            `json:"events_url,omitempty"`
-	LabelsURL         *string            `json:"labels_url,omitempty"`
-	RepositoryURL     *string            `json:"repository_url,omitempty"`
-	ParentIssueURL    *string            `json:"parent_issue_url,omitempty"`
-	Milestone         *Milestone         `json:"milestone,omitempty"`
-	PullRequestLinks  *PullRequestLinks  `json:"pull_request,omitempty"`
-	Repository        *Repository        `json:"repository,omitempty"`
-	Reactions         *Reactions         `json:"reactions,omitempty"`
-	Assignees         []*User            `json:"assignees,omitempty"`
-	NodeID            *string            `json:"node_id,omitempty"`
-	Draft             *bool              `json:"draft,omitempty"`
-	Type              *IssueType         `json:"type,omitempty"`
-	IssueFieldValues  []*IssueFieldValue `json:"issue_field_values,omitempty"`
+	AuthorAssociation        *string                   `json:"author_association,omitempty"`
+	User                     *User                     `json:"user,omitempty"`
+	Labels                   []*Label                  `json:"labels,omitempty"`
+	Assignee                 *User                     `json:"assignee,omitempty"`
+	Comments                 *int                      `json:"comments,omitempty"`
+	ClosedAt                 *Timestamp                `json:"closed_at,omitempty"`
+	CreatedAt                *Timestamp                `json:"created_at,omitempty"`
+	UpdatedAt                *Timestamp                `json:"updated_at,omitempty"`
+	ClosedBy                 *User                     `json:"closed_by,omitempty"`
+	URL                      *string                   `json:"url,omitempty"`
+	HTMLURL                  *string                   `json:"html_url,omitempty"`
+	CommentsURL              *string                   `json:"comments_url,omitempty"`
+	EventsURL                *string                   `json:"events_url,omitempty"`
+	LabelsURL                *string                   `json:"labels_url,omitempty"`
+	RepositoryURL            *string                   `json:"repository_url,omitempty"`
+	ParentIssueURL           *string                   `json:"parent_issue_url,omitempty"`
+	Milestone                *Milestone                `json:"milestone,omitempty"`
+	PullRequestLinks         *PullRequestLinks         `json:"pull_request,omitempty"`
+	Repository               *Repository               `json:"repository,omitempty"`
+	Reactions                *Reactions                `json:"reactions,omitempty"`
+	Assignees                []*User                   `json:"assignees,omitempty"`
+	NodeID                   *string                   `json:"node_id,omitempty"`
+	Draft                    *bool                     `json:"draft,omitempty"`
+	Type                     *IssueType                `json:"type,omitempty"`
+	PinnedComment            *IssueComment             `json:"pinned_comment,omitempty"`
+	PerformedViaGithubApp    *App                      `json:"performed_via_github_app,omitempty"`
+	IssueDependenciesSummary *IssueDependenciesSummary `json:"issue_dependencies_summary,omitempty"`
+	SubIssuesSummary         *SubIssuesSummary         `json:"sub_issues_summary,omitempty"`
+	IssueFieldValues         []*IssueFieldValue        `json:"issue_field_values,omitempty"`
 
 	// TextMatches is only populated from search results that request text matches
 	// See: search.go and https://docs.github.com/rest/search/#text-match-metadata
@@ -439,9 +458,9 @@ func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int)
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues
-func (s *IssuesService) Create(ctx context.Context, owner, repo string, issue *IssueRequest) (*Issue, *Response, error) {
+func (s *IssuesService) Create(ctx context.Context, owner, repo string, body *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, issue)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -460,9 +479,9 @@ func (s *IssuesService) Create(ctx context.Context, owner, repo string, issue *I
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#update-an-issue
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
-func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int, issue *IssueRequest) (*Issue, *Response, error) {
+func (s *IssuesService) Edit(ctx context.Context, owner, repo string, number int, body *IssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, number)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, issue)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -515,9 +534,9 @@ type LockIssueOptions struct {
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#lock-an-issue
 //
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/lock
-func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, opts *LockIssueOptions) (*Response, error) {
+func (s *IssuesService) Lock(ctx context.Context, owner, repo string, number int, body *LockIssueOptions) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/lock", owner, repo, number)
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}

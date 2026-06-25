@@ -114,10 +114,10 @@ func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string) 
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#create-a-budget
 //
 //meta:operation POST /enterprises/{enterprise}/settings/billing/budgets
-func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string, budget EnterpriseCreateBudget) (*EnterpriseCreateOrUpdateBudgetResponse, *Response, error) {
+func (s *EnterpriseService) CreateBudget(ctx context.Context, enterprise string, body EnterpriseCreateBudget) (*EnterpriseCreateOrUpdateBudgetResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets", enterprise)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, budget)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -158,10 +158,10 @@ func (s *EnterpriseService) GetBudget(ctx context.Context, enterprise, budgetID 
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#update-a-budget
 //
 //meta:operation PATCH /enterprises/{enterprise}/settings/billing/budgets/{budget_id}
-func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, budget EnterpriseUpdateBudget) (*EnterpriseCreateOrUpdateBudgetResponse, *Response, error) {
+func (s *EnterpriseService) UpdateBudget(ctx context.Context, enterprise, budgetID string, body EnterpriseUpdateBudget) (*EnterpriseCreateOrUpdateBudgetResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v", enterprise, budgetID)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, budget)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

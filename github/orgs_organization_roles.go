@@ -103,10 +103,10 @@ func (s *OrganizationsService) GetOrgRole(ctx context.Context, org string, roleI
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles?apiVersion=2022-11-28#create-a-custom-organization-role
 //
 //meta:operation POST /orgs/{org}/organization-roles
-func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, request CreateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
+func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org string, body CreateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles", org)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, request)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -126,10 +126,10 @@ func (s *OrganizationsService) CreateCustomOrgRole(ctx context.Context, org stri
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/orgs/organization-roles?apiVersion=2022-11-28#update-a-custom-organization-role
 //
 //meta:operation PATCH /orgs/{org}/organization-roles/{role_id}
-func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, request UpdateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
+func (s *OrganizationsService) UpdateCustomOrgRole(ctx context.Context, org string, roleID int64, body UpdateCustomOrgRoleRequest) (*CustomOrgRole, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/organization-roles/%v", org, roleID)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, request)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

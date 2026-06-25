@@ -169,9 +169,9 @@ func (s *DependabotService) GetRepoAlert(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/dependabot/alerts?apiVersion=2022-11-28#update-a-dependabot-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/dependabot/alerts/{alert_number}
-func (s *DependabotService) UpdateAlert(ctx context.Context, owner, repo string, number int, stateInfo *DependabotAlertState) (*DependabotAlert, *Response, error) {
+func (s *DependabotService) UpdateAlert(ctx context.Context, owner, repo string, number int, body *DependabotAlertState) (*DependabotAlert, *Response, error) {
 	url := fmt.Sprintf("repos/%v/%v/dependabot/alerts/%v", owner, repo, number)
-	req, err := s.client.NewRequest(ctx, "PATCH", url, stateInfo)
+	req, err := s.client.NewRequest(ctx, "PATCH", url, body)
 	if err != nil {
 		return nil, nil, err
 	}

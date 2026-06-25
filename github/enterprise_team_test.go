@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -27,8 +26,8 @@ func TestEnterpriseService_ListTeams(t *testing.T) {
 			"name": "Team One",
 			"html_url": "https://example.com/html",
 			"slug": "team-one",
-			"created_at": "2020-01-01T00:00:00Z",
-			"updated_at": "2020-01-02T00:00:00Z",
+			"created_at": `+refTimeStr(1136178000)+`,
+			"updated_at": `+refTimeStr(1136178001)+`,
 			"group_id": "99"
 		}]`)
 	})
@@ -49,8 +48,8 @@ func TestEnterpriseService_ListTeams(t *testing.T) {
 			HTMLURL:   "https://example.com/html",
 			Slug:      "team-one",
 			GroupID:   "99",
-			CreatedAt: Timestamp{Time: time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)},
-			UpdatedAt: Timestamp{Time: time.Date(2020, time.January, 2, 0, 0, 0, 0, time.UTC)},
+			CreatedAt: *refTimestamp(1136178000),
+			UpdatedAt: *refTimestamp(1136178001),
 		},
 	}
 

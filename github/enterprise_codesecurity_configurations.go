@@ -60,10 +60,10 @@ func (s *EnterpriseService) ListCodeSecurityConfigurations(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#create-a-code-security-configuration-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/code-security/configurations
-func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context, enterprise string, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+func (s *EnterpriseService) CreateCodeSecurityConfiguration(ctx context.Context, enterprise string, body CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations", enterprise)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, config)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -123,10 +123,10 @@ func (s *EnterpriseService) GetCodeSecurityConfiguration(ctx context.Context, en
 // GitHub API docs: https://docs.github.com/rest/code-security/configurations?apiVersion=2022-11-28#update-a-custom-code-security-configuration-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/code-security/configurations/{configuration_id}
-func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64, config CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
+func (s *EnterpriseService) UpdateCodeSecurityConfiguration(ctx context.Context, enterprise string, configurationID int64, body CodeSecurityConfiguration) (*CodeSecurityConfiguration, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/code-security/configurations/%v", enterprise, configurationID)
 
-	req, err := s.client.NewRequest(ctx, "PATCH", u, config)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

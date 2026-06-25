@@ -6,10 +6,10 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -52,8 +52,8 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 				"active": true,
 				"meta": {
 				  "resourceType": "User",
-				  "created": "2018-02-13T15:05:24.000-00:00",
-				  "lastModified": "2018-02-13T15:05:24.000-00:00",
+				  "created": ` + refTimeStr(1136178000) + `,
+				  "lastModified": ` + refTimeStr(1136178001) + `,
 				  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"
 				}
 			  }
@@ -72,7 +72,6 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 		t.Errorf("SCIM.ListSCIMProvisionedIdentities returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2018, time.February, 13, 15, 5, 24, 0, time.UTC)}
 	want := SCIMProvisionedIdentities{
 		Schemas:      []string{"urn:ietf:params:scim:api:messages:2.0:ListResponse"},
 		TotalResults: Ptr(1),
@@ -83,8 +82,8 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 				ID: Ptr("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				Meta: &SCIMMeta{
 					ResourceType: Ptr("User"),
-					Created:      &date,
-					LastModified: &date,
+					Created:      refTimestamp(1136178000),
+					LastModified: refTimestamp(1136178001),
 					Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				},
 				UserName: "octocat@github.com",
@@ -208,8 +207,8 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 			"active": true,
 			"meta": {
 			  "resourceType": "User",
-			  "created": "2017-03-09T16:11:13-00:00",
-			  "lastModified": "2017-03-09T16:11:13-00:00",
+			  "created": ` + refTimeStr(1136178000) + `,
+			  "lastModified": ` + refTimeStr(1136178001) + `,
 			  "location": "https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"
 			}
 		  }`))
@@ -221,13 +220,12 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 		t.Errorf("SCIM.GetSCIMProvisioningInfoForUser returned error: %v", err)
 	}
 
-	date := Timestamp{time.Date(2017, time.March, 9, 16, 11, 13, 0, time.UTC)}
 	want := SCIMUserAttributes{
 		ID: Ptr("edefdfedf-050c-11e7-8d32"),
 		Meta: &SCIMMeta{
 			ResourceType: Ptr("User"),
-			Created:      &date,
-			LastModified: &date,
+			Created:      refTimestamp(1136178000),
+			LastModified: refTimestamp(1136178001),
 			Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"),
 		},
 		UserName: "mona.octocat@okta.example.com",
@@ -273,13 +271,7 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, "PUT")
-		w.WriteHeader(http.StatusOK)
-	})
-
-	ctx := t.Context()
-	opts := &SCIMUserAttributes{
+	body := UpdateProvisionedOrgMembershipRequest{
 		UserName: "userName",
 		Name: SCIMUserName{
 			GivenName:  "givenName",
@@ -291,19 +283,40 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 			},
 		},
 	}
-	_, err := client.SCIM.UpdateProvisionedOrgMembership(ctx, "o", "123", opts)
+
+	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, body)
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{"id":"123","userName":"userName"}`)
+	})
+
+	ctx := t.Context()
+	user, _, err := client.SCIM.UpdateProvisionedOrgMembership(ctx, "o", "123", body)
 	if err != nil {
 		t.Errorf("SCIM.UpdateProvisionedOrgMembership returned error: %v", err)
 	}
 
+	want := &SCIMUserAttributes{
+		ID:       Ptr("123"),
+		UserName: "userName",
+	}
+	if !cmp.Equal(user, want) {
+		t.Errorf("SCIM.UpdateProvisionedOrgMembership returned %+v, want %+v", user, want)
+	}
+
 	const methodName = "UpdateProvisionedOrgMembership"
-	testBadOptions(t, methodName, func() error {
-		_, err := client.SCIM.UpdateProvisionedOrgMembership(ctx, "\n", "123", opts)
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SCIM.UpdateProvisionedOrgMembership(ctx, "\n", "123", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.SCIM.UpdateProvisionedOrgMembership(ctx, "o", "123", opts)
+		got, resp, err := client.SCIM.UpdateProvisionedOrgMembership(ctx, "o", "123", body)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 
@@ -311,26 +324,64 @@ func TestSCIMService_UpdateAttributeForSCIMUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	body := UpdateAttributeForSCIMUserRequest{
+		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
+		Operations: []*UpdateAttributeForSCIMUserOperations{
+			{
+				Op:    "replace",
+				Path:  Ptr("displayName"),
+				Value: json.RawMessage(`"NewDisplayName"`),
+			},
+		},
+	}
+
+	// Verify the wire format against an expected map (not the same struct) so
+	// that JSON key names are pinned. Per the SCIM PatchOp schema the request
+	// uses a capitalized "Operations" key (and lowercase "schemas").
+	wantBody := map[string]any{
+		"schemas": []any{SCIMSchemasURINamespacesPatchOp},
+		"Operations": []any{
+			map[string]any{
+				"op":    "replace",
+				"path":  "displayName",
+				"value": "NewDisplayName",
+			},
+		},
+	}
+
 	mux.HandleFunc("/scim/v2/organizations/o/Users/123", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		w.WriteHeader(http.StatusNoContent)
+		testJSONBody(t, r, wantBody)
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, `{"id":"123","userName":"userName"}`)
 	})
 
 	ctx := t.Context()
-	opts := &UpdateAttributeForSCIMUserOptions{}
-	_, err := client.SCIM.UpdateAttributeForSCIMUser(ctx, "o", "123", opts)
+	user, _, err := client.SCIM.UpdateAttributeForSCIMUser(ctx, "o", "123", body)
 	if err != nil {
 		t.Errorf("SCIM.UpdateAttributeForSCIMUser returned error: %v", err)
 	}
 
+	want := &SCIMUserAttributes{
+		ID:       Ptr("123"),
+		UserName: "userName",
+	}
+	if !cmp.Equal(user, want) {
+		t.Errorf("SCIM.UpdateAttributeForSCIMUser returned %+v, want %+v", user, want)
+	}
+
 	const methodName = "UpdateAttributeForSCIMUser"
-	testBadOptions(t, methodName, func() error {
-		_, err := client.SCIM.UpdateAttributeForSCIMUser(ctx, "\n", "123", opts)
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.SCIM.UpdateAttributeForSCIMUser(ctx, "\n", "123", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.SCIM.UpdateAttributeForSCIMUser(ctx, "o", "123", opts)
+		got, resp, err := client.SCIM.UpdateAttributeForSCIMUser(ctx, "o", "123", body)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
 	})
 }
 

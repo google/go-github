@@ -87,8 +87,10 @@ type LicenseStatus struct {
 	ReferenceNumber              *string    `json:"referenceNumber,omitempty"`
 	Seats                        *int       `json:"seats,omitempty"`
 	SSHAllowed                   *bool      `json:"sshAllowed,omitempty"`
-	SupportKey                   *string    `json:"supportKey,omitempty"`
-	UnlimitedSeating             *bool      `json:"unlimitedSeating,omitempty"`
+	// SupportKey is documented as a string, but the actual response is a bool.
+	// TODO: Remove this note once GitHub corrects the schema documentation.
+	SupportKey       *bool `json:"supportKey,omitempty"`
+	UnlimitedSeating *bool `json:"unlimitedSeating,omitempty"`
 }
 
 // UploadLicenseOptions is a struct to hold the options for the UploadLicense API.
@@ -351,17 +353,21 @@ func (s *EnterpriseService) InitialConfig(ctx context.Context, license, password
 
 // License gets the current license information for the GitHub Enterprise instance.
 //
+// NOTE: The GitHub documentation incorrectly shows the return type as a list ([{...}]),
+// but the actual response is a single object ({...}).
+// TODO: Remove this note once GitHub corrects the schema documentation.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#get-the-enterprise-license-information
 //
 //meta:operation GET /manage/v1/config/license
-func (s *EnterpriseService) License(ctx context.Context) ([]*LicenseStatus, *Response, error) {
+func (s *EnterpriseService) License(ctx context.Context) (*LicenseStatus, *Response, error) {
 	u := "manage/v1/config/license"
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var licenseStatus []*LicenseStatus
+	var licenseStatus *LicenseStatus
 	resp, err := s.client.Do(req, &licenseStatus)
 	if err != nil {
 		return nil, resp, err
@@ -460,13 +466,13 @@ func (s *EnterpriseService) Settings(ctx context.Context) (*ConfigSettings, *Res
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#set-settings
 //
 //meta:operation PUT /manage/v1/config/settings
-func (s *EnterpriseService) UpdateSettings(ctx context.Context, opts *ConfigSettings) (*Response, error) {
+func (s *EnterpriseService) UpdateSettings(ctx context.Context, body *ConfigSettings) (*Response, error) {
 	u := "manage/v1/config/settings"
 
-	if opts == nil {
+	if body == nil {
 		return nil, errors.New("opts should not be nil")
 	}
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -479,9 +485,9 @@ func (s *EnterpriseService) UpdateSettings(ctx context.Context, opts *ConfigSett
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/manage-ghes#trigger-a-ghe-config-apply-run
 //
 //meta:operation POST /manage/v1/config/apply
-func (s *EnterpriseService) ConfigApply(ctx context.Context, opts *ConfigApplyOptions) (*ConfigApplyOptions, *Response, error) {
+func (s *EnterpriseService) ConfigApply(ctx context.Context, body *ConfigApplyOptions) (*ConfigApplyOptions, *Response, error) {
 	u := "manage/v1/config/apply"
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

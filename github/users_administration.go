@@ -52,10 +52,10 @@ type UserSuspendOptions struct {
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#suspend-a-user
 //
 //meta:operation PUT /users/{username}/suspended
-func (s *UsersService) Suspend(ctx context.Context, user string, opts *UserSuspendOptions) (*Response, error) {
+func (s *UsersService) Suspend(ctx context.Context, user string, body *UserSuspendOptions) (*Response, error) {
 	u := fmt.Sprintf("users/%v/suspended", user)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, err
 	}

@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -93,8 +92,8 @@ func TestUserImpersonation_Create(t *testing.T) {
 		"token_last_eight": "1234",
 		"note": null,
 		"note_url": null,
-		"created_at": "2018-01-01T00:00:00Z",
-		"updated_at": "2018-01-01T00:00:00Z",
+		"created_at": `+refTimeStr(1136178000)+`,
+		"updated_at": `+refTimeStr(1136178001)+`,
 		"scopes": [
 		  "repo"
 		],
@@ -107,7 +106,6 @@ func TestUserImpersonation_Create(t *testing.T) {
 		t.Errorf("Admin.CreateUserImpersonation returned error: %v", err)
 	}
 
-	date := Timestamp{Time: time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)}
 	want := &UserAuthorization{
 		ID:  Ptr(int64(1234)),
 		URL: Ptr("https://example.com/authorizations"),
@@ -121,8 +119,8 @@ func TestUserImpersonation_Create(t *testing.T) {
 		TokenLastEight: Ptr("1234"),
 		Note:           nil,
 		NoteURL:        nil,
-		CreatedAt:      &date,
-		UpdatedAt:      &date,
+		CreatedAt:      refTimestamp(1136178000),
+		UpdatedAt:      refTimestamp(1136178001),
 		Scopes:         []string{"repo"},
 		Fingerprint:    nil,
 	}

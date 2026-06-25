@@ -136,8 +136,8 @@ type DependabotEncryptedSecret struct {
 	SelectedRepositoryIDs DependabotSecretsSelectedRepoIDs `json:"selected_repository_ids,omitempty"`
 }
 
-func (s *DependabotService) putSecret(ctx context.Context, url string, eSecret *DependabotEncryptedSecret) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "PUT", url, eSecret)
+func (s *DependabotService) putSecret(ctx context.Context, url string, body *DependabotEncryptedSecret) (*Response, error) {
+	req, err := s.client.NewRequest(ctx, "PUT", url, body)
 	if err != nil {
 		return nil, err
 	}

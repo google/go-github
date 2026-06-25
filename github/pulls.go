@@ -282,9 +282,9 @@ type NewPullRequest struct {
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#create-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls
-func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, pull *NewPullRequest) (*PullRequest, *Response, error) {
+func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, body *NewPullRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, pull)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -323,10 +323,10 @@ type PullRequestBranchUpdateResponse struct {
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#update-a-pull-request-branch
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/update-branch
-func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, opts *PullRequestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error) {
+func (s *PullRequestsService) UpdateBranch(ctx context.Context, owner, repo string, number int, body *PullRequestBranchUpdateOptions) (*PullRequestBranchUpdateResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/update-branch", owner, repo, number)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

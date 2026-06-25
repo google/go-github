@@ -87,10 +87,10 @@ func (s *EnterpriseService) GetCustomProperty(ctx context.Context, enterprise, c
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/custom-properties?apiVersion=2022-11-28#create-or-update-a-custom-property-for-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/properties/schema/{custom_property_name}
-func (s *EnterpriseService) CreateOrUpdateCustomProperty(ctx context.Context, enterprise, customPropertyName string, property *CustomProperty) (*CustomProperty, *Response, error) {
+func (s *EnterpriseService) CreateOrUpdateCustomProperty(ctx context.Context, enterprise, customPropertyName string, body *CustomProperty) (*CustomProperty, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/properties/schema/%v", enterprise, customPropertyName)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, property)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

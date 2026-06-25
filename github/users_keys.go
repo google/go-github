@@ -89,10 +89,10 @@ func (s *UsersService) GetKey(ctx context.Context, id int64) (*Key, *Response, e
 // GitHub API docs: https://docs.github.com/rest/users/keys?apiVersion=2022-11-28#create-a-public-ssh-key-for-the-authenticated-user
 //
 //meta:operation POST /user/keys
-func (s *UsersService) CreateKey(ctx context.Context, key *Key) (*Key, *Response, error) {
+func (s *UsersService) CreateKey(ctx context.Context, body *Key) (*Key, *Response, error) {
 	u := "user/keys"
 
-	req, err := s.client.NewRequest(ctx, "POST", u, key)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

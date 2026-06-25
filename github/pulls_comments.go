@@ -136,9 +136,9 @@ func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/pulls/comments?apiVersion=2022-11-28#create-a-review-comment-for-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/comments
-func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo string, number int, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
+func (s *PullRequestsService) CreateComment(ctx context.Context, owner, repo string, number int, body *PullRequestComment) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/comments", owner, repo, number)
-	req, err := s.client.NewRequest(ctx, "POST", u, comment)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -188,9 +188,9 @@ func (s *PullRequestsService) CreateCommentInReplyTo(ctx context.Context, owner,
 // GitHub API docs: https://docs.github.com/rest/pulls/comments?apiVersion=2022-11-28#update-a-review-comment-for-a-pull-request
 //
 //meta:operation PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}
-func (s *PullRequestsService) EditComment(ctx context.Context, owner, repo string, commentID int64, comment *PullRequestComment) (*PullRequestComment, *Response, error) {
+func (s *PullRequestsService) EditComment(ctx context.Context, owner, repo string, commentID int64, body *PullRequestComment) (*PullRequestComment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/comments/%v", owner, repo, commentID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, comment)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

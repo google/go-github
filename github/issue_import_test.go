@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -19,18 +18,17 @@ func TestIssueImportService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	createdAt := time.Date(2020, time.August, 11, 15, 30, 0, 0, time.UTC)
 	input := &IssueImportRequest{
 		IssueImport: IssueImport{
 			Assignee:  Ptr("developer"),
 			Body:      "Dummy description",
-			CreatedAt: &Timestamp{createdAt},
+			CreatedAt: &referenceTimestamp,
 			Labels:    []string{"l1", "l2"},
 			Milestone: Ptr(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
-			CreatedAt: &Timestamp{createdAt},
+			CreatedAt: &referenceTimestamp,
 			Body:      "Comment body",
 		}},
 	}
@@ -72,18 +70,17 @@ func TestIssueImportService_Create_deferred(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	createdAt := time.Date(2020, time.August, 11, 15, 30, 0, 0, time.UTC)
 	input := &IssueImportRequest{
 		IssueImport: IssueImport{
 			Assignee:  Ptr("developer"),
 			Body:      "Dummy description",
-			CreatedAt: &Timestamp{createdAt},
+			CreatedAt: &referenceTimestamp,
 			Labels:    []string{"l1", "l2"},
 			Milestone: Ptr(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
-			CreatedAt: &Timestamp{createdAt},
+			CreatedAt: &referenceTimestamp,
 			Body:      "Comment body",
 		}},
 	}
@@ -113,18 +110,17 @@ func TestIssueImportService_Create_badResponse(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	createdAt := time.Date(2020, time.August, 11, 15, 30, 0, 0, time.UTC)
 	input := &IssueImportRequest{
 		IssueImport: IssueImport{
 			Assignee:  Ptr("developer"),
 			Body:      "Dummy description",
-			CreatedAt: &Timestamp{createdAt},
+			CreatedAt: &referenceTimestamp,
 			Labels:    []string{"l1", "l2"},
 			Milestone: Ptr(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
-			CreatedAt: &Timestamp{createdAt},
+			CreatedAt: &referenceTimestamp,
 			Body:      "Comment body",
 		}},
 	}
@@ -212,7 +208,7 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", Timestamp{time.Now()})
+	got, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", referenceTimestamp)
 	if err != nil {
 		t.Errorf("CheckStatusSince returned error: %v", err)
 	}
@@ -224,12 +220,12 @@ func TestIssueImportService_CheckStatusSince(t *testing.T) {
 
 	const methodName = "CheckStatusSince"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.IssueImport.CheckStatusSince(ctx, "\n", "\n", Timestamp{time.Now()})
+		_, _, err = client.IssueImport.CheckStatusSince(ctx, "\n", "\n", referenceTimestamp)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", Timestamp{time.Now()})
+		got, resp, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", referenceTimestamp)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -249,7 +245,7 @@ func TestIssueImportService_CheckStatusSince_badResponse(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	if _, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", Timestamp{time.Now()}); err == nil {
+	if _, _, err := client.IssueImport.CheckStatusSince(ctx, "o", "r", referenceTimestamp); err == nil {
 		t.Error("CheckStatusSince returned no error, want JSON err")
 	}
 }
@@ -259,7 +255,7 @@ func TestIssueImportService_CheckStatusSince_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.IssueImport.CheckStatusSince(ctx, "%", "r", Timestamp{time.Now()})
+	_, _, err := client.IssueImport.CheckStatusSince(ctx, "%", "r", referenceTimestamp)
 	testURLParseError(t, err)
 }
 

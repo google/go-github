@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -120,7 +119,7 @@ func TestEnterpriseService_GetLicenseSyncStatus(t *testing.T) {
 							"last_sync": {
 								"type": "object",
 								"properties": {
-									"date": "2025-10-30T10:30:00Z",
+									"date": `+referenceTimeStr+`,
 									"status": "success",
 									"error": ""
 								}
@@ -152,7 +151,7 @@ func TestEnterpriseService_GetLicenseSyncStatus(t *testing.T) {
 						LastSync: &LastLicenseSync{
 							Type: "object",
 							Properties: &LastLicenseSyncProperties{
-								Date:   &Timestamp{time.Date(2025, 10, 30, 10, 30, 0, 0, time.UTC)},
+								Date:   &referenceTimestamp,
 								Status: "success",
 								Error:  "",
 							},

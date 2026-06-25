@@ -2078,12 +2078,12 @@ func (a *AppConfig) GetWebhookSecret() string {
 	return *a.WebhookSecret
 }
 
-// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
-func (a *AppInstallationRepositoriesOptions) GetSelectedRepositoryIDs() []int64 {
-	if a == nil || a.SelectedRepositoryIDs == nil {
+// GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
+func (a *AppInstallationRepositoriesRequest) GetRepositories() []string {
+	if a == nil || a.Repositories == nil {
 		return nil
 	}
-	return a.SelectedRepositoryIDs
+	return a.Repositories
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
@@ -3268,6 +3268,22 @@ func (b *BasicAuthTransport) GetUsername() string {
 		return ""
 	}
 	return b.Username
+}
+
+// GetID returns the ID field.
+func (b *BillingCostCenter) GetID() string {
+	if b == nil {
+		return ""
+	}
+	return b.ID
+}
+
+// GetName returns the Name field.
+func (b *BillingCostCenter) GetName() string {
+	if b == nil {
+		return ""
+	}
+	return b.Name
 }
 
 // GetContent returns the Content field if it's non-nil, zero value otherwise.
@@ -5196,6 +5212,166 @@ func (c *CodeQLDatabase) GetURL() string {
 		return ""
 	}
 	return *c.URL
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFinding) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetLocation returns the Location field.
+func (c *CodeQualityFinding) GetLocation() CodeQualityFindingLocation {
+	if c == nil {
+		return CodeQualityFindingLocation{}
+	}
+	return c.Location
+}
+
+// GetMessage returns the Message field.
+func (c *CodeQualityFinding) GetMessage() CodeQualityFindingMessage {
+	if c == nil {
+		return CodeQualityFindingMessage{}
+	}
+	return c.Message
+}
+
+// GetNumber returns the Number field.
+func (c *CodeQualityFinding) GetNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.Number
+}
+
+// GetRule returns the Rule field.
+func (c *CodeQualityFinding) GetRule() CodeQualityFindingRule {
+	if c == nil {
+		return CodeQualityFindingRule{}
+	}
+	return c.Rule
+}
+
+// GetState returns the State field.
+func (c *CodeQualityFinding) GetState() string {
+	if c == nil {
+		return ""
+	}
+	return c.State
+}
+
+// GetURL returns the URL field.
+func (c *CodeQualityFinding) GetURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.URL
+}
+
+// GetEndColumn returns the EndColumn field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFindingLocation) GetEndColumn() int {
+	if c == nil || c.EndColumn == nil {
+		return 0
+	}
+	return *c.EndColumn
+}
+
+// GetEndLine returns the EndLine field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFindingLocation) GetEndLine() int {
+	if c == nil || c.EndLine == nil {
+		return 0
+	}
+	return *c.EndLine
+}
+
+// GetPath returns the Path field.
+func (c *CodeQualityFindingLocation) GetPath() string {
+	if c == nil {
+		return ""
+	}
+	return c.Path
+}
+
+// GetStartColumn returns the StartColumn field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFindingLocation) GetStartColumn() int {
+	if c == nil || c.StartColumn == nil {
+		return 0
+	}
+	return *c.StartColumn
+}
+
+// GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFindingLocation) GetStartLine() int {
+	if c == nil || c.StartLine == nil {
+		return 0
+	}
+	return *c.StartLine
+}
+
+// GetMarkdown returns the Markdown field.
+func (c *CodeQualityFindingMessage) GetMarkdown() string {
+	if c == nil {
+		return ""
+	}
+	return c.Markdown
+}
+
+// GetText returns the Text field.
+func (c *CodeQualityFindingMessage) GetText() string {
+	if c == nil {
+		return ""
+	}
+	return c.Text
+}
+
+// GetCategory returns the Category field.
+func (c *CodeQualityFindingRule) GetCategory() string {
+	if c == nil {
+		return ""
+	}
+	return c.Category
+}
+
+// GetDescription returns the Description field.
+func (c *CodeQualityFindingRule) GetDescription() string {
+	if c == nil {
+		return ""
+	}
+	return c.Description
+}
+
+// GetHelp returns the Help field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFindingRule) GetHelp() string {
+	if c == nil || c.Help == nil {
+		return ""
+	}
+	return *c.Help
+}
+
+// GetID returns the ID field.
+func (c *CodeQualityFindingRule) GetID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ID
+}
+
+// GetSeverity returns the Severity field.
+func (c *CodeQualityFindingRule) GetSeverity() string {
+	if c == nil {
+		return ""
+	}
+	return c.Severity
+}
+
+// GetTitle returns the Title field.
+func (c *CodeQualityFindingRule) GetTitle() string {
+	if c == nil {
+		return ""
+	}
+	return c.Title
 }
 
 // GetLanguages returns the Languages slice if it's non-nil, nil otherwise.
@@ -11198,6 +11374,38 @@ func (c *CreateEvent) GetSender() *User {
 	return c.Sender
 }
 
+// GetBody returns the Body field.
+func (c *CreateGistCommentRequest) GetBody() string {
+	if c == nil {
+		return ""
+	}
+	return c.Body
+}
+
+// GetContent returns the Content field.
+func (c *CreateGistFile) GetContent() string {
+	if c == nil {
+		return ""
+	}
+	return c.Content
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateGistRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetPublic returns the Public field if it's non-nil, zero value otherwise.
+func (c *CreateGistRequest) GetPublic() bool {
+	if c == nil || c.Public == nil {
+		return false
+	}
+	return *c.Public
+}
+
 // GetEnableStaticIP returns the EnableStaticIP field if it's non-nil, zero value otherwise.
 func (c *CreateHostedRunnerRequest) GetEnableStaticIP() bool {
 	if c == nil || c.EnableStaticIP == nil {
@@ -14814,6 +15022,158 @@ func (e *Enterprise) GetWebsiteURL() string {
 	return *e.WebsiteURL
 }
 
+// GetDiscountAmount returns the DiscountAmount field.
+func (e *EnterpriseAggregatedUsageItem) GetDiscountAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.DiscountAmount
+}
+
+// GetDiscountQuantity returns the DiscountQuantity field.
+func (e *EnterpriseAggregatedUsageItem) GetDiscountQuantity() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.DiscountQuantity
+}
+
+// GetGrossAmount returns the GrossAmount field.
+func (e *EnterpriseAggregatedUsageItem) GetGrossAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.GrossAmount
+}
+
+// GetGrossQuantity returns the GrossQuantity field.
+func (e *EnterpriseAggregatedUsageItem) GetGrossQuantity() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.GrossQuantity
+}
+
+// GetModel returns the Model field.
+func (e *EnterpriseAggregatedUsageItem) GetModel() string {
+	if e == nil {
+		return ""
+	}
+	return e.Model
+}
+
+// GetNetAmount returns the NetAmount field.
+func (e *EnterpriseAggregatedUsageItem) GetNetAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.NetAmount
+}
+
+// GetNetQuantity returns the NetQuantity field.
+func (e *EnterpriseAggregatedUsageItem) GetNetQuantity() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.NetQuantity
+}
+
+// GetPricePerUnit returns the PricePerUnit field.
+func (e *EnterpriseAggregatedUsageItem) GetPricePerUnit() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.PricePerUnit
+}
+
+// GetProduct returns the Product field.
+func (e *EnterpriseAggregatedUsageItem) GetProduct() string {
+	if e == nil {
+		return ""
+	}
+	return e.Product
+}
+
+// GetSKU returns the SKU field.
+func (e *EnterpriseAggregatedUsageItem) GetSKU() string {
+	if e == nil {
+		return ""
+	}
+	return e.SKU
+}
+
+// GetUnitType returns the UnitType field.
+func (e *EnterpriseAggregatedUsageItem) GetUnitType() string {
+	if e == nil {
+		return ""
+	}
+	return e.UnitType
+}
+
+// GetCostCenter returns the CostCenter field.
+func (e *EnterpriseAggregatedUsageReport) GetCostCenter() *BillingCostCenter {
+	if e == nil {
+		return nil
+	}
+	return e.CostCenter
+}
+
+// GetEnterprise returns the Enterprise field.
+func (e *EnterpriseAggregatedUsageReport) GetEnterprise() string {
+	if e == nil {
+		return ""
+	}
+	return e.Enterprise
+}
+
+// GetModel returns the Model field if it's non-nil, zero value otherwise.
+func (e *EnterpriseAggregatedUsageReport) GetModel() string {
+	if e == nil || e.Model == nil {
+		return ""
+	}
+	return *e.Model
+}
+
+// GetOrganization returns the Organization field if it's non-nil, zero value otherwise.
+func (e *EnterpriseAggregatedUsageReport) GetOrganization() string {
+	if e == nil || e.Organization == nil {
+		return ""
+	}
+	return *e.Organization
+}
+
+// GetProduct returns the Product field if it's non-nil, zero value otherwise.
+func (e *EnterpriseAggregatedUsageReport) GetProduct() string {
+	if e == nil || e.Product == nil {
+		return ""
+	}
+	return *e.Product
+}
+
+// GetTimePeriod returns the TimePeriod field.
+func (e *EnterpriseAggregatedUsageReport) GetTimePeriod() EnterpriseUsageTimePeriod {
+	if e == nil {
+		return EnterpriseUsageTimePeriod{}
+	}
+	return e.TimePeriod
+}
+
+// GetUsageItems returns the UsageItems slice if it's non-nil, nil otherwise.
+func (e *EnterpriseAggregatedUsageReport) GetUsageItems() []*EnterpriseAggregatedUsageItem {
+	if e == nil || e.UsageItems == nil {
+		return nil
+	}
+	return e.UsageItems
+}
+
+// GetUser returns the User field if it's non-nil, zero value otherwise.
+func (e *EnterpriseAggregatedUsageReport) GetUser() string {
+	if e == nil || e.User == nil {
+		return ""
+	}
+	return *e.User
+}
+
 // GetBudgetAlerting returns the BudgetAlerting field.
 func (e *EnterpriseBudget) GetBudgetAlerting() *EnterpriseBudgetAlerting {
 	if e == nil {
@@ -15246,6 +15606,38 @@ func (e *EnterpriseListBudgets) GetTotalCount() int {
 	return *e.TotalCount
 }
 
+// GetModel returns the Model field.
+func (e *EnterprisePremiumRequestUsageReportOptions) GetModel() string {
+	if e == nil {
+		return ""
+	}
+	return e.Model
+}
+
+// GetOrganization returns the Organization field.
+func (e *EnterprisePremiumRequestUsageReportOptions) GetOrganization() string {
+	if e == nil {
+		return ""
+	}
+	return e.Organization
+}
+
+// GetProduct returns the Product field.
+func (e *EnterprisePremiumRequestUsageReportOptions) GetProduct() string {
+	if e == nil {
+		return ""
+	}
+	return e.Product
+}
+
+// GetUser returns the User field.
+func (e *EnterprisePremiumRequestUsageReportOptions) GetUser() string {
+	if e == nil {
+		return ""
+	}
+	return e.User
+}
+
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
 func (e *EnterpriseRunnerGroup) GetAllowsPublicRepositories() bool {
 	if e == nil || e.AllowsPublicRepositories == nil {
@@ -15580,6 +15972,334 @@ func (e *EnterpriseUpdateBudget) GetPreventFurtherUsage() bool {
 		return false
 	}
 	return *e.PreventFurtherUsage
+}
+
+// GetDate returns the Date field.
+func (e *EnterpriseUsageItem) GetDate() string {
+	if e == nil {
+		return ""
+	}
+	return e.Date
+}
+
+// GetDiscountAmount returns the DiscountAmount field.
+func (e *EnterpriseUsageItem) GetDiscountAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.DiscountAmount
+}
+
+// GetGrossAmount returns the GrossAmount field.
+func (e *EnterpriseUsageItem) GetGrossAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.GrossAmount
+}
+
+// GetNetAmount returns the NetAmount field.
+func (e *EnterpriseUsageItem) GetNetAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.NetAmount
+}
+
+// GetOrganizationName returns the OrganizationName field.
+func (e *EnterpriseUsageItem) GetOrganizationName() string {
+	if e == nil {
+		return ""
+	}
+	return e.OrganizationName
+}
+
+// GetPricePerUnit returns the PricePerUnit field.
+func (e *EnterpriseUsageItem) GetPricePerUnit() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.PricePerUnit
+}
+
+// GetProduct returns the Product field.
+func (e *EnterpriseUsageItem) GetProduct() string {
+	if e == nil {
+		return ""
+	}
+	return e.Product
+}
+
+// GetQuantity returns the Quantity field.
+func (e *EnterpriseUsageItem) GetQuantity() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.Quantity
+}
+
+// GetRepositoryName returns the RepositoryName field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageItem) GetRepositoryName() string {
+	if e == nil || e.RepositoryName == nil {
+		return ""
+	}
+	return *e.RepositoryName
+}
+
+// GetSKU returns the SKU field.
+func (e *EnterpriseUsageItem) GetSKU() string {
+	if e == nil {
+		return ""
+	}
+	return e.SKU
+}
+
+// GetUnitType returns the UnitType field.
+func (e *EnterpriseUsageItem) GetUnitType() string {
+	if e == nil {
+		return ""
+	}
+	return e.UnitType
+}
+
+// GetUsageItems returns the UsageItems slice if it's non-nil, nil otherwise.
+func (e *EnterpriseUsageReport) GetUsageItems() []*EnterpriseUsageItem {
+	if e == nil || e.UsageItems == nil {
+		return nil
+	}
+	return e.UsageItems
+}
+
+// GetCostCenterID returns the CostCenterID field.
+func (e *EnterpriseUsageReportOptions) GetCostCenterID() string {
+	if e == nil {
+		return ""
+	}
+	return e.CostCenterID
+}
+
+// GetDay returns the Day field.
+func (e *EnterpriseUsageReportOptions) GetDay() int {
+	if e == nil {
+		return 0
+	}
+	return e.Day
+}
+
+// GetMonth returns the Month field.
+func (e *EnterpriseUsageReportOptions) GetMonth() int {
+	if e == nil {
+		return 0
+	}
+	return e.Month
+}
+
+// GetYear returns the Year field.
+func (e *EnterpriseUsageReportOptions) GetYear() int {
+	if e == nil {
+		return 0
+	}
+	return e.Year
+}
+
+// GetDiscountAmount returns the DiscountAmount field.
+func (e *EnterpriseUsageSummaryItem) GetDiscountAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.DiscountAmount
+}
+
+// GetDiscountQuantity returns the DiscountQuantity field.
+func (e *EnterpriseUsageSummaryItem) GetDiscountQuantity() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.DiscountQuantity
+}
+
+// GetGrossAmount returns the GrossAmount field.
+func (e *EnterpriseUsageSummaryItem) GetGrossAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.GrossAmount
+}
+
+// GetGrossQuantity returns the GrossQuantity field.
+func (e *EnterpriseUsageSummaryItem) GetGrossQuantity() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.GrossQuantity
+}
+
+// GetNetAmount returns the NetAmount field.
+func (e *EnterpriseUsageSummaryItem) GetNetAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.NetAmount
+}
+
+// GetNetQuantity returns the NetQuantity field.
+func (e *EnterpriseUsageSummaryItem) GetNetQuantity() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.NetQuantity
+}
+
+// GetPricePerUnit returns the PricePerUnit field.
+func (e *EnterpriseUsageSummaryItem) GetPricePerUnit() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.PricePerUnit
+}
+
+// GetProduct returns the Product field.
+func (e *EnterpriseUsageSummaryItem) GetProduct() string {
+	if e == nil {
+		return ""
+	}
+	return e.Product
+}
+
+// GetSKU returns the SKU field.
+func (e *EnterpriseUsageSummaryItem) GetSKU() string {
+	if e == nil {
+		return ""
+	}
+	return e.SKU
+}
+
+// GetUnitType returns the UnitType field.
+func (e *EnterpriseUsageSummaryItem) GetUnitType() string {
+	if e == nil {
+		return ""
+	}
+	return e.UnitType
+}
+
+// GetOrganization returns the Organization field.
+func (e *EnterpriseUsageSummaryOptions) GetOrganization() string {
+	if e == nil {
+		return ""
+	}
+	return e.Organization
+}
+
+// GetProduct returns the Product field.
+func (e *EnterpriseUsageSummaryOptions) GetProduct() string {
+	if e == nil {
+		return ""
+	}
+	return e.Product
+}
+
+// GetRepository returns the Repository field.
+func (e *EnterpriseUsageSummaryOptions) GetRepository() string {
+	if e == nil {
+		return ""
+	}
+	return e.Repository
+}
+
+// GetSKU returns the SKU field.
+func (e *EnterpriseUsageSummaryOptions) GetSKU() string {
+	if e == nil {
+		return ""
+	}
+	return e.SKU
+}
+
+// GetCostCenter returns the CostCenter field.
+func (e *EnterpriseUsageSummaryReport) GetCostCenter() *BillingCostCenter {
+	if e == nil {
+		return nil
+	}
+	return e.CostCenter
+}
+
+// GetEnterprise returns the Enterprise field.
+func (e *EnterpriseUsageSummaryReport) GetEnterprise() string {
+	if e == nil {
+		return ""
+	}
+	return e.Enterprise
+}
+
+// GetOrganization returns the Organization field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageSummaryReport) GetOrganization() string {
+	if e == nil || e.Organization == nil {
+		return ""
+	}
+	return *e.Organization
+}
+
+// GetProduct returns the Product field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageSummaryReport) GetProduct() string {
+	if e == nil || e.Product == nil {
+		return ""
+	}
+	return *e.Product
+}
+
+// GetRepository returns the Repository field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageSummaryReport) GetRepository() string {
+	if e == nil || e.Repository == nil {
+		return ""
+	}
+	return *e.Repository
+}
+
+// GetSKU returns the SKU field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageSummaryReport) GetSKU() string {
+	if e == nil || e.SKU == nil {
+		return ""
+	}
+	return *e.SKU
+}
+
+// GetTimePeriod returns the TimePeriod field.
+func (e *EnterpriseUsageSummaryReport) GetTimePeriod() EnterpriseUsageTimePeriod {
+	if e == nil {
+		return EnterpriseUsageTimePeriod{}
+	}
+	return e.TimePeriod
+}
+
+// GetUsageItems returns the UsageItems slice if it's non-nil, nil otherwise.
+func (e *EnterpriseUsageSummaryReport) GetUsageItems() []*EnterpriseUsageSummaryItem {
+	if e == nil || e.UsageItems == nil {
+		return nil
+	}
+	return e.UsageItems
+}
+
+// GetDay returns the Day field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageTimePeriod) GetDay() int {
+	if e == nil || e.Day == nil {
+		return 0
+	}
+	return *e.Day
+}
+
+// GetMonth returns the Month field if it's non-nil, zero value otherwise.
+func (e *EnterpriseUsageTimePeriod) GetMonth() int {
+	if e == nil || e.Month == nil {
+		return 0
+	}
+	return *e.Month
+}
+
+// GetYear returns the Year field.
+func (e *EnterpriseUsageTimePeriod) GetYear() int {
+	if e == nil {
+		return 0
+	}
+	return e.Year
 }
 
 // GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
@@ -19702,6 +20422,14 @@ func (i *Issue) GetID() int64 {
 	return *i.ID
 }
 
+// GetIssueDependenciesSummary returns the IssueDependenciesSummary field.
+func (i *Issue) GetIssueDependenciesSummary() *IssueDependenciesSummary {
+	if i == nil {
+		return nil
+	}
+	return i.IssueDependenciesSummary
+}
+
 // GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
 func (i *Issue) GetIssueFieldValues() []*IssueFieldValue {
 	if i == nil || i.IssueFieldValues == nil {
@@ -19766,6 +20494,22 @@ func (i *Issue) GetParentIssueURL() string {
 	return *i.ParentIssueURL
 }
 
+// GetPerformedViaGithubApp returns the PerformedViaGithubApp field.
+func (i *Issue) GetPerformedViaGithubApp() *App {
+	if i == nil {
+		return nil
+	}
+	return i.PerformedViaGithubApp
+}
+
+// GetPinnedComment returns the PinnedComment field.
+func (i *Issue) GetPinnedComment() *IssueComment {
+	if i == nil {
+		return nil
+	}
+	return i.PinnedComment
+}
+
 // GetPullRequestLinks returns the PullRequestLinks field.
 func (i *Issue) GetPullRequestLinks() *PullRequestLinks {
 	if i == nil {
@@ -19812,6 +20556,14 @@ func (i *Issue) GetStateReason() string {
 		return ""
 	}
 	return *i.StateReason
+}
+
+// GetSubIssuesSummary returns the SubIssuesSummary field.
+func (i *Issue) GetSubIssuesSummary() *SubIssuesSummary {
+	if i == nil {
+		return nil
+	}
+	return i.SubIssuesSummary
 }
 
 // GetTextMatches returns the TextMatches slice if it's non-nil, nil otherwise.
@@ -20012,6 +20764,46 @@ func (i *IssueCommentEvent) GetSender() *User {
 		return nil
 	}
 	return i.Sender
+}
+
+// GetBlockedBy returns the BlockedBy field if it's non-nil, zero value otherwise.
+func (i *IssueDependenciesSummary) GetBlockedBy() int {
+	if i == nil || i.BlockedBy == nil {
+		return 0
+	}
+	return *i.BlockedBy
+}
+
+// GetBlocking returns the Blocking field if it's non-nil, zero value otherwise.
+func (i *IssueDependenciesSummary) GetBlocking() int {
+	if i == nil || i.Blocking == nil {
+		return 0
+	}
+	return *i.Blocking
+}
+
+// GetTotalBlockedBy returns the TotalBlockedBy field if it's non-nil, zero value otherwise.
+func (i *IssueDependenciesSummary) GetTotalBlockedBy() int {
+	if i == nil || i.TotalBlockedBy == nil {
+		return 0
+	}
+	return *i.TotalBlockedBy
+}
+
+// GetTotalBlocking returns the TotalBlocking field if it's non-nil, zero value otherwise.
+func (i *IssueDependenciesSummary) GetTotalBlocking() int {
+	if i == nil || i.TotalBlocking == nil {
+		return 0
+	}
+	return *i.TotalBlocking
+}
+
+// GetIssueID returns the IssueID field.
+func (i *IssueDependencyRequest) GetIssueID() int64 {
+	if i == nil {
+		return 0
+	}
+	return i.IssueID
 }
 
 // GetAction returns the Action field.
@@ -21487,9 +22279,9 @@ func (l *LicenseStatus) GetSSHAllowed() bool {
 }
 
 // GetSupportKey returns the SupportKey field if it's non-nil, zero value otherwise.
-func (l *LicenseStatus) GetSupportKey() string {
+func (l *LicenseStatus) GetSupportKey() bool {
 	if l == nil || l.SupportKey == nil {
-		return ""
+		return false
 	}
 	return *l.SupportKey
 }
@@ -21732,6 +22524,22 @@ func (l *ListCheckSuiteResults) GetTotal() int {
 		return 0
 	}
 	return *l.Total
+}
+
+// GetDirection returns the Direction field.
+func (l *ListCodeQualityFindingsOptions) GetDirection() string {
+	if l == nil {
+		return ""
+	}
+	return l.Direction
+}
+
+// GetState returns the State field.
+func (l *ListCodeQualityFindingsOptions) GetState() string {
+	if l == nil {
+		return ""
+	}
+	return l.State
 }
 
 // GetAfter returns the After field.
@@ -39894,6 +40702,30 @@ func (s *SubIssueRequest) GetSubIssueID() int64 {
 	return s.SubIssueID
 }
 
+// GetCompleted returns the Completed field if it's non-nil, zero value otherwise.
+func (s *SubIssuesSummary) GetCompleted() int {
+	if s == nil || s.Completed == nil {
+		return 0
+	}
+	return *s.Completed
+}
+
+// GetPercentCompleted returns the PercentCompleted field if it's non-nil, zero value otherwise.
+func (s *SubIssuesSummary) GetPercentCompleted() int {
+	if s == nil || s.PercentCompleted == nil {
+		return 0
+	}
+	return *s.PercentCompleted
+}
+
+// GetTotal returns the Total field if it's non-nil, zero value otherwise.
+func (s *SubIssuesSummary) GetTotal() int {
+	if s == nil || s.Total == nil {
+		return 0
+	}
+	return *s.Total
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (s *Subscription) GetCreatedAt() Timestamp {
 	if s == nil || s.CreatedAt == nil {
@@ -41430,20 +42262,20 @@ func (u *UnauthenticatedRateLimitedTransport) GetClientSecret() string {
 	return u.ClientSecret
 }
 
+// GetRepositories returns the Repositories slice if it's non-nil, nil otherwise.
+func (u *UpdateAppInstallationRepositoriesRequest) GetRepositories() []string {
+	if u == nil || u.Repositories == nil {
+		return nil
+	}
+	return u.Repositories
+}
+
 // GetRepositorySelection returns the RepositorySelection field if it's non-nil, zero value otherwise.
-func (u *UpdateAppInstallationRepositoriesOptions) GetRepositorySelection() string {
+func (u *UpdateAppInstallationRepositoriesRequest) GetRepositorySelection() string {
 	if u == nil || u.RepositorySelection == nil {
 		return ""
 	}
 	return *u.RepositorySelection
-}
-
-// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
-func (u *UpdateAppInstallationRepositoriesOptions) GetSelectedRepositoryIDs() []int64 {
-	if u == nil || u.SelectedRepositoryIDs == nil {
-		return nil
-	}
-	return u.SelectedRepositoryIDs
 }
 
 // GetOp returns the Op field.
@@ -41470,16 +42302,16 @@ func (u *UpdateAttributeForSCIMUserOperations) GetValue() json.RawMessage {
 	return u.Value
 }
 
-// GetOperations returns the Operations field.
-func (u *UpdateAttributeForSCIMUserOptions) GetOperations() UpdateAttributeForSCIMUserOperations {
-	if u == nil {
-		return UpdateAttributeForSCIMUserOperations{}
+// GetOperations returns the Operations slice if it's non-nil, nil otherwise.
+func (u *UpdateAttributeForSCIMUserRequest) GetOperations() []*UpdateAttributeForSCIMUserOperations {
+	if u == nil || u.Operations == nil {
+		return nil
 	}
 	return u.Operations
 }
 
 // GetSchemas returns the Schemas slice if it's non-nil, nil otherwise.
-func (u *UpdateAttributeForSCIMUserOptions) GetSchemas() []string {
+func (u *UpdateAttributeForSCIMUserRequest) GetSchemas() []string {
 	if u == nil || u.Schemas == nil {
 		return nil
 	}
@@ -41692,6 +42524,38 @@ func (u *UpdateEnterpriseRunnerGroupRequest) GetVisibility() string {
 		return ""
 	}
 	return *u.Visibility
+}
+
+// GetBody returns the Body field.
+func (u *UpdateGistCommentRequest) GetBody() string {
+	if u == nil {
+		return ""
+	}
+	return u.Body
+}
+
+// GetContent returns the Content field if it's non-nil, zero value otherwise.
+func (u *UpdateGistFile) GetContent() string {
+	if u == nil || u.Content == nil {
+		return ""
+	}
+	return *u.Content
+}
+
+// GetFilename returns the Filename field if it's non-nil, zero value otherwise.
+func (u *UpdateGistFile) GetFilename() string {
+	if u == nil || u.Filename == nil {
+		return ""
+	}
+	return *u.Filename
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateGistRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
 }
 
 // GetEnableStaticIP returns the EnableStaticIP field if it's non-nil, zero value otherwise.
@@ -41932,6 +42796,70 @@ func (u *UpdateProjectV2Field) GetValue() any {
 		return nil
 	}
 	return u.Value
+}
+
+// GetActive returns the Active field if it's non-nil, zero value otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetActive() bool {
+	if u == nil || u.Active == nil {
+		return false
+	}
+	return *u.Active
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetDisplayName() string {
+	if u == nil || u.DisplayName == nil {
+		return ""
+	}
+	return *u.DisplayName
+}
+
+// GetEmails returns the Emails slice if it's non-nil, nil otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetEmails() []*SCIMUserEmail {
+	if u == nil || u.Emails == nil {
+		return nil
+	}
+	return u.Emails
+}
+
+// GetExternalID returns the ExternalID field if it's non-nil, zero value otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetExternalID() string {
+	if u == nil || u.ExternalID == nil {
+		return ""
+	}
+	return *u.ExternalID
+}
+
+// GetGroups returns the Groups slice if it's non-nil, nil otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetGroups() []string {
+	if u == nil || u.Groups == nil {
+		return nil
+	}
+	return u.Groups
+}
+
+// GetName returns the Name field.
+func (u *UpdateProvisionedOrgMembershipRequest) GetName() SCIMUserName {
+	if u == nil {
+		return SCIMUserName{}
+	}
+	return u.Name
+}
+
+// GetSchemas returns the Schemas slice if it's non-nil, nil otherwise.
+func (u *UpdateProvisionedOrgMembershipRequest) GetSchemas() []string {
+	if u == nil || u.Schemas == nil {
+		return nil
+	}
+	return u.Schemas
+}
+
+// GetUserName returns the UserName field.
+func (u *UpdateProvisionedOrgMembershipRequest) GetUserName() string {
+	if u == nil {
+		return ""
+	}
+	return u.UserName
 }
 
 // GetForce returns the Force field if it's non-nil, zero value otherwise.

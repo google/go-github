@@ -107,7 +107,7 @@ func TestGistsService_CreateComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &GistComment{ID: Ptr(int64(1)), Body: Ptr("b")}
+	input := CreateGistCommentRequest{Body: "b"}
 
 	mux.HandleFunc("/gists/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -146,15 +146,15 @@ func TestGistsService_CreateComment_invalidID(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Gists.CreateComment(ctx, "%", nil)
+	_, _, err := client.Gists.CreateComment(ctx, "%", CreateGistCommentRequest{})
 	testURLParseError(t, err)
 }
 
-func TestGistsService_EditComment(t *testing.T) {
+func TestGistsService_UpdateComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &GistComment{ID: Ptr(int64(1)), Body: Ptr("b")}
+	input := UpdateGistCommentRequest{Body: "b"}
 
 	mux.HandleFunc("/gists/1/comments/2", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -163,24 +163,24 @@ func TestGistsService_EditComment(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	comment, _, err := client.Gists.EditComment(ctx, "1", 2, input)
+	comment, _, err := client.Gists.UpdateComment(ctx, "1", 2, input)
 	if err != nil {
-		t.Errorf("Gists.EditComment returned error: %v", err)
+		t.Errorf("Gists.UpdateComment returned error: %v", err)
 	}
 
 	want := &GistComment{ID: Ptr(int64(1))}
 	if !cmp.Equal(comment, want) {
-		t.Errorf("Gists.EditComment returned %+v, want %+v", comment, want)
+		t.Errorf("Gists.UpdateComment returned %+v, want %+v", comment, want)
 	}
 
-	const methodName = "EditComment"
+	const methodName = "UpdateComment"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Gists.EditComment(ctx, "\n", -2, input)
+		_, _, err = client.Gists.UpdateComment(ctx, "\n", -2, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Gists.EditComment(ctx, "1", 2, input)
+		got, resp, err := client.Gists.UpdateComment(ctx, "1", 2, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -188,12 +188,12 @@ func TestGistsService_EditComment(t *testing.T) {
 	})
 }
 
-func TestGistsService_EditComment_invalidID(t *testing.T) {
+func TestGistsService_UpdateComment_invalidID(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Gists.EditComment(ctx, "%", 1, nil)
+	_, _, err := client.Gists.UpdateComment(ctx, "%", 1, UpdateGistCommentRequest{})
 	testURLParseError(t, err)
 }
 

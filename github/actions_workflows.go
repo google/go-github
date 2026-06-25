@@ -202,10 +202,10 @@ func (s *ActionsService) getWorkflowUsage(ctx context.Context, url string) (*Wor
 // GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
-func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, owner, repo string, workflowID int64, event CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
+func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, owner, repo string, workflowID int64, body CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowID)
 
-	return s.createWorkflowDispatchEvent(ctx, u, &event)
+	return s.createWorkflowDispatchEvent(ctx, u, &body)
 }
 
 // CreateWorkflowDispatchEventByFileName manually triggers a GitHub Actions workflow run.
@@ -213,14 +213,14 @@ func (s *ActionsService) CreateWorkflowDispatchEventByID(ctx context.Context, ow
 // GitHub API docs: https://docs.github.com/rest/actions/workflows?apiVersion=2022-11-28#create-a-workflow-dispatch-event
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
-func (s *ActionsService) CreateWorkflowDispatchEventByFileName(ctx context.Context, owner, repo, workflowFileName string, event CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
+func (s *ActionsService) CreateWorkflowDispatchEventByFileName(ctx context.Context, owner, repo, workflowFileName string, body CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/workflows/%v/dispatches", owner, repo, workflowFileName)
 
-	return s.createWorkflowDispatchEvent(ctx, u, &event)
+	return s.createWorkflowDispatchEvent(ctx, u, &body)
 }
 
-func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url string, event *CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
-	req, err := s.client.NewRequest(ctx, "POST", url, event)
+func (s *ActionsService) createWorkflowDispatchEvent(ctx context.Context, url string, body *CreateWorkflowDispatchEventRequest) (*WorkflowDispatchRunDetails, *Response, error) {
+	req, err := s.client.NewRequest(ctx, "POST", url, body)
 	if err != nil {
 		return nil, nil, err
 	}

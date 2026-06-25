@@ -383,10 +383,10 @@ func (s *AppsService) DeleteInstallation(ctx context.Context, id int64) (*Respon
 // GitHub API docs: https://docs.github.com/rest/apps/apps?apiVersion=2022-11-28#create-an-installation-access-token-for-an-app
 //
 //meta:operation POST /app/installations/{installation_id}/access_tokens
-func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opts *InstallationTokenOptions) (*InstallationToken, *Response, error) {
+func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, body *InstallationTokenOptions) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -407,10 +407,10 @@ func (s *AppsService) CreateInstallationToken(ctx context.Context, id int64, opt
 // GitHub API docs: https://docs.github.com/rest/apps/apps?apiVersion=2022-11-28#create-an-installation-access-token-for-an-app
 //
 //meta:operation POST /app/installations/{installation_id}/access_tokens
-func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id int64, opts *InstallationTokenListRepoOptions) (*InstallationToken, *Response, error) {
+func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id int64, body *InstallationTokenListRepoOptions) (*InstallationToken, *Response, error) {
 	u := fmt.Sprintf("app/installations/%v/access_tokens", id)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

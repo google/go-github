@@ -74,9 +74,9 @@ type IssueImportError struct {
 // GitHub API docs: https://gist.github.com/jonmagic/5282384165e0f86ef105#start-an-issue-import
 //
 //meta:operation POST /repos/{owner}/{repo}/import/issues
-func (s *IssueImportService) Create(ctx context.Context, owner, repo string, issue *IssueImportRequest) (*IssueImportResponse, *Response, error) {
+func (s *IssueImportService) Create(ctx context.Context, owner, repo string, body *IssueImportRequest) (*IssueImportResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/import/issues", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, issue)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

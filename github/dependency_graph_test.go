@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -23,7 +22,7 @@ func TestDependencyGraphService_GetSBOM(t *testing.T) {
 		fmt.Fprint(w, `{
    "sbom":{
       "creationInfo":{
-         "created":"2021-09-01T00:00:00Z"
+         "created":`+referenceTimeStr+`
       },
       "name":"owner/repo",
       "packages":[
@@ -42,11 +41,10 @@ func TestDependencyGraphService_GetSBOM(t *testing.T) {
 		t.Errorf("DependencyGraph.GetSBOM returned error: %v", err)
 	}
 
-	testTime := time.Date(2021, 9, 1, 0, 0, 0, 0, time.UTC)
 	want := &SBOM{
 		&SBOMInfo{
 			CreationInfo: &CreationInfo{
-				Created: &Timestamp{testTime},
+				Created: &referenceTimestamp,
 			},
 			Name: Ptr("owner/repo"),
 			Packages: []*RepoDependencies{

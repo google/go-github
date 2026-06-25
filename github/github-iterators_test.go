@@ -4263,6 +4263,78 @@ func TestClassroomService_ListClassroomsIter(t *testing.T) {
 	}
 }
 
+func TestCodeQualityService_ListFindingsIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?after=yo>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`)
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`)
+		case 3:
+			fmt.Fprint(w, `[{},{}]`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `[{},{}]`)
+		}
+	})
+
+	iter := client.CodeQuality.ListFindingsIter(t.Context(), "", "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.CodeQuality.ListFindingsIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListCodeQualityFindingsOptions{}
+	iter = client.CodeQuality.ListFindingsIter(t.Context(), "", "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.CodeQuality.ListFindingsIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.CodeQuality.ListFindingsIter(t.Context(), "", "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.CodeQuality.ListFindingsIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.CodeQuality.ListFindingsIter(t.Context(), "", "", nil)
+	gotItems = 0
+	iter(func(item *CodeQualityFinding, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.CodeQuality.ListFindingsIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
 func TestCodeScanningService_ListAlertInstancesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -7644,6 +7716,150 @@ func TestIssuesService_ListAssigneesIter(t *testing.T) {
 	})
 	if gotItems != 1 {
 		t.Errorf("client.Issues.ListAssigneesIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestIssuesService_ListBlockedByIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`)
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`)
+		case 3:
+			fmt.Fprint(w, `[{},{}]`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `[{},{}]`)
+		}
+	})
+
+	iter := client.Issues.ListBlockedByIter(t.Context(), "", "", 0, nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListBlockedByIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Issues.ListBlockedByIter(t.Context(), "", "", 0, opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListBlockedByIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Issues.ListBlockedByIter(t.Context(), "", "", 0, nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListBlockedByIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Issues.ListBlockedByIter(t.Context(), "", "", 0, nil)
+	gotItems = 0
+	iter(func(item *Issue, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListBlockedByIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestIssuesService_ListBlockingIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`)
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`)
+		case 3:
+			fmt.Fprint(w, `[{},{}]`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `[{},{}]`)
+		}
+	})
+
+	iter := client.Issues.ListBlockingIter(t.Context(), "", "", 0, nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Issues.ListBlockingIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Issues.ListBlockingIter(t.Context(), "", "", 0, opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Issues.ListBlockingIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Issues.ListBlockingIter(t.Context(), "", "", 0, nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListBlockingIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Issues.ListBlockingIter(t.Context(), "", "", 0, nil)
+	gotItems = 0
+	iter(func(item *Issue, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Issues.ListBlockingIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
@@ -15240,8 +15456,8 @@ func TestTeamsService_ListCommentsByIDIter(t *testing.T) {
 		t.Errorf("client.Teams.ListCommentsByIDIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	options := &DiscussionCommentListOptions{}
-	iter = client.Teams.ListCommentsByIDIter(t.Context(), 0, 0, 0, options)
+	opts := &DiscussionCommentListOptions{}
+	iter = client.Teams.ListCommentsByIDIter(t.Context(), 0, 0, 0, opts)
 	gotItems = 0
 	for _, err := range iter {
 		gotItems++
@@ -15312,8 +15528,8 @@ func TestTeamsService_ListCommentsBySlugIter(t *testing.T) {
 		t.Errorf("client.Teams.ListCommentsBySlugIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	options := &DiscussionCommentListOptions{}
-	iter = client.Teams.ListCommentsBySlugIter(t.Context(), "", "", 0, options)
+	opts := &DiscussionCommentListOptions{}
+	iter = client.Teams.ListCommentsBySlugIter(t.Context(), "", "", 0, opts)
 	gotItems = 0
 	for _, err := range iter {
 		gotItems++

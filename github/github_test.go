@@ -6,6 +6,7 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -1738,6 +1739,111 @@ func TestNewUploadRequest_pathTraversal(t *testing.T) {
 	}
 }
 
+func TestNewUploadRequest_setsGetBodyForSeekableReader(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	const content = "upload content"
+	file := openTestFile(t, "upload.txt", content)
+
+	req, err := c.NewUploadRequest(t.Context(), "https://example.com/", file, int64(len(content)), "text/plain")
+	if err != nil {
+		t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
+	}
+
+	// GetBody must be set for rewindable readers so HTTP/2 can retry the request
+	// after a refused stream. See issue #2113.
+	if req.GetBody == nil {
+		t.Fatal("NewUploadRequest did not set req.GetBody for a seekable/ReaderAt reader")
+	}
+
+	// Each GetBody call must return an independent copy yielding the identical
+	// body so retries send the same bytes.
+	for i := range 2 {
+		body, err := req.GetBody()
+		if err != nil {
+			t.Fatalf("GetBody call %v returned unexpected error: %v", i, err)
+		}
+		got, err := io.ReadAll(body)
+		body.Close()
+		if err != nil {
+			t.Fatalf("reading GetBody result on call %v: %v", i, err)
+		}
+		if string(got) != content {
+			t.Errorf("GetBody call %v body = %q, want %q", i, got, content)
+		}
+	}
+
+	// Reading via GetBody must not have disturbed the original body's read
+	// position: req.Body must still yield the full content.
+	gotBody, err := io.ReadAll(req.Body)
+	if err != nil {
+		t.Fatalf("reading req.Body: %v", err)
+	}
+	if string(gotBody) != content {
+		t.Errorf("req.Body after GetBody calls = %q, want %q", gotBody, content)
+	}
+}
+
+// seekerOnlyReader implements io.Reader and io.Seeker but deliberately not
+// io.ReaderAt, so it cannot provide an independent body copy.
+type seekerOnlyReader struct {
+	r *strings.Reader
+}
+
+func (s *seekerOnlyReader) Read(p []byte) (int, error) { return s.r.Read(p) }
+
+func (s *seekerOnlyReader) Seek(offset int64, whence int) (int64, error) {
+	return s.r.Seek(offset, whence)
+}
+
+func TestNewUploadRequest_noGetBodyWithoutReaderAt(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	tests := []struct {
+		name   string
+		reader io.Reader
+	}{
+		// *bytes.Buffer is neither io.Seeker nor io.ReaderAt.
+		{"non-seekable", bytes.NewBufferString("upload content")},
+		// io.Seeker alone is insufficient: without io.ReaderAt we cannot return
+		// an independent body copy, so GetBody must stay nil rather than risk
+		// disturbing the original body's read position.
+		{"seeker without ReaderAt", &seekerOnlyReader{strings.NewReader("upload content")}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			req, err := c.NewUploadRequest(t.Context(), "https://example.com/", tt.reader, 14, "text/plain")
+			if err != nil {
+				t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
+			}
+			if req.GetBody != nil {
+				t.Errorf("NewUploadRequest set req.GetBody for %v reader, want nil", tt.name)
+			}
+		})
+	}
+}
+
+func TestNewUploadRequest_returnsErrorWhenSeekFails(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	const content = "upload content"
+	file := openTestFile(t, "upload.txt", content)
+	// Closing the file makes Seek fail, exercising the GetBody offset-probe
+	// error path (issue #2113).
+	if err := file.Close(); err != nil {
+		t.Fatalf("closing test file: %v", err)
+	}
+
+	_, err := c.NewUploadRequest(t.Context(), "https://example.com/", file, int64(len(content)), "text/plain")
+	if err == nil {
+		t.Error("NewUploadRequest returned nil error when Seek failed, want error")
+	}
+}
+
 func TestNewFormRequest(t *testing.T) {
 	t.Parallel()
 	c := mustNewClient(t)
@@ -2318,7 +2424,7 @@ func TestDo_rateLimit(t *testing.T) {
 		w.Header().Set(HeaderRateLimit, "60")
 		w.Header().Set(HeaderRateRemaining, "59")
 		w.Header().Set(HeaderRateUsed, "1")
-		w.Header().Set(HeaderRateReset, "1372700873")
+		w.Header().Set(HeaderRateReset, referenceUnixTimeStr)
 		w.Header().Set(HeaderRateResource, "core")
 	})
 
@@ -2336,9 +2442,8 @@ func TestDo_rateLimit(t *testing.T) {
 	if got, want := resp.Rate.Used, 1; got != want {
 		t.Errorf("Client rate used = %v, want %v", got, want)
 	}
-	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if !resp.Rate.Reset.UTC().Equal(reset) {
-		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset.UTC(), reset)
+	if !resp.Rate.Reset.UTC().Equal(referenceTime) {
+		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset.UTC(), referenceTime)
 	}
 	if got, want := resp.Rate.Resource, "core"; got != want {
 		t.Errorf("Client rate resource = %v, want %v", got, want)
@@ -2436,7 +2541,7 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 		w.Header().Set(HeaderRateLimit, "60")
 		w.Header().Set(HeaderRateRemaining, "59")
 		w.Header().Set(HeaderRateUsed, "1")
-		w.Header().Set(HeaderRateReset, "1372700873")
+		w.Header().Set(HeaderRateReset, referenceUnixTimeStr)
 		w.Header().Set(HeaderRateResource, "core")
 		http.Error(w, "Bad Request", 400)
 	})
@@ -2458,9 +2563,8 @@ func TestDo_rateLimit_errorResponse(t *testing.T) {
 	if got, want := resp.Rate.Used, 1; got != want {
 		t.Errorf("Client rate used = %v, want %v", got, want)
 	}
-	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if !resp.Rate.Reset.UTC().Equal(reset) {
-		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, reset)
+	if !resp.Rate.Reset.UTC().Equal(referenceTime) {
+		t.Errorf("Client rate reset = %v, want %v", resp.Rate.Reset, referenceTime)
 	}
 	if got, want := resp.Rate.Resource, "core"; got != want {
 		t.Errorf("Client rate resource = %v, want %v", got, want)
@@ -2476,7 +2580,7 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 		w.Header().Set(HeaderRateLimit, "60")
 		w.Header().Set(HeaderRateRemaining, "0")
 		w.Header().Set(HeaderRateUsed, "60")
-		w.Header().Set(HeaderRateReset, "1372700873")
+		w.Header().Set(HeaderRateReset, referenceUnixTimeStr)
 		w.Header().Set(HeaderRateResource, "core")
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusForbidden)
@@ -2505,9 +2609,8 @@ func TestDo_rateLimit_rateLimitError(t *testing.T) {
 	if got, want := rateLimitErr.Rate.Used, 60; got != want {
 		t.Errorf("rateLimitErr rate used = %v, want %v", got, want)
 	}
-	reset := time.Date(2013, time.July, 1, 17, 47, 53, 0, time.UTC)
-	if !rateLimitErr.Rate.Reset.UTC().Equal(reset) {
-		t.Errorf("rateLimitErr rate reset = %v, want %v", rateLimitErr.Rate.Reset.UTC(), reset)
+	if !rateLimitErr.Rate.Reset.UTC().Equal(referenceTime) {
+		t.Errorf("rateLimitErr rate reset = %v, want %v", rateLimitErr.Rate.Reset.UTC(), referenceTime)
 	}
 	if got, want := rateLimitErr.Rate.Resource, "core"; got != want {
 		t.Errorf("rateLimitErr rate resource = %v, want %v", got, want)
@@ -3351,7 +3454,7 @@ func TestCheckResponse(t *testing.T) {
 		StatusCode: http.StatusBadRequest,
 		Body: io.NopCloser(strings.NewReader(`{"message":"m",
 			"errors": [{"resource": "r", "field": "f", "code": "c"}],
-			"block": {"reason": "dmca", "created_at": "2016-03-17T15:39:46Z"}}`)),
+			"block": {"reason": "dmca", "created_at": ` + referenceTimeStr + `}}`)),
 	}
 	var err *ErrorResponse
 	errors.As(CheckResponse(res), &err)
@@ -3366,7 +3469,7 @@ func TestCheckResponse(t *testing.T) {
 		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 		Block: &ErrorBlock{
 			Reason:    "dmca",
-			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+			CreatedAt: &referenceTimestamp,
 		},
 	}
 	if !errors.Is(err, want) {
@@ -3579,7 +3682,7 @@ func TestErrorResponse_Is(t *testing.T) {
 		Errors:   []Error{{Resource: "r", Field: "f", Code: "c"}},
 		Block: &ErrorBlock{
 			Reason:    "r",
-			CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+			CreatedAt: &referenceTimestamp,
 		},
 		DocumentationURL: "https://github.com",
 	}
@@ -3595,7 +3698,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},
@@ -3608,7 +3711,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m1",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},
@@ -3621,7 +3724,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://google.com",
 			},
@@ -3633,7 +3736,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message: "m",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},
@@ -3646,7 +3749,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},
@@ -3659,7 +3762,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m",
 				Block: &ErrorBlock{
 					Reason:    "r",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},
@@ -3681,7 +3784,7 @@ func TestErrorResponse_Is(t *testing.T) {
 				Message:  "m",
 				Block: &ErrorBlock{
 					Reason:    "r1",
-					CreatedAt: &Timestamp{time.Date(2016, time.March, 17, 15, 39, 46, 0, time.UTC)},
+					CreatedAt: &referenceTimestamp,
 				},
 				DocumentationURL: "https://github.com",
 			},

@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -60,7 +59,7 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 						"html_url": "https://github.com/octocat/Hello-World/blob/master/README.md"
 					}
 				},
-				"updated_at": "2017-02-28T00:00:00Z",
+				"updated_at": `+referenceTimeStr+`,
 				"content_reports_enabled": true
 			}`)
 	})
@@ -71,11 +70,10 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 		t.Errorf("Repositories.GetCommunityHealthMetrics returned error: %v", err)
 	}
 
-	updatedAt := time.Date(2017, time.February, 28, 0, 0, 0, 0, time.UTC)
 	want := &CommunityHealthMetrics{
 		HealthPercentage:      Ptr(100),
 		Description:           Ptr("My first repository on GitHub!"),
-		UpdatedAt:             &Timestamp{updatedAt},
+		UpdatedAt:             &referenceTimestamp,
 		ContentReportsEnabled: Ptr(true),
 		Files: &CommunityHealthFiles{
 			CodeOfConduct: &Metric{

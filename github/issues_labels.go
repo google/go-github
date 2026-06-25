@@ -77,9 +77,9 @@ func (s *IssuesService) GetLabel(ctx context.Context, owner, repo, name string) 
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#create-a-label
 //
 //meta:operation POST /repos/{owner}/{repo}/labels
-func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, label *Label) (*Label, *Response, error) {
+func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, body *Label) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels", owner, repo)
-	req, err := s.client.NewRequest(ctx, "POST", u, label)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -98,9 +98,9 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, lab
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#update-a-label
 //
 //meta:operation PATCH /repos/{owner}/{repo}/labels/{name}
-func (s *IssuesService) EditLabel(ctx context.Context, owner, repo, name string, label *Label) (*Label, *Response, error) {
+func (s *IssuesService) EditLabel(ctx context.Context, owner, repo, name string, body *Label) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, label)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -159,9 +159,9 @@ func (s *IssuesService) ListLabelsByIssue(ctx context.Context, owner, repo strin
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#add-labels-to-an-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues/{issue_number}/labels
-func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner, repo string, number int, labels []string) ([]*Label, *Response, error) {
+func (s *IssuesService) AddLabelsToIssue(ctx context.Context, owner, repo string, number int, body []string) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels", owner, repo, number)
-	req, err := s.client.NewRequest(ctx, "POST", u, labels)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -195,9 +195,9 @@ func (s *IssuesService) RemoveLabelForIssue(ctx context.Context, owner, repo str
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#set-labels-for-an-issue
 //
 //meta:operation PUT /repos/{owner}/{repo}/issues/{issue_number}/labels
-func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner, repo string, number int, labels []string) ([]*Label, *Response, error) {
+func (s *IssuesService) ReplaceLabelsForIssue(ctx context.Context, owner, repo string, number int, body []string) ([]*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v/labels", owner, repo, number)
-	req, err := s.client.NewRequest(ctx, "PUT", u, labels)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

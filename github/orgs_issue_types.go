@@ -46,9 +46,9 @@ func (s *OrganizationsService) ListIssueTypes(ctx context.Context, org string) (
 // GitHub API docs: https://docs.github.com/rest/orgs/issue-types?apiVersion=2022-11-28#create-issue-type-for-an-organization
 //
 //meta:operation POST /orgs/{org}/issue-types
-func (s *OrganizationsService) CreateIssueType(ctx context.Context, org string, opts *CreateOrUpdateIssueTypesOptions) (*IssueType, *Response, error) {
+func (s *OrganizationsService) CreateIssueType(ctx context.Context, org string, body *CreateOrUpdateIssueTypesOptions) (*IssueType, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issue-types", org)
-	req, err := s.client.NewRequest(ctx, "POST", u, opts)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -67,9 +67,9 @@ func (s *OrganizationsService) CreateIssueType(ctx context.Context, org string, 
 // GitHub API docs: https://docs.github.com/rest/orgs/issue-types?apiVersion=2022-11-28#update-issue-type-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/issue-types/{issue_type_id}
-func (s *OrganizationsService) UpdateIssueType(ctx context.Context, org string, issueTypeID int64, opts *CreateOrUpdateIssueTypesOptions) (*IssueType, *Response, error) {
+func (s *OrganizationsService) UpdateIssueType(ctx context.Context, org string, issueTypeID int64, body *CreateOrUpdateIssueTypesOptions) (*IssueType, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/issue-types/%v", org, issueTypeID)
-	req, err := s.client.NewRequest(ctx, "PUT", u, opts)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

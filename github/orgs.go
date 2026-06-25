@@ -280,9 +280,9 @@ func (s *OrganizationsService) GetByID(ctx context.Context, id int64) (*Organiza
 // GitHub API docs: https://docs.github.com/rest/orgs/orgs?apiVersion=2022-11-28#update-an-organization
 //
 //meta:operation PATCH /orgs/{org}
-func (s *OrganizationsService) Edit(ctx context.Context, name string, org *Organization) (*Organization, *Response, error) {
+func (s *OrganizationsService) Edit(ctx context.Context, name string, body *Organization) (*Organization, *Response, error) {
 	u := fmt.Sprintf("orgs/%v", name)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, org)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

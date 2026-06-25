@@ -634,10 +634,10 @@ type TemplateRepoRequest struct {
 // GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-using-a-template
 //
 //meta:operation POST /repos/{template_owner}/{template_repo}/generate
-func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOwner, templateRepo string, templateRepoReq *TemplateRepoRequest) (*Repository, *Response, error) {
+func (s *RepositoriesService) CreateFromTemplate(ctx context.Context, templateOwner, templateRepo string, body *TemplateRepoRequest) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/generate", templateOwner, templateRepo)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, templateRepoReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -733,9 +733,9 @@ func (s *RepositoriesService) GetByID(ctx context.Context, id int64) (*Repositor
 // GitHub API docs: https://docs.github.com/rest/repos/repos?apiVersion=2022-11-28#update-a-repository
 //
 //meta:operation PATCH /repos/{owner}/{repo}
-func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, repository *Repository) (*Repository, *Response, error) {
+func (s *RepositoriesService) Edit(ctx context.Context, owner, repo string, body *Repository) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, repository)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1600,9 +1600,9 @@ func (s *RepositoriesService) ListRequiredStatusChecksContexts(ctx context.Conte
 // GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
 //
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection
-func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string, preq *ProtectionRequest) (*Protection, *Response, error) {
+func (s *RepositoriesService) UpdateBranchProtection(ctx context.Context, owner, repo, branch string, body *ProtectionRequest) (*Protection, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest(ctx, "PUT", u, preq)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1715,9 +1715,9 @@ func (s *RepositoriesService) OptionalSignaturesOnProtectedBranch(ctx context.Co
 // GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#update-status-check-protection
 //
 //meta:operation PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks
-func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, owner, repo, branch string, sreq *RequiredStatusChecksRequest) (*RequiredStatusChecks, *Response, error) {
+func (s *RepositoriesService) UpdateRequiredStatusChecks(ctx context.Context, owner, repo, branch string, body *RequiredStatusChecksRequest) (*RequiredStatusChecks, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_status_checks", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest(ctx, "PATCH", u, sreq)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1802,9 +1802,9 @@ func (s *RepositoriesService) GetPullRequestReviewEnforcement(ctx context.Contex
 // GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#update-pull-request-review-protection
 //
 //meta:operation PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews
-func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, patch *PullRequestReviewsEnforcementUpdate) (*PullRequestReviewsEnforcement, *Response, error) {
+func (s *RepositoriesService) UpdatePullRequestReviewEnforcement(ctx context.Context, owner, repo, branch string, body *PullRequestReviewsEnforcementUpdate) (*PullRequestReviewsEnforcement, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/required_pull_request_reviews", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest(ctx, "PATCH", u, patch)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -2043,9 +2043,9 @@ func (s *RepositoriesService) ListAppRestrictions(ctx context.Context, owner, re
 // GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#set-app-access-restrictions
 //
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
-func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
+func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner, repo, branch string, body []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest(ctx, "PUT", u, apps)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -2069,9 +2069,9 @@ func (s *RepositoriesService) ReplaceAppRestrictions(ctx context.Context, owner,
 // GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#add-app-access-restrictions
 //
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/apps
-func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, repo, branch string, apps []string) ([]*App, *Response, error) {
+func (s *RepositoriesService) AddAppRestrictions(ctx context.Context, owner, repo, branch string, body []string) ([]*App, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/apps", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest(ctx, "POST", u, apps)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -2146,9 +2146,9 @@ func (s *RepositoriesService) ListTeamRestrictions(ctx context.Context, owner, r
 // GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#set-team-access-restrictions
 //
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams
-func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
+func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner, repo, branch string, body []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest(ctx, "PUT", u, teams)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -2172,9 +2172,9 @@ func (s *RepositoriesService) ReplaceTeamRestrictions(ctx context.Context, owner
 // GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#add-team-access-restrictions
 //
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/teams
-func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, repo, branch string, teams []string) ([]*Team, *Response, error) {
+func (s *RepositoriesService) AddTeamRestrictions(ctx context.Context, owner, repo, branch string, body []string) ([]*Team, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/teams", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest(ctx, "POST", u, teams)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -2249,9 +2249,9 @@ func (s *RepositoriesService) ListUserRestrictions(ctx context.Context, owner, r
 // GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#set-user-access-restrictions
 //
 //meta:operation PUT /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users
-func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
+func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner, repo, branch string, body []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest(ctx, "PUT", u, users)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -2275,9 +2275,9 @@ func (s *RepositoriesService) ReplaceUserRestrictions(ctx context.Context, owner
 // GitHub API docs: https://docs.github.com/rest/branches/branch-protection?apiVersion=2022-11-28#add-user-access-restrictions
 //
 //meta:operation POST /repos/{owner}/{repo}/branches/{branch}/protection/restrictions/users
-func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, repo, branch string, users []string) ([]*User, *Response, error) {
+func (s *RepositoriesService) AddUserRestrictions(ctx context.Context, owner, repo, branch string, body []string) ([]*User, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/branches/%v/protection/restrictions/users", owner, repo, url.PathEscape(branch))
-	req, err := s.client.NewRequest(ctx, "POST", u, users)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

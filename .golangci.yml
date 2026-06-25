@@ -26,6 +26,7 @@ linters:
     - nakedret
     - nolintlint
     - paralleltest
+    - paramcheck
     - perfsprint
     - redundantptr
     - revive
@@ -194,6 +195,132 @@ linters:
         type: module
         description: Reports usage of %d or %s in format strings.
         original-url: github.com/google/go-github/v88/tools/fmtpercentv
+      paramcheck:
+        type: module
+        description: Reports parameter naming and type convention issues.
+        original-url: github.com/google/go-github/v88/tools/paramcheck
+        settings:
+          # Body type names exempt from the "pass by value, not by pointer" rule.
+          # TODO: fix and remove these exceptions.
+          body-allowed-pointer-types:
+            - ActionsVariable
+            - AddProjectItemOptions
+            - AuthorizationRequest
+            - AutolinkOptions
+            - CodeScanningAlertState
+            - CodespaceCreateForUserOptions
+            - ConfigApplyOptions
+            - ConfigSettings
+            - CreateCodespaceOptions
+            - CreateOrUpdateCustomRepoRoleOptions
+            - CreateOrUpdateIssueTypesOptions
+            - CreateOrgInvitationOptions
+            - CreateUpdateEnvironment
+            - CreateWorkflowDispatchEventRequest
+            - CustomDeploymentProtectionRuleRequest
+            - CustomProperty
+            - DependabotAlertState
+            - DependabotEncryptedSecret
+            - DependencyGraphSnapshot
+            - DeploymentBranchPolicyRequest
+            - DeploymentRequest
+            - DeploymentStatusRequest
+            - EncryptedSecret
+            - EnterpriseSecurityAnalysisSettings
+            - ExternalGroup
+            - GenerateJITConfigRequest
+            - GenerateNotesOptions
+            - Hook
+            - HookConfig
+            - ImpersonateUserOptions
+            - Import
+            - InstallationTokenListRepoOptions
+            - InstallationTokenOptions
+            - IssueComment
+            - IssueImportRequest
+            - IssueRequest
+            - Key
+            - Label
+            - LockIssueOptions
+            - MaintenanceOptions
+            - Milestone
+            - NewPullRequest
+            - OIDCSubjectClaimCustomTemplate
+            - Organization
+            - PagesUpdate
+            - PagesUpdateWithoutCNAME
+            - PendingDeploymentsRequest
+            - PreReceiveHook
+            - ProtectionRequest
+            - PublishCodespaceOptions
+            - PullRequestBranchUpdateOptions
+            - PullRequestComment
+            - PullRequestReviewDismissalRequest
+            - PullRequestReviewRequest
+            - PullRequestReviewsEnforcementUpdate
+            - ReleaseAsset
+            - RepoMergeUpstreamRequest
+            - Repository
+            - RepositoryAddCollaboratorOptions
+            - RepositoryComment
+            - RepositoryContentFileOptions
+            - RepositoryCreateForkOptions
+            - RepositoryMergeRequest
+            - RequiredStatusChecksRequest
+            - ReviewCustomDeploymentProtectionRuleRequest
+            - SCIMUserAttributes
+            - SarifAnalysis
+            - SecretScanningAlertUpdateOptions
+            - SecretScanningPatternConfigsUpdateOptions
+            - SourceImportAuthor
+            - Subscription
+            - TeamAddTeamMembershipOptions
+            - TeamAddTeamRepoOptions
+            - TeamLDAPMapping
+            - TeamProjectOptions
+            - TemplateRepoRequest
+            - UpdateCodespaceOptions
+            - UpdateDefaultSetupConfigurationOptions
+            - UpdateProjectItemOptions
+            - User
+            - UserLDAPMapping
+            - UserSuspendOptions
+            - WorkflowsPermissionsOpt
+          # Body type names exempt from the "Options" suffix rule.
+          # TODO: fix and remove these exceptions.
+          body-allowed-wrong-names:
+            - AddProjectItemOptions
+            - AutolinkOptions
+            - CheckSuitePreferenceOptions
+            - CodespaceCreateForUserOptions
+            - ConfigApplyOptions
+            - CreateCheckRunOptions
+            - CreateCheckSuiteOptions
+            - CreateCodespaceOptions
+            - CreateOrUpdateCustomRepoRoleOptions
+            - CreateOrUpdateIssueTypesOptions
+            - CreateOrgInvitationOptions
+            - GenerateNotesOptions
+            - ImpersonateUserOptions
+            - InstallationTokenListRepoOptions
+            - InstallationTokenOptions
+            - LockIssueOptions
+            - MaintenanceOptions
+            - PublishCodespaceOptions
+            - PullRequestBranchUpdateOptions
+            - RepositoryAddCollaboratorOptions
+            - RepositoryContentFileOptions
+            - RepositoryCreateForkOptions
+            - SecretScanningAlertUpdateOptions
+            - SecretScanningPatternConfigsUpdateOptions
+            - TeamAddTeamMembershipOptions
+            - TeamAddTeamRepoOptions
+            - TeamProjectOptions
+            - UpdateCheckRunOptions
+            - UpdateCodespaceOptions
+            - UpdateDefaultSetupConfigurationOptions
+            - UpdateProjectItemOptions
+            - UserSuspendOptions
       redundantptr:
         type: module
         description: Reports github.Ptr(x) calls that can be replaced with &x.
@@ -436,6 +563,8 @@ linters:
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
+  # paramcheck reports multiple distinct issues on the same parameter line.
+  uniq-by-line: false
 formatters:
   enable:
     - gci

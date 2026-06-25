@@ -230,10 +230,10 @@ func (s *EnterpriseService) GetAuditLogStream(ctx context.Context, enterprise st
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log?apiVersion=2022-11-28#create-an-audit-log-streaming-configuration-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/audit-log/streams
-func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise string, config AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
+func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise string, body AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/streams", enterprise)
 
-	req, err := s.client.NewRequest(ctx, "POST", u, config)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -253,10 +253,10 @@ func (s *EnterpriseService) CreateAuditLogStream(ctx context.Context, enterprise
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/audit-log?apiVersion=2022-11-28#update-an-existing-audit-log-stream-configuration
 //
 //meta:operation PUT /enterprises/{enterprise}/audit-log/streams/{stream_id}
-func (s *EnterpriseService) UpdateAuditLogStream(ctx context.Context, enterprise string, streamID int64, config AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
+func (s *EnterpriseService) UpdateAuditLogStream(ctx context.Context, enterprise string, streamID int64, body AuditLogStreamConfig) (*AuditLogStream, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/audit-log/streams/%v", enterprise, streamID)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, config)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

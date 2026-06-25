@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -449,7 +448,7 @@ func TestActionsService_ListRunnerGroupHostedRunners(t *testing.T) {
 							"length": 31
 						}
 					],
-					"last_active_on": "2023-04-26T15:23:37Z"
+					"last_active_on": `+referenceTimeStr+`
 				},
 				{
 					"id": 7,
@@ -470,7 +469,7 @@ func TestActionsService_ListRunnerGroupHostedRunners(t *testing.T) {
 					"maximum_runners": 20,
 					"public_ip_enabled": false,
 					"public_ips": [],
-					"last_active_on": "2023-04-26T15:23:37Z"
+					"last_active_on": `+referenceTimeStr+`
 				}
 			]
 		}`)
@@ -482,8 +481,6 @@ func TestActionsService_ListRunnerGroupHostedRunners(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.ListRunnerGroupHostedRunners returned error: %v", err)
 	}
-
-	lastActiveOn := Timestamp{time.Date(2023, 4, 26, 15, 23, 37, 0, time.UTC)}
 
 	want := &HostedRunners{
 		TotalCount: 2,
@@ -513,7 +510,7 @@ func TestActionsService_ListRunnerGroupHostedRunners(t *testing.T) {
 						Length:  31,
 					},
 				},
-				LastActiveOn: &lastActiveOn,
+				LastActiveOn: &referenceTimestamp,
 			},
 			{
 				ID:            Ptr(int64(7)),
@@ -534,7 +531,7 @@ func TestActionsService_ListRunnerGroupHostedRunners(t *testing.T) {
 				MaximumRunners:  Ptr(int64(20)),
 				PublicIPEnabled: Ptr(false),
 				PublicIPs:       []*HostedRunnerPublicIP{},
-				LastActiveOn:    &lastActiveOn,
+				LastActiveOn:    &referenceTimestamp,
 			},
 		},
 	}

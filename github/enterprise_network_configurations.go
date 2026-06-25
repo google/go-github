@@ -41,13 +41,13 @@ func (s *EnterpriseService) ListEnterpriseNetworkConfigurations(ctx context.Cont
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations?apiVersion=2022-11-28#create-a-hosted-compute-network-configuration-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/network-configurations
-func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Context, enterprise string, createReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
-	if err := validateNetworkConfigurationRequest(createReq); err != nil {
+func (s *EnterpriseService) CreateEnterpriseNetworkConfiguration(ctx context.Context, enterprise string, body NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
+	if err := validateNetworkConfigurationRequest(body); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("enterprises/%v/network-configurations", enterprise)
-	req, err := s.client.NewRequest(ctx, "POST", u, createReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -87,13 +87,13 @@ func (s *EnterpriseService) GetEnterpriseNetworkConfiguration(ctx context.Contex
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/network-configurations?apiVersion=2022-11-28#update-a-hosted-compute-network-configuration-for-an-enterprise
 //
 //meta:operation PATCH /enterprises/{enterprise}/network-configurations/{network_configuration_id}
-func (s *EnterpriseService) UpdateEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string, updateReq NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
-	if err := validateNetworkConfigurationRequest(updateReq); err != nil {
+func (s *EnterpriseService) UpdateEnterpriseNetworkConfiguration(ctx context.Context, enterprise, networkID string, body NetworkConfigurationRequest) (*NetworkConfiguration, *Response, error) {
+	if err := validateNetworkConfigurationRequest(body); err != nil {
 		return nil, nil, fmt.Errorf("validation failed: %w", err)
 	}
 
 	u := fmt.Sprintf("enterprises/%v/network-configurations/%v", enterprise, networkID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, updateReq)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
