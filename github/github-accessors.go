@@ -4806,6 +4806,166 @@ func (c *CodeQLDatabase) GetURL() string {
 	return *c.URL
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFinding) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetLocation returns the Location field.
+func (c *CodeQualityFinding) GetLocation() CodeQualityFindingLocation {
+	if c == nil {
+		return CodeQualityFindingLocation{}
+	}
+	return c.Location
+}
+
+// GetMessage returns the Message field.
+func (c *CodeQualityFinding) GetMessage() CodeQualityFindingMessage {
+	if c == nil {
+		return CodeQualityFindingMessage{}
+	}
+	return c.Message
+}
+
+// GetNumber returns the Number field.
+func (c *CodeQualityFinding) GetNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.Number
+}
+
+// GetRule returns the Rule field.
+func (c *CodeQualityFinding) GetRule() CodeQualityFindingRule {
+	if c == nil {
+		return CodeQualityFindingRule{}
+	}
+	return c.Rule
+}
+
+// GetState returns the State field.
+func (c *CodeQualityFinding) GetState() string {
+	if c == nil {
+		return ""
+	}
+	return c.State
+}
+
+// GetURL returns the URL field.
+func (c *CodeQualityFinding) GetURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.URL
+}
+
+// GetEndColumn returns the EndColumn field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFindingLocation) GetEndColumn() int {
+	if c == nil || c.EndColumn == nil {
+		return 0
+	}
+	return *c.EndColumn
+}
+
+// GetEndLine returns the EndLine field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFindingLocation) GetEndLine() int {
+	if c == nil || c.EndLine == nil {
+		return 0
+	}
+	return *c.EndLine
+}
+
+// GetPath returns the Path field.
+func (c *CodeQualityFindingLocation) GetPath() string {
+	if c == nil {
+		return ""
+	}
+	return c.Path
+}
+
+// GetStartColumn returns the StartColumn field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFindingLocation) GetStartColumn() int {
+	if c == nil || c.StartColumn == nil {
+		return 0
+	}
+	return *c.StartColumn
+}
+
+// GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFindingLocation) GetStartLine() int {
+	if c == nil || c.StartLine == nil {
+		return 0
+	}
+	return *c.StartLine
+}
+
+// GetMarkdown returns the Markdown field.
+func (c *CodeQualityFindingMessage) GetMarkdown() string {
+	if c == nil {
+		return ""
+	}
+	return c.Markdown
+}
+
+// GetText returns the Text field.
+func (c *CodeQualityFindingMessage) GetText() string {
+	if c == nil {
+		return ""
+	}
+	return c.Text
+}
+
+// GetCategory returns the Category field.
+func (c *CodeQualityFindingRule) GetCategory() string {
+	if c == nil {
+		return ""
+	}
+	return c.Category
+}
+
+// GetDescription returns the Description field.
+func (c *CodeQualityFindingRule) GetDescription() string {
+	if c == nil {
+		return ""
+	}
+	return c.Description
+}
+
+// GetHelp returns the Help field if it's non-nil, zero value otherwise.
+func (c *CodeQualityFindingRule) GetHelp() string {
+	if c == nil || c.Help == nil {
+		return ""
+	}
+	return *c.Help
+}
+
+// GetID returns the ID field.
+func (c *CodeQualityFindingRule) GetID() string {
+	if c == nil {
+		return ""
+	}
+	return c.ID
+}
+
+// GetSeverity returns the Severity field.
+func (c *CodeQualityFindingRule) GetSeverity() string {
+	if c == nil {
+		return ""
+	}
+	return c.Severity
+}
+
+// GetTitle returns the Title field.
+func (c *CodeQualityFindingRule) GetTitle() string {
+	if c == nil {
+		return ""
+	}
+	return c.Title
+}
+
 // GetLanguages returns the Languages slice if it's non-nil, nil otherwise.
 func (c *CodeQualitySetupConfiguration) GetLanguages() []string {
 	if c == nil || c.Languages == nil {
@@ -21916,6 +22076,22 @@ func (l *ListCheckSuiteResults) GetTotal() int {
 		return 0
 	}
 	return *l.Total
+}
+
+// GetDirection returns the Direction field.
+func (l *ListCodeQualityFindingsOptions) GetDirection() string {
+	if l == nil {
+		return ""
+	}
+	return l.Direction
+}
+
+// GetState returns the State field.
+func (l *ListCodeQualityFindingsOptions) GetState() string {
+	if l == nil {
+		return ""
+	}
+	return l.State
 }
 
 // GetAfter returns the After field.
