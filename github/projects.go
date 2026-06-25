@@ -918,7 +918,7 @@ func (s *ProjectV2ViewSortBy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	if len(tuple) != 2 {
-		return fmt.Errorf("ProjectV2ViewSortBy: expected a [field_id, direction] tuple, got %v elements", len(tuple))
+		return fmt.Errorf("expected a [field_id, direction] tuple, got %v elements", len(tuple))
 	}
 
 	var fieldID int64
@@ -926,17 +926,17 @@ func (s *ProjectV2ViewSortBy) UnmarshalJSON(data []byte) error {
 		// The OpenAPI schema allows the field_id to be a string as well.
 		var str string
 		if err2 := json.Unmarshal(tuple[0], &str); err2 != nil {
-			return fmt.Errorf("ProjectV2ViewSortBy: invalid field_id: %w", err)
+			return fmt.Errorf("invalid field_id: %w", err2)
 		}
 		fieldID, err = strconv.ParseInt(str, 10, 64)
 		if err != nil {
-			return fmt.Errorf("ProjectV2ViewSortBy: invalid field_id %q: %w", str, err)
+			return fmt.Errorf("invalid field_id %q: %w", str, err)
 		}
 	}
 
 	var direction string
 	if err := json.Unmarshal(tuple[1], &direction); err != nil {
-		return fmt.Errorf("ProjectV2ViewSortBy: invalid direction: %w", err)
+		return fmt.Errorf("invalid direction: %w", err)
 	}
 
 	s.FieldID = &fieldID
@@ -951,9 +951,9 @@ func (s ProjectV2ViewSortBy) MarshalJSON() ([]byte, error) {
 
 // CreateProjectV2ViewRequest specifies the parameters to create a project view.
 type CreateProjectV2ViewRequest struct {
-	// Name is the view's display name. (Required.)
+	// Name is the view's display name.
 	Name string `json:"name"`
-	// Layout is the view's layout. One of: table, board, roadmap. (Required.)
+	// Layout is the view's layout. One of: table, board, roadmap.
 	Layout string `json:"layout"`
 	// Filter is an optional query string to filter the items shown in the view.
 	Filter *string `json:"filter,omitempty"`
