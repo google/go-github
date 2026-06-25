@@ -885,14 +885,14 @@ type ProjectV2View struct {
 	NodeID          string                 `json:"node_id"`
 	ProjectURL      string                 `json:"project_url"`
 	HTMLURL         string                 `json:"html_url"`
-	Creator         *User                  `json:"creator,omitempty"`
+	Creator         User                   `json:"creator"`
 	Filter          *string                `json:"filter,omitempty"`
-	VisibleFields   []int64                `json:"visible_fields,omitempty"`
-	SortBy          []*ProjectV2ViewSortBy `json:"sort_by,omitempty"`
-	GroupBy         []int64                `json:"group_by,omitempty"`
-	VerticalGroupBy []int64                `json:"vertical_group_by,omitempty"`
-	CreatedAt       *Timestamp             `json:"created_at,omitempty"`
-	UpdatedAt       *Timestamp             `json:"updated_at,omitempty"`
+	VisibleFields   []int64                `json:"visible_fields"`
+	SortBy          []*ProjectV2ViewSortBy `json:"sort_by"`
+	GroupBy         []int64                `json:"group_by"`
+	VerticalGroupBy []int64                `json:"vertical_group_by"`
+	CreatedAt       Timestamp              `json:"created_at"`
+	UpdatedAt       Timestamp              `json:"updated_at"`
 }
 
 // ProjectV2ViewSortBy represents a single sort criterion of a project view.

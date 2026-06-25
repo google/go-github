@@ -29414,18 +29414,18 @@ func (p *ProjectV2TextContent) GetRaw() string {
 	return *p.Raw
 }
 
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+// GetCreatedAt returns the CreatedAt field.
 func (p *ProjectV2View) GetCreatedAt() Timestamp {
-	if p == nil || p.CreatedAt == nil {
+	if p == nil {
 		return Timestamp{}
 	}
-	return *p.CreatedAt
+	return p.CreatedAt
 }
 
 // GetCreator returns the Creator field.
-func (p *ProjectV2View) GetCreator() *User {
+func (p *ProjectV2View) GetCreator() User {
 	if p == nil {
-		return nil
+		return User{}
 	}
 	return p.Creator
 }
@@ -29510,12 +29510,12 @@ func (p *ProjectV2View) GetSortBy() []*ProjectV2ViewSortBy {
 	return p.SortBy
 }
 
-// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+// GetUpdatedAt returns the UpdatedAt field.
 func (p *ProjectV2View) GetUpdatedAt() Timestamp {
-	if p == nil || p.UpdatedAt == nil {
+	if p == nil {
 		return Timestamp{}
 	}
-	return *p.UpdatedAt
+	return p.UpdatedAt
 }
 
 // GetVerticalGroupBy returns the VerticalGroupBy slice if it's non-nil, nil otherwise.

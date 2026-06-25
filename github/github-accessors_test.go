@@ -37079,10 +37079,7 @@ func TestProjectV2TextContent_GetRaw(tt *testing.T) {
 
 func TestProjectV2View_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue Timestamp
-	p := &ProjectV2View{CreatedAt: &zeroValue}
-	p.GetCreatedAt()
-	p = &ProjectV2View{}
+	p := &ProjectV2View{}
 	p.GetCreatedAt()
 	p = nil
 	p.GetCreatedAt()
@@ -37187,10 +37184,7 @@ func TestProjectV2View_GetSortBy(tt *testing.T) {
 
 func TestProjectV2View_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue Timestamp
-	p := &ProjectV2View{UpdatedAt: &zeroValue}
-	p.GetUpdatedAt()
-	p = &ProjectV2View{}
+	p := &ProjectV2View{}
 	p.GetUpdatedAt()
 	p = nil
 	p.GetUpdatedAt()
