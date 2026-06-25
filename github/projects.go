@@ -732,9 +732,9 @@ func (s *ProjectsService) DeleteUserProjectItem(ctx context.Context, username st
 
 // CreateProjectV2DraftItemRequest specifies the parameters to create a draft item in a project.
 type CreateProjectV2DraftItemRequest struct {
-	// Title is the title of the draft issue item to create. (Required.)
+	// Title is the title of the draft issue item to create.
 	Title string `json:"title"`
-	// Body is the body content of the draft issue item to create. (Optional.)
+	// Body is the body content of the draft issue item to create.
 	Body *string `json:"body,omitempty"`
 }
 
@@ -785,7 +785,7 @@ func (s *ProjectsService) CreateUserProjectDraftItem(ctx context.Context, userID
 
 // ProjectV2FieldSingleSelectOption represents an option to create for a single_select project field.
 type ProjectV2FieldSingleSelectOption struct {
-	// Name is the display name of the option. (Required.)
+	// Name is the display name of the option.
 	Name string `json:"name"`
 	// Color is the color associated with the option.
 	// One of: BLUE, GRAY, GREEN, ORANGE, PINK, PURPLE, RED, YELLOW.
