@@ -6130,6 +6130,184 @@ func TestCodeQLDatabase_GetURL(tt *testing.T) {
 	c.GetURL()
 }
 
+func TestCodeQualityFinding_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &CodeQualityFinding{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CodeQualityFinding{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCodeQualityFinding_GetLocation(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFinding{}
+	c.GetLocation()
+	c = nil
+	c.GetLocation()
+}
+
+func TestCodeQualityFinding_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFinding{}
+	c.GetMessage()
+	c = nil
+	c.GetMessage()
+}
+
+func TestCodeQualityFinding_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFinding{}
+	c.GetNumber()
+	c = nil
+	c.GetNumber()
+}
+
+func TestCodeQualityFinding_GetRule(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFinding{}
+	c.GetRule()
+	c = nil
+	c.GetRule()
+}
+
+func TestCodeQualityFinding_GetState(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFinding{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCodeQualityFinding_GetURL(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFinding{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
+func TestCodeQualityFindingLocation_GetEndColumn(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CodeQualityFindingLocation{EndColumn: &zeroValue}
+	c.GetEndColumn()
+	c = &CodeQualityFindingLocation{}
+	c.GetEndColumn()
+	c = nil
+	c.GetEndColumn()
+}
+
+func TestCodeQualityFindingLocation_GetEndLine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CodeQualityFindingLocation{EndLine: &zeroValue}
+	c.GetEndLine()
+	c = &CodeQualityFindingLocation{}
+	c.GetEndLine()
+	c = nil
+	c.GetEndLine()
+}
+
+func TestCodeQualityFindingLocation_GetPath(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFindingLocation{}
+	c.GetPath()
+	c = nil
+	c.GetPath()
+}
+
+func TestCodeQualityFindingLocation_GetStartColumn(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CodeQualityFindingLocation{StartColumn: &zeroValue}
+	c.GetStartColumn()
+	c = &CodeQualityFindingLocation{}
+	c.GetStartColumn()
+	c = nil
+	c.GetStartColumn()
+}
+
+func TestCodeQualityFindingLocation_GetStartLine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CodeQualityFindingLocation{StartLine: &zeroValue}
+	c.GetStartLine()
+	c = &CodeQualityFindingLocation{}
+	c.GetStartLine()
+	c = nil
+	c.GetStartLine()
+}
+
+func TestCodeQualityFindingMessage_GetMarkdown(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFindingMessage{}
+	c.GetMarkdown()
+	c = nil
+	c.GetMarkdown()
+}
+
+func TestCodeQualityFindingMessage_GetText(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFindingMessage{}
+	c.GetText()
+	c = nil
+	c.GetText()
+}
+
+func TestCodeQualityFindingRule_GetCategory(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFindingRule{}
+	c.GetCategory()
+	c = nil
+	c.GetCategory()
+}
+
+func TestCodeQualityFindingRule_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFindingRule{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCodeQualityFindingRule_GetHelp(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CodeQualityFindingRule{Help: &zeroValue}
+	c.GetHelp()
+	c = &CodeQualityFindingRule{}
+	c.GetHelp()
+	c = nil
+	c.GetHelp()
+}
+
+func TestCodeQualityFindingRule_GetID(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFindingRule{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCodeQualityFindingRule_GetSeverity(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFindingRule{}
+	c.GetSeverity()
+	c = nil
+	c.GetSeverity()
+}
+
+func TestCodeQualityFindingRule_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityFindingRule{}
+	c.GetTitle()
+	c = nil
+	c.GetTitle()
+}
+
 func TestCodeQualitySetupConfiguration_GetLanguages(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
@@ -27632,6 +27810,22 @@ func TestListCheckSuiteResults_GetTotal(tt *testing.T) {
 	l.GetTotal()
 	l = nil
 	l.GetTotal()
+}
+
+func TestListCodeQualityFindingsOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCodeQualityFindingsOptions{}
+	l.GetDirection()
+	l = nil
+	l.GetDirection()
+}
+
+func TestListCodeQualityFindingsOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	l := &ListCodeQualityFindingsOptions{}
+	l.GetState()
+	l = nil
+	l.GetState()
 }
 
 func TestListCodeSecurityConfigurationRepositoriesOptions_GetAfter(tt *testing.T) {

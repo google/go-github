@@ -1921,6 +1921,37 @@ func (s *ClassroomService) ListClassroomsIter(ctx context.Context, opts *ListOpt
 	}
 }
 
+// ListFindingsIter returns an iterator that paginates through all results of ListFindings.
+func (s *CodeQualityService) ListFindingsIter(ctx context.Context, owner string, repo string, opts *ListCodeQualityFindingsOptions) iter.Seq2[*CodeQualityFinding, error] {
+	return func(yield func(*CodeQualityFinding, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListCodeQualityFindingsOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListFindings(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.After == "" {
+				break
+			}
+			opts.ListCursorOptions.After = resp.After
+		}
+	}
+}
+
 // ListAlertInstancesIter returns an iterator that paginates through all results of ListAlertInstances.
 func (s *CodeScanningService) ListAlertInstancesIter(ctx context.Context, owner string, repo string, id int64, opts *AlertInstancesListOptions) iter.Seq2[*MostRecentInstance, error] {
 	return func(yield func(*MostRecentInstance, error) bool) {
