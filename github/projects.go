@@ -878,25 +878,21 @@ func (s *ProjectsService) AddUserProjectField(ctx context.Context, username stri
 
 // ProjectV2View represents a view in a project.
 type ProjectV2View struct {
-	ID         int64   `json:"id"`
-	Number     int     `json:"number"`
-	Name       string  `json:"name"`
-	Layout     string  `json:"layout"`
-	NodeID     string  `json:"node_id"`
-	ProjectURL string  `json:"project_url"`
-	HTMLURL    string  `json:"html_url"`
-	Creator    *User   `json:"creator,omitempty"`
-	Filter     *string `json:"filter,omitempty"`
-	// VisibleFields holds the IDs of the fields displayed in the view.
-	VisibleFields []int64 `json:"visible_fields,omitempty"`
-	// SortBy holds the view's sorting configuration, in priority order.
-	SortBy []*ProjectV2ViewSortBy `json:"sort_by,omitempty"`
-	// GroupBy holds the IDs of the fields the view is grouped by.
-	GroupBy []int64 `json:"group_by,omitempty"`
-	// VerticalGroupBy holds the IDs of the fields the view is vertically grouped by.
-	VerticalGroupBy []int64    `json:"vertical_group_by,omitempty"`
-	CreatedAt       *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt       *Timestamp `json:"updated_at,omitempty"`
+	ID              int64                  `json:"id"`
+	Number          int                    `json:"number"`
+	Name            string                 `json:"name"`
+	Layout          string                 `json:"layout"`
+	NodeID          string                 `json:"node_id"`
+	ProjectURL      string                 `json:"project_url"`
+	HTMLURL         string                 `json:"html_url"`
+	Creator         *User                  `json:"creator,omitempty"`
+	Filter          *string                `json:"filter,omitempty"`
+	VisibleFields   []int64                `json:"visible_fields,omitempty"`
+	SortBy          []*ProjectV2ViewSortBy `json:"sort_by,omitempty"`
+	GroupBy         []int64                `json:"group_by,omitempty"`
+	VerticalGroupBy []int64                `json:"vertical_group_by,omitempty"`
+	CreatedAt       *Timestamp             `json:"created_at,omitempty"`
+	UpdatedAt       *Timestamp             `json:"updated_at,omitempty"`
 }
 
 // ProjectV2ViewSortBy represents a single sort criterion of a project view.
@@ -905,9 +901,9 @@ type ProjectV2View struct {
 // object, so it has custom JSON (un)marshaling.
 type ProjectV2ViewSortBy struct {
 	// FieldID is the ID of the field to sort by.
-	FieldID *int64
+	FieldID *int64 `json:"-"`
 	// Direction is the sort direction, one of "asc" or "desc".
-	Direction *string
+	Direction *string `json:"-"`
 }
 
 // UnmarshalJSON implements custom unmarshaling for the [field_id, direction]
