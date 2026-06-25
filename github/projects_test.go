@@ -1771,6 +1771,38 @@ func TestProjectV2ViewSortBy_UnmarshalJSON(t *testing.T) {
 		}
 	})
 
+	t.Run("non-array is an error", func(t *testing.T) {
+		t.Parallel()
+		var got ProjectV2ViewSortBy
+		if err := json.Unmarshal([]byte(`{"a":1}`), &got); err == nil {
+			t.Error("Unmarshal of a non-array = nil error, want error")
+		}
+	})
+
+	t.Run("field_id of an unsupported type is an error", func(t *testing.T) {
+		t.Parallel()
+		var got ProjectV2ViewSortBy
+		if err := json.Unmarshal([]byte(`[true,"asc"]`), &got); err == nil {
+			t.Error("Unmarshal of a boolean field_id = nil error, want error")
+		}
+	})
+
+	t.Run("non-numeric string field_id is an error", func(t *testing.T) {
+		t.Parallel()
+		var got ProjectV2ViewSortBy
+		if err := json.Unmarshal([]byte(`["abc","asc"]`), &got); err == nil {
+			t.Error(`Unmarshal of field_id "abc" = nil error, want error`)
+		}
+	})
+
+	t.Run("non-string direction is an error", func(t *testing.T) {
+		t.Parallel()
+		var got ProjectV2ViewSortBy
+		if err := json.Unmarshal([]byte(`[123,456]`), &got); err == nil {
+			t.Error("Unmarshal of a numeric direction = nil error, want error")
+		}
+	})
+
 	t.Run("round trips through MarshalJSON", func(t *testing.T) {
 		t.Parallel()
 		in := &ProjectV2ViewSortBy{FieldID: Ptr(int64(9007199254740993)), Direction: Ptr("asc")}
