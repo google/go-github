@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -1753,19 +1752,11 @@ func TestProjectV2ViewSortBy_UnmarshalJSON(t *testing.T) {
 		t.Parallel()
 		// The second element uses a string field_id, which the OpenAPI schema
 		// permits. The first exceeds 2^53 to confirm int64 (not float64) decoding.
-		var got []*ProjectV2ViewSortBy
-		if err := json.Unmarshal([]byte(`[[9007199254740993,"asc"],["456","desc"]]`), &got); err != nil {
-			t.Fatalf("Unmarshal returned error: %v", err)
+		want := []*ProjectV2ViewSortBy{
+			{FieldID: Ptr(int64(9007199254740993)), Direction: Ptr("asc")},
+			{FieldID: Ptr(int64(456)), Direction: Ptr("desc")},
 		}
-		if len(got) != 2 {
-			t.Fatalf("len(got) = %d, want 2", len(got))
-		}
-		if got[0].GetFieldID() != 9007199254740993 || got[0].GetDirection() != "asc" {
-			t.Errorf("got[0] = %+v, want {9007199254740993 asc}", got[0])
-		}
-		if got[1].GetFieldID() != 456 || got[1].GetDirection() != "desc" {
-			t.Errorf("got[1] = %+v, want {456 desc}", got[1])
-		}
+		testJSONUnmarshalOnly(t, want, `[[9007199254740993,"asc"],["456","desc"]]`)
 	})
 
 	t.Run("wrong tuple length is an error", func(t *testing.T) {
@@ -1811,19 +1802,6 @@ func TestProjectV2ViewSortBy_UnmarshalJSON(t *testing.T) {
 	t.Run("round trips through MarshalJSON", func(t *testing.T) {
 		t.Parallel()
 		in := &ProjectV2ViewSortBy{FieldID: Ptr(int64(9007199254740993)), Direction: Ptr("asc")}
-		b, err := json.Marshal(in)
-		if err != nil {
-			t.Fatalf("Marshal returned error: %v", err)
-		}
-		if got, want := string(b), `[9007199254740993,"asc"]`; got != want {
-			t.Errorf("Marshal = %v, want %v", got, want)
-		}
-		var out ProjectV2ViewSortBy
-		if err := json.Unmarshal(b, &out); err != nil {
-			t.Fatalf("Unmarshal returned error: %v", err)
-		}
-		if out.GetFieldID() != 9007199254740993 || out.GetDirection() != "asc" {
-			t.Errorf("round trip = %+v, want {9007199254740993 asc}", out)
-		}
+		testJSONMarshal(t, in, `[9007199254740993,"asc"]`)
 	})
 }
