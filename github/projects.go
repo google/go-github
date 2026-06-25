@@ -878,13 +878,13 @@ func (s *ProjectsService) AddUserProjectField(ctx context.Context, username stri
 
 // ProjectV2View represents a view in a project.
 type ProjectV2View struct {
-	ID         *int64  `json:"id,omitempty"`
-	Number     *int    `json:"number,omitempty"`
-	Name       *string `json:"name,omitempty"`
-	Layout     *string `json:"layout,omitempty"`
-	NodeID     *string `json:"node_id,omitempty"`
-	ProjectURL *string `json:"project_url,omitempty"`
-	HTMLURL    *string `json:"html_url,omitempty"`
+	ID         int64   `json:"id"`
+	Number     int     `json:"number"`
+	Name       string  `json:"name"`
+	Layout     string  `json:"layout"`
+	NodeID     string  `json:"node_id"`
+	ProjectURL string  `json:"project_url"`
+	HTMLURL    string  `json:"html_url"`
 	Creator    *User   `json:"creator,omitempty"`
 	Filter     *string `json:"filter,omitempty"`
 	// VisibleFields holds the IDs of the fields displayed in the view.

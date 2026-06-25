@@ -1617,10 +1617,10 @@ func TestProjectsService_CreateOrganizationProjectView(t *testing.T) {
 		t.Fatalf("Projects.CreateOrganizationProjectView returned error: %v", err)
 	}
 	want := &ProjectV2View{
-		ID:     Ptr(int64(5)),
-		Number: Ptr(2),
-		Name:   Ptr("My board"),
-		Layout: Ptr("board"),
+		ID:     5,
+		Number: 2,
+		Name:   "My board",
+		Layout: "board",
 		SortBy: []*ProjectV2ViewSortBy{
 			{FieldID: Ptr(int64(9007199254740993)), Direction: Ptr("asc")},
 			{FieldID: Ptr(int64(456)), Direction: Ptr("desc")},
@@ -1661,7 +1661,7 @@ func TestProjectsService_CreateUserProjectView(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.CreateUserProjectView returned error: %v", err)
 	}
-	want := &ProjectV2View{ID: Ptr(int64(6)), Number: Ptr(3), Name: Ptr("My table"), Layout: Ptr("table")}
+	want := &ProjectV2View{ID: 6, Number: 3, Name: "My table", Layout: "table"}
 	if diff := cmp.Diff(want, view); diff != "" {
 		t.Errorf("Projects.CreateUserProjectView mismatch (-want +got):\n%v", diff)
 	}

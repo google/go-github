@@ -37120,10 +37120,7 @@ func TestProjectV2View_GetGroupBy(tt *testing.T) {
 
 func TestProjectV2View_GetHTMLURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &ProjectV2View{HTMLURL: &zeroValue}
-	p.GetHTMLURL()
-	p = &ProjectV2View{}
+	p := &ProjectV2View{}
 	p.GetHTMLURL()
 	p = nil
 	p.GetHTMLURL()
@@ -37131,10 +37128,7 @@ func TestProjectV2View_GetHTMLURL(tt *testing.T) {
 
 func TestProjectV2View_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	p := &ProjectV2View{ID: &zeroValue}
-	p.GetID()
-	p = &ProjectV2View{}
+	p := &ProjectV2View{}
 	p.GetID()
 	p = nil
 	p.GetID()
@@ -37142,10 +37136,7 @@ func TestProjectV2View_GetID(tt *testing.T) {
 
 func TestProjectV2View_GetLayout(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &ProjectV2View{Layout: &zeroValue}
-	p.GetLayout()
-	p = &ProjectV2View{}
+	p := &ProjectV2View{}
 	p.GetLayout()
 	p = nil
 	p.GetLayout()
@@ -37153,10 +37144,7 @@ func TestProjectV2View_GetLayout(tt *testing.T) {
 
 func TestProjectV2View_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &ProjectV2View{Name: &zeroValue}
-	p.GetName()
-	p = &ProjectV2View{}
+	p := &ProjectV2View{}
 	p.GetName()
 	p = nil
 	p.GetName()
@@ -37164,10 +37152,7 @@ func TestProjectV2View_GetName(tt *testing.T) {
 
 func TestProjectV2View_GetNodeID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &ProjectV2View{NodeID: &zeroValue}
-	p.GetNodeID()
-	p = &ProjectV2View{}
+	p := &ProjectV2View{}
 	p.GetNodeID()
 	p = nil
 	p.GetNodeID()
@@ -37175,10 +37160,7 @@ func TestProjectV2View_GetNodeID(tt *testing.T) {
 
 func TestProjectV2View_GetNumber(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	p := &ProjectV2View{Number: &zeroValue}
-	p.GetNumber()
-	p = &ProjectV2View{}
+	p := &ProjectV2View{}
 	p.GetNumber()
 	p = nil
 	p.GetNumber()
@@ -37186,10 +37168,7 @@ func TestProjectV2View_GetNumber(tt *testing.T) {
 
 func TestProjectV2View_GetProjectURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &ProjectV2View{ProjectURL: &zeroValue}
-	p.GetProjectURL()
-	p = &ProjectV2View{}
+	p := &ProjectV2View{}
 	p.GetProjectURL()
 	p = nil
 	p.GetProjectURL()

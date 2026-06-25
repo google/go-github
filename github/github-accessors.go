@@ -29446,60 +29446,60 @@ func (p *ProjectV2View) GetGroupBy() []int64 {
 	return p.GroupBy
 }
 
-// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+// GetHTMLURL returns the HTMLURL field.
 func (p *ProjectV2View) GetHTMLURL() string {
-	if p == nil || p.HTMLURL == nil {
+	if p == nil {
 		return ""
 	}
-	return *p.HTMLURL
+	return p.HTMLURL
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (p *ProjectV2View) GetID() int64 {
-	if p == nil || p.ID == nil {
+	if p == nil {
 		return 0
 	}
-	return *p.ID
+	return p.ID
 }
 
-// GetLayout returns the Layout field if it's non-nil, zero value otherwise.
+// GetLayout returns the Layout field.
 func (p *ProjectV2View) GetLayout() string {
-	if p == nil || p.Layout == nil {
+	if p == nil {
 		return ""
 	}
-	return *p.Layout
+	return p.Layout
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (p *ProjectV2View) GetName() string {
-	if p == nil || p.Name == nil {
+	if p == nil {
 		return ""
 	}
-	return *p.Name
+	return p.Name
 }
 
-// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+// GetNodeID returns the NodeID field.
 func (p *ProjectV2View) GetNodeID() string {
-	if p == nil || p.NodeID == nil {
+	if p == nil {
 		return ""
 	}
-	return *p.NodeID
+	return p.NodeID
 }
 
-// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+// GetNumber returns the Number field.
 func (p *ProjectV2View) GetNumber() int {
-	if p == nil || p.Number == nil {
+	if p == nil {
 		return 0
 	}
-	return *p.Number
+	return p.Number
 }
 
-// GetProjectURL returns the ProjectURL field if it's non-nil, zero value otherwise.
+// GetProjectURL returns the ProjectURL field.
 func (p *ProjectV2View) GetProjectURL() string {
-	if p == nil || p.ProjectURL == nil {
+	if p == nil {
 		return ""
 	}
-	return *p.ProjectURL
+	return p.ProjectURL
 }
 
 // GetSortBy returns the SortBy slice if it's non-nil, nil otherwise.
