@@ -11,6 +11,9 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestProjectsService_ListOrganizationProjects(t *testing.T) {
@@ -1449,8 +1452,9 @@ func TestProjectsService_CreateOrganizationProjectDraftItem(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.CreateOrganizationProjectDraftItem returned error: %v", err)
 	}
-	if item.GetID() != 42 {
-		t.Fatalf("unexpected item: %+v", item)
+	want := &ProjectV2Item{ID: Ptr(int64(42)), NodeID: Ptr("PVTI_draft"), ContentType: Ptr(ProjectV2ItemContentTypeDraftIssue)}
+	if diff := cmp.Diff(want, item); diff != "" {
+		t.Errorf("Projects.CreateOrganizationProjectDraftItem mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "CreateOrganizationProjectDraftItem"
@@ -1484,8 +1488,9 @@ func TestProjectsService_CreateUserProjectDraftItem(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.CreateUserProjectDraftItem returned error: %v", err)
 	}
-	if item.GetID() != 43 {
-		t.Fatalf("unexpected item: %+v", item)
+	want := &ProjectV2Item{ID: Ptr(int64(43)), NodeID: Ptr("PVTI_draft_u"), ContentType: Ptr(ProjectV2ItemContentTypeDraftIssue)}
+	if diff := cmp.Diff(want, item); diff != "" {
+		t.Errorf("Projects.CreateUserProjectDraftItem mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "CreateUserProjectDraftItem"
@@ -1522,8 +1527,9 @@ func TestProjectsService_AddOrganizationProjectField(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.AddOrganizationProjectField returned error: %v", err)
 	}
-	if field.GetID() != 7 || field.GetDataType() != "single_select" {
-		t.Fatalf("unexpected field: %+v", field)
+	want := &ProjectV2Field{ID: Ptr(int64(7)), Name: Ptr("Priority"), DataType: Ptr("single_select")}
+	if diff := cmp.Diff(want, field); diff != "" {
+		t.Errorf("Projects.AddOrganizationProjectField mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "AddOrganizationProjectField"
@@ -1567,8 +1573,9 @@ func TestProjectsService_AddUserProjectField(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.AddUserProjectField returned error: %v", err)
 	}
-	if field.GetID() != 8 {
-		t.Fatalf("unexpected field: %+v", field)
+	want := &ProjectV2Field{ID: Ptr(int64(8)), Name: Ptr("Sprint"), DataType: Ptr("iteration")}
+	if diff := cmp.Diff(want, field); diff != "" {
+		t.Errorf("Projects.AddUserProjectField mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "AddUserProjectField"
@@ -1609,23 +1616,18 @@ func TestProjectsService_CreateOrganizationProjectView(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.CreateOrganizationProjectView returned error: %v", err)
 	}
-	if view.GetID() != 5 || view.GetNumber() != 2 || view.GetLayout() != "board" {
-		t.Fatalf("unexpected view: %+v", view)
+	want := &ProjectV2View{
+		ID:     Ptr(int64(5)),
+		Number: Ptr(2),
+		Name:   Ptr("My board"),
+		Layout: Ptr("board"),
+		SortBy: []*ProjectV2ViewSortBy{
+			{FieldID: Ptr(int64(9007199254740993)), Direction: Ptr("asc")},
+			{FieldID: Ptr(int64(456)), Direction: Ptr("desc")},
+		},
 	}
-	if len(view.SortBy) != 2 {
-		t.Fatalf("unexpected sort_by: %+v", view.SortBy)
-	}
-	if got, want := view.SortBy[0].GetFieldID(), int64(9007199254740993); got != want {
-		t.Errorf("view.SortBy[0].FieldID = %v, want %v", got, want)
-	}
-	if got, want := view.SortBy[0].GetDirection(), "asc"; got != want {
-		t.Errorf("view.SortBy[0].Direction = %q, want %q", got, want)
-	}
-	if got, want := view.SortBy[1].GetFieldID(), int64(456); got != want {
-		t.Errorf("view.SortBy[1].FieldID = %v, want %v", got, want)
-	}
-	if got, want := view.SortBy[1].GetDirection(), "desc"; got != want {
-		t.Errorf("view.SortBy[1].Direction = %q, want %q", got, want)
+	if diff := cmp.Diff(want, view); diff != "" {
+		t.Errorf("Projects.CreateOrganizationProjectView mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "CreateOrganizationProjectView"
@@ -1659,8 +1661,9 @@ func TestProjectsService_CreateUserProjectView(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.CreateUserProjectView returned error: %v", err)
 	}
-	if view.GetID() != 6 || view.GetLayout() != "table" {
-		t.Fatalf("unexpected view: %+v", view)
+	want := &ProjectV2View{ID: Ptr(int64(6)), Number: Ptr(3), Name: Ptr("My table"), Layout: Ptr("table")}
+	if diff := cmp.Diff(want, view); diff != "" {
+		t.Errorf("Projects.CreateUserProjectView mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "CreateUserProjectView"
@@ -1689,8 +1692,9 @@ func TestProjectsService_ListOrganizationProjectViewItems(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.ListOrganizationProjectViewItems returned error: %v", err)
 	}
-	if len(items) != 1 || items[0].GetID() != 21 {
-		t.Fatalf("Projects.ListOrganizationProjectViewItems returned %+v", items)
+	want := []*ProjectV2Item{{ID: Ptr(int64(21)), NodeID: Ptr("PVTI_view_item")}}
+	if diff := cmp.Diff(want, items); diff != "" {
+		t.Errorf("Projects.ListOrganizationProjectViewItems mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "ListOrganizationProjectViewItems"
@@ -1723,8 +1727,9 @@ func TestProjectsService_ListUserProjectViewItems(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.ListUserProjectViewItems returned error: %v", err)
 	}
-	if len(items) != 1 || items[0].GetID() != 22 {
-		t.Fatalf("Projects.ListUserProjectViewItems returned %+v", items)
+	want := []*ProjectV2Item{{ID: Ptr(int64(22)), NodeID: Ptr("PVTI_view_item_u")}}
+	if diff := cmp.Diff(want, items); diff != "" {
+		t.Errorf("Projects.ListUserProjectViewItems mismatch (-want +got):\n%v", diff)
 	}
 
 	const methodName = "ListUserProjectViewItems"
