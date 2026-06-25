@@ -1431,3 +1431,362 @@ func TestProjectV2ItemContent_Marshal(t *testing.T) {
 		testJSONMarshalOnly(t, &content, want)
 	})
 }
+
+func TestProjectsService_CreateOrganizationProjectDraftItem(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CreateProjectV2DraftItemRequest{Title: Ptr("My draft"), Body: Ptr("Draft body")}
+
+	mux.HandleFunc("/orgs/o/projectsV2/1/drafts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"id":42,"node_id":"PVTI_draft","content_type":"DraftIssue"}`)
+	})
+
+	ctx := t.Context()
+	item, _, err := client.Projects.CreateOrganizationProjectDraftItem(ctx, "o", 1, input)
+	if err != nil {
+		t.Fatalf("Projects.CreateOrganizationProjectDraftItem returned error: %v", err)
+	}
+	if item.GetID() != 42 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+
+	const methodName = "CreateOrganizationProjectDraftItem"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.CreateOrganizationProjectDraftItem(ctx, "\n", 1, input)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.CreateOrganizationProjectDraftItem(ctx, "o", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_CreateUserProjectDraftItem(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CreateProjectV2DraftItemRequest{Title: Ptr("My draft")}
+
+	mux.HandleFunc("/user/12345/projectsV2/1/drafts", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"id":43,"node_id":"PVTI_draft_u","content_type":"DraftIssue"}`)
+	})
+
+	ctx := t.Context()
+	item, _, err := client.Projects.CreateUserProjectDraftItem(ctx, 12345, 1, input)
+	if err != nil {
+		t.Fatalf("Projects.CreateUserProjectDraftItem returned error: %v", err)
+	}
+	if item.GetID() != 43 {
+		t.Fatalf("unexpected item: %+v", item)
+	}
+
+	const methodName = "CreateUserProjectDraftItem"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.CreateUserProjectDraftItem(ctx, 12345, 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_AddOrganizationProjectField(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := AddProjectV2FieldRequest{
+		Name:     Ptr("Priority"),
+		DataType: Ptr("single_select"),
+		SingleSelectOptions: []*ProjectV2FieldSingleSelectOption{
+			{Name: Ptr("High"), Color: Ptr("RED"), Description: Ptr("Urgent")},
+			{Name: Ptr("Low"), Color: Ptr("GRAY")},
+		},
+	}
+
+	mux.HandleFunc("/orgs/o/projectsV2/1/fields", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"id":7,"name":"Priority","data_type":"single_select"}`)
+	})
+
+	ctx := t.Context()
+	field, _, err := client.Projects.AddOrganizationProjectField(ctx, "o", 1, input)
+	if err != nil {
+		t.Fatalf("Projects.AddOrganizationProjectField returned error: %v", err)
+	}
+	if field.GetID() != 7 || field.GetDataType() != "single_select" {
+		t.Fatalf("unexpected field: %+v", field)
+	}
+
+	const methodName = "AddOrganizationProjectField"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.AddOrganizationProjectField(ctx, "\n", 1, input)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.AddOrganizationProjectField(ctx, "o", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_AddUserProjectField(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := AddProjectV2FieldRequest{
+		Name:     Ptr("Sprint"),
+		DataType: Ptr("iteration"),
+		IterationConfiguration: &ProjectV2FieldIterationConfiguration{
+			StartDate: Ptr("2026-01-01"),
+			Duration:  Ptr(14),
+			Iterations: []*ProjectV2FieldIterationConfigurationIteration{
+				{Title: Ptr("Sprint 1"), StartDate: Ptr("2026-01-01"), Duration: Ptr(14)},
+			},
+		},
+	}
+
+	mux.HandleFunc("/users/u/projectsV2/1/fields", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"id":8,"name":"Sprint","data_type":"iteration"}`)
+	})
+
+	ctx := t.Context()
+	field, _, err := client.Projects.AddUserProjectField(ctx, "u", 1, input)
+	if err != nil {
+		t.Fatalf("Projects.AddUserProjectField returned error: %v", err)
+	}
+	if field.GetID() != 8 {
+		t.Fatalf("unexpected field: %+v", field)
+	}
+
+	const methodName = "AddUserProjectField"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.AddUserProjectField(ctx, "\n", 1, input)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.AddUserProjectField(ctx, "u", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_CreateOrganizationProjectView(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CreateProjectV2ViewRequest{
+		Name:          Ptr("My board"),
+		Layout:        Ptr("board"),
+		Filter:        Ptr("is:open"),
+		VisibleFields: []int64{1, 2, 3},
+	}
+
+	mux.HandleFunc("/orgs/o/projectsV2/1/views", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
+		// The first field_id is larger than 2^53 to ensure it is decoded as an
+		// int64 without the precision loss that a float64 would introduce.
+		fmt.Fprint(w, `{"id":5,"number":2,"name":"My board","layout":"board","sort_by":[[9007199254740993,"asc"],[456,"desc"]]}`)
+	})
+
+	ctx := t.Context()
+	view, _, err := client.Projects.CreateOrganizationProjectView(ctx, "o", 1, input)
+	if err != nil {
+		t.Fatalf("Projects.CreateOrganizationProjectView returned error: %v", err)
+	}
+	if view.GetID() != 5 || view.GetNumber() != 2 || view.GetLayout() != "board" {
+		t.Fatalf("unexpected view: %+v", view)
+	}
+	if len(view.SortBy) != 2 {
+		t.Fatalf("unexpected sort_by: %+v", view.SortBy)
+	}
+	if got, want := view.SortBy[0].GetFieldID(), int64(9007199254740993); got != want {
+		t.Errorf("view.SortBy[0].FieldID = %v, want %v", got, want)
+	}
+	if got, want := view.SortBy[0].GetDirection(), "asc"; got != want {
+		t.Errorf("view.SortBy[0].Direction = %q, want %q", got, want)
+	}
+	if got, want := view.SortBy[1].GetFieldID(), int64(456); got != want {
+		t.Errorf("view.SortBy[1].FieldID = %v, want %v", got, want)
+	}
+	if got, want := view.SortBy[1].GetDirection(), "desc"; got != want {
+		t.Errorf("view.SortBy[1].Direction = %q, want %q", got, want)
+	}
+
+	const methodName = "CreateOrganizationProjectView"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.CreateOrganizationProjectView(ctx, "\n", 1, input)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.CreateOrganizationProjectView(ctx, "o", 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_CreateUserProjectView(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CreateProjectV2ViewRequest{Name: Ptr("My table"), Layout: Ptr("table")}
+
+	mux.HandleFunc("/users/12345/projectsV2/1/views", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"id":6,"number":3,"name":"My table","layout":"table"}`)
+	})
+
+	ctx := t.Context()
+	view, _, err := client.Projects.CreateUserProjectView(ctx, 12345, 1, input)
+	if err != nil {
+		t.Fatalf("Projects.CreateUserProjectView returned error: %v", err)
+	}
+	if view.GetID() != 6 || view.GetLayout() != "table" {
+		t.Fatalf("unexpected view: %+v", view)
+	}
+
+	const methodName = "CreateUserProjectView"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.CreateUserProjectView(ctx, 12345, 1, input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_ListOrganizationProjectViewItems(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/projectsV2/1/views/2/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"after": "2", "before": "1", "per_page": "50", "fields": "10,11", "q": "status:open"})
+		fmt.Fprint(w, `[{"id":21,"node_id":"PVTI_view_item"}]`)
+	})
+
+	opts := &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{After: "2", Before: "1", PerPage: 50}, Query: "status:open"}, Fields: []int64{10, 11}}
+	ctx := t.Context()
+	items, _, err := client.Projects.ListOrganizationProjectViewItems(ctx, "o", 1, 2, opts)
+	if err != nil {
+		t.Fatalf("Projects.ListOrganizationProjectViewItems returned error: %v", err)
+	}
+	if len(items) != 1 || items[0].GetID() != 21 {
+		t.Fatalf("Projects.ListOrganizationProjectViewItems returned %+v", items)
+	}
+
+	const methodName = "ListOrganizationProjectViewItems"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListOrganizationProjectViewItems(ctx, "\n", 1, 2, opts)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListOrganizationProjectViewItems(ctx, "o", 1, 2, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectsService_ListUserProjectViewItems(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/projectsV2/1/views/2/items", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"per_page": "30"})
+		fmt.Fprint(w, `[{"id":22,"node_id":"PVTI_view_item_u"}]`)
+	})
+
+	opts := &ListProjectItemsOptions{ListProjectsOptions: ListProjectsOptions{ListProjectsPaginationOptions: ListProjectsPaginationOptions{PerPage: 30}}}
+	ctx := t.Context()
+	items, _, err := client.Projects.ListUserProjectViewItems(ctx, "u", 1, 2, opts)
+	if err != nil {
+		t.Fatalf("Projects.ListUserProjectViewItems returned error: %v", err)
+	}
+	if len(items) != 1 || items[0].GetID() != 22 {
+		t.Fatalf("Projects.ListUserProjectViewItems returned %+v", items)
+	}
+
+	const methodName = "ListUserProjectViewItems"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Projects.ListUserProjectViewItems(ctx, "\n", 1, 2, opts)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Projects.ListUserProjectViewItems(ctx, "u", 1, 2, opts)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestProjectV2ViewSortBy_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
+
+	t.Run("numeric and string field_id", func(t *testing.T) {
+		t.Parallel()
+		// The second element uses a string field_id, which the OpenAPI schema
+		// permits. The first exceeds 2^53 to confirm int64 (not float64) decoding.
+		var got []*ProjectV2ViewSortBy
+		if err := json.Unmarshal([]byte(`[[9007199254740993,"asc"],["456","desc"]]`), &got); err != nil {
+			t.Fatalf("Unmarshal returned error: %v", err)
+		}
+		if len(got) != 2 {
+			t.Fatalf("len(got) = %d, want 2", len(got))
+		}
+		if got[0].GetFieldID() != 9007199254740993 || got[0].GetDirection() != "asc" {
+			t.Errorf("got[0] = %+v, want {9007199254740993 asc}", got[0])
+		}
+		if got[1].GetFieldID() != 456 || got[1].GetDirection() != "desc" {
+			t.Errorf("got[1] = %+v, want {456 desc}", got[1])
+		}
+	})
+
+	t.Run("wrong tuple length is an error", func(t *testing.T) {
+		t.Parallel()
+		var got ProjectV2ViewSortBy
+		if err := json.Unmarshal([]byte(`[1]`), &got); err == nil {
+			t.Error("Unmarshal of a 1-element tuple = nil error, want error")
+		}
+	})
+
+	t.Run("round trips through MarshalJSON", func(t *testing.T) {
+		t.Parallel()
+		in := &ProjectV2ViewSortBy{FieldID: Ptr(int64(9007199254740993)), Direction: Ptr("asc")}
+		b, err := json.Marshal(in)
+		if err != nil {
+			t.Fatalf("Marshal returned error: %v", err)
+		}
+		if got, want := string(b), `[9007199254740993,"asc"]`; got != want {
+			t.Errorf("Marshal = %v, want %v", got, want)
+		}
+		var out ProjectV2ViewSortBy
+		if err := json.Unmarshal(b, &out); err != nil {
+			t.Fatalf("Unmarshal returned error: %v", err)
+		}
+		if out.GetFieldID() != 9007199254740993 || out.GetDirection() != "asc" {
+			t.Errorf("round trip = %+v, want {9007199254740993 asc}", out)
+		}
+	})
+}
