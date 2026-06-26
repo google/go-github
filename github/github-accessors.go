@@ -16703,7 +16703,7 @@ func (g *GenerateJITConfigRequest) GetWorkFolder() string {
 }
 
 // GetConfigurationFilePath returns the ConfigurationFilePath field if it's non-nil, zero value otherwise.
-func (g *GenerateNotesOptions) GetConfigurationFilePath() string {
+func (g *GenerateNotesRequest) GetConfigurationFilePath() string {
 	if g == nil || g.ConfigurationFilePath == nil {
 		return ""
 	}
@@ -16711,7 +16711,7 @@ func (g *GenerateNotesOptions) GetConfigurationFilePath() string {
 }
 
 // GetPreviousTagName returns the PreviousTagName field if it's non-nil, zero value otherwise.
-func (g *GenerateNotesOptions) GetPreviousTagName() string {
+func (g *GenerateNotesRequest) GetPreviousTagName() string {
 	if g == nil || g.PreviousTagName == nil {
 		return ""
 	}
@@ -16719,7 +16719,7 @@ func (g *GenerateNotesOptions) GetPreviousTagName() string {
 }
 
 // GetTagName returns the TagName field.
-func (g *GenerateNotesOptions) GetTagName() string {
+func (g *GenerateNotesRequest) GetTagName() string {
 	if g == nil {
 		return ""
 	}
@@ -16727,7 +16727,7 @@ func (g *GenerateNotesOptions) GetTagName() string {
 }
 
 // GetTargetCommitish returns the TargetCommitish field if it's non-nil, zero value otherwise.
-func (g *GenerateNotesOptions) GetTargetCommitish() string {
+func (g *GenerateNotesRequest) GetTargetCommitish() string {
 	if g == nil || g.TargetCommitish == nil {
 		return ""
 	}
@@ -42524,6 +42524,30 @@ func (u *UpdateRef) GetSHA() string {
 		return ""
 	}
 	return u.SHA
+}
+
+// GetLabel returns the Label field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseAssetRequest) GetLabel() string {
+	if u == nil || u.Label == nil {
+		return ""
+	}
+	return *u.Label
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseAssetRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseAssetRequest) GetState() string {
+	if u == nil || u.State == nil {
+		return ""
+	}
+	return *u.State
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.

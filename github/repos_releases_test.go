@@ -56,18 +56,18 @@ func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &GenerateNotesOptions{
+	body := GenerateNotesRequest{
 		TagName: "v1.0.0",
 	}
 
 	mux.HandleFunc("/repos/o/r/releases/generate-notes", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"name":"v1.0.0","body":"**Full Changelog**: https://github.com/o/r/compare/v0.9.0...v1.0.0"}`)
 	})
 
 	ctx := t.Context()
-	releases, _, err := client.Repositories.GenerateReleaseNotes(ctx, "o", "r", opt)
+	releases, _, err := client.Repositories.GenerateReleaseNotes(ctx, "o", "r", body)
 	if err != nil {
 		t.Errorf("Repositories.GenerateReleaseNotes returned error: %v", err)
 	}
@@ -81,12 +81,12 @@ func TestRepositoriesService_GenerateReleaseNotes(t *testing.T) {
 
 	const methodName = "GenerateReleaseNotes"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.GenerateReleaseNotes(ctx, "\n", "\n", opt)
+		_, _, err = client.Repositories.GenerateReleaseNotes(ctx, "\n", "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.GenerateReleaseNotes(ctx, "o", "r", opt)
+		got, resp, err := client.Repositories.GenerateReleaseNotes(ctx, "o", "r", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -564,11 +564,11 @@ func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 	}
 }
 
-func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
+func TestRepositoriesService_UpdateReleaseAsset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ReleaseAsset{Name: Ptr("n")}
+	input := UpdateReleaseAssetRequest{Name: Ptr("n")}
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -577,23 +577,23 @@ func TestRepositoriesService_EditReleaseAsset(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	asset, _, err := client.Repositories.EditReleaseAsset(ctx, "o", "r", 1, input)
+	asset, _, err := client.Repositories.UpdateReleaseAsset(ctx, "o", "r", 1, input)
 	if err != nil {
-		t.Errorf("Repositories.EditReleaseAsset returned error: %v", err)
+		t.Errorf("Repositories.UpdateReleaseAsset returned error: %v", err)
 	}
 	want := &ReleaseAsset{ID: Ptr(int64(1))}
 	if !cmp.Equal(asset, want) {
-		t.Errorf("Repositories.EditReleaseAsset returned = %+v, want %+v", asset, want)
+		t.Errorf("Repositories.UpdateReleaseAsset returned = %+v, want %+v", asset, want)
 	}
 
-	const methodName = "EditReleaseAsset"
+	const methodName = "UpdateReleaseAsset"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.EditReleaseAsset(ctx, "\n", "\n", 1, input)
+		_, _, err = client.Repositories.UpdateReleaseAsset(ctx, "\n", "\n", 1, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.EditReleaseAsset(ctx, "o", "r", 1, input)
+		got, resp, err := client.Repositories.UpdateReleaseAsset(ctx, "o", "r", 1, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
