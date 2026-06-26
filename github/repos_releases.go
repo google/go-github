@@ -29,10 +29,8 @@ type RepositoryRelease struct {
 	MakeLatest             *string `json:"make_latest,omitempty"`
 	DiscussionCategoryName *string `json:"discussion_category_name,omitempty"`
 
-	// The following fields are not used in EditRelease:
 	GenerateReleaseNotes *bool `json:"generate_release_notes,omitempty"`
 
-	// The following fields are not used in CreateRelease or EditRelease:
 	ID          *int64          `json:"id,omitempty"`
 	CreatedAt   *Timestamp      `json:"created_at,omitempty"`
 	PublishedAt *Timestamp      `json:"published_at,omitempty"`
@@ -179,52 +177,42 @@ func (s *RepositoriesService) getSingleRelease(ctx context.Context, url string) 
 	return release, resp, nil
 }
 
-// repositoryReleaseRequest is a subset of RepositoryRelease and
-// is used internally by CreateRelease and EditRelease to pass
-// only the known fields for these endpoints.
-//
-// See https://github.com/google/go-github/issues/992 for more
-// information.
-type repositoryReleaseRequest struct {
-	TagName                *string `json:"tag_name,omitempty"`
-	TargetCommitish        *string `json:"target_commitish,omitempty"`
-	Name                   *string `json:"name,omitempty"`
-	Body                   *string `json:"body,omitempty"`
-	Draft                  *bool   `json:"draft,omitempty"`
-	Prerelease             *bool   `json:"prerelease,omitempty"`
+// CreateReleaseRequest represents a request to create a release in a repository.
+type CreateReleaseRequest struct {
+	TagName         string  `json:"tag_name"`
+	TargetCommitish *string `json:"target_commitish,omitempty"`
+	Name            *string `json:"name,omitempty"`
+	Body            *string `json:"body,omitempty"`
+	Draft           *bool   `json:"draft,omitempty"`
+	Prerelease      *bool   `json:"prerelease,omitempty"`
+	// MakeLatest can be one of: "true", "false", or "legacy".
 	MakeLatest             *string `json:"make_latest,omitempty"`
+	DiscussionCategoryName *string `json:"discussion_category_name,omitempty"`
 	GenerateReleaseNotes   *bool   `json:"generate_release_notes,omitempty"`
+}
+
+// UpdateReleaseRequest represents a request to update a release in a repository.
+type UpdateReleaseRequest struct {
+	TagName         *string `json:"tag_name,omitempty"`
+	TargetCommitish *string `json:"target_commitish,omitempty"`
+	Name            *string `json:"name,omitempty"`
+	Body            *string `json:"body,omitempty"`
+	Draft           *bool   `json:"draft,omitempty"`
+	Prerelease      *bool   `json:"prerelease,omitempty"`
+	// MakeLatest can be one of: "true", "false", or "legacy".
+	MakeLatest             *string `json:"make_latest,omitempty"`
 	DiscussionCategoryName *string `json:"discussion_category_name,omitempty"`
 }
 
 // CreateRelease adds a new release for a repository.
 //
-// Note that only a subset of the release fields are used.
-// See RepositoryRelease for more information.
-//
 // GitHub API docs: https://docs.github.com/rest/releases/releases?apiVersion=2022-11-28#create-a-release
 //
 //meta:operation POST /repos/{owner}/{repo}/releases
-func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
-	if release == nil {
-		return nil, nil, errors.New("release must be provided")
-	}
-
+func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo string, body CreateReleaseRequest) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases", owner, repo)
 
-	releaseReq := &repositoryReleaseRequest{
-		TagName:                release.TagName,
-		TargetCommitish:        release.TargetCommitish,
-		Name:                   release.Name,
-		Body:                   release.Body,
-		Draft:                  release.Draft,
-		Prerelease:             release.Prerelease,
-		MakeLatest:             release.MakeLatest,
-		DiscussionCategoryName: release.DiscussionCategoryName,
-		GenerateReleaseNotes:   release.GenerateReleaseNotes,
-	}
-
-	req, err := s.client.NewRequest(ctx, "POST", u, releaseReq)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -238,33 +226,15 @@ func (s *RepositoriesService) CreateRelease(ctx context.Context, owner, repo str
 	return r, resp, nil
 }
 
-// EditRelease edits a repository release.
-//
-// Note that only a subset of the release fields are used.
-// See RepositoryRelease for more information.
+// UpdateRelease updates a repository release.
 //
 // GitHub API docs: https://docs.github.com/rest/releases/releases?apiVersion=2022-11-28#update-a-release
 //
 //meta:operation PATCH /repos/{owner}/{repo}/releases/{release_id}
-func (s *RepositoriesService) EditRelease(ctx context.Context, owner, repo string, id int64, release *RepositoryRelease) (*RepositoryRelease, *Response, error) {
-	if release == nil {
-		return nil, nil, errors.New("release must be provided")
-	}
-
+func (s *RepositoriesService) UpdateRelease(ctx context.Context, owner, repo string, id int64, body UpdateReleaseRequest) (*RepositoryRelease, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/%v", owner, repo, id)
 
-	releaseReq := &repositoryReleaseRequest{
-		TagName:                release.TagName,
-		TargetCommitish:        release.TargetCommitish,
-		Name:                   release.Name,
-		Body:                   release.Body,
-		Draft:                  release.Draft,
-		Prerelease:             release.Prerelease,
-		MakeLatest:             release.MakeLatest,
-		DiscussionCategoryName: release.DiscussionCategoryName,
-	}
-
-	req, err := s.client.NewRequest(ctx, "PATCH", u, releaseReq)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

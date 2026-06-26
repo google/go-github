@@ -11294,6 +11294,78 @@ func (c *CreateRef) GetSHA() string {
 	return c.SHA
 }
 
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (c *CreateReleaseRequest) GetBody() string {
+	if c == nil || c.Body == nil {
+		return ""
+	}
+	return *c.Body
+}
+
+// GetDiscussionCategoryName returns the DiscussionCategoryName field if it's non-nil, zero value otherwise.
+func (c *CreateReleaseRequest) GetDiscussionCategoryName() string {
+	if c == nil || c.DiscussionCategoryName == nil {
+		return ""
+	}
+	return *c.DiscussionCategoryName
+}
+
+// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+func (c *CreateReleaseRequest) GetDraft() bool {
+	if c == nil || c.Draft == nil {
+		return false
+	}
+	return *c.Draft
+}
+
+// GetGenerateReleaseNotes returns the GenerateReleaseNotes field if it's non-nil, zero value otherwise.
+func (c *CreateReleaseRequest) GetGenerateReleaseNotes() bool {
+	if c == nil || c.GenerateReleaseNotes == nil {
+		return false
+	}
+	return *c.GenerateReleaseNotes
+}
+
+// GetMakeLatest returns the MakeLatest field if it's non-nil, zero value otherwise.
+func (c *CreateReleaseRequest) GetMakeLatest() string {
+	if c == nil || c.MakeLatest == nil {
+		return ""
+	}
+	return *c.MakeLatest
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CreateReleaseRequest) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetPrerelease returns the Prerelease field if it's non-nil, zero value otherwise.
+func (c *CreateReleaseRequest) GetPrerelease() bool {
+	if c == nil || c.Prerelease == nil {
+		return false
+	}
+	return *c.Prerelease
+}
+
+// GetTagName returns the TagName field.
+func (c *CreateReleaseRequest) GetTagName() string {
+	if c == nil {
+		return ""
+	}
+	return c.TagName
+}
+
+// GetTargetCommitish returns the TargetCommitish field if it's non-nil, zero value otherwise.
+func (c *CreateReleaseRequest) GetTargetCommitish() string {
+	if c == nil || c.TargetCommitish == nil {
+		return ""
+	}
+	return *c.TargetCommitish
+}
+
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
 func (c *CreateRunnerGroupRequest) GetAllowsPublicRepositories() bool {
 	if c == nil || c.AllowsPublicRepositories == nil {
@@ -42428,6 +42500,70 @@ func (u *UpdateRef) GetSHA() string {
 		return ""
 	}
 	return u.SHA
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseRequest) GetBody() string {
+	if u == nil || u.Body == nil {
+		return ""
+	}
+	return *u.Body
+}
+
+// GetDiscussionCategoryName returns the DiscussionCategoryName field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseRequest) GetDiscussionCategoryName() string {
+	if u == nil || u.DiscussionCategoryName == nil {
+		return ""
+	}
+	return *u.DiscussionCategoryName
+}
+
+// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseRequest) GetDraft() bool {
+	if u == nil || u.Draft == nil {
+		return false
+	}
+	return *u.Draft
+}
+
+// GetMakeLatest returns the MakeLatest field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseRequest) GetMakeLatest() string {
+	if u == nil || u.MakeLatest == nil {
+		return ""
+	}
+	return *u.MakeLatest
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetPrerelease returns the Prerelease field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseRequest) GetPrerelease() bool {
+	if u == nil || u.Prerelease == nil {
+		return false
+	}
+	return *u.Prerelease
+}
+
+// GetTagName returns the TagName field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseRequest) GetTagName() string {
+	if u == nil || u.TagName == nil {
+		return ""
+	}
+	return *u.TagName
+}
+
+// GetTargetCommitish returns the TargetCommitish field if it's non-nil, zero value otherwise.
+func (u *UpdateReleaseRequest) GetTargetCommitish() string {
+	if u == nil || u.TargetCommitish == nil {
+		return ""
+	}
+	return *u.TargetCommitish
 }
 
 // GetUpdateAllowsFetchAndMerge returns the UpdateAllowsFetchAndMerge field.

@@ -14334,6 +14334,102 @@ func TestCreateRef_GetSHA(tt *testing.T) {
 	c.GetSHA()
 }
 
+func TestCreateReleaseRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateReleaseRequest{Body: &zeroValue}
+	c.GetBody()
+	c = &CreateReleaseRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreateReleaseRequest_GetDiscussionCategoryName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateReleaseRequest{DiscussionCategoryName: &zeroValue}
+	c.GetDiscussionCategoryName()
+	c = &CreateReleaseRequest{}
+	c.GetDiscussionCategoryName()
+	c = nil
+	c.GetDiscussionCategoryName()
+}
+
+func TestCreateReleaseRequest_GetDraft(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateReleaseRequest{Draft: &zeroValue}
+	c.GetDraft()
+	c = &CreateReleaseRequest{}
+	c.GetDraft()
+	c = nil
+	c.GetDraft()
+}
+
+func TestCreateReleaseRequest_GetGenerateReleaseNotes(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateReleaseRequest{GenerateReleaseNotes: &zeroValue}
+	c.GetGenerateReleaseNotes()
+	c = &CreateReleaseRequest{}
+	c.GetGenerateReleaseNotes()
+	c = nil
+	c.GetGenerateReleaseNotes()
+}
+
+func TestCreateReleaseRequest_GetMakeLatest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateReleaseRequest{MakeLatest: &zeroValue}
+	c.GetMakeLatest()
+	c = &CreateReleaseRequest{}
+	c.GetMakeLatest()
+	c = nil
+	c.GetMakeLatest()
+}
+
+func TestCreateReleaseRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateReleaseRequest{Name: &zeroValue}
+	c.GetName()
+	c = &CreateReleaseRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateReleaseRequest_GetPrerelease(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateReleaseRequest{Prerelease: &zeroValue}
+	c.GetPrerelease()
+	c = &CreateReleaseRequest{}
+	c.GetPrerelease()
+	c = nil
+	c.GetPrerelease()
+}
+
+func TestCreateReleaseRequest_GetTagName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateReleaseRequest{}
+	c.GetTagName()
+	c = nil
+	c.GetTagName()
+}
+
+func TestCreateReleaseRequest_GetTargetCommitish(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateReleaseRequest{TargetCommitish: &zeroValue}
+	c.GetTargetCommitish()
+	c = &CreateReleaseRequest{}
+	c.GetTargetCommitish()
+	c = nil
+	c.GetTargetCommitish()
+}
+
 func TestCreateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -53253,6 +53349,94 @@ func TestUpdateRef_GetSHA(tt *testing.T) {
 	u.GetSHA()
 	u = nil
 	u.GetSHA()
+}
+
+func TestUpdateReleaseRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{Body: &zeroValue}
+	u.GetBody()
+	u = &UpdateReleaseRequest{}
+	u.GetBody()
+	u = nil
+	u.GetBody()
+}
+
+func TestUpdateReleaseRequest_GetDiscussionCategoryName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{DiscussionCategoryName: &zeroValue}
+	u.GetDiscussionCategoryName()
+	u = &UpdateReleaseRequest{}
+	u.GetDiscussionCategoryName()
+	u = nil
+	u.GetDiscussionCategoryName()
+}
+
+func TestUpdateReleaseRequest_GetDraft(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateReleaseRequest{Draft: &zeroValue}
+	u.GetDraft()
+	u = &UpdateReleaseRequest{}
+	u.GetDraft()
+	u = nil
+	u.GetDraft()
+}
+
+func TestUpdateReleaseRequest_GetMakeLatest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{MakeLatest: &zeroValue}
+	u.GetMakeLatest()
+	u = &UpdateReleaseRequest{}
+	u.GetMakeLatest()
+	u = nil
+	u.GetMakeLatest()
+}
+
+func TestUpdateReleaseRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateReleaseRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateReleaseRequest_GetPrerelease(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateReleaseRequest{Prerelease: &zeroValue}
+	u.GetPrerelease()
+	u = &UpdateReleaseRequest{}
+	u.GetPrerelease()
+	u = nil
+	u.GetPrerelease()
+}
+
+func TestUpdateReleaseRequest_GetTagName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{TagName: &zeroValue}
+	u.GetTagName()
+	u = &UpdateReleaseRequest{}
+	u.GetTagName()
+	u = nil
+	u.GetTagName()
+}
+
+func TestUpdateReleaseRequest_GetTargetCommitish(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{TargetCommitish: &zeroValue}
+	u.GetTargetCommitish()
+	u = &UpdateReleaseRequest{}
+	u.GetTargetCommitish()
+	u = nil
+	u.GetTargetCommitish()
 }
 
 func TestUpdateRuleParameters_GetUpdateAllowsFetchAndMerge(tt *testing.T) {
