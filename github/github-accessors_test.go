@@ -14334,6 +14334,102 @@ func TestCreateRef_GetSHA(tt *testing.T) {
 	c.GetSHA()
 }
 
+func TestCreateReleaseRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateReleaseRequest{Body: &zeroValue}
+	c.GetBody()
+	c = &CreateReleaseRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreateReleaseRequest_GetDiscussionCategoryName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateReleaseRequest{DiscussionCategoryName: &zeroValue}
+	c.GetDiscussionCategoryName()
+	c = &CreateReleaseRequest{}
+	c.GetDiscussionCategoryName()
+	c = nil
+	c.GetDiscussionCategoryName()
+}
+
+func TestCreateReleaseRequest_GetDraft(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateReleaseRequest{Draft: &zeroValue}
+	c.GetDraft()
+	c = &CreateReleaseRequest{}
+	c.GetDraft()
+	c = nil
+	c.GetDraft()
+}
+
+func TestCreateReleaseRequest_GetGenerateReleaseNotes(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateReleaseRequest{GenerateReleaseNotes: &zeroValue}
+	c.GetGenerateReleaseNotes()
+	c = &CreateReleaseRequest{}
+	c.GetGenerateReleaseNotes()
+	c = nil
+	c.GetGenerateReleaseNotes()
+}
+
+func TestCreateReleaseRequest_GetMakeLatest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateReleaseRequest{MakeLatest: &zeroValue}
+	c.GetMakeLatest()
+	c = &CreateReleaseRequest{}
+	c.GetMakeLatest()
+	c = nil
+	c.GetMakeLatest()
+}
+
+func TestCreateReleaseRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateReleaseRequest{Name: &zeroValue}
+	c.GetName()
+	c = &CreateReleaseRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateReleaseRequest_GetPrerelease(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateReleaseRequest{Prerelease: &zeroValue}
+	c.GetPrerelease()
+	c = &CreateReleaseRequest{}
+	c.GetPrerelease()
+	c = nil
+	c.GetPrerelease()
+}
+
+func TestCreateReleaseRequest_GetTagName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateReleaseRequest{}
+	c.GetTagName()
+	c = nil
+	c.GetTagName()
+}
+
+func TestCreateReleaseRequest_GetTargetCommitish(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateReleaseRequest{TargetCommitish: &zeroValue}
+	c.GetTargetCommitish()
+	c = &CreateReleaseRequest{}
+	c.GetTargetCommitish()
+	c = nil
+	c.GetTargetCommitish()
+}
+
 func TestCreateRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -44126,10 +44222,7 @@ func TestRepositoryRelease_GetAssets(tt *testing.T) {
 
 func TestRepositoryRelease_GetAssetsURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryRelease{AssetsURL: &zeroValue}
-	r.GetAssetsURL()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetAssetsURL()
 	r = nil
 	r.GetAssetsURL()
@@ -44154,56 +44247,58 @@ func TestRepositoryRelease_GetBody(tt *testing.T) {
 	r.GetBody()
 }
 
+func TestRepositoryRelease_GetBodyHTML(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryRelease{BodyHTML: &zeroValue}
+	r.GetBodyHTML()
+	r = &RepositoryRelease{}
+	r.GetBodyHTML()
+	r = nil
+	r.GetBodyHTML()
+}
+
+func TestRepositoryRelease_GetBodyText(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryRelease{BodyText: &zeroValue}
+	r.GetBodyText()
+	r = &RepositoryRelease{}
+	r.GetBodyText()
+	r = nil
+	r.GetBodyText()
+}
+
 func TestRepositoryRelease_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue Timestamp
-	r := &RepositoryRelease{CreatedAt: &zeroValue}
-	r.GetCreatedAt()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetCreatedAt()
 	r = nil
 	r.GetCreatedAt()
 }
 
-func TestRepositoryRelease_GetDiscussionCategoryName(tt *testing.T) {
+func TestRepositoryRelease_GetDiscussionURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	r := &RepositoryRelease{DiscussionCategoryName: &zeroValue}
-	r.GetDiscussionCategoryName()
+	r := &RepositoryRelease{DiscussionURL: &zeroValue}
+	r.GetDiscussionURL()
 	r = &RepositoryRelease{}
-	r.GetDiscussionCategoryName()
+	r.GetDiscussionURL()
 	r = nil
-	r.GetDiscussionCategoryName()
+	r.GetDiscussionURL()
 }
 
 func TestRepositoryRelease_GetDraft(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	r := &RepositoryRelease{Draft: &zeroValue}
-	r.GetDraft()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetDraft()
 	r = nil
 	r.GetDraft()
-}
-
-func TestRepositoryRelease_GetGenerateReleaseNotes(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	r := &RepositoryRelease{GenerateReleaseNotes: &zeroValue}
-	r.GetGenerateReleaseNotes()
-	r = &RepositoryRelease{}
-	r.GetGenerateReleaseNotes()
-	r = nil
-	r.GetGenerateReleaseNotes()
 }
 
 func TestRepositoryRelease_GetHTMLURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryRelease{HTMLURL: &zeroValue}
-	r.GetHTMLURL()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetHTMLURL()
 	r = nil
 	r.GetHTMLURL()
@@ -44211,10 +44306,7 @@ func TestRepositoryRelease_GetHTMLURL(tt *testing.T) {
 
 func TestRepositoryRelease_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	r := &RepositoryRelease{ID: &zeroValue}
-	r.GetID()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetID()
 	r = nil
 	r.GetID()
@@ -44231,15 +44323,15 @@ func TestRepositoryRelease_GetImmutable(tt *testing.T) {
 	r.GetImmutable()
 }
 
-func TestRepositoryRelease_GetMakeLatest(tt *testing.T) {
+func TestRepositoryRelease_GetMentionsCount(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryRelease{MakeLatest: &zeroValue}
-	r.GetMakeLatest()
+	var zeroValue int
+	r := &RepositoryRelease{MentionsCount: &zeroValue}
+	r.GetMentionsCount()
 	r = &RepositoryRelease{}
-	r.GetMakeLatest()
+	r.GetMentionsCount()
 	r = nil
-	r.GetMakeLatest()
+	r.GetMentionsCount()
 }
 
 func TestRepositoryRelease_GetName(tt *testing.T) {
@@ -44255,10 +44347,7 @@ func TestRepositoryRelease_GetName(tt *testing.T) {
 
 func TestRepositoryRelease_GetNodeID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryRelease{NodeID: &zeroValue}
-	r.GetNodeID()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetNodeID()
 	r = nil
 	r.GetNodeID()
@@ -44266,10 +44355,7 @@ func TestRepositoryRelease_GetNodeID(tt *testing.T) {
 
 func TestRepositoryRelease_GetPrerelease(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	r := &RepositoryRelease{Prerelease: &zeroValue}
-	r.GetPrerelease()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetPrerelease()
 	r = nil
 	r.GetPrerelease()
@@ -44286,12 +44372,17 @@ func TestRepositoryRelease_GetPublishedAt(tt *testing.T) {
 	r.GetPublishedAt()
 }
 
+func TestRepositoryRelease_GetReactions(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRelease{}
+	r.GetReactions()
+	r = nil
+	r.GetReactions()
+}
+
 func TestRepositoryRelease_GetTagName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryRelease{TagName: &zeroValue}
-	r.GetTagName()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetTagName()
 	r = nil
 	r.GetTagName()
@@ -44310,21 +44401,26 @@ func TestRepositoryRelease_GetTarballURL(tt *testing.T) {
 
 func TestRepositoryRelease_GetTargetCommitish(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryRelease{TargetCommitish: &zeroValue}
-	r.GetTargetCommitish()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetTargetCommitish()
 	r = nil
 	r.GetTargetCommitish()
 }
 
+func TestRepositoryRelease_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	r := &RepositoryRelease{UpdatedAt: &zeroValue}
+	r.GetUpdatedAt()
+	r = &RepositoryRelease{}
+	r.GetUpdatedAt()
+	r = nil
+	r.GetUpdatedAt()
+}
+
 func TestRepositoryRelease_GetUploadURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryRelease{UploadURL: &zeroValue}
-	r.GetUploadURL()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetUploadURL()
 	r = nil
 	r.GetUploadURL()
@@ -44332,10 +44428,7 @@ func TestRepositoryRelease_GetUploadURL(tt *testing.T) {
 
 func TestRepositoryRelease_GetURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryRelease{URL: &zeroValue}
-	r.GetURL()
-	r = &RepositoryRelease{}
+	r := &RepositoryRelease{}
 	r.GetURL()
 	r = nil
 	r.GetURL()
@@ -53253,6 +53346,94 @@ func TestUpdateRef_GetSHA(tt *testing.T) {
 	u.GetSHA()
 	u = nil
 	u.GetSHA()
+}
+
+func TestUpdateReleaseRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{Body: &zeroValue}
+	u.GetBody()
+	u = &UpdateReleaseRequest{}
+	u.GetBody()
+	u = nil
+	u.GetBody()
+}
+
+func TestUpdateReleaseRequest_GetDiscussionCategoryName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{DiscussionCategoryName: &zeroValue}
+	u.GetDiscussionCategoryName()
+	u = &UpdateReleaseRequest{}
+	u.GetDiscussionCategoryName()
+	u = nil
+	u.GetDiscussionCategoryName()
+}
+
+func TestUpdateReleaseRequest_GetDraft(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateReleaseRequest{Draft: &zeroValue}
+	u.GetDraft()
+	u = &UpdateReleaseRequest{}
+	u.GetDraft()
+	u = nil
+	u.GetDraft()
+}
+
+func TestUpdateReleaseRequest_GetMakeLatest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{MakeLatest: &zeroValue}
+	u.GetMakeLatest()
+	u = &UpdateReleaseRequest{}
+	u.GetMakeLatest()
+	u = nil
+	u.GetMakeLatest()
+}
+
+func TestUpdateReleaseRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateReleaseRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateReleaseRequest_GetPrerelease(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateReleaseRequest{Prerelease: &zeroValue}
+	u.GetPrerelease()
+	u = &UpdateReleaseRequest{}
+	u.GetPrerelease()
+	u = nil
+	u.GetPrerelease()
+}
+
+func TestUpdateReleaseRequest_GetTagName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{TagName: &zeroValue}
+	u.GetTagName()
+	u = &UpdateReleaseRequest{}
+	u.GetTagName()
+	u = nil
+	u.GetTagName()
+}
+
+func TestUpdateReleaseRequest_GetTargetCommitish(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseRequest{TargetCommitish: &zeroValue}
+	u.GetTargetCommitish()
+	u = &UpdateReleaseRequest{}
+	u.GetTargetCommitish()
+	u = nil
+	u.GetTargetCommitish()
 }
 
 func TestUpdateRuleParameters_GetUpdateAllowsFetchAndMerge(tt *testing.T) {
