@@ -290,7 +290,7 @@ func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &EncryptedSecret{
+	input := EncryptedSecret{
 		Name:           "NAME",
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
@@ -315,7 +315,7 @@ func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
 
 	const methodName = "CreateOrUpdateRepoSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", nil)
+		_, err = client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", EncryptedSecret{})
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
@@ -477,7 +477,7 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &EncryptedSecret{
+	input := EncryptedSecret{
 		Name:                  "NAME",
 		EncryptedValue:        "QIv=",
 		KeyID:                 "1234",
@@ -506,7 +506,7 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 
 	const methodName = "CreateOrUpdateOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateOrgSecret(ctx, "o", nil)
+		_, err = client.Actions.CreateOrUpdateOrgSecret(ctx, "o", EncryptedSecret{})
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
@@ -682,13 +682,13 @@ func TestActionsService_GetEnvPublicKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
 	ctx := t.Context()
-	key, _, err := client.Actions.GetEnvPublicKey(ctx, 1, "e")
+	key, _, err := client.Actions.GetEnvPublicKey(ctx, "o", "r", "e")
 	if err != nil {
 		t.Errorf("Actions.GetEnvPublicKey returned error: %v", err)
 	}
@@ -700,12 +700,12 @@ func TestActionsService_GetEnvPublicKey(t *testing.T) {
 
 	const methodName = "GetEnvPublicKey"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetEnvPublicKey(ctx, 0.0, "\n")
+		_, _, err = client.Actions.GetEnvPublicKey(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetEnvPublicKey(ctx, 1, "e")
+		got, resp, err := client.Actions.GetEnvPublicKey(ctx, "o", "r", "e")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -723,7 +723,7 @@ func TestActionsService_GetEnvPublicKeyNumeric(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	key, _, err := client.Actions.GetEnvPublicKey(ctx, 1, "e")
+	key, _, err := client.Actions.GetEnvPublicKey(ctx, "o", "r", "e")
 	if err != nil {
 		t.Errorf("Actions.GetEnvPublicKey returned error: %v", err)
 	}
@@ -735,12 +735,12 @@ func TestActionsService_GetEnvPublicKeyNumeric(t *testing.T) {
 
 	const methodName = "GetEnvPublicKey"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetEnvPublicKey(ctx, 0.0, "\n")
+		_, _, err = client.Actions.GetEnvPublicKey(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetEnvPublicKey(ctx, 1, "e")
+		got, resp, err := client.Actions.GetEnvPublicKey(ctx, "o", "r", "e")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -752,7 +752,7 @@ func TestActionsService_ListEnvSecrets(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"name":"B","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
@@ -760,7 +760,7 @@ func TestActionsService_ListEnvSecrets(t *testing.T) {
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := t.Context()
-	secrets, _, err := client.Actions.ListEnvSecrets(ctx, 1, "e", opts)
+	secrets, _, err := client.Actions.ListEnvSecrets(ctx, "o", "r", "e", opts)
 	if err != nil {
 		t.Errorf("Actions.ListEnvSecrets returned error: %v", err)
 	}
@@ -778,12 +778,12 @@ func TestActionsService_ListEnvSecrets(t *testing.T) {
 
 	const methodName = "ListEnvSecrets"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListEnvSecrets(ctx, 0.0, "\n", opts)
+		_, _, err = client.Actions.ListEnvSecrets(ctx, "\n", "\n", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListEnvSecrets(ctx, 1, "e", opts)
+		got, resp, err := client.Actions.ListEnvSecrets(ctx, "o", "r", "e", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -795,13 +795,13 @@ func TestActionsService_GetEnvSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"name":"secret","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 	})
 
 	ctx := t.Context()
-	secret, _, err := client.Actions.GetEnvSecret(ctx, 1, "e", "secret")
+	secret, _, err := client.Actions.GetEnvSecret(ctx, "o", "r", "e", "secret")
 	if err != nil {
 		t.Errorf("Actions.GetEnvSecret returned error: %v", err)
 	}
@@ -817,12 +817,12 @@ func TestActionsService_GetEnvSecret(t *testing.T) {
 
 	const methodName = "GetEnvSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetEnvSecret(ctx, 0.0, "\n", "\n")
+		_, _, err = client.Actions.GetEnvSecret(ctx, "\n", "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetEnvSecret(ctx, 1, "e", "secret")
+		got, resp, err := client.Actions.GetEnvSecret(ctx, "o", "r", "e", "secret")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -834,7 +834,7 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &EncryptedSecret{
+	input := EncryptedSecret{
 		Name:           "secret",
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
@@ -852,23 +852,23 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.CreateOrUpdateEnvSecret(ctx, 1, "e", input)
+	_, err := client.Actions.CreateOrUpdateEnvSecret(ctx, "o", "r", "e", input)
 	if err != nil {
 		t.Errorf("Actions.CreateOrUpdateEnvSecret returned error: %v", err)
 	}
 
 	const methodName = "CreateOrUpdateEnvSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, 1, "e", nil)
+		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, "\n", "\n", "\n", EncryptedSecret{})
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, 0.0, "\n", input)
+		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, "\n", "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateOrUpdateEnvSecret(ctx, 1, "e", input)
+		return client.Actions.CreateOrUpdateEnvSecret(ctx, "\n", "\n", "\n", input)
 	})
 }
 
@@ -881,18 +881,18 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.DeleteEnvSecret(ctx, 1, "e", "secret")
+	_, err := client.Actions.DeleteEnvSecret(ctx, "o", "r", "e", "secret")
 	if err != nil {
 		t.Errorf("Actions.DeleteEnvSecret returned error: %v", err)
 	}
 
 	const methodName = "DeleteEnvSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.DeleteEnvSecret(ctx, 0.0, "\n", "\n")
+		_, err = client.Actions.DeleteEnvSecret(ctx, "\n", "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.DeleteEnvSecret(ctx, 1, "r", "secret")
+		return client.Actions.DeleteEnvSecret(ctx, "\n", "\n", "\n", "\n")
 	})
 }
