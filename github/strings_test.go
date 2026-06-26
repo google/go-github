@@ -211,7 +211,7 @@ func TestString(t *testing.T) {
 		{RepositoryComment{ID: Ptr(int64(1))}, `github.RepositoryComment{ID:1}`},
 		{RepositoryCommit{SHA: Ptr("s")}, `github.RepositoryCommit{SHA:"s"}`},
 		{RepositoryContent{Name: Ptr("n")}, `github.RepositoryContent{Name:"n"}`},
-		{RepositoryRelease{ID: Ptr(int64(1))}, `github.RepositoryRelease{ID:1}`},
+		{RepositoryRelease{ID: 1}, `github.RepositoryRelease{TagName:"", TargetCommitish:"", Draft:false, Prerelease:false, ID:1, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", NodeID:""}`},
 		{Repository{ID: Ptr(int64(1))}, `github.Repository{ID:1}`},
 		{Team{ID: Ptr(int64(1))}, `github.Team{ID:1}`},
 		{TreeEntry{SHA: Ptr("s")}, `github.TreeEntry{SHA:"s"}`},

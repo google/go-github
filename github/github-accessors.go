@@ -35174,12 +35174,12 @@ func (r *RepositoryRelease) GetAssets() []*ReleaseAsset {
 	return r.Assets
 }
 
-// GetAssetsURL returns the AssetsURL field if it's non-nil, zero value otherwise.
+// GetAssetsURL returns the AssetsURL field.
 func (r *RepositoryRelease) GetAssetsURL() string {
-	if r == nil || r.AssetsURL == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.AssetsURL
+	return r.AssetsURL
 }
 
 // GetAuthor returns the Author field.
@@ -35214,12 +35214,12 @@ func (r *RepositoryRelease) GetBodyText() string {
 	return *r.BodyText
 }
 
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+// GetCreatedAt returns the CreatedAt field.
 func (r *RepositoryRelease) GetCreatedAt() Timestamp {
-	if r == nil || r.CreatedAt == nil {
+	if r == nil {
 		return Timestamp{}
 	}
-	return *r.CreatedAt
+	return r.CreatedAt
 }
 
 // GetDiscussionURL returns the DiscussionURL field if it's non-nil, zero value otherwise.
@@ -35230,28 +35230,28 @@ func (r *RepositoryRelease) GetDiscussionURL() string {
 	return *r.DiscussionURL
 }
 
-// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+// GetDraft returns the Draft field.
 func (r *RepositoryRelease) GetDraft() bool {
-	if r == nil || r.Draft == nil {
+	if r == nil {
 		return false
 	}
-	return *r.Draft
+	return r.Draft
 }
 
-// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+// GetHTMLURL returns the HTMLURL field.
 func (r *RepositoryRelease) GetHTMLURL() string {
-	if r == nil || r.HTMLURL == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.HTMLURL
+	return r.HTMLURL
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (r *RepositoryRelease) GetID() int64 {
-	if r == nil || r.ID == nil {
+	if r == nil {
 		return 0
 	}
-	return *r.ID
+	return r.ID
 }
 
 // GetImmutable returns the Immutable field if it's non-nil, zero value otherwise.
@@ -35278,20 +35278,20 @@ func (r *RepositoryRelease) GetName() string {
 	return *r.Name
 }
 
-// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+// GetNodeID returns the NodeID field.
 func (r *RepositoryRelease) GetNodeID() string {
-	if r == nil || r.NodeID == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.NodeID
+	return r.NodeID
 }
 
-// GetPrerelease returns the Prerelease field if it's non-nil, zero value otherwise.
+// GetPrerelease returns the Prerelease field.
 func (r *RepositoryRelease) GetPrerelease() bool {
-	if r == nil || r.Prerelease == nil {
+	if r == nil {
 		return false
 	}
-	return *r.Prerelease
+	return r.Prerelease
 }
 
 // GetPublishedAt returns the PublishedAt field if it's non-nil, zero value otherwise.
@@ -35310,12 +35310,12 @@ func (r *RepositoryRelease) GetReactions() *Reactions {
 	return r.Reactions
 }
 
-// GetTagName returns the TagName field if it's non-nil, zero value otherwise.
+// GetTagName returns the TagName field.
 func (r *RepositoryRelease) GetTagName() string {
-	if r == nil || r.TagName == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.TagName
+	return r.TagName
 }
 
 // GetTarballURL returns the TarballURL field if it's non-nil, zero value otherwise.
@@ -35326,12 +35326,12 @@ func (r *RepositoryRelease) GetTarballURL() string {
 	return *r.TarballURL
 }
 
-// GetTargetCommitish returns the TargetCommitish field if it's non-nil, zero value otherwise.
+// GetTargetCommitish returns the TargetCommitish field.
 func (r *RepositoryRelease) GetTargetCommitish() string {
-	if r == nil || r.TargetCommitish == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.TargetCommitish
+	return r.TargetCommitish
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
@@ -35342,20 +35342,20 @@ func (r *RepositoryRelease) GetUpdatedAt() Timestamp {
 	return *r.UpdatedAt
 }
 
-// GetUploadURL returns the UploadURL field if it's non-nil, zero value otherwise.
+// GetUploadURL returns the UploadURL field.
 func (r *RepositoryRelease) GetUploadURL() string {
-	if r == nil || r.UploadURL == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.UploadURL
+	return r.UploadURL
 }
 
-// GetURL returns the URL field if it's non-nil, zero value otherwise.
+// GetURL returns the URL field.
 func (r *RepositoryRelease) GetURL() string {
-	if r == nil || r.URL == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.URL
+	return r.URL
 }
 
 // GetZipballURL returns the ZipballURL field if it's non-nil, zero value otherwise.

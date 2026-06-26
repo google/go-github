@@ -32,7 +32,7 @@ func TestRepositoriesService_ListReleases(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListReleases returned error: %v", err)
 	}
-	want := []*RepositoryRelease{{ID: Ptr(int64(1))}}
+	want := []*RepositoryRelease{{ID: 1}}
 	if !cmp.Equal(releases, want) {
 		t.Errorf("Repositories.ListReleases returned %+v, want %+v", releases, want)
 	}
@@ -109,7 +109,7 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 		t.Errorf("Repositories.GetRelease returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: Ptr(int64(1)), Author: &User{Login: Ptr("l")}}
+	want := &RepositoryRelease{ID: 1, Author: &User{Login: Ptr("l")}}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetRelease returned %+v, want %+v", release, want)
 	}
@@ -144,7 +144,7 @@ func TestRepositoriesService_GetLatestRelease(t *testing.T) {
 		t.Errorf("Repositories.GetLatestRelease returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: Ptr(int64(3))}
+	want := &RepositoryRelease{ID: 3}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetLatestRelease returned %+v, want %+v", release, want)
 	}
@@ -179,7 +179,7 @@ func TestRepositoriesService_GetReleaseByTag(t *testing.T) {
 		t.Errorf("Repositories.GetReleaseByTag returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: Ptr(int64(13))}
+	want := &RepositoryRelease{ID: 13}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetReleaseByTag returned %+v, want %+v", release, want)
 	}
@@ -222,7 +222,7 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 		t.Errorf("Repositories.CreateRelease returned error: %v", err)
 	}
 
-	want := &RepositoryRelease{ID: Ptr(int64(1))}
+	want := &RepositoryRelease{ID: 1}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.CreateRelease returned %+v, want %+v", release, want)
 	}
@@ -262,7 +262,7 @@ func TestRepositoriesService_UpdateRelease(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.UpdateRelease returned error: %v", err)
 	}
-	want := &RepositoryRelease{ID: Ptr(int64(1))}
+	want := &RepositoryRelease{ID: 1}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.UpdateRelease returned = %+v, want %+v", release, want)
 	}
@@ -756,7 +756,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
 
 	// Provide a templated upload URL like GitHub returns.
 	release := &RepositoryRelease{
-		UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}"),
+		UploadURL: "/repos/o/r/releases/1/assets{?name,label}",
 	}
 
 	ctx := t.Context()
@@ -786,7 +786,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_AbsoluteTemplate(t *t
 
 	// Build an absolute URL using the test client's BaseURL.
 	absoluteUploadURL := client.baseURL.String() + "repos/o/r/releases/1/assets{?name,label}"
-	release := &RepositoryRelease{UploadURL: &absoluteUploadURL}
+	release := &RepositoryRelease{UploadURL: absoluteUploadURL}
 
 	opts := &UploadOptions{Name: "abs.txt"}
 	ctx := t.Context()
@@ -825,7 +825,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NilReader(t *testing.
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
+	release := &RepositoryRelease{UploadURL: "/repos/o/r/releases/1/assets{?name,label}"}
 
 	ctx := t.Context()
 	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, &UploadOptions{Name: "n.txt"}, nil, 12)
@@ -844,7 +844,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NegativeSize(t *testi
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
+	release := &RepositoryRelease{UploadURL: "/repos/o/r/releases/1/assets{?name,label}"}
 
 	body := []byte("Upload me !\n")
 	reader := bytes.NewReader(body)
@@ -871,7 +871,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NoOpts(t *testing.T) 
 	reader := bytes.NewReader(body)
 	size := int64(len(body))
 
-	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
+	release := &RepositoryRelease{UploadURL: "/repos/o/r/releases/1/assets{?name,label}"}
 
 	ctx := t.Context()
 	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(ctx, release, nil, reader, size)
@@ -908,7 +908,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_WithMediaType(t *test
 	reader := bytes.NewReader(body)
 	size := int64(len(body))
 
-	release := &RepositoryRelease{UploadURL: Ptr("/repos/o/r/releases/1/assets{?name,label}")}
+	release := &RepositoryRelease{UploadURL: "/repos/o/r/releases/1/assets{?name,label}"}
 
 	opts := &UploadOptions{Name: "n.txt", MediaType: "image/png"}
 

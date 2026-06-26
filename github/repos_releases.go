@@ -19,26 +19,26 @@ import (
 
 // RepositoryRelease represents a GitHub release in a repository.
 type RepositoryRelease struct {
-	TagName         *string         `json:"tag_name"`
-	TargetCommitish *string         `json:"target_commitish"`
+	TagName         string          `json:"tag_name"`
+	TargetCommitish string          `json:"target_commitish"`
 	Name            *string         `json:"name"`
 	Body            *string         `json:"body,omitempty"`
-	Draft           *bool           `json:"draft"`
-	Prerelease      *bool           `json:"prerelease"`
+	Draft           bool            `json:"draft"`
+	Prerelease      bool            `json:"prerelease"`
 	Immutable       *bool           `json:"immutable,omitempty"`
-	ID              *int64          `json:"id"`
-	CreatedAt       *Timestamp      `json:"created_at"`
+	ID              int64           `json:"id"`
+	CreatedAt       Timestamp       `json:"created_at"`
 	PublishedAt     *Timestamp      `json:"published_at"`
 	UpdatedAt       *Timestamp      `json:"updated_at,omitempty"`
-	URL             *string         `json:"url"`
-	HTMLURL         *string         `json:"html_url"`
-	AssetsURL       *string         `json:"assets_url"`
+	URL             string          `json:"url"`
+	HTMLURL         string          `json:"html_url"`
+	AssetsURL       string          `json:"assets_url"`
 	Assets          []*ReleaseAsset `json:"assets"`
-	UploadURL       *string         `json:"upload_url"`
+	UploadURL       string          `json:"upload_url"`
 	ZipballURL      *string         `json:"zipball_url"`
 	TarballURL      *string         `json:"tarball_url"`
 	Author          *User           `json:"author"`
-	NodeID          *string         `json:"node_id"`
+	NodeID          string          `json:"node_id"`
 	BodyHTML        *string         `json:"body_html,omitempty"`
 	BodyText        *string         `json:"body_text,omitempty"`
 	MentionsCount   *int            `json:"mentions_count,omitempty"`
@@ -473,7 +473,7 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(
 	reader io.Reader,
 	size int64,
 ) (*ReleaseAsset, *Response, error) {
-	if release == nil || release.UploadURL == nil {
+	if release == nil || release.UploadURL == "" {
 		return nil, nil, errors.New("release UploadURL must be provided")
 	}
 	if reader == nil {
@@ -484,7 +484,7 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(
 	}
 
 	// Strip URI-template portion (e.g. "{?name,label}") if present.
-	uploadURL := *release.UploadURL
+	uploadURL := release.UploadURL
 	if idx := strings.Index(uploadURL, "{"); idx != -1 {
 		uploadURL = uploadURL[:idx]
 	}
