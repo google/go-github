@@ -44250,6 +44250,28 @@ func TestRepositoryRelease_GetBody(tt *testing.T) {
 	r.GetBody()
 }
 
+func TestRepositoryRelease_GetBodyHTML(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryRelease{BodyHTML: &zeroValue}
+	r.GetBodyHTML()
+	r = &RepositoryRelease{}
+	r.GetBodyHTML()
+	r = nil
+	r.GetBodyHTML()
+}
+
+func TestRepositoryRelease_GetBodyText(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryRelease{BodyText: &zeroValue}
+	r.GetBodyText()
+	r = &RepositoryRelease{}
+	r.GetBodyText()
+	r = nil
+	r.GetBodyText()
+}
+
 func TestRepositoryRelease_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -44261,15 +44283,15 @@ func TestRepositoryRelease_GetCreatedAt(tt *testing.T) {
 	r.GetCreatedAt()
 }
 
-func TestRepositoryRelease_GetDiscussionCategoryName(tt *testing.T) {
+func TestRepositoryRelease_GetDiscussionURL(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	r := &RepositoryRelease{DiscussionCategoryName: &zeroValue}
-	r.GetDiscussionCategoryName()
+	r := &RepositoryRelease{DiscussionURL: &zeroValue}
+	r.GetDiscussionURL()
 	r = &RepositoryRelease{}
-	r.GetDiscussionCategoryName()
+	r.GetDiscussionURL()
 	r = nil
-	r.GetDiscussionCategoryName()
+	r.GetDiscussionURL()
 }
 
 func TestRepositoryRelease_GetDraft(tt *testing.T) {
@@ -44281,17 +44303,6 @@ func TestRepositoryRelease_GetDraft(tt *testing.T) {
 	r.GetDraft()
 	r = nil
 	r.GetDraft()
-}
-
-func TestRepositoryRelease_GetGenerateReleaseNotes(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	r := &RepositoryRelease{GenerateReleaseNotes: &zeroValue}
-	r.GetGenerateReleaseNotes()
-	r = &RepositoryRelease{}
-	r.GetGenerateReleaseNotes()
-	r = nil
-	r.GetGenerateReleaseNotes()
 }
 
 func TestRepositoryRelease_GetHTMLURL(tt *testing.T) {
@@ -44327,15 +44338,15 @@ func TestRepositoryRelease_GetImmutable(tt *testing.T) {
 	r.GetImmutable()
 }
 
-func TestRepositoryRelease_GetMakeLatest(tt *testing.T) {
+func TestRepositoryRelease_GetMentionsCount(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryRelease{MakeLatest: &zeroValue}
-	r.GetMakeLatest()
+	var zeroValue int
+	r := &RepositoryRelease{MentionsCount: &zeroValue}
+	r.GetMentionsCount()
 	r = &RepositoryRelease{}
-	r.GetMakeLatest()
+	r.GetMentionsCount()
 	r = nil
-	r.GetMakeLatest()
+	r.GetMentionsCount()
 }
 
 func TestRepositoryRelease_GetName(tt *testing.T) {
@@ -44382,6 +44393,14 @@ func TestRepositoryRelease_GetPublishedAt(tt *testing.T) {
 	r.GetPublishedAt()
 }
 
+func TestRepositoryRelease_GetReactions(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRelease{}
+	r.GetReactions()
+	r = nil
+	r.GetReactions()
+}
+
 func TestRepositoryRelease_GetTagName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -44413,6 +44432,17 @@ func TestRepositoryRelease_GetTargetCommitish(tt *testing.T) {
 	r.GetTargetCommitish()
 	r = nil
 	r.GetTargetCommitish()
+}
+
+func TestRepositoryRelease_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	r := &RepositoryRelease{UpdatedAt: &zeroValue}
+	r.GetUpdatedAt()
+	r = &RepositoryRelease{}
+	r.GetUpdatedAt()
+	r = nil
+	r.GetUpdatedAt()
 }
 
 func TestRepositoryRelease_GetUploadURL(tt *testing.T) {

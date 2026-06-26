@@ -35198,6 +35198,22 @@ func (r *RepositoryRelease) GetBody() string {
 	return *r.Body
 }
 
+// GetBodyHTML returns the BodyHTML field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetBodyHTML() string {
+	if r == nil || r.BodyHTML == nil {
+		return ""
+	}
+	return *r.BodyHTML
+}
+
+// GetBodyText returns the BodyText field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetBodyText() string {
+	if r == nil || r.BodyText == nil {
+		return ""
+	}
+	return *r.BodyText
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (r *RepositoryRelease) GetCreatedAt() Timestamp {
 	if r == nil || r.CreatedAt == nil {
@@ -35206,12 +35222,12 @@ func (r *RepositoryRelease) GetCreatedAt() Timestamp {
 	return *r.CreatedAt
 }
 
-// GetDiscussionCategoryName returns the DiscussionCategoryName field if it's non-nil, zero value otherwise.
-func (r *RepositoryRelease) GetDiscussionCategoryName() string {
-	if r == nil || r.DiscussionCategoryName == nil {
+// GetDiscussionURL returns the DiscussionURL field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetDiscussionURL() string {
+	if r == nil || r.DiscussionURL == nil {
 		return ""
 	}
-	return *r.DiscussionCategoryName
+	return *r.DiscussionURL
 }
 
 // GetDraft returns the Draft field if it's non-nil, zero value otherwise.
@@ -35220,14 +35236,6 @@ func (r *RepositoryRelease) GetDraft() bool {
 		return false
 	}
 	return *r.Draft
-}
-
-// GetGenerateReleaseNotes returns the GenerateReleaseNotes field if it's non-nil, zero value otherwise.
-func (r *RepositoryRelease) GetGenerateReleaseNotes() bool {
-	if r == nil || r.GenerateReleaseNotes == nil {
-		return false
-	}
-	return *r.GenerateReleaseNotes
 }
 
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
@@ -35254,12 +35262,12 @@ func (r *RepositoryRelease) GetImmutable() bool {
 	return *r.Immutable
 }
 
-// GetMakeLatest returns the MakeLatest field if it's non-nil, zero value otherwise.
-func (r *RepositoryRelease) GetMakeLatest() string {
-	if r == nil || r.MakeLatest == nil {
-		return ""
+// GetMentionsCount returns the MentionsCount field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetMentionsCount() int {
+	if r == nil || r.MentionsCount == nil {
+		return 0
 	}
-	return *r.MakeLatest
+	return *r.MentionsCount
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -35294,6 +35302,14 @@ func (r *RepositoryRelease) GetPublishedAt() Timestamp {
 	return *r.PublishedAt
 }
 
+// GetReactions returns the Reactions field.
+func (r *RepositoryRelease) GetReactions() *Reactions {
+	if r == nil {
+		return nil
+	}
+	return r.Reactions
+}
+
 // GetTagName returns the TagName field if it's non-nil, zero value otherwise.
 func (r *RepositoryRelease) GetTagName() string {
 	if r == nil || r.TagName == nil {
@@ -35316,6 +35332,14 @@ func (r *RepositoryRelease) GetTargetCommitish() string {
 		return ""
 	}
 	return *r.TargetCommitish
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (r *RepositoryRelease) GetUpdatedAt() Timestamp {
+	if r == nil || r.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *r.UpdatedAt
 }
 
 // GetUploadURL returns the UploadURL field if it's non-nil, zero value otherwise.

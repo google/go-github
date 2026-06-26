@@ -19,31 +19,31 @@ import (
 
 // RepositoryRelease represents a GitHub release in a repository.
 type RepositoryRelease struct {
-	TagName         *string `json:"tag_name,omitempty"`
-	TargetCommitish *string `json:"target_commitish,omitempty"`
-	Name            *string `json:"name,omitempty"`
-	Body            *string `json:"body,omitempty"`
-	Draft           *bool   `json:"draft,omitempty"`
-	Prerelease      *bool   `json:"prerelease,omitempty"`
-	// MakeLatest can be one of: "true", "false", or "legacy".
-	MakeLatest             *string `json:"make_latest,omitempty"`
-	DiscussionCategoryName *string `json:"discussion_category_name,omitempty"`
-
-	GenerateReleaseNotes *bool `json:"generate_release_notes,omitempty"`
-
-	ID          *int64          `json:"id,omitempty"`
-	CreatedAt   *Timestamp      `json:"created_at,omitempty"`
-	PublishedAt *Timestamp      `json:"published_at,omitempty"`
-	URL         *string         `json:"url,omitempty"`
-	HTMLURL     *string         `json:"html_url,omitempty"`
-	AssetsURL   *string         `json:"assets_url,omitempty"`
-	Assets      []*ReleaseAsset `json:"assets,omitempty"`
-	UploadURL   *string         `json:"upload_url,omitempty"`
-	ZipballURL  *string         `json:"zipball_url,omitempty"`
-	TarballURL  *string         `json:"tarball_url,omitempty"`
-	Author      *User           `json:"author,omitempty"`
-	NodeID      *string         `json:"node_id,omitempty"`
-	Immutable   *bool           `json:"immutable,omitempty"`
+	TagName         *string         `json:"tag_name"`
+	TargetCommitish *string         `json:"target_commitish"`
+	Name            *string         `json:"name"`
+	Body            *string         `json:"body,omitempty"`
+	Draft           *bool           `json:"draft"`
+	Prerelease      *bool           `json:"prerelease"`
+	Immutable       *bool           `json:"immutable,omitempty"`
+	ID              *int64          `json:"id"`
+	CreatedAt       *Timestamp      `json:"created_at"`
+	PublishedAt     *Timestamp      `json:"published_at"`
+	UpdatedAt       *Timestamp      `json:"updated_at,omitempty"`
+	URL             *string         `json:"url"`
+	HTMLURL         *string         `json:"html_url"`
+	AssetsURL       *string         `json:"assets_url"`
+	Assets          []*ReleaseAsset `json:"assets"`
+	UploadURL       *string         `json:"upload_url"`
+	ZipballURL      *string         `json:"zipball_url"`
+	TarballURL      *string         `json:"tarball_url"`
+	Author          *User           `json:"author"`
+	NodeID          *string         `json:"node_id"`
+	BodyHTML        *string         `json:"body_html,omitempty"`
+	BodyText        *string         `json:"body_text,omitempty"`
+	MentionsCount   *int            `json:"mentions_count,omitempty"`
+	DiscussionURL   *string         `json:"discussion_url,omitempty"`
+	Reactions       *Reactions      `json:"reactions,omitempty"`
 }
 
 func (r RepositoryRelease) String() string {
