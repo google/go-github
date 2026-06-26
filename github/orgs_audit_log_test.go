@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -366,5 +367,90 @@ func TestAuditEntry_MarshalJSON(t *testing.T) {
 
 	testJSONMarshalOnly(t, u, want)
 	testJSONMarshalOnly(t, &u, want)
-	// can't unmarshal AdditionalFields back into map[string]any, so skip testJSONUnmarshalOnly
+}
+
+func TestAuditEntry_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
+	testJSONUnmarshalOnly(t, &AuditEntry{}, "{}")
+
+	tests := []struct {
+		name    string
+		payload string
+		want    *AuditEntry
+	}{
+		{
+			name:    "org is scalar",
+			payload: `{"action":"test","org":"myorg","org_id":42}`,
+			want:    &AuditEntry{Action: Ptr("test"), Org: Ptr("myorg"), OrgID: Ptr(int64(42))},
+		},
+		{
+			name:    "org is single element array",
+			payload: `{"action":"test","org":["myorg"],"org_id":[42]}`,
+			want:    &AuditEntry{Action: Ptr("test"), Org: Ptr("myorg"), OrgID: Ptr(int64(42))},
+		},
+		{
+			name:    "org is multi-element array",
+			payload: `{"action":"test","org":["org1","org2","org3"],"org_id":[1,2,3]}`,
+			want:    &AuditEntry{Action: Ptr("test"), Org: Ptr("org1, org2, org3"), OrgID: Ptr(int64(1))},
+		},
+		{
+			name:    "org_id is scalar",
+			payload: `{"action":"test","org_id":42}`,
+			want:    &AuditEntry{Action: Ptr("test"), OrgID: Ptr(int64(42))},
+		},
+		{
+			name:    "org_id is array",
+			payload: `{"action":"test","org_id":[42,43,44]}`,
+			want:    &AuditEntry{Action: Ptr("test"), OrgID: Ptr(int64(42))}, // first element
+		},
+		{
+			name:    "org is empty array",
+			payload: `{"action":"test","org":[]}`,
+			want:    &AuditEntry{Action: Ptr("test"), AdditionalFields: map[string]any{"org": []any{}}},
+		},
+		{
+			name:    "org_id is empty array",
+			payload: `{"action":"test","org_id":[]}`,
+			want:    &AuditEntry{Action: Ptr("test"), AdditionalFields: map[string]any{"org_id": []any{}}},
+		},
+		{
+			name:    "org and org_id are null",
+			payload: `{"action":"test","org":null,"org_id":null}`,
+			want:    &AuditEntry{Action: Ptr("test")},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			testJSONUnmarshalOnly(t, tc.want, tc.payload)
+		})
+	}
+}
+
+func TestAuditEntry_UnmarshalJSON_Errors(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name    string
+		payload string
+	}{
+		{
+			name:    "invalid org type",
+			payload: `{"action":"test","org":{"key":"value"}}`,
+		},
+		{
+			name:    "invalid org_id type",
+			payload: `{"action":"test","org_id":{"key":"value"}}`,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			var entry AuditEntry
+			if err := json.Unmarshal([]byte(tc.payload), &entry); err == nil {
+				t.Errorf("AuditEntry.UnmarshalJSON(%q) = nil, but want error", tc.payload)
+			}
+		})
+	}
 }
