@@ -56,8 +56,8 @@ type RepositoryReleaseNotes struct {
 	Body string `json:"body"`
 }
 
-// GenerateNotesOptions represents the options to generate release notes.
-type GenerateNotesOptions struct {
+// GenerateNotesRequest represents the request to generate release notes.
+type GenerateNotesRequest struct {
 	TagName               string  `json:"tag_name"`
 	PreviousTagName       *string `json:"previous_tag_name,omitempty"`
 	TargetCommitish       *string `json:"target_commitish,omitempty"`
@@ -80,6 +80,13 @@ type ReleaseAsset struct {
 	Uploader           *User      `json:"uploader,omitempty"`
 	NodeID             *string    `json:"node_id,omitempty"`
 	Digest             *string    `json:"digest,omitempty"`
+}
+
+// UpdateReleaseAssetRequest represents the request to update a release asset.
+type UpdateReleaseAssetRequest struct {
+	Name  *string `json:"name,omitempty"`
+	Label *string `json:"label,omitempty"`
+	State *string `json:"state,omitempty"`
 }
 
 func (r ReleaseAsset) String() string {
@@ -146,7 +153,7 @@ func (s *RepositoriesService) GetReleaseByTag(ctx context.Context, owner, repo, 
 // GitHub API docs: https://docs.github.com/rest/releases/releases?apiVersion=2022-11-28#generate-release-notes-content-for-a-release
 //
 //meta:operation POST /repos/{owner}/{repo}/releases/generate-notes
-func (s *RepositoriesService) GenerateReleaseNotes(ctx context.Context, owner, repo string, body *GenerateNotesOptions) (*RepositoryReleaseNotes, *Response, error) {
+func (s *RepositoriesService) GenerateReleaseNotes(ctx context.Context, owner, repo string, body GenerateNotesRequest) (*RepositoryReleaseNotes, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/generate-notes", owner, repo)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -375,12 +382,12 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, f
 	return resp.Body, nil
 }
 
-// EditReleaseAsset edits a repository release asset.
+// UpdateReleaseAsset updates a repository release asset.
 //
 // GitHub API docs: https://docs.github.com/rest/releases/assets?apiVersion=2022-11-28#update-a-release-asset
 //
 //meta:operation PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}
-func (s *RepositoriesService) EditReleaseAsset(ctx context.Context, owner, repo string, id int64, body *ReleaseAsset) (*ReleaseAsset, *Response, error) {
+func (s *RepositoriesService) UpdateReleaseAsset(ctx context.Context, owner, repo string, id int64, body UpdateReleaseAssetRequest) (*ReleaseAsset, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/releases/assets/%v", owner, repo, id)
 
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)

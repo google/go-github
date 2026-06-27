@@ -20993,42 +20993,42 @@ func TestGenerateJITConfigRequest_GetWorkFolder(tt *testing.T) {
 	g.GetWorkFolder()
 }
 
-func TestGenerateNotesOptions_GetConfigurationFilePath(tt *testing.T) {
+func TestGenerateNotesRequest_GetConfigurationFilePath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	g := &GenerateNotesOptions{ConfigurationFilePath: &zeroValue}
+	g := &GenerateNotesRequest{ConfigurationFilePath: &zeroValue}
 	g.GetConfigurationFilePath()
-	g = &GenerateNotesOptions{}
+	g = &GenerateNotesRequest{}
 	g.GetConfigurationFilePath()
 	g = nil
 	g.GetConfigurationFilePath()
 }
 
-func TestGenerateNotesOptions_GetPreviousTagName(tt *testing.T) {
+func TestGenerateNotesRequest_GetPreviousTagName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	g := &GenerateNotesOptions{PreviousTagName: &zeroValue}
+	g := &GenerateNotesRequest{PreviousTagName: &zeroValue}
 	g.GetPreviousTagName()
-	g = &GenerateNotesOptions{}
+	g = &GenerateNotesRequest{}
 	g.GetPreviousTagName()
 	g = nil
 	g.GetPreviousTagName()
 }
 
-func TestGenerateNotesOptions_GetTagName(tt *testing.T) {
+func TestGenerateNotesRequest_GetTagName(tt *testing.T) {
 	tt.Parallel()
-	g := &GenerateNotesOptions{}
+	g := &GenerateNotesRequest{}
 	g.GetTagName()
 	g = nil
 	g.GetTagName()
 }
 
-func TestGenerateNotesOptions_GetTargetCommitish(tt *testing.T) {
+func TestGenerateNotesRequest_GetTargetCommitish(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	g := &GenerateNotesOptions{TargetCommitish: &zeroValue}
+	g := &GenerateNotesRequest{TargetCommitish: &zeroValue}
 	g.GetTargetCommitish()
-	g = &GenerateNotesOptions{}
+	g = &GenerateNotesRequest{}
 	g.GetTargetCommitish()
 	g = nil
 	g.GetTargetCommitish()
@@ -53346,6 +53346,39 @@ func TestUpdateRef_GetSHA(tt *testing.T) {
 	u.GetSHA()
 	u = nil
 	u.GetSHA()
+}
+
+func TestUpdateReleaseAssetRequest_GetLabel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseAssetRequest{Label: &zeroValue}
+	u.GetLabel()
+	u = &UpdateReleaseAssetRequest{}
+	u.GetLabel()
+	u = nil
+	u.GetLabel()
+}
+
+func TestUpdateReleaseAssetRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseAssetRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateReleaseAssetRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateReleaseAssetRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateReleaseAssetRequest{State: &zeroValue}
+	u.GetState()
+	u = &UpdateReleaseAssetRequest{}
+	u.GetState()
+	u = nil
+	u.GetState()
 }
 
 func TestUpdateReleaseRequest_GetBody(tt *testing.T) {
