@@ -435,6 +435,14 @@ func TestAuditEntry_UnmarshalJSON_Errors(t *testing.T) {
 		payload string
 	}{
 		{
+			name:    "malformed json",
+			payload: `{`,
+		},
+		{
+			name:    "invalid defined field type",
+			payload: `{"actor_id":"not-an-int"}`,
+		},
+		{
 			name:    "invalid org type",
 			payload: `{"action":"test","org":{"key":"value"}}`,
 		},
