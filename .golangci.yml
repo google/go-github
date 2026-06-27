@@ -557,6 +557,12 @@ linters:
       # Because fmt.Sprint(reset.Unix())) is more readable than strconv.FormatInt(reset.Unix(), 10).
       - linters: [perfsprint]
         text: fmt.Sprint.* can be replaced with faster strconv.FormatInt
+
+    # Exclude the large auto-generated files (script/generate.sh output) from linting.
+    paths:
+      - github/github-accessors.*\.go$
+      - github/github-iterators.*\.go$
+      - github/github-stringify_test\.go$
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
@@ -569,3 +575,9 @@ formatters:
   settings:
     gofumpt:
       extra-rules: true
+  exclusions:
+    # Exclude the large auto-generated files (script/generate.sh output) from formatting.
+    paths:
+      - github/github-accessors.*\.go$
+      - github/github-iterators.*\.go$
+      - github/github-stringify_test\.go$
