@@ -37070,6 +37070,14 @@ func (r *Runner) GetBusy() bool {
 	return *r.Busy
 }
 
+// GetEphemeral returns the Ephemeral field if it's non-nil, zero value otherwise.
+func (r *Runner) GetEphemeral() bool {
+	if r == nil || r.Ephemeral == nil {
+		return false
+	}
+	return *r.Ephemeral
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *Runner) GetID() int64 {
 	if r == nil || r.ID == nil {
@@ -37102,12 +37110,28 @@ func (r *Runner) GetOS() string {
 	return *r.OS
 }
 
+// GetRunnerGroupID returns the RunnerGroupID field if it's non-nil, zero value otherwise.
+func (r *Runner) GetRunnerGroupID() int64 {
+	if r == nil || r.RunnerGroupID == nil {
+		return 0
+	}
+	return *r.RunnerGroupID
+}
+
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
 func (r *Runner) GetStatus() string {
 	if r == nil || r.Status == nil {
 		return ""
 	}
 	return *r.Status
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (r *Runner) GetVersion() string {
+	if r == nil || r.Version == nil {
+		return ""
+	}
+	return *r.Version
 }
 
 // GetArchitecture returns the Architecture field if it's non-nil, zero value otherwise.

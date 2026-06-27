@@ -46452,6 +46452,17 @@ func TestRunner_GetBusy(tt *testing.T) {
 	r.GetBusy()
 }
 
+func TestRunner_GetEphemeral(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	r := &Runner{Ephemeral: &zeroValue}
+	r.GetEphemeral()
+	r = &Runner{}
+	r.GetEphemeral()
+	r = nil
+	r.GetEphemeral()
+}
+
 func TestRunner_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -46496,6 +46507,17 @@ func TestRunner_GetOS(tt *testing.T) {
 	r.GetOS()
 }
 
+func TestRunner_GetRunnerGroupID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &Runner{RunnerGroupID: &zeroValue}
+	r.GetRunnerGroupID()
+	r = &Runner{}
+	r.GetRunnerGroupID()
+	r = nil
+	r.GetRunnerGroupID()
+}
+
 func TestRunner_GetStatus(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -46505,6 +46527,17 @@ func TestRunner_GetStatus(tt *testing.T) {
 	r.GetStatus()
 	r = nil
 	r.GetStatus()
+}
+
+func TestRunner_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &Runner{Version: &zeroValue}
+	r.GetVersion()
+	r = &Runner{}
+	r.GetVersion()
+	r = nil
+	r.GetVersion()
 }
 
 func TestRunnerApplicationDownload_GetArchitecture(tt *testing.T) {
