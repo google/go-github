@@ -58,7 +58,7 @@ func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+	input := GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
 	mux.HandleFunc("/orgs/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -96,7 +96,7 @@ func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+	input := GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
 	mux.HandleFunc("/repos/o/r/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
