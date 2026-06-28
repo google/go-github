@@ -183,7 +183,7 @@ Every exported method and type needs to have code comments that follow
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
-	// ...
+	...
 }
 ```
 And the returned type `Repository` will have comments like this:
@@ -333,13 +333,13 @@ repo := &Repository{
 
 #### Request Option Types
 
-Request option types should be used for query parameters and named after the method they
+Request option types (for query parameters) are named after the method they
 modify, with the suffix `Options`:
 
 ```go
 type RepositoryListOptions struct {
-	Type      string `url:"type,omitempty"`
-	Sort      string `url:"sort,omitempty"`
+	Type string `url:"type,omitempty"`
+	Sort string `url:"sort,omitempty"`
 	Direction string `url:"direction,omitempty"`
 	ListOptions
 }
@@ -347,15 +347,14 @@ type RepositoryListOptions struct {
 
 #### Request Body Types
 
-Request body types for POST/PUT/PATCH requests should use the `Request`
+Request body types (for POST/PUT/PATCH requests) should use the `Request`
 suffix for create and update operations:
 
 ```go
-type CreateHostedRunnerRequest struct {
-	Name           string `json:"name"`
-	RunnerGroupID  int64  `json:"runner_group_id"`
-	MaximumRunners *int64 `json:"maximum_runners,omitempty"`
-	// ...
+type CreateSelfHostedRunnerGroupRequest struct {
+	Name         string `json:"name"`
+	RunnerGroupId int64 `json:"runner_group_id"`
+	Visibility   string `json:"visibility,omitempty"`
 }
 ```
 
@@ -366,9 +365,9 @@ any suffix:
 
 ```go
 type Repository struct {
-	ID          *int64  `json:"id,omitempty"`
-	Name        *string `json:"name,omitempty"`
-	FullName    *string `json:"full_name,omitempty"`
+	ID *int64 `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	FullName *string `json:"full_name,omitempty"`
 	Description *string `json:"description,omitempty"`
 	// ...
 }
@@ -385,33 +384,30 @@ type Repository struct {
 
 #### Request Bodies
 
-Required fields should be non-pointer types without `omitempty`.
-Optional fields should be pointer types with `omitempty`.
-Use `omitzero` for structs and `time.Time` where you want to omit
-empty values (not just nil). For slices and maps, `omitzero` has the
-opposite behavior: it keeps empty (non-nil) values and only omits nil
-values.
+Required fields should be non-pointer types without `omitempty`:
 
 ```go
-type RepositoryRuleset struct {
-	// ID is optional.
-	ID *int64 `json:"id,omitempty"`
-
-	// Name is required.
-	Name string `json:"name"`
-
-	// Target is optional struct.
-	Target *RulesetTarget `json:"target,omitempty"`
-
-	// BypassActors is optional.
-	BypassActors []*BypassActor `json:"bypass_actors,omitzero"`
-
-	// CreatedAt is optional.
-	CreatedAt *Timestamp `json:"created_at,omitempty"`
-
+type SecretScanningAlertUpdateOptions struct {
+	State string `json:"state"`
 	// ...
 }
 ```
+
+Optional fields should be pointer types with `omitempty`:
+
+```go
+type SecretScanningAlertUpdateOptions struct {
+	State string `json:"state"`
+	Resolution *string `json:"resolution,omitempty"`
+	ResolutionComment *string `json:"resolution_comment,omitempty"`
+}
+```
+
+Use `omitzero` for structs and `time.Time` where you want to omit
+empty values (not just nil). For slices and maps, `omitzero` has the
+opposite behavior: it keeps empty (non-nil) values and only omits nil
+values. See `RepositoryRuleset` for examples of `omitzero` usage with
+both slices and structs.
 
 For optional boolean fields where you need to distinguish between `false`
 and "not set", use `*bool` with `omitzero`.
@@ -421,7 +417,8 @@ and "not set", use `*bool` with `omitzero`.
 Follow the same conventions as request bodies for `omitempty` and
 `omitzero` usage. Optional fields should use pointer types with
 `omitempty`, and required fields should prefer non-pointer types.
-See [Common Types](#common-types) for conventions on ID, Node ID, and Timestamp.
+See [Common Types](#common-types) for conventions on ID, Node ID,
+Timestamp, and Boolean fields.
 
 ### URL Tags for Query Parameters
 
@@ -429,9 +426,13 @@ All fields should use `url` tags with `omitempty` to omit zero values
 from the query string:
 
 ```go
+type RepositoryContentGetOptions struct {
+	Ref string `url:"ref,omitempty"`
+}
+
 type RepositoryListOptions struct {
-	Type      string `url:"type,omitempty"`
-	Sort      string `url:"sort,omitempty"`
+	Type string `url:"type,omitempty"`
+	Sort string `url:"sort,omitempty"`
 	Direction string `url:"direction,omitempty"`
 	ListOptions
 }
@@ -447,7 +448,7 @@ Use `ListOptions` for APIs that use page/per_page parameters:
 
 ```go
 type ListOptions struct {
-	Page    int `url:"page,omitempty"`
+	Page int `url:"page,omitempty"`
 	PerPage int `url:"per_page,omitempty"`
 }
 ```
@@ -458,13 +459,13 @@ Use `ListCursorOptions` for APIs that use cursor-based pagination:
 
 ```go
 type ListCursorOptions struct {
-	Page    string `url:"page,omitempty"`
-	PerPage int    `url:"per_page,omitempty"`
-	First   int    `url:"first,omitempty"`
-	Last    int    `url:"last,omitempty"`
-	After   string `url:"after,omitempty"`
-	Before  string `url:"before,omitempty"`
-	Cursor  string `url:"cursor,omitempty"`
+	Page string `url:"page,omitempty"`
+	PerPage int `url:"per_page,omitempty"`
+	First int `url:"first,omitempty"`
+	Last int `url:"last,omitempty"`
+	After string `url:"after,omitempty"`
+	Before string `url:"before,omitempty"`
+	Cursor string `url:"cursor,omitempty"`
 }
 ```
 
@@ -483,23 +484,32 @@ in `gen-iterators.go` can be adjusted — including `useCursorPagination`,
 
 #### ID Fields
 
-GitHub API IDs are usually `int64`. Use non-pointer `int64`
-if the ID is required and `*int64` if the ID is optional.
+GitHub API IDs are always `int64`. In request bodies, use non-pointer `int64`
+if the ID is required and `*int64` if the ID is optional. In response bodies,
+use non-pointer `int64` if the ID is required and `*int64` with `omitempty`
+if the ID is optional:
 
 ```go
+// Request body — required ID
 type CreateHostedRunnerRequest struct {
 	RunnerGroupID int64 `json:"runner_group_id"`
+}
+
+// Response body — optional ID
+type Repository struct {
+	ID *int64 `json:"id,omitempty"`
 	// ...
 }
 ```
 
 #### Node ID Fields
 
-Node IDs are usually `string`:
+Node IDs are always `string`. In response bodies, `NodeID` is typically
+required and should use a non-pointer type:
 
 ```go
-type IssueFieldValue struct {
-	NodeID string `json:"node_id"`
+type Repository struct {
+	NodeID *string `json:"node_id,omitempty"`
 	// ...
 }
 ```
@@ -511,6 +521,8 @@ Use the `Timestamp` type for all date/time fields:
 ```go
 type Repository struct {
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+	PushedAt *Timestamp `json:"pushed_at,omitempty"`
 	// ...
 }
 ```
