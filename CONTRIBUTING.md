@@ -303,12 +303,10 @@ Request body types (for POST/PUT/PATCH requests) should use the `Request`
 suffix for create and update operations:
 
 ```go
-type CreateHostedRunnerRequest struct {
-	Name string `json:"name"`
-	RunnerGroupId int64 `json:"runner_group_id"` // Required, non-pointer
-	EnableStaticIP *bool `json:"enable_static_ip,omitempty"`
-	Image string `json:"image"`
-	VMSize string `json:"vm_size"`
+type CreateSelfHostedRunnerGroupRequest struct {
+	Name         string `json:"name"`
+	RunnerGroupId int64 `json:"runner_group_id"`
+	Visibility   string `json:"visibility,omitempty"`
 }
 ```
 
@@ -439,18 +437,27 @@ in `gen-iterators.go` can be adjusted — including `useCursorPagination`,
 #### ID Fields
 
 GitHub API IDs are always `int64`. In request bodies, use non-pointer `int64`
-for required fields and `*int64` for optional fields. In response bodies, use
-`*int64` with `omitempty`:
+if the ID is required and `*int64` if the ID is optional. In response bodies,
+use non-pointer `int64` if the ID is required and `*int64` with `omitempty`
+if the ID is optional:
 
 ```go
+// Request body — required ID
 type CreateHostedRunnerRequest struct {
-	RunnerGroupId int64 `json:"runner_group_id"` // Required, non-pointer
+	RunnerGroupID int64 `json:"runner_group_id"`
+}
+
+// Response body — optional ID
+type Repository struct {
+	ID *int64 `json:"id,omitempty"`
+	// ...
 }
 ```
 
 #### Node ID Fields
 
-Node IDs are always `string`:
+Node IDs are always `string`. In response bodies, `NodeID` is typically
+required and should use a non-pointer type:
 
 ```go
 type Repository struct {
@@ -548,20 +555,13 @@ Its subcommands are:
 ## Scripts
 
 The `script` directory has shell scripts that help with common development
-tasks.
+tasks:
 
-**script/fmt.sh** formats all Go code in the repository.
-
-**script/generate.sh** runs code generators and `go mod tidy` on all modules. With
-`--check` it checks that the generated files are current.
-
-**script/lint.sh** runs linters on the project and checks generated files are
-current.
-
-**script/metadata.sh** runs `tools/metadata`. See the [Metadata](#metadata)
-section for more information.
-
-**script/test.sh** runs tests on all modules.
+- `script/fmt.sh` formats all Go code in the repository.
+- `script/generate.sh` runs code generators and `go mod tidy` on all modules. With `--check` it checks that the generated files are current.
+- `script/lint.sh` runs linters on the project and checks generated files are current.
+- `script/metadata.sh` runs `tools/metadata`. See the [Metadata](#metadata) section for more information.
+- `script/test.sh` runs tests on all modules.
 
 ## Maintainer's Guide
 
