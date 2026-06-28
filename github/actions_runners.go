@@ -41,8 +41,8 @@ func (s *ActionsService) ListRunnerApplicationDownloads(ctx context.Context, own
 	return rads, resp, nil
 }
 
-// GenerateJITConfigRequest specifies body parameters to GenerateOrgJITConfig, GenerateRepoJITConfig, and GenerateEnterpriseJITConfig.
-type GenerateJITConfigRequest struct {
+// CreateJITConfigRequest specifies body parameters to CreateOrgJITConfig, CreateRepoJITConfig, and CreateJITConfig.
+type CreateJITConfigRequest struct {
 	Name          string  `json:"name"`
 	RunnerGroupID int64   `json:"runner_group_id"`
 	WorkFolder    *string `json:"work_folder,omitempty"`
@@ -58,12 +58,12 @@ type JITRunnerConfig struct {
 	EncodedJITConfig *string `json:"encoded_jit_config,omitempty"`
 }
 
-// GenerateOrgJITConfig generate a just-in-time configuration for an organization.
+// CreateOrgJITConfig creates a just-in-time configuration for an organization.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-organization
 //
 //meta:operation POST /orgs/{org}/actions/runners/generate-jitconfig
-func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, org string, body GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
+func (s *ActionsService) CreateOrgJITConfig(ctx context.Context, org string, body CreateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/runners/generate-jitconfig", org)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -79,12 +79,12 @@ func (s *ActionsService) GenerateOrgJITConfig(ctx context.Context, org string, b
 	return jitConfig, resp, nil
 }
 
-// GenerateRepoJITConfig generates a just-in-time configuration for a repository.
+// CreateRepoJITConfig creates a just-in-time configuration for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-a-repository
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runners/generate-jitconfig
-func (s *ActionsService) GenerateRepoJITConfig(ctx context.Context, owner, repo string, body GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
+func (s *ActionsService) CreateRepoJITConfig(ctx context.Context, owner, repo string, body CreateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runners/generate-jitconfig", owner, repo)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {

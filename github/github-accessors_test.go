@@ -13970,6 +13970,44 @@ func TestCreateHostedRunnerRequest_GetSize(tt *testing.T) {
 	c.GetSize()
 }
 
+func TestCreateJITConfigRequest_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateJITConfigRequest{Labels: zeroValue}
+	c.GetLabels()
+	c = &CreateJITConfigRequest{}
+	c.GetLabels()
+	c = nil
+	c.GetLabels()
+}
+
+func TestCreateJITConfigRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateJITConfigRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateJITConfigRequest_GetRunnerGroupID(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateJITConfigRequest{}
+	c.GetRunnerGroupID()
+	c = nil
+	c.GetRunnerGroupID()
+}
+
+func TestCreateJITConfigRequest_GetWorkFolder(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateJITConfigRequest{WorkFolder: &zeroValue}
+	c.GetWorkFolder()
+	c = &CreateJITConfigRequest{}
+	c.GetWorkFolder()
+	c = nil
+	c.GetWorkFolder()
+}
+
 func TestCreateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -20953,44 +20991,6 @@ func TestForkEvent_GetSender(tt *testing.T) {
 	f.GetSender()
 	f = nil
 	f.GetSender()
-}
-
-func TestGenerateJITConfigRequest_GetLabels(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	g := &GenerateJITConfigRequest{Labels: zeroValue}
-	g.GetLabels()
-	g = &GenerateJITConfigRequest{}
-	g.GetLabels()
-	g = nil
-	g.GetLabels()
-}
-
-func TestGenerateJITConfigRequest_GetName(tt *testing.T) {
-	tt.Parallel()
-	g := &GenerateJITConfigRequest{}
-	g.GetName()
-	g = nil
-	g.GetName()
-}
-
-func TestGenerateJITConfigRequest_GetRunnerGroupID(tt *testing.T) {
-	tt.Parallel()
-	g := &GenerateJITConfigRequest{}
-	g.GetRunnerGroupID()
-	g = nil
-	g.GetRunnerGroupID()
-}
-
-func TestGenerateJITConfigRequest_GetWorkFolder(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	g := &GenerateJITConfigRequest{WorkFolder: &zeroValue}
-	g.GetWorkFolder()
-	g = &GenerateJITConfigRequest{}
-	g.GetWorkFolder()
-	g = nil
-	g.GetWorkFolder()
 }
 
 func TestGenerateNotesRequest_GetConfigurationFilePath(tt *testing.T) {

@@ -54,11 +54,11 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 	})
 }
 
-func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
+func TestActionsService_CreateOrgJITConfig(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+	input := CreateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
 	mux.HandleFunc("/orgs/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -67,24 +67,24 @@ func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	jitConfig, _, err := client.Actions.GenerateOrgJITConfig(ctx, "o", input)
+	jitConfig, _, err := client.Actions.CreateOrgJITConfig(ctx, "o", input)
 	if err != nil {
-		t.Errorf("Actions.GenerateOrgJITConfig returned error: %v", err)
+		t.Errorf("Actions.CreateOrgJITConfig returned error: %v", err)
 	}
 
 	want := &JITRunnerConfig{EncodedJITConfig: Ptr("foo")}
 	if !cmp.Equal(jitConfig, want) {
-		t.Errorf("Actions.GenerateOrgJITConfig returned %+v, want %+v", jitConfig, want)
+		t.Errorf("Actions.CreateOrgJITConfig returned %+v, want %+v", jitConfig, want)
 	}
 
-	const methodName = "GenerateOrgJITConfig"
+	const methodName = "CreateOrgJITConfig"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GenerateOrgJITConfig(ctx, "\n", input)
+		_, _, err = client.Actions.CreateOrgJITConfig(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GenerateOrgJITConfig(ctx, "o", input)
+		got, resp, err := client.Actions.CreateOrgJITConfig(ctx, "o", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -92,11 +92,11 @@ func TestActionsService_GenerateOrgJITConfig(t *testing.T) {
 	})
 }
 
-func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
+func TestActionsService_CreateRepoJITConfig(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+	input := CreateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
 	mux.HandleFunc("/repos/o/r/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -105,24 +105,24 @@ func TestActionsService_GenerateRepoJITConfig(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	jitConfig, _, err := client.Actions.GenerateRepoJITConfig(ctx, "o", "r", input)
+	jitConfig, _, err := client.Actions.CreateRepoJITConfig(ctx, "o", "r", input)
 	if err != nil {
-		t.Errorf("Actions.GenerateRepoJITConfig returned error: %v", err)
+		t.Errorf("Actions.CreateRepoJITConfig returned error: %v", err)
 	}
 
 	want := &JITRunnerConfig{EncodedJITConfig: Ptr("foo")}
 	if !cmp.Equal(jitConfig, want) {
-		t.Errorf("Actions.GenerateRepoJITConfig returned %+v, want %+v", jitConfig, want)
+		t.Errorf("Actions.CreateRepoJITConfig returned %+v, want %+v", jitConfig, want)
 	}
 
-	const methodName = "GenerateRepoJITConfig"
+	const methodName = "CreateRepoJITConfig"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GenerateRepoJITConfig(ctx, "\n", "\n", input)
+		_, _, err = client.Actions.CreateRepoJITConfig(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GenerateRepoJITConfig(ctx, "o", "r", input)
+		got, resp, err := client.Actions.CreateRepoJITConfig(ctx, "o", "r", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
