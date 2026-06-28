@@ -171,7 +171,7 @@ Every exported method and type needs to have code comments that follow
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
-	...
+	// ...
 }
 ```
 And the returned type `Repository` will have comments like this:
@@ -179,10 +179,10 @@ And the returned type `Repository` will have comments like this:
 ```go
 // Repository represents a GitHub repository.
 type Repository struct {
-	ID *int64 `json:"id,omitempty"`
+	ID     *int64  `json:"id,omitempty"`
 	NodeID *string `json:"node_id,omitempty"`
-	Owner *User `json:"owner,omitempty"`
-	...
+	Owner  *User   `json:"owner,omitempty"`
+	// ...
 }
 ```
 
