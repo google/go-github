@@ -151,7 +151,13 @@ tips (which are frequently ignored by AI-driven PRs):
 * When possible, try to make smaller, focused PRs (which are easier to review
   and easier for others to understand).
 
-## Code Comments
+## Code Guidelines
+
+This section documents common code patterns and conventions used throughout
+the go-github repository. Following these guidelines helps maintain consistency
+and makes the codebase easier to understand and maintain.
+
+### Code Comments
 
 Every exported method and type needs to have code comments that follow
 [Go Doc Comments][]. A typical method's comments will look like this:
@@ -165,7 +171,7 @@ Every exported method and type needs to have code comments that follow
 func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v", owner, repo)
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
-	// ...
+	...
 }
 ```
 And the returned type `Repository` will have comments like this:
@@ -173,10 +179,10 @@ And the returned type `Repository` will have comments like this:
 ```go
 // Repository represents a GitHub repository.
 type Repository struct {
-	ID     *int64  `json:"id,omitempty"`
+	ID *int64 `json:"id,omitempty"`
 	NodeID *string `json:"node_id,omitempty"`
-	Owner  *User   `json:"owner,omitempty"`
-	// ...
+	Owner *User `json:"owner,omitempty"`
+	...
 }
 ```
 
@@ -198,6 +204,280 @@ line instead of looking up what the url parameters are called in the OpenAPI
 description.
 
 [Go Doc Comments]: https://go.dev/doc/comment
+
+### File Organization
+
+Files are organized by service and API endpoint, following the pattern
+`{service}_{api}.go`. For example:
+- `repos_contents.go` - Repository contents API methods
+- `users_ssh_signing_keys.go` - User SSH signing keys API methods
+- `orgs_rules.go` - Organization rules API methods
+
+Test files follow the pattern `{service}_{api}_test.go`.
+
+These services map directly to how the [GitHub API documentation][] is
+organized, so use that as your guide for where to put new methods.
+
+For example, methods defined at <https://docs.github.com/en/rest/webhooks/repos> live in [repos_hooks.go](https://github.com/google/go-github/blob/master/github/repos_hooks.go).
+
+[GitHub API documentation]: https://docs.github.com/en/rest
+
+### Naming Conventions
+
+#### Receiver Names
+
+Service method receivers consistently use the single letter `s`:
+
+```go
+func (s *RepositoriesService) Get(ctx context.Context, owner, repo string) (*Repository, *Response, error) {
+	// ...
+}
+```
+
+#### Method Names
+
+Methods use descriptive names that clearly indicate their action.
+The method name should not repeat the scope already defined by the service:
+
+```go
+// On OrganizationsService, the scope is already "organization":
+func (s *OrganizationsService) ListMembers(ctx context.Context, org string, opts *OrganizationListMembersOptions) ([]*User, *Response, error)
+
+// On EnterpriseService, the scope is already "enterprise":
+func (s *EnterpriseService) GetLicenseInfo(ctx context.Context) (*LicenseInfo, *Response, error)
+```
+
+Common method name prefixes:
+- `Get` - Retrieve a single resource
+- `List` - Retrieve multiple resources (supports pagination)
+- `Create` - Create a new resource
+- `Update` - Update an existing resource
+- `Delete` - Delete a resource
+
+#### Common Variable Names
+
+- `ctx` - Context
+- `u` - URL string
+- `req` - HTTP request
+- `resp` - HTTP response
+- `result` - Result from API call
+- `err` - Error
+- `opts` - Options parameter
+- `owner` - Repository owner (username or organization)
+- `repo` - Repository name
+- `org` - Organization name
+- `user` - Username
+- `team` - Team name or slug
+- `project` - Project name or number
+
+### Type Conventions
+
+#### Value vs Pointer Parameters
+
+Prefer value types over pointer types for parameters where the distinction
+between "zero" and "unset" is not needed, or where the type is small and
+cheap to copy (e.g., `string`, `int`, `int64`, `bool`). Use pointer types
+when you need to distinguish between an unset value and a zero value.
+See [#3644][] and [#3887][] for background discussion.
+
+[#3644]: https://github.com/google/go-github/pull/3644
+[#3887]: https://github.com/google/go-github/pull/3887
+
+#### Request Option Types
+
+Request option types (for query parameters) are named after the method they
+modify, with the suffix `Options`:
+
+```go
+type RepositoryListOptions struct {
+	Type string `url:"type,omitempty"`
+	Sort string `url:"sort,omitempty"`
+	Direction string `url:"direction,omitempty"`
+	ListOptions
+}
+```
+
+#### Request Body Types
+
+Request body types (for POST/PUT/PATCH requests) should use the `Request`
+suffix for create and update operations:
+
+```go
+type CreateSelfHostedRunnerGroupRequest struct {
+	Name         string `json:"name"`
+	RunnerGroupId int64 `json:"runner_group_id"`
+	Visibility   string `json:"visibility,omitempty"`
+}
+```
+
+#### Response Types
+
+Response types are named after the resource they represent, typically without
+any suffix:
+
+```go
+type Repository struct {
+	ID *int64 `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	FullName *string `json:"full_name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	// ...
+}
+```
+
+#### Common Structs
+
+- `ListOptions` - For offset-based pagination (page/per_page)
+- `ListCursorOptions` - For cursor-based pagination
+- `UploadOptions` - For file uploads
+- `Response` - Wraps the HTTP response
+
+### JSON Tags
+
+#### Request Bodies
+
+Required fields should be non-pointer types without `omitempty`:
+
+```go
+type SecretScanningAlertUpdateOptions struct {
+	State string `json:"state"`
+	// ...
+}
+```
+
+Optional fields should be pointer types with `omitempty`:
+
+```go
+type SecretScanningAlertUpdateOptions struct {
+	State string `json:"state"`
+	Resolution *string `json:"resolution,omitempty"`
+	ResolutionComment *string `json:"resolution_comment,omitempty"`
+}
+```
+
+Use `omitzero` for structs and `time.Time` where you want to omit
+empty values (not just nil). For slices and maps, `omitzero` has the
+opposite behavior: it keeps empty (non-nil) values and only omits nil
+values. See `RepositoryRuleset` for examples of `omitzero` usage with
+both slices and structs.
+
+For optional boolean fields where you need to distinguish between `false`
+and "not set", use `*bool` with `omitzero`.
+
+#### Response Bodies
+
+Follow the same conventions as request bodies for `omitempty` and
+`omitzero` usage. Optional fields should use pointer types with
+`omitempty`, and required fields should prefer non-pointer types.
+See [Common Types](#common-types) for conventions on ID, Node ID,
+Timestamp, and Boolean fields.
+
+### URL Tags for Query Parameters
+
+All fields should use `url` tags with `omitempty` to omit zero values
+from the query string:
+
+```go
+type RepositoryContentGetOptions struct {
+	Ref string `url:"ref,omitempty"`
+}
+
+type RepositoryListOptions struct {
+	Type string `url:"type,omitempty"`
+	Sort string `url:"sort,omitempty"`
+	Direction string `url:"direction,omitempty"`
+	ListOptions
+}
+```
+
+### Pagination
+
+The go-github library supports two types of pagination:
+
+#### Offset-based Pagination
+
+Use `ListOptions` for APIs that use page/per_page parameters:
+
+```go
+type ListOptions struct {
+	Page int `url:"page,omitempty"`
+	PerPage int `url:"per_page,omitempty"`
+}
+```
+
+#### Cursor-based Pagination
+
+Use `ListCursorOptions` for APIs that use cursor-based pagination:
+
+```go
+type ListCursorOptions struct {
+	Page string `url:"page,omitempty"`
+	PerPage int `url:"per_page,omitempty"`
+	First int `url:"first,omitempty"`
+	Last int `url:"last,omitempty"`
+	After string `url:"after,omitempty"`
+	Before string `url:"before,omitempty"`
+	Cursor string `url:"cursor,omitempty"`
+}
+```
+
+Embed the appropriate pagination options in your option structs
+based on the API's pagination model: use `ListOptions` for
+offset-based APIs and `ListCursorOptions` for cursor-based APIs.
+The library automatically generates iterator methods (e.g., `ListIter`)
+for methods that start with `List` and return a slice.
+
+For APIs with non-standard pagination behavior (e.g., methods that
+return a wrapper struct containing multiple slices), configuration maps
+in `gen-iterators.go` can be adjusted — including `useCursorPagination`,
+`customNames`, `sliceToBeUsedForIteration`, and `customTestJSON`.
+
+### Common Types
+
+#### ID Fields
+
+GitHub API IDs are always `int64`. In request bodies, use non-pointer `int64`
+if the ID is required and `*int64` if the ID is optional. In response bodies,
+use non-pointer `int64` if the ID is required and `*int64` with `omitempty`
+if the ID is optional:
+
+```go
+// Request body — required ID
+type CreateHostedRunnerRequest struct {
+	RunnerGroupID int64 `json:"runner_group_id"`
+}
+
+// Response body — optional ID
+type Repository struct {
+	ID *int64 `json:"id,omitempty"`
+	// ...
+}
+```
+
+#### Node ID Fields
+
+Node IDs are always `string`. In response bodies, `NodeID` is typically
+required and should use a non-pointer type:
+
+```go
+type Repository struct {
+	NodeID *string `json:"node_id,omitempty"`
+	// ...
+}
+```
+
+#### Timestamp Fields
+
+Use the `Timestamp` type for all date/time fields:
+
+```go
+type Repository struct {
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+	PushedAt *Timestamp `json:"pushed_at,omitempty"`
+	// ...
+}
+```
 
 ## Metadata
 
@@ -275,35 +555,13 @@ Its subcommands are:
 ## Scripts
 
 The `script` directory has shell scripts that help with common development
-tasks.
+tasks:
 
-**script/fmt.sh** formats all Go code in the repository.
-
-**script/generate.sh** runs code generators and `go mod tidy` on all modules. With
-`--check` it checks that the generated files are current.
-
-**script/lint.sh** runs linters on the project and checks generated files are
-current.
-
-**script/metadata.sh** runs `tools/metadata`. See the [Metadata](#metadata)
-section for more information.
-
-**script/test.sh** runs tests on all modules.
-
-## Other notes on code organization
-
-Currently, everything is defined in the main `github` package, with API methods
-broken into separate service objects. These services map directly to how
-the [GitHub API documentation][] is organized, so use that as your guide for
-where to put new methods.
-
-Code is organized in files also based pretty closely on the GitHub API
-documentation, following the format `{service}_{api}.go`. For example, methods
-defined at <https://docs.github.com/en/rest/webhooks/repos> live in
-[repos_hooks.go][].
-
-[GitHub API documentation]: https://docs.github.com/en/rest
-[repos_hooks.go]: https://github.com/google/go-github/blob/master/github/repos_hooks.go
+- `script/fmt.sh` formats all Go code in the repository.
+- `script/generate.sh` runs code generators and `go mod tidy` on all modules. With `--check` it checks that the generated files are current.
+- `script/lint.sh` runs linters on the project and checks generated files are current.
+- `script/metadata.sh` runs `tools/metadata`. See the [Metadata](#metadata) section for more information.
+- `script/test.sh` runs tests on all modules.
 
 ## Maintainer's Guide
 
