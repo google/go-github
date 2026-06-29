@@ -11014,6 +11014,38 @@ func (c *CreateHostedRunnerRequest) GetSize() string {
 	return c.Size
 }
 
+// GetLabels returns the Labels slice if it's non-nil, nil otherwise.
+func (c *CreateJITConfigRequest) GetLabels() []string {
+	if c == nil || c.Labels == nil {
+		return nil
+	}
+	return c.Labels
+}
+
+// GetName returns the Name field.
+func (c *CreateJITConfigRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetRunnerGroupID returns the RunnerGroupID field.
+func (c *CreateJITConfigRequest) GetRunnerGroupID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.RunnerGroupID
+}
+
+// GetWorkFolder returns the WorkFolder field if it's non-nil, zero value otherwise.
+func (c *CreateJITConfigRequest) GetWorkFolder() string {
+	if c == nil || c.WorkFolder == nil {
+		return ""
+	}
+	return *c.WorkFolder
+}
+
 // GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.
 func (c *CreateOrganizationPrivateRegistry) GetAccountID() string {
 	if c == nil || c.AccountID == nil {
@@ -16668,38 +16700,6 @@ func (f *ForkEvent) GetSender() *User {
 		return nil
 	}
 	return f.Sender
-}
-
-// GetLabels returns the Labels slice if it's non-nil, nil otherwise.
-func (g *GenerateJITConfigRequest) GetLabels() []string {
-	if g == nil || g.Labels == nil {
-		return nil
-	}
-	return g.Labels
-}
-
-// GetName returns the Name field.
-func (g *GenerateJITConfigRequest) GetName() string {
-	if g == nil {
-		return ""
-	}
-	return g.Name
-}
-
-// GetRunnerGroupID returns the RunnerGroupID field.
-func (g *GenerateJITConfigRequest) GetRunnerGroupID() int64 {
-	if g == nil {
-		return 0
-	}
-	return g.RunnerGroupID
-}
-
-// GetWorkFolder returns the WorkFolder field if it's non-nil, zero value otherwise.
-func (g *GenerateJITConfigRequest) GetWorkFolder() string {
-	if g == nil || g.WorkFolder == nil {
-		return ""
-	}
-	return *g.WorkFolder
 }
 
 // GetConfigurationFilePath returns the ConfigurationFilePath field if it's non-nil, zero value otherwise.
@@ -37070,6 +37070,14 @@ func (r *Runner) GetBusy() bool {
 	return *r.Busy
 }
 
+// GetEphemeral returns the Ephemeral field if it's non-nil, zero value otherwise.
+func (r *Runner) GetEphemeral() bool {
+	if r == nil || r.Ephemeral == nil {
+		return false
+	}
+	return *r.Ephemeral
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (r *Runner) GetID() int64 {
 	if r == nil || r.ID == nil {
@@ -37102,12 +37110,28 @@ func (r *Runner) GetOS() string {
 	return *r.OS
 }
 
+// GetRunnerGroupID returns the RunnerGroupID field if it's non-nil, zero value otherwise.
+func (r *Runner) GetRunnerGroupID() int64 {
+	if r == nil || r.RunnerGroupID == nil {
+		return 0
+	}
+	return *r.RunnerGroupID
+}
+
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
 func (r *Runner) GetStatus() string {
 	if r == nil || r.Status == nil {
 		return ""
 	}
 	return *r.Status
+}
+
+// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+func (r *Runner) GetVersion() string {
+	if r == nil || r.Version == nil {
+		return ""
+	}
+	return *r.Version
 }
 
 // GetArchitecture returns the Architecture field if it's non-nil, zero value otherwise.

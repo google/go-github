@@ -228,7 +228,6 @@ linters:
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
             - ExternalGroup
-            - GenerateJITConfigRequest
             - Hook
             - HookConfig
             - ImpersonateUserOptions
