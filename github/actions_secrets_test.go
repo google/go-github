@@ -717,7 +717,7 @@ func TestActionsService_GetEnvPublicKeyNumeric(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"key_id":1234,"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
@@ -840,7 +840,7 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 		KeyID:          "1234",
 	}
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		want := EncryptedSecret{
@@ -876,7 +876,7 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(_ http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets/secret", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 

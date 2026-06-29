@@ -131,28 +131,15 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner, repo, secr
 		return err
 	}
 
-	encryptedSecret, err := encryptSecretWithPublicKey(publicKey, secretName, secretValue)
-	if err != nil {
-		return err
-	}
-
-	if _, err := client.Actions.CreateOrUpdateRepoSecret(ctx, owner, repo, encryptedSecret); err != nil {
-		return fmt.Errorf("client.Actions.CreateOrUpdateRepoSecret returned error: %v", err)
-	}
-
-	return nil
-}
-
-func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName, secretValue string) (github.EncryptedSecret, error) {
 	decodedPublicKey, err := base64.StdEncoding.DecodeString(publicKey.GetKey())
 	if err != nil {
-		return github.EncryptedSecret{}, fmt.Errorf("base64.StdEncoding.DecodeString was unable to decode public key: %v", err)
+		return fmt.Errorf("base64.StdEncoding.DecodeString was unable to decode public key: %v", err)
 	}
 
 	boxKey := [32]byte(decodedPublicKey)
 	encryptedBytes, err := box.SealAnonymous([]byte{}, []byte(secretValue), &boxKey, crypto_rand.Reader)
 	if err != nil {
-		return github.EncryptedSecret{}, fmt.Errorf("box.SealAnonymous failed with error %w", err)
+		return fmt.Errorf("box.SealAnonymous failed with error %w", err)
 	}
 
 	encryptedString := base64.StdEncoding.EncodeToString(encryptedBytes)
@@ -162,5 +149,10 @@ func encryptSecretWithPublicKey(publicKey *github.PublicKey, secretName, secretV
 		KeyID:          keyID,
 		EncryptedValue: encryptedString,
 	}
-	return encryptedSecret, nil
+
+	if _, err := client.Actions.CreateOrUpdateRepoSecret(ctx, owner, repo, encryptedSecret); err != nil {
+		return fmt.Errorf("client.Actions.CreateOrUpdateRepoSecret returned error: %v", err)
+	}
+
+	return nil
 }
