@@ -144,13 +144,12 @@ func addRepoSecret(ctx context.Context, client *github.Client, owner, repo, secr
 
 	encryptedString := base64.StdEncoding.EncodeToString(encryptedBytes)
 	keyID := publicKey.GetKeyID()
-	encryptedSecret := github.EncryptedSecret{
-		Name:           secretName,
+	req := github.SecretRequest{
 		KeyID:          keyID,
 		EncryptedValue: encryptedString,
 	}
 
-	if _, err := client.Actions.CreateOrUpdateRepoSecret(ctx, owner, repo, encryptedSecret); err != nil {
+	if _, err := client.Actions.CreateOrUpdateRepoSecret(ctx, owner, repo, secretName, req); err != nil {
 		return fmt.Errorf("client.Actions.CreateOrUpdateRepoSecret returned error: %v", err)
 	}
 

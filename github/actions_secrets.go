@@ -305,7 +305,7 @@ type EncryptedSecret struct {
 type OrgSecretRequest struct {
 	KeyID                 string  `json:"key_id"`
 	EncryptedValue        string  `json:"encrypted_value"`
-	Visibility            string  `json:"visibility,omitempty"`
+	Visibility            string  `json:"visibility"`
 	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitzero"`
 }
 
