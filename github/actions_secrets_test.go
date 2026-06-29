@@ -859,7 +859,7 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 
 	const methodName = "CreateOrUpdateEnvSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, "\n", "\n", "\n", EncryptedSecret{})
+		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, "o", "r", "e", EncryptedSecret{})
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
@@ -868,7 +868,7 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateOrUpdateEnvSecret(ctx, "\n", "\n", "\n", input)
+		return client.Actions.CreateOrUpdateEnvSecret(ctx, "o", "r", "e", input)
 	})
 }
 
@@ -893,6 +893,6 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.DeleteEnvSecret(ctx, "\n", "\n", "\n", "\n")
+		return client.Actions.DeleteEnvSecret(ctx, "o", "r", "e", "secret")
 	})
 }

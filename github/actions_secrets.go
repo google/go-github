@@ -247,6 +247,10 @@ func (s *ActionsService) putSecret(ctx context.Context, url string, body Encrypt
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, repo string, body EncryptedSecret) (*Response, error) {
+	if body.Name == "" {
+		return nil, errors.New("secret name must be provided")
+	}
+
 	url := fmt.Sprintf("repos/%v/%v/actions/secrets/%v", owner, repo, body.Name)
 	return s.putSecret(ctx, url, body)
 }
@@ -257,6 +261,10 @@ func (s *ActionsService) CreateOrUpdateRepoSecret(ctx context.Context, owner, re
 //
 //meta:operation PUT /orgs/{org}/actions/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string, body EncryptedSecret) (*Response, error) {
+	if body.Name == "" {
+		return nil, errors.New("secret name must be provided")
+	}
+
 	url := fmt.Sprintf("orgs/%v/actions/secrets/%v", org, body.Name)
 	return s.putSecret(ctx, url, body)
 }
@@ -267,6 +275,10 @@ func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org string
 //
 //meta:operation PUT /repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}
 func (s *ActionsService) CreateOrUpdateEnvSecret(ctx context.Context, owner, repo, env string, body EncryptedSecret) (*Response, error) {
+	if body.Name == "" {
+		return nil, errors.New("secret name must be provided")
+	}
+
 	url := fmt.Sprintf("repos/%v/%v/environments/%v/secrets/%v", owner, repo, env, body.Name)
 	return s.putSecret(ctx, url, body)
 }
