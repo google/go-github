@@ -25830,6 +25830,38 @@ func (o *OrgBlockEvent) GetSender() *User {
 	return o.Sender
 }
 
+// GetEncryptedValue returns the EncryptedValue field.
+func (o *OrgSecretRequest) GetEncryptedValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.EncryptedValue
+}
+
+// GetKeyID returns the KeyID field.
+func (o *OrgSecretRequest) GetKeyID() string {
+	if o == nil {
+		return ""
+	}
+	return o.KeyID
+}
+
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
+func (o *OrgSecretRequest) GetSelectedRepositoryIDs() []int64 {
+	if o == nil || o.SelectedRepositoryIDs == nil {
+		return nil
+	}
+	return o.SelectedRepositoryIDs
+}
+
+// GetVisibility returns the Visibility field.
+func (o *OrgSecretRequest) GetVisibility() string {
+	if o == nil {
+		return ""
+	}
+	return o.Visibility
+}
+
 // GetDisabledOrgs returns the DisabledOrgs field if it's non-nil, zero value otherwise.
 func (o *OrgStats) GetDisabledOrgs() int {
 	if o == nil || o.DisabledOrgs == nil {
@@ -38348,6 +38380,22 @@ func (s *Secret) GetVisibility() string {
 		return ""
 	}
 	return s.Visibility
+}
+
+// GetEncryptedValue returns the EncryptedValue field.
+func (s *SecretRequest) GetEncryptedValue() string {
+	if s == nil {
+		return ""
+	}
+	return s.EncryptedValue
+}
+
+// GetKeyID returns the KeyID field.
+func (s *SecretRequest) GetKeyID() string {
+	if s == nil {
+		return ""
+	}
+	return s.KeyID
 }
 
 // GetSecrets returns the Secrets slice if it's non-nil, nil otherwise.
