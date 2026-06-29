@@ -31503,6 +31503,17 @@ func TestOIDCSubjectClaimCustomTemplate_GetIncludeClaimKeys(tt *testing.T) {
 	o.GetIncludeClaimKeys()
 }
 
+func TestOIDCSubjectClaimCustomTemplate_GetSubClaimPrefix(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	o := &OIDCSubjectClaimCustomTemplate{SubClaimPrefix: &zeroValue}
+	o.GetSubClaimPrefix()
+	o = &OIDCSubjectClaimCustomTemplate{}
+	o.GetSubClaimPrefix()
+	o = nil
+	o.GetSubClaimPrefix()
+}
+
 func TestOIDCSubjectClaimCustomTemplate_GetUseDefault(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -31512,6 +31523,17 @@ func TestOIDCSubjectClaimCustomTemplate_GetUseDefault(tt *testing.T) {
 	o.GetUseDefault()
 	o = nil
 	o.GetUseDefault()
+}
+
+func TestOIDCSubjectClaimCustomTemplate_GetUseImmutableSubject(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &OIDCSubjectClaimCustomTemplate{UseImmutableSubject: &zeroValue}
+	o.GetUseImmutableSubject()
+	o = &OIDCSubjectClaimCustomTemplate{}
+	o.GetUseImmutableSubject()
+	o = nil
+	o.GetUseImmutableSubject()
 }
 
 func TestOrganization_GetAdvancedSecurityEnabledForNewRepos(tt *testing.T) {
