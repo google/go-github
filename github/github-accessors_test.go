@@ -24055,6 +24055,149 @@ func TestInstallationPermissions_GetEmails(tt *testing.T) {
 	i.GetEmails()
 }
 
+func TestInstallationPermissions_GetEnterpriseAIControls(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseAIControls: &zeroValue}
+	i.GetEnterpriseAIControls()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseAIControls()
+	i = nil
+	i.GetEnterpriseAIControls()
+}
+
+func TestInstallationPermissions_GetEnterpriseCopilotMetrics(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseCopilotMetrics: &zeroValue}
+	i.GetEnterpriseCopilotMetrics()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseCopilotMetrics()
+	i = nil
+	i.GetEnterpriseCopilotMetrics()
+}
+
+func TestInstallationPermissions_GetEnterpriseCredentials(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseCredentials: &zeroValue}
+	i.GetEnterpriseCredentials()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseCredentials()
+	i = nil
+	i.GetEnterpriseCredentials()
+}
+
+func TestInstallationPermissions_GetEnterpriseCustomEnterpriseRoles(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseCustomEnterpriseRoles: &zeroValue}
+	i.GetEnterpriseCustomEnterpriseRoles()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseCustomEnterpriseRoles()
+	i = nil
+	i.GetEnterpriseCustomEnterpriseRoles()
+}
+
+func TestInstallationPermissions_GetEnterpriseCustomOrgRoles(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseCustomOrgRoles: &zeroValue}
+	i.GetEnterpriseCustomOrgRoles()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseCustomOrgRoles()
+	i = nil
+	i.GetEnterpriseCustomOrgRoles()
+}
+
+func TestInstallationPermissions_GetEnterpriseCustomProperties(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseCustomProperties: &zeroValue}
+	i.GetEnterpriseCustomProperties()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseCustomProperties()
+	i = nil
+	i.GetEnterpriseCustomProperties()
+}
+
+func TestInstallationPermissions_GetEnterpriseCustomPropertiesForOrgs(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseCustomPropertiesForOrgs: &zeroValue}
+	i.GetEnterpriseCustomPropertiesForOrgs()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseCustomPropertiesForOrgs()
+	i = nil
+	i.GetEnterpriseCustomPropertiesForOrgs()
+}
+
+func TestInstallationPermissions_GetEnterpriseOrganizationInstallations(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseOrganizationInstallations: &zeroValue}
+	i.GetEnterpriseOrganizationInstallations()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseOrganizationInstallations()
+	i = nil
+	i.GetEnterpriseOrganizationInstallations()
+}
+
+func TestInstallationPermissions_GetEnterpriseOrganizations(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseOrganizations: &zeroValue}
+	i.GetEnterpriseOrganizations()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseOrganizations()
+	i = nil
+	i.GetEnterpriseOrganizations()
+}
+
+func TestInstallationPermissions_GetEnterpriseOrgInstallationRepositories(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseOrgInstallationRepositories: &zeroValue}
+	i.GetEnterpriseOrgInstallationRepositories()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseOrgInstallationRepositories()
+	i = nil
+	i.GetEnterpriseOrgInstallationRepositories()
+}
+
+func TestInstallationPermissions_GetEnterprisePeople(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterprisePeople: &zeroValue}
+	i.GetEnterprisePeople()
+	i = &InstallationPermissions{}
+	i.GetEnterprisePeople()
+	i = nil
+	i.GetEnterprisePeople()
+}
+
+func TestInstallationPermissions_GetEnterpriseSSO(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseSSO: &zeroValue}
+	i.GetEnterpriseSSO()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseSSO()
+	i = nil
+	i.GetEnterpriseSSO()
+}
+
+func TestInstallationPermissions_GetEnterpriseTeams(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &InstallationPermissions{EnterpriseTeams: &zeroValue}
+	i.GetEnterpriseTeams()
+	i = &InstallationPermissions{}
+	i.GetEnterpriseTeams()
+	i = nil
+	i.GetEnterpriseTeams()
+}
+
 func TestInstallationPermissions_GetEnvironments(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
