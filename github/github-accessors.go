@@ -40686,6 +40686,14 @@ func (t *TaskStep) GetStatus() string {
 	return *t.Status
 }
 
+// GetAccessSource returns the AccessSource field if it's non-nil, zero value otherwise.
+func (t *Team) GetAccessSource() string {
+	if t == nil || t.AccessSource == nil {
+		return ""
+	}
+	return *t.AccessSource
+}
+
 // GetAssignment returns the Assignment field if it's non-nil, zero value otherwise.
 func (t *Team) GetAssignment() string {
 	if t == nil || t.Assignment == nil {
