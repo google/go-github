@@ -228,8 +228,6 @@ linters:
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
             - ExternalGroup
-            - GenerateJITConfigRequest
-            - GenerateNotesOptions
             - Hook
             - HookConfig
             - ImpersonateUserOptions
@@ -258,7 +256,6 @@ linters:
             - PullRequestReviewDismissalRequest
             - PullRequestReviewRequest
             - PullRequestReviewsEnforcementUpdate
-            - ReleaseAsset
             - RepoMergeUpstreamRequest
             - Repository
             - RepositoryAddCollaboratorOptions
@@ -300,7 +297,6 @@ linters:
             - CreateOrUpdateCustomRepoRoleOptions
             - CreateOrUpdateIssueTypesOptions
             - CreateOrgInvitationOptions
-            - GenerateNotesOptions
             - ImpersonateUserOptions
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
