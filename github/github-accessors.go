@@ -19182,12 +19182,12 @@ func (i *InstallationPermissions) GetEnterpriseOrganizations() string {
 	return *i.EnterpriseOrganizations
 }
 
-// GetEnterpriseOrgInstallationRepositories returns the EnterpriseOrgInstallationRepositories field if it's non-nil, zero value otherwise.
-func (i *InstallationPermissions) GetEnterpriseOrgInstallationRepositories() string {
-	if i == nil || i.EnterpriseOrgInstallationRepositories == nil {
+// GetEnterpriseOrgInstallationRepos returns the EnterpriseOrgInstallationRepos field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseOrgInstallationRepos() string {
+	if i == nil || i.EnterpriseOrgInstallationRepos == nil {
 		return ""
 	}
-	return *i.EnterpriseOrgInstallationRepositories
+	return *i.EnterpriseOrgInstallationRepos
 }
 
 // GetEnterprisePeople returns the EnterprisePeople field if it's non-nil, zero value otherwise.

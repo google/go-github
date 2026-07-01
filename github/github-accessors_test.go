@@ -24154,15 +24154,15 @@ func TestInstallationPermissions_GetEnterpriseOrganizations(tt *testing.T) {
 	i.GetEnterpriseOrganizations()
 }
 
-func TestInstallationPermissions_GetEnterpriseOrgInstallationRepositories(tt *testing.T) {
+func TestInstallationPermissions_GetEnterpriseOrgInstallationRepos(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	i := &InstallationPermissions{EnterpriseOrgInstallationRepositories: &zeroValue}
-	i.GetEnterpriseOrgInstallationRepositories()
+	i := &InstallationPermissions{EnterpriseOrgInstallationRepos: &zeroValue}
+	i.GetEnterpriseOrgInstallationRepos()
 	i = &InstallationPermissions{}
-	i.GetEnterpriseOrgInstallationRepositories()
+	i.GetEnterpriseOrgInstallationRepos()
 	i = nil
-	i.GetEnterpriseOrgInstallationRepositories()
+	i.GetEnterpriseOrgInstallationRepos()
 }
 
 func TestInstallationPermissions_GetEnterprisePeople(tt *testing.T) {

@@ -107,7 +107,7 @@ type InstallationPermissions struct {
 	EnterpriseCustomPropertiesForOrgs       *string `json:"enterprise_custom_properties_for_organizations,omitempty"`
 	EnterpriseOrganizations                 *string `json:"enterprise_organizations,omitempty"`
 	EnterpriseOrganizationInstallations     *string `json:"enterprise_organization_installations,omitempty"`
-	EnterpriseOrgInstallationRepositories   *string `json:"enterprise_organization_installation_repositories,omitempty"`
+	EnterpriseOrgInstallationRepos          *string `json:"enterprise_organization_installation_repositories,omitempty"`
 	EnterprisePeople                        *string `json:"enterprise_people,omitempty"`
 	EnterpriseSSO                           *string `json:"enterprise_sso,omitempty"`
 	EnterpriseTeams                         *string `json:"enterprise_teams,omitempty"`
