@@ -190,7 +190,7 @@ func (s *ActionsService) ListEnabledReposInOrgIter(ctx context.Context, owner st
 }
 
 // ListEnvSecretsIter returns an iterator that paginates through all results of ListEnvSecrets.
-func (s *ActionsService) ListEnvSecretsIter(ctx context.Context, repoID int, env string, opts *ListOptions) iter.Seq2[*Secret, error] {
+func (s *ActionsService) ListEnvSecretsIter(ctx context.Context, owner string, repo string, env string, opts *ListOptions) iter.Seq2[*Secret, error] {
 	return func(yield func(*Secret, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
@@ -200,7 +200,7 @@ func (s *ActionsService) ListEnvSecretsIter(ctx context.Context, repoID int, env
 		}
 
 		for {
-			results, resp, err := s.ListEnvSecrets(ctx, repoID, env, opts)
+			results, resp, err := s.ListEnvSecrets(ctx, owner, repo, env, opts)
 			if err != nil {
 				yield(nil, err)
 				return

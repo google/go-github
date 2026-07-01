@@ -32473,6 +32473,41 @@ func TestOrgBlockEvent_GetSender(tt *testing.T) {
 	o.GetSender()
 }
 
+func TestOrgSecretRequest_GetEncryptedValue(tt *testing.T) {
+	tt.Parallel()
+	o := &OrgSecretRequest{}
+	o.GetEncryptedValue()
+	o = nil
+	o.GetEncryptedValue()
+}
+
+func TestOrgSecretRequest_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	o := &OrgSecretRequest{}
+	o.GetKeyID()
+	o = nil
+	o.GetKeyID()
+}
+
+func TestOrgSecretRequest_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	o := &OrgSecretRequest{SelectedRepositoryIDs: zeroValue}
+	o.GetSelectedRepositoryIDs()
+	o = &OrgSecretRequest{}
+	o.GetSelectedRepositoryIDs()
+	o = nil
+	o.GetSelectedRepositoryIDs()
+}
+
+func TestOrgSecretRequest_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	o := &OrgSecretRequest{}
+	o.GetVisibility()
+	o = nil
+	o.GetVisibility()
+}
+
 func TestOrgStats_GetDisabledOrgs(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -48117,6 +48152,22 @@ func TestSecret_GetVisibility(tt *testing.T) {
 	s.GetVisibility()
 	s = nil
 	s.GetVisibility()
+}
+
+func TestSecretRequest_GetEncryptedValue(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretRequest{}
+	s.GetEncryptedValue()
+	s = nil
+	s.GetEncryptedValue()
+}
+
+func TestSecretRequest_GetKeyID(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretRequest{}
+	s.GetKeyID()
+	s = nil
+	s.GetKeyID()
 }
 
 func TestSecrets_GetSecrets(tt *testing.T) {

@@ -396,7 +396,7 @@ func TestActionsService_ListEnvSecretsIter(t *testing.T) {
 		}
 	})
 
-	iter := client.Actions.ListEnvSecretsIter(t.Context(), 0, "", nil)
+	iter := client.Actions.ListEnvSecretsIter(t.Context(), "", "", "", nil)
 	var gotItems int
 	for _, err := range iter {
 		gotItems++
@@ -409,7 +409,7 @@ func TestActionsService_ListEnvSecretsIter(t *testing.T) {
 	}
 
 	opts := &ListOptions{}
-	iter = client.Actions.ListEnvSecretsIter(t.Context(), 0, "", opts)
+	iter = client.Actions.ListEnvSecretsIter(t.Context(), "", "", "", opts)
 	gotItems = 0
 	for _, err := range iter {
 		gotItems++
@@ -421,7 +421,7 @@ func TestActionsService_ListEnvSecretsIter(t *testing.T) {
 		t.Errorf("client.Actions.ListEnvSecretsIter call 2 got %v items; want %v", gotItems, want)
 	}
 
-	iter = client.Actions.ListEnvSecretsIter(t.Context(), 0, "", nil)
+	iter = client.Actions.ListEnvSecretsIter(t.Context(), "", "", "", nil)
 	gotItems = 0
 	for _, err := range iter {
 		gotItems++
@@ -433,7 +433,7 @@ func TestActionsService_ListEnvSecretsIter(t *testing.T) {
 		t.Errorf("client.Actions.ListEnvSecretsIter call 3 got %v items; want 1 (an error)", gotItems)
 	}
 
-	iter = client.Actions.ListEnvSecretsIter(t.Context(), 0, "", nil)
+	iter = client.Actions.ListEnvSecretsIter(t.Context(), "", "", "", nil)
 	gotItems = 0
 	iter(func(item *Secret, err error) bool {
 		gotItems++
