@@ -64,6 +64,11 @@ type Team struct {
 	// Type identifies the ownership type of the team
 	// Possible values are: "organization", "enterprise".
 	Type *string `json:"type,omitempty"`
+
+	// AccessSource identifies the source of the team's access to a specific
+	// repository. Possible values are: "direct", "organization" or "enterprise".
+	// This is only populated when calling [RepositoriesService.ListTeams].
+	AccessSource *string `json:"access_source,omitempty"`
 }
 
 func (t Team) String() string {

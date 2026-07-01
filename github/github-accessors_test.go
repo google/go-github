@@ -50977,6 +50977,17 @@ func TestTaskStep_GetStatus(tt *testing.T) {
 	t.GetStatus()
 }
 
+func TestTeam_GetAccessSource(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	t := &Team{AccessSource: &zeroValue}
+	t.GetAccessSource()
+	t = &Team{}
+	t.GetAccessSource()
+	t = nil
+	t.GetAccessSource()
+}
+
 func TestTeam_GetAssignment(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
