@@ -178,7 +178,7 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 
 	name := "NAME"
 	input := ActionsVariableUpdateRequest{
-		Name:  Ptr(name),
+		Name:  &name,
 		Value: Ptr("VALUE"),
 	}
 
@@ -358,7 +358,7 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 
 	name := "NAME"
 	input := OrgActionsVariableUpdateRequest{
-		Name:                  Ptr(name),
+		Name:                  &name,
 		Value:                 Ptr("VALUE"),
 		Visibility:            Ptr("selected"),
 		SelectedRepositoryIDs: []int64{1296269, 1269280},
@@ -677,7 +677,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 
 	name := "NAME"
 	input := ActionsVariableUpdateRequest{
-		Name:  Ptr(name),
+		Name:  &name,
 		Value: Ptr("VAR"),
 	}
 
