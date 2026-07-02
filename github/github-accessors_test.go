@@ -645,7 +645,10 @@ func TestActionsVariables_GetVariables(tt *testing.T) {
 
 func TestActionsVariableUpdateRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	a := &ActionsVariableUpdateRequest{}
+	var zeroValue string
+	a := &ActionsVariableUpdateRequest{Name: &zeroValue}
+	a.GetName()
+	a = &ActionsVariableUpdateRequest{}
 	a.GetName()
 	a = nil
 	a.GetName()
@@ -653,7 +656,10 @@ func TestActionsVariableUpdateRequest_GetName(tt *testing.T) {
 
 func TestActionsVariableUpdateRequest_GetValue(tt *testing.T) {
 	tt.Parallel()
-	a := &ActionsVariableUpdateRequest{}
+	var zeroValue string
+	a := &ActionsVariableUpdateRequest{Value: &zeroValue}
+	a.GetValue()
+	a = &ActionsVariableUpdateRequest{}
 	a.GetValue()
 	a = nil
 	a.GetValue()
@@ -31575,7 +31581,10 @@ func TestOrgActionsVariableCreateRequest_GetVisibility(tt *testing.T) {
 
 func TestOrgActionsVariableUpdateRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	o := &OrgActionsVariableUpdateRequest{}
+	var zeroValue string
+	o := &OrgActionsVariableUpdateRequest{Name: &zeroValue}
+	o.GetName()
+	o = &OrgActionsVariableUpdateRequest{}
 	o.GetName()
 	o = nil
 	o.GetName()
@@ -31594,7 +31603,10 @@ func TestOrgActionsVariableUpdateRequest_GetSelectedRepositoryIDs(tt *testing.T)
 
 func TestOrgActionsVariableUpdateRequest_GetValue(tt *testing.T) {
 	tt.Parallel()
-	o := &OrgActionsVariableUpdateRequest{}
+	var zeroValue string
+	o := &OrgActionsVariableUpdateRequest{Value: &zeroValue}
+	o.GetValue()
+	o = &OrgActionsVariableUpdateRequest{}
 	o.GetValue()
 	o = nil
 	o.GetValue()
@@ -31602,7 +31614,10 @@ func TestOrgActionsVariableUpdateRequest_GetValue(tt *testing.T) {
 
 func TestOrgActionsVariableUpdateRequest_GetVisibility(tt *testing.T) {
 	tt.Parallel()
-	o := &OrgActionsVariableUpdateRequest{}
+	var zeroValue string
+	o := &OrgActionsVariableUpdateRequest{Visibility: &zeroValue}
+	o.GetVisibility()
+	o = &OrgActionsVariableUpdateRequest{}
 	o.GetVisibility()
 	o = nil
 	o.GetVisibility()

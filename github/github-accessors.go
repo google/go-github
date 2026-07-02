@@ -510,20 +510,20 @@ func (a *ActionsVariables) GetVariables() []*ActionsVariable {
 	return a.Variables
 }
 
-// GetName returns the Name field.
+// GetName returns the Name field if it's non-nil, zero value otherwise.
 func (a *ActionsVariableUpdateRequest) GetName() string {
-	if a == nil {
+	if a == nil || a.Name == nil {
 		return ""
 	}
-	return a.Name
+	return *a.Name
 }
 
-// GetValue returns the Value field.
+// GetValue returns the Value field if it's non-nil, zero value otherwise.
 func (a *ActionsVariableUpdateRequest) GetValue() string {
-	if a == nil {
+	if a == nil || a.Value == nil {
 		return ""
 	}
-	return a.Value
+	return *a.Value
 }
 
 // GetMaximumAdvancedSecurityCommitters returns the MaximumAdvancedSecurityCommitters field if it's non-nil, zero value otherwise.
@@ -25158,12 +25158,12 @@ func (o *OrgActionsVariableCreateRequest) GetVisibility() string {
 	return o.Visibility
 }
 
-// GetName returns the Name field.
+// GetName returns the Name field if it's non-nil, zero value otherwise.
 func (o *OrgActionsVariableUpdateRequest) GetName() string {
-	if o == nil {
+	if o == nil || o.Name == nil {
 		return ""
 	}
-	return o.Name
+	return *o.Name
 }
 
 // GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
@@ -25174,20 +25174,20 @@ func (o *OrgActionsVariableUpdateRequest) GetSelectedRepositoryIDs() []int64 {
 	return o.SelectedRepositoryIDs
 }
 
-// GetValue returns the Value field.
+// GetValue returns the Value field if it's non-nil, zero value otherwise.
 func (o *OrgActionsVariableUpdateRequest) GetValue() string {
-	if o == nil {
+	if o == nil || o.Value == nil {
 		return ""
 	}
-	return o.Value
+	return *o.Value
 }
 
-// GetVisibility returns the Visibility field.
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
 func (o *OrgActionsVariableUpdateRequest) GetVisibility() string {
-	if o == nil {
+	if o == nil || o.Visibility == nil {
 		return ""
 	}
-	return o.Visibility
+	return *o.Visibility
 }
 
 // GetAdvancedSecurityEnabledForNewRepos returns the AdvancedSecurityEnabledForNewRepos field if it's non-nil, zero value otherwise.
