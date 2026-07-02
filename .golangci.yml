@@ -243,7 +243,6 @@ linters:
             - MaintenanceOptions
             - Milestone
             - NewPullRequest
-            - OIDCSubjectClaimCustomTemplate
             - Organization
             - PagesUpdate
             - PagesUpdateWithoutCNAME

@@ -87,7 +87,7 @@ func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &OIDCSubjectClaimCustomTemplate{
+	input := OIDCSubjectClaimCustomTemplate{
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
 
@@ -120,7 +120,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &OIDCSubjectClaimCustomTemplate{
+	input := OIDCSubjectClaimCustomTemplate{
 		UseDefault:       Ptr(false),
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
@@ -154,7 +154,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testin
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &OIDCSubjectClaimCustomTemplate{
+	input := OIDCSubjectClaimCustomTemplate{
 		UseDefault: Ptr(true),
 	}
 
