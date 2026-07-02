@@ -454,14 +454,6 @@ func (a *ActionsVariable) GetSelectedRepositoriesURL() string {
 	return *a.SelectedRepositoriesURL
 }
 
-// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs field.
-func (a *ActionsVariable) GetSelectedRepositoryIDs() *SelectedRepoIDs {
-	if a == nil {
-		return nil
-	}
-	return a.SelectedRepositoryIDs
-}
-
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
 func (a *ActionsVariable) GetUpdatedAt() Timestamp {
 	if a == nil || a.UpdatedAt == nil {
@@ -486,6 +478,22 @@ func (a *ActionsVariable) GetVisibility() string {
 	return *a.Visibility
 }
 
+// GetName returns the Name field.
+func (a *ActionsVariableCreateRequest) GetName() string {
+	if a == nil {
+		return ""
+	}
+	return a.Name
+}
+
+// GetValue returns the Value field.
+func (a *ActionsVariableCreateRequest) GetValue() string {
+	if a == nil {
+		return ""
+	}
+	return a.Value
+}
+
 // GetTotalCount returns the TotalCount field.
 func (a *ActionsVariables) GetTotalCount() int {
 	if a == nil {
@@ -500,6 +508,22 @@ func (a *ActionsVariables) GetVariables() []*ActionsVariable {
 		return nil
 	}
 	return a.Variables
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *ActionsVariableUpdateRequest) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
+// GetValue returns the Value field if it's non-nil, zero value otherwise.
+func (a *ActionsVariableUpdateRequest) GetValue() string {
+	if a == nil || a.Value == nil {
+		return ""
+	}
+	return *a.Value
 }
 
 // GetMaximumAdvancedSecurityCommitters returns the MaximumAdvancedSecurityCommitters field if it's non-nil, zero value otherwise.
@@ -25100,6 +25124,70 @@ func (o *OIDCSubjectClaimCustomTemplate) GetUseDefault() bool {
 		return false
 	}
 	return *o.UseDefault
+}
+
+// GetName returns the Name field.
+func (o *OrgActionsVariableCreateRequest) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
+func (o *OrgActionsVariableCreateRequest) GetSelectedRepositoryIDs() []int64 {
+	if o == nil || o.SelectedRepositoryIDs == nil {
+		return nil
+	}
+	return o.SelectedRepositoryIDs
+}
+
+// GetValue returns the Value field.
+func (o *OrgActionsVariableCreateRequest) GetValue() string {
+	if o == nil {
+		return ""
+	}
+	return o.Value
+}
+
+// GetVisibility returns the Visibility field.
+func (o *OrgActionsVariableCreateRequest) GetVisibility() string {
+	if o == nil {
+		return ""
+	}
+	return o.Visibility
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (o *OrgActionsVariableUpdateRequest) GetName() string {
+	if o == nil || o.Name == nil {
+		return ""
+	}
+	return *o.Name
+}
+
+// GetSelectedRepositoryIDs returns the SelectedRepositoryIDs slice if it's non-nil, nil otherwise.
+func (o *OrgActionsVariableUpdateRequest) GetSelectedRepositoryIDs() []int64 {
+	if o == nil || o.SelectedRepositoryIDs == nil {
+		return nil
+	}
+	return o.SelectedRepositoryIDs
+}
+
+// GetValue returns the Value field if it's non-nil, zero value otherwise.
+func (o *OrgActionsVariableUpdateRequest) GetValue() string {
+	if o == nil || o.Value == nil {
+		return ""
+	}
+	return *o.Value
+}
+
+// GetVisibility returns the Visibility field if it's non-nil, zero value otherwise.
+func (o *OrgActionsVariableUpdateRequest) GetVisibility() string {
+	if o == nil || o.Visibility == nil {
+		return ""
+	}
+	return *o.Visibility
 }
 
 // GetAdvancedSecurityEnabledForNewRepos returns the AdvancedSecurityEnabledForNewRepos field if it's non-nil, zero value otherwise.
