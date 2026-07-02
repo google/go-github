@@ -176,9 +176,10 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	name := "NAME"
 	input := ActionsVariableUpdateRequest{
-		Name:  "NAME",
-		Value: "VALUE",
+		Name:  Ptr(name),
+		Value: Ptr("VALUE"),
 	}
 
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
@@ -189,7 +190,7 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.UpdateRepoVariable(ctx, "o", "r", input.Name, input)
+	_, err := client.Actions.UpdateRepoVariable(ctx, "o", "r", name, input)
 	if err != nil {
 		t.Errorf("Actions.UpdateRepoVariable returned error: %v", err)
 	}
@@ -201,7 +202,7 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.UpdateRepoVariable(ctx, "o", "r", input.Name, input)
+		return client.Actions.UpdateRepoVariable(ctx, "o", "r", name, input)
 	})
 }
 
@@ -355,10 +356,11 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	name := "NAME"
 	input := OrgActionsVariableUpdateRequest{
-		Name:                  "NAME",
-		Value:                 "VALUE",
-		Visibility:            "selected",
+		Name:                  Ptr(name),
+		Value:                 Ptr("VALUE"),
+		Visibility:            Ptr("selected"),
 		SelectedRepositoryIDs: []int64{1296269, 1269280},
 	}
 
@@ -370,7 +372,7 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.UpdateOrgVariable(ctx, "o", input.Name, input)
+	_, err := client.Actions.UpdateOrgVariable(ctx, "o", name, input)
 	if err != nil {
 		t.Errorf("Actions.UpdateOrgVariable returned error: %v", err)
 	}
@@ -382,7 +384,7 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.UpdateOrgVariable(ctx, "o", input.Name, input)
+		return client.Actions.UpdateOrgVariable(ctx, "o", name, input)
 	})
 }
 
@@ -600,19 +602,19 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"name":"variable","value":"VAR","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
+		fmt.Fprint(w, `{"name":"NAME","value":"VAR","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 	})
 
 	ctx := t.Context()
-	variable, _, err := client.Actions.GetEnvVariable(ctx, "o", "r", "e", "variable")
+	variable, _, err := client.Actions.GetEnvVariable(ctx, "o", "r", "e", "NAME")
 	if err != nil {
 		t.Errorf("Actions.GetEnvVariable returned error: %v", err)
 	}
 
 	want := &ActionsVariable{
-		Name:      "variable",
+		Name:      "NAME",
 		Value:     "VAR",
 		CreatedAt: refTimestamp(1136178000),
 		UpdatedAt: refTimestamp(1136178001),
@@ -628,7 +630,7 @@ func TestActionsService_GetEnvVariable(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetEnvVariable(ctx, "o", "r", "e", "variable")
+		got, resp, err := client.Actions.GetEnvVariable(ctx, "o", "r", "e", "NAME")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -641,7 +643,7 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := ActionsVariableCreateRequest{
-		Name:  "variable",
+		Name:  "NAME",
 		Value: "VAR",
 	}
 
@@ -673,12 +675,13 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	name := "NAME"
 	input := ActionsVariableUpdateRequest{
-		Name:  "variable",
-		Value: "VAR",
+		Name:  Ptr(name),
+		Value: Ptr("VAR"),
 	}
 
-	mux.HandleFunc("/repos/o/r/environments/e/variables/variable", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testHeader(t, r, "Content-Type", "application/json")
 		testJSONBody(t, r, input)
@@ -686,7 +689,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.UpdateEnvVariable(ctx, "o", "r", "e", input.Name, input)
+	_, err := client.Actions.UpdateEnvVariable(ctx, "o", "r", "e", name, input)
 	if err != nil {
 		t.Errorf("Actions.UpdateEnvVariable returned error: %v", err)
 	}
@@ -698,7 +701,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.UpdateEnvVariable(ctx, "o", "r", "e", input.Name, input)
+		return client.Actions.UpdateEnvVariable(ctx, "o", "r", "e", name, input)
 	})
 }
 
@@ -706,12 +709,12 @@ func TestActionsService_DeleteEnvVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repos/o/r/environments/e/variables/variable", func(_ http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/variables/NAME", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.DeleteEnvVariable(ctx, "o", "r", "e", "variable")
+	_, err := client.Actions.DeleteEnvVariable(ctx, "o", "r", "e", "NAME")
 	if err != nil {
 		t.Errorf("Actions.DeleteEnvVariable returned error: %v", err)
 	}
@@ -723,6 +726,6 @@ func TestActionsService_DeleteEnvVariable(t *testing.T) {
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.DeleteEnvVariable(ctx, "o", "r", "e", "variable")
+		return client.Actions.DeleteEnvVariable(ctx, "o", "r", "e", "NAME")
 	})
 }
