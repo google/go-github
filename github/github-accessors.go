@@ -25118,12 +25118,28 @@ func (o *OIDCSubjectClaimCustomTemplate) GetIncludeClaimKeys() []string {
 	return o.IncludeClaimKeys
 }
 
+// GetSubClaimPrefix returns the SubClaimPrefix field if it's non-nil, zero value otherwise.
+func (o *OIDCSubjectClaimCustomTemplate) GetSubClaimPrefix() string {
+	if o == nil || o.SubClaimPrefix == nil {
+		return ""
+	}
+	return *o.SubClaimPrefix
+}
+
 // GetUseDefault returns the UseDefault field if it's non-nil, zero value otherwise.
 func (o *OIDCSubjectClaimCustomTemplate) GetUseDefault() bool {
 	if o == nil || o.UseDefault == nil {
 		return false
 	}
 	return *o.UseDefault
+}
+
+// GetUseImmutableSubject returns the UseImmutableSubject field if it's non-nil, zero value otherwise.
+func (o *OIDCSubjectClaimCustomTemplate) GetUseImmutableSubject() bool {
+	if o == nil || o.UseImmutableSubject == nil {
+		return false
+	}
+	return *o.UseImmutableSubject
 }
 
 // GetName returns the Name field.
