@@ -472,7 +472,7 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := OrgSecretRequest{
+	input := SecretOrgRequest{
 		KeyID:                 "1234",
 		EncryptedValue:        "QIv=",
 		Visibility:            "selected",
@@ -482,7 +482,7 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		want := OrgSecretRequest{
+		want := SecretOrgRequest{
 			KeyID:                 "1234",
 			EncryptedValue:        "QIv=",
 			Visibility:            "selected",
