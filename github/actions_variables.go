@@ -23,9 +23,9 @@ type OrgActionsVariableCreateRequest struct {
 // OrgActionsVariableUpdateRequest represents a request to update an
 // organization variable.
 type OrgActionsVariableUpdateRequest struct {
-	Name                  string  `json:"name,omitempty"`
-	Value                 string  `json:"value,omitempty"`
-	Visibility            string  `json:"visibility,omitempty"`
+	Name                  *string `json:"name,omitempty"`
+	Value                 *string `json:"value,omitempty"`
+	Visibility            *string `json:"visibility,omitempty"`
 	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitzero"`
 }
 
@@ -39,8 +39,8 @@ type ActionsVariableCreateRequest struct {
 // ActionsVariableUpdateRequest represents a request to update a variable
 // for a repository or repository environment variable.
 type ActionsVariableUpdateRequest struct {
-	Name  string `json:"name,omitempty"`
-	Value string `json:"value,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 // ActionsVariable represents a repository action variable.
