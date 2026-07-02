@@ -19134,6 +19134,110 @@ func (i *InstallationPermissions) GetEmails() string {
 	return *i.Emails
 }
 
+// GetEnterpriseAIControls returns the EnterpriseAIControls field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseAIControls() string {
+	if i == nil || i.EnterpriseAIControls == nil {
+		return ""
+	}
+	return *i.EnterpriseAIControls
+}
+
+// GetEnterpriseCopilotMetrics returns the EnterpriseCopilotMetrics field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseCopilotMetrics() string {
+	if i == nil || i.EnterpriseCopilotMetrics == nil {
+		return ""
+	}
+	return *i.EnterpriseCopilotMetrics
+}
+
+// GetEnterpriseCredentials returns the EnterpriseCredentials field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseCredentials() string {
+	if i == nil || i.EnterpriseCredentials == nil {
+		return ""
+	}
+	return *i.EnterpriseCredentials
+}
+
+// GetEnterpriseCustomEnterpriseRoles returns the EnterpriseCustomEnterpriseRoles field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseCustomEnterpriseRoles() string {
+	if i == nil || i.EnterpriseCustomEnterpriseRoles == nil {
+		return ""
+	}
+	return *i.EnterpriseCustomEnterpriseRoles
+}
+
+// GetEnterpriseCustomOrgRoles returns the EnterpriseCustomOrgRoles field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseCustomOrgRoles() string {
+	if i == nil || i.EnterpriseCustomOrgRoles == nil {
+		return ""
+	}
+	return *i.EnterpriseCustomOrgRoles
+}
+
+// GetEnterpriseCustomProperties returns the EnterpriseCustomProperties field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseCustomProperties() string {
+	if i == nil || i.EnterpriseCustomProperties == nil {
+		return ""
+	}
+	return *i.EnterpriseCustomProperties
+}
+
+// GetEnterpriseCustomPropertiesForOrgs returns the EnterpriseCustomPropertiesForOrgs field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseCustomPropertiesForOrgs() string {
+	if i == nil || i.EnterpriseCustomPropertiesForOrgs == nil {
+		return ""
+	}
+	return *i.EnterpriseCustomPropertiesForOrgs
+}
+
+// GetEnterpriseOrganizationInstallations returns the EnterpriseOrganizationInstallations field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseOrganizationInstallations() string {
+	if i == nil || i.EnterpriseOrganizationInstallations == nil {
+		return ""
+	}
+	return *i.EnterpriseOrganizationInstallations
+}
+
+// GetEnterpriseOrganizations returns the EnterpriseOrganizations field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseOrganizations() string {
+	if i == nil || i.EnterpriseOrganizations == nil {
+		return ""
+	}
+	return *i.EnterpriseOrganizations
+}
+
+// GetEnterpriseOrgInstallationRepos returns the EnterpriseOrgInstallationRepos field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseOrgInstallationRepos() string {
+	if i == nil || i.EnterpriseOrgInstallationRepos == nil {
+		return ""
+	}
+	return *i.EnterpriseOrgInstallationRepos
+}
+
+// GetEnterprisePeople returns the EnterprisePeople field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterprisePeople() string {
+	if i == nil || i.EnterprisePeople == nil {
+		return ""
+	}
+	return *i.EnterprisePeople
+}
+
+// GetEnterpriseSSO returns the EnterpriseSSO field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseSSO() string {
+	if i == nil || i.EnterpriseSSO == nil {
+		return ""
+	}
+	return *i.EnterpriseSSO
+}
+
+// GetEnterpriseTeams returns the EnterpriseTeams field if it's non-nil, zero value otherwise.
+func (i *InstallationPermissions) GetEnterpriseTeams() string {
+	if i == nil || i.EnterpriseTeams == nil {
+		return ""
+	}
+	return *i.EnterpriseTeams
+}
+
 // GetEnvironments returns the Environments field if it's non-nil, zero value otherwise.
 func (i *InstallationPermissions) GetEnvironments() string {
 	if i == nil || i.Environments == nil {
