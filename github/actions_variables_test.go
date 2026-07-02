@@ -143,7 +143,7 @@ func TestActionsService_CreateRepoVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := ActionsVariableRequest{
+	input := ActionsVariableCreateRequest{
 		Name:  "NAME",
 		Value: "VALUE",
 	}
@@ -176,7 +176,7 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := ActionsVariableRequest{
+	input := ActionsVariableUpdateRequest{
 		Name:  "NAME",
 		Value: "VALUE",
 	}
@@ -320,7 +320,7 @@ func TestActionsService_CreateOrgVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := OrgActionsVariableRequest{
+	input := OrgActionsVariableCreateRequest{
 		Name:                  "NAME",
 		Value:                 "VALUE",
 		Visibility:            "selected",
@@ -355,7 +355,7 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := OrgActionsVariableRequest{
+	input := OrgActionsVariableUpdateRequest{
 		Name:                  "NAME",
 		Value:                 "VALUE",
 		Visibility:            "selected",
@@ -640,7 +640,7 @@ func TestActionsService_CreateEnvVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := ActionsVariableRequest{
+	input := ActionsVariableCreateRequest{
 		Name:  "variable",
 		Value: "VAR",
 	}
@@ -673,7 +673,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := ActionsVariableRequest{
+	input := ActionsVariableUpdateRequest{
 		Name:  "variable",
 		Value: "VAR",
 	}

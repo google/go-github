@@ -608,17 +608,17 @@ func TestActionsVariable_GetVisibility(tt *testing.T) {
 	a.GetVisibility()
 }
 
-func TestActionsVariableRequest_GetName(tt *testing.T) {
+func TestActionsVariableCreateRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	a := &ActionsVariableRequest{}
+	a := &ActionsVariableCreateRequest{}
 	a.GetName()
 	a = nil
 	a.GetName()
 }
 
-func TestActionsVariableRequest_GetValue(tt *testing.T) {
+func TestActionsVariableCreateRequest_GetValue(tt *testing.T) {
 	tt.Parallel()
-	a := &ActionsVariableRequest{}
+	a := &ActionsVariableCreateRequest{}
 	a.GetValue()
 	a = nil
 	a.GetValue()
@@ -641,6 +641,22 @@ func TestActionsVariables_GetVariables(tt *testing.T) {
 	a.GetVariables()
 	a = nil
 	a.GetVariables()
+}
+
+func TestActionsVariableUpdateRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsVariableUpdateRequest{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestActionsVariableUpdateRequest_GetValue(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsVariableUpdateRequest{}
+	a.GetValue()
+	a = nil
+	a.GetValue()
 }
 
 func TestActiveCommitters_GetMaximumAdvancedSecurityCommitters(tt *testing.T) {
@@ -31522,36 +31538,71 @@ func TestOIDCSubjectClaimCustomTemplate_GetUseDefault(tt *testing.T) {
 	o.GetUseDefault()
 }
 
-func TestOrgActionsVariableRequest_GetName(tt *testing.T) {
+func TestOrgActionsVariableCreateRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	o := &OrgActionsVariableRequest{}
+	o := &OrgActionsVariableCreateRequest{}
 	o.GetName()
 	o = nil
 	o.GetName()
 }
 
-func TestOrgActionsVariableRequest_GetSelectedRepositoryIDs(tt *testing.T) {
+func TestOrgActionsVariableCreateRequest_GetSelectedRepositoryIDs(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []int64{}
-	o := &OrgActionsVariableRequest{SelectedRepositoryIDs: zeroValue}
+	o := &OrgActionsVariableCreateRequest{SelectedRepositoryIDs: zeroValue}
 	o.GetSelectedRepositoryIDs()
-	o = &OrgActionsVariableRequest{}
+	o = &OrgActionsVariableCreateRequest{}
 	o.GetSelectedRepositoryIDs()
 	o = nil
 	o.GetSelectedRepositoryIDs()
 }
 
-func TestOrgActionsVariableRequest_GetValue(tt *testing.T) {
+func TestOrgActionsVariableCreateRequest_GetValue(tt *testing.T) {
 	tt.Parallel()
-	o := &OrgActionsVariableRequest{}
+	o := &OrgActionsVariableCreateRequest{}
 	o.GetValue()
 	o = nil
 	o.GetValue()
 }
 
-func TestOrgActionsVariableRequest_GetVisibility(tt *testing.T) {
+func TestOrgActionsVariableCreateRequest_GetVisibility(tt *testing.T) {
 	tt.Parallel()
-	o := &OrgActionsVariableRequest{}
+	o := &OrgActionsVariableCreateRequest{}
+	o.GetVisibility()
+	o = nil
+	o.GetVisibility()
+}
+
+func TestOrgActionsVariableUpdateRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	o := &OrgActionsVariableUpdateRequest{}
+	o.GetName()
+	o = nil
+	o.GetName()
+}
+
+func TestOrgActionsVariableUpdateRequest_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	o := &OrgActionsVariableUpdateRequest{SelectedRepositoryIDs: zeroValue}
+	o.GetSelectedRepositoryIDs()
+	o = &OrgActionsVariableUpdateRequest{}
+	o.GetSelectedRepositoryIDs()
+	o = nil
+	o.GetSelectedRepositoryIDs()
+}
+
+func TestOrgActionsVariableUpdateRequest_GetValue(tt *testing.T) {
+	tt.Parallel()
+	o := &OrgActionsVariableUpdateRequest{}
+	o.GetValue()
+	o = nil
+	o.GetValue()
+}
+
+func TestOrgActionsVariableUpdateRequest_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	o := &OrgActionsVariableUpdateRequest{}
 	o.GetVisibility()
 	o = nil
 	o.GetVisibility()
