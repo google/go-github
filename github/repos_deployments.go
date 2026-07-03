@@ -172,7 +172,10 @@ type DeploymentStatus struct {
 
 // DeploymentStatusRequest represents a deployment status request.
 type DeploymentStatusRequest struct {
-	State          string  `json:"state"`
+	State string `json:"state"`
+	// TargetURL is the target URL to associate with this status.
+	// It's recommended to use LogURL instead, which replaces TargetURL.
+	TargetURL      *string `json:"target_url,omitempty"`
 	LogURL         *string `json:"log_url,omitempty"`
 	Description    *string `json:"description,omitempty"`
 	Environment    *string `json:"environment,omitempty"`

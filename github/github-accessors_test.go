@@ -17439,6 +17439,17 @@ func TestDeploymentStatusRequest_GetState(tt *testing.T) {
 	d.GetState()
 }
 
+func TestDeploymentStatusRequest_GetTargetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DeploymentStatusRequest{TargetURL: &zeroValue}
+	d.GetTargetURL()
+	d = &DeploymentStatusRequest{}
+	d.GetTargetURL()
+	d = nil
+	d.GetTargetURL()
+}
+
 func TestDevContainer_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

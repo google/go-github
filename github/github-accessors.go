@@ -13790,6 +13790,14 @@ func (d *DeploymentStatusRequest) GetState() string {
 	return d.State
 }
 
+// GetTargetURL returns the TargetURL field if it's non-nil, zero value otherwise.
+func (d *DeploymentStatusRequest) GetTargetURL() string {
+	if d == nil || d.TargetURL == nil {
+		return ""
+	}
+	return *d.TargetURL
+}
+
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
 func (d *DevContainer) GetDisplayName() string {
 	if d == nil || d.DisplayName == nil {
