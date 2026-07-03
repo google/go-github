@@ -70,7 +70,7 @@ func deprecateOperations(descs []*openapiFile, ops []*operation) {
 		}
 	}
 
-	ghesLatest := fmt.Sprintf("/ghes-%d.%d", ghesLatestMajor, ghesLatestMinor)
+	ghesLatest := fmt.Sprintf("/ghes-%v.%v", ghesLatestMajor, ghesLatestMinor)
 
 	for _, op := range ops {
 		if op.Deprecated {
