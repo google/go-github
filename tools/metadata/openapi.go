@@ -58,8 +58,7 @@ func getOpsFromGithub(ctx context.Context, client *github.Client, gitRef string)
 }
 
 func deprecateOperations(descs []*openapiFile, ops []*operation) {
-	ghesLatestMajor := 0
-	ghesLatestMinor := 0
+	var ghesLatestMajor, ghesLatestMinor int
 
 	for _, desc := range descs {
 		if strings.Contains(desc.filename, "/ghes") {
@@ -77,7 +76,7 @@ func deprecateOperations(descs []*openapiFile, ops []*operation) {
 			continue
 		}
 
-		latest := false
+		var latest bool
 		for _, f := range op.OpenAPIFiles {
 			if strings.Contains(f, "/api.github.com") {
 				latest = true
