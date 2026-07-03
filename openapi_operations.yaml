@@ -8,6 +8,48 @@ operations:
   - name: POST /hub
     documentation_url: https://docs.github.com/webhooks/about-webhooks-for-repositories#pubsubhubbub
   - name: GET /organizations/{organization_id}
+  - name: DELETE /organizations/{organization_id}/team/{team_id}
+    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#delete-a-team
+  - name: GET /organizations/{organization_id}/team/{team_id}
+    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#get-a-team-by-name
+  - name: PATCH /organizations/{organization_id}/team/{team_id}
+    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#update-a-team
+  - name: GET /organizations/{organization_id}/team/{team_id}/invitations
+    documentation_url: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-pending-team-invitations
+  - name: GET /organizations/{organization_id}/team/{team_id}/members
+    documentation_url: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-team-members
+  - name: DELETE /organizations/{organization_id}/team/{team_id}/memberships/{username}
+    documentation_url: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#remove-team-membership-for-a-user
+  - name: GET /organizations/{organization_id}/team/{team_id}/memberships/{username}
+    documentation_url: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#get-team-membership-for-a-user
+  - name: PUT /organizations/{organization_id}/team/{team_id}/memberships/{username}
+    documentation_url: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
+  - name: GET /organizations/{organization_id}/team/{team_id}/projects
+    documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#list-team-projects
+    deprecated: true
+  - name: DELETE /organizations/{organization_id}/team/{team_id}/projects/{project_id}
+    documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#remove-a-project-from-a-team
+    deprecated: true
+  - name: GET /organizations/{organization_id}/team/{team_id}/projects/{project_id}
+    documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#check-team-permissions-for-a-project
+    deprecated: true
+  - name: PUT /organizations/{organization_id}/team/{team_id}/projects/{project_id}
+    documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions
+    deprecated: true
+  - name: GET /organizations/{organization_id}/team/{team_id}/repos
+    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#list-team-repositories
+  - name: DELETE /organizations/{organization_id}/team/{team_id}/repos/{owner}/{repo}
+    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#remove-a-repository-from-a-team
+  - name: GET /organizations/{organization_id}/team/{team_id}/repos/{owner}/{repo}
+    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#check-team-permissions-for-a-repository
+  - name: PUT /organizations/{organization_id}/team/{team_id}/repos/{owner}/{repo}
+    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#add-or-update-team-repository-permissions
+  - name: GET /organizations/{organization_id}/team/{team_id}/team-sync/group-mappings
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#list-idp-groups-for-a-team
+  - name: PATCH /organizations/{organization_id}/team/{team_id}/team-sync/group-mappings
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#create-or-update-idp-group-connections
+  - name: GET /organizations/{organization_id}/team/{team_id}/teams
+    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#list-child-teams
   - name: GET /orgs/{org}/copilot/metrics
     documentation_url: https://docs.github.com/rest/copilot/copilot-metrics?apiVersion=2022-11-28#get-copilot-metrics-for-an-organization
     deprecated: true
@@ -22,48 +64,6 @@ operations:
     documentation_url: https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
   - name: GET /repositories/{repository_id}
   - name: GET /repositories/{repository_id}/installation
-  - name: GET /organizations/{organization_id}/team/{team_id}
-    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#get-a-team-by-name
-  - name: PATCH /organizations/{organization_id}/team/{team_id}
-    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#update-a-team
-  - name: DELETE /organizations/{organization_id}/team/{team_id}
-    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#delete-a-team
-  - name: GET /organizations/{organization_id}/team/{team_id}/teams
-    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#list-child-teams
-  - name: GET /organizations/{organization_id}/team/{team_id}/repos
-    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#list-team-repositories
-  - name: GET /organizations/{organization_id}/team/{team_id}/repos/{owner}/{repo}
-    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#check-team-permissions-for-a-repository
-  - name: PUT /organizations/{organization_id}/team/{team_id}/repos/{owner}/{repo}
-    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#add-or-update-team-repository-permissions
-  - name: DELETE /organizations/{organization_id}/team/{team_id}/repos/{owner}/{repo}
-    documentation_url: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#remove-a-repository-from-a-team
-  - name: GET /organizations/{organization_id}/team/{team_id}/projects
-    documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#list-team-projects
-    deprecated: true
-  - name: GET /organizations/{organization_id}/team/{team_id}/projects/{project_id}
-    documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#check-team-permissions-for-a-project
-    deprecated: true
-  - name: PUT /organizations/{organization_id}/team/{team_id}/projects/{project_id}
-    documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#add-or-update-team-project-permissions
-    deprecated: true
-  - name: DELETE /organizations/{organization_id}/team/{team_id}/projects/{project_id}
-    documentation_url: https://docs.github.com/enterprise-server@3.16/rest/teams/teams#remove-a-project-from-a-team
-    deprecated: true
-  - name: GET /organizations/{organization_id}/team/{team_id}/team-sync/group-mappings
-    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#list-idp-groups-for-a-team
-  - name: PATCH /organizations/{organization_id}/team/{team_id}/team-sync/group-mappings
-    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/teams/team-sync?apiVersion=2022-11-28#create-or-update-idp-group-connections
-  - name: GET /organizations/{organization_id}/team/{team_id}/members
-    documentation_url: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-team-members
-  - name: GET /organizations/{organization_id}/team/{team_id}/memberships/{username}
-    documentation_url: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#get-team-membership-for-a-user
-  - name: PUT /organizations/{organization_id}/team/{team_id}/memberships/{username}
-    documentation_url: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
-  - name: DELETE /organizations/{organization_id}/team/{team_id}/memberships/{username}
-    documentation_url: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#remove-team-membership-for-a-user
-  - name: GET /organizations/{organization_id}/team/{team_id}/invitations
-    documentation_url: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-pending-team-invitations
 operation_overrides:
   - name: GET /meta
     documentation_url: https://docs.github.com/rest/meta/meta#get-github-meta-information
@@ -93,7 +93,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 3e08e45a052d4b8fe77fb5838c28652af9e89ecf
+openapi_commit: a70b6c5b86500ea35cb362ba0cbc940a7bb2155e
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -1181,8 +1181,16 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/copilot/usage-records
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics#get-copilot-usage-records-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: POST /enterprises/{enterprise}/credential-authorizations/revoke-all
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/credential-authorizations#revoke-all-credential-authorizations-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/credential-authorizations/{username}/revoke
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/credential-authorizations#revoke-credential-authorizations-for-a-user-in-an-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/dependabot/alerts
