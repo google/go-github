@@ -43,6 +43,8 @@ type DiscussionCommentListOptions struct {
 // ListCommentsByID lists all comments on a team discussion by team ID.
 // Authenticated user must grant read:discussion scope.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#list-discussion-comments
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
@@ -69,6 +71,8 @@ func (s *TeamsService) ListCommentsByID(ctx context.Context, orgID, teamID int64
 
 // ListCommentsBySlug lists all comments on a team discussion by team slug.
 // Authenticated user must grant read:discussion scope.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#list-discussion-comments
 //
@@ -97,6 +101,8 @@ func (s *TeamsService) ListCommentsBySlug(ctx context.Context, org, slug string,
 // GetCommentByID gets a specific comment on a team discussion by team ID.
 // Authenticated user must grant read:discussion scope.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#get-a-discussion-comment
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}
@@ -118,6 +124,8 @@ func (s *TeamsService) GetCommentByID(ctx context.Context, orgID, teamID int64, 
 
 // GetCommentBySlug gets a specific comment on a team discussion by team slug.
 // Authenticated user must grant read:discussion scope.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#get-a-discussion-comment
 //
@@ -142,6 +150,8 @@ func (s *TeamsService) GetCommentBySlug(ctx context.Context, org, slug string, d
 // CreateCommentByID creates a new comment on a team discussion by team ID.
 // Authenticated user must grant write:discussion scope.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#create-a-discussion-comment
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments
@@ -163,6 +173,8 @@ func (s *TeamsService) CreateCommentByID(ctx context.Context, orgID, teamID int6
 
 // CreateCommentBySlug creates a new comment on a team discussion by team slug.
 // Authenticated user must grant write:discussion scope.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#create-a-discussion-comment
 //
@@ -187,6 +199,8 @@ func (s *TeamsService) CreateCommentBySlug(ctx context.Context, org, slug string
 // Authenticated user must grant write:discussion scope.
 // User is allowed to edit body of a comment only.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#update-a-discussion-comment
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}
@@ -210,6 +224,8 @@ func (s *TeamsService) EditCommentByID(ctx context.Context, orgID, teamID int64,
 // Authenticated user must grant write:discussion scope.
 // User is allowed to edit body of a comment only.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#update-a-discussion-comment
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}
@@ -232,6 +248,8 @@ func (s *TeamsService) EditCommentBySlug(ctx context.Context, org, slug string, 
 // DeleteCommentByID deletes a comment on a team discussion by team ID.
 // Authenticated user must grant write:discussion scope.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#delete-a-discussion-comment
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}
@@ -247,6 +265,8 @@ func (s *TeamsService) DeleteCommentByID(ctx context.Context, orgID, teamID int6
 
 // DeleteCommentBySlug deletes a comment on a team discussion by team slug.
 // Authenticated user must grant write:discussion scope.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussion-comments#delete-a-discussion-comment
 //
