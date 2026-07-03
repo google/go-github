@@ -19,7 +19,7 @@ func TestActionsService_GetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"include_claim_keys":["repo","context"]}`)
+		fmt.Fprint(w, `{"include_claim_keys":["repo","context"],"use_immutable_subject":true}`)
 	})
 
 	ctx := t.Context()
@@ -28,7 +28,7 @@ func TestActionsService_GetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 		t.Errorf("Actions.GetOrgOIDCSubjectClaimCustomTemplate returned error: %v", err)
 	}
 
-	want := &OIDCSubjectClaimCustomTemplate{IncludeClaimKeys: []string{"repo", "context"}}
+	want := &OIDCSubjectClaimCustomTemplate{IncludeClaimKeys: []string{"repo", "context"}, UseImmutableSubject: Ptr(true)}
 	if !cmp.Equal(template, want) {
 		t.Errorf("Actions.GetOrgOIDCSubjectClaimCustomTemplate returned %+v, want %+v", template, want)
 	}
@@ -54,7 +54,7 @@ func TestActionsService_GetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"use_default":false,"include_claim_keys":["repo","context"]}`)
+		fmt.Fprint(w, `{"use_default":false,"include_claim_keys":["repo","context"],"use_immutable_subject":true,"sub_claim_prefix":"repo:o/r"}`)
 	})
 
 	ctx := t.Context()
@@ -63,7 +63,7 @@ func TestActionsService_GetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 		t.Errorf("Actions.GetRepoOIDCSubjectClaimCustomTemplate returned error: %v", err)
 	}
 
-	want := &OIDCSubjectClaimCustomTemplate{UseDefault: Ptr(false), IncludeClaimKeys: []string{"repo", "context"}}
+	want := &OIDCSubjectClaimCustomTemplate{UseDefault: Ptr(false), IncludeClaimKeys: []string{"repo", "context"}, UseImmutableSubject: Ptr(true), SubClaimPrefix: Ptr("repo:o/r")}
 	if !cmp.Equal(template, want) {
 		t.Errorf("Actions.GetRepoOIDCSubjectClaimCustomTemplate returned %+v, want %+v", template, want)
 	}
@@ -87,8 +87,9 @@ func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &OIDCSubjectClaimCustomTemplate{
-		IncludeClaimKeys: []string{"repo", "context"},
+	input := OIDCSubjectClaimCustomTemplate{
+		IncludeClaimKeys:    []string{"repo", "context"},
+		UseImmutableSubject: Ptr(true),
 	}
 
 	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
@@ -120,7 +121,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &OIDCSubjectClaimCustomTemplate{
+	input := OIDCSubjectClaimCustomTemplate{
 		UseDefault:       Ptr(false),
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
@@ -154,7 +155,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testin
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &OIDCSubjectClaimCustomTemplate{
+	input := OIDCSubjectClaimCustomTemplate{
 		UseDefault: Ptr(true),
 	}
 

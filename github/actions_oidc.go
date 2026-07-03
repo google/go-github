@@ -12,8 +12,10 @@ import (
 
 // OIDCSubjectClaimCustomTemplate represents an OIDC subject claim customization template.
 type OIDCSubjectClaimCustomTemplate struct {
-	UseDefault       *bool    `json:"use_default,omitempty"`
-	IncludeClaimKeys []string `json:"include_claim_keys,omitempty"`
+	UseDefault          *bool    `json:"use_default,omitempty"`
+	IncludeClaimKeys    []string `json:"include_claim_keys,omitempty"`
+	UseImmutableSubject *bool    `json:"use_immutable_subject,omitempty"`
+	SubClaimPrefix      *string  `json:"sub_claim_prefix,omitempty"`
 }
 
 // GetOrgOIDCSubjectClaimCustomTemplate gets the subject claim customization template for an organization.
@@ -56,7 +58,7 @@ func (s *ActionsService) getOIDCSubjectClaimCustomTemplate(ctx context.Context, 
 // GitHub API docs: https://docs.github.com/rest/actions/oidc?apiVersion=2022-11-28#set-the-customization-template-for-an-oidc-subject-claim-for-an-organization
 //
 //meta:operation PUT /orgs/{org}/actions/oidc/customization/sub
-func (s *ActionsService) SetOrgOIDCSubjectClaimCustomTemplate(ctx context.Context, org string, body *OIDCSubjectClaimCustomTemplate) (*Response, error) {
+func (s *ActionsService) SetOrgOIDCSubjectClaimCustomTemplate(ctx context.Context, org string, body OIDCSubjectClaimCustomTemplate) (*Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/oidc/customization/sub", org)
 	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, body)
 }
@@ -66,12 +68,12 @@ func (s *ActionsService) SetOrgOIDCSubjectClaimCustomTemplate(ctx context.Contex
 // GitHub API docs: https://docs.github.com/rest/actions/oidc?apiVersion=2022-11-28#set-the-customization-template-for-an-oidc-subject-claim-for-a-repository
 //
 //meta:operation PUT /repos/{owner}/{repo}/actions/oidc/customization/sub
-func (s *ActionsService) SetRepoOIDCSubjectClaimCustomTemplate(ctx context.Context, owner, repo string, template *OIDCSubjectClaimCustomTemplate) (*Response, error) {
+func (s *ActionsService) SetRepoOIDCSubjectClaimCustomTemplate(ctx context.Context, owner, repo string, body OIDCSubjectClaimCustomTemplate) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/oidc/customization/sub", owner, repo)
-	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, template)
+	return s.setOIDCSubjectClaimCustomTemplate(ctx, u, body)
 }
 
-func (s *ActionsService) setOIDCSubjectClaimCustomTemplate(ctx context.Context, url string, body *OIDCSubjectClaimCustomTemplate) (*Response, error) {
+func (s *ActionsService) setOIDCSubjectClaimCustomTemplate(ctx context.Context, url string, body OIDCSubjectClaimCustomTemplate) (*Response, error) {
 	req, err := s.client.NewRequest(ctx, "PUT", url, body)
 	if err != nil {
 		return nil, err
