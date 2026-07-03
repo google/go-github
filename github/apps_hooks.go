@@ -36,7 +36,7 @@ func (s *AppsService) GetHookConfig(ctx context.Context) (*HookConfig, *Response
 // GitHub API docs: https://docs.github.com/rest/apps/webhooks?apiVersion=2022-11-28#update-a-webhook-configuration-for-an-app
 //
 //meta:operation PATCH /app/hook/config
-func (s *AppsService) UpdateHookConfig(ctx context.Context, body *HookConfig) (*HookConfig, *Response, error) {
+func (s *AppsService) UpdateHookConfig(ctx context.Context, body HookConfig) (*HookConfig, *Response, error) {
 	req, err := s.client.NewRequest(ctx, "PATCH", "app/hook/config", body)
 	if err != nil {
 		return nil, nil, err
