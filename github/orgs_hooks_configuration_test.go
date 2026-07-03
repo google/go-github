@@ -66,7 +66,7 @@ func TestOrganizationsService_EditHookConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &HookConfig{}
+	input := HookConfig{}
 
 	mux.HandleFunc("/orgs/o/hooks/1/config", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -110,6 +110,6 @@ func TestOrganizationsService_EditHookConfiguration_invalidOrg(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Organizations.EditHookConfiguration(ctx, "%", 1, nil)
+	_, _, err := client.Organizations.EditHookConfiguration(ctx, "%", 1, HookConfig{})
 	testURLParseError(t, err)
 }

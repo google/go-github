@@ -229,7 +229,6 @@ linters:
             - EnterpriseSecurityAnalysisSettings
             - ExternalGroup
             - Hook
-            - HookConfig
             - ImpersonateUserOptions
             - Import
             - InstallationTokenListRepoOptions
