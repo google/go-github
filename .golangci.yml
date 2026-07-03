@@ -223,8 +223,6 @@ linters:
             - DependabotEncryptedSecret
             - DependencyGraphSnapshot
             - DeploymentBranchPolicyRequest
-            - DeploymentRequest
-            - DeploymentStatusRequest
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
             - ExternalGroup

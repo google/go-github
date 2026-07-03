@@ -13390,12 +13390,12 @@ func (d *DeploymentRequest) GetProductionEnvironment() bool {
 	return *d.ProductionEnvironment
 }
 
-// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+// GetRef returns the Ref field.
 func (d *DeploymentRequest) GetRef() string {
-	if d == nil || d.Ref == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.Ref
+	return d.Ref
 }
 
 // GetRequiredContexts returns the RequiredContexts field if it's non-nil, zero value otherwise.
@@ -13782,12 +13782,12 @@ func (d *DeploymentStatusRequest) GetLogURL() string {
 	return *d.LogURL
 }
 
-// GetState returns the State field if it's non-nil, zero value otherwise.
+// GetState returns the State field.
 func (d *DeploymentStatusRequest) GetState() string {
-	if d == nil || d.State == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.State
+	return d.State
 }
 
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
