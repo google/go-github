@@ -596,6 +596,84 @@ func TestWithAuthToken(t *testing.T) {
 	})
 }
 
+func TestWithAuthTokenAuthorizesConfiguredHostsOnly(t *testing.T) {
+	t.Parallel()
+
+	const token = "secret-token"
+
+	trustedAuths := make(chan string, 2)
+	trusted := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		trustedAuths <- r.Header.Get("Authorization")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{}`))
+	}))
+	defer trusted.Close()
+
+	attackerAuths := make(chan string, 2)
+	attacker := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		attackerAuths <- r.Header.Get("Authorization")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{}`))
+	}))
+	defer attacker.Close()
+
+	baseURL := trusted.URL + "/api/"
+	uploadURL := trusted.URL + "/upload/"
+	client := mustNewClient(t, WithURLs(&baseURL, &uploadURL), WithAuthToken(token))
+
+	req, err := client.NewRequest(t.Context(), "GET", "repos/o/r", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned unexpected error: %v", err)
+	}
+	resp, err := client.BareDo(req)
+	if err != nil {
+		t.Fatalf("BareDo returned unexpected error: %v", err)
+	}
+	resp.Body.Close()
+
+	req, err = client.NewUploadRequest(t.Context(), "assets", strings.NewReader("x"), 1, "")
+	if err != nil {
+		t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
+	}
+	resp, err = client.BareDo(req)
+	if err != nil {
+		t.Fatalf("BareDo returned unexpected error: %v", err)
+	}
+	resp.Body.Close()
+
+	for range 2 {
+		if got, want := <-trustedAuths, "Bearer "+token; got != want {
+			t.Errorf("Authorization on configured host = %q, want %q", got, want)
+		}
+	}
+
+	req, err = client.NewRequest(t.Context(), "GET", attacker.URL+"/repos/o/r", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned unexpected error: %v", err)
+	}
+	resp, err = client.BareDo(req)
+	if err != nil {
+		t.Fatalf("BareDo returned unexpected error: %v", err)
+	}
+	resp.Body.Close()
+
+	req, err = client.NewUploadRequest(t.Context(), attacker.URL+"/assets", strings.NewReader("x"), 1, "")
+	if err != nil {
+		t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
+	}
+	resp, err = client.BareDo(req)
+	if err != nil {
+		t.Fatalf("BareDo returned unexpected error: %v", err)
+	}
+	resp.Body.Close()
+
+	for range 2 {
+		if got := <-attackerAuths; got != "" {
+			t.Errorf("Authorization on cross-host request = %q, want empty", got)
+		}
+	}
+}
+
 func TestWithURLs(t *testing.T) {
 	t.Parallel()
 	for _, tt := range []struct {

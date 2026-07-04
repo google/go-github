@@ -602,25 +602,6 @@ func newClient(opts clientOptions) (*Client, error) {
 		c.client.Transport = t2
 	}
 
-	if opts.token != nil {
-		transport := c.client.Transport
-		if transport == nil {
-			transport = http.DefaultTransport
-		}
-		c.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
-			req = req.Clone(req.Context())
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", *opts.token))
-			return transport.RoundTrip(req)
-		})
-	}
-
-	c.clientIgnoreRedirects = &http.Client{
-		Transport:     c.client.Transport,
-		Timeout:       c.client.Timeout,
-		Jar:           c.client.Jar,
-		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
-	}
-
 	if opts.apiVersionMin != nil {
 		c.apiVersionMin = *opts.apiVersionMin
 	}
@@ -645,6 +626,27 @@ func newClient(opts clientOptions) (*Client, error) {
 		c.uploadURL = opts.uploadURL
 	} else {
 		c.uploadURL, _ = url.Parse(uploadBaseURL)
+	}
+
+	if opts.token != nil {
+		transport := c.client.Transport
+		if transport == nil {
+			transport = http.DefaultTransport
+		}
+		c.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			req = req.Clone(req.Context())
+			if c.shouldAuthorizeRequest(req) {
+				req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", *opts.token))
+			}
+			return transport.RoundTrip(req)
+		})
+	}
+
+	c.clientIgnoreRedirects = &http.Client{
+		Transport:     c.client.Transport,
+		Timeout:       c.client.Timeout,
+		Jar:           c.client.Jar,
+		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
 	}
 
 	c.disableRateLimitCheck = opts.disableRateLimitCheck
@@ -703,6 +705,23 @@ func newClient(opts clientOptions) (*Client, error) {
 	c.Users = (*UsersService)(&c.common)
 
 	return c, nil
+}
+
+func (c *Client) shouldAuthorizeRequest(req *http.Request) bool {
+	if req == nil || req.URL == nil {
+		return false
+	}
+
+	return sameOrigin(req.URL, c.baseURL) || sameOrigin(req.URL, c.uploadURL)
+}
+
+func sameOrigin(u, base *url.URL) bool {
+	if u == nil || base == nil {
+		return false
+	}
+
+	return strings.EqualFold(u.Scheme, base.Scheme) &&
+		strings.EqualFold(u.Host, base.Host)
 }
 
 // UserAgent returns the User-Agent header value for the client.
