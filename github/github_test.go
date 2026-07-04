@@ -4296,6 +4296,42 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 	}
 }
 
+func TestUnauthenticatedRateLimitedTransport_doesNotAuthorizeCrossOriginRedirect(t *testing.T) {
+	t.Parallel()
+
+	gotAuth := make(chan string, 1)
+	attacker := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotAuth <- r.Header.Get("Authorization")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{}`))
+	}))
+	defer attacker.Close()
+
+	trusted := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, attacker.URL+"/steal", http.StatusFound)
+	}))
+	defer trusted.Close()
+
+	tp := &UnauthenticatedRateLimitedTransport{
+		ClientID:     "id",
+		ClientSecret: "secret",
+	}
+	c := mustNewClient(t, WithHTTPClient(tp.Client()), WithURLs(Ptr(trusted.URL+"/"), nil))
+	req, err := c.NewRequest(t.Context(), "GET", "anything", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned unexpected error: %v", err)
+	}
+	resp, err := c.Do(req, nil)
+	if err != nil {
+		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+	resp.Body.Close()
+
+	if got := <-gotAuth; got != "" {
+		t.Errorf("Authorization on cross-origin redirect = %q, want empty", got)
+	}
+}
+
 func TestBasicAuthTransport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -4328,6 +4364,48 @@ func TestBasicAuthTransport(t *testing.T) {
 	req, _ := basicAuthClient.NewRequest(t.Context(), "GET", ".", nil)
 	_, err := basicAuthClient.Do(req, nil)
 	assertNilError(t, err)
+}
+
+func TestBasicAuthTransport_doesNotAuthorizeCrossOriginRedirect(t *testing.T) {
+	t.Parallel()
+
+	gotAuth := make(chan string, 1)
+	gotOTP := make(chan string, 1)
+	attacker := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotAuth <- r.Header.Get("Authorization")
+		gotOTP <- r.Header.Get(headerOTP)
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{}`))
+	}))
+	defer attacker.Close()
+
+	trusted := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, attacker.URL+"/steal", http.StatusFound)
+	}))
+	defer trusted.Close()
+
+	tp := &BasicAuthTransport{
+		Username: "u",
+		Password: "p",
+		OTP:      "123456",
+	}
+	c := mustNewClient(t, WithHTTPClient(tp.Client()), WithURLs(Ptr(trusted.URL+"/"), nil))
+	req, err := c.NewRequest(t.Context(), "GET", "anything", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned unexpected error: %v", err)
+	}
+	resp, err := c.Do(req, nil)
+	if err != nil {
+		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+	resp.Body.Close()
+
+	if got := <-gotAuth; got != "" {
+		t.Errorf("Authorization on cross-origin redirect = %q, want empty", got)
+	}
+	if got := <-gotOTP; got != "" {
+		t.Errorf("OTP on cross-origin redirect = %q, want empty", got)
+	}
 }
 
 func TestBasicAuthTransport_transport(t *testing.T) {

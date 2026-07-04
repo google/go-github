@@ -1981,6 +1981,20 @@ func setCredentialsAsHeaders(req *http.Request, id, secret string) *http.Request
 	return &convertedRequest
 }
 
+func isCrossOriginRedirect(req *http.Request) bool {
+	if req == nil || req.URL == nil || req.Response == nil || req.Response.Request == nil || req.Response.Request.URL == nil {
+		return false
+	}
+	return !sameRedirectOrigin(req.URL, req.Response.Request.URL)
+}
+
+func sameRedirectOrigin(a, b *url.URL) bool {
+	if a == nil || b == nil {
+		return false
+	}
+	return strings.EqualFold(a.Scheme, b.Scheme) && strings.EqualFold(a.Host, b.Host)
+}
+
 /*
 UnauthenticatedRateLimitedTransport allows you to make unauthenticated calls
 that need to use a higher rate limit associated with your OAuth application.
@@ -2021,6 +2035,10 @@ func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*htt
 		return nil, errors.New("t.ClientSecret is empty")
 	}
 
+	if isCrossOriginRedirect(req) {
+		return t.transport().RoundTrip(req)
+	}
+
 	req2 := setCredentialsAsHeaders(req, t.ClientID, t.ClientSecret)
 	// Make the HTTP request.
 	return t.transport().RoundTrip(req2)
@@ -2055,6 +2073,10 @@ type BasicAuthTransport struct {
 
 // RoundTrip implements the RoundTripper interface.
 func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	if isCrossOriginRedirect(req) {
+		return t.transport().RoundTrip(req)
+	}
+
 	req2 := setCredentialsAsHeaders(req, t.Username, t.Password)
 	if t.OTP != "" {
 		req2.Header.Set(headerOTP, t.OTP)
