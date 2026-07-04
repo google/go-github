@@ -563,15 +563,12 @@ func nodeServiceMethod(fn *ast.FuncDecl) string {
 	return serviceMethod
 }
 
-// See: https://github.com/google/go-github/issues/3894
+// skipServiceMethod lists helper methods that download from URLs returned by
+// other endpoints and therefore have no REST API operation of their own.
 var skipServiceMethod = map[string]bool{
-	"BillingService.GetOrganizationPackagesBilling": true,
-	"BillingService.GetOrganizationStorageBilling":  true,
-	"BillingService.GetPackagesBilling":             true,
-	"BillingService.GetStorageBilling":              true,
-	"CopilotService.DownloadCopilotMetrics":         true,
-	"CopilotService.DownloadDailyMetrics":           true,
-	"CopilotService.DownloadPeriodicMetrics":        true,
-	"CopilotService.DownloadUserDailyMetrics":       true,
-	"CopilotService.DownloadUserPeriodicMetrics":    true,
+	"CopilotService.DownloadCopilotMetrics":      true,
+	"CopilotService.DownloadDailyMetrics":        true,
+	"CopilotService.DownloadPeriodicMetrics":     true,
+	"CopilotService.DownloadUserDailyMetrics":    true,
+	"CopilotService.DownloadUserPeriodicMetrics": true,
 }

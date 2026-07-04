@@ -25,7 +25,7 @@ type TeamListTeamMembersOptions struct {
 //
 // GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-team-members
 //
-//meta:operation GET /orgs/{org}/teams/{team_slug}/members
+//meta:operation GET /organizations/{organization_id}/team/{team_id}/members
 func (s *TeamsService) ListTeamMembersByID(ctx context.Context, orgID, teamID int64, opts *TeamListTeamMembersOptions) ([]*User, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/members", orgID, teamID)
 	u, err := addOptions(u, opts)
@@ -77,9 +77,9 @@ func (s *TeamsService) ListTeamMembersBySlug(ctx context.Context, org, slug stri
 // GetTeamMembershipByID returns the membership status for a user in a team, given a specified
 // organization ID, by team ID.
 //
-// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-team-members
+// GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#get-team-membership-for-a-user
 //
-//meta:operation GET /orgs/{org}/teams/{team_slug}/members
+//meta:operation GET /organizations/{organization_id}/team/{team_id}/memberships/{username}
 func (s *TeamsService) GetTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Membership, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
@@ -137,7 +137,7 @@ type TeamAddTeamMembershipOptions struct {
 //
 // GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#add-or-update-team-membership-for-a-user
 //
-//meta:operation PUT /orgs/{org}/teams/{team_slug}/memberships/{username}
+//meta:operation PUT /organizations/{organization_id}/team/{team_id}/memberships/{username}
 func (s *TeamsService) AddTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string, body *TeamAddTeamMembershipOptions) (*Membership, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
@@ -181,7 +181,7 @@ func (s *TeamsService) AddTeamMembershipBySlug(ctx context.Context, org, slug, u
 //
 // GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#remove-team-membership-for-a-user
 //
-//meta:operation DELETE /orgs/{org}/teams/{team_slug}/memberships/{username}
+//meta:operation DELETE /organizations/{organization_id}/team/{team_id}/memberships/{username}
 func (s *TeamsService) RemoveTeamMembershipByID(ctx context.Context, orgID, teamID int64, user string) (*Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/memberships/%v", orgID, teamID, user)
 	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
@@ -213,7 +213,7 @@ func (s *TeamsService) RemoveTeamMembershipBySlug(ctx context.Context, org, slug
 //
 // GitHub API docs: https://docs.github.com/rest/teams/members?apiVersion=2022-11-28#list-pending-team-invitations
 //
-//meta:operation GET /orgs/{org}/teams/{team_slug}/invitations
+//meta:operation GET /organizations/{organization_id}/team/{team_id}/invitations
 func (s *TeamsService) ListPendingTeamInvitationsByID(ctx context.Context, orgID, teamID int64, opts *ListOptions) ([]*Invitation, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v/invitations", orgID, teamID)
 	u, err := addOptions(u, opts)

@@ -49,6 +49,8 @@ type DiscussionListOptions struct {
 // ListDiscussionsByID lists all discussions on team's page given Organization and Team ID.
 // Authenticated user must grant read:discussion scope.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#list-discussions
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions
@@ -75,6 +77,8 @@ func (s *TeamsService) ListDiscussionsByID(ctx context.Context, orgID, teamID in
 
 // ListDiscussionsBySlug lists all discussions on team's page given Organization name and Team's slug.
 // Authenticated user must grant read:discussion scope.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#list-discussions
 //
@@ -103,6 +107,8 @@ func (s *TeamsService) ListDiscussionsBySlug(ctx context.Context, org, slug stri
 // GetDiscussionByID gets a specific discussion on a team's page given Organization and Team ID.
 // Authenticated user must grant read:discussion scope.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#get-a-discussion
 //
 //meta:operation GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
@@ -124,6 +130,8 @@ func (s *TeamsService) GetDiscussionByID(ctx context.Context, orgID, teamID int6
 
 // GetDiscussionBySlug gets a specific discussion on a team's page given Organization name and Team's slug.
 // Authenticated user must grant read:discussion scope.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#get-a-discussion
 //
@@ -147,6 +155,8 @@ func (s *TeamsService) GetDiscussionBySlug(ctx context.Context, org, slug string
 // CreateDiscussionByID creates a new discussion post on a team's page given Organization and Team ID.
 // Authenticated user must grant write:discussion scope.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#create-a-discussion
 //
 //meta:operation POST /orgs/{org}/teams/{team_slug}/discussions
@@ -168,6 +178,8 @@ func (s *TeamsService) CreateDiscussionByID(ctx context.Context, orgID, teamID i
 
 // CreateDiscussionBySlug creates a new discussion post on a team's page given Organization name and Team's slug.
 // Authenticated user must grant write:discussion scope.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#create-a-discussion
 //
@@ -192,6 +204,8 @@ func (s *TeamsService) CreateDiscussionBySlug(ctx context.Context, org, slug str
 // Authenticated user must grant write:discussion scope.
 // User is allowed to change Title and Body of a discussion only.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#update-a-discussion
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
@@ -215,6 +229,8 @@ func (s *TeamsService) EditDiscussionByID(ctx context.Context, orgID, teamID int
 // Authenticated user must grant write:discussion scope.
 // User is allowed to change Title and Body of a discussion only.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#update-a-discussion
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
@@ -237,6 +253,8 @@ func (s *TeamsService) EditDiscussionBySlug(ctx context.Context, org, slug strin
 // DeleteDiscussionByID deletes a discussion from team's page given Organization and Team ID.
 // Authenticated user must grant write:discussion scope.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#delete-a-discussion
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}
@@ -252,6 +270,8 @@ func (s *TeamsService) DeleteDiscussionByID(ctx context.Context, orgID, teamID i
 
 // DeleteDiscussionBySlug deletes a discussion from team's page given Organization name and Team's slug.
 // Authenticated user must grant write:discussion scope.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/teams/discussions#delete-a-discussion
 //

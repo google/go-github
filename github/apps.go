@@ -426,6 +426,8 @@ func (s *AppsService) CreateInstallationTokenListRepos(ctx context.Context, id i
 
 // CreateAttachment creates a new attachment on user comment containing a url.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.3/rest/reference/apps#create-a-content-attachment
 //
 //meta:operation POST /repos/{owner}/{repo}/content_references/{content_reference_id}/attachments
