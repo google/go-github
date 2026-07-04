@@ -4365,6 +4365,52 @@ func TestIsCrossOriginRedirect(t *testing.T) {
 	}
 }
 
+func TestSameRedirectOrigin(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		a    *url.URL
+		b    *url.URL
+		want bool
+	}{
+		{
+			name: "nil url",
+		},
+		{
+			name: "same origin",
+			a:    mustParseURL(t, "https://api.github.test/repos"),
+			b:    mustParseURL(t, "https://api.github.test/orgs"),
+			want: true,
+		},
+		{
+			name: "same origin case insensitive",
+			a:    mustParseURL(t, "HTTPS://API.GITHUB.TEST/repos"),
+			b:    mustParseURL(t, "https://api.github.test/orgs"),
+			want: true,
+		},
+		{
+			name: "different scheme",
+			a:    mustParseURL(t, "http://api.github.test/repos"),
+			b:    mustParseURL(t, "https://api.github.test/repos"),
+		},
+		{
+			name: "different host",
+			a:    mustParseURL(t, "https://api.github.test/repos"),
+			b:    mustParseURL(t, "https://example.test/repos"),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if got := sameRedirectOrigin(tt.a, tt.b); got != tt.want {
+				t.Errorf("sameRedirectOrigin() = %t, want %t", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestUnauthenticatedRateLimitedTransport_doesNotAuthorizeCrossOriginRedirect(t *testing.T) {
 	t.Parallel()
 
