@@ -16965,8 +16965,8 @@ func TestDeploymentRequest_GetRef(tt *testing.T) {
 
 func TestDeploymentRequest_GetRequiredContexts(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue []string
-	d := &DeploymentRequest{RequiredContexts: &zeroValue}
+	zeroValue := []string{}
+	d := &DeploymentRequest{RequiredContexts: zeroValue}
 	d.GetRequiredContexts()
 	d = &DeploymentRequest{}
 	d.GetRequiredContexts()

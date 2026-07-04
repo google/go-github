@@ -32,15 +32,17 @@ type Deployment struct {
 
 // DeploymentRequest represents a deployment request.
 type DeploymentRequest struct {
-	Ref                   string    `json:"ref"`
-	Task                  *string   `json:"task,omitempty"`
-	AutoMerge             *bool     `json:"auto_merge,omitempty"`
-	RequiredContexts      *[]string `json:"required_contexts,omitempty"`
-	Payload               any       `json:"payload,omitempty"`
-	Environment           *string   `json:"environment,omitempty"`
-	Description           *string   `json:"description,omitempty"`
-	TransientEnvironment  *bool     `json:"transient_environment,omitempty"`
-	ProductionEnvironment *bool     `json:"production_environment,omitempty"`
+	Ref       string  `json:"ref"`
+	Task      *string `json:"task,omitempty"`
+	AutoMerge *bool   `json:"auto_merge,omitempty"`
+	// RequiredContexts is the status contexts to verify against commit status checks.
+	// If nil, all unique contexts are verified; an empty slice bypasses checking entirely.
+	RequiredContexts      []string `json:"required_contexts,omitzero"`
+	Payload               any      `json:"payload,omitempty"`
+	Environment           *string  `json:"environment,omitempty"`
+	Description           *string  `json:"description,omitempty"`
+	TransientEnvironment  *bool    `json:"transient_environment,omitempty"`
+	ProductionEnvironment *bool    `json:"production_environment,omitempty"`
 }
 
 // DeploymentsListOptions specifies the optional parameters to the
@@ -242,8 +244,8 @@ func (s *RepositoriesService) GetDeploymentStatus(ctx context.Context, owner, re
 // GitHub API docs: https://docs.github.com/rest/deployments/statuses?apiVersion=2022-11-28#create-a-deployment-status
 //
 //meta:operation POST /repos/{owner}/{repo}/deployments/{deployment_id}/statuses
-func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner, repo string, deployment int64, body DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deployment)
+func (s *RepositoriesService) CreateDeploymentStatus(ctx context.Context, owner, repo string, deploymentID int64, body DeploymentStatusRequest) (*DeploymentStatus, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/deployments/%v/statuses", owner, repo, deploymentID)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {

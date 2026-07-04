@@ -13398,12 +13398,12 @@ func (d *DeploymentRequest) GetRef() string {
 	return d.Ref
 }
 
-// GetRequiredContexts returns the RequiredContexts field if it's non-nil, zero value otherwise.
+// GetRequiredContexts returns the RequiredContexts slice if it's non-nil, nil otherwise.
 func (d *DeploymentRequest) GetRequiredContexts() []string {
 	if d == nil || d.RequiredContexts == nil {
 		return nil
 	}
-	return *d.RequiredContexts
+	return d.RequiredContexts
 }
 
 // GetTask returns the Task field if it's non-nil, zero value otherwise.
