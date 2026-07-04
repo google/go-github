@@ -4296,6 +4296,75 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 	}
 }
 
+func TestIsCrossOriginRedirect(t *testing.T) {
+	t.Parallel()
+
+	req := func(from, to string) *http.Request {
+		r := &http.Request{URL: mustParseURL(t, to)}
+		r.Response = &http.Response{Request: &http.Request{URL: mustParseURL(t, from)}}
+		return r
+	}
+
+	tests := []struct {
+		name string
+		req  *http.Request
+		want bool
+	}{
+		{
+			name: "nil request",
+		},
+		{
+			name: "nil url",
+			req:  &http.Request{},
+		},
+		{
+			name: "nil response",
+			req:  &http.Request{URL: mustParseURL(t, "https://api.github.com/")},
+		},
+		{
+			name: "nil response request",
+			req: &http.Request{
+				URL:      mustParseURL(t, "https://api.github.com/"),
+				Response: &http.Response{},
+			},
+		},
+		{
+			name: "nil response request url",
+			req: &http.Request{
+				URL:      mustParseURL(t, "https://api.github.com/"),
+				Response: &http.Response{Request: &http.Request{}},
+			},
+		},
+		{
+			name: "same origin",
+			req:  req("https://api.github.com/repos", "https://api.github.com/orgs"),
+		},
+		{
+			name: "same origin case insensitive",
+			req:  req("HTTPS://API.GITHUB.COM/repos", "https://api.github.com/orgs"),
+		},
+		{
+			name: "different scheme",
+			req:  req("https://api.github.com/repos", "http://api.github.com/repos"),
+			want: true,
+		},
+		{
+			name: "different host",
+			req:  req("https://api.github.com/repos", "https://example.com/repos"),
+			want: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if got := isCrossOriginRedirect(tt.req); got != tt.want {
+				t.Errorf("isCrossOriginRedirect() = %t, want %t", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestUnauthenticatedRateLimitedTransport_doesNotAuthorizeCrossOriginRedirect(t *testing.T) {
 	t.Parallel()
 
