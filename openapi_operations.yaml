@@ -53,6 +53,12 @@ operations:
   - name: GET /orgs/{org}/copilot/metrics
     documentation_url: https://docs.github.com/rest/copilot/copilot-metrics?apiVersion=2022-11-28#get-copilot-metrics-for-an-organization
     deprecated: true
+  - name: GET /orgs/{org}/settings/billing/packages
+    documentation_url: https://docs.github.com/rest/billing/billing?apiVersion=2022-11-28#get-github-packages-billing-for-an-organization
+    deprecated: true
+  - name: GET /orgs/{org}/settings/billing/shared-storage
+    documentation_url: https://docs.github.com/rest/billing/billing?apiVersion=2022-11-28#get-shared-storage-billing-for-an-organization
+    deprecated: true
   - name: GET /orgs/{org}/team/{team_slug}/copilot/metrics
     documentation_url: https://docs.github.com/rest/copilot/copilot-metrics?apiVersion=2022-11-28#get-copilot-metrics-for-a-team
     deprecated: true
@@ -64,6 +70,12 @@ operations:
     documentation_url: https://gist.github.com/jonmagic/5282384165e0f86ef105#import-status-request
   - name: GET /repositories/{repository_id}
   - name: GET /repositories/{repository_id}/installation
+  - name: GET /users/{username}/settings/billing/packages
+    documentation_url: https://docs.github.com/rest/billing/billing?apiVersion=2022-11-28#get-github-packages-billing-for-a-user
+    deprecated: true
+  - name: GET /users/{username}/settings/billing/shared-storage
+    documentation_url: https://docs.github.com/rest/billing/billing?apiVersion=2022-11-28#get-shared-storage-billing-for-a-user
+    deprecated: true
 operation_overrides:
   - name: GET /meta
     documentation_url: https://docs.github.com/rest/meta/meta#get-github-meta-information
