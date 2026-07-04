@@ -674,6 +674,97 @@ func TestWithAuthTokenAuthorizesConfiguredHostsOnly(t *testing.T) {
 	}
 }
 
+func TestClientShouldAuthorizeRequest(t *testing.T) {
+	t.Parallel()
+
+	baseURL := "https://api.github.test/"
+	uploadURL := "https://uploads.github.test/"
+	client := mustNewClient(t, WithURLs(&baseURL, &uploadURL))
+
+	tests := []struct {
+		name string
+		req  *http.Request
+		want bool
+	}{
+		{
+			name: "nil request",
+		},
+		{
+			name: "nil url",
+			req:  &http.Request{},
+		},
+		{
+			name: "base url",
+			req:  &http.Request{URL: mustParseURL(t, "https://api.github.test/repos")},
+			want: true,
+		},
+		{
+			name: "upload url",
+			req:  &http.Request{URL: mustParseURL(t, "https://uploads.github.test/assets")},
+			want: true,
+		},
+		{
+			name: "different host",
+			req:  &http.Request{URL: mustParseURL(t, "https://example.test/repos")},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if got := client.shouldAuthorizeRequest(tt.req); got != tt.want {
+				t.Errorf("shouldAuthorizeRequest() = %t, want %t", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestSameOrigin(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		a    *url.URL
+		b    *url.URL
+		want bool
+	}{
+		{
+			name: "nil url",
+		},
+		{
+			name: "same origin",
+			a:    mustParseURL(t, "https://api.github.test/repos"),
+			b:    mustParseURL(t, "https://api.github.test/orgs"),
+			want: true,
+		},
+		{
+			name: "same origin case insensitive",
+			a:    mustParseURL(t, "HTTPS://API.GITHUB.TEST/repos"),
+			b:    mustParseURL(t, "https://api.github.test/orgs"),
+			want: true,
+		},
+		{
+			name: "different scheme",
+			a:    mustParseURL(t, "http://api.github.test/repos"),
+			b:    mustParseURL(t, "https://api.github.test/repos"),
+		},
+		{
+			name: "different host",
+			a:    mustParseURL(t, "https://api.github.test/repos"),
+			b:    mustParseURL(t, "https://example.test/repos"),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if got := sameOrigin(tt.a, tt.b); got != tt.want {
+				t.Errorf("sameOrigin() = %t, want %t", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestWithURLs(t *testing.T) {
 	t.Parallel()
 	for _, tt := range []struct {
