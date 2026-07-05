@@ -4421,6 +4421,45 @@ func TestSameRedirectOrigin(t *testing.T) {
 	}
 }
 
+func TestDefaultPort(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		url  string
+		want string
+	}{
+		{
+			name: "explicit port",
+			url:  "https://api.github.test:8443/repos",
+			want: "8443",
+		},
+		{
+			name: "http",
+			url:  "http://api.github.test/repos",
+			want: "80",
+		},
+		{
+			name: "https",
+			url:  "https://api.github.test/repos",
+			want: "443",
+		},
+		{
+			name: "other scheme",
+			url:  "git://api.github.test/repos",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if got := defaultPort(mustParseURL(t, tt.url)); got != tt.want {
+				t.Errorf("defaultPort() = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestUnauthenticatedRateLimitedTransport_doesNotAuthorizeCrossOriginRedirect(t *testing.T) {
 	t.Parallel()
 
