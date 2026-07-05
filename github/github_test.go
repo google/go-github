@@ -4344,6 +4344,10 @@ func TestIsCrossOriginRedirect(t *testing.T) {
 			req:  req("HTTPS://API.GITHUB.COM/repos", "https://api.github.com/orgs"),
 		},
 		{
+			name: "same origin default port",
+			req:  req("https://api.github.com:443/repos", "https://api.github.com/orgs"),
+		},
+		{
 			name: "different scheme",
 			req:  req("https://api.github.com/repos", "http://api.github.com/repos"),
 			want: true,
@@ -4386,6 +4390,12 @@ func TestSameRedirectOrigin(t *testing.T) {
 		{
 			name: "same origin case insensitive",
 			a:    mustParseURL(t, "HTTPS://API.GITHUB.TEST/repos"),
+			b:    mustParseURL(t, "https://api.github.test/orgs"),
+			want: true,
+		},
+		{
+			name: "same origin default port",
+			a:    mustParseURL(t, "https://api.github.test:443/repos"),
 			b:    mustParseURL(t, "https://api.github.test/orgs"),
 			want: true,
 		},
