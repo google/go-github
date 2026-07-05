@@ -32,11 +32,9 @@ type Deployment struct {
 
 // DeploymentRequest represents a deployment request.
 type DeploymentRequest struct {
-	Ref       string  `json:"ref"`
-	Task      *string `json:"task,omitempty"`
-	AutoMerge *bool   `json:"auto_merge,omitempty"`
-	// RequiredContexts is the status contexts to verify against commit status checks.
-	// If nil, all unique contexts are verified; an empty slice bypasses checking entirely.
+	Ref                   string   `json:"ref"`
+	Task                  *string  `json:"task,omitempty"`
+	AutoMerge             *bool    `json:"auto_merge,omitempty"`
 	RequiredContexts      []string `json:"required_contexts,omitzero"`
 	Payload               any      `json:"payload,omitempty"`
 	Environment           *string  `json:"environment,omitempty"`
