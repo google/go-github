@@ -429,6 +429,8 @@ func (s *ReactionsService) CreateTeamDiscussionReaction(ctx context.Context, tea
 
 // DeleteTeamDiscussionReaction deletes the reaction to a team discussion.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#delete-team-discussion-reaction
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions/{reaction_id}
@@ -439,6 +441,8 @@ func (s *ReactionsService) DeleteTeamDiscussionReaction(ctx context.Context, org
 }
 
 // DeleteTeamDiscussionReactionByOrgIDAndTeamID deletes the reaction to a team discussion by organization ID and team ID.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#create-reaction-for-a-team-discussion
 //
@@ -508,6 +512,8 @@ func (s *ReactionsService) CreateTeamDiscussionCommentReaction(ctx context.Conte
 
 // DeleteTeamDiscussionCommentReaction deletes the reaction to a team discussion comment.
 //
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#delete-team-discussion-comment-reaction
 //
 //meta:operation DELETE /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions/{reaction_id}
@@ -518,6 +524,8 @@ func (s *ReactionsService) DeleteTeamDiscussionCommentReaction(ctx context.Conte
 }
 
 // DeleteTeamDiscussionCommentReactionByOrgIDAndTeamID deletes the reaction to a team discussion comment by organization ID and team ID.
+//
+// Deprecated: This endpoint has been deprecated by GitHub.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.13/rest/reactions/reactions#create-reaction-for-a-team-discussion-comment
 //

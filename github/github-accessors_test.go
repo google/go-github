@@ -578,14 +578,6 @@ func TestActionsVariable_GetSelectedRepositoriesURL(tt *testing.T) {
 	a.GetSelectedRepositoriesURL()
 }
 
-func TestActionsVariable_GetSelectedRepositoryIDs(tt *testing.T) {
-	tt.Parallel()
-	a := &ActionsVariable{}
-	a.GetSelectedRepositoryIDs()
-	a = nil
-	a.GetSelectedRepositoryIDs()
-}
-
 func TestActionsVariable_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -616,6 +608,22 @@ func TestActionsVariable_GetVisibility(tt *testing.T) {
 	a.GetVisibility()
 }
 
+func TestActionsVariableCreateRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsVariableCreateRequest{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestActionsVariableCreateRequest_GetValue(tt *testing.T) {
+	tt.Parallel()
+	a := &ActionsVariableCreateRequest{}
+	a.GetValue()
+	a = nil
+	a.GetValue()
+}
+
 func TestActionsVariables_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	a := &ActionsVariables{}
@@ -633,6 +641,28 @@ func TestActionsVariables_GetVariables(tt *testing.T) {
 	a.GetVariables()
 	a = nil
 	a.GetVariables()
+}
+
+func TestActionsVariableUpdateRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ActionsVariableUpdateRequest{Name: &zeroValue}
+	a.GetName()
+	a = &ActionsVariableUpdateRequest{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestActionsVariableUpdateRequest_GetValue(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &ActionsVariableUpdateRequest{Value: &zeroValue}
+	a.GetValue()
+	a = &ActionsVariableUpdateRequest{}
+	a.GetValue()
+	a = nil
+	a.GetValue()
 }
 
 func TestActiveCommitters_GetMaximumAdvancedSecurityCommitters(tt *testing.T) {
@@ -31503,6 +31533,17 @@ func TestOIDCSubjectClaimCustomTemplate_GetIncludeClaimKeys(tt *testing.T) {
 	o.GetIncludeClaimKeys()
 }
 
+func TestOIDCSubjectClaimCustomTemplate_GetSubClaimPrefix(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	o := &OIDCSubjectClaimCustomTemplate{SubClaimPrefix: &zeroValue}
+	o.GetSubClaimPrefix()
+	o = &OIDCSubjectClaimCustomTemplate{}
+	o.GetSubClaimPrefix()
+	o = nil
+	o.GetSubClaimPrefix()
+}
+
 func TestOIDCSubjectClaimCustomTemplate_GetUseDefault(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -31512,6 +31553,96 @@ func TestOIDCSubjectClaimCustomTemplate_GetUseDefault(tt *testing.T) {
 	o.GetUseDefault()
 	o = nil
 	o.GetUseDefault()
+}
+
+func TestOIDCSubjectClaimCustomTemplate_GetUseImmutableSubject(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	o := &OIDCSubjectClaimCustomTemplate{UseImmutableSubject: &zeroValue}
+	o.GetUseImmutableSubject()
+	o = &OIDCSubjectClaimCustomTemplate{}
+	o.GetUseImmutableSubject()
+	o = nil
+	o.GetUseImmutableSubject()
+}
+
+func TestOrgActionsVariableCreateRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	o := &OrgActionsVariableCreateRequest{}
+	o.GetName()
+	o = nil
+	o.GetName()
+}
+
+func TestOrgActionsVariableCreateRequest_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	o := &OrgActionsVariableCreateRequest{SelectedRepositoryIDs: zeroValue}
+	o.GetSelectedRepositoryIDs()
+	o = &OrgActionsVariableCreateRequest{}
+	o.GetSelectedRepositoryIDs()
+	o = nil
+	o.GetSelectedRepositoryIDs()
+}
+
+func TestOrgActionsVariableCreateRequest_GetValue(tt *testing.T) {
+	tt.Parallel()
+	o := &OrgActionsVariableCreateRequest{}
+	o.GetValue()
+	o = nil
+	o.GetValue()
+}
+
+func TestOrgActionsVariableCreateRequest_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	o := &OrgActionsVariableCreateRequest{}
+	o.GetVisibility()
+	o = nil
+	o.GetVisibility()
+}
+
+func TestOrgActionsVariableUpdateRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	o := &OrgActionsVariableUpdateRequest{Name: &zeroValue}
+	o.GetName()
+	o = &OrgActionsVariableUpdateRequest{}
+	o.GetName()
+	o = nil
+	o.GetName()
+}
+
+func TestOrgActionsVariableUpdateRequest_GetSelectedRepositoryIDs(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	o := &OrgActionsVariableUpdateRequest{SelectedRepositoryIDs: zeroValue}
+	o.GetSelectedRepositoryIDs()
+	o = &OrgActionsVariableUpdateRequest{}
+	o.GetSelectedRepositoryIDs()
+	o = nil
+	o.GetSelectedRepositoryIDs()
+}
+
+func TestOrgActionsVariableUpdateRequest_GetValue(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	o := &OrgActionsVariableUpdateRequest{Value: &zeroValue}
+	o.GetValue()
+	o = &OrgActionsVariableUpdateRequest{}
+	o.GetValue()
+	o = nil
+	o.GetValue()
+}
+
+func TestOrgActionsVariableUpdateRequest_GetVisibility(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	o := &OrgActionsVariableUpdateRequest{Visibility: &zeroValue}
+	o.GetVisibility()
+	o = &OrgActionsVariableUpdateRequest{}
+	o.GetVisibility()
+	o = nil
+	o.GetVisibility()
 }
 
 func TestOrganization_GetAdvancedSecurityEnabledForNewRepos(tt *testing.T) {
