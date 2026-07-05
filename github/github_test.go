@@ -669,97 +669,68 @@ func TestWithAuthTokenAuthorizesConfiguredHostsOnly(t *testing.T) {
 
 	for range 2 {
 		if got := <-attackerAuths; got != "" {
-			t.Errorf("Authorization on cross-host request = %q, want empty", got)
+			t.Errorf("Authorization on cross-origin request = %q, want empty", got)
 		}
 	}
 }
 
-func TestClientShouldAuthorizeRequest(t *testing.T) {
+func TestWithAuthTokenCloneAuthorizesCloneHosts(t *testing.T) {
 	t.Parallel()
 
-	baseURL := "https://api.github.test/"
-	uploadURL := "https://uploads.github.test/"
-	client := mustNewClient(t, WithURLs(&baseURL, &uploadURL))
+	const token = "clone-token"
 
-	tests := []struct {
-		name string
-		req  *http.Request
-		want bool
-	}{
-		{
-			name: "nil request",
-		},
-		{
-			name: "nil url",
-			req:  &http.Request{},
-		},
-		{
-			name: "base url",
-			req:  &http.Request{URL: mustParseURL(t, "https://api.github.test/repos")},
-			want: true,
-		},
-		{
-			name: "upload url",
-			req:  &http.Request{URL: mustParseURL(t, "https://uploads.github.test/assets")},
-			want: true,
-		},
-		{
-			name: "different host",
-			req:  &http.Request{URL: mustParseURL(t, "https://example.test/repos")},
-		},
+	gotAuth := make(chan string, 1)
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotAuth <- r.Header.Get("Authorization")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{}`))
+	}))
+	defer server.Close()
+
+	client := mustNewClient(t, WithAuthToken(token))
+	baseURL := server.URL + "/api/"
+	uploadURL := server.URL + "/upload/"
+	clone, err := client.Clone(WithURLs(&baseURL, &uploadURL))
+	if err != nil {
+		t.Fatalf("Clone returned unexpected error: %v", err)
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			if got := client.shouldAuthorizeRequest(tt.req); got != tt.want {
-				t.Errorf("shouldAuthorizeRequest() = %t, want %t", got, tt.want)
-			}
-		})
+	req, err := clone.NewRequest(t.Context(), "GET", "repos/o/r", nil)
+	if err != nil {
+		t.Fatalf("NewRequest returned unexpected error: %v", err)
+	}
+	resp, err := clone.BareDo(req)
+	if err != nil {
+		t.Fatalf("BareDo returned unexpected error: %v", err)
+	}
+	resp.Body.Close()
+
+	if got, want := <-gotAuth, "Bearer "+token; got != want {
+		t.Errorf("Authorization on clone configured host = %q, want %q", got, want)
 	}
 }
 
-func TestSameOrigin(t *testing.T) {
+func TestShouldAuthorizeURL(t *testing.T) {
 	t.Parallel()
 
+	baseURL := mustParseURL(t, "https://api.github.test:443/")
+	uploadURL := mustParseURL(t, "https://uploads.github.test/")
 	tests := []struct {
 		name string
-		a    *url.URL
-		b    *url.URL
+		url  *url.URL
 		want bool
 	}{
-		{
-			name: "nil url",
-		},
-		{
-			name: "same origin",
-			a:    mustParseURL(t, "https://api.github.test/repos"),
-			b:    mustParseURL(t, "https://api.github.test/orgs"),
-			want: true,
-		},
-		{
-			name: "same origin case insensitive",
-			a:    mustParseURL(t, "HTTPS://API.GITHUB.TEST/repos"),
-			b:    mustParseURL(t, "https://api.github.test/orgs"),
-			want: true,
-		},
-		{
-			name: "different scheme",
-			a:    mustParseURL(t, "http://api.github.test/repos"),
-			b:    mustParseURL(t, "https://api.github.test/repos"),
-		},
-		{
-			name: "different host",
-			a:    mustParseURL(t, "https://api.github.test/repos"),
-			b:    mustParseURL(t, "https://example.test/repos"),
-		},
+		{name: "base url", url: mustParseURL(t, "https://api.github.test/repos"), want: true},
+		{name: "upload url", url: mustParseURL(t, "https://uploads.github.test/assets"), want: true},
+		{name: "same origin case insensitive", url: mustParseURL(t, "HTTPS://API.GITHUB.TEST/repos"), want: true},
+		{name: "different scheme", url: mustParseURL(t, "http://api.github.test/repos")},
+		{name: "different host", url: mustParseURL(t, "https://example.test/repos")},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			if got := sameOrigin(tt.a, tt.b); got != tt.want {
-				t.Errorf("sameOrigin() = %t, want %t", got, tt.want)
+			if got := shouldAuthorizeURL(tt.url, baseURL, uploadURL); got != tt.want {
+				t.Errorf("shouldAuthorizeURL() = %t, want %t", got, tt.want)
 			}
 		})
 	}
@@ -3519,11 +3490,11 @@ func TestBareDoUntilFound_UnexpectedRedirection(t *testing.T) {
 	}
 }
 
-// TestBareDoUntilFound_RejectsCrossHostRedirect verifies that bareDoUntilFound
-// refuses to follow a 301 redirect whose Location points to a different host,
+// TestBareDoUntilFound_RejectsCrossOriginRedirect verifies that bareDoUntilFound
+// refuses to follow a 301 redirect whose Location points to a different origin,
 // which would otherwise leak the Authorization header (added by the auth
 // transport) to an attacker-controlled server.
-func TestBareDoUntilFound_RejectsCrossHostRedirect(t *testing.T) {
+func TestBareDoUntilFound_RejectsCrossOriginRedirect(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -3535,18 +3506,18 @@ func TestBareDoUntilFound_RejectsCrossHostRedirect(t *testing.T) {
 	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
 	_, _, err := client.bareDoUntilFound(req, 1)
 	if err == nil {
-		t.Fatal("Expected cross-host redirect to be rejected, got nil error.")
+		t.Fatal("Expected cross-origin redirect to be rejected, got nil error.")
 	}
-	if !strings.Contains(err.Error(), "cross-host redirect") {
-		t.Errorf("Expected cross-host redirect error, got: %v", err)
+	if !strings.Contains(err.Error(), "cross-origin redirect") {
+		t.Errorf("Expected cross-origin redirect error, got: %v", err)
 	}
 }
 
-// TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect verifies
+// TestRoundTripWithOptionalFollowRedirect_RejectsCrossOriginRedirect verifies
 // that roundTripWithOptionalFollowRedirect refuses to follow a 301 redirect to
-// a different host, preventing Authorization-header leakage to attacker-
+// a different origin, preventing Authorization-header leakage to attacker-
 // controlled servers via a malicious or compromised API response.
-func TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect(t *testing.T) {
+func TestRoundTripWithOptionalFollowRedirect_RejectsCrossOriginRedirect(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -3557,15 +3528,15 @@ func TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect(t *testing
 
 	_, err := client.roundTripWithOptionalFollowRedirect(t.Context(), ".", 1)
 	if err == nil {
-		t.Fatal("Expected cross-host redirect to be rejected, got nil error.")
+		t.Fatal("Expected cross-origin redirect to be rejected, got nil error.")
 	}
-	if !strings.Contains(err.Error(), "cross-host redirect") {
-		t.Errorf("Expected cross-host redirect error, got: %v", err)
+	if !strings.Contains(err.Error(), "cross-origin redirect") {
+		t.Errorf("Expected cross-origin redirect error, got: %v", err)
 	}
 }
 
 // TestRoundTripWithOptionalFollowRedirect_AllowsSameHostRedirect ensures the
-// cross-host check does not break legitimate same-host 301 follow behavior
+// cross-origin check does not break legitimate same-origin 301 follow behavior
 // (the path that rate-limit redirection relies on).
 func TestRoundTripWithOptionalFollowRedirect_AllowsSameHostRedirect(t *testing.T) {
 	t.Parallel()
