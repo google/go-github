@@ -716,23 +716,45 @@ func TestShouldAuthorizeURL(t *testing.T) {
 	baseURL := mustParseURL(t, "https://api.github.test:443/")
 	uploadURL := mustParseURL(t, "https://uploads.github.test/")
 	tests := []struct {
-		name string
-		url  *url.URL
-		want bool
+		name    string
+		url     *url.URL
+		baseURL *url.URL
+		want    bool
 	}{
+		{name: "nil url"},
 		{name: "base url", url: mustParseURL(t, "https://api.github.test/repos"), want: true},
 		{name: "upload url", url: mustParseURL(t, "https://uploads.github.test/assets"), want: true},
 		{name: "same origin case insensitive", url: mustParseURL(t, "HTTPS://API.GITHUB.TEST/repos"), want: true},
+		{
+			name:    "same http origin default port",
+			url:     mustParseURL(t, "http://api.github.test/repos"),
+			baseURL: mustParseURL(t, "http://api.github.test:80/"),
+			want:    true,
+		},
+		{
+			name:    "same non-http origin",
+			url:     mustParseURL(t, "git://api.github.test/repos"),
+			baseURL: mustParseURL(t, "git://api.github.test/"),
+			want:    true,
+		},
 		{name: "different scheme", url: mustParseURL(t, "http://api.github.test/repos")},
 		{name: "different host", url: mustParseURL(t, "https://example.test/repos")},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			baseURL := baseURL
+			if tt.baseURL != nil {
+				baseURL = tt.baseURL
+			}
 			if got := shouldAuthorizeURL(tt.url, baseURL, uploadURL); got != tt.want {
 				t.Errorf("shouldAuthorizeURL() = %t, want %t", got, tt.want)
 			}
 		})
+	}
+
+	if shouldAuthorizeURL(mustParseURL(t, "https://api.github.test/repos"), nil, nil) {
+		t.Error("shouldAuthorizeURL() with nil configured origins = true, want false")
 	}
 }
 
