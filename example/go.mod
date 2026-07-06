@@ -1,4 +1,4 @@
-module github.com/google/go-github/v88/example
+module github.com/google/go-github/v89/example
 
 go 1.25.5
 
@@ -7,8 +7,8 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.19.0
 	github.com/gofri/go-github-pagination v1.0.1
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
-	github.com/google/go-github/otel/v88 v88.0.0
-	github.com/google/go-github/v88 v88.0.0
+	github.com/google/go-github/otel/v89 v89.0.0
+	github.com/google/go-github/v89 v89.0.0
 	github.com/sigstore/sigstore-go v1.1.4
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.44.0
 	go.opentelemetry.io/otel/sdk v1.44.0
@@ -53,6 +53,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect
 	github.com/google/certificate-transparency-go v1.3.2 // indirect
 	github.com/google/go-containerregistry v0.20.7 // indirect
+	github.com/google/go-github/v88 v88.0.0 // indirect
 	github.com/google/go-querystring v1.2.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3 // indirect
@@ -88,6 +89,6 @@ require (
 )
 
 // Use version at HEAD, not the latest published.
-replace github.com/google/go-github/v88 => ../
+replace github.com/google/go-github/v89 => ../
 
-replace github.com/google/go-github/otel/v88 => ../otel
+replace github.com/google/go-github/otel/v89 => ../otel
