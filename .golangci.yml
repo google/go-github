@@ -64,7 +64,7 @@ linters:
     goheader:
       values:
         regexp:
-          CopyrightDate: "Copyright \\d{4} "
+          CopyrightDate: 'Copyright \d{4} '
       template: |-
         {{CopyrightDate}}The go-github AUTHORS. All rights reserved.
 
@@ -521,16 +521,16 @@ linters:
       # Allow fmt.Print in examples, internal tools, and tests.
       - linters: [forbidigo]
         path: ^(example|tools|test|scrape)\/
-        text: "fmt\\.Print"
+        text: 'fmt\.Print'
 
       # We need to pass nil Context in order to test DoBare erroring on nil ctx.
       - linters: [staticcheck]
         path: _test\.go
-        text: "SA1012: do not pass a nil Context"
+        text: 'SA1012: do not pass a nil Context'
 
       # We need to use sha1 for validating signatures
       - linters: [gosec]
-        text: "G505: Blocklisted import crypto/sha1: weak cryptographic primitive"
+        text: 'G505: Blocklisted import crypto/sha1: weak cryptographic primitive'
 
       # This is adapted from golangci-lint's default exclusions. It disables linting for error checks on
       # os.RemoveAll, fmt.Fprint*, fmt.Scanf, and any function ending in "Close".
@@ -540,7 +540,7 @@ linters:
       # We don't care about gosec issues in examples or internal tools.
       - linters: [gosec]
         path: ^(example|tools)\/
-        text: "(G304|G703|G705|G706)"
+        text: '(G304|G703|G705|G706)'
 
       # We don't run parallel integration tests
       - linters: [paralleltest, tparallel]
