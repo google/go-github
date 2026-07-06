@@ -45,7 +45,7 @@ consistent with the SHA listed in "openapi_commit". This is run in CI as a conve
 changes to openapi_operations.yaml.
 `,
 
-	"unused_deprecated_help": `Onbly list deprecated operations in openapi_operations.yaml that aren't used by any service methods.`,
+	"unused_deprecated_help": `Only list deprecated operations in openapi_operations.yaml that aren't used by any service methods.`,
 	"output_json_help":       `Output JSON.`,
 }
 
