@@ -43182,6 +43182,14 @@ func (u *User) GetID() int64 {
 	return *u.ID
 }
 
+// GetInherited returns the Inherited field if it's non-nil, zero value otherwise.
+func (u *User) GetInherited() bool {
+	if u == nil || u.Inherited == nil {
+		return false
+	}
+	return *u.Inherited
+}
+
 // GetInheritedFrom returns the InheritedFrom slice if it's non-nil, nil otherwise.
 func (u *User) GetInheritedFrom() []*Team {
 	if u == nil || u.InheritedFrom == nil {
@@ -43308,6 +43316,14 @@ func (u *User) GetReposURL() string {
 		return ""
 	}
 	return *u.ReposURL
+}
+
+// GetRole returns the Role field if it's non-nil, zero value otherwise.
+func (u *User) GetRole() string {
+	if u == nil || u.Role == nil {
+		return ""
+	}
+	return *u.Role
 }
 
 // GetRoleName returns the RoleName field if it's non-nil, zero value otherwise.

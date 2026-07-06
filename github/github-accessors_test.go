@@ -54175,6 +54175,17 @@ func TestUser_GetID(tt *testing.T) {
 	u.GetID()
 }
 
+func TestUser_GetInherited(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &User{Inherited: &zeroValue}
+	u.GetInherited()
+	u = &User{}
+	u.GetInherited()
+	u = nil
+	u.GetInherited()
+}
+
 func TestUser_GetInheritedFrom(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*Team{}
@@ -54343,6 +54354,17 @@ func TestUser_GetReposURL(tt *testing.T) {
 	u.GetReposURL()
 	u = nil
 	u.GetReposURL()
+}
+
+func TestUser_GetRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &User{Role: &zeroValue}
+	u.GetRole()
+	u = &User{}
+	u.GetRole()
+	u = nil
+	u.GetRole()
 }
 
 func TestUser_GetRoleName(tt *testing.T) {
