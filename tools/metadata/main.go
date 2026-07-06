@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 
 	"github.com/alecthomas/kong"
 	"github.com/google/go-github/v88/github"
@@ -44,7 +45,8 @@ consistent with the SHA listed in "openapi_commit". This is run in CI as a conve
 changes to openapi_operations.yaml.
 `,
 
-	"output_json_help": `Output JSON.`,
+	"unused_deprecated_help": `Onbly list deprecated operations in openapi_operations.yaml that aren't used by any service methods.`,
+	"output_json_help":       `Output JSON.`,
 }
 
 type rootCmd struct {
@@ -142,7 +144,8 @@ func (c *updateGoCmd) Run(root *rootCmd) error {
 }
 
 type unusedCmd struct {
-	JSON bool `kong:"help=${output_json_help}"`
+	Deprecated bool `kong:"help=${unused_deprecated_help}"`
+	JSON       bool `kong:"help=${output_json_help}"`
 }
 
 func (c *unusedCmd) Run(root *rootCmd, k *kong.Context) error {
@@ -153,6 +156,11 @@ func (c *unusedCmd) Run(root *rootCmd, k *kong.Context) error {
 	unused, err := unusedOps(opsFile, filepath.Join(root.WorkingDir, "github"))
 	if err != nil {
 		return err
+	}
+	if c.Deprecated {
+		unused = slices.DeleteFunc(unused, func(op *operation) bool {
+			return !op.Deprecated
+		})
 	}
 	if c.JSON {
 		enc := json.NewEncoder(k.Stdout)
