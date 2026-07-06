@@ -16996,10 +16996,7 @@ func TestDeploymentRequest_GetProductionEnvironment(tt *testing.T) {
 
 func TestDeploymentRequest_GetRef(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DeploymentRequest{Ref: &zeroValue}
-	d.GetRef()
-	d = &DeploymentRequest{}
+	d := &DeploymentRequest{}
 	d.GetRef()
 	d = nil
 	d.GetRef()
@@ -17007,8 +17004,8 @@ func TestDeploymentRequest_GetRef(tt *testing.T) {
 
 func TestDeploymentRequest_GetRequiredContexts(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue []string
-	d := &DeploymentRequest{RequiredContexts: &zeroValue}
+	zeroValue := []string{}
+	d := &DeploymentRequest{RequiredContexts: zeroValue}
 	d.GetRequiredContexts()
 	d = &DeploymentRequest{}
 	d.GetRequiredContexts()
@@ -17475,13 +17472,21 @@ func TestDeploymentStatusRequest_GetLogURL(tt *testing.T) {
 
 func TestDeploymentStatusRequest_GetState(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DeploymentStatusRequest{State: &zeroValue}
-	d.GetState()
-	d = &DeploymentStatusRequest{}
+	d := &DeploymentStatusRequest{}
 	d.GetState()
 	d = nil
 	d.GetState()
+}
+
+func TestDeploymentStatusRequest_GetTargetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DeploymentStatusRequest{TargetURL: &zeroValue}
+	d.GetTargetURL()
+	d = &DeploymentStatusRequest{}
+	d.GetTargetURL()
+	d = nil
+	d.GetTargetURL()
 }
 
 func TestDevContainer_GetDisplayName(tt *testing.T) {

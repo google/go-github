@@ -91,7 +91,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &DeploymentRequest{Ref: Ptr("1111"), Task: Ptr("deploy"), TransientEnvironment: Ptr(true)}
+	input := DeploymentRequest{Ref: "1111", Task: Ptr("deploy"), TransientEnvironment: Ptr(true)}
 
 	mux.HandleFunc("/repos/o/r/deployments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -244,7 +244,7 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &DeploymentStatusRequest{State: Ptr("inactive"), Description: Ptr("deploy"), AutoInactive: Ptr(false)}
+	input := DeploymentStatusRequest{State: "inactive", Description: Ptr("deploy"), AutoInactive: Ptr(false)}
 
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
