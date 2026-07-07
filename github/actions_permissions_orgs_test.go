@@ -290,6 +290,30 @@ func TestActionsService_UpdateActionsAllowed(t *testing.T) {
 	})
 }
 
+func TestActionsService_UpdateActionsAllowed_emptyPatterns(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{}}
+
+	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":[]}`)
+	})
+
+	ctx := t.Context()
+	org, _, err := client.Actions.UpdateActionsAllowed(ctx, "o", *input)
+	if err != nil {
+		t.Errorf("Actions.UpdateActionsAllowed returned error: %v", err)
+	}
+
+	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{}}
+	if !cmp.Equal(org, want) {
+		t.Errorf("Actions.UpdateActionsAllowed returned %+v, want %+v", org, want)
+	}
+}
+
 func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
