@@ -36,7 +36,7 @@ type ActionsEnabledOnOrgRepos struct {
 type ActionsAllowed struct {
 	GithubOwnedAllowed *bool    `json:"github_owned_allowed,omitempty"`
 	VerifiedAllowed    *bool    `json:"verified_allowed,omitempty"`
-	PatternsAllowed    []string `json:"patterns_allowed,omitempty"`
+	PatternsAllowed    []string `json:"patterns_allowed,omitzero"`
 }
 
 func (a ActionsAllowed) String() string {
