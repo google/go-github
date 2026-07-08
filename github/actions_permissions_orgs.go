@@ -36,7 +36,7 @@ type ActionsEnabledOnOrgRepos struct {
 type ActionsAllowed struct {
 	GithubOwnedAllowed *bool    `json:"github_owned_allowed,omitempty"`
 	VerifiedAllowed    *bool    `json:"verified_allowed,omitempty"`
-	PatternsAllowed    []string `json:"patterns_allowed,omitzero"`
+	PatternsAllowed    []string `json:"patterns_allowed,omitzero"` // omitzero is used to allow empty array to be sent in the request body, to configure the organization to allow no 3rd-party actions. It needs to still omit a `nil` value, so that it's possible to patch the other values without changing the allowed actions.
 }
 
 func (a ActionsAllowed) String() string {
