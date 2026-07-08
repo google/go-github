@@ -35238,12 +35238,12 @@ func (r *RepositoryListRulesetsOptions) GetIncludesParents() bool {
 	return *r.IncludesParents
 }
 
-// GetBase returns the Base field if it's non-nil, zero value otherwise.
+// GetBase returns the Base field.
 func (r *RepositoryMergeRequest) GetBase() string {
-	if r == nil || r.Base == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.Base
+	return r.Base
 }
 
 // GetCommitMessage returns the CommitMessage field if it's non-nil, zero value otherwise.
@@ -35254,12 +35254,12 @@ func (r *RepositoryMergeRequest) GetCommitMessage() string {
 	return *r.CommitMessage
 }
 
-// GetHead returns the Head field if it's non-nil, zero value otherwise.
+// GetHead returns the Head field.
 func (r *RepositoryMergeRequest) GetHead() string {
-	if r == nil || r.Head == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.Head
+	return r.Head
 }
 
 // GetAll returns the All slice if it's non-nil, nil otherwise.

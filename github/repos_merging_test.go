@@ -17,9 +17,9 @@ func TestRepositoriesService_Merge(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &RepositoryMergeRequest{
-		Base:          Ptr("b"),
-		Head:          Ptr("h"),
+	input := RepositoryMergeRequest{
+		Base:          "b",
+		Head:          "h",
 		CommitMessage: Ptr("c"),
 	}
 

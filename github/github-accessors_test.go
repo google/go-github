@@ -44310,10 +44310,7 @@ func TestRepositoryListRulesetsOptions_GetIncludesParents(tt *testing.T) {
 
 func TestRepositoryMergeRequest_GetBase(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryMergeRequest{Base: &zeroValue}
-	r.GetBase()
-	r = &RepositoryMergeRequest{}
+	r := &RepositoryMergeRequest{}
 	r.GetBase()
 	r = nil
 	r.GetBase()
@@ -44332,10 +44329,7 @@ func TestRepositoryMergeRequest_GetCommitMessage(tt *testing.T) {
 
 func TestRepositoryMergeRequest_GetHead(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryMergeRequest{Head: &zeroValue}
-	r.GetHead()
-	r = &RepositoryMergeRequest{}
+	r := &RepositoryMergeRequest{}
 	r.GetHead()
 	r = nil
 	r.GetHead()

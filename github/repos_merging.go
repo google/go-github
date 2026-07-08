@@ -13,8 +13,8 @@ import (
 // RepositoryMergeRequest represents a request to merge a branch in a
 // repository.
 type RepositoryMergeRequest struct {
-	Base          *string `json:"base,omitempty"`
-	Head          *string `json:"head,omitempty"`
+	Base          string  `json:"base"`
+	Head          string  `json:"head"`
 	CommitMessage *string `json:"commit_message,omitempty"`
 }
 
@@ -37,7 +37,7 @@ type RepoMergeUpstreamResult struct {
 // GitHub API docs: https://docs.github.com/rest/branches/branches?apiVersion=2022-11-28#merge-a-branch
 //
 //meta:operation POST /repos/{owner}/{repo}/merges
-func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, body *RepositoryMergeRequest) (*RepositoryCommit, *Response, error) {
+func (s *RepositoriesService) Merge(ctx context.Context, owner, repo string, body RepositoryMergeRequest) (*RepositoryCommit, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/merges", owner, repo)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
