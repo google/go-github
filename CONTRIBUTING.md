@@ -150,6 +150,9 @@ tips (which are frequently ignored by AI-driven PRs):
   fail, but with the included PR changes, the new test(s) pass.
 * When possible, try to make smaller, focused PRs (which are easier to review
   and easier for others to understand).
+* When a reviewer leaves a comment on one occurrence of an issue, apply the
+  same fix to all similar occurrences throughout the entire PR - don't wait
+  for the reviewer to point out each one individually.
 
 ## Code Guidelines
 

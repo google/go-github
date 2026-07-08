@@ -16,7 +16,7 @@ import (
 	"strings"
 
 	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/google/go-github/v88/github"
+	"github.com/google/go-github/v89/github"
 	"golang.org/x/sync/errgroup"
 )
 
