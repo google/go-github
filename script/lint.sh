@@ -1,7 +1,7 @@
 #!/bin/sh
 #/ [ CHECK_GITHUB_OPENAPI=1 ] script/lint.sh runs linters and validates generated files.
-#/ When CHECK_GITHUB is set, it validates that openapi_operations.yaml is consistent with the
-#/ descriptions from github.com/github/rest-api-description.
+#/ When CHECK_GITHUB_OPENAPI is set, it validates OpenAPI metadata and schema fields
+#/ against descriptions from github.com/github/rest-api-description.
 
 set -e
 
@@ -94,6 +94,14 @@ if [ -n "$CHECK_GITHUB_OPENAPI" ]; then
     printf "${GREEN}✔ openapi_operations.yaml is valid${NC}\n"
   else
     printf "${RED}✘ openapi_operations.yaml validation failed${NC}\n"
+    fail
+  fi
+
+  print_header "Validating OpenAPI schema fields"
+  if script/metadata.sh check-schema-fields; then
+    printf "${GREEN}✔ OpenAPI schema fields are valid${NC}\n"
+  else
+    printf "${RED}✘ OpenAPI schema field validation failed${NC}\n"
     fail
   fi
 fi
