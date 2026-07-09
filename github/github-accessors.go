@@ -33198,12 +33198,12 @@ func (r *RepoImmutableReleasesStatus) GetEnforcedByOwner() bool {
 	return *r.EnforcedByOwner
 }
 
-// GetBranch returns the Branch field if it's non-nil, zero value otherwise.
+// GetBranch returns the Branch field.
 func (r *RepoMergeUpstreamRequest) GetBranch() string {
-	if r == nil || r.Branch == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.Branch
+	return r.Branch
 }
 
 // GetBaseBranch returns the BaseBranch field if it's non-nil, zero value otherwise.

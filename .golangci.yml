@@ -252,7 +252,6 @@ linters:
             - PullRequestReviewDismissalRequest
             - PullRequestReviewRequest
             - PullRequestReviewsEnforcementUpdate
-            - RepoMergeUpstreamRequest
             - Repository
             - RepositoryAddCollaboratorOptions
             - RepositoryComment

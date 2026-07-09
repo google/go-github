@@ -41712,10 +41712,7 @@ func TestRepoImmutableReleasesStatus_GetEnforcedByOwner(tt *testing.T) {
 
 func TestRepoMergeUpstreamRequest_GetBranch(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepoMergeUpstreamRequest{Branch: &zeroValue}
-	r.GetBranch()
-	r = &RepoMergeUpstreamRequest{}
+	r := &RepoMergeUpstreamRequest{}
 	r.GetBranch()
 	r = nil
 	r.GetBranch()

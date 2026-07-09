@@ -59,8 +59,8 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &RepoMergeUpstreamRequest{
-		Branch: Ptr("b"),
+	input := RepoMergeUpstreamRequest{
+		Branch: "b",
 	}
 
 	mux.HandleFunc("/repos/o/r/merge-upstream", func(w http.ResponseWriter, r *http.Request) {
