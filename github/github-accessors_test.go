@@ -52006,10 +52006,7 @@ func TestTemplateRepoRequest_GetIncludeAllBranches(tt *testing.T) {
 
 func TestTemplateRepoRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	t := &TemplateRepoRequest{Name: &zeroValue}
-	t.GetName()
-	t = &TemplateRepoRequest{}
+	t := &TemplateRepoRequest{}
 	t.GetName()
 	t = nil
 	t.GetName()
