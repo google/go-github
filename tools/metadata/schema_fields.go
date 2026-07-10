@@ -28,11 +28,11 @@ import (
 type schemaFieldCheckOptions struct {
 	descriptions     []*openapiFile
 	githubDir        string
-	schemaNames      map[string]bool
+	schemaNames      []string
 	includeResponses bool
-	// exceptions holds "Struct.Field" entries whose diagnostics are suppressed. It is
-	// loaded from schema_field_exceptions.yaml by the command; see loadSchemaFieldExceptions.
-	exceptions map[string]bool
+	// exceptions holds "Struct.Field" entries whose diagnostics are suppressed. It is loaded from
+	// schema_field_exceptions.yaml by the command; see loadSchemaFieldExceptions.
+	exceptions []string
 }
 
 type schemaFieldCheckResult struct {
@@ -117,7 +117,7 @@ type goStructField struct {
 type openapiSchemaFields struct {
 	openapiSchema string
 	openapiFile   string
-	required      map[string]bool
+	required      []string
 	properties    map[string]openapiSchemaProperty
 }
 
@@ -133,23 +133,22 @@ type schemaFieldMatch struct {
 	matchReason string
 }
 
-// schemaFieldExceptionsFile is the on-disk format of schema_field_exceptions.yaml: a list
-// of "Struct.Field" entries whose JSON field optionality intentionally deviates from the
-// OpenAPI schema, so their diagnostics are suppressed. Each entry is a known deviation
-// awaiting cleanup.
+// schemaFieldExceptionsFile is the on-disk format of schema_field_exceptions.yaml: a list of "Struct.Field"
+// entries whose JSON field optionality intentionally deviates from the OpenAPI schema, so their diagnostics
+// are suppressed. Each entry is a known deviation awaiting cleanup.
 type schemaFieldExceptionsFile struct {
 	Exceptions []string `yaml:"exceptions"`
 }
 
-// loadSchemaFieldExceptions reads the "Struct.Field" exception entries from filename and
-// returns them as a set. A missing file yields an empty set and no error when optional is
-// true, so callers relying on the default path do not need the file to exist; an explicitly
-// requested file that is missing is an error.
-func loadSchemaFieldExceptions(filename string, optional bool) (map[string]bool, error) {
+// loadSchemaFieldExceptions reads the "Struct.Field" exception entries from the exceptions file under
+// workingDir and returns them. A missing file yields no exceptions and no error, so callers do not need
+// the file to exist.
+func loadSchemaFieldExceptions(workingDir string) ([]string, error) {
+	filename := filepath.Join(workingDir, "tools/metadata/schema_field_exceptions.yaml")
 	b, err := os.ReadFile(filename)
 	if err != nil {
-		if optional && errors.Is(err, fs.ErrNotExist) {
-			return map[string]bool{}, nil
+		if errors.Is(err, fs.ErrNotExist) {
+			return nil, nil
 		}
 		return nil, err
 	}
@@ -157,15 +156,14 @@ func loadSchemaFieldExceptions(filename string, optional bool) (map[string]bool,
 	if err := yaml.Unmarshal(b, &exceptionsFile); err != nil {
 		return nil, fmt.Errorf("%v: %w", filename, err)
 	}
-	return sliceSet(exceptionsFile.Exceptions), nil
+	return exceptionsFile.Exceptions, nil
 }
 
-// filterAllowedSchemaFieldDiagnostics removes diagnostics whose "Struct.Field" is listed in
-// the exceptions set.
-func filterAllowedSchemaFieldDiagnostics(diagnostics []*schemaFieldDiagnostic, exceptions map[string]bool) []*schemaFieldDiagnostic {
+// filterAllowedSchemaFieldDiagnostics removes diagnostics whose "Struct.Field" is listed in the exceptions.
+func filterAllowedSchemaFieldDiagnostics(diagnostics []*schemaFieldDiagnostic, exceptions []string) []*schemaFieldDiagnostic {
 	var kept []*schemaFieldDiagnostic
 	for _, diag := range diagnostics {
-		if exceptions[diag.GoStruct+"."+diag.Field] {
+		if slices.Contains(exceptions, diag.GoStruct+"."+diag.Field) {
 			continue
 		}
 		kept = append(kept, diag)
@@ -244,7 +242,7 @@ func sortSchemaFieldResult(result *schemaFieldCheckResult) {
 	})
 }
 
-func collectOpenAPISchemaFields(descriptions []*openapiFile, schemaNames map[string]bool) ([]*openapiSchemaFields, []*schemaFieldSkipped, error) {
+func collectOpenAPISchemaFields(descriptions []*openapiFile, schemaNames []string) ([]*openapiSchemaFields, []*schemaFieldSkipped, error) {
 	var schemas []*openapiSchemaFields
 	var skipped []*schemaFieldSkipped
 	seen := map[string]bool{}
@@ -256,7 +254,7 @@ func collectOpenAPISchemaFields(descriptions []*openapiFile, schemaNames map[str
 
 		names := make([]string, 0, len(desc.description.Components.Schemas))
 		for name := range desc.description.Components.Schemas {
-			if len(schemaNames) > 0 && !schemaNames[name] {
+			if len(schemaNames) > 0 && !slices.Contains(schemaNames, name) {
 				continue
 			}
 			if seen[name] {
@@ -290,13 +288,13 @@ func collectOpenAPISchemaFields(descriptions []*openapiFile, schemaNames map[str
 			schemas = append(schemas, &openapiSchemaFields{
 				openapiSchema: name,
 				openapiFile:   desc.filename,
-				required:      sliceSet(schema.Required),
+				required:      schema.Required,
 				properties:    schemaProperties(schema.Properties),
 			})
 		}
 	}
 
-	for name := range schemaNames {
+	for _, name := range schemaNames {
 		if !seen[name] {
 			skipped = append(skipped, newSchemaFieldSkipped(name, "", "schema filter did not match an OpenAPI schema"))
 		}
@@ -325,7 +323,7 @@ func flattenObjectSchema(schema *openapi3.Schema) (*openapi3.Schema, string, err
 	}
 
 	merged := &openapi3.Schema{
-		Required:   append([]string{}, schema.Required...),
+		Required:   slices.Clone(schema.Required),
 		Properties: openapi3.Schemas{},
 	}
 	maps.Copy(merged.Properties, schema.Properties)
@@ -363,14 +361,6 @@ func schemaProperties(properties openapi3.Schemas) map[string]openapiSchemaPrope
 	return result
 }
 
-func sliceSet(values []string) map[string]bool {
-	set := make(map[string]bool, len(values))
-	for _, value := range values {
-		set[value] = true
-	}
-	return set
-}
-
 func matchOpenAPISchemasToGoStructs(schemas []*openapiSchemaFields, goStructs map[string]*goStructInfo, requestStructs map[string]bool, allowSchemaNameMatch, includeResponses bool) ([]*schemaFieldMatch, []*schemaFieldSkipped) {
 	var matches []*schemaFieldMatch
 	var skipped []*schemaFieldSkipped
@@ -395,9 +385,9 @@ func matchOpenAPISchemasToGoStructs(schemas []*openapiSchemaFields, goStructs ma
 	return dropAmbiguousFieldSetMatches(matches, skipped)
 }
 
-// dropAmbiguousFieldSetMatches removes exact-field-set matches for a Go struct that matched more
-// than one OpenAPI schema. A field set that coincidentally equals several unrelated schemas (for
-// example a generic {id, type}) is not a reliable match, so it is skipped rather than reported.
+// dropAmbiguousFieldSetMatches removes exact-field-set matches for a Go struct that matched more than one
+// OpenAPI schema. A field set that coincidentally equals several unrelated schemas (for example a generic
+// {id, type}) is not a reliable match, so it is skipped rather than reported.
 func dropAmbiguousFieldSetMatches(matches []*schemaFieldMatch, skipped []*schemaFieldSkipped) ([]*schemaFieldMatch, []*schemaFieldSkipped) {
 	fieldSetMatchCount := map[string]int{}
 	for _, match := range matches {
@@ -480,10 +470,9 @@ func matchByExactFieldSet(schema *openapiSchemaFields, goStructs map[string]*goS
 	}
 }
 
-// canCheckGoStruct reports whether goStruct should be compared against an OpenAPI schema.
-// By default only request body structs are checked; requestStructs holds the names of
-// structs used as the body argument of a mutating client.NewRequest call. Response and
-// other structs are only checked when includeResponses is set.
+// canCheckGoStruct reports whether goStruct should be compared against an OpenAPI schema. By default only
+// request body structs are checked; requestStructs holds the names of structs used as the body argument of a
+// mutating client.NewRequest call. Response and other structs are only checked when includeResponses is set.
 func canCheckGoStruct(goStruct *goStructInfo, requestStructs map[string]bool, includeResponses bool) bool {
 	return includeResponses || requestStructs[goStruct.name]
 }
@@ -506,32 +495,29 @@ func joinGoStructNames(goStructs []*goStructInfo) string {
 	return strings.Join(names, ", ")
 }
 
-// Thresholds for hasEnoughSharedFields. A schema-name match already agrees on the
-// Go type name, so these guard only against a name that coincidentally collides with
-// an unrelated struct. They are deliberately lenient: a wrong match is dropped later
-// as ambiguous, but a missed match silently skips a real check.
+// Thresholds for hasEnoughSharedFields. A schema-name match already agrees on the Go type name, so these
+// guard only against a name that coincidentally collides with an unrelated struct. They are deliberately
+// lenient: a wrong match is dropped later as ambiguous, but a missed match silently skips a real check.
 const (
-	// minSharedFieldsForMatch accepts a match once this many JSON fields overlap,
-	// regardless of struct size: three shared, correctly named fields are unlikely
-	// to line up by chance.
+	// minSharedFieldsForMatch accepts a match once this many JSON fields overlap, regardless of struct
+	// size: three shared, correctly named fields are unlikely to line up by chance.
 	minSharedFieldsForMatch = 3
-	// minSharedFieldPercent is the fallback for structs smaller than
-	// minSharedFieldsForMatch: the overlap must cover at least this share of the
-	// smaller field set. Compared as shared*100 >= smallest*minSharedFieldPercent
-	// to stay in integer math.
+	// minSharedFieldPercent is the fallback for structs smaller than minSharedFieldsForMatch: the overlap
+	// must cover at least this share of the smaller field set. Compared as
+	// shared*100 >= smallest*minSharedFieldPercent to stay in integer math.
 	minSharedFieldPercent = 60
 )
 
-// hasEnoughSharedFields reports whether schema and goStruct share enough JSON fields to
-// treat a schema-name match as genuine rather than a coincidental name collision.
+// hasEnoughSharedFields reports whether schema and goStruct share enough JSON fields to treat a schema-name
+// match as genuine rather than a coincidental name collision.
 func hasEnoughSharedFields(schema *openapiSchemaFields, goStruct *goStructInfo) bool {
 	shared := sharedFieldCount(schema, goStruct)
 	if shared == 0 {
 		return false
 	}
 	smallest := min(len(schema.properties), len(goStruct.fields))
-	// A type with one or two fields has too little signal for a percentage test, so
-	// require every field to line up before trusting the match.
+	// A type with one or two fields has too little signal for a percentage test, so require every field to
+	// line up before trusting the match.
 	if smallest <= 2 {
 		return shared == smallest
 	}
@@ -560,14 +546,12 @@ func sameJSONFieldSet(schema *openapiSchemaFields, goStruct *goStructInfo) bool 
 	return true
 }
 
-// goInitialisms maps a lowercase OpenAPI name token to its idiomatic Go casing when
-// building candidate struct names in goName. The structfield linter keeps a similar
-// list (its `initialisms`/`specialCases`), but it lives in the separate
-// github.com/google/go-github/v89/tools/structfield module and is keyed and shaped
-// differently (uppercase-keyed set for a different purpose), so the two are
-// intentionally not shared: unifying them would require a new shared module that both
-// tools depend on. This list is deliberately small and only needs the initialisms that
-// actually appear in OpenAPI schema names.
+// goInitialisms maps a lowercase OpenAPI name token to its idiomatic Go casing when building candidate struct
+// names in goName. The structfield linter keeps a similar list (its `initialisms`/`specialCases`), but it
+// lives in the separate github.com/google/go-github/v89/tools/structfield module and is keyed and shaped
+// differently (uppercase-keyed set for a different purpose), so the two are intentionally not shared:
+// unifying them would require a new shared module that both tools depend on. This list is deliberately small
+// and only needs the initialisms that actually appear in OpenAPI schema names.
 var goInitialisms = map[string]string{
 	"api":     "API",
 	"apis":    "APIs",
@@ -605,7 +589,7 @@ func goNameCandidates(openapiName string) []string {
 		allSingular[i] = singular
 		if singular != token {
 			allChanged = true
-			variant := append([]string{}, tokens...)
+			variant := slices.Clone(tokens)
 			variant[i] = singular
 			variants = append(variants, variant)
 		}
@@ -697,7 +681,7 @@ func compareSchemaFields(match *schemaFieldMatch) []*schemaFieldDiagnostic {
 			continue
 		}
 
-		required := match.schema.required[jsonName]
+		required := slices.Contains(match.schema.required, jsonName)
 		switch {
 		case required && !prop.nullable && field.isPointer:
 			diagnostics = append(diagnostics, newSchemaFieldDiagnostic(match, field, "field is required and non-nullable in the OpenAPI schema but is a pointer"))
@@ -801,16 +785,16 @@ func collectGoStructs(dir string) (map[string]*goStructInfo, map[string]bool, er
 	if err != nil {
 		return nil, nil, err
 	}
-	// Exclude shared types that are also returned as a response; they follow the
-	// all-pointer response convention rather than the request-body convention.
+	// Exclude shared types that are also returned as a response; they follow the all-pointer response
+	// convention rather than the request-body convention.
 	for name := range responseStructs {
 		delete(requestStructs, name)
 	}
 	return structs, requestStructs, nil
 }
 
-// collectRequestStructNames adds to requestStructs the name of the struct type passed as the
-// body argument of every mutating client.NewRequest call in fn.
+// collectRequestStructNames adds to requestStructs the name of the struct type passed as the body argument of
+// every mutating client.NewRequest call in fn.
 func collectRequestStructNames(fn *ast.FuncDecl, requestStructs map[string]bool) {
 	if fn.Body == nil {
 		return
@@ -829,8 +813,8 @@ func collectRequestStructNames(fn *ast.FuncDecl, requestStructs map[string]bool)
 	})
 }
 
-// collectResponseStructNames adds to responseStructs the name of every struct type returned
-// as a pointer (*T) or pointer slice ([]*T) by fn, which marks it as a response type.
+// collectResponseStructNames adds to responseStructs the name of every struct type returned as a pointer (*T)
+// or pointer slice ([]*T) by fn, which marks it as a response type.
 func collectResponseStructNames(fn *ast.FuncDecl, responseStructs map[string]bool) {
 	if fn.Type.Results == nil {
 		return
@@ -871,7 +855,8 @@ func isClientNewRequest(call *ast.CallExpr) bool {
 	}
 }
 
-// isMutatingNewRequest reports whether call's method argument is "PATCH", "POST", or "PUT" and a body argument is present.
+// isMutatingNewRequest reports whether call's method argument is "PATCH", "POST", or "PUT" and a body
+// argument is present.
 func isMutatingNewRequest(call *ast.CallExpr) bool {
 	if len(call.Args) < 4 {
 		return false
@@ -888,8 +873,8 @@ func isMutatingNewRequest(call *ast.CallExpr) bool {
 	}
 }
 
-// requestBodyStructName returns the struct type name of a client.NewRequest body argument,
-// resolving a function parameter to its declared type or a composite literal to its type.
+// requestBodyStructName returns the struct type name of a client.NewRequest body argument, resolving a
+// function parameter to its declared type or a composite literal to its type.
 func requestBodyStructName(fn *ast.FuncDecl, arg ast.Expr) string {
 	switch a := arg.(type) {
 	case *ast.Ident:
@@ -920,7 +905,8 @@ func findFuncParam(fn *ast.FuncDecl, name string) *ast.Field {
 	return nil
 }
 
-// exprTypeName returns the base type name of expr, unwrapping a pointer and resolving a qualified (pkg.Type) selector.
+// exprTypeName returns the base type name of expr, unwrapping a pointer and resolving a qualified (pkg.Type)
+// selector.
 func exprTypeName(expr ast.Expr) string {
 	switch t := expr.(type) {
 	case *ast.StarExpr:
@@ -947,7 +933,7 @@ func collectFieldsForStruct(fset *token.FileSet, filename, structName string, st
 			info := goStructField{
 				goStruct:     structName,
 				field:        name.Name,
-				jsonName:     defaultJSONName(name.Name),
+				jsonName:     name.Name,
 				isPointer:    isPointerType(field.Type),
 				canBeOmitted: canBeOmitted(field.Type),
 				filename:     filename,
@@ -988,10 +974,6 @@ func parseJSONTag(tag string) (name string, hasOmitOption, ignored bool) {
 		}
 	}
 	return name, hasOmitOption, false
-}
-
-func defaultJSONName(name string) string {
-	return name
 }
 
 func isPointerType(expr ast.Expr) bool {

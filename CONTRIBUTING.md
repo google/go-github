@@ -674,8 +674,7 @@ Its subcommands are:
   listed as `Struct.Field` entries in
   `tools/metadata/schema_field_exceptions.yaml`, and their diagnostics are
   suppressed; each is a known deviation to fix and remove over time. Update that
-  file (rather than the Go source) to add or remove an exception. Use
-  `--exceptions` to point the command at a different file.
+  file (rather than the Go source) to add or remove an exception.
 
 [OpenAPI descriptions of their API]: https://github.com/github/rest-api-description
 

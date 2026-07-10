@@ -50,10 +50,8 @@ type Demo struct {
 				},
 			}),
 		})},
-		githubDir: githubDir,
-		schemaNames: sliceSet([]string{
-			"demo",
-		}),
+		githubDir:   githubDir,
+		schemaNames: []string{"demo"},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -214,7 +212,7 @@ type NullableDemo struct {
 			}),
 		})},
 		githubDir:   githubDir,
-		schemaNames: sliceSet([]string{"nullable-demo"}),
+		schemaNames: []string{"nullable-demo"},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -396,18 +394,6 @@ func TestIsPointerTypeAndCanBeOmitted(t *testing.T) {
 				t.Errorf("canBeOmitted(%q) = %v, want %v", tt.expr, got, tt.wantOmittable)
 			}
 		})
-	}
-}
-
-func TestSliceSet(t *testing.T) {
-	t.Parallel()
-	got := sliceSet([]string{"a", "b", "a"})
-	want := map[string]bool{"a": true, "b": true}
-	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("sliceSet mismatch (-want +got):\n%v", diff)
-	}
-	if got := sliceSet(nil); len(got) != 0 {
-		t.Errorf("sliceSet(nil) = %v, want empty", got)
 	}
 }
 
@@ -724,7 +710,7 @@ func (s *svc) Add(ctx context.Context, body *ItemRequest) {
 
 func TestFilterAllowedSchemaFieldDiagnostics(t *testing.T) {
 	t.Parallel()
-	exceptions := sliceSet([]string{"ExemptStruct.ExemptField"})
+	exceptions := []string{"ExemptStruct.ExemptField"}
 	got := filterAllowedSchemaFieldDiagnostics([]*schemaFieldDiagnostic{
 		{GoStruct: "ExemptStruct", Field: "ExemptField"},
 		{GoStruct: "NotExemptStruct", Field: "NotExemptField"},
@@ -737,35 +723,32 @@ func TestFilterAllowedSchemaFieldDiagnostics(t *testing.T) {
 func TestLoadSchemaFieldExceptions(t *testing.T) {
 	t.Parallel()
 	dir := t.TempDir()
-	path := filepath.Join(dir, "schema_field_exceptions.yaml")
-	writeFile(t, path, `# comment
+	metadataDir := filepath.Join(dir, "tools", "metadata")
+	if err := os.MkdirAll(metadataDir, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	writeFile(t, filepath.Join(metadataDir, "schema_field_exceptions.yaml"), `# comment
 exceptions:
   - StructA.FieldA
   - StructB.FieldB # TODO: fix
 `)
 
-	got, err := loadSchemaFieldExceptions(path, false)
+	got, err := loadSchemaFieldExceptions(dir)
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := map[string]bool{"StructA.FieldA": true, "StructB.FieldB": true}
+	want := []string{"StructA.FieldA", "StructB.FieldB"}
 	if diff := cmp.Diff(want, got); diff != "" {
 		t.Errorf("loadSchemaFieldExceptions mismatch (-want +got):\n%v", diff)
 	}
 
-	// A missing optional file yields an empty set and no error.
-	missing := filepath.Join(dir, "does-not-exist.yaml")
-	got, err = loadSchemaFieldExceptions(missing, true)
+	// A missing file yields no exceptions and no error.
+	got, err = loadSchemaFieldExceptions(t.TempDir())
 	if err != nil {
-		t.Fatalf("optional missing file: unexpected error %v", err)
+		t.Fatalf("missing file: unexpected error %v", err)
 	}
 	if len(got) != 0 {
-		t.Errorf("optional missing file: got %v, want empty", got)
-	}
-
-	// A missing required file is an error.
-	if _, err := loadSchemaFieldExceptions(missing, false); err == nil {
-		t.Error("required missing file: got nil error, want error")
+		t.Errorf("missing file: got %v, want empty", got)
 	}
 }
 
@@ -773,13 +756,13 @@ exceptions:
 // malformed edit is caught by unit tests rather than only in CI.
 func TestSchemaFieldExceptionsFileParses(t *testing.T) {
 	t.Parallel()
-	// Tests run with the package directory as the working directory, so the committed
-	// file (tools/metadata/schema_field_exceptions.yaml) is reachable by its basename.
-	got, err := loadSchemaFieldExceptions("schema_field_exceptions.yaml", false)
+	// Tests run with the package directory as the working directory, so the repository root that
+	// loadSchemaFieldExceptions joins with the fixed relative path is "../..".
+	got, err := loadSchemaFieldExceptions(filepath.Join("..", ".."))
 	if err != nil {
 		t.Fatal(err)
 	}
-	for key := range got {
+	for _, key := range got {
 		if _, _, ok := strings.Cut(key, "."); !ok {
 			t.Errorf("exception %q is not in Struct.Field form", key)
 		}

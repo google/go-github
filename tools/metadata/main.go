@@ -36,12 +36,10 @@ Update go source code to be consistent with openapi_operations.yaml.
 	"format_help": `Format white space in openapi_operations.yaml and sort its operations.`,
 	"unused_help": `List operations in openapi_operations.yaml that aren't used by any service methods.`,
 	"check_schema_fields_help": `
-Check Go struct JSON field optionality against GitHub's OpenAPI schemas.
-By default, the check automatically matches OpenAPI component schemas to Go
-request structs only when the JSON field set makes the match unambiguous. Use
---schema to try one or more OpenAPI schema names; filtered schemas also allow
-high-confidence schema-name matches and response structs to make refactoring
-experiments easier.
+Check Go struct JSON field optionality against GitHub's OpenAPI schemas. By default, the check automatically
+matches OpenAPI component schemas to Go request structs only when the JSON field set makes the match unambiguous.
+Use --schema to try one or more OpenAPI schema names; filtered schemas also allow high-confidence schema-name
+matches and response structs to make refactoring experiments easier.
 `,
 
 	"working_dir_help":         `Working directory. Should be the root of the go-github repository.`,
@@ -49,7 +47,6 @@ experiments easier.
 	"openapi_ref_default_help": `Git ref to pull OpenAPI descriptions from. Defaults to openapi_commit from openapi_operations.yaml.`,
 	"schema_filter_help":       `OpenAPI schema name to check. May be repeated. Defaults to all automatically matched schemas.`,
 	"include_responses_help":   `Also check response structs. By default only request structs are checked unless --schema is provided.`,
-	"schema_exceptions_help":   `Path (relative to the working directory) of the YAML file listing "Struct.Field" exceptions to suppress. Missing default file is treated as no exceptions.`,
 
 	"openapi_validate_help": `
 Instead of updating, make sure that the operations in openapi_operations.yaml's "openapi_operations" field are
@@ -88,14 +85,6 @@ func githubClient(apiURL, uploadURL string) (*github.Client, error) {
 	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
 		return nil, errors.New("GITHUB_TOKEN environment variable must be set to a GitHub personal access token with the public_repo scope")
-	}
-	return github.NewClient(github.WithAuthToken(token), github.WithEnterpriseURLs(apiURL, uploadURL))
-}
-
-func publicGithubClient(apiURL, uploadURL string) (*github.Client, error) {
-	token := os.Getenv("GITHUB_TOKEN")
-	if token == "" {
-		return github.NewClient(github.WithEnterpriseURLs(apiURL, uploadURL))
 	}
 	return github.NewClient(github.WithAuthToken(token), github.WithEnterpriseURLs(apiURL, uploadURL))
 }
@@ -203,16 +192,10 @@ func (c *unusedCmd) Run(root *rootCmd, k *kong.Context) error {
 	return nil
 }
 
-// defaultSchemaFieldExceptionsFile is the working-directory-relative path of the
-// exceptions file loaded by check-schema-fields when --exceptions is not overridden.
-const defaultSchemaFieldExceptionsFile = "tools/metadata/schema_field_exceptions.yaml"
-
 type checkSchemaCmd struct {
 	Ref              string   `kong:"help=${openapi_ref_default_help}"`
 	Schemas          []string `kong:"name=schema,help=${schema_filter_help}"`
 	IncludeResponses bool     `kong:"name=include-responses,help=${include_responses_help}"`
-	ExceptionsFile   string   `kong:"name=exceptions,default='tools/metadata/schema_field_exceptions.yaml',help=${schema_exceptions_help}"`
-	JSON             bool     `kong:"help=${output_json_help}"`
 	Verbose          bool     `kong:"help='Print checked and skipped schema matches.'"`
 }
 
@@ -230,7 +213,7 @@ func (c *checkSchemaCmd) Run(root *rootCmd, k *kong.Context) error {
 		}
 	}
 
-	client, err := publicGithubClient(root.GithubURL, root.UploadURL)
+	client, err := githubClient(root.GithubURL, root.UploadURL)
 	if err != nil {
 		return err
 	}
@@ -238,17 +221,14 @@ func (c *checkSchemaCmd) Run(root *rootCmd, k *kong.Context) error {
 	if err != nil {
 		return err
 	}
-	exceptions, err := loadSchemaFieldExceptions(
-		filepath.Join(root.WorkingDir, c.ExceptionsFile),
-		c.ExceptionsFile == defaultSchemaFieldExceptionsFile,
-	)
+	exceptions, err := loadSchemaFieldExceptions(root.WorkingDir)
 	if err != nil {
 		return err
 	}
 	result, err := checkSchemaFields(schemaFieldCheckOptions{
 		descriptions:     descriptions,
 		githubDir:        filepath.Join(root.WorkingDir, "github"),
-		schemaNames:      sliceSet(c.Schemas),
+		schemaNames:      c.Schemas,
 		includeResponses: c.IncludeResponses,
 		exceptions:       exceptions,
 	})
@@ -256,26 +236,18 @@ func (c *checkSchemaCmd) Run(root *rootCmd, k *kong.Context) error {
 		return err
 	}
 
-	if c.JSON {
-		enc := json.NewEncoder(k.Stdout)
-		enc.SetIndent("", "  ")
-		if err := enc.Encode(result); err != nil {
-			return err
+	fmt.Fprintf(k.Stdout, "Found %v schema field issues\n", len(result.Diagnostics))
+	fmt.Fprintf(k.Stdout, "Checked %v OpenAPI schema/Go struct pairs; skipped %v OpenAPI schemas\n", result.Summary.Checked, result.Summary.Skipped)
+	if c.Verbose {
+		for _, checked := range result.Checked {
+			fmt.Fprintf(k.Stdout, "checked: %v -> %v (%v)\n", checked.OpenAPISchema, checked.GoStruct, checked.MatchReason)
 		}
-	} else {
-		fmt.Fprintf(k.Stdout, "Found %v schema field issues\n", len(result.Diagnostics))
-		fmt.Fprintf(k.Stdout, "Checked %v OpenAPI schema/Go struct pairs; skipped %v OpenAPI schemas\n", result.Summary.Checked, result.Summary.Skipped)
-		if c.Verbose {
-			for _, checked := range result.Checked {
-				fmt.Fprintf(k.Stdout, "checked: %v -> %v (%v)\n", checked.OpenAPISchema, checked.GoStruct, checked.MatchReason)
-			}
-			for _, skipped := range result.Skipped {
-				fmt.Fprintf(k.Stdout, "skipped: %v (%v)\n", skipped.OpenAPISchema, skipped.Reason)
-			}
+		for _, skipped := range result.Skipped {
+			fmt.Fprintf(k.Stdout, "skipped: %v (%v)\n", skipped.OpenAPISchema, skipped.Reason)
 		}
-		for _, diag := range result.Diagnostics {
-			fmt.Fprintln(k.Stdout, diag.String())
-		}
+	}
+	for _, diag := range result.Diagnostics {
+		fmt.Fprintln(k.Stdout, diag.String())
 	}
 	if len(result.Diagnostics) > 0 {
 		return fmt.Errorf("found %v schema field issues", len(result.Diagnostics))
