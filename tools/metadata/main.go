@@ -49,6 +49,7 @@ experiments easier.
 	"openapi_ref_default_help": `Git ref to pull OpenAPI descriptions from. Defaults to openapi_commit from openapi_operations.yaml.`,
 	"schema_filter_help":       `OpenAPI schema name to check. May be repeated. Defaults to all automatically matched schemas.`,
 	"include_responses_help":   `Also check response structs. By default only request structs are checked unless --schema is provided.`,
+	"schema_exceptions_help":   `Path (relative to the working directory) of the YAML file listing "Struct.Field" exceptions to suppress. Missing default file is treated as no exceptions.`,
 
 	"openapi_validate_help": `
 Instead of updating, make sure that the operations in openapi_operations.yaml's "openapi_operations" field are
@@ -202,10 +203,15 @@ func (c *unusedCmd) Run(root *rootCmd, k *kong.Context) error {
 	return nil
 }
 
+// defaultSchemaFieldExceptionsFile is the working-directory-relative path of the
+// exceptions file loaded by check-schema-fields when --exceptions is not overridden.
+const defaultSchemaFieldExceptionsFile = "tools/metadata/schema_field_exceptions.yaml"
+
 type checkSchemaCmd struct {
 	Ref              string   `kong:"help=${openapi_ref_default_help}"`
 	Schemas          []string `kong:"name=schema,help=${schema_filter_help}"`
 	IncludeResponses bool     `kong:"name=include-responses,help=${include_responses_help}"`
+	ExceptionsFile   string   `kong:"name=exceptions,default='tools/metadata/schema_field_exceptions.yaml',help=${schema_exceptions_help}"`
 	JSON             bool     `kong:"help=${output_json_help}"`
 	Verbose          bool     `kong:"help='Print checked and skipped schema matches.'"`
 }
@@ -232,11 +238,19 @@ func (c *checkSchemaCmd) Run(root *rootCmd, k *kong.Context) error {
 	if err != nil {
 		return err
 	}
+	exceptions, err := loadSchemaFieldExceptions(
+		filepath.Join(root.WorkingDir, c.ExceptionsFile),
+		c.ExceptionsFile == defaultSchemaFieldExceptionsFile,
+	)
+	if err != nil {
+		return err
+	}
 	result, err := checkSchemaFields(schemaFieldCheckOptions{
 		descriptions:     descriptions,
 		githubDir:        filepath.Join(root.WorkingDir, "github"),
 		schemaNames:      sliceSet(c.Schemas),
 		includeResponses: c.IncludeResponses,
+		exceptions:       exceptions,
 	})
 	if err != nil {
 		return err
@@ -253,10 +267,10 @@ func (c *checkSchemaCmd) Run(root *rootCmd, k *kong.Context) error {
 		fmt.Fprintf(k.Stdout, "Checked %v OpenAPI schema/Go struct pairs; skipped %v OpenAPI schemas\n", result.Summary.Checked, result.Summary.Skipped)
 		if c.Verbose {
 			for _, checked := range result.Checked {
-				fmt.Fprintf(k.Stdout, "checked: %s -> %s (%s)\n", checked.OpenAPISchema, checked.GoStruct, checked.MatchReason)
+				fmt.Fprintf(k.Stdout, "checked: %v -> %v (%v)\n", checked.OpenAPISchema, checked.GoStruct, checked.MatchReason)
 			}
 			for _, skipped := range result.Skipped {
-				fmt.Fprintf(k.Stdout, "skipped: %s (%s)\n", skipped.OpenAPISchema, skipped.Reason)
+				fmt.Fprintf(k.Stdout, "skipped: %v (%v)\n", skipped.OpenAPISchema, skipped.Reason)
 			}
 		}
 		for _, diag := range result.Diagnostics {

@@ -1,0 +1,21 @@
+# schema_field_exceptions.yaml lists "Struct.Field" entries whose JSON field
+# optionality intentionally deviates from the OpenAPI schema, so that their
+# check-schema-fields diagnostics are suppressed.
+#
+# Each entry is a known deviation awaiting cleanup (for example a required field
+# kept as a pointer pending a value-parameter refactor for #3644, or an optional
+# field left as a value type). This mirrors how the paramcheck and structfield
+# linters keep their allowlists in .golangci.yml.
+#
+# TODO: fix these fields and remove the exceptions.
+exceptions:
+  - DependencyGraphSnapshot.Detector
+  - DependencyGraphSnapshot.Job
+  - DependencyGraphSnapshot.Ref
+  - DependencyGraphSnapshot.Scanned
+  - DependencyGraphSnapshot.Sha
+  - DeploymentBranchPolicyRequest.Name
+  - ReviewCustomDeploymentProtectionRuleRequest.Comment
+  - WorkflowsPermissionsOpt.RequireApprovalForForkPRWorkflows
+  - WorkflowsPermissionsOpt.SendSecretsAndVariables
+  - WorkflowsPermissionsOpt.SendWriteTokensToWorkflows

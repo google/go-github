@@ -671,9 +671,11 @@ Its subcommands are:
 
   A few Go fields intentionally deviate from the OpenAPI schema (for example a
   required field kept as a pointer pending a value-parameter refactor). These are
-  listed as `Struct.Field` entries in `schemaFieldExceptions` in
-  `tools/metadata/schema_fields.go`, and their diagnostics are suppressed; each is
-  a known deviation to fix and remove over time.
+  listed as `Struct.Field` entries in
+  `tools/metadata/schema_field_exceptions.yaml`, and their diagnostics are
+  suppressed; each is a known deviation to fix and remove over time. Update that
+  file (rather than the Go source) to add or remove an exception. Use
+  `--exceptions` to point the command at a different file.
 
 [OpenAPI descriptions of their API]: https://github.com/github/rest-api-description
 

@@ -14,6 +14,7 @@ import (
 	"go/token"
 	"io/fs"
 	"maps"
+	"os"
 	"path/filepath"
 	"reflect"
 	"slices"
@@ -21,6 +22,7 @@ import (
 	"unicode"
 
 	"github.com/getkin/kin-openapi/openapi3"
+	"go.yaml.in/yaml/v3"
 )
 
 type schemaFieldCheckOptions struct {
@@ -28,6 +30,9 @@ type schemaFieldCheckOptions struct {
 	githubDir        string
 	schemaNames      map[string]bool
 	includeResponses bool
+	// exceptions holds "Struct.Field" entries whose diagnostics are suppressed. It is
+	// loaded from schema_field_exceptions.yaml by the command; see loadSchemaFieldExceptions.
+	exceptions map[string]bool
 }
 
 type schemaFieldCheckResult struct {
@@ -128,30 +133,39 @@ type schemaFieldMatch struct {
 	matchReason string
 }
 
-// schemaFieldExceptions lists "Struct.Field" entries whose JSON field optionality intentionally
-// deviates from the OpenAPI schema, so their diagnostics are suppressed. Each entry is a known
-// deviation awaiting cleanup (for example a required field kept as a pointer pending a
-// value-parameter refactor for #3644, or an optional field left as a value type).
-// TODO: fix these fields and remove the exceptions.
-var schemaFieldExceptions = map[string]bool{
-	"DependencyGraphSnapshot.Detector":                          true,
-	"DependencyGraphSnapshot.Job":                               true,
-	"DependencyGraphSnapshot.Ref":                               true,
-	"DependencyGraphSnapshot.Scanned":                           true,
-	"DependencyGraphSnapshot.Sha":                               true,
-	"DeploymentBranchPolicyRequest.Name":                        true,
-	"ReviewCustomDeploymentProtectionRuleRequest.Comment":       true,
-	"WorkflowsPermissionsOpt.RequireApprovalForForkPRWorkflows": true,
-	"WorkflowsPermissionsOpt.SendSecretsAndVariables":           true,
-	"WorkflowsPermissionsOpt.SendWriteTokensToWorkflows":        true,
+// schemaFieldExceptionsFile is the on-disk format of schema_field_exceptions.yaml: a list
+// of "Struct.Field" entries whose JSON field optionality intentionally deviates from the
+// OpenAPI schema, so their diagnostics are suppressed. Each entry is a known deviation
+// awaiting cleanup.
+type schemaFieldExceptionsFile struct {
+	Exceptions []string `yaml:"exceptions"`
+}
+
+// loadSchemaFieldExceptions reads the "Struct.Field" exception entries from filename and
+// returns them as a set. A missing file yields an empty set and no error when optional is
+// true, so callers relying on the default path do not need the file to exist; an explicitly
+// requested file that is missing is an error.
+func loadSchemaFieldExceptions(filename string, optional bool) (map[string]bool, error) {
+	b, err := os.ReadFile(filename)
+	if err != nil {
+		if optional && errors.Is(err, fs.ErrNotExist) {
+			return map[string]bool{}, nil
+		}
+		return nil, err
+	}
+	var exceptionsFile schemaFieldExceptionsFile
+	if err := yaml.Unmarshal(b, &exceptionsFile); err != nil {
+		return nil, fmt.Errorf("%v: %w", filename, err)
+	}
+	return sliceSet(exceptionsFile.Exceptions), nil
 }
 
 // filterAllowedSchemaFieldDiagnostics removes diagnostics whose "Struct.Field" is listed in
-// schemaFieldExceptions.
-func filterAllowedSchemaFieldDiagnostics(diagnostics []*schemaFieldDiagnostic) []*schemaFieldDiagnostic {
+// the exceptions set.
+func filterAllowedSchemaFieldDiagnostics(diagnostics []*schemaFieldDiagnostic, exceptions map[string]bool) []*schemaFieldDiagnostic {
 	var kept []*schemaFieldDiagnostic
 	for _, diag := range diagnostics {
-		if schemaFieldExceptions[diag.GoStruct+"."+diag.Field] {
+		if exceptions[diag.GoStruct+"."+diag.Field] {
 			continue
 		}
 		kept = append(kept, diag)
@@ -194,7 +208,7 @@ func checkSchemaFields(opts schemaFieldCheckOptions) (schemaFieldCheckResult, er
 		result.Diagnostics = append(result.Diagnostics, compareSchemaFields(match)...)
 	}
 
-	result.Diagnostics = filterAllowedSchemaFieldDiagnostics(result.Diagnostics)
+	result.Diagnostics = filterAllowedSchemaFieldDiagnostics(result.Diagnostics, opts.exceptions)
 	sortSchemaFieldResult(&result)
 	result.Summary.Checked = len(result.Checked)
 	result.Summary.Skipped = len(result.Skipped)
@@ -492,16 +506,36 @@ func joinGoStructNames(goStructs []*goStructInfo) string {
 	return strings.Join(names, ", ")
 }
 
+// Thresholds for hasEnoughSharedFields. A schema-name match already agrees on the
+// Go type name, so these guard only against a name that coincidentally collides with
+// an unrelated struct. They are deliberately lenient: a wrong match is dropped later
+// as ambiguous, but a missed match silently skips a real check.
+const (
+	// minSharedFieldsForMatch accepts a match once this many JSON fields overlap,
+	// regardless of struct size: three shared, correctly named fields are unlikely
+	// to line up by chance.
+	minSharedFieldsForMatch = 3
+	// minSharedFieldPercent is the fallback for structs smaller than
+	// minSharedFieldsForMatch: the overlap must cover at least this share of the
+	// smaller field set. Compared as shared*100 >= smallest*minSharedFieldPercent
+	// to stay in integer math.
+	minSharedFieldPercent = 60
+)
+
+// hasEnoughSharedFields reports whether schema and goStruct share enough JSON fields to
+// treat a schema-name match as genuine rather than a coincidental name collision.
 func hasEnoughSharedFields(schema *openapiSchemaFields, goStruct *goStructInfo) bool {
 	shared := sharedFieldCount(schema, goStruct)
 	if shared == 0 {
 		return false
 	}
 	smallest := min(len(schema.properties), len(goStruct.fields))
+	// A type with one or two fields has too little signal for a percentage test, so
+	// require every field to line up before trusting the match.
 	if smallest <= 2 {
 		return shared == smallest
 	}
-	return shared >= 3 || shared*10 >= smallest*6
+	return shared >= minSharedFieldsForMatch || shared*100 >= smallest*minSharedFieldPercent
 }
 
 func sharedFieldCount(schema *openapiSchemaFields, goStruct *goStructInfo) int {
@@ -526,6 +560,14 @@ func sameJSONFieldSet(schema *openapiSchemaFields, goStruct *goStructInfo) bool 
 	return true
 }
 
+// goInitialisms maps a lowercase OpenAPI name token to its idiomatic Go casing when
+// building candidate struct names in goName. The structfield linter keeps a similar
+// list (its `initialisms`/`specialCases`), but it lives in the separate
+// github.com/google/go-github/v89/tools/structfield module and is keyed and shaped
+// differently (uppercase-keyed set for a different purpose), so the two are
+// intentionally not shared: unifying them would require a new shared module that both
+// tools depend on. This list is deliberately small and only needs the initialisms that
+// actually appear in OpenAPI schema names.
 var goInitialisms = map[string]string{
 	"api":     "API",
 	"apis":    "APIs",
