@@ -424,7 +424,7 @@ func TestDiagLocation(t *testing.T) {
 	}
 	for _, tt := range tests {
 		if got := diagLocation(tt.filename, tt.line); got != tt.want {
-			t.Errorf("diagLocation(%q, %d) = %q, want %q", tt.filename, tt.line, got, tt.want)
+			t.Errorf("diagLocation(%q, %v) = %q, want %q", tt.filename, tt.line, got, tt.want)
 		}
 	}
 }
@@ -459,7 +459,7 @@ func TestCanCheckOptionality(t *testing.T) {
 	}
 	for _, tt := range tests {
 		if got := tt.prop.canCheckOptionality(); got != tt.want {
-			t.Errorf("%s: canCheckOptionality() = %v, want %v", tt.name, got, tt.want)
+			t.Errorf("%v: canCheckOptionality() = %v, want %v", tt.name, got, tt.want)
 		}
 	}
 }
@@ -485,7 +485,7 @@ func TestSharedFieldCount(t *testing.T) {
 		structWith("b", "c", "d"),
 	)
 	if got != 2 {
-		t.Errorf("sharedFieldCount = %d, want 2", got)
+		t.Errorf("sharedFieldCount = %v, want 2", got)
 	}
 }
 
@@ -559,7 +559,7 @@ func TestHasUnsupportedComposition(t *testing.T) {
 	}
 	for _, tt := range tests {
 		if got := hasUnsupportedComposition(tt.schema); got != tt.want {
-			t.Errorf("%s: hasUnsupportedComposition = %v, want %v", tt.name, got, tt.want)
+			t.Errorf("%v: hasUnsupportedComposition = %v, want %v", tt.name, got, tt.want)
 		}
 	}
 }
@@ -576,7 +576,7 @@ func TestFlattenObjectSchema(t *testing.T) {
 			t.Fatalf("flattenObjectSchema = (_, %q, %v)", reason, err)
 		}
 		if got != obj {
-			t.Errorf("flattenObjectSchema returned a different schema for a plain object")
+			t.Error("flattenObjectSchema returned a different schema for a plain object")
 		}
 	})
 
