@@ -2839,6 +2839,18 @@ func TestDo_rateLimit_sleepUntilClientResetLimit(t *testing.T) {
 }
 
 // Ensure sleep is aborted when the context is cancelled.
+//
+// The test verifies that when a request receives a 403 rate-limit response,
+// the client begins sleeping until the reset time, and that canceling the
+// context during (or just before) that sleep aborts it and returns
+// context.Canceled.
+//
+// Determinism: The handler signals via requestReceived once it has run,
+// guaranteeing exactly one request before cancellation. A tiny goroutine
+// waits for that signal and then calls cancel, so the context is cancelled
+// after the handler returns but independently of wall-clock timing. There
+// are no time.After timeouts or time.Sleep delays: the test either completes
+// in microseconds or hangs (caught by the test framework's global timeout).
 func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -2870,42 +2882,31 @@ func TestDo_rateLimit_abortSleepContextCancelled(t *testing.T) {
 
 	req, _ := client.NewRequest(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
 
-	errCh := make(chan error, 1)
+	// Cancel the context as soon as the handler has processed the request.
+	// The handler always runs and returns before the client begins the
+	// rate-limit sleep (the HTTP transport is synchronous), so cancel fires
+	// either just before or during the sleep — both paths are handled
+	// identically by sleepUntilResetWithBuffer's select.
 	go func() {
-		_, err := client.Do(req, nil)
-		errCh <- err
+		<-requestReceived
+		cancel()
 	}()
 
-	// Wait until the handler has processed the request, ensuring exactly one
-	// request was made before we cancel the context to abort the rate-limit
-	// sleep. This decouples the request-count assertion from the timing of
-	// the context cancellation, eliminating flakiness on slow runners.
-	select {
-	case <-requestReceived:
-	case <-time.After(10 * time.Second):
-		t.Fatal("Timed out waiting for request to be received.")
-	}
+	_, err := client.Do(req, nil)
 
 	if got, want := int(requestCount.Load()), 1; got != want {
 		t.Errorf("Expected 1 request, got %v", got)
 	}
-
-	// Now cancel the context while the client is sleeping waiting for the
-	// rate limit to reset. This should abort the sleep and return the
-	// context error.
-	cancel()
-
-	select {
-	case err := <-errCh:
-		if !errors.Is(err, context.Canceled) {
-			t.Errorf("Expected context cancelled error, got: %v", err)
-		}
-	case <-time.After(10 * time.Second):
-		t.Fatal("Timed out waiting for Do to return after context cancellation.")
+	if !errors.Is(err, context.Canceled) {
+		t.Errorf("Expected context cancelled error, got: %v", err)
 	}
 }
 
 // Ensure sleep is aborted when the context is cancelled on initial request.
+//
+// Determinism: The context is pre-cancelled before Do is called, so
+// checkRateLimitBeforeDo → sleepUntilResetWithBuffer sees ctx.Done() already
+// closed and returns immediately. No wall-clock timeout is involved.
 func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -2924,8 +2925,12 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintln(w, `{}`)
 	})
-	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Millisecond)
-	defer cancel()
+	// Pre-cancel the context: checkRateLimitBeforeDo will call
+	// sleepUntilResetWithBuffer which immediately returns ctx.Err() because
+	// ctx.Done() is already closed. This is fully deterministic — no timing
+	// race between a short timeout and goroutine scheduling.
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
 	req, _ := client.NewRequest(context.WithValue(ctx, SleepUntilPrimaryRateLimitResetWhenRateLimited, true), "GET", ".", nil)
 	_, err := client.Do(req, nil)
 	var rateLimitError *RateLimitError
@@ -2936,7 +2941,7 @@ func TestDo_rateLimit_abortSleepContextCancelledClientLimit(t *testing.T) {
 		t.Errorf("Expected request to be prevented because context cancellation, got: %v.", got)
 	}
 	if got, want := int(requestCount.Load()), 0; got != want {
-		t.Errorf("Expected 1 requests, got %v", got)
+		t.Errorf("Expected 0 requests, got %v", got)
 	}
 }
 
