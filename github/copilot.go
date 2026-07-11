@@ -68,6 +68,27 @@ func (s *CopilotService) ListOrganizationCopilotSpaces(ctx context.Context, org 
 	return spaces, resp, nil
 }
 
+// GetOrganizationCopilotSpace gets a Copilot Space for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces#get-an-organization-copilot-space
+//
+//meta:operation GET /orgs/{org}/copilot-spaces/{space_number}
+func (s *CopilotService) GetOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int) (*CopilotSpace, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot-spaces/%v", org, spaceNumber)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var space *CopilotSpace
+	resp, err := s.client.Do(req, &space)
+	if err != nil {
+		return nil, resp, err
+	}
+	return space, resp, nil
+}
+
 // CopilotOrganizationDetails represents the details of an organization's Copilot for Business subscription.
 type CopilotOrganizationDetails struct {
 	SeatBreakdown         *CopilotSeatBreakdown `json:"seat_breakdown"`

@@ -1133,6 +1133,83 @@ func TestCopilotService_ListOrganizationCopilotSpaces(t *testing.T) {
 	})
 }
 
+func TestCopilotService_GetOrganizationCopilotSpace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot-spaces/6", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": 12,
+			"number": 6,
+			"name": "Test Planning Space",
+			"description": "A space for planning",
+			"general_instructions": "use this space for team planning",
+			"owner": {
+				"login": "octo-org",
+				"id": 1,
+				"type": "Organization"
+			},
+			"creator": {
+				"login": "octocat",
+				"id": 2,
+				"type": "User"
+			},
+			"created_at": `+refTimeStr(1136178000)+`,
+			"updated_at": `+refTimeStr(1136178001)+`,
+			"html_url": "https://github.com/copilot/spaces/octo-org/6",
+			"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+			"base_role": "read"
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.GetOrganizationCopilotSpace(ctx, "o", 6)
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationCopilotSpace returned error: %v", err)
+	}
+
+	want := &CopilotSpace{
+		ID:                  Ptr(int64(12)),
+		Number:              Ptr(6),
+		Name:                Ptr("Test Planning Space"),
+		Description:         Ptr("A space for planning"),
+		GeneralInstructions: Ptr("use this space for team planning"),
+		Owner: &User{
+			Login: Ptr("octo-org"),
+			ID:    Ptr(int64(1)),
+			Type:  Ptr("Organization"),
+		},
+		Creator: &User{
+			Login: Ptr("octocat"),
+			ID:    Ptr(int64(2)),
+			Type:  Ptr("User"),
+		},
+		CreatedAt: refTimestamp(1136178000),
+		UpdatedAt: refTimestamp(1136178001),
+		HTMLURL:   Ptr("https://github.com/copilot/spaces/octo-org/6"),
+		APIURL:    Ptr("https://api.github.com/orgs/octo-org/copilot-spaces/6"),
+		BaseRole:  Ptr("read"),
+	}
+
+	assertNoDiff(t, want, got)
+
+	const methodName = "GetOrganizationCopilotSpace"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationCopilotSpace(ctx, "\n", 6)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationCopilotSpace(ctx, "o", 6)
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationCopilotSpace returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
 func TestCopilotService_GetSeatDetails(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
