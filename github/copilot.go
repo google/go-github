@@ -42,6 +42,32 @@ type CopilotSpacesList struct {
 	Spaces []*CopilotSpace `json:"spaces,omitempty"`
 }
 
+// ListOrganizationCopilotSpaces lists Copilot Spaces for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces#list-organization-copilot-spaces
+//
+//meta:operation GET /orgs/{org}/copilot-spaces
+func (s *CopilotService) ListOrganizationCopilotSpaces(ctx context.Context, org string, opts *ListCursorOptions) (*CopilotSpacesList, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot-spaces", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var spaces *CopilotSpacesList
+	resp, err := s.client.Do(req, &spaces)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return spaces, resp, nil
+}
+
 // CopilotOrganizationDetails represents the details of an organization's Copilot for Business subscription.
 type CopilotOrganizationDetails struct {
 	SeatBreakdown         *CopilotSeatBreakdown `json:"seat_breakdown"`
