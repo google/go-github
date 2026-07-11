@@ -21,6 +21,27 @@ import (
 // GitHub API docs: https://docs.github.com/rest/copilot?apiVersion=2022-11-28
 type CopilotService service
 
+// CopilotSpace represents a Copilot Space.
+type CopilotSpace struct {
+	ID                  *int64     `json:"id,omitempty"`
+	Number              *int       `json:"number,omitempty"`
+	Name                *string    `json:"name,omitempty"`
+	Description         *string    `json:"description,omitempty"`
+	GeneralInstructions *string    `json:"general_instructions,omitempty"`
+	Owner               *User      `json:"owner,omitempty"`
+	Creator             *User      `json:"creator,omitempty"`
+	CreatedAt           *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt           *Timestamp `json:"updated_at,omitempty"`
+	HTMLURL             *string    `json:"html_url,omitempty"`
+	APIURL              *string    `json:"api_url,omitempty"`
+	BaseRole            *string    `json:"base_role,omitempty"`
+}
+
+// CopilotSpacesList represents a list of Copilot Spaces.
+type CopilotSpacesList struct {
+	Spaces []*CopilotSpace `json:"spaces,omitempty"`
+}
+
 // CopilotOrganizationDetails represents the details of an organization's Copilot for Business subscription.
 type CopilotOrganizationDetails struct {
 	SeatBreakdown         *CopilotSeatBreakdown `json:"seat_breakdown"`
