@@ -23,18 +23,35 @@ type CopilotService service
 
 // CopilotSpace represents a Copilot Space.
 type CopilotSpace struct {
-	ID                  *int64     `json:"id,omitempty"`
-	Number              *int       `json:"number,omitempty"`
-	Name                *string    `json:"name,omitempty"`
-	Description         *string    `json:"description,omitempty"`
-	GeneralInstructions *string    `json:"general_instructions,omitempty"`
-	Owner               *User      `json:"owner,omitempty"`
-	Creator             *User      `json:"creator,omitempty"`
-	CreatedAt           *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt           *Timestamp `json:"updated_at,omitempty"`
-	HTMLURL             *string    `json:"html_url,omitempty"`
-	APIURL              *string    `json:"api_url,omitempty"`
-	BaseRole            *string    `json:"base_role,omitempty"`
+	ID                  *int64                  `json:"id,omitempty"`
+	Number              *int                    `json:"number,omitempty"`
+	Name                *string                 `json:"name,omitempty"`
+	Description         *string                 `json:"description,omitempty"`
+	GeneralInstructions *string                 `json:"general_instructions,omitempty"`
+	Owner               *User                   `json:"owner,omitempty"`
+	Creator             *User                   `json:"creator,omitempty"`
+	CreatedAt           *Timestamp              `json:"created_at,omitempty"`
+	UpdatedAt           *Timestamp              `json:"updated_at,omitempty"`
+	HTMLURL             *string                 `json:"html_url,omitempty"`
+	APIURL              *string                 `json:"api_url,omitempty"`
+	BaseRole            *string                 `json:"base_role,omitempty"`
+	ResourcesAttributes []*CopilotSpaceResource `json:"resources_attributes,omitempty"`
+}
+
+// CopilotSpaceResource represents a resource attached to a Copilot Space.
+type CopilotSpaceResource struct {
+	ID           *int64         `json:"id,omitempty"`
+	ResourceType *string        `json:"resource_type,omitempty"`
+	Metadata     map[string]any `json:"metadata,omitempty"`
+}
+
+// CopilotSpaceRequest represents a request to create or update a Copilot Space.
+type CopilotSpaceRequest struct {
+	Name                *string                 `json:"name,omitempty"`
+	Description         *string                 `json:"description,omitempty"`
+	GeneralInstructions *string                 `json:"general_instructions,omitempty"`
+	BaseRole            *string                 `json:"base_role,omitempty"`
+	ResourcesAttributes []*CopilotSpaceResource `json:"resources_attributes,omitempty"`
 }
 
 // CopilotSpacesList represents a list of Copilot Spaces.
@@ -86,6 +103,28 @@ func (s *CopilotService) GetOrganizationCopilotSpace(ctx context.Context, org st
 	if err != nil {
 		return nil, resp, err
 	}
+	return space, resp, nil
+}
+
+// CreateOrganizationCopilotSpace creates a Copilot Space for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces#create-an-organization-copilot-space
+//
+//meta:operation POST /orgs/{org}/copilot-spaces
+func (s *CopilotService) CreateOrganizationCopilotSpace(ctx context.Context, org string, body CopilotSpaceRequest) (*CopilotSpace, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot-spaces", org)
+
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var space *CopilotSpace
+	resp, err := s.client.Do(req, &space)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	return space, resp, nil
 }
 
