@@ -9926,6 +9926,182 @@ func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
+// GetAPIURL returns the APIURL field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetAPIURL() string {
+	if c == nil || c.APIURL == nil {
+		return ""
+	}
+	return *c.APIURL
+}
+
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetBaseRole() string {
+	if c == nil || c.BaseRole == nil {
+		return ""
+	}
+	return *c.BaseRole
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetCreator returns the Creator field.
+func (c *CopilotSpace) GetCreator() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Creator
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetGeneralInstructions returns the GeneralInstructions field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetGeneralInstructions() string {
+	if c == nil || c.GeneralInstructions == nil {
+		return ""
+	}
+	return *c.GeneralInstructions
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetHTMLURL() string {
+	if c == nil || c.HTMLURL == nil {
+		return ""
+	}
+	return *c.HTMLURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetNumber() int {
+	if c == nil || c.Number == nil {
+		return 0
+	}
+	return *c.Number
+}
+
+// GetOwner returns the Owner field.
+func (c *CopilotSpace) GetOwner() *User {
+	if c == nil {
+		return nil
+	}
+	return c.Owner
+}
+
+// GetResourcesAttributes returns the ResourcesAttributes slice if it's non-nil, nil otherwise.
+func (c *CopilotSpace) GetResourcesAttributes() []*CopilotSpaceResource {
+	if c == nil || c.ResourcesAttributes == nil {
+		return nil
+	}
+	return c.ResourcesAttributes
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
+}
+
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceRequest) GetBaseRole() string {
+	if c == nil || c.BaseRole == nil {
+		return ""
+	}
+	return *c.BaseRole
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetGeneralInstructions returns the GeneralInstructions field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceRequest) GetGeneralInstructions() string {
+	if c == nil || c.GeneralInstructions == nil {
+		return ""
+	}
+	return *c.GeneralInstructions
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceRequest) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetResourcesAttributes returns the ResourcesAttributes slice if it's non-nil, nil otherwise.
+func (c *CopilotSpaceRequest) GetResourcesAttributes() []*CopilotSpaceResource {
+	if c == nil || c.ResourcesAttributes == nil {
+		return nil
+	}
+	return c.ResourcesAttributes
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceResource) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetMetadata returns the Metadata map if it's non-nil, an empty map otherwise.
+func (c *CopilotSpaceResource) GetMetadata() map[string]any {
+	if c == nil || c.Metadata == nil {
+		return map[string]any{}
+	}
+	return c.Metadata
+}
+
+// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceResource) GetResourceType() string {
+	if c == nil || c.ResourceType == nil {
+		return ""
+	}
+	return *c.ResourceType
+}
+
+// GetSpaces returns the Spaces slice if it's non-nil, nil otherwise.
+func (c *CopilotSpacesList) GetSpaces() []*CopilotSpace {
+	if c == nil || c.Spaces == nil {
+		return nil
+	}
+	return c.Spaces
+}
+
 // GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
 func (c *CopilotUserDailyMetrics) GetCodeAcceptanceActivityCount() int {
 	if c == nil || c.CodeAcceptanceActivityCount == nil {
