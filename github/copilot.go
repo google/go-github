@@ -61,7 +61,7 @@ type CopilotSpacesList struct {
 
 // ListOrganizationCopilotSpaces lists Copilot Spaces for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces#list-organization-copilot-spaces
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#list-organization-copilot-spaces
 //
 //meta:operation GET /orgs/{org}/copilot-spaces
 func (s *CopilotService) ListOrganizationCopilotSpaces(ctx context.Context, org string, opts *ListCursorOptions) (*CopilotSpacesList, *Response, error) {
@@ -87,7 +87,7 @@ func (s *CopilotService) ListOrganizationCopilotSpaces(ctx context.Context, org 
 
 // GetOrganizationCopilotSpace gets a Copilot Space for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces#get-an-organization-copilot-space
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#get-an-organization-copilot-space
 //
 //meta:operation GET /orgs/{org}/copilot-spaces/{space_number}
 func (s *CopilotService) GetOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int) (*CopilotSpace, *Response, error) {
@@ -109,7 +109,7 @@ func (s *CopilotService) GetOrganizationCopilotSpace(ctx context.Context, org st
 
 // CreateOrganizationCopilotSpace creates a Copilot Space for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces#create-an-organization-copilot-space
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#create-an-organization-copilot-space
 //
 //meta:operation POST /orgs/{org}/copilot-spaces
 func (s *CopilotService) CreateOrganizationCopilotSpace(ctx context.Context, org string, body CopilotSpaceRequest) (*CopilotSpace, *Response, error) {
@@ -131,7 +131,7 @@ func (s *CopilotService) CreateOrganizationCopilotSpace(ctx context.Context, org
 
 // UpdateOrganizationCopilotSpace updates a Copilot Space for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces#set-an-organization-copilot-space
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#set-an-organization-copilot-space
 //
 //meta:operation PUT /orgs/{org}/copilot-spaces/{space_number}
 func (s *CopilotService) UpdateOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int, body CopilotSpaceRequest) (*CopilotSpace, *Response, error) {
@@ -153,7 +153,7 @@ func (s *CopilotService) UpdateOrganizationCopilotSpace(ctx context.Context, org
 
 // DeleteOrganizationCopilotSpace deletes a Copilot Space for an organization.
 //
-// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces#delete-an-organization-copilot-space
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#delete-an-organization-copilot-space
 //
 //meta:operation DELETE /orgs/{org}/copilot-spaces/{space_number}
 func (s *CopilotService) DeleteOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int) (*Response, error) {
