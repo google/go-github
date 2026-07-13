@@ -103,6 +103,7 @@ func (s *CopilotService) GetOrganizationCopilotSpace(ctx context.Context, org st
 	if err != nil {
 		return nil, resp, err
 	}
+
 	return space, resp, nil
 }
 
@@ -115,6 +116,28 @@ func (s *CopilotService) CreateOrganizationCopilotSpace(ctx context.Context, org
 	u := fmt.Sprintf("orgs/%v/copilot-spaces", org)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var space *CopilotSpace
+	resp, err := s.client.Do(req, &space)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return space, resp, nil
+}
+
+// UpdateOrganizationCopilotSpace updates a Copilot Space for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces#set-an-organization-copilot-space
+//
+//meta:operation PUT /orgs/{org}/copilot-spaces/{space_number}
+func (s *CopilotService) UpdateOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int, body CopilotSpaceRequest) (*CopilotSpace, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot-spaces/%v", org, spaceNumber)
+
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
