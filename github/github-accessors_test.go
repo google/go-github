@@ -12634,10 +12634,7 @@ func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
 
 func TestCopilotSpace_GetAPIURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CopilotSpace{APIURL: &zeroValue}
-	c.GetAPIURL()
-	c = &CopilotSpace{}
+	c := &CopilotSpace{}
 	c.GetAPIURL()
 	c = nil
 	c.GetAPIURL()
@@ -12645,10 +12642,7 @@ func TestCopilotSpace_GetAPIURL(tt *testing.T) {
 
 func TestCopilotSpace_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CopilotSpace{BaseRole: &zeroValue}
-	c.GetBaseRole()
-	c = &CopilotSpace{}
+	c := &CopilotSpace{}
 	c.GetBaseRole()
 	c = nil
 	c.GetBaseRole()
@@ -12656,10 +12650,7 @@ func TestCopilotSpace_GetBaseRole(tt *testing.T) {
 
 func TestCopilotSpace_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue Timestamp
-	c := &CopilotSpace{CreatedAt: &zeroValue}
-	c.GetCreatedAt()
-	c = &CopilotSpace{}
+	c := &CopilotSpace{}
 	c.GetCreatedAt()
 	c = nil
 	c.GetCreatedAt()
@@ -12697,10 +12688,7 @@ func TestCopilotSpace_GetGeneralInstructions(tt *testing.T) {
 
 func TestCopilotSpace_GetHTMLURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CopilotSpace{HTMLURL: &zeroValue}
-	c.GetHTMLURL()
-	c = &CopilotSpace{}
+	c := &CopilotSpace{}
 	c.GetHTMLURL()
 	c = nil
 	c.GetHTMLURL()
@@ -12708,10 +12696,7 @@ func TestCopilotSpace_GetHTMLURL(tt *testing.T) {
 
 func TestCopilotSpace_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	c := &CopilotSpace{ID: &zeroValue}
-	c.GetID()
-	c = &CopilotSpace{}
+	c := &CopilotSpace{}
 	c.GetID()
 	c = nil
 	c.GetID()
@@ -12719,10 +12704,7 @@ func TestCopilotSpace_GetID(tt *testing.T) {
 
 func TestCopilotSpace_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	c := &CopilotSpace{Name: &zeroValue}
-	c.GetName()
-	c = &CopilotSpace{}
+	c := &CopilotSpace{}
 	c.GetName()
 	c = nil
 	c.GetName()
@@ -12730,10 +12712,7 @@ func TestCopilotSpace_GetName(tt *testing.T) {
 
 func TestCopilotSpace_GetNumber(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	c := &CopilotSpace{Number: &zeroValue}
-	c.GetNumber()
-	c = &CopilotSpace{}
+	c := &CopilotSpace{}
 	c.GetNumber()
 	c = nil
 	c.GetNumber()
@@ -12760,10 +12739,7 @@ func TestCopilotSpace_GetResourcesAttributes(tt *testing.T) {
 
 func TestCopilotSpace_GetUpdatedAt(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue Timestamp
-	c := &CopilotSpace{UpdatedAt: &zeroValue}
-	c.GetUpdatedAt()
-	c = &CopilotSpace{}
+	c := &CopilotSpace{}
 	c.GetUpdatedAt()
 	c = nil
 	c.GetUpdatedAt()
