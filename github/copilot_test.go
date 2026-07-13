@@ -1441,6 +1441,32 @@ func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
 	})
 }
 
+func TestCopilotService_DeleteOrganizationCopilotSpace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot-spaces/6", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := t.Context()
+	_, err := client.Copilot.DeleteOrganizationCopilotSpace(ctx, "o", 6)
+	if err != nil {
+		t.Errorf("Copilot.DeleteOrganizationCopilotSpace returned error: %v", err)
+	}
+
+	const methodName = "DeleteOrganizationCopilotSpace"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Copilot.DeleteOrganizationCopilotSpace(ctx, "\n", 6)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Copilot.DeleteOrganizationCopilotSpace(ctx, "o", 6)
+	})
+}
+
 func TestCopilotService_GetSeatDetails(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

@@ -151,6 +151,22 @@ func (s *CopilotService) UpdateOrganizationCopilotSpace(ctx context.Context, org
 	return space, resp, nil
 }
 
+// DeleteOrganizationCopilotSpace deletes a Copilot Space for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces#delete-an-organization-copilot-space
+//
+//meta:operation DELETE /orgs/{org}/copilot-spaces/{space_number}
+func (s *CopilotService) DeleteOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot-spaces/%v", org, spaceNumber)
+
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
 // CopilotOrganizationDetails represents the details of an organization's Copilot for Business subscription.
 type CopilotOrganizationDetails struct {
 	SeatBreakdown         *CopilotSeatBreakdown `json:"seat_breakdown"`
