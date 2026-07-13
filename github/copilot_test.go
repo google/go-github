@@ -1092,26 +1092,26 @@ func TestCopilotService_ListOrganizationCopilotSpaces(t *testing.T) {
 	want := &CopilotSpacesList{
 		Spaces: []*CopilotSpace{
 			{
-				ID:                  Ptr(int64(12)),
-				Number:              Ptr(6),
-				Name:                Ptr("Test Planning Space"),
+				ID:                  int64(12),
+				Number:              6,
+				Name:                "Test Planning Space",
 				Description:         Ptr("A space for planning"),
 				GeneralInstructions: Ptr("use this space for team planning"),
-				Owner: &User{
+				Owner: User{
 					Login: Ptr("octo-org"),
 					ID:    Ptr(int64(1)),
 					Type:  Ptr("Organization"),
 				},
-				Creator: &User{
+				Creator: User{
 					Login: Ptr("octocat"),
 					ID:    Ptr(int64(2)),
 					Type:  Ptr("User"),
 				},
-				CreatedAt: refTimestamp(1136178000),
-				UpdatedAt: refTimestamp(1136178001),
-				HTMLURL:   Ptr("https://github.com/copilot/spaces/octo-org/3"),
-				APIURL:    Ptr("https://api.github.com/orgs/octo-org/copilot-spaces/3"),
-				BaseRole:  Ptr("read"),
+				CreatedAt: *refTimestamp(1136178000),
+				UpdatedAt: *refTimestamp(1136178001),
+				HTMLURL:   "https://github.com/copilot/spaces/octo-org/3",
+				APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/3",
+				BaseRole:  "read",
 			},
 		},
 	}
@@ -1170,26 +1170,26 @@ func TestCopilotService_GetOrganizationCopilotSpace(t *testing.T) {
 	}
 
 	want := &CopilotSpace{
-		ID:                  Ptr(int64(12)),
-		Number:              Ptr(6),
-		Name:                Ptr("Test Planning Space"),
+		ID:                  int64(12),
+		Number:              6,
+		Name:                "Test Planning Space",
 		Description:         Ptr("A space for planning"),
 		GeneralInstructions: Ptr("use this space for team planning"),
-		Owner: &User{
+		Owner: User{
 			Login: Ptr("octo-org"),
 			ID:    Ptr(int64(1)),
 			Type:  Ptr("Organization"),
 		},
-		Creator: &User{
+		Creator: User{
 			Login: Ptr("octocat"),
 			ID:    Ptr(int64(2)),
 			Type:  Ptr("User"),
 		},
-		CreatedAt: refTimestamp(1136178000),
-		UpdatedAt: refTimestamp(1136178001),
-		HTMLURL:   Ptr("https://github.com/copilot/spaces/octo-org/6"),
-		APIURL:    Ptr("https://api.github.com/orgs/octo-org/copilot-spaces/6"),
-		BaseRole:  Ptr("read"),
+		CreatedAt: *refTimestamp(1136178000),
+		UpdatedAt: *refTimestamp(1136178001),
+		HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+		APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		BaseRole:  "read",
 	}
 
 	assertNoDiff(t, want, got)
@@ -1231,26 +1231,26 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 	}
 
 	want := &CopilotSpace{
-		ID:                  Ptr(int64(12)),
-		Number:              Ptr(6),
-		Name:                Ptr("Team Planning Space"),
+		ID:                  int64(12),
+		Number:              6,
+		Name:                "Team Planning Space",
 		Description:         Ptr("Organization space for team planning"),
 		GeneralInstructions: Ptr("Help the team with planning tasks"),
-		Owner: &User{
+		Owner: User{
 			Login: Ptr("octo-org"),
 			ID:    Ptr(int64(1)),
 			Type:  Ptr("Organization"),
 		},
-		Creator: &User{
+		Creator: User{
 			Login: Ptr("octocat"),
 			ID:    Ptr(int64(2)),
 			Type:  Ptr("User"),
 		},
-		CreatedAt: refTimestamp(1136178000),
-		UpdatedAt: refTimestamp(1136178001),
-		HTMLURL:   Ptr("https://github.com/copilot/spaces/octo-org/6"),
-		APIURL:    Ptr("https://api.github.com/orgs/octo-org/copilot-spaces/6"),
-		BaseRole:  Ptr("no_access"),
+		CreatedAt: *refTimestamp(1136178000),
+		UpdatedAt: *refTimestamp(1136178001),
+		HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+		APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		BaseRole:  "no_access",
 		ResourcesAttributes: []*CopilotSpaceResource{
 			{
 				ID:           Ptr(int64(101)),
@@ -1347,26 +1347,26 @@ func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
 	}
 
 	want := &CopilotSpace{
-		ID:                  Ptr(int64(12)),
-		Number:              Ptr(6),
-		Name:                Ptr("Team Planning Space"),
+		ID:                  int64(12),
+		Number:              6,
+		Name:                "Team Planning Space",
 		Description:         Ptr("Updated organization space for team planning"),
 		GeneralInstructions: Ptr("Help the team with updated planning tasks"),
-		Owner: &User{
+		Owner: User{
 			Login: Ptr("octo-org"),
 			ID:    Ptr(int64(1)),
 			Type:  Ptr("Organization"),
 		},
-		Creator: &User{
+		Creator: User{
 			Login: Ptr("octocat"),
 			ID:    Ptr(int64(2)),
 			Type:  Ptr("User"),
 		},
-		CreatedAt: refTimestamp(1136178000),
-		UpdatedAt: refTimestamp(1136178001),
-		HTMLURL:   Ptr("https://github.com/copilot/spaces/octo-org/6"),
-		APIURL:    Ptr("https://api.github.com/orgs/octo-org/copilot-spaces/6"),
-		BaseRole:  Ptr("read"),
+		CreatedAt: *refTimestamp(1136178000),
+		UpdatedAt: *refTimestamp(1136178001),
+		HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+		APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		BaseRole:  "read",
 		ResourcesAttributes: []*CopilotSpaceResource{
 			{
 				ID:           Ptr(int64(101)),
