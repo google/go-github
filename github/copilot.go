@@ -23,18 +23,18 @@ type CopilotService service
 
 // CopilotSpace represents a Copilot Space.
 type CopilotSpace struct {
-	ID                  *int64                  `json:"id,omitempty"`
-	Number              *int                    `json:"number,omitempty"`
-	Name                *string                 `json:"name,omitempty"`
+	ID                  int64                   `json:"id"`
+	Number              int                     `json:"number"`
+	Name                string                  `json:"name"`
 	Description         *string                 `json:"description,omitempty"`
 	GeneralInstructions *string                 `json:"general_instructions,omitempty"`
-	Owner               *User                   `json:"owner,omitempty"`
-	Creator             *User                   `json:"creator,omitempty"`
-	CreatedAt           *Timestamp              `json:"created_at,omitempty"`
-	UpdatedAt           *Timestamp              `json:"updated_at,omitempty"`
-	HTMLURL             *string                 `json:"html_url,omitempty"`
-	APIURL              *string                 `json:"api_url,omitempty"`
-	BaseRole            *string                 `json:"base_role,omitempty"`
+	Owner               User                    `json:"owner"`
+	Creator             User                    `json:"creator"`
+	CreatedAt           Timestamp               `json:"created_at"`
+	UpdatedAt           Timestamp               `json:"updated_at"`
+	HTMLURL             string                  `json:"html_url"`
+	APIURL              string                  `json:"api_url"`
+	BaseRole            string                  `json:"base_role"`
 	ResourcesAttributes []*CopilotSpaceResource `json:"resources_attributes,omitempty"`
 }
 
@@ -56,7 +56,7 @@ type CopilotSpaceRequest struct {
 
 // CopilotSpacesList represents a list of Copilot Spaces.
 type CopilotSpacesList struct {
-	Spaces []*CopilotSpace `json:"spaces,omitempty"`
+	Spaces []*CopilotSpace `json:"spaces"`
 }
 
 // ListOrganizationCopilotSpaces lists Copilot Spaces for an organization.

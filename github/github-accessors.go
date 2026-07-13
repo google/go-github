@@ -9926,34 +9926,34 @@ func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
-// GetAPIURL returns the APIURL field if it's non-nil, zero value otherwise.
+// GetAPIURL returns the APIURL field.
 func (c *CopilotSpace) GetAPIURL() string {
-	if c == nil || c.APIURL == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.APIURL
+	return c.APIURL
 }
 
-// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+// GetBaseRole returns the BaseRole field.
 func (c *CopilotSpace) GetBaseRole() string {
-	if c == nil || c.BaseRole == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.BaseRole
+	return c.BaseRole
 }
 
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+// GetCreatedAt returns the CreatedAt field.
 func (c *CopilotSpace) GetCreatedAt() Timestamp {
-	if c == nil || c.CreatedAt == nil {
+	if c == nil {
 		return Timestamp{}
 	}
-	return *c.CreatedAt
+	return c.CreatedAt
 }
 
 // GetCreator returns the Creator field.
-func (c *CopilotSpace) GetCreator() *User {
+func (c *CopilotSpace) GetCreator() User {
 	if c == nil {
-		return nil
+		return User{}
 	}
 	return c.Creator
 }
@@ -9974,42 +9974,42 @@ func (c *CopilotSpace) GetGeneralInstructions() string {
 	return *c.GeneralInstructions
 }
 
-// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+// GetHTMLURL returns the HTMLURL field.
 func (c *CopilotSpace) GetHTMLURL() string {
-	if c == nil || c.HTMLURL == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.HTMLURL
+	return c.HTMLURL
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (c *CopilotSpace) GetID() int64 {
-	if c == nil || c.ID == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.ID
+	return c.ID
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (c *CopilotSpace) GetName() string {
-	if c == nil || c.Name == nil {
+	if c == nil {
 		return ""
 	}
-	return *c.Name
+	return c.Name
 }
 
-// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+// GetNumber returns the Number field.
 func (c *CopilotSpace) GetNumber() int {
-	if c == nil || c.Number == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.Number
+	return c.Number
 }
 
 // GetOwner returns the Owner field.
-func (c *CopilotSpace) GetOwner() *User {
+func (c *CopilotSpace) GetOwner() User {
 	if c == nil {
-		return nil
+		return User{}
 	}
 	return c.Owner
 }
@@ -10022,12 +10022,12 @@ func (c *CopilotSpace) GetResourcesAttributes() []*CopilotSpaceResource {
 	return c.ResourcesAttributes
 }
 
-// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+// GetUpdatedAt returns the UpdatedAt field.
 func (c *CopilotSpace) GetUpdatedAt() Timestamp {
-	if c == nil || c.UpdatedAt == nil {
+	if c == nil {
 		return Timestamp{}
 	}
-	return *c.UpdatedAt
+	return c.UpdatedAt
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
