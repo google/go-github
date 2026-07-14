@@ -620,13 +620,11 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 
 // TemplateRepoRequest represents a request to create a repository from a template.
 type TemplateRepoRequest struct {
-	// Name is required when creating a repo.
-	Name        string  `json:"name"`
-	Owner       *string `json:"owner,omitempty"`
-	Description *string `json:"description,omitempty"`
-
-	IncludeAllBranches *bool `json:"include_all_branches,omitempty"`
-	Private            *bool `json:"private,omitempty"`
+	Name               string  `json:"name"`
+	Owner              *string `json:"owner,omitempty"`
+	Description        *string `json:"description,omitempty"`
+	IncludeAllBranches *bool   `json:"include_all_branches,omitempty"`
+	Private            *bool   `json:"private,omitempty"`
 }
 
 // CreateFromTemplate generates a repository from a template.
