@@ -13206,12 +13206,12 @@ func (d *DeploymentBranchPolicy) GetType() string {
 	return *d.Type
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (d *DeploymentBranchPolicyRequest) GetName() string {
-	if d == nil || d.Name == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.Name
+	return d.Name
 }
 
 // GetType returns the Type field if it's non-nil, zero value otherwise.

@@ -16749,10 +16749,7 @@ func TestDeploymentBranchPolicy_GetType(tt *testing.T) {
 
 func TestDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DeploymentBranchPolicyRequest{Name: &zeroValue}
-	d.GetName()
-	d = &DeploymentBranchPolicyRequest{}
+	d := &DeploymentBranchPolicyRequest{}
 	d.GetName()
 	d = nil
 	d.GetName()
