@@ -41494,12 +41494,12 @@ func (t *TemplateRepoRequest) GetIncludeAllBranches() bool {
 	return *t.IncludeAllBranches
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (t *TemplateRepoRequest) GetName() string {
-	if t == nil || t.Name == nil {
+	if t == nil {
 		return ""
 	}
-	return *t.Name
+	return t.Name
 }
 
 // GetOwner returns the Owner field if it's non-nil, zero value otherwise.

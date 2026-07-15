@@ -341,8 +341,8 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	templateRepoReq := &TemplateRepoRequest{
-		Name: Ptr("n"),
+	templateRepoReq := TemplateRepoRequest{
+		Name: "n",
 	}
 
 	mux.HandleFunc("/repos/to/tr/generate", func(w http.ResponseWriter, r *http.Request) {
