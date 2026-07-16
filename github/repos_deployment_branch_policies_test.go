@@ -97,7 +97,7 @@ func TestRepositoriesService_CreateDeploymentBranchPolicy(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Repositories.CreateDeploymentBranchPolicy(ctx, "o", "r", "e", DeploymentBranchPolicyRequest{Name: "n", Type: Ptr("branch")})
+	got, _, err := client.Repositories.CreateDeploymentBranchPolicy(ctx, "o", "r", "e", CreateDeploymentBranchPolicyRequest{Name: "n", Type: Ptr("branch")})
 	if err != nil {
 		t.Errorf("Repositories.CreateDeploymentBranchPolicy returned error: %v", err)
 	}
@@ -109,7 +109,7 @@ func TestRepositoriesService_CreateDeploymentBranchPolicy(t *testing.T) {
 
 	const methodName = "CreateDeploymentBranchPolicy"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.CreateDeploymentBranchPolicy(ctx, "o", "r", "e", DeploymentBranchPolicyRequest{Name: "n"})
+		got, resp, err := client.Repositories.CreateDeploymentBranchPolicy(ctx, "o", "r", "e", CreateDeploymentBranchPolicyRequest{Name: "n"})
 		if got != nil {
 			t.Errorf("got non-nil Repositories.CreateDeploymentBranchPolicy response: %+v", got)
 		}
@@ -127,7 +127,7 @@ func TestRepositoriesService_UpdateDeploymentBranchPolicy(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Repositories.UpdateDeploymentBranchPolicy(ctx, "o", "r", "e", 1, DeploymentBranchPolicyRequest{Name: "n"})
+	got, _, err := client.Repositories.UpdateDeploymentBranchPolicy(ctx, "o", "r", "e", 1, UpdateDeploymentBranchPolicyRequest{Name: "n"})
 	if err != nil {
 		t.Errorf("Repositories.UpdateDeploymentBranchPolicy returned error: %v", err)
 	}
@@ -139,7 +139,7 @@ func TestRepositoriesService_UpdateDeploymentBranchPolicy(t *testing.T) {
 
 	const methodName = "UpdateDeploymentBranchPolicy"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.UpdateDeploymentBranchPolicy(ctx, "o", "r", "e", 1, DeploymentBranchPolicyRequest{Name: "n"})
+		got, resp, err := client.Repositories.UpdateDeploymentBranchPolicy(ctx, "o", "r", "e", 1, UpdateDeploymentBranchPolicyRequest{Name: "n"})
 		if got != nil {
 			t.Errorf("got non-nil Repositories.UpdateDeploymentBranchPolicy response: %+v", got)
 		}

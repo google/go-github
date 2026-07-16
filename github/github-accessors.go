@@ -10878,6 +10878,22 @@ func (c *CreateCustomOrgRoleRequest) GetPermissions() []string {
 	return c.Permissions
 }
 
+// GetName returns the Name field.
+func (c *CreateDeploymentBranchPolicyRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (c *CreateDeploymentBranchPolicyRequest) GetType() string {
+	if c == nil || c.Type == nil {
+		return ""
+	}
+	return *c.Type
+}
+
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
 func (c *CreateEnterpriseRunnerGroupRequest) GetAllowsPublicRepositories() bool {
 	if c == nil || c.AllowsPublicRepositories == nil {
@@ -13200,22 +13216,6 @@ func (d *DeploymentBranchPolicy) GetNodeID() string {
 
 // GetType returns the Type field if it's non-nil, zero value otherwise.
 func (d *DeploymentBranchPolicy) GetType() string {
-	if d == nil || d.Type == nil {
-		return ""
-	}
-	return *d.Type
-}
-
-// GetName returns the Name field.
-func (d *DeploymentBranchPolicyRequest) GetName() string {
-	if d == nil {
-		return ""
-	}
-	return d.Name
-}
-
-// GetType returns the Type field if it's non-nil, zero value otherwise.
-func (d *DeploymentBranchPolicyRequest) GetType() string {
 	if d == nil || d.Type == nil {
 		return ""
 	}
@@ -42380,6 +42380,14 @@ func (u *UpdateDefaultSetupConfigurationResponse) GetRunURL() string {
 		return ""
 	}
 	return *u.RunURL
+}
+
+// GetName returns the Name field.
+func (u *UpdateDeploymentBranchPolicyRequest) GetName() string {
+	if u == nil {
+		return ""
+	}
+	return u.Name
 }
 
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
