@@ -259,7 +259,6 @@ linters:
             - RequiredStatusChecksRequest
             - ReviewCustomDeploymentProtectionRuleRequest
             - SCIMUserAttributes
-            - SarifAnalysis
             - SecretScanningAlertUpdateOptions
             - SecretScanningPatternConfigsUpdateOptions
             - SourceImportAuthor

@@ -37526,28 +37526,28 @@ func (s *SarifAnalysis) GetCheckoutURI() string {
 	return *s.CheckoutURI
 }
 
-// GetCommitSHA returns the CommitSHA field if it's non-nil, zero value otherwise.
+// GetCommitSHA returns the CommitSHA field.
 func (s *SarifAnalysis) GetCommitSHA() string {
-	if s == nil || s.CommitSHA == nil {
+	if s == nil {
 		return ""
 	}
-	return *s.CommitSHA
+	return s.CommitSHA
 }
 
-// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+// GetRef returns the Ref field.
 func (s *SarifAnalysis) GetRef() string {
-	if s == nil || s.Ref == nil {
+	if s == nil {
 		return ""
 	}
-	return *s.Ref
+	return s.Ref
 }
 
-// GetSarif returns the Sarif field if it's non-nil, zero value otherwise.
+// GetSarif returns the Sarif field.
 func (s *SarifAnalysis) GetSarif() string {
-	if s == nil || s.Sarif == nil {
+	if s == nil {
 		return ""
 	}
-	return *s.Sarif
+	return s.Sarif
 }
 
 // GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.

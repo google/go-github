@@ -47060,10 +47060,7 @@ func TestSarifAnalysis_GetCheckoutURI(tt *testing.T) {
 
 func TestSarifAnalysis_GetCommitSHA(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SarifAnalysis{CommitSHA: &zeroValue}
-	s.GetCommitSHA()
-	s = &SarifAnalysis{}
+	s := &SarifAnalysis{}
 	s.GetCommitSHA()
 	s = nil
 	s.GetCommitSHA()
@@ -47071,10 +47068,7 @@ func TestSarifAnalysis_GetCommitSHA(tt *testing.T) {
 
 func TestSarifAnalysis_GetRef(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SarifAnalysis{Ref: &zeroValue}
-	s.GetRef()
-	s = &SarifAnalysis{}
+	s := &SarifAnalysis{}
 	s.GetRef()
 	s = nil
 	s.GetRef()
@@ -47082,10 +47076,7 @@ func TestSarifAnalysis_GetRef(tt *testing.T) {
 
 func TestSarifAnalysis_GetSarif(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SarifAnalysis{Sarif: &zeroValue}
-	s.GetSarif()
-	s = &SarifAnalysis{}
+	s := &SarifAnalysis{}
 	s.GetSarif()
 	s = nil
 	s.GetSarif()

@@ -62,7 +62,7 @@ func TestCodeScanningService_UploadSarif(t *testing.T) {
 		URL: Ptr("https://example.com/testurl"),
 	}
 
-	sarifAnalysis := &SarifAnalysis{CommitSHA: Ptr("abc"), Ref: Ptr("ref/head/main"), Sarif: Ptr("abc"), CheckoutURI: Ptr("uri"), StartedAt: &referenceTimestamp, ToolName: Ptr("codeql-cli")}
+	sarifAnalysis := SarifAnalysis{CommitSHA: "abc", Ref: "ref/head/main", Sarif: "abc", CheckoutURI: Ptr("uri"), StartedAt: &referenceTimestamp, ToolName: Ptr("codeql-cli")}
 
 	mux.HandleFunc("/repos/o/r/code-scanning/sarifs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
