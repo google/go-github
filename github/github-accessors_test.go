@@ -47104,6 +47104,17 @@ func TestSarifAnalysis_GetToolName(tt *testing.T) {
 	s.GetToolName()
 }
 
+func TestSarifAnalysis_GetValidate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SarifAnalysis{Validate: &zeroValue}
+	s.GetValidate()
+	s = &SarifAnalysis{}
+	s.GetValidate()
+	s = nil
+	s.GetValidate()
+}
+
 func TestSarifID_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

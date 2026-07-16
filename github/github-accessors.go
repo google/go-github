@@ -37566,6 +37566,14 @@ func (s *SarifAnalysis) GetToolName() string {
 	return *s.ToolName
 }
 
+// GetValidate returns the Validate field if it's non-nil, zero value otherwise.
+func (s *SarifAnalysis) GetValidate() bool {
+	if s == nil || s.Validate == nil {
+		return false
+	}
+	return *s.Validate
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (s *SarifID) GetID() string {
 	if s == nil || s.ID == nil {
