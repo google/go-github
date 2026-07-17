@@ -135,10 +135,10 @@ func ExamplePullRequestsService_Create() {
 		log.Fatalf("Error creating GitHub client: %v", err)
 	}
 
-	newPR := &github.NewPullRequest{
+	newPR := github.NewPullRequest{
 		Title:               github.Ptr("My awesome pull request"),
-		Head:                github.Ptr("branch_to_merge"),
-		Base:                github.Ptr("master"),
+		Head:                "branch_to_merge",
+		Base:                "master",
 		Body:                github.Ptr("This is the description of the PR created with the package `github.com/google/go-github/github`"),
 		MaintainerCanModify: github.Ptr(true),
 	}

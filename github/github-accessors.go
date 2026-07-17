@@ -24886,12 +24886,12 @@ func (n *NetworkSettingsResource) GetSubnetID() string {
 	return *n.SubnetID
 }
 
-// GetBase returns the Base field if it's non-nil, zero value otherwise.
+// GetBase returns the Base field.
 func (n *NewPullRequest) GetBase() string {
-	if n == nil || n.Base == nil {
+	if n == nil {
 		return ""
 	}
-	return *n.Base
+	return n.Base
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
@@ -24910,12 +24910,12 @@ func (n *NewPullRequest) GetDraft() bool {
 	return *n.Draft
 }
 
-// GetHead returns the Head field if it's non-nil, zero value otherwise.
+// GetHead returns the Head field.
 func (n *NewPullRequest) GetHead() string {
-	if n == nil || n.Head == nil {
+	if n == nil {
 		return ""
 	}
-	return *n.Head
+	return n.Head
 }
 
 // GetHeadRepo returns the HeadRepo field if it's non-nil, zero value otherwise.

@@ -31237,10 +31237,7 @@ func TestNetworkSettingsResource_GetSubnetID(tt *testing.T) {
 
 func TestNewPullRequest_GetBase(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	n := &NewPullRequest{Base: &zeroValue}
-	n.GetBase()
-	n = &NewPullRequest{}
+	n := &NewPullRequest{}
 	n.GetBase()
 	n = nil
 	n.GetBase()
@@ -31270,10 +31267,7 @@ func TestNewPullRequest_GetDraft(tt *testing.T) {
 
 func TestNewPullRequest_GetHead(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	n := &NewPullRequest{Head: &zeroValue}
-	n.GetHead()
-	n = &NewPullRequest{}
+	n := &NewPullRequest{}
 	n.GetHead()
 	n = nil
 	n.GetHead()
