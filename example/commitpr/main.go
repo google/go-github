@@ -194,7 +194,7 @@ func createPR() (err error) {
 		prRepo = sourceRepo
 	}
 
-	newPR := github.NewPullRequest{
+	newPR := github.CreatePullRequest{
 		Title:               prSubject,
 		Head:                *commitBranch,
 		HeadRepo:            repoBranch,

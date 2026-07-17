@@ -258,8 +258,8 @@ func (s *PullRequestsService) GetRaw(ctx context.Context, owner, repo string, nu
 	return buf.String(), resp, nil
 }
 
-// NewPullRequest represents a new pull request to be created.
-type NewPullRequest struct {
+// CreatePullRequest represents a request to create a pull request.
+type CreatePullRequest struct {
 	Title *string `json:"title,omitempty"`
 	// The name of the branch where your changes are implemented. For
 	// cross-repository pull requests in the same network, namespace head with
@@ -282,7 +282,7 @@ type NewPullRequest struct {
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#create-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls
-func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, body NewPullRequest) (*PullRequest, *Response, error) {
+func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, body CreatePullRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {

@@ -135,7 +135,7 @@ func ExamplePullRequestsService_Create() {
 		log.Fatalf("Error creating GitHub client: %v", err)
 	}
 
-	newPR := github.NewPullRequest{
+	newPR := github.CreatePullRequest{
 		Title:               github.Ptr("My awesome pull request"),
 		Head:                "branch_to_merge",
 		Base:                "master",
