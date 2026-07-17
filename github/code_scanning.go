@@ -215,8 +215,7 @@ type SarifAnalysis struct {
 	CheckoutURI *string    `json:"checkout_uri,omitempty"`
 	StartedAt   *Timestamp `json:"started_at,omitempty"`
 	ToolName    *string    `json:"tool_name,omitempty"`
-	// Validate indicates whether the SARIF file will be validated according to the code scanning specification.
-	Validate *bool `json:"validate,omitempty"`
+	Validate    *bool      `json:"validate,omitempty"`
 }
 
 // CodeScanningAlertState specifies the state of a code scanning alert.
