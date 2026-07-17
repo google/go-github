@@ -11054,6 +11054,22 @@ func (c *CreateCustomOrgRoleRequest) GetPermissions() []string {
 	return c.Permissions
 }
 
+// GetName returns the Name field.
+func (c *CreateDeploymentBranchPolicyRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (c *CreateDeploymentBranchPolicyRequest) GetType() string {
+	if c == nil || c.Type == nil {
+		return ""
+	}
+	return *c.Type
+}
+
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.
 func (c *CreateEnterpriseRunnerGroupRequest) GetAllowsPublicRepositories() bool {
 	if c == nil || c.AllowsPublicRepositories == nil {
@@ -13376,22 +13392,6 @@ func (d *DeploymentBranchPolicy) GetNodeID() string {
 
 // GetType returns the Type field if it's non-nil, zero value otherwise.
 func (d *DeploymentBranchPolicy) GetType() string {
-	if d == nil || d.Type == nil {
-		return ""
-	}
-	return *d.Type
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (d *DeploymentBranchPolicyRequest) GetName() string {
-	if d == nil || d.Name == nil {
-		return ""
-	}
-	return *d.Name
-}
-
-// GetType returns the Type field if it's non-nil, zero value otherwise.
-func (d *DeploymentBranchPolicyRequest) GetType() string {
 	if d == nil || d.Type == nil {
 		return ""
 	}
@@ -37702,28 +37702,28 @@ func (s *SarifAnalysis) GetCheckoutURI() string {
 	return *s.CheckoutURI
 }
 
-// GetCommitSHA returns the CommitSHA field if it's non-nil, zero value otherwise.
+// GetCommitSHA returns the CommitSHA field.
 func (s *SarifAnalysis) GetCommitSHA() string {
-	if s == nil || s.CommitSHA == nil {
+	if s == nil {
 		return ""
 	}
-	return *s.CommitSHA
+	return s.CommitSHA
 }
 
-// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+// GetRef returns the Ref field.
 func (s *SarifAnalysis) GetRef() string {
-	if s == nil || s.Ref == nil {
+	if s == nil {
 		return ""
 	}
-	return *s.Ref
+	return s.Ref
 }
 
-// GetSarif returns the Sarif field if it's non-nil, zero value otherwise.
+// GetSarif returns the Sarif field.
 func (s *SarifAnalysis) GetSarif() string {
-	if s == nil || s.Sarif == nil {
+	if s == nil {
 		return ""
 	}
-	return *s.Sarif
+	return s.Sarif
 }
 
 // GetStartedAt returns the StartedAt field if it's non-nil, zero value otherwise.
@@ -37740,6 +37740,14 @@ func (s *SarifAnalysis) GetToolName() string {
 		return ""
 	}
 	return *s.ToolName
+}
+
+// GetValidate returns the Validate field if it's non-nil, zero value otherwise.
+func (s *SarifAnalysis) GetValidate() bool {
+	if s == nil || s.Validate == nil {
+		return false
+	}
+	return *s.Validate
 }
 
 // GetID returns the ID field if it's non-nil, zero value otherwise.
@@ -41670,12 +41678,12 @@ func (t *TemplateRepoRequest) GetIncludeAllBranches() bool {
 	return *t.IncludeAllBranches
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (t *TemplateRepoRequest) GetName() string {
-	if t == nil || t.Name == nil {
+	if t == nil {
 		return ""
 	}
-	return *t.Name
+	return t.Name
 }
 
 // GetOwner returns the Owner field if it's non-nil, zero value otherwise.
@@ -42556,6 +42564,14 @@ func (u *UpdateDefaultSetupConfigurationResponse) GetRunURL() string {
 		return ""
 	}
 	return *u.RunURL
+}
+
+// GetName returns the Name field.
+func (u *UpdateDeploymentBranchPolicyRequest) GetName() string {
+	if u == nil {
+		return ""
+	}
+	return u.Name
 }
 
 // GetAllowsPublicRepositories returns the AllowsPublicRepositories field if it's non-nil, zero value otherwise.

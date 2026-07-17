@@ -14013,6 +14013,25 @@ func TestCreateCustomOrgRoleRequest_GetPermissions(tt *testing.T) {
 	c.GetPermissions()
 }
 
+func TestCreateDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDeploymentBranchPolicyRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateDeploymentBranchPolicyRequest_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateDeploymentBranchPolicyRequest{Type: &zeroValue}
+	c.GetType()
+	c = &CreateDeploymentBranchPolicyRequest{}
+	c.GetType()
+	c = nil
+	c.GetType()
+}
+
 func TestCreateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -16954,28 +16973,6 @@ func TestDeploymentBranchPolicy_GetType(tt *testing.T) {
 	d := &DeploymentBranchPolicy{Type: &zeroValue}
 	d.GetType()
 	d = &DeploymentBranchPolicy{}
-	d.GetType()
-	d = nil
-	d.GetType()
-}
-
-func TestDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DeploymentBranchPolicyRequest{Name: &zeroValue}
-	d.GetName()
-	d = &DeploymentBranchPolicyRequest{}
-	d.GetName()
-	d = nil
-	d.GetName()
-}
-
-func TestDeploymentBranchPolicyRequest_GetType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DeploymentBranchPolicyRequest{Type: &zeroValue}
-	d.GetType()
-	d = &DeploymentBranchPolicyRequest{}
 	d.GetType()
 	d = nil
 	d.GetType()
@@ -47275,10 +47272,7 @@ func TestSarifAnalysis_GetCheckoutURI(tt *testing.T) {
 
 func TestSarifAnalysis_GetCommitSHA(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SarifAnalysis{CommitSHA: &zeroValue}
-	s.GetCommitSHA()
-	s = &SarifAnalysis{}
+	s := &SarifAnalysis{}
 	s.GetCommitSHA()
 	s = nil
 	s.GetCommitSHA()
@@ -47286,10 +47280,7 @@ func TestSarifAnalysis_GetCommitSHA(tt *testing.T) {
 
 func TestSarifAnalysis_GetRef(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SarifAnalysis{Ref: &zeroValue}
-	s.GetRef()
-	s = &SarifAnalysis{}
+	s := &SarifAnalysis{}
 	s.GetRef()
 	s = nil
 	s.GetRef()
@@ -47297,10 +47288,7 @@ func TestSarifAnalysis_GetRef(tt *testing.T) {
 
 func TestSarifAnalysis_GetSarif(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SarifAnalysis{Sarif: &zeroValue}
-	s.GetSarif()
-	s = &SarifAnalysis{}
+	s := &SarifAnalysis{}
 	s.GetSarif()
 	s = nil
 	s.GetSarif()
@@ -47326,6 +47314,17 @@ func TestSarifAnalysis_GetToolName(tt *testing.T) {
 	s.GetToolName()
 	s = nil
 	s.GetToolName()
+}
+
+func TestSarifAnalysis_GetValidate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SarifAnalysis{Validate: &zeroValue}
+	s.GetValidate()
+	s = &SarifAnalysis{}
+	s.GetValidate()
+	s = nil
+	s.GetValidate()
 }
 
 func TestSarifID_GetID(tt *testing.T) {
@@ -52218,10 +52217,7 @@ func TestTemplateRepoRequest_GetIncludeAllBranches(tt *testing.T) {
 
 func TestTemplateRepoRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	t := &TemplateRepoRequest{Name: &zeroValue}
-	t.GetName()
-	t = &TemplateRepoRequest{}
+	t := &TemplateRepoRequest{}
 	t.GetName()
 	t = nil
 	t.GetName()
@@ -53357,6 +53353,14 @@ func TestUpdateDefaultSetupConfigurationResponse_GetRunURL(tt *testing.T) {
 	u.GetRunURL()
 	u = nil
 	u.GetRunURL()
+}
+
+func TestUpdateDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateDeploymentBranchPolicyRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
 }
 
 func TestUpdateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {

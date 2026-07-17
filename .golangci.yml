@@ -222,7 +222,6 @@ linters:
             - DependabotAlertState
             - DependabotEncryptedSecret
             - DependencyGraphSnapshot
-            - DeploymentBranchPolicyRequest
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
             - ExternalGroup
@@ -260,7 +259,6 @@ linters:
             - RequiredStatusChecksRequest
             - ReviewCustomDeploymentProtectionRuleRequest
             - SCIMUserAttributes
-            - SarifAnalysis
             - SecretScanningAlertUpdateOptions
             - SecretScanningPatternConfigsUpdateOptions
             - SourceImportAuthor
@@ -269,7 +267,6 @@ linters:
             - TeamAddTeamRepoOptions
             - TeamLDAPMapping
             - TeamProjectOptions
-            - TemplateRepoRequest
             - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
