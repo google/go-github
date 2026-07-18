@@ -11118,6 +11118,70 @@ func (c *CreateHostedRunnerRequest) GetSize() string {
 	return c.Size
 }
 
+// GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
+func (c *CreateIssueRequest) GetAssignee() string {
+	if c == nil || c.Assignee == nil {
+		return ""
+	}
+	return *c.Assignee
+}
+
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (c *CreateIssueRequest) GetAssignees() []string {
+	if c == nil || c.Assignees == nil {
+		return nil
+	}
+	return c.Assignees
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (c *CreateIssueRequest) GetBody() string {
+	if c == nil || c.Body == nil {
+		return ""
+	}
+	return *c.Body
+}
+
+// GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
+func (c *CreateIssueRequest) GetIssueFieldValues() []*IssueRequestFieldValue {
+	if c == nil || c.IssueFieldValues == nil {
+		return nil
+	}
+	return c.IssueFieldValues
+}
+
+// GetLabels returns the Labels slice if it's non-nil, nil otherwise.
+func (c *CreateIssueRequest) GetLabels() []string {
+	if c == nil || c.Labels == nil {
+		return nil
+	}
+	return c.Labels
+}
+
+// GetMilestone returns the Milestone field if it's non-nil, zero value otherwise.
+func (c *CreateIssueRequest) GetMilestone() int {
+	if c == nil || c.Milestone == nil {
+		return 0
+	}
+	return *c.Milestone
+}
+
+// GetTitle returns the Title field.
+func (c *CreateIssueRequest) GetTitle() string {
+	if c == nil {
+		return ""
+	}
+	return c.Title
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (c *CreateIssueRequest) GetType() string {
+	if c == nil || c.Type == nil {
+		return ""
+	}
+	return *c.Type
+}
+
 // GetLabels returns the Labels slice if it's non-nil, nil otherwise.
 func (c *CreateJITConfigRequest) GetLabels() []string {
 	if c == nil || c.Labels == nil {

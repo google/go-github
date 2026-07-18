@@ -14098,6 +14098,91 @@ func TestCreateHostedRunnerRequest_GetSize(tt *testing.T) {
 	c.GetSize()
 }
 
+func TestCreateIssueRequest_GetAssignee(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateIssueRequest{Assignee: &zeroValue}
+	c.GetAssignee()
+	c = &CreateIssueRequest{}
+	c.GetAssignee()
+	c = nil
+	c.GetAssignee()
+}
+
+func TestCreateIssueRequest_GetAssignees(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateIssueRequest{Assignees: zeroValue}
+	c.GetAssignees()
+	c = &CreateIssueRequest{}
+	c.GetAssignees()
+	c = nil
+	c.GetAssignees()
+}
+
+func TestCreateIssueRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateIssueRequest{Body: &zeroValue}
+	c.GetBody()
+	c = &CreateIssueRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreateIssueRequest_GetIssueFieldValues(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*IssueRequestFieldValue{}
+	c := &CreateIssueRequest{IssueFieldValues: zeroValue}
+	c.GetIssueFieldValues()
+	c = &CreateIssueRequest{}
+	c.GetIssueFieldValues()
+	c = nil
+	c.GetIssueFieldValues()
+}
+
+func TestCreateIssueRequest_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateIssueRequest{Labels: zeroValue}
+	c.GetLabels()
+	c = &CreateIssueRequest{}
+	c.GetLabels()
+	c = nil
+	c.GetLabels()
+}
+
+func TestCreateIssueRequest_GetMilestone(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreateIssueRequest{Milestone: &zeroValue}
+	c.GetMilestone()
+	c = &CreateIssueRequest{}
+	c.GetMilestone()
+	c = nil
+	c.GetMilestone()
+}
+
+func TestCreateIssueRequest_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateIssueRequest{}
+	c.GetTitle()
+	c = nil
+	c.GetTitle()
+}
+
+func TestCreateIssueRequest_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateIssueRequest{Type: &zeroValue}
+	c.GetType()
+	c = &CreateIssueRequest{}
+	c.GetType()
+	c = nil
+	c.GetType()
+}
+
 func TestCreateJITConfigRequest_GetLabels(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}

@@ -104,7 +104,22 @@ func (i Issue) IsPullRequest() bool {
 	return i.PullRequestLinks != nil
 }
 
-// IssueRequest represents a request to create/edit an issue.
+// CreateIssueRequest represents a request to create an issue.
+// It is separate from Issue above because otherwise Labels
+// and Assignee fail to serialize to the correct JSON.
+type CreateIssueRequest struct {
+	// Title is required when creating an issue.
+	Title            string                    `json:"title"`
+	Body             *string                   `json:"body,omitempty"`
+	Labels           []string                  `json:"labels,omitempty"`
+	Assignee         *string                   `json:"assignee,omitempty"`
+	Milestone        *int                      `json:"milestone,omitempty"`
+	Assignees        []string                  `json:"assignees,omitempty"`
+	Type             *string                   `json:"type,omitempty"`
+	IssueFieldValues []*IssueRequestFieldValue `json:"issue_field_values,omitempty"`
+}
+
+// IssueRequest represents a request to edit an issue.
 // It is separate from Issue above because otherwise Labels
 // and Assignee fail to serialize to the correct JSON.
 type IssueRequest struct {
@@ -458,7 +473,7 @@ func (s *IssuesService) Get(ctx context.Context, owner, repo string, number int)
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#create-an-issue
 //
 //meta:operation POST /repos/{owner}/{repo}/issues
-func (s *IssuesService) Create(ctx context.Context, owner, repo string, body IssueRequest) (*Issue, *Response, error) {
+func (s *IssuesService) Create(ctx context.Context, owner, repo string, body CreateIssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues", owner, repo)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {

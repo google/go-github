@@ -297,11 +297,11 @@ func TestIssuesService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := IssueRequest{
-		Title:    Ptr("t"),
+	input := CreateIssueRequest{
+		Title:    "t",
 		Body:     Ptr("b"),
 		Assignee: Ptr("a"),
-		Labels:   &[]string{"l1", "l2"},
+		Labels:   []string{"l1", "l2"},
 	}
 
 	mux.HandleFunc("/repos/o/r/issues", func(w http.ResponseWriter, r *http.Request) {
@@ -341,7 +341,7 @@ func TestIssuesService_Create_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.Create(ctx, "%", "r", IssueRequest{})
+	_, _, err := client.Issues.Create(ctx, "%", "r", CreateIssueRequest{})
 	testURLParseError(t, err)
 }
 
