@@ -40,13 +40,31 @@ type CopilotSpace struct {
 
 // CopilotSpaceResource represents a resource attached to a Copilot Space.
 type CopilotSpaceResource struct {
-	ID           *int64         `json:"id,omitempty"`
-	ResourceType *string        `json:"resource_type,omitempty"`
-	Metadata     map[string]any `json:"metadata,omitempty"`
+	ID           *int64                `json:"id,omitempty"`
+	ResourceType *string               `json:"resource_type,omitempty"`
+	Metadata     *CopilotSpaceMetadata `json:"metadata,omitempty"`
 }
 
-// CopilotSpaceRequest represents a request to create or update a Copilot Space.
-type CopilotSpaceRequest struct {
+// CopilotSpaceMetadata represents metadata specific to a Copilot Space resource type.
+type CopilotSpaceMetadata struct {
+	RepositoryID *int64  `json:"repository_id,omitempty"`
+	FilePath     *string `json:"file_path,omitempty"`
+	Text         *string `json:"text,omitempty"`
+	Name         *string `json:"name,omitempty"`
+	Number       *int    `json:"number,omitempty"`
+}
+
+// CreateOrganizationCopilotSpaceRequest represents a request to create a Copilot Space.
+type CreateOrganizationCopilotSpaceRequest struct {
+	Name                string                  `json:"name"`
+	Description         *string                 `json:"description,omitempty"`
+	GeneralInstructions *string                 `json:"general_instructions,omitempty"`
+	BaseRole            *string                 `json:"base_role,omitempty"`
+	ResourcesAttributes []*CopilotSpaceResource `json:"resources_attributes,omitempty"`
+}
+
+// UpdateOrganizationCopilotSpaceRequest represents a request to update a Copilot Space.
+type UpdateOrganizationCopilotSpaceRequest struct {
 	Name                *string                 `json:"name,omitempty"`
 	Description         *string                 `json:"description,omitempty"`
 	GeneralInstructions *string                 `json:"general_instructions,omitempty"`
@@ -112,7 +130,7 @@ func (s *CopilotService) GetOrganizationCopilotSpace(ctx context.Context, org st
 // GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#create-an-organization-copilot-space
 //
 //meta:operation POST /orgs/{org}/copilot-spaces
-func (s *CopilotService) CreateOrganizationCopilotSpace(ctx context.Context, org string, body CopilotSpaceRequest) (*CopilotSpace, *Response, error) {
+func (s *CopilotService) CreateOrganizationCopilotSpace(ctx context.Context, org string, body CreateOrganizationCopilotSpaceRequest) (*CopilotSpace, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot-spaces", org)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
@@ -134,7 +152,7 @@ func (s *CopilotService) CreateOrganizationCopilotSpace(ctx context.Context, org
 // GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#set-an-organization-copilot-space
 //
 //meta:operation PUT /orgs/{org}/copilot-spaces/{space_number}
-func (s *CopilotService) UpdateOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int, body CopilotSpaceRequest) (*CopilotSpace, *Response, error) {
+func (s *CopilotService) UpdateOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int, body UpdateOrganizationCopilotSpaceRequest) (*CopilotSpace, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/copilot-spaces/%v", org, spaceNumber)
 
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
