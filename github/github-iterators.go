@@ -190,7 +190,7 @@ func (s *ActionsService) ListEnabledReposInOrgIter(ctx context.Context, owner st
 }
 
 // ListEnvSecretsIter returns an iterator that paginates through all results of ListEnvSecrets.
-func (s *ActionsService) ListEnvSecretsIter(ctx context.Context, repoID int, env string, opts *ListOptions) iter.Seq2[*Secret, error] {
+func (s *ActionsService) ListEnvSecretsIter(ctx context.Context, owner string, repo string, env string, opts *ListOptions) iter.Seq2[*Secret, error] {
 	return func(yield func(*Secret, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
@@ -200,7 +200,7 @@ func (s *ActionsService) ListEnvSecretsIter(ctx context.Context, repoID int, env
 		}
 
 		for {
-			results, resp, err := s.ListEnvSecrets(ctx, repoID, env, opts)
+			results, resp, err := s.ListEnvSecrets(ctx, owner, repo, env, opts)
 			if err != nil {
 				yield(nil, err)
 				return
@@ -1917,6 +1917,37 @@ func (s *ClassroomService) ListClassroomsIter(ctx context.Context, opts *ListOpt
 				break
 			}
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListFindingsIter returns an iterator that paginates through all results of ListFindings.
+func (s *CodeQualityService) ListFindingsIter(ctx context.Context, owner string, repo string, opts *ListCodeQualityFindingsOptions) iter.Seq2[*CodeQualityFinding, error] {
+	return func(yield func(*CodeQualityFinding, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListCodeQualityFindingsOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListFindings(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.After == "" {
+				break
+			}
+			opts.ListCursorOptions.After = resp.After
 		}
 	}
 }

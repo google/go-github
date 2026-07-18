@@ -13,9 +13,10 @@ import (
 	"regexp"
 	"slices"
 	"strconv"
+	"strings"
 
 	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/google/go-github/v88/github"
+	"github.com/google/go-github/v89/github"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -51,8 +52,50 @@ func getOpsFromGithub(ctx context.Context, client *github.Client, gitRef string)
 			}
 		}
 	}
+	deprecateOperations(descs, ops)
 	sortOperations(ops)
 	return ops, nil
+}
+
+func deprecateOperations(descs []*openapiFile, ops []*operation) {
+	var ghesLatestMajor, ghesLatestMinor int
+
+	for _, desc := range descs {
+		if strings.Contains(desc.filename, "/ghes") {
+			if desc.releaseMajor > ghesLatestMajor || (desc.releaseMajor == ghesLatestMajor && desc.releaseMinor > ghesLatestMinor) {
+				ghesLatestMajor = desc.releaseMajor
+				ghesLatestMinor = desc.releaseMinor
+			}
+		}
+	}
+
+	ghesLatest := fmt.Sprintf("/ghes-%v.%v", ghesLatestMajor, ghesLatestMinor)
+
+	for _, op := range ops {
+		if op.Deprecated {
+			continue
+		}
+
+		var latest bool
+		for _, f := range op.OpenAPIFiles {
+			if strings.Contains(f, "/api.github.com") {
+				latest = true
+				break
+			}
+			if strings.Contains(f, "/ghec") {
+				latest = true
+				break
+			}
+			if strings.Contains(f, ghesLatest) {
+				latest = true
+				break
+			}
+		}
+
+		if !latest {
+			op.Deprecated = true
+		}
+	}
 }
 
 func (o *openapiFile) loadDescription(ctx context.Context, client *github.Client, gitRef string) error {

@@ -2139,29 +2139,32 @@ func TestRepositoryParticipation_String(t *testing.T) {
 func TestRepositoryRelease_String(t *testing.T) {
 	t.Parallel()
 	v := RepositoryRelease{
-		TagName:                Ptr(""),
-		TargetCommitish:        Ptr(""),
-		Name:                   Ptr(""),
-		Body:                   Ptr(""),
-		Draft:                  Ptr(false),
-		Prerelease:             Ptr(false),
-		MakeLatest:             Ptr(""),
-		DiscussionCategoryName: Ptr(""),
-		GenerateReleaseNotes:   Ptr(false),
-		ID:                     Ptr(int64(0)),
-		CreatedAt:              &Timestamp{},
-		PublishedAt:            &Timestamp{},
-		URL:                    Ptr(""),
-		HTMLURL:                Ptr(""),
-		AssetsURL:              Ptr(""),
-		UploadURL:              Ptr(""),
-		ZipballURL:             Ptr(""),
-		TarballURL:             Ptr(""),
-		Author:                 &User{},
-		NodeID:                 Ptr(""),
-		Immutable:              Ptr(false),
+		TagName:         "",
+		TargetCommitish: "",
+		Name:            Ptr(""),
+		Body:            Ptr(""),
+		Draft:           false,
+		Prerelease:      false,
+		Immutable:       Ptr(false),
+		ID:              0,
+		CreatedAt:       Timestamp{},
+		PublishedAt:     &Timestamp{},
+		UpdatedAt:       &Timestamp{},
+		URL:             "",
+		HTMLURL:         "",
+		AssetsURL:       "",
+		UploadURL:       "",
+		ZipballURL:      Ptr(""),
+		TarballURL:      Ptr(""),
+		Author:          &User{},
+		NodeID:          "",
+		BodyHTML:        Ptr(""),
+		BodyText:        Ptr(""),
+		MentionsCount:   Ptr(0),
+		DiscussionURL:   Ptr(""),
+		Reactions:       &Reactions{},
 	}
-	want := `github.RepositoryRelease{TagName:"", TargetCommitish:"", Name:"", Body:"", Draft:false, Prerelease:false, MakeLatest:"", DiscussionCategoryName:"", GenerateReleaseNotes:false, ID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", ZipballURL:"", TarballURL:"", Author:github.User{}, NodeID:"", Immutable:false}`
+	want := `github.RepositoryRelease{TagName:"", TargetCommitish:"", Name:"", Body:"", Draft:false, Prerelease:false, Immutable:false, ID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", ZipballURL:"", TarballURL:"", Author:github.User{}, NodeID:"", BodyHTML:"", BodyText:"", MentionsCount:0, DiscussionURL:"", Reactions:github.Reactions{}}`
 	if got := v.String(); got != want {
 		t.Errorf("RepositoryRelease.String = %v, want %v", got, want)
 	}
@@ -2292,8 +2295,9 @@ func TestTeam_String(t *testing.T) {
 		LDAPDN:              Ptr(""),
 		Assignment:          Ptr(""),
 		Type:                Ptr(""),
+		AccessSource:        Ptr(""),
 	}
-	want := `github.Team{ID:0, NodeID:"", Name:"", Description:"", URL:"", Slug:"", Permission:"", Privacy:"", NotificationSetting:"", MembersCount:0, ReposCount:0, Organization:github.Organization{}, HTMLURL:"", MembersURL:"", RepositoriesURL:"", Parent:github.Team{}, LDAPDN:"", Assignment:"", Type:""}`
+	want := `github.Team{ID:0, NodeID:"", Name:"", Description:"", URL:"", Slug:"", Permission:"", Privacy:"", NotificationSetting:"", MembersCount:0, ReposCount:0, Organization:github.Organization{}, HTMLURL:"", MembersURL:"", RepositoriesURL:"", Parent:github.Team{}, LDAPDN:"", Assignment:"", Type:"", AccessSource:""}`
 	if got := v.String(); got != want {
 		t.Errorf("Team.String = %v, want %v", got, want)
 	}
@@ -2440,8 +2444,10 @@ func TestUser_String(t *testing.T) {
 		Permissions:             &RepositoryPermissions{},
 		RoleName:                Ptr(""),
 		Assignment:              Ptr(""),
+		Role:                    Ptr(""),
+		Inherited:               Ptr(false),
 	}
-	want := `github.User{Login:"", ID:0, UserViewType:"", NodeID:"", AvatarURL:"", HTMLURL:"", GravatarID:"", Name:"", Company:"", Blog:"", Location:"", Email:"", NotificationEmail:"", Hireable:false, Bio:"", TwitterUsername:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Type:"", SiteAdmin:false, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, TwoFactorAuthentication:false, Plan:github.Plan{}, BusinessPlus:false, LdapDn:"", URL:"", EventsURL:"", FollowingURL:"", FollowersURL:"", GistsURL:"", OrganizationsURL:"", ReceivedEventsURL:"", ReposURL:"", StarredURL:"", SubscriptionsURL:"", Permissions:github.RepositoryPermissions{}, RoleName:"", Assignment:""}`
+	want := `github.User{Login:"", ID:0, UserViewType:"", NodeID:"", AvatarURL:"", HTMLURL:"", GravatarID:"", Name:"", Company:"", Blog:"", Location:"", Email:"", NotificationEmail:"", Hireable:false, Bio:"", TwitterUsername:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Type:"", SiteAdmin:false, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, TwoFactorAuthentication:false, Plan:github.Plan{}, BusinessPlus:false, LdapDn:"", URL:"", EventsURL:"", FollowingURL:"", FollowersURL:"", GistsURL:"", OrganizationsURL:"", ReceivedEventsURL:"", ReposURL:"", StarredURL:"", SubscriptionsURL:"", Permissions:github.RepositoryPermissions{}, RoleName:"", Assignment:"", Role:"", Inherited:false}`
 	if got := v.String(); got != want {
 		t.Errorf("User.String = %v, want %v", got, want)
 	}

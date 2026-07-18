@@ -186,7 +186,7 @@ linters:
       extraneousnew:
         type: module
         description: Reports problematic usage of 'new' or '&SomeStruct{}' when a more idiomatic 'var' pointer would be more appropriate.
-        original-url: github.com/google/go-github/v88/tools/extraneousnew
+        original-url: github.com/google/go-github/v89/tools/extraneousnew
         settings:
           ignored-methods:
             - RateLimitService.Get
@@ -194,11 +194,11 @@ linters:
       fmtpercentv:
         type: module
         description: Reports usage of %d or %s in format strings.
-        original-url: github.com/google/go-github/v88/tools/fmtpercentv
+        original-url: github.com/google/go-github/v89/tools/fmtpercentv
       paramcheck:
         type: module
         description: Reports parameter naming and type convention issues.
-        original-url: github.com/google/go-github/v88/tools/paramcheck
+        original-url: github.com/google/go-github/v89/tools/paramcheck
         settings:
           # Body type names exempt from the "pass by value, not by pointer" rule.
           # TODO: fix and remove these exceptions.
@@ -222,16 +222,10 @@ linters:
             - DependabotAlertState
             - DependabotEncryptedSecret
             - DependencyGraphSnapshot
-            - DeploymentBranchPolicyRequest
-            - DeploymentRequest
-            - DeploymentStatusRequest
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
             - ExternalGroup
-            - GenerateJITConfigRequest
-            - GenerateNotesOptions
             - Hook
-            - HookConfig
             - ImpersonateUserOptions
             - Import
             - InstallationTokenListRepoOptions
@@ -245,7 +239,6 @@ linters:
             - MaintenanceOptions
             - Milestone
             - NewPullRequest
-            - OIDCSubjectClaimCustomTemplate
             - Organization
             - PagesUpdate
             - PagesUpdateWithoutCNAME
@@ -258,18 +251,14 @@ linters:
             - PullRequestReviewDismissalRequest
             - PullRequestReviewRequest
             - PullRequestReviewsEnforcementUpdate
-            - ReleaseAsset
-            - RepoMergeUpstreamRequest
             - Repository
             - RepositoryAddCollaboratorOptions
             - RepositoryComment
             - RepositoryContentFileOptions
             - RepositoryCreateForkOptions
-            - RepositoryMergeRequest
             - RequiredStatusChecksRequest
             - ReviewCustomDeploymentProtectionRuleRequest
             - SCIMUserAttributes
-            - SarifAnalysis
             - SecretScanningAlertUpdateOptions
             - SecretScanningPatternConfigsUpdateOptions
             - SourceImportAuthor
@@ -278,7 +267,6 @@ linters:
             - TeamAddTeamRepoOptions
             - TeamLDAPMapping
             - TeamProjectOptions
-            - TemplateRepoRequest
             - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
@@ -300,7 +288,6 @@ linters:
             - CreateOrUpdateCustomRepoRoleOptions
             - CreateOrUpdateIssueTypesOptions
             - CreateOrgInvitationOptions
-            - GenerateNotesOptions
             - ImpersonateUserOptions
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
@@ -324,15 +311,15 @@ linters:
       redundantptr:
         type: module
         description: Reports github.Ptr(x) calls that can be replaced with &x.
-        original-url: github.com/google/go-github/v88/tools/redundantptr
+        original-url: github.com/google/go-github/v89/tools/redundantptr
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v88/tools/sliceofpointers
+        original-url: github.com/google/go-github/v89/tools/sliceofpointers
       structfield:
         type: module
         description: Reports mismatches between Go field and JSON, URL tag names and types.
-        original-url: github.com/google/go-github/v88/tools/structfield
+        original-url: github.com/google/go-github/v89/tools/structfield
         settings:
           allowed-tag-names:
             - ActionsCacheUsageList.RepoCacheUsage # TODO: RepoCacheUsages ?
@@ -417,9 +404,6 @@ linters:
             - CreateTag.Object # TODO: Git
             - CreateTag.Tag # TODO: Git
             - CreateTag.Type # TODO: Git
-            - DependabotEncryptedSecret.SelectedRepositoryIDs # TODO: Dependabot
-            - DependabotEncryptedSecret.Visibility # TODO: Dependabot
-            - DeploymentRequest.RequiredContexts # TODO: Deployments
             - DismissalRestrictionsRequest.Apps # TODO: Repositories
             - DismissalRestrictionsRequest.Teams # TODO: Repositories
             - DismissalRestrictionsRequest.Users # TODO: Repositories

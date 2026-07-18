@@ -31,12 +31,12 @@ func (s *EnterpriseService) ListRunnerApplicationDownloads(ctx context.Context, 
 	return rads, resp, nil
 }
 
-// GenerateEnterpriseJITConfig generates a just-in-time configuration for an enterprise.
+// CreateJITConfig creates a just-in-time configuration for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners?apiVersion=2022-11-28#create-configuration-for-a-just-in-time-runner-for-an-enterprise
 //
 //meta:operation POST /enterprises/{enterprise}/actions/runners/generate-jitconfig
-func (s *EnterpriseService) GenerateEnterpriseJITConfig(ctx context.Context, enterprise string, body *GenerateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
+func (s *EnterpriseService) CreateJITConfig(ctx context.Context, enterprise string, body CreateJITConfigRequest) (*JITRunnerConfig, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/runners/generate-jitconfig", enterprise)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
