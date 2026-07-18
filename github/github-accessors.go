@@ -678,6 +678,46 @@ func (a *AddProjectItemOptions) GetType() *ProjectV2ItemContentType {
 	return a.Type
 }
 
+// GetDataType returns the DataType field if it's non-nil, zero value otherwise.
+func (a *AddProjectV2FieldRequest) GetDataType() string {
+	if a == nil || a.DataType == nil {
+		return ""
+	}
+	return *a.DataType
+}
+
+// GetIssueFieldID returns the IssueFieldID field if it's non-nil, zero value otherwise.
+func (a *AddProjectV2FieldRequest) GetIssueFieldID() int64 {
+	if a == nil || a.IssueFieldID == nil {
+		return 0
+	}
+	return *a.IssueFieldID
+}
+
+// GetIterationConfiguration returns the IterationConfiguration field.
+func (a *AddProjectV2FieldRequest) GetIterationConfiguration() *ProjectV2FieldIterationConfiguration {
+	if a == nil {
+		return nil
+	}
+	return a.IterationConfiguration
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *AddProjectV2FieldRequest) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
+// GetSingleSelectOptions returns the SingleSelectOptions slice if it's non-nil, nil otherwise.
+func (a *AddProjectV2FieldRequest) GetSingleSelectOptions() []*ProjectV2FieldSingleSelectOption {
+	if a == nil || a.SingleSelectOptions == nil {
+		return nil
+	}
+	return a.SingleSelectOptions
+}
+
 // GetMessage returns the Message field if it's non-nil, zero value otherwise.
 func (a *AddResourcesToCostCenterResponse) GetMessage() string {
 	if a == nil || a.Message == nil {
@@ -11468,6 +11508,54 @@ func (c *CreateOrUpdateIssueTypesOptions) GetName() string {
 		return ""
 	}
 	return c.Name
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (c *CreateProjectV2DraftItemRequest) GetBody() string {
+	if c == nil || c.Body == nil {
+		return ""
+	}
+	return *c.Body
+}
+
+// GetTitle returns the Title field.
+func (c *CreateProjectV2DraftItemRequest) GetTitle() string {
+	if c == nil {
+		return ""
+	}
+	return c.Title
+}
+
+// GetFilter returns the Filter field if it's non-nil, zero value otherwise.
+func (c *CreateProjectV2ViewRequest) GetFilter() string {
+	if c == nil || c.Filter == nil {
+		return ""
+	}
+	return *c.Filter
+}
+
+// GetLayout returns the Layout field.
+func (c *CreateProjectV2ViewRequest) GetLayout() string {
+	if c == nil {
+		return ""
+	}
+	return c.Layout
+}
+
+// GetName returns the Name field.
+func (c *CreateProjectV2ViewRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetVisibleFields returns the VisibleFields slice if it's non-nil, nil otherwise.
+func (c *CreateProjectV2ViewRequest) GetVisibleFields() []int64 {
+	if c == nil || c.VisibleFields == nil {
+		return nil
+	}
+	return c.VisibleFields
 }
 
 // GetFrom returns the From field if it's non-nil, zero value otherwise.
@@ -29390,6 +29478,54 @@ func (p *ProjectV2FieldIteration) GetTitle() *ProjectV2TextContent {
 	return p.Title
 }
 
+// GetDuration returns the Duration field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIterationConfiguration) GetDuration() int {
+	if p == nil || p.Duration == nil {
+		return 0
+	}
+	return *p.Duration
+}
+
+// GetIterations returns the Iterations slice if it's non-nil, nil otherwise.
+func (p *ProjectV2FieldIterationConfiguration) GetIterations() []*ProjectV2FieldIterationConfigurationIteration {
+	if p == nil || p.Iterations == nil {
+		return nil
+	}
+	return p.Iterations
+}
+
+// GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIterationConfiguration) GetStartDate() string {
+	if p == nil || p.StartDate == nil {
+		return ""
+	}
+	return *p.StartDate
+}
+
+// GetDuration returns the Duration field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIterationConfigurationIteration) GetDuration() int {
+	if p == nil || p.Duration == nil {
+		return 0
+	}
+	return *p.Duration
+}
+
+// GetStartDate returns the StartDate field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIterationConfigurationIteration) GetStartDate() string {
+	if p == nil || p.StartDate == nil {
+		return ""
+	}
+	return *p.StartDate
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldIterationConfigurationIteration) GetTitle() string {
+	if p == nil || p.Title == nil {
+		return ""
+	}
+	return *p.Title
+}
+
 // GetColor returns the Color field if it's non-nil, zero value otherwise.
 func (p *ProjectV2FieldOption) GetColor() string {
 	if p == nil || p.Color == nil {
@@ -29418,6 +29554,30 @@ func (p *ProjectV2FieldOption) GetID() string {
 func (p *ProjectV2FieldOption) GetName() *ProjectV2TextContent {
 	if p == nil {
 		return nil
+	}
+	return p.Name
+}
+
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldSingleSelectOption) GetColor() string {
+	if p == nil || p.Color == nil {
+		return ""
+	}
+	return *p.Color
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (p *ProjectV2FieldSingleSelectOption) GetDescription() string {
+	if p == nil || p.Description == nil {
+		return ""
+	}
+	return *p.Description
+}
+
+// GetName returns the Name field.
+func (p *ProjectV2FieldSingleSelectOption) GetName() string {
+	if p == nil {
+		return ""
 	}
 	return p.Name
 }
@@ -29740,6 +29900,142 @@ func (p *ProjectV2TextContent) GetRaw() string {
 		return ""
 	}
 	return *p.Raw
+}
+
+// GetCreatedAt returns the CreatedAt field.
+func (p *ProjectV2View) GetCreatedAt() Timestamp {
+	if p == nil {
+		return Timestamp{}
+	}
+	return p.CreatedAt
+}
+
+// GetCreator returns the Creator field.
+func (p *ProjectV2View) GetCreator() User {
+	if p == nil {
+		return User{}
+	}
+	return p.Creator
+}
+
+// GetFilter returns the Filter field if it's non-nil, zero value otherwise.
+func (p *ProjectV2View) GetFilter() string {
+	if p == nil || p.Filter == nil {
+		return ""
+	}
+	return *p.Filter
+}
+
+// GetGroupBy returns the GroupBy slice if it's non-nil, nil otherwise.
+func (p *ProjectV2View) GetGroupBy() []int64 {
+	if p == nil || p.GroupBy == nil {
+		return nil
+	}
+	return p.GroupBy
+}
+
+// GetHTMLURL returns the HTMLURL field.
+func (p *ProjectV2View) GetHTMLURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.HTMLURL
+}
+
+// GetID returns the ID field.
+func (p *ProjectV2View) GetID() int64 {
+	if p == nil {
+		return 0
+	}
+	return p.ID
+}
+
+// GetLayout returns the Layout field.
+func (p *ProjectV2View) GetLayout() string {
+	if p == nil {
+		return ""
+	}
+	return p.Layout
+}
+
+// GetName returns the Name field.
+func (p *ProjectV2View) GetName() string {
+	if p == nil {
+		return ""
+	}
+	return p.Name
+}
+
+// GetNodeID returns the NodeID field.
+func (p *ProjectV2View) GetNodeID() string {
+	if p == nil {
+		return ""
+	}
+	return p.NodeID
+}
+
+// GetNumber returns the Number field.
+func (p *ProjectV2View) GetNumber() int {
+	if p == nil {
+		return 0
+	}
+	return p.Number
+}
+
+// GetProjectURL returns the ProjectURL field.
+func (p *ProjectV2View) GetProjectURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.ProjectURL
+}
+
+// GetSortBy returns the SortBy slice if it's non-nil, nil otherwise.
+func (p *ProjectV2View) GetSortBy() []*ProjectV2ViewSortBy {
+	if p == nil || p.SortBy == nil {
+		return nil
+	}
+	return p.SortBy
+}
+
+// GetUpdatedAt returns the UpdatedAt field.
+func (p *ProjectV2View) GetUpdatedAt() Timestamp {
+	if p == nil {
+		return Timestamp{}
+	}
+	return p.UpdatedAt
+}
+
+// GetVerticalGroupBy returns the VerticalGroupBy slice if it's non-nil, nil otherwise.
+func (p *ProjectV2View) GetVerticalGroupBy() []int64 {
+	if p == nil || p.VerticalGroupBy == nil {
+		return nil
+	}
+	return p.VerticalGroupBy
+}
+
+// GetVisibleFields returns the VisibleFields slice if it's non-nil, nil otherwise.
+func (p *ProjectV2View) GetVisibleFields() []int64 {
+	if p == nil || p.VisibleFields == nil {
+		return nil
+	}
+	return p.VisibleFields
+}
+
+// GetDirection returns the Direction field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ViewSortBy) GetDirection() string {
+	if p == nil || p.Direction == nil {
+		return ""
+	}
+	return *p.Direction
+}
+
+// GetFieldID returns the FieldID field if it's non-nil, zero value otherwise.
+func (p *ProjectV2ViewSortBy) GetFieldID() int64 {
+	if p == nil || p.FieldID == nil {
+		return 0
+	}
+	return *p.FieldID
 }
 
 // GetAllowDeletions returns the AllowDeletions field.
