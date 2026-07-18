@@ -21358,6 +21358,14 @@ func (i *IssueRequest) GetBody() string {
 	return *i.Body
 }
 
+// GetDuplicateIssueID returns the DuplicateIssueID field if it's non-nil, zero value otherwise.
+func (i *IssueRequest) GetDuplicateIssueID() int {
+	if i == nil || i.DuplicateIssueID == nil {
+		return 0
+	}
+	return *i.DuplicateIssueID
+}
+
 // GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
 func (i *IssueRequest) GetIssueFieldValues() []*IssueRequestFieldValue {
 	if i == nil || i.IssueFieldValues == nil {

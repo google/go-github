@@ -128,8 +128,10 @@ type IssueRequest struct {
 	Labels   *[]string `json:"labels,omitempty"`
 	Assignee *string   `json:"assignee,omitempty"`
 	State    *string   `json:"state,omitempty"`
-	// StateReason can be 'completed' or 'not_planned'.
-	StateReason      *string                   `json:"state_reason,omitempty"`
+	// StateReason can be `completed`, `not_planned`, `duplicate` or `reopened`.
+	StateReason *string `json:"state_reason,omitempty"`
+	// DuplicateIssueID is required when state_reason is `duplicate`.
+	DuplicateIssueID *int                      `json:"duplicate_issue_id,omitempty"`
 	Milestone        *int                      `json:"milestone,omitempty"`
 	Assignees        *[]string                 `json:"assignees,omitempty"`
 	Type             *string                   `json:"type,omitempty"`

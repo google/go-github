@@ -26891,6 +26891,17 @@ func TestIssueRequest_GetBody(tt *testing.T) {
 	i.GetBody()
 }
 
+func TestIssueRequest_GetDuplicateIssueID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	i := &IssueRequest{DuplicateIssueID: &zeroValue}
+	i.GetDuplicateIssueID()
+	i = &IssueRequest{}
+	i.GetDuplicateIssueID()
+	i = nil
+	i.GetDuplicateIssueID()
+}
+
 func TestIssueRequest_GetIssueFieldValues(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*IssueRequestFieldValue{}
