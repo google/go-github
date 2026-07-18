@@ -297,7 +297,7 @@ func TestIssuesService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &IssueRequest{
+	input := IssueRequest{
 		Title:    Ptr("t"),
 		Body:     Ptr("b"),
 		Assignee: Ptr("a"),
@@ -341,7 +341,7 @@ func TestIssuesService_Create_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.Create(ctx, "%", "r", nil)
+	_, _, err := client.Issues.Create(ctx, "%", "r", IssueRequest{})
 	testURLParseError(t, err)
 }
 
@@ -349,7 +349,7 @@ func TestIssuesService_Edit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &IssueRequest{Title: Ptr("t"), Type: Ptr("bug")}
+	input := IssueRequest{Title: Ptr("t"), Type: Ptr("bug")}
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -423,7 +423,7 @@ func TestIssuesService_Edit_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.Edit(ctx, "%", "r", 1, nil)
+	_, _, err := client.Issues.Edit(ctx, "%", "r", 1, IssueRequest{})
 	testURLParseError(t, err)
 }
 

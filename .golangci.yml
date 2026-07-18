@@ -232,7 +232,6 @@ linters:
             - InstallationTokenOptions
             - IssueComment
             - IssueImportRequest
-            - IssueRequest
             - Key
             - Label
             - LockIssueOptions
