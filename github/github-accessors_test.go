@@ -12710,59 +12710,59 @@ func TestCopilotSpace_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
-func TestCopilotSpaceRequest_GetBaseRole(tt *testing.T) {
+func TestCopilotSpaceMetadata_GetFilePath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CopilotSpaceRequest{BaseRole: &zeroValue}
-	c.GetBaseRole()
-	c = &CopilotSpaceRequest{}
-	c.GetBaseRole()
+	c := &CopilotSpaceMetadata{FilePath: &zeroValue}
+	c.GetFilePath()
+	c = &CopilotSpaceMetadata{}
+	c.GetFilePath()
 	c = nil
-	c.GetBaseRole()
+	c.GetFilePath()
 }
 
-func TestCopilotSpaceRequest_GetDescription(tt *testing.T) {
+func TestCopilotSpaceMetadata_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CopilotSpaceRequest{Description: &zeroValue}
-	c.GetDescription()
-	c = &CopilotSpaceRequest{}
-	c.GetDescription()
-	c = nil
-	c.GetDescription()
-}
-
-func TestCopilotSpaceRequest_GetGeneralInstructions(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CopilotSpaceRequest{GeneralInstructions: &zeroValue}
-	c.GetGeneralInstructions()
-	c = &CopilotSpaceRequest{}
-	c.GetGeneralInstructions()
-	c = nil
-	c.GetGeneralInstructions()
-}
-
-func TestCopilotSpaceRequest_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CopilotSpaceRequest{Name: &zeroValue}
+	c := &CopilotSpaceMetadata{Name: &zeroValue}
 	c.GetName()
-	c = &CopilotSpaceRequest{}
+	c = &CopilotSpaceMetadata{}
 	c.GetName()
 	c = nil
 	c.GetName()
 }
 
-func TestCopilotSpaceRequest_GetResourcesAttributes(tt *testing.T) {
+func TestCopilotSpaceMetadata_GetNumber(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := []*CopilotSpaceResource{}
-	c := &CopilotSpaceRequest{ResourcesAttributes: zeroValue}
-	c.GetResourcesAttributes()
-	c = &CopilotSpaceRequest{}
-	c.GetResourcesAttributes()
+	var zeroValue int
+	c := &CopilotSpaceMetadata{Number: &zeroValue}
+	c.GetNumber()
+	c = &CopilotSpaceMetadata{}
+	c.GetNumber()
 	c = nil
-	c.GetResourcesAttributes()
+	c.GetNumber()
+}
+
+func TestCopilotSpaceMetadata_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotSpaceMetadata{RepositoryID: &zeroValue}
+	c.GetRepositoryID()
+	c = &CopilotSpaceMetadata{}
+	c.GetRepositoryID()
+	c = nil
+	c.GetRepositoryID()
+}
+
+func TestCopilotSpaceMetadata_GetText(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{Text: &zeroValue}
+	c.GetText()
+	c = &CopilotSpaceMetadata{}
+	c.GetText()
+	c = nil
+	c.GetText()
 }
 
 func TestCopilotSpaceResource_GetID(tt *testing.T) {
@@ -12778,10 +12778,7 @@ func TestCopilotSpaceResource_GetID(tt *testing.T) {
 
 func TestCopilotSpaceResource_GetMetadata(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := map[string]any{}
-	c := &CopilotSpaceResource{Metadata: zeroValue}
-	c.GetMetadata()
-	c = &CopilotSpaceResource{}
+	c := &CopilotSpaceResource{}
 	c.GetMetadata()
 	c = nil
 	c.GetMetadata()
@@ -14346,6 +14343,58 @@ func TestCreateJITConfigRequest_GetWorkFolder(tt *testing.T) {
 	c.GetWorkFolder()
 	c = nil
 	c.GetWorkFolder()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationCopilotSpaceRequest{BaseRole: &zeroValue}
+	c.GetBaseRole()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationCopilotSpaceRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetGeneralInstructions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationCopilotSpaceRequest{GeneralInstructions: &zeroValue}
+	c.GetGeneralInstructions()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetGeneralInstructions()
+	c = nil
+	c.GetGeneralInstructions()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateOrganizationCopilotSpaceRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetResourcesAttributes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotSpaceResource{}
+	c := &CreateOrganizationCopilotSpaceRequest{ResourcesAttributes: zeroValue}
+	c.GetResourcesAttributes()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetResourcesAttributes()
+	c = nil
+	c.GetResourcesAttributes()
 }
 
 func TestCreateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
@@ -53545,6 +53594,61 @@ func TestUpdateHostedRunnerRequest_GetSize(tt *testing.T) {
 	u.GetSize()
 	u = nil
 	u.GetSize()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{BaseRole: &zeroValue}
+	u.GetBaseRole()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetBaseRole()
+	u = nil
+	u.GetBaseRole()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetGeneralInstructions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{GeneralInstructions: &zeroValue}
+	u.GetGeneralInstructions()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetGeneralInstructions()
+	u = nil
+	u.GetGeneralInstructions()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetResourcesAttributes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotSpaceResource{}
+	u := &UpdateOrganizationCopilotSpaceRequest{ResourcesAttributes: zeroValue}
+	u.GetResourcesAttributes()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetResourcesAttributes()
+	u = nil
+	u.GetResourcesAttributes()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {

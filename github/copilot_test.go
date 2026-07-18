@@ -1214,17 +1214,17 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CopilotSpaceRequest{
-		Name:                Ptr("Team Planning Space"),
+	input := CreateOrganizationCopilotSpaceRequest{
+		Name:                "Team Planning Space",
 		Description:         Ptr("Organization space for team planning"),
 		GeneralInstructions: Ptr("Help the team with planning tasks"),
 		BaseRole:            Ptr("no_access"),
 		ResourcesAttributes: []*CopilotSpaceResource{
 			{
 				ResourceType: Ptr("free_text"),
-				Metadata: map[string]any{
-					"name": "Team Guidelines",
-					"text": "Our team follows agile methodology",
+				Metadata: &CopilotSpaceMetadata{
+					Name: Ptr("Team Guidelines"),
+					Text: Ptr("Our team follows agile methodology"),
 				},
 			},
 		},
@@ -1255,9 +1255,9 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 			{
 				ID:           Ptr(int64(101)),
 				ResourceType: Ptr("free_text"),
-				Metadata: map[string]any{
-					"name": "Team Guidelines",
-					"text": "Our team follows agile methodology",
+				Metadata: &CopilotSpaceMetadata{
+					Name: Ptr("Team Guidelines"),
+					Text: Ptr("Our team follows agile methodology"),
 				},
 			},
 		},
@@ -1329,7 +1329,7 @@ func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CopilotSpaceRequest{
+	input := UpdateOrganizationCopilotSpaceRequest{
 		Name:                Ptr("Team Planning Space"),
 		Description:         Ptr("Updated organization space for team planning"),
 		GeneralInstructions: Ptr("Help the team with updated planning tasks"),
@@ -1338,9 +1338,9 @@ func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
 			{
 				ID:           Ptr(int64(101)),
 				ResourceType: Ptr("free_text"),
-				Metadata: map[string]any{
-					"name": "Updated Team Guidelines",
-					"text": "Our team now follows updated agile methodology",
+				Metadata: &CopilotSpaceMetadata{
+					Name: Ptr("Team Guidelines"),
+					Text: Ptr("Our team follows agile methodology"),
 				},
 			},
 		},
@@ -1371,9 +1371,9 @@ func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
 			{
 				ID:           Ptr(int64(101)),
 				ResourceType: Ptr("free_text"),
-				Metadata: map[string]any{
-					"name": "Updated Team Guidelines",
-					"text": "Our team now follows updated agile methodology",
+				Metadata: &CopilotSpaceMetadata{
+					Name: Ptr("Updated Team Guidelines"),
+					Text: Ptr("Our team now follows updated agile methodology"),
 				},
 			},
 		},
