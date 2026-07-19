@@ -596,7 +596,7 @@ func TestWithAuthToken(t *testing.T) {
 	})
 }
 
-func TestWithAuthTokenAuthorizesConfiguredHostsOnly(t *testing.T) {
+func TestWithAuthTokenAuthorizesConfiguredOriginsOnly(t *testing.T) {
 	t.Parallel()
 
 	const token = "secret-token"
