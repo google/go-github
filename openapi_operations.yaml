@@ -105,7 +105,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: a70b6c5b86500ea35cb362ba0cbc940a7bb2155e
+openapi_commit: 03ca9c1cac754ec9b8369dc75de8a8c753c6e087
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -438,20 +438,23 @@ openapi_operations:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
   - name: GET /assignments/{assignment_id}
-    documentation_url: https://docs.github.com/rest/classroom/classroom#get-an-assignment
+    documentation_url: https://docs.github.com/rest/classroom/classroom#closing-down---get-an-assignment
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /assignments/{assignment_id}/accepted_assignments
-    documentation_url: https://docs.github.com/rest/classroom/classroom#list-accepted-assignments-for-an-assignment
+    documentation_url: https://docs.github.com/rest/classroom/classroom#closing-down---list-accepted-assignments-for-an-assignment
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /assignments/{assignment_id}/grades
-    documentation_url: https://docs.github.com/rest/classroom/classroom#get-assignment-grades
+    documentation_url: https://docs.github.com/rest/classroom/classroom#closing-down---get-assignment-grades
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /authorizations
     documentation_url: https://docs.github.com/enterprise-server@3.21/rest/oauth-authorizations/oauth-authorizations#list-your-authorizations
     openapi_files:
@@ -488,20 +491,23 @@ openapi_operations:
       - descriptions/ghes-3.21/ghes-3.21.json
     deprecated: true
   - name: GET /classrooms
-    documentation_url: https://docs.github.com/rest/classroom/classroom#list-classrooms
+    documentation_url: https://docs.github.com/rest/classroom/classroom#closing-down---list-classrooms
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /classrooms/{classroom_id}
-    documentation_url: https://docs.github.com/rest/classroom/classroom#get-a-classroom
+    documentation_url: https://docs.github.com/rest/classroom/classroom#closing-down---get-a-classroom
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /classrooms/{classroom_id}/assignments
-    documentation_url: https://docs.github.com/rest/classroom/classroom#list-assignments-for-a-classroom
+    documentation_url: https://docs.github.com/rest/classroom/classroom#closing-down---list-assignments-for-a-classroom
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+    deprecated: true
   - name: GET /codes_of_conduct
     documentation_url: https://docs.github.com/rest/codes-of-conduct/codes-of-conduct#get-all-codes-of-conduct
     openapi_files:
@@ -1163,6 +1169,11 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/copilot/metrics/reports/repos-1-day
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-enterprise-repository-report-for-a-specific-day
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/copilot/metrics/reports/user-teams-1-day
     documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-enterprise-user-teams-report-for-a-specific-day
     openapi_files:
@@ -1269,6 +1280,14 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/enterprise-roles/{role_id}/users
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/enterprise-roles#list-users-that-are-assigned-to-an-enterprise-role
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/innersource-vulnerabilities/sync
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/security-advisories#sync-innersource-vulnerabilities-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/innersource-vulnerabilities/sync/status/{job_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/security-advisories#get-innersource-vulnerability-sync-status-for-an-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/installation
@@ -1404,6 +1423,22 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: DELETE /enterprises/{enterprise}/secret-scanning/custom-patterns
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/custom-patterns#bulk-delete-enterprise-custom-patterns
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: GET /enterprises/{enterprise}/secret-scanning/custom-patterns
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/custom-patterns#list-enterprise-custom-patterns
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/secret-scanning/custom-patterns
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/custom-patterns#bulk-create-enterprise-custom-patterns
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PATCH /enterprises/{enterprise}/secret-scanning/custom-patterns/{pattern_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/custom-patterns#update-an-enterprise-custom-pattern
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/secret-scanning/pattern-configurations
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/push-protection#list-enterprise-pattern-configurations
     openapi_files:
@@ -1600,6 +1635,18 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /enterprises/{enterprise}/visual-studio-subscriptions
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing#get-a-list-of-visual-studio-subscriptions-for-the-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: DELETE /enterprises/{enterprise}/visual-studio-subscriptions/{visual_studio_subscription_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing#delete-a-visual-studio-subscription-user-match
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: PUT /enterprises/{enterprise}/visual-studio-subscriptions/{visual_studio_subscription_id}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing#add-or-update-a-visual-studio-subscription-user-match
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: POST /enterprises/{enterprise}/{security_product}/{enablement}
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/code-security-and-analysis#enable-or-disable-a-security-feature
     openapi_files:
@@ -3072,6 +3119,11 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/copilot/metrics/reports/repos-1-day
+    documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-organization-repository-report-for-a-specific-day
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/copilot/metrics/reports/user-teams-1-day
     documentation_url: https://docs.github.com/rest/copilot/copilot-usage-metrics#get-copilot-organization-user-teams-report-for-a-specific-day
     openapi_files:
@@ -4044,6 +4096,26 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: DELETE /orgs/{org}/secret-scanning/custom-patterns
+    documentation_url: https://docs.github.com/rest/secret-scanning/custom-patterns#bulk-delete-organization-custom-patterns
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/secret-scanning/custom-patterns
+    documentation_url: https://docs.github.com/rest/secret-scanning/custom-patterns#list-organization-custom-patterns
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/secret-scanning/custom-patterns
+    documentation_url: https://docs.github.com/rest/secret-scanning/custom-patterns#bulk-create-organization-custom-patterns
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/secret-scanning/custom-patterns/{pattern_id}
+    documentation_url: https://docs.github.com/rest/secret-scanning/custom-patterns#update-an-organization-custom-pattern
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/secret-scanning/pattern-configurations
     documentation_url: https://docs.github.com/rest/secret-scanning/push-protection#list-organization-pattern-configurations
     openapi_files:
@@ -5446,18 +5518,22 @@ openapi_operations:
     documentation_url: https://docs.github.com/rest/code-quality/code-quality#list-code-quality-findings-for-a-repository
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/code-quality/findings/{finding_number}
     documentation_url: https://docs.github.com/rest/code-quality/code-quality#get-a-code-quality-finding
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/code-quality/setup
     documentation_url: https://docs.github.com/rest/code-quality/code-quality#get-a-code-quality-setup-configuration
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: PATCH /repos/{owner}/{repo}/code-quality/setup
     documentation_url: https://docs.github.com/rest/code-quality/code-quality#update-a-code-quality-setup-configuration
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/code-scanning/alerts
     documentation_url: https://docs.github.com/rest/code-scanning/code-scanning#list-code-scanning-alerts-for-a-repository
     openapi_files:
@@ -6411,6 +6487,16 @@ openapi_operations:
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/interaction-limits/pulls/creation-cap
+    documentation_url: https://docs.github.com/rest/interactions/repos#get-pull-request-creation-cap-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /repos/{owner}/{repo}/interaction-limits/pulls/creation-cap
+    documentation_url: https://docs.github.com/rest/interactions/repos#update-pull-request-creation-cap-for-a-repository
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/invitations
     documentation_url: https://docs.github.com/rest/collaborators/invitations#list-repository-invitations
     openapi_files:
@@ -7342,6 +7428,26 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: DELETE /repos/{owner}/{repo}/secret-scanning/custom-patterns
+    documentation_url: https://docs.github.com/rest/secret-scanning/custom-patterns#bulk-delete-repository-custom-patterns
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/secret-scanning/custom-patterns
+    documentation_url: https://docs.github.com/rest/secret-scanning/custom-patterns#list-repository-custom-patterns
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/secret-scanning/custom-patterns
+    documentation_url: https://docs.github.com/rest/secret-scanning/custom-patterns#bulk-create-repository-custom-patterns
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /repos/{owner}/{repo}/secret-scanning/custom-patterns/{pattern_id}
+    documentation_url: https://docs.github.com/rest/secret-scanning/custom-patterns#update-a-repository-custom-pattern
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: POST /repos/{owner}/{repo}/secret-scanning/push-protection-bypasses
     documentation_url: https://docs.github.com/rest/secret-scanning/secret-scanning#create-a-push-protection-bypass
     openapi_files:

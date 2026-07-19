@@ -49425,6 +49425,238 @@ func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
 	s.GetState()
 }
 
+func TestSecretScanningCustomPattern_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	s := &SecretScanningCustomPattern{CreatedAt: &zeroValue}
+	s.GetCreatedAt()
+	s = &SecretScanningCustomPattern{}
+	s.GetCreatedAt()
+	s = nil
+	s.GetCreatedAt()
+}
+
+func TestSecretScanningCustomPattern_GetCustomPatternVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPattern{CustomPatternVersion: &zeroValue}
+	s.GetCustomPatternVersion()
+	s = &SecretScanningCustomPattern{}
+	s.GetCustomPatternVersion()
+	s = nil
+	s.GetCustomPatternVersion()
+}
+
+func TestSecretScanningCustomPattern_GetEndDelimiter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPattern{EndDelimiter: &zeroValue}
+	s.GetEndDelimiter()
+	s = &SecretScanningCustomPattern{}
+	s.GetEndDelimiter()
+	s = nil
+	s.GetEndDelimiter()
+}
+
+func TestSecretScanningCustomPattern_GetID(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningCustomPattern{}
+	s.GetID()
+	s = nil
+	s.GetID()
+}
+
+func TestSecretScanningCustomPattern_GetMustMatch(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SecretScanningCustomPattern{MustMatch: zeroValue}
+	s.GetMustMatch()
+	s = &SecretScanningCustomPattern{}
+	s.GetMustMatch()
+	s = nil
+	s.GetMustMatch()
+}
+
+func TestSecretScanningCustomPattern_GetMustNotMatch(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SecretScanningCustomPattern{MustNotMatch: zeroValue}
+	s.GetMustNotMatch()
+	s = &SecretScanningCustomPattern{}
+	s.GetMustNotMatch()
+	s = nil
+	s.GetMustNotMatch()
+}
+
+func TestSecretScanningCustomPattern_GetName(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningCustomPattern{}
+	s.GetName()
+	s = nil
+	s.GetName()
+}
+
+func TestSecretScanningCustomPattern_GetPattern(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningCustomPattern{}
+	s.GetPattern()
+	s = nil
+	s.GetPattern()
+}
+
+func TestSecretScanningCustomPattern_GetPushProtectionEnabled(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningCustomPattern{}
+	s.GetPushProtectionEnabled()
+	s = nil
+	s.GetPushProtectionEnabled()
+}
+
+func TestSecretScanningCustomPattern_GetSlug(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningCustomPattern{}
+	s.GetSlug()
+	s = nil
+	s.GetSlug()
+}
+
+func TestSecretScanningCustomPattern_GetStartDelimiter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPattern{StartDelimiter: &zeroValue}
+	s.GetStartDelimiter()
+	s = &SecretScanningCustomPattern{}
+	s.GetStartDelimiter()
+	s = nil
+	s.GetStartDelimiter()
+}
+
+func TestSecretScanningCustomPattern_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPattern{State: &zeroValue}
+	s.GetState()
+	s = &SecretScanningCustomPattern{}
+	s.GetState()
+	s = nil
+	s.GetState()
+}
+
+func TestSecretScanningCustomPattern_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	s := &SecretScanningCustomPattern{UpdatedAt: &zeroValue}
+	s.GetUpdatedAt()
+	s = &SecretScanningCustomPattern{}
+	s.GetUpdatedAt()
+	s = nil
+	s.GetUpdatedAt()
+}
+
+func TestSecretScanningCustomPatternRequest_GetEndDelimiter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPatternRequest{EndDelimiter: &zeroValue}
+	s.GetEndDelimiter()
+	s = &SecretScanningCustomPatternRequest{}
+	s.GetEndDelimiter()
+	s = nil
+	s.GetEndDelimiter()
+}
+
+func TestSecretScanningCustomPatternRequest_GetMustMatch(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SecretScanningCustomPatternRequest{MustMatch: zeroValue}
+	s.GetMustMatch()
+	s = &SecretScanningCustomPatternRequest{}
+	s.GetMustMatch()
+	s = nil
+	s.GetMustMatch()
+}
+
+func TestSecretScanningCustomPatternRequest_GetMustNotMatch(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SecretScanningCustomPatternRequest{MustNotMatch: zeroValue}
+	s.GetMustNotMatch()
+	s = &SecretScanningCustomPatternRequest{}
+	s.GetMustNotMatch()
+	s = nil
+	s.GetMustNotMatch()
+}
+
+func TestSecretScanningCustomPatternRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningCustomPatternRequest{}
+	s.GetName()
+	s = nil
+	s.GetName()
+}
+
+func TestSecretScanningCustomPatternRequest_GetPattern(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningCustomPatternRequest{}
+	s.GetPattern()
+	s = nil
+	s.GetPattern()
+}
+
+func TestSecretScanningCustomPatternRequest_GetStartDelimiter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPatternRequest{StartDelimiter: &zeroValue}
+	s.GetStartDelimiter()
+	s = &SecretScanningCustomPatternRequest{}
+	s.GetStartDelimiter()
+	s = nil
+	s.GetStartDelimiter()
+}
+
+func TestSecretScanningCustomPatternsCreateRequest_GetPatterns(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningCustomPatternRequest{}
+	s := &SecretScanningCustomPatternsCreateRequest{Patterns: zeroValue}
+	s.GetPatterns()
+	s = &SecretScanningCustomPatternsCreateRequest{}
+	s.GetPatterns()
+	s = nil
+	s.GetPatterns()
+}
+
+func TestSecretScanningCustomPatternsCreateResponse_GetCreatedPatterns(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningCustomPattern{}
+	s := &SecretScanningCustomPatternsCreateResponse{CreatedPatterns: zeroValue}
+	s.GetCreatedPatterns()
+	s = &SecretScanningCustomPatternsCreateResponse{}
+	s.GetCreatedPatterns()
+	s = nil
+	s.GetCreatedPatterns()
+}
+
+func TestSecretScanningCustomPatternsDeleteRequest_GetPatterns(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningCustomPatternToDelete{}
+	s := &SecretScanningCustomPatternsDeleteRequest{Patterns: zeroValue}
+	s.GetPatterns()
+	s = &SecretScanningCustomPatternsDeleteRequest{}
+	s.GetPatterns()
+	s = nil
+	s.GetPatterns()
+}
+
+func TestSecretScanningCustomPatternsDeleteRequest_GetPostDeleteAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPatternsDeleteRequest{PostDeleteAction: &zeroValue}
+	s.GetPostDeleteAction()
+	s = &SecretScanningCustomPatternsDeleteRequest{}
+	s.GetPostDeleteAction()
+	s = nil
+	s.GetPostDeleteAction()
+}
+
 func TestSecretScanningCustomPatternSetting_GetCustomPatternVersion(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -49450,6 +49682,91 @@ func TestSecretScanningCustomPatternSetting_GetTokenType(tt *testing.T) {
 	s.GetTokenType()
 	s = nil
 	s.GetTokenType()
+}
+
+func TestSecretScanningCustomPatternToDelete_GetCustomPatternVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPatternToDelete{CustomPatternVersion: &zeroValue}
+	s.GetCustomPatternVersion()
+	s = &SecretScanningCustomPatternToDelete{}
+	s.GetCustomPatternVersion()
+	s = nil
+	s.GetCustomPatternVersion()
+}
+
+func TestSecretScanningCustomPatternToDelete_GetPatternID(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningCustomPatternToDelete{}
+	s.GetPatternID()
+	s = nil
+	s.GetPatternID()
+}
+
+func TestSecretScanningCustomPatternUpdateRequest_GetCustomPatternVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPatternUpdateRequest{CustomPatternVersion: &zeroValue}
+	s.GetCustomPatternVersion()
+	s = &SecretScanningCustomPatternUpdateRequest{}
+	s.GetCustomPatternVersion()
+	s = nil
+	s.GetCustomPatternVersion()
+}
+
+func TestSecretScanningCustomPatternUpdateRequest_GetEndDelimiter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPatternUpdateRequest{EndDelimiter: &zeroValue}
+	s.GetEndDelimiter()
+	s = &SecretScanningCustomPatternUpdateRequest{}
+	s.GetEndDelimiter()
+	s = nil
+	s.GetEndDelimiter()
+}
+
+func TestSecretScanningCustomPatternUpdateRequest_GetMustMatch(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SecretScanningCustomPatternUpdateRequest{MustMatch: zeroValue}
+	s.GetMustMatch()
+	s = &SecretScanningCustomPatternUpdateRequest{}
+	s.GetMustMatch()
+	s = nil
+	s.GetMustMatch()
+}
+
+func TestSecretScanningCustomPatternUpdateRequest_GetMustNotMatch(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	s := &SecretScanningCustomPatternUpdateRequest{MustNotMatch: zeroValue}
+	s.GetMustNotMatch()
+	s = &SecretScanningCustomPatternUpdateRequest{}
+	s.GetMustNotMatch()
+	s = nil
+	s.GetMustNotMatch()
+}
+
+func TestSecretScanningCustomPatternUpdateRequest_GetPattern(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPatternUpdateRequest{Pattern: &zeroValue}
+	s.GetPattern()
+	s = &SecretScanningCustomPatternUpdateRequest{}
+	s.GetPattern()
+	s = nil
+	s.GetPattern()
+}
+
+func TestSecretScanningCustomPatternUpdateRequest_GetStartDelimiter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningCustomPatternUpdateRequest{StartDelimiter: &zeroValue}
+	s.GetStartDelimiter()
+	s = &SecretScanningCustomPatternUpdateRequest{}
+	s.GetStartDelimiter()
+	s = nil
+	s.GetStartDelimiter()
 }
 
 func TestSecretScanningDelegatedBypassOptions_GetReviewers(tt *testing.T) {
