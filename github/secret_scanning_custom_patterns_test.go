@@ -86,7 +86,7 @@ func TestSecretScanningService_CreateCustomPatternsForRepo(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SecretScanningCustomPatternsCreateRequest{
+	input := SecretScanningCustomPatternsCreateRequest{
 		Patterns: []*SecretScanningCustomPatternRequest{
 			{
 				Name:    "Custom pattern",
@@ -151,7 +151,7 @@ func TestSecretScanningService_UpdateCustomPatternForRepo(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SecretScanningCustomPatternUpdateRequest{
+	input := SecretScanningCustomPatternUpdateRequest{
 		Pattern:              Ptr("[A-Z]{3}-[0-9]{4}"),
 		CustomPatternVersion: Ptr("v1"),
 	}
@@ -212,7 +212,7 @@ func TestSecretScanningService_DeleteCustomPatternsForRepo(t *testing.T) {
 		},
 	}
 
-	mux.HandleFunc("/repos/o/r/secret-scanning/custom-patterns", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/secret-scanning/custom-patterns", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testJSONBody(t, r, input)
 	})
