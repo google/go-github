@@ -856,6 +856,58 @@ func TestAddProjectItemOptions_GetType(tt *testing.T) {
 	a.GetType()
 }
 
+func TestAddProjectV2FieldRequest_GetDataType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddProjectV2FieldRequest{DataType: &zeroValue}
+	a.GetDataType()
+	a = &AddProjectV2FieldRequest{}
+	a.GetDataType()
+	a = nil
+	a.GetDataType()
+}
+
+func TestAddProjectV2FieldRequest_GetIssueFieldID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AddProjectV2FieldRequest{IssueFieldID: &zeroValue}
+	a.GetIssueFieldID()
+	a = &AddProjectV2FieldRequest{}
+	a.GetIssueFieldID()
+	a = nil
+	a.GetIssueFieldID()
+}
+
+func TestAddProjectV2FieldRequest_GetIterationConfiguration(tt *testing.T) {
+	tt.Parallel()
+	a := &AddProjectV2FieldRequest{}
+	a.GetIterationConfiguration()
+	a = nil
+	a.GetIterationConfiguration()
+}
+
+func TestAddProjectV2FieldRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AddProjectV2FieldRequest{Name: &zeroValue}
+	a.GetName()
+	a = &AddProjectV2FieldRequest{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestAddProjectV2FieldRequest_GetSingleSelectOptions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ProjectV2FieldSingleSelectOption{}
+	a := &AddProjectV2FieldRequest{SingleSelectOptions: zeroValue}
+	a.GetSingleSelectOptions()
+	a = &AddProjectV2FieldRequest{}
+	a.GetSingleSelectOptions()
+	a = nil
+	a.GetSingleSelectOptions()
+}
+
 func TestAddResourcesToCostCenterResponse_GetMessage(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -13801,6 +13853,25 @@ func TestCreateCustomOrgRoleRequest_GetPermissions(tt *testing.T) {
 	c.GetPermissions()
 }
 
+func TestCreateDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDeploymentBranchPolicyRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateDeploymentBranchPolicyRequest_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateDeploymentBranchPolicyRequest{Type: &zeroValue}
+	c.GetType()
+	c = &CreateDeploymentBranchPolicyRequest{}
+	c.GetType()
+	c = nil
+	c.GetType()
+}
+
 func TestCreateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -14452,6 +14523,63 @@ func TestCreateOrUpdateIssueTypesOptions_GetName(tt *testing.T) {
 	c.GetName()
 	c = nil
 	c.GetName()
+}
+
+func TestCreateProjectV2DraftItemRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateProjectV2DraftItemRequest{Body: &zeroValue}
+	c.GetBody()
+	c = &CreateProjectV2DraftItemRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreateProjectV2DraftItemRequest_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateProjectV2DraftItemRequest{}
+	c.GetTitle()
+	c = nil
+	c.GetTitle()
+}
+
+func TestCreateProjectV2ViewRequest_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateProjectV2ViewRequest{Filter: &zeroValue}
+	c.GetFilter()
+	c = &CreateProjectV2ViewRequest{}
+	c.GetFilter()
+	c = nil
+	c.GetFilter()
+}
+
+func TestCreateProjectV2ViewRequest_GetLayout(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateProjectV2ViewRequest{}
+	c.GetLayout()
+	c = nil
+	c.GetLayout()
+}
+
+func TestCreateProjectV2ViewRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateProjectV2ViewRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateProjectV2ViewRequest_GetVisibleFields(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	c := &CreateProjectV2ViewRequest{VisibleFields: zeroValue}
+	c.GetVisibleFields()
+	c = &CreateProjectV2ViewRequest{}
+	c.GetVisibleFields()
+	c = nil
+	c.GetVisibleFields()
 }
 
 func TestCreateProtectedChanges_GetFrom(tt *testing.T) {
@@ -16742,28 +16870,6 @@ func TestDeploymentBranchPolicy_GetType(tt *testing.T) {
 	d := &DeploymentBranchPolicy{Type: &zeroValue}
 	d.GetType()
 	d = &DeploymentBranchPolicy{}
-	d.GetType()
-	d = nil
-	d.GetType()
-}
-
-func TestDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DeploymentBranchPolicyRequest{Name: &zeroValue}
-	d.GetName()
-	d = &DeploymentBranchPolicyRequest{}
-	d.GetName()
-	d = nil
-	d.GetName()
-}
-
-func TestDeploymentBranchPolicyRequest_GetType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DeploymentBranchPolicyRequest{Type: &zeroValue}
-	d.GetType()
-	d = &DeploymentBranchPolicyRequest{}
 	d.GetType()
 	d = nil
 	d.GetType()
@@ -36968,6 +37074,72 @@ func TestProjectV2FieldIteration_GetTitle(tt *testing.T) {
 	p.GetTitle()
 }
 
+func TestProjectV2FieldIterationConfiguration_GetDuration(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &ProjectV2FieldIterationConfiguration{Duration: &zeroValue}
+	p.GetDuration()
+	p = &ProjectV2FieldIterationConfiguration{}
+	p.GetDuration()
+	p = nil
+	p.GetDuration()
+}
+
+func TestProjectV2FieldIterationConfiguration_GetIterations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ProjectV2FieldIterationConfigurationIteration{}
+	p := &ProjectV2FieldIterationConfiguration{Iterations: zeroValue}
+	p.GetIterations()
+	p = &ProjectV2FieldIterationConfiguration{}
+	p.GetIterations()
+	p = nil
+	p.GetIterations()
+}
+
+func TestProjectV2FieldIterationConfiguration_GetStartDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2FieldIterationConfiguration{StartDate: &zeroValue}
+	p.GetStartDate()
+	p = &ProjectV2FieldIterationConfiguration{}
+	p.GetStartDate()
+	p = nil
+	p.GetStartDate()
+}
+
+func TestProjectV2FieldIterationConfigurationIteration_GetDuration(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &ProjectV2FieldIterationConfigurationIteration{Duration: &zeroValue}
+	p.GetDuration()
+	p = &ProjectV2FieldIterationConfigurationIteration{}
+	p.GetDuration()
+	p = nil
+	p.GetDuration()
+}
+
+func TestProjectV2FieldIterationConfigurationIteration_GetStartDate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2FieldIterationConfigurationIteration{StartDate: &zeroValue}
+	p.GetStartDate()
+	p = &ProjectV2FieldIterationConfigurationIteration{}
+	p.GetStartDate()
+	p = nil
+	p.GetStartDate()
+}
+
+func TestProjectV2FieldIterationConfigurationIteration_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2FieldIterationConfigurationIteration{Title: &zeroValue}
+	p.GetTitle()
+	p = &ProjectV2FieldIterationConfigurationIteration{}
+	p.GetTitle()
+	p = nil
+	p.GetTitle()
+}
+
 func TestProjectV2FieldOption_GetColor(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -37001,6 +37173,36 @@ func TestProjectV2FieldOption_GetID(tt *testing.T) {
 func TestProjectV2FieldOption_GetName(tt *testing.T) {
 	tt.Parallel()
 	p := &ProjectV2FieldOption{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestProjectV2FieldSingleSelectOption_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2FieldSingleSelectOption{Color: &zeroValue}
+	p.GetColor()
+	p = &ProjectV2FieldSingleSelectOption{}
+	p.GetColor()
+	p = nil
+	p.GetColor()
+}
+
+func TestProjectV2FieldSingleSelectOption_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2FieldSingleSelectOption{Description: &zeroValue}
+	p.GetDescription()
+	p = &ProjectV2FieldSingleSelectOption{}
+	p.GetDescription()
+	p = nil
+	p.GetDescription()
+}
+
+func TestProjectV2FieldSingleSelectOption_GetName(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2FieldSingleSelectOption{}
 	p.GetName()
 	p = nil
 	p.GetName()
@@ -37399,6 +37601,163 @@ func TestProjectV2TextContent_GetRaw(tt *testing.T) {
 	p.GetRaw()
 	p = nil
 	p.GetRaw()
+}
+
+func TestProjectV2View_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2View{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestProjectV2View_GetCreator(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2View{}
+	p.GetCreator()
+	p = nil
+	p.GetCreator()
+}
+
+func TestProjectV2View_GetFilter(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2View{Filter: &zeroValue}
+	p.GetFilter()
+	p = &ProjectV2View{}
+	p.GetFilter()
+	p = nil
+	p.GetFilter()
+}
+
+func TestProjectV2View_GetGroupBy(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	p := &ProjectV2View{GroupBy: zeroValue}
+	p.GetGroupBy()
+	p = &ProjectV2View{}
+	p.GetGroupBy()
+	p = nil
+	p.GetGroupBy()
+}
+
+func TestProjectV2View_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2View{}
+	p.GetHTMLURL()
+	p = nil
+	p.GetHTMLURL()
+}
+
+func TestProjectV2View_GetID(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2View{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestProjectV2View_GetLayout(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2View{}
+	p.GetLayout()
+	p = nil
+	p.GetLayout()
+}
+
+func TestProjectV2View_GetName(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2View{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestProjectV2View_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2View{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestProjectV2View_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2View{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestProjectV2View_GetProjectURL(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2View{}
+	p.GetProjectURL()
+	p = nil
+	p.GetProjectURL()
+}
+
+func TestProjectV2View_GetSortBy(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*ProjectV2ViewSortBy{}
+	p := &ProjectV2View{SortBy: zeroValue}
+	p.GetSortBy()
+	p = &ProjectV2View{}
+	p.GetSortBy()
+	p = nil
+	p.GetSortBy()
+}
+
+func TestProjectV2View_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	p := &ProjectV2View{}
+	p.GetUpdatedAt()
+	p = nil
+	p.GetUpdatedAt()
+}
+
+func TestProjectV2View_GetVerticalGroupBy(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	p := &ProjectV2View{VerticalGroupBy: zeroValue}
+	p.GetVerticalGroupBy()
+	p = &ProjectV2View{}
+	p.GetVerticalGroupBy()
+	p = nil
+	p.GetVerticalGroupBy()
+}
+
+func TestProjectV2View_GetVisibleFields(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	p := &ProjectV2View{VisibleFields: zeroValue}
+	p.GetVisibleFields()
+	p = &ProjectV2View{}
+	p.GetVisibleFields()
+	p = nil
+	p.GetVisibleFields()
+}
+
+func TestProjectV2ViewSortBy_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &ProjectV2ViewSortBy{Direction: &zeroValue}
+	p.GetDirection()
+	p = &ProjectV2ViewSortBy{}
+	p.GetDirection()
+	p = nil
+	p.GetDirection()
+}
+
+func TestProjectV2ViewSortBy_GetFieldID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &ProjectV2ViewSortBy{FieldID: &zeroValue}
+	p.GetFieldID()
+	p = &ProjectV2ViewSortBy{}
+	p.GetFieldID()
+	p = nil
+	p.GetFieldID()
 }
 
 func TestProtection_GetAllowDeletions(tt *testing.T) {
@@ -41712,10 +42071,7 @@ func TestRepoImmutableReleasesStatus_GetEnforcedByOwner(tt *testing.T) {
 
 func TestRepoMergeUpstreamRequest_GetBranch(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepoMergeUpstreamRequest{Branch: &zeroValue}
-	r.GetBranch()
-	r = &RepoMergeUpstreamRequest{}
+	r := &RepoMergeUpstreamRequest{}
 	r.GetBranch()
 	r = nil
 	r.GetBranch()
@@ -44310,10 +44666,7 @@ func TestRepositoryListRulesetsOptions_GetIncludesParents(tt *testing.T) {
 
 func TestRepositoryMergeRequest_GetBase(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryMergeRequest{Base: &zeroValue}
-	r.GetBase()
-	r = &RepositoryMergeRequest{}
+	r := &RepositoryMergeRequest{}
 	r.GetBase()
 	r = nil
 	r.GetBase()
@@ -44332,10 +44685,7 @@ func TestRepositoryMergeRequest_GetCommitMessage(tt *testing.T) {
 
 func TestRepositoryMergeRequest_GetHead(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &RepositoryMergeRequest{Head: &zeroValue}
-	r.GetHead()
-	r = &RepositoryMergeRequest{}
+	r := &RepositoryMergeRequest{}
 	r.GetHead()
 	r = nil
 	r.GetHead()
@@ -47072,10 +47422,7 @@ func TestSarifAnalysis_GetCheckoutURI(tt *testing.T) {
 
 func TestSarifAnalysis_GetCommitSHA(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SarifAnalysis{CommitSHA: &zeroValue}
-	s.GetCommitSHA()
-	s = &SarifAnalysis{}
+	s := &SarifAnalysis{}
 	s.GetCommitSHA()
 	s = nil
 	s.GetCommitSHA()
@@ -47083,10 +47430,7 @@ func TestSarifAnalysis_GetCommitSHA(tt *testing.T) {
 
 func TestSarifAnalysis_GetRef(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SarifAnalysis{Ref: &zeroValue}
-	s.GetRef()
-	s = &SarifAnalysis{}
+	s := &SarifAnalysis{}
 	s.GetRef()
 	s = nil
 	s.GetRef()
@@ -47094,10 +47438,7 @@ func TestSarifAnalysis_GetRef(tt *testing.T) {
 
 func TestSarifAnalysis_GetSarif(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SarifAnalysis{Sarif: &zeroValue}
-	s.GetSarif()
-	s = &SarifAnalysis{}
+	s := &SarifAnalysis{}
 	s.GetSarif()
 	s = nil
 	s.GetSarif()
@@ -47123,6 +47464,17 @@ func TestSarifAnalysis_GetToolName(tt *testing.T) {
 	s.GetToolName()
 	s = nil
 	s.GetToolName()
+}
+
+func TestSarifAnalysis_GetValidate(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SarifAnalysis{Validate: &zeroValue}
+	s.GetValidate()
+	s = &SarifAnalysis{}
+	s.GetValidate()
+	s = nil
+	s.GetValidate()
 }
 
 func TestSarifID_GetID(tt *testing.T) {
@@ -52015,10 +52367,7 @@ func TestTemplateRepoRequest_GetIncludeAllBranches(tt *testing.T) {
 
 func TestTemplateRepoRequest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	t := &TemplateRepoRequest{Name: &zeroValue}
-	t.GetName()
-	t = &TemplateRepoRequest{}
+	t := &TemplateRepoRequest{}
 	t.GetName()
 	t = nil
 	t.GetName()
@@ -53154,6 +53503,14 @@ func TestUpdateDefaultSetupConfigurationResponse_GetRunURL(tt *testing.T) {
 	u.GetRunURL()
 	u = nil
 	u.GetRunURL()
+}
+
+func TestUpdateDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateDeploymentBranchPolicyRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
 }
 
 func TestUpdateEnterpriseRunnerGroupRequest_GetAllowsPublicRepositories(tt *testing.T) {
