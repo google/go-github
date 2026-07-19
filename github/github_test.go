@@ -4243,8 +4243,9 @@ func TestUnauthenticatedRateLimitedTransport(t *testing.T) {
 	})
 
 	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     clientID,
-		ClientSecret: clientSecret,
+		ClientID:       clientID,
+		ClientSecret:   clientSecret,
+		AllowedOrigins: []*url.URL{client.baseURL},
 	}
 	unauthedClient := mustNewClient(t, WithHTTPClient(tp.Client()))
 	unauthedClient.baseURL = client.baseURL
@@ -4296,204 +4297,128 @@ func TestUnauthenticatedRateLimitedTransport_transport(t *testing.T) {
 	}
 }
 
-func TestIsCrossOriginRedirect(t *testing.T) {
+func TestIsAllowedAuthOrigin(t *testing.T) {
 	t.Parallel()
 
-	req := func(from, to string) *http.Request {
-		r := &http.Request{URL: mustParseURL(t, to)}
-		r.Response = &http.Response{Request: &http.Request{URL: mustParseURL(t, from)}}
-		return r
-	}
-
 	tests := []struct {
-		name string
-		req  *http.Request
-		want bool
+		name           string
+		url            string
+		allowedOrigins []*url.URL
+		want           bool
 	}{
-		{
-			name: "nil request",
-		},
-		{
-			name: "nil url",
-			req:  &http.Request{},
-		},
-		{
-			name: "nil response",
-			req:  &http.Request{URL: mustParseURL(t, "https://api.github.com/")},
-		},
-		{
-			name: "nil response request",
-			req: &http.Request{
-				URL:      mustParseURL(t, "https://api.github.com/"),
-				Response: &http.Response{},
-			},
-		},
-		{
-			name: "nil response request url",
-			req: &http.Request{
-				URL:      mustParseURL(t, "https://api.github.com/"),
-				Response: &http.Response{Request: &http.Request{}},
-			},
-		},
-		{
-			name: "same origin",
-			req:  req("https://api.github.com/repos", "https://api.github.com/orgs"),
-		},
-		{
-			name: "same origin case insensitive",
-			req:  req("HTTPS://API.GITHUB.COM/repos", "https://api.github.com/orgs"),
-		},
-		{
-			name: "same origin default port",
-			req:  req("https://api.github.com:443/repos", "https://api.github.com/orgs"),
-		},
-		{
-			name: "different scheme",
-			req:  req("https://api.github.com/repos", "http://api.github.com/repos"),
-			want: true,
-		},
-		{
-			name: "different host",
-			req:  req("https://api.github.com/repos", "https://example.com/repos"),
-			want: true,
-		},
+		{name: "default api", url: "https://api.github.com/repos", want: true},
+		{name: "default upload", url: "https://uploads.github.com/assets", want: true},
+		{name: "custom", url: "https://ghe.example.com/api/v3/", allowedOrigins: []*url.URL{mustParseURL(t, "https://ghe.example.com/")}, want: true},
+		{name: "case insensitive", url: "HTTPS://API.GITHUB.COM/repos", want: true},
+		{name: "default http port", url: "http://ghe.example.com/repos", allowedOrigins: []*url.URL{mustParseURL(t, "http://ghe.example.com:80/")}, want: true},
+		{name: "other scheme", url: "git://ghe.example.com/repos", allowedOrigins: []*url.URL{mustParseURL(t, "git://ghe.example.com/")}, want: true},
+		{name: "different scheme", url: "http://api.github.com/repos"},
+		{name: "different host", url: "https://example.com/repos"},
+		{name: "different port", url: "https://api.github.com:8443/repos"},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			if got := isCrossOriginRedirect(tt.req); got != tt.want {
-				t.Errorf("isCrossOriginRedirect() = %t, want %t", got, tt.want)
+			if got := isAllowedAuthOrigin(mustParseURL(t, tt.url), tt.allowedOrigins); got != tt.want {
+				t.Errorf("isAllowedAuthOrigin() = %t, want %t", got, tt.want)
 			}
 		})
 	}
+
+	if isAllowedAuthOrigin(nil, nil) {
+		t.Error("isAllowedAuthOrigin(nil, nil) = true, want false")
+	}
 }
 
-func TestSameRedirectOrigin(t *testing.T) {
-	t.Parallel()
+type authHeaders struct {
+	authorization string
+	otp           string
+}
 
-	tests := []struct {
-		name string
-		a    *url.URL
-		b    *url.URL
-		want bool
-	}{
-		{
-			name: "nil url",
-		},
-		{
-			name: "same origin",
-			a:    mustParseURL(t, "https://api.github.test/repos"),
-			b:    mustParseURL(t, "https://api.github.test/orgs"),
-			want: true,
-		},
-		{
-			name: "same origin case insensitive",
-			a:    mustParseURL(t, "HTTPS://API.GITHUB.TEST/repos"),
-			b:    mustParseURL(t, "https://api.github.test/orgs"),
-			want: true,
-		},
-		{
-			name: "same origin default port",
-			a:    mustParseURL(t, "https://api.github.test:443/repos"),
-			b:    mustParseURL(t, "https://api.github.test/orgs"),
-			want: true,
-		},
-		{
-			name: "different scheme",
-			a:    mustParseURL(t, "http://api.github.test/repos"),
-			b:    mustParseURL(t, "https://api.github.test/repos"),
-		},
-		{
-			name: "different host",
-			a:    mustParseURL(t, "https://api.github.test/repos"),
-			b:    mustParseURL(t, "https://example.test/repos"),
-		},
-	}
+func testAuthTransportOriginScope(t *testing.T, newClient func([]*url.URL) *http.Client, want authHeaders) {
+	t.Helper()
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			if got := sameRedirectOrigin(tt.a, tt.b); got != tt.want {
-				t.Errorf("sameRedirectOrigin() = %t, want %t", got, tt.want)
+	t.Run("allowed origin", func(t *testing.T) {
+		got := make(chan authHeaders, 1)
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			got <- authHeaders{r.Header.Get("Authorization"), r.Header.Get(headerOTP)}
+			w.WriteHeader(http.StatusOK)
+		}))
+		defer server.Close()
+
+		client := newClient([]*url.URL{mustParseURL(t, server.URL)})
+		resp, err := client.Get(server.URL)
+		if err != nil {
+			t.Fatalf("Get returned unexpected error: %v", err)
+		}
+		resp.Body.Close()
+		if got := <-got; got != want {
+			t.Errorf("headers = %+v, want %+v", got, want)
+		}
+	})
+
+	t.Run("direct unconfigured origin", func(t *testing.T) {
+		got := make(chan authHeaders, 1)
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			got <- authHeaders{r.Header.Get("Authorization"), r.Header.Get(headerOTP)}
+			w.WriteHeader(http.StatusOK)
+		}))
+		defer server.Close()
+
+		client := newClient([]*url.URL{mustParseURL(t, "https://api.github.test/")})
+		resp, err := client.Get(server.URL)
+		if err != nil {
+			t.Fatalf("Get returned unexpected error: %v", err)
+		}
+		resp.Body.Close()
+		if got := <-got; got != (authHeaders{}) {
+			t.Errorf("headers on unconfigured origin = %+v, want empty", got)
+		}
+	})
+
+	t.Run("cross origin redirect chain", func(t *testing.T) {
+		got := make(chan authHeaders, 2)
+		var target *httptest.Server
+		target = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			got <- authHeaders{r.Header.Get("Authorization"), r.Header.Get(headerOTP)}
+			if r.URL.Path == "/first" {
+				http.Redirect(w, r, target.URL+"/second", http.StatusFound)
+				return
 			}
-		})
-	}
-}
+			w.WriteHeader(http.StatusOK)
+		}))
+		defer target.Close()
 
-func TestDefaultPort(t *testing.T) {
-	t.Parallel()
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, target.URL+"/first", http.StatusFound)
+		}))
+		defer server.Close()
 
-	tests := []struct {
-		name string
-		url  string
-		want string
-	}{
-		{
-			name: "explicit port",
-			url:  "https://api.github.test:8443/repos",
-			want: "8443",
-		},
-		{
-			name: "http",
-			url:  "http://api.github.test/repos",
-			want: "80",
-		},
-		{
-			name: "https",
-			url:  "https://api.github.test/repos",
-			want: "443",
-		},
-		{
-			name: "other scheme",
-			url:  "git://api.github.test/repos",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			if got := defaultPort(mustParseURL(t, tt.url)); got != tt.want {
-				t.Errorf("defaultPort() = %q, want %q", got, tt.want)
+		client := newClient([]*url.URL{mustParseURL(t, server.URL)})
+		resp, err := client.Get(server.URL)
+		if err != nil {
+			t.Fatalf("Get returned unexpected error: %v", err)
+		}
+		resp.Body.Close()
+		for range 2 {
+			if got := <-got; got != (authHeaders{}) {
+				t.Errorf("headers on cross-origin redirect = %+v, want empty", got)
 			}
-		})
-	}
+		}
+	})
 }
 
-func TestUnauthenticatedRateLimitedTransport_doesNotAuthorizeCrossOriginRedirect(t *testing.T) {
+func TestUnauthenticatedRateLimitedTransport_originScope(t *testing.T) {
 	t.Parallel()
 
-	gotAuth := make(chan string, 1)
-	attacker := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		gotAuth <- r.Header.Get("Authorization")
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte(`{}`))
-	}))
-	defer attacker.Close()
-
-	trusted := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, attacker.URL+"/steal", http.StatusFound)
-	}))
-	defer trusted.Close()
-
-	tp := &UnauthenticatedRateLimitedTransport{
-		ClientID:     "id",
-		ClientSecret: "secret",
-	}
-	c := mustNewClient(t, WithHTTPClient(tp.Client()), WithURLs(Ptr(trusted.URL+"/"), nil))
-	req, err := c.NewRequest(t.Context(), "GET", "anything", nil)
-	if err != nil {
-		t.Fatalf("NewRequest returned unexpected error: %v", err)
-	}
-	resp, err := c.Do(req, nil)
-	if err != nil {
-		t.Fatalf("Do returned unexpected error: %v", err)
-	}
-	resp.Body.Close()
-
-	if got := <-gotAuth; got != "" {
-		t.Errorf("Authorization on cross-origin redirect = %q, want empty", got)
-	}
+	testAuthTransportOriginScope(t, func(allowedOrigins []*url.URL) *http.Client {
+		return (&UnauthenticatedRateLimitedTransport{
+			ClientID:       "id",
+			ClientSecret:   "secret",
+			AllowedOrigins: allowedOrigins,
+		}).Client()
+	}, authHeaders{authorization: "Basic aWQ6c2VjcmV0"})
 }
 
 func TestBasicAuthTransport(t *testing.T) {
@@ -4519,9 +4444,10 @@ func TestBasicAuthTransport(t *testing.T) {
 	})
 
 	tp := &BasicAuthTransport{
-		Username: username,
-		Password: password,
-		OTP:      otp,
+		Username:       username,
+		Password:       password,
+		OTP:            otp,
+		AllowedOrigins: []*url.URL{client.baseURL},
 	}
 	basicAuthClient := mustNewClient(t, WithHTTPClient(tp.Client()))
 	basicAuthClient.baseURL = client.baseURL
@@ -4530,46 +4456,17 @@ func TestBasicAuthTransport(t *testing.T) {
 	assertNilError(t, err)
 }
 
-func TestBasicAuthTransport_doesNotAuthorizeCrossOriginRedirect(t *testing.T) {
+func TestBasicAuthTransport_originScope(t *testing.T) {
 	t.Parallel()
 
-	gotAuth := make(chan string, 1)
-	gotOTP := make(chan string, 1)
-	attacker := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		gotAuth <- r.Header.Get("Authorization")
-		gotOTP <- r.Header.Get(headerOTP)
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte(`{}`))
-	}))
-	defer attacker.Close()
-
-	trusted := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, attacker.URL+"/steal", http.StatusFound)
-	}))
-	defer trusted.Close()
-
-	tp := &BasicAuthTransport{
-		Username: "u",
-		Password: "p",
-		OTP:      "123456",
-	}
-	c := mustNewClient(t, WithHTTPClient(tp.Client()), WithURLs(Ptr(trusted.URL+"/"), nil))
-	req, err := c.NewRequest(t.Context(), "GET", "anything", nil)
-	if err != nil {
-		t.Fatalf("NewRequest returned unexpected error: %v", err)
-	}
-	resp, err := c.Do(req, nil)
-	if err != nil {
-		t.Fatalf("Do returned unexpected error: %v", err)
-	}
-	resp.Body.Close()
-
-	if got := <-gotAuth; got != "" {
-		t.Errorf("Authorization on cross-origin redirect = %q, want empty", got)
-	}
-	if got := <-gotOTP; got != "" {
-		t.Errorf("OTP on cross-origin redirect = %q, want empty", got)
-	}
+	testAuthTransportOriginScope(t, func(allowedOrigins []*url.URL) *http.Client {
+		return (&BasicAuthTransport{
+			Username:       "u",
+			Password:       "p",
+			OTP:            "123456",
+			AllowedOrigins: allowedOrigins,
+		}).Client()
+	}, authHeaders{authorization: "Basic dTpw", otp: "123456"})
 }
 
 func TestBasicAuthTransport_transport(t *testing.T) {
