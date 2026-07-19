@@ -4376,6 +4376,8 @@ func testAuthTransportOriginScope(t *testing.T, newClient func([]*url.URL) *http
 	t.Helper()
 
 	t.Run("allowed origin", func(t *testing.T) {
+		t.Parallel()
+
 		got := make(chan authHeaders, 1)
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			got <- authHeaders{r.Header.Get("Authorization"), r.Header.Get(headerOTP)}
@@ -4395,6 +4397,8 @@ func testAuthTransportOriginScope(t *testing.T, newClient func([]*url.URL) *http
 	})
 
 	t.Run("direct unconfigured origin", func(t *testing.T) {
+		t.Parallel()
+
 		got := make(chan authHeaders, 1)
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			got <- authHeaders{r.Header.Get("Authorization"), r.Header.Get(headerOTP)}
@@ -4414,6 +4418,8 @@ func testAuthTransportOriginScope(t *testing.T, newClient func([]*url.URL) *http
 	})
 
 	t.Run("cross origin redirect chain", func(t *testing.T) {
+		t.Parallel()
+
 		got := make(chan authHeaders, 2)
 		var target *httptest.Server
 		target = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
