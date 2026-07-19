@@ -358,7 +358,7 @@ func TestIssuesService_Edit(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	issue, _, err := client.Issues.Edit(ctx, "o", "r", 1, input)
+	issue, _, err := client.Issues.Update(ctx, "o", "r", 1, input)
 	if err != nil {
 		t.Errorf("Issues.Edit returned error: %v", err)
 	}
@@ -370,12 +370,12 @@ func TestIssuesService_Edit(t *testing.T) {
 
 	const methodName = "Edit"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Issues.Edit(ctx, "\n", "\n", -1, input)
+		_, _, err = client.Issues.Update(ctx, "\n", "\n", -1, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Issues.Edit(ctx, "o", "r", 1, input)
+		got, resp, err := client.Issues.Update(ctx, "o", "r", 1, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -423,7 +423,7 @@ func TestIssuesService_Edit_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.Edit(ctx, "%", "r", 1, IssueRequest{})
+	_, _, err := client.Issues.Update(ctx, "%", "r", 1, IssueRequest{})
 	testURLParseError(t, err)
 }
 
