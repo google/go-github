@@ -674,6 +674,84 @@ func TestWithAuthTokenAuthorizesConfiguredHostsOnly(t *testing.T) {
 	}
 }
 
+func TestWithAuthTokenRedirectOriginScope(t *testing.T) {
+	t.Parallel()
+
+	const token = "redirect-token"
+
+	t.Run("same origin", func(t *testing.T) {
+		t.Parallel()
+
+		gotAuth := make(chan string, 1)
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.Path == "/start" {
+				http.Redirect(w, r, "/final", http.StatusFound)
+				return
+			}
+			gotAuth <- r.Header.Get("Authorization")
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte(`{}`))
+		}))
+		defer server.Close()
+
+		baseURL := server.URL + "/"
+		client := mustNewClient(t, WithURLs(&baseURL, nil), WithAuthToken(token))
+		req, err := client.NewRequest(t.Context(), "GET", "start", nil)
+		if err != nil {
+			t.Fatalf("NewRequest returned unexpected error: %v", err)
+		}
+		resp, err := client.Do(req, nil)
+		if err != nil {
+			t.Fatalf("Do returned unexpected error: %v", err)
+		}
+		resp.Body.Close()
+
+		if got, want := <-gotAuth, "Bearer "+token; got != want {
+			t.Errorf("Authorization on same-origin redirect = %q, want %q", got, want)
+		}
+	})
+
+	t.Run("cross origin chain", func(t *testing.T) {
+		t.Parallel()
+
+		gotAuth := make(chan string, 2)
+		var target *httptest.Server
+		target = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			gotAuth <- r.Header.Get("Authorization")
+			if r.URL.Path == "/first" {
+				http.Redirect(w, r, target.URL+"/second", http.StatusFound)
+				return
+			}
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte(`{}`))
+		}))
+		defer target.Close()
+
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, target.URL+"/first", http.StatusFound)
+		}))
+		defer server.Close()
+
+		baseURL := server.URL + "/"
+		client := mustNewClient(t, WithURLs(&baseURL, nil), WithAuthToken(token))
+		req, err := client.NewRequest(t.Context(), "GET", "start", nil)
+		if err != nil {
+			t.Fatalf("NewRequest returned unexpected error: %v", err)
+		}
+		resp, err := client.Do(req, nil)
+		if err != nil {
+			t.Fatalf("Do returned unexpected error: %v", err)
+		}
+		resp.Body.Close()
+
+		for range 2 {
+			if got := <-gotAuth; got != "" {
+				t.Errorf("Authorization on cross-origin redirect = %q, want empty", got)
+			}
+		}
+	})
+}
+
 func TestWithAuthTokenCloneAuthorizesCloneHosts(t *testing.T) {
 	t.Parallel()
 
@@ -710,7 +788,7 @@ func TestWithAuthTokenCloneAuthorizesCloneHosts(t *testing.T) {
 	}
 }
 
-func TestShouldAuthorizeURL(t *testing.T) {
+func TestIsConfiguredOrigin(t *testing.T) {
 	t.Parallel()
 
 	baseURL := mustParseURL(t, "https://api.github.test:443/")
@@ -747,14 +825,14 @@ func TestShouldAuthorizeURL(t *testing.T) {
 			if tt.baseURL != nil {
 				baseURL = tt.baseURL
 			}
-			if got := shouldAuthorizeURL(tt.url, baseURL, uploadURL); got != tt.want {
-				t.Errorf("shouldAuthorizeURL() = %t, want %t", got, tt.want)
+			if got := isConfiguredOrigin(tt.url, baseURL, uploadURL); got != tt.want {
+				t.Errorf("isConfiguredOrigin() = %t, want %t", got, tt.want)
 			}
 		})
 	}
 
-	if shouldAuthorizeURL(mustParseURL(t, "https://api.github.test/repos"), nil, nil) {
-		t.Error("shouldAuthorizeURL() with nil configured origins = true, want false")
+	if isConfiguredOrigin(mustParseURL(t, "https://api.github.test/repos"), nil, nil) {
+		t.Error("isConfiguredOrigin() with nil configured origins = true, want false")
 	}
 }
 

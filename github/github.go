@@ -167,8 +167,8 @@ var ErrPathForbidden = errors.New("path must not contain '..' due to auth vulner
 type Client struct {
 	client                *http.Client // HTTP client used to communicate with the API.
 	clientIgnoreRedirects *http.Client // HTTP client used to communicate with the API on endpoints where we don't want to follow redirects.
-	transport             http.RoundTripper
-	token                 *string
+	baseTransport         http.RoundTripper
+	authToken             *string
 
 	// Base URL for API requests. Defaults to the public GitHub API, but can be
 	// set to a domain endpoint to use with GitHub Enterprise. baseURL should
@@ -256,9 +256,9 @@ type service struct {
 	client *Client
 }
 
-// Client returns the http.Client used by this GitHub client.
-// This should only be used for requests to the configured GitHub API or upload
-// URLs because requests to those origins may contain an authorization token.
+// Client returns the http.Client used by this GitHub client. Authentication
+// configured by [WithAuthToken] is limited to the configured API and upload
+// origins.
 func (c *Client) Client() *http.Client {
 	clientCopy := *c.client
 	return &clientCopy
@@ -436,8 +436,8 @@ func WithEnvProxy() ClientOptionsFunc {
 }
 
 // WithAuthToken returns a ClientOptionsFunc that sets the authentication token
-// for requests to the Client's configured API and upload URLs. If not set, the
-// client will make unauthenticated requests.
+// for requests to the Client's configured API and upload origins. If not set,
+// the client will make unauthenticated requests.
 func WithAuthToken(token string) ClientOptionsFunc {
 	return func(o *clientOptions) error {
 		if token == "" {
@@ -631,7 +631,7 @@ func newClient(opts clientOptions) (*Client, error) {
 		c.uploadURL, _ = url.Parse(uploadBaseURL)
 	}
 
-	c.transport = c.client.Transport
+	c.baseTransport = c.client.Transport
 	if opts.token != nil {
 		transport := c.client.Transport
 		if transport == nil {
@@ -640,10 +640,10 @@ func newClient(opts clientOptions) (*Client, error) {
 		token := "Bearer " + *opts.token
 		baseURL := c.baseURL
 		uploadURL := c.uploadURL
-		c.token = Ptr(*opts.token)
-		c.transport = transport
+		c.authToken = Ptr(*opts.token)
+		c.baseTransport = transport
 		c.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
-			if shouldAuthorizeURL(req.URL, baseURL, uploadURL) {
+			if isConfiguredOrigin(req.URL, baseURL, uploadURL) {
 				req = req.Clone(req.Context())
 				req.Header.Set("Authorization", token)
 			}
@@ -716,7 +716,7 @@ func newClient(opts clientOptions) (*Client, error) {
 	return c, nil
 }
 
-func shouldAuthorizeURL(u, baseURL, uploadURL *url.URL) bool {
+func isConfiguredOrigin(u, baseURL, uploadURL *url.URL) bool {
 	if u == nil {
 		return false
 	}
@@ -787,7 +787,7 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 		userAgent:                               &c.userAgent,
 		baseURL:                                 Ptr(*c.baseURL),
 		uploadURL:                               Ptr(*c.uploadURL),
-		token:                                   c.token,
+		token:                                   c.authToken,
 		disableRateLimitCheck:                   c.disableRateLimitCheck,
 		rateLimitRedirectionalEndpoints:         c.rateLimitRedirectionalEndpoints,
 		maxSecondaryRateLimitRetryAfterDuration: &c.maxSecondaryRateLimitRetryAfterDuration,
@@ -805,8 +805,8 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 
 	if o.httpClient == nil {
 		transport := c.client.Transport
-		if c.token != nil {
-			transport = c.transport
+		if c.authToken != nil {
+			transport = c.baseTransport
 		}
 		o.httpClient = &http.Client{
 			Transport:     transport,
@@ -1414,10 +1414,9 @@ func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL
 					return nil, nil, errInvalidLocation
 				}
 				newURL := c.baseURL.ResolveReference(rerr.Location)
-				// Refuse to follow a permanent redirect to a different origin:
-				// req.Clone preserves Authorization headers added by the auth
-				// transport, so a cross-origin target would leak credentials.
-				if !sameOrigin(newURL, c.baseURL) {
+				// Restrict redirects to configured origins so credentials cannot
+				// be sent elsewhere.
+				if !isConfiguredOrigin(newURL, c.baseURL, c.uploadURL) {
 					return nil, response, fmt.Errorf("refusing to follow cross-origin redirect from %q to %q", c.baseURL.Host, newURL.Host)
 				}
 				newRequest := req.Clone(req.Context())
@@ -2193,11 +2192,8 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 	return resp, err
 }
 
-// checkRedirectOrigin returns an error if the redirect target is on a different
-// origin than the client's configured BaseURL. This prevents credentials attached
-// by the auth transport from being sent to an attacker-controlled host when a
-// compromised or malicious API response returns a cross-origin Location header.
-// An empty Location is also rejected.
+// checkRedirectOrigin returns an error if the redirect target is outside the
+// client's configured API and upload origins. An empty Location is also rejected.
 func (c *Client) checkRedirectOrigin(location string) error {
 	if location == "" {
 		return errInvalidLocation
@@ -2208,7 +2204,7 @@ func (c *Client) checkRedirectOrigin(location string) error {
 	}
 	// Resolve relative locations against BaseURL so relative paths are allowed.
 	target = c.baseURL.ResolveReference(target)
-	if !sameOrigin(target, c.baseURL) {
+	if !isConfiguredOrigin(target, c.baseURL, c.uploadURL) {
 		return fmt.Errorf("refusing to follow cross-origin redirect from %q to %q", c.baseURL.Host, target.Host)
 	}
 	return nil
