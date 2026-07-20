@@ -11502,6 +11502,70 @@ func (c *CreateProtectedChanges) GetFrom() bool {
 	return *c.From
 }
 
+// GetBase returns the Base field.
+func (c *CreatePullRequest) GetBase() string {
+	if c == nil {
+		return ""
+	}
+	return c.Base
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetBody() string {
+	if c == nil || c.Body == nil {
+		return ""
+	}
+	return *c.Body
+}
+
+// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetDraft() bool {
+	if c == nil || c.Draft == nil {
+		return false
+	}
+	return *c.Draft
+}
+
+// GetHead returns the Head field.
+func (c *CreatePullRequest) GetHead() string {
+	if c == nil {
+		return ""
+	}
+	return c.Head
+}
+
+// GetHeadRepo returns the HeadRepo field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetHeadRepo() string {
+	if c == nil || c.HeadRepo == nil {
+		return ""
+	}
+	return *c.HeadRepo
+}
+
+// GetIssue returns the Issue field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetIssue() int {
+	if c == nil || c.Issue == nil {
+		return 0
+	}
+	return *c.Issue
+}
+
+// GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetMaintainerCanModify() bool {
+	if c == nil || c.MaintainerCanModify == nil {
+		return false
+	}
+	return *c.MaintainerCanModify
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
+}
+
 // GetRef returns the Ref field.
 func (c *CreateRef) GetRef() string {
 	if c == nil {
@@ -24972,70 +25036,6 @@ func (n *NetworkSettingsResource) GetSubnetID() string {
 		return ""
 	}
 	return *n.SubnetID
-}
-
-// GetBase returns the Base field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetBase() string {
-	if n == nil || n.Base == nil {
-		return ""
-	}
-	return *n.Base
-}
-
-// GetBody returns the Body field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetBody() string {
-	if n == nil || n.Body == nil {
-		return ""
-	}
-	return *n.Body
-}
-
-// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetDraft() bool {
-	if n == nil || n.Draft == nil {
-		return false
-	}
-	return *n.Draft
-}
-
-// GetHead returns the Head field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetHead() string {
-	if n == nil || n.Head == nil {
-		return ""
-	}
-	return *n.Head
-}
-
-// GetHeadRepo returns the HeadRepo field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetHeadRepo() string {
-	if n == nil || n.HeadRepo == nil {
-		return ""
-	}
-	return *n.HeadRepo
-}
-
-// GetIssue returns the Issue field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetIssue() int {
-	if n == nil || n.Issue == nil {
-		return 0
-	}
-	return *n.Issue
-}
-
-// GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetMaintainerCanModify() bool {
-	if n == nil || n.MaintainerCanModify == nil {
-		return false
-	}
-	return *n.MaintainerCanModify
-}
-
-// GetTitle returns the Title field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetTitle() string {
-	if n == nil || n.Title == nil {
-		return ""
-	}
-	return *n.Title
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
