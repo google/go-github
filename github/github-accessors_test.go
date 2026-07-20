@@ -14678,6 +14678,88 @@ func TestCreateProtectedChanges_GetFrom(tt *testing.T) {
 	c.GetFrom()
 }
 
+func TestCreatePullRequest_GetBase(tt *testing.T) {
+	tt.Parallel()
+	c := &CreatePullRequest{}
+	c.GetBase()
+	c = nil
+	c.GetBase()
+}
+
+func TestCreatePullRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreatePullRequest{Body: &zeroValue}
+	c.GetBody()
+	c = &CreatePullRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreatePullRequest_GetDraft(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreatePullRequest{Draft: &zeroValue}
+	c.GetDraft()
+	c = &CreatePullRequest{}
+	c.GetDraft()
+	c = nil
+	c.GetDraft()
+}
+
+func TestCreatePullRequest_GetHead(tt *testing.T) {
+	tt.Parallel()
+	c := &CreatePullRequest{}
+	c.GetHead()
+	c = nil
+	c.GetHead()
+}
+
+func TestCreatePullRequest_GetHeadRepo(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreatePullRequest{HeadRepo: &zeroValue}
+	c.GetHeadRepo()
+	c = &CreatePullRequest{}
+	c.GetHeadRepo()
+	c = nil
+	c.GetHeadRepo()
+}
+
+func TestCreatePullRequest_GetIssue(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreatePullRequest{Issue: &zeroValue}
+	c.GetIssue()
+	c = &CreatePullRequest{}
+	c.GetIssue()
+	c = nil
+	c.GetIssue()
+}
+
+func TestCreatePullRequest_GetMaintainerCanModify(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreatePullRequest{MaintainerCanModify: &zeroValue}
+	c.GetMaintainerCanModify()
+	c = &CreatePullRequest{}
+	c.GetMaintainerCanModify()
+	c = nil
+	c.GetMaintainerCanModify()
+}
+
+func TestCreatePullRequest_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreatePullRequest{Title: &zeroValue}
+	c.GetTitle()
+	c = &CreatePullRequest{}
+	c.GetTitle()
+	c = nil
+	c.GetTitle()
+}
+
 func TestCreateRef_GetRef(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateRef{}
@@ -31438,94 +31520,6 @@ func TestNetworkSettingsResource_GetSubnetID(tt *testing.T) {
 	n.GetSubnetID()
 	n = nil
 	n.GetSubnetID()
-}
-
-func TestNewPullRequest_GetBase(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewPullRequest{Base: &zeroValue}
-	n.GetBase()
-	n = &NewPullRequest{}
-	n.GetBase()
-	n = nil
-	n.GetBase()
-}
-
-func TestNewPullRequest_GetBody(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewPullRequest{Body: &zeroValue}
-	n.GetBody()
-	n = &NewPullRequest{}
-	n.GetBody()
-	n = nil
-	n.GetBody()
-}
-
-func TestNewPullRequest_GetDraft(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	n := &NewPullRequest{Draft: &zeroValue}
-	n.GetDraft()
-	n = &NewPullRequest{}
-	n.GetDraft()
-	n = nil
-	n.GetDraft()
-}
-
-func TestNewPullRequest_GetHead(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewPullRequest{Head: &zeroValue}
-	n.GetHead()
-	n = &NewPullRequest{}
-	n.GetHead()
-	n = nil
-	n.GetHead()
-}
-
-func TestNewPullRequest_GetHeadRepo(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewPullRequest{HeadRepo: &zeroValue}
-	n.GetHeadRepo()
-	n = &NewPullRequest{}
-	n.GetHeadRepo()
-	n = nil
-	n.GetHeadRepo()
-}
-
-func TestNewPullRequest_GetIssue(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	n := &NewPullRequest{Issue: &zeroValue}
-	n.GetIssue()
-	n = &NewPullRequest{}
-	n.GetIssue()
-	n = nil
-	n.GetIssue()
-}
-
-func TestNewPullRequest_GetMaintainerCanModify(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	n := &NewPullRequest{MaintainerCanModify: &zeroValue}
-	n.GetMaintainerCanModify()
-	n = &NewPullRequest{}
-	n.GetMaintainerCanModify()
-	n = nil
-	n.GetMaintainerCanModify()
-}
-
-func TestNewPullRequest_GetTitle(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewPullRequest{Title: &zeroValue}
-	n.GetTitle()
-	n = &NewPullRequest{}
-	n.GetTitle()
-	n = nil
-	n.GetTitle()
 }
 
 func TestNewTeam_GetDescription(tt *testing.T) {

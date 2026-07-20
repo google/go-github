@@ -237,7 +237,6 @@ linters:
             - LockIssueOptions
             - MaintenanceOptions
             - Milestone
-            - NewPullRequest
             - Organization
             - PagesUpdate
             - PagesUpdateWithoutCNAME

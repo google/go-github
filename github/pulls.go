@@ -258,19 +258,19 @@ func (s *PullRequestsService) GetRaw(ctx context.Context, owner, repo string, nu
 	return buf.String(), resp, nil
 }
 
-// NewPullRequest represents a new pull request to be created.
-type NewPullRequest struct {
+// CreatePullRequest represents a request to create a pull request.
+type CreatePullRequest struct {
 	Title *string `json:"title,omitempty"`
 	// The name of the branch where your changes are implemented. For
 	// cross-repository pull requests in the same network, namespace head with
 	// a user like this: username:branch.
-	Head     *string `json:"head,omitempty"`
+	Head     string  `json:"head"`
 	HeadRepo *string `json:"head_repo,omitempty"`
 	// The name of the branch you want the changes pulled into. This should be
 	// an existing branch on the current repository. You cannot submit a pull
 	// request to one repository that requests a merge to a base of another
 	// repository.
-	Base                *string `json:"base,omitempty"`
+	Base                string  `json:"base"`
 	Body                *string `json:"body,omitempty"`
 	Issue               *int    `json:"issue,omitempty"`
 	MaintainerCanModify *bool   `json:"maintainer_can_modify,omitempty"`
@@ -282,7 +282,7 @@ type NewPullRequest struct {
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#create-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls
-func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, body *NewPullRequest) (*PullRequest, *Response, error) {
+func (s *PullRequestsService) Create(ctx context.Context, owner, repo string, body CreatePullRequest) (*PullRequest, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls", owner, repo)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
