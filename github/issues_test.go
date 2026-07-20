@@ -350,7 +350,7 @@ func TestIssuesService_Update(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := IssueRequest{Title: Ptr("t"), Type: Ptr("bug")}
+	input := UpdateIssueRequest{Title: Ptr("t"), Type: Ptr("bug")}
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -424,7 +424,7 @@ func TestIssuesService_Update_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.Update(ctx, "%", "r", 1, IssueRequest{})
+	_, _, err := client.Issues.Update(ctx, "%", "r", 1, UpdateIssueRequest{})
 	testURLParseError(t, err)
 }
 
@@ -437,22 +437,22 @@ func TestIssueRequest_Marshal_LabelsAndAssignees(t *testing.T) {
 
 	tests := []struct {
 		name  string
-		input IssueRequest
+		input UpdateIssueRequest
 		want  string
 	}{
 		{
 			name:  "nil labels and assignees are omitted",
-			input: IssueRequest{},
+			input: UpdateIssueRequest{},
 			want:  `{}`,
 		},
 		{
 			name:  "empty non-nil labels and assignees are sent to clear them",
-			input: IssueRequest{Labels: []string{}, Assignees: []string{}},
+			input: UpdateIssueRequest{Labels: []string{}, Assignees: []string{}},
 			want:  `{"labels":[],"assignees":[]}`,
 		},
 		{
 			name:  "populated labels and assignees are sent",
-			input: IssueRequest{Labels: []string{"bug"}, Assignees: []string{"octocat"}},
+			input: UpdateIssueRequest{Labels: []string{"bug"}, Assignees: []string{"octocat"}},
 			want:  `{"labels":["bug"],"assignees":["octocat"]}`,
 		},
 	}

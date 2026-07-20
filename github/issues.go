@@ -108,7 +108,6 @@ func (i Issue) IsPullRequest() bool {
 // It is separate from Issue above because otherwise Labels
 // and Assignee fail to serialize to the correct JSON.
 type CreateIssueRequest struct {
-	// Title is required when creating an issue.
 	Title            string                    `json:"title"`
 	Body             *string                   `json:"body,omitempty"`
 	Labels           []string                  `json:"labels,omitempty"`
@@ -119,10 +118,10 @@ type CreateIssueRequest struct {
 	IssueFieldValues []*IssueRequestFieldValue `json:"issue_field_values,omitempty"`
 }
 
-// IssueRequest represents a request to edit an issue.
+// UpdateIssueRequest represents a request to edit an issue.
 // It is separate from Issue above because otherwise Labels
 // and Assignee fail to serialize to the correct JSON.
-type IssueRequest struct {
+type UpdateIssueRequest struct {
 	Title *string `json:"title,omitempty"`
 	Body  *string `json:"body,omitempty"`
 	// Labels: nil leaves existing labels unchanged; a non-nil slice replaces
@@ -500,7 +499,7 @@ func (s *IssuesService) Create(ctx context.Context, owner, repo string, body Cre
 // GitHub API docs: https://docs.github.com/rest/issues/issues?apiVersion=2022-11-28#update-an-issue
 //
 //meta:operation PATCH /repos/{owner}/{repo}/issues/{issue_number}
-func (s *IssuesService) Update(ctx context.Context, owner, repo string, number int, body IssueRequest) (*Issue, *Response, error) {
+func (s *IssuesService) Update(ctx context.Context, owner, repo string, number int, body UpdateIssueRequest) (*Issue, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/issues/%v", owner, repo, number)
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {

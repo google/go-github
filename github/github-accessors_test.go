@@ -26940,127 +26940,6 @@ func TestIssueListCommentsOptions_GetSort(tt *testing.T) {
 	i.GetSort()
 }
 
-func TestIssueRequest_GetAssignee(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueRequest{Assignee: &zeroValue}
-	i.GetAssignee()
-	i = &IssueRequest{}
-	i.GetAssignee()
-	i = nil
-	i.GetAssignee()
-}
-
-func TestIssueRequest_GetAssignees(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	i := &IssueRequest{Assignees: zeroValue}
-	i.GetAssignees()
-	i = &IssueRequest{}
-	i.GetAssignees()
-	i = nil
-	i.GetAssignees()
-}
-
-func TestIssueRequest_GetBody(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueRequest{Body: &zeroValue}
-	i.GetBody()
-	i = &IssueRequest{}
-	i.GetBody()
-	i = nil
-	i.GetBody()
-}
-
-func TestIssueRequest_GetDuplicateIssueID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	i := &IssueRequest{DuplicateIssueID: &zeroValue}
-	i.GetDuplicateIssueID()
-	i = &IssueRequest{}
-	i.GetDuplicateIssueID()
-	i = nil
-	i.GetDuplicateIssueID()
-}
-
-func TestIssueRequest_GetIssueFieldValues(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []*IssueRequestFieldValue{}
-	i := &IssueRequest{IssueFieldValues: zeroValue}
-	i.GetIssueFieldValues()
-	i = &IssueRequest{}
-	i.GetIssueFieldValues()
-	i = nil
-	i.GetIssueFieldValues()
-}
-
-func TestIssueRequest_GetLabels(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	i := &IssueRequest{Labels: zeroValue}
-	i.GetLabels()
-	i = &IssueRequest{}
-	i.GetLabels()
-	i = nil
-	i.GetLabels()
-}
-
-func TestIssueRequest_GetMilestone(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	i := &IssueRequest{Milestone: &zeroValue}
-	i.GetMilestone()
-	i = &IssueRequest{}
-	i.GetMilestone()
-	i = nil
-	i.GetMilestone()
-}
-
-func TestIssueRequest_GetState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueRequest{State: &zeroValue}
-	i.GetState()
-	i = &IssueRequest{}
-	i.GetState()
-	i = nil
-	i.GetState()
-}
-
-func TestIssueRequest_GetStateReason(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueRequest{StateReason: &zeroValue}
-	i.GetStateReason()
-	i = &IssueRequest{}
-	i.GetStateReason()
-	i = nil
-	i.GetStateReason()
-}
-
-func TestIssueRequest_GetTitle(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueRequest{Title: &zeroValue}
-	i.GetTitle()
-	i = &IssueRequest{}
-	i.GetTitle()
-	i = nil
-	i.GetTitle()
-}
-
-func TestIssueRequest_GetType(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	i := &IssueRequest{Type: &zeroValue}
-	i.GetType()
-	i = &IssueRequest{}
-	i.GetType()
-	i = nil
-	i.GetType()
-}
-
 func TestIssueRequestFieldValue_GetFieldID(tt *testing.T) {
 	tt.Parallel()
 	i := &IssueRequestFieldValue{}
@@ -53785,6 +53664,127 @@ func TestUpdateHostedRunnerRequest_GetSize(tt *testing.T) {
 	u.GetSize()
 	u = nil
 	u.GetSize()
+}
+
+func TestUpdateIssueRequest_GetAssignee(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueRequest{Assignee: &zeroValue}
+	u.GetAssignee()
+	u = &UpdateIssueRequest{}
+	u.GetAssignee()
+	u = nil
+	u.GetAssignee()
+}
+
+func TestUpdateIssueRequest_GetAssignees(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateIssueRequest{Assignees: zeroValue}
+	u.GetAssignees()
+	u = &UpdateIssueRequest{}
+	u.GetAssignees()
+	u = nil
+	u.GetAssignees()
+}
+
+func TestUpdateIssueRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueRequest{Body: &zeroValue}
+	u.GetBody()
+	u = &UpdateIssueRequest{}
+	u.GetBody()
+	u = nil
+	u.GetBody()
+}
+
+func TestUpdateIssueRequest_GetDuplicateIssueID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UpdateIssueRequest{DuplicateIssueID: &zeroValue}
+	u.GetDuplicateIssueID()
+	u = &UpdateIssueRequest{}
+	u.GetDuplicateIssueID()
+	u = nil
+	u.GetDuplicateIssueID()
+}
+
+func TestUpdateIssueRequest_GetIssueFieldValues(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*IssueRequestFieldValue{}
+	u := &UpdateIssueRequest{IssueFieldValues: zeroValue}
+	u.GetIssueFieldValues()
+	u = &UpdateIssueRequest{}
+	u.GetIssueFieldValues()
+	u = nil
+	u.GetIssueFieldValues()
+}
+
+func TestUpdateIssueRequest_GetLabels(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateIssueRequest{Labels: zeroValue}
+	u.GetLabels()
+	u = &UpdateIssueRequest{}
+	u.GetLabels()
+	u = nil
+	u.GetLabels()
+}
+
+func TestUpdateIssueRequest_GetMilestone(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UpdateIssueRequest{Milestone: &zeroValue}
+	u.GetMilestone()
+	u = &UpdateIssueRequest{}
+	u.GetMilestone()
+	u = nil
+	u.GetMilestone()
+}
+
+func TestUpdateIssueRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueRequest{State: &zeroValue}
+	u.GetState()
+	u = &UpdateIssueRequest{}
+	u.GetState()
+	u = nil
+	u.GetState()
+}
+
+func TestUpdateIssueRequest_GetStateReason(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueRequest{StateReason: &zeroValue}
+	u.GetStateReason()
+	u = &UpdateIssueRequest{}
+	u.GetStateReason()
+	u = nil
+	u.GetStateReason()
+}
+
+func TestUpdateIssueRequest_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueRequest{Title: &zeroValue}
+	u.GetTitle()
+	u = &UpdateIssueRequest{}
+	u.GetTitle()
+	u = nil
+	u.GetTitle()
+}
+
+func TestUpdateIssueRequest_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueRequest{Type: &zeroValue}
+	u.GetType()
+	u = &UpdateIssueRequest{}
+	u.GetType()
+	u = nil
+	u.GetType()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
