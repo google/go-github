@@ -26871,8 +26871,8 @@ func TestIssueRequest_GetAssignee(tt *testing.T) {
 
 func TestIssueRequest_GetAssignees(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue []string
-	i := &IssueRequest{Assignees: &zeroValue}
+	zeroValue := []string{}
+	i := &IssueRequest{Assignees: zeroValue}
 	i.GetAssignees()
 	i = &IssueRequest{}
 	i.GetAssignees()
@@ -26915,8 +26915,8 @@ func TestIssueRequest_GetIssueFieldValues(tt *testing.T) {
 
 func TestIssueRequest_GetLabels(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue []string
-	i := &IssueRequest{Labels: &zeroValue}
+	zeroValue := []string{}
+	i := &IssueRequest{Labels: zeroValue}
 	i.GetLabels()
 	i = &IssueRequest{}
 	i.GetLabels()

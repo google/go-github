@@ -123,17 +123,21 @@ type CreateIssueRequest struct {
 // It is separate from Issue above because otherwise Labels
 // and Assignee fail to serialize to the correct JSON.
 type IssueRequest struct {
-	Title    *string   `json:"title,omitempty"`
-	Body     *string   `json:"body,omitempty"`
-	Labels   *[]string `json:"labels,omitempty"`
-	Assignee *string   `json:"assignee,omitempty"`
-	State    *string   `json:"state,omitempty"`
+	Title *string `json:"title,omitempty"`
+	Body  *string `json:"body,omitempty"`
+	// Labels: nil leaves existing labels unchanged; a non-nil slice replaces
+	// them, so []string{} clears all labels.
+	Labels   []string `json:"labels,omitzero"`
+	Assignee *string  `json:"assignee,omitempty"`
+	State    *string  `json:"state,omitempty"`
 	// StateReason can be `completed`, `not_planned`, `duplicate` or `reopened`.
 	StateReason *string `json:"state_reason,omitempty"`
 	// DuplicateIssueID is required when state_reason is `duplicate`.
-	DuplicateIssueID *int                      `json:"duplicate_issue_id,omitempty"`
-	Milestone        *int                      `json:"milestone,omitempty"`
-	Assignees        *[]string                 `json:"assignees,omitempty"`
+	DuplicateIssueID *int `json:"duplicate_issue_id,omitempty"`
+	Milestone        *int `json:"milestone,omitempty"`
+	// Assignees: nil leaves existing assignees unchanged; a non-nil slice
+	// replaces them, so []string{} clears all assignees.
+	Assignees        []string                  `json:"assignees,omitzero"`
 	Type             *string                   `json:"type,omitempty"`
 	IssueFieldValues []*IssueRequestFieldValue `json:"issue_field_values,omitempty"`
 }

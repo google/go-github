@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -345,7 +346,7 @@ func TestIssuesService_Create_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestIssuesService_Edit(t *testing.T) {
+func TestIssuesService_Update(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -360,15 +361,15 @@ func TestIssuesService_Edit(t *testing.T) {
 	ctx := t.Context()
 	issue, _, err := client.Issues.Update(ctx, "o", "r", 1, input)
 	if err != nil {
-		t.Errorf("Issues.Edit returned error: %v", err)
+		t.Errorf("Issues.Update returned error: %v", err)
 	}
 
 	want := &Issue{Number: Ptr(1), Type: &IssueType{Name: Ptr("bug")}}
 	if !cmp.Equal(issue, want) {
-		t.Errorf("Issues.Edit returned %+v, want %+v", issue, want)
+		t.Errorf("Issues.Update returned %+v, want %+v", issue, want)
 	}
 
-	const methodName = "Edit"
+	const methodName = "Update"
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Issues.Update(ctx, "\n", "\n", -1, input)
 		return err
@@ -418,13 +419,57 @@ func TestIssuesService_RemoveMilestone(t *testing.T) {
 	})
 }
 
-func TestIssuesService_Edit_invalidOwner(t *testing.T) {
+func TestIssuesService_Update_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
 	_, _, err := client.Issues.Update(ctx, "%", "r", 1, IssueRequest{})
 	testURLParseError(t, err)
+}
+
+// TestIssueRequest_Marshal_LabelsAndAssignees verifies the omitzero behavior of
+// the Labels and Assignees fields: a nil slice is omitted from the request body
+// (leaving the existing values unchanged), whereas a non-nil slice — including
+// an explicit empty slice — is sent (clearing the values when empty).
+func TestIssueRequest_Marshal_LabelsAndAssignees(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name  string
+		input IssueRequest
+		want  string
+	}{
+		{
+			name:  "nil labels and assignees are omitted",
+			input: IssueRequest{},
+			want:  `{}`,
+		},
+		{
+			name:  "empty non-nil labels and assignees are sent to clear them",
+			input: IssueRequest{Labels: []string{}, Assignees: []string{}},
+			want:  `{"labels":[],"assignees":[]}`,
+		},
+		{
+			name:  "populated labels and assignees are sent",
+			input: IssueRequest{Labels: []string{"bug"}, Assignees: []string{"octocat"}},
+			want:  `{"labels":["bug"],"assignees":["octocat"]}`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			b, err := json.Marshal(tt.input)
+			if err != nil {
+				t.Fatalf("json.Marshal(%#v) returned error: %v", tt.input, err)
+			}
+			if got := string(b); got != tt.want {
+				t.Errorf("json.Marshal(%#v) = %v, want %v", tt.input, got, tt.want)
+			}
+		})
+	}
 }
 
 func TestIssuesService_Lock(t *testing.T) {

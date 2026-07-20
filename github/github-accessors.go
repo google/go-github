@@ -21342,12 +21342,12 @@ func (i *IssueRequest) GetAssignee() string {
 	return *i.Assignee
 }
 
-// GetAssignees returns the Assignees field if it's non-nil, zero value otherwise.
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
 func (i *IssueRequest) GetAssignees() []string {
 	if i == nil || i.Assignees == nil {
 		return nil
 	}
-	return *i.Assignees
+	return i.Assignees
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
@@ -21374,12 +21374,12 @@ func (i *IssueRequest) GetIssueFieldValues() []*IssueRequestFieldValue {
 	return i.IssueFieldValues
 }
 
-// GetLabels returns the Labels field if it's non-nil, zero value otherwise.
+// GetLabels returns the Labels slice if it's non-nil, nil otherwise.
 func (i *IssueRequest) GetLabels() []string {
 	if i == nil || i.Labels == nil {
 		return nil
 	}
-	return *i.Labels
+	return i.Labels
 }
 
 // GetMilestone returns the Milestone field if it's non-nil, zero value otherwise.
