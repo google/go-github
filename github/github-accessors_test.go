@@ -3649,39 +3649,6 @@ func TestAutolink_GetURLTemplate(tt *testing.T) {
 	a.GetURLTemplate()
 }
 
-func TestAutolinkOptions_GetIsAlphanumeric(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	a := &AutolinkOptions{IsAlphanumeric: &zeroValue}
-	a.GetIsAlphanumeric()
-	a = &AutolinkOptions{}
-	a.GetIsAlphanumeric()
-	a = nil
-	a.GetIsAlphanumeric()
-}
-
-func TestAutolinkOptions_GetKeyPrefix(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &AutolinkOptions{KeyPrefix: &zeroValue}
-	a.GetKeyPrefix()
-	a = &AutolinkOptions{}
-	a.GetKeyPrefix()
-	a = nil
-	a.GetKeyPrefix()
-}
-
-func TestAutolinkOptions_GetURLTemplate(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &AutolinkOptions{URLTemplate: &zeroValue}
-	a.GetURLTemplate()
-	a = &AutolinkOptions{}
-	a.GetURLTemplate()
-	a = nil
-	a.GetURLTemplate()
-}
-
 func TestAutomatedSecurityFixes_GetEnabled(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -13561,6 +13528,33 @@ func TestCreateArtifactStorageRequest_GetVersion(tt *testing.T) {
 	c.GetVersion()
 	c = nil
 	c.GetVersion()
+}
+
+func TestCreateAutolinkRequest_GetIsAlphanumeric(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateAutolinkRequest{IsAlphanumeric: &zeroValue}
+	c.GetIsAlphanumeric()
+	c = &CreateAutolinkRequest{}
+	c.GetIsAlphanumeric()
+	c = nil
+	c.GetIsAlphanumeric()
+}
+
+func TestCreateAutolinkRequest_GetKeyPrefix(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateAutolinkRequest{}
+	c.GetKeyPrefix()
+	c = nil
+	c.GetKeyPrefix()
+}
+
+func TestCreateAutolinkRequest_GetURLTemplate(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateAutolinkRequest{}
+	c.GetURLTemplate()
+	c = nil
+	c.GetURLTemplate()
 }
 
 func TestCreateCheckRunOptions_GetActions(tt *testing.T) {

@@ -2862,30 +2862,6 @@ func (a *Autolink) GetURLTemplate() string {
 	return *a.URLTemplate
 }
 
-// GetIsAlphanumeric returns the IsAlphanumeric field if it's non-nil, zero value otherwise.
-func (a *AutolinkOptions) GetIsAlphanumeric() bool {
-	if a == nil || a.IsAlphanumeric == nil {
-		return false
-	}
-	return *a.IsAlphanumeric
-}
-
-// GetKeyPrefix returns the KeyPrefix field if it's non-nil, zero value otherwise.
-func (a *AutolinkOptions) GetKeyPrefix() string {
-	if a == nil || a.KeyPrefix == nil {
-		return ""
-	}
-	return *a.KeyPrefix
-}
-
-// GetURLTemplate returns the URLTemplate field if it's non-nil, zero value otherwise.
-func (a *AutolinkOptions) GetURLTemplate() string {
-	if a == nil || a.URLTemplate == nil {
-		return ""
-	}
-	return *a.URLTemplate
-}
-
 // GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
 func (a *AutomatedSecurityFixes) GetEnabled() bool {
 	if a == nil || a.Enabled == nil {
@@ -10692,6 +10668,30 @@ func (c *CreateArtifactStorageRequest) GetVersion() string {
 		return ""
 	}
 	return *c.Version
+}
+
+// GetIsAlphanumeric returns the IsAlphanumeric field if it's non-nil, zero value otherwise.
+func (c *CreateAutolinkRequest) GetIsAlphanumeric() bool {
+	if c == nil || c.IsAlphanumeric == nil {
+		return false
+	}
+	return *c.IsAlphanumeric
+}
+
+// GetKeyPrefix returns the KeyPrefix field.
+func (c *CreateAutolinkRequest) GetKeyPrefix() string {
+	if c == nil {
+		return ""
+	}
+	return c.KeyPrefix
+}
+
+// GetURLTemplate returns the URLTemplate field.
+func (c *CreateAutolinkRequest) GetURLTemplate() string {
+	if c == nil {
+		return ""
+	}
+	return c.URLTemplate
 }
 
 // GetActions returns the Actions slice if it's non-nil, nil otherwise.
