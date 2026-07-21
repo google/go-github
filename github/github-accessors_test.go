@@ -12762,6 +12762,17 @@ func TestCopilotSpace_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestCopilotSpaceMetadata_GetCopilotChatAttachmentID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{CopilotChatAttachmentID: &zeroValue}
+	c.GetCopilotChatAttachmentID()
+	c = &CopilotSpaceMetadata{}
+	c.GetCopilotChatAttachmentID()
+	c = nil
+	c.GetCopilotChatAttachmentID()
+}
+
 func TestCopilotSpaceMetadata_GetFilePath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -12771,6 +12782,28 @@ func TestCopilotSpaceMetadata_GetFilePath(tt *testing.T) {
 	c.GetFilePath()
 	c = nil
 	c.GetFilePath()
+}
+
+func TestCopilotSpaceMetadata_GetHeight(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotSpaceMetadata{Height: &zeroValue}
+	c.GetHeight()
+	c = &CopilotSpaceMetadata{}
+	c.GetHeight()
+	c = nil
+	c.GetHeight()
+}
+
+func TestCopilotSpaceMetadata_GetMediaType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{MediaType: &zeroValue}
+	c.GetMediaType()
+	c = &CopilotSpaceMetadata{}
+	c.GetMediaType()
+	c = nil
+	c.GetMediaType()
 }
 
 func TestCopilotSpaceMetadata_GetName(tt *testing.T) {
@@ -12817,6 +12850,50 @@ func TestCopilotSpaceMetadata_GetText(tt *testing.T) {
 	c.GetText()
 }
 
+func TestCopilotSpaceMetadata_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{URL: &zeroValue}
+	c.GetURL()
+	c = &CopilotSpaceMetadata{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
+func TestCopilotSpaceMetadata_GetWidth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotSpaceMetadata{Width: &zeroValue}
+	c.GetWidth()
+	c = &CopilotSpaceMetadata{}
+	c.GetWidth()
+	c = nil
+	c.GetWidth()
+}
+
+func TestCopilotSpaceResource_GetCopilotChatAttachmentID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceResource{CopilotChatAttachmentID: &zeroValue}
+	c.GetCopilotChatAttachmentID()
+	c = &CopilotSpaceResource{}
+	c.GetCopilotChatAttachmentID()
+	c = nil
+	c.GetCopilotChatAttachmentID()
+}
+
+func TestCopilotSpaceResource_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &CopilotSpaceResource{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CopilotSpaceResource{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
 func TestCopilotSpaceResource_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -12845,6 +12922,17 @@ func TestCopilotSpaceResource_GetResourceType(tt *testing.T) {
 	c.GetResourceType()
 	c = nil
 	c.GetResourceType()
+}
+
+func TestCopilotSpaceResource_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &CopilotSpaceResource{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CopilotSpaceResource{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
 }
 
 func TestCopilotSpacesList_GetSpaces(tt *testing.T) {

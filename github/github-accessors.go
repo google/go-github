@@ -10070,12 +10070,36 @@ func (c *CopilotSpace) GetUpdatedAt() Timestamp {
 	return c.UpdatedAt
 }
 
+// GetCopilotChatAttachmentID returns the CopilotChatAttachmentID field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetCopilotChatAttachmentID() string {
+	if c == nil || c.CopilotChatAttachmentID == nil {
+		return ""
+	}
+	return *c.CopilotChatAttachmentID
+}
+
 // GetFilePath returns the FilePath field if it's non-nil, zero value otherwise.
 func (c *CopilotSpaceMetadata) GetFilePath() string {
 	if c == nil || c.FilePath == nil {
 		return ""
 	}
 	return *c.FilePath
+}
+
+// GetHeight returns the Height field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetHeight() int {
+	if c == nil || c.Height == nil {
+		return 0
+	}
+	return *c.Height
+}
+
+// GetMediaType returns the MediaType field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetMediaType() string {
+	if c == nil || c.MediaType == nil {
+		return ""
+	}
+	return *c.MediaType
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -10110,6 +10134,38 @@ func (c *CopilotSpaceMetadata) GetText() string {
 	return *c.Text
 }
 
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
+// GetWidth returns the Width field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetWidth() int {
+	if c == nil || c.Width == nil {
+		return 0
+	}
+	return *c.Width
+}
+
+// GetCopilotChatAttachmentID returns the CopilotChatAttachmentID field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceResource) GetCopilotChatAttachmentID() string {
+	if c == nil || c.CopilotChatAttachmentID == nil {
+		return ""
+	}
+	return *c.CopilotChatAttachmentID
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceResource) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (c *CopilotSpaceResource) GetID() int64 {
 	if c == nil || c.ID == nil {
@@ -10132,6 +10188,14 @@ func (c *CopilotSpaceResource) GetResourceType() string {
 		return ""
 	}
 	return *c.ResourceType
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceResource) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
 }
 
 // GetSpaces returns the Spaces slice if it's non-nil, nil otherwise.
