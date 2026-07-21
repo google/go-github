@@ -40,18 +40,26 @@ type CopilotSpace struct {
 
 // CopilotSpaceResource represents a resource attached to a Copilot Space.
 type CopilotSpaceResource struct {
-	ID           *int64                `json:"id,omitempty"`
-	ResourceType *string               `json:"resource_type,omitempty"`
-	Metadata     *CopilotSpaceMetadata `json:"metadata,omitempty"`
+	ID                      *int64                `json:"id,omitempty"`
+	ResourceType            *string               `json:"resource_type,omitempty"`
+	Metadata                *CopilotSpaceMetadata `json:"metadata,omitempty"`
+	CopilotChatAttachmentID *string               `json:"copilot_chat_attachment_id,omitempty"`
+	CreatedAt               *Timestamp            `json:"created_at,omitempty"`
+	UpdatedAt               *Timestamp            `json:"updated_at,omitempty"`
 }
 
 // CopilotSpaceMetadata represents metadata specific to a Copilot Space resource type.
 type CopilotSpaceMetadata struct {
-	RepositoryID *int64  `json:"repository_id,omitempty"`
-	FilePath     *string `json:"file_path,omitempty"`
-	Text         *string `json:"text,omitempty"`
-	Name         *string `json:"name,omitempty"`
-	Number       *int    `json:"number,omitempty"`
+	RepositoryID            *int64  `json:"repository_id,omitempty"`
+	FilePath                *string `json:"file_path,omitempty"`
+	Text                    *string `json:"text,omitempty"`
+	Name                    *string `json:"name,omitempty"`
+	Number                  *int    `json:"number,omitempty"`
+	CopilotChatAttachmentID *string `json:"copilot_chat_attachment_id,omitempty"`
+	MediaType               *string `json:"media_type,omitempty"`
+	URL                     *string `json:"url,omitempty"`
+	Height                  *int    `json:"height,omitempty"`
+	Width                   *int    `json:"width,omitempty"`
 }
 
 // CreateOrganizationCopilotSpaceRequest represents a request to create a Copilot Space.
