@@ -232,7 +232,6 @@ linters:
             - InstallationTokenOptions
             - IssueComment
             - IssueImportRequest
-            - IssueRequest
             - Key
             - Label
             - LockIssueOptions
@@ -420,8 +419,6 @@ linters:
             - IssueListByRepoOptions.Since # TODO: Issues
             - IssueListCommentsOptions.Direction
             - IssueListCommentsOptions.Sort
-            - IssueRequest.Assignees # TODO: Issues
-            - IssueRequest.Labels # TODO: Issues
             - License.Conditions # TODO: Licenses
             - License.Limitations # TODO: Licenses
             - License.Permissions # TODO: Licenses
