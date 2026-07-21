@@ -1260,6 +1260,20 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 					Text: Ptr("Our team follows agile methodology"),
 				},
 			},
+			{
+				ID:                      Ptr(int64(125)),
+				ResourceType:            Ptr("media_content"),
+				CopilotChatAttachmentID: Ptr("attachment-123"),
+				Metadata: &CopilotSpaceMetadata{
+					CopilotChatAttachmentID: Ptr("attachment-123"),
+					MediaType:               Ptr("image/png"),
+					URL:                     Ptr("https://test.com/image.png"),
+					Height:                  Ptr(640),
+					Width:                   Ptr(480),
+				},
+				CreatedAt: refTimestamp(1676450100),
+				UpdatedAt: refTimestamp(1676450400),
+			},
 		},
 	}
 
@@ -1296,6 +1310,20 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 				"name": "Team Guidelines",
 				"text": "Our team follows agile methodology"
 			}
+		},
+		{
+			"id": 125,
+			"resource_type": "media_content",
+			"copilot_chat_attachment_id": "attachment-123",
+			"metadata": {
+				"copilot_chat_attachment_id": "attachment-123",
+				"media_type": "image/png",
+				"url": "https://test.com/image.png",
+				"height": 640,
+				"width": 480
+			},
+			"created_at": "2023-02-15T08:35:00Z",
+			"updated_at": "2023-02-15T08:40:00Z"
 		}
 	]
 		}`)
