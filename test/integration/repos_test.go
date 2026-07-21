@@ -189,21 +189,21 @@ func TestRepositories_Autolinks(t *testing.T) {
 
 	repo := createRandomTestRepository(t, "", true)
 
-	opts := &github.AutolinkOptions{
-		KeyPrefix:      github.Ptr("TICKET-"),
-		URLTemplate:    github.Ptr("https://example.com/TICKET?query=<num>"),
+	body := github.CreateAutolinkRequest{
+		KeyPrefix:      "TICKET-",
+		URLTemplate:    "https://example.com/TICKET?query=<num>",
 		IsAlphanumeric: github.Ptr(false),
 	}
 
-	actionlink, _, err := client.Repositories.AddAutolink(t.Context(), *repo.Owner.Login, *repo.Name, opts)
+	actionlink, _, err := client.Repositories.CreateAutolink(t.Context(), *repo.Owner.Login, *repo.Name, body)
 	if err != nil {
-		t.Fatalf("Repositories.AddAutolink() returned error: %v", err)
+		t.Fatalf("Repositories.CreateAutolink() returned error: %v", err)
 	}
 
-	if !cmp.Equal(actionlink.KeyPrefix, opts.KeyPrefix) ||
-		!cmp.Equal(actionlink.URLTemplate, opts.URLTemplate) ||
-		!cmp.Equal(actionlink.IsAlphanumeric, opts.IsAlphanumeric) {
-		t.Errorf("Repositories.AddAutolink() returned %+v, want %+v", actionlink, opts)
+	if !cmp.Equal(actionlink.GetKeyPrefix(), body.KeyPrefix) ||
+		!cmp.Equal(actionlink.GetURLTemplate(), body.URLTemplate) ||
+		!cmp.Equal(actionlink.IsAlphanumeric, body.IsAlphanumeric) {
+		t.Errorf("Repositories.CreateAutolink() returned %+v, want %+v", actionlink, body)
 	}
 
 	_, err = client.Repositories.Delete(t.Context(), *repo.Owner.Login, *repo.Name)
