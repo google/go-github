@@ -11398,6 +11398,70 @@ func (c *CreateHostedRunnerRequest) GetSize() string {
 	return c.Size
 }
 
+// GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
+func (c *CreateIssueRequest) GetAssignee() string {
+	if c == nil || c.Assignee == nil {
+		return ""
+	}
+	return *c.Assignee
+}
+
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (c *CreateIssueRequest) GetAssignees() []string {
+	if c == nil || c.Assignees == nil {
+		return nil
+	}
+	return c.Assignees
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (c *CreateIssueRequest) GetBody() string {
+	if c == nil || c.Body == nil {
+		return ""
+	}
+	return *c.Body
+}
+
+// GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
+func (c *CreateIssueRequest) GetIssueFieldValues() []*IssueRequestFieldValue {
+	if c == nil || c.IssueFieldValues == nil {
+		return nil
+	}
+	return c.IssueFieldValues
+}
+
+// GetLabels returns the Labels slice if it's non-nil, nil otherwise.
+func (c *CreateIssueRequest) GetLabels() []string {
+	if c == nil || c.Labels == nil {
+		return nil
+	}
+	return c.Labels
+}
+
+// GetMilestone returns the Milestone field if it's non-nil, zero value otherwise.
+func (c *CreateIssueRequest) GetMilestone() int {
+	if c == nil || c.Milestone == nil {
+		return 0
+	}
+	return *c.Milestone
+}
+
+// GetTitle returns the Title field.
+func (c *CreateIssueRequest) GetTitle() string {
+	if c == nil {
+		return ""
+	}
+	return c.Title
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (c *CreateIssueRequest) GetType() string {
+	if c == nil || c.Type == nil {
+		return ""
+	}
+	return *c.Type
+}
+
 // GetLabels returns the Labels slice if it's non-nil, nil otherwise.
 func (c *CreateJITConfigRequest) GetLabels() []string {
 	if c == nil || c.Labels == nil {
@@ -11780,6 +11844,70 @@ func (c *CreateProtectedChanges) GetFrom() bool {
 		return false
 	}
 	return *c.From
+}
+
+// GetBase returns the Base field.
+func (c *CreatePullRequest) GetBase() string {
+	if c == nil {
+		return ""
+	}
+	return c.Base
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetBody() string {
+	if c == nil || c.Body == nil {
+		return ""
+	}
+	return *c.Body
+}
+
+// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetDraft() bool {
+	if c == nil || c.Draft == nil {
+		return false
+	}
+	return *c.Draft
+}
+
+// GetHead returns the Head field.
+func (c *CreatePullRequest) GetHead() string {
+	if c == nil {
+		return ""
+	}
+	return c.Head
+}
+
+// GetHeadRepo returns the HeadRepo field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetHeadRepo() string {
+	if c == nil || c.HeadRepo == nil {
+		return ""
+	}
+	return *c.HeadRepo
+}
+
+// GetIssue returns the Issue field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetIssue() int {
+	if c == nil || c.Issue == nil {
+		return 0
+	}
+	return *c.Issue
+}
+
+// GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetMaintainerCanModify() bool {
+	if c == nil || c.MaintainerCanModify == nil {
+		return false
+	}
+	return *c.MaintainerCanModify
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequest) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
 }
 
 // GetRef returns the Ref field.
@@ -21550,86 +21678,6 @@ func (i *IssueListCommentsOptions) GetSort() string {
 	return *i.Sort
 }
 
-// GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
-func (i *IssueRequest) GetAssignee() string {
-	if i == nil || i.Assignee == nil {
-		return ""
-	}
-	return *i.Assignee
-}
-
-// GetAssignees returns the Assignees field if it's non-nil, zero value otherwise.
-func (i *IssueRequest) GetAssignees() []string {
-	if i == nil || i.Assignees == nil {
-		return nil
-	}
-	return *i.Assignees
-}
-
-// GetBody returns the Body field if it's non-nil, zero value otherwise.
-func (i *IssueRequest) GetBody() string {
-	if i == nil || i.Body == nil {
-		return ""
-	}
-	return *i.Body
-}
-
-// GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
-func (i *IssueRequest) GetIssueFieldValues() []*IssueRequestFieldValue {
-	if i == nil || i.IssueFieldValues == nil {
-		return nil
-	}
-	return i.IssueFieldValues
-}
-
-// GetLabels returns the Labels field if it's non-nil, zero value otherwise.
-func (i *IssueRequest) GetLabels() []string {
-	if i == nil || i.Labels == nil {
-		return nil
-	}
-	return *i.Labels
-}
-
-// GetMilestone returns the Milestone field if it's non-nil, zero value otherwise.
-func (i *IssueRequest) GetMilestone() int {
-	if i == nil || i.Milestone == nil {
-		return 0
-	}
-	return *i.Milestone
-}
-
-// GetState returns the State field if it's non-nil, zero value otherwise.
-func (i *IssueRequest) GetState() string {
-	if i == nil || i.State == nil {
-		return ""
-	}
-	return *i.State
-}
-
-// GetStateReason returns the StateReason field if it's non-nil, zero value otherwise.
-func (i *IssueRequest) GetStateReason() string {
-	if i == nil || i.StateReason == nil {
-		return ""
-	}
-	return *i.StateReason
-}
-
-// GetTitle returns the Title field if it's non-nil, zero value otherwise.
-func (i *IssueRequest) GetTitle() string {
-	if i == nil || i.Title == nil {
-		return ""
-	}
-	return *i.Title
-}
-
-// GetType returns the Type field if it's non-nil, zero value otherwise.
-func (i *IssueRequest) GetType() string {
-	if i == nil || i.Type == nil {
-		return ""
-	}
-	return *i.Type
-}
-
 // GetFieldID returns the FieldID field.
 func (i *IssueRequestFieldValue) GetFieldID() int64 {
 	if i == nil {
@@ -25252,70 +25300,6 @@ func (n *NetworkSettingsResource) GetSubnetID() string {
 		return ""
 	}
 	return *n.SubnetID
-}
-
-// GetBase returns the Base field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetBase() string {
-	if n == nil || n.Base == nil {
-		return ""
-	}
-	return *n.Base
-}
-
-// GetBody returns the Body field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetBody() string {
-	if n == nil || n.Body == nil {
-		return ""
-	}
-	return *n.Body
-}
-
-// GetDraft returns the Draft field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetDraft() bool {
-	if n == nil || n.Draft == nil {
-		return false
-	}
-	return *n.Draft
-}
-
-// GetHead returns the Head field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetHead() string {
-	if n == nil || n.Head == nil {
-		return ""
-	}
-	return *n.Head
-}
-
-// GetHeadRepo returns the HeadRepo field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetHeadRepo() string {
-	if n == nil || n.HeadRepo == nil {
-		return ""
-	}
-	return *n.HeadRepo
-}
-
-// GetIssue returns the Issue field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetIssue() int {
-	if n == nil || n.Issue == nil {
-		return 0
-	}
-	return *n.Issue
-}
-
-// GetMaintainerCanModify returns the MaintainerCanModify field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetMaintainerCanModify() bool {
-	if n == nil || n.MaintainerCanModify == nil {
-		return false
-	}
-	return *n.MaintainerCanModify
-}
-
-// GetTitle returns the Title field if it's non-nil, zero value otherwise.
-func (n *NewPullRequest) GetTitle() string {
-	if n == nil || n.Title == nil {
-		return ""
-	}
-	return *n.Title
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
@@ -43108,6 +43092,94 @@ func (u *UpdateHostedRunnerRequest) GetSize() string {
 		return ""
 	}
 	return *u.Size
+}
+
+// GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueRequest) GetAssignee() string {
+	if u == nil || u.Assignee == nil {
+		return ""
+	}
+	return *u.Assignee
+}
+
+// GetAssignees returns the Assignees slice if it's non-nil, nil otherwise.
+func (u *UpdateIssueRequest) GetAssignees() []string {
+	if u == nil || u.Assignees == nil {
+		return nil
+	}
+	return u.Assignees
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueRequest) GetBody() string {
+	if u == nil || u.Body == nil {
+		return ""
+	}
+	return *u.Body
+}
+
+// GetDuplicateIssueID returns the DuplicateIssueID field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueRequest) GetDuplicateIssueID() int {
+	if u == nil || u.DuplicateIssueID == nil {
+		return 0
+	}
+	return *u.DuplicateIssueID
+}
+
+// GetIssueFieldValues returns the IssueFieldValues slice if it's non-nil, nil otherwise.
+func (u *UpdateIssueRequest) GetIssueFieldValues() []*IssueRequestFieldValue {
+	if u == nil || u.IssueFieldValues == nil {
+		return nil
+	}
+	return u.IssueFieldValues
+}
+
+// GetLabels returns the Labels slice if it's non-nil, nil otherwise.
+func (u *UpdateIssueRequest) GetLabels() []string {
+	if u == nil || u.Labels == nil {
+		return nil
+	}
+	return u.Labels
+}
+
+// GetMilestone returns the Milestone field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueRequest) GetMilestone() int {
+	if u == nil || u.Milestone == nil {
+		return 0
+	}
+	return *u.Milestone
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueRequest) GetState() string {
+	if u == nil || u.State == nil {
+		return ""
+	}
+	return *u.State
+}
+
+// GetStateReason returns the StateReason field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueRequest) GetStateReason() string {
+	if u == nil || u.StateReason == nil {
+		return ""
+	}
+	return *u.StateReason
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueRequest) GetTitle() string {
+	if u == nil || u.Title == nil {
+		return ""
+	}
+	return *u.Title
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueRequest) GetType() string {
+	if u == nil || u.Type == nil {
+		return ""
+	}
+	return *u.Type
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.

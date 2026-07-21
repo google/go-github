@@ -355,7 +355,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &NewPullRequest{Title: Ptr("t")}
+	input := CreatePullRequest{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -395,7 +395,7 @@ func TestPullRequestsService_Create_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.PullRequests.Create(ctx, "%", "r", nil)
+	_, _, err := client.PullRequests.Create(ctx, "%", "r", CreatePullRequest{})
 	testURLParseError(t, err)
 }
 
