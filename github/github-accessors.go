@@ -39454,6 +39454,14 @@ func (s *SecretScanningAlertUpdateOptions) GetState() string {
 	return s.State
 }
 
+// GetPatterns returns the Patterns slice if it's non-nil, nil otherwise.
+func (s *SecretScanningCreateCustomPatternsRequest) GetPatterns() []*SecretScanningCustomPatternRequest {
+	if s == nil || s.Patterns == nil {
+		return nil
+	}
+	return s.Patterns
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (s *SecretScanningCustomPattern) GetCreatedAt() Timestamp {
 	if s == nil || s.CreatedAt == nil {
@@ -39558,6 +39566,38 @@ func (s *SecretScanningCustomPattern) GetUpdatedAt() Timestamp {
 	return *s.UpdatedAt
 }
 
+// GetDirection returns the Direction field.
+func (s *SecretScanningCustomPatternListOptions) GetDirection() string {
+	if s == nil {
+		return ""
+	}
+	return s.Direction
+}
+
+// GetPushProtection returns the PushProtection field.
+func (s *SecretScanningCustomPatternListOptions) GetPushProtection() string {
+	if s == nil {
+		return ""
+	}
+	return s.PushProtection
+}
+
+// GetSort returns the Sort field.
+func (s *SecretScanningCustomPatternListOptions) GetSort() string {
+	if s == nil {
+		return ""
+	}
+	return s.Sort
+}
+
+// GetState returns the State field.
+func (s *SecretScanningCustomPatternListOptions) GetState() string {
+	if s == nil {
+		return ""
+	}
+	return s.State
+}
+
 // GetEndDelimiter returns the EndDelimiter field if it's non-nil, zero value otherwise.
 func (s *SecretScanningCustomPatternRequest) GetEndDelimiter() string {
 	if s == nil || s.EndDelimiter == nil {
@@ -39606,36 +39646,12 @@ func (s *SecretScanningCustomPatternRequest) GetStartDelimiter() string {
 	return *s.StartDelimiter
 }
 
-// GetPatterns returns the Patterns slice if it's non-nil, nil otherwise.
-func (s *SecretScanningCustomPatternsCreateRequest) GetPatterns() []*SecretScanningCustomPatternRequest {
-	if s == nil || s.Patterns == nil {
-		return nil
-	}
-	return s.Patterns
-}
-
 // GetCreatedPatterns returns the CreatedPatterns slice if it's non-nil, nil otherwise.
 func (s *SecretScanningCustomPatternsCreateResponse) GetCreatedPatterns() []*SecretScanningCustomPattern {
 	if s == nil || s.CreatedPatterns == nil {
 		return nil
 	}
 	return s.CreatedPatterns
-}
-
-// GetPatterns returns the Patterns slice if it's non-nil, nil otherwise.
-func (s *SecretScanningCustomPatternsDeleteRequest) GetPatterns() []*SecretScanningCustomPatternToDelete {
-	if s == nil || s.Patterns == nil {
-		return nil
-	}
-	return s.Patterns
-}
-
-// GetPostDeleteAction returns the PostDeleteAction field if it's non-nil, zero value otherwise.
-func (s *SecretScanningCustomPatternsDeleteRequest) GetPostDeleteAction() string {
-	if s == nil || s.PostDeleteAction == nil {
-		return ""
-	}
-	return *s.PostDeleteAction
 }
 
 // GetCustomPatternVersion returns the CustomPatternVersion field if it's non-nil, zero value otherwise.
@@ -39678,60 +39694,28 @@ func (s *SecretScanningCustomPatternToDelete) GetPatternID() int64 {
 	return s.PatternID
 }
 
-// GetCustomPatternVersion returns the CustomPatternVersion field if it's non-nil, zero value otherwise.
-func (s *SecretScanningCustomPatternUpdateRequest) GetCustomPatternVersion() string {
-	if s == nil || s.CustomPatternVersion == nil {
-		return ""
-	}
-	return *s.CustomPatternVersion
-}
-
-// GetEndDelimiter returns the EndDelimiter field if it's non-nil, zero value otherwise.
-func (s *SecretScanningCustomPatternUpdateRequest) GetEndDelimiter() string {
-	if s == nil || s.EndDelimiter == nil {
-		return ""
-	}
-	return *s.EndDelimiter
-}
-
-// GetMustMatch returns the MustMatch slice if it's non-nil, nil otherwise.
-func (s *SecretScanningCustomPatternUpdateRequest) GetMustMatch() []string {
-	if s == nil || s.MustMatch == nil {
-		return nil
-	}
-	return s.MustMatch
-}
-
-// GetMustNotMatch returns the MustNotMatch slice if it's non-nil, nil otherwise.
-func (s *SecretScanningCustomPatternUpdateRequest) GetMustNotMatch() []string {
-	if s == nil || s.MustNotMatch == nil {
-		return nil
-	}
-	return s.MustNotMatch
-}
-
-// GetPattern returns the Pattern field if it's non-nil, zero value otherwise.
-func (s *SecretScanningCustomPatternUpdateRequest) GetPattern() string {
-	if s == nil || s.Pattern == nil {
-		return ""
-	}
-	return *s.Pattern
-}
-
-// GetStartDelimiter returns the StartDelimiter field if it's non-nil, zero value otherwise.
-func (s *SecretScanningCustomPatternUpdateRequest) GetStartDelimiter() string {
-	if s == nil || s.StartDelimiter == nil {
-		return ""
-	}
-	return *s.StartDelimiter
-}
-
 // GetReviewers returns the Reviewers slice if it's non-nil, nil otherwise.
 func (s *SecretScanningDelegatedBypassOptions) GetReviewers() []*BypassReviewer {
 	if s == nil || s.Reviewers == nil {
 		return nil
 	}
 	return s.Reviewers
+}
+
+// GetPatterns returns the Patterns slice if it's non-nil, nil otherwise.
+func (s *SecretScanningDeleteCustomPatternsRequest) GetPatterns() []*SecretScanningCustomPatternToDelete {
+	if s == nil || s.Patterns == nil {
+		return nil
+	}
+	return s.Patterns
+}
+
+// GetPostDeleteAction returns the PostDeleteAction field if it's non-nil, zero value otherwise.
+func (s *SecretScanningDeleteCustomPatternsRequest) GetPostDeleteAction() string {
+	if s == nil || s.PostDeleteAction == nil {
+		return ""
+	}
+	return *s.PostDeleteAction
 }
 
 // GetCustomPatternOverrides returns the CustomPatternOverrides slice if it's non-nil, nil otherwise.
@@ -39940,6 +39924,54 @@ func (s *SecretScanningScanHistory) GetPatternUpdateScans() []*SecretsScan {
 		return nil
 	}
 	return s.PatternUpdateScans
+}
+
+// GetCustomPatternVersion returns the CustomPatternVersion field if it's non-nil, zero value otherwise.
+func (s *SecretScanningUpdateCustomPatternRequest) GetCustomPatternVersion() string {
+	if s == nil || s.CustomPatternVersion == nil {
+		return ""
+	}
+	return *s.CustomPatternVersion
+}
+
+// GetEndDelimiter returns the EndDelimiter field if it's non-nil, zero value otherwise.
+func (s *SecretScanningUpdateCustomPatternRequest) GetEndDelimiter() string {
+	if s == nil || s.EndDelimiter == nil {
+		return ""
+	}
+	return *s.EndDelimiter
+}
+
+// GetMustMatch returns the MustMatch slice if it's non-nil, nil otherwise.
+func (s *SecretScanningUpdateCustomPatternRequest) GetMustMatch() []string {
+	if s == nil || s.MustMatch == nil {
+		return nil
+	}
+	return s.MustMatch
+}
+
+// GetMustNotMatch returns the MustNotMatch slice if it's non-nil, nil otherwise.
+func (s *SecretScanningUpdateCustomPatternRequest) GetMustNotMatch() []string {
+	if s == nil || s.MustNotMatch == nil {
+		return nil
+	}
+	return s.MustNotMatch
+}
+
+// GetPattern returns the Pattern field if it's non-nil, zero value otherwise.
+func (s *SecretScanningUpdateCustomPatternRequest) GetPattern() string {
+	if s == nil || s.Pattern == nil {
+		return ""
+	}
+	return *s.Pattern
+}
+
+// GetStartDelimiter returns the StartDelimiter field if it's non-nil, zero value otherwise.
+func (s *SecretScanningUpdateCustomPatternRequest) GetStartDelimiter() string {
+	if s == nil || s.StartDelimiter == nil {
+		return ""
+	}
+	return *s.StartDelimiter
 }
 
 // GetStatus returns the Status field if it's non-nil, zero value otherwise.
