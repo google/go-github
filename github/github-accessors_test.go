@@ -12731,7 +12731,7 @@ func TestCopilotSpace_GetUpdatedAt(tt *testing.T) {
 
 func TestCopilotSpaceMetadata_GetCopilotChatAttachmentID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
+	var zeroValue int64
 	c := &CopilotSpaceMetadata{CopilotChatAttachmentID: &zeroValue}
 	c.GetCopilotChatAttachmentID()
 	c = &CopilotSpaceMetadata{}
@@ -12841,7 +12841,7 @@ func TestCopilotSpaceMetadata_GetWidth(tt *testing.T) {
 
 func TestCopilotSpaceResource_GetCopilotChatAttachmentID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
+	var zeroValue int64
 	c := &CopilotSpaceResource{CopilotChatAttachmentID: &zeroValue}
 	c.GetCopilotChatAttachmentID()
 	c = &CopilotSpaceResource{}
