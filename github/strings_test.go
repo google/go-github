@@ -195,7 +195,7 @@ func TestString(t *testing.T) {
 		{Issue{Number: Ptr(1)}, `github.Issue{Number:1}`},
 		{SubIssue{ID: Ptr(int64(1))}, `github.SubIssue{ID:1}`},
 		{Key{ID: Ptr(int64(1))}, `github.Key{ID:1}`},
-		{Label{ID: Ptr(int64(1)), Name: Ptr("l")}, `github.Label{ID:1, Name:"l"}`},
+		{Label{ID: 1, Name: "l"}, `github.Label{ID:1, URL:"", Name:"l", Color:"", Default:false, NodeID:""}`},
 		{Organization{ID: Ptr(int64(1))}, `github.Organization{ID:1}`},
 		{PullRequestComment{ID: Ptr(int64(1))}, `github.PullRequestComment{ID:1}`},
 		{PullRequest{Number: Ptr(1)}, `github.PullRequest{Number:1}`},

@@ -232,7 +232,6 @@ linters:
             - IssueComment
             - IssueImportRequest
             - Key
-            - Label
             - LockIssueOptions
             - MaintenanceOptions
             - Milestone
