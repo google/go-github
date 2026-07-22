@@ -206,7 +206,6 @@ linters:
             - ActionsVariable
             - AddProjectItemOptions
             - AuthorizationRequest
-            - AutolinkOptions
             - CodeScanningAlertState
             - CodespaceCreateForUserOptions
             - ConfigApplyOptions
@@ -232,13 +231,11 @@ linters:
             - InstallationTokenOptions
             - IssueComment
             - IssueImportRequest
-            - IssueRequest
             - Key
             - Label
             - LockIssueOptions
             - MaintenanceOptions
             - Milestone
-            - NewPullRequest
             - Organization
             - PagesUpdate
             - PagesUpdateWithoutCNAME
@@ -278,7 +275,6 @@ linters:
           # TODO: fix and remove these exceptions.
           body-allowed-wrong-names:
             - AddProjectItemOptions
-            - AutolinkOptions
             - CheckSuitePreferenceOptions
             - CodespaceCreateForUserOptions
             - ConfigApplyOptions
@@ -421,8 +417,6 @@ linters:
             - IssueListByRepoOptions.Since # TODO: Issues
             - IssueListCommentsOptions.Direction
             - IssueListCommentsOptions.Sort
-            - IssueRequest.Assignees # TODO: Issues
-            - IssueRequest.Labels # TODO: Issues
             - License.Conditions # TODO: Licenses
             - License.Limitations # TODO: Licenses
             - License.Permissions # TODO: Licenses
