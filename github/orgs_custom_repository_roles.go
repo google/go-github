@@ -43,7 +43,7 @@ type UpdateCustomRepoRoleRequest struct {
 	Name        *string  `json:"name,omitempty"`
 	Description *string  `json:"description,omitempty"`
 	BaseRole    *string  `json:"base_role,omitempty"`
-	Permissions []string `json:"permissions,omitempty"`
+	Permissions []string `json:"permissions,omitzero"`
 }
 
 // RepoFineGrainedPermission represents a fine-grained permission that can be used in a custom repository role.
