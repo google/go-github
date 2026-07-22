@@ -10063,9 +10063,9 @@ func (c *CopilotSpace) GetUpdatedAt() Timestamp {
 }
 
 // GetCopilotChatAttachmentID returns the CopilotChatAttachmentID field if it's non-nil, zero value otherwise.
-func (c *CopilotSpaceMetadata) GetCopilotChatAttachmentID() string {
+func (c *CopilotSpaceMetadata) GetCopilotChatAttachmentID() int64 {
 	if c == nil || c.CopilotChatAttachmentID == nil {
-		return ""
+		return 0
 	}
 	return *c.CopilotChatAttachmentID
 }
@@ -10143,9 +10143,9 @@ func (c *CopilotSpaceMetadata) GetWidth() int {
 }
 
 // GetCopilotChatAttachmentID returns the CopilotChatAttachmentID field if it's non-nil, zero value otherwise.
-func (c *CopilotSpaceResource) GetCopilotChatAttachmentID() string {
+func (c *CopilotSpaceResource) GetCopilotChatAttachmentID() int64 {
 	if c == nil || c.CopilotChatAttachmentID == nil {
-		return ""
+		return 0
 	}
 	return *c.CopilotChatAttachmentID
 }

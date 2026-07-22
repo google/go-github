@@ -1263,9 +1263,9 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 			{
 				ID:                      Ptr(int64(125)),
 				ResourceType:            Ptr("media_content"),
-				CopilotChatAttachmentID: Ptr("attachment-123"),
+				CopilotChatAttachmentID: Ptr(int64(123)),
 				Metadata: &CopilotSpaceMetadata{
-					CopilotChatAttachmentID: Ptr("attachment-123"),
+					CopilotChatAttachmentID: Ptr(int64(123)),
 					MediaType:               Ptr("image/png"),
 					URL:                     Ptr("https://test.com/image.png"),
 					Height:                  Ptr(640),
@@ -1314,9 +1314,9 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 		{
 			"id": 125,
 			"resource_type": "media_content",
-			"copilot_chat_attachment_id": "attachment-123",
+			"copilot_chat_attachment_id": 123,
 			"metadata": {
-				"copilot_chat_attachment_id": "attachment-123",
+				"copilot_chat_attachment_id": 123,
 				"media_type": "image/png",
 				"url": "https://test.com/image.png",
 				"height": 640,
