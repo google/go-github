@@ -12,28 +12,28 @@ import (
 
 // Label represents a GitHub label on an Issue.
 type Label struct {
-	ID          *int64  `json:"id,omitempty"`
-	URL         *string `json:"url,omitempty"`
-	Name        *string `json:"name,omitempty"`
-	Color       *string `json:"color,omitempty"`
-	Description *string `json:"description,omitempty"`
-	Default     *bool   `json:"default,omitempty"`
-	NodeID      *string `json:"node_id,omitempty"`
+	ID          int64   `json:"id"`
+	URL         string  `json:"url"`
+	Name        string  `json:"name"`
+	Color       string  `json:"color"`
+	Description *string `json:"description"`
+	Default     bool    `json:"default"`
+	NodeID      string  `json:"node_id"`
 }
 
 func (l Label) String() string {
 	return Stringify(l)
 }
 
-// CreateLabelRequest represents a request to create a label.
-type CreateLabelRequest struct {
+// CreateIssueLabelRequest represents a request to create a label.
+type CreateIssueLabelRequest struct {
 	Name        string  `json:"name"`
 	Color       *string `json:"color,omitempty"`
 	Description *string `json:"description,omitempty"`
 }
 
-// UpdateLabelRequest represents a request to update a label.
-type UpdateLabelRequest struct {
+// UpdateIssueLabelRequest represents a request to update a label.
+type UpdateIssueLabelRequest struct {
 	NewName     *string `json:"new_name,omitempty"`
 	Color       *string `json:"color,omitempty"`
 	Description *string `json:"description,omitempty"`
@@ -91,7 +91,7 @@ func (s *IssuesService) GetLabel(ctx context.Context, owner, repo, name string) 
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#create-a-label
 //
 //meta:operation POST /repos/{owner}/{repo}/labels
-func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, body CreateLabelRequest) (*Label, *Response, error) {
+func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, body CreateIssueLabelRequest) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels", owner, repo)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -112,7 +112,7 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, bod
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#update-a-label
 //
 //meta:operation PATCH /repos/{owner}/{repo}/labels/{name}
-func (s *IssuesService) UpdateLabel(ctx context.Context, owner, repo, name string, body UpdateLabelRequest) (*Label, *Response, error) {
+func (s *IssuesService) UpdateLabel(ctx context.Context, owner, repo, name string, body UpdateIssueLabelRequest) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {

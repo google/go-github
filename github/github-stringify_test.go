@@ -1036,13 +1036,13 @@ func TestKey_String(t *testing.T) {
 func TestLabel_String(t *testing.T) {
 	t.Parallel()
 	v := Label{
-		ID:          Ptr(int64(0)),
-		URL:         Ptr(""),
-		Name:        Ptr(""),
-		Color:       Ptr(""),
+		ID:          0,
+		URL:         "",
+		Name:        "",
+		Color:       "",
 		Description: Ptr(""),
-		Default:     Ptr(false),
-		NodeID:      Ptr(""),
+		Default:     false,
+		NodeID:      "",
 	}
 	want := `github.Label{ID:0, URL:"", Name:"", Color:"", Description:"", Default:false, NodeID:""}`
 	if got := v.String(); got != want {
