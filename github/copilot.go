@@ -43,7 +43,7 @@ type CopilotSpaceResource struct {
 	ID                      *int64                `json:"id,omitempty"`
 	ResourceType            *string               `json:"resource_type,omitempty"`
 	Metadata                *CopilotSpaceMetadata `json:"metadata,omitempty"`
-	CopilotChatAttachmentID *string               `json:"copilot_chat_attachment_id,omitempty"`
+	CopilotChatAttachmentID *int64                `json:"copilot_chat_attachment_id,omitempty"`
 	CreatedAt               *Timestamp            `json:"created_at,omitempty"`
 	UpdatedAt               *Timestamp            `json:"updated_at,omitempty"`
 }
@@ -55,7 +55,7 @@ type CopilotSpaceMetadata struct {
 	Text                    *string `json:"text,omitempty"`
 	Name                    *string `json:"name,omitempty"`
 	Number                  *int    `json:"number,omitempty"`
-	CopilotChatAttachmentID *string `json:"copilot_chat_attachment_id,omitempty"`
+	CopilotChatAttachmentID *int64  `json:"copilot_chat_attachment_id,omitempty"`
 	MediaType               *string `json:"media_type,omitempty"`
 	URL                     *string `json:"url,omitempty"`
 	Height                  *int    `json:"height,omitempty"`
