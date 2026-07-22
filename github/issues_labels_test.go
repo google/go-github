@@ -107,7 +107,7 @@ func TestIssuesService_CreateLabel(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Label{Name: Ptr("n")}
+	input := CreateLabelRequest{Name: "n"}
 
 	mux.HandleFunc("/repos/o/r/labels", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -146,7 +146,7 @@ func TestIssuesService_CreateLabel_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.CreateLabel(ctx, "%", "%", nil)
+	_, _, err := client.Issues.CreateLabel(ctx, "%", "%", CreateLabelRequest{})
 	testURLParseError(t, err)
 }
 
@@ -154,11 +154,11 @@ func TestIssuesService_EditLabel(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Label{Name: Ptr("z")}
+	input := UpdateLabelRequest{NewName: Ptr("z")}
 
 	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input)
+		testPlainBody(t, r, `{"new_name":"z"}`+"\n")
 		fmt.Fprint(w, `{"url":"u"}`)
 	})
 
@@ -175,7 +175,7 @@ func TestIssuesService_EditLabel(t *testing.T) {
 
 	const methodName = "EditLabel"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Issues.EditLabel(ctx, "\n", "\n", "\n", input)
+		_, _, err = client.Issues.EditLabel(ctx, "\n", "\n", "\n", UpdateLabelRequest{})
 		return err
 	})
 
@@ -193,7 +193,7 @@ func TestIssuesService_EditLabel_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.EditLabel(ctx, "%", "%", "%", nil)
+	_, _, err := client.Issues.EditLabel(ctx, "%", "%", "%", UpdateLabelRequest{})
 	testURLParseError(t, err)
 }
 

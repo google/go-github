@@ -11254,6 +11254,30 @@ func (c *CreateJITConfigRequest) GetWorkFolder() string {
 	return *c.WorkFolder
 }
 
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (c *CreateLabelRequest) GetColor() string {
+	if c == nil || c.Color == nil {
+		return ""
+	}
+	return *c.Color
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateLabelRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetName returns the Name field.
+func (c *CreateLabelRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
 // GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.
 func (c *CreateOrganizationPrivateRegistry) GetAccountID() string {
 	if c == nil || c.AccountID == nil {
@@ -42900,6 +42924,30 @@ func (u *UpdateIssueRequest) GetType() string {
 		return ""
 	}
 	return *u.Type
+}
+
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (u *UpdateLabelRequest) GetColor() string {
+	if u == nil || u.Color == nil {
+		return ""
+	}
+	return *u.Color
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateLabelRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetNewName returns the NewName field if it's non-nil, zero value otherwise.
+func (u *UpdateLabelRequest) GetNewName() string {
+	if u == nil || u.NewName == nil {
+		return ""
+	}
+	return *u.NewName
 }
 
 // GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.

@@ -14267,6 +14267,36 @@ func TestCreateJITConfigRequest_GetWorkFolder(tt *testing.T) {
 	c.GetWorkFolder()
 }
 
+func TestCreateLabelRequest_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateLabelRequest{Color: &zeroValue}
+	c.GetColor()
+	c = &CreateLabelRequest{}
+	c.GetColor()
+	c = nil
+	c.GetColor()
+}
+
+func TestCreateLabelRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateLabelRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateLabelRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateLabelRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateLabelRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
 func TestCreateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -53779,6 +53809,39 @@ func TestUpdateIssueRequest_GetType(tt *testing.T) {
 	u.GetType()
 	u = nil
 	u.GetType()
+}
+
+func TestUpdateLabelRequest_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateLabelRequest{Color: &zeroValue}
+	u.GetColor()
+	u = &UpdateLabelRequest{}
+	u.GetColor()
+	u = nil
+	u.GetColor()
+}
+
+func TestUpdateLabelRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateLabelRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateLabelRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateLabelRequest_GetNewName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateLabelRequest{NewName: &zeroValue}
+	u.GetNewName()
+	u = &UpdateLabelRequest{}
+	u.GetNewName()
+	u = nil
+	u.GetNewName()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
