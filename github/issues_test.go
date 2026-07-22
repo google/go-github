@@ -261,9 +261,9 @@ func TestIssuesService_Get(t *testing.T) {
 		Number:            Ptr(1),
 		AuthorAssociation: Ptr("MEMBER"),
 		Labels: []*Label{{
-			URL:   Ptr("u"),
-			Name:  Ptr("n"),
-			Color: Ptr("c"),
+			URL:   "u",
+			Name:  "n",
+			Color: "c",
 		}},
 	}
 	if !cmp.Equal(issue, want) {

@@ -2862,30 +2862,6 @@ func (a *Autolink) GetURLTemplate() string {
 	return *a.URLTemplate
 }
 
-// GetIsAlphanumeric returns the IsAlphanumeric field if it's non-nil, zero value otherwise.
-func (a *AutolinkOptions) GetIsAlphanumeric() bool {
-	if a == nil || a.IsAlphanumeric == nil {
-		return false
-	}
-	return *a.IsAlphanumeric
-}
-
-// GetKeyPrefix returns the KeyPrefix field if it's non-nil, zero value otherwise.
-func (a *AutolinkOptions) GetKeyPrefix() string {
-	if a == nil || a.KeyPrefix == nil {
-		return ""
-	}
-	return *a.KeyPrefix
-}
-
-// GetURLTemplate returns the URLTemplate field if it's non-nil, zero value otherwise.
-func (a *AutolinkOptions) GetURLTemplate() string {
-	if a == nil || a.URLTemplate == nil {
-		return ""
-	}
-	return *a.URLTemplate
-}
-
 // GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
 func (a *AutomatedSecurityFixes) GetEnabled() bool {
 	if a == nil || a.Enabled == nil {
@@ -10934,6 +10910,30 @@ func (c *CreateArtifactStorageRequest) GetVersion() string {
 	return *c.Version
 }
 
+// GetIsAlphanumeric returns the IsAlphanumeric field if it's non-nil, zero value otherwise.
+func (c *CreateAutolinkRequest) GetIsAlphanumeric() bool {
+	if c == nil || c.IsAlphanumeric == nil {
+		return false
+	}
+	return *c.IsAlphanumeric
+}
+
+// GetKeyPrefix returns the KeyPrefix field.
+func (c *CreateAutolinkRequest) GetKeyPrefix() string {
+	if c == nil {
+		return ""
+	}
+	return c.KeyPrefix
+}
+
+// GetURLTemplate returns the URLTemplate field.
+func (c *CreateAutolinkRequest) GetURLTemplate() string {
+	if c == nil {
+		return ""
+	}
+	return c.URLTemplate
+}
+
 // GetActions returns the Actions slice if it's non-nil, nil otherwise.
 func (c *CreateCheckRunOptions) GetActions() []*CheckRunAction {
 	if c == nil || c.Actions == nil {
@@ -11396,6 +11396,30 @@ func (c *CreateHostedRunnerRequest) GetSize() string {
 		return ""
 	}
 	return c.Size
+}
+
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (c *CreateIssueLabelRequest) GetColor() string {
+	if c == nil || c.Color == nil {
+		return ""
+	}
+	return *c.Color
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateIssueLabelRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetName returns the Name field.
+func (c *CreateIssueLabelRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
 }
 
 // GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
@@ -21982,20 +22006,20 @@ func (k *Key) GetVerified() bool {
 	return *k.Verified
 }
 
-// GetColor returns the Color field if it's non-nil, zero value otherwise.
+// GetColor returns the Color field.
 func (l *Label) GetColor() string {
-	if l == nil || l.Color == nil {
+	if l == nil {
 		return ""
 	}
-	return *l.Color
+	return l.Color
 }
 
-// GetDefault returns the Default field if it's non-nil, zero value otherwise.
+// GetDefault returns the Default field.
 func (l *Label) GetDefault() bool {
-	if l == nil || l.Default == nil {
+	if l == nil {
 		return false
 	}
-	return *l.Default
+	return l.Default
 }
 
 // GetDescription returns the Description field if it's non-nil, zero value otherwise.
@@ -22006,36 +22030,36 @@ func (l *Label) GetDescription() string {
 	return *l.Description
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (l *Label) GetID() int64 {
-	if l == nil || l.ID == nil {
+	if l == nil {
 		return 0
 	}
-	return *l.ID
+	return l.ID
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (l *Label) GetName() string {
-	if l == nil || l.Name == nil {
+	if l == nil {
 		return ""
 	}
-	return *l.Name
+	return l.Name
 }
 
-// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+// GetNodeID returns the NodeID field.
 func (l *Label) GetNodeID() string {
-	if l == nil || l.NodeID == nil {
+	if l == nil {
 		return ""
 	}
-	return *l.NodeID
+	return l.NodeID
 }
 
-// GetURL returns the URL field if it's non-nil, zero value otherwise.
+// GetURL returns the URL field.
 func (l *Label) GetURL() string {
-	if l == nil || l.URL == nil {
+	if l == nil {
 		return ""
 	}
-	return *l.URL
+	return l.URL
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
@@ -43092,6 +43116,30 @@ func (u *UpdateHostedRunnerRequest) GetSize() string {
 		return ""
 	}
 	return *u.Size
+}
+
+// GetColor returns the Color field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueLabelRequest) GetColor() string {
+	if u == nil || u.Color == nil {
+		return ""
+	}
+	return *u.Color
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueLabelRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetNewName returns the NewName field if it's non-nil, zero value otherwise.
+func (u *UpdateIssueLabelRequest) GetNewName() string {
+	if u == nil || u.NewName == nil {
+		return ""
+	}
+	return *u.NewName
 }
 
 // GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.

@@ -52,18 +52,18 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_AddAutolink(t *testing.T) {
+func TestRepositoriesService_CreateAutolink(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &AutolinkOptions{
-		KeyPrefix:      Ptr("TICKET-"),
-		URLTemplate:    Ptr("https://example.com/TICKET?query=<num>"),
+	body := CreateAutolinkRequest{
+		KeyPrefix:      "TICKET-",
+		URLTemplate:    "https://example.com/TICKET?query=<num>",
 		IsAlphanumeric: Ptr(true),
 	}
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, body)
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`
 			{
@@ -74,9 +74,9 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 		`))
 	})
 	ctx := t.Context()
-	autolink, _, err := client.Repositories.AddAutolink(ctx, "o", "r", opt)
+	autolink, _, err := client.Repositories.CreateAutolink(ctx, "o", "r", body)
 	if err != nil {
-		t.Errorf("Repositories.AddAutolink returned error: %v", err)
+		t.Errorf("Repositories.CreateAutolink returned error: %v", err)
 	}
 	want := &Autolink{
 		KeyPrefix:      Ptr("TICKET-"),
@@ -85,17 +85,17 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 	}
 
 	if !cmp.Equal(autolink, want) {
-		t.Errorf("AddAutolink returned %+v, want %+v", autolink, want)
+		t.Errorf("CreateAutolink returned %+v, want %+v", autolink, want)
 	}
 
-	const methodName = "AddAutolink"
+	const methodName = "CreateAutolink"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.AddAutolink(ctx, "\n", "\n", opt)
+		_, _, err = client.Repositories.CreateAutolink(ctx, "\n", "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.AddAutolink(ctx, "o", "r", opt)
+		got, resp, err := client.Repositories.CreateAutolink(ctx, "o", "r", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

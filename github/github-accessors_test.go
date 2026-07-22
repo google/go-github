@@ -3649,39 +3649,6 @@ func TestAutolink_GetURLTemplate(tt *testing.T) {
 	a.GetURLTemplate()
 }
 
-func TestAutolinkOptions_GetIsAlphanumeric(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	a := &AutolinkOptions{IsAlphanumeric: &zeroValue}
-	a.GetIsAlphanumeric()
-	a = &AutolinkOptions{}
-	a.GetIsAlphanumeric()
-	a = nil
-	a.GetIsAlphanumeric()
-}
-
-func TestAutolinkOptions_GetKeyPrefix(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &AutolinkOptions{KeyPrefix: &zeroValue}
-	a.GetKeyPrefix()
-	a = &AutolinkOptions{}
-	a.GetKeyPrefix()
-	a = nil
-	a.GetKeyPrefix()
-}
-
-func TestAutolinkOptions_GetURLTemplate(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	a := &AutolinkOptions{URLTemplate: &zeroValue}
-	a.GetURLTemplate()
-	a = &AutolinkOptions{}
-	a.GetURLTemplate()
-	a = nil
-	a.GetURLTemplate()
-}
-
 func TestAutomatedSecurityFixes_GetEnabled(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -13860,6 +13827,33 @@ func TestCreateArtifactStorageRequest_GetVersion(tt *testing.T) {
 	c.GetVersion()
 }
 
+func TestCreateAutolinkRequest_GetIsAlphanumeric(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateAutolinkRequest{IsAlphanumeric: &zeroValue}
+	c.GetIsAlphanumeric()
+	c = &CreateAutolinkRequest{}
+	c.GetIsAlphanumeric()
+	c = nil
+	c.GetIsAlphanumeric()
+}
+
+func TestCreateAutolinkRequest_GetKeyPrefix(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateAutolinkRequest{}
+	c.GetKeyPrefix()
+	c = nil
+	c.GetKeyPrefix()
+}
+
+func TestCreateAutolinkRequest_GetURLTemplate(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateAutolinkRequest{}
+	c.GetURLTemplate()
+	c = nil
+	c.GetURLTemplate()
+}
+
 func TestCreateCheckRunOptions_GetActions(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*CheckRunAction{}
@@ -14445,6 +14439,36 @@ func TestCreateHostedRunnerRequest_GetSize(tt *testing.T) {
 	c.GetSize()
 	c = nil
 	c.GetSize()
+}
+
+func TestCreateIssueLabelRequest_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateIssueLabelRequest{Color: &zeroValue}
+	c.GetColor()
+	c = &CreateIssueLabelRequest{}
+	c.GetColor()
+	c = nil
+	c.GetColor()
+}
+
+func TestCreateIssueLabelRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateIssueLabelRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateIssueLabelRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateIssueLabelRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateIssueLabelRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
 }
 
 func TestCreateIssueRequest_GetAssignee(tt *testing.T) {
@@ -27673,10 +27697,7 @@ func TestKey_GetVerified(tt *testing.T) {
 
 func TestLabel_GetColor(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	l := &Label{Color: &zeroValue}
-	l.GetColor()
-	l = &Label{}
+	l := &Label{}
 	l.GetColor()
 	l = nil
 	l.GetColor()
@@ -27684,10 +27705,7 @@ func TestLabel_GetColor(tt *testing.T) {
 
 func TestLabel_GetDefault(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	l := &Label{Default: &zeroValue}
-	l.GetDefault()
-	l = &Label{}
+	l := &Label{}
 	l.GetDefault()
 	l = nil
 	l.GetDefault()
@@ -27706,10 +27724,7 @@ func TestLabel_GetDescription(tt *testing.T) {
 
 func TestLabel_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int64
-	l := &Label{ID: &zeroValue}
-	l.GetID()
-	l = &Label{}
+	l := &Label{}
 	l.GetID()
 	l = nil
 	l.GetID()
@@ -27717,10 +27732,7 @@ func TestLabel_GetID(tt *testing.T) {
 
 func TestLabel_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	l := &Label{Name: &zeroValue}
-	l.GetName()
-	l = &Label{}
+	l := &Label{}
 	l.GetName()
 	l = nil
 	l.GetName()
@@ -27728,10 +27740,7 @@ func TestLabel_GetName(tt *testing.T) {
 
 func TestLabel_GetNodeID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	l := &Label{NodeID: &zeroValue}
-	l.GetNodeID()
-	l = &Label{}
+	l := &Label{}
 	l.GetNodeID()
 	l = nil
 	l.GetNodeID()
@@ -27739,10 +27748,7 @@ func TestLabel_GetNodeID(tt *testing.T) {
 
 func TestLabel_GetURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	l := &Label{URL: &zeroValue}
-	l.GetURL()
-	l = &Label{}
+	l := &Label{}
 	l.GetURL()
 	l = nil
 	l.GetURL()
@@ -54013,6 +54019,39 @@ func TestUpdateHostedRunnerRequest_GetSize(tt *testing.T) {
 	u.GetSize()
 	u = nil
 	u.GetSize()
+}
+
+func TestUpdateIssueLabelRequest_GetColor(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueLabelRequest{Color: &zeroValue}
+	u.GetColor()
+	u = &UpdateIssueLabelRequest{}
+	u.GetColor()
+	u = nil
+	u.GetColor()
+}
+
+func TestUpdateIssueLabelRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueLabelRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateIssueLabelRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateIssueLabelRequest_GetNewName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateIssueLabelRequest{NewName: &zeroValue}
+	u.GetNewName()
+	u = &UpdateIssueLabelRequest{}
+	u.GetNewName()
+	u = nil
+	u.GetNewName()
 }
 
 func TestUpdateIssueRequest_GetAssignee(tt *testing.T) {
