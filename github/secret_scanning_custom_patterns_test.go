@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -20,6 +19,13 @@ func TestSecretScanningService_ListCustomPatternsForRepo(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/custom-patterns", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"state":           "published",
+			"push_protection": "enabled",
+			"sort":            "created",
+			"direction":       "desc",
+			"page":            "2",
+		})
 		fmt.Fprint(w, `[
 			{
 				"id": 1,
@@ -33,20 +39,24 @@ func TestSecretScanningService_ListCustomPatternsForRepo(t *testing.T) {
 				"must_match": ["ID-.*"],
 				"must_not_match": ["TEST-.*"],
 				"custom_pattern_version": "v1",
-				"created_at": "2026-07-01T00:00:00Z",
-				"updated_at": "2026-07-02T00:00:00Z"
+				"created_at": `+referenceTimeStr+`,
+				"updated_at": `+referenceTimeStr+`
 			}
 		]`)
 	})
 
 	ctx := t.Context()
-	patterns, _, err := client.SecretScanning.ListCustomPatternsForRepo(ctx, "o", "r")
+	opts := &SecretScanningCustomPatternListOptions{
+		State:          "published",
+		PushProtection: "enabled",
+		Sort:           "created",
+		Direction:      "desc",
+		ListOptions:    ListOptions{Page: 2},
+	}
+	patterns, _, err := client.SecretScanning.ListCustomPatternsForRepo(ctx, "o", "r", opts)
 	if err != nil {
 		t.Errorf("SecretScanning.ListCustomPatternsForRepo returned error: %v", err)
 	}
-
-	createdAt, _ := time.Parse(time.RFC3339, "2026-07-01T00:00:00Z")
-	updatedAt, _ := time.Parse(time.RFC3339, "2026-07-02T00:00:00Z")
 
 	want := []*SecretScanningCustomPattern{
 		{
@@ -61,8 +71,8 @@ func TestSecretScanningService_ListCustomPatternsForRepo(t *testing.T) {
 			MustMatch:             []string{"ID-.*"},
 			MustNotMatch:          []string{"TEST-.*"},
 			CustomPatternVersion:  Ptr("v1"),
-			CreatedAt:             &Timestamp{createdAt},
-			UpdatedAt:             &Timestamp{updatedAt},
+			CreatedAt:             &referenceTimestamp,
+			UpdatedAt:             &referenceTimestamp,
 		},
 	}
 	if !cmp.Equal(patterns, want) {
@@ -72,12 +82,12 @@ func TestSecretScanningService_ListCustomPatternsForRepo(t *testing.T) {
 	const methodName = "ListCustomPatternsForRepo"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.SecretScanning.ListCustomPatternsForRepo(ctx, "\n", "\n")
+		_, _, err = client.SecretScanning.ListCustomPatternsForRepo(ctx, "\n", "\n", nil)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, resp, err := client.SecretScanning.ListCustomPatternsForRepo(ctx, "o", "r")
+		_, resp, err := client.SecretScanning.ListCustomPatternsForRepo(ctx, "o", "r", nil)
 		return resp, err
 	})
 }
@@ -86,7 +96,7 @@ func TestSecretScanningService_CreateCustomPatternsForRepo(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := SecretScanningCustomPatternsCreateRequest{
+	input := SecretScanningCreateCustomPatternsRequest{
 		Patterns: []*SecretScanningCustomPatternRequest{
 			{
 				Name:    "Custom pattern",
@@ -151,7 +161,7 @@ func TestSecretScanningService_UpdateCustomPatternForRepo(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := SecretScanningCustomPatternUpdateRequest{
+	input := SecretScanningUpdateCustomPatternRequest{
 		Pattern:              Ptr("[A-Z]{3}-[0-9]{4}"),
 		CustomPatternVersion: Ptr("v1"),
 	}
@@ -206,7 +216,7 @@ func TestSecretScanningService_DeleteCustomPatternsForRepo(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SecretScanningCustomPatternsDeleteRequest{
+	input := SecretScanningDeleteCustomPatternsRequest{
 		Patterns: []*SecretScanningCustomPatternToDelete{
 			{PatternID: 1},
 		},
