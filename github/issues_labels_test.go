@@ -150,7 +150,7 @@ func TestIssuesService_CreateLabel_invalidOwner(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestIssuesService_EditLabel(t *testing.T) {
+func TestIssuesService_UpdateLabel(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
@@ -163,24 +163,24 @@ func TestIssuesService_EditLabel(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	label, _, err := client.Issues.EditLabel(ctx, "o", "r", "n", input)
+	label, _, err := client.Issues.UpdateLabel(ctx, "o", "r", "n", input)
 	if err != nil {
-		t.Errorf("Issues.EditLabel returned error: %v", err)
+		t.Errorf("Issues.UpdateLabel returned error: %v", err)
 	}
 
 	want := &Label{URL: Ptr("u")}
 	if !cmp.Equal(label, want) {
-		t.Errorf("Issues.EditLabel returned %+v, want %+v", label, want)
+		t.Errorf("Issues.UpdateLabel returned %+v, want %+v", label, want)
 	}
 
-	const methodName = "EditLabel"
+	const methodName = "UpdateLabel"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Issues.EditLabel(ctx, "\n", "\n", "\n", UpdateLabelRequest{})
+		_, _, err = client.Issues.UpdateLabel(ctx, "\n", "\n", "\n", UpdateLabelRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Issues.EditLabel(ctx, "o", "r", "n", input)
+		got, resp, err := client.Issues.UpdateLabel(ctx, "o", "r", "n", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -188,12 +188,12 @@ func TestIssuesService_EditLabel(t *testing.T) {
 	})
 }
 
-func TestIssuesService_EditLabel_invalidOwner(t *testing.T) {
+func TestIssuesService_UpdateLabel_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.EditLabel(ctx, "%", "%", "%", UpdateLabelRequest{})
+	_, _, err := client.Issues.UpdateLabel(ctx, "%", "%", "%", UpdateLabelRequest{})
 	testURLParseError(t, err)
 }
 

@@ -107,12 +107,12 @@ func (s *IssuesService) CreateLabel(ctx context.Context, owner, repo string, bod
 	return l, resp, nil
 }
 
-// EditLabel edits a label.
+// UpdateLabel updates a label.
 //
 // GitHub API docs: https://docs.github.com/rest/issues/labels?apiVersion=2022-11-28#update-a-label
 //
 //meta:operation PATCH /repos/{owner}/{repo}/labels/{name}
-func (s *IssuesService) EditLabel(ctx context.Context, owner, repo, name string, body UpdateLabelRequest) (*Label, *Response, error) {
+func (s *IssuesService) UpdateLabel(ctx context.Context, owner, repo, name string, body UpdateLabelRequest) (*Label, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/labels/%v", owner, repo, name)
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
