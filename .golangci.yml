@@ -211,7 +211,6 @@ linters:
             - ConfigApplyOptions
             - ConfigSettings
             - CreateCodespaceOptions
-            - CreateOrUpdateCustomRepoRoleOptions
             - CreateOrUpdateIssueTypesOptions
             - CreateOrgInvitationOptions
             - CreateUpdateEnvironment
@@ -281,7 +280,6 @@ linters:
             - CreateCheckRunOptions
             - CreateCheckSuiteOptions
             - CreateCodespaceOptions
-            - CreateOrUpdateCustomRepoRoleOptions
             - CreateOrUpdateIssueTypesOptions
             - CreateOrgInvitationOptions
             - ImpersonateUserOptions

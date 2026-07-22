@@ -10918,6 +10918,38 @@ func (c *CreateCustomOrgRoleRequest) GetPermissions() []string {
 	return c.Permissions
 }
 
+// GetBaseRole returns the BaseRole field.
+func (c *CreateCustomRepoRoleRequest) GetBaseRole() string {
+	if c == nil {
+		return ""
+	}
+	return c.BaseRole
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateCustomRepoRoleRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetName returns the Name field.
+func (c *CreateCustomRepoRoleRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetPermissions returns the Permissions slice if it's non-nil, nil otherwise.
+func (c *CreateCustomRepoRoleRequest) GetPermissions() []string {
+	if c == nil || c.Permissions == nil {
+		return nil
+	}
+	return c.Permissions
+}
+
 // GetName returns the Name field.
 func (c *CreateDeploymentBranchPolicyRequest) GetName() string {
 	if c == nil {
@@ -11436,38 +11468,6 @@ func (c *CreateOrgInvitationOptions) GetTeamID() []int64 {
 		return nil
 	}
 	return c.TeamID
-}
-
-// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateCustomRepoRoleOptions) GetBaseRole() string {
-	if c == nil || c.BaseRole == nil {
-		return ""
-	}
-	return *c.BaseRole
-}
-
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateCustomRepoRoleOptions) GetDescription() string {
-	if c == nil || c.Description == nil {
-		return ""
-	}
-	return *c.Description
-}
-
-// GetName returns the Name field if it's non-nil, zero value otherwise.
-func (c *CreateOrUpdateCustomRepoRoleOptions) GetName() string {
-	if c == nil || c.Name == nil {
-		return ""
-	}
-	return *c.Name
-}
-
-// GetPermissions returns the Permissions slice if it's non-nil, nil otherwise.
-func (c *CreateOrUpdateCustomRepoRoleOptions) GetPermissions() []string {
-	if c == nil || c.Permissions == nil {
-		return nil
-	}
-	return c.Permissions
 }
 
 // GetColor returns the Color field if it's non-nil, zero value otherwise.
@@ -42624,6 +42624,38 @@ func (u *UpdateCustomOrgRoleRequest) GetName() string {
 
 // GetPermissions returns the Permissions slice if it's non-nil, nil otherwise.
 func (u *UpdateCustomOrgRoleRequest) GetPermissions() []string {
+	if u == nil || u.Permissions == nil {
+		return nil
+	}
+	return u.Permissions
+}
+
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (u *UpdateCustomRepoRoleRequest) GetBaseRole() string {
+	if u == nil || u.BaseRole == nil {
+		return ""
+	}
+	return *u.BaseRole
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateCustomRepoRoleRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateCustomRepoRoleRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetPermissions returns the Permissions slice if it's non-nil, nil otherwise.
+func (u *UpdateCustomRepoRoleRequest) GetPermissions() []string {
 	if u == nil || u.Permissions == nil {
 		return nil
 	}

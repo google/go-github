@@ -183,13 +183,13 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 
 	ctx := t.Context()
 
-	opts := &CreateOrUpdateCustomRepoRoleOptions{
-		Name:        Ptr("Labeler"),
+	body := CreateCustomRepoRoleRequest{
+		Name:        "Labeler",
 		Description: Ptr("A role for issue and PR labelers"),
-		BaseRole:    Ptr("read"),
+		BaseRole:    "read",
 		Permissions: []string{"add_label"},
 	}
-	apps, _, err := client.Organizations.CreateCustomRepoRole(ctx, "o", opts)
+	apps, _, err := client.Organizations.CreateCustomRepoRole(ctx, "o", body)
 	if err != nil {
 		t.Errorf("Organizations.CreateCustomRepoRole returned error: %v", err)
 	}
@@ -202,12 +202,12 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 
 	const methodName = "CreateCustomRepoRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.CreateCustomRepoRole(ctx, "\no", nil)
+		_, _, err = client.Organizations.CreateCustomRepoRole(ctx, "\no", CreateCustomRepoRoleRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.CreateCustomRepoRole(ctx, "o", nil)
+		got, resp, err := client.Organizations.CreateCustomRepoRole(ctx, "o", CreateCustomRepoRoleRequest{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -226,11 +226,11 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 
 	ctx := t.Context()
 
-	opts := &CreateOrUpdateCustomRepoRoleOptions{
+	body := UpdateCustomRepoRoleRequest{
 		Name:        Ptr("Updated Name"),
 		Description: Ptr("Updated Description"),
 	}
-	apps, _, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", 8030, opts)
+	apps, _, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", 8030, body)
 	if err != nil {
 		t.Errorf("Organizations.UpdateCustomRepoRole returned error: %v", err)
 	}
@@ -243,12 +243,12 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 
 	const methodName = "UpdateCustomRepoRole"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.UpdateCustomRepoRole(ctx, "\no", 8030, nil)
+		_, _, err = client.Organizations.UpdateCustomRepoRole(ctx, "\no", 8030, UpdateCustomRepoRoleRequest{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", 8030, nil)
+		got, resp, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", 8030, UpdateCustomRepoRoleRequest{})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
