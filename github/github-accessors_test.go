@@ -13847,6 +13847,44 @@ func TestCreateCustomOrgRoleRequest_GetPermissions(tt *testing.T) {
 	c.GetPermissions()
 }
 
+func TestCreateCustomRepoRoleRequest_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCustomRepoRoleRequest{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCreateCustomRepoRoleRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCustomRepoRoleRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateCustomRepoRoleRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateCustomRepoRoleRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCustomRepoRoleRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateCustomRepoRoleRequest_GetPermissions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateCustomRepoRoleRequest{Permissions: zeroValue}
+	c.GetPermissions()
+	c = &CreateCustomRepoRoleRequest{}
+	c.GetPermissions()
+	c = nil
+	c.GetPermissions()
+}
+
 func TestCreateDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateDeploymentBranchPolicyRequest{}
@@ -14539,50 +14577,6 @@ func TestCreateOrgInvitationOptions_GetTeamID(tt *testing.T) {
 	c.GetTeamID()
 	c = nil
 	c.GetTeamID()
-}
-
-func TestCreateOrUpdateCustomRepoRoleOptions_GetBaseRole(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrUpdateCustomRepoRoleOptions{BaseRole: &zeroValue}
-	c.GetBaseRole()
-	c = &CreateOrUpdateCustomRepoRoleOptions{}
-	c.GetBaseRole()
-	c = nil
-	c.GetBaseRole()
-}
-
-func TestCreateOrUpdateCustomRepoRoleOptions_GetDescription(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrUpdateCustomRepoRoleOptions{Description: &zeroValue}
-	c.GetDescription()
-	c = &CreateOrUpdateCustomRepoRoleOptions{}
-	c.GetDescription()
-	c = nil
-	c.GetDescription()
-}
-
-func TestCreateOrUpdateCustomRepoRoleOptions_GetName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CreateOrUpdateCustomRepoRoleOptions{Name: &zeroValue}
-	c.GetName()
-	c = &CreateOrUpdateCustomRepoRoleOptions{}
-	c.GetName()
-	c = nil
-	c.GetName()
-}
-
-func TestCreateOrUpdateCustomRepoRoleOptions_GetPermissions(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	c := &CreateOrUpdateCustomRepoRoleOptions{Permissions: zeroValue}
-	c.GetPermissions()
-	c = &CreateOrUpdateCustomRepoRoleOptions{}
-	c.GetPermissions()
-	c = nil
-	c.GetPermissions()
 }
 
 func TestCreateOrUpdateIssueTypesOptions_GetColor(tt *testing.T) {
@@ -53423,6 +53417,50 @@ func TestUpdateCustomOrgRoleRequest_GetPermissions(tt *testing.T) {
 	u := &UpdateCustomOrgRoleRequest{Permissions: zeroValue}
 	u.GetPermissions()
 	u = &UpdateCustomOrgRoleRequest{}
+	u.GetPermissions()
+	u = nil
+	u.GetPermissions()
+}
+
+func TestUpdateCustomRepoRoleRequest_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCustomRepoRoleRequest{BaseRole: &zeroValue}
+	u.GetBaseRole()
+	u = &UpdateCustomRepoRoleRequest{}
+	u.GetBaseRole()
+	u = nil
+	u.GetBaseRole()
+}
+
+func TestUpdateCustomRepoRoleRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCustomRepoRoleRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateCustomRepoRoleRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateCustomRepoRoleRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCustomRepoRoleRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateCustomRepoRoleRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateCustomRepoRoleRequest_GetPermissions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	u := &UpdateCustomRepoRoleRequest{Permissions: zeroValue}
+	u.GetPermissions()
+	u = &UpdateCustomRepoRoleRequest{}
 	u.GetPermissions()
 	u = nil
 	u.GetPermissions()
