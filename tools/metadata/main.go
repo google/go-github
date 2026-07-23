@@ -35,9 +35,18 @@ Update go source code to be consistent with openapi_operations.yaml.
 
 	"format_help": `Format white space in openapi_operations.yaml and sort its operations.`,
 	"unused_help": `List operations in openapi_operations.yaml that aren't used by any service methods.`,
+	"check_schema_fields_help": `
+Check Go struct JSON field optionality against GitHub's OpenAPI schemas. By default, the check automatically
+matches OpenAPI component schemas to Go request structs only when the JSON field set makes the match unambiguous.
+Use --schema to try one or more OpenAPI schema names; filtered schemas also allow high-confidence schema-name
+matches and response structs to make refactoring experiments easier.
+`,
 
-	"working_dir_help": `Working directory. Should be the root of the go-github repository.`,
-	"openapi_ref_help": `Git ref to pull OpenAPI descriptions from.`,
+	"working_dir_help":         `Working directory. Should be the root of the go-github repository.`,
+	"openapi_ref_help":         `Git ref to pull OpenAPI descriptions from.`,
+	"openapi_ref_default_help": `Git ref to pull OpenAPI descriptions from. Defaults to openapi_commit from openapi_operations.yaml.`,
+	"schema_filter_help":       `OpenAPI schema name to check. May be repeated. Defaults to all automatically matched schemas.`,
+	"include_responses_help":   `Also check response structs. By default only request structs are checked unless --schema is provided.`,
 
 	"openapi_validate_help": `
 Instead of updating, make sure that the operations in openapi_operations.yaml's "openapi_operations" field are
@@ -54,6 +63,7 @@ type rootCmd struct {
 	UpdateGo      updateGoCmd      `kong:"cmd,help=${update_go_help}"`
 	Format        formatCmd        `kong:"cmd,help=${format_help}"`
 	Unused        unusedCmd        `kong:"cmd,help=${unused_help}"`
+	CheckSchema   checkSchemaCmd   `kong:"cmd,name=check-schema-fields,help=${check_schema_fields_help}"`
 
 	WorkingDir string `kong:"short=C,default=.,help=${working_dir_help}"`
 
@@ -178,6 +188,69 @@ func (c *unusedCmd) Run(root *rootCmd, k *kong.Context) error {
 			fmt.Fprintf(k.Stdout, "doc:     %v\n", op.DocumentationURL)
 		}
 		fmt.Fprintln(k.Stdout, "")
+	}
+	return nil
+}
+
+type checkSchemaCmd struct {
+	Ref              string   `kong:"help=${openapi_ref_default_help}"`
+	Schemas          []string `kong:"name=schema,help=${schema_filter_help}"`
+	IncludeResponses bool     `kong:"name=include-responses,help=${include_responses_help}"`
+	Verbose          bool     `kong:"help='Print checked and skipped schema matches.'"`
+}
+
+func (c *checkSchemaCmd) Run(root *rootCmd, k *kong.Context) error {
+	ctx := context.Background()
+	_, opsFile, err := root.opsFile()
+	if err != nil {
+		return err
+	}
+	ref := c.Ref
+	if ref == "" {
+		ref = opsFile.GitCommit
+		if ref == "" {
+			return errors.New("openapi_operations.yaml does not have an openapi_commit field")
+		}
+	}
+
+	client, err := githubClient(root.GithubURL, root.UploadURL)
+	if err != nil {
+		return err
+	}
+	descriptions, err := getDescriptions(ctx, client, ref)
+	if err != nil {
+		return err
+	}
+	exceptions, err := loadSchemaFieldExceptions(root.WorkingDir)
+	if err != nil {
+		return err
+	}
+	result, err := checkSchemaFields(schemaFieldCheckOptions{
+		descriptions:     descriptions,
+		githubDir:        filepath.Join(root.WorkingDir, "github"),
+		schemaNames:      c.Schemas,
+		includeResponses: c.IncludeResponses,
+		exceptions:       exceptions,
+	})
+	if err != nil {
+		return err
+	}
+
+	fmt.Fprintf(k.Stdout, "Found %v schema field issues\n", len(result.Diagnostics))
+	fmt.Fprintf(k.Stdout, "Checked %v OpenAPI schema/Go struct pairs; skipped %v OpenAPI schemas\n", result.Summary.Checked, result.Summary.Skipped)
+	if c.Verbose {
+		for _, checked := range result.Checked {
+			fmt.Fprintf(k.Stdout, "checked: %v -> %v (%v)\n", checked.OpenAPISchema, checked.GoStruct, checked.MatchReason)
+		}
+		for _, skipped := range result.Skipped {
+			fmt.Fprintf(k.Stdout, "skipped: %v (%v)\n", skipped.OpenAPISchema, skipped.Reason)
+		}
+	}
+	for _, diag := range result.Diagnostics {
+		fmt.Fprintln(k.Stdout, diag.String())
+	}
+	if len(result.Diagnostics) > 0 {
+		return fmt.Errorf("found %v schema field issues", len(result.Diagnostics))
 	}
 	return nil
 }
