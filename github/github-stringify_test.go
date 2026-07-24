@@ -1728,7 +1728,7 @@ func TestPullRequestReview_String(t *testing.T) {
 func TestPullRequestReviewDismissalRequest_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequestReviewDismissalRequest{
-		Message: Ptr(""),
+		Message: "",
 	}
 	want := `github.PullRequestReviewDismissalRequest{Message:""}`
 	if got := v.String(); got != want {

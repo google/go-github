@@ -39649,10 +39649,7 @@ func TestPullRequestReviewCommentEvent_GetSender(tt *testing.T) {
 
 func TestPullRequestReviewDismissalRequest_GetMessage(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	p := &PullRequestReviewDismissalRequest{Message: &zeroValue}
-	p.GetMessage()
-	p = &PullRequestReviewDismissalRequest{}
+	p := &PullRequestReviewDismissalRequest{}
 	p.GetMessage()
 	p = nil
 	p.GetMessage()
