@@ -1045,6 +1045,456 @@ func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
 	})
 }
 
+func TestCopilotService_ListOrganizationCopilotSpaces(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot-spaces", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"per_page": "100",
+			"after":    "cursor",
+		})
+		fmt.Fprint(w, `{
+			"spaces": [
+			{
+				"id": 12,
+				"number": 6,
+				"name": "Test Planning Space",
+				"description": "A space for planning",
+				"general_instructions": "use this space for team planning",
+				"owner": {
+					"login": "octo-org",
+					"id": 1,
+					"type": "Organization"
+				},
+				"creator": {
+					"login": "octocat",
+					"id": 2,
+					"type": "User"
+				},
+				"created_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`,
+				"html_url": "https://github.com/copilot/spaces/octo-org/3",
+				"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/3",
+				"base_role": "read"
+			}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &ListCursorOptions{PerPage: 100, After: "cursor"}
+	got, _, err := client.Copilot.ListOrganizationCopilotSpaces(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Copilot.ListOrganizationCopilotSpaces returned error: %v", err)
+	}
+	want := &CopilotSpacesList{
+		Spaces: []*CopilotSpace{
+			{
+				ID:                  int64(12),
+				Number:              6,
+				Name:                "Test Planning Space",
+				Description:         Ptr("A space for planning"),
+				GeneralInstructions: Ptr("use this space for team planning"),
+				Owner: User{
+					Login: Ptr("octo-org"),
+					ID:    Ptr(int64(1)),
+					Type:  Ptr("Organization"),
+				},
+				Creator: User{
+					Login: Ptr("octocat"),
+					ID:    Ptr(int64(2)),
+					Type:  Ptr("User"),
+				},
+				CreatedAt: *refTimestamp(1136178000),
+				UpdatedAt: *refTimestamp(1136178001),
+				HTMLURL:   "https://github.com/copilot/spaces/octo-org/3",
+				APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/3",
+				BaseRole:  "read",
+			},
+		},
+	}
+
+	assertNoDiff(t, want, got)
+
+	const methodName = "ListOrganizationCopilotSpaces"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.ListOrganizationCopilotSpaces(ctx, "\n", opts)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.ListOrganizationCopilotSpaces(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("Copilot.ListOrganizationCopilotSpaces returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationCopilotSpace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot-spaces/6", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": 12,
+			"number": 6,
+			"name": "Test Planning Space",
+			"description": "A space for planning",
+			"general_instructions": "use this space for team planning",
+			"owner": {
+				"login": "octo-org",
+				"id": 1,
+				"type": "Organization"
+			},
+			"creator": {
+				"login": "octocat",
+				"id": 2,
+				"type": "User"
+			},
+			"created_at": `+refTimeStr(1136178000)+`,
+			"updated_at": `+refTimeStr(1136178001)+`,
+			"html_url": "https://github.com/copilot/spaces/octo-org/6",
+			"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+			"base_role": "read"
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.GetOrganizationCopilotSpace(ctx, "o", 6)
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationCopilotSpace returned error: %v", err)
+	}
+
+	want := &CopilotSpace{
+		ID:                  int64(12),
+		Number:              6,
+		Name:                "Test Planning Space",
+		Description:         Ptr("A space for planning"),
+		GeneralInstructions: Ptr("use this space for team planning"),
+		Owner: User{
+			Login: Ptr("octo-org"),
+			ID:    Ptr(int64(1)),
+			Type:  Ptr("Organization"),
+		},
+		Creator: User{
+			Login: Ptr("octocat"),
+			ID:    Ptr(int64(2)),
+			Type:  Ptr("User"),
+		},
+		CreatedAt: *refTimestamp(1136178000),
+		UpdatedAt: *refTimestamp(1136178001),
+		HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+		APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		BaseRole:  "read",
+	}
+
+	assertNoDiff(t, want, got)
+
+	const methodName = "GetOrganizationCopilotSpace"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationCopilotSpace(ctx, "\n", 6)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationCopilotSpace(ctx, "o", 6)
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationCopilotSpace returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CreateOrganizationCopilotSpaceRequest{
+		Name:                "Team Planning Space",
+		Description:         Ptr("Organization space for team planning"),
+		GeneralInstructions: Ptr("Help the team with planning tasks"),
+		BaseRole:            Ptr("no_access"),
+		ResourcesAttributes: []*CopilotSpaceResource{
+			{
+				ResourceType: Ptr("free_text"),
+				Metadata: &CopilotSpaceMetadata{
+					Name: Ptr("Team Guidelines"),
+					Text: Ptr("Our team follows agile methodology"),
+				},
+			},
+		},
+	}
+
+	want := &CopilotSpace{
+		ID:                  int64(12),
+		Number:              6,
+		Name:                "Team Planning Space",
+		Description:         Ptr("Organization space for team planning"),
+		GeneralInstructions: Ptr("Help the team with planning tasks"),
+		Owner: User{
+			Login: Ptr("octo-org"),
+			ID:    Ptr(int64(1)),
+			Type:  Ptr("Organization"),
+		},
+		Creator: User{
+			Login: Ptr("octocat"),
+			ID:    Ptr(int64(2)),
+			Type:  Ptr("User"),
+		},
+		CreatedAt: *refTimestamp(1136178000),
+		UpdatedAt: *refTimestamp(1136178001),
+		HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+		APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		BaseRole:  "no_access",
+		ResourcesAttributes: []*CopilotSpaceResource{
+			{
+				ID:           Ptr(int64(101)),
+				ResourceType: Ptr("free_text"),
+				Metadata: &CopilotSpaceMetadata{
+					Name: Ptr("Team Guidelines"),
+					Text: Ptr("Our team follows agile methodology"),
+				},
+			},
+			{
+				ID:                      Ptr(int64(125)),
+				ResourceType:            Ptr("media_content"),
+				CopilotChatAttachmentID: Ptr(int64(123)),
+				Metadata: &CopilotSpaceMetadata{
+					CopilotChatAttachmentID: Ptr(int64(123)),
+					MediaType:               Ptr("image/png"),
+					URL:                     Ptr("https://test.com/image.png"),
+					Height:                  Ptr(640),
+					Width:                   Ptr(480),
+				},
+				CreatedAt: refTimestamp(1676450100),
+				UpdatedAt: refTimestamp(1676450400),
+			},
+		},
+	}
+
+	mux.HandleFunc("/orgs/o/copilot-spaces", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
+
+		fmt.Fprint(w, `{
+		"id": 12,
+		"number": 6,
+		"name": "Team Planning Space",
+		"description": "Organization space for team planning",
+		"general_instructions": "Help the team with planning tasks",
+		"owner": {
+			"login": "octo-org",
+			"id": 1,
+			"type": "Organization"
+		},
+		"creator": {
+			"login": "octocat",
+			"id": 2,
+			"type": "User"
+		},
+		"created_at": `+refTimeStr(1136178000)+`,
+		"updated_at": `+refTimeStr(1136178001)+`,
+		"html_url": "https://github.com/copilot/spaces/octo-org/6",
+		"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		"base_role": "no_access",
+		"resources_attributes": [
+		{
+			"id": 101,
+			"resource_type": "free_text",
+			"metadata": {
+				"name": "Team Guidelines",
+				"text": "Our team follows agile methodology"
+			}
+		},
+		{
+			"id": 125,
+			"resource_type": "media_content",
+			"copilot_chat_attachment_id": 123,
+			"metadata": {
+				"copilot_chat_attachment_id": 123,
+				"media_type": "image/png",
+				"url": "https://test.com/image.png",
+				"height": 640,
+				"width": 480
+			},
+			"created_at": "2023-02-15T08:35:00Z",
+			"updated_at": "2023-02-15T08:40:00Z"
+		}
+	]
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.CreateOrganizationCopilotSpace(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Copilot.CreateOrganizationCopilotSpace returned error: %v", err)
+	}
+
+	assertNoDiff(t, want, got)
+
+	const methodName = "CreateOrganizationCopilotSpace"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.CreateOrganizationCopilotSpace(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.CreateOrganizationCopilotSpace(ctx, "o", input)
+		if got != nil {
+			t.Errorf("Copilot.CreateOrganizationCopilotSpace returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := UpdateOrganizationCopilotSpaceRequest{
+		Name:                Ptr("Team Planning Space"),
+		Description:         Ptr("Updated organization space for team planning"),
+		GeneralInstructions: Ptr("Help the team with updated planning tasks"),
+		BaseRole:            Ptr("read"),
+		ResourcesAttributes: []*CopilotSpaceResource{
+			{
+				ID:           Ptr(int64(101)),
+				ResourceType: Ptr("free_text"),
+				Metadata: &CopilotSpaceMetadata{
+					Name: Ptr("Team Guidelines"),
+					Text: Ptr("Our team follows agile methodology"),
+				},
+			},
+		},
+	}
+
+	want := &CopilotSpace{
+		ID:                  int64(12),
+		Number:              6,
+		Name:                "Team Planning Space",
+		Description:         Ptr("Updated organization space for team planning"),
+		GeneralInstructions: Ptr("Help the team with updated planning tasks"),
+		Owner: User{
+			Login: Ptr("octo-org"),
+			ID:    Ptr(int64(1)),
+			Type:  Ptr("Organization"),
+		},
+		Creator: User{
+			Login: Ptr("octocat"),
+			ID:    Ptr(int64(2)),
+			Type:  Ptr("User"),
+		},
+		CreatedAt: *refTimestamp(1136178000),
+		UpdatedAt: *refTimestamp(1136178001),
+		HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+		APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		BaseRole:  "read",
+		ResourcesAttributes: []*CopilotSpaceResource{
+			{
+				ID:           Ptr(int64(101)),
+				ResourceType: Ptr("free_text"),
+				Metadata: &CopilotSpaceMetadata{
+					Name: Ptr("Updated Team Guidelines"),
+					Text: Ptr("Our team now follows updated agile methodology"),
+				},
+			},
+		},
+	}
+
+	mux.HandleFunc("/orgs/o/copilot-spaces/6", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+
+		fmt.Fprint(w, `{
+		"id": 12,
+		"number": 6,
+		"name": "Team Planning Space",
+		"description": "Updated organization space for team planning",
+		"general_instructions": "Help the team with updated planning tasks",
+		"owner": {
+			"login": "octo-org",
+			"id": 1,
+			"type": "Organization"
+		},
+		"creator": {
+			"login": "octocat",
+			"id": 2,
+			"type": "User"
+		},
+		"created_at": `+refTimeStr(1136178000)+`,
+		"updated_at": `+refTimeStr(1136178001)+`,
+		"html_url": "https://github.com/copilot/spaces/octo-org/6",
+		"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		"base_role": "read",
+		"resources_attributes": [
+		{
+			"id": 101,
+			"resource_type": "free_text",
+			"metadata": {
+				"name": "Updated Team Guidelines",
+				"text": "Our team now follows updated agile methodology"
+			}
+		}
+	]
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.UpdateOrganizationCopilotSpace(ctx, "o", 6, input)
+	if err != nil {
+		t.Errorf("Copilot.UpdateOrganizationCopilotSpace returned error: %v", err)
+	}
+
+	assertNoDiff(t, want, got)
+
+	const methodName = "UpdateOrganizationCopilotSpace"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.UpdateOrganizationCopilotSpace(ctx, "\n", 6, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.UpdateOrganizationCopilotSpace(ctx, "o", 6, input)
+		if got != nil {
+			t.Errorf("Copilot.UpdateOrganizationCopilotSpace returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_DeleteOrganizationCopilotSpace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot-spaces/6", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := t.Context()
+	_, err := client.Copilot.DeleteOrganizationCopilotSpace(ctx, "o", 6)
+	if err != nil {
+		t.Errorf("Copilot.DeleteOrganizationCopilotSpace returned error: %v", err)
+	}
+
+	const methodName = "DeleteOrganizationCopilotSpace"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Copilot.DeleteOrganizationCopilotSpace(ctx, "\n", 6)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Copilot.DeleteOrganizationCopilotSpace(ctx, "o", 6)
+	})
+}
+
 func TestCopilotService_GetSeatDetails(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
