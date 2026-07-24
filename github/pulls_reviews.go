@@ -93,12 +93,12 @@ func (r *PullRequestReviewRequest) isComfortFadePreview() (bool, error) {
 	return false, nil
 }
 
-// PullRequestReviewDismissalRequest represents a request to dismiss a review.
-type PullRequestReviewDismissalRequest struct {
+// PullRequestDismissReviewRequest represents a request to dismiss a review.
+type PullRequestDismissReviewRequest struct {
 	Message string `json:"message"`
 }
 
-func (r PullRequestReviewDismissalRequest) String() string {
+func (r PullRequestDismissReviewRequest) String() string {
 	return Stringify(r)
 }
 
@@ -315,7 +315,7 @@ func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo stri
 // GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#dismiss-a-review-for-a-pull-request
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals
-func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, body PullRequestReviewDismissalRequest) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) DismissReview(ctx context.Context, owner, repo string, number int, reviewID int64, body PullRequestDismissReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews/%v/dismissals", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
