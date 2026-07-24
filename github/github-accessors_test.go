@@ -39146,6 +39146,17 @@ func TestPullRequestComment_GetUser(tt *testing.T) {
 	p.GetUser()
 }
 
+func TestPullRequestDismissReviewRequest_GetEvent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestDismissReviewRequest{Event: &zeroValue}
+	p.GetEvent()
+	p = &PullRequestDismissReviewRequest{}
+	p.GetEvent()
+	p = nil
+	p.GetEvent()
+}
+
 func TestPullRequestDismissReviewRequest_GetMessage(tt *testing.T) {
 	tt.Parallel()
 	p := &PullRequestDismissReviewRequest{}

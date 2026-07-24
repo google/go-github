@@ -95,7 +95,8 @@ func (r *PullRequestReviewRequest) isComfortFadePreview() (bool, error) {
 
 // PullRequestDismissReviewRequest represents a request to dismiss a review.
 type PullRequestDismissReviewRequest struct {
-	Message string `json:"message"`
+	Message string  `json:"message"`
+	Event   *string `json:"event,omitempty"`
 }
 
 func (r PullRequestDismissReviewRequest) String() string {

@@ -562,7 +562,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := PullRequestDismissReviewRequest{Message: "m"}
+	input := PullRequestDismissReviewRequest{Message: "m", Event: Ptr("DISMISS")}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/dismissals", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")

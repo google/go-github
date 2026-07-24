@@ -31126,6 +31126,14 @@ func (p *PullRequestComment) GetUser() *User {
 	return p.User
 }
 
+// GetEvent returns the Event field if it's non-nil, zero value otherwise.
+func (p *PullRequestDismissReviewRequest) GetEvent() string {
+	if p == nil || p.Event == nil {
+		return ""
+	}
+	return *p.Event
+}
+
 // GetMessage returns the Message field.
 func (p *PullRequestDismissReviewRequest) GetMessage() string {
 	if p == nil {

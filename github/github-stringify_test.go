@@ -1709,8 +1709,9 @@ func TestPullRequestDismissReviewRequest_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequestDismissReviewRequest{
 		Message: "",
+		Event:   Ptr(""),
 	}
-	want := `github.PullRequestDismissReviewRequest{Message:""}`
+	want := `github.PullRequestDismissReviewRequest{Message:"", Event:""}`
 	if got := v.String(); got != want {
 		t.Errorf("PullRequestDismissReviewRequest.String = %v, want %v", got, want)
 	}
