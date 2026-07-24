@@ -31934,6 +31934,22 @@ func (p *PullRequestRuleParameters) GetRequireLastPushApproval() bool {
 	return p.RequireLastPushApproval
 }
 
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (p *PullRequestSubmitReviewRequest) GetBody() string {
+	if p == nil || p.Body == nil {
+		return ""
+	}
+	return *p.Body
+}
+
+// GetEvent returns the Event field.
+func (p *PullRequestSubmitReviewRequest) GetEvent() string {
+	if p == nil {
+		return ""
+	}
+	return p.Event
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestTargetEvent) GetAction() string {
 	if p == nil || p.Action == nil {

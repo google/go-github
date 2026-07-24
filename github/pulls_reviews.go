@@ -103,6 +103,12 @@ func (r PullRequestDismissReviewRequest) String() string {
 	return Stringify(r)
 }
 
+// PullRequestSubmitReviewRequest represents a request to submit a review.
+type PullRequestSubmitReviewRequest struct {
+	Body  *string `json:"body,omitempty"`
+	Event string  `json:"event"`
+}
+
 // ListReviews lists all reviews on the specified pull request.
 //
 // GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#list-reviews-for-a-pull-request
@@ -294,7 +300,7 @@ func (s *PullRequestsService) UpdateReview(ctx context.Context, owner, repo stri
 // GitHub API docs: https://docs.github.com/rest/pulls/reviews?apiVersion=2022-11-28#submit-a-review-for-a-pull-request
 //
 //meta:operation POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events
-func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, body *PullRequestReviewRequest) (*PullRequestReview, *Response, error) {
+func (s *PullRequestsService) SubmitReview(ctx context.Context, owner, repo string, number int, reviewID int64, body PullRequestSubmitReviewRequest) (*PullRequestReview, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/reviews/%v/events", owner, repo, number, reviewID)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)

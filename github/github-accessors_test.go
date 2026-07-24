@@ -40068,6 +40068,25 @@ func TestPullRequestRuleParameters_GetRequireLastPushApproval(tt *testing.T) {
 	p.GetRequireLastPushApproval()
 }
 
+func TestPullRequestSubmitReviewRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestSubmitReviewRequest{Body: &zeroValue}
+	p.GetBody()
+	p = &PullRequestSubmitReviewRequest{}
+	p.GetBody()
+	p = nil
+	p.GetBody()
+}
+
+func TestPullRequestSubmitReviewRequest_GetEvent(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestSubmitReviewRequest{}
+	p.GetEvent()
+	p = nil
+	p.GetEvent()
+}
+
 func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

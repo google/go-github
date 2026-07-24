@@ -512,9 +512,9 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PullRequestReviewRequest{
+	input := PullRequestSubmitReviewRequest{
 		Body:  Ptr("b"),
-		Event: Ptr("APPROVE"),
+		Event: "APPROVE",
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/events", func(w http.ResponseWriter, r *http.Request) {
@@ -554,7 +554,7 @@ func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.PullRequests.SubmitReview(ctx, "%", "r", 1, 1, &PullRequestReviewRequest{})
+	_, _, err := client.PullRequests.SubmitReview(ctx, "%", "r", 1, 1, PullRequestSubmitReviewRequest{})
 	testURLParseError(t, err)
 }
 
