@@ -29,7 +29,7 @@ type SecretScanningCustomPattern struct {
 
 	// State is the publish state of the pattern. Possible values are:
 	// "published" or "unpublished".
-	State *string `json:"state,omitempty"`
+	State string `json:"state"`
 
 	// PushProtectionEnabled reports whether push protection is enabled for
 	// this custom pattern.

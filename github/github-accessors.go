@@ -39526,12 +39526,12 @@ func (s *SecretScanningCustomPattern) GetStartDelimiter() string {
 	return *s.StartDelimiter
 }
 
-// GetState returns the State field if it's non-nil, zero value otherwise.
+// GetState returns the State field.
 func (s *SecretScanningCustomPattern) GetState() string {
-	if s == nil || s.State == nil {
+	if s == nil {
 		return ""
 	}
-	return *s.State
+	return s.State
 }
 
 // GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.

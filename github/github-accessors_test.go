@@ -49507,10 +49507,7 @@ func TestSecretScanningCustomPattern_GetStartDelimiter(tt *testing.T) {
 
 func TestSecretScanningCustomPattern_GetState(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	s := &SecretScanningCustomPattern{State: &zeroValue}
-	s.GetState()
-	s = &SecretScanningCustomPattern{}
+	s := &SecretScanningCustomPattern{}
 	s.GetState()
 	s = nil
 	s.GetState()
