@@ -795,6 +795,12 @@ func WithVersion(version string) RequestOption {
 	}
 }
 
+var requestBufferPool = sync.Pool{
+	New: func() any {
+		return new(bytes.Buffer)
+	},
+}
+
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash. If
@@ -1407,12 +1413,24 @@ func (c *Client) Do(req *http.Request, v any) (*Response, error) {
 	case io.Writer:
 		_, err = io.Copy(v, resp.Body)
 	default:
-		decErr := json.NewDecoder(resp.Body).Decode(v)
-		if decErr == io.EOF {
-			decErr = nil // ignore EOF errors caused by empty response body
-		}
-		if decErr != nil {
-			err = decErr
+		respBuf := requestBufferPool.Get().(*bytes.Buffer)
+		defer func() {
+			respBuf.Reset()
+			requestBufferPool.Put(respBuf)
+		}()
+
+		_, readErr := respBuf.ReadFrom(resp.Body)
+		if readErr != nil {
+			err = readErr
+		} else if respBuf.Len() > 0 {
+			b := respBuf.Bytes()
+			decErr := json.Unmarshal(b, v)
+			if decErr != nil && len(bytes.TrimSpace(b)) == 0 {
+				decErr = nil // ignore errors caused by empty response body
+			}
+			if decErr != nil {
+				err = decErr
+			}
 		}
 	}
 	return resp, err
