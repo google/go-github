@@ -31558,12 +31558,12 @@ func (p *PullRequestReviewCommentEvent) GetSender() *User {
 	return p.Sender
 }
 
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+// GetMessage returns the Message field.
 func (p *PullRequestReviewDismissalRequest) GetMessage() string {
-	if p == nil || p.Message == nil {
+	if p == nil {
 		return ""
 	}
-	return *p.Message
+	return p.Message
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
