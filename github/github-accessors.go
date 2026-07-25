@@ -25342,6 +25342,22 @@ func (o *OAuthAPP) GetURL() string {
 	return *o.URL
 }
 
+// GetCustomPropertyName returns the CustomPropertyName field if it's non-nil, zero value otherwise.
+func (o *OIDCCustomPropertyClaim) GetCustomPropertyName() string {
+	if o == nil || o.CustomPropertyName == nil {
+		return ""
+	}
+	return *o.CustomPropertyName
+}
+
+// GetInclusionSource returns the InclusionSource field.
+func (o *OIDCCustomPropertyClaim) GetInclusionSource() *InclusionSource {
+	if o == nil {
+		return nil
+	}
+	return o.InclusionSource
+}
+
 // GetIncludeClaimKeys returns the IncludeClaimKeys slice if it's non-nil, nil otherwise.
 func (o *OIDCSubjectClaimCustomTemplate) GetIncludeClaimKeys() []string {
 	if o == nil || o.IncludeClaimKeys == nil {
