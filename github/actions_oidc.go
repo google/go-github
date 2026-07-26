@@ -93,8 +93,8 @@ const (
 
 // OIDCCustomPropertyClaim represents an OIDC custom property claim for GitHub Actions.
 type OIDCCustomPropertyClaim struct {
-	CustomPropertyName *string          `json:"custom_property_name,omitempty"`
-	InclusionSource    *InclusionSource `json:"inclusion_source,omitempty"`
+	CustomPropertyName string          `json:"custom_property_name"`
+	InclusionSource    InclusionSource `json:"inclusion_source"`
 }
 
 // ListEnterpriseOIDCCustomPropertyClaims lists the custom property claims in oidc for enterprise actions.
