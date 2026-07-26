@@ -90,9 +90,9 @@ type SecretScanningCreateCustomPatternsRequest struct {
 	Patterns []*SecretScanningCustomPatternRequest `json:"patterns"`
 }
 
-// SecretScanningCustomPatternsCreateResponse represents the bulk response
+// SecretScanningCreateCustomPatternsResponse represents the bulk response
 // returned after creating one or more custom patterns.
-type SecretScanningCustomPatternsCreateResponse struct {
+type SecretScanningCreateCustomPatternsResponse struct {
 	// CreatedPatterns is the list of successfully created custom patterns.
 	CreatedPatterns []*SecretScanningCustomPattern `json:"created_patterns"`
 }
@@ -205,7 +205,7 @@ func (s *SecretScanningService) ListCustomPatternsForRepo(ctx context.Context, o
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/custom-patterns?apiVersion=2022-11-28#bulk-create-repository-custom-patterns
 //
 //meta:operation POST /repos/{owner}/{repo}/secret-scanning/custom-patterns
-func (s *SecretScanningService) CreateCustomPatternsForRepo(ctx context.Context, owner, repo string, body SecretScanningCreateCustomPatternsRequest) (*SecretScanningCustomPatternsCreateResponse, *Response, error) {
+func (s *SecretScanningService) CreateCustomPatternsForRepo(ctx context.Context, owner, repo string, body SecretScanningCreateCustomPatternsRequest) (*SecretScanningCreateCustomPatternsResponse, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/custom-patterns", owner, repo)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
@@ -213,7 +213,7 @@ func (s *SecretScanningService) CreateCustomPatternsForRepo(ctx context.Context,
 		return nil, nil, err
 	}
 
-	var result *SecretScanningCustomPatternsCreateResponse
+	var result *SecretScanningCreateCustomPatternsResponse
 	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err

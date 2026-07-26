@@ -39462,6 +39462,14 @@ func (s *SecretScanningCreateCustomPatternsRequest) GetPatterns() []*SecretScann
 	return s.Patterns
 }
 
+// GetCreatedPatterns returns the CreatedPatterns slice if it's non-nil, nil otherwise.
+func (s *SecretScanningCreateCustomPatternsResponse) GetCreatedPatterns() []*SecretScanningCustomPattern {
+	if s == nil || s.CreatedPatterns == nil {
+		return nil
+	}
+	return s.CreatedPatterns
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (s *SecretScanningCustomPattern) GetCreatedAt() Timestamp {
 	if s == nil || s.CreatedAt == nil {
@@ -39644,14 +39652,6 @@ func (s *SecretScanningCustomPatternRequest) GetStartDelimiter() string {
 		return ""
 	}
 	return *s.StartDelimiter
-}
-
-// GetCreatedPatterns returns the CreatedPatterns slice if it's non-nil, nil otherwise.
-func (s *SecretScanningCustomPatternsCreateResponse) GetCreatedPatterns() []*SecretScanningCustomPattern {
-	if s == nil || s.CreatedPatterns == nil {
-		return nil
-	}
-	return s.CreatedPatterns
 }
 
 // GetCustomPatternVersion returns the CustomPatternVersion field if it's non-nil, zero value otherwise.

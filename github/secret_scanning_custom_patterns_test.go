@@ -128,7 +128,7 @@ func TestSecretScanningService_CreateCustomPatternsForRepo(t *testing.T) {
 		t.Errorf("SecretScanning.CreateCustomPatternsForRepo returned error: %v", err)
 	}
 
-	want := &SecretScanningCustomPatternsCreateResponse{
+	want := &SecretScanningCreateCustomPatternsResponse{
 		CreatedPatterns: []*SecretScanningCustomPattern{
 			{
 				ID:                    1,

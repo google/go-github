@@ -49405,6 +49405,17 @@ func TestSecretScanningCreateCustomPatternsRequest_GetPatterns(tt *testing.T) {
 	s.GetPatterns()
 }
 
+func TestSecretScanningCreateCustomPatternsResponse_GetCreatedPatterns(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningCustomPattern{}
+	s := &SecretScanningCreateCustomPatternsResponse{CreatedPatterns: zeroValue}
+	s.GetCreatedPatterns()
+	s = &SecretScanningCreateCustomPatternsResponse{}
+	s.GetCreatedPatterns()
+	s = nil
+	s.GetCreatedPatterns()
+}
+
 func TestSecretScanningCustomPattern_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -49620,17 +49631,6 @@ func TestSecretScanningCustomPatternRequest_GetStartDelimiter(tt *testing.T) {
 	s.GetStartDelimiter()
 	s = nil
 	s.GetStartDelimiter()
-}
-
-func TestSecretScanningCustomPatternsCreateResponse_GetCreatedPatterns(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []*SecretScanningCustomPattern{}
-	s := &SecretScanningCustomPatternsCreateResponse{CreatedPatterns: zeroValue}
-	s.GetCreatedPatterns()
-	s = &SecretScanningCustomPatternsCreateResponse{}
-	s.GetCreatedPatterns()
-	s = nil
-	s.GetCreatedPatterns()
 }
 
 func TestSecretScanningCustomPatternSetting_GetCustomPatternVersion(tt *testing.T) {
