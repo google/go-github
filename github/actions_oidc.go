@@ -93,8 +93,13 @@ const (
 
 // OIDCCustomPropertyClaim represents an OIDC custom property claim for GitHub Actions.
 type OIDCCustomPropertyClaim struct {
-	CustomPropertyName string          `json:"custom_property_name"`
-	InclusionSource    InclusionSource `json:"inclusion_source"`
+	CustomPropertyName string `json:"custom_property_name"`
+}
+
+// OIDCCustomPropertyClaimResponse represents the OIDC custom property claim along with the inclusion source (enterprise or organization) for GitHub Actions.
+type OIDCCustomPropertyClaimResponse struct {
+	OIDCCustomPropertyClaim
+	InclusionSource InclusionSource `json:"inclusion_source"`
 }
 
 // ListEnterpriseOIDCCustomPropertyClaims lists the custom property claims in oidc for enterprise actions.
@@ -102,7 +107,7 @@ type OIDCCustomPropertyClaim struct {
 // GitHub API docs: https://docs.github.com/rest/actions/oidc?apiVersion=2022-11-28#list-oidc-custom-property-inclusions-for-an-enterprise
 //
 //meta:operation GET /enterprises/{enterprise}/actions/oidc/customization/properties/repo
-func (s *ActionsService) ListEnterpriseOIDCCustomPropertyClaims(ctx context.Context, enterprise string) ([]*OIDCCustomPropertyClaim, *Response, error) {
+func (s *ActionsService) ListEnterpriseOIDCCustomPropertyClaims(ctx context.Context, enterprise string) ([]*OIDCCustomPropertyClaimResponse, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/actions/oidc/customization/properties/repo", enterprise)
 	return s.listOIDCCustomPropertyClaims(ctx, u)
 }
@@ -112,18 +117,18 @@ func (s *ActionsService) ListEnterpriseOIDCCustomPropertyClaims(ctx context.Cont
 // GitHub API docs: https://docs.github.com/rest/actions/oidc?apiVersion=2022-11-28#list-oidc-custom-property-inclusions-for-an-organization
 //
 //meta:operation GET /orgs/{org}/actions/oidc/customization/properties/repo
-func (s *ActionsService) ListOrgOIDCCustomPropertyClaims(ctx context.Context, org string) ([]*OIDCCustomPropertyClaim, *Response, error) {
+func (s *ActionsService) ListOrgOIDCCustomPropertyClaims(ctx context.Context, org string) ([]*OIDCCustomPropertyClaimResponse, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/actions/oidc/customization/properties/repo", org)
 	return s.listOIDCCustomPropertyClaims(ctx, u)
 }
 
-func (s *ActionsService) listOIDCCustomPropertyClaims(ctx context.Context, url string) ([]*OIDCCustomPropertyClaim, *Response, error) {
+func (s *ActionsService) listOIDCCustomPropertyClaims(ctx context.Context, url string) ([]*OIDCCustomPropertyClaimResponse, *Response, error) {
 	req, err := s.client.NewRequest(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var props []*OIDCCustomPropertyClaim
+	var props []*OIDCCustomPropertyClaimResponse
 	resp, err := s.client.Do(req, &props)
 	if err != nil {
 		return nil, resp, err

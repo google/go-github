@@ -198,9 +198,9 @@ func TestActionsService_ListEnterpriseOIDCCustomPropertyClaims(t *testing.T) {
 		t.Errorf("Actions.ListEnterpriseOIDCCustomPropertyClaims returned error: %v", err)
 	}
 
-	want := []*OIDCCustomPropertyClaim{
-		{CustomPropertyName: Ptr("environment"), InclusionSource: Ptr(InclusionSourceEnterprise)},
-		{CustomPropertyName: Ptr("lane"), InclusionSource: Ptr(InclusionSourceEnterprise)},
+	want := []*OIDCCustomPropertyClaimResponse{
+		{OIDCCustomPropertyClaim: OIDCCustomPropertyClaim{"environment"}, InclusionSource: InclusionSourceEnterprise},
+		{OIDCCustomPropertyClaim: OIDCCustomPropertyClaim{"lane"}, InclusionSource: InclusionSourceEnterprise},
 	}
 
 	if !cmp.Equal(claims, want) {
@@ -237,9 +237,9 @@ func TestActionsService_ListOrgOIDCCustomPropertyClaims(t *testing.T) {
 		t.Errorf("Actions.ListOrgOIDCCustomPropertyClaims returned error: %v", err)
 	}
 
-	want := []*OIDCCustomPropertyClaim{
-		{CustomPropertyName: Ptr("environment"), InclusionSource: Ptr(InclusionSourceOrganization)},
-		{CustomPropertyName: Ptr("lane"), InclusionSource: Ptr(InclusionSourceOrganization)},
+	want := []*OIDCCustomPropertyClaimResponse{
+		{OIDCCustomPropertyClaim: OIDCCustomPropertyClaim{"environment"}, InclusionSource: InclusionSourceOrganization},
+		{OIDCCustomPropertyClaim: OIDCCustomPropertyClaim{"lane"}, InclusionSource: InclusionSourceOrganization},
 	}
 
 	if !cmp.Equal(claims, want) {
@@ -266,7 +266,7 @@ func TestActionsService_SetEnterpriseOIDCCustomPropertyClaim(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := OIDCCustomPropertyClaim{
-		CustomPropertyName: Ptr("environment"),
+		CustomPropertyName: "environment",
 	}
 
 	mux.HandleFunc("/enterprises/e/actions/oidc/customization/properties/repo", func(w http.ResponseWriter, r *http.Request) {
@@ -283,7 +283,7 @@ func TestActionsService_SetEnterpriseOIDCCustomPropertyClaim(t *testing.T) {
 		t.Errorf("Actions.SetEnterpriseOIDCCustomPropertyClaim returned error: %v", err)
 	}
 
-	want := &OIDCCustomPropertyClaim{CustomPropertyName: Ptr("environment")}
+	want := &OIDCCustomPropertyClaim{CustomPropertyName: "environment"}
 	if !cmp.Equal(property, want) {
 		t.Errorf("Actions.SetEnterpriseOIDCCustomPropertyClaim returned %+v, want %+v", property, want)
 	}
@@ -309,7 +309,7 @@ func TestActionsService_SetOrgOIDCCustomPropertyClaim(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := OIDCCustomPropertyClaim{
-		CustomPropertyName: Ptr("environment"),
+		CustomPropertyName: "environment",
 	}
 
 	mux.HandleFunc("/orgs/o/actions/oidc/customization/properties/repo", func(w http.ResponseWriter, r *http.Request) {
@@ -326,7 +326,7 @@ func TestActionsService_SetOrgOIDCCustomPropertyClaim(t *testing.T) {
 		t.Errorf("Actions.SetOrgOIDCCustomPropertyClaim returned error: %v", err)
 	}
 
-	want := &OIDCCustomPropertyClaim{CustomPropertyName: Ptr("environment")}
+	want := &OIDCCustomPropertyClaim{CustomPropertyName: "environment"}
 	if !cmp.Equal(property, want) {
 		t.Errorf("Actions.SetOrgOIDCCustomPropertyClaim returned %+v, want %+v", property, want)
 	}
