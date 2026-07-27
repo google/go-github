@@ -82,12 +82,12 @@ func TestSecretScanningService_ListCustomPatternsForRepo(t *testing.T) {
 	const methodName = "ListCustomPatternsForRepo"
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.SecretScanning.ListCustomPatternsForRepo(ctx, "\n", "\n", nil)
+		_, _, err = client.SecretScanning.ListCustomPatternsForRepo(ctx, "\n", "\n", &SecretScanningCustomPatternListOptions{})
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		_, resp, err := client.SecretScanning.ListCustomPatternsForRepo(ctx, "o", "r", nil)
+		_, resp, err := client.SecretScanning.ListCustomPatternsForRepo(ctx, "o", "r", &SecretScanningCustomPatternListOptions{})
 		return resp, err
 	})
 }
