@@ -31784,6 +31784,22 @@ func TestOAuthAPP_GetURL(tt *testing.T) {
 	o.GetURL()
 }
 
+func TestOIDCCustomPropertyClaim_GetCustomPropertyName(tt *testing.T) {
+	tt.Parallel()
+	o := &OIDCCustomPropertyClaim{}
+	o.GetCustomPropertyName()
+	o = nil
+	o.GetCustomPropertyName()
+}
+
+func TestOIDCCustomPropertyClaimResponse_GetInclusionSource(tt *testing.T) {
+	tt.Parallel()
+	o := &OIDCCustomPropertyClaimResponse{}
+	o.GetInclusionSource()
+	o = nil
+	o.GetInclusionSource()
+}
+
 func TestOIDCSubjectClaimCustomTemplate_GetIncludeClaimKeys(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
