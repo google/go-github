@@ -21534,6 +21534,14 @@ func (i *IssuesSearchResult) GetIssues() []*Issue {
 	return i.Issues
 }
 
+// GetSearchType returns the SearchType field if it's non-nil, zero value otherwise.
+func (i *IssuesSearchResult) GetSearchType() string {
+	if i == nil || i.SearchType == nil {
+		return ""
+	}
+	return *i.SearchType
+}
+
 // GetTotal returns the Total field if it's non-nil, zero value otherwise.
 func (i *IssuesSearchResult) GetTotal() int {
 	if i == nil || i.Total == nil {
@@ -38804,6 +38812,14 @@ func (s *SearchOptions) GetOrder() string {
 		return ""
 	}
 	return s.Order
+}
+
+// GetSearchType returns the SearchType field.
+func (s *SearchOptions) GetSearchType() string {
+	if s == nil {
+		return ""
+	}
+	return s.SearchType
 }
 
 // GetSort returns the Sort field.
