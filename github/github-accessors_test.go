@@ -27114,6 +27114,17 @@ func TestIssuesSearchResult_GetIssues(tt *testing.T) {
 	i.GetIssues()
 }
 
+func TestIssuesSearchResult_GetSearchType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssuesSearchResult{SearchType: &zeroValue}
+	i.GetSearchType()
+	i = &IssuesSearchResult{}
+	i.GetSearchType()
+	i = nil
+	i.GetSearchType()
+}
+
 func TestIssuesSearchResult_GetTotal(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -48656,6 +48667,14 @@ func TestSearchOptions_GetOrder(tt *testing.T) {
 	s.GetOrder()
 	s = nil
 	s.GetOrder()
+}
+
+func TestSearchOptions_GetSearchType(tt *testing.T) {
+	tt.Parallel()
+	s := &SearchOptions{}
+	s.GetSearchType()
+	s = nil
+	s.GetSearchType()
 }
 
 func TestSearchOptions_GetSort(tt *testing.T) {
