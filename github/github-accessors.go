@@ -31991,7 +31991,7 @@ func (p *PullRequestRuleParameters) GetRequireLastPushApproval() bool {
 }
 
 // GetBase returns the Base field.
-func (p *PullRequestStack) GetBase() *PullRequestBranch {
+func (p *PullRequestStack) GetBase() *PullRequestStackBase {
 	if p == nil {
 		return nil
 	}
@@ -32028,6 +32028,22 @@ func (p *PullRequestStack) GetSize() int {
 		return 0
 	}
 	return *p.Size
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackBase) GetRef() string {
+	if p == nil || p.Ref == nil {
+		return ""
+	}
+	return *p.Ref
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackBase) GetSHA() string {
+	if p == nil || p.SHA == nil {
+		return ""
+	}
+	return *p.SHA
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.

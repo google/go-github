@@ -40182,6 +40182,28 @@ func TestPullRequestStack_GetSize(tt *testing.T) {
 	p.GetSize()
 }
 
+func TestPullRequestStackBase_GetRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestStackBase{Ref: &zeroValue}
+	p.GetRef()
+	p = &PullRequestStackBase{}
+	p.GetRef()
+	p = nil
+	p.GetRef()
+}
+
+func TestPullRequestStackBase_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestStackBase{SHA: &zeroValue}
+	p.GetSHA()
+	p = &PullRequestStackBase{}
+	p.GetSHA()
+	p = nil
+	p.GetSHA()
+}
+
 func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
