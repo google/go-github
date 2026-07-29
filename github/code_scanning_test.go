@@ -1393,6 +1393,32 @@ func TestCodeScanningService_GetCodeQLDatabase(t *testing.T) {
 	})
 }
 
+func TestCodeScanningService_DeleteCodeQLDatabase(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/code-scanning/codeql/databases/lang", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	_, err := client.CodeScanning.DeleteCodeQLDatabase(ctx, "o", "r", "lang")
+	if err != nil {
+		t.Errorf("CodeScanning.DeleteCodeQLDatabase returned error: %v", err)
+	}
+
+	const methodName = "DeleteCodeQLDatabase"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.CodeScanning.DeleteCodeQLDatabase(ctx, "\n", "\n", "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.CodeScanning.DeleteCodeQLDatabase(ctx, "o", "r", "lang")
+	})
+}
+
 func TestCodeScanningService_GetDefaultSetupConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
