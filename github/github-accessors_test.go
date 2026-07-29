@@ -38734,6 +38734,14 @@ func TestPullRequest_GetReviewCommentURL(tt *testing.T) {
 	p.GetReviewCommentURL()
 }
 
+func TestPullRequest_GetStack(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequest{}
+	p.GetStack()
+	p = nil
+	p.GetStack()
+}
+
 func TestPullRequest_GetState(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -40120,6 +40128,58 @@ func TestPullRequestRuleParameters_GetRequireLastPushApproval(tt *testing.T) {
 	p.GetRequireLastPushApproval()
 	p = nil
 	p.GetRequireLastPushApproval()
+}
+
+func TestPullRequestStack_GetBase(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStack{}
+	p.GetBase()
+	p = nil
+	p.GetBase()
+}
+
+func TestPullRequestStack_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PullRequestStack{ID: &zeroValue}
+	p.GetID()
+	p = &PullRequestStack{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPullRequestStack_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &PullRequestStack{Number: &zeroValue}
+	p.GetNumber()
+	p = &PullRequestStack{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestPullRequestStack_GetPosition(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &PullRequestStack{Position: &zeroValue}
+	p.GetPosition()
+	p = &PullRequestStack{}
+	p.GetPosition()
+	p = nil
+	p.GetPosition()
+}
+
+func TestPullRequestStack_GetSize(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &PullRequestStack{Size: &zeroValue}
+	p.GetSize()
+	p = &PullRequestStack{}
+	p.GetSize()
+	p = nil
+	p.GetSize()
 }
 
 func TestPullRequestTargetEvent_GetAction(tt *testing.T) {
