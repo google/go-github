@@ -31190,6 +31190,22 @@ func (p *PullRequestComment) GetUser() *User {
 	return p.User
 }
 
+// GetEvent returns the Event field if it's non-nil, zero value otherwise.
+func (p *PullRequestDismissReviewRequest) GetEvent() string {
+	if p == nil || p.Event == nil {
+		return ""
+	}
+	return *p.Event
+}
+
+// GetMessage returns the Message field.
+func (p *PullRequestDismissReviewRequest) GetMessage() string {
+	if p == nil {
+		return ""
+	}
+	return p.Message
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestEvent) GetAction() string {
 	if p == nil || p.Action == nil {
@@ -31622,14 +31638,6 @@ func (p *PullRequestReviewCommentEvent) GetSender() *User {
 	return p.Sender
 }
 
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (p *PullRequestReviewDismissalRequest) GetMessage() string {
-	if p == nil || p.Message == nil {
-		return ""
-	}
-	return *p.Message
-}
-
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (p *PullRequestReviewEvent) GetAction() string {
 	if p == nil || p.Action == nil {
@@ -32044,6 +32052,22 @@ func (p *PullRequestStackBase) GetSHA() string {
 		return ""
 	}
 	return p.SHA
+}
+
+// GetBody returns the Body field if it's non-nil, zero value otherwise.
+func (p *PullRequestSubmitReviewRequest) GetBody() string {
+	if p == nil || p.Body == nil {
+		return ""
+	}
+	return *p.Body
+}
+
+// GetEvent returns the Event field.
+func (p *PullRequestSubmitReviewRequest) GetEvent() string {
+	if p == nil {
+		return ""
+	}
+	return p.Event
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.

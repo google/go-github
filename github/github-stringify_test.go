@@ -1706,6 +1706,18 @@ func TestPullRequestComment_String(t *testing.T) {
 	}
 }
 
+func TestPullRequestDismissReviewRequest_String(t *testing.T) {
+	t.Parallel()
+	v := PullRequestDismissReviewRequest{
+		Message: "",
+		Event:   Ptr(""),
+	}
+	want := `github.PullRequestDismissReviewRequest{Message:"", Event:""}`
+	if got := v.String(); got != want {
+		t.Errorf("PullRequestDismissReviewRequest.String = %v, want %v", got, want)
+	}
+}
+
 func TestPullRequestReview_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequestReview{
@@ -1723,17 +1735,6 @@ func TestPullRequestReview_String(t *testing.T) {
 	want := `github.PullRequestReview{ID:0, NodeID:"", User:github.User{}, Body:"", SubmittedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CommitID:"", HTMLURL:"", PullRequestURL:"", State:"", AuthorAssociation:""}`
 	if got := v.String(); got != want {
 		t.Errorf("PullRequestReview.String = %v, want %v", got, want)
-	}
-}
-
-func TestPullRequestReviewDismissalRequest_String(t *testing.T) {
-	t.Parallel()
-	v := PullRequestReviewDismissalRequest{
-		Message: Ptr(""),
-	}
-	want := `github.PullRequestReviewDismissalRequest{Message:""}`
-	if got := v.String(); got != want {
-		t.Errorf("PullRequestReviewDismissalRequest.String = %v, want %v", got, want)
 	}
 }
 
