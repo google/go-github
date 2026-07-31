@@ -1097,6 +1097,22 @@ func TestAdvisoryCVSS_GetVectorString(tt *testing.T) {
 	a.GetVectorString()
 }
 
+func TestAdvisoryCVSSSeverities_GetCVSSV3(tt *testing.T) {
+	tt.Parallel()
+	a := &AdvisoryCVSSSeverities{}
+	a.GetCVSSV3()
+	a = nil
+	a.GetCVSSV3()
+}
+
+func TestAdvisoryCVSSSeverities_GetCVSSV4(tt *testing.T) {
+	tt.Parallel()
+	a := &AdvisoryCVSSSeverities{}
+	a.GetCVSSV4()
+	a = nil
+	a.GetCVSSV4()
+}
+
 func TestAdvisoryCWEs_GetCWEID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -16695,6 +16711,17 @@ func TestDependabotAlertState_GetState(tt *testing.T) {
 	d.GetState()
 }
 
+func TestDependabotSecurityAdvisory_GetClassification(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	d := &DependabotSecurityAdvisory{Classification: &zeroValue}
+	d.GetClassification()
+	d = &DependabotSecurityAdvisory{}
+	d.GetClassification()
+	d = nil
+	d.GetClassification()
+}
+
 func TestDependabotSecurityAdvisory_GetCVEID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -16712,6 +16739,14 @@ func TestDependabotSecurityAdvisory_GetCVSS(tt *testing.T) {
 	d.GetCVSS()
 	d = nil
 	d.GetCVSS()
+}
+
+func TestDependabotSecurityAdvisory_GetCVSSSeverities(tt *testing.T) {
+	tt.Parallel()
+	d := &DependabotSecurityAdvisory{}
+	d.GetCVSSSeverities()
+	d = nil
+	d.GetCVSSSeverities()
 }
 
 func TestDependabotSecurityAdvisory_GetCWEs(tt *testing.T) {
@@ -27426,6 +27461,17 @@ func TestIssuesSearchResult_GetIssues(tt *testing.T) {
 	i.GetIssues()
 	i = nil
 	i.GetIssues()
+}
+
+func TestIssuesSearchResult_GetSearchType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	i := &IssuesSearchResult{SearchType: &zeroValue}
+	i.GetSearchType()
+	i = &IssuesSearchResult{}
+	i.GetSearchType()
+	i = nil
+	i.GetSearchType()
 }
 
 func TestIssuesSearchResult_GetTotal(tt *testing.T) {
@@ -48972,6 +49018,14 @@ func TestSearchOptions_GetOrder(tt *testing.T) {
 	s.GetOrder()
 }
 
+func TestSearchOptions_GetSearchType(tt *testing.T) {
+	tt.Parallel()
+	s := &SearchOptions{}
+	s.GetSearchType()
+	s = nil
+	s.GetSearchType()
+}
+
 func TestSearchOptions_GetSort(tt *testing.T) {
 	tt.Parallel()
 	s := &SearchOptions{}
@@ -50563,6 +50617,14 @@ func TestSecurityAdvisory_GetCVSS(tt *testing.T) {
 	s.GetCVSS()
 	s = nil
 	s.GetCVSS()
+}
+
+func TestSecurityAdvisory_GetCVSSSeverities(tt *testing.T) {
+	tt.Parallel()
+	s := &SecurityAdvisory{}
+	s.GetCVSSSeverities()
+	s = nil
+	s.GetCVSSSeverities()
 }
 
 func TestSecurityAdvisory_GetCWEIDs(tt *testing.T) {

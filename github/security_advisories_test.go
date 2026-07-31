@@ -793,6 +793,10 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 					"vector_string": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H",
 					"score": 7.6
 				},
+				"cvss_severities": {
+					"cvss_v3": {"vector_string": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H", "score": 7.6},
+					"cvss_v4": {"vector_string": "CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N", "score": 8.7}
+				},
 				"cwes": [
 					{
 						"cwe_id": "CWE-400",
@@ -863,6 +867,16 @@ func TestListGlobalSecurityAdvisories(t *testing.T) {
 				CVSS: &AdvisoryCVSS{
 					VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
 					Score:        Ptr(7.6),
+				},
+				CVSSSeverities: &AdvisoryCVSSSeverities{
+					CVSSV3: &AdvisoryCVSS{
+						VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
+						Score:        Ptr(7.6),
+					},
+					CVSSV4: &AdvisoryCVSS{
+						VectorString: Ptr("CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"),
+						Score:        Ptr(8.7),
+					},
 				},
 				CWEs: []*AdvisoryCWEs{
 					{
@@ -977,6 +991,10 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 				"vector_string": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H",
 				"score": 7.6
 			},
+			"cvss_severities": {
+				"cvss_v3": {"vector_string": "CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H", "score": 7.6},
+				"cvss_v4": {"vector_string": "CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N", "score": 8.7}
+			},
 			"cwes": [
 				{
 					"cwe_id": "CWE-400",
@@ -1043,6 +1061,16 @@ func TestGetGlobalSecurityAdvisories(t *testing.T) {
 			CVSS: &AdvisoryCVSS{
 				VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
 				Score:        Ptr(7.6),
+			},
+			CVSSSeverities: &AdvisoryCVSSSeverities{
+				CVSSV3: &AdvisoryCVSS{
+					VectorString: Ptr("CVSS:3.1/AV:N/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H"),
+					Score:        Ptr(7.6),
+				},
+				CVSSV4: &AdvisoryCVSS{
+					VectorString: Ptr("CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"),
+					Score:        Ptr(8.7),
+				},
 			},
 			CWEs: []*AdvisoryCWEs{
 				{

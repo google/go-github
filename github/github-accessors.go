@@ -886,6 +886,22 @@ func (a *AdvisoryCVSS) GetVectorString() string {
 	return *a.VectorString
 }
 
+// GetCVSSV3 returns the CVSSV3 field.
+func (a *AdvisoryCVSSSeverities) GetCVSSV3() *AdvisoryCVSS {
+	if a == nil {
+		return nil
+	}
+	return a.CVSSV3
+}
+
+// GetCVSSV4 returns the CVSSV4 field.
+func (a *AdvisoryCVSSSeverities) GetCVSSV4() *AdvisoryCVSS {
+	if a == nil {
+		return nil
+	}
+	return a.CVSSV4
+}
+
 // GetCWEID returns the CWEID field if it's non-nil, zero value otherwise.
 func (a *AdvisoryCWEs) GetCWEID() string {
 	if a == nil || a.CWEID == nil {
@@ -13190,6 +13206,14 @@ func (d *DependabotAlertState) GetState() string {
 	return d.State
 }
 
+// GetClassification returns the Classification field if it's non-nil, zero value otherwise.
+func (d *DependabotSecurityAdvisory) GetClassification() string {
+	if d == nil || d.Classification == nil {
+		return ""
+	}
+	return *d.Classification
+}
+
 // GetCVEID returns the CVEID field if it's non-nil, zero value otherwise.
 func (d *DependabotSecurityAdvisory) GetCVEID() string {
 	if d == nil || d.CVEID == nil {
@@ -13204,6 +13228,14 @@ func (d *DependabotSecurityAdvisory) GetCVSS() *AdvisoryCVSS {
 		return nil
 	}
 	return d.CVSS
+}
+
+// GetCVSSSeverities returns the CVSSSeverities field.
+func (d *DependabotSecurityAdvisory) GetCVSSSeverities() *AdvisoryCVSSSeverities {
+	if d == nil {
+		return nil
+	}
+	return d.CVSSSeverities
 }
 
 // GetCWEs returns the CWEs slice if it's non-nil, nil otherwise.
@@ -21812,6 +21844,14 @@ func (i *IssuesSearchResult) GetIssues() []*Issue {
 		return nil
 	}
 	return i.Issues
+}
+
+// GetSearchType returns the SearchType field if it's non-nil, zero value otherwise.
+func (i *IssuesSearchResult) GetSearchType() string {
+	if i == nil || i.SearchType == nil {
+		return ""
+	}
+	return *i.SearchType
 }
 
 // GetTotal returns the Total field if it's non-nil, zero value otherwise.
@@ -39086,6 +39126,14 @@ func (s *SearchOptions) GetOrder() string {
 	return s.Order
 }
 
+// GetSearchType returns the SearchType field.
+func (s *SearchOptions) GetSearchType() string {
+	if s == nil {
+		return ""
+	}
+	return s.SearchType
+}
+
 // GetSort returns the Sort field.
 func (s *SearchOptions) GetSort() string {
 	if s == nil {
@@ -40380,6 +40428,14 @@ func (s *SecurityAdvisory) GetCVSS() *AdvisoryCVSS {
 		return nil
 	}
 	return s.CVSS
+}
+
+// GetCVSSSeverities returns the CVSSSeverities field.
+func (s *SecurityAdvisory) GetCVSSSeverities() *AdvisoryCVSSSeverities {
+	if s == nil {
+		return nil
+	}
+	return s.CVSSSeverities
 }
 
 // GetCWEIDs returns the CWEIDs slice if it's non-nil, nil otherwise.
