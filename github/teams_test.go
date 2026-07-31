@@ -1802,8 +1802,8 @@ func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	body := &ExternalGroup{
-		GroupID: Ptr(int64(123)),
+	body := UpdateConnectedExternalGroupRequest{
+		GroupID: 123,
 	}
 	externalGroup, _, err := client.Teams.UpdateConnectedExternalGroup(ctx, "o", "t", body)
 	if err != nil {
@@ -1868,8 +1868,8 @@ func TestTeamsService_UpdateConnectedExternalGroup_notFound(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	body := &ExternalGroup{
-		GroupID: Ptr(int64(123)),
+	body := UpdateConnectedExternalGroupRequest{
+		GroupID: 123,
 	}
 	eg, resp, err := client.Teams.UpdateConnectedExternalGroup(ctx, "o", "t", body)
 	if err == nil {

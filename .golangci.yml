@@ -222,7 +222,6 @@ linters:
             - DependencyGraphSnapshot
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
-            - ExternalGroup
             - Hook
             - ImpersonateUserOptions
             - Import
