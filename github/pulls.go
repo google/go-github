@@ -130,7 +130,7 @@ type PullRequestBranch struct {
 // Base branch (the branch below it in the stack).
 type PullRequestStack struct {
 	// Base is the base of the stack: the branch the entire stack ultimately targets.
-	Base *PullRequestStackBase `json:"base,omitempty"`
+	Base *PullRequestStackBase `json:"base"`
 	// Size is the total number of pull requests in the stack.
 	Size *int `json:"size,omitempty"`
 	// Position is the one-based position of this pull request within the stack,
@@ -145,8 +145,8 @@ type PullRequestStack struct {
 // PullRequestStackBase represents the base of a stacked pull request's stack:
 // the branch the entire stack ultimately targets.
 type PullRequestStackBase struct {
-	Ref *string `json:"ref,omitempty"`
-	SHA *string `json:"sha,omitempty"`
+	Ref string `json:"ref"`
+	SHA string `json:"sha"`
 }
 
 // PullRequestListOptions specifies the optional parameters to the
