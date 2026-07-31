@@ -30822,6 +30822,14 @@ func (p *PullRequest) GetReviewCommentURL() string {
 	return *p.ReviewCommentURL
 }
 
+// GetStack returns the Stack field.
+func (p *PullRequest) GetStack() *PullRequestStack {
+	if p == nil {
+		return nil
+	}
+	return p.Stack
+}
+
 // GetState returns the State field if it's non-nil, zero value otherwise.
 func (p *PullRequest) GetState() string {
 	if p == nil || p.State == nil {
@@ -31980,6 +31988,62 @@ func (p *PullRequestRuleParameters) GetRequireLastPushApproval() bool {
 		return false
 	}
 	return p.RequireLastPushApproval
+}
+
+// GetBase returns the Base field.
+func (p *PullRequestStack) GetBase() *PullRequestStackBase {
+	if p == nil {
+		return nil
+	}
+	return p.Base
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PullRequestStack) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (p *PullRequestStack) GetNumber() int {
+	if p == nil || p.Number == nil {
+		return 0
+	}
+	return *p.Number
+}
+
+// GetPosition returns the Position field if it's non-nil, zero value otherwise.
+func (p *PullRequestStack) GetPosition() int {
+	if p == nil || p.Position == nil {
+		return 0
+	}
+	return *p.Position
+}
+
+// GetSize returns the Size field if it's non-nil, zero value otherwise.
+func (p *PullRequestStack) GetSize() int {
+	if p == nil || p.Size == nil {
+		return 0
+	}
+	return *p.Size
+}
+
+// GetRef returns the Ref field.
+func (p *PullRequestStackBase) GetRef() string {
+	if p == nil {
+		return ""
+	}
+	return p.Ref
+}
+
+// GetSHA returns the SHA field.
+func (p *PullRequestStackBase) GetSHA() string {
+	if p == nil {
+		return ""
+	}
+	return p.SHA
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
