@@ -32030,20 +32030,20 @@ func (p *PullRequestStack) GetSize() int {
 	return *p.Size
 }
 
-// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+// GetRef returns the Ref field.
 func (p *PullRequestStackBase) GetRef() string {
-	if p == nil || p.Ref == nil {
+	if p == nil {
 		return ""
 	}
-	return *p.Ref
+	return p.Ref
 }
 
-// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+// GetSHA returns the SHA field.
 func (p *PullRequestStackBase) GetSHA() string {
-	if p == nil || p.SHA == nil {
+	if p == nil {
 		return ""
 	}
-	return *p.SHA
+	return p.SHA
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
