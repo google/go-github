@@ -105,7 +105,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 03ca9c1cac754ec9b8369dc75de8a8c753c6e087
+openapi_commit: 16bc535ad66fac59d585b1516d1d52f58f787962
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -1212,8 +1212,16 @@ openapi_operations:
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/credential-authorizations#revoke-all-credential-authorizations-for-an-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/credential-authorizations/revoke-credential-type
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/credential-authorizations#revoke-a-single-credential-type-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: POST /enterprises/{enterprise}/credential-authorizations/{username}/revoke
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/credential-authorizations#revoke-credential-authorizations-for-a-user-in-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
+  - name: POST /enterprises/{enterprise}/credential-authorizations/{username}/revoke-credential-type
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/credential-authorizations#revoke-a-single-credential-type-for-a-user-in-an-enterprise
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/dependabot/alerts
@@ -6773,6 +6781,21 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority
     documentation_url: https://docs.github.com/rest/issues/sub-issues#reprioritize-sub-issue
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/issues/{issue_number}/suggestions
+    documentation_url: https://docs.github.com/rest/issues/issues#list-issue-suggestions
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/issues/{issue_number}/suggestions/{suggestion_id}/approve
+    documentation_url: https://docs.github.com/rest/issues/issues#approve-an-issue-suggestion
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/issues/{issue_number}/suggestions/{suggestion_id}/dismiss
+    documentation_url: https://docs.github.com/rest/issues/issues#dismiss-an-issue-suggestion
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json

@@ -596,6 +596,25 @@ func (s *CodeScanningService) GetCodeQLDatabase(ctx context.Context, owner, repo
 	return codeqlDatabase, resp, nil
 }
 
+// DeleteCodeQLDatabase deletes a CodeQL database for a language in a repository.
+//
+// You must use an access token with the repo scope to use this
+// endpoint with private repos or the public_repo scope for public repos.
+//
+// GitHub API docs: https://docs.github.com/rest/code-scanning/code-scanning?apiVersion=2022-11-28#delete-a-codeql-database
+//
+//meta:operation DELETE /repos/{owner}/{repo}/code-scanning/codeql/databases/{language}
+func (s *CodeScanningService) DeleteCodeQLDatabase(ctx context.Context, owner, repo, language string) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/code-scanning/codeql/databases/%v", owner, repo, language)
+
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
 // DefaultSetupConfiguration represents a code scanning default setup configuration.
 type DefaultSetupConfiguration struct {
 	State      *string    `json:"state,omitempty"`
