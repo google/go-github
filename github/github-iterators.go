@@ -6719,6 +6719,37 @@ func (s *SecretScanningService) ListAlertsForRepoIter(ctx context.Context, owner
 	}
 }
 
+// ListCustomPatternsForOrgIter returns an iterator that paginates through all results of ListCustomPatternsForOrg.
+func (s *SecretScanningService) ListCustomPatternsForOrgIter(ctx context.Context, org string, opts *SecretScanningCustomPatternListOptions) iter.Seq2[*SecretScanningCustomPattern, error] {
+	return func(yield func(*SecretScanningCustomPattern, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &SecretScanningCustomPatternListOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListCustomPatternsForOrg(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListCustomPatternsForRepoIter returns an iterator that paginates through all results of ListCustomPatternsForRepo.
 func (s *SecretScanningService) ListCustomPatternsForRepoIter(ctx context.Context, owner string, repo string, opts *SecretScanningCustomPatternListOptions) iter.Seq2[*SecretScanningCustomPattern, error] {
 	return func(yield func(*SecretScanningCustomPattern, error) bool) {
