@@ -154,6 +154,15 @@ tips (which are frequently ignored by AI-driven PRs):
   same fix to all similar occurrences throughout the entire PR - don't wait
   for the reviewer to point out each one individually.
 
+### Assisted contributions
+
+Tools that help draft or generate code are allowed, but contributors remain
+responsible for understanding and testing every line they submit. If an
+AI/LLM tool helped with code, tests, or prose, briefly disclose what it did in
+the PR description. Review the rendered diff and description yourself before
+requesting review, remove irrelevant generated changes, and keep review
+comments specific and actionable.
+
 ## Code Guidelines
 
 This section documents common code patterns and conventions used throughout
