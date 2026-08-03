@@ -261,3 +261,89 @@ func (s *SecretScanningService) DeleteCustomPatternsForRepo(ctx context.Context,
 
 	return s.client.Do(req, nil)
 }
+
+// ListCustomPatternsForOrg lists the secret scanning custom patterns defined at the organization level.
+//
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/custom-patterns?apiVersion=2022-11-28#list-organization-custom-patterns
+//
+//meta:operation GET /orgs/{org}/secret-scanning/custom-patterns
+func (s *SecretScanningService) ListCustomPatternsForOrg(ctx context.Context, org string, opts *SecretScanningCustomPatternListOptions) ([]*SecretScanningCustomPattern, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/secret-scanning/custom-patterns", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var patterns []*SecretScanningCustomPattern
+	resp, err := s.client.Do(req, &patterns)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return patterns, resp, nil
+}
+
+// CreateCustomPatternsForOrg creates one or more secret scanning custom patterns at organization level.
+//
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/custom-patterns?apiVersion=2022-11-28#bulk-create-organization-custom-patterns
+//
+//meta:operation POST /orgs/{org}/secret-scanning/custom-patterns
+func (s *SecretScanningService) CreateCustomPatternsForOrg(ctx context.Context, org string, body SecretScanningCreateCustomPatternsRequest) (*SecretScanningCreateCustomPatternsResponse, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/secret-scanning/custom-patterns", org)
+
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var result *SecretScanningCreateCustomPatternsResponse
+	resp, err := s.client.Do(req, &result)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
+}
+
+// UpdateCustomPatternForOrg updates a single secret scanning custom pattern at organization level.
+//
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/custom-patterns?apiVersion=2022-11-28#update-an-organization-custom-pattern
+//
+//meta:operation PATCH /orgs/{org}/secret-scanning/custom-patterns/{pattern_id}
+func (s *SecretScanningService) UpdateCustomPatternForOrg(ctx context.Context, org string, patternID int64, body SecretScanningUpdateCustomPatternRequest) (*SecretScanningCustomPattern, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/secret-scanning/custom-patterns/%v", org, patternID)
+
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var pattern *SecretScanningCustomPattern
+	resp, err := s.client.Do(req, &pattern)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return pattern, resp, nil
+}
+
+// DeleteCustomPatternsForOrg deletes one or more secret scanning custom patterns at the organization level.
+//
+// GitHub API docs: https://docs.github.com/rest/secret-scanning/custom-patterns?apiVersion=2022-11-28#bulk-delete-organization-custom-patterns
+//
+//meta:operation DELETE /orgs/{org}/secret-scanning/custom-patterns
+func (s *SecretScanningService) DeleteCustomPatternsForOrg(ctx context.Context, org string, body SecretScanningDeleteCustomPatternsRequest) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/secret-scanning/custom-patterns", org)
+
+	req, err := s.client.NewRequest(ctx, "DELETE", u, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}

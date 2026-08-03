@@ -1661,9 +1661,10 @@ func TestPullRequest_String(t *testing.T) {
 		Links:               &PRLinks{},
 		Head:                &PullRequestBranch{},
 		Base:                &PullRequestBranch{},
+		Stack:               &PullRequestStack{},
 		ActiveLockReason:    Ptr(""),
 	}
-	want := `github.PullRequest{ID:0, Number:0, State:"", Locked:false, Title:"", Body:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, MergedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, User:github.User{}, Draft:false, URL:"", HTMLURL:"", IssueURL:"", StatusesURL:"", DiffURL:"", PatchURL:"", CommitsURL:"", CommentsURL:"", ReviewCommentsURL:"", ReviewCommentURL:"", Assignee:github.User{}, Milestone:github.Milestone{}, AuthorAssociation:"", NodeID:"", AutoMerge:github.PullRequestAutoMerge{}, Merged:false, Mergeable:false, MergeableState:"", Rebaseable:false, MergedBy:github.User{}, MergeCommitSHA:"", Comments:0, Commits:0, Additions:0, Deletions:0, ChangedFiles:0, MaintainerCanModify:false, ReviewComments:0, Links:github.PRLinks{}, Head:github.PullRequestBranch{}, Base:github.PullRequestBranch{}, ActiveLockReason:""}`
+	want := `github.PullRequest{ID:0, Number:0, State:"", Locked:false, Title:"", Body:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, MergedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, User:github.User{}, Draft:false, URL:"", HTMLURL:"", IssueURL:"", StatusesURL:"", DiffURL:"", PatchURL:"", CommitsURL:"", CommentsURL:"", ReviewCommentsURL:"", ReviewCommentURL:"", Assignee:github.User{}, Milestone:github.Milestone{}, AuthorAssociation:"", NodeID:"", AutoMerge:github.PullRequestAutoMerge{}, Merged:false, Mergeable:false, MergeableState:"", Rebaseable:false, MergedBy:github.User{}, MergeCommitSHA:"", Comments:0, Commits:0, Additions:0, Deletions:0, ChangedFiles:0, MaintainerCanModify:false, ReviewComments:0, Links:github.PRLinks{}, Head:github.PullRequestBranch{}, Base:github.PullRequestBranch{}, Stack:github.PullRequestStack{}, ActiveLockReason:""}`
 	if got := v.String(); got != want {
 		t.Errorf("PullRequest.String = %v, want %v", got, want)
 	}
@@ -1705,6 +1706,18 @@ func TestPullRequestComment_String(t *testing.T) {
 	}
 }
 
+func TestPullRequestDismissReviewRequest_String(t *testing.T) {
+	t.Parallel()
+	v := PullRequestDismissReviewRequest{
+		Message: "",
+		Event:   Ptr(""),
+	}
+	want := `github.PullRequestDismissReviewRequest{Message:"", Event:""}`
+	if got := v.String(); got != want {
+		t.Errorf("PullRequestDismissReviewRequest.String = %v, want %v", got, want)
+	}
+}
+
 func TestPullRequestReview_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequestReview{
@@ -1722,17 +1735,6 @@ func TestPullRequestReview_String(t *testing.T) {
 	want := `github.PullRequestReview{ID:0, NodeID:"", User:github.User{}, Body:"", SubmittedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CommitID:"", HTMLURL:"", PullRequestURL:"", State:"", AuthorAssociation:""}`
 	if got := v.String(); got != want {
 		t.Errorf("PullRequestReview.String = %v, want %v", got, want)
-	}
-}
-
-func TestPullRequestReviewDismissalRequest_String(t *testing.T) {
-	t.Parallel()
-	v := PullRequestReviewDismissalRequest{
-		Message: Ptr(""),
-	}
-	want := `github.PullRequestReviewDismissalRequest{Message:""}`
-	if got := v.String(); got != want {
-		t.Errorf("PullRequestReviewDismissalRequest.String = %v, want %v", got, want)
 	}
 }
 
