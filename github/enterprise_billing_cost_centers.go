@@ -146,7 +146,7 @@ func (s *EnterpriseService) GetCostCenter(ctx context.Context, enterprise, costC
 
 // UpdateCostCenter updates the name of a cost center.
 //
-// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers?apiVersion=2022-11-28#update-a-cost-center-name
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers?apiVersion=2022-11-28#update-a-cost-center
 //
 //meta:operation PATCH /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
 func (s *EnterpriseService) UpdateCostCenter(ctx context.Context, enterprise, costCenterID string, body CostCenterRequest) (*CostCenter, *Response, error) {
