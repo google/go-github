@@ -54936,6 +54936,22 @@ func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 }
 
+func TestUpdateTeamLDAPMappingRequest_GetLDAPDN(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateTeamLDAPMappingRequest{}
+	u.GetLDAPDN()
+	u = nil
+	u.GetLDAPDN()
+}
+
+func TestUpdateUserLDAPMappingRequest_GetLDAPDN(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateUserLDAPMappingRequest{}
+	u.GetLDAPDN()
+	u = nil
+	u.GetLDAPDN()
+}
+
 func TestUploadLicenseOptions_GetLicense(tt *testing.T) {
 	tt.Parallel()
 	u := &UploadLicenseOptions{}

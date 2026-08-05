@@ -17,8 +17,8 @@ func TestAdminService_UpdateUserLDAPMapping(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &UserLDAPMapping{
-		LDAPDN: Ptr("uid=asdf,ou=users,dc=github,dc=com"),
+	input := UpdateUserLDAPMappingRequest{
+		LDAPDN: "uid=asdf,ou=users,dc=github,dc=com",
 	}
 
 	mux.HandleFunc("/admin/ldap/users/u/mapping", func(w http.ResponseWriter, r *http.Request) {
@@ -60,8 +60,8 @@ func TestAdminService_UpdateTeamLDAPMapping(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &TeamLDAPMapping{
-		LDAPDN: Ptr("cn=Enterprise Ops,ou=teams,dc=github,dc=com"),
+	input := UpdateTeamLDAPMappingRequest{
+		LDAPDN: "cn=Enterprise Ops,ou=teams,dc=github,dc=com",
 	}
 
 	mux.HandleFunc("/admin/ldap/teams/1/mapping", func(w http.ResponseWriter, r *http.Request) {

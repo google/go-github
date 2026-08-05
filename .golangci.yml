@@ -258,13 +258,11 @@ linters:
             - Subscription
             - TeamAddTeamMembershipOptions
             - TeamAddTeamRepoOptions
-            - TeamLDAPMapping
             - TeamProjectOptions
             - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
             - User
-            - UserLDAPMapping
             - UserSuspendOptions
             - WorkflowsPermissionsOpt
           # Body type names exempt from the "Options" suffix rule.
