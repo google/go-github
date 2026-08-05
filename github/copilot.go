@@ -48,6 +48,20 @@ type CopilotSpaceResource struct {
 	UpdatedAt               *Timestamp            `json:"updated_at,omitempty"`
 }
 
+// CreateCopilotSpaceResourceAttributes represents a resource to attach when creating a Copilot Space.
+type CreateCopilotSpaceResourceAttributes struct {
+	ResourceType *string               `json:"resource_type,omitempty"`
+	Metadata     *CopilotSpaceMetadata `json:"metadata,omitempty"`
+}
+
+// UpdateCopilotSpaceResourceAttributes represents a resource to attach, update, or remove when updating a Copilot Space.
+type UpdateCopilotSpaceResourceAttributes struct {
+	ID           *int64                `json:"id,omitempty"`
+	ResourceType *string               `json:"resource_type,omitempty"`
+	Metadata     *CopilotSpaceMetadata `json:"metadata,omitempty"`
+	Destroy      *bool                 `json:"_destroy,omitempty"`
+}
+
 // CopilotSpaceMetadata represents metadata specific to a Copilot Space resource type.
 type CopilotSpaceMetadata struct {
 	RepositoryID            *int64  `json:"repository_id,omitempty"`
@@ -64,20 +78,20 @@ type CopilotSpaceMetadata struct {
 
 // CreateOrganizationCopilotSpaceRequest represents a request to create a Copilot Space.
 type CreateOrganizationCopilotSpaceRequest struct {
-	Name                string                  `json:"name"`
-	Description         *string                 `json:"description,omitempty"`
-	GeneralInstructions *string                 `json:"general_instructions,omitempty"`
-	BaseRole            *string                 `json:"base_role,omitempty"`
-	ResourcesAttributes []*CopilotSpaceResource `json:"resources_attributes,omitempty"`
+	Name                string                                  `json:"name"`
+	Description         *string                                 `json:"description,omitempty"`
+	GeneralInstructions *string                                 `json:"general_instructions,omitempty"`
+	BaseRole            *string                                 `json:"base_role,omitempty"`
+	ResourcesAttributes []*CreateCopilotSpaceResourceAttributes `json:"resources_attributes,omitempty"`
 }
 
 // UpdateOrganizationCopilotSpaceRequest represents a request to update a Copilot Space.
 type UpdateOrganizationCopilotSpaceRequest struct {
-	Name                *string                 `json:"name,omitempty"`
-	Description         *string                 `json:"description,omitempty"`
-	GeneralInstructions *string                 `json:"general_instructions,omitempty"`
-	BaseRole            *string                 `json:"base_role,omitempty"`
-	ResourcesAttributes []*CopilotSpaceResource `json:"resources_attributes,omitempty"`
+	Name                *string                                 `json:"name,omitempty"`
+	Description         *string                                 `json:"description,omitempty"`
+	GeneralInstructions *string                                 `json:"general_instructions,omitempty"`
+	BaseRole            *string                                 `json:"base_role,omitempty"`
+	ResourcesAttributes []*UpdateCopilotSpaceResourceAttributes `json:"resources_attributes,omitempty"`
 }
 
 // CopilotSpacesList represents a list of Copilot Spaces.

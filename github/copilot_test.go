@@ -562,7 +562,9 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 		},
 	}
 
-	assertNoDiff(t, want, got)
+	if !cmp.Equal(want, got) {
+		t.Errorf("CopilotService returned %+v, want %+v", got, want)
+	}
 
 	const methodName = "ListCopilotSeats"
 
@@ -1194,7 +1196,9 @@ func TestCopilotService_GetOrganizationCopilotSpace(t *testing.T) {
 		BaseRole:  "read",
 	}
 
-	assertNoDiff(t, want, got)
+	if !cmp.Equal(want, got) {
+		t.Errorf("CopilotService returned %+v, want %+v", got, want)
+	}
 
 	const methodName = "GetOrganizationCopilotSpace"
 
@@ -1221,7 +1225,7 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 		Description:         Ptr("Organization space for team planning"),
 		GeneralInstructions: Ptr("Help the team with planning tasks"),
 		BaseRole:            Ptr("no_access"),
-		ResourcesAttributes: []*CopilotSpaceResource{
+		ResourcesAttributes: []*CreateCopilotSpaceResourceAttributes{
 			{
 				ResourceType: Ptr("free_text"),
 				Metadata: &CopilotSpaceMetadata{
@@ -1273,8 +1277,8 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 					Height:                  Ptr(640),
 					Width:                   Ptr(480),
 				},
-				CreatedAt: refTimestamp(1676450100),
-				UpdatedAt: refTimestamp(1676450400),
+				CreatedAt: &Timestamp{referenceTime},
+				UpdatedAt: &Timestamp{referenceTime},
 			},
 		},
 	}
@@ -1320,12 +1324,12 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 			"metadata": {
 				"copilot_chat_attachment_id": 123,
 				"media_type": "image/png",
-				"url": "https://test.com/image.png",
+				"url": "https://example.com/image.png",
 				"height": 640,
 				"width": 480
 			},
-			"created_at": "2023-02-15T08:35:00Z",
-			"updated_at": "2023-02-15T08:40:00Z"
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`
 		}
 	]
 		}`)
@@ -1337,7 +1341,9 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 		t.Errorf("Copilot.CreateOrganizationCopilotSpace returned error: %v", err)
 	}
 
-	assertNoDiff(t, want, got)
+	if !cmp.Equal(want, got) {
+		t.Errorf("CopilotService returned %+v, want %+v", got, want)
+	}
 
 	const methodName = "CreateOrganizationCopilotSpace"
 
@@ -1364,7 +1370,7 @@ func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
 		Description:         Ptr("Updated organization space for team planning"),
 		GeneralInstructions: Ptr("Help the team with updated planning tasks"),
 		BaseRole:            Ptr("read"),
-		ResourcesAttributes: []*CopilotSpaceResource{
+		ResourcesAttributes: []*UpdateCopilotSpaceResourceAttributes{
 			{
 				ID:           Ptr(int64(101)),
 				ResourceType: Ptr("free_text"),
@@ -1372,6 +1378,10 @@ func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
 					Name: Ptr("Team Guidelines"),
 					Text: Ptr("Our team follows agile methodology"),
 				},
+			},
+			{
+				ID:      Ptr(int64(102)),
+				Destroy: Ptr(true),
 			},
 		},
 	}
@@ -1453,7 +1463,9 @@ func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
 		t.Errorf("Copilot.UpdateOrganizationCopilotSpace returned error: %v", err)
 	}
 
-	assertNoDiff(t, want, got)
+	if !cmp.Equal(want, got) {
+		t.Errorf("CopilotService returned %+v, want %+v", got, want)
+	}
 
 	const methodName = "UpdateOrganizationCopilotSpace"
 
