@@ -105,7 +105,7 @@ operation_overrides:
     documentation_url: https://docs.github.com/rest/pages/pages#request-a-github-pages-build
   - name: GET /repos/{owner}/{repo}/pages/builds/{build_id}
     documentation_url: https://docs.github.com/rest/pages/pages#get-github-pages-build
-openapi_commit: 16bc535ad66fac59d585b1516d1d52f58f787962
+openapi_commit: e50419c4bb8f2d1d34735044bb3b410863dc0a10
 openapi_operations:
   - name: GET /
     documentation_url: https://docs.github.com/rest/meta/meta#github-api-root
@@ -883,6 +883,10 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /enterprises/{enterprise}/actions/runners/deprecations/{version}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#get-runner-version-end-of-life-schedule-for-an-enterprise
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /enterprises/{enterprise}/actions/runners/downloads
     documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#list-runner-applications-for-an-enterprise
     openapi_files:
@@ -1507,7 +1511,7 @@ openapi_operations:
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: PATCH /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}
-    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers#update-a-cost-center-name
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/billing/cost-centers#update-a-cost-center
     openapi_files:
       - descriptions/ghec/ghec.json
   - name: DELETE /enterprises/{enterprise}/settings/billing/cost-centers/{cost_center_id}/resource
@@ -2449,6 +2453,10 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /orgs/{org}/actions/runners/deprecations/{version}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#get-runner-version-end-of-life-schedule-for-an-organization
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /orgs/{org}/actions/runners/downloads
     documentation_url: https://docs.github.com/rest/actions/self-hosted-runners#list-runner-applications-for-an-organization
     openapi_files:
@@ -2735,6 +2743,16 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: POST /orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}
     documentation_url: https://docs.github.com/rest/orgs/artifact-metadata#set-cluster-deployment-records
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}/jobs
+    documentation_url: https://docs.github.com/rest/orgs/artifact-metadata#create-a-cluster-deployment-records-job
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/artifacts/metadata/deployment-record/cluster/{cluster}/jobs/{job_id}
+    documentation_url: https://docs.github.com/rest/orgs/artifact-metadata#get-cluster-deployment-records-job-status
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -3460,6 +3478,16 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: PUT /orgs/{org}/interaction-limits
     documentation_url: https://docs.github.com/rest/interactions/orgs#set-interaction-restrictions-for-an-organization
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /orgs/{org}/interaction-limits/pulls/creation-cap
+    documentation_url: https://docs.github.com/rest/interactions/orgs#get-pull-request-creation-cap-for-an-org
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: PATCH /orgs/{org}/interaction-limits/pulls/creation-cap
+    documentation_url: https://docs.github.com/rest/interactions/orgs#update-pull-request-creation-cap-for-an-org
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
@@ -4798,6 +4826,10 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: GET /repos/{owner}/{repo}/actions/runners/deprecations/{version}
+    documentation_url: https://docs.github.com/enterprise-cloud@latest/rest/actions/self-hosted-runners#get-runner-version-end-of-life-schedule-for-a-repository
+    openapi_files:
+      - descriptions/ghec/ghec.json
   - name: GET /repos/{owner}/{repo}/actions/runners/downloads
     documentation_url: https://docs.github.com/rest/actions/self-hosted-runners#list-runner-applications-for-a-repository
     openapi_files:
@@ -7183,6 +7215,16 @@ openapi_operations:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json
       - descriptions/ghes-3.21/ghes-3.21.json
+  - name: PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge-async
+    documentation_url: https://docs.github.com/rest/pulls/pulls#merge-a-pull-request-asynchronously
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/pulls/{pull_number}/merge-async/{uuid}
+    documentation_url: https://docs.github.com/rest/pulls/pulls#get-the-result-of-an-asynchronous-merge
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
   - name: DELETE /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers
     documentation_url: https://docs.github.com/rest/pulls/review-requests#remove-requested-reviewers-from-a-pull-request
     openapi_files:
@@ -7515,6 +7557,31 @@ openapi_operations:
       - descriptions/ghec/ghec.json
   - name: POST /repos/{owner}/{repo}/security-advisories/{ghsa_id}/forks
     documentation_url: https://docs.github.com/rest/security-advisories/repository-advisories#create-a-temporary-private-fork
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/stacks
+    documentation_url: https://docs.github.com/rest/pulls/stacks#list-pull-request-stacks
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/stacks
+    documentation_url: https://docs.github.com/rest/pulls/stacks#create-a-pull-request-stack
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: GET /repos/{owner}/{repo}/stacks/{stack_number}
+    documentation_url: https://docs.github.com/rest/pulls/stacks#get-a-pull-request-stack
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/stacks/{stack_number}/add
+    documentation_url: https://docs.github.com/rest/pulls/stacks#add-pull-requests-to-a-pull-request-stack
+    openapi_files:
+      - descriptions/api.github.com/api.github.com.json
+      - descriptions/ghec/ghec.json
+  - name: POST /repos/{owner}/{repo}/stacks/{stack_number}/unstack
+    documentation_url: https://docs.github.com/rest/pulls/stacks#remove-pull-requests-from-a-pull-request-stack
     openapi_files:
       - descriptions/api.github.com/api.github.com.json
       - descriptions/ghec/ghec.json

@@ -43342,6 +43342,14 @@ func (u *UpdateCodespaceOptions) GetRecentFolders() []string {
 	return u.RecentFolders
 }
 
+// GetGroupID returns the GroupID field.
+func (u *UpdateConnectedExternalGroupRequest) GetGroupID() int64 {
+	if u == nil {
+		return 0
+	}
+	return u.GroupID
+}
+
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
 func (u *UpdateCustomOrgRoleRequest) GetBaseRole() string {
 	if u == nil || u.BaseRole == nil {

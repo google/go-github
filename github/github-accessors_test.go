@@ -54254,6 +54254,14 @@ func TestUpdateCodespaceOptions_GetRecentFolders(tt *testing.T) {
 	u.GetRecentFolders()
 }
 
+func TestUpdateConnectedExternalGroupRequest_GetGroupID(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateConnectedExternalGroupRequest{}
+	u.GetGroupID()
+	u = nil
+	u.GetGroupID()
+}
+
 func TestUpdateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

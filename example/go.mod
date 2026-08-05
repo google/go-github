@@ -1,4 +1,4 @@
-module github.com/google/go-github/v89/example
+module github.com/google/go-github/v90/example
 
 go 1.25.8
 
@@ -7,8 +7,8 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.19.0
 	github.com/gofri/go-github-pagination v1.0.1
 	github.com/gofri/go-github-ratelimit/v2 v2.0.2
-	github.com/google/go-github/otel/v89 v89.0.0
-	github.com/google/go-github/v89 v89.0.0
+	github.com/google/go-github/otel/v90 v90.0.0
+	github.com/google/go-github/v90 v90.0.0
 	github.com/sigstore/sigstore-go v1.2.2
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.44.0
 	go.opentelemetry.io/otel/sdk v1.44.0
@@ -91,6 +91,6 @@ require (
 )
 
 // Use version at HEAD, not the latest published.
-replace github.com/google/go-github/v89 => ../
+replace github.com/google/go-github/v90 => ../
 
-replace github.com/google/go-github/otel/v89 => ../otel
+replace github.com/google/go-github/otel/v90 => ../otel
