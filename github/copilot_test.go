@@ -1269,7 +1269,7 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 				Metadata: &CopilotSpaceMetadata{
 					CopilotChatAttachmentID: Ptr(int64(123)),
 					MediaType:               Ptr("image/png"),
-					URL:                     Ptr("https://test.com/image.png"),
+					URL:                     Ptr("https://example.com/image.png"),
 					Height:                  Ptr(640),
 					Width:                   Ptr(480),
 				},
