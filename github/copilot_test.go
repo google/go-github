@@ -1116,7 +1116,9 @@ func TestCopilotService_ListOrganizationCopilotSpaces(t *testing.T) {
 		},
 	}
 
-	assertNoDiff(t, want, got)
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.ListOrganizationCopilotSpaces returned %+v, want %+v", got, want)
+	}
 
 	const methodName = "ListOrganizationCopilotSpaces"
 
