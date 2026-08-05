@@ -15307,6 +15307,25 @@ func TestCreateCommitOptions_GetSigner(tt *testing.T) {
 	c.GetSigner()
 }
 
+func TestCreateCopilotSpaceResourceAttributes_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCopilotSpaceResourceAttributes{}
+	c.GetMetadata()
+	c = nil
+	c.GetMetadata()
+}
+
+func TestCreateCopilotSpaceResourceAttributes_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCopilotSpaceResourceAttributes{ResourceType: &zeroValue}
+	c.GetResourceType()
+	c = &CreateCopilotSpaceResourceAttributes{}
+	c.GetResourceType()
+	c = nil
+	c.GetResourceType()
+}
+
 func TestCreateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -15950,7 +15969,7 @@ func TestCreateOrganizationCopilotSpaceRequest_GetName(tt *testing.T) {
 
 func TestCreateOrganizationCopilotSpaceRequest_GetResourcesAttributes(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := []*CopilotSpaceResource{}
+	zeroValue := []*CreateCopilotSpaceResourceAttributes{}
 	c := &CreateOrganizationCopilotSpaceRequest{ResourcesAttributes: zeroValue}
 	c.GetResourcesAttributes()
 	c = &CreateOrganizationCopilotSpaceRequest{}
@@ -56108,6 +56127,47 @@ func TestUpdateConnectedExternalGroupRequest_GetGroupID(tt *testing.T) {
 	u.GetGroupID()
 }
 
+func TestUpdateCopilotSpaceResourceAttributes_GetDestroy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateCopilotSpaceResourceAttributes{Destroy: &zeroValue}
+	u.GetDestroy()
+	u = &UpdateCopilotSpaceResourceAttributes{}
+	u.GetDestroy()
+	u = nil
+	u.GetDestroy()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	u := &UpdateCopilotSpaceResourceAttributes{ID: &zeroValue}
+	u.GetID()
+	u = &UpdateCopilotSpaceResourceAttributes{}
+	u.GetID()
+	u = nil
+	u.GetID()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateCopilotSpaceResourceAttributes{}
+	u.GetMetadata()
+	u = nil
+	u.GetMetadata()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCopilotSpaceResourceAttributes{ResourceType: &zeroValue}
+	u.GetResourceType()
+	u = &UpdateCopilotSpaceResourceAttributes{}
+	u.GetResourceType()
+	u = nil
+	u.GetResourceType()
+}
+
 func TestUpdateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -56684,7 +56744,7 @@ func TestUpdateOrganizationCopilotSpaceRequest_GetName(tt *testing.T) {
 
 func TestUpdateOrganizationCopilotSpaceRequest_GetResourcesAttributes(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := []*CopilotSpaceResource{}
+	zeroValue := []*UpdateCopilotSpaceResourceAttributes{}
 	u := &UpdateOrganizationCopilotSpaceRequest{ResourcesAttributes: zeroValue}
 	u.GetResourcesAttributes()
 	u = &UpdateOrganizationCopilotSpaceRequest{}

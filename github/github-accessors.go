@@ -12126,6 +12126,22 @@ func (c *CreateCommitOptions) GetSigner() MessageSigner {
 	return c.Signer
 }
 
+// GetMetadata returns the Metadata field.
+func (c *CreateCopilotSpaceResourceAttributes) GetMetadata() *CopilotSpaceMetadata {
+	if c == nil {
+		return nil
+	}
+	return c.Metadata
+}
+
+// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
+func (c *CreateCopilotSpaceResourceAttributes) GetResourceType() string {
+	if c == nil || c.ResourceType == nil {
+		return ""
+	}
+	return *c.ResourceType
+}
+
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
 func (c *CreateCustomOrgRoleRequest) GetBaseRole() string {
 	if c == nil || c.BaseRole == nil {
@@ -12639,7 +12655,7 @@ func (c *CreateOrganizationCopilotSpaceRequest) GetName() string {
 }
 
 // GetResourcesAttributes returns the ResourcesAttributes slice if it's non-nil, nil otherwise.
-func (c *CreateOrganizationCopilotSpaceRequest) GetResourcesAttributes() []*CopilotSpaceResource {
+func (c *CreateOrganizationCopilotSpaceRequest) GetResourcesAttributes() []*CreateCopilotSpaceResourceAttributes {
 	if c == nil || c.ResourcesAttributes == nil {
 		return nil
 	}
@@ -44878,6 +44894,38 @@ func (u *UpdateConnectedExternalGroupRequest) GetGroupID() int64 {
 	return u.GroupID
 }
 
+// GetDestroy returns the Destroy field if it's non-nil, zero value otherwise.
+func (u *UpdateCopilotSpaceResourceAttributes) GetDestroy() bool {
+	if u == nil || u.Destroy == nil {
+		return false
+	}
+	return *u.Destroy
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (u *UpdateCopilotSpaceResourceAttributes) GetID() int64 {
+	if u == nil || u.ID == nil {
+		return 0
+	}
+	return *u.ID
+}
+
+// GetMetadata returns the Metadata field.
+func (u *UpdateCopilotSpaceResourceAttributes) GetMetadata() *CopilotSpaceMetadata {
+	if u == nil {
+		return nil
+	}
+	return u.Metadata
+}
+
+// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
+func (u *UpdateCopilotSpaceResourceAttributes) GetResourceType() string {
+	if u == nil || u.ResourceType == nil {
+		return ""
+	}
+	return *u.ResourceType
+}
+
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
 func (u *UpdateCustomOrgRoleRequest) GetBaseRole() string {
 	if u == nil || u.BaseRole == nil {
@@ -45303,7 +45351,7 @@ func (u *UpdateOrganizationCopilotSpaceRequest) GetName() string {
 }
 
 // GetResourcesAttributes returns the ResourcesAttributes slice if it's non-nil, nil otherwise.
-func (u *UpdateOrganizationCopilotSpaceRequest) GetResourcesAttributes() []*CopilotSpaceResource {
+func (u *UpdateOrganizationCopilotSpaceRequest) GetResourcesAttributes() []*UpdateCopilotSpaceResourceAttributes {
 	if u == nil || u.ResourcesAttributes == nil {
 		return nil
 	}
