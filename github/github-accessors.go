@@ -43838,6 +43838,22 @@ func (u *UpdateRunnerGroupRequest) GetVisibility() string {
 	return *u.Visibility
 }
 
+// GetLDAPDN returns the LDAPDN field.
+func (u *UpdateTeamLDAPMappingRequest) GetLDAPDN() string {
+	if u == nil {
+		return ""
+	}
+	return u.LDAPDN
+}
+
+// GetLDAPDN returns the LDAPDN field.
+func (u *UpdateUserLDAPMappingRequest) GetLDAPDN() string {
+	if u == nil {
+		return ""
+	}
+	return u.LDAPDN
+}
+
 // GetLicense returns the License field.
 func (u *UploadLicenseOptions) GetLicense() string {
 	if u == nil {
