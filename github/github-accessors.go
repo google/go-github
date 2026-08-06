@@ -43582,6 +43582,14 @@ func (u *UpdateOrganizationPrivateRegistry) GetVisibility() *PrivateRegistryVisi
 	return u.Visibility
 }
 
+// GetEnforcement returns the Enforcement field if it's non-nil, zero value otherwise.
+func (u *UpdatePreReceiveHookRequest) GetEnforcement() string {
+	if u == nil || u.Enforcement == nil {
+		return ""
+	}
+	return *u.Enforcement
+}
+
 // GetArchived returns the Archived field if it's non-nil, zero value otherwise.
 func (u *UpdateProjectItemOptions) GetArchived() bool {
 	if u == nil || u.Archived == nil {

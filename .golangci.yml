@@ -237,7 +237,6 @@ linters:
             - PagesUpdate
             - PagesUpdateWithoutCNAME
             - PendingDeploymentsRequest
-            - PreReceiveHook
             - ProtectionRequest
             - PublishCodespaceOptions
             - PullRequestBranchUpdateOptions
