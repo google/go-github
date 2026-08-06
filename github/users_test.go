@@ -128,15 +128,15 @@ func TestUsersService_Update(t *testing.T) {
 	ctx := t.Context()
 	user, _, err := client.Users.Update(ctx, input)
 	if err != nil {
-		t.Errorf("Users.Edit returned error: %v", err)
+		t.Errorf("Users.Update returned error: %v", err)
 	}
 
 	want := &User{ID: Ptr(int64(1))}
 	if !cmp.Equal(user, want) {
-		t.Errorf("Users.Edit returned %+v, want %+v", user, want)
+		t.Errorf("Users.Update returned %+v, want %+v", user, want)
 	}
 
-	const methodName = "Edit"
+	const methodName = "Update"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Users.Update(ctx, input)
 		if got != nil {
