@@ -54602,6 +54602,17 @@ func TestUpdateOrganizationPrivateRegistry_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 }
 
+func TestUpdatePreReceiveHookRequest_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdatePreReceiveHookRequest{Enforcement: &zeroValue}
+	u.GetEnforcement()
+	u = &UpdatePreReceiveHookRequest{}
+	u.GetEnforcement()
+	u = nil
+	u.GetEnforcement()
+}
+
 func TestUpdateProjectItemOptions_GetArchived(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool

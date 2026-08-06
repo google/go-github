@@ -110,7 +110,7 @@ func TestRepositoriesService_UpdatePreReceiveHook(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PreReceiveHook{}
+	input := UpdatePreReceiveHookRequest{Enforcement: Ptr("enabled")}
 
 	mux.HandleFunc("/repos/o/r/pre-receive-hooks/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -149,7 +149,7 @@ func TestRepositoriesService_PreReceiveHook_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Repositories.UpdatePreReceiveHook(ctx, "%", "%", 1, nil)
+	_, _, err := client.Repositories.UpdatePreReceiveHook(ctx, "%", "%", 1, UpdatePreReceiveHookRequest{})
 	testURLParseError(t, err)
 }
 

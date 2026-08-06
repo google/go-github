@@ -22,6 +22,12 @@ func (p PreReceiveHook) String() string {
 	return Stringify(p)
 }
 
+// UpdatePreReceiveHookRequest represents a request to update the enforcement
+// of a pre-receive hook for a repository.
+type UpdatePreReceiveHookRequest struct {
+	Enforcement *string `json:"enforcement,omitempty"`
+}
+
 // ListPreReceiveHooks lists all pre-receive hooks for the specified repository.
 //
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/repo-pre-receive-hooks#list-pre-receive-hooks-for-a-repository
@@ -78,7 +84,7 @@ func (s *RepositoriesService) GetPreReceiveHook(ctx context.Context, owner, repo
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/repo-pre-receive-hooks#update-pre-receive-hook-enforcement-for-a-repository
 //
 //meta:operation PATCH /repos/{owner}/{repo}/pre-receive-hooks/{pre_receive_hook_id}
-func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, repo string, id int64, body *PreReceiveHook) (*PreReceiveHook, *Response, error) {
+func (s *RepositoriesService) UpdatePreReceiveHook(ctx context.Context, owner, repo string, id int64, body UpdatePreReceiveHookRequest) (*PreReceiveHook, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pre-receive-hooks/%v", owner, repo, id)
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
