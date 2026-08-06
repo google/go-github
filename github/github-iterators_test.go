@@ -14919,6 +14919,78 @@ func TestSecretScanningService_ListAlertsForRepoIter(t *testing.T) {
 	}
 }
 
+func TestSecretScanningService_ListCustomPatternsForEnterpriseIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`)
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`)
+		case 3:
+			fmt.Fprint(w, `[{},{}]`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `[{},{}]`)
+		}
+	})
+
+	iter := client.SecretScanning.ListCustomPatternsForEnterpriseIter(t.Context(), "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.SecretScanning.ListCustomPatternsForEnterpriseIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &SecretScanningCustomPatternListOptions{}
+	iter = client.SecretScanning.ListCustomPatternsForEnterpriseIter(t.Context(), "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.SecretScanning.ListCustomPatternsForEnterpriseIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.SecretScanning.ListCustomPatternsForEnterpriseIter(t.Context(), "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.SecretScanning.ListCustomPatternsForEnterpriseIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.SecretScanning.ListCustomPatternsForEnterpriseIter(t.Context(), "", nil)
+	gotItems = 0
+	iter(func(item *SecretScanningCustomPattern, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.SecretScanning.ListCustomPatternsForEnterpriseIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
 func TestSecretScanningService_ListCustomPatternsForOrgIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
