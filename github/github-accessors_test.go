@@ -14351,6 +14351,47 @@ func TestCreateJITConfigRequest_GetWorkFolder(tt *testing.T) {
 	c.GetWorkFolder()
 }
 
+func TestCreateMilestoneRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateMilestoneRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateMilestoneRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateMilestoneRequest_GetDueOn(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &CreateMilestoneRequest{DueOn: &zeroValue}
+	c.GetDueOn()
+	c = &CreateMilestoneRequest{}
+	c.GetDueOn()
+	c = nil
+	c.GetDueOn()
+}
+
+func TestCreateMilestoneRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateMilestoneRequest{State: &zeroValue}
+	c.GetState()
+	c = &CreateMilestoneRequest{}
+	c.GetState()
+	c = nil
+	c.GetState()
+}
+
+func TestCreateMilestoneRequest_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateMilestoneRequest{}
+	c.GetTitle()
+	c = nil
+	c.GetTitle()
+}
+
 func TestCreateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -54397,6 +54438,50 @@ func TestUpdateIssueRequest_GetType(tt *testing.T) {
 	u.GetType()
 	u = nil
 	u.GetType()
+}
+
+func TestUpdateMilestoneRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateMilestoneRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateMilestoneRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateMilestoneRequest_GetDueOn(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	u := &UpdateMilestoneRequest{DueOn: &zeroValue}
+	u.GetDueOn()
+	u = &UpdateMilestoneRequest{}
+	u.GetDueOn()
+	u = nil
+	u.GetDueOn()
+}
+
+func TestUpdateMilestoneRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateMilestoneRequest{State: &zeroValue}
+	u.GetState()
+	u = &UpdateMilestoneRequest{}
+	u.GetState()
+	u = nil
+	u.GetState()
+}
+
+func TestUpdateMilestoneRequest_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateMilestoneRequest{Title: &zeroValue}
+	u.GetTitle()
+	u = &UpdateMilestoneRequest{}
+	u.GetTitle()
+	u = nil
+	u.GetTitle()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {

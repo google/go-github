@@ -112,7 +112,7 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Milestone{Title: Ptr("t")}
+	input := CreateMilestoneRequest{Title: "t"}
 
 	mux.HandleFunc("/repos/o/r/milestones", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -151,15 +151,15 @@ func TestIssuesService_CreateMilestone_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.CreateMilestone(ctx, "%", "r", nil)
+	_, _, err := client.Issues.CreateMilestone(ctx, "%", "r", CreateMilestoneRequest{})
 	testURLParseError(t, err)
 }
 
-func TestIssuesService_EditMilestone(t *testing.T) {
+func TestIssuesService_UpdateMilestone(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Milestone{Title: Ptr("t")}
+	input := UpdateMilestoneRequest{Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -168,24 +168,24 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	milestone, _, err := client.Issues.EditMilestone(ctx, "o", "r", 1, input)
+	milestone, _, err := client.Issues.UpdateMilestone(ctx, "o", "r", 1, input)
 	if err != nil {
-		t.Errorf("IssuesService.EditMilestone returned error: %v", err)
+		t.Errorf("IssuesService.UpdateMilestone returned error: %v", err)
 	}
 
 	want := &Milestone{Number: Ptr(1)}
 	if !cmp.Equal(milestone, want) {
-		t.Errorf("IssuesService.EditMilestone returned %+v, want %+v", milestone, want)
+		t.Errorf("IssuesService.UpdateMilestone returned %+v, want %+v", milestone, want)
 	}
 
-	const methodName = "EditMilestone"
+	const methodName = "UpdateMilestone"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Issues.EditMilestone(ctx, "\n", "\n", -1, input)
+		_, _, err = client.Issues.UpdateMilestone(ctx, "\n", "\n", -1, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Issues.EditMilestone(ctx, "o", "r", 1, input)
+		got, resp, err := client.Issues.UpdateMilestone(ctx, "o", "r", 1, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -193,12 +193,12 @@ func TestIssuesService_EditMilestone(t *testing.T) {
 	})
 }
 
-func TestIssuesService_EditMilestone_invalidOwner(t *testing.T) {
+func TestIssuesService_UpdateMilestone_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Issues.EditMilestone(ctx, "%", "r", 1, nil)
+	_, _, err := client.Issues.UpdateMilestone(ctx, "%", "r", 1, UpdateMilestoneRequest{})
 	testURLParseError(t, err)
 }
 
