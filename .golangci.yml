@@ -261,7 +261,6 @@ linters:
             - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
-            - User
             - UserSuspendOptions
             - WorkflowsPermissionsOpt
           # Body type names exempt from the "Options" suffix rule.
