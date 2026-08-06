@@ -101,6 +101,18 @@ type User struct {
 	Inherited *bool `json:"inherited,omitempty"`
 }
 
+// UserUpdateRequest represents the request body for updating a user.
+type UserUpdateRequest struct {
+    Name              *string `json:"name,omitempty"`
+    Email             *string `json:"email,omitempty"`
+    Blog              *string `json:"blog,omitempty"`
+    TwitterUsername   *string `json:"twitter_username,omitempty"`
+    Company           *string `json:"company,omitempty"`
+    Location          *string `json:"location,omitempty"`
+    Hireable          *bool   `json:"hireable,omitempty"`
+    Bio               *string `json:"bio,omitempty"`
+}
+
 func (u User) String() string {
 	return Stringify(u)
 }
@@ -161,7 +173,7 @@ func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response,
 // GitHub API docs: https://docs.github.com/rest/users/users?apiVersion=2022-11-28#update-the-authenticated-user
 //
 //meta:operation PATCH /user
-func (s *UsersService) Update(ctx context.Context, body User) (*User, *Response, error) {
+func (s *UsersService) Update(ctx context.Context, body UserUpdateRequest) (*User, *Response, error) {
 	u := "user"
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {

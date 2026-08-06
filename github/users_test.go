@@ -117,7 +117,7 @@ func TestUsersService_Update(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := User{Name: Ptr("n")}
+	input := UserUpdateRequest{Name: Ptr("n")}
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
