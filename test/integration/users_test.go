@@ -65,9 +65,8 @@ func TestUsers_Update(t *testing.T) {
 
 	// update location to test value
 	testLoc := fmt.Sprintf("test-%v", rand.Int())
-	u.Location = &testLoc
 
-	_, _, err = client.Users.Update(t.Context(), u)
+	_, _, err = client.Users.Update(t.Context(), github.UserUpdateRequest{Location: &testLoc})
 	if err != nil {
 		t.Fatalf("Users.Update returned error: %v", err)
 	}
@@ -83,8 +82,7 @@ func TestUsers_Update(t *testing.T) {
 	}
 
 	// set location back to the original value
-	u.Location = &location
-	_, _, err = client.Users.Update(t.Context(), u)
+	_, _, err = client.Users.Update(t.Context(), github.UserUpdateRequest{Location: &location})
 	if err != nil {
 		t.Fatalf("Users.Update returned error: %v", err)
 	}
