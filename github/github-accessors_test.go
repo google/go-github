@@ -908,6 +908,17 @@ func TestAddProjectV2FieldRequest_GetSingleSelectOptions(tt *testing.T) {
 	a.GetSingleSelectOptions()
 }
 
+func TestAddPullRequestsToStackRequest_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int{}
+	a := &AddPullRequestsToStackRequest{PullRequests: zeroValue}
+	a.GetPullRequests()
+	a = &AddPullRequestsToStackRequest{}
+	a.GetPullRequests()
+	a = nil
+	a.GetPullRequests()
+}
+
 func TestAddResourcesToCostCenterResponse_GetMessage(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -14792,6 +14803,17 @@ func TestCreatePullRequest_GetTitle(tt *testing.T) {
 	c.GetTitle()
 	c = nil
 	c.GetTitle()
+}
+
+func TestCreatePullRequestStackRequest_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int{}
+	c := &CreatePullRequestStackRequest{PullRequests: zeroValue}
+	c.GetPullRequests()
+	c = &CreatePullRequestStackRequest{}
+	c.GetPullRequests()
+	c = nil
+	c.GetPullRequests()
 }
 
 func TestCreateRef_GetRef(tt *testing.T) {
@@ -39497,6 +39519,14 @@ func TestPullRequestListOptions_GetState(tt *testing.T) {
 	p.GetState()
 }
 
+func TestPullRequestListStacksOptions_GetPullRequest(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestListStacksOptions{}
+	p.GetPullRequest()
+	p = nil
+	p.GetPullRequest()
+}
+
 func TestPullRequestMergeResult_GetMerged(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -40146,6 +40176,17 @@ func TestPullRequestStack_GetBase(tt *testing.T) {
 	p.GetBase()
 }
 
+func TestPullRequestStack_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PullRequestStack{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &PullRequestStack{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
 func TestPullRequestStack_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -40155,6 +40196,17 @@ func TestPullRequestStack_GetID(tt *testing.T) {
 	p.GetID()
 	p = nil
 	p.GetID()
+}
+
+func TestPullRequestStack_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestStack{NodeID: &zeroValue}
+	p.GetNodeID()
+	p = &PullRequestStack{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
 }
 
 func TestPullRequestStack_GetNumber(tt *testing.T) {
@@ -40168,6 +40220,17 @@ func TestPullRequestStack_GetNumber(tt *testing.T) {
 	p.GetNumber()
 }
 
+func TestPullRequestStack_GetOpen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &PullRequestStack{Open: &zeroValue}
+	p.GetOpen()
+	p = &PullRequestStack{}
+	p.GetOpen()
+	p = nil
+	p.GetOpen()
+}
+
 func TestPullRequestStack_GetPosition(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -40179,6 +40242,17 @@ func TestPullRequestStack_GetPosition(tt *testing.T) {
 	p.GetPosition()
 }
 
+func TestPullRequestStack_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequest{}
+	p := &PullRequestStack{PullRequests: zeroValue}
+	p.GetPullRequests()
+	p = &PullRequestStack{}
+	p.GetPullRequests()
+	p = nil
+	p.GetPullRequests()
+}
+
 func TestPullRequestStack_GetSize(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -40188,6 +40262,17 @@ func TestPullRequestStack_GetSize(tt *testing.T) {
 	p.GetSize()
 	p = nil
 	p.GetSize()
+}
+
+func TestPullRequestStack_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestStack{URL: &zeroValue}
+	p.GetURL()
+	p = &PullRequestStack{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
 }
 
 func TestPullRequestStackBase_GetRef(tt *testing.T) {

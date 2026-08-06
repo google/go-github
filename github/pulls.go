@@ -124,10 +124,10 @@ type PullRequestBranch struct {
 	User  *User       `json:"user,omitempty"`
 }
 
-// PullRequestStack represents the stack a pull request belongs to, in
-// repositories that use stacked pull requests. Base reports the branch the
-// entire stack ultimately targets, which can differ from the pull request's own
-// Base branch (the branch below it in the stack).
+// PullRequestStack represents a stack of pull requests. When embedded in a
+// PullRequest, Base reports the branch the entire stack ultimately targets,
+// which can differ from the pull request's own Base branch (the branch below it
+// in the stack), and Position reports that pull request's place in the stack.
 type PullRequestStack struct {
 	// Base is the base of the stack: the branch the entire stack ultimately targets.
 	Base *PullRequestStackBase `json:"base"`
@@ -136,10 +136,20 @@ type PullRequestStack struct {
 	// Position is the one-based position of this pull request within the stack,
 	// where 1 is the bottom of the stack.
 	Position *int `json:"position,omitempty"`
-	// ID is the ID of the stack that this pull request belongs to.
+	// ID is the ID of the stack.
 	ID *int64 `json:"id,omitempty"`
-	// Number is the number of the stack that this pull request belongs to.
+	// Number is the number of the stack.
 	Number *int `json:"number,omitempty"`
+	// NodeID is the global node ID of the stack.
+	NodeID *string `json:"node_id,omitempty"`
+	// URL is the API URL of the stack.
+	URL *string `json:"url,omitempty"`
+	// Open reports whether the stack contains any open pull requests.
+	Open *bool `json:"open,omitempty"`
+	// CreatedAt is the time the stack was created.
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	// PullRequests contains the pull requests in the stack, from bottom to top.
+	PullRequests []*PullRequest `json:"pull_requests,omitempty"`
 }
 
 // PullRequestStackBase represents the base of a stacked pull request's stack:
