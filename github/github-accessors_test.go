@@ -56321,6 +56321,94 @@ func TestUserSuspendOptions_GetReason(tt *testing.T) {
 	u.GetReason()
 }
 
+func TestUserUpdateRequest_GetBio(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UserUpdateRequest{Bio: &zeroValue}
+	u.GetBio()
+	u = &UserUpdateRequest{}
+	u.GetBio()
+	u = nil
+	u.GetBio()
+}
+
+func TestUserUpdateRequest_GetBlog(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UserUpdateRequest{Blog: &zeroValue}
+	u.GetBlog()
+	u = &UserUpdateRequest{}
+	u.GetBlog()
+	u = nil
+	u.GetBlog()
+}
+
+func TestUserUpdateRequest_GetCompany(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UserUpdateRequest{Company: &zeroValue}
+	u.GetCompany()
+	u = &UserUpdateRequest{}
+	u.GetCompany()
+	u = nil
+	u.GetCompany()
+}
+
+func TestUserUpdateRequest_GetEmail(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UserUpdateRequest{Email: &zeroValue}
+	u.GetEmail()
+	u = &UserUpdateRequest{}
+	u.GetEmail()
+	u = nil
+	u.GetEmail()
+}
+
+func TestUserUpdateRequest_GetHireable(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UserUpdateRequest{Hireable: &zeroValue}
+	u.GetHireable()
+	u = &UserUpdateRequest{}
+	u.GetHireable()
+	u = nil
+	u.GetHireable()
+}
+
+func TestUserUpdateRequest_GetLocation(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UserUpdateRequest{Location: &zeroValue}
+	u.GetLocation()
+	u = &UserUpdateRequest{}
+	u.GetLocation()
+	u = nil
+	u.GetLocation()
+}
+
+func TestUserUpdateRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UserUpdateRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UserUpdateRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUserUpdateRequest_GetTwitterUsername(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UserUpdateRequest{TwitterUsername: &zeroValue}
+	u.GetTwitterUsername()
+	u = &UserUpdateRequest{}
+	u.GetTwitterUsername()
+	u = nil
+	u.GetTwitterUsername()
+}
+
 func TestVulnerabilityPackage_GetEcosystem(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

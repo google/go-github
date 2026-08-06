@@ -44902,6 +44902,70 @@ func (u *UserSuspendOptions) GetReason() string {
 	return *u.Reason
 }
 
+// GetBio returns the Bio field if it's non-nil, zero value otherwise.
+func (u *UserUpdateRequest) GetBio() string {
+	if u == nil || u.Bio == nil {
+		return ""
+	}
+	return *u.Bio
+}
+
+// GetBlog returns the Blog field if it's non-nil, zero value otherwise.
+func (u *UserUpdateRequest) GetBlog() string {
+	if u == nil || u.Blog == nil {
+		return ""
+	}
+	return *u.Blog
+}
+
+// GetCompany returns the Company field if it's non-nil, zero value otherwise.
+func (u *UserUpdateRequest) GetCompany() string {
+	if u == nil || u.Company == nil {
+		return ""
+	}
+	return *u.Company
+}
+
+// GetEmail returns the Email field if it's non-nil, zero value otherwise.
+func (u *UserUpdateRequest) GetEmail() string {
+	if u == nil || u.Email == nil {
+		return ""
+	}
+	return *u.Email
+}
+
+// GetHireable returns the Hireable field if it's non-nil, zero value otherwise.
+func (u *UserUpdateRequest) GetHireable() bool {
+	if u == nil || u.Hireable == nil {
+		return false
+	}
+	return *u.Hireable
+}
+
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (u *UserUpdateRequest) GetLocation() string {
+	if u == nil || u.Location == nil {
+		return ""
+	}
+	return *u.Location
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UserUpdateRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetTwitterUsername returns the TwitterUsername field if it's non-nil, zero value otherwise.
+func (u *UserUpdateRequest) GetTwitterUsername() string {
+	if u == nil || u.TwitterUsername == nil {
+		return ""
+	}
+	return *u.TwitterUsername
+}
+
 // GetEcosystem returns the Ecosystem field if it's non-nil, zero value otherwise.
 func (v *VulnerabilityPackage) GetEcosystem() string {
 	if v == nil || v.Ecosystem == nil {

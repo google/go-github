@@ -103,14 +103,14 @@ type User struct {
 
 // UserUpdateRequest represents the request body for updating a user.
 type UserUpdateRequest struct {
-    Name              *string `json:"name,omitempty"`
-    Email             *string `json:"email,omitempty"`
-    Blog              *string `json:"blog,omitempty"`
-    TwitterUsername   *string `json:"twitter_username,omitempty"`
-    Company           *string `json:"company,omitempty"`
-    Location          *string `json:"location,omitempty"`
-    Hireable          *bool   `json:"hireable,omitempty"`
-    Bio               *string `json:"bio,omitempty"`
+	Name            *string `json:"name,omitempty"`
+	Email           *string `json:"email,omitempty"`
+	Blog            *string `json:"blog,omitempty"`
+	TwitterUsername *string `json:"twitter_username,omitempty"`
+	Company         *string `json:"company,omitempty"`
+	Location        *string `json:"location,omitempty"`
+	Hireable        *bool   `json:"hireable,omitempty"`
+	Bio             *string `json:"bio,omitempty"`
 }
 
 func (u User) String() string {
