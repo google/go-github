@@ -168,7 +168,7 @@ func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response,
 	return user, resp, nil
 }
 
-// Edit the authenticated user.
+// Update the authenticated user.
 //
 // GitHub API docs: https://docs.github.com/rest/users/users?apiVersion=2022-11-28#update-the-authenticated-user
 //
