@@ -113,11 +113,11 @@ func TestUsersService_GetByID(t *testing.T) {
 	})
 }
 
-func TestUsersService_Edit(t *testing.T) {
+func TestUsersService_Update(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &User{Name: Ptr("n")}
+	input := User{Name: Ptr("n")}
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -126,7 +126,7 @@ func TestUsersService_Edit(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	user, _, err := client.Users.Edit(ctx, input)
+	user, _, err := client.Users.Update(ctx, input)
 	if err != nil {
 		t.Errorf("Users.Edit returned error: %v", err)
 	}
@@ -138,7 +138,7 @@ func TestUsersService_Edit(t *testing.T) {
 
 	const methodName = "Edit"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.Edit(ctx, input)
+		got, resp, err := client.Users.Update(ctx, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

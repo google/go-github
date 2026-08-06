@@ -161,7 +161,7 @@ func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response,
 // GitHub API docs: https://docs.github.com/rest/users/users?apiVersion=2022-11-28#update-the-authenticated-user
 //
 //meta:operation PATCH /user
-func (s *UsersService) Edit(ctx context.Context, body *User) (*User, *Response, error) {
+func (s *UsersService) Update(ctx context.Context, body User) (*User, *Response, error) {
 	u := "user"
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
