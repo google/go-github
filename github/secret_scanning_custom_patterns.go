@@ -347,3 +347,78 @@ func (s *SecretScanningService) DeleteCustomPatternsForOrg(ctx context.Context, 
 
 	return s.client.Do(req, nil)
 }
+
+// ListCustomPatternsForEnterprise lists the secret scanning custom patterns defined at the enterprise level.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/custom-patterns?apiVersion=2022-11-28#list-enterprise-custom-patterns
+//
+//meta:operation GET /enterprises/{enterprise}/secret-scanning/custom-patterns
+func (s *SecretScanningService) ListCustomPatternsForEnterprise(ctx context.Context, enterprise string, opts *SecretScanningCustomPatternListOptions) ([]*SecretScanningCustomPattern, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/secret-scanning/custom-patterns", enterprise)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	var patterns []*SecretScanningCustomPattern
+	resp, err := s.client.Do(req, &patterns)
+	if err != nil {
+		return nil, resp, err
+	}
+	return patterns, resp, nil
+}
+
+// CreateCustomPatternsForEnterprise creates one or more secret scanning custom patterns at the enterprise level.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/custom-patterns?apiVersion=2022-11-28#bulk-create-enterprise-custom-patterns
+//
+//meta:operation POST /enterprises/{enterprise}/secret-scanning/custom-patterns
+func (s *SecretScanningService) CreateCustomPatternsForEnterprise(ctx context.Context, enterprise string, body SecretScanningCreateCustomPatternsRequest) (*SecretScanningCreateCustomPatternsResponse, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/secret-scanning/custom-patterns", enterprise)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+	var result *SecretScanningCreateCustomPatternsResponse
+	resp, err := s.client.Do(req, &result)
+	if err != nil {
+		return nil, resp, err
+	}
+	return result, resp, nil
+}
+
+// UpdateCustomPatternForEnterprise updates a single secret scanning custom pattern at the enterprise level.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/custom-patterns?apiVersion=2022-11-28#update-an-enterprise-custom-pattern
+//
+//meta:operation PATCH /enterprises/{enterprise}/secret-scanning/custom-patterns/{pattern_id}
+func (s *SecretScanningService) UpdateCustomPatternForEnterprise(ctx context.Context, enterprise string, patternID int64, body SecretScanningUpdateCustomPatternRequest) (*SecretScanningCustomPattern, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/secret-scanning/custom-patterns/%v", enterprise, patternID)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+	var pattern *SecretScanningCustomPattern
+	resp, err := s.client.Do(req, &pattern)
+	if err != nil {
+		return nil, resp, err
+	}
+	return pattern, resp, nil
+}
+
+// DeleteCustomPatternsForEnterprise deletes one or more secret scanning custom patterns at the enterprise level.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/secret-scanning/custom-patterns?apiVersion=2022-11-28#bulk-delete-enterprise-custom-patterns
+//
+//meta:operation DELETE /enterprises/{enterprise}/secret-scanning/custom-patterns
+func (s *SecretScanningService) DeleteCustomPatternsForEnterprise(ctx context.Context, enterprise string, body SecretScanningDeleteCustomPatternsRequest) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/secret-scanning/custom-patterns", enterprise)
+	req, err := s.client.NewRequest(ctx, "DELETE", u, body)
+	if err != nil {
+		return nil, err
+	}
+	return s.client.Do(req, nil)
+}
