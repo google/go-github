@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/golangci/plugin-module-register v0.1.2
 	github.com/google/go-github/v90/tools/structfield v0.0.0
-	go.yaml.in/yaml/v3 v3.0.4
+	go.yaml.in/yaml/v3 v3.0.5
 	golang.org/x/tools v0.48.0
 )
 
