@@ -14,4 +14,5 @@ func main() {
 	_ = fmt.Sprintf("some/%d/%s/url", 1, "yo") // want `use %v instead of %s and %d`
 	fmt.Printf("some %d", 1)                   // want `use %v instead of %d`
 	fmt.Printf("some %s", "thing")             // want `use %v instead of %s`
+	fmt.Fprintf(nil, "some %s", 1)             // want `use %v instead of %s`
 }
