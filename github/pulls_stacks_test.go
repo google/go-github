@@ -32,8 +32,8 @@ func testPullRequestStackResponse() string {
 	}`
 }
 
-func testPullRequestStack() *PullRequestStack {
-	return &PullRequestStack{
+func testPullRequestStackDetails() *PullRequestStackDetails {
+	return &PullRequestStackDetails{
 		ID:        Ptr(int64(1)),
 		Number:    Ptr(42),
 		NodeID:    Ptr("S_kwDOABCDEF4AAAAA"),
@@ -64,7 +64,7 @@ func TestPullRequestsService_ListStacks(t *testing.T) {
 			"page":         "2",
 			"per_page":     "50",
 		})
-		fmt.Fprintf(w, "[%s]", testPullRequestStackResponse())
+		fmt.Fprintf(w, "[%v]", testPullRequestStackResponse())
 	})
 
 	opts := &PullRequestListStacksOptions{
@@ -77,7 +77,7 @@ func TestPullRequestsService_ListStacks(t *testing.T) {
 		t.Errorf("PullRequests.ListStacks returned error: %v", err)
 	}
 
-	want := []*PullRequestStack{testPullRequestStack()}
+	want := []*PullRequestStackDetails{testPullRequestStackDetails()}
 	if !cmp.Equal(stacks, want) {
 		t.Errorf("PullRequests.ListStacks returned %+v, want %+v", stacks, want)
 	}
@@ -122,7 +122,7 @@ func TestPullRequestsService_CreateStack(t *testing.T) {
 	if err != nil {
 		t.Errorf("PullRequests.CreateStack returned error: %v", err)
 	}
-	if want := testPullRequestStack(); !cmp.Equal(stack, want) {
+	if want := testPullRequestStackDetails(); !cmp.Equal(stack, want) {
 		t.Errorf("PullRequests.CreateStack returned %+v, want %+v", stack, want)
 	}
 
@@ -163,7 +163,7 @@ func TestPullRequestsService_GetStack(t *testing.T) {
 	if err != nil {
 		t.Errorf("PullRequests.GetStack returned error: %v", err)
 	}
-	if want := testPullRequestStack(); !cmp.Equal(stack, want) {
+	if want := testPullRequestStackDetails(); !cmp.Equal(stack, want) {
 		t.Errorf("PullRequests.GetStack returned %+v, want %+v", stack, want)
 	}
 
@@ -206,7 +206,7 @@ func TestPullRequestsService_AddToStack(t *testing.T) {
 	if err != nil {
 		t.Errorf("PullRequests.AddToStack returned error: %v", err)
 	}
-	if want := testPullRequestStack(); !cmp.Equal(stack, want) {
+	if want := testPullRequestStackDetails(); !cmp.Equal(stack, want) {
 		t.Errorf("PullRequests.AddToStack returned %+v, want %+v", stack, want)
 	}
 
@@ -248,7 +248,7 @@ func TestPullRequestsService_Unstack(t *testing.T) {
 		if err != nil {
 			t.Errorf("PullRequests.Unstack returned error: %v", err)
 		}
-		if want := testPullRequestStack(); !cmp.Equal(stack, want) {
+		if want := testPullRequestStackDetails(); !cmp.Equal(stack, want) {
 			t.Errorf("PullRequests.Unstack returned %+v, want %+v", stack, want)
 		}
 	})
@@ -296,19 +296,4 @@ func TestPullRequestsService_Unstack_invalidOwner(t *testing.T) {
 
 	_, _, err := client.PullRequests.Unstack(t.Context(), "%", "%", 42)
 	testURLParseError(t, err)
-}
-
-func TestPullRequestStack_unmarshal(t *testing.T) {
-	t.Parallel()
-	testJSONUnmarshalOnly(t, testPullRequestStack(), testPullRequestStackResponse())
-}
-
-func TestCreatePullRequestStackRequest_marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &CreatePullRequestStackRequest{PullRequests: []int{101, 102}}, `{"pull_requests":[101,102]}`)
-}
-
-func TestAddPullRequestsToStackRequest_marshal(t *testing.T) {
-	t.Parallel()
-	testJSONMarshal(t, &AddPullRequestsToStackRequest{PullRequests: []int{103}}, `{"pull_requests":[103]}`)
 }

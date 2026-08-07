@@ -32030,28 +32030,12 @@ func (p *PullRequestStack) GetBase() *PullRequestStackBase {
 	return p.Base
 }
 
-// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
-func (p *PullRequestStack) GetCreatedAt() Timestamp {
-	if p == nil || p.CreatedAt == nil {
-		return Timestamp{}
-	}
-	return *p.CreatedAt
-}
-
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (p *PullRequestStack) GetID() int64 {
 	if p == nil || p.ID == nil {
 		return 0
 	}
 	return *p.ID
-}
-
-// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
-func (p *PullRequestStack) GetNodeID() string {
-	if p == nil || p.NodeID == nil {
-		return ""
-	}
-	return *p.NodeID
 }
 
 // GetNumber returns the Number field if it's non-nil, zero value otherwise.
@@ -32062,14 +32046,6 @@ func (p *PullRequestStack) GetNumber() int {
 	return *p.Number
 }
 
-// GetOpen returns the Open field if it's non-nil, zero value otherwise.
-func (p *PullRequestStack) GetOpen() bool {
-	if p == nil || p.Open == nil {
-		return false
-	}
-	return *p.Open
-}
-
 // GetPosition returns the Position field if it's non-nil, zero value otherwise.
 func (p *PullRequestStack) GetPosition() int {
 	if p == nil || p.Position == nil {
@@ -32078,28 +32054,12 @@ func (p *PullRequestStack) GetPosition() int {
 	return *p.Position
 }
 
-// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
-func (p *PullRequestStack) GetPullRequests() []*PullRequest {
-	if p == nil || p.PullRequests == nil {
-		return nil
-	}
-	return p.PullRequests
-}
-
 // GetSize returns the Size field if it's non-nil, zero value otherwise.
 func (p *PullRequestStack) GetSize() int {
 	if p == nil || p.Size == nil {
 		return 0
 	}
 	return *p.Size
-}
-
-// GetURL returns the URL field if it's non-nil, zero value otherwise.
-func (p *PullRequestStack) GetURL() string {
-	if p == nil || p.URL == nil {
-		return ""
-	}
-	return *p.URL
 }
 
 // GetRef returns the Ref field.
@@ -32116,6 +32076,70 @@ func (p *PullRequestStackBase) GetSHA() string {
 		return ""
 	}
 	return p.SHA
+}
+
+// GetBase returns the Base field.
+func (p *PullRequestStackDetails) GetBase() *PullRequestStackBase {
+	if p == nil {
+		return nil
+	}
+	return p.Base
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackDetails) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackDetails) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackDetails) GetNodeID() string {
+	if p == nil || p.NodeID == nil {
+		return ""
+	}
+	return *p.NodeID
+}
+
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackDetails) GetNumber() int {
+	if p == nil || p.Number == nil {
+		return 0
+	}
+	return *p.Number
+}
+
+// GetOpen returns the Open field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackDetails) GetOpen() bool {
+	if p == nil || p.Open == nil {
+		return false
+	}
+	return *p.Open
+}
+
+// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
+func (p *PullRequestStackDetails) GetPullRequests() []*PullRequest {
+	if p == nil || p.PullRequests == nil {
+		return nil
+	}
+	return p.PullRequests
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackDetails) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.

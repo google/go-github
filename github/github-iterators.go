@@ -5356,8 +5356,8 @@ func (s *PullRequestsService) ListReviewsIter(ctx context.Context, owner string,
 }
 
 // ListStacksIter returns an iterator that paginates through all results of ListStacks.
-func (s *PullRequestsService) ListStacksIter(ctx context.Context, owner string, repo string, opts *PullRequestListStacksOptions) iter.Seq2[*PullRequestStack, error] {
-	return func(yield func(*PullRequestStack, error) bool) {
+func (s *PullRequestsService) ListStacksIter(ctx context.Context, owner string, repo string, opts *PullRequestListStacksOptions) iter.Seq2[*PullRequestStackDetails, error] {
+	return func(yield func(*PullRequestStackDetails, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
 			opts = &PullRequestListStacksOptions{}

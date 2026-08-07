@@ -40176,17 +40176,6 @@ func TestPullRequestStack_GetBase(tt *testing.T) {
 	p.GetBase()
 }
 
-func TestPullRequestStack_GetCreatedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	p := &PullRequestStack{CreatedAt: &zeroValue}
-	p.GetCreatedAt()
-	p = &PullRequestStack{}
-	p.GetCreatedAt()
-	p = nil
-	p.GetCreatedAt()
-}
-
 func TestPullRequestStack_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
@@ -40196,17 +40185,6 @@ func TestPullRequestStack_GetID(tt *testing.T) {
 	p.GetID()
 	p = nil
 	p.GetID()
-}
-
-func TestPullRequestStack_GetNodeID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &PullRequestStack{NodeID: &zeroValue}
-	p.GetNodeID()
-	p = &PullRequestStack{}
-	p.GetNodeID()
-	p = nil
-	p.GetNodeID()
 }
 
 func TestPullRequestStack_GetNumber(tt *testing.T) {
@@ -40220,17 +40198,6 @@ func TestPullRequestStack_GetNumber(tt *testing.T) {
 	p.GetNumber()
 }
 
-func TestPullRequestStack_GetOpen(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	p := &PullRequestStack{Open: &zeroValue}
-	p.GetOpen()
-	p = &PullRequestStack{}
-	p.GetOpen()
-	p = nil
-	p.GetOpen()
-}
-
 func TestPullRequestStack_GetPosition(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -40242,17 +40209,6 @@ func TestPullRequestStack_GetPosition(tt *testing.T) {
 	p.GetPosition()
 }
 
-func TestPullRequestStack_GetPullRequests(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []*PullRequest{}
-	p := &PullRequestStack{PullRequests: zeroValue}
-	p.GetPullRequests()
-	p = &PullRequestStack{}
-	p.GetPullRequests()
-	p = nil
-	p.GetPullRequests()
-}
-
 func TestPullRequestStack_GetSize(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -40262,17 +40218,6 @@ func TestPullRequestStack_GetSize(tt *testing.T) {
 	p.GetSize()
 	p = nil
 	p.GetSize()
-}
-
-func TestPullRequestStack_GetURL(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	p := &PullRequestStack{URL: &zeroValue}
-	p.GetURL()
-	p = &PullRequestStack{}
-	p.GetURL()
-	p = nil
-	p.GetURL()
 }
 
 func TestPullRequestStackBase_GetRef(tt *testing.T) {
@@ -40289,6 +40234,91 @@ func TestPullRequestStackBase_GetSHA(tt *testing.T) {
 	p.GetSHA()
 	p = nil
 	p.GetSHA()
+}
+
+func TestPullRequestStackDetails_GetBase(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackDetails{}
+	p.GetBase()
+	p = nil
+	p.GetBase()
+}
+
+func TestPullRequestStackDetails_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PullRequestStackDetails{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &PullRequestStackDetails{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestPullRequestStackDetails_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PullRequestStackDetails{ID: &zeroValue}
+	p.GetID()
+	p = &PullRequestStackDetails{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPullRequestStackDetails_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestStackDetails{NodeID: &zeroValue}
+	p.GetNodeID()
+	p = &PullRequestStackDetails{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestPullRequestStackDetails_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	p := &PullRequestStackDetails{Number: &zeroValue}
+	p.GetNumber()
+	p = &PullRequestStackDetails{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestPullRequestStackDetails_GetOpen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	p := &PullRequestStackDetails{Open: &zeroValue}
+	p.GetOpen()
+	p = &PullRequestStackDetails{}
+	p.GetOpen()
+	p = nil
+	p.GetOpen()
+}
+
+func TestPullRequestStackDetails_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequest{}
+	p := &PullRequestStackDetails{PullRequests: zeroValue}
+	p.GetPullRequests()
+	p = &PullRequestStackDetails{}
+	p.GetPullRequests()
+	p = nil
+	p.GetPullRequests()
+}
+
+func TestPullRequestStackDetails_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestStackDetails{URL: &zeroValue}
+	p.GetURL()
+	p = &PullRequestStackDetails{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
 }
 
 func TestPullRequestSubmitReviewRequest_GetBody(tt *testing.T) {
