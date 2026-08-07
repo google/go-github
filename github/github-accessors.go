@@ -11326,6 +11326,38 @@ func (c *CreateJITConfigRequest) GetWorkFolder() string {
 	return *c.WorkFolder
 }
 
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateMilestoneRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetDueOn returns the DueOn field if it's non-nil, zero value otherwise.
+func (c *CreateMilestoneRequest) GetDueOn() Timestamp {
+	if c == nil || c.DueOn == nil {
+		return Timestamp{}
+	}
+	return *c.DueOn
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (c *CreateMilestoneRequest) GetState() string {
+	if c == nil || c.State == nil {
+		return ""
+	}
+	return *c.State
+}
+
+// GetTitle returns the Title field.
+func (c *CreateMilestoneRequest) GetTitle() string {
+	if c == nil {
+		return ""
+	}
+	return c.Title
+}
+
 // GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.
 func (c *CreateOrganizationPrivateRegistry) GetAccountID() string {
 	if c == nil || c.AccountID == nil {
@@ -43428,6 +43460,38 @@ func (u *UpdateIssueRequest) GetType() string {
 		return ""
 	}
 	return *u.Type
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateMilestoneRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetDueOn returns the DueOn field if it's non-nil, zero value otherwise.
+func (u *UpdateMilestoneRequest) GetDueOn() Timestamp {
+	if u == nil || u.DueOn == nil {
+		return Timestamp{}
+	}
+	return *u.DueOn
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (u *UpdateMilestoneRequest) GetState() string {
+	if u == nil || u.State == nil {
+		return ""
+	}
+	return *u.State
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (u *UpdateMilestoneRequest) GetTitle() string {
+	if u == nil || u.Title == nil {
+		return ""
+	}
+	return *u.Title
 }
 
 // GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.

@@ -232,7 +232,6 @@ linters:
             - Key
             - LockIssueOptions
             - MaintenanceOptions
-            - Milestone
             - Organization
             - PagesUpdate
             - PagesUpdateWithoutCNAME
