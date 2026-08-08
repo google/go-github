@@ -31,25 +31,131 @@ type AddPullRequestsToStackRequest struct {
 	PullRequests []int `json:"pull_requests"`
 }
 
-// PullRequestStackDetails represents a pull request stack returned by the
-// stacked pull request endpoints.
+// PullRequestStackRef represents the branch a pull request stack ultimately
+// targets. The stacked pull request endpoints return the ref alone, unlike
+// PullRequestStackBase, which the pull request endpoints return with a SHA.
+type PullRequestStackRef struct {
+	// Ref is the name of the branch the entire stack ultimately targets.
+	Ref string `json:"ref"`
+}
+
+// PullRequestStackDetails represents a pull request stack returned by
+// PullRequestsService.CreateStack, GetStack, AddToStack, and Unstack.
 type PullRequestStackDetails struct {
 	// ID is the ID of the stack.
-	ID *int64 `json:"id,omitempty"`
+	ID int64 `json:"id"`
 	// Number is the number of the stack.
-	Number *int `json:"number,omitempty"`
+	Number int `json:"number"`
 	// NodeID is the global node ID of the stack.
-	NodeID *string `json:"node_id,omitempty"`
+	NodeID string `json:"node_id"`
 	// URL is the API URL of the stack.
-	URL *string `json:"url,omitempty"`
+	URL string `json:"url"`
 	// Base is the branch the entire stack ultimately targets.
-	Base *PullRequestStackBase `json:"base"`
+	Base *PullRequestStackRef `json:"base"`
 	// Open reports whether the stack contains any open pull requests.
-	Open *bool `json:"open,omitempty"`
+	Open bool `json:"open"`
 	// CreatedAt is the time the stack was created.
-	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	CreatedAt Timestamp `json:"created_at"`
 	// PullRequests contains the pull requests in the stack, from bottom to top.
-	PullRequests []*PullRequest `json:"pull_requests,omitempty"`
+	PullRequests []*PullRequestStackPullRequest `json:"pull_requests"`
+}
+
+// PullRequestStackPullRequest represents a pull request in a stack returned by
+// PullRequestsService.CreateStack, GetStack, AddToStack, and Unstack.
+type PullRequestStackPullRequest struct {
+	// ID is the ID of the pull request.
+	ID int64 `json:"id"`
+	// Number is the number of the pull request.
+	Number int `json:"number"`
+	// NodeID is the global node ID of the pull request.
+	NodeID string `json:"node_id"`
+	// URL is the API URL of the pull request.
+	URL string `json:"url"`
+	// HTMLURL is the web URL of the pull request.
+	HTMLURL string `json:"html_url"`
+	// Title is the title of the pull request.
+	Title string `json:"title"`
+	// State is the state of the pull request. Possible values are: "open" and "closed".
+	State string `json:"state"`
+	// Draft reports whether the pull request is a draft.
+	Draft bool `json:"draft"`
+	// MergedAt is the time the pull request was merged, or nil if it is unmerged.
+	MergedAt *Timestamp `json:"merged_at"`
+	// User is the author of the pull request.
+	User *User `json:"user"`
+	// Head is the branch the pull request merges from.
+	Head *PullRequestStackBranch `json:"head"`
+	// Base is the branch the pull request merges into, which is the pull
+	// request below it in the stack.
+	Base *PullRequestStackBranch `json:"base"`
+}
+
+// PullRequestStackBranch represents the head or base branch of a pull request
+// returned by the stacked pull request endpoints.
+type PullRequestStackBranch struct {
+	// Ref is the name of the branch.
+	Ref string `json:"ref"`
+	// SHA is the SHA of the most recent commit on the branch.
+	SHA string `json:"sha"`
+	// Repo is the repository the branch belongs to.
+	Repo *PullRequestStackRepository `json:"repo"`
+}
+
+// PullRequestStackRepository represents the repository a stacked pull
+// request's branch belongs to.
+type PullRequestStackRepository struct {
+	// ID is the ID of the repository.
+	ID int64 `json:"id"`
+	// URL is the API URL of the repository.
+	URL string `json:"url"`
+	// Name is the name of the repository.
+	Name string `json:"name"`
+}
+
+// PullRequestStackMinimal represents a pull request stack returned by
+// PullRequestsService.ListStacks. This endpoint returns less detail about each
+// pull request in the stack than PullRequestStackDetails carries.
+type PullRequestStackMinimal struct {
+	// ID is the ID of the stack.
+	ID int64 `json:"id"`
+	// Number is the number of the stack.
+	Number int `json:"number"`
+	// NodeID is the global node ID of the stack.
+	NodeID string `json:"node_id"`
+	// URL is the API URL of the stack.
+	URL string `json:"url"`
+	// Base is the branch the entire stack ultimately targets.
+	Base *PullRequestStackRef `json:"base"`
+	// Open reports whether the stack contains any open pull requests.
+	Open bool `json:"open"`
+	// CreatedAt is the time the stack was created.
+	CreatedAt Timestamp `json:"created_at"`
+	// PullRequests contains the pull requests in the stack, from bottom to top.
+	PullRequests []*PullRequestStackMinimalPullRequest `json:"pull_requests"`
+}
+
+// PullRequestStackMinimalPullRequest represents a pull request in a stack
+// returned by PullRequestsService.ListStacks.
+type PullRequestStackMinimalPullRequest struct {
+	// Number is the number of the pull request.
+	Number int `json:"number"`
+	// State is the state of the pull request. Possible values are: "open" and "closed".
+	State string `json:"state"`
+	// Draft reports whether the pull request is a draft.
+	Draft bool `json:"draft"`
+	// MergedAt is the time the pull request was merged, or nil if it is unmerged.
+	MergedAt *Timestamp `json:"merged_at"`
+	// Head is the branch the pull request merges from.
+	Head *PullRequestStackMinimalBranch `json:"head"`
+}
+
+// PullRequestStackMinimalBranch represents the head branch of a pull request
+// returned by PullRequestsService.ListStacks.
+type PullRequestStackMinimalBranch struct {
+	// Ref is the name of the branch.
+	Ref string `json:"ref"`
+	// SHA is the SHA of the most recent commit on the branch.
+	SHA string `json:"sha"`
 }
 
 // ListStacks lists pull request stacks in a repository.
@@ -57,7 +163,7 @@ type PullRequestStackDetails struct {
 // GitHub API docs: https://docs.github.com/rest/pulls/stacks?apiVersion=2022-11-28#list-pull-request-stacks
 //
 //meta:operation GET /repos/{owner}/{repo}/stacks
-func (s *PullRequestsService) ListStacks(ctx context.Context, owner, repo string, opts *PullRequestListStacksOptions) ([]*PullRequestStackDetails, *Response, error) {
+func (s *PullRequestsService) ListStacks(ctx context.Context, owner, repo string, opts *PullRequestListStacksOptions) ([]*PullRequestStackMinimal, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stacks", owner, repo)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -69,7 +175,7 @@ func (s *PullRequestsService) ListStacks(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	var stacks []*PullRequestStackDetails
+	var stacks []*PullRequestStackMinimal
 	resp, err := s.client.Do(req, &stacks)
 	if err != nil {
 		return nil, resp, err

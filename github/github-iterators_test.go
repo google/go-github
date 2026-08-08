@@ -11883,7 +11883,7 @@ func TestPullRequestsService_ListStacksIter(t *testing.T) {
 
 	iter = client.PullRequests.ListStacksIter(t.Context(), "", "", nil)
 	gotItems = 0
-	iter(func(item *PullRequestStackDetails, err error) bool {
+	iter(func(item *PullRequestStackMinimal, err error) bool {
 		gotItems++
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)

@@ -23,6 +23,71 @@ func testPullRequestStackResponse() string {
 		"open":true,
 		"created_at":` + referenceTimeStr + `,
 		"pull_requests":[{
+			"id":1001,
+			"number":101,
+			"node_id":"PR_kwDOABCDEF4AAAAA",
+			"url":"https://api.github.com/repos/o/r/pulls/101",
+			"html_url":"https://github.com/o/r/pull/101",
+			"title":"Add a feature",
+			"state":"open",
+			"draft":false,
+			"merged_at":null,
+			"user":{"login":"octocat"},
+			"head":{"ref":"feature","sha":"abc123","repo":{"id":2001,"url":"https://api.github.com/repos/o/r","name":"r"}},
+			"base":{"ref":"main","sha":"def456","repo":{"id":2001,"url":"https://api.github.com/repos/o/r","name":"r"}}
+		}]
+	}`
+}
+
+func testPullRequestStackDetails() *PullRequestStackDetails {
+	repo := &PullRequestStackRepository{
+		ID:   2001,
+		URL:  "https://api.github.com/repos/o/r",
+		Name: "r",
+	}
+
+	return &PullRequestStackDetails{
+		ID:        1,
+		Number:    42,
+		NodeID:    "S_kwDOABCDEF4AAAAA",
+		URL:       "https://api.github.com/repos/o/r/stacks/42",
+		Base:      &PullRequestStackRef{Ref: "main"},
+		Open:      true,
+		CreatedAt: referenceTimestamp,
+		PullRequests: []*PullRequestStackPullRequest{{
+			ID:      1001,
+			Number:  101,
+			NodeID:  "PR_kwDOABCDEF4AAAAA",
+			URL:     "https://api.github.com/repos/o/r/pulls/101",
+			HTMLURL: "https://github.com/o/r/pull/101",
+			Title:   "Add a feature",
+			State:   "open",
+			Draft:   false,
+			User:    &User{Login: Ptr("octocat")},
+			Head: &PullRequestStackBranch{
+				Ref:  "feature",
+				SHA:  "abc123",
+				Repo: repo,
+			},
+			Base: &PullRequestStackBranch{
+				Ref:  "main",
+				SHA:  "def456",
+				Repo: repo,
+			},
+		}},
+	}
+}
+
+func testPullRequestStackMinimalResponse() string {
+	return `{
+		"id":1,
+		"number":42,
+		"node_id":"S_kwDOABCDEF4AAAAA",
+		"url":"https://api.github.com/repos/o/r/stacks/42",
+		"base":{"ref":"main"},
+		"open":true,
+		"created_at":` + referenceTimeStr + `,
+		"pull_requests":[{
 			"number":101,
 			"state":"open",
 			"draft":false,
@@ -32,22 +97,22 @@ func testPullRequestStackResponse() string {
 	}`
 }
 
-func testPullRequestStackDetails() *PullRequestStackDetails {
-	return &PullRequestStackDetails{
-		ID:        Ptr(int64(1)),
-		Number:    Ptr(42),
-		NodeID:    Ptr("S_kwDOABCDEF4AAAAA"),
-		URL:       Ptr("https://api.github.com/repos/o/r/stacks/42"),
-		Base:      &PullRequestStackBase{Ref: "main"},
-		Open:      Ptr(true),
-		CreatedAt: &referenceTimestamp,
-		PullRequests: []*PullRequest{{
-			Number: Ptr(101),
-			State:  Ptr("open"),
-			Draft:  Ptr(false),
-			Head: &PullRequestBranch{
-				Ref: Ptr("feature"),
-				SHA: Ptr("abc123"),
+func testPullRequestStackMinimal() *PullRequestStackMinimal {
+	return &PullRequestStackMinimal{
+		ID:        1,
+		Number:    42,
+		NodeID:    "S_kwDOABCDEF4AAAAA",
+		URL:       "https://api.github.com/repos/o/r/stacks/42",
+		Base:      &PullRequestStackRef{Ref: "main"},
+		Open:      true,
+		CreatedAt: referenceTimestamp,
+		PullRequests: []*PullRequestStackMinimalPullRequest{{
+			Number: 101,
+			State:  "open",
+			Draft:  false,
+			Head: &PullRequestStackMinimalBranch{
+				Ref: "feature",
+				SHA: "abc123",
 			},
 		}},
 	}
@@ -64,7 +129,7 @@ func TestPullRequestsService_ListStacks(t *testing.T) {
 			"page":         "2",
 			"per_page":     "50",
 		})
-		fmt.Fprintf(w, "[%v]", testPullRequestStackResponse())
+		fmt.Fprintf(w, "[%v]", testPullRequestStackMinimalResponse())
 	})
 
 	opts := &PullRequestListStacksOptions{
@@ -77,7 +142,7 @@ func TestPullRequestsService_ListStacks(t *testing.T) {
 		t.Errorf("PullRequests.ListStacks returned error: %v", err)
 	}
 
-	want := []*PullRequestStackDetails{testPullRequestStackDetails()}
+	want := []*PullRequestStackMinimal{testPullRequestStackMinimal()}
 	if !cmp.Equal(stacks, want) {
 		t.Errorf("PullRequests.ListStacks returned %+v, want %+v", stacks, want)
 	}
