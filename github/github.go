@@ -1981,6 +1981,46 @@ func setCredentialsAsHeaders(req *http.Request, id, secret string) *http.Request
 	return &convertedRequest
 }
 
+var defaultAuthOrigins = []*url.URL{
+	{Scheme: "https", Host: "api.github.com"},
+	{Scheme: "https", Host: "uploads.github.com"},
+}
+
+func isAllowedAuthOrigin(u *url.URL, allowedOrigins []*url.URL) bool {
+	if len(allowedOrigins) == 0 {
+		allowedOrigins = defaultAuthOrigins
+	}
+	for _, allowedOrigin := range allowedOrigins {
+		if sameAuthOrigin(u, allowedOrigin) {
+			return true
+		}
+	}
+	return false
+}
+
+func sameAuthOrigin(a, b *url.URL) bool {
+	if a == nil || b == nil {
+		return false
+	}
+	return strings.EqualFold(a.Scheme, b.Scheme) &&
+		strings.EqualFold(a.Hostname(), b.Hostname()) &&
+		authDefaultPort(a) == authDefaultPort(b)
+}
+
+func authDefaultPort(u *url.URL) string {
+	if port := u.Port(); port != "" {
+		return port
+	}
+	switch strings.ToLower(u.Scheme) {
+	case "http":
+		return "80"
+	case "https":
+		return "443"
+	default:
+		return ""
+	}
+}
+
 /*
 UnauthenticatedRateLimitedTransport allows you to make unauthenticated calls
 that need to use a higher rate limit associated with your OAuth application.
@@ -1992,7 +2032,8 @@ that need to use a higher rate limit associated with your OAuth application.
 	client := github.NewClient(t.Client())
 
 This will add the client id and secret as a base64-encoded string in the format
-ClientID:ClientSecret and apply it as an "Authorization": "Basic" header.
+ClientID:ClientSecret and apply it as an "Authorization": "Basic" header for
+requests to AllowedOrigins.
 
 See https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#primary-rate-limit-for-oauth-apps
 for more information.
@@ -2007,6 +2048,11 @@ type UnauthenticatedRateLimitedTransport struct {
 	// application.
 	ClientSecret string
 
+	// AllowedOrigins limits where credentials may be sent. Origins are matched
+	// by scheme, hostname, and port. If empty, the public GitHub API and upload
+	// origins are allowed.
+	AllowedOrigins []*url.URL
+
 	// Transport is the underlying HTTP transport to use when making requests.
 	// It will default to http.DefaultTransport if nil.
 	Transport http.RoundTripper
@@ -2019,6 +2065,10 @@ func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*htt
 	}
 	if t.ClientSecret == "" {
 		return nil, errors.New("t.ClientSecret is empty")
+	}
+
+	if !isAllowedAuthOrigin(req.URL, t.AllowedOrigins) {
+		return t.transport().RoundTrip(req)
 	}
 
 	req2 := setCredentialsAsHeaders(req, t.ClientID, t.ClientSecret)
@@ -2039,14 +2089,19 @@ func (t *UnauthenticatedRateLimitedTransport) transport() http.RoundTripper {
 	return http.DefaultTransport
 }
 
-// BasicAuthTransport is an http.RoundTripper that authenticates all requests
-// using HTTP Basic Authentication with the provided username and password. It
-// additionally supports users who have two-factor authentication enabled on
-// their GitHub account.
+// BasicAuthTransport is an http.RoundTripper that authenticates requests to
+// AllowedOrigins using HTTP Basic Authentication with the provided username
+// and password. It additionally supports users who have two-factor
+// authentication enabled on their GitHub account.
 type BasicAuthTransport struct {
 	Username string // GitHub username
 	Password string // GitHub password
 	OTP      string // one-time password for users with two-factor auth enabled
+
+	// AllowedOrigins limits where credentials may be sent. Origins are matched
+	// by scheme, hostname, and port. If empty, the public GitHub API and upload
+	// origins are allowed.
+	AllowedOrigins []*url.URL
 
 	// Transport is the underlying HTTP transport to use when making requests.
 	// It will default to http.DefaultTransport if nil.
@@ -2055,6 +2110,10 @@ type BasicAuthTransport struct {
 
 // RoundTrip implements the RoundTripper interface.
 func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	if !isAllowedAuthOrigin(req.URL, t.AllowedOrigins) {
+		return t.transport().RoundTrip(req)
+	}
+
 	req2 := setCredentialsAsHeaders(req, t.Username, t.Password)
 	if t.OTP != "" {
 		req2.Header.Set(headerOTP, t.OTP)
