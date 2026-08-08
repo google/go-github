@@ -57,12 +57,12 @@ type PullRequestStackDetails struct {
 	// CreatedAt is the time the stack was created.
 	CreatedAt Timestamp `json:"created_at"`
 	// PullRequests contains the pull requests in the stack, from bottom to top.
-	PullRequests []*PullRequestStackPullRequest `json:"pull_requests"`
+	PullRequests []*PullRequestStackEntry `json:"pull_requests"`
 }
 
-// PullRequestStackPullRequest represents a pull request in a stack returned by
+// PullRequestStackEntry represents a pull request in a stack returned by
 // PullRequestsService.CreateStack, GetStack, AddToStack, and Unstack.
-type PullRequestStackPullRequest struct {
+type PullRequestStackEntry struct {
 	// ID is the ID of the pull request.
 	ID int64 `json:"id"`
 	// Number is the number of the pull request.
@@ -131,12 +131,12 @@ type PullRequestStackMinimal struct {
 	// CreatedAt is the time the stack was created.
 	CreatedAt Timestamp `json:"created_at"`
 	// PullRequests contains the pull requests in the stack, from bottom to top.
-	PullRequests []*PullRequestStackMinimalPullRequest `json:"pull_requests"`
+	PullRequests []*PullRequestStackMinimalEntry `json:"pull_requests"`
 }
 
-// PullRequestStackMinimalPullRequest represents a pull request in a stack
+// PullRequestStackMinimalEntry represents a pull request in a stack
 // returned by PullRequestsService.ListStacks.
-type PullRequestStackMinimalPullRequest struct {
+type PullRequestStackMinimalEntry struct {
 	// Number is the number of the pull request.
 	Number int `json:"number"`
 	// State is the state of the pull request. Possible values are: "open" and "closed".
@@ -146,12 +146,12 @@ type PullRequestStackMinimalPullRequest struct {
 	// MergedAt is the time the pull request was merged, or nil if it is unmerged.
 	MergedAt *Timestamp `json:"merged_at"`
 	// Head is the branch the pull request merges from.
-	Head *PullRequestStackMinimalBranch `json:"head"`
+	Head *PullRequestStackMinimalHead `json:"head"`
 }
 
-// PullRequestStackMinimalBranch represents the head branch of a pull request
+// PullRequestStackMinimalHead represents the head branch of a pull request
 // returned by PullRequestsService.ListStacks.
-type PullRequestStackMinimalBranch struct {
+type PullRequestStackMinimalHead struct {
 	// Ref is the name of the branch.
 	Ref string `json:"ref"`
 	// SHA is the SHA of the most recent commit on the branch.

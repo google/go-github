@@ -40310,7 +40310,7 @@ func TestPullRequestStackDetails_GetOpen(tt *testing.T) {
 
 func TestPullRequestStackDetails_GetPullRequests(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := []*PullRequestStackPullRequest{}
+	zeroValue := []*PullRequestStackEntry{}
 	p := &PullRequestStackDetails{PullRequests: zeroValue}
 	p.GetPullRequests()
 	p = &PullRequestStackDetails{}
@@ -40325,6 +40325,105 @@ func TestPullRequestStackDetails_GetURL(tt *testing.T) {
 	p.GetURL()
 	p = nil
 	p.GetURL()
+}
+
+func TestPullRequestStackEntry_GetBase(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetBase()
+	p = nil
+	p.GetBase()
+}
+
+func TestPullRequestStackEntry_GetDraft(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetDraft()
+	p = nil
+	p.GetDraft()
+}
+
+func TestPullRequestStackEntry_GetHead(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetHead()
+	p = nil
+	p.GetHead()
+}
+
+func TestPullRequestStackEntry_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetHTMLURL()
+	p = nil
+	p.GetHTMLURL()
+}
+
+func TestPullRequestStackEntry_GetID(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPullRequestStackEntry_GetMergedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PullRequestStackEntry{MergedAt: &zeroValue}
+	p.GetMergedAt()
+	p = &PullRequestStackEntry{}
+	p.GetMergedAt()
+	p = nil
+	p.GetMergedAt()
+}
+
+func TestPullRequestStackEntry_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestPullRequestStackEntry_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestPullRequestStackEntry_GetState(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetState()
+	p = nil
+	p.GetState()
+}
+
+func TestPullRequestStackEntry_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetTitle()
+	p = nil
+	p.GetTitle()
+}
+
+func TestPullRequestStackEntry_GetURL(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
+}
+
+func TestPullRequestStackEntry_GetUser(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetUser()
+	p = nil
+	p.GetUser()
 }
 
 func TestPullRequestStackMinimal_GetBase(tt *testing.T) {
@@ -40377,7 +40476,7 @@ func TestPullRequestStackMinimal_GetOpen(tt *testing.T) {
 
 func TestPullRequestStackMinimal_GetPullRequests(tt *testing.T) {
 	tt.Parallel()
-	zeroValue := []*PullRequestStackMinimalPullRequest{}
+	zeroValue := []*PullRequestStackMinimalEntry{}
 	p := &PullRequestStackMinimal{PullRequests: zeroValue}
 	p.GetPullRequests()
 	p = &PullRequestStackMinimal{}
@@ -40394,162 +40493,63 @@ func TestPullRequestStackMinimal_GetURL(tt *testing.T) {
 	p.GetURL()
 }
 
-func TestPullRequestStackMinimalBranch_GetRef(tt *testing.T) {
+func TestPullRequestStackMinimalEntry_GetDraft(tt *testing.T) {
 	tt.Parallel()
-	p := &PullRequestStackMinimalBranch{}
+	p := &PullRequestStackMinimalEntry{}
+	p.GetDraft()
+	p = nil
+	p.GetDraft()
+}
+
+func TestPullRequestStackMinimalEntry_GetHead(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimalEntry{}
+	p.GetHead()
+	p = nil
+	p.GetHead()
+}
+
+func TestPullRequestStackMinimalEntry_GetMergedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PullRequestStackMinimalEntry{MergedAt: &zeroValue}
+	p.GetMergedAt()
+	p = &PullRequestStackMinimalEntry{}
+	p.GetMergedAt()
+	p = nil
+	p.GetMergedAt()
+}
+
+func TestPullRequestStackMinimalEntry_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimalEntry{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestPullRequestStackMinimalEntry_GetState(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimalEntry{}
+	p.GetState()
+	p = nil
+	p.GetState()
+}
+
+func TestPullRequestStackMinimalHead_GetRef(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimalHead{}
 	p.GetRef()
 	p = nil
 	p.GetRef()
 }
 
-func TestPullRequestStackMinimalBranch_GetSHA(tt *testing.T) {
+func TestPullRequestStackMinimalHead_GetSHA(tt *testing.T) {
 	tt.Parallel()
-	p := &PullRequestStackMinimalBranch{}
+	p := &PullRequestStackMinimalHead{}
 	p.GetSHA()
 	p = nil
 	p.GetSHA()
-}
-
-func TestPullRequestStackMinimalPullRequest_GetDraft(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackMinimalPullRequest{}
-	p.GetDraft()
-	p = nil
-	p.GetDraft()
-}
-
-func TestPullRequestStackMinimalPullRequest_GetHead(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackMinimalPullRequest{}
-	p.GetHead()
-	p = nil
-	p.GetHead()
-}
-
-func TestPullRequestStackMinimalPullRequest_GetMergedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	p := &PullRequestStackMinimalPullRequest{MergedAt: &zeroValue}
-	p.GetMergedAt()
-	p = &PullRequestStackMinimalPullRequest{}
-	p.GetMergedAt()
-	p = nil
-	p.GetMergedAt()
-}
-
-func TestPullRequestStackMinimalPullRequest_GetNumber(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackMinimalPullRequest{}
-	p.GetNumber()
-	p = nil
-	p.GetNumber()
-}
-
-func TestPullRequestStackMinimalPullRequest_GetState(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackMinimalPullRequest{}
-	p.GetState()
-	p = nil
-	p.GetState()
-}
-
-func TestPullRequestStackPullRequest_GetBase(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetBase()
-	p = nil
-	p.GetBase()
-}
-
-func TestPullRequestStackPullRequest_GetDraft(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetDraft()
-	p = nil
-	p.GetDraft()
-}
-
-func TestPullRequestStackPullRequest_GetHead(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetHead()
-	p = nil
-	p.GetHead()
-}
-
-func TestPullRequestStackPullRequest_GetHTMLURL(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetHTMLURL()
-	p = nil
-	p.GetHTMLURL()
-}
-
-func TestPullRequestStackPullRequest_GetID(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetID()
-	p = nil
-	p.GetID()
-}
-
-func TestPullRequestStackPullRequest_GetMergedAt(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	p := &PullRequestStackPullRequest{MergedAt: &zeroValue}
-	p.GetMergedAt()
-	p = &PullRequestStackPullRequest{}
-	p.GetMergedAt()
-	p = nil
-	p.GetMergedAt()
-}
-
-func TestPullRequestStackPullRequest_GetNodeID(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetNodeID()
-	p = nil
-	p.GetNodeID()
-}
-
-func TestPullRequestStackPullRequest_GetNumber(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetNumber()
-	p = nil
-	p.GetNumber()
-}
-
-func TestPullRequestStackPullRequest_GetState(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetState()
-	p = nil
-	p.GetState()
-}
-
-func TestPullRequestStackPullRequest_GetTitle(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetTitle()
-	p = nil
-	p.GetTitle()
-}
-
-func TestPullRequestStackPullRequest_GetURL(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetURL()
-	p = nil
-	p.GetURL()
-}
-
-func TestPullRequestStackPullRequest_GetUser(tt *testing.T) {
-	tt.Parallel()
-	p := &PullRequestStackPullRequest{}
-	p.GetUser()
-	p = nil
-	p.GetUser()
 }
 
 func TestPullRequestStackRef_GetRef(tt *testing.T) {

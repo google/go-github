@@ -54,7 +54,7 @@ func testPullRequestStackDetails() *PullRequestStackDetails {
 		Base:      &PullRequestStackRef{Ref: "main"},
 		Open:      true,
 		CreatedAt: referenceTimestamp,
-		PullRequests: []*PullRequestStackPullRequest{{
+		PullRequests: []*PullRequestStackEntry{{
 			ID:      1001,
 			Number:  101,
 			NodeID:  "PR_kwDOABCDEF4AAAAA",
@@ -106,11 +106,11 @@ func testPullRequestStackMinimal() *PullRequestStackMinimal {
 		Base:      &PullRequestStackRef{Ref: "main"},
 		Open:      true,
 		CreatedAt: referenceTimestamp,
-		PullRequests: []*PullRequestStackMinimalPullRequest{{
+		PullRequests: []*PullRequestStackMinimalEntry{{
 			Number: 101,
 			State:  "open",
 			Draft:  false,
-			Head: &PullRequestStackMinimalBranch{
+			Head: &PullRequestStackMinimalHead{
 				Ref: "feature",
 				SHA: "abc123",
 			},
