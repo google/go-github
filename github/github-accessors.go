@@ -20854,6 +20854,14 @@ func (i *IssueCommentEvent) GetSender() *User {
 	return i.Sender
 }
 
+// GetBody returns the Body field.
+func (i *IssueCommentRequest) GetBody() string {
+	if i == nil {
+		return ""
+	}
+	return i.Body
+}
+
 // GetBlockedBy returns the BlockedBy field if it's non-nil, zero value otherwise.
 func (i *IssueDependenciesSummary) GetBlockedBy() int {
 	if i == nil || i.BlockedBy == nil {

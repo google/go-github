@@ -26288,6 +26288,14 @@ func TestIssueCommentEvent_GetSender(tt *testing.T) {
 	i.GetSender()
 }
 
+func TestIssueCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueCommentRequest{}
+	i.GetBody()
+	i = nil
+	i.GetBody()
+}
+
 func TestIssueDependenciesSummary_GetBlockedBy(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
