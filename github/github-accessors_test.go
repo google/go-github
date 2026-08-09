@@ -26172,6 +26172,14 @@ func TestIssueComment_GetIssueURL(tt *testing.T) {
 	i.GetIssueURL()
 }
 
+func TestIssueComment_GetMinimized(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueComment{}
+	i.GetMinimized()
+	i = nil
+	i.GetMinimized()
+}
+
 func TestIssueComment_GetNodeID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -26181,6 +26189,22 @@ func TestIssueComment_GetNodeID(tt *testing.T) {
 	i.GetNodeID()
 	i = nil
 	i.GetNodeID()
+}
+
+func TestIssueComment_GetPerformedViaGithubApp(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueComment{}
+	i.GetPerformedViaGithubApp()
+	i = nil
+	i.GetPerformedViaGithubApp()
+}
+
+func TestIssueComment_GetPin(tt *testing.T) {
+	tt.Parallel()
+	i := &IssueComment{}
+	i.GetPin()
+	i = nil
+	i.GetPin()
 }
 
 func TestIssueComment_GetReactions(tt *testing.T) {
@@ -31233,6 +31257,17 @@ func TestMilestoneStats_GetTotalMilestones(tt *testing.T) {
 	m.GetTotalMilestones()
 }
 
+func TestMinimizedIssueComment_GetReason(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	m := &MinimizedIssueComment{Reason: &zeroValue}
+	m.GetReason()
+	m = &MinimizedIssueComment{}
+	m.GetReason()
+	m = nil
+	m.GetReason()
+}
+
 func TestMostRecentInstance_GetAnalysisKey(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -35850,6 +35885,25 @@ func TestPingEvent_GetZen(tt *testing.T) {
 	p.GetZen()
 	p = nil
 	p.GetZen()
+}
+
+func TestPinnedIssueComment_GetPinnedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PinnedIssueComment{PinnedAt: &zeroValue}
+	p.GetPinnedAt()
+	p = &PinnedIssueComment{}
+	p.GetPinnedAt()
+	p = nil
+	p.GetPinnedAt()
+}
+
+func TestPinnedIssueComment_GetPinnedBy(tt *testing.T) {
+	tt.Parallel()
+	p := &PinnedIssueComment{}
+	p.GetPinnedBy()
+	p = nil
+	p.GetPinnedBy()
 }
 
 func TestPlan_GetCollaborators(tt *testing.T) {

@@ -26,10 +26,24 @@ type IssueComment struct {
 	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
 	// Use the Issue Comments REST API endpoint to retrieve this information.
 	// See: https://docs.github.com/rest/issues/comments?apiVersion=2022-11-28#get-an-issue-comment
-	AuthorAssociation *string `json:"author_association,omitempty"`
-	URL               *string `json:"url,omitempty"`
-	HTMLURL           *string `json:"html_url,omitempty"`
-	IssueURL          *string `json:"issue_url,omitempty"`
+	AuthorAssociation     *string                `json:"author_association,omitempty"`
+	PerformedViaGithubApp *App                   `json:"performed_via_github_app,omitempty"`
+	Pin                   *PinnedIssueComment    `json:"pin,omitempty"`
+	Minimized             *MinimizedIssueComment `json:"minimized,omitempty"`
+	URL                   *string                `json:"url,omitempty"`
+	HTMLURL               *string                `json:"html_url,omitempty"`
+	IssueURL              *string                `json:"issue_url,omitempty"`
+}
+
+// PinnedIssueComment represents the pin details of a pinned issue comment.
+type PinnedIssueComment struct {
+	PinnedAt *Timestamp `json:"pinned_at,omitempty"`
+	PinnedBy *User      `json:"pinned_by,omitempty"`
+}
+
+// MinimizedIssueComment represents the minimized details of a minimized issue comment.
+type MinimizedIssueComment struct {
+	Reason *string `json:"reason,omitempty"`
 }
 
 func (i IssueComment) String() string {
