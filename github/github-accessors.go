@@ -11894,6 +11894,78 @@ func (c *CreateTag) GetType() string {
 	return c.Type
 }
 
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetMaintainers returns the Maintainers slice if it's non-nil, nil otherwise.
+func (c *CreateTeamRequest) GetMaintainers() []string {
+	if c == nil || c.Maintainers == nil {
+		return nil
+	}
+	return c.Maintainers
+}
+
+// GetName returns the Name field.
+func (c *CreateTeamRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetNotificationSetting returns the NotificationSetting field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetNotificationSetting() string {
+	if c == nil || c.NotificationSetting == nil {
+		return ""
+	}
+	return *c.NotificationSetting
+}
+
+// GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetParentTeamID() int64 {
+	if c == nil || c.ParentTeamID == nil {
+		return 0
+	}
+	return *c.ParentTeamID
+}
+
+// GetParentTeamSlug returns the ParentTeamSlug field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetParentTeamSlug() string {
+	if c == nil || c.ParentTeamSlug == nil {
+		return ""
+	}
+	return *c.ParentTeamSlug
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetPermission() string {
+	if c == nil || c.Permission == nil {
+		return ""
+	}
+	return *c.Permission
+}
+
+// GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetPrivacy() string {
+	if c == nil || c.Privacy == nil {
+		return ""
+	}
+	return *c.Privacy
+}
+
+// GetRepoNames returns the RepoNames slice if it's non-nil, nil otherwise.
+func (c *CreateTeamRequest) GetRepoNames() []string {
+	if c == nil || c.RepoNames == nil {
+		return nil
+	}
+	return c.RepoNames
+}
+
 // GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
 func (c *CreateUpdateEnvironment) GetCanAdminsBypass() bool {
 	if c == nil || c.CanAdminsBypass == nil {
@@ -25116,78 +25188,6 @@ func (n *NetworkSettingsResource) GetSubnetID() string {
 		return ""
 	}
 	return *n.SubnetID
-}
-
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetDescription() string {
-	if n == nil || n.Description == nil {
-		return ""
-	}
-	return *n.Description
-}
-
-// GetLDAPDN returns the LDAPDN field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetLDAPDN() string {
-	if n == nil || n.LDAPDN == nil {
-		return ""
-	}
-	return *n.LDAPDN
-}
-
-// GetMaintainers returns the Maintainers slice if it's non-nil, nil otherwise.
-func (n *NewTeam) GetMaintainers() []string {
-	if n == nil || n.Maintainers == nil {
-		return nil
-	}
-	return n.Maintainers
-}
-
-// GetName returns the Name field.
-func (n *NewTeam) GetName() string {
-	if n == nil {
-		return ""
-	}
-	return n.Name
-}
-
-// GetNotificationSetting returns the NotificationSetting field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetNotificationSetting() string {
-	if n == nil || n.NotificationSetting == nil {
-		return ""
-	}
-	return *n.NotificationSetting
-}
-
-// GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetParentTeamID() int64 {
-	if n == nil || n.ParentTeamID == nil {
-		return 0
-	}
-	return *n.ParentTeamID
-}
-
-// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetPermission() string {
-	if n == nil || n.Permission == nil {
-		return ""
-	}
-	return *n.Permission
-}
-
-// GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetPrivacy() string {
-	if n == nil || n.Privacy == nil {
-		return ""
-	}
-	return *n.Privacy
-}
-
-// GetRepoNames returns the RepoNames slice if it's non-nil, nil otherwise.
-func (n *NewTeam) GetRepoNames() []string {
-	if n == nil || n.RepoNames == nil {
-		return nil
-	}
-	return n.RepoNames
 }
 
 // GetClusterRoles returns the ClusterRoles slice if it's non-nil, nil otherwise.
@@ -43916,6 +43916,70 @@ func (u *UpdateTeamLDAPMappingRequest) GetLDAPDN() string {
 		return ""
 	}
 	return u.LDAPDN
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetNotificationSetting returns the NotificationSetting field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetNotificationSetting() string {
+	if u == nil || u.NotificationSetting == nil {
+		return ""
+	}
+	return *u.NotificationSetting
+}
+
+// GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetParentTeamID() int64 {
+	if u == nil || u.ParentTeamID == nil {
+		return 0
+	}
+	return *u.ParentTeamID
+}
+
+// GetParentTeamSlug returns the ParentTeamSlug field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetParentTeamSlug() string {
+	if u == nil || u.ParentTeamSlug == nil {
+		return ""
+	}
+	return *u.ParentTeamSlug
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetPermission() string {
+	if u == nil || u.Permission == nil {
+		return ""
+	}
+	return *u.Permission
+}
+
+// GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetPrivacy() string {
+	if u == nil || u.Privacy == nil {
+		return ""
+	}
+	return *u.Privacy
+}
+
+// GetRemoveParentTeam returns the RemoveParentTeam field.
+func (u *UpdateTeamRequest) GetRemoveParentTeam() bool {
+	if u == nil {
+		return false
+	}
+	return u.RemoveParentTeam
 }
 
 // GetLDAPDN returns the LDAPDN field.
