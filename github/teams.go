@@ -267,6 +267,7 @@ func (r UpdateTeamRequest) String() string {
 	return Stringify(r)
 }
 
+// MarshalJSON implements the json.Marshaler interface.
 func (r UpdateTeamRequest) MarshalJSON() ([]byte, error) {
 	type alias UpdateTeamRequest
 	if !r.RemoveParentTeam {
