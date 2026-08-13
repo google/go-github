@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -266,35 +267,18 @@ func (r UpdateTeamRequest) String() string {
 	return Stringify(r)
 }
 
-func (r UpdateTeamRequest) body() any {
+func (r UpdateTeamRequest) MarshalJSON() ([]byte, error) {
+	type alias UpdateTeamRequest
 	if !r.RemoveParentTeam {
-		return r
+		return json.Marshal(alias(r))
 	}
-
-	return updateTeamRequestNoParent{
-		Name:                r.Name,
-		Description:         r.Description,
-		Privacy:             r.Privacy,
-		NotificationSetting: r.NotificationSetting,
-		Permission:          r.Permission,
-		ParentTeamID:        nil,
-		ParentTeamSlug:      nil,
-	}
-}
-
-// updateTeamRequestNoParent represents a team to be updated with the parent removed.
-type updateTeamRequestNoParent struct {
-	Name                *string `json:"name"`
-	Description         *string `json:"description,omitempty"`
-	Privacy             *string `json:"privacy,omitempty"`
-	NotificationSetting *string `json:"notification_setting,omitempty"`
-	Permission          *string `json:"permission,omitempty"`
-	ParentTeamID        *int64  `json:"parent_team_id"`
-	ParentTeamSlug      *string `json:"parent_team_slug"`
-}
-
-func (r updateTeamRequestNoParent) String() string {
-	return Stringify(r)
+	return json.Marshal(&struct {
+		alias
+		ParentTeamID   *int64  `json:"parent_team_id"`
+		ParentTeamSlug *string `json:"parent_team_slug"`
+	}{
+		alias: alias(r),
+	})
 }
 
 // UpdateTeamByID updates a team, given an organization ID, selected by ID.
@@ -304,7 +288,7 @@ func (r updateTeamRequestNoParent) String() string {
 //meta:operation PATCH /organizations/{organization_id}/team/{team_id}
 func (s *TeamsService) UpdateTeamByID(ctx context.Context, orgID, teamID int64, body UpdateTeamRequest) (*Team, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, body.body())
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -325,7 +309,7 @@ func (s *TeamsService) UpdateTeamByID(ctx context.Context, orgID, teamID int64, 
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}
 func (s *TeamsService) UpdateTeamBySlug(ctx context.Context, org, slug string, body UpdateTeamRequest) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v", org, slug)
-	req, err := s.client.NewRequest(ctx, "PATCH", u, body.body())
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}

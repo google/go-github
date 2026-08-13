@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 func TestTeamsService_ListTeams(t *testing.T) {
@@ -275,7 +276,7 @@ func TestTeamsService_UpdateTeamByID_RemoveParent(t *testing.T) {
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input.body().(updateTeamRequestNoParent))
+		testJSONBody(t, r, input, cmpopts.IgnoreFields(UpdateTeamRequest{}, "RemoveParentTeam"))
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -338,7 +339,7 @@ func TestTeamsService_UpdateTeamBySlug_RemoveParent(t *testing.T) {
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input.body().(updateTeamRequestNoParent))
+		testJSONBody(t, r, input, cmpopts.IgnoreFields(UpdateTeamRequest{}, "RemoveParentTeam"))
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
