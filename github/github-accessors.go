@@ -10039,9 +10039,9 @@ func (c *CopilotSpace) GetNumber() int {
 }
 
 // GetOwner returns the Owner field.
-func (c *CopilotSpace) GetOwner() User {
+func (c *CopilotSpace) GetOwner() any {
 	if c == nil {
-		return User{}
+		return nil
 	}
 	return c.Owner
 }
