@@ -15,6 +15,124 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func TestCopilotSpace_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		json string
+		want *CopilotSpace
+	}{
+		{
+			name: "user owner",
+			json: `{
+				"id": 12,
+				"number": 6,
+				"name": "Test Planning Space",
+				"owner": {
+					"login": "octocat",
+					"id": 1,
+					"type": "User"
+				},
+				"creator": {
+					"login": "octocat",
+					"id": 1,
+					"type": "User"
+				},
+				"created_at": ` + refTimeStr(1136178000) + `,
+				"updated_at": ` + refTimeStr(1136178001) + `,
+				"html_url": "https://github.com/copilot/spaces/octocat/6",
+				"api_url": "https://api.github.com/users/octocat/copilot-spaces/6",
+				"base_role": "read"
+			}`,
+			want: &CopilotSpace{
+				ID:        int64(12),
+				Number:    6,
+				Name:      "Test Planning Space",
+				Owner:     &User{Login: Ptr("octocat"), ID: Ptr(int64(1)), Type: Ptr("User")},
+				Creator:   User{Login: Ptr("octocat"), ID: Ptr(int64(1)), Type: Ptr("User")},
+				CreatedAt: *refTimestamp(1136178000),
+				UpdatedAt: *refTimestamp(1136178001),
+				HTMLURL:   "https://github.com/copilot/spaces/octocat/6",
+				APIURL:    "https://api.github.com/users/octocat/copilot-spaces/6",
+				BaseRole:  "read",
+			},
+		},
+		{
+			name: "organization owner without type",
+			json: `{
+				"id": 12,
+				"number": 6,
+				"name": "Test Planning Space",
+				"owner": {
+					"login": "octo-org",
+					"id": 1,
+					"node_id": "MDEyOk9yZ2FuaXphdGlvbjE=",
+					"url": "https://api.github.com/orgs/octo-org",
+					"repos_url": "https://api.github.com/orgs/octo-org/repos",
+					"events_url": "https://api.github.com/orgs/octo-org/events",
+					"hooks_url": "https://api.github.com/orgs/octo-org/hooks",
+					"issues_url": "https://api.github.com/orgs/octo-org/issues",
+					"members_url": "https://api.github.com/orgs/octo-org/members{/member}",
+					"public_members_url": "https://api.github.com/orgs/octo-org/public_members{/member}",
+					"avatar_url": "https://github.com/images/error/octocat_happy.gif",
+					"description": "A great organization"
+				},
+				"creator": {
+					"login": "octocat",
+					"id": 1,
+					"type": "User"
+				},
+				"created_at": ` + refTimeStr(1136178000) + `,
+				"updated_at": ` + refTimeStr(1136178001) + `,
+				"html_url": "https://github.com/copilot/spaces/octo-org/6",
+				"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+				"base_role": "read"
+			}`,
+			want: &CopilotSpace{
+				ID:     int64(12),
+				Number: 6,
+				Name:   "Test Planning Space",
+				Owner: &Organization{
+					Login:            Ptr("octo-org"),
+					ID:               Ptr(int64(1)),
+					NodeID:           Ptr("MDEyOk9yZ2FuaXphdGlvbjE="),
+					URL:              Ptr("https://api.github.com/orgs/octo-org"),
+					ReposURL:         Ptr("https://api.github.com/orgs/octo-org/repos"),
+					EventsURL:        Ptr("https://api.github.com/orgs/octo-org/events"),
+					HooksURL:         Ptr("https://api.github.com/orgs/octo-org/hooks"),
+					IssuesURL:        Ptr("https://api.github.com/orgs/octo-org/issues"),
+					MembersURL:       Ptr("https://api.github.com/orgs/octo-org/members{/member}"),
+					PublicMembersURL: Ptr("https://api.github.com/orgs/octo-org/public_members{/member}"),
+					AvatarURL:        Ptr("https://github.com/images/error/octocat_happy.gif"),
+					Description:      Ptr("A great organization"),
+				},
+				Creator:   User{Login: Ptr("octocat"), ID: Ptr(int64(1)), Type: Ptr("User")},
+				CreatedAt: *refTimestamp(1136178000),
+				UpdatedAt: *refTimestamp(1136178001),
+				HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+				APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+				BaseRole:  "read",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			var got *CopilotSpace
+			if err := json.Unmarshal([]byte(tt.json), &got); err != nil {
+				t.Errorf("CopilotSpace.UnmarshalJSON returned error: %v", err)
+			}
+
+			if !cmp.Equal(got, tt.want) {
+				t.Errorf("CopilotSpace.UnmarshalJSON returned %+v, want %+v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
@@ -1099,7 +1217,7 @@ func TestCopilotService_ListOrganizationCopilotSpaces(t *testing.T) {
 				Name:                "Test Planning Space",
 				Description:         Ptr("A space for planning"),
 				GeneralInstructions: Ptr("use this space for team planning"),
-				Owner: User{
+				Owner: &Organization{
 					Login: Ptr("octo-org"),
 					ID:    Ptr(int64(1)),
 					Type:  Ptr("Organization"),
@@ -1179,7 +1297,7 @@ func TestCopilotService_GetOrganizationCopilotSpace(t *testing.T) {
 		Name:                "Test Planning Space",
 		Description:         Ptr("A space for planning"),
 		GeneralInstructions: Ptr("use this space for team planning"),
-		Owner: User{
+		Owner: &Organization{
 			Login: Ptr("octo-org"),
 			ID:    Ptr(int64(1)),
 			Type:  Ptr("Organization"),
@@ -1242,7 +1360,7 @@ func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
 		Name:                "Team Planning Space",
 		Description:         Ptr("Organization space for team planning"),
 		GeneralInstructions: Ptr("Help the team with planning tasks"),
-		Owner: User{
+		Owner: &Organization{
 			Login: Ptr("octo-org"),
 			ID:    Ptr(int64(1)),
 			Type:  Ptr("Organization"),
@@ -1392,7 +1510,7 @@ func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
 		Name:                "Team Planning Space",
 		Description:         Ptr("Updated organization space for team planning"),
 		GeneralInstructions: Ptr("Help the team with updated planning tasks"),
-		Owner: User{
+		Owner: &Organization{
 			Login: Ptr("octo-org"),
 			ID:    Ptr(int64(1)),
 			Type:  Ptr("Organization"),

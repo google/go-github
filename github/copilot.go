@@ -23,12 +23,13 @@ type CopilotService service
 
 // CopilotSpace represents a Copilot Space.
 type CopilotSpace struct {
-	ID                  int64                   `json:"id"`
-	Number              int                     `json:"number"`
-	Name                string                  `json:"name"`
-	Description         *string                 `json:"description,omitempty"`
-	GeneralInstructions *string                 `json:"general_instructions,omitempty"`
-	Owner               User                    `json:"owner"`
+	ID                  int64   `json:"id"`
+	Number              int     `json:"number"`
+	Name                string  `json:"name"`
+	Description         *string `json:"description,omitempty"`
+	GeneralInstructions *string `json:"general_instructions,omitempty"`
+	// Owner can either be a User or an Organization.
+	Owner               any                     `json:"owner"`
 	Creator             User                    `json:"creator"`
 	CreatedAt           Timestamp               `json:"created_at"`
 	UpdatedAt           Timestamp               `json:"updated_at"`
@@ -36,6 +37,52 @@ type CopilotSpace struct {
 	APIURL              string                  `json:"api_url"`
 	BaseRole            string                  `json:"base_role"`
 	ResourcesAttributes []*CopilotSpaceResource `json:"resources_attributes,omitempty"`
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+func (c *CopilotSpace) UnmarshalJSON(data []byte) error {
+	type alias CopilotSpace
+	var space alias
+
+	if err := json.Unmarshal(data, &space); err != nil {
+		return err
+	}
+
+	*c = CopilotSpace(space)
+
+	switch v := space.Owner.(type) {
+	case nil:
+		c.Owner = nil
+	case map[string]any:
+		jsonData, err := json.Marshal(space.Owner)
+		if err != nil {
+			return err
+		}
+		if t, ok := v["type"].(string); ok && t == "User" {
+			var user *User
+			if err := json.Unmarshal(jsonData, &user); err != nil {
+				return err
+			}
+			c.Owner = user
+		} else if t, ok := v["type"].(string); ok && t == "Organization" {
+			var organization *Organization
+			if err := json.Unmarshal(jsonData, &organization); err != nil {
+				return err
+			}
+			c.Owner = organization
+		} else if _, ok := v["hooks_url"]; ok {
+			var organization *Organization
+			if err := json.Unmarshal(jsonData, &organization); err != nil {
+				return err
+			}
+			c.Owner = organization
+		} else {
+			return fmt.Errorf("unsupported owner type %v", v["type"])
+		}
+	default:
+		return fmt.Errorf("unsupported owner type %T", v)
+	}
+	return nil
 }
 
 // CopilotSpaceResource represents a resource attached to a Copilot Space.
