@@ -15443,6 +15443,102 @@ func TestCreateTag_GetType(tt *testing.T) {
 	c.GetType()
 }
 
+func TestCreateTeamRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateTeamRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateTeamRequest_GetMaintainers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateTeamRequest{Maintainers: zeroValue}
+	c.GetMaintainers()
+	c = &CreateTeamRequest{}
+	c.GetMaintainers()
+	c = nil
+	c.GetMaintainers()
+}
+
+func TestCreateTeamRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateTeamRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateTeamRequest_GetNotificationSetting(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{NotificationSetting: &zeroValue}
+	c.GetNotificationSetting()
+	c = &CreateTeamRequest{}
+	c.GetNotificationSetting()
+	c = nil
+	c.GetNotificationSetting()
+}
+
+func TestCreateTeamRequest_GetParentTeamID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreateTeamRequest{ParentTeamID: &zeroValue}
+	c.GetParentTeamID()
+	c = &CreateTeamRequest{}
+	c.GetParentTeamID()
+	c = nil
+	c.GetParentTeamID()
+}
+
+func TestCreateTeamRequest_GetParentTeamSlug(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{ParentTeamSlug: &zeroValue}
+	c.GetParentTeamSlug()
+	c = &CreateTeamRequest{}
+	c.GetParentTeamSlug()
+	c = nil
+	c.GetParentTeamSlug()
+}
+
+func TestCreateTeamRequest_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{Permission: &zeroValue}
+	c.GetPermission()
+	c = &CreateTeamRequest{}
+	c.GetPermission()
+	c = nil
+	c.GetPermission()
+}
+
+func TestCreateTeamRequest_GetPrivacy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{Privacy: &zeroValue}
+	c.GetPrivacy()
+	c = &CreateTeamRequest{}
+	c.GetPrivacy()
+	c = nil
+	c.GetPrivacy()
+}
+
+func TestCreateTeamRequest_GetRepoNames(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateTeamRequest{RepoNames: zeroValue}
+	c.GetRepoNames()
+	c = &CreateTeamRequest{}
+	c.GetRepoNames()
+	c = nil
+	c.GetRepoNames()
+}
+
 func TestCreateUpdateEnvironment_GetCanAdminsBypass(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -31854,102 +31950,6 @@ func TestNetworkSettingsResource_GetSubnetID(tt *testing.T) {
 	n.GetSubnetID()
 	n = nil
 	n.GetSubnetID()
-}
-
-func TestNewTeam_GetDescription(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{Description: &zeroValue}
-	n.GetDescription()
-	n = &NewTeam{}
-	n.GetDescription()
-	n = nil
-	n.GetDescription()
-}
-
-func TestNewTeam_GetLDAPDN(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{LDAPDN: &zeroValue}
-	n.GetLDAPDN()
-	n = &NewTeam{}
-	n.GetLDAPDN()
-	n = nil
-	n.GetLDAPDN()
-}
-
-func TestNewTeam_GetMaintainers(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	n := &NewTeam{Maintainers: zeroValue}
-	n.GetMaintainers()
-	n = &NewTeam{}
-	n.GetMaintainers()
-	n = nil
-	n.GetMaintainers()
-}
-
-func TestNewTeam_GetName(tt *testing.T) {
-	tt.Parallel()
-	n := &NewTeam{}
-	n.GetName()
-	n = nil
-	n.GetName()
-}
-
-func TestNewTeam_GetNotificationSetting(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{NotificationSetting: &zeroValue}
-	n.GetNotificationSetting()
-	n = &NewTeam{}
-	n.GetNotificationSetting()
-	n = nil
-	n.GetNotificationSetting()
-}
-
-func TestNewTeam_GetParentTeamID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	n := &NewTeam{ParentTeamID: &zeroValue}
-	n.GetParentTeamID()
-	n = &NewTeam{}
-	n.GetParentTeamID()
-	n = nil
-	n.GetParentTeamID()
-}
-
-func TestNewTeam_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{Permission: &zeroValue}
-	n.GetPermission()
-	n = &NewTeam{}
-	n.GetPermission()
-	n = nil
-	n.GetPermission()
-}
-
-func TestNewTeam_GetPrivacy(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{Privacy: &zeroValue}
-	n.GetPrivacy()
-	n = &NewTeam{}
-	n.GetPrivacy()
-	n = nil
-	n.GetPrivacy()
-}
-
-func TestNewTeam_GetRepoNames(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	n := &NewTeam{RepoNames: zeroValue}
-	n.GetRepoNames()
-	n = &NewTeam{}
-	n.GetRepoNames()
-	n = nil
-	n.GetRepoNames()
 }
 
 func TestNodeDetails_GetClusterRoles(tt *testing.T) {
@@ -55502,6 +55502,91 @@ func TestUpdateTeamLDAPMappingRequest_GetLDAPDN(tt *testing.T) {
 	u.GetLDAPDN()
 	u = nil
 	u.GetLDAPDN()
+}
+
+func TestUpdateTeamRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateTeamRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateTeamRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateTeamRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateTeamRequest_GetNotificationSetting(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{NotificationSetting: &zeroValue}
+	u.GetNotificationSetting()
+	u = &UpdateTeamRequest{}
+	u.GetNotificationSetting()
+	u = nil
+	u.GetNotificationSetting()
+}
+
+func TestUpdateTeamRequest_GetParentTeamID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	u := &UpdateTeamRequest{ParentTeamID: &zeroValue}
+	u.GetParentTeamID()
+	u = &UpdateTeamRequest{}
+	u.GetParentTeamID()
+	u = nil
+	u.GetParentTeamID()
+}
+
+func TestUpdateTeamRequest_GetParentTeamSlug(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{ParentTeamSlug: &zeroValue}
+	u.GetParentTeamSlug()
+	u = &UpdateTeamRequest{}
+	u.GetParentTeamSlug()
+	u = nil
+	u.GetParentTeamSlug()
+}
+
+func TestUpdateTeamRequest_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{Permission: &zeroValue}
+	u.GetPermission()
+	u = &UpdateTeamRequest{}
+	u.GetPermission()
+	u = nil
+	u.GetPermission()
+}
+
+func TestUpdateTeamRequest_GetPrivacy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{Privacy: &zeroValue}
+	u.GetPrivacy()
+	u = &UpdateTeamRequest{}
+	u.GetPrivacy()
+	u = nil
+	u.GetPrivacy()
+}
+
+func TestUpdateTeamRequest_GetRemoveParentTeam(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateTeamRequest{}
+	u.GetRemoveParentTeam()
+	u = nil
+	u.GetRemoveParentTeam()
 }
 
 func TestUpdateUserLDAPMappingRequest_GetLDAPDN(tt *testing.T) {
