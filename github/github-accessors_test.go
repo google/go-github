@@ -46172,6 +46172,14 @@ func TestRepositoryVisibilityRuleParameters_GetPrivate(tt *testing.T) {
 	r.GetPrivate()
 }
 
+func TestRepositoryVisibilityRuleParameters_GetPublic(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryVisibilityRuleParameters{}
+	r.GetPublic()
+	r = nil
+	r.GetPublic()
+}
+
 func TestRepositoryVulnerabilityAlert_GetAffectedPackageName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
