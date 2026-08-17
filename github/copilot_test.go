@@ -19,9 +19,10 @@ func TestCopilotSpace_UnmarshalJSON(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name string
-		json string
-		want *CopilotSpace
+		name    string
+		json    string
+		want    *CopilotSpace
+		wantErr bool
 	}{
 		{
 			name: "user owner",
@@ -115,6 +116,43 @@ func TestCopilotSpace_UnmarshalJSON(t *testing.T) {
 				BaseRole:  "read",
 			},
 		},
+		{
+			name:    "Invalid JSON",
+			json:    `{`,
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			name: "Unsupported owner type",
+			json: `{
+				"id": 12,
+				"owner": {
+					"login": "octo-bot",
+					"id": 1,
+					"type": "Bot"
+				}
+			}`,
+			wantErr: true,
+		},
+		{
+			name: "Owner without discriminator",
+			json: `{
+				"id": 12,
+				"owner": {
+					"login": "octo-org",
+					"id": 1
+				}
+			}`,
+			wantErr: true,
+		},
+		{
+			name: "Unsupported owner json type",
+			json: `{
+				"id": 12,
+				"owner": "octo-cat"
+			}`,
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -122,7 +160,14 @@ func TestCopilotSpace_UnmarshalJSON(t *testing.T) {
 			t.Parallel()
 
 			var got *CopilotSpace
-			if err := json.Unmarshal([]byte(tt.json), &got); err != nil {
+			err := json.Unmarshal([]byte(tt.json), &got)
+			if tt.wantErr {
+				if err == nil {
+					t.Error("CopilotSpace.UnmarshalJSON returned nil instead of an error")
+				}
+				return
+			}
+			if err != nil {
 				t.Errorf("CopilotSpace.UnmarshalJSON returned error: %v", err)
 			}
 
