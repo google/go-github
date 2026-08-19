@@ -76,6 +76,11 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 			wantRule:  []*RequiredReviewer{{Type: Ptr("Team"), Reviewer: nil}},
 			wantError: true,
 		},
+		"Wrong ID Type in Enterprise Team Object": {
+			data:      []byte(`[{"type": "BusinessTeam", "reviewer": {"id": "string"}}]`),
+			wantRule:  []*RequiredReviewer{{Type: Ptr("BusinessTeam"), Reviewer: nil}},
+			wantError: true,
+		},
 		"Wrong Type of Reviewer": {
 			data:      []byte(`[{"type": "Cat", "reviewer": {"id": 1,"login": "octocat"}}]`),
 			wantRule:  []*RequiredReviewer{{Type: nil, Reviewer: nil}},
