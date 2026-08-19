@@ -8822,6 +8822,14 @@ func (c *CopilotDailyMetrics) GetPullRequests() *CopilotMetricsPullRequests {
 	return c.PullRequests
 }
 
+// GetTotalsBy3rdPartyAgent returns the TotalsBy3rdPartyAgent slice if it's non-nil, nil otherwise.
+func (c *CopilotDailyMetrics) GetTotalsBy3rdPartyAgent() []*CopilotMetricsThirdPartyAgent {
+	if c == nil || c.TotalsBy3rdPartyAgent == nil {
+		return nil
+	}
+	return c.TotalsBy3rdPartyAgent
+}
+
 // GetTotalsByCLI returns the TotalsByCLI field.
 func (c *CopilotDailyMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 	if c == nil {
@@ -9766,6 +9774,38 @@ func (c *CopilotMetricsReportOptions) GetDay() string {
 	return c.Day
 }
 
+// GetAgentID returns the AgentID field.
+func (c *CopilotMetricsThirdPartyAgent) GetAgentID() string {
+	if c == nil {
+		return ""
+	}
+	return c.AgentID
+}
+
+// GetAgentName returns the AgentName field.
+func (c *CopilotMetricsThirdPartyAgent) GetAgentName() string {
+	if c == nil {
+		return ""
+	}
+	return c.AgentName
+}
+
+// GetSessionCount returns the SessionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsThirdPartyAgent) GetSessionCount() int {
+	if c == nil || c.SessionCount == nil {
+		return 0
+	}
+	return *c.SessionCount
+}
+
+// GetUserInitiatedInteractionCount returns the UserInitiatedInteractionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsThirdPartyAgent) GetUserInitiatedInteractionCount() int {
+	if c == nil || c.UserInitiatedInteractionCount == nil {
+		return 0
+	}
+	return *c.UserInitiatedInteractionCount
+}
+
 // GetCopilotChat returns the CopilotChat field.
 func (c *CopilotOrganizationDetails) GetCopilotChat() string {
 	if c == nil {
@@ -10028,6 +10068,14 @@ func (c *CopilotUserDailyMetrics) GetOrganizationID() string {
 		return ""
 	}
 	return *c.OrganizationID
+}
+
+// GetTotalsBy3rdPartyAgent returns the TotalsBy3rdPartyAgent slice if it's non-nil, nil otherwise.
+func (c *CopilotUserDailyMetrics) GetTotalsBy3rdPartyAgent() []*CopilotMetricsThirdPartyAgent {
+	if c == nil || c.TotalsBy3rdPartyAgent == nil {
+		return nil
+	}
+	return c.TotalsBy3rdPartyAgent
 }
 
 // GetTotalsByCLI returns the TotalsByCLI field.
@@ -10308,6 +10356,14 @@ func (c *CopilotUserPeriodicMetrics) GetReportStartDay() string {
 		return ""
 	}
 	return c.ReportStartDay
+}
+
+// GetTotalsBy3rdPartyAgent returns the TotalsBy3rdPartyAgent slice if it's non-nil, nil otherwise.
+func (c *CopilotUserPeriodicMetrics) GetTotalsBy3rdPartyAgent() []*CopilotMetricsThirdPartyAgent {
+	if c == nil || c.TotalsBy3rdPartyAgent == nil {
+		return nil
+	}
+	return c.TotalsBy3rdPartyAgent
 }
 
 // GetTotalsByCLI returns the TotalsByCLI field.

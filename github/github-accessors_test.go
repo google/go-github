@@ -11280,6 +11280,17 @@ func TestCopilotDailyMetrics_GetPullRequests(tt *testing.T) {
 	c.GetPullRequests()
 }
 
+func TestCopilotDailyMetrics_GetTotalsBy3rdPartyAgent(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotMetricsThirdPartyAgent{}
+	c := &CopilotDailyMetrics{TotalsBy3rdPartyAgent: zeroValue}
+	c.GetTotalsBy3rdPartyAgent()
+	c = &CopilotDailyMetrics{}
+	c.GetTotalsBy3rdPartyAgent()
+	c = nil
+	c.GetTotalsBy3rdPartyAgent()
+}
+
 func TestCopilotDailyMetrics_GetTotalsByCLI(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotDailyMetrics{}
@@ -12410,6 +12421,44 @@ func TestCopilotMetricsReportOptions_GetDay(tt *testing.T) {
 	c.GetDay()
 }
 
+func TestCopilotMetricsThirdPartyAgent_GetAgentID(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsThirdPartyAgent{}
+	c.GetAgentID()
+	c = nil
+	c.GetAgentID()
+}
+
+func TestCopilotMetricsThirdPartyAgent_GetAgentName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsThirdPartyAgent{}
+	c.GetAgentName()
+	c = nil
+	c.GetAgentName()
+}
+
+func TestCopilotMetricsThirdPartyAgent_GetSessionCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsThirdPartyAgent{SessionCount: &zeroValue}
+	c.GetSessionCount()
+	c = &CopilotMetricsThirdPartyAgent{}
+	c.GetSessionCount()
+	c = nil
+	c.GetSessionCount()
+}
+
+func TestCopilotMetricsThirdPartyAgent_GetUserInitiatedInteractionCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsThirdPartyAgent{UserInitiatedInteractionCount: &zeroValue}
+	c.GetUserInitiatedInteractionCount()
+	c = &CopilotMetricsThirdPartyAgent{}
+	c.GetUserInitiatedInteractionCount()
+	c = nil
+	c.GetUserInitiatedInteractionCount()
+}
+
 func TestCopilotOrganizationDetails_GetCopilotChat(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotOrganizationDetails{}
@@ -12726,6 +12775,17 @@ func TestCopilotUserDailyMetrics_GetOrganizationID(tt *testing.T) {
 	c.GetOrganizationID()
 	c = nil
 	c.GetOrganizationID()
+}
+
+func TestCopilotUserDailyMetrics_GetTotalsBy3rdPartyAgent(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotMetricsThirdPartyAgent{}
+	c := &CopilotUserDailyMetrics{TotalsBy3rdPartyAgent: zeroValue}
+	c.GetTotalsBy3rdPartyAgent()
+	c = &CopilotUserDailyMetrics{}
+	c.GetTotalsBy3rdPartyAgent()
+	c = nil
+	c.GetTotalsBy3rdPartyAgent()
 }
 
 func TestCopilotUserDailyMetrics_GetTotalsByCLI(tt *testing.T) {
@@ -13075,6 +13135,17 @@ func TestCopilotUserPeriodicMetrics_GetReportStartDay(tt *testing.T) {
 	c.GetReportStartDay()
 	c = nil
 	c.GetReportStartDay()
+}
+
+func TestCopilotUserPeriodicMetrics_GetTotalsBy3rdPartyAgent(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotMetricsThirdPartyAgent{}
+	c := &CopilotUserPeriodicMetrics{TotalsBy3rdPartyAgent: zeroValue}
+	c.GetTotalsBy3rdPartyAgent()
+	c = &CopilotUserPeriodicMetrics{}
+	c.GetTotalsBy3rdPartyAgent()
+	c = nil
+	c.GetTotalsBy3rdPartyAgent()
 }
 
 func TestCopilotUserPeriodicMetrics_GetTotalsByCLI(tt *testing.T) {
