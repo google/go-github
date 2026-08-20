@@ -75,11 +75,11 @@ func TestUserImpersonation_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &ImpersonateUserOptions{Scopes: []string{"repo"}}
+	body := CreateUserImpersonationRequest{Scopes: []string{"repo"}}
 
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id": 1234,
 		"url": "https://example.com/authorizations",
 		"app": {
@@ -101,7 +101,7 @@ func TestUserImpersonation_Create(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	auth, _, err := client.Admin.CreateUserImpersonation(ctx, "github", opt)
+	auth, _, err := client.Admin.CreateUserImpersonation(ctx, "github", body)
 	if err != nil {
 		t.Errorf("Admin.CreateUserImpersonation returned error: %v", err)
 	}
@@ -130,12 +130,12 @@ func TestUserImpersonation_Create(t *testing.T) {
 
 	const methodName = "CreateUserImpersonation"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Admin.CreateUserImpersonation(ctx, "\n", opt)
+		_, _, err = client.Admin.CreateUserImpersonation(ctx, "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Admin.CreateUserImpersonation(ctx, "github", opt)
+		got, resp, err := client.Admin.CreateUserImpersonation(ctx, "github", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
