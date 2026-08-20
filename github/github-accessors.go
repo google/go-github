@@ -12006,6 +12006,14 @@ func (c *CreateUpdateEnvironment) GetWaitTimer() int {
 	return *c.WaitTimer
 }
 
+// GetScopes returns the Scopes slice if it's non-nil, nil otherwise.
+func (c *CreateUserImpersonationRequest) GetScopes() []string {
+	if c == nil || c.Scopes == nil {
+		return nil
+	}
+	return c.Scopes
+}
+
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
 func (c *CreateUserRequest) GetEmail() string {
 	if c == nil || c.Email == nil {
@@ -18900,14 +18908,6 @@ func (i *ImmutableReleaseSettings) GetSelectedRepositoriesURL() string {
 		return ""
 	}
 	return *i.SelectedRepositoriesURL
-}
-
-// GetScopes returns the Scopes slice if it's non-nil, nil otherwise.
-func (i *ImpersonateUserOptions) GetScopes() []string {
-	if i == nil || i.Scopes == nil {
-		return nil
-	}
-	return i.Scopes
 }
 
 // GetAuthorsCount returns the AuthorsCount field if it's non-nil, zero value otherwise.
