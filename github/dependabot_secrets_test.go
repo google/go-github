@@ -169,8 +169,7 @@ func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &DependabotEncryptedSecret{
-		Name:           "NAME",
+	input := SecretRequest{
 		EncryptedValue: "QIv=",
 		KeyID:          "1234",
 	}
@@ -178,7 +177,7 @@ func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		want := DependabotEncryptedSecret{
+		want := SecretRequest{
 			EncryptedValue: input.EncryptedValue,
 			KeyID:          input.KeyID,
 		}
@@ -187,23 +186,19 @@ func TestDependabotService_CreateOrUpdateRepoSecret(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Dependabot.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
+	_, err := client.Dependabot.CreateOrUpdateRepoSecret(ctx, "o", "r", "NAME", input)
 	if err != nil {
 		t.Errorf("Dependabot.CreateOrUpdateRepoSecret returned error: %v", err)
 	}
 
 	const methodName = "CreateOrUpdateRepoSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.CreateOrUpdateRepoSecret(ctx, "o", "r", nil)
-		return err
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.CreateOrUpdateRepoSecret(ctx, "\n", "\n", input)
+		_, err = client.Dependabot.CreateOrUpdateRepoSecret(ctx, "\n", "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Dependabot.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
+		return client.Dependabot.CreateOrUpdateRepoSecret(ctx, "o", "r", "NAME", input)
 	})
 }
 
@@ -356,50 +351,45 @@ func TestDependabotService_CreateOrUpdateOrgSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &DependabotEncryptedSecret{
-		Name:                  "NAME",
+	input := SecretOrgRequest{
 		EncryptedValue:        "QIv=",
 		KeyID:                 "1234",
 		Visibility:            "selected",
-		SelectedRepositoryIDs: DependabotSecretsSelectedRepoIDs{1296269, 1269280},
+		SelectedRepositoryIDs: []int64{1296269, 1269280},
 	}
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		want := DependabotEncryptedSecret{
+		want := SecretOrgRequest{
 			EncryptedValue: input.EncryptedValue,
 			KeyID:          input.KeyID,
 			Visibility:     input.Visibility,
 		}
 		testJSONBody(t, r, struct {
-			*DependabotEncryptedSecret
+			SecretOrgRequest
 			SelectedRepositoryIDs []string `json:"selected_repository_ids,omitempty"`
 		}{
-			DependabotEncryptedSecret: &want,
-			SelectedRepositoryIDs:     []string{"1296269", "1269280"},
+			SecretOrgRequest:      want,
+			SelectedRepositoryIDs: []string{"1296269", "1269280"},
 		})
 		w.WriteHeader(http.StatusCreated)
 	})
 
 	ctx := t.Context()
-	_, err := client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", input)
+	_, err := client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", "NAME", input)
 	if err != nil {
 		t.Errorf("Dependabot.CreateOrUpdateOrgSecret returned error: %v", err)
 	}
 
 	const methodName = "CreateOrUpdateOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", nil)
-		return err
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.CreateOrUpdateOrgSecret(ctx, "\n", input)
+		_, err = client.Dependabot.CreateOrUpdateOrgSecret(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", input)
+		return client.Dependabot.CreateOrUpdateOrgSecret(ctx, "o", "NAME", input)
 	})
 }
 
@@ -448,13 +438,13 @@ func TestDependabotService_SetSelectedReposForOrgSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := DependabotSecretsSelectedRepoIDs{64780797}
+	input := []int64{64780797}
 
 	mux.HandleFunc("/orgs/o/dependabot/secrets/NAME/repositories", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		testJSONBody(t, r, struct {
-			SelectedIDs DependabotSecretsSelectedRepoIDs `json:"selected_repository_ids"`
+			SelectedIDs []int64 `json:"selected_repository_ids"`
 		}{
 			SelectedIDs: input,
 		})
@@ -485,29 +475,25 @@ func TestDependabotService_AddSelectedRepoToOrgSecret(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	repo := &Repository{ID: Ptr(int64(1234))}
+	repoID := int64(1234)
 	ctx := t.Context()
-	_, err := client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
+	_, err := client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repoID)
 	if err != nil {
 		t.Errorf("Dependabot.AddSelectedRepoToOrgSecret returned error: %v", err)
 	}
 
 	const methodName = "AddSelectedRepoToOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", nil)
+		_, err = client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", 0)
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", &Repository{ID: nil})
-		return err
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "\n", "\n", repo)
+		_, err = client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "\n", "\n", repoID)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
+		return client.Dependabot.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repoID)
 	})
 }
 
@@ -519,29 +505,25 @@ func TestDependabotService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	repo := &Repository{ID: Ptr(int64(1234))}
+	repoID := int64(1234)
 	ctx := t.Context()
-	_, err := client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
+	_, err := client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repoID)
 	if err != nil {
 		t.Errorf("Dependabot.RemoveSelectedRepoFromOrgSecret returned error: %v", err)
 	}
 
 	const methodName = "RemoveSelectedRepoFromOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", nil)
+		_, err = client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", 0)
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", &Repository{ID: nil})
-		return err
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "\n", "\n", repo)
+		_, err = client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "\n", "\n", repoID)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
+		return client.Dependabot.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repoID)
 	})
 }
 

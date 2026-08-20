@@ -512,9 +512,9 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PullRequestReviewRequest{
+	input := PullRequestSubmitReviewRequest{
 		Body:  Ptr("b"),
-		Event: Ptr("APPROVE"),
+		Event: "APPROVE",
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/events", func(w http.ResponseWriter, r *http.Request) {
@@ -554,7 +554,7 @@ func TestPullRequestsService_SubmitReview_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.PullRequests.SubmitReview(ctx, "%", "r", 1, 1, &PullRequestReviewRequest{})
+	_, _, err := client.PullRequests.SubmitReview(ctx, "%", "r", 1, 1, PullRequestSubmitReviewRequest{})
 	testURLParseError(t, err)
 }
 
@@ -562,7 +562,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PullRequestReviewDismissalRequest{Message: Ptr("m")}
+	input := PullRequestDismissReviewRequest{Message: "m", Event: Ptr("DISMISS")}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/dismissals", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -601,6 +601,6 @@ func TestPullRequestsService_DismissReview_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.PullRequests.DismissReview(ctx, "%", "r", 1, 1, &PullRequestReviewDismissalRequest{})
+	_, _, err := client.PullRequests.DismissReview(ctx, "%", "r", 1, 1, PullRequestDismissReviewRequest{})
 	testURLParseError(t, err)
 }

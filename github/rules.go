@@ -602,6 +602,7 @@ type SimplePatternRuleParameters struct {
 type RepositoryVisibilityRuleParameters struct {
 	Internal bool `json:"internal"`
 	Private  bool `json:"private"`
+	Public   bool `json:"public"`
 }
 
 // repositoryRulesetRuleWrapper is a helper type to marshal & unmarshal a ruleset rule.

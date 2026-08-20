@@ -57,6 +57,8 @@ var (
 		},
 		"processZeroValue": func(v string) string {
 			switch v {
+			case "false":
+				return "false"
 			case "Ptr(false)":
 				return "false"
 			case "Ptr(0.0)":

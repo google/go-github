@@ -173,8 +173,11 @@ type PremiumRequestUsageReport struct {
 
 // GetOrganizationPackagesBilling returns the free and paid storage used for GitHub Packages in gigabytes for an Org.
 //
-// This endpoint appears to have disappeared from the official GitHub v3 API documentation website.
-// See https://github.com/google/go-github/issues/3894 for details.
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
+// GitHub API docs: https://docs.github.com/rest/billing/billing?apiVersion=2022-11-28#get-github-packages-billing-for-an-organization
+//
+//meta:operation GET /orgs/{org}/settings/billing/packages
 func (s *BillingService) GetOrganizationPackagesBilling(ctx context.Context, org string) (*PackagesBilling, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/packages", org)
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
@@ -194,8 +197,11 @@ func (s *BillingService) GetOrganizationPackagesBilling(ctx context.Context, org
 // GetOrganizationStorageBilling returns the estimated paid and estimated total storage used for GitHub Actions
 // and GitHub Packages in gigabytes for an Org.
 //
-// This endpoint appears to have disappeared from the official GitHub v3 API documentation website.
-// See https://github.com/google/go-github/issues/3894 for details.
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
+// GitHub API docs: https://docs.github.com/rest/billing/billing?apiVersion=2022-11-28#get-shared-storage-billing-for-an-organization
+//
+//meta:operation GET /orgs/{org}/settings/billing/shared-storage
 func (s *BillingService) GetOrganizationStorageBilling(ctx context.Context, org string) (*StorageBilling, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/settings/billing/shared-storage", org)
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
@@ -240,8 +246,11 @@ func (s *BillingService) GetOrganizationAdvancedSecurityActiveCommitters(ctx con
 
 // GetPackagesBilling returns the free and paid storage used for GitHub Packages in gigabytes for a user.
 //
-// This endpoint appears to have disappeared from the official GitHub v3 API documentation website.
-// See https://github.com/google/go-github/issues/3894 for details.
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
+// GitHub API docs: https://docs.github.com/rest/billing/billing?apiVersion=2022-11-28#get-github-packages-billing-for-a-user
+//
+//meta:operation GET /users/{username}/settings/billing/packages
 func (s *BillingService) GetPackagesBilling(ctx context.Context, user string) (*PackagesBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/packages", user)
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
@@ -261,8 +270,11 @@ func (s *BillingService) GetPackagesBilling(ctx context.Context, user string) (*
 // GetStorageBilling returns the estimated paid and estimated total storage used for GitHub Actions
 // and GitHub Packages in gigabytes for a user.
 //
-// This endpoint appears to have disappeared from the official GitHub v3 API documentation website.
-// See https://github.com/google/go-github/issues/3894 for details.
+// Deprecated: This endpoint has been deprecated by GitHub.
+//
+// GitHub API docs: https://docs.github.com/rest/billing/billing?apiVersion=2022-11-28#get-shared-storage-billing-for-a-user
+//
+//meta:operation GET /users/{username}/settings/billing/shared-storage
 func (s *BillingService) GetStorageBilling(ctx context.Context, user string) (*StorageBilling, *Response, error) {
 	u := fmt.Sprintf("users/%v/settings/billing/shared-storage", user)
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)

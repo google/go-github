@@ -57,7 +57,7 @@ func TestAppsService_UpdateHookConfig(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &HookConfig{
+	input := HookConfig{
 		ContentType: Ptr("json"),
 		InsecureSSL: Ptr("1"),
 		Secret:      Ptr("s"),

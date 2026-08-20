@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v88/github"
+	"github.com/google/go-github/v90/github"
 )
 
 func ExampleMarkdownService_Render() {
@@ -79,7 +79,7 @@ func ExampleRepositoriesService_CreateFile() {
 	// so you will need to modify the example to provide authentication to
 	// github.NewClient(). See the following documentation for more information
 	// on how to authenticate with the client:
-	// https://pkg.go.dev/github.com/google/go-github/v88/github#hdr-Authentication
+	// https://pkg.go.dev/github.com/google/go-github/v90/github#hdr-Authentication
 	client, err := github.NewClient()
 	if err != nil {
 		log.Fatalf("Error creating GitHub client: %v", err)
@@ -129,16 +129,16 @@ func ExamplePullRequestsService_Create() {
 	// so you will need to modify the example to provide authentication to
 	// github.NewClient(). See the following documentation for more information
 	// on how to authenticate with the client:
-	// https://pkg.go.dev/github.com/google/go-github/v88/github#hdr-Authentication
+	// https://pkg.go.dev/github.com/google/go-github/v90/github#hdr-Authentication
 	client, err := github.NewClient()
 	if err != nil {
 		log.Fatalf("Error creating GitHub client: %v", err)
 	}
 
-	newPR := &github.NewPullRequest{
+	newPR := github.CreatePullRequest{
 		Title:               github.Ptr("My awesome pull request"),
-		Head:                github.Ptr("branch_to_merge"),
-		Base:                github.Ptr("master"),
+		Head:                "branch_to_merge",
+		Base:                "master",
 		Body:                github.Ptr("This is the description of the PR created with the package `github.com/google/go-github/github`"),
 		MaintainerCanModify: github.Ptr(true),
 	}
@@ -160,7 +160,7 @@ func ExampleTeamsService_ListTeams() {
 	// the example to to provide authentication to github.NewClient(). See the
 	//  following documentation for more information on how to authenticate with
 	// the client:
-	// https://pkg.go.dev/github.com/google/go-github/v88/github#hdr-Authentication
+	// https://pkg.go.dev/github.com/google/go-github/v90/github#hdr-Authentication
 	client, err := github.NewClient()
 	if err != nil {
 		log.Fatalf("Error creating GitHub client: %v", err)

@@ -30,7 +30,7 @@ import (
 )
 
 const (
-	Version = "v88.0.0"
+	Version = "v90.0.0"
 
 	HeaderRateLimit     = "X-Ratelimit-Limit"
 	HeaderRateRemaining = "X-Ratelimit-Remaining"
@@ -1579,7 +1579,7 @@ func (r *ErrorResponse) Is(target error) bool {
 			return false
 		}
 		if r.Block.CreatedAt != nil && v.Block.CreatedAt != nil {
-			if *(r.Block.CreatedAt) != *(v.Block.CreatedAt) {
+			if *r.Block.CreatedAt != *v.Block.CreatedAt {
 				return false
 			}
 		}

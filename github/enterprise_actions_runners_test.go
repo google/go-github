@@ -13,11 +13,11 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestEnterpriseService_GenerateEnterpriseJITConfig(t *testing.T) {
+func TestEnterpriseService_CreateJITConfig(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &GenerateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
+	input := CreateJITConfigRequest{Name: "test", RunnerGroupID: 1, Labels: []string{"one", "two"}}
 
 	mux.HandleFunc("/enterprises/o/actions/runners/generate-jitconfig", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -26,24 +26,24 @@ func TestEnterpriseService_GenerateEnterpriseJITConfig(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	jitConfig, _, err := client.Enterprise.GenerateEnterpriseJITConfig(ctx, "o", input)
+	jitConfig, _, err := client.Enterprise.CreateJITConfig(ctx, "o", input)
 	if err != nil {
-		t.Errorf("Enterprise.GenerateEnterpriseJITConfig returned error: %v", err)
+		t.Errorf("Enterprise.CreateJITConfig returned error: %v", err)
 	}
 
 	want := &JITRunnerConfig{EncodedJITConfig: Ptr("foo")}
 	if !cmp.Equal(jitConfig, want) {
-		t.Errorf("Enterprise.GenerateEnterpriseJITConfig returned %+v, want %+v", jitConfig, want)
+		t.Errorf("Enterprise.CreateJITConfig returned %+v, want %+v", jitConfig, want)
 	}
 
-	const methodName = "GenerateEnterpriseJITConfig"
+	const methodName = "CreateJITConfig"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.GenerateEnterpriseJITConfig(ctx, "\n", input)
+		_, _, err = client.Enterprise.CreateJITConfig(ctx, "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.GenerateEnterpriseJITConfig(ctx, "o", input)
+		got, resp, err := client.Enterprise.CreateJITConfig(ctx, "o", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

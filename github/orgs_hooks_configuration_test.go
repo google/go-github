@@ -62,11 +62,11 @@ func TestOrganizationsService_GetHookConfiguration_invalidOrg(t *testing.T) {
 	testURLParseError(t, err)
 }
 
-func TestOrganizationsService_EditHookConfiguration(t *testing.T) {
+func TestOrganizationsService_UpdateHookConfiguration(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &HookConfig{}
+	input := HookConfig{}
 
 	mux.HandleFunc("/orgs/o/hooks/1/config", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -75,9 +75,9 @@ func TestOrganizationsService_EditHookConfiguration(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	config, _, err := client.Organizations.EditHookConfiguration(ctx, "o", 1, input)
+	config, _, err := client.Organizations.UpdateHookConfiguration(ctx, "o", 1, input)
 	if err != nil {
-		t.Errorf("Organizations.EditHookConfiguration returned error: %v", err)
+		t.Errorf("Organizations.UpdateHookConfiguration returned error: %v", err)
 	}
 
 	want := &HookConfig{
@@ -87,17 +87,17 @@ func TestOrganizationsService_EditHookConfiguration(t *testing.T) {
 		URL:         Ptr("https://example.com/webhook"),
 	}
 	if !cmp.Equal(config, want) {
-		t.Errorf("Organizations.EditHookConfiguration returned %+v, want %+v", config, want)
+		t.Errorf("Organizations.UpdateHookConfiguration returned %+v, want %+v", config, want)
 	}
 
-	const methodName = "EditHookConfiguration"
+	const methodName = "UpdateHookConfiguration"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Organizations.EditHookConfiguration(ctx, "\n", -1, input)
+		_, _, err = client.Organizations.UpdateHookConfiguration(ctx, "\n", -1, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Organizations.EditHookConfiguration(ctx, "o", 1, input)
+		got, resp, err := client.Organizations.UpdateHookConfiguration(ctx, "o", 1, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -105,11 +105,11 @@ func TestOrganizationsService_EditHookConfiguration(t *testing.T) {
 	})
 }
 
-func TestOrganizationsService_EditHookConfiguration_invalidOrg(t *testing.T) {
+func TestOrganizationsService_UpdateHookConfiguration_invalidOrg(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Organizations.EditHookConfiguration(ctx, "%", 1, nil)
+	_, _, err := client.Organizations.UpdateHookConfiguration(ctx, "%", 1, HookConfig{})
 	testURLParseError(t, err)
 }

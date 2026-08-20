@@ -252,6 +252,40 @@ func TestActionsService_GetActionsAllowed(t *testing.T) {
 	})
 }
 
+func TestActionsService_GetActionsAllowed_emptyPatterns(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":[]}`)
+	})
+
+	ctx := t.Context()
+	org, _, err := client.Actions.GetActionsAllowed(ctx, "o")
+	if err != nil {
+		t.Errorf("Actions.GetActionsAllowed returned error: %v", err)
+	}
+	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{}}
+	if !cmp.Equal(org, want) {
+		t.Errorf("Actions.GetActionsAllowed returned %+v, want %+v", org, want)
+	}
+
+	const methodName = "GetActionsAllowed"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Actions.GetActionsAllowed(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Actions.GetActionsAllowed(ctx, "o")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 func TestActionsService_UpdateActionsAllowed(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -288,6 +322,78 @@ func TestActionsService_UpdateActionsAllowed(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestActionsService_UpdateActionsAllowed_emptyPatterns(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{}}
+
+	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":[]}`)
+	})
+
+	ctx := t.Context()
+	org, _, err := client.Actions.UpdateActionsAllowed(ctx, "o", *input)
+	if err != nil {
+		t.Errorf("Actions.UpdateActionsAllowed returned error: %v", err)
+	}
+
+	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{}}
+	if !cmp.Equal(org, want) {
+		t.Errorf("Actions.UpdateActionsAllowed returned %+v, want %+v", org, want)
+	}
+}
+
+func TestActionsService_UpdateActionsAllowed_nilPatterns(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: nil}
+
+	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
+	})
+
+	ctx := t.Context()
+	org, _, err := client.Actions.UpdateActionsAllowed(ctx, "o", *input)
+	if err != nil {
+		t.Errorf("Actions.UpdateActionsAllowed returned error: %v", err)
+	}
+
+	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	if !cmp.Equal(org, want) {
+		t.Errorf("Actions.UpdateActionsAllowed returned %+v, want %+v", org, want)
+	}
+}
+
+func TestActionsService_UpdateActionsAllowed_omittedPatterns(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false)}
+
+	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"github_owned_allowed":true, "verified_allowed":false, "patterns_allowed":["a/b"]}`)
+	})
+
+	ctx := t.Context()
+	org, _, err := client.Actions.UpdateActionsAllowed(ctx, "o", *input)
+	if err != nil {
+		t.Errorf("Actions.UpdateActionsAllowed returned error: %v", err)
+	}
+
+	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	if !cmp.Equal(org, want) {
+		t.Errorf("Actions.UpdateActionsAllowed returned %+v, want %+v", org, want)
+	}
 }
 
 func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T) {

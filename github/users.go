@@ -69,10 +69,14 @@ type User struct {
 	// See: search.go and https://docs.github.com/rest/search?apiVersion=2022-11-28#text-match-metadata
 	TextMatches []*TextMatch `json:"text_matches,omitempty"`
 
-	// Permissions and RoleName identify the permissions and role that a user has on a given
-	// repository. These are only populated when calling Repositories.ListCollaborators.
+	// Permissions identify the permissions that a user has on a given
+	// repository.
+	// This is only populated when calling [RepositoriesService.ListCollaborators].
 	Permissions *RepositoryPermissions `json:"permissions,omitempty"`
-	RoleName    *string                `json:"role_name,omitempty"`
+
+	// RoleName identifies the role that a user has on a given repository.
+	// This is only populated when calling [RepositoriesService.ListCollaborators].
+	RoleName *string `json:"role_name,omitempty"`
 
 	// Assignment identifies how a user was assigned to an organization role. Its
 	// possible values are: "direct", "indirect", "mixed". This is only populated when
@@ -81,6 +85,32 @@ type User struct {
 	// InheritedFrom identifies the team that a user inherited their organization role
 	// from. This is only populated when calling the ListUsersAssignedToOrgRole method.
 	InheritedFrom []*Team `json:"inherited_from,omitempty"`
+
+	// Role identifies the role that a user has on a given team.
+	// Its possible values are: "member", "maintainer".
+	// This is only populated when calling the
+	// [TeamsService.ListTeamMembersBySlug] or [TeamsService.ListTeamMembersByID]
+	// methods.
+	Role *string `json:"role,omitempty"`
+
+	// Inherited identifies whether a user inherited their team role from a child
+	// team.
+	// This is only populated when calling the
+	// [TeamsService.ListTeamMembersBySlug] or [TeamsService.ListTeamMembersByID]
+	// methods.
+	Inherited *bool `json:"inherited,omitempty"`
+}
+
+// UserUpdateRequest represents the request body for updating a user.
+type UserUpdateRequest struct {
+	Name            *string `json:"name,omitempty"`
+	Email           *string `json:"email,omitempty"`
+	Blog            *string `json:"blog,omitempty"`
+	TwitterUsername *string `json:"twitter_username,omitempty"`
+	Company         *string `json:"company,omitempty"`
+	Location        *string `json:"location,omitempty"`
+	Hireable        *bool   `json:"hireable,omitempty"`
+	Bio             *string `json:"bio,omitempty"`
 }
 
 func (u User) String() string {
@@ -138,12 +168,12 @@ func (s *UsersService) GetByID(ctx context.Context, id int64) (*User, *Response,
 	return user, resp, nil
 }
 
-// Edit the authenticated user.
+// Update the authenticated user.
 //
 // GitHub API docs: https://docs.github.com/rest/users/users?apiVersion=2022-11-28#update-the-authenticated-user
 //
 //meta:operation PATCH /user
-func (s *UsersService) Edit(ctx context.Context, body *User) (*User, *Response, error) {
+func (s *UsersService) Update(ctx context.Context, body UserUpdateRequest) (*User, *Response, error) {
 	u := "user"
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {

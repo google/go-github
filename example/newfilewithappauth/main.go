@@ -16,7 +16,7 @@ import (
 	"time"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v88/github"
+	"github.com/google/go-github/v90/github"
 )
 
 func main() {
@@ -57,7 +57,8 @@ func main() {
 	token, _, err := client.Apps.CreateInstallationToken(
 		context.Background(),
 		installID,
-		&github.InstallationTokenOptions{})
+		&github.InstallationTokenOptions{},
+	)
 	if err != nil {
 		log.Fatalf("failed to create installation token: %v", err)
 	}
@@ -76,7 +77,8 @@ func main() {
 			Content: []byte("foo"),
 			Message: github.Ptr("sample commit"),
 			SHA:     nil,
-		})
+		},
+	)
 	if err != nil {
 		log.Fatalf("failed to create new file: %v", err)
 	}

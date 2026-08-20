@@ -11,17 +11,48 @@ import (
 	"fmt"
 )
 
+// ActionsCreateOrgVariableRequest represents a request to create an
+// organization variable.
+type ActionsCreateOrgVariableRequest struct {
+	Name                  string  `json:"name"`
+	Value                 string  `json:"value"`
+	Visibility            string  `json:"visibility"`
+	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitzero"`
+}
+
+// ActionsUpdateOrgVariableRequest represents a request to update an
+// organization variable.
+type ActionsUpdateOrgVariableRequest struct {
+	Name                  *string `json:"name,omitempty"`
+	Value                 *string `json:"value,omitempty"`
+	Visibility            *string `json:"visibility,omitempty"`
+	SelectedRepositoryIDs []int64 `json:"selected_repository_ids,omitzero"`
+}
+
+// ActionsCreateVariableRequest represents a request to create a variable
+// for a repository or repository environment variable.
+type ActionsCreateVariableRequest struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
+
+// ActionsUpdateVariableRequest represents a request to update a variable
+// for a repository or repository environment variable.
+type ActionsUpdateVariableRequest struct {
+	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
+}
+
 // ActionsVariable represents a repository action variable.
 type ActionsVariable struct {
-	Name       string     `json:"name"`
-	Value      string     `json:"value"`
-	CreatedAt  *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt  *Timestamp `json:"updated_at,omitempty"`
-	Visibility *string    `json:"visibility,omitempty"`
+	Name      string     `json:"name"`
+	Value     string     `json:"value"`
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
+
 	// Used by ListOrgVariables and GetOrgVariables
+	Visibility              *string `json:"visibility,omitempty"`
 	SelectedRepositoriesURL *string `json:"selected_repositories_url,omitempty"`
-	// Used by UpdateOrgVariable and CreateOrgVariable
-	SelectedRepositoryIDs *SelectedRepoIDs `json:"selected_repository_ids,omitempty"`
 }
 
 // ActionsVariables represents one item from the ListVariables response.
@@ -30,8 +61,14 @@ type ActionsVariables struct {
 	Variables  []*ActionsVariable `json:"variables"`
 }
 
-func (s *ActionsService) listVariables(ctx context.Context, url string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	u, err := addOptions(url, opts)
+// ListRepoVariables lists all variables available in a repository.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#list-repository-variables
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/variables
+func (s *ActionsService) ListRepoVariables(ctx context.Context, owner, repo string, opts *ListOptions) (*ActionsVariables, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/variables", owner, repo)
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -50,24 +87,30 @@ func (s *ActionsService) listVariables(ctx context.Context, url string, opts *Li
 	return variables, resp, nil
 }
 
-// ListRepoVariables lists all variables available in a repository.
-//
-// GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#list-repository-variables
-//
-//meta:operation GET /repos/{owner}/{repo}/actions/variables
-func (s *ActionsService) ListRepoVariables(ctx context.Context, owner, repo string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/variables", owner, repo)
-	return s.listVariables(ctx, url, opts)
-}
-
 // ListRepoOrgVariables lists all organization variables available in a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#list-repository-organization-variables
 //
 //meta:operation GET /repos/{owner}/{repo}/actions/organization-variables
 func (s *ActionsService) ListRepoOrgVariables(ctx context.Context, owner, repo string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/organization-variables", owner, repo)
-	return s.listVariables(ctx, url, opts)
+	u := fmt.Sprintf("repos/%v/%v/actions/organization-variables", owner, repo)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var variables *ActionsVariables
+	resp, err := s.client.Do(req, &variables)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return variables, resp, nil
 }
 
 // ListOrgVariables lists all variables available in an organization.
@@ -76,8 +119,24 @@ func (s *ActionsService) ListRepoOrgVariables(ctx context.Context, owner, repo s
 //
 //meta:operation GET /orgs/{org}/actions/variables
 func (s *ActionsService) ListOrgVariables(ctx context.Context, org string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables", org)
-	return s.listVariables(ctx, url, opts)
+	u := fmt.Sprintf("orgs/%v/actions/variables", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var variables *ActionsVariables
+	resp, err := s.client.Do(req, &variables)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return variables, resp, nil
 }
 
 // ListEnvVariables lists all variables available in an environment.
@@ -86,12 +145,35 @@ func (s *ActionsService) ListOrgVariables(ctx context.Context, org string, opts 
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/variables
 func (s *ActionsService) ListEnvVariables(ctx context.Context, owner, repo, env string, opts *ListOptions) (*ActionsVariables, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables", owner, repo, env)
-	return s.listVariables(ctx, url, opts)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v/variables", owner, repo, env)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var variables *ActionsVariables
+	resp, err := s.client.Do(req, &variables)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return variables, resp, nil
 }
 
-func (s *ActionsService) getVariable(ctx context.Context, url string) (*ActionsVariable, *Response, error) {
-	req, err := s.client.NewRequest(ctx, "GET", url, nil)
+// GetRepoVariable gets a single repository variable.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#get-a-repository-variable
+//
+//meta:operation GET /repos/{owner}/{repo}/actions/variables/{name}
+func (s *ActionsService) GetRepoVariable(ctx context.Context, owner, repo, name string) (*ActionsVariable, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, name)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -105,24 +187,26 @@ func (s *ActionsService) getVariable(ctx context.Context, url string) (*ActionsV
 	return variable, resp, nil
 }
 
-// GetRepoVariable gets a single repository variable.
-//
-// GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#get-a-repository-variable
-//
-//meta:operation GET /repos/{owner}/{repo}/actions/variables/{name}
-func (s *ActionsService) GetRepoVariable(ctx context.Context, owner, repo, name string) (*ActionsVariable, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, name)
-	return s.getVariable(ctx, url)
-}
-
 // GetOrgVariable gets a single organization variable.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#get-an-organization-variable
 //
 //meta:operation GET /orgs/{org}/actions/variables/{name}
 func (s *ActionsService) GetOrgVariable(ctx context.Context, org, name string) (*ActionsVariable, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v", org, name)
-	return s.getVariable(ctx, url)
+	u := fmt.Sprintf("orgs/%v/actions/variables/%v", org, name)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var variable *ActionsVariable
+	resp, err := s.client.Do(req, &variable)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return variable, resp, nil
 }
 
 // GetEnvVariable gets a single environment variable.
@@ -131,16 +215,20 @@ func (s *ActionsService) GetOrgVariable(ctx context.Context, org, name string) (
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}
 func (s *ActionsService) GetEnvVariable(ctx context.Context, owner, repo, env, variableName string) (*ActionsVariable, *Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", owner, repo, env, variableName)
-	return s.getVariable(ctx, url)
-}
+	u := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", owner, repo, env, variableName)
 
-func (s *ActionsService) postVariable(ctx context.Context, url string, body *ActionsVariable) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "POST", url, body)
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return s.client.Do(req, nil)
+
+	var variable *ActionsVariable
+	resp, err := s.client.Do(req, &variable)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return variable, resp, nil
 }
 
 // CreateRepoVariable creates a repository variable.
@@ -148,9 +236,15 @@ func (s *ActionsService) postVariable(ctx context.Context, url string, body *Act
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#create-a-repository-variable
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/variables
-func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo string, body *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/variables", owner, repo)
-	return s.postVariable(ctx, url, body)
+func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo string, body ActionsCreateVariableRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/variables", owner, repo)
+
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
 }
 
 // CreateOrgVariable creates an organization variable.
@@ -158,9 +252,15 @@ func (s *ActionsService) CreateRepoVariable(ctx context.Context, owner, repo str
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#create-an-organization-variable
 //
 //meta:operation POST /orgs/{org}/actions/variables
-func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, body *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables", org)
-	return s.postVariable(ctx, url, body)
+func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, body ActionsCreateOrgVariableRequest) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/variables", org)
+
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
 }
 
 // CreateEnvVariable creates an environment variable.
@@ -168,13 +268,10 @@ func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, body
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#create-an-environment-variable
 //
 //meta:operation POST /repos/{owner}/{repo}/environments/{environment_name}/variables
-func (s *ActionsService) CreateEnvVariable(ctx context.Context, owner, repo, env string, body *ActionsVariable) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables", owner, repo, env)
-	return s.postVariable(ctx, url, body)
-}
+func (s *ActionsService) CreateEnvVariable(ctx context.Context, owner, repo, env string, body ActionsCreateVariableRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/environments/%v/variables", owner, repo, env)
 
-func (s *ActionsService) patchVariable(ctx context.Context, url string, body *ActionsVariable) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "PATCH", url, body)
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -186,13 +283,15 @@ func (s *ActionsService) patchVariable(ctx context.Context, url string, body *Ac
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#update-a-repository-variable
 //
 //meta:operation PATCH /repos/{owner}/{repo}/actions/variables/{name}
-func (s *ActionsService) UpdateRepoVariable(ctx context.Context, owner, repo string, variable *ActionsVariable) (*Response, error) {
-	if variable == nil {
-		return nil, errors.New("variable must be provided")
+func (s *ActionsService) UpdateRepoVariable(ctx context.Context, owner, repo, name string, body ActionsUpdateVariableRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, name)
+
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
+	if err != nil {
+		return nil, err
 	}
 
-	url := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, variable.Name)
-	return s.patchVariable(ctx, url, variable)
+	return s.client.Do(req, nil)
 }
 
 // UpdateOrgVariable updates an organization variable.
@@ -200,13 +299,15 @@ func (s *ActionsService) UpdateRepoVariable(ctx context.Context, owner, repo str
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#update-an-organization-variable
 //
 //meta:operation PATCH /orgs/{org}/actions/variables/{name}
-func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org string, variable *ActionsVariable) (*Response, error) {
-	if variable == nil {
-		return nil, errors.New("variable must be provided")
+func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org, name string, body ActionsUpdateOrgVariableRequest) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/variables/%v", org, name)
+
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
+	if err != nil {
+		return nil, err
 	}
 
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v", org, variable.Name)
-	return s.patchVariable(ctx, url, variable)
+	return s.client.Do(req, nil)
 }
 
 // UpdateEnvVariable updates an environment variable.
@@ -214,17 +315,10 @@ func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org string, vari
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#update-an-environment-variable
 //
 //meta:operation PATCH /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}
-func (s *ActionsService) UpdateEnvVariable(ctx context.Context, owner, repo, env string, variable *ActionsVariable) (*Response, error) {
-	if variable == nil {
-		return nil, errors.New("variable must be provided")
-	}
+func (s *ActionsService) UpdateEnvVariable(ctx context.Context, owner, repo, env, name string, body ActionsUpdateVariableRequest) (*Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", owner, repo, env, name)
 
-	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", owner, repo, env, variable.Name)
-	return s.patchVariable(ctx, url, variable)
-}
-
-func (s *ActionsService) deleteVariable(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, err
 	}
@@ -238,8 +332,14 @@ func (s *ActionsService) deleteVariable(ctx context.Context, url string) (*Respo
 //
 //meta:operation DELETE /repos/{owner}/{repo}/actions/variables/{name}
 func (s *ActionsService) DeleteRepoVariable(ctx context.Context, owner, repo, name string) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, name)
-	return s.deleteVariable(ctx, url)
+	u := fmt.Sprintf("repos/%v/%v/actions/variables/%v", owner, repo, name)
+
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
 }
 
 // DeleteOrgVariable deletes a variable in an organization.
@@ -248,8 +348,14 @@ func (s *ActionsService) DeleteRepoVariable(ctx context.Context, owner, repo, na
 //
 //meta:operation DELETE /orgs/{org}/actions/variables/{name}
 func (s *ActionsService) DeleteOrgVariable(ctx context.Context, org, name string) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v", org, name)
-	return s.deleteVariable(ctx, url)
+	u := fmt.Sprintf("orgs/%v/actions/variables/%v", org, name)
+
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
 }
 
 // DeleteEnvVariable deletes a variable in an environment.
@@ -258,12 +364,25 @@ func (s *ActionsService) DeleteOrgVariable(ctx context.Context, org, name string
 //
 //meta:operation DELETE /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}
 func (s *ActionsService) DeleteEnvVariable(ctx context.Context, owner, repo, env, variableName string) (*Response, error) {
-	url := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", owner, repo, env, variableName)
-	return s.deleteVariable(ctx, url)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v/variables/%v", owner, repo, env, variableName)
+
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
 }
 
-func (s *ActionsService) listSelectedReposForVariable(ctx context.Context, url string, opts *ListOptions) (*SelectedReposList, *Response, error) {
-	u, err := addOptions(url, opts)
+// ListSelectedReposForOrgVariable lists all repositories that have access to a variable.
+//
+// GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#list-selected-repositories-for-an-organization-variable
+//
+//meta:operation GET /orgs/{org}/actions/variables/{name}/repositories
+func (s *ActionsService) ListSelectedReposForOrgVariable(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories", org, name)
+
+	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -282,41 +401,19 @@ func (s *ActionsService) listSelectedReposForVariable(ctx context.Context, url s
 	return result, resp, nil
 }
 
-// ListSelectedReposForOrgVariable lists all repositories that have access to a variable.
-//
-// GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#list-selected-repositories-for-an-organization-variable
-//
-//meta:operation GET /orgs/{org}/actions/variables/{name}/repositories
-func (s *ActionsService) ListSelectedReposForOrgVariable(ctx context.Context, org, name string, opts *ListOptions) (*SelectedReposList, *Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories", org, name)
-	return s.listSelectedReposForVariable(ctx, url, opts)
-}
-
-func (s *ActionsService) setSelectedReposForVariable(ctx context.Context, url string, ids SelectedRepoIDs) (*Response, error) {
-	type repoIDs struct {
-		SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
-	}
-
-	req, err := s.client.NewRequest(ctx, "PUT", url, repoIDs{SelectedIDs: ids})
-	if err != nil {
-		return nil, err
-	}
-
-	return s.client.Do(req, nil)
-}
-
 // SetSelectedReposForOrgVariable sets the repositories that have access to a variable.
 //
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#set-selected-repositories-for-an-organization-variable
 //
 //meta:operation PUT /orgs/{org}/actions/variables/{name}/repositories
-func (s *ActionsService) SetSelectedReposForOrgVariable(ctx context.Context, org, name string, ids SelectedRepoIDs) (*Response, error) {
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories", org, name)
-	return s.setSelectedReposForVariable(ctx, url, ids)
-}
+func (s *ActionsService) SetSelectedReposForOrgVariable(ctx context.Context, org, name string, ids []int64) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories", org, name)
 
-func (s *ActionsService) addSelectedRepoToVariable(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "PUT", url, nil)
+	type repoIDs struct {
+		SelectedIDs []int64 `json:"selected_repository_ids"`
+	}
+
+	req, err := s.client.NewRequest(ctx, "PUT", u, repoIDs{SelectedIDs: ids})
 	if err != nil {
 		return nil, err
 	}
@@ -337,12 +434,8 @@ func (s *ActionsService) AddSelectedRepoToOrgVariable(ctx context.Context, org, 
 		return nil, errors.New("id must be provided")
 	}
 
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories/%v", org, name, *repo.ID)
-	return s.addSelectedRepoToVariable(ctx, url)
-}
-
-func (s *ActionsService) removeSelectedRepoFromVariable(ctx context.Context, url string) (*Response, error) {
-	req, err := s.client.NewRequest(ctx, "DELETE", url, nil)
+	u := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories/%v", org, name, *repo.ID)
+	req, err := s.client.NewRequest(ctx, "PUT", u, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -363,6 +456,12 @@ func (s *ActionsService) RemoveSelectedRepoFromOrgVariable(ctx context.Context, 
 		return nil, errors.New("id must be provided")
 	}
 
-	url := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories/%v", org, name, *repo.ID)
-	return s.removeSelectedRepoFromVariable(ctx, url)
+	u := fmt.Sprintf("orgs/%v/actions/variables/%v/repositories/%v", org, name, *repo.ID)
+
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
 }

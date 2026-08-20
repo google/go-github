@@ -290,41 +290,36 @@ func TestActionsService_CreateOrUpdateRepoSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &EncryptedSecret{
-		Name:           "NAME",
-		EncryptedValue: "QIv=",
+	input := SecretRequest{
 		KeyID:          "1234",
+		EncryptedValue: "QIv=",
 	}
 
 	mux.HandleFunc("/repos/o/r/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		want := EncryptedSecret{
-			EncryptedValue: "QIv=",
+		want := SecretRequest{
 			KeyID:          "1234",
+			EncryptedValue: "QIv=",
 		}
 		testJSONBody(t, r, want)
 		w.WriteHeader(http.StatusCreated)
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
+	_, err := client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", "NAME", input)
 	if err != nil {
 		t.Errorf("Actions.CreateOrUpdateRepoSecret returned error: %v", err)
 	}
 
 	const methodName = "CreateOrUpdateRepoSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", nil)
-		return err
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateRepoSecret(ctx, "\n", "\n", input)
+		_, err = client.Actions.CreateOrUpdateRepoSecret(ctx, "\n", "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", input)
+		return client.Actions.CreateOrUpdateRepoSecret(ctx, "o", "r", "NAME", input)
 	})
 }
 
@@ -477,45 +472,40 @@ func TestActionsService_CreateOrUpdateOrgSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &EncryptedSecret{
-		Name:                  "NAME",
-		EncryptedValue:        "QIv=",
+	input := SecretOrgRequest{
 		KeyID:                 "1234",
+		EncryptedValue:        "QIv=",
 		Visibility:            "selected",
-		SelectedRepositoryIDs: SelectedRepoIDs{1296269, 1269280},
+		SelectedRepositoryIDs: []int64{1296269, 1269280},
 	}
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		want := EncryptedSecret{
-			EncryptedValue:        "QIv=",
+		want := SecretOrgRequest{
 			KeyID:                 "1234",
+			EncryptedValue:        "QIv=",
 			Visibility:            "selected",
-			SelectedRepositoryIDs: SelectedRepoIDs{1296269, 1269280},
+			SelectedRepositoryIDs: []int64{1296269, 1269280},
 		}
 		testJSONBody(t, r, want)
 		w.WriteHeader(http.StatusCreated)
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.CreateOrUpdateOrgSecret(ctx, "o", input)
+	_, err := client.Actions.CreateOrUpdateOrgSecret(ctx, "o", "NAME", input)
 	if err != nil {
 		t.Errorf("Actions.CreateOrUpdateOrgSecret returned error: %v", err)
 	}
 
 	const methodName = "CreateOrUpdateOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateOrgSecret(ctx, "o", nil)
-		return err
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateOrgSecret(ctx, "\n", input)
+		_, err = client.Actions.CreateOrUpdateOrgSecret(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateOrUpdateOrgSecret(ctx, "o", input)
+		return client.Actions.CreateOrUpdateOrgSecret(ctx, "o", "NAME", input)
 	})
 }
 
@@ -564,13 +554,13 @@ func TestActionsService_SetSelectedReposForOrgSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := SelectedRepoIDs{64780797}
+	input := []int64{64780797}
 
 	mux.HandleFunc("/orgs/o/actions/secrets/NAME/repositories", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
 		testJSONBody(t, r, struct {
-			SelectedIDs SelectedRepoIDs `json:"selected_repository_ids"`
+			SelectedIDs []int64 `json:"selected_repository_ids"`
 		}{
 			SelectedIDs: input,
 		})
@@ -601,25 +591,25 @@ func TestActionsService_AddSelectedRepoToOrgSecret(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	repo := &Repository{ID: Ptr(int64(1234))}
+	repoID := int64(1234)
 	ctx := t.Context()
-	_, err := client.Actions.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
+	_, err := client.Actions.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repoID)
 	if err != nil {
 		t.Errorf("Actions.AddSelectedRepoToOrgSecret returned error: %v", err)
 	}
 
 	const methodName = "AddSelectedRepoToOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", nil)
+		_, err = client.Actions.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", 0)
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.AddSelectedRepoToOrgSecret(ctx, "\n", "\n", repo)
+		_, err = client.Actions.AddSelectedRepoToOrgSecret(ctx, "\n", "\n", repoID)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repo)
+		return client.Actions.AddSelectedRepoToOrgSecret(ctx, "o", "NAME", repoID)
 	})
 }
 
@@ -631,25 +621,25 @@ func TestActionsService_RemoveSelectedRepoFromOrgSecret(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	repo := &Repository{ID: Ptr(int64(1234))}
+	repoID := int64(1234)
 	ctx := t.Context()
-	_, err := client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
+	_, err := client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repoID)
 	if err != nil {
 		t.Errorf("Actions.RemoveSelectedRepoFromOrgSecret returned error: %v", err)
 	}
 
 	const methodName = "RemoveSelectedRepoFromOrgSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", nil)
+		_, err = client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", 0)
 		return err
 	})
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "\n", "\n", repo)
+		_, err = client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "\n", "\n", repoID)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repo)
+		return client.Actions.RemoveSelectedRepoFromOrgSecret(ctx, "o", "NAME", repoID)
 	})
 }
 
@@ -682,13 +672,13 @@ func TestActionsService_GetEnvPublicKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
 	ctx := t.Context()
-	key, _, err := client.Actions.GetEnvPublicKey(ctx, 1, "e")
+	key, _, err := client.Actions.GetEnvPublicKey(ctx, "o", "r", "e")
 	if err != nil {
 		t.Errorf("Actions.GetEnvPublicKey returned error: %v", err)
 	}
@@ -700,12 +690,12 @@ func TestActionsService_GetEnvPublicKey(t *testing.T) {
 
 	const methodName = "GetEnvPublicKey"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetEnvPublicKey(ctx, 0.0, "\n")
+		_, _, err = client.Actions.GetEnvPublicKey(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetEnvPublicKey(ctx, 1, "e")
+		got, resp, err := client.Actions.GetEnvPublicKey(ctx, "o", "r", "e")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -717,13 +707,13 @@ func TestActionsService_GetEnvPublicKeyNumeric(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"key_id":1234,"key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
 	})
 
 	ctx := t.Context()
-	key, _, err := client.Actions.GetEnvPublicKey(ctx, 1, "e")
+	key, _, err := client.Actions.GetEnvPublicKey(ctx, "o", "r", "e")
 	if err != nil {
 		t.Errorf("Actions.GetEnvPublicKey returned error: %v", err)
 	}
@@ -735,12 +725,12 @@ func TestActionsService_GetEnvPublicKeyNumeric(t *testing.T) {
 
 	const methodName = "GetEnvPublicKey"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetEnvPublicKey(ctx, 0.0, "\n")
+		_, _, err = client.Actions.GetEnvPublicKey(ctx, "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetEnvPublicKey(ctx, 1, "e")
+		got, resp, err := client.Actions.GetEnvPublicKey(ctx, "o", "r", "e")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -752,7 +742,7 @@ func TestActionsService_ListEnvSecrets(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
 		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"name":"B","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
@@ -760,7 +750,7 @@ func TestActionsService_ListEnvSecrets(t *testing.T) {
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
 	ctx := t.Context()
-	secrets, _, err := client.Actions.ListEnvSecrets(ctx, 1, "e", opts)
+	secrets, _, err := client.Actions.ListEnvSecrets(ctx, "o", "r", "e", opts)
 	if err != nil {
 		t.Errorf("Actions.ListEnvSecrets returned error: %v", err)
 	}
@@ -778,12 +768,12 @@ func TestActionsService_ListEnvSecrets(t *testing.T) {
 
 	const methodName = "ListEnvSecrets"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.ListEnvSecrets(ctx, 0.0, "\n", opts)
+		_, _, err = client.Actions.ListEnvSecrets(ctx, "\n", "\n", "\n", opts)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.ListEnvSecrets(ctx, 1, "e", opts)
+		got, resp, err := client.Actions.ListEnvSecrets(ctx, "o", "r", "e", opts)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -795,13 +785,13 @@ func TestActionsService_GetEnvSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{"name":"secret","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 	})
 
 	ctx := t.Context()
-	secret, _, err := client.Actions.GetEnvSecret(ctx, 1, "e", "secret")
+	secret, _, err := client.Actions.GetEnvSecret(ctx, "o", "r", "e", "secret")
 	if err != nil {
 		t.Errorf("Actions.GetEnvSecret returned error: %v", err)
 	}
@@ -817,12 +807,12 @@ func TestActionsService_GetEnvSecret(t *testing.T) {
 
 	const methodName = "GetEnvSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Actions.GetEnvSecret(ctx, 0.0, "\n", "\n")
+		_, _, err = client.Actions.GetEnvSecret(ctx, "\n", "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Actions.GetEnvSecret(ctx, 1, "e", "secret")
+		got, resp, err := client.Actions.GetEnvSecret(ctx, "o", "r", "e", "secret")
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -834,41 +824,36 @@ func TestActionsService_CreateOrUpdateEnvSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &EncryptedSecret{
-		Name:           "secret",
-		EncryptedValue: "QIv=",
+	input := SecretRequest{
 		KeyID:          "1234",
+		EncryptedValue: "QIv=",
 	}
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets/secret", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "Content-Type", "application/json")
-		want := EncryptedSecret{
-			EncryptedValue: "QIv=",
+		want := SecretRequest{
 			KeyID:          "1234",
+			EncryptedValue: "QIv=",
 		}
 		testJSONBody(t, r, want)
 		w.WriteHeader(http.StatusCreated)
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.CreateOrUpdateEnvSecret(ctx, 1, "e", input)
+	_, err := client.Actions.CreateOrUpdateEnvSecret(ctx, "o", "r", "e", "secret", input)
 	if err != nil {
 		t.Errorf("Actions.CreateOrUpdateEnvSecret returned error: %v", err)
 	}
 
 	const methodName = "CreateOrUpdateEnvSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, 1, "e", nil)
-		return err
-	})
-	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, 0.0, "\n", input)
+		_, err = client.Actions.CreateOrUpdateEnvSecret(ctx, "\n", "\n", "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.CreateOrUpdateEnvSecret(ctx, 1, "e", input)
+		return client.Actions.CreateOrUpdateEnvSecret(ctx, "o", "r", "e", "secret", input)
 	})
 }
 
@@ -876,23 +861,23 @@ func TestActionsService_DeleteEnvSecret(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	mux.HandleFunc("/repositories/1/environments/e/secrets/secret", func(_ http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/o/r/environments/e/secrets/secret", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.DeleteEnvSecret(ctx, 1, "e", "secret")
+	_, err := client.Actions.DeleteEnvSecret(ctx, "o", "r", "e", "secret")
 	if err != nil {
 		t.Errorf("Actions.DeleteEnvSecret returned error: %v", err)
 	}
 
 	const methodName = "DeleteEnvSecret"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.DeleteEnvSecret(ctx, 0.0, "\n", "\n")
+		_, err = client.Actions.DeleteEnvSecret(ctx, "\n", "\n", "\n", "\n")
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.DeleteEnvSecret(ctx, 1, "r", "secret")
+		return client.Actions.DeleteEnvSecret(ctx, "o", "r", "e", "secret")
 	})
 }
