@@ -15591,6 +15591,17 @@ func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
 	c.GetWaitTimer()
 }
 
+func TestCreateUserImpersonationRequest_GetScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateUserImpersonationRequest{Scopes: zeroValue}
+	c.GetScopes()
+	c = &CreateUserImpersonationRequest{}
+	c.GetScopes()
+	c = nil
+	c.GetScopes()
+}
+
 func TestCreateUserRequest_GetEmail(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -24123,17 +24134,6 @@ func TestImmutableReleaseSettings_GetSelectedRepositoriesURL(tt *testing.T) {
 	i.GetSelectedRepositoriesURL()
 	i = nil
 	i.GetSelectedRepositoriesURL()
-}
-
-func TestImpersonateUserOptions_GetScopes(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	i := &ImpersonateUserOptions{Scopes: zeroValue}
-	i.GetScopes()
-	i = &ImpersonateUserOptions{}
-	i.GetScopes()
-	i = nil
-	i.GetScopes()
 }
 
 func TestImport_GetAuthorsCount(tt *testing.T) {
@@ -46538,6 +46538,14 @@ func TestRepositoryVisibilityRuleParameters_GetPrivate(tt *testing.T) {
 	r.GetPrivate()
 	r = nil
 	r.GetPrivate()
+}
+
+func TestRepositoryVisibilityRuleParameters_GetPublic(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryVisibilityRuleParameters{}
+	r.GetPublic()
+	r = nil
+	r.GetPublic()
 }
 
 func TestRepositoryVulnerabilityAlert_GetAffectedPackageName(tt *testing.T) {
