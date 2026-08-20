@@ -36886,6 +36886,14 @@ func (r *RepositoryVisibilityRuleParameters) GetPrivate() bool {
 	return r.Private
 }
 
+// GetPublic returns the Public field.
+func (r *RepositoryVisibilityRuleParameters) GetPublic() bool {
+	if r == nil {
+		return false
+	}
+	return r.Public
+}
+
 // GetAffectedPackageName returns the AffectedPackageName field if it's non-nil, zero value otherwise.
 func (r *RepositoryVulnerabilityAlert) GetAffectedPackageName() string {
 	if r == nil || r.AffectedPackageName == nil {
