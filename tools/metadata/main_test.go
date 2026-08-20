@@ -78,7 +78,8 @@ func TestUpdateOpenAPI(t *testing.T) {
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				})),
+				}),
+			),
 		},
 		"ghec/ghec.json": openapi3.T{
 			Paths: openapi3.NewPaths(
@@ -88,7 +89,8 @@ func TestUpdateOpenAPI(t *testing.T) {
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				})),
+				}),
+			),
 		},
 		"ghes-3.9/ghes-3.9.json": openapi3.T{
 			Paths: openapi3.NewPaths(
@@ -98,7 +100,8 @@ func TestUpdateOpenAPI(t *testing.T) {
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				})),
+				}),
+			),
 		},
 		"ghes-3.10/ghes-3.10.json": openapi3.T{
 			Paths: openapi3.NewPaths(
@@ -108,7 +111,8 @@ func TestUpdateOpenAPI(t *testing.T) {
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				})),
+				}),
+			),
 		},
 		"ghes-2.22/ghes-2.22.json": openapi3.T{
 			Paths: openapi3.NewPaths(
@@ -118,7 +122,8 @@ func TestUpdateOpenAPI(t *testing.T) {
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				})),
+				}),
+			),
 		},
 	})
 
