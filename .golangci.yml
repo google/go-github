@@ -233,7 +233,6 @@ linters:
             - Organization
             - PagesUpdate
             - PagesUpdateWithoutCNAME
-            - PendingDeploymentsRequest
             - ProtectionRequest
             - PublishCodespaceOptions
             - PullRequestBranchUpdateOptions
@@ -246,7 +245,6 @@ linters:
             - RepositoryContentFileOptions
             - RepositoryCreateForkOptions
             - RequiredStatusChecksRequest
-            - ReviewCustomDeploymentProtectionRuleRequest
             - SCIMUserAttributes
             - SecretScanningAlertUpdateOptions
             - SecretScanningPatternConfigsUpdateOptions
