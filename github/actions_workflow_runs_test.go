@@ -811,18 +811,18 @@ func TestActionsService_ReviewCustomDeploymentProtectionRule(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	if _, err := client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request); err != nil {
+	if _, err := client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, request); err != nil {
 		t.Errorf("ReviewCustomDeploymentProtectionRule returned error: %v", err)
 	}
 
 	const methodName = "ReviewCustomDeploymentProtectionRule"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "\n", "\n", 9444496, &request)
+		_, err = client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "\n", "\n", 9444496, request)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request)
+		return client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, request)
 	})
 }
 
@@ -898,7 +898,7 @@ func TestActionsService_PendingDeployments(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: "approved", Comment: ""}
+	input := PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: "approved", Comment: ""}
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
