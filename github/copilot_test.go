@@ -3064,6 +3064,14 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 					"prompt_tokens_sum": 9494
 				}
 			},
+			"totals_by_3rd_party_agent": [
+				{
+					"agent_name": "Claude",
+					"agent_id": "claude",
+					"user_initiated_interaction_count": 8,
+					"session_count": 3
+				}
+			],
 			"loc_added_sum": 100,
 			"pull_requests": {
 				"total_reviewed": 1,
@@ -3119,6 +3127,14 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 				AvgTokensPerRequest: Ptr(4123.5),
 				OutputTokensSum:     Ptr(7000),
 				PromptTokensSum:     Ptr(9494),
+			},
+		},
+		TotalsBy3rdPartyAgent: []*CopilotMetricsThirdPartyAgent{
+			{
+				AgentName:                     "Claude",
+				AgentID:                       "claude",
+				UserInitiatedInteractionCount: Ptr(8),
+				SessionCount:                  Ptr(3),
 			},
 		},
 		LOCAddedSum: Ptr(100),
@@ -3268,7 +3284,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 
 	mux.HandleFunc("/path/to/users-daily", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_code_review_active":true,"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":`+refTimeStr(1136178000)+`,"cli_version":"1.0.8"}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":`+refTimeStr(1136178001)+`,"plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":`+refTimeStr(1136178002)+`,"ide_version":"1.90"}}]}
+		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_code_review_active":true,"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":`+refTimeStr(1136178000)+`,"cli_version":"1.0.8"}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":`+refTimeStr(1136178001)+`,"plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":`+refTimeStr(1136178002)+`,"ide_version":"1.90"}}],"totals_by_3rd_party_agent":[{"agent_name":"Claude","agent_id":"claude","user_initiated_interaction_count":2}]}
 {"user_id":2,"user_login":"bob","day":"2026-04-01","used_agent":true,"used_copilot_code_review_passive":true}
 `)
 	})
@@ -3317,6 +3333,13 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 						SampledAt:  refTimestamp(1136178002),
 						IDEVersion: "1.90",
 					},
+				},
+			},
+			TotalsBy3rdPartyAgent: []*CopilotMetricsThirdPartyAgent{
+				{
+					AgentName:                     "Claude",
+					AgentID:                       "claude",
+					UserInitiatedInteractionCount: Ptr(2),
 				},
 			},
 		},
