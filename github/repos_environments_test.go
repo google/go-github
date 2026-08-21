@@ -31,6 +31,11 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 			wantRule:  []*RequiredReviewer{{Type: Ptr("Team"), Reviewer: &Team{ID: Ptr(int64(1)), Name: Ptr("Justice League")}}},
 			wantError: false,
 		},
+		"Enterprise Team Reviewer": {
+			data:      []byte(`[{"type": "BusinessTeam", "reviewer": {"id": 1, "name": "Justice League"}}]`),
+			wantRule:  []*RequiredReviewer{{Type: Ptr("Team"), Reviewer: &Team{ID: Ptr(int64(1)), Name: Ptr("Justice League")}}},
+			wantError: false,
+		},
 		"Both Types Reviewer": {
 			data:      []byte(`[{"type": "User", "reviewer": {"id": 1,"login": "octocat"}},{"type": "Team", "reviewer": {"id": 1, "name": "Justice League"}}]`),
 			wantRule:  []*RequiredReviewer{{Type: Ptr("User"), Reviewer: &User{ID: Ptr(int64(1)), Login: Ptr("octocat")}}, {Type: Ptr("Team"), Reviewer: &Team{ID: Ptr(int64(1)), Name: Ptr("Justice League")}}},
@@ -69,6 +74,11 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 		"Wrong ID Type in Team Object": {
 			data:      []byte(`[{"type": "Team", "reviewer": {"id": "string"}}]`),
 			wantRule:  []*RequiredReviewer{{Type: Ptr("Team"), Reviewer: nil}},
+			wantError: true,
+		},
+		"Wrong ID Type in Enterprise Team Object": {
+			data:      []byte(`[{"type": "BusinessTeam", "reviewer": {"id": "string"}}]`),
+			wantRule:  []*RequiredReviewer{{Type: Ptr("BusinessTeam"), Reviewer: nil}},
 			wantError: true,
 		},
 		"Wrong Type of Reviewer": {
