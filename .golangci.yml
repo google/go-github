@@ -203,7 +203,6 @@ linters:
           # Body type names exempt from the "pass by value, not by pointer" rule.
           # TODO: fix and remove these exceptions.
           body-allowed-pointer-types:
-            - ActionsVariable
             - AddProjectItemOptions
             - AuthorizationRequest
             - CodeScanningAlertState
@@ -218,7 +217,6 @@ linters:
             - CustomDeploymentProtectionRuleRequest
             - CustomProperty
             - DependabotAlertState
-            - DependabotEncryptedSecret
             - DependencyGraphSnapshot
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
