@@ -44,7 +44,9 @@ jobs:
         go-version: stable
         cache-dependency-path: "**/go.sum"
     - name: Check OpenAPI
-      run: ./script/metadata.sh update-openapi --validate
+      run: |
+        ./script/metadata.sh update-openapi --validate
+        ./script/metadata.sh check-schema-fields
       env:
         CHECK_GITHUB_OPENAPI: 1
         GITHUB_TOKEN: ${{ github.token }}
