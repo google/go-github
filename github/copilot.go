@@ -1024,6 +1024,44 @@ type CopilotMetricsThirdPartyAgent struct {
 	SessionCount                  *int   `json:"session_count,omitempty"`
 }
 
+// CopilotMetricsAIAdoptionPhase represents a user's AI adoption phase classification
+// in a Copilot usage metrics report.
+//
+// Phase assignment uses a trailing 28-day engagement window and may change day to day.
+// Version identifies the classification model (for example, "v1").
+//
+// GitHub API docs: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/copilot-usage-metrics#ai-adoption-phase-fields
+type CopilotMetricsAIAdoptionPhase struct {
+	PhaseNumber int    `json:"phase_number"`
+	Phase       string `json:"phase"`
+	Version     string `json:"version"`
+}
+
+// CopilotMetricsAIAdoptionPhaseTotals represents aggregated per-phase averages in an
+// enterprise or organization Copilot usage metrics report.
+//
+// Aggregated metrics report the average per user within each phase rather than the sum,
+// except TotalEngagedUsers and TotalPullRequestsMerged.
+//
+// GitHub API docs: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/copilot-usage-metrics#ai-adoption-phase-fields
+type CopilotMetricsAIAdoptionPhaseTotals struct {
+	Phase                               string   `json:"phase"`
+	PhaseNumber                         int      `json:"phase_number"`
+	TotalEngagedUsers                   *int     `json:"total_engaged_users,omitempty"`
+	AvgUserInitiatedInteractions        *float64 `json:"avg_user_initiated_interactions,omitempty"`
+	AvgCodeGenerationActivities         *float64 `json:"avg_code_generation_activities,omitempty"`
+	AvgCodeAcceptanceActivities         *float64 `json:"avg_code_acceptance_activities,omitempty"`
+	AvgLOCAdded                         *float64 `json:"avg_loc_added,omitempty"`
+	AvgLOCDeleted                       *float64 `json:"avg_loc_deleted,omitempty"`
+	AvgPullRequestsReviewed             *float64 `json:"avg_pull_requests_reviewed,omitempty"`
+	AvgPullRequestsCreated              *float64 `json:"avg_pull_requests_created,omitempty"`
+	AvgPullRequestsMerged               *float64 `json:"avg_pull_requests_merged,omitempty"`
+	TotalPullRequestsMerged             *int     `json:"total_pull_requests_merged,omitempty"`
+	AvgPullRequestsMedianMinutesToMerge *float64 `json:"avg_pull_requests_median_minutes_to_merge,omitempty"`
+	AvgPullRequestsMinutesToReview      *float64 `json:"avg_pull_requests_minutes_to_review,omitempty"`
+	AvgPullRequestsReviewCycles         *float64 `json:"avg_pull_requests_review_cycles,omitempty"`
+}
+
 // CopilotDailyMetrics represents the payload downloaded from a 1-day Copilot usage metrics report.
 type CopilotDailyMetrics struct {
 	Day                                 string  `json:"day"`
@@ -1040,20 +1078,21 @@ type CopilotDailyMetrics struct {
 	MonthlyActiveCopilotCloudAgentUsers *int    `json:"monthly_active_copilot_cloud_agent_users,omitempty"`
 	UserInitiatedInteractionCount       *int    `json:"user_initiated_interaction_count,omitempty"`
 	CopilotMetricsChatPanel
-	CodeGenerationActivityCount *int                             `json:"code_generation_activity_count,omitempty"`
-	CodeAcceptanceActivityCount *int                             `json:"code_acceptance_activity_count,omitempty"`
-	TotalsByIDE                 []*CopilotMetricsIDE             `json:"totals_by_ide,omitempty"`
-	TotalsByFeature             []*CopilotMetricsFeature         `json:"totals_by_feature,omitempty"`
-	TotalsByLanguageFeature     []*CopilotMetricsLanguageFeature `json:"totals_by_language_feature,omitempty"`
-	TotalsByLanguageModel       []*CopilotMetricsLanguageModel   `json:"totals_by_language_model,omitempty"`
-	TotalsByModelFeature        []*CopilotMetricsModelFeature    `json:"totals_by_model_feature,omitempty"`
-	TotalsByCLI                 *CopilotMetricsCLI               `json:"totals_by_cli,omitempty"`
-	TotalsBy3rdPartyAgent       []*CopilotMetricsThirdPartyAgent `json:"totals_by_3rd_party_agent,omitempty"`
-	LOCSuggestedToAddSum        *int                             `json:"loc_suggested_to_add_sum,omitempty"`
-	LOCSuggestedToDeleteSum     *int                             `json:"loc_suggested_to_delete_sum,omitempty"`
-	LOCAddedSum                 *int                             `json:"loc_added_sum,omitempty"`
-	LOCDeletedSum               *int                             `json:"loc_deleted_sum,omitempty"`
-	PullRequests                *CopilotMetricsPullRequests      `json:"pull_requests,omitempty"`
+	CodeGenerationActivityCount *int                                   `json:"code_generation_activity_count,omitempty"`
+	CodeAcceptanceActivityCount *int                                   `json:"code_acceptance_activity_count,omitempty"`
+	TotalsByIDE                 []*CopilotMetricsIDE                   `json:"totals_by_ide,omitempty"`
+	TotalsByFeature             []*CopilotMetricsFeature               `json:"totals_by_feature,omitempty"`
+	TotalsByLanguageFeature     []*CopilotMetricsLanguageFeature       `json:"totals_by_language_feature,omitempty"`
+	TotalsByLanguageModel       []*CopilotMetricsLanguageModel         `json:"totals_by_language_model,omitempty"`
+	TotalsByModelFeature        []*CopilotMetricsModelFeature          `json:"totals_by_model_feature,omitempty"`
+	TotalsByCLI                 *CopilotMetricsCLI                     `json:"totals_by_cli,omitempty"`
+	TotalsBy3rdPartyAgent       []*CopilotMetricsThirdPartyAgent       `json:"totals_by_3rd_party_agent,omitempty"`
+	TotalsByAIAdoptionPhase     []*CopilotMetricsAIAdoptionPhaseTotals `json:"totals_by_ai_adoption_phase,omitempty"`
+	LOCSuggestedToAddSum        *int                                   `json:"loc_suggested_to_add_sum,omitempty"`
+	LOCSuggestedToDeleteSum     *int                                   `json:"loc_suggested_to_delete_sum,omitempty"`
+	LOCAddedSum                 *int                                   `json:"loc_added_sum,omitempty"`
+	LOCDeletedSum               *int                                   `json:"loc_deleted_sum,omitempty"`
+	PullRequests                *CopilotMetricsPullRequests            `json:"pull_requests,omitempty"`
 }
 
 // CopilotPeriodicMetrics represents the payload downloaded from a multi-day (e.g. 28-day rolling)
@@ -1094,12 +1133,13 @@ type CopilotUserMetricsIDE struct {
 // CopilotUserDailyMetrics represents a single user's per-day Copilot usage metrics record from a
 // 1-day user metrics report. User metrics reports are served as newline-delimited JSON.
 type CopilotUserDailyMetrics struct {
-	UserID                        int     `json:"user_id"`
-	UserLogin                     string  `json:"user_login"`
-	Day                           string  `json:"day"`
-	OrganizationID                *string `json:"organization_id,omitempty"`
-	EnterpriseID                  *string `json:"enterprise_id,omitempty"`
-	UserInitiatedInteractionCount *int    `json:"user_initiated_interaction_count,omitempty"`
+	UserID                        int      `json:"user_id"`
+	UserLogin                     string   `json:"user_login"`
+	Day                           string   `json:"day"`
+	OrganizationID                *string  `json:"organization_id,omitempty"`
+	EnterpriseID                  *string  `json:"enterprise_id,omitempty"`
+	AICreditsUsed                 *float64 `json:"ai_credits_used,omitempty"`
+	UserInitiatedInteractionCount *int     `json:"user_initiated_interaction_count,omitempty"`
 	CopilotMetricsChatPanel
 	CodeGenerationActivityCount  *int                             `json:"code_generation_activity_count,omitempty"`
 	CodeAcceptanceActivityCount  *int                             `json:"code_acceptance_activity_count,omitempty"`
@@ -1110,6 +1150,7 @@ type CopilotUserDailyMetrics struct {
 	TotalsByModelFeature         []*CopilotMetricsModelFeature    `json:"totals_by_model_feature,omitempty"`
 	TotalsByCLI                  *CopilotMetricsCLI               `json:"totals_by_cli,omitempty"`
 	TotalsBy3rdPartyAgent        []*CopilotMetricsThirdPartyAgent `json:"totals_by_3rd_party_agent,omitempty"`
+	AIAdoptionPhase              *CopilotMetricsAIAdoptionPhase   `json:"ai_adoption_phase,omitempty"`
 	UsedAgent                    *bool                            `json:"used_agent,omitempty"`
 	UsedChat                     *bool                            `json:"used_chat,omitempty"`
 	UsedCLI                      *bool                            `json:"used_cli,omitempty"`
@@ -1126,14 +1167,15 @@ type CopilotUserDailyMetrics struct {
 // multi-day (e.g. 28-day rolling) user metrics report. User metrics reports are served as
 // newline-delimited JSON.
 type CopilotUserPeriodicMetrics struct {
-	ReportStartDay                string  `json:"report_start_day"`
-	ReportEndDay                  string  `json:"report_end_day"`
-	Day                           string  `json:"day"`
-	OrganizationID                *string `json:"organization_id,omitempty"`
-	EnterpriseID                  *string `json:"enterprise_id,omitempty"`
-	UserID                        int     `json:"user_id"`
-	UserLogin                     string  `json:"user_login"`
-	UserInitiatedInteractionCount *int    `json:"user_initiated_interaction_count,omitempty"`
+	ReportStartDay                string   `json:"report_start_day"`
+	ReportEndDay                  string   `json:"report_end_day"`
+	Day                           string   `json:"day"`
+	OrganizationID                *string  `json:"organization_id,omitempty"`
+	EnterpriseID                  *string  `json:"enterprise_id,omitempty"`
+	UserID                        int      `json:"user_id"`
+	UserLogin                     string   `json:"user_login"`
+	AICreditsUsed                 *float64 `json:"ai_credits_used,omitempty"`
+	UserInitiatedInteractionCount *int     `json:"user_initiated_interaction_count,omitempty"`
 	CopilotMetricsChatPanel
 	CodeGenerationActivityCount  *int                             `json:"code_generation_activity_count,omitempty"`
 	CodeAcceptanceActivityCount  *int                             `json:"code_acceptance_activity_count,omitempty"`
@@ -1144,6 +1186,7 @@ type CopilotUserPeriodicMetrics struct {
 	TotalsByModelFeature         []*CopilotMetricsModelFeature    `json:"totals_by_model_feature,omitempty"`
 	TotalsByCLI                  *CopilotMetricsCLI               `json:"totals_by_cli,omitempty"`
 	TotalsBy3rdPartyAgent        []*CopilotMetricsThirdPartyAgent `json:"totals_by_3rd_party_agent,omitempty"`
+	AIAdoptionPhase              *CopilotMetricsAIAdoptionPhase   `json:"ai_adoption_phase,omitempty"`
 	UsedAgent                    *bool                            `json:"used_agent,omitempty"`
 	UsedChat                     *bool                            `json:"used_chat,omitempty"`
 	UsedCLI                      *bool                            `json:"used_cli,omitempty"`
