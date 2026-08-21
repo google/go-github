@@ -1002,19 +1002,22 @@ func TestIssue_String(t *testing.T) {
 func TestIssueComment_String(t *testing.T) {
 	t.Parallel()
 	v := IssueComment{
-		ID:                Ptr(int64(0)),
-		NodeID:            Ptr(""),
-		Body:              Ptr(""),
-		User:              &User{},
-		Reactions:         &Reactions{},
-		CreatedAt:         &Timestamp{},
-		UpdatedAt:         &Timestamp{},
-		AuthorAssociation: Ptr(""),
-		URL:               Ptr(""),
-		HTMLURL:           Ptr(""),
-		IssueURL:          Ptr(""),
+		ID:                    Ptr(int64(0)),
+		NodeID:                Ptr(""),
+		Body:                  Ptr(""),
+		User:                  &User{},
+		Reactions:             &Reactions{},
+		CreatedAt:             &Timestamp{},
+		UpdatedAt:             &Timestamp{},
+		AuthorAssociation:     Ptr(""),
+		PerformedViaGithubApp: &App{},
+		Pin:                   &PinnedIssueComment{},
+		Minimized:             &MinimizedIssueComment{},
+		URL:                   Ptr(""),
+		HTMLURL:               Ptr(""),
+		IssueURL:              Ptr(""),
 	}
-	want := `github.IssueComment{ID:0, NodeID:"", Body:"", User:github.User{}, Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, AuthorAssociation:"", URL:"", HTMLURL:"", IssueURL:""}`
+	want := `github.IssueComment{ID:0, NodeID:"", Body:"", User:github.User{}, Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, AuthorAssociation:"", PerformedViaGithubApp:github.App{}, Pin:github.PinnedIssueComment{}, Minimized:github.MinimizedIssueComment{}, URL:"", HTMLURL:"", IssueURL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("IssueComment.String = %v, want %v", got, want)
 	}

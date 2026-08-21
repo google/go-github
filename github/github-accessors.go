@@ -21270,12 +21270,36 @@ func (i *IssueComment) GetIssueURL() string {
 	return *i.IssueURL
 }
 
+// GetMinimized returns the Minimized field.
+func (i *IssueComment) GetMinimized() *MinimizedIssueComment {
+	if i == nil {
+		return nil
+	}
+	return i.Minimized
+}
+
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
 func (i *IssueComment) GetNodeID() string {
 	if i == nil || i.NodeID == nil {
 		return ""
 	}
 	return *i.NodeID
+}
+
+// GetPerformedViaGithubApp returns the PerformedViaGithubApp field.
+func (i *IssueComment) GetPerformedViaGithubApp() *App {
+	if i == nil {
+		return nil
+	}
+	return i.PerformedViaGithubApp
+}
+
+// GetPin returns the Pin field.
+func (i *IssueComment) GetPin() *PinnedIssueComment {
+	if i == nil {
+		return nil
+	}
+	return i.Pin
 }
 
 // GetReactions returns the Reactions field.
@@ -21372,6 +21396,14 @@ func (i *IssueCommentEvent) GetSender() *User {
 		return nil
 	}
 	return i.Sender
+}
+
+// GetBody returns the Body field.
+func (i *IssueCommentRequest) GetBody() string {
+	if i == nil {
+		return ""
+	}
+	return i.Body
 }
 
 // GetBlockedBy returns the BlockedBy field if it's non-nil, zero value otherwise.
@@ -25438,6 +25470,14 @@ func (m *MilestoneStats) GetTotalMilestones() int {
 	return *m.TotalMilestones
 }
 
+// GetReason returns the Reason field if it's non-nil, zero value otherwise.
+func (m *MinimizedIssueComment) GetReason() string {
+	if m == nil || m.Reason == nil {
+		return ""
+	}
+	return *m.Reason
+}
+
 // GetAnalysisKey returns the AnalysisKey field if it's non-nil, zero value otherwise.
 func (m *MostRecentInstance) GetAnalysisKey() string {
 	if m == nil || m.AnalysisKey == nil {
@@ -28924,6 +28964,22 @@ func (p *PingEvent) GetZen() string {
 		return ""
 	}
 	return *p.Zen
+}
+
+// GetPinnedAt returns the PinnedAt field if it's non-nil, zero value otherwise.
+func (p *PinnedIssueComment) GetPinnedAt() Timestamp {
+	if p == nil || p.PinnedAt == nil {
+		return Timestamp{}
+	}
+	return *p.PinnedAt
+}
+
+// GetPinnedBy returns the PinnedBy field.
+func (p *PinnedIssueComment) GetPinnedBy() *User {
+	if p == nil {
+		return nil
+	}
+	return p.PinnedBy
 }
 
 // GetCollaborators returns the Collaborators field if it's non-nil, zero value otherwise.
