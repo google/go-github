@@ -1244,6 +1244,507 @@ func TestAdvisoryVulnerability_GetVulnerableVersionRange(tt *testing.T) {
 	a.GetVulnerableVersionRange()
 }
 
+func TestAgentTask_GetArchivedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AgentTask{ArchivedAt: &zeroValue}
+	a.GetArchivedAt()
+	a = &AgentTask{}
+	a.GetArchivedAt()
+	a = nil
+	a.GetArchivedAt()
+}
+
+func TestAgentTask_GetArtifacts(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AgentTaskArtifact{}
+	a := &AgentTask{Artifacts: zeroValue}
+	a.GetArtifacts()
+	a = &AgentTask{}
+	a.GetArtifacts()
+	a = nil
+	a.GetArtifacts()
+}
+
+func TestAgentTask_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTask{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestAgentTask_GetCreator(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTask{}
+	a.GetCreator()
+	a = nil
+	a.GetCreator()
+}
+
+func TestAgentTask_GetCreatorType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTask{CreatorType: &zeroValue}
+	a.GetCreatorType()
+	a = &AgentTask{}
+	a.GetCreatorType()
+	a = nil
+	a.GetCreatorType()
+}
+
+func TestAgentTask_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTask{HTMLURL: &zeroValue}
+	a.GetHTMLURL()
+	a = &AgentTask{}
+	a.GetHTMLURL()
+	a = nil
+	a.GetHTMLURL()
+}
+
+func TestAgentTask_GetID(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTask{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAgentTask_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTask{Name: &zeroValue}
+	a.GetName()
+	a = &AgentTask{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestAgentTask_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTask{}
+	a.GetOwner()
+	a = nil
+	a.GetOwner()
+}
+
+func TestAgentTask_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTask{}
+	a.GetRepository()
+	a = nil
+	a.GetRepository()
+}
+
+func TestAgentTask_GetSessionCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AgentTask{SessionCount: &zeroValue}
+	a.GetSessionCount()
+	a = &AgentTask{}
+	a.GetSessionCount()
+	a = nil
+	a.GetSessionCount()
+}
+
+func TestAgentTask_GetSessions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AgentTaskSession{}
+	a := &AgentTask{Sessions: zeroValue}
+	a.GetSessions()
+	a = &AgentTask{}
+	a.GetSessions()
+	a = nil
+	a.GetSessions()
+}
+
+func TestAgentTask_GetState(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTask{}
+	a.GetState()
+	a = nil
+	a.GetState()
+}
+
+func TestAgentTask_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AgentTask{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &AgentTask{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestAgentTask_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTask{URL: &zeroValue}
+	a.GetURL()
+	a = &AgentTask{}
+	a.GetURL()
+	a = nil
+	a.GetURL()
+}
+
+func TestAgentTask_GetUserCollaborators(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*User{}
+	a := &AgentTask{UserCollaborators: zeroValue}
+	a.GetUserCollaborators()
+	a = &AgentTask{}
+	a.GetUserCollaborators()
+	a = nil
+	a.GetUserCollaborators()
+}
+
+func TestAgentTaskArtifact_GetData(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskArtifact{}
+	a.GetData()
+	a = nil
+	a.GetData()
+}
+
+func TestAgentTaskArtifact_GetProvider(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskArtifact{}
+	a.GetProvider()
+	a = nil
+	a.GetProvider()
+}
+
+func TestAgentTaskArtifact_GetType(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskArtifact{}
+	a.GetType()
+	a = nil
+	a.GetType()
+}
+
+func TestAgentTaskArtifactData_GetBaseRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskArtifactData{BaseRef: &zeroValue}
+	a.GetBaseRef()
+	a = &AgentTaskArtifactData{}
+	a.GetBaseRef()
+	a = nil
+	a.GetBaseRef()
+}
+
+func TestAgentTaskArtifactData_GetGlobalID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskArtifactData{GlobalID: &zeroValue}
+	a.GetGlobalID()
+	a = &AgentTaskArtifactData{}
+	a.GetGlobalID()
+	a = nil
+	a.GetGlobalID()
+}
+
+func TestAgentTaskArtifactData_GetHeadRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskArtifactData{HeadRef: &zeroValue}
+	a.GetHeadRef()
+	a = &AgentTaskArtifactData{}
+	a.GetHeadRef()
+	a = nil
+	a.GetHeadRef()
+}
+
+func TestAgentTaskArtifactData_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AgentTaskArtifactData{ID: &zeroValue}
+	a.GetID()
+	a = &AgentTaskArtifactData{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAgentTaskCreator_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AgentTaskCreator{ID: &zeroValue}
+	a.GetID()
+	a = &AgentTaskCreator{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAgentTaskList_GetTasks(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*AgentTask{}
+	a := &AgentTaskList{Tasks: zeroValue}
+	a.GetTasks()
+	a = &AgentTaskList{}
+	a.GetTasks()
+	a = nil
+	a.GetTasks()
+}
+
+func TestAgentTaskList_GetTotalActiveCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AgentTaskList{TotalActiveCount: &zeroValue}
+	a.GetTotalActiveCount()
+	a = &AgentTaskList{}
+	a.GetTotalActiveCount()
+	a = nil
+	a.GetTotalActiveCount()
+}
+
+func TestAgentTaskList_GetTotalArchivedCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	a := &AgentTaskList{TotalArchivedCount: &zeroValue}
+	a.GetTotalArchivedCount()
+	a = &AgentTaskList{}
+	a.GetTotalArchivedCount()
+	a = nil
+	a.GetTotalArchivedCount()
+}
+
+func TestAgentTaskListByRepoOptions_GetCreatorID(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int64{}
+	a := &AgentTaskListByRepoOptions{CreatorID: zeroValue}
+	a.GetCreatorID()
+	a = &AgentTaskListByRepoOptions{}
+	a.GetCreatorID()
+	a = nil
+	a.GetCreatorID()
+}
+
+func TestAgentTaskListOptions_GetDirection(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskListOptions{}
+	a.GetDirection()
+	a = nil
+	a.GetDirection()
+}
+
+func TestAgentTaskListOptions_GetIsArchived(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskListOptions{}
+	a.GetIsArchived()
+	a = nil
+	a.GetIsArchived()
+}
+
+func TestAgentTaskListOptions_GetSince(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue time.Time
+	a := &AgentTaskListOptions{Since: &zeroValue}
+	a.GetSince()
+	a = &AgentTaskListOptions{}
+	a.GetSince()
+	a = nil
+	a.GetSince()
+}
+
+func TestAgentTaskListOptions_GetSort(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskListOptions{}
+	a.GetSort()
+	a = nil
+	a.GetSort()
+}
+
+func TestAgentTaskListOptions_GetState(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskListOptions{}
+	a.GetState()
+	a = nil
+	a.GetState()
+}
+
+func TestAgentTaskOwner_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AgentTaskOwner{ID: &zeroValue}
+	a.GetID()
+	a = &AgentTaskOwner{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAgentTaskRepository_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	a := &AgentTaskRepository{ID: &zeroValue}
+	a.GetID()
+	a = &AgentTaskRepository{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAgentTaskSession_GetBaseRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{BaseRef: &zeroValue}
+	a.GetBaseRef()
+	a = &AgentTaskSession{}
+	a.GetBaseRef()
+	a = nil
+	a.GetBaseRef()
+}
+
+func TestAgentTaskSession_GetCompletedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AgentTaskSession{CompletedAt: &zeroValue}
+	a.GetCompletedAt()
+	a = &AgentTaskSession{}
+	a.GetCompletedAt()
+	a = nil
+	a.GetCompletedAt()
+}
+
+func TestAgentTaskSession_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetCreatedAt()
+	a = nil
+	a.GetCreatedAt()
+}
+
+func TestAgentTaskSession_GetError(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetError()
+	a = nil
+	a.GetError()
+}
+
+func TestAgentTaskSession_GetHeadRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{HeadRef: &zeroValue}
+	a.GetHeadRef()
+	a = &AgentTaskSession{}
+	a.GetHeadRef()
+	a = nil
+	a.GetHeadRef()
+}
+
+func TestAgentTaskSession_GetID(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetID()
+	a = nil
+	a.GetID()
+}
+
+func TestAgentTaskSession_GetModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{Model: &zeroValue}
+	a.GetModel()
+	a = &AgentTaskSession{}
+	a.GetModel()
+	a = nil
+	a.GetModel()
+}
+
+func TestAgentTaskSession_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{Name: &zeroValue}
+	a.GetName()
+	a = &AgentTaskSession{}
+	a.GetName()
+	a = nil
+	a.GetName()
+}
+
+func TestAgentTaskSession_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetOwner()
+	a = nil
+	a.GetOwner()
+}
+
+func TestAgentTaskSession_GetPrompt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{Prompt: &zeroValue}
+	a.GetPrompt()
+	a = &AgentTaskSession{}
+	a.GetPrompt()
+	a = nil
+	a.GetPrompt()
+}
+
+func TestAgentTaskSession_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetRepository()
+	a = nil
+	a.GetRepository()
+}
+
+func TestAgentTaskSession_GetState(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetState()
+	a = nil
+	a.GetState()
+}
+
+func TestAgentTaskSession_GetTaskID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSession{TaskID: &zeroValue}
+	a.GetTaskID()
+	a = &AgentTaskSession{}
+	a.GetTaskID()
+	a = nil
+	a.GetTaskID()
+}
+
+func TestAgentTaskSession_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	a := &AgentTaskSession{UpdatedAt: &zeroValue}
+	a.GetUpdatedAt()
+	a = &AgentTaskSession{}
+	a.GetUpdatedAt()
+	a = nil
+	a.GetUpdatedAt()
+}
+
+func TestAgentTaskSession_GetUser(tt *testing.T) {
+	tt.Parallel()
+	a := &AgentTaskSession{}
+	a.GetUser()
+	a = nil
+	a.GetUser()
+}
+
+func TestAgentTaskSessionError_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AgentTaskSessionError{Message: &zeroValue}
+	a.GetMessage()
+	a = &AgentTaskSessionError{}
+	a.GetMessage()
+	a = nil
+	a.GetMessage()
+}
+
 func TestAlert_GetClosedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -13350,6 +13851,58 @@ func TestCostCenters_GetCostCenters(tt *testing.T) {
 	c.GetCostCenters()
 }
 
+func TestCreateAgentTaskRequest_GetBaseRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateAgentTaskRequest{BaseRef: &zeroValue}
+	c.GetBaseRef()
+	c = &CreateAgentTaskRequest{}
+	c.GetBaseRef()
+	c = nil
+	c.GetBaseRef()
+}
+
+func TestCreateAgentTaskRequest_GetCreatePullRequest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateAgentTaskRequest{CreatePullRequest: &zeroValue}
+	c.GetCreatePullRequest()
+	c = &CreateAgentTaskRequest{}
+	c.GetCreatePullRequest()
+	c = nil
+	c.GetCreatePullRequest()
+}
+
+func TestCreateAgentTaskRequest_GetHeadRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateAgentTaskRequest{HeadRef: &zeroValue}
+	c.GetHeadRef()
+	c = &CreateAgentTaskRequest{}
+	c.GetHeadRef()
+	c = nil
+	c.GetHeadRef()
+}
+
+func TestCreateAgentTaskRequest_GetModel(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateAgentTaskRequest{Model: &zeroValue}
+	c.GetModel()
+	c = &CreateAgentTaskRequest{}
+	c.GetModel()
+	c = nil
+	c.GetModel()
+}
+
+func TestCreateAgentTaskRequest_GetPrompt(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateAgentTaskRequest{}
+	c.GetPrompt()
+	c = nil
+	c.GetPrompt()
+}
+
 func TestCreateArtifactDeploymentRequest_GetCluster(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -15075,6 +15628,102 @@ func TestCreateTag_GetType(tt *testing.T) {
 	c.GetType()
 }
 
+func TestCreateTeamRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateTeamRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateTeamRequest_GetMaintainers(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateTeamRequest{Maintainers: zeroValue}
+	c.GetMaintainers()
+	c = &CreateTeamRequest{}
+	c.GetMaintainers()
+	c = nil
+	c.GetMaintainers()
+}
+
+func TestCreateTeamRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateTeamRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateTeamRequest_GetNotificationSetting(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{NotificationSetting: &zeroValue}
+	c.GetNotificationSetting()
+	c = &CreateTeamRequest{}
+	c.GetNotificationSetting()
+	c = nil
+	c.GetNotificationSetting()
+}
+
+func TestCreateTeamRequest_GetParentTeamID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreateTeamRequest{ParentTeamID: &zeroValue}
+	c.GetParentTeamID()
+	c = &CreateTeamRequest{}
+	c.GetParentTeamID()
+	c = nil
+	c.GetParentTeamID()
+}
+
+func TestCreateTeamRequest_GetParentTeamSlug(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{ParentTeamSlug: &zeroValue}
+	c.GetParentTeamSlug()
+	c = &CreateTeamRequest{}
+	c.GetParentTeamSlug()
+	c = nil
+	c.GetParentTeamSlug()
+}
+
+func TestCreateTeamRequest_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{Permission: &zeroValue}
+	c.GetPermission()
+	c = &CreateTeamRequest{}
+	c.GetPermission()
+	c = nil
+	c.GetPermission()
+}
+
+func TestCreateTeamRequest_GetPrivacy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{Privacy: &zeroValue}
+	c.GetPrivacy()
+	c = &CreateTeamRequest{}
+	c.GetPrivacy()
+	c = nil
+	c.GetPrivacy()
+}
+
+func TestCreateTeamRequest_GetRepoNames(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateTeamRequest{RepoNames: zeroValue}
+	c.GetRepoNames()
+	c = &CreateTeamRequest{}
+	c.GetRepoNames()
+	c = nil
+	c.GetRepoNames()
+}
+
 func TestCreateUpdateEnvironment_GetCanAdminsBypass(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -15125,6 +15774,17 @@ func TestCreateUpdateEnvironment_GetWaitTimer(tt *testing.T) {
 	c.GetWaitTimer()
 	c = nil
 	c.GetWaitTimer()
+}
+
+func TestCreateUserImpersonationRequest_GetScopes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []string{}
+	c := &CreateUserImpersonationRequest{Scopes: zeroValue}
+	c.GetScopes()
+	c = &CreateUserImpersonationRequest{}
+	c.GetScopes()
+	c = nil
+	c.GetScopes()
 }
 
 func TestCreateUserRequest_GetEmail(tt *testing.T) {
@@ -23661,17 +24321,6 @@ func TestImmutableReleaseSettings_GetSelectedRepositoriesURL(tt *testing.T) {
 	i.GetSelectedRepositoriesURL()
 }
 
-func TestImpersonateUserOptions_GetScopes(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	i := &ImpersonateUserOptions{Scopes: zeroValue}
-	i.GetScopes()
-	i = &ImpersonateUserOptions{}
-	i.GetScopes()
-	i = nil
-	i.GetScopes()
-}
-
 func TestImport_GetAuthorsCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -31529,102 +32178,6 @@ func TestNetworkSettingsResource_GetSubnetID(tt *testing.T) {
 	n.GetSubnetID()
 	n = nil
 	n.GetSubnetID()
-}
-
-func TestNewTeam_GetDescription(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{Description: &zeroValue}
-	n.GetDescription()
-	n = &NewTeam{}
-	n.GetDescription()
-	n = nil
-	n.GetDescription()
-}
-
-func TestNewTeam_GetLDAPDN(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{LDAPDN: &zeroValue}
-	n.GetLDAPDN()
-	n = &NewTeam{}
-	n.GetLDAPDN()
-	n = nil
-	n.GetLDAPDN()
-}
-
-func TestNewTeam_GetMaintainers(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	n := &NewTeam{Maintainers: zeroValue}
-	n.GetMaintainers()
-	n = &NewTeam{}
-	n.GetMaintainers()
-	n = nil
-	n.GetMaintainers()
-}
-
-func TestNewTeam_GetName(tt *testing.T) {
-	tt.Parallel()
-	n := &NewTeam{}
-	n.GetName()
-	n = nil
-	n.GetName()
-}
-
-func TestNewTeam_GetNotificationSetting(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{NotificationSetting: &zeroValue}
-	n.GetNotificationSetting()
-	n = &NewTeam{}
-	n.GetNotificationSetting()
-	n = nil
-	n.GetNotificationSetting()
-}
-
-func TestNewTeam_GetParentTeamID(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int64
-	n := &NewTeam{ParentTeamID: &zeroValue}
-	n.GetParentTeamID()
-	n = &NewTeam{}
-	n.GetParentTeamID()
-	n = nil
-	n.GetParentTeamID()
-}
-
-func TestNewTeam_GetPermission(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{Permission: &zeroValue}
-	n.GetPermission()
-	n = &NewTeam{}
-	n.GetPermission()
-	n = nil
-	n.GetPermission()
-}
-
-func TestNewTeam_GetPrivacy(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	n := &NewTeam{Privacy: &zeroValue}
-	n.GetPrivacy()
-	n = &NewTeam{}
-	n.GetPrivacy()
-	n = nil
-	n.GetPrivacy()
-}
-
-func TestNewTeam_GetRepoNames(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []string{}
-	n := &NewTeam{RepoNames: zeroValue}
-	n.GetRepoNames()
-	n = &NewTeam{}
-	n.GetRepoNames()
-	n = nil
-	n.GetRepoNames()
 }
 
 func TestNodeDetails_GetClusterRoles(tt *testing.T) {
@@ -46234,6 +46787,14 @@ func TestRepositoryVisibilityRuleParameters_GetPrivate(tt *testing.T) {
 	r.GetPrivate()
 }
 
+func TestRepositoryVisibilityRuleParameters_GetPublic(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryVisibilityRuleParameters{}
+	r.GetPublic()
+	r = nil
+	r.GetPublic()
+}
+
 func TestRepositoryVulnerabilityAlert_GetAffectedPackageName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -55100,6 +55661,91 @@ func TestUpdateTeamLDAPMappingRequest_GetLDAPDN(tt *testing.T) {
 	u.GetLDAPDN()
 	u = nil
 	u.GetLDAPDN()
+}
+
+func TestUpdateTeamRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateTeamRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateTeamRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateTeamRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateTeamRequest_GetNotificationSetting(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{NotificationSetting: &zeroValue}
+	u.GetNotificationSetting()
+	u = &UpdateTeamRequest{}
+	u.GetNotificationSetting()
+	u = nil
+	u.GetNotificationSetting()
+}
+
+func TestUpdateTeamRequest_GetParentTeamID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	u := &UpdateTeamRequest{ParentTeamID: &zeroValue}
+	u.GetParentTeamID()
+	u = &UpdateTeamRequest{}
+	u.GetParentTeamID()
+	u = nil
+	u.GetParentTeamID()
+}
+
+func TestUpdateTeamRequest_GetParentTeamSlug(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{ParentTeamSlug: &zeroValue}
+	u.GetParentTeamSlug()
+	u = &UpdateTeamRequest{}
+	u.GetParentTeamSlug()
+	u = nil
+	u.GetParentTeamSlug()
+}
+
+func TestUpdateTeamRequest_GetPermission(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{Permission: &zeroValue}
+	u.GetPermission()
+	u = &UpdateTeamRequest{}
+	u.GetPermission()
+	u = nil
+	u.GetPermission()
+}
+
+func TestUpdateTeamRequest_GetPrivacy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateTeamRequest{Privacy: &zeroValue}
+	u.GetPrivacy()
+	u = &UpdateTeamRequest{}
+	u.GetPrivacy()
+	u = nil
+	u.GetPrivacy()
+}
+
+func TestUpdateTeamRequest_GetRemoveParentTeam(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateTeamRequest{}
+	u.GetRemoveParentTeam()
+	u = nil
+	u.GetRemoveParentTeam()
 }
 
 func TestUpdateUserLDAPMappingRequest_GetLDAPDN(tt *testing.T) {

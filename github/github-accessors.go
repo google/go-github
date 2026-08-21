@@ -1006,6 +1006,414 @@ func (a *AdvisoryVulnerability) GetVulnerableVersionRange() string {
 	return *a.VulnerableVersionRange
 }
 
+// GetArchivedAt returns the ArchivedAt field if it's non-nil, zero value otherwise.
+func (a *AgentTask) GetArchivedAt() Timestamp {
+	if a == nil || a.ArchivedAt == nil {
+		return Timestamp{}
+	}
+	return *a.ArchivedAt
+}
+
+// GetArtifacts returns the Artifacts slice if it's non-nil, nil otherwise.
+func (a *AgentTask) GetArtifacts() []*AgentTaskArtifact {
+	if a == nil || a.Artifacts == nil {
+		return nil
+	}
+	return a.Artifacts
+}
+
+// GetCreatedAt returns the CreatedAt field.
+func (a *AgentTask) GetCreatedAt() Timestamp {
+	if a == nil {
+		return Timestamp{}
+	}
+	return a.CreatedAt
+}
+
+// GetCreator returns the Creator field.
+func (a *AgentTask) GetCreator() *AgentTaskCreator {
+	if a == nil {
+		return nil
+	}
+	return a.Creator
+}
+
+// GetCreatorType returns the CreatorType field if it's non-nil, zero value otherwise.
+func (a *AgentTask) GetCreatorType() string {
+	if a == nil || a.CreatorType == nil {
+		return ""
+	}
+	return *a.CreatorType
+}
+
+// GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
+func (a *AgentTask) GetHTMLURL() string {
+	if a == nil || a.HTMLURL == nil {
+		return ""
+	}
+	return *a.HTMLURL
+}
+
+// GetID returns the ID field.
+func (a *AgentTask) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *AgentTask) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
+// GetOwner returns the Owner field.
+func (a *AgentTask) GetOwner() *AgentTaskOwner {
+	if a == nil {
+		return nil
+	}
+	return a.Owner
+}
+
+// GetRepository returns the Repository field.
+func (a *AgentTask) GetRepository() *AgentTaskRepository {
+	if a == nil {
+		return nil
+	}
+	return a.Repository
+}
+
+// GetSessionCount returns the SessionCount field if it's non-nil, zero value otherwise.
+func (a *AgentTask) GetSessionCount() int {
+	if a == nil || a.SessionCount == nil {
+		return 0
+	}
+	return *a.SessionCount
+}
+
+// GetSessions returns the Sessions slice if it's non-nil, nil otherwise.
+func (a *AgentTask) GetSessions() []*AgentTaskSession {
+	if a == nil || a.Sessions == nil {
+		return nil
+	}
+	return a.Sessions
+}
+
+// GetState returns the State field.
+func (a *AgentTask) GetState() string {
+	if a == nil {
+		return ""
+	}
+	return a.State
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (a *AgentTask) GetUpdatedAt() Timestamp {
+	if a == nil || a.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (a *AgentTask) GetURL() string {
+	if a == nil || a.URL == nil {
+		return ""
+	}
+	return *a.URL
+}
+
+// GetUserCollaborators returns the UserCollaborators slice if it's non-nil, nil otherwise.
+func (a *AgentTask) GetUserCollaborators() []*User {
+	if a == nil || a.UserCollaborators == nil {
+		return nil
+	}
+	return a.UserCollaborators
+}
+
+// GetData returns the Data field.
+func (a *AgentTaskArtifact) GetData() *AgentTaskArtifactData {
+	if a == nil {
+		return nil
+	}
+	return a.Data
+}
+
+// GetProvider returns the Provider field.
+func (a *AgentTaskArtifact) GetProvider() string {
+	if a == nil {
+		return ""
+	}
+	return a.Provider
+}
+
+// GetType returns the Type field.
+func (a *AgentTaskArtifact) GetType() string {
+	if a == nil {
+		return ""
+	}
+	return a.Type
+}
+
+// GetBaseRef returns the BaseRef field if it's non-nil, zero value otherwise.
+func (a *AgentTaskArtifactData) GetBaseRef() string {
+	if a == nil || a.BaseRef == nil {
+		return ""
+	}
+	return *a.BaseRef
+}
+
+// GetGlobalID returns the GlobalID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskArtifactData) GetGlobalID() string {
+	if a == nil || a.GlobalID == nil {
+		return ""
+	}
+	return *a.GlobalID
+}
+
+// GetHeadRef returns the HeadRef field if it's non-nil, zero value otherwise.
+func (a *AgentTaskArtifactData) GetHeadRef() string {
+	if a == nil || a.HeadRef == nil {
+		return ""
+	}
+	return *a.HeadRef
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskArtifactData) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskCreator) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetTasks returns the Tasks slice if it's non-nil, nil otherwise.
+func (a *AgentTaskList) GetTasks() []*AgentTask {
+	if a == nil || a.Tasks == nil {
+		return nil
+	}
+	return a.Tasks
+}
+
+// GetTotalActiveCount returns the TotalActiveCount field if it's non-nil, zero value otherwise.
+func (a *AgentTaskList) GetTotalActiveCount() int {
+	if a == nil || a.TotalActiveCount == nil {
+		return 0
+	}
+	return *a.TotalActiveCount
+}
+
+// GetTotalArchivedCount returns the TotalArchivedCount field if it's non-nil, zero value otherwise.
+func (a *AgentTaskList) GetTotalArchivedCount() int {
+	if a == nil || a.TotalArchivedCount == nil {
+		return 0
+	}
+	return *a.TotalArchivedCount
+}
+
+// GetCreatorID returns the CreatorID slice if it's non-nil, nil otherwise.
+func (a *AgentTaskListByRepoOptions) GetCreatorID() []int64 {
+	if a == nil || a.CreatorID == nil {
+		return nil
+	}
+	return a.CreatorID
+}
+
+// GetDirection returns the Direction field.
+func (a *AgentTaskListOptions) GetDirection() string {
+	if a == nil {
+		return ""
+	}
+	return a.Direction
+}
+
+// GetIsArchived returns the IsArchived field.
+func (a *AgentTaskListOptions) GetIsArchived() bool {
+	if a == nil {
+		return false
+	}
+	return a.IsArchived
+}
+
+// GetSince returns the Since field if it's non-nil, zero value otherwise.
+func (a *AgentTaskListOptions) GetSince() time.Time {
+	if a == nil || a.Since == nil {
+		return time.Time{}
+	}
+	return *a.Since
+}
+
+// GetSort returns the Sort field.
+func (a *AgentTaskListOptions) GetSort() string {
+	if a == nil {
+		return ""
+	}
+	return a.Sort
+}
+
+// GetState returns the State field.
+func (a *AgentTaskListOptions) GetState() string {
+	if a == nil {
+		return ""
+	}
+	return a.State
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskOwner) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskRepository) GetID() int64 {
+	if a == nil || a.ID == nil {
+		return 0
+	}
+	return *a.ID
+}
+
+// GetBaseRef returns the BaseRef field if it's non-nil, zero value otherwise.
+func (a *AgentTaskSession) GetBaseRef() string {
+	if a == nil || a.BaseRef == nil {
+		return ""
+	}
+	return *a.BaseRef
+}
+
+// GetCompletedAt returns the CompletedAt field if it's non-nil, zero value otherwise.
+func (a *AgentTaskSession) GetCompletedAt() Timestamp {
+	if a == nil || a.CompletedAt == nil {
+		return Timestamp{}
+	}
+	return *a.CompletedAt
+}
+
+// GetCreatedAt returns the CreatedAt field.
+func (a *AgentTaskSession) GetCreatedAt() Timestamp {
+	if a == nil {
+		return Timestamp{}
+	}
+	return a.CreatedAt
+}
+
+// GetError returns the Error field.
+func (a *AgentTaskSession) GetError() *AgentTaskSessionError {
+	if a == nil {
+		return nil
+	}
+	return a.Error
+}
+
+// GetHeadRef returns the HeadRef field if it's non-nil, zero value otherwise.
+func (a *AgentTaskSession) GetHeadRef() string {
+	if a == nil || a.HeadRef == nil {
+		return ""
+	}
+	return *a.HeadRef
+}
+
+// GetID returns the ID field.
+func (a *AgentTaskSession) GetID() string {
+	if a == nil {
+		return ""
+	}
+	return a.ID
+}
+
+// GetModel returns the Model field if it's non-nil, zero value otherwise.
+func (a *AgentTaskSession) GetModel() string {
+	if a == nil || a.Model == nil {
+		return ""
+	}
+	return *a.Model
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (a *AgentTaskSession) GetName() string {
+	if a == nil || a.Name == nil {
+		return ""
+	}
+	return *a.Name
+}
+
+// GetOwner returns the Owner field.
+func (a *AgentTaskSession) GetOwner() *AgentTaskOwner {
+	if a == nil {
+		return nil
+	}
+	return a.Owner
+}
+
+// GetPrompt returns the Prompt field if it's non-nil, zero value otherwise.
+func (a *AgentTaskSession) GetPrompt() string {
+	if a == nil || a.Prompt == nil {
+		return ""
+	}
+	return *a.Prompt
+}
+
+// GetRepository returns the Repository field.
+func (a *AgentTaskSession) GetRepository() *AgentTaskRepository {
+	if a == nil {
+		return nil
+	}
+	return a.Repository
+}
+
+// GetState returns the State field.
+func (a *AgentTaskSession) GetState() string {
+	if a == nil {
+		return ""
+	}
+	return a.State
+}
+
+// GetTaskID returns the TaskID field if it's non-nil, zero value otherwise.
+func (a *AgentTaskSession) GetTaskID() string {
+	if a == nil || a.TaskID == nil {
+		return ""
+	}
+	return *a.TaskID
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (a *AgentTaskSession) GetUpdatedAt() Timestamp {
+	if a == nil || a.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *a.UpdatedAt
+}
+
+// GetUser returns the User field.
+func (a *AgentTaskSession) GetUser() *User {
+	if a == nil {
+		return nil
+	}
+	return a.User
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (a *AgentTaskSessionError) GetMessage() string {
+	if a == nil || a.Message == nil {
+		return ""
+	}
+	return *a.Message
+}
+
 // GetClosedAt returns the ClosedAt field if it's non-nil, zero value otherwise.
 func (a *Alert) GetClosedAt() Timestamp {
 	if a == nil || a.ClosedAt == nil {
@@ -10526,6 +10934,46 @@ func (c *CostCenters) GetCostCenters() []*CostCenter {
 	return c.CostCenters
 }
 
+// GetBaseRef returns the BaseRef field if it's non-nil, zero value otherwise.
+func (c *CreateAgentTaskRequest) GetBaseRef() string {
+	if c == nil || c.BaseRef == nil {
+		return ""
+	}
+	return *c.BaseRef
+}
+
+// GetCreatePullRequest returns the CreatePullRequest field if it's non-nil, zero value otherwise.
+func (c *CreateAgentTaskRequest) GetCreatePullRequest() bool {
+	if c == nil || c.CreatePullRequest == nil {
+		return false
+	}
+	return *c.CreatePullRequest
+}
+
+// GetHeadRef returns the HeadRef field if it's non-nil, zero value otherwise.
+func (c *CreateAgentTaskRequest) GetHeadRef() string {
+	if c == nil || c.HeadRef == nil {
+		return ""
+	}
+	return *c.HeadRef
+}
+
+// GetModel returns the Model field if it's non-nil, zero value otherwise.
+func (c *CreateAgentTaskRequest) GetModel() string {
+	if c == nil || c.Model == nil {
+		return ""
+	}
+	return *c.Model
+}
+
+// GetPrompt returns the Prompt field.
+func (c *CreateAgentTaskRequest) GetPrompt() string {
+	if c == nil {
+		return ""
+	}
+	return c.Prompt
+}
+
 // GetCluster returns the Cluster field if it's non-nil, zero value otherwise.
 func (c *CreateArtifactDeploymentRequest) GetCluster() string {
 	if c == nil || c.Cluster == nil {
@@ -11894,6 +12342,78 @@ func (c *CreateTag) GetType() string {
 	return c.Type
 }
 
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetMaintainers returns the Maintainers slice if it's non-nil, nil otherwise.
+func (c *CreateTeamRequest) GetMaintainers() []string {
+	if c == nil || c.Maintainers == nil {
+		return nil
+	}
+	return c.Maintainers
+}
+
+// GetName returns the Name field.
+func (c *CreateTeamRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetNotificationSetting returns the NotificationSetting field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetNotificationSetting() string {
+	if c == nil || c.NotificationSetting == nil {
+		return ""
+	}
+	return *c.NotificationSetting
+}
+
+// GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetParentTeamID() int64 {
+	if c == nil || c.ParentTeamID == nil {
+		return 0
+	}
+	return *c.ParentTeamID
+}
+
+// GetParentTeamSlug returns the ParentTeamSlug field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetParentTeamSlug() string {
+	if c == nil || c.ParentTeamSlug == nil {
+		return ""
+	}
+	return *c.ParentTeamSlug
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetPermission() string {
+	if c == nil || c.Permission == nil {
+		return ""
+	}
+	return *c.Permission
+}
+
+// GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetPrivacy() string {
+	if c == nil || c.Privacy == nil {
+		return ""
+	}
+	return *c.Privacy
+}
+
+// GetRepoNames returns the RepoNames slice if it's non-nil, nil otherwise.
+func (c *CreateTeamRequest) GetRepoNames() []string {
+	if c == nil || c.RepoNames == nil {
+		return nil
+	}
+	return c.RepoNames
+}
+
 // GetCanAdminsBypass returns the CanAdminsBypass field if it's non-nil, zero value otherwise.
 func (c *CreateUpdateEnvironment) GetCanAdminsBypass() bool {
 	if c == nil || c.CanAdminsBypass == nil {
@@ -11932,6 +12452,14 @@ func (c *CreateUpdateEnvironment) GetWaitTimer() int {
 		return 0
 	}
 	return *c.WaitTimer
+}
+
+// GetScopes returns the Scopes slice if it's non-nil, nil otherwise.
+func (c *CreateUserImpersonationRequest) GetScopes() []string {
+	if c == nil || c.Scopes == nil {
+		return nil
+	}
+	return c.Scopes
 }
 
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
@@ -18830,14 +19358,6 @@ func (i *ImmutableReleaseSettings) GetSelectedRepositoriesURL() string {
 	return *i.SelectedRepositoriesURL
 }
 
-// GetScopes returns the Scopes slice if it's non-nil, nil otherwise.
-func (i *ImpersonateUserOptions) GetScopes() []string {
-	if i == nil || i.Scopes == nil {
-		return nil
-	}
-	return i.Scopes
-}
-
 // GetAuthorsCount returns the AuthorsCount field if it's non-nil, zero value otherwise.
 func (i *Import) GetAuthorsCount() int {
 	if i == nil || i.AuthorsCount == nil {
@@ -25156,78 +25676,6 @@ func (n *NetworkSettingsResource) GetSubnetID() string {
 		return ""
 	}
 	return *n.SubnetID
-}
-
-// GetDescription returns the Description field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetDescription() string {
-	if n == nil || n.Description == nil {
-		return ""
-	}
-	return *n.Description
-}
-
-// GetLDAPDN returns the LDAPDN field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetLDAPDN() string {
-	if n == nil || n.LDAPDN == nil {
-		return ""
-	}
-	return *n.LDAPDN
-}
-
-// GetMaintainers returns the Maintainers slice if it's non-nil, nil otherwise.
-func (n *NewTeam) GetMaintainers() []string {
-	if n == nil || n.Maintainers == nil {
-		return nil
-	}
-	return n.Maintainers
-}
-
-// GetName returns the Name field.
-func (n *NewTeam) GetName() string {
-	if n == nil {
-		return ""
-	}
-	return n.Name
-}
-
-// GetNotificationSetting returns the NotificationSetting field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetNotificationSetting() string {
-	if n == nil || n.NotificationSetting == nil {
-		return ""
-	}
-	return *n.NotificationSetting
-}
-
-// GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetParentTeamID() int64 {
-	if n == nil || n.ParentTeamID == nil {
-		return 0
-	}
-	return *n.ParentTeamID
-}
-
-// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetPermission() string {
-	if n == nil || n.Permission == nil {
-		return ""
-	}
-	return *n.Permission
-}
-
-// GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
-func (n *NewTeam) GetPrivacy() string {
-	if n == nil || n.Privacy == nil {
-		return ""
-	}
-	return *n.Privacy
-}
-
-// GetRepoNames returns the RepoNames slice if it's non-nil, nil otherwise.
-func (n *NewTeam) GetRepoNames() []string {
-	if n == nil || n.RepoNames == nil {
-		return nil
-	}
-	return n.RepoNames
 }
 
 // GetClusterRoles returns the ClusterRoles slice if it's non-nil, nil otherwise.
@@ -36942,6 +37390,14 @@ func (r *RepositoryVisibilityRuleParameters) GetPrivate() bool {
 	return r.Private
 }
 
+// GetPublic returns the Public field.
+func (r *RepositoryVisibilityRuleParameters) GetPublic() bool {
+	if r == nil {
+		return false
+	}
+	return r.Public
+}
+
 // GetAffectedPackageName returns the AffectedPackageName field if it's non-nil, zero value otherwise.
 func (r *RepositoryVulnerabilityAlert) GetAffectedPackageName() string {
 	if r == nil || r.AffectedPackageName == nil {
@@ -43972,6 +44428,70 @@ func (u *UpdateTeamLDAPMappingRequest) GetLDAPDN() string {
 		return ""
 	}
 	return u.LDAPDN
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetNotificationSetting returns the NotificationSetting field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetNotificationSetting() string {
+	if u == nil || u.NotificationSetting == nil {
+		return ""
+	}
+	return *u.NotificationSetting
+}
+
+// GetParentTeamID returns the ParentTeamID field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetParentTeamID() int64 {
+	if u == nil || u.ParentTeamID == nil {
+		return 0
+	}
+	return *u.ParentTeamID
+}
+
+// GetParentTeamSlug returns the ParentTeamSlug field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetParentTeamSlug() string {
+	if u == nil || u.ParentTeamSlug == nil {
+		return ""
+	}
+	return *u.ParentTeamSlug
+}
+
+// GetPermission returns the Permission field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetPermission() string {
+	if u == nil || u.Permission == nil {
+		return ""
+	}
+	return *u.Permission
+}
+
+// GetPrivacy returns the Privacy field if it's non-nil, zero value otherwise.
+func (u *UpdateTeamRequest) GetPrivacy() string {
+	if u == nil || u.Privacy == nil {
+		return ""
+	}
+	return *u.Privacy
+}
+
+// GetRemoveParentTeam returns the RemoveParentTeam field.
+func (u *UpdateTeamRequest) GetRemoveParentTeam() bool {
+	if u == nil {
+		return false
+	}
+	return u.RemoveParentTeam
 }
 
 // GetLDAPDN returns the LDAPDN field.

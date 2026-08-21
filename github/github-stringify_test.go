@@ -508,6 +508,25 @@ func TestContributorStats_String(t *testing.T) {
 	}
 }
 
+func TestCreateTeamRequest_String(t *testing.T) {
+	t.Parallel()
+	v := CreateTeamRequest{
+		Name:                "",
+		Description:         Ptr(""),
+		Maintainers:         []string{""},
+		RepoNames:           []string{""},
+		Privacy:             Ptr(""),
+		NotificationSetting: Ptr(""),
+		Permission:          Ptr(""),
+		ParentTeamID:        Ptr(int64(0)),
+		ParentTeamSlug:      Ptr(""),
+	}
+	want := `github.CreateTeamRequest{Name:"", Description:"", Maintainers:[""], RepoNames:[""], Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:""}`
+	if got := v.String(); got != want {
+		t.Errorf("CreateTeamRequest.String = %v, want %v", got, want)
+	}
+}
+
 func TestDependabotSecurityUpdates_String(t *testing.T) {
 	t.Parallel()
 	v := DependabotSecurityUpdates{
@@ -1173,25 +1192,6 @@ func TestMilestoneStats_String(t *testing.T) {
 	want := `github.MilestoneStats{TotalMilestones:0, OpenMilestones:0, ClosedMilestones:0}`
 	if got := v.String(); got != want {
 		t.Errorf("MilestoneStats.String = %v, want %v", got, want)
-	}
-}
-
-func TestNewTeam_String(t *testing.T) {
-	t.Parallel()
-	v := NewTeam{
-		Name:                "",
-		Description:         Ptr(""),
-		Maintainers:         []string{""},
-		RepoNames:           []string{""},
-		ParentTeamID:        Ptr(int64(0)),
-		NotificationSetting: Ptr(""),
-		Permission:          Ptr(""),
-		Privacy:             Ptr(""),
-		LDAPDN:              Ptr(""),
-	}
-	want := `github.NewTeam{Name:"", Description:"", Maintainers:[""], RepoNames:[""], ParentTeamID:0, NotificationSetting:"", Permission:"", Privacy:"", LDAPDN:""}`
-	if got := v.String(); got != want {
-		t.Errorf("NewTeam.String = %v, want %v", got, want)
 	}
 }
 
@@ -2396,6 +2396,24 @@ func TestTreeEntry_String(t *testing.T) {
 	want := `github.TreeEntry{SHA:"", Path:"", Mode:"", Type:"", Size:0, Content:"", URL:""}`
 	if got := v.String(); got != want {
 		t.Errorf("TreeEntry.String = %v, want %v", got, want)
+	}
+}
+
+func TestUpdateTeamRequest_String(t *testing.T) {
+	t.Parallel()
+	v := UpdateTeamRequest{
+		Name:                Ptr(""),
+		Description:         Ptr(""),
+		Privacy:             Ptr(""),
+		NotificationSetting: Ptr(""),
+		Permission:          Ptr(""),
+		ParentTeamID:        Ptr(int64(0)),
+		ParentTeamSlug:      Ptr(""),
+		RemoveParentTeam:    false,
+	}
+	want := `github.UpdateTeamRequest{Name:"", Description:"", Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:"", RemoveParentTeam:false}`
+	if got := v.String(); got != want {
+		t.Errorf("UpdateTeamRequest.String = %v, want %v", got, want)
 	}
 }
 

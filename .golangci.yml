@@ -223,7 +223,6 @@ linters:
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
             - Hook
-            - ImpersonateUserOptions
             - Import
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
@@ -273,7 +272,6 @@ linters:
             - CreateCodespaceOptions
             - CreateOrUpdateIssueTypesOptions
             - CreateOrgInvitationOptions
-            - ImpersonateUserOptions
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
             - LockIssueOptions

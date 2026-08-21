@@ -221,7 +221,7 @@ func testPlainBody(t *testing.T, r *http.Request, want string) {
 	}
 }
 
-func testJSONBody[T any](t *testing.T, r *http.Request, want T) {
+func testJSONBody[T any](t *testing.T, r *http.Request, want T, opts ...cmp.Option) {
 	t.Helper()
 	b, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -234,7 +234,7 @@ func testJSONBody[T any](t *testing.T, r *http.Request, want T) {
 		t.Errorf("Error unmarshaling request body JSON: %v", err)
 	}
 
-	if diff := cmp.Diff(want, got); diff != "" {
+	if diff := cmp.Diff(want, got, opts...); diff != "" {
 		t.Errorf("request JSON body mismatch (-want +got):\n%v", diff)
 	}
 }

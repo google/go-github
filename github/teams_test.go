@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 func TestTeamsService_ListTeams(t *testing.T) {
@@ -186,7 +187,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", Privacy: Ptr("closed"), RepoNames: []string{"r"}}
+	input := CreateTeamRequest{Name: "n", Privacy: Ptr("closed"), RepoNames: []string{"r"}}
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -225,15 +226,15 @@ func TestTeamsService_CreateTeam_invalidOrg(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Teams.CreateTeam(ctx, "%", NewTeam{})
+	_, _, err := client.Teams.CreateTeam(ctx, "%", CreateTeamRequest{})
 	testURLParseError(t, err)
 }
 
-func TestTeamsService_EditTeamByID(t *testing.T) {
+func TestTeamsService_UpdateTeamByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", Privacy: Ptr("closed")}
+	input := UpdateTeamRequest{Name: Ptr("n"), Privacy: Ptr("closed")}
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -242,24 +243,24 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	team, _, err := client.Teams.EditTeamByID(ctx, 1, 1, input, false)
+	team, _, err := client.Teams.UpdateTeamByID(ctx, 1, 1, input)
 	if err != nil {
-		t.Errorf("Teams.EditTeamByID returned error: %v", err)
+		t.Errorf("Teams.UpdateTeamByID returned error: %v", err)
 	}
 
 	want := &Team{ID: Ptr(int64(1))}
 	if !cmp.Equal(team, want) {
-		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
+		t.Errorf("Teams.UpdateTeamByID returned %+v, want %+v", team, want)
 	}
 
-	const methodName = "EditTeamByID"
+	const methodName = "UpdateTeamByID"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.EditTeamByID(ctx, -1, -1, input, false)
+		_, _, err = client.Teams.UpdateTeamByID(ctx, -1, -1, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Teams.EditTeamByID(ctx, 1, 1, input, false)
+		got, resp, err := client.Teams.UpdateTeamByID(ctx, 1, 1, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -267,36 +268,36 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 	})
 }
 
-func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
+func TestTeamsService_UpdateTeamByID_RemoveParent(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", NotificationSetting: Ptr("notifications_enabled"), Privacy: Ptr("closed")}
+	input := UpdateTeamRequest{Name: Ptr("n"), NotificationSetting: Ptr("notifications_enabled"), Privacy: Ptr("closed"), RemoveParentTeam: true}
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, input, cmpopts.IgnoreFields(UpdateTeamRequest{}, "RemoveParentTeam"))
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	ctx := t.Context()
-	team, _, err := client.Teams.EditTeamByID(ctx, 1, 1, input, true)
+	team, _, err := client.Teams.UpdateTeamByID(ctx, 1, 1, input)
 	if err != nil {
-		t.Errorf("Teams.EditTeamByID returned error: %v", err)
+		t.Errorf("Teams.UpdateTeamByID returned error: %v", err)
 	}
 
 	want := &Team{ID: Ptr(int64(1))}
 	if !cmp.Equal(team, want) {
-		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
+		t.Errorf("Teams.UpdateTeamByID returned %+v, want %+v", team, want)
 	}
 }
 
-func TestTeamsService_EditTeamBySlug(t *testing.T) {
+func TestTeamsService_UpdateTeamBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", Privacy: Ptr("closed")}
+	input := UpdateTeamRequest{Name: Ptr("n"), Privacy: Ptr("closed")}
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -305,24 +306,24 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	team, _, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, false)
+	team, _, err := client.Teams.UpdateTeamBySlug(ctx, "o", "s", input)
 	if err != nil {
-		t.Errorf("Teams.EditTeamBySlug returned error: %v", err)
+		t.Errorf("Teams.UpdateTeamBySlug returned error: %v", err)
 	}
 
 	want := &Team{ID: Ptr(int64(1))}
 	if !cmp.Equal(team, want) {
-		t.Errorf("Teams.EditTeamBySlug returned %+v, want %+v", team, want)
+		t.Errorf("Teams.UpdateTeamBySlug returned %+v, want %+v", team, want)
 	}
 
-	const methodName = "EditTeamBySlug"
+	const methodName = "UpdateTeamBySlug"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.EditTeamBySlug(ctx, "\n", "\n", input, false)
+		_, _, err = client.Teams.UpdateTeamBySlug(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, false)
+		got, resp, err := client.Teams.UpdateTeamBySlug(ctx, "o", "s", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -330,28 +331,28 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 	})
 }
 
-func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
+func TestTeamsService_UpdateTeamBySlug_RemoveParent(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", NotificationSetting: Ptr("notifications_disabled"), Privacy: Ptr("closed")}
+	input := UpdateTeamRequest{Name: Ptr("n"), NotificationSetting: Ptr("notifications_disabled"), Privacy: Ptr("closed"), RemoveParentTeam: true}
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, input, cmpopts.IgnoreFields(UpdateTeamRequest{}, "RemoveParentTeam"))
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	ctx := t.Context()
-	team, _, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, true)
+	team, _, err := client.Teams.UpdateTeamBySlug(ctx, "o", "s", input)
 	if err != nil {
-		t.Errorf("Teams.EditTeamBySlug returned error: %v", err)
+		t.Errorf("Teams.UpdateTeamBySlug returned error: %v", err)
 	}
 
 	want := &Team{ID: Ptr(int64(1))}
 	if !cmp.Equal(team, want) {
-		t.Errorf("Teams.EditTeamBySlug returned %+v, want %+v", team, want)
+		t.Errorf("Teams.UpdateTeamBySlug returned %+v, want %+v", team, want)
 	}
 }
 

@@ -3,8 +3,8 @@ module tools
 go 1.25.0
 
 require (
-	github.com/alecthomas/kong v1.16.0
-	github.com/getkin/kin-openapi v0.145.0
+	github.com/alecthomas/kong v1.16.1
+	github.com/getkin/kin-openapi v0.146.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v90 v90.0.0
 	go.yaml.in/yaml/v3 v3.0.5
