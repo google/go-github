@@ -22350,6 +22350,14 @@ func (k *Key) GetCreatedAt() Timestamp {
 	return *k.CreatedAt
 }
 
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (k *Key) GetEnabled() bool {
+	if k == nil || k.Enabled == nil {
+		return false
+	}
+	return *k.Enabled
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (k *Key) GetID() int64 {
 	if k == nil || k.ID == nil {

@@ -28099,6 +28099,17 @@ func TestKey_GetCreatedAt(tt *testing.T) {
 	k.GetCreatedAt()
 }
 
+func TestKey_GetEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	k := &Key{Enabled: &zeroValue}
+	k.GetEnabled()
+	k = &Key{}
+	k.GetEnabled()
+	k = nil
+	k.GetEnabled()
+}
+
 func TestKey_GetID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64

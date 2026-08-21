@@ -17,6 +17,7 @@ type Key struct {
 	URL       *string    `json:"url,omitempty"`
 	Title     *string    `json:"title,omitempty"`
 	ReadOnly  *bool      `json:"read_only,omitempty"`
+	Enabled   *bool      `json:"enabled,omitempty"`
 	Verified  *bool      `json:"verified,omitempty"`
 	CreatedAt *Timestamp `json:"created_at,omitempty"`
 	AddedBy   *string    `json:"added_by,omitempty"`
