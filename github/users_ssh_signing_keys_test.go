@@ -119,7 +119,7 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Key{Key: Ptr("k"), Title: Ptr("t")}
+	input := CreateSSHSigningKeyRequest{Key: "k", Title: Ptr("t")}
 
 	mux.HandleFunc("/user/ssh_signing_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -138,9 +138,9 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 		t.Errorf("Users.CreateSSHSigningKey returned %+v, want %+v", key, want)
 	}
 
-	const methodName = "CreateKey"
+	const methodName = "CreateSSHSigningKey"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Users.CreateKey(ctx, input)
+		got, resp, err := client.Users.CreateSSHSigningKey(ctx, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
