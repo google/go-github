@@ -14454,6 +14454,36 @@ func TestCreateCustomRepoRoleRequest_GetPermissions(tt *testing.T) {
 	c.GetPermissions()
 }
 
+func TestCreateDeployKeyRequest_GetKey(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDeployKeyRequest{}
+	c.GetKey()
+	c = nil
+	c.GetKey()
+}
+
+func TestCreateDeployKeyRequest_GetReadOnly(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateDeployKeyRequest{ReadOnly: &zeroValue}
+	c.GetReadOnly()
+	c = &CreateDeployKeyRequest{}
+	c.GetReadOnly()
+	c = nil
+	c.GetReadOnly()
+}
+
+func TestCreateDeployKeyRequest_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateDeployKeyRequest{Title: &zeroValue}
+	c.GetTitle()
+	c = &CreateDeployKeyRequest{}
+	c.GetTitle()
+	c = nil
+	c.GetTitle()
+}
+
 func TestCreateDeploymentBranchPolicyRequest_GetName(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateDeploymentBranchPolicyRequest{}
@@ -15588,6 +15618,25 @@ func TestCreateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
+func TestCreateSSHSigningKeyRequest_GetKey(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateSSHSigningKeyRequest{}
+	c.GetKey()
+	c = nil
+	c.GetKey()
+}
+
+func TestCreateSSHSigningKeyRequest_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateSSHSigningKeyRequest{Title: &zeroValue}
+	c.GetTitle()
+	c = &CreateSSHSigningKeyRequest{}
+	c.GetTitle()
+	c = nil
+	c.GetTitle()
+}
+
 func TestCreateTag_GetMessage(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateTag{}
@@ -15785,6 +15834,25 @@ func TestCreateUserImpersonationRequest_GetScopes(tt *testing.T) {
 	c.GetScopes()
 	c = nil
 	c.GetScopes()
+}
+
+func TestCreateUserKeyRequest_GetKey(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateUserKeyRequest{}
+	c.GetKey()
+	c = nil
+	c.GetKey()
+}
+
+func TestCreateUserKeyRequest_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateUserKeyRequest{Title: &zeroValue}
+	c.GetTitle()
+	c = &CreateUserKeyRequest{}
+	c.GetTitle()
+	c = nil
+	c.GetTitle()
 }
 
 func TestCreateUserRequest_GetEmail(tt *testing.T) {

@@ -227,7 +227,6 @@ linters:
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
             - IssueImportRequest
-            - Key
             - LockIssueOptions
             - MaintenanceOptions
             - Organization

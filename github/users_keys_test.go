@@ -119,7 +119,7 @@ func TestUsersService_CreateKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Key{Key: Ptr("k"), Title: Ptr("t")}
+	input := CreateUserKeyRequest{Key: "k", Title: Ptr("t")}
 
 	mux.HandleFunc("/user/keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

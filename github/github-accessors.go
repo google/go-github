@@ -11414,6 +11414,30 @@ func (c *CreateCustomRepoRoleRequest) GetPermissions() []string {
 	return c.Permissions
 }
 
+// GetKey returns the Key field.
+func (c *CreateDeployKeyRequest) GetKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.Key
+}
+
+// GetReadOnly returns the ReadOnly field if it's non-nil, zero value otherwise.
+func (c *CreateDeployKeyRequest) GetReadOnly() bool {
+	if c == nil || c.ReadOnly == nil {
+		return false
+	}
+	return *c.ReadOnly
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CreateDeployKeyRequest) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
+}
+
 // GetName returns the Name field.
 func (c *CreateDeploymentBranchPolicyRequest) GetName() string {
 	if c == nil {
@@ -12302,6 +12326,22 @@ func (c *CreateRunnerGroupRequest) GetVisibility() string {
 	return *c.Visibility
 }
 
+// GetKey returns the Key field.
+func (c *CreateSSHSigningKeyRequest) GetKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.Key
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CreateSSHSigningKeyRequest) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
+}
+
 // GetMessage returns the Message field.
 func (c *CreateTag) GetMessage() string {
 	if c == nil {
@@ -12460,6 +12500,22 @@ func (c *CreateUserImpersonationRequest) GetScopes() []string {
 		return nil
 	}
 	return c.Scopes
+}
+
+// GetKey returns the Key field.
+func (c *CreateUserKeyRequest) GetKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.Key
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CreateUserKeyRequest) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
 }
 
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
