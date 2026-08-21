@@ -199,6 +199,29 @@ func TestAnalyzeFormat(t *testing.T) {
 	}
 }
 
+func TestRelPathsUseForwardSlashes(t *testing.T) {
+	t.Parallel()
+	// On Windows, filepath.Rel produces backslash separators. The tool must
+	// normalize them so the output always matches the unix-standard format.
+	// This invariant holds on every platform; Windows CI is what enforces it
+	// in practice.
+	structs, err := analyze("testdata/github", false)
+	if err != nil {
+		t.Fatalf("analyze: %v", err)
+	}
+	if len(structs) == 0 {
+		t.Fatal("analyze returned no structs")
+	}
+	for _, s := range structs {
+		if strings.ContainsRune(s.relPath, '\\') {
+			t.Errorf("relPath %q contains a backslash; expected forward slashes only", s.relPath)
+		}
+		if !strings.HasPrefix(s.relPath, "github/") {
+			t.Errorf("relPath %q does not start with the package prefix \"github/\"", s.relPath)
+		}
+	}
+}
+
 // names returns the sorted struct names from a slice of structInfo.
 func names(structs []*structInfo) []string {
 	out := make([]string, 0, len(structs))

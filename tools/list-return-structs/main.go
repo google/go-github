@@ -133,6 +133,10 @@ func collectStructs(fset *token.FileSet, files []*ast.File, baseDir string) map[
 		if err != nil {
 			relPath = filepath.Base(absPath)
 		}
+		// Always report paths with forward slashes so the output matches the
+		// unix-standard format on every platform (filepath.Rel uses the OS
+		// separator, which is '\' on Windows).
+		relPath = filepath.ToSlash(relPath)
 
 		for _, decl := range file.Decls {
 			genDecl, ok := decl.(*ast.GenDecl)
