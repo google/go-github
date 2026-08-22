@@ -21,6 +21,239 @@ import (
 // GitHub API docs: https://docs.github.com/rest/copilot?apiVersion=2022-11-28
 type CopilotService service
 
+// CopilotSpace represents a Copilot Space.
+type CopilotSpace struct {
+	ID                  int64   `json:"id"`
+	Number              int     `json:"number"`
+	Name                string  `json:"name"`
+	Description         *string `json:"description,omitempty"`
+	GeneralInstructions *string `json:"general_instructions,omitempty"`
+	// Owner can either be a User or an Organization.
+	Owner               any                     `json:"owner"`
+	Creator             User                    `json:"creator"`
+	CreatedAt           Timestamp               `json:"created_at"`
+	UpdatedAt           Timestamp               `json:"updated_at"`
+	HTMLURL             string                  `json:"html_url"`
+	APIURL              string                  `json:"api_url"`
+	BaseRole            string                  `json:"base_role"`
+	ResourcesAttributes []*CopilotSpaceResource `json:"resources_attributes,omitempty"`
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+func (c *CopilotSpace) UnmarshalJSON(data []byte) error {
+	type alias CopilotSpace
+	var space alias
+
+	if err := json.Unmarshal(data, &space); err != nil {
+		return err
+	}
+
+	*c = CopilotSpace(space)
+
+	switch v := space.Owner.(type) {
+	case nil:
+		c.Owner = nil
+	case map[string]any:
+		jsonData, err := json.Marshal(space.Owner)
+		if err != nil {
+			return err
+		}
+		if t, ok := v["type"].(string); ok && t == "User" {
+			var user *User
+			if err := json.Unmarshal(jsonData, &user); err != nil {
+				return err
+			}
+			c.Owner = user
+		} else if t, ok := v["type"].(string); ok && t == "Organization" {
+			var organization *Organization
+			if err := json.Unmarshal(jsonData, &organization); err != nil {
+				return err
+			}
+			c.Owner = organization
+		} else if _, ok := v["hooks_url"]; ok {
+			var organization *Organization
+			if err := json.Unmarshal(jsonData, &organization); err != nil {
+				return err
+			}
+			c.Owner = organization
+		} else {
+			return fmt.Errorf("unsupported owner type %v", v["type"])
+		}
+	default:
+		return fmt.Errorf("unsupported owner type %T", v)
+	}
+	return nil
+}
+
+// CopilotSpaceResource represents a resource attached to a Copilot Space.
+type CopilotSpaceResource struct {
+	ID                      *int64                `json:"id,omitempty"`
+	ResourceType            *string               `json:"resource_type,omitempty"`
+	Metadata                *CopilotSpaceMetadata `json:"metadata,omitempty"`
+	CopilotChatAttachmentID *int64                `json:"copilot_chat_attachment_id,omitempty"`
+	CreatedAt               *Timestamp            `json:"created_at,omitempty"`
+	UpdatedAt               *Timestamp            `json:"updated_at,omitempty"`
+}
+
+// CreateCopilotSpaceResourceAttributes represents a resource to attach when creating a Copilot Space.
+type CreateCopilotSpaceResourceAttributes struct {
+	ResourceType *string               `json:"resource_type,omitempty"`
+	Metadata     *CopilotSpaceMetadata `json:"metadata,omitempty"`
+}
+
+// UpdateCopilotSpaceResourceAttributes represents a resource to attach, update, or remove when updating a Copilot Space.
+type UpdateCopilotSpaceResourceAttributes struct {
+	ID           *int64                `json:"id,omitempty"`
+	ResourceType *string               `json:"resource_type,omitempty"`
+	Metadata     *CopilotSpaceMetadata `json:"metadata,omitempty"`
+	Destroy      *bool                 `json:"_destroy,omitempty"`
+}
+
+// CopilotSpaceMetadata represents metadata specific to a Copilot Space resource type.
+type CopilotSpaceMetadata struct {
+	RepositoryID            *int64  `json:"repository_id,omitempty"`
+	FilePath                *string `json:"file_path,omitempty"`
+	Text                    *string `json:"text,omitempty"`
+	Name                    *string `json:"name,omitempty"`
+	Number                  *int    `json:"number,omitempty"`
+	CopilotChatAttachmentID *int64  `json:"copilot_chat_attachment_id,omitempty"`
+	MediaType               *string `json:"media_type,omitempty"`
+	URL                     *string `json:"url,omitempty"`
+	Height                  *int    `json:"height,omitempty"`
+	Width                   *int    `json:"width,omitempty"`
+}
+
+// CreateOrganizationCopilotSpaceRequest represents a request to create a Copilot Space.
+type CreateOrganizationCopilotSpaceRequest struct {
+	Name                string                                  `json:"name"`
+	Description         *string                                 `json:"description,omitempty"`
+	GeneralInstructions *string                                 `json:"general_instructions,omitempty"`
+	BaseRole            *string                                 `json:"base_role,omitempty"`
+	ResourcesAttributes []*CreateCopilotSpaceResourceAttributes `json:"resources_attributes,omitempty"`
+}
+
+// UpdateOrganizationCopilotSpaceRequest represents a request to update a Copilot Space.
+type UpdateOrganizationCopilotSpaceRequest struct {
+	Name                *string                                 `json:"name,omitempty"`
+	Description         *string                                 `json:"description,omitempty"`
+	GeneralInstructions *string                                 `json:"general_instructions,omitempty"`
+	BaseRole            *string                                 `json:"base_role,omitempty"`
+	ResourcesAttributes []*UpdateCopilotSpaceResourceAttributes `json:"resources_attributes,omitempty"`
+}
+
+// CopilotSpacesList represents a list of Copilot Spaces.
+type CopilotSpacesList struct {
+	Spaces []*CopilotSpace `json:"spaces"`
+}
+
+// ListOrganizationCopilotSpaces lists Copilot Spaces for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#list-organization-copilot-spaces
+//
+//meta:operation GET /orgs/{org}/copilot-spaces
+func (s *CopilotService) ListOrganizationCopilotSpaces(ctx context.Context, org string, opts *ListCursorOptions) (*CopilotSpacesList, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot-spaces", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var spaces *CopilotSpacesList
+	resp, err := s.client.Do(req, &spaces)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return spaces, resp, nil
+}
+
+// GetOrganizationCopilotSpace gets a Copilot Space for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#get-an-organization-copilot-space
+//
+//meta:operation GET /orgs/{org}/copilot-spaces/{space_number}
+func (s *CopilotService) GetOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int) (*CopilotSpace, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot-spaces/%v", org, spaceNumber)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var space *CopilotSpace
+	resp, err := s.client.Do(req, &space)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return space, resp, nil
+}
+
+// CreateOrganizationCopilotSpace creates a Copilot Space for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#create-an-organization-copilot-space
+//
+//meta:operation POST /orgs/{org}/copilot-spaces
+func (s *CopilotService) CreateOrganizationCopilotSpace(ctx context.Context, org string, body CreateOrganizationCopilotSpaceRequest) (*CopilotSpace, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot-spaces", org)
+
+	req, err := s.client.NewRequest(ctx, "POST", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var space *CopilotSpace
+	resp, err := s.client.Do(req, &space)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return space, resp, nil
+}
+
+// UpdateOrganizationCopilotSpace updates a Copilot Space for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#set-an-organization-copilot-space
+//
+//meta:operation PUT /orgs/{org}/copilot-spaces/{space_number}
+func (s *CopilotService) UpdateOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int, body UpdateOrganizationCopilotSpaceRequest) (*CopilotSpace, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot-spaces/%v", org, spaceNumber)
+
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var space *CopilotSpace
+	resp, err := s.client.Do(req, &space)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return space, resp, nil
+}
+
+// DeleteOrganizationCopilotSpace deletes a Copilot Space for an organization.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot-spaces/copilot-spaces?apiVersion=2022-11-28#delete-an-organization-copilot-space
+//
+//meta:operation DELETE /orgs/{org}/copilot-spaces/{space_number}
+func (s *CopilotService) DeleteOrganizationCopilotSpace(ctx context.Context, org string, spaceNumber int) (*Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot-spaces/%v", org, spaceNumber)
+
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
 // CopilotOrganizationDetails represents the details of an organization's Copilot for Business subscription.
 type CopilotOrganizationDetails struct {
 	SeatBreakdown         *CopilotSeatBreakdown `json:"seat_breakdown"`
