@@ -5425,6 +5425,37 @@ func (s *PullRequestsService) ListReviewsIter(ctx context.Context, owner string,
 	}
 }
 
+// ListStacksIter returns an iterator that paginates through all results of ListStacks.
+func (s *PullRequestsService) ListStacksIter(ctx context.Context, owner string, repo string, opts *PullRequestListStacksOptions) iter.Seq2[*PullRequestStackMinimal, error] {
+	return func(yield func(*PullRequestStackMinimal, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &PullRequestListStacksOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListStacks(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListCommentReactionsIter returns an iterator that paginates through all results of ListCommentReactions.
 func (s *ReactionsService) ListCommentReactionsIter(ctx context.Context, owner string, repo string, id int64, opts *ListReactionOptions) iter.Seq2[*Reaction, error] {
 	return func(yield func(*Reaction, error) bool) {
