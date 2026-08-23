@@ -105,7 +105,7 @@ func getTree(ref *github.Reference) (tree *github.Tree, err error) {
 		if err != nil {
 			return nil, err
 		}
-		entries = append(entries, &github.TreeEntry{Path: &file, Type: github.Ptr("blob"), Content: github.Ptr(string(content)), Mode: github.Ptr("100644")})
+		entries = append(entries, &github.TreeEntry{Path: &file, Type: new("blob"), Content: new(string(content)), Mode: new("100644")})
 	}
 
 	tree, _, err = client.Git.CreateTree(ctx, *sourceOwner, *sourceRepo, *ref.Object.SHA, entries)
@@ -173,7 +173,7 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 	ref.Object.SHA = newCommit.SHA
 	_, _, err = client.Git.UpdateRef(ctx, *sourceOwner, *sourceRepo, *ref.Ref, github.UpdateRef{
 		SHA:   *newCommit.SHA,
-		Force: github.Ptr(false),
+		Force: new(false),
 	})
 	return err
 }
@@ -200,7 +200,7 @@ func createPR() (err error) {
 		HeadRepo:            repoBranch,
 		Base:                *prBranch,
 		Body:                prDescription,
-		MaintainerCanModify: github.Ptr(true),
+		MaintainerCanModify: new(true),
 	}
 
 	pr, _, err := client.PullRequests.Create(ctx, *prRepoOwner, *prRepo, newPR)

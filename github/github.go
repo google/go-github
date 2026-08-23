@@ -1262,8 +1262,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		}
 
 		// If the error type is *url.Error, sanitize its URL before returning.
-		var e *url.Error
-		if errors.As(err, &e) {
+		if e, ok := errors.AsType[*url.Error](err); ok {
 			if url, err := url.Parse(e.URL); err == nil {
 				e.URL = sanitizeURL(url).String()
 				return response, e
@@ -1290,8 +1289,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		// added to the AcceptedError and returned.
 		//
 		// Issue #1022
-		var aerr *AcceptedError
-		if errors.As(err, &aerr) {
+		if aerr, ok := errors.AsType[*AcceptedError](err); ok {
 			b, readErr := io.ReadAll(io.LimitReader(resp.Body, maxErrorBodySize))
 			if readErr != nil {
 				return response, readErr
@@ -1352,8 +1350,7 @@ var errInvalidLocation = errors.New("invalid or empty Location header in redirec
 func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL, *Response, error) {
 	response, err := c.bareDoIgnoreRedirects(req)
 	if err != nil {
-		var rerr *RedirectionError
-		if errors.As(err, &rerr) {
+		if rerr, ok := errors.AsType[*RedirectionError](err); ok {
 			// If we receive a 302, transform potential relative locations into absolute and return it.
 			if rerr.StatusCode == http.StatusFound {
 				if rerr.Location == nil {

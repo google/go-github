@@ -83,8 +83,7 @@ func (s *RepositoriesService) CreateFork(ctx context.Context, owner, repo string
 	resp, err := s.client.Do(req, &fork)
 	if err != nil {
 		// Persist AcceptedError's metadata to the Repository object.
-		var aerr *AcceptedError
-		if errors.As(err, &aerr) {
+		if aerr, ok := errors.AsType[*AcceptedError](err); ok {
 			if err := json.Unmarshal(aerr.Raw, &fork); err != nil {
 				return fork, resp, err
 			}
