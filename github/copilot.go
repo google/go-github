@@ -1045,21 +1045,21 @@ type CopilotMetricsAIAdoptionPhase struct {
 //
 // GitHub API docs: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/copilot-usage-metrics#ai-adoption-phase-fields
 type CopilotMetricsAIAdoptionPhaseTotals struct {
-	Phase                               string   `json:"phase"`
-	PhaseNumber                         int      `json:"phase_number"`
-	TotalEngagedUsers                   *int     `json:"total_engaged_users,omitempty"`
-	AvgUserInitiatedInteractions        *float64 `json:"avg_user_initiated_interactions,omitempty"`
-	AvgCodeGenerationActivities         *float64 `json:"avg_code_generation_activities,omitempty"`
-	AvgCodeAcceptanceActivities         *float64 `json:"avg_code_acceptance_activities,omitempty"`
-	AvgLOCAdded                         *float64 `json:"avg_loc_added,omitempty"`
-	AvgLOCDeleted                       *float64 `json:"avg_loc_deleted,omitempty"`
-	AvgPullRequestsReviewed             *float64 `json:"avg_pull_requests_reviewed,omitempty"`
-	AvgPullRequestsCreated              *float64 `json:"avg_pull_requests_created,omitempty"`
-	AvgPullRequestsMerged               *float64 `json:"avg_pull_requests_merged,omitempty"`
-	TotalPullRequestsMerged             *int     `json:"total_pull_requests_merged,omitempty"`
-	AvgPullRequestsMedianMinutesToMerge *float64 `json:"avg_pull_requests_median_minutes_to_merge,omitempty"`
-	AvgPullRequestsMinutesToReview      *float64 `json:"avg_pull_requests_minutes_to_review,omitempty"`
-	AvgPullRequestsReviewCycles         *float64 `json:"avg_pull_requests_review_cycles,omitempty"`
+	Phase                               string  `json:"phase"`
+	PhaseNumber                         int     `json:"phase_number"`
+	TotalEngagedUsers                   int     `json:"total_engaged_users"`
+	AvgUserInitiatedInteractions        float64 `json:"avg_user_initiated_interactions"`
+	AvgCodeGenerationActivities         float64 `json:"avg_code_generation_activities"`
+	AvgCodeAcceptanceActivities         float64 `json:"avg_code_acceptance_activities"`
+	AvgLOCAdded                         float64 `json:"avg_loc_added"`
+	AvgLOCDeleted                       float64 `json:"avg_loc_deleted"`
+	AvgPullRequestsReviewed             float64 `json:"avg_pull_requests_reviewed"`
+	AvgPullRequestsCreated              float64 `json:"avg_pull_requests_created"`
+	AvgPullRequestsMerged               float64 `json:"avg_pull_requests_merged"`
+	TotalPullRequestsMerged             int     `json:"total_pull_requests_merged"`
+	AvgPullRequestsMedianMinutesToMerge float64 `json:"avg_pull_requests_median_minutes_to_merge"`
+	AvgPullRequestsMinutesToReview      float64 `json:"avg_pull_requests_minutes_to_review"`
+	AvgPullRequestsReviewCycles         float64 `json:"avg_pull_requests_review_cycles"`
 }
 
 // CopilotDailyMetrics represents the payload downloaded from a 1-day Copilot usage metrics report.

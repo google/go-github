@@ -3160,19 +3160,19 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 			{
 				Phase:                               "Phase 1",
 				PhaseNumber:                         1,
-				TotalEngagedUsers:                   Ptr(4),
-				AvgUserInitiatedInteractions:        Ptr(1.5),
-				AvgCodeGenerationActivities:         Ptr(2.0),
-				AvgCodeAcceptanceActivities:         Ptr(1.0),
-				AvgLOCAdded:                         Ptr(22.0),
-				AvgLOCDeleted:                       Ptr(0.0),
-				AvgPullRequestsReviewed:             Ptr(0.5),
-				AvgPullRequestsCreated:              Ptr(1.0),
-				AvgPullRequestsMerged:               Ptr(1.0),
-				TotalPullRequestsMerged:             Ptr(4),
-				AvgPullRequestsMedianMinutesToMerge: Ptr(2.5),
-				AvgPullRequestsMinutesToReview:      Ptr(1.5),
-				AvgPullRequestsReviewCycles:         Ptr(1.0),
+				TotalEngagedUsers:                   4,
+				AvgUserInitiatedInteractions:        1.5,
+				AvgCodeGenerationActivities:         2.0,
+				AvgCodeAcceptanceActivities:         1.0,
+				AvgLOCAdded:                         22.0,
+				AvgLOCDeleted:                       0.0,
+				AvgPullRequestsReviewed:             0.5,
+				AvgPullRequestsCreated:              1.0,
+				AvgPullRequestsMerged:               1.0,
+				TotalPullRequestsMerged:             4,
+				AvgPullRequestsMedianMinutesToMerge: 2.5,
+				AvgPullRequestsMinutesToReview:      1.5,
+				AvgPullRequestsReviewCycles:         1.0,
 			},
 		},
 		LOCAddedSum: Ptr(100),
@@ -3322,7 +3322,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 
 	mux.HandleFunc("/path/to/users-daily", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","ai_credits_used":12.5,"user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_code_review_active":true,"ai_adoption_phase":{"phase":"Phase 2","phase_number":2,"version":"v1"},"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":`+refTimeStr(1136178000)+`,"cli_version":"1.0.8"}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":`+refTimeStr(1136178001)+`,"plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":`+refTimeStr(1136178002)+`,"ide_version":"1.90"}}],"totals_by_3rd_party_agent":[{"agent_name":"Claude","agent_id":"claude","user_initiated_interaction_count":2}]}
+		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","ai_credits_used":12.5,"user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_code_review_active":true,"ai_adoption_phase":{"phase":"Phase 2","phase_number":2,"version":"v1"},"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":`+referenceTimeStr+`,"cli_version":"1.0.8"}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":`+referenceTimeStr+`,"plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":`+referenceTimeStr+`,"ide_version":"1.90"}}],"totals_by_3rd_party_agent":[{"agent_name":"Claude","agent_id":"claude","user_initiated_interaction_count":2}]}
 {"user_id":2,"user_login":"bob","day":"2026-04-01","used_agent":true,"used_copilot_code_review_passive":true}
 `)
 	})
@@ -3360,7 +3360,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 				RequestCount: Ptr(2),
 				PromptCount:  Ptr(1),
 				LastKnownCLIVersion: &CopilotMetricsCLIVersion{
-					SampledAt:  refTimestamp(1136178000),
+					SampledAt:  &referenceTimestamp,
 					CLIVersion: "1.0.8",
 				},
 			},
@@ -3369,12 +3369,12 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 					IDE:                           "vscode",
 					UserInitiatedInteractionCount: Ptr(5),
 					LastKnownPluginVersion: &CopilotUserMetricsPluginVersion{
-						SampledAt:     refTimestamp(1136178001),
+						SampledAt:     &referenceTimestamp,
 						Plugin:        "copilot",
 						PluginVersion: "1.0.0",
 					},
 					LastKnownIDEVersion: &CopilotUserMetricsIDEVersion{
-						SampledAt:  refTimestamp(1136178002),
+						SampledAt:  &referenceTimestamp,
 						IDEVersion: "1.90",
 					},
 				},

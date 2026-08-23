@@ -12429,10 +12429,7 @@ func TestCopilotMetricsAIAdoptionPhase_GetVersion(tt *testing.T) {
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgCodeAcceptanceActivities(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgCodeAcceptanceActivities: &zeroValue}
-	c.GetAvgCodeAcceptanceActivities()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgCodeAcceptanceActivities()
 	c = nil
 	c.GetAvgCodeAcceptanceActivities()
@@ -12440,10 +12437,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgCodeAcceptanceActivities(tt *
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgCodeGenerationActivities(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgCodeGenerationActivities: &zeroValue}
-	c.GetAvgCodeGenerationActivities()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgCodeGenerationActivities()
 	c = nil
 	c.GetAvgCodeGenerationActivities()
@@ -12451,10 +12445,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgCodeGenerationActivities(tt *
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgLOCAdded(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgLOCAdded: &zeroValue}
-	c.GetAvgLOCAdded()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgLOCAdded()
 	c = nil
 	c.GetAvgLOCAdded()
@@ -12462,10 +12453,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgLOCAdded(tt *testing.T) {
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgLOCDeleted(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgLOCDeleted: &zeroValue}
-	c.GetAvgLOCDeleted()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgLOCDeleted()
 	c = nil
 	c.GetAvgLOCDeleted()
@@ -12473,10 +12461,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgLOCDeleted(tt *testing.T) {
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsCreated(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgPullRequestsCreated: &zeroValue}
-	c.GetAvgPullRequestsCreated()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgPullRequestsCreated()
 	c = nil
 	c.GetAvgPullRequestsCreated()
@@ -12484,10 +12469,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsCreated(tt *testi
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsMedianMinutesToMerge(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgPullRequestsMedianMinutesToMerge: &zeroValue}
-	c.GetAvgPullRequestsMedianMinutesToMerge()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgPullRequestsMedianMinutesToMerge()
 	c = nil
 	c.GetAvgPullRequestsMedianMinutesToMerge()
@@ -12495,10 +12477,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsMedianMinutesToMe
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsMerged(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgPullRequestsMerged: &zeroValue}
-	c.GetAvgPullRequestsMerged()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgPullRequestsMerged()
 	c = nil
 	c.GetAvgPullRequestsMerged()
@@ -12506,10 +12485,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsMerged(tt *testin
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsMinutesToReview(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgPullRequestsMinutesToReview: &zeroValue}
-	c.GetAvgPullRequestsMinutesToReview()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgPullRequestsMinutesToReview()
 	c = nil
 	c.GetAvgPullRequestsMinutesToReview()
@@ -12517,10 +12493,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsMinutesToReview(t
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsReviewCycles(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgPullRequestsReviewCycles: &zeroValue}
-	c.GetAvgPullRequestsReviewCycles()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgPullRequestsReviewCycles()
 	c = nil
 	c.GetAvgPullRequestsReviewCycles()
@@ -12528,10 +12501,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsReviewCycles(tt *
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsReviewed(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgPullRequestsReviewed: &zeroValue}
-	c.GetAvgPullRequestsReviewed()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgPullRequestsReviewed()
 	c = nil
 	c.GetAvgPullRequestsReviewed()
@@ -12539,10 +12509,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsReviewed(tt *test
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgUserInitiatedInteractions(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	c := &CopilotMetricsAIAdoptionPhaseTotals{AvgUserInitiatedInteractions: &zeroValue}
-	c.GetAvgUserInitiatedInteractions()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetAvgUserInitiatedInteractions()
 	c = nil
 	c.GetAvgUserInitiatedInteractions()
@@ -12566,10 +12533,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetPhaseNumber(tt *testing.T) {
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetTotalEngagedUsers(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	c := &CopilotMetricsAIAdoptionPhaseTotals{TotalEngagedUsers: &zeroValue}
-	c.GetTotalEngagedUsers()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetTotalEngagedUsers()
 	c = nil
 	c.GetTotalEngagedUsers()
@@ -12577,10 +12541,7 @@ func TestCopilotMetricsAIAdoptionPhaseTotals_GetTotalEngagedUsers(tt *testing.T)
 
 func TestCopilotMetricsAIAdoptionPhaseTotals_GetTotalPullRequestsMerged(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	c := &CopilotMetricsAIAdoptionPhaseTotals{TotalPullRequestsMerged: &zeroValue}
-	c.GetTotalPullRequestsMerged()
-	c = &CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
 	c.GetTotalPullRequestsMerged()
 	c = nil
 	c.GetTotalPullRequestsMerged()

@@ -9798,92 +9798,92 @@ func (c *CopilotMetricsAIAdoptionPhase) GetVersion() string {
 	return c.Version
 }
 
-// GetAvgCodeAcceptanceActivities returns the AvgCodeAcceptanceActivities field if it's non-nil, zero value otherwise.
+// GetAvgCodeAcceptanceActivities returns the AvgCodeAcceptanceActivities field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgCodeAcceptanceActivities() float64 {
-	if c == nil || c.AvgCodeAcceptanceActivities == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgCodeAcceptanceActivities
+	return c.AvgCodeAcceptanceActivities
 }
 
-// GetAvgCodeGenerationActivities returns the AvgCodeGenerationActivities field if it's non-nil, zero value otherwise.
+// GetAvgCodeGenerationActivities returns the AvgCodeGenerationActivities field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgCodeGenerationActivities() float64 {
-	if c == nil || c.AvgCodeGenerationActivities == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgCodeGenerationActivities
+	return c.AvgCodeGenerationActivities
 }
 
-// GetAvgLOCAdded returns the AvgLOCAdded field if it's non-nil, zero value otherwise.
+// GetAvgLOCAdded returns the AvgLOCAdded field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgLOCAdded() float64 {
-	if c == nil || c.AvgLOCAdded == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgLOCAdded
+	return c.AvgLOCAdded
 }
 
-// GetAvgLOCDeleted returns the AvgLOCDeleted field if it's non-nil, zero value otherwise.
+// GetAvgLOCDeleted returns the AvgLOCDeleted field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgLOCDeleted() float64 {
-	if c == nil || c.AvgLOCDeleted == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgLOCDeleted
+	return c.AvgLOCDeleted
 }
 
-// GetAvgPullRequestsCreated returns the AvgPullRequestsCreated field if it's non-nil, zero value otherwise.
+// GetAvgPullRequestsCreated returns the AvgPullRequestsCreated field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsCreated() float64 {
-	if c == nil || c.AvgPullRequestsCreated == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgPullRequestsCreated
+	return c.AvgPullRequestsCreated
 }
 
-// GetAvgPullRequestsMedianMinutesToMerge returns the AvgPullRequestsMedianMinutesToMerge field if it's non-nil, zero value otherwise.
+// GetAvgPullRequestsMedianMinutesToMerge returns the AvgPullRequestsMedianMinutesToMerge field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsMedianMinutesToMerge() float64 {
-	if c == nil || c.AvgPullRequestsMedianMinutesToMerge == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgPullRequestsMedianMinutesToMerge
+	return c.AvgPullRequestsMedianMinutesToMerge
 }
 
-// GetAvgPullRequestsMerged returns the AvgPullRequestsMerged field if it's non-nil, zero value otherwise.
+// GetAvgPullRequestsMerged returns the AvgPullRequestsMerged field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsMerged() float64 {
-	if c == nil || c.AvgPullRequestsMerged == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgPullRequestsMerged
+	return c.AvgPullRequestsMerged
 }
 
-// GetAvgPullRequestsMinutesToReview returns the AvgPullRequestsMinutesToReview field if it's non-nil, zero value otherwise.
+// GetAvgPullRequestsMinutesToReview returns the AvgPullRequestsMinutesToReview field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsMinutesToReview() float64 {
-	if c == nil || c.AvgPullRequestsMinutesToReview == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgPullRequestsMinutesToReview
+	return c.AvgPullRequestsMinutesToReview
 }
 
-// GetAvgPullRequestsReviewCycles returns the AvgPullRequestsReviewCycles field if it's non-nil, zero value otherwise.
+// GetAvgPullRequestsReviewCycles returns the AvgPullRequestsReviewCycles field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsReviewCycles() float64 {
-	if c == nil || c.AvgPullRequestsReviewCycles == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgPullRequestsReviewCycles
+	return c.AvgPullRequestsReviewCycles
 }
 
-// GetAvgPullRequestsReviewed returns the AvgPullRequestsReviewed field if it's non-nil, zero value otherwise.
+// GetAvgPullRequestsReviewed returns the AvgPullRequestsReviewed field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsReviewed() float64 {
-	if c == nil || c.AvgPullRequestsReviewed == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgPullRequestsReviewed
+	return c.AvgPullRequestsReviewed
 }
 
-// GetAvgUserInitiatedInteractions returns the AvgUserInitiatedInteractions field if it's non-nil, zero value otherwise.
+// GetAvgUserInitiatedInteractions returns the AvgUserInitiatedInteractions field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgUserInitiatedInteractions() float64 {
-	if c == nil || c.AvgUserInitiatedInteractions == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.AvgUserInitiatedInteractions
+	return c.AvgUserInitiatedInteractions
 }
 
 // GetPhase returns the Phase field.
@@ -9902,20 +9902,20 @@ func (c *CopilotMetricsAIAdoptionPhaseTotals) GetPhaseNumber() int {
 	return c.PhaseNumber
 }
 
-// GetTotalEngagedUsers returns the TotalEngagedUsers field if it's non-nil, zero value otherwise.
+// GetTotalEngagedUsers returns the TotalEngagedUsers field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetTotalEngagedUsers() int {
-	if c == nil || c.TotalEngagedUsers == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.TotalEngagedUsers
+	return c.TotalEngagedUsers
 }
 
-// GetTotalPullRequestsMerged returns the TotalPullRequestsMerged field if it's non-nil, zero value otherwise.
+// GetTotalPullRequestsMerged returns the TotalPullRequestsMerged field.
 func (c *CopilotMetricsAIAdoptionPhaseTotals) GetTotalPullRequestsMerged() int {
-	if c == nil || c.TotalPullRequestsMerged == nil {
+	if c == nil {
 		return 0
 	}
-	return *c.TotalPullRequestsMerged
+	return c.TotalPullRequestsMerged
 }
 
 // GetChatPanelAgentMode returns the ChatPanelAgentMode field if it's non-nil, zero value otherwise.
