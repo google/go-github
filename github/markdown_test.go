@@ -16,9 +16,9 @@ func TestMarkdownService_Markdown(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &markdownRenderRequest{
-		Text:    Ptr("# text #"),
-		Mode:    Ptr("gfm"),
-		Context: Ptr("google/go-github"),
+		Text:    new("# text #"),
+		Mode:    new("gfm"),
+		Context: new("google/go-github"),
 	}
 	mux.HandleFunc("/markdown", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")

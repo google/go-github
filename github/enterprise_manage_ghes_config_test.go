@@ -163,69 +163,69 @@ func TestEnterpriseService_Settings(t *testing.T) {
 	}
 
 	want := &ConfigSettings{
-		PrivateMode:           Ptr(false),
-		PublicPages:           Ptr(false),
-		SubdomainIsolation:    Ptr(true),
-		SignupEnabled:         Ptr(false),
-		GithubHostname:        Ptr("ghe.local"),
-		IdenticonsHost:        Ptr("dotcom"),
+		PrivateMode:           new(false),
+		PublicPages:           new(false),
+		SubdomainIsolation:    new(true),
+		SignupEnabled:         new(false),
+		GithubHostname:        new("ghe.local"),
+		IdenticonsHost:        new("dotcom"),
 		HTTPProxy:             nil,
-		AuthMode:              Ptr("default"),
-		ExpireSessions:        Ptr(false),
+		AuthMode:              new("default"),
+		ExpireSessions:        new(false),
 		AdminPassword:         nil,
-		ConfigurationID:       Ptr(int64(1401777404)),
-		ConfigurationRunCount: Ptr(4),
+		ConfigurationID:       new(int64(1401777404)),
+		ConfigurationRunCount: new(4),
 		Avatar: &ConfigSettingsAvatar{
-			Enabled: Ptr(false),
-			URI:     Ptr(""),
+			Enabled: new(false),
+			URI:     new(""),
 		},
 		Customer: &ConfigSettingsCustomer{
-			Name:          Ptr("GitHub"),
-			Email:         Ptr("stannis"),
-			UUID:          Ptr("af6cac80-e4e1-012e-d822-1231380e52e9"),
+			Name:          new("GitHub"),
+			Email:         new("stannis"),
+			UUID:          new("af6cac80-e4e1-012e-d822-1231380e52e9"),
 			Secret:        nil,
-			PublicKeyData: Ptr("-"),
+			PublicKeyData: new("-"),
 		},
 		License: &ConfigSettingsLicenseSettings{
-			Seats:            Ptr(0),
-			Evaluation:       Ptr(false),
-			Perpetual:        Ptr(false),
-			UnlimitedSeating: Ptr(true),
-			SupportKey:       Ptr("ssh-rsa AAAAB3N...."),
-			SSHAllowed:       Ptr(true),
-			ClusterSupport:   Ptr(false),
+			Seats:            new(0),
+			Evaluation:       new(false),
+			Perpetual:        new(false),
+			UnlimitedSeating: new(true),
+			SupportKey:       new("ssh-rsa AAAAB3N...."),
+			SSHAllowed:       new(true),
+			ClusterSupport:   new(false),
 			ExpireAt:         &referenceTimestamp,
 		},
 		GithubSSL: &ConfigSettingsGithubSSL{
-			Enabled: Ptr(false),
+			Enabled: new(false),
 			Cert:    nil,
 			Key:     nil,
 		},
 		LDAP: &ConfigSettingsLDAP{
 			Host:                    nil,
-			Port:                    Ptr(0),
+			Port:                    new(0),
 			Base:                    []string{},
 			UID:                     nil,
 			BindDN:                  nil,
 			Password:                nil,
-			Method:                  Ptr("Plain"),
-			SearchStrategy:          Ptr("detect"),
+			Method:                  new("Plain"),
+			SearchStrategy:          new("detect"),
 			UserGroups:              []string{},
 			AdminGroup:              nil,
-			VirtualAttributeEnabled: Ptr(false),
-			RecursiveGroupSearch:    Ptr(false),
-			PosixSupport:            Ptr(true),
-			UserSyncEmails:          Ptr(false),
-			UserSyncKeys:            Ptr(false),
-			UserSyncInterval:        Ptr(4),
-			TeamSyncInterval:        Ptr(4),
-			SyncEnabled:             Ptr(false),
+			VirtualAttributeEnabled: new(false),
+			RecursiveGroupSearch:    new(false),
+			PosixSupport:            new(true),
+			UserSyncEmails:          new(false),
+			UserSyncKeys:            new(false),
+			UserSyncInterval:        new(4),
+			TeamSyncInterval:        new(4),
+			SyncEnabled:             new(false),
 			Reconciliation: &ConfigSettingsLDAPReconciliation{
 				User: nil,
 				Org:  nil,
 			},
 			Profile: &ConfigSettingsLDAPProfile{
-				UID:  Ptr("uid"),
+				UID:  new("uid"),
 				Name: nil,
 				Mail: nil,
 				Key:  nil,
@@ -239,60 +239,60 @@ func TestEnterpriseService_Settings(t *testing.T) {
 			Certificate:        nil,
 			CertificatePath:    nil,
 			Issuer:             nil,
-			IDPInitiatedSSO:    Ptr(false),
-			DisableAdminDemote: Ptr(false),
+			IDPInitiatedSSO:    new(false),
+			DisableAdminDemote: new(false),
 		},
 		GithubOAuth: &ConfigSettingsGithubOAuth{
-			ClientID:         Ptr("12313412"),
-			ClientSecret:     Ptr("kj123131132"),
-			OrganizationName: Ptr("Homestar Runners"),
-			OrganizationTeam: Ptr("homestarrunners/characters"),
+			ClientID:         new("12313412"),
+			ClientSecret:     new("kj123131132"),
+			OrganizationName: new("Homestar Runners"),
+			OrganizationTeam: new("homestarrunners/characters"),
 		},
 		SMTP: &ConfigSettingsSMTP{
-			Enabled:                 Ptr(true),
-			Address:                 Ptr("smtp.example.com"),
-			Authentication:          Ptr("plain"),
-			Port:                    Ptr("1234"),
-			Domain:                  Ptr("blah"),
-			Username:                Ptr("foo"),
-			UserName:                Ptr("mr_foo"),
-			Password:                Ptr("bar"),
-			DiscardToNoreplyAddress: Ptr(true),
-			SupportAddress:          Ptr("enterprise@github.com"),
-			SupportAddressType:      Ptr("email"),
-			NoreplyAddress:          Ptr("noreply@github.com"),
-			EnableStarttlsAuto:      Ptr(true),
+			Enabled:                 new(true),
+			Address:                 new("smtp.example.com"),
+			Authentication:          new("plain"),
+			Port:                    new("1234"),
+			Domain:                  new("blah"),
+			Username:                new("foo"),
+			UserName:                new("mr_foo"),
+			Password:                new("bar"),
+			DiscardToNoreplyAddress: new(true),
+			SupportAddress:          new("enterprise@github.com"),
+			SupportAddressType:      new("email"),
+			NoreplyAddress:          new("noreply@github.com"),
+			EnableStarttlsAuto:      new(true),
 		},
 		NTP: &ConfigSettingsNTP{
-			PrimaryServer:   Ptr("example.com/primary"),
-			SecondaryServer: Ptr("example.com/secondary"),
+			PrimaryServer:   new("example.com/primary"),
+			SecondaryServer: new("example.com/secondary"),
 		},
 		Timezone: nil,
 		SNMP: &ConfigSettingsSNMP{
-			Enabled:   Ptr(false),
-			Community: Ptr(""),
+			Enabled:   new(false),
+			Community: new(""),
 		},
 		Syslog: &ConfigSettingsSyslog{
-			Enabled:      Ptr(false),
+			Enabled:      new(false),
 			Server:       nil,
-			ProtocolName: Ptr("udp"),
+			ProtocolName: new("udp"),
 		},
 		Assets: nil,
 		Pages: &ConfigSettingsPagesSettings{
-			Enabled: Ptr(true),
+			Enabled: new(true),
 		},
 		Collectd: &ConfigSettingsCollectd{
-			Enabled:    Ptr(false),
+			Enabled:    new(false),
 			Server:     nil,
-			Port:       Ptr(0),
+			Port:       new(0),
 			Encryption: nil,
 			Username:   nil,
 			Password:   nil,
 		},
 		Mapping: &ConfigSettingsMapping{
-			Enabled:    Ptr(true),
+			Enabled:    new(true),
 			Tileserver: nil,
-			Basemap:    Ptr("company.map-qsz2zrvs"),
+			Basemap:    new("company.map-qsz2zrvs"),
 			Token:      nil,
 		},
 		LoadBalancer: nil,
@@ -334,7 +334,7 @@ func TestEnterpriseService_NodeMetadata(t *testing.T) {
 	})
 
 	opt := &NodeQueryOptions{
-		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
+		UUID: new("1234-1234"), ClusterRoles: new("primary"),
 	}
 	ctx := t.Context()
 	configNodes, _, err := client.Enterprise.NodeMetadata(ctx, opt)
@@ -343,10 +343,10 @@ func TestEnterpriseService_NodeMetadata(t *testing.T) {
 	}
 
 	want := &NodeMetadataStatus{
-		Topology: Ptr("Cluster"),
+		Topology: new("Cluster"),
 		Nodes: []*NodeDetails{{
-			Hostname: Ptr("data1"),
-			UUID:     Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"),
+			Hostname: new("data1"),
+			UUID:     new("1b6cf518-f97c-11ed-8544-061d81f7eedb"),
 			ClusterRoles: []string{
 				"ConsulServer",
 			},
@@ -384,7 +384,7 @@ func TestEnterpriseService_LicenseStatus(t *testing.T) {
 	}
 
 	want := []*LicenseCheck{{
-		Status: Ptr("valid"),
+		Status: new("valid"),
 	}}
 	if !cmp.Equal(licenseCheck, want) {
 		t.Errorf("Enterprise.LicenseStatus returned %+v, want %+v", licenseCheck, want)
@@ -435,24 +435,24 @@ func TestEnterpriseService_License(t *testing.T) {
 	}
 
 	want := &LicenseStatus{
-		AdvancedSecurityEnabled:      Ptr(true),
-		AdvancedSecuritySeats:        Ptr(0),
-		ClusterSupport:               Ptr(false),
-		Company:                      Ptr("GitHub"),
-		CroquetSupport:               Ptr(true),
-		CustomTerms:                  Ptr(true),
-		Evaluation:                   Ptr(false),
+		AdvancedSecurityEnabled:      new(true),
+		AdvancedSecuritySeats:        new(0),
+		ClusterSupport:               new(false),
+		Company:                      new("GitHub"),
+		CroquetSupport:               new(true),
+		CustomTerms:                  new(true),
+		Evaluation:                   new(false),
 		ExpireAt:                     refTimestamp(1136178000),
-		InsightsEnabled:              Ptr(true),
+		InsightsEnabled:              new(true),
 		InsightsExpireAt:             refTimestamp(1136178001),
 		LearningLabEvaluationExpires: refTimestamp(1136178002),
-		LearningLabSeats:             Ptr(100),
-		Perpetual:                    Ptr(false),
-		ReferenceNumber:              Ptr("32a145"),
-		Seats:                        Ptr(0),
-		SSHAllowed:                   Ptr(true),
-		SupportKey:                   Ptr(true),
-		UnlimitedSeating:             Ptr(true),
+		LearningLabSeats:             new(100),
+		Perpetual:                    new(false),
+		ReferenceNumber:              new("32a145"),
+		Seats:                        new(0),
+		SSHAllowed:                   new(true),
+		SupportKey:                   new(true),
+		UnlimitedSeating:             new(true),
 	}
 	if diff := cmp.Diff(want, license); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\n%v", diff)
@@ -495,7 +495,7 @@ func TestEnterpriseService_ConfigApplyEvents(t *testing.T) {
 	})
 
 	input := &ConfigApplyEventsOptions{
-		LastRequestID: Ptr("387cd628c06d606700e79be368e5e574:0cde553750689"),
+		LastRequestID: new("387cd628c06d606700e79be368e5e574:0cde553750689"),
 	}
 
 	ctx := t.Context()
@@ -506,20 +506,20 @@ func TestEnterpriseService_ConfigApplyEvents(t *testing.T) {
 
 	want := &ConfigApplyEvents{
 		Nodes: []*ConfigApplyEventsNode{{
-			Node:          Ptr("ghes-01.lan"),
-			LastRequestID: Ptr("387cd628c06d606700e79be368e5e574:0cde553750689c76:0000000000000000"),
+			Node:          new("ghes-01.lan"),
+			LastRequestID: new("387cd628c06d606700e79be368e5e574:0cde553750689c76:0000000000000000"),
 			Events: []*ConfigApplyEventsNodeEvent{{
 				Timestamp:    &referenceTimestamp,
-				SeverityText: Ptr("INFO"),
-				Body:         Ptr("Validating services"),
-				EventName:    Ptr("Enterprise::ConfigApply::PhaseValidation#config_phase_validation"),
-				Topology:     Ptr("multinode"),
-				Hostname:     Ptr("ghes-01.lan"),
-				ConfigRunID:  Ptr("d34db33f"),
-				TraceID:      Ptr("387cd628c06d606700e79be368e5e574"),
-				SpanID:       Ptr("0cde553750689c76"),
-				SpanParentID: Ptr(int64(0)),
-				SpanDepth:    Ptr(0),
+				SeverityText: new("INFO"),
+				Body:         new("Validating services"),
+				EventName:    new("Enterprise::ConfigApply::PhaseValidation#config_phase_validation"),
+				Topology:     new("multinode"),
+				Hostname:     new("ghes-01.lan"),
+				ConfigRunID:  new("d34db33f"),
+				TraceID:      new("387cd628c06d606700e79be368e5e574"),
+				SpanID:       new("0cde553750689c76"),
+				SpanParentID: new(int64(0)),
+				SpanDepth:    new(0),
 			}},
 		}},
 	}
@@ -551,7 +551,7 @@ func TestEnterpriseService_UpdateSettings(t *testing.T) {
 	})
 
 	input := &ConfigSettings{
-		PrivateMode: Ptr(false),
+		PrivateMode: new(false),
 	}
 
 	ctx := t.Context()
@@ -621,7 +621,7 @@ func TestEnterpriseService_ConfigApply(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &ConfigApplyOptions{
-		RunID: Ptr("1234"),
+		RunID: new("1234"),
 	}
 
 	mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
@@ -636,7 +636,7 @@ func TestEnterpriseService_ConfigApply(t *testing.T) {
 		t.Errorf("Enterprise.ConfigApply returned error: %v", err)
 	}
 	want := &ConfigApplyOptions{
-		RunID: Ptr("1234"),
+		RunID: new("1234"),
 	}
 	if !cmp.Equal(configApply, want) {
 		t.Errorf("Enterprise.ConfigApply returned %+v, want %+v", configApply, want)
@@ -657,7 +657,7 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &ConfigApplyOptions{
-		RunID: Ptr("1234"),
+		RunID: new("1234"),
 	}
 
 	mux.HandleFunc("/manage/v1/config/apply", func(w http.ResponseWriter, r *http.Request) {
@@ -683,13 +683,13 @@ func TestEnterpriseService_ConfigApplyStatus(t *testing.T) {
 		t.Errorf("Enterprise.ConfigApplyStatus returned error: %v", err)
 	}
 	want := &ConfigApplyStatus{
-		Running:    Ptr(true),
-		Successful: Ptr(false),
+		Running:    new(true),
+		Successful: new(false),
 		Nodes: []*ConfigApplyStatusNode{{
-			RunID:      Ptr("d34db33f"),
-			Hostname:   Ptr("ghes-01.lan"),
-			Running:    Ptr(true),
-			Successful: Ptr(false),
+			RunID:      new("d34db33f"),
+			Hostname:   new("ghes-01.lan"),
+			Running:    new(true),
+			Successful: new(false),
 		}},
 	}
 	if !cmp.Equal(configApplyStatus, want) {

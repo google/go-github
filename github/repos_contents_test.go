@@ -24,14 +24,14 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 		wantErr           bool    // whether an error is expected
 	}{
 		{
-			encoding: Ptr(""),
-			content:  Ptr("hello"),
+			encoding: new(""),
+			content:  new("hello"),
 			want:     "hello",
 			wantErr:  false,
 		},
 		{
 			encoding: nil,
-			content:  Ptr("hello"),
+			content:  new("hello"),
 			want:     "hello",
 			wantErr:  false,
 		},
@@ -42,19 +42,19 @@ func TestRepositoryContent_GetContent(t *testing.T) {
 			wantErr:  false,
 		},
 		{
-			encoding: Ptr("base64"),
-			content:  Ptr("aGVsbG8="),
+			encoding: new("base64"),
+			content:  new("aGVsbG8="),
 			want:     "hello",
 			wantErr:  false,
 		},
 		{
-			encoding: Ptr("bad"),
-			content:  Ptr("aGVsbG8="),
+			encoding: new("bad"),
+			content:  new("aGVsbG8="),
 			want:     "",
 			wantErr:  true,
 		},
 		{
-			encoding: Ptr("none"),
+			encoding: new("none"),
 			content:  nil,
 			want:     "",
 			wantErr:  true,
@@ -106,7 +106,7 @@ func TestRepositoriesService_GetReadme(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetReadme returned error: %v", err)
 	}
-	want := &RepositoryContent{Type: Ptr("file"), Name: Ptr("README.md"), Size: Ptr(5362), Encoding: Ptr("base64"), Path: Ptr("README.md")}
+	want := &RepositoryContent{Type: new("file"), Name: new("README.md"), Size: new(5362), Encoding: new("base64"), Path: new("README.md")}
 	if !cmp.Equal(readme, want) {
 		t.Errorf("Repositories.GetReadme returned %+v, want %+v", readme, want)
 	}
@@ -678,7 +678,7 @@ func TestRepositoriesService_GetContents_File(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetContents returned error: %v", err)
 	}
-	want := &RepositoryContent{Type: Ptr("file"), Name: Ptr("LICENSE"), Size: Ptr(20678), Encoding: Ptr("base64"), Path: Ptr("LICENSE")}
+	want := &RepositoryContent{Type: new("file"), Name: new("LICENSE"), Size: new(20678), Encoding: new("base64"), Path: new("LICENSE")}
 	if !cmp.Equal(fileContents, want) {
 		t.Errorf("Repositories.GetContents returned %+v, want %+v", fileContents, want)
 	}
@@ -782,8 +782,8 @@ func TestRepositoriesService_GetContents_Directory(t *testing.T) {
 		t.Errorf("Repositories.GetContents returned error: %v", err)
 	}
 	want := []*RepositoryContent{
-		{Type: Ptr("dir"), Name: Ptr("lib"), Path: Ptr("lib")},
-		{Type: Ptr("file"), Name: Ptr("LICENSE"), Size: Ptr(20678), Path: Ptr("LICENSE")},
+		{Type: new("dir"), Name: new("lib"), Path: new("lib")},
+		{Type: new("file"), Name: new("LICENSE"), Size: new(20678), Path: new("LICENSE")},
 	}
 	if !cmp.Equal(directoryContents, want) {
 		t.Errorf("Repositories.GetContents_Directory returned %+v, want %+v", directoryContents, want)
@@ -807,9 +807,9 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 		}`)
 	})
 	repositoryContentsOptions := &RepositoryContentFileOptions{
-		Message:   Ptr("m"),
+		Message:   new("m"),
 		Content:   []byte("c"),
-		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
+		Committer: &CommitAuthor{Name: new("n"), Email: new("e")},
 	}
 	ctx := t.Context()
 	createResponse, _, err := client.Repositories.CreateFile(ctx, "o", "r", "p", repositoryContentsOptions)
@@ -817,10 +817,10 @@ func TestRepositoriesService_CreateFile(t *testing.T) {
 		t.Errorf("Repositories.CreateFile returned error: %v", err)
 	}
 	want := &RepositoryContentResponse{
-		Content: &RepositoryContent{Name: Ptr("p")},
+		Content: &RepositoryContent{Name: new("p")},
 		Commit: Commit{
-			Message: Ptr("m"),
-			SHA:     Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
+			Message: new("m"),
+			SHA:     new("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
 	}
 	if !cmp.Equal(createResponse, want) {
@@ -859,10 +859,10 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 		}`)
 	})
 	repositoryContentsOptions := &RepositoryContentFileOptions{
-		Message:   Ptr("m"),
+		Message:   new("m"),
 		Content:   []byte("c"),
-		SHA:       Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
-		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
+		SHA:       new("f5f369044773ff9c6383c087466d12adb6fa0828"),
+		Committer: &CommitAuthor{Name: new("n"), Email: new("e")},
 	}
 	ctx := t.Context()
 	updateResponse, _, err := client.Repositories.UpdateFile(ctx, "o", "r", "p", repositoryContentsOptions)
@@ -870,10 +870,10 @@ func TestRepositoriesService_UpdateFile(t *testing.T) {
 		t.Errorf("Repositories.UpdateFile returned error: %v", err)
 	}
 	want := &RepositoryContentResponse{
-		Content: &RepositoryContent{Name: Ptr("p")},
+		Content: &RepositoryContent{Name: new("p")},
 		Commit: Commit{
-			Message: Ptr("m"),
-			SHA:     Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
+			Message: new("m"),
+			SHA:     new("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
 	}
 	if !cmp.Equal(updateResponse, want) {
@@ -910,9 +910,9 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 		}`)
 	})
 	repositoryContentsOptions := &RepositoryContentFileOptions{
-		Message:   Ptr("m"),
-		SHA:       Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
-		Committer: &CommitAuthor{Name: Ptr("n"), Email: Ptr("e")},
+		Message:   new("m"),
+		SHA:       new("f5f369044773ff9c6383c087466d12adb6fa0828"),
+		Committer: &CommitAuthor{Name: new("n"), Email: new("e")},
 	}
 	ctx := t.Context()
 	deleteResponse, _, err := client.Repositories.DeleteFile(ctx, "o", "r", "p", repositoryContentsOptions)
@@ -922,8 +922,8 @@ func TestRepositoriesService_DeleteFile(t *testing.T) {
 	want := &RepositoryContentResponse{
 		Content: nil,
 		Commit: Commit{
-			Message: Ptr("m"),
-			SHA:     Ptr("f5f369044773ff9c6383c087466d12adb6fa0828"),
+			Message: new("m"),
+			SHA:     new("f5f369044773ff9c6383c087466d12adb6fa0828"),
 		},
 	}
 	if !cmp.Equal(deleteResponse, want) {

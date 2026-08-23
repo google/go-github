@@ -47,7 +47,7 @@ func TestRepositoriesService_ListCommits(t *testing.T) {
 		t.Errorf("Repositories.ListCommits returned error: %v", err)
 	}
 
-	want := []*RepositoryCommit{{SHA: Ptr("s")}}
+	want := []*RepositoryCommit{{SHA: new("s")}}
 	if !cmp.Equal(commits, want) {
 		t.Errorf("Repositories.ListCommits returned %+v, want %+v", commits, want)
 	}
@@ -105,37 +105,37 @@ func TestRepositoriesService_GetCommit(t *testing.T) {
 	}
 
 	want := &RepositoryCommit{
-		SHA: Ptr("s"),
+		SHA: new("s"),
 		Commit: &Commit{
-			Message: Ptr("m"),
+			Message: new("m"),
 		},
 		Author: &User{
-			Login: Ptr("l"),
+			Login: new("l"),
 		},
 		Committer: &User{
-			Login: Ptr("l"),
+			Login: new("l"),
 		},
 		Parents: []*Commit{
 			{
-				SHA: Ptr("s"),
+				SHA: new("s"),
 			},
 		},
 		Stats: &CommitStats{
-			Additions: Ptr(104),
-			Deletions: Ptr(4),
-			Total:     Ptr(108),
+			Additions: new(104),
+			Deletions: new(4),
+			Total:     new(108),
 		},
 		Files: []*CommitFile{
 			{
-				Filename:    Ptr("f"),
-				Additions:   Ptr(10),
-				Deletions:   Ptr(2),
-				Changes:     Ptr(12),
-				Status:      Ptr("s"),
-				Patch:       Ptr("p"),
-				BlobURL:     Ptr("b"),
-				RawURL:      Ptr("r"),
-				ContentsURL: Ptr("c"),
+				Filename:    new("f"),
+				Additions:   new(10),
+				Deletions:   new(2),
+				Changes:     new(12),
+				Status:      new("s"),
+				Patch:       new("p"),
+				BlobURL:     new("b"),
+				RawURL:      new("r"),
+				ContentsURL: new("c"),
 			},
 		},
 	}
@@ -445,50 +445,50 @@ func TestRepositoriesService_CompareCommits(t *testing.T) {
 
 			want := &CommitsComparison{
 				BaseCommit: &RepositoryCommit{
-					SHA: Ptr("s"),
+					SHA: new("s"),
 					Commit: &Commit{
-						Author:    &CommitAuthor{Name: Ptr("n")},
-						Committer: &CommitAuthor{Name: Ptr("n")},
-						Message:   Ptr("m"),
-						Tree:      &Tree{SHA: Ptr("t")},
+						Author:    &CommitAuthor{Name: new("n")},
+						Committer: &CommitAuthor{Name: new("n")},
+						Message:   new("m"),
+						Tree:      &Tree{SHA: new("t")},
 					},
-					Author:    &User{Login: Ptr("l")},
-					Committer: &User{Login: Ptr("l")},
+					Author:    &User{Login: new("l")},
+					Committer: &User{Login: new("l")},
 					Parents: []*Commit{
 						{
-							SHA: Ptr("s"),
+							SHA: new("s"),
 						},
 					},
 				},
-				Status:       Ptr("s"),
-				AheadBy:      Ptr(1),
-				BehindBy:     Ptr(2),
-				TotalCommits: Ptr(1),
+				Status:       new("s"),
+				AheadBy:      new(1),
+				BehindBy:     new(2),
+				TotalCommits: new(1),
 				Commits: []*RepositoryCommit{
 					{
-						SHA: Ptr("s"),
+						SHA: new("s"),
 						Commit: &Commit{
-							Author: &CommitAuthor{Name: Ptr("n")},
+							Author: &CommitAuthor{Name: new("n")},
 						},
-						Author:    &User{Login: Ptr("l")},
-						Committer: &User{Login: Ptr("l")},
+						Author:    &User{Login: new("l")},
+						Committer: &User{Login: new("l")},
 						Parents: []*Commit{
 							{
-								SHA: Ptr("s"),
+								SHA: new("s"),
 							},
 						},
 					},
 				},
 				Files: []*CommitFile{
 					{
-						Filename: Ptr("f"),
+						Filename: new("f"),
 					},
 				},
-				HTMLURL:      Ptr(fmt.Sprintf("https://github.com/o/r/compare/%v...%v", escapedBase, escapedHead)),
-				PermalinkURL: Ptr("https://github.com/o/r/compare/o:bbcd538c8e72b8c175046e27cc8f907076331401...o:0328041d1152db8ae77652d1618a02e57f745f17"),
-				DiffURL:      Ptr(fmt.Sprintf("https://github.com/o/r/compare/%v...%v.diff", escapedBase, escapedHead)),
-				PatchURL:     Ptr(fmt.Sprintf("https://github.com/o/r/compare/%v...%v.patch", escapedBase, escapedHead)),
-				URL:          Ptr(fmt.Sprintf("https://api.github.com/repos/o/r/compare/%v...%v", escapedBase, escapedHead)),
+				HTMLURL:      new(fmt.Sprintf("https://github.com/o/r/compare/%v...%v", escapedBase, escapedHead)),
+				PermalinkURL: new("https://github.com/o/r/compare/o:bbcd538c8e72b8c175046e27cc8f907076331401...o:0328041d1152db8ae77652d1618a02e57f745f17"),
+				DiffURL:      new(fmt.Sprintf("https://github.com/o/r/compare/%v...%v.diff", escapedBase, escapedHead)),
+				PatchURL:     new(fmt.Sprintf("https://github.com/o/r/compare/%v...%v.patch", escapedBase, escapedHead)),
+				URL:          new(fmt.Sprintf("https://api.github.com/repos/o/r/compare/%v...%v", escapedBase, escapedHead)),
 			}
 
 			if !cmp.Equal(got, want) {
@@ -659,12 +659,12 @@ func TestRepositoriesService_ListBranchesHeadCommit(t *testing.T) {
 
 	want := []*BranchCommit{
 		{
-			Name: Ptr("b"),
+			Name: new("b"),
 			Commit: &Commit{
-				SHA: Ptr("2e90302801c870f17b6152327d9b9a03c8eca0e2"),
-				URL: Ptr("https://api.github.com/repos/google/go-github/commits/2e90302801c870f17b6152327d9b9a03c8eca0e2"),
+				SHA: new("2e90302801c870f17b6152327d9b9a03c8eca0e2"),
+				URL: new("https://api.github.com/repos/google/go-github/commits/2e90302801c870f17b6152327d9b9a03c8eca0e2"),
 			},
-			Protected: Ptr(true),
+			Protected: new(true),
 		},
 	}
 	if !cmp.Equal(branches, want) {

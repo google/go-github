@@ -48,20 +48,20 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 	want := &EnterpriseListBudgets{
 		Budgets: []*EnterpriseBudget{
 			{
-				ID:                  Ptr("2066deda-923f-43f9-88d2-62395a28c0cdd"),
-				BudgetType:          Ptr(BudgetTypeProductPricing),
-				BudgetProductSKU:    Ptr("actions"),
-				BudgetScope:         Ptr(BudgetScopeEnterprise),
-				BudgetAmount:        Ptr(1000),
-				PreventFurtherUsage: Ptr(true),
+				ID:                  new("2066deda-923f-43f9-88d2-62395a28c0cdd"),
+				BudgetType:          new(BudgetTypeProductPricing),
+				BudgetProductSKU:    new("actions"),
+				BudgetScope:         new(BudgetScopeEnterprise),
+				BudgetAmount:        new(1000),
+				PreventFurtherUsage: new(true),
 				BudgetAlerting: &EnterpriseBudgetAlerting{
-					WillAlert:       Ptr(true),
+					WillAlert:       new(true),
 					AlertRecipients: []string{"enterprise-admin"},
 				},
 			},
 		},
-		HasNextPage: Ptr(true),
-		TotalCount:  Ptr(1),
+		HasNextPage: new(true),
+		TotalCount:  new(1),
 	}
 	if !cmp.Equal(budgets, want) {
 		t.Errorf("Enterprise.ListBudgets returned %+v, want %+v", budgets, want)
@@ -100,7 +100,7 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 		PreventFurtherUsage: true,
 		BudgetScope:         BudgetScopeEnterprise,
 		BudgetType:          BudgetTypeProductPricing,
-		BudgetProductSKU:    Ptr("actions"),
+		BudgetProductSKU:    new("actions"),
 		BudgetAlerting:      &EnterpriseBudgetAlerting{},
 	}
 
@@ -126,9 +126,9 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 	want := &EnterpriseCreateOrUpdateBudgetResponse{
 		Message: "Budget successfully created.",
 		Budget: &EnterpriseBudget{
-			ID:                  Ptr("b-123"),
-			BudgetAmount:        Ptr(200),
-			PreventFurtherUsage: Ptr(true),
+			ID:                  new("b-123"),
+			BudgetAmount:        new(200),
+			PreventFurtherUsage: new(true),
 		},
 	}
 	if !cmp.Equal(resp, want) {
@@ -182,12 +182,12 @@ func TestEnterpriseService_GetBudget(t *testing.T) {
 	}
 
 	want := &EnterpriseBudget{
-		ID:                  Ptr("2066deda-923f-43f9-88d2-62395a28c0cdd"),
-		BudgetType:          Ptr(BudgetTypeProductPricing),
-		BudgetProductSKU:    Ptr("actions_linux"),
-		BudgetScope:         Ptr(BudgetScopeRepository),
-		BudgetAmount:        Ptr(0),
-		PreventFurtherUsage: Ptr(true),
+		ID:                  new("2066deda-923f-43f9-88d2-62395a28c0cdd"),
+		BudgetType:          new(BudgetTypeProductPricing),
+		BudgetProductSKU:    new("actions_linux"),
+		BudgetScope:         new(BudgetScopeRepository),
+		BudgetAmount:        new(0),
+		PreventFurtherUsage: new(true),
 	}
 	if !cmp.Equal(budget, want) {
 		t.Errorf("Enterprise.GetBudget returned %+v, want %+v", budget, want)
@@ -222,8 +222,8 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	req := EnterpriseUpdateBudget{
-		BudgetAmount:        Ptr(10),
-		PreventFurtherUsage: Ptr(false),
+		BudgetAmount:        new(10),
+		PreventFurtherUsage: new(false),
 	}
 
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets/b-123", func(w http.ResponseWriter, r *http.Request) {
@@ -248,9 +248,9 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 	want := &EnterpriseCreateOrUpdateBudgetResponse{
 		Message: "Budget successfully updated.",
 		Budget: &EnterpriseBudget{
-			ID:                  Ptr("b-123"),
-			BudgetAmount:        Ptr(10),
-			PreventFurtherUsage: Ptr(false),
+			ID:                  new("b-123"),
+			BudgetAmount:        new(10),
+			PreventFurtherUsage: new(false),
 		},
 	}
 	if !cmp.Equal(resp, want) {

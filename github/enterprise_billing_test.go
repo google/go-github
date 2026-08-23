@@ -71,7 +71,7 @@ func TestEnterpriseService_GetUsageReport(t *testing.T) {
 				DiscountAmount:   0.0,
 				NetAmount:        0.8,
 				OrganizationName: "GitHub",
-				RepositoryName:   Ptr("github/example"),
+				RepositoryName:   new("github/example"),
 			},
 		},
 	}
@@ -293,13 +293,13 @@ func TestEnterpriseService_GetPremiumRequestUsageReport(t *testing.T) {
 	want := &EnterpriseAggregatedUsageReport{
 		TimePeriod: EnterpriseUsageTimePeriod{
 			Year:  2025,
-			Month: Ptr(10),
+			Month: new(10),
 		},
 		Enterprise:   "GitHub",
-		Organization: Ptr("GitHub"),
-		User:         Ptr("testuser"),
-		Product:      Ptr("Copilot"),
-		Model:        Ptr("GPT-5"),
+		Organization: new("GitHub"),
+		User:         new("testuser"),
+		Product:      new("Copilot"),
+		Model:        new("GPT-5"),
 		UsageItems: []*EnterpriseAggregatedUsageItem{
 			{
 				Product:          "Copilot",
@@ -420,13 +420,13 @@ func TestEnterpriseService_GetAICreditUsage(t *testing.T) {
 	want := &EnterpriseAggregatedUsageReport{
 		TimePeriod: EnterpriseUsageTimePeriod{
 			Year:  2025,
-			Month: Ptr(6),
+			Month: new(6),
 		},
 		Enterprise:   "GitHub",
-		Organization: Ptr("GitHub"),
-		User:         Ptr("testuser"),
-		Product:      Ptr("Copilot"),
-		Model:        Ptr("GPT-5"),
+		Organization: new("GitHub"),
+		User:         new("testuser"),
+		Product:      new("Copilot"),
+		Model:        new("GPT-5"),
 		UsageItems: []*EnterpriseAggregatedUsageItem{
 			{
 				Product:          "Copilot",

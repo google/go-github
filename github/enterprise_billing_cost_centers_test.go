@@ -57,7 +57,7 @@ func TestEnterpriseService_ListCostCenters(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListCostCenterOptions{
-		State: Ptr("active"),
+		State: new("active"),
 	}
 	costCenters, _, err := client.Enterprise.ListCostCenters(ctx, "e", opts)
 	if err != nil {
@@ -69,8 +69,8 @@ func TestEnterpriseService_ListCostCenters(t *testing.T) {
 			{
 				ID:                "2eeb8ffe-6903-11ee-8c99-0242ac120002",
 				Name:              "Cost Center Name",
-				State:             Ptr("active"),
-				AzureSubscription: Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+				State:             new("active"),
+				AzureSubscription: new("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 				Resources: []*CostCenterResource{
 					{
 						Type: "User",
@@ -85,7 +85,7 @@ func TestEnterpriseService_ListCostCenters(t *testing.T) {
 			{
 				ID:    "3ffb9ffe-6903-11ee-8c99-0242ac120003",
 				Name:  "Another Cost Center",
-				State: Ptr("active"),
+				State: new("active"),
 				Resources: []*CostCenterResource{
 					{
 						Type: "User",
@@ -213,8 +213,8 @@ func TestEnterpriseService_GetCostCenter(t *testing.T) {
 	want := &CostCenter{
 		ID:                "2eeb8ffe-6903-11ee-8c99-0242ac120002",
 		Name:              "Cost Center Name",
-		State:             Ptr("active"),
-		AzureSubscription: Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+		State:             new("active"),
+		AzureSubscription: new("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		Resources: []*CostCenterResource{
 			{
 				Type: "User",
@@ -292,8 +292,8 @@ func TestEnterpriseService_UpdateCostCenter(t *testing.T) {
 	want := &CostCenter{
 		ID:                "2eeb8ffe-6903-11ee-8c99-0242ac120002",
 		Name:              "Updated Cost Center Name",
-		State:             Ptr("active"),
-		AzureSubscription: Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+		State:             new("active"),
+		AzureSubscription: new("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		Resources: []*CostCenterResource{
 			{
 				Type: "User",
@@ -427,22 +427,22 @@ func TestEnterpriseService_AddResourcesToCostCenter(t *testing.T) {
 	}
 
 	want := &AddResourcesToCostCenterResponse{
-		Message: Ptr("Resources successfully added to the cost center."),
+		Message: new("Resources successfully added to the cost center."),
 		ReassignedResources: []*ReassignedResource{
 			{
-				ResourceType:       Ptr("user"),
-				Name:               Ptr("monalisa"),
-				PreviousCostCenter: Ptr("old-cost-center"),
+				ResourceType:       new("user"),
+				Name:               new("monalisa"),
+				PreviousCostCenter: new("old-cost-center"),
 			},
 			{
-				ResourceType:       Ptr("organization"),
-				Name:               Ptr("octo-org"),
-				PreviousCostCenter: Ptr("another-cost-center"),
+				ResourceType:       new("organization"),
+				Name:               new("octo-org"),
+				PreviousCostCenter: new("another-cost-center"),
 			},
 			{
-				ResourceType:       Ptr("repository"),
-				Name:               Ptr("octo-repo"),
-				PreviousCostCenter: Ptr("yet-another-cost-center"),
+				ResourceType:       new("repository"),
+				Name:               new("octo-repo"),
+				PreviousCostCenter: new("yet-another-cost-center"),
 			},
 		},
 	}
@@ -497,7 +497,7 @@ func TestEnterpriseService_RemoveResourcesFromCostCenter(t *testing.T) {
 	}
 
 	want := &RemoveResourcesFromCostCenterResponse{
-		Message: Ptr("Resources successfully removed from the cost center."),
+		Message: new("Resources successfully removed from the cost center."),
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Enterprise.RemoveResourcesFromCostCenter returned %+v, want %+v", result, want)

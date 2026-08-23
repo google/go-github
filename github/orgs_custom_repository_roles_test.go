@@ -51,24 +51,24 @@ func TestOrganizationsService_ListCustomRepoRoles(t *testing.T) {
 	}
 
 	want := &OrganizationCustomRepoRoles{
-		TotalCount: Ptr(1),
+		TotalCount: new(1),
 		CustomRepoRoles: []*CustomRepoRoles{
 			{
-				ID:          Ptr(int64(1)),
-				Name:        Ptr("Developer"),
-				BaseRole:    Ptr("write"),
+				ID:          new(int64(1)),
+				Name:        new("Developer"),
+				BaseRole:    new("write"),
 				Permissions: []string{"delete_alerts_code_scanning"},
 				Org: &Organization{
-					Login:     Ptr("l"),
-					ID:        Ptr(int64(1)),
-					NodeID:    Ptr("n"),
-					AvatarURL: Ptr("a"),
-					HTMLURL:   Ptr("h"),
-					Name:      Ptr("n"),
-					Company:   Ptr("c"),
-					Blog:      Ptr("b"),
-					Location:  Ptr("l"),
-					Email:     Ptr("e"),
+					Login:     new("l"),
+					ID:        new(int64(1)),
+					NodeID:    new("n"),
+					AvatarURL: new("a"),
+					HTMLURL:   new("h"),
+					Name:      new("n"),
+					Company:   new("c"),
+					Blog:      new("b"),
+					Location:  new("l"),
+					Email:     new("e"),
 				},
 				CreatedAt: refTimestamp(1136178000),
 				UpdatedAt: refTimestamp(1136178001),
@@ -129,21 +129,21 @@ func TestOrganizationsService_GetCustomRepoRole(t *testing.T) {
 	}
 
 	want := &CustomRepoRoles{
-		ID:          Ptr(int64(1)),
-		Name:        Ptr("Developer"),
-		BaseRole:    Ptr("write"),
+		ID:          new(int64(1)),
+		Name:        new("Developer"),
+		BaseRole:    new("write"),
 		Permissions: []string{"delete_alerts_code_scanning"},
 		Org: &Organization{
-			Login:     Ptr("l"),
-			ID:        Ptr(int64(1)),
-			NodeID:    Ptr("n"),
-			AvatarURL: Ptr("a"),
-			HTMLURL:   Ptr("h"),
-			Name:      Ptr("n"),
-			Company:   Ptr("c"),
-			Blog:      Ptr("b"),
-			Location:  Ptr("l"),
-			Email:     Ptr("e"),
+			Login:     new("l"),
+			ID:        new(int64(1)),
+			NodeID:    new("n"),
+			AvatarURL: new("a"),
+			HTMLURL:   new("h"),
+			Name:      new("n"),
+			Company:   new("c"),
+			Blog:      new("b"),
+			Location:  new("l"),
+			Email:     new("e"),
 		},
 		CreatedAt: refTimestamp(1136178000),
 		UpdatedAt: refTimestamp(1136178001),
@@ -185,7 +185,7 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 
 	body := CreateCustomRepoRoleRequest{
 		Name:        "Labeler",
-		Description: Ptr("A role for issue and PR labelers"),
+		Description: new("A role for issue and PR labelers"),
 		BaseRole:    "read",
 		Permissions: []string{"add_label"},
 	}
@@ -194,7 +194,7 @@ func TestOrganizationsService_CreateCustomRepoRole(t *testing.T) {
 		t.Errorf("Organizations.CreateCustomRepoRole returned error: %v", err)
 	}
 
-	want := &CustomRepoRoles{ID: Ptr(int64(8030)), Name: Ptr("Labeler"), BaseRole: Ptr("read"), Permissions: []string{"add_label"}, Description: Ptr("A role for issue and PR labelers")}
+	want := &CustomRepoRoles{ID: new(int64(8030)), Name: new("Labeler"), BaseRole: new("read"), Permissions: []string{"add_label"}, Description: new("A role for issue and PR labelers")}
 
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.CreateCustomRepoRole returned %+v, want %+v", apps, want)
@@ -227,15 +227,15 @@ func TestOrganizationsService_UpdateCustomRepoRole(t *testing.T) {
 	ctx := t.Context()
 
 	body := UpdateCustomRepoRoleRequest{
-		Name:        Ptr("Updated Name"),
-		Description: Ptr("Updated Description"),
+		Name:        new("Updated Name"),
+		Description: new("Updated Description"),
 	}
 	apps, _, err := client.Organizations.UpdateCustomRepoRole(ctx, "o", 8030, body)
 	if err != nil {
 		t.Errorf("Organizations.UpdateCustomRepoRole returned error: %v", err)
 	}
 
-	want := &CustomRepoRoles{ID: Ptr(int64(8030)), Name: Ptr("Updated Name"), BaseRole: Ptr("read"), Permissions: []string{"add_label"}, Description: Ptr("Updated Description")}
+	want := &CustomRepoRoles{ID: new(int64(8030)), Name: new("Updated Name"), BaseRole: new("read"), Permissions: []string{"add_label"}, Description: new("Updated Description")}
 
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.UpdateCustomRepoRole returned %+v, want %+v", apps, want)

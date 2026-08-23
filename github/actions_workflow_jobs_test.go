@@ -34,10 +34,10 @@ func TestActionsService_ListWorkflowJobs(t *testing.T) {
 	}
 
 	want := &Jobs{
-		TotalCount: Ptr(4),
+		TotalCount: new(4),
 		Jobs: []*WorkflowJob{
-			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: refTimestamp(1136178000), CompletedAt: refTimestamp(1136178001)},
-			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: refTimestamp(1136178002), CompletedAt: refTimestamp(1136178003)},
+			{ID: new(int64(399444496)), RunID: new(int64(29679449)), StartedAt: refTimestamp(1136178000), CompletedAt: refTimestamp(1136178001)},
+			{ID: new(int64(399444497)), RunID: new(int64(29679449)), StartedAt: refTimestamp(1136178002), CompletedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(jobs, want) {
@@ -77,10 +77,10 @@ func TestActionsService_ListWorkflowJobs_Filter(t *testing.T) {
 	}
 
 	want := &Jobs{
-		TotalCount: Ptr(4),
+		TotalCount: new(4),
 		Jobs: []*WorkflowJob{
-			{ID: Ptr(int64(399444496)), RunID: Ptr(int64(29679449)), StartedAt: refTimestamp(1136178000), CompletedAt: refTimestamp(1136178001)},
-			{ID: Ptr(int64(399444497)), RunID: Ptr(int64(29679449)), StartedAt: refTimestamp(1136178002), CompletedAt: refTimestamp(1136178003)},
+			{ID: new(int64(399444496)), RunID: new(int64(29679449)), StartedAt: refTimestamp(1136178000), CompletedAt: refTimestamp(1136178001)},
+			{ID: new(int64(399444497)), RunID: new(int64(29679449)), StartedAt: refTimestamp(1136178002), CompletedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(jobs, want) {
@@ -105,21 +105,21 @@ func TestActionsService_ListWorkflowJobsAttempt(t *testing.T) {
 	}
 
 	want := &Jobs{
-		TotalCount: Ptr(4),
+		TotalCount: new(4),
 		Jobs: []*WorkflowJob{
 			{
-				ID:          Ptr(int64(399444496)),
-				RunID:       Ptr(int64(29679449)),
+				ID:          new(int64(399444496)),
+				RunID:       new(int64(29679449)),
 				StartedAt:   refTimestamp(1136178000),
 				CompletedAt: refTimestamp(1136178001),
-				RunAttempt:  Ptr(int64(2)),
+				RunAttempt:  new(int64(2)),
 			},
 			{
-				ID:          Ptr(int64(399444497)),
-				RunID:       Ptr(int64(29679449)),
+				ID:          new(int64(399444497)),
+				RunID:       new(int64(29679449)),
 				StartedAt:   refTimestamp(1136178002),
 				CompletedAt: refTimestamp(1136178003),
-				RunAttempt:  Ptr(int64(2)),
+				RunAttempt:  new(int64(2)),
 			},
 		},
 	}
@@ -158,7 +158,7 @@ func TestActionsService_GetWorkflowJobByID(t *testing.T) {
 	}
 
 	want := &WorkflowJob{
-		ID:          Ptr(int64(399444496)),
+		ID:          new(int64(399444496)),
 		StartedAt:   refTimestamp(1136178000),
 		CompletedAt: refTimestamp(1136178001),
 	}

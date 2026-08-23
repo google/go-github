@@ -27,7 +27,7 @@ func TestRepositoryService_GetActionsAllowed(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetActionsAllowed returned error: %v", err)
 	}
-	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.GetActionsAllowed returned %+v, want %+v", org, want)
 	}
@@ -51,7 +51,7 @@ func TestRepositoriesService_EditActionsAllowed(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	input := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -65,7 +65,7 @@ func TestRepositoriesService_EditActionsAllowed(t *testing.T) {
 		t.Errorf("Repositories.EditActionsAllowed returned error: %v", err)
 	}
 
-	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.EditActionsAllowed returned %+v, want %+v", org, want)
 	}
