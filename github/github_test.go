@@ -2296,6 +2296,50 @@ func TestDo_httpError(t *testing.T) {
 	}
 }
 
+// closeRecorder flags when the response body handed back by the transport
+// is closed.
+type closeRecorder struct {
+	io.ReadCloser
+	closed *bool
+}
+
+func (r *closeRecorder) Close() error {
+	*r.closed = true
+	return r.ReadCloser.Close()
+}
+
+// CheckResponse substitutes resp.Body with a re-readable copy on error
+// responses; the network body it replaces must still be closed.
+func TestDo_closesOriginalBodyOnErrorResponse(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, `{"message":"Bad Request"}`, 400)
+	})
+
+	var closed bool
+	base := client.client.Transport
+	if base == nil {
+		base = http.DefaultTransport
+	}
+	client.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		resp, err := base.RoundTrip(req)
+		if resp != nil {
+			resp.Body = &closeRecorder{ReadCloser: resp.Body, closed: &closed}
+		}
+		return resp, err
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	if _, err := client.Do(req, nil); err == nil {
+		t.Fatal("Expected HTTP 400 error, got no error.")
+	}
+	if !closed {
+		t.Error("original response body was not closed on an error response")
+	}
+}
+
 // Test handling of an error caused by the internal http client's Do()
 // function. A redirect loop is pretty unlikely to occur within the GitHub
 // API, but does allow us to exercise the right code path.
