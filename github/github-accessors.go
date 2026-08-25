@@ -9238,6 +9238,14 @@ func (c *CopilotDailyMetrics) GetTotalsBy3rdPartyAgent() []*CopilotMetricsThirdP
 	return c.TotalsBy3rdPartyAgent
 }
 
+// GetTotalsByAIAdoptionPhase returns the TotalsByAIAdoptionPhase slice if it's non-nil, nil otherwise.
+func (c *CopilotDailyMetrics) GetTotalsByAIAdoptionPhase() []*CopilotMetricsAIAdoptionPhaseTotals {
+	if c == nil || c.TotalsByAIAdoptionPhase == nil {
+		return nil
+	}
+	return c.TotalsByAIAdoptionPhase
+}
+
 // GetTotalsByCLI returns the TotalsByCLI field.
 func (c *CopilotDailyMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 	if c == nil {
@@ -9764,6 +9772,150 @@ func (c *CopilotMetrics) GetTotalEngagedUsers() int {
 		return 0
 	}
 	return *c.TotalEngagedUsers
+}
+
+// GetPhase returns the Phase field.
+func (c *CopilotMetricsAIAdoptionPhase) GetPhase() string {
+	if c == nil {
+		return ""
+	}
+	return c.Phase
+}
+
+// GetPhaseNumber returns the PhaseNumber field.
+func (c *CopilotMetricsAIAdoptionPhase) GetPhaseNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.PhaseNumber
+}
+
+// GetVersion returns the Version field.
+func (c *CopilotMetricsAIAdoptionPhase) GetVersion() string {
+	if c == nil {
+		return ""
+	}
+	return c.Version
+}
+
+// GetAvgCodeAcceptanceActivities returns the AvgCodeAcceptanceActivities field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgCodeAcceptanceActivities() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgCodeAcceptanceActivities
+}
+
+// GetAvgCodeGenerationActivities returns the AvgCodeGenerationActivities field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgCodeGenerationActivities() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgCodeGenerationActivities
+}
+
+// GetAvgLOCAdded returns the AvgLOCAdded field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgLOCAdded() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgLOCAdded
+}
+
+// GetAvgLOCDeleted returns the AvgLOCDeleted field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgLOCDeleted() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgLOCDeleted
+}
+
+// GetAvgPullRequestsCreated returns the AvgPullRequestsCreated field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsCreated() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgPullRequestsCreated
+}
+
+// GetAvgPullRequestsMedianMinutesToMerge returns the AvgPullRequestsMedianMinutesToMerge field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsMedianMinutesToMerge() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgPullRequestsMedianMinutesToMerge
+}
+
+// GetAvgPullRequestsMerged returns the AvgPullRequestsMerged field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsMerged() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgPullRequestsMerged
+}
+
+// GetAvgPullRequestsMinutesToReview returns the AvgPullRequestsMinutesToReview field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsMinutesToReview() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgPullRequestsMinutesToReview
+}
+
+// GetAvgPullRequestsReviewCycles returns the AvgPullRequestsReviewCycles field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsReviewCycles() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgPullRequestsReviewCycles
+}
+
+// GetAvgPullRequestsReviewed returns the AvgPullRequestsReviewed field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgPullRequestsReviewed() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgPullRequestsReviewed
+}
+
+// GetAvgUserInitiatedInteractions returns the AvgUserInitiatedInteractions field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetAvgUserInitiatedInteractions() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.AvgUserInitiatedInteractions
+}
+
+// GetPhase returns the Phase field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetPhase() string {
+	if c == nil {
+		return ""
+	}
+	return c.Phase
+}
+
+// GetPhaseNumber returns the PhaseNumber field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetPhaseNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.PhaseNumber
+}
+
+// GetTotalEngagedUsers returns the TotalEngagedUsers field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetTotalEngagedUsers() int {
+	if c == nil {
+		return 0
+	}
+	return c.TotalEngagedUsers
+}
+
+// GetTotalPullRequestsMerged returns the TotalPullRequestsMerged field.
+func (c *CopilotMetricsAIAdoptionPhaseTotals) GetTotalPullRequestsMerged() int {
+	if c == nil {
+		return 0
+	}
+	return c.TotalPullRequestsMerged
 }
 
 // GetChatPanelAgentMode returns the ChatPanelAgentMode field if it's non-nil, zero value otherwise.
@@ -10406,6 +10558,22 @@ func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
+// GetAIAdoptionPhase returns the AIAdoptionPhase field.
+func (c *CopilotUserDailyMetrics) GetAIAdoptionPhase() *CopilotMetricsAIAdoptionPhase {
+	if c == nil {
+		return nil
+	}
+	return c.AIAdoptionPhase
+}
+
+// GetAICreditsUsed returns the AICreditsUsed field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetAICreditsUsed() float64 {
+	if c == nil || c.AICreditsUsed == nil {
+		return 0
+	}
+	return *c.AICreditsUsed
+}
+
 // GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
 func (c *CopilotUserDailyMetrics) GetCodeAcceptanceActivityCount() int {
 	if c == nil || c.CodeAcceptanceActivityCount == nil {
@@ -10676,6 +10844,22 @@ func (c *CopilotUserMetricsPluginVersion) GetSampledAt() Timestamp {
 		return Timestamp{}
 	}
 	return *c.SampledAt
+}
+
+// GetAIAdoptionPhase returns the AIAdoptionPhase field.
+func (c *CopilotUserPeriodicMetrics) GetAIAdoptionPhase() *CopilotMetricsAIAdoptionPhase {
+	if c == nil {
+		return nil
+	}
+	return c.AIAdoptionPhase
+}
+
+// GetAICreditsUsed returns the AICreditsUsed field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetAICreditsUsed() float64 {
+	if c == nil || c.AICreditsUsed == nil {
+		return 0
+	}
+	return *c.AICreditsUsed
 }
 
 // GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
