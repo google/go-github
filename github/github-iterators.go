@@ -3327,6 +3327,41 @@ func (s *EnterpriseService) ListTeamsIter(ctx context.Context, enterprise string
 	}
 }
 
+// ListVisualStudioSubscriptionsIter returns an iterator that paginates through all results of ListVisualStudioSubscriptions.
+func (s *EnterpriseService) ListVisualStudioSubscriptionsIter(ctx context.Context, enterprise string, opts *ListVisualStudioSubscriptionsOptions) iter.Seq2[*VisualStudioSubscriptionAssignment, error] {
+	return func(yield func(*VisualStudioSubscriptionAssignment, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListVisualStudioSubscriptionsOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListVisualStudioSubscriptions(ctx, enterprise, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*VisualStudioSubscriptionAssignment
+			if results != nil {
+				iterItems = results.VisualStudioSubscriptionAssignments
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListIter returns an iterator that paginates through all results of List.
 func (s *GistsService) ListIter(ctx context.Context, user string, opts *GistListOptions) iter.Seq2[*Gist, error] {
 	return func(yield func(*Gist, error) bool) {
