@@ -3035,8 +3035,14 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 			"organization_id": "123",
 			"daily_active_cli_users": 2,
 			"daily_active_users": 10,
+			"daily_active_copilot_code_review_users": 3,
+			"daily_passive_copilot_code_review_users": 1,
 			"weekly_active_users": 20,
+			"weekly_active_copilot_code_review_users": 8,
+			"weekly_passive_copilot_code_review_users": 2,
 			"monthly_active_users": 30,
+			"monthly_active_copilot_code_review_users": 15,
+			"monthly_passive_copilot_code_review_users": 4,
 			"chat_panel_ask_mode": 4,
 			"totals_by_ide": [
 				{"ide": "vscode", "user_initiated_interaction_count": 5, "loc_added_sum": 100}
@@ -3113,12 +3119,18 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 	}
 
 	want := &CopilotDailyMetrics{
-		Day:                 "2026-04-01",
-		OrganizationID:      new("123"),
-		DailyActiveCLIUsers: new(2),
-		DailyActiveUsers:    new(10),
-		WeeklyActiveUsers:   new(20),
-		MonthlyActiveUsers:  new(30),
+		Day:                                  "2026-04-01",
+		OrganizationID:                       new("123"),
+		DailyActiveCLIUsers:                  new(2),
+		DailyActiveUsers:                     new(10),
+		DailyActiveCopilotCodeReviewUsers:    new(3),
+		DailyPassiveCopilotCodeReviewUsers:   new(1),
+		WeeklyActiveUsers:                    new(20),
+		WeeklyActiveCopilotCodeReviewUsers:   new(8),
+		WeeklyPassiveCopilotCodeReviewUsers:  new(2),
+		MonthlyActiveUsers:                   new(30),
+		MonthlyActiveCopilotCodeReviewUsers:  new(15),
+		MonthlyPassiveCopilotCodeReviewUsers: new(4),
 		CopilotMetricsChatPanel: CopilotMetricsChatPanel{
 			ChatPanelAskMode: new(4),
 		},
@@ -3260,6 +3272,10 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 					"day": "2026-03-05",
 					"daily_active_cli_users": 2,
 					"daily_active_users": 5,
+					"daily_active_copilot_code_review_users": 2,
+					"daily_passive_copilot_code_review_users": 1,
+					"weekly_active_copilot_code_review_users": 6,
+					"monthly_active_copilot_code_review_users": 12,
 					"totals_by_cli": {
 						"session_count": 1,
 						"request_count": 2,
@@ -3298,9 +3314,13 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 		CreatedAt:      refTimestamp(1136178000),
 		DayTotals: []*CopilotDailyMetrics{
 			{
-				Day:                 "2026-03-05",
-				DailyActiveCLIUsers: new(2),
-				DailyActiveUsers:    new(5),
+				Day:                                 "2026-03-05",
+				DailyActiveCLIUsers:                 new(2),
+				DailyActiveUsers:                    new(5),
+				DailyActiveCopilotCodeReviewUsers:   new(2),
+				DailyPassiveCopilotCodeReviewUsers:  new(1),
+				WeeklyActiveCopilotCodeReviewUsers:  new(6),
+				MonthlyActiveCopilotCodeReviewUsers: new(12),
 				TotalsByCLI: &CopilotMetricsCLI{
 					SessionCount: new(1),
 					RequestCount: new(2),

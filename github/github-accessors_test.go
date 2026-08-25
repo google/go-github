@@ -11644,6 +11644,17 @@ func TestCopilotDailyMetrics_GetDailyActiveCopilotCloudAgentUsers(tt *testing.T)
 	c.GetDailyActiveCopilotCloudAgentUsers()
 }
 
+func TestCopilotDailyMetrics_GetDailyActiveCopilotCodeReviewUsers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotDailyMetrics{DailyActiveCopilotCodeReviewUsers: &zeroValue}
+	c.GetDailyActiveCopilotCodeReviewUsers()
+	c = &CopilotDailyMetrics{}
+	c.GetDailyActiveCopilotCodeReviewUsers()
+	c = nil
+	c.GetDailyActiveCopilotCodeReviewUsers()
+}
+
 func TestCopilotDailyMetrics_GetDailyActiveUsers(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -11653,6 +11664,17 @@ func TestCopilotDailyMetrics_GetDailyActiveUsers(tt *testing.T) {
 	c.GetDailyActiveUsers()
 	c = nil
 	c.GetDailyActiveUsers()
+}
+
+func TestCopilotDailyMetrics_GetDailyPassiveCopilotCodeReviewUsers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotDailyMetrics{DailyPassiveCopilotCodeReviewUsers: &zeroValue}
+	c.GetDailyPassiveCopilotCodeReviewUsers()
+	c = &CopilotDailyMetrics{}
+	c.GetDailyPassiveCopilotCodeReviewUsers()
+	c = nil
+	c.GetDailyPassiveCopilotCodeReviewUsers()
 }
 
 func TestCopilotDailyMetrics_GetDay(tt *testing.T) {
@@ -11751,6 +11773,17 @@ func TestCopilotDailyMetrics_GetMonthlyActiveCopilotCloudAgentUsers(tt *testing.
 	c.GetMonthlyActiveCopilotCloudAgentUsers()
 }
 
+func TestCopilotDailyMetrics_GetMonthlyActiveCopilotCodeReviewUsers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotDailyMetrics{MonthlyActiveCopilotCodeReviewUsers: &zeroValue}
+	c.GetMonthlyActiveCopilotCodeReviewUsers()
+	c = &CopilotDailyMetrics{}
+	c.GetMonthlyActiveCopilotCodeReviewUsers()
+	c = nil
+	c.GetMonthlyActiveCopilotCodeReviewUsers()
+}
+
 func TestCopilotDailyMetrics_GetMonthlyActiveUsers(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -11760,6 +11793,17 @@ func TestCopilotDailyMetrics_GetMonthlyActiveUsers(tt *testing.T) {
 	c.GetMonthlyActiveUsers()
 	c = nil
 	c.GetMonthlyActiveUsers()
+}
+
+func TestCopilotDailyMetrics_GetMonthlyPassiveCopilotCodeReviewUsers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotDailyMetrics{MonthlyPassiveCopilotCodeReviewUsers: &zeroValue}
+	c.GetMonthlyPassiveCopilotCodeReviewUsers()
+	c = &CopilotDailyMetrics{}
+	c.GetMonthlyPassiveCopilotCodeReviewUsers()
+	c = nil
+	c.GetMonthlyPassiveCopilotCodeReviewUsers()
 }
 
 func TestCopilotDailyMetrics_GetOrganizationID(tt *testing.T) {
@@ -11888,6 +11932,17 @@ func TestCopilotDailyMetrics_GetWeeklyActiveCopilotCloudAgentUsers(tt *testing.T
 	c.GetWeeklyActiveCopilotCloudAgentUsers()
 }
 
+func TestCopilotDailyMetrics_GetWeeklyActiveCopilotCodeReviewUsers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotDailyMetrics{WeeklyActiveCopilotCodeReviewUsers: &zeroValue}
+	c.GetWeeklyActiveCopilotCodeReviewUsers()
+	c = &CopilotDailyMetrics{}
+	c.GetWeeklyActiveCopilotCodeReviewUsers()
+	c = nil
+	c.GetWeeklyActiveCopilotCodeReviewUsers()
+}
+
 func TestCopilotDailyMetrics_GetWeeklyActiveUsers(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -11897,6 +11952,17 @@ func TestCopilotDailyMetrics_GetWeeklyActiveUsers(tt *testing.T) {
 	c.GetWeeklyActiveUsers()
 	c = nil
 	c.GetWeeklyActiveUsers()
+}
+
+func TestCopilotDailyMetrics_GetWeeklyPassiveCopilotCodeReviewUsers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotDailyMetrics{WeeklyPassiveCopilotCodeReviewUsers: &zeroValue}
+	c.GetWeeklyPassiveCopilotCodeReviewUsers()
+	c = &CopilotDailyMetrics{}
+	c.GetWeeklyPassiveCopilotCodeReviewUsers()
+	c = nil
+	c.GetWeeklyPassiveCopilotCodeReviewUsers()
 }
 
 func TestCopilotDailyMetricsReport_GetDownloadLinks(tt *testing.T) {
