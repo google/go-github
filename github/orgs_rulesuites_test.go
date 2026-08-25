@@ -120,6 +120,16 @@ func TestOrganizationsService_ListOrganizationRuleSuites_ListOptions(t *testing.
 	}
 }
 
+func TestOrganizationsService_ListOrganizationRuleSuites_addOptionsError(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	_, _, err := client.Organizations.ListOrganizationRuleSuites(t.Context(), "\u007F", &ListOptions{})
+	if err == nil {
+		t.Fatal("Organizations.ListOrganizationRuleSuites returned nil error, want non-nil")
+	}
+}
+
 func TestOrganizationsService_GetOrganizationRuleSuite(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

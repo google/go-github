@@ -447,71 +447,6 @@ func TestActionsService_ListEnvSecretsIter(t *testing.T) {
 	}
 }
 
-func TestOrganizationsService_ListOrganizationRuleSuitesIter(t *testing.T) {
-	t.Parallel()
-	client, mux, _ := setup(t)
-	var callNum int
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		callNum++
-		switch callNum {
-		case 1:
-			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
-			fmt.Fprint(w, `[
-				{"id":1}, {"id":2}, {"id":3}
-			]`)
-		case 2:
-			fmt.Fprint(w, `[
-				{"id":4}, {"id":5}
-			]`)
-		case 3:
-			fmt.Fprint(w, `[
-				{"id":6}, {"id":7}, {"id": 8}
-			]`)
-		case 4:
-			w.WriteHeader(http.StatusNotFound)
-		}
-	})
-
-	iter := client.Organizations.ListOrganizationRuleSuitesIter(t.Context(), "o", nil)
-	var gotItems int
-	for _, err := range iter {
-		gotItems++
-		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
-		}
-	}
-	if want := 5; gotItems != want {
-		t.Errorf("client.Organizations.ListOrganizationRuleSuitesIter got %v items; want %v", gotItems, want)
-	}
-
-	// Test behavior when ListOptions is provided (should stop after first page)
-	opts := &ListOptions{}
-	iter = client.Organizations.ListOrganizationRuleSuitesIter(t.Context(), "o", opts)
-	gotItems = 0
-	for _, err := range iter {
-		gotItems++
-		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
-		}
-	}
-	if want := 3; gotItems != want {
-		t.Errorf("client.Organizations.ListOrganizationRuleSuitesIter with opts got %v items; want %v", gotItems, want)
-	}
-
-	// Test error propagation
-	iter = client.Organizations.ListOrganizationRuleSuitesIter(t.Context(), "o", nil)
-	gotItems = 0
-	for _, err := range iter {
-		gotItems++
-		if err == nil {
-			t.Error("expected error; got nil")
-		}
-	}
-	if gotItems != 1 {
-		t.Errorf("client.Organizations.ListOrganizationRuleSuitesIter error case got %v items; want 1 (an error)", gotItems)
-	}
-}
-
 func TestActionsService_ListEnvVariablesIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -10517,6 +10452,78 @@ func TestOrganizationsService_ListOrgMembershipsIter(t *testing.T) {
 	})
 	if gotItems != 1 {
 		t.Errorf("client.Organizations.ListOrgMembershipsIter call 4 got %v items; want 1 (an error)", gotItems)
+	}
+}
+
+func TestOrganizationsService_ListOrganizationRuleSuitesIter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+	var callNum int
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		callNum++
+		switch callNum {
+		case 1:
+			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
+			fmt.Fprint(w, `[{},{},{}]`)
+		case 2:
+			fmt.Fprint(w, `[{},{},{},{}]`)
+		case 3:
+			fmt.Fprint(w, `[{},{}]`)
+		case 4:
+			w.WriteHeader(http.StatusNotFound)
+		case 5:
+			fmt.Fprint(w, `[{},{}]`)
+		}
+	})
+
+	iter := client.Organizations.ListOrganizationRuleSuitesIter(t.Context(), "", nil)
+	var gotItems int
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 7; gotItems != want {
+		t.Errorf("client.Organizations.ListOrganizationRuleSuitesIter call 1 got %v items; want %v", gotItems, want)
+	}
+
+	opts := &ListOptions{}
+	iter = client.Organizations.ListOrganizationRuleSuitesIter(t.Context(), "", opts)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+	}
+	if want := 2; gotItems != want {
+		t.Errorf("client.Organizations.ListOrganizationRuleSuitesIter call 2 got %v items; want %v", gotItems, want)
+	}
+
+	iter = client.Organizations.ListOrganizationRuleSuitesIter(t.Context(), "", nil)
+	gotItems = 0
+	for _, err := range iter {
+		gotItems++
+		if err == nil {
+			t.Error("expected error; got nil")
+		}
+	}
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListOrganizationRuleSuitesIter call 3 got %v items; want 1 (an error)", gotItems)
+	}
+
+	iter = client.Organizations.ListOrganizationRuleSuitesIter(t.Context(), "", nil)
+	gotItems = 0
+	iter(func(item *RuleSuite, err error) bool {
+		gotItems++
+		if err != nil {
+			t.Errorf("Unexpected error: %v", err)
+		}
+		return false
+	})
+	if gotItems != 1 {
+		t.Errorf("client.Organizations.ListOrganizationRuleSuitesIter call 4 got %v items; want 1 (an error)", gotItems)
 	}
 }
 
