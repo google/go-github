@@ -11633,6 +11633,17 @@ func TestCopilotDailyMetrics_GetDailyActiveCLIUsers(tt *testing.T) {
 	c.GetDailyActiveCLIUsers()
 }
 
+func TestCopilotDailyMetrics_GetDailyActiveCopilotAppUsers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotDailyMetrics{DailyActiveCopilotAppUsers: &zeroValue}
+	c.GetDailyActiveCopilotAppUsers()
+	c = &CopilotDailyMetrics{}
+	c.GetDailyActiveCopilotAppUsers()
+	c = nil
+	c.GetDailyActiveCopilotAppUsers()
+}
+
 func TestCopilotDailyMetrics_GetDailyActiveCopilotCloudAgentUsers(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -11809,6 +11820,14 @@ func TestCopilotDailyMetrics_GetTotalsByCLI(tt *testing.T) {
 	c.GetTotalsByCLI()
 	c = nil
 	c.GetTotalsByCLI()
+}
+
+func TestCopilotDailyMetrics_GetTotalsByCopilotApp(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDailyMetrics{}
+	c.GetTotalsByCopilotApp()
+	c = nil
+	c.GetTotalsByCopilotApp()
 }
 
 func TestCopilotDailyMetrics_GetTotalsByFeature(tt *testing.T) {
@@ -12769,6 +12788,80 @@ func TestCopilotMetricsCodeActivity_GetLOCSuggestedToDeleteSum(tt *testing.T) {
 	c.GetLOCSuggestedToDeleteSum()
 }
 
+func TestCopilotMetricsCopilotApp_GetPromptCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotApp{PromptCount: &zeroValue}
+	c.GetPromptCount()
+	c = &CopilotMetricsCopilotApp{}
+	c.GetPromptCount()
+	c = nil
+	c.GetPromptCount()
+}
+
+func TestCopilotMetricsCopilotApp_GetRequestCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotApp{RequestCount: &zeroValue}
+	c.GetRequestCount()
+	c = &CopilotMetricsCopilotApp{}
+	c.GetRequestCount()
+	c = nil
+	c.GetRequestCount()
+}
+
+func TestCopilotMetricsCopilotApp_GetSessionCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotApp{SessionCount: &zeroValue}
+	c.GetSessionCount()
+	c = &CopilotMetricsCopilotApp{}
+	c.GetSessionCount()
+	c = nil
+	c.GetSessionCount()
+}
+
+func TestCopilotMetricsCopilotApp_GetTokenUsage(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsCopilotApp{}
+	c.GetTokenUsage()
+	c = nil
+	c.GetTokenUsage()
+}
+
+func TestCopilotMetricsCopilotAppTokenUsage_GetAvgTokensPerRequest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue float64
+	c := &CopilotMetricsCopilotAppTokenUsage{AvgTokensPerRequest: &zeroValue}
+	c.GetAvgTokensPerRequest()
+	c = &CopilotMetricsCopilotAppTokenUsage{}
+	c.GetAvgTokensPerRequest()
+	c = nil
+	c.GetAvgTokensPerRequest()
+}
+
+func TestCopilotMetricsCopilotAppTokenUsage_GetOutputTokensSum(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotAppTokenUsage{OutputTokensSum: &zeroValue}
+	c.GetOutputTokensSum()
+	c = &CopilotMetricsCopilotAppTokenUsage{}
+	c.GetOutputTokensSum()
+	c = nil
+	c.GetOutputTokensSum()
+}
+
+func TestCopilotMetricsCopilotAppTokenUsage_GetPromptTokensSum(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotAppTokenUsage{PromptTokensSum: &zeroValue}
+	c.GetPromptTokensSum()
+	c = &CopilotMetricsCopilotAppTokenUsage{}
+	c.GetPromptTokensSum()
+	c = nil
+	c.GetPromptTokensSum()
+}
+
 func TestCopilotMetricsFeature_GetFeature(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotMetricsFeature{}
@@ -13471,6 +13564,14 @@ func TestCopilotUserDailyMetrics_GetTotalsByCLI(tt *testing.T) {
 	c.GetTotalsByCLI()
 }
 
+func TestCopilotUserDailyMetrics_GetTotalsByCopilotApp(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserDailyMetrics{}
+	c.GetTotalsByCopilotApp()
+	c = nil
+	c.GetTotalsByCopilotApp()
+}
+
 func TestCopilotUserDailyMetrics_GetTotalsByFeature(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*CopilotMetricsFeature{}
@@ -13557,6 +13658,28 @@ func TestCopilotUserDailyMetrics_GetUsedCLI(tt *testing.T) {
 	c.GetUsedCLI()
 	c = nil
 	c.GetUsedCLI()
+}
+
+func TestCopilotUserDailyMetrics_GetUsedCopilotApp(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CopilotUserDailyMetrics{UsedCopilotApp: &zeroValue}
+	c.GetUsedCopilotApp()
+	c = &CopilotUserDailyMetrics{}
+	c.GetUsedCopilotApp()
+	c = nil
+	c.GetUsedCopilotApp()
+}
+
+func TestCopilotUserDailyMetrics_GetUsedCopilotCloudAgent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CopilotUserDailyMetrics{UsedCopilotCloudAgent: &zeroValue}
+	c.GetUsedCopilotCloudAgent()
+	c = &CopilotUserDailyMetrics{}
+	c.GetUsedCopilotCloudAgent()
+	c = nil
+	c.GetUsedCopilotCloudAgent()
 }
 
 func TestCopilotUserDailyMetrics_GetUsedCopilotCodeReviewActive(tt *testing.T) {
@@ -13850,6 +13973,14 @@ func TestCopilotUserPeriodicMetrics_GetTotalsByCLI(tt *testing.T) {
 	c.GetTotalsByCLI()
 }
 
+func TestCopilotUserPeriodicMetrics_GetTotalsByCopilotApp(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserPeriodicMetrics{}
+	c.GetTotalsByCopilotApp()
+	c = nil
+	c.GetTotalsByCopilotApp()
+}
+
 func TestCopilotUserPeriodicMetrics_GetTotalsByFeature(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*CopilotMetricsFeature{}
@@ -13936,6 +14067,28 @@ func TestCopilotUserPeriodicMetrics_GetUsedCLI(tt *testing.T) {
 	c.GetUsedCLI()
 	c = nil
 	c.GetUsedCLI()
+}
+
+func TestCopilotUserPeriodicMetrics_GetUsedCopilotApp(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CopilotUserPeriodicMetrics{UsedCopilotApp: &zeroValue}
+	c.GetUsedCopilotApp()
+	c = &CopilotUserPeriodicMetrics{}
+	c.GetUsedCopilotApp()
+	c = nil
+	c.GetUsedCopilotApp()
+}
+
+func TestCopilotUserPeriodicMetrics_GetUsedCopilotCloudAgent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CopilotUserPeriodicMetrics{UsedCopilotCloudAgent: &zeroValue}
+	c.GetUsedCopilotCloudAgent()
+	c = &CopilotUserPeriodicMetrics{}
+	c.GetUsedCopilotCloudAgent()
+	c = nil
+	c.GetUsedCopilotCloudAgent()
 }
 
 func TestCopilotUserPeriodicMetrics_GetUsedCopilotCodeReviewActive(tt *testing.T) {

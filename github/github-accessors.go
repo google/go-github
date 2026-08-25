@@ -9118,6 +9118,14 @@ func (c *CopilotDailyMetrics) GetDailyActiveCLIUsers() int {
 	return *c.DailyActiveCLIUsers
 }
 
+// GetDailyActiveCopilotAppUsers returns the DailyActiveCopilotAppUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetDailyActiveCopilotAppUsers() int {
+	if c == nil || c.DailyActiveCopilotAppUsers == nil {
+		return 0
+	}
+	return *c.DailyActiveCopilotAppUsers
+}
+
 // GetDailyActiveCopilotCloudAgentUsers returns the DailyActiveCopilotCloudAgentUsers field if it's non-nil, zero value otherwise.
 func (c *CopilotDailyMetrics) GetDailyActiveCopilotCloudAgentUsers() int {
 	if c == nil || c.DailyActiveCopilotCloudAgentUsers == nil {
@@ -9252,6 +9260,14 @@ func (c *CopilotDailyMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 		return nil
 	}
 	return c.TotalsByCLI
+}
+
+// GetTotalsByCopilotApp returns the TotalsByCopilotApp field.
+func (c *CopilotDailyMetrics) GetTotalsByCopilotApp() *CopilotMetricsCopilotApp {
+	if c == nil {
+		return nil
+	}
+	return c.TotalsByCopilotApp
 }
 
 // GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
@@ -10086,6 +10102,62 @@ func (c *CopilotMetricsCodeActivity) GetLOCSuggestedToDeleteSum() int {
 	return *c.LOCSuggestedToDeleteSum
 }
 
+// GetPromptCount returns the PromptCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotApp) GetPromptCount() int {
+	if c == nil || c.PromptCount == nil {
+		return 0
+	}
+	return *c.PromptCount
+}
+
+// GetRequestCount returns the RequestCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotApp) GetRequestCount() int {
+	if c == nil || c.RequestCount == nil {
+		return 0
+	}
+	return *c.RequestCount
+}
+
+// GetSessionCount returns the SessionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotApp) GetSessionCount() int {
+	if c == nil || c.SessionCount == nil {
+		return 0
+	}
+	return *c.SessionCount
+}
+
+// GetTokenUsage returns the TokenUsage field.
+func (c *CopilotMetricsCopilotApp) GetTokenUsage() *CopilotMetricsCopilotAppTokenUsage {
+	if c == nil {
+		return nil
+	}
+	return c.TokenUsage
+}
+
+// GetAvgTokensPerRequest returns the AvgTokensPerRequest field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotAppTokenUsage) GetAvgTokensPerRequest() float64 {
+	if c == nil || c.AvgTokensPerRequest == nil {
+		return 0
+	}
+	return *c.AvgTokensPerRequest
+}
+
+// GetOutputTokensSum returns the OutputTokensSum field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotAppTokenUsage) GetOutputTokensSum() int {
+	if c == nil || c.OutputTokensSum == nil {
+		return 0
+	}
+	return *c.OutputTokensSum
+}
+
+// GetPromptTokensSum returns the PromptTokensSum field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotAppTokenUsage) GetPromptTokensSum() int {
+	if c == nil || c.PromptTokensSum == nil {
+		return 0
+	}
+	return *c.PromptTokensSum
+}
+
 // GetFeature returns the Feature field.
 func (c *CopilotMetricsFeature) GetFeature() string {
 	if c == nil {
@@ -10662,6 +10734,14 @@ func (c *CopilotUserDailyMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 	return c.TotalsByCLI
 }
 
+// GetTotalsByCopilotApp returns the TotalsByCopilotApp field.
+func (c *CopilotUserDailyMetrics) GetTotalsByCopilotApp() *CopilotMetricsCopilotApp {
+	if c == nil {
+		return nil
+	}
+	return c.TotalsByCopilotApp
+}
+
 // GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
 func (c *CopilotUserDailyMetrics) GetTotalsByFeature() []*CopilotMetricsFeature {
 	if c == nil || c.TotalsByFeature == nil {
@@ -10724,6 +10804,22 @@ func (c *CopilotUserDailyMetrics) GetUsedCLI() bool {
 		return false
 	}
 	return *c.UsedCLI
+}
+
+// GetUsedCopilotApp returns the UsedCopilotApp field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUsedCopilotApp() bool {
+	if c == nil || c.UsedCopilotApp == nil {
+		return false
+	}
+	return *c.UsedCopilotApp
+}
+
+// GetUsedCopilotCloudAgent returns the UsedCopilotCloudAgent field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUsedCopilotCloudAgent() bool {
+	if c == nil || c.UsedCopilotCloudAgent == nil {
+		return false
+	}
+	return *c.UsedCopilotCloudAgent
 }
 
 // GetUsedCopilotCodeReviewActive returns the UsedCopilotCodeReviewActive field if it's non-nil, zero value otherwise.
@@ -10966,6 +11062,14 @@ func (c *CopilotUserPeriodicMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 	return c.TotalsByCLI
 }
 
+// GetTotalsByCopilotApp returns the TotalsByCopilotApp field.
+func (c *CopilotUserPeriodicMetrics) GetTotalsByCopilotApp() *CopilotMetricsCopilotApp {
+	if c == nil {
+		return nil
+	}
+	return c.TotalsByCopilotApp
+}
+
 // GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
 func (c *CopilotUserPeriodicMetrics) GetTotalsByFeature() []*CopilotMetricsFeature {
 	if c == nil || c.TotalsByFeature == nil {
@@ -11028,6 +11132,22 @@ func (c *CopilotUserPeriodicMetrics) GetUsedCLI() bool {
 		return false
 	}
 	return *c.UsedCLI
+}
+
+// GetUsedCopilotApp returns the UsedCopilotApp field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUsedCopilotApp() bool {
+	if c == nil || c.UsedCopilotApp == nil {
+		return false
+	}
+	return *c.UsedCopilotApp
+}
+
+// GetUsedCopilotCloudAgent returns the UsedCopilotCloudAgent field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUsedCopilotCloudAgent() bool {
+	if c == nil || c.UsedCopilotCloudAgent == nil {
+		return false
+	}
+	return *c.UsedCopilotCloudAgent
 }
 
 // GetUsedCopilotCodeReviewActive returns the UsedCopilotCodeReviewActive field if it's non-nil, zero value otherwise.
