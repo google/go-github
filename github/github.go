@@ -1282,9 +1282,13 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		c.rateMu.Unlock()
 	}
 
+	// CheckResponse substitutes r.Body with a re-readable copy on error
+	// responses, so capture the network body first: it is the one that must
+	// be closed.
+	origBody := resp.Body
 	err = CheckResponse(resp)
 	if err != nil {
-		defer resp.Body.Close()
+		defer origBody.Close()
 		// Special case for AcceptedErrors. If an AcceptedError
 		// has been encountered, the response's payload will be
 		// added to the AcceptedError and returned.
