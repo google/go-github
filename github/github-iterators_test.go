@@ -10488,7 +10488,7 @@ func TestOrganizationsService_ListOrganizationRuleSuitesIter(t *testing.T) {
 		t.Errorf("client.Organizations.ListOrganizationRuleSuitesIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	opts := &ListOptions{}
+	opts := &ListRuleSuitesOptions{}
 	iter = client.Organizations.ListOrganizationRuleSuitesIter(t.Context(), "", opts)
 	gotItems = 0
 	for _, err := range iter {

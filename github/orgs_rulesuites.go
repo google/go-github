@@ -42,12 +42,24 @@ type RuleEvaluationSource struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// ListRuleSuitesOptions specifies the optional parameters to the ListOrganizationRuleSuites method.
+type ListRuleSuitesOptions struct {
+	Ref             string `url:"ref,omitempty"`
+	RepositoryName  string `url:"repository_name,omitempty"`
+	TimePeriod      string `url:"time_period,omitempty"`
+	ActorName       string `url:"actor_name,omitempty"`
+	RuleSuiteResult string `url:"rule_suite_result,omitempty"`
+	EvaluateStatus  string `url:"evaluate_status,omitempty"`
+	Page            int    `url:"page,omitempty"`
+	PerPage         int    `url:"per_page,omitempty"`
+}
+
 // ListOrganizationRuleSuites lists rule suites for the specified organization.
 //
 // GitHub API docs: https://docs.github.com/rest/orgs/rule-suites?apiVersion=2022-11-28#list-organization-rule-suites
 //
 //meta:operation GET /orgs/{org}/rulesets/rule-suites
-func (s *OrganizationsService) ListOrganizationRuleSuites(ctx context.Context, org string, opts *ListOptions) ([]*RuleSuite, *Response, error) {
+func (s *OrganizationsService) ListOrganizationRuleSuites(ctx context.Context, org string, opts *ListRuleSuitesOptions) ([]*RuleSuite, *Response, error) {
 	endpoint := fmt.Sprintf("orgs/%v/rulesets/rule-suites", org)
 
 	u, err := addOptions(endpoint, opts)

@@ -76,8 +76,14 @@ func TestOrganizationsService_ListOrganizationRuleSuites_ListOptions(t *testing.
 	mux.HandleFunc("/orgs/o/rulesets/rule-suites", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{
-			"page":     "2",
-			"per_page": "35",
+			"page":              "2",
+			"per_page":          "35",
+			"ref":               "refs/heads/main",
+			"repository_name":   "repo2",
+			"time_period":       "day",
+			"actor_name":        "alice",
+			"rule_suite_result": "pass",
+			"evaluate_status":   "active",
 		})
 		fmt.Fprint(w, `[
 			{
@@ -95,7 +101,16 @@ func TestOrganizationsService_ListOrganizationRuleSuites_ListOptions(t *testing.
 		]`)
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 35}
+	opts := &ListRuleSuitesOptions{
+		Ref:             "refs/heads/main",
+		RepositoryName:  "repo2",
+		TimePeriod:      "day",
+		ActorName:       "alice",
+		RuleSuiteResult: "pass",
+		EvaluateStatus:  "active",
+		Page:            2,
+		PerPage:         35,
+	}
 	ctx := t.Context()
 	suites, _, err := client.Organizations.ListOrganizationRuleSuites(ctx, "o", opts)
 	if err != nil {
@@ -124,7 +139,7 @@ func TestOrganizationsService_ListOrganizationRuleSuites_addOptionsError(t *test
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	_, _, err := client.Organizations.ListOrganizationRuleSuites(t.Context(), "\u007F", &ListOptions{})
+	_, _, err := client.Organizations.ListOrganizationRuleSuites(t.Context(), "\u007F", &ListRuleSuitesOptions{})
 	if err == nil {
 		t.Fatal("Organizations.ListOrganizationRuleSuites returned nil error, want non-nil")
 	}

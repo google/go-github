@@ -23942,6 +23942,70 @@ func (l *ListRepositorySecurityAdvisoriesOptions) GetState() string {
 	return l.State
 }
 
+// GetActorName returns the ActorName field.
+func (l *ListRuleSuitesOptions) GetActorName() string {
+	if l == nil {
+		return ""
+	}
+	return l.ActorName
+}
+
+// GetEvaluateStatus returns the EvaluateStatus field.
+func (l *ListRuleSuitesOptions) GetEvaluateStatus() string {
+	if l == nil {
+		return ""
+	}
+	return l.EvaluateStatus
+}
+
+// GetPage returns the Page field.
+func (l *ListRuleSuitesOptions) GetPage() int {
+	if l == nil {
+		return 0
+	}
+	return l.Page
+}
+
+// GetPerPage returns the PerPage field.
+func (l *ListRuleSuitesOptions) GetPerPage() int {
+	if l == nil {
+		return 0
+	}
+	return l.PerPage
+}
+
+// GetRef returns the Ref field.
+func (l *ListRuleSuitesOptions) GetRef() string {
+	if l == nil {
+		return ""
+	}
+	return l.Ref
+}
+
+// GetRepositoryName returns the RepositoryName field.
+func (l *ListRuleSuitesOptions) GetRepositoryName() string {
+	if l == nil {
+		return ""
+	}
+	return l.RepositoryName
+}
+
+// GetRuleSuiteResult returns the RuleSuiteResult field.
+func (l *ListRuleSuitesOptions) GetRuleSuiteResult() string {
+	if l == nil {
+		return ""
+	}
+	return l.RuleSuiteResult
+}
+
+// GetTimePeriod returns the TimePeriod field.
+func (l *ListRuleSuitesOptions) GetTimePeriod() string {
+	if l == nil {
+		return ""
+	}
+	return l.TimePeriod
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (l *ListRunnersOptions) GetName() string {
 	if l == nil || l.Name == nil {

@@ -30036,6 +30036,70 @@ func TestListRepositorySecurityAdvisoriesOptions_GetState(tt *testing.T) {
 	l.GetState()
 }
 
+func TestListRuleSuitesOptions_GetActorName(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetActorName()
+	l = nil
+	l.GetActorName()
+}
+
+func TestListRuleSuitesOptions_GetEvaluateStatus(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetEvaluateStatus()
+	l = nil
+	l.GetEvaluateStatus()
+}
+
+func TestListRuleSuitesOptions_GetPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetPage()
+	l = nil
+	l.GetPage()
+}
+
+func TestListRuleSuitesOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
+}
+
+func TestListRuleSuitesOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetRef()
+	l = nil
+	l.GetRef()
+}
+
+func TestListRuleSuitesOptions_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetRepositoryName()
+	l = nil
+	l.GetRepositoryName()
+}
+
+func TestListRuleSuitesOptions_GetRuleSuiteResult(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetRuleSuiteResult()
+	l = nil
+	l.GetRuleSuiteResult()
+}
+
+func TestListRuleSuitesOptions_GetTimePeriod(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetTimePeriod()
+	l = nil
+	l.GetTimePeriod()
+}
+
 func TestListRunnersOptions_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

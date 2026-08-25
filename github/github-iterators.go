@@ -4771,11 +4771,11 @@ func (s *OrganizationsService) ListOrgMembershipsIter(ctx context.Context, opts 
 }
 
 // ListOrganizationRuleSuitesIter returns an iterator that paginates through all results of ListOrganizationRuleSuites.
-func (s *OrganizationsService) ListOrganizationRuleSuitesIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*RuleSuite, error] {
+func (s *OrganizationsService) ListOrganizationRuleSuitesIter(ctx context.Context, org string, opts *ListRuleSuitesOptions) iter.Seq2[*RuleSuite, error] {
 	return func(yield func(*RuleSuite, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
-			opts = &ListOptions{}
+			opts = &ListRuleSuitesOptions{}
 		} else {
 			opts = Ptr(*opts)
 		}
