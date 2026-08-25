@@ -16,11 +16,11 @@ import (
 func TestAcceptedAssignment_String(t *testing.T) {
 	t.Parallel()
 	v := AcceptedAssignment{
-		ID:          Ptr(int64(0)),
-		Submitted:   Ptr(false),
-		Passing:     Ptr(false),
-		CommitCount: Ptr(0),
-		Grade:       Ptr(""),
+		ID:          new(int64(0)),
+		Submitted:   new(false),
+		Passing:     new(false),
+		CommitCount: new(0),
+		Grade:       new(""),
 		Repository:  &Repository{},
 		Assignment:  &ClassroomAssignment{},
 	}
@@ -33,8 +33,8 @@ func TestAcceptedAssignment_String(t *testing.T) {
 func TestActionsAllowed_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsAllowed{
-		GithubOwnedAllowed: Ptr(false),
-		VerifiedAllowed:    Ptr(false),
+		GithubOwnedAllowed: new(false),
+		VerifiedAllowed:    new(false),
 		PatternsAllowed:    []string{""},
 	}
 	want := `github.ActionsAllowed{GithubOwnedAllowed:false, VerifiedAllowed:false, PatternsAllowed:[""]}`
@@ -46,10 +46,10 @@ func TestActionsAllowed_String(t *testing.T) {
 func TestActionsPermissions_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissions{
-		EnabledRepositories: Ptr(""),
-		AllowedActions:      Ptr(""),
-		SelectedActionsURL:  Ptr(""),
-		SHAPinningRequired:  Ptr(false),
+		EnabledRepositories: new(""),
+		AllowedActions:      new(""),
+		SelectedActionsURL:  new(""),
+		SHAPinningRequired:  new(false),
 	}
 	want := `github.ActionsPermissions{EnabledRepositories:"", AllowedActions:"", SelectedActionsURL:"", SHAPinningRequired:false}`
 	if got := v.String(); got != want {
@@ -60,9 +60,9 @@ func TestActionsPermissions_String(t *testing.T) {
 func TestActionsPermissionsEnterprise_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissionsEnterprise{
-		EnabledOrganizations: Ptr(""),
-		AllowedActions:       Ptr(""),
-		SelectedActionsURL:   Ptr(""),
+		EnabledOrganizations: new(""),
+		AllowedActions:       new(""),
+		SelectedActionsURL:   new(""),
 	}
 	want := `github.ActionsPermissionsEnterprise{EnabledOrganizations:"", AllowedActions:"", SelectedActionsURL:""}`
 	if got := v.String(); got != want {
@@ -73,10 +73,10 @@ func TestActionsPermissionsEnterprise_String(t *testing.T) {
 func TestActionsPermissionsRepository_String(t *testing.T) {
 	t.Parallel()
 	v := ActionsPermissionsRepository{
-		Enabled:            Ptr(false),
-		AllowedActions:     Ptr(""),
-		SelectedActionsURL: Ptr(""),
-		SHAPinningRequired: Ptr(false),
+		Enabled:            new(false),
+		AllowedActions:     new(""),
+		SelectedActionsURL: new(""),
+		SHAPinningRequired: new(false),
 	}
 	want := `github.ActionsPermissionsRepository{Enabled:false, AllowedActions:"", SelectedActionsURL:"", SHAPinningRequired:false}`
 	if got := v.String(); got != want {
@@ -107,7 +107,7 @@ func TestAdminStats_String(t *testing.T) {
 func TestAdvancedSecurity_String(t *testing.T) {
 	t.Parallel()
 	v := AdvancedSecurity{
-		Status: Ptr(""),
+		Status: new(""),
 	}
 	want := `github.AdvancedSecurity{Status:""}`
 	if got := v.String(); got != want {
@@ -118,8 +118,8 @@ func TestAdvancedSecurity_String(t *testing.T) {
 func TestArtifactPeriod_String(t *testing.T) {
 	t.Parallel()
 	v := ArtifactPeriod{
-		Days:               Ptr(0),
-		MaximumAllowedDays: Ptr(0),
+		Days:               new(0),
+		MaximumAllowedDays: new(0),
 	}
 	want := `github.ArtifactPeriod{Days:0, MaximumAllowedDays:0}`
 	if got := v.String(); got != want {
@@ -130,17 +130,17 @@ func TestArtifactPeriod_String(t *testing.T) {
 func TestAssignmentGrade_String(t *testing.T) {
 	t.Parallel()
 	v := AssignmentGrade{
-		AssignmentName:        Ptr(""),
-		AssignmentURL:         Ptr(""),
-		StarterCodeURL:        Ptr(""),
-		GithubUsername:        Ptr(""),
-		RosterIdentifier:      Ptr(""),
-		StudentRepositoryName: Ptr(""),
-		StudentRepositoryURL:  Ptr(""),
+		AssignmentName:        new(""),
+		AssignmentURL:         new(""),
+		StarterCodeURL:        new(""),
+		GithubUsername:        new(""),
+		RosterIdentifier:      new(""),
+		StudentRepositoryName: new(""),
+		StudentRepositoryURL:  new(""),
 		SubmissionTimestamp:   &Timestamp{},
-		PointsAwarded:         Ptr(0),
-		PointsAvailable:       Ptr(0),
-		GroupName:             Ptr(""),
+		PointsAwarded:         new(0),
+		PointsAvailable:       new(0),
+		GroupName:             new(""),
 	}
 	want := `github.AssignmentGrade{AssignmentName:"", AssignmentURL:"", StarterCodeURL:"", GithubUsername:"", RosterIdentifier:"", StudentRepositoryName:"", StudentRepositoryURL:"", SubmissionTimestamp:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PointsAwarded:0, PointsAvailable:0, GroupName:""}`
 	if got := v.String(); got != want {
@@ -151,18 +151,18 @@ func TestAssignmentGrade_String(t *testing.T) {
 func TestAuthorization_String(t *testing.T) {
 	t.Parallel()
 	v := Authorization{
-		ID:             Ptr(int64(0)),
-		URL:            Ptr(""),
+		ID:             new(int64(0)),
+		URL:            new(""),
 		Scopes:         []Scope{ScopeNone},
-		Token:          Ptr(""),
-		TokenLastEight: Ptr(""),
-		HashedToken:    Ptr(""),
+		Token:          new(""),
+		TokenLastEight: new(""),
+		HashedToken:    new(""),
 		App:            &AuthorizationApp{},
-		Note:           Ptr(""),
-		NoteURL:        Ptr(""),
+		Note:           new(""),
+		NoteURL:        new(""),
 		UpdatedAt:      &Timestamp{},
 		CreatedAt:      &Timestamp{},
-		Fingerprint:    Ptr(""),
+		Fingerprint:    new(""),
 		User:           &User{},
 	}
 	want := `github.Authorization{ID:0, URL:"", Scopes:["(no scope)"], Token:"", TokenLastEight:"", HashedToken:"", App:github.AuthorizationApp{}, Note:"", NoteURL:"", UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Fingerprint:"", User:github.User{}}`
@@ -174,9 +174,9 @@ func TestAuthorization_String(t *testing.T) {
 func TestAuthorizationApp_String(t *testing.T) {
 	t.Parallel()
 	v := AuthorizationApp{
-		URL:      Ptr(""),
-		Name:     Ptr(""),
-		ClientID: Ptr(""),
+		URL:      new(""),
+		Name:     new(""),
+		ClientID: new(""),
 	}
 	want := `github.AuthorizationApp{URL:"", Name:"", ClientID:""}`
 	if got := v.String(); got != want {
@@ -188,11 +188,11 @@ func TestAuthorizationRequest_String(t *testing.T) {
 	t.Parallel()
 	v := AuthorizationRequest{
 		Scopes:       []Scope{ScopeNone},
-		Note:         Ptr(""),
-		NoteURL:      Ptr(""),
-		ClientID:     Ptr(""),
-		ClientSecret: Ptr(""),
-		Fingerprint:  Ptr(""),
+		Note:         new(""),
+		NoteURL:      new(""),
+		ClientID:     new(""),
+		ClientSecret: new(""),
+		Fingerprint:  new(""),
 	}
 	want := `github.AuthorizationRequest{Scopes:["(no scope)"], Note:"", NoteURL:"", ClientID:"", ClientSecret:"", Fingerprint:""}`
 	if got := v.String(); got != want {
@@ -206,9 +206,9 @@ func TestAuthorizationUpdateRequest_String(t *testing.T) {
 		Scopes:       []string{""},
 		AddScopes:    []string{""},
 		RemoveScopes: []string{""},
-		Note:         Ptr(""),
-		NoteURL:      Ptr(""),
-		Fingerprint:  Ptr(""),
+		Note:         new(""),
+		NoteURL:      new(""),
+		Fingerprint:  new(""),
 	}
 	want := `github.AuthorizationUpdateRequest{Scopes:[""], AddScopes:[""], RemoveScopes:[""], Note:"", NoteURL:"", Fingerprint:""}`
 	if got := v.String(); got != want {
@@ -219,19 +219,19 @@ func TestAuthorizationUpdateRequest_String(t *testing.T) {
 func TestCheckRun_String(t *testing.T) {
 	t.Parallel()
 	v := CheckRun{
-		ID:          Ptr(int64(0)),
-		NodeID:      Ptr(""),
-		HeadSHA:     Ptr(""),
-		ExternalID:  Ptr(""),
-		URL:         Ptr(""),
-		HTMLURL:     Ptr(""),
-		DetailsURL:  Ptr(""),
-		Status:      Ptr(""),
-		Conclusion:  Ptr(""),
+		ID:          new(int64(0)),
+		NodeID:      new(""),
+		HeadSHA:     new(""),
+		ExternalID:  new(""),
+		URL:         new(""),
+		HTMLURL:     new(""),
+		DetailsURL:  new(""),
+		Status:      new(""),
+		Conclusion:  new(""),
 		StartedAt:   &Timestamp{},
 		CompletedAt: &Timestamp{},
 		Output:      &CheckRunOutput{},
-		Name:        Ptr(""),
+		Name:        new(""),
 		CheckSuite:  &CheckSuite{},
 		App:         &App{},
 	}
@@ -244,23 +244,23 @@ func TestCheckRun_String(t *testing.T) {
 func TestCheckSuite_String(t *testing.T) {
 	t.Parallel()
 	v := CheckSuite{
-		ID:                   Ptr(int64(0)),
-		NodeID:               Ptr(""),
-		HeadBranch:           Ptr(""),
-		HeadSHA:              Ptr(""),
-		URL:                  Ptr(""),
-		BeforeSHA:            Ptr(""),
-		AfterSHA:             Ptr(""),
-		Status:               Ptr(""),
-		Conclusion:           Ptr(""),
+		ID:                   new(int64(0)),
+		NodeID:               new(""),
+		HeadBranch:           new(""),
+		HeadSHA:              new(""),
+		URL:                  new(""),
+		BeforeSHA:            new(""),
+		AfterSHA:             new(""),
+		Status:               new(""),
+		Conclusion:           new(""),
 		CreatedAt:            &Timestamp{},
 		UpdatedAt:            &Timestamp{},
 		App:                  &App{},
 		Repository:           &Repository{},
 		HeadCommit:           &Commit{},
-		LatestCheckRunsCount: Ptr(int64(0)),
-		Rerequestable:        Ptr(false),
-		RunsRerequestable:    Ptr(false),
+		LatestCheckRunsCount: new(int64(0)),
+		Rerequestable:        new(false),
+		RunsRerequestable:    new(false),
 	}
 	want := `github.CheckSuite{ID:0, NodeID:"", HeadBranch:"", HeadSHA:"", URL:"", BeforeSHA:"", AfterSHA:"", Status:"", Conclusion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, App:github.App{}, Repository:github.Repository{}, HeadCommit:github.Commit{}, LatestCheckRunsCount:0, Rerequestable:false, RunsRerequestable:false}`
 	if got := v.String(); got != want {
@@ -271,11 +271,11 @@ func TestCheckSuite_String(t *testing.T) {
 func TestClassroom_String(t *testing.T) {
 	t.Parallel()
 	v := Classroom{
-		ID:           Ptr(int64(0)),
-		Name:         Ptr(""),
-		Archived:     Ptr(false),
+		ID:           new(int64(0)),
+		Name:         new(""),
+		Archived:     new(false),
 		Organization: &Organization{},
-		URL:          Ptr(""),
+		URL:          new(""),
 	}
 	want := `github.Classroom{ID:0, Name:"", Archived:false, Organization:github.Organization{}, URL:""}`
 	if got := v.String(); got != want {
@@ -286,22 +286,22 @@ func TestClassroom_String(t *testing.T) {
 func TestClassroomAssignment_String(t *testing.T) {
 	t.Parallel()
 	v := ClassroomAssignment{
-		ID:                          Ptr(int64(0)),
-		PublicRepo:                  Ptr(false),
-		Title:                       Ptr(""),
-		Type:                        Ptr(""),
-		InviteLink:                  Ptr(""),
-		InvitationsEnabled:          Ptr(false),
-		Slug:                        Ptr(""),
-		StudentsAreRepoAdmins:       Ptr(false),
-		FeedbackPullRequestsEnabled: Ptr(false),
-		MaxTeams:                    Ptr(0),
-		MaxMembers:                  Ptr(0),
-		Editor:                      Ptr(""),
-		Accepted:                    Ptr(0),
-		Submitted:                   Ptr(0),
-		Passing:                     Ptr(0),
-		Language:                    Ptr(""),
+		ID:                          new(int64(0)),
+		PublicRepo:                  new(false),
+		Title:                       new(""),
+		Type:                        new(""),
+		InviteLink:                  new(""),
+		InvitationsEnabled:          new(false),
+		Slug:                        new(""),
+		StudentsAreRepoAdmins:       new(false),
+		FeedbackPullRequestsEnabled: new(false),
+		MaxTeams:                    new(0),
+		MaxMembers:                  new(0),
+		Editor:                      new(""),
+		Accepted:                    new(0),
+		Submitted:                   new(0),
+		Passing:                     new(0),
+		Language:                    new(""),
 		Deadline:                    &Timestamp{},
 		StarterCodeRepository:       &Repository{},
 		Classroom:                   &Classroom{},
@@ -315,10 +315,10 @@ func TestClassroomAssignment_String(t *testing.T) {
 func TestClassroomUser_String(t *testing.T) {
 	t.Parallel()
 	v := ClassroomUser{
-		ID:        Ptr(int64(0)),
-		Login:     Ptr(""),
-		AvatarURL: Ptr(""),
-		HTMLURL:   Ptr(""),
+		ID:        new(int64(0)),
+		Login:     new(""),
+		AvatarURL: new(""),
+		HTMLURL:   new(""),
 	}
 	want := `github.ClassroomUser{ID:0, Login:"", AvatarURL:"", HTMLURL:""}`
 	if got := v.String(); got != want {
@@ -329,10 +329,10 @@ func TestClassroomUser_String(t *testing.T) {
 func TestCodeOfConduct_String(t *testing.T) {
 	t.Parallel()
 	v := CodeOfConduct{
-		Name: Ptr(""),
-		Key:  Ptr(""),
-		URL:  Ptr(""),
-		Body: Ptr(""),
+		Name: new(""),
+		Key:  new(""),
+		URL:  new(""),
+		Body: new(""),
 	}
 	want := `github.CodeOfConduct{Name:"", Key:"", URL:"", Body:""}`
 	if got := v.String(); got != want {
@@ -343,10 +343,10 @@ func TestCodeOfConduct_String(t *testing.T) {
 func TestCodeResult_String(t *testing.T) {
 	t.Parallel()
 	v := CodeResult{
-		Name:       Ptr(""),
-		Path:       Ptr(""),
-		SHA:        Ptr(""),
-		HTMLURL:    Ptr(""),
+		Name:       new(""),
+		Path:       new(""),
+		SHA:        new(""),
+		HTMLURL:    new(""),
 		Repository: &Repository{},
 	}
 	want := `github.CodeResult{Name:"", Path:"", SHA:"", HTMLURL:"", Repository:github.Repository{}}`
@@ -358,7 +358,7 @@ func TestCodeResult_String(t *testing.T) {
 func TestCodeSecurity_String(t *testing.T) {
 	t.Parallel()
 	v := CodeSecurity{
-		Status: Ptr(""),
+		Status: new(""),
 	}
 	want := `github.CodeSecurity{Status:""}`
 	if got := v.String(); got != want {
@@ -369,12 +369,12 @@ func TestCodeSecurity_String(t *testing.T) {
 func TestCombinedStatus_String(t *testing.T) {
 	t.Parallel()
 	v := CombinedStatus{
-		State:         Ptr(""),
-		Name:          Ptr(""),
-		SHA:           Ptr(""),
-		TotalCount:    Ptr(0),
-		CommitURL:     Ptr(""),
-		RepositoryURL: Ptr(""),
+		State:         new(""),
+		Name:          new(""),
+		SHA:           new(""),
+		TotalCount:    new(0),
+		CommitURL:     new(""),
+		RepositoryURL: new(""),
 	}
 	want := `github.CombinedStatus{State:"", Name:"", SHA:"", TotalCount:0, CommitURL:"", RepositoryURL:""}`
 	if got := v.String(); got != want {
@@ -385,10 +385,10 @@ func TestCombinedStatus_String(t *testing.T) {
 func TestCommentStats_String(t *testing.T) {
 	t.Parallel()
 	v := CommentStats{
-		TotalCommitComments:      Ptr(0),
-		TotalGistComments:        Ptr(0),
-		TotalIssueComments:       Ptr(0),
-		TotalPullRequestComments: Ptr(0),
+		TotalCommitComments:      new(0),
+		TotalGistComments:        new(0),
+		TotalIssueComments:       new(0),
+		TotalPullRequestComments: new(0),
 	}
 	want := `github.CommentStats{TotalCommitComments:0, TotalGistComments:0, TotalIssueComments:0, TotalPullRequestComments:0}`
 	if got := v.String(); got != want {
@@ -399,16 +399,16 @@ func TestCommentStats_String(t *testing.T) {
 func TestCommit_String(t *testing.T) {
 	t.Parallel()
 	v := Commit{
-		SHA:          Ptr(""),
+		SHA:          new(""),
 		Author:       &CommitAuthor{},
 		Committer:    &CommitAuthor{},
-		Message:      Ptr(""),
+		Message:      new(""),
 		Tree:         &Tree{},
-		HTMLURL:      Ptr(""),
-		URL:          Ptr(""),
+		HTMLURL:      new(""),
+		URL:          new(""),
 		Verification: &SignatureVerification{},
-		NodeID:       Ptr(""),
-		CommentCount: Ptr(0),
+		NodeID:       new(""),
+		CommentCount: new(0),
 	}
 	want := `github.Commit{SHA:"", Author:github.CommitAuthor{}, Committer:github.CommitAuthor{}, Message:"", Tree:github.Tree{}, HTMLURL:"", URL:"", Verification:github.SignatureVerification{}, NodeID:"", CommentCount:0}`
 	if got := v.String(); got != want {
@@ -420,9 +420,9 @@ func TestCommitAuthor_String(t *testing.T) {
 	t.Parallel()
 	v := CommitAuthor{
 		Date:  &Timestamp{},
-		Name:  Ptr(""),
-		Email: Ptr(""),
-		Login: Ptr(""),
+		Name:  new(""),
+		Email: new(""),
+		Login: new(""),
 	}
 	want := `github.CommitAuthor{Date:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Name:"", Email:"", Login:""}`
 	if got := v.String(); got != want {
@@ -433,17 +433,17 @@ func TestCommitAuthor_String(t *testing.T) {
 func TestCommitFile_String(t *testing.T) {
 	t.Parallel()
 	v := CommitFile{
-		SHA:              Ptr(""),
-		Filename:         Ptr(""),
-		Additions:        Ptr(0),
-		Deletions:        Ptr(0),
-		Changes:          Ptr(0),
-		Status:           Ptr(""),
-		Patch:            Ptr(""),
-		BlobURL:          Ptr(""),
-		RawURL:           Ptr(""),
-		ContentsURL:      Ptr(""),
-		PreviousFilename: Ptr(""),
+		SHA:              new(""),
+		Filename:         new(""),
+		Additions:        new(0),
+		Deletions:        new(0),
+		Changes:          new(0),
+		Status:           new(""),
+		Patch:            new(""),
+		BlobURL:          new(""),
+		RawURL:           new(""),
+		ContentsURL:      new(""),
+		PreviousFilename: new(""),
 	}
 	want := `github.CommitFile{SHA:"", Filename:"", Additions:0, Deletions:0, Changes:0, Status:"", Patch:"", BlobURL:"", RawURL:"", ContentsURL:"", PreviousFilename:""}`
 	if got := v.String(); got != want {
@@ -454,9 +454,9 @@ func TestCommitFile_String(t *testing.T) {
 func TestCommitStats_String(t *testing.T) {
 	t.Parallel()
 	v := CommitStats{
-		Additions: Ptr(0),
-		Deletions: Ptr(0),
-		Total:     Ptr(0),
+		Additions: new(0),
+		Deletions: new(0),
+		Total:     new(0),
 	}
 	want := `github.CommitStats{Additions:0, Deletions:0, Total:0}`
 	if got := v.String(); got != want {
@@ -469,15 +469,15 @@ func TestCommitsComparison_String(t *testing.T) {
 	v := CommitsComparison{
 		BaseCommit:      &RepositoryCommit{},
 		MergeBaseCommit: &RepositoryCommit{},
-		Status:          Ptr(""),
-		AheadBy:         Ptr(0),
-		BehindBy:        Ptr(0),
-		TotalCommits:    Ptr(0),
-		HTMLURL:         Ptr(""),
-		PermalinkURL:    Ptr(""),
-		DiffURL:         Ptr(""),
-		PatchURL:        Ptr(""),
-		URL:             Ptr(""),
+		Status:          new(""),
+		AheadBy:         new(0),
+		BehindBy:        new(0),
+		TotalCommits:    new(0),
+		HTMLURL:         new(""),
+		PermalinkURL:    new(""),
+		DiffURL:         new(""),
+		PatchURL:        new(""),
+		URL:             new(""),
 	}
 	want := `github.CommitsComparison{BaseCommit:github.RepositoryCommit{}, MergeBaseCommit:github.RepositoryCommit{}, Status:"", AheadBy:0, BehindBy:0, TotalCommits:0, HTMLURL:"", PermalinkURL:"", DiffURL:"", PatchURL:"", URL:""}`
 	if got := v.String(); got != want {
@@ -500,7 +500,7 @@ func TestContributorStats_String(t *testing.T) {
 	t.Parallel()
 	v := ContributorStats{
 		Author: &Contributor{},
-		Total:  Ptr(0),
+		Total:  new(0),
 	}
 	want := `github.ContributorStats{Author:github.Contributor{}, Total:0}`
 	if got := v.String(); got != want {
@@ -512,14 +512,14 @@ func TestCreateTeamRequest_String(t *testing.T) {
 	t.Parallel()
 	v := CreateTeamRequest{
 		Name:                "",
-		Description:         Ptr(""),
+		Description:         new(""),
 		Maintainers:         []string{""},
 		RepoNames:           []string{""},
-		Privacy:             Ptr(""),
-		NotificationSetting: Ptr(""),
-		Permission:          Ptr(""),
-		ParentTeamID:        Ptr(int64(0)),
-		ParentTeamSlug:      Ptr(""),
+		Privacy:             new(""),
+		NotificationSetting: new(""),
+		Permission:          new(""),
+		ParentTeamID:        new(int64(0)),
+		ParentTeamSlug:      new(""),
 	}
 	want := `github.CreateTeamRequest{Name:"", Description:"", Maintainers:[""], RepoNames:[""], Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:""}`
 	if got := v.String(); got != want {
@@ -530,7 +530,7 @@ func TestCreateTeamRequest_String(t *testing.T) {
 func TestDependabotSecurityUpdates_String(t *testing.T) {
 	t.Parallel()
 	v := DependabotSecurityUpdates{
-		Status: Ptr(""),
+		Status: new(""),
 	}
 	want := `github.DependabotSecurityUpdates{Status:""}`
 	if got := v.String(); got != want {
@@ -542,17 +542,17 @@ func TestDiscussionComment_String(t *testing.T) {
 	t.Parallel()
 	v := DiscussionComment{
 		Author:        &User{},
-		Body:          Ptr(""),
-		BodyHTML:      Ptr(""),
-		BodyVersion:   Ptr(""),
+		Body:          new(""),
+		BodyHTML:      new(""),
+		BodyVersion:   new(""),
 		CreatedAt:     &Timestamp{},
 		LastEditedAt:  &Timestamp{},
-		DiscussionURL: Ptr(""),
-		HTMLURL:       Ptr(""),
-		NodeID:        Ptr(""),
-		Number:        Ptr(0),
+		DiscussionURL: new(""),
+		HTMLURL:       new(""),
+		NodeID:        new(""),
+		Number:        new(0),
 		UpdatedAt:     &Timestamp{},
-		URL:           Ptr(""),
+		URL:           new(""),
 		Reactions:     &Reactions{},
 	}
 	want := `github.DiscussionComment{Author:github.User{}, Body:"", BodyHTML:"", BodyVersion:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, LastEditedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, DiscussionURL:"", HTMLURL:"", NodeID:"", Number:0, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", Reactions:github.Reactions{}}`
@@ -564,13 +564,13 @@ func TestDiscussionComment_String(t *testing.T) {
 func TestDraftReviewComment_String(t *testing.T) {
 	t.Parallel()
 	v := DraftReviewComment{
-		Path:      Ptr(""),
-		Position:  Ptr(0),
-		Body:      Ptr(""),
-		StartSide: Ptr(""),
-		Side:      Ptr(""),
-		StartLine: Ptr(0),
-		Line:      Ptr(0),
+		Path:      new(""),
+		Position:  new(0),
+		Body:      new(""),
+		StartSide: new(""),
+		Side:      new(""),
+		StartLine: new(0),
+		Line:      new(0),
 	}
 	want := `github.DraftReviewComment{Path:"", Position:0, Body:"", StartSide:"", Side:"", StartLine:0, Line:0}`
 	if got := v.String(); got != want {
@@ -581,14 +581,14 @@ func TestDraftReviewComment_String(t *testing.T) {
 func TestEnterprise_String(t *testing.T) {
 	t.Parallel()
 	v := Enterprise{
-		ID:          Ptr(0),
-		Slug:        Ptr(""),
-		Name:        Ptr(""),
-		NodeID:      Ptr(""),
-		AvatarURL:   Ptr(""),
-		Description: Ptr(""),
-		WebsiteURL:  Ptr(""),
-		HTMLURL:     Ptr(""),
+		ID:          new(0),
+		Slug:        new(""),
+		Name:        new(""),
+		NodeID:      new(""),
+		AvatarURL:   new(""),
+		Description: new(""),
+		WebsiteURL:  new(""),
+		HTMLURL:     new(""),
 		CreatedAt:   &Timestamp{},
 		UpdatedAt:   &Timestamp{},
 	}
@@ -601,13 +601,13 @@ func TestEnterprise_String(t *testing.T) {
 func TestEnterpriseBudget_String(t *testing.T) {
 	t.Parallel()
 	v := EnterpriseBudget{
-		ID:                  Ptr(""),
-		BudgetType:          Ptr(""),
-		BudgetProductSKU:    Ptr(""),
-		BudgetScope:         Ptr(""),
-		BudgetEntityName:    Ptr(""),
-		BudgetAmount:        Ptr(0),
-		PreventFurtherUsage: Ptr(false),
+		ID:                  new(""),
+		BudgetType:          new(""),
+		BudgetProductSKU:    new(""),
+		BudgetScope:         new(""),
+		BudgetEntityName:    new(""),
+		BudgetAmount:        new(0),
+		PreventFurtherUsage: new(false),
 		BudgetAlerting:      &EnterpriseBudgetAlerting{},
 	}
 	want := `github.EnterpriseBudget{ID:"", BudgetType:"", BudgetProductSKU:"", BudgetScope:"", BudgetEntityName:"", BudgetAmount:0, PreventFurtherUsage:false, BudgetAlerting:github.EnterpriseBudgetAlerting{}}`
@@ -619,13 +619,13 @@ func TestEnterpriseBudget_String(t *testing.T) {
 func TestEvent_String(t *testing.T) {
 	t.Parallel()
 	v := Event{
-		Type:      Ptr(""),
-		Public:    Ptr(false),
+		Type:      new(""),
+		Public:    new(false),
 		Repo:      &Repository{},
 		Actor:     &User{},
 		Org:       &Organization{},
 		CreatedAt: &Timestamp{},
-		ID:        Ptr(""),
+		ID:        new(""),
 	}
 	want := `github.Event{Type:"", Public:false, Repo:github.Repository{}, Actor:github.User{}, Org:github.Organization{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ID:""}`
 	if got := v.String(); got != want {
@@ -636,15 +636,15 @@ func TestEvent_String(t *testing.T) {
 func TestGPGKey_String(t *testing.T) {
 	t.Parallel()
 	v := GPGKey{
-		ID:                Ptr(int64(0)),
-		PrimaryKeyID:      Ptr(int64(0)),
-		KeyID:             Ptr(""),
-		RawKey:            Ptr(""),
-		PublicKey:         Ptr(""),
-		CanSign:           Ptr(false),
-		CanEncryptComms:   Ptr(false),
-		CanEncryptStorage: Ptr(false),
-		CanCertify:        Ptr(false),
+		ID:                new(int64(0)),
+		PrimaryKeyID:      new(int64(0)),
+		KeyID:             new(""),
+		RawKey:            new(""),
+		PublicKey:         new(""),
+		CanSign:           new(false),
+		CanEncryptComms:   new(false),
+		CanEncryptStorage: new(false),
+		CanCertify:        new(false),
 		CreatedAt:         &Timestamp{},
 		ExpiresAt:         &Timestamp{},
 	}
@@ -657,17 +657,17 @@ func TestGPGKey_String(t *testing.T) {
 func TestGist_String(t *testing.T) {
 	t.Parallel()
 	v := Gist{
-		ID:          Ptr(""),
-		Description: Ptr(""),
-		Public:      Ptr(false),
+		ID:          new(""),
+		Description: new(""),
+		Public:      new(false),
 		Owner:       &User{},
-		Comments:    Ptr(0),
-		HTMLURL:     Ptr(""),
-		GitPullURL:  Ptr(""),
-		GitPushURL:  Ptr(""),
+		Comments:    new(0),
+		HTMLURL:     new(""),
+		GitPullURL:  new(""),
+		GitPushURL:  new(""),
 		CreatedAt:   &Timestamp{},
 		UpdatedAt:   &Timestamp{},
-		NodeID:      Ptr(""),
+		NodeID:      new(""),
 	}
 	want := `github.Gist{ID:"", Description:"", Public:false, Owner:github.User{}, Comments:0, HTMLURL:"", GitPullURL:"", GitPushURL:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, NodeID:""}`
 	if got := v.String(); got != want {
@@ -678,9 +678,9 @@ func TestGist_String(t *testing.T) {
 func TestGistComment_String(t *testing.T) {
 	t.Parallel()
 	v := GistComment{
-		ID:        Ptr(int64(0)),
-		URL:       Ptr(""),
-		Body:      Ptr(""),
+		ID:        new(int64(0)),
+		URL:       new(""),
+		Body:      new(""),
 		User:      &User{},
 		CreatedAt: &Timestamp{},
 	}
@@ -693,12 +693,12 @@ func TestGistComment_String(t *testing.T) {
 func TestGistCommit_String(t *testing.T) {
 	t.Parallel()
 	v := GistCommit{
-		URL:          Ptr(""),
-		Version:      Ptr(""),
+		URL:          new(""),
+		Version:      new(""),
 		User:         &User{},
 		ChangeStatus: &CommitStats{},
 		CommittedAt:  &Timestamp{},
-		NodeID:       Ptr(""),
+		NodeID:       new(""),
 	}
 	want := `github.GistCommit{URL:"", Version:"", User:github.User{}, ChangeStatus:github.CommitStats{}, CommittedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, NodeID:""}`
 	if got := v.String(); got != want {
@@ -709,12 +709,12 @@ func TestGistCommit_String(t *testing.T) {
 func TestGistFile_String(t *testing.T) {
 	t.Parallel()
 	v := GistFile{
-		Size:     Ptr(0),
-		Filename: Ptr(""),
-		Language: Ptr(""),
-		Type:     Ptr(""),
-		RawURL:   Ptr(""),
-		Content:  Ptr(""),
+		Size:     new(0),
+		Filename: new(""),
+		Language: new(""),
+		Type:     new(""),
+		RawURL:   new(""),
+		Content:  new(""),
 	}
 	want := `github.GistFile{Size:0, Filename:"", Language:"", Type:"", RawURL:"", Content:""}`
 	if got := v.String(); got != want {
@@ -725,12 +725,12 @@ func TestGistFile_String(t *testing.T) {
 func TestGistFork_String(t *testing.T) {
 	t.Parallel()
 	v := GistFork{
-		URL:       Ptr(""),
+		URL:       new(""),
 		User:      &User{},
-		ID:        Ptr(""),
+		ID:        new(""),
 		CreatedAt: &Timestamp{},
 		UpdatedAt: &Timestamp{},
-		NodeID:    Ptr(""),
+		NodeID:    new(""),
 	}
 	want := `github.GistFork{URL:"", User:github.User{}, ID:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, NodeID:""}`
 	if got := v.String(); got != want {
@@ -741,9 +741,9 @@ func TestGistFork_String(t *testing.T) {
 func TestGistStats_String(t *testing.T) {
 	t.Parallel()
 	v := GistStats{
-		TotalGists:   Ptr(0),
-		PrivateGists: Ptr(0),
-		PublicGists:  Ptr(0),
+		TotalGists:   new(0),
+		PrivateGists: new(0),
+		PublicGists:  new(0),
 	}
 	want := `github.GistStats{TotalGists:0, PrivateGists:0, PublicGists:0}`
 	if got := v.String(); got != want {
@@ -754,9 +754,9 @@ func TestGistStats_String(t *testing.T) {
 func TestGitObject_String(t *testing.T) {
 	t.Parallel()
 	v := GitObject{
-		Type: Ptr(""),
-		SHA:  Ptr(""),
-		URL:  Ptr(""),
+		Type: new(""),
+		SHA:  new(""),
+		URL:  new(""),
 	}
 	want := `github.GitObject{Type:"", SHA:"", URL:""}`
 	if got := v.String(); got != want {
@@ -767,8 +767,8 @@ func TestGitObject_String(t *testing.T) {
 func TestGitignore_String(t *testing.T) {
 	t.Parallel()
 	v := Gitignore{
-		Name:   Ptr(""),
-		Source: Ptr(""),
+		Name:   new(""),
+		Source: new(""),
 	}
 	want := `github.Gitignore{Name:"", Source:""}`
 	if got := v.String(); got != want {
@@ -779,8 +779,8 @@ func TestGitignore_String(t *testing.T) {
 func TestGrant_String(t *testing.T) {
 	t.Parallel()
 	v := Grant{
-		ID:        Ptr(int64(0)),
-		URL:       Ptr(""),
+		ID:        new(int64(0)),
+		URL:       new(""),
 		App:       &AuthorizationApp{},
 		CreatedAt: &Timestamp{},
 		UpdatedAt: &Timestamp{},
@@ -795,13 +795,13 @@ func TestGrant_String(t *testing.T) {
 func TestHeadCommit_String(t *testing.T) {
 	t.Parallel()
 	v := HeadCommit{
-		Message:   Ptr(""),
+		Message:   new(""),
 		Author:    &CommitAuthor{},
-		URL:       Ptr(""),
-		Distinct:  Ptr(false),
-		SHA:       Ptr(""),
-		ID:        Ptr(""),
-		TreeID:    Ptr(""),
+		URL:       new(""),
+		Distinct:  new(false),
+		SHA:       new(""),
+		ID:        new(""),
+		TreeID:    new(""),
 		Timestamp: &Timestamp{},
 		Committer: &CommitAuthor{},
 		Added:     []string{""},
@@ -819,15 +819,15 @@ func TestHook_String(t *testing.T) {
 	v := Hook{
 		CreatedAt: &Timestamp{},
 		UpdatedAt: &Timestamp{},
-		URL:       Ptr(""),
-		ID:        Ptr(int64(0)),
-		Type:      Ptr(""),
-		Name:      Ptr(""),
-		TestURL:   Ptr(""),
-		PingURL:   Ptr(""),
+		URL:       new(""),
+		ID:        new(int64(0)),
+		Type:      new(""),
+		Name:      new(""),
+		TestURL:   new(""),
+		PingURL:   new(""),
 		Config:    &HookConfig{},
 		Events:    []string{""},
-		Active:    Ptr(false),
+		Active:    new(false),
 	}
 	want := `github.Hook{CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", ID:0, Type:"", Name:"", TestURL:"", PingURL:"", Config:github.HookConfig{}, Events:[""], Active:false}`
 	if got := v.String(); got != want {
@@ -838,17 +838,17 @@ func TestHook_String(t *testing.T) {
 func TestHookDelivery_String(t *testing.T) {
 	t.Parallel()
 	v := HookDelivery{
-		ID:             Ptr(int64(0)),
-		GUID:           Ptr(""),
+		ID:             new(int64(0)),
+		GUID:           new(""),
 		DeliveredAt:    &Timestamp{},
-		Redelivery:     Ptr(false),
-		Duration:       Ptr(0.0),
-		Status:         Ptr(""),
-		StatusCode:     Ptr(0),
-		Event:          Ptr(""),
-		Action:         Ptr(""),
-		InstallationID: Ptr(int64(0)),
-		RepositoryID:   Ptr(int64(0)),
+		Redelivery:     new(false),
+		Duration:       new(0.0),
+		Status:         new(""),
+		StatusCode:     new(0),
+		Event:          new(""),
+		Action:         new(""),
+		InstallationID: new(int64(0)),
+		RepositoryID:   new(int64(0)),
 		Request:        &HookRequest{},
 		Response:       &HookResponse{},
 	}
@@ -861,9 +861,9 @@ func TestHookDelivery_String(t *testing.T) {
 func TestHookStats_String(t *testing.T) {
 	t.Parallel()
 	v := HookStats{
-		TotalHooks:    Ptr(0),
-		ActiveHooks:   Ptr(0),
-		InactiveHooks: Ptr(0),
+		TotalHooks:    new(0),
+		ActiveHooks:   new(0),
+		InactiveHooks: new(0),
 	}
 	want := `github.HookStats{TotalHooks:0, ActiveHooks:0, InactiveHooks:0}`
 	if got := v.String(); got != want {
@@ -874,28 +874,28 @@ func TestHookStats_String(t *testing.T) {
 func TestImport_String(t *testing.T) {
 	t.Parallel()
 	v := Import{
-		VCSURL:          Ptr(""),
-		VCS:             Ptr(""),
-		VCSUsername:     Ptr(""),
-		VCSPassword:     Ptr(""),
-		TFVCProject:     Ptr(""),
-		UseLFS:          Ptr(""),
-		HasLargeFiles:   Ptr(false),
-		LargeFilesSize:  Ptr(0),
-		LargeFilesCount: Ptr(0),
-		Status:          Ptr(""),
-		CommitCount:     Ptr(0),
-		StatusText:      Ptr(""),
-		AuthorsCount:    Ptr(0),
-		Percent:         Ptr(0),
-		PushPercent:     Ptr(0),
-		URL:             Ptr(""),
-		HTMLURL:         Ptr(""),
-		AuthorsURL:      Ptr(""),
-		RepositoryURL:   Ptr(""),
-		Message:         Ptr(""),
-		FailedStep:      Ptr(""),
-		HumanName:       Ptr(""),
+		VCSURL:          new(""),
+		VCS:             new(""),
+		VCSUsername:     new(""),
+		VCSPassword:     new(""),
+		TFVCProject:     new(""),
+		UseLFS:          new(""),
+		HasLargeFiles:   new(false),
+		LargeFilesSize:  new(0),
+		LargeFilesCount: new(0),
+		Status:          new(""),
+		CommitCount:     new(0),
+		StatusText:      new(""),
+		AuthorsCount:    new(0),
+		Percent:         new(0),
+		PushPercent:     new(0),
+		URL:             new(""),
+		HTMLURL:         new(""),
+		AuthorsURL:      new(""),
+		RepositoryURL:   new(""),
+		Message:         new(""),
+		FailedStep:      new(""),
+		HumanName:       new(""),
 	}
 	want := `github.Import{VCSURL:"", VCS:"", VCSUsername:"", VCSPassword:"", TFVCProject:"", UseLFS:"", HasLargeFiles:false, LargeFilesSize:0, LargeFilesCount:0, Status:"", CommitCount:0, StatusText:"", AuthorsCount:0, Percent:0, PushPercent:0, URL:"", HTMLURL:"", AuthorsURL:"", RepositoryURL:"", Message:"", FailedStep:"", HumanName:""}`
 	if got := v.String(); got != want {
@@ -906,25 +906,25 @@ func TestImport_String(t *testing.T) {
 func TestInstallation_String(t *testing.T) {
 	t.Parallel()
 	v := Installation{
-		ID:                     Ptr(int64(0)),
-		NodeID:                 Ptr(""),
-		ClientID:               Ptr(""),
-		AppID:                  Ptr(int64(0)),
-		AppSlug:                Ptr(""),
-		TargetID:               Ptr(int64(0)),
+		ID:                     new(int64(0)),
+		NodeID:                 new(""),
+		ClientID:               new(""),
+		AppID:                  new(int64(0)),
+		AppSlug:                new(""),
+		TargetID:               new(int64(0)),
 		Account:                &User{},
-		AccessTokensURL:        Ptr(""),
-		RepositoriesURL:        Ptr(""),
-		HTMLURL:                Ptr(""),
-		TargetType:             Ptr(""),
-		SingleFileName:         Ptr(""),
-		RepositorySelection:    Ptr(""),
+		AccessTokensURL:        new(""),
+		RepositoriesURL:        new(""),
+		HTMLURL:                new(""),
+		TargetType:             new(""),
+		SingleFileName:         new(""),
+		RepositorySelection:    new(""),
 		Events:                 []string{""},
 		SingleFilePaths:        []string{""},
 		Permissions:            &InstallationPermissions{},
 		CreatedAt:              &Timestamp{},
 		UpdatedAt:              &Timestamp{},
-		HasMultipleSingleFiles: Ptr(false),
+		HasMultipleSingleFiles: new(false),
 		SuspendedBy:            &User{},
 		SuspendedAt:            &Timestamp{},
 	}
@@ -937,17 +937,17 @@ func TestInstallation_String(t *testing.T) {
 func TestInvitation_String(t *testing.T) {
 	t.Parallel()
 	v := Invitation{
-		ID:                Ptr(int64(0)),
-		NodeID:            Ptr(""),
-		Login:             Ptr(""),
-		Email:             Ptr(""),
-		Role:              Ptr(""),
+		ID:                new(int64(0)),
+		NodeID:            new(""),
+		Login:             new(""),
+		Email:             new(""),
+		Role:              new(""),
 		CreatedAt:         &Timestamp{},
 		Inviter:           &User{},
-		TeamCount:         Ptr(0),
-		InvitationTeamURL: Ptr(""),
+		TeamCount:         new(0),
+		InvitationTeamURL: new(""),
 		FailedAt:          &Timestamp{},
-		FailedReason:      Ptr(""),
+		FailedReason:      new(""),
 	}
 	want := `github.Invitation{ID:0, NodeID:"", Login:"", Email:"", Role:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Inviter:github.User{}, TeamCount:0, InvitationTeamURL:"", FailedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, FailedReason:""}`
 	if got := v.String(); got != want {
@@ -958,40 +958,40 @@ func TestInvitation_String(t *testing.T) {
 func TestIssue_String(t *testing.T) {
 	t.Parallel()
 	v := Issue{
-		ID:                       Ptr(int64(0)),
-		Number:                   Ptr(0),
-		State:                    Ptr(""),
-		StateReason:              Ptr(""),
-		Locked:                   Ptr(false),
-		Title:                    Ptr(""),
-		Body:                     Ptr(""),
-		AuthorAssociation:        Ptr(""),
+		ID:                       new(int64(0)),
+		Number:                   new(0),
+		State:                    new(""),
+		StateReason:              new(""),
+		Locked:                   new(false),
+		Title:                    new(""),
+		Body:                     new(""),
+		AuthorAssociation:        new(""),
 		User:                     &User{},
 		Assignee:                 &User{},
-		Comments:                 Ptr(0),
+		Comments:                 new(0),
 		ClosedAt:                 &Timestamp{},
 		CreatedAt:                &Timestamp{},
 		UpdatedAt:                &Timestamp{},
 		ClosedBy:                 &User{},
-		URL:                      Ptr(""),
-		HTMLURL:                  Ptr(""),
-		CommentsURL:              Ptr(""),
-		EventsURL:                Ptr(""),
-		LabelsURL:                Ptr(""),
-		RepositoryURL:            Ptr(""),
-		ParentIssueURL:           Ptr(""),
+		URL:                      new(""),
+		HTMLURL:                  new(""),
+		CommentsURL:              new(""),
+		EventsURL:                new(""),
+		LabelsURL:                new(""),
+		RepositoryURL:            new(""),
+		ParentIssueURL:           new(""),
 		Milestone:                &Milestone{},
 		PullRequestLinks:         &PullRequestLinks{},
 		Repository:               &Repository{},
 		Reactions:                &Reactions{},
-		NodeID:                   Ptr(""),
-		Draft:                    Ptr(false),
+		NodeID:                   new(""),
+		Draft:                    new(false),
 		Type:                     &IssueType{},
 		PinnedComment:            &IssueComment{},
 		PerformedViaGithubApp:    &App{},
 		IssueDependenciesSummary: &IssueDependenciesSummary{},
 		SubIssuesSummary:         &SubIssuesSummary{},
-		ActiveLockReason:         Ptr(""),
+		ActiveLockReason:         new(""),
 	}
 	want := `github.Issue{ID:0, Number:0, State:"", StateReason:"", Locked:false, Title:"", Body:"", AuthorAssociation:"", User:github.User{}, Assignee:github.User{}, Comments:0, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ClosedBy:github.User{}, URL:"", HTMLURL:"", CommentsURL:"", EventsURL:"", LabelsURL:"", RepositoryURL:"", ParentIssueURL:"", Milestone:github.Milestone{}, PullRequestLinks:github.PullRequestLinks{}, Repository:github.Repository{}, Reactions:github.Reactions{}, NodeID:"", Draft:false, Type:github.IssueType{}, PinnedComment:github.IssueComment{}, PerformedViaGithubApp:github.App{}, IssueDependenciesSummary:github.IssueDependenciesSummary{}, SubIssuesSummary:github.SubIssuesSummary{}, ActiveLockReason:""}`
 	if got := v.String(); got != want {
@@ -1002,20 +1002,20 @@ func TestIssue_String(t *testing.T) {
 func TestIssueComment_String(t *testing.T) {
 	t.Parallel()
 	v := IssueComment{
-		ID:                    Ptr(int64(0)),
-		NodeID:                Ptr(""),
-		Body:                  Ptr(""),
+		ID:                    new(int64(0)),
+		NodeID:                new(""),
+		Body:                  new(""),
 		User:                  &User{},
 		Reactions:             &Reactions{},
 		CreatedAt:             &Timestamp{},
 		UpdatedAt:             &Timestamp{},
-		AuthorAssociation:     Ptr(""),
+		AuthorAssociation:     new(""),
 		PerformedViaGithubApp: &App{},
 		Pin:                   &PinnedIssueComment{},
 		Minimized:             &MinimizedIssueComment{},
-		URL:                   Ptr(""),
-		HTMLURL:               Ptr(""),
-		IssueURL:              Ptr(""),
+		URL:                   new(""),
+		HTMLURL:               new(""),
+		IssueURL:              new(""),
 	}
 	want := `github.IssueComment{ID:0, NodeID:"", Body:"", User:github.User{}, Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, AuthorAssociation:"", PerformedViaGithubApp:github.App{}, Pin:github.PinnedIssueComment{}, Minimized:github.MinimizedIssueComment{}, URL:"", HTMLURL:"", IssueURL:""}`
 	if got := v.String(); got != want {
@@ -1026,9 +1026,9 @@ func TestIssueComment_String(t *testing.T) {
 func TestIssueStats_String(t *testing.T) {
 	t.Parallel()
 	v := IssueStats{
-		TotalIssues:  Ptr(0),
-		OpenIssues:   Ptr(0),
-		ClosedIssues: Ptr(0),
+		TotalIssues:  new(0),
+		OpenIssues:   new(0),
+		ClosedIssues: new(0),
 	}
 	want := `github.IssueStats{TotalIssues:0, OpenIssues:0, ClosedIssues:0}`
 	if got := v.String(); got != want {
@@ -1039,14 +1039,14 @@ func TestIssueStats_String(t *testing.T) {
 func TestKey_String(t *testing.T) {
 	t.Parallel()
 	v := Key{
-		ID:        Ptr(int64(0)),
-		Key:       Ptr(""),
-		URL:       Ptr(""),
-		Title:     Ptr(""),
-		ReadOnly:  Ptr(false),
-		Verified:  Ptr(false),
+		ID:        new(int64(0)),
+		Key:       new(""),
+		URL:       new(""),
+		Title:     new(""),
+		ReadOnly:  new(false),
+		Verified:  new(false),
 		CreatedAt: &Timestamp{},
-		AddedBy:   Ptr(""),
+		AddedBy:   new(""),
 		LastUsed:  &Timestamp{},
 	}
 	want := `github.Key{ID:0, Key:"", URL:"", Title:"", ReadOnly:false, Verified:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, AddedBy:"", LastUsed:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
@@ -1062,7 +1062,7 @@ func TestLabel_String(t *testing.T) {
 		URL:         "",
 		Name:        "",
 		Color:       "",
-		Description: Ptr(""),
+		Description: new(""),
 		Default:     false,
 		NodeID:      "",
 	}
@@ -1075,13 +1075,13 @@ func TestLabel_String(t *testing.T) {
 func TestLabelResult_String(t *testing.T) {
 	t.Parallel()
 	v := LabelResult{
-		ID:          Ptr(int64(0)),
-		URL:         Ptr(""),
-		Name:        Ptr(""),
-		Color:       Ptr(""),
-		Default:     Ptr(false),
-		Description: Ptr(""),
-		Score:       Ptr(0.0),
+		ID:          new(int64(0)),
+		URL:         new(""),
+		Name:        new(""),
+		Color:       new(""),
+		Default:     new(false),
+		Description: new(""),
+		Score:       new(0.0),
 	}
 	want := `github.LabelResult{ID:0, URL:"", Name:"", Color:"", Default:false, Description:"", Score:0}`
 	if got := v.String(); got != want {
@@ -1092,10 +1092,10 @@ func TestLabelResult_String(t *testing.T) {
 func TestLargeFile_String(t *testing.T) {
 	t.Parallel()
 	v := LargeFile{
-		RefName: Ptr(""),
-		Path:    Ptr(""),
-		OID:     Ptr(""),
-		Size:    Ptr(0),
+		RefName: new(""),
+		Path:    new(""),
+		OID:     new(""),
+		Size:    new(0),
 	}
 	want := `github.LargeFile{RefName:"", Path:"", OID:"", Size:0}`
 	if got := v.String(); got != want {
@@ -1106,15 +1106,15 @@ func TestLargeFile_String(t *testing.T) {
 func TestLicense_String(t *testing.T) {
 	t.Parallel()
 	v := License{
-		Key:            Ptr(""),
-		Name:           Ptr(""),
-		URL:            Ptr(""),
-		SPDXID:         Ptr(""),
-		HTMLURL:        Ptr(""),
-		Featured:       Ptr(false),
-		Description:    Ptr(""),
-		Implementation: Ptr(""),
-		Body:           Ptr(""),
+		Key:            new(""),
+		Name:           new(""),
+		URL:            new(""),
+		SPDXID:         new(""),
+		HTMLURL:        new(""),
+		Featured:       new(false),
+		Description:    new(""),
+		Implementation: new(""),
+		Body:           new(""),
 	}
 	want := `github.License{Key:"", Name:"", URL:"", SPDXID:"", HTMLURL:"", Featured:false, Description:"", Implementation:"", Body:""}`
 	if got := v.String(); got != want {
@@ -1125,10 +1125,10 @@ func TestLicense_String(t *testing.T) {
 func TestMembership_String(t *testing.T) {
 	t.Parallel()
 	v := Membership{
-		URL:             Ptr(""),
-		State:           Ptr(""),
-		Role:            Ptr(""),
-		OrganizationURL: Ptr(""),
+		URL:             new(""),
+		State:           new(""),
+		Role:            new(""),
+		OrganizationURL: new(""),
 		Organization:    &Organization{},
 		User:            &User{},
 	}
@@ -1141,14 +1141,14 @@ func TestMembership_String(t *testing.T) {
 func TestMigration_String(t *testing.T) {
 	t.Parallel()
 	v := Migration{
-		ID:                 Ptr(int64(0)),
-		GUID:               Ptr(""),
-		State:              Ptr(""),
-		LockRepositories:   Ptr(false),
-		ExcludeAttachments: Ptr(false),
-		URL:                Ptr(""),
-		CreatedAt:          Ptr(""),
-		UpdatedAt:          Ptr(""),
+		ID:                 new(int64(0)),
+		GUID:               new(""),
+		State:              new(""),
+		LockRepositories:   new(false),
+		ExcludeAttachments: new(false),
+		URL:                new(""),
+		CreatedAt:          new(""),
+		UpdatedAt:          new(""),
 	}
 	want := `github.Migration{ID:0, GUID:"", State:"", LockRepositories:false, ExcludeAttachments:false, URL:"", CreatedAt:"", UpdatedAt:""}`
 	if got := v.String(); got != want {
@@ -1159,22 +1159,22 @@ func TestMigration_String(t *testing.T) {
 func TestMilestone_String(t *testing.T) {
 	t.Parallel()
 	v := Milestone{
-		URL:          Ptr(""),
-		HTMLURL:      Ptr(""),
-		LabelsURL:    Ptr(""),
-		ID:           Ptr(int64(0)),
-		Number:       Ptr(0),
-		State:        Ptr(""),
-		Title:        Ptr(""),
-		Description:  Ptr(""),
+		URL:          new(""),
+		HTMLURL:      new(""),
+		LabelsURL:    new(""),
+		ID:           new(int64(0)),
+		Number:       new(0),
+		State:        new(""),
+		Title:        new(""),
+		Description:  new(""),
 		Creator:      &User{},
-		OpenIssues:   Ptr(0),
-		ClosedIssues: Ptr(0),
+		OpenIssues:   new(0),
+		ClosedIssues: new(0),
 		CreatedAt:    &Timestamp{},
 		UpdatedAt:    &Timestamp{},
 		ClosedAt:     &Timestamp{},
 		DueOn:        &Timestamp{},
-		NodeID:       Ptr(""),
+		NodeID:       new(""),
 	}
 	want := `github.Milestone{URL:"", HTMLURL:"", LabelsURL:"", ID:0, Number:0, State:"", Title:"", Description:"", Creator:github.User{}, OpenIssues:0, ClosedIssues:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, DueOn:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, NodeID:""}`
 	if got := v.String(); got != want {
@@ -1185,9 +1185,9 @@ func TestMilestone_String(t *testing.T) {
 func TestMilestoneStats_String(t *testing.T) {
 	t.Parallel()
 	v := MilestoneStats{
-		TotalMilestones:  Ptr(0),
-		OpenMilestones:   Ptr(0),
-		ClosedMilestones: Ptr(0),
+		TotalMilestones:  new(0),
+		OpenMilestones:   new(0),
+		ClosedMilestones: new(0),
 	}
 	want := `github.MilestoneStats{TotalMilestones:0, OpenMilestones:0, ClosedMilestones:0}`
 	if got := v.String(); got != want {
@@ -1198,9 +1198,9 @@ func TestMilestoneStats_String(t *testing.T) {
 func TestOAuthAPP_String(t *testing.T) {
 	t.Parallel()
 	v := OAuthAPP{
-		URL:      Ptr(""),
-		Name:     Ptr(""),
-		ClientID: Ptr(""),
+		URL:      new(""),
+		Name:     new(""),
+		ClientID: new(""),
 	}
 	want := `github.OAuthAPP{URL:"", Name:"", ClientID:""}`
 	if got := v.String(); got != want {
@@ -1211,10 +1211,10 @@ func TestOAuthAPP_String(t *testing.T) {
 func TestOrgStats_String(t *testing.T) {
 	t.Parallel()
 	v := OrgStats{
-		TotalOrgs:        Ptr(0),
-		DisabledOrgs:     Ptr(0),
-		TotalTeams:       Ptr(0),
-		TotalTeamMembers: Ptr(0),
+		TotalOrgs:        new(0),
+		DisabledOrgs:     new(0),
+		TotalTeams:       new(0),
+		TotalTeamMembers: new(0),
 	}
 	want := `github.OrgStats{TotalOrgs:0, DisabledOrgs:0, TotalTeams:0, TotalTeamMembers:0}`
 	if got := v.String(); got != want {
@@ -1225,75 +1225,75 @@ func TestOrgStats_String(t *testing.T) {
 func TestOrganization_String(t *testing.T) {
 	t.Parallel()
 	v := Organization{
-		Login:                                Ptr(""),
-		ID:                                   Ptr(int64(0)),
-		NodeID:                               Ptr(""),
-		AvatarURL:                            Ptr(""),
-		HTMLURL:                              Ptr(""),
-		Name:                                 Ptr(""),
-		Company:                              Ptr(""),
-		Blog:                                 Ptr(""),
-		Location:                             Ptr(""),
-		Email:                                Ptr(""),
-		TwitterUsername:                      Ptr(""),
-		Description:                          Ptr(""),
-		PublicRepos:                          Ptr(0),
-		PublicGists:                          Ptr(0),
-		Followers:                            Ptr(0),
-		Following:                            Ptr(0),
+		Login:                                new(""),
+		ID:                                   new(int64(0)),
+		NodeID:                               new(""),
+		AvatarURL:                            new(""),
+		HTMLURL:                              new(""),
+		Name:                                 new(""),
+		Company:                              new(""),
+		Blog:                                 new(""),
+		Location:                             new(""),
+		Email:                                new(""),
+		TwitterUsername:                      new(""),
+		Description:                          new(""),
+		PublicRepos:                          new(0),
+		PublicGists:                          new(0),
+		Followers:                            new(0),
+		Following:                            new(0),
 		CreatedAt:                            &Timestamp{},
 		UpdatedAt:                            &Timestamp{},
 		ArchivedAt:                           &Timestamp{},
-		TotalPrivateRepos:                    Ptr(int64(0)),
-		OwnedPrivateRepos:                    Ptr(int64(0)),
-		PrivateGists:                         Ptr(0),
-		DiskUsage:                            Ptr(0),
-		Collaborators:                        Ptr(0),
-		BillingEmail:                         Ptr(""),
-		Type:                                 Ptr(""),
+		TotalPrivateRepos:                    new(int64(0)),
+		OwnedPrivateRepos:                    new(int64(0)),
+		PrivateGists:                         new(0),
+		DiskUsage:                            new(0),
+		Collaborators:                        new(0),
+		BillingEmail:                         new(""),
+		Type:                                 new(""),
 		Plan:                                 &Plan{},
-		TwoFactorRequirementEnabled:          Ptr(false),
-		IsVerified:                           Ptr(false),
-		HasOrganizationProjects:              Ptr(false),
-		HasRepositoryProjects:                Ptr(false),
-		DefaultRepoPermission:                Ptr(""),
-		DefaultRepoSettings:                  Ptr(""),
-		MembersCanCreateRepos:                Ptr(false),
-		MembersCanCreatePublicRepos:          Ptr(false),
-		MembersCanCreatePrivateRepos:         Ptr(false),
-		MembersCanCreateInternalRepos:        Ptr(false),
-		MembersCanForkPrivateRepos:           Ptr(false),
-		DeployKeysEnabledForRepositories:     Ptr(false),
-		MembersAllowedRepositoryCreationType: Ptr(""),
-		MembersCanCreatePages:                Ptr(false),
-		MembersCanCreatePublicPages:          Ptr(false),
-		MembersCanCreatePrivatePages:         Ptr(false),
-		WebCommitSignoffRequired:             Ptr(false),
-		AdvancedSecurityEnabledForNewRepos:   Ptr(false),
-		DependabotAlertsEnabledForNewRepos:   Ptr(false),
-		DependabotSecurityUpdatesEnabledForNewRepos:    Ptr(false),
-		DependencyGraphEnabledForNewRepos:              Ptr(false),
-		SecretScanningEnabledForNewRepos:               Ptr(false),
-		SecretScanningPushProtectionEnabledForNewRepos: Ptr(false),
-		SecretScanningValidityChecksEnabled:            Ptr(false),
-		SecretScanningPushProtectionCustomLinkEnabled:  Ptr(false),
-		SecretScanningPushProtectionCustomLink:         Ptr(""),
-		MembersCanDeleteRepositories:                   Ptr(false),
-		MembersCanChangeRepoVisibility:                 Ptr(false),
-		MembersCanInviteOutsideCollaborators:           Ptr(false),
-		MembersCanDeleteIssues:                         Ptr(false),
-		DisplayCommenterFullNameSettingEnabled:         Ptr(false),
-		ReadersCanCreateDiscussions:                    Ptr(false),
-		MembersCanCreateTeams:                          Ptr(false),
-		MembersCanViewDependencyInsights:               Ptr(false),
-		DefaultRepositoryBranch:                        Ptr(""),
-		URL:                                            Ptr(""),
-		EventsURL:                                      Ptr(""),
-		HooksURL:                                       Ptr(""),
-		IssuesURL:                                      Ptr(""),
-		MembersURL:                                     Ptr(""),
-		PublicMembersURL:                               Ptr(""),
-		ReposURL:                                       Ptr(""),
+		TwoFactorRequirementEnabled:          new(false),
+		IsVerified:                           new(false),
+		HasOrganizationProjects:              new(false),
+		HasRepositoryProjects:                new(false),
+		DefaultRepoPermission:                new(""),
+		DefaultRepoSettings:                  new(""),
+		MembersCanCreateRepos:                new(false),
+		MembersCanCreatePublicRepos:          new(false),
+		MembersCanCreatePrivateRepos:         new(false),
+		MembersCanCreateInternalRepos:        new(false),
+		MembersCanForkPrivateRepos:           new(false),
+		DeployKeysEnabledForRepositories:     new(false),
+		MembersAllowedRepositoryCreationType: new(""),
+		MembersCanCreatePages:                new(false),
+		MembersCanCreatePublicPages:          new(false),
+		MembersCanCreatePrivatePages:         new(false),
+		WebCommitSignoffRequired:             new(false),
+		AdvancedSecurityEnabledForNewRepos:   new(false),
+		DependabotAlertsEnabledForNewRepos:   new(false),
+		DependabotSecurityUpdatesEnabledForNewRepos:    new(false),
+		DependencyGraphEnabledForNewRepos:              new(false),
+		SecretScanningEnabledForNewRepos:               new(false),
+		SecretScanningPushProtectionEnabledForNewRepos: new(false),
+		SecretScanningValidityChecksEnabled:            new(false),
+		SecretScanningPushProtectionCustomLinkEnabled:  new(false),
+		SecretScanningPushProtectionCustomLink:         new(""),
+		MembersCanDeleteRepositories:                   new(false),
+		MembersCanChangeRepoVisibility:                 new(false),
+		MembersCanInviteOutsideCollaborators:           new(false),
+		MembersCanDeleteIssues:                         new(false),
+		DisplayCommenterFullNameSettingEnabled:         new(false),
+		ReadersCanCreateDiscussions:                    new(false),
+		MembersCanCreateTeams:                          new(false),
+		MembersCanViewDependencyInsights:               new(false),
+		DefaultRepositoryBranch:                        new(""),
+		URL:                                            new(""),
+		EventsURL:                                      new(""),
+		HooksURL:                                       new(""),
+		IssuesURL:                                      new(""),
+		MembersURL:                                     new(""),
+		PublicMembersURL:                               new(""),
+		ReposURL:                                       new(""),
 	}
 	want := `github.Organization{Login:"", ID:0, NodeID:"", AvatarURL:"", HTMLURL:"", Name:"", Company:"", Blog:"", Location:"", Email:"", TwitterUsername:"", Description:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ArchivedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, BillingEmail:"", Type:"", Plan:github.Plan{}, TwoFactorRequirementEnabled:false, IsVerified:false, HasOrganizationProjects:false, HasRepositoryProjects:false, DefaultRepoPermission:"", DefaultRepoSettings:"", MembersCanCreateRepos:false, MembersCanCreatePublicRepos:false, MembersCanCreatePrivateRepos:false, MembersCanCreateInternalRepos:false, MembersCanForkPrivateRepos:false, DeployKeysEnabledForRepositories:false, MembersAllowedRepositoryCreationType:"", MembersCanCreatePages:false, MembersCanCreatePublicPages:false, MembersCanCreatePrivatePages:false, WebCommitSignoffRequired:false, AdvancedSecurityEnabledForNewRepos:false, DependabotAlertsEnabledForNewRepos:false, DependabotSecurityUpdatesEnabledForNewRepos:false, DependencyGraphEnabledForNewRepos:false, SecretScanningEnabledForNewRepos:false, SecretScanningPushProtectionEnabledForNewRepos:false, SecretScanningValidityChecksEnabled:false, SecretScanningPushProtectionCustomLinkEnabled:false, SecretScanningPushProtectionCustomLink:"", MembersCanDeleteRepositories:false, MembersCanChangeRepoVisibility:false, MembersCanInviteOutsideCollaborators:false, MembersCanDeleteIssues:false, DisplayCommenterFullNameSettingEnabled:false, ReadersCanCreateDiscussions:false, MembersCanCreateTeams:false, MembersCanViewDependencyInsights:false, DefaultRepositoryBranch:"", URL:"", EventsURL:"", HooksURL:"", IssuesURL:"", MembersURL:"", PublicMembersURL:"", ReposURL:""}`
 	if got := v.String(); got != want {
@@ -1304,22 +1304,22 @@ func TestOrganization_String(t *testing.T) {
 func TestPackage_String(t *testing.T) {
 	t.Parallel()
 	v := Package{
-		ID:             Ptr(int64(0)),
-		Name:           Ptr(""),
-		PackageType:    Ptr(""),
-		HTMLURL:        Ptr(""),
-		Visibility:     Ptr(""),
+		ID:             new(int64(0)),
+		Name:           new(""),
+		PackageType:    new(""),
+		HTMLURL:        new(""),
+		Visibility:     new(""),
 		Owner:          &User{},
 		Repository:     &Repository{},
 		CreatedAt:      &Timestamp{},
 		UpdatedAt:      &Timestamp{},
-		Namespace:      Ptr(""),
-		Description:    Ptr(""),
-		Ecosystem:      Ptr(""),
+		Namespace:      new(""),
+		Description:    new(""),
+		Ecosystem:      new(""),
 		PackageVersion: &PackageVersion{},
 		Registry:       &PackageRegistry{},
-		URL:            Ptr(""),
-		VersionCount:   Ptr(int64(0)),
+		URL:            new(""),
+		VersionCount:   new(int64(0)),
 	}
 	want := `github.Package{ID:0, Name:"", PackageType:"", HTMLURL:"", Visibility:"", Owner:github.User{}, Repository:github.Repository{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Namespace:"", Description:"", Ecosystem:"", PackageVersion:github.PackageVersion{}, Registry:github.PackageRegistry{}, URL:"", VersionCount:0}`
 	if got := v.String(); got != want {
@@ -1352,8 +1352,8 @@ func TestPackageEventContainerMetadata_String(t *testing.T) {
 func TestPackageEventContainerMetadataTag_String(t *testing.T) {
 	t.Parallel()
 	v := PackageEventContainerMetadataTag{
-		Name:   Ptr(""),
-		Digest: Ptr(""),
+		Name:   new(""),
+		Digest: new(""),
 	}
 	want := `github.PackageEventContainerMetadataTag{Name:"", Digest:""}`
 	if got := v.String(); got != want {
@@ -1364,16 +1364,16 @@ func TestPackageEventContainerMetadataTag_String(t *testing.T) {
 func TestPackageFile_String(t *testing.T) {
 	t.Parallel()
 	v := PackageFile{
-		DownloadURL: Ptr(""),
-		ID:          Ptr(int64(0)),
-		Name:        Ptr(""),
-		SHA256:      Ptr(""),
-		SHA1:        Ptr(""),
-		MD5:         Ptr(""),
-		ContentType: Ptr(""),
-		State:       Ptr(""),
+		DownloadURL: new(""),
+		ID:          new(int64(0)),
+		Name:        new(""),
+		SHA256:      new(""),
+		SHA1:        new(""),
+		MD5:         new(""),
+		ContentType: new(""),
+		State:       new(""),
 		Author:      &User{},
-		Size:        Ptr(int64(0)),
+		Size:        new(int64(0)),
 		CreatedAt:   &Timestamp{},
 		UpdatedAt:   &Timestamp{},
 	}
@@ -1386,7 +1386,7 @@ func TestPackageFile_String(t *testing.T) {
 func TestPackageMetadata_String(t *testing.T) {
 	t.Parallel()
 	v := PackageMetadata{
-		PackageType: Ptr(""),
+		PackageType: new(""),
 		Container:   &PackageContainerMetadata{},
 	}
 	want := `github.PackageMetadata{PackageType:"", Container:github.PackageContainerMetadata{}}`
@@ -1398,30 +1398,30 @@ func TestPackageMetadata_String(t *testing.T) {
 func TestPackageNPMMetadata_String(t *testing.T) {
 	t.Parallel()
 	v := PackageNPMMetadata{
-		Name:                Ptr(""),
-		Version:             Ptr(""),
-		NPMUser:             Ptr(""),
-		Description:         Ptr(""),
-		GitHead:             Ptr(""),
-		Homepage:            Ptr(""),
-		License:             Ptr(""),
-		Main:                Ptr(""),
-		ID:                  Ptr(""),
-		NodeVersion:         Ptr(""),
-		NPMVersion:          Ptr(""),
-		HasShrinkwrap:       Ptr(false),
+		Name:                new(""),
+		Version:             new(""),
+		NPMUser:             new(""),
+		Description:         new(""),
+		GitHead:             new(""),
+		Homepage:            new(""),
+		License:             new(""),
+		Main:                new(""),
+		ID:                  new(""),
+		NodeVersion:         new(""),
+		NPMVersion:          new(""),
+		HasShrinkwrap:       new(false),
 		Maintainers:         []any{nil},
 		Contributors:        []any{nil},
 		Keywords:            []string{""},
 		Files:               []string{""},
 		OS:                  []string{""},
 		CPU:                 []string{""},
-		Readme:              Ptr(""),
-		InstallationCommand: Ptr(""),
-		ReleaseID:           Ptr(int64(0)),
-		CommitOID:           Ptr(""),
-		PublishedViaActions: Ptr(false),
-		DeletedByID:         Ptr(int64(0)),
+		Readme:              new(""),
+		InstallationCommand: new(""),
+		ReleaseID:           new(int64(0)),
+		CommitOID:           new(""),
+		PublishedViaActions: new(false),
+		DeletedByID:         new(int64(0)),
 	}
 	want := `github.PackageNPMMetadata{Name:"", Version:"", NPMUser:"", Description:"", GitHead:"", Homepage:"", License:"", Main:"", ID:"", NodeVersion:"", NPMVersion:"", HasShrinkwrap:false, Maintainers:[<nil>], Contributors:[<nil>], Keywords:[""], Files:[""], OS:[""], CPU:[""], Readme:"", InstallationCommand:"", ReleaseID:0, CommitOID:"", PublishedViaActions:false, DeletedByID:0}`
 	if got := v.String(); got != want {
@@ -1432,7 +1432,7 @@ func TestPackageNPMMetadata_String(t *testing.T) {
 func TestPackageNugetMetadata_String(t *testing.T) {
 	t.Parallel()
 	v := PackageNugetMetadata{
-		Name: Ptr(""),
+		Name: new(""),
 	}
 	want := `github.PackageNugetMetadata{Name:""}`
 	if got := v.String(); got != want {
@@ -1443,11 +1443,11 @@ func TestPackageNugetMetadata_String(t *testing.T) {
 func TestPackageRegistry_String(t *testing.T) {
 	t.Parallel()
 	v := PackageRegistry{
-		AboutURL: Ptr(""),
-		Name:     Ptr(""),
-		Type:     Ptr(""),
-		URL:      Ptr(""),
-		Vendor:   Ptr(""),
+		AboutURL: new(""),
+		Name:     new(""),
+		Type:     new(""),
+		URL:      new(""),
+		Vendor:   new(""),
 	}
 	want := `github.PackageRegistry{AboutURL:"", Name:"", Type:"", URL:"", Vendor:""}`
 	if got := v.String(); got != want {
@@ -1458,15 +1458,15 @@ func TestPackageRegistry_String(t *testing.T) {
 func TestPackageRelease_String(t *testing.T) {
 	t.Parallel()
 	v := PackageRelease{
-		URL:             Ptr(""),
-		HTMLURL:         Ptr(""),
-		ID:              Ptr(int64(0)),
-		TagName:         Ptr(""),
-		TargetCommitish: Ptr(""),
-		Name:            Ptr(""),
-		Draft:           Ptr(false),
+		URL:             new(""),
+		HTMLURL:         new(""),
+		ID:              new(int64(0)),
+		TagName:         new(""),
+		TargetCommitish: new(""),
+		Name:            new(""),
+		Draft:           new(false),
 		Author:          &User{},
-		Prerelease:      Ptr(false),
+		Prerelease:      new(false),
 		CreatedAt:       &Timestamp{},
 		PublishedAt:     &Timestamp{},
 	}
@@ -1479,32 +1479,32 @@ func TestPackageRelease_String(t *testing.T) {
 func TestPackageVersion_String(t *testing.T) {
 	t.Parallel()
 	v := PackageVersion{
-		ID:                  Ptr(int64(0)),
-		Name:                Ptr(""),
-		URL:                 Ptr(""),
-		PackageHTMLURL:      Ptr(""),
-		License:             Ptr(""),
-		Description:         Ptr(""),
+		ID:                  new(int64(0)),
+		Name:                new(""),
+		URL:                 new(""),
+		PackageHTMLURL:      new(""),
+		License:             new(""),
+		Description:         new(""),
 		CreatedAt:           &Timestamp{},
 		UpdatedAt:           &Timestamp{},
-		Version:             Ptr(""),
-		Summary:             Ptr(""),
-		BodyHTML:            Ptr(""),
+		Version:             new(""),
+		Summary:             new(""),
+		BodyHTML:            new(""),
 		Release:             &PackageRelease{},
-		Manifest:            Ptr(""),
-		HTMLURL:             Ptr(""),
-		TagName:             Ptr(""),
-		TargetCommitish:     Ptr(""),
-		TargetOID:           Ptr(""),
-		Draft:               Ptr(false),
-		Prerelease:          Ptr(false),
+		Manifest:            new(""),
+		HTMLURL:             new(""),
+		TagName:             new(""),
+		TargetCommitish:     new(""),
+		TargetOID:           new(""),
+		Draft:               new(false),
+		Prerelease:          new(false),
 		ContainerMetadata:   &PackageEventContainerMetadata{},
 		DockerMetadata:      []any{nil},
 		NPMMetadata:         &PackageNPMMetadata{},
-		PackageURL:          Ptr(""),
+		PackageURL:          new(""),
 		Author:              &User{},
-		SourceURL:           Ptr(""),
-		InstallationCommand: Ptr(""),
+		SourceURL:           new(""),
+		InstallationCommand: new(""),
 		DeletedAt:           &Timestamp{},
 	}
 	want := `github.PackageVersion{ID:0, Name:"", URL:"", PackageHTMLURL:"", License:"", Description:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Version:"", Summary:"", BodyHTML:"", Release:github.PackageRelease{}, Manifest:"", HTMLURL:"", TagName:"", TargetCommitish:"", TargetOID:"", Draft:false, Prerelease:false, ContainerMetadata:github.PackageEventContainerMetadata{}, DockerMetadata:[<nil>], NPMMetadata:github.PackageNPMMetadata{}, PackageURL:"", Author:github.User{}, SourceURL:"", InstallationCommand:"", DeletedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
@@ -1528,13 +1528,13 @@ func TestPackageVersionBody_String(t *testing.T) {
 func TestPackageVersionBodyInfo_String(t *testing.T) {
 	t.Parallel()
 	v := PackageVersionBodyInfo{
-		Type:       Ptr(""),
-		OID:        Ptr(""),
-		Mode:       Ptr(int64(0)),
-		Name:       Ptr(""),
-		Path:       Ptr(""),
-		Size:       Ptr(int64(0)),
-		Collection: Ptr(false),
+		Type:       new(""),
+		OID:        new(""),
+		Mode:       new(int64(0)),
+		Name:       new(""),
+		Path:       new(""),
+		Size:       new(int64(0)),
+		Collection: new(false),
 	}
 	want := `github.PackageVersionBodyInfo{Type:"", OID:"", Mode:0, Name:"", Path:"", Size:0, Collection:false}`
 	if got := v.String(); got != want {
@@ -1545,7 +1545,7 @@ func TestPackageVersionBodyInfo_String(t *testing.T) {
 func TestPageStats_String(t *testing.T) {
 	t.Parallel()
 	v := PageStats{
-		TotalPages: Ptr(0),
+		TotalPages: new(0),
 	}
 	want := `github.PageStats{TotalPages:0}`
 	if got := v.String(); got != want {
@@ -1556,12 +1556,12 @@ func TestPageStats_String(t *testing.T) {
 func TestPlan_String(t *testing.T) {
 	t.Parallel()
 	v := Plan{
-		Name:          Ptr(""),
-		Space:         Ptr(0),
-		Collaborators: Ptr(0),
-		PrivateRepos:  Ptr(int64(0)),
-		FilledSeats:   Ptr(0),
-		Seats:         Ptr(0),
+		Name:          new(""),
+		Space:         new(0),
+		Collaborators: new(0),
+		PrivateRepos:  new(int64(0)),
+		FilledSeats:   new(0),
+		Seats:         new(0),
 	}
 	want := `github.Plan{Name:"", Space:0, Collaborators:0, PrivateRepos:0, FilledSeats:0, Seats:0}`
 	if got := v.String(); got != want {
@@ -1572,10 +1572,10 @@ func TestPlan_String(t *testing.T) {
 func TestPreReceiveHook_String(t *testing.T) {
 	t.Parallel()
 	v := PreReceiveHook{
-		ID:          Ptr(int64(0)),
-		Name:        Ptr(""),
-		Enforcement: Ptr(""),
-		ConfigURL:   Ptr(""),
+		ID:          new(int64(0)),
+		Name:        new(""),
+		Enforcement: new(""),
+		ConfigURL:   new(""),
 	}
 	want := `github.PreReceiveHook{ID:0, Name:"", Enforcement:"", ConfigURL:""}`
 	if got := v.String(); got != want {
@@ -1586,31 +1586,31 @@ func TestPreReceiveHook_String(t *testing.T) {
 func TestProjectV2_String(t *testing.T) {
 	t.Parallel()
 	v := ProjectV2{
-		ID:                     Ptr(int64(0)),
-		NodeID:                 Ptr(""),
+		ID:                     new(int64(0)),
+		NodeID:                 new(""),
 		Owner:                  &User{},
 		Creator:                &User{},
-		Title:                  Ptr(""),
-		Description:            Ptr(""),
-		Public:                 Ptr(false),
+		Title:                  new(""),
+		Description:            new(""),
+		Public:                 new(false),
 		ClosedAt:               &Timestamp{},
 		CreatedAt:              &Timestamp{},
 		UpdatedAt:              &Timestamp{},
 		DeletedAt:              &Timestamp{},
-		Number:                 Ptr(0),
-		ShortDescription:       Ptr(""),
+		Number:                 new(0),
+		ShortDescription:       new(""),
 		DeletedBy:              &User{},
-		State:                  Ptr(""),
+		State:                  new(""),
 		LatestStatusUpdate:     &ProjectV2StatusUpdate{},
-		IsTemplate:             Ptr(false),
-		URL:                    Ptr(""),
-		HTMLURL:                Ptr(""),
-		ColumnsURL:             Ptr(""),
-		OwnerURL:               Ptr(""),
-		Name:                   Ptr(""),
-		Body:                   Ptr(""),
-		OrganizationPermission: Ptr(""),
-		Private:                Ptr(false),
+		IsTemplate:             new(false),
+		URL:                    new(""),
+		HTMLURL:                new(""),
+		ColumnsURL:             new(""),
+		OwnerURL:               new(""),
+		Name:                   new(""),
+		Body:                   new(""),
+		OrganizationPermission: new(""),
+		Private:                new(false),
 	}
 	want := `github.ProjectV2{ID:0, NodeID:"", Owner:github.User{}, Creator:github.User{}, Title:"", Description:"", Public:false, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, DeletedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Number:0, ShortDescription:"", DeletedBy:github.User{}, State:"", LatestStatusUpdate:github.ProjectV2StatusUpdate{}, IsTemplate:false, URL:"", HTMLURL:"", ColumnsURL:"", OwnerURL:"", Name:"", Body:"", OrganizationPermission:"", Private:false}`
 	if got := v.String(); got != want {
@@ -1621,51 +1621,51 @@ func TestProjectV2_String(t *testing.T) {
 func TestPullRequest_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequest{
-		ID:                  Ptr(int64(0)),
-		Number:              Ptr(0),
-		State:               Ptr(""),
-		Locked:              Ptr(false),
-		Title:               Ptr(""),
-		Body:                Ptr(""),
+		ID:                  new(int64(0)),
+		Number:              new(0),
+		State:               new(""),
+		Locked:              new(false),
+		Title:               new(""),
+		Body:                new(""),
 		CreatedAt:           &Timestamp{},
 		UpdatedAt:           &Timestamp{},
 		ClosedAt:            &Timestamp{},
 		MergedAt:            &Timestamp{},
 		User:                &User{},
-		Draft:               Ptr(false),
-		URL:                 Ptr(""),
-		HTMLURL:             Ptr(""),
-		IssueURL:            Ptr(""),
-		StatusesURL:         Ptr(""),
-		DiffURL:             Ptr(""),
-		PatchURL:            Ptr(""),
-		CommitsURL:          Ptr(""),
-		CommentsURL:         Ptr(""),
-		ReviewCommentsURL:   Ptr(""),
-		ReviewCommentURL:    Ptr(""),
+		Draft:               new(false),
+		URL:                 new(""),
+		HTMLURL:             new(""),
+		IssueURL:            new(""),
+		StatusesURL:         new(""),
+		DiffURL:             new(""),
+		PatchURL:            new(""),
+		CommitsURL:          new(""),
+		CommentsURL:         new(""),
+		ReviewCommentsURL:   new(""),
+		ReviewCommentURL:    new(""),
 		Assignee:            &User{},
 		Milestone:           &Milestone{},
-		AuthorAssociation:   Ptr(""),
-		NodeID:              Ptr(""),
+		AuthorAssociation:   new(""),
+		NodeID:              new(""),
 		AutoMerge:           &PullRequestAutoMerge{},
-		Merged:              Ptr(false),
-		Mergeable:           Ptr(false),
-		MergeableState:      Ptr(""),
-		Rebaseable:          Ptr(false),
+		Merged:              new(false),
+		Mergeable:           new(false),
+		MergeableState:      new(""),
+		Rebaseable:          new(false),
 		MergedBy:            &User{},
-		MergeCommitSHA:      Ptr(""),
-		Comments:            Ptr(0),
-		Commits:             Ptr(0),
-		Additions:           Ptr(0),
-		Deletions:           Ptr(0),
-		ChangedFiles:        Ptr(0),
-		MaintainerCanModify: Ptr(false),
-		ReviewComments:      Ptr(0),
+		MergeCommitSHA:      new(""),
+		Comments:            new(0),
+		Commits:             new(0),
+		Additions:           new(0),
+		Deletions:           new(0),
+		ChangedFiles:        new(0),
+		MaintainerCanModify: new(false),
+		ReviewComments:      new(0),
 		Links:               &PRLinks{},
 		Head:                &PullRequestBranch{},
 		Base:                &PullRequestBranch{},
 		Stack:               &PullRequestStack{},
-		ActiveLockReason:    Ptr(""),
+		ActiveLockReason:    new(""),
 	}
 	want := `github.PullRequest{ID:0, Number:0, State:"", Locked:false, Title:"", Body:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, ClosedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, MergedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, User:github.User{}, Draft:false, URL:"", HTMLURL:"", IssueURL:"", StatusesURL:"", DiffURL:"", PatchURL:"", CommitsURL:"", CommentsURL:"", ReviewCommentsURL:"", ReviewCommentURL:"", Assignee:github.User{}, Milestone:github.Milestone{}, AuthorAssociation:"", NodeID:"", AutoMerge:github.PullRequestAutoMerge{}, Merged:false, Mergeable:false, MergeableState:"", Rebaseable:false, MergedBy:github.User{}, MergeCommitSHA:"", Comments:0, Commits:0, Additions:0, Deletions:0, ChangedFiles:0, MaintainerCanModify:false, ReviewComments:0, Links:github.PRLinks{}, Head:github.PullRequestBranch{}, Base:github.PullRequestBranch{}, Stack:github.PullRequestStack{}, ActiveLockReason:""}`
 	if got := v.String(); got != want {
@@ -1676,32 +1676,32 @@ func TestPullRequest_String(t *testing.T) {
 func TestPullRequestComment_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequestComment{
-		ID:                  Ptr(int64(0)),
-		NodeID:              Ptr(""),
-		InReplyTo:           Ptr(int64(0)),
-		Body:                Ptr(""),
-		Path:                Ptr(""),
-		DiffHunk:            Ptr(""),
-		PullRequestReviewID: Ptr(int64(0)),
-		Position:            Ptr(0),
-		OriginalPosition:    Ptr(0),
-		StartLine:           Ptr(0),
-		Line:                Ptr(0),
-		OriginalLine:        Ptr(0),
-		OriginalStartLine:   Ptr(0),
-		Side:                Ptr(""),
-		StartSide:           Ptr(""),
-		CommitID:            Ptr(""),
-		OriginalCommitID:    Ptr(""),
+		ID:                  new(int64(0)),
+		NodeID:              new(""),
+		InReplyTo:           new(int64(0)),
+		Body:                new(""),
+		Path:                new(""),
+		DiffHunk:            new(""),
+		PullRequestReviewID: new(int64(0)),
+		Position:            new(0),
+		OriginalPosition:    new(0),
+		StartLine:           new(0),
+		Line:                new(0),
+		OriginalLine:        new(0),
+		OriginalStartLine:   new(0),
+		Side:                new(""),
+		StartSide:           new(""),
+		CommitID:            new(""),
+		OriginalCommitID:    new(""),
 		User:                &User{},
 		Reactions:           &Reactions{},
 		CreatedAt:           &Timestamp{},
 		UpdatedAt:           &Timestamp{},
-		AuthorAssociation:   Ptr(""),
-		URL:                 Ptr(""),
-		HTMLURL:             Ptr(""),
-		PullRequestURL:      Ptr(""),
-		SubjectType:         Ptr(""),
+		AuthorAssociation:   new(""),
+		URL:                 new(""),
+		HTMLURL:             new(""),
+		PullRequestURL:      new(""),
+		SubjectType:         new(""),
 	}
 	want := `github.PullRequestComment{ID:0, NodeID:"", InReplyTo:0, Body:"", Path:"", DiffHunk:"", PullRequestReviewID:0, Position:0, OriginalPosition:0, StartLine:0, Line:0, OriginalLine:0, OriginalStartLine:0, Side:"", StartSide:"", CommitID:"", OriginalCommitID:"", User:github.User{}, Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, AuthorAssociation:"", URL:"", HTMLURL:"", PullRequestURL:"", SubjectType:""}`
 	if got := v.String(); got != want {
@@ -1713,7 +1713,7 @@ func TestPullRequestDismissReviewRequest_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequestDismissReviewRequest{
 		Message: "",
-		Event:   Ptr(""),
+		Event:   new(""),
 	}
 	want := `github.PullRequestDismissReviewRequest{Message:"", Event:""}`
 	if got := v.String(); got != want {
@@ -1724,16 +1724,16 @@ func TestPullRequestDismissReviewRequest_String(t *testing.T) {
 func TestPullRequestReview_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequestReview{
-		ID:                Ptr(int64(0)),
-		NodeID:            Ptr(""),
+		ID:                new(int64(0)),
+		NodeID:            new(""),
 		User:              &User{},
-		Body:              Ptr(""),
+		Body:              new(""),
 		SubmittedAt:       &Timestamp{},
-		CommitID:          Ptr(""),
-		HTMLURL:           Ptr(""),
-		PullRequestURL:    Ptr(""),
-		State:             Ptr(""),
-		AuthorAssociation: Ptr(""),
+		CommitID:          new(""),
+		HTMLURL:           new(""),
+		PullRequestURL:    new(""),
+		State:             new(""),
+		AuthorAssociation: new(""),
 	}
 	want := `github.PullRequestReview{ID:0, NodeID:"", User:github.User{}, Body:"", SubmittedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, CommitID:"", HTMLURL:"", PullRequestURL:"", State:"", AuthorAssociation:""}`
 	if got := v.String(); got != want {
@@ -1744,10 +1744,10 @@ func TestPullRequestReview_String(t *testing.T) {
 func TestPullRequestReviewRequest_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequestReviewRequest{
-		NodeID:   Ptr(""),
-		CommitID: Ptr(""),
-		Body:     Ptr(""),
-		Event:    Ptr(""),
+		NodeID:   new(""),
+		CommitID: new(""),
+		Body:     new(""),
+		Event:    new(""),
 	}
 	want := `github.PullRequestReviewRequest{NodeID:"", CommitID:"", Body:"", Event:""}`
 	if got := v.String(); got != want {
@@ -1758,8 +1758,8 @@ func TestPullRequestReviewRequest_String(t *testing.T) {
 func TestPullRequestThread_String(t *testing.T) {
 	t.Parallel()
 	v := PullRequestThread{
-		ID:     Ptr(int64(0)),
-		NodeID: Ptr(""),
+		ID:     new(int64(0)),
+		NodeID: new(""),
 	}
 	want := `github.PullRequestThread{ID:0, NodeID:""}`
 	if got := v.String(); got != want {
@@ -1770,10 +1770,10 @@ func TestPullRequestThread_String(t *testing.T) {
 func TestPullStats_String(t *testing.T) {
 	t.Parallel()
 	v := PullStats{
-		TotalPulls:       Ptr(0),
-		MergedPulls:      Ptr(0),
-		MergeablePulls:   Ptr(0),
-		UnmergeablePulls: Ptr(0),
+		TotalPulls:       new(0),
+		MergedPulls:      new(0),
+		MergeablePulls:   new(0),
+		UnmergeablePulls: new(0),
 	}
 	want := `github.PullStats{TotalPulls:0, MergedPulls:0, MergeablePulls:0, UnmergeablePulls:0}`
 	if got := v.String(); got != want {
@@ -1784,19 +1784,19 @@ func TestPullStats_String(t *testing.T) {
 func TestPushEvent_String(t *testing.T) {
 	t.Parallel()
 	v := PushEvent{
-		PushID:       Ptr(int64(0)),
-		Head:         Ptr(""),
-		Ref:          Ptr(""),
-		Size:         Ptr(0),
-		Before:       Ptr(""),
-		DistinctSize: Ptr(0),
-		Action:       Ptr(""),
-		After:        Ptr(""),
-		Created:      Ptr(false),
-		Deleted:      Ptr(false),
-		Forced:       Ptr(false),
-		BaseRef:      Ptr(""),
-		Compare:      Ptr(""),
+		PushID:       new(int64(0)),
+		Head:         new(""),
+		Ref:          new(""),
+		Size:         new(0),
+		Before:       new(""),
+		DistinctSize: new(0),
+		Action:       new(""),
+		After:        new(""),
+		Created:      new(false),
+		Deleted:      new(false),
+		Forced:       new(false),
+		BaseRef:      new(""),
+		Compare:      new(""),
 		Repo:         &PushEventRepository{},
 		HeadCommit:   &HeadCommit{},
 		Pusher:       &CommitAuthor{},
@@ -1828,10 +1828,10 @@ func TestRate_String(t *testing.T) {
 func TestReaction_String(t *testing.T) {
 	t.Parallel()
 	v := Reaction{
-		ID:        Ptr(int64(0)),
+		ID:        new(int64(0)),
 		User:      &User{},
-		NodeID:    Ptr(""),
-		Content:   Ptr(""),
+		NodeID:    new(""),
+		Content:   new(""),
 		CreatedAt: &Timestamp{},
 	}
 	want := `github.Reaction{ID:0, User:github.User{}, NodeID:"", Content:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
@@ -1843,10 +1843,10 @@ func TestReaction_String(t *testing.T) {
 func TestReference_String(t *testing.T) {
 	t.Parallel()
 	v := Reference{
-		Ref:    Ptr(""),
-		URL:    Ptr(""),
+		Ref:    new(""),
+		URL:    new(""),
 		Object: &GitObject{},
-		NodeID: Ptr(""),
+		NodeID: new(""),
 	}
 	want := `github.Reference{Ref:"", URL:"", Object:github.GitObject{}, NodeID:""}`
 	if got := v.String(); got != want {
@@ -1857,20 +1857,20 @@ func TestReference_String(t *testing.T) {
 func TestReleaseAsset_String(t *testing.T) {
 	t.Parallel()
 	v := ReleaseAsset{
-		ID:                 Ptr(int64(0)),
-		URL:                Ptr(""),
-		Name:               Ptr(""),
-		Label:              Ptr(""),
-		State:              Ptr(""),
-		ContentType:        Ptr(""),
-		Size:               Ptr(0),
-		DownloadCount:      Ptr(0),
+		ID:                 new(int64(0)),
+		URL:                new(""),
+		Name:               new(""),
+		Label:              new(""),
+		State:              new(""),
+		ContentType:        new(""),
+		Size:               new(0),
+		DownloadCount:      new(0),
 		CreatedAt:          &Timestamp{},
 		UpdatedAt:          &Timestamp{},
-		BrowserDownloadURL: Ptr(""),
+		BrowserDownloadURL: new(""),
 		Uploader:           &User{},
-		NodeID:             Ptr(""),
-		Digest:             Ptr(""),
+		NodeID:             new(""),
+		Digest:             new(""),
 	}
 	want := `github.ReleaseAsset{ID:0, URL:"", Name:"", Label:"", State:"", ContentType:"", Size:0, DownloadCount:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, BrowserDownloadURL:"", Uploader:github.User{}, NodeID:"", Digest:""}`
 	if got := v.String(); got != want {
@@ -1881,8 +1881,8 @@ func TestReleaseAsset_String(t *testing.T) {
 func TestRename_String(t *testing.T) {
 	t.Parallel()
 	v := Rename{
-		From: Ptr(""),
-		To:   Ptr(""),
+		From: new(""),
+		To:   new(""),
 	}
 	want := `github.Rename{From:"", To:""}`
 	if got := v.String(); got != want {
@@ -1893,12 +1893,12 @@ func TestRename_String(t *testing.T) {
 func TestRepoStats_String(t *testing.T) {
 	t.Parallel()
 	v := RepoStats{
-		TotalRepos:  Ptr(0),
-		RootRepos:   Ptr(0),
-		ForkRepos:   Ptr(0),
-		OrgRepos:    Ptr(0),
-		TotalPushes: Ptr(0),
-		TotalWikis:  Ptr(0),
+		TotalRepos:  new(0),
+		RootRepos:   new(0),
+		ForkRepos:   new(0),
+		OrgRepos:    new(0),
+		TotalPushes: new(0),
+		TotalWikis:  new(0),
 	}
 	want := `github.RepoStats{TotalRepos:0, RootRepos:0, ForkRepos:0, OrgRepos:0, TotalPushes:0, TotalWikis:0}`
 	if got := v.String(); got != want {
@@ -1909,14 +1909,14 @@ func TestRepoStats_String(t *testing.T) {
 func TestRepoStatus_String(t *testing.T) {
 	t.Parallel()
 	v := RepoStatus{
-		ID:          Ptr(int64(0)),
-		NodeID:      Ptr(""),
-		URL:         Ptr(""),
-		State:       Ptr(""),
-		TargetURL:   Ptr(""),
-		Description: Ptr(""),
-		Context:     Ptr(""),
-		AvatarURL:   Ptr(""),
+		ID:          new(int64(0)),
+		NodeID:      new(""),
+		URL:         new(""),
+		State:       new(""),
+		TargetURL:   new(""),
+		Description: new(""),
+		Context:     new(""),
+		AvatarURL:   new(""),
 		Creator:     &User{},
 		CreatedAt:   &Timestamp{},
 		UpdatedAt:   &Timestamp{},
@@ -1930,112 +1930,112 @@ func TestRepoStatus_String(t *testing.T) {
 func TestRepository_String(t *testing.T) {
 	t.Parallel()
 	v := Repository{
-		ID:                        Ptr(int64(0)),
-		NodeID:                    Ptr(""),
+		ID:                        new(int64(0)),
+		NodeID:                    new(""),
 		Owner:                     &User{},
-		Name:                      Ptr(""),
-		FullName:                  Ptr(""),
-		Description:               Ptr(""),
-		Homepage:                  Ptr(""),
+		Name:                      new(""),
+		FullName:                  new(""),
+		Description:               new(""),
+		Homepage:                  new(""),
 		CodeOfConduct:             &CodeOfConduct{},
-		DefaultBranch:             Ptr(""),
-		MasterBranch:              Ptr(""),
+		DefaultBranch:             new(""),
+		MasterBranch:              new(""),
 		CreatedAt:                 &Timestamp{},
 		PushedAt:                  &Timestamp{},
 		UpdatedAt:                 &Timestamp{},
-		HTMLURL:                   Ptr(""),
-		CloneURL:                  Ptr(""),
-		GitURL:                    Ptr(""),
-		MirrorURL:                 Ptr(""),
-		SSHURL:                    Ptr(""),
-		SVNURL:                    Ptr(""),
-		Language:                  Ptr(""),
-		Fork:                      Ptr(false),
-		ForksCount:                Ptr(0),
-		NetworkCount:              Ptr(0),
-		OpenIssuesCount:           Ptr(0),
-		OpenIssues:                Ptr(0),
-		StargazersCount:           Ptr(0),
-		SubscribersCount:          Ptr(0),
-		WatchersCount:             Ptr(0),
-		Watchers:                  Ptr(0),
-		Size:                      Ptr(0),
-		AutoInit:                  Ptr(false),
+		HTMLURL:                   new(""),
+		CloneURL:                  new(""),
+		GitURL:                    new(""),
+		MirrorURL:                 new(""),
+		SSHURL:                    new(""),
+		SVNURL:                    new(""),
+		Language:                  new(""),
+		Fork:                      new(false),
+		ForksCount:                new(0),
+		NetworkCount:              new(0),
+		OpenIssuesCount:           new(0),
+		OpenIssues:                new(0),
+		StargazersCount:           new(0),
+		SubscribersCount:          new(0),
+		WatchersCount:             new(0),
+		Watchers:                  new(0),
+		Size:                      new(0),
+		AutoInit:                  new(false),
 		Parent:                    &Repository{},
 		Source:                    &Repository{},
 		TemplateRepository:        &Repository{},
 		Organization:              &Organization{},
 		Permissions:               &RepositoryPermissions{},
-		AllowRebaseMerge:          Ptr(false),
-		AllowUpdateBranch:         Ptr(false),
-		AllowSquashMerge:          Ptr(false),
-		AllowMergeCommit:          Ptr(false),
-		AllowAutoMerge:            Ptr(false),
-		AllowForking:              Ptr(false),
-		WebCommitSignoffRequired:  Ptr(false),
-		DeleteBranchOnMerge:       Ptr(false),
-		UseSquashPRTitleAsDefault: Ptr(false),
-		SquashMergeCommitTitle:    Ptr(""),
-		SquashMergeCommitMessage:  Ptr(""),
-		MergeCommitTitle:          Ptr(""),
-		MergeCommitMessage:        Ptr(""),
+		AllowRebaseMerge:          new(false),
+		AllowUpdateBranch:         new(false),
+		AllowSquashMerge:          new(false),
+		AllowMergeCommit:          new(false),
+		AllowAutoMerge:            new(false),
+		AllowForking:              new(false),
+		WebCommitSignoffRequired:  new(false),
+		DeleteBranchOnMerge:       new(false),
+		UseSquashPRTitleAsDefault: new(false),
+		SquashMergeCommitTitle:    new(""),
+		SquashMergeCommitMessage:  new(""),
+		MergeCommitTitle:          new(""),
+		MergeCommitMessage:        new(""),
 		Topics:                    []string{""},
-		Archived:                  Ptr(false),
-		Disabled:                  Ptr(false),
+		Archived:                  new(false),
+		Disabled:                  new(false),
 		License:                   &License{},
-		Private:                   Ptr(false),
-		HasIssues:                 Ptr(false),
-		HasWiki:                   Ptr(false),
-		HasPages:                  Ptr(false),
-		HasProjects:               Ptr(false),
-		HasDownloads:              Ptr(false),
-		HasDiscussions:            Ptr(false),
-		HasPullRequests:           Ptr(false),
-		PullRequestCreationPolicy: Ptr(""),
-		IsTemplate:                Ptr(false),
-		LicenseTemplate:           Ptr(""),
-		GitignoreTemplate:         Ptr(""),
+		Private:                   new(false),
+		HasIssues:                 new(false),
+		HasWiki:                   new(false),
+		HasPages:                  new(false),
+		HasProjects:               new(false),
+		HasDownloads:              new(false),
+		HasDiscussions:            new(false),
+		HasPullRequests:           new(false),
+		PullRequestCreationPolicy: new(""),
+		IsTemplate:                new(false),
+		LicenseTemplate:           new(""),
+		GitignoreTemplate:         new(""),
 		SecurityAndAnalysis:       &SecurityAndAnalysis{},
-		TeamID:                    Ptr(int64(0)),
-		URL:                       Ptr(""),
-		ArchiveURL:                Ptr(""),
-		AssigneesURL:              Ptr(""),
-		BlobsURL:                  Ptr(""),
-		BranchesURL:               Ptr(""),
-		CollaboratorsURL:          Ptr(""),
-		CommentsURL:               Ptr(""),
-		CommitsURL:                Ptr(""),
-		CompareURL:                Ptr(""),
-		ContentsURL:               Ptr(""),
-		ContributorsURL:           Ptr(""),
-		DeploymentsURL:            Ptr(""),
-		DownloadsURL:              Ptr(""),
-		EventsURL:                 Ptr(""),
-		ForksURL:                  Ptr(""),
-		GitCommitsURL:             Ptr(""),
-		GitRefsURL:                Ptr(""),
-		GitTagsURL:                Ptr(""),
-		HooksURL:                  Ptr(""),
-		IssueCommentURL:           Ptr(""),
-		IssueEventsURL:            Ptr(""),
-		IssuesURL:                 Ptr(""),
-		KeysURL:                   Ptr(""),
-		LabelsURL:                 Ptr(""),
-		LanguagesURL:              Ptr(""),
-		MergesURL:                 Ptr(""),
-		MilestonesURL:             Ptr(""),
-		NotificationsURL:          Ptr(""),
-		PullsURL:                  Ptr(""),
-		ReleasesURL:               Ptr(""),
-		StargazersURL:             Ptr(""),
-		StatusesURL:               Ptr(""),
-		SubscribersURL:            Ptr(""),
-		SubscriptionURL:           Ptr(""),
-		TagsURL:                   Ptr(""),
-		TreesURL:                  Ptr(""),
-		TeamsURL:                  Ptr(""),
-		Visibility:                Ptr(""),
-		RoleName:                  Ptr(""),
+		TeamID:                    new(int64(0)),
+		URL:                       new(""),
+		ArchiveURL:                new(""),
+		AssigneesURL:              new(""),
+		BlobsURL:                  new(""),
+		BranchesURL:               new(""),
+		CollaboratorsURL:          new(""),
+		CommentsURL:               new(""),
+		CommitsURL:                new(""),
+		CompareURL:                new(""),
+		ContentsURL:               new(""),
+		ContributorsURL:           new(""),
+		DeploymentsURL:            new(""),
+		DownloadsURL:              new(""),
+		EventsURL:                 new(""),
+		ForksURL:                  new(""),
+		GitCommitsURL:             new(""),
+		GitRefsURL:                new(""),
+		GitTagsURL:                new(""),
+		HooksURL:                  new(""),
+		IssueCommentURL:           new(""),
+		IssueEventsURL:            new(""),
+		IssuesURL:                 new(""),
+		KeysURL:                   new(""),
+		LabelsURL:                 new(""),
+		LanguagesURL:              new(""),
+		MergesURL:                 new(""),
+		MilestonesURL:             new(""),
+		NotificationsURL:          new(""),
+		PullsURL:                  new(""),
+		ReleasesURL:               new(""),
+		StargazersURL:             new(""),
+		StatusesURL:               new(""),
+		SubscribersURL:            new(""),
+		SubscriptionURL:           new(""),
+		TagsURL:                   new(""),
+		TreesURL:                  new(""),
+		TeamsURL:                  new(""),
+		Visibility:                new(""),
+		RoleName:                  new(""),
 	}
 	want := `github.Repository{ID:0, NodeID:"", Owner:github.User{}, Name:"", FullName:"", Description:"", Homepage:"", CodeOfConduct:github.CodeOfConduct{}, DefaultBranch:"", MasterBranch:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PushedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HTMLURL:"", CloneURL:"", GitURL:"", MirrorURL:"", SSHURL:"", SVNURL:"", Language:"", Fork:false, ForksCount:0, NetworkCount:0, OpenIssuesCount:0, OpenIssues:0, StargazersCount:0, SubscribersCount:0, WatchersCount:0, Watchers:0, Size:0, AutoInit:false, Parent:github.Repository{}, Source:github.Repository{}, TemplateRepository:github.Repository{}, Organization:github.Organization{}, Permissions:github.RepositoryPermissions{}, AllowRebaseMerge:false, AllowUpdateBranch:false, AllowSquashMerge:false, AllowMergeCommit:false, AllowAutoMerge:false, AllowForking:false, WebCommitSignoffRequired:false, DeleteBranchOnMerge:false, UseSquashPRTitleAsDefault:false, SquashMergeCommitTitle:"", SquashMergeCommitMessage:"", MergeCommitTitle:"", MergeCommitMessage:"", Topics:[""], Archived:false, Disabled:false, License:github.License{}, Private:false, HasIssues:false, HasWiki:false, HasPages:false, HasProjects:false, HasDownloads:false, HasDiscussions:false, HasPullRequests:false, PullRequestCreationPolicy:"", IsTemplate:false, LicenseTemplate:"", GitignoreTemplate:"", SecurityAndAnalysis:github.SecurityAndAnalysis{}, TeamID:0, URL:"", ArchiveURL:"", AssigneesURL:"", BlobsURL:"", BranchesURL:"", CollaboratorsURL:"", CommentsURL:"", CommitsURL:"", CompareURL:"", ContentsURL:"", ContributorsURL:"", DeploymentsURL:"", DownloadsURL:"", EventsURL:"", ForksURL:"", GitCommitsURL:"", GitRefsURL:"", GitTagsURL:"", HooksURL:"", IssueCommentURL:"", IssueEventsURL:"", IssuesURL:"", KeysURL:"", LabelsURL:"", LanguagesURL:"", MergesURL:"", MilestonesURL:"", NotificationsURL:"", PullsURL:"", ReleasesURL:"", StargazersURL:"", StatusesURL:"", SubscribersURL:"", SubscriptionURL:"", TagsURL:"", TreesURL:"", TeamsURL:"", Visibility:"", RoleName:""}`
 	if got := v.String(); got != want {
@@ -2046,18 +2046,18 @@ func TestRepository_String(t *testing.T) {
 func TestRepositoryComment_String(t *testing.T) {
 	t.Parallel()
 	v := RepositoryComment{
-		HTMLURL:   Ptr(""),
-		URL:       Ptr(""),
-		ID:        Ptr(int64(0)),
-		NodeID:    Ptr(""),
-		CommitID:  Ptr(""),
+		HTMLURL:   new(""),
+		URL:       new(""),
+		ID:        new(int64(0)),
+		NodeID:    new(""),
+		CommitID:  new(""),
 		User:      &User{},
 		Reactions: &Reactions{},
 		CreatedAt: &Timestamp{},
 		UpdatedAt: &Timestamp{},
-		Body:      Ptr(""),
-		Path:      Ptr(""),
-		Position:  Ptr(0),
+		Body:      new(""),
+		Path:      new(""),
+		Position:  new(0),
 	}
 	want := `github.RepositoryComment{HTMLURL:"", URL:"", ID:0, NodeID:"", CommitID:"", User:github.User{}, Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Body:"", Path:"", Position:0}`
 	if got := v.String(); got != want {
@@ -2068,14 +2068,14 @@ func TestRepositoryComment_String(t *testing.T) {
 func TestRepositoryCommit_String(t *testing.T) {
 	t.Parallel()
 	v := RepositoryCommit{
-		NodeID:      Ptr(""),
-		SHA:         Ptr(""),
+		NodeID:      new(""),
+		SHA:         new(""),
 		Commit:      &Commit{},
 		Author:      &User{},
 		Committer:   &User{},
-		HTMLURL:     Ptr(""),
-		URL:         Ptr(""),
-		CommentsURL: Ptr(""),
+		HTMLURL:     new(""),
+		URL:         new(""),
+		CommentsURL: new(""),
 		Stats:       &CommitStats{},
 	}
 	want := `github.RepositoryCommit{NodeID:"", SHA:"", Commit:github.Commit{}, Author:github.User{}, Committer:github.User{}, HTMLURL:"", URL:"", CommentsURL:"", Stats:github.CommitStats{}}`
@@ -2087,19 +2087,19 @@ func TestRepositoryCommit_String(t *testing.T) {
 func TestRepositoryContent_String(t *testing.T) {
 	t.Parallel()
 	v := RepositoryContent{
-		Type:            Ptr(""),
-		Target:          Ptr(""),
-		Encoding:        Ptr(""),
-		Size:            Ptr(0),
-		Name:            Ptr(""),
-		Path:            Ptr(""),
-		Content:         Ptr(""),
-		SHA:             Ptr(""),
-		URL:             Ptr(""),
-		GitURL:          Ptr(""),
-		HTMLURL:         Ptr(""),
-		DownloadURL:     Ptr(""),
-		SubmoduleGitURL: Ptr(""),
+		Type:            new(""),
+		Target:          new(""),
+		Encoding:        new(""),
+		Size:            new(0),
+		Name:            new(""),
+		Path:            new(""),
+		Content:         new(""),
+		SHA:             new(""),
+		URL:             new(""),
+		GitURL:          new(""),
+		HTMLURL:         new(""),
+		DownloadURL:     new(""),
+		SubmoduleGitURL: new(""),
 	}
 	want := `github.RepositoryContent{Type:"", Target:"", Encoding:"", Size:0, Name:"", Path:"", Content:"", SHA:"", URL:"", GitURL:"", HTMLURL:"", DownloadURL:"", SubmoduleGitURL:""}`
 	if got := v.String(); got != want {
@@ -2110,17 +2110,17 @@ func TestRepositoryContent_String(t *testing.T) {
 func TestRepositoryLicense_String(t *testing.T) {
 	t.Parallel()
 	v := RepositoryLicense{
-		Name:        Ptr(""),
-		Path:        Ptr(""),
-		SHA:         Ptr(""),
-		Size:        Ptr(0),
-		URL:         Ptr(""),
-		HTMLURL:     Ptr(""),
-		GitURL:      Ptr(""),
-		DownloadURL: Ptr(""),
-		Type:        Ptr(""),
-		Content:     Ptr(""),
-		Encoding:    Ptr(""),
+		Name:        new(""),
+		Path:        new(""),
+		SHA:         new(""),
+		Size:        new(0),
+		URL:         new(""),
+		HTMLURL:     new(""),
+		GitURL:      new(""),
+		DownloadURL: new(""),
+		Type:        new(""),
+		Content:     new(""),
+		Encoding:    new(""),
 		License:     &License{},
 	}
 	want := `github.RepositoryLicense{Name:"", Path:"", SHA:"", Size:0, URL:"", HTMLURL:"", GitURL:"", DownloadURL:"", Type:"", Content:"", Encoding:"", License:github.License{}}`
@@ -2146,11 +2146,11 @@ func TestRepositoryRelease_String(t *testing.T) {
 	v := RepositoryRelease{
 		TagName:         "",
 		TargetCommitish: "",
-		Name:            Ptr(""),
-		Body:            Ptr(""),
+		Name:            new(""),
+		Body:            new(""),
 		Draft:           false,
 		Prerelease:      false,
-		Immutable:       Ptr(false),
+		Immutable:       new(false),
 		ID:              0,
 		CreatedAt:       Timestamp{},
 		PublishedAt:     &Timestamp{},
@@ -2159,14 +2159,14 @@ func TestRepositoryRelease_String(t *testing.T) {
 		HTMLURL:         "",
 		AssetsURL:       "",
 		UploadURL:       "",
-		ZipballURL:      Ptr(""),
-		TarballURL:      Ptr(""),
+		ZipballURL:      new(""),
+		TarballURL:      new(""),
 		Author:          &User{},
 		NodeID:          "",
-		BodyHTML:        Ptr(""),
-		BodyText:        Ptr(""),
-		MentionsCount:   Ptr(0),
-		DiscussionURL:   Ptr(""),
+		BodyHTML:        new(""),
+		BodyText:        new(""),
+		MentionsCount:   new(0),
+		DiscussionURL:   new(""),
 		Reactions:       &Reactions{},
 	}
 	want := `github.RepositoryRelease{TagName:"", TargetCommitish:"", Name:"", Body:"", Draft:false, Prerelease:false, Immutable:false, ID:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, PublishedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", HTMLURL:"", AssetsURL:"", UploadURL:"", ZipballURL:"", TarballURL:"", Author:github.User{}, NodeID:"", BodyHTML:"", BodyText:"", MentionsCount:0, DiscussionURL:"", Reactions:github.Reactions{}}`
@@ -2189,9 +2189,9 @@ func TestSBOM_String(t *testing.T) {
 func TestSSHSigningKey_String(t *testing.T) {
 	t.Parallel()
 	v := SSHSigningKey{
-		ID:        Ptr(int64(0)),
-		Key:       Ptr(""),
-		Title:     Ptr(""),
+		ID:        new(int64(0)),
+		Key:       new(""),
+		Title:     new(""),
 		CreatedAt: &Timestamp{},
 	}
 	want := `github.SSHSigningKey{ID:0, Key:"", Title:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
@@ -2203,7 +2203,7 @@ func TestSSHSigningKey_String(t *testing.T) {
 func TestSecretScanning_String(t *testing.T) {
 	t.Parallel()
 	v := SecretScanning{
-		Status: Ptr(""),
+		Status: new(""),
 	}
 	want := `github.SecretScanning{Status:""}`
 	if got := v.String(); got != want {
@@ -2214,7 +2214,7 @@ func TestSecretScanning_String(t *testing.T) {
 func TestSecretScanningPushProtection_String(t *testing.T) {
 	t.Parallel()
 	v := SecretScanningPushProtection{
-		Status: Ptr(""),
+		Status: new(""),
 	}
 	want := `github.SecretScanningPushProtection{Status:""}`
 	if got := v.String(); got != want {
@@ -2241,7 +2241,7 @@ func TestSecurityAndAnalysis_String(t *testing.T) {
 func TestSelfHostRunnerPermissionsEnterprise_String(t *testing.T) {
 	t.Parallel()
 	v := SelfHostRunnerPermissionsEnterprise{
-		DisableSelfHostedRunnersForAllOrgs: Ptr(false),
+		DisableSelfHostedRunnersForAllOrgs: new(false),
 	}
 	want := `github.SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs:false}`
 	if got := v.String(); got != want {
@@ -2252,8 +2252,8 @@ func TestSelfHostRunnerPermissionsEnterprise_String(t *testing.T) {
 func TestSelfHostedRunnersSettingsOrganization_String(t *testing.T) {
 	t.Parallel()
 	v := SelfHostedRunnersSettingsOrganization{
-		EnabledRepositories:     Ptr(""),
-		SelectedRepositoriesURL: Ptr(""),
+		EnabledRepositories:     new(""),
+		SelectedRepositoriesURL: new(""),
 	}
 	want := `github.SelfHostedRunnersSettingsOrganization{EnabledRepositories:"", SelectedRepositoriesURL:""}`
 	if got := v.String(); got != want {
@@ -2264,13 +2264,13 @@ func TestSelfHostedRunnersSettingsOrganization_String(t *testing.T) {
 func TestSourceImportAuthor_String(t *testing.T) {
 	t.Parallel()
 	v := SourceImportAuthor{
-		ID:         Ptr(int64(0)),
-		RemoteID:   Ptr(""),
-		RemoteName: Ptr(""),
-		Email:      Ptr(""),
-		Name:       Ptr(""),
-		URL:        Ptr(""),
-		ImportURL:  Ptr(""),
+		ID:         new(int64(0)),
+		RemoteID:   new(""),
+		RemoteName: new(""),
+		Email:      new(""),
+		Name:       new(""),
+		URL:        new(""),
+		ImportURL:  new(""),
 	}
 	want := `github.SourceImportAuthor{ID:0, RemoteID:"", RemoteName:"", Email:"", Name:"", URL:"", ImportURL:""}`
 	if got := v.String(); got != want {
@@ -2281,26 +2281,26 @@ func TestSourceImportAuthor_String(t *testing.T) {
 func TestTeam_String(t *testing.T) {
 	t.Parallel()
 	v := Team{
-		ID:                  Ptr(int64(0)),
-		NodeID:              Ptr(""),
-		Name:                Ptr(""),
-		Description:         Ptr(""),
-		URL:                 Ptr(""),
-		Slug:                Ptr(""),
-		Permission:          Ptr(""),
-		Privacy:             Ptr(""),
-		NotificationSetting: Ptr(""),
-		MembersCount:        Ptr(0),
-		ReposCount:          Ptr(0),
+		ID:                  new(int64(0)),
+		NodeID:              new(""),
+		Name:                new(""),
+		Description:         new(""),
+		URL:                 new(""),
+		Slug:                new(""),
+		Permission:          new(""),
+		Privacy:             new(""),
+		NotificationSetting: new(""),
+		MembersCount:        new(0),
+		ReposCount:          new(0),
 		Organization:        &Organization{},
-		HTMLURL:             Ptr(""),
-		MembersURL:          Ptr(""),
-		RepositoriesURL:     Ptr(""),
+		HTMLURL:             new(""),
+		MembersURL:          new(""),
+		RepositoriesURL:     new(""),
 		Parent:              &Team{},
-		LDAPDN:              Ptr(""),
-		Assignment:          Ptr(""),
-		Type:                Ptr(""),
-		AccessSource:        Ptr(""),
+		LDAPDN:              new(""),
+		Assignment:          new(""),
+		Type:                new(""),
+		AccessSource:        new(""),
 	}
 	want := `github.Team{ID:0, NodeID:"", Name:"", Description:"", URL:"", Slug:"", Permission:"", Privacy:"", NotificationSetting:"", MembersCount:0, ReposCount:0, Organization:github.Organization{}, HTMLURL:"", MembersURL:"", RepositoriesURL:"", Parent:github.Team{}, LDAPDN:"", Assignment:"", Type:"", AccessSource:""}`
 	if got := v.String(); got != want {
@@ -2312,22 +2312,22 @@ func TestTeamDiscussion_String(t *testing.T) {
 	t.Parallel()
 	v := TeamDiscussion{
 		Author:        &User{},
-		Body:          Ptr(""),
-		BodyHTML:      Ptr(""),
-		BodyVersion:   Ptr(""),
-		CommentsCount: Ptr(0),
-		CommentsURL:   Ptr(""),
+		Body:          new(""),
+		BodyHTML:      new(""),
+		BodyVersion:   new(""),
+		CommentsCount: new(0),
+		CommentsURL:   new(""),
 		CreatedAt:     &Timestamp{},
 		LastEditedAt:  &Timestamp{},
-		HTMLURL:       Ptr(""),
-		NodeID:        Ptr(""),
-		Number:        Ptr(0),
-		Pinned:        Ptr(false),
-		Private:       Ptr(false),
-		TeamURL:       Ptr(""),
-		Title:         Ptr(""),
+		HTMLURL:       new(""),
+		NodeID:        new(""),
+		Number:        new(0),
+		Pinned:        new(false),
+		Private:       new(false),
+		TeamURL:       new(""),
+		Title:         new(""),
 		UpdatedAt:     &Timestamp{},
-		URL:           Ptr(""),
+		URL:           new(""),
 		Reactions:     &Reactions{},
 	}
 	want := `github.TeamDiscussion{Author:github.User{}, Body:"", BodyHTML:"", BodyVersion:"", CommentsCount:0, CommentsURL:"", CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, LastEditedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, HTMLURL:"", NodeID:"", Number:0, Pinned:false, Private:false, TeamURL:"", Title:"", UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, URL:"", Reactions:github.Reactions{}}`
@@ -2339,16 +2339,16 @@ func TestTeamDiscussion_String(t *testing.T) {
 func TestTeamLDAPMapping_String(t *testing.T) {
 	t.Parallel()
 	v := TeamLDAPMapping{
-		ID:              Ptr(int64(0)),
-		LDAPDN:          Ptr(""),
-		URL:             Ptr(""),
-		Name:            Ptr(""),
-		Slug:            Ptr(""),
-		Description:     Ptr(""),
-		Privacy:         Ptr(""),
-		Permission:      Ptr(""),
-		MembersURL:      Ptr(""),
-		RepositoriesURL: Ptr(""),
+		ID:              new(int64(0)),
+		LDAPDN:          new(""),
+		URL:             new(""),
+		Name:            new(""),
+		Slug:            new(""),
+		Description:     new(""),
+		Privacy:         new(""),
+		Permission:      new(""),
+		MembersURL:      new(""),
+		RepositoriesURL: new(""),
 	}
 	want := `github.TeamLDAPMapping{ID:0, LDAPDN:"", URL:"", Name:"", Slug:"", Description:"", Privacy:"", Permission:"", MembersURL:"", RepositoriesURL:""}`
 	if got := v.String(); got != want {
@@ -2359,10 +2359,10 @@ func TestTeamLDAPMapping_String(t *testing.T) {
 func TestTextMatch_String(t *testing.T) {
 	t.Parallel()
 	v := TextMatch{
-		ObjectURL:  Ptr(""),
-		ObjectType: Ptr(""),
-		Property:   Ptr(""),
-		Fragment:   Ptr(""),
+		ObjectURL:  new(""),
+		ObjectType: new(""),
+		Property:   new(""),
+		Fragment:   new(""),
 	}
 	want := `github.TextMatch{ObjectURL:"", ObjectType:"", Property:"", Fragment:""}`
 	if got := v.String(); got != want {
@@ -2373,8 +2373,8 @@ func TestTextMatch_String(t *testing.T) {
 func TestTree_String(t *testing.T) {
 	t.Parallel()
 	v := Tree{
-		SHA:       Ptr(""),
-		Truncated: Ptr(false),
+		SHA:       new(""),
+		Truncated: new(false),
 	}
 	want := `github.Tree{SHA:"", Truncated:false}`
 	if got := v.String(); got != want {
@@ -2385,13 +2385,13 @@ func TestTree_String(t *testing.T) {
 func TestTreeEntry_String(t *testing.T) {
 	t.Parallel()
 	v := TreeEntry{
-		SHA:     Ptr(""),
-		Path:    Ptr(""),
-		Mode:    Ptr(""),
-		Type:    Ptr(""),
-		Size:    Ptr(0),
-		Content: Ptr(""),
-		URL:     Ptr(""),
+		SHA:     new(""),
+		Path:    new(""),
+		Mode:    new(""),
+		Type:    new(""),
+		Size:    new(0),
+		Content: new(""),
+		URL:     new(""),
 	}
 	want := `github.TreeEntry{SHA:"", Path:"", Mode:"", Type:"", Size:0, Content:"", URL:""}`
 	if got := v.String(); got != want {
@@ -2402,13 +2402,13 @@ func TestTreeEntry_String(t *testing.T) {
 func TestUpdateTeamRequest_String(t *testing.T) {
 	t.Parallel()
 	v := UpdateTeamRequest{
-		Name:                Ptr(""),
-		Description:         Ptr(""),
-		Privacy:             Ptr(""),
-		NotificationSetting: Ptr(""),
-		Permission:          Ptr(""),
-		ParentTeamID:        Ptr(int64(0)),
-		ParentTeamSlug:      Ptr(""),
+		Name:                new(""),
+		Description:         new(""),
+		Privacy:             new(""),
+		NotificationSetting: new(""),
+		Permission:          new(""),
+		ParentTeamID:        new(int64(0)),
+		ParentTeamSlug:      new(""),
 		RemoveParentTeam:    false,
 	}
 	want := `github.UpdateTeamRequest{Name:"", Description:"", Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:"", RemoveParentTeam:false}`
@@ -2420,55 +2420,55 @@ func TestUpdateTeamRequest_String(t *testing.T) {
 func TestUser_String(t *testing.T) {
 	t.Parallel()
 	v := User{
-		Login:                   Ptr(""),
-		ID:                      Ptr(int64(0)),
-		UserViewType:            Ptr(""),
-		NodeID:                  Ptr(""),
-		AvatarURL:               Ptr(""),
-		HTMLURL:                 Ptr(""),
-		GravatarID:              Ptr(""),
-		Name:                    Ptr(""),
-		Company:                 Ptr(""),
-		Blog:                    Ptr(""),
-		Location:                Ptr(""),
-		Email:                   Ptr(""),
-		NotificationEmail:       Ptr(""),
-		Hireable:                Ptr(false),
-		Bio:                     Ptr(""),
-		TwitterUsername:         Ptr(""),
-		PublicRepos:             Ptr(0),
-		PublicGists:             Ptr(0),
-		Followers:               Ptr(0),
-		Following:               Ptr(0),
+		Login:                   new(""),
+		ID:                      new(int64(0)),
+		UserViewType:            new(""),
+		NodeID:                  new(""),
+		AvatarURL:               new(""),
+		HTMLURL:                 new(""),
+		GravatarID:              new(""),
+		Name:                    new(""),
+		Company:                 new(""),
+		Blog:                    new(""),
+		Location:                new(""),
+		Email:                   new(""),
+		NotificationEmail:       new(""),
+		Hireable:                new(false),
+		Bio:                     new(""),
+		TwitterUsername:         new(""),
+		PublicRepos:             new(0),
+		PublicGists:             new(0),
+		Followers:               new(0),
+		Following:               new(0),
 		CreatedAt:               &Timestamp{},
 		UpdatedAt:               &Timestamp{},
 		SuspendedAt:             &Timestamp{},
-		Type:                    Ptr(""),
-		SiteAdmin:               Ptr(false),
-		TotalPrivateRepos:       Ptr(int64(0)),
-		OwnedPrivateRepos:       Ptr(int64(0)),
-		PrivateGists:            Ptr(0),
-		DiskUsage:               Ptr(0),
-		Collaborators:           Ptr(0),
-		TwoFactorAuthentication: Ptr(false),
+		Type:                    new(""),
+		SiteAdmin:               new(false),
+		TotalPrivateRepos:       new(int64(0)),
+		OwnedPrivateRepos:       new(int64(0)),
+		PrivateGists:            new(0),
+		DiskUsage:               new(0),
+		Collaborators:           new(0),
+		TwoFactorAuthentication: new(false),
 		Plan:                    &Plan{},
-		BusinessPlus:            Ptr(false),
-		LdapDn:                  Ptr(""),
-		URL:                     Ptr(""),
-		EventsURL:               Ptr(""),
-		FollowingURL:            Ptr(""),
-		FollowersURL:            Ptr(""),
-		GistsURL:                Ptr(""),
-		OrganizationsURL:        Ptr(""),
-		ReceivedEventsURL:       Ptr(""),
-		ReposURL:                Ptr(""),
-		StarredURL:              Ptr(""),
-		SubscriptionsURL:        Ptr(""),
+		BusinessPlus:            new(false),
+		LdapDn:                  new(""),
+		URL:                     new(""),
+		EventsURL:               new(""),
+		FollowingURL:            new(""),
+		FollowersURL:            new(""),
+		GistsURL:                new(""),
+		OrganizationsURL:        new(""),
+		ReceivedEventsURL:       new(""),
+		ReposURL:                new(""),
+		StarredURL:              new(""),
+		SubscriptionsURL:        new(""),
 		Permissions:             &RepositoryPermissions{},
-		RoleName:                Ptr(""),
-		Assignment:              Ptr(""),
-		Role:                    Ptr(""),
-		Inherited:               Ptr(false),
+		RoleName:                new(""),
+		Assignment:              new(""),
+		Role:                    new(""),
+		Inherited:               new(false),
 	}
 	want := `github.User{Login:"", ID:0, UserViewType:"", NodeID:"", AvatarURL:"", HTMLURL:"", GravatarID:"", Name:"", Company:"", Blog:"", Location:"", Email:"", NotificationEmail:"", Hireable:false, Bio:"", TwitterUsername:"", PublicRepos:0, PublicGists:0, Followers:0, Following:0, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, SuspendedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Type:"", SiteAdmin:false, TotalPrivateRepos:0, OwnedPrivateRepos:0, PrivateGists:0, DiskUsage:0, Collaborators:0, TwoFactorAuthentication:false, Plan:github.Plan{}, BusinessPlus:false, LdapDn:"", URL:"", EventsURL:"", FollowingURL:"", FollowersURL:"", GistsURL:"", OrganizationsURL:"", ReceivedEventsURL:"", ReposURL:"", StarredURL:"", SubscriptionsURL:"", Permissions:github.RepositoryPermissions{}, RoleName:"", Assignment:"", Role:"", Inherited:false}`
 	if got := v.String(); got != want {
@@ -2479,23 +2479,23 @@ func TestUser_String(t *testing.T) {
 func TestUserLDAPMapping_String(t *testing.T) {
 	t.Parallel()
 	v := UserLDAPMapping{
-		ID:                Ptr(int64(0)),
-		LDAPDN:            Ptr(""),
-		Login:             Ptr(""),
-		AvatarURL:         Ptr(""),
-		GravatarID:        Ptr(""),
-		Type:              Ptr(""),
-		SiteAdmin:         Ptr(false),
-		URL:               Ptr(""),
-		EventsURL:         Ptr(""),
-		FollowingURL:      Ptr(""),
-		FollowersURL:      Ptr(""),
-		GistsURL:          Ptr(""),
-		OrganizationsURL:  Ptr(""),
-		ReceivedEventsURL: Ptr(""),
-		ReposURL:          Ptr(""),
-		StarredURL:        Ptr(""),
-		SubscriptionsURL:  Ptr(""),
+		ID:                new(int64(0)),
+		LDAPDN:            new(""),
+		Login:             new(""),
+		AvatarURL:         new(""),
+		GravatarID:        new(""),
+		Type:              new(""),
+		SiteAdmin:         new(false),
+		URL:               new(""),
+		EventsURL:         new(""),
+		FollowingURL:      new(""),
+		FollowersURL:      new(""),
+		GistsURL:          new(""),
+		OrganizationsURL:  new(""),
+		ReceivedEventsURL: new(""),
+		ReposURL:          new(""),
+		StarredURL:        new(""),
+		SubscriptionsURL:  new(""),
 	}
 	want := `github.UserLDAPMapping{ID:0, LDAPDN:"", Login:"", AvatarURL:"", GravatarID:"", Type:"", SiteAdmin:false, URL:"", EventsURL:"", FollowingURL:"", FollowersURL:"", GistsURL:"", OrganizationsURL:"", ReceivedEventsURL:"", ReposURL:"", StarredURL:"", SubscriptionsURL:""}`
 	if got := v.String(); got != want {
@@ -2506,14 +2506,14 @@ func TestUserLDAPMapping_String(t *testing.T) {
 func TestUserMigration_String(t *testing.T) {
 	t.Parallel()
 	v := UserMigration{
-		ID:                 Ptr(int64(0)),
-		GUID:               Ptr(""),
-		State:              Ptr(""),
-		LockRepositories:   Ptr(false),
-		ExcludeAttachments: Ptr(false),
-		URL:                Ptr(""),
-		CreatedAt:          Ptr(""),
-		UpdatedAt:          Ptr(""),
+		ID:                 new(int64(0)),
+		GUID:               new(""),
+		State:              new(""),
+		LockRepositories:   new(false),
+		ExcludeAttachments: new(false),
+		URL:                new(""),
+		CreatedAt:          new(""),
+		UpdatedAt:          new(""),
 	}
 	want := `github.UserMigration{ID:0, GUID:"", State:"", LockRepositories:false, ExcludeAttachments:false, URL:"", CreatedAt:"", UpdatedAt:""}`
 	if got := v.String(); got != want {
@@ -2524,9 +2524,9 @@ func TestUserMigration_String(t *testing.T) {
 func TestUserStats_String(t *testing.T) {
 	t.Parallel()
 	v := UserStats{
-		TotalUsers:     Ptr(0),
-		AdminUsers:     Ptr(0),
-		SuspendedUsers: Ptr(0),
+		TotalUsers:     new(0),
+		AdminUsers:     new(0),
+		SuspendedUsers: new(0),
 	}
 	want := `github.UserStats{TotalUsers:0, AdminUsers:0, SuspendedUsers:0}`
 	if got := v.String(); got != want {
@@ -2538,7 +2538,7 @@ func TestWeeklyCommitActivity_String(t *testing.T) {
 	t.Parallel()
 	v := WeeklyCommitActivity{
 		Days:  []int{0},
-		Total: Ptr(0),
+		Total: new(0),
 		Week:  &Timestamp{},
 	}
 	want := `github.WeeklyCommitActivity{Days:[0], Total:0, Week:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
@@ -2551,9 +2551,9 @@ func TestWeeklyStats_String(t *testing.T) {
 	t.Parallel()
 	v := WeeklyStats{
 		Week:      &Timestamp{},
-		Additions: Ptr(0),
-		Deletions: Ptr(0),
-		Commits:   Ptr(0),
+		Additions: new(0),
+		Deletions: new(0),
+		Commits:   new(0),
 	}
 	want := `github.WeeklyStats{Week:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Additions:0, Deletions:0, Commits:0}`
 	if got := v.String(); got != want {
@@ -2564,10 +2564,10 @@ func TestWeeklyStats_String(t *testing.T) {
 func TestWorkflowsPermissions_String(t *testing.T) {
 	t.Parallel()
 	v := WorkflowsPermissions{
-		RunWorkflowsFromForkPullRequests:  Ptr(false),
-		SendWriteTokensToWorkflows:        Ptr(false),
-		SendSecretsAndVariables:           Ptr(false),
-		RequireApprovalForForkPRWorkflows: Ptr(false),
+		RunWorkflowsFromForkPullRequests:  new(false),
+		SendWriteTokensToWorkflows:        new(false),
+		SendSecretsAndVariables:           new(false),
+		RequireApprovalForForkPRWorkflows: new(false),
 	}
 	want := `github.WorkflowsPermissions{RunWorkflowsFromForkPullRequests:false, SendWriteTokensToWorkflows:false, SendSecretsAndVariables:false, RequireApprovalForForkPRWorkflows:false}`
 	if got := v.String(); got != want {

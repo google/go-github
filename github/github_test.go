@@ -969,7 +969,7 @@ func Test_newClient(t *testing.T) {
 			opts: clientOptions{
 				httpClient:                              &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
 				transport:                               &http.Transport{IdleConnTimeout: 10 * time.Second},
-				timeout:                                 Ptr(15 * time.Second),
+				timeout:                                 new(15 * time.Second),
 				apiVersionMin:                           new(api20221128),
 				apiVersionMax:                           new(api20221128),
 				userAgent:                               new("CustomUserAgent/1.0"),
@@ -977,7 +977,7 @@ func Test_newClient(t *testing.T) {
 				uploadURL:                               mustParseURL(t, "https://custom-upload-url/api/uploads/"),
 				disableRateLimitCheck:                   true,
 				rateLimitRedirectionalEndpoints:         true,
-				maxSecondaryRateLimitRetryAfterDuration: Ptr(2 * time.Minute),
+				maxSecondaryRateLimitRetryAfterDuration: new(2 * time.Minute),
 			},
 			wantErr: "",
 		},
@@ -986,7 +986,7 @@ func Test_newClient(t *testing.T) {
 			opts: clientOptions{
 				disableRateLimitCheck:                   false,
 				rateLimitRedirectionalEndpoints:         true,
-				maxSecondaryRateLimitRetryAfterDuration: Ptr(2 * time.Minute),
+				maxSecondaryRateLimitRetryAfterDuration: new(2 * time.Minute),
 			},
 			wantErr: "",
 		},

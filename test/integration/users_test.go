@@ -209,10 +209,10 @@ func TestUsers_Keys(t *testing.T) {
 	// Verify that fetching individual key works
 	k, _, err := client.Users.GetKey(t.Context(), id)
 	if err != nil {
-		t.Fatalf("Users.GetKey(%d) returned error: %v", id, err)
+		t.Fatalf("Users.GetKey(%v) returned error: %v", id, err)
 	}
 	if *k.Key != key {
-		t.Fatalf("Users.GetKey(%d) returned key %v, want %v", id, *k.Key, key)
+		t.Fatalf("Users.GetKey(%v) returned key %v, want %v", id, *k.Key, key)
 	}
 
 	// Remove test key
