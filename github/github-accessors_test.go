@@ -11792,6 +11792,17 @@ func TestCopilotDailyMetrics_GetTotalsBy3rdPartyAgent(tt *testing.T) {
 	c.GetTotalsBy3rdPartyAgent()
 }
 
+func TestCopilotDailyMetrics_GetTotalsByAIAdoptionPhase(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotMetricsAIAdoptionPhaseTotals{}
+	c := &CopilotDailyMetrics{TotalsByAIAdoptionPhase: zeroValue}
+	c.GetTotalsByAIAdoptionPhase()
+	c = &CopilotDailyMetrics{}
+	c.GetTotalsByAIAdoptionPhase()
+	c = nil
+	c.GetTotalsByAIAdoptionPhase()
+}
+
 func TestCopilotDailyMetrics_GetTotalsByCLI(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotDailyMetrics{}
@@ -12390,6 +12401,150 @@ func TestCopilotMetrics_GetTotalEngagedUsers(tt *testing.T) {
 	c.GetTotalEngagedUsers()
 	c = nil
 	c.GetTotalEngagedUsers()
+}
+
+func TestCopilotMetricsAIAdoptionPhase_GetPhase(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhase{}
+	c.GetPhase()
+	c = nil
+	c.GetPhase()
+}
+
+func TestCopilotMetricsAIAdoptionPhase_GetPhaseNumber(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhase{}
+	c.GetPhaseNumber()
+	c = nil
+	c.GetPhaseNumber()
+}
+
+func TestCopilotMetricsAIAdoptionPhase_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhase{}
+	c.GetVersion()
+	c = nil
+	c.GetVersion()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgCodeAcceptanceActivities(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgCodeAcceptanceActivities()
+	c = nil
+	c.GetAvgCodeAcceptanceActivities()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgCodeGenerationActivities(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgCodeGenerationActivities()
+	c = nil
+	c.GetAvgCodeGenerationActivities()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgLOCAdded(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgLOCAdded()
+	c = nil
+	c.GetAvgLOCAdded()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgLOCDeleted(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgLOCDeleted()
+	c = nil
+	c.GetAvgLOCDeleted()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsCreated(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgPullRequestsCreated()
+	c = nil
+	c.GetAvgPullRequestsCreated()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsMedianMinutesToMerge(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgPullRequestsMedianMinutesToMerge()
+	c = nil
+	c.GetAvgPullRequestsMedianMinutesToMerge()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsMerged(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgPullRequestsMerged()
+	c = nil
+	c.GetAvgPullRequestsMerged()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsMinutesToReview(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgPullRequestsMinutesToReview()
+	c = nil
+	c.GetAvgPullRequestsMinutesToReview()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsReviewCycles(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgPullRequestsReviewCycles()
+	c = nil
+	c.GetAvgPullRequestsReviewCycles()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgPullRequestsReviewed(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgPullRequestsReviewed()
+	c = nil
+	c.GetAvgPullRequestsReviewed()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetAvgUserInitiatedInteractions(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetAvgUserInitiatedInteractions()
+	c = nil
+	c.GetAvgUserInitiatedInteractions()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetPhase(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetPhase()
+	c = nil
+	c.GetPhase()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetPhaseNumber(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetPhaseNumber()
+	c = nil
+	c.GetPhaseNumber()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetTotalEngagedUsers(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetTotalEngagedUsers()
+	c = nil
+	c.GetTotalEngagedUsers()
+}
+
+func TestCopilotMetricsAIAdoptionPhaseTotals_GetTotalPullRequestsMerged(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsAIAdoptionPhaseTotals{}
+	c.GetTotalPullRequestsMerged()
+	c = nil
+	c.GetTotalPullRequestsMerged()
 }
 
 func TestCopilotMetricsChatPanel_GetChatPanelAgentMode(tt *testing.T) {
@@ -13182,6 +13337,25 @@ func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestCopilotUserDailyMetrics_GetAIAdoptionPhase(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserDailyMetrics{}
+	c.GetAIAdoptionPhase()
+	c = nil
+	c.GetAIAdoptionPhase()
+}
+
+func TestCopilotUserDailyMetrics_GetAICreditsUsed(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue float64
+	c := &CopilotUserDailyMetrics{AICreditsUsed: &zeroValue}
+	c.GetAICreditsUsed()
+	c = &CopilotUserDailyMetrics{}
+	c.GetAICreditsUsed()
+	c = nil
+	c.GetAICreditsUsed()
+}
+
 func TestCopilotUserDailyMetrics_GetCodeAcceptanceActivityCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -13524,6 +13698,25 @@ func TestCopilotUserMetricsPluginVersion_GetSampledAt(tt *testing.T) {
 	c.GetSampledAt()
 	c = nil
 	c.GetSampledAt()
+}
+
+func TestCopilotUserPeriodicMetrics_GetAIAdoptionPhase(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserPeriodicMetrics{}
+	c.GetAIAdoptionPhase()
+	c = nil
+	c.GetAIAdoptionPhase()
+}
+
+func TestCopilotUserPeriodicMetrics_GetAICreditsUsed(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue float64
+	c := &CopilotUserPeriodicMetrics{AICreditsUsed: &zeroValue}
+	c.GetAICreditsUsed()
+	c = &CopilotUserPeriodicMetrics{}
+	c.GetAICreditsUsed()
+	c = nil
+	c.GetAICreditsUsed()
 }
 
 func TestCopilotUserPeriodicMetrics_GetCodeAcceptanceActivityCount(tt *testing.T) {

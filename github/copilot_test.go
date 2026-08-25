@@ -3072,6 +3072,25 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 					"session_count": 3
 				}
 			],
+			"totals_by_ai_adoption_phase": [
+				{
+					"phase": "Phase 1",
+					"phase_number": 1,
+					"total_engaged_users": 4,
+					"avg_user_initiated_interactions": 1.5,
+					"avg_code_generation_activities": 2.0,
+					"avg_code_acceptance_activities": 1.0,
+					"avg_loc_added": 22.0,
+					"avg_loc_deleted": 0.0,
+					"avg_pull_requests_reviewed": 0.5,
+					"avg_pull_requests_created": 1.0,
+					"avg_pull_requests_merged": 1.0,
+					"total_pull_requests_merged": 4,
+					"avg_pull_requests_median_minutes_to_merge": 2.5,
+					"avg_pull_requests_minutes_to_review": 1.5,
+					"avg_pull_requests_review_cycles": 1.0
+				}
+			],
 			"loc_added_sum": 100,
 			"pull_requests": {
 				"total_reviewed": 1,
@@ -3135,6 +3154,25 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 				AgentID:                       "claude",
 				UserInitiatedInteractionCount: new(8),
 				SessionCount:                  new(3),
+			},
+		},
+		TotalsByAIAdoptionPhase: []*CopilotMetricsAIAdoptionPhaseTotals{
+			{
+				Phase:                               "Phase 1",
+				PhaseNumber:                         1,
+				TotalEngagedUsers:                   4,
+				AvgUserInitiatedInteractions:        1.5,
+				AvgCodeGenerationActivities:         2.0,
+				AvgCodeAcceptanceActivities:         1.0,
+				AvgLOCAdded:                         22.0,
+				AvgLOCDeleted:                       0.0,
+				AvgPullRequestsReviewed:             0.5,
+				AvgPullRequestsCreated:              1.0,
+				AvgPullRequestsMerged:               1.0,
+				TotalPullRequestsMerged:             4,
+				AvgPullRequestsMedianMinutesToMerge: 2.5,
+				AvgPullRequestsMinutesToReview:      1.5,
+				AvgPullRequestsReviewCycles:         1.0,
 			},
 		},
 		LOCAddedSum: new(100),
@@ -3284,7 +3322,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 
 	mux.HandleFunc("/path/to/users-daily", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_code_review_active":true,"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":`+refTimeStr(1136178000)+`,"cli_version":"1.0.8"}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":`+refTimeStr(1136178001)+`,"plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":`+refTimeStr(1136178002)+`,"ide_version":"1.90"}}],"totals_by_3rd_party_agent":[{"agent_name":"Claude","agent_id":"claude","user_initiated_interaction_count":2}]}
+		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","ai_credits_used":12.5,"user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_code_review_active":true,"ai_adoption_phase":{"phase":"Phase 2","phase_number":2,"version":"v1"},"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":`+referenceTimeStr+`,"cli_version":"1.0.8"}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":`+referenceTimeStr+`,"plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":`+referenceTimeStr+`,"ide_version":"1.90"}}],"totals_by_3rd_party_agent":[{"agent_name":"Claude","agent_id":"claude","user_initiated_interaction_count":2}]}
 {"user_id":2,"user_login":"bob","day":"2026-04-01","used_agent":true,"used_copilot_code_review_passive":true}
 `)
 	})
@@ -3304,6 +3342,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 			UserID:                        1,
 			UserLogin:                     "alice",
 			Day:                           "2026-04-01",
+			AICreditsUsed:                 new(12.5),
 			UserInitiatedInteractionCount: new(5),
 			CopilotMetricsChatPanel: CopilotMetricsChatPanel{
 				ChatPanelEditMode: new(2),
@@ -3311,12 +3350,17 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 			UsedChat:                    new(true),
 			UsedCLI:                     new(true),
 			UsedCopilotCodeReviewActive: new(true),
+			AIAdoptionPhase: &CopilotMetricsAIAdoptionPhase{
+				Phase:       "Phase 2",
+				PhaseNumber: 2,
+				Version:     "v1",
+			},
 			TotalsByCLI: &CopilotMetricsCLI{
 				SessionCount: new(2),
 				RequestCount: new(2),
 				PromptCount:  new(1),
 				LastKnownCLIVersion: &CopilotMetricsCLIVersion{
-					SampledAt:  refTimestamp(1136178000),
+					SampledAt:  &referenceTimestamp,
 					CLIVersion: "1.0.8",
 				},
 			},
@@ -3325,12 +3369,12 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 					IDE:                           "vscode",
 					UserInitiatedInteractionCount: new(5),
 					LastKnownPluginVersion: &CopilotUserMetricsPluginVersion{
-						SampledAt:     refTimestamp(1136178001),
+						SampledAt:     &referenceTimestamp,
 						Plugin:        "copilot",
 						PluginVersion: "1.0.0",
 					},
 					LastKnownIDEVersion: &CopilotUserMetricsIDEVersion{
-						SampledAt:  refTimestamp(1136178002),
+						SampledAt:  &referenceTimestamp,
 						IDEVersion: "1.90",
 					},
 				},
@@ -3398,7 +3442,7 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 
 	mux.HandleFunc("/path/to/users-periodic", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"report_start_day":"2026-03-05","report_end_day":"2026-04-01","day":"2026-03-05","user_id":1,"user_login":"alice","user_initiated_interaction_count":3,"used_copilot_code_review_active":true}
+		fmt.Fprint(w, `{"report_start_day":"2026-03-05","report_end_day":"2026-04-01","day":"2026-03-05","user_id":1,"user_login":"alice","ai_credits_used":3.25,"user_initiated_interaction_count":3,"used_copilot_code_review_active":true,"ai_adoption_phase":{"phase":"Phase 1","phase_number":1,"version":"v1"}}
 {"report_start_day":"2026-03-05","report_end_day":"2026-04-01","day":"2026-03-06","user_id":1,"user_login":"alice","used_cli":true,"used_copilot_code_review_passive":true,"used_copilot_coding_agent":true,"totals_by_cli":{"session_count":1,"request_count":3,"prompt_count":2,"token_usage":{"avg_tokens_per_request":1200.5,"output_tokens_sum":2400,"prompt_tokens_sum":1201}}}
 `)
 	})
@@ -3420,8 +3464,14 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 			Day:                           "2026-03-05",
 			UserID:                        1,
 			UserLogin:                     "alice",
+			AICreditsUsed:                 new(3.25),
 			UserInitiatedInteractionCount: new(3),
 			UsedCopilotCodeReviewActive:   new(true),
+			AIAdoptionPhase: &CopilotMetricsAIAdoptionPhase{
+				Phase:       "Phase 1",
+				PhaseNumber: 1,
+				Version:     "v1",
+			},
 		},
 		{
 			ReportStartDay:               "2026-03-05",
