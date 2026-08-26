@@ -514,7 +514,7 @@ type pullRequestMergeRequest struct {
 	SHA           string  `json:"sha,omitempty"`
 }
 
-// MergeAsyncRequest 		 a request to merge a pull request asynchronously.
+// MergeAsyncRequest represents a request to merge a pull request asynchronously.
 type MergeAsyncRequest struct {
 	// MergeMethod is the merge method: merge, squash, or rebase. Not supported on merge_queue actions.
 	MergeMethod *string `json:"merge_method,omitempty"`
@@ -528,13 +528,13 @@ type MergeAsyncRequest struct {
 	SHA *string `json:"sha,omitempty"`
 }
 
-// AsyncMergeResult 	 the current state of an asynchronous merge request.
+// AsyncMergeResult represents the current state of an asynchronous merge request.
 type AsyncMergeResult struct {
 	Status  *string            `json:"status,omitempty"`
 	Details *AsyncMergeDetails `json:"details,omitempty"`
 }
 
-// AsyncMergeDetails 	 details for the current state of an AsyncMergeResult.
+// AsyncMergeDetails represents details for the current state of an AsyncMergeResult.
 type AsyncMergeDetails struct {
 	Message         *string `json:"message,omitempty"`
 	UUID            *string `json:"uuid,omitempty"`
