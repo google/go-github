@@ -4667,21 +4667,6 @@ func TestClientCopy_leak_transport(t *testing.T) {
 	assertNoDiff(t, "Bearer bob", bob.GetLogin())
 }
 
-func TestPtr(t *testing.T) {
-	t.Parallel()
-	equal := func(t *testing.T, want, got any) {
-		t.Helper()
-		if !cmp.Equal(want, got) {
-			t.Errorf("want %#v, got %#v", want, got)
-		}
-	}
-
-	equal(t, true, *new(true))
-	equal(t, int(10), *new(int(10)))
-	equal(t, int64(-10), *new(int64(-10)))
-	equal(t, "str", *new("str"))
-}
-
 func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {
 	t.Parallel()
 
