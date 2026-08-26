@@ -3213,7 +3213,7 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 }
 
 // CheckResponse substitutes resp.Body with a re-readable copy on error
-// responses; fetchMetricsReport must still close the network body it replaces.
+// responses; fetchMetricsReport must still close the original body it replaces.
 func TestCopilotService_fetchMetricsReport_closesOriginalBodyOnErrorResponse(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

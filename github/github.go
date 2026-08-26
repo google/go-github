@@ -1795,6 +1795,12 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 // API error responses are expected to have response
 // body, and a JSON response body that maps to [ErrorResponse].
 //
+// On error responses other than 202 Accepted, CheckResponse consumes r.Body
+// and replaces it with an in-memory copy so that the error body can be
+// re-read. Closing r.Body after CheckResponse returns therefore closes only
+// the copy: to release the original body and its underlying connection,
+// capture r.Body before the call and close the captured body instead.
+//
 // The error type will be *[RateLimitError] for rate limit exceeded errors,
 // *[AcceptedError] for 202 Accepted status codes,
 // *[TwoFactorAuthError] for two-factor authentication errors,

@@ -1212,8 +1212,12 @@ func (s *CopilotService) fetchMetricsReport(ctx context.Context, url string) (*h
 		return nil, nil, err
 	}
 
+	// CheckResponse substitutes resp.Body with a re-readable copy on error
+	// responses, so capture the original body first: it is the one that must
+	// be closed.
+	origBody := resp.Body
 	if err := CheckResponse(resp); err != nil {
-		resp.Body.Close()
+		_ = origBody.Close()
 		return nil, newResponse(resp), err
 	}
 

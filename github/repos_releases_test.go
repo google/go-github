@@ -538,9 +538,11 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 }
 
 // CheckResponse substitutes resp.Body with a re-readable copy on error
-// responses; downloadReleaseAssetFromURL must still close the network body it
-// replaces. The recorder wraps the follow-redirects client's transport because
-// that client, not the library client, performs the redirected request.
+// responses; downloadReleaseAssetFromURL must still close the original body it
+// replaces. Unlike its sibling tests, the recorder wraps the follow-redirects
+// client's transport: that client, not the library client, performs the
+// redirected request, so wrapping the library client would only ever observe
+// the first hop's correctly-closed redirect response and never the leak.
 func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToErrorClosesOriginalBody(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
