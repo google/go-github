@@ -531,7 +531,7 @@ type MergeAsyncRequest struct {
 // AsyncMergeResult represents the current state of an asynchronous merge request.
 type AsyncMergeResult struct {
 	Status  *string            `json:"status,omitempty"`
-	Details *AsyncMergeDetails `json:"details,omitempty"`
+	Details *PullRequestMergeAsyncDetails `json:"details,omitempty"`
 }
 
 // AsyncMergeDetails represents details for the current state of an AsyncMergeResult.
