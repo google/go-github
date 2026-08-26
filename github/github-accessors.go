@@ -12414,6 +12414,86 @@ func (c *CreatePullRequest) GetTitle() string {
 	return *c.Title
 }
 
+// GetBody returns the Body field.
+func (c *CreatePullRequestCommentRequest) GetBody() string {
+	if c == nil {
+		return ""
+	}
+	return c.Body
+}
+
+// GetCommitID returns the CommitID field.
+func (c *CreatePullRequestCommentRequest) GetCommitID() string {
+	if c == nil {
+		return ""
+	}
+	return c.CommitID
+}
+
+// GetInReplyTo returns the InReplyTo field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetInReplyTo() int64 {
+	if c == nil || c.InReplyTo == nil {
+		return 0
+	}
+	return *c.InReplyTo
+}
+
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetLine() int {
+	if c == nil || c.Line == nil {
+		return 0
+	}
+	return *c.Line
+}
+
+// GetPath returns the Path field.
+func (c *CreatePullRequestCommentRequest) GetPath() string {
+	if c == nil {
+		return ""
+	}
+	return c.Path
+}
+
+// GetPosition returns the Position field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetPosition() int {
+	if c == nil || c.Position == nil {
+		return 0
+	}
+	return *c.Position
+}
+
+// GetSide returns the Side field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetSide() string {
+	if c == nil || c.Side == nil {
+		return ""
+	}
+	return *c.Side
+}
+
+// GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetStartLine() int {
+	if c == nil || c.StartLine == nil {
+		return 0
+	}
+	return *c.StartLine
+}
+
+// GetStartSide returns the StartSide field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetStartSide() string {
+	if c == nil || c.StartSide == nil {
+		return ""
+	}
+	return *c.StartSide
+}
+
+// GetSubjectType returns the SubjectType field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetSubjectType() string {
+	if c == nil || c.SubjectType == nil {
+		return ""
+	}
+	return *c.SubjectType
+}
+
 // GetRef returns the Ref field.
 func (c *CreateRef) GetRef() string {
 	if c == nil {
@@ -44564,6 +44644,14 @@ func (u *UpdateProvisionedOrgMembershipRequest) GetUserName() string {
 		return ""
 	}
 	return u.UserName
+}
+
+// GetBody returns the Body field.
+func (u *UpdatePullRequestCommentRequest) GetBody() string {
+	if u == nil {
+		return ""
+	}
+	return u.Body
 }
 
 // GetForce returns the Force field if it's non-nil, zero value otherwise.

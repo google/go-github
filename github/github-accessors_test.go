@@ -15682,6 +15682,107 @@ func TestCreatePullRequest_GetTitle(tt *testing.T) {
 	c.GetTitle()
 }
 
+func TestCreatePullRequestCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	c := &CreatePullRequestCommentRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreatePullRequestCommentRequest_GetCommitID(tt *testing.T) {
+	tt.Parallel()
+	c := &CreatePullRequestCommentRequest{}
+	c.GetCommitID()
+	c = nil
+	c.GetCommitID()
+}
+
+func TestCreatePullRequestCommentRequest_GetInReplyTo(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreatePullRequestCommentRequest{InReplyTo: &zeroValue}
+	c.GetInReplyTo()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetInReplyTo()
+	c = nil
+	c.GetInReplyTo()
+}
+
+func TestCreatePullRequestCommentRequest_GetLine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreatePullRequestCommentRequest{Line: &zeroValue}
+	c.GetLine()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetLine()
+	c = nil
+	c.GetLine()
+}
+
+func TestCreatePullRequestCommentRequest_GetPath(tt *testing.T) {
+	tt.Parallel()
+	c := &CreatePullRequestCommentRequest{}
+	c.GetPath()
+	c = nil
+	c.GetPath()
+}
+
+func TestCreatePullRequestCommentRequest_GetPosition(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreatePullRequestCommentRequest{Position: &zeroValue}
+	c.GetPosition()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetPosition()
+	c = nil
+	c.GetPosition()
+}
+
+func TestCreatePullRequestCommentRequest_GetSide(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreatePullRequestCommentRequest{Side: &zeroValue}
+	c.GetSide()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetSide()
+	c = nil
+	c.GetSide()
+}
+
+func TestCreatePullRequestCommentRequest_GetStartLine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreatePullRequestCommentRequest{StartLine: &zeroValue}
+	c.GetStartLine()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetStartLine()
+	c = nil
+	c.GetStartLine()
+}
+
+func TestCreatePullRequestCommentRequest_GetStartSide(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreatePullRequestCommentRequest{StartSide: &zeroValue}
+	c.GetStartSide()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetStartSide()
+	c = nil
+	c.GetStartSide()
+}
+
+func TestCreatePullRequestCommentRequest_GetSubjectType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreatePullRequestCommentRequest{SubjectType: &zeroValue}
+	c.GetSubjectType()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetSubjectType()
+	c = nil
+	c.GetSubjectType()
+}
+
 func TestCreateRef_GetRef(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateRef{}
@@ -55782,6 +55883,14 @@ func TestUpdateProvisionedOrgMembershipRequest_GetUserName(tt *testing.T) {
 	u.GetUserName()
 	u = nil
 	u.GetUserName()
+}
+
+func TestUpdatePullRequestCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdatePullRequestCommentRequest{}
+	u.GetBody()
+	u = nil
+	u.GetBody()
 }
 
 func TestUpdateRef_GetForce(tt *testing.T) {
