@@ -1044,12 +1044,13 @@ func TestKey_String(t *testing.T) {
 		URL:       Ptr(""),
 		Title:     Ptr(""),
 		ReadOnly:  Ptr(false),
+		Enabled:   Ptr(false),
 		Verified:  Ptr(false),
 		CreatedAt: &Timestamp{},
 		AddedBy:   Ptr(""),
 		LastUsed:  &Timestamp{},
 	}
-	want := `github.Key{ID:0, Key:"", URL:"", Title:"", ReadOnly:false, Verified:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, AddedBy:"", LastUsed:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
+	want := `github.Key{ID:0, Key:"", URL:"", Title:"", ReadOnly:false, Enabled:false, Verified:false, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, AddedBy:"", LastUsed:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}}`
 	if got := v.String(); got != want {
 		t.Errorf("Key.String = %v, want %v", got, want)
 	}
