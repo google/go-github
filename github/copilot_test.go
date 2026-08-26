@@ -3212,6 +3212,38 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 	}
 }
 
+// CheckResponse substitutes resp.Body with a re-readable copy on error
+// responses; fetchMetricsReport must still close the network body it replaces.
+func TestCopilotService_fetchMetricsReport_closesOriginalBodyOnErrorResponse(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/daily", func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, `{"message":"Bad Request"}`, 400)
+	})
+
+	var closed bool
+	base := client.client.Transport
+	if base == nil {
+		base = http.DefaultTransport
+	}
+	client.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		resp, err := base.RoundTrip(req)
+		if resp != nil {
+			resp.Body = &closeRecorder{ReadCloser: resp.Body, closed: &closed}
+		}
+		return resp, err
+	})
+
+	ctx := t.Context()
+	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, client.baseURL.String()+"path/to/daily"); err == nil {
+		t.Fatal("Copilot.DownloadDailyMetrics expected error but got none")
+	}
+	if !closed {
+		t.Error("original response body was not closed on an error response")
+	}
+}
+
 func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
