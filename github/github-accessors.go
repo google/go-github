@@ -31918,6 +31918,22 @@ func (p *PullRequestComment) GetBody() string {
 	return *p.Body
 }
 
+// GetBodyHTML returns the BodyHTML field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetBodyHTML() string {
+	if p == nil || p.BodyHTML == nil {
+		return ""
+	}
+	return *p.BodyHTML
+}
+
+// GetBodyText returns the BodyText field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetBodyText() string {
+	if p == nil || p.BodyText == nil {
+		return ""
+	}
+	return *p.BodyText
+}
+
 // GetCommitID returns the CommitID field if it's non-nil, zero value otherwise.
 func (p *PullRequestComment) GetCommitID() string {
 	if p == nil || p.CommitID == nil {
@@ -31972,6 +31988,14 @@ func (p *PullRequestComment) GetLine() int {
 		return 0
 	}
 	return *p.Line
+}
+
+// GetLinks returns the Links field.
+func (p *PullRequestComment) GetLinks() *PullRequestCommentLinks {
+	if p == nil {
+		return nil
+	}
+	return p.Links
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
@@ -32108,6 +32132,30 @@ func (p *PullRequestComment) GetUser() *User {
 		return nil
 	}
 	return p.User
+}
+
+// GetHTML returns the HTML field.
+func (p *PullRequestCommentLinks) GetHTML() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.HTML
+}
+
+// GetPullRequest returns the PullRequest field.
+func (p *PullRequestCommentLinks) GetPullRequest() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.PullRequest
+}
+
+// GetSelf returns the Self field.
+func (p *PullRequestCommentLinks) GetSelf() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Self
 }
 
 // GetEvent returns the Event field if it's non-nil, zero value otherwise.

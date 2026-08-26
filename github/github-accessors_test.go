@@ -40058,6 +40058,28 @@ func TestPullRequestComment_GetBody(tt *testing.T) {
 	p.GetBody()
 }
 
+func TestPullRequestComment_GetBodyHTML(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestComment{BodyHTML: &zeroValue}
+	p.GetBodyHTML()
+	p = &PullRequestComment{}
+	p.GetBodyHTML()
+	p = nil
+	p.GetBodyHTML()
+}
+
+func TestPullRequestComment_GetBodyText(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestComment{BodyText: &zeroValue}
+	p.GetBodyText()
+	p = &PullRequestComment{}
+	p.GetBodyText()
+	p = nil
+	p.GetBodyText()
+}
+
 func TestPullRequestComment_GetCommitID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -40133,6 +40155,14 @@ func TestPullRequestComment_GetLine(tt *testing.T) {
 	p.GetLine()
 	p = nil
 	p.GetLine()
+}
+
+func TestPullRequestComment_GetLinks(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestComment{}
+	p.GetLinks()
+	p = nil
+	p.GetLinks()
 }
 
 func TestPullRequestComment_GetNodeID(tt *testing.T) {
@@ -40314,6 +40344,30 @@ func TestPullRequestComment_GetUser(tt *testing.T) {
 	p.GetUser()
 	p = nil
 	p.GetUser()
+}
+
+func TestPullRequestCommentLinks_GetHTML(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestCommentLinks{}
+	p.GetHTML()
+	p = nil
+	p.GetHTML()
+}
+
+func TestPullRequestCommentLinks_GetPullRequest(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestCommentLinks{}
+	p.GetPullRequest()
+	p = nil
+	p.GetPullRequest()
+}
+
+func TestPullRequestCommentLinks_GetSelf(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestCommentLinks{}
+	p.GetSelf()
+	p = nil
+	p.GetSelf()
 }
 
 func TestPullRequestDismissReviewRequest_GetEvent(tt *testing.T) {

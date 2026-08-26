@@ -18,6 +18,8 @@ type PullRequestComment struct {
 	NodeID              *string    `json:"node_id,omitempty"`
 	InReplyTo           *int64     `json:"in_reply_to_id,omitempty"`
 	Body                *string    `json:"body,omitempty"`
+	BodyHTML            *string    `json:"body_html,omitempty"`
+	BodyText            *string    `json:"body_text,omitempty"`
 	Path                *string    `json:"path,omitempty"`
 	DiffHunk            *string    `json:"diff_hunk,omitempty"`
 	PullRequestReviewID *int64     `json:"pull_request_review_id,omitempty"`
@@ -41,12 +43,21 @@ type PullRequestComment struct {
 	// Deprecated: GitHub will remove this field from Events API payloads on October 7, 2025.
 	// Use the Pull Request Comments REST API endpoint to retrieve this information.
 	// See: https://docs.github.com/rest/pulls/comments?apiVersion=2022-11-28#get-a-review-comment-for-a-pull-request
-	AuthorAssociation *string `json:"author_association,omitempty"`
-	URL               *string `json:"url,omitempty"`
-	HTMLURL           *string `json:"html_url,omitempty"`
-	PullRequestURL    *string `json:"pull_request_url,omitempty"`
+	AuthorAssociation *string                  `json:"author_association,omitempty"`
+	URL               *string                  `json:"url,omitempty"`
+	HTMLURL           *string                  `json:"html_url,omitempty"`
+	PullRequestURL    *string                  `json:"pull_request_url,omitempty"`
+	Links             *PullRequestCommentLinks `json:"_links,omitempty"`
 	// Can be one of: LINE, FILE from https://docs.github.com/rest/pulls/comments?apiVersion=2022-11-28#create-a-review-comment-for-a-pull-request
 	SubjectType *string `json:"subject_type,omitempty"`
+}
+
+// PullRequestCommentLinks represents the "_links" object in a pull request
+// review comment.
+type PullRequestCommentLinks struct {
+	Self        *PRLink `json:"self,omitempty"`
+	HTML        *PRLink `json:"html,omitempty"`
+	PullRequest *PRLink `json:"pull_request,omitempty"`
 }
 
 func (p PullRequestComment) String() string {
