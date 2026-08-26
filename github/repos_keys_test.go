@@ -107,7 +107,7 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Key{Key: Ptr("k"), Title: Ptr("t")}
+	input := CreateDeployKeyRequest{Key: "k", Title: Ptr("t")}
 
 	mux.HandleFunc("/repos/o/r/keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -146,7 +146,7 @@ func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Repositories.CreateKey(ctx, "%", "%", nil)
+	_, _, err := client.Repositories.CreateKey(ctx, "%", "%", CreateDeployKeyRequest{})
 	testURLParseError(t, err)
 }
 
