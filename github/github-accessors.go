@@ -2702,70 +2702,6 @@ func (a *AssignmentGrade) GetSubmissionTimestamp() Timestamp {
 	return *a.SubmissionTimestamp
 }
 
-// GetExpectedHeadSHA returns the ExpectedHeadSHA field if it's non-nil, zero value otherwise.
-func (a *AsyncMergeDetails) GetExpectedHeadSHA() string {
-	if a == nil || a.ExpectedHeadSHA == nil {
-		return ""
-	}
-	return *a.ExpectedHeadSHA
-}
-
-// GetMergeAction returns the MergeAction field if it's non-nil, zero value otherwise.
-func (a *AsyncMergeDetails) GetMergeAction() string {
-	if a == nil || a.MergeAction == nil {
-		return ""
-	}
-	return *a.MergeAction
-}
-
-// GetMergeMethod returns the MergeMethod field if it's non-nil, zero value otherwise.
-func (a *AsyncMergeDetails) GetMergeMethod() string {
-	if a == nil || a.MergeMethod == nil {
-		return ""
-	}
-	return *a.MergeMethod
-}
-
-// GetMessage returns the Message field if it's non-nil, zero value otherwise.
-func (a *AsyncMergeDetails) GetMessage() string {
-	if a == nil || a.Message == nil {
-		return ""
-	}
-	return *a.Message
-}
-
-// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
-func (a *AsyncMergeDetails) GetSHA() string {
-	if a == nil || a.SHA == nil {
-		return ""
-	}
-	return *a.SHA
-}
-
-// GetUUID returns the UUID field if it's non-nil, zero value otherwise.
-func (a *AsyncMergeDetails) GetUUID() string {
-	if a == nil || a.UUID == nil {
-		return ""
-	}
-	return *a.UUID
-}
-
-// GetDetails returns the Details field.
-func (a *AsyncMergeResult) GetDetails() *AsyncMergeDetails {
-	if a == nil {
-		return nil
-	}
-	return a.Details
-}
-
-// GetStatus returns the Status field if it's non-nil, zero value otherwise.
-func (a *AsyncMergeResult) GetStatus() string {
-	if a == nil || a.Status == nil {
-		return ""
-	}
-	return *a.Status
-}
-
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (a *Attachment) GetBody() string {
 	if a == nil || a.Body == nil {
@@ -25166,46 +25102,6 @@ func (m *MembershipEvent) GetTeam() *Team {
 	return m.Team
 }
 
-// GetCommitMessage returns the CommitMessage field if it's non-nil, zero value otherwise.
-func (m *MergeAsyncRequest) GetCommitMessage() string {
-	if m == nil || m.CommitMessage == nil {
-		return ""
-	}
-	return *m.CommitMessage
-}
-
-// GetCommitTitle returns the CommitTitle field if it's non-nil, zero value otherwise.
-func (m *MergeAsyncRequest) GetCommitTitle() string {
-	if m == nil || m.CommitTitle == nil {
-		return ""
-	}
-	return *m.CommitTitle
-}
-
-// GetMergeAction returns the MergeAction field if it's non-nil, zero value otherwise.
-func (m *MergeAsyncRequest) GetMergeAction() string {
-	if m == nil || m.MergeAction == nil {
-		return ""
-	}
-	return *m.MergeAction
-}
-
-// GetMergeMethod returns the MergeMethod field if it's non-nil, zero value otherwise.
-func (m *MergeAsyncRequest) GetMergeMethod() string {
-	if m == nil || m.MergeMethod == nil {
-		return ""
-	}
-	return *m.MergeMethod
-}
-
-// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
-func (m *MergeAsyncRequest) GetSHA() string {
-	if m == nil || m.SHA == nil {
-		return ""
-	}
-	return *m.SHA
-}
-
 // GetBaseRef returns the BaseRef field if it's non-nil, zero value otherwise.
 func (m *MergeGroup) GetBaseRef() string {
 	if m == nil || m.BaseRef == nil {
@@ -32316,6 +32212,110 @@ func (p *PullRequestListOptions) GetState() string {
 		return ""
 	}
 	return p.State
+}
+
+// GetExpectedHeadSHA returns the ExpectedHeadSHA field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetExpectedHeadSHA() string {
+	if p == nil || p.ExpectedHeadSHA == nil {
+		return ""
+	}
+	return *p.ExpectedHeadSHA
+}
+
+// GetMergeAction returns the MergeAction field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetMergeAction() string {
+	if p == nil || p.MergeAction == nil {
+		return ""
+	}
+	return *p.MergeAction
+}
+
+// GetMergeMethod returns the MergeMethod field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetMergeMethod() string {
+	if p == nil || p.MergeMethod == nil {
+		return ""
+	}
+	return *p.MergeMethod
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetMessage() string {
+	if p == nil || p.Message == nil {
+		return ""
+	}
+	return *p.Message
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetSHA() string {
+	if p == nil || p.SHA == nil {
+		return ""
+	}
+	return *p.SHA
+}
+
+// GetUUID returns the UUID field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetUUID() string {
+	if p == nil || p.UUID == nil {
+		return ""
+	}
+	return *p.UUID
+}
+
+// GetCommitMessage returns the CommitMessage field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncRequest) GetCommitMessage() string {
+	if p == nil || p.CommitMessage == nil {
+		return ""
+	}
+	return *p.CommitMessage
+}
+
+// GetCommitTitle returns the CommitTitle field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncRequest) GetCommitTitle() string {
+	if p == nil || p.CommitTitle == nil {
+		return ""
+	}
+	return *p.CommitTitle
+}
+
+// GetMergeAction returns the MergeAction field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncRequest) GetMergeAction() string {
+	if p == nil || p.MergeAction == nil {
+		return ""
+	}
+	return *p.MergeAction
+}
+
+// GetMergeMethod returns the MergeMethod field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncRequest) GetMergeMethod() string {
+	if p == nil || p.MergeMethod == nil {
+		return ""
+	}
+	return *p.MergeMethod
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncRequest) GetSHA() string {
+	if p == nil || p.SHA == nil {
+		return ""
+	}
+	return *p.SHA
+}
+
+// GetDetails returns the Details field.
+func (p *PullRequestMergeAsyncResult) GetDetails() *PullRequestMergeAsyncDetails {
+	if p == nil {
+		return nil
+	}
+	return p.Details
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncResult) GetStatus() string {
+	if p == nil || p.Status == nil {
+		return ""
+	}
+	return *p.Status
 }
 
 // GetMerged returns the Merged field if it's non-nil, zero value otherwise.

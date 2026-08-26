@@ -514,8 +514,8 @@ type pullRequestMergeRequest struct {
 	SHA           string  `json:"sha,omitempty"`
 }
 
-// MergeAsyncRequest represents a request to merge a pull request asynchronously.
-type MergeAsyncRequest struct {
+// PullRequestMergeAsyncRequest represents a request to merge a pull request asynchronously.
+type PullRequestMergeAsyncRequest struct {
 	// MergeMethod is the merge method: merge, squash, or rebase. Not supported on merge_queue actions.
 	MergeMethod *string `json:"merge_method,omitempty"`
 	// MergeAction is how to merge: default, direct_merge, or merge_queue.
@@ -528,14 +528,14 @@ type MergeAsyncRequest struct {
 	SHA *string `json:"sha,omitempty"`
 }
 
-// AsyncMergeResult represents the current state of an asynchronous merge request.
-type AsyncMergeResult struct {
-	Status  *string            `json:"status,omitempty"`
+// PullRequestMergeAsyncResult represents the current state of an asynchronous merge request.
+type PullRequestMergeAsyncResult struct {
+	Status  *string                       `json:"status,omitempty"`
 	Details *PullRequestMergeAsyncDetails `json:"details,omitempty"`
 }
 
-// AsyncMergeDetails represents details for the current state of an AsyncMergeResult.
-type AsyncMergeDetails struct {
+// PullRequestMergeAsyncDetails represents details for the current state of a PullRequestMergeAsyncResult.
+type PullRequestMergeAsyncDetails struct {
 	Message         *string `json:"message,omitempty"`
 	UUID            *string `json:"uuid,omitempty"`
 	MergeMethod     *string `json:"merge_method,omitempty"`
@@ -584,8 +584,8 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, num
 // method for merging stacked pull requests; the legacy Merge method cannot be
 // used for stacks.
 //
-// A pending response includes a UUID in AsyncMergeResult.Details.UUID that
-// must be passed to GetMergeAsyncResult to poll for the outcome.
+// A pending response includes a UUID in PullRequestMergeAsyncResult.Details.UUID
+// that must be passed to GetMergeAsyncResult to poll for the outcome.
 //
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#merge-a-pull-request-asynchronously
 //
@@ -598,7 +598,7 @@ func (s *PullRequestsService) MergeAsync(ctx context.Context, owner, repo string
 		return nil, nil, err
 	}
 
-	var result *AsyncMergeResult
+	var result *PullRequestMergeAsyncResult
 	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err
@@ -615,7 +615,7 @@ func (s *PullRequestsService) MergeAsync(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#get-the-result-of-an-asynchronous-merge
 //
 //meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/merge-async/{uuid}
-func (s *PullRequestsService) GetMergeAsyncResult(ctx context.Context, owner, repo string, number int, uuid string) (*AsyncMergeResult, *Response, error) {
+func (s *PullRequestsService) GetMergeAsyncResult(ctx context.Context, owner, repo string, number int, uuid string) (*PullRequestMergeAsyncResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/merge-async/%v", owner, repo, number, uuid)
 
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
@@ -623,7 +623,7 @@ func (s *PullRequestsService) GetMergeAsyncResult(ctx context.Context, owner, re
 		return nil, nil, err
 	}
 
-	var result *AsyncMergeResult
+	var result *PullRequestMergeAsyncResult
 	resp, err := s.client.Do(req, &result)
 	if err != nil {
 		return nil, resp, err

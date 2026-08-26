@@ -760,7 +760,7 @@ func TestPullRequestsService_MergeAsync(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	request := MergeAsyncRequest{
+	request := PullRequestMergeAsyncRequest{
 		MergeMethod: Ptr("squash"),
 		MergeAction: Ptr("default"),
 	}
@@ -787,9 +787,9 @@ func TestPullRequestsService_MergeAsync(t *testing.T) {
 		t.Errorf("PullRequests.MergeAsync returned error: %v", err)
 	}
 
-	want := &AsyncMergeResult{
+	want := &PullRequestMergeAsyncResult{
 		Status: Ptr("pending"),
-		Details: &AsyncMergeDetails{
+		Details: &PullRequestMergeAsyncDetails{
 			Message:         Ptr("Merge request enqueued."),
 			UUID:            Ptr("630b9d5e-3f2a-4f7e-8b0c-2d5f9a8c1e42"),
 			MergeMethod:     Ptr("squash"),
@@ -839,9 +839,9 @@ func TestPullRequestsService_GetMergeAsyncResult(t *testing.T) {
 		t.Errorf("PullRequests.GetMergeAsyncResult returned error: %v", err)
 	}
 
-	want := &AsyncMergeResult{
+	want := &PullRequestMergeAsyncResult{
 		Status: Ptr("merged"),
-		Details: &AsyncMergeDetails{
+		Details: &PullRequestMergeAsyncDetails{
 			Message: Ptr("Pull request was merged."),
 			SHA:     Ptr("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
 		},
