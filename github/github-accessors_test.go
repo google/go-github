@@ -3411,6 +3411,91 @@ func TestAssignmentGrade_GetSubmissionTimestamp(tt *testing.T) {
 	a.GetSubmissionTimestamp()
 }
 
+func TestAsyncMergeDetails_GetExpectedHeadSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AsyncMergeDetails{ExpectedHeadSHA: &zeroValue}
+	a.GetExpectedHeadSHA()
+	a = &AsyncMergeDetails{}
+	a.GetExpectedHeadSHA()
+	a = nil
+	a.GetExpectedHeadSHA()
+}
+
+func TestAsyncMergeDetails_GetMergeAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AsyncMergeDetails{MergeAction: &zeroValue}
+	a.GetMergeAction()
+	a = &AsyncMergeDetails{}
+	a.GetMergeAction()
+	a = nil
+	a.GetMergeAction()
+}
+
+func TestAsyncMergeDetails_GetMergeMethod(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AsyncMergeDetails{MergeMethod: &zeroValue}
+	a.GetMergeMethod()
+	a = &AsyncMergeDetails{}
+	a.GetMergeMethod()
+	a = nil
+	a.GetMergeMethod()
+}
+
+func TestAsyncMergeDetails_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AsyncMergeDetails{Message: &zeroValue}
+	a.GetMessage()
+	a = &AsyncMergeDetails{}
+	a.GetMessage()
+	a = nil
+	a.GetMessage()
+}
+
+func TestAsyncMergeDetails_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AsyncMergeDetails{SHA: &zeroValue}
+	a.GetSHA()
+	a = &AsyncMergeDetails{}
+	a.GetSHA()
+	a = nil
+	a.GetSHA()
+}
+
+func TestAsyncMergeDetails_GetUUID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AsyncMergeDetails{UUID: &zeroValue}
+	a.GetUUID()
+	a = &AsyncMergeDetails{}
+	a.GetUUID()
+	a = nil
+	a.GetUUID()
+}
+
+func TestAsyncMergeResult_GetDetails(tt *testing.T) {
+	tt.Parallel()
+	a := &AsyncMergeResult{}
+	a.GetDetails()
+	a = nil
+	a.GetDetails()
+}
+
+func TestAsyncMergeResult_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	a := &AsyncMergeResult{Status: &zeroValue}
+	a.GetStatus()
+	a = &AsyncMergeResult{}
+	a.GetStatus()
+	a = nil
+	a.GetStatus()
+}
+
 func TestAttachment_GetBody(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -31428,6 +31513,61 @@ func TestMembershipEvent_GetTeam(tt *testing.T) {
 	m.GetTeam()
 	m = nil
 	m.GetTeam()
+}
+
+func TestMergeAsyncRequest_GetCommitMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	m := &MergeAsyncRequest{CommitMessage: &zeroValue}
+	m.GetCommitMessage()
+	m = &MergeAsyncRequest{}
+	m.GetCommitMessage()
+	m = nil
+	m.GetCommitMessage()
+}
+
+func TestMergeAsyncRequest_GetCommitTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	m := &MergeAsyncRequest{CommitTitle: &zeroValue}
+	m.GetCommitTitle()
+	m = &MergeAsyncRequest{}
+	m.GetCommitTitle()
+	m = nil
+	m.GetCommitTitle()
+}
+
+func TestMergeAsyncRequest_GetMergeAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	m := &MergeAsyncRequest{MergeAction: &zeroValue}
+	m.GetMergeAction()
+	m = &MergeAsyncRequest{}
+	m.GetMergeAction()
+	m = nil
+	m.GetMergeAction()
+}
+
+func TestMergeAsyncRequest_GetMergeMethod(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	m := &MergeAsyncRequest{MergeMethod: &zeroValue}
+	m.GetMergeMethod()
+	m = &MergeAsyncRequest{}
+	m.GetMergeMethod()
+	m = nil
+	m.GetMergeMethod()
+}
+
+func TestMergeAsyncRequest_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	m := &MergeAsyncRequest{SHA: &zeroValue}
+	m.GetSHA()
+	m = &MergeAsyncRequest{}
+	m.GetSHA()
+	m = nil
+	m.GetSHA()
 }
 
 func TestMergeGroup_GetBaseRef(tt *testing.T) {

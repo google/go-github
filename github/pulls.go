@@ -514,6 +514,36 @@ type pullRequestMergeRequest struct {
 	SHA           string  `json:"sha,omitempty"`
 }
 
+// MergeAsyncRequest 		 a request to merge a pull request asynchronously.
+type MergeAsyncRequest struct {
+	// MergeMethod is the merge method: merge, squash, or rebase. Not supported on merge_queue actions.
+	MergeMethod *string `json:"merge_method,omitempty"`
+	// MergeAction is how to merge: default, direct_merge, or merge_queue.
+	MergeAction *string `json:"merge_action,omitempty"`
+	// CommitTitle is the title for the automatic commit message. Not supported on merge_queue actions.
+	CommitTitle *string `json:"commit_title,omitempty"`
+	// CommitMessage is extra detail to append to the automatic commit message. Not supported on merge_queue actions.
+	CommitMessage *string `json:"commit_message,omitempty"`
+	// SHA that the pull request head must match to allow the merge.
+	SHA *string `json:"sha,omitempty"`
+}
+
+// AsyncMergeResult 	 the current state of an asynchronous merge request.
+type AsyncMergeResult struct {
+	Status  *string            `json:"status,omitempty"`
+	Details *AsyncMergeDetails `json:"details,omitempty"`
+}
+
+// AsyncMergeDetails 	 details for the current state of an AsyncMergeResult.
+type AsyncMergeDetails struct {
+	Message         *string `json:"message,omitempty"`
+	UUID            *string `json:"uuid,omitempty"`
+	MergeMethod     *string `json:"merge_method,omitempty"`
+	MergeAction     *string `json:"merge_action,omitempty"`
+	ExpectedHeadSHA *string `json:"expected_head_sha,omitempty"`
+	SHA             *string `json:"sha,omitempty"`
+}
+
 // Merge a pull request.
 // commitMessage is an extra detail to append to automatic commit message.
 //
@@ -547,4 +577,57 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, num
 	}
 
 	return mergeResult, resp, nil
+}
+
+// MergeAsync merges a pull request asynchronously. For stacked pull requests,
+// this also merges everything below it in the stack. This is the required
+// method for merging stacked pull requests; the legacy Merge method cannot be
+// used for stacks.
+//
+// A pending response includes a UUID in AsyncMergeResult.Details.UUID that
+// must be passed to GetMergeAsyncResult to poll for the outcome.
+//
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#merge-a-pull-request-asynchronously
+//
+//meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge-async
+func (s *PullRequestsService) MergeAsync(ctx context.Context, owner, repo string, number int, body MergeAsyncRequest) (*AsyncMergeResult, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/merge-async", owner, repo, number)
+
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var result *AsyncMergeResult
+	resp, err := s.client.Do(req, &result)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
+}
+
+// GetMergeAsyncResult fetches the current result of an asynchronous merge
+// request, identified by the uuid returned when the merge was submitted via
+// MergeAsync. Poll this method until the returned status is no longer
+// "pending". Results are retained for 24 hours after their most recent update.
+//
+// GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#get-the-result-of-an-asynchronous-merge
+//
+//meta:operation GET /repos/{owner}/{repo}/pulls/{pull_number}/merge-async/{uuid}
+func (s *PullRequestsService) GetMergeAsyncResult(ctx context.Context, owner, repo string, number int, uuid string) (*AsyncMergeResult, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/pulls/%v/merge-async/%v", owner, repo, number, uuid)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var result *AsyncMergeResult
+	resp, err := s.client.Do(req, &result)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return result, resp, nil
 }
