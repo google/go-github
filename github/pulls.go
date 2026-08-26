@@ -590,7 +590,7 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, num
 // GitHub API docs: https://docs.github.com/rest/pulls/pulls?apiVersion=2022-11-28#merge-a-pull-request-asynchronously
 //
 //meta:operation PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge-async
-func (s *PullRequestsService) MergeAsync(ctx context.Context, owner, repo string, number int, body MergeAsyncRequest) (*AsyncMergeResult, *Response, error) {
+func (s *PullRequestsService) MergeAsync(ctx context.Context, owner, repo string, number int, body PullRequestMergeAsyncRequest) (*PullRequestMergeAsyncResult, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/pulls/%v/merge-async", owner, repo, number)
 
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
