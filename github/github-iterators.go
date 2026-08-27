@@ -3334,7 +3334,7 @@ func (s *EnterpriseService) ListVisualStudioSubscriptionsIter(ctx context.Contex
 		if opts == nil {
 			opts = &ListVisualStudioSubscriptionsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
