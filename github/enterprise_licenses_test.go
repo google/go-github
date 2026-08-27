@@ -180,3 +180,143 @@ func TestEnterpriseService_GetLicenseSyncStatus(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestEnterpriseService_ListVisualStudioSubscriptions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/visual-studio-subscriptions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"page": "1", "per_page": "10", "is_unmatched_only": "true"})
+		fmt.Fprint(w, `{
+			"total_count": 1,
+			"visual_studio_subscriptions": [{
+				"visual_studio_subscription_email": "user@example.com",
+				"subscription_id": "sub-123",
+				"username": "monalisa",
+				"manual_match": true
+			}]
+		}`)
+	})
+
+	opt := &ListVisualStudioSubscriptionsOptions{
+		ListOptions:     ListOptions{Page: 1, PerPage: 10},
+		IsUnmatchedOnly: true,
+	}
+	ctx := t.Context()
+	subscriptions, _, err := client.Enterprise.ListVisualStudioSubscriptions(ctx, "e", opt)
+	if err != nil {
+		t.Errorf("Enterprise.ListVisualStudioSubscriptions returned error: %v", err)
+	}
+
+	want := &VisualStudioSubscriptions{
+		TotalCount: Ptr(1),
+		VisualStudioSubscriptions: []*VisualStudioSubscriptionAssignment{
+			{
+				VisualStudioSubscriptionEmail: Ptr("user@example.com"),
+				SubscriptionID:                Ptr("sub-123"),
+				Username:                      Ptr("monalisa"),
+				ManualMatch:                   Ptr(true),
+			},
+		},
+	}
+
+	if !cmp.Equal(subscriptions, want) {
+		t.Errorf("Enterprise.ListVisualStudioSubscriptions returned %+v, want %+v", subscriptions, want)
+	}
+
+	const methodName = "ListVisualStudioSubscriptions"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.ListVisualStudioSubscriptions(ctx, "\n", opt)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.ListVisualStudioSubscriptions(ctx, "e", opt)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_AddOrUpdateVisualStudioSubscriptionAssignment(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := VisualStudioSubscriptionAssignmentRequest{
+		UserIdentifier: Ptr("monalisa"),
+	}
+
+	mux.HandleFunc("/enterprises/e/visual-studio-subscriptions/sub-123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{
+			"visual_studio_subscription_email": "user@example.com",
+			"subscription_id": "sub-123",
+			"username": "monalisa",
+			"manual_match": true
+		}`)
+	})
+
+	ctx := t.Context()
+	assignment, _, err := client.Enterprise.AddOrUpdateVisualStudioSubscriptionAssignment(ctx, "e", "sub-123", input)
+	if err != nil {
+		t.Errorf("Enterprise.AddOrUpdateVisualStudioSubscriptionAssignment returned error: %v", err)
+	}
+
+	want := &VisualStudioSubscriptionAssignment{
+		VisualStudioSubscriptionEmail: Ptr("user@example.com"),
+		SubscriptionID:                Ptr("sub-123"),
+		Username:                      Ptr("monalisa"),
+		ManualMatch:                   Ptr(true),
+	}
+
+	if !cmp.Equal(assignment, want) {
+		t.Errorf("Enterprise.AddOrUpdateVisualStudioSubscriptionAssignment returned %+v, want %+v", assignment, want)
+	}
+
+	const methodName = "AddOrUpdateVisualStudioSubscriptionAssignment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.AddOrUpdateVisualStudioSubscriptionAssignment(ctx, "\n", "sub-123", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.AddOrUpdateVisualStudioSubscriptionAssignment(ctx, "e", "sub-123", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestEnterpriseService_DeleteVisualStudioSubscriptionAssignment(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/visual-studio-subscriptions/sub-123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	resp, err := client.Enterprise.DeleteVisualStudioSubscriptionAssignment(ctx, "e", "sub-123")
+	if err != nil {
+		t.Errorf("Enterprise.DeleteVisualStudioSubscriptionAssignment returned error: %v", err)
+	}
+
+	if resp.StatusCode != http.StatusNoContent {
+		t.Errorf("Enterprise.DeleteVisualStudioSubscriptionAssignment status code = %v, want %v", resp.StatusCode, http.StatusNoContent)
+	}
+
+	const methodName = "DeleteVisualStudioSubscriptionAssignment"
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Enterprise.DeleteVisualStudioSubscriptionAssignment(ctx, "\n", "sub-123")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Enterprise.DeleteVisualStudioSubscriptionAssignment(ctx, "e", "sub-123")
+	})
+}
