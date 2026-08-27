@@ -3248,6 +3248,109 @@ func TestDo_noContent(t *testing.T) {
 	}
 }
 
+func TestDo_ioWriter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "hello world")
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	var buf bytes.Buffer
+	_, err := client.Do(req, &buf)
+	assertNilError(t, err)
+
+	if buf.String() != "hello world" {
+		t.Errorf("Response body = %q, want %q", buf.String(), "hello world")
+	}
+}
+
+func TestDo_ioWriter_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "hello world")
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	var w writerThatErrors
+	_, err := client.Do(req, &w)
+	if err == nil {
+		t.Fatal("Expected error from io.Writer, got none")
+	}
+}
+
+type writerThatErrors struct{}
+
+func (w *writerThatErrors) Write(_ []byte) (int, error) {
+	return 0, errors.New("write error")
+}
+
+func TestDo_invalidJSON(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	type foo struct {
+		A string
+	}
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "not valid json")
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	var body foo
+	_, err := client.Do(req, &body)
+	if err == nil {
+		t.Fatal("Expected JSON decode error, got none")
+	}
+}
+
+func TestDo_whitespaceOnlyBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	type foo struct {
+		A string
+	}
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "  \n\t ")
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	var body foo
+	_, err := client.Do(req, &body)
+	assertNilError(t, err)
+
+	if body.A != "" {
+		t.Errorf("Response body = %v, want empty foo", body)
+	}
+}
+
+func TestDo_nilV_noop(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"A":"a"}`)
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
+	assertNilError(t, err)
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Expected status %v, got %v", http.StatusOK, resp.StatusCode)
+	}
+}
+
 func TestClient_checkRequestAPIVersionBeforeDo(t *testing.T) {
 	t.Parallel()
 
