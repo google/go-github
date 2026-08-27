@@ -180,9 +180,9 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// Add new key
-	_, _, err = client.Users.CreateKey(t.Context(), &github.Key{
+	_, _, err = client.Users.CreateKey(t.Context(), github.CreateUserKeyRequest{
 		Title: new("go-github test key"),
-		Key:   &key,
+		Key:   key,
 	})
 	if err != nil {
 		t.Fatalf("Users.CreateKey() returned error: %v", err)
