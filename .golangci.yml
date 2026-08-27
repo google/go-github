@@ -28,7 +28,6 @@ linters:
     - paralleltest
     - paramcheck
     - perfsprint
-    - redundantptr
     - revive
     - sliceofpointers
     - staticcheck
