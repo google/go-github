@@ -805,6 +805,22 @@ var requestBufferPool = sync.Pool{
 	},
 }
 
+// maxPooledBufferCap is the largest buffer capacity that putRequestBuffer
+// returns to requestBufferPool. Buffers that grew beyond it while reading an
+// unusually large response are dropped so they do not pin memory in the pool.
+const maxPooledBufferCap = 1 << 20
+
+// putRequestBuffer resets buf and returns it to requestBufferPool, dropping
+// oversized buffers. It reports whether buf was pooled.
+func putRequestBuffer(buf *bytes.Buffer) bool {
+	if buf.Cap() > maxPooledBufferCap {
+		return false
+	}
+	buf.Reset()
+	requestBufferPool.Put(buf)
+	return true
+}
+
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash. If
@@ -1418,10 +1434,7 @@ func (c *Client) Do(req *http.Request, v any) (*Response, error) {
 		_, err = io.Copy(v, resp.Body)
 	default:
 		respBuf := requestBufferPool.Get().(*bytes.Buffer)
-		defer func() {
-			respBuf.Reset()
-			requestBufferPool.Put(respBuf)
-		}()
+		defer putRequestBuffer(respBuf)
 
 		_, readErr := respBuf.ReadFrom(resp.Body)
 		if readErr != nil {

@@ -3351,6 +3351,79 @@ func TestDo_nilV_noop(t *testing.T) {
 	}
 }
 
+func TestDo_readError(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		// Announce more bytes than are sent so that reading the response
+		// body fails with an unexpected EOF.
+		w.Header().Set("Content-Length", "64")
+		fmt.Fprint(w, `{"A":"a"}`)
+	})
+
+	type foo struct {
+		A string
+	}
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	var body foo
+	_, err := client.Do(req, &body)
+	if err == nil {
+		t.Fatal("Expected body read error, got none")
+	}
+}
+
+func TestDo_largeThenSmallBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	large := strings.Repeat("a", 2*maxPooledBufferCap)
+	mux.HandleFunc("/large", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprintf(w, `{"A":%q}`, large)
+	})
+	mux.HandleFunc("/small", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"A":"small"}`)
+	})
+
+	type foo struct {
+		A string
+	}
+
+	req, _ := client.NewRequest(t.Context(), "GET", "large", nil)
+	var body foo
+	_, err := client.Do(req, &body)
+	assertNilError(t, err)
+	if body.A != large {
+		t.Error("Large response body was not decoded correctly")
+	}
+
+	req, _ = client.NewRequest(t.Context(), "GET", "small", nil)
+	body = foo{}
+	_, err = client.Do(req, &body)
+	assertNilError(t, err)
+	if body.A != "small" {
+		t.Errorf("Response body = %v, want %v", body.A, "small")
+	}
+}
+
+func TestPutRequestBuffer(t *testing.T) {
+	t.Parallel()
+
+	if !putRequestBuffer(new(bytes.Buffer)) {
+		t.Error("putRequestBuffer returned false for a small buffer, want true")
+	}
+
+	oversized := new(bytes.Buffer)
+	oversized.Grow(maxPooledBufferCap + 1)
+	if putRequestBuffer(oversized) {
+		t.Error("putRequestBuffer returned true for an oversized buffer, want false")
+	}
+}
+
 func TestClient_checkRequestAPIVersionBeforeDo(t *testing.T) {
 	t.Parallel()
 
