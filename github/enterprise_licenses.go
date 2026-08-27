@@ -91,21 +91,21 @@ type LastLicenseSyncProperties struct {
 
 // VisualStudioSubscriptionAssignment represents a user's Visual Studio subscription assignment.
 type VisualStudioSubscriptionAssignment struct {
-	Email          *string `json:"email,omitempty"`
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	Username       *string `json:"username,omitempty"`
-	ManualMatch    *bool   `json:"manual_match,omitempty"`
+	VisualStudioSubscriptionEmail *string `json:"visual_studio_subscription_email,omitempty"`
+	SubscriptionID                *string `json:"subscription_id,omitempty"`
+	Username                      *string `json:"username,omitempty"`
+	ManualMatch                   *bool   `json:"manual_match,omitempty"`
 }
 
 // VisualStudioSubscriptions represents a list of Visual Studio subscriptions for an enterprise.
 type VisualStudioSubscriptions struct {
-	TotalCount                          *int                                  `json:"total_count,omitempty"`
-	VisualStudioSubscriptionAssignments []*VisualStudioSubscriptionAssignment `json:"visual_studio_subscription_assignments,omitempty"`
+	TotalCount                *int                                  `json:"total_count,omitempty"`
+	VisualStudioSubscriptions []*VisualStudioSubscriptionAssignment `json:"visual_studio_subscriptions,omitempty"`
 }
 
-// VisualStudioSubscriptionUserMatchRequest represents the request body to add or update a user match.
-type VisualStudioSubscriptionUserMatchRequest struct {
-	UserIdentifier string `json:"user_identifier"`
+// VisualStudioSubscriptionAssignmentRequest represents the request body to add or update a subscription assignment.
+type VisualStudioSubscriptionAssignmentRequest struct {
+	UserIdentifier *string `json:"user_identifier,omitempty"`
 }
 
 // ListVisualStudioSubscriptionsOptions specifies the optional parameters to
@@ -191,12 +191,12 @@ func (s *EnterpriseService) ListVisualStudioSubscriptions(ctx context.Context, e
 	return subscriptions, resp, nil
 }
 
-// AddOrUpdateVisualStudioSubscriptionUserMatch adds or updates a manual match between a user and a Visual Studio subscription.
+// AddOrUpdateVisualStudioSubscriptionAssignment adds or updates a manual match between a user and a Visual Studio subscription.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing?apiVersion=2022-11-28#add-or-update-a-visual-studio-subscription-user-match
 //
 //meta:operation PUT /enterprises/{enterprise}/visual-studio-subscriptions/{visual_studio_subscription_id}
-func (s *EnterpriseService) AddOrUpdateVisualStudioSubscriptionUserMatch(ctx context.Context, enterprise, subscriptionID string, body VisualStudioSubscriptionUserMatchRequest) (*VisualStudioSubscriptionAssignment, *Response, error) {
+func (s *EnterpriseService) AddOrUpdateVisualStudioSubscriptionAssignment(ctx context.Context, enterprise, subscriptionID string, body VisualStudioSubscriptionAssignmentRequest) (*VisualStudioSubscriptionAssignment, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/visual-studio-subscriptions/%v", enterprise, subscriptionID)
 
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
@@ -213,12 +213,12 @@ func (s *EnterpriseService) AddOrUpdateVisualStudioSubscriptionUserMatch(ctx con
 	return assignment, resp, nil
 }
 
-// DeleteVisualStudioSubscriptionUserMatch deletes a manual match between a user and a Visual Studio subscription.
+// DeleteVisualStudioSubscriptionAssignment deletes a manual match between a user and a Visual Studio subscription.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing?apiVersion=2022-11-28#delete-a-visual-studio-subscription-user-match
 //
 //meta:operation DELETE /enterprises/{enterprise}/visual-studio-subscriptions/{visual_studio_subscription_id}
-func (s *EnterpriseService) DeleteVisualStudioSubscriptionUserMatch(ctx context.Context, enterprise, subscriptionID string) (*Response, error) {
+func (s *EnterpriseService) DeleteVisualStudioSubscriptionAssignment(ctx context.Context, enterprise, subscriptionID string) (*Response, error) {
 	u := fmt.Sprintf("enterprises/%v/visual-studio-subscriptions/%v", enterprise, subscriptionID)
 
 	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)

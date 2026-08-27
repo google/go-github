@@ -57485,17 +57485,6 @@ func TestUserUpdateRequest_GetTwitterUsername(tt *testing.T) {
 	u.GetTwitterUsername()
 }
 
-func TestVisualStudioSubscriptionAssignment_GetEmail(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	v := &VisualStudioSubscriptionAssignment{Email: &zeroValue}
-	v.GetEmail()
-	v = &VisualStudioSubscriptionAssignment{}
-	v.GetEmail()
-	v = nil
-	v.GetEmail()
-}
-
 func TestVisualStudioSubscriptionAssignment_GetManualMatch(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -57529,6 +57518,28 @@ func TestVisualStudioSubscriptionAssignment_GetUsername(tt *testing.T) {
 	v.GetUsername()
 }
 
+func TestVisualStudioSubscriptionAssignment_GetVisualStudioSubscriptionEmail(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	v := &VisualStudioSubscriptionAssignment{VisualStudioSubscriptionEmail: &zeroValue}
+	v.GetVisualStudioSubscriptionEmail()
+	v = &VisualStudioSubscriptionAssignment{}
+	v.GetVisualStudioSubscriptionEmail()
+	v = nil
+	v.GetVisualStudioSubscriptionEmail()
+}
+
+func TestVisualStudioSubscriptionAssignmentRequest_GetUserIdentifier(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	v := &VisualStudioSubscriptionAssignmentRequest{UserIdentifier: &zeroValue}
+	v.GetUserIdentifier()
+	v = &VisualStudioSubscriptionAssignmentRequest{}
+	v.GetUserIdentifier()
+	v = nil
+	v.GetUserIdentifier()
+}
+
 func TestVisualStudioSubscriptions_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -57540,23 +57551,15 @@ func TestVisualStudioSubscriptions_GetTotalCount(tt *testing.T) {
 	v.GetTotalCount()
 }
 
-func TestVisualStudioSubscriptions_GetVisualStudioSubscriptionAssignments(tt *testing.T) {
+func TestVisualStudioSubscriptions_GetVisualStudioSubscriptions(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*VisualStudioSubscriptionAssignment{}
-	v := &VisualStudioSubscriptions{VisualStudioSubscriptionAssignments: zeroValue}
-	v.GetVisualStudioSubscriptionAssignments()
+	v := &VisualStudioSubscriptions{VisualStudioSubscriptions: zeroValue}
+	v.GetVisualStudioSubscriptions()
 	v = &VisualStudioSubscriptions{}
-	v.GetVisualStudioSubscriptionAssignments()
+	v.GetVisualStudioSubscriptions()
 	v = nil
-	v.GetVisualStudioSubscriptionAssignments()
-}
-
-func TestVisualStudioSubscriptionUserMatchRequest_GetUserIdentifier(tt *testing.T) {
-	tt.Parallel()
-	v := &VisualStudioSubscriptionUserMatchRequest{}
-	v.GetUserIdentifier()
-	v = nil
-	v.GetUserIdentifier()
+	v.GetVisualStudioSubscriptions()
 }
 
 func TestVulnerabilityPackage_GetEcosystem(tt *testing.T) {

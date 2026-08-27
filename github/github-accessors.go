@@ -45862,14 +45862,6 @@ func (u *UserUpdateRequest) GetTwitterUsername() string {
 	return *u.TwitterUsername
 }
 
-// GetEmail returns the Email field if it's non-nil, zero value otherwise.
-func (v *VisualStudioSubscriptionAssignment) GetEmail() string {
-	if v == nil || v.Email == nil {
-		return ""
-	}
-	return *v.Email
-}
-
 // GetManualMatch returns the ManualMatch field if it's non-nil, zero value otherwise.
 func (v *VisualStudioSubscriptionAssignment) GetManualMatch() bool {
 	if v == nil || v.ManualMatch == nil {
@@ -45894,6 +45886,22 @@ func (v *VisualStudioSubscriptionAssignment) GetUsername() string {
 	return *v.Username
 }
 
+// GetVisualStudioSubscriptionEmail returns the VisualStudioSubscriptionEmail field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignment) GetVisualStudioSubscriptionEmail() string {
+	if v == nil || v.VisualStudioSubscriptionEmail == nil {
+		return ""
+	}
+	return *v.VisualStudioSubscriptionEmail
+}
+
+// GetUserIdentifier returns the UserIdentifier field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignmentRequest) GetUserIdentifier() string {
+	if v == nil || v.UserIdentifier == nil {
+		return ""
+	}
+	return *v.UserIdentifier
+}
+
 // GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
 func (v *VisualStudioSubscriptions) GetTotalCount() int {
 	if v == nil || v.TotalCount == nil {
@@ -45902,20 +45910,12 @@ func (v *VisualStudioSubscriptions) GetTotalCount() int {
 	return *v.TotalCount
 }
 
-// GetVisualStudioSubscriptionAssignments returns the VisualStudioSubscriptionAssignments slice if it's non-nil, nil otherwise.
-func (v *VisualStudioSubscriptions) GetVisualStudioSubscriptionAssignments() []*VisualStudioSubscriptionAssignment {
-	if v == nil || v.VisualStudioSubscriptionAssignments == nil {
+// GetVisualStudioSubscriptions returns the VisualStudioSubscriptions slice if it's non-nil, nil otherwise.
+func (v *VisualStudioSubscriptions) GetVisualStudioSubscriptions() []*VisualStudioSubscriptionAssignment {
+	if v == nil || v.VisualStudioSubscriptions == nil {
 		return nil
 	}
-	return v.VisualStudioSubscriptionAssignments
-}
-
-// GetUserIdentifier returns the UserIdentifier field.
-func (v *VisualStudioSubscriptionUserMatchRequest) GetUserIdentifier() string {
-	if v == nil {
-		return ""
-	}
-	return v.UserIdentifier
+	return v.VisualStudioSubscriptions
 }
 
 // GetEcosystem returns the Ecosystem field if it's non-nil, zero value otherwise.

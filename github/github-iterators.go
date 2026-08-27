@@ -3346,7 +3346,7 @@ func (s *EnterpriseService) ListVisualStudioSubscriptionsIter(ctx context.Contex
 
 			var iterItems []*VisualStudioSubscriptionAssignment
 			if results != nil {
-				iterItems = results.VisualStudioSubscriptionAssignments
+				iterItems = results.VisualStudioSubscriptions
 			}
 			for _, item := range iterItems {
 				if !yield(item, nil) {

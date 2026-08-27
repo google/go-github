@@ -7152,15 +7152,15 @@ func TestEnterpriseService_ListVisualStudioSubscriptionsIter(t *testing.T) {
 		switch callNum {
 		case 1:
 			w.Header().Set("Link", `<https://api.github.com/?page=1>; rel="next"`)
-			fmt.Fprint(w, `{"visual_studio_subscription_assignments": [{},{},{}]}`)
+			fmt.Fprint(w, `{"visual_studio_subscriptions": [{},{},{}]}`)
 		case 2:
-			fmt.Fprint(w, `{"visual_studio_subscription_assignments": [{},{},{},{}]}`)
+			fmt.Fprint(w, `{"visual_studio_subscriptions": [{},{},{},{}]}`)
 		case 3:
-			fmt.Fprint(w, `{"visual_studio_subscription_assignments": [{},{}]}`)
+			fmt.Fprint(w, `{"visual_studio_subscriptions": [{},{}]}`)
 		case 4:
 			w.WriteHeader(http.StatusNotFound)
 		case 5:
-			fmt.Fprint(w, `{"visual_studio_subscription_assignments": [{},{}]}`)
+			fmt.Fprint(w, `{"visual_studio_subscriptions": [{},{}]}`)
 		}
 	})
 
