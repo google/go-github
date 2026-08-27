@@ -210,13 +210,13 @@ func TestEnterpriseService_ListVisualStudioSubscriptions(t *testing.T) {
 	}
 
 	want := &VisualStudioSubscriptions{
-		TotalCount: Ptr(1),
+		TotalCount: new(1),
 		VisualStudioSubscriptions: []*VisualStudioSubscriptionAssignment{
 			{
-				VisualStudioSubscriptionEmail: Ptr("user@example.com"),
-				SubscriptionID:                Ptr("sub-123"),
-				Username:                      Ptr("monalisa"),
-				ManualMatch:                   Ptr(true),
+				VisualStudioSubscriptionEmail: new("user@example.com"),
+				SubscriptionID:                new("sub-123"),
+				Username:                      new("monalisa"),
+				ManualMatch:                   new(true),
 			},
 		},
 	}
@@ -245,7 +245,7 @@ func TestEnterpriseService_AddOrUpdateVisualStudioSubscriptionAssignment(t *test
 	client, mux, _ := setup(t)
 
 	input := VisualStudioSubscriptionAssignmentRequest{
-		UserIdentifier: Ptr("monalisa"),
+		UserIdentifier: new("monalisa"),
 	}
 
 	mux.HandleFunc("/enterprises/e/visual-studio-subscriptions/sub-123", func(w http.ResponseWriter, r *http.Request) {
@@ -266,10 +266,10 @@ func TestEnterpriseService_AddOrUpdateVisualStudioSubscriptionAssignment(t *test
 	}
 
 	want := &VisualStudioSubscriptionAssignment{
-		VisualStudioSubscriptionEmail: Ptr("user@example.com"),
-		SubscriptionID:                Ptr("sub-123"),
-		Username:                      Ptr("monalisa"),
-		ManualMatch:                   Ptr(true),
+		VisualStudioSubscriptionEmail: new("user@example.com"),
+		SubscriptionID:                new("sub-123"),
+		Username:                      new("monalisa"),
+		ManualMatch:                   new(true),
 	}
 
 	if !cmp.Equal(assignment, want) {
