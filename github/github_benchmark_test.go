@@ -8,81 +8,53 @@ package github
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
 	"testing"
 )
 
-// legacyDecodeResponse simulates the behavior before pooled decoding
-// (io.ReadAll -> json.Unmarshal).
-func legacyDecodeResponse(resp *http.Response, v any) error {
-	data, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-	if len(data) > 0 {
-		return json.Unmarshal(data, v)
-	}
-	return nil
+// fixedResponseTransport serves a canned JSON payload without touching the
+// network so that BenchmarkDo measures the real request/decode path alone.
+type fixedResponseTransport struct {
+	payload []byte
 }
 
-// pooledDecodeResponse simulates the new pooled decoding behavior
-// (requestBufferPool -> ReadFrom -> json.Unmarshal).
-func pooledDecodeResponse(resp *http.Response, v any) error {
-	respBuf := requestBufferPool.Get().(*bytes.Buffer)
-	defer func() {
-		respBuf.Reset()
-		requestBufferPool.Put(respBuf)
-	}()
-
-	_, err := respBuf.ReadFrom(resp.Body)
-	if err != nil {
-		return err
-	}
-	if respBuf.Len() > 0 {
-		b := respBuf.Bytes()
-		return json.Unmarshal(b, v)
-	}
-	return nil
+func (t *fixedResponseTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Header:     make(http.Header),
+		Body:       io.NopCloser(bytes.NewReader(t.payload)),
+		Request:    req,
+	}, nil
 }
 
-type dummyReadCloser struct {
-	io.Reader
-}
+func BenchmarkDo(b *testing.B) {
+	for _, sizeKB := range []int{1, 500} {
+		b.Run(fmt.Sprintf("%vKB", sizeKB), func(b *testing.B) {
+			payload, err := json.Marshal(map[string]string{"body": strings.Repeat("a", sizeKB*1024)})
+			if err != nil {
+				b.Fatalf("json.Marshal returned error: %v", err)
+			}
+			client, err := NewClient(WithHTTPClient(&http.Client{
+				Transport: &fixedResponseTransport{payload: payload},
+			}))
+			if err != nil {
+				b.Fatalf("NewClient returned error: %v", err)
+			}
+			req, err := client.NewRequest(b.Context(), "GET", ".", nil)
+			if err != nil {
+				b.Fatalf("NewRequest returned error: %v", err)
+			}
 
-func (d *dummyReadCloser) Close() error { return nil }
-
-func BenchmarkDecodeResponse_Legacy(b *testing.B) {
-	payload, _ := json.Marshal(map[string]string{"title": "benchmark_test", "body": strings.Repeat("a", 1024*500)}) // 500KB JSON
-
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		b.StopTimer()
-		resp := &http.Response{
-			Body: &dummyReadCloser{Reader: bytes.NewReader(payload)},
-		}
-		var v map[string]string
-		b.StartTimer()
-
-		_ = legacyDecodeResponse(resp, &v)
-	}
-}
-
-func BenchmarkDecodeResponse_Pooled(b *testing.B) {
-	payload, _ := json.Marshal(map[string]string{"title": "benchmark_test", "body": strings.Repeat("a", 1024*500)}) // 500KB JSON
-
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		b.StopTimer()
-		resp := &http.Response{
-			Body: &dummyReadCloser{Reader: bytes.NewReader(payload)},
-		}
-		var v map[string]string
-		b.StartTimer()
-
-		_ = pooledDecodeResponse(resp, &v)
+			b.ReportAllocs()
+			for b.Loop() {
+				var v map[string]string
+				if _, err := client.Do(req, &v); err != nil {
+					b.Fatalf("Do returned error: %v", err)
+				}
+			}
+		})
 	}
 }
