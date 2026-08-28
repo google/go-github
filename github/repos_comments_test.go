@@ -111,7 +111,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &RepositoryComment{Body: new("b")}
+	input := CreateCommitCommentRequest{Body: "b"}
 
 	mux.HandleFunc("/repos/o/r/commits/s/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -150,7 +150,7 @@ func TestRepositoriesService_CreateComment_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Repositories.CreateComment(ctx, "%", "%", "%", nil)
+	_, _, err := client.Repositories.CreateComment(ctx, "%", "%", "%", CreateCommitCommentRequest{})
 	testURLParseError(t, err)
 }
 
@@ -203,7 +203,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &RepositoryComment{Body: new("b")}
+	input := UpdateCommitCommentRequest{Body: "b"}
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -243,7 +243,7 @@ func TestRepositoriesService_UpdateComment_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Repositories.UpdateComment(ctx, "%", "%", 1, nil)
+	_, _, err := client.Repositories.UpdateComment(ctx, "%", "%", 1, UpdateCommitCommentRequest{})
 	testURLParseError(t, err)
 }
 

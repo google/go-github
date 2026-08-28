@@ -11582,6 +11582,38 @@ func (c *CreateCodespaceOptions) GetWorkingDirectory() string {
 	return *c.WorkingDirectory
 }
 
+// GetBody returns the Body field.
+func (c *CreateCommitCommentRequest) GetBody() string {
+	if c == nil {
+		return ""
+	}
+	return c.Body
+}
+
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (c *CreateCommitCommentRequest) GetLine() int {
+	if c == nil || c.Line == nil {
+		return 0
+	}
+	return *c.Line
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (c *CreateCommitCommentRequest) GetPath() string {
+	if c == nil || c.Path == nil {
+		return ""
+	}
+	return *c.Path
+}
+
+// GetPosition returns the Position field if it's non-nil, zero value otherwise.
+func (c *CreateCommitCommentRequest) GetPosition() int {
+	if c == nil || c.Position == nil {
+		return 0
+	}
+	return *c.Position
+}
+
 // GetSigner returns the Signer field.
 func (c *CreateCommitOptions) GetSigner() MessageSigner {
 	if c == nil {
@@ -44044,6 +44076,14 @@ func (u *UpdateCodespaceOptions) GetRecentFolders() []string {
 		return nil
 	}
 	return u.RecentFolders
+}
+
+// GetBody returns the Body field.
+func (u *UpdateCommitCommentRequest) GetBody() string {
+	if u == nil {
+		return ""
+	}
+	return u.Body
 }
 
 // GetGroupID returns the GroupID field.
