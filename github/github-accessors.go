@@ -35870,6 +35870,14 @@ func (r *RepositoryCodeSecurityConfiguration) GetState() string {
 	return *r.State
 }
 
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (r *RepositoryComment) GetAuthorAssociation() string {
+	if r == nil || r.AuthorAssociation == nil {
+		return ""
+	}
+	return *r.AuthorAssociation
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (r *RepositoryComment) GetBody() string {
 	if r == nil || r.Body == nil {
@@ -35908,6 +35916,14 @@ func (r *RepositoryComment) GetID() int64 {
 		return 0
 	}
 	return *r.ID
+}
+
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (r *RepositoryComment) GetLine() int {
+	if r == nil || r.Line == nil {
+		return 0
+	}
+	return *r.Line
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.

@@ -12,18 +12,20 @@ import (
 
 // RepositoryComment represents a comment for a commit, file, or line in a repository.
 type RepositoryComment struct {
-	HTMLURL   *string    `json:"html_url,omitempty"`
-	URL       *string    `json:"url,omitempty"`
-	ID        *int64     `json:"id,omitempty"`
-	NodeID    *string    `json:"node_id,omitempty"`
-	CommitID  *string    `json:"commit_id,omitempty"`
-	User      *User      `json:"user,omitempty"`
-	Reactions *Reactions `json:"reactions,omitempty"`
-	CreatedAt *Timestamp `json:"created_at,omitempty"`
-	UpdatedAt *Timestamp `json:"updated_at,omitempty"`
-	Body      *string    `json:"body,omitempty"`
-	Path      *string    `json:"path,omitempty"`
-	Position  *int       `json:"position,omitempty"`
+	HTMLURL           *string    `json:"html_url,omitempty"`
+	URL               *string    `json:"url,omitempty"`
+	ID                *int64     `json:"id,omitempty"`
+	NodeID            *string    `json:"node_id,omitempty"`
+	CommitID          *string    `json:"commit_id,omitempty"`
+	User              *User      `json:"user,omitempty"`
+	AuthorAssociation *string    `json:"author_association,omitempty"`
+	Reactions         *Reactions `json:"reactions,omitempty"`
+	CreatedAt         *Timestamp `json:"created_at,omitempty"`
+	UpdatedAt         *Timestamp `json:"updated_at,omitempty"`
+	Body              *string    `json:"body,omitempty"`
+	Path              *string    `json:"path,omitempty"`
+	Position          *int       `json:"position,omitempty"`
+	Line              *int       `json:"line,omitempty"`
 }
 
 func (r RepositoryComment) String() string {

@@ -45012,6 +45012,17 @@ func TestRepositoryCodeSecurityConfiguration_GetState(tt *testing.T) {
 	r.GetState()
 }
 
+func TestRepositoryComment_GetAuthorAssociation(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryComment{AuthorAssociation: &zeroValue}
+	r.GetAuthorAssociation()
+	r = &RepositoryComment{}
+	r.GetAuthorAssociation()
+	r = nil
+	r.GetAuthorAssociation()
+}
+
 func TestRepositoryComment_GetBody(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -45065,6 +45076,17 @@ func TestRepositoryComment_GetID(tt *testing.T) {
 	r.GetID()
 	r = nil
 	r.GetID()
+}
+
+func TestRepositoryComment_GetLine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	r := &RepositoryComment{Line: &zeroValue}
+	r.GetLine()
+	r = &RepositoryComment{}
+	r.GetLine()
+	r = nil
+	r.GetLine()
 }
 
 func TestRepositoryComment_GetNodeID(tt *testing.T) {
