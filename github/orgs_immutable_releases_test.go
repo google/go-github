@@ -32,8 +32,8 @@ func TestOrganizationsService_GetImmutableReleasesSettings(t *testing.T) {
 	}
 
 	want := &ImmutableReleaseSettings{
-		EnforcedRepositories:    Ptr("selected"),
-		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/o/r"),
+		EnforcedRepositories:    new("selected"),
+		SelectedRepositoriesURL: new("https://api.github.com/orgs/o/r"),
 	}
 
 	if !cmp.Equal(settings, want) {
@@ -61,7 +61,7 @@ func TestOrganizationsService_UpdateImmutableReleasesSettings(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := ImmutableReleasePolicy{
-		EnforcedRepositories: Ptr("selected"),
+		EnforcedRepositories: new("selected"),
 	}
 
 	mux.HandleFunc("/orgs/o/settings/immutable-releases", func(w http.ResponseWriter, r *http.Request) {
@@ -119,10 +119,10 @@ func TestOrganizationsService_ListImmutableReleaseRepositories(t *testing.T) {
 	}
 
 	want := &ListRepositories{
-		TotalCount: Ptr(2),
+		TotalCount: new(2),
 		Repositories: []*Repository{
-			{ID: Ptr(int64(1)), Name: Ptr("repo1")},
-			{ID: Ptr(int64(2)), Name: Ptr("repo2")},
+			{ID: new(int64(1)), Name: new("repo1")},
+			{ID: new(int64(2)), Name: new("repo2")},
 		},
 	}
 

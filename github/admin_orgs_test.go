@@ -18,7 +18,7 @@ func TestAdminService_CreateOrg(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Organization{
-		Login: Ptr("github"),
+		Login: new("github"),
 	}
 
 	mux.HandleFunc("/admin/organizations", func(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +33,7 @@ func TestAdminService_CreateOrg(t *testing.T) {
 		t.Errorf("Admin.CreateOrg returned error: %v", err)
 	}
 
-	want := &Organization{ID: Ptr(int64(1)), Login: Ptr("github")}
+	want := &Organization{ID: new(int64(1)), Login: new("github")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Admin.CreateOrg returned %+v, want %+v", org, want)
 	}
@@ -53,12 +53,12 @@ func TestAdminService_RenameOrg(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Organization{
-		Login: Ptr("o"),
+		Login: new("o"),
 	}
 
 	mux.HandleFunc("/admin/organizations/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		want := &renameOrgRequest{Login: Ptr("the-new-octocats")}
+		want := &renameOrgRequest{Login: new("the-new-octocats")}
 		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"message":"Job queued to rename organization. It may take a few minutes to complete.","url":"https://<hostname>/api/v3/organizations/1"}`)
 	})
@@ -69,7 +69,7 @@ func TestAdminService_RenameOrg(t *testing.T) {
 		t.Errorf("Admin.RenameOrgByName returned error: %v", err)
 	}
 
-	want := &RenameOrgResponse{Message: Ptr("Job queued to rename organization. It may take a few minutes to complete."), URL: Ptr("https://<hostname>/api/v3/organizations/1")}
+	want := &RenameOrgResponse{Message: new("Job queued to rename organization. It may take a few minutes to complete."), URL: new("https://<hostname>/api/v3/organizations/1")}
 	if !cmp.Equal(resp, want) {
 		t.Errorf("Admin.RenameOrgByName returned %+v, want %+v", resp, want)
 	}
@@ -99,7 +99,7 @@ func TestAdminService_RenameOrgByName(t *testing.T) {
 
 	mux.HandleFunc("/admin/organizations/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		want := &renameOrgRequest{Login: Ptr("the-new-octocats")}
+		want := &renameOrgRequest{Login: new("the-new-octocats")}
 		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"message":"Job queued to rename organization. It may take a few minutes to complete.","url":"https://<hostname>/api/v3/organizations/1"}`)
 	})
@@ -110,7 +110,7 @@ func TestAdminService_RenameOrgByName(t *testing.T) {
 		t.Errorf("Admin.RenameOrgByName returned error: %v", err)
 	}
 
-	want := &RenameOrgResponse{Message: Ptr("Job queued to rename organization. It may take a few minutes to complete."), URL: Ptr("https://<hostname>/api/v3/organizations/1")}
+	want := &RenameOrgResponse{Message: new("Job queued to rename organization. It may take a few minutes to complete."), URL: new("https://<hostname>/api/v3/organizations/1")}
 	if !cmp.Equal(resp, want) {
 		t.Errorf("Admin.RenameOrgByName returned %+v, want %+v", resp, want)
 	}

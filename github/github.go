@@ -744,8 +744,8 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 		apiVersionMin:                           &c.apiVersionMin,
 		apiVersionMax:                           &c.apiVersionMax,
 		userAgent:                               &c.userAgent,
-		baseURL:                                 Ptr(*c.baseURL),
-		uploadURL:                               Ptr(*c.uploadURL),
+		baseURL:                                 new(*c.baseURL),
+		uploadURL:                               new(*c.uploadURL),
 		disableRateLimitCheck:                   c.disableRateLimitCheck,
 		rateLimitRedirectionalEndpoints:         c.rateLimitRedirectionalEndpoints,
 		maxSecondaryRateLimitRetryAfterDuration: &c.maxSecondaryRateLimitRetryAfterDuration,
@@ -1286,8 +1286,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		}
 
 		// If the error type is *url.Error, sanitize its URL before returning.
-		var e *url.Error
-		if errors.As(err, &e) {
+		if e, ok := errors.AsType[*url.Error](err); ok {
 			if url, err := url.Parse(e.URL); err == nil {
 				e.URL = sanitizeURL(url).String()
 				return response, e
@@ -1314,8 +1313,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		// added to the AcceptedError and returned.
 		//
 		// Issue #1022
-		var aerr *AcceptedError
-		if errors.As(err, &aerr) {
+		if aerr, ok := errors.AsType[*AcceptedError](err); ok {
 			b, readErr := io.ReadAll(io.LimitReader(resp.Body, maxErrorBodySize))
 			if readErr != nil {
 				return response, readErr
@@ -1376,8 +1374,7 @@ var errInvalidLocation = errors.New("invalid or empty Location header in redirec
 func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL, *Response, error) {
 	response, err := c.bareDoIgnoreRedirects(req)
 	if err != nil {
-		var rerr *RedirectionError
-		if errors.As(err, &rerr) {
+		if rerr, ok := errors.AsType[*RedirectionError](err); ok {
 			// If we receive a 302, transform potential relative locations into absolute and return it.
 			if rerr.StatusCode == http.StatusFound {
 				if rerr.Location == nil {
@@ -2203,8 +2200,12 @@ func (c *Client) checkRedirectHost(location string) error {
 
 // Ptr is a helper routine that allocates a new T value
 // to store v and returns a pointer to it.
+//
+// Deprecated: use the new builtin instead.
+//
+//go:fix inline
 func Ptr[T any](v T) *T {
-	return &v
+	return new(v)
 }
 
 // Bool is a helper routine that allocates a new bool value
@@ -2213,7 +2214,7 @@ func Ptr[T any](v T) *T {
 // Deprecated: use Ptr instead.
 //
 //go:fix inline
-func Bool(v bool) *bool { return Ptr(v) }
+func Bool(v bool) *bool { return new(v) }
 
 // Int is a helper routine that allocates a new int value
 // to store v and returns a pointer to it.
@@ -2221,7 +2222,7 @@ func Bool(v bool) *bool { return Ptr(v) }
 // Deprecated: use Ptr instead.
 //
 //go:fix inline
-func Int(v int) *int { return Ptr(v) }
+func Int(v int) *int { return new(v) }
 
 // Int64 is a helper routine that allocates a new int64 value
 // to store v and returns a pointer to it.
@@ -2229,7 +2230,7 @@ func Int(v int) *int { return Ptr(v) }
 // Deprecated: use Ptr instead.
 //
 //go:fix inline
-func Int64(v int64) *int64 { return Ptr(v) }
+func Int64(v int64) *int64 { return new(v) }
 
 // String is a helper routine that allocates a new string value
 // to store v and returns a pointer to it.
@@ -2237,7 +2238,7 @@ func Int64(v int64) *int64 { return Ptr(v) }
 // Deprecated: use Ptr instead.
 //
 //go:fix inline
-func String(v string) *string { return Ptr(v) }
+func String(v string) *string { return new(v) }
 
 // roundTripperFunc creates a RoundTripper (transport).
 type roundTripperFunc func(*http.Request) (*http.Response, error)

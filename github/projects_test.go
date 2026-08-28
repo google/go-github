@@ -599,7 +599,7 @@ func TestProjectsService_AddOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(99))}
+	input := &AddProjectItemOptions{Type: new(ProjectV2ItemContentType("Issue")), ID: new(int64(99))}
 
 	mux.HandleFunc("/orgs/o/projectsV2/1/items", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -628,7 +628,7 @@ func TestProjectsService_AddProjectItemForOrg_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "AddOrganizationProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(1))})
+		got, resp, err := client.Projects.AddOrganizationProjectItem(ctx, "o", 1, &AddProjectItemOptions{Type: new(ProjectV2ItemContentType("Issue")), ID: new(int64(1))})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -717,7 +717,7 @@ func TestProjectsService_GetOrganizationProjectItem_WithFieldsOption(t *testing.
 func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &UpdateProjectItemOptions{Archived: Ptr(true)}
+	input := &UpdateProjectItemOptions{Archived: new(true)}
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testJSONBody(t, r, input)
@@ -736,7 +736,7 @@ func TestProjectsService_UpdateOrganizationProjectItem(t *testing.T) {
 func TestProjectsService_UpdateOrganizationProjectItem_error(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &UpdateProjectItemOptions{Archived: Ptr(true)}
+	input := &UpdateProjectItemOptions{Archived: new(true)}
 	mux.HandleFunc("/orgs/o/projectsV2/1/items/17", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testJSONBody(t, r, input)
@@ -861,7 +861,7 @@ func TestProjectsService_ListUserProjectItems_error(t *testing.T) {
 func TestProjectsService_AddUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("PullRequest")), ID: Ptr(int64(123))}
+	input := &AddProjectItemOptions{Type: new(ProjectV2ItemContentType("PullRequest")), ID: new(int64(123))}
 	mux.HandleFunc("/users/u/projectsV2/2/items", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testJSONBody(t, r, input)
@@ -887,7 +887,7 @@ func TestProjectsService_AddUserProjectItem_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "AddUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: Ptr(ProjectV2ItemContentType("Issue")), ID: Ptr(int64(5))})
+		got, resp, err := client.Projects.AddUserProjectItem(ctx, "u", 2, &AddProjectItemOptions{Type: new(ProjectV2ItemContentType("Issue")), ID: new(int64(5))})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -976,7 +976,7 @@ func TestProjectsService_GetUserProjectItem_WithFieldsOption(t *testing.T) {
 func TestProjectsService_UpdateUserProjectItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := &UpdateProjectItemOptions{Archived: Ptr(false)}
+	input := &UpdateProjectItemOptions{Archived: new(false)}
 	mux.HandleFunc("/users/u/projectsV2/2/items/55", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
 		testJSONBody(t, r, input)
@@ -1002,7 +1002,7 @@ func TestProjectsService_UpdateUserProjectItem_error(t *testing.T) {
 	ctx := t.Context()
 	const methodName = "UpdateUserProjectItem"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: Ptr(false)})
+		got, resp, err := client.Projects.UpdateUserProjectItem(ctx, "u", 2, 55, &UpdateProjectItemOptions{Archived: new(false)})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -1079,19 +1079,19 @@ func TestProjectV2Item_UnmarshalJSON_Issue(t *testing.T) {
 	t.Parallel()
 
 	item := ProjectV2Item{
-		ID:          Ptr(int64(123)),
-		NodeID:      Ptr("PVTI_test"),
-		ContentType: Ptr(ProjectV2ItemContentTypeIssue),
+		ID:          new(int64(123)),
+		NodeID:      new("PVTI_test"),
+		ContentType: new(ProjectV2ItemContentTypeIssue),
 		Content: &ProjectV2ItemContent{
 			Issue: &Issue{
-				ID:     Ptr(int64(456)),
-				Number: Ptr(10),
-				Title:  Ptr("Test Issue"),
-				State:  Ptr("open"),
-				Body:   Ptr("Issue body"),
+				ID:     new(int64(456)),
+				Number: new(10),
+				Title:  new("Test Issue"),
+				State:  new("open"),
+				Body:   new("Issue body"),
 				Repository: &Repository{
-					ID:   Ptr(int64(789)),
-					Name: Ptr("test-repo"),
+					ID:   new(int64(789)),
+					Name: new("test-repo"),
 				},
 			},
 		},
@@ -1123,24 +1123,24 @@ func TestProjectV2Item_UnmarshalJSON_PullRequest(t *testing.T) {
 	t.Parallel()
 
 	item := ProjectV2Item{
-		ID:          Ptr(int64(124)),
-		NodeID:      Ptr("PVTI_pr"),
-		ContentType: Ptr(ProjectV2ItemContentTypePullRequest),
+		ID:          new(int64(124)),
+		NodeID:      new("PVTI_pr"),
+		ContentType: new(ProjectV2ItemContentTypePullRequest),
 		Content: &ProjectV2ItemContent{
 			PullRequest: &PullRequest{
-				ID:             Ptr(int64(457)),
-				Number:         Ptr(20),
-				Title:          Ptr("Test PR"),
-				State:          Ptr("closed"),
-				Merged:         Ptr(true),
-				MergeCommitSHA: Ptr("abc123"),
+				ID:             new(int64(457)),
+				Number:         new(20),
+				Title:          new("Test PR"),
+				State:          new("closed"),
+				Merged:         new(true),
+				MergeCommitSHA: new("abc123"),
 				Head: &PullRequestBranch{
-					Ref: Ptr("feature-branch"),
-					SHA: Ptr("def456"),
+					Ref: new("feature-branch"),
+					SHA: new("def456"),
 				},
 				Base: &PullRequestBranch{
-					Ref: Ptr("main"),
-					SHA: Ptr("ghi789"),
+					Ref: new("main"),
+					SHA: new("ghi789"),
 				},
 			},
 		},
@@ -1177,15 +1177,15 @@ func TestProjectV2Item_UnmarshalJSON_DraftIssue(t *testing.T) {
 	t.Parallel()
 
 	item := ProjectV2Item{
-		ID:          Ptr(int64(125)),
-		NodeID:      Ptr("PVTI_draft"),
-		ContentType: Ptr(ProjectV2ItemContentTypeDraftIssue),
+		ID:          new(int64(125)),
+		NodeID:      new("PVTI_draft"),
+		ContentType: new(ProjectV2ItemContentTypeDraftIssue),
 		Content: &ProjectV2ItemContent{
 			DraftIssue: &ProjectV2DraftIssue{
-				ID:     Ptr(int64(458)),
-				NodeID: Ptr("DI_test"),
-				Title:  Ptr("Draft Issue Title"),
-				Body:   Ptr("Draft issue body content"),
+				ID:     new(int64(458)),
+				NodeID: new("DI_test"),
+				Title:  new("Draft Issue Title"),
+				Body:   new("Draft issue body content"),
 			},
 		},
 		CreatedAt: &referenceTimestamp,
@@ -1211,9 +1211,9 @@ func TestProjectV2Item_UnmarshalJSON_NullContent(t *testing.T) {
 	t.Parallel()
 
 	item := ProjectV2Item{
-		ID:          Ptr(int64(126)),
-		NodeID:      Ptr("PVTI_null"),
-		ContentType: Ptr(ProjectV2ItemContentTypeIssue),
+		ID:          new(int64(126)),
+		NodeID:      new("PVTI_null"),
+		ContentType: new(ProjectV2ItemContentTypeIssue),
 		Content:     nil, // Content is null
 	}
 
@@ -1240,8 +1240,8 @@ func TestProjectV2Item_UnmarshalJSON_MissingContentType(t *testing.T) {
 	}`
 
 	item := ProjectV2Item{
-		ID:      Ptr(int64(127)),
-		NodeID:  Ptr("PVTI_no_type"),
+		ID:      new(int64(127)),
+		NodeID:  new("PVTI_no_type"),
 		Content: nil,
 	}
 
@@ -1271,15 +1271,15 @@ func TestProjectV2Item_Marshal_Issue(t *testing.T) {
 	testJSONMarshal(t, &ProjectV2Item{}, "{}")
 
 	item := &ProjectV2Item{
-		ContentType: Ptr(ProjectV2ItemContentTypeIssue),
+		ContentType: new(ProjectV2ItemContentTypeIssue),
 		Content: &ProjectV2ItemContent{
 			Issue: &Issue{
-				Number: Ptr(42),
-				Title:  Ptr("Bug report"),
-				State:  Ptr("open"),
+				Number: new(42),
+				Title:  new("Bug report"),
+				State:  new("open"),
 			},
 		},
-		ID: Ptr(int64(123)),
+		ID: new(int64(123)),
 	}
 
 	want := `{
@@ -1300,15 +1300,15 @@ func TestProjectV2Item_Marshal_PullRequest(t *testing.T) {
 	testJSONMarshal(t, ProjectV2Item{}, "{}")
 
 	item := ProjectV2Item{
-		ContentType: Ptr(ProjectV2ItemContentTypePullRequest),
+		ContentType: new(ProjectV2ItemContentTypePullRequest),
 		Content: &ProjectV2ItemContent{
 			PullRequest: &PullRequest{
-				Number: Ptr(99),
-				Title:  Ptr("Feature addition"),
-				State:  Ptr("closed"),
+				Number: new(99),
+				Title:  new("Feature addition"),
+				State:  new("closed"),
 			},
 		},
-		ID: Ptr(int64(456)),
+		ID: new(int64(456)),
 	}
 
 	want := `{
@@ -1329,14 +1329,14 @@ func TestProjectV2Item_Marshal_DraftIssue(t *testing.T) {
 	testJSONMarshal(t, &ProjectV2Item{}, "{}")
 
 	item := &ProjectV2Item{
-		ContentType: Ptr(ProjectV2ItemContentTypeDraftIssue),
+		ContentType: new(ProjectV2ItemContentTypeDraftIssue),
 		Content: &ProjectV2ItemContent{
 			DraftIssue: &ProjectV2DraftIssue{
-				Title: Ptr("Draft task"),
-				Body:  Ptr("Work in progress"),
+				Title: new("Draft task"),
+				Body:  new("Work in progress"),
 			},
 		},
-		ID: Ptr(int64(789)),
+		ID: new(int64(789)),
 	}
 
 	want := `{
@@ -1355,9 +1355,9 @@ func TestProjectV2Item_Marshal_MissingContent(t *testing.T) {
 	t.Parallel()
 
 	item := &ProjectV2Item{
-		ContentType: Ptr(ProjectV2ItemContentTypeIssue),
+		ContentType: new(ProjectV2ItemContentTypeIssue),
 		Content:     &ProjectV2ItemContent{},
-		ID:          Ptr(int64(789)),
+		ID:          new(int64(789)),
 	}
 
 	want := `{
@@ -1377,9 +1377,9 @@ func TestProjectV2ItemContent_Marshal(t *testing.T) {
 
 		content := ProjectV2ItemContent{
 			Issue: &Issue{
-				Number: Ptr(42),
-				Title:  Ptr("Bug report"),
-				State:  Ptr("open"),
+				Number: new(42),
+				Title:  new("Bug report"),
+				State:  new("open"),
 			},
 		}
 
@@ -1398,9 +1398,9 @@ func TestProjectV2ItemContent_Marshal(t *testing.T) {
 
 		content := ProjectV2ItemContent{
 			PullRequest: &PullRequest{
-				Number: Ptr(99),
-				Title:  Ptr("Feature addition"),
-				State:  Ptr("closed"),
+				Number: new(99),
+				Title:  new("Feature addition"),
+				State:  new("closed"),
 			},
 		}
 
@@ -1419,8 +1419,8 @@ func TestProjectV2ItemContent_Marshal(t *testing.T) {
 
 		content := ProjectV2ItemContent{
 			DraftIssue: &ProjectV2DraftIssue{
-				Title: Ptr("Draft task"),
-				Body:  Ptr("Work in progress"),
+				Title: new("Draft task"),
+				Body:  new("Work in progress"),
 			},
 		}
 
@@ -1438,7 +1438,7 @@ func TestProjectsService_CreateOrganizationProjectDraftItem(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CreateProjectV2DraftItemRequest{Title: "My draft", Body: Ptr("Draft body")}
+	input := CreateProjectV2DraftItemRequest{Title: "My draft", Body: new("Draft body")}
 
 	mux.HandleFunc("/orgs/o/projectsV2/1/drafts", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -1451,7 +1451,7 @@ func TestProjectsService_CreateOrganizationProjectDraftItem(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.CreateOrganizationProjectDraftItem returned error: %v", err)
 	}
-	want := &ProjectV2Item{ID: Ptr(int64(42)), NodeID: Ptr("PVTI_draft"), ContentType: Ptr(ProjectV2ItemContentTypeDraftIssue)}
+	want := &ProjectV2Item{ID: new(int64(42)), NodeID: new("PVTI_draft"), ContentType: new(ProjectV2ItemContentTypeDraftIssue)}
 	if diff := cmp.Diff(want, item); diff != "" {
 		t.Errorf("Projects.CreateOrganizationProjectDraftItem mismatch (-want +got):\n%v", diff)
 	}
@@ -1487,7 +1487,7 @@ func TestProjectsService_CreateUserProjectDraftItem(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.CreateUserProjectDraftItem returned error: %v", err)
 	}
-	want := &ProjectV2Item{ID: Ptr(int64(43)), NodeID: Ptr("PVTI_draft_u"), ContentType: Ptr(ProjectV2ItemContentTypeDraftIssue)}
+	want := &ProjectV2Item{ID: new(int64(43)), NodeID: new("PVTI_draft_u"), ContentType: new(ProjectV2ItemContentTypeDraftIssue)}
 	if diff := cmp.Diff(want, item); diff != "" {
 		t.Errorf("Projects.CreateUserProjectDraftItem mismatch (-want +got):\n%v", diff)
 	}
@@ -1507,11 +1507,11 @@ func TestProjectsService_AddOrganizationProjectField(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := AddProjectV2FieldRequest{
-		Name:     Ptr("Priority"),
-		DataType: Ptr("single_select"),
+		Name:     new("Priority"),
+		DataType: new("single_select"),
 		SingleSelectOptions: []*ProjectV2FieldSingleSelectOption{
-			{Name: "High", Color: Ptr("RED"), Description: Ptr("Urgent")},
-			{Name: "Low", Color: Ptr("GRAY")},
+			{Name: "High", Color: new("RED"), Description: new("Urgent")},
+			{Name: "Low", Color: new("GRAY")},
 		},
 	}
 
@@ -1526,7 +1526,7 @@ func TestProjectsService_AddOrganizationProjectField(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.AddOrganizationProjectField returned error: %v", err)
 	}
-	want := &ProjectV2Field{ID: Ptr(int64(7)), Name: Ptr("Priority"), DataType: Ptr("single_select")}
+	want := &ProjectV2Field{ID: new(int64(7)), Name: new("Priority"), DataType: new("single_select")}
 	if diff := cmp.Diff(want, field); diff != "" {
 		t.Errorf("Projects.AddOrganizationProjectField mismatch (-want +got):\n%v", diff)
 	}
@@ -1550,13 +1550,13 @@ func TestProjectsService_AddUserProjectField(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := AddProjectV2FieldRequest{
-		Name:     Ptr("Sprint"),
-		DataType: Ptr("iteration"),
+		Name:     new("Sprint"),
+		DataType: new("iteration"),
 		IterationConfiguration: &ProjectV2FieldIterationConfiguration{
-			StartDate: Ptr("2026-01-01"),
-			Duration:  Ptr(14),
+			StartDate: new("2026-01-01"),
+			Duration:  new(14),
 			Iterations: []*ProjectV2FieldIterationConfigurationIteration{
-				{Title: Ptr("Sprint 1"), StartDate: Ptr("2026-01-01"), Duration: Ptr(14)},
+				{Title: new("Sprint 1"), StartDate: new("2026-01-01"), Duration: new(14)},
 			},
 		},
 	}
@@ -1572,7 +1572,7 @@ func TestProjectsService_AddUserProjectField(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.AddUserProjectField returned error: %v", err)
 	}
-	want := &ProjectV2Field{ID: Ptr(int64(8)), Name: Ptr("Sprint"), DataType: Ptr("iteration")}
+	want := &ProjectV2Field{ID: new(int64(8)), Name: new("Sprint"), DataType: new("iteration")}
 	if diff := cmp.Diff(want, field); diff != "" {
 		t.Errorf("Projects.AddUserProjectField mismatch (-want +got):\n%v", diff)
 	}
@@ -1598,7 +1598,7 @@ func TestProjectsService_CreateOrganizationProjectView(t *testing.T) {
 	input := CreateProjectV2ViewRequest{
 		Name:          "My board",
 		Layout:        "board",
-		Filter:        Ptr("is:open"),
+		Filter:        new("is:open"),
 		VisibleFields: []int64{1, 2, 3},
 	}
 
@@ -1621,8 +1621,8 @@ func TestProjectsService_CreateOrganizationProjectView(t *testing.T) {
 		Name:   "My board",
 		Layout: "board",
 		SortBy: []*ProjectV2ViewSortBy{
-			{FieldID: Ptr(int64(9007199254740993)), Direction: Ptr("asc")},
-			{FieldID: Ptr(int64(456)), Direction: Ptr("desc")},
+			{FieldID: new(int64(9007199254740993)), Direction: new("asc")},
+			{FieldID: new(int64(456)), Direction: new("desc")},
 		},
 	}
 	if diff := cmp.Diff(want, view); diff != "" {
@@ -1691,7 +1691,7 @@ func TestProjectsService_ListOrganizationProjectViewItems(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.ListOrganizationProjectViewItems returned error: %v", err)
 	}
-	want := []*ProjectV2Item{{ID: Ptr(int64(21)), NodeID: Ptr("PVTI_view_item")}}
+	want := []*ProjectV2Item{{ID: new(int64(21)), NodeID: new("PVTI_view_item")}}
 	if diff := cmp.Diff(want, items); diff != "" {
 		t.Errorf("Projects.ListOrganizationProjectViewItems mismatch (-want +got):\n%v", diff)
 	}
@@ -1726,7 +1726,7 @@ func TestProjectsService_ListUserProjectViewItems(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Projects.ListUserProjectViewItems returned error: %v", err)
 	}
-	want := []*ProjectV2Item{{ID: Ptr(int64(22)), NodeID: Ptr("PVTI_view_item_u")}}
+	want := []*ProjectV2Item{{ID: new(int64(22)), NodeID: new("PVTI_view_item_u")}}
 	if diff := cmp.Diff(want, items); diff != "" {
 		t.Errorf("Projects.ListUserProjectViewItems mismatch (-want +got):\n%v", diff)
 	}
@@ -1753,8 +1753,8 @@ func TestProjectV2ViewSortBy_UnmarshalJSON(t *testing.T) {
 		// The second element uses a string field_id, which the OpenAPI schema
 		// permits. The first exceeds 2^53 to confirm int64 (not float64) decoding.
 		want := []*ProjectV2ViewSortBy{
-			{FieldID: Ptr(int64(9007199254740993)), Direction: Ptr("asc")},
-			{FieldID: Ptr(int64(456)), Direction: Ptr("desc")},
+			{FieldID: new(int64(9007199254740993)), Direction: new("asc")},
+			{FieldID: new(int64(456)), Direction: new("desc")},
 		}
 		testJSONUnmarshalOnly(t, want, `[[9007199254740993,"asc"],["456","desc"]]`)
 	})
@@ -1801,7 +1801,7 @@ func TestProjectV2ViewSortBy_UnmarshalJSON(t *testing.T) {
 
 	t.Run("round trips through MarshalJSON", func(t *testing.T) {
 		t.Parallel()
-		in := &ProjectV2ViewSortBy{FieldID: Ptr(int64(9007199254740993)), Direction: Ptr("asc")}
+		in := &ProjectV2ViewSortBy{FieldID: new(int64(9007199254740993)), Direction: new("asc")}
 		testJSONMarshal(t, in, `[9007199254740993,"asc"]`)
 	})
 }

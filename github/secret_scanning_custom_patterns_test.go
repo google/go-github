@@ -66,11 +66,11 @@ func TestSecretScanningService_ListCustomPatternsForRepo(t *testing.T) {
 			Slug:                  "custom-pattern",
 			State:                 "published",
 			PushProtectionEnabled: true,
-			StartDelimiter:        Ptr(`\b`),
-			EndDelimiter:          Ptr(`\b`),
+			StartDelimiter:        new(`\b`),
+			EndDelimiter:          new(`\b`),
 			MustMatch:             []string{"ID-.*"},
 			MustNotMatch:          []string{"TEST-.*"},
-			CustomPatternVersion:  Ptr("v1"),
+			CustomPatternVersion:  new("v1"),
 			CreatedAt:             &referenceTimestamp,
 			UpdatedAt:             &referenceTimestamp,
 		},
@@ -162,8 +162,8 @@ func TestSecretScanningService_UpdateCustomPatternForRepo(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := SecretScanningUpdateCustomPatternRequest{
-		Pattern:              Ptr("[A-Z]{3}-[0-9]{4}"),
-		CustomPatternVersion: Ptr("v1"),
+		Pattern:              new("[A-Z]{3}-[0-9]{4}"),
+		CustomPatternVersion: new("v1"),
 	}
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/custom-patterns/1", func(w http.ResponseWriter, r *http.Request) {
@@ -193,7 +193,7 @@ func TestSecretScanningService_UpdateCustomPatternForRepo(t *testing.T) {
 		Slug:                  "custom-pattern",
 		State:                 "published",
 		PushProtectionEnabled: false,
-		CustomPatternVersion:  Ptr("v2"),
+		CustomPatternVersion:  new("v2"),
 	}
 	if !cmp.Equal(pattern, want) {
 		t.Errorf("SecretScanning.UpdateCustomPatternForRepo returned %+v, want %+v", pattern, want)
@@ -298,11 +298,11 @@ func TestSecretScanningService_ListCustomPatternsForOrg(t *testing.T) {
 			Slug:                  "custom-pattern",
 			State:                 "published",
 			PushProtectionEnabled: true,
-			StartDelimiter:        Ptr(`\b`),
-			EndDelimiter:          Ptr(`\b`),
+			StartDelimiter:        new(`\b`),
+			EndDelimiter:          new(`\b`),
 			MustMatch:             []string{"ID-.*"},
 			MustNotMatch:          []string{"TEST-.*"},
-			CustomPatternVersion:  Ptr("v1"),
+			CustomPatternVersion:  new("v1"),
 			CreatedAt:             &referenceTimestamp,
 			UpdatedAt:             &referenceTimestamp,
 		},
@@ -394,8 +394,8 @@ func TestSecretScanningService_UpdateCustomPatternForOrg(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := SecretScanningUpdateCustomPatternRequest{
-		Pattern:              Ptr("[A-Z]{3}-[0-9]{4}"),
-		CustomPatternVersion: Ptr("v1"),
+		Pattern:              new("[A-Z]{3}-[0-9]{4}"),
+		CustomPatternVersion: new("v1"),
 	}
 
 	mux.HandleFunc("/orgs/o/secret-scanning/custom-patterns/1", func(w http.ResponseWriter, r *http.Request) {
@@ -425,7 +425,7 @@ func TestSecretScanningService_UpdateCustomPatternForOrg(t *testing.T) {
 		Slug:                  "custom-pattern",
 		State:                 "published",
 		PushProtectionEnabled: false,
-		CustomPatternVersion:  Ptr("v2"),
+		CustomPatternVersion:  new("v2"),
 	}
 	if !cmp.Equal(pattern, want) {
 		t.Errorf("SecretScanning.UpdateCustomPatternForOrg returned %+v, want %+v", pattern, want)
@@ -530,11 +530,11 @@ func TestSecretScanningService_ListCustomPatternsForEnterprise(t *testing.T) {
 			Slug:                  "custom-pattern",
 			State:                 "published",
 			PushProtectionEnabled: true,
-			StartDelimiter:        Ptr(`\b`),
-			EndDelimiter:          Ptr(`\b`),
+			StartDelimiter:        new(`\b`),
+			EndDelimiter:          new(`\b`),
 			MustMatch:             []string{"ID-.*"},
 			MustNotMatch:          []string{"TEST-.*"},
-			CustomPatternVersion:  Ptr("v1"),
+			CustomPatternVersion:  new("v1"),
 			CreatedAt:             &referenceTimestamp,
 			UpdatedAt:             &referenceTimestamp,
 		},
@@ -626,8 +626,8 @@ func TestSecretScanningService_UpdateCustomPatternForEnterprise(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := SecretScanningUpdateCustomPatternRequest{
-		Pattern:              Ptr("[A-Z]{3}-[0-9]{4}"),
-		CustomPatternVersion: Ptr("v1"),
+		Pattern:              new("[A-Z]{3}-[0-9]{4}"),
+		CustomPatternVersion: new("v1"),
 	}
 
 	mux.HandleFunc("/enterprises/e/secret-scanning/custom-patterns/1", func(w http.ResponseWriter, r *http.Request) {
@@ -657,7 +657,7 @@ func TestSecretScanningService_UpdateCustomPatternForEnterprise(t *testing.T) {
 		Slug:                  "custom-pattern",
 		State:                 "published",
 		PushProtectionEnabled: false,
-		CustomPatternVersion:  Ptr("v2"),
+		CustomPatternVersion:  new("v2"),
 	}
 	if !cmp.Equal(pattern, want) {
 		t.Errorf("SecretScanning.UpdateCustomPatternForEnterprise returned %+v, want %+v", pattern, want)

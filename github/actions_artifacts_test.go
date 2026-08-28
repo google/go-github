@@ -32,7 +32,7 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 	})
 
 	opts := &ListArtifactsOptions{
-		Name:        Ptr("TheArtifact"),
+		Name:        new("TheArtifact"),
 		ListOptions: ListOptions{Page: 2},
 	}
 	ctx := t.Context()
@@ -41,7 +41,7 @@ func TestActionsService_ListArtifacts(t *testing.T) {
 		t.Errorf("Actions.ListArtifacts returned error: %v", err)
 	}
 
-	want := &ArtifactList{TotalCount: Ptr(int64(1)), Artifacts: []*Artifact{{ID: Ptr(int64(1))}}}
+	want := &ArtifactList{TotalCount: new(int64(1)), Artifacts: []*Artifact{{ID: new(int64(1))}}}
 	if !cmp.Equal(artifacts, want) {
 		t.Errorf("Actions.ListArtifacts returned %+v, want %+v", artifacts, want)
 	}
@@ -123,7 +123,7 @@ func TestActionsService_ListWorkflowRunArtifacts(t *testing.T) {
 		t.Errorf("Actions.ListWorkflowRunArtifacts returned error: %v", err)
 	}
 
-	want := &ArtifactList{TotalCount: Ptr(int64(1)), Artifacts: []*Artifact{{ID: Ptr(int64(1))}}}
+	want := &ArtifactList{TotalCount: new(int64(1)), Artifacts: []*Artifact{{ID: new(int64(1))}}}
 	if !cmp.Equal(artifacts, want) {
 		t.Errorf("Actions.ListWorkflowRunArtifacts returned %+v, want %+v", artifacts, want)
 	}
@@ -205,11 +205,11 @@ func TestActionsService_GetArtifact(t *testing.T) {
 	}
 
 	want := &Artifact{
-		ID:                 Ptr(int64(1)),
-		NodeID:             Ptr("xyz"),
-		Name:               Ptr("a"),
-		SizeInBytes:        Ptr(int64(5)),
-		ArchiveDownloadURL: Ptr("u"),
+		ID:                 new(int64(1)),
+		NodeID:             new("xyz"),
+		Name:               new("a"),
+		SizeInBytes:        new(int64(5)),
+		ArchiveDownloadURL: new("u"),
 	}
 	if !cmp.Equal(artifact, want) {
 		t.Errorf("Actions.GetArtifact returned %+v, want %+v", artifact, want)

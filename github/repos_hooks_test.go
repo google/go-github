@@ -32,7 +32,7 @@ func TestRepositoriesService_CreateHook(t *testing.T) {
 		t.Errorf("Repositories.CreateHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Ptr(int64(1))}
+	want := &Hook{ID: new(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.CreateHook returned %+v, want %+v", hook, want)
 	}
@@ -74,7 +74,7 @@ func TestRepositoriesService_ListHooks(t *testing.T) {
 		t.Errorf("Repositories.ListHooks returned error: %v", err)
 	}
 
-	want := []*Hook{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*Hook{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(hooks, want) {
 		t.Errorf("Repositories.ListHooks returned %+v, want %+v", hooks, want)
 	}
@@ -128,7 +128,7 @@ func TestRepositoriesService_GetHook(t *testing.T) {
 		t.Errorf("Repositories.GetHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Ptr(int64(1))}
+	want := &Hook{ID: new(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.GetHook returned %+v, want %+v", hook, want)
 	}
@@ -176,7 +176,7 @@ func TestRepositoriesService_EditHook(t *testing.T) {
 		t.Errorf("Repositories.EditHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Ptr(int64(1))}
+	want := &Hook{ID: new(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.EditHook returned %+v, want %+v", hook, want)
 	}

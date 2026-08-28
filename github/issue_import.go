@@ -86,8 +86,7 @@ func (s *IssueImportService) Create(ctx context.Context, owner, repo string, bod
 	var i *IssueImportResponse
 	resp, err := s.client.Do(req, &i)
 	if err != nil {
-		var aerr *AcceptedError
-		if errors.As(err, &aerr) {
+		if aerr, ok := errors.AsType[*AcceptedError](err); ok {
 			if err := json.Unmarshal(aerr.Raw, &i); err != nil {
 				return i, resp, err
 			}

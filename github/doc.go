@@ -171,13 +171,13 @@ https://docs.github.com/rest/using-the-rest-api/best-practices-for-using-the-res
 
 All structs for GitHub resources use pointer values for all non-repeated fields.
 This allows distinguishing between unset fields and those set to a zero-value.
-A helper function, [Ptr], has been provided to easily create these pointers for string,
+Use the new builtin to easily create these pointers for string,
 bool, and int values. For example:
 
 	// create a new private repository named "foo"
 	repo := &github.Repository{
-		Name:    github.Ptr("foo"),
-		Private: github.Ptr(true),
+		Name:    new("foo"),
+		Private: new(true),
 	}
 	client.Repositories.Create(ctx, "", repo)
 

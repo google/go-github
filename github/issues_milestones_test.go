@@ -35,7 +35,7 @@ func TestIssuesService_ListMilestones(t *testing.T) {
 		t.Errorf("IssuesService.ListMilestones returned error: %v", err)
 	}
 
-	want := []*Milestone{{Number: Ptr(1)}}
+	want := []*Milestone{{Number: new(1)}}
 	if !cmp.Equal(milestones, want) {
 		t.Errorf("IssuesService.ListMilestones returned %+v, want %+v", milestones, want)
 	}
@@ -79,7 +79,7 @@ func TestIssuesService_GetMilestone(t *testing.T) {
 		t.Errorf("IssuesService.GetMilestone returned error: %v", err)
 	}
 
-	want := &Milestone{Number: Ptr(1)}
+	want := &Milestone{Number: new(1)}
 	if !cmp.Equal(milestone, want) {
 		t.Errorf("IssuesService.GetMilestone returned %+v, want %+v", milestone, want)
 	}
@@ -126,7 +126,7 @@ func TestIssuesService_CreateMilestone(t *testing.T) {
 		t.Errorf("IssuesService.CreateMilestone returned error: %v", err)
 	}
 
-	want := &Milestone{Number: Ptr(1)}
+	want := &Milestone{Number: new(1)}
 	if !cmp.Equal(milestone, want) {
 		t.Errorf("IssuesService.CreateMilestone returned %+v, want %+v", milestone, want)
 	}
@@ -159,7 +159,7 @@ func TestIssuesService_UpdateMilestone(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := UpdateMilestoneRequest{Title: Ptr("t")}
+	input := UpdateMilestoneRequest{Title: new("t")}
 
 	mux.HandleFunc("/repos/o/r/milestones/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -173,7 +173,7 @@ func TestIssuesService_UpdateMilestone(t *testing.T) {
 		t.Errorf("IssuesService.UpdateMilestone returned error: %v", err)
 	}
 
-	want := &Milestone{Number: Ptr(1)}
+	want := &Milestone{Number: new(1)}
 	if !cmp.Equal(milestone, want) {
 		t.Errorf("IssuesService.UpdateMilestone returned %+v, want %+v", milestone, want)
 	}

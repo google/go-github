@@ -30,7 +30,7 @@ func TestRepositoriesService_ListInvitations(t *testing.T) {
 		t.Errorf("Repositories.ListInvitations returned error: %v", err)
 	}
 
-	want := []*RepositoryInvitation{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*RepositoryInvitation{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListInvitations = %+v, want %+v", got, want)
 	}
@@ -91,7 +91,7 @@ func TestRepositoriesService_UpdateInvitation(t *testing.T) {
 		t.Errorf("Repositories.UpdateInvitation returned error: %v", err)
 	}
 
-	want := &RepositoryInvitation{ID: Ptr(int64(1))}
+	want := &RepositoryInvitation{ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.UpdateInvitation = %+v, want %+v", got, want)
 	}

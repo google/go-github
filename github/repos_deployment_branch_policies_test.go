@@ -34,10 +34,10 @@ func TestRepositoriesService_ListDeploymentBranchPolicies(t *testing.T) {
 
 	want := &DeploymentBranchPolicyResponse{
 		BranchPolicies: []*DeploymentBranchPolicy{
-			{ID: Ptr(int64(1))},
-			{ID: Ptr(int64(2))},
+			{ID: new(int64(1))},
+			{ID: new(int64(2))},
 		},
-		TotalCount: Ptr(2),
+		TotalCount: new(2),
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListDeploymentBranchPolicies = %+v, want %+v", got, want)
@@ -72,7 +72,7 @@ func TestRepositoriesService_GetDeploymentBranchPolicy(t *testing.T) {
 		t.Errorf("Repositories.GetDeploymentBranchPolicy returned error: %v", err)
 	}
 
-	want := &DeploymentBranchPolicy{ID: Ptr(int64(1))}
+	want := &DeploymentBranchPolicy{ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.GetDeploymentBranchPolicy = %+v, want %+v", got, want)
 	}
@@ -97,12 +97,12 @@ func TestRepositoriesService_CreateDeploymentBranchPolicy(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	got, _, err := client.Repositories.CreateDeploymentBranchPolicy(ctx, "o", "r", "e", CreateDeploymentBranchPolicyRequest{Name: "n", Type: Ptr("branch")})
+	got, _, err := client.Repositories.CreateDeploymentBranchPolicy(ctx, "o", "r", "e", CreateDeploymentBranchPolicyRequest{Name: "n", Type: new("branch")})
 	if err != nil {
 		t.Errorf("Repositories.CreateDeploymentBranchPolicy returned error: %v", err)
 	}
 
-	want := &DeploymentBranchPolicy{ID: Ptr(int64(1)), Type: Ptr("branch")}
+	want := &DeploymentBranchPolicy{ID: new(int64(1)), Type: new("branch")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.CreateDeploymentBranchPolicy = %+v, want %+v", got, want)
 	}
@@ -132,7 +132,7 @@ func TestRepositoriesService_UpdateDeploymentBranchPolicy(t *testing.T) {
 		t.Errorf("Repositories.UpdateDeploymentBranchPolicy returned error: %v", err)
 	}
 
-	want := &DeploymentBranchPolicy{ID: Ptr(int64(1))}
+	want := &DeploymentBranchPolicy{ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.UpdateDeploymentBranchPolicy = %+v, want %+v", got, want)
 	}

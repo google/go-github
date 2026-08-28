@@ -89,23 +89,23 @@ func agentTaskWithSessionsJSON() string {
 func agentTask() *AgentTask {
 	return &AgentTask{
 		ID:          "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-		URL:         Ptr("https://api.github.com/agents/repos/octocat/hello-world/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-		HTMLURL:     Ptr("https://github.com/octocat/hello-world/copilot/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-		Name:        Ptr("Fix the login button on the homepage"),
-		Creator:     &AgentTaskCreator{ID: Ptr(int64(1))},
-		CreatorType: Ptr("user"),
+		URL:         new("https://api.github.com/agents/repos/octocat/hello-world/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+		HTMLURL:     new("https://github.com/octocat/hello-world/copilot/tasks/a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+		Name:        new("Fix the login button on the homepage"),
+		Creator:     &AgentTaskCreator{ID: new(int64(1))},
+		CreatorType: new("user"),
 		UserCollaborators: []*User{
-			{ID: Ptr(int64(3))},
+			{ID: new(int64(3))},
 		},
-		Owner:        &AgentTaskOwner{ID: Ptr(int64(2))},
-		Repository:   &AgentTaskRepository{ID: Ptr(int64(1296269))},
+		Owner:        &AgentTaskOwner{ID: new(int64(2))},
+		Repository:   &AgentTaskRepository{ID: new(int64(1296269))},
 		State:        "completed",
-		SessionCount: Ptr(1),
+		SessionCount: new(1),
 		Artifacts: []*AgentTaskArtifact{
 			{
 				Provider: "github",
 				Type:     "pull",
-				Data:     &AgentTaskArtifactData{ID: Ptr(int64(42))},
+				Data:     &AgentTaskArtifactData{ID: new(int64(42))},
 			},
 		},
 		CreatedAt: Timestamp{time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)},
@@ -120,17 +120,17 @@ func agentTaskWithSessions() *AgentTask {
 	task.Sessions = []*AgentTaskSession{
 		{
 			ID:          "s1a2b3c4-d5e6-7890-abcd-ef1234567890",
-			Name:        Ptr("Fix the login button on the homepage"),
-			User:        &User{ID: Ptr(int64(1))},
-			Owner:       &AgentTaskOwner{ID: Ptr(int64(2))},
-			Repository:  &AgentTaskRepository{ID: Ptr(int64(1296269))},
-			TaskID:      Ptr("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+			Name:        new("Fix the login button on the homepage"),
+			User:        &User{ID: new(int64(1))},
+			Owner:       &AgentTaskOwner{ID: new(int64(2))},
+			Repository:  &AgentTaskRepository{ID: new(int64(1296269))},
+			TaskID:      new("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
 			State:       "failed",
-			Prompt:      Ptr("Fix the login button on the homepage"),
-			HeadRef:     Ptr("copilot/fix-1"),
-			BaseRef:     Ptr("main"),
-			Model:       Ptr("claude-sonnet-4.6"),
-			Error:       &AgentTaskSessionError{Message: Ptr("agent task failed")},
+			Prompt:      new("Fix the login button on the homepage"),
+			HeadRef:     new("copilot/fix-1"),
+			BaseRef:     new("main"),
+			Model:       new("claude-sonnet-4.6"),
+			Error:       &AgentTaskSessionError{Message: new("agent task failed")},
 			CreatedAt:   Timestamp{time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)},
 			UpdatedAt:   &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)},
 			CompletedAt: &Timestamp{time.Date(2025, time.March, 14, 1, 0, 0, 0, time.UTC)},
@@ -166,7 +166,7 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 			Direction:   "asc",
 			State:       "queued,completed",
 			IsArchived:  true,
-			Since:       Ptr(time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)),
+			Since:       new(time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)),
 			ListOptions: ListOptions{Page: 2, PerPage: 1},
 		},
 		CreatorID: []int64{1, 2},
@@ -180,8 +180,8 @@ func TestAgentTasksService_ListByRepo(t *testing.T) {
 
 	want := &AgentTaskList{
 		Tasks:              []*AgentTask{agentTask()},
-		TotalActiveCount:   Ptr(5),
-		TotalArchivedCount: Ptr(2),
+		TotalActiveCount:   new(5),
+		TotalArchivedCount: new(2),
 	}
 	if diff := cmp.Diff(want, tasks); diff != "" {
 		t.Errorf("AgentTasks.ListByRepo mismatch (-want +got):\n%v", diff)
@@ -211,10 +211,10 @@ func TestAgentTasksService_Create(t *testing.T) {
 
 	input := CreateAgentTaskRequest{
 		Prompt:            "Fix the login button on the homepage",
-		Model:             Ptr("gpt-5.3-codex"),
-		CreatePullRequest: Ptr(true),
-		HeadRef:           Ptr("copilot/fix-1"),
-		BaseRef:           Ptr("main"),
+		Model:             new("gpt-5.3-codex"),
+		CreatePullRequest: new(true),
+		HeadRef:           new("copilot/fix-1"),
+		BaseRef:           new("main"),
 	}
 
 	mux.HandleFunc("/agents/repos/o/r/tasks", func(w http.ResponseWriter, r *http.Request) {
@@ -307,7 +307,7 @@ func TestAgentTasksService_List(t *testing.T) {
 		Direction:   "desc",
 		State:       "completed",
 		IsArchived:  true,
-		Since:       Ptr(time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)),
+		Since:       new(time.Date(2025, time.March, 14, 0, 0, 0, 0, time.UTC)),
 		ListOptions: ListOptions{Page: 2, PerPage: 1},
 	}
 
@@ -319,8 +319,8 @@ func TestAgentTasksService_List(t *testing.T) {
 
 	want := &AgentTaskList{
 		Tasks:              []*AgentTask{agentTask()},
-		TotalActiveCount:   Ptr(5),
-		TotalArchivedCount: Ptr(2),
+		TotalActiveCount:   new(5),
+		TotalArchivedCount: new(2),
 	}
 	if diff := cmp.Diff(want, tasks); diff != "" {
 		t.Errorf("AgentTasks.List mismatch (-want +got):\n%v", diff)

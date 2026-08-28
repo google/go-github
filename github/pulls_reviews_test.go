@@ -34,8 +34,8 @@ func TestPullRequestsService_ListReviews(t *testing.T) {
 	}
 
 	want := []*PullRequestReview{
-		{ID: Ptr(int64(1))},
-		{ID: Ptr(int64(2))},
+		{ID: new(int64(1))},
+		{ID: new(int64(2))},
 	}
 	if !cmp.Equal(reviews, want) {
 		t.Errorf("PullRequests.ListReviews returned %+v, want %+v", reviews, want)
@@ -80,7 +80,7 @@ func TestPullRequestsService_GetReview(t *testing.T) {
 		t.Errorf("PullRequests.GetReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Ptr(int64(1))}
+	want := &PullRequestReview{ID: new(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.GetReview returned %+v, want %+v", review, want)
 	}
@@ -124,7 +124,7 @@ func TestPullRequestsService_DeletePendingReview(t *testing.T) {
 		t.Errorf("PullRequests.DeletePendingReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Ptr(int64(1))}
+	want := &PullRequestReview{ID: new(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.DeletePendingReview returned %+v, want %+v", review, want)
 	}
@@ -169,8 +169,8 @@ func TestPullRequestsService_ListReviewComments(t *testing.T) {
 	}
 
 	want := []*PullRequestComment{
-		{ID: Ptr(int64(1))},
-		{ID: Ptr(int64(2))},
+		{ID: new(int64(1))},
+		{ID: new(int64(2))},
 	}
 	if !cmp.Equal(comments, want) {
 		t.Errorf("PullRequests.ListReviewComments returned %+v, want %+v", comments, want)
@@ -359,9 +359,9 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &PullRequestReviewRequest{
-		CommitID: Ptr("commit_id"),
-		Body:     Ptr("b"),
-		Event:    Ptr("APPROVE"),
+		CommitID: new("commit_id"),
+		Body:     new("b"),
+		Event:    new("APPROVE"),
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews", func(w http.ResponseWriter, r *http.Request) {
@@ -376,7 +376,7 @@ func TestPullRequestsService_CreateReview(t *testing.T) {
 		t.Errorf("PullRequests.CreateReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Ptr(int64(1))}
+	want := &PullRequestReview{ID: new(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.CreateReview returned %+v, want %+v", review, want)
 	}
@@ -417,12 +417,12 @@ func TestPullRequestsService_CreateReview_badReview(t *testing.T) {
 		Comments: []*DraftReviewComment{{
 			Path: &path,
 			Body: &body,
-			Side: Ptr("RIGHT"),
-			Line: Ptr(11),
+			Side: new("RIGHT"),
+			Line: new(11),
 		}, {
 			Path:     &path,
 			Body:     &body,
-			Position: Ptr(1),
+			Position: new(1),
 		}},
 	}
 
@@ -488,7 +488,7 @@ func TestPullRequestsService_UpdateReview(t *testing.T) {
 		t.Errorf("PullRequests.UpdateReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Ptr(int64(1))}
+	want := &PullRequestReview{ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("PullRequests.UpdateReview = %+v, want %+v", got, want)
 	}
@@ -513,7 +513,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := PullRequestSubmitReviewRequest{
-		Body:  Ptr("b"),
+		Body:  new("b"),
 		Event: "APPROVE",
 	}
 
@@ -529,7 +529,7 @@ func TestPullRequestsService_SubmitReview(t *testing.T) {
 		t.Errorf("PullRequests.SubmitReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Ptr(int64(1))}
+	want := &PullRequestReview{ID: new(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.SubmitReview returned %+v, want %+v", review, want)
 	}
@@ -562,7 +562,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := PullRequestDismissReviewRequest{Message: "m", Event: Ptr("DISMISS")}
+	input := PullRequestDismissReviewRequest{Message: "m", Event: new("DISMISS")}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/reviews/1/dismissals", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -576,7 +576,7 @@ func TestPullRequestsService_DismissReview(t *testing.T) {
 		t.Errorf("PullRequests.DismissReview returned error: %v", err)
 	}
 
-	want := &PullRequestReview{ID: Ptr(int64(1))}
+	want := &PullRequestReview{ID: new(int64(1))}
 	if !cmp.Equal(review, want) {
 		t.Errorf("PullRequests.DismissReview returned %+v, want %+v", review, want)
 	}

@@ -37,9 +37,9 @@ func TestEnterpriseService_GetOrganizationCustomPropertySchema(t *testing.T) {
 	want := &EnterpriseCustomPropertySchema{
 		Properties: []*CustomProperty{
 			{
-				PropertyName: Ptr("team"),
+				PropertyName: new("team"),
 				ValueType:    PropertyValueTypeString,
-				Description:  Ptr("Team name"),
+				Description:  new("Team name"),
 			},
 		},
 	}
@@ -73,7 +73,7 @@ func TestEnterpriseService_CreateOrUpdateOrganizationCustomPropertySchema(t *tes
 
 	ctx := t.Context()
 	schema := EnterpriseCustomPropertySchema{
-		Properties: []*CustomProperty{{PropertyName: Ptr("team")}},
+		Properties: []*CustomProperty{{PropertyName: new("team")}},
 	}
 	_, err := client.Enterprise.CreateOrUpdateOrganizationCustomPropertySchema(ctx, "e", schema)
 	if err != nil {
@@ -110,9 +110,9 @@ func TestEnterpriseService_GetOrganizationCustomProperty(t *testing.T) {
 	}
 
 	want := &CustomProperty{
-		PropertyName: Ptr("team"),
+		PropertyName: new("team"),
 		ValueType:    PropertyValueTypeString,
-		Description:  Ptr("Team name"),
+		Description:  new("Team name"),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -143,7 +143,7 @@ func TestEnterpriseService_CreateOrUpdateOrganizationCustomProperty(t *testing.T
 	})
 
 	ctx := t.Context()
-	property := CustomProperty{PropertyName: Ptr("team")}
+	property := CustomProperty{PropertyName: new("team")}
 	_, err := client.Enterprise.CreateOrUpdateOrganizationCustomProperty(ctx, "e", "prop", property)
 	if err != nil {
 		t.Errorf("Enterprise.CreateOrUpdateOrganizationCustomProperty returned error: %v", err)
@@ -208,8 +208,8 @@ func TestEnterpriseService_ListOrganizationCustomPropertyValues(t *testing.T) {
 
 	want := []*EnterpriseCustomPropertiesValues{
 		{
-			OrganizationID:    Ptr(int64(1)),
-			OrganizationLogin: Ptr("org1"),
+			OrganizationID:    new(int64(1)),
+			OrganizationLogin: new("org1"),
 			Properties: []*CustomPropertyValue{
 				{PropertyName: "team", Value: "core"},
 			},
@@ -244,7 +244,7 @@ func TestEnterpriseService_CreateOrUpdateOrganizationCustomPropertyValues(t *tes
 	})
 
 	ctx := t.Context()
-	values := []*CustomPropertyValue{{PropertyName: "team", Value: Ptr("core")}}
+	values := []*CustomPropertyValue{{PropertyName: "team", Value: new("core")}}
 	orgs := []string{"org1"}
 
 	opts := EnterpriseCustomPropertyValuesRequest{
