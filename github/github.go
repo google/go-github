@@ -797,6 +797,30 @@ func WithVersion(version string) RequestOption {
 	}
 }
 
+// requestBufferPool pools response read buffers so that Client.Do can decode
+// JSON payloads without allocating a growing buffer per call.
+var requestBufferPool = sync.Pool{
+	New: func() any {
+		return new(bytes.Buffer)
+	},
+}
+
+// maxPooledBufferCap is the largest buffer capacity that putRequestBuffer
+// returns to requestBufferPool. Buffers that grew beyond it while reading an
+// unusually large response are dropped so they do not pin memory in the pool.
+const maxPooledBufferCap = 1 << 20
+
+// putRequestBuffer resets buf and returns it to requestBufferPool, dropping
+// oversized buffers. It reports whether buf was pooled.
+func putRequestBuffer(buf *bytes.Buffer) bool {
+	if buf.Cap() > maxPooledBufferCap {
+		return false
+	}
+	buf.Reset()
+	requestBufferPool.Put(buf)
+	return true
+}
+
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
 // in which case it is resolved relative to the BaseURL of the Client.
 // Relative URLs should always be specified without a preceding slash. If
@@ -1406,12 +1430,21 @@ func (c *Client) Do(req *http.Request, v any) (*Response, error) {
 	case io.Writer:
 		_, err = io.Copy(v, resp.Body)
 	default:
-		decErr := json.NewDecoder(resp.Body).Decode(v)
-		if decErr == io.EOF {
-			decErr = nil // ignore EOF errors caused by empty response body
-		}
-		if decErr != nil {
-			err = decErr
+		respBuf := requestBufferPool.Get().(*bytes.Buffer)
+		defer putRequestBuffer(respBuf)
+
+		_, readErr := respBuf.ReadFrom(resp.Body)
+		if readErr != nil {
+			err = readErr
+		} else if respBuf.Len() > 0 {
+			b := respBuf.Bytes()
+			decErr := json.Unmarshal(b, v)
+			if decErr != nil && len(bytes.TrimSpace(b)) == 0 {
+				decErr = nil // ignore errors caused by whitespace-only response body
+			}
+			if decErr != nil {
+				err = decErr
+			}
 		}
 	}
 	return resp, err
