@@ -503,7 +503,7 @@ func (r *RulesetReviewer) UnmarshalJSON(data []byte) error {
 	if aux.ID != nil {
 		switch id := aux.ID.(type) {
 		case float64:
-			r.ID = Ptr(int64(id))
+			r.ID = new(int64(id))
 		case string:
 			i, err := strconv.ParseInt(id, 10, 64)
 			if err != nil {

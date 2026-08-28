@@ -75,7 +75,7 @@ func main() {
 		"example/foo.txt",
 		&github.RepositoryContentFileOptions{
 			Content: []byte("foo"),
-			Message: github.Ptr("sample commit"),
+			Message: new("sample commit"),
 			SHA:     nil,
 		},
 	)

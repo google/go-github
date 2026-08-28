@@ -19,17 +19,17 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 
 	snapshot := &DependencyGraphSnapshot{
 		Version: 0,
-		Sha:     Ptr("ce587453ced02b1526dfb4cb910479d431683101"),
-		Ref:     Ptr("refs/heads/main"),
+		Sha:     new("ce587453ced02b1526dfb4cb910479d431683101"),
+		Ref:     new("refs/heads/main"),
 		Job: &DependencyGraphSnapshotJob{
-			Correlator: Ptr("yourworkflowname_youractionname"),
-			ID:         Ptr("yourrunid"),
-			HTMLURL:    Ptr("https://example.com"),
+			Correlator: new("yourworkflowname_youractionname"),
+			ID:         new("yourrunid"),
+			HTMLURL:    new("https://example.com"),
 		},
 		Detector: &DependencyGraphSnapshotDetector{
-			Name:    Ptr("octo-detector"),
-			Version: Ptr("0.0.1"),
-			URL:     Ptr("https://github.com/octo-org/octo-repo"),
+			Name:    new("octo-detector"),
+			Version: new("0.0.1"),
+			URL:     new("https://github.com/octo-org/octo-repo"),
 		},
 		Scanned: &referenceTimestamp,
 		Metadata: map[string]any{
@@ -38,32 +38,32 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 		},
 		Manifests: map[string]*DependencyGraphSnapshotManifest{
 			"package-lock.json": {
-				Name: Ptr("package-lock.json"),
-				File: &DependencyGraphSnapshotManifestFile{SourceLocation: Ptr("src/package-lock.json")},
+				Name: new("package-lock.json"),
+				File: &DependencyGraphSnapshotManifestFile{SourceLocation: new("src/package-lock.json")},
 				Metadata: map[string]any{
 					"key1": "value1",
 					"key2": "value2",
 				},
 				Resolved: map[string]*DependencyGraphSnapshotResolvedDependency{
 					"@actions/core": {
-						PackageURL:   Ptr("pkg:/npm/%40actions/core@1.1.9"),
-						Relationship: Ptr("direct"),
-						Scope:        Ptr("runtime"),
+						PackageURL:   new("pkg:/npm/%40actions/core@1.1.9"),
+						Relationship: new("direct"),
+						Scope:        new("runtime"),
 						Metadata: map[string]any{
 							"licenses": "MIT",
 						},
 						Dependencies: []string{"@actions/http-client"},
 					},
 					"@actions/http-client": {
-						PackageURL:   Ptr("pkg:/npm/%40actions/http-client@1.0.7"),
-						Relationship: Ptr("indirect"),
-						Scope:        Ptr("runtime"),
+						PackageURL:   new("pkg:/npm/%40actions/http-client@1.0.7"),
+						Relationship: new("indirect"),
+						Scope:        new("runtime"),
 						Dependencies: []string{"tunnel"},
 					},
 					"tunnel": {
-						PackageURL:   Ptr("pkg:/npm/tunnel@0.0.6"),
-						Relationship: Ptr("indirect"),
-						Scope:        Ptr("runtime"),
+						PackageURL:   new("pkg:/npm/tunnel@0.0.6"),
+						Relationship: new("indirect"),
+						Scope:        new("runtime"),
 					},
 				},
 			},
@@ -85,8 +85,8 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 	want := &DependencyGraphSnapshotCreationData{
 		ID:        12345,
 		CreatedAt: &referenceTimestamp,
-		Message:   Ptr("Dependency results for the repo have been successfully updated."),
-		Result:    Ptr("SUCCESS"),
+		Message:   new("Dependency results for the repo have been successfully updated."),
+		Result:    new("SUCCESS"),
 	}
 	if !cmp.Equal(snapshotCreationData, want) {
 		t.Errorf("DependencyGraph.CreateSnapshot returned %+v, want %+v", snapshotCreationData, want)

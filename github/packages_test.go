@@ -108,10 +108,10 @@ func TestPackageVersion_GetBodyAsPackageVersionBody(t *testing.T) {
 			},
 			wantValue: &PackageVersionBody{
 				Repo: &Repository{
-					Name: Ptr("n"),
+					Name: new("n"),
 				},
 				Info: &PackageVersionBodyInfo{
-					Type: Ptr("t"),
+					Type: new("t"),
 				},
 			},
 			wantOk: true,
@@ -168,7 +168,7 @@ func TestPackageVersion_GetMetadata(t *testing.T) {
 				}`),
 			},
 			wantValue: &PackageMetadata{
-				PackageType: Ptr("container"),
+				PackageType: new("container"),
 				Container: &PackageContainerMetadata{
 					Tags: []string{"a"},
 				},

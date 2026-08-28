@@ -38,12 +38,12 @@ func TestChecksService_GetCheckRun(t *testing.T) {
 	completeAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 
 	want := &CheckRun{
-		ID:          Ptr(int64(1)),
-		Status:      Ptr("completed"),
-		Conclusion:  Ptr("neutral"),
+		ID:          new(int64(1)),
+		Status:      new("completed"),
+		Conclusion:  new("neutral"),
 		StartedAt:   &Timestamp{startedAt},
 		CompletedAt: &Timestamp{completeAt},
-		Name:        Ptr("testCheckRun"),
+		Name:        new("testCheckRun"),
 	}
 	if !cmp.Equal(checkRun, want) {
 		t.Errorf("Checks.GetCheckRun return %+v, want %+v", checkRun, want)
@@ -86,13 +86,13 @@ func TestChecksService_GetCheckSuite(t *testing.T) {
 		t.Errorf("Checks.GetCheckSuite return error: %v", err)
 	}
 	want := &CheckSuite{
-		ID:         Ptr(int64(1)),
-		HeadBranch: Ptr("master"),
-		HeadSHA:    Ptr("deadbeef"),
-		AfterSHA:   Ptr("deadbeefa"),
-		BeforeSHA:  Ptr("deadbeefb"),
-		Status:     Ptr("completed"),
-		Conclusion: Ptr("neutral"),
+		ID:         new(int64(1)),
+		HeadBranch: new("master"),
+		HeadSHA:    new("deadbeef"),
+		AfterSHA:   new("deadbeefa"),
+		BeforeSHA:  new("deadbeefb"),
+		Status:     new("completed"),
+		Conclusion: new("neutral"),
 	}
 	if !cmp.Equal(checkSuite, want) {
 		t.Errorf("Checks.GetCheckSuite return %+v, want %+v", checkSuite, want)
@@ -134,12 +134,12 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	checkRunOpt := CreateCheckRunOptions{
 		Name:      "testCreateCheckRun",
 		HeadSHA:   "deadbeef",
-		Status:    Ptr("in_progress"),
+		Status:    new("in_progress"),
 		StartedAt: &Timestamp{startedAt},
 		Output: &CheckRunOutput{
-			Title:   Ptr("Mighty test report"),
-			Summary: Ptr(""),
-			Text:    Ptr(""),
+			Title:   new("Mighty test report"),
+			Summary: new(""),
+			Text:    new(""),
 		},
 	}
 
@@ -150,15 +150,15 @@ func TestChecksService_CreateCheckRun(t *testing.T) {
 	}
 
 	want := &CheckRun{
-		ID:        Ptr(int64(1)),
-		Status:    Ptr("in_progress"),
+		ID:        new(int64(1)),
+		Status:    new("in_progress"),
 		StartedAt: &Timestamp{startedAt},
-		HeadSHA:   Ptr("deadbeef"),
-		Name:      Ptr("testCreateCheckRun"),
+		HeadSHA:   new("deadbeef"),
+		Name:      new("testCreateCheckRun"),
 		Output: &CheckRunOutput{
-			Title:   Ptr("Mighty test report"),
-			Summary: Ptr(""),
-			Text:    Ptr(""),
+			Title:   new("Mighty test report"),
+			Summary: new(""),
+			Text:    new(""),
 		},
 	}
 	if !cmp.Equal(checkRun, want) {
@@ -210,15 +210,15 @@ func TestChecksService_ListCheckRunAnnotations(t *testing.T) {
 	}
 
 	want := []*CheckRunAnnotation{{
-		Path:            Ptr("README.md"),
-		StartLine:       Ptr(2),
-		EndLine:         Ptr(2),
-		StartColumn:     Ptr(1),
-		EndColumn:       Ptr(5),
-		AnnotationLevel: Ptr("warning"),
-		Message:         Ptr("Check your spelling for 'banaas'."),
-		Title:           Ptr("Spell check"),
-		RawDetails:      Ptr("Do you mean 'bananas' or 'banana'?"),
+		Path:            new("README.md"),
+		StartLine:       new(2),
+		EndLine:         new(2),
+		StartColumn:     new(1),
+		EndColumn:       new(5),
+		AnnotationLevel: new("warning"),
+		Message:         new("Check your spelling for 'banaas'."),
+		Title:           new("Spell check"),
+		RawDetails:      new("Do you mean 'bananas' or 'banana'?"),
 	}}
 
 	if !cmp.Equal(checkRunAnnotations, want) {
@@ -259,12 +259,12 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	updateCheckRunOpt := UpdateCheckRunOptions{
 		Name:        "testUpdateCheckRun",
-		Status:      Ptr("completed"),
+		Status:      new("completed"),
 		CompletedAt: &Timestamp{startedAt},
 		Output: &CheckRunOutput{
-			Title:   Ptr("Mighty test report"),
-			Summary: Ptr("There are 0 failures, 2 warnings and 1 notice"),
-			Text:    Ptr("You may have misspelled some words."),
+			Title:   new("Mighty test report"),
+			Summary: new("There are 0 failures, 2 warnings and 1 notice"),
+			Text:    new("You may have misspelled some words."),
 		},
 	}
 
@@ -275,16 +275,16 @@ func TestChecksService_UpdateCheckRun(t *testing.T) {
 	}
 
 	want := &CheckRun{
-		ID:          Ptr(int64(1)),
-		Status:      Ptr("completed"),
+		ID:          new(int64(1)),
+		Status:      new("completed"),
 		StartedAt:   &Timestamp{startedAt},
 		CompletedAt: &Timestamp{startedAt},
-		Conclusion:  Ptr("neutral"),
-		Name:        Ptr("testUpdateCheckRun"),
+		Conclusion:  new("neutral"),
+		Name:        new("testUpdateCheckRun"),
 		Output: &CheckRunOutput{
-			Title:   Ptr("Mighty test report"),
-			Summary: Ptr("There are 0 failures, 2 warnings and 1 notice"),
-			Text:    Ptr("You may have misspelled some words."),
+			Title:   new("Mighty test report"),
+			Summary: new("There are 0 failures, 2 warnings and 1 notice"),
+			Text:    new("You may have misspelled some words."),
 		},
 	}
 	if !cmp.Equal(checkRun, want) {
@@ -334,10 +334,10 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 	})
 
 	opt := &ListCheckRunsOptions{
-		CheckName:   Ptr("testing"),
-		Status:      Ptr("completed"),
-		Filter:      Ptr("all"),
-		AppID:       Ptr(int64(1)),
+		CheckName:   new("testing"),
+		Status:      new("completed"),
+		Filter:      new("all"),
+		AppID:       new(int64(1)),
 		ListOptions: ListOptions{Page: 1},
 	}
 	ctx := t.Context()
@@ -347,15 +347,15 @@ func TestChecksService_ListCheckRunsForRef(t *testing.T) {
 	}
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	want := &ListCheckRunsResults{
-		Total: Ptr(1),
+		Total: new(1),
 		CheckRuns: []*CheckRun{{
-			ID:          Ptr(int64(1)),
-			Status:      Ptr("completed"),
+			ID:          new(int64(1)),
+			Status:      new("completed"),
 			StartedAt:   &Timestamp{startedAt},
 			CompletedAt: &Timestamp{startedAt},
-			Conclusion:  Ptr("neutral"),
-			HeadSHA:     Ptr("deadbeef"),
-			App:         &App{ID: Ptr(int64(1))},
+			Conclusion:  new("neutral"),
+			HeadSHA:     new("deadbeef"),
+			App:         &App{ID: new(int64(1))},
 		}},
 	}
 
@@ -403,9 +403,9 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 	})
 
 	opt := &ListCheckRunsOptions{
-		CheckName:   Ptr("testing"),
-		Status:      Ptr("completed"),
-		Filter:      Ptr("all"),
+		CheckName:   new("testing"),
+		Status:      new("completed"),
+		Filter:      new("all"),
 		ListOptions: ListOptions{Page: 1},
 	}
 	ctx := t.Context()
@@ -415,14 +415,14 @@ func TestChecksService_ListCheckRunsCheckSuite(t *testing.T) {
 	}
 	startedAt, _ := time.Parse(time.RFC3339, "2018-05-04T01:14:52Z")
 	want := &ListCheckRunsResults{
-		Total: Ptr(1),
+		Total: new(1),
 		CheckRuns: []*CheckRun{{
-			ID:          Ptr(int64(1)),
-			Status:      Ptr("completed"),
+			ID:          new(int64(1)),
+			Status:      new("completed"),
 			StartedAt:   &Timestamp{startedAt},
 			CompletedAt: &Timestamp{startedAt},
-			Conclusion:  Ptr("neutral"),
-			HeadSHA:     Ptr("deadbeef"),
+			Conclusion:  new("neutral"),
+			HeadSHA:     new("deadbeef"),
 		}},
 	}
 
@@ -470,8 +470,8 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 	})
 
 	opt := &ListCheckSuiteOptions{
-		CheckName:   Ptr("testing"),
-		AppID:       Ptr(int64(2)),
+		CheckName:   new("testing"),
+		AppID:       new(int64(2)),
 		ListOptions: ListOptions{Page: 1},
 	}
 	ctx := t.Context()
@@ -480,15 +480,15 @@ func TestChecksService_ListCheckSuiteForRef(t *testing.T) {
 		t.Errorf("Checks.ListCheckSuitesForRef return error: %v", err)
 	}
 	want := &ListCheckSuiteResults{
-		Total: Ptr(1),
+		Total: new(1),
 		CheckSuites: []*CheckSuite{{
-			ID:         Ptr(int64(1)),
-			Status:     Ptr("completed"),
-			Conclusion: Ptr("neutral"),
-			HeadSHA:    Ptr("deadbeef"),
-			HeadBranch: Ptr("master"),
-			BeforeSHA:  Ptr("deadbeefb"),
-			AfterSHA:   Ptr("deadbeefa"),
+			ID:         new(int64(1)),
+			Status:     new("completed"),
+			Conclusion: new("neutral"),
+			HeadSHA:    new("deadbeef"),
+			HeadBranch: new("master"),
+			BeforeSHA:  new("deadbeefb"),
+			AfterSHA:   new("deadbeefa"),
 		}},
 	}
 
@@ -516,8 +516,8 @@ func TestChecksService_SetCheckSuitePreferences(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	a := []*AutoTriggerCheck{{
-		AppID:   Ptr(int64(2)),
-		Setting: Ptr(false),
+		AppID:   new(int64(2)),
+		Setting: new(false),
 	}}
 	opt := CheckSuitePreferenceOptions{AutoTriggerChecks: a}
 
@@ -579,7 +579,7 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 
 	checkSuiteOpt := CreateCheckSuiteOptions{
 		HeadSHA:    "deadbeef",
-		HeadBranch: Ptr("master"),
+		HeadBranch: new("master"),
 	}
 
 	ctx := t.Context()
@@ -589,13 +589,13 @@ func TestChecksService_CreateCheckSuite(t *testing.T) {
 	}
 
 	want := &CheckSuite{
-		ID:         Ptr(int64(2)),
-		Status:     Ptr("completed"),
-		HeadSHA:    Ptr("deadbeef"),
-		HeadBranch: Ptr("master"),
-		Conclusion: Ptr("neutral"),
-		BeforeSHA:  Ptr("deadbeefb"),
-		AfterSHA:   Ptr("deadbeefa"),
+		ID:         new(int64(2)),
+		Status:     new("completed"),
+		HeadSHA:    new("deadbeef"),
+		HeadBranch: new("master"),
+		Conclusion: new("neutral"),
+		BeforeSHA:  new("deadbeefb"),
+		AfterSHA:   new("deadbeefa"),
 	}
 	if !cmp.Equal(checkSuite, want) {
 		t.Errorf("Checks.CreateCheckSuite return %+v, want %+v", checkSuite, want)

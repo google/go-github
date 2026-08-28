@@ -30,7 +30,7 @@ func TestOrganizationsService_ListAll(t *testing.T) {
 		t.Errorf("Organizations.ListAll returned error: %v", err)
 	}
 
-	want := []*Organization{{ID: Ptr(int64(4314092))}}
+	want := []*Organization{{ID: new(int64(4314092))}}
 	if !cmp.Equal(orgs, want) {
 		t.Errorf("Organizations.ListAll returned %+v, want %+v", orgs, want)
 	}
@@ -60,7 +60,7 @@ func TestOrganizationsService_List_authenticatedUser(t *testing.T) {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
 
-	want := []*Organization{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*Organization{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
@@ -97,7 +97,7 @@ func TestOrganizationsService_List_specifiedUser(t *testing.T) {
 		t.Errorf("Organizations.List returned error: %v", err)
 	}
 
-	want := []*Organization{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*Organization{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(orgs, want) {
 		t.Errorf("Organizations.List returned %+v, want %+v", orgs, want)
 	}
@@ -142,7 +142,7 @@ func TestOrganizationsService_Get(t *testing.T) {
 		t.Errorf("Organizations.Get returned error: %v", err)
 	}
 
-	want := &Organization{ID: Ptr(int64(1)), Login: Ptr("l"), URL: Ptr("u"), AvatarURL: Ptr("a"), Location: Ptr("l")}
+	want := &Organization{ID: new(int64(1)), Login: new("l"), URL: new("u"), AvatarURL: new("a"), Location: new("l")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.Get returned %+v, want %+v", org, want)
 	}
@@ -186,7 +186,7 @@ func TestOrganizationsService_GetByID(t *testing.T) {
 		t.Fatalf("Organizations.GetByID returned error: %v", err)
 	}
 
-	want := &Organization{ID: Ptr(int64(1)), Login: Ptr("l"), URL: Ptr("u"), AvatarURL: Ptr("a"), Location: Ptr("l")}
+	want := &Organization{ID: new(int64(1)), Login: new("l"), URL: new("u"), AvatarURL: new("a"), Location: new("l")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.GetByID returned %+v, want %+v", org, want)
 	}
@@ -210,7 +210,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Organization{Login: Ptr("l")}
+	input := &Organization{Login: new("l")}
 
 	mux.HandleFunc("/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		testHeader(t, r, "Accept", mediaTypeMemberAllowedRepoCreationTypePreview)
@@ -226,7 +226,7 @@ func TestOrganizationsService_Edit(t *testing.T) {
 		t.Errorf("Organizations.Edit returned error: %v", err)
 	}
 
-	want := &Organization{ID: Ptr(int64(1))}
+	want := &Organization{ID: new(int64(1))}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Organizations.Edit returned %+v, want %+v", org, want)
 	}
@@ -295,7 +295,7 @@ func TestOrganizationsService_ListInstallations(t *testing.T) {
 		t.Errorf("Organizations.ListInstallations returned error: %v", err)
 	}
 
-	want := &OrganizationInstallations{TotalCount: Ptr(1), Installations: []*Installation{{ID: Ptr(int64(1)), AppID: Ptr(int64(5))}}}
+	want := &OrganizationInstallations{TotalCount: new(1), Installations: []*Installation{{ID: new(int64(1)), AppID: new(int64(5))}}}
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListInstallations returned %+v, want %+v", apps, want)
 	}
@@ -340,7 +340,7 @@ func TestOrganizationsService_ListInstallations_withListOptions(t *testing.T) {
 		t.Errorf("Organizations.ListInstallations returned error: %v", err)
 	}
 
-	want := &OrganizationInstallations{TotalCount: Ptr(2), Installations: []*Installation{{ID: Ptr(int64(2)), AppID: Ptr(int64(10))}}}
+	want := &OrganizationInstallations{TotalCount: new(2), Installations: []*Installation{{ID: new(int64(2)), AppID: new(int64(10))}}}
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListInstallations returned %+v, want %+v", apps, want)
 	}

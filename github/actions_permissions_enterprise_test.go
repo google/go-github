@@ -27,7 +27,7 @@ func TestActionsService_GetActionsPermissionsInEnterprise(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.GetActionsPermissionsInEnterprise returned error: %v", err)
 	}
-	want := &ActionsPermissionsEnterprise{EnabledOrganizations: Ptr("all"), AllowedActions: Ptr("all")}
+	want := &ActionsPermissionsEnterprise{EnabledOrganizations: new("all"), AllowedActions: new("all")}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.GetActionsPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -51,7 +51,7 @@ func TestActionsService_UpdateActionsPermissionsInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsPermissionsEnterprise{EnabledOrganizations: Ptr("all"), AllowedActions: Ptr("selected")}
+	input := &ActionsPermissionsEnterprise{EnabledOrganizations: new("all"), AllowedActions: new("selected")}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -65,7 +65,7 @@ func TestActionsService_UpdateActionsPermissionsInEnterprise(t *testing.T) {
 		t.Errorf("Actions.UpdateActionsPermissionsInEnterprise returned error: %v", err)
 	}
 
-	want := &ActionsPermissionsEnterprise{EnabledOrganizations: Ptr("all"), AllowedActions: Ptr("selected")}
+	want := &ActionsPermissionsEnterprise{EnabledOrganizations: new("all"), AllowedActions: new("selected")}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.UpdateActionsPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -107,8 +107,8 @@ func TestActionsService_ListEnabledOrgsInEnterprise(t *testing.T) {
 	}
 
 	want := &ActionsEnabledOnEnterpriseRepos{TotalCount: int(2), Organizations: []*Organization{
-		{ID: Ptr(int64(2))},
-		{ID: Ptr(int64(3))},
+		{ID: new(int64(2))},
+		{ID: new(int64(3))},
 	}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Actions.ListEnabledOrgsInEnterprise returned %+v, want %+v", got, want)
@@ -232,7 +232,7 @@ func TestActionsService_GetActionsAllowedInEnterprise(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.GetActionsAllowedInEnterprise returned error: %v", err)
 	}
-	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.GetActionsAllowedInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -256,7 +256,7 @@ func TestActionsService_UpdateActionsAllowedInEnterprise(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	input := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -270,7 +270,7 @@ func TestActionsService_UpdateActionsAllowedInEnterprise(t *testing.T) {
 		t.Errorf("Actions.UpdateActionsAllowedInEnterprise returned error: %v", err)
 	}
 
-	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.UpdateActionsAllowedInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -304,7 +304,7 @@ func TestActionsService_GetDefaultWorkflowPermissionsInEnterprise(t *testing.T) 
 	if err != nil {
 		t.Errorf("Actions.GetDefaultWorkflowPermissionsInEnterprise returned error: %v", err)
 	}
-	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
+	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: new("read"), CanApprovePullRequestReviews: new(true)}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.GetDefaultWorkflowPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -328,7 +328,7 @@ func TestActionsService_UpdateDefaultWorkflowPermissionsInEnterprise(t *testing.
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
+	input := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: new("read"), CanApprovePullRequestReviews: new(true)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -342,7 +342,7 @@ func TestActionsService_UpdateDefaultWorkflowPermissionsInEnterprise(t *testing.
 		t.Errorf("Actions.UpdateDefaultWorkflowPermissionsInEnterprise returned error: %v", err)
 	}
 
-	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
+	want := &DefaultWorkflowPermissionEnterprise{DefaultWorkflowPermissions: new("read"), CanApprovePullRequestReviews: new(true)}
 	if !cmp.Equal(ent, want) {
 		t.Errorf("Actions.UpdateDefaultWorkflowPermissionsInEnterprise returned %+v, want %+v", ent, want)
 	}
@@ -378,8 +378,8 @@ func TestActionsService_GetArtifactAndLogRetentionPeriodInEnterprise(t *testing.
 	}
 
 	want := &ArtifactPeriod{
-		Days:               Ptr(90),
-		MaximumAllowedDays: Ptr(365),
+		Days:               new(90),
+		MaximumAllowedDays: new(365),
 	}
 	if !cmp.Equal(period, want) {
 		t.Errorf("Actions.GetArtifactAndLogRetentionPeriodInEnterprise = %+v, want %+v", period, want)
@@ -404,7 +404,7 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInEnterprise(t *testi
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactPeriodOpt{Days: Ptr(90)}
+	input := &ArtifactPeriodOpt{Days: new(90)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -447,7 +447,7 @@ func TestActionsService_GetSelfHostedRunnerPermissionsInEnterprise(t *testing.T)
 	if err != nil {
 		t.Errorf("Actions.GetSelfHostedRunnerPermissionsInEnterprise returned error: %v", err)
 	}
-	want := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: Ptr(true)}
+	want := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: new(true)}
 	if !cmp.Equal(permissions, want) {
 		t.Errorf("Actions.GetSelfHostedRunnerPermissionsInEnterprise returned %+v, want %+v", permissions, want)
 	}
@@ -471,7 +471,7 @@ func TestActionsService_UpdateSelfHostedRunnerPermissionsInEnterprise(t *testing
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: Ptr(false)}
+	input := &SelfHostRunnerPermissionsEnterprise{DisableSelfHostedRunnersForAllOrgs: new(false)}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -515,10 +515,10 @@ func TestActionsService_GetPrivateRepoForkPRWorkflowSettingsInEnterprise(t *test
 		t.Errorf("Actions.GetPrivateRepoForkPRWorkflowSettingsInEnterprise returned error: %v", err)
 	}
 	want := &WorkflowsPermissions{
-		RunWorkflowsFromForkPullRequests:  Ptr(true),
-		SendWriteTokensToWorkflows:        Ptr(false),
-		SendSecretsAndVariables:           Ptr(true),
-		RequireApprovalForForkPRWorkflows: Ptr(false),
+		RunWorkflowsFromForkPullRequests:  new(true),
+		SendWriteTokensToWorkflows:        new(false),
+		SendSecretsAndVariables:           new(true),
+		RequireApprovalForForkPRWorkflows: new(false),
 	}
 	if !cmp.Equal(permissions, want) {
 		t.Errorf("Actions.GetPrivateRepoForkPRWorkflowSettingsInEnterprise returned %+v, want %+v", permissions, want)
@@ -545,8 +545,8 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInEnterprise(t *t
 
 	input := &WorkflowsPermissionsOpt{
 		RunWorkflowsFromForkPullRequests: true,
-		SendWriteTokensToWorkflows:       Ptr(false),
-		SendSecretsAndVariables:          Ptr(true),
+		SendWriteTokensToWorkflows:       new(false),
+		SendSecretsAndVariables:          new(true),
 	}
 
 	mux.HandleFunc("/enterprises/e/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {

@@ -34,8 +34,8 @@ func TestGitService_GetBlob(t *testing.T) {
 	}
 
 	want := Blob{
-		SHA:     Ptr("s"),
-		Content: Ptr("blob content"),
+		SHA:     new("s"),
+		Content: new("blob content"),
 	}
 
 	if !cmp.Equal(*blob, want) {
@@ -108,10 +108,10 @@ func TestGitService_CreateBlob(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := Blob{
-		SHA:      Ptr("s"),
-		Content:  Ptr("blob content"),
-		Encoding: Ptr("utf-8"),
-		Size:     Ptr(12),
+		SHA:      new("s"),
+		Content:  new("blob content"),
+		Encoding: new("utf-8"),
+		Size:     new(12),
 	}
 
 	mux.HandleFunc("/repos/o/r/git/blobs", func(w http.ResponseWriter, r *http.Request) {

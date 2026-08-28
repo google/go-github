@@ -360,18 +360,18 @@ func newTestServer(t *testing.T, ref string, files map[string]any) *httptest.Ser
 	server := httptest.NewServer(mux)
 	mux.HandleFunc(
 		path.Join(repoPath, "commits", ref),
-		jsonHandler(emptyQuery, &github.RepositoryCommit{SHA: github.Ptr("s")}),
+		jsonHandler(emptyQuery, &github.RepositoryCommit{SHA: new("s")}),
 	)
 	var descriptionsContent []*github.RepositoryContent
 	for name, content := range files {
 		descriptionsContent = append(descriptionsContent, &github.RepositoryContent{
-			Name: github.Ptr(path.Base(path.Dir(name))),
+			Name: new(path.Base(path.Dir(name))),
 		})
 		mux.HandleFunc(
 			path.Join(repoPath, "contents/descriptions", name),
 			jsonHandler(refQuery, &github.RepositoryContent{
-				Name:        github.Ptr(path.Base(name)),
-				DownloadURL: github.Ptr(server.URL + "/dl/" + name),
+				Name:        new(path.Base(name)),
+				DownloadURL: new(server.URL + "/dl/" + name),
 			}),
 		)
 		mux.HandleFunc(

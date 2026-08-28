@@ -687,7 +687,7 @@ func ({{.RecvVar}} *{{.RecvType}}) {{.IterMethod}}({{.Args}}) iter.Seq2[{{.Retur
 		if {{.OptsName}} == nil {
 			{{.OptsName}} = &{{.OptsType}}{}
 		} else {
-			{{.OptsName}} = Ptr(*{{.OptsName}})
+			{{.OptsName}} = new(*{{.OptsName}})
 		}
 
 		{{end}}

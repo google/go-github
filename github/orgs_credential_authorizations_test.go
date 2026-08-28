@@ -45,12 +45,12 @@ func TestOrganizationsService_ListCredentialAuthorizations(t *testing.T) {
 
 	want := []*CredentialAuthorization{
 		{
-			Login:                  Ptr("l"),
-			CredentialID:           Ptr(int64(1)),
-			CredentialType:         Ptr("t"),
+			Login:                  new("l"),
+			CredentialID:           new(int64(1)),
+			CredentialType:         new("t"),
 			CredentialAuthorizedAt: refTimestamp(1136178000),
 			CredentialAccessedAt:   refTimestamp(1136178001),
-			AuthorizedCredentialID: Ptr(int64(1)),
+			AuthorizedCredentialID: new(int64(1)),
 		},
 	}
 	if !cmp.Equal(creds, want) {

@@ -32,7 +32,7 @@ func TestRepositoriesService_ListCollaborators(t *testing.T) {
 		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
 	}
 
-	want := []*User{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*User{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(users, want) {
 		t.Errorf("Repositories.ListCollaborators returned %+v, want %+v", users, want)
 	}
@@ -72,7 +72,7 @@ func TestRepositoriesService_ListCollaborators_withAffiliation(t *testing.T) {
 		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
 	}
 
-	want := []*User{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*User{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(users, want) {
 		t.Errorf("Repositories.ListCollaborators returned %+v, want %+v", users, want)
 	}
@@ -112,7 +112,7 @@ func TestRepositoriesService_ListCollaborators_withPermission(t *testing.T) {
 		t.Errorf("Repositories.ListCollaborators returned error: %v", err)
 	}
 
-	want := []*User{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*User{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(users, want) {
 		t.Errorf("Repositories.ListCollaborators returned %+v, want %+v", users, want)
 	}
@@ -234,9 +234,9 @@ func TestRepositoryService_GetPermissionLevel(t *testing.T) {
 	}
 
 	want := &RepositoryPermissionLevel{
-		Permission: Ptr("admin"),
+		Permission: new("admin"),
 		User: &User{
-			Login: Ptr("u"),
+			Login: new("u"),
 		},
 	}
 
@@ -276,21 +276,21 @@ func TestRepositoriesService_AddCollaborator(t *testing.T) {
 		t.Errorf("Repositories.AddCollaborator returned error: %v", err)
 	}
 	want := &CollaboratorInvitation{
-		ID: Ptr(int64(1)),
+		ID: new(int64(1)),
 		Repo: &Repository{
-			ID:   Ptr(int64(1)),
-			URL:  Ptr("s"),
-			Name: Ptr("r"),
+			ID:   new(int64(1)),
+			URL:  new("s"),
+			Name: new("r"),
 		},
 		Invitee: &User{
-			Login: Ptr("u"),
+			Login: new("u"),
 		},
 		Inviter: &User{
-			Login: Ptr("o"),
+			Login: new("o"),
 		},
-		Permissions: Ptr("write"),
-		URL:         Ptr("https://api.github.com/user/repository_invitations/1296269"),
-		HTMLURL:     Ptr("https://github.com/octocat/Hello-World/invitations"),
+		Permissions: new("write"),
+		URL:         new("https://api.github.com/user/repository_invitations/1296269"),
+		HTMLURL:     new("https://github.com/octocat/Hello-World/invitations"),
 	}
 
 	if !cmp.Equal(collaboratorInvitation, want) {

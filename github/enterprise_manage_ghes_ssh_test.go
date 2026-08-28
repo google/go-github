@@ -32,8 +32,8 @@ func TestEnterpriseService_GetSSHKey(t *testing.T) {
 	}
 
 	want := []*ClusterSSHKey{{
-		Key:         Ptr("ssh-rsa 1234"),
-		Fingerprint: Ptr("bd"),
+		Key:         new("ssh-rsa 1234"),
+		Fingerprint: new("bd"),
 	}}
 	if !cmp.Equal(accessSSH, want) {
 		t.Errorf("Enterprise.GetSSHKey returned %+v, want %+v", accessSSH, want)
@@ -69,7 +69,7 @@ func TestEnterpriseService_DeleteSSHKey(t *testing.T) {
 		t.Errorf("Enterprise.DeleteSSHKey returned error: %v", err)
 	}
 
-	want := []*SSHKeyStatus{{Hostname: Ptr("primary"), UUID: Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: Ptr("SSH key removed successfully")}}
+	want := []*SSHKeyStatus{{Hostname: new("primary"), UUID: new("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: new("SSH key removed successfully")}}
 	if diff := cmp.Diff(want, sshStatus); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\n%v", diff)
 	}
@@ -104,7 +104,7 @@ func TestEnterpriseService_CreateSSHKey(t *testing.T) {
 		t.Errorf("Enterprise.CreateSSHKey returned error: %v", err)
 	}
 
-	want := []*SSHKeyStatus{{Hostname: Ptr("primary"), UUID: Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: Ptr("SSH key added successfully"), Modified: Ptr(true)}}
+	want := []*SSHKeyStatus{{Hostname: new("primary"), UUID: new("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: new("SSH key added successfully"), Modified: new(true)}}
 	if diff := cmp.Diff(want, sshStatus); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\n%v", diff)
 	}

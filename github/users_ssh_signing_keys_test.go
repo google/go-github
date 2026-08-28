@@ -30,7 +30,7 @@ func TestUsersService_ListSSHSigningKeys_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.ListSSHSigningKeys returned error: %v", err)
 	}
 
-	want := []*SSHSigningKey{{ID: Ptr(int64(1))}}
+	want := []*SSHSigningKey{{ID: new(int64(1))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListSSHSigningKeys returned %+v, want %+v", keys, want)
 	}
@@ -65,7 +65,7 @@ func TestUsersService_ListSSHSigningKeys_specifiedUser(t *testing.T) {
 		t.Errorf("Users.ListSSHSigningKeys returned error: %v", err)
 	}
 
-	want := []*SSHSigningKey{{ID: Ptr(int64(1))}}
+	want := []*SSHSigningKey{{ID: new(int64(1))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListSSHSigningKeys returned %+v, want %+v", keys, want)
 	}
@@ -95,7 +95,7 @@ func TestUsersService_GetSSHSigningKey(t *testing.T) {
 		t.Errorf("Users.GetSSHSigningKey returned error: %v", err)
 	}
 
-	want := &SSHSigningKey{ID: Ptr(int64(1))}
+	want := &SSHSigningKey{ID: new(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Users.GetSSHSigningKey returned %+v, want %+v", key, want)
 	}
@@ -119,7 +119,7 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CreateSSHSigningKeyRequest{Key: "k", Title: Ptr("t")}
+	input := CreateSSHSigningKeyRequest{Key: "k", Title: new("t")}
 
 	mux.HandleFunc("/user/ssh_signing_keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -133,7 +133,7 @@ func TestUsersService_CreateSSHSigningKey(t *testing.T) {
 		t.Errorf("Users.CreateSSHSigningKey returned error: %v", err)
 	}
 
-	want := &SSHSigningKey{ID: Ptr(int64(1))}
+	want := &SSHSigningKey{ID: new(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Users.CreateSSHSigningKey returned %+v, want %+v", key, want)
 	}
