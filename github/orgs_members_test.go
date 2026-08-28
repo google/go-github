@@ -39,7 +39,7 @@ func TestOrganizationsService_ListMembers(t *testing.T) {
 		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
 
-	want := []*User{{ID: Ptr(int64(1))}}
+	want := []*User{{ID: new(int64(1))}}
 	if !cmp.Equal(members, want) {
 		t.Errorf("Organizations.ListMembers returned %+v, want %+v", members, want)
 	}
@@ -84,7 +84,7 @@ func TestOrganizationsService_ListMembers_public(t *testing.T) {
 		t.Errorf("Organizations.ListMembers returned error: %v", err)
 	}
 
-	want := []*User{{ID: Ptr(int64(1))}}
+	want := []*User{{ID: new(int64(1))}}
 	if !cmp.Equal(members, want) {
 		t.Errorf("Organizations.ListMembers returned %+v, want %+v", members, want)
 	}
@@ -389,7 +389,7 @@ func TestOrganizationsService_ListOrgMemberships(t *testing.T) {
 		t.Errorf("Organizations.ListOrgMemberships returned error: %v", err)
 	}
 
-	want := []*Membership{{URL: Ptr("u")}}
+	want := []*Membership{{URL: new("u")}}
 	if !cmp.Equal(memberships, want) {
 		t.Errorf("Organizations.ListOrgMemberships returned %+v, want %+v", memberships, want)
 	}
@@ -419,7 +419,7 @@ func TestOrganizationsService_GetOrgMembership_AuthenticatedUser(t *testing.T) {
 		t.Errorf("Organizations.GetOrgMembership returned error: %v", err)
 	}
 
-	want := &Membership{URL: Ptr("u")}
+	want := &Membership{URL: new("u")}
 	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.GetOrgMembership returned %+v, want %+v", membership, want)
 	}
@@ -454,7 +454,7 @@ func TestOrganizationsService_GetOrgMembership_SpecifiedUser(t *testing.T) {
 		t.Errorf("Organizations.GetOrgMembership returned error: %v", err)
 	}
 
-	want := &Membership{URL: Ptr("u")}
+	want := &Membership{URL: new("u")}
 	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.GetOrgMembership returned %+v, want %+v", membership, want)
 	}
@@ -464,7 +464,7 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Membership{State: Ptr("active")}
+	input := &Membership{State: new("active")}
 
 	mux.HandleFunc("/user/memberships/orgs/o", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -478,7 +478,7 @@ func TestOrganizationsService_EditOrgMembership_AuthenticatedUser(t *testing.T) 
 		t.Errorf("Organizations.EditOrgMembership returned error: %v", err)
 	}
 
-	want := &Membership{URL: Ptr("u")}
+	want := &Membership{URL: new("u")}
 	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.EditOrgMembership returned %+v, want %+v", membership, want)
 	}
@@ -502,7 +502,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Membership{State: Ptr("active")}
+	input := &Membership{State: new("active")}
 
 	mux.HandleFunc("/orgs/o/memberships/u", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -516,7 +516,7 @@ func TestOrganizationsService_EditOrgMembership_SpecifiedUser(t *testing.T) {
 		t.Errorf("Organizations.EditOrgMembership returned error: %v", err)
 	}
 
-	want := &Membership{URL: Ptr("u")}
+	want := &Membership{URL: new("u")}
 	if !cmp.Equal(membership, want) {
 		t.Errorf("Organizations.EditOrgMembership returned %+v, want %+v", membership, want)
 	}
@@ -596,32 +596,32 @@ func TestOrganizationsService_ListPendingOrgInvitations(t *testing.T) {
 
 	want := []*Invitation{
 		{
-			ID:        Ptr(int64(1)),
-			Login:     Ptr("monalisa"),
-			Email:     Ptr("octocat@github.com"),
-			Role:      Ptr("direct_member"),
+			ID:        new(int64(1)),
+			Login:     new("monalisa"),
+			Email:     new("octocat@github.com"),
+			Role:      new("direct_member"),
 			CreatedAt: &referenceTimestamp,
 			Inviter: &User{
-				Login:             Ptr("other_user"),
-				ID:                Ptr(int64(1)),
-				AvatarURL:         Ptr("https://github.com/images/error/other_user_happy.gif"),
-				GravatarID:        Ptr(""),
-				URL:               Ptr("https://api.github.com/users/other_user"),
-				HTMLURL:           Ptr("https://github.com/other_user"),
-				FollowersURL:      Ptr("https://api.github.com/users/other_user/followers"),
-				FollowingURL:      Ptr("https://api.github.com/users/other_user/following/other_user"),
-				GistsURL:          Ptr("https://api.github.com/users/other_user/gists/gist_id"),
-				StarredURL:        Ptr("https://api.github.com/users/other_user/starred/owner/repo"),
-				SubscriptionsURL:  Ptr("https://api.github.com/users/other_user/subscriptions"),
-				OrganizationsURL:  Ptr("https://api.github.com/users/other_user/orgs"),
-				ReposURL:          Ptr("https://api.github.com/users/other_user/repos"),
-				EventsURL:         Ptr("https://api.github.com/users/other_user/events/privacy"),
-				ReceivedEventsURL: Ptr("https://api.github.com/users/other_user/received_events/privacy"),
-				Type:              Ptr("User"),
-				SiteAdmin:         Ptr(false),
+				Login:             new("other_user"),
+				ID:                new(int64(1)),
+				AvatarURL:         new("https://github.com/images/error/other_user_happy.gif"),
+				GravatarID:        new(""),
+				URL:               new("https://api.github.com/users/other_user"),
+				HTMLURL:           new("https://github.com/other_user"),
+				FollowersURL:      new("https://api.github.com/users/other_user/followers"),
+				FollowingURL:      new("https://api.github.com/users/other_user/following/other_user"),
+				GistsURL:          new("https://api.github.com/users/other_user/gists/gist_id"),
+				StarredURL:        new("https://api.github.com/users/other_user/starred/owner/repo"),
+				SubscriptionsURL:  new("https://api.github.com/users/other_user/subscriptions"),
+				OrganizationsURL:  new("https://api.github.com/users/other_user/orgs"),
+				ReposURL:          new("https://api.github.com/users/other_user/repos"),
+				EventsURL:         new("https://api.github.com/users/other_user/events/privacy"),
+				ReceivedEventsURL: new("https://api.github.com/users/other_user/received_events/privacy"),
+				Type:              new("User"),
+				SiteAdmin:         new(false),
 			},
-			TeamCount:         Ptr(2),
-			InvitationTeamURL: Ptr("https://api.github.com/organizations/2/invitations/1/teams"),
+			TeamCount:         new(2),
+			InvitationTeamURL: new("https://api.github.com/organizations/2/invitations/1/teams"),
 		},
 	}
 
@@ -649,8 +649,8 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &CreateOrgInvitationOptions{
-		Email: Ptr("octocat@github.com"),
-		Role:  Ptr("direct_member"),
+		Email: new("octocat@github.com"),
+		Role:  new("direct_member"),
 		TeamID: []int64{
 			12,
 			26,
@@ -669,7 +669,7 @@ func TestOrganizationsService_CreateOrgInvitation(t *testing.T) {
 		t.Errorf("Organizations.CreateOrgInvitation returned error: %v", err)
 	}
 
-	want := &Invitation{Email: Ptr("octocat@github.com")}
+	want := &Invitation{Email: new("octocat@github.com")}
 	if !cmp.Equal(invitations, want) {
 		t.Errorf("Organizations.CreateOrgInvitation returned %+v, want %+v", invitations, want)
 	}
@@ -720,15 +720,15 @@ func TestOrganizationsService_ListOrgInvitationTeams(t *testing.T) {
 
 	want := []*Team{
 		{
-			ID:              Ptr(int64(1)),
-			URL:             Ptr("https://api.github.com/teams/1"),
-			Name:            Ptr("Justice League"),
-			Slug:            Ptr("justice-league"),
-			Description:     Ptr("A great team."),
-			Privacy:         Ptr("closed"),
-			Permission:      Ptr("admin"),
-			MembersURL:      Ptr("https://api.github.com/teams/1/members{/member}"),
-			RepositoriesURL: Ptr("https://api.github.com/teams/1/repos"),
+			ID:              new(int64(1)),
+			URL:             new("https://api.github.com/teams/1"),
+			Name:            new("Justice League"),
+			Slug:            new("justice-league"),
+			Description:     new("A great team."),
+			Privacy:         new("closed"),
+			Permission:      new("admin"),
+			MembersURL:      new("https://api.github.com/teams/1/members{/member}"),
+			RepositoriesURL: new("https://api.github.com/teams/1/repos"),
 		},
 	}
 
@@ -803,36 +803,36 @@ func TestOrganizationsService_ListFailedOrgInvitations(t *testing.T) {
 
 	want := []*Invitation{
 		{
-			ID:           Ptr(int64(1)),
-			Login:        Ptr("monalisa"),
-			NodeID:       Ptr("MDQ6VXNlcjE="),
-			Email:        Ptr("octocat@github.com"),
-			Role:         Ptr("direct_member"),
+			ID:           new(int64(1)),
+			Login:        new("monalisa"),
+			NodeID:       new("MDQ6VXNlcjE="),
+			Email:        new("octocat@github.com"),
+			Role:         new("direct_member"),
 			CreatedAt:    refTimestamp(1136178000),
 			FailedAt:     refTimestamp(1136178001),
-			FailedReason: Ptr("the reason"),
+			FailedReason: new("the reason"),
 			Inviter: &User{
-				Login:             Ptr("other_user"),
-				ID:                Ptr(int64(1)),
-				NodeID:            Ptr("MDQ6VXNlcjE="),
-				AvatarURL:         Ptr("https://github.com/images/error/other_user_happy.gif"),
-				GravatarID:        Ptr(""),
-				URL:               Ptr("https://api.github.com/users/other_user"),
-				HTMLURL:           Ptr("https://github.com/other_user"),
-				FollowersURL:      Ptr("https://api.github.com/users/other_user/followers"),
-				FollowingURL:      Ptr("https://api.github.com/users/other_user/following{/other_user}"),
-				GistsURL:          Ptr("https://api.github.com/users/other_user/gists{/gist_id}"),
-				StarredURL:        Ptr("https://api.github.com/users/other_user/starred{/owner}{/repo}"),
-				SubscriptionsURL:  Ptr("https://api.github.com/users/other_user/subscriptions"),
-				OrganizationsURL:  Ptr("https://api.github.com/users/other_user/orgs"),
-				ReposURL:          Ptr("https://api.github.com/users/other_user/repos"),
-				EventsURL:         Ptr("https://api.github.com/users/other_user/events{/privacy}"),
-				ReceivedEventsURL: Ptr("https://api.github.com/users/other_user/received_events"),
-				Type:              Ptr("User"),
-				SiteAdmin:         Ptr(false),
+				Login:             new("other_user"),
+				ID:                new(int64(1)),
+				NodeID:            new("MDQ6VXNlcjE="),
+				AvatarURL:         new("https://github.com/images/error/other_user_happy.gif"),
+				GravatarID:        new(""),
+				URL:               new("https://api.github.com/users/other_user"),
+				HTMLURL:           new("https://github.com/other_user"),
+				FollowersURL:      new("https://api.github.com/users/other_user/followers"),
+				FollowingURL:      new("https://api.github.com/users/other_user/following{/other_user}"),
+				GistsURL:          new("https://api.github.com/users/other_user/gists{/gist_id}"),
+				StarredURL:        new("https://api.github.com/users/other_user/starred{/owner}{/repo}"),
+				SubscriptionsURL:  new("https://api.github.com/users/other_user/subscriptions"),
+				OrganizationsURL:  new("https://api.github.com/users/other_user/orgs"),
+				ReposURL:          new("https://api.github.com/users/other_user/repos"),
+				EventsURL:         new("https://api.github.com/users/other_user/events{/privacy}"),
+				ReceivedEventsURL: new("https://api.github.com/users/other_user/received_events"),
+				Type:              new("User"),
+				SiteAdmin:         new(false),
 			},
-			TeamCount:         Ptr(2),
-			InvitationTeamURL: Ptr("https://api.github.com/organizations/2/invitations/1/teams"),
+			TeamCount:         new(2),
+			InvitationTeamURL: new("https://api.github.com/organizations/2/invitations/1/teams"),
 		},
 	}
 

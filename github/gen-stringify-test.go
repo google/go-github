@@ -59,13 +59,13 @@ var (
 			switch v {
 			case "false":
 				return "false"
-			case "Ptr(false)":
+			case "new(false)":
 				return "false"
-			case "Ptr(0.0)":
+			case "new(0.0)":
 				return "0"
-			case "0", "Ptr(0)", "Ptr(int64(0))":
+			case "0", "new(0)", "new(int64(0))":
 				return "0"
-			case `""`, `Ptr("")`:
+			case `""`, `new("")`:
 				return `""`
 			case "Timestamp{}", "&Timestamp{}":
 				return "github.Timestamp{0001-01-01 00:00:00 +0000 UTC}"
@@ -287,15 +287,15 @@ func (t *templateData) addIdentPtr(x *ast.Ident, receiverType, fieldName string)
 	var namedStruct bool
 	switch x.String() {
 	case "int":
-		zeroValue = "Ptr(0)"
+		zeroValue = "new(0)"
 	case "int64":
-		zeroValue = "Ptr(int64(0))"
+		zeroValue = "new(int64(0))"
 	case "float64":
-		zeroValue = "Ptr(0.0)"
+		zeroValue = "new(0.0)"
 	case "string":
-		zeroValue = `Ptr("")`
+		zeroValue = `new("")`
 	case "bool":
-		zeroValue = "Ptr(false)"
+		zeroValue = "new(false)"
 	case "Timestamp":
 		zeroValue = "&Timestamp{}"
 	default:

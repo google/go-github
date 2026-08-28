@@ -15,7 +15,7 @@ import (
 
 func TestLicenses_ListIter(t *testing.T) {
 	opts := &github.ListLicensesOptions{
-		Featured: github.Ptr(true),
+		Featured: new(true),
 		ListOptions: github.ListOptions{
 			Page:    1,
 			PerPage: 1,

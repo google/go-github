@@ -30,8 +30,8 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 	})
 
 	opt := &IssueListCommentsOptions{
-		Sort:        Ptr("updated"),
-		Direction:   Ptr("desc"),
+		Sort:        new("updated"),
+		Direction:   new("desc"),
 		Since:       &referenceTime,
 		ListOptions: ListOptions{Page: 2},
 	}
@@ -41,7 +41,7 @@ func TestIssuesService_ListComments_allIssues(t *testing.T) {
 		t.Errorf("Issues.ListComments returned error: %v", err)
 	}
 
-	want := []*IssueComment{{ID: Ptr(int64(1))}}
+	want := []*IssueComment{{ID: new(int64(1))}}
 	if !cmp.Equal(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -77,7 +77,7 @@ func TestIssuesService_ListComments_specificIssue(t *testing.T) {
 		t.Errorf("Issues.ListComments returned error: %v", err)
 	}
 
-	want := []*IssueComment{{ID: Ptr(int64(1))}}
+	want := []*IssueComment{{ID: new(int64(1))}}
 	if !cmp.Equal(comments, want) {
 		t.Errorf("Issues.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -122,7 +122,7 @@ func TestIssuesService_GetComment(t *testing.T) {
 		t.Errorf("Issues.GetComment returned error: %v", err)
 	}
 
-	want := &IssueComment{ID: Ptr(int64(1))}
+	want := &IssueComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -169,7 +169,7 @@ func TestIssuesService_CreateComment(t *testing.T) {
 		t.Errorf("Issues.CreateComment returned error: %v", err)
 	}
 
-	want := &IssueComment{ID: Ptr(int64(1))}
+	want := &IssueComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -216,7 +216,7 @@ func TestIssuesService_UpdateComment(t *testing.T) {
 		t.Errorf("Issues.UpdateComment returned error: %v", err)
 	}
 
-	want := &IssueComment{ID: Ptr(int64(1))}
+	want := &IssueComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Issues.UpdateComment returned %+v, want %+v", comment, want)
 	}

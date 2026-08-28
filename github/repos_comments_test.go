@@ -31,7 +31,7 @@ func TestRepositoriesService_ListComments(t *testing.T) {
 		t.Errorf("Repositories.ListComments returned error: %v", err)
 	}
 
-	want := []*RepositoryComment{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*RepositoryComment{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(comments, want) {
 		t.Errorf("Repositories.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -78,7 +78,7 @@ func TestRepositoriesService_ListCommitComments(t *testing.T) {
 		t.Errorf("Repositories.ListCommitComments returned error: %v", err)
 	}
 
-	want := []*RepositoryComment{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*RepositoryComment{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(comments, want) {
 		t.Errorf("Repositories.ListCommitComments returned %+v, want %+v", comments, want)
 	}
@@ -111,7 +111,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &RepositoryComment{Body: Ptr("b")}
+	input := &RepositoryComment{Body: new("b")}
 
 	mux.HandleFunc("/repos/o/r/commits/s/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -125,7 +125,7 @@ func TestRepositoriesService_CreateComment(t *testing.T) {
 		t.Errorf("Repositories.CreateComment returned error: %v", err)
 	}
 
-	want := &RepositoryComment{ID: Ptr(int64(1))}
+	want := &RepositoryComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Repositories.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -170,7 +170,7 @@ func TestRepositoriesService_GetComment(t *testing.T) {
 		t.Errorf("Repositories.GetComment returned error: %v", err)
 	}
 
-	want := &RepositoryComment{ID: Ptr(int64(1))}
+	want := &RepositoryComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Repositories.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -203,7 +203,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &RepositoryComment{Body: Ptr("b")}
+	input := &RepositoryComment{Body: new("b")}
 
 	mux.HandleFunc("/repos/o/r/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -218,7 +218,7 @@ func TestRepositoriesService_UpdateComment(t *testing.T) {
 		t.Errorf("Repositories.UpdateComment returned error: %v", err)
 	}
 
-	want := &RepositoryComment{ID: Ptr(int64(1))}
+	want := &RepositoryComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Repositories.UpdateComment returned %+v, want %+v", comment, want)
 	}

@@ -39,9 +39,9 @@ func TestSearchService_Repositories(t *testing.T) {
 	}
 
 	want := &RepositoriesSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(false),
-		Repositories:      []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}},
+		Total:             new(4),
+		IncompleteResults: new(false),
+		Repositories:      []*Repository{{ID: new(int64(1))}, {ID: new(int64(2))}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Repositories returned %+v, want %+v", result, want)
@@ -130,18 +130,18 @@ func TestSearchService_RepositoriesTextMatch(t *testing.T) {
 	}
 
 	wantedRepoResult := &Repository{
-		Name: Ptr("gopher1"),
+		Name: new("gopher1"),
 		TextMatches: []*TextMatch{
 			{
-				Fragment: Ptr("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
-				Matches:  []*Match{{Text: Ptr("gopher"), Indices: []int{14, 21}}},
+				Fragment: new("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
+				Matches:  []*Match{{Text: new("gopher"), Indices: []int{14, 21}}},
 			},
 		},
 	}
 
 	want := &RepositoriesSearchResult{
-		Total:             Ptr(1),
-		IncompleteResults: Ptr(false),
+		Total:             new(1),
+		IncompleteResults: new(false),
 		Repositories:      []*Repository{wantedRepoResult},
 	}
 	if !cmp.Equal(result, want) {
@@ -172,9 +172,9 @@ func TestSearchService_Topics(t *testing.T) {
 	}
 
 	want := &TopicsSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(false),
-		Topics:            []*TopicResult{{Name: Ptr("blah")}, {Name: Ptr("blahblah")}},
+		Total:             new(4),
+		IncompleteResults: new(false),
+		Topics:            []*TopicResult{{Name: new("blah")}, {Name: new("blahblah")}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Topics returned %+v, want %+v", result, want)
@@ -225,9 +225,9 @@ func TestSearchService_Commits(t *testing.T) {
 	}
 
 	want := &CommitsSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(false),
-		Commits:           []*CommitResult{{SHA: Ptr("random_hash1")}, {SHA: Ptr("random_hash2")}},
+		Total:             new(4),
+		IncompleteResults: new(false),
+		Commits:           []*CommitResult{{SHA: new("random_hash1")}, {SHA: new("random_hash2")}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Commits returned %+v, want %+v", result, want)
@@ -280,9 +280,9 @@ func TestSearchService_Issues(t *testing.T) {
 	}
 
 	want := &IssuesSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(true),
-		Issues:            []*Issue{{Number: Ptr(1)}, {Number: Ptr(2)}},
+		Total:             new(4),
+		IncompleteResults: new(true),
+		Issues:            []*Issue{{Number: new(1)}, {Number: new(2)}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
@@ -315,7 +315,7 @@ func TestSearchService_Issues_advancedSearch(t *testing.T) {
 		fmt.Fprint(w, `{"total_count": 4, "incomplete_results": true, "items": [{"number":1},{"number":2}]}`)
 	})
 
-	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}, AdvancedSearch: Ptr(true)}
+	opts := &SearchOptions{Sort: "forks", Order: "desc", ListOptions: ListOptions{Page: 2, PerPage: 2}, AdvancedSearch: new(true)}
 	ctx := t.Context()
 	result, _, err := client.Search.Issues(ctx, "blah", opts)
 	if err != nil {
@@ -323,9 +323,9 @@ func TestSearchService_Issues_advancedSearch(t *testing.T) {
 	}
 
 	want := &IssuesSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(true),
-		Issues:            []*Issue{{Number: Ptr(1)}, {Number: Ptr(2)}},
+		Total:             new(4),
+		IncompleteResults: new(true),
+		Issues:            []*Issue{{Number: new(1)}, {Number: new(2)}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues_advancedSearch returned %+v, want %+v", result, want)
@@ -358,10 +358,10 @@ func TestSearchService_Issues_searchType(t *testing.T) {
 	}
 
 	want := &IssuesSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(true),
-		SearchType:        Ptr("hybrid"),
-		Issues:            []*Issue{{Number: Ptr(1)}, {Number: Ptr(2)}},
+		Total:             new(4),
+		IncompleteResults: new(true),
+		SearchType:        new("hybrid"),
+		Issues:            []*Issue{{Number: new(1)}, {Number: new(2)}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues_searchType returned %+v, want %+v", result, want)
@@ -410,9 +410,9 @@ func TestSearchService_Issues_withQualifiersNoOpts(t *testing.T) {
 	}
 
 	want := &IssuesSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(true),
-		Issues:            []*Issue{{Number: Ptr(1)}, {Number: Ptr(2)}},
+		Total:             new(4),
+		IncompleteResults: new(true),
+		Issues:            []*Issue{{Number: new(1)}, {Number: new(2)}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
@@ -449,9 +449,9 @@ func TestSearchService_Issues_withQualifiersAndOpts(t *testing.T) {
 	}
 
 	want := &IssuesSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(true),
-		Issues:            []*Issue{{Number: Ptr(1)}, {Number: Ptr(2)}},
+		Total:             new(4),
+		IncompleteResults: new(true),
+		Issues:            []*Issue{{Number: new(1)}, {Number: new(2)}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Issues returned %+v, want %+v", result, want)
@@ -483,9 +483,9 @@ func TestSearchService_Users(t *testing.T) {
 	}
 
 	want := &UsersSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(false),
-		Users:             []*User{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}},
+		Total:             new(4),
+		IncompleteResults: new(false),
+		Users:             []*User{{ID: new(int64(1))}, {ID: new(int64(2))}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Users returned %+v, want %+v", result, want)
@@ -538,9 +538,9 @@ func TestSearchService_Code(t *testing.T) {
 	}
 
 	want := &CodeSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(false),
-		CodeResults:       []*CodeResult{{Name: Ptr("1")}, {Name: Ptr("2")}},
+		Total:             new(4),
+		IncompleteResults: new(false),
+		CodeResults:       []*CodeResult{{Name: new("1")}, {Name: new("2")}},
 	}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Search.Code returned %+v, want %+v", result, want)
@@ -612,18 +612,18 @@ func TestSearchService_CodeTextMatch(t *testing.T) {
 	}
 
 	wantedCodeResult := &CodeResult{
-		Name: Ptr("gopher1"),
+		Name: new("gopher1"),
 		TextMatches: []*TextMatch{
 			{
-				Fragment: Ptr("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
-				Matches:  []*Match{{Text: Ptr("gopher"), Indices: []int{14, 21}}},
+				Fragment: new("I'm afraid my friend what you have found\nIs a gopher who lives to feed"),
+				Matches:  []*Match{{Text: new("gopher"), Indices: []int{14, 21}}},
 			},
 		},
 	}
 
 	want := &CodeSearchResult{
-		Total:             Ptr(1),
-		IncompleteResults: Ptr(false),
+		Total:             new(1),
+		IncompleteResults: new(false),
 		CodeResults:       []*CodeResult{wantedCodeResult},
 	}
 	if !cmp.Equal(result, want) {
@@ -657,11 +657,11 @@ func TestSearchService_Labels(t *testing.T) {
 	}
 
 	want := &LabelsSearchResult{
-		Total:             Ptr(4),
-		IncompleteResults: Ptr(false),
+		Total:             new(4),
+		IncompleteResults: new(false),
 		Labels: []*LabelResult{
-			{ID: Ptr(int64(1234)), Name: Ptr("bug"), Description: Ptr("some text")},
-			{ID: Ptr(int64(4567)), Name: Ptr("feature")},
+			{ID: new(int64(1234)), Name: new("bug"), Description: new("some text")},
+			{ID: new(int64(4567)), Name: new("feature")},
 		},
 	}
 	if !cmp.Equal(result, want) {

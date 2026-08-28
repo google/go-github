@@ -43,8 +43,8 @@ func TestEnterpriseService_ListCodeSecurityConfigurations(t *testing.T) {
 	}
 
 	want := []*CodeSecurityConfiguration{
-		{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")},
-		{ID: Ptr(int64(2)), Name: "config2", Description: "desc2", PrivateVulnerabilityReporting: Ptr("enabled")},
+		{ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled")},
+		{ID: new(int64(2)), Name: "config2", Description: "desc2", PrivateVulnerabilityReporting: new("enabled")},
 	}
 	if !cmp.Equal(configurations, want) {
 		t.Errorf("Enterprise.ListCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
@@ -83,7 +83,7 @@ func TestEnterpriseService_GetCodeSecurityConfiguration(t *testing.T) {
 		t.Errorf("Enterprise.GetCodeSecurityConfiguration returned error: %v", err)
 	}
 
-	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}
+	want := &CodeSecurityConfiguration{ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled")}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Enterprise.GetCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
@@ -111,7 +111,7 @@ func TestEnterpriseService_CreateCodeSecurityConfiguration(t *testing.T) {
 	input := CodeSecurityConfiguration{
 		Name:                     "config1",
 		Description:              "desc1",
-		CodeScanningDefaultSetup: Ptr("enabled"),
+		CodeScanningDefaultSetup: new("enabled"),
 	}
 
 	mux.HandleFunc("/enterprises/e/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
@@ -130,7 +130,7 @@ func TestEnterpriseService_CreateCodeSecurityConfiguration(t *testing.T) {
 		t.Errorf("Enterprise.CreateCodeSecurityConfiguration returned error: %v", err)
 	}
 
-	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}
+	want := &CodeSecurityConfiguration{ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled")}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Enterprise.CreateCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
@@ -185,8 +185,8 @@ func TestEnterpriseService_ListDefaultCodeSecurityConfigurations(t *testing.T) {
 	}
 
 	want := []*CodeSecurityConfigurationWithDefaultForNewRepos{
-		{DefaultForNewRepos: Ptr("public"), Configuration: &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}},
-		{DefaultForNewRepos: Ptr("private_and_internal"), Configuration: &CodeSecurityConfiguration{ID: Ptr(int64(2)), Name: "config2", Description: "desc2", PrivateVulnerabilityReporting: Ptr("enabled")}},
+		{DefaultForNewRepos: new("public"), Configuration: &CodeSecurityConfiguration{ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled")}},
+		{DefaultForNewRepos: new("private_and_internal"), Configuration: &CodeSecurityConfiguration{ID: new(int64(2)), Name: "config2", Description: "desc2", PrivateVulnerabilityReporting: new("enabled")}},
 	}
 	if !cmp.Equal(configurations, want) {
 		t.Errorf("Enterprise.ListDefaultCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
@@ -215,7 +215,7 @@ func TestEnterpriseService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	input := CodeSecurityConfiguration{
 		Name:                     "config1",
 		Description:              "desc1",
-		CodeScanningDefaultSetup: Ptr("enabled"),
+		CodeScanningDefaultSetup: new("enabled"),
 	}
 
 	mux.HandleFunc("/enterprises/e/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -234,7 +234,7 @@ func TestEnterpriseService_UpdateCodeSecurityConfiguration(t *testing.T) {
 		t.Errorf("Enterprise.UpdateCodeSecurityConfiguration returned error: %v", err)
 	}
 
-	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}
+	want := &CodeSecurityConfiguration{ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled")}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Enterprise.UpdateCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
@@ -351,9 +351,9 @@ func TestEnterpriseService_SetDefaultCodeSecurityConfiguration(t *testing.T) {
 		t.Errorf("Enterprise.SetDefaultCodeSecurityConfiguration returned status %v, want %v", resp.StatusCode, wantStatus)
 	}
 	want := &CodeSecurityConfigurationWithDefaultForNewRepos{
-		DefaultForNewRepos: Ptr("all"),
+		DefaultForNewRepos: new("all"),
 		Configuration: &CodeSecurityConfiguration{
-			ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled"),
+			ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled"),
 		},
 	}
 	if !cmp.Equal(got, want) {
@@ -407,8 +407,8 @@ func TestEnterpriseService_ListCodeSecurityConfigurationRepositories(t *testing.
 		t.Errorf("Enterprise.ListCodeSecurityConfigurationRepositories returned error: %v", err)
 	}
 	want := []*RepositoryAttachment{
-		{Status: Ptr("attached"), Repository: &Repository{ID: Ptr(int64(8)), Name: Ptr("repo8")}},
-		{Status: Ptr("attached"), Repository: &Repository{ID: Ptr(int64(42)), Name: Ptr("repo42")}},
+		{Status: new("attached"), Repository: &Repository{ID: new(int64(8)), Name: new("repo8")}},
+		{Status: new("attached"), Repository: &Repository{ID: new(int64(42)), Name: new("repo42")}},
 	}
 	if !cmp.Equal(attachments, want) {
 		t.Errorf("Enterprise.ListCodeSecurityConfigurationRepositories returned %+v, want %+v", attachments, want)

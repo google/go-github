@@ -34,7 +34,7 @@ func TestActivityService_ListStargazers(t *testing.T) {
 		t.Errorf("Activity.ListStargazers returned error: %v", err)
 	}
 
-	want := []*Stargazer{{StarredAt: &referenceTimestamp, User: &User{ID: Ptr(int64(1))}}}
+	want := []*Stargazer{{StarredAt: &referenceTimestamp, User: &User{ID: new(int64(1))}}}
 	if !cmp.Equal(stargazers, want) {
 		t.Errorf("Activity.ListStargazers returned %+v, want %+v", stargazers, want)
 	}
@@ -70,7 +70,7 @@ func TestActivityService_ListStarred_authenticatedUser(t *testing.T) {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
 	}
 
-	want := []*StarredRepository{{StarredAt: &referenceTimestamp, Repository: &Repository{ID: Ptr(int64(1))}}}
+	want := []*StarredRepository{{StarredAt: &referenceTimestamp, Repository: &Repository{ID: new(int64(1))}}}
 	if !cmp.Equal(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}
@@ -112,7 +112,7 @@ func TestActivityService_ListStarred_specifiedUser(t *testing.T) {
 		t.Errorf("Activity.ListStarred returned error: %v", err)
 	}
 
-	want := []*StarredRepository{{StarredAt: &referenceTimestamp, Repository: &Repository{ID: Ptr(int64(2))}}}
+	want := []*StarredRepository{{StarredAt: &referenceTimestamp, Repository: &Repository{ID: new(int64(2))}}}
 	if !cmp.Equal(repos, want) {
 		t.Errorf("Activity.ListStarred returned %+v, want %+v", repos, want)
 	}

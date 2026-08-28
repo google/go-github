@@ -29,7 +29,7 @@ func TestRepositoriesService_ListTagProtection(t *testing.T) {
 		t.Errorf("Repositories.ListTagProtection returned error: %v", err)
 	}
 
-	want := []*TagProtection{{ID: Ptr(int64(1)), Pattern: Ptr("tag1")}, {ID: Ptr(int64(2)), Pattern: Ptr("tag2")}}
+	want := []*TagProtection{{ID: new(int64(1)), Pattern: new("tag1")}, {ID: new(int64(2)), Pattern: new("tag2")}}
 	if !cmp.Equal(tagProtections, want) {
 		t.Errorf("Repositories.ListTagProtection returned %+v, want %+v", tagProtections, want)
 	}
@@ -77,7 +77,7 @@ func TestRepositoriesService_CreateTagProtection(t *testing.T) {
 		t.Errorf("Repositories.CreateTagProtection returned error: %v", err)
 	}
 
-	want := &TagProtection{ID: Ptr(int64(1)), Pattern: Ptr("tag*")}
+	want := &TagProtection{ID: new(int64(1)), Pattern: new("tag*")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.CreateTagProtection returned %+v, want %+v", got, want)
 	}

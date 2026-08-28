@@ -13,7 +13,7 @@ go-github tracks [Go's version support policy][support-policy] supporting any
 minor version of the latest two major releases of Go and the go directive in
 go.mod reflects that.
 We do our best not to break older versions of Go if we don't have to, but we
-don't explicitly test older versions and as of Go 1.23 the go directive in
+don't explicitly test older versions and as of Go 1.26 the go directive in
 go.mod declares a hard required _minimum_ version of Go to use with this module
 and this _must_ be greater than or equal to the go line of all dependencies so
 go-github will require the N-1 major release of Go by default.
@@ -332,14 +332,14 @@ recommended when making requests using short-lived credentials such as a
 
 All structs for GitHub resources use pointer values for all non-repeated fields.
 This allows distinguishing between unset fields and those set to a zero-value.
-Helper functions have been provided to easily create these pointers for string,
+Use the `new` builtin to easily create these pointers for string,
 bool, and int values. For example:
 
 ```go
 // create a new private repository named "foo"
 repo := &github.Repository{
-	Name:    github.Ptr("foo"),
-	Private: github.Ptr(true),
+	Name:    new("foo"),
+	Private: new(true),
 }
 client.Repositories.Create(ctx, "", repo)
 ```

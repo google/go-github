@@ -161,41 +161,41 @@ func TestRepositoryRulesetRules(t *testing.T) {
 					RequiredReviewThreadResolution: true,
 				},
 				RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
-					DoNotEnforceOnCreate: Ptr(true),
+					DoNotEnforceOnCreate: new(true),
 					RequiredStatusChecks: []*RuleStatusCheck{
-						{Context: "test1", IntegrationID: Ptr(int64(1))},
-						{Context: "test2", IntegrationID: Ptr(int64(2))},
+						{Context: "test1", IntegrationID: new(int64(1))},
+						{Context: "test2", IntegrationID: new(int64(2))},
 					},
 					StrictRequiredStatusChecksPolicy: true,
 				},
 				NonFastForward: &EmptyRuleParameters{},
 				CommitMessagePattern: &PatternRuleParameters{
-					Name:     Ptr("cmp"),
-					Negate:   Ptr(false),
+					Name:     new("cmp"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
 				CommitAuthorEmailPattern: &PatternRuleParameters{
-					Name:     Ptr("caep"),
-					Negate:   Ptr(false),
+					Name:     new("caep"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
 				CommitterEmailPattern: &PatternRuleParameters{
-					Name:     Ptr("cep"),
-					Negate:   Ptr(false),
+					Name:     new("cep"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
 				BranchNamePattern: &PatternRuleParameters{
-					Name:     Ptr("bp"),
-					Negate:   Ptr(false),
+					Name:     new("bp"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
 				TagNamePattern: &PatternRuleParameters{
-					Name:     Ptr("tp"),
-					Negate:   Ptr(false),
+					Name:     new("tp"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -208,19 +208,19 @@ func TestRepositoryRulesetRules(t *testing.T) {
 				},
 				MaxFileSize: &MaxFileSizeRuleParameters{MaxFileSize: 1024},
 				Workflows: &WorkflowsRuleParameters{
-					DoNotEnforceOnCreate: Ptr(true),
+					DoNotEnforceOnCreate: new(true),
 					Workflows: []*RuleWorkflow{
 						{
 							Path:         ".github/workflows/test1.yaml",
-							Ref:          Ptr("main"),
-							RepositoryID: Ptr(int64(1)),
-							SHA:          Ptr("aaaa"),
+							Ref:          new("main"),
+							RepositoryID: new(int64(1)),
+							SHA:          new("aaaa"),
 						},
 						{
 							Path:         ".github/workflows/test2.yaml",
-							Ref:          Ptr("main"),
-							RepositoryID: Ptr(int64(2)),
-							SHA:          Ptr("bbbb"),
+							Ref:          new("main"),
+							RepositoryID: new(int64(2)),
+							SHA:          new("bbbb"),
 						},
 					},
 				},
@@ -460,10 +460,10 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: RequiredStatusChecksRuleParameters{
-							DoNotEnforceOnCreate: Ptr(true),
+							DoNotEnforceOnCreate: new(true),
 							RequiredStatusChecks: []*RuleStatusCheck{
-								{Context: "test1", IntegrationID: Ptr(int64(1))},
-								{Context: "test2", IntegrationID: Ptr(int64(2))},
+								{Context: "test1", IntegrationID: new(int64(1))},
+								{Context: "test2", IntegrationID: new(int64(2))},
 							},
 							StrictRequiredStatusChecksPolicy: true,
 						},
@@ -484,8 +484,8 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PatternRuleParameters{
-							Name:     Ptr("cmp"),
-							Negate:   Ptr(false),
+							Name:     new("cmp"),
+							Negate:   new(false),
 							Operator: PatternRuleOperatorStartsWith,
 							Pattern:  "test",
 						},
@@ -499,8 +499,8 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PatternRuleParameters{
-							Name:     Ptr("caep"),
-							Negate:   Ptr(false),
+							Name:     new("caep"),
+							Negate:   new(false),
 							Operator: PatternRuleOperatorStartsWith,
 							Pattern:  "test",
 						},
@@ -514,8 +514,8 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PatternRuleParameters{
-							Name:     Ptr("cep"),
-							Negate:   Ptr(false),
+							Name:     new("cep"),
+							Negate:   new(false),
 							Operator: PatternRuleOperatorStartsWith,
 							Pattern:  "test",
 						},
@@ -529,8 +529,8 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PatternRuleParameters{
-							Name:     Ptr("bp"),
-							Negate:   Ptr(false),
+							Name:     new("bp"),
+							Negate:   new(false),
 							Operator: PatternRuleOperatorStartsWith,
 							Pattern:  "test",
 						},
@@ -544,8 +544,8 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PatternRuleParameters{
-							Name:     Ptr("tp"),
-							Negate:   Ptr(false),
+							Name:     new("tp"),
+							Negate:   new(false),
 							Operator: PatternRuleOperatorStartsWith,
 							Pattern:  "test",
 						},
@@ -603,19 +603,19 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: WorkflowsRuleParameters{
-							DoNotEnforceOnCreate: Ptr(true),
+							DoNotEnforceOnCreate: new(true),
 							Workflows: []*RuleWorkflow{
 								{
 									Path:         ".github/workflows/test1.yaml",
-									Ref:          Ptr("main"),
-									RepositoryID: Ptr(int64(1)),
-									SHA:          Ptr("aaaa"),
+									Ref:          new("main"),
+									RepositoryID: new(int64(1)),
+									SHA:          new("aaaa"),
 								},
 								{
 									Path:         ".github/workflows/test2.yaml",
-									Ref:          Ptr("main"),
-									RepositoryID: Ptr(int64(2)),
-									SHA:          Ptr("bbbb"),
+									Ref:          new("main"),
+									RepositoryID: new(int64(2)),
+									SHA:          new("bbbb"),
 								},
 							},
 						},
@@ -824,11 +824,11 @@ func TestRepositoryRule(t *testing.T) {
 					RequiredReviewThreadResolution: false,
 					RequiredReviewers: []*RulesetRequiredReviewer{
 						{
-							MinimumApprovals: Ptr(1),
+							MinimumApprovals: new(1),
 							FilePatterns:     []string{"*"},
 							Reviewer: &RulesetReviewer{
-								ID:   Ptr(int64(123456)),
-								Type: Ptr(RulesetReviewerTypeTeam),
+								ID:   new(int64(123456)),
+								Type: new(RulesetReviewerTypeTeam),
 							},
 						},
 					},
@@ -853,11 +853,11 @@ func TestRepositoryRule(t *testing.T) {
 					RequiredReviewThreadResolution: false,
 					RequiredReviewers: []*RulesetRequiredReviewer{
 						{
-							MinimumApprovals: Ptr(1),
+							MinimumApprovals: new(1),
 							FilePatterns:     []string{"*"},
 							Reviewer: &RulesetReviewer{
-								ID:   Ptr(int64(123456)),
-								Type: Ptr(RulesetReviewerTypeTeam),
+								ID:   new(int64(123456)),
+								Type: new(RulesetReviewerTypeTeam),
 							},
 						},
 					},
@@ -889,8 +889,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeCommitMessagePattern,
 				Parameters: &PatternRuleParameters{
-					Name:     Ptr("test"),
-					Negate:   Ptr(false),
+					Name:     new("test"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -902,8 +902,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeCommitAuthorEmailPattern,
 				Parameters: &PatternRuleParameters{
-					Name:     Ptr("test"),
-					Negate:   Ptr(false),
+					Name:     new("test"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -915,8 +915,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeCommitterEmailPattern,
 				Parameters: &PatternRuleParameters{
-					Name:     Ptr("test"),
-					Negate:   Ptr(false),
+					Name:     new("test"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -928,8 +928,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeBranchNamePattern,
 				Parameters: &PatternRuleParameters{
-					Name:     Ptr("test"),
-					Negate:   Ptr(false),
+					Name:     new("test"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -941,8 +941,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeTagNamePattern,
 				Parameters: &PatternRuleParameters{
-					Name:     Ptr("test"),
-					Negate:   Ptr(false),
+					Name:     new("test"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},

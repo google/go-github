@@ -47,15 +47,15 @@ func TestPrivateRegistriesService_ListOrganizationPrivateRegistries(t *testing.T
 	}
 
 	want := &PrivateRegistries{
-		TotalCount: Ptr(1),
+		TotalCount: new(1),
 		Configurations: []*PrivateRegistry{
 			{
-				Name:         Ptr("MAVEN_REPOSITORY_SECRET"),
-				RegistryType: Ptr(PrivateRegistryTypeMavenRepository),
-				Username:     Ptr("monalisa"),
+				Name:         new("MAVEN_REPOSITORY_SECRET"),
+				RegistryType: new(PrivateRegistryTypeMavenRepository),
+				Username:     new("monalisa"),
 				CreatedAt:    refTimestamp(1136178000),
 				UpdatedAt:    refTimestamp(1136178001),
-				Visibility:   Ptr(PrivateRegistryVisibilitySelected),
+				Visibility:   new(PrivateRegistryVisibilitySelected),
 			},
 		},
 	}
@@ -91,9 +91,9 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	input := &CreateOrganizationPrivateRegistry{
 		RegistryType:          PrivateRegistryTypeMavenRepository,
 		URL:                   "https://example.com/OWNER/REPOSITORY",
-		Username:              Ptr("monalisa"),
-		EncryptedValue:        Ptr("encrypted_value"),
-		KeyID:                 Ptr("key_id"),
+		Username:              new("monalisa"),
+		EncryptedValue:        new("encrypted_value"),
+		KeyID:                 new("key_id"),
 		Visibility:            PrivateRegistryVisibilitySelected,
 		SelectedRepositoryIDs: []int64{1, 2, 3},
 	}
@@ -121,12 +121,12 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry(t *testing.T
 	}
 
 	want := &PrivateRegistry{
-		Name:                  Ptr("MAVEN_REPOSITORY_SECRET"),
-		RegistryType:          Ptr(PrivateRegistryTypeMavenRepository),
-		Username:              Ptr("monalisa"),
+		Name:                  new("MAVEN_REPOSITORY_SECRET"),
+		RegistryType:          new(PrivateRegistryTypeMavenRepository),
+		Username:              new("monalisa"),
 		CreatedAt:             refTimestamp(1136178000),
 		UpdatedAt:             refTimestamp(1136178001),
-		Visibility:            Ptr(PrivateRegistryVisibilitySelected),
+		Visibility:            new(PrivateRegistryVisibilitySelected),
 		SelectedRepositoryIDs: []int64{1, 2, 3},
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
@@ -155,10 +155,10 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDC(t *test
 	input := &CreateOrganizationPrivateRegistry{
 		RegistryType:          PrivateRegistryTypeMavenRepository,
 		URL:                   "https://example.com/maven",
-		AuthType:              Ptr("oidc_azure"),
-		TenantID:              Ptr("my-tenant-id"),
-		ClientID:              Ptr("my-client-id"),
-		ReplacesBase:          Ptr(true),
+		AuthType:              new("oidc_azure"),
+		TenantID:              new("my-tenant-id"),
+		ClientID:              new("my-client-id"),
+		ReplacesBase:          new(true),
 		Visibility:            PrivateRegistryVisibilitySelected,
 		SelectedRepositoryIDs: []int64{1, 2, 3},
 	}
@@ -185,11 +185,11 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDC(t *test
 	}
 
 	want := &PrivateRegistry{
-		Name:                  Ptr("MAVEN_REPOSITORY_SECRET"),
-		RegistryType:          Ptr(PrivateRegistryTypeMavenRepository),
+		Name:                  new("MAVEN_REPOSITORY_SECRET"),
+		RegistryType:          new(PrivateRegistryTypeMavenRepository),
 		CreatedAt:             refTimestamp(1136178000),
 		UpdatedAt:             refTimestamp(1136178001),
-		Visibility:            Ptr(PrivateRegistryVisibilitySelected),
+		Visibility:            new(PrivateRegistryVisibilitySelected),
 		SelectedRepositoryIDs: []int64{1, 2, 3},
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
@@ -202,14 +202,14 @@ func TestPrivateRegistries_UpdateOrganizationPrivateRegistry_OIDC(t *testing.T) 
 	client, mux, _ := setup(t)
 
 	input := &UpdateOrganizationPrivateRegistry{
-		AuthType:    Ptr("oidc_aws"),
-		AWSRegion:   Ptr("us-east-1"),
-		AccountID:   Ptr("123456789012"),
-		RoleName:    Ptr("my-role"),
-		Domain:      Ptr("my-domain"),
-		DomainOwner: Ptr("123456789012"),
-		Audience:    Ptr("example.com"),
-		Visibility:  Ptr(PrivateRegistryVisibilitySelected),
+		AuthType:    new("oidc_aws"),
+		AWSRegion:   new("us-east-1"),
+		AccountID:   new("123456789012"),
+		RoleName:    new("my-role"),
+		Domain:      new("my-domain"),
+		DomainOwner: new("123456789012"),
+		Audience:    new("example.com"),
+		Visibility:  new(PrivateRegistryVisibilitySelected),
 	}
 
 	mux.HandleFunc("/orgs/o/private-registries/AWS_REGISTRY_SECRET", func(w http.ResponseWriter, r *http.Request) {
@@ -233,10 +233,10 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDCJFrog(t 
 	input := &CreateOrganizationPrivateRegistry{
 		RegistryType:          PrivateRegistryTypeNpmRegistry,
 		URL:                   "https://example.com/npm",
-		AuthType:              Ptr("oidc_jfrog"),
-		JFrogOIDCProviderName: Ptr("my-jfrog-provider"),
-		Audience:              Ptr("jfrog"),
-		IdentityMappingName:   Ptr("my-identity-mapping"),
+		AuthType:              new("oidc_jfrog"),
+		JFrogOIDCProviderName: new("my-jfrog-provider"),
+		Audience:              new("jfrog"),
+		IdentityMappingName:   new("my-identity-mapping"),
 		Visibility:            PrivateRegistryVisibilityPrivate,
 	}
 
@@ -261,11 +261,11 @@ func TestPrivateRegistriesService_CreateOrganizationPrivateRegistry_OIDCJFrog(t 
 	}
 
 	want := &PrivateRegistry{
-		Name:         Ptr("NPM_REGISTRY_SECRET"),
-		RegistryType: Ptr(PrivateRegistryTypeNpmRegistry),
+		Name:         new("NPM_REGISTRY_SECRET"),
+		RegistryType: new(PrivateRegistryTypeNpmRegistry),
 		CreatedAt:    refTimestamp(1136178000),
 		UpdatedAt:    refTimestamp(1136178001),
-		Visibility:   Ptr(PrivateRegistryVisibilityPrivate),
+		Visibility:   new(PrivateRegistryVisibilityPrivate),
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
 		t.Errorf("PrivateRegistries.CreateOrganizationPrivateRegistry (OIDC JFrog) mismatch (-want +got):\\n%v", diff)
@@ -291,8 +291,8 @@ func TestPrivateRegistriesService_GetOrganizationPrivateRegistriesPublicKey(t *t
 	}
 
 	want := &PublicKey{
-		KeyID: Ptr("0123456789"),
-		Key:   Ptr("public_key"),
+		KeyID: new("0123456789"),
+		Key:   new("public_key"),
 	}
 	if diff := cmp.Diff(want, publicKey); diff != "" {
 		t.Errorf("PrivateRegistries.GetOrganizationPrivateRegistriesPublicKey mismatch (-want +got):\\n%v", diff)
@@ -336,12 +336,12 @@ func TestPrivateRegistriesService_GetOrganizationPrivateRegistry(t *testing.T) {
 	}
 
 	want := &PrivateRegistry{
-		Name:         Ptr("MAVEN_REPOSITORY_SECRET"),
-		RegistryType: Ptr(PrivateRegistryTypeMavenRepository),
-		Username:     Ptr("monalisa"),
+		Name:         new("MAVEN_REPOSITORY_SECRET"),
+		RegistryType: new(PrivateRegistryTypeMavenRepository),
+		Username:     new("monalisa"),
 		CreatedAt:    refTimestamp(1136178000),
 		UpdatedAt:    refTimestamp(1136178001),
-		Visibility:   Ptr(PrivateRegistryVisibilitySelected),
+		Visibility:   new(PrivateRegistryVisibilitySelected),
 	}
 	if diff := cmp.Diff(want, privateRegistry); diff != "" {
 		t.Errorf("PrivateRegistries.GetOrganizationPrivateRegistry mismatch (-want +got):\\n%v", diff)
@@ -366,10 +366,10 @@ func TestPrivateRegistries_UpdateOrganizationPrivateRegistry(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &UpdateOrganizationPrivateRegistry{
-		Username:       Ptr("monalisa"),
-		EncryptedValue: Ptr("encrypted_value"),
-		KeyID:          Ptr("key_id"),
-		Visibility:     Ptr(PrivateRegistryVisibilitySelected),
+		Username:       new("monalisa"),
+		EncryptedValue: new("encrypted_value"),
+		KeyID:          new("key_id"),
+		Visibility:     new(PrivateRegistryVisibilitySelected),
 	}
 
 	mux.HandleFunc("/orgs/o/private-registries/MAVEN_REPOSITORY_SECRET", func(w http.ResponseWriter, r *http.Request) {

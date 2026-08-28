@@ -49,7 +49,7 @@ func (s *RepositoriesService) ListRulesForBranchIter(ctx context.Context, owner,
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {

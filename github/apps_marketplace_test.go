@@ -34,7 +34,7 @@ func TestMarketplaceService_ListPlans(t *testing.T) {
 		t.Errorf("Marketplace.ListPlans returned error: %v", err)
 	}
 
-	want := []*MarketplacePlan{{ID: Ptr(int64(1))}}
+	want := []*MarketplacePlan{{ID: new(int64(1))}}
 	if !cmp.Equal(plans, want) {
 		t.Errorf("Marketplace.ListPlans returned %+v, want %+v", plans, want)
 	}
@@ -66,7 +66,7 @@ func TestMarketplaceService_Stubbed_ListPlans(t *testing.T) {
 		t.Errorf("Marketplace.ListPlans (Stubbed) returned error: %v", err)
 	}
 
-	want := []*MarketplacePlan{{ID: Ptr(int64(1))}}
+	want := []*MarketplacePlan{{ID: new(int64(1))}}
 	if !cmp.Equal(plans, want) {
 		t.Errorf("Marketplace.ListPlans (Stubbed) returned %+v, want %+v", plans, want)
 	}
@@ -89,7 +89,7 @@ func TestMarketplaceService_ListPlanAccountsForPlan(t *testing.T) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan returned error: %v", err)
 	}
 
-	want := []*MarketplacePlanAccount{{ID: Ptr(int64(1))}}
+	want := []*MarketplacePlanAccount{{ID: new(int64(1))}}
 	if !cmp.Equal(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan returned %+v, want %+v", accounts, want)
 	}
@@ -121,7 +121,7 @@ func TestMarketplaceService_Stubbed_ListPlanAccountsForPlan(t *testing.T) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan (Stubbed) returned error: %v", err)
 	}
 
-	want := []*MarketplacePlanAccount{{ID: Ptr(int64(1))}}
+	want := []*MarketplacePlanAccount{{ID: new(int64(1))}}
 	if !cmp.Equal(accounts, want) {
 		t.Errorf("Marketplace.ListPlanAccountsForPlan (Stubbed) returned %+v, want %+v", accounts, want)
 	}
@@ -143,7 +143,7 @@ func TestMarketplaceService_GetPlanAccountForAccount(t *testing.T) {
 		t.Errorf("Marketplace.GetPlanAccountForAccount returned error: %v", err)
 	}
 
-	want := &MarketplacePlanAccount{ID: Ptr(int64(1)), MarketplacePendingChange: &MarketplacePendingChange{ID: Ptr(int64(77))}}
+	want := &MarketplacePlanAccount{ID: new(int64(1)), MarketplacePendingChange: &MarketplacePendingChange{ID: new(int64(77))}}
 	if !cmp.Equal(account, want) {
 		t.Errorf("Marketplace.GetPlanAccountForAccount returned %+v, want %+v", account, want)
 	}
@@ -174,7 +174,7 @@ func TestMarketplaceService_Stubbed_GetPlanAccountForAccount(t *testing.T) {
 		t.Errorf("Marketplace.GetPlanAccountForAccount (Stubbed) returned error: %v", err)
 	}
 
-	want := &MarketplacePlanAccount{ID: Ptr(int64(1))}
+	want := &MarketplacePlanAccount{ID: new(int64(1))}
 	if !cmp.Equal(account, want) {
 		t.Errorf("Marketplace.GetPlanAccountForAccount (Stubbed) returned %+v, want %+v", account, want)
 	}
@@ -197,7 +197,7 @@ func TestMarketplaceService_ListMarketplacePurchasesForUser(t *testing.T) {
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned error: %v", err)
 	}
 
-	want := []*MarketplacePurchase{{BillingCycle: Ptr("monthly")}}
+	want := []*MarketplacePurchase{{BillingCycle: new("monthly")}}
 	if !cmp.Equal(purchases, want) {
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned %+v, want %+v", purchases, want)
 	}
@@ -229,7 +229,7 @@ func TestMarketplaceService_Stubbed_ListMarketplacePurchasesForUser(t *testing.T
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned error: %v", err)
 	}
 
-	want := []*MarketplacePurchase{{BillingCycle: Ptr("monthly")}}
+	want := []*MarketplacePurchase{{BillingCycle: new("monthly")}}
 	if !cmp.Equal(purchases, want) {
 		t.Errorf("Marketplace.ListMarketplacePurchasesForUser returned %+v, want %+v", purchases, want)
 	}

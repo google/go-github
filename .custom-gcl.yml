@@ -6,8 +6,6 @@ plugins:
     path: ./tools/fmtpercentv
   - module: "github.com/google/go-github/v90/tools/paramcheck"
     path: ./tools/paramcheck
-  - module: "github.com/google/go-github/v90/tools/redundantptr"
-    path: ./tools/redundantptr
   - module: "github.com/google/go-github/v90/tools/sliceofpointers"
     path: ./tools/sliceofpointers
   - module: "github.com/google/go-github/v90/tools/structfield"

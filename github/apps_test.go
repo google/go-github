@@ -28,7 +28,7 @@ func TestAppsService_Get_authenticatedApp(t *testing.T) {
 		t.Errorf("Apps.Get returned error: %v", err)
 	}
 
-	want := &App{ID: Ptr(int64(1))}
+	want := &App{ID: new(int64(1))}
 	if !cmp.Equal(app, want) {
 		t.Errorf("Apps.Get returned %+v, want %+v", app, want)
 	}
@@ -63,7 +63,7 @@ func TestAppsService_Get_specifiedApp(t *testing.T) {
 		t.Errorf("Apps.Get returned error: %v", err)
 	}
 
-	want := &App{HTMLURL: Ptr("https://github.com/apps/a")}
+	want := &App{HTMLURL: new("https://github.com/apps/a")}
 	if !cmp.Equal(app, want) {
 		t.Errorf("Apps.Get returned %+v, want %+v", *app.HTMLURL, *want.HTMLURL)
 	}
@@ -96,9 +96,9 @@ func TestAppsService_ListInstallationRequests(t *testing.T) {
 	}
 
 	want := []*InstallationRequest{{
-		ID:        Ptr(int64(1)),
-		Account:   &User{ID: Ptr(int64(2))},
-		Requester: &User{ID: Ptr(int64(3))},
+		ID:        new(int64(1)),
+		Account:   &User{ID: new(int64(2))},
+		Requester: &User{ID: new(int64(3))},
 		CreatedAt: &referenceTimestamp,
 	}}
 	if !cmp.Equal(installationRequests, want) {
@@ -187,49 +187,49 @@ func TestAppsService_ListInstallations(t *testing.T) {
 	}
 
 	want := []*Installation{{
-		ID:                  Ptr(int64(1)),
-		AppID:               Ptr(int64(1)),
-		TargetID:            Ptr(int64(1)),
-		TargetType:          Ptr("Organization"),
-		SingleFileName:      Ptr("config.yml"),
-		RepositorySelection: Ptr("selected"),
+		ID:                  new(int64(1)),
+		AppID:               new(int64(1)),
+		TargetID:            new(int64(1)),
+		TargetType:          new("Organization"),
+		SingleFileName:      new("config.yml"),
+		RepositorySelection: new("selected"),
 		Permissions: &InstallationPermissions{
-			Actions:                                 Ptr("read"),
-			Administration:                          Ptr("read"),
-			Checks:                                  Ptr("read"),
-			Contents:                                Ptr("read"),
-			ContentReferences:                       Ptr("read"),
-			Deployments:                             Ptr("read"),
-			Environments:                            Ptr("read"),
-			Issues:                                  Ptr("write"),
-			Metadata:                                Ptr("read"),
-			Members:                                 Ptr("read"),
-			OrganizationAdministration:              Ptr("write"),
-			OrganizationCustomRoles:                 Ptr("write"),
-			OrganizationHooks:                       Ptr("write"),
-			OrganizationPackages:                    Ptr("write"),
-			OrganizationPersonalAccessTokens:        Ptr("read"),
-			OrganizationPersonalAccessTokenRequests: Ptr("read"),
-			OrganizationPlan:                        Ptr("read"),
-			OrganizationPreReceiveHooks:             Ptr("write"),
-			OrganizationProjects:                    Ptr("read"),
-			OrganizationSecrets:                     Ptr("read"),
-			OrganizationSelfHostedRunners:           Ptr("read"),
-			OrganizationUserBlocking:                Ptr("write"),
-			Packages:                                Ptr("read"),
-			Pages:                                   Ptr("read"),
-			PullRequests:                            Ptr("write"),
-			RepositoryHooks:                         Ptr("write"),
-			RepositoryProjects:                      Ptr("read"),
-			RepositoryPreReceiveHooks:               Ptr("read"),
-			Secrets:                                 Ptr("read"),
-			SecretScanningAlerts:                    Ptr("read"),
-			SecurityEvents:                          Ptr("read"),
-			SingleFile:                              Ptr("write"),
-			Statuses:                                Ptr("write"),
-			TeamDiscussions:                         Ptr("read"),
-			VulnerabilityAlerts:                     Ptr("read"),
-			Workflows:                               Ptr("write"),
+			Actions:                                 new("read"),
+			Administration:                          new("read"),
+			Checks:                                  new("read"),
+			Contents:                                new("read"),
+			ContentReferences:                       new("read"),
+			Deployments:                             new("read"),
+			Environments:                            new("read"),
+			Issues:                                  new("write"),
+			Metadata:                                new("read"),
+			Members:                                 new("read"),
+			OrganizationAdministration:              new("write"),
+			OrganizationCustomRoles:                 new("write"),
+			OrganizationHooks:                       new("write"),
+			OrganizationPackages:                    new("write"),
+			OrganizationPersonalAccessTokens:        new("read"),
+			OrganizationPersonalAccessTokenRequests: new("read"),
+			OrganizationPlan:                        new("read"),
+			OrganizationPreReceiveHooks:             new("write"),
+			OrganizationProjects:                    new("read"),
+			OrganizationSecrets:                     new("read"),
+			OrganizationSelfHostedRunners:           new("read"),
+			OrganizationUserBlocking:                new("write"),
+			Packages:                                new("read"),
+			Pages:                                   new("read"),
+			PullRequests:                            new("write"),
+			RepositoryHooks:                         new("write"),
+			RepositoryProjects:                      new("read"),
+			RepositoryPreReceiveHooks:               new("read"),
+			Secrets:                                 new("read"),
+			SecretScanningAlerts:                    new("read"),
+			SecurityEvents:                          new("read"),
+			SingleFile:                              new("write"),
+			Statuses:                                new("write"),
+			TeamDiscussions:                         new("read"),
+			VulnerabilityAlerts:                     new("read"),
+			Workflows:                               new("write"),
 		},
 		Events:    []string{"push", "pull_request"},
 		CreatedAt: refTimestamp(1136178000),
@@ -264,7 +264,7 @@ func TestAppsService_GetInstallation(t *testing.T) {
 		t.Errorf("Apps.GetInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
+	want := &Installation{ID: new(int64(1)), AppID: new(int64(1)), TargetID: new(int64(1)), TargetType: new("Organization")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.GetInstallation returned %+v, want %+v", installation, want)
 	}
@@ -304,7 +304,7 @@ func TestAppsService_ListUserInstallations(t *testing.T) {
 		t.Errorf("Apps.ListUserInstallations returned error: %v", err)
 	}
 
-	want := []*Installation{{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}}
+	want := []*Installation{{ID: new(int64(1)), AppID: new(int64(1)), TargetID: new(int64(1)), TargetType: new("Organization")}}
 	if !cmp.Equal(installations, want) {
 		t.Errorf("Apps.ListUserInstallations returned %+v, want %+v", installations, want)
 	}
@@ -412,7 +412,7 @@ func TestAppsService_CreateInstallationToken(t *testing.T) {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
 
-	want := &InstallationToken{Token: Ptr("t")}
+	want := &InstallationToken{Token: new("t")}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
 	}
@@ -440,8 +440,8 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 		RepositoryIDs: []int64{1234},
 		Repositories:  []string{"foo"},
 		Permissions: &InstallationPermissions{
-			Contents: Ptr("write"),
-			Issues:   Ptr("read"),
+			Contents: new("write"),
+			Issues:   new("read"),
 		},
 	}
 
@@ -457,7 +457,7 @@ func TestAppsService_CreateInstallationTokenWithOptions(t *testing.T) {
 		t.Errorf("Apps.CreateInstallationToken returned error: %v", err)
 	}
 
-	want := &InstallationToken{Token: Ptr("t")}
+	want := &InstallationToken{Token: new("t")}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Apps.CreateInstallationToken returned %+v, want %+v", token, want)
 	}
@@ -470,8 +470,8 @@ func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
 	installationTokenListRepoOptions := &InstallationTokenListRepoOptions{
 		Repositories: []string{"foo"},
 		Permissions: &InstallationPermissions{
-			Contents: Ptr("write"),
-			Issues:   Ptr("read"),
+			Contents: new("write"),
+			Issues:   new("read"),
 		},
 	}
 
@@ -487,7 +487,7 @@ func TestAppsService_CreateInstallationTokenListReposWithOptions(t *testing.T) {
 		t.Errorf("Apps.CreateInstallationTokenListRepos returned error: %v", err)
 	}
 
-	want := &InstallationToken{Token: Ptr("t")}
+	want := &InstallationToken{Token: new("t")}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Apps.CreateInstallationTokenListRepos returned %+v, want %+v", token, want)
 	}
@@ -508,7 +508,7 @@ func TestAppsService_CreateInstallationTokenListReposWithNoOptions(t *testing.T)
 		t.Errorf("Apps.CreateInstallationTokenListRepos returned error: %v", err)
 	}
 
-	want := &InstallationToken{Token: Ptr("t")}
+	want := &InstallationToken{Token: new("t")}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Apps.CreateInstallationTokenListRepos returned %+v, want %+v", token, want)
 	}
@@ -546,7 +546,7 @@ func TestAppsService_CreateAttachment(t *testing.T) {
 		t.Errorf("CreateAttachment returned error: %v", err)
 	}
 
-	want := &Attachment{ID: Ptr(int64(1)), Title: Ptr("title1"), Body: Ptr("body1")}
+	want := &Attachment{ID: new(int64(1)), Title: new("title1"), Body: new("body1")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateAttachment = %+v, want %+v", got, want)
 	}
@@ -581,7 +581,7 @@ func TestAppsService_GetOrganizationInstallation(t *testing.T) {
 		t.Errorf("Apps.GetOrganizationInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
+	want := &Installation{ID: new(int64(1)), AppID: new(int64(1)), TargetID: new(int64(1)), TargetType: new("Organization")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.GetOrganizationInstallation returned %+v, want %+v", installation, want)
 	}
@@ -616,7 +616,7 @@ func TestAppsService_GetEnterpriseInstallation(t *testing.T) {
 		t.Errorf("Apps.GetEnterpriseInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Enterprise")}
+	want := &Installation{ID: new(int64(1)), AppID: new(int64(1)), TargetID: new(int64(1)), TargetType: new("Enterprise")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.GetEnterpriseInstallation returned %+v, want %+v", installation, want)
 	}
@@ -651,7 +651,7 @@ func TestAppsService_GetRepositoryInstallation(t *testing.T) {
 		t.Errorf("Apps.GetRepositoryInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
+	want := &Installation{ID: new(int64(1)), AppID: new(int64(1)), TargetID: new(int64(1)), TargetType: new("Organization")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.GetRepositoryInstallation returned %+v, want %+v", installation, want)
 	}
@@ -686,7 +686,7 @@ func TestAppsService_GetRepositoryInstallationByID(t *testing.T) {
 		t.Errorf("Apps.GetRepositoryInstallationByID returned error: %v", err)
 	}
 
-	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("Organization")}
+	want := &Installation{ID: new(int64(1)), AppID: new(int64(1)), TargetID: new(int64(1)), TargetType: new("Organization")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.GetRepositoryInstallationByID returned %+v, want %+v", installation, want)
 	}
@@ -721,7 +721,7 @@ func TestAppsService_GetUserInstallation(t *testing.T) {
 		t.Errorf("Apps.GetUserInstallation returned error: %v", err)
 	}
 
-	want := &Installation{ID: Ptr(int64(1)), AppID: Ptr(int64(1)), TargetID: Ptr(int64(1)), TargetType: Ptr("User")}
+	want := &Installation{ID: new(int64(1)), AppID: new(int64(1)), TargetID: new(int64(1)), TargetType: new("User")}
 	if !cmp.Equal(installation, want) {
 		t.Errorf("Apps.GetUserInstallation returned %+v, want %+v", installation, want)
 	}

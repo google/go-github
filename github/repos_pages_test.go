@@ -18,18 +18,18 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Pages{
-		BuildType: Ptr("legacy"),
+		BuildType: new("legacy"),
 		Source: &PagesSource{
-			Branch: Ptr("master"),
-			Path:   Ptr("/"),
+			Branch: new("master"),
+			Path:   new("/"),
 		},
-		CNAME: Ptr("www.example.com"), // not passed along.
+		CNAME: new("www.example.com"), // not passed along.
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
-		want := &createPagesRequest{BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("master"), Path: Ptr("/")}}
+		want := &createPagesRequest{BuildType: new("legacy"), Source: &PagesSource{Branch: new("master"), Path: new("/")}}
 		testJSONBody(t, r, want)
 
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","build_type": "legacy","source": {"branch":"master", "path":"/"}}`)
@@ -41,7 +41,7 @@ func TestRepositoriesService_EnablePagesLegacy(t *testing.T) {
 		t.Errorf("Repositories.EnablePages returned error: %v", err)
 	}
 
-	want := &Pages{URL: Ptr("u"), Status: Ptr("s"), CNAME: Ptr("c"), Custom404: Ptr(false), HTMLURL: Ptr("h"), BuildType: Ptr("legacy"), Source: &PagesSource{Branch: Ptr("master"), Path: Ptr("/")}}
+	want := &Pages{URL: new("u"), Status: new("s"), CNAME: new("c"), Custom404: new(false), HTMLURL: new("h"), BuildType: new("legacy"), Source: &PagesSource{Branch: new("master"), Path: new("/")}}
 
 	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.EnablePages returned %v, want %v", page, want)
@@ -71,14 +71,14 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Pages{
-		BuildType: Ptr("workflow"),
-		CNAME:     Ptr("www.example.com"), // not passed along.
+		BuildType: new("workflow"),
+		CNAME:     new("www.example.com"), // not passed along.
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", mediaTypeEnablePagesAPIPreview)
-		want := &createPagesRequest{BuildType: Ptr("workflow")}
+		want := &createPagesRequest{BuildType: new("workflow")}
 		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"url":"u","status":"s","cname":"c","custom_404":false,"html_url":"h","build_type": "workflow"}`)
 	})
@@ -89,7 +89,7 @@ func TestRepositoriesService_EnablePagesWorkflow(t *testing.T) {
 		t.Errorf("Repositories.EnablePages returned error: %v", err)
 	}
 
-	want := &Pages{URL: Ptr("u"), Status: Ptr("s"), CNAME: Ptr("c"), Custom404: Ptr(false), HTMLURL: Ptr("h"), BuildType: Ptr("workflow")}
+	want := &Pages{URL: new("u"), Status: new("s"), CNAME: new("c"), Custom404: new(false), HTMLURL: new("h"), BuildType: new("workflow")}
 
 	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.EnablePages returned %v, want %v", page, want)
@@ -115,9 +115,9 @@ func TestRepositoriesService_UpdatePagesLegacy(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
-		CNAME:     Ptr("www.example.com"),
-		BuildType: Ptr("legacy"),
-		Source:    &PagesSource{Branch: Ptr("gh-pages")},
+		CNAME:     new("www.example.com"),
+		BuildType: new("legacy"),
+		Source:    &PagesSource{Branch: new("gh-pages")},
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -148,8 +148,8 @@ func TestRepositoriesService_UpdatePagesWorkflow(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
-		CNAME:     Ptr("www.example.com"),
-		BuildType: Ptr("workflow"),
+		CNAME:     new("www.example.com"),
+		BuildType: new("workflow"),
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -180,7 +180,7 @@ func TestRepositoriesService_UpdatePagesGHES(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &PagesUpdateWithoutCNAME{
-		BuildType: Ptr("workflow"),
+		BuildType: new("workflow"),
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -211,7 +211,7 @@ func TestRepositoriesService_UpdatePages_NullCNAME(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &PagesUpdate{
-		Source: &PagesSource{Branch: Ptr("gh-pages")},
+		Source: &PagesSource{Branch: new("gh-pages")},
 	}
 
 	mux.HandleFunc("/repos/o/r/pages", func(w http.ResponseWriter, r *http.Request) {
@@ -268,7 +268,7 @@ func TestRepositoriesService_GetPagesInfo(t *testing.T) {
 		t.Errorf("Repositories.GetPagesInfo returned error: %v", err)
 	}
 
-	want := &Pages{URL: Ptr("u"), Status: Ptr("s"), CNAME: Ptr("c"), Custom404: Ptr(false), HTMLURL: Ptr("h"), Public: Ptr(true), HTTPSCertificate: &PagesHTTPSCertificate{State: Ptr("approved"), Description: Ptr("Certificate is approved"), Domains: []string{"developer.github.com"}, ExpiresAt: Ptr("2021-05-22")}, HTTPSEnforced: Ptr(true)}
+	want := &Pages{URL: new("u"), Status: new("s"), CNAME: new("c"), Custom404: new(false), HTMLURL: new("h"), Public: new(true), HTTPSCertificate: &PagesHTTPSCertificate{State: new("approved"), Description: new("Certificate is approved"), Domains: []string{"developer.github.com"}, ExpiresAt: new("2021-05-22")}, HTTPSEnforced: new(true)}
 	if !cmp.Equal(page, want) {
 		t.Errorf("Repositories.GetPagesInfo returned %+v, want %+v", page, want)
 	}
@@ -303,7 +303,7 @@ func TestRepositoriesService_ListPagesBuilds(t *testing.T) {
 		t.Errorf("Repositories.ListPagesBuilds returned error: %v", err)
 	}
 
-	want := []*PagesBuild{{URL: Ptr("u"), Status: Ptr("s"), Commit: Ptr("c")}}
+	want := []*PagesBuild{{URL: new("u"), Status: new("s"), Commit: new("c")}}
 	if !cmp.Equal(pages, want) {
 		t.Errorf("Repositories.ListPagesBuilds returned %+v, want %+v", pages, want)
 	}
@@ -357,7 +357,7 @@ func TestRepositoriesService_GetLatestPagesBuild(t *testing.T) {
 		t.Errorf("Repositories.GetLatestPagesBuild returned error: %v", err)
 	}
 
-	want := &PagesBuild{URL: Ptr("u"), Status: Ptr("s"), Commit: Ptr("c")}
+	want := &PagesBuild{URL: new("u"), Status: new("s"), Commit: new("c")}
 	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.GetLatestPagesBuild returned %+v, want %+v", build, want)
 	}
@@ -392,7 +392,7 @@ func TestRepositoriesService_GetPageBuild(t *testing.T) {
 		t.Errorf("Repositories.GetPageBuild returned error: %v", err)
 	}
 
-	want := &PagesBuild{URL: Ptr("u"), Status: Ptr("s"), Commit: Ptr("c")}
+	want := &PagesBuild{URL: new("u"), Status: new("s"), Commit: new("c")}
 	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.GetPageBuild returned %+v, want %+v", build, want)
 	}
@@ -427,7 +427,7 @@ func TestRepositoriesService_RequestPageBuild(t *testing.T) {
 		t.Errorf("Repositories.RequestPageBuild returned error: %v", err)
 	}
 
-	want := &PagesBuild{URL: Ptr("u"), Status: Ptr("s")}
+	want := &PagesBuild{URL: new("u"), Status: new("s")}
 	if !cmp.Equal(build, want) {
 		t.Errorf("Repositories.RequestPageBuild returned %+v, want %+v", build, want)
 	}
@@ -464,16 +464,16 @@ func TestRepositoriesService_GetPageHealthCheck(t *testing.T) {
 
 	want := &PagesHealthCheckResponse{
 		Domain: &PagesDomain{
-			Host:        Ptr("example.com"),
-			URI:         Ptr("http://example.com/"),
-			Nameservers: Ptr("default"),
-			DNSResolves: Ptr(true),
+			Host:        new("example.com"),
+			URI:         new("http://example.com/"),
+			Nameservers: new("default"),
+			DNSResolves: new(true),
 		},
 		AltDomain: &PagesDomain{
-			Host:        Ptr("www.example.com"),
-			URI:         Ptr("http://www.example.com/"),
-			Nameservers: Ptr("default"),
-			DNSResolves: Ptr(true),
+			Host:        new("www.example.com"),
+			URI:         new("http://www.example.com/"),
+			Nameservers: new("default"),
+			DNSResolves: new(true),
 		},
 	}
 	if !cmp.Equal(healthCheckResponse, want) {
