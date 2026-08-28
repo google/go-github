@@ -1305,9 +1305,13 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		c.rateMu.Unlock()
 	}
 
+	// CheckResponse substitutes r.Body with a re-readable copy on error
+	// responses, so capture the network body first: it is the one that must
+	// be closed.
+	origBody := resp.Body
 	err = CheckResponse(resp)
 	if err != nil {
-		defer resp.Body.Close()
+		defer origBody.Close()
 		// Special case for AcceptedErrors. If an AcceptedError
 		// has been encountered, the response's payload will be
 		// added to the AcceptedError and returned.
@@ -1820,6 +1824,12 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 // the 200 range or equal to 202 Accepted.
 // API error responses are expected to have response
 // body, and a JSON response body that maps to [ErrorResponse].
+//
+// On error responses other than 202 Accepted, CheckResponse consumes r.Body
+// and replaces it with an in-memory copy so that the error body can be
+// re-read. Closing r.Body after CheckResponse returns therefore closes only
+// the copy: to release the original body and its underlying connection,
+// capture r.Body before the call and close the captured body instead.
 //
 // The error type will be *[RateLimitError] for rate limit exceeded errors,
 // *[AcceptedError] for 202 Accepted status codes,

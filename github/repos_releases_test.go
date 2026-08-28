@@ -537,6 +537,56 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 	}
 }
 
+// CheckResponse substitutes resp.Body with a re-readable copy on error
+// responses; downloadReleaseAssetFromURL must still close the original body it
+// replaces. Unlike its sibling tests, the recorder wraps the follow-redirects
+// client's transport: that client, not the library client, performs the
+// redirected request, so wrapping the library client would only ever observe
+// the first hop's correctly-closed redirect response and never the leak.
+func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToErrorClosesOriginalBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		// /yo, below will be served as baseURLPath/yo
+		http.Redirect(w, r, baseURLPath+"/yo", http.StatusFound)
+	})
+	mux.HandleFunc("/yo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		http.Error(w, `{"message":"Not Found"}`, 404)
+	})
+
+	var closed bool
+	followRedirectsClient := &http.Client{
+		Transport: roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			resp, err := http.DefaultTransport.RoundTrip(req)
+			if resp != nil {
+				resp.Body = &closeRecorder{ReadCloser: resp.Body, closed: &closed}
+			}
+			return resp, err
+		}),
+	}
+
+	ctx := t.Context()
+	rc, loc, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, followRedirectsClient)
+	if err == nil {
+		t.Error("Repositories.DownloadReleaseAsset did not return an error")
+	}
+	if rc != nil {
+		rc.Close()
+		t.Error("Repositories.DownloadReleaseAsset returned stream, want nil")
+	}
+	if loc != "" {
+		t.Errorf(`Repositories.DownloadReleaseAsset returned "%v", want empty ""`, loc)
+	}
+	if !closed {
+		t.Error("original response body was not closed on an error response")
+	}
+}
+
 func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
