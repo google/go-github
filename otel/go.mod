@@ -1,6 +1,6 @@
 module github.com/google/go-github/otel/v90
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/google/go-github/v90 v90.0.0

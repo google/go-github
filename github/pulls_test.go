@@ -39,7 +39,7 @@ func TestPullRequestsService_List(t *testing.T) {
 		t.Errorf("PullRequests.List returned error: %v", err)
 	}
 
-	want := []*PullRequest{{Number: Ptr(1)}}
+	want := []*PullRequest{{Number: new(1)}}
 	if !cmp.Equal(pulls, want) {
 		t.Errorf("PullRequests.List returned %+v, want %+v", pulls, want)
 	}
@@ -79,7 +79,7 @@ func TestPullRequestsService_ListPullRequestsWithCommit(t *testing.T) {
 		t.Errorf("PullRequests.ListPullRequestsWithCommit returned error: %v", err)
 	}
 
-	want := []*PullRequest{{Number: Ptr(1)}}
+	want := []*PullRequest{{Number: new(1)}}
 	if !cmp.Equal(pulls, want) {
 		t.Errorf("PullRequests.ListPullRequestsWithCommit returned %+v, want %+v", pulls, want)
 	}
@@ -123,7 +123,7 @@ func TestPullRequestsService_Get(t *testing.T) {
 		t.Errorf("PullRequests.Get returned error: %v", err)
 	}
 
-	want := &PullRequest{Number: Ptr(1)}
+	want := &PullRequest{Number: new(1)}
 	if !cmp.Equal(pull, want) {
 		t.Errorf("PullRequests.Get returned %+v, want %+v", pull, want)
 	}
@@ -245,24 +245,24 @@ func TestPullRequestsService_Get_links(t *testing.T) {
 	}
 
 	want := &PullRequest{
-		Number: Ptr(1),
+		Number: new(1),
 		Links: &PRLinks{
 			Self: &PRLink{
-				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
+				HRef: new("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
 			}, HTML: &PRLink{
-				HRef: Ptr("https://github.com/octocat/Hello-World/pull/1347"),
+				HRef: new("https://github.com/octocat/Hello-World/pull/1347"),
 			}, Issue: &PRLink{
-				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
+				HRef: new("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
 			}, Comments: &PRLink{
-				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/issues/1347/comments"),
+				HRef: new("https://api.github.com/repos/octocat/Hello-World/issues/1347/comments"),
 			}, ReviewComments: &PRLink{
-				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
+				HRef: new("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
 			}, ReviewComment: &PRLink{
-				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
+				HRef: new("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
 			}, Commits: &PRLink{
-				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/1347/commits"),
+				HRef: new("https://api.github.com/repos/octocat/Hello-World/pulls/1347/commits"),
 			}, Statuses: &PRLink{
-				HRef: Ptr("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+				HRef: new("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
 			},
 		},
 	}
@@ -287,14 +287,14 @@ func TestPullRequestsService_Get_headAndBase(t *testing.T) {
 	}
 
 	want := &PullRequest{
-		Number: Ptr(1),
+		Number: new(1),
 		Head: &PullRequestBranch{
-			Ref:  Ptr("r2"),
-			Repo: &Repository{ID: Ptr(int64(2))},
+			Ref:  new("r2"),
+			Repo: &Repository{ID: new(int64(2))},
 		},
 		Base: &PullRequestBranch{
-			Ref:  Ptr("r1"),
-			Repo: &Repository{ID: Ptr(int64(1))},
+			Ref:  new("r1"),
+			Repo: &Repository{ID: new(int64(1))},
 		},
 	}
 	if !cmp.Equal(pull, want) {
@@ -326,15 +326,15 @@ func TestPullRequestsService_Get_urlFields(t *testing.T) {
 	}
 
 	want := &PullRequest{
-		Number:            Ptr(1),
-		URL:               Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
-		HTMLURL:           Ptr("https://github.com/octocat/Hello-World/pull/1347"),
-		IssueURL:          Ptr("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
-		StatusesURL:       Ptr("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
-		DiffURL:           Ptr("https://github.com/octocat/Hello-World/pull/1347.diff"),
-		PatchURL:          Ptr("https://github.com/octocat/Hello-World/pull/1347.patch"),
-		ReviewCommentsURL: Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
-		ReviewCommentURL:  Ptr("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
+		Number:            new(1),
+		URL:               new("https://api.github.com/repos/octocat/Hello-World/pulls/1347"),
+		HTMLURL:           new("https://github.com/octocat/Hello-World/pull/1347"),
+		IssueURL:          new("https://api.github.com/repos/octocat/Hello-World/issues/1347"),
+		StatusesURL:       new("https://api.github.com/repos/octocat/Hello-World/statuses/6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+		DiffURL:           new("https://github.com/octocat/Hello-World/pull/1347.diff"),
+		PatchURL:          new("https://github.com/octocat/Hello-World/pull/1347.patch"),
+		ReviewCommentsURL: new("https://api.github.com/repos/octocat/Hello-World/pulls/1347/comments"),
+		ReviewCommentURL:  new("https://api.github.com/repos/octocat/Hello-World/pulls/comments{/number}"),
 	}
 
 	if !cmp.Equal(pull, want) {
@@ -355,7 +355,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CreatePullRequest{Title: Ptr("t")}
+	input := CreatePullRequest{Title: new("t")}
 
 	mux.HandleFunc("/repos/o/r/pulls", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -370,7 +370,7 @@ func TestPullRequestsService_Create(t *testing.T) {
 		t.Errorf("PullRequests.Create returned error: %v", err)
 	}
 
-	want := &PullRequest{Number: Ptr(1)}
+	want := &PullRequest{Number: new(1)}
 	if !cmp.Equal(pull, want) {
 		t.Errorf("PullRequests.Create returned %+v, want %+v", pull, want)
 	}
@@ -414,7 +414,7 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 	})
 
 	opts := &PullRequestBranchUpdateOptions{
-		ExpectedHeadSHA: Ptr("s"),
+		ExpectedHeadSHA: new("s"),
 	}
 
 	ctx := t.Context()
@@ -424,8 +424,8 @@ func TestPullRequestsService_UpdateBranch(t *testing.T) {
 	}
 
 	want := &PullRequestBranchUpdateResponse{
-		Message: Ptr("Updating pull request branch."),
-		URL:     Ptr("https://github.com/repos/o/r/pulls/1"),
+		Message: new("Updating pull request branch."),
+		URL:     new("https://github.com/repos/o/r/pulls/1"),
 	}
 
 	if !cmp.Equal(pull, want) {
@@ -458,23 +458,23 @@ func TestPullRequestsService_Edit(t *testing.T) {
 		wantUpdate   *pullRequestUpdate
 	}{
 		{
-			input:        &PullRequest{Title: Ptr("t")},
+			input:        &PullRequest{Title: new("t")},
 			sendResponse: `{"number":1}`,
-			want:         &PullRequest{Number: Ptr(1)},
+			want:         &PullRequest{Number: new(1)},
 			wantUpdate: &pullRequestUpdate{
-				Title: Ptr("t"),
+				Title: new("t"),
 			},
 		},
 		{
 			// base update
-			input:        &PullRequest{Base: &PullRequestBranch{Ref: Ptr("master")}},
+			input:        &PullRequest{Base: &PullRequestBranch{Ref: new("master")}},
 			sendResponse: `{"number":1,"base":{"ref":"master"}}`,
 			want: &PullRequest{
-				Number: Ptr(1),
-				Base:   &PullRequestBranch{Ref: Ptr("master")},
+				Number: new(1),
+				Base:   &PullRequestBranch{Ref: new("master")},
 			},
 			wantUpdate: &pullRequestUpdate{
-				Base: Ptr("master"),
+				Base: new("master"),
 			},
 		},
 	}
@@ -564,18 +564,18 @@ func TestPullRequestsService_ListCommits(t *testing.T) {
 
 	want := []*RepositoryCommit{
 		{
-			SHA: Ptr("3"),
+			SHA: new("3"),
 			Parents: []*Commit{
 				{
-					SHA: Ptr("2"),
+					SHA: new("2"),
 				},
 			},
 		},
 		{
-			SHA: Ptr("2"),
+			SHA: new("2"),
 			Parents: []*Commit{
 				{
-					SHA: Ptr("1"),
+					SHA: new("1"),
 				},
 			},
 		},
@@ -638,22 +638,22 @@ func TestPullRequestsService_ListFiles(t *testing.T) {
 
 	want := []*CommitFile{
 		{
-			SHA:       Ptr("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
-			Filename:  Ptr("file1.txt"),
-			Additions: Ptr(103),
-			Deletions: Ptr(21),
-			Changes:   Ptr(124),
-			Status:    Ptr("added"),
-			Patch:     Ptr("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
+			SHA:       new("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+			Filename:  new("file1.txt"),
+			Additions: new(103),
+			Deletions: new(21),
+			Changes:   new(124),
+			Status:    new("added"),
+			Patch:     new("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
 		},
 		{
-			SHA:       Ptr("f61aebed695e2e4193db5e6dcb09b5b57875f334"),
-			Filename:  Ptr("file2.txt"),
-			Additions: Ptr(5),
-			Deletions: Ptr(3),
-			Changes:   Ptr(103),
-			Status:    Ptr("modified"),
-			Patch:     Ptr("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
+			SHA:       new("f61aebed695e2e4193db5e6dcb09b5b57875f334"),
+			Filename:  new("file2.txt"),
+			Additions: new(5),
+			Deletions: new(3),
+			Changes:   new(103),
+			Status:    new("modified"),
+			Patch:     new("@@ -132,7 +132,7 @@ module Test @@ -1000,7 +1000,7 @@ module Test"),
 		},
 	}
 
@@ -733,9 +733,9 @@ func TestPullRequestsService_Merge(t *testing.T) {
 	}
 
 	want := &PullRequestMergeResult{
-		SHA:     Ptr("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
-		Merged:  Ptr(true),
-		Message: Ptr("Pull Request successfully merged"),
+		SHA:     new("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+		Merged:  new(true),
+		Message: new("Pull Request successfully merged"),
 	}
 	if !cmp.Equal(merge, want) {
 		t.Errorf("PullRequests.Merge returned %+v, want %+v", merge, want)
@@ -768,26 +768,26 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 		{
 			options: nil,
 			want: pullRequestMergeRequest{
-				CommitMessage: Ptr("merging pull request"),
+				CommitMessage: new("merging pull request"),
 			},
 		},
 		{
 			options: &PullRequestOptions{},
 			want: pullRequestMergeRequest{
-				CommitMessage: Ptr("merging pull request"),
+				CommitMessage: new("merging pull request"),
 			},
 		},
 		{
 			options: &PullRequestOptions{MergeMethod: "rebase"},
 			want: pullRequestMergeRequest{
-				CommitMessage: Ptr("merging pull request"),
+				CommitMessage: new("merging pull request"),
 				MergeMethod:   "rebase",
 			},
 		},
 		{
 			options: &PullRequestOptions{SHA: "6dcb09b5b57875f334f61aebed695e2e4193db5e"},
 			want: pullRequestMergeRequest{
-				CommitMessage: Ptr("merging pull request"),
+				CommitMessage: new("merging pull request"),
 				SHA:           "6dcb09b5b57875f334f61aebed695e2e4193db5e",
 			},
 		},
@@ -798,7 +798,7 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 				MergeMethod: "squash",
 			},
 			want: pullRequestMergeRequest{
-				CommitMessage: Ptr("merging pull request"),
+				CommitMessage: new("merging pull request"),
 				SHA:           "6dcb09b5b57875f334f61aebed695e2e4193db5e",
 				CommitTitle:   "Extra detail",
 				MergeMethod:   "squash",
@@ -809,7 +809,7 @@ func TestPullRequestsService_Merge_options(t *testing.T) {
 				DontDefaultIfBlank: true,
 			},
 			want: pullRequestMergeRequest{
-				CommitMessage: Ptr("merging pull request"),
+				CommitMessage: new("merging pull request"),
 			},
 		},
 	}
@@ -852,7 +852,7 @@ func TestPullRequestsService_Merge_Blank_Message(t *testing.T) {
 		DontDefaultIfBlank: true,
 	}
 	want = &pullRequestMergeRequest{
-		CommitMessage: Ptr(""),
+		CommitMessage: new(""),
 	}
 	_, _, _ = client.PullRequests.Merge(ctx, "o", "r", 1, "", &opts)
 	if !madeRequest {

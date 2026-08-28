@@ -33,13 +33,13 @@ func TestGitService_GetTree(t *testing.T) {
 	}
 
 	want := Tree{
-		SHA: Ptr("s"),
+		SHA: new("s"),
 		Entries: []*TreeEntry{
 			{
-				Type: Ptr("blob"),
+				Type: new("blob"),
 			},
 		},
-		Truncated: Ptr(true),
+		Truncated: new(true),
 	}
 	if !cmp.Equal(*tree, want) {
 		t.Errorf("Git.GetTree returned %+v, want %+v", *tree, want)
@@ -75,10 +75,10 @@ func TestGitService_CreateTree(t *testing.T) {
 
 	input := []*TreeEntry{
 		{
-			Path: Ptr("file.rb"),
-			Mode: Ptr("100644"),
-			Type: Ptr("blob"),
-			SHA:  Ptr("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
+			Path: new("file.rb"),
+			Mode: new("100644"),
+			Type: new("blob"),
+			SHA:  new("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
 		},
 	}
 
@@ -114,14 +114,14 @@ func TestGitService_CreateTree(t *testing.T) {
 	}
 
 	want := Tree{
-		Ptr("cd8274d15fa3ae2ab983129fb037999f264ba9a7"),
+		new("cd8274d15fa3ae2ab983129fb037999f264ba9a7"),
 		[]*TreeEntry{
 			{
-				Path: Ptr("file.rb"),
-				Mode: Ptr("100644"),
-				Type: Ptr("blob"),
-				Size: Ptr(132),
-				SHA:  Ptr("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
+				Path: new("file.rb"),
+				Mode: new("100644"),
+				Type: new("blob"),
+				Size: new(132),
+				SHA:  new("7c258a9869f33c1e1e1f74fbb32f07c86cb5a75b"),
 			},
 		},
 		nil,
@@ -152,9 +152,9 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 
 	input := []*TreeEntry{
 		{
-			Path:    Ptr("content.md"),
-			Mode:    Ptr("100644"),
-			Content: Ptr("file content"),
+			Path:    new("content.md"),
+			Mode:    new("100644"),
+			Content: new("file content"),
 		},
 	}
 
@@ -191,15 +191,15 @@ func TestGitService_CreateTree_Content(t *testing.T) {
 	}
 
 	want := Tree{
-		Ptr("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
+		new("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
 		[]*TreeEntry{
 			{
-				Path: Ptr("content.md"),
-				Mode: Ptr("100644"),
-				Type: Ptr("blob"),
-				Size: Ptr(12),
-				SHA:  Ptr("aad8feacf6f8063150476a7b2bd9770f2794c08b"),
-				URL:  Ptr("https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"),
+				Path: new("content.md"),
+				Mode: new("100644"),
+				Type: new("blob"),
+				Size: new(12),
+				SHA:  new("aad8feacf6f8063150476a7b2bd9770f2794c08b"),
+				URL:  new("https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"),
 			},
 		},
 		nil,
@@ -230,8 +230,8 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 
 	input := []*TreeEntry{
 		{
-			Path: Ptr("content.md"),
-			Mode: Ptr("100644"),
+			Path: new("content.md"),
+			Mode: new("100644"),
 		},
 	}
 
@@ -268,15 +268,15 @@ func TestGitService_CreateTree_Delete(t *testing.T) {
 	}
 
 	want := Tree{
-		Ptr("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
+		new("5c6780ad2c68743383b740fd1dab6f6a33202b11"),
 		[]*TreeEntry{
 			{
-				Path: Ptr("content.md"),
-				Mode: Ptr("100644"),
-				Type: Ptr("blob"),
-				Size: Ptr(12),
+				Path: new("content.md"),
+				Mode: new("100644"),
+				Type: new("blob"),
+				Size: new(12),
 				SHA:  nil,
-				URL:  Ptr("https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"),
+				URL:  new("https://api.github.com/repos/o/r/git/blobs/aad8feacf6f8063150476a7b2bd9770f2794c08b"),
 			},
 		},
 		nil,
@@ -315,13 +315,13 @@ func TestTreeEntry_MarshalJSON(t *testing.T) {
 	testJSONMarshal(t, &TreeEntry{}, `{"sha": null}`)
 
 	u := &TreeEntry{
-		SHA:     Ptr("sha"),
-		Path:    Ptr("path"),
-		Mode:    Ptr("mode"),
-		Type:    Ptr("type"),
-		Size:    Ptr(1),
-		Content: Ptr("content"),
-		URL:     Ptr("url"),
+		SHA:     new("sha"),
+		Path:    new("path"),
+		Mode:    new("mode"),
+		Type:    new("type"),
+		Size:    new(1),
+		Content: new("content"),
+		URL:     new("url"),
 	}
 
 	want := `{
@@ -340,11 +340,11 @@ func TestTreeEntry_MarshalJSON(t *testing.T) {
 func TestTreeEntry_MarshalJSON_withNilContentAndSHA(t *testing.T) {
 	t.Parallel()
 	te := TreeEntry{
-		Path: Ptr("path"),
-		Mode: Ptr("mode"),
-		Type: Ptr("type"),
-		Size: Ptr(1),
-		URL:  Ptr("url"),
+		Path: new("path"),
+		Mode: new("mode"),
+		Type: new("type"),
+		Size: new(1),
+		URL:  new("url"),
 	}
 
 	want := `{"sha":null,"path":"path","mode":"mode","type":"type"}`
@@ -357,13 +357,13 @@ func TestTreeEntryWithFileDelete_MarshalJSON(t *testing.T) {
 	testJSONMarshal(t, &treeEntryWithFileDelete{}, `{"sha": null}`)
 
 	u := &treeEntryWithFileDelete{
-		SHA:     Ptr("sha"),
-		Path:    Ptr("path"),
-		Mode:    Ptr("mode"),
-		Type:    Ptr("type"),
-		Size:    Ptr(1),
-		Content: Ptr("content"),
-		URL:     Ptr("url"),
+		SHA:     new("sha"),
+		Path:    new("path"),
+		Mode:    new("mode"),
+		Type:    new("type"),
+		Size:    new(1),
+		Content: new("content"),
+		URL:     new("url"),
 	}
 
 	want := `{

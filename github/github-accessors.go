@@ -24350,6 +24350,14 @@ func (l *ListUserIssuesOptions) GetState() string {
 	return l.State
 }
 
+// GetIsUnmatchedOnly returns the IsUnmatchedOnly field.
+func (l *ListVisualStudioSubscriptionsOptions) GetIsUnmatchedOnly() bool {
+	if l == nil {
+		return false
+	}
+	return l.IsUnmatchedOnly
+}
+
 // GetFilter returns the Filter field.
 func (l *ListWorkflowJobsOptions) GetFilter() string {
 	if l == nil {
@@ -46052,6 +46060,62 @@ func (u *UserUpdateRequest) GetTwitterUsername() string {
 		return ""
 	}
 	return *u.TwitterUsername
+}
+
+// GetManualMatch returns the ManualMatch field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignment) GetManualMatch() bool {
+	if v == nil || v.ManualMatch == nil {
+		return false
+	}
+	return *v.ManualMatch
+}
+
+// GetSubscriptionID returns the SubscriptionID field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignment) GetSubscriptionID() string {
+	if v == nil || v.SubscriptionID == nil {
+		return ""
+	}
+	return *v.SubscriptionID
+}
+
+// GetUsername returns the Username field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignment) GetUsername() string {
+	if v == nil || v.Username == nil {
+		return ""
+	}
+	return *v.Username
+}
+
+// GetVisualStudioSubscriptionEmail returns the VisualStudioSubscriptionEmail field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignment) GetVisualStudioSubscriptionEmail() string {
+	if v == nil || v.VisualStudioSubscriptionEmail == nil {
+		return ""
+	}
+	return *v.VisualStudioSubscriptionEmail
+}
+
+// GetUserIdentifier returns the UserIdentifier field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignmentRequest) GetUserIdentifier() string {
+	if v == nil || v.UserIdentifier == nil {
+		return ""
+	}
+	return *v.UserIdentifier
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptions) GetTotalCount() int {
+	if v == nil || v.TotalCount == nil {
+		return 0
+	}
+	return *v.TotalCount
+}
+
+// GetVisualStudioSubscriptions returns the VisualStudioSubscriptions slice if it's non-nil, nil otherwise.
+func (v *VisualStudioSubscriptions) GetVisualStudioSubscriptions() []*VisualStudioSubscriptionAssignment {
+	if v == nil || v.VisualStudioSubscriptions == nil {
+		return nil
+	}
+	return v.VisualStudioSubscriptions
 }
 
 // GetEcosystem returns the Ecosystem field if it's non-nil, zero value otherwise.

@@ -30504,6 +30504,14 @@ func TestListUserIssuesOptions_GetState(tt *testing.T) {
 	l.GetState()
 }
 
+func TestListVisualStudioSubscriptionsOptions_GetIsUnmatchedOnly(tt *testing.T) {
+	tt.Parallel()
+	l := &ListVisualStudioSubscriptionsOptions{}
+	l.GetIsUnmatchedOnly()
+	l = nil
+	l.GetIsUnmatchedOnly()
+}
+
 func TestListWorkflowJobsOptions_GetFilter(tt *testing.T) {
 	tt.Parallel()
 	l := &ListWorkflowJobsOptions{}
@@ -57717,6 +57725,83 @@ func TestUserUpdateRequest_GetTwitterUsername(tt *testing.T) {
 	u.GetTwitterUsername()
 	u = nil
 	u.GetTwitterUsername()
+}
+
+func TestVisualStudioSubscriptionAssignment_GetManualMatch(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	v := &VisualStudioSubscriptionAssignment{ManualMatch: &zeroValue}
+	v.GetManualMatch()
+	v = &VisualStudioSubscriptionAssignment{}
+	v.GetManualMatch()
+	v = nil
+	v.GetManualMatch()
+}
+
+func TestVisualStudioSubscriptionAssignment_GetSubscriptionID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	v := &VisualStudioSubscriptionAssignment{SubscriptionID: &zeroValue}
+	v.GetSubscriptionID()
+	v = &VisualStudioSubscriptionAssignment{}
+	v.GetSubscriptionID()
+	v = nil
+	v.GetSubscriptionID()
+}
+
+func TestVisualStudioSubscriptionAssignment_GetUsername(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	v := &VisualStudioSubscriptionAssignment{Username: &zeroValue}
+	v.GetUsername()
+	v = &VisualStudioSubscriptionAssignment{}
+	v.GetUsername()
+	v = nil
+	v.GetUsername()
+}
+
+func TestVisualStudioSubscriptionAssignment_GetVisualStudioSubscriptionEmail(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	v := &VisualStudioSubscriptionAssignment{VisualStudioSubscriptionEmail: &zeroValue}
+	v.GetVisualStudioSubscriptionEmail()
+	v = &VisualStudioSubscriptionAssignment{}
+	v.GetVisualStudioSubscriptionEmail()
+	v = nil
+	v.GetVisualStudioSubscriptionEmail()
+}
+
+func TestVisualStudioSubscriptionAssignmentRequest_GetUserIdentifier(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	v := &VisualStudioSubscriptionAssignmentRequest{UserIdentifier: &zeroValue}
+	v.GetUserIdentifier()
+	v = &VisualStudioSubscriptionAssignmentRequest{}
+	v.GetUserIdentifier()
+	v = nil
+	v.GetUserIdentifier()
+}
+
+func TestVisualStudioSubscriptions_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	v := &VisualStudioSubscriptions{TotalCount: &zeroValue}
+	v.GetTotalCount()
+	v = &VisualStudioSubscriptions{}
+	v.GetTotalCount()
+	v = nil
+	v.GetTotalCount()
+}
+
+func TestVisualStudioSubscriptions_GetVisualStudioSubscriptions(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*VisualStudioSubscriptionAssignment{}
+	v := &VisualStudioSubscriptions{VisualStudioSubscriptions: zeroValue}
+	v.GetVisualStudioSubscriptions()
+	v = &VisualStudioSubscriptions{}
+	v.GetVisualStudioSubscriptions()
+	v = nil
+	v.GetVisualStudioSubscriptions()
 }
 
 func TestVulnerabilityPackage_GetEcosystem(tt *testing.T) {

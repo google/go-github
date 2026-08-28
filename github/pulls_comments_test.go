@@ -43,7 +43,7 @@ func TestPullRequestsService_ListComments_allPulls(t *testing.T) {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
 	}
 
-	want := []*PullRequestComment{{ID: Ptr(int64(1))}}
+	want := []*PullRequestComment{{ID: new(int64(1))}}
 	if !cmp.Equal(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
@@ -80,7 +80,7 @@ func TestPullRequestsService_ListComments_specificPull(t *testing.T) {
 		t.Errorf("PullRequests.ListComments returned error: %v", err)
 	}
 
-	want := []*PullRequestComment{{ID: Ptr(int64(1)), PullRequestReviewID: Ptr(int64(42))}}
+	want := []*PullRequestComment{{ID: new(int64(1)), PullRequestReviewID: new(int64(42))}}
 	if !cmp.Equal(pulls, want) {
 		t.Errorf("PullRequests.ListComments returned %+v, want %+v", pulls, want)
 	}
@@ -112,7 +112,7 @@ func TestPullRequestsService_GetComment(t *testing.T) {
 		t.Errorf("PullRequests.GetComment returned error: %v", err)
 	}
 
-	want := &PullRequestComment{ID: Ptr(int64(1))}
+	want := &PullRequestComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("PullRequests.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -161,7 +161,7 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 		t.Errorf("PullRequests.CreateComment returned error: %v", err)
 	}
 
-	want := &PullRequestComment{ID: Ptr(int64(1))}
+	want := &PullRequestComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("PullRequests.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -194,7 +194,7 @@ func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PullRequestComment{Body: Ptr("b")}
+	input := &PullRequestComment{Body: new("b")}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -208,7 +208,7 @@ func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
 		t.Errorf("PullRequests.CreateCommentInReplyTo returned error: %v", err)
 	}
 
-	want := &PullRequestComment{ID: Ptr(int64(1))}
+	want := &PullRequestComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("PullRequests.CreateCommentInReplyTo returned %+v, want %+v", comment, want)
 	}
@@ -246,7 +246,7 @@ func TestPullRequestsService_UpdateComment(t *testing.T) {
 		t.Errorf("PullRequests.UpdateComment returned error: %v", err)
 	}
 
-	want := &PullRequestComment{ID: Ptr(int64(1))}
+	want := &PullRequestComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("PullRequests.UpdateComment returned %+v, want %+v", comment, want)
 	}

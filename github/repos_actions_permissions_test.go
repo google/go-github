@@ -27,7 +27,7 @@ func TestRepositoriesService_GetActionsPermissions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetActionsPermissions returned error: %v", err)
 	}
-	want := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("all"), SHAPinningRequired: Ptr(true)}
+	want := &ActionsPermissionsRepository{Enabled: new(true), AllowedActions: new("all"), SHAPinningRequired: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.GetActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -51,7 +51,7 @@ func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("selected"), SHAPinningRequired: Ptr(true)}
+	input := &ActionsPermissionsRepository{Enabled: new(true), AllowedActions: new("selected"), SHAPinningRequired: new(true)}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -65,7 +65,7 @@ func TestRepositoriesService_UpdateActionsPermissions(t *testing.T) {
 		t.Errorf("Repositories.UpdateActionsPermissions returned error: %v", err)
 	}
 
-	want := &ActionsPermissionsRepository{Enabled: Ptr(true), AllowedActions: Ptr("selected"), SHAPinningRequired: Ptr(true)}
+	want := &ActionsPermissionsRepository{Enabled: new(true), AllowedActions: new("selected"), SHAPinningRequired: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.UpdateActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -99,7 +99,7 @@ func TestRepositoriesService_GetDefaultWorkflowPermissions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetDefaultWorkflowPermissions returned error: %v", err)
 	}
-	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
+	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: new("read"), CanApprovePullRequestReviews: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.GetDefaultWorkflowPermissions returned %+v, want %+v", org, want)
 	}
@@ -123,7 +123,7 @@ func TestRepositoriesService_UpdateDefaultWorkflowPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
+	input := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: new("read"), CanApprovePullRequestReviews: new(true)}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -137,7 +137,7 @@ func TestRepositoriesService_UpdateDefaultWorkflowPermissions(t *testing.T) {
 		t.Errorf("Repositories.UpdateDefaultWorkflowPermissions returned error: %v", err)
 	}
 
-	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
+	want := &DefaultWorkflowPermissionRepository{DefaultWorkflowPermissions: new("read"), CanApprovePullRequestReviews: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Repositories.UpdateDefaultWorkflowPermissions returned %+v, want %+v", org, want)
 	}
@@ -173,8 +173,8 @@ func TestRepositoriesService_GetArtifactAndLogRetentionPeriod(t *testing.T) {
 	}
 
 	want := &ArtifactPeriod{
-		Days:               Ptr(90),
-		MaximumAllowedDays: Ptr(365),
+		Days:               new(90),
+		MaximumAllowedDays: new(365),
 	}
 	if !cmp.Equal(period, want) {
 		t.Errorf("Repositories.GetArtifactAndLogRetentionPeriod = %+v, want %+v", period, want)
@@ -199,7 +199,7 @@ func TestRepositoriesService_UpdateArtifactAndLogRetentionPeriod(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactPeriodOpt{Days: Ptr(90)}
+	input := &ArtifactPeriodOpt{Days: new(90)}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -243,10 +243,10 @@ func TestRepositoriesService_GetPrivateRepoForkPRWorkflowSettings(t *testing.T) 
 		t.Errorf("Repositories.GetPrivateRepoForkPRWorkflowSettings returned error: %v", err)
 	}
 	want := &WorkflowsPermissions{
-		RunWorkflowsFromForkPullRequests:  Ptr(true),
-		SendWriteTokensToWorkflows:        Ptr(false),
-		SendSecretsAndVariables:           Ptr(true),
-		RequireApprovalForForkPRWorkflows: Ptr(false),
+		RunWorkflowsFromForkPullRequests:  new(true),
+		SendWriteTokensToWorkflows:        new(false),
+		SendSecretsAndVariables:           new(true),
+		RequireApprovalForForkPRWorkflows: new(false),
 	}
 	if !cmp.Equal(permissions, want) {
 		t.Errorf("Repositories.GetPrivateRepoForkPRWorkflowSettings returned %+v, want %+v", permissions, want)
@@ -273,8 +273,8 @@ func TestRepositoriesService_UpdatePrivateRepoForkPRWorkflowSettings(t *testing.
 
 	input := &WorkflowsPermissionsOpt{
 		RunWorkflowsFromForkPullRequests: true,
-		SendWriteTokensToWorkflows:       Ptr(false),
-		SendSecretsAndVariables:          Ptr(true),
+		SendWriteTokensToWorkflows:       new(false),
+		SendSecretsAndVariables:          new(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {

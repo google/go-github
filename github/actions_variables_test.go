@@ -179,7 +179,7 @@ func TestActionsService_UpdateRepoVariable(t *testing.T) {
 	name := "NAME"
 	input := ActionsUpdateVariableRequest{
 		Name:  &name,
-		Value: Ptr("VALUE"),
+		Value: new("VALUE"),
 	}
 
 	mux.HandleFunc("/repos/o/r/actions/variables/NAME", func(w http.ResponseWriter, r *http.Request) {
@@ -251,9 +251,9 @@ func TestActionsService_ListOrgVariables(t *testing.T) {
 	want := &ActionsVariables{
 		TotalCount: 3,
 		Variables: []*ActionsVariable{
-			{Name: "A", Value: "AA", CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001), Visibility: Ptr("private")},
-			{Name: "B", Value: "BB", CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003), Visibility: Ptr("all")},
-			{Name: "C", Value: "CC", CreatedAt: refTimestamp(1136178004), UpdatedAt: refTimestamp(1136178005), Visibility: Ptr("selected"), SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories")},
+			{Name: "A", Value: "AA", CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001), Visibility: new("private")},
+			{Name: "B", Value: "BB", CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003), Visibility: new("all")},
+			{Name: "C", Value: "CC", CreatedAt: refTimestamp(1136178004), UpdatedAt: refTimestamp(1136178005), Visibility: new("selected"), SelectedRepositoriesURL: new("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories")},
 		},
 	}
 	if !cmp.Equal(variables, want) {
@@ -295,8 +295,8 @@ func TestActionsService_GetOrgVariable(t *testing.T) {
 		Value:                   "VALUE",
 		CreatedAt:               refTimestamp(1136178000),
 		UpdatedAt:               refTimestamp(1136178001),
-		Visibility:              Ptr("selected"),
-		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"),
+		Visibility:              new("selected"),
+		SelectedRepositoriesURL: new("https://api.github.com/orgs/octo-org/actions/variables/VAR/repositories"),
 	}
 	if !cmp.Equal(variable, want) {
 		t.Errorf("Actions.GetOrgVariable returned %+v, want %+v", variable, want)
@@ -359,8 +359,8 @@ func TestActionsService_UpdateOrgVariable(t *testing.T) {
 	name := "NAME"
 	input := ActionsUpdateOrgVariableRequest{
 		Name:                  &name,
-		Value:                 Ptr("VALUE"),
-		Visibility:            Ptr("selected"),
+		Value:                 new("VALUE"),
+		Visibility:            new("selected"),
 		SelectedRepositoryIDs: []int64{1296269, 1269280},
 	}
 
@@ -405,9 +405,9 @@ func TestActionsService_ListSelectedReposForOrgVariable(t *testing.T) {
 	}
 
 	want := &SelectedReposList{
-		TotalCount: Ptr(1),
+		TotalCount: new(1),
 		Repositories: []*Repository{
-			{ID: Ptr(int64(1))},
+			{ID: new(int64(1))},
 		},
 	}
 	if !cmp.Equal(repos, want) {
@@ -470,7 +470,7 @@ func TestActionsService_AddSelectedRepoToOrgVariable(t *testing.T) {
 		testMethod(t, r, "PUT")
 	})
 
-	repo := &Repository{ID: Ptr(int64(1234))}
+	repo := &Repository{ID: new(int64(1234))}
 	ctx := t.Context()
 	_, err := client.Actions.AddSelectedRepoToOrgVariable(ctx, "o", "NAME", repo)
 	if err != nil {
@@ -504,7 +504,7 @@ func TestActionsService_RemoveSelectedRepoFromOrgVariable(t *testing.T) {
 		testMethod(t, r, "DELETE")
 	})
 
-	repo := &Repository{ID: Ptr(int64(1234))}
+	repo := &Repository{ID: new(int64(1234))}
 	ctx := t.Context()
 	_, err := client.Actions.RemoveSelectedRepoFromOrgVariable(ctx, "o", "NAME", repo)
 	if err != nil {
@@ -678,7 +678,7 @@ func TestActionsService_UpdateEnvVariable(t *testing.T) {
 	name := "NAME"
 	input := ActionsUpdateVariableRequest{
 		Name:  &name,
-		Value: Ptr("VAR"),
+		Value: new("VAR"),
 	}
 
 	mux.HandleFunc("/repos/o/r/environments/e/variables/NAME", func(w http.ResponseWriter, r *http.Request) {

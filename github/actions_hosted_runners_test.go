@@ -84,13 +84,13 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 		TotalCount: 2,
 		Runners: []*HostedRunner{
 			{
-				ID:            Ptr(int64(5)),
-				Name:          Ptr("My hosted ubuntu runner"),
-				RunnerGroupID: Ptr(int64(2)),
-				Platform:      Ptr("linux-x64"),
+				ID:            new(int64(5)),
+				Name:          new("My hosted ubuntu runner"),
+				RunnerGroupID: new(int64(2)),
+				Platform:      new("linux-x64"),
 				ImageDetails: &HostedRunnerImageDetail{
-					ID:     Ptr("ubuntu-20.04"),
-					SizeGB: Ptr(int64(86)),
+					ID:     new("ubuntu-20.04"),
+					SizeGB: new(int64(86)),
 				},
 				MachineSizeDetails: &HostedRunnerMachineSpec{
 					ID:        "4-core",
@@ -98,9 +98,9 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 					MemoryGB:  16,
 					StorageGB: 150,
 				},
-				Status:          Ptr("Ready"),
-				MaximumRunners:  Ptr(int64(10)),
-				PublicIPEnabled: Ptr(true),
+				Status:          new("Ready"),
+				MaximumRunners:  new(int64(10)),
+				PublicIPEnabled: new(true),
 				PublicIPs: []*HostedRunnerPublicIP{
 					{
 						Enabled: true,
@@ -111,13 +111,13 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 				LastActiveOn: &referenceTimestamp,
 			},
 			{
-				ID:            Ptr(int64(7)),
-				Name:          Ptr("My hosted Windows runner"),
-				RunnerGroupID: Ptr(int64(2)),
-				Platform:      Ptr("win-x64"),
+				ID:            new(int64(7)),
+				Name:          new("My hosted Windows runner"),
+				RunnerGroupID: new(int64(2)),
+				Platform:      new("win-x64"),
 				ImageDetails: &HostedRunnerImageDetail{
-					ID:     Ptr("windows-latest"),
-					SizeGB: Ptr(int64(256)),
+					ID:     new("windows-latest"),
+					SizeGB: new(int64(256)),
 				},
 				MachineSizeDetails: &HostedRunnerMachineSpec{
 					ID:        "8-core",
@@ -125,9 +125,9 @@ func TestActionsService_ListHostedRunners(t *testing.T) {
 					MemoryGB:  32,
 					StorageGB: 300,
 				},
-				Status:          Ptr("Ready"),
-				MaximumRunners:  Ptr(int64(20)),
-				PublicIPEnabled: Ptr(false),
+				Status:          new("Ready"),
+				MaximumRunners:  new(int64(20)),
+				PublicIPEnabled: new(false),
 				PublicIPs:       []*HostedRunnerPublicIP{},
 				LastActiveOn:    &referenceTimestamp,
 			},
@@ -194,13 +194,13 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 		Image: HostedRunnerImage{
 			ID:      "ubuntu-latest",
 			Source:  "github",
-			Version: Ptr("latest"),
+			Version: new("latest"),
 		},
 		RunnerGroupID:  1,
 		Size:           "4-core",
-		MaximumRunners: Ptr(int64(50)),
-		EnableStaticIP: Ptr(false),
-		ImageGen:       Ptr(true),
+		MaximumRunners: new(int64(50)),
+		EnableStaticIP: new(false),
+		ImageGen:       new(true),
 	}
 	hostedRunner, _, err := client.Actions.CreateHostedRunner(ctx, "o", validReq)
 	if err != nil {
@@ -208,13 +208,13 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 	}
 
 	want := &HostedRunner{
-		ID:            Ptr(int64(5)),
-		Name:          Ptr("My hosted ubuntu runner"),
-		RunnerGroupID: Ptr(int64(2)),
-		Platform:      Ptr("linux-x64"),
+		ID:            new(int64(5)),
+		Name:          new("My hosted ubuntu runner"),
+		RunnerGroupID: new(int64(2)),
+		Platform:      new("linux-x64"),
 		ImageDetails: &HostedRunnerImageDetail{
-			ID:     Ptr("ubuntu-20.04"),
-			SizeGB: Ptr(int64(86)),
+			ID:     new("ubuntu-20.04"),
+			SizeGB: new(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
 			ID:        "4-core",
@@ -222,9 +222,9 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 			MemoryGB:  16,
 			StorageGB: 150,
 		},
-		Status:          Ptr("Ready"),
-		MaximumRunners:  Ptr(int64(10)),
-		PublicIPEnabled: Ptr(true),
+		Status:          new("Ready"),
+		MaximumRunners:  new(int64(10)),
+		PublicIPEnabled: new(true),
 		PublicIPs: []*HostedRunnerPublicIP{
 			{
 				Enabled: true,
@@ -252,7 +252,7 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 				Image: HostedRunnerImage{
 					ID:      "ubuntu-latest",
 					Source:  "github",
-					Version: Ptr("latest"),
+					Version: new("latest"),
 				},
 				RunnerGroupID: 1,
 			},
@@ -273,7 +273,7 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 				Image: HostedRunnerImage{
 					ID:      "ubuntu-latest",
 					Source:  "github",
-					Version: Ptr("latest"),
+					Version: new("latest"),
 				},
 				RunnerGroupID: 1,
 				Size:          "4-core",
@@ -287,7 +287,7 @@ func TestActionsService_CreateHostedRunner(t *testing.T) {
 				Image: HostedRunnerImage{
 					ID:      "ubuntu-latest",
 					Source:  "github",
-					Version: Ptr("latest"),
+					Version: new("latest"),
 				},
 				Size: "4-core",
 			},
@@ -623,13 +623,13 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 	}
 
 	want := &HostedRunner{
-		ID:            Ptr(int64(5)),
-		Name:          Ptr("My hosted ubuntu runner"),
-		RunnerGroupID: Ptr(int64(2)),
-		Platform:      Ptr("linux-x64"),
+		ID:            new(int64(5)),
+		Name:          new("My hosted ubuntu runner"),
+		RunnerGroupID: new(int64(2)),
+		Platform:      new("linux-x64"),
 		ImageDetails: &HostedRunnerImageDetail{
-			ID:     Ptr("ubuntu-20.04"),
-			SizeGB: Ptr(int64(86)),
+			ID:     new("ubuntu-20.04"),
+			SizeGB: new(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
 			ID:        "4-core",
@@ -637,9 +637,9 @@ func TestActionsService_GetHostedRunner(t *testing.T) {
 			MemoryGB:  16,
 			StorageGB: 150,
 		},
-		Status:          Ptr("Ready"),
-		MaximumRunners:  Ptr(int64(10)),
-		PublicIPEnabled: Ptr(true),
+		Status:          new("Ready"),
+		MaximumRunners:  new(int64(10)),
+		PublicIPEnabled: new(true),
 		PublicIPs: []*HostedRunnerPublicIP{
 			{
 				Enabled: true,
@@ -706,11 +706,11 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 
 	ctx := t.Context()
 	validReq := UpdateHostedRunnerRequest{
-		Name:           Ptr("My larger runner"),
-		RunnerGroupID:  Ptr(int64(1)),
-		MaximumRunners: Ptr(int64(50)),
-		EnableStaticIP: Ptr(false),
-		ImageVersion:   Ptr("1.0.0"),
+		Name:           new("My larger runner"),
+		RunnerGroupID:  new(int64(1)),
+		MaximumRunners: new(int64(50)),
+		EnableStaticIP: new(false),
+		ImageVersion:   new("1.0.0"),
 	}
 	hostedRunner, _, err := client.Actions.UpdateHostedRunner(ctx, "o", 23, validReq)
 	if err != nil {
@@ -718,13 +718,13 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 	}
 
 	want := &HostedRunner{
-		ID:            Ptr(int64(5)),
-		Name:          Ptr("My hosted ubuntu runner"),
-		RunnerGroupID: Ptr(int64(2)),
-		Platform:      Ptr("linux-x64"),
+		ID:            new(int64(5)),
+		Name:          new("My hosted ubuntu runner"),
+		RunnerGroupID: new(int64(2)),
+		Platform:      new("linux-x64"),
 		ImageDetails: &HostedRunnerImageDetail{
-			ID:     Ptr("ubuntu-20.04"),
-			SizeGB: Ptr(int64(86)),
+			ID:     new("ubuntu-20.04"),
+			SizeGB: new(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
 			ID:        "4-core",
@@ -732,9 +732,9 @@ func TestActionsService_UpdateHostedRunner(t *testing.T) {
 			MemoryGB:  16,
 			StorageGB: 150,
 		},
-		Status:          Ptr("Ready"),
-		MaximumRunners:  Ptr(int64(10)),
-		PublicIPEnabled: Ptr(true),
+		Status:          new("Ready"),
+		MaximumRunners:  new(int64(10)),
+		PublicIPEnabled: new(true),
 		PublicIPs: []*HostedRunnerPublicIP{
 			{
 				Enabled: true,
@@ -806,13 +806,13 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 	}
 
 	want := &HostedRunner{
-		ID:            Ptr(int64(5)),
-		Name:          Ptr("My hosted ubuntu runner"),
-		RunnerGroupID: Ptr(int64(2)),
-		Platform:      Ptr("linux-x64"),
+		ID:            new(int64(5)),
+		Name:          new("My hosted ubuntu runner"),
+		RunnerGroupID: new(int64(2)),
+		Platform:      new("linux-x64"),
 		ImageDetails: &HostedRunnerImageDetail{
-			ID:     Ptr("ubuntu-20.04"),
-			SizeGB: Ptr(int64(86)),
+			ID:     new("ubuntu-20.04"),
+			SizeGB: new(int64(86)),
 		},
 		MachineSizeDetails: &HostedRunnerMachineSpec{
 			ID:        "4-core",
@@ -820,9 +820,9 @@ func TestActionsService_DeleteHostedRunner(t *testing.T) {
 			MemoryGB:  16,
 			StorageGB: 150,
 		},
-		Status:          Ptr("Ready"),
-		MaximumRunners:  Ptr(int64(10)),
-		PublicIPEnabled: Ptr(true),
+		Status:          new("Ready"),
+		MaximumRunners:  new(int64(10)),
+		PublicIPEnabled: new(true),
 		PublicIPs: []*HostedRunnerPublicIP{
 			{
 				Enabled: true,

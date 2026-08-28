@@ -608,41 +608,41 @@ func TestWithURLs(t *testing.T) {
 	}{
 		{
 			name:          "does_not_modify_urls_with_trailing_slash",
-			baseURL:       Ptr("https://example.com/"),
-			wantBaseURL:   Ptr("https://example.com/"),
-			uploadURL:     Ptr("https://upload.example.com/"),
-			wantUploadURL: Ptr("https://upload.example.com/"),
+			baseURL:       new("https://example.com/"),
+			wantBaseURL:   new("https://example.com/"),
+			uploadURL:     new("https://upload.example.com/"),
+			wantUploadURL: new("https://upload.example.com/"),
 		},
 		{
 			name:          "adds_trailing_slash",
-			baseURL:       Ptr("https://example.com"),
-			wantBaseURL:   Ptr("https://example.com/"),
-			uploadURL:     Ptr("https://upload.example.com"),
-			wantUploadURL: Ptr("https://upload.example.com/"),
+			baseURL:       new("https://example.com"),
+			wantBaseURL:   new("https://example.com/"),
+			uploadURL:     new("https://upload.example.com"),
+			wantUploadURL: new("https://upload.example.com/"),
 		},
 		{
 			name: "skips_unset",
 		},
 		{
 			name:    "error_on_empty_base_url",
-			baseURL: Ptr(""),
+			baseURL: new(""),
 			wantErr: "invalid base url: url cannot be empty",
 		},
 		{
 			name:    "error_on_bad_base_url",
-			baseURL: Ptr("bogus\nbase\nURL"),
+			baseURL: new("bogus\nbase\nURL"),
 			wantErr: "invalid base url: invalid url",
 		},
 		{
 			name:      "error_on_empty_upload_url",
-			baseURL:   Ptr("https://example.com/"),
-			uploadURL: Ptr(""),
+			baseURL:   new("https://example.com/"),
+			uploadURL: new(""),
 			wantErr:   "invalid upload url: url cannot be empty",
 		},
 		{
 			name:      "error_on_bad_upload_url",
-			baseURL:   Ptr("https://example.com/"),
-			uploadURL: Ptr("bogus\nupload\nURL"),
+			baseURL:   new("https://example.com/"),
+			uploadURL: new("bogus\nupload\nURL"),
 			wantErr:   "invalid upload url: invalid url",
 		},
 	} {
@@ -969,15 +969,15 @@ func Test_newClient(t *testing.T) {
 			opts: clientOptions{
 				httpClient:                              &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
 				transport:                               &http.Transport{IdleConnTimeout: 10 * time.Second},
-				timeout:                                 Ptr(15 * time.Second),
-				apiVersionMin:                           Ptr(api20221128),
-				apiVersionMax:                           Ptr(api20221128),
-				userAgent:                               Ptr("CustomUserAgent/1.0"),
+				timeout:                                 new(15 * time.Second),
+				apiVersionMin:                           new(api20221128),
+				apiVersionMax:                           new(api20221128),
+				userAgent:                               new("CustomUserAgent/1.0"),
 				baseURL:                                 mustParseURL(t, "https://custom-url/api/v3/"),
 				uploadURL:                               mustParseURL(t, "https://custom-upload-url/api/uploads/"),
 				disableRateLimitCheck:                   true,
 				rateLimitRedirectionalEndpoints:         true,
-				maxSecondaryRateLimitRetryAfterDuration: Ptr(2 * time.Minute),
+				maxSecondaryRateLimitRetryAfterDuration: new(2 * time.Minute),
 			},
 			wantErr: "",
 		},
@@ -986,7 +986,7 @@ func Test_newClient(t *testing.T) {
 			opts: clientOptions{
 				disableRateLimitCheck:                   false,
 				rateLimitRedirectionalEndpoints:         true,
-				maxSecondaryRateLimitRetryAfterDuration: Ptr(2 * time.Minute),
+				maxSecondaryRateLimitRetryAfterDuration: new(2 * time.Minute),
 			},
 			wantErr: "",
 		},
@@ -1533,7 +1533,7 @@ func TestNewRequest(t *testing.T) {
 	c := mustNewClient(t)
 
 	inURL, outURL := "/foo", defaultBaseURL+"foo"
-	inBody, outBody := &User{Login: Ptr("l")}, `{"login":"l"}`+"\n"
+	inBody, outBody := &User{Login: new("l")}, `{"login":"l"}`+"\n"
 	req, _ := c.NewRequest(t.Context(), "GET", inURL, inBody)
 
 	// test that relative URL was expanded
@@ -2293,6 +2293,50 @@ func TestDo_httpError(t *testing.T) {
 	}
 	if resp.StatusCode != 400 {
 		t.Errorf("Expected HTTP 400 error, got %v status code.", resp.StatusCode)
+	}
+}
+
+// closeRecorder flags when the response body handed back by the transport
+// is closed.
+type closeRecorder struct {
+	io.ReadCloser
+	closed *bool
+}
+
+func (r *closeRecorder) Close() error {
+	*r.closed = true
+	return r.ReadCloser.Close()
+}
+
+// CheckResponse substitutes resp.Body with a re-readable copy on error
+// responses; the network body it replaces must still be closed.
+func TestDo_closesOriginalBodyOnErrorResponse(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, `{"message":"Bad Request"}`, 400)
+	})
+
+	var closed bool
+	base := client.client.Transport
+	if base == nil {
+		base = http.DefaultTransport
+	}
+	client.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		resp, err := base.RoundTrip(req)
+		if resp != nil {
+			resp.Body = &closeRecorder{ReadCloser: resp.Body, closed: &closed}
+		}
+		return resp, err
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	if _, err := client.Do(req, nil); err == nil {
+		t.Fatal("Expected HTTP 400 error, got no error.")
+	}
+	if !closed {
+		t.Error("original response body was not closed on an error response")
 	}
 }
 
@@ -3245,6 +3289,182 @@ func TestDo_noContent(t *testing.T) {
 	_, err := client.Do(req, &body)
 	if err != nil {
 		t.Fatalf("Do returned unexpected error: %v", err)
+	}
+}
+
+func TestDo_ioWriter(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "hello world")
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	var buf bytes.Buffer
+	_, err := client.Do(req, &buf)
+	assertNilError(t, err)
+
+	if buf.String() != "hello world" {
+		t.Errorf("Response body = %q, want %q", buf.String(), "hello world")
+	}
+}
+
+func TestDo_ioWriter_error(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "hello world")
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	var w writerThatErrors
+	_, err := client.Do(req, &w)
+	if err == nil {
+		t.Fatal("Expected error from io.Writer, got none")
+	}
+}
+
+type writerThatErrors struct{}
+
+func (w *writerThatErrors) Write(_ []byte) (int, error) {
+	return 0, errors.New("write error")
+}
+
+func TestDo_invalidJSON(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	type foo struct {
+		A string
+	}
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "not valid json")
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	var body foo
+	_, err := client.Do(req, &body)
+	if err == nil {
+		t.Fatal("Expected JSON decode error, got none")
+	}
+}
+
+func TestDo_whitespaceOnlyBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	type foo struct {
+		A string
+	}
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "  \n\t ")
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	var body foo
+	_, err := client.Do(req, &body)
+	assertNilError(t, err)
+
+	if body.A != "" {
+		t.Errorf("Response body = %v, want empty foo", body)
+	}
+}
+
+func TestDo_nilV_noop(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"A":"a"}`)
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	resp, err := client.Do(req, nil)
+	assertNilError(t, err)
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Expected status %v, got %v", http.StatusOK, resp.StatusCode)
+	}
+}
+
+func TestDo_readError(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		// Announce more bytes than are sent so that reading the response
+		// body fails with an unexpected EOF.
+		w.Header().Set("Content-Length", "64")
+		fmt.Fprint(w, `{"A":"a"}`)
+	})
+
+	type foo struct {
+		A string
+	}
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	var body foo
+	_, err := client.Do(req, &body)
+	if err == nil {
+		t.Fatal("Expected body read error, got none")
+	}
+}
+
+func TestDo_largeThenSmallBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	large := strings.Repeat("a", 2*maxPooledBufferCap)
+	mux.HandleFunc("/large", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprintf(w, `{"A":%q}`, large)
+	})
+	mux.HandleFunc("/small", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"A":"small"}`)
+	})
+
+	type foo struct {
+		A string
+	}
+
+	req, _ := client.NewRequest(t.Context(), "GET", "large", nil)
+	var body foo
+	_, err := client.Do(req, &body)
+	assertNilError(t, err)
+	if body.A != large {
+		t.Error("Large response body was not decoded correctly")
+	}
+
+	req, _ = client.NewRequest(t.Context(), "GET", "small", nil)
+	body = foo{}
+	_, err = client.Do(req, &body)
+	assertNilError(t, err)
+	if body.A != "small" {
+		t.Errorf("Response body = %v, want %v", body.A, "small")
+	}
+}
+
+func TestPutRequestBuffer(t *testing.T) {
+	t.Parallel()
+
+	if !putRequestBuffer(new(bytes.Buffer)) {
+		t.Error("putRequestBuffer returned false for a small buffer, want true")
+	}
+
+	oversized := new(bytes.Buffer)
+	oversized.Grow(maxPooledBufferCap + 1)
+	if putRequestBuffer(oversized) {
+		t.Error("putRequestBuffer returned true for an oversized buffer, want false")
 	}
 }
 
@@ -4665,21 +4885,6 @@ func TestClientCopy_leak_transport(t *testing.T) {
 	}
 
 	assertNoDiff(t, "Bearer bob", bob.GetLogin())
-}
-
-func TestPtr(t *testing.T) {
-	t.Parallel()
-	equal := func(t *testing.T, want, got any) {
-		t.Helper()
-		if !cmp.Equal(want, got) {
-			t.Errorf("want %#v, got %#v", want, got)
-		}
-	}
-
-	equal(t, true, *Ptr(true))
-	equal(t, int(10), *Ptr(int(10)))
-	equal(t, int64(-10), *Ptr(int64(-10)))
-	equal(t, "str", *Ptr("str"))
 }
 
 func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {

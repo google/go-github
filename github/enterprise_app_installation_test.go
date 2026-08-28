@@ -108,7 +108,7 @@ func TestEnterpriseService_ListAppInstallations(t *testing.T) {
 		t.Errorf("ListAppInstallations returned error: %v", err)
 	}
 	want := []*Installation{
-		{ID: Ptr(int64(99))},
+		{ID: new(int64(99))},
 	}
 
 	if !cmp.Equal(installations, want) {
@@ -153,7 +153,7 @@ func TestEnterpriseService_InstallApp(t *testing.T) {
 		t.Errorf("InstallApp returned error: %v", err)
 	}
 
-	want := &Installation{ID: Ptr(int64(555))}
+	want := &Installation{ID: new(int64(555))}
 
 	if !cmp.Equal(installation, want) {
 		t.Errorf("InstallApp returned %+v, want %+v", installation, want)
@@ -234,7 +234,7 @@ func TestEnterpriseService_UpdateAppInstallationRepositories(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := UpdateAppInstallationRepositoriesRequest{
-		RepositorySelection: Ptr("selected"),
+		RepositorySelection: new("selected"),
 		Repositories:        []string{"hello-world", "hello-world-2"},
 	}
 
@@ -250,7 +250,7 @@ func TestEnterpriseService_UpdateAppInstallationRepositories(t *testing.T) {
 		t.Errorf("Enterprise.UpdateAppInstallationRepositories returned error: %v", err)
 	}
 
-	want := &Installation{ID: Ptr(int64(1)), RepositorySelection: Ptr("selected")}
+	want := &Installation{ID: new(int64(1)), RepositorySelection: new("selected")}
 	if diff := cmp.Diff(inst, want); diff != "" {
 		t.Errorf("Enterprise.UpdateAppInstallationRepositories returned diff (-want +got):\n%v", diff)
 	}

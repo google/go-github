@@ -32,7 +32,7 @@ func TestRepositoriesService_ListByAuthenticatedUser(t *testing.T) {
 		t.Errorf("Repositories.ListByAuthenticatedUser returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*Repository{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListByAuthenticatedUser returned %+v, want %+v", got, want)
 	}
@@ -73,7 +73,7 @@ func TestRepositoriesService_ListByUser(t *testing.T) {
 		t.Errorf("Repositories.ListByUser returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Ptr(int64(1))}}
+	want := []*Repository{{ID: new(int64(1))}}
 	if !cmp.Equal(repos, want) {
 		t.Errorf("Repositories.ListByUser returned %+v, want %+v", repos, want)
 	}
@@ -114,7 +114,7 @@ func TestRepositoriesService_ListByUser_type(t *testing.T) {
 		t.Errorf("Repositories.ListByUser returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Ptr(int64(1))}}
+	want := []*Repository{{ID: new(int64(1))}}
 	if !cmp.Equal(repos, want) {
 		t.Errorf("Repositories.ListByUser returned %+v, want %+v", repos, want)
 	}
@@ -154,7 +154,7 @@ func TestRepositoriesService_ListByOrg(t *testing.T) {
 		t.Errorf("Repositories.ListByOrg returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Ptr(int64(1))}}
+	want := []*Repository{{ID: new(int64(1))}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListByOrg returned %+v, want %+v", got, want)
 	}
@@ -202,7 +202,7 @@ func TestRepositoriesService_ListAll(t *testing.T) {
 		t.Errorf("Repositories.ListAll returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Ptr(int64(1))}}
+	want := []*Repository{{ID: new(int64(1))}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListAll returned %+v, want %+v", got, want)
 	}
@@ -222,15 +222,15 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Repository{
-		Name:     Ptr("n"),
-		Archived: Ptr(true), // not passed along.
+		Name:     new("n"),
+		Archived: new(true), // not passed along.
 	}
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/user/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		want := &createRepoRequest{Name: Ptr("n")}
+		want := &createRepoRequest{Name: new("n")}
 		testJSONBody(t, r, want)
 
 		fmt.Fprint(w, `{"id":1}`)
@@ -242,7 +242,7 @@ func TestRepositoriesService_Create_user(t *testing.T) {
 		t.Errorf("Repositories.Create returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1))}
+	want := &Repository{ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.Create returned %+v, want %+v", got, want)
 	}
@@ -271,15 +271,15 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Repository{
-		Name:     Ptr("n"),
-		Archived: Ptr(true), // not passed along.
+		Name:     new("n"),
+		Archived: new(true), // not passed along.
 	}
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/orgs/o/repos", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
-		want := &createRepoRequest{Name: Ptr("n")}
+		want := &createRepoRequest{Name: new("n")}
 		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id":1}`)
 	})
@@ -290,7 +290,7 @@ func TestRepositoriesService_Create_org(t *testing.T) {
 		t.Errorf("Repositories.Create returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1))}
+	want := &Repository{ID: new(int64(1))}
 	if !cmp.Equal(repo, want) {
 		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
 	}
@@ -301,7 +301,7 @@ func TestRepositoriesService_Create_withCustomProperties(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Repository{
-		Name: Ptr("n"),
+		Name: new("n"),
 		CustomProperties: map[string]any{
 			"environment": "production",
 			"team":        "backend",
@@ -314,7 +314,7 @@ func TestRepositoriesService_Create_withCustomProperties(t *testing.T) {
 		testMethod(t, r, "POST")
 		testHeader(t, r, "Accept", strings.Join(wantAcceptHeaders, ", "))
 		want := &createRepoRequest{
-			Name: Ptr("n"),
+			Name: new("n"),
 			CustomProperties: map[string]any{
 				"environment": "production",
 				"team":        "backend",
@@ -331,7 +331,7 @@ func TestRepositoriesService_Create_withCustomProperties(t *testing.T) {
 		t.Errorf("Repositories.Create returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1))}
+	want := &Repository{ID: new(int64(1))}
 	if !cmp.Equal(repo, want) {
 		t.Errorf("Repositories.Create returned %+v, want %+v", repo, want)
 	}
@@ -358,7 +358,7 @@ func TestRepositoriesService_CreateFromTemplate(t *testing.T) {
 		t.Errorf("Repositories.CreateFromTemplate returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1)), Name: Ptr("n")}
+	want := &Repository{ID: new(int64(1)), Name: new("n")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.CreateFromTemplate returned %+v, want %+v", got, want)
 	}
@@ -395,7 +395,7 @@ func TestRepositoriesService_Get(t *testing.T) {
 		t.Errorf("Repositories.Get returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), Owner: &User{Login: Ptr("l")}, License: &License{Key: Ptr("mit")}, SecurityAndAnalysis: &SecurityAndAnalysis{AdvancedSecurity: &AdvancedSecurity{Status: Ptr("enabled")}, SecretScanning: &SecretScanning{Ptr("enabled")}, SecretScanningPushProtection: &SecretScanningPushProtection{Ptr("enabled")}, DependabotSecurityUpdates: &DependabotSecurityUpdates{Ptr("enabled")}, SecretScanningValidityChecks: &SecretScanningValidityChecks{Ptr("enabled")}, CodeSecurity: &CodeSecurity{Ptr("enabled")}}}
+	want := &Repository{ID: new(int64(1)), Name: new("n"), Description: new("d"), Owner: &User{Login: new("l")}, License: &License{Key: new("mit")}, SecurityAndAnalysis: &SecurityAndAnalysis{AdvancedSecurity: &AdvancedSecurity{Status: new("enabled")}, SecretScanning: &SecretScanning{new("enabled")}, SecretScanningPushProtection: &SecretScanningPushProtection{new("enabled")}, DependabotSecurityUpdates: &DependabotSecurityUpdates{new("enabled")}, SecretScanningValidityChecks: &SecretScanningValidityChecks{new("enabled")}, CodeSecurity: &CodeSecurity{new("enabled")}}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.Get returned %+v, want %+v", got, want)
 	}
@@ -439,10 +439,10 @@ func TestRepositoriesService_GetCodeOfConduct(t *testing.T) {
 	}
 
 	want := &CodeOfConduct{
-		Key:  Ptr("key"),
-		Name: Ptr("name"),
-		URL:  Ptr("url"),
-		Body: Ptr("body"),
+		Key:  new("key"),
+		Name: new("name"),
+		URL:  new("url"),
+		Body: new("body"),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -479,7 +479,7 @@ func TestRepositoriesService_GetByID(t *testing.T) {
 		t.Fatalf("Repositories.GetByID returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), Owner: &User{Login: Ptr("l")}, License: &License{Key: Ptr("mit")}}
+	want := &Repository{ID: new(int64(1)), Name: new("n"), Description: new("d"), Owner: &User{Login: new("l")}, License: &License{Key: new("mit")}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.GetByID returned %+v, want %+v", got, want)
 	}
@@ -498,7 +498,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Repository{HasIssues: Ptr(true)}
+	input := &Repository{HasIssues: new(true)}
 
 	wantAcceptHeaders := []string{mediaTypeRepositoryTemplatePreview, mediaTypeRepositoryVisibilityPreview}
 	mux.HandleFunc("/repos/o/r", func(w http.ResponseWriter, r *http.Request) {
@@ -514,7 +514,7 @@ func TestRepositoriesService_Edit(t *testing.T) {
 		t.Errorf("Repositories.Edit returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1))}
+	want := &Repository{ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.Edit returned %+v, want %+v", got, want)
 	}
@@ -699,8 +699,8 @@ func TestRepositoriesService_GetAutomatedSecurityFixes(t *testing.T) {
 	}
 
 	want := &AutomatedSecurityFixes{
-		Enabled: Ptr(true),
-		Paused:  Ptr(false),
+		Enabled: new(true),
+		Paused:  new(false),
 	}
 	if !cmp.Equal(fixes, want) {
 		t.Errorf("Repositories.GetAutomatedSecurityFixes returned %#v, want %#v", fixes, want)
@@ -756,7 +756,7 @@ func TestRepositoriesService_ListContributors(t *testing.T) {
 		t.Errorf("Repositories.ListContributors returned error: %v", err)
 	}
 
-	want := []*Contributor{{Contributions: Ptr(42)}}
+	want := []*Contributor{{Contributions: new(42)}}
 	if !cmp.Equal(contributors, want) {
 		t.Errorf("Repositories.ListContributors returned %+v, want %+v", contributors, want)
 	}
@@ -828,7 +828,7 @@ func TestRepositoriesService_ListTeams(t *testing.T) {
 		t.Errorf("Repositories.ListTeams returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Ptr(int64(1))}}
+	want := []*Team{{ID: new(int64(1))}}
 	if !cmp.Equal(teams, want) {
 		t.Errorf("Repositories.ListTeams returned %+v, want %+v", teams, want)
 	}
@@ -867,13 +867,13 @@ func TestRepositoriesService_ListTags(t *testing.T) {
 
 	want := []*RepositoryTag{
 		{
-			Name: Ptr("n"),
+			Name: new("n"),
 			Commit: &Commit{
-				SHA: Ptr("s"),
-				URL: Ptr("u"),
+				SHA: new("s"),
+				URL: new("u"),
 			},
-			ZipballURL: Ptr("z"),
-			TarballURL: Ptr("t"),
+			ZipballURL: new("z"),
+			TarballURL: new("t"),
 		},
 	}
 	if !cmp.Equal(tags, want) {
@@ -915,7 +915,7 @@ func TestRepositoriesService_ListBranches(t *testing.T) {
 		t.Errorf("Repositories.ListBranches returned error: %v", err)
 	}
 
-	want := []*Branch{{Name: Ptr("master"), Commit: &RepositoryCommit{SHA: Ptr("a57781"), URL: Ptr("https://api.github.com/repos/o/r/commits/a57781")}}}
+	want := []*Branch{{Name: new("master"), Commit: &RepositoryCommit{SHA: new("a57781"), URL: new("https://api.github.com/repos/o/r/commits/a57781")}}}
 	if !cmp.Equal(branches, want) {
 		t.Errorf("Repositories.ListBranches returned %+v, want %+v", branches, want)
 	}
@@ -960,14 +960,14 @@ func TestRepositoriesService_GetBranch(t *testing.T) {
 		}
 
 		want := &Branch{
-			Name: Ptr("n"),
+			Name: new("n"),
 			Commit: &RepositoryCommit{
-				SHA: Ptr("s"),
+				SHA: new("s"),
 				Commit: &Commit{
-					Message: Ptr("m"),
+					Message: new("m"),
 				},
 			},
-			Protected: Ptr(true),
+			Protected: new(true),
 			Protection: &Protection{
 				RequiredStatusChecks: &RequiredStatusChecks{
 					Contexts: &[]string{"c"},
@@ -1038,14 +1038,14 @@ func TestRepositoriesService_GetBranch_StatusMovedPermanently_followRedirects(t 
 	}
 
 	want := &Branch{
-		Name: Ptr("n"),
+		Name: new("n"),
 		Commit: &RepositoryCommit{
-			SHA: Ptr("s"),
+			SHA: new("s"),
 			Commit: &Commit{
-				Message: Ptr("m"),
+				Message: new("m"),
 			},
 		},
-		Protected: Ptr(true),
+		Protected: new(true),
 		Protection: &Protection{
 			RequiredStatusChecks: &RequiredStatusChecks{
 				Contexts: &[]string{"c"},
@@ -1129,7 +1129,7 @@ func TestRepositoriesService_RenameBranch(t *testing.T) {
 				t.Errorf("Repositories.RenameBranch returned error: %v", err)
 			}
 
-			want := &Branch{Name: Ptr("nn"), Protected: Ptr(true)}
+			want := &Branch{Name: new("nn"), Protected: new(true)}
 			if !cmp.Equal(got, want) {
 				t.Errorf("Repositories.RenameBranch returned %+v, want %+v", got, want)
 			}
@@ -1245,13 +1245,13 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 					DismissStaleReviews: true,
 					DismissalRestrictions: &DismissalRestrictions{
 						Users: []*User{
-							{Login: Ptr("u"), ID: Ptr(int64(3))},
+							{Login: new("u"), ID: new(int64(3))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("t"), ID: Ptr(int64(4))},
+							{Slug: new("t"), ID: new(int64(4))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("a"), ID: Ptr(int64(5))},
+							{Slug: new("a"), ID: new(int64(5))},
 						},
 					},
 					RequireCodeOwnerReviews:      true,
@@ -1264,26 +1264,26 @@ func TestRepositoriesService_GetBranchProtection(t *testing.T) {
 				},
 				Restrictions: &BranchRestrictions{
 					Users: []*User{
-						{Login: Ptr("u"), ID: Ptr(int64(1))},
+						{Login: new("u"), ID: new(int64(1))},
 					},
 					Teams: []*Team{
-						{Slug: Ptr("t"), ID: Ptr(int64(2))},
+						{Slug: new("t"), ID: new(int64(2))},
 					},
 					Apps: []*App{
-						{Slug: Ptr("a"), ID: Ptr(int64(3))},
+						{Slug: new("a"), ID: new(int64(3))},
 					},
 				},
 				RequiredConversationResolution: &RequiredConversationResolution{
 					Enabled: true,
 				},
 				BlockCreations: &BlockCreations{
-					Enabled: Ptr(false),
+					Enabled: new(false),
 				},
 				LockBranch: &LockBranch{
-					Enabled: Ptr(false),
+					Enabled: new(false),
 				},
 				AllowForkSyncing: &AllowForkSyncing{
-					Enabled: Ptr(false),
+					Enabled: new(false),
 				},
 			}
 			if !cmp.Equal(protection, want) {
@@ -1379,10 +1379,10 @@ func TestRepositoriesService_GetBranchProtection_noDismissalRestrictions(t *test
 			},
 			Restrictions: &BranchRestrictions{
 				Users: []*User{
-					{Login: Ptr("u"), ID: Ptr(int64(1))},
+					{Login: new("u"), ID: new(int64(1))},
 				},
 				Teams: []*Team{
-					{Slug: Ptr("t"), ID: Ptr(int64(2))},
+					{Slug: new("t"), ID: new(int64(2))},
 				},
 			},
 		}
@@ -1469,9 +1469,9 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 					Teams: []string{"t"},
 					Apps:  []string{"a"},
 				},
-				BlockCreations:   Ptr(true),
-				LockBranch:       Ptr(true),
-				AllowForkSyncing: Ptr(true),
+				BlockCreations:   new(true),
+				LockBranch:       new(true),
+				AllowForkSyncing: new(true),
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -1550,47 +1550,47 @@ func TestRepositoriesService_UpdateBranchProtection_Contexts(t *testing.T) {
 					DismissStaleReviews: true,
 					DismissalRestrictions: &DismissalRestrictions{
 						Users: []*User{
-							{Login: Ptr("uu"), ID: Ptr(int64(3))},
+							{Login: new("uu"), ID: new(int64(3))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("tt"), ID: Ptr(int64(4))},
+							{Slug: new("tt"), ID: new(int64(4))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("aa"), ID: Ptr(int64(5))},
+							{Slug: new("aa"), ID: new(int64(5))},
 						},
 					},
 					RequireCodeOwnerReviews: true,
 					BypassPullRequestAllowances: &BypassPullRequestAllowances{
 						Users: []*User{
-							{Login: Ptr("uuu"), ID: Ptr(int64(10))},
+							{Login: new("uuu"), ID: new(int64(10))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("ttt"), ID: Ptr(int64(20))},
+							{Slug: new("ttt"), ID: new(int64(20))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("aaa"), ID: Ptr(int64(30))},
+							{Slug: new("aaa"), ID: new(int64(30))},
 						},
 					},
 				},
 				Restrictions: &BranchRestrictions{
 					Users: []*User{
-						{Login: Ptr("u"), ID: Ptr(int64(1))},
+						{Login: new("u"), ID: new(int64(1))},
 					},
 					Teams: []*Team{
-						{Slug: Ptr("t"), ID: Ptr(int64(2))},
+						{Slug: new("t"), ID: new(int64(2))},
 					},
 					Apps: []*App{
-						{Slug: Ptr("a"), ID: Ptr(int64(3))},
+						{Slug: new("a"), ID: new(int64(3))},
 					},
 				},
 				BlockCreations: &BlockCreations{
-					Enabled: Ptr(true),
+					Enabled: new(true),
 				},
 				LockBranch: &LockBranch{
-					Enabled: Ptr(true),
+					Enabled: new(true),
 				},
 				AllowForkSyncing: &AllowForkSyncing{
-					Enabled: Ptr(true),
+					Enabled: new(true),
 				},
 			}
 			if !cmp.Equal(protection, want) {
@@ -1652,9 +1652,9 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 					Teams: []string{"t"},
 					Apps:  []string{"a"},
 				},
-				BlockCreations:   Ptr(true),
-				LockBranch:       Ptr(true),
-				AllowForkSyncing: Ptr(true),
+				BlockCreations:   new(true),
+				LockBranch:       new(true),
+				AllowForkSyncing: new(true),
 			}
 
 			mux.HandleFunc(test.urlPath, func(w http.ResponseWriter, r *http.Request) {
@@ -1723,47 +1723,47 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyContexts(t *testing.T) 
 					DismissStaleReviews: true,
 					DismissalRestrictions: &DismissalRestrictions{
 						Users: []*User{
-							{Login: Ptr("uu"), ID: Ptr(int64(3))},
+							{Login: new("uu"), ID: new(int64(3))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("tt"), ID: Ptr(int64(4))},
+							{Slug: new("tt"), ID: new(int64(4))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("aa"), ID: Ptr(int64(5))},
+							{Slug: new("aa"), ID: new(int64(5))},
 						},
 					},
 					RequireCodeOwnerReviews: true,
 					BypassPullRequestAllowances: &BypassPullRequestAllowances{
 						Users: []*User{
-							{Login: Ptr("uuu"), ID: Ptr(int64(10))},
+							{Login: new("uuu"), ID: new(int64(10))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("ttt"), ID: Ptr(int64(20))},
+							{Slug: new("ttt"), ID: new(int64(20))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("aaa"), ID: Ptr(int64(30))},
+							{Slug: new("aaa"), ID: new(int64(30))},
 						},
 					},
 				},
 				Restrictions: &BranchRestrictions{
 					Users: []*User{
-						{Login: Ptr("u"), ID: Ptr(int64(1))},
+						{Login: new("u"), ID: new(int64(1))},
 					},
 					Teams: []*Team{
-						{Slug: Ptr("t"), ID: Ptr(int64(2))},
+						{Slug: new("t"), ID: new(int64(2))},
 					},
 					Apps: []*App{
-						{Slug: Ptr("a"), ID: Ptr(int64(3))},
+						{Slug: new("a"), ID: new(int64(3))},
 					},
 				},
 				BlockCreations: &BlockCreations{
-					Enabled: Ptr(true),
+					Enabled: new(true),
 				},
 				LockBranch: &LockBranch{
-					Enabled: Ptr(true),
+					Enabled: new(true),
 				},
 				AllowForkSyncing: &AllowForkSyncing{
-					Enabled: Ptr(true),
+					Enabled: new(true),
 				},
 			}
 			if !cmp.Equal(protection, want) {
@@ -1898,37 +1898,37 @@ func TestRepositoriesService_UpdateBranchProtection_Checks(t *testing.T) {
 					DismissStaleReviews: true,
 					DismissalRestrictions: &DismissalRestrictions{
 						Users: []*User{
-							{Login: Ptr("uu"), ID: Ptr(int64(3))},
+							{Login: new("uu"), ID: new(int64(3))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("tt"), ID: Ptr(int64(4))},
+							{Slug: new("tt"), ID: new(int64(4))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("aa"), ID: Ptr(int64(5))},
+							{Slug: new("aa"), ID: new(int64(5))},
 						},
 					},
 					RequireCodeOwnerReviews: true,
 					BypassPullRequestAllowances: &BypassPullRequestAllowances{
 						Users: []*User{
-							{Login: Ptr("uuu"), ID: Ptr(int64(10))},
+							{Login: new("uuu"), ID: new(int64(10))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("ttt"), ID: Ptr(int64(20))},
+							{Slug: new("ttt"), ID: new(int64(20))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("aaa"), ID: Ptr(int64(30))},
+							{Slug: new("aaa"), ID: new(int64(30))},
 						},
 					},
 				},
 				Restrictions: &BranchRestrictions{
 					Users: []*User{
-						{Login: Ptr("u"), ID: Ptr(int64(1))},
+						{Login: new("u"), ID: new(int64(1))},
 					},
 					Teams: []*Team{
-						{Slug: Ptr("t"), ID: Ptr(int64(2))},
+						{Slug: new("t"), ID: new(int64(2))},
 					},
 					Apps: []*App{
-						{Slug: Ptr("a"), ID: Ptr(int64(3))},
+						{Slug: new("a"), ID: new(int64(3))},
 					},
 				},
 			}
@@ -2036,37 +2036,37 @@ func TestRepositoriesService_UpdateBranchProtection_EmptyChecks(t *testing.T) {
 					DismissStaleReviews: true,
 					DismissalRestrictions: &DismissalRestrictions{
 						Users: []*User{
-							{Login: Ptr("uu"), ID: Ptr(int64(3))},
+							{Login: new("uu"), ID: new(int64(3))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("tt"), ID: Ptr(int64(4))},
+							{Slug: new("tt"), ID: new(int64(4))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("aa"), ID: Ptr(int64(5))},
+							{Slug: new("aa"), ID: new(int64(5))},
 						},
 					},
 					RequireCodeOwnerReviews: true,
 					BypassPullRequestAllowances: &BypassPullRequestAllowances{
 						Users: []*User{
-							{Login: Ptr("uuu"), ID: Ptr(int64(10))},
+							{Login: new("uuu"), ID: new(int64(10))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("ttt"), ID: Ptr(int64(20))},
+							{Slug: new("ttt"), ID: new(int64(20))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("aaa"), ID: Ptr(int64(30))},
+							{Slug: new("aaa"), ID: new(int64(30))},
 						},
 					},
 				},
 				Restrictions: &BranchRestrictions{
 					Users: []*User{
-						{Login: Ptr("u"), ID: Ptr(int64(1))},
+						{Login: new("u"), ID: new(int64(1))},
 					},
 					Teams: []*Team{
-						{Slug: Ptr("t"), ID: Ptr(int64(2))},
+						{Slug: new("t"), ID: new(int64(2))},
 					},
 					Apps: []*App{
-						{Slug: Ptr("a"), ID: Ptr(int64(3))},
+						{Slug: new("a"), ID: new(int64(3))},
 					},
 				},
 			}
@@ -2172,37 +2172,37 @@ func TestRepositoriesService_UpdateBranchProtection_StrictNoChecks(t *testing.T)
 					DismissStaleReviews: true,
 					DismissalRestrictions: &DismissalRestrictions{
 						Users: []*User{
-							{Login: Ptr("uu"), ID: Ptr(int64(3))},
+							{Login: new("uu"), ID: new(int64(3))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("tt"), ID: Ptr(int64(4))},
+							{Slug: new("tt"), ID: new(int64(4))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("aa"), ID: Ptr(int64(5))},
+							{Slug: new("aa"), ID: new(int64(5))},
 						},
 					},
 					RequireCodeOwnerReviews: true,
 					BypassPullRequestAllowances: &BypassPullRequestAllowances{
 						Users: []*User{
-							{Login: Ptr("uuu"), ID: Ptr(int64(10))},
+							{Login: new("uuu"), ID: new(int64(10))},
 						},
 						Teams: []*Team{
-							{Slug: Ptr("ttt"), ID: Ptr(int64(20))},
+							{Slug: new("ttt"), ID: new(int64(20))},
 						},
 						Apps: []*App{
-							{Slug: Ptr("aaa"), ID: Ptr(int64(30))},
+							{Slug: new("aaa"), ID: new(int64(30))},
 						},
 					},
 				},
 				Restrictions: &BranchRestrictions{
 					Users: []*User{
-						{Login: Ptr("u"), ID: Ptr(int64(1))},
+						{Login: new("u"), ID: new(int64(1))},
 					},
 					Teams: []*Team{
-						{Slug: Ptr("t"), ID: Ptr(int64(2))},
+						{Slug: new("t"), ID: new(int64(2))},
 					},
 					Apps: []*App{
-						{Slug: Ptr("a"), ID: Ptr(int64(3))},
+						{Slug: new("a"), ID: new(int64(3))},
 					},
 				},
 			}
@@ -2230,7 +2230,7 @@ func TestRepositoriesService_UpdateBranchProtection_RequireLastPushApproval(t *t
 
 			input := &ProtectionRequest{
 				RequiredPullRequestReviews: &PullRequestReviewsEnforcementRequest{
-					RequireLastPushApproval: Ptr(true),
+					RequireLastPushApproval: new(true),
 				},
 			}
 
@@ -2326,14 +2326,14 @@ func TestRepositoriesService_License(t *testing.T) {
 	}
 
 	want := &RepositoryLicense{
-		Name: Ptr("LICENSE"),
-		Path: Ptr("LICENSE"),
+		Name: new("LICENSE"),
+		Path: new("LICENSE"),
 		License: &License{
-			Name:     Ptr("MIT License"),
-			Key:      Ptr("mit"),
-			SPDXID:   Ptr("MIT"),
-			URL:      Ptr("https://api.github.com/licenses/mit"),
-			Featured: Ptr(true),
+			Name:     new("MIT License"),
+			Key:      new("mit"),
+			SPDXID:   new("MIT"),
+			URL:      new("https://api.github.com/licenses/mit"),
+			Featured: new(true),
 		},
 	}
 
@@ -2490,7 +2490,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Contexts(t *testing.T) {
 			client, mux, _ := setup(t)
 
 			input := &RequiredStatusChecksRequest{
-				Strict:   Ptr(true),
+				Strict:   new(true),
 				Contexts: []string{"continuous-integration"},
 			}
 
@@ -2564,7 +2564,7 @@ func TestRepositoriesService_UpdateRequiredStatusChecks_Checks(t *testing.T) {
 			appID := int64(123)
 			noAppID := int64(-1)
 			input := &RequiredStatusChecksRequest{
-				Strict: Ptr(true),
+				Strict: new(true),
 				Checks: []*RequiredStatusCheck{
 					{
 						Context: "continuous-integration",
@@ -2800,13 +2800,13 @@ func TestRepositoriesService_GetPullRequestReviewEnforcement(t *testing.T) {
 				DismissStaleReviews: true,
 				DismissalRestrictions: &DismissalRestrictions{
 					Users: []*User{
-						{Login: Ptr("u"), ID: Ptr(int64(1))},
+						{Login: new("u"), ID: new(int64(1))},
 					},
 					Teams: []*Team{
-						{Slug: Ptr("t"), ID: Ptr(int64(2))},
+						{Slug: new("t"), ID: new(int64(2))},
 					},
 					Apps: []*App{
-						{Slug: Ptr("a"), ID: Ptr(int64(3))},
+						{Slug: new("a"), ID: new(int64(3))},
 					},
 				},
 				RequireCodeOwnerReviews:      true,
@@ -2883,13 +2883,13 @@ func TestRepositoriesService_UpdatePullRequestReviewEnforcement(t *testing.T) {
 				DismissStaleReviews: true,
 				DismissalRestrictions: &DismissalRestrictions{
 					Users: []*User{
-						{Login: Ptr("u"), ID: Ptr(int64(1))},
+						{Login: new("u"), ID: new(int64(1))},
 					},
 					Teams: []*Team{
-						{Slug: Ptr("t"), ID: Ptr(int64(2))},
+						{Slug: new("t"), ID: new(int64(2))},
 					},
 					Apps: []*App{
-						{Slug: Ptr("a"), ID: Ptr(int64(3))},
+						{Slug: new("a"), ID: new(int64(3))},
 					},
 				},
 				RequireCodeOwnerReviews:      true,
@@ -3041,7 +3041,7 @@ func TestRepositoriesService_GetAdminEnforcement(t *testing.T) {
 			}
 
 			want := &AdminEnforcement{
-				URL:     Ptr("/repos/o/r/branches/b/protection/enforce_admins"),
+				URL:     new("/repos/o/r/branches/b/protection/enforce_admins"),
 				Enabled: true,
 			}
 
@@ -3093,7 +3093,7 @@ func TestRepositoriesService_AddAdminEnforcement(t *testing.T) {
 			}
 
 			want := &AdminEnforcement{
-				URL:     Ptr("/repos/o/r/branches/b/protection/enforce_admins"),
+				URL:     new("/repos/o/r/branches/b/protection/enforce_admins"),
 				Enabled: true,
 			}
 			if !cmp.Equal(enforcement, want) {
@@ -3184,8 +3184,8 @@ func TestRepositoriesService_GetSignaturesProtectedBranch(t *testing.T) {
 			}
 
 			want := &SignaturesProtectedBranch{
-				URL:     Ptr("/repos/o/r/branches/b/protection/required_signatures"),
-				Enabled: Ptr(false),
+				URL:     new("/repos/o/r/branches/b/protection/required_signatures"),
+				Enabled: new(false),
 			}
 
 			if !cmp.Equal(signature, want) {
@@ -3276,8 +3276,8 @@ func TestRepositoriesService_RequireSignaturesOnProtectedBranch(t *testing.T) {
 			}
 
 			want := &SignaturesProtectedBranch{
-				URL:     Ptr("/repos/o/r/branches/b/protection/required_signatures"),
-				Enabled: Ptr(true),
+				URL:     new("/repos/o/r/branches/b/protection/required_signatures"),
+				Enabled: new(true),
 			}
 
 			if !cmp.Equal(signature, want) {
@@ -3564,7 +3564,7 @@ func TestRepositoriesService_ReplaceAppRestrictions(t *testing.T) {
 				t.Errorf("Repositories.ReplaceAppRestrictions returned error: %v", err)
 			}
 			want := []*App{
-				{Name: Ptr("octocat")},
+				{Name: new("octocat")},
 			}
 			if !cmp.Equal(got, want) {
 				t.Errorf("Repositories.ReplaceAppRestrictions returned %+v, want %+v", got, want)
@@ -3615,7 +3615,7 @@ func TestRepositoriesService_AddAppRestrictions(t *testing.T) {
 				t.Errorf("Repositories.AddAppRestrictions returned error: %v", err)
 			}
 			want := []*App{
-				{Name: Ptr("octocat")},
+				{Name: new("octocat")},
 			}
 			if !cmp.Equal(got, want) {
 				t.Errorf("Repositories.AddAppRestrictions returned %+v, want %+v", got, want)
@@ -3755,7 +3755,7 @@ func TestRepositoriesService_ReplaceTeamRestrictions(t *testing.T) {
 				t.Errorf("Repositories.ReplaceTeamRestrictions returned error: %v", err)
 			}
 			want := []*Team{
-				{Name: Ptr("octocat")},
+				{Name: new("octocat")},
 			}
 			if !cmp.Equal(got, want) {
 				t.Errorf("Repositories.ReplaceTeamRestrictions returned %+v, want %+v", got, want)
@@ -3806,7 +3806,7 @@ func TestRepositoriesService_AddTeamRestrictions(t *testing.T) {
 				t.Errorf("Repositories.AddTeamRestrictions returned error: %v", err)
 			}
 			want := []*Team{
-				{Name: Ptr("octocat")},
+				{Name: new("octocat")},
 			}
 			if !cmp.Equal(got, want) {
 				t.Errorf("Repositories.AddTeamRestrictions returned %+v, want %+v", got, want)
@@ -3946,7 +3946,7 @@ func TestRepositoriesService_ReplaceUserRestrictions(t *testing.T) {
 				t.Errorf("Repositories.ReplaceUserRestrictions returned error: %v", err)
 			}
 			want := []*User{
-				{Name: Ptr("octocat")},
+				{Name: new("octocat")},
 			}
 			if !cmp.Equal(got, want) {
 				t.Errorf("Repositories.ReplaceUserRestrictions returned %+v, want %+v", got, want)
@@ -3997,7 +3997,7 @@ func TestRepositoriesService_AddUserRestrictions(t *testing.T) {
 				t.Errorf("Repositories.AddUserRestrictions returned error: %v", err)
 			}
 			want := []*User{
-				{Name: Ptr("octocat")},
+				{Name: new("octocat")},
 			}
 			if !cmp.Equal(got, want) {
 				t.Errorf("Repositories.AddUserRestrictions returned %+v, want %+v", got, want)
@@ -4071,7 +4071,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := TransferRequest{NewOwner: "a", NewName: Ptr("b"), TeamID: []int64{123}}
+	input := TransferRequest{NewOwner: "a", NewName: new("b"), TeamID: []int64{123}}
 
 	mux.HandleFunc("/repos/o/r/transfer", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -4085,7 +4085,7 @@ func TestRepositoriesService_Transfer(t *testing.T) {
 		t.Errorf("Repositories.Transfer returned error: %v", err)
 	}
 
-	want := &Repository{Owner: &User{Login: Ptr("a")}}
+	want := &Repository{Owner: &User{Login: new("a")}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.Transfer returned %+v, want %+v", got, want)
 	}
@@ -4156,7 +4156,7 @@ func TestRepositoriesService_Dispatch(t *testing.T) {
 			t.Errorf("Repositories.Dispatch returned error: %v", err)
 		}
 
-		want := &Repository{Owner: &User{Login: Ptr("a")}}
+		want := &Repository{Owner: &User{Login: new("a")}}
 		if !cmp.Equal(got, want) {
 			t.Errorf("Repositories.Dispatch returned %+v, want %+v", got, want)
 		}
@@ -4352,25 +4352,25 @@ func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {
 			Timestamp:    &referenceTimestamp,
 			ActivityType: "push",
 			Actor: &RepositoryActor{
-				Login:             Ptr("testuser1"),
-				ID:                Ptr(int64(111111)),
-				NodeID:            Ptr("MDQ6VXNlcjExMTExMQ=="),
-				AvatarURL:         Ptr("https://avatars.githubusercontent.com/u/111111?v=4"),
-				GravatarID:        Ptr(""),
-				URL:               Ptr("https://api.github.com/users/testuser1"),
-				HTMLURL:           Ptr("https://github.com/testuser1"),
-				FollowersURL:      Ptr("https://api.github.com/users/testuser1/followers"),
-				FollowingURL:      Ptr("https://api.github.com/users/testuser1/following{/other_user}"),
-				GistsURL:          Ptr("https://api.github.com/users/testuser1/gists{/gist_id}"),
-				StarredURL:        Ptr("https://api.github.com/users/testuser1/starred{/owner}{/repo}"),
-				SubscriptionsURL:  Ptr("https://api.github.com/users/testuser1/subscriptions"),
-				OrganizationsURL:  Ptr("https://api.github.com/users/testuser1/orgs"),
-				ReposURL:          Ptr("https://api.github.com/users/testuser1/repos"),
-				EventsURL:         Ptr("https://api.github.com/users/testuser1/events{/privacy}"),
-				ReceivedEventsURL: Ptr("https://api.github.com/users/testuser1/received_events"),
-				Type:              Ptr("User"),
-				UserViewType:      Ptr("public"),
-				SiteAdmin:         Ptr(false),
+				Login:             new("testuser1"),
+				ID:                new(int64(111111)),
+				NodeID:            new("MDQ6VXNlcjExMTExMQ=="),
+				AvatarURL:         new("https://avatars.githubusercontent.com/u/111111?v=4"),
+				GravatarID:        new(""),
+				URL:               new("https://api.github.com/users/testuser1"),
+				HTMLURL:           new("https://github.com/testuser1"),
+				FollowersURL:      new("https://api.github.com/users/testuser1/followers"),
+				FollowingURL:      new("https://api.github.com/users/testuser1/following{/other_user}"),
+				GistsURL:          new("https://api.github.com/users/testuser1/gists{/gist_id}"),
+				StarredURL:        new("https://api.github.com/users/testuser1/starred{/owner}{/repo}"),
+				SubscriptionsURL:  new("https://api.github.com/users/testuser1/subscriptions"),
+				OrganizationsURL:  new("https://api.github.com/users/testuser1/orgs"),
+				ReposURL:          new("https://api.github.com/users/testuser1/repos"),
+				EventsURL:         new("https://api.github.com/users/testuser1/events{/privacy}"),
+				ReceivedEventsURL: new("https://api.github.com/users/testuser1/received_events"),
+				Type:              new("User"),
+				UserViewType:      new("public"),
+				SiteAdmin:         new(false),
 			},
 		},
 		{
@@ -4382,25 +4382,25 @@ func TestRepositoriesService_ListRepositoryActivities(t *testing.T) {
 			Timestamp:    &referenceTimestamp,
 			ActivityType: "branch_deletion",
 			Actor: &RepositoryActor{
-				Login:             Ptr("testuser2"),
-				ID:                Ptr(int64(222222)),
-				NodeID:            Ptr("MDQ6VXNlcjIyMjIyMg=="),
-				AvatarURL:         Ptr("https://avatars.githubusercontent.com/u/222222?v=4"),
-				GravatarID:        Ptr(""),
-				URL:               Ptr("https://api.github.com/users/testuser2"),
-				HTMLURL:           Ptr("https://github.com/testuser2"),
-				FollowersURL:      Ptr("https://api.github.com/users/testuser2/followers"),
-				FollowingURL:      Ptr("https://api.github.com/users/testuser2/following{/other_user}"),
-				GistsURL:          Ptr("https://api.github.com/users/testuser2/gists{/gist_id}"),
-				StarredURL:        Ptr("https://api.github.com/users/testuser2/starred{/owner}{/repo}"),
-				SubscriptionsURL:  Ptr("https://api.github.com/users/testuser2/subscriptions"),
-				OrganizationsURL:  Ptr("https://api.github.com/users/testuser2/orgs"),
-				ReposURL:          Ptr("https://api.github.com/users/testuser2/repos"),
-				EventsURL:         Ptr("https://api.github.com/users/testuser2/events{/privacy}"),
-				ReceivedEventsURL: Ptr("https://api.github.com/users/testuser2/received_events"),
-				Type:              Ptr("User"),
-				UserViewType:      Ptr("public"),
-				SiteAdmin:         Ptr(false),
+				Login:             new("testuser2"),
+				ID:                new(int64(222222)),
+				NodeID:            new("MDQ6VXNlcjIyMjIyMg=="),
+				AvatarURL:         new("https://avatars.githubusercontent.com/u/222222?v=4"),
+				GravatarID:        new(""),
+				URL:               new("https://api.github.com/users/testuser2"),
+				HTMLURL:           new("https://github.com/testuser2"),
+				FollowersURL:      new("https://api.github.com/users/testuser2/followers"),
+				FollowingURL:      new("https://api.github.com/users/testuser2/following{/other_user}"),
+				GistsURL:          new("https://api.github.com/users/testuser2/gists{/gist_id}"),
+				StarredURL:        new("https://api.github.com/users/testuser2/starred{/owner}{/repo}"),
+				SubscriptionsURL:  new("https://api.github.com/users/testuser2/subscriptions"),
+				OrganizationsURL:  new("https://api.github.com/users/testuser2/orgs"),
+				ReposURL:          new("https://api.github.com/users/testuser2/repos"),
+				EventsURL:         new("https://api.github.com/users/testuser2/events{/privacy}"),
+				ReceivedEventsURL: new("https://api.github.com/users/testuser2/received_events"),
+				Type:              new("User"),
+				UserViewType:      new("public"),
+				SiteAdmin:         new(false),
 			},
 		},
 	}
@@ -4500,25 +4500,25 @@ func TestRepositoriesService_ListRepositoryActivities_withOptions(t *testing.T) 
 			Timestamp:    &referenceTimestamp,
 			ActivityType: "push",
 			Actor: &RepositoryActor{
-				Login:             Ptr("testuser1"),
-				ID:                Ptr(int64(111111)),
-				NodeID:            Ptr("MDQ6VXNlcjExMTExMQ=="),
-				AvatarURL:         Ptr("https://avatars.githubusercontent.com/u/111111?v=4"),
-				GravatarID:        Ptr(""),
-				URL:               Ptr("https://api.github.com/users/testuser1"),
-				HTMLURL:           Ptr("https://github.com/testuser1"),
-				FollowersURL:      Ptr("https://api.github.com/users/testuser1/followers"),
-				FollowingURL:      Ptr("https://api.github.com/users/testuser1/following{/other_user}"),
-				GistsURL:          Ptr("https://api.github.com/users/testuser1/gists{/gist_id}"),
-				StarredURL:        Ptr("https://api.github.com/users/testuser1/starred{/owner}{/repo}"),
-				SubscriptionsURL:  Ptr("https://api.github.com/users/testuser1/subscriptions"),
-				OrganizationsURL:  Ptr("https://api.github.com/users/testuser1/orgs"),
-				ReposURL:          Ptr("https://api.github.com/users/testuser1/repos"),
-				EventsURL:         Ptr("https://api.github.com/users/testuser1/events{/privacy}"),
-				ReceivedEventsURL: Ptr("https://api.github.com/users/testuser1/received_events"),
-				Type:              Ptr("User"),
-				UserViewType:      Ptr("public"),
-				SiteAdmin:         Ptr(false),
+				Login:             new("testuser1"),
+				ID:                new(int64(111111)),
+				NodeID:            new("MDQ6VXNlcjExMTExMQ=="),
+				AvatarURL:         new("https://avatars.githubusercontent.com/u/111111?v=4"),
+				GravatarID:        new(""),
+				URL:               new("https://api.github.com/users/testuser1"),
+				HTMLURL:           new("https://github.com/testuser1"),
+				FollowersURL:      new("https://api.github.com/users/testuser1/followers"),
+				FollowingURL:      new("https://api.github.com/users/testuser1/following{/other_user}"),
+				GistsURL:          new("https://api.github.com/users/testuser1/gists{/gist_id}"),
+				StarredURL:        new("https://api.github.com/users/testuser1/starred{/owner}{/repo}"),
+				SubscriptionsURL:  new("https://api.github.com/users/testuser1/subscriptions"),
+				OrganizationsURL:  new("https://api.github.com/users/testuser1/orgs"),
+				ReposURL:          new("https://api.github.com/users/testuser1/repos"),
+				EventsURL:         new("https://api.github.com/users/testuser1/events{/privacy}"),
+				ReceivedEventsURL: new("https://api.github.com/users/testuser1/received_events"),
+				Type:              new("User"),
+				UserViewType:      new("public"),
+				SiteAdmin:         new(false),
 			},
 		},
 	}

@@ -28,7 +28,7 @@ func TestDependabotService_GetRepoPublicKey(t *testing.T) {
 		t.Errorf("Dependabot.GetRepoPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: new("1234"), Key: new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Dependabot.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
@@ -63,7 +63,7 @@ func TestDependabotService_GetRepoPublicKeyNumeric(t *testing.T) {
 		t.Errorf("Dependabot.GetRepoPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: new("1234"), Key: new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Dependabot.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
@@ -242,7 +242,7 @@ func TestDependabotService_GetOrgPublicKey(t *testing.T) {
 		t.Errorf("Dependabot.GetOrgPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: Ptr("012345678"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{KeyID: new("012345678"), Key: new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Dependabot.GetOrgPublicKey returned %+v, want %+v", key, want)
 	}
@@ -410,9 +410,9 @@ func TestDependabotService_ListSelectedReposForOrgSecret(t *testing.T) {
 	}
 
 	want := &SelectedReposList{
-		TotalCount: Ptr(1),
+		TotalCount: new(1),
 		Repositories: []*Repository{
-			{ID: Ptr(int64(1))},
+			{ID: new(int64(1))},
 		},
 	}
 	if !cmp.Equal(repos, want) {

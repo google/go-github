@@ -744,8 +744,8 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 		apiVersionMin:                           &c.apiVersionMin,
 		apiVersionMax:                           &c.apiVersionMax,
 		userAgent:                               &c.userAgent,
-		baseURL:                                 Ptr(*c.baseURL),
-		uploadURL:                               Ptr(*c.uploadURL),
+		baseURL:                                 new(*c.baseURL),
+		uploadURL:                               new(*c.uploadURL),
 		disableRateLimitCheck:                   c.disableRateLimitCheck,
 		rateLimitRedirectionalEndpoints:         c.rateLimitRedirectionalEndpoints,
 		maxSecondaryRateLimitRetryAfterDuration: &c.maxSecondaryRateLimitRetryAfterDuration,
@@ -795,6 +795,30 @@ func WithVersion(version string) RequestOption {
 	return func(req *http.Request) {
 		req.Header.Set(headerAPIVersion, version)
 	}
+}
+
+// requestBufferPool pools response read buffers so that Client.Do can decode
+// JSON payloads without allocating a growing buffer per call.
+var requestBufferPool = sync.Pool{
+	New: func() any {
+		return new(bytes.Buffer)
+	},
+}
+
+// maxPooledBufferCap is the largest buffer capacity that putRequestBuffer
+// returns to requestBufferPool. Buffers that grew beyond it while reading an
+// unusually large response are dropped so they do not pin memory in the pool.
+const maxPooledBufferCap = 1 << 20
+
+// putRequestBuffer resets buf and returns it to requestBufferPool, dropping
+// oversized buffers. It reports whether buf was pooled.
+func putRequestBuffer(buf *bytes.Buffer) bool {
+	if buf.Cap() > maxPooledBufferCap {
+		return false
+	}
+	buf.Reset()
+	requestBufferPool.Put(buf)
+	return true
 }
 
 // NewRequest creates an API request. A relative URL can be provided in urlStr,
@@ -1262,8 +1286,7 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		}
 
 		// If the error type is *url.Error, sanitize its URL before returning.
-		var e *url.Error
-		if errors.As(err, &e) {
+		if e, ok := errors.AsType[*url.Error](err); ok {
 			if url, err := url.Parse(e.URL); err == nil {
 				e.URL = sanitizeURL(url).String()
 				return response, e
@@ -1282,16 +1305,19 @@ func (c *Client) bareDo(caller *http.Client, req *http.Request) (*Response, erro
 		c.rateMu.Unlock()
 	}
 
+	// CheckResponse substitutes r.Body with a re-readable copy on error
+	// responses, so capture the network body first: it is the one that must
+	// be closed.
+	origBody := resp.Body
 	err = CheckResponse(resp)
 	if err != nil {
-		defer resp.Body.Close()
+		defer origBody.Close()
 		// Special case for AcceptedErrors. If an AcceptedError
 		// has been encountered, the response's payload will be
 		// added to the AcceptedError and returned.
 		//
 		// Issue #1022
-		var aerr *AcceptedError
-		if errors.As(err, &aerr) {
+		if aerr, ok := errors.AsType[*AcceptedError](err); ok {
 			b, readErr := io.ReadAll(io.LimitReader(resp.Body, maxErrorBodySize))
 			if readErr != nil {
 				return response, readErr
@@ -1352,8 +1378,7 @@ var errInvalidLocation = errors.New("invalid or empty Location header in redirec
 func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL, *Response, error) {
 	response, err := c.bareDoIgnoreRedirects(req)
 	if err != nil {
-		var rerr *RedirectionError
-		if errors.As(err, &rerr) {
+		if rerr, ok := errors.AsType[*RedirectionError](err); ok {
 			// If we receive a 302, transform potential relative locations into absolute and return it.
 			if rerr.StatusCode == http.StatusFound {
 				if rerr.Location == nil {
@@ -1409,12 +1434,21 @@ func (c *Client) Do(req *http.Request, v any) (*Response, error) {
 	case io.Writer:
 		_, err = io.Copy(v, resp.Body)
 	default:
-		decErr := json.NewDecoder(resp.Body).Decode(v)
-		if decErr == io.EOF {
-			decErr = nil // ignore EOF errors caused by empty response body
-		}
-		if decErr != nil {
-			err = decErr
+		respBuf := requestBufferPool.Get().(*bytes.Buffer)
+		defer putRequestBuffer(respBuf)
+
+		_, readErr := respBuf.ReadFrom(resp.Body)
+		if readErr != nil {
+			err = readErr
+		} else if respBuf.Len() > 0 {
+			b := respBuf.Bytes()
+			decErr := json.Unmarshal(b, v)
+			if decErr != nil && len(bytes.TrimSpace(b)) == 0 {
+				decErr = nil // ignore errors caused by whitespace-only response body
+			}
+			if decErr != nil {
+				err = decErr
+			}
 		}
 	}
 	return resp, err
@@ -1790,6 +1824,12 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 // the 200 range or equal to 202 Accepted.
 // API error responses are expected to have response
 // body, and a JSON response body that maps to [ErrorResponse].
+//
+// On error responses other than 202 Accepted, CheckResponse consumes r.Body
+// and replaces it with an in-memory copy so that the error body can be
+// re-read. Closing r.Body after CheckResponse returns therefore closes only
+// the copy: to release the original body and its underlying connection,
+// capture r.Body before the call and close the captured body instead.
 //
 // The error type will be *[RateLimitError] for rate limit exceeded errors,
 // *[AcceptedError] for 202 Accepted status codes,
@@ -2170,8 +2210,12 @@ func (c *Client) checkRedirectHost(location string) error {
 
 // Ptr is a helper routine that allocates a new T value
 // to store v and returns a pointer to it.
+//
+// Deprecated: use the new builtin instead.
+//
+//go:fix inline
 func Ptr[T any](v T) *T {
-	return &v
+	return new(v)
 }
 
 // Bool is a helper routine that allocates a new bool value
@@ -2180,7 +2224,7 @@ func Ptr[T any](v T) *T {
 // Deprecated: use Ptr instead.
 //
 //go:fix inline
-func Bool(v bool) *bool { return Ptr(v) }
+func Bool(v bool) *bool { return new(v) }
 
 // Int is a helper routine that allocates a new int value
 // to store v and returns a pointer to it.
@@ -2188,7 +2232,7 @@ func Bool(v bool) *bool { return Ptr(v) }
 // Deprecated: use Ptr instead.
 //
 //go:fix inline
-func Int(v int) *int { return Ptr(v) }
+func Int(v int) *int { return new(v) }
 
 // Int64 is a helper routine that allocates a new int64 value
 // to store v and returns a pointer to it.
@@ -2196,7 +2240,7 @@ func Int(v int) *int { return Ptr(v) }
 // Deprecated: use Ptr instead.
 //
 //go:fix inline
-func Int64(v int64) *int64 { return Ptr(v) }
+func Int64(v int64) *int64 { return new(v) }
 
 // String is a helper routine that allocates a new string value
 // to store v and returns a pointer to it.
@@ -2204,7 +2248,7 @@ func Int64(v int64) *int64 { return Ptr(v) }
 // Deprecated: use Ptr instead.
 //
 //go:fix inline
-func String(v string) *string { return Ptr(v) }
+func String(v string) *string { return new(v) }
 
 // roundTripperFunc creates a RoundTripper (transport).
 type roundTripperFunc func(*http.Request) (*http.Response, error)

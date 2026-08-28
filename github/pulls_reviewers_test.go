@@ -31,7 +31,7 @@ func TestRequestReviewers(t *testing.T) {
 	if err != nil {
 		t.Errorf("PullRequests.RequestReviewers returned error: %v", err)
 	}
-	want := &PullRequest{Number: Ptr(1)}
+	want := &PullRequest{Number: new(1)}
 	if !cmp.Equal(got, want) {
 		t.Errorf("PullRequests.RequestReviewers returned %+v, want %+v", got, want)
 	}
@@ -115,14 +115,14 @@ func TestListReviewers(t *testing.T) {
 	want := &Reviewers{
 		Users: []*User{
 			{
-				Login: Ptr("octocat"),
-				ID:    Ptr(int64(1)),
+				Login: new("octocat"),
+				ID:    new(int64(1)),
 			},
 		},
 		Teams: []*Team{
 			{
-				ID:   Ptr(int64(1)),
-				Name: Ptr("Justice League"),
+				ID:   new(int64(1)),
+				Name: new("Justice League"),
 			},
 		},
 	}
