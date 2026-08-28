@@ -608,41 +608,41 @@ func TestWithURLs(t *testing.T) {
 	}{
 		{
 			name:          "does_not_modify_urls_with_trailing_slash",
-			baseURL:       Ptr("https://example.com/"),
-			wantBaseURL:   Ptr("https://example.com/"),
-			uploadURL:     Ptr("https://upload.example.com/"),
-			wantUploadURL: Ptr("https://upload.example.com/"),
+			baseURL:       new("https://example.com/"),
+			wantBaseURL:   new("https://example.com/"),
+			uploadURL:     new("https://upload.example.com/"),
+			wantUploadURL: new("https://upload.example.com/"),
 		},
 		{
 			name:          "adds_trailing_slash",
-			baseURL:       Ptr("https://example.com"),
-			wantBaseURL:   Ptr("https://example.com/"),
-			uploadURL:     Ptr("https://upload.example.com"),
-			wantUploadURL: Ptr("https://upload.example.com/"),
+			baseURL:       new("https://example.com"),
+			wantBaseURL:   new("https://example.com/"),
+			uploadURL:     new("https://upload.example.com"),
+			wantUploadURL: new("https://upload.example.com/"),
 		},
 		{
 			name: "skips_unset",
 		},
 		{
 			name:    "error_on_empty_base_url",
-			baseURL: Ptr(""),
+			baseURL: new(""),
 			wantErr: "invalid base url: url cannot be empty",
 		},
 		{
 			name:    "error_on_bad_base_url",
-			baseURL: Ptr("bogus\nbase\nURL"),
+			baseURL: new("bogus\nbase\nURL"),
 			wantErr: "invalid base url: invalid url",
 		},
 		{
 			name:      "error_on_empty_upload_url",
-			baseURL:   Ptr("https://example.com/"),
-			uploadURL: Ptr(""),
+			baseURL:   new("https://example.com/"),
+			uploadURL: new(""),
 			wantErr:   "invalid upload url: url cannot be empty",
 		},
 		{
 			name:      "error_on_bad_upload_url",
-			baseURL:   Ptr("https://example.com/"),
-			uploadURL: Ptr("bogus\nupload\nURL"),
+			baseURL:   new("https://example.com/"),
+			uploadURL: new("bogus\nupload\nURL"),
 			wantErr:   "invalid upload url: invalid url",
 		},
 	} {
@@ -969,15 +969,15 @@ func Test_newClient(t *testing.T) {
 			opts: clientOptions{
 				httpClient:                              &http.Client{Transport: &http.Transport{IdleConnTimeout: 5 * time.Second}},
 				transport:                               &http.Transport{IdleConnTimeout: 10 * time.Second},
-				timeout:                                 Ptr(15 * time.Second),
-				apiVersionMin:                           Ptr(api20221128),
-				apiVersionMax:                           Ptr(api20221128),
-				userAgent:                               Ptr("CustomUserAgent/1.0"),
+				timeout:                                 new(15 * time.Second),
+				apiVersionMin:                           new(api20221128),
+				apiVersionMax:                           new(api20221128),
+				userAgent:                               new("CustomUserAgent/1.0"),
 				baseURL:                                 mustParseURL(t, "https://custom-url/api/v3/"),
 				uploadURL:                               mustParseURL(t, "https://custom-upload-url/api/uploads/"),
 				disableRateLimitCheck:                   true,
 				rateLimitRedirectionalEndpoints:         true,
-				maxSecondaryRateLimitRetryAfterDuration: Ptr(2 * time.Minute),
+				maxSecondaryRateLimitRetryAfterDuration: new(2 * time.Minute),
 			},
 			wantErr: "",
 		},
@@ -986,7 +986,7 @@ func Test_newClient(t *testing.T) {
 			opts: clientOptions{
 				disableRateLimitCheck:                   false,
 				rateLimitRedirectionalEndpoints:         true,
-				maxSecondaryRateLimitRetryAfterDuration: Ptr(2 * time.Minute),
+				maxSecondaryRateLimitRetryAfterDuration: new(2 * time.Minute),
 			},
 			wantErr: "",
 		},
@@ -1533,7 +1533,7 @@ func TestNewRequest(t *testing.T) {
 	c := mustNewClient(t)
 
 	inURL, outURL := "/foo", defaultBaseURL+"foo"
-	inBody, outBody := &User{Login: Ptr("l")}, `{"login":"l"}`+"\n"
+	inBody, outBody := &User{Login: new("l")}, `{"login":"l"}`+"\n"
 	req, _ := c.NewRequest(t.Context(), "GET", inURL, inBody)
 
 	// test that relative URL was expanded
@@ -4709,21 +4709,6 @@ func TestClientCopy_leak_transport(t *testing.T) {
 	}
 
 	assertNoDiff(t, "Bearer bob", bob.GetLogin())
-}
-
-func TestPtr(t *testing.T) {
-	t.Parallel()
-	equal := func(t *testing.T, want, got any) {
-		t.Helper()
-		if !cmp.Equal(want, got) {
-			t.Errorf("want %#v, got %#v", want, got)
-		}
-	}
-
-	equal(t, true, *Ptr(true))
-	equal(t, int(10), *Ptr(int(10)))
-	equal(t, int64(-10), *Ptr(int64(-10)))
-	equal(t, "str", *Ptr("str"))
 }
 
 func TestDeploymentProtectionRuleEvent_GetRunID(t *testing.T) {

@@ -27,7 +27,7 @@ func TestActionsService_GetActionsPermissions(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.GetActionsPermissions returned error: %v", err)
 	}
-	want := &ActionsPermissions{EnabledRepositories: Ptr("all"), AllowedActions: Ptr("all"), SHAPinningRequired: Ptr(true)}
+	want := &ActionsPermissions{EnabledRepositories: new("all"), AllowedActions: new("all"), SHAPinningRequired: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.GetActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -51,7 +51,7 @@ func TestActionsService_UpdateActionsPermissions(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsPermissions{EnabledRepositories: Ptr("all"), AllowedActions: Ptr("selected"), SHAPinningRequired: Ptr(true)}
+	input := &ActionsPermissions{EnabledRepositories: new("all"), AllowedActions: new("selected"), SHAPinningRequired: new(true)}
 
 	mux.HandleFunc("/orgs/o/actions/permissions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -65,7 +65,7 @@ func TestActionsService_UpdateActionsPermissions(t *testing.T) {
 		t.Errorf("Actions.UpdateActionsPermissions returned error: %v", err)
 	}
 
-	want := &ActionsPermissions{EnabledRepositories: Ptr("all"), AllowedActions: Ptr("selected"), SHAPinningRequired: Ptr(true)}
+	want := &ActionsPermissions{EnabledRepositories: new("all"), AllowedActions: new("selected"), SHAPinningRequired: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.UpdateActionsPermissions returned %+v, want %+v", org, want)
 	}
@@ -107,8 +107,8 @@ func TestActionsService_ListEnabledReposInOrg(t *testing.T) {
 	}
 
 	want := &ActionsEnabledOnOrgRepos{TotalCount: int(2), Repositories: []*Repository{
-		{ID: Ptr(int64(2))},
-		{ID: Ptr(int64(3))},
+		{ID: new(int64(2))},
+		{ID: new(int64(3))},
 	}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Actions.ListEnabledReposInOrg returned %+v, want %+v", got, want)
@@ -232,7 +232,7 @@ func TestActionsService_GetActionsAllowed(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.GetActionsAllowed returned error: %v", err)
 	}
-	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.GetActionsAllowed returned %+v, want %+v", org, want)
 	}
@@ -266,7 +266,7 @@ func TestActionsService_GetActionsAllowed_emptyPatterns(t *testing.T) {
 	if err != nil {
 		t.Errorf("Actions.GetActionsAllowed returned error: %v", err)
 	}
-	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{}}
+	want := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{}}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.GetActionsAllowed returned %+v, want %+v", org, want)
 	}
@@ -290,7 +290,7 @@ func TestActionsService_UpdateActionsAllowed(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	input := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -304,7 +304,7 @@ func TestActionsService_UpdateActionsAllowed(t *testing.T) {
 		t.Errorf("Actions.UpdateActionsAllowed returned error: %v", err)
 	}
 
-	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.UpdateActionsAllowed returned %+v, want %+v", org, want)
 	}
@@ -328,7 +328,7 @@ func TestActionsService_UpdateActionsAllowed_emptyPatterns(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{}}
+	input := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{}}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -342,7 +342,7 @@ func TestActionsService_UpdateActionsAllowed_emptyPatterns(t *testing.T) {
 		t.Errorf("Actions.UpdateActionsAllowed returned error: %v", err)
 	}
 
-	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{}}
+	want := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{}}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.UpdateActionsAllowed returned %+v, want %+v", org, want)
 	}
@@ -352,7 +352,7 @@ func TestActionsService_UpdateActionsAllowed_nilPatterns(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: nil}
+	input := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: nil}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -366,7 +366,7 @@ func TestActionsService_UpdateActionsAllowed_nilPatterns(t *testing.T) {
 		t.Errorf("Actions.UpdateActionsAllowed returned error: %v", err)
 	}
 
-	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.UpdateActionsAllowed returned %+v, want %+v", org, want)
 	}
@@ -376,7 +376,7 @@ func TestActionsService_UpdateActionsAllowed_omittedPatterns(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false)}
+	input := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false)}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/selected-actions", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -390,7 +390,7 @@ func TestActionsService_UpdateActionsAllowed_omittedPatterns(t *testing.T) {
 		t.Errorf("Actions.UpdateActionsAllowed returned error: %v", err)
 	}
 
-	want := &ActionsAllowed{GithubOwnedAllowed: Ptr(true), VerifiedAllowed: Ptr(false), PatternsAllowed: []string{"a/b"}}
+	want := &ActionsAllowed{GithubOwnedAllowed: new(true), VerifiedAllowed: new(false), PatternsAllowed: []string{"a/b"}}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.UpdateActionsAllowed returned %+v, want %+v", org, want)
 	}
@@ -410,7 +410,7 @@ func TestActionsService_GetDefaultWorkflowPermissionsInOrganization(t *testing.T
 	if err != nil {
 		t.Errorf("Actions.GetDefaultWorkflowPermissionsInOrganization returned error: %v", err)
 	}
-	want := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
+	want := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: new("read"), CanApprovePullRequestReviews: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.GetDefaultWorkflowPermissionsInOrganization returned %+v, want %+v", org, want)
 	}
@@ -434,7 +434,7 @@ func TestActionsService_UpdateDefaultWorkflowPermissionsInOrganization(t *testin
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
+	input := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: new("read"), CanApprovePullRequestReviews: new(true)}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/workflow", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -448,7 +448,7 @@ func TestActionsService_UpdateDefaultWorkflowPermissionsInOrganization(t *testin
 		t.Errorf("Actions.UpdateDefaultWorkflowPermissionsInOrganization returned error: %v", err)
 	}
 
-	want := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: Ptr("read"), CanApprovePullRequestReviews: Ptr(true)}
+	want := &DefaultWorkflowPermissionOrganization{DefaultWorkflowPermissions: new("read"), CanApprovePullRequestReviews: new(true)}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Actions.UpdateDefaultWorkflowPermissionsInOrganization returned %+v, want %+v", org, want)
 	}
@@ -484,8 +484,8 @@ func TestActionsService_GetArtifactAndLogRetentionPeriodInOrganization(t *testin
 	}
 
 	want := &ArtifactPeriod{
-		Days:               Ptr(90),
-		MaximumAllowedDays: Ptr(365),
+		Days:               new(90),
+		MaximumAllowedDays: new(365),
 	}
 	if !cmp.Equal(period, want) {
 		t.Errorf("Actions.GetArtifactAndLogRetentionPeriodInOrganization = %+v, want %+v", period, want)
@@ -510,7 +510,7 @@ func TestActionsService_UpdateArtifactAndLogRetentionPeriodInOrganization(t *tes
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &ArtifactPeriodOpt{Days: Ptr(90)}
+	input := &ArtifactPeriodOpt{Days: new(90)}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/artifact-and-log-retention", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -554,8 +554,8 @@ func TestActionsService_GetSelfHostedRunnersSettingsInOrganization(t *testing.T)
 		t.Errorf("Actions.GetSelfHostedRunnersSettingsInOrganization returned error: %v", err)
 	}
 	want := &SelfHostedRunnersSettingsOrganization{
-		EnabledRepositories:     Ptr("all"),
-		SelectedRepositoriesURL: Ptr("https://api.github.com/orgs/octo-org/actions/permissions/self-hosted-runners/repositories"),
+		EnabledRepositories:     new("all"),
+		SelectedRepositoriesURL: new("https://api.github.com/orgs/octo-org/actions/permissions/self-hosted-runners/repositories"),
 	}
 	if !cmp.Equal(settings, want) {
 		t.Errorf("Actions.GetSelfHostedRunnersSettingsInOrganization returned %+v, want %+v", settings, want)
@@ -580,7 +580,7 @@ func TestActionsService_UpdateSelfHostedRunnersSettingsInOrganization(t *testing
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SelfHostedRunnersSettingsOrganizationOpt{EnabledRepositories: Ptr("selected")}
+	input := &SelfHostedRunnersSettingsOrganizationOpt{EnabledRepositories: new("selected")}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/self-hosted-runners", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -631,8 +631,8 @@ func TestActionsService_ListRepositoriesSelfHostedRunnersAllowedInOrganization(t
 	}
 
 	want := &SelfHostedRunnersAllowedRepos{TotalCount: int(2), Repositories: []*Repository{
-		{ID: Ptr(int64(2))},
-		{ID: Ptr(int64(3))},
+		{ID: new(int64(2))},
+		{ID: new(int64(3))},
 	}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Actions.ListRepositoriesSelfHostedRunnersAllowedInOrganization returned %+v, want %+v", got, want)
@@ -757,10 +757,10 @@ func TestActionsService_GetPrivateRepoForkPRWorkflowSettingsInOrganization(t *te
 		t.Errorf("Actions.GetPrivateRepoForkPRWorkflowSettingsInOrganization returned error: %v", err)
 	}
 	want := &WorkflowsPermissions{
-		RunWorkflowsFromForkPullRequests:  Ptr(true),
-		SendWriteTokensToWorkflows:        Ptr(false),
-		SendSecretsAndVariables:           Ptr(true),
-		RequireApprovalForForkPRWorkflows: Ptr(false),
+		RunWorkflowsFromForkPullRequests:  new(true),
+		SendWriteTokensToWorkflows:        new(false),
+		SendSecretsAndVariables:           new(true),
+		RequireApprovalForForkPRWorkflows: new(false),
 	}
 	if !cmp.Equal(permissions, want) {
 		t.Errorf("Actions.GetPrivateRepoForkPRWorkflowSettingsInOrganization returned %+v, want %+v", permissions, want)
@@ -787,8 +787,8 @@ func TestActionsService_UpdatePrivateRepoForkPRWorkflowSettingsInOrganization(t 
 
 	input := &WorkflowsPermissionsOpt{
 		RunWorkflowsFromForkPullRequests: true,
-		SendWriteTokensToWorkflows:       Ptr(false),
-		SendSecretsAndVariables:          Ptr(true),
+		SendWriteTokensToWorkflows:       new(false),
+		SendSecretsAndVariables:          new(true),
 	}
 
 	mux.HandleFunc("/orgs/o/actions/permissions/fork-pr-workflows-private-repos", func(w http.ResponseWriter, r *http.Request) {

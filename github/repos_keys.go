@@ -60,12 +60,19 @@ func (s *RepositoriesService) GetKey(ctx context.Context, owner, repo string, id
 	return key, resp, nil
 }
 
+// CreateDeployKeyRequest represents a request to create a deploy key.
+type CreateDeployKeyRequest struct {
+	Title    *string `json:"title,omitempty"`
+	Key      string  `json:"key"`
+	ReadOnly *bool   `json:"read_only,omitempty"`
+}
+
 // CreateKey adds a deploy key for a repository.
 //
 // GitHub API docs: https://docs.github.com/rest/deploy-keys/deploy-keys?apiVersion=2022-11-28#create-a-deploy-key
 //
 //meta:operation POST /repos/{owner}/{repo}/keys
-func (s *RepositoriesService) CreateKey(ctx context.Context, owner, repo string, body *Key) (*Key, *Response, error) {
+func (s *RepositoriesService) CreateKey(ctx context.Context, owner, repo string, body CreateDeployKeyRequest) (*Key, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/keys", owner, repo)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)

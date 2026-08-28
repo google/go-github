@@ -28,7 +28,7 @@ func TestActionsService_GetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 		t.Errorf("Actions.GetOrgOIDCSubjectClaimCustomTemplate returned error: %v", err)
 	}
 
-	want := &OIDCSubjectClaimCustomTemplate{IncludeClaimKeys: []string{"repo", "context"}, UseImmutableSubject: Ptr(true)}
+	want := &OIDCSubjectClaimCustomTemplate{IncludeClaimKeys: []string{"repo", "context"}, UseImmutableSubject: new(true)}
 	if !cmp.Equal(template, want) {
 		t.Errorf("Actions.GetOrgOIDCSubjectClaimCustomTemplate returned %+v, want %+v", template, want)
 	}
@@ -63,7 +63,7 @@ func TestActionsService_GetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 		t.Errorf("Actions.GetRepoOIDCSubjectClaimCustomTemplate returned error: %v", err)
 	}
 
-	want := &OIDCSubjectClaimCustomTemplate{UseDefault: Ptr(false), IncludeClaimKeys: []string{"repo", "context"}, UseImmutableSubject: Ptr(true), SubClaimPrefix: Ptr("repo:o/r")}
+	want := &OIDCSubjectClaimCustomTemplate{UseDefault: new(false), IncludeClaimKeys: []string{"repo", "context"}, UseImmutableSubject: new(true), SubClaimPrefix: new("repo:o/r")}
 	if !cmp.Equal(template, want) {
 		t.Errorf("Actions.GetRepoOIDCSubjectClaimCustomTemplate returned %+v, want %+v", template, want)
 	}
@@ -89,7 +89,7 @@ func TestActionsService_SetOrgOIDCSubjectClaimCustomTemplate(t *testing.T) {
 
 	input := OIDCSubjectClaimCustomTemplate{
 		IncludeClaimKeys:    []string{"repo", "context"},
-		UseImmutableSubject: Ptr(true),
+		UseImmutableSubject: new(true),
 	}
 
 	mux.HandleFunc("/orgs/o/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {
@@ -122,7 +122,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplate(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := OIDCSubjectClaimCustomTemplate{
-		UseDefault:       Ptr(false),
+		UseDefault:       new(false),
 		IncludeClaimKeys: []string{"repo", "context"},
 	}
 
@@ -156,7 +156,7 @@ func TestActionsService_SetRepoOIDCSubjectClaimCustomTemplateToDefault(t *testin
 	client, mux, _ := setup(t)
 
 	input := OIDCSubjectClaimCustomTemplate{
-		UseDefault: Ptr(true),
+		UseDefault: new(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/actions/oidc/customization/sub", func(w http.ResponseWriter, r *http.Request) {

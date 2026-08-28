@@ -64,7 +64,7 @@ func TestMetaService_Get(t *testing.T) {
 			},
 		},
 
-		VerifiablePasswordAuthentication: Ptr(true),
+		VerifiablePasswordAuthentication: new(true),
 	}
 	if !cmp.Equal(want, meta) {
 		t.Errorf("Get returned %+v, want %+v", meta, want)

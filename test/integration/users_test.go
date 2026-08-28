@@ -180,9 +180,9 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// Add new key
-	_, _, err = client.Users.CreateKey(t.Context(), &github.Key{
-		Title: github.Ptr("go-github test key"),
-		Key:   &key,
+	_, _, err = client.Users.CreateKey(t.Context(), github.CreateUserKeyRequest{
+		Title: new("go-github test key"),
+		Key:   key,
 	})
 	if err != nil {
 		t.Fatalf("Users.CreateKey() returned error: %v", err)
@@ -209,10 +209,10 @@ func TestUsers_Keys(t *testing.T) {
 	// Verify that fetching individual key works
 	k, _, err := client.Users.GetKey(t.Context(), id)
 	if err != nil {
-		t.Fatalf("Users.GetKey(%q) returned error: %v", id, err)
+		t.Fatalf("Users.GetKey(%v) returned error: %v", id, err)
 	}
 	if *k.Key != key {
-		t.Fatalf("Users.GetKey(%q) returned key %v, want %v", id, *k.Key, key)
+		t.Fatalf("Users.GetKey(%v) returned key %v, want %v", id, *k.Key, key)
 	}
 
 	// Remove test key

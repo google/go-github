@@ -257,20 +257,20 @@ var migrationJSON = []byte(`{
 }`)
 
 var wantMigration = &Migration{
-	ID:                 Ptr(int64(79)),
-	GUID:               Ptr("0b989ba4-242f-11e5-81e1-c7b6966d2516"),
-	State:              Ptr("pending"),
-	LockRepositories:   Ptr(true),
-	ExcludeAttachments: Ptr(false),
-	URL:                Ptr("https://api.github.com/orgs/octo-org/migrations/79"),
-	CreatedAt:          Ptr("2015-07-06T15:33:38-07:00"),
-	UpdatedAt:          Ptr("2015-07-06T15:33:38-07:00"),
+	ID:                 new(int64(79)),
+	GUID:               new("0b989ba4-242f-11e5-81e1-c7b6966d2516"),
+	State:              new("pending"),
+	LockRepositories:   new(true),
+	ExcludeAttachments: new(false),
+	URL:                new("https://api.github.com/orgs/octo-org/migrations/79"),
+	CreatedAt:          new("2015-07-06T15:33:38-07:00"),
+	UpdatedAt:          new("2015-07-06T15:33:38-07:00"),
 	Repositories: []*Repository{
 		{
-			ID:          Ptr(int64(1296269)),
-			Name:        Ptr("Hello-World"),
-			FullName:    Ptr("octocat/Hello-World"),
-			Description: Ptr("This your first repo!"),
+			ID:          new(int64(1296269)),
+			Name:        new("Hello-World"),
+			FullName:    new("octocat/Hello-World"),
+			Description: new("This your first repo!"),
 		},
 	},
 }

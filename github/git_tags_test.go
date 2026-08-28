@@ -28,7 +28,7 @@ func TestGitService_GetTag(t *testing.T) {
 		t.Errorf("Git.GetTag returned error: %v", err)
 	}
 
-	want := &Tag{Tag: Ptr("t")}
+	want := &Tag{Tag: new("t")}
 	if !cmp.Equal(tag, want) {
 		t.Errorf("Git.GetTag returned %+v, want %+v", tag, want)
 	}
@@ -71,7 +71,7 @@ func TestGitService_CreateTag(t *testing.T) {
 		t.Errorf("Git.CreateTag returned error: %v", err)
 	}
 
-	want := &Tag{Tag: Ptr("t")}
+	want := &Tag{Tag: new("t")}
 	if !cmp.Equal(tag, want) {
 		t.Errorf("Git.CreateTag returned %+v, want %+v", tag, want)
 	}

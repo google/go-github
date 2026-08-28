@@ -92,7 +92,7 @@ func TestUsersServiceReason_Suspend(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &UserSuspendOptions{Reason: Ptr("test")}
+	input := &UserSuspendOptions{Reason: new("test")}
 
 	mux.HandleFunc("/users/u/suspended", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")

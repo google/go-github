@@ -30,9 +30,9 @@ func TestCodespacesService_ListInOrg(t *testing.T) {
 	}
 
 	want := &ListCodespaces{
-		TotalCount: Ptr(1),
+		TotalCount: new(1),
 		Codespaces: []*Codespace{
-			{ID: Ptr(int64(1))},
+			{ID: new(int64(1))},
 		},
 	}
 
@@ -171,9 +171,9 @@ func TestCodespacesService_ListUserCodespacesInOrg(t *testing.T) {
 	}
 
 	want := &ListCodespaces{
-		TotalCount: Ptr(1),
+		TotalCount: new(1),
 		Codespaces: []*Codespace{
-			{ID: Ptr(int64(1))},
+			{ID: new(int64(1))},
 		},
 	}
 

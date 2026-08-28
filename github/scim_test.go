@@ -63,9 +63,9 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListSCIMProvisionedIdentitiesOptions{
-		StartIndex: Ptr(1),
-		Count:      Ptr(10),
-		Filter:     Ptr(`userName="Octocat"`),
+		StartIndex: new(1),
+		Count:      new(10),
+		Filter:     new(`userName="Octocat"`),
 	}
 	identities, _, err := client.SCIM.ListSCIMProvisionedIdentities(ctx, "o", opts)
 	if err != nil {
@@ -74,35 +74,35 @@ func TestSCIMService_ListSCIMProvisionedIdentities(t *testing.T) {
 
 	want := SCIMProvisionedIdentities{
 		Schemas:      []string{"urn:ietf:params:scim:api:messages:2.0:ListResponse"},
-		TotalResults: Ptr(1),
-		ItemsPerPage: Ptr(1),
-		StartIndex:   Ptr(1),
+		TotalResults: new(1),
+		ItemsPerPage: new(1),
+		StartIndex:   new(1),
 		Resources: []*SCIMUserAttributes{
 			{
-				ID: Ptr("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
+				ID: new("5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				Meta: &SCIMMeta{
-					ResourceType: Ptr("User"),
+					ResourceType: new("User"),
 					Created:      refTimestamp(1136178000),
 					LastModified: refTimestamp(1136178001),
-					Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"),
+					Location:     new("https://api.github.com/scim/v2/organizations/octo-org/Users/5fc0c238-1112-11e8-8e45-920c87bdbd75"),
 				},
 				UserName: "octocat@github.com",
 				Name: SCIMUserName{
 					GivenName:  "Mona",
 					FamilyName: "Octocat",
-					Formatted:  Ptr("Mona Octocat"),
+					Formatted:  new("Mona Octocat"),
 				},
-				DisplayName: Ptr("Mona Octocat"),
+				DisplayName: new("Mona Octocat"),
 				Emails: []*SCIMUserEmail{
 					{
 						Value:   "octocat@github.com",
-						Primary: Ptr(true),
+						Primary: new(true),
 					},
 				},
 				Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
-				ExternalID: Ptr("00u1dhhb1fkIGP7RL1d8"),
+				ExternalID: new("00u1dhhb1fkIGP7RL1d8"),
 				Groups:     nil,
-				Active:     Ptr(true),
+				Active:     new(true),
 			},
 		},
 	}
@@ -153,7 +153,7 @@ func TestSCIMService_ProvisionAndInviteSCIMUser(t *testing.T) {
 	}
 
 	want := &SCIMUserAttributes{
-		ID:       Ptr("1234567890"),
+		ID:       new("1234567890"),
 		UserName: "userName",
 	}
 	if !cmp.Equal(user, want) {
@@ -221,33 +221,33 @@ func TestSCIMService_GetSCIMProvisioningInfoForUser(t *testing.T) {
 	}
 
 	want := SCIMUserAttributes{
-		ID: Ptr("edefdfedf-050c-11e7-8d32"),
+		ID: new("edefdfedf-050c-11e7-8d32"),
 		Meta: &SCIMMeta{
-			ResourceType: Ptr("User"),
+			ResourceType: new("User"),
 			Created:      refTimestamp(1136178000),
 			LastModified: refTimestamp(1136178001),
-			Location:     Ptr("https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"),
+			Location:     new("https://api.github.com/scim/v2/organizations/octo-org/Users/edefdfedf-050c-11e7-8d32"),
 		},
 		UserName: "mona.octocat@okta.example.com",
 		Name: SCIMUserName{
 			GivenName:  "Mona",
 			FamilyName: "Octocat",
-			Formatted:  Ptr("Mona Octocat"),
+			Formatted:  new("Mona Octocat"),
 		},
-		DisplayName: Ptr("Mona Octocat"),
+		DisplayName: new("Mona Octocat"),
 		Emails: []*SCIMUserEmail{
 			{
 				Value:   "mona.octocat@okta.example.com",
-				Primary: Ptr(true),
+				Primary: new(true),
 			},
 			{
 				Value: "mona@octocat.github.com",
 			},
 		},
 		Schemas:    []string{"urn:ietf:params:scim:schemas:core:2.0:User"},
-		ExternalID: Ptr("a7d0f98382"),
+		ExternalID: new("a7d0f98382"),
 		Groups:     nil,
-		Active:     Ptr(true),
+		Active:     new(true),
 	}
 
 	if !cmp.Equal(user, &want) {
@@ -298,7 +298,7 @@ func TestSCIMService_UpdateProvisionedOrgMembership(t *testing.T) {
 	}
 
 	want := &SCIMUserAttributes{
-		ID:       Ptr("123"),
+		ID:       new("123"),
 		UserName: "userName",
 	}
 	if !cmp.Equal(user, want) {
@@ -329,7 +329,7 @@ func TestSCIMService_UpdateAttributeForSCIMUser(t *testing.T) {
 		Operations: []*UpdateAttributeForSCIMUserOperations{
 			{
 				Op:    "replace",
-				Path:  Ptr("displayName"),
+				Path:  new("displayName"),
 				Value: json.RawMessage(`"NewDisplayName"`),
 			},
 		},
@@ -363,7 +363,7 @@ func TestSCIMService_UpdateAttributeForSCIMUser(t *testing.T) {
 	}
 
 	want := &SCIMUserAttributes{
-		ID:       Ptr("123"),
+		ID:       new("123"),
 		UserName: "userName",
 	}
 	if !cmp.Equal(user, want) {

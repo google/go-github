@@ -71,43 +71,43 @@ func TestRepositoriesService_GetCommunityHealthMetrics(t *testing.T) {
 	}
 
 	want := &CommunityHealthMetrics{
-		HealthPercentage:      Ptr(100),
-		Description:           Ptr("My first repository on GitHub!"),
+		HealthPercentage:      new(100),
+		Description:           new("My first repository on GitHub!"),
 		UpdatedAt:             &referenceTimestamp,
-		ContentReportsEnabled: Ptr(true),
+		ContentReportsEnabled: new(true),
 		Files: &CommunityHealthFiles{
 			CodeOfConduct: &Metric{
-				Name:    Ptr("Contributor Covenant"),
-				Key:     Ptr("contributor_covenant"),
-				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"),
+				Name:    new("Contributor Covenant"),
+				Key:     new("contributor_covenant"),
+				HTMLURL: new("https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"),
 			},
 			CodeOfConductFile: &Metric{
-				URL:     Ptr("https://api.github.com/repos/octocat/Hello-World/contents/CODE_OF_CONDUCT.md"),
-				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"),
+				URL:     new("https://api.github.com/repos/octocat/Hello-World/contents/CODE_OF_CONDUCT.md"),
+				HTMLURL: new("https://github.com/octocat/Hello-World/blob/master/CODE_OF_CONDUCT.md"),
 			},
 			Contributing: &Metric{
-				URL:     Ptr("https://api.github.com/repos/octocat/Hello-World/contents/CONTRIBUTING"),
-				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/CONTRIBUTING"),
+				URL:     new("https://api.github.com/repos/octocat/Hello-World/contents/CONTRIBUTING"),
+				HTMLURL: new("https://github.com/octocat/Hello-World/blob/master/CONTRIBUTING"),
 			},
 			IssueTemplate: &Metric{
-				URL:     Ptr("https://api.github.com/repos/octocat/Hello-World/contents/ISSUE_TEMPLATE"),
-				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/ISSUE_TEMPLATE"),
+				URL:     new("https://api.github.com/repos/octocat/Hello-World/contents/ISSUE_TEMPLATE"),
+				HTMLURL: new("https://github.com/octocat/Hello-World/blob/master/ISSUE_TEMPLATE"),
 			},
 			PullRequestTemplate: &Metric{
-				URL:     Ptr("https://api.github.com/repos/octocat/Hello-World/contents/PULL_REQUEST_TEMPLATE"),
-				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/PULL_REQUEST_TEMPLATE"),
+				URL:     new("https://api.github.com/repos/octocat/Hello-World/contents/PULL_REQUEST_TEMPLATE"),
+				HTMLURL: new("https://github.com/octocat/Hello-World/blob/master/PULL_REQUEST_TEMPLATE"),
 			},
 			License: &Metric{
-				Name:    Ptr("MIT License"),
-				Key:     Ptr("mit"),
-				SPDXID:  Ptr("MIT"),
-				URL:     Ptr("https://api.github.com/licenses/mit"),
-				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/LICENSE"),
-				NodeID:  Ptr("MDc6TGljZW5zZW1pdA=="),
+				Name:    new("MIT License"),
+				Key:     new("mit"),
+				SPDXID:  new("MIT"),
+				URL:     new("https://api.github.com/licenses/mit"),
+				HTMLURL: new("https://github.com/octocat/Hello-World/blob/master/LICENSE"),
+				NodeID:  new("MDc6TGljZW5zZW1pdA=="),
 			},
 			Readme: &Metric{
-				URL:     Ptr("https://api.github.com/repos/octocat/Hello-World/contents/README.md"),
-				HTMLURL: Ptr("https://github.com/octocat/Hello-World/blob/master/README.md"),
+				URL:     new("https://api.github.com/repos/octocat/Hello-World/contents/README.md"),
+				HTMLURL: new("https://github.com/octocat/Hello-World/blob/master/README.md"),
 			},
 		},
 	}

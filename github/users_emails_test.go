@@ -34,7 +34,7 @@ func TestUsersService_ListEmails(t *testing.T) {
 		t.Errorf("Users.ListEmails returned error: %v", err)
 	}
 
-	want := []*UserEmail{{Email: Ptr("user@example.com"), Verified: Ptr(false), Primary: Ptr(true)}}
+	want := []*UserEmail{{Email: new("user@example.com"), Verified: new(false), Primary: new(true)}}
 	if !cmp.Equal(emails, want) {
 		t.Errorf("Users.ListEmails returned %+v, want %+v", emails, want)
 	}
@@ -68,8 +68,8 @@ func TestUsersService_AddEmails(t *testing.T) {
 	}
 
 	want := []*UserEmail{
-		{Email: Ptr("old@example.com")},
-		{Email: Ptr("new@example.com")},
+		{Email: new("old@example.com")},
+		{Email: new("new@example.com")},
 	}
 	if !cmp.Equal(emails, want) {
 		t.Errorf("Users.AddEmails returned %+v, want %+v", emails, want)
@@ -112,7 +112,7 @@ func TestUsersService_SetEmailVisibility(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &UserEmail{Visibility: Ptr("private")}
+	input := &UserEmail{Visibility: new("private")}
 
 	mux.HandleFunc("/user/email/visibility", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -131,7 +131,7 @@ func TestUsersService_SetEmailVisibility(t *testing.T) {
 		t.Errorf("Users.SetEmailVisibility returned error: %v", err)
 	}
 
-	want := []*UserEmail{{Email: Ptr("user@example.com"), Verified: Ptr(false), Primary: Ptr(true), Visibility: Ptr("private")}}
+	want := []*UserEmail{{Email: new("user@example.com"), Verified: new(false), Primary: new(true), Visibility: new("private")}}
 	if !cmp.Equal(emails, want) {
 		t.Errorf("Users.SetEmailVisibility returned %+v, want %+v", emails, want)
 	}

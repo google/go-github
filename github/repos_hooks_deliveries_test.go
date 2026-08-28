@@ -33,7 +33,7 @@ func TestRepositoriesService_ListHookDeliveries(t *testing.T) {
 		t.Errorf("Repositories.ListHookDeliveries returned error: %v", err)
 	}
 
-	want := []*HookDelivery{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*HookDelivery{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if d := cmp.Diff(hooks, want); d != "" {
 		t.Errorf("Repositories.ListHooks want (-), got (+):\n%v", d)
 	}
@@ -77,7 +77,7 @@ func TestRepositoriesService_GetHookDelivery(t *testing.T) {
 		t.Errorf("Repositories.GetHookDelivery returned error: %v", err)
 	}
 
-	want := &HookDelivery{ID: Ptr(int64(1))}
+	want := &HookDelivery{ID: new(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.GetHookDelivery returned %+v, want %+v", hook, want)
 	}
@@ -121,7 +121,7 @@ func TestRepositoriesService_RedeliverHookDelivery(t *testing.T) {
 		t.Errorf("Repositories.RedeliverHookDelivery returned error: %v", err)
 	}
 
-	want := &HookDelivery{ID: Ptr(int64(1))}
+	want := &HookDelivery{ID: new(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.RedeliverHookDelivery returned %+v, want %+v", hook, want)
 	}
@@ -238,7 +238,7 @@ func TestHookDelivery_ParsePayload_invalidEvent(t *testing.T) {
 	p := json.RawMessage(nil)
 
 	d := &HookDelivery{
-		Event: Ptr("some_invalid_event"),
+		Event: new("some_invalid_event"),
 		Request: &HookRequest{
 			RawPayload: &p,
 		},
@@ -255,7 +255,7 @@ func TestHookDelivery_ParsePayload_invalidPayload(t *testing.T) {
 	p := json.RawMessage([]byte(`{"check_run":{"id":"invalid"}}`))
 
 	d := &HookDelivery{
-		Event: Ptr("check_run"),
+		Event: new("check_run"),
 		Request: &HookRequest{
 			RawPayload: &p,
 		},

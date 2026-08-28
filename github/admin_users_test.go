@@ -17,7 +17,7 @@ func TestAdminUsers_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CreateUserRequest{Login: "github", Email: Ptr("email@example.com"), Suspended: Ptr(false)}
+	input := CreateUserRequest{Login: "github", Email: new("email@example.com"), Suspended: new(false)}
 
 	mux.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -31,7 +31,7 @@ func TestAdminUsers_Create(t *testing.T) {
 		t.Errorf("Admin.CreateUser returned error: %v", err)
 	}
 
-	want := &User{ID: Ptr(int64(1)), Login: Ptr("github")}
+	want := &User{ID: new(int64(1)), Login: new("github")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Admin.CreateUser returned %+v, want %+v", org, want)
 	}
@@ -107,16 +107,16 @@ func TestUserImpersonation_Create(t *testing.T) {
 	}
 
 	want := &UserAuthorization{
-		ID:  Ptr(int64(1234)),
-		URL: Ptr("https://example.com/authorizations"),
+		ID:  new(int64(1234)),
+		URL: new("https://example.com/authorizations"),
 		App: &OAuthAPP{
-			Name:     Ptr("GitHub Site Administrator"),
-			URL:      Ptr("https://docs.github.com/en/rest/enterprise/users/"),
-			ClientID: Ptr("1234"),
+			Name:     new("GitHub Site Administrator"),
+			URL:      new("https://docs.github.com/en/rest/enterprise/users/"),
+			ClientID: new("1234"),
 		},
-		Token:          Ptr("1234"),
-		HashedToken:    Ptr("1234"),
-		TokenLastEight: Ptr("1234"),
+		Token:          new("1234"),
+		HashedToken:    new("1234"),
+		TokenLastEight: new("1234"),
 		Note:           nil,
 		NoteURL:        nil,
 		CreatedAt:      refTimestamp(1136178000),

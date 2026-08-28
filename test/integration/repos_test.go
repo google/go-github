@@ -22,7 +22,7 @@ func TestRepositories_CRUD(t *testing.T) {
 	repo := createRandomTestRepository(t, "", true)
 
 	// update the repository description
-	repo.Description = github.Ptr("description")
+	repo.Description = new("description")
 	repo.DefaultBranch = nil // FIXME: this shouldn't be necessary
 	_, _, err := client.Repositories.Edit(t.Context(), *repo.Owner.Login, *repo.Name, repo)
 	if err != nil {
@@ -99,9 +99,9 @@ func TestRepositories_EditBranches(t *testing.T) {
 		//       In order to be able to test these Restrictions, need to add support
 		//       for creating temporary organization repositories.
 		Restrictions:     nil,
-		BlockCreations:   github.Ptr(false),
-		LockBranch:       github.Ptr(false),
-		AllowForkSyncing: github.Ptr(false),
+		BlockCreations:   new(false),
+		LockBranch:       new(false),
+		AllowForkSyncing: new(false),
 	}
 
 	protection, _, err := client.Repositories.UpdateBranchProtection(t.Context(), *repo.Owner.Login, *repo.Name, "master", protectionRequest)
@@ -119,18 +119,18 @@ func TestRepositories_EditBranches(t *testing.T) {
 			RequiredApprovingReviewCount: 0,
 		},
 		EnforceAdmins: &github.AdminEnforcement{
-			URL:     github.Ptr("https://api.github.com/repos/" + *repo.Owner.Login + "/" + *repo.Name + "/branches/master/protection/enforce_admins"),
+			URL:     new("https://api.github.com/repos/" + *repo.Owner.Login + "/" + *repo.Name + "/branches/master/protection/enforce_admins"),
 			Enabled: true,
 		},
 		Restrictions: nil,
 		BlockCreations: &github.BlockCreations{
-			Enabled: github.Ptr(false),
+			Enabled: new(false),
 		},
 		LockBranch: &github.LockBranch{
-			Enabled: github.Ptr(false),
+			Enabled: new(false),
 		},
 		AllowForkSyncing: &github.AllowForkSyncing{
-			Enabled: github.Ptr(false),
+			Enabled: new(false),
 		},
 	}
 	if !cmp.Equal(protection, want) {
@@ -192,7 +192,7 @@ func TestRepositories_Autolinks(t *testing.T) {
 	body := github.CreateAutolinkRequest{
 		KeyPrefix:      "TICKET-",
 		URLTemplate:    "https://example.com/TICKET?query=<num>",
-		IsAlphanumeric: github.Ptr(false),
+		IsAlphanumeric: new(false),
 	}
 
 	actionlink, _, err := client.Repositories.CreateAutolink(t.Context(), *repo.Owner.Login, *repo.Name, body)

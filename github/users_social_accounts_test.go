@@ -34,7 +34,7 @@ func TestUsersService_ListSocialAccounts(t *testing.T) {
 		t.Errorf("Users.ListSocialAccounts returned error: %v", err)
 	}
 
-	want := []*SocialAccount{{Provider: Ptr("example"), URL: Ptr("https://example.com")}}
+	want := []*SocialAccount{{Provider: new("example"), URL: new("https://example.com")}}
 	if !cmp.Equal(accounts, want) {
 		t.Errorf("Users.ListSocialAccounts returned %#v, want %#v", accounts, want)
 	}
@@ -71,7 +71,7 @@ func TestUsersService_AddSocialAccounts(t *testing.T) {
 	}
 
 	want := []*SocialAccount{
-		{Provider: Ptr("example"), URL: Ptr("https://example.com")},
+		{Provider: new("example"), URL: new("https://example.com")},
 	}
 	if !cmp.Equal(accounts, want) {
 		t.Errorf("Users.AddSocialAccounts returned %#v, want %#v", accounts, want)
@@ -135,7 +135,7 @@ func TestUsersService_ListUserSocialAccounts(t *testing.T) {
 		t.Errorf("Users.ListUserSocialAccounts returned error: %v", err)
 	}
 
-	want := []*SocialAccount{{Provider: Ptr("example"), URL: Ptr("https://example.com")}}
+	want := []*SocialAccount{{Provider: new("example"), URL: new("https://example.com")}}
 	if !cmp.Equal(accounts, want) {
 		t.Errorf("Users.ListUserSocialAccounts returned %#v, want %#v", accounts, want)
 	}

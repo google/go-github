@@ -18,10 +18,10 @@ func TestMigrationService_StartImport(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Import{
-		VCS:         Ptr("git"),
-		VCSURL:      Ptr("url"),
-		VCSUsername: Ptr("u"),
-		VCSPassword: Ptr("p"),
+		VCS:         new("git"),
+		VCSURL:      new("url"),
+		VCSUsername: new("u"),
+		VCSPassword: new("p"),
 	}
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +36,7 @@ func TestMigrationService_StartImport(t *testing.T) {
 	if err != nil {
 		t.Errorf("StartImport returned error: %v", err)
 	}
-	want := &Import{Status: Ptr("importing")}
+	want := &Import{Status: new("importing")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("StartImport = %+v, want %+v", got, want)
 	}
@@ -70,7 +70,7 @@ func TestMigrationService_ImportProgress(t *testing.T) {
 	if err != nil {
 		t.Errorf("ImportProgress returned error: %v", err)
 	}
-	want := &Import{Status: Ptr("complete")}
+	want := &Import{Status: new("complete")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("ImportProgress = %+v, want %+v", got, want)
 	}
@@ -95,10 +95,10 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &Import{
-		VCS:         Ptr("git"),
-		VCSURL:      Ptr("url"),
-		VCSUsername: Ptr("u"),
-		VCSPassword: Ptr("p"),
+		VCS:         new("git"),
+		VCSURL:      new("url"),
+		VCSUsername: new("u"),
+		VCSPassword: new("p"),
 	}
 
 	mux.HandleFunc("/repos/o/r/import", func(w http.ResponseWriter, r *http.Request) {
@@ -113,7 +113,7 @@ func TestMigrationService_UpdateImport(t *testing.T) {
 	if err != nil {
 		t.Errorf("UpdateImport returned error: %v", err)
 	}
-	want := &Import{Status: Ptr("importing")}
+	want := &Import{Status: new("importing")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("UpdateImport = %+v, want %+v", got, want)
 	}
@@ -148,8 +148,8 @@ func TestMigrationService_CommitAuthors(t *testing.T) {
 		t.Errorf("CommitAuthors returned error: %v", err)
 	}
 	want := []*SourceImportAuthor{
-		{ID: Ptr(int64(1)), Name: Ptr("a")},
-		{ID: Ptr(int64(2)), Name: Ptr("b")},
+		{ID: new(int64(1)), Name: new("a")},
+		{ID: new(int64(2)), Name: new("b")},
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CommitAuthors = %+v, want %+v", got, want)
@@ -174,7 +174,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SourceImportAuthor{Name: Ptr("n"), Email: Ptr("e")}
+	input := &SourceImportAuthor{Name: new("n"), Email: new("e")}
 
 	mux.HandleFunc("/repos/o/r/import/authors/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -187,7 +187,7 @@ func TestMigrationService_MapCommitAuthor(t *testing.T) {
 	if err != nil {
 		t.Errorf("MapCommitAuthor returned error: %v", err)
 	}
-	want := &SourceImportAuthor{ID: Ptr(int64(1))}
+	want := &SourceImportAuthor{ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("MapCommitAuthor = %+v, want %+v", got, want)
 	}
@@ -211,7 +211,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Import{UseLFS: Ptr("opt_in")}
+	input := &Import{UseLFS: new("opt_in")}
 
 	mux.HandleFunc("/repos/o/r/import/lfs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -225,7 +225,7 @@ func TestMigrationService_SetLFSPreference(t *testing.T) {
 	if err != nil {
 		t.Errorf("SetLFSPreference returned error: %v", err)
 	}
-	want := &Import{Status: Ptr("importing")}
+	want := &Import{Status: new("importing")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("SetLFSPreference = %+v, want %+v", got, want)
 	}
@@ -260,8 +260,8 @@ func TestMigrationService_LargeFiles(t *testing.T) {
 		t.Errorf("LargeFiles returned error: %v", err)
 	}
 	want := []*LargeFile{
-		{OID: Ptr("a")},
-		{OID: Ptr("b")},
+		{OID: new("a")},
+		{OID: new("b")},
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("LargeFiles = %+v, want %+v", got, want)

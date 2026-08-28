@@ -11654,6 +11654,30 @@ func (c *CreateCustomRepoRoleRequest) GetPermissions() []string {
 	return c.Permissions
 }
 
+// GetKey returns the Key field.
+func (c *CreateDeployKeyRequest) GetKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.Key
+}
+
+// GetReadOnly returns the ReadOnly field if it's non-nil, zero value otherwise.
+func (c *CreateDeployKeyRequest) GetReadOnly() bool {
+	if c == nil || c.ReadOnly == nil {
+		return false
+	}
+	return *c.ReadOnly
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CreateDeployKeyRequest) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
+}
+
 // GetName returns the Name field.
 func (c *CreateDeploymentBranchPolicyRequest) GetName() string {
 	if c == nil {
@@ -12542,6 +12566,22 @@ func (c *CreateRunnerGroupRequest) GetVisibility() string {
 	return *c.Visibility
 }
 
+// GetKey returns the Key field.
+func (c *CreateSSHSigningKeyRequest) GetKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.Key
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CreateSSHSigningKeyRequest) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
+}
+
 // GetMessage returns the Message field.
 func (c *CreateTag) GetMessage() string {
 	if c == nil {
@@ -12700,6 +12740,22 @@ func (c *CreateUserImpersonationRequest) GetScopes() []string {
 		return nil
 	}
 	return c.Scopes
+}
+
+// GetKey returns the Key field.
+func (c *CreateUserKeyRequest) GetKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.Key
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (c *CreateUserKeyRequest) GetTitle() string {
+	if c == nil || c.Title == nil {
+		return ""
+	}
+	return *c.Title
 }
 
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
@@ -22534,6 +22590,14 @@ func (k *Key) GetCreatedAt() Timestamp {
 	return *k.CreatedAt
 }
 
+// GetEnabled returns the Enabled field if it's non-nil, zero value otherwise.
+func (k *Key) GetEnabled() bool {
+	if k == nil || k.Enabled == nil {
+		return false
+	}
+	return *k.Enabled
+}
+
 // GetID returns the ID field if it's non-nil, zero value otherwise.
 func (k *Key) GetID() int64 {
 	if k == nil || k.ID == nil {
@@ -24204,6 +24268,14 @@ func (l *ListUserIssuesOptions) GetState() string {
 		return ""
 	}
 	return l.State
+}
+
+// GetIsUnmatchedOnly returns the IsUnmatchedOnly field.
+func (l *ListVisualStudioSubscriptionsOptions) GetIsUnmatchedOnly() bool {
+	if l == nil {
+		return false
+	}
+	return l.IsUnmatchedOnly
 }
 
 // GetFilter returns the Filter field.
@@ -45852,6 +45924,62 @@ func (u *UserUpdateRequest) GetTwitterUsername() string {
 		return ""
 	}
 	return *u.TwitterUsername
+}
+
+// GetManualMatch returns the ManualMatch field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignment) GetManualMatch() bool {
+	if v == nil || v.ManualMatch == nil {
+		return false
+	}
+	return *v.ManualMatch
+}
+
+// GetSubscriptionID returns the SubscriptionID field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignment) GetSubscriptionID() string {
+	if v == nil || v.SubscriptionID == nil {
+		return ""
+	}
+	return *v.SubscriptionID
+}
+
+// GetUsername returns the Username field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignment) GetUsername() string {
+	if v == nil || v.Username == nil {
+		return ""
+	}
+	return *v.Username
+}
+
+// GetVisualStudioSubscriptionEmail returns the VisualStudioSubscriptionEmail field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignment) GetVisualStudioSubscriptionEmail() string {
+	if v == nil || v.VisualStudioSubscriptionEmail == nil {
+		return ""
+	}
+	return *v.VisualStudioSubscriptionEmail
+}
+
+// GetUserIdentifier returns the UserIdentifier field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptionAssignmentRequest) GetUserIdentifier() string {
+	if v == nil || v.UserIdentifier == nil {
+		return ""
+	}
+	return *v.UserIdentifier
+}
+
+// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+func (v *VisualStudioSubscriptions) GetTotalCount() int {
+	if v == nil || v.TotalCount == nil {
+		return 0
+	}
+	return *v.TotalCount
+}
+
+// GetVisualStudioSubscriptions returns the VisualStudioSubscriptions slice if it's non-nil, nil otherwise.
+func (v *VisualStudioSubscriptions) GetVisualStudioSubscriptions() []*VisualStudioSubscriptionAssignment {
+	if v == nil || v.VisualStudioSubscriptions == nil {
+		return nil
+	}
+	return v.VisualStudioSubscriptions
 }
 
 // GetEcosystem returns the Ecosystem field if it's non-nil, zero value otherwise.
