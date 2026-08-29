@@ -2888,6 +2888,96 @@ func TestCopilotService_GetOrganizationUsersMetricsReport(t *testing.T) {
 	})
 }
 
+func TestCopilotService_GetEnterpriseUserTeamsDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/metrics/reports/user-teams-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2026-05-14"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/user-teams-1.json", "https://example.com/user-teams-2.json"],
+			"report_day": "2026-05-14"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2026-05-14"}
+	got, _, err := client.Copilot.GetEnterpriseUserTeamsDailyMetricsReport(ctx, "e", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseUserTeamsDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/user-teams-1.json", "https://example.com/user-teams-2.json"},
+		ReportDay:     "2026-05-14",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseUserTeamsDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseUserTeamsDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseUserTeamsDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseUserTeamsDailyMetricsReport(ctx, "e", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseUserTeamsDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationUserTeamsDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/metrics/reports/user-teams-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2026-05-14"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/user-teams-1.json"],
+			"report_day": "2026-05-14"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2026-05-14"}
+	got, _, err := client.Copilot.GetOrganizationUserTeamsDailyMetricsReport(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationUserTeamsDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/user-teams-1.json"},
+		ReportDay:     "2026-05-14",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationUserTeamsDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationUserTeamsDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationUserTeamsDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationUserTeamsDailyMetricsReport(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationUserTeamsDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
 func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -3652,5 +3742,92 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 	})
 	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.baseURL.String()+"path/to/users-periodic/badjson"); err == nil {
 		t.Error("Copilot.DownloadUserPeriodicMetrics expected error for bad JSON, got none")
+	}
+}
+
+func TestCopilotService_DownloadUserTeamsDailyMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/user-teams-daily", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"user_id":1001,"user_login":"octocat","day":"2026-05-14","organization_id":"999","team_id":42,"slug":"frontend"}
+{"user_id":1001,"user_login":"octocat","day":"2026-05-14","organization_id":"999","team_id":43,"slug":"backend"}
+{"user_id":1002,"user_login":"hubot","day":"2026-05-14","enterprise_id":"1","team_id":9001,"slug":"eng-platform"}
+`)
+	})
+
+	ctx := t.Context()
+	url := client.baseURL.String() + "path/to/user-teams-daily"
+	got, resp, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, url)
+	if err != nil {
+		t.Errorf("Copilot.DownloadUserTeamsDailyMetrics returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Copilot.DownloadUserTeamsDailyMetrics returned status code: %v", resp.StatusCode)
+	}
+
+	want := []*CopilotUserTeamsDailyMetrics{
+		{
+			UserID:         1001,
+			UserLogin:      "octocat",
+			Day:            "2026-05-14",
+			OrganizationID: new("999"),
+			TeamID:         42,
+			Slug:           "frontend",
+		},
+		{
+			UserID:         1001,
+			UserLogin:      "octocat",
+			Day:            "2026-05-14",
+			OrganizationID: new("999"),
+			TeamID:         43,
+			Slug:           "backend",
+		},
+		{
+			UserID:       1002,
+			UserLogin:    "hubot",
+			Day:          "2026-05-14",
+			EnterpriseID: new("1"),
+			TeamID:       9001,
+			Slug:         "eng-platform",
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.DownloadUserTeamsDailyMetrics returned %+v, want %+v", got, want)
+	}
+
+	mux.HandleFunc("/path/to/user-teams-daily/empty", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+	})
+	gotEmpty, _, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, client.baseURL.String()+"path/to/user-teams-daily/empty")
+	if err != nil {
+		t.Errorf("Copilot.DownloadUserTeamsDailyMetrics empty body returned error: %v", err)
+	}
+	if gotEmpty != nil {
+		t.Errorf("Copilot.DownloadUserTeamsDailyMetrics empty body returned %+v, want nil", gotEmpty)
+	}
+
+	mux.HandleFunc("/path/to/user-teams-daily/error", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+	if _, _, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, client.baseURL.String()+"path/to/user-teams-daily/error"); err == nil {
+		t.Error("Copilot.DownloadUserTeamsDailyMetrics expected error but got none")
+	}
+	if _, _, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, "\n"); err == nil {
+		t.Error("Copilot.DownloadUserTeamsDailyMetrics expected error for invalid URL, got none")
+	}
+	if _, _, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, "invalid-scheme://test"); err == nil {
+		t.Error("Copilot.DownloadUserTeamsDailyMetrics expected error for invalid scheme, got none")
+	}
+
+	mux.HandleFunc("/path/to/user-teams-daily/badjson", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "{\"user_id\":1,\"day\":\"2026-05-14\"}\n{bad\n")
+	})
+	if _, _, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, client.baseURL.String()+"path/to/user-teams-daily/badjson"); err == nil {
+		t.Error("Copilot.DownloadUserTeamsDailyMetrics expected error for bad JSON, got none")
 	}
 }
