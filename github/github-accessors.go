@@ -9134,12 +9134,28 @@ func (c *CopilotDailyMetrics) GetDailyActiveCopilotCloudAgentUsers() int {
 	return *c.DailyActiveCopilotCloudAgentUsers
 }
 
+// GetDailyActiveCopilotCodeReviewUsers returns the DailyActiveCopilotCodeReviewUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetDailyActiveCopilotCodeReviewUsers() int {
+	if c == nil || c.DailyActiveCopilotCodeReviewUsers == nil {
+		return 0
+	}
+	return *c.DailyActiveCopilotCodeReviewUsers
+}
+
 // GetDailyActiveUsers returns the DailyActiveUsers field if it's non-nil, zero value otherwise.
 func (c *CopilotDailyMetrics) GetDailyActiveUsers() int {
 	if c == nil || c.DailyActiveUsers == nil {
 		return 0
 	}
 	return *c.DailyActiveUsers
+}
+
+// GetDailyPassiveCopilotCodeReviewUsers returns the DailyPassiveCopilotCodeReviewUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetDailyPassiveCopilotCodeReviewUsers() int {
+	if c == nil || c.DailyPassiveCopilotCodeReviewUsers == nil {
+		return 0
+	}
+	return *c.DailyPassiveCopilotCodeReviewUsers
 }
 
 // GetDay returns the Day field.
@@ -9214,12 +9230,28 @@ func (c *CopilotDailyMetrics) GetMonthlyActiveCopilotCloudAgentUsers() int {
 	return *c.MonthlyActiveCopilotCloudAgentUsers
 }
 
+// GetMonthlyActiveCopilotCodeReviewUsers returns the MonthlyActiveCopilotCodeReviewUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetMonthlyActiveCopilotCodeReviewUsers() int {
+	if c == nil || c.MonthlyActiveCopilotCodeReviewUsers == nil {
+		return 0
+	}
+	return *c.MonthlyActiveCopilotCodeReviewUsers
+}
+
 // GetMonthlyActiveUsers returns the MonthlyActiveUsers field if it's non-nil, zero value otherwise.
 func (c *CopilotDailyMetrics) GetMonthlyActiveUsers() int {
 	if c == nil || c.MonthlyActiveUsers == nil {
 		return 0
 	}
 	return *c.MonthlyActiveUsers
+}
+
+// GetMonthlyPassiveCopilotCodeReviewUsers returns the MonthlyPassiveCopilotCodeReviewUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetMonthlyPassiveCopilotCodeReviewUsers() int {
+	if c == nil || c.MonthlyPassiveCopilotCodeReviewUsers == nil {
+		return 0
+	}
+	return *c.MonthlyPassiveCopilotCodeReviewUsers
 }
 
 // GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
@@ -9326,12 +9358,28 @@ func (c *CopilotDailyMetrics) GetWeeklyActiveCopilotCloudAgentUsers() int {
 	return *c.WeeklyActiveCopilotCloudAgentUsers
 }
 
+// GetWeeklyActiveCopilotCodeReviewUsers returns the WeeklyActiveCopilotCodeReviewUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetWeeklyActiveCopilotCodeReviewUsers() int {
+	if c == nil || c.WeeklyActiveCopilotCodeReviewUsers == nil {
+		return 0
+	}
+	return *c.WeeklyActiveCopilotCodeReviewUsers
+}
+
 // GetWeeklyActiveUsers returns the WeeklyActiveUsers field if it's non-nil, zero value otherwise.
 func (c *CopilotDailyMetrics) GetWeeklyActiveUsers() int {
 	if c == nil || c.WeeklyActiveUsers == nil {
 		return 0
 	}
 	return *c.WeeklyActiveUsers
+}
+
+// GetWeeklyPassiveCopilotCodeReviewUsers returns the WeeklyPassiveCopilotCodeReviewUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetWeeklyPassiveCopilotCodeReviewUsers() int {
+	if c == nil || c.WeeklyPassiveCopilotCodeReviewUsers == nil {
+		return 0
+	}
+	return *c.WeeklyPassiveCopilotCodeReviewUsers
 }
 
 // GetDownloadLinks returns the DownloadLinks slice if it's non-nil, nil otherwise.

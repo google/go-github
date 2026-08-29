@@ -1083,20 +1083,26 @@ type CopilotMetricsAIAdoptionPhaseTotals struct {
 
 // CopilotDailyMetrics represents the payload downloaded from a 1-day Copilot usage metrics report.
 type CopilotDailyMetrics struct {
-	Day                                 string  `json:"day"`
-	OrganizationID                      *string `json:"organization_id,omitempty"`
-	EnterpriseID                        *string `json:"enterprise_id,omitempty"`
-	DailyActiveCLIUsers                 *int    `json:"daily_active_cli_users,omitempty"`
-	DailyActiveCopilotAppUsers          *int    `json:"daily_active_copilot_app_users,omitempty"`
-	DailyActiveUsers                    *int    `json:"daily_active_users,omitempty"`
-	DailyActiveCopilotCloudAgentUsers   *int    `json:"daily_active_copilot_cloud_agent_users,omitempty"`
-	WeeklyActiveUsers                   *int    `json:"weekly_active_users,omitempty"`
-	WeeklyActiveCopilotCloudAgentUsers  *int    `json:"weekly_active_copilot_cloud_agent_users,omitempty"`
-	MonthlyActiveUsers                  *int    `json:"monthly_active_users,omitempty"`
-	MonthlyActiveChatUsers              *int    `json:"monthly_active_chat_users,omitempty"`
-	MonthlyActiveAgentUsers             *int    `json:"monthly_active_agent_users,omitempty"`
-	MonthlyActiveCopilotCloudAgentUsers *int    `json:"monthly_active_copilot_cloud_agent_users,omitempty"`
-	UserInitiatedInteractionCount       *int    `json:"user_initiated_interaction_count,omitempty"`
+	Day                                  string  `json:"day"`
+	OrganizationID                       *string `json:"organization_id,omitempty"`
+	EnterpriseID                         *string `json:"enterprise_id,omitempty"`
+	DailyActiveCLIUsers                  *int    `json:"daily_active_cli_users,omitempty"`
+	DailyActiveCopilotAppUsers           *int    `json:"daily_active_copilot_app_users,omitempty"`
+	DailyActiveUsers                     *int    `json:"daily_active_users,omitempty"`
+	DailyActiveCopilotCloudAgentUsers    *int    `json:"daily_active_copilot_cloud_agent_users,omitempty"`
+	WeeklyActiveUsers                    *int    `json:"weekly_active_users,omitempty"`
+	WeeklyActiveCopilotCloudAgentUsers   *int    `json:"weekly_active_copilot_cloud_agent_users,omitempty"`
+	MonthlyActiveUsers                   *int    `json:"monthly_active_users,omitempty"`
+	MonthlyActiveChatUsers               *int    `json:"monthly_active_chat_users,omitempty"`
+	MonthlyActiveAgentUsers              *int    `json:"monthly_active_agent_users,omitempty"`
+	MonthlyActiveCopilotCloudAgentUsers  *int    `json:"monthly_active_copilot_cloud_agent_users,omitempty"`
+	DailyActiveCopilotCodeReviewUsers    *int    `json:"daily_active_copilot_code_review_users,omitempty"`
+	WeeklyActiveCopilotCodeReviewUsers   *int    `json:"weekly_active_copilot_code_review_users,omitempty"`
+	MonthlyActiveCopilotCodeReviewUsers  *int    `json:"monthly_active_copilot_code_review_users,omitempty"`
+	DailyPassiveCopilotCodeReviewUsers   *int    `json:"daily_passive_copilot_code_review_users,omitempty"`
+	WeeklyPassiveCopilotCodeReviewUsers  *int    `json:"weekly_passive_copilot_code_review_users,omitempty"`
+	MonthlyPassiveCopilotCodeReviewUsers *int    `json:"monthly_passive_copilot_code_review_users,omitempty"`
+	UserInitiatedInteractionCount        *int    `json:"user_initiated_interaction_count,omitempty"`
 	CopilotMetricsChatPanel
 	CodeGenerationActivityCount *int                                   `json:"code_generation_activity_count,omitempty"`
 	CodeAcceptanceActivityCount *int                                   `json:"code_acceptance_activity_count,omitempty"`
