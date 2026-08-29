@@ -30,6 +30,8 @@ func (k Key) String() string {
 
 // CreateUserKeyRequest represents a request to create a public SSH key for the
 // authenticated user.
+//
+//meta:schema request POST /user/keys
 type CreateUserKeyRequest struct {
 	Title *string `json:"title,omitempty"`
 	Key   string  `json:"key"`

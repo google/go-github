@@ -24,12 +24,16 @@ func (g GistComment) String() string {
 }
 
 // CreateGistCommentRequest represents the input for creating a gist comment.
+//
+//meta:schema request POST /gists/{gist_id}/comments
 type CreateGistCommentRequest struct {
 	// Body is the comment text.
 	Body string `json:"body"`
 }
 
 // UpdateGistCommentRequest represents the input for updating a gist comment.
+//
+//meta:schema request PATCH /gists/{gist_id}/comments/{comment_id}
 type UpdateGistCommentRequest struct {
 	// Body is the comment text.
 	Body string `json:"body"`
