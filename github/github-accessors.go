@@ -11287,7 +11287,7 @@ func (c *CopilotUserTeamsDailyMetrics) GetTeamID() int64 {
 }
 
 // GetUserID returns the UserID field.
-func (c *CopilotUserTeamsDailyMetrics) GetUserID() int {
+func (c *CopilotUserTeamsDailyMetrics) GetUserID() int64 {
 	if c == nil {
 		return 0
 	}

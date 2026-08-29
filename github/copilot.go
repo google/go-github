@@ -1227,7 +1227,7 @@ type CopilotUserMetricsIDE struct {
 //
 // GitHub API docs: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/copilot-usage-metrics#user-teams-fields
 type CopilotUserTeamsDailyMetrics struct {
-	UserID         int     `json:"user_id"`
+	UserID         int64   `json:"user_id"`
 	UserLogin      string  `json:"user_login"`
 	Day            string  `json:"day"`
 	OrganizationID *string `json:"organization_id,omitempty"`
