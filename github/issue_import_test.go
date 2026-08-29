@@ -20,11 +20,11 @@ func TestIssueImportService_Create(t *testing.T) {
 
 	input := &IssueImportRequest{
 		IssueImport: IssueImport{
-			Assignee:  Ptr("developer"),
+			Assignee:  new("developer"),
 			Body:      "Dummy description",
 			CreatedAt: &referenceTimestamp,
 			Labels:    []string{"l1", "l2"},
-			Milestone: Ptr(1),
+			Milestone: new(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
@@ -72,11 +72,11 @@ func TestIssueImportService_Create_deferred(t *testing.T) {
 
 	input := &IssueImportRequest{
 		IssueImport: IssueImport{
-			Assignee:  Ptr("developer"),
+			Assignee:  new("developer"),
 			Body:      "Dummy description",
 			CreatedAt: &referenceTimestamp,
 			Labels:    []string{"l1", "l2"},
-			Milestone: Ptr(1),
+			Milestone: new(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
@@ -112,11 +112,11 @@ func TestIssueImportService_Create_badResponse(t *testing.T) {
 
 	input := &IssueImportRequest{
 		IssueImport: IssueImport{
-			Assignee:  Ptr("developer"),
+			Assignee:  new("developer"),
 			Body:      "Dummy description",
 			CreatedAt: &referenceTimestamp,
 			Labels:    []string{"l1", "l2"},
-			Milestone: Ptr(1),
+			Milestone: new(1),
 			Title:     "Dummy Issue",
 		},
 		Comments: []*Comment{{
@@ -268,9 +268,9 @@ var issueImportResponseJSON = []byte(`{
 }`)
 
 var wantIssueImportResponse = &IssueImportResponse{
-	ID:              Ptr(3),
-	Status:          Ptr("pending"),
-	URL:             Ptr("https://api.github.com/repos/o/r/import/issues/3"),
-	ImportIssuesURL: Ptr("https://api.github.com/repos/o/r/import/issues"),
-	RepositoryURL:   Ptr("https://api.github.com/repos/o/r"),
+	ID:              new(3),
+	Status:          new("pending"),
+	URL:             new("https://api.github.com/repos/o/r/import/issues/3"),
+	ImportIssuesURL: new("https://api.github.com/repos/o/r/import/issues"),
+	RepositoryURL:   new("https://api.github.com/repos/o/r"),
 }

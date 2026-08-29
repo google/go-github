@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 func TestTeamsService_ListTeams(t *testing.T) {
@@ -30,7 +31,7 @@ func TestTeamsService_ListTeams(t *testing.T) {
 		t.Errorf("Teams.ListTeams returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Ptr(int64(1))}}
+	want := []*Team{{ID: new(int64(1))}}
 	if !cmp.Equal(teams, want) {
 		t.Errorf("Teams.ListTeams returned %+v, want %+v", teams, want)
 	}
@@ -74,7 +75,7 @@ func TestTeamsService_GetTeamByID(t *testing.T) {
 		t.Errorf("Teams.GetTeamByID returned error: %v", err)
 	}
 
-	want := &Team{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), URL: Ptr("u"), Slug: Ptr("s"), Permission: Ptr("p"), LDAPDN: Ptr("cn=n,ou=groups,dc=example,dc=com"), Type: Ptr("organization")}
+	want := &Team{ID: new(int64(1)), Name: new("n"), Description: new("d"), URL: new("u"), Slug: new("s"), Permission: new("p"), LDAPDN: new("cn=n,ou=groups,dc=example,dc=com"), Type: new("organization")}
 	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.GetTeamByID returned %+v, want %+v", team, want)
 	}
@@ -131,7 +132,7 @@ func TestTeamsService_GetTeamBySlug(t *testing.T) {
 		t.Errorf("Teams.GetTeamBySlug returned error: %v", err)
 	}
 
-	want := &Team{ID: Ptr(int64(1)), Name: Ptr("n"), Description: Ptr("d"), URL: Ptr("u"), Slug: Ptr("s"), Permission: Ptr("p"), LDAPDN: Ptr("cn=n,ou=groups,dc=example,dc=com"), Type: Ptr("organization")}
+	want := &Team{ID: new(int64(1)), Name: new("n"), Description: new("d"), URL: new("u"), Slug: new("s"), Permission: new("p"), LDAPDN: new("cn=n,ou=groups,dc=example,dc=com"), Type: new("organization")}
 	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.GetTeamBySlug returned %+v, want %+v", team, want)
 	}
@@ -186,7 +187,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", Privacy: Ptr("closed"), RepoNames: []string{"r"}}
+	input := CreateTeamRequest{Name: "n", Privacy: new("closed"), RepoNames: []string{"r"}}
 
 	mux.HandleFunc("/orgs/o/teams", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -200,7 +201,7 @@ func TestTeamsService_CreateTeam(t *testing.T) {
 		t.Errorf("Teams.CreateTeam returned error: %v", err)
 	}
 
-	want := &Team{ID: Ptr(int64(1))}
+	want := &Team{ID: new(int64(1))}
 	if !cmp.Equal(team, want) {
 		t.Errorf("Teams.CreateTeam returned %+v, want %+v", team, want)
 	}
@@ -225,15 +226,15 @@ func TestTeamsService_CreateTeam_invalidOrg(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Teams.CreateTeam(ctx, "%", NewTeam{})
+	_, _, err := client.Teams.CreateTeam(ctx, "%", CreateTeamRequest{})
 	testURLParseError(t, err)
 }
 
-func TestTeamsService_EditTeamByID(t *testing.T) {
+func TestTeamsService_UpdateTeamByID(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", Privacy: Ptr("closed")}
+	input := UpdateTeamRequest{Name: new("n"), Privacy: new("closed")}
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -242,24 +243,24 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	team, _, err := client.Teams.EditTeamByID(ctx, 1, 1, input, false)
+	team, _, err := client.Teams.UpdateTeamByID(ctx, 1, 1, input)
 	if err != nil {
-		t.Errorf("Teams.EditTeamByID returned error: %v", err)
+		t.Errorf("Teams.UpdateTeamByID returned error: %v", err)
 	}
 
-	want := &Team{ID: Ptr(int64(1))}
+	want := &Team{ID: new(int64(1))}
 	if !cmp.Equal(team, want) {
-		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
+		t.Errorf("Teams.UpdateTeamByID returned %+v, want %+v", team, want)
 	}
 
-	const methodName = "EditTeamByID"
+	const methodName = "UpdateTeamByID"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.EditTeamByID(ctx, -1, -1, input, false)
+		_, _, err = client.Teams.UpdateTeamByID(ctx, -1, -1, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Teams.EditTeamByID(ctx, 1, 1, input, false)
+		got, resp, err := client.Teams.UpdateTeamByID(ctx, 1, 1, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -267,36 +268,36 @@ func TestTeamsService_EditTeamByID(t *testing.T) {
 	})
 }
 
-func TestTeamsService_EditTeamByID_RemoveParent(t *testing.T) {
+func TestTeamsService_UpdateTeamByID_RemoveParent(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", NotificationSetting: Ptr("notifications_enabled"), Privacy: Ptr("closed")}
+	input := UpdateTeamRequest{Name: new("n"), NotificationSetting: new("notifications_enabled"), Privacy: new("closed"), RemoveParentTeam: true}
 
 	mux.HandleFunc("/organizations/1/team/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, input, cmpopts.IgnoreFields(UpdateTeamRequest{}, "RemoveParentTeam"))
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	ctx := t.Context()
-	team, _, err := client.Teams.EditTeamByID(ctx, 1, 1, input, true)
+	team, _, err := client.Teams.UpdateTeamByID(ctx, 1, 1, input)
 	if err != nil {
-		t.Errorf("Teams.EditTeamByID returned error: %v", err)
+		t.Errorf("Teams.UpdateTeamByID returned error: %v", err)
 	}
 
-	want := &Team{ID: Ptr(int64(1))}
+	want := &Team{ID: new(int64(1))}
 	if !cmp.Equal(team, want) {
-		t.Errorf("Teams.EditTeamByID returned %+v, want %+v", team, want)
+		t.Errorf("Teams.UpdateTeamByID returned %+v, want %+v", team, want)
 	}
 }
 
-func TestTeamsService_EditTeamBySlug(t *testing.T) {
+func TestTeamsService_UpdateTeamBySlug(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", Privacy: Ptr("closed")}
+	input := UpdateTeamRequest{Name: new("n"), Privacy: new("closed")}
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -305,24 +306,24 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	team, _, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, false)
+	team, _, err := client.Teams.UpdateTeamBySlug(ctx, "o", "s", input)
 	if err != nil {
-		t.Errorf("Teams.EditTeamBySlug returned error: %v", err)
+		t.Errorf("Teams.UpdateTeamBySlug returned error: %v", err)
 	}
 
-	want := &Team{ID: Ptr(int64(1))}
+	want := &Team{ID: new(int64(1))}
 	if !cmp.Equal(team, want) {
-		t.Errorf("Teams.EditTeamBySlug returned %+v, want %+v", team, want)
+		t.Errorf("Teams.UpdateTeamBySlug returned %+v, want %+v", team, want)
 	}
 
-	const methodName = "EditTeamBySlug"
+	const methodName = "UpdateTeamBySlug"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Teams.EditTeamBySlug(ctx, "\n", "\n", input, false)
+		_, _, err = client.Teams.UpdateTeamBySlug(ctx, "\n", "\n", input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, false)
+		got, resp, err := client.Teams.UpdateTeamBySlug(ctx, "o", "s", input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -330,28 +331,28 @@ func TestTeamsService_EditTeamBySlug(t *testing.T) {
 	})
 }
 
-func TestTeamsService_EditTeamBySlug_RemoveParent(t *testing.T) {
+func TestTeamsService_UpdateTeamBySlug_RemoveParent(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := NewTeam{Name: "n", NotificationSetting: Ptr("notifications_disabled"), Privacy: Ptr("closed")}
+	input := UpdateTeamRequest{Name: new("n"), NotificationSetting: new("notifications_disabled"), Privacy: new("closed"), RemoveParentTeam: true}
 
 	mux.HandleFunc("/orgs/o/teams/s", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, input)
+		testJSONBody(t, r, input, cmpopts.IgnoreFields(UpdateTeamRequest{}, "RemoveParentTeam"))
 
 		fmt.Fprint(w, `{"id":1}`)
 	})
 
 	ctx := t.Context()
-	team, _, err := client.Teams.EditTeamBySlug(ctx, "o", "s", input, true)
+	team, _, err := client.Teams.UpdateTeamBySlug(ctx, "o", "s", input)
 	if err != nil {
-		t.Errorf("Teams.EditTeamBySlug returned error: %v", err)
+		t.Errorf("Teams.UpdateTeamBySlug returned error: %v", err)
 	}
 
-	want := &Team{ID: Ptr(int64(1))}
+	want := &Team{ID: new(int64(1))}
 	if !cmp.Equal(team, want) {
-		t.Errorf("Teams.EditTeamBySlug returned %+v, want %+v", team, want)
+		t.Errorf("Teams.UpdateTeamBySlug returned %+v, want %+v", team, want)
 	}
 }
 
@@ -422,7 +423,7 @@ func TestTeamsService_ListChildTeamsByParentID(t *testing.T) {
 		t.Errorf("Teams.ListChildTeamsByParentID returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Ptr(int64(2))}}
+	want := []*Team{{ID: new(int64(2))}}
 	if !cmp.Equal(teams, want) {
 		t.Errorf("Teams.ListChildTeamsByParentID returned %+v, want %+v", teams, want)
 	}
@@ -459,7 +460,7 @@ func TestTeamsService_ListChildTeamsByParentSlug(t *testing.T) {
 		t.Errorf("Teams.ListChildTeamsByParentSlug returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Ptr(int64(2))}}
+	want := []*Team{{ID: new(int64(2))}}
 	if !cmp.Equal(teams, want) {
 		t.Errorf("Teams.ListChildTeamsByParentSlug returned %+v, want %+v", teams, want)
 	}
@@ -497,7 +498,7 @@ func TestTeamsService_ListTeamReposByID(t *testing.T) {
 		t.Errorf("Teams.ListTeamReposByID returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Ptr(int64(1))}}
+	want := []*Repository{{ID: new(int64(1))}}
 	if !cmp.Equal(members, want) {
 		t.Errorf("Teams.ListTeamReposByID returned %+v, want %+v", members, want)
 	}
@@ -535,7 +536,7 @@ func TestTeamsService_ListTeamReposBySlug(t *testing.T) {
 		t.Errorf("Teams.ListTeamReposBySlug returned error: %v", err)
 	}
 
-	want := []*Repository{{ID: Ptr(int64(1))}}
+	want := []*Repository{{ID: new(int64(1))}}
 	if !cmp.Equal(members, want) {
 		t.Errorf("Teams.ListTeamReposBySlug returned %+v, want %+v", members, want)
 	}
@@ -571,7 +572,7 @@ func TestTeamsService_IsTeamRepoByID_true(t *testing.T) {
 		t.Errorf("Teams.IsTeamRepoByID returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1))}
+	want := &Repository{ID: new(int64(1))}
 	if !cmp.Equal(repo, want) {
 		t.Errorf("Teams.IsTeamRepoByID returned %+v, want %+v", repo, want)
 	}
@@ -607,7 +608,7 @@ func TestTeamsService_IsTeamRepoBySlug_true(t *testing.T) {
 		t.Errorf("Teams.IsTeamRepoBySlug returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1))}
+	want := &Repository{ID: new(int64(1))}
 	if !cmp.Equal(repo, want) {
 		t.Errorf("Teams.IsTeamRepoBySlug returned %+v, want %+v", repo, want)
 	}
@@ -928,7 +929,7 @@ func TestTeamsService_ListUserTeams(t *testing.T) {
 		t.Errorf("Teams.ListUserTeams returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Ptr(int64(1))}}
+	want := []*Team{{ID: new(int64(1))}}
 	if !cmp.Equal(teams, want) {
 		t.Errorf("Teams.ListUserTeams returned %+v, want %+v", teams, want)
 	}
@@ -959,7 +960,7 @@ func TestTeamsService_ListProjectsByID(t *testing.T) {
 		t.Errorf("Teams.ListTeamProjectsByID returned error: %v", err)
 	}
 
-	want := []*ProjectV2{{ID: Ptr(int64(1))}}
+	want := []*ProjectV2{{ID: new(int64(1))}}
 	if !cmp.Equal(projects, want) {
 		t.Errorf("Teams.ListTeamProjectsByID returned %+v, want %+v", projects, want)
 	}
@@ -995,7 +996,7 @@ func TestTeamsService_ListProjectsBySlug(t *testing.T) {
 		t.Errorf("Teams.ListTeamProjectsBySlug returned error: %v", err)
 	}
 
-	want := []*ProjectV2{{ID: Ptr(int64(1))}}
+	want := []*ProjectV2{{ID: new(int64(1))}}
 	if !cmp.Equal(projects, want) {
 		t.Errorf("Teams.ListTeamProjectsBySlug returned %+v, want %+v", projects, want)
 	}
@@ -1031,7 +1032,7 @@ func TestTeamsService_ReviewProjectsByID(t *testing.T) {
 		t.Errorf("Teams.ReviewTeamProjectsByID returned error: %v", err)
 	}
 
-	want := &ProjectV2{ID: Ptr(int64(1))}
+	want := &ProjectV2{ID: new(int64(1))}
 	if !cmp.Equal(project, want) {
 		t.Errorf("Teams.ReviewTeamProjectsByID returned %+v, want %+v", project, want)
 	}
@@ -1067,7 +1068,7 @@ func TestTeamsService_ReviewProjectsBySlug(t *testing.T) {
 		t.Errorf("Teams.ReviewTeamProjectsBySlug returned error: %v", err)
 	}
 
-	want := &ProjectV2{ID: Ptr(int64(1))}
+	want := &ProjectV2{ID: new(int64(1))}
 	if !cmp.Equal(project, want) {
 		t.Errorf("Teams.ReviewTeamProjectsBySlug returned %+v, want %+v", project, want)
 	}
@@ -1092,7 +1093,7 @@ func TestTeamsService_AddTeamProjectByID(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	opt := &TeamProjectOptions{
-		Permission: Ptr("admin"),
+		Permission: new("admin"),
 	}
 
 	mux.HandleFunc("/organizations/1/team/1/projects/1", func(w http.ResponseWriter, r *http.Request) {
@@ -1124,7 +1125,7 @@ func TestTeamsService_AddTeamProjectBySlug(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	opt := &TeamProjectOptions{
-		Permission: Ptr("admin"),
+		Permission: new("admin"),
 	}
 
 	mux.HandleFunc("/orgs/o/teams/s/projects/1", func(w http.ResponseWriter, r *http.Request) {
@@ -1231,9 +1232,9 @@ func TestTeamsService_ListIDPGroupsInOrganization(t *testing.T) {
 	want := &IDPGroupList{
 		Groups: []*IDPGroup{
 			{
-				GroupID:          Ptr("1"),
-				GroupName:        Ptr("n"),
-				GroupDescription: Ptr("d"),
+				GroupID:          new("1"),
+				GroupName:        new("n"),
+				GroupDescription: new("d"),
 			},
 		},
 	}
@@ -1274,9 +1275,9 @@ func TestTeamsService_ListIDPGroupsForTeamByID(t *testing.T) {
 	want := &IDPGroupList{
 		Groups: []*IDPGroup{
 			{
-				GroupID:          Ptr("1"),
-				GroupName:        Ptr("n"),
-				GroupDescription: Ptr("d"),
+				GroupID:          new("1"),
+				GroupName:        new("n"),
+				GroupDescription: new("d"),
 			},
 		},
 	}
@@ -1317,9 +1318,9 @@ func TestTeamsService_ListIDPGroupsForTeamBySlug(t *testing.T) {
 	want := &IDPGroupList{
 		Groups: []*IDPGroup{
 			{
-				GroupID:          Ptr("1"),
-				GroupName:        Ptr("n"),
-				GroupDescription: Ptr("d"),
+				GroupID:          new("1"),
+				GroupName:        new("n"),
+				GroupDescription: new("d"),
 			},
 		},
 	}
@@ -1354,9 +1355,9 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID(t *testing.T) {
 	input := IDPGroupList{
 		Groups: []*IDPGroup{
 			{
-				GroupID:          Ptr("1"),
-				GroupName:        Ptr("n"),
-				GroupDescription: Ptr("d"),
+				GroupID:          new("1"),
+				GroupName:        new("n"),
+				GroupDescription: new("d"),
 			},
 		},
 	}
@@ -1370,9 +1371,9 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsByID(t *testing.T) {
 	want := &IDPGroupList{
 		Groups: []*IDPGroup{
 			{
-				GroupID:          Ptr("1"),
-				GroupName:        Ptr("n"),
-				GroupDescription: Ptr("d"),
+				GroupID:          new("1"),
+				GroupName:        new("n"),
+				GroupDescription: new("d"),
 			},
 		},
 	}
@@ -1407,9 +1408,9 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug(t *testing.T) {
 	input := IDPGroupList{
 		Groups: []*IDPGroup{
 			{
-				GroupID:          Ptr("1"),
-				GroupName:        Ptr("n"),
-				GroupDescription: Ptr("d"),
+				GroupID:          new("1"),
+				GroupName:        new("n"),
+				GroupDescription: new("d"),
 			},
 		},
 	}
@@ -1423,9 +1424,9 @@ func TestTeamsService_CreateOrUpdateIDPGroupConnectionsBySlug(t *testing.T) {
 	want := &IDPGroupList{
 		Groups: []*IDPGroup{
 			{
-				GroupID:          Ptr("1"),
-				GroupName:        Ptr("n"),
-				GroupDescription: Ptr("d"),
+				GroupID:          new("1"),
+				GroupName:        new("n"),
+				GroupDescription: new("d"),
 			},
 		},
 	}
@@ -1546,31 +1547,31 @@ func TestTeamsService_GetExternalGroup(t *testing.T) {
 	}
 
 	want := &ExternalGroup{
-		GroupID:   Ptr(int64(123)),
-		GroupName: Ptr("Octocat admins"),
+		GroupID:   new(int64(123)),
+		GroupName: new("Octocat admins"),
 		UpdatedAt: &Timestamp{Time: referenceTime},
 		Teams: []*ExternalGroupTeam{
 			{
-				TeamID:   Ptr(int64(1)),
-				TeamName: Ptr("team-test"),
+				TeamID:   new(int64(1)),
+				TeamName: new("team-test"),
 			},
 			{
-				TeamID:   Ptr(int64(2)),
-				TeamName: Ptr("team-test2"),
+				TeamID:   new(int64(2)),
+				TeamName: new("team-test2"),
 			},
 		},
 		Members: []*ExternalGroupMember{
 			{
-				MemberID:    Ptr(int64(1)),
-				MemberLogin: Ptr("mona-lisa_eocsaxrs"),
-				MemberName:  Ptr("Mona Lisa"),
-				MemberEmail: Ptr("mona_lisa@github.com"),
+				MemberID:    new(int64(1)),
+				MemberLogin: new("mona-lisa_eocsaxrs"),
+				MemberName:  new("Mona Lisa"),
+				MemberEmail: new("mona_lisa@github.com"),
 			},
 			{
-				MemberID:    Ptr(int64(2)),
-				MemberLogin: Ptr("octo-lisa_eocsaxrs"),
-				MemberName:  Ptr("Octo Lisa"),
-				MemberEmail: Ptr("octo_lisa@github.com"),
+				MemberID:    new(int64(2)),
+				MemberLogin: new("octo-lisa_eocsaxrs"),
+				MemberName:  new("Octo Lisa"),
+				MemberEmail: new("octo_lisa@github.com"),
 			},
 		},
 	}
@@ -1634,7 +1635,7 @@ func TestTeamsService_ListExternalGroups(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListExternalGroupsOptions{
-		DisplayName: Ptr("Octocat"),
+		DisplayName: new("Octocat"),
 	}
 	list, _, err := client.Teams.ListExternalGroups(ctx, "o", opts)
 	if err != nil {
@@ -1644,8 +1645,8 @@ func TestTeamsService_ListExternalGroups(t *testing.T) {
 	want := &ExternalGroupList{
 		Groups: []*ExternalGroup{
 			{
-				GroupID:   Ptr(int64(123)),
-				GroupName: Ptr("Octocat admins"),
+				GroupID:   new(int64(123)),
+				GroupName: new("Octocat admins"),
 				UpdatedAt: &Timestamp{Time: referenceTime},
 			},
 		},
@@ -1717,8 +1718,8 @@ func TestTeamsService_ListExternalGroupsForTeamBySlug(t *testing.T) {
 	want := &ExternalGroupList{
 		Groups: []*ExternalGroup{
 			{
-				GroupID:   Ptr(int64(123)),
-				GroupName: Ptr("Octocat admins"),
+				GroupID:   new(int64(123)),
+				GroupName: new("Octocat admins"),
 				UpdatedAt: &Timestamp{Time: referenceTime},
 			},
 		},
@@ -1802,8 +1803,8 @@ func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	body := &ExternalGroup{
-		GroupID: Ptr(int64(123)),
+	body := UpdateConnectedExternalGroupRequest{
+		GroupID: 123,
 	}
 	externalGroup, _, err := client.Teams.UpdateConnectedExternalGroup(ctx, "o", "t", body)
 	if err != nil {
@@ -1811,31 +1812,31 @@ func TestTeamsService_UpdateConnectedExternalGroup(t *testing.T) {
 	}
 
 	want := &ExternalGroup{
-		GroupID:   Ptr(int64(123)),
-		GroupName: Ptr("Octocat admins"),
+		GroupID:   new(int64(123)),
+		GroupName: new("Octocat admins"),
 		UpdatedAt: &Timestamp{Time: referenceTime},
 		Teams: []*ExternalGroupTeam{
 			{
-				TeamID:   Ptr(int64(1)),
-				TeamName: Ptr("team-test"),
+				TeamID:   new(int64(1)),
+				TeamName: new("team-test"),
 			},
 			{
-				TeamID:   Ptr(int64(2)),
-				TeamName: Ptr("team-test2"),
+				TeamID:   new(int64(2)),
+				TeamName: new("team-test2"),
 			},
 		},
 		Members: []*ExternalGroupMember{
 			{
-				MemberID:    Ptr(int64(1)),
-				MemberLogin: Ptr("mona-lisa_eocsaxrs"),
-				MemberName:  Ptr("Mona Lisa"),
-				MemberEmail: Ptr("mona_lisa@github.com"),
+				MemberID:    new(int64(1)),
+				MemberLogin: new("mona-lisa_eocsaxrs"),
+				MemberName:  new("Mona Lisa"),
+				MemberEmail: new("mona_lisa@github.com"),
 			},
 			{
-				MemberID:    Ptr(int64(2)),
-				MemberLogin: Ptr("octo-lisa_eocsaxrs"),
-				MemberName:  Ptr("Octo Lisa"),
-				MemberEmail: Ptr("octo_lisa@github.com"),
+				MemberID:    new(int64(2)),
+				MemberLogin: new("octo-lisa_eocsaxrs"),
+				MemberName:  new("Octo Lisa"),
+				MemberEmail: new("octo_lisa@github.com"),
 			},
 		},
 	}
@@ -1868,8 +1869,8 @@ func TestTeamsService_UpdateConnectedExternalGroup_notFound(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	body := &ExternalGroup{
-		GroupID: Ptr(int64(123)),
+	body := UpdateConnectedExternalGroupRequest{
+		GroupID: 123,
 	}
 	eg, resp, err := client.Teams.UpdateConnectedExternalGroup(ctx, "o", "t", body)
 	if err == nil {

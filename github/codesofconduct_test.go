@@ -33,9 +33,9 @@ func TestCodesOfConductService_List(t *testing.T) {
 
 	want := []*CodeOfConduct{
 		{
-			Key:  Ptr("key"),
-			Name: Ptr("name"),
-			URL:  Ptr("url"),
+			Key:  new("key"),
+			Name: new("name"),
+			URL:  new("url"),
 		},
 	}
 	if !cmp.Equal(want, cs) {
@@ -72,10 +72,10 @@ func TestCodesOfConductService_Get(t *testing.T) {
 	assertNilError(t, err)
 
 	want := &CodeOfConduct{
-		Key:  Ptr("key"),
-		Name: Ptr("name"),
-		URL:  Ptr("url"),
-		Body: Ptr("body"),
+		Key:  new("key"),
+		Name: new("name"),
+		URL:  new("url"),
+		Body: new("body"),
 	}
 	if !cmp.Equal(want, coc) {
 		t.Errorf("returned %+v, want %+v", coc, want)

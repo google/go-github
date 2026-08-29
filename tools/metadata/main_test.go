@@ -23,7 +23,7 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v89/github"
+	"github.com/google/go-github/v90/github"
 )
 
 func TestUpdateGo(t *testing.T) {
@@ -78,7 +78,8 @@ func TestUpdateOpenAPI(t *testing.T) {
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				})),
+				}),
+			),
 		},
 		"ghec/ghec.json": openapi3.T{
 			Paths: openapi3.NewPaths(
@@ -88,7 +89,8 @@ func TestUpdateOpenAPI(t *testing.T) {
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				})),
+				}),
+			),
 		},
 		"ghes-3.9/ghes-3.9.json": openapi3.T{
 			Paths: openapi3.NewPaths(
@@ -98,7 +100,8 @@ func TestUpdateOpenAPI(t *testing.T) {
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				})),
+				}),
+			),
 		},
 		"ghes-3.10/ghes-3.10.json": openapi3.T{
 			Paths: openapi3.NewPaths(
@@ -108,7 +111,8 @@ func TestUpdateOpenAPI(t *testing.T) {
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				})),
+				}),
+			),
 		},
 		"ghes-2.22/ghes-2.22.json": openapi3.T{
 			Paths: openapi3.NewPaths(
@@ -118,7 +122,8 @@ func TestUpdateOpenAPI(t *testing.T) {
 							URL: "https://docs.github.com/rest/reference/a",
 						},
 					},
-				})),
+				}),
+			),
 		},
 	})
 
@@ -355,18 +360,18 @@ func newTestServer(t *testing.T, ref string, files map[string]any) *httptest.Ser
 	server := httptest.NewServer(mux)
 	mux.HandleFunc(
 		path.Join(repoPath, "commits", ref),
-		jsonHandler(emptyQuery, &github.RepositoryCommit{SHA: github.Ptr("s")}),
+		jsonHandler(emptyQuery, &github.RepositoryCommit{SHA: new("s")}),
 	)
 	var descriptionsContent []*github.RepositoryContent
 	for name, content := range files {
 		descriptionsContent = append(descriptionsContent, &github.RepositoryContent{
-			Name: github.Ptr(path.Base(path.Dir(name))),
+			Name: new(path.Base(path.Dir(name))),
 		})
 		mux.HandleFunc(
 			path.Join(repoPath, "contents/descriptions", name),
 			jsonHandler(refQuery, &github.RepositoryContent{
-				Name:        github.Ptr(path.Base(name)),
-				DownloadURL: github.Ptr(server.URL + "/dl/" + name),
+				Name:        new(path.Base(name)),
+				DownloadURL: new(server.URL + "/dl/" + name),
 			}),
 		)
 		mux.HandleFunc(

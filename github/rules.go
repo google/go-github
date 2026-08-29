@@ -503,7 +503,7 @@ func (r *RulesetReviewer) UnmarshalJSON(data []byte) error {
 	if aux.ID != nil {
 		switch id := aux.ID.(type) {
 		case float64:
-			r.ID = Ptr(int64(id))
+			r.ID = new(int64(id))
 		case string:
 			i, err := strconv.ParseInt(id, 10, 64)
 			if err != nil {
@@ -602,6 +602,7 @@ type SimplePatternRuleParameters struct {
 type RepositoryVisibilityRuleParameters struct {
 	Internal bool `json:"internal"`
 	Private  bool `json:"private"`
+	Public   bool `json:"public"`
 }
 
 // repositoryRulesetRuleWrapper is a helper type to marshal & unmarshal a ruleset rule.

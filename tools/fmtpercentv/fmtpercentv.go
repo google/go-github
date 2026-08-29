@@ -77,7 +77,11 @@ func checkCallExpr(expr *ast.CallExpr, tokenPos token.Pos, pass *analysis.Pass) 
 	if fun.Sel.Name != "Sprintf" && fun.Sel.Name != "Printf" && fun.Sel.Name != "Fprintf" && fun.Sel.Name != "Errorf" {
 		return
 	}
-	fmtStrBasicLit, ok := expr.Args[0].(*ast.BasicLit)
+	argIdx := 0
+	if fun.Sel.Name == "Fprintf" {
+		argIdx = 1
+	}
+	fmtStrBasicLit, ok := expr.Args[argIdx].(*ast.BasicLit)
 	if !ok {
 		return
 	}

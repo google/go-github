@@ -13,7 +13,7 @@
 //
 // Note, if you want to push a single file, you probably prefer to use the
 // content API. An example is available here:
-// https://pkg.go.dev/github.com/google/go-github/v89/github#example-RepositoriesService-CreateFile
+// https://pkg.go.dev/github.com/google/go-github/v90/github#example-RepositoriesService-CreateFile
 //
 // Note, for this to work at least 1 commit is needed, so you if you use this
 // after creating a repository you might want to make sure you set `AutoInit` to
@@ -33,7 +33,7 @@ import (
 	"time"
 
 	"github.com/ProtonMail/go-crypto/openpgp"
-	"github.com/google/go-github/v89/github"
+	"github.com/google/go-github/v90/github"
 )
 
 var (
@@ -105,7 +105,7 @@ func getTree(ref *github.Reference) (tree *github.Tree, err error) {
 		if err != nil {
 			return nil, err
 		}
-		entries = append(entries, &github.TreeEntry{Path: &file, Type: github.Ptr("blob"), Content: github.Ptr(string(content)), Mode: github.Ptr("100644")})
+		entries = append(entries, &github.TreeEntry{Path: &file, Type: new("blob"), Content: new(string(content)), Mode: new("100644")})
 	}
 
 	tree, _, err = client.Git.CreateTree(ctx, *sourceOwner, *sourceRepo, *ref.Object.SHA, entries)
@@ -173,12 +173,12 @@ func pushCommit(ref *github.Reference, tree *github.Tree) (err error) {
 	ref.Object.SHA = newCommit.SHA
 	_, _, err = client.Git.UpdateRef(ctx, *sourceOwner, *sourceRepo, *ref.Ref, github.UpdateRef{
 		SHA:   *newCommit.SHA,
-		Force: github.Ptr(false),
+		Force: new(false),
 	})
 	return err
 }
 
-// createPR creates a pull request. Based on: https://pkg.go.dev/github.com/google/go-github/v89/github#example-PullRequestsService-Create
+// createPR creates a pull request. Based on: https://pkg.go.dev/github.com/google/go-github/v90/github#example-PullRequestsService-Create
 func createPR() (err error) {
 	if *prSubject == "" {
 		return errors.New("missing `-pr-title` flag; skipping PR creation")
@@ -194,13 +194,13 @@ func createPR() (err error) {
 		prRepo = sourceRepo
 	}
 
-	newPR := &github.NewPullRequest{
+	newPR := github.CreatePullRequest{
 		Title:               prSubject,
-		Head:                commitBranch,
+		Head:                *commitBranch,
 		HeadRepo:            repoBranch,
-		Base:                prBranch,
+		Base:                *prBranch,
 		Body:                prDescription,
-		MaintainerCanModify: github.Ptr(true),
+		MaintainerCanModify: new(true),
 	}
 
 	pr, _, err := client.PullRequests.Create(ctx, *prRepoOwner, *prRepo, newPR)

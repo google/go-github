@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v89/github"
+	"github.com/google/go-github/v90/github"
 )
 
 func ExampleMarkdownService_Render() {
@@ -79,7 +79,7 @@ func ExampleRepositoriesService_CreateFile() {
 	// so you will need to modify the example to provide authentication to
 	// github.NewClient(). See the following documentation for more information
 	// on how to authenticate with the client:
-	// https://pkg.go.dev/github.com/google/go-github/v89/github#hdr-Authentication
+	// https://pkg.go.dev/github.com/google/go-github/v90/github#hdr-Authentication
 	client, err := github.NewClient()
 	if err != nil {
 		log.Fatalf("Error creating GitHub client: %v", err)
@@ -91,10 +91,10 @@ func ExampleRepositoriesService_CreateFile() {
 	// Note: the file needs to be absent from the repository as you are not
 	// specifying a SHA reference here.
 	opts := &github.RepositoryContentFileOptions{
-		Message:   github.Ptr("This is my commit message"),
+		Message:   new("This is my commit message"),
 		Content:   fileContent,
-		Branch:    github.Ptr("master"),
-		Committer: &github.CommitAuthor{Name: github.Ptr("FirstName LastName"), Email: github.Ptr("user@example.com")},
+		Branch:    new("master"),
+		Committer: &github.CommitAuthor{Name: new("FirstName LastName"), Email: new("user@example.com")},
 	}
 	if _, _, err := client.Repositories.CreateFile(ctx, "myOrganization", "myRepository", "myNewFile.md", opts); err != nil {
 		log.Fatalf("Error creating file: %v", err)
@@ -129,18 +129,18 @@ func ExamplePullRequestsService_Create() {
 	// so you will need to modify the example to provide authentication to
 	// github.NewClient(). See the following documentation for more information
 	// on how to authenticate with the client:
-	// https://pkg.go.dev/github.com/google/go-github/v89/github#hdr-Authentication
+	// https://pkg.go.dev/github.com/google/go-github/v90/github#hdr-Authentication
 	client, err := github.NewClient()
 	if err != nil {
 		log.Fatalf("Error creating GitHub client: %v", err)
 	}
 
-	newPR := &github.NewPullRequest{
-		Title:               github.Ptr("My awesome pull request"),
-		Head:                github.Ptr("branch_to_merge"),
-		Base:                github.Ptr("master"),
-		Body:                github.Ptr("This is the description of the PR created with the package `github.com/google/go-github/github`"),
-		MaintainerCanModify: github.Ptr(true),
+	newPR := github.CreatePullRequest{
+		Title:               new("My awesome pull request"),
+		Head:                "branch_to_merge",
+		Base:                "master",
+		Body:                new("This is the description of the PR created with the package `github.com/google/go-github/github`"),
+		MaintainerCanModify: new(true),
 	}
 
 	ctx := context.Background()
@@ -160,7 +160,7 @@ func ExampleTeamsService_ListTeams() {
 	// the example to to provide authentication to github.NewClient(). See the
 	//  following documentation for more information on how to authenticate with
 	// the client:
-	// https://pkg.go.dev/github.com/google/go-github/v89/github#hdr-Authentication
+	// https://pkg.go.dev/github.com/google/go-github/v90/github#hdr-Authentication
 	client, err := github.NewClient()
 	if err != nil {
 		log.Fatalf("Error creating GitHub client: %v", err)

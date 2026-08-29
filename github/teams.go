@@ -7,8 +7,8 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"net/http"
 )
 
 // TeamsService provides access to the team-related functions
@@ -163,13 +163,26 @@ func (s *TeamsService) GetTeamBySlug(ctx context.Context, org, slug string) (*Te
 	return t, resp, nil
 }
 
-// NewTeam represents a team to be created or modified.
-type NewTeam struct {
-	Name         string   `json:"name"` // Name of the team. (Required.)
-	Description  *string  `json:"description,omitempty"`
-	Maintainers  []string `json:"maintainers,omitempty"`
-	RepoNames    []string `json:"repo_names,omitempty"`
-	ParentTeamID *int64   `json:"parent_team_id,omitempty"`
+// CreateTeamRequest represents a team to be created.
+type CreateTeamRequest struct {
+	// The name of the team (required).
+	Name string `json:"name"`
+
+	// The description of the team.
+	Description *string `json:"description,omitempty"`
+
+	// List GitHub usernames for organization members who will become team maintainers.
+	Maintainers []string `json:"maintainers,omitempty"`
+
+	// The full name (e.g., "organization-name/repository-name") of repositories to add the team to.
+	RepoNames []string `json:"repo_names,omitempty"`
+
+	// Privacy identifies the level of privacy this team should have.
+	// Possible values are:
+	//     secret - only visible to organization owners and members of this team
+	//     closed - visible to all members of this organization
+	// Default is "secret".
+	Privacy *string `json:"privacy,omitempty"`
 
 	// NotificationSetting can be one of: "notifications_enabled", "notifications_disabled".
 	NotificationSetting *string `json:"notification_setting,omitempty"`
@@ -181,20 +194,16 @@ type NewTeam struct {
 	// specifying a permission value when calling AddTeamRepo.
 	Permission *string `json:"permission,omitempty"`
 
-	// Privacy identifies the level of privacy this team should have.
-	// Possible values are:
-	//     secret - only visible to organization owners and members of this team
-	//     closed - visible to all members of this organization
-	// Default is "secret".
-	Privacy *string `json:"privacy,omitempty"`
+	// The ID of a team to set as the parent team.
+	ParentTeamID *int64 `json:"parent_team_id,omitempty"`
 
-	// LDAPDN may be used in GitHub Enterprise when the team membership
-	// is synchronized with LDAP.
-	LDAPDN *string `json:"ldap_dn,omitempty"`
+	// The slug of a team to set as the parent team.
+	// Ignored when ParentTeamID is also provided.
+	ParentTeamSlug *string `json:"parent_team_slug,omitempty"`
 }
 
-func (s NewTeam) String() string {
-	return Stringify(s)
+func (r CreateTeamRequest) String() string {
+	return Stringify(r)
 }
 
 // CreateTeam creates a new team within an organization.
@@ -202,7 +211,7 @@ func (s NewTeam) String() string {
 // GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#create-a-team
 //
 //meta:operation POST /orgs/{org}/teams
-func (s *TeamsService) CreateTeam(ctx context.Context, org string, body NewTeam) (*Team, *Response, error) {
+func (s *TeamsService) CreateTeam(ctx context.Context, org string, body CreateTeamRequest) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams", org)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -218,51 +227,69 @@ func (s *TeamsService) CreateTeam(ctx context.Context, org string, body NewTeam)
 	return t, resp, nil
 }
 
-// newTeamNoParent is the same as NewTeam but ensures that the
-// "parent_team_id" field will be null. It is for internal use
-// only and should not be exported.
-type newTeamNoParent struct {
-	Name                string   `json:"name"`
-	Description         *string  `json:"description,omitempty"`
-	Maintainers         []string `json:"maintainers,omitempty"`
-	RepoNames           []string `json:"repo_names,omitempty"`
-	ParentTeamID        *int64   `json:"parent_team_id"` // This will be "null"
-	NotificationSetting *string  `json:"notification_setting,omitempty"`
-	Privacy             *string  `json:"privacy,omitempty"`
-	LDAPDN              *string  `json:"ldap_dn,omitempty"`
+// UpdateTeamRequest represents a team to be updated.
+type UpdateTeamRequest struct {
+	// The name of the team (required).
+	Name *string `json:"name"`
+
+	// The description of the team.
+	Description *string `json:"description,omitempty"`
+
+	// Privacy identifies the level of privacy this team should have.
+	// Possible values are:
+	//     secret - only visible to organization owners and members of this team
+	//     closed - visible to all members of this organization
+	// Default is "secret".
+	Privacy *string `json:"privacy,omitempty"`
+
+	// NotificationSetting can be one of: "notifications_enabled", "notifications_disabled".
+	NotificationSetting *string `json:"notification_setting,omitempty"`
+
+	// Deprecated: Permission is deprecated when creating or editing a team in an org
+	// using the new GitHub permission model. It no longer identifies the
+	// permission a team has on its repos, but only specifies the default
+	// permission a repo is initially added with. Avoid confusion by
+	// specifying a permission value when calling AddTeamRepo.
+	Permission *string `json:"permission,omitempty"`
+
+	// The ID of a team to set as the parent team.
+	ParentTeamID *int64 `json:"parent_team_id,omitempty"`
+
+	// The slug of a team to set as the parent team.
+	// Ignored when ParentTeamID is also provided.
+	ParentTeamSlug *string `json:"parent_team_slug,omitempty"`
+
+	// If set to true, the parent team will be removed from the team.
+	RemoveParentTeam bool `json:"-"`
 }
 
-// copyNewTeamWithoutParent is used to set the "parent_team_id"
-// field to "null" after copying the other fields from a NewTeam.
-// It is for internal use only and should not be exported.
-func copyNewTeamWithoutParent(team *NewTeam) *newTeamNoParent {
-	return &newTeamNoParent{
-		Name:                team.Name,
-		Description:         team.Description,
-		Maintainers:         team.Maintainers,
-		RepoNames:           team.RepoNames,
-		NotificationSetting: team.NotificationSetting,
-		Privacy:             team.Privacy,
-		LDAPDN:              team.LDAPDN,
+func (r UpdateTeamRequest) String() string {
+	return Stringify(r)
+}
+
+// MarshalJSON implements the json.Marshaler interface.
+func (r UpdateTeamRequest) MarshalJSON() ([]byte, error) {
+	type alias UpdateTeamRequest
+	if !r.RemoveParentTeam {
+		return json.Marshal(alias(r))
 	}
+	return json.Marshal(&struct {
+		alias
+		ParentTeamID   *int64  `json:"parent_team_id"`
+		ParentTeamSlug *string `json:"parent_team_slug"`
+	}{
+		alias: alias(r),
+	})
 }
 
-// EditTeamByID edits a team, given an organization ID, selected by ID.
+// UpdateTeamByID updates a team, given an organization ID, selected by ID.
 //
 // GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#update-a-team
 //
 //meta:operation PATCH /organizations/{organization_id}/team/{team_id}
-func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, body NewTeam, removeParent bool) (*Team, *Response, error) {
+func (s *TeamsService) UpdateTeamByID(ctx context.Context, orgID, teamID int64, body UpdateTeamRequest) (*Team, *Response, error) {
 	u := fmt.Sprintf("organizations/%v/team/%v", orgID, teamID)
-
-	var req *http.Request
-	var err error
-	if removeParent {
-		teamRemoveParent := copyNewTeamWithoutParent(&body)
-		req, err = s.client.NewRequest(ctx, "PATCH", u, teamRemoveParent)
-	} else {
-		req, err = s.client.NewRequest(ctx, "PATCH", u, body)
-	}
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -276,22 +303,14 @@ func (s *TeamsService) EditTeamByID(ctx context.Context, orgID, teamID int64, bo
 	return t, resp, nil
 }
 
-// EditTeamBySlug edits a team, given an organization name, by slug.
+// UpdateTeamBySlug updates a team, given an organization name, by slug.
 //
 // GitHub API docs: https://docs.github.com/rest/teams/teams?apiVersion=2022-11-28#update-a-team
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}
-func (s *TeamsService) EditTeamBySlug(ctx context.Context, org, slug string, body NewTeam, removeParent bool) (*Team, *Response, error) {
+func (s *TeamsService) UpdateTeamBySlug(ctx context.Context, org, slug string, body UpdateTeamRequest) (*Team, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v", org, slug)
-
-	var req *http.Request
-	var err error
-	if removeParent {
-		teamRemoveParent := copyNewTeamWithoutParent(&body)
-		req, err = s.client.NewRequest(ctx, "PATCH", u, teamRemoveParent)
-	} else {
-		req, err = s.client.NewRequest(ctx, "PATCH", u, body)
-	}
+	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -974,6 +993,12 @@ type ExternalGroupList struct {
 	Groups []*ExternalGroup `json:"groups"`
 }
 
+// UpdateConnectedExternalGroupRequest represents a request to update the connection
+// between an external group and a team.
+type UpdateConnectedExternalGroupRequest struct {
+	GroupID int64 `json:"group_id"`
+}
+
 // GetExternalGroup fetches an external group.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups?apiVersion=2022-11-28#get-an-external-group
@@ -1056,7 +1081,7 @@ func (s *TeamsService) ListExternalGroupsForTeamBySlug(ctx context.Context, org,
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/teams/external-groups?apiVersion=2022-11-28#update-the-connection-between-an-external-group-and-a-team
 //
 //meta:operation PATCH /orgs/{org}/teams/{team_slug}/external-groups
-func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, slug string, body *ExternalGroup) (*ExternalGroup, *Response, error) {
+func (s *TeamsService) UpdateConnectedExternalGroup(ctx context.Context, org, slug string, body UpdateConnectedExternalGroupRequest) (*ExternalGroup, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/teams/%v/external-groups", org, slug)
 
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)

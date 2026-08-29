@@ -39,11 +39,11 @@ func TestEnterpriseService_GetCodeSecurityAndAnalysis(t *testing.T) {
 		t.Errorf("Enterprise.%v returned error: %v", methodName, err)
 	}
 	want := &EnterpriseSecurityAnalysisSettings{
-		AdvancedSecurityEnabledForNewRepositories:             Ptr(true),
-		SecretScanningEnabledForNewRepositories:               Ptr(true),
-		SecretScanningPushProtectionEnabledForNewRepositories: Ptr(true),
-		SecretScanningPushProtectionCustomLink:                Ptr("https://github.com/test-org/test-repo/blob/main/README.md"),
-		SecretScanningValidityChecksEnabled:                   Ptr(true),
+		AdvancedSecurityEnabledForNewRepositories:             new(true),
+		SecretScanningEnabledForNewRepositories:               new(true),
+		SecretScanningPushProtectionEnabledForNewRepositories: new(true),
+		SecretScanningPushProtectionCustomLink:                new("https://github.com/test-org/test-repo/blob/main/README.md"),
+		SecretScanningValidityChecksEnabled:                   new(true),
 	}
 
 	if !cmp.Equal(settings, want) {
@@ -69,11 +69,11 @@ func TestEnterpriseService_UpdateCodeSecurityAndAnalysis(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &EnterpriseSecurityAnalysisSettings{
-		AdvancedSecurityEnabledForNewRepositories:             Ptr(true),
-		SecretScanningEnabledForNewRepositories:               Ptr(true),
-		SecretScanningPushProtectionEnabledForNewRepositories: Ptr(true),
-		SecretScanningPushProtectionCustomLink:                Ptr("https://github.com/test-org/test-repo/blob/main/README.md"),
-		SecretScanningValidityChecksEnabled:                   Ptr(true),
+		AdvancedSecurityEnabledForNewRepositories:             new(true),
+		SecretScanningEnabledForNewRepositories:               new(true),
+		SecretScanningPushProtectionEnabledForNewRepositories: new(true),
+		SecretScanningPushProtectionCustomLink:                new("https://github.com/test-org/test-repo/blob/main/README.md"),
+		SecretScanningValidityChecksEnabled:                   new(true),
 	}
 
 	mux.HandleFunc("/enterprises/e/code_security_and_analysis", func(_ http.ResponseWriter, r *http.Request) {

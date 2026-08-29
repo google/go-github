@@ -34,10 +34,10 @@ func TestActionsService_ListWorkflowRunsByID(t *testing.T) {
 	}
 
 	want := &WorkflowRuns{
-		TotalCount: Ptr(4),
+		TotalCount: new(4),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
-			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
+			{ID: new(int64(399444496)), RunNumber: new(296), CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
+			{ID: new(int64(399444497)), RunNumber: new(296), CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(runs, want) {
@@ -77,10 +77,10 @@ func TestActionsService_ListWorkflowRunsFileName(t *testing.T) {
 	}
 
 	want := &WorkflowRuns{
-		TotalCount: Ptr(4),
+		TotalCount: new(4),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Ptr(int64(399444496)), RunNumber: Ptr(296), CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
-			{ID: Ptr(int64(399444497)), RunNumber: Ptr(296), CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
+			{ID: new(int64(399444496)), RunNumber: new(296), CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
+			{ID: new(int64(399444497)), RunNumber: new(296), CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(runs, want) {
@@ -118,8 +118,8 @@ func TestActionsService_GetWorkflowRunByID(t *testing.T) {
 	}
 
 	want := &WorkflowRun{
-		ID:        Ptr(int64(399444496)),
-		RunNumber: Ptr(296),
+		ID:        new(int64(399444496)),
+		RunNumber: new(296),
 		CreatedAt: refTimestamp(1136178000),
 		UpdatedAt: refTimestamp(1136178001),
 	}
@@ -153,7 +153,7 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 		fmt.Fprint(w, `{"id":399444496,"run_number":296,"run_attempt":3,"created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
 	})
 
-	opts := &WorkflowRunAttemptOptions{ExcludePullRequests: Ptr(true)}
+	opts := &WorkflowRunAttemptOptions{ExcludePullRequests: new(true)}
 	ctx := t.Context()
 	runs, _, err := client.Actions.GetWorkflowRunAttempt(ctx, "o", "r", 29679449, 3, opts)
 	if err != nil {
@@ -161,9 +161,9 @@ func TestActionsService_GetWorkflowRunAttempt(t *testing.T) {
 	}
 
 	want := &WorkflowRun{
-		ID:         Ptr(int64(399444496)),
-		RunNumber:  Ptr(296),
-		RunAttempt: Ptr(3),
+		ID:         new(int64(399444496)),
+		RunNumber:  new(296),
+		RunAttempt: new(3),
 		CreatedAt:  refTimestamp(1136178000),
 		UpdatedAt:  refTimestamp(1136178001),
 	}
@@ -714,10 +714,10 @@ func TestActionsService_ListRepositoryWorkflowRuns(t *testing.T) {
 	}
 
 	expected := &WorkflowRuns{
-		TotalCount: Ptr(2),
+		TotalCount: new(2),
 		WorkflowRuns: []*WorkflowRun{
-			{ID: Ptr(int64(298499444)), RunNumber: Ptr(301), CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
-			{ID: Ptr(int64(298499445)), RunNumber: Ptr(302), CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
+			{ID: new(int64(298499444)), RunNumber: new(301), CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
+			{ID: new(int64(298499445)), RunNumber: new(302), CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
 		},
 	}
 
@@ -811,18 +811,18 @@ func TestActionsService_ReviewCustomDeploymentProtectionRule(t *testing.T) {
 	}
 
 	ctx := t.Context()
-	if _, err := client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request); err != nil {
+	if _, err := client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, request); err != nil {
 		t.Errorf("ReviewCustomDeploymentProtectionRule returned error: %v", err)
 	}
 
 	const methodName = "ReviewCustomDeploymentProtectionRule"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "\n", "\n", 9444496, &request)
+		_, err = client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "\n", "\n", 9444496, request)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, &request)
+		return client.Actions.ReviewCustomDeploymentProtectionRule(ctx, "o", "r", 9444496, request)
 	})
 }
 
@@ -844,35 +844,35 @@ func TestActionsService_GetWorkflowRunUsageByID(t *testing.T) {
 	want := &WorkflowRunUsage{
 		Billable: &WorkflowRunBillMap{
 			"UBUNTU": &WorkflowRunBill{
-				TotalMS: Ptr(int64(180000)),
-				Jobs:    Ptr(1),
+				TotalMS: new(int64(180000)),
+				Jobs:    new(1),
 				JobRuns: []*WorkflowRunJobRun{
 					{
-						JobID:      Ptr(1),
-						DurationMS: Ptr(int64(60000)),
+						JobID:      new(1),
+						DurationMS: new(int64(60000)),
 					},
 				},
 			},
 			"MACOS": &WorkflowRunBill{
-				TotalMS: Ptr(int64(240000)),
-				Jobs:    Ptr(2),
+				TotalMS: new(int64(240000)),
+				Jobs:    new(2),
 				JobRuns: []*WorkflowRunJobRun{
 					{
-						JobID:      Ptr(2),
-						DurationMS: Ptr(int64(30000)),
+						JobID:      new(2),
+						DurationMS: new(int64(30000)),
 					},
 					{
-						JobID:      Ptr(3),
-						DurationMS: Ptr(int64(10000)),
+						JobID:      new(3),
+						DurationMS: new(int64(10000)),
 					},
 				},
 			},
 			"WINDOWS": &WorkflowRunBill{
-				TotalMS: Ptr(int64(300000)),
-				Jobs:    Ptr(2),
+				TotalMS: new(int64(300000)),
+				Jobs:    new(2),
 			},
 		},
-		RunDurationMS: Ptr(int64(500000)),
+		RunDurationMS: new(int64(500000)),
 	}
 
 	if !cmp.Equal(workflowRunUsage, want) {
@@ -898,7 +898,7 @@ func TestActionsService_PendingDeployments(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: "approved", Comment: ""}
+	input := PendingDeploymentsRequest{EnvironmentIDs: []int64{3, 4}, State: "approved", Comment: ""}
 
 	mux.HandleFunc("/repos/o/r/actions/runs/399444496/pending_deployments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -912,7 +912,7 @@ func TestActionsService_PendingDeployments(t *testing.T) {
 		t.Errorf("Actions.PendingDeployments returned error: %v", err)
 	}
 
-	want := []*Deployment{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*Deployment{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(deployments, want) {
 		t.Errorf("Actions.PendingDeployments returned %+v, want %+v", deployments, want)
 	}
@@ -991,40 +991,40 @@ func TestActionsService_GetPendingDeployments(t *testing.T) {
 	want := []*PendingDeployment{
 		{
 			Environment: &PendingDeploymentEnvironment{
-				ID:      Ptr(int64(1)),
-				NodeID:  Ptr("nid"),
-				Name:    Ptr("n"),
-				URL:     Ptr("u"),
-				HTMLURL: Ptr("hu"),
+				ID:      new(int64(1)),
+				NodeID:  new("nid"),
+				Name:    new("n"),
+				URL:     new("u"),
+				HTMLURL: new("hu"),
 			},
-			WaitTimer:             Ptr(int64(0)),
+			WaitTimer:             new(int64(0)),
 			WaitTimerStartedAt:    refTimestamp(1136178000),
-			CurrentUserCanApprove: Ptr(false),
+			CurrentUserCanApprove: new(false),
 			Reviewers:             []*RequiredReviewer{},
 		},
 		{
 			Environment: &PendingDeploymentEnvironment{
-				ID:      Ptr(int64(2)),
-				NodeID:  Ptr("nid"),
-				Name:    Ptr("n"),
-				URL:     Ptr("u"),
-				HTMLURL: Ptr("hu"),
+				ID:      new(int64(2)),
+				NodeID:  new("nid"),
+				Name:    new("n"),
+				URL:     new("u"),
+				HTMLURL: new("hu"),
 			},
-			WaitTimer:             Ptr(int64(13)),
+			WaitTimer:             new(int64(13)),
 			WaitTimerStartedAt:    refTimestamp(1136178001),
-			CurrentUserCanApprove: Ptr(true),
+			CurrentUserCanApprove: new(true),
 			Reviewers: []*RequiredReviewer{
 				{
-					Type: Ptr("User"),
+					Type: new("User"),
 					Reviewer: &User{
-						Login: Ptr("l"),
+						Login: new("l"),
 					},
 				},
 				{
-					Type: Ptr("Team"),
+					Type: new("Team"),
 					Reviewer: &Team{
-						Name: Ptr("t"),
-						Slug: Ptr("s"),
+						Name: new("t"),
+						Slug: new("s"),
 					},
 				},
 			},

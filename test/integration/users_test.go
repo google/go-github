@@ -12,7 +12,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/google/go-github/v89/github"
+	"github.com/google/go-github/v90/github"
 )
 
 func TestUsers_Get(t *testing.T) {
@@ -65,9 +65,8 @@ func TestUsers_Update(t *testing.T) {
 
 	// update location to test value
 	testLoc := fmt.Sprintf("test-%v", rand.Int())
-	u.Location = &testLoc
 
-	_, _, err = client.Users.Edit(t.Context(), u)
+	_, _, err = client.Users.Update(t.Context(), github.UserUpdateRequest{Location: &testLoc})
 	if err != nil {
 		t.Fatalf("Users.Update returned error: %v", err)
 	}
@@ -83,10 +82,9 @@ func TestUsers_Update(t *testing.T) {
 	}
 
 	// set location back to the original value
-	u.Location = &location
-	_, _, err = client.Users.Edit(t.Context(), u)
+	_, _, err = client.Users.Update(t.Context(), github.UserUpdateRequest{Location: &location})
 	if err != nil {
-		t.Fatalf("Users.Edit returned error: %v", err)
+		t.Fatalf("Users.Update returned error: %v", err)
 	}
 }
 
@@ -182,9 +180,9 @@ func TestUsers_Keys(t *testing.T) {
 	}
 
 	// Add new key
-	_, _, err = client.Users.CreateKey(t.Context(), &github.Key{
-		Title: github.Ptr("go-github test key"),
-		Key:   &key,
+	_, _, err = client.Users.CreateKey(t.Context(), github.CreateUserKeyRequest{
+		Title: new("go-github test key"),
+		Key:   key,
 	})
 	if err != nil {
 		t.Fatalf("Users.CreateKey() returned error: %v", err)
@@ -211,10 +209,10 @@ func TestUsers_Keys(t *testing.T) {
 	// Verify that fetching individual key works
 	k, _, err := client.Users.GetKey(t.Context(), id)
 	if err != nil {
-		t.Fatalf("Users.GetKey(%q) returned error: %v", id, err)
+		t.Fatalf("Users.GetKey(%v) returned error: %v", id, err)
 	}
 	if *k.Key != key {
-		t.Fatalf("Users.GetKey(%q) returned key %v, want %v", id, *k.Key, key)
+		t.Fatalf("Users.GetKey(%v) returned key %v, want %v", id, *k.Key, key)
 	}
 
 	// Remove test key

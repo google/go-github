@@ -36,19 +36,19 @@ func TestUsersService_Authenticated_ListPackages(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	packages, _, err := client.Users.ListPackages(ctx, "", &PackageListOptions{PackageType: Ptr("container"), Visibility: Ptr("private")})
+	packages, _, err := client.Users.ListPackages(ctx, "", &PackageListOptions{PackageType: new("container"), Visibility: new("private")})
 	if err != nil {
 		t.Errorf("Users.Authenticated_ListPackages returned error: %v", err)
 	}
 
 	want := []*Package{{
-		ID:           Ptr(int64(197)),
-		Name:         Ptr("hello_docker"),
-		PackageType:  Ptr("container"),
-		VersionCount: Ptr(int64(1)),
-		Visibility:   Ptr("private"),
-		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello_docker"),
-		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello_docker"),
+		ID:           new(int64(197)),
+		Name:         new("hello_docker"),
+		PackageType:  new("container"),
+		VersionCount: new(int64(1)),
+		Visibility:   new("private"),
+		URL:          new("https://api.github.com/orgs/github/packages/container/hello_docker"),
+		HTMLURL:      new("https://github.com/orgs/github/packages/container/package/hello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}}
@@ -92,19 +92,19 @@ func TestUsersService_specifiedUser_ListPackages(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	packages, _, err := client.Users.ListPackages(ctx, "u", &PackageListOptions{PackageType: Ptr("container"), Visibility: Ptr("public")})
+	packages, _, err := client.Users.ListPackages(ctx, "u", &PackageListOptions{PackageType: new("container"), Visibility: new("public")})
 	if err != nil {
 		t.Errorf("Users.specifiedUser_ListPackages returned error: %v", err)
 	}
 
 	want := []*Package{{
-		ID:           Ptr(int64(197)),
-		Name:         Ptr("hello_docker"),
-		PackageType:  Ptr("container"),
-		VersionCount: Ptr(int64(1)),
-		Visibility:   Ptr("public"),
-		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello_docker"),
-		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello_docker"),
+		ID:           new(int64(197)),
+		Name:         new("hello_docker"),
+		PackageType:  new("container"),
+		VersionCount: new(int64(1)),
+		Visibility:   new("public"),
+		URL:          new("https://api.github.com/orgs/github/packages/container/hello_docker"),
+		HTMLURL:      new("https://github.com/orgs/github/packages/container/package/hello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}}
@@ -156,13 +156,13 @@ func TestUsersService_specifiedUser_GetPackage(t *testing.T) {
 	}
 
 	want := &Package{
-		ID:           Ptr(int64(197)),
-		Name:         Ptr("hello/hello_docker"),
-		PackageType:  Ptr("container"),
-		VersionCount: Ptr(int64(1)),
-		Visibility:   Ptr("private"),
-		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello%2Fhello_docker"),
-		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello%2Fhello_docker"),
+		ID:           new(int64(197)),
+		Name:         new("hello/hello_docker"),
+		PackageType:  new("container"),
+		VersionCount: new(int64(1)),
+		Visibility:   new("private"),
+		URL:          new("https://api.github.com/orgs/github/packages/container/hello%2Fhello_docker"),
+		HTMLURL:      new("https://github.com/orgs/github/packages/container/package/hello%2Fhello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}
@@ -210,13 +210,13 @@ func TestUsersService_Authenticated_GetPackage(t *testing.T) {
 	}
 
 	want := &Package{
-		ID:           Ptr(int64(197)),
-		Name:         Ptr("hello_docker"),
-		PackageType:  Ptr("container"),
-		VersionCount: Ptr(int64(1)),
-		Visibility:   Ptr("private"),
-		URL:          Ptr("https://api.github.com/orgs/github/packages/container/hello_docker"),
-		HTMLURL:      Ptr("https://github.com/orgs/github/packages/container/package/hello_docker"),
+		ID:           new(int64(197)),
+		Name:         new("hello_docker"),
+		PackageType:  new("container"),
+		VersionCount: new(int64(1)),
+		Visibility:   new("private"),
+		URL:          new("https://api.github.com/orgs/github/packages/container/hello_docker"),
+		HTMLURL:      new("https://github.com/orgs/github/packages/container/package/hello_docker"),
 		CreatedAt:    &Timestamp{referenceTime},
 		UpdatedAt:    &Timestamp{referenceTime},
 	}
@@ -377,13 +377,13 @@ func TestUsersService_ListPackageVersions(t *testing.T) {
 	}
 
 	want := []*PackageVersion{{
-		ID:             Ptr(int64(45763)),
-		Name:           Ptr("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            Ptr("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
-		PackageHTMLURL: Ptr("https://github.com/users/octocat/packages/container/package/hello_docker"),
+		ID:             new(int64(45763)),
+		Name:           new("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
+		URL:            new("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
+		PackageHTMLURL: new("https://github.com/users/octocat/packages/container/package/hello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
+		HTMLURL:        new("https://github.com/users/octocat/packages/container/hello_docker/45763"),
 		Metadata:       json.RawMessage(m),
 	}}
 	if !cmp.Equal(packages, want) {
@@ -440,13 +440,13 @@ func TestUsersService_ListUserPackageVersions(t *testing.T) {
 	}
 
 	want := []*PackageVersion{{
-		ID:             Ptr(int64(45763)),
-		Name:           Ptr("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            Ptr("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
-		PackageHTMLURL: Ptr("https://github.com/users/octocat/packages/container/package/hello_docker"),
+		ID:             new(int64(45763)),
+		Name:           new("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
+		URL:            new("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
+		PackageHTMLURL: new("https://github.com/users/octocat/packages/container/package/hello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
+		HTMLURL:        new("https://github.com/users/octocat/packages/container/hello_docker/45763"),
 		Metadata:       json.RawMessage(m),
 	}}
 	if !cmp.Equal(packages, want) {
@@ -503,13 +503,13 @@ func TestUsersService_Authenticated_PackageGetVersion(t *testing.T) {
 	}
 
 	want := &PackageVersion{
-		ID:             Ptr(int64(45763)),
-		Name:           Ptr("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            Ptr("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
-		PackageHTMLURL: Ptr("https://github.com/users/octocat/packages/container/package/hello_docker"),
+		ID:             new(int64(45763)),
+		Name:           new("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
+		URL:            new("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
+		PackageHTMLURL: new("https://github.com/users/octocat/packages/container/package/hello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
+		HTMLURL:        new("https://github.com/users/octocat/packages/container/hello_docker/45763"),
 		Metadata:       json.RawMessage(m),
 	}
 	if !cmp.Equal(packages, want) {
@@ -566,13 +566,13 @@ func TestUsersService_specifiedUser_PackageGetVersion(t *testing.T) {
 	}
 
 	want := &PackageVersion{
-		ID:             Ptr(int64(45763)),
-		Name:           Ptr("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
-		URL:            Ptr("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
-		PackageHTMLURL: Ptr("https://github.com/users/octocat/packages/container/package/hello_docker"),
+		ID:             new(int64(45763)),
+		Name:           new("sha256:08a44bab0bddaddd8837a8b381aebc2e4b933768b981685a9e088360af0d3dd9"),
+		URL:            new("https://api.github.com/users/octocat/packages/container/hello_docker/versions/45763"),
+		PackageHTMLURL: new("https://github.com/users/octocat/packages/container/package/hello_docker"),
 		CreatedAt:      &Timestamp{referenceTime},
 		UpdatedAt:      &Timestamp{referenceTime},
-		HTMLURL:        Ptr("https://github.com/users/octocat/packages/container/hello_docker/45763"),
+		HTMLURL:        new("https://github.com/users/octocat/packages/container/hello_docker/45763"),
 		Metadata:       json.RawMessage(m),
 	}
 	if !cmp.Equal(packages, want) {

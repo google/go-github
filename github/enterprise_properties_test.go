@@ -52,22 +52,22 @@ func TestEnterpriseService_GetAllCustomProperties(t *testing.T) {
 
 	want := []*CustomProperty{
 		{
-			PropertyName:     Ptr("name"),
+			PropertyName:     new("name"),
 			ValueType:        PropertyValueTypeSingleSelect,
-			Required:         Ptr(true),
+			Required:         new(true),
 			DefaultValue:     "production",
-			Description:      Ptr("Prod or dev environment"),
+			Description:      new("Prod or dev environment"),
 			AllowedValues:    []string{"production", "development"},
-			ValuesEditableBy: Ptr("org_actors"),
+			ValuesEditableBy: new("org_actors"),
 		},
 		{
-			PropertyName: Ptr("service"),
+			PropertyName: new("service"),
 			ValueType:    PropertyValueTypeString,
 		},
 		{
-			PropertyName: Ptr("team"),
+			PropertyName: new("team"),
 			ValueType:    PropertyValueTypeString,
-			Description:  Ptr("Team owning the repository"),
+			Description:  new("Team owning the repository"),
 		},
 	}
 	if !cmp.Equal(properties, want) {
@@ -91,12 +91,12 @@ func TestEnterpriseService_CreateOrUpdateCustomProperties(t *testing.T) {
 
 	properties := []*CustomProperty{
 		{
-			PropertyName: Ptr("name"),
+			PropertyName: new("name"),
 			ValueType:    PropertyValueTypeSingleSelect,
-			Required:     Ptr(true),
+			Required:     new(true),
 		},
 		{
-			PropertyName: Ptr("service"),
+			PropertyName: new("service"),
 			ValueType:    PropertyValueTypeString,
 		},
 	}
@@ -129,12 +129,12 @@ func TestEnterpriseService_CreateOrUpdateCustomProperties(t *testing.T) {
 
 	want := []*CustomProperty{
 		{
-			PropertyName: Ptr("name"),
+			PropertyName: new("name"),
 			ValueType:    PropertyValueTypeSingleSelect,
-			Required:     Ptr(true),
+			Required:     new(true),
 		},
 		{
-			PropertyName: Ptr("service"),
+			PropertyName: new("service"),
 			ValueType:    PropertyValueTypeString,
 		},
 	}
@@ -181,13 +181,13 @@ func TestEnterpriseService_GetCustomProperty(t *testing.T) {
 	}
 
 	want := &CustomProperty{
-		PropertyName:     Ptr("name"),
+		PropertyName:     new("name"),
 		ValueType:        PropertyValueTypeSingleSelect,
-		Required:         Ptr(true),
+		Required:         new(true),
 		DefaultValue:     "production",
-		Description:      Ptr("Prod or dev environment"),
+		Description:      new("Prod or dev environment"),
 		AllowedValues:    []string{"production", "development"},
-		ValuesEditableBy: Ptr("org_actors"),
+		ValuesEditableBy: new("org_actors"),
 	}
 	if !cmp.Equal(property, want) {
 		t.Errorf("Enterprise.GetCustomProperty returned %+v, want %+v", property, want)
@@ -227,24 +227,24 @@ func TestEnterpriseService_CreateOrUpdateCustomProperty(t *testing.T) {
 	ctx := t.Context()
 	property, _, err := client.Enterprise.CreateOrUpdateCustomProperty(ctx, "e", "name", &CustomProperty{
 		ValueType:        PropertyValueTypeSingleSelect,
-		Required:         Ptr(true),
+		Required:         new(true),
 		DefaultValue:     "production",
-		Description:      Ptr("Prod or dev environment"),
+		Description:      new("Prod or dev environment"),
 		AllowedValues:    []string{"production", "development"},
-		ValuesEditableBy: Ptr("org_actors"),
+		ValuesEditableBy: new("org_actors"),
 	})
 	if err != nil {
 		t.Errorf("Enterprise.CreateOrUpdateCustomProperty returned error: %v", err)
 	}
 
 	want := &CustomProperty{
-		PropertyName:     Ptr("name"),
+		PropertyName:     new("name"),
 		ValueType:        PropertyValueTypeSingleSelect,
-		Required:         Ptr(true),
+		Required:         new(true),
 		DefaultValue:     "production",
-		Description:      Ptr("Prod or dev environment"),
+		Description:      new("Prod or dev environment"),
 		AllowedValues:    []string{"production", "development"},
-		ValuesEditableBy: Ptr("org_actors"),
+		ValuesEditableBy: new("org_actors"),
 	}
 	if !cmp.Equal(property, want) {
 		t.Errorf("Enterprise.CreateOrUpdateCustomProperty returned %+v, want %+v", property, want)

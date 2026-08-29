@@ -10,12 +10,12 @@ package integration
 import (
 	"testing"
 
-	"github.com/google/go-github/v89/github"
+	"github.com/google/go-github/v90/github"
 )
 
 func TestLicenses_ListIter(t *testing.T) {
 	opts := &github.ListLicensesOptions{
-		Featured: github.Ptr(true),
+		Featured: new(true),
 		ListOptions: github.ListOptions{
 			Page:    1,
 			PerPage: 1,

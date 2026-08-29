@@ -17,7 +17,7 @@ func TestAdminUsers_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := CreateUserRequest{Login: "github", Email: Ptr("email@example.com"), Suspended: Ptr(false)}
+	input := CreateUserRequest{Login: "github", Email: new("email@example.com"), Suspended: new(false)}
 
 	mux.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -31,7 +31,7 @@ func TestAdminUsers_Create(t *testing.T) {
 		t.Errorf("Admin.CreateUser returned error: %v", err)
 	}
 
-	want := &User{ID: Ptr(int64(1)), Login: Ptr("github")}
+	want := &User{ID: new(int64(1)), Login: new("github")}
 	if !cmp.Equal(org, want) {
 		t.Errorf("Admin.CreateUser returned %+v, want %+v", org, want)
 	}
@@ -75,11 +75,11 @@ func TestUserImpersonation_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &ImpersonateUserOptions{Scopes: []string{"repo"}}
+	body := CreateUserImpersonationRequest{Scopes: []string{"repo"}}
 
 	mux.HandleFunc("/admin/users/github/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, body)
 		fmt.Fprint(w, `{"id": 1234,
 		"url": "https://example.com/authorizations",
 		"app": {
@@ -101,22 +101,22 @@ func TestUserImpersonation_Create(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	auth, _, err := client.Admin.CreateUserImpersonation(ctx, "github", opt)
+	auth, _, err := client.Admin.CreateUserImpersonation(ctx, "github", body)
 	if err != nil {
 		t.Errorf("Admin.CreateUserImpersonation returned error: %v", err)
 	}
 
 	want := &UserAuthorization{
-		ID:  Ptr(int64(1234)),
-		URL: Ptr("https://example.com/authorizations"),
+		ID:  new(int64(1234)),
+		URL: new("https://example.com/authorizations"),
 		App: &OAuthAPP{
-			Name:     Ptr("GitHub Site Administrator"),
-			URL:      Ptr("https://docs.github.com/en/rest/enterprise/users/"),
-			ClientID: Ptr("1234"),
+			Name:     new("GitHub Site Administrator"),
+			URL:      new("https://docs.github.com/en/rest/enterprise/users/"),
+			ClientID: new("1234"),
 		},
-		Token:          Ptr("1234"),
-		HashedToken:    Ptr("1234"),
-		TokenLastEight: Ptr("1234"),
+		Token:          new("1234"),
+		HashedToken:    new("1234"),
+		TokenLastEight: new("1234"),
 		Note:           nil,
 		NoteURL:        nil,
 		CreatedAt:      refTimestamp(1136178000),
@@ -130,12 +130,12 @@ func TestUserImpersonation_Create(t *testing.T) {
 
 	const methodName = "CreateUserImpersonation"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Admin.CreateUserImpersonation(ctx, "\n", opt)
+		_, _, err = client.Admin.CreateUserImpersonation(ctx, "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Admin.CreateUserImpersonation(ctx, "github", opt)
+		got, resp, err := client.Admin.CreateUserImpersonation(ctx, "github", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}

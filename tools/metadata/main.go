@@ -17,7 +17,7 @@ import (
 	"slices"
 
 	"github.com/alecthomas/kong"
-	"github.com/google/go-github/v89/github"
+	"github.com/google/go-github/v90/github"
 )
 
 var helpVars = kong.Vars{

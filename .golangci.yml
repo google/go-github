@@ -28,7 +28,6 @@ linters:
     - paralleltest
     - paramcheck
     - perfsprint
-    - redundantptr
     - revive
     - sliceofpointers
     - staticcheck
@@ -186,7 +185,7 @@ linters:
       extraneousnew:
         type: module
         description: Reports problematic usage of 'new' or '&SomeStruct{}' when a more idiomatic 'var' pointer would be more appropriate.
-        original-url: github.com/google/go-github/v89/tools/extraneousnew
+        original-url: github.com/google/go-github/v90/tools/extraneousnew
         settings:
           ignored-methods:
             - RateLimitService.Get
@@ -194,25 +193,22 @@ linters:
       fmtpercentv:
         type: module
         description: Reports usage of %d or %s in format strings.
-        original-url: github.com/google/go-github/v89/tools/fmtpercentv
+        original-url: github.com/google/go-github/v90/tools/fmtpercentv
       paramcheck:
         type: module
         description: Reports parameter naming and type convention issues.
-        original-url: github.com/google/go-github/v89/tools/paramcheck
+        original-url: github.com/google/go-github/v90/tools/paramcheck
         settings:
           # Body type names exempt from the "pass by value, not by pointer" rule.
           # TODO: fix and remove these exceptions.
           body-allowed-pointer-types:
-            - ActionsVariable
             - AddProjectItemOptions
             - AuthorizationRequest
-            - AutolinkOptions
             - CodeScanningAlertState
             - CodespaceCreateForUserOptions
             - ConfigApplyOptions
             - ConfigSettings
             - CreateCodespaceOptions
-            - CreateOrUpdateCustomRepoRoleOptions
             - CreateOrUpdateIssueTypesOptions
             - CreateOrgInvitationOptions
             - CreateUpdateEnvironment
@@ -220,80 +216,55 @@ linters:
             - CustomDeploymentProtectionRuleRequest
             - CustomProperty
             - DependabotAlertState
-            - DependabotEncryptedSecret
             - DependencyGraphSnapshot
-            - DeploymentBranchPolicyRequest
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
-            - ExternalGroup
             - Hook
-            - ImpersonateUserOptions
             - Import
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
-            - IssueComment
             - IssueImportRequest
-            - IssueRequest
-            - Key
-            - Label
             - LockIssueOptions
             - MaintenanceOptions
-            - Milestone
-            - NewPullRequest
             - Organization
             - PagesUpdate
             - PagesUpdateWithoutCNAME
-            - PendingDeploymentsRequest
-            - PreReceiveHook
             - ProtectionRequest
             - PublishCodespaceOptions
             - PullRequestBranchUpdateOptions
-            - PullRequestComment
-            - PullRequestReviewDismissalRequest
             - PullRequestReviewRequest
             - PullRequestReviewsEnforcementUpdate
-            - RepoMergeUpstreamRequest
             - Repository
             - RepositoryAddCollaboratorOptions
             - RepositoryComment
             - RepositoryContentFileOptions
             - RepositoryCreateForkOptions
-            - RepositoryMergeRequest
             - RequiredStatusChecksRequest
-            - ReviewCustomDeploymentProtectionRuleRequest
             - SCIMUserAttributes
-            - SarifAnalysis
             - SecretScanningAlertUpdateOptions
             - SecretScanningPatternConfigsUpdateOptions
             - SourceImportAuthor
             - Subscription
             - TeamAddTeamMembershipOptions
             - TeamAddTeamRepoOptions
-            - TeamLDAPMapping
             - TeamProjectOptions
-            - TemplateRepoRequest
             - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
-            - User
-            - UserLDAPMapping
             - UserSuspendOptions
             - WorkflowsPermissionsOpt
           # Body type names exempt from the "Options" suffix rule.
           # TODO: fix and remove these exceptions.
           body-allowed-wrong-names:
             - AddProjectItemOptions
-            - AutolinkOptions
             - CheckSuitePreferenceOptions
             - CodespaceCreateForUserOptions
             - ConfigApplyOptions
             - CreateCheckRunOptions
             - CreateCheckSuiteOptions
             - CreateCodespaceOptions
-            - CreateOrUpdateCustomRepoRoleOptions
             - CreateOrUpdateIssueTypesOptions
             - CreateOrgInvitationOptions
-            - ImpersonateUserOptions
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
             - LockIssueOptions
@@ -313,18 +284,14 @@ linters:
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
             - UserSuspendOptions
-      redundantptr:
-        type: module
-        description: Reports github.Ptr(x) calls that can be replaced with &x.
-        original-url: github.com/google/go-github/v89/tools/redundantptr
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v89/tools/sliceofpointers
+        original-url: github.com/google/go-github/v90/tools/sliceofpointers
       structfield:
         type: module
         description: Reports mismatches between Go field and JSON, URL tag names and types.
-        original-url: github.com/google/go-github/v89/tools/structfield
+        original-url: github.com/google/go-github/v90/tools/structfield
         settings:
           allowed-tag-names:
             - ActionsCacheUsageList.RepoCacheUsage # TODO: RepoCacheUsages ?
@@ -426,8 +393,6 @@ linters:
             - IssueListByRepoOptions.Since # TODO: Issues
             - IssueListCommentsOptions.Direction
             - IssueListCommentsOptions.Sort
-            - IssueRequest.Assignees # TODO: Issues
-            - IssueRequest.Labels # TODO: Issues
             - License.Conditions # TODO: Licenses
             - License.Limitations # TODO: Licenses
             - License.Permissions # TODO: Licenses

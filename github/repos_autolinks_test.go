@@ -29,8 +29,8 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 	}
 
 	want := []*Autolink{
-		{ID: Ptr(int64(1)), KeyPrefix: Ptr("TICKET-"), URLTemplate: Ptr("https://example.com/TICKET?query=<num>")},
-		{ID: Ptr(int64(2)), KeyPrefix: Ptr("STORY-"), URLTemplate: Ptr("https://example.com/STORY?query=<num>")},
+		{ID: new(int64(1)), KeyPrefix: new("TICKET-"), URLTemplate: new("https://example.com/TICKET?query=<num>")},
+		{ID: new(int64(2)), KeyPrefix: new("STORY-"), URLTemplate: new("https://example.com/STORY?query=<num>")},
 	}
 
 	if !cmp.Equal(autolinks, want) {
@@ -52,18 +52,18 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 	})
 }
 
-func TestRepositoriesService_AddAutolink(t *testing.T) {
+func TestRepositoriesService_CreateAutolink(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &AutolinkOptions{
-		KeyPrefix:      Ptr("TICKET-"),
-		URLTemplate:    Ptr("https://example.com/TICKET?query=<num>"),
-		IsAlphanumeric: Ptr(true),
+	body := CreateAutolinkRequest{
+		KeyPrefix:      "TICKET-",
+		URLTemplate:    "https://example.com/TICKET?query=<num>",
+		IsAlphanumeric: new(true),
 	}
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, body)
 		w.WriteHeader(http.StatusOK)
 		assertWrite(t, w, []byte(`
 			{
@@ -74,28 +74,28 @@ func TestRepositoriesService_AddAutolink(t *testing.T) {
 		`))
 	})
 	ctx := t.Context()
-	autolink, _, err := client.Repositories.AddAutolink(ctx, "o", "r", opt)
+	autolink, _, err := client.Repositories.CreateAutolink(ctx, "o", "r", body)
 	if err != nil {
-		t.Errorf("Repositories.AddAutolink returned error: %v", err)
+		t.Errorf("Repositories.CreateAutolink returned error: %v", err)
 	}
 	want := &Autolink{
-		KeyPrefix:      Ptr("TICKET-"),
-		URLTemplate:    Ptr("https://example.com/TICKET?query=<num>"),
-		IsAlphanumeric: Ptr(true),
+		KeyPrefix:      new("TICKET-"),
+		URLTemplate:    new("https://example.com/TICKET?query=<num>"),
+		IsAlphanumeric: new(true),
 	}
 
 	if !cmp.Equal(autolink, want) {
-		t.Errorf("AddAutolink returned %+v, want %+v", autolink, want)
+		t.Errorf("CreateAutolink returned %+v, want %+v", autolink, want)
 	}
 
-	const methodName = "AddAutolink"
+	const methodName = "CreateAutolink"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Repositories.AddAutolink(ctx, "\n", "\n", opt)
+		_, _, err = client.Repositories.CreateAutolink(ctx, "\n", "\n", body)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Repositories.AddAutolink(ctx, "o", "r", opt)
+		got, resp, err := client.Repositories.CreateAutolink(ctx, "o", "r", body)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -118,7 +118,7 @@ func TestRepositoriesService_GetAutolink(t *testing.T) {
 		t.Errorf("Repositories.GetAutolink returned error: %v", err)
 	}
 
-	want := &Autolink{ID: Ptr(int64(1)), KeyPrefix: Ptr("TICKET-"), URLTemplate: Ptr("https://example.com/TICKET?query=<num>")}
+	want := &Autolink{ID: new(int64(1)), KeyPrefix: new("TICKET-"), URLTemplate: new("https://example.com/TICKET?query=<num>")}
 	if !cmp.Equal(autolink, want) {
 		t.Errorf("Repositories.GetAutolink returned %+v, want %+v", autolink, want)
 	}

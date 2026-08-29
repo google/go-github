@@ -132,7 +132,7 @@ func unmarshalStringOrArray(raw json.RawMessage) (*string, error) {
 	if len(ss) == 0 {
 		return nil, nil
 	}
-	return Ptr(strings.Join(ss, ", ")), nil
+	return new(strings.Join(ss, ", ")), nil
 }
 
 // unmarshalIntOrArray decodes a JSON value that is either a plain integer or an array of integers.

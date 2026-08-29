@@ -154,8 +154,8 @@ func TestCopilotService_GetSeatDetailsUser(t *testing.T) {
 	}
 
 	want := &User{
-		ID:   Ptr(int64(1)),
-		Type: Ptr("User"),
+		ID:   new(int64(1)),
+		Type: new("User"),
 	}
 
 	if got, ok := seatDetails.GetUser(); ok && !cmp.Equal(got, want) {
@@ -172,8 +172,8 @@ func TestCopilotService_GetSeatDetailsUser(t *testing.T) {
 			}`
 
 	bad := &Organization{
-		ID:   Ptr(int64(1)),
-		Type: Ptr("Organization"),
+		ID:   new(int64(1)),
+		Type: new("Organization"),
 	}
 
 	err = json.Unmarshal([]byte(data), seatDetails)
@@ -203,8 +203,8 @@ func TestCopilotService_GetSeatDetailsTeam(t *testing.T) {
 	}
 
 	want := &Team{
-		ID:   Ptr(int64(1)),
-		Type: Ptr("Team"),
+		ID:   new(int64(1)),
+		Type: new("Team"),
 	}
 
 	if got, ok := seatDetails.GetTeam(); ok && !cmp.Equal(got, want) {
@@ -221,8 +221,8 @@ func TestCopilotService_GetSeatDetailsTeam(t *testing.T) {
 			}`
 
 	bad := &User{
-		ID:   Ptr(int64(1)),
-		Type: Ptr("User"),
+		ID:   new(int64(1)),
+		Type: new("User"),
 	}
 
 	err = json.Unmarshal([]byte(data), seatDetails)
@@ -252,8 +252,8 @@ func TestCopilotService_GetSeatDetailsOrganization(t *testing.T) {
 	}
 
 	want := &Organization{
-		ID:   Ptr(int64(1)),
-		Type: Ptr("Organization"),
+		ID:   new(int64(1)),
+		Type: new("Organization"),
 	}
 
 	if got, ok := seatDetails.GetOrganization(); ok && !cmp.Equal(got, want) {
@@ -270,7 +270,7 @@ func TestCopilotService_GetSeatDetailsOrganization(t *testing.T) {
 			}`
 
 	bad := &Team{
-		ID: Ptr(int64(1)),
+		ID: new(int64(1)),
 	}
 
 	err = json.Unmarshal([]byte(data), seatDetails)
@@ -464,38 +464,38 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 		Seats: []*CopilotSeatDetails{
 			{
 				Assignee: &User{
-					Login:             Ptr("octocat"),
-					ID:                Ptr(int64(1)),
-					NodeID:            Ptr("MDQ6VXNlcjE="),
-					AvatarURL:         Ptr("https://github.com/images/error/octocat_happy.gif"),
-					GravatarID:        Ptr(""),
-					URL:               Ptr("https://api.github.com/users/octocat"),
-					HTMLURL:           Ptr("https://github.com/octocat"),
-					FollowersURL:      Ptr("https://api.github.com/users/octocat/followers"),
-					FollowingURL:      Ptr("https://api.github.com/users/octocat/following{/other_user}"),
-					GistsURL:          Ptr("https://api.github.com/users/octocat/gists{/gist_id}"),
-					StarredURL:        Ptr("https://api.github.com/users/octocat/starred{/owner}{/repo}"),
-					SubscriptionsURL:  Ptr("https://api.github.com/users/octocat/subscriptions"),
-					OrganizationsURL:  Ptr("https://api.github.com/users/octocat/orgs"),
-					ReposURL:          Ptr("https://api.github.com/users/octocat/repos"),
-					EventsURL:         Ptr("https://api.github.com/users/octocat/events{/privacy}"),
-					ReceivedEventsURL: Ptr("https://api.github.com/users/octocat/received_events"),
-					Type:              Ptr("User"),
-					SiteAdmin:         Ptr(false),
+					Login:             new("octocat"),
+					ID:                new(int64(1)),
+					NodeID:            new("MDQ6VXNlcjE="),
+					AvatarURL:         new("https://github.com/images/error/octocat_happy.gif"),
+					GravatarID:        new(""),
+					URL:               new("https://api.github.com/users/octocat"),
+					HTMLURL:           new("https://github.com/octocat"),
+					FollowersURL:      new("https://api.github.com/users/octocat/followers"),
+					FollowingURL:      new("https://api.github.com/users/octocat/following{/other_user}"),
+					GistsURL:          new("https://api.github.com/users/octocat/gists{/gist_id}"),
+					StarredURL:        new("https://api.github.com/users/octocat/starred{/owner}{/repo}"),
+					SubscriptionsURL:  new("https://api.github.com/users/octocat/subscriptions"),
+					OrganizationsURL:  new("https://api.github.com/users/octocat/orgs"),
+					ReposURL:          new("https://api.github.com/users/octocat/repos"),
+					EventsURL:         new("https://api.github.com/users/octocat/events{/privacy}"),
+					ReceivedEventsURL: new("https://api.github.com/users/octocat/received_events"),
+					Type:              new("User"),
+					SiteAdmin:         new(false),
 				},
 				AssigningTeam: &Team{
-					ID:                  Ptr(int64(1)),
-					NodeID:              Ptr("MDQ6VGVhbTE="),
-					URL:                 Ptr("https://api.github.com/teams/1"),
-					HTMLURL:             Ptr("https://github.com/orgs/github/teams/justice-league"),
-					Name:                Ptr("Justice League"),
-					Slug:                Ptr("justice-league"),
-					Description:         Ptr("A great team."),
-					Privacy:             Ptr("closed"),
-					Permission:          Ptr("admin"),
-					NotificationSetting: Ptr("notifications_enabled"),
-					MembersURL:          Ptr("https://api.github.com/teams/1/members{/member}"),
-					RepositoriesURL:     Ptr("https://api.github.com/teams/1/repos"),
+					ID:                  new(int64(1)),
+					NodeID:              new("MDQ6VGVhbTE="),
+					URL:                 new("https://api.github.com/teams/1"),
+					HTMLURL:             new("https://github.com/orgs/github/teams/justice-league"),
+					Name:                new("Justice League"),
+					Slug:                new("justice-league"),
+					Description:         new("A great team."),
+					Privacy:             new("closed"),
+					Permission:          new("admin"),
+					NotificationSetting: new("notifications_enabled"),
+					MembersURL:          new("https://api.github.com/teams/1/members{/member}"),
+					RepositoriesURL:     new("https://api.github.com/teams/1/repos"),
 					Parent:              nil,
 				},
 
@@ -503,61 +503,61 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 				UpdatedAt:               refTimestamp(1136178001),
 				PendingCancellationDate: nil,
 				LastActivityAt:          refTimestamp(1136178002),
-				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
+				LastActivityEditor:      new("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
 				Assignee: &User{
-					Login:             Ptr("octokitten"),
-					ID:                Ptr(int64(1)),
-					NodeID:            Ptr("MDQ76VNlcjE="),
-					AvatarURL:         Ptr("https://github.com/images/error/octokitten_happy.gif"),
-					GravatarID:        Ptr(""),
-					URL:               Ptr("https://api.github.com/users/octokitten"),
-					HTMLURL:           Ptr("https://github.com/octokitten"),
-					FollowersURL:      Ptr("https://api.github.com/users/octokitten/followers"),
-					FollowingURL:      Ptr("https://api.github.com/users/octokitten/following{/other_user}"),
-					GistsURL:          Ptr("https://api.github.com/users/octokitten/gists{/gist_id}"),
-					StarredURL:        Ptr("https://api.github.com/users/octokitten/starred{/owner}{/repo}"),
-					SubscriptionsURL:  Ptr("https://api.github.com/users/octokitten/subscriptions"),
-					OrganizationsURL:  Ptr("https://api.github.com/users/octokitten/orgs"),
-					ReposURL:          Ptr("https://api.github.com/users/octokitten/repos"),
-					EventsURL:         Ptr("https://api.github.com/users/octokitten/events{/privacy}"),
-					ReceivedEventsURL: Ptr("https://api.github.com/users/octokitten/received_events"),
-					Type:              Ptr("User"),
-					SiteAdmin:         Ptr(false),
+					Login:             new("octokitten"),
+					ID:                new(int64(1)),
+					NodeID:            new("MDQ76VNlcjE="),
+					AvatarURL:         new("https://github.com/images/error/octokitten_happy.gif"),
+					GravatarID:        new(""),
+					URL:               new("https://api.github.com/users/octokitten"),
+					HTMLURL:           new("https://github.com/octokitten"),
+					FollowersURL:      new("https://api.github.com/users/octokitten/followers"),
+					FollowingURL:      new("https://api.github.com/users/octokitten/following{/other_user}"),
+					GistsURL:          new("https://api.github.com/users/octokitten/gists{/gist_id}"),
+					StarredURL:        new("https://api.github.com/users/octokitten/starred{/owner}{/repo}"),
+					SubscriptionsURL:  new("https://api.github.com/users/octokitten/subscriptions"),
+					OrganizationsURL:  new("https://api.github.com/users/octokitten/orgs"),
+					ReposURL:          new("https://api.github.com/users/octokitten/repos"),
+					EventsURL:         new("https://api.github.com/users/octokitten/events{/privacy}"),
+					ReceivedEventsURL: new("https://api.github.com/users/octokitten/received_events"),
+					Type:              new("User"),
+					SiteAdmin:         new(false),
 				},
 				AssigningTeam:           nil,
 				CreatedAt:               refTimestamp(1136178000),
 				UpdatedAt:               refTimestamp(1136178001),
-				PendingCancellationDate: Ptr("2021-11-01"),
+				PendingCancellationDate: new("2021-11-01"),
 				LastActivityAt:          refTimestamp(1136178002),
-				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
+				LastActivityEditor:      new("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
 				Assignee: &Team{
-					ID:   Ptr(int64(1)),
-					Name: Ptr("octokittens"),
-					Type: Ptr("Team"),
+					ID:   new(int64(1)),
+					Name: new("octokittens"),
+					Type: new("Team"),
 				},
 				AssigningTeam:           nil,
 				CreatedAt:               refTimestamp(1136178000),
 				UpdatedAt:               refTimestamp(1136178001),
-				PendingCancellationDate: Ptr("2021-11-01"),
+				PendingCancellationDate: new("2021-11-01"),
 				LastActivityAt:          refTimestamp(1136178002),
-				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
+				LastActivityEditor:      new("vscode/1.77.3/copilot/1.86.82"),
 			},
 			{
 				Assignee: &Organization{
-					ID:   Ptr(int64(1)),
-					Name: Ptr("octocats"),
-					Type: Ptr("Organization"),
+					ID:   new(int64(1)),
+					Name: new("octocats"),
+					Type: new("Organization"),
 				},
 				AssigningTeam:           nil,
 				CreatedAt:               refTimestamp(1136178000),
 				UpdatedAt:               refTimestamp(1136178001),
-				PendingCancellationDate: Ptr("2021-11-01"),
+				PendingCancellationDate: new("2021-11-01"),
 				LastActivityAt:          refTimestamp(1136178002),
-				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
+				LastActivityEditor:      new("vscode/1.77.3/copilot/1.86.82"),
 			},
 		},
 	}
@@ -679,74 +679,74 @@ func TestCopilotService_ListCopilotEnterpriseSeats(t *testing.T) {
 		Seats: []*CopilotSeatDetails{
 			{
 				Assignee: &User{
-					Login:             Ptr("octocat"),
-					ID:                Ptr(int64(1)),
-					NodeID:            Ptr("MDQ6VXNlcjE="),
-					AvatarURL:         Ptr("https://github.com/images/error/octocat_happy.gif"),
-					GravatarID:        Ptr(""),
-					URL:               Ptr("https://api.github.com/users/octocat"),
-					HTMLURL:           Ptr("https://github.com/octocat"),
-					FollowersURL:      Ptr("https://api.github.com/users/octocat/followers"),
-					FollowingURL:      Ptr("https://api.github.com/users/octocat/following{/other_user}"),
-					GistsURL:          Ptr("https://api.github.com/users/octocat/gists{/gist_id}"),
-					StarredURL:        Ptr("https://api.github.com/users/octocat/starred{/owner}{/repo}"),
-					SubscriptionsURL:  Ptr("https://api.github.com/users/octocat/subscriptions"),
-					OrganizationsURL:  Ptr("https://api.github.com/users/octocat/orgs"),
-					ReposURL:          Ptr("https://api.github.com/users/octocat/repos"),
-					EventsURL:         Ptr("https://api.github.com/users/octocat/events{/privacy}"),
-					ReceivedEventsURL: Ptr("https://api.github.com/users/octocat/received_events"),
-					Type:              Ptr("User"),
-					SiteAdmin:         Ptr(false),
+					Login:             new("octocat"),
+					ID:                new(int64(1)),
+					NodeID:            new("MDQ6VXNlcjE="),
+					AvatarURL:         new("https://github.com/images/error/octocat_happy.gif"),
+					GravatarID:        new(""),
+					URL:               new("https://api.github.com/users/octocat"),
+					HTMLURL:           new("https://github.com/octocat"),
+					FollowersURL:      new("https://api.github.com/users/octocat/followers"),
+					FollowingURL:      new("https://api.github.com/users/octocat/following{/other_user}"),
+					GistsURL:          new("https://api.github.com/users/octocat/gists{/gist_id}"),
+					StarredURL:        new("https://api.github.com/users/octocat/starred{/owner}{/repo}"),
+					SubscriptionsURL:  new("https://api.github.com/users/octocat/subscriptions"),
+					OrganizationsURL:  new("https://api.github.com/users/octocat/orgs"),
+					ReposURL:          new("https://api.github.com/users/octocat/repos"),
+					EventsURL:         new("https://api.github.com/users/octocat/events{/privacy}"),
+					ReceivedEventsURL: new("https://api.github.com/users/octocat/received_events"),
+					Type:              new("User"),
+					SiteAdmin:         new(false),
 				},
 				AssigningTeam: &Team{
-					ID:                  Ptr(int64(1)),
-					NodeID:              Ptr("MDQ6VGVhbTE="),
-					URL:                 Ptr("https://api.github.com/teams/1"),
-					HTMLURL:             Ptr("https://github.com/orgs/github/teams/justice-league"),
-					Name:                Ptr("Justice League"),
-					Slug:                Ptr("justice-league"),
-					Description:         Ptr("A great team."),
-					Privacy:             Ptr("closed"),
-					NotificationSetting: Ptr("notifications_enabled"),
-					Permission:          Ptr("admin"),
-					MembersURL:          Ptr("https://api.github.com/teams/1/members{/member}"),
-					RepositoriesURL:     Ptr("https://api.github.com/teams/1/repos"),
+					ID:                  new(int64(1)),
+					NodeID:              new("MDQ6VGVhbTE="),
+					URL:                 new("https://api.github.com/teams/1"),
+					HTMLURL:             new("https://github.com/orgs/github/teams/justice-league"),
+					Name:                new("Justice League"),
+					Slug:                new("justice-league"),
+					Description:         new("A great team."),
+					Privacy:             new("closed"),
+					NotificationSetting: new("notifications_enabled"),
+					Permission:          new("admin"),
+					MembersURL:          new("https://api.github.com/teams/1/members{/member}"),
+					RepositoriesURL:     new("https://api.github.com/teams/1/repos"),
 					Parent:              nil,
 				},
 				CreatedAt:               refTimestamp(1136178000),
 				UpdatedAt:               refTimestamp(1136178001),
 				PendingCancellationDate: nil,
 				LastActivityAt:          refTimestamp(1136178002),
-				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
-				PlanType:                Ptr("business"),
+				LastActivityEditor:      new("vscode/1.77.3/copilot/1.86.82"),
+				PlanType:                new("business"),
 			},
 			{
 				Assignee: &User{
-					Login:             Ptr("octokitten"),
-					ID:                Ptr(int64(1)),
-					NodeID:            Ptr("MDQ76VNlcjE="),
-					AvatarURL:         Ptr("https://github.com/images/error/octokitten_happy.gif"),
-					GravatarID:        Ptr(""),
-					URL:               Ptr("https://api.github.com/users/octokitten"),
-					HTMLURL:           Ptr("https://github.com/octokitten"),
-					FollowersURL:      Ptr("https://api.github.com/users/octokitten/followers"),
-					FollowingURL:      Ptr("https://api.github.com/users/octokitten/following{/other_user}"),
-					GistsURL:          Ptr("https://api.github.com/users/octokitten/gists{/gist_id}"),
-					StarredURL:        Ptr("https://api.github.com/users/octokitten/starred{/owner}{/repo}"),
-					SubscriptionsURL:  Ptr("https://api.github.com/users/octokitten/subscriptions"),
-					OrganizationsURL:  Ptr("https://api.github.com/users/octokitten/orgs"),
-					ReposURL:          Ptr("https://api.github.com/users/octokitten/repos"),
-					EventsURL:         Ptr("https://api.github.com/users/octokitten/events{/privacy}"),
-					ReceivedEventsURL: Ptr("https://api.github.com/users/octokitten/received_events"),
-					Type:              Ptr("User"),
-					SiteAdmin:         Ptr(false),
+					Login:             new("octokitten"),
+					ID:                new(int64(1)),
+					NodeID:            new("MDQ76VNlcjE="),
+					AvatarURL:         new("https://github.com/images/error/octokitten_happy.gif"),
+					GravatarID:        new(""),
+					URL:               new("https://api.github.com/users/octokitten"),
+					HTMLURL:           new("https://github.com/octokitten"),
+					FollowersURL:      new("https://api.github.com/users/octokitten/followers"),
+					FollowingURL:      new("https://api.github.com/users/octokitten/following{/other_user}"),
+					GistsURL:          new("https://api.github.com/users/octokitten/gists{/gist_id}"),
+					StarredURL:        new("https://api.github.com/users/octokitten/starred{/owner}{/repo}"),
+					SubscriptionsURL:  new("https://api.github.com/users/octokitten/subscriptions"),
+					OrganizationsURL:  new("https://api.github.com/users/octokitten/orgs"),
+					ReposURL:          new("https://api.github.com/users/octokitten/repos"),
+					EventsURL:         new("https://api.github.com/users/octokitten/events{/privacy}"),
+					ReceivedEventsURL: new("https://api.github.com/users/octokitten/received_events"),
+					Type:              new("User"),
+					SiteAdmin:         new(false),
 				},
 				AssigningTeam:           nil,
 				CreatedAt:               refTimestamp(1136178000),
 				UpdatedAt:               refTimestamp(1136178001),
-				PendingCancellationDate: Ptr("2021-11-01"),
+				PendingCancellationDate: new("2021-11-01"),
 				LastActivityAt:          refTimestamp(1136178002),
-				LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
+				LastActivityEditor:      new("vscode/1.77.3/copilot/1.86.82"),
 				PlanType:                nil,
 			},
 		},
@@ -803,8 +803,8 @@ func TestCopilotService_ListOrganizationCodingAgentRepositories(t *testing.T) {
 	want := &ListOrganizationCopilotCodingAgentRepositoriesResponse{
 		TotalCount: 2,
 		Repositories: []*Repository{
-			{ID: Ptr(int64(1)), Name: Ptr("Hello-World"), FullName: Ptr("octocat/Hello-World")},
-			{ID: Ptr(int64(2)), Name: Ptr("Hello-World-2"), FullName: Ptr("octocat/Hello-World-2")},
+			{ID: new(int64(1)), Name: new("Hello-World"), FullName: new("octocat/Hello-World")},
+			{ID: new(int64(2)), Name: new("Hello-World-2"), FullName: new("octocat/Hello-World-2")},
 		},
 	}
 	if !cmp.Equal(got, want) {
@@ -1103,45 +1103,45 @@ func TestCopilotService_GetSeatDetails(t *testing.T) {
 
 	want := &CopilotSeatDetails{
 		Assignee: &User{
-			Login:             Ptr("octocat"),
-			ID:                Ptr(int64(1)),
-			NodeID:            Ptr("MDQ6VXNlcjE="),
-			AvatarURL:         Ptr("https://github.com/images/error/octocat_happy.gif"),
-			GravatarID:        Ptr(""),
-			URL:               Ptr("https://api.github.com/users/octocat"),
-			HTMLURL:           Ptr("https://github.com/octocat"),
-			FollowersURL:      Ptr("https://api.github.com/users/octocat/followers"),
-			FollowingURL:      Ptr("https://api.github.com/users/octocat/following{/other_user}"),
-			GistsURL:          Ptr("https://api.github.com/users/octocat/gists{/gist_id}"),
-			StarredURL:        Ptr("https://api.github.com/users/octocat/starred{/owner}{/repo}"),
-			SubscriptionsURL:  Ptr("https://api.github.com/users/octocat/subscriptions"),
-			OrganizationsURL:  Ptr("https://api.github.com/users/octocat/orgs"),
-			ReposURL:          Ptr("https://api.github.com/users/octocat/repos"),
-			EventsURL:         Ptr("https://api.github.com/users/octocat/events{/privacy}"),
-			ReceivedEventsURL: Ptr("https://api.github.com/users/octocat/received_events"),
-			Type:              Ptr("User"),
-			SiteAdmin:         Ptr(false),
+			Login:             new("octocat"),
+			ID:                new(int64(1)),
+			NodeID:            new("MDQ6VXNlcjE="),
+			AvatarURL:         new("https://github.com/images/error/octocat_happy.gif"),
+			GravatarID:        new(""),
+			URL:               new("https://api.github.com/users/octocat"),
+			HTMLURL:           new("https://github.com/octocat"),
+			FollowersURL:      new("https://api.github.com/users/octocat/followers"),
+			FollowingURL:      new("https://api.github.com/users/octocat/following{/other_user}"),
+			GistsURL:          new("https://api.github.com/users/octocat/gists{/gist_id}"),
+			StarredURL:        new("https://api.github.com/users/octocat/starred{/owner}{/repo}"),
+			SubscriptionsURL:  new("https://api.github.com/users/octocat/subscriptions"),
+			OrganizationsURL:  new("https://api.github.com/users/octocat/orgs"),
+			ReposURL:          new("https://api.github.com/users/octocat/repos"),
+			EventsURL:         new("https://api.github.com/users/octocat/events{/privacy}"),
+			ReceivedEventsURL: new("https://api.github.com/users/octocat/received_events"),
+			Type:              new("User"),
+			SiteAdmin:         new(false),
 		},
 		AssigningTeam: &Team{
-			ID:                  Ptr(int64(1)),
-			NodeID:              Ptr("MDQ6VGVhbTE="),
-			URL:                 Ptr("https://api.github.com/teams/1"),
-			HTMLURL:             Ptr("https://github.com/orgs/github/teams/justice-league"),
-			Name:                Ptr("Justice League"),
-			Slug:                Ptr("justice-league"),
-			Description:         Ptr("A great team."),
-			Privacy:             Ptr("closed"),
-			NotificationSetting: Ptr("notifications_enabled"),
-			Permission:          Ptr("admin"),
-			MembersURL:          Ptr("https://api.github.com/teams/1/members{/member}"),
-			RepositoriesURL:     Ptr("https://api.github.com/teams/1/repos"),
+			ID:                  new(int64(1)),
+			NodeID:              new("MDQ6VGVhbTE="),
+			URL:                 new("https://api.github.com/teams/1"),
+			HTMLURL:             new("https://github.com/orgs/github/teams/justice-league"),
+			Name:                new("Justice League"),
+			Slug:                new("justice-league"),
+			Description:         new("A great team."),
+			Privacy:             new("closed"),
+			NotificationSetting: new("notifications_enabled"),
+			Permission:          new("admin"),
+			MembersURL:          new("https://api.github.com/teams/1/members{/member}"),
+			RepositoriesURL:     new("https://api.github.com/teams/1/repos"),
 			Parent:              nil,
 		},
 		CreatedAt:               refTimestamp(1136178000),
 		UpdatedAt:               refTimestamp(1136178001),
 		PendingCancellationDate: nil,
 		LastActivityAt:          refTimestamp(1136178002),
-		LastActivityEditor:      Ptr("vscode/1.77.3/copilot/1.86.82"),
+		LastActivityEditor:      new("vscode/1.77.3/copilot/1.86.82"),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -1334,8 +1334,8 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  Ptr(24),
-			TotalEngagedUsers: Ptr(20),
+			TotalActiveUsers:  new(24),
+			TotalEngagedUsers: new(20),
 			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIDECodeCompletionsLanguage{
@@ -1386,7 +1386,7 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
-								CustomModelTrainingDate: Ptr("2024-02-01"),
+								CustomModelTrainingDate: new("2024-02-01"),
 								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "typescript",
@@ -1429,7 +1429,7 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 							{
 								Name:                     "a-custom-model",
 								IsCustomModel:            true,
-								CustomModelTrainingDate:  Ptr("2024-02-01"),
+								CustomModelTrainingDate:  new("2024-02-01"),
 								TotalEngagedUsers:        1,
 								TotalChats:               10,
 								TotalChatInsertionEvents: 11,
@@ -1474,7 +1474,7 @@ func TestCopilotService_GetEnterpriseMetrics(t *testing.T) {
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
-								CustomModelTrainingDate: Ptr("2024-02-01"),
+								CustomModelTrainingDate: new("2024-02-01"),
 								TotalPRSummariesCreated: 10,
 								TotalEngagedUsers:       4,
 							},
@@ -1675,8 +1675,8 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  Ptr(24),
-			TotalEngagedUsers: Ptr(20),
+			TotalActiveUsers:  new(24),
+			TotalEngagedUsers: new(20),
 			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIDECodeCompletionsLanguage{
@@ -1727,7 +1727,7 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
-								CustomModelTrainingDate: Ptr("2024-02-01"),
+								CustomModelTrainingDate: new("2024-02-01"),
 								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "typescript",
@@ -1770,7 +1770,7 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 							{
 								Name:                     "a-custom-model",
 								IsCustomModel:            true,
-								CustomModelTrainingDate:  Ptr("2024-02-01"),
+								CustomModelTrainingDate:  new("2024-02-01"),
 								TotalEngagedUsers:        1,
 								TotalChats:               10,
 								TotalChatInsertionEvents: 11,
@@ -1815,7 +1815,7 @@ func TestCopilotService_GetEnterpriseTeamMetrics(t *testing.T) {
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
-								CustomModelTrainingDate: Ptr("2024-02-01"),
+								CustomModelTrainingDate: new("2024-02-01"),
 								TotalPRSummariesCreated: 10,
 								TotalEngagedUsers:       4,
 							},
@@ -2016,8 +2016,8 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  Ptr(24),
-			TotalEngagedUsers: Ptr(20),
+			TotalActiveUsers:  new(24),
+			TotalEngagedUsers: new(20),
 			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIDECodeCompletionsLanguage{
@@ -2068,7 +2068,7 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
-								CustomModelTrainingDate: Ptr("2024-02-01"),
+								CustomModelTrainingDate: new("2024-02-01"),
 								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "typescript",
@@ -2111,7 +2111,7 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 							{
 								Name:                     "a-custom-model",
 								IsCustomModel:            true,
-								CustomModelTrainingDate:  Ptr("2024-02-01"),
+								CustomModelTrainingDate:  new("2024-02-01"),
 								TotalEngagedUsers:        1,
 								TotalChats:               10,
 								TotalChatInsertionEvents: 11,
@@ -2156,7 +2156,7 @@ func TestCopilotService_GetOrganizationMetrics(t *testing.T) {
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
-								CustomModelTrainingDate: Ptr("2024-02-01"),
+								CustomModelTrainingDate: new("2024-02-01"),
 								TotalPRSummariesCreated: 10,
 								TotalEngagedUsers:       4,
 							},
@@ -2357,8 +2357,8 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 	want := []*CopilotMetrics{
 		{
 			Date:              "2024-06-24",
-			TotalActiveUsers:  Ptr(24),
-			TotalEngagedUsers: Ptr(20),
+			TotalActiveUsers:  new(24),
+			TotalEngagedUsers: new(20),
 			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 20,
 				Languages: []*CopilotIDECodeCompletionsLanguage{
@@ -2409,7 +2409,7 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
-								CustomModelTrainingDate: Ptr("2024-02-01"),
+								CustomModelTrainingDate: new("2024-02-01"),
 								Languages: []*CopilotIDECodeCompletionsModelLanguage{
 									{
 										Name:                    "typescript",
@@ -2452,7 +2452,7 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 							{
 								Name:                     "a-custom-model",
 								IsCustomModel:            true,
-								CustomModelTrainingDate:  Ptr("2024-02-01"),
+								CustomModelTrainingDate:  new("2024-02-01"),
 								TotalEngagedUsers:        1,
 								TotalChats:               10,
 								TotalChatInsertionEvents: 11,
@@ -2497,7 +2497,7 @@ func TestCopilotService_GetOrganizationTeamMetrics(t *testing.T) {
 							{
 								Name:                    "a-custom-model",
 								IsCustomModel:           true,
-								CustomModelTrainingDate: Ptr("2024-02-01"),
+								CustomModelTrainingDate: new("2024-02-01"),
 								TotalPRSummariesCreated: 10,
 								TotalEngagedUsers:       4,
 							},
@@ -2947,8 +2947,8 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 	want := []*CopilotMetrics{
 		{
 			Date:              "2023-01-01",
-			TotalActiveUsers:  Ptr(100),
-			TotalEngagedUsers: Ptr(50),
+			TotalActiveUsers:  new(100),
+			TotalEngagedUsers: new(50),
 			CopilotIDECodeCompletions: &CopilotIDECodeCompletions{
 				TotalEngagedUsers: 50,
 				Languages: []*CopilotIDECodeCompletionsLanguage{
@@ -3034,6 +3034,7 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 			"day": "2026-04-01",
 			"organization_id": "123",
 			"daily_active_cli_users": 2,
+			"daily_active_copilot_app_users": 1,
 			"daily_active_users": 10,
 			"weekly_active_users": 20,
 			"monthly_active_users": 30,
@@ -3064,6 +3065,43 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 					"prompt_tokens_sum": 9494
 				}
 			},
+			"totals_by_copilot_app": {
+				"session_count": 2,
+				"request_count": 6,
+				"prompt_count": 3,
+				"token_usage": {
+					"avg_tokens_per_request": 150.0,
+					"output_tokens_sum": 600,
+					"prompt_tokens_sum": 300
+				}
+			},
+			"totals_by_3rd_party_agent": [
+				{
+					"agent_name": "Claude",
+					"agent_id": "claude",
+					"user_initiated_interaction_count": 8,
+					"session_count": 3
+				}
+			],
+			"totals_by_ai_adoption_phase": [
+				{
+					"phase": "Phase 1",
+					"phase_number": 1,
+					"total_engaged_users": 4,
+					"avg_user_initiated_interactions": 1.5,
+					"avg_code_generation_activities": 2.0,
+					"avg_code_acceptance_activities": 1.0,
+					"avg_loc_added": 22.0,
+					"avg_loc_deleted": 0.0,
+					"avg_pull_requests_reviewed": 0.5,
+					"avg_pull_requests_created": 1.0,
+					"avg_pull_requests_merged": 1.0,
+					"total_pull_requests_merged": 4,
+					"avg_pull_requests_median_minutes_to_merge": 2.5,
+					"avg_pull_requests_minutes_to_review": 1.5,
+					"avg_pull_requests_review_cycles": 1.0
+				}
+			],
 			"loc_added_sum": 100,
 			"pull_requests": {
 				"total_reviewed": 1,
@@ -3086,48 +3124,86 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 	}
 
 	want := &CopilotDailyMetrics{
-		Day:                 "2026-04-01",
-		OrganizationID:      Ptr("123"),
-		DailyActiveCLIUsers: Ptr(2),
-		DailyActiveUsers:    Ptr(10),
-		WeeklyActiveUsers:   Ptr(20),
-		MonthlyActiveUsers:  Ptr(30),
+		Day:                        "2026-04-01",
+		OrganizationID:             new("123"),
+		DailyActiveCLIUsers:        new(2),
+		DailyActiveCopilotAppUsers: new(1),
+		DailyActiveUsers:           new(10),
+		WeeklyActiveUsers:          new(20),
+		MonthlyActiveUsers:         new(30),
 		CopilotMetricsChatPanel: CopilotMetricsChatPanel{
-			ChatPanelAskMode: Ptr(4),
+			ChatPanelAskMode: new(4),
 		},
 		TotalsByIDE: []*CopilotMetricsIDE{
-			{IDE: "vscode", UserInitiatedInteractionCount: Ptr(5), CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: Ptr(100)}},
+			{IDE: "vscode", UserInitiatedInteractionCount: new(5), CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: new(100)}},
 		},
 		TotalsByFeature: []*CopilotMetricsFeature{
-			{Feature: "completion", UserInitiatedInteractionCount: Ptr(5)},
-			{Feature: "agent_edit", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: Ptr(7), LOCDeletedSum: Ptr(2)}},
+			{Feature: "completion", UserInitiatedInteractionCount: new(5)},
+			{Feature: "agent_edit", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{LOCAddedSum: new(7), LOCDeletedSum: new(2)}},
 		},
 		TotalsByLanguageFeature: []*CopilotMetricsLanguageFeature{
-			{Language: "go", Feature: "completion", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: Ptr(3)}},
+			{Language: "go", Feature: "completion", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: new(3)}},
 		},
 		TotalsByLanguageModel: []*CopilotMetricsLanguageModel{
-			{Language: "go", Model: "m1", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: Ptr(3)}},
+			{Language: "go", Model: "m1", CopilotMetricsCodeActivity: CopilotMetricsCodeActivity{CodeGenerationActivityCount: new(3)}},
 		},
 		TotalsByModelFeature: []*CopilotMetricsModelFeature{
-			{Model: "m1", Feature: "completion", UserInitiatedInteractionCount: Ptr(5)},
+			{Model: "m1", Feature: "completion", UserInitiatedInteractionCount: new(5)},
 		},
 		TotalsByCLI: &CopilotMetricsCLI{
-			SessionCount: Ptr(3),
-			RequestCount: Ptr(4),
-			PromptCount:  Ptr(2),
+			SessionCount: new(3),
+			RequestCount: new(4),
+			PromptCount:  new(2),
 			TokenUsage: &CopilotMetricsCLITokenUsage{
-				AvgTokensPerRequest: Ptr(4123.5),
-				OutputTokensSum:     Ptr(7000),
-				PromptTokensSum:     Ptr(9494),
+				AvgTokensPerRequest: new(4123.5),
+				OutputTokensSum:     new(7000),
+				PromptTokensSum:     new(9494),
 			},
 		},
-		LOCAddedSum: Ptr(100),
+		TotalsByCopilotApp: &CopilotMetricsCopilotApp{
+			SessionCount: new(2),
+			RequestCount: new(6),
+			PromptCount:  new(3),
+			TokenUsage: &CopilotMetricsCopilotAppTokenUsage{
+				AvgTokensPerRequest: new(150.0),
+				OutputTokensSum:     new(600),
+				PromptTokensSum:     new(300),
+			},
+		},
+		TotalsBy3rdPartyAgent: []*CopilotMetricsThirdPartyAgent{
+			{
+				AgentName:                     "Claude",
+				AgentID:                       "claude",
+				UserInitiatedInteractionCount: new(8),
+				SessionCount:                  new(3),
+			},
+		},
+		TotalsByAIAdoptionPhase: []*CopilotMetricsAIAdoptionPhaseTotals{
+			{
+				Phase:                               "Phase 1",
+				PhaseNumber:                         1,
+				TotalEngagedUsers:                   4,
+				AvgUserInitiatedInteractions:        1.5,
+				AvgCodeGenerationActivities:         2.0,
+				AvgCodeAcceptanceActivities:         1.0,
+				AvgLOCAdded:                         22.0,
+				AvgLOCDeleted:                       0.0,
+				AvgPullRequestsReviewed:             0.5,
+				AvgPullRequestsCreated:              1.0,
+				AvgPullRequestsMerged:               1.0,
+				TotalPullRequestsMerged:             4,
+				AvgPullRequestsMedianMinutesToMerge: 2.5,
+				AvgPullRequestsMinutesToReview:      1.5,
+				AvgPullRequestsReviewCycles:         1.0,
+			},
+		},
+		LOCAddedSum: new(100),
 		PullRequests: &CopilotMetricsPullRequests{
-			TotalReviewed:                       Ptr(1),
-			TotalCreated:                        Ptr(2),
-			MedianMinutesToMerge:                Ptr(12.5),
-			MedianMinutesToMergeCopilotAuthored: Ptr(4.5),
-			MedianMinutesToMergeCopilotReviewed: Ptr(6.5),
+			TotalReviewed:                       new(1),
+			TotalCreated:                        new(2),
+			MedianMinutesToMerge:                new(12.5),
+			MedianMinutesToMergeCopilotAuthored: new(4.5),
+			MedianMinutesToMergeCopilotReviewed: new(6.5),
 		},
 	}
 
@@ -3158,6 +3234,38 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 	}
 }
 
+// CheckResponse substitutes resp.Body with a re-readable copy on error
+// responses; fetchMetricsReport must still close the original body it replaces.
+func TestCopilotService_fetchMetricsReport_closesOriginalBodyOnErrorResponse(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/daily", func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, `{"message":"Bad Request"}`, 400)
+	})
+
+	var closed bool
+	base := client.client.Transport
+	if base == nil {
+		base = http.DefaultTransport
+	}
+	client.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		resp, err := base.RoundTrip(req)
+		if resp != nil {
+			resp.Body = &closeRecorder{ReadCloser: resp.Body, closed: &closed}
+		}
+		return resp, err
+	})
+
+	ctx := t.Context()
+	if _, _, err := client.Copilot.DownloadDailyMetrics(ctx, client.baseURL.String()+"path/to/daily"); err == nil {
+		t.Fatal("Copilot.DownloadDailyMetrics expected error but got none")
+	}
+	if !closed {
+		t.Error("original response body was not closed on an error response")
+	}
+}
+
 func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -3173,6 +3281,7 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 				{
 					"day": "2026-03-05",
 					"daily_active_cli_users": 2,
+					"daily_active_copilot_app_users": 1,
 					"daily_active_users": 5,
 					"totals_by_cli": {
 						"session_count": 1,
@@ -3182,6 +3291,16 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 							"avg_tokens_per_request": 4000.0,
 							"output_tokens_sum": 5000,
 							"prompt_tokens_sum": 3000
+						}
+					},
+					"totals_by_copilot_app": {
+						"session_count": 1,
+						"request_count": 2,
+						"prompt_count": 1,
+						"token_usage": {
+							"avg_tokens_per_request": 800.0,
+							"output_tokens_sum": 400,
+							"prompt_tokens_sum": 400
 						}
 					},
 					"pull_requests": {
@@ -3208,30 +3327,41 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 	want := &CopilotPeriodicMetrics{
 		ReportStartDay: "2026-03-05",
 		ReportEndDay:   "2026-04-01",
-		OrganizationID: Ptr("123"),
+		OrganizationID: new("123"),
 		CreatedAt:      refTimestamp(1136178000),
 		DayTotals: []*CopilotDailyMetrics{
 			{
-				Day:                 "2026-03-05",
-				DailyActiveCLIUsers: Ptr(2),
-				DailyActiveUsers:    Ptr(5),
+				Day:                        "2026-03-05",
+				DailyActiveCLIUsers:        new(2),
+				DailyActiveCopilotAppUsers: new(1),
+				DailyActiveUsers:           new(5),
 				TotalsByCLI: &CopilotMetricsCLI{
-					SessionCount: Ptr(1),
-					RequestCount: Ptr(2),
-					PromptCount:  Ptr(1),
+					SessionCount: new(1),
+					RequestCount: new(2),
+					PromptCount:  new(1),
 					TokenUsage: &CopilotMetricsCLITokenUsage{
-						AvgTokensPerRequest: Ptr(4000.0),
-						OutputTokensSum:     Ptr(5000),
-						PromptTokensSum:     Ptr(3000),
+						AvgTokensPerRequest: new(4000.0),
+						OutputTokensSum:     new(5000),
+						PromptTokensSum:     new(3000),
+					},
+				},
+				TotalsByCopilotApp: &CopilotMetricsCopilotApp{
+					SessionCount: new(1),
+					RequestCount: new(2),
+					PromptCount:  new(1),
+					TokenUsage: &CopilotMetricsCopilotAppTokenUsage{
+						AvgTokensPerRequest: new(800.0),
+						OutputTokensSum:     new(400),
+						PromptTokensSum:     new(400),
 					},
 				},
 				PullRequests: &CopilotMetricsPullRequests{
-					MedianMinutesToMerge:                Ptr(8.5),
-					MedianMinutesToMergeCopilotAuthored: Ptr(5.0),
-					MedianMinutesToMergeCopilotReviewed: Ptr(7.0),
+					MedianMinutesToMerge:                new(8.5),
+					MedianMinutesToMergeCopilotAuthored: new(5.0),
+					MedianMinutesToMergeCopilotReviewed: new(7.0),
 				},
 			},
-			{Day: "2026-03-06", DailyActiveUsers: Ptr(7)},
+			{Day: "2026-03-06", DailyActiveUsers: new(7)},
 		},
 	}
 
@@ -3268,7 +3398,7 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 
 	mux.HandleFunc("/path/to/users-daily", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_code_review_active":true,"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":`+refTimeStr(1136178000)+`,"cli_version":"1.0.8"}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":`+refTimeStr(1136178001)+`,"plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":`+refTimeStr(1136178002)+`,"ide_version":"1.90"}}]}
+		fmt.Fprint(w, `{"user_id":1,"user_login":"alice","day":"2026-04-01","ai_credits_used":12.5,"user_initiated_interaction_count":5,"chat_panel_edit_mode":2,"used_chat":true,"used_cli":true,"used_copilot_app":true,"used_copilot_cloud_agent":false,"used_copilot_coding_agent":false,"used_copilot_code_review_active":true,"ai_adoption_phase":{"phase":"Phase 2","phase_number":2,"version":"v1"},"totals_by_cli":{"session_count":2,"request_count":2,"prompt_count":1,"last_known_cli_version":{"sampled_at":`+referenceTimeStr+`,"cli_version":"1.0.8"}},"totals_by_copilot_app":{"session_count":1,"request_count":4,"prompt_count":2,"token_usage":{"avg_tokens_per_request":150.0,"output_tokens_sum":100,"prompt_tokens_sum":50}},"totals_by_ide":[{"ide":"vscode","user_initiated_interaction_count":5,"last_known_plugin_version":{"sampled_at":`+referenceTimeStr+`,"plugin":"copilot","plugin_version":"1.0.0"},"last_known_ide_version":{"sampled_at":`+referenceTimeStr+`,"ide_version":"1.90"}}],"totals_by_3rd_party_agent":[{"agent_name":"Claude","agent_id":"claude","user_initiated_interaction_count":2}]}
 {"user_id":2,"user_login":"bob","day":"2026-04-01","used_agent":true,"used_copilot_code_review_passive":true}
 `)
 	})
@@ -3288,35 +3418,61 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 			UserID:                        1,
 			UserLogin:                     "alice",
 			Day:                           "2026-04-01",
-			UserInitiatedInteractionCount: Ptr(5),
+			AICreditsUsed:                 new(12.5),
+			UserInitiatedInteractionCount: new(5),
 			CopilotMetricsChatPanel: CopilotMetricsChatPanel{
-				ChatPanelEditMode: Ptr(2),
+				ChatPanelEditMode: new(2),
 			},
-			UsedChat:                    Ptr(true),
-			UsedCLI:                     Ptr(true),
-			UsedCopilotCodeReviewActive: Ptr(true),
+			UsedChat:                    new(true),
+			UsedCLI:                     new(true),
+			UsedCopilotApp:              new(true),
+			UsedCopilotCloudAgent:       new(false),
+			UsedCopilotCodingAgent:      new(false),
+			UsedCopilotCodeReviewActive: new(true),
+			AIAdoptionPhase: &CopilotMetricsAIAdoptionPhase{
+				Phase:       "Phase 2",
+				PhaseNumber: 2,
+				Version:     "v1",
+			},
 			TotalsByCLI: &CopilotMetricsCLI{
-				SessionCount: Ptr(2),
-				RequestCount: Ptr(2),
-				PromptCount:  Ptr(1),
+				SessionCount: new(2),
+				RequestCount: new(2),
+				PromptCount:  new(1),
 				LastKnownCLIVersion: &CopilotMetricsCLIVersion{
-					SampledAt:  refTimestamp(1136178000),
+					SampledAt:  &referenceTimestamp,
 					CLIVersion: "1.0.8",
+				},
+			},
+			TotalsByCopilotApp: &CopilotMetricsCopilotApp{
+				SessionCount: new(1),
+				RequestCount: new(4),
+				PromptCount:  new(2),
+				TokenUsage: &CopilotMetricsCopilotAppTokenUsage{
+					AvgTokensPerRequest: new(150.0),
+					OutputTokensSum:     new(100),
+					PromptTokensSum:     new(50),
 				},
 			},
 			TotalsByIDE: []*CopilotUserMetricsIDE{
 				{
 					IDE:                           "vscode",
-					UserInitiatedInteractionCount: Ptr(5),
+					UserInitiatedInteractionCount: new(5),
 					LastKnownPluginVersion: &CopilotUserMetricsPluginVersion{
-						SampledAt:     refTimestamp(1136178001),
+						SampledAt:     &referenceTimestamp,
 						Plugin:        "copilot",
 						PluginVersion: "1.0.0",
 					},
 					LastKnownIDEVersion: &CopilotUserMetricsIDEVersion{
-						SampledAt:  refTimestamp(1136178002),
+						SampledAt:  &referenceTimestamp,
 						IDEVersion: "1.90",
 					},
+				},
+			},
+			TotalsBy3rdPartyAgent: []*CopilotMetricsThirdPartyAgent{
+				{
+					AgentName:                     "Claude",
+					AgentID:                       "claude",
+					UserInitiatedInteractionCount: new(2),
 				},
 			},
 		},
@@ -3324,8 +3480,8 @@ func TestCopilotService_DownloadUserDailyMetrics(t *testing.T) {
 			UserID:                       2,
 			UserLogin:                    "bob",
 			Day:                          "2026-04-01",
-			UsedAgent:                    Ptr(true),
-			UsedCopilotCodeReviewPassive: Ptr(true),
+			UsedAgent:                    new(true),
+			UsedCopilotCodeReviewPassive: new(true),
 		},
 	}
 
@@ -3375,8 +3531,8 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 
 	mux.HandleFunc("/path/to/users-periodic", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"report_start_day":"2026-03-05","report_end_day":"2026-04-01","day":"2026-03-05","user_id":1,"user_login":"alice","user_initiated_interaction_count":3,"used_copilot_code_review_active":true}
-{"report_start_day":"2026-03-05","report_end_day":"2026-04-01","day":"2026-03-06","user_id":1,"user_login":"alice","used_cli":true,"used_copilot_code_review_passive":true,"used_copilot_coding_agent":true,"totals_by_cli":{"session_count":1,"request_count":3,"prompt_count":2,"token_usage":{"avg_tokens_per_request":1200.5,"output_tokens_sum":2400,"prompt_tokens_sum":1201}}}
+		fmt.Fprint(w, `{"report_start_day":"2026-03-05","report_end_day":"2026-04-01","day":"2026-03-05","user_id":1,"user_login":"alice","ai_credits_used":3.25,"user_initiated_interaction_count":3,"used_copilot_code_review_active":true,"ai_adoption_phase":{"phase":"Phase 1","phase_number":1,"version":"v1"}}
+{"report_start_day":"2026-03-05","report_end_day":"2026-04-01","day":"2026-03-06","user_id":1,"user_login":"alice","used_cli":true,"used_copilot_app":true,"used_copilot_cloud_agent":true,"used_copilot_coding_agent":true,"used_copilot_code_review_passive":true,"totals_by_cli":{"session_count":1,"request_count":3,"prompt_count":2,"token_usage":{"avg_tokens_per_request":1200.5,"output_tokens_sum":2400,"prompt_tokens_sum":1201}},"totals_by_copilot_app":{"session_count":2,"request_count":5,"prompt_count":3,"token_usage":{"avg_tokens_per_request":900.0,"output_tokens_sum":1500,"prompt_tokens_sum":1500}}}
 `)
 	})
 
@@ -3397,8 +3553,14 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 			Day:                           "2026-03-05",
 			UserID:                        1,
 			UserLogin:                     "alice",
-			UserInitiatedInteractionCount: Ptr(3),
-			UsedCopilotCodeReviewActive:   Ptr(true),
+			AICreditsUsed:                 new(3.25),
+			UserInitiatedInteractionCount: new(3),
+			UsedCopilotCodeReviewActive:   new(true),
+			AIAdoptionPhase: &CopilotMetricsAIAdoptionPhase{
+				Phase:       "Phase 1",
+				PhaseNumber: 1,
+				Version:     "v1",
+			},
 		},
 		{
 			ReportStartDay:               "2026-03-05",
@@ -3406,17 +3568,29 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 			Day:                          "2026-03-06",
 			UserID:                       1,
 			UserLogin:                    "alice",
-			UsedCLI:                      Ptr(true),
-			UsedCopilotCodeReviewPassive: Ptr(true),
-			UsedCopilotCodingAgent:       Ptr(true),
+			UsedCLI:                      new(true),
+			UsedCopilotApp:               new(true),
+			UsedCopilotCloudAgent:        new(true),
+			UsedCopilotCodeReviewPassive: new(true),
+			UsedCopilotCodingAgent:       new(true),
 			TotalsByCLI: &CopilotMetricsCLI{
-				SessionCount: Ptr(1),
-				RequestCount: Ptr(3),
-				PromptCount:  Ptr(2),
+				SessionCount: new(1),
+				RequestCount: new(3),
+				PromptCount:  new(2),
 				TokenUsage: &CopilotMetricsCLITokenUsage{
-					AvgTokensPerRequest: Ptr(1200.5),
-					OutputTokensSum:     Ptr(2400),
-					PromptTokensSum:     Ptr(1201),
+					AvgTokensPerRequest: new(1200.5),
+					OutputTokensSum:     new(2400),
+					PromptTokensSum:     new(1201),
+				},
+			},
+			TotalsByCopilotApp: &CopilotMetricsCopilotApp{
+				SessionCount: new(2),
+				RequestCount: new(5),
+				PromptCount:  new(3),
+				TokenUsage: &CopilotMetricsCopilotAppTokenUsage{
+					AvgTokensPerRequest: new(900.0),
+					OutputTokensSum:     new(1500),
+					PromptTokensSum:     new(1500),
 				},
 			},
 		},

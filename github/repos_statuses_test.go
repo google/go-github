@@ -30,7 +30,7 @@ func TestRepositoriesService_ListStatuses(t *testing.T) {
 		t.Errorf("Repositories.ListStatuses returned error: %v", err)
 	}
 
-	want := []*RepoStatus{{ID: Ptr(int64(1))}}
+	want := []*RepoStatus{{ID: new(int64(1))}}
 	if !cmp.Equal(statuses, want) {
 		t.Errorf("Repositories.ListStatuses returned %+v, want %+v", statuses, want)
 	}
@@ -63,7 +63,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := RepoStatus{State: Ptr("s"), TargetURL: Ptr("t"), Description: Ptr("d")}
+	input := RepoStatus{State: new("s"), TargetURL: new("t"), Description: new("d")}
 
 	mux.HandleFunc("/repos/o/r/statuses/r", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -77,7 +77,7 @@ func TestRepositoriesService_CreateStatus(t *testing.T) {
 		t.Errorf("Repositories.CreateStatus returned error: %v", err)
 	}
 
-	want := &RepoStatus{ID: Ptr(int64(1))}
+	want := &RepoStatus{ID: new(int64(1))}
 	if !cmp.Equal(status, want) {
 		t.Errorf("Repositories.CreateStatus returned %+v, want %+v", status, want)
 	}
@@ -123,7 +123,7 @@ func TestRepositoriesService_GetCombinedStatus(t *testing.T) {
 		t.Errorf("Repositories.GetCombinedStatus returned error: %v", err)
 	}
 
-	want := &CombinedStatus{State: Ptr("success"), Statuses: []*RepoStatus{{ID: Ptr(int64(1))}}}
+	want := &CombinedStatus{State: new("success"), Statuses: []*RepoStatus{{ID: new(int64(1))}}}
 	if !cmp.Equal(status, want) {
 		t.Errorf("Repositories.GetCombinedStatus returned %+v, want %+v", status, want)
 	}

@@ -154,6 +154,15 @@ tips (which are frequently ignored by AI-driven PRs):
   same fix to all similar occurrences throughout the entire PR - don't wait
   for the reviewer to point out each one individually.
 
+### Assisted contributions
+
+Tools that help draft or generate code are allowed, but contributors remain
+responsible for understanding and testing every line they submit. If an
+AI/LLM tool helped with code, tests, or prose, briefly disclose what it did in
+the PR description. Review the rendered diff and description yourself before
+requesting review, remove irrelevant generated changes, and keep review
+comments specific and actionable.
+
 ## Code Guidelines
 
 This section documents common code patterns and conventions used throughout
@@ -311,14 +320,14 @@ See [#3644][] and [#3887][] for background discussion.
 #### Creating Pointers
 
 Pointer fields are common because many request and response fields are
-optional. Use the generic `Ptr` helper to take the address of a literal
+optional. Use the `new` builtin to take the address of a literal
 instead of declaring an intermediate variable:
 
 ```go
 repo := &Repository{
-	Name:    Ptr("go-github"),
-	Private: Ptr(true),
-	ID:      Ptr(int64(1)),
+	Name:    new("go-github"),
+	Private: new(true),
+	ID:      new(int64(1)),
 }
 ```
 
@@ -539,7 +548,7 @@ func TestRepositoriesService_GetByID(t *testing.T) {
 		t.Fatalf("Repositories.GetByID returned error: %v", err)
 	}
 
-	want := &Repository{ID: Ptr(int64(1)), Name: Ptr("n")}
+	want := &Repository{ID: new(int64(1)), Name: new("n")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.GetByID returned %+v, want %+v", got, want)
 	}

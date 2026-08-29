@@ -52,28 +52,28 @@ func TestOrganizationsService_ListRoles(t *testing.T) {
 	}
 
 	want := &OrganizationCustomRoles{
-		TotalCount: Ptr(1),
+		TotalCount: new(1),
 		CustomRepoRoles: []*CustomOrgRole{
 			{
-				ID:          Ptr(int64(1)),
-				Name:        Ptr("Auditor"),
+				ID:          new(int64(1)),
+				Name:        new("Auditor"),
 				Permissions: []string{"read_audit_logs"},
 				Org: &Organization{
-					Login:     Ptr("l"),
-					ID:        Ptr(int64(1)),
-					NodeID:    Ptr("n"),
-					AvatarURL: Ptr("a"),
-					HTMLURL:   Ptr("h"),
-					Name:      Ptr("n"),
-					Company:   Ptr("c"),
-					Blog:      Ptr("b"),
-					Location:  Ptr("l"),
-					Email:     Ptr("e"),
+					Login:     new("l"),
+					ID:        new(int64(1)),
+					NodeID:    new("n"),
+					AvatarURL: new("a"),
+					HTMLURL:   new("h"),
+					Name:      new("n"),
+					Company:   new("c"),
+					Blog:      new("b"),
+					Location:  new("l"),
+					Email:     new("e"),
 				},
 				CreatedAt: refTimestamp(1136178000),
 				UpdatedAt: refTimestamp(1136178001),
-				Source:    Ptr("Organization"),
-				BaseRole:  Ptr("admin"),
+				Source:    new("Organization"),
+				BaseRole:  new("admin"),
 			},
 		},
 	}
@@ -123,14 +123,14 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 	}
 
 	wantBuiltInRole := &CustomOrgRole{
-		ID:          Ptr(int64(8132)),
-		Name:        Ptr("all_repo_read"),
-		Description: Ptr("Grants read access to all repositories in the organization."),
+		ID:          new(int64(8132)),
+		Name:        new("all_repo_read"),
+		Description: new("Grants read access to all repositories in the organization."),
 		Permissions: []string{},
 		CreatedAt:   refTimestamp(1136178000),
 		UpdatedAt:   refTimestamp(1136178001),
-		Source:      Ptr("Predefined"),
-		BaseRole:    Ptr("read"),
+		Source:      new("Predefined"),
+		BaseRole:    new("read"),
 	}
 
 	if !cmp.Equal(gotBuiltInRole, wantBuiltInRole) {
@@ -162,9 +162,9 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 	}
 
 	wantCustomRole := &CustomOrgRole{
-		ID:          Ptr(int64(123456)),
-		Name:        Ptr("test-role"),
-		Description: Ptr("test-role"),
+		ID:          new(int64(123456)),
+		Name:        new("test-role"),
+		Description: new("test-role"),
 		Permissions: []string{
 			"read_organization_custom_org_role",
 			"read_organization_custom_repo_role",
@@ -172,7 +172,7 @@ func TestOrganizationsService_GetOrgRole(t *testing.T) {
 		},
 		CreatedAt: refTimestamp(1136178000),
 		UpdatedAt: refTimestamp(1136178001),
-		Source:    Ptr("Organization"),
+		Source:    new("Organization"),
 		BaseRole:  nil,
 	}
 
@@ -209,14 +209,14 @@ func TestOrganizationsService_CreateCustomOrgRole(t *testing.T) {
 	opts := CreateCustomOrgRoleRequest{
 		Name:        "Reader",
 		Permissions: []string{"read_organization_custom_org_role"},
-		Description: Ptr("A role for reading custom org roles"),
+		Description: new("A role for reading custom org roles"),
 	}
 	gotRoles, _, err := client.Organizations.CreateCustomOrgRole(ctx, "o", opts)
 	if err != nil {
 		t.Errorf("Organizations.CreateCustomOrgRole returned error: %v", err)
 	}
 
-	want := &CustomOrgRole{ID: Ptr(int64(8030)), Name: Ptr("Reader"), Permissions: []string{"read_organization_custom_org_role"}, Description: Ptr("A role for reading custom org roles")}
+	want := &CustomOrgRole{ID: new(int64(8030)), Name: new("Reader"), Permissions: []string{"read_organization_custom_org_role"}, Description: new("A role for reading custom org roles")}
 
 	if !cmp.Equal(gotRoles, want) {
 		t.Errorf("Organizations.CreateCustomOrgRole returned %+v, want %+v", gotRoles, want)
@@ -249,15 +249,15 @@ func TestOrganizationsService_UpdateCustomOrgRole(t *testing.T) {
 	ctx := t.Context()
 
 	opts := UpdateCustomOrgRoleRequest{
-		Name:        Ptr("Updated Name"),
-		Description: Ptr("Updated Description"),
+		Name:        new("Updated Name"),
+		Description: new("Updated Description"),
 	}
 	gotRoles, _, err := client.Organizations.UpdateCustomOrgRole(ctx, "o", 8030, opts)
 	if err != nil {
 		t.Errorf("Organizations.UpdateCustomOrgRole returned error: %v", err)
 	}
 
-	want := &CustomOrgRole{ID: Ptr(int64(8030)), Name: Ptr("Updated Name"), Permissions: []string{"read_organization_custom_org_role"}, Description: Ptr("Updated Description")}
+	want := &CustomOrgRole{ID: new(int64(8030)), Name: new("Updated Name"), Permissions: []string{"read_organization_custom_org_role"}, Description: new("Updated Description")}
 
 	if !cmp.Equal(gotRoles, want) {
 		t.Errorf("Organizations.UpdateCustomOrgRole returned %+v, want %+v", gotRoles, want)
@@ -440,7 +440,7 @@ func TestOrganizationsService_ListTeamsAssignedToOrgRole(t *testing.T) {
 		t.Errorf("Organizations.ListTeamsAssignedToOrgRole returned error: %v", err)
 	}
 
-	want := []*Team{{ID: Ptr(int64(1))}}
+	want := []*Team{{ID: new(int64(1))}}
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListTeamsAssignedToOrgRole returned %+v, want %+v", apps, want)
 	}
@@ -475,7 +475,7 @@ func TestOrganizationsService_ListUsersAssignedToOrgRole(t *testing.T) {
 		t.Errorf("Organizations.ListUsersAssignedToOrgRole returned error: %v", err)
 	}
 
-	want := []*User{{ID: Ptr(int64(1))}}
+	want := []*User{{ID: new(int64(1))}}
 	if !cmp.Equal(apps, want) {
 		t.Errorf("Organizations.ListUsersAssignedToOrgRole returned %+v, want %+v", apps, want)
 	}

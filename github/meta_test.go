@@ -64,7 +64,7 @@ func TestMetaService_Get(t *testing.T) {
 			},
 		},
 
-		VerifiablePasswordAuthentication: Ptr(true),
+		VerifiablePasswordAuthentication: new(true),
 	}
 	if !cmp.Equal(want, meta) {
 		t.Errorf("Get returned %+v, want %+v", meta, want)
@@ -73,6 +73,36 @@ func TestMetaService_Get(t *testing.T) {
 	const methodName = "Get"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Meta.Get(ctx)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestMetaService_ListAPIVersions(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/versions", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `["2021-01-01","2022-11-28"]`)
+	})
+
+	ctx := t.Context()
+	versions, _, err := client.Meta.ListAPIVersions(ctx)
+	if err != nil {
+		t.Errorf("ListAPIVersions returned error: %v", err)
+	}
+
+	want := []string{"2021-01-01", "2022-11-28"}
+	if !cmp.Equal(want, versions) {
+		t.Errorf("ListAPIVersions returned %+v, want %+v", versions, want)
+	}
+
+	const methodName = "ListAPIVersions"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Meta.ListAPIVersions(ctx)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
