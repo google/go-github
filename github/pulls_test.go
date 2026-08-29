@@ -761,8 +761,8 @@ func TestPullRequestsService_MergeAsync(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	request := PullRequestMergeAsyncRequest{
-		MergeMethod: Ptr("squash"),
-		MergeAction: Ptr("default"),
+		MergeMethod: new("squash"),
+		MergeAction: new("default"),
 	}
 
 	mux.HandleFunc("/repos/o/r/pulls/1/merge-async", func(w http.ResponseWriter, r *http.Request) {
@@ -788,13 +788,13 @@ func TestPullRequestsService_MergeAsync(t *testing.T) {
 	}
 
 	want := &PullRequestMergeAsyncResult{
-		Status: Ptr("pending"),
+		Status: new("pending"),
 		Details: &PullRequestMergeAsyncDetails{
-			Message:         Ptr("Merge request enqueued."),
-			UUID:            Ptr("630b9d5e-3f2a-4f7e-8b0c-2d5f9a8c1e42"),
-			MergeMethod:     Ptr("squash"),
-			MergeAction:     Ptr("default"),
-			ExpectedHeadSHA: Ptr("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+			Message:         new("Merge request enqueued."),
+			UUID:            new("630b9d5e-3f2a-4f7e-8b0c-2d5f9a8c1e42"),
+			MergeMethod:     new("squash"),
+			MergeAction:     new("default"),
+			ExpectedHeadSHA: new("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
 		},
 	}
 	if !cmp.Equal(result, want) {
@@ -840,10 +840,10 @@ func TestPullRequestsService_GetMergeAsyncResult(t *testing.T) {
 	}
 
 	want := &PullRequestMergeAsyncResult{
-		Status: Ptr("merged"),
+		Status: new("merged"),
 		Details: &PullRequestMergeAsyncDetails{
-			Message: Ptr("Pull request was merged."),
-			SHA:     Ptr("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+			Message: new("Pull request was merged."),
+			SHA:     new("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
 		},
 	}
 	if !cmp.Equal(result, want) {
