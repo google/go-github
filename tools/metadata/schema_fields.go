@@ -17,61 +17,50 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"regexp"
 	"slices"
 	"strings"
-	"unicode"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"go.yaml.in/yaml/v3"
 )
 
 type schemaFieldCheckOptions struct {
-	descriptions     []*openapiFile
-	githubDir        string
-	schemaNames      []string
-	includeResponses bool
+	descriptions []*openapiFile
+	githubDir    string
 	// exceptions holds "Struct.Field" entries whose diagnostics are suppressed. It is loaded from
 	// schema_field_exceptions.yaml by the command; see loadSchemaFieldExceptions.
 	exceptions []string
 }
 
 type schemaFieldCheckResult struct {
-	Summary     schemaFieldCheckSummary  `json:"summary"`
-	Checked     []*schemaFieldChecked    `json:"checked"`
-	Skipped     []*schemaFieldSkipped    `json:"skipped,omitempty"`
-	Diagnostics []*schemaFieldDiagnostic `json:"diagnostics"`
+	Summary     schemaFieldCheckSummary
+	Checked     []*schemaFieldChecked
+	Diagnostics []*schemaFieldDiagnostic
 }
 
 type schemaFieldCheckSummary struct {
-	OpenAPISchemas int `json:"openapi_schemas"`
-	GoStructs      int `json:"go_structs"`
-	Checked        int `json:"checked"`
-	Skipped        int `json:"skipped"`
-	Diagnostics    int `json:"diagnostics"`
+	GoStructs        int
+	AnnotatedStructs int
+	Checked          int
+	Diagnostics      int
 }
 
 type schemaFieldChecked struct {
-	OpenAPISchema string `json:"openapi_schema"`
-	GoStruct      string `json:"go_struct"`
-	OpenAPIFile   string `json:"openapi_file,omitempty"`
-	MatchReason   string `json:"match_reason"`
-}
-
-type schemaFieldSkipped struct {
-	OpenAPISchema string `json:"openapi_schema"`
-	OpenAPIFile   string `json:"openapi_file,omitempty"`
-	Reason        string `json:"reason"`
+	Annotation  string
+	GoStruct    string
+	OpenAPIFile string
 }
 
 type schemaFieldDiagnostic struct {
-	OpenAPISchema string `json:"openapi_schema"`
-	GoStruct      string `json:"go_struct"`
-	Field         string `json:"field"`
-	JSONName      string `json:"json_name"`
-	Message       string `json:"message"`
-	Filename      string `json:"filename,omitempty"`
-	Line          int    `json:"line,omitempty"`
-	OpenAPIFile   string `json:"openapi_file,omitempty"`
+	Annotation  string
+	GoStruct    string
+	Field       string
+	JSONName    string
+	Message     string
+	Filename    string
+	Line        int
+	OpenAPIFile string
 }
 
 func (d schemaFieldDiagnostic) String() string {
@@ -83,7 +72,14 @@ func (d schemaFieldDiagnostic) String() string {
 	if d.OpenAPIFile != "" {
 		source = fmt.Sprintf(" [%v]", d.OpenAPIFile)
 	}
-	return fmt.Sprintf("%v%v.%v (%v from %v): %v%v", loc, d.GoStruct, d.Field, d.JSONName, d.OpenAPISchema, d.Message, source)
+	subject := d.GoStruct
+	if d.Field != "" {
+		subject += "." + d.Field
+	}
+	if d.JSONName != "" && d.Annotation != "" {
+		subject += fmt.Sprintf(" (%v from %v)", d.JSONName, d.Annotation)
+	}
+	return fmt.Sprintf("%v%v: %v%v", loc, subject, d.Message, source)
 }
 
 func diagLocation(filename string, line int) string {
@@ -96,11 +92,36 @@ func diagLocation(filename string, line int) string {
 	return fmt.Sprintf("%v:%v", filename, line)
 }
 
-type goStructInfo struct {
-	name     string
+// schemaAnnotation is one "//meta:schema <role> <METHOD> <path>" line from a struct doc comment. It names
+// the operation whose request or response body schema the annotated struct must match.
+type schemaAnnotation struct {
+	role     string // "request" or "response"
+	method   string
+	path     string
 	filename string
 	line     int
-	fields   map[string]goStructField
+}
+
+func (a schemaAnnotation) String() string {
+	return fmt.Sprintf("%v %v %v", a.role, a.method, a.path)
+}
+
+// schemaAnnotationProblem is a malformed "//meta:schema" line that could not be parsed into a
+// schemaAnnotation.
+type schemaAnnotationProblem struct {
+	text     string
+	message  string
+	filename string
+	line     int
+}
+
+type goStructInfo struct {
+	name               string
+	filename           string
+	line               int
+	fields             map[string]goStructField
+	annotations        []*schemaAnnotation
+	annotationProblems []*schemaAnnotationProblem
 }
 
 type goStructField struct {
@@ -115,10 +136,10 @@ type goStructField struct {
 }
 
 type openapiSchemaFields struct {
-	openapiSchema string
-	openapiFile   string
-	required      []string
-	properties    map[string]openapiSchemaProperty
+	annotation  string
+	openapiFile string
+	required    []string
+	properties  map[string]openapiSchemaProperty
 }
 
 type openapiSchemaProperty struct {
@@ -128,9 +149,8 @@ type openapiSchemaProperty struct {
 }
 
 type schemaFieldMatch struct {
-	schema      *openapiSchemaFields
-	goStruct    *goStructInfo
-	matchReason string
+	schema   *openapiSchemaFields
+	goStruct *goStructInfo
 }
 
 // schemaFieldExceptionsFile is the on-disk format of schema_field_exceptions.yaml: a list of "Struct.Field"
@@ -171,45 +191,87 @@ func filterAllowedSchemaFieldDiagnostics(diagnostics []*schemaFieldDiagnostic, e
 	return kept
 }
 
+// checkSchemaFields validates every Go struct that carries at least one "//meta:schema" annotation against
+// the OpenAPI schema of the annotated operation. Structs without annotations are not checked.
 func checkSchemaFields(opts schemaFieldCheckOptions) (schemaFieldCheckResult, error) {
 	if len(opts.descriptions) == 0 {
 		return schemaFieldCheckResult{}, errors.New("no OpenAPI descriptions loaded")
 	}
 
-	goStructs, requestStructs, err := collectGoStructs(opts.githubDir)
+	goStructs, err := collectGoStructs(opts.githubDir)
 	if err != nil {
 		return schemaFieldCheckResult{}, err
 	}
 
-	schemas, skipped, err := collectOpenAPISchemaFields(opts.descriptions, opts.schemaNames)
-	if err != nil {
-		return schemaFieldCheckResult{}, err
-	}
+	var result schemaFieldCheckResult
+	for _, name := range slices.Sorted(maps.Keys(goStructs)) {
+		goStruct := goStructs[name]
+		if len(goStruct.annotations) == 0 && len(goStruct.annotationProblems) == 0 {
+			continue
+		}
+		result.Summary.AnnotatedStructs++
 
-	includeResponses := opts.includeResponses || len(opts.schemaNames) > 0
-	matches, matchSkipped := matchOpenAPISchemasToGoStructs(schemas, goStructs, requestStructs, len(opts.schemaNames) > 0, includeResponses)
-	result := schemaFieldCheckResult{
-		Skipped: append(skipped, matchSkipped...),
-		Summary: schemaFieldCheckSummary{
-			OpenAPISchemas: len(schemas),
-			GoStructs:      len(goStructs),
-		},
-	}
+		for _, problem := range goStruct.annotationProblems {
+			result.Diagnostics = append(result.Diagnostics, &schemaFieldDiagnostic{
+				GoStruct: goStruct.name,
+				Message:  fmt.Sprintf("invalid annotation %q: %v", problem.text, problem.message),
+				Filename: problem.filename,
+				Line:     problem.line,
+			})
+		}
 
-	for _, match := range matches {
-		result.Checked = append(result.Checked, &schemaFieldChecked{
-			OpenAPISchema: match.schema.openapiSchema,
-			GoStruct:      match.goStruct.name,
-			OpenAPIFile:   match.schema.openapiFile,
-			MatchReason:   match.matchReason,
-		})
-		result.Diagnostics = append(result.Diagnostics, compareSchemaFields(match)...)
+		for _, ann := range goStruct.annotations {
+			schema, openapiFilename, problem := resolveSchemaAnnotation(opts.descriptions, ann)
+			if problem != "" {
+				result.Diagnostics = append(result.Diagnostics, &schemaFieldDiagnostic{
+					Annotation:  ann.String(),
+					GoStruct:    goStruct.name,
+					Message:     problem,
+					Filename:    ann.filename,
+					Line:        ann.line,
+					OpenAPIFile: openapiFilename,
+				})
+				continue
+			}
+
+			flat, reason, err := flattenObjectSchema(schema)
+			if err != nil {
+				return schemaFieldCheckResult{}, fmt.Errorf("%v %v: %w", goStruct.name, ann, err)
+			}
+			if reason != "" {
+				result.Diagnostics = append(result.Diagnostics, &schemaFieldDiagnostic{
+					Annotation:  ann.String(),
+					GoStruct:    goStruct.name,
+					Message:     "annotated schema cannot be checked: " + reason,
+					Filename:    ann.filename,
+					Line:        ann.line,
+					OpenAPIFile: openapiFilename,
+				})
+				continue
+			}
+
+			match := &schemaFieldMatch{
+				schema: &openapiSchemaFields{
+					annotation:  ann.String(),
+					openapiFile: openapiFilename,
+					required:    flat.Required,
+					properties:  schemaProperties(flat.Properties),
+				},
+				goStruct: goStruct,
+			}
+			result.Checked = append(result.Checked, &schemaFieldChecked{
+				Annotation:  ann.String(),
+				GoStruct:    goStruct.name,
+				OpenAPIFile: openapiFilename,
+			})
+			result.Diagnostics = append(result.Diagnostics, compareSchemaFields(match)...)
+		}
 	}
 
 	result.Diagnostics = filterAllowedSchemaFieldDiagnostics(result.Diagnostics, opts.exceptions)
 	sortSchemaFieldResult(&result)
+	result.Summary.GoStructs = len(goStructs)
 	result.Summary.Checked = len(result.Checked)
-	result.Summary.Skipped = len(result.Skipped)
 	result.Summary.Diagnostics = len(result.Diagnostics)
 	return result, nil
 }
@@ -220,95 +282,78 @@ func sortSchemaFieldResult(result *schemaFieldCheckResult) {
 			cmp.Compare(a.GoStruct, b.GoStruct),
 			cmp.Compare(a.JSONName, b.JSONName),
 			cmp.Compare(a.Field, b.Field),
-			cmp.Compare(a.OpenAPISchema, b.OpenAPISchema),
+			cmp.Compare(a.Annotation, b.Annotation),
 			cmp.Compare(a.OpenAPIFile, b.OpenAPIFile),
 			cmp.Compare(a.Message, b.Message),
 		)
 	})
 	slices.SortFunc(result.Checked, func(a, b *schemaFieldChecked) int {
 		return cmp.Or(
-			cmp.Compare(a.OpenAPISchema, b.OpenAPISchema),
 			cmp.Compare(a.GoStruct, b.GoStruct),
+			cmp.Compare(a.Annotation, b.Annotation),
 			cmp.Compare(a.OpenAPIFile, b.OpenAPIFile),
-			cmp.Compare(a.MatchReason, b.MatchReason),
-		)
-	})
-	slices.SortFunc(result.Skipped, func(a, b *schemaFieldSkipped) int {
-		return cmp.Or(
-			cmp.Compare(a.OpenAPISchema, b.OpenAPISchema),
-			cmp.Compare(a.OpenAPIFile, b.OpenAPIFile),
-			cmp.Compare(a.Reason, b.Reason),
 		)
 	})
 }
 
-func collectOpenAPISchemaFields(descriptions []*openapiFile, schemaNames []string) ([]*openapiSchemaFields, []*schemaFieldSkipped, error) {
-	var schemas []*openapiSchemaFields
-	var skipped []*schemaFieldSkipped
-	seen := map[string]bool{}
-
+// resolveSchemaAnnotation finds the schema named by ann in the first OpenAPI description that documents the
+// annotated operation, searching the descriptions in their load order (api.github.com first, then ghec,
+// then ghes). It returns a non-empty problem string when the operation cannot be found or has no matching
+// JSON schema, mirroring how unknown "//meta:operation" names are reported.
+func resolveSchemaAnnotation(descriptions []*openapiFile, ann *schemaAnnotation) (schema *openapi3.Schema, openapiFilename, problem string) {
+	normPath := normalizeOpPath(ann.path)
 	for _, desc := range descriptions {
-		if desc.description == nil || desc.description.Components == nil || desc.description.Components.Schemas == nil {
+		if desc.description == nil {
 			continue
 		}
-
-		names := make([]string, 0, len(desc.description.Components.Schemas))
-		for name := range desc.description.Components.Schemas {
-			if len(schemaNames) > 0 && !slices.Contains(schemaNames, name) {
+		for path, pathItem := range desc.description.Paths.Map() {
+			if pathItem == nil || normalizeOpPath(path) != normPath {
 				continue
 			}
-			if seen[name] {
+			op := pathItem.Operations()[ann.method]
+			if op == nil {
 				continue
 			}
-			names = append(names, name)
-		}
-		slices.Sort(names)
-
-		for _, name := range names {
-			seen[name] = true
-			schemaRef := desc.description.Components.Schemas[name]
-			if schemaRef == nil || schemaRef.Value == nil {
-				skipped = append(skipped, newSchemaFieldSkipped(name, desc.filename, "schema reference is unresolved"))
-				continue
-			}
-
-			schema, reason, err := flattenObjectSchema(schemaRef.Value)
-			if err != nil {
-				return nil, nil, fmt.Errorf("%v %v: %w", desc.filename, name, err)
-			}
-			if reason != "" {
-				skipped = append(skipped, newSchemaFieldSkipped(name, desc.filename, reason))
-				continue
-			}
-			if len(schema.Properties) == 0 {
-				skipped = append(skipped, newSchemaFieldSkipped(name, desc.filename, "schema has no object properties"))
-				continue
-			}
-
-			schemas = append(schemas, &openapiSchemaFields{
-				openapiSchema: name,
-				openapiFile:   desc.filename,
-				required:      schema.Required,
-				properties:    schemaProperties(schema.Properties),
-			})
+			schema, problem = annotationSchema(op, ann.role)
+			return schema, desc.filename, problem
 		}
 	}
-
-	for _, name := range schemaNames {
-		if !seen[name] {
-			skipped = append(skipped, newSchemaFieldSkipped(name, "", "schema filter did not match an OpenAPI schema"))
-		}
-	}
-
-	return schemas, skipped, nil
+	return nil, "", fmt.Sprintf("could not find operation %v %v in any OpenAPI description", ann.method, ann.path)
 }
 
-func newSchemaFieldSkipped(schemaName, filename, reason string) *schemaFieldSkipped {
-	return &schemaFieldSkipped{
-		OpenAPISchema: schemaName,
-		OpenAPIFile:   filename,
-		Reason:        reason,
+// annotationSchema extracts the request or response JSON schema from op according to role.
+func annotationSchema(op *openapi3.Operation, role string) (*openapi3.Schema, string) {
+	switch role {
+	case "request":
+		if op.RequestBody == nil || op.RequestBody.Value == nil {
+			return nil, "operation has no request body"
+		}
+		return jsonContentSchema(op.RequestBody.Value.Content, "operation request body")
+	default: // "response"; parseSchemaAnnotations rejects other roles
+		if op.Responses == nil {
+			return nil, "operation has no responses"
+		}
+		responses := op.Responses.Map()
+		for _, code := range slices.Sorted(maps.Keys(responses)) {
+			if !strings.HasPrefix(code, "2") || responses[code] == nil || responses[code].Value == nil {
+				continue
+			}
+			if schema, problem := jsonContentSchema(responses[code].Value.Content, ""); problem == "" {
+				return schema, ""
+			}
+		}
+		return nil, "operation has no 2xx response with an application/json schema"
 	}
+}
+
+// jsonContentSchema returns the application/json schema from content, or a problem string naming what is
+// missing.
+func jsonContentSchema(content openapi3.Content, what string) (*openapi3.Schema, string) {
+	mediaType := content.Get("application/json")
+	if mediaType == nil || mediaType.Schema == nil || mediaType.Schema.Value == nil {
+		return nil, what + " has no application/json schema"
+	}
+	return mediaType.Schema.Value, ""
 }
 
 func flattenObjectSchema(schema *openapi3.Schema) (*openapi3.Schema, string, error) {
@@ -361,314 +406,6 @@ func schemaProperties(properties openapi3.Schemas) map[string]openapiSchemaPrope
 	return result
 }
 
-func matchOpenAPISchemasToGoStructs(schemas []*openapiSchemaFields, goStructs map[string]*goStructInfo, requestStructs map[string]bool, allowSchemaNameMatch, includeResponses bool) ([]*schemaFieldMatch, []*schemaFieldSkipped) {
-	var matches []*schemaFieldMatch
-	var skipped []*schemaFieldSkipped
-
-	for _, schema := range schemas {
-		if allowSchemaNameMatch {
-			if match, ok, reason := matchBySchemaName(schema, goStructs, requestStructs, includeResponses); ok {
-				matches = append(matches, match)
-				continue
-			} else if reason != "" {
-				skipped = append(skipped, newSchemaFieldSkipped(schema.openapiSchema, schema.openapiFile, reason))
-				continue
-			}
-		}
-		if match, ok, reason := matchByExactFieldSet(schema, goStructs, requestStructs, includeResponses); ok {
-			matches = append(matches, match)
-		} else {
-			skipped = append(skipped, newSchemaFieldSkipped(schema.openapiSchema, schema.openapiFile, reason))
-		}
-	}
-
-	return dropAmbiguousFieldSetMatches(matches, skipped)
-}
-
-// dropAmbiguousFieldSetMatches removes exact-field-set matches for a Go struct that matched more than one
-// OpenAPI schema. A field set that coincidentally equals several unrelated schemas (for example a generic
-// {id, type}) is not a reliable match, so it is skipped rather than reported.
-func dropAmbiguousFieldSetMatches(matches []*schemaFieldMatch, skipped []*schemaFieldSkipped) ([]*schemaFieldMatch, []*schemaFieldSkipped) {
-	fieldSetMatchCount := map[string]int{}
-	for _, match := range matches {
-		if match.matchReason == "exact JSON field set" {
-			fieldSetMatchCount[match.goStruct.name]++
-		}
-	}
-
-	var kept []*schemaFieldMatch
-	for _, match := range matches {
-		if match.matchReason == "exact JSON field set" && fieldSetMatchCount[match.goStruct.name] > 1 {
-			skipped = append(skipped, newSchemaFieldSkipped(match.schema.openapiSchema, match.schema.openapiFile,
-				"Go struct "+match.goStruct.name+" matches multiple schemas by field set"))
-			continue
-		}
-		kept = append(kept, match)
-	}
-	return kept, skipped
-}
-
-func matchBySchemaName(schema *openapiSchemaFields, goStructs map[string]*goStructInfo, requestStructs map[string]bool, includeResponses bool) (*schemaFieldMatch, bool, string) {
-	var matches []*goStructInfo
-	for _, name := range goNameCandidates(schema.openapiSchema) {
-		goStruct, ok := goStructs[name]
-		if !ok {
-			continue
-		}
-		if !canCheckGoStruct(goStruct, requestStructs, includeResponses) {
-			continue
-		}
-		if !hasEnoughSharedFields(schema, goStruct) {
-			continue
-		}
-		matches = appendUniqueGoStruct(matches, goStruct)
-	}
-
-	switch len(matches) {
-	case 0:
-		return nil, false, ""
-	case 1:
-		return &schemaFieldMatch{
-			schema:      schema,
-			goStruct:    matches[0],
-			matchReason: "schema name",
-		}, true, ""
-	default:
-		return nil, false, "ambiguous Go struct name match: " + joinGoStructNames(matches)
-	}
-}
-
-func matchByExactFieldSet(schema *openapiSchemaFields, goStructs map[string]*goStructInfo, requestStructs map[string]bool, includeResponses bool) (*schemaFieldMatch, bool, string) {
-	if len(schema.properties) < 2 {
-		return nil, false, "no unambiguous Go struct match"
-	}
-
-	var matches []*goStructInfo
-	for _, goStruct := range goStructs {
-		if !canCheckGoStruct(goStruct, requestStructs, includeResponses) {
-			continue
-		}
-		if sameJSONFieldSet(schema, goStruct) {
-			matches = append(matches, goStruct)
-		}
-	}
-
-	switch len(matches) {
-	case 0:
-		return nil, false, "no unambiguous Go struct match"
-	case 1:
-		return &schemaFieldMatch{
-			schema:      schema,
-			goStruct:    matches[0],
-			matchReason: "exact JSON field set",
-		}, true, ""
-	default:
-		slices.SortFunc(matches, func(a, b *goStructInfo) int {
-			return cmp.Compare(a.name, b.name)
-		})
-		return nil, false, "ambiguous Go struct field-set match: " + joinGoStructNames(matches)
-	}
-}
-
-// canCheckGoStruct reports whether goStruct should be compared against an OpenAPI schema. By default only
-// request body structs are checked; requestStructs holds the names of structs used as the body argument of a
-// mutating client.NewRequest call. Response and other structs are only checked when includeResponses is set.
-func canCheckGoStruct(goStruct *goStructInfo, requestStructs map[string]bool, includeResponses bool) bool {
-	return includeResponses || requestStructs[goStruct.name]
-}
-
-func appendUniqueGoStruct(matches []*goStructInfo, goStruct *goStructInfo) []*goStructInfo {
-	for _, existing := range matches {
-		if existing.name == goStruct.name {
-			return matches
-		}
-	}
-	return append(matches, goStruct)
-}
-
-func joinGoStructNames(goStructs []*goStructInfo) string {
-	names := make([]string, 0, len(goStructs))
-	for _, goStruct := range goStructs {
-		names = append(names, goStruct.name)
-	}
-	slices.Sort(names)
-	return strings.Join(names, ", ")
-}
-
-// Thresholds for hasEnoughSharedFields. A schema-name match already agrees on the Go type name, so these
-// guard only against a name that coincidentally collides with an unrelated struct. They are deliberately
-// lenient: a wrong match is dropped later as ambiguous, but a missed match silently skips a real check.
-const (
-	// minSharedFieldsForMatch accepts a match once this many JSON fields overlap, regardless of struct
-	// size: three shared, correctly named fields are unlikely to line up by chance.
-	minSharedFieldsForMatch = 3
-	// minSharedFieldPercent is the fallback for structs smaller than minSharedFieldsForMatch: the overlap
-	// must cover at least this share of the smaller field set. Compared as
-	// shared*100 >= smallest*minSharedFieldPercent to stay in integer math.
-	minSharedFieldPercent = 60
-)
-
-// hasEnoughSharedFields reports whether schema and goStruct share enough JSON fields to treat a schema-name
-// match as genuine rather than a coincidental name collision.
-func hasEnoughSharedFields(schema *openapiSchemaFields, goStruct *goStructInfo) bool {
-	shared := sharedFieldCount(schema, goStruct)
-	if shared == 0 {
-		return false
-	}
-	smallest := min(len(schema.properties), len(goStruct.fields))
-	// A type with one or two fields has too little signal for a percentage test, so require every field to
-	// line up before trusting the match.
-	if smallest <= 2 {
-		return shared == smallest
-	}
-	return shared >= minSharedFieldsForMatch || shared*100 >= smallest*minSharedFieldPercent
-}
-
-func sharedFieldCount(schema *openapiSchemaFields, goStruct *goStructInfo) int {
-	var shared int
-	for name := range schema.properties {
-		if _, ok := goStruct.fields[name]; ok {
-			shared++
-		}
-	}
-	return shared
-}
-
-func sameJSONFieldSet(schema *openapiSchemaFields, goStruct *goStructInfo) bool {
-	if len(schema.properties) != len(goStruct.fields) {
-		return false
-	}
-	for name := range schema.properties {
-		if _, ok := goStruct.fields[name]; !ok {
-			return false
-		}
-	}
-	return true
-}
-
-// goInitialisms maps a lowercase OpenAPI name token to its idiomatic Go casing when building candidate struct
-// names in goName. The structfield linter keeps a similar list (its `initialisms`/`specialCases`), but it
-// lives in the separate github.com/google/go-github/v89/tools/structfield module and is keyed and shaped
-// differently (uppercase-keyed set for a different purpose), so the two are intentionally not shared:
-// unifying them would require a new shared module that both tools depend on. This list is deliberately small
-// and only needs the initialisms that actually appear in OpenAPI schema names.
-var goInitialisms = map[string]string{
-	"api":     "API",
-	"apis":    "APIs",
-	"gpg":     "GPG",
-	"html":    "HTML",
-	"http":    "HTTP",
-	"https":   "HTTPS",
-	"id":      "ID",
-	"ids":     "IDs",
-	"ip":      "IP",
-	"ips":     "IPs",
-	"oauth":   "OAuth",
-	"oidc":    "OIDC",
-	"scim":    "SCIM",
-	"sms":     "SMS",
-	"sso":     "SSO",
-	"ssh":     "SSH",
-	"totp":    "TOTP",
-	"url":     "URL",
-	"urls":    "URLs",
-	"webhook": "Webhook",
-}
-
-func goNameCandidates(openapiName string) []string {
-	tokens := splitOpenAPIName(openapiName)
-	if len(tokens) == 0 {
-		return nil
-	}
-
-	variants := [][]string{tokens}
-	allSingular := make([]string, len(tokens))
-	var allChanged bool
-	for i, token := range tokens {
-		singular := singularize(token)
-		allSingular[i] = singular
-		if singular != token {
-			allChanged = true
-			variant := slices.Clone(tokens)
-			variant[i] = singular
-			variants = append(variants, variant)
-		}
-	}
-	if allChanged {
-		variants = append(variants, allSingular)
-	}
-
-	var names []string
-	seen := map[string]bool{}
-	for _, variant := range variants {
-		name := goName(variant)
-		if name == "" || seen[name] {
-			continue
-		}
-		seen[name] = true
-		names = append(names, name)
-	}
-	return names
-}
-
-func splitOpenAPIName(name string) []string {
-	return strings.FieldsFunc(name, func(r rune) bool {
-		return !unicode.IsLetter(r) && !unicode.IsDigit(r)
-	})
-}
-
-func singularize(token string) string {
-	lower := strings.ToLower(token)
-	switch {
-	case strings.HasSuffix(lower, "ies") && len(token) > 3:
-		return token[:len(token)-3] + "y"
-	case strings.HasSuffix(lower, "statuses"):
-		return token[:len(token)-2]
-	case strings.HasSuffix(lower, "ches") || strings.HasSuffix(lower, "shes") || strings.HasSuffix(lower, "xes") || strings.HasSuffix(lower, "ses"):
-		return token[:len(token)-2]
-	case strings.HasSuffix(lower, "s") && !strings.HasSuffix(lower, "ss") && len(token) > 1:
-		return token[:len(token)-1]
-	default:
-		return token
-	}
-}
-
-func goName(tokens []string) string {
-	var b strings.Builder
-	for _, token := range tokens {
-		if token == "" {
-			continue
-		}
-		lower := strings.ToLower(token)
-		if initialism, ok := goInitialisms[lower]; ok {
-			b.WriteString(initialism)
-			continue
-		}
-		if isVersionToken(lower) {
-			b.WriteString(strings.ToUpper(lower[:1]))
-			b.WriteString(lower[1:])
-			continue
-		}
-		b.WriteString(strings.ToUpper(token[:1]))
-		if len(token) > 1 {
-			b.WriteString(strings.ToLower(token[1:]))
-		}
-	}
-	return b.String()
-}
-
-func isVersionToken(token string) bool {
-	if len(token) < 2 || token[0] != 'v' {
-		return false
-	}
-	for _, r := range token[1:] {
-		if !unicode.IsDigit(r) {
-			return false
-		}
-	}
-	return true
-}
-
 func compareSchemaFields(match *schemaFieldMatch) []*schemaFieldDiagnostic {
 	var diagnostics []*schemaFieldDiagnostic
 	for jsonName, field := range match.goStruct.fields {
@@ -702,12 +439,12 @@ func compareSchemaFields(match *schemaFieldMatch) []*schemaFieldDiagnostic {
 			continue
 		}
 		diagnostics = append(diagnostics, &schemaFieldDiagnostic{
-			OpenAPISchema: match.schema.openapiSchema,
-			GoStruct:      match.goStruct.name,
-			JSONName:      propName,
-			Field:         propName,
-			Message:       "OpenAPI schema property is missing from the Go struct",
-			OpenAPIFile:   match.schema.openapiFile,
+			Annotation:  match.schema.annotation,
+			GoStruct:    match.goStruct.name,
+			JSONName:    propName,
+			Field:       propName,
+			Message:     "OpenAPI schema property is missing from the Go struct",
+			OpenAPIFile: match.schema.openapiFile,
 		})
 	}
 	return diagnostics
@@ -719,27 +456,70 @@ func (p openapiSchemaProperty) canCheckOptionality() bool {
 
 func newSchemaFieldDiagnostic(match *schemaFieldMatch, field goStructField, message string) *schemaFieldDiagnostic {
 	return &schemaFieldDiagnostic{
-		OpenAPISchema: match.schema.openapiSchema,
-		GoStruct:      match.goStruct.name,
-		Field:         field.field,
-		JSONName:      field.jsonName,
-		Message:       message,
-		Filename:      field.filename,
-		Line:          field.line,
-		OpenAPIFile:   match.schema.openapiFile,
+		Annotation:  match.schema.annotation,
+		GoStruct:    match.goStruct.name,
+		Field:       field.field,
+		JSONName:    field.jsonName,
+		Message:     message,
+		Filename:    field.filename,
+		Line:        field.line,
+		OpenAPIFile: match.schema.openapiFile,
 	}
 }
 
-// collectGoStructs parses the Go source files in dir and returns every exported struct by
-// name along with the set of struct types used exclusively as request bodies. A request body
-// is the type of the body argument passed to a mutating (POST, PUT, or PATCH) client.NewRequest
-// call; types that are also returned as a response (for example shared types like Label) are
-// excluded because they follow the all-pointer response convention rather than the request-body
-// convention.
-func collectGoStructs(dir string) (map[string]*goStructInfo, map[string]bool, error) {
+// metaSchemaLineRe recognizes a "//meta:schema ..." doc comment line; the arguments are validated by
+// parseSchemaAnnotations.
+var metaSchemaLineRe = regexp.MustCompile(`(?i)^\s*//\s*meta:schema\b(.*)$`)
+
+// parseSchemaAnnotations extracts every "//meta:schema <role> <METHOD> <path>" line from doc. Malformed
+// lines are returned as problems so they surface as diagnostics instead of being silently ignored.
+func parseSchemaAnnotations(fset *token.FileSet, doc *ast.CommentGroup, filename string) ([]*schemaAnnotation, []*schemaAnnotationProblem) {
+	if doc == nil {
+		return nil, nil
+	}
+	var annotations []*schemaAnnotation
+	var problems []*schemaAnnotationProblem
+	for _, comment := range doc.List {
+		m := metaSchemaLineRe.FindStringSubmatch(comment.Text)
+		if m == nil {
+			continue
+		}
+		line := fset.Position(comment.Pos()).Line
+		args := strings.Fields(m[1])
+		if len(args) != 3 {
+			problems = append(problems, &schemaAnnotationProblem{
+				text:     strings.TrimSpace(strings.TrimPrefix(comment.Text, "//")),
+				message:  "want //meta:schema <request|response> <METHOD> <path>",
+				filename: filename,
+				line:     line,
+			})
+			continue
+		}
+		role := strings.ToLower(args[0])
+		if role != "request" && role != "response" {
+			problems = append(problems, &schemaAnnotationProblem{
+				text:     strings.TrimSpace(strings.TrimPrefix(comment.Text, "//")),
+				message:  fmt.Sprintf("unknown role %q; want request or response", args[0]),
+				filename: filename,
+				line:     line,
+			})
+			continue
+		}
+		annotations = append(annotations, &schemaAnnotation{
+			role:     role,
+			method:   strings.ToUpper(args[1]),
+			path:     args[2],
+			filename: filename,
+			line:     line,
+		})
+	}
+	return annotations, problems
+}
+
+// collectGoStructs parses the Go source files in dir and returns every exported struct by name, along with
+// any "//meta:schema" annotations found in the struct doc comments.
+func collectGoStructs(dir string) (map[string]*goStructInfo, error) {
 	structs := map[string]*goStructInfo{}
-	requestStructs := map[string]bool{}
-	responseStructs := map[string]bool{}
 	fset := token.NewFileSet()
 	err := filepath.WalkDir(dir, func(filename string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
@@ -749,16 +529,11 @@ func collectGoStructs(dir string) (map[string]*goStructInfo, map[string]bool, er
 			return nil
 		}
 
-		fileNode, err := parser.ParseFile(fset, filename, nil, parser.SkipObjectResolution)
+		fileNode, err := parser.ParseFile(fset, filename, nil, parser.ParseComments|parser.SkipObjectResolution)
 		if err != nil {
 			return err
 		}
 		for _, decl := range fileNode.Decls {
-			if fn, ok := decl.(*ast.FuncDecl); ok {
-				collectRequestStructNames(fn, requestStructs)
-				collectResponseStructNames(fn, responseStructs)
-				continue
-			}
 			gen, ok := decl.(*ast.GenDecl)
 			if !ok || gen.Tok != token.TYPE {
 				continue
@@ -772,152 +547,27 @@ func collectGoStructs(dir string) (map[string]*goStructInfo, map[string]bool, er
 				if !ok {
 					continue
 				}
+				doc := typeSpec.Doc
+				if doc == nil && len(gen.Specs) == 1 {
+					doc = gen.Doc
+				}
+				annotations, problems := parseSchemaAnnotations(fset, doc, filename)
 				structs[typeSpec.Name.Name] = &goStructInfo{
-					name:     typeSpec.Name.Name,
-					filename: filename,
-					line:     fset.Position(typeSpec.Name.Pos()).Line,
-					fields:   collectFieldsForStruct(fset, filename, typeSpec.Name.Name, structType),
+					name:               typeSpec.Name.Name,
+					filename:           filename,
+					line:               fset.Position(typeSpec.Name.Pos()).Line,
+					fields:             collectFieldsForStruct(fset, filename, typeSpec.Name.Name, structType),
+					annotations:        annotations,
+					annotationProblems: problems,
 				}
 			}
 		}
 		return nil
 	})
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	// Exclude shared types that are also returned as a response; they follow the all-pointer response
-	// convention rather than the request-body convention.
-	for name := range responseStructs {
-		delete(requestStructs, name)
-	}
-	return structs, requestStructs, nil
-}
-
-// collectRequestStructNames adds to requestStructs the name of the struct type passed as the body argument of
-// every mutating client.NewRequest call in fn.
-func collectRequestStructNames(fn *ast.FuncDecl, requestStructs map[string]bool) {
-	if fn.Body == nil {
-		return
-	}
-	ast.Inspect(fn.Body, func(n ast.Node) bool {
-		call, ok := n.(*ast.CallExpr)
-		if !ok {
-			return true
-		}
-		if isClientNewRequest(call) && isMutatingNewRequest(call) {
-			if name := requestBodyStructName(fn, call.Args[3]); name != "" {
-				requestStructs[name] = true
-			}
-		}
-		return true
-	})
-}
-
-// collectResponseStructNames adds to responseStructs the name of every struct type returned as a pointer (*T)
-// or pointer slice ([]*T) by fn, which marks it as a response type.
-func collectResponseStructNames(fn *ast.FuncDecl, responseStructs map[string]bool) {
-	if fn.Type.Results == nil {
-		return
-	}
-	for _, field := range fn.Type.Results.List {
-		if name := responseStructName(field.Type); name != "" {
-			responseStructs[name] = true
-		}
-	}
-}
-
-// responseStructName returns the struct name of a *T or []*T result type, or "" otherwise.
-func responseStructName(expr ast.Expr) string {
-	switch t := expr.(type) {
-	case *ast.StarExpr:
-		if ident, ok := t.X.(*ast.Ident); ok {
-			return ident.Name
-		}
-	case *ast.ArrayType:
-		return responseStructName(t.Elt)
-	}
-	return ""
-}
-
-// isClientNewRequest reports whether call is of the form x.client.NewRequest(...) or client.NewRequest(...).
-func isClientNewRequest(call *ast.CallExpr) bool {
-	sel, ok := call.Fun.(*ast.SelectorExpr)
-	if !ok || sel.Sel.Name != "NewRequest" {
-		return false
-	}
-	switch x := sel.X.(type) {
-	case *ast.SelectorExpr:
-		return x.Sel.Name == "client"
-	case *ast.Ident:
-		return x.Name == "client"
-	default:
-		return false
-	}
-}
-
-// isMutatingNewRequest reports whether call's method argument is "PATCH", "POST", or "PUT" and a body
-// argument is present.
-func isMutatingNewRequest(call *ast.CallExpr) bool {
-	if len(call.Args) < 4 {
-		return false
-	}
-	lit, ok := call.Args[1].(*ast.BasicLit)
-	if !ok || lit.Kind != token.STRING {
-		return false
-	}
-	switch lit.Value {
-	case `"PATCH"`, `"POST"`, `"PUT"`:
-		return true
-	default:
-		return false
-	}
-}
-
-// requestBodyStructName returns the struct type name of a client.NewRequest body argument, resolving a
-// function parameter to its declared type or a composite literal to its type.
-func requestBodyStructName(fn *ast.FuncDecl, arg ast.Expr) string {
-	switch a := arg.(type) {
-	case *ast.Ident:
-		if field := findFuncParam(fn, a.Name); field != nil {
-			return exprTypeName(field.Type)
-		}
-	case *ast.UnaryExpr:
-		if a.Op == token.AND {
-			return requestBodyStructName(fn, a.X)
-		}
-	case *ast.CompositeLit:
-		return exprTypeName(a.Type)
-	}
-	return ""
-}
-
-func findFuncParam(fn *ast.FuncDecl, name string) *ast.Field {
-	if fn.Type.Params == nil {
-		return nil
-	}
-	for _, field := range fn.Type.Params.List {
-		for _, ident := range field.Names {
-			if ident.Name == name {
-				return field
-			}
-		}
-	}
-	return nil
-}
-
-// exprTypeName returns the base type name of expr, unwrapping a pointer and resolving a qualified (pkg.Type)
-// selector.
-func exprTypeName(expr ast.Expr) string {
-	switch t := expr.(type) {
-	case *ast.StarExpr:
-		return exprTypeName(t.X)
-	case *ast.Ident:
-		return t.Name
-	case *ast.SelectorExpr:
-		return t.Sel.Name
-	default:
-		return ""
-	}
+	return structs, nil
 }
 
 func collectFieldsForStruct(fset *token.FileSet, filename, structName string, structType *ast.StructType) map[string]goStructField {

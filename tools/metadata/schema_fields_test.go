@@ -16,13 +16,16 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestCheckSchemaFieldsMatchesBySchemaName(t *testing.T) {
+func TestCheckSchemaFieldsAnnotatedStruct(t *testing.T) {
 	t.Parallel()
 	githubDir := t.TempDir()
 	writeFile(t, filepath.Join(githubDir, "demo.go"), `package github
 
 import "encoding/json"
 
+// Demo is a demo request body.
+//
+//meta:schema request POST /demo
 type Demo struct {
 	ID       *int64             `+"`json:\"id,omitempty\"`"+`
 	Name     string             `+"`json:\"name\"`"+`
@@ -36,32 +39,31 @@ type Demo struct {
 `)
 
 	result, err := checkSchemaFields(schemaFieldCheckOptions{
-		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json", openapi3.Schemas{
-			"demo": openapi3.NewSchemaRef("", &openapi3.Schema{
-				Required: []string{"id", "name", "items", "metadata"},
-				Properties: openapi3.Schemas{
-					"id":       openapi3.NewSchemaRef("", openapi3.NewIntegerSchema()),
-					"name":     openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
-					"note":     openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
-					"items":    openapi3.NewSchemaRef("", openapi3.NewArraySchema()),
-					"metadata": openapi3.NewSchemaRef("", openapi3.NewObjectSchema()),
-					"raw":      openapi3.NewSchemaRef("", openapi3.NewObjectSchema()),
-					"missing":  openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
-				},
-			}),
-		})},
-		githubDir:   githubDir,
-		schemaNames: []string{"demo"},
+		descriptions: []*openapiFile{
+			testOpenAPIFile("descriptions/api.github.com/api.github.com.json",
+				"/demo", &openapi3.PathItem{Post: testRequestBodyOperation(&openapi3.Schema{
+					Required: []string{"id", "name", "items", "metadata"},
+					Properties: openapi3.Schemas{
+						"id":       openapi3.NewSchemaRef("", openapi3.NewIntegerSchema()),
+						"name":     openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
+						"note":     openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
+						"items":    openapi3.NewSchemaRef("", openapi3.NewArraySchema()),
+						"metadata": openapi3.NewSchemaRef("", openapi3.NewObjectSchema()),
+						"raw":      openapi3.NewSchemaRef("", openapi3.NewObjectSchema()),
+						"missing":  openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
+					},
+				})}),
+		},
+		githubDir: githubDir,
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	if diff := cmp.Diff([]*schemaFieldChecked{{
-		OpenAPISchema: "demo",
-		GoStruct:      "Demo",
-		OpenAPIFile:   "descriptions/api.github.com/api.github.com.json",
-		MatchReason:   "schema name",
+		Annotation:  "request POST /demo",
+		GoStruct:    "Demo",
+		OpenAPIFile: "descriptions/api.github.com/api.github.com.json",
 	}}, result.Checked); diff != "" {
 		t.Errorf("checked mismatch (-want +got):\n%v", diff)
 	}
@@ -82,256 +84,303 @@ type Demo struct {
 	}
 }
 
-func TestCheckSchemaFieldsMatchesByExactFieldSet(t *testing.T) {
+func TestCheckSchemaFieldsMultipleAnnotations(t *testing.T) {
 	t.Parallel()
 	githubDir := t.TempDir()
 	writeFile(t, filepath.Join(githubDir, "demo.go"), `package github
 
-type ExactFieldsRequest struct {
-	ID   *int64  `+"`json:\"id,omitempty\"`"+`
-	Name string  `+"`json:\"name\"`"+`
-	Note *string `+"`json:\"note,omitempty\"`"+`
+// DemoRequest is used by two operations.
+//
+//meta:schema request POST /repos/{owner}/{repo}/demos
+//meta:schema request PATCH /repos/{owner}/{repo}/demos/{demo_id}
+type DemoRequest struct {
+	Body string `+"`json:\"body\"`"+`
+}
+`)
+
+	bodySchema := func() *openapi3.Schema {
+		return &openapi3.Schema{
+			Required:   []string{"body"},
+			Properties: openapi3.Schemas{"body": openapi3.NewSchemaRef("", openapi3.NewStringSchema())},
+		}
+	}
+	descriptions := []*openapiFile{
+		testOpenAPIFile("descriptions/api.github.com/api.github.com.json",
+			"/repos/{owner}/{repo}/demos", &openapi3.PathItem{Post: testRequestBodyOperation(bodySchema())}),
+		testOpenAPIFile("descriptions/ghec/ghec.json",
+			"/repos/{owner}/{repo}/demos/{demo_id}", &openapi3.PathItem{Patch: testRequestBodyOperation(bodySchema())}),
+	}
+
+	result, err := checkSchemaFields(schemaFieldCheckOptions{descriptions: descriptions, githubDir: githubDir})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if diff := cmp.Diff([]*schemaFieldChecked{
+		{Annotation: "request PATCH /repos/{owner}/{repo}/demos/{demo_id}", GoStruct: "DemoRequest", OpenAPIFile: "descriptions/ghec/ghec.json"},
+		{Annotation: "request POST /repos/{owner}/{repo}/demos", GoStruct: "DemoRequest", OpenAPIFile: "descriptions/api.github.com/api.github.com.json"},
+	}, result.Checked); diff != "" {
+		t.Errorf("checked mismatch (-want +got):\n%v", diff)
+	}
+	if len(result.Diagnostics) != 0 {
+		t.Errorf("diagnostics = %v, want none", result.Diagnostics)
+	}
+	if result.Summary.AnnotatedStructs != 1 {
+		t.Errorf("AnnotatedStructs = %v, want 1", result.Summary.AnnotatedStructs)
+	}
 }
 
-func (s *svc) Create(ctx context.Context, body *ExactFieldsRequest) {
-	s.client.NewRequest(ctx, "POST", "u", body)
+func TestCheckSchemaFieldsUnresolvedAnnotation(t *testing.T) {
+	t.Parallel()
+	githubDir := t.TempDir()
+	writeFile(t, filepath.Join(githubDir, "demo.go"), `package github
+
+//meta:schema request POST /missing
+type Demo struct {
+	Body string `+"`json:\"body\"`"+`
 }
 `)
 
 	result, err := checkSchemaFields(schemaFieldCheckOptions{
-		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json", openapi3.Schemas{
-			"unrelated-schema-name": openapi3.NewSchemaRef("", &openapi3.Schema{
-				Required: []string{"id", "name"},
-				Properties: openapi3.Schemas{
-					"id":   openapi3.NewSchemaRef("", openapi3.NewIntegerSchema()),
-					"name": openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
-					"note": openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
-				},
-			}),
-		})},
+		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json",
+			"/demo", &openapi3.PathItem{Post: testRequestBodyOperation(openapi3.NewObjectSchema())})},
+		githubDir: githubDir,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(result.Diagnostics) != 1 {
+		t.Fatalf("diagnostics = %v, want one", result.Diagnostics)
+	}
+	if got, want := result.Diagnostics[0].Message, "could not find operation POST /missing in any OpenAPI description"; got != want {
+		t.Errorf("message = %q, want %q", got, want)
+	}
+}
+
+func TestCheckSchemaFieldsInvalidAnnotation(t *testing.T) {
+	t.Parallel()
+	githubDir := t.TempDir()
+	writeFile(t, filepath.Join(githubDir, "demo.go"), `package github
+
+//meta:schema POST /demo
+type Demo struct{}
+
+//meta:schema body POST /demo
+type Demo2 struct{}
+`)
+
+	result, err := checkSchemaFields(schemaFieldCheckOptions{
+		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json",
+			"/demo", &openapi3.PathItem{Post: testRequestBodyOperation(openapi3.NewObjectSchema())})},
 		githubDir: githubDir,
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if diff := cmp.Diff([]*schemaFieldChecked{{
-		OpenAPISchema: "unrelated-schema-name",
-		GoStruct:      "ExactFieldsRequest",
-		OpenAPIFile:   "descriptions/api.github.com/api.github.com.json",
-		MatchReason:   "exact JSON field set",
-	}}, result.Checked); diff != "" {
-		t.Errorf("checked mismatch (-want +got):\n%v\nskipped: %#v", diff, result.Skipped)
-	}
-
 	var got []string
 	for _, diag := range result.Diagnostics {
-		got = append(got, diag.JSONName+": "+diag.Message)
+		got = append(got, diag.GoStruct+": "+diag.Message)
 	}
 	want := []string{
-		"id: field is required and non-nullable in the OpenAPI schema but is a pointer",
+		`Demo: invalid annotation "meta:schema POST /demo": want //meta:schema <request|response> <METHOD> <path>`,
+		`Demo2: invalid annotation "meta:schema body POST /demo": unknown role "body"; want request or response`,
 	}
 	if diff := cmp.Diff(want, got); diff != "" {
 		t.Errorf("diagnostics mismatch (-want +got):\n%v", diff)
 	}
 }
 
-func TestCheckSchemaFieldsSkipsAmbiguousExactFieldSet(t *testing.T) {
+func TestCheckSchemaFieldsResponseRole(t *testing.T) {
 	t.Parallel()
 	githubDir := t.TempDir()
 	writeFile(t, filepath.Join(githubDir, "demo.go"), `package github
 
-type FirstMatchRequest struct {
-	ID   int64  `+"`json:\"id\"`"+`
-	Name string `+"`json:\"name\"`"+`
-}
-
-type SecondMatchRequest struct {
-	ID   int64  `+"`json:\"id\"`"+`
-	Name string `+"`json:\"name\"`"+`
-}
-
-func (s *svc) First(ctx context.Context, body *FirstMatchRequest) {
-	s.client.NewRequest(ctx, "POST", "u", body)
-}
-
-func (s *svc) Second(ctx context.Context, body *SecondMatchRequest) {
-	s.client.NewRequest(ctx, "POST", "u", body)
+//meta:schema response GET /demo
+type Demo struct {
+	ID int64 `+"`json:\"id\"`"+`
 }
 `)
 
-	result, err := checkSchemaFields(schemaFieldCheckOptions{
-		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json", openapi3.Schemas{
-			"unrelated-schema-name": openapi3.NewSchemaRef("", &openapi3.Schema{
-				Required: []string{"id", "name"},
-				Properties: openapi3.Schemas{
-					"id":   openapi3.NewSchemaRef("", openapi3.NewIntegerSchema()),
-					"name": openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
-				},
-			}),
+	op := &openapi3.Operation{Responses: openapi3.NewResponses(openapi3.WithStatus(200, &openapi3.ResponseRef{
+		Value: &openapi3.Response{Content: openapi3.NewContentWithJSONSchema(&openapi3.Schema{
+			Required:   []string{"id"},
+			Properties: openapi3.Schemas{"id": openapi3.NewSchemaRef("", openapi3.NewIntegerSchema())},
 		})},
+	}))}
+	result, err := checkSchemaFields(schemaFieldCheckOptions{
+		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json",
+			"/demo", &openapi3.PathItem{Get: op})},
 		githubDir: githubDir,
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
+	if len(result.Checked) != 1 || len(result.Diagnostics) != 0 {
+		t.Errorf("checked = %v, diagnostics = %v; want one check and no diagnostics", result.Checked, result.Diagnostics)
+	}
+}
 
-	if len(result.Checked) != 0 {
-		t.Fatalf("checked = %v, want none", result.Checked)
+func TestCheckSchemaFieldsUnsupportedComposition(t *testing.T) {
+	t.Parallel()
+	githubDir := t.TempDir()
+	writeFile(t, filepath.Join(githubDir, "demo.go"), `package github
+
+//meta:schema request POST /demo
+type Demo struct{}
+`)
+
+	oneOf := &openapi3.Schema{OneOf: openapi3.SchemaRefs{openapi3.NewSchemaRef("", openapi3.NewStringSchema())}}
+	result, err := checkSchemaFields(schemaFieldCheckOptions{
+		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json",
+			"/demo", &openapi3.PathItem{Post: testRequestBodyOperation(oneOf)})},
+		githubDir: githubDir,
+	})
+	if err != nil {
+		t.Fatal(err)
 	}
-	if len(result.Diagnostics) != 0 {
-		t.Fatalf("diagnostics = %v, want none", result.Diagnostics)
+	if len(result.Diagnostics) != 1 {
+		t.Fatalf("diagnostics = %v, want one", result.Diagnostics)
 	}
-	if len(result.Skipped) != 1 {
-		t.Fatalf("skipped = %v, want one skip", result.Skipped)
+	if !strings.Contains(result.Diagnostics[0].Message, "annotated schema cannot be checked") {
+		t.Errorf("message = %q, want an unsupported-composition diagnostic", result.Diagnostics[0].Message)
 	}
-	if got := result.Skipped[0].Reason; !strings.Contains(got, "ambiguous Go struct field-set match") {
-		t.Errorf("skip reason = %q, want ambiguous field-set match", got)
+}
+
+func TestCheckSchemaFieldsIgnoresUnannotatedStructs(t *testing.T) {
+	t.Parallel()
+	githubDir := t.TempDir()
+	writeFile(t, filepath.Join(githubDir, "demo.go"), `package github
+
+// Unannotated has fields that would fail the check if it were annotated.
+type Unannotated struct {
+	Name *string `+"`json:\"name\"`"+`
+}
+`)
+
+	result, err := checkSchemaFields(schemaFieldCheckOptions{
+		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json",
+			"/demo", &openapi3.PathItem{Post: testRequestBodyOperation(openapi3.NewObjectSchema())})},
+		githubDir: githubDir,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(result.Checked) != 0 || len(result.Diagnostics) != 0 || result.Summary.AnnotatedStructs != 0 {
+		t.Errorf("result = %+v, want nothing checked for an unannotated struct", result)
 	}
 }
 
 func TestCheckSchemaFieldsAllowsRequiredNullablePointer(t *testing.T) {
 	t.Parallel()
 	githubDir := t.TempDir()
-	writeFile(t, filepath.Join(githubDir, "nullable.go"), `package github
+	writeFile(t, filepath.Join(githubDir, "demo.go"), `package github
 
-type NullableDemo struct {
-	ID *int64 `+"`json:\"id\"`"+`
+//meta:schema request POST /demo
+type Demo struct {
+	Name *string `+"`json:\"name\"`"+`
 }
 `)
 
-	nullableInteger := openapi3.NewIntegerSchema()
-	nullableInteger.Nullable = true
+	nullable := openapi3.NewStringSchema()
+	nullable.Nullable = true
 	result, err := checkSchemaFields(schemaFieldCheckOptions{
-		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json", openapi3.Schemas{
-			"nullable-demo": openapi3.NewSchemaRef("", &openapi3.Schema{
-				Required: []string{"id"},
-				Properties: openapi3.Schemas{
-					"id": openapi3.NewSchemaRef("", nullableInteger),
-				},
-			}),
-		})},
-		githubDir:   githubDir,
-		schemaNames: []string{"nullable-demo"},
+		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json",
+			"/demo", &openapi3.PathItem{Post: testRequestBodyOperation(&openapi3.Schema{
+				Required:   []string{"name"},
+				Properties: openapi3.Schemas{"name": openapi3.NewSchemaRef("", nullable)},
+			})})},
+		githubDir: githubDir,
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
 	if len(result.Diagnostics) != 0 {
-		t.Errorf("diagnostics = %v, want none", result.Diagnostics)
+		t.Errorf("diagnostics = %v, want none for a required nullable pointer field", result.Diagnostics)
 	}
 }
 
-func TestGoNameCandidates(t *testing.T) {
+func TestResolveSchemaAnnotation(t *testing.T) {
 	t.Parallel()
-	tests := []struct {
-		name string
-		in   string
-		want []string
-	}{
-		{name: "plural and version tokens", in: "projects-v2", want: []string{"ProjectsV2", "ProjectV2"}},
-		{name: "singular unchanged", in: "repository", want: []string{"Repository"}},
-		{name: "trailing plural", in: "teams", want: []string{"Teams", "Team"}},
-		{name: "multiple words no plural", in: "code-scanning-alert", want: []string{"CodeScanningAlert"}},
-		{name: "initialism token", in: "api", want: []string{"API"}},
-		{name: "empty", in: "", want: nil},
+	schema := &openapi3.Schema{Properties: openapi3.Schemas{"body": openapi3.NewSchemaRef("", openapi3.NewStringSchema())}}
+	descriptions := []*openapiFile{
+		testOpenAPIFile("descriptions/api.github.com/api.github.com.json",
+			"/repos/{owner}/{repo}/demos", &openapi3.PathItem{Post: testRequestBodyOperation(schema)}),
+		testOpenAPIFile("descriptions/ghes-3.21/ghes-3.21.json",
+			"/admin/demos", &openapi3.PathItem{Post: testRequestBodyOperation(schema)}),
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			if diff := cmp.Diff(tt.want, goNameCandidates(tt.in)); diff != "" {
-				t.Errorf("goNameCandidates(%q) mismatch (-want +got):\n%v", tt.in, diff)
-			}
-		})
-	}
-}
 
-func TestSingularize(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		in, want string
-	}{
-		{"projects", "project"},
-		{"policies", "policy"},
-		{"statuses", "status"},
-		{"boxes", "box"},
-		{"branches", "branch"},
-		{"buses", "bus"},
-		{"keys", "key"},
-		{"class", "class"}, // "ss" is not treated as a plural "s"
-		{"v2", "v2"},
-		{"", ""},
-	}
-	for _, tt := range tests {
-		if got := singularize(tt.in); got != tt.want {
-			t.Errorf("singularize(%q) = %q, want %q", tt.in, got, tt.want)
+	t.Run("path parameter names are normalized", func(t *testing.T) {
+		t.Parallel()
+		got, file, problem := resolveSchemaAnnotation(descriptions, &schemaAnnotation{role: "request", method: "POST", path: "/repos/{o}/{r}/demos"})
+		if got == nil || problem != "" || file != "descriptions/api.github.com/api.github.com.json" {
+			t.Errorf("resolveSchemaAnnotation = (%v, %q, %q), want the api.github.com schema", got, file, problem)
 		}
-	}
-}
+	})
 
-func TestGoName(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name string
-		in   []string
-		want string
-	}{
-		{name: "initialism", in: []string{"api"}, want: "API"},
-		{name: "url initialism", in: []string{"url"}, want: "URL"},
-		{name: "special case oauth", in: []string{"oauth"}, want: "OAuth"},
-		{name: "version token", in: []string{"projects", "v2"}, want: "ProjectsV2"},
-		{name: "plain word", in: []string{"repository"}, want: "Repository"},
-		{name: "skips empty tokens", in: []string{"code", "", "scanning"}, want: "CodeScanning"},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			if got := goName(tt.in); got != tt.want {
-				t.Errorf("goName(%v) = %q, want %q", tt.in, got, tt.want)
-			}
-		})
-	}
-}
-
-func TestIsVersionToken(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		in   string
-		want bool
-	}{
-		{"v2", true},
-		{"v10", true},
-		{"v", false},
-		{"vx", false},
-		{"2", false},
-		{"version", false},
-		{"", false},
-	}
-	for _, tt := range tests {
-		if got := isVersionToken(tt.in); got != tt.want {
-			t.Errorf("isVersionToken(%q) = %v, want %v", tt.in, got, tt.want)
+	t.Run("operation only in a later description is found", func(t *testing.T) {
+		t.Parallel()
+		got, file, problem := resolveSchemaAnnotation(descriptions, &schemaAnnotation{role: "request", method: "POST", path: "/admin/demos"})
+		if got == nil || problem != "" || file != "descriptions/ghes-3.21/ghes-3.21.json" {
+			t.Errorf("resolveSchemaAnnotation = (%v, %q, %q), want the ghes schema", got, file, problem)
 		}
-	}
+	})
+
+	t.Run("wrong method is not found", func(t *testing.T) {
+		t.Parallel()
+		got, _, problem := resolveSchemaAnnotation(descriptions, &schemaAnnotation{role: "request", method: "PATCH", path: "/repos/{owner}/{repo}/demos"})
+		if got != nil || !strings.Contains(problem, "could not find operation") {
+			t.Errorf("resolveSchemaAnnotation = (%v, %q), want a not-found problem", got, problem)
+		}
+	})
+
+	t.Run("missing request body is a problem", func(t *testing.T) {
+		t.Parallel()
+		noBody := []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json",
+			"/demo", &openapi3.PathItem{Post: &openapi3.Operation{}})}
+		got, _, problem := resolveSchemaAnnotation(noBody, &schemaAnnotation{role: "request", method: "POST", path: "/demo"})
+		if got != nil || problem != "operation has no request body" {
+			t.Errorf("resolveSchemaAnnotation = (%v, %q), want a no-request-body problem", got, problem)
+		}
+	})
 }
 
-func TestSplitOpenAPIName(t *testing.T) {
+func TestParseSchemaAnnotationsViaCollectGoStructs(t *testing.T) {
 	t.Parallel()
-	tests := []struct {
-		in   string
-		want []string
-	}{
-		{"projects-v2", []string{"projects", "v2"}},
-		{"api.github.com", []string{"api", "github", "com"}},
-		{"foo_bar-baz", []string{"foo", "bar", "baz"}},
-		{"single", []string{"single"}},
+	githubDir := t.TempDir()
+	writeFile(t, filepath.Join(githubDir, "demo.go"), `package github
+
+// Demo has annotations in mixed case with surrounding doc text.
+//
+//meta:schema Request post /demo
+//meta:schema response GET /demo
+type Demo struct{}
+
+type Group struct{}
+`)
+
+	structs, err := collectGoStructs(githubDir)
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range tests {
-		if diff := cmp.Diff(tt.want, splitOpenAPIName(tt.in)); diff != "" {
-			t.Errorf("splitOpenAPIName(%q) mismatch (-want +got):\n%v", tt.in, diff)
-		}
+
+	demo := structs["Demo"]
+	if demo == nil {
+		t.Fatal("Demo struct not collected")
 	}
-	if got := splitOpenAPIName(""); len(got) != 0 {
-		t.Errorf("splitOpenAPIName(\"\") = %v, want empty", got)
+	var got []string
+	for _, ann := range demo.annotations {
+		got = append(got, ann.String())
+	}
+	want := []string{"request POST /demo", "response GET /demo"}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("annotations mismatch (-want +got):\n%v", diff)
+	}
+	if len(demo.annotationProblems) != 0 {
+		t.Errorf("annotationProblems = %v, want none", demo.annotationProblems)
+	}
+	if group := structs["Group"]; group == nil || len(group.annotations) != 0 {
+		t.Errorf("Group = %+v, want collected with no annotations", group)
 	}
 }
 
@@ -418,16 +467,22 @@ func TestDiagLocation(t *testing.T) {
 func TestSchemaFieldDiagnosticString(t *testing.T) {
 	t.Parallel()
 	withLoc := schemaFieldDiagnostic{
-		OpenAPISchema: "sch", GoStruct: "S", Field: "F", JSONName: "j",
+		Annotation: "request POST /demo", GoStruct: "S", Field: "F", JSONName: "j",
 		Message: "msg", Filename: "f.go", Line: 3, OpenAPIFile: "api.json",
 	}
-	if got, want := withLoc.String(), "f.go:3: S.F (j from sch): msg [api.json]"; got != want {
+	if got, want := withLoc.String(), "f.go:3: S.F (j from request POST /demo): msg [api.json]"; got != want {
 		t.Errorf("String() = %q, want %q", got, want)
 	}
 	noLoc := schemaFieldDiagnostic{
-		OpenAPISchema: "sch", GoStruct: "S", Field: "F", JSONName: "j", Message: "msg",
+		Annotation: "request POST /demo", GoStruct: "S", Field: "F", JSONName: "j", Message: "msg",
 	}
-	if got, want := noLoc.String(), "S.F (j from sch): msg"; got != want {
+	if got, want := noLoc.String(), "S.F (j from request POST /demo): msg"; got != want {
+		t.Errorf("String() = %q, want %q", got, want)
+	}
+	annotationLevel := schemaFieldDiagnostic{
+		GoStruct: "S", Message: "msg", Filename: "f.go", Line: 3,
+	}
+	if got, want := annotationLevel.String(), "f.go:3: S: msg"; got != want {
 		t.Errorf("String() = %q, want %q", got, want)
 	}
 }
@@ -447,86 +502,6 @@ func TestCanCheckOptionality(t *testing.T) {
 		if got := tt.prop.canCheckOptionality(); got != tt.want {
 			t.Errorf("%v: canCheckOptionality() = %v, want %v", tt.name, got, tt.want)
 		}
-	}
-}
-
-// fieldSet and structWith build the minimal shapes the field-matching helpers need.
-func fieldSet[T any](names ...string) map[string]T {
-	m := make(map[string]T, len(names))
-	for _, name := range names {
-		var zero T
-		m[name] = zero
-	}
-	return m
-}
-
-func structWith(fields ...string) *goStructInfo {
-	return &goStructInfo{fields: fieldSet[goStructField](fields...)}
-}
-
-func TestSharedFieldCount(t *testing.T) {
-	t.Parallel()
-	got := sharedFieldCount(
-		&openapiSchemaFields{properties: fieldSet[openapiSchemaProperty]("a", "b", "c")},
-		structWith("b", "c", "d"),
-	)
-	if got != 2 {
-		t.Errorf("sharedFieldCount = %v, want 2", got)
-	}
-}
-
-func TestSameJSONFieldSet(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name   string
-		schema []string
-		strct  []string
-		want   bool
-	}{
-		{name: "equal", schema: []string{"a", "b"}, strct: []string{"a", "b"}, want: true},
-		{name: "different length", schema: []string{"a", "b"}, strct: []string{"a"}, want: false},
-		{name: "same length different members", schema: []string{"a", "b"}, strct: []string{"a", "c"}, want: false},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			got := sameJSONFieldSet(
-				&openapiSchemaFields{properties: fieldSet[openapiSchemaProperty](tt.schema...)},
-				structWith(tt.strct...),
-			)
-			if got != tt.want {
-				t.Errorf("sameJSONFieldSet = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestHasEnoughSharedFields(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name   string
-		schema []string
-		strct  []string
-		want   bool
-	}{
-		{name: "three shared", schema: []string{"a", "b", "c"}, strct: []string{"a", "b", "c"}, want: true},
-		{name: "tiny type all shared", schema: []string{"a", "b"}, strct: []string{"a", "b"}, want: true},
-		{name: "tiny type partial", schema: []string{"a", "b"}, strct: []string{"a", "x"}, want: false},
-		{name: "percentage threshold met", schema: []string{"a", "b", "c"}, strct: []string{"a", "b", "x"}, want: true},
-		{name: "percentage threshold missed", schema: []string{"a", "b", "c", "d"}, strct: []string{"a", "b", "x", "y"}, want: false},
-		{name: "no overlap", schema: []string{"a", "b", "c"}, strct: []string{"x", "y", "z"}, want: false},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			got := hasEnoughSharedFields(
-				&openapiSchemaFields{properties: fieldSet[openapiSchemaProperty](tt.schema...)},
-				structWith(tt.strct...),
-			)
-			if got != tt.want {
-				t.Errorf("hasEnoughSharedFields = %v, want %v", got, tt.want)
-			}
-		})
 	}
 }
 
@@ -635,77 +610,23 @@ func TestSchemaProperties(t *testing.T) {
 func TestCheckSchemaFieldsCommand(t *testing.T) {
 	testServer := newTestServer(t, "schema-ref", map[string]any{
 		"api.github.com/api.github.com.json": openapi3.T{
-			Components: &openapi3.Components{
-				Schemas: openapi3.Schemas{
-					"demo": openapi3.NewSchemaRef("", &openapi3.Schema{
-						Required: []string{"id", "name"},
-						Properties: openapi3.Schemas{
-							"id":   openapi3.NewSchemaRef("", openapi3.NewIntegerSchema()),
-							"name": openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
-							"note": openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
-						},
-					}),
-				},
-			},
+			Paths: openapi3.NewPaths(openapi3.WithPath("/demo", &openapi3.PathItem{
+				Post: testRequestBodyOperation(&openapi3.Schema{
+					Required: []string{"id", "name"},
+					Properties: openapi3.Schemas{
+						"id":   openapi3.NewSchemaRef("", openapi3.NewIntegerSchema()),
+						"name": openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
+						"note": openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
+					},
+				}),
+			})),
 		},
 	})
 
 	res := runTest(t, "testdata/check-schema-fields", "check-schema-fields", "--github-url", testServer.URL)
-	res.assertOutput("Found 0 schema field issues\nChecked 1 OpenAPI schema/Go struct pairs; skipped 0 OpenAPI schemas", "")
+	res.assertOutput("Found 0 schema field issues\nChecked 1 annotations on 1 annotated structs", "")
 	res.assertNoErr()
 	res.checkGolden()
-}
-
-func TestCheckSchemaFieldsSkipsStructMatchingMultipleSchemas(t *testing.T) {
-	t.Parallel()
-	githubDir := t.TempDir()
-	writeFile(t, filepath.Join(githubDir, "demo.go"), `package github
-
-type ItemRequest struct {
-	ID   int64  `+"`json:\"id\"`"+`
-	Type string `+"`json:\"type\"`"+`
-}
-
-func (s *svc) Add(ctx context.Context, body *ItemRequest) {
-	s.client.NewRequest(ctx, "POST", "u", body)
-}
-`)
-
-	itemSchema := func() *openapi3.SchemaRef {
-		return openapi3.NewSchemaRef("", &openapi3.Schema{
-			Required: []string{"id", "type"},
-			Properties: openapi3.Schemas{
-				"id":   openapi3.NewSchemaRef("", openapi3.NewIntegerSchema()),
-				"type": openapi3.NewSchemaRef("", openapi3.NewStringSchema()),
-			},
-		})
-	}
-	result, err := checkSchemaFields(schemaFieldCheckOptions{
-		descriptions: []*openapiFile{testOpenAPIFile("descriptions/api.github.com/api.github.com.json", openapi3.Schemas{
-			"schema-a": itemSchema(),
-			"schema-b": itemSchema(),
-		})},
-		githubDir: githubDir,
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if len(result.Checked) != 0 {
-		t.Fatalf("checked = %v, want none", result.Checked)
-	}
-	if len(result.Diagnostics) != 0 {
-		t.Fatalf("diagnostics = %v, want none", result.Diagnostics)
-	}
-	var dropped bool
-	for _, skip := range result.Skipped {
-		if strings.Contains(skip.Reason, "matches multiple schemas by field set") {
-			dropped = true
-		}
-	}
-	if !dropped {
-		t.Errorf("skipped = %#v, want a \"matches multiple schemas by field set\" reason", result.Skipped)
-	}
 }
 
 func TestFilterAllowedSchemaFieldDiagnostics(t *testing.T) {
@@ -769,12 +690,20 @@ func TestSchemaFieldExceptionsFileParses(t *testing.T) {
 	}
 }
 
-func testOpenAPIFile(filename string, schemas openapi3.Schemas) *openapiFile {
+func testOpenAPIFile(filename, path string, pathItem *openapi3.PathItem) *openapiFile {
 	return &openapiFile{
 		filename: filename,
 		description: &openapi3.T{
-			Components: &openapi3.Components{
-				Schemas: schemas,
+			Paths: openapi3.NewPaths(openapi3.WithPath(path, pathItem)),
+		},
+	}
+}
+
+func testRequestBodyOperation(schema *openapi3.Schema) *openapi3.Operation {
+	return &openapi3.Operation{
+		RequestBody: &openapi3.RequestBodyRef{
+			Value: &openapi3.RequestBody{
+				Content: openapi3.NewContentWithJSONSchema(schema),
 			},
 		},
 	}

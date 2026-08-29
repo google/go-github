@@ -652,34 +652,35 @@ Its subcommands are:
 - `unused` - lists operations from `openapi_operations.yaml` that are not mapped
   from any methods.
 
-- `check-schema-fields` - automatically matches GitHub's OpenAPI component
-  schemas to Go request structs when the JSON field set makes the match
-  unambiguous, then reports JSON field optionality mismatches. Ambiguous or
-  unsupported schemas are skipped instead of configured with per-schema
-  exceptions. It can be used to check whether required, non-nullable schema
-  fields are represented as non-pointer fields without `omitempty` or
-  `omitzero`, and whether optional schema fields remain omittable in Go. For
-  example:
+- `check-schema-fields` - checks Go struct JSON field optionality against
+  GitHub's OpenAPI schemas. A struct opts in by carrying one or more
+  `//meta:schema` annotations in its doc comment, each naming the operation
+  whose request or response body schema the struct must match:
+
+  ```go
+  // IssueCommentRequest represents a request to create or update an issue comment.
+  //
+  //meta:schema request POST /repos/{owner}/{repo}/issues/{issue_number}/comments
+  //meta:schema request PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}
+  type IssueCommentRequest struct {
+  ```
+
+  For every annotation the command verifies that required, non-nullable schema
+  fields are non-pointer fields without `omitempty` or `omitzero`, that optional
+  schema fields remain omittable, and that the field sets line up. Unannotated
+  structs are not checked, and an annotation that does not resolve to an
+  operation in the OpenAPI descriptions is itself reported as an issue. Run it
+  with:
 
   ```sh
   script/metadata.sh check-schema-fields
   ```
 
-  To experiment with one schema while refactoring, pass `--schema` with the
-  OpenAPI schema name. Filtered schemas also allow high-confidence schema-name
-  matches and response structs so the command can report the current
-  differences before the JSON field set is fully aligned:
+  When adding a new request type (or converting one to pass by value), add a
+  `//meta:schema request <METHOD> <path>` line per operation that uses it as a
+  body, reusing the method's `//meta:operation` value.
 
-  ```sh
-  script/metadata.sh check-schema-fields --schema repository-ruleset --verbose
-  ```
-
-  Use `--include-responses` to inspect response structs in bulk. This is useful
-  for measuring drift, but response required fields are treated more cautiously
-  than request bodies in this project.
-
-  A few Go fields intentionally deviate from the OpenAPI schema (for example a
-  required field kept as a pointer pending a value-parameter refactor). These are
+  A few Go fields may intentionally deviate from the OpenAPI schema. These are
   listed as `Struct.Field` entries in
   `tools/metadata/schema_field_exceptions.yaml`, and their diagnostics are
   suppressed; each is a known deviation to fix and remove over time. Update that

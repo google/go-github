@@ -1,15 +1,4 @@
 # The file lists "Struct.Field" entries whose JSON field optionality intentionally deviates from the OpenAPI schema,
-# so that their check-schema-fields diagnostics are suppressed.
-#
-# TODO: fix these fields and remove the exceptions.
-exceptions:
-  - DependencyGraphSnapshot.Detector
-  - DependencyGraphSnapshot.Job
-  - DependencyGraphSnapshot.Ref
-  - DependencyGraphSnapshot.Scanned
-  - DependencyGraphSnapshot.Sha
-  - DeploymentBranchPolicyRequest.Name
-  - ReviewCustomDeploymentProtectionRuleRequest.Comment
-  - WorkflowsPermissionsOpt.RequireApprovalForForkPRWorkflows
-  - WorkflowsPermissionsOpt.SendSecretsAndVariables
-  - WorkflowsPermissionsOpt.SendWriteTokensToWorkflows
+# so that their check-schema-fields diagnostics are suppressed. Add an entry only for an annotated struct whose
+# deviation is deliberate; unannotated structs are not checked at all.
+exceptions: []
