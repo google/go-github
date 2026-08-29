@@ -1681,6 +1681,8 @@ func TestPullRequestComment_String(t *testing.T) {
 		NodeID:              new(""),
 		InReplyTo:           new(int64(0)),
 		Body:                new(""),
+		BodyHTML:            new(""),
+		BodyText:            new(""),
 		Path:                new(""),
 		DiffHunk:            new(""),
 		PullRequestReviewID: new(int64(0)),
@@ -1702,9 +1704,10 @@ func TestPullRequestComment_String(t *testing.T) {
 		URL:                 new(""),
 		HTMLURL:             new(""),
 		PullRequestURL:      new(""),
+		Links:               &PullRequestCommentLinks{},
 		SubjectType:         new(""),
 	}
-	want := `github.PullRequestComment{ID:0, NodeID:"", InReplyTo:0, Body:"", Path:"", DiffHunk:"", PullRequestReviewID:0, Position:0, OriginalPosition:0, StartLine:0, Line:0, OriginalLine:0, OriginalStartLine:0, Side:"", StartSide:"", CommitID:"", OriginalCommitID:"", User:github.User{}, Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, AuthorAssociation:"", URL:"", HTMLURL:"", PullRequestURL:"", SubjectType:""}`
+	want := `github.PullRequestComment{ID:0, NodeID:"", InReplyTo:0, Body:"", BodyHTML:"", BodyText:"", Path:"", DiffHunk:"", PullRequestReviewID:0, Position:0, OriginalPosition:0, StartLine:0, Line:0, OriginalLine:0, OriginalStartLine:0, Side:"", StartSide:"", CommitID:"", OriginalCommitID:"", User:github.User{}, Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, AuthorAssociation:"", URL:"", HTMLURL:"", PullRequestURL:"", Links:github.PullRequestCommentLinks{}, SubjectType:""}`
 	if got := v.String(); got != want {
 		t.Errorf("PullRequestComment.String = %v, want %v", got, want)
 	}

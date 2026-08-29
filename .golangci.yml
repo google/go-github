@@ -232,7 +232,6 @@ linters:
             - ProtectionRequest
             - PublishCodespaceOptions
             - PullRequestBranchUpdateOptions
-            - PullRequestComment
             - PullRequestReviewRequest
             - PullRequestReviewsEnforcementUpdate
             - Repository

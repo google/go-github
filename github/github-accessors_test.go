@@ -11633,6 +11633,17 @@ func TestCopilotDailyMetrics_GetDailyActiveCLIUsers(tt *testing.T) {
 	c.GetDailyActiveCLIUsers()
 }
 
+func TestCopilotDailyMetrics_GetDailyActiveCopilotAppUsers(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotDailyMetrics{DailyActiveCopilotAppUsers: &zeroValue}
+	c.GetDailyActiveCopilotAppUsers()
+	c = &CopilotDailyMetrics{}
+	c.GetDailyActiveCopilotAppUsers()
+	c = nil
+	c.GetDailyActiveCopilotAppUsers()
+}
+
 func TestCopilotDailyMetrics_GetDailyActiveCopilotCloudAgentUsers(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -11853,6 +11864,14 @@ func TestCopilotDailyMetrics_GetTotalsByCLI(tt *testing.T) {
 	c.GetTotalsByCLI()
 	c = nil
 	c.GetTotalsByCLI()
+}
+
+func TestCopilotDailyMetrics_GetTotalsByCopilotApp(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotDailyMetrics{}
+	c.GetTotalsByCopilotApp()
+	c = nil
+	c.GetTotalsByCopilotApp()
 }
 
 func TestCopilotDailyMetrics_GetTotalsByFeature(tt *testing.T) {
@@ -12835,6 +12854,80 @@ func TestCopilotMetricsCodeActivity_GetLOCSuggestedToDeleteSum(tt *testing.T) {
 	c.GetLOCSuggestedToDeleteSum()
 }
 
+func TestCopilotMetricsCopilotApp_GetPromptCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotApp{PromptCount: &zeroValue}
+	c.GetPromptCount()
+	c = &CopilotMetricsCopilotApp{}
+	c.GetPromptCount()
+	c = nil
+	c.GetPromptCount()
+}
+
+func TestCopilotMetricsCopilotApp_GetRequestCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotApp{RequestCount: &zeroValue}
+	c.GetRequestCount()
+	c = &CopilotMetricsCopilotApp{}
+	c.GetRequestCount()
+	c = nil
+	c.GetRequestCount()
+}
+
+func TestCopilotMetricsCopilotApp_GetSessionCount(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotApp{SessionCount: &zeroValue}
+	c.GetSessionCount()
+	c = &CopilotMetricsCopilotApp{}
+	c.GetSessionCount()
+	c = nil
+	c.GetSessionCount()
+}
+
+func TestCopilotMetricsCopilotApp_GetTokenUsage(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsCopilotApp{}
+	c.GetTokenUsage()
+	c = nil
+	c.GetTokenUsage()
+}
+
+func TestCopilotMetricsCopilotAppTokenUsage_GetAvgTokensPerRequest(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue float64
+	c := &CopilotMetricsCopilotAppTokenUsage{AvgTokensPerRequest: &zeroValue}
+	c.GetAvgTokensPerRequest()
+	c = &CopilotMetricsCopilotAppTokenUsage{}
+	c.GetAvgTokensPerRequest()
+	c = nil
+	c.GetAvgTokensPerRequest()
+}
+
+func TestCopilotMetricsCopilotAppTokenUsage_GetOutputTokensSum(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotAppTokenUsage{OutputTokensSum: &zeroValue}
+	c.GetOutputTokensSum()
+	c = &CopilotMetricsCopilotAppTokenUsage{}
+	c.GetOutputTokensSum()
+	c = nil
+	c.GetOutputTokensSum()
+}
+
+func TestCopilotMetricsCopilotAppTokenUsage_GetPromptTokensSum(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotAppTokenUsage{PromptTokensSum: &zeroValue}
+	c.GetPromptTokensSum()
+	c = &CopilotMetricsCopilotAppTokenUsage{}
+	c.GetPromptTokensSum()
+	c = nil
+	c.GetPromptTokensSum()
+}
+
 func TestCopilotMetricsFeature_GetFeature(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotMetricsFeature{}
@@ -13537,6 +13630,14 @@ func TestCopilotUserDailyMetrics_GetTotalsByCLI(tt *testing.T) {
 	c.GetTotalsByCLI()
 }
 
+func TestCopilotUserDailyMetrics_GetTotalsByCopilotApp(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserDailyMetrics{}
+	c.GetTotalsByCopilotApp()
+	c = nil
+	c.GetTotalsByCopilotApp()
+}
+
 func TestCopilotUserDailyMetrics_GetTotalsByFeature(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*CopilotMetricsFeature{}
@@ -13623,6 +13724,28 @@ func TestCopilotUserDailyMetrics_GetUsedCLI(tt *testing.T) {
 	c.GetUsedCLI()
 	c = nil
 	c.GetUsedCLI()
+}
+
+func TestCopilotUserDailyMetrics_GetUsedCopilotApp(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CopilotUserDailyMetrics{UsedCopilotApp: &zeroValue}
+	c.GetUsedCopilotApp()
+	c = &CopilotUserDailyMetrics{}
+	c.GetUsedCopilotApp()
+	c = nil
+	c.GetUsedCopilotApp()
+}
+
+func TestCopilotUserDailyMetrics_GetUsedCopilotCloudAgent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CopilotUserDailyMetrics{UsedCopilotCloudAgent: &zeroValue}
+	c.GetUsedCopilotCloudAgent()
+	c = &CopilotUserDailyMetrics{}
+	c.GetUsedCopilotCloudAgent()
+	c = nil
+	c.GetUsedCopilotCloudAgent()
 }
 
 func TestCopilotUserDailyMetrics_GetUsedCopilotCodeReviewActive(tt *testing.T) {
@@ -13916,6 +14039,14 @@ func TestCopilotUserPeriodicMetrics_GetTotalsByCLI(tt *testing.T) {
 	c.GetTotalsByCLI()
 }
 
+func TestCopilotUserPeriodicMetrics_GetTotalsByCopilotApp(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserPeriodicMetrics{}
+	c.GetTotalsByCopilotApp()
+	c = nil
+	c.GetTotalsByCopilotApp()
+}
+
 func TestCopilotUserPeriodicMetrics_GetTotalsByFeature(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*CopilotMetricsFeature{}
@@ -14002,6 +14133,28 @@ func TestCopilotUserPeriodicMetrics_GetUsedCLI(tt *testing.T) {
 	c.GetUsedCLI()
 	c = nil
 	c.GetUsedCLI()
+}
+
+func TestCopilotUserPeriodicMetrics_GetUsedCopilotApp(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CopilotUserPeriodicMetrics{UsedCopilotApp: &zeroValue}
+	c.GetUsedCopilotApp()
+	c = &CopilotUserPeriodicMetrics{}
+	c.GetUsedCopilotApp()
+	c = nil
+	c.GetUsedCopilotApp()
+}
+
+func TestCopilotUserPeriodicMetrics_GetUsedCopilotCloudAgent(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CopilotUserPeriodicMetrics{UsedCopilotCloudAgent: &zeroValue}
+	c.GetUsedCopilotCloudAgent()
+	c = &CopilotUserPeriodicMetrics{}
+	c.GetUsedCopilotCloudAgent()
+	c = nil
+	c.GetUsedCopilotCloudAgent()
 }
 
 func TestCopilotUserPeriodicMetrics_GetUsedCopilotCodeReviewActive(tt *testing.T) {
@@ -15746,6 +15899,107 @@ func TestCreatePullRequest_GetTitle(tt *testing.T) {
 	c.GetTitle()
 	c = nil
 	c.GetTitle()
+}
+
+func TestCreatePullRequestCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	c := &CreatePullRequestCommentRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreatePullRequestCommentRequest_GetCommitID(tt *testing.T) {
+	tt.Parallel()
+	c := &CreatePullRequestCommentRequest{}
+	c.GetCommitID()
+	c = nil
+	c.GetCommitID()
+}
+
+func TestCreatePullRequestCommentRequest_GetInReplyTo(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreatePullRequestCommentRequest{InReplyTo: &zeroValue}
+	c.GetInReplyTo()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetInReplyTo()
+	c = nil
+	c.GetInReplyTo()
+}
+
+func TestCreatePullRequestCommentRequest_GetLine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreatePullRequestCommentRequest{Line: &zeroValue}
+	c.GetLine()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetLine()
+	c = nil
+	c.GetLine()
+}
+
+func TestCreatePullRequestCommentRequest_GetPath(tt *testing.T) {
+	tt.Parallel()
+	c := &CreatePullRequestCommentRequest{}
+	c.GetPath()
+	c = nil
+	c.GetPath()
+}
+
+func TestCreatePullRequestCommentRequest_GetPosition(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreatePullRequestCommentRequest{Position: &zeroValue}
+	c.GetPosition()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetPosition()
+	c = nil
+	c.GetPosition()
+}
+
+func TestCreatePullRequestCommentRequest_GetSide(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreatePullRequestCommentRequest{Side: &zeroValue}
+	c.GetSide()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetSide()
+	c = nil
+	c.GetSide()
+}
+
+func TestCreatePullRequestCommentRequest_GetStartLine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreatePullRequestCommentRequest{StartLine: &zeroValue}
+	c.GetStartLine()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetStartLine()
+	c = nil
+	c.GetStartLine()
+}
+
+func TestCreatePullRequestCommentRequest_GetStartSide(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreatePullRequestCommentRequest{StartSide: &zeroValue}
+	c.GetStartSide()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetStartSide()
+	c = nil
+	c.GetStartSide()
+}
+
+func TestCreatePullRequestCommentRequest_GetSubjectType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreatePullRequestCommentRequest{SubjectType: &zeroValue}
+	c.GetSubjectType()
+	c = &CreatePullRequestCommentRequest{}
+	c.GetSubjectType()
+	c = nil
+	c.GetSubjectType()
 }
 
 func TestCreateRef_GetRef(tt *testing.T) {
@@ -40031,6 +40285,28 @@ func TestPullRequestComment_GetBody(tt *testing.T) {
 	p.GetBody()
 }
 
+func TestPullRequestComment_GetBodyHTML(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestComment{BodyHTML: &zeroValue}
+	p.GetBodyHTML()
+	p = &PullRequestComment{}
+	p.GetBodyHTML()
+	p = nil
+	p.GetBodyHTML()
+}
+
+func TestPullRequestComment_GetBodyText(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestComment{BodyText: &zeroValue}
+	p.GetBodyText()
+	p = &PullRequestComment{}
+	p.GetBodyText()
+	p = nil
+	p.GetBodyText()
+}
+
 func TestPullRequestComment_GetCommitID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -40106,6 +40382,14 @@ func TestPullRequestComment_GetLine(tt *testing.T) {
 	p.GetLine()
 	p = nil
 	p.GetLine()
+}
+
+func TestPullRequestComment_GetLinks(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestComment{}
+	p.GetLinks()
+	p = nil
+	p.GetLinks()
 }
 
 func TestPullRequestComment_GetNodeID(tt *testing.T) {
@@ -40287,6 +40571,30 @@ func TestPullRequestComment_GetUser(tt *testing.T) {
 	p.GetUser()
 	p = nil
 	p.GetUser()
+}
+
+func TestPullRequestCommentLinks_GetHTML(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestCommentLinks{}
+	p.GetHTML()
+	p = nil
+	p.GetHTML()
+}
+
+func TestPullRequestCommentLinks_GetPullRequest(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestCommentLinks{}
+	p.GetPullRequest()
+	p = nil
+	p.GetPullRequest()
+}
+
+func TestPullRequestCommentLinks_GetSelf(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestCommentLinks{}
+	p.GetSelf()
+	p = nil
+	p.GetSelf()
 }
 
 func TestPullRequestDismissReviewRequest_GetEvent(tt *testing.T) {
@@ -40568,6 +40876,146 @@ func TestPullRequestListOptions_GetState(tt *testing.T) {
 	p.GetState()
 	p = nil
 	p.GetState()
+}
+
+func TestPullRequestMergeAsyncDetails_GetExpectedHeadSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncDetails{ExpectedHeadSHA: &zeroValue}
+	p.GetExpectedHeadSHA()
+	p = &PullRequestMergeAsyncDetails{}
+	p.GetExpectedHeadSHA()
+	p = nil
+	p.GetExpectedHeadSHA()
+}
+
+func TestPullRequestMergeAsyncDetails_GetMergeAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncDetails{MergeAction: &zeroValue}
+	p.GetMergeAction()
+	p = &PullRequestMergeAsyncDetails{}
+	p.GetMergeAction()
+	p = nil
+	p.GetMergeAction()
+}
+
+func TestPullRequestMergeAsyncDetails_GetMergeMethod(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncDetails{MergeMethod: &zeroValue}
+	p.GetMergeMethod()
+	p = &PullRequestMergeAsyncDetails{}
+	p.GetMergeMethod()
+	p = nil
+	p.GetMergeMethod()
+}
+
+func TestPullRequestMergeAsyncDetails_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncDetails{Message: &zeroValue}
+	p.GetMessage()
+	p = &PullRequestMergeAsyncDetails{}
+	p.GetMessage()
+	p = nil
+	p.GetMessage()
+}
+
+func TestPullRequestMergeAsyncDetails_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncDetails{SHA: &zeroValue}
+	p.GetSHA()
+	p = &PullRequestMergeAsyncDetails{}
+	p.GetSHA()
+	p = nil
+	p.GetSHA()
+}
+
+func TestPullRequestMergeAsyncDetails_GetUUID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncDetails{UUID: &zeroValue}
+	p.GetUUID()
+	p = &PullRequestMergeAsyncDetails{}
+	p.GetUUID()
+	p = nil
+	p.GetUUID()
+}
+
+func TestPullRequestMergeAsyncRequest_GetCommitMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncRequest{CommitMessage: &zeroValue}
+	p.GetCommitMessage()
+	p = &PullRequestMergeAsyncRequest{}
+	p.GetCommitMessage()
+	p = nil
+	p.GetCommitMessage()
+}
+
+func TestPullRequestMergeAsyncRequest_GetCommitTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncRequest{CommitTitle: &zeroValue}
+	p.GetCommitTitle()
+	p = &PullRequestMergeAsyncRequest{}
+	p.GetCommitTitle()
+	p = nil
+	p.GetCommitTitle()
+}
+
+func TestPullRequestMergeAsyncRequest_GetMergeAction(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncRequest{MergeAction: &zeroValue}
+	p.GetMergeAction()
+	p = &PullRequestMergeAsyncRequest{}
+	p.GetMergeAction()
+	p = nil
+	p.GetMergeAction()
+}
+
+func TestPullRequestMergeAsyncRequest_GetMergeMethod(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncRequest{MergeMethod: &zeroValue}
+	p.GetMergeMethod()
+	p = &PullRequestMergeAsyncRequest{}
+	p.GetMergeMethod()
+	p = nil
+	p.GetMergeMethod()
+}
+
+func TestPullRequestMergeAsyncRequest_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncRequest{SHA: &zeroValue}
+	p.GetSHA()
+	p = &PullRequestMergeAsyncRequest{}
+	p.GetSHA()
+	p = nil
+	p.GetSHA()
+}
+
+func TestPullRequestMergeAsyncResult_GetDetails(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestMergeAsyncResult{}
+	p.GetDetails()
+	p = nil
+	p.GetDetails()
+}
+
+func TestPullRequestMergeAsyncResult_GetStatus(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PullRequestMergeAsyncResult{Status: &zeroValue}
+	p.GetStatus()
+	p = &PullRequestMergeAsyncResult{}
+	p.GetStatus()
+	p = nil
+	p.GetStatus()
 }
 
 func TestPullRequestMergeResult_GetMerged(tt *testing.T) {
@@ -55856,6 +56304,14 @@ func TestUpdateProvisionedOrgMembershipRequest_GetUserName(tt *testing.T) {
 	u.GetUserName()
 	u = nil
 	u.GetUserName()
+}
+
+func TestUpdatePullRequestCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdatePullRequestCommentRequest{}
+	u.GetBody()
+	u = nil
+	u.GetBody()
 }
 
 func TestUpdateRef_GetForce(tt *testing.T) {

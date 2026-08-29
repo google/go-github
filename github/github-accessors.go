@@ -9118,6 +9118,14 @@ func (c *CopilotDailyMetrics) GetDailyActiveCLIUsers() int {
 	return *c.DailyActiveCLIUsers
 }
 
+// GetDailyActiveCopilotAppUsers returns the DailyActiveCopilotAppUsers field if it's non-nil, zero value otherwise.
+func (c *CopilotDailyMetrics) GetDailyActiveCopilotAppUsers() int {
+	if c == nil || c.DailyActiveCopilotAppUsers == nil {
+		return 0
+	}
+	return *c.DailyActiveCopilotAppUsers
+}
+
 // GetDailyActiveCopilotCloudAgentUsers returns the DailyActiveCopilotCloudAgentUsers field if it's non-nil, zero value otherwise.
 func (c *CopilotDailyMetrics) GetDailyActiveCopilotCloudAgentUsers() int {
 	if c == nil || c.DailyActiveCopilotCloudAgentUsers == nil {
@@ -9284,6 +9292,14 @@ func (c *CopilotDailyMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 		return nil
 	}
 	return c.TotalsByCLI
+}
+
+// GetTotalsByCopilotApp returns the TotalsByCopilotApp field.
+func (c *CopilotDailyMetrics) GetTotalsByCopilotApp() *CopilotMetricsCopilotApp {
+	if c == nil {
+		return nil
+	}
+	return c.TotalsByCopilotApp
 }
 
 // GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
@@ -10134,6 +10150,62 @@ func (c *CopilotMetricsCodeActivity) GetLOCSuggestedToDeleteSum() int {
 	return *c.LOCSuggestedToDeleteSum
 }
 
+// GetPromptCount returns the PromptCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotApp) GetPromptCount() int {
+	if c == nil || c.PromptCount == nil {
+		return 0
+	}
+	return *c.PromptCount
+}
+
+// GetRequestCount returns the RequestCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotApp) GetRequestCount() int {
+	if c == nil || c.RequestCount == nil {
+		return 0
+	}
+	return *c.RequestCount
+}
+
+// GetSessionCount returns the SessionCount field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotApp) GetSessionCount() int {
+	if c == nil || c.SessionCount == nil {
+		return 0
+	}
+	return *c.SessionCount
+}
+
+// GetTokenUsage returns the TokenUsage field.
+func (c *CopilotMetricsCopilotApp) GetTokenUsage() *CopilotMetricsCopilotAppTokenUsage {
+	if c == nil {
+		return nil
+	}
+	return c.TokenUsage
+}
+
+// GetAvgTokensPerRequest returns the AvgTokensPerRequest field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotAppTokenUsage) GetAvgTokensPerRequest() float64 {
+	if c == nil || c.AvgTokensPerRequest == nil {
+		return 0
+	}
+	return *c.AvgTokensPerRequest
+}
+
+// GetOutputTokensSum returns the OutputTokensSum field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotAppTokenUsage) GetOutputTokensSum() int {
+	if c == nil || c.OutputTokensSum == nil {
+		return 0
+	}
+	return *c.OutputTokensSum
+}
+
+// GetPromptTokensSum returns the PromptTokensSum field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotAppTokenUsage) GetPromptTokensSum() int {
+	if c == nil || c.PromptTokensSum == nil {
+		return 0
+	}
+	return *c.PromptTokensSum
+}
+
 // GetFeature returns the Feature field.
 func (c *CopilotMetricsFeature) GetFeature() string {
 	if c == nil {
@@ -10710,6 +10782,14 @@ func (c *CopilotUserDailyMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 	return c.TotalsByCLI
 }
 
+// GetTotalsByCopilotApp returns the TotalsByCopilotApp field.
+func (c *CopilotUserDailyMetrics) GetTotalsByCopilotApp() *CopilotMetricsCopilotApp {
+	if c == nil {
+		return nil
+	}
+	return c.TotalsByCopilotApp
+}
+
 // GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
 func (c *CopilotUserDailyMetrics) GetTotalsByFeature() []*CopilotMetricsFeature {
 	if c == nil || c.TotalsByFeature == nil {
@@ -10772,6 +10852,22 @@ func (c *CopilotUserDailyMetrics) GetUsedCLI() bool {
 		return false
 	}
 	return *c.UsedCLI
+}
+
+// GetUsedCopilotApp returns the UsedCopilotApp field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUsedCopilotApp() bool {
+	if c == nil || c.UsedCopilotApp == nil {
+		return false
+	}
+	return *c.UsedCopilotApp
+}
+
+// GetUsedCopilotCloudAgent returns the UsedCopilotCloudAgent field if it's non-nil, zero value otherwise.
+func (c *CopilotUserDailyMetrics) GetUsedCopilotCloudAgent() bool {
+	if c == nil || c.UsedCopilotCloudAgent == nil {
+		return false
+	}
+	return *c.UsedCopilotCloudAgent
 }
 
 // GetUsedCopilotCodeReviewActive returns the UsedCopilotCodeReviewActive field if it's non-nil, zero value otherwise.
@@ -11014,6 +11110,14 @@ func (c *CopilotUserPeriodicMetrics) GetTotalsByCLI() *CopilotMetricsCLI {
 	return c.TotalsByCLI
 }
 
+// GetTotalsByCopilotApp returns the TotalsByCopilotApp field.
+func (c *CopilotUserPeriodicMetrics) GetTotalsByCopilotApp() *CopilotMetricsCopilotApp {
+	if c == nil {
+		return nil
+	}
+	return c.TotalsByCopilotApp
+}
+
 // GetTotalsByFeature returns the TotalsByFeature slice if it's non-nil, nil otherwise.
 func (c *CopilotUserPeriodicMetrics) GetTotalsByFeature() []*CopilotMetricsFeature {
 	if c == nil || c.TotalsByFeature == nil {
@@ -11076,6 +11180,22 @@ func (c *CopilotUserPeriodicMetrics) GetUsedCLI() bool {
 		return false
 	}
 	return *c.UsedCLI
+}
+
+// GetUsedCopilotApp returns the UsedCopilotApp field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUsedCopilotApp() bool {
+	if c == nil || c.UsedCopilotApp == nil {
+		return false
+	}
+	return *c.UsedCopilotApp
+}
+
+// GetUsedCopilotCloudAgent returns the UsedCopilotCloudAgent field if it's non-nil, zero value otherwise.
+func (c *CopilotUserPeriodicMetrics) GetUsedCopilotCloudAgent() bool {
+	if c == nil || c.UsedCopilotCloudAgent == nil {
+		return false
+	}
+	return *c.UsedCopilotCloudAgent
 }
 
 // GetUsedCopilotCodeReviewActive returns the UsedCopilotCodeReviewActive field if it's non-nil, zero value otherwise.
@@ -12460,6 +12580,86 @@ func (c *CreatePullRequest) GetTitle() string {
 		return ""
 	}
 	return *c.Title
+}
+
+// GetBody returns the Body field.
+func (c *CreatePullRequestCommentRequest) GetBody() string {
+	if c == nil {
+		return ""
+	}
+	return c.Body
+}
+
+// GetCommitID returns the CommitID field.
+func (c *CreatePullRequestCommentRequest) GetCommitID() string {
+	if c == nil {
+		return ""
+	}
+	return c.CommitID
+}
+
+// GetInReplyTo returns the InReplyTo field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetInReplyTo() int64 {
+	if c == nil || c.InReplyTo == nil {
+		return 0
+	}
+	return *c.InReplyTo
+}
+
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetLine() int {
+	if c == nil || c.Line == nil {
+		return 0
+	}
+	return *c.Line
+}
+
+// GetPath returns the Path field.
+func (c *CreatePullRequestCommentRequest) GetPath() string {
+	if c == nil {
+		return ""
+	}
+	return c.Path
+}
+
+// GetPosition returns the Position field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetPosition() int {
+	if c == nil || c.Position == nil {
+		return 0
+	}
+	return *c.Position
+}
+
+// GetSide returns the Side field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetSide() string {
+	if c == nil || c.Side == nil {
+		return ""
+	}
+	return *c.Side
+}
+
+// GetStartLine returns the StartLine field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetStartLine() int {
+	if c == nil || c.StartLine == nil {
+		return 0
+	}
+	return *c.StartLine
+}
+
+// GetStartSide returns the StartSide field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetStartSide() string {
+	if c == nil || c.StartSide == nil {
+		return ""
+	}
+	return *c.StartSide
+}
+
+// GetSubjectType returns the SubjectType field if it's non-nil, zero value otherwise.
+func (c *CreatePullRequestCommentRequest) GetSubjectType() string {
+	if c == nil || c.SubjectType == nil {
+		return ""
+	}
+	return *c.SubjectType
 }
 
 // GetRef returns the Ref field.
@@ -31894,6 +32094,22 @@ func (p *PullRequestComment) GetBody() string {
 	return *p.Body
 }
 
+// GetBodyHTML returns the BodyHTML field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetBodyHTML() string {
+	if p == nil || p.BodyHTML == nil {
+		return ""
+	}
+	return *p.BodyHTML
+}
+
+// GetBodyText returns the BodyText field if it's non-nil, zero value otherwise.
+func (p *PullRequestComment) GetBodyText() string {
+	if p == nil || p.BodyText == nil {
+		return ""
+	}
+	return *p.BodyText
+}
+
 // GetCommitID returns the CommitID field if it's non-nil, zero value otherwise.
 func (p *PullRequestComment) GetCommitID() string {
 	if p == nil || p.CommitID == nil {
@@ -31948,6 +32164,14 @@ func (p *PullRequestComment) GetLine() int {
 		return 0
 	}
 	return *p.Line
+}
+
+// GetLinks returns the Links field.
+func (p *PullRequestComment) GetLinks() *PullRequestCommentLinks {
+	if p == nil {
+		return nil
+	}
+	return p.Links
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
@@ -32084,6 +32308,30 @@ func (p *PullRequestComment) GetUser() *User {
 		return nil
 	}
 	return p.User
+}
+
+// GetHTML returns the HTML field.
+func (p *PullRequestCommentLinks) GetHTML() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.HTML
+}
+
+// GetPullRequest returns the PullRequest field.
+func (p *PullRequestCommentLinks) GetPullRequest() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.PullRequest
+}
+
+// GetSelf returns the Self field.
+func (p *PullRequestCommentLinks) GetSelf() *PRLink {
+	if p == nil {
+		return nil
+	}
+	return p.Self
 }
 
 // GetEvent returns the Event field if it's non-nil, zero value otherwise.
@@ -32332,6 +32580,110 @@ func (p *PullRequestListOptions) GetState() string {
 		return ""
 	}
 	return p.State
+}
+
+// GetExpectedHeadSHA returns the ExpectedHeadSHA field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetExpectedHeadSHA() string {
+	if p == nil || p.ExpectedHeadSHA == nil {
+		return ""
+	}
+	return *p.ExpectedHeadSHA
+}
+
+// GetMergeAction returns the MergeAction field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetMergeAction() string {
+	if p == nil || p.MergeAction == nil {
+		return ""
+	}
+	return *p.MergeAction
+}
+
+// GetMergeMethod returns the MergeMethod field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetMergeMethod() string {
+	if p == nil || p.MergeMethod == nil {
+		return ""
+	}
+	return *p.MergeMethod
+}
+
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetMessage() string {
+	if p == nil || p.Message == nil {
+		return ""
+	}
+	return *p.Message
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetSHA() string {
+	if p == nil || p.SHA == nil {
+		return ""
+	}
+	return *p.SHA
+}
+
+// GetUUID returns the UUID field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncDetails) GetUUID() string {
+	if p == nil || p.UUID == nil {
+		return ""
+	}
+	return *p.UUID
+}
+
+// GetCommitMessage returns the CommitMessage field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncRequest) GetCommitMessage() string {
+	if p == nil || p.CommitMessage == nil {
+		return ""
+	}
+	return *p.CommitMessage
+}
+
+// GetCommitTitle returns the CommitTitle field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncRequest) GetCommitTitle() string {
+	if p == nil || p.CommitTitle == nil {
+		return ""
+	}
+	return *p.CommitTitle
+}
+
+// GetMergeAction returns the MergeAction field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncRequest) GetMergeAction() string {
+	if p == nil || p.MergeAction == nil {
+		return ""
+	}
+	return *p.MergeAction
+}
+
+// GetMergeMethod returns the MergeMethod field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncRequest) GetMergeMethod() string {
+	if p == nil || p.MergeMethod == nil {
+		return ""
+	}
+	return *p.MergeMethod
+}
+
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncRequest) GetSHA() string {
+	if p == nil || p.SHA == nil {
+		return ""
+	}
+	return *p.SHA
+}
+
+// GetDetails returns the Details field.
+func (p *PullRequestMergeAsyncResult) GetDetails() *PullRequestMergeAsyncDetails {
+	if p == nil {
+		return nil
+	}
+	return p.Details
+}
+
+// GetStatus returns the Status field if it's non-nil, zero value otherwise.
+func (p *PullRequestMergeAsyncResult) GetStatus() string {
+	if p == nil || p.Status == nil {
+		return ""
+	}
+	return *p.Status
 }
 
 // GetMerged returns the Merged field if it's non-nil, zero value otherwise.
@@ -44620,6 +44972,14 @@ func (u *UpdateProvisionedOrgMembershipRequest) GetUserName() string {
 		return ""
 	}
 	return u.UserName
+}
+
+// GetBody returns the Body field.
+func (u *UpdatePullRequestCommentRequest) GetBody() string {
+	if u == nil {
+		return ""
+	}
+	return u.Body
 }
 
 // GetForce returns the Force field if it's non-nil, zero value otherwise.

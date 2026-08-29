@@ -145,7 +145,7 @@ func TestPullRequestsService_CreateComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PullRequestComment{Body: new("b")}
+	input := CreatePullRequestCommentRequest{Body: "b", CommitID: "c", Path: "p"}
 
 	wantAcceptHeaders := []string{mediaTypeReactionsPreview, mediaTypeMultiLineCommentsPreview}
 	mux.HandleFunc("/repos/o/r/pulls/1/comments", func(w http.ResponseWriter, r *http.Request) {
@@ -186,7 +186,7 @@ func TestPullRequestsService_CreateComment_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.PullRequests.CreateComment(ctx, "%", "r", 1, nil)
+	_, _, err := client.PullRequests.CreateComment(ctx, "%", "r", 1, CreatePullRequestCommentRequest{})
 	testURLParseError(t, err)
 }
 
@@ -228,11 +228,11 @@ func TestPullRequestsService_CreateCommentInReplyTo(t *testing.T) {
 	})
 }
 
-func TestPullRequestsService_EditComment(t *testing.T) {
+func TestPullRequestsService_UpdateComment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &PullRequestComment{Body: new("b")}
+	input := UpdatePullRequestCommentRequest{Body: "b"}
 
 	mux.HandleFunc("/repos/o/r/pulls/comments/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -241,24 +241,24 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	comment, _, err := client.PullRequests.EditComment(ctx, "o", "r", 1, input)
+	comment, _, err := client.PullRequests.UpdateComment(ctx, "o", "r", 1, input)
 	if err != nil {
-		t.Errorf("PullRequests.EditComment returned error: %v", err)
+		t.Errorf("PullRequests.UpdateComment returned error: %v", err)
 	}
 
 	want := &PullRequestComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
-		t.Errorf("PullRequests.EditComment returned %+v, want %+v", comment, want)
+		t.Errorf("PullRequests.UpdateComment returned %+v, want %+v", comment, want)
 	}
 
-	const methodName = "EditComment"
+	const methodName = "UpdateComment"
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.PullRequests.EditComment(ctx, "\n", "\n", -1, input)
+		_, _, err = client.PullRequests.UpdateComment(ctx, "\n", "\n", -1, input)
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.PullRequests.EditComment(ctx, "o", "r", 1, input)
+		got, resp, err := client.PullRequests.UpdateComment(ctx, "o", "r", 1, input)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -266,12 +266,12 @@ func TestPullRequestsService_EditComment(t *testing.T) {
 	})
 }
 
-func TestPullRequestsService_EditComment_invalidOwner(t *testing.T) {
+func TestPullRequestsService_UpdateComment_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.PullRequests.EditComment(ctx, "%", "r", 1, nil)
+	_, _, err := client.PullRequests.UpdateComment(ctx, "%", "r", 1, UpdatePullRequestCommentRequest{})
 	testURLParseError(t, err)
 }
 
