@@ -584,6 +584,11 @@ func (s *PullRequestsService) Merge(ctx context.Context, owner, repo string, num
 // method for merging stacked pull requests; the legacy Merge method cannot be
 // used for stacks.
 //
+// This endpoint typically returns a 202 Accepted status along with the initial
+// AsyncMergeResult, since the merge is processed asynchronously. Because this
+// is an explicitly asynchronous call, the returned status code is not treated
+// as an error here.
+//
 // A pending response includes a UUID in PullRequestMergeAsyncResult.Details.UUID
 // that must be passed to GetMergeAsyncResult to poll for the outcome.
 //
