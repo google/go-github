@@ -2896,6 +2896,41 @@ func (s *EnterpriseService) ListAssignmentsIter(ctx context.Context, enterprise 
 	}
 }
 
+// ListBudgetsIter returns an iterator that paginates through all results of ListBudgets.
+func (s *EnterpriseService) ListBudgetsIter(ctx context.Context, enterprise string, opts *EnterpriseListBudgetsOptions) iter.Seq2[*EnterpriseBudget, error] {
+	return func(yield func(*EnterpriseBudget, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &EnterpriseListBudgetsOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListBudgets(ctx, enterprise, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*EnterpriseBudget
+			if results != nil {
+				iterItems = results.Budgets
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListCodeSecurityConfigurationRepositoriesIter returns an iterator that paginates through all results of ListCodeSecurityConfigurationRepositories.
 func (s *EnterpriseService) ListCodeSecurityConfigurationRepositoriesIter(ctx context.Context, enterprise string, configurationID int64, opts *ListCodeSecurityConfigurationRepositoriesOptions) iter.Seq2[*RepositoryAttachment, error] {
 	return func(yield func(*RepositoryAttachment, error) bool) {
