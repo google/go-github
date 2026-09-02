@@ -25,6 +25,7 @@ func TestOrganizationsService_ListIssueTypes(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZo",
 				"name": "Task",
 				"description": "A specific piece of work",
+				"is_enabled": true,
 				"created_at": `+refTimeStr(1136178000)+`,
 				"updated_at": `+refTimeStr(1136178001)+`
 			},
@@ -33,6 +34,7 @@ func TestOrganizationsService_ListIssueTypes(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZs",
 				"name": "Bug",
 				"description": "An unexpected problem or behavior",
+				"is_enabled": false,
 				"created_at": `+refTimeStr(1136178002)+`,
 				"updated_at": `+refTimeStr(1136178003)+`
 			}
@@ -51,6 +53,7 @@ func TestOrganizationsService_ListIssueTypes(t *testing.T) {
 			NodeID:      new("IT_kwDNAd3NAZo"),
 			Name:        new("Task"),
 			Description: new("A specific piece of work"),
+			IsEnabled:   new(true),
 			CreatedAt:   refTimestamp(1136178000),
 			UpdatedAt:   refTimestamp(1136178001),
 		},
@@ -59,6 +62,7 @@ func TestOrganizationsService_ListIssueTypes(t *testing.T) {
 			NodeID:      new("IT_kwDNAd3NAZs"),
 			Name:        new("Bug"),
 			Description: new("An unexpected problem or behavior"),
+			IsEnabled:   new(false),
 			CreatedAt:   refTimestamp(1136178002),
 			UpdatedAt:   refTimestamp(1136178003),
 		},
@@ -102,6 +106,7 @@ func TestOrganizationsService_CreateIssueType(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZo",
 				"name": "Epic",
 				"description": "An issue type for a multi-week tracking of work",
+				"is_enabled": true,
 				"created_at": `+refTimeStr(1136178000)+`,
 				"updated_at": `+refTimeStr(1136178001)+`
 		}`)
@@ -117,6 +122,7 @@ func TestOrganizationsService_CreateIssueType(t *testing.T) {
 		NodeID:      new("IT_kwDNAd3NAZo"),
 		Name:        new("Epic"),
 		Description: new("An issue type for a multi-week tracking of work"),
+		IsEnabled:   new(true),
 		CreatedAt:   refTimestamp(1136178000),
 		UpdatedAt:   refTimestamp(1136178001),
 	}
@@ -160,6 +166,7 @@ func TestOrganizationsService_UpdateIssueType(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZo",
 				"name": "Epic",
 				"description": "An issue type for a multi-week tracking of work",
+				"is_enabled": true,
 				"created_at": `+refTimeStr(1136178000)+`,
 				"updated_at": `+refTimeStr(1136178001)+`
 		}`)
@@ -175,6 +182,7 @@ func TestOrganizationsService_UpdateIssueType(t *testing.T) {
 		NodeID:      new("IT_kwDNAd3NAZo"),
 		Name:        new("Epic"),
 		Description: new("An issue type for a multi-week tracking of work"),
+		IsEnabled:   new(true),
 		CreatedAt:   refTimestamp(1136178000),
 		UpdatedAt:   refTimestamp(1136178001),
 	}
