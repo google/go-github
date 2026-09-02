@@ -20854,10 +20854,7 @@ func TestEnterpriseDeleteBudgetResponse_GetMessage(tt *testing.T) {
 
 func TestEnterpriseGetUserStatesOptions_GetSortOrder(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	e := &EnterpriseGetUserStatesOptions{SortOrder: &zeroValue}
-	e.GetSortOrder()
-	e = &EnterpriseGetUserStatesOptions{}
+	e := &EnterpriseGetUserStatesOptions{}
 	e.GetSortOrder()
 	e = nil
 	e.GetSortOrder()
@@ -20865,10 +20862,7 @@ func TestEnterpriseGetUserStatesOptions_GetSortOrder(tt *testing.T) {
 
 func TestEnterpriseGetUserStatesOptions_GetThresholdLowerBound(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	e := &EnterpriseGetUserStatesOptions{ThresholdLowerBound: &zeroValue}
-	e.GetThresholdLowerBound()
-	e = &EnterpriseGetUserStatesOptions{}
+	e := &EnterpriseGetUserStatesOptions{}
 	e.GetThresholdLowerBound()
 	e = nil
 	e.GetThresholdLowerBound()
@@ -20876,10 +20870,7 @@ func TestEnterpriseGetUserStatesOptions_GetThresholdLowerBound(tt *testing.T) {
 
 func TestEnterpriseGetUserStatesOptions_GetThresholdUpperBound(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	e := &EnterpriseGetUserStatesOptions{ThresholdUpperBound: &zeroValue}
-	e.GetThresholdUpperBound()
-	e = &EnterpriseGetUserStatesOptions{}
+	e := &EnterpriseGetUserStatesOptions{}
 	e.GetThresholdUpperBound()
 	e = nil
 	e.GetThresholdUpperBound()
@@ -20887,10 +20878,7 @@ func TestEnterpriseGetUserStatesOptions_GetThresholdUpperBound(tt *testing.T) {
 
 func TestEnterpriseGetUserStatesOptions_GetUser(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	e := &EnterpriseGetUserStatesOptions{User: &zeroValue}
-	e.GetUser()
-	e = &EnterpriseGetUserStatesOptions{}
+	e := &EnterpriseGetUserStatesOptions{}
 	e.GetUser()
 	e = nil
 	e.GetUser()

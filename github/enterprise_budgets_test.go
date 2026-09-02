@@ -104,7 +104,7 @@ func TestEnterpriseService_GetUserStatesForBudget(t *testing.T) {
 		testFormValues(t, r, values{
 			"page":                  "1",
 			"per_page":              "2",
-			"sort_order":            "0",
+			"sort_order":            "1",
 			"user":                  "octocat",
 			"threshold_lower_bound": "50.5",
 			"threshold_upper_bound": "100",
@@ -129,10 +129,10 @@ func TestEnterpriseService_GetUserStatesForBudget(t *testing.T) {
 	})
 
 	opts := &EnterpriseGetUserStatesOptions{
-		SortOrder:           new(0),
-		User:                new("octocat"),
-		ThresholdLowerBound: new(50.5),
-		ThresholdUpperBound: new(100.0),
+		SortOrder:           1,
+		User:                "octocat",
+		ThresholdLowerBound: 50.5,
+		ThresholdUpperBound: 100.0,
 		ListOptions:         ListOptions{Page: 1, PerPage: 2},
 	}
 	ctx := t.Context()

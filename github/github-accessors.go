@@ -16558,36 +16558,36 @@ func (e *EnterpriseDeleteBudgetResponse) GetMessage() string {
 	return e.Message
 }
 
-// GetSortOrder returns the SortOrder field if it's non-nil, zero value otherwise.
+// GetSortOrder returns the SortOrder field.
 func (e *EnterpriseGetUserStatesOptions) GetSortOrder() int {
-	if e == nil || e.SortOrder == nil {
+	if e == nil {
 		return 0
 	}
-	return *e.SortOrder
+	return e.SortOrder
 }
 
-// GetThresholdLowerBound returns the ThresholdLowerBound field if it's non-nil, zero value otherwise.
+// GetThresholdLowerBound returns the ThresholdLowerBound field.
 func (e *EnterpriseGetUserStatesOptions) GetThresholdLowerBound() float64 {
-	if e == nil || e.ThresholdLowerBound == nil {
+	if e == nil {
 		return 0
 	}
-	return *e.ThresholdLowerBound
+	return e.ThresholdLowerBound
 }
 
-// GetThresholdUpperBound returns the ThresholdUpperBound field if it's non-nil, zero value otherwise.
+// GetThresholdUpperBound returns the ThresholdUpperBound field.
 func (e *EnterpriseGetUserStatesOptions) GetThresholdUpperBound() float64 {
-	if e == nil || e.ThresholdUpperBound == nil {
+	if e == nil {
 		return 0
 	}
-	return *e.ThresholdUpperBound
+	return e.ThresholdUpperBound
 }
 
-// GetUser returns the User field if it's non-nil, zero value otherwise.
+// GetUser returns the User field.
 func (e *EnterpriseGetUserStatesOptions) GetUser() string {
-	if e == nil || e.User == nil {
+	if e == nil {
 		return ""
 	}
-	return *e.User
+	return e.User
 }
 
 // GetEnterpriseServerEmails returns the EnterpriseServerEmails slice if it's non-nil, nil otherwise.

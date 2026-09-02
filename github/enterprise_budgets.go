@@ -85,10 +85,10 @@ func (u EnterpriseBudgetUserStates) String() string {
 // EnterpriseGetUserStatesOptions specifies the optional parameters to the
 // EnterpriseService.GetUserStatesForBudget method.
 type EnterpriseGetUserStatesOptions struct {
-	SortOrder           *int     `url:"sort_order,omitempty"`
-	User                *string  `url:"user,omitempty"`
-	ThresholdLowerBound *float64 `url:"threshold_lower_bound,omitempty"`
-	ThresholdUpperBound *float64 `url:"threshold_upper_bound,omitempty"`
+	SortOrder           int     `url:"sort_order,omitempty"`
+	User                string  `url:"user,omitempty"`
+	ThresholdLowerBound float64 `url:"threshold_lower_bound,omitempty"`
+	ThresholdUpperBound float64 `url:"threshold_upper_bound,omitempty"`
 
 	ListOptions
 }
