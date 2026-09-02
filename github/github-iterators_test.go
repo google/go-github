@@ -6240,7 +6240,7 @@ func TestEnterpriseService_ListBudgetsIter(t *testing.T) {
 		t.Errorf("client.Enterprise.ListBudgetsIter call 1 got %v items; want %v", gotItems, want)
 	}
 
-	opts := &EnterpriseListBudgetsOptions{}
+	opts := &ListOptions{}
 	iter = client.Enterprise.ListBudgetsIter(t.Context(), "", opts)
 	gotItems = 0
 	for _, err := range iter {

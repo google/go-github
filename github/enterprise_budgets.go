@@ -53,12 +53,6 @@ type EnterpriseListBudgets struct {
 	TotalCount  *int                `json:"total_count,omitempty"`
 }
 
-// EnterpriseListBudgetsOptions specifies the optional parameters to the
-// EnterpriseService.ListBudgets method.
-type EnterpriseListBudgetsOptions struct {
-	ListOptions
-}
-
 // EnterpriseBudgetUserState represents the budget status and consumption of an individual user.
 type EnterpriseBudgetUserState struct {
 	User             *string  `json:"user,omitempty"`
@@ -132,7 +126,7 @@ type EnterpriseDeleteBudgetResponse struct {
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#get-all-budgets
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/budgets
-func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string, opts *EnterpriseListBudgetsOptions) (*EnterpriseListBudgets, *Response, error) {
+func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string, opts *ListOptions) (*EnterpriseListBudgets, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets", enterprise)
 
 	u, err := addOptions(u, opts)

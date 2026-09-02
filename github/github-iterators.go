@@ -2897,11 +2897,11 @@ func (s *EnterpriseService) ListAssignmentsIter(ctx context.Context, enterprise 
 }
 
 // ListBudgetsIter returns an iterator that paginates through all results of ListBudgets.
-func (s *EnterpriseService) ListBudgetsIter(ctx context.Context, enterprise string, opts *EnterpriseListBudgetsOptions) iter.Seq2[*EnterpriseBudget, error] {
+func (s *EnterpriseService) ListBudgetsIter(ctx context.Context, enterprise string, opts *ListOptions) iter.Seq2[*EnterpriseBudget, error] {
 	return func(yield func(*EnterpriseBudget, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
-			opts = &EnterpriseListBudgetsOptions{}
+			opts = &ListOptions{}
 		} else {
 			opts = new(*opts)
 		}
@@ -2926,7 +2926,7 @@ func (s *EnterpriseService) ListBudgetsIter(ctx context.Context, enterprise stri
 			if resp.NextPage == 0 {
 				break
 			}
-			opts.ListOptions.Page = resp.NextPage
+			opts.Page = resp.NextPage
 		}
 	}
 }

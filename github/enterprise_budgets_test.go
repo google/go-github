@@ -40,9 +40,7 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 		}`)
 	})
 
-	opts := &EnterpriseListBudgetsOptions{
-		ListOptions: ListOptions{Page: 2, PerPage: 10},
-	}
+	opts := &ListOptions{Page: 2, PerPage: 10}
 	ctx := t.Context()
 	budgets, _, err := client.Enterprise.ListBudgets(ctx, "e", opts)
 	if err != nil {
