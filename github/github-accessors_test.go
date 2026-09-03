@@ -12928,6 +12928,36 @@ func TestCopilotMetricsCopilotAppTokenUsage_GetPromptTokensSum(tt *testing.T) {
 	c.GetPromptTokensSum()
 }
 
+func TestCopilotMetricsCopilotSuggestionByCommentType_GetCommentType(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotMetricsCopilotSuggestionByCommentType{}
+	c.GetCommentType()
+	c = nil
+	c.GetCommentType()
+}
+
+func TestCopilotMetricsCopilotSuggestionByCommentType_GetTotalCopilotAppliedSuggestions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotSuggestionByCommentType{TotalCopilotAppliedSuggestions: &zeroValue}
+	c.GetTotalCopilotAppliedSuggestions()
+	c = &CopilotMetricsCopilotSuggestionByCommentType{}
+	c.GetTotalCopilotAppliedSuggestions()
+	c = nil
+	c.GetTotalCopilotAppliedSuggestions()
+}
+
+func TestCopilotMetricsCopilotSuggestionByCommentType_GetTotalCopilotSuggestions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotMetricsCopilotSuggestionByCommentType{TotalCopilotSuggestions: &zeroValue}
+	c.GetTotalCopilotSuggestions()
+	c = &CopilotMetricsCopilotSuggestionByCommentType{}
+	c.GetTotalCopilotSuggestions()
+	c = nil
+	c.GetTotalCopilotSuggestions()
+}
+
 func TestCopilotMetricsFeature_GetFeature(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotMetricsFeature{}
@@ -13045,6 +13075,17 @@ func TestCopilotMetricsModelFeature_GetUserInitiatedInteractionCount(tt *testing
 	c.GetUserInitiatedInteractionCount()
 	c = nil
 	c.GetUserInitiatedInteractionCount()
+}
+
+func TestCopilotMetricsPullRequests_GetCopilotSuggestionsByCommentType(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotMetricsCopilotSuggestionByCommentType{}
+	c := &CopilotMetricsPullRequests{CopilotSuggestionsByCommentType: zeroValue}
+	c.GetCopilotSuggestionsByCommentType()
+	c = &CopilotMetricsPullRequests{}
+	c.GetCopilotSuggestionsByCommentType()
+	c = nil
+	c.GetCopilotSuggestionsByCommentType()
 }
 
 func TestCopilotMetricsPullRequests_GetMedianMinutesToMerge(tt *testing.T) {
@@ -13364,6 +13405,76 @@ func TestCopilotPeriodicMetrics_GetReportStartDay(tt *testing.T) {
 	c.GetReportStartDay()
 	c = nil
 	c.GetReportStartDay()
+}
+
+func TestCopilotRepositoryDailyMetrics_GetDay(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotRepositoryDailyMetrics{}
+	c.GetDay()
+	c = nil
+	c.GetDay()
+}
+
+func TestCopilotRepositoryDailyMetrics_GetEnterpriseID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotRepositoryDailyMetrics{EnterpriseID: &zeroValue}
+	c.GetEnterpriseID()
+	c = &CopilotRepositoryDailyMetrics{}
+	c.GetEnterpriseID()
+	c = nil
+	c.GetEnterpriseID()
+}
+
+func TestCopilotRepositoryDailyMetrics_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotRepositoryDailyMetrics{OrganizationID: &zeroValue}
+	c.GetOrganizationID()
+	c = &CopilotRepositoryDailyMetrics{}
+	c.GetOrganizationID()
+	c = nil
+	c.GetOrganizationID()
+}
+
+func TestCopilotRepositoryDailyMetrics_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotRepositoryDailyMetrics{}
+	c.GetPullRequests()
+	c = nil
+	c.GetPullRequests()
+}
+
+func TestCopilotRepositoryDailyMetrics_GetRepoID(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotRepositoryDailyMetrics{}
+	c.GetRepoID()
+	c = nil
+	c.GetRepoID()
+}
+
+func TestCopilotRepositoryDailyMetrics_GetRepoName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotRepositoryDailyMetrics{}
+	c.GetRepoName()
+	c = nil
+	c.GetRepoName()
+}
+
+func TestCopilotRepositoryDailyMetrics_GetRepoOwnerName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotRepositoryDailyMetrics{}
+	c.GetRepoOwnerName()
+	c = nil
+	c.GetRepoOwnerName()
+}
+
+func TestCopilotRepositoryDailyMetrics_GetRepoVisibility(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotRepositoryDailyMetrics{}
+	c.GetRepoVisibility()
+	c = nil
+	c.GetRepoVisibility()
 }
 
 func TestCopilotSeatBreakdown_GetActiveThisCycle(tt *testing.T) {
