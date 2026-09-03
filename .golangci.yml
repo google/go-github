@@ -185,7 +185,7 @@ linters:
       extraneousnew:
         type: module
         description: Reports problematic usage of 'new' or '&SomeStruct{}' when a more idiomatic 'var' pointer would be more appropriate.
-        original-url: github.com/google/go-github/v90/tools/extraneousnew
+        original-url: github.com/google/go-github/v91/tools/extraneousnew
         settings:
           ignored-methods:
             - RateLimitService.Get
@@ -193,11 +193,11 @@ linters:
       fmtpercentv:
         type: module
         description: Reports usage of %d or %s in format strings.
-        original-url: github.com/google/go-github/v90/tools/fmtpercentv
+        original-url: github.com/google/go-github/v91/tools/fmtpercentv
       paramcheck:
         type: module
         description: Reports parameter naming and type convention issues.
-        original-url: github.com/google/go-github/v90/tools/paramcheck
+        original-url: github.com/google/go-github/v91/tools/paramcheck
         settings:
           # Body type names exempt from the "pass by value, not by pointer" rule.
           # TODO: fix and remove these exceptions.
@@ -287,11 +287,11 @@ linters:
       sliceofpointers:
         type: module
         description: Reports usage of []*string and slices of structs without pointers.
-        original-url: github.com/google/go-github/v90/tools/sliceofpointers
+        original-url: github.com/google/go-github/v91/tools/sliceofpointers
       structfield:
         type: module
         description: Reports mismatches between Go field and JSON, URL tag names and types.
-        original-url: github.com/google/go-github/v90/tools/structfield
+        original-url: github.com/google/go-github/v91/tools/structfield
         settings:
           allowed-tag-names:
             - ActionsCacheUsageList.RepoCacheUsage # TODO: RepoCacheUsages ?
