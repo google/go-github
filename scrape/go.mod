@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	github.com/PuerkitoBio/goquery v1.12.0
 	github.com/google/go-cmp v0.7.0
-	github.com/google/go-github/v90 v90.0.0
+	github.com/google/go-github/v91 v91.0.0
 	github.com/xlzd/gotp v0.1.0
 	golang.org/x/net v0.58.0
 )
