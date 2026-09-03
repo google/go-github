@@ -14961,6 +14961,47 @@ func TestCreateCodespaceOptions_GetWorkingDirectory(tt *testing.T) {
 	c.GetWorkingDirectory()
 }
 
+func TestCreateCommitCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCommitCommentRequest{}
+	c.GetBody()
+	c = nil
+	c.GetBody()
+}
+
+func TestCreateCommitCommentRequest_GetLine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreateCommitCommentRequest{Line: &zeroValue}
+	c.GetLine()
+	c = &CreateCommitCommentRequest{}
+	c.GetLine()
+	c = nil
+	c.GetLine()
+}
+
+func TestCreateCommitCommentRequest_GetPath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCommitCommentRequest{Path: &zeroValue}
+	c.GetPath()
+	c = &CreateCommitCommentRequest{}
+	c.GetPath()
+	c = nil
+	c.GetPath()
+}
+
+func TestCreateCommitCommentRequest_GetPosition(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreateCommitCommentRequest{Position: &zeroValue}
+	c.GetPosition()
+	c = &CreateCommitCommentRequest{}
+	c.GetPosition()
+	c = nil
+	c.GetPosition()
+}
+
 func TestCreateCommitOptions_GetSigner(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateCommitOptions{}
@@ -45452,6 +45493,17 @@ func TestRepositoryCodeSecurityConfiguration_GetState(tt *testing.T) {
 	r.GetState()
 }
 
+func TestRepositoryComment_GetAuthorAssociation(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RepositoryComment{AuthorAssociation: &zeroValue}
+	r.GetAuthorAssociation()
+	r = &RepositoryComment{}
+	r.GetAuthorAssociation()
+	r = nil
+	r.GetAuthorAssociation()
+}
+
 func TestRepositoryComment_GetBody(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -45505,6 +45557,17 @@ func TestRepositoryComment_GetID(tt *testing.T) {
 	r.GetID()
 	r = nil
 	r.GetID()
+}
+
+func TestRepositoryComment_GetLine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	r := &RepositoryComment{Line: &zeroValue}
+	r.GetLine()
+	r = &RepositoryComment{}
+	r.GetLine()
+	r = nil
+	r.GetLine()
 }
 
 func TestRepositoryComment_GetNodeID(tt *testing.T) {
@@ -55554,6 +55617,14 @@ func TestUpdateCodespaceOptions_GetRecentFolders(tt *testing.T) {
 	u.GetRecentFolders()
 	u = nil
 	u.GetRecentFolders()
+}
+
+func TestUpdateCommitCommentRequest_GetBody(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateCommitCommentRequest{}
+	u.GetBody()
+	u = nil
+	u.GetBody()
 }
 
 func TestUpdateConnectedExternalGroupRequest_GetGroupID(tt *testing.T) {

@@ -236,7 +236,6 @@ linters:
             - PullRequestReviewsEnforcementUpdate
             - Repository
             - RepositoryAddCollaboratorOptions
-            - RepositoryComment
             - RepositoryContentFileOptions
             - RepositoryCreateForkOptions
             - RequiredStatusChecksRequest

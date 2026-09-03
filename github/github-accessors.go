@@ -11846,6 +11846,38 @@ func (c *CreateCodespaceOptions) GetWorkingDirectory() string {
 	return *c.WorkingDirectory
 }
 
+// GetBody returns the Body field.
+func (c *CreateCommitCommentRequest) GetBody() string {
+	if c == nil {
+		return ""
+	}
+	return c.Body
+}
+
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (c *CreateCommitCommentRequest) GetLine() int {
+	if c == nil || c.Line == nil {
+		return 0
+	}
+	return *c.Line
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (c *CreateCommitCommentRequest) GetPath() string {
+	if c == nil || c.Path == nil {
+		return ""
+	}
+	return *c.Path
+}
+
+// GetPosition returns the Position field if it's non-nil, zero value otherwise.
+func (c *CreateCommitCommentRequest) GetPosition() int {
+	if c == nil || c.Position == nil {
+		return 0
+	}
+	return *c.Position
+}
+
 // GetSigner returns the Signer field.
 func (c *CreateCommitOptions) GetSigner() MessageSigner {
 	if c == nil {
@@ -36214,6 +36246,14 @@ func (r *RepositoryCodeSecurityConfiguration) GetState() string {
 	return *r.State
 }
 
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (r *RepositoryComment) GetAuthorAssociation() string {
+	if r == nil || r.AuthorAssociation == nil {
+		return ""
+	}
+	return *r.AuthorAssociation
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (r *RepositoryComment) GetBody() string {
 	if r == nil || r.Body == nil {
@@ -36252,6 +36292,14 @@ func (r *RepositoryComment) GetID() int64 {
 		return 0
 	}
 	return *r.ID
+}
+
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (r *RepositoryComment) GetLine() int {
+	if r == nil || r.Line == nil {
+		return 0
+	}
+	return *r.Line
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
@@ -44420,6 +44468,14 @@ func (u *UpdateCodespaceOptions) GetRecentFolders() []string {
 		return nil
 	}
 	return u.RecentFolders
+}
+
+// GetBody returns the Body field.
+func (u *UpdateCommitCommentRequest) GetBody() string {
+	if u == nil {
+		return ""
+	}
+	return u.Body
 }
 
 // GetGroupID returns the GroupID field.
