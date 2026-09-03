@@ -8,6 +8,7 @@ package github
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 )
@@ -606,7 +607,15 @@ func (s *PullRequestsService) MergeAsync(ctx context.Context, owner, repo string
 	var result *PullRequestMergeAsyncResult
 	resp, err := s.client.Do(req, &result)
 	if err != nil {
-		return nil, resp, err
+		var acceptedError *AcceptedError
+		if !errors.As(err, &acceptedError) {
+			return nil, resp, err
+		}
+		// 202 Accepted is the success response here, so decode the payload
+		// instead of returning the AcceptedError.
+		if err := json.Unmarshal(acceptedError.Raw, &result); err != nil {
+			return nil, resp, err
+		}
 	}
 
 	return result, resp, nil
