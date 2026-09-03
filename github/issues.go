@@ -159,6 +159,7 @@ type IssueType struct {
 	Name        *string    `json:"name,omitempty"`
 	Description *string    `json:"description,omitempty"`
 	Color       *string    `json:"color,omitempty"`
+	IsEnabled   *bool      `json:"is_enabled,omitempty"`
 	CreatedAt   *Timestamp `json:"created_at,omitempty"`
 	UpdatedAt   *Timestamp `json:"updated_at,omitempty"`
 }

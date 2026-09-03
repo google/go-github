@@ -26,7 +26,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/go-github/v90/github"
+	"github.com/google/go-github/v91/github"
 	"go.yaml.in/yaml/v3"
 )
 
@@ -566,10 +566,11 @@ func nodeServiceMethod(fn *ast.FuncDecl) string {
 // skipServiceMethod lists helper methods that download from URLs returned by
 // other endpoints and therefore have no REST API operation of their own.
 var skipServiceMethod = map[string]bool{
-	"CopilotService.DownloadCopilotMetrics":        true,
-	"CopilotService.DownloadDailyMetrics":          true,
-	"CopilotService.DownloadPeriodicMetrics":       true,
-	"CopilotService.DownloadUserDailyMetrics":      true,
-	"CopilotService.DownloadUserPeriodicMetrics":   true,
-	"CopilotService.DownloadUserTeamsDailyMetrics": true,
+	"CopilotService.DownloadCopilotMetrics":         true,
+	"CopilotService.DownloadDailyMetrics":           true,
+	"CopilotService.DownloadPeriodicMetrics":        true,
+	"CopilotService.DownloadRepositoryDailyMetrics": true,
+	"CopilotService.DownloadUserDailyMetrics":       true,
+	"CopilotService.DownloadUserPeriodicMetrics":    true,
+	"CopilotService.DownloadUserTeamsDailyMetrics":  true,
 }

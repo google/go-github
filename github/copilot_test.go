@@ -2888,6 +2888,96 @@ func TestCopilotService_GetOrganizationUsersMetricsReport(t *testing.T) {
 	})
 }
 
+func TestCopilotService_GetEnterpriseRepositoriesDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/metrics/reports/repos-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2026-07-14"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/repos-1.json", "https://example.com/repos-2.json"],
+			"report_day": "2026-07-14"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2026-07-14"}
+	got, _, err := client.Copilot.GetEnterpriseRepositoriesDailyMetricsReport(ctx, "e", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseRepositoriesDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/repos-1.json", "https://example.com/repos-2.json"},
+		ReportDay:     "2026-07-14",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseRepositoriesDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseRepositoriesDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseRepositoriesDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseRepositoriesDailyMetricsReport(ctx, "e", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseRepositoriesDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationRepositoriesDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/metrics/reports/repos-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2026-07-14"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/repos-1.json"],
+			"report_day": "2026-07-14"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2026-07-14"}
+	got, _, err := client.Copilot.GetOrganizationRepositoriesDailyMetricsReport(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationRepositoriesDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/repos-1.json"},
+		ReportDay:     "2026-07-14",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationRepositoriesDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationRepositoriesDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationRepositoriesDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationRepositoriesDailyMetricsReport(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationRepositoriesDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
 func TestCopilotService_GetEnterpriseUserTeamsDailyMetricsReport(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -3742,6 +3832,125 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 	})
 	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.baseURL.String()+"path/to/users-periodic/badjson"); err == nil {
 		t.Error("Copilot.DownloadUserPeriodicMetrics expected error for bad JSON, got none")
+	}
+}
+
+func TestCopilotService_DownloadRepositoryDailyMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/repos-daily", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"day":"2026-07-14","enterprise_id":"1001","organization_id":"2002","repo_id":900000001,"repo_owner_name":"octodemo-metrics","repo_name":"example-service-alpha","repo_visibility":"INTERNAL","pull_requests":{"total_reviewed":1,"total_created":1,"total_created_by_copilot":1,"total_reviewed_by_copilot":1,"total_merged":1,"median_minutes_to_merge":372.62,"total_suggestions":0,"total_applied_suggestions":0,"total_merged_created_by_copilot":1,"median_minutes_to_merge_copilot_authored":372.62,"total_copilot_suggestions":0,"total_copilot_applied_suggestions":0,"total_merged_reviewed_by_copilot":1,"median_minutes_to_merge_copilot_reviewed":372.62,"copilot_suggestions_by_comment_type":[]}}
+{"day":"2026-07-14","enterprise_id":"1001","organization_id":"2002","repo_id":900000003,"repo_owner_name":"octodemo-metrics","repo_name":"example-service-gamma","repo_visibility":"INTERNAL","pull_requests":{"total_reviewed":1,"total_created":0,"total_created_by_copilot":0,"total_reviewed_by_copilot":1,"total_merged":1,"median_minutes_to_merge":1020.53,"total_suggestions":0,"total_applied_suggestions":1,"total_merged_created_by_copilot":0,"total_copilot_suggestions":0,"total_copilot_applied_suggestions":1,"total_merged_reviewed_by_copilot":1,"median_minutes_to_merge_copilot_reviewed":1020.53,"copilot_suggestions_by_comment_type":[{"comment_type":"spelling","total_copilot_suggestions":0,"total_copilot_applied_suggestions":1}]}}
+`)
+	})
+
+	ctx := t.Context()
+	url := client.baseURL.String() + "path/to/repos-daily"
+	got, resp, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, url)
+	if err != nil {
+		t.Errorf("Copilot.DownloadRepositoryDailyMetrics returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Copilot.DownloadRepositoryDailyMetrics returned status code: %v", resp.StatusCode)
+	}
+
+	want := []*CopilotRepositoryDailyMetrics{
+		{
+			Day:            "2026-07-14",
+			EnterpriseID:   new("1001"),
+			OrganizationID: new("2002"),
+			RepoID:         900000001,
+			RepoOwnerName:  "octodemo-metrics",
+			RepoName:       "example-service-alpha",
+			RepoVisibility: "INTERNAL",
+			PullRequests: &CopilotMetricsPullRequests{
+				TotalReviewed:                       new(1),
+				TotalCreated:                        new(1),
+				TotalCreatedByCopilot:               new(1),
+				TotalReviewedByCopilot:              new(1),
+				TotalMerged:                         new(1),
+				MedianMinutesToMerge:                new(372.62),
+				TotalSuggestions:                    new(0),
+				TotalAppliedSuggestions:             new(0),
+				TotalMergedCreatedByCopilot:         new(1),
+				MedianMinutesToMergeCopilotAuthored: new(372.62),
+				TotalCopilotSuggestions:             new(0),
+				TotalCopilotAppliedSuggestions:      new(0),
+				TotalMergedReviewedByCopilot:        new(1),
+				MedianMinutesToMergeCopilotReviewed: new(372.62),
+				CopilotSuggestionsByCommentType:     []*CopilotMetricsCopilotSuggestionByCommentType{},
+			},
+		},
+		{
+			Day:            "2026-07-14",
+			EnterpriseID:   new("1001"),
+			OrganizationID: new("2002"),
+			RepoID:         900000003,
+			RepoOwnerName:  "octodemo-metrics",
+			RepoName:       "example-service-gamma",
+			RepoVisibility: "INTERNAL",
+			PullRequests: &CopilotMetricsPullRequests{
+				TotalReviewed:                       new(1),
+				TotalCreated:                        new(0),
+				TotalCreatedByCopilot:               new(0),
+				TotalReviewedByCopilot:              new(1),
+				TotalMerged:                         new(1),
+				MedianMinutesToMerge:                new(1020.53),
+				TotalSuggestions:                    new(0),
+				TotalAppliedSuggestions:             new(1),
+				TotalMergedCreatedByCopilot:         new(0),
+				TotalCopilotSuggestions:             new(0),
+				TotalCopilotAppliedSuggestions:      new(1),
+				TotalMergedReviewedByCopilot:        new(1),
+				MedianMinutesToMergeCopilotReviewed: new(1020.53),
+				CopilotSuggestionsByCommentType: []*CopilotMetricsCopilotSuggestionByCommentType{
+					{
+						CommentType:                    "spelling",
+						TotalCopilotSuggestions:        new(0),
+						TotalCopilotAppliedSuggestions: new(1),
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.DownloadRepositoryDailyMetrics returned %+v, want %+v", got, want)
+	}
+
+	mux.HandleFunc("/path/to/repos-daily/empty", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+	})
+	gotEmpty, _, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, client.baseURL.String()+"path/to/repos-daily/empty")
+	if err != nil {
+		t.Errorf("Copilot.DownloadRepositoryDailyMetrics empty body returned error: %v", err)
+	}
+	if gotEmpty != nil {
+		t.Errorf("Copilot.DownloadRepositoryDailyMetrics empty body returned %+v, want nil", gotEmpty)
+	}
+
+	mux.HandleFunc("/path/to/repos-daily/error", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+	if _, _, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, client.baseURL.String()+"path/to/repos-daily/error"); err == nil {
+		t.Error("Copilot.DownloadRepositoryDailyMetrics expected error but got none")
+	}
+	if _, _, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, "\n"); err == nil {
+		t.Error("Copilot.DownloadRepositoryDailyMetrics expected error for invalid URL, got none")
+	}
+	if _, _, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, "invalid-scheme://test"); err == nil {
+		t.Error("Copilot.DownloadRepositoryDailyMetrics expected error for invalid scheme, got none")
+	}
+
+	mux.HandleFunc("/path/to/repos-daily/badjson", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "{\"repo_id\":1,\"day\":\"2026-07-14\"}\n{bad\n")
+	})
+	if _, _, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, client.baseURL.String()+"path/to/repos-daily/badjson"); err == nil {
+		t.Error("Copilot.DownloadRepositoryDailyMetrics expected error for bad JSON, got none")
 	}
 }
 
