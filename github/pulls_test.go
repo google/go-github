@@ -768,6 +768,7 @@ func TestPullRequestsService_MergeAsync(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/pulls/1/merge-async", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testJSONBody(t, r, request)
+		w.WriteHeader(http.StatusAccepted)
 		fmt.Fprint(w, `
 			{
 			  "status": "pending",
