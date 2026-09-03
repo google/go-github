@@ -22862,6 +22862,14 @@ func (i *IssueType) GetID() int64 {
 	return *i.ID
 }
 
+// GetIsEnabled returns the IsEnabled field if it's non-nil, zero value otherwise.
+func (i *IssueType) GetIsEnabled() bool {
+	if i == nil || i.IsEnabled == nil {
+		return false
+	}
+	return *i.IsEnabled
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (i *IssueType) GetName() string {
 	if i == nil || i.Name == nil {

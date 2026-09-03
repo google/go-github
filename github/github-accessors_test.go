@@ -28698,6 +28698,17 @@ func TestIssueType_GetID(tt *testing.T) {
 	i.GetID()
 }
 
+func TestIssueType_GetIsEnabled(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	i := &IssueType{IsEnabled: &zeroValue}
+	i.GetIsEnabled()
+	i = &IssueType{}
+	i.GetIsEnabled()
+	i = nil
+	i.GetIsEnabled()
+}
+
 func TestIssueType_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
