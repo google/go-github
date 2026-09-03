@@ -4805,6 +4805,37 @@ func (s *OrganizationsService) ListOrgMembershipsIter(ctx context.Context, opts 
 	}
 }
 
+// ListOrganizationRuleSuitesIter returns an iterator that paginates through all results of ListOrganizationRuleSuites.
+func (s *OrganizationsService) ListOrganizationRuleSuitesIter(ctx context.Context, org string, opts *ListRuleSuitesOptions) iter.Seq2[*RuleSuite, error] {
+	return func(yield func(*RuleSuite, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListRuleSuitesOptions{}
+		} else {
+			opts = Ptr(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListOrganizationRuleSuites(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListOutsideCollaboratorsIter returns an iterator that paginates through all results of ListOutsideCollaborators.
 func (s *OrganizationsService) ListOutsideCollaboratorsIter(ctx context.Context, org string, opts *ListOutsideCollaboratorsOptions) iter.Seq2[*User, error] {
 	return func(yield func(*User, error) bool) {

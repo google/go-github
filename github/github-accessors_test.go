@@ -30628,6 +30628,70 @@ func TestListRepositorySecurityAdvisoriesOptions_GetState(tt *testing.T) {
 	l.GetState()
 }
 
+func TestListRuleSuitesOptions_GetActorName(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetActorName()
+	l = nil
+	l.GetActorName()
+}
+
+func TestListRuleSuitesOptions_GetEvaluateStatus(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetEvaluateStatus()
+	l = nil
+	l.GetEvaluateStatus()
+}
+
+func TestListRuleSuitesOptions_GetPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetPage()
+	l = nil
+	l.GetPage()
+}
+
+func TestListRuleSuitesOptions_GetPerPage(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetPerPage()
+	l = nil
+	l.GetPerPage()
+}
+
+func TestListRuleSuitesOptions_GetRef(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetRef()
+	l = nil
+	l.GetRef()
+}
+
+func TestListRuleSuitesOptions_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetRepositoryName()
+	l = nil
+	l.GetRepositoryName()
+}
+
+func TestListRuleSuitesOptions_GetRuleSuiteResult(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetRuleSuiteResult()
+	l = nil
+	l.GetRuleSuiteResult()
+}
+
+func TestListRuleSuitesOptions_GetTimePeriod(tt *testing.T) {
+	tt.Parallel()
+	l := &ListRuleSuitesOptions{}
+	l.GetTimePeriod()
+	l = nil
+	l.GetTimePeriod()
+}
+
 func TestListRunnersOptions_GetName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -48584,6 +48648,91 @@ func TestRuleCodeScanningTool_GetTool(tt *testing.T) {
 	r.GetTool()
 }
 
+func TestRuleEvaluation_GetDetails(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluation{Details: &zeroValue}
+	r.GetDetails()
+	r = &RuleEvaluation{}
+	r.GetDetails()
+	r = nil
+	r.GetDetails()
+}
+
+func TestRuleEvaluation_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluation{Enforcement: &zeroValue}
+	r.GetEnforcement()
+	r = &RuleEvaluation{}
+	r.GetEnforcement()
+	r = nil
+	r.GetEnforcement()
+}
+
+func TestRuleEvaluation_GetResult(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluation{Result: &zeroValue}
+	r.GetResult()
+	r = &RuleEvaluation{}
+	r.GetResult()
+	r = nil
+	r.GetResult()
+}
+
+func TestRuleEvaluation_GetRuleSource(tt *testing.T) {
+	tt.Parallel()
+	r := &RuleEvaluation{}
+	r.GetRuleSource()
+	r = nil
+	r.GetRuleSource()
+}
+
+func TestRuleEvaluation_GetRuleType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluation{RuleType: &zeroValue}
+	r.GetRuleType()
+	r = &RuleEvaluation{}
+	r.GetRuleType()
+	r = nil
+	r.GetRuleType()
+}
+
+func TestRuleEvaluationSource_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RuleEvaluationSource{ID: &zeroValue}
+	r.GetID()
+	r = &RuleEvaluationSource{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRuleEvaluationSource_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationSource{Name: &zeroValue}
+	r.GetName()
+	r = &RuleEvaluationSource{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestRuleEvaluationSource_GetType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleEvaluationSource{Type: &zeroValue}
+	r.GetType()
+	r = &RuleEvaluationSource{}
+	r.GetType()
+	r = nil
+	r.GetType()
+}
+
 func TestRulesetRequiredReviewer_GetFilePatterns(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
@@ -48650,6 +48799,138 @@ func TestRuleStatusCheck_GetIntegrationID(tt *testing.T) {
 	r.GetIntegrationID()
 	r = nil
 	r.GetIntegrationID()
+}
+
+func TestRuleSuite_GetActorID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RuleSuite{ActorID: &zeroValue}
+	r.GetActorID()
+	r = &RuleSuite{}
+	r.GetActorID()
+	r = nil
+	r.GetActorID()
+}
+
+func TestRuleSuite_GetActorName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{ActorName: &zeroValue}
+	r.GetActorName()
+	r = &RuleSuite{}
+	r.GetActorName()
+	r = nil
+	r.GetActorName()
+}
+
+func TestRuleSuite_GetAfterSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{AfterSHA: &zeroValue}
+	r.GetAfterSHA()
+	r = &RuleSuite{}
+	r.GetAfterSHA()
+	r = nil
+	r.GetAfterSHA()
+}
+
+func TestRuleSuite_GetBeforeSHA(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{BeforeSHA: &zeroValue}
+	r.GetBeforeSHA()
+	r = &RuleSuite{}
+	r.GetBeforeSHA()
+	r = nil
+	r.GetBeforeSHA()
+}
+
+func TestRuleSuite_GetEvaluationResult(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{EvaluationResult: &zeroValue}
+	r.GetEvaluationResult()
+	r = &RuleSuite{}
+	r.GetEvaluationResult()
+	r = nil
+	r.GetEvaluationResult()
+}
+
+func TestRuleSuite_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RuleSuite{ID: &zeroValue}
+	r.GetID()
+	r = &RuleSuite{}
+	r.GetID()
+	r = nil
+	r.GetID()
+}
+
+func TestRuleSuite_GetPushedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	r := &RuleSuite{PushedAt: &zeroValue}
+	r.GetPushedAt()
+	r = &RuleSuite{}
+	r.GetPushedAt()
+	r = nil
+	r.GetPushedAt()
+}
+
+func TestRuleSuite_GetRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{Ref: &zeroValue}
+	r.GetRef()
+	r = &RuleSuite{}
+	r.GetRef()
+	r = nil
+	r.GetRef()
+}
+
+func TestRuleSuite_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	r := &RuleSuite{RepositoryID: &zeroValue}
+	r.GetRepositoryID()
+	r = &RuleSuite{}
+	r.GetRepositoryID()
+	r = nil
+	r.GetRepositoryID()
+}
+
+func TestRuleSuite_GetRepositoryName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{RepositoryName: &zeroValue}
+	r.GetRepositoryName()
+	r = &RuleSuite{}
+	r.GetRepositoryName()
+	r = nil
+	r.GetRepositoryName()
+}
+
+func TestRuleSuite_GetResult(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	r := &RuleSuite{Result: &zeroValue}
+	r.GetResult()
+	r = &RuleSuite{}
+	r.GetResult()
+	r = nil
+	r.GetResult()
+}
+
+func TestRuleSuite_GetRuleEvaluations(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*RuleEvaluation{}
+	r := &RuleSuite{RuleEvaluations: zeroValue}
+	r.GetRuleEvaluations()
+	r = &RuleSuite{}
+	r.GetRuleEvaluations()
+	r = nil
+	r.GetRuleEvaluations()
 }
 
 func TestRuleWorkflow_GetPath(tt *testing.T) {

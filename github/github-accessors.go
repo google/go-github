@@ -24438,6 +24438,70 @@ func (l *ListRepositorySecurityAdvisoriesOptions) GetState() string {
 	return l.State
 }
 
+// GetActorName returns the ActorName field.
+func (l *ListRuleSuitesOptions) GetActorName() string {
+	if l == nil {
+		return ""
+	}
+	return l.ActorName
+}
+
+// GetEvaluateStatus returns the EvaluateStatus field.
+func (l *ListRuleSuitesOptions) GetEvaluateStatus() string {
+	if l == nil {
+		return ""
+	}
+	return l.EvaluateStatus
+}
+
+// GetPage returns the Page field.
+func (l *ListRuleSuitesOptions) GetPage() int {
+	if l == nil {
+		return 0
+	}
+	return l.Page
+}
+
+// GetPerPage returns the PerPage field.
+func (l *ListRuleSuitesOptions) GetPerPage() int {
+	if l == nil {
+		return 0
+	}
+	return l.PerPage
+}
+
+// GetRef returns the Ref field.
+func (l *ListRuleSuitesOptions) GetRef() string {
+	if l == nil {
+		return ""
+	}
+	return l.Ref
+}
+
+// GetRepositoryName returns the RepositoryName field.
+func (l *ListRuleSuitesOptions) GetRepositoryName() string {
+	if l == nil {
+		return ""
+	}
+	return l.RepositoryName
+}
+
+// GetRuleSuiteResult returns the RuleSuiteResult field.
+func (l *ListRuleSuitesOptions) GetRuleSuiteResult() string {
+	if l == nil {
+		return ""
+	}
+	return l.RuleSuiteResult
+}
+
+// GetTimePeriod returns the TimePeriod field.
+func (l *ListRuleSuitesOptions) GetTimePeriod() string {
+	if l == nil {
+		return ""
+	}
+	return l.TimePeriod
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (l *ListRunnersOptions) GetName() string {
 	if l == nil || l.Name == nil {
@@ -38854,6 +38918,70 @@ func (r *RuleCodeScanningTool) GetTool() string {
 	return r.Tool
 }
 
+// GetDetails returns the Details field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluation) GetDetails() string {
+	if r == nil || r.Details == nil {
+		return ""
+	}
+	return *r.Details
+}
+
+// GetEnforcement returns the Enforcement field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluation) GetEnforcement() string {
+	if r == nil || r.Enforcement == nil {
+		return ""
+	}
+	return *r.Enforcement
+}
+
+// GetResult returns the Result field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluation) GetResult() string {
+	if r == nil || r.Result == nil {
+		return ""
+	}
+	return *r.Result
+}
+
+// GetRuleSource returns the RuleSource field.
+func (r *RuleEvaluation) GetRuleSource() *RuleEvaluationSource {
+	if r == nil {
+		return nil
+	}
+	return r.RuleSource
+}
+
+// GetRuleType returns the RuleType field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluation) GetRuleType() string {
+	if r == nil || r.RuleType == nil {
+		return ""
+	}
+	return *r.RuleType
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationSource) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationSource) GetName() string {
+	if r == nil || r.Name == nil {
+		return ""
+	}
+	return *r.Name
+}
+
+// GetType returns the Type field if it's non-nil, zero value otherwise.
+func (r *RuleEvaluationSource) GetType() string {
+	if r == nil || r.Type == nil {
+		return ""
+	}
+	return *r.Type
+}
+
 // GetFilePatterns returns the FilePatterns slice if it's non-nil, nil otherwise.
 func (r *RulesetRequiredReviewer) GetFilePatterns() []string {
 	if r == nil || r.FilePatterns == nil {
@@ -38908,6 +39036,102 @@ func (r *RuleStatusCheck) GetIntegrationID() int64 {
 		return 0
 	}
 	return *r.IntegrationID
+}
+
+// GetActorID returns the ActorID field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetActorID() int64 {
+	if r == nil || r.ActorID == nil {
+		return 0
+	}
+	return *r.ActorID
+}
+
+// GetActorName returns the ActorName field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetActorName() string {
+	if r == nil || r.ActorName == nil {
+		return ""
+	}
+	return *r.ActorName
+}
+
+// GetAfterSHA returns the AfterSHA field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetAfterSHA() string {
+	if r == nil || r.AfterSHA == nil {
+		return ""
+	}
+	return *r.AfterSHA
+}
+
+// GetBeforeSHA returns the BeforeSHA field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetBeforeSHA() string {
+	if r == nil || r.BeforeSHA == nil {
+		return ""
+	}
+	return *r.BeforeSHA
+}
+
+// GetEvaluationResult returns the EvaluationResult field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetEvaluationResult() string {
+	if r == nil || r.EvaluationResult == nil {
+		return ""
+	}
+	return *r.EvaluationResult
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetID() int64 {
+	if r == nil || r.ID == nil {
+		return 0
+	}
+	return *r.ID
+}
+
+// GetPushedAt returns the PushedAt field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetPushedAt() Timestamp {
+	if r == nil || r.PushedAt == nil {
+		return Timestamp{}
+	}
+	return *r.PushedAt
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetRef() string {
+	if r == nil || r.Ref == nil {
+		return ""
+	}
+	return *r.Ref
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetRepositoryID() int64 {
+	if r == nil || r.RepositoryID == nil {
+		return 0
+	}
+	return *r.RepositoryID
+}
+
+// GetRepositoryName returns the RepositoryName field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetRepositoryName() string {
+	if r == nil || r.RepositoryName == nil {
+		return ""
+	}
+	return *r.RepositoryName
+}
+
+// GetResult returns the Result field if it's non-nil, zero value otherwise.
+func (r *RuleSuite) GetResult() string {
+	if r == nil || r.Result == nil {
+		return ""
+	}
+	return *r.Result
+}
+
+// GetRuleEvaluations returns the RuleEvaluations slice if it's non-nil, nil otherwise.
+func (r *RuleSuite) GetRuleEvaluations() []*RuleEvaluation {
+	if r == nil || r.RuleEvaluations == nil {
+		return nil
+	}
+	return r.RuleEvaluations
 }
 
 // GetPath returns the Path field.
