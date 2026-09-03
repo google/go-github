@@ -1556,6 +1556,35 @@ type ErrorResponse struct {
 	DocumentationURL string `json:"documentation_url,omitempty"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface.
+func (r *ErrorResponse) UnmarshalJSON(data []byte) error {
+	type aliasErrorResponse ErrorResponse // avoid infinite recursion by using type alias.
+	response := struct {
+		Errors json.RawMessage `json:"errors"`
+		*aliasErrorResponse
+	}{
+		aliasErrorResponse: (*aliasErrorResponse)(r),
+	}
+
+	if err := json.Unmarshal(data, &response); err != nil {
+		return err
+	}
+	if len(response.Errors) == 0 || string(response.Errors) == "null" {
+		return nil
+	}
+	if err := json.Unmarshal(response.Errors, &r.Errors); err == nil {
+		return nil
+	}
+
+	var message string
+	if err := json.Unmarshal(response.Errors, &message); err != nil {
+		return err
+	}
+	//nolint:sliceofpointers
+	r.Errors = []Error{{Message: message}}
+	return nil
+}
+
 // ErrorBlock contains a further explanation for the reason of an error.
 // See https://developer.github.com/changes/2016-03-17-the-451-status-code-is-now-supported/
 // for more information.
