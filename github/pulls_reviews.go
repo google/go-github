@@ -94,6 +94,8 @@ func (r *PullRequestReviewRequest) isComfortFadePreview() (bool, error) {
 }
 
 // PullRequestDismissReviewRequest represents a request to dismiss a review.
+//
+//meta:schema request PUT /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/dismissals
 type PullRequestDismissReviewRequest struct {
 	Message string  `json:"message"`
 	Event   *string `json:"event,omitempty"`
@@ -104,6 +106,8 @@ func (r PullRequestDismissReviewRequest) String() string {
 }
 
 // PullRequestSubmitReviewRequest represents a request to submit a review.
+//
+//meta:schema request POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events
 type PullRequestSubmitReviewRequest struct {
 	Body  *string `json:"body,omitempty"`
 	Event string  `json:"event"`

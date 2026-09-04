@@ -12,6 +12,8 @@ import (
 
 // RepositoryMergeRequest represents a request to merge a branch in a
 // repository.
+//
+//meta:schema request POST /repos/{owner}/{repo}/merges
 type RepositoryMergeRequest struct {
 	Base          string  `json:"base"`
 	Head          string  `json:"head"`
@@ -20,6 +22,8 @@ type RepositoryMergeRequest struct {
 
 // RepoMergeUpstreamRequest represents a request to sync a branch of
 // a forked repository to keep it up-to-date with the upstream repository.
+//
+//meta:schema request POST /repos/{owner}/{repo}/merge-upstream
 type RepoMergeUpstreamRequest struct {
 	Branch string `json:"branch"`
 }

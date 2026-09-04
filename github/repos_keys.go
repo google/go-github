@@ -61,6 +61,8 @@ func (s *RepositoriesService) GetKey(ctx context.Context, owner, repo string, id
 }
 
 // CreateDeployKeyRequest represents a request to create a deploy key.
+//
+//meta:schema request POST /repos/{owner}/{repo}/keys
 type CreateDeployKeyRequest struct {
 	Title    *string `json:"title,omitempty"`
 	Key      string  `json:"key"`

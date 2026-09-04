@@ -25,12 +25,16 @@ type DeploymentBranchPolicyResponse struct {
 }
 
 // CreateDeploymentBranchPolicyRequest represents a request to create a deployment branch policy.
+//
+//meta:schema request POST /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies
 type CreateDeploymentBranchPolicyRequest struct {
 	Name string  `json:"name"`
 	Type *string `json:"type,omitempty"`
 }
 
 // UpdateDeploymentBranchPolicyRequest represents a request to update a deployment branch policy.
+//
+//meta:schema request PUT /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}
 type UpdateDeploymentBranchPolicyRequest struct {
 	Name string `json:"name"`
 }

@@ -24,6 +24,8 @@ func (k SSHSigningKey) String() string {
 
 // CreateSSHSigningKeyRequest represents a request to create an SSH signing key
 // for the authenticated user.
+//
+//meta:schema request POST /user/ssh_signing_keys
 type CreateSSHSigningKeyRequest struct {
 	Title *string `json:"title,omitempty"`
 	Key   string  `json:"key"`
