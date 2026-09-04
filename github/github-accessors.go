@@ -16470,6 +16470,62 @@ func (e *EnterpriseBudgetAlerting) GetWillAlert() bool {
 	return *e.WillAlert
 }
 
+// GetConsumedAmount returns the ConsumedAmount field.
+func (e *EnterpriseBudgetUserState) GetConsumedAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.ConsumedAmount
+}
+
+// GetOverrideBudgetID returns the OverrideBudgetID field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudgetUserState) GetOverrideBudgetID() string {
+	if e == nil || e.OverrideBudgetID == nil {
+		return ""
+	}
+	return *e.OverrideBudgetID
+}
+
+// GetTargetAmount returns the TargetAmount field.
+func (e *EnterpriseBudgetUserState) GetTargetAmount() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.TargetAmount
+}
+
+// GetUser returns the User field if it's non-nil, zero value otherwise.
+func (e *EnterpriseBudgetUserState) GetUser() string {
+	if e == nil || e.User == nil {
+		return ""
+	}
+	return *e.User
+}
+
+// GetHasNextPage returns the HasNextPage field.
+func (e *EnterpriseBudgetUserStates) GetHasNextPage() bool {
+	if e == nil {
+		return false
+	}
+	return e.HasNextPage
+}
+
+// GetTotalCount returns the TotalCount field.
+func (e *EnterpriseBudgetUserStates) GetTotalCount() int {
+	if e == nil {
+		return 0
+	}
+	return e.TotalCount
+}
+
+// GetUserStates returns the UserStates slice if it's non-nil, nil otherwise.
+func (e *EnterpriseBudgetUserStates) GetUserStates() []*EnterpriseBudgetUserState {
+	if e == nil || e.UserStates == nil {
+		return nil
+	}
+	return e.UserStates
+}
+
 // GetTotalSeatsConsumed returns the TotalSeatsConsumed field.
 func (e *EnterpriseConsumedLicenses) GetTotalSeatsConsumed() int {
 	if e == nil {
@@ -16628,6 +16684,38 @@ func (e *EnterpriseDeleteBudgetResponse) GetMessage() string {
 		return ""
 	}
 	return e.Message
+}
+
+// GetSortOrder returns the SortOrder field.
+func (e *EnterpriseGetUserStatesOptions) GetSortOrder() int {
+	if e == nil {
+		return 0
+	}
+	return e.SortOrder
+}
+
+// GetThresholdLowerBound returns the ThresholdLowerBound field.
+func (e *EnterpriseGetUserStatesOptions) GetThresholdLowerBound() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.ThresholdLowerBound
+}
+
+// GetThresholdUpperBound returns the ThresholdUpperBound field.
+func (e *EnterpriseGetUserStatesOptions) GetThresholdUpperBound() float64 {
+	if e == nil {
+		return 0
+	}
+	return e.ThresholdUpperBound
+}
+
+// GetUser returns the User field.
+func (e *EnterpriseGetUserStatesOptions) GetUser() string {
+	if e == nil {
+		return ""
+	}
+	return e.User
 }
 
 // GetEnterpriseServerEmails returns the EnterpriseServerEmails slice if it's non-nil, nil otherwise.
@@ -16820,6 +16908,22 @@ func (e *EnterpriseListBudgets) GetTotalCount() int {
 		return 0
 	}
 	return *e.TotalCount
+}
+
+// GetScope returns the Scope field.
+func (e *EnterpriseListBudgetsOptions) GetScope() string {
+	if e == nil {
+		return ""
+	}
+	return e.Scope
+}
+
+// GetUser returns the User field.
+func (e *EnterpriseListBudgetsOptions) GetUser() string {
+	if e == nil {
+		return ""
+	}
+	return e.User
 }
 
 // GetModel returns the Model field.

@@ -20740,6 +20740,71 @@ func TestEnterpriseBudgetAlerting_GetWillAlert(tt *testing.T) {
 	e.GetWillAlert()
 }
 
+func TestEnterpriseBudgetUserState_GetConsumedAmount(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseBudgetUserState{}
+	e.GetConsumedAmount()
+	e = nil
+	e.GetConsumedAmount()
+}
+
+func TestEnterpriseBudgetUserState_GetOverrideBudgetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseBudgetUserState{OverrideBudgetID: &zeroValue}
+	e.GetOverrideBudgetID()
+	e = &EnterpriseBudgetUserState{}
+	e.GetOverrideBudgetID()
+	e = nil
+	e.GetOverrideBudgetID()
+}
+
+func TestEnterpriseBudgetUserState_GetTargetAmount(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseBudgetUserState{}
+	e.GetTargetAmount()
+	e = nil
+	e.GetTargetAmount()
+}
+
+func TestEnterpriseBudgetUserState_GetUser(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	e := &EnterpriseBudgetUserState{User: &zeroValue}
+	e.GetUser()
+	e = &EnterpriseBudgetUserState{}
+	e.GetUser()
+	e = nil
+	e.GetUser()
+}
+
+func TestEnterpriseBudgetUserStates_GetHasNextPage(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseBudgetUserStates{}
+	e.GetHasNextPage()
+	e = nil
+	e.GetHasNextPage()
+}
+
+func TestEnterpriseBudgetUserStates_GetTotalCount(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseBudgetUserStates{}
+	e.GetTotalCount()
+	e = nil
+	e.GetTotalCount()
+}
+
+func TestEnterpriseBudgetUserStates_GetUserStates(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*EnterpriseBudgetUserState{}
+	e := &EnterpriseBudgetUserStates{UserStates: zeroValue}
+	e.GetUserStates()
+	e = &EnterpriseBudgetUserStates{}
+	e.GetUserStates()
+	e = nil
+	e.GetUserStates()
+}
+
 func TestEnterpriseConsumedLicenses_GetTotalSeatsConsumed(tt *testing.T) {
 	tt.Parallel()
 	e := &EnterpriseConsumedLicenses{}
@@ -20925,6 +20990,38 @@ func TestEnterpriseDeleteBudgetResponse_GetMessage(tt *testing.T) {
 	e.GetMessage()
 	e = nil
 	e.GetMessage()
+}
+
+func TestEnterpriseGetUserStatesOptions_GetSortOrder(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseGetUserStatesOptions{}
+	e.GetSortOrder()
+	e = nil
+	e.GetSortOrder()
+}
+
+func TestEnterpriseGetUserStatesOptions_GetThresholdLowerBound(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseGetUserStatesOptions{}
+	e.GetThresholdLowerBound()
+	e = nil
+	e.GetThresholdLowerBound()
+}
+
+func TestEnterpriseGetUserStatesOptions_GetThresholdUpperBound(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseGetUserStatesOptions{}
+	e.GetThresholdUpperBound()
+	e = nil
+	e.GetThresholdUpperBound()
+}
+
+func TestEnterpriseGetUserStatesOptions_GetUser(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseGetUserStatesOptions{}
+	e.GetUser()
+	e = nil
+	e.GetUser()
 }
 
 func TestEnterpriseLicensedUsers_GetEnterpriseServerEmails(tt *testing.T) {
@@ -21165,6 +21262,22 @@ func TestEnterpriseListBudgets_GetTotalCount(tt *testing.T) {
 	e.GetTotalCount()
 	e = nil
 	e.GetTotalCount()
+}
+
+func TestEnterpriseListBudgetsOptions_GetScope(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseListBudgetsOptions{}
+	e.GetScope()
+	e = nil
+	e.GetScope()
+}
+
+func TestEnterpriseListBudgetsOptions_GetUser(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseListBudgetsOptions{}
+	e.GetUser()
+	e = nil
+	e.GetUser()
 }
 
 func TestEnterprisePremiumRequestUsageReportOptions_GetModel(tt *testing.T) {
