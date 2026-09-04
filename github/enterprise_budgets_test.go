@@ -88,7 +88,7 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 	})
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListBudgets(ctx, "\n", nil)
+		_, _, err = client.Enterprise.ListBudgets(ctx, "\n", opts)
 		return err
 	})
 }
@@ -179,7 +179,7 @@ func TestEnterpriseService_GetUserStatesForBudget(t *testing.T) {
 	})
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.GetUserStatesForBudget(ctx, "\n", "\n", nil)
+		_, _, err = client.Enterprise.GetUserStatesForBudget(ctx, "\n", "\n", opts)
 		return err
 	})
 }
