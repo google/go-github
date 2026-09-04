@@ -57127,6 +57127,238 @@ func TestUsageReportOptions_GetYear(tt *testing.T) {
 	u.GetYear()
 }
 
+func TestUsageSummaryItem_GetDiscountAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetDiscountAmount()
+	u = nil
+	u.GetDiscountAmount()
+}
+
+func TestUsageSummaryItem_GetDiscountQuantity(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetDiscountQuantity()
+	u = nil
+	u.GetDiscountQuantity()
+}
+
+func TestUsageSummaryItem_GetGrossAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetGrossAmount()
+	u = nil
+	u.GetGrossAmount()
+}
+
+func TestUsageSummaryItem_GetGrossQuantity(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetGrossQuantity()
+	u = nil
+	u.GetGrossQuantity()
+}
+
+func TestUsageSummaryItem_GetNetAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetNetAmount()
+	u = nil
+	u.GetNetAmount()
+}
+
+func TestUsageSummaryItem_GetNetQuantity(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetNetQuantity()
+	u = nil
+	u.GetNetQuantity()
+}
+
+func TestUsageSummaryItem_GetPricePerUnit(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetPricePerUnit()
+	u = nil
+	u.GetPricePerUnit()
+}
+
+func TestUsageSummaryItem_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetProduct()
+	u = nil
+	u.GetProduct()
+}
+
+func TestUsageSummaryItem_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetSKU()
+	u = nil
+	u.GetSKU()
+}
+
+func TestUsageSummaryItem_GetUnitType(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetUnitType()
+	u = nil
+	u.GetUnitType()
+}
+
+func TestUsageSummaryOptions_GetDay(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetDay()
+	u = nil
+	u.GetDay()
+}
+
+func TestUsageSummaryOptions_GetMonth(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetMonth()
+	u = nil
+	u.GetMonth()
+}
+
+func TestUsageSummaryOptions_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetProduct()
+	u = nil
+	u.GetProduct()
+}
+
+func TestUsageSummaryOptions_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetRepository()
+	u = nil
+	u.GetRepository()
+}
+
+func TestUsageSummaryOptions_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetSKU()
+	u = nil
+	u.GetSKU()
+}
+
+func TestUsageSummaryOptions_GetYear(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetYear()
+	u = nil
+	u.GetYear()
+}
+
+func TestUsageSummaryReport_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageSummaryReport{Organization: &zeroValue}
+	u.GetOrganization()
+	u = &UsageSummaryReport{}
+	u.GetOrganization()
+	u = nil
+	u.GetOrganization()
+}
+
+func TestUsageSummaryReport_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageSummaryReport{Product: &zeroValue}
+	u.GetProduct()
+	u = &UsageSummaryReport{}
+	u.GetProduct()
+	u = nil
+	u.GetProduct()
+}
+
+func TestUsageSummaryReport_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageSummaryReport{Repository: &zeroValue}
+	u.GetRepository()
+	u = &UsageSummaryReport{}
+	u.GetRepository()
+	u = nil
+	u.GetRepository()
+}
+
+func TestUsageSummaryReport_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageSummaryReport{SKU: &zeroValue}
+	u.GetSKU()
+	u = &UsageSummaryReport{}
+	u.GetSKU()
+	u = nil
+	u.GetSKU()
+}
+
+func TestUsageSummaryReport_GetTimePeriod(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryReport{}
+	u.GetTimePeriod()
+	u = nil
+	u.GetTimePeriod()
+}
+
+func TestUsageSummaryReport_GetUsageItems(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*UsageSummaryItem{}
+	u := &UsageSummaryReport{UsageItems: zeroValue}
+	u.GetUsageItems()
+	u = &UsageSummaryReport{}
+	u.GetUsageItems()
+	u = nil
+	u.GetUsageItems()
+}
+
+func TestUsageSummaryReport_GetUser(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageSummaryReport{User: &zeroValue}
+	u.GetUser()
+	u = &UsageSummaryReport{}
+	u.GetUser()
+	u = nil
+	u.GetUser()
+}
+
+func TestUsageSummaryTimePeriod_GetDay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UsageSummaryTimePeriod{Day: &zeroValue}
+	u.GetDay()
+	u = &UsageSummaryTimePeriod{}
+	u.GetDay()
+	u = nil
+	u.GetDay()
+}
+
+func TestUsageSummaryTimePeriod_GetMonth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UsageSummaryTimePeriod{Month: &zeroValue}
+	u.GetMonth()
+	u = &UsageSummaryTimePeriod{}
+	u.GetMonth()
+	u = nil
+	u.GetMonth()
+}
+
+func TestUsageSummaryTimePeriod_GetYear(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryTimePeriod{}
+	u.GetYear()
+	u = nil
+	u.GetYear()
+}
+
 func TestUser_GetAssignment(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
