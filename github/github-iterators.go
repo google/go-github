@@ -2772,6 +2772,41 @@ func (s *DependabotService) ListSelectedReposForOrgSecretIter(ctx context.Contex
 	}
 }
 
+// ListUserStatesForBudgetIter returns an iterator that paginates through all results of GetUserStatesForBudget.
+func (s *EnterpriseService) ListUserStatesForBudgetIter(ctx context.Context, enterprise string, budgetID string, opts *EnterpriseGetUserStatesOptions) iter.Seq2[*EnterpriseBudgetUserState, error] {
+	return func(yield func(*EnterpriseBudgetUserState, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &EnterpriseGetUserStatesOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.GetUserStatesForBudget(ctx, enterprise, budgetID, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*EnterpriseBudgetUserState
+			if results != nil {
+				iterItems = results.UserStates
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListAppAccessibleOrganizationRepositoriesIter returns an iterator that paginates through all results of ListAppAccessibleOrganizationRepositories.
 func (s *EnterpriseService) ListAppAccessibleOrganizationRepositoriesIter(ctx context.Context, enterprise string, org string, opts *ListOptions) iter.Seq2[*AccessibleRepository, error] {
 	return func(yield func(*AccessibleRepository, error) bool) {
@@ -2897,11 +2932,11 @@ func (s *EnterpriseService) ListAssignmentsIter(ctx context.Context, enterprise 
 }
 
 // ListBudgetsIter returns an iterator that paginates through all results of ListBudgets.
-func (s *EnterpriseService) ListBudgetsIter(ctx context.Context, enterprise string, opts *ListBudgetsOptions) iter.Seq2[*EnterpriseBudget, error] {
+func (s *EnterpriseService) ListBudgetsIter(ctx context.Context, enterprise string, opts *EnterpriseListBudgetsOptions) iter.Seq2[*EnterpriseBudget, error] {
 	return func(yield func(*EnterpriseBudget, error) bool) {
 		// Create a copy of opts to avoid mutating the caller's struct
 		if opts == nil {
-			opts = &ListBudgetsOptions{}
+			opts = &EnterpriseListBudgetsOptions{}
 		} else {
 			opts = new(*opts)
 		}

@@ -45,7 +45,7 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 		}`)
 	})
 
-	opts := &ListBudgetsOptions{
+	opts := &EnterpriseListBudgetsOptions{
 		Scope:       "enterprise",
 		User:        "octocat",
 		ListOptions: ListOptions{Page: 2, PerPage: 10},

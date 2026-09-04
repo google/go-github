@@ -21264,6 +21264,22 @@ func TestEnterpriseListBudgets_GetTotalCount(tt *testing.T) {
 	e.GetTotalCount()
 }
 
+func TestEnterpriseListBudgetsOptions_GetScope(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseListBudgetsOptions{}
+	e.GetScope()
+	e = nil
+	e.GetScope()
+}
+
+func TestEnterpriseListBudgetsOptions_GetUser(tt *testing.T) {
+	tt.Parallel()
+	e := &EnterpriseListBudgetsOptions{}
+	e.GetUser()
+	e = nil
+	e.GetUser()
+}
+
 func TestEnterprisePremiumRequestUsageReportOptions_GetModel(tt *testing.T) {
 	tt.Parallel()
 	e := &EnterprisePremiumRequestUsageReportOptions{}
@@ -29878,22 +29894,6 @@ func TestListArtifactsOptions_GetName(tt *testing.T) {
 	l.GetName()
 	l = nil
 	l.GetName()
-}
-
-func TestListBudgetsOptions_GetScope(tt *testing.T) {
-	tt.Parallel()
-	l := &ListBudgetsOptions{}
-	l.GetScope()
-	l = nil
-	l.GetScope()
-}
-
-func TestListBudgetsOptions_GetUser(tt *testing.T) {
-	tt.Parallel()
-	l := &ListBudgetsOptions{}
-	l.GetUser()
-	l = nil
-	l.GetUser()
 }
 
 func TestListCheckRunsOptions_GetAppID(tt *testing.T) {

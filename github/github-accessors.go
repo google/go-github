@@ -16910,6 +16910,22 @@ func (e *EnterpriseListBudgets) GetTotalCount() int {
 	return *e.TotalCount
 }
 
+// GetScope returns the Scope field.
+func (e *EnterpriseListBudgetsOptions) GetScope() string {
+	if e == nil {
+		return ""
+	}
+	return e.Scope
+}
+
+// GetUser returns the User field.
+func (e *EnterpriseListBudgetsOptions) GetUser() string {
+	if e == nil {
+		return ""
+	}
+	return e.User
+}
+
 // GetModel returns the Model field.
 func (e *EnterprisePremiumRequestUsageReportOptions) GetModel() string {
 	if e == nil {
@@ -23796,22 +23812,6 @@ func (l *ListArtifactsOptions) GetName() string {
 		return ""
 	}
 	return *l.Name
-}
-
-// GetScope returns the Scope field.
-func (l *ListBudgetsOptions) GetScope() string {
-	if l == nil {
-		return ""
-	}
-	return l.Scope
-}
-
-// GetUser returns the User field.
-func (l *ListBudgetsOptions) GetUser() string {
-	if l == nil {
-		return ""
-	}
-	return l.User
 }
 
 // GetAppID returns the AppID field if it's non-nil, zero value otherwise.
