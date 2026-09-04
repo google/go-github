@@ -75,6 +75,8 @@ type DependencyGraphSnapshotManifest struct {
 // CreateDependencyGraphSnapshotRequest represents a request to create a snapshot of a repository's dependencies.
 //
 // GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
+//
+//meta:schema request POST /repos/{owner}/{repo}/dependency-graph/snapshots
 type CreateDependencyGraphSnapshotRequest struct {
 	Version   int                                         `json:"version"`
 	SHA       string                                      `json:"sha"`
