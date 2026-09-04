@@ -875,10 +875,11 @@ func TestHookDelivery_String(t *testing.T) {
 		Action:         new(""),
 		InstallationID: new(int64(0)),
 		RepositoryID:   new(int64(0)),
+		ThrottledAt:    &Timestamp{},
 		Request:        &HookRequest{},
 		Response:       &HookResponse{},
 	}
-	want := `github.HookDelivery{ID:0, GUID:"", DeliveredAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Redelivery:false, Duration:0, Status:"", StatusCode:0, Event:"", Action:"", InstallationID:0, RepositoryID:0, Request:github.HookRequest{}, Response:github.HookResponse{}}`
+	want := `github.HookDelivery{ID:0, GUID:"", DeliveredAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Redelivery:false, Duration:0, Status:"", StatusCode:0, Event:"", Action:"", InstallationID:0, RepositoryID:0, ThrottledAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Request:github.HookRequest{}, Response:github.HookResponse{}}`
 	if got := v.String(); got != want {
 		t.Errorf("HookDelivery.String = %v, want %v", got, want)
 	}

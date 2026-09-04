@@ -19518,6 +19518,14 @@ func (h *HookDelivery) GetStatusCode() int {
 	return *h.StatusCode
 }
 
+// GetThrottledAt returns the ThrottledAt field if it's non-nil, zero value otherwise.
+func (h *HookDelivery) GetThrottledAt() Timestamp {
+	if h == nil || h.ThrottledAt == nil {
+		return Timestamp{}
+	}
+	return *h.ThrottledAt
+}
+
 // GetHeaders returns the Headers map if it's non-nil, an empty map otherwise.
 func (h *HookRequest) GetHeaders() map[string]string {
 	if h == nil || h.Headers == nil {
