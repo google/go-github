@@ -14366,12 +14366,12 @@ func (d *DependencyGraphSnapshot) GetScanned() Timestamp {
 	return *d.Scanned
 }
 
-// GetSha returns the Sha field if it's non-nil, zero value otherwise.
-func (d *DependencyGraphSnapshot) GetSha() string {
-	if d == nil || d.Sha == nil {
+// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
+func (d *DependencyGraphSnapshot) GetSHA() string {
+	if d == nil || d.SHA == nil {
 		return ""
 	}
-	return *d.Sha
+	return *d.SHA
 }
 
 // GetVersion returns the Version field.

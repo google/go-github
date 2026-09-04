@@ -19,7 +19,7 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 
 	snapshot := &DependencyGraphSnapshot{
 		Version: 0,
-		Sha:     new("ce587453ced02b1526dfb4cb910479d431683101"),
+		SHA:     new("ce587453ced02b1526dfb4cb910479d431683101"),
 		Ref:     new("refs/heads/main"),
 		Job: &DependencyGraphSnapshotJob{
 			Correlator: new("yourworkflowname_youractionname"),

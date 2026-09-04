@@ -304,7 +304,6 @@ linters:
             - CommitsSearchResult.Commits
             - CommitsSearchResult.Total
             - CreateOrgInvitationOptions.TeamID # TODO: TeamIDs
-            - DependencyGraphSnapshot.Sha # TODO: SHA
             - Discussion.DiscussionCategory # TODO: Category ?
             - EditOwner.OwnerInfo
             - EnterpriseLicensedUsers.GithubComSamlNameID # TODO: GithubComSAMLNameID

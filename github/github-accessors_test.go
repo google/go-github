@@ -18135,15 +18135,15 @@ func TestDependencyGraphSnapshot_GetScanned(tt *testing.T) {
 	d.GetScanned()
 }
 
-func TestDependencyGraphSnapshot_GetSha(tt *testing.T) {
+func TestDependencyGraphSnapshot_GetSHA(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	d := &DependencyGraphSnapshot{Sha: &zeroValue}
-	d.GetSha()
+	d := &DependencyGraphSnapshot{SHA: &zeroValue}
+	d.GetSHA()
 	d = &DependencyGraphSnapshot{}
-	d.GetSha()
+	d.GetSHA()
 	d = nil
-	d.GetSha()
+	d.GetSHA()
 }
 
 func TestDependencyGraphSnapshot_GetVersion(tt *testing.T) {

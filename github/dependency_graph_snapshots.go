@@ -77,7 +77,7 @@ type DependencyGraphSnapshotManifest struct {
 // GitHub API docs: https://docs.github.com/rest/dependency-graph/dependency-submission?apiVersion=2022-11-28#create-a-snapshot-of-dependencies-for-a-repository
 type DependencyGraphSnapshot struct {
 	Version   int                                         `json:"version"`
-	Sha       *string                                     `json:"sha,omitempty"`
+	SHA       *string                                     `json:"sha,omitempty"`
 	Ref       *string                                     `json:"ref,omitempty"`
 	Job       *DependencyGraphSnapshotJob                 `json:"job,omitempty"`
 	Detector  *DependencyGraphSnapshotDetector            `json:"detector,omitempty"`
