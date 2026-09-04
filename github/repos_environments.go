@@ -101,10 +101,17 @@ func (r *RequiredReviewer) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		r.Reviewer = reviewer.Reviewer
+	case "BusinessTeam": // BusinessTeam is the type returned for Enterprise Teams, but we will treat it as a Team type
+		reviewer.Reviewer = &Team{}
+		if err := json.Unmarshal(data, &reviewer); err != nil {
+			return err
+		}
+		r.Type = Ptr("Team") // Change the type to "Team" for compatibility
+		r.Reviewer = reviewer.Reviewer
 	default:
 		r.Type = nil
 		r.Reviewer = nil
-		return fmt.Errorf("reviewer.Type is %T, not a string of 'User' or 'Team', unable to unmarshal", reviewer.Type)
+		return fmt.Errorf("reviewer.Type is %T, not a string of 'User', 'Team' or 'BusinessTeam', unable to unmarshal", reviewer.Type)
 	}
 
 	return nil
