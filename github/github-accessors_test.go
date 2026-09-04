@@ -24414,6 +24414,17 @@ func TestHookDelivery_GetStatusCode(tt *testing.T) {
 	h.GetStatusCode()
 }
 
+func TestHookDelivery_GetThrottledAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	h := &HookDelivery{ThrottledAt: &zeroValue}
+	h.GetThrottledAt()
+	h = &HookDelivery{}
+	h.GetThrottledAt()
+	h = nil
+	h.GetThrottledAt()
+}
+
 func TestHookRequest_GetHeaders(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := map[string]string{}

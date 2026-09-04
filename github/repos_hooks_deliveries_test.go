@@ -22,7 +22,7 @@ func TestRepositoriesService_ListHookDeliveries(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/hooks/1/deliveries", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testFormValues(t, r, values{"cursor": "v1_12077215967"})
-		fmt.Fprint(w, `[{"id":1}, {"id":2}]`)
+		fmt.Fprint(w, `[{"id":1,"throttled_at":`+referenceTimeStr+`}, {"id":2}]`)
 	})
 
 	opt := &ListCursorOptions{Cursor: "v1_12077215967"}
@@ -33,7 +33,7 @@ func TestRepositoriesService_ListHookDeliveries(t *testing.T) {
 		t.Errorf("Repositories.ListHookDeliveries returned error: %v", err)
 	}
 
-	want := []*HookDelivery{{ID: new(int64(1))}, {ID: new(int64(2))}}
+	want := []*HookDelivery{{ID: new(int64(1)), ThrottledAt: &referenceTimestamp}, {ID: new(int64(2))}}
 	if d := cmp.Diff(hooks, want); d != "" {
 		t.Errorf("Repositories.ListHooks want (-), got (+):\n%v", d)
 	}
@@ -68,7 +68,7 @@ func TestRepositoriesService_GetHookDelivery(t *testing.T) {
 
 	mux.HandleFunc("/repos/o/r/hooks/1/deliveries/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"id":1}`)
+		fmt.Fprint(w, `{"id":1,"throttled_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -77,7 +77,7 @@ func TestRepositoriesService_GetHookDelivery(t *testing.T) {
 		t.Errorf("Repositories.GetHookDelivery returned error: %v", err)
 	}
 
-	want := &HookDelivery{ID: new(int64(1))}
+	want := &HookDelivery{ID: new(int64(1)), ThrottledAt: &referenceTimestamp}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Repositories.GetHookDelivery returned %+v, want %+v", hook, want)
 	}
