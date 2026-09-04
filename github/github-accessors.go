@@ -45654,6 +45654,214 @@ func (u *UsageReportOptions) GetYear() int {
 	return *u.Year
 }
 
+// GetDiscountAmount returns the DiscountAmount field.
+func (u *UsageSummaryItem) GetDiscountAmount() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.DiscountAmount
+}
+
+// GetDiscountQuantity returns the DiscountQuantity field.
+func (u *UsageSummaryItem) GetDiscountQuantity() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.DiscountQuantity
+}
+
+// GetGrossAmount returns the GrossAmount field.
+func (u *UsageSummaryItem) GetGrossAmount() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.GrossAmount
+}
+
+// GetGrossQuantity returns the GrossQuantity field.
+func (u *UsageSummaryItem) GetGrossQuantity() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.GrossQuantity
+}
+
+// GetNetAmount returns the NetAmount field.
+func (u *UsageSummaryItem) GetNetAmount() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.NetAmount
+}
+
+// GetNetQuantity returns the NetQuantity field.
+func (u *UsageSummaryItem) GetNetQuantity() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.NetQuantity
+}
+
+// GetPricePerUnit returns the PricePerUnit field.
+func (u *UsageSummaryItem) GetPricePerUnit() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.PricePerUnit
+}
+
+// GetProduct returns the Product field.
+func (u *UsageSummaryItem) GetProduct() string {
+	if u == nil {
+		return ""
+	}
+	return u.Product
+}
+
+// GetSKU returns the SKU field.
+func (u *UsageSummaryItem) GetSKU() string {
+	if u == nil {
+		return ""
+	}
+	return u.SKU
+}
+
+// GetUnitType returns the UnitType field.
+func (u *UsageSummaryItem) GetUnitType() string {
+	if u == nil {
+		return ""
+	}
+	return u.UnitType
+}
+
+// GetDay returns the Day field.
+func (u *UsageSummaryOptions) GetDay() int {
+	if u == nil {
+		return 0
+	}
+	return u.Day
+}
+
+// GetMonth returns the Month field.
+func (u *UsageSummaryOptions) GetMonth() int {
+	if u == nil {
+		return 0
+	}
+	return u.Month
+}
+
+// GetProduct returns the Product field.
+func (u *UsageSummaryOptions) GetProduct() string {
+	if u == nil {
+		return ""
+	}
+	return u.Product
+}
+
+// GetRepository returns the Repository field.
+func (u *UsageSummaryOptions) GetRepository() string {
+	if u == nil {
+		return ""
+	}
+	return u.Repository
+}
+
+// GetSKU returns the SKU field.
+func (u *UsageSummaryOptions) GetSKU() string {
+	if u == nil {
+		return ""
+	}
+	return u.SKU
+}
+
+// GetYear returns the Year field.
+func (u *UsageSummaryOptions) GetYear() int {
+	if u == nil {
+		return 0
+	}
+	return u.Year
+}
+
+// GetOrganization returns the Organization field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryReport) GetOrganization() string {
+	if u == nil || u.Organization == nil {
+		return ""
+	}
+	return *u.Organization
+}
+
+// GetProduct returns the Product field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryReport) GetProduct() string {
+	if u == nil || u.Product == nil {
+		return ""
+	}
+	return *u.Product
+}
+
+// GetRepository returns the Repository field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryReport) GetRepository() string {
+	if u == nil || u.Repository == nil {
+		return ""
+	}
+	return *u.Repository
+}
+
+// GetSKU returns the SKU field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryReport) GetSKU() string {
+	if u == nil || u.SKU == nil {
+		return ""
+	}
+	return *u.SKU
+}
+
+// GetTimePeriod returns the TimePeriod field.
+func (u *UsageSummaryReport) GetTimePeriod() UsageSummaryTimePeriod {
+	if u == nil {
+		return UsageSummaryTimePeriod{}
+	}
+	return u.TimePeriod
+}
+
+// GetUsageItems returns the UsageItems slice if it's non-nil, nil otherwise.
+func (u *UsageSummaryReport) GetUsageItems() []*UsageSummaryItem {
+	if u == nil || u.UsageItems == nil {
+		return nil
+	}
+	return u.UsageItems
+}
+
+// GetUser returns the User field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryReport) GetUser() string {
+	if u == nil || u.User == nil {
+		return ""
+	}
+	return *u.User
+}
+
+// GetDay returns the Day field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryTimePeriod) GetDay() int {
+	if u == nil || u.Day == nil {
+		return 0
+	}
+	return *u.Day
+}
+
+// GetMonth returns the Month field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryTimePeriod) GetMonth() int {
+	if u == nil || u.Month == nil {
+		return 0
+	}
+	return *u.Month
+}
+
+// GetYear returns the Year field.
+func (u *UsageSummaryTimePeriod) GetYear() int {
+	if u == nil {
+		return 0
+	}
+	return u.Year
+}
+
 // GetAssignment returns the Assignment field if it's non-nil, zero value otherwise.
 func (u *User) GetAssignment() string {
 	if u == nil || u.Assignment == nil {
