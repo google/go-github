@@ -20742,10 +20742,7 @@ func TestEnterpriseBudgetAlerting_GetWillAlert(tt *testing.T) {
 
 func TestEnterpriseBudgetUserState_GetConsumedAmount(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	e := &EnterpriseBudgetUserState{ConsumedAmount: &zeroValue}
-	e.GetConsumedAmount()
-	e = &EnterpriseBudgetUserState{}
+	e := &EnterpriseBudgetUserState{}
 	e.GetConsumedAmount()
 	e = nil
 	e.GetConsumedAmount()
@@ -20764,10 +20761,7 @@ func TestEnterpriseBudgetUserState_GetOverrideBudgetID(tt *testing.T) {
 
 func TestEnterpriseBudgetUserState_GetTargetAmount(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue float64
-	e := &EnterpriseBudgetUserState{TargetAmount: &zeroValue}
-	e.GetTargetAmount()
-	e = &EnterpriseBudgetUserState{}
+	e := &EnterpriseBudgetUserState{}
 	e.GetTargetAmount()
 	e = nil
 	e.GetTargetAmount()
@@ -20786,10 +20780,7 @@ func TestEnterpriseBudgetUserState_GetUser(tt *testing.T) {
 
 func TestEnterpriseBudgetUserStates_GetHasNextPage(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	e := &EnterpriseBudgetUserStates{HasNextPage: &zeroValue}
-	e.GetHasNextPage()
-	e = &EnterpriseBudgetUserStates{}
+	e := &EnterpriseBudgetUserStates{}
 	e.GetHasNextPage()
 	e = nil
 	e.GetHasNextPage()
@@ -20797,10 +20788,7 @@ func TestEnterpriseBudgetUserStates_GetHasNextPage(tt *testing.T) {
 
 func TestEnterpriseBudgetUserStates_GetTotalCount(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue int
-	e := &EnterpriseBudgetUserStates{TotalCount: &zeroValue}
-	e.GetTotalCount()
-	e = &EnterpriseBudgetUserStates{}
+	e := &EnterpriseBudgetUserStates{}
 	e.GetTotalCount()
 	e = nil
 	e.GetTotalCount()
@@ -29879,6 +29867,22 @@ func TestListArtifactsOptions_GetName(tt *testing.T) {
 	l.GetName()
 	l = nil
 	l.GetName()
+}
+
+func TestListBudgetsOptions_GetScope(tt *testing.T) {
+	tt.Parallel()
+	l := &ListBudgetsOptions{}
+	l.GetScope()
+	l = nil
+	l.GetScope()
+}
+
+func TestListBudgetsOptions_GetUser(tt *testing.T) {
+	tt.Parallel()
+	l := &ListBudgetsOptions{}
+	l.GetUser()
+	l = nil
+	l.GetUser()
 }
 
 func TestListCheckRunsOptions_GetAppID(tt *testing.T) {

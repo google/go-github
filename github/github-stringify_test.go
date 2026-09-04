@@ -620,8 +620,8 @@ func TestEnterpriseBudgetUserState_String(t *testing.T) {
 	t.Parallel()
 	v := EnterpriseBudgetUserState{
 		User:             new(""),
-		ConsumedAmount:   new(0.0),
-		TargetAmount:     new(0.0),
+		ConsumedAmount:   0.0,
+		TargetAmount:     0.0,
 		OverrideBudgetID: new(""),
 	}
 	want := `github.EnterpriseBudgetUserState{User:"", ConsumedAmount:0, TargetAmount:0, OverrideBudgetID:""}`
@@ -633,8 +633,8 @@ func TestEnterpriseBudgetUserState_String(t *testing.T) {
 func TestEnterpriseBudgetUserStates_String(t *testing.T) {
 	t.Parallel()
 	v := EnterpriseBudgetUserStates{
-		HasNextPage: new(false),
-		TotalCount:  new(0),
+		HasNextPage: false,
+		TotalCount:  0,
 	}
 	want := `github.EnterpriseBudgetUserStates{HasNextPage:false, TotalCount:0}`
 	if got := v.String(); got != want {

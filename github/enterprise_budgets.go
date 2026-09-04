@@ -53,12 +53,21 @@ type EnterpriseListBudgets struct {
 	TotalCount  *int                `json:"total_count,omitempty"`
 }
 
+// ListBudgetsOptions specifies the optional parameters to the
+// EnterpriseService.ListBudgets method.
+type ListBudgetsOptions struct {
+	Scope string `url:"scope,omitempty"`
+	User  string `url:"user,omitempty"`
+
+	ListOptions
+}
+
 // EnterpriseBudgetUserState represents the budget status and consumption of an individual user.
 type EnterpriseBudgetUserState struct {
-	User             *string  `json:"user,omitempty"`
-	ConsumedAmount   *float64 `json:"consumed_amount,omitempty"`
-	TargetAmount     *float64 `json:"target_amount,omitempty"`
-	OverrideBudgetID *string  `json:"override_budget_id,omitempty"`
+	User             *string `json:"user,omitempty"`
+	ConsumedAmount   float64 `json:"consumed_amount"`
+	TargetAmount     float64 `json:"target_amount"`
+	OverrideBudgetID *string `json:"override_budget_id,omitempty"`
 }
 
 func (u EnterpriseBudgetUserState) String() string {
@@ -68,8 +77,8 @@ func (u EnterpriseBudgetUserState) String() string {
 // EnterpriseBudgetUserStates represents the response when retrieving user states for a budget.
 type EnterpriseBudgetUserStates struct {
 	UserStates  []*EnterpriseBudgetUserState `json:"user_states"`
-	HasNextPage *bool                        `json:"has_next_page,omitempty"`
-	TotalCount  *int                         `json:"total_count,omitempty"`
+	HasNextPage bool                         `json:"has_next_page"`
+	TotalCount  int                          `json:"total_count"`
 }
 
 func (u EnterpriseBudgetUserStates) String() string {
@@ -126,9 +135,8 @@ type EnterpriseDeleteBudgetResponse struct {
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#get-all-budgets
 //
 //meta:operation GET /enterprises/{enterprise}/settings/billing/budgets
-func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string, opts *ListOptions) (*EnterpriseListBudgets, *Response, error) {
+func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string, opts *ListBudgetsOptions) (*EnterpriseListBudgets, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets", enterprise)
-
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -155,7 +163,6 @@ func (s *EnterpriseService) ListBudgets(ctx context.Context, enterprise string, 
 //meta:operation GET /enterprises/{enterprise}/settings/billing/budgets/{budget_id}/user-states
 func (s *EnterpriseService) GetUserStatesForBudget(ctx context.Context, enterprise, budgetID string, opts *EnterpriseGetUserStatesOptions) (*EnterpriseBudgetUserStates, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/settings/billing/budgets/%v/user-states", enterprise, budgetID)
-
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err

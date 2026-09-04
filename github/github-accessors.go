@@ -16470,12 +16470,12 @@ func (e *EnterpriseBudgetAlerting) GetWillAlert() bool {
 	return *e.WillAlert
 }
 
-// GetConsumedAmount returns the ConsumedAmount field if it's non-nil, zero value otherwise.
+// GetConsumedAmount returns the ConsumedAmount field.
 func (e *EnterpriseBudgetUserState) GetConsumedAmount() float64 {
-	if e == nil || e.ConsumedAmount == nil {
+	if e == nil {
 		return 0
 	}
-	return *e.ConsumedAmount
+	return e.ConsumedAmount
 }
 
 // GetOverrideBudgetID returns the OverrideBudgetID field if it's non-nil, zero value otherwise.
@@ -16486,12 +16486,12 @@ func (e *EnterpriseBudgetUserState) GetOverrideBudgetID() string {
 	return *e.OverrideBudgetID
 }
 
-// GetTargetAmount returns the TargetAmount field if it's non-nil, zero value otherwise.
+// GetTargetAmount returns the TargetAmount field.
 func (e *EnterpriseBudgetUserState) GetTargetAmount() float64 {
-	if e == nil || e.TargetAmount == nil {
+	if e == nil {
 		return 0
 	}
-	return *e.TargetAmount
+	return e.TargetAmount
 }
 
 // GetUser returns the User field if it's non-nil, zero value otherwise.
@@ -16502,20 +16502,20 @@ func (e *EnterpriseBudgetUserState) GetUser() string {
 	return *e.User
 }
 
-// GetHasNextPage returns the HasNextPage field if it's non-nil, zero value otherwise.
+// GetHasNextPage returns the HasNextPage field.
 func (e *EnterpriseBudgetUserStates) GetHasNextPage() bool {
-	if e == nil || e.HasNextPage == nil {
+	if e == nil {
 		return false
 	}
-	return *e.HasNextPage
+	return e.HasNextPage
 }
 
-// GetTotalCount returns the TotalCount field if it's non-nil, zero value otherwise.
+// GetTotalCount returns the TotalCount field.
 func (e *EnterpriseBudgetUserStates) GetTotalCount() int {
-	if e == nil || e.TotalCount == nil {
+	if e == nil {
 		return 0
 	}
-	return *e.TotalCount
+	return e.TotalCount
 }
 
 // GetUserStates returns the UserStates slice if it's non-nil, nil otherwise.
@@ -23788,6 +23788,22 @@ func (l *ListArtifactsOptions) GetName() string {
 		return ""
 	}
 	return *l.Name
+}
+
+// GetScope returns the Scope field.
+func (l *ListBudgetsOptions) GetScope() string {
+	if l == nil {
+		return ""
+	}
+	return l.Scope
+}
+
+// GetUser returns the User field.
+func (l *ListBudgetsOptions) GetUser() string {
+	if l == nil {
+		return ""
+	}
+	return l.User
 }
 
 // GetAppID returns the AppID field if it's non-nil, zero value otherwise.

@@ -19,7 +19,12 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		testFormValues(t, r, values{"page": "2", "per_page": "10"})
+		testFormValues(t, r, values{
+			"page":     "2",
+			"per_page": "10",
+			"scope":    "enterprise",
+			"user":     "octocat",
+		})
 		fmt.Fprint(w, `{
 			"budgets": [
 				{
@@ -40,7 +45,11 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 		}`)
 	})
 
-	opts := &ListOptions{Page: 2, PerPage: 10}
+	opts := &ListBudgetsOptions{
+		Scope:       "enterprise",
+		User:        "octocat",
+		ListOptions: ListOptions{Page: 2, PerPage: 10},
+	}
 	ctx := t.Context()
 	budgets, _, err := client.Enterprise.ListBudgets(ctx, "e", opts)
 	if err != nil {
@@ -143,18 +152,18 @@ func TestEnterpriseService_GetUserStatesForBudget(t *testing.T) {
 		UserStates: []*EnterpriseBudgetUserState{
 			{
 				User:           new("octocat"),
-				ConsumedAmount: new(50.5),
-				TargetAmount:   new(1000.0),
+				ConsumedAmount: 50.5,
+				TargetAmount:   1000.0,
 			},
 			{
 				User:             new("monalisa"),
-				ConsumedAmount:   new(250.0),
-				TargetAmount:     new(1000.0),
+				ConsumedAmount:   250.0,
+				TargetAmount:     1000.0,
 				OverrideBudgetID: new("2066deda-923f-43f9-88d2-62395a28c0cdd"),
 			},
 		},
-		HasNextPage: new(false),
-		TotalCount:  new(2),
+		HasNextPage: false,
+		TotalCount:  2,
 	}
 	if !cmp.Equal(states, want) {
 		t.Errorf("Enterprise.GetUserStatesForBudget returned %+v, want %+v", states, want)
