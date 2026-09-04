@@ -15089,6 +15089,65 @@ func TestCreateCustomRepoRoleRequest_GetPermissions(tt *testing.T) {
 	c.GetPermissions()
 }
 
+func TestCreateDependencyGraphSnapshotRequest_GetDetector(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetDetector()
+	c = nil
+	c.GetDetector()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetJob(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetJob()
+	c = nil
+	c.GetJob()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	c := &CreateDependencyGraphSnapshotRequest{Metadata: zeroValue}
+	c.GetMetadata()
+	c = &CreateDependencyGraphSnapshotRequest{}
+	c.GetMetadata()
+	c = nil
+	c.GetMetadata()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetRef(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetScanned(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetScanned()
+	c = nil
+	c.GetScanned()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetSHA()
+	c = nil
+	c.GetSHA()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetVersion()
+	c = nil
+	c.GetVersion()
+}
+
 func TestCreateDeployKeyRequest_GetKey(tt *testing.T) {
 	tt.Parallel()
 	c := &CreateDeployKeyRequest{}
@@ -18086,74 +18145,6 @@ func TestDependencyGraphAutosubmitActionOptions_GetLabeledRunners(tt *testing.T)
 	d.GetLabeledRunners()
 }
 
-func TestDependencyGraphSnapshot_GetDetector(tt *testing.T) {
-	tt.Parallel()
-	d := &DependencyGraphSnapshot{}
-	d.GetDetector()
-	d = nil
-	d.GetDetector()
-}
-
-func TestDependencyGraphSnapshot_GetJob(tt *testing.T) {
-	tt.Parallel()
-	d := &DependencyGraphSnapshot{}
-	d.GetJob()
-	d = nil
-	d.GetJob()
-}
-
-func TestDependencyGraphSnapshot_GetMetadata(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := map[string]any{}
-	d := &DependencyGraphSnapshot{Metadata: zeroValue}
-	d.GetMetadata()
-	d = &DependencyGraphSnapshot{}
-	d.GetMetadata()
-	d = nil
-	d.GetMetadata()
-}
-
-func TestDependencyGraphSnapshot_GetRef(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshot{Ref: &zeroValue}
-	d.GetRef()
-	d = &DependencyGraphSnapshot{}
-	d.GetRef()
-	d = nil
-	d.GetRef()
-}
-
-func TestDependencyGraphSnapshot_GetScanned(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	d := &DependencyGraphSnapshot{Scanned: &zeroValue}
-	d.GetScanned()
-	d = &DependencyGraphSnapshot{}
-	d.GetScanned()
-	d = nil
-	d.GetScanned()
-}
-
-func TestDependencyGraphSnapshot_GetSHA(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshot{SHA: &zeroValue}
-	d.GetSHA()
-	d = &DependencyGraphSnapshot{}
-	d.GetSHA()
-	d = nil
-	d.GetSHA()
-}
-
-func TestDependencyGraphSnapshot_GetVersion(tt *testing.T) {
-	tt.Parallel()
-	d := &DependencyGraphSnapshot{}
-	d.GetVersion()
-	d = nil
-	d.GetVersion()
-}
-
 func TestDependencyGraphSnapshotCreationData_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -18197,10 +18188,7 @@ func TestDependencyGraphSnapshotCreationData_GetResult(tt *testing.T) {
 
 func TestDependencyGraphSnapshotDetector_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotDetector{Name: &zeroValue}
-	d.GetName()
-	d = &DependencyGraphSnapshotDetector{}
+	d := &DependencyGraphSnapshotDetector{}
 	d.GetName()
 	d = nil
 	d.GetName()
@@ -18208,10 +18196,7 @@ func TestDependencyGraphSnapshotDetector_GetName(tt *testing.T) {
 
 func TestDependencyGraphSnapshotDetector_GetURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotDetector{URL: &zeroValue}
-	d.GetURL()
-	d = &DependencyGraphSnapshotDetector{}
+	d := &DependencyGraphSnapshotDetector{}
 	d.GetURL()
 	d = nil
 	d.GetURL()
@@ -18219,10 +18204,7 @@ func TestDependencyGraphSnapshotDetector_GetURL(tt *testing.T) {
 
 func TestDependencyGraphSnapshotDetector_GetVersion(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotDetector{Version: &zeroValue}
-	d.GetVersion()
-	d = &DependencyGraphSnapshotDetector{}
+	d := &DependencyGraphSnapshotDetector{}
 	d.GetVersion()
 	d = nil
 	d.GetVersion()
@@ -18230,10 +18212,7 @@ func TestDependencyGraphSnapshotDetector_GetVersion(tt *testing.T) {
 
 func TestDependencyGraphSnapshotJob_GetCorrelator(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotJob{Correlator: &zeroValue}
-	d.GetCorrelator()
-	d = &DependencyGraphSnapshotJob{}
+	d := &DependencyGraphSnapshotJob{}
 	d.GetCorrelator()
 	d = nil
 	d.GetCorrelator()
@@ -18252,10 +18231,7 @@ func TestDependencyGraphSnapshotJob_GetHTMLURL(tt *testing.T) {
 
 func TestDependencyGraphSnapshotJob_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotJob{ID: &zeroValue}
-	d.GetID()
-	d = &DependencyGraphSnapshotJob{}
+	d := &DependencyGraphSnapshotJob{}
 	d.GetID()
 	d = nil
 	d.GetID()
@@ -18282,10 +18258,7 @@ func TestDependencyGraphSnapshotManifest_GetMetadata(tt *testing.T) {
 
 func TestDependencyGraphSnapshotManifest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotManifest{Name: &zeroValue}
-	d.GetName()
-	d = &DependencyGraphSnapshotManifest{}
+	d := &DependencyGraphSnapshotManifest{}
 	d.GetName()
 	d = nil
 	d.GetName()

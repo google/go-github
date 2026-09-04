@@ -11950,6 +11950,62 @@ func (c *CreateCustomRepoRoleRequest) GetPermissions() []string {
 	return c.Permissions
 }
 
+// GetDetector returns the Detector field.
+func (c *CreateDependencyGraphSnapshotRequest) GetDetector() DependencyGraphSnapshotDetector {
+	if c == nil {
+		return DependencyGraphSnapshotDetector{}
+	}
+	return c.Detector
+}
+
+// GetJob returns the Job field.
+func (c *CreateDependencyGraphSnapshotRequest) GetJob() DependencyGraphSnapshotJob {
+	if c == nil {
+		return DependencyGraphSnapshotJob{}
+	}
+	return c.Job
+}
+
+// GetMetadata returns the Metadata map if it's non-nil, an empty map otherwise.
+func (c *CreateDependencyGraphSnapshotRequest) GetMetadata() map[string]any {
+	if c == nil || c.Metadata == nil {
+		return map[string]any{}
+	}
+	return c.Metadata
+}
+
+// GetRef returns the Ref field.
+func (c *CreateDependencyGraphSnapshotRequest) GetRef() string {
+	if c == nil {
+		return ""
+	}
+	return c.Ref
+}
+
+// GetScanned returns the Scanned field.
+func (c *CreateDependencyGraphSnapshotRequest) GetScanned() Timestamp {
+	if c == nil {
+		return Timestamp{}
+	}
+	return c.Scanned
+}
+
+// GetSHA returns the SHA field.
+func (c *CreateDependencyGraphSnapshotRequest) GetSHA() string {
+	if c == nil {
+		return ""
+	}
+	return c.SHA
+}
+
+// GetVersion returns the Version field.
+func (c *CreateDependencyGraphSnapshotRequest) GetVersion() int {
+	if c == nil {
+		return 0
+	}
+	return c.Version
+}
+
 // GetKey returns the Key field.
 func (c *CreateDeployKeyRequest) GetKey() string {
 	if c == nil {
@@ -14326,62 +14382,6 @@ func (d *DependencyGraphAutosubmitActionOptions) GetLabeledRunners() bool {
 	return *d.LabeledRunners
 }
 
-// GetDetector returns the Detector field.
-func (d *DependencyGraphSnapshot) GetDetector() *DependencyGraphSnapshotDetector {
-	if d == nil {
-		return nil
-	}
-	return d.Detector
-}
-
-// GetJob returns the Job field.
-func (d *DependencyGraphSnapshot) GetJob() *DependencyGraphSnapshotJob {
-	if d == nil {
-		return nil
-	}
-	return d.Job
-}
-
-// GetMetadata returns the Metadata map if it's non-nil, an empty map otherwise.
-func (d *DependencyGraphSnapshot) GetMetadata() map[string]any {
-	if d == nil || d.Metadata == nil {
-		return map[string]any{}
-	}
-	return d.Metadata
-}
-
-// GetRef returns the Ref field if it's non-nil, zero value otherwise.
-func (d *DependencyGraphSnapshot) GetRef() string {
-	if d == nil || d.Ref == nil {
-		return ""
-	}
-	return *d.Ref
-}
-
-// GetScanned returns the Scanned field if it's non-nil, zero value otherwise.
-func (d *DependencyGraphSnapshot) GetScanned() Timestamp {
-	if d == nil || d.Scanned == nil {
-		return Timestamp{}
-	}
-	return *d.Scanned
-}
-
-// GetSHA returns the SHA field if it's non-nil, zero value otherwise.
-func (d *DependencyGraphSnapshot) GetSHA() string {
-	if d == nil || d.SHA == nil {
-		return ""
-	}
-	return *d.SHA
-}
-
-// GetVersion returns the Version field.
-func (d *DependencyGraphSnapshot) GetVersion() int {
-	if d == nil {
-		return 0
-	}
-	return d.Version
-}
-
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (d *DependencyGraphSnapshotCreationData) GetCreatedAt() Timestamp {
 	if d == nil || d.CreatedAt == nil {
@@ -14414,36 +14414,36 @@ func (d *DependencyGraphSnapshotCreationData) GetResult() string {
 	return *d.Result
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (d *DependencyGraphSnapshotDetector) GetName() string {
-	if d == nil || d.Name == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.Name
+	return d.Name
 }
 
-// GetURL returns the URL field if it's non-nil, zero value otherwise.
+// GetURL returns the URL field.
 func (d *DependencyGraphSnapshotDetector) GetURL() string {
-	if d == nil || d.URL == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.URL
+	return d.URL
 }
 
-// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+// GetVersion returns the Version field.
 func (d *DependencyGraphSnapshotDetector) GetVersion() string {
-	if d == nil || d.Version == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.Version
+	return d.Version
 }
 
-// GetCorrelator returns the Correlator field if it's non-nil, zero value otherwise.
+// GetCorrelator returns the Correlator field.
 func (d *DependencyGraphSnapshotJob) GetCorrelator() string {
-	if d == nil || d.Correlator == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.Correlator
+	return d.Correlator
 }
 
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
@@ -14454,12 +14454,12 @@ func (d *DependencyGraphSnapshotJob) GetHTMLURL() string {
 	return *d.HTMLURL
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (d *DependencyGraphSnapshotJob) GetID() string {
-	if d == nil || d.ID == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.ID
+	return d.ID
 }
 
 // GetFile returns the File field.
@@ -14478,12 +14478,12 @@ func (d *DependencyGraphSnapshotManifest) GetMetadata() map[string]any {
 	return d.Metadata
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (d *DependencyGraphSnapshotManifest) GetName() string {
-	if d == nil || d.Name == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.Name
+	return d.Name
 }
 
 // GetSourceLocation returns the SourceLocation field if it's non-nil, zero value otherwise.

@@ -216,7 +216,6 @@ linters:
             - CustomDeploymentProtectionRuleRequest
             - CustomProperty
             - DependabotAlertState
-            - DependencyGraphSnapshot
             - EncryptedSecret
             - EnterpriseSecurityAnalysisSettings
             - Hook
