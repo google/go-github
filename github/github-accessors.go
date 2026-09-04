@@ -10206,6 +10206,30 @@ func (c *CopilotMetricsCopilotAppTokenUsage) GetPromptTokensSum() int {
 	return *c.PromptTokensSum
 }
 
+// GetCommentType returns the CommentType field.
+func (c *CopilotMetricsCopilotSuggestionByCommentType) GetCommentType() string {
+	if c == nil {
+		return ""
+	}
+	return c.CommentType
+}
+
+// GetTotalCopilotAppliedSuggestions returns the TotalCopilotAppliedSuggestions field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotSuggestionByCommentType) GetTotalCopilotAppliedSuggestions() int {
+	if c == nil || c.TotalCopilotAppliedSuggestions == nil {
+		return 0
+	}
+	return *c.TotalCopilotAppliedSuggestions
+}
+
+// GetTotalCopilotSuggestions returns the TotalCopilotSuggestions field if it's non-nil, zero value otherwise.
+func (c *CopilotMetricsCopilotSuggestionByCommentType) GetTotalCopilotSuggestions() int {
+	if c == nil || c.TotalCopilotSuggestions == nil {
+		return 0
+	}
+	return *c.TotalCopilotSuggestions
+}
+
 // GetFeature returns the Feature field.
 func (c *CopilotMetricsFeature) GetFeature() string {
 	if c == nil {
@@ -10308,6 +10332,14 @@ func (c *CopilotMetricsModelFeature) GetUserInitiatedInteractionCount() int {
 		return 0
 	}
 	return *c.UserInitiatedInteractionCount
+}
+
+// GetCopilotSuggestionsByCommentType returns the CopilotSuggestionsByCommentType slice if it's non-nil, nil otherwise.
+func (c *CopilotMetricsPullRequests) GetCopilotSuggestionsByCommentType() []*CopilotMetricsCopilotSuggestionByCommentType {
+	if c == nil || c.CopilotSuggestionsByCommentType == nil {
+		return nil
+	}
+	return c.CopilotSuggestionsByCommentType
 }
 
 // GetMedianMinutesToMerge returns the MedianMinutesToMerge field if it's non-nil, zero value otherwise.
@@ -10564,6 +10596,70 @@ func (c *CopilotPeriodicMetrics) GetReportStartDay() string {
 		return ""
 	}
 	return c.ReportStartDay
+}
+
+// GetDay returns the Day field.
+func (c *CopilotRepositoryDailyMetrics) GetDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.Day
+}
+
+// GetEnterpriseID returns the EnterpriseID field if it's non-nil, zero value otherwise.
+func (c *CopilotRepositoryDailyMetrics) GetEnterpriseID() string {
+	if c == nil || c.EnterpriseID == nil {
+		return ""
+	}
+	return *c.EnterpriseID
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (c *CopilotRepositoryDailyMetrics) GetOrganizationID() string {
+	if c == nil || c.OrganizationID == nil {
+		return ""
+	}
+	return *c.OrganizationID
+}
+
+// GetPullRequests returns the PullRequests field.
+func (c *CopilotRepositoryDailyMetrics) GetPullRequests() *CopilotMetricsPullRequests {
+	if c == nil {
+		return nil
+	}
+	return c.PullRequests
+}
+
+// GetRepoID returns the RepoID field.
+func (c *CopilotRepositoryDailyMetrics) GetRepoID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.RepoID
+}
+
+// GetRepoName returns the RepoName field.
+func (c *CopilotRepositoryDailyMetrics) GetRepoName() string {
+	if c == nil {
+		return ""
+	}
+	return c.RepoName
+}
+
+// GetRepoOwnerName returns the RepoOwnerName field.
+func (c *CopilotRepositoryDailyMetrics) GetRepoOwnerName() string {
+	if c == nil {
+		return ""
+	}
+	return c.RepoOwnerName
+}
+
+// GetRepoVisibility returns the RepoVisibility field.
+func (c *CopilotRepositoryDailyMetrics) GetRepoVisibility() string {
+	if c == nil {
+		return ""
+	}
+	return c.RepoVisibility
 }
 
 // GetActiveThisCycle returns the ActiveThisCycle field.
@@ -11748,6 +11844,38 @@ func (c *CreateCodespaceOptions) GetWorkingDirectory() string {
 		return ""
 	}
 	return *c.WorkingDirectory
+}
+
+// GetBody returns the Body field.
+func (c *CreateCommitCommentRequest) GetBody() string {
+	if c == nil {
+		return ""
+	}
+	return c.Body
+}
+
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (c *CreateCommitCommentRequest) GetLine() int {
+	if c == nil || c.Line == nil {
+		return 0
+	}
+	return *c.Line
+}
+
+// GetPath returns the Path field if it's non-nil, zero value otherwise.
+func (c *CreateCommitCommentRequest) GetPath() string {
+	if c == nil || c.Path == nil {
+		return ""
+	}
+	return *c.Path
+}
+
+// GetPosition returns the Position field if it's non-nil, zero value otherwise.
+func (c *CreateCommitCommentRequest) GetPosition() int {
+	if c == nil || c.Position == nil {
+		return 0
+	}
+	return *c.Position
 }
 
 // GetSigner returns the Signer field.
@@ -22852,6 +22980,14 @@ func (i *IssueType) GetID() int64 {
 		return 0
 	}
 	return *i.ID
+}
+
+// GetIsEnabled returns the IsEnabled field if it's non-nil, zero value otherwise.
+func (i *IssueType) GetIsEnabled() bool {
+	if i == nil || i.IsEnabled == nil {
+		return false
+	}
+	return *i.IsEnabled
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -36198,6 +36334,14 @@ func (r *RepositoryCodeSecurityConfiguration) GetState() string {
 	return *r.State
 }
 
+// GetAuthorAssociation returns the AuthorAssociation field if it's non-nil, zero value otherwise.
+func (r *RepositoryComment) GetAuthorAssociation() string {
+	if r == nil || r.AuthorAssociation == nil {
+		return ""
+	}
+	return *r.AuthorAssociation
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (r *RepositoryComment) GetBody() string {
 	if r == nil || r.Body == nil {
@@ -36236,6 +36380,14 @@ func (r *RepositoryComment) GetID() int64 {
 		return 0
 	}
 	return *r.ID
+}
+
+// GetLine returns the Line field if it's non-nil, zero value otherwise.
+func (r *RepositoryComment) GetLine() int {
+	if r == nil || r.Line == nil {
+		return 0
+	}
+	return *r.Line
 }
 
 // GetNodeID returns the NodeID field if it's non-nil, zero value otherwise.
@@ -44404,6 +44556,14 @@ func (u *UpdateCodespaceOptions) GetRecentFolders() []string {
 		return nil
 	}
 	return u.RecentFolders
+}
+
+// GetBody returns the Body field.
+func (u *UpdateCommitCommentRequest) GetBody() string {
+	if u == nil {
+		return ""
+	}
+	return u.Body
 }
 
 // GetGroupID returns the GroupID field.

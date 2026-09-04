@@ -30,7 +30,7 @@ import (
 )
 
 const (
-	Version = "v90.0.0"
+	Version = "v91.0.0"
 
 	HeaderRateLimit     = "X-Ratelimit-Limit"
 	HeaderRateRemaining = "X-Ratelimit-Remaining"

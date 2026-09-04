@@ -2076,20 +2076,22 @@ func TestRepository_String(t *testing.T) {
 func TestRepositoryComment_String(t *testing.T) {
 	t.Parallel()
 	v := RepositoryComment{
-		HTMLURL:   new(""),
-		URL:       new(""),
-		ID:        new(int64(0)),
-		NodeID:    new(""),
-		CommitID:  new(""),
-		User:      &User{},
-		Reactions: &Reactions{},
-		CreatedAt: &Timestamp{},
-		UpdatedAt: &Timestamp{},
-		Body:      new(""),
-		Path:      new(""),
-		Position:  new(0),
+		HTMLURL:           new(""),
+		URL:               new(""),
+		ID:                new(int64(0)),
+		NodeID:            new(""),
+		CommitID:          new(""),
+		User:              &User{},
+		AuthorAssociation: new(""),
+		Reactions:         &Reactions{},
+		CreatedAt:         &Timestamp{},
+		UpdatedAt:         &Timestamp{},
+		Body:              new(""),
+		Path:              new(""),
+		Position:          new(0),
+		Line:              new(0),
 	}
-	want := `github.RepositoryComment{HTMLURL:"", URL:"", ID:0, NodeID:"", CommitID:"", User:github.User{}, Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Body:"", Path:"", Position:0}`
+	want := `github.RepositoryComment{HTMLURL:"", URL:"", ID:0, NodeID:"", CommitID:"", User:github.User{}, AuthorAssociation:"", Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Body:"", Path:"", Position:0, Line:0}`
 	if got := v.String(); got != want {
 		t.Errorf("RepositoryComment.String = %v, want %v", got, want)
 	}
