@@ -937,12 +937,74 @@ func (s *CopilotService) GetOrganizationRepositoriesDailyMetricsReport(ctx conte
 	return report, resp, nil
 }
 
+// GetEnterpriseUserTeamsDailyMetricsReport gets a report containing Copilot
+// user-team membership data for a single day for an enterprise.
+//
+// Use DownloadUserTeamsDailyMetrics to decode the payloads served at the returned download links.
+// Join these records with per-user usage metrics on user_id, day, and enterprise_id to
+// construct team-level metrics.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-enterprise-user-teams-report-for-a-specific-day
+//
+//meta:operation GET /enterprises/{enterprise}/copilot/metrics/reports/user-teams-1-day
+func (s *CopilotService) GetEnterpriseUserTeamsDailyMetricsReport(ctx context.Context, enterprise string, opts *CopilotMetricsReportOptions) (*CopilotDailyMetricsReport, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/copilot/metrics/reports/user-teams-1-day", enterprise)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var report *CopilotDailyMetricsReport
+	resp, err := s.client.Do(req, &report)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return report, resp, nil
+}
+
+// GetOrganizationUserTeamsDailyMetricsReport gets a report containing Copilot
+// user-team membership data for a single day for an organization.
+//
+// Use DownloadUserTeamsDailyMetrics to decode the payloads served at the returned download links.
+// Join these records with per-user usage metrics on user_id, day, and organization_id to
+// construct team-level metrics.
+//
+// GitHub API docs: https://docs.github.com/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28#get-copilot-organization-user-teams-report-for-a-specific-day
+//
+//meta:operation GET /orgs/{org}/copilot/metrics/reports/user-teams-1-day
+func (s *CopilotService) GetOrganizationUserTeamsDailyMetricsReport(ctx context.Context, org string, opts *CopilotMetricsReportOptions) (*CopilotDailyMetricsReport, *Response, error) {
+	u := fmt.Sprintf("orgs/%v/copilot/metrics/reports/user-teams-1-day", org)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var report *CopilotDailyMetricsReport
+	resp, err := s.client.Do(req, &report)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return report, resp, nil
+}
+
 // DownloadCopilotMetrics downloads a Copilot metrics report from the provided download link
 // and decodes it as a []*CopilotMetrics.
 //
 // Deprecated: Use DownloadDailyMetrics,
 // DownloadPeriodicMetrics, DownloadUserDailyMetrics, DownloadUserPeriodicMetrics,
-// DownloadRepositoryDailyMetrics instead.
+// DownloadRepositoryDailyMetrics, DownloadUserTeamsDailyMetrics instead.
 // The payloads served at the download links returned by the new
 // Get*MetricsReport endpoints on GitHub.com do not match the CopilotMetrics shape
 // (see https://github.com/google/go-github/issues/4136).
@@ -1242,6 +1304,22 @@ type CopilotUserMetricsIDE struct {
 	LastKnownIDEVersion    *CopilotUserMetricsIDEVersion    `json:"last_known_ide_version,omitempty"`
 }
 
+// CopilotUserTeamsDailyMetrics represents a user-team membership record from a user-teams-1-day
+// report. These records are joined with per-user usage metrics to construct team-level metrics.
+// Teams with fewer than 5 seated Copilot users are omitted from the report.
+// User-teams reports are served as newline-delimited JSON.
+//
+// GitHub API docs: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/copilot-usage-metrics#user-teams-fields
+type CopilotUserTeamsDailyMetrics struct {
+	UserID         int64   `json:"user_id"`
+	UserLogin      string  `json:"user_login"`
+	Day            string  `json:"day"`
+	OrganizationID *string `json:"organization_id,omitempty"`
+	EnterpriseID   *string `json:"enterprise_id,omitempty"`
+	TeamID         int64   `json:"team_id"`
+	Slug           string  `json:"slug"`
+}
+
 // CopilotUserDailyMetrics represents a single user's per-day Copilot usage metrics record from a
 // 1-day user metrics report. User metrics reports are served as newline-delimited JSON.
 type CopilotUserDailyMetrics struct {
@@ -1447,6 +1525,25 @@ func (s *CopilotService) DownloadRepositoryDailyMetrics(ctx context.Context, url
 	defer resp.Body.Close()
 
 	records, err := decodeNDJSONMetrics[CopilotRepositoryDailyMetrics](resp.Body)
+	if err != nil {
+		return nil, r, err
+	}
+	return records, r, nil
+}
+
+// DownloadUserTeamsDailyMetrics downloads the payload of a 1-day Copilot user-teams report from a
+// download link returned by GetEnterpriseUserTeamsDailyMetricsReport or
+// GetOrganizationUserTeamsDailyMetricsReport.
+//
+// The response is newline-delimited JSON, with one CopilotUserTeamsDailyMetrics record per line.
+func (s *CopilotService) DownloadUserTeamsDailyMetrics(ctx context.Context, url string) ([]*CopilotUserTeamsDailyMetrics, *Response, error) {
+	resp, r, err := s.fetchMetricsReport(ctx, url)
+	if err != nil {
+		return nil, r, err
+	}
+	defer resp.Body.Close()
+
+	records, err := decodeNDJSONMetrics[CopilotUserTeamsDailyMetrics](resp.Body)
 	if err != nil {
 		return nil, r, err
 	}
