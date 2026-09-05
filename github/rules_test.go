@@ -35,6 +35,13 @@ func TestRepositoryRulesetRules(t *testing.T) {
 			`[{"type":"required_deployments","parameters":{"required_deployment_environments":["test"]}}]`,
 		},
 		{
+			"code_quality_rule",
+			&RepositoryRulesetRules{
+				CodeQuality: &CodeQualityRuleParameters{Severity: "errors"},
+			},
+			`[{"type":"code_quality","parameters":{"severity":"errors"}}]`,
+		},
+		{
 			"all_rules_with_required_params",
 			&RepositoryRulesetRules{
 				Creation:              &EmptyRuleParameters{},
