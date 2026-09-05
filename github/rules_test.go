@@ -316,6 +316,10 @@ func TestRepositoryRulesetRules(t *testing.T) {
 				"invalid_copilot_code_review_parameters",
 				`[{"type":"copilot_code_review","parameters":"not_an_object"}]`,
 			},
+			{
+				"invalid_code_quality_parameters",
+				`[{"type":"code_quality","parameters":"not_an_object"}]`,
+			},
 		}
 
 		for _, tt := range tests {
@@ -720,6 +724,10 @@ func TestBranchRules(t *testing.T) {
 			{
 				"invalid_copilot_code_review_parameters",
 				`[{"type":"copilot_code_review","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":"not_an_object"}]`,
+			},
+			{
+				"invalid_code_quality_parameters",
+				`[{"type":"code_quality","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":"not_an_object"}]`,
 			},
 		}
 
