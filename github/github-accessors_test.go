@@ -4973,6 +4973,17 @@ func TestBranchRules_GetBranchNamePattern(tt *testing.T) {
 	b.GetBranchNamePattern()
 }
 
+func TestBranchRules_GetCodeQuality(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CodeQualityBranchRule{}
+	b := &BranchRules{CodeQuality: zeroValue}
+	b.GetCodeQuality()
+	b = &BranchRules{}
+	b.GetCodeQuality()
+	b = nil
+	b.GetCodeQuality()
+}
+
 func TestBranchRules_GetCodeScanning(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*CodeScanningBranchRule{}
@@ -6775,6 +6786,14 @@ func TestCodeQLDatabase_GetURL(tt *testing.T) {
 	c.GetURL()
 }
 
+func TestCodeQualityBranchRule_GetParameters(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityBranchRule{}
+	c.GetParameters()
+	c = nil
+	c.GetParameters()
+}
+
 func TestCodeQualityFinding_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -6951,6 +6970,14 @@ func TestCodeQualityFindingRule_GetTitle(tt *testing.T) {
 	c.GetTitle()
 	c = nil
 	c.GetTitle()
+}
+
+func TestCodeQualityRuleParameters_GetSeverity(tt *testing.T) {
+	tt.Parallel()
+	c := &CodeQualityRuleParameters{}
+	c.GetSeverity()
+	c = nil
+	c.GetSeverity()
 }
 
 func TestCodeQualitySetupConfiguration_GetLanguages(tt *testing.T) {
@@ -47630,6 +47657,14 @@ func TestRepositoryRulesetRules_GetBranchNamePattern(tt *testing.T) {
 	r.GetBranchNamePattern()
 	r = nil
 	r.GetBranchNamePattern()
+}
+
+func TestRepositoryRulesetRules_GetCodeQuality(tt *testing.T) {
+	tt.Parallel()
+	r := &RepositoryRulesetRules{}
+	r.GetCodeQuality()
+	r = nil
+	r.GetCodeQuality()
 }
 
 func TestRepositoryRulesetRules_GetCodeScanning(tt *testing.T) {

@@ -3934,6 +3934,14 @@ func (b *BranchRules) GetBranchNamePattern() []*PatternBranchRule {
 	return b.BranchNamePattern
 }
 
+// GetCodeQuality returns the CodeQuality slice if it's non-nil, nil otherwise.
+func (b *BranchRules) GetCodeQuality() []*CodeQualityBranchRule {
+	if b == nil || b.CodeQuality == nil {
+		return nil
+	}
+	return b.CodeQuality
+}
+
 // GetCodeScanning returns the CodeScanning slice if it's non-nil, nil otherwise.
 func (b *BranchRules) GetCodeScanning() []*CodeScanningBranchRule {
 	if b == nil || b.CodeScanning == nil {
@@ -5334,6 +5342,14 @@ func (c *CodeQLDatabase) GetURL() string {
 	return *c.URL
 }
 
+// GetParameters returns the Parameters field.
+func (c *CodeQualityBranchRule) GetParameters() CodeQualityRuleParameters {
+	if c == nil {
+		return CodeQualityRuleParameters{}
+	}
+	return c.Parameters
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (c *CodeQualityFinding) GetCreatedAt() Timestamp {
 	if c == nil || c.CreatedAt == nil {
@@ -5492,6 +5508,14 @@ func (c *CodeQualityFindingRule) GetTitle() string {
 		return ""
 	}
 	return c.Title
+}
+
+// GetSeverity returns the Severity field.
+func (c *CodeQualityRuleParameters) GetSeverity() CodeQualitySeverity {
+	if c == nil {
+		return ""
+	}
+	return c.Severity
 }
 
 // GetLanguages returns the Languages slice if it's non-nil, nil otherwise.
@@ -38044,6 +38068,14 @@ func (r *RepositoryRulesetRules) GetBranchNamePattern() *PatternRuleParameters {
 		return nil
 	}
 	return r.BranchNamePattern
+}
+
+// GetCodeQuality returns the CodeQuality field.
+func (r *RepositoryRulesetRules) GetCodeQuality() *CodeQualityRuleParameters {
+	if r == nil {
+		return nil
+	}
+	return r.CodeQuality
 }
 
 // GetCodeScanning returns the CodeScanning field.

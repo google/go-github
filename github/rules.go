@@ -73,6 +73,7 @@ const (
 	// Branch or tag target rules.
 	RulesetRuleTypeBranchNamePattern        RepositoryRuleType = "branch_name_pattern"
 	RulesetRuleTypeCodeScanning             RepositoryRuleType = "code_scanning"
+	RulesetRuleTypeCodeQuality              RepositoryRuleType = "code_quality"
 	RulesetRuleTypeCommitAuthorEmailPattern RepositoryRuleType = "commit_author_email_pattern"
 	RulesetRuleTypeCommitMessagePattern     RepositoryRuleType = "commit_message_pattern"
 	RulesetRuleTypeCommitterEmailPattern    RepositoryRuleType = "committer_email_pattern"
@@ -183,6 +184,15 @@ const (
 	CodeScanningSecurityAlertsThresholdHighOrHigher   CodeScanningSecurityAlertsThreshold = "high_or_higher"
 	CodeScanningSecurityAlertsThresholdMediumOrHigher CodeScanningSecurityAlertsThreshold = "medium_or_higher"
 	CodeScanningSecurityAlertsThresholdAll            CodeScanningSecurityAlertsThreshold = "all"
+)
+
+// CodeQualitySeverity models the minimum code quality severity that blocks a merge.
+type CodeQualitySeverity string
+
+// This is the set of GitHub code quality severity thresholds.
+const (
+	CodeQualitySeverityErrors            CodeQualitySeverity = "errors"
+	CodeQualitySeverityErrorsAndWarnings CodeQualitySeverity = "errors_and_warnings"
 )
 
 // RepositoryRuleset represents a GitHub ruleset object.
@@ -308,6 +318,7 @@ type RepositoryRulesetRules struct {
 	TagNamePattern           *PatternRuleParameters
 	Workflows                *WorkflowsRuleParameters
 	CodeScanning             *CodeScanningRuleParameters
+	CodeQuality              *CodeQualityRuleParameters
 	CopilotCodeReview        *CopilotCodeReviewRuleParameters
 
 	// Push target rules.
@@ -345,6 +356,7 @@ type BranchRules struct {
 	TagNamePattern           []*PatternBranchRule
 	Workflows                []*WorkflowsBranchRule
 	CodeScanning             []*CodeScanningBranchRule
+	CodeQuality              []*CodeQualityBranchRule
 	CopilotCodeReview        []*CopilotCodeReviewBranchRule
 
 	// Push target rules.
@@ -431,6 +443,12 @@ type WorkflowsBranchRule struct {
 type CodeScanningBranchRule struct {
 	BranchRuleMetadata
 	Parameters CodeScanningRuleParameters `json:"parameters"`
+}
+
+// CodeQualityBranchRule represents a code quality branch rule.
+type CodeQualityBranchRule struct {
+	BranchRuleMetadata
+	Parameters CodeQualityRuleParameters `json:"parameters"`
 }
 
 // CopilotCodeReviewBranchRule represents a copilot code review branch rule.
@@ -577,6 +595,11 @@ type RuleWorkflow struct {
 // CodeScanningRuleParameters represents the code scanning rule parameters.
 type CodeScanningRuleParameters struct {
 	CodeScanningTools []*RuleCodeScanningTool `json:"code_scanning_tools"`
+}
+
+// CodeQualityRuleParameters represents the code_quality rule parameters.
+type CodeQualityRuleParameters struct {
+	Severity CodeQualitySeverity `json:"severity"`
 }
 
 // CopilotCodeReviewRuleParameters represents the copilot_code_review rule parameters.
@@ -777,6 +800,14 @@ func (r RepositoryRulesetRules) MarshalJSON() ([]byte, error) {
 
 	if r.CodeScanning != nil {
 		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCodeScanning, r.CodeScanning)
+		if err != nil {
+			return nil, err
+		}
+		rawRules = append(rawRules, json.RawMessage(bytes))
+	}
+
+	if r.CodeQuality != nil {
+		bytes, err := marshalRepositoryRulesetRule(RulesetRuleTypeCodeQuality, r.CodeQuality)
 		if err != nil {
 			return nil, err
 		}
@@ -1022,6 +1053,14 @@ func (r *RepositoryRulesetRules) UnmarshalJSON(data []byte) error {
 					return err
 				}
 			}
+		case RulesetRuleTypeCodeQuality:
+			r.CodeQuality = &CodeQualityRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, r.CodeQuality); err != nil {
+					return err
+				}
+			}
 		case RulesetRuleTypeCopilotCodeReview:
 			r.CopilotCodeReview = &CopilotCodeReviewRuleParameters{}
 
@@ -1245,6 +1284,16 @@ func (r *BranchRules) UnmarshalJSON(data []byte) error {
 			}
 
 			r.CodeScanning = append(r.CodeScanning, &CodeScanningBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
+		case RulesetRuleTypeCodeQuality:
+			params := &CodeQualityRuleParameters{}
+
+			if w.Parameters != nil {
+				if err := json.Unmarshal(w.Parameters, params); err != nil {
+					return err
+				}
+			}
+
+			r.CodeQuality = append(r.CodeQuality, &CodeQualityBranchRule{BranchRuleMetadata: w.BranchRuleMetadata, Parameters: *params})
 		case RulesetRuleTypeCopilotCodeReview:
 			params := &CopilotCodeReviewRuleParameters{}
 
