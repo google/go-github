@@ -369,6 +369,22 @@ func TestBranchRules(t *testing.T) {
 			`[{"type":"update","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"update_allows_fetch_and_merge":true}}]`,
 		},
 		{
+			"code_quality",
+			&BranchRules{
+				CodeQuality: []*CodeQualityBranchRule{
+					{
+						BranchRuleMetadata: BranchRuleMetadata{
+							RulesetSourceType: RulesetSourceTypeRepository,
+							RulesetSource:     "test/test",
+							RulesetID:         1,
+						},
+						Parameters: CodeQualityRuleParameters{Severity: CodeQualitySeverityErrors},
+					},
+				},
+			},
+			`[{"type":"code_quality","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"severity":"errors"}}]`,
+		},
+		{
 			"all_rule_types_with_all_parameters",
 			&BranchRules{
 				Creation: []*BranchRuleMetadata{
