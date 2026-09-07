@@ -393,11 +393,9 @@ func (s *CopilotService) ListOrganizationCodingAgentRepositories(ctx context.Con
 // CopilotContentExclusionDetails lists Copilot content exclusion path rules,
 // keyed by repository identifier. Each value is the list of file paths excluded
 // from Copilot for that repository.
+//
+// NOTE Breaking API change: renamed from CopilotOrganizationContentExclusionDetails.
 type CopilotContentExclusionDetails map[string][]string
-
-// CopilotOrganizationContentExclusionDetails is an alias for organization-scoped
-// content exclusion rules. Prefer CopilotContentExclusionDetails for new code.
-type CopilotOrganizationContentExclusionDetails = CopilotContentExclusionDetails
 
 // CopilotContentExclusionUpdateResponse represents the response from setting
 // Copilot content exclusion rules.
