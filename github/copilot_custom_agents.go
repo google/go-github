@@ -118,10 +118,10 @@ func (s *CopilotService) GetEnterpriseCustomAgentsSource(ctx context.Context, en
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/copilot/copilot-custom-agents?apiVersion=2022-11-28#set-the-source-organization-for-custom-agents-in-an-enterprise
 //
 //meta:operation PUT /enterprises/{enterprise}/copilot/custom-agents/source
-func (s *CopilotService) SetEnterpriseCustomAgentsSource(ctx context.Context, enterprise string, request SetCopilotCustomAgentsSourceRequest) (*CopilotCustomAgentsSource, *Response, error) {
+func (s *CopilotService) SetEnterpriseCustomAgentsSource(ctx context.Context, enterprise string, body SetCopilotCustomAgentsSourceRequest) (*CopilotCustomAgentsSource, *Response, error) {
 	u := fmt.Sprintf("enterprises/%v/copilot/custom-agents/source", enterprise)
 
-	req, err := s.client.NewRequest(ctx, "PUT", u, request)
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
 	}
