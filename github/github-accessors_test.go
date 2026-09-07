@@ -11600,6 +11600,162 @@ func TestCopilotCodeReviewRuleParameters_GetReviewOnPush(tt *testing.T) {
 	c.GetReviewOnPush()
 }
 
+func TestCopilotCustomAgent_GetFilePath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCustomAgent{FilePath: &zeroValue}
+	c.GetFilePath()
+	c = &CopilotCustomAgent{}
+	c.GetFilePath()
+	c = nil
+	c.GetFilePath()
+}
+
+func TestCopilotCustomAgent_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCustomAgent{Name: &zeroValue}
+	c.GetName()
+	c = &CopilotCustomAgent{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotCustomAgent_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCustomAgent{URL: &zeroValue}
+	c.GetURL()
+	c = &CopilotCustomAgent{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
+func TestCopilotCustomAgentsSource_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCustomAgentsSource{}
+	c.GetOrganization()
+	c = nil
+	c.GetOrganization()
+}
+
+func TestCopilotCustomAgentsSource_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCustomAgentsSource{}
+	c.GetRepository()
+	c = nil
+	c.GetRepository()
+}
+
+func TestCopilotCustomAgentsSource_GetRuleset(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotCustomAgentsSource{}
+	c.GetRuleset()
+	c = nil
+	c.GetRuleset()
+}
+
+func TestCopilotCustomAgentsSourceOrganization_GetAvatarURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCustomAgentsSourceOrganization{AvatarURL: &zeroValue}
+	c.GetAvatarURL()
+	c = &CopilotCustomAgentsSourceOrganization{}
+	c.GetAvatarURL()
+	c = nil
+	c.GetAvatarURL()
+}
+
+func TestCopilotCustomAgentsSourceOrganization_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotCustomAgentsSourceOrganization{ID: &zeroValue}
+	c.GetID()
+	c = &CopilotCustomAgentsSourceOrganization{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCopilotCustomAgentsSourceOrganization_GetLogin(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCustomAgentsSourceOrganization{Login: &zeroValue}
+	c.GetLogin()
+	c = &CopilotCustomAgentsSourceOrganization{}
+	c.GetLogin()
+	c = nil
+	c.GetLogin()
+}
+
+func TestCopilotCustomAgentsSourceRepository_GetFullName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCustomAgentsSourceRepository{FullName: &zeroValue}
+	c.GetFullName()
+	c = &CopilotCustomAgentsSourceRepository{}
+	c.GetFullName()
+	c = nil
+	c.GetFullName()
+}
+
+func TestCopilotCustomAgentsSourceRepository_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotCustomAgentsSourceRepository{ID: &zeroValue}
+	c.GetID()
+	c = &CopilotCustomAgentsSourceRepository{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCopilotCustomAgentsSourceRepository_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCustomAgentsSourceRepository{Name: &zeroValue}
+	c.GetName()
+	c = &CopilotCustomAgentsSourceRepository{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotCustomAgentsSourceRuleset_GetEnforcement(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCustomAgentsSourceRuleset{Enforcement: &zeroValue}
+	c.GetEnforcement()
+	c = &CopilotCustomAgentsSourceRuleset{}
+	c.GetEnforcement()
+	c = nil
+	c.GetEnforcement()
+}
+
+func TestCopilotCustomAgentsSourceRuleset_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotCustomAgentsSourceRuleset{ID: &zeroValue}
+	c.GetID()
+	c = &CopilotCustomAgentsSourceRuleset{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCopilotCustomAgentsSourceRuleset_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotCustomAgentsSourceRuleset{Name: &zeroValue}
+	c.GetName()
+	c = &CopilotCustomAgentsSourceRuleset{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
 func TestCopilotDailyMetrics_GetCodeAcceptanceActivityCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
@@ -20908,6 +21064,17 @@ func TestEnterpriseCreateOrUpdateBudgetResponse_GetMessage(tt *testing.T) {
 	e.GetMessage()
 	e = nil
 	e.GetMessage()
+}
+
+func TestEnterpriseCustomAgents_GetCustomAgents(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotCustomAgent{}
+	e := &EnterpriseCustomAgents{CustomAgents: zeroValue}
+	e.GetCustomAgents()
+	e = &EnterpriseCustomAgents{}
+	e.GetCustomAgents()
+	e = nil
+	e.GetCustomAgents()
 }
 
 func TestEnterpriseCustomPropertiesValues_GetOrganizationID(tt *testing.T) {
@@ -52737,6 +52904,25 @@ func TestServiceInstanceItems_GetType(tt *testing.T) {
 	s.GetType()
 	s = nil
 	s.GetType()
+}
+
+func TestSetCopilotCustomAgentsSourceRequest_GetCreateRuleset(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	s := &SetCopilotCustomAgentsSourceRequest{CreateRuleset: &zeroValue}
+	s.GetCreateRuleset()
+	s = &SetCopilotCustomAgentsSourceRequest{}
+	s.GetCreateRuleset()
+	s = nil
+	s.GetCreateRuleset()
+}
+
+func TestSetCopilotCustomAgentsSourceRequest_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	s := &SetCopilotCustomAgentsSourceRequest{}
+	s.GetOrganizationID()
+	s = nil
+	s.GetOrganizationID()
 }
 
 func TestSetOrgAccessRunnerGroupRequest_GetSelectedOrganizationIDs(tt *testing.T) {
