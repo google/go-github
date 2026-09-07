@@ -375,8 +375,12 @@ func (s *RepositoriesService) downloadReleaseAssetFromURL(ctx context.Context, f
 	if err != nil {
 		return nil, err
 	}
+	// CheckResponse substitutes resp.Body with a re-readable copy on error
+	// responses, so capture the original body first: it is the one that must
+	// be closed.
+	origBody := resp.Body
 	if err := CheckResponse(resp); err != nil {
-		_ = resp.Body.Close()
+		_ = origBody.Close()
 		return nil, err
 	}
 	return resp.Body, nil

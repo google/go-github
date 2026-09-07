@@ -32,9 +32,9 @@ func TestRepositoriesService_ListTrafficReferrers(t *testing.T) {
 	}
 
 	want := []*TrafficReferrer{{
-		Referrer: Ptr("Google"),
-		Count:    Ptr(4),
-		Uniques:  Ptr(3),
+		Referrer: new("Google"),
+		Count:    new(4),
+		Uniques:  new(3),
 	}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListTrafficReferrers returned %+v, want %+v", got, want)
@@ -75,10 +75,10 @@ func TestRepositoriesService_ListTrafficPaths(t *testing.T) {
 	}
 
 	want := []*TrafficPath{{
-		Path:    Ptr("/github/hubot"),
-		Title:   Ptr("github/hubot: A customizable life embetterment robot."),
-		Count:   Ptr(3542),
-		Uniques: Ptr(2225),
+		Path:    new("/github/hubot"),
+		Title:   new("github/hubot: A customizable life embetterment robot."),
+		Count:   new(3542),
+		Uniques: new(2225),
 	}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Repositories.ListTrafficPaths returned %+v, want %+v", got, want)
@@ -123,11 +123,11 @@ func TestRepositoriesService_ListTrafficViews(t *testing.T) {
 	want := &TrafficViews{
 		Views: []*TrafficData{{
 			Timestamp: &referenceTimestamp,
-			Count:     Ptr(7),
-			Uniques:   Ptr(6),
+			Count:     new(7),
+			Uniques:   new(6),
 		}},
-		Count:   Ptr(7),
-		Uniques: Ptr(6),
+		Count:   new(7),
+		Uniques: new(6),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -173,11 +173,11 @@ func TestRepositoriesService_ListTrafficClones(t *testing.T) {
 	want := &TrafficClones{
 		Clones: []*TrafficData{{
 			Timestamp: &referenceTimestamp,
-			Count:     Ptr(7),
-			Uniques:   Ptr(6),
+			Count:     new(7),
+			Uniques:   new(6),
 		}},
-		Count:   Ptr(7),
-		Uniques: Ptr(6),
+		Count:   new(7),
+		Uniques: new(6),
 	}
 
 	if !cmp.Equal(got, want) {

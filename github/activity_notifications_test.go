@@ -42,7 +42,7 @@ func TestActivityService_ListNotification(t *testing.T) {
 		t.Errorf("Activity.ListNotifications returned error: %v", err)
 	}
 
-	want := []*Notification{{ID: Ptr("1"), Subject: &NotificationSubject{Title: Ptr("t")}}}
+	want := []*Notification{{ID: new("1"), Subject: &NotificationSubject{Title: new("t")}}}
 	if !cmp.Equal(notifications, want) {
 		t.Errorf("Activity.ListNotifications returned %+v, want %+v", notifications, want)
 	}
@@ -72,7 +72,7 @@ func TestActivityService_ListRepositoryNotifications(t *testing.T) {
 		t.Errorf("Activity.ListRepositoryNotifications returned error: %v", err)
 	}
 
-	want := []*Notification{{ID: Ptr("1")}}
+	want := []*Notification{{ID: new("1")}}
 	if !cmp.Equal(notifications, want) {
 		t.Errorf("Activity.ListRepositoryNotifications returned %+v, want %+v", notifications, want)
 	}
@@ -209,7 +209,7 @@ func TestActivityService_GetThread(t *testing.T) {
 		t.Errorf("Activity.GetThread returned error: %v", err)
 	}
 
-	want := &Notification{ID: Ptr("1")}
+	want := &Notification{ID: new("1")}
 	if !cmp.Equal(notification, want) {
 		t.Errorf("Activity.GetThread returned %+v, want %+v", notification, want)
 	}
@@ -296,7 +296,7 @@ func TestActivityService_GetThreadSubscription(t *testing.T) {
 		t.Errorf("Activity.GetThreadSubscription returned error: %v", err)
 	}
 
-	want := &Subscription{Subscribed: Ptr(true)}
+	want := &Subscription{Subscribed: new(true)}
 	if !cmp.Equal(sub, want) {
 		t.Errorf("Activity.GetThreadSubscription returned %+v, want %+v", sub, want)
 	}
@@ -320,7 +320,7 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Subscription{Subscribed: Ptr(true)}
+	input := &Subscription{Subscribed: new(true)}
 
 	mux.HandleFunc("/notifications/threads/1/subscription", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -334,7 +334,7 @@ func TestActivityService_SetThreadSubscription(t *testing.T) {
 		t.Errorf("Activity.SetThreadSubscription returned error: %v", err)
 	}
 
-	want := &Subscription{Ignored: Ptr(true)}
+	want := &Subscription{Ignored: new(true)}
 	if !cmp.Equal(sub, want) {
 		t.Errorf("Activity.SetThreadSubscription returned %+v, want %+v", sub, want)
 	}

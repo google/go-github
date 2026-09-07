@@ -21,7 +21,7 @@ func (s *ActionsService) ListArtifactsIter(ctx context.Context, owner string, re
 		if opts == nil {
 			opts = &ListArtifactsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -56,7 +56,7 @@ func (s *ActionsService) ListCacheUsageByRepoForOrgIter(ctx context.Context, org
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -91,7 +91,7 @@ func (s *ActionsService) ListCachesIter(ctx context.Context, owner string, repo 
 		if opts == nil {
 			opts = &ActionsCacheListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -126,7 +126,7 @@ func (s *ActionsService) ListEnabledOrgsInEnterpriseIter(ctx context.Context, ow
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -161,7 +161,7 @@ func (s *ActionsService) ListEnabledReposInOrgIter(ctx context.Context, owner st
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -196,7 +196,7 @@ func (s *ActionsService) ListEnvSecretsIter(ctx context.Context, owner string, r
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -231,7 +231,7 @@ func (s *ActionsService) ListEnvVariablesIter(ctx context.Context, owner string,
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -266,7 +266,7 @@ func (s *ActionsService) ListHostedRunnersIter(ctx context.Context, org string, 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -301,7 +301,7 @@ func (s *ActionsService) ListOrgSecretsIter(ctx context.Context, org string, opt
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -336,7 +336,7 @@ func (s *ActionsService) ListOrgVariablesIter(ctx context.Context, org string, o
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -371,7 +371,7 @@ func (s *ActionsService) ListOrganizationRunnerGroupsIter(ctx context.Context, o
 		if opts == nil {
 			opts = &ListOrgRunnerGroupOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -406,7 +406,7 @@ func (s *ActionsService) ListOrganizationRunnersIter(ctx context.Context, org st
 		if opts == nil {
 			opts = &ListRunnersOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -441,7 +441,7 @@ func (s *ActionsService) ListRepoOrgSecretsIter(ctx context.Context, owner strin
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -476,7 +476,7 @@ func (s *ActionsService) ListRepoOrgVariablesIter(ctx context.Context, owner str
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -511,7 +511,7 @@ func (s *ActionsService) ListRepoSecretsIter(ctx context.Context, owner string, 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -546,7 +546,7 @@ func (s *ActionsService) ListRepoVariablesIter(ctx context.Context, owner string
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -581,7 +581,7 @@ func (s *ActionsService) ListRepositoriesSelfHostedRunnersAllowedInOrganizationI
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -616,7 +616,7 @@ func (s *ActionsService) ListRepositoryAccessRunnerGroupIter(ctx context.Context
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -651,7 +651,7 @@ func (s *ActionsService) ListRepositoryWorkflowRunsIter(ctx context.Context, own
 		if opts == nil {
 			opts = &ListWorkflowRunsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -686,7 +686,7 @@ func (s *ActionsService) ListRunnerGroupHostedRunnersIter(ctx context.Context, o
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -721,7 +721,7 @@ func (s *ActionsService) ListRunnerGroupRunnersIter(ctx context.Context, org str
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -756,7 +756,7 @@ func (s *ActionsService) ListRunnersIter(ctx context.Context, owner string, repo
 		if opts == nil {
 			opts = &ListRunnersOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -791,7 +791,7 @@ func (s *ActionsService) ListSelectedReposForOrgSecretIter(ctx context.Context, 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -826,7 +826,7 @@ func (s *ActionsService) ListSelectedReposForOrgVariableIter(ctx context.Context
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -861,7 +861,7 @@ func (s *ActionsService) ListWorkflowJobsIter(ctx context.Context, owner string,
 		if opts == nil {
 			opts = &ListWorkflowJobsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -896,7 +896,7 @@ func (s *ActionsService) ListWorkflowJobsAttemptIter(ctx context.Context, owner 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -931,7 +931,7 @@ func (s *ActionsService) ListWorkflowRunArtifactsIter(ctx context.Context, owner
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -966,7 +966,7 @@ func (s *ActionsService) ListWorkflowRunsByFileNameIter(ctx context.Context, own
 		if opts == nil {
 			opts = &ListWorkflowRunsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1001,7 +1001,7 @@ func (s *ActionsService) ListWorkflowRunsByIDIter(ctx context.Context, owner str
 		if opts == nil {
 			opts = &ListWorkflowRunsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1036,7 +1036,7 @@ func (s *ActionsService) ListWorkflowsIter(ctx context.Context, owner string, re
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1071,7 +1071,7 @@ func (s *ActivityService) ListEventsIter(ctx context.Context, opts *ListOptions)
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1102,7 +1102,7 @@ func (s *ActivityService) ListEventsForOrganizationIter(ctx context.Context, org
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1133,7 +1133,7 @@ func (s *ActivityService) ListEventsForRepoNetworkIter(ctx context.Context, owne
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1164,7 +1164,7 @@ func (s *ActivityService) ListEventsPerformedByUserIter(ctx context.Context, use
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1195,7 +1195,7 @@ func (s *ActivityService) ListEventsReceivedByUserIter(ctx context.Context, user
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1226,7 +1226,7 @@ func (s *ActivityService) ListIssueEventsForRepositoryIter(ctx context.Context, 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1257,7 +1257,7 @@ func (s *ActivityService) ListNotificationsIter(ctx context.Context, opts *Notif
 		if opts == nil {
 			opts = &NotificationListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1288,7 +1288,7 @@ func (s *ActivityService) ListRepositoryEventsIter(ctx context.Context, owner st
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1319,7 +1319,7 @@ func (s *ActivityService) ListRepositoryNotificationsIter(ctx context.Context, o
 		if opts == nil {
 			opts = &NotificationListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1350,7 +1350,7 @@ func (s *ActivityService) ListStargazersIter(ctx context.Context, owner string, 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1381,7 +1381,7 @@ func (s *ActivityService) ListStarredIter(ctx context.Context, user string, opts
 		if opts == nil {
 			opts = &ActivityListStarredOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1412,7 +1412,7 @@ func (s *ActivityService) ListUserEventsForOrganizationIter(ctx context.Context,
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1443,7 +1443,7 @@ func (s *ActivityService) ListWatchedIter(ctx context.Context, user string, opts
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1474,7 +1474,7 @@ func (s *ActivityService) ListWatchersIter(ctx context.Context, owner string, re
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1498,6 +1498,76 @@ func (s *ActivityService) ListWatchersIter(ctx context.Context, owner string, re
 	}
 }
 
+// ListIter returns an iterator that paginates through all results of List.
+func (s *AgentTasksService) ListIter(ctx context.Context, opts *AgentTaskListOptions) iter.Seq2[*AgentTask, error] {
+	return func(yield func(*AgentTask, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &AgentTaskListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.List(ctx, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*AgentTask
+			if results != nil {
+				iterItems = results.Tasks
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
+// ListByRepoIter returns an iterator that paginates through all results of ListByRepo.
+func (s *AgentTasksService) ListByRepoIter(ctx context.Context, owner string, repo string, opts *AgentTaskListByRepoOptions) iter.Seq2[*AgentTask, error] {
+	return func(yield func(*AgentTask, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &AgentTaskListByRepoOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListByRepo(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*AgentTask
+			if results != nil {
+				iterItems = results.Tasks
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListHookDeliveriesIter returns an iterator that paginates through all results of ListHookDeliveries.
 func (s *AppsService) ListHookDeliveriesIter(ctx context.Context, opts *ListCursorOptions) iter.Seq2[*HookDelivery, error] {
 	return func(yield func(*HookDelivery, error) bool) {
@@ -1505,7 +1575,7 @@ func (s *AppsService) ListHookDeliveriesIter(ctx context.Context, opts *ListCurs
 		if opts == nil {
 			opts = &ListCursorOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1536,7 +1606,7 @@ func (s *AppsService) ListInstallationRequestsIter(ctx context.Context, opts *Li
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1567,7 +1637,7 @@ func (s *AppsService) ListInstallationsIter(ctx context.Context, opts *ListOptio
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1598,7 +1668,7 @@ func (s *AppsService) ListReposIter(ctx context.Context, opts *ListOptions) iter
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1633,7 +1703,7 @@ func (s *AppsService) ListUserInstallationsIter(ctx context.Context, opts *ListO
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1664,7 +1734,7 @@ func (s *AppsService) ListUserReposIter(ctx context.Context, id int64, opts *Lis
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1699,7 +1769,7 @@ func (s *ChecksService) ListCheckRunAnnotationsIter(ctx context.Context, owner s
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1730,7 +1800,7 @@ func (s *ChecksService) ListCheckRunsCheckSuiteIter(ctx context.Context, owner s
 		if opts == nil {
 			opts = &ListCheckRunsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1765,7 +1835,7 @@ func (s *ChecksService) ListCheckRunsForRefIter(ctx context.Context, owner strin
 		if opts == nil {
 			opts = &ListCheckRunsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1800,7 +1870,7 @@ func (s *ChecksService) ListCheckSuitesForRefIter(ctx context.Context, owner str
 		if opts == nil {
 			opts = &ListCheckSuiteOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1835,7 +1905,7 @@ func (s *ClassroomService) ListAcceptedAssignmentsIter(ctx context.Context, assi
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1866,7 +1936,7 @@ func (s *ClassroomService) ListClassroomAssignmentsIter(ctx context.Context, cla
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1897,7 +1967,7 @@ func (s *ClassroomService) ListClassroomsIter(ctx context.Context, opts *ListOpt
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1928,7 +1998,7 @@ func (s *CodeQualityService) ListFindingsIter(ctx context.Context, owner string,
 		if opts == nil {
 			opts = &ListCodeQualityFindingsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1959,7 +2029,7 @@ func (s *CodeScanningService) ListAlertInstancesIter(ctx context.Context, owner 
 		if opts == nil {
 			opts = &AlertInstancesListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -1990,7 +2060,7 @@ func (s *CodeScanningService) ListAlertsForOrgIter(ctx context.Context, org stri
 		if opts == nil {
 			opts = &AlertListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2022,7 +2092,7 @@ func (s *CodeScanningService) ListAlertsForRepoIter(ctx context.Context, owner s
 		if opts == nil {
 			opts = &AlertListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2054,7 +2124,7 @@ func (s *CodeScanningService) ListAnalysesForRepoIter(ctx context.Context, owner
 		if opts == nil {
 			opts = &AnalysesListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2085,7 +2155,7 @@ func (s *CodespacesService) ListIter(ctx context.Context, opts *ListCodespacesOp
 		if opts == nil {
 			opts = &ListCodespacesOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2120,7 +2190,7 @@ func (s *CodespacesService) ListDevContainerConfigurationsIter(ctx context.Conte
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2155,7 +2225,7 @@ func (s *CodespacesService) ListInOrgIter(ctx context.Context, org string, opts 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2190,7 +2260,7 @@ func (s *CodespacesService) ListInRepoIter(ctx context.Context, owner string, re
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2225,7 +2295,7 @@ func (s *CodespacesService) ListOrgSecretsIter(ctx context.Context, org string, 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2260,7 +2330,7 @@ func (s *CodespacesService) ListRepoSecretsIter(ctx context.Context, owner strin
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2295,7 +2365,7 @@ func (s *CodespacesService) ListSelectedReposForOrgSecretIter(ctx context.Contex
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2330,7 +2400,7 @@ func (s *CodespacesService) ListSelectedReposForUserSecretIter(ctx context.Conte
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2365,7 +2435,7 @@ func (s *CodespacesService) ListUserCodespacesInOrgIter(ctx context.Context, org
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2400,7 +2470,7 @@ func (s *CodespacesService) ListUserSecretsIter(ctx context.Context, opts *ListO
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2435,7 +2505,7 @@ func (s *CopilotService) ListCopilotEnterpriseSeatsIter(ctx context.Context, ent
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2470,7 +2540,7 @@ func (s *CopilotService) ListCopilotSeatsIter(ctx context.Context, org string, o
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2505,7 +2575,7 @@ func (s *CopilotService) ListOrganizationCodingAgentRepositoriesIter(ctx context
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2540,7 +2610,7 @@ func (s *DependabotService) ListOrgAlertsIter(ctx context.Context, org string, o
 		if opts == nil {
 			opts = &ListAlertsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2572,7 +2642,7 @@ func (s *DependabotService) ListOrgSecretsIter(ctx context.Context, org string, 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2607,7 +2677,7 @@ func (s *DependabotService) ListRepoAlertsIter(ctx context.Context, owner string
 		if opts == nil {
 			opts = &ListAlertsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2639,7 +2709,7 @@ func (s *DependabotService) ListRepoSecretsIter(ctx context.Context, owner strin
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2674,7 +2744,7 @@ func (s *DependabotService) ListSelectedReposForOrgSecretIter(ctx context.Contex
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2702,6 +2772,41 @@ func (s *DependabotService) ListSelectedReposForOrgSecretIter(ctx context.Contex
 	}
 }
 
+// ListUserStatesForBudgetIter returns an iterator that paginates through all results of GetUserStatesForBudget.
+func (s *EnterpriseService) ListUserStatesForBudgetIter(ctx context.Context, enterprise string, budgetID string, opts *EnterpriseGetUserStatesOptions) iter.Seq2[*EnterpriseBudgetUserState, error] {
+	return func(yield func(*EnterpriseBudgetUserState, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &EnterpriseGetUserStatesOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.GetUserStatesForBudget(ctx, enterprise, budgetID, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*EnterpriseBudgetUserState
+			if results != nil {
+				iterItems = results.UserStates
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListAppAccessibleOrganizationRepositoriesIter returns an iterator that paginates through all results of ListAppAccessibleOrganizationRepositories.
 func (s *EnterpriseService) ListAppAccessibleOrganizationRepositoriesIter(ctx context.Context, enterprise string, org string, opts *ListOptions) iter.Seq2[*AccessibleRepository, error] {
 	return func(yield func(*AccessibleRepository, error) bool) {
@@ -2709,7 +2814,7 @@ func (s *EnterpriseService) ListAppAccessibleOrganizationRepositoriesIter(ctx co
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2740,7 +2845,7 @@ func (s *EnterpriseService) ListAppInstallableOrganizationsIter(ctx context.Cont
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2771,7 +2876,7 @@ func (s *EnterpriseService) ListAppInstallationsIter(ctx context.Context, enterp
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2802,7 +2907,7 @@ func (s *EnterpriseService) ListAssignmentsIter(ctx context.Context, enterprise 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2826,6 +2931,41 @@ func (s *EnterpriseService) ListAssignmentsIter(ctx context.Context, enterprise 
 	}
 }
 
+// ListBudgetsIter returns an iterator that paginates through all results of ListBudgets.
+func (s *EnterpriseService) ListBudgetsIter(ctx context.Context, enterprise string, opts *EnterpriseListBudgetsOptions) iter.Seq2[*EnterpriseBudget, error] {
+	return func(yield func(*EnterpriseBudget, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &EnterpriseListBudgetsOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListBudgets(ctx, enterprise, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*EnterpriseBudget
+			if results != nil {
+				iterItems = results.Budgets
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListCodeSecurityConfigurationRepositoriesIter returns an iterator that paginates through all results of ListCodeSecurityConfigurationRepositories.
 func (s *EnterpriseService) ListCodeSecurityConfigurationRepositoriesIter(ctx context.Context, enterprise string, configurationID int64, opts *ListCodeSecurityConfigurationRepositoriesOptions) iter.Seq2[*RepositoryAttachment, error] {
 	return func(yield func(*RepositoryAttachment, error) bool) {
@@ -2833,7 +2973,7 @@ func (s *EnterpriseService) ListCodeSecurityConfigurationRepositoriesIter(ctx co
 		if opts == nil {
 			opts = &ListCodeSecurityConfigurationRepositoriesOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2864,7 +3004,7 @@ func (s *EnterpriseService) ListCodeSecurityConfigurationsIter(ctx context.Conte
 		if opts == nil {
 			opts = &ListEnterpriseCodeSecurityConfigurationOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2895,7 +3035,7 @@ func (s *EnterpriseService) ListConsumedLicensesIter(ctx context.Context, enterp
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2930,7 +3070,7 @@ func (s *EnterpriseService) ListEnterpriseNetworkConfigurationsIter(ctx context.
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -2965,7 +3105,7 @@ func (s *EnterpriseService) ListHostedRunnersIter(ctx context.Context, enterpris
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3000,7 +3140,7 @@ func (s *EnterpriseService) ListOrganizationAccessRunnerGroupIter(ctx context.Co
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3035,7 +3175,7 @@ func (s *EnterpriseService) ListOrganizationCustomPropertyValuesIter(ctx context
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3066,7 +3206,7 @@ func (s *EnterpriseService) ListRepositoriesForOrgAppInstallationIter(ctx contex
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3097,7 +3237,7 @@ func (s *EnterpriseService) ListRunnerGroupRunnersIter(ctx context.Context, ente
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3132,7 +3272,7 @@ func (s *EnterpriseService) ListRunnerGroupsIter(ctx context.Context, enterprise
 		if opts == nil {
 			opts = &ListEnterpriseRunnerGroupOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3167,7 +3307,7 @@ func (s *EnterpriseService) ListRunnersIter(ctx context.Context, enterprise stri
 		if opts == nil {
 			opts = &ListRunnersOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3202,7 +3342,7 @@ func (s *EnterpriseService) ListTeamMembersIter(ctx context.Context, enterprise 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3233,7 +3373,7 @@ func (s *EnterpriseService) ListTeamsIter(ctx context.Context, enterprise string
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3257,6 +3397,41 @@ func (s *EnterpriseService) ListTeamsIter(ctx context.Context, enterprise string
 	}
 }
 
+// ListVisualStudioSubscriptionsIter returns an iterator that paginates through all results of ListVisualStudioSubscriptions.
+func (s *EnterpriseService) ListVisualStudioSubscriptionsIter(ctx context.Context, enterprise string, opts *ListVisualStudioSubscriptionsOptions) iter.Seq2[*VisualStudioSubscriptionAssignment, error] {
+	return func(yield func(*VisualStudioSubscriptionAssignment, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListVisualStudioSubscriptionsOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListVisualStudioSubscriptions(ctx, enterprise, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*VisualStudioSubscriptionAssignment
+			if results != nil {
+				iterItems = results.VisualStudioSubscriptions
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
+		}
+	}
+}
+
 // ListIter returns an iterator that paginates through all results of List.
 func (s *GistsService) ListIter(ctx context.Context, user string, opts *GistListOptions) iter.Seq2[*Gist, error] {
 	return func(yield func(*Gist, error) bool) {
@@ -3264,7 +3439,7 @@ func (s *GistsService) ListIter(ctx context.Context, user string, opts *GistList
 		if opts == nil {
 			opts = &GistListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3295,7 +3470,7 @@ func (s *GistsService) ListAllIter(ctx context.Context, opts *GistListOptions) i
 		if opts == nil {
 			opts = &GistListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3326,7 +3501,7 @@ func (s *GistsService) ListCommentsIter(ctx context.Context, gistID string, opts
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3357,7 +3532,7 @@ func (s *GistsService) ListCommitsIter(ctx context.Context, id string, opts *Lis
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3388,7 +3563,7 @@ func (s *GistsService) ListForksIter(ctx context.Context, id string, opts *ListO
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3419,7 +3594,7 @@ func (s *GistsService) ListStarredIter(ctx context.Context, opts *GistListOption
 		if opts == nil {
 			opts = &GistListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3450,7 +3625,7 @@ func (s *IssuesService) ListAllIssuesIter(ctx context.Context, opts *ListAllIssu
 		if opts == nil {
 			opts = &ListAllIssuesOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3481,7 +3656,7 @@ func (s *IssuesService) ListAssigneesIter(ctx context.Context, owner string, rep
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3512,7 +3687,7 @@ func (s *IssuesService) ListBlockedByIter(ctx context.Context, owner string, rep
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3543,7 +3718,7 @@ func (s *IssuesService) ListBlockingIter(ctx context.Context, owner string, repo
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3574,7 +3749,7 @@ func (s *IssuesService) ListByOrgIter(ctx context.Context, org string, opts *Iss
 		if opts == nil {
 			opts = &IssueListByOrgOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3605,7 +3780,7 @@ func (s *IssuesService) ListByRepoIter(ctx context.Context, owner string, repo s
 		if opts == nil {
 			opts = &IssueListByRepoOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3637,7 +3812,7 @@ func (s *IssuesService) ListCommentsIter(ctx context.Context, owner string, repo
 		if opts == nil {
 			opts = &IssueListCommentsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3668,7 +3843,7 @@ func (s *IssuesService) ListIssueEventsIter(ctx context.Context, owner string, r
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3699,7 +3874,7 @@ func (s *IssuesService) ListIssueTimelineIter(ctx context.Context, owner string,
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3730,7 +3905,7 @@ func (s *IssuesService) ListLabelsIter(ctx context.Context, owner string, repo s
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3761,7 +3936,7 @@ func (s *IssuesService) ListLabelsByIssueIter(ctx context.Context, owner string,
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3792,7 +3967,7 @@ func (s *IssuesService) ListLabelsForMilestoneIter(ctx context.Context, owner st
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3823,7 +3998,7 @@ func (s *IssuesService) ListMilestonesIter(ctx context.Context, owner string, re
 		if opts == nil {
 			opts = &MilestoneListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3854,7 +4029,7 @@ func (s *IssuesService) ListRepositoryEventsIter(ctx context.Context, owner stri
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3885,7 +4060,7 @@ func (s *IssuesService) ListUserIssuesIter(ctx context.Context, opts *ListUserIs
 		if opts == nil {
 			opts = &ListUserIssuesOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3916,7 +4091,7 @@ func (s *LicensesService) ListIter(ctx context.Context, opts *ListLicensesOption
 		if opts == nil {
 			opts = &ListLicensesOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3947,7 +4122,7 @@ func (s *MarketplaceService) ListMarketplacePurchasesForUserIter(ctx context.Con
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -3978,7 +4153,7 @@ func (s *MarketplaceService) ListPlanAccountsForPlanIter(ctx context.Context, pl
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4009,7 +4184,7 @@ func (s *MarketplaceService) ListPlansIter(ctx context.Context, opts *ListOption
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4040,7 +4215,7 @@ func (s *MigrationService) ListMigrationsIter(ctx context.Context, org string, o
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4071,7 +4246,7 @@ func (s *MigrationService) ListUserMigrationsIter(ctx context.Context, opts *Lis
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4102,7 +4277,7 @@ func (s *OrganizationsService) ListIter(ctx context.Context, user string, opts *
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4133,7 +4308,7 @@ func (s *OrganizationsService) ListAllRepositoryRulesetsIter(ctx context.Context
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4164,7 +4339,7 @@ func (s *OrganizationsService) ListAttestationsIter(ctx context.Context, org str
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4199,7 +4374,7 @@ func (s *OrganizationsService) ListBlockedUsersIter(ctx context.Context, org str
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4230,7 +4405,7 @@ func (s *OrganizationsService) ListCodeSecurityConfigurationRepositoriesIter(ctx
 		if opts == nil {
 			opts = &ListCodeSecurityConfigurationRepositoriesOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4261,7 +4436,7 @@ func (s *OrganizationsService) ListCodeSecurityConfigurationsIter(ctx context.Co
 		if opts == nil {
 			opts = &ListOrgCodeSecurityConfigurationOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4292,7 +4467,7 @@ func (s *OrganizationsService) ListCredentialAuthorizationsIter(ctx context.Cont
 		if opts == nil {
 			opts = &CredentialAuthorizationsListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4323,7 +4498,7 @@ func (s *OrganizationsService) ListCustomPropertyValuesIter(ctx context.Context,
 		if opts == nil {
 			opts = &ListCustomPropertyValuesOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4354,7 +4529,7 @@ func (s *OrganizationsService) ListFailedOrgInvitationsIter(ctx context.Context,
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4385,7 +4560,7 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokenRequestsIter(ct
 		if opts == nil {
 			opts = &ListFineGrainedPATOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4416,7 +4591,7 @@ func (s *OrganizationsService) ListFineGrainedPersonalAccessTokensIter(ctx conte
 		if opts == nil {
 			opts = &ListFineGrainedPATOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4447,7 +4622,7 @@ func (s *OrganizationsService) ListHookDeliveriesIter(ctx context.Context, org s
 		if opts == nil {
 			opts = &ListCursorOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4478,7 +4653,7 @@ func (s *OrganizationsService) ListHooksIter(ctx context.Context, org string, op
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4509,7 +4684,7 @@ func (s *OrganizationsService) ListImmutableReleaseRepositoriesIter(ctx context.
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4544,7 +4719,7 @@ func (s *OrganizationsService) ListInstallationsIter(ctx context.Context, org st
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4579,7 +4754,7 @@ func (s *OrganizationsService) ListMembersIter(ctx context.Context, org string, 
 		if opts == nil {
 			opts = &ListMembersOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4610,7 +4785,7 @@ func (s *OrganizationsService) ListNetworkConfigurationsIter(ctx context.Context
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4645,7 +4820,7 @@ func (s *OrganizationsService) ListOrgInvitationTeamsIter(ctx context.Context, o
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4676,7 +4851,7 @@ func (s *OrganizationsService) ListOrgMembershipsIter(ctx context.Context, opts 
 		if opts == nil {
 			opts = &ListOrgMembershipsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4707,7 +4882,7 @@ func (s *OrganizationsService) ListOutsideCollaboratorsIter(ctx context.Context,
 		if opts == nil {
 			opts = &ListOutsideCollaboratorsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4738,7 +4913,7 @@ func (s *OrganizationsService) ListPackagesIter(ctx context.Context, org string,
 		if opts == nil {
 			opts = &PackageListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4769,7 +4944,7 @@ func (s *OrganizationsService) ListPendingOrgInvitationsIter(ctx context.Context
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4800,7 +4975,7 @@ func (s *OrganizationsService) ListTeamsAssignedToOrgRoleIter(ctx context.Contex
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4831,7 +5006,7 @@ func (s *OrganizationsService) ListUsersAssignedToOrgRoleIter(ctx context.Contex
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4862,7 +5037,7 @@ func (s *PrivateRegistriesService) ListOrganizationPrivateRegistriesIter(ctx con
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4897,7 +5072,7 @@ func (s *ProjectsService) ListOrganizationProjectFieldsIter(ctx context.Context,
 		if opts == nil {
 			opts = &ListProjectsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4928,7 +5103,7 @@ func (s *ProjectsService) ListOrganizationProjectItemsIter(ctx context.Context, 
 		if opts == nil {
 			opts = &ListProjectItemsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4959,7 +5134,7 @@ func (s *ProjectsService) ListOrganizationProjectViewItemsIter(ctx context.Conte
 		if opts == nil {
 			opts = &ListProjectItemsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -4990,7 +5165,7 @@ func (s *ProjectsService) ListOrganizationProjectsIter(ctx context.Context, org 
 		if opts == nil {
 			opts = &ListProjectsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5021,7 +5196,7 @@ func (s *ProjectsService) ListUserProjectFieldsIter(ctx context.Context, user st
 		if opts == nil {
 			opts = &ListProjectsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5052,7 +5227,7 @@ func (s *ProjectsService) ListUserProjectItemsIter(ctx context.Context, username
 		if opts == nil {
 			opts = &ListProjectItemsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5083,7 +5258,7 @@ func (s *ProjectsService) ListUserProjectViewItemsIter(ctx context.Context, user
 		if opts == nil {
 			opts = &ListProjectItemsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5114,7 +5289,7 @@ func (s *ProjectsService) ListUserProjectsIter(ctx context.Context, username str
 		if opts == nil {
 			opts = &ListProjectsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5145,7 +5320,7 @@ func (s *PullRequestsService) ListIter(ctx context.Context, owner string, repo s
 		if opts == nil {
 			opts = &PullRequestListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5176,7 +5351,7 @@ func (s *PullRequestsService) ListCommentsIter(ctx context.Context, owner string
 		if opts == nil {
 			opts = &PullRequestListCommentsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5207,7 +5382,7 @@ func (s *PullRequestsService) ListCommitsIter(ctx context.Context, owner string,
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5238,7 +5413,7 @@ func (s *PullRequestsService) ListFilesIter(ctx context.Context, owner string, r
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5269,7 +5444,7 @@ func (s *PullRequestsService) ListPullRequestsWithCommitIter(ctx context.Context
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5300,7 +5475,7 @@ func (s *PullRequestsService) ListReviewCommentsIter(ctx context.Context, owner 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5331,7 +5506,7 @@ func (s *PullRequestsService) ListReviewsIter(ctx context.Context, owner string,
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5362,7 +5537,7 @@ func (s *PullRequestsService) ListStacksIter(ctx context.Context, owner string, 
 		if opts == nil {
 			opts = &PullRequestListStacksOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5393,7 +5568,7 @@ func (s *ReactionsService) ListCommentReactionsIter(ctx context.Context, owner s
 		if opts == nil {
 			opts = &ListReactionOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5424,7 +5599,7 @@ func (s *ReactionsService) ListIssueCommentReactionsIter(ctx context.Context, ow
 		if opts == nil {
 			opts = &ListReactionOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5455,7 +5630,7 @@ func (s *ReactionsService) ListIssueReactionsIter(ctx context.Context, owner str
 		if opts == nil {
 			opts = &ListReactionOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5486,7 +5661,7 @@ func (s *ReactionsService) ListPullRequestCommentReactionsIter(ctx context.Conte
 		if opts == nil {
 			opts = &ListReactionOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5517,7 +5692,7 @@ func (s *ReactionsService) ListReleaseReactionsIter(ctx context.Context, owner s
 		if opts == nil {
 			opts = &ListReactionOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5548,7 +5723,7 @@ func (s *ReactionsService) ListTeamDiscussionCommentReactionsIter(ctx context.Co
 		if opts == nil {
 			opts = &ListReactionOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5579,7 +5754,7 @@ func (s *ReactionsService) ListTeamDiscussionReactionsIter(ctx context.Context, 
 		if opts == nil {
 			opts = &ListReactionOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5610,7 +5785,7 @@ func (s *RepositoriesService) ListCommitComparisonFilesIter(ctx context.Context,
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5645,7 +5820,7 @@ func (s *RepositoriesService) ListCombinedStatusIter(ctx context.Context, owner 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5680,7 +5855,7 @@ func (s *RepositoriesService) ListCommitFilesIter(ctx context.Context, owner str
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5715,7 +5890,7 @@ func (s *RepositoriesService) ListIter(ctx context.Context, user string, opts *R
 		if opts == nil {
 			opts = &RepositoryListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5746,7 +5921,7 @@ func (s *RepositoriesService) ListAllTopicsIter(ctx context.Context, owner strin
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5777,7 +5952,7 @@ func (s *RepositoriesService) ListAttestationsIter(ctx context.Context, owner st
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5812,7 +5987,7 @@ func (s *RepositoriesService) ListBranchesIter(ctx context.Context, owner string
 		if opts == nil {
 			opts = &BranchListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5843,7 +6018,7 @@ func (s *RepositoriesService) ListByAuthenticatedUserIter(ctx context.Context, o
 		if opts == nil {
 			opts = &RepositoryListByAuthenticatedUserOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5874,7 +6049,7 @@ func (s *RepositoriesService) ListByOrgIter(ctx context.Context, org string, opt
 		if opts == nil {
 			opts = &RepositoryListByOrgOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5905,7 +6080,7 @@ func (s *RepositoriesService) ListByUserIter(ctx context.Context, user string, o
 		if opts == nil {
 			opts = &RepositoryListByUserOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5936,7 +6111,7 @@ func (s *RepositoriesService) ListCollaboratorsIter(ctx context.Context, owner s
 		if opts == nil {
 			opts = &ListCollaboratorsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5967,7 +6142,7 @@ func (s *RepositoriesService) ListCommentsIter(ctx context.Context, owner string
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -5998,7 +6173,7 @@ func (s *RepositoriesService) ListCommitCommentsIter(ctx context.Context, owner 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6029,7 +6204,7 @@ func (s *RepositoriesService) ListCommitsIter(ctx context.Context, owner string,
 		if opts == nil {
 			opts = &CommitsListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6060,7 +6235,7 @@ func (s *RepositoriesService) ListContributorsIter(ctx context.Context, owner st
 		if opts == nil {
 			opts = &ListContributorsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6091,7 +6266,7 @@ func (s *RepositoriesService) ListCustomDeploymentRuleIntegrationsIter(ctx conte
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6126,7 +6301,7 @@ func (s *RepositoriesService) ListDeploymentBranchPoliciesIter(ctx context.Conte
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6161,7 +6336,7 @@ func (s *RepositoriesService) ListDeploymentStatusesIter(ctx context.Context, ow
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6192,7 +6367,7 @@ func (s *RepositoriesService) ListDeploymentsIter(ctx context.Context, owner str
 		if opts == nil {
 			opts = &DeploymentsListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6223,7 +6398,7 @@ func (s *RepositoriesService) ListEnvironmentsIter(ctx context.Context, owner st
 		if opts == nil {
 			opts = &EnvironmentListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6258,7 +6433,7 @@ func (s *RepositoriesService) ListForksIter(ctx context.Context, owner string, r
 		if opts == nil {
 			opts = &RepositoryListForksOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6289,7 +6464,7 @@ func (s *RepositoriesService) ListHookDeliveriesIter(ctx context.Context, owner 
 		if opts == nil {
 			opts = &ListCursorOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6320,7 +6495,7 @@ func (s *RepositoriesService) ListHooksIter(ctx context.Context, owner string, r
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6351,7 +6526,7 @@ func (s *RepositoriesService) ListInvitationsIter(ctx context.Context, owner str
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6382,7 +6557,7 @@ func (s *RepositoriesService) ListKeysIter(ctx context.Context, owner string, re
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6413,7 +6588,7 @@ func (s *RepositoriesService) ListPagesBuildsIter(ctx context.Context, owner str
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6444,7 +6619,7 @@ func (s *RepositoriesService) ListPreReceiveHooksIter(ctx context.Context, owner
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6475,7 +6650,7 @@ func (s *RepositoriesService) ListReleaseAssetsIter(ctx context.Context, owner s
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6506,7 +6681,7 @@ func (s *RepositoriesService) ListReleasesIter(ctx context.Context, owner string
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6537,7 +6712,7 @@ func (s *RepositoriesService) ListRepositoryActivitiesIter(ctx context.Context, 
 		if opts == nil {
 			opts = &ListRepositoryActivityOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6568,7 +6743,7 @@ func (s *RepositoriesService) ListStatusesIter(ctx context.Context, owner string
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6599,7 +6774,7 @@ func (s *RepositoriesService) ListTagsIter(ctx context.Context, owner string, re
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6630,7 +6805,7 @@ func (s *RepositoriesService) ListTeamsIter(ctx context.Context, owner string, r
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6661,7 +6836,7 @@ func (s *SecretScanningService) ListAlertsForEnterpriseIter(ctx context.Context,
 		if opts == nil {
 			opts = &SecretScanningAlertListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6693,7 +6868,7 @@ func (s *SecretScanningService) ListAlertsForOrgIter(ctx context.Context, org st
 		if opts == nil {
 			opts = &SecretScanningAlertListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6725,7 +6900,7 @@ func (s *SecretScanningService) ListAlertsForRepoIter(ctx context.Context, owner
 		if opts == nil {
 			opts = &SecretScanningAlertListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6757,7 +6932,7 @@ func (s *SecretScanningService) ListCustomPatternsForEnterpriseIter(ctx context.
 		if opts == nil {
 			opts = &SecretScanningCustomPatternListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6788,7 +6963,7 @@ func (s *SecretScanningService) ListCustomPatternsForOrgIter(ctx context.Context
 		if opts == nil {
 			opts = &SecretScanningCustomPatternListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6819,7 +6994,7 @@ func (s *SecretScanningService) ListCustomPatternsForRepoIter(ctx context.Contex
 		if opts == nil {
 			opts = &SecretScanningCustomPatternListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6850,7 +7025,7 @@ func (s *SecretScanningService) ListLocationsForAlertIter(ctx context.Context, o
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6881,7 +7056,7 @@ func (s *SecurityAdvisoriesService) ListGlobalSecurityAdvisoriesIter(ctx context
 		if opts == nil {
 			opts = &ListGlobalSecurityAdvisoriesOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6912,7 +7087,7 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesIter(ctx con
 		if opts == nil {
 			opts = &ListRepositorySecurityAdvisoriesOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6943,7 +7118,7 @@ func (s *SecurityAdvisoriesService) ListRepositorySecurityAdvisoriesForOrgIter(c
 		if opts == nil {
 			opts = &ListRepositorySecurityAdvisoriesOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -6974,7 +7149,7 @@ func (s *SubIssueService) ListByIssueIter(ctx context.Context, owner string, rep
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7005,7 +7180,7 @@ func (s *TeamsService) ListChildTeamsByParentIDIter(ctx context.Context, orgID i
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7036,7 +7211,7 @@ func (s *TeamsService) ListChildTeamsByParentSlugIter(ctx context.Context, org s
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7067,7 +7242,7 @@ func (s *TeamsService) ListCommentsByIDIter(ctx context.Context, orgID int64, te
 		if opts == nil {
 			opts = &DiscussionCommentListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7098,7 +7273,7 @@ func (s *TeamsService) ListCommentsBySlugIter(ctx context.Context, org string, s
 		if opts == nil {
 			opts = &DiscussionCommentListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7129,7 +7304,7 @@ func (s *TeamsService) ListDiscussionsByIDIter(ctx context.Context, orgID int64,
 		if opts == nil {
 			opts = &DiscussionListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7160,7 +7335,7 @@ func (s *TeamsService) ListDiscussionsBySlugIter(ctx context.Context, org string
 		if opts == nil {
 			opts = &DiscussionListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7191,7 +7366,7 @@ func (s *TeamsService) ListExternalGroupsIter(ctx context.Context, org string, o
 		if opts == nil {
 			opts = &ListExternalGroupsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7226,7 +7401,7 @@ func (s *TeamsService) ListIDPGroupsInOrganizationIter(ctx context.Context, org 
 		if opts == nil {
 			opts = &ListIDPGroupsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7261,7 +7436,7 @@ func (s *TeamsService) ListPendingTeamInvitationsByIDIter(ctx context.Context, o
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7292,7 +7467,7 @@ func (s *TeamsService) ListPendingTeamInvitationsBySlugIter(ctx context.Context,
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7323,7 +7498,7 @@ func (s *TeamsService) ListTeamMembersByIDIter(ctx context.Context, orgID int64,
 		if opts == nil {
 			opts = &TeamListTeamMembersOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7354,7 +7529,7 @@ func (s *TeamsService) ListTeamMembersBySlugIter(ctx context.Context, org string
 		if opts == nil {
 			opts = &TeamListTeamMembersOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7385,7 +7560,7 @@ func (s *TeamsService) ListTeamReposByIDIter(ctx context.Context, orgID int64, t
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7416,7 +7591,7 @@ func (s *TeamsService) ListTeamReposBySlugIter(ctx context.Context, org string, 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7447,7 +7622,7 @@ func (s *TeamsService) ListTeamsIter(ctx context.Context, org string, opts *List
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7478,7 +7653,7 @@ func (s *TeamsService) ListUserTeamsIter(ctx context.Context, opts *ListOptions)
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7509,7 +7684,7 @@ func (s *UsersService) ListAttestationsIter(ctx context.Context, user string, su
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7544,7 +7719,7 @@ func (s *UsersService) ListBlockedUsersIter(ctx context.Context, opts *ListOptio
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7575,7 +7750,7 @@ func (s *UsersService) ListEmailsIter(ctx context.Context, opts *ListOptions) it
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7606,7 +7781,7 @@ func (s *UsersService) ListFollowersIter(ctx context.Context, user string, opts 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7637,7 +7812,7 @@ func (s *UsersService) ListFollowingIter(ctx context.Context, user string, opts 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7668,7 +7843,7 @@ func (s *UsersService) ListGPGKeysIter(ctx context.Context, user string, opts *L
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7699,7 +7874,7 @@ func (s *UsersService) ListInvitationsIter(ctx context.Context, opts *ListOption
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7730,7 +7905,7 @@ func (s *UsersService) ListKeysIter(ctx context.Context, user string, opts *List
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7761,7 +7936,7 @@ func (s *UsersService) ListPackageVersionsIter(ctx context.Context, packageType 
 		if opts == nil {
 			opts = &ListPackageVersionsOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7792,7 +7967,7 @@ func (s *UsersService) ListPackagesIter(ctx context.Context, user string, opts *
 		if opts == nil {
 			opts = &PackageListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7823,7 +7998,7 @@ func (s *UsersService) ListSSHSigningKeysIter(ctx context.Context, user string, 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7854,7 +8029,7 @@ func (s *UsersService) ListSocialAccountsIter(ctx context.Context, opts *ListOpt
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {
@@ -7885,7 +8060,7 @@ func (s *UsersService) ListUserSocialAccountsIter(ctx context.Context, username 
 		if opts == nil {
 			opts = &ListOptions{}
 		} else {
-			opts = Ptr(*opts)
+			opts = new(*opts)
 		}
 
 		for {

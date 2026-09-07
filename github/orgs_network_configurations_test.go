@@ -65,12 +65,12 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 		t.Errorf("Organizations.ListNetworkConfigurations returned error %v", err)
 	}
 	want := &NetworkConfigurations{
-		TotalCount: Ptr(int64(3)),
+		TotalCount: new(int64(3)),
 		NetworkConfigurations: []*NetworkConfiguration{
 			{
-				ID:             Ptr("123456789ABCDEF"),
-				Name:           Ptr("Network Configuration One"),
-				ComputeService: Ptr(ComputeService("actions")),
+				ID:             new("123456789ABCDEF"),
+				Name:           new("Network Configuration One"),
+				ComputeService: new(ComputeService("actions")),
 				NetworkSettingsIDs: []string{
 					"23456789ABDCEF1",
 					"3456789ABDCEF12",
@@ -78,9 +78,9 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 				CreatedOn: &referenceTimestamp,
 			},
 			{
-				ID:             Ptr("456789ABDCEF123"),
-				Name:           Ptr("Network Configuration Two"),
-				ComputeService: Ptr(ComputeService("none")),
+				ID:             new("456789ABDCEF123"),
+				Name:           new("Network Configuration Two"),
+				ComputeService: new(ComputeService("none")),
 				NetworkSettingsIDs: []string{
 					"56789ABDCEF1234",
 					"6789ABDCEF12345",
@@ -88,9 +88,9 @@ func TestOrganizationsService_ListOrgsNetworkConfigurations(t *testing.T) {
 				CreatedOn: &referenceTimestamp,
 			},
 			{
-				ID:             Ptr("789ABDCEF123456"),
-				Name:           Ptr("Network Configuration Three"),
-				ComputeService: Ptr(ComputeService("codespaces")),
+				ID:             new("789ABDCEF123456"),
+				Name:           new("Network Configuration Three"),
+				ComputeService: new(ComputeService("codespaces")),
 				NetworkSettingsIDs: []string{
 					"56789ABDCEF1234",
 					"6789ABDCEF12345",
@@ -138,8 +138,8 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 	ctx := t.Context()
 
 	req := NetworkConfigurationRequest{
-		Name:           Ptr("network-configuration-two"),
-		ComputeService: Ptr(ComputeService("none")),
+		Name:           new("network-configuration-two"),
+		ComputeService: new(ComputeService("none")),
 		NetworkSettingsIDs: []string{
 			"56789ABDCEF1234",
 		},
@@ -151,9 +151,9 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 	}
 
 	want := &NetworkConfiguration{
-		ID:             Ptr("456789ABDCEF123"),
-		Name:           Ptr("network-configuration-two"),
-		ComputeService: Ptr(ComputeService("none")),
+		ID:             new("456789ABDCEF123"),
+		Name:           new("network-configuration-two"),
+		ComputeService: new(ComputeService("none")),
 		NetworkSettingsIDs: []string{
 			"56789ABDCEF1234",
 		},
@@ -172,8 +172,8 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 		{
 			name: "invalid network configuration name length",
 			request: NetworkConfigurationRequest{
-				Name:           Ptr(""),
-				ComputeService: Ptr(ComputeService("none")),
+				Name:           new(""),
+				ComputeService: new(ComputeService("none")),
 				NetworkSettingsIDs: []string{
 					"56789ABDCEF1234",
 				},
@@ -184,7 +184,7 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 			name: "invalid network configuration name",
 			// may only contain upper and lowercase letters a-z, numbers 0-9, '.', '-', and '_'.
 			request: NetworkConfigurationRequest{
-				Name: Ptr("network configuration two"),
+				Name: new("network configuration two"),
 				NetworkSettingsIDs: []string{
 					"56789ABDCEF1234",
 				},
@@ -194,8 +194,8 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 		{
 			name: "invalid network settings ids",
 			request: NetworkConfigurationRequest{
-				Name:           Ptr("network-configuration-two"),
-				ComputeService: Ptr(ComputeService("none")),
+				Name:           new("network-configuration-two"),
+				ComputeService: new(ComputeService("none")),
 				NetworkSettingsIDs: []string{
 					"56789ABDCEF1234",
 					"3456789ABDCEF12",
@@ -206,8 +206,8 @@ func TestOrganizationsService_CreateOrgsNetworkConfiguration(t *testing.T) {
 		{
 			name: "invalid compute service",
 			request: NetworkConfigurationRequest{
-				Name:           Ptr("network-configuration-two"),
-				ComputeService: Ptr(ComputeService("codespaces")),
+				Name:           new("network-configuration-two"),
+				ComputeService: new(ComputeService("codespaces")),
 				NetworkSettingsIDs: []string{
 					"56789ABDCEF1234",
 				},
@@ -263,9 +263,9 @@ func TestOrganizationsService_GetOrgsNetworkConfiguration(t *testing.T) {
 		t.Errorf("Organizations.GetNetworkConfiguration returned error: %v", err)
 	}
 	want := &NetworkConfiguration{
-		ID:             Ptr("789ABDCEF123456"),
-		Name:           Ptr("Network Configuration Three"),
-		ComputeService: Ptr(ComputeService("codespaces")),
+		ID:             new("789ABDCEF123456"),
+		Name:           new("Network Configuration Three"),
+		ComputeService: new(ComputeService("codespaces")),
 		NetworkSettingsIDs: []string{
 			"56789ABDCEF1234",
 			"6789ABDCEF12345",
@@ -312,8 +312,8 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 	ctx := t.Context()
 
 	req := NetworkConfigurationRequest{
-		Name:           Ptr("network-configuration-three-update"),
-		ComputeService: Ptr(ComputeService("actions")),
+		Name:           new("network-configuration-three-update"),
+		ComputeService: new(ComputeService("actions")),
 		NetworkSettingsIDs: []string{
 			"56789ABDCEF1234",
 		},
@@ -324,9 +324,9 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 	}
 
 	want := &NetworkConfiguration{
-		ID:             Ptr("789ABDCEF123456"),
-		Name:           Ptr("Network Configuration Three Update"),
-		ComputeService: Ptr(ComputeService("actions")),
+		ID:             new("789ABDCEF123456"),
+		Name:           new("Network Configuration Three Update"),
+		ComputeService: new(ComputeService("actions")),
 		NetworkSettingsIDs: []string{
 			"56789ABDCEF1234",
 			"6789ABDCEF12345",
@@ -345,8 +345,8 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 		{
 			name: "invalid network configuration name length",
 			request: NetworkConfigurationRequest{
-				Name:           Ptr(""),
-				ComputeService: Ptr(ComputeService("none")),
+				Name:           new(""),
+				ComputeService: new(ComputeService("none")),
 				NetworkSettingsIDs: []string{
 					"56789ABDCEF1234",
 				},
@@ -357,7 +357,7 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 			name: "invalid network configuration name",
 			// may only contain upper and lowercase letters a-z, numbers 0-9, '.', '-', and '_'.
 			request: NetworkConfigurationRequest{
-				Name: Ptr("network configuration three update"),
+				Name: new("network configuration three update"),
 				NetworkSettingsIDs: []string{
 					"56789ABDCEF1234",
 				},
@@ -367,8 +367,8 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 		{
 			name: "invalid network settings ids",
 			request: NetworkConfigurationRequest{
-				Name:           Ptr("network-configuration-three-update"),
-				ComputeService: Ptr(ComputeService("none")),
+				Name:           new("network-configuration-three-update"),
+				ComputeService: new(ComputeService("none")),
 				NetworkSettingsIDs: []string{
 					"56789ABDCEF1234",
 					"3456789ABDCEF12",
@@ -379,8 +379,8 @@ func TestOrganizationsService_UpdateOrgsNetworkConfiguration(t *testing.T) {
 		{
 			name: "invalid compute service",
 			request: NetworkConfigurationRequest{
-				Name:           Ptr("network-configuration-three-update"),
-				ComputeService: Ptr(ComputeService("codespaces")),
+				Name:           new("network-configuration-three-update"),
+				ComputeService: new(ComputeService("codespaces")),
 				NetworkSettingsIDs: []string{
 					"56789ABDCEF1234",
 				},
@@ -460,11 +460,11 @@ func TestOrganizationsService_GetOrgsNetworkConfigurationResource(t *testing.T) 
 	}
 
 	want := &NetworkSettingsResource{
-		ID:                     Ptr("220F78DACB92BBFBC5E6F22DE1CCF52309D"),
-		Name:                   Ptr("my_network_settings"),
-		NetworkConfigurationID: Ptr("934E208B3EE0BD60CF5F752C426BFB53562"),
-		SubnetID:               Ptr("/subscriptions/14839728-3ad9-43ab-bd2b-fa6ad0f75e2a/resourceGroups/my-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/my-subnet"),
-		Region:                 Ptr("germanywestcentral"),
+		ID:                     new("220F78DACB92BBFBC5E6F22DE1CCF52309D"),
+		Name:                   new("my_network_settings"),
+		NetworkConfigurationID: new("934E208B3EE0BD60CF5F752C426BFB53562"),
+		SubnetID:               new("/subscriptions/14839728-3ad9-43ab-bd2b-fa6ad0f75e2a/resourceGroups/my-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/my-subnet"),
+		Region:                 new("germanywestcentral"),
 	}
 
 	if !cmp.Equal(want, resource) {

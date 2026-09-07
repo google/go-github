@@ -89,6 +89,34 @@ type LastLicenseSyncProperties struct {
 	Error  string     `json:"error"`
 }
 
+// VisualStudioSubscriptionAssignment represents a user's Visual Studio subscription assignment.
+type VisualStudioSubscriptionAssignment struct {
+	VisualStudioSubscriptionEmail *string `json:"visual_studio_subscription_email,omitempty"`
+	SubscriptionID                *string `json:"subscription_id,omitempty"`
+	Username                      *string `json:"username,omitempty"`
+	ManualMatch                   *bool   `json:"manual_match,omitempty"`
+}
+
+// VisualStudioSubscriptions represents a list of Visual Studio subscriptions for an enterprise.
+type VisualStudioSubscriptions struct {
+	TotalCount                *int                                  `json:"total_count,omitempty"`
+	VisualStudioSubscriptions []*VisualStudioSubscriptionAssignment `json:"visual_studio_subscriptions,omitempty"`
+}
+
+// VisualStudioSubscriptionAssignmentRequest represents the request body to add or update a subscription assignment.
+type VisualStudioSubscriptionAssignmentRequest struct {
+	UserIdentifier *string `json:"user_identifier,omitempty"`
+}
+
+// ListVisualStudioSubscriptionsOptions specifies the optional parameters to
+// EnterpriseService.ListVisualStudioSubscriptions.
+type ListVisualStudioSubscriptionsOptions struct {
+	ListOptions
+
+	// IsUnmatchedOnly filters results to return only unmatched subscriptions.
+	IsUnmatchedOnly bool `url:"is_unmatched_only,omitempty"`
+}
+
 // ListConsumedLicenses collect information about the number of consumed licenses and a collection with all the users with consumed enterprise licenses.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing?apiVersion=2022-11-28#list-enterprise-consumed-licenses
@@ -135,4 +163,68 @@ func (s *EnterpriseService) GetLicenseSyncStatus(ctx context.Context, enterprise
 	}
 
 	return syncStatus, resp, nil
+}
+
+// ListVisualStudioSubscriptions gets a list of Visual Studio subscriptions for an enterprise.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing?apiVersion=2022-11-28#get-a-list-of-visual-studio-subscriptions-for-the-enterprise
+//
+//meta:operation GET /enterprises/{enterprise}/visual-studio-subscriptions
+func (s *EnterpriseService) ListVisualStudioSubscriptions(ctx context.Context, enterprise string, opts *ListVisualStudioSubscriptionsOptions) (*VisualStudioSubscriptions, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/visual-studio-subscriptions", enterprise)
+	u, err := addOptions(u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var subscriptions *VisualStudioSubscriptions
+	resp, err := s.client.Do(req, &subscriptions)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return subscriptions, resp, nil
+}
+
+// AddOrUpdateVisualStudioSubscriptionAssignment adds or updates a manual match between a user and a Visual Studio subscription.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing?apiVersion=2022-11-28#add-or-update-a-visual-studio-subscription-user-match
+//
+//meta:operation PUT /enterprises/{enterprise}/visual-studio-subscriptions/{visual_studio_subscription_id}
+func (s *EnterpriseService) AddOrUpdateVisualStudioSubscriptionAssignment(ctx context.Context, enterprise, subscriptionID string, body VisualStudioSubscriptionAssignmentRequest) (*VisualStudioSubscriptionAssignment, *Response, error) {
+	u := fmt.Sprintf("enterprises/%v/visual-studio-subscriptions/%v", enterprise, subscriptionID)
+
+	req, err := s.client.NewRequest(ctx, "PUT", u, body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var assignment *VisualStudioSubscriptionAssignment
+	resp, err := s.client.Do(req, &assignment)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return assignment, resp, nil
+}
+
+// DeleteVisualStudioSubscriptionAssignment deletes a manual match between a user and a Visual Studio subscription.
+//
+// GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/enterprise-admin/licensing?apiVersion=2022-11-28#delete-a-visual-studio-subscription-user-match
+//
+//meta:operation DELETE /enterprises/{enterprise}/visual-studio-subscriptions/{visual_studio_subscription_id}
+func (s *EnterpriseService) DeleteVisualStudioSubscriptionAssignment(ctx context.Context, enterprise, subscriptionID string) (*Response, error) {
+	u := fmt.Sprintf("enterprises/%v/visual-studio-subscriptions/%v", enterprise, subscriptionID)
+
+	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
 }

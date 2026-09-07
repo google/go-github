@@ -20,12 +20,12 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 	input := CreateArtifactDeploymentRequest{
 		Name:               "test-n",
 		Digest:             "sha256:123",
-		Version:            Ptr("v1.0.0"),
+		Version:            new("v1.0.0"),
 		Status:             "deployed",
 		LogicalEnvironment: "prod",
 		DeploymentName:     "dep-1",
 		RuntimeRisks:       []DeploymentRuntimeRisk{DeploymentRuntimeRiskCriticalResource, DeploymentRuntimeRiskInternetExposed},
-		GithubRepository:   Ptr("octo-org/octo-repo"),
+		GithubRepository:   new("octo-org/octo-repo"),
 		Tags: map[string]string{
 			"data-access": "sensitive",
 		},
@@ -44,8 +44,8 @@ func TestOrganizationsService_CreateArtifactDeploymentRecord(t *testing.T) {
 	}
 
 	want := &ArtifactDeploymentResponse{
-		TotalCount:        Ptr(1),
-		DeploymentRecords: []*ArtifactDeploymentRecord{{ID: Ptr(int64(1))}},
+		TotalCount:        new(1),
+		DeploymentRecords: []*ArtifactDeploymentRecord{{ID: new(int64(1))}},
 	}
 
 	if !cmp.Equal(got, want) {
@@ -73,13 +73,13 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 
 	input := ClusterDeploymentRecordsRequest{
 		LogicalEnvironment:  "prod",
-		PhysicalEnvironment: Ptr("pacific-east"),
+		PhysicalEnvironment: new("pacific-east"),
 		Deployments: []*ClusterArtifactDeployment{
 			{
 				Name:           "awesome-image",
 				Digest:         "sha256:abc",
 				DeploymentName: "dep-1",
-				Version:        Ptr("v2.0"),
+				Version:        new("v2.0"),
 				Status:         "deployed",
 			},
 		},
@@ -98,8 +98,8 @@ func TestOrganizationsService_SetClusterDeploymentRecords(t *testing.T) {
 	}
 
 	want := &ArtifactDeploymentResponse{
-		TotalCount:        Ptr(1),
-		DeploymentRecords: []*ArtifactDeploymentRecord{{ID: Ptr(int64(2))}},
+		TotalCount:        new(1),
+		DeploymentRecords: []*ArtifactDeploymentRecord{{ID: new(int64(2))}},
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("SetClusterDeploymentRecords returned %+v, want %+v", got, want)
@@ -127,11 +127,11 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 	input := CreateArtifactStorageRequest{
 		Name:             "libfoo",
 		Digest:           "sha256:123",
-		Version:          Ptr("v1.2.3"),
-		Path:             Ptr("target/libs"),
-		GithubRepository: Ptr("org/repo"),
+		Version:          new("v1.2.3"),
+		Path:             new("target/libs"),
+		GithubRepository: new("org/repo"),
 		RegistryURL:      "https://reg.example.com",
-		Status:           Ptr("active"),
+		Status:           new("active"),
 	}
 
 	mux.HandleFunc("/orgs/o/artifacts/metadata/storage-record", func(w http.ResponseWriter, r *http.Request) {
@@ -147,8 +147,8 @@ func TestOrganizationsService_CreateArtifactStorageRecord(t *testing.T) {
 	}
 
 	want := &ArtifactStorageResponse{
-		TotalCount:     Ptr(1),
-		StorageRecords: []*ArtifactStorageRecord{{Name: Ptr("libfoo")}},
+		TotalCount:     new(1),
+		StorageRecords: []*ArtifactStorageRecord{{Name: new("libfoo")}},
 	}
 
 	if !cmp.Equal(got, want) {
@@ -187,9 +187,9 @@ func TestOrganizationsService_ListArtifactDeploymentRecords(t *testing.T) {
 	}
 
 	want := &ArtifactDeploymentResponse{
-		TotalCount: Ptr(1),
+		TotalCount: new(1),
 		DeploymentRecords: []*ArtifactDeploymentRecord{
-			{ID: Ptr(int64(1)), RuntimeRisks: []DeploymentRuntimeRisk{DeploymentRuntimeRiskSensitiveData}},
+			{ID: new(int64(1)), RuntimeRisks: []DeploymentRuntimeRisk{DeploymentRuntimeRiskSensitiveData}},
 		},
 	}
 	if !cmp.Equal(got, want) {
@@ -228,8 +228,8 @@ func TestOrganizationsService_ListArtifactStorageRecords(t *testing.T) {
 	}
 
 	want := &ArtifactStorageResponse{
-		TotalCount:     Ptr(1),
-		StorageRecords: []*ArtifactStorageRecord{{Name: Ptr("libfoo")}},
+		TotalCount:     new(1),
+		StorageRecords: []*ArtifactStorageRecord{{Name: new("libfoo")}},
 	}
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListArtifactStorageRecords returned %+v, want %+v", got, want)

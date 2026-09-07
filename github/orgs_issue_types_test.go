@@ -25,6 +25,7 @@ func TestOrganizationsService_ListIssueTypes(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZo",
 				"name": "Task",
 				"description": "A specific piece of work",
+				"is_enabled": true,
 				"created_at": `+refTimeStr(1136178000)+`,
 				"updated_at": `+refTimeStr(1136178001)+`
 			},
@@ -33,6 +34,7 @@ func TestOrganizationsService_ListIssueTypes(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZs",
 				"name": "Bug",
 				"description": "An unexpected problem or behavior",
+				"is_enabled": false,
 				"created_at": `+refTimeStr(1136178002)+`,
 				"updated_at": `+refTimeStr(1136178003)+`
 			}
@@ -47,18 +49,20 @@ func TestOrganizationsService_ListIssueTypes(t *testing.T) {
 
 	want := []*IssueType{
 		{
-			ID:          Ptr(int64(410)),
-			NodeID:      Ptr("IT_kwDNAd3NAZo"),
-			Name:        Ptr("Task"),
-			Description: Ptr("A specific piece of work"),
+			ID:          new(int64(410)),
+			NodeID:      new("IT_kwDNAd3NAZo"),
+			Name:        new("Task"),
+			Description: new("A specific piece of work"),
+			IsEnabled:   new(true),
 			CreatedAt:   refTimestamp(1136178000),
 			UpdatedAt:   refTimestamp(1136178001),
 		},
 		{
-			ID:          Ptr(int64(411)),
-			NodeID:      Ptr("IT_kwDNAd3NAZs"),
-			Name:        Ptr("Bug"),
-			Description: Ptr("An unexpected problem or behavior"),
+			ID:          new(int64(411)),
+			NodeID:      new("IT_kwDNAd3NAZs"),
+			Name:        new("Bug"),
+			Description: new("An unexpected problem or behavior"),
+			IsEnabled:   new(false),
 			CreatedAt:   refTimestamp(1136178002),
 			UpdatedAt:   refTimestamp(1136178003),
 		},
@@ -88,10 +92,10 @@ func TestOrganizationsService_CreateIssueType(t *testing.T) {
 
 	input := &CreateOrUpdateIssueTypesOptions{
 		Name:        "Epic",
-		Description: Ptr("An issue type for a multi-week tracking of work"),
+		Description: new("An issue type for a multi-week tracking of work"),
 		IsEnabled:   true,
-		Color:       Ptr("green"),
-		IsPrivate:   Ptr(true),
+		Color:       new("green"),
+		IsPrivate:   new(true),
 	}
 
 	mux.HandleFunc("/orgs/o/issue-types", func(w http.ResponseWriter, r *http.Request) {
@@ -102,6 +106,7 @@ func TestOrganizationsService_CreateIssueType(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZo",
 				"name": "Epic",
 				"description": "An issue type for a multi-week tracking of work",
+				"is_enabled": true,
 				"created_at": `+refTimeStr(1136178000)+`,
 				"updated_at": `+refTimeStr(1136178001)+`
 		}`)
@@ -113,10 +118,11 @@ func TestOrganizationsService_CreateIssueType(t *testing.T) {
 		t.Errorf("Organizations.CreateIssueType returned error: %v", err)
 	}
 	want := &IssueType{
-		ID:          Ptr(int64(410)),
-		NodeID:      Ptr("IT_kwDNAd3NAZo"),
-		Name:        Ptr("Epic"),
-		Description: Ptr("An issue type for a multi-week tracking of work"),
+		ID:          new(int64(410)),
+		NodeID:      new("IT_kwDNAd3NAZo"),
+		Name:        new("Epic"),
+		Description: new("An issue type for a multi-week tracking of work"),
+		IsEnabled:   new(true),
 		CreatedAt:   refTimestamp(1136178000),
 		UpdatedAt:   refTimestamp(1136178001),
 	}
@@ -146,10 +152,10 @@ func TestOrganizationsService_UpdateIssueType(t *testing.T) {
 
 	input := &CreateOrUpdateIssueTypesOptions{
 		Name:        "Epic",
-		Description: Ptr("An issue type for a multi-week tracking of work"),
+		Description: new("An issue type for a multi-week tracking of work"),
 		IsEnabled:   true,
-		Color:       Ptr("green"),
-		IsPrivate:   Ptr(true),
+		Color:       new("green"),
+		IsPrivate:   new(true),
 	}
 
 	mux.HandleFunc("/orgs/o/issue-types/410", func(w http.ResponseWriter, r *http.Request) {
@@ -160,6 +166,7 @@ func TestOrganizationsService_UpdateIssueType(t *testing.T) {
 				"node_id": "IT_kwDNAd3NAZo",
 				"name": "Epic",
 				"description": "An issue type for a multi-week tracking of work",
+				"is_enabled": true,
 				"created_at": `+refTimeStr(1136178000)+`,
 				"updated_at": `+refTimeStr(1136178001)+`
 		}`)
@@ -171,10 +178,11 @@ func TestOrganizationsService_UpdateIssueType(t *testing.T) {
 		t.Errorf("Organizations.UpdateIssueType returned error: %v", err)
 	}
 	want := &IssueType{
-		ID:          Ptr(int64(410)),
-		NodeID:      Ptr("IT_kwDNAd3NAZo"),
-		Name:        Ptr("Epic"),
-		Description: Ptr("An issue type for a multi-week tracking of work"),
+		ID:          new(int64(410)),
+		NodeID:      new("IT_kwDNAd3NAZo"),
+		Name:        new("Epic"),
+		Description: new("An issue type for a multi-week tracking of work"),
+		IsEnabled:   new(true),
 		CreatedAt:   refTimestamp(1136178000),
 		UpdatedAt:   refTimestamp(1136178001),
 	}

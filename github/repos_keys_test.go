@@ -30,7 +30,7 @@ func TestRepositoriesService_ListKeys(t *testing.T) {
 		t.Errorf("Repositories.ListKeys returned error: %v", err)
 	}
 
-	want := []*Key{{ID: Ptr(int64(1))}}
+	want := []*Key{{ID: new(int64(1))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Repositories.ListKeys returned %+v, want %+v", keys, want)
 	}
@@ -74,7 +74,7 @@ func TestRepositoriesService_GetKey(t *testing.T) {
 		t.Errorf("Repositories.GetKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Ptr(int64(1))}
+	want := &Key{ID: new(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Repositories.GetKey returned %+v, want %+v", key, want)
 	}
@@ -107,7 +107,7 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &Key{Key: Ptr("k"), Title: Ptr("t")}
+	input := CreateDeployKeyRequest{Key: "k", Title: new("t")}
 
 	mux.HandleFunc("/repos/o/r/keys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -121,7 +121,7 @@ func TestRepositoriesService_CreateKey(t *testing.T) {
 		t.Errorf("Repositories.CreateKey returned error: %v", err)
 	}
 
-	want := &Key{ID: Ptr(int64(1))}
+	want := &Key{ID: new(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Repositories.CreateKey returned %+v, want %+v", key, want)
 	}
@@ -146,7 +146,7 @@ func TestRepositoriesService_CreateKey_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Repositories.CreateKey(ctx, "%", "%", nil)
+	_, _, err := client.Repositories.CreateKey(ctx, "%", "%", CreateDeployKeyRequest{})
 	testURLParseError(t, err)
 }
 

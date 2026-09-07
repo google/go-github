@@ -28,7 +28,7 @@ func TestUsersService_Get_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
 
-	want := &User{ID: Ptr(int64(1))}
+	want := &User{ID: new(int64(1))}
 	if !cmp.Equal(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
@@ -63,7 +63,7 @@ func TestUsersService_Get_specifiedUser(t *testing.T) {
 		t.Errorf("Users.Get returned error: %v", err)
 	}
 
-	want := &User{ID: Ptr(int64(1))}
+	want := &User{ID: new(int64(1))}
 	if !cmp.Equal(user, want) {
 		t.Errorf("Users.Get returned %+v, want %+v", user, want)
 	}
@@ -93,7 +93,7 @@ func TestUsersService_GetByID(t *testing.T) {
 		t.Fatalf("Users.GetByID returned error: %v", err)
 	}
 
-	want := &User{ID: Ptr(int64(1))}
+	want := &User{ID: new(int64(1))}
 	if !cmp.Equal(user, want) {
 		t.Errorf("Users.GetByID returned %+v, want %+v", user, want)
 	}
@@ -117,7 +117,7 @@ func TestUsersService_Update(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := UserUpdateRequest{Name: Ptr("n")}
+	input := UserUpdateRequest{Name: new("n")}
 
 	mux.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -131,7 +131,7 @@ func TestUsersService_Update(t *testing.T) {
 		t.Errorf("Users.Update returned error: %v", err)
 	}
 
-	want := &User{ID: Ptr(int64(1))}
+	want := &User{ID: new(int64(1))}
 	if !cmp.Equal(user, want) {
 		t.Errorf("Users.Update returned %+v, want %+v", user, want)
 	}
@@ -163,7 +163,7 @@ func TestUsersService_GetHovercard(t *testing.T) {
 		t.Errorf("Users.GetHovercard returned error: %v", err)
 	}
 
-	want := &Hovercard{Contexts: []*UserContext{{Message: Ptr("Owns this repository"), Octicon: Ptr("repo")}}}
+	want := &Hovercard{Contexts: []*UserContext{{Message: new("Owns this repository"), Octicon: new("repo")}}}
 	if !cmp.Equal(hovercard, want) {
 		t.Errorf("Users.GetHovercard returned %+v, want %+v", hovercard, want)
 	}
@@ -200,7 +200,7 @@ func TestUsersService_ListAll(t *testing.T) {
 		t.Errorf("Users.ListAll returned error: %v", err)
 	}
 
-	want := []*User{{ID: Ptr(int64(2))}}
+	want := []*User{{ID: new(int64(2))}}
 	if !cmp.Equal(users, want) {
 		t.Errorf("Users.ListAll returned %+v, want %+v", users, want)
 	}
@@ -230,7 +230,7 @@ func TestUsersService_ListInvitations(t *testing.T) {
 		t.Errorf("Users.ListInvitations returned error: %v", err)
 	}
 
-	want := []*RepositoryInvitation{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*RepositoryInvitation{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Users.ListInvitations = %+v, want %+v", got, want)
 	}

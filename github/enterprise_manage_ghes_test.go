@@ -39,13 +39,13 @@ func TestEnterpriseService_CheckSystemRequirements(t *testing.T) {
 	}
 
 	want := &SystemRequirements{
-		Status: Ptr("OK"),
+		Status: new("OK"),
 		Nodes: []*SystemRequirementsNode{{
-			Hostname: Ptr("primary"),
-			Status:   Ptr("OK"),
+			Hostname: new("primary"),
+			Status:   new("OK"),
 			RolesStatus: []*SystemRequirementsNodeRoleStatus{{
-				Status: Ptr("OK"),
-				Role:   Ptr("ConsulServer"),
+				Status: new("OK"),
+				Role:   new("ConsulServer"),
 			}},
 		}},
 	}
@@ -86,10 +86,10 @@ func TestEnterpriseService_ClusterStatus(t *testing.T) {
 	}
 
 	want := &ClusterStatus{
-		Status: Ptr("OK"),
+		Status: new("OK"),
 		Nodes: []*ClusterStatusNode{{
-			Hostname: Ptr("primary"),
-			Status:   Ptr("OK"),
+			Hostname: new("primary"),
+			Status:   new("OK"),
 			Services: []*ClusterStatusNodeServiceItem{},
 		}},
 	}
@@ -128,7 +128,7 @@ func TestEnterpriseService_ReplicationStatus(t *testing.T) {
 	})
 
 	opt := &NodeQueryOptions{
-		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
+		UUID: new("1234-1234"), ClusterRoles: new("primary"),
 	}
 	ctx := t.Context()
 	replicationStatus, _, err := client.Enterprise.ReplicationStatus(ctx, opt)
@@ -137,10 +137,10 @@ func TestEnterpriseService_ReplicationStatus(t *testing.T) {
 	}
 
 	want := &ClusterStatus{
-		Status: Ptr("OK"),
+		Status: new("OK"),
 		Nodes: []*ClusterStatusNode{{
-			Hostname: Ptr("primary"),
-			Status:   Ptr("OK"),
+			Hostname: new("primary"),
+			Status:   new("OK"),
 			Services: []*ClusterStatusNodeServiceItem{},
 		}},
 	}
@@ -180,7 +180,7 @@ func TestEnterpriseService_Versions(t *testing.T) {
 	})
 
 	opt := &NodeQueryOptions{
-		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
+		UUID: new("1234-1234"), ClusterRoles: new("primary"),
 	}
 	ctx := t.Context()
 	releaseVersions, _, err := client.Enterprise.GetNodeReleaseVersions(ctx, opt)
@@ -189,12 +189,12 @@ func TestEnterpriseService_Versions(t *testing.T) {
 	}
 
 	want := []*NodeReleaseVersion{{
-		Hostname: Ptr("primary"),
+		Hostname: new("primary"),
 		Version: &ReleaseVersion{
-			Version:   Ptr("3.9.0"),
-			Platform:  Ptr("azure"),
-			BuildID:   Ptr("fc542058b5"),
-			BuildDate: Ptr("2023-05-02"),
+			Version:   new("3.9.0"),
+			Platform:  new("azure"),
+			BuildID:   new("fc542058b5"),
+			BuildDate: new("2023-05-02"),
 		},
 	}}
 	if !cmp.Equal(releaseVersions, want) {

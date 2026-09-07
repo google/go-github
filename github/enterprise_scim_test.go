@@ -54,10 +54,10 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListProvisionedSCIMGroupsEnterpriseOptions{
-		StartIndex:         Ptr(1),
-		ExcludedAttributes: Ptr("members,meta"),
-		Count:              Ptr(3),
-		Filter:             Ptr(`externalId eq "914a"`),
+		StartIndex:         new(1),
+		ExcludedAttributes: new("members,meta"),
+		Count:              new(3),
+		Filter:             new(`externalId eq "914a"`),
 	}
 	got, _, err := client.Enterprise.ListProvisionedSCIMGroups(ctx, "ee", opts)
 	if err != nil {
@@ -66,24 +66,24 @@ func TestEnterpriseService_ListProvisionedSCIMGroups(t *testing.T) {
 
 	want := &SCIMEnterpriseGroups{
 		Schemas:      []string{SCIMSchemasURINamespacesListResponse},
-		TotalResults: Ptr(1),
-		ItemsPerPage: Ptr(1),
-		StartIndex:   Ptr(1),
+		TotalResults: new(1),
+		ItemsPerPage: new(1),
+		StartIndex:   new(1),
 		Resources: []*SCIMEnterpriseGroupAttributes{{
-			ID: Ptr("914a"),
+			ID: new("914a"),
 			Meta: &SCIMEnterpriseMeta{
 				ResourceType: "Group",
 				Created:      &Timestamp{referenceTime},
 				LastModified: &Timestamp{referenceTime},
-				Location:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Groups/914a"),
+				Location:     new("https://api.github.com/scim/v2/enterprises/ee/Groups/914a"),
 			},
-			DisplayName: Ptr("gn1"),
+			DisplayName: new("gn1"),
 			Schemas:     []string{SCIMSchemasURINamespacesGroups},
-			ExternalID:  Ptr("de88"),
+			ExternalID:  new("de88"),
 			Members: []*SCIMEnterpriseDisplayReference{{
 				Value:   "e7f9",
-				Ref:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Users/e7f9"),
-				Display: Ptr("d1"),
+				Ref:     new("https://api.github.com/scim/v2/enterprises/ee/Users/e7f9"),
+				Display: new("d1"),
 			}},
 		}},
 	}
@@ -157,9 +157,9 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListProvisionedSCIMUsersEnterpriseOptions{
-		StartIndex: Ptr(1),
-		Count:      Ptr(3),
-		Filter:     Ptr(`userName eq "octocat@github.com"`),
+		StartIndex: new(1),
+		Count:      new(3),
+		Filter:     new(`userName eq "octocat@github.com"`),
 	}
 	got, _, err := client.Enterprise.ListProvisionedSCIMUsers(ctx, "ee", opts)
 	if err != nil {
@@ -168,19 +168,19 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 
 	want := &SCIMEnterpriseUsers{
 		Schemas:      []string{SCIMSchemasURINamespacesListResponse},
-		TotalResults: Ptr(1),
-		ItemsPerPage: Ptr(1),
-		StartIndex:   Ptr(1),
+		TotalResults: new(1),
+		ItemsPerPage: new(1),
+		StartIndex:   new(1),
 		Resources: []*SCIMEnterpriseUserAttributes{{
 			Schemas:     []string{SCIMSchemasURINamespacesUser},
-			ID:          Ptr("5fc0"),
+			ID:          new("5fc0"),
 			ExternalID:  "00u1",
 			UserName:    "octocat@github.com",
 			DisplayName: "Mona Octocat",
 			Name: &SCIMEnterpriseUserName{
 				GivenName:  "Mona",
 				FamilyName: "Octocat",
-				Formatted:  Ptr("Mona Octocat"),
+				Formatted:  new("Mona Octocat"),
 			},
 			Emails: []*SCIMEnterpriseUserEmail{{
 				Value:   "octocat@github.com",
@@ -191,7 +191,7 @@ func TestEnterpriseService_ListProvisionedSCIMUsers(t *testing.T) {
 				ResourceType: "User",
 				Created:      &Timestamp{referenceTime},
 				LastModified: &Timestamp{referenceTime},
-				Location:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Users/5fc0"),
+				Location:     new("https://api.github.com/scim/v2/enterprises/ee/Users/5fc0"),
 			},
 		}},
 	}
@@ -221,8 +221,8 @@ func TestEnterpriseService_SetProvisionedSCIMGroup(t *testing.T) {
 
 	input := SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  Ptr("8aa1"),
-		DisplayName: Ptr("dn"),
+		ExternalID:  new("8aa1"),
+		DisplayName: new("dn"),
 	}
 
 	mux.HandleFunc("/scim/v2/enterprises/ee/Groups/abcd", func(w http.ResponseWriter, r *http.Request) {
@@ -245,14 +245,14 @@ func TestEnterpriseService_SetProvisionedSCIMGroup(t *testing.T) {
 	})
 	want := &SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ID:          Ptr("abcd"),
-		ExternalID:  Ptr("8aa1"),
-		DisplayName: Ptr("dn"),
+		ID:          new("abcd"),
+		ExternalID:  new("8aa1"),
+		DisplayName: new("dn"),
 		Meta: &SCIMEnterpriseMeta{
 			ResourceType: "Group",
 			Created:      &Timestamp{referenceTime},
 			LastModified: &Timestamp{referenceTime},
-			Location:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Groups/abcd"),
+			Location:     new("https://api.github.localhost/scim/v2/enterprises/ee/Groups/abcd"),
 		},
 	}
 
@@ -324,7 +324,7 @@ func TestEnterpriseService_SetProvisionedSCIMUser(t *testing.T) {
 	})
 	want := &SCIMEnterpriseUserAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesUser},
-		ID:          Ptr("7fce"),
+		ID:          new("7fce"),
 		ExternalID:  "e123",
 		Active:      true,
 		UserName:    "e123",
@@ -338,7 +338,7 @@ func TestEnterpriseService_SetProvisionedSCIMUser(t *testing.T) {
 			ResourceType: "User",
 			Created:      &Timestamp{referenceTime},
 			LastModified: &Timestamp{referenceTime},
-			Location:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/7fce"),
+			Location:     new("https://api.github.localhost/scim/v2/enterprises/ee/Users/7fce"),
 		},
 	}
 
@@ -374,7 +374,7 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
 		Operations: []*SCIMEnterpriseAttributeOperation{{
 			Op:    "replace",
-			Path:  Ptr("displayName"),
+			Path:  new("displayName"),
 			Value: "Employees",
 		}},
 	}
@@ -404,19 +404,19 @@ func TestEnterpriseService_UpdateSCIMGroupAttribute(t *testing.T) {
 	})
 	want := &SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ID:          Ptr("abcd"),
-		ExternalID:  Ptr("8aa1"),
-		DisplayName: Ptr("Employees"),
+		ID:          new("abcd"),
+		ExternalID:  new("8aa1"),
+		DisplayName: new("Employees"),
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
-			Ref:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
-			Display: Ptr("User 1"),
+			Ref:     new("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
+			Display: new("User 1"),
 		}},
 		Meta: &SCIMEnterpriseMeta{
 			ResourceType: "Group",
 			Created:      &Timestamp{referenceTime},
 			LastModified: &Timestamp{referenceTime},
-			Location:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Groups/abcd"),
+			Location:     new("https://api.github.localhost/scim/v2/enterprises/ee/Groups/abcd"),
 		},
 	}
 
@@ -452,11 +452,11 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 		Schemas: []string{SCIMSchemasURINamespacesPatchOp},
 		Operations: []*SCIMEnterpriseAttributeOperation{{
 			Op:    "replace",
-			Path:  Ptr("emails[type eq 'work'].value"),
+			Path:  new("emails[type eq 'work'].value"),
 			Value: "updatedEmail@example.com",
 		}, {
 			Op:    "replace",
-			Path:  Ptr("name.familyName"),
+			Path:  new("name.familyName"),
 			Value: "updatedFamilyName",
 		}},
 	}
@@ -498,16 +498,16 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 	})
 	want := &SCIMEnterpriseUserAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesUser},
-		ID:          Ptr("7fce"),
+		ID:          new("7fce"),
 		ExternalID:  "e123",
 		Active:      true,
 		UserName:    "e123",
 		DisplayName: "John Doe",
 		Name: &SCIMEnterpriseUserName{
-			Formatted:  Ptr("John Doe X"),
+			Formatted:  new("John Doe X"),
 			FamilyName: "updatedFamilyName",
 			GivenName:  "John",
-			MiddleName: Ptr("X"),
+			MiddleName: new("X"),
 		},
 		Emails: []*SCIMEnterpriseUserEmail{{
 			Value:   "john@example.com",
@@ -516,13 +516,13 @@ func TestEnterpriseService_UpdateSCIMUserAttribute(t *testing.T) {
 		}},
 		Roles: []*SCIMEnterpriseUserRole{{
 			Value:   "User",
-			Primary: Ptr(false),
+			Primary: new(false),
 		}},
 		Meta: &SCIMEnterpriseMeta{
 			ResourceType: "User",
 			Created:      &Timestamp{referenceTime},
 			LastModified: &Timestamp{referenceTime},
-			Location:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/7fce"),
+			Location:     new("https://api.github.localhost/scim/v2/enterprises/ee/Users/7fce"),
 		},
 	}
 
@@ -556,14 +556,14 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 
 	input := SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  Ptr("8aa1"),
-		DisplayName: Ptr("dn"),
+		ExternalID:  new("8aa1"),
+		DisplayName: new("dn"),
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
-			Display: Ptr("d1"),
+			Display: new("d1"),
 		}, {
 			Value:   "0db5",
-			Display: Ptr("d2"),
+			Display: new("d2"),
 		}},
 	}
 
@@ -599,23 +599,23 @@ func TestEnterpriseService_ProvisionSCIMGroup(t *testing.T) {
 	})
 	want := &SCIMEnterpriseGroupAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ID:          Ptr("abcd"),
-		ExternalID:  Ptr("8aa1"),
-		DisplayName: Ptr("dn"),
+		ID:          new("abcd"),
+		ExternalID:  new("8aa1"),
+		DisplayName: new("dn"),
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "879d",
-			Ref:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
-			Display: Ptr("d1"),
+			Ref:     new("https://api.github.localhost/scim/v2/enterprises/ee/Users/879d"),
+			Display: new("d1"),
 		}, {
 			Value:   "0db5",
-			Ref:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/0db5"),
-			Display: Ptr("d2"),
+			Ref:     new("https://api.github.localhost/scim/v2/enterprises/ee/Users/0db5"),
+			Display: new("d2"),
 		}},
 		Meta: &SCIMEnterpriseMeta{
 			ResourceType: "Group",
 			Created:      &Timestamp{referenceTime},
 			LastModified: &Timestamp{referenceTime},
-			Location:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Groups/abcd"),
+			Location:     new("https://api.github.localhost/scim/v2/enterprises/ee/Groups/abcd"),
 		},
 	}
 
@@ -653,7 +653,7 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 		Active:     true,
 		UserName:   "e123",
 		Name: &SCIMEnterpriseUserName{
-			Formatted:  Ptr("John Doe"),
+			Formatted:  new("John Doe"),
 			FamilyName: "Doe",
 			GivenName:  "John",
 		},
@@ -665,7 +665,7 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 		}},
 		Roles: []*SCIMEnterpriseUserRole{{
 			Value:   "User",
-			Primary: Ptr(false),
+			Primary: new(false),
 		}},
 	}
 
@@ -705,13 +705,13 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 	})
 	want := &SCIMEnterpriseUserAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesUser},
-		ID:          Ptr("7fce"),
+		ID:          new("7fce"),
 		ExternalID:  "e123",
 		Active:      true,
 		UserName:    "e123",
 		DisplayName: "DOE John",
 		Name: &SCIMEnterpriseUserName{
-			Formatted:  Ptr("John Doe"),
+			Formatted:  new("John Doe"),
 			FamilyName: "Doe",
 			GivenName:  "John",
 		},
@@ -722,13 +722,13 @@ func TestEnterpriseService_ProvisionSCIMUser(t *testing.T) {
 		}},
 		Roles: []*SCIMEnterpriseUserRole{{
 			Value:   "User",
-			Primary: Ptr(false),
+			Primary: new(false),
 		}},
 		Meta: &SCIMEnterpriseMeta{
 			ResourceType: "User",
 			Created:      &Timestamp{referenceTime},
 			LastModified: &Timestamp{referenceTime},
-			Location:     Ptr("https://api.github.localhost/scim/v2/enterprises/ee/Users/7fce"),
+			Location:     new("https://api.github.localhost/scim/v2/enterprises/ee/Users/7fce"),
 		},
 	}
 
@@ -785,27 +785,27 @@ func TestEnterpriseService_GetProvisionedSCIMGroup(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	opts := &GetProvisionedSCIMGroupEnterpriseOptions{ExcludedAttributes: Ptr("members,meta")}
+	opts := &GetProvisionedSCIMGroupEnterpriseOptions{ExcludedAttributes: new("members,meta")}
 	got, _, err := client.Enterprise.GetProvisionedSCIMGroup(ctx, "ee", "914a", opts)
 	if err != nil {
 		t.Fatalf("Enterprise.GetProvisionedSCIMGroup returned unexpected error: %v", err)
 	}
 
 	want := &SCIMEnterpriseGroupAttributes{
-		ID: Ptr("914a"),
+		ID: new("914a"),
 		Meta: &SCIMEnterpriseMeta{
 			ResourceType: "Group",
 			Created:      &Timestamp{referenceTime},
 			LastModified: &Timestamp{referenceTime},
-			Location:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Groups/914a"),
+			Location:     new("https://api.github.com/scim/v2/enterprises/ee/Groups/914a"),
 		},
-		DisplayName: Ptr("gn1"),
+		DisplayName: new("gn1"),
 		Schemas:     []string{SCIMSchemasURINamespacesGroups},
-		ExternalID:  Ptr("de88"),
+		ExternalID:  new("de88"),
 		Members: []*SCIMEnterpriseDisplayReference{{
 			Value:   "e7f9",
-			Ref:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Users/e7f9"),
-			Display: Ptr("d1"),
+			Ref:     new("https://api.github.com/scim/v2/enterprises/ee/Users/e7f9"),
+			Display: new("d1"),
 		}},
 	}
 
@@ -871,14 +871,14 @@ func TestEnterpriseService_GetProvisionedSCIMUser(t *testing.T) {
 
 	want := &SCIMEnterpriseUserAttributes{
 		Schemas:     []string{SCIMSchemasURINamespacesUser},
-		ID:          Ptr("5fc0"),
+		ID:          new("5fc0"),
 		ExternalID:  "00u1",
 		UserName:    "octocat@github.com",
 		DisplayName: "Mona Octocat",
 		Name: &SCIMEnterpriseUserName{
 			GivenName:  "Mona",
 			FamilyName: "Octocat",
-			Formatted:  Ptr("Mona Octocat"),
+			Formatted:  new("Mona Octocat"),
 		},
 		Emails: []*SCIMEnterpriseUserEmail{{
 			Value:   "octocat@github.com",
@@ -889,7 +889,7 @@ func TestEnterpriseService_GetProvisionedSCIMUser(t *testing.T) {
 			ResourceType: "User",
 			Created:      &Timestamp{referenceTime},
 			LastModified: &Timestamp{referenceTime},
-			Location:     Ptr("https://api.github.com/scim/v2/enterprises/ee/Users/5fc0"),
+			Location:     new("https://api.github.com/scim/v2/enterprises/ee/Users/5fc0"),
 		},
 	}
 

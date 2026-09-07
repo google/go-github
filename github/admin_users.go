@@ -61,9 +61,10 @@ func (s *AdminService) DeleteUser(ctx context.Context, username string) (*Respon
 	return resp, nil
 }
 
-// ImpersonateUserOptions represents the scoping for the OAuth token.
-type ImpersonateUserOptions struct {
-	Scopes []string `json:"scopes,omitempty"`
+// CreateUserImpersonationRequest represents the scoping for the OAuth token.
+// Note that `Scopes` is a required field.
+type CreateUserImpersonationRequest struct {
+	Scopes []string `json:"scopes"`
 }
 
 // OAuthAPP represents the GitHub Site Administrator OAuth app.
@@ -98,7 +99,7 @@ type UserAuthorization struct {
 // GitHub API docs: https://docs.github.com/enterprise-server@3.21/rest/enterprise-admin/users#create-an-impersonation-oauth-token
 //
 //meta:operation POST /admin/users/{username}/authorizations
-func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, body *ImpersonateUserOptions) (*UserAuthorization, *Response, error) {
+func (s *AdminService) CreateUserImpersonation(ctx context.Context, username string, body CreateUserImpersonationRequest) (*UserAuthorization, *Response, error) {
 	u := fmt.Sprintf("admin/users/%v/authorizations", username)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)

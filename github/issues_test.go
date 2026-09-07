@@ -57,7 +57,7 @@ func TestIssuesService_ListAllIssues(t *testing.T) {
 		t.Errorf("Issues.ListAllIssues returned error: %v", err)
 	}
 
-	want := []*Issue{{Number: Ptr(1)}}
+	want := []*Issue{{Number: new(1)}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.ListAllIssues = %+v, want %+v", issues, want)
 	}
@@ -107,7 +107,7 @@ func TestIssuesService_ListUserIssues(t *testing.T) {
 		t.Errorf("Issues.ListUserIssues returned error: %v", err)
 	}
 
-	want := []*Issue{{Number: Ptr(1)}}
+	want := []*Issue{{Number: new(1)}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.ListUserIssues = %+v, want %+v", issues, want)
 	}
@@ -159,7 +159,7 @@ func TestIssuesService_ListByOrg(t *testing.T) {
 		t.Errorf("Issues.ListByOrg returned error: %v", err)
 	}
 
-	want := []*Issue{{Number: Ptr(1)}}
+	want := []*Issue{{Number: new(1)}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.ListByOrg returned %+v, want %+v", issues, want)
 	}
@@ -221,7 +221,7 @@ func TestIssuesService_ListByRepo(t *testing.T) {
 		t.Errorf("Issues.ListByRepo returned error: %v", err)
 	}
 
-	want := []*Issue{{Number: Ptr(1)}}
+	want := []*Issue{{Number: new(1)}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.ListByRepo returned %+v, want %+v", issues, want)
 	}
@@ -258,8 +258,8 @@ func TestIssuesService_Get(t *testing.T) {
 	}
 
 	want := &Issue{
-		Number:            Ptr(1),
-		AuthorAssociation: Ptr("MEMBER"),
+		Number:            new(1),
+		AuthorAssociation: new("MEMBER"),
 		Labels: []*Label{{
 			URL:   "u",
 			Name:  "n",
@@ -300,8 +300,8 @@ func TestIssuesService_Create(t *testing.T) {
 
 	input := CreateIssueRequest{
 		Title:    "t",
-		Body:     Ptr("b"),
-		Assignee: Ptr("a"),
+		Body:     new("b"),
+		Assignee: new("a"),
 		Labels:   []string{"l1", "l2"},
 	}
 
@@ -317,7 +317,7 @@ func TestIssuesService_Create(t *testing.T) {
 		t.Errorf("Issues.Create returned error: %v", err)
 	}
 
-	want := &Issue{Number: Ptr(1)}
+	want := &Issue{Number: new(1)}
 	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Create returned %+v, want %+v", issue, want)
 	}
@@ -350,7 +350,7 @@ func TestIssuesService_Update(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := UpdateIssueRequest{Title: Ptr("t"), Type: Ptr("bug")}
+	input := UpdateIssueRequest{Title: new("t"), Type: new("bug")}
 
 	mux.HandleFunc("/repos/o/r/issues/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -364,7 +364,7 @@ func TestIssuesService_Update(t *testing.T) {
 		t.Errorf("Issues.Update returned error: %v", err)
 	}
 
-	want := &Issue{Number: Ptr(1), Type: &IssueType{Name: Ptr("bug")}}
+	want := &Issue{Number: new(1), Type: &IssueType{Name: new("bug")}}
 	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.Update returned %+v, want %+v", issue, want)
 	}
@@ -399,7 +399,7 @@ func TestIssuesService_RemoveMilestone(t *testing.T) {
 		t.Errorf("Issues.RemoveMilestone returned error: %v", err)
 	}
 
-	want := &Issue{Number: Ptr(1)}
+	want := &Issue{Number: new(1)}
 	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.RemoveMilestone returned %+v, want %+v", issue, want)
 	}
@@ -547,7 +547,7 @@ func TestIsPullRequest(t *testing.T) {
 	if i.IsPullRequest() {
 		t.Errorf("expected i.IsPullRequest (%v) to return false, got true", i)
 	}
-	i.PullRequestLinks = &PullRequestLinks{URL: Ptr("http://example.com")}
+	i.PullRequestLinks = &PullRequestLinks{URL: new("http://example.com")}
 	if !i.IsPullRequest() {
 		t.Errorf("expected i.IsPullRequest (%v) to return true, got false", i)
 	}

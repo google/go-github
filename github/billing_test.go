@@ -259,10 +259,10 @@ func TestBillingService_GetOrganizationAdvancedSecurityActiveCommitters(t *testi
 	}
 
 	want := &ActiveCommitters{
-		TotalAdvancedSecurityCommitters:     Ptr(2),
-		TotalCount:                          Ptr(2),
-		MaximumAdvancedSecurityCommitters:   Ptr(3),
-		PurchasedAdvancedSecurityCommitters: Ptr(4),
+		TotalAdvancedSecurityCommitters:     new(2),
+		TotalCount:                          new(2),
+		MaximumAdvancedSecurityCommitters:   new(3),
+		PurchasedAdvancedSecurityCommitters: new(4),
 		Repositories: []*RepositoryActiveCommitters{
 			{
 				Name:                       "octocat-org/Hello-World",
@@ -336,8 +336,8 @@ func TestBillingService_GetOrganizationUsageReport(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &UsageReportOptions{
-		Year:  Ptr(2023),
-		Month: Ptr(8),
+		Year:  new(2023),
+		Month: new(8),
 	}
 	report, _, err := client.Billing.GetOrganizationUsageReport(ctx, "o", opts)
 	if err != nil {
@@ -356,8 +356,8 @@ func TestBillingService_GetOrganizationUsageReport(t *testing.T) {
 				GrossAmount:      0.8,
 				DiscountAmount:   0.0,
 				NetAmount:        0.8,
-				OrganizationName: Ptr("GitHub"),
-				RepositoryName:   Ptr("github/example"),
+				OrganizationName: new("GitHub"),
+				RepositoryName:   new("github/example"),
 			},
 		},
 	}
@@ -418,7 +418,7 @@ func TestBillingService_GetUsageReport(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &UsageReportOptions{
-		Day: Ptr(15),
+		Day: new(15),
 	}
 	report, _, err := client.Billing.GetUsageReport(ctx, "u", opts)
 	if err != nil {
@@ -437,7 +437,7 @@ func TestBillingService_GetUsageReport(t *testing.T) {
 				GrossAmount:    9.0,
 				DiscountAmount: 1.0,
 				NetAmount:      8.0,
-				RepositoryName: Ptr("user/example"),
+				RepositoryName: new("user/example"),
 			},
 		},
 	}
@@ -507,9 +507,9 @@ func TestBillingService_GetOrganizationPremiumRequestUsageReport(t *testing.T) {
 	})
 	ctx := t.Context()
 	opts := &PremiumRequestUsageReportOptions{
-		Year:  Ptr(2025),
-		Month: Ptr(10),
-		User:  Ptr("testuser"),
+		Year:  new(2025),
+		Month: new(10),
+		User:  new("testuser"),
 	}
 	report, _, err := client.Billing.GetOrganizationPremiumRequestUsageReport(ctx, "o", opts)
 	if err != nil {
@@ -518,12 +518,12 @@ func TestBillingService_GetOrganizationPremiumRequestUsageReport(t *testing.T) {
 	want := &PremiumRequestUsageReport{
 		TimePeriod: PremiumRequestUsageTimePeriod{
 			Year:  2025,
-			Month: Ptr(10),
+			Month: new(10),
 		},
-		Organization: Ptr("GitHub"),
-		User:         Ptr("testuser"),
-		Product:      Ptr("Copilot"),
-		Model:        Ptr("GPT-5"),
+		Organization: new("GitHub"),
+		User:         new("testuser"),
+		Product:      new("Copilot"),
+		Model:        new("GPT-5"),
 		UsageItems: []*PremiumRequestUsageItem{
 			{
 				Product:          "Copilot",
@@ -603,8 +603,8 @@ func TestBillingService_GetPremiumRequestUsageReport(t *testing.T) {
 	})
 	ctx := t.Context()
 	opts := &PremiumRequestUsageReportOptions{
-		Year: Ptr(2025),
-		Day:  Ptr(15),
+		Year: new(2025),
+		Day:  new(15),
 	}
 	report, _, err := client.Billing.GetPremiumRequestUsageReport(ctx, "u", opts)
 	if err != nil {
@@ -613,10 +613,10 @@ func TestBillingService_GetPremiumRequestUsageReport(t *testing.T) {
 	want := &PremiumRequestUsageReport{
 		TimePeriod: PremiumRequestUsageTimePeriod{
 			Year: 2025,
-			Day:  Ptr(15),
+			Day:  new(15),
 		},
-		User:    Ptr("User"),
-		Product: Ptr("Copilot"),
+		User:    new("User"),
+		Product: new("Copilot"),
 		UsageItems: []*PremiumRequestUsageItem{
 			{
 				Product:          "Copilot",
@@ -697,9 +697,9 @@ func TestBillingService_PremiumRequestUsageItem_FloatQuantities(t *testing.T) {
 	want := &PremiumRequestUsageReport{
 		TimePeriod: PremiumRequestUsageTimePeriod{
 			Year:  2026,
-			Month: Ptr(2),
+			Month: new(2),
 		},
-		Organization: Ptr("testorg"),
+		Organization: new("testorg"),
 		UsageItems: []*PremiumRequestUsageItem{
 			{
 				Product:          "Copilot",
@@ -761,9 +761,9 @@ func TestBillingService_GetOrgAICreditUsage(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &PremiumRequestUsageReportOptions{
-		Year:  Ptr(2025),
-		Month: Ptr(6),
-		User:  Ptr("testuser"),
+		Year:  new(2025),
+		Month: new(6),
+		User:  new("testuser"),
 	}
 	report, _, err := client.Billing.GetOrgAICreditUsage(ctx, "o", opts)
 	if err != nil {
@@ -773,12 +773,12 @@ func TestBillingService_GetOrgAICreditUsage(t *testing.T) {
 	want := &PremiumRequestUsageReport{
 		TimePeriod: PremiumRequestUsageTimePeriod{
 			Year:  2025,
-			Month: Ptr(6),
+			Month: new(6),
 		},
-		Organization: Ptr("GitHub"),
-		User:         Ptr("testuser"),
-		Product:      Ptr("Copilot"),
-		Model:        Ptr("GPT-5"),
+		Organization: new("GitHub"),
+		User:         new("testuser"),
+		Product:      new("Copilot"),
+		Model:        new("GPT-5"),
 		UsageItems: []*PremiumRequestUsageItem{
 			{
 				Product:          "Copilot",
@@ -863,10 +863,10 @@ func TestBillingService_GetOrgAICreditUsage_FloatQuantities(t *testing.T) {
 	want := &PremiumRequestUsageReport{
 		TimePeriod: PremiumRequestUsageTimePeriod{
 			Year:  2025,
-			Month: Ptr(6),
-			Day:   Ptr(15),
+			Month: new(6),
+			Day:   new(15),
 		},
-		Organization: Ptr("testorg"),
+		Organization: new("testorg"),
 		UsageItems: []*PremiumRequestUsageItem{
 			{
 				Product:          "Copilot",
@@ -927,9 +927,9 @@ func TestBillingService_GetUserAICreditUsage(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &PremiumRequestUsageReportOptions{
-		Year:  Ptr(2025),
-		Month: Ptr(6),
-		User:  Ptr("testuser"),
+		Year:  new(2025),
+		Month: new(6),
+		User:  new("testuser"),
 	}
 	report, _, err := client.Billing.GetUserAICreditUsage(ctx, "u", opts)
 	if err != nil {
@@ -939,11 +939,11 @@ func TestBillingService_GetUserAICreditUsage(t *testing.T) {
 	want := &PremiumRequestUsageReport{
 		TimePeriod: PremiumRequestUsageTimePeriod{
 			Year:  2025,
-			Month: Ptr(6),
+			Month: new(6),
 		},
-		User:    Ptr("testuser"),
-		Product: Ptr("Copilot"),
-		Model:   Ptr("GPT-5"),
+		User:    new("testuser"),
+		Product: new("Copilot"),
+		Model:   new("GPT-5"),
 		UsageItems: []*PremiumRequestUsageItem{
 			{
 				Product:          "Copilot",
@@ -1028,10 +1028,10 @@ func TestBillingService_GetUserAICreditUsage_FloatQuantities(t *testing.T) {
 	want := &PremiumRequestUsageReport{
 		TimePeriod: PremiumRequestUsageTimePeriod{
 			Year:  2025,
-			Month: Ptr(6),
-			Day:   Ptr(15),
+			Month: new(6),
+			Day:   new(15),
 		},
-		User: Ptr("testuser"),
+		User: new("testuser"),
 		UsageItems: []*PremiumRequestUsageItem{
 			{
 				Product:          "Copilot",

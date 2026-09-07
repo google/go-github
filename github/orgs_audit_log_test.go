@@ -82,9 +82,9 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	})
 	ctx := t.Context()
 	getOpts := GetAuditLogOptions{
-		Include: Ptr("all"),
-		Phrase:  Ptr("action:workflows"),
-		Order:   Ptr("asc"),
+		Include: new("all"),
+		Phrase:  new("action:workflows"),
+		Order:   new("asc"),
 	}
 
 	auditEntries, _, err := client.Organizations.GetAuditLog(ctx, "o", &getOpts)
@@ -96,18 +96,18 @@ func TestOrganizationService_GetAuditLog(t *testing.T) {
 	want := []*AuditEntry{
 		{
 			Timestamp:  &Timestamp{timestamp},
-			DocumentID: Ptr("beeZYapIUe-wKg5-beadb33"),
-			Action:     Ptr("workflows.completed_workflow_run"),
-			Actor:      Ptr("testactor"),
+			DocumentID: new("beeZYapIUe-wKg5-beadb33"),
+			Action:     new("workflows.completed_workflow_run"),
+			Actor:      new("testactor"),
 			ActorLocation: &ActorLocation{
-				CountryCode: Ptr("US"),
+				CountryCode: new("US"),
 			},
 			CreatedAt:   &Timestamp{timestamp},
-			HashedToken: Ptr("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-			Org:         Ptr("o"),
-			OrgID:       Ptr(int64(1)),
-			TokenID:     Ptr(int64(1)),
-			TokenScopes: Ptr("gist,repo:read"),
+			HashedToken: new("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+			Org:         new("o"),
+			OrgID:       new(int64(1)),
+			TokenID:     new(int64(1)),
+			TokenScopes: new("gist,repo:read"),
 			AdditionalFields: map[string]any{
 				"actor_ip":                 "10.0.0.1",
 				"active":                   true,
@@ -172,21 +172,21 @@ func TestAuditEntry_MarshalJSON(t *testing.T) {
 	testJSONMarshal(t, &AuditEntry{}, "{}")
 
 	u := AuditEntry{
-		Action:                   Ptr("a"),
-		Actor:                    Ptr("ac"),
-		ActorLocation:            &ActorLocation{CountryCode: Ptr("alcc")},
-		Business:                 Ptr("b"),
+		Action:                   new("a"),
+		Actor:                    new("ac"),
+		ActorLocation:            &ActorLocation{CountryCode: new("alcc")},
+		Business:                 new("b"),
 		CreatedAt:                &Timestamp{referenceTime},
-		DocumentID:               Ptr("did"),
-		ExternalIdentityNameID:   Ptr("ein"),
-		ExternalIdentityUsername: Ptr("eiu"),
-		HashedToken:              Ptr("ht"),
-		Org:                      Ptr("o"),
-		OrgID:                    Ptr(int64(1)),
+		DocumentID:               new("did"),
+		ExternalIdentityNameID:   new("ein"),
+		ExternalIdentityUsername: new("eiu"),
+		HashedToken:              new("ht"),
+		Org:                      new("o"),
+		OrgID:                    new(int64(1)),
 		Timestamp:                &Timestamp{referenceTime},
-		TokenID:                  Ptr(int64(1)),
-		TokenScopes:              Ptr("ts"),
-		User:                     Ptr("u"),
+		TokenID:                  new(int64(1)),
+		TokenScopes:              new("ts"),
+		User:                     new("u"),
 		Data: map[string]any{
 			"old_name":  "on",
 			"old_login": "ol",
@@ -381,42 +381,42 @@ func TestAuditEntry_UnmarshalJSON(t *testing.T) {
 		{
 			name:    "org is scalar",
 			payload: `{"action":"test","org":"myorg","org_id":42}`,
-			want:    &AuditEntry{Action: Ptr("test"), Org: Ptr("myorg"), OrgID: Ptr(int64(42))},
+			want:    &AuditEntry{Action: new("test"), Org: new("myorg"), OrgID: new(int64(42))},
 		},
 		{
 			name:    "org is single element array",
 			payload: `{"action":"test","org":["myorg"],"org_id":[42]}`,
-			want:    &AuditEntry{Action: Ptr("test"), Org: Ptr("myorg"), OrgID: Ptr(int64(42))},
+			want:    &AuditEntry{Action: new("test"), Org: new("myorg"), OrgID: new(int64(42))},
 		},
 		{
 			name:    "org is multi-element array",
 			payload: `{"action":"test","org":["org1","org2","org3"],"org_id":[1,2,3]}`,
-			want:    &AuditEntry{Action: Ptr("test"), Org: Ptr("org1, org2, org3"), OrgID: Ptr(int64(1))},
+			want:    &AuditEntry{Action: new("test"), Org: new("org1, org2, org3"), OrgID: new(int64(1))},
 		},
 		{
 			name:    "org_id is scalar",
 			payload: `{"action":"test","org_id":42}`,
-			want:    &AuditEntry{Action: Ptr("test"), OrgID: Ptr(int64(42))},
+			want:    &AuditEntry{Action: new("test"), OrgID: new(int64(42))},
 		},
 		{
 			name:    "org_id is array",
 			payload: `{"action":"test","org_id":[42,43,44]}`,
-			want:    &AuditEntry{Action: Ptr("test"), OrgID: Ptr(int64(42))}, // first element
+			want:    &AuditEntry{Action: new("test"), OrgID: new(int64(42))}, // first element
 		},
 		{
 			name:    "org is empty array",
 			payload: `{"action":"test","org":[]}`,
-			want:    &AuditEntry{Action: Ptr("test"), AdditionalFields: map[string]any{"org": []any{}}},
+			want:    &AuditEntry{Action: new("test"), AdditionalFields: map[string]any{"org": []any{}}},
 		},
 		{
 			name:    "org_id is empty array",
 			payload: `{"action":"test","org_id":[]}`,
-			want:    &AuditEntry{Action: Ptr("test"), AdditionalFields: map[string]any{"org_id": []any{}}},
+			want:    &AuditEntry{Action: new("test"), AdditionalFields: map[string]any{"org_id": []any{}}},
 		},
 		{
 			name:    "org and org_id are null",
 			payload: `{"action":"test","org":null,"org_id":null}`,
-			want:    &AuditEntry{Action: Ptr("test")},
+			want:    &AuditEntry{Action: new("test")},
 		},
 	}
 

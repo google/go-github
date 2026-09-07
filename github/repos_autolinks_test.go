@@ -29,8 +29,8 @@ func TestRepositoriesService_ListAutolinks(t *testing.T) {
 	}
 
 	want := []*Autolink{
-		{ID: Ptr(int64(1)), KeyPrefix: Ptr("TICKET-"), URLTemplate: Ptr("https://example.com/TICKET?query=<num>")},
-		{ID: Ptr(int64(2)), KeyPrefix: Ptr("STORY-"), URLTemplate: Ptr("https://example.com/STORY?query=<num>")},
+		{ID: new(int64(1)), KeyPrefix: new("TICKET-"), URLTemplate: new("https://example.com/TICKET?query=<num>")},
+		{ID: new(int64(2)), KeyPrefix: new("STORY-"), URLTemplate: new("https://example.com/STORY?query=<num>")},
 	}
 
 	if !cmp.Equal(autolinks, want) {
@@ -59,7 +59,7 @@ func TestRepositoriesService_CreateAutolink(t *testing.T) {
 	body := CreateAutolinkRequest{
 		KeyPrefix:      "TICKET-",
 		URLTemplate:    "https://example.com/TICKET?query=<num>",
-		IsAlphanumeric: Ptr(true),
+		IsAlphanumeric: new(true),
 	}
 	mux.HandleFunc("/repos/o/r/autolinks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -79,9 +79,9 @@ func TestRepositoriesService_CreateAutolink(t *testing.T) {
 		t.Errorf("Repositories.CreateAutolink returned error: %v", err)
 	}
 	want := &Autolink{
-		KeyPrefix:      Ptr("TICKET-"),
-		URLTemplate:    Ptr("https://example.com/TICKET?query=<num>"),
-		IsAlphanumeric: Ptr(true),
+		KeyPrefix:      new("TICKET-"),
+		URLTemplate:    new("https://example.com/TICKET?query=<num>"),
+		IsAlphanumeric: new(true),
 	}
 
 	if !cmp.Equal(autolink, want) {
@@ -118,7 +118,7 @@ func TestRepositoriesService_GetAutolink(t *testing.T) {
 		t.Errorf("Repositories.GetAutolink returned error: %v", err)
 	}
 
-	want := &Autolink{ID: Ptr(int64(1)), KeyPrefix: Ptr("TICKET-"), URLTemplate: Ptr("https://example.com/TICKET?query=<num>")}
+	want := &Autolink{ID: new(int64(1)), KeyPrefix: new("TICKET-"), URLTemplate: new("https://example.com/TICKET?query=<num>")}
 	if !cmp.Equal(autolink, want) {
 		t.Errorf("Repositories.GetAutolink returned %+v, want %+v", autolink, want)
 	}

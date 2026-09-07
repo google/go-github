@@ -30,7 +30,7 @@ func TestIssuesService_ListBlockedBy(t *testing.T) {
 		t.Errorf("Issues.ListBlockedBy returned error: %v", err)
 	}
 
-	want := []*Issue{{Number: Ptr(1347), Title: Ptr("Found a bug")}}
+	want := []*Issue{{Number: new(1347), Title: new("Found a bug")}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.ListBlockedBy returned %+v, want %+v", issues, want)
 	}
@@ -79,7 +79,7 @@ func TestIssuesService_AddBlockedBy(t *testing.T) {
 		t.Errorf("Issues.AddBlockedBy returned error: %v", err)
 	}
 
-	want := &Issue{Number: Ptr(42), Title: Ptr("Dependency issue")}
+	want := &Issue{Number: new(42), Title: new("Dependency issue")}
 	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.AddBlockedBy returned %+v, want %+v", issue, want)
 	}
@@ -123,7 +123,7 @@ func TestIssuesService_RemoveBlockedBy(t *testing.T) {
 		t.Errorf("Issues.RemoveBlockedBy returned error: %v", err)
 	}
 
-	want := &Issue{Number: Ptr(1), Title: Ptr("Original issue")}
+	want := &Issue{Number: new(1), Title: new("Original issue")}
 	if !cmp.Equal(issue, want) {
 		t.Errorf("Issues.RemoveBlockedBy returned %+v, want %+v", issue, want)
 	}
@@ -169,7 +169,7 @@ func TestIssuesService_ListBlocking(t *testing.T) {
 		t.Errorf("Issues.ListBlocking returned error: %v", err)
 	}
 
-	want := []*Issue{{Number: Ptr(1348), Title: Ptr("Blocked issue")}}
+	want := []*Issue{{Number: new(1348), Title: new("Blocked issue")}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("Issues.ListBlocking returned %+v, want %+v", issues, want)
 	}

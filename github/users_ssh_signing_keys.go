@@ -22,6 +22,13 @@ func (k SSHSigningKey) String() string {
 	return Stringify(k)
 }
 
+// CreateSSHSigningKeyRequest represents a request to create an SSH signing key
+// for the authenticated user.
+type CreateSSHSigningKeyRequest struct {
+	Title *string `json:"title,omitempty"`
+	Key   string  `json:"key"`
+}
+
 // ListSSHSigningKeys lists the SSH signing keys for a user. Passing an empty
 // username string will fetch SSH signing keys for the authenticated user.
 //
@@ -84,7 +91,7 @@ func (s *UsersService) GetSSHSigningKey(ctx context.Context, id int64) (*SSHSign
 // GitHub API docs: https://docs.github.com/rest/users/ssh-signing-keys?apiVersion=2022-11-28#create-a-ssh-signing-key-for-the-authenticated-user
 //
 //meta:operation POST /user/ssh_signing_keys
-func (s *UsersService) CreateSSHSigningKey(ctx context.Context, body *Key) (*SSHSigningKey, *Response, error) {
+func (s *UsersService) CreateSSHSigningKey(ctx context.Context, body CreateSSHSigningKeyRequest) (*SSHSigningKey, *Response, error) {
 	u := "user/ssh_signing_keys"
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)

@@ -30,7 +30,7 @@ func TestGistsService_ListComments(t *testing.T) {
 		t.Errorf("Gists.ListComments returned error: %v", err)
 	}
 
-	want := []*GistComment{{ID: Ptr(int64(1))}}
+	want := []*GistComment{{ID: new(int64(1))}}
 	if !cmp.Equal(comments, want) {
 		t.Errorf("Gists.ListComments returned %+v, want %+v", comments, want)
 	}
@@ -74,7 +74,7 @@ func TestGistsService_GetComment(t *testing.T) {
 		t.Errorf("Gists.GetComment returned error: %v", err)
 	}
 
-	want := &GistComment{ID: Ptr(int64(1))}
+	want := &GistComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Gists.GetComment returned %+v, want %+v", comment, want)
 	}
@@ -121,7 +121,7 @@ func TestGistsService_CreateComment(t *testing.T) {
 		t.Errorf("Gists.CreateComment returned error: %v", err)
 	}
 
-	want := &GistComment{ID: Ptr(int64(1))}
+	want := &GistComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Gists.CreateComment returned %+v, want %+v", comment, want)
 	}
@@ -168,7 +168,7 @@ func TestGistsService_UpdateComment(t *testing.T) {
 		t.Errorf("Gists.UpdateComment returned error: %v", err)
 	}
 
-	want := &GistComment{ID: Ptr(int64(1))}
+	want := &GistComment{ID: new(int64(1))}
 	if !cmp.Equal(comment, want) {
 		t.Errorf("Gists.UpdateComment returned %+v, want %+v", comment, want)
 	}

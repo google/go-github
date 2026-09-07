@@ -27,7 +27,7 @@ func BenchmarkStringify(b *testing.B) {
 		Score:   1.1,
 		Rank:    99.999999,
 		Tags:    []string{"go", "github", "api"},
-		Pointer: Ptr(42),
+		Pointer: new(42),
 	}
 	b.ResetTimer()
 	for b.Loop() {

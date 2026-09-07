@@ -51,7 +51,7 @@ func TestGitService_GetCommit(t *testing.T) {
 		t.Errorf("Git.GetCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: Ptr("s"), Message: Ptr("Commit Message."), Author: &CommitAuthor{Name: Ptr("n")}}
+	want := &Commit{SHA: new("s"), Message: new("Commit Message."), Author: &CommitAuthor{Name: new("n")}}
 	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.GetCommit returned %+v, want %+v", commit, want)
 	}
@@ -85,9 +85,9 @@ func TestGitService_CreateCommit(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := Commit{
-		Message: Ptr("Commit Message."),
-		Tree:    &Tree{SHA: Ptr("t")},
-		Parents: []*Commit{{SHA: Ptr("p")}},
+		Message: new("Commit Message."),
+		Tree:    &Tree{SHA: new("t")},
+		Parents: []*Commit{{SHA: new("p")}},
 	}
 
 	mux.HandleFunc("/repos/o/r/git/commits", func(w http.ResponseWriter, r *http.Request) {
@@ -107,7 +107,7 @@ func TestGitService_CreateCommit(t *testing.T) {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: Ptr("s")}
+	want := &Commit{SHA: new("s")}
 	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
@@ -132,11 +132,11 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := Commit{
-		Message: Ptr("Commit Message."),
-		Tree:    &Tree{SHA: Ptr("t")},
-		Parents: []*Commit{{SHA: Ptr("p")}},
+		Message: new("Commit Message."),
+		Tree:    &Tree{SHA: new("t")},
+		Parents: []*Commit{{SHA: new("p")}},
 		Verification: &SignatureVerification{
-			Signature: Ptr("----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"),
+			Signature: new("----- BEGIN PGP SIGNATURE -----\n\naaaa\naaaa\n----- END PGP SIGNATURE -----"),
 		},
 	}
 
@@ -163,7 +163,7 @@ func TestGitService_CreateSignedCommit(t *testing.T) {
 		t.Errorf("Git.CreateCommit returned error: %v", err)
 	}
 
-	want := &Commit{SHA: Ptr("commitSha")}
+	want := &Commit{SHA: new("commitSha")}
 	if !cmp.Equal(commit, want) {
 		t.Errorf("Git.CreateCommit returned %+v, want %+v", commit, want)
 	}
@@ -204,8 +204,8 @@ func TestGitService_CreateCommit_WithSigner(t *testing.T) {
 	signature := "my voice is my password"
 	date := time.Date(2017, time.May, 4, 0, 3, 43, 0, time.FixedZone("CEST", 2*3600))
 	author := CommitAuthor{
-		Name:  Ptr("go-github"),
-		Email: Ptr("go-github@github.com"),
+		Name:  new("go-github"),
+		Email: new("go-github@github.com"),
 		Date:  &Timestamp{date},
 	}
 	wantMessage := `tree t
@@ -217,14 +217,14 @@ Commit Message.`
 	sha := "commitSha"
 	input := Commit{
 		SHA:     &sha,
-		Message: Ptr("Commit Message."),
-		Tree:    &Tree{SHA: Ptr("t")},
-		Parents: []*Commit{{SHA: Ptr("p")}},
+		Message: new("Commit Message."),
+		Tree:    &Tree{SHA: new("t")},
+		Parents: []*Commit{{SHA: new("p")}},
 		Author:  &author,
 	}
 	wantBody := &createCommit{
 		Message:   input.Message,
-		Tree:      Ptr("t"),
+		Tree:      new("t"),
 		Parents:   []string{"p"},
 		Author:    &author,
 		Signature: &signature,
@@ -247,8 +247,8 @@ Commit Message.`
 func TestGitService_createSignature_nilSigner(t *testing.T) {
 	t.Parallel()
 	a := &createCommit{
-		Message: Ptr("Commit Message."),
-		Tree:    Ptr("t"),
+		Message: new("Commit Message."),
+		Tree:    new("t"),
 		Parents: []string{"p"},
 	}
 
@@ -271,10 +271,10 @@ func TestGitService_createSignature_nilCommit(t *testing.T) {
 func TestGitService_createSignature_signerError(t *testing.T) {
 	t.Parallel()
 	a := &createCommit{
-		Message: Ptr("Commit Message."),
-		Tree:    Ptr("t"),
+		Message: new("Commit Message."),
+		Tree:    new("t"),
 		Parents: []string{"p"},
-		Author:  &CommitAuthor{Name: Ptr("go-github")},
+		Author:  &CommitAuthor{Name: new("go-github")},
 	}
 
 	signer := mockSigner(t, "", errors.New("signer error"), "")
@@ -301,8 +301,8 @@ func TestGitService_createSignatureMessage_nilMessage(t *testing.T) {
 		Message: nil,
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
-			Name:  Ptr("go-github"),
-			Email: Ptr("go-github@github.com"),
+			Name:  new("go-github"),
+			Email: new("go-github@github.com"),
 			Date:  &Timestamp{date},
 		},
 	})
@@ -315,11 +315,11 @@ func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
 	t.Parallel()
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 	_, err := createSignatureMessage(&createCommit{
-		Message: Ptr(""),
+		Message: new(""),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
-			Name:  Ptr("go-github"),
-			Email: Ptr("go-github@github.com"),
+			Name:  new("go-github"),
+			Email: new("go-github@github.com"),
 			Date:  &Timestamp{date},
 		},
 	})
@@ -331,7 +331,7 @@ func TestGitService_createSignatureMessage_emptyMessage(t *testing.T) {
 func TestGitService_createSignatureMessage_nilAuthor(t *testing.T) {
 	t.Parallel()
 	_, err := createSignatureMessage(&createCommit{
-		Message: Ptr("Commit Message."),
+		Message: new("Commit Message."),
 		Parents: []string{"p"},
 		Author:  nil,
 	})
@@ -345,11 +345,11 @@ func TestGitService_createSignatureMessage_withoutTree(t *testing.T) {
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	msg, _ := createSignatureMessage(&createCommit{
-		Message: Ptr("Commit Message."),
+		Message: new("Commit Message."),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
-			Name:  Ptr("go-github"),
-			Email: Ptr("go-github@github.com"),
+			Name:  new("go-github"),
+			Email: new("go-github@github.com"),
 			Date:  &Timestamp{date},
 		},
 	})
@@ -368,16 +368,16 @@ func TestGitService_createSignatureMessage_withoutCommitter(t *testing.T) {
 	date, _ := time.Parse("Mon Jan 02 15:04:05 2006 -0700", "Thu May 04 00:03:43 2017 +0200")
 
 	msg, _ := createSignatureMessage(&createCommit{
-		Message: Ptr("Commit Message."),
+		Message: new("Commit Message."),
 		Parents: []string{"p"},
 		Author: &CommitAuthor{
-			Name:  Ptr("go-github"),
-			Email: Ptr("go-github@github.com"),
+			Name:  new("go-github"),
+			Email: new("go-github@github.com"),
 			Date:  &Timestamp{date},
 		},
 		Committer: &CommitAuthor{
-			Name:  Ptr("foo"),
-			Email: Ptr("foo@example.com"),
+			Name:  new("foo"),
+			Email: new("foo@example.com"),
 			Date:  &Timestamp{date},
 		},
 	})

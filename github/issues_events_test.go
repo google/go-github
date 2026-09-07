@@ -34,7 +34,7 @@ func TestIssuesService_ListIssueEvents(t *testing.T) {
 		t.Errorf("Issues.ListIssueEvents returned error: %v", err)
 	}
 
-	want := []*IssueEvent{{ID: Ptr(int64(1))}}
+	want := []*IssueEvent{{ID: new(int64(1))}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Issues.ListIssueEvents returned %+v, want %+v", events, want)
 	}
@@ -74,7 +74,7 @@ func TestIssuesService_ListRepositoryEvents(t *testing.T) {
 		t.Errorf("Issues.ListRepositoryEvents returned error: %v", err)
 	}
 
-	want := []*IssueEvent{{ID: Ptr(int64(1))}}
+	want := []*IssueEvent{{ID: new(int64(1))}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Issues.ListRepositoryEvents returned %+v, want %+v", events, want)
 	}
@@ -109,7 +109,7 @@ func TestIssuesService_GetEvent(t *testing.T) {
 		t.Errorf("Issues.GetEvent returned error: %v", err)
 	}
 
-	want := &IssueEvent{ID: Ptr(int64(1))}
+	want := &IssueEvent{ID: new(int64(1))}
 	if !cmp.Equal(event, want) {
 		t.Errorf("Issues.GetEvent returned %+v, want %+v", event, want)
 	}

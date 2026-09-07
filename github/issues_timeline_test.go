@@ -36,7 +36,7 @@ func TestIssuesService_ListIssueTimeline(t *testing.T) {
 		t.Errorf("Issues.ListIssueTimeline returned error: %v", err)
 	}
 
-	want := []*Timeline{{ID: Ptr(int64(1))}}
+	want := []*Timeline{{ID: new(int64(1))}}
 	if !cmp.Equal(events, want) {
 		t.Errorf("Issues.ListIssueTimeline = %+v, want %+v", events, want)
 	}
@@ -104,35 +104,35 @@ func TestTimeline_ReviewRequests(t *testing.T) {
 
 	want := []*Timeline{
 		{
-			ID:  Ptr(int64(1234567890)),
-			URL: Ptr("http://example.com/timeline/1"),
+			ID:  new(int64(1234567890)),
+			URL: new("http://example.com/timeline/1"),
 			Actor: &User{
-				Login: Ptr("actor-user"),
-				ID:    Ptr(int64(1)),
+				Login: new("actor-user"),
+				ID:    new(int64(1)),
 			},
-			Event:     Ptr("review_requested"),
+			Event:     new("review_requested"),
 			CreatedAt: &Timestamp{referenceTime},
 			Reviewer: &User{
-				Login: Ptr("reviewer-user"),
-				ID:    Ptr(int64(2)),
+				Login: new("reviewer-user"),
+				ID:    new(int64(2)),
 			},
 			Requester: &User{
-				Login: Ptr("requester-user"),
-				ID:    Ptr(int64(1)),
+				Login: new("requester-user"),
+				ID:    new(int64(1)),
 			},
 		},
 		{
-			ID:  Ptr(int64(1234567891)),
-			URL: Ptr("http://example.com/timeline/2"),
+			ID:  new(int64(1234567891)),
+			URL: new("http://example.com/timeline/2"),
 			Actor: &User{
-				Login: Ptr("actor-user"),
-				ID:    Ptr(int64(1)),
+				Login: new("actor-user"),
+				ID:    new(int64(1)),
 			},
-			Event:     Ptr("review_request_removed"),
+			Event:     new("review_request_removed"),
 			CreatedAt: &Timestamp{referenceTime},
 			Reviewer: &User{
-				Login: Ptr("reviewer-user"),
-				ID:    Ptr(int64(2)),
+				Login: new("reviewer-user"),
+				ID:    new(int64(2)),
 			},
 		},
 	}

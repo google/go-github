@@ -34,7 +34,7 @@ func TestAuthorizationsService_Check(t *testing.T) {
 		t.Errorf("Authorizations.Check returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Ptr(int64(1))}
+	want := &Authorization{ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Authorizations.Check returned auth %+v, want %+v", got, want)
 	}
@@ -75,7 +75,7 @@ func TestAuthorizationsService_Reset(t *testing.T) {
 		t.Errorf("Authorizations.Reset returned error: %v", err)
 	}
 
-	want := &Authorization{ID: Ptr(int64(1))}
+	want := &Authorization{ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Authorizations.Reset returned auth %+v, want %+v", got, want)
 	}
@@ -176,7 +176,7 @@ func TestAuthorizationsService_CreateImpersonation(t *testing.T) {
 		t.Errorf("Authorizations.CreateImpersonation returned error: %+v", err)
 	}
 
-	want := &Authorization{ID: Ptr(int64(1))}
+	want := &Authorization{ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("Authorizations.CreateImpersonation returned %+v, want %+v", *got.ID, *want.ID)
 	}

@@ -31,7 +31,7 @@ func TestRepositoriesService_ListDeployments(t *testing.T) {
 		t.Errorf("Repositories.ListDeployments returned error: %v", err)
 	}
 
-	want := []*Deployment{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*Deployment{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(deployments, want) {
 		t.Errorf("Repositories.ListDeployments returned %+v, want %+v", deployments, want)
 	}
@@ -66,7 +66,7 @@ func TestRepositoriesService_GetDeployment(t *testing.T) {
 		t.Errorf("Repositories.GetDeployment returned error: %v", err)
 	}
 
-	want := &Deployment{ID: Ptr(int64(3))}
+	want := &Deployment{ID: new(int64(3))}
 
 	if !cmp.Equal(deployment, want) {
 		t.Errorf("Repositories.GetDeployment returned %+v, want %+v", deployment, want)
@@ -91,7 +91,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := DeploymentRequest{Ref: "1111", Task: Ptr("deploy"), TransientEnvironment: Ptr(true)}
+	input := DeploymentRequest{Ref: "1111", Task: new("deploy"), TransientEnvironment: new(true)}
 
 	mux.HandleFunc("/repos/o/r/deployments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -107,7 +107,7 @@ func TestRepositoriesService_CreateDeployment(t *testing.T) {
 		t.Errorf("Repositories.CreateDeployment returned error: %v", err)
 	}
 
-	want := &Deployment{Ref: Ptr("1111"), Task: Ptr("deploy")}
+	want := &Deployment{Ref: new("1111"), Task: new("deploy")}
 	if !cmp.Equal(deployment, want) {
 		t.Errorf("Repositories.CreateDeployment returned %+v, want %+v", deployment, want)
 	}
@@ -183,7 +183,7 @@ func TestRepositoriesService_ListDeploymentStatuses(t *testing.T) {
 		t.Errorf("Repositories.ListDeploymentStatuses returned error: %v", err)
 	}
 
-	want := []*DeploymentStatus{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*DeploymentStatus{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(statuses, want) {
 		t.Errorf("Repositories.ListDeploymentStatuses returned %+v, want %+v", statuses, want)
 	}
@@ -220,7 +220,7 @@ func TestRepositoriesService_GetDeploymentStatus(t *testing.T) {
 		t.Errorf("Repositories.GetDeploymentStatus returned error: %v", err)
 	}
 
-	want := &DeploymentStatus{ID: Ptr(int64(4))}
+	want := &DeploymentStatus{ID: new(int64(4))}
 	if !cmp.Equal(deploymentStatus, want) {
 		t.Errorf("Repositories.GetDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
 	}
@@ -244,7 +244,7 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := DeploymentStatusRequest{State: "inactive", Description: Ptr("deploy"), AutoInactive: Ptr(false)}
+	input := DeploymentStatusRequest{State: "inactive", Description: new("deploy"), AutoInactive: new(false)}
 
 	mux.HandleFunc("/repos/o/r/deployments/1/statuses", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -260,7 +260,7 @@ func TestRepositoriesService_CreateDeploymentStatus(t *testing.T) {
 		t.Errorf("Repositories.CreateDeploymentStatus returned error: %v", err)
 	}
 
-	want := &DeploymentStatus{State: Ptr("inactive"), Description: Ptr("deploy")}
+	want := &DeploymentStatus{State: new("inactive"), Description: new("deploy")}
 	if !cmp.Equal(deploymentStatus, want) {
 		t.Errorf("Repositories.CreateDeploymentStatus returned %+v, want %+v", deploymentStatus, want)
 	}

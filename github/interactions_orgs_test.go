@@ -29,7 +29,7 @@ func TestInteractionsService_GetRestrictionsForOrgs(t *testing.T) {
 		t.Errorf("Interactions.GetRestrictionsForOrg returned error: %v", err)
 	}
 
-	want := &InteractionRestriction{Origin: Ptr("organization")}
+	want := &InteractionRestriction{Origin: new("organization")}
 	if !cmp.Equal(organizationInteractions, want) {
 		t.Errorf("Interactions.GetRestrictionsForOrg returned %+v, want %+v", organizationInteractions, want)
 	}
@@ -53,7 +53,7 @@ func TestInteractionsService_UpdateRestrictionsForOrg(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &InteractionRestriction{Limit: Ptr("existing_users")}
+	input := &InteractionRestriction{Limit: new("existing_users")}
 
 	mux.HandleFunc("/orgs/o/interaction-limits", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
@@ -68,7 +68,7 @@ func TestInteractionsService_UpdateRestrictionsForOrg(t *testing.T) {
 		t.Errorf("Interactions.UpdateRestrictionsForOrg returned error: %v", err)
 	}
 
-	want := &InteractionRestriction{Origin: Ptr("organization")}
+	want := &InteractionRestriction{Origin: new("organization")}
 	if !cmp.Equal(organizationInteractions, want) {
 		t.Errorf("Interactions.UpdateRestrictionsForOrg returned %+v, want %+v", organizationInteractions, want)
 	}

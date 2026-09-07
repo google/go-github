@@ -87,44 +87,44 @@ var feedsJSON = []byte(`{
 }`)
 
 var wantFeeds = &Feeds{
-	TimelineURL:                Ptr("https://github.com/timeline"),
-	UserURL:                    Ptr("https://github.com/{user}"),
-	CurrentUserPublicURL:       Ptr("https://github.com/defunkt"),
-	CurrentUserURL:             Ptr("https://github.com/defunkt.private?token=abc123"),
-	CurrentUserActorURL:        Ptr("https://github.com/defunkt.private.actor?token=abc123"),
-	CurrentUserOrganizationURL: Ptr(""),
+	TimelineURL:                new("https://github.com/timeline"),
+	UserURL:                    new("https://github.com/{user}"),
+	CurrentUserPublicURL:       new("https://github.com/defunkt"),
+	CurrentUserURL:             new("https://github.com/defunkt.private?token=abc123"),
+	CurrentUserActorURL:        new("https://github.com/defunkt.private.actor?token=abc123"),
+	CurrentUserOrganizationURL: new(""),
 	CurrentUserOrganizationURLs: []string{
 		"https://github.com/organizations/github/defunkt.private.atom?token=abc123",
 	},
 	Links: &FeedLinks{
 		Timeline: &FeedLink{
-			HRef: Ptr("https://github.com/timeline"),
-			Type: Ptr("application/atom+xml"),
+			HRef: new("https://github.com/timeline"),
+			Type: new("application/atom+xml"),
 		},
 		User: &FeedLink{
-			HRef: Ptr("https://github.com/{user}"),
-			Type: Ptr("application/atom+xml"),
+			HRef: new("https://github.com/{user}"),
+			Type: new("application/atom+xml"),
 		},
 		CurrentUserPublic: &FeedLink{
-			HRef: Ptr("https://github.com/defunkt"),
-			Type: Ptr("application/atom+xml"),
+			HRef: new("https://github.com/defunkt"),
+			Type: new("application/atom+xml"),
 		},
 		CurrentUser: &FeedLink{
-			HRef: Ptr("https://github.com/defunkt.private?token=abc123"),
-			Type: Ptr("application/atom+xml"),
+			HRef: new("https://github.com/defunkt.private?token=abc123"),
+			Type: new("application/atom+xml"),
 		},
 		CurrentUserActor: &FeedLink{
-			HRef: Ptr("https://github.com/defunkt.private.actor?token=abc123"),
-			Type: Ptr("application/atom+xml"),
+			HRef: new("https://github.com/defunkt.private.actor?token=abc123"),
+			Type: new("application/atom+xml"),
 		},
 		CurrentUserOrganization: &FeedLink{
-			HRef: Ptr(""),
-			Type: Ptr(""),
+			HRef: new(""),
+			Type: new(""),
 		},
 		CurrentUserOrganizations: []*FeedLink{
 			{
-				HRef: Ptr("https://github.com/organizations/github/defunkt.private.atom?token=abc123"),
-				Type: Ptr("application/atom+xml"),
+				HRef: new("https://github.com/organizations/github/defunkt.private.atom?token=abc123"),
+				Type: new("application/atom+xml"),
 			},
 		},
 	},

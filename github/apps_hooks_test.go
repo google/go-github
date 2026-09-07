@@ -34,10 +34,10 @@ func TestAppsService_GetHookConfig(t *testing.T) {
 	}
 
 	want := &HookConfig{
-		ContentType: Ptr("json"),
-		InsecureSSL: Ptr("0"),
-		Secret:      Ptr("********"),
-		URL:         Ptr("https://example.com/webhook"),
+		ContentType: new("json"),
+		InsecureSSL: new("0"),
+		Secret:      new("********"),
+		URL:         new("https://example.com/webhook"),
 	}
 	if !cmp.Equal(config, want) {
 		t.Errorf("Apps.GetHookConfig returned %+v, want %+v", config, want)
@@ -58,10 +58,10 @@ func TestAppsService_UpdateHookConfig(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := HookConfig{
-		ContentType: Ptr("json"),
-		InsecureSSL: Ptr("1"),
-		Secret:      Ptr("s"),
-		URL:         Ptr("u"),
+		ContentType: new("json"),
+		InsecureSSL: new("1"),
+		Secret:      new("s"),
+		URL:         new("u"),
 	}
 
 	mux.HandleFunc("/app/hook/config", func(w http.ResponseWriter, r *http.Request) {
@@ -82,10 +82,10 @@ func TestAppsService_UpdateHookConfig(t *testing.T) {
 	}
 
 	want := &HookConfig{
-		ContentType: Ptr("json"),
-		InsecureSSL: Ptr("1"),
-		Secret:      Ptr("********"),
-		URL:         Ptr("u"),
+		ContentType: new("json"),
+		InsecureSSL: new("1"),
+		Secret:      new("********"),
+		URL:         new("u"),
 	}
 	if !cmp.Equal(config, want) {
 		t.Errorf("Apps.UpdateHookConfig returned %+v, want %+v", config, want)

@@ -32,7 +32,7 @@ func TestGistsService_List_specifiedUser(t *testing.T) {
 		t.Errorf("Gists.List returned error: %v", err)
 	}
 
-	want := []*Gist{{ID: Ptr("1")}}
+	want := []*Gist{{ID: new("1")}}
 	if !cmp.Equal(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
@@ -67,7 +67,7 @@ func TestGistsService_List_authenticatedUser(t *testing.T) {
 		t.Errorf("Gists.List returned error: %v", err)
 	}
 
-	want := []*Gist{{ID: Ptr("1")}}
+	want := []*Gist{{ID: new("1")}}
 	if !cmp.Equal(gists, want) {
 		t.Errorf("Gists.List returned %+v, want %+v", gists, want)
 	}
@@ -115,7 +115,7 @@ func TestGistsService_ListAll(t *testing.T) {
 		t.Errorf("Gists.ListAll returned error: %v", err)
 	}
 
-	want := []*Gist{{ID: Ptr("1")}}
+	want := []*Gist{{ID: new("1")}}
 	if !cmp.Equal(gists, want) {
 		t.Errorf("Gists.ListAll returned %+v, want %+v", gists, want)
 	}
@@ -149,7 +149,7 @@ func TestGistsService_ListStarred(t *testing.T) {
 		t.Errorf("Gists.ListStarred returned error: %v", err)
 	}
 
-	want := []*Gist{{ID: Ptr("1")}}
+	want := []*Gist{{ID: new("1")}}
 	if !cmp.Equal(gists, want) {
 		t.Errorf("Gists.ListStarred returned %+v, want %+v", gists, want)
 	}
@@ -179,7 +179,7 @@ func TestGistsService_Get(t *testing.T) {
 		t.Errorf("Gists.Get returned error: %v", err)
 	}
 
-	want := &Gist{ID: Ptr("1")}
+	want := &Gist{ID: new("1")}
 	if !cmp.Equal(gist, want) {
 		t.Errorf("Gists.Get returned %+v, want %+v", gist, want)
 	}
@@ -223,7 +223,7 @@ func TestGistsService_GetRevision(t *testing.T) {
 		t.Errorf("Gists.GetRevision returned error: %v", err)
 	}
 
-	want := &Gist{ID: Ptr("1")}
+	want := &Gist{ID: new("1")}
 	if !cmp.Equal(gist, want) {
 		t.Errorf("Gists.GetRevision returned %+v, want %+v", gist, want)
 	}
@@ -257,8 +257,8 @@ func TestGistsService_Create(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := CreateGistRequest{
-		Description: Ptr("Gist description"),
-		Public:      Ptr(false),
+		Description: new("Gist description"),
+		Public:      new(false),
 		Files: map[GistFilename]*CreateGistFile{
 			"test.txt": {Content: "Gist file content"},
 		},
@@ -289,11 +289,11 @@ func TestGistsService_Create(t *testing.T) {
 	}
 
 	want := &Gist{
-		ID:          Ptr("1"),
-		Description: Ptr("Gist description"),
-		Public:      Ptr(false),
+		ID:          new("1"),
+		Description: new("Gist description"),
+		Public:      new(false),
 		Files: map[GistFilename]GistFile{
-			"test.txt": {Filename: Ptr("test.txt")},
+			"test.txt": {Filename: new("test.txt")},
 		},
 	}
 	if !cmp.Equal(gist, want) {
@@ -315,9 +315,9 @@ func TestGistsService_Update(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := UpdateGistRequest{
-		Description: Ptr("New description"),
+		Description: new("New description"),
 		Files: map[GistFilename]*UpdateGistFile{
-			"new.txt": {Content: Ptr("new file content")},
+			"new.txt": {Content: new("new file content")},
 			// A nil value deletes the file from the gist.
 			"old.txt": nil,
 		},
@@ -351,12 +351,12 @@ func TestGistsService_Update(t *testing.T) {
 	}
 
 	want := &Gist{
-		ID:          Ptr("1"),
-		Description: Ptr("new description"),
-		Public:      Ptr(false),
+		ID:          new("1"),
+		Description: new("new description"),
+		Public:      new(false),
 		Files: map[GistFilename]GistFile{
-			"test.txt": {Filename: Ptr("test.txt")},
-			"new.txt":  {Filename: Ptr("new.txt")},
+			"test.txt": {Filename: new("test.txt")},
+			"new.txt":  {Filename: new("new.txt")},
 		},
 	}
 	if !cmp.Equal(gist, want) {
@@ -420,14 +420,14 @@ func TestGistsService_ListCommits(t *testing.T) {
 	}
 
 	want := []*GistCommit{{
-		URL:         Ptr("https://api.github.com/gists/1/1"),
-		Version:     Ptr("1"),
-		User:        &User{ID: Ptr(int64(1))},
+		URL:         new("https://api.github.com/gists/1/1"),
+		Version:     new("1"),
+		User:        &User{ID: new(int64(1))},
 		CommittedAt: &referenceTimestamp,
 		ChangeStatus: &CommitStats{
-			Additions: Ptr(180),
-			Deletions: Ptr(0),
-			Total:     Ptr(180),
+			Additions: new(180),
+			Deletions: new(0),
+			Total:     new(180),
 		},
 	}}
 
@@ -684,7 +684,7 @@ func TestGistsService_Fork(t *testing.T) {
 		t.Errorf("Gists.Fork returned error: %v", err)
 	}
 
-	want := &Gist{ID: Ptr("2")}
+	want := &Gist{ID: new("2")}
 	if !cmp.Equal(gist, want) {
 		t.Errorf("Gists.Fork returned %+v, want %+v", gist, want)
 	}
@@ -730,9 +730,9 @@ func TestGistsService_ListForks(t *testing.T) {
 	}
 
 	want := []*GistFork{{
-		URL:       Ptr("https://api.github.com/gists/1"),
-		ID:        Ptr("1"),
-		User:      &User{ID: Ptr(int64(1))},
+		URL:       new("https://api.github.com/gists/1"),
+		ID:        new("1"),
+		User:      &User{ID: new(int64(1))},
 		CreatedAt: refTimestamp(1136178000),
 		UpdatedAt: refTimestamp(1136178001),
 	}}

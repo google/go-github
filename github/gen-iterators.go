@@ -164,9 +164,10 @@ var useCursorPagination = map[string]bool{
 
 // customNames provides custom names for iterator methods where the default methodName + "Iter" would be confusing.
 var customNames = map[string]string{
-	"RepositoriesService.GetCommit":         "ListCommitFiles",
-	"RepositoriesService.CompareCommits":    "ListCommitComparisonFiles",
-	"RepositoriesService.GetCombinedStatus": "ListCombinedStatus",
+	"EnterpriseService.GetUserStatesForBudget": "ListUserStatesForBudget",
+	"RepositoriesService.GetCommit":            "ListCommitFiles",
+	"RepositoriesService.CompareCommits":       "ListCommitComparisonFiles",
+	"RepositoriesService.GetCombinedStatus":    "ListCombinedStatus",
 }
 
 // sliceToBeUsedForIteration identifies methods where the wrapper struct contains multiple []*T fields,
@@ -687,7 +688,7 @@ func ({{.RecvVar}} *{{.RecvType}}) {{.IterMethod}}({{.Args}}) iter.Seq2[{{.Retur
 		if {{.OptsName}} == nil {
 			{{.OptsName}} = &{{.OptsType}}{}
 		} else {
-			{{.OptsName}} = Ptr(*{{.OptsName}})
+			{{.OptsName}} = new(*{{.OptsName}})
 		}
 
 		{{end}}

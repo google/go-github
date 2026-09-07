@@ -109,7 +109,7 @@ func TestRepositoriesService_GetRelease(t *testing.T) {
 		t.Errorf("Repositories.GetRelease returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &RepositoryRelease{ID: 1, Author: &User{Login: Ptr("l")}}
+	want := &RepositoryRelease{ID: 1, Author: &User{Login: new("l")}}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetRelease returned %+v, want %+v", release, want)
 	}
@@ -205,9 +205,9 @@ func TestRepositoriesService_CreateRelease(t *testing.T) {
 
 	input := CreateReleaseRequest{
 		TagName:                "v1.0",
-		Name:                   Ptr("v1.0"),
-		DiscussionCategoryName: Ptr("General"),
-		GenerateReleaseNotes:   Ptr(true),
+		Name:                   new("v1.0"),
+		DiscussionCategoryName: new("General"),
+		GenerateReleaseNotes:   new(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/releases", func(w http.ResponseWriter, r *http.Request) {
@@ -247,8 +247,8 @@ func TestRepositoriesService_UpdateRelease(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := UpdateReleaseRequest{
-		Name:                   Ptr("n"),
-		DiscussionCategoryName: Ptr("General"),
+		Name:                   new("n"),
+		DiscussionCategoryName: new("General"),
 	}
 
 	mux.HandleFunc("/repos/o/r/releases/1", func(w http.ResponseWriter, r *http.Request) {
@@ -323,7 +323,7 @@ func TestRepositoriesService_ListReleaseAssets(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListReleaseAssets returned error: %v", err)
 	}
-	want := []*ReleaseAsset{{ID: Ptr(int64(1))}}
+	want := []*ReleaseAsset{{ID: new(int64(1))}}
 	if !cmp.Equal(assets, want) {
 		t.Errorf("Repositories.ListReleaseAssets returned %+v, want %+v", assets, want)
 	}
@@ -357,7 +357,7 @@ func TestRepositoriesService_GetReleaseAsset(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.GetReleaseAsset returned error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	want := &ReleaseAsset{ID: new(int64(1))}
 	if !cmp.Equal(asset, want) {
 		t.Errorf("Repositories.GetReleaseAsset returned %+v, want %+v", asset, want)
 	}
@@ -537,6 +537,56 @@ func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToError(t *testi
 	}
 }
 
+// CheckResponse substitutes resp.Body with a re-readable copy on error
+// responses; downloadReleaseAssetFromURL must still close the original body it
+// replaces. Unlike its sibling tests, the recorder wraps the follow-redirects
+// client's transport: that client, not the library client, performs the
+// redirected request, so wrapping the library client would only ever observe
+// the first hop's correctly-closed redirect response and never the leak.
+func TestRepositoriesService_DownloadReleaseAsset_FollowRedirectToErrorClosesOriginalBody(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		// /yo, below will be served as baseURLPath/yo
+		http.Redirect(w, r, baseURLPath+"/yo", http.StatusFound)
+	})
+	mux.HandleFunc("/yo", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testHeader(t, r, "Accept", defaultMediaType)
+		http.Error(w, `{"message":"Not Found"}`, 404)
+	})
+
+	var closed bool
+	followRedirectsClient := &http.Client{
+		Transport: roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			resp, err := http.DefaultTransport.RoundTrip(req)
+			if resp != nil {
+				resp.Body = &closeRecorder{ReadCloser: resp.Body, closed: &closed}
+			}
+			return resp, err
+		}),
+	}
+
+	ctx := t.Context()
+	rc, loc, err := client.Repositories.DownloadReleaseAsset(ctx, "o", "r", 1, followRedirectsClient)
+	if err == nil {
+		t.Error("Repositories.DownloadReleaseAsset did not return an error")
+	}
+	if rc != nil {
+		rc.Close()
+		t.Error("Repositories.DownloadReleaseAsset returned stream, want nil")
+	}
+	if loc != "" {
+		t.Errorf(`Repositories.DownloadReleaseAsset returned "%v", want empty ""`, loc)
+	}
+	if !closed {
+		t.Error("original response body was not closed on an error response")
+	}
+}
+
 func TestRepositoriesService_DownloadReleaseAsset_APIError(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -568,7 +618,7 @@ func TestRepositoriesService_UpdateReleaseAsset(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := UpdateReleaseAssetRequest{Name: Ptr("n")}
+	input := UpdateReleaseAssetRequest{Name: new("n")}
 
 	mux.HandleFunc("/repos/o/r/releases/assets/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -581,7 +631,7 @@ func TestRepositoriesService_UpdateReleaseAsset(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.UpdateReleaseAsset returned error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	want := &ReleaseAsset{ID: new(int64(1))}
 	if !cmp.Equal(asset, want) {
 		t.Errorf("Repositories.UpdateReleaseAsset returned = %+v, want %+v", asset, want)
 	}
@@ -704,7 +754,7 @@ func TestRepositoriesService_UploadReleaseAsset(t *testing.T) {
 		if err != nil {
 			t.Errorf("Repositories.UploadReleaseAsset returned error: %v", err)
 		}
-		want := &ReleaseAsset{ID: Ptr(int64(1))}
+		want := &ReleaseAsset{ID: new(int64(1))}
 		if !cmp.Equal(asset, want) {
 			t.Errorf("Repositories.UploadReleaseAsset returned %+v, want %+v", asset, want)
 		}
@@ -764,7 +814,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Repositories.UploadReleaseAssetFromRelease returned error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	want := &ReleaseAsset{ID: new(int64(1))}
 	if !cmp.Equal(asset, want) {
 		t.Fatalf("Repositories.UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
 	}
@@ -794,7 +844,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_AbsoluteTemplate(t *t
 	if err != nil {
 		t.Fatalf("UploadReleaseAssetFromRelease returned error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	want := &ReleaseAsset{ID: new(int64(1))}
 	if !cmp.Equal(asset, want) {
 		t.Fatalf("UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
 	}
@@ -878,7 +928,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_NoOpts(t *testing.T) 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	want := &ReleaseAsset{ID: new(int64(1))}
 	if !cmp.Equal(asset, want) {
 		t.Fatalf("Repositories.UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
 	}
@@ -917,7 +967,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_WithMediaType(t *test
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	want := &ReleaseAsset{ID: Ptr(int64(1))}
+	want := &ReleaseAsset{ID: new(int64(1))}
 	if !cmp.Equal(asset, want) {
 		t.Fatalf("UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
 	}

@@ -29,11 +29,11 @@ func TestActionsService_ListRunnerApplicationDownloads(t *testing.T) {
 	}
 
 	want := []*RunnerApplicationDownload{
-		{OS: Ptr("osx"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-osx-x64-2.164.0.tar.gz")},
-		{OS: Ptr("linux"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-x64-2.164.0.tar.gz")},
-		{OS: Ptr("linux"), Architecture: Ptr("arm"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-arm-2.164.0.tar.gz")},
-		{OS: Ptr("win"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: Ptr("actions-runner-win-x64-2.164.0.zip")},
-		{OS: Ptr("linux"), Architecture: Ptr("arm64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-arm64-2.164.0.tar.gz")},
+		{OS: new("osx"), Architecture: new("x64"), DownloadURL: new("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: new("actions-runner-osx-x64-2.164.0.tar.gz")},
+		{OS: new("linux"), Architecture: new("x64"), DownloadURL: new("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: new("actions-runner-linux-x64-2.164.0.tar.gz")},
+		{OS: new("linux"), Architecture: new("arm"), DownloadURL: new("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: new("actions-runner-linux-arm-2.164.0.tar.gz")},
+		{OS: new("win"), Architecture: new("x64"), DownloadURL: new("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: new("actions-runner-win-x64-2.164.0.zip")},
+		{OS: new("linux"), Architecture: new("arm64"), DownloadURL: new("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: new("actions-runner-linux-arm64-2.164.0.tar.gz")},
 	}
 	if !cmp.Equal(downloads, want) {
 		t.Errorf("Actions.ListRunnerApplicationDownloads returned %+v, want %+v", downloads, want)
@@ -72,7 +72,7 @@ func TestActionsService_CreateOrgJITConfig(t *testing.T) {
 		t.Errorf("Actions.CreateOrgJITConfig returned error: %v", err)
 	}
 
-	want := &JITRunnerConfig{EncodedJITConfig: Ptr("foo")}
+	want := &JITRunnerConfig{EncodedJITConfig: new("foo")}
 	if !cmp.Equal(jitConfig, want) {
 		t.Errorf("Actions.CreateOrgJITConfig returned %+v, want %+v", jitConfig, want)
 	}
@@ -110,7 +110,7 @@ func TestActionsService_CreateRepoJITConfig(t *testing.T) {
 		t.Errorf("Actions.CreateRepoJITConfig returned error: %v", err)
 	}
 
-	want := &JITRunnerConfig{EncodedJITConfig: Ptr("foo")}
+	want := &JITRunnerConfig{EncodedJITConfig: new("foo")}
 	if !cmp.Equal(jitConfig, want) {
 		t.Errorf("Actions.CreateRepoJITConfig returned %+v, want %+v", jitConfig, want)
 	}
@@ -146,7 +146,7 @@ func TestActionsService_CreateRegistrationToken(t *testing.T) {
 	}
 
 	want := &RegistrationToken{
-		Token:     Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
+		Token:     new("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &referenceTimestamp,
 	}
 	if !cmp.Equal(token, want) {
@@ -179,7 +179,7 @@ func TestActionsService_ListRunners(t *testing.T) {
 	})
 
 	opts := &ListRunnersOptions{
-		Name:        Ptr("MBP"),
+		Name:        new("MBP"),
 		ListOptions: ListOptions{Page: 2, PerPage: 2},
 	}
 	ctx := t.Context()
@@ -191,7 +191,7 @@ func TestActionsService_ListRunners(t *testing.T) {
 	want := &Runners{
 		TotalCount: 1,
 		Runners: []*Runner{
-			{ID: Ptr(int64(23)), Name: Ptr("MBP"), OS: Ptr("macos"), Status: Ptr("online")},
+			{ID: new(int64(23)), Name: new("MBP"), OS: new("macos"), Status: new("online")},
 		},
 	}
 	if !cmp.Equal(runners, want) {
@@ -229,10 +229,10 @@ func TestActionsService_GetRunner(t *testing.T) {
 	}
 
 	want := &Runner{
-		ID:     Ptr(int64(23)),
-		Name:   Ptr("MBP"),
-		OS:     Ptr("macos"),
-		Status: Ptr("online"),
+		ID:     new(int64(23)),
+		Name:   new("MBP"),
+		OS:     new("macos"),
+		Status: new("online"),
 	}
 	if !cmp.Equal(runner, want) {
 		t.Errorf("Actions.GetRunner returned %+v, want %+v", runner, want)
@@ -268,7 +268,7 @@ func TestActionsService_CreateRemoveToken(t *testing.T) {
 		t.Errorf("Actions.CreateRemoveToken returned error: %v", err)
 	}
 
-	want := &RemoveToken{Token: Ptr("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &referenceTimestamp}
+	want := &RemoveToken{Token: new("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &referenceTimestamp}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateRemoveToken returned %+v, want %+v", token, want)
 	}
@@ -329,11 +329,11 @@ func TestActionsService_ListOrganizationRunnerApplicationDownloads(t *testing.T)
 	}
 
 	want := []*RunnerApplicationDownload{
-		{OS: Ptr("osx"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-osx-x64-2.164.0.tar.gz")},
-		{OS: Ptr("linux"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-x64-2.164.0.tar.gz")},
-		{OS: Ptr("linux"), Architecture: Ptr("arm"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-arm-2.164.0.tar.gz")},
-		{OS: Ptr("win"), Architecture: Ptr("x64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: Ptr("actions-runner-win-x64-2.164.0.zip")},
-		{OS: Ptr("linux"), Architecture: Ptr("arm64"), DownloadURL: Ptr("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: Ptr("actions-runner-linux-arm64-2.164.0.tar.gz")},
+		{OS: new("osx"), Architecture: new("x64"), DownloadURL: new("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-osx-x64-2.164.0.tar.gz"), Filename: new("actions-runner-osx-x64-2.164.0.tar.gz")},
+		{OS: new("linux"), Architecture: new("x64"), DownloadURL: new("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-x64-2.164.0.tar.gz"), Filename: new("actions-runner-linux-x64-2.164.0.tar.gz")},
+		{OS: new("linux"), Architecture: new("arm"), DownloadURL: new("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm-2.164.0.tar.gz"), Filename: new("actions-runner-linux-arm-2.164.0.tar.gz")},
+		{OS: new("win"), Architecture: new("x64"), DownloadURL: new("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-win-x64-2.164.0.zip"), Filename: new("actions-runner-win-x64-2.164.0.zip")},
+		{OS: new("linux"), Architecture: new("arm64"), DownloadURL: new("https://github.com/actions/runner/releases/download/v2.164.0/actions-runner-linux-arm64-2.164.0.tar.gz"), Filename: new("actions-runner-linux-arm64-2.164.0.tar.gz")},
 	}
 	if !cmp.Equal(downloads, want) {
 		t.Errorf("Actions.ListOrganizationRunnerApplicationDownloads returned %+v, want %+v", downloads, want)
@@ -370,7 +370,7 @@ func TestActionsService_CreateOrganizationRegistrationToken(t *testing.T) {
 	}
 
 	want := &RegistrationToken{
-		Token:     Ptr("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
+		Token:     new("LLBF3JGZDX3P5PMEXLND6TS6FCWO6"),
 		ExpiresAt: &referenceTimestamp,
 	}
 	if !cmp.Equal(token, want) {
@@ -414,8 +414,8 @@ func TestActionsService_ListOrganizationRunners(t *testing.T) {
 	want := &Runners{
 		TotalCount: 2,
 		Runners: []*Runner{
-			{ID: Ptr(int64(23)), Name: Ptr("MBP"), OS: Ptr("macos"), Status: Ptr("online")},
-			{ID: Ptr(int64(24)), Name: Ptr("iMac"), OS: Ptr("macos"), Status: Ptr("offline")},
+			{ID: new(int64(23)), Name: new("MBP"), OS: new("macos"), Status: new("online")},
+			{ID: new(int64(24)), Name: new("iMac"), OS: new("macos"), Status: new("offline")},
 		},
 	}
 	if !cmp.Equal(runners, want) {
@@ -453,10 +453,10 @@ func TestActionsService_GetOrganizationRunner(t *testing.T) {
 	}
 
 	want := &Runner{
-		ID:     Ptr(int64(23)),
-		Name:   Ptr("MBP"),
-		OS:     Ptr("macos"),
-		Status: Ptr("online"),
+		ID:     new(int64(23)),
+		Name:   new("MBP"),
+		OS:     new("macos"),
+		Status: new("online"),
 	}
 	if !cmp.Equal(runner, want) {
 		t.Errorf("Actions.GetOrganizationRunner returned %+v, want %+v", runner, want)
@@ -492,7 +492,7 @@ func TestActionsService_CreateOrganizationRemoveToken(t *testing.T) {
 		t.Errorf("Actions.CreateOrganizationRemoveToken returned error: %v", err)
 	}
 
-	want := &RemoveToken{Token: Ptr("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &referenceTimestamp}
+	want := &RemoveToken{Token: new("AABF3JGZDX3P5PMEXLND6TS6FCWO6"), ExpiresAt: &referenceTimestamp}
 	if !cmp.Equal(token, want) {
 		t.Errorf("Actions.CreateOrganizationRemoveToken returned %+v, want %+v", token, want)
 	}

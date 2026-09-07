@@ -255,9 +255,9 @@ func TestEnterpriseService_ListTeamMembers(t *testing.T) {
 
 	want := []*User{
 		{
-			Login: Ptr("user1"),
-			ID:    Ptr(int64(1001)),
-			URL:   Ptr("https://example.com/user1"),
+			Login: new("user1"),
+			ID:    new(int64(1001)),
+			URL:   new("https://example.com/user1"),
 		},
 	}
 
@@ -302,8 +302,8 @@ func TestEnterpriseService_BulkAddTeamMembers(t *testing.T) {
 	}
 
 	want := []*User{
-		{Login: Ptr("u1"), ID: Ptr(int64(1))},
-		{Login: Ptr("u2"), ID: Ptr(int64(2))},
+		{Login: new("u1"), ID: new(int64(1))},
+		{Login: new("u2"), ID: new(int64(2))},
 	}
 
 	if !cmp.Equal(got, want) {
@@ -347,8 +347,8 @@ func TestEnterpriseService_BulkRemoveTeamMembers(t *testing.T) {
 	}
 
 	want := []*User{
-		{Login: Ptr("u1"), ID: Ptr(int64(1))},
-		{Login: Ptr("u2"), ID: Ptr(int64(2))},
+		{Login: new("u1"), ID: new(int64(1))},
+		{Login: new("u2"), ID: new(int64(2))},
 	}
 
 	if !cmp.Equal(got, want) {
@@ -388,8 +388,8 @@ func TestEnterpriseService_GetTeamMembership(t *testing.T) {
 	}
 
 	want := &User{
-		Login: Ptr("u1"),
-		ID:    Ptr(int64(10)),
+		Login: new("u1"),
+		ID:    new(int64(10)),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -429,8 +429,8 @@ func TestEnterpriseService_AddTeamMember(t *testing.T) {
 	}
 
 	want := &User{
-		Login: Ptr("u1"),
-		ID:    Ptr(int64(5)),
+		Login: new("u1"),
+		ID:    new(int64(5)),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -512,18 +512,18 @@ func TestEnterpriseService_ListAssignments(t *testing.T) {
 
 	want := []*Organization{
 		{
-			Login:            Ptr("team-one"),
-			URL:              Ptr("https://example.com/team1"),
-			NodeID:           Ptr("node-id"),
-			ReposURL:         Ptr("https://example.com/members"),
-			EventsURL:        Ptr("https://example.com/events"),
-			ID:               Ptr(int64(1)),
-			HooksURL:         Ptr("https://api.github.com/orgs/team-one/hooks"),
-			IssuesURL:        Ptr("https://api.github.com/orgs/team-one/issues"),
-			MembersURL:       Ptr("https://api.github.com/orgs/team-one/members"),
-			PublicMembersURL: Ptr("https://api.github.com/orgs/team-one/public_members"),
-			AvatarURL:        Ptr("https://github.com/images/error/octocat_happy.gif"),
-			Description:      Ptr("Team One"),
+			Login:            new("team-one"),
+			URL:              new("https://example.com/team1"),
+			NodeID:           new("node-id"),
+			ReposURL:         new("https://example.com/members"),
+			EventsURL:        new("https://example.com/events"),
+			ID:               new(int64(1)),
+			HooksURL:         new("https://api.github.com/orgs/team-one/hooks"),
+			IssuesURL:        new("https://api.github.com/orgs/team-one/issues"),
+			MembersURL:       new("https://api.github.com/orgs/team-one/members"),
+			PublicMembersURL: new("https://api.github.com/orgs/team-one/public_members"),
+			AvatarURL:        new("https://github.com/images/error/octocat_happy.gif"),
+			Description:      new("Team One"),
 		},
 	}
 
@@ -569,8 +569,8 @@ func TestEnterpriseService_AddMultipleAssignments(t *testing.T) {
 	}
 
 	want := []*Organization{
-		{Login: Ptr("o1"), ID: Ptr(int64(1))},
-		{Login: Ptr("o2"), ID: Ptr(int64(2))},
+		{Login: new("o1"), ID: new(int64(1))},
+		{Login: new("o2"), ID: new(int64(2))},
 	}
 
 	if !cmp.Equal(got, want) {
@@ -614,8 +614,8 @@ func TestEnterpriseService_RemoveMultipleAssignments(t *testing.T) {
 	}
 
 	want := []*Organization{
-		{Login: Ptr("o1"), ID: Ptr(int64(1))},
-		{Login: Ptr("o2"), ID: Ptr(int64(2))},
+		{Login: new("o1"), ID: new(int64(1))},
+		{Login: new("o2"), ID: new(int64(2))},
 	}
 
 	if !cmp.Equal(got, want) {
@@ -655,8 +655,8 @@ func TestEnterpriseService_GetAssignment(t *testing.T) {
 	}
 
 	want := &Organization{
-		Login: Ptr("o1"),
-		ID:    Ptr(int64(10)),
+		Login: new("o1"),
+		ID:    new(int64(10)),
 	}
 
 	if !cmp.Equal(got, want) {
@@ -696,8 +696,8 @@ func TestEnterpriseService_AddAssignment(t *testing.T) {
 	}
 
 	want := &Organization{
-		Login: Ptr("o1"),
-		ID:    Ptr(int64(5)),
+		Login: new("o1"),
+		ID:    new(int64(5)),
 	}
 
 	if !cmp.Equal(got, want) {

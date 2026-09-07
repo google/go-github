@@ -31,7 +31,7 @@ func TestReactionsService_ListCommentReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListCommentReactions returned error: %v", err)
 	}
-	want := []*Reaction{{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}}
+	want := []*Reaction{{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}}
 	if !cmp.Equal(reactions, want) {
 		t.Errorf("ListCommentReactions = %+v, want %+v", reactions, want)
 	}
@@ -68,7 +68,7 @@ func TestReactionsService_CreateCommentReaction(t *testing.T) {
 	if err != nil {
 		t.Errorf("CreateCommentReaction returned error: %v", err)
 	}
-	want := &Reaction{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}
+	want := &Reaction{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateCommentReaction = %+v, want %+v", got, want)
 	}
@@ -107,7 +107,7 @@ func TestReactionsService_ListIssueReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListIssueReactions returned error: %v", err)
 	}
-	want := []*Reaction{{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}}
+	want := []*Reaction{{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListIssueReactions = %+v, want %+v", got, want)
 	}
@@ -151,7 +151,7 @@ func TestReactionsService_CreateIssueReaction(t *testing.T) {
 	if err != nil {
 		t.Errorf("CreateIssueReaction returned error: %v", err)
 	}
-	want := &Reaction{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}
+	want := &Reaction{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateIssueReaction = %+v, want %+v", got, want)
 	}
@@ -190,7 +190,7 @@ func TestReactionsService_ListIssueCommentReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListIssueCommentReactions returned error: %v", err)
 	}
-	want := []*Reaction{{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}}
+	want := []*Reaction{{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListIssueCommentReactions = %+v, want %+v", got, want)
 	}
@@ -234,7 +234,7 @@ func TestReactionsService_CreateIssueCommentReaction(t *testing.T) {
 	if err != nil {
 		t.Errorf("CreateIssueCommentReaction returned error: %v", err)
 	}
-	want := &Reaction{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}
+	want := &Reaction{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateIssueCommentReaction = %+v, want %+v", got, want)
 	}
@@ -273,7 +273,7 @@ func TestReactionsService_ListPullRequestCommentReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListPullRequestCommentReactions returned error: %v", err)
 	}
-	want := []*Reaction{{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}}
+	want := []*Reaction{{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListPullRequestCommentReactions = %+v, want %+v", got, want)
 	}
@@ -317,7 +317,7 @@ func TestReactionsService_CreatePullRequestCommentReaction(t *testing.T) {
 	if err != nil {
 		t.Errorf("CreatePullRequestCommentReaction returned error: %v", err)
 	}
-	want := &Reaction{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}
+	want := &Reaction{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreatePullRequestCommentReaction = %+v, want %+v", got, want)
 	}
@@ -356,7 +356,7 @@ func TestReactionsService_ListTeamDiscussionReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListTeamDiscussionReactions returned error: %v", err)
 	}
-	want := []*Reaction{{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}}
+	want := []*Reaction{{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListTeamDiscussionReactions = %+v, want %+v", got, want)
 	}
@@ -400,7 +400,7 @@ func TestReactionsService_CreateTeamDiscussionReaction(t *testing.T) {
 	if err != nil {
 		t.Errorf("CreateTeamDiscussionReaction returned error: %v", err)
 	}
-	want := &Reaction{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}
+	want := &Reaction{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateTeamDiscussionReaction = %+v, want %+v", got, want)
 	}
@@ -439,7 +439,7 @@ func TestReactionService_ListTeamDiscussionCommentReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListTeamDiscussionCommentReactions returned error: %v", err)
 	}
-	want := []*Reaction{{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}}
+	want := []*Reaction{{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListTeamDiscussionCommentReactions = %+v, want %+v", got, want)
 	}
@@ -483,7 +483,7 @@ func TestReactionService_CreateTeamDiscussionCommentReaction(t *testing.T) {
 	if err != nil {
 		t.Errorf("CreateTeamDiscussionCommentReaction returned error: %v", err)
 	}
-	want := &Reaction{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}
+	want := &Reaction{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("CreateTeamDiscussionCommentReaction = %+v, want %+v", got, want)
 	}
@@ -846,7 +846,7 @@ func TestReactionService_CreateReleaseReaction(t *testing.T) {
 		t.Errorf("%v returned error: %v", methodName, err)
 	}
 
-	want := &Reaction{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("rocket")}
+	want := &Reaction{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("rocket")}
 	if !cmp.Equal(got, want) {
 		t.Errorf("%v = %+v, want %+v", methodName, got, want)
 	}
@@ -884,7 +884,7 @@ func TestReactionsService_ListReleaseReactions(t *testing.T) {
 	if err != nil {
 		t.Errorf("ListReleaseReactions returned error: %v", err)
 	}
-	want := []*Reaction{{ID: Ptr(int64(1)), User: &User{Login: Ptr("l"), ID: Ptr(int64(2))}, Content: Ptr("+1")}}
+	want := []*Reaction{{ID: new(int64(1)), User: &User{Login: new("l"), ID: new(int64(2))}, Content: new("+1")}}
 	if !cmp.Equal(got, want) {
 		t.Errorf("ListReleaseReactions = %+v, want %+v", got, want)
 	}

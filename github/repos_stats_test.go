@@ -51,16 +51,16 @@ func TestRepositoriesService_ListContributorsStats(t *testing.T) {
 	want := []*ContributorStats{
 		{
 			Author: &Contributor{
-				ID:     Ptr(int64(1)),
-				NodeID: Ptr("nodeid-1"),
+				ID:     new(int64(1)),
+				NodeID: new("nodeid-1"),
 			},
-			Total: Ptr(135),
+			Total: new(135),
 			Weeks: []*WeeklyStats{
 				{
 					Week:      &referenceTimestamp,
-					Additions: Ptr(6898),
-					Deletions: Ptr(77),
-					Commits:   Ptr(10),
+					Additions: new(6898),
+					Deletions: new(77),
+					Commits:   new(10),
 				},
 			},
 		},
@@ -112,7 +112,7 @@ func TestRepositoriesService_ListCommitActivity(t *testing.T) {
 	want := []*WeeklyCommitActivity{
 		{
 			Days:  []int{0, 3, 26, 20, 39, 1, 0},
-			Total: Ptr(89),
+			Total: new(89),
 			Week:  &referenceTimestamp,
 		},
 	}
@@ -154,8 +154,8 @@ func TestRepositoriesService_ListCodeFrequency(t *testing.T) {
 
 	want := []*WeeklyStats{{
 		Week:      &referenceTimestamp,
-		Additions: Ptr(1124),
-		Deletions: Ptr(-435),
+		Additions: new(1124),
+		Deletions: new(-435),
 	}}
 
 	if !cmp.Equal(code, want) {
@@ -263,9 +263,9 @@ func TestRepositoriesService_ListPunchCard(t *testing.T) {
 	}
 
 	want := []*PunchCard{
-		{Day: Ptr(0), Hour: Ptr(0), Commits: Ptr(5)},
-		{Day: Ptr(0), Hour: Ptr(1), Commits: Ptr(43)},
-		{Day: Ptr(0), Hour: Ptr(2), Commits: Ptr(21)},
+		{Day: new(0), Hour: new(0), Commits: new(5)},
+		{Day: new(0), Hour: new(1), Commits: new(43)},
+		{Day: new(0), Hour: new(2), Commits: new(21)},
 	}
 
 	if !cmp.Equal(card, want) {

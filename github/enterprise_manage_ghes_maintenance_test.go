@@ -43,7 +43,7 @@ func TestEnterpriseService_GetMaintenanceStatus(t *testing.T) {
 	})
 
 	opt := &NodeQueryOptions{
-		UUID: Ptr("1234-1234"), ClusterRoles: Ptr("primary"),
+		UUID: new("1234-1234"), ClusterRoles: new("primary"),
 	}
 	ctx := t.Context()
 	maintenanceStatus, _, err := client.Enterprise.GetMaintenanceStatus(ctx, opt)
@@ -52,17 +52,17 @@ func TestEnterpriseService_GetMaintenanceStatus(t *testing.T) {
 	}
 
 	want := []*MaintenanceStatus{{
-		Hostname:      Ptr("primary"),
-		UUID:          Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"),
-		Status:        Ptr("scheduled"),
+		Hostname:      new("primary"),
+		UUID:          new("1b6cf518-f97c-11ed-8544-061d81f7eedb"),
+		Status:        new("scheduled"),
 		ScheduledTime: &referenceTimestamp,
 		ConnectionServices: []*ConnectionServiceItem{{
-			Name:   Ptr("git operations"),
-			Number: Ptr(15),
+			Name:   new("git operations"),
+			Number: new(15),
 		}},
-		CanUnsetMaintenance:    Ptr(true),
+		CanUnsetMaintenance:    new(true),
 		IPExceptionList:        []string{"1.1.1.1"},
-		MaintenanceModeMessage: Ptr("Scheduled maintenance for upgrading."),
+		MaintenanceModeMessage: new("Scheduled maintenance for upgrading."),
 	}}
 	if !cmp.Equal(maintenanceStatus, want) {
 		t.Errorf("Enterprise.GetMaintenanceStatus returned %+v, want %+v", maintenanceStatus, want)
@@ -84,12 +84,12 @@ func TestEnterpriseService_CreateMaintenance(t *testing.T) {
 
 	input := &MaintenanceOptions{
 		Enabled: true,
-		UUID:    Ptr("1234-1234"),
-		When:    Ptr("now"),
+		UUID:    new("1234-1234"),
+		When:    new("now"),
 		IPExceptionList: []string{
 			"1.1.1.1",
 		},
-		MaintenanceModeMessage: Ptr("Scheduled maintenance for upgrading."),
+		MaintenanceModeMessage: new("Scheduled maintenance for upgrading."),
 	}
 
 	mux.HandleFunc("/manage/v1/maintenance", func(w http.ResponseWriter, r *http.Request) {
@@ -104,7 +104,7 @@ func TestEnterpriseService_CreateMaintenance(t *testing.T) {
 		t.Errorf("Enterprise.CreateMaintenance returned error: %v", err)
 	}
 
-	want := []*MaintenanceOperationStatus{{Hostname: Ptr("primary"), UUID: Ptr("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: Ptr("Scheduled maintenance for upgrading.")}}
+	want := []*MaintenanceOperationStatus{{Hostname: new("primary"), UUID: new("1b6cf518-f97c-11ed-8544-061d81f7eedb"), Message: new("Scheduled maintenance for upgrading.")}}
 	if diff := cmp.Diff(want, maintenanceStatus); diff != "" {
 		t.Errorf("diff mismatch (-want +got):\n%v", diff)
 	}

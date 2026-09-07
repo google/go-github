@@ -13,7 +13,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/google/go-github/v90/github"
+	"github.com/google/go-github/v91/github"
 )
 
 func fetchAllUserMigrations() ([]*github.UserMigration, error) {

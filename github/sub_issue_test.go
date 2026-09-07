@@ -31,7 +31,7 @@ func TestSubIssuesService_Add(t *testing.T) {
 		t.Errorf("SubIssues.Add returned error: %v", err)
 	}
 
-	want := &SubIssue{Number: Ptr(1), ID: Ptr(int64(42))}
+	want := &SubIssue{Number: new(1), ID: new(int64(42))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("SubIssues.Add = %+v, want %+v", got, want)
 	}
@@ -70,7 +70,7 @@ func TestSubIssuesService_ListByIssue(t *testing.T) {
 		t.Errorf("SubIssues.ListByIssue returned error: %v", err)
 	}
 
-	want := []*SubIssue{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*SubIssue{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(issues, want) {
 		t.Errorf("SubIssues.ListByIssue = %+v, want %+v", issues, want)
 	}
@@ -108,7 +108,7 @@ func TestSubIssuesService_Remove(t *testing.T) {
 		t.Errorf("SubIssues.Remove returned error: %v", err)
 	}
 
-	want := &SubIssue{ID: Ptr(int64(42)), Number: Ptr(1)}
+	want := &SubIssue{ID: new(int64(42)), Number: new(1)}
 	if !cmp.Equal(got, want) {
 		t.Errorf("SubIssues.Remove = %+v, want %+v", got, want)
 	}
@@ -127,7 +127,7 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &SubIssueRequest{SubIssueID: 42, AfterID: Ptr(int64(5))}
+	input := &SubIssueRequest{SubIssueID: 42, AfterID: new(int64(5))}
 
 	mux.HandleFunc("/repos/o/r/issues/1/sub_issues/priority", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -141,7 +141,7 @@ func TestSubIssuesService_Reprioritize(t *testing.T) {
 		t.Errorf("SubIssues.Reprioritize returned error: %v", err)
 	}
 
-	want := &SubIssue{ID: Ptr(int64(42)), Number: Ptr(1)}
+	want := &SubIssue{ID: new(int64(42)), Number: new(1)}
 	if !cmp.Equal(got, want) {
 		t.Errorf("SubIssues.Reprioritize = %+v, want %+v", got, want)
 	}
@@ -172,7 +172,7 @@ func TestSubIssuesService_GetParentIssue(t *testing.T) {
 		t.Errorf("SubIssues.GetParentIssue returned error: %v", err)
 	}
 
-	want := &Issue{Number: Ptr(1), ID: Ptr(int64(1))}
+	want := &Issue{Number: new(1), ID: new(int64(1))}
 	if !cmp.Equal(got, want) {
 		t.Errorf("SubIssues.GetParentIssue = %+v, want %+v", got, want)
 	}

@@ -31,10 +31,10 @@ func TestActionsService_ListWorkflows(t *testing.T) {
 	}
 
 	want := &Workflows{
-		TotalCount: Ptr(4),
+		TotalCount: new(4),
 		Workflows: []*Workflow{
-			{ID: Ptr(int64(72844)), CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
-			{ID: Ptr(int64(72845)), CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
+			{ID: new(int64(72844)), CreatedAt: refTimestamp(1136178000), UpdatedAt: refTimestamp(1136178001)},
+			{ID: new(int64(72845)), CreatedAt: refTimestamp(1136178002), UpdatedAt: refTimestamp(1136178003)},
 		},
 	}
 	if !cmp.Equal(workflows, want) {
@@ -72,7 +72,7 @@ func TestActionsService_GetWorkflowByID(t *testing.T) {
 	}
 
 	want := &Workflow{
-		ID:        Ptr(int64(72844)),
+		ID:        new(int64(72844)),
 		CreatedAt: refTimestamp(1136178000),
 		UpdatedAt: refTimestamp(1136178001),
 	}
@@ -111,7 +111,7 @@ func TestActionsService_GetWorkflowByFileName(t *testing.T) {
 	}
 
 	want := &Workflow{
-		ID:        Ptr(int64(72844)),
+		ID:        new(int64(72844)),
 		CreatedAt: refTimestamp(1136178000),
 		UpdatedAt: refTimestamp(1136178001),
 	}
@@ -152,13 +152,13 @@ func TestActionsService_GetWorkflowUsageByID(t *testing.T) {
 	want := &WorkflowUsage{
 		Billable: &WorkflowBillMap{
 			"UBUNTU": &WorkflowBill{
-				TotalMS: Ptr(int64(180000)),
+				TotalMS: new(int64(180000)),
 			},
 			"MACOS": &WorkflowBill{
-				TotalMS: Ptr(int64(240000)),
+				TotalMS: new(int64(240000)),
 			},
 			"WINDOWS": &WorkflowBill{
-				TotalMS: Ptr(int64(300000)),
+				TotalMS: new(int64(300000)),
 			},
 		},
 	}
@@ -199,13 +199,13 @@ func TestActionsService_GetWorkflowUsageByFileName(t *testing.T) {
 	want := &WorkflowUsage{
 		Billable: &WorkflowBillMap{
 			"UBUNTU": &WorkflowBill{
-				TotalMS: Ptr(int64(180000)),
+				TotalMS: new(int64(180000)),
 			},
 			"MACOS": &WorkflowBill{
-				TotalMS: Ptr(int64(240000)),
+				TotalMS: new(int64(240000)),
 			},
 			"WINDOWS": &WorkflowBill{
-				TotalMS: Ptr(int64(300000)),
+				TotalMS: new(int64(300000)),
 			},
 		},
 	}
@@ -234,7 +234,7 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 
 	event := CreateWorkflowDispatchEventRequest{
 		Ref:              "d4cfb6e7",
-		ReturnRunDetails: Ptr(true),
+		ReturnRunDetails: new(true),
 		Inputs: map[string]any{
 			"key": "value",
 		},
@@ -253,9 +253,9 @@ func TestActionsService_CreateWorkflowDispatchEventByID(t *testing.T) {
 	}
 
 	want := &WorkflowDispatchRunDetails{
-		WorkflowRunID: Ptr(int64(1)),
-		RunURL:        Ptr("https://api.github.com/repos/o/r/actions/runs/1"),
-		HTMLURL:       Ptr("https://github.com/o/r/actions/runs/1"),
+		WorkflowRunID: new(int64(1)),
+		RunURL:        new("https://api.github.com/repos/o/r/actions/runs/1"),
+		HTMLURL:       new("https://github.com/o/r/actions/runs/1"),
 	}
 	if !cmp.Equal(dispatchResponse, want) {
 		t.Errorf("Actions.CreateWorkflowDispatchEventByID = %+v, want %+v", dispatchResponse, want)
@@ -289,7 +289,7 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 
 	event := CreateWorkflowDispatchEventRequest{
 		Ref:              "d4cfb6e7",
-		ReturnRunDetails: Ptr(true),
+		ReturnRunDetails: new(true),
 		Inputs: map[string]any{
 			"key": "value",
 		},
@@ -308,9 +308,9 @@ func TestActionsService_CreateWorkflowDispatchEventByFileName(t *testing.T) {
 	}
 
 	want := &WorkflowDispatchRunDetails{
-		WorkflowRunID: Ptr(int64(1)),
-		RunURL:        Ptr("https://api.github.com/repos/o/r/actions/runs/1"),
-		HTMLURL:       Ptr("https://github.com/o/r/actions/runs/1"),
+		WorkflowRunID: new(int64(1)),
+		RunURL:        new("https://api.github.com/repos/o/r/actions/runs/1"),
+		HTMLURL:       new("https://github.com/o/r/actions/runs/1"),
 	}
 	if !cmp.Equal(dispatchResponse, want) {
 		t.Errorf("Actions.CreateWorkflowDispatchEventByFileName = %+v, want %+v", dispatchResponse, want)

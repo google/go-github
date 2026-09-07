@@ -40,11 +40,11 @@ func TestAppsService_CompleteAppManifest(t *testing.T) {
 	}
 
 	want := &AppConfig{
-		ID:            Ptr(int64(1)),
-		ClientID:      Ptr("a"),
-		ClientSecret:  Ptr("b"),
-		WebhookSecret: Ptr("c"),
-		PEM:           Ptr("key"),
+		ID:            new(int64(1)),
+		ClientID:      new("a"),
+		ClientSecret:  new("b"),
+		WebhookSecret: new("c"),
+		PEM:           new("key"),
 	}
 
 	if !cmp.Equal(cfg, want) {

@@ -42,9 +42,9 @@ func TestCodespacesService_ListRepositoryMachineTypes(t *testing.T) {
 
 	ctx := t.Context()
 	opts := &ListRepoMachineTypesOptions{
-		Ref:      Ptr("main"),
-		Location: Ptr("WestUs2"),
-		ClientIP: Ptr("1.2.3.4"),
+		Ref:      new("main"),
+		Location: new("WestUs2"),
+		ClientIP: new("1.2.3.4"),
 	}
 
 	got, _, err := client.Codespaces.ListRepositoryMachineTypes(
@@ -61,13 +61,13 @@ func TestCodespacesService_ListRepositoryMachineTypes(t *testing.T) {
 		TotalCount: 1,
 		Machines: []*CodespacesMachine{
 			{
-				Name:                 Ptr("standardLinux"),
-				DisplayName:          Ptr("4 cores, 8 GB RAM, 64 GB storage"),
-				OperatingSystem:      Ptr("linux"),
-				StorageInBytes:       Ptr(int64(68719476736)),
-				MemoryInBytes:        Ptr(int64(17179869184)),
-				CPUs:                 Ptr(4),
-				PrebuildAvailability: Ptr("ready"),
+				Name:                 new("standardLinux"),
+				DisplayName:          new("4 cores, 8 GB RAM, 64 GB storage"),
+				OperatingSystem:      new("linux"),
+				StorageInBytes:       new(int64(68719476736)),
+				MemoryInBytes:        new(int64(17179869184)),
+				CPUs:                 new(4),
+				PrebuildAvailability: new("ready"),
 			},
 		},
 	}
@@ -123,13 +123,13 @@ func TestCodespacesService_ListCodespaceMachineTypes(t *testing.T) {
 		TotalCount: 1,
 		Machines: []*CodespacesMachine{
 			{
-				Name:                 Ptr("standardLinux"),
-				DisplayName:          Ptr("4 cores, 8 GB RAM, 64 GB storage"),
-				OperatingSystem:      Ptr("linux"),
-				StorageInBytes:       Ptr(int64(68719476736)),
-				MemoryInBytes:        Ptr(int64(17179869184)),
-				CPUs:                 Ptr(4),
-				PrebuildAvailability: Ptr("ready"),
+				Name:                 new("standardLinux"),
+				DisplayName:          new("4 cores, 8 GB RAM, 64 GB storage"),
+				OperatingSystem:      new("linux"),
+				StorageInBytes:       new(int64(68719476736)),
+				MemoryInBytes:        new(int64(17179869184)),
+				CPUs:                 new(4),
+				PrebuildAvailability: new("ready"),
 			},
 		},
 	}

@@ -33,7 +33,7 @@ func TestUsersService_ListBlockedUsers(t *testing.T) {
 		t.Errorf("Users.ListBlockedUsers returned error: %v", err)
 	}
 
-	want := []*User{{Login: Ptr("octocat")}}
+	want := []*User{{Login: new("octocat")}}
 	if !cmp.Equal(blockedUsers, want) {
 		t.Errorf("Users.ListBlockedUsers returned %+v, want %+v", blockedUsers, want)
 	}

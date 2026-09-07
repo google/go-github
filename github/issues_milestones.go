@@ -34,6 +34,22 @@ func (m Milestone) String() string {
 	return Stringify(m)
 }
 
+// CreateMilestoneRequest represents a request to create a milestone.
+type CreateMilestoneRequest struct {
+	Title       string     `json:"title"`
+	State       *string    `json:"state,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	DueOn       *Timestamp `json:"due_on,omitempty"`
+}
+
+// UpdateMilestoneRequest represents a request to update a milestone.
+type UpdateMilestoneRequest struct {
+	Title       *string    `json:"title,omitempty"`
+	State       *string    `json:"state,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	DueOn       *Timestamp `json:"due_on,omitempty"`
+}
+
 // MilestoneListOptions specifies the optional parameters to the
 // IssuesService.ListMilestones method.
 type MilestoneListOptions struct {
@@ -104,7 +120,7 @@ func (s *IssuesService) GetMilestone(ctx context.Context, owner, repo string, nu
 // GitHub API docs: https://docs.github.com/rest/issues/milestones?apiVersion=2022-11-28#create-a-milestone
 //
 //meta:operation POST /repos/{owner}/{repo}/milestones
-func (s *IssuesService) CreateMilestone(ctx context.Context, owner, repo string, body *Milestone) (*Milestone, *Response, error) {
+func (s *IssuesService) CreateMilestone(ctx context.Context, owner, repo string, body CreateMilestoneRequest) (*Milestone, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/milestones", owner, repo)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -120,12 +136,12 @@ func (s *IssuesService) CreateMilestone(ctx context.Context, owner, repo string,
 	return m, resp, nil
 }
 
-// EditMilestone edits a milestone.
+// UpdateMilestone updates a milestone.
 //
 // GitHub API docs: https://docs.github.com/rest/issues/milestones?apiVersion=2022-11-28#update-a-milestone
 //
 //meta:operation PATCH /repos/{owner}/{repo}/milestones/{milestone_number}
-func (s *IssuesService) EditMilestone(ctx context.Context, owner, repo string, number int, body *Milestone) (*Milestone, *Response, error) {
+func (s *IssuesService) UpdateMilestone(ctx context.Context, owner, repo string, number int, body UpdateMilestoneRequest) (*Milestone, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/milestones/%v", owner, repo, number)
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)
 	if err != nil {

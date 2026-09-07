@@ -19,14 +19,14 @@ type PullRequestListStacksOptions struct {
 	ListOptions
 }
 
-// CreatePullRequestStackRequest represents a request to create a pull request stack.
-type CreatePullRequestStackRequest struct {
+// PullRequestCreateStackRequest represents a request to create a pull request stack.
+type PullRequestCreateStackRequest struct {
 	// PullRequests is an ordered list of pull request numbers from the bottom of the stack to the top.
 	PullRequests []int `json:"pull_requests"`
 }
 
-// AddPullRequestsToStackRequest represents a request to append pull requests to a stack.
-type AddPullRequestsToStackRequest struct {
+// PullRequestsAddToStackRequest represents a request to append pull requests to a stack.
+type PullRequestsAddToStackRequest struct {
 	// PullRequests is an ordered list of pull request numbers to append from the current top upward.
 	PullRequests []int `json:"pull_requests"`
 }
@@ -189,7 +189,7 @@ func (s *PullRequestsService) ListStacks(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/pulls/stacks?apiVersion=2022-11-28#create-a-pull-request-stack
 //
 //meta:operation POST /repos/{owner}/{repo}/stacks
-func (s *PullRequestsService) CreateStack(ctx context.Context, owner, repo string, body CreatePullRequestStackRequest) (*PullRequestStackDetails, *Response, error) {
+func (s *PullRequestsService) CreateStack(ctx context.Context, owner, repo string, body PullRequestCreateStackRequest) (*PullRequestStackDetails, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stacks", owner, repo)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -231,7 +231,7 @@ func (s *PullRequestsService) GetStack(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/rest/pulls/stacks?apiVersion=2022-11-28#add-pull-requests-to-a-pull-request-stack
 //
 //meta:operation POST /repos/{owner}/{repo}/stacks/{stack_number}/add
-func (s *PullRequestsService) AddToStack(ctx context.Context, owner, repo string, stackNumber int, body AddPullRequestsToStackRequest) (*PullRequestStackDetails, *Response, error) {
+func (s *PullRequestsService) AddToStack(ctx context.Context, owner, repo string, stackNumber int, body PullRequestsAddToStackRequest) (*PullRequestStackDetails, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stacks/%v/add", owner, repo, stackNumber)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {

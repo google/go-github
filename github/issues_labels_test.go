@@ -74,7 +74,7 @@ func TestIssuesService_GetLabel(t *testing.T) {
 		t.Errorf("Issues.GetLabel returned error: %v", err)
 	}
 
-	want := &Label{URL: "u", Name: "n", Color: "c", Description: Ptr("d")}
+	want := &Label{URL: "u", Name: "n", Color: "c", Description: new("d")}
 	if !cmp.Equal(label, want) {
 		t.Errorf("Issues.GetLabel returned %+v, want %+v", label, want)
 	}
@@ -154,7 +154,7 @@ func TestIssuesService_UpdateLabel(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := UpdateIssueLabelRequest{NewName: Ptr("z")}
+	input := UpdateIssueLabelRequest{NewName: new("z")}
 
 	mux.HandleFunc("/repos/o/r/labels/n", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")

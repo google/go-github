@@ -42,9 +42,9 @@ func TestEnterpriseService_GetAuditLog(t *testing.T) {
 		]`)
 	})
 	getOpts := GetAuditLogOptions{
-		Include: Ptr("all"),
-		Phrase:  Ptr("action:workflows"),
-		Order:   Ptr("asc"),
+		Include: new("all"),
+		Phrase:  new("action:workflows"),
+		Order:   new("asc"),
 	}
 	ctx := t.Context()
 	auditEntries, _, err := client.Enterprise.GetAuditLog(ctx, "e", &getOpts)
@@ -55,11 +55,11 @@ func TestEnterpriseService_GetAuditLog(t *testing.T) {
 	want := []*AuditEntry{
 		{
 			Timestamp:  &Timestamp{timestamp},
-			DocumentID: Ptr("beeZYapIUe-wKg5-beadb33"),
-			Action:     Ptr("workflows.completed_workflow_run"),
-			Actor:      Ptr("testactor"),
+			DocumentID: new("beeZYapIUe-wKg5-beadb33"),
+			Action:     new("workflows.completed_workflow_run"),
+			Actor:      new("testactor"),
 			CreatedAt:  &Timestamp{timestamp},
-			Org:        Ptr("o"),
+			Org:        new("o"),
 			AdditionalFields: map[string]any{
 				"completed_at":    "2021-03-07T00:35:08.000Z",
 				"conclusion":      "success",

@@ -125,9 +125,9 @@ func TestRepositoryRulesetRules(t *testing.T) {
 				RepositoryDelete:     &EmptyRuleParameters{},
 				RepositoryName:       &SimplePatternRuleParameters{Pattern: "^test-.+", Negate: false},
 				RepositoryTransfer:   &EmptyRuleParameters{},
-				RepositoryVisibility: &RepositoryVisibilityRuleParameters{Internal: false, Private: false},
+				RepositoryVisibility: &RepositoryVisibilityRuleParameters{Internal: false, Private: false, Public: false},
 			},
-			`[{"type":"creation"},{"type":"update"},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test1"},{"context":"test2"}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"workflows":[{"path":".github/workflows/test1.yaml"},{"path":".github/workflows/test2.yaml"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}},{"type":"copilot_code_review","parameters":{"review_on_push":true,"review_draft_pull_requests":false}},{"type":"repository_create"},{"type":"repository_delete"},{"type":"repository_name","parameters":{"negate":false,"pattern":"^test-.+"}},{"type":"repository_transfer"},{"type":"repository_visibility","parameters":{"internal":false,"private":false}}]`,
+			`[{"type":"creation"},{"type":"update"},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"required_status_checks":[{"context":"test1"},{"context":"test2"}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"workflows":[{"path":".github/workflows/test1.yaml"},{"path":".github/workflows/test2.yaml"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}},{"type":"copilot_code_review","parameters":{"review_on_push":true,"review_draft_pull_requests":false}},{"type":"repository_create"},{"type":"repository_delete"},{"type":"repository_name","parameters":{"negate":false,"pattern":"^test-.+"}},{"type":"repository_transfer"},{"type":"repository_visibility","parameters":{"internal":false,"private":false,"public":false}}]`,
 		},
 		{
 			"all_rules_with_all_params",
@@ -161,41 +161,41 @@ func TestRepositoryRulesetRules(t *testing.T) {
 					RequiredReviewThreadResolution: true,
 				},
 				RequiredStatusChecks: &RequiredStatusChecksRuleParameters{
-					DoNotEnforceOnCreate: Ptr(true),
+					DoNotEnforceOnCreate: new(true),
 					RequiredStatusChecks: []*RuleStatusCheck{
-						{Context: "test1", IntegrationID: Ptr(int64(1))},
-						{Context: "test2", IntegrationID: Ptr(int64(2))},
+						{Context: "test1", IntegrationID: new(int64(1))},
+						{Context: "test2", IntegrationID: new(int64(2))},
 					},
 					StrictRequiredStatusChecksPolicy: true,
 				},
 				NonFastForward: &EmptyRuleParameters{},
 				CommitMessagePattern: &PatternRuleParameters{
-					Name:     Ptr("cmp"),
-					Negate:   Ptr(false),
+					Name:     new("cmp"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
 				CommitAuthorEmailPattern: &PatternRuleParameters{
-					Name:     Ptr("caep"),
-					Negate:   Ptr(false),
+					Name:     new("caep"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
 				CommitterEmailPattern: &PatternRuleParameters{
-					Name:     Ptr("cep"),
-					Negate:   Ptr(false),
+					Name:     new("cep"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
 				BranchNamePattern: &PatternRuleParameters{
-					Name:     Ptr("bp"),
-					Negate:   Ptr(false),
+					Name:     new("bp"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
 				TagNamePattern: &PatternRuleParameters{
-					Name:     Ptr("tp"),
-					Negate:   Ptr(false),
+					Name:     new("tp"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -208,19 +208,19 @@ func TestRepositoryRulesetRules(t *testing.T) {
 				},
 				MaxFileSize: &MaxFileSizeRuleParameters{MaxFileSize: 1024},
 				Workflows: &WorkflowsRuleParameters{
-					DoNotEnforceOnCreate: Ptr(true),
+					DoNotEnforceOnCreate: new(true),
 					Workflows: []*RuleWorkflow{
 						{
 							Path:         ".github/workflows/test1.yaml",
-							Ref:          Ptr("main"),
-							RepositoryID: Ptr(int64(1)),
-							SHA:          Ptr("aaaa"),
+							Ref:          new("main"),
+							RepositoryID: new(int64(1)),
+							SHA:          new("aaaa"),
 						},
 						{
 							Path:         ".github/workflows/test2.yaml",
-							Ref:          Ptr("main"),
-							RepositoryID: Ptr(int64(2)),
-							SHA:          Ptr("bbbb"),
+							Ref:          new("main"),
+							RepositoryID: new(int64(2)),
+							SHA:          new("bbbb"),
 						},
 					},
 				},
@@ -246,9 +246,9 @@ func TestRepositoryRulesetRules(t *testing.T) {
 				RepositoryDelete:     &EmptyRuleParameters{},
 				RepositoryName:       &SimplePatternRuleParameters{Pattern: "^test-.+", Negate: false},
 				RepositoryTransfer:   &EmptyRuleParameters{},
-				RepositoryVisibility: &RepositoryVisibilityRuleParameters{Internal: false, Private: false},
+				RepositoryVisibility: &RepositoryVisibilityRuleParameters{Internal: false, Private: false, Public: false},
 			},
-			`[{"type":"creation"},{"type":"update","parameters":{"update_allows_fetch_and_merge":true}},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"do_not_enforce_on_create":true,"required_status_checks":[{"context":"test1","integration_id":1},{"context":"test2","integration_id":2}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"name":"cmp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"name":"caep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"name":"cep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"name":"bp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"name":"tp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"do_not_enforce_on_create":true,"workflows":[{"path":".github/workflows/test1.yaml","ref":"main","repository_id":1,"sha":"aaaa"},{"path":".github/workflows/test2.yaml","ref":"main","repository_id":2,"sha":"bbbb"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}},{"type":"copilot_code_review","parameters":{"review_on_push":true,"review_draft_pull_requests":false}},{"type":"repository_create"},{"type":"repository_delete"},{"type":"repository_name","parameters":{"negate":false,"pattern":"^test-.+"}},{"type":"repository_transfer"},{"type":"repository_visibility","parameters":{"internal":false,"private":false}}]`,
+			`[{"type":"creation"},{"type":"update","parameters":{"update_allows_fetch_and_merge":true}},{"type":"deletion"},{"type":"required_linear_history"},{"type":"merge_queue","parameters":{"check_response_timeout_minutes":5,"grouping_strategy":"ALLGREEN","max_entries_to_build":10,"max_entries_to_merge":20,"merge_method":"SQUASH","min_entries_to_merge":1,"min_entries_to_merge_wait_minutes":15}},{"type":"required_deployments","parameters":{"required_deployment_environments":["test1","test2"]}},{"type":"required_signatures"},{"type":"pull_request","parameters":{"allowed_merge_methods":["squash","rebase"],"dismiss_stale_reviews_on_push":true,"require_code_owner_review":true,"require_last_push_approval":true,"required_approving_review_count":2,"required_review_thread_resolution":true}},{"type":"required_status_checks","parameters":{"do_not_enforce_on_create":true,"required_status_checks":[{"context":"test1","integration_id":1},{"context":"test2","integration_id":2}],"strict_required_status_checks_policy":true}},{"type":"non_fast_forward"},{"type":"commit_message_pattern","parameters":{"name":"cmp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"commit_author_email_pattern","parameters":{"name":"caep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"committer_email_pattern","parameters":{"name":"cep","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"branch_name_pattern","parameters":{"name":"bp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"tag_name_pattern","parameters":{"name":"tp","negate":false,"operator":"starts_with","pattern":"test"}},{"type":"file_path_restriction","parameters":{"restricted_file_paths":["test1","test2"]}},{"type":"max_file_path_length","parameters":{"max_file_path_length":512}},{"type":"file_extension_restriction","parameters":{"restricted_file_extensions":[".exe",".pkg"]}},{"type":"max_file_size","parameters":{"max_file_size":1024}},{"type":"workflows","parameters":{"do_not_enforce_on_create":true,"workflows":[{"path":".github/workflows/test1.yaml","ref":"main","repository_id":1,"sha":"aaaa"},{"path":".github/workflows/test2.yaml","ref":"main","repository_id":2,"sha":"bbbb"}]}},{"type":"code_scanning","parameters":{"code_scanning_tools":[{"alerts_threshold":"all","security_alerts_threshold":"all","tool":"test"},{"alerts_threshold":"none","security_alerts_threshold":"none","tool":"test"}]}},{"type":"copilot_code_review","parameters":{"review_on_push":true,"review_draft_pull_requests":false}},{"type":"repository_create"},{"type":"repository_delete"},{"type":"repository_name","parameters":{"negate":false,"pattern":"^test-.+"}},{"type":"repository_transfer"},{"type":"repository_visibility","parameters":{"internal":false,"private":false,"public":false}}]`,
 		},
 	}
 
@@ -460,10 +460,10 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: RequiredStatusChecksRuleParameters{
-							DoNotEnforceOnCreate: Ptr(true),
+							DoNotEnforceOnCreate: new(true),
 							RequiredStatusChecks: []*RuleStatusCheck{
-								{Context: "test1", IntegrationID: Ptr(int64(1))},
-								{Context: "test2", IntegrationID: Ptr(int64(2))},
+								{Context: "test1", IntegrationID: new(int64(1))},
+								{Context: "test2", IntegrationID: new(int64(2))},
 							},
 							StrictRequiredStatusChecksPolicy: true,
 						},
@@ -484,8 +484,8 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PatternRuleParameters{
-							Name:     Ptr("cmp"),
-							Negate:   Ptr(false),
+							Name:     new("cmp"),
+							Negate:   new(false),
 							Operator: PatternRuleOperatorStartsWith,
 							Pattern:  "test",
 						},
@@ -499,8 +499,8 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PatternRuleParameters{
-							Name:     Ptr("caep"),
-							Negate:   Ptr(false),
+							Name:     new("caep"),
+							Negate:   new(false),
 							Operator: PatternRuleOperatorStartsWith,
 							Pattern:  "test",
 						},
@@ -514,8 +514,8 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PatternRuleParameters{
-							Name:     Ptr("cep"),
-							Negate:   Ptr(false),
+							Name:     new("cep"),
+							Negate:   new(false),
 							Operator: PatternRuleOperatorStartsWith,
 							Pattern:  "test",
 						},
@@ -529,8 +529,8 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PatternRuleParameters{
-							Name:     Ptr("bp"),
-							Negate:   Ptr(false),
+							Name:     new("bp"),
+							Negate:   new(false),
 							Operator: PatternRuleOperatorStartsWith,
 							Pattern:  "test",
 						},
@@ -544,8 +544,8 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: PatternRuleParameters{
-							Name:     Ptr("tp"),
-							Negate:   Ptr(false),
+							Name:     new("tp"),
+							Negate:   new(false),
 							Operator: PatternRuleOperatorStartsWith,
 							Pattern:  "test",
 						},
@@ -603,19 +603,19 @@ func TestBranchRules(t *testing.T) {
 							RulesetID:         1,
 						},
 						Parameters: WorkflowsRuleParameters{
-							DoNotEnforceOnCreate: Ptr(true),
+							DoNotEnforceOnCreate: new(true),
 							Workflows: []*RuleWorkflow{
 								{
 									Path:         ".github/workflows/test1.yaml",
-									Ref:          Ptr("main"),
-									RepositoryID: Ptr(int64(1)),
-									SHA:          Ptr("aaaa"),
+									Ref:          new("main"),
+									RepositoryID: new(int64(1)),
+									SHA:          new("aaaa"),
 								},
 								{
 									Path:         ".github/workflows/test2.yaml",
-									Ref:          Ptr("main"),
-									RepositoryID: Ptr(int64(2)),
-									SHA:          Ptr("bbbb"),
+									Ref:          new("main"),
+									RepositoryID: new(int64(2)),
+									SHA:          new("bbbb"),
 								},
 							},
 						},
@@ -824,11 +824,11 @@ func TestRepositoryRule(t *testing.T) {
 					RequiredReviewThreadResolution: false,
 					RequiredReviewers: []*RulesetRequiredReviewer{
 						{
-							MinimumApprovals: Ptr(1),
+							MinimumApprovals: new(1),
 							FilePatterns:     []string{"*"},
 							Reviewer: &RulesetReviewer{
-								ID:   Ptr(int64(123456)),
-								Type: Ptr(RulesetReviewerTypeTeam),
+								ID:   new(int64(123456)),
+								Type: new(RulesetReviewerTypeTeam),
 							},
 						},
 					},
@@ -853,11 +853,11 @@ func TestRepositoryRule(t *testing.T) {
 					RequiredReviewThreadResolution: false,
 					RequiredReviewers: []*RulesetRequiredReviewer{
 						{
-							MinimumApprovals: Ptr(1),
+							MinimumApprovals: new(1),
 							FilePatterns:     []string{"*"},
 							Reviewer: &RulesetReviewer{
-								ID:   Ptr(int64(123456)),
-								Type: Ptr(RulesetReviewerTypeTeam),
+								ID:   new(int64(123456)),
+								Type: new(RulesetReviewerTypeTeam),
 							},
 						},
 					},
@@ -889,8 +889,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeCommitMessagePattern,
 				Parameters: &PatternRuleParameters{
-					Name:     Ptr("test"),
-					Negate:   Ptr(false),
+					Name:     new("test"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -902,8 +902,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeCommitAuthorEmailPattern,
 				Parameters: &PatternRuleParameters{
-					Name:     Ptr("test"),
-					Negate:   Ptr(false),
+					Name:     new("test"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -915,8 +915,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeCommitterEmailPattern,
 				Parameters: &PatternRuleParameters{
-					Name:     Ptr("test"),
-					Negate:   Ptr(false),
+					Name:     new("test"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -928,8 +928,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeBranchNamePattern,
 				Parameters: &PatternRuleParameters{
-					Name:     Ptr("test"),
-					Negate:   Ptr(false),
+					Name:     new("test"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -941,8 +941,8 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeTagNamePattern,
 				Parameters: &PatternRuleParameters{
-					Name:     Ptr("test"),
-					Negate:   Ptr(false),
+					Name:     new("test"),
+					Negate:   new(false),
 					Operator: PatternRuleOperatorStartsWith,
 					Pattern:  "test",
 				},
@@ -1069,11 +1069,12 @@ func TestRepositoryRule(t *testing.T) {
 			&RepositoryRule{
 				Type: RulesetRuleTypeRepositoryVisibility,
 				Parameters: &RepositoryVisibilityRuleParameters{
-					Internal: false,
+					Internal: true,
 					Private:  false,
+					Public:   true,
 				},
 			},
-			`{"type":"repository_visibility","parameters":{"internal":false,"private":false}}`,
+			`{"type":"repository_visibility","parameters":{"internal":true,"private":false,"public":true}}`,
 		},
 	}
 
@@ -1105,6 +1106,18 @@ func TestRepositoryRule(t *testing.T) {
 				Parameters: &CopilotCodeReviewRuleParameters{},
 			},
 			`{"type":"copilot_code_review","parameters":{"review_on_push":false,"review_draft_pull_requests":false}}`,
+		},
+		{
+			"repository_visibility",
+			&RepositoryRule{
+				Type: RulesetRuleTypeRepositoryVisibility,
+				Parameters: &RepositoryVisibilityRuleParameters{
+					Internal: true,
+					Private:  false,
+					Public:   true,
+				},
+			},
+			`{"type":"repository_visibility","parameters":{"internal":true,"private":false,"public":true}}`,
 		},
 	}
 

@@ -466,7 +466,7 @@ func TestCodespacesService_GetPublicKey(t *testing.T) {
 				t.Errorf("Codespaces.%v returned error: %v", tt.methodName, err)
 			}
 
-			want := &PublicKey{KeyID: Ptr("1234"), Key: Ptr("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+			want := &PublicKey{KeyID: new("1234"), Key: new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
 			if !cmp.Equal(key, want) {
 				t.Errorf("Codespaces.%v returned %+v, want %+v", tt.methodName, key, want)
 			}
@@ -545,9 +545,9 @@ func TestCodespacesService_ListSelectedReposForSecret(t *testing.T) {
 			}
 
 			want := &SelectedReposList{
-				TotalCount: Ptr(1),
+				TotalCount: new(1),
 				Repositories: []*Repository{
-					{ID: Ptr(int64(1))},
+					{ID: new(int64(1))},
 				},
 			}
 
@@ -659,7 +659,7 @@ func TestCodespacesService_AddSelectedReposForSecret(t *testing.T) {
 		badCall    func(context.Context, *Client) (*Response, error)
 		methodName string
 	}
-	repo := &Repository{ID: Ptr(int64(1234))}
+	repo := &Repository{ID: new(int64(1234))}
 	tests := []*test{
 		{
 			name: "User",
@@ -729,7 +729,7 @@ func TestCodespacesService_RemoveSelectedReposFromSecret(t *testing.T) {
 		badCall    func(context.Context, *Client) (*Response, error)
 		methodName string
 	}
-	repo := &Repository{ID: Ptr(int64(1234))}
+	repo := &Repository{ID: new(int64(1234))}
 	tests := []*test{
 		{
 			name: "User",

@@ -20,7 +20,7 @@ func TestRepositoriesService_Merge(t *testing.T) {
 	input := RepositoryMergeRequest{
 		Base:          "b",
 		Head:          "h",
-		CommitMessage: Ptr("c"),
+		CommitMessage: new("c"),
 	}
 
 	mux.HandleFunc("/repos/o/r/merges", func(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +35,7 @@ func TestRepositoriesService_Merge(t *testing.T) {
 		t.Errorf("Repositories.Merge returned error: %v", err)
 	}
 
-	want := &RepositoryCommit{SHA: Ptr("s")}
+	want := &RepositoryCommit{SHA: new("s")}
 	if !cmp.Equal(commit, want) {
 		t.Errorf("Repositories.Merge returned %+v, want %+v", commit, want)
 	}
@@ -75,7 +75,7 @@ func TestRepositoriesService_MergeUpstream(t *testing.T) {
 		t.Errorf("Repositories.MergeUpstream returned error: %v", err)
 	}
 
-	want := &RepoMergeUpstreamResult{MergeType: Ptr("m")}
+	want := &RepoMergeUpstreamResult{MergeType: new("m")}
 	if !cmp.Equal(result, want) {
 		t.Errorf("Repositories.MergeUpstream returned %+v, want %+v", result, want)
 	}

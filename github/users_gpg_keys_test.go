@@ -30,7 +30,7 @@ func TestUsersService_ListGPGKeys_authenticatedUser(t *testing.T) {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
 	}
 
-	want := []*GPGKey{{ID: Ptr(int64(1)), PrimaryKeyID: Ptr(int64(2))}}
+	want := []*GPGKey{{ID: new(int64(1)), PrimaryKeyID: new(int64(2))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
@@ -65,7 +65,7 @@ func TestUsersService_ListGPGKeys_specifiedUser(t *testing.T) {
 		t.Errorf("Users.ListGPGKeys returned error: %v", err)
 	}
 
-	want := []*GPGKey{{ID: Ptr(int64(1)), PrimaryKeyID: Ptr(int64(2))}}
+	want := []*GPGKey{{ID: new(int64(1)), PrimaryKeyID: new(int64(2))}}
 	if !cmp.Equal(keys, want) {
 		t.Errorf("Users.ListGPGKeys = %+v, want %+v", keys, want)
 	}
@@ -95,7 +95,7 @@ func TestUsersService_GetGPGKey(t *testing.T) {
 		t.Errorf("Users.GetGPGKey returned error: %v", err)
 	}
 
-	want := &GPGKey{ID: Ptr(int64(1))}
+	want := &GPGKey{ID: new(int64(1))}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Users.GetGPGKey = %+v, want %+v", key, want)
 	}
@@ -146,7 +146,7 @@ mQINBFcEd9kBEACo54TDbGhKlXKWMvJgecEUKPPcv7XdnpKdGb3LRw5MvFwT0V0f
 		t.Errorf("Users.CreateGPGKey returned error: %v", err)
 	}
 
-	want := &GPGKey{ID: Ptr(int64(1))}
+	want := &GPGKey{ID: new(int64(1))}
 	if !cmp.Equal(gpgKey, want) {
 		t.Errorf("Users.GetGPGKey = %+v, want %+v", gpgKey, want)
 	}

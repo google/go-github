@@ -278,18 +278,18 @@ func TestRepositoriesService_GetAllRulesets(t *testing.T) {
 
 	want := []*RepositoryRuleset{
 		{
-			ID:          Ptr(int64(42)),
+			ID:          new(int64(42)),
 			Name:        "ruleset",
-			SourceType:  Ptr(RulesetSourceTypeRepository),
+			SourceType:  new(RulesetSourceTypeRepository),
 			Source:      "o/repo",
 			Enforcement: RulesetEnforcementActive,
 			CreatedAt:   &Timestamp{referenceTime},
 			UpdatedAt:   &Timestamp{referenceTime},
 		},
 		{
-			ID:          Ptr(int64(314)),
+			ID:          new(int64(314)),
 			Name:        "Another ruleset",
-			SourceType:  Ptr(RulesetSourceTypeRepository),
+			SourceType:  new(RulesetSourceTypeRepository),
 			Source:      "o/repo",
 			Enforcement: RulesetEnforcementActive,
 			CreatedAt:   &Timestamp{referenceTime},
@@ -329,7 +329,7 @@ func TestRepositoriesService_GetAllRulesets_ListOptions(t *testing.T) {
 	})
 
 	opts := &RepositoryListRulesetsOptions{
-		IncludesParents: Ptr(false),
+		IncludesParents: new(false),
 		ListOptions: ListOptions{
 			Page:    2,
 			PerPage: 35,
@@ -343,7 +343,7 @@ func TestRepositoriesService_GetAllRulesets_ListOptions(t *testing.T) {
 
 	want := []*RepositoryRuleset{
 		{
-			ID: Ptr(int64(42)),
+			ID: new(int64(42)),
 		},
 	}
 	if !cmp.Equal(ruleSet, want) {
@@ -390,9 +390,9 @@ func TestRepositoriesService_CreateRuleset(t *testing.T) {
 	}
 
 	want := &RepositoryRuleset{
-		ID:          Ptr(int64(42)),
+		ID:          new(int64(42)),
 		Name:        "ruleset",
-		SourceType:  Ptr(RulesetSourceTypeRepository),
+		SourceType:  new(RulesetSourceTypeRepository),
 		Source:      "o/repo",
 		Enforcement: RulesetEnforcementActive,
 	}
@@ -463,11 +463,11 @@ func TestRepositoriesService_CreateRulesetWithPushRules(t *testing.T) {
 	}
 
 	want := &RepositoryRuleset{
-		ID:          Ptr(int64(42)),
+		ID:          new(int64(42)),
 		Name:        "ruleset",
-		SourceType:  Ptr(RulesetSourceTypeRepository),
+		SourceType:  new(RulesetSourceTypeRepository),
 		Source:      "o/repo",
-		Target:      Ptr(RulesetTargetPush),
+		Target:      new(RulesetTargetPush),
 		Enforcement: RulesetEnforcementActive,
 		Rules: &RepositoryRulesetRules{
 			FilePathRestriction:      &FilePathRestrictionRuleParameters{RestrictedFilePaths: []string{"/a/file"}},
@@ -515,9 +515,9 @@ func TestRepositoriesService_GetRuleset(t *testing.T) {
 	}
 
 	want := &RepositoryRuleset{
-		ID:          Ptr(int64(42)),
+		ID:          new(int64(42)),
 		Name:        "ruleset",
-		SourceType:  Ptr(RulesetSourceTypeOrganization),
+		SourceType:  new(RulesetSourceTypeOrganization),
 		Source:      "o",
 		Enforcement: RulesetEnforcementActive,
 		CreatedAt:   &Timestamp{referenceTime},
@@ -563,9 +563,9 @@ func TestRepositoriesService_UpdateRuleset(t *testing.T) {
 	}
 
 	want := &RepositoryRuleset{
-		ID:          Ptr(int64(42)),
+		ID:          new(int64(42)),
 		Name:        "ruleset",
-		SourceType:  Ptr(RulesetSourceTypeRepository),
+		SourceType:  new(RulesetSourceTypeRepository),
 		Source:      "o/repo",
 		Enforcement: "active",
 	}

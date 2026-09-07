@@ -511,7 +511,7 @@ func (s *ActionsService) GetPendingDeployments(ctx context.Context, owner, repo 
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#review-pending-deployments-for-a-workflow-run
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments
-func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo string, runID int64, body *PendingDeploymentsRequest) ([]*Deployment, *Response, error) {
+func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo string, runID int64, body PendingDeploymentsRequest) ([]*Deployment, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/pending_deployments", owner, repo, runID)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
@@ -534,7 +534,7 @@ func (s *ActionsService) PendingDeployments(ctx context.Context, owner, repo str
 // GitHub API docs: https://docs.github.com/rest/actions/workflow-runs?apiVersion=2022-11-28#review-custom-deployment-protection-rules-for-a-workflow-run
 //
 //meta:operation POST /repos/{owner}/{repo}/actions/runs/{run_id}/deployment_protection_rule
-func (s *ActionsService) ReviewCustomDeploymentProtectionRule(ctx context.Context, owner, repo string, runID int64, body *ReviewCustomDeploymentProtectionRuleRequest) (*Response, error) {
+func (s *ActionsService) ReviewCustomDeploymentProtectionRule(ctx context.Context, owner, repo string, runID int64, body ReviewCustomDeploymentProtectionRuleRequest) (*Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/actions/runs/%v/deployment_protection_rule", owner, repo, runID)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)

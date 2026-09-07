@@ -43,8 +43,8 @@ func TestOrganizationsService_ListCodeSecurityConfigurations(t *testing.T) {
 	}
 
 	want := []*CodeSecurityConfiguration{
-		{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")},
-		{ID: Ptr(int64(2)), Name: "config2", Description: "desc2", PrivateVulnerabilityReporting: Ptr("enabled")},
+		{ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled")},
+		{ID: new(int64(2)), Name: "config2", Description: "desc2", PrivateVulnerabilityReporting: new("enabled")},
 	}
 	if !cmp.Equal(configurations, want) {
 		t.Errorf("Organizations.ListCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
@@ -83,7 +83,7 @@ func TestOrganizationsService_GetCodeSecurityConfiguration(t *testing.T) {
 		t.Errorf("Organizations.GetCodeSecurityConfiguration returned error: %v", err)
 	}
 
-	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}
+	want := &CodeSecurityConfiguration{ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled")}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Organizations.GetCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
@@ -111,7 +111,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 	input := CodeSecurityConfiguration{
 		Name:                     "config1",
 		Description:              "desc1",
-		CodeScanningDefaultSetup: Ptr("enabled"),
+		CodeScanningDefaultSetup: new("enabled"),
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations", func(w http.ResponseWriter, r *http.Request) {
@@ -129,7 +129,7 @@ func TestOrganizationsService_CreateCodeSecurityConfiguration(t *testing.T) {
 		t.Errorf("Organizations.CreateCodeSecurityConfiguration returned error: %v", err)
 	}
 
-	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}
+	want := &CodeSecurityConfiguration{ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled")}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Organizations.CreateCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
@@ -157,10 +157,10 @@ func TestOrganizationsService_CreateCodeSecurityConfigurationWithDelegatedBypass
 	input := CodeSecurityConfiguration{
 		Name:                          "config1",
 		Description:                   "desc1",
-		SecretProtection:              Ptr("enabled"), // required to configure bypass
-		SecretScanning:                Ptr("enabled"), // required to configure bypass
-		SecretScanningPushProtection:  Ptr("enabled"), // required to configure bypass
-		SecretScanningDelegatedBypass: Ptr("enabled"),
+		SecretProtection:              new("enabled"), // required to configure bypass
+		SecretScanning:                new("enabled"), // required to configure bypass
+		SecretScanningPushProtection:  new("enabled"), // required to configure bypass
+		SecretScanningDelegatedBypass: new("enabled"),
 		SecretScanningDelegatedBypassOptions: &SecretScanningDelegatedBypassOptions{
 			Reviewers: []*BypassReviewer{
 				{
@@ -208,22 +208,22 @@ func TestOrganizationsService_CreateCodeSecurityConfigurationWithDelegatedBypass
 	}
 
 	want := &CodeSecurityConfiguration{
-		ID:                            Ptr(int64(123)),
+		ID:                            new(int64(123)),
 		Name:                          "config1",
 		Description:                   "desc1",
-		SecretProtection:              Ptr("enabled"),
-		SecretScanning:                Ptr("enabled"),
-		SecretScanningPushProtection:  Ptr("enabled"),
-		SecretScanningDelegatedBypass: Ptr("enabled"),
+		SecretProtection:              new("enabled"),
+		SecretScanning:                new("enabled"),
+		SecretScanningPushProtection:  new("enabled"),
+		SecretScanningDelegatedBypass: new("enabled"),
 		SecretScanningDelegatedBypassOptions: &SecretScanningDelegatedBypassOptions{
 			Reviewers: []*BypassReviewer{
 				{
-					SecurityConfigurationID: Ptr(int64(123)),
+					SecurityConfigurationID: new(int64(123)),
 					ReviewerType:            "TEAM",
 					ReviewerID:              456,
 				},
 				{
-					SecurityConfigurationID: Ptr(int64(123)),
+					SecurityConfigurationID: new(int64(123)),
 					ReviewerType:            "ROLE",
 					ReviewerID:              789,
 				},
@@ -284,8 +284,8 @@ func TestOrganizationsService_ListDefaultCodeSecurityConfigurations(t *testing.T
 	}
 
 	want := []*CodeSecurityConfigurationWithDefaultForNewRepos{
-		{DefaultForNewRepos: Ptr("public"), Configuration: &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}},
-		{DefaultForNewRepos: Ptr("private_and_internal"), Configuration: &CodeSecurityConfiguration{ID: Ptr(int64(2)), Name: "config2", Description: "desc2", PrivateVulnerabilityReporting: Ptr("enabled")}},
+		{DefaultForNewRepos: new("public"), Configuration: &CodeSecurityConfiguration{ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled")}},
+		{DefaultForNewRepos: new("private_and_internal"), Configuration: &CodeSecurityConfiguration{ID: new(int64(2)), Name: "config2", Description: "desc2", PrivateVulnerabilityReporting: new("enabled")}},
 	}
 	if !cmp.Equal(configurations, want) {
 		t.Errorf("Organizations.ListDefaultCodeSecurityConfigurations returned %+v, want %+v", configurations, want)
@@ -346,7 +346,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 	input := CodeSecurityConfiguration{
 		Name:                     "config1",
 		Description:              "desc1",
-		CodeScanningDefaultSetup: Ptr("enabled"),
+		CodeScanningDefaultSetup: new("enabled"),
 	}
 
 	mux.HandleFunc("/orgs/o/code-security/configurations/1", func(w http.ResponseWriter, r *http.Request) {
@@ -364,7 +364,7 @@ func TestOrganizationsService_UpdateCodeSecurityConfiguration(t *testing.T) {
 		t.Errorf("Organizations.UpdateCodeSecurityConfiguration returned error: %v", err)
 	}
 
-	want := &CodeSecurityConfiguration{ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}
+	want := &CodeSecurityConfiguration{ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled")}
 	if !cmp.Equal(configuration, want) {
 		t.Errorf("Organizations.UpdateCodeSecurityConfiguration returned %+v, want %+v", configuration, want)
 	}
@@ -485,9 +485,9 @@ func TestOrganizationsService_SetDefaultCodeSecurityConfiguration(t *testing.T) 
 		t.Errorf("Organizations.SetDefaultCodeSecurityConfiguration returned status %v, want %v", resp.StatusCode, wantStatus)
 	}
 	want := &CodeSecurityConfigurationWithDefaultForNewRepos{
-		DefaultForNewRepos: Ptr("all"),
+		DefaultForNewRepos: new("all"),
 		Configuration: &CodeSecurityConfiguration{
-			ID: Ptr(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled"),
+			ID: new(int64(1)), Name: "config1", Description: "desc1", CodeScanningDefaultSetup: new("enabled"),
 		},
 	}
 	if !cmp.Equal(got, want) {
@@ -541,8 +541,8 @@ func TestOrganizationsService_ListCodeSecurityConfigurationRepositories(t *testi
 		t.Errorf("Organizations.ListCodeSecurityConfigurationRepositories returned error: %v", err)
 	}
 	want := []*RepositoryAttachment{
-		{Status: Ptr("attached"), Repository: &Repository{ID: Ptr(int64(8)), Name: Ptr("repo8")}},
-		{Status: Ptr("attached"), Repository: &Repository{ID: Ptr(int64(42)), Name: Ptr("repo42")}},
+		{Status: new("attached"), Repository: &Repository{ID: new(int64(8)), Name: new("repo8")}},
+		{Status: new("attached"), Repository: &Repository{ID: new(int64(42)), Name: new("repo42")}},
 	}
 	if !cmp.Equal(attachments, want) {
 		t.Errorf("Organizations.ListCodeSecurityConfigurationRepositories returned %+v, want %+v", attachments, want)
@@ -585,9 +585,9 @@ func TestOrganizationsService_GetCodeSecurityConfigurationForRepository(t *testi
 	if err != nil {
 		t.Errorf("Organizations.GetCodeSecurityConfigurationForRepository returned error: %v", err)
 	}
-	c := &CodeSecurityConfiguration{ID: Ptr(int64(42)), Name: "config42", Description: "desc1", CodeScanningDefaultSetup: Ptr("enabled")}
+	c := &CodeSecurityConfiguration{ID: new(int64(42)), Name: "config42", Description: "desc1", CodeScanningDefaultSetup: new("enabled")}
 	want := &RepositoryCodeSecurityConfiguration{
-		State:         Ptr("attached"),
+		State:         new("attached"),
 		Configuration: c,
 	}
 	if !cmp.Equal(rc, want) {

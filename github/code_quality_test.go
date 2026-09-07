@@ -36,11 +36,11 @@ func TestCodeQualityService_GetSetup(t *testing.T) {
 	}
 
 	want := &CodeQualitySetupConfiguration{
-		State:      Ptr("configured"),
+		State:      new("configured"),
 		Languages:  []string{"javascript-typescript", "python"},
-		RunnerType: Ptr("standard"),
+		RunnerType: new("standard"),
 		UpdatedAt:  &referenceTimestamp,
-		Schedule:   Ptr("weekly"),
+		Schedule:   new("weekly"),
 	}
 	if diff := cmp.Diff(want, cfg); diff != "" {
 		t.Errorf("CodeQuality.GetSetup mismatch (-want +got):\n%v", diff)
@@ -66,7 +66,7 @@ func TestCodeQualityService_UpdateSetup(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &CodeQualityUpdateSetupRequest{
-		State:     Ptr("configured"),
+		State:     new("configured"),
 		Languages: []string{"javascript-typescript", "python", "ruby"},
 	}
 
@@ -86,8 +86,8 @@ func TestCodeQualityService_UpdateSetup(t *testing.T) {
 	}
 
 	want := &CodeQualityUpdateSetupResponse{
-		RunID:  Ptr(int64(42)),
-		RunURL: Ptr("https://api.github.com/repos/octocat/hello-world/actions/runs/42"),
+		RunID:  new(int64(42)),
+		RunURL: new("https://api.github.com/repos/octocat/hello-world/actions/runs/42"),
 	}
 	if diff := cmp.Diff(want, result); diff != "" {
 		t.Errorf("CodeQuality.UpdateSetup mismatch (-want +got):\n%v", diff)
@@ -113,9 +113,9 @@ func TestCodeQualityService_UpdateSetup_withRunnerLabel(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &CodeQualityUpdateSetupRequest{
-		State:       Ptr("configured"),
-		RunnerType:  Ptr("labeled"),
-		RunnerLabel: Ptr("my-runner"),
+		State:       new("configured"),
+		RunnerType:  new("labeled"),
+		RunnerLabel: new("my-runner"),
 		Languages:   []string{"go", "python"},
 	}
 
@@ -135,8 +135,8 @@ func TestCodeQualityService_UpdateSetup_withRunnerLabel(t *testing.T) {
 	}
 
 	want := &CodeQualityUpdateSetupResponse{
-		RunID:  Ptr(int64(99)),
-		RunURL: Ptr("https://api.github.com/repos/octocat/hello-world/actions/runs/99"),
+		RunID:  new(int64(99)),
+		RunURL: new("https://api.github.com/repos/octocat/hello-world/actions/runs/99"),
 	}
 	if diff := cmp.Diff(want, result); diff != "" {
 		t.Errorf("CodeQuality.UpdateSetup mismatch (-want +got):\n%v", diff)
@@ -148,7 +148,7 @@ func TestCodeQualityService_UpdateSetup_notConfigured(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &CodeQualityUpdateSetupRequest{
-		State: Ptr("not-configured"),
+		State: new("not-configured"),
 	}
 
 	mux.HandleFunc("/repos/o/r/code-quality/setup", func(w http.ResponseWriter, r *http.Request) {
@@ -241,16 +241,16 @@ func TestCodeQualityService_ListFindings(t *testing.T) {
 				ID:          "rule-1",
 				Title:       "Example Rule",
 				Description: "An example rule description",
-				Help:        Ptr("How to fix it"),
+				Help:        new("How to fix it"),
 				Severity:    "warning",
 				Category:    "maintainability",
 			},
 			Location: CodeQualityFindingLocation{
 				Path:        "src/main.go",
-				StartLine:   Ptr(10),
-				EndLine:     Ptr(10),
-				StartColumn: Ptr(1),
-				EndColumn:   Ptr(20),
+				StartLine:   new(10),
+				EndLine:     new(10),
+				StartColumn: new(1),
+				EndColumn:   new(20),
 			},
 			Message: CodeQualityFindingMessage{
 				Text:     "Issue found",
@@ -347,8 +347,8 @@ func TestCodeQualityService_GetFinding(t *testing.T) {
 		},
 		Location: CodeQualityFindingLocation{
 			Path:      "src/main.go",
-			StartLine: Ptr(5),
-			EndLine:   Ptr(5),
+			StartLine: new(5),
+			EndLine:   new(5),
 		},
 		Message: CodeQualityFindingMessage{
 			Text:     "Critical issue",

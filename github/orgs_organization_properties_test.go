@@ -71,8 +71,8 @@ func TestOrganizationsService_CreateOrUpdateOrganizationCustomPropertyValues(t *
 
 	ctx := t.Context()
 	values := []*CustomPropertyValue{
-		{PropertyName: "team", Value: Ptr("core")},
-		{PropertyName: "level", Value: Ptr("gold")},
+		{PropertyName: "team", Value: new("core")},
+		{PropertyName: "level", Value: new("gold")},
 	}
 
 	props := OrganizationCustomPropertyValues{

@@ -23,17 +23,17 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 	}{
 		"User Reviewer": {
 			data:      []byte(`[{"type": "User", "reviewer": {"id": 1,"login": "octocat"}}]`),
-			wantRule:  []*RequiredReviewer{{Type: Ptr("User"), Reviewer: &User{ID: Ptr(int64(1)), Login: Ptr("octocat")}}},
+			wantRule:  []*RequiredReviewer{{Type: new("User"), Reviewer: &User{ID: new(int64(1)), Login: new("octocat")}}},
 			wantError: false,
 		},
 		"Team Reviewer": {
 			data:      []byte(`[{"type": "Team", "reviewer": {"id": 1, "name": "Justice League"}}]`),
-			wantRule:  []*RequiredReviewer{{Type: Ptr("Team"), Reviewer: &Team{ID: Ptr(int64(1)), Name: Ptr("Justice League")}}},
+			wantRule:  []*RequiredReviewer{{Type: new("Team"), Reviewer: &Team{ID: new(int64(1)), Name: new("Justice League")}}},
 			wantError: false,
 		},
 		"Both Types Reviewer": {
 			data:      []byte(`[{"type": "User", "reviewer": {"id": 1,"login": "octocat"}},{"type": "Team", "reviewer": {"id": 1, "name": "Justice League"}}]`),
-			wantRule:  []*RequiredReviewer{{Type: Ptr("User"), Reviewer: &User{ID: Ptr(int64(1)), Login: Ptr("octocat")}}, {Type: Ptr("Team"), Reviewer: &Team{ID: Ptr(int64(1)), Name: Ptr("Justice League")}}},
+			wantRule:  []*RequiredReviewer{{Type: new("User"), Reviewer: &User{ID: new(int64(1)), Login: new("octocat")}}, {Type: new("Team"), Reviewer: &Team{ID: new(int64(1)), Name: new("Justice League")}}},
 			wantError: false,
 		},
 		"Empty JSON Object": {
@@ -63,12 +63,12 @@ func TestRequiredReviewer_UnmarshalJSON(t *testing.T) {
 		},
 		"Wrong ID Type in User Object": {
 			data:      []byte(`[{"type": "User", "reviewer": {"id": "string"}}]`),
-			wantRule:  []*RequiredReviewer{{Type: Ptr("User"), Reviewer: nil}},
+			wantRule:  []*RequiredReviewer{{Type: new("User"), Reviewer: nil}},
 			wantError: true,
 		},
 		"Wrong ID Type in Team Object": {
 			data:      []byte(`[{"type": "Team", "reviewer": {"id": "string"}}]`),
-			wantRule:  []*RequiredReviewer{{Type: Ptr("Team"), Reviewer: nil}},
+			wantRule:  []*RequiredReviewer{{Type: new("Team"), Reviewer: nil}},
 			wantError: true,
 		},
 		"Wrong Type of Reviewer": {
@@ -125,7 +125,7 @@ func TestRepositoriesService_ListEnvironments(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.ListEnvironments returned error: %v", err)
 	}
-	want := &EnvResponse{TotalCount: Ptr(1), Environments: []*Environment{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}}
+	want := &EnvResponse{TotalCount: new(1), Environments: []*Environment{{ID: new(int64(1))}, {ID: new(int64(2))}}}
 	if !cmp.Equal(environments, want) {
 		t.Errorf("Repositories.ListEnvironments returned %+v, want %+v", environments, want)
 	}
@@ -160,7 +160,7 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 		t.Errorf("Repositories.GetEnvironment returned error: %v\n%v", err, resp.Body)
 	}
 
-	want := &Environment{ID: Ptr(int64(1)), Name: Ptr("staging"), DeploymentBranchPolicy: &BranchPolicy{ProtectedBranches: Ptr(true), CustomBranchPolicies: Ptr(false)}, CanAdminsBypass: Ptr(false)}
+	want := &Environment{ID: new(int64(1)), Name: new("staging"), DeploymentBranchPolicy: &BranchPolicy{ProtectedBranches: new(true), CustomBranchPolicies: new(false)}, CanAdminsBypass: new(false)}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.GetEnvironment returned %+v, want %+v", release, want)
 	}
@@ -185,12 +185,12 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	input := &CreateUpdateEnvironment{
-		WaitTimer: Ptr(30),
+		WaitTimer: new(30),
 	}
 
 	mux.HandleFunc("/repos/o/r/environments/e", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
-		want := &CreateUpdateEnvironment{WaitTimer: Ptr(30), CanAdminsBypass: Ptr(true)}
+		want := &CreateUpdateEnvironment{WaitTimer: new(30), CanAdminsBypass: new(true)}
 		testJSONBody(t, r, want)
 		fmt.Fprint(w, `{"id": 1, "name": "staging",	"protection_rules": [{"id": 1, "type": "wait_timer", "wait_timer": 30}]}`)
 	})
@@ -201,7 +201,7 @@ func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned error: %v", err)
 	}
 
-	want := &Environment{ID: Ptr(int64(1)), Name: Ptr("staging"), ProtectionRules: []*ProtectionRule{{ID: Ptr(int64(1)), Type: Ptr("wait_timer"), WaitTimer: Ptr(30)}}}
+	want := &Environment{ID: new(int64(1)), Name: new("staging"), ProtectionRules: []*ProtectionRule{{ID: new(int64(1)), Type: new("wait_timer"), WaitTimer: new(30)}}}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned %+v, want %+v", release, want)
 	}
@@ -246,7 +246,7 @@ func TestRepositoriesService_CreateEnvironment_noEnterprise(t *testing.T) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned error: %v", err)
 	}
 
-	want := &Environment{ID: Ptr(int64(1)), Name: Ptr("staging"), ProtectionRules: []*ProtectionRule{}}
+	want := &Environment{ID: new(int64(1)), Name: new("staging"), ProtectionRules: []*ProtectionRule{}}
 	if !cmp.Equal(release, want) {
 		t.Errorf("Repositories.CreateUpdateEnvironment returned %+v, want %+v", release, want)
 	}
@@ -258,8 +258,8 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 
 	input := &CreateUpdateEnvironment{
 		DeploymentBranchPolicy: &BranchPolicy{
-			ProtectedBranches:    Ptr(true),
-			CustomBranchPolicies: Ptr(false),
+			ProtectedBranches:    new(true),
+			CustomBranchPolicies: new(false),
 		},
 	}
 
@@ -276,18 +276,18 @@ func TestRepositoriesService_createNewEnvNoEnterprise(t *testing.T) {
 	}
 
 	want := &Environment{
-		ID:   Ptr(int64(1)),
-		Name: Ptr("staging"),
+		ID:   new(int64(1)),
+		Name: new("staging"),
 		ProtectionRules: []*ProtectionRule{
 			{
-				ID:     Ptr(int64(1)),
-				NodeID: Ptr("id"),
-				Type:   Ptr("branch_policy"),
+				ID:     new(int64(1)),
+				NodeID: new("id"),
+				Type:   new("branch_policy"),
 			},
 		},
 		DeploymentBranchPolicy: &BranchPolicy{
-			ProtectedBranches:    Ptr(true),
-			CustomBranchPolicies: Ptr(false),
+			ProtectedBranches:    new(true),
+			CustomBranchPolicies: new(false),
 		},
 	}
 	if !cmp.Equal(release, want) {

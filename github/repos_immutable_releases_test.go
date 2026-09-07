@@ -79,7 +79,7 @@ func TestRepositoriesService_AreImmutableReleasesEnabled(t *testing.T) {
 	if err != nil {
 		t.Errorf("Repositories.AreImmutableReleasesEnabled returned error: %v", err)
 	}
-	want := &RepoImmutableReleasesStatus{Enabled: Ptr(true), EnforcedByOwner: Ptr(false)}
+	want := &RepoImmutableReleasesStatus{Enabled: new(true), EnforcedByOwner: new(false)}
 	if !cmp.Equal(status, want) {
 		t.Errorf("Repositories.AreImmutableReleasesEnabled returned %+v, want %+v", status, want)
 	}

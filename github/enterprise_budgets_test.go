@@ -19,6 +19,12 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page":     "2",
+			"per_page": "10",
+			"scope":    "enterprise",
+			"user":     "octocat",
+		})
 		fmt.Fprint(w, `{
 			"budgets": [
 				{
@@ -39,8 +45,13 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 		}`)
 	})
 
+	opts := &EnterpriseListBudgetsOptions{
+		Scope:       "enterprise",
+		User:        "octocat",
+		ListOptions: ListOptions{Page: 2, PerPage: 10},
+	}
 	ctx := t.Context()
-	budgets, _, err := client.Enterprise.ListBudgets(ctx, "e")
+	budgets, _, err := client.Enterprise.ListBudgets(ctx, "e", opts)
 	if err != nil {
 		t.Errorf("Enterprise.ListBudgets returned error: %v", err)
 	}
@@ -48,20 +59,20 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 	want := &EnterpriseListBudgets{
 		Budgets: []*EnterpriseBudget{
 			{
-				ID:                  Ptr("2066deda-923f-43f9-88d2-62395a28c0cdd"),
-				BudgetType:          Ptr(BudgetTypeProductPricing),
-				BudgetProductSKU:    Ptr("actions"),
-				BudgetScope:         Ptr(BudgetScopeEnterprise),
-				BudgetAmount:        Ptr(1000),
-				PreventFurtherUsage: Ptr(true),
+				ID:                  new("2066deda-923f-43f9-88d2-62395a28c0cdd"),
+				BudgetType:          new(BudgetTypeProductPricing),
+				BudgetProductSKU:    new("actions"),
+				BudgetScope:         new(BudgetScopeEnterprise),
+				BudgetAmount:        new(1000),
+				PreventFurtherUsage: new(true),
 				BudgetAlerting: &EnterpriseBudgetAlerting{
-					WillAlert:       Ptr(true),
+					WillAlert:       new(true),
 					AlertRecipients: []string{"enterprise-admin"},
 				},
 			},
 		},
-		HasNextPage: Ptr(true),
-		TotalCount:  Ptr(1),
+		HasNextPage: new(true),
+		TotalCount:  new(1),
 	}
 	if !cmp.Equal(budgets, want) {
 		t.Errorf("Enterprise.ListBudgets returned %+v, want %+v", budgets, want)
@@ -69,7 +80,7 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 
 	const methodName = "ListBudgets"
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		got, resp, err := client.Enterprise.ListBudgets(ctx, "e")
+		got, resp, err := client.Enterprise.ListBudgets(ctx, "e", nil)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
@@ -77,7 +88,7 @@ func TestEnterpriseService_ListBudgets(t *testing.T) {
 	})
 
 	testBadOptions(t, methodName, func() (err error) {
-		_, _, err = client.Enterprise.ListBudgets(ctx, "\n")
+		_, _, err = client.Enterprise.ListBudgets(ctx, "\n", opts)
 		return err
 	})
 }
@@ -87,7 +98,98 @@ func TestEnterpriseService_ListBudgets_invalidEnterprise(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, _, err := client.Enterprise.ListBudgets(ctx, "%")
+	_, _, err := client.Enterprise.ListBudgets(ctx, "%", nil)
+	testURLParseError(t, err)
+}
+
+func TestEnterpriseService_GetUserStatesForBudget(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/settings/billing/budgets/b-123/user-states", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"page":                  "1",
+			"per_page":              "2",
+			"sort_order":            "1",
+			"user":                  "octocat",
+			"threshold_lower_bound": "50.5",
+			"threshold_upper_bound": "100",
+		})
+		fmt.Fprint(w, `{
+			"user_states": [
+				{
+					"user": "octocat",
+					"consumed_amount": 50.5,
+					"target_amount": 1000
+				},
+				{
+					"user": "monalisa",
+					"consumed_amount": 250,
+					"target_amount": 1000,
+					"override_budget_id": "2066deda-923f-43f9-88d2-62395a28c0cdd"
+				}
+			],
+			"has_next_page": false,
+			"total_count": 2
+		}`)
+	})
+
+	opts := &EnterpriseGetUserStatesOptions{
+		SortOrder:           1,
+		User:                "octocat",
+		ThresholdLowerBound: 50.5,
+		ThresholdUpperBound: 100.0,
+		ListOptions:         ListOptions{Page: 1, PerPage: 2},
+	}
+	ctx := t.Context()
+	states, _, err := client.Enterprise.GetUserStatesForBudget(ctx, "e", "b-123", opts)
+	if err != nil {
+		t.Errorf("Enterprise.GetUserStatesForBudget returned error: %v", err)
+	}
+
+	want := &EnterpriseBudgetUserStates{
+		UserStates: []*EnterpriseBudgetUserState{
+			{
+				User:           new("octocat"),
+				ConsumedAmount: 50.5,
+				TargetAmount:   1000.0,
+			},
+			{
+				User:             new("monalisa"),
+				ConsumedAmount:   250.0,
+				TargetAmount:     1000.0,
+				OverrideBudgetID: new("2066deda-923f-43f9-88d2-62395a28c0cdd"),
+			},
+		},
+		HasNextPage: false,
+		TotalCount:  2,
+	}
+	if !cmp.Equal(states, want) {
+		t.Errorf("Enterprise.GetUserStatesForBudget returned %+v, want %+v", states, want)
+	}
+
+	const methodName = "GetUserStatesForBudget"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetUserStatesForBudget(ctx, "e", "b-123", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GetUserStatesForBudget(ctx, "\n", "\n", opts)
+		return err
+	})
+}
+
+func TestEnterpriseService_GetUserStatesForBudget_invalidEnterprise(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Enterprise.GetUserStatesForBudget(ctx, "%", "b-123", nil)
 	testURLParseError(t, err)
 }
 
@@ -100,7 +202,7 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 		PreventFurtherUsage: true,
 		BudgetScope:         BudgetScopeEnterprise,
 		BudgetType:          BudgetTypeProductPricing,
-		BudgetProductSKU:    Ptr("actions"),
+		BudgetProductSKU:    new("actions"),
 		BudgetAlerting:      &EnterpriseBudgetAlerting{},
 	}
 
@@ -126,9 +228,9 @@ func TestEnterpriseService_CreateBudget(t *testing.T) {
 	want := &EnterpriseCreateOrUpdateBudgetResponse{
 		Message: "Budget successfully created.",
 		Budget: &EnterpriseBudget{
-			ID:                  Ptr("b-123"),
-			BudgetAmount:        Ptr(200),
-			PreventFurtherUsage: Ptr(true),
+			ID:                  new("b-123"),
+			BudgetAmount:        new(200),
+			PreventFurtherUsage: new(true),
 		},
 	}
 	if !cmp.Equal(resp, want) {
@@ -182,12 +284,12 @@ func TestEnterpriseService_GetBudget(t *testing.T) {
 	}
 
 	want := &EnterpriseBudget{
-		ID:                  Ptr("2066deda-923f-43f9-88d2-62395a28c0cdd"),
-		BudgetType:          Ptr(BudgetTypeProductPricing),
-		BudgetProductSKU:    Ptr("actions_linux"),
-		BudgetScope:         Ptr(BudgetScopeRepository),
-		BudgetAmount:        Ptr(0),
-		PreventFurtherUsage: Ptr(true),
+		ID:                  new("2066deda-923f-43f9-88d2-62395a28c0cdd"),
+		BudgetType:          new(BudgetTypeProductPricing),
+		BudgetProductSKU:    new("actions_linux"),
+		BudgetScope:         new(BudgetScopeRepository),
+		BudgetAmount:        new(0),
+		PreventFurtherUsage: new(true),
 	}
 	if !cmp.Equal(budget, want) {
 		t.Errorf("Enterprise.GetBudget returned %+v, want %+v", budget, want)
@@ -222,8 +324,8 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	req := EnterpriseUpdateBudget{
-		BudgetAmount:        Ptr(10),
-		PreventFurtherUsage: Ptr(false),
+		BudgetAmount:        new(10),
+		PreventFurtherUsage: new(false),
 	}
 
 	mux.HandleFunc("/enterprises/e/settings/billing/budgets/b-123", func(w http.ResponseWriter, r *http.Request) {
@@ -248,9 +350,9 @@ func TestEnterpriseService_UpdateBudget(t *testing.T) {
 	want := &EnterpriseCreateOrUpdateBudgetResponse{
 		Message: "Budget successfully updated.",
 		Budget: &EnterpriseBudget{
-			ID:                  Ptr("b-123"),
-			BudgetAmount:        Ptr(10),
-			PreventFurtherUsage: Ptr(false),
+			ID:                  new("b-123"),
+			BudgetAmount:        new(10),
+			PreventFurtherUsage: new(false),
 		},
 	}
 	if !cmp.Equal(resp, want) {

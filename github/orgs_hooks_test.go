@@ -31,7 +31,7 @@ func TestOrganizationsService_ListHooks(t *testing.T) {
 		t.Errorf("Organizations.ListHooks returned error: %v", err)
 	}
 
-	want := []*Hook{{ID: Ptr(int64(1))}, {ID: Ptr(int64(2))}}
+	want := []*Hook{{ID: new(int64(1))}, {ID: new(int64(2))}}
 	if !cmp.Equal(hooks, want) {
 		t.Errorf("Organizations.ListHooks returned %+v, want %+v", hooks, want)
 	}
@@ -79,7 +79,7 @@ func TestOrganizationsService_CreateHook(t *testing.T) {
 		t.Errorf("Organizations.CreateHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Ptr(int64(1))}
+	want := &Hook{ID: new(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Organizations.CreateHook returned %+v, want %+v", hook, want)
 	}
@@ -118,7 +118,7 @@ func TestOrganizationsService_GetHook(t *testing.T) {
 		t.Errorf("Organizations.GetHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Ptr(int64(1))}
+	want := &Hook{ID: new(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Organizations.GetHook returned %+v, want %+v", hook, want)
 	}
@@ -165,7 +165,7 @@ func TestOrganizationsService_EditHook(t *testing.T) {
 		t.Errorf("Organizations.EditHook returned error: %v", err)
 	}
 
-	want := &Hook{ID: Ptr(int64(1))}
+	want := &Hook{ID: new(int64(1))}
 	if !cmp.Equal(hook, want) {
 		t.Errorf("Organizations.EditHook returned %+v, want %+v", hook, want)
 	}

@@ -63,37 +63,37 @@ func TestSecretScanningService_ListPatternConfigsForEnterprise(t *testing.T) {
 	}
 
 	want := &SecretScanningPatternConfigs{
-		PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+		PatternConfigVersion: new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
 		ProviderPatternOverrides: []*SecretScanningPatternOverride{
 			{
-				TokenType:            Ptr("GITHUB_PERSONAL_ACCESS_TOKEN"),
+				TokenType:            new("GITHUB_PERSONAL_ACCESS_TOKEN"),
 				CustomPatternVersion: nil,
-				Slug:                 Ptr("github_personal_access_token_legacy_v2"),
-				DisplayName:          Ptr("GitHub Personal Access Token (Legacy v2)"),
-				AlertTotal:           Ptr(15),
-				AlertTotalPercentage: Ptr(36),
-				FalsePositives:       Ptr(2),
-				FalsePositiveRate:    Ptr(13),
-				Bypassrate:           Ptr(13),
-				DefaultSetting:       Ptr("enabled"),
-				EnterpriseSetting:    Ptr("enabled"),
-				Setting:              Ptr("enabled"),
+				Slug:                 new("github_personal_access_token_legacy_v2"),
+				DisplayName:          new("GitHub Personal Access Token (Legacy v2)"),
+				AlertTotal:           new(15),
+				AlertTotalPercentage: new(36),
+				FalsePositives:       new(2),
+				FalsePositiveRate:    new(13),
+				Bypassrate:           new(13),
+				DefaultSetting:       new("enabled"),
+				EnterpriseSetting:    new("enabled"),
+				Setting:              new("enabled"),
 			},
 		},
 		CustomPatternOverrides: []*SecretScanningPatternOverride{
 			{
-				TokenType:            Ptr("cp_2"),
-				CustomPatternVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
-				Slug:                 Ptr("custom-api-key"),
-				DisplayName:          Ptr("Custom API Key"),
-				AlertTotal:           Ptr(15),
-				AlertTotalPercentage: Ptr(36),
-				FalsePositives:       Ptr(3),
-				FalsePositiveRate:    Ptr(20),
-				Bypassrate:           Ptr(20),
-				DefaultSetting:       Ptr("disabled"),
+				TokenType:            new("cp_2"),
+				CustomPatternVersion: new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+				Slug:                 new("custom-api-key"),
+				DisplayName:          new("Custom API Key"),
+				AlertTotal:           new(15),
+				AlertTotalPercentage: new(36),
+				FalsePositives:       new(3),
+				FalsePositiveRate:    new(20),
+				Bypassrate:           new(20),
+				DefaultSetting:       new("disabled"),
 				EnterpriseSetting:    nil,
-				Setting:              Ptr("enabled"),
+				Setting:              new("enabled"),
 			},
 		},
 	}
@@ -164,37 +164,37 @@ func TestSecretScanningService_ListPatternConfigsForOrg(t *testing.T) {
 	}
 
 	want := &SecretScanningPatternConfigs{
-		PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+		PatternConfigVersion: new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
 		ProviderPatternOverrides: []*SecretScanningPatternOverride{
 			{
-				TokenType:            Ptr("GITHUB_PERSONAL_ACCESS_TOKEN"),
+				TokenType:            new("GITHUB_PERSONAL_ACCESS_TOKEN"),
 				CustomPatternVersion: nil,
-				Slug:                 Ptr("github_personal_access_token_legacy_v2"),
-				DisplayName:          Ptr("GitHub Personal Access Token (Legacy v2)"),
-				AlertTotal:           Ptr(15),
-				AlertTotalPercentage: Ptr(36),
-				FalsePositives:       Ptr(2),
-				FalsePositiveRate:    Ptr(13),
-				Bypassrate:           Ptr(13),
-				DefaultSetting:       Ptr("enabled"),
-				EnterpriseSetting:    Ptr("enabled"),
-				Setting:              Ptr("enabled"),
+				Slug:                 new("github_personal_access_token_legacy_v2"),
+				DisplayName:          new("GitHub Personal Access Token (Legacy v2)"),
+				AlertTotal:           new(15),
+				AlertTotalPercentage: new(36),
+				FalsePositives:       new(2),
+				FalsePositiveRate:    new(13),
+				Bypassrate:           new(13),
+				DefaultSetting:       new("enabled"),
+				EnterpriseSetting:    new("enabled"),
+				Setting:              new("enabled"),
 			},
 		},
 		CustomPatternOverrides: []*SecretScanningPatternOverride{
 			{
-				TokenType:            Ptr("cp_2"),
-				CustomPatternVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
-				Slug:                 Ptr("custom-api-key"),
-				DisplayName:          Ptr("Custom API Key"),
-				AlertTotal:           Ptr(15),
-				AlertTotalPercentage: Ptr(36),
-				FalsePositives:       Ptr(3),
-				FalsePositiveRate:    Ptr(20),
-				Bypassrate:           Ptr(20),
-				DefaultSetting:       Ptr("disabled"),
+				TokenType:            new("cp_2"),
+				CustomPatternVersion: new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+				Slug:                 new("custom-api-key"),
+				DisplayName:          new("Custom API Key"),
+				AlertTotal:           new(15),
+				AlertTotalPercentage: new(36),
+				FalsePositives:       new(3),
+				FalsePositiveRate:    new(20),
+				Bypassrate:           new(20),
+				DefaultSetting:       new("disabled"),
 				EnterpriseSetting:    nil,
-				Setting:              Ptr("enabled"),
+				Setting:              new("enabled"),
 			},
 		},
 	}
@@ -231,7 +231,7 @@ func TestSecretScanningService_UpdatePatternConfigsForEnterprise(t *testing.T) {
 	ctx := t.Context()
 
 	opts := &SecretScanningPatternConfigsUpdateOptions{
-		PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+		PatternConfigVersion: new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
 		ProviderPatternSettings: []*SecretScanningProviderPatternSetting{
 			{
 				TokenType:             "GITHUB_PERSONAL_ACCESS_TOKEN",
@@ -241,7 +241,7 @@ func TestSecretScanningService_UpdatePatternConfigsForEnterprise(t *testing.T) {
 		CustomPatternSettings: []*SecretScanningCustomPatternSetting{
 			{
 				TokenType:             "cp_2",
-				CustomPatternVersion:  Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+				CustomPatternVersion:  new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
 				PushProtectionSetting: "enabled",
 			},
 		},
@@ -253,7 +253,7 @@ func TestSecretScanningService_UpdatePatternConfigsForEnterprise(t *testing.T) {
 	}
 
 	want := &SecretScanningPatternConfigsUpdate{
-		PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+		PatternConfigVersion: new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
 	}
 
 	if !cmp.Equal(configsUpdate, want) {
@@ -288,7 +288,7 @@ func TestSecretScanningService_UpdatePatternConfigsForOrg(t *testing.T) {
 	ctx := t.Context()
 
 	opts := &SecretScanningPatternConfigsUpdateOptions{
-		PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+		PatternConfigVersion: new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
 		ProviderPatternSettings: []*SecretScanningProviderPatternSetting{
 			{
 				TokenType:             "GITHUB_PERSONAL_ACCESS_TOKEN",
@@ -298,7 +298,7 @@ func TestSecretScanningService_UpdatePatternConfigsForOrg(t *testing.T) {
 		CustomPatternSettings: []*SecretScanningCustomPatternSetting{
 			{
 				TokenType:             "cp_2",
-				CustomPatternVersion:  Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+				CustomPatternVersion:  new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
 				PushProtectionSetting: "enabled",
 			},
 		},
@@ -310,7 +310,7 @@ func TestSecretScanningService_UpdatePatternConfigsForOrg(t *testing.T) {
 	}
 
 	want := &SecretScanningPatternConfigsUpdate{
-		PatternConfigVersion: Ptr("0ujsswThIGTUYm2K8FjOOfXtY1K"),
+		PatternConfigVersion: new("0ujsswThIGTUYm2K8FjOOfXtY1K"),
 	}
 
 	if !cmp.Equal(configsUpdate, want) {

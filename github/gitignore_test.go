@@ -58,7 +58,7 @@ func TestGitignoresService_Get(t *testing.T) {
 		t.Errorf("Gitignores.Get returned error: %v", err)
 	}
 
-	want := &Gitignore{Name: Ptr("Name"), Source: Ptr("template source")}
+	want := &Gitignore{Name: new("Name"), Source: new("template source")}
 	if !cmp.Equal(gitignore, want) {
 		t.Errorf("Gitignores.Get returned %+v, want %+v", gitignore, want)
 	}

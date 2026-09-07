@@ -23,7 +23,7 @@ func TestLicensesService_List(t *testing.T) {
 		fmt.Fprint(w, `[{"key":"mit","name":"MIT","spdx_id":"MIT","url":"https://api.github.com/licenses/mit","featured":true}]`)
 	})
 
-	opts := &ListLicensesOptions{Featured: Ptr(true), ListOptions: ListOptions{Page: 2, PerPage: 20}}
+	opts := &ListLicensesOptions{Featured: new(true), ListOptions: ListOptions{Page: 2, PerPage: 20}}
 	ctx := t.Context()
 	licenses, _, err := client.Licenses.List(ctx, opts)
 	if err != nil {
@@ -31,11 +31,11 @@ func TestLicensesService_List(t *testing.T) {
 	}
 
 	want := []*License{{
-		Key:      Ptr("mit"),
-		Name:     Ptr("MIT"),
-		SPDXID:   Ptr("MIT"),
-		URL:      Ptr("https://api.github.com/licenses/mit"),
-		Featured: Ptr(true),
+		Key:      new("mit"),
+		Name:     new("MIT"),
+		SPDXID:   new("MIT"),
+		URL:      new("https://api.github.com/licenses/mit"),
+		Featured: new(true),
 	}}
 	if !cmp.Equal(licenses, want) {
 		t.Errorf("Licenses.List returned %+v, want %+v", licenses, want)
@@ -66,7 +66,7 @@ func TestLicensesService_Get(t *testing.T) {
 		t.Errorf("Licenses.Get returned error: %v", err)
 	}
 
-	want := &License{Key: Ptr("mit"), Name: Ptr("MIT")}
+	want := &License{Key: new("mit"), Name: new("MIT")}
 	if !cmp.Equal(license, want) {
 		t.Errorf("Licenses.Get returned %+v, want %+v", license, want)
 	}

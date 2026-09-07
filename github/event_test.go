@@ -19,14 +19,14 @@ func TestPayload_Panic(t *testing.T) {
 	}()
 
 	body := json.RawMessage("[") // bogus JSON
-	e := &Event{Type: Ptr("UserEvent"), RawPayload: &body}
+	e := &Event{Type: new("UserEvent"), RawPayload: &body}
 	e.Payload()
 }
 
 func TestPayload_NoPanic(t *testing.T) {
 	t.Parallel()
 	body := json.RawMessage("{}")
-	e := &Event{Type: Ptr("UserEvent"), RawPayload: &body}
+	e := &Event{Type: new("UserEvent"), RawPayload: &body}
 	e.Payload()
 }
 

@@ -35,7 +35,7 @@ func TestActionsService_ListCaches(t *testing.T) {
 		t.Errorf("Actions.ListCaches returned error: %v", err)
 	}
 
-	want := &ActionsCacheList{TotalCount: 1, ActionsCaches: []*ActionsCache{{ID: Ptr(int64(1))}}}
+	want := &ActionsCacheList{TotalCount: 1, ActionsCaches: []*ActionsCache{{ID: new(int64(1))}}}
 	if !cmp.Equal(cacheList, want) {
 		t.Errorf("Actions.ListCaches returned %+v, want %+v", cacheList, want)
 	}
@@ -105,19 +105,19 @@ func TestActionsService_DeleteCachesByKey(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	_, err := client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", Ptr("main"))
+	_, err := client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", new("main"))
 	if err != nil {
 		t.Errorf("Actions.DeleteCachesByKey return error: %v", err)
 	}
 
 	const methodName = "DeleteCachesByKey"
 	testBadOptions(t, methodName, func() (err error) {
-		_, err = client.Actions.DeleteCachesByKey(ctx, "\n", "\n", "\n", Ptr("\n"))
+		_, err = client.Actions.DeleteCachesByKey(ctx, "\n", "\n", "\n", new("\n"))
 		return err
 	})
 
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
-		return client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", Ptr("main"))
+		return client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", new("main"))
 	})
 }
 
@@ -126,7 +126,7 @@ func TestActionsService_DeleteCachesByKey_invalidOwner(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, err := client.Actions.DeleteCachesByKey(ctx, "%", "r", "1", Ptr("main"))
+	_, err := client.Actions.DeleteCachesByKey(ctx, "%", "r", "1", new("main"))
 	testURLParseError(t, err)
 }
 
@@ -135,7 +135,7 @@ func TestActionsService_DeleteCachesByKey_invalidRepo(t *testing.T) {
 	client, _, _ := setup(t)
 
 	ctx := t.Context()
-	_, err := client.Actions.DeleteCachesByKey(ctx, "o", "%", "1", Ptr("main"))
+	_, err := client.Actions.DeleteCachesByKey(ctx, "o", "%", "1", new("main"))
 	testURLParseError(t, err)
 }
 
@@ -149,7 +149,7 @@ func TestActionsService_DeleteCachesByKey_notFound(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	resp, err := client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", Ptr("main"))
+	resp, err := client.Actions.DeleteCachesByKey(ctx, "o", "r", "1", new("main"))
 	if err == nil {
 		t.Error("Expected HTTP 404 response")
 	}

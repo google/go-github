@@ -161,10 +161,10 @@ func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, n
 func (c CreateUpdateEnvironment) MarshalJSON() ([]byte, error) {
 	type alias CreateUpdateEnvironment
 	if c.WaitTimer == nil {
-		c.WaitTimer = Ptr(0)
+		c.WaitTimer = new(0)
 	}
 	if c.CanAdminsBypass == nil {
-		c.CanAdminsBypass = Ptr(true)
+		c.CanAdminsBypass = new(true)
 	}
 	return json.Marshal(&struct {
 		alias

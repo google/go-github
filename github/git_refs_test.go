@@ -39,12 +39,12 @@ func TestGitService_GetRef_singleRef(t *testing.T) {
 	}
 
 	want := &Reference{
-		Ref: Ptr("refs/heads/b"),
-		URL: Ptr("https://api.github.com/repos/o/r/git/refs/heads/b"),
+		Ref: new("refs/heads/b"),
+		URL: new("https://api.github.com/repos/o/r/git/refs/heads/b"),
 		Object: &GitObject{
-			Type: Ptr("commit"),
-			SHA:  Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-			URL:  Ptr("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			Type: new("commit"),
+			SHA:  new("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			URL:  new("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
 	if !cmp.Equal(ref, want) {
@@ -135,12 +135,12 @@ func TestGitService_ListMatchingRefs_singleRef(t *testing.T) {
 
 	ref := refs[0]
 	want := &Reference{
-		Ref: Ptr("refs/heads/b"),
-		URL: Ptr("https://api.github.com/repos/o/r/git/refs/heads/b"),
+		Ref: new("refs/heads/b"),
+		URL: new("https://api.github.com/repos/o/r/git/refs/heads/b"),
 		Object: &GitObject{
-			Type: Ptr("commit"),
-			SHA:  Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-			URL:  Ptr("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			Type: new("commit"),
+			SHA:  new("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			URL:  new("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
 	if !cmp.Equal(ref, want) {
@@ -199,12 +199,12 @@ func TestGitService_ListMatchingRefs_multipleRefs(t *testing.T) {
 	}
 
 	want := &Reference{
-		Ref: Ptr("refs/heads/booger"),
-		URL: Ptr("https://api.github.com/repos/o/r/git/refs/heads/booger"),
+		Ref: new("refs/heads/booger"),
+		URL: new("https://api.github.com/repos/o/r/git/refs/heads/booger"),
 		Object: &GitObject{
-			Type: Ptr("commit"),
-			SHA:  Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-			URL:  Ptr("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			Type: new("commit"),
+			SHA:  new("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			URL:  new("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
 	if !cmp.Equal(refs[0], want) {
@@ -297,21 +297,21 @@ func TestGitService_ListMatchingRefs_allRefs(t *testing.T) {
 
 	want := []*Reference{
 		{
-			Ref: Ptr("refs/heads/branchA"),
-			URL: Ptr("https://api.github.com/repos/o/r/git/refs/heads/branchA"),
+			Ref: new("refs/heads/branchA"),
+			URL: new("https://api.github.com/repos/o/r/git/refs/heads/branchA"),
 			Object: &GitObject{
-				Type: Ptr("commit"),
-				SHA:  Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-				URL:  Ptr("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+				Type: new("commit"),
+				SHA:  new("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+				URL:  new("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 			},
 		},
 		{
-			Ref: Ptr("refs/heads/branchB"),
-			URL: Ptr("https://api.github.com/repos/o/r/git/refs/heads/branchB"),
+			Ref: new("refs/heads/branchB"),
+			URL: new("https://api.github.com/repos/o/r/git/refs/heads/branchB"),
 			Object: &GitObject{
-				Type: Ptr("commit"),
-				SHA:  Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-				URL:  Ptr("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+				Type: new("commit"),
+				SHA:  new("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+				URL:  new("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 			},
 		},
 	}
@@ -368,12 +368,12 @@ func TestGitService_CreateRef(t *testing.T) {
 	}
 
 	want := &Reference{
-		Ref: Ptr("refs/heads/b"),
-		URL: Ptr("https://api.github.com/repos/o/r/git/refs/heads/b"),
+		Ref: new("refs/heads/b"),
+		URL: new("https://api.github.com/repos/o/r/git/refs/heads/b"),
 		Object: &GitObject{
-			Type: Ptr("commit"),
-			SHA:  Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-			URL:  Ptr("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			Type: new("commit"),
+			SHA:  new("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			URL:  new("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
 	if !cmp.Equal(ref, want) {
@@ -420,7 +420,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 
 	args := UpdateRef{
 		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
-		Force: Ptr(true),
+		Force: new(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b", func(w http.ResponseWriter, r *http.Request) {
@@ -441,19 +441,19 @@ func TestGitService_UpdateRef(t *testing.T) {
 	ctx := t.Context()
 	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", "refs/heads/b", UpdateRef{
 		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
-		Force: Ptr(true),
+		Force: new(true),
 	})
 	if err != nil {
 		t.Errorf("Git.UpdateRef returned error: %v", err)
 	}
 
 	want := &Reference{
-		Ref: Ptr("refs/heads/b"),
-		URL: Ptr("https://api.github.com/repos/o/r/git/refs/heads/b"),
+		Ref: new("refs/heads/b"),
+		URL: new("https://api.github.com/repos/o/r/git/refs/heads/b"),
 		Object: &GitObject{
-			Type: Ptr("commit"),
-			SHA:  Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-			URL:  Ptr("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			Type: new("commit"),
+			SHA:  new("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			URL:  new("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
 	if !cmp.Equal(ref, want) {
@@ -463,7 +463,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 	// without 'refs/' prefix
 	_, _, err = client.Git.UpdateRef(ctx, "o", "r", "heads/b", UpdateRef{
 		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
-		Force: Ptr(true),
+		Force: new(true),
 	})
 	if err != nil {
 		t.Errorf("Git.UpdateRef returned error: %v", err)
@@ -481,7 +481,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 	testBadOptions(t, methodName, func() (err error) {
 		_, _, err = client.Git.UpdateRef(ctx, "\n", "\n", "refs/heads/b", UpdateRef{
 			SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
-			Force: Ptr(true),
+			Force: new(true),
 		})
 		return err
 	})
@@ -489,7 +489,7 @@ func TestGitService_UpdateRef(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Git.UpdateRef(ctx, "o", "r", "refs/heads/b", UpdateRef{
 			SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
-			Force: Ptr(true),
+			Force: new(true),
 		})
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -576,7 +576,7 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 
 	args := UpdateRef{
 		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
-		Force: Ptr(true),
+		Force: new(true),
 	}
 
 	mux.HandleFunc("/repos/o/r/git/refs/heads/b#1", func(w http.ResponseWriter, r *http.Request) {
@@ -597,19 +597,19 @@ func TestGitService_UpdateRef_pathEscape(t *testing.T) {
 	ctx := t.Context()
 	ref, _, err := client.Git.UpdateRef(ctx, "o", "r", "refs/heads/b#1", UpdateRef{
 		SHA:   "aa218f56b14c9653891f9e74264a383fa43fefbd",
-		Force: Ptr(true),
+		Force: new(true),
 	})
 	if err != nil {
 		t.Errorf("Git.UpdateRef returned error: %v", err)
 	}
 
 	want := &Reference{
-		Ref: Ptr("refs/heads/b#1"),
-		URL: Ptr("https://api.github.com/repos/o/r/git/refs/heads/b%231"),
+		Ref: new("refs/heads/b#1"),
+		URL: new("https://api.github.com/repos/o/r/git/refs/heads/b%231"),
 		Object: &GitObject{
-			Type: Ptr("commit"),
-			SHA:  Ptr("aa218f56b14c9653891f9e74264a383fa43fefbd"),
-			URL:  Ptr("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			Type: new("commit"),
+			SHA:  new("aa218f56b14c9653891f9e74264a383fa43fefbd"),
+			URL:  new("https://api.github.com/repos/o/r/git/commits/aa218f56b14c9653891f9e74264a383fa43fefbd"),
 		},
 	}
 	if !cmp.Equal(ref, want) {
