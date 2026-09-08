@@ -18,6 +18,11 @@ import (
 func TestCopilotSpace_UnmarshalJSON(t *testing.T) {
 	t.Parallel()
 
+	var got CopilotSpace
+	err := got.UnmarshalJSON([]byte(`{`))
+	if err == nil {
+		t.Error("CopilotSpace.UnmarshalJSON returned nil instead of an error")
+	}
 	tests := []struct {
 		name    string
 		json    string
@@ -117,12 +122,6 @@ func TestCopilotSpace_UnmarshalJSON(t *testing.T) {
 			},
 		},
 		{
-			name:    "Invalid JSON",
-			json:    `{`,
-			want:    nil,
-			wantErr: true,
-		},
-		{
 			name: "Unsupported owner type",
 			json: `{
 				"id": 12,
@@ -150,6 +149,53 @@ func TestCopilotSpace_UnmarshalJSON(t *testing.T) {
 			json: `{
 				"id": 12,
 				"owner": "octo-cat"
+			}`,
+			wantErr: true,
+		},
+		{
+			name: "User owner decode error",
+			json: `{
+				"id": 12,
+				"owner": {
+					"login": "octocat",
+					"id": "not-an-int",
+					"type": "User"
+				}
+			}`,
+			wantErr: true,
+		},
+		{
+			name: "Null owner",
+			json: `{
+				"id": 12,
+				"owner": null
+			}`,
+			want: &CopilotSpace{
+				ID:    12,
+				Owner: nil,
+			},
+		},
+		{
+			name: "Organization owner decode error",
+			json: `{
+				"id": 12,
+				"owner": {
+					"login": "octo-org",
+					"id": "not-an-int",
+					"type": "Organization"
+				}
+			}`,
+			wantErr: true,
+		},
+		{
+			name: "Organization owner fallback decode error",
+			json: `{
+				"id": 12,
+				"owner": {
+					"login": "octo-org",
+					"id": "not-an-int",
+					"hooks_url": "https://api.github.com/orgs/octo-org/hooks"
+				}
 			}`,
 			wantErr: true,
 		},
