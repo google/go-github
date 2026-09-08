@@ -32222,6 +32222,14 @@ func (p *PullRequest) GetUser() *User {
 	return p.User
 }
 
+// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
+func (p *PullRequestAddToStackRequest) GetPullRequests() []int {
+	if p == nil || p.PullRequests == nil {
+		return nil
+	}
+	return p.PullRequests
+}
+
 // GetCommitMessage returns the CommitMessage field if it's non-nil, zero value otherwise.
 func (p *PullRequestAutoMerge) GetCommitMessage() string {
 	if p == nil || p.CommitMessage == nil {
@@ -33508,14 +33516,6 @@ func (p *PullRequestRuleParameters) GetRequireLastPushApproval() bool {
 		return false
 	}
 	return p.RequireLastPushApproval
-}
-
-// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
-func (p *PullRequestsAddToStackRequest) GetPullRequests() []int {
-	if p == nil || p.PullRequests == nil {
-		return nil
-	}
-	return p.PullRequests
 }
 
 // GetBase returns the Base field.

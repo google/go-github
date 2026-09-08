@@ -40419,6 +40419,17 @@ func TestPullRequest_GetUser(tt *testing.T) {
 	p.GetUser()
 }
 
+func TestPullRequestAddToStackRequest_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int{}
+	p := &PullRequestAddToStackRequest{PullRequests: zeroValue}
+	p.GetPullRequests()
+	p = &PullRequestAddToStackRequest{}
+	p.GetPullRequests()
+	p = nil
+	p.GetPullRequests()
+}
+
 func TestPullRequestAutoMerge_GetCommitMessage(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -41963,17 +41974,6 @@ func TestPullRequestRuleParameters_GetRequireLastPushApproval(tt *testing.T) {
 	p.GetRequireLastPushApproval()
 	p = nil
 	p.GetRequireLastPushApproval()
-}
-
-func TestPullRequestsAddToStackRequest_GetPullRequests(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []int{}
-	p := &PullRequestsAddToStackRequest{PullRequests: zeroValue}
-	p.GetPullRequests()
-	p = &PullRequestsAddToStackRequest{}
-	p.GetPullRequests()
-	p = nil
-	p.GetPullRequests()
 }
 
 func TestPullRequestStack_GetBase(tt *testing.T) {

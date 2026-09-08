@@ -305,7 +305,7 @@ func TestPullRequestsService_GetStack_invalidOwner(t *testing.T) {
 func TestPullRequestsService_AddToStack(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
-	input := PullRequestsAddToStackRequest{PullRequests: []int{103, 104}}
+	input := PullRequestAddToStackRequest{PullRequests: []int{103, 104}}
 
 	mux.HandleFunc("/repos/o/r/stacks/42/add", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
@@ -401,7 +401,7 @@ func TestPullRequestsService_AddToStack_invalidOwner(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	_, _, err := client.PullRequests.AddToStack(t.Context(), "%", "%", 42, PullRequestsAddToStackRequest{})
+	_, _, err := client.PullRequests.AddToStack(t.Context(), "%", "%", 42, PullRequestAddToStackRequest{})
 	testURLParseError(t, err)
 }
 

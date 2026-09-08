@@ -25,8 +25,8 @@ type PullRequestCreateStackRequest struct {
 	PullRequests []int `json:"pull_requests"`
 }
 
-// PullRequestsAddToStackRequest represents a request to append pull requests to a stack.
-type PullRequestsAddToStackRequest struct {
+// PullRequestAddToStackRequest represents a request to append pull requests to a stack.
+type PullRequestAddToStackRequest struct {
 	// PullRequests is an ordered list of pull request numbers to append from the current top upward.
 	PullRequests []int `json:"pull_requests"`
 }
@@ -231,7 +231,7 @@ func (s *PullRequestsService) GetStack(ctx context.Context, owner, repo string, 
 // GitHub API docs: https://docs.github.com/rest/pulls/stacks?apiVersion=2022-11-28#add-pull-requests-to-a-pull-request-stack
 //
 //meta:operation POST /repos/{owner}/{repo}/stacks/{stack_number}/add
-func (s *PullRequestsService) AddToStack(ctx context.Context, owner, repo string, stackNumber int, body PullRequestsAddToStackRequest) (*PullRequestStackDetails, *Response, error) {
+func (s *PullRequestsService) AddToStack(ctx context.Context, owner, repo string, stackNumber int, body PullRequestAddToStackRequest) (*PullRequestStackDetails, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/stacks/%v/add", owner, repo, stackNumber)
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
