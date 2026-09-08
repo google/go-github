@@ -397,6 +397,22 @@ func TestAppsService_DeleteInstallation(t *testing.T) {
 	})
 }
 
+func TestAppsService_DeleteInstallationNoContent(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/app/installations/1", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ctx := t.Context()
+	_, err := client.Apps.DeleteInstallation(ctx, 1)
+	if err != nil {
+		t.Errorf("Apps.DeleteInstallation returned error: %v", err)
+	}
+}
+
 func TestAppsService_CreateInstallationToken(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
