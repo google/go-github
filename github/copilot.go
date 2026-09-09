@@ -41,6 +41,7 @@ type CopilotSpace struct {
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
 func (c *CopilotSpace) UnmarshalJSON(data []byte) error {
+	// Define a new type without methods to avoid recursively calling UnmarshalJSON.
 	type alias CopilotSpace
 	var space alias
 
