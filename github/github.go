@@ -69,7 +69,7 @@ const (
 	// After some time, specific media types will be promoted (to a "stable" state).
 	// From then on, the preview headers are not required anymore to activate the additional
 	// feature on GitHub.com's API. However, this API header might still be needed for users
-	// to run a GitHub Enterprise Server on-premise.
+	// to run a GitHub Enterprise Server on-premises.
 	// It's not uncommon for GitHub Enterprise Server customers to run older versions which
 	// would probably rely on the preview headers for some time.
 	// While the header promotion is going out for GitHub.com, it may be some time before it
@@ -196,10 +196,10 @@ type Client struct {
 	secondaryRateLimitReset time.Time        // Secondary rate limit reset for the client as determined by the most recent API calls.
 
 	// If specified, Client will block requests for at most this duration in case of reaching a secondary
-	// rate limit
+	// rate limit.
 	maxSecondaryRateLimitRetryAfterDuration time.Duration
 
-	// Whether to respect rate limit headers on endpoints that return 302 redirections to artifacts
+	// Whether to respect rate limit headers on endpoints that return 302 redirections to artifacts.
 	rateLimitRedirectionalEndpoints bool
 
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
