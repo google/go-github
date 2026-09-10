@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/alecthomas/kong v1.16.1
-	github.com/getkin/kin-openapi v0.148.0
+	github.com/getkin/kin-openapi v0.149.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v91 v91.0.0
 	go.yaml.in/yaml/v3 v3.0.5
