@@ -6398,12 +6398,12 @@ func (c *CodespaceCreateForUserOptions) GetRef() string {
 	return *c.Ref
 }
 
-// GetRepositoryID returns the RepositoryID field.
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
 func (c *CodespaceCreateForUserOptions) GetRepositoryID() int64 {
-	if c == nil {
+	if c == nil || c.RepositoryID == nil {
 		return 0
 	}
-	return c.RepositoryID
+	return *c.RepositoryID
 }
 
 // GetRetentionPeriodMinutes returns the RetentionPeriodMinutes field if it's non-nil, zero value otherwise.

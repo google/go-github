@@ -502,7 +502,7 @@ func TestCodespacesService_Create(t *testing.T) {
 		Geo:                new("WestUs2"),
 		Machine:            new("standardLinux"),
 		IdleTimeoutMinutes: new(60),
-		RepositoryID:       int64(111),
+		RepositoryID:       new(int64(111)),
 		PullRequest:        nil,
 	}
 
@@ -543,6 +543,24 @@ func TestCodespacesService_Create(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestCodespaceCreateForUserOptions_Marshal(t *testing.T) {
+	t.Parallel()
+
+	repoOpts := CodespaceCreateForUserOptions{
+		RepositoryID: new(int64(111)),
+		Ref:          new("main"),
+	}
+	testJSONMarshal(t, repoOpts, `{"repository_id":111,"ref":"main"}`)
+
+	pullRequestOpts := CodespaceCreateForUserOptions{
+		PullRequest: &CodespacePullRequestOptions{
+			PullRequestNumber: 42,
+			RepositoryID:      111,
+		},
+	}
+	testJSONMarshal(t, pullRequestOpts, `{"pull_request":{"pull_request_number":42,"repository_id":111}}`)
 }
 
 func TestCodespacesService_Get(t *testing.T) {

@@ -214,9 +214,9 @@ type CodespacePullRequestOptions struct {
 
 // CodespaceCreateForUserOptions represents options for creating a codespace for the authenticated user.
 type CodespaceCreateForUserOptions struct {
-	PullRequest *CodespacePullRequestOptions `json:"pull_request"`
+	PullRequest *CodespacePullRequestOptions `json:"pull_request,omitempty"`
 	// RepositoryID represents the repository ID for this codespace.
-	RepositoryID               int64   `json:"repository_id"`
+	RepositoryID               *int64  `json:"repository_id,omitempty"`
 	Ref                        *string `json:"ref,omitempty"`
 	Geo                        *string `json:"geo,omitempty"`
 	ClientIP                   *string `json:"client_ip,omitempty"`

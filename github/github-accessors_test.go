@@ -8129,7 +8129,10 @@ func TestCodespaceCreateForUserOptions_GetRef(tt *testing.T) {
 
 func TestCodespaceCreateForUserOptions_GetRepositoryID(tt *testing.T) {
 	tt.Parallel()
-	c := &CodespaceCreateForUserOptions{}
+	var zeroValue int64
+	c := &CodespaceCreateForUserOptions{RepositoryID: &zeroValue}
+	c.GetRepositoryID()
+	c = &CodespaceCreateForUserOptions{}
 	c.GetRepositoryID()
 	c = nil
 	c.GetRepositoryID()
