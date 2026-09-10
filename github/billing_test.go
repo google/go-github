@@ -1052,3 +1052,219 @@ func TestBillingService_GetUserAICreditUsage_FloatQuantities(t *testing.T) {
 		t.Errorf("Billing.GetUserAICreditUsage returned %+v, want %+v", report, want)
 	}
 }
+
+func TestBillingService_GetOrganizationUsageSummary(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/organizations/o/settings/billing/usage/summary", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"year":       "2025",
+			"month":      "8",
+			"day":        "15",
+			"repository": "o/repo",
+			"product":    "actions",
+			"sku":        "actions_linux",
+		})
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2025,
+				"month": 8,
+				"day": 15
+			},
+			"organization": "o",
+			"repository": "o/repo",
+			"product": "actions",
+			"sku": "actions_linux",
+			"usageItems": [
+				{
+					"product": "actions",
+					"sku": "actions_linux",
+					"unitType": "minutes",
+					"pricePerUnit": 0.008,
+					"grossQuantity": 100,
+					"grossAmount": 0.8,
+					"discountQuantity": 10,
+					"discountAmount": 0.08,
+					"netQuantity": 90,
+					"netAmount": 0.72
+				}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &UsageSummaryOptions{
+		Year:       2025,
+		Month:      8,
+		Day:        15,
+		Repository: "o/repo",
+		Product:    "actions",
+		SKU:        "actions_linux",
+	}
+	report, _, err := client.Billing.GetOrganizationUsageSummary(ctx, "o", opts)
+	if err != nil {
+		t.Fatalf("Billing.GetOrganizationUsageSummary returned error: %v", err)
+	}
+
+	want := &UsageSummaryReport{
+		TimePeriod: UsageSummaryTimePeriod{
+			Year:  2025,
+			Month: new(8),
+			Day:   new(15),
+		},
+		Organization: new("o"),
+		Repository:   new("o/repo"),
+		Product:      new("actions"),
+		SKU:          new("actions_linux"),
+		UsageItems: []*UsageSummaryItem{
+			{
+				Product:          "actions",
+				SKU:              "actions_linux",
+				UnitType:         "minutes",
+				PricePerUnit:     0.008,
+				GrossQuantity:    100.0,
+				GrossAmount:      0.8,
+				DiscountQuantity: 10.0,
+				DiscountAmount:   0.08,
+				NetQuantity:      90.0,
+				NetAmount:        0.72,
+			},
+		},
+	}
+	if !cmp.Equal(report, want) {
+		t.Errorf("Billing.GetOrganizationUsageSummary returned %+v, want %+v", report, want)
+	}
+
+	const methodName = "GetOrganizationUsageSummary"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Billing.GetOrganizationUsageSummary(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetOrganizationUsageSummary(ctx, "o", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestBillingService_GetOrganizationUsageSummary_invalidOrg(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Billing.GetOrganizationUsageSummary(ctx, "%", nil)
+	testURLParseError(t, err)
+}
+
+func TestBillingService_GetUserUsageSummary(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/users/u/settings/billing/usage/summary", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"year":       "2025",
+			"month":      "8",
+			"day":        "15",
+			"repository": "u/repo",
+			"product":    "actions",
+			"sku":        "actions_linux",
+		})
+		fmt.Fprint(w, `{
+			"timePeriod": {
+				"year": 2025,
+				"month": 8,
+				"day": 15
+			},
+			"user": "u",
+			"repository": "u/repo",
+			"product": "actions",
+			"sku": "actions_linux",
+			"usageItems": [
+				{
+					"product": "actions",
+					"sku": "actions_linux",
+					"unitType": "minutes",
+					"pricePerUnit": 0.008,
+					"grossQuantity": 100,
+					"grossAmount": 0.8,
+					"discountQuantity": 10,
+					"discountAmount": 0.08,
+					"netQuantity": 90,
+					"netAmount": 0.72
+				}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &UsageSummaryOptions{
+		Year:       2025,
+		Month:      8,
+		Day:        15,
+		Repository: "u/repo",
+		Product:    "actions",
+		SKU:        "actions_linux",
+	}
+	report, _, err := client.Billing.GetUserUsageSummary(ctx, "u", opts)
+	if err != nil {
+		t.Fatalf("Billing.GetUserUsageSummary returned error: %v", err)
+	}
+
+	want := &UsageSummaryReport{
+		TimePeriod: UsageSummaryTimePeriod{
+			Year:  2025,
+			Month: new(8),
+			Day:   new(15),
+		},
+		User:       new("u"),
+		Repository: new("u/repo"),
+		Product:    new("actions"),
+		SKU:        new("actions_linux"),
+		UsageItems: []*UsageSummaryItem{
+			{
+				Product:          "actions",
+				SKU:              "actions_linux",
+				UnitType:         "minutes",
+				PricePerUnit:     0.008,
+				GrossQuantity:    100.0,
+				GrossAmount:      0.8,
+				DiscountQuantity: 10.0,
+				DiscountAmount:   0.08,
+				NetQuantity:      90.0,
+				NetAmount:        0.72,
+			},
+		},
+	}
+	if !cmp.Equal(report, want) {
+		t.Errorf("Billing.GetUserUsageSummary returned %+v, want %+v", report, want)
+	}
+
+	const methodName = "GetUserUsageSummary"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Billing.GetUserUsageSummary(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Billing.GetUserUsageSummary(ctx, "u", nil)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestBillingService_GetUserUsageSummary_invalidUser(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	ctx := t.Context()
+	_, _, err := client.Billing.GetUserUsageSummary(ctx, "%", nil)
+	testURLParseError(t, err)
+}
