@@ -604,7 +604,8 @@ func TestCodespacesService_Update(t *testing.T) {
 	client, mux, _ := setup(t)
 
 	opt := &UpdateCodespaceOptions{
-		Machine: new("standardLinux"),
+		Machine:     new("standardLinux"),
+		DisplayName: new("my codespace"),
 		RecentFolders: []string{
 			"folder1",
 			"folder2",

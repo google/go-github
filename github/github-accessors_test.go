@@ -55697,6 +55697,17 @@ func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
 	u.GetStatus()
 }
 
+func TestUpdateCodespaceOptions_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCodespaceOptions{DisplayName: &zeroValue}
+	u.GetDisplayName()
+	u = &UpdateCodespaceOptions{}
+	u.GetDisplayName()
+	u = nil
+	u.GetDisplayName()
+}
+
 func TestUpdateCodespaceOptions_GetMachine(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string

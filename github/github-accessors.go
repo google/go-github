@@ -44566,6 +44566,14 @@ func (u *UpdateCheckRunOptions) GetStatus() string {
 	return *u.Status
 }
 
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (u *UpdateCodespaceOptions) GetDisplayName() string {
+	if u == nil || u.DisplayName == nil {
+		return ""
+	}
+	return *u.DisplayName
+}
+
 // GetMachine returns the Machine field if it's non-nil, zero value otherwise.
 func (u *UpdateCodespaceOptions) GetMachine() string {
 	if u == nil || u.Machine == nil {

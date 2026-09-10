@@ -234,6 +234,8 @@ type CodespaceCreateForUserOptions struct {
 type UpdateCodespaceOptions struct {
 	// Machine represents a valid machine to transition this codespace to.
 	Machine *string `json:"machine,omitempty"`
+	// DisplayName represents the display name for this codespace.
+	DisplayName *string `json:"display_name,omitempty"`
 	// RecentFolders represents the recently opened folders inside the codespace.
 	// It is currently used by the clients to determine the folder path to load the codespace in.
 	RecentFolders []string `json:"recent_folders,omitempty"`
