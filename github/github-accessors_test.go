@@ -56291,6 +56291,14 @@ func TestUpdateEnterpriseRunnerGroupRequest_GetNetworkConfigurationID(tt *testin
 	u.GetNetworkConfigurationID()
 }
 
+func TestUpdateEnterpriseRunnerGroupRequest_GetRemoveNetworkConfiguration(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateEnterpriseRunnerGroupRequest{}
+	u.GetRemoveNetworkConfiguration()
+	u = nil
+	u.GetRemoveNetworkConfiguration()
+}
+
 func TestUpdateEnterpriseRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -57161,6 +57169,14 @@ func TestUpdateRunnerGroupRequest_GetNetworkConfigurationID(tt *testing.T) {
 	u.GetNetworkConfigurationID()
 	u = nil
 	u.GetNetworkConfigurationID()
+}
+
+func TestUpdateRunnerGroupRequest_GetRemoveNetworkConfiguration(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateRunnerGroupRequest{}
+	u.GetRemoveNetworkConfiguration()
+	u = nil
+	u.GetRemoveNetworkConfiguration()
 }
 
 func TestUpdateRunnerGroupRequest_GetRestrictedToWorkflows(tt *testing.T) {
