@@ -8,6 +8,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/url"
 )
 
 // CustomDeploymentProtectionRuleApp represents a single deployment protection rule app for an environment.
@@ -49,7 +50,7 @@ type CustomDeploymentProtectionRuleRequest struct {
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules
 func (s *RepositoriesService) GetAllDeploymentProtectionRules(ctx context.Context, owner, repo, environment string) (*ListDeploymentProtectionRuleResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules", owner, repo, environment)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules", owner, repo, url.PathEscape(environment))
 
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
@@ -71,7 +72,7 @@ func (s *RepositoriesService) GetAllDeploymentProtectionRules(ctx context.Contex
 //
 //meta:operation POST /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules
 func (s *RepositoriesService) CreateCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, body *CustomDeploymentProtectionRuleRequest) (*CustomDeploymentProtectionRule, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules", owner, repo, environment)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules", owner, repo, url.PathEscape(environment))
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)
 	if err != nil {
@@ -93,7 +94,7 @@ func (s *RepositoriesService) CreateCustomDeploymentProtectionRule(ctx context.C
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/apps
 func (s *RepositoriesService) ListCustomDeploymentRuleIntegrations(ctx context.Context, owner, repo, environment string, opts *ListOptions) (*ListCustomDeploymentRuleIntegrationsResponse, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules/apps", owner, repo, environment)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules/apps", owner, repo, url.PathEscape(environment))
 	u, err := addOptions(u, opts)
 	if err != nil {
 		return nil, nil, err
@@ -119,7 +120,7 @@ func (s *RepositoriesService) ListCustomDeploymentRuleIntegrations(ctx context.C
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}
 func (s *RepositoriesService) GetCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, protectionRuleID int64) (*CustomDeploymentProtectionRule, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules/%v", owner, repo, environment, protectionRuleID)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules/%v", owner, repo, url.PathEscape(environment), protectionRuleID)
 
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
@@ -141,7 +142,7 @@ func (s *RepositoriesService) GetCustomDeploymentProtectionRule(ctx context.Cont
 //
 //meta:operation DELETE /repos/{owner}/{repo}/environments/{environment_name}/deployment_protection_rules/{protection_rule_id}
 func (s *RepositoriesService) DisableCustomDeploymentProtectionRule(ctx context.Context, owner, repo, environment string, protectionRuleID int64) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules/%v", owner, repo, environment, protectionRuleID)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v/deployment_protection_rules/%v", owner, repo, url.PathEscape(environment), protectionRuleID)
 
 	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {

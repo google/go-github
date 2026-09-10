@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 )
 
 // Environment represents a single environment in a repository.
@@ -141,7 +142,7 @@ func (s *RepositoriesService) ListEnvironments(ctx context.Context, owner, repo 
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) GetEnvironment(ctx context.Context, owner, repo, name string) (*Environment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, name)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, url.PathEscape(name))
 	req, err := s.client.NewRequest(ctx, "GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -198,7 +199,7 @@ type createUpdateEnvironmentNoEnterprise struct {
 //
 //meta:operation PUT /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) CreateUpdateEnvironment(ctx context.Context, owner, repo, name string, body *CreateUpdateEnvironment) (*Environment, *Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, name)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, url.PathEscape(name))
 	req, err := s.client.NewRequest(ctx, "PUT", u, body)
 	if err != nil {
 		return nil, nil, err
@@ -247,7 +248,7 @@ func (s *RepositoriesService) createNewEnvNoEnterprise(ctx context.Context, u st
 //
 //meta:operation DELETE /repos/{owner}/{repo}/environments/{environment_name}
 func (s *RepositoriesService) DeleteEnvironment(ctx context.Context, owner, repo, name string) (*Response, error) {
-	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, name)
+	u := fmt.Sprintf("repos/%v/%v/environments/%v", owner, repo, url.PathEscape(name))
 	req, err := s.client.NewRequest(ctx, "DELETE", u, nil)
 	if err != nil {
 		return nil, err
