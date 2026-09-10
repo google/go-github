@@ -145,7 +145,7 @@ func TestCodespacesService_CreateInRepo(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CreateCodespaceOptions{
+	input := CreateCodespaceRequest{
 		Ref:                new("main"),
 		Geo:                new("WestUs2"),
 		Machine:            new("standardLinux"),
@@ -451,7 +451,7 @@ func TestCodespacesService_CreateFromPullRequest(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	input := &CreateCodespaceOptions{
+	input := CreateCodespaceRequest{
 		Machine:            new("standardLinux"),
 		IdleTimeoutMinutes: new(60),
 	}
@@ -497,7 +497,7 @@ func TestCodespacesService_Create(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &CodespaceCreateForUserOptions{
+	input := CreateCodespaceForUserRequest{
 		Ref:                new("main"),
 		Geo:                new("WestUs2"),
 		Machine:            new("standardLinux"),
@@ -508,14 +508,14 @@ func TestCodespacesService_Create(t *testing.T) {
 
 	mux.HandleFunc("/user/codespaces", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
 	})
 
 	ctx := t.Context()
 	codespace, _, err := client.Codespaces.Create(
 		ctx,
-		opt,
+		input,
 	)
 	if err != nil {
 		t.Fatalf("Codespaces.Create returned error: %v", err)
@@ -536,7 +536,7 @@ func TestCodespacesService_Create(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		got, resp, err := client.Codespaces.Create(
 			ctx,
-			opt,
+			input,
 		)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -545,22 +545,22 @@ func TestCodespacesService_Create(t *testing.T) {
 	})
 }
 
-func TestCodespaceCreateForUserOptions_Marshal(t *testing.T) {
+func TestCreateCodespaceForUserRequest_Marshal(t *testing.T) {
 	t.Parallel()
 
-	repoOpts := CodespaceCreateForUserOptions{
+	repoInput := CreateCodespaceForUserRequest{
 		RepositoryID: new(int64(111)),
 		Ref:          new("main"),
 	}
-	testJSONMarshal(t, repoOpts, `{"repository_id":111,"ref":"main"}`)
+	testJSONMarshal(t, repoInput, `{"repository_id":111,"ref":"main"}`)
 
-	pullRequestOpts := CodespaceCreateForUserOptions{
+	pullRequestInput := CreateCodespaceForUserRequest{
 		PullRequest: &CodespacePullRequestOptions{
 			PullRequestNumber: 42,
 			RepositoryID:      111,
 		},
 	}
-	testJSONMarshal(t, pullRequestOpts, `{"pull_request":{"pull_request_number":42,"repository_id":111}}`)
+	testJSONMarshal(t, pullRequestInput, `{"pull_request":{"pull_request_number":42,"repository_id":111}}`)
 }
 
 func TestCodespacesService_Get(t *testing.T) {
@@ -603,7 +603,7 @@ func TestCodespacesService_Update(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &UpdateCodespaceOptions{
+	input := UpdateCodespaceRequest{
 		Machine:     new("standardLinux"),
 		DisplayName: new("my codespace"),
 		RecentFolders: []string{
@@ -614,7 +614,7 @@ func TestCodespacesService_Update(t *testing.T) {
 
 	mux.HandleFunc("/user/codespaces/codespace_1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
 	})
 
@@ -622,7 +622,7 @@ func TestCodespacesService_Update(t *testing.T) {
 	codespace, _, err := client.Codespaces.Update(
 		ctx,
 		"codespace_1",
-		opt,
+		input,
 	)
 	if err != nil {
 		t.Fatalf("Codespaces.Update returned error: %v", err)
@@ -644,7 +644,7 @@ func TestCodespacesService_Update(t *testing.T) {
 		got, resp, err := client.Codespaces.Update(
 			ctx,
 			"codespace_1",
-			opt,
+			input,
 		)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
@@ -739,14 +739,14 @@ func TestCodespacesService_Publish(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opt := &PublishCodespaceOptions{
+	input := PublishCodespaceRequest{
 		Name:    new("repo"),
 		Private: new(true),
 	}
 
 	mux.HandleFunc("/user/codespaces/codespace_1/publish", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
-		testJSONBody(t, r, opt)
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{"id":1,"repository":{"id":111}}`)
 	})
 
@@ -754,7 +754,7 @@ func TestCodespacesService_Publish(t *testing.T) {
 	repo, _, err := client.Codespaces.Publish(
 		ctx,
 		"codespace_1",
-		opt,
+		input,
 	)
 	if err != nil {
 		t.Fatalf("Codespaces.Publish returned error: %v", err)
@@ -775,7 +775,7 @@ func TestCodespacesService_Publish(t *testing.T) {
 		got, resp, err := client.Codespaces.Publish(
 			ctx,
 			"codespace_1",
-			opt,
+			input,
 		)
 		if got != nil {
 			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
