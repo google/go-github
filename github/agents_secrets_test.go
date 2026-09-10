@@ -93,7 +93,7 @@ func TestAgentsService_ListRepoSecrets(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"name":"B","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
+		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"name":"B","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -106,8 +106,8 @@ func TestAgentsService_ListRepoSecrets(t *testing.T) {
 	want := &Secrets{
 		TotalCount: 4,
 		Secrets: []*Secret{
-			{Name: "A", CreatedAt: *refTimestamp(1136178000), UpdatedAt: *refTimestamp(1136178001)},
-			{Name: "B", CreatedAt: *refTimestamp(1136178002), UpdatedAt: *refTimestamp(1136178003)},
+			{Name: "A", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp},
+			{Name: "B", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp},
 		},
 	}
 	if !cmp.Equal(secrets, want) {
@@ -137,7 +137,7 @@ func TestAgentsService_ListRepoOrgSecrets(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`},{"name":"B","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`}]}`)
+		fmt.Fprint(w, `{"total_count":4,"secrets":[{"name":"A","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`},{"name":"B","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -150,8 +150,8 @@ func TestAgentsService_ListRepoOrgSecrets(t *testing.T) {
 	want := &Secrets{
 		TotalCount: 4,
 		Secrets: []*Secret{
-			{Name: "A", CreatedAt: *refTimestamp(1136178000), UpdatedAt: *refTimestamp(1136178001)},
-			{Name: "B", CreatedAt: *refTimestamp(1136178002), UpdatedAt: *refTimestamp(1136178003)},
+			{Name: "A", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp},
+			{Name: "B", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp},
 		},
 	}
 	if !cmp.Equal(secrets, want) {
@@ -180,7 +180,7 @@ func TestAgentsService_GetRepoSecret(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/agents/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
-		fmt.Fprint(w, `{"name":"NAME","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`}`)
+		fmt.Fprint(w, `{"name":"NAME","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -191,8 +191,8 @@ func TestAgentsService_GetRepoSecret(t *testing.T) {
 
 	want := &Secret{
 		Name:      "NAME",
-		CreatedAt: *refTimestamp(1136178000),
-		UpdatedAt: *refTimestamp(1136178001),
+		CreatedAt: referenceTimestamp,
+		UpdatedAt: referenceTimestamp,
 	}
 	if !cmp.Equal(secret, want) {
 		t.Errorf("Agents.GetRepoSecret returned %+v, want %+v", secret, want)
@@ -226,11 +226,7 @@ func TestAgentsService_CreateOrUpdateRepoSecret(t *testing.T) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testHeader(t, r, "Content-Type", "application/json")
-		want := SecretRequest{
-			EncryptedValue: input.EncryptedValue,
-			KeyID:          input.KeyID,
-		}
-		testJSONBody(t, r, want)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 	})
 
@@ -321,7 +317,7 @@ func TestAgentsService_ListOrgSecrets(t *testing.T) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testFormValues(t, r, values{"per_page": "2", "page": "2"})
-		fmt.Fprint(w, `{"total_count":3,"secrets":[{"name":"GIST_ID","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`,"visibility":"private"},{"name":"DEPLOY_TOKEN","created_at":`+refTimeStr(1136178002)+`,"updated_at":`+refTimeStr(1136178003)+`,"visibility":"all"},{"name":"GH_TOKEN","created_at":`+refTimeStr(1136178004)+`,"updated_at":`+refTimeStr(1136178005)+`,"visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/agents/secrets/SUPER_SECRET/repositories"}]}`)
+		fmt.Fprint(w, `{"total_count":3,"secrets":[{"name":"GIST_ID","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"private"},{"name":"DEPLOY_TOKEN","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"all"},{"name":"GH_TOKEN","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/agents/secrets/SUPER_SECRET/repositories"}]}`)
 	})
 
 	opts := &ListOptions{Page: 2, PerPage: 2}
@@ -334,9 +330,9 @@ func TestAgentsService_ListOrgSecrets(t *testing.T) {
 	want := &Secrets{
 		TotalCount: 3,
 		Secrets: []*Secret{
-			{Name: "GIST_ID", CreatedAt: *refTimestamp(1136178000), UpdatedAt: *refTimestamp(1136178001), Visibility: "private"},
-			{Name: "DEPLOY_TOKEN", CreatedAt: *refTimestamp(1136178002), UpdatedAt: *refTimestamp(1136178003), Visibility: "all"},
-			{Name: "GH_TOKEN", CreatedAt: *refTimestamp(1136178004), UpdatedAt: *refTimestamp(1136178005), Visibility: "selected", SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/agents/secrets/SUPER_SECRET/repositories"},
+			{Name: "GIST_ID", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp, Visibility: "private"},
+			{Name: "DEPLOY_TOKEN", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp, Visibility: "all"},
+			{Name: "GH_TOKEN", CreatedAt: referenceTimestamp, UpdatedAt: referenceTimestamp, Visibility: "selected", SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/agents/secrets/SUPER_SECRET/repositories"},
 		},
 	}
 	if !cmp.Equal(secrets, want) {
@@ -365,7 +361,7 @@ func TestAgentsService_GetOrgSecret(t *testing.T) {
 	mux.HandleFunc("/orgs/o/agents/secrets/NAME", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
-		fmt.Fprint(w, `{"name":"NAME","created_at":`+refTimeStr(1136178000)+`,"updated_at":`+refTimeStr(1136178001)+`,"visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/agents/secrets/SUPER_SECRET/repositories"}`)
+		fmt.Fprint(w, `{"name":"NAME","created_at":`+referenceTimeStr+`,"updated_at":`+referenceTimeStr+`,"visibility":"selected","selected_repositories_url":"https://api.github.com/orgs/octo-org/agents/secrets/SUPER_SECRET/repositories"}`)
 	})
 
 	ctx := t.Context()
@@ -376,8 +372,8 @@ func TestAgentsService_GetOrgSecret(t *testing.T) {
 
 	want := &Secret{
 		Name:                    "NAME",
-		CreatedAt:               *refTimestamp(1136178000),
-		UpdatedAt:               *refTimestamp(1136178001),
+		CreatedAt:               referenceTimestamp,
+		UpdatedAt:               referenceTimestamp,
 		Visibility:              "selected",
 		SelectedRepositoriesURL: "https://api.github.com/orgs/octo-org/agents/secrets/SUPER_SECRET/repositories",
 	}
@@ -415,13 +411,7 @@ func TestAgentsService_CreateOrUpdateOrgSecret(t *testing.T) {
 		testMethod(t, r, "PUT")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
 		testHeader(t, r, "Content-Type", "application/json")
-		want := SecretOrgRequest{
-			EncryptedValue:        input.EncryptedValue,
-			KeyID:                 input.KeyID,
-			Visibility:            input.Visibility,
-			SelectedRepositoryIDs: input.SelectedRepositoryIDs,
-		}
-		testJSONBody(t, r, want)
+		testJSONBody(t, r, input)
 		w.WriteHeader(http.StatusCreated)
 	})
 
