@@ -32222,6 +32222,14 @@ func (p *PullRequest) GetUser() *User {
 	return p.User
 }
 
+// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
+func (p *PullRequestAddToStackRequest) GetPullRequests() []int {
+	if p == nil || p.PullRequests == nil {
+		return nil
+	}
+	return p.PullRequests
+}
+
 // GetCommitMessage returns the CommitMessage field if it's non-nil, zero value otherwise.
 func (p *PullRequestAutoMerge) GetCommitMessage() string {
 	if p == nil || p.CommitMessage == nil {
@@ -32582,6 +32590,14 @@ func (p *PullRequestCommentLinks) GetSelf() *PRLink {
 	return p.Self
 }
 
+// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
+func (p *PullRequestCreateStackRequest) GetPullRequests() []int {
+	if p == nil || p.PullRequests == nil {
+		return nil
+	}
+	return p.PullRequests
+}
+
 // GetEvent returns the Event field if it's non-nil, zero value otherwise.
 func (p *PullRequestDismissReviewRequest) GetEvent() string {
 	if p == nil || p.Event == nil {
@@ -32828,6 +32844,14 @@ func (p *PullRequestListOptions) GetState() string {
 		return ""
 	}
 	return p.State
+}
+
+// GetPullRequest returns the PullRequest field.
+func (p *PullRequestListStacksOptions) GetPullRequest() int {
+	if p == nil {
+		return 0
+	}
+	return p.PullRequest
 }
 
 // GetExpectedHeadSHA returns the ExpectedHeadSHA field if it's non-nil, zero value otherwise.
@@ -33548,6 +33572,342 @@ func (p *PullRequestStackBase) GetSHA() string {
 		return ""
 	}
 	return p.SHA
+}
+
+// GetRef returns the Ref field.
+func (p *PullRequestStackBranch) GetRef() string {
+	if p == nil {
+		return ""
+	}
+	return p.Ref
+}
+
+// GetRepo returns the Repo field.
+func (p *PullRequestStackBranch) GetRepo() *PullRequestStackRepository {
+	if p == nil {
+		return nil
+	}
+	return p.Repo
+}
+
+// GetSHA returns the SHA field.
+func (p *PullRequestStackBranch) GetSHA() string {
+	if p == nil {
+		return ""
+	}
+	return p.SHA
+}
+
+// GetBase returns the Base field.
+func (p *PullRequestStackDetails) GetBase() *PullRequestStackRef {
+	if p == nil {
+		return nil
+	}
+	return p.Base
+}
+
+// GetCreatedAt returns the CreatedAt field.
+func (p *PullRequestStackDetails) GetCreatedAt() Timestamp {
+	if p == nil {
+		return Timestamp{}
+	}
+	return p.CreatedAt
+}
+
+// GetID returns the ID field.
+func (p *PullRequestStackDetails) GetID() int64 {
+	if p == nil {
+		return 0
+	}
+	return p.ID
+}
+
+// GetNodeID returns the NodeID field.
+func (p *PullRequestStackDetails) GetNodeID() string {
+	if p == nil {
+		return ""
+	}
+	return p.NodeID
+}
+
+// GetNumber returns the Number field.
+func (p *PullRequestStackDetails) GetNumber() int {
+	if p == nil {
+		return 0
+	}
+	return p.Number
+}
+
+// GetOpen returns the Open field.
+func (p *PullRequestStackDetails) GetOpen() bool {
+	if p == nil {
+		return false
+	}
+	return p.Open
+}
+
+// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
+func (p *PullRequestStackDetails) GetPullRequests() []*PullRequestStackEntry {
+	if p == nil || p.PullRequests == nil {
+		return nil
+	}
+	return p.PullRequests
+}
+
+// GetURL returns the URL field.
+func (p *PullRequestStackDetails) GetURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.URL
+}
+
+// GetBase returns the Base field.
+func (p *PullRequestStackEntry) GetBase() *PullRequestStackBranch {
+	if p == nil {
+		return nil
+	}
+	return p.Base
+}
+
+// GetDraft returns the Draft field.
+func (p *PullRequestStackEntry) GetDraft() bool {
+	if p == nil {
+		return false
+	}
+	return p.Draft
+}
+
+// GetHead returns the Head field.
+func (p *PullRequestStackEntry) GetHead() *PullRequestStackBranch {
+	if p == nil {
+		return nil
+	}
+	return p.Head
+}
+
+// GetHTMLURL returns the HTMLURL field.
+func (p *PullRequestStackEntry) GetHTMLURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.HTMLURL
+}
+
+// GetID returns the ID field.
+func (p *PullRequestStackEntry) GetID() int64 {
+	if p == nil {
+		return 0
+	}
+	return p.ID
+}
+
+// GetMergedAt returns the MergedAt field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackEntry) GetMergedAt() Timestamp {
+	if p == nil || p.MergedAt == nil {
+		return Timestamp{}
+	}
+	return *p.MergedAt
+}
+
+// GetNodeID returns the NodeID field.
+func (p *PullRequestStackEntry) GetNodeID() string {
+	if p == nil {
+		return ""
+	}
+	return p.NodeID
+}
+
+// GetNumber returns the Number field.
+func (p *PullRequestStackEntry) GetNumber() int {
+	if p == nil {
+		return 0
+	}
+	return p.Number
+}
+
+// GetState returns the State field.
+func (p *PullRequestStackEntry) GetState() string {
+	if p == nil {
+		return ""
+	}
+	return p.State
+}
+
+// GetTitle returns the Title field.
+func (p *PullRequestStackEntry) GetTitle() string {
+	if p == nil {
+		return ""
+	}
+	return p.Title
+}
+
+// GetURL returns the URL field.
+func (p *PullRequestStackEntry) GetURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.URL
+}
+
+// GetUser returns the User field.
+func (p *PullRequestStackEntry) GetUser() *User {
+	if p == nil {
+		return nil
+	}
+	return p.User
+}
+
+// GetBase returns the Base field.
+func (p *PullRequestStackMinimal) GetBase() *PullRequestStackRef {
+	if p == nil {
+		return nil
+	}
+	return p.Base
+}
+
+// GetCreatedAt returns the CreatedAt field.
+func (p *PullRequestStackMinimal) GetCreatedAt() Timestamp {
+	if p == nil {
+		return Timestamp{}
+	}
+	return p.CreatedAt
+}
+
+// GetID returns the ID field.
+func (p *PullRequestStackMinimal) GetID() int64 {
+	if p == nil {
+		return 0
+	}
+	return p.ID
+}
+
+// GetNodeID returns the NodeID field.
+func (p *PullRequestStackMinimal) GetNodeID() string {
+	if p == nil {
+		return ""
+	}
+	return p.NodeID
+}
+
+// GetNumber returns the Number field.
+func (p *PullRequestStackMinimal) GetNumber() int {
+	if p == nil {
+		return 0
+	}
+	return p.Number
+}
+
+// GetOpen returns the Open field.
+func (p *PullRequestStackMinimal) GetOpen() bool {
+	if p == nil {
+		return false
+	}
+	return p.Open
+}
+
+// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
+func (p *PullRequestStackMinimal) GetPullRequests() []*PullRequestStackMinimalEntry {
+	if p == nil || p.PullRequests == nil {
+		return nil
+	}
+	return p.PullRequests
+}
+
+// GetURL returns the URL field.
+func (p *PullRequestStackMinimal) GetURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.URL
+}
+
+// GetDraft returns the Draft field.
+func (p *PullRequestStackMinimalEntry) GetDraft() bool {
+	if p == nil {
+		return false
+	}
+	return p.Draft
+}
+
+// GetHead returns the Head field.
+func (p *PullRequestStackMinimalEntry) GetHead() *PullRequestStackMinimalHead {
+	if p == nil {
+		return nil
+	}
+	return p.Head
+}
+
+// GetMergedAt returns the MergedAt field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackMinimalEntry) GetMergedAt() Timestamp {
+	if p == nil || p.MergedAt == nil {
+		return Timestamp{}
+	}
+	return *p.MergedAt
+}
+
+// GetNumber returns the Number field.
+func (p *PullRequestStackMinimalEntry) GetNumber() int {
+	if p == nil {
+		return 0
+	}
+	return p.Number
+}
+
+// GetState returns the State field.
+func (p *PullRequestStackMinimalEntry) GetState() string {
+	if p == nil {
+		return ""
+	}
+	return p.State
+}
+
+// GetRef returns the Ref field.
+func (p *PullRequestStackMinimalHead) GetRef() string {
+	if p == nil {
+		return ""
+	}
+	return p.Ref
+}
+
+// GetSHA returns the SHA field.
+func (p *PullRequestStackMinimalHead) GetSHA() string {
+	if p == nil {
+		return ""
+	}
+	return p.SHA
+}
+
+// GetRef returns the Ref field.
+func (p *PullRequestStackRef) GetRef() string {
+	if p == nil {
+		return ""
+	}
+	return p.Ref
+}
+
+// GetID returns the ID field.
+func (p *PullRequestStackRepository) GetID() int64 {
+	if p == nil {
+		return 0
+	}
+	return p.ID
+}
+
+// GetName returns the Name field.
+func (p *PullRequestStackRepository) GetName() string {
+	if p == nil {
+		return ""
+	}
+	return p.Name
+}
+
+// GetURL returns the URL field.
+func (p *PullRequestStackRepository) GetURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.URL
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
