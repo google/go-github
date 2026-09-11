@@ -38,6 +38,8 @@ type UpdateDeploymentBranchPolicyRequest struct {
 
 // ListDeploymentBranchPolicies lists the deployment branch policies for an environment.
 //
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/deployments/branch-policies?apiVersion=2022-11-28#list-deployment-branch-policies
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies
@@ -64,6 +66,8 @@ func (s *RepositoriesService) ListDeploymentBranchPolicies(ctx context.Context, 
 
 // GetDeploymentBranchPolicy gets a deployment branch policy for an environment.
 //
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/deployments/branch-policies?apiVersion=2022-11-28#get-a-deployment-branch-policy
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}
@@ -85,6 +89,8 @@ func (s *RepositoriesService) GetDeploymentBranchPolicy(ctx context.Context, own
 }
 
 // CreateDeploymentBranchPolicy creates a deployment branch policy for an environment.
+//
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/deployments/branch-policies?apiVersion=2022-11-28#create-a-deployment-branch-policy
 //
@@ -108,6 +114,8 @@ func (s *RepositoriesService) CreateDeploymentBranchPolicy(ctx context.Context, 
 
 // UpdateDeploymentBranchPolicy updates a deployment branch policy for an environment.
 //
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/deployments/branch-policies?apiVersion=2022-11-28#update-a-deployment-branch-policy
 //
 //meta:operation PUT /repos/{owner}/{repo}/environments/{environment_name}/deployment-branch-policies/{branch_policy_id}
@@ -129,6 +137,8 @@ func (s *RepositoriesService) UpdateDeploymentBranchPolicy(ctx context.Context, 
 }
 
 // DeleteDeploymentBranchPolicy deletes a deployment branch policy for an environment.
+//
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/deployments/branch-policies?apiVersion=2022-11-28#delete-a-deployment-branch-policy
 //

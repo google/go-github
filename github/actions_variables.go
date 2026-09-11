@@ -142,6 +142,8 @@ func (s *ActionsService) ListOrgVariables(ctx context.Context, org string, opts 
 
 // ListEnvVariables lists all variables available in an environment.
 //
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#list-environment-variables
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/variables
@@ -212,6 +214,8 @@ func (s *ActionsService) GetOrgVariable(ctx context.Context, org, name string) (
 
 // GetEnvVariable gets a single environment variable.
 //
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#get-an-environment-variable
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}
@@ -266,6 +270,8 @@ func (s *ActionsService) CreateOrgVariable(ctx context.Context, org string, body
 
 // CreateEnvVariable creates an environment variable.
 //
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#create-an-environment-variable
 //
 //meta:operation POST /repos/{owner}/{repo}/environments/{environment_name}/variables
@@ -312,6 +318,8 @@ func (s *ActionsService) UpdateOrgVariable(ctx context.Context, org, name string
 }
 
 // UpdateEnvVariable updates an environment variable.
+//
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#update-an-environment-variable
 //
@@ -360,6 +368,8 @@ func (s *ActionsService) DeleteOrgVariable(ctx context.Context, org, name string
 }
 
 // DeleteEnvVariable deletes a variable in an environment.
+//
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/actions/variables?apiVersion=2022-11-28#delete-an-environment-variable
 //

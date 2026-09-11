@@ -85,6 +85,8 @@ func (s *ActionsService) GetOrgPublicKey(ctx context.Context, org string) (*Publ
 
 // GetEnvPublicKey gets a public key that should be used for secret encryption.
 //
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#get-an-environment-public-key
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/secrets/public-key
@@ -191,6 +193,8 @@ func (s *ActionsService) ListOrgSecrets(ctx context.Context, org string, opts *L
 
 // ListEnvSecrets lists all secrets available in an environment.
 //
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#list-environment-secrets
 //
 //meta:operation GET /repos/{owner}/{repo}/environments/{environment_name}/secrets
@@ -260,6 +264,8 @@ func (s *ActionsService) GetOrgSecret(ctx context.Context, org, name string) (*S
 }
 
 // GetEnvSecret gets a single environment secret without revealing its encrypted value.
+//
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#get-an-environment-secret
 //
@@ -355,6 +361,8 @@ func (s *ActionsService) CreateOrUpdateOrgSecret(ctx context.Context, org, name 
 
 // CreateOrUpdateEnvSecret creates or updates a single environment secret with an encrypted value.
 //
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
+//
 // GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#create-or-update-an-environment-secret
 //
 //meta:operation PUT /repos/{owner}/{repo}/environments/{environment_name}/secrets/{secret_name}
@@ -402,6 +410,8 @@ func (s *ActionsService) DeleteOrgSecret(ctx context.Context, org, name string) 
 }
 
 // DeleteEnvSecret deletes a secret in an environment using the secret name.
+//
+// Note: the environment name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/actions/secrets?apiVersion=2022-11-28#delete-an-environment-secret
 //
