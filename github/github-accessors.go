@@ -19614,6 +19614,14 @@ func (h *HostedRunner) GetImageDetails() *HostedRunnerImageDetail {
 	return h.ImageDetails
 }
 
+// GetImageGen returns the ImageGen field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetImageGen() bool {
+	if h == nil || h.ImageGen == nil {
+		return false
+	}
+	return *h.ImageGen
+}
+
 // GetLastActiveOn returns the LastActiveOn field if it's non-nil, zero value otherwise.
 func (h *HostedRunner) GetLastActiveOn() Timestamp {
 	if h == nil || h.LastActiveOn == nil {
@@ -45156,6 +45164,14 @@ func (u *UpdateHostedRunnerRequest) GetEnableStaticIP() bool {
 		return false
 	}
 	return *u.EnableStaticIP
+}
+
+// GetImageGen returns the ImageGen field if it's non-nil, zero value otherwise.
+func (u *UpdateHostedRunnerRequest) GetImageGen() bool {
+	if u == nil || u.ImageGen == nil {
+		return false
+	}
+	return *u.ImageGen
 }
 
 // GetImageID returns the ImageID field if it's non-nil, zero value otherwise.
