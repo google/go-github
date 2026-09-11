@@ -39582,6 +39582,14 @@ func (s *SBOM) GetSBOM() *SBOMInfo {
 	return s.SBOM
 }
 
+// GetSBOMURL returns the SBOMURL field if it's non-nil, zero value otherwise.
+func (s *SBOMGeneration) GetSBOMURL() string {
+	if s == nil || s.SBOMURL == nil {
+		return ""
+	}
+	return *s.SBOMURL
+}
+
 // GetCreationInfo returns the CreationInfo field.
 func (s *SBOMInfo) GetCreationInfo() *CreationInfo {
 	if s == nil {

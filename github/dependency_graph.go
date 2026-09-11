@@ -7,7 +7,10 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
+	"strings"
 )
 
 // DependencyGraphService handles communication with the dependency graph
@@ -126,4 +129,125 @@ func (s *DependencyGraphService) GetSBOM(ctx context.Context, owner, repo string
 	}
 
 	return sbom, resp, nil
+}
+
+// SBOMGeneration represents the response to a request to generate
+// a software bill of materials for a repository.
+type SBOMGeneration struct {
+	// SBOMURL is the URL the generated SBOM can be fetched from once it's
+	// ready. UUID extracts the identifier FetchSBOM takes.
+	SBOMURL *string `json:"sbom_url,omitempty"`
+}
+
+// UUID returns the sbomUUID accepted by FetchSBOM. It is the final path segment
+// of SBOMURL.
+func (s *SBOMGeneration) UUID() string {
+	url := s.GetSBOMURL()
+	if i := strings.LastIndex(url, "/"); i >= 0 {
+		return url[i+1:]
+	}
+	return ""
+}
+
+// GenerateSBOM requests the generation of a software bill of materials for a repository.
+//
+// Generation is asynchronous. Pass the returned SBOMGeneration's UUID to
+// FetchSBOM to retrieve the SBOM once GitHub has built it.
+//
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28#request-generation-of-a-software-bill-of-materials-sbom-for-a-repository
+//
+//meta:operation GET /repos/{owner}/{repo}/dependency-graph/sbom/generate-report
+func (s *DependencyGraphService) GenerateSBOM(ctx context.Context, owner, repo string) (*SBOMGeneration, *Response, error) {
+	u := fmt.Sprintf("repos/%v/%v/dependency-graph/sbom/generate-report", owner, repo)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var generation *SBOMGeneration
+	resp, err := s.client.Do(req, &generation)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return generation, resp, nil
+}
+
+// FetchSBOM downloads a software bill of materials or returns a redirect URL.
+//
+// If followRedirectsClient is nil, FetchSBOM returns the download URL in
+// redirectURL and a nil sbom. Otherwise, it downloads the report and returns
+// sbom with an empty redirectURL.
+//
+// Use http.DefaultClient or another client that does not add authentication
+// headers when fetching the pre-signed download URL.
+//
+// While GitHub is generating the SBOM, FetchSBOM returns an *AcceptedError
+// and status code 202. The request can be repeated later.
+//
+// GitHub API docs: https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28#fetch-a-software-bill-of-materials-sbom-for-a-repository
+//
+//meta:operation GET /repos/{owner}/{repo}/dependency-graph/sbom/fetch-report/{sbom_uuid}
+func (s *DependencyGraphService) FetchSBOM(ctx context.Context, owner, repo, sbomUUID string, followRedirectsClient *http.Client) (sbom *SBOM, redirectURL string, resp *Response, err error) {
+	u := fmt.Sprintf("repos/%v/%v/dependency-graph/sbom/fetch-report/%v", owner, repo, sbomUUID)
+
+	req, err := s.client.NewRequest(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, "", nil, err
+	}
+
+	loc, resp, err := s.client.bareDoUntilFound(req, 10)
+	if err != nil {
+		return nil, "", resp, err
+	}
+	defer resp.Body.Close()
+
+	if loc == nil {
+		return nil, "", resp, fmt.Errorf("expected redirect, got status %v", resp.Status)
+	}
+
+	if followRedirectsClient == nil {
+		return nil, loc.String(), resp, nil
+	}
+
+	sbom, err = s.fetchSBOMFromURL(ctx, followRedirectsClient, loc.String())
+	if err != nil {
+		return nil, "", resp, err
+	}
+
+	return sbom, "", resp, nil
+}
+
+// fetchSBOMFromURL downloads and decodes an SPDX report from a temporary download
+// URL.
+//
+// The request must not carry s.client's credentials: the URL is pre-signed and
+// its host rejects authenticated requests.
+func (s *DependencyGraphService) fetchSBOMFromURL(ctx context.Context, followRedirectsClient *http.Client, url string) (*SBOM, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := followRedirectsClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// CheckResponse substitutes resp.Body with a re-readable copy on error responses,
+	// so capture the network body first: it is the one that must be closed.
+	origBody := resp.Body
+	defer origBody.Close()
+
+	if err := CheckResponse(resp); err != nil {
+		return nil, err
+	}
+
+	var info *SBOMInfo
+	if err := json.NewDecoder(resp.Body).Decode(&info); err != nil {
+		return nil, err
+	}
+
+	return &SBOM{SBOM: info}, nil
 }
