@@ -39863,6 +39863,28 @@ func TestPublicIPUsage_GetMaximum(tt *testing.T) {
 	p.GetMaximum()
 }
 
+func TestPublicKey_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PublicKey{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &PublicKey{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestPublicKey_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PublicKey{ID: &zeroValue}
+	p.GetID()
+	p = &PublicKey{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
 func TestPublicKey_GetKey(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39883,6 +39905,28 @@ func TestPublicKey_GetKeyID(tt *testing.T) {
 	p.GetKeyID()
 	p = nil
 	p.GetKeyID()
+}
+
+func TestPublicKey_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PublicKey{Title: &zeroValue}
+	p.GetTitle()
+	p = &PublicKey{}
+	p.GetTitle()
+	p = nil
+	p.GetTitle()
+}
+
+func TestPublicKey_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PublicKey{URL: &zeroValue}
+	p.GetURL()
+	p = &PublicKey{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
 }
 
 func TestPublishCodespaceOptions_GetName(tt *testing.T) {

@@ -20,7 +20,7 @@ func TestAgentsService_GetRepoPublicKey(t *testing.T) {
 	mux.HandleFunc("/repos/o/r/agents/secrets/public-key", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testHeader(t, r, "X-Github-Api-Version", api20260310)
-		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"}`)
+		fmt.Fprint(w, `{"key_id":"1234","key":"2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234","id":1,"url":"https://api.github.com/repos/o/r/agents/secrets/public-key","title":"title","created_at":`+referenceTimeStr+`}`)
 	})
 
 	ctx := t.Context()
@@ -29,7 +29,14 @@ func TestAgentsService_GetRepoPublicKey(t *testing.T) {
 		t.Errorf("Agents.GetRepoPublicKey returned error: %v", err)
 	}
 
-	want := &PublicKey{KeyID: new("1234"), Key: new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234")}
+	want := &PublicKey{
+		KeyID:     new("1234"),
+		Key:       new("2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234"),
+		ID:        new(int64(1)),
+		URL:       new("https://api.github.com/repos/o/r/agents/secrets/public-key"),
+		Title:     new("title"),
+		CreatedAt: &referenceTimestamp,
+	}
 	if !cmp.Equal(key, want) {
 		t.Errorf("Agents.GetRepoPublicKey returned %+v, want %+v", key, want)
 	}
