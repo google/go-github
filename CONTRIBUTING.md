@@ -652,6 +652,40 @@ Its subcommands are:
 - `unused` - lists operations from `openapi_operations.yaml` that are not mapped
   from any methods.
 
+- `check-schema-fields` - checks Go struct JSON field optionality against
+  GitHub's OpenAPI schemas. A struct opts in by carrying one or more
+  `//meta:schema` annotations in its doc comment, each naming the operation
+  whose request or response body schema the struct must match:
+
+  ```go
+  // IssueCommentRequest represents a request to create or update an issue comment.
+  //
+  //meta:schema request POST /repos/{owner}/{repo}/issues/{issue_number}/comments
+  //meta:schema request PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}
+  type IssueCommentRequest struct {
+  ```
+
+  For every annotation the command verifies that required, non-nullable schema
+  fields are non-pointer fields without `omitempty` or `omitzero`, that optional
+  schema fields remain omittable, and that the field sets line up. Unannotated
+  structs are not checked, and an annotation that does not resolve to an
+  operation in the OpenAPI descriptions is itself reported as an issue. Run it
+  with:
+
+  ```sh
+  script/metadata.sh check-schema-fields
+  ```
+
+  When adding a new request type (or converting one to pass by value), add a
+  `//meta:schema request <METHOD> <path>` line per operation that uses it as a
+  body, reusing the method's `//meta:operation` value.
+
+  A few Go fields may intentionally deviate from the OpenAPI schema. These are
+  listed as `Struct.Field` entries in
+  `tools/metadata/schema_field_exceptions.yaml`, and their diagnostics are
+  suppressed; each is a known deviation to fix and remove over time. Update that
+  file (rather than the Go source) to add or remove an exception.
+
 [OpenAPI descriptions of their API]: https://github.com/github/rest-api-description
 
 ## Scripts

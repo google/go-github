@@ -995,6 +995,8 @@ type ExternalGroupList struct {
 
 // UpdateConnectedExternalGroupRequest represents a request to update the connection
 // between an external group and a team.
+//
+//meta:schema request PATCH /orgs/{org}/teams/{team_slug}/external-groups
 type UpdateConnectedExternalGroupRequest struct {
 	GroupID int64 `json:"group_id"`
 }

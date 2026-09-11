@@ -619,6 +619,8 @@ func (s *RepositoriesService) Create(ctx context.Context, org string, repo *Repo
 }
 
 // TemplateRepoRequest represents a request to create a repository from a template.
+//
+//meta:schema request POST /repos/{template_owner}/{template_repo}/generate
 type TemplateRepoRequest struct {
 	Name               string  `json:"name"`
 	Owner              *string `json:"owner,omitempty"`

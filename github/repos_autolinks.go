@@ -11,6 +11,8 @@ import (
 )
 
 // CreateAutolinkRequest specifies parameters for RepositoriesService.CreateAutolink method.
+//
+//meta:schema request POST /repos/{owner}/{repo}/autolinks
 type CreateAutolinkRequest struct {
 	KeyPrefix      string `json:"key_prefix"`
 	URLTemplate    string `json:"url_template"`

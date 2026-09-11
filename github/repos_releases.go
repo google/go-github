@@ -57,6 +57,8 @@ type RepositoryReleaseNotes struct {
 }
 
 // GenerateNotesRequest represents the request to generate release notes.
+//
+//meta:schema request POST /repos/{owner}/{repo}/releases/generate-notes
 type GenerateNotesRequest struct {
 	TagName               string  `json:"tag_name"`
 	PreviousTagName       *string `json:"previous_tag_name,omitempty"`
@@ -83,6 +85,8 @@ type ReleaseAsset struct {
 }
 
 // UpdateReleaseAssetRequest represents the request to update a release asset.
+//
+//meta:schema request PATCH /repos/{owner}/{repo}/releases/assets/{asset_id}
 type UpdateReleaseAssetRequest struct {
 	Name  *string `json:"name,omitempty"`
 	Label *string `json:"label,omitempty"`
@@ -185,6 +189,8 @@ func (s *RepositoriesService) getSingleRelease(ctx context.Context, url string) 
 }
 
 // CreateReleaseRequest represents a request to create a release in a repository.
+//
+//meta:schema request POST /repos/{owner}/{repo}/releases
 type CreateReleaseRequest struct {
 	TagName         string  `json:"tag_name"`
 	TargetCommitish *string `json:"target_commitish,omitempty"`
@@ -199,6 +205,8 @@ type CreateReleaseRequest struct {
 }
 
 // UpdateReleaseRequest represents a request to update a release in a repository.
+//
+//meta:schema request PATCH /repos/{owner}/{repo}/releases/{release_id}
 type UpdateReleaseRequest struct {
 	TagName         *string `json:"tag_name,omitempty"`
 	TargetCommitish *string `json:"target_commitish,omitempty"`

@@ -144,6 +144,8 @@ func (s *PullRequestsService) GetComment(ctx context.Context, owner, repo string
 
 // CreatePullRequestCommentRequest represents a request to create a review
 // comment on a pull request.
+//
+//meta:schema request POST /repos/{owner}/{repo}/pulls/{pull_number}/comments
 type CreatePullRequestCommentRequest struct {
 	Body     string `json:"body"`
 	CommitID string `json:"commit_id"`
@@ -160,6 +162,8 @@ type CreatePullRequestCommentRequest struct {
 
 // UpdatePullRequestCommentRequest represents a request to update a review
 // comment on a pull request.
+//
+//meta:schema request PATCH /repos/{owner}/{repo}/pulls/comments/{comment_id}
 type UpdatePullRequestCommentRequest struct {
 	Body string `json:"body"`
 }

@@ -31,6 +31,8 @@ type CustomRepoRoles struct {
 }
 
 // CreateCustomRepoRoleRequest represents the parameters to create a custom repository role.
+//
+//meta:schema request POST /orgs/{org}/custom-repository-roles
 type CreateCustomRepoRoleRequest struct {
 	Name        string   `json:"name"`
 	Description *string  `json:"description,omitempty"`
@@ -39,6 +41,8 @@ type CreateCustomRepoRoleRequest struct {
 }
 
 // UpdateCustomRepoRoleRequest represents the parameters to update a custom repository role.
+//
+//meta:schema request PATCH /orgs/{org}/custom-repository-roles/{role_id}
 type UpdateCustomRepoRoleRequest struct {
 	Name        *string  `json:"name,omitempty"`
 	Description *string  `json:"description,omitempty"`

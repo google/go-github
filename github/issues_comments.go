@@ -51,6 +51,9 @@ func (i IssueComment) String() string {
 }
 
 // IssueCommentRequest represents a request to create or update an issue comment.
+//
+//meta:schema request POST /repos/{owner}/{repo}/issues/{issue_number}/comments
+//meta:schema request PATCH /repos/{owner}/{repo}/issues/comments/{comment_id}
 type IssueCommentRequest struct {
 	Body string `json:"body"`
 }

@@ -35,6 +35,8 @@ func (m Milestone) String() string {
 }
 
 // CreateMilestoneRequest represents a request to create a milestone.
+//
+//meta:schema request POST /repos/{owner}/{repo}/milestones
 type CreateMilestoneRequest struct {
 	Title       string     `json:"title"`
 	State       *string    `json:"state,omitempty"`
@@ -43,6 +45,8 @@ type CreateMilestoneRequest struct {
 }
 
 // UpdateMilestoneRequest represents a request to update a milestone.
+//
+//meta:schema request PATCH /repos/{owner}/{repo}/milestones/{milestone_number}
 type UpdateMilestoneRequest struct {
 	Title       *string    `json:"title,omitempty"`
 	State       *string    `json:"state,omitempty"`
