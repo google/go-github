@@ -49,40 +49,26 @@ func (c *CopilotSpace) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	*c = CopilotSpace(space)
-
 	switch v := space.Owner.(type) {
 	case nil:
-		c.Owner = nil
+		space.Owner = nil
 	case map[string]any:
-		jsonData, err := json.Marshal(space.Owner)
-		if err != nil {
-			return err
-		}
 		if t, ok := v["type"].(string); ok && t == "User" {
-			var user *User
-			if err := json.Unmarshal(jsonData, &user); err != nil {
-				return err
-			}
-			c.Owner = user
+			space.Owner = &User{}
 		} else if t, ok := v["type"].(string); ok && t == "Organization" {
-			var organization *Organization
-			if err := json.Unmarshal(jsonData, &organization); err != nil {
-				return err
-			}
-			c.Owner = organization
+			space.Owner = &Organization{}
 		} else if _, ok := v["hooks_url"]; ok {
-			var organization *Organization
-			if err := json.Unmarshal(jsonData, &organization); err != nil {
-				return err
-			}
-			c.Owner = organization
+			space.Owner = &Organization{}
 		} else {
 			return fmt.Errorf("unsupported owner type %v", v["type"])
+		}
+		if err := json.Unmarshal(data, &space); err != nil {
+			return err
 		}
 	default:
 		return fmt.Errorf("unsupported owner type %T", v)
 	}
+	*c = CopilotSpace(space)
 	return nil
 }
 

@@ -30,6 +30,36 @@ func TestCopilotSpace_UnmarshalJSON(t *testing.T) {
 		wantErr bool
 	}{
 		{
+			name: "user owner with large ID",
+			json: `{"owner":{"id":9007199254740993,"type":"User"}}`,
+			want: &CopilotSpace{
+				Owner: &User{
+					ID:   new(int64(9007199254740993)),
+					Type: new("User"),
+				},
+			},
+		},
+		{
+			name: "organization owner with large ID",
+			json: `{"owner":{"id":9007199254740993,"type":"Organization"}}`,
+			want: &CopilotSpace{
+				Owner: &Organization{
+					ID:   new(int64(9007199254740993)),
+					Type: new("Organization"),
+				},
+			},
+		},
+		{
+			name: "organization owner without type with large ID",
+			json: `{"owner":{"id":9007199254740993,"hooks_url":"https://api.github.com/orgs/octo-org/hooks"}}`,
+			want: &CopilotSpace{
+				Owner: &Organization{
+					ID:       new(int64(9007199254740993)),
+					HooksURL: new("https://api.github.com/orgs/octo-org/hooks"),
+				},
+			},
+		},
+		{
 			name: "user owner",
 			json: `{
 				"id": 12,
@@ -771,9 +801,7 @@ func TestCopilotService_ListCopilotSeats(t *testing.T) {
 		},
 	}
 
-	if !cmp.Equal(want, got) {
-		t.Errorf("CopilotService returned %+v, want %+v", got, want)
-	}
+	assertNoDiff(t, want, got)
 
 	const methodName = "ListCopilotSeats"
 
