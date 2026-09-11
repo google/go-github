@@ -58,6 +58,39 @@ func TestRepositoriesService_ListDeploymentBranchPolicies(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_ListDeploymentBranchPolicies_EscapeEnvironment(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		environment        string
+		escapedEnvironment string
+	}{
+		{environment: "staging", escapedEnvironment: "staging"},
+		{environment: "team/staging", escapedEnvironment: "team%2Fstaging"},
+	} {
+		t.Run(tt.environment, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				if got, want := r.URL.EscapedPath(), "/repos/o/repo/environments/"+tt.escapedEnvironment+"/deployment-branch-policies"; got != want {
+					t.Errorf("Request path = %q, want %q", got, want)
+				}
+				if got, want := r.URL.Path, "/repos/o/repo/environments/"+tt.environment+"/deployment-branch-policies"; got != want {
+					t.Errorf("Decoded request path = %q, want %q", got, want)
+				}
+				fmt.Fprint(w, `{"total_count":0,"branch_policies":[]}`)
+			})
+
+			ctx := t.Context()
+			_, _, err := client.Repositories.ListDeploymentBranchPolicies(ctx, "o", "repo", tt.environment, nil)
+			if err != nil {
+				t.Fatalf("Repositories.ListDeploymentBranchPolicies returned error: %v", err)
+			}
+		})
+	}
+}
+
 func TestRepositoriesService_GetDeploymentBranchPolicy(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
