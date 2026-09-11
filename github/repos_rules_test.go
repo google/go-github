@@ -63,6 +63,59 @@ func TestRepositoriesService_ListRulesForBranch(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_ListRulesForBranch_EscapeBranch(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		branch        string
+		escapedBranch string
+	}{
+		{branch: "main", escapedBranch: "main"},
+		{branch: "feature/login", escapedBranch: "feature%2Flogin"},
+		{branch: "fix/#123-login", escapedBranch: "fix%2F%23123-login"},
+		{branch: "release%25", escapedBranch: "release%2525"},
+		{branch: "release%ready", escapedBranch: "release%25ready"},
+	} {
+		for _, options := range []struct {
+			name  string
+			opts  *ListOptions
+			query values
+		}{
+			{name: "no_options", query: values{}},
+			{
+				name: "pagination",
+				opts: &ListOptions{Page: 2, PerPage: 35},
+				query: values{
+					"page":     "2",
+					"per_page": "35",
+				},
+			},
+		} {
+			t.Run(tt.branch+"/"+options.name, func(t *testing.T) {
+				t.Parallel()
+				client, mux, _ := setup(t)
+
+				mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+					testMethod(t, r, "GET")
+					if got, want := r.URL.EscapedPath(), "/repos/o/repo/rules/branches/"+tt.escapedBranch; got != want {
+						t.Errorf("Request path = %q, want %q", got, want)
+					}
+					if got, want := r.URL.Path, "/repos/o/repo/rules/branches/"+tt.branch; got != want {
+						t.Errorf("Decoded request path = %q, want %q", got, want)
+					}
+					testFormValues(t, r, options.query)
+					fmt.Fprint(w, `[]`)
+				})
+
+				ctx := t.Context()
+				_, _, err := client.Repositories.ListRulesForBranch(ctx, "o", "repo", tt.branch, options.opts)
+				if err != nil {
+					t.Fatalf("Repositories.ListRulesForBranch returned error: %v", err)
+				}
+			})
+		}
+	}
+}
+
 func TestRepositoriesService_ListRulesForBranchIter(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

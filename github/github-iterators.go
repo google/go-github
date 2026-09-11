@@ -1568,6 +1568,146 @@ func (s *AgentTasksService) ListByRepoIter(ctx context.Context, owner string, re
 	}
 }
 
+// ListOrgSecretsIter returns an iterator that paginates through all results of ListOrgSecrets.
+func (s *AgentsService) ListOrgSecretsIter(ctx context.Context, org string, opts *ListOptions) iter.Seq2[*Secret, error] {
+	return func(yield func(*Secret, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListOrgSecrets(ctx, org, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*Secret
+			if results != nil {
+				iterItems = results.Secrets
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListRepoOrgSecretsIter returns an iterator that paginates through all results of ListRepoOrgSecrets.
+func (s *AgentsService) ListRepoOrgSecretsIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*Secret, error] {
+	return func(yield func(*Secret, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRepoOrgSecrets(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*Secret
+			if results != nil {
+				iterItems = results.Secrets
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListRepoSecretsIter returns an iterator that paginates through all results of ListRepoSecrets.
+func (s *AgentsService) ListRepoSecretsIter(ctx context.Context, owner string, repo string, opts *ListOptions) iter.Seq2[*Secret, error] {
+	return func(yield func(*Secret, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListRepoSecrets(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*Secret
+			if results != nil {
+				iterItems = results.Secrets
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListSelectedReposForOrgSecretIter returns an iterator that paginates through all results of ListSelectedReposForOrgSecret.
+func (s *AgentsService) ListSelectedReposForOrgSecretIter(ctx context.Context, org string, name string, opts *ListOptions) iter.Seq2[*Repository, error] {
+	return func(yield func(*Repository, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &ListOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListSelectedReposForOrgSecret(ctx, org, name, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			var iterItems []*Repository
+			if results != nil {
+				iterItems = results.Repositories
+			}
+			for _, item := range iterItems {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.Page = resp.NextPage
+		}
+	}
+}
+
 // ListHookDeliveriesIter returns an iterator that paginates through all results of ListHookDeliveries.
 func (s *AppsService) ListHookDeliveriesIter(ctx context.Context, opts *ListCursorOptions) iter.Seq2[*HookDelivery, error] {
 	return func(yield func(*HookDelivery, error) bool) {
@@ -5561,6 +5701,37 @@ func (s *PullRequestsService) ListReviewsIter(ctx context.Context, owner string,
 				break
 			}
 			opts.Page = resp.NextPage
+		}
+	}
+}
+
+// ListStacksIter returns an iterator that paginates through all results of ListStacks.
+func (s *PullRequestsService) ListStacksIter(ctx context.Context, owner string, repo string, opts *PullRequestListStacksOptions) iter.Seq2[*PullRequestStackMinimal, error] {
+	return func(yield func(*PullRequestStackMinimal, error) bool) {
+		// Create a copy of opts to avoid mutating the caller's struct
+		if opts == nil {
+			opts = &PullRequestListStacksOptions{}
+		} else {
+			opts = new(*opts)
+		}
+
+		for {
+			results, resp, err := s.ListStacks(ctx, owner, repo, opts)
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			for _, item := range results {
+				if !yield(item, nil) {
+					return
+				}
+			}
+
+			if resp.NextPage == 0 {
+				break
+			}
+			opts.ListOptions.Page = resp.NextPage
 		}
 	}
 }

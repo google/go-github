@@ -17,28 +17,28 @@ func TestDependencyGraphService_CreateSnapshot(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	snapshot := &DependencyGraphSnapshot{
+	snapshot := CreateDependencyGraphSnapshotRequest{
 		Version: 0,
-		Sha:     new("ce587453ced02b1526dfb4cb910479d431683101"),
-		Ref:     new("refs/heads/main"),
-		Job: &DependencyGraphSnapshotJob{
-			Correlator: new("yourworkflowname_youractionname"),
-			ID:         new("yourrunid"),
+		SHA:     "ce587453ced02b1526dfb4cb910479d431683101",
+		Ref:     "refs/heads/main",
+		Job: DependencyGraphSnapshotJob{
+			Correlator: "yourworkflowname_youractionname",
+			ID:         "yourrunid",
 			HTMLURL:    new("https://example.com"),
 		},
-		Detector: &DependencyGraphSnapshotDetector{
-			Name:    new("octo-detector"),
-			Version: new("0.0.1"),
-			URL:     new("https://github.com/octo-org/octo-repo"),
+		Detector: DependencyGraphSnapshotDetector{
+			Name:    "octo-detector",
+			Version: "0.0.1",
+			URL:     "https://github.com/octo-org/octo-repo",
 		},
-		Scanned: &referenceTimestamp,
+		Scanned: referenceTimestamp,
 		Metadata: map[string]any{
 			"key1": "value1",
 			"key2": "value2",
 		},
 		Manifests: map[string]*DependencyGraphSnapshotManifest{
 			"package-lock.json": {
-				Name: new("package-lock.json"),
+				Name: "package-lock.json",
 				File: &DependencyGraphSnapshotManifestFile{SourceLocation: new("src/package-lock.json")},
 				Metadata: map[string]any{
 					"key1": "value1",

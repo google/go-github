@@ -14625,6 +14625,68 @@ func TestCopilotUserPeriodicMetrics_GetUserLogin(tt *testing.T) {
 	c.GetUserLogin()
 }
 
+func TestCopilotUserTeamsDailyMetrics_GetDay(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetDay()
+	c = nil
+	c.GetDay()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetEnterpriseID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotUserTeamsDailyMetrics{EnterpriseID: &zeroValue}
+	c.GetEnterpriseID()
+	c = &CopilotUserTeamsDailyMetrics{}
+	c.GetEnterpriseID()
+	c = nil
+	c.GetEnterpriseID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotUserTeamsDailyMetrics{OrganizationID: &zeroValue}
+	c.GetOrganizationID()
+	c = &CopilotUserTeamsDailyMetrics{}
+	c.GetOrganizationID()
+	c = nil
+	c.GetOrganizationID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetSlug(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetSlug()
+	c = nil
+	c.GetSlug()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetTeamID(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetTeamID()
+	c = nil
+	c.GetTeamID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetUserID(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetUserID()
+	c = nil
+	c.GetUserID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetUserLogin(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetUserLogin()
+	c = nil
+	c.GetUserLogin()
+}
+
 func TestCostCenter_GetAzureSubscription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -15403,6 +15465,65 @@ func TestCreateCustomRepoRoleRequest_GetPermissions(tt *testing.T) {
 	c.GetPermissions()
 	c = nil
 	c.GetPermissions()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetDetector(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetDetector()
+	c = nil
+	c.GetDetector()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetJob(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetJob()
+	c = nil
+	c.GetJob()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := map[string]any{}
+	c := &CreateDependencyGraphSnapshotRequest{Metadata: zeroValue}
+	c.GetMetadata()
+	c = &CreateDependencyGraphSnapshotRequest{}
+	c.GetMetadata()
+	c = nil
+	c.GetMetadata()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetRef(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetScanned(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetScanned()
+	c = nil
+	c.GetScanned()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetSHA()
+	c = nil
+	c.GetSHA()
+}
+
+func TestCreateDependencyGraphSnapshotRequest_GetVersion(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateDependencyGraphSnapshotRequest{}
+	c.GetVersion()
+	c = nil
+	c.GetVersion()
 }
 
 func TestCreateDeployKeyRequest_GetKey(tt *testing.T) {
@@ -18454,74 +18575,6 @@ func TestDependencyGraphAutosubmitActionOptions_GetLabeledRunners(tt *testing.T)
 	d.GetLabeledRunners()
 }
 
-func TestDependencyGraphSnapshot_GetDetector(tt *testing.T) {
-	tt.Parallel()
-	d := &DependencyGraphSnapshot{}
-	d.GetDetector()
-	d = nil
-	d.GetDetector()
-}
-
-func TestDependencyGraphSnapshot_GetJob(tt *testing.T) {
-	tt.Parallel()
-	d := &DependencyGraphSnapshot{}
-	d.GetJob()
-	d = nil
-	d.GetJob()
-}
-
-func TestDependencyGraphSnapshot_GetMetadata(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := map[string]any{}
-	d := &DependencyGraphSnapshot{Metadata: zeroValue}
-	d.GetMetadata()
-	d = &DependencyGraphSnapshot{}
-	d.GetMetadata()
-	d = nil
-	d.GetMetadata()
-}
-
-func TestDependencyGraphSnapshot_GetRef(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshot{Ref: &zeroValue}
-	d.GetRef()
-	d = &DependencyGraphSnapshot{}
-	d.GetRef()
-	d = nil
-	d.GetRef()
-}
-
-func TestDependencyGraphSnapshot_GetScanned(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue Timestamp
-	d := &DependencyGraphSnapshot{Scanned: &zeroValue}
-	d.GetScanned()
-	d = &DependencyGraphSnapshot{}
-	d.GetScanned()
-	d = nil
-	d.GetScanned()
-}
-
-func TestDependencyGraphSnapshot_GetSha(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshot{Sha: &zeroValue}
-	d.GetSha()
-	d = &DependencyGraphSnapshot{}
-	d.GetSha()
-	d = nil
-	d.GetSha()
-}
-
-func TestDependencyGraphSnapshot_GetVersion(tt *testing.T) {
-	tt.Parallel()
-	d := &DependencyGraphSnapshot{}
-	d.GetVersion()
-	d = nil
-	d.GetVersion()
-}
-
 func TestDependencyGraphSnapshotCreationData_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -18565,10 +18618,7 @@ func TestDependencyGraphSnapshotCreationData_GetResult(tt *testing.T) {
 
 func TestDependencyGraphSnapshotDetector_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotDetector{Name: &zeroValue}
-	d.GetName()
-	d = &DependencyGraphSnapshotDetector{}
+	d := &DependencyGraphSnapshotDetector{}
 	d.GetName()
 	d = nil
 	d.GetName()
@@ -18576,10 +18626,7 @@ func TestDependencyGraphSnapshotDetector_GetName(tt *testing.T) {
 
 func TestDependencyGraphSnapshotDetector_GetURL(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotDetector{URL: &zeroValue}
-	d.GetURL()
-	d = &DependencyGraphSnapshotDetector{}
+	d := &DependencyGraphSnapshotDetector{}
 	d.GetURL()
 	d = nil
 	d.GetURL()
@@ -18587,10 +18634,7 @@ func TestDependencyGraphSnapshotDetector_GetURL(tt *testing.T) {
 
 func TestDependencyGraphSnapshotDetector_GetVersion(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotDetector{Version: &zeroValue}
-	d.GetVersion()
-	d = &DependencyGraphSnapshotDetector{}
+	d := &DependencyGraphSnapshotDetector{}
 	d.GetVersion()
 	d = nil
 	d.GetVersion()
@@ -18598,10 +18642,7 @@ func TestDependencyGraphSnapshotDetector_GetVersion(tt *testing.T) {
 
 func TestDependencyGraphSnapshotJob_GetCorrelator(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotJob{Correlator: &zeroValue}
-	d.GetCorrelator()
-	d = &DependencyGraphSnapshotJob{}
+	d := &DependencyGraphSnapshotJob{}
 	d.GetCorrelator()
 	d = nil
 	d.GetCorrelator()
@@ -18620,10 +18661,7 @@ func TestDependencyGraphSnapshotJob_GetHTMLURL(tt *testing.T) {
 
 func TestDependencyGraphSnapshotJob_GetID(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotJob{ID: &zeroValue}
-	d.GetID()
-	d = &DependencyGraphSnapshotJob{}
+	d := &DependencyGraphSnapshotJob{}
 	d.GetID()
 	d = nil
 	d.GetID()
@@ -18650,10 +18688,7 @@ func TestDependencyGraphSnapshotManifest_GetMetadata(tt *testing.T) {
 
 func TestDependencyGraphSnapshotManifest_GetName(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	d := &DependencyGraphSnapshotManifest{Name: &zeroValue}
-	d.GetName()
-	d = &DependencyGraphSnapshotManifest{}
+	d := &DependencyGraphSnapshotManifest{}
 	d.GetName()
 	d = nil
 	d.GetName()
@@ -40231,6 +40266,28 @@ func TestPublicIPUsage_GetMaximum(tt *testing.T) {
 	p.GetMaximum()
 }
 
+func TestPublicKey_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PublicKey{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &PublicKey{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestPublicKey_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PublicKey{ID: &zeroValue}
+	p.GetID()
+	p = &PublicKey{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
 func TestPublicKey_GetKey(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -40251,6 +40308,28 @@ func TestPublicKey_GetKeyID(tt *testing.T) {
 	p.GetKeyID()
 	p = nil
 	p.GetKeyID()
+}
+
+func TestPublicKey_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PublicKey{Title: &zeroValue}
+	p.GetTitle()
+	p = &PublicKey{}
+	p.GetTitle()
+	p = nil
+	p.GetTitle()
+}
+
+func TestPublicKey_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PublicKey{URL: &zeroValue}
+	p.GetURL()
+	p = &PublicKey{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
 }
 
 func TestPublishCodespaceOptions_GetName(tt *testing.T) {
@@ -40787,6 +40866,17 @@ func TestPullRequest_GetUser(tt *testing.T) {
 	p.GetUser()
 }
 
+func TestPullRequestAddToStackRequest_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int{}
+	p := &PullRequestAddToStackRequest{PullRequests: zeroValue}
+	p.GetPullRequests()
+	p = &PullRequestAddToStackRequest{}
+	p.GetPullRequests()
+	p = nil
+	p.GetPullRequests()
+}
+
 func TestPullRequestAutoMerge_GetCommitMessage(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -41252,6 +41342,17 @@ func TestPullRequestCommentLinks_GetSelf(tt *testing.T) {
 	p.GetSelf()
 }
 
+func TestPullRequestCreateStackRequest_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []int{}
+	p := &PullRequestCreateStackRequest{PullRequests: zeroValue}
+	p.GetPullRequests()
+	p = &PullRequestCreateStackRequest{}
+	p.GetPullRequests()
+	p = nil
+	p.GetPullRequests()
+}
+
 func TestPullRequestDismissReviewRequest_GetEvent(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -41531,6 +41632,14 @@ func TestPullRequestListOptions_GetState(tt *testing.T) {
 	p.GetState()
 	p = nil
 	p.GetState()
+}
+
+func TestPullRequestListStacksOptions_GetPullRequest(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestListStacksOptions{}
+	p.GetPullRequest()
+	p = nil
+	p.GetPullRequest()
 }
 
 func TestPullRequestMergeAsyncDetails_GetExpectedHeadSHA(tt *testing.T) {
@@ -42380,6 +42489,354 @@ func TestPullRequestStackBase_GetSHA(tt *testing.T) {
 	p.GetSHA()
 	p = nil
 	p.GetSHA()
+}
+
+func TestPullRequestStackBranch_GetRef(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackBranch{}
+	p.GetRef()
+	p = nil
+	p.GetRef()
+}
+
+func TestPullRequestStackBranch_GetRepo(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackBranch{}
+	p.GetRepo()
+	p = nil
+	p.GetRepo()
+}
+
+func TestPullRequestStackBranch_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackBranch{}
+	p.GetSHA()
+	p = nil
+	p.GetSHA()
+}
+
+func TestPullRequestStackDetails_GetBase(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackDetails{}
+	p.GetBase()
+	p = nil
+	p.GetBase()
+}
+
+func TestPullRequestStackDetails_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackDetails{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestPullRequestStackDetails_GetID(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackDetails{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPullRequestStackDetails_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackDetails{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestPullRequestStackDetails_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackDetails{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestPullRequestStackDetails_GetOpen(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackDetails{}
+	p.GetOpen()
+	p = nil
+	p.GetOpen()
+}
+
+func TestPullRequestStackDetails_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequestStackEntry{}
+	p := &PullRequestStackDetails{PullRequests: zeroValue}
+	p.GetPullRequests()
+	p = &PullRequestStackDetails{}
+	p.GetPullRequests()
+	p = nil
+	p.GetPullRequests()
+}
+
+func TestPullRequestStackDetails_GetURL(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackDetails{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
+}
+
+func TestPullRequestStackEntry_GetBase(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetBase()
+	p = nil
+	p.GetBase()
+}
+
+func TestPullRequestStackEntry_GetDraft(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetDraft()
+	p = nil
+	p.GetDraft()
+}
+
+func TestPullRequestStackEntry_GetHead(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetHead()
+	p = nil
+	p.GetHead()
+}
+
+func TestPullRequestStackEntry_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetHTMLURL()
+	p = nil
+	p.GetHTMLURL()
+}
+
+func TestPullRequestStackEntry_GetID(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPullRequestStackEntry_GetMergedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PullRequestStackEntry{MergedAt: &zeroValue}
+	p.GetMergedAt()
+	p = &PullRequestStackEntry{}
+	p.GetMergedAt()
+	p = nil
+	p.GetMergedAt()
+}
+
+func TestPullRequestStackEntry_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestPullRequestStackEntry_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestPullRequestStackEntry_GetState(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetState()
+	p = nil
+	p.GetState()
+}
+
+func TestPullRequestStackEntry_GetTitle(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetTitle()
+	p = nil
+	p.GetTitle()
+}
+
+func TestPullRequestStackEntry_GetURL(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
+}
+
+func TestPullRequestStackEntry_GetUser(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackEntry{}
+	p.GetUser()
+	p = nil
+	p.GetUser()
+}
+
+func TestPullRequestStackMinimal_GetBase(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimal{}
+	p.GetBase()
+	p = nil
+	p.GetBase()
+}
+
+func TestPullRequestStackMinimal_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimal{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestPullRequestStackMinimal_GetID(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimal{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPullRequestStackMinimal_GetNodeID(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimal{}
+	p.GetNodeID()
+	p = nil
+	p.GetNodeID()
+}
+
+func TestPullRequestStackMinimal_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimal{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestPullRequestStackMinimal_GetOpen(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimal{}
+	p.GetOpen()
+	p = nil
+	p.GetOpen()
+}
+
+func TestPullRequestStackMinimal_GetPullRequests(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*PullRequestStackMinimalEntry{}
+	p := &PullRequestStackMinimal{PullRequests: zeroValue}
+	p.GetPullRequests()
+	p = &PullRequestStackMinimal{}
+	p.GetPullRequests()
+	p = nil
+	p.GetPullRequests()
+}
+
+func TestPullRequestStackMinimal_GetURL(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimal{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
+}
+
+func TestPullRequestStackMinimalEntry_GetDraft(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimalEntry{}
+	p.GetDraft()
+	p = nil
+	p.GetDraft()
+}
+
+func TestPullRequestStackMinimalEntry_GetHead(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimalEntry{}
+	p.GetHead()
+	p = nil
+	p.GetHead()
+}
+
+func TestPullRequestStackMinimalEntry_GetMergedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PullRequestStackMinimalEntry{MergedAt: &zeroValue}
+	p.GetMergedAt()
+	p = &PullRequestStackMinimalEntry{}
+	p.GetMergedAt()
+	p = nil
+	p.GetMergedAt()
+}
+
+func TestPullRequestStackMinimalEntry_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimalEntry{}
+	p.GetNumber()
+	p = nil
+	p.GetNumber()
+}
+
+func TestPullRequestStackMinimalEntry_GetState(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimalEntry{}
+	p.GetState()
+	p = nil
+	p.GetState()
+}
+
+func TestPullRequestStackMinimalHead_GetRef(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimalHead{}
+	p.GetRef()
+	p = nil
+	p.GetRef()
+}
+
+func TestPullRequestStackMinimalHead_GetSHA(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackMinimalHead{}
+	p.GetSHA()
+	p = nil
+	p.GetSHA()
+}
+
+func TestPullRequestStackRef_GetRef(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackRef{}
+	p.GetRef()
+	p = nil
+	p.GetRef()
+}
+
+func TestPullRequestStackRepository_GetID(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackRepository{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
+func TestPullRequestStackRepository_GetName(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackRepository{}
+	p.GetName()
+	p = nil
+	p.GetName()
+}
+
+func TestPullRequestStackRepository_GetURL(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestStackRepository{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
 }
 
 func TestPullRequestSubmitReviewRequest_GetBody(tt *testing.T) {
@@ -57586,6 +58043,238 @@ func TestUsageReportOptions_GetYear(tt *testing.T) {
 	u := &UsageReportOptions{Year: &zeroValue}
 	u.GetYear()
 	u = &UsageReportOptions{}
+	u.GetYear()
+	u = nil
+	u.GetYear()
+}
+
+func TestUsageSummaryItem_GetDiscountAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetDiscountAmount()
+	u = nil
+	u.GetDiscountAmount()
+}
+
+func TestUsageSummaryItem_GetDiscountQuantity(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetDiscountQuantity()
+	u = nil
+	u.GetDiscountQuantity()
+}
+
+func TestUsageSummaryItem_GetGrossAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetGrossAmount()
+	u = nil
+	u.GetGrossAmount()
+}
+
+func TestUsageSummaryItem_GetGrossQuantity(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetGrossQuantity()
+	u = nil
+	u.GetGrossQuantity()
+}
+
+func TestUsageSummaryItem_GetNetAmount(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetNetAmount()
+	u = nil
+	u.GetNetAmount()
+}
+
+func TestUsageSummaryItem_GetNetQuantity(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetNetQuantity()
+	u = nil
+	u.GetNetQuantity()
+}
+
+func TestUsageSummaryItem_GetPricePerUnit(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetPricePerUnit()
+	u = nil
+	u.GetPricePerUnit()
+}
+
+func TestUsageSummaryItem_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetProduct()
+	u = nil
+	u.GetProduct()
+}
+
+func TestUsageSummaryItem_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetSKU()
+	u = nil
+	u.GetSKU()
+}
+
+func TestUsageSummaryItem_GetUnitType(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryItem{}
+	u.GetUnitType()
+	u = nil
+	u.GetUnitType()
+}
+
+func TestUsageSummaryOptions_GetDay(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetDay()
+	u = nil
+	u.GetDay()
+}
+
+func TestUsageSummaryOptions_GetMonth(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetMonth()
+	u = nil
+	u.GetMonth()
+}
+
+func TestUsageSummaryOptions_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetProduct()
+	u = nil
+	u.GetProduct()
+}
+
+func TestUsageSummaryOptions_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetRepository()
+	u = nil
+	u.GetRepository()
+}
+
+func TestUsageSummaryOptions_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetSKU()
+	u = nil
+	u.GetSKU()
+}
+
+func TestUsageSummaryOptions_GetYear(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryOptions{}
+	u.GetYear()
+	u = nil
+	u.GetYear()
+}
+
+func TestUsageSummaryReport_GetOrganization(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageSummaryReport{Organization: &zeroValue}
+	u.GetOrganization()
+	u = &UsageSummaryReport{}
+	u.GetOrganization()
+	u = nil
+	u.GetOrganization()
+}
+
+func TestUsageSummaryReport_GetProduct(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageSummaryReport{Product: &zeroValue}
+	u.GetProduct()
+	u = &UsageSummaryReport{}
+	u.GetProduct()
+	u = nil
+	u.GetProduct()
+}
+
+func TestUsageSummaryReport_GetRepository(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageSummaryReport{Repository: &zeroValue}
+	u.GetRepository()
+	u = &UsageSummaryReport{}
+	u.GetRepository()
+	u = nil
+	u.GetRepository()
+}
+
+func TestUsageSummaryReport_GetSKU(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageSummaryReport{SKU: &zeroValue}
+	u.GetSKU()
+	u = &UsageSummaryReport{}
+	u.GetSKU()
+	u = nil
+	u.GetSKU()
+}
+
+func TestUsageSummaryReport_GetTimePeriod(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryReport{}
+	u.GetTimePeriod()
+	u = nil
+	u.GetTimePeriod()
+}
+
+func TestUsageSummaryReport_GetUsageItems(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*UsageSummaryItem{}
+	u := &UsageSummaryReport{UsageItems: zeroValue}
+	u.GetUsageItems()
+	u = &UsageSummaryReport{}
+	u.GetUsageItems()
+	u = nil
+	u.GetUsageItems()
+}
+
+func TestUsageSummaryReport_GetUser(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UsageSummaryReport{User: &zeroValue}
+	u.GetUser()
+	u = &UsageSummaryReport{}
+	u.GetUser()
+	u = nil
+	u.GetUser()
+}
+
+func TestUsageSummaryTimePeriod_GetDay(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UsageSummaryTimePeriod{Day: &zeroValue}
+	u.GetDay()
+	u = &UsageSummaryTimePeriod{}
+	u.GetDay()
+	u = nil
+	u.GetDay()
+}
+
+func TestUsageSummaryTimePeriod_GetMonth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	u := &UsageSummaryTimePeriod{Month: &zeroValue}
+	u.GetMonth()
+	u = &UsageSummaryTimePeriod{}
+	u.GetMonth()
+	u = nil
+	u.GetMonth()
+}
+
+func TestUsageSummaryTimePeriod_GetYear(tt *testing.T) {
+	tt.Parallel()
+	u := &UsageSummaryTimePeriod{}
 	u.GetYear()
 	u = nil
 	u.GetYear()

@@ -11582,6 +11582,62 @@ func (c *CopilotUserPeriodicMetrics) GetUserLogin() string {
 	return c.UserLogin
 }
 
+// GetDay returns the Day field.
+func (c *CopilotUserTeamsDailyMetrics) GetDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.Day
+}
+
+// GetEnterpriseID returns the EnterpriseID field if it's non-nil, zero value otherwise.
+func (c *CopilotUserTeamsDailyMetrics) GetEnterpriseID() string {
+	if c == nil || c.EnterpriseID == nil {
+		return ""
+	}
+	return *c.EnterpriseID
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (c *CopilotUserTeamsDailyMetrics) GetOrganizationID() string {
+	if c == nil || c.OrganizationID == nil {
+		return ""
+	}
+	return *c.OrganizationID
+}
+
+// GetSlug returns the Slug field.
+func (c *CopilotUserTeamsDailyMetrics) GetSlug() string {
+	if c == nil {
+		return ""
+	}
+	return c.Slug
+}
+
+// GetTeamID returns the TeamID field.
+func (c *CopilotUserTeamsDailyMetrics) GetTeamID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.TeamID
+}
+
+// GetUserID returns the UserID field.
+func (c *CopilotUserTeamsDailyMetrics) GetUserID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.UserID
+}
+
+// GetUserLogin returns the UserLogin field.
+func (c *CopilotUserTeamsDailyMetrics) GetUserLogin() string {
+	if c == nil {
+		return ""
+	}
+	return c.UserLogin
+}
+
 // GetAzureSubscription returns the AzureSubscription field if it's non-nil, zero value otherwise.
 func (c *CostCenter) GetAzureSubscription() string {
 	if c == nil || c.AzureSubscription == nil {
@@ -12204,6 +12260,62 @@ func (c *CreateCustomRepoRoleRequest) GetPermissions() []string {
 		return nil
 	}
 	return c.Permissions
+}
+
+// GetDetector returns the Detector field.
+func (c *CreateDependencyGraphSnapshotRequest) GetDetector() DependencyGraphSnapshotDetector {
+	if c == nil {
+		return DependencyGraphSnapshotDetector{}
+	}
+	return c.Detector
+}
+
+// GetJob returns the Job field.
+func (c *CreateDependencyGraphSnapshotRequest) GetJob() DependencyGraphSnapshotJob {
+	if c == nil {
+		return DependencyGraphSnapshotJob{}
+	}
+	return c.Job
+}
+
+// GetMetadata returns the Metadata map if it's non-nil, an empty map otherwise.
+func (c *CreateDependencyGraphSnapshotRequest) GetMetadata() map[string]any {
+	if c == nil || c.Metadata == nil {
+		return map[string]any{}
+	}
+	return c.Metadata
+}
+
+// GetRef returns the Ref field.
+func (c *CreateDependencyGraphSnapshotRequest) GetRef() string {
+	if c == nil {
+		return ""
+	}
+	return c.Ref
+}
+
+// GetScanned returns the Scanned field.
+func (c *CreateDependencyGraphSnapshotRequest) GetScanned() Timestamp {
+	if c == nil {
+		return Timestamp{}
+	}
+	return c.Scanned
+}
+
+// GetSHA returns the SHA field.
+func (c *CreateDependencyGraphSnapshotRequest) GetSHA() string {
+	if c == nil {
+		return ""
+	}
+	return c.SHA
+}
+
+// GetVersion returns the Version field.
+func (c *CreateDependencyGraphSnapshotRequest) GetVersion() int {
+	if c == nil {
+		return 0
+	}
+	return c.Version
 }
 
 // GetKey returns the Key field.
@@ -14622,62 +14734,6 @@ func (d *DependencyGraphAutosubmitActionOptions) GetLabeledRunners() bool {
 	return *d.LabeledRunners
 }
 
-// GetDetector returns the Detector field.
-func (d *DependencyGraphSnapshot) GetDetector() *DependencyGraphSnapshotDetector {
-	if d == nil {
-		return nil
-	}
-	return d.Detector
-}
-
-// GetJob returns the Job field.
-func (d *DependencyGraphSnapshot) GetJob() *DependencyGraphSnapshotJob {
-	if d == nil {
-		return nil
-	}
-	return d.Job
-}
-
-// GetMetadata returns the Metadata map if it's non-nil, an empty map otherwise.
-func (d *DependencyGraphSnapshot) GetMetadata() map[string]any {
-	if d == nil || d.Metadata == nil {
-		return map[string]any{}
-	}
-	return d.Metadata
-}
-
-// GetRef returns the Ref field if it's non-nil, zero value otherwise.
-func (d *DependencyGraphSnapshot) GetRef() string {
-	if d == nil || d.Ref == nil {
-		return ""
-	}
-	return *d.Ref
-}
-
-// GetScanned returns the Scanned field if it's non-nil, zero value otherwise.
-func (d *DependencyGraphSnapshot) GetScanned() Timestamp {
-	if d == nil || d.Scanned == nil {
-		return Timestamp{}
-	}
-	return *d.Scanned
-}
-
-// GetSha returns the Sha field if it's non-nil, zero value otherwise.
-func (d *DependencyGraphSnapshot) GetSha() string {
-	if d == nil || d.Sha == nil {
-		return ""
-	}
-	return *d.Sha
-}
-
-// GetVersion returns the Version field.
-func (d *DependencyGraphSnapshot) GetVersion() int {
-	if d == nil {
-		return 0
-	}
-	return d.Version
-}
-
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (d *DependencyGraphSnapshotCreationData) GetCreatedAt() Timestamp {
 	if d == nil || d.CreatedAt == nil {
@@ -14710,36 +14766,36 @@ func (d *DependencyGraphSnapshotCreationData) GetResult() string {
 	return *d.Result
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (d *DependencyGraphSnapshotDetector) GetName() string {
-	if d == nil || d.Name == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.Name
+	return d.Name
 }
 
-// GetURL returns the URL field if it's non-nil, zero value otherwise.
+// GetURL returns the URL field.
 func (d *DependencyGraphSnapshotDetector) GetURL() string {
-	if d == nil || d.URL == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.URL
+	return d.URL
 }
 
-// GetVersion returns the Version field if it's non-nil, zero value otherwise.
+// GetVersion returns the Version field.
 func (d *DependencyGraphSnapshotDetector) GetVersion() string {
-	if d == nil || d.Version == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.Version
+	return d.Version
 }
 
-// GetCorrelator returns the Correlator field if it's non-nil, zero value otherwise.
+// GetCorrelator returns the Correlator field.
 func (d *DependencyGraphSnapshotJob) GetCorrelator() string {
-	if d == nil || d.Correlator == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.Correlator
+	return d.Correlator
 }
 
 // GetHTMLURL returns the HTMLURL field if it's non-nil, zero value otherwise.
@@ -14750,12 +14806,12 @@ func (d *DependencyGraphSnapshotJob) GetHTMLURL() string {
 	return *d.HTMLURL
 }
 
-// GetID returns the ID field if it's non-nil, zero value otherwise.
+// GetID returns the ID field.
 func (d *DependencyGraphSnapshotJob) GetID() string {
-	if d == nil || d.ID == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.ID
+	return d.ID
 }
 
 // GetFile returns the File field.
@@ -14774,12 +14830,12 @@ func (d *DependencyGraphSnapshotManifest) GetMetadata() map[string]any {
 	return d.Metadata
 }
 
-// GetName returns the Name field if it's non-nil, zero value otherwise.
+// GetName returns the Name field.
 func (d *DependencyGraphSnapshotManifest) GetName() string {
-	if d == nil || d.Name == nil {
+	if d == nil {
 		return ""
 	}
-	return *d.Name
+	return d.Name
 }
 
 // GetSourceLocation returns the SourceLocation field if it's non-nil, zero value otherwise.
@@ -32094,6 +32150,22 @@ func (p *PublicIPUsage) GetMaximum() int64 {
 	return p.Maximum
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
 // GetKey returns the Key field if it's non-nil, zero value otherwise.
 func (p *PublicKey) GetKey() string {
 	if p == nil || p.Key == nil {
@@ -32108,6 +32180,22 @@ func (p *PublicKey) GetKeyID() string {
 		return ""
 	}
 	return *p.KeyID
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetTitle() string {
+	if p == nil || p.Title == nil {
+		return ""
+	}
+	return *p.Title
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
@@ -32518,6 +32606,14 @@ func (p *PullRequest) GetUser() *User {
 	return p.User
 }
 
+// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
+func (p *PullRequestAddToStackRequest) GetPullRequests() []int {
+	if p == nil || p.PullRequests == nil {
+		return nil
+	}
+	return p.PullRequests
+}
+
 // GetCommitMessage returns the CommitMessage field if it's non-nil, zero value otherwise.
 func (p *PullRequestAutoMerge) GetCommitMessage() string {
 	if p == nil || p.CommitMessage == nil {
@@ -32878,6 +32974,14 @@ func (p *PullRequestCommentLinks) GetSelf() *PRLink {
 	return p.Self
 }
 
+// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
+func (p *PullRequestCreateStackRequest) GetPullRequests() []int {
+	if p == nil || p.PullRequests == nil {
+		return nil
+	}
+	return p.PullRequests
+}
+
 // GetEvent returns the Event field if it's non-nil, zero value otherwise.
 func (p *PullRequestDismissReviewRequest) GetEvent() string {
 	if p == nil || p.Event == nil {
@@ -33124,6 +33228,14 @@ func (p *PullRequestListOptions) GetState() string {
 		return ""
 	}
 	return p.State
+}
+
+// GetPullRequest returns the PullRequest field.
+func (p *PullRequestListStacksOptions) GetPullRequest() int {
+	if p == nil {
+		return 0
+	}
+	return p.PullRequest
 }
 
 // GetExpectedHeadSHA returns the ExpectedHeadSHA field if it's non-nil, zero value otherwise.
@@ -33844,6 +33956,342 @@ func (p *PullRequestStackBase) GetSHA() string {
 		return ""
 	}
 	return p.SHA
+}
+
+// GetRef returns the Ref field.
+func (p *PullRequestStackBranch) GetRef() string {
+	if p == nil {
+		return ""
+	}
+	return p.Ref
+}
+
+// GetRepo returns the Repo field.
+func (p *PullRequestStackBranch) GetRepo() *PullRequestStackRepository {
+	if p == nil {
+		return nil
+	}
+	return p.Repo
+}
+
+// GetSHA returns the SHA field.
+func (p *PullRequestStackBranch) GetSHA() string {
+	if p == nil {
+		return ""
+	}
+	return p.SHA
+}
+
+// GetBase returns the Base field.
+func (p *PullRequestStackDetails) GetBase() *PullRequestStackRef {
+	if p == nil {
+		return nil
+	}
+	return p.Base
+}
+
+// GetCreatedAt returns the CreatedAt field.
+func (p *PullRequestStackDetails) GetCreatedAt() Timestamp {
+	if p == nil {
+		return Timestamp{}
+	}
+	return p.CreatedAt
+}
+
+// GetID returns the ID field.
+func (p *PullRequestStackDetails) GetID() int64 {
+	if p == nil {
+		return 0
+	}
+	return p.ID
+}
+
+// GetNodeID returns the NodeID field.
+func (p *PullRequestStackDetails) GetNodeID() string {
+	if p == nil {
+		return ""
+	}
+	return p.NodeID
+}
+
+// GetNumber returns the Number field.
+func (p *PullRequestStackDetails) GetNumber() int {
+	if p == nil {
+		return 0
+	}
+	return p.Number
+}
+
+// GetOpen returns the Open field.
+func (p *PullRequestStackDetails) GetOpen() bool {
+	if p == nil {
+		return false
+	}
+	return p.Open
+}
+
+// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
+func (p *PullRequestStackDetails) GetPullRequests() []*PullRequestStackEntry {
+	if p == nil || p.PullRequests == nil {
+		return nil
+	}
+	return p.PullRequests
+}
+
+// GetURL returns the URL field.
+func (p *PullRequestStackDetails) GetURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.URL
+}
+
+// GetBase returns the Base field.
+func (p *PullRequestStackEntry) GetBase() *PullRequestStackBranch {
+	if p == nil {
+		return nil
+	}
+	return p.Base
+}
+
+// GetDraft returns the Draft field.
+func (p *PullRequestStackEntry) GetDraft() bool {
+	if p == nil {
+		return false
+	}
+	return p.Draft
+}
+
+// GetHead returns the Head field.
+func (p *PullRequestStackEntry) GetHead() *PullRequestStackBranch {
+	if p == nil {
+		return nil
+	}
+	return p.Head
+}
+
+// GetHTMLURL returns the HTMLURL field.
+func (p *PullRequestStackEntry) GetHTMLURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.HTMLURL
+}
+
+// GetID returns the ID field.
+func (p *PullRequestStackEntry) GetID() int64 {
+	if p == nil {
+		return 0
+	}
+	return p.ID
+}
+
+// GetMergedAt returns the MergedAt field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackEntry) GetMergedAt() Timestamp {
+	if p == nil || p.MergedAt == nil {
+		return Timestamp{}
+	}
+	return *p.MergedAt
+}
+
+// GetNodeID returns the NodeID field.
+func (p *PullRequestStackEntry) GetNodeID() string {
+	if p == nil {
+		return ""
+	}
+	return p.NodeID
+}
+
+// GetNumber returns the Number field.
+func (p *PullRequestStackEntry) GetNumber() int {
+	if p == nil {
+		return 0
+	}
+	return p.Number
+}
+
+// GetState returns the State field.
+func (p *PullRequestStackEntry) GetState() string {
+	if p == nil {
+		return ""
+	}
+	return p.State
+}
+
+// GetTitle returns the Title field.
+func (p *PullRequestStackEntry) GetTitle() string {
+	if p == nil {
+		return ""
+	}
+	return p.Title
+}
+
+// GetURL returns the URL field.
+func (p *PullRequestStackEntry) GetURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.URL
+}
+
+// GetUser returns the User field.
+func (p *PullRequestStackEntry) GetUser() *User {
+	if p == nil {
+		return nil
+	}
+	return p.User
+}
+
+// GetBase returns the Base field.
+func (p *PullRequestStackMinimal) GetBase() *PullRequestStackRef {
+	if p == nil {
+		return nil
+	}
+	return p.Base
+}
+
+// GetCreatedAt returns the CreatedAt field.
+func (p *PullRequestStackMinimal) GetCreatedAt() Timestamp {
+	if p == nil {
+		return Timestamp{}
+	}
+	return p.CreatedAt
+}
+
+// GetID returns the ID field.
+func (p *PullRequestStackMinimal) GetID() int64 {
+	if p == nil {
+		return 0
+	}
+	return p.ID
+}
+
+// GetNodeID returns the NodeID field.
+func (p *PullRequestStackMinimal) GetNodeID() string {
+	if p == nil {
+		return ""
+	}
+	return p.NodeID
+}
+
+// GetNumber returns the Number field.
+func (p *PullRequestStackMinimal) GetNumber() int {
+	if p == nil {
+		return 0
+	}
+	return p.Number
+}
+
+// GetOpen returns the Open field.
+func (p *PullRequestStackMinimal) GetOpen() bool {
+	if p == nil {
+		return false
+	}
+	return p.Open
+}
+
+// GetPullRequests returns the PullRequests slice if it's non-nil, nil otherwise.
+func (p *PullRequestStackMinimal) GetPullRequests() []*PullRequestStackMinimalEntry {
+	if p == nil || p.PullRequests == nil {
+		return nil
+	}
+	return p.PullRequests
+}
+
+// GetURL returns the URL field.
+func (p *PullRequestStackMinimal) GetURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.URL
+}
+
+// GetDraft returns the Draft field.
+func (p *PullRequestStackMinimalEntry) GetDraft() bool {
+	if p == nil {
+		return false
+	}
+	return p.Draft
+}
+
+// GetHead returns the Head field.
+func (p *PullRequestStackMinimalEntry) GetHead() *PullRequestStackMinimalHead {
+	if p == nil {
+		return nil
+	}
+	return p.Head
+}
+
+// GetMergedAt returns the MergedAt field if it's non-nil, zero value otherwise.
+func (p *PullRequestStackMinimalEntry) GetMergedAt() Timestamp {
+	if p == nil || p.MergedAt == nil {
+		return Timestamp{}
+	}
+	return *p.MergedAt
+}
+
+// GetNumber returns the Number field.
+func (p *PullRequestStackMinimalEntry) GetNumber() int {
+	if p == nil {
+		return 0
+	}
+	return p.Number
+}
+
+// GetState returns the State field.
+func (p *PullRequestStackMinimalEntry) GetState() string {
+	if p == nil {
+		return ""
+	}
+	return p.State
+}
+
+// GetRef returns the Ref field.
+func (p *PullRequestStackMinimalHead) GetRef() string {
+	if p == nil {
+		return ""
+	}
+	return p.Ref
+}
+
+// GetSHA returns the SHA field.
+func (p *PullRequestStackMinimalHead) GetSHA() string {
+	if p == nil {
+		return ""
+	}
+	return p.SHA
+}
+
+// GetRef returns the Ref field.
+func (p *PullRequestStackRef) GetRef() string {
+	if p == nil {
+		return ""
+	}
+	return p.Ref
+}
+
+// GetID returns the ID field.
+func (p *PullRequestStackRepository) GetID() int64 {
+	if p == nil {
+		return 0
+	}
+	return p.ID
+}
+
+// GetName returns the Name field.
+func (p *PullRequestStackRepository) GetName() string {
+	if p == nil {
+		return ""
+	}
+	return p.Name
+}
+
+// GetURL returns the URL field.
+func (p *PullRequestStackRepository) GetURL() string {
+	if p == nil {
+		return ""
+	}
+	return p.URL
 }
 
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
@@ -46020,6 +46468,214 @@ func (u *UsageReportOptions) GetYear() int {
 		return 0
 	}
 	return *u.Year
+}
+
+// GetDiscountAmount returns the DiscountAmount field.
+func (u *UsageSummaryItem) GetDiscountAmount() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.DiscountAmount
+}
+
+// GetDiscountQuantity returns the DiscountQuantity field.
+func (u *UsageSummaryItem) GetDiscountQuantity() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.DiscountQuantity
+}
+
+// GetGrossAmount returns the GrossAmount field.
+func (u *UsageSummaryItem) GetGrossAmount() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.GrossAmount
+}
+
+// GetGrossQuantity returns the GrossQuantity field.
+func (u *UsageSummaryItem) GetGrossQuantity() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.GrossQuantity
+}
+
+// GetNetAmount returns the NetAmount field.
+func (u *UsageSummaryItem) GetNetAmount() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.NetAmount
+}
+
+// GetNetQuantity returns the NetQuantity field.
+func (u *UsageSummaryItem) GetNetQuantity() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.NetQuantity
+}
+
+// GetPricePerUnit returns the PricePerUnit field.
+func (u *UsageSummaryItem) GetPricePerUnit() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.PricePerUnit
+}
+
+// GetProduct returns the Product field.
+func (u *UsageSummaryItem) GetProduct() string {
+	if u == nil {
+		return ""
+	}
+	return u.Product
+}
+
+// GetSKU returns the SKU field.
+func (u *UsageSummaryItem) GetSKU() string {
+	if u == nil {
+		return ""
+	}
+	return u.SKU
+}
+
+// GetUnitType returns the UnitType field.
+func (u *UsageSummaryItem) GetUnitType() string {
+	if u == nil {
+		return ""
+	}
+	return u.UnitType
+}
+
+// GetDay returns the Day field.
+func (u *UsageSummaryOptions) GetDay() int {
+	if u == nil {
+		return 0
+	}
+	return u.Day
+}
+
+// GetMonth returns the Month field.
+func (u *UsageSummaryOptions) GetMonth() int {
+	if u == nil {
+		return 0
+	}
+	return u.Month
+}
+
+// GetProduct returns the Product field.
+func (u *UsageSummaryOptions) GetProduct() string {
+	if u == nil {
+		return ""
+	}
+	return u.Product
+}
+
+// GetRepository returns the Repository field.
+func (u *UsageSummaryOptions) GetRepository() string {
+	if u == nil {
+		return ""
+	}
+	return u.Repository
+}
+
+// GetSKU returns the SKU field.
+func (u *UsageSummaryOptions) GetSKU() string {
+	if u == nil {
+		return ""
+	}
+	return u.SKU
+}
+
+// GetYear returns the Year field.
+func (u *UsageSummaryOptions) GetYear() int {
+	if u == nil {
+		return 0
+	}
+	return u.Year
+}
+
+// GetOrganization returns the Organization field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryReport) GetOrganization() string {
+	if u == nil || u.Organization == nil {
+		return ""
+	}
+	return *u.Organization
+}
+
+// GetProduct returns the Product field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryReport) GetProduct() string {
+	if u == nil || u.Product == nil {
+		return ""
+	}
+	return *u.Product
+}
+
+// GetRepository returns the Repository field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryReport) GetRepository() string {
+	if u == nil || u.Repository == nil {
+		return ""
+	}
+	return *u.Repository
+}
+
+// GetSKU returns the SKU field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryReport) GetSKU() string {
+	if u == nil || u.SKU == nil {
+		return ""
+	}
+	return *u.SKU
+}
+
+// GetTimePeriod returns the TimePeriod field.
+func (u *UsageSummaryReport) GetTimePeriod() UsageSummaryTimePeriod {
+	if u == nil {
+		return UsageSummaryTimePeriod{}
+	}
+	return u.TimePeriod
+}
+
+// GetUsageItems returns the UsageItems slice if it's non-nil, nil otherwise.
+func (u *UsageSummaryReport) GetUsageItems() []*UsageSummaryItem {
+	if u == nil || u.UsageItems == nil {
+		return nil
+	}
+	return u.UsageItems
+}
+
+// GetUser returns the User field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryReport) GetUser() string {
+	if u == nil || u.User == nil {
+		return ""
+	}
+	return *u.User
+}
+
+// GetDay returns the Day field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryTimePeriod) GetDay() int {
+	if u == nil || u.Day == nil {
+		return 0
+	}
+	return *u.Day
+}
+
+// GetMonth returns the Month field if it's non-nil, zero value otherwise.
+func (u *UsageSummaryTimePeriod) GetMonth() int {
+	if u == nil || u.Month == nil {
+		return 0
+	}
+	return *u.Month
+}
+
+// GetYear returns the Year field.
+func (u *UsageSummaryTimePeriod) GetYear() int {
+	if u == nil {
+		return 0
+	}
+	return u.Year
 }
 
 // GetAssignment returns the Assignment field if it's non-nil, zero value otherwise.
