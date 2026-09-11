@@ -23,19 +23,19 @@ func TestDependencyGraphService_GetSBOM(t *testing.T) {
 	mux.HandleFunc("/repos/owner/repo/dependency-graph/sbom", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		fmt.Fprint(w, `{
-			"sbom": {
-				"creationInfo": {
-					"created": `+referenceTimeStr+`
-				},
-				"name": "owner/repo",
-				"packages": [
-					{
-						"name": "rubygems:rails",
-						"versionInfo": "1.0.0"
-					}
-				]
-			}
-		}`)
+   "sbom":{
+      "creationInfo":{
+         "created":`+referenceTimeStr+`
+      },
+      "name":"owner/repo",
+      "packages":[
+                {
+                "name":"rubygems:rails",
+                "versionInfo":"1.0.0"
+                }
+            ]
+        }
+    }`)
 	})
 
 	ctx := t.Context()
