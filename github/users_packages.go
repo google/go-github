@@ -49,7 +49,7 @@ func (s *UsersService) ListPackages(ctx context.Context, user string, opts *Pack
 // GetPackage gets a package by name for a user. Passing the empty string for "user" will
 // get the package for the authenticated user.
 //
-// Note that packageName is escaped for the URL path so that you don't need to.
+// Note: the package name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#get-a-package-for-a-user
 //
@@ -82,7 +82,7 @@ func (s *UsersService) GetPackage(ctx context.Context, user, packageType, packag
 // DeletePackage deletes a package from a user. Passing the empty string for "user" will
 // delete the package for the authenticated user.
 //
-// Note that packageName is escaped for the URL path so that you don't need to.
+// Note: the package name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#delete-a-package-for-a-user
 //
@@ -109,7 +109,7 @@ func (s *UsersService) DeletePackage(ctx context.Context, user, packageType, pac
 // RestorePackage restores a package to a user. Passing the empty string for "user" will
 // restore the package for the authenticated user.
 //
-// Note that packageName is escaped for the URL path so that you don't need to.
+// Note: the package name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#restore-a-package-for-a-user
 //
@@ -143,7 +143,7 @@ type ListPackageVersionsOptions struct {
 
 // ListPackageVersions gets all versions of a package for the authenticated user.
 //
-// Note that packageName is escaped for the URL path so that you don't need to.
+// Note: the package name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#list-package-versions-for-a-package-owned-by-the-authenticated-user
 //
@@ -171,7 +171,7 @@ func (s *UsersService) ListPackageVersions(ctx context.Context, packageType, pac
 
 // ListUserPackageVersions returns package versions for a public package owned by a specified user.
 //
-// Note that packageName is escaped for the URL path so that you don't need to.
+// Note: the package name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#list-package-versions-for-a-package-owned-by-a-user
 //
@@ -196,7 +196,7 @@ func (s *UsersService) ListUserPackageVersions(ctx context.Context, user, packag
 // PackageGetVersion gets a specific version of a package for a user. Passing the empty string for "user" will
 // get the version for the authenticated user.
 //
-// Note that packageName is escaped for the URL path so that you don't need to.
+// Note: the package name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#get-a-package-version-for-a-user
 //
@@ -229,7 +229,7 @@ func (s *UsersService) PackageGetVersion(ctx context.Context, user, packageType,
 // PackageDeleteVersion deletes a package version for a user. Passing the empty string for "user" will
 // delete the version for the authenticated user.
 //
-// Note that packageName is escaped for the URL path so that you don't need to.
+// Note: the package name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#delete-a-package-version-for-the-authenticated-user
 //
@@ -256,7 +256,7 @@ func (s *UsersService) PackageDeleteVersion(ctx context.Context, user, packageTy
 // PackageRestoreVersion restores a package version to a user. Passing the empty string for "user" will
 // restore the version for the authenticated user.
 //
-// Note that packageName is escaped for the URL path so that you don't need to.
+// Note: the package name is URL path escaped for you. See: https://pkg.go.dev/net/url#PathEscape .
 //
 // GitHub API docs: https://docs.github.com/rest/packages/packages?apiVersion=2022-11-28#restore-a-package-version-for-the-authenticated-user
 //
