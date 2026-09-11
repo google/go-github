@@ -11342,6 +11342,62 @@ func (c *CopilotUserPeriodicMetrics) GetUserLogin() string {
 	return c.UserLogin
 }
 
+// GetDay returns the Day field.
+func (c *CopilotUserTeamsDailyMetrics) GetDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.Day
+}
+
+// GetEnterpriseID returns the EnterpriseID field if it's non-nil, zero value otherwise.
+func (c *CopilotUserTeamsDailyMetrics) GetEnterpriseID() string {
+	if c == nil || c.EnterpriseID == nil {
+		return ""
+	}
+	return *c.EnterpriseID
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (c *CopilotUserTeamsDailyMetrics) GetOrganizationID() string {
+	if c == nil || c.OrganizationID == nil {
+		return ""
+	}
+	return *c.OrganizationID
+}
+
+// GetSlug returns the Slug field.
+func (c *CopilotUserTeamsDailyMetrics) GetSlug() string {
+	if c == nil {
+		return ""
+	}
+	return c.Slug
+}
+
+// GetTeamID returns the TeamID field.
+func (c *CopilotUserTeamsDailyMetrics) GetTeamID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.TeamID
+}
+
+// GetUserID returns the UserID field.
+func (c *CopilotUserTeamsDailyMetrics) GetUserID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.UserID
+}
+
+// GetUserLogin returns the UserLogin field.
+func (c *CopilotUserTeamsDailyMetrics) GetUserLogin() string {
+	if c == nil {
+		return ""
+	}
+	return c.UserLogin
+}
+
 // GetAzureSubscription returns the AzureSubscription field if it's non-nil, zero value otherwise.
 func (c *CostCenter) GetAzureSubscription() string {
 	if c == nil || c.AzureSubscription == nil {
