@@ -31854,6 +31854,22 @@ func (p *PublicIPUsage) GetMaximum() int64 {
 	return p.Maximum
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
 // GetKey returns the Key field if it's non-nil, zero value otherwise.
 func (p *PublicKey) GetKey() string {
 	if p == nil || p.Key == nil {
@@ -31868,6 +31884,22 @@ func (p *PublicKey) GetKeyID() string {
 		return ""
 	}
 	return *p.KeyID
+}
+
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetTitle() string {
+	if p == nil || p.Title == nil {
+		return ""
+	}
+	return *p.Title
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.

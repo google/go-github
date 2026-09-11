@@ -15,8 +15,18 @@ import (
 
 // PublicKey represents the public key that should be used to encrypt secrets.
 type PublicKey struct {
+	// KeyID is the identifier for the key.
 	KeyID *string `json:"key_id"`
-	Key   *string `json:"key"`
+	// Key is the Base64 encoded public key.
+	Key *string `json:"key"`
+	// ID is the unique identifier of the key.
+	ID *int64 `json:"id,omitempty"`
+	// URL is the API URL for the key.
+	URL *string `json:"url,omitempty"`
+	// Title is the title of the key.
+	Title *string `json:"title,omitempty"`
+	// CreatedAt is the time when the key was created.
+	CreatedAt *Timestamp `json:"created_at,omitempty"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
@@ -24,8 +34,12 @@ type PublicKey struct {
 // do not error out when unmarshaling.
 func (p *PublicKey) UnmarshalJSON(data []byte) error {
 	var pk struct {
-		KeyID any     `json:"key_id"`
-		Key   *string `json:"key"`
+		KeyID     any        `json:"key_id"`
+		Key       *string    `json:"key"`
+		ID        *int64     `json:"id"`
+		URL       *string    `json:"url"`
+		Title     *string    `json:"title"`
+		CreatedAt *Timestamp `json:"created_at"`
 	}
 
 	if err := json.Unmarshal(data, &pk); err != nil {
@@ -33,6 +47,10 @@ func (p *PublicKey) UnmarshalJSON(data []byte) error {
 	}
 
 	p.Key = pk.Key
+	p.ID = pk.ID
+	p.URL = pk.URL
+	p.Title = pk.Title
+	p.CreatedAt = pk.CreatedAt
 
 	switch v := pk.KeyID.(type) {
 	case nil:
