@@ -35,6 +35,13 @@ func TestRepositoryRulesetRules(t *testing.T) {
 			`[{"type":"required_deployments","parameters":{"required_deployment_environments":["test"]}}]`,
 		},
 		{
+			"code_quality_rule",
+			&RepositoryRulesetRules{
+				CodeQuality: &CodeQualityRuleParameters{Severity: "errors"},
+			},
+			`[{"type":"code_quality","parameters":{"severity":"errors"}}]`,
+		},
+		{
 			"all_rules_with_required_params",
 			&RepositoryRulesetRules{
 				Creation:              &EmptyRuleParameters{},
@@ -309,6 +316,10 @@ func TestRepositoryRulesetRules(t *testing.T) {
 				"invalid_copilot_code_review_parameters",
 				`[{"type":"copilot_code_review","parameters":"not_an_object"}]`,
 			},
+			{
+				"invalid_code_quality_parameters",
+				`[{"type":"code_quality","parameters":"not_an_object"}]`,
+			},
 		}
 
 		for _, tt := range tests {
@@ -360,6 +371,22 @@ func TestBranchRules(t *testing.T) {
 				},
 			},
 			`[{"type":"update","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"update_allows_fetch_and_merge":true}}]`,
+		},
+		{
+			"code_quality",
+			&BranchRules{
+				CodeQuality: []*CodeQualityBranchRule{
+					{
+						BranchRuleMetadata: BranchRuleMetadata{
+							RulesetSourceType: RulesetSourceTypeRepository,
+							RulesetSource:     "test/test",
+							RulesetID:         1,
+						},
+						Parameters: CodeQualityRuleParameters{Severity: CodeQualitySeverityErrors},
+					},
+				},
+			},
+			`[{"type":"code_quality","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":{"severity":"errors"}}]`,
 		},
 		{
 			"all_rule_types_with_all_parameters",
@@ -697,6 +724,10 @@ func TestBranchRules(t *testing.T) {
 			{
 				"invalid_copilot_code_review_parameters",
 				`[{"type":"copilot_code_review","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":"not_an_object"}]`,
+			},
+			{
+				"invalid_code_quality_parameters",
+				`[{"type":"code_quality","ruleset_source_type":"Repository","ruleset_source":"test/test","ruleset_id":1,"parameters":"not_an_object"}]`,
 			},
 		}
 
