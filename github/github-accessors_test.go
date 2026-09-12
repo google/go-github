@@ -11600,6 +11600,17 @@ func TestCopilotCodeReviewRuleParameters_GetReviewOnPush(tt *testing.T) {
 	c.GetReviewOnPush()
 }
 
+func TestCopilotContentExclusionUpdateResponse_GetMessage(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotContentExclusionUpdateResponse{Message: &zeroValue}
+	c.GetMessage()
+	c = &CopilotContentExclusionUpdateResponse{}
+	c.GetMessage()
+	c = nil
+	c.GetMessage()
+}
+
 func TestCopilotDailyMetrics_GetCodeAcceptanceActivityCount(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int

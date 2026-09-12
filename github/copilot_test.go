@@ -1084,7 +1084,7 @@ func TestCopilotService_GetOrganizationContentExclusionDetails(t *testing.T) {
 		t.Errorf("Copilot.GetOrganizationContentExclusionDetails returned error: %v", err)
 	}
 
-	want := CopilotOrganizationContentExclusionDetails{
+	want := CopilotContentExclusionDetails{
 		"octo-repo":   {"/src/some-dir/kernel.rs"},
 		"octo-repo-2": {"/docs/secret.md", "**/*.env"},
 	}
@@ -1103,6 +1103,132 @@ func TestCopilotService_GetOrganizationContentExclusionDetails(t *testing.T) {
 		got, resp, err := client.Copilot.GetOrganizationContentExclusionDetails(ctx, "o")
 		if got != nil {
 			t.Errorf("Copilot.GetOrganizationContentExclusionDetails returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_SetOrganizationContentExclusionDetails(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CopilotContentExclusionDetails{
+		"octo-repo": {"/src/some-dir/kernel.rs"},
+	}
+
+	mux.HandleFunc("/orgs/o/copilot/content_exclusion", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"message": "Content exclusion rules updated"}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.SetOrganizationContentExclusionDetails(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Copilot.SetOrganizationContentExclusionDetails returned error: %v", err)
+	}
+
+	want := &CopilotContentExclusionUpdateResponse{
+		Message: new("Content exclusion rules updated"),
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.SetOrganizationContentExclusionDetails returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "SetOrganizationContentExclusionDetails"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.SetOrganizationContentExclusionDetails(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.SetOrganizationContentExclusionDetails(ctx, "o", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetEnterpriseContentExclusionDetails(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/content_exclusion", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"git@github.com:*/copilot": ["/__tests__/**"],
+			"octo-org/octo-repo": ["/src/some-dir/kernel.rs"]
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.GetEnterpriseContentExclusionDetails(ctx, "e")
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseContentExclusionDetails returned error: %v", err)
+	}
+
+	want := CopilotContentExclusionDetails{
+		"git@github.com:*/copilot": {"/__tests__/**"},
+		"octo-org/octo-repo":       {"/src/some-dir/kernel.rs"},
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseContentExclusionDetails returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseContentExclusionDetails"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseContentExclusionDetails(ctx, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseContentExclusionDetails(ctx, "e")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_SetEnterpriseContentExclusionDetails(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CopilotContentExclusionDetails{
+		"git@github.com:*/copilot": {"/__tests__/**"},
+		"octo-org/octo-repo":       {"/src/some-dir/kernel.rs"},
+	}
+
+	mux.HandleFunc("/enterprises/e/copilot/content_exclusion", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+		fmt.Fprint(w, `{"message": "Content exclusion rules updated"}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.SetEnterpriseContentExclusionDetails(ctx, "e", input)
+	if err != nil {
+		t.Errorf("Copilot.SetEnterpriseContentExclusionDetails returned error: %v", err)
+	}
+
+	want := &CopilotContentExclusionUpdateResponse{
+		Message: new("Content exclusion rules updated"),
+	}
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.SetEnterpriseContentExclusionDetails returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "SetEnterpriseContentExclusionDetails"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.SetEnterpriseContentExclusionDetails(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.SetEnterpriseContentExclusionDetails(ctx, "e", input)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
 		}
 		return resp, err
 	})

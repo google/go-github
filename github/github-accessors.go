@@ -9094,6 +9094,14 @@ func (c *CopilotCodeReviewRuleParameters) GetReviewOnPush() bool {
 	return c.ReviewOnPush
 }
 
+// GetMessage returns the Message field if it's non-nil, zero value otherwise.
+func (c *CopilotContentExclusionUpdateResponse) GetMessage() string {
+	if c == nil || c.Message == nil {
+		return ""
+	}
+	return *c.Message
+}
+
 // GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
 func (c *CopilotDailyMetrics) GetCodeAcceptanceActivityCount() int {
 	if c == nil || c.CodeAcceptanceActivityCount == nil {
