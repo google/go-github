@@ -25040,6 +25040,17 @@ func TestHostedRunner_GetImageDetails(tt *testing.T) {
 	h.GetImageDetails()
 }
 
+func TestHostedRunner_GetImageGen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	h := &HostedRunner{ImageGen: &zeroValue}
+	h.GetImageGen()
+	h = &HostedRunner{}
+	h.GetImageGen()
+	h = nil
+	h.GetImageGen()
+}
+
 func TestHostedRunner_GetLastActiveOn(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -56903,6 +56914,17 @@ func TestUpdateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {
 	u.GetEnableStaticIP()
 	u = nil
 	u.GetEnableStaticIP()
+}
+
+func TestUpdateHostedRunnerRequest_GetImageGen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateHostedRunnerRequest{ImageGen: &zeroValue}
+	u.GetImageGen()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetImageGen()
+	u = nil
+	u.GetImageGen()
 }
 
 func TestUpdateHostedRunnerRequest_GetImageID(tt *testing.T) {
