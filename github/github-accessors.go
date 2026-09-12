@@ -41350,6 +41350,38 @@ func (s *SecretScanning) GetStatus() string {
 	return *s.Status
 }
 
+// GetAssignedTo returns the AssignedTo field.
+func (s *SecretScanningAlert) GetAssignedTo() *User {
+	if s == nil {
+		return nil
+	}
+	return s.AssignedTo
+}
+
+// GetClosureRequestComment returns the ClosureRequestComment field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetClosureRequestComment() string {
+	if s == nil || s.ClosureRequestComment == nil {
+		return ""
+	}
+	return *s.ClosureRequestComment
+}
+
+// GetClosureRequestReviewer returns the ClosureRequestReviewer field.
+func (s *SecretScanningAlert) GetClosureRequestReviewer() *User {
+	if s == nil {
+		return nil
+	}
+	return s.ClosureRequestReviewer
+}
+
+// GetClosureRequestReviewerComment returns the ClosureRequestReviewerComment field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetClosureRequestReviewerComment() string {
+	if s == nil || s.ClosureRequestReviewerComment == nil {
+		return ""
+	}
+	return *s.ClosureRequestReviewerComment
+}
+
 // GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlert) GetCreatedAt() Timestamp {
 	if s == nil || s.CreatedAt == nil {
@@ -41398,6 +41430,14 @@ func (s *SecretScanningAlert) GetLocationsURL() string {
 	return *s.LocationsURL
 }
 
+// GetMetadata returns the Metadata slice if it's non-nil, nil otherwise.
+func (s *SecretScanningAlert) GetMetadata() []*SecretScanningAlertMetadata {
+	if s == nil || s.Metadata == nil {
+		return nil
+	}
+	return s.Metadata
+}
+
 // GetMultiRepo returns the MultiRepo field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlert) GetMultiRepo() bool {
 	if s == nil || s.MultiRepo == nil {
@@ -41412,6 +41452,22 @@ func (s *SecretScanningAlert) GetNumber() int {
 		return 0
 	}
 	return *s.Number
+}
+
+// GetProvider returns the Provider field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetProvider() string {
+	if s == nil || s.Provider == nil {
+		return ""
+	}
+	return *s.Provider
+}
+
+// GetProviderSlug returns the ProviderSlug field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlert) GetProviderSlug() string {
+	if s == nil || s.ProviderSlug == nil {
+		return ""
+	}
+	return *s.ProviderSlug
 }
 
 // GetPubliclyLeaked returns the PubliclyLeaked field if it's non-nil, zero value otherwise.
@@ -41844,6 +41900,22 @@ func (s *SecretScanningAlertLocationEvent) GetSender() *User {
 		return nil
 	}
 	return s.Sender
+}
+
+// GetKey returns the Key field.
+func (s *SecretScanningAlertMetadata) GetKey() string {
+	if s == nil {
+		return ""
+	}
+	return s.Key
+}
+
+// GetValue returns the Value field.
+func (s *SecretScanningAlertMetadata) GetValue() string {
+	if s == nil {
+		return ""
+	}
+	return s.Value
 }
 
 // GetResolution returns the Resolution field if it's non-nil, zero value otherwise.

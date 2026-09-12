@@ -51599,6 +51599,44 @@ func TestSecretScanning_GetStatus(tt *testing.T) {
 	s.GetStatus()
 }
 
+func TestSecretScanningAlert_GetAssignedTo(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlert{}
+	s.GetAssignedTo()
+	s = nil
+	s.GetAssignedTo()
+}
+
+func TestSecretScanningAlert_GetClosureRequestComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{ClosureRequestComment: &zeroValue}
+	s.GetClosureRequestComment()
+	s = &SecretScanningAlert{}
+	s.GetClosureRequestComment()
+	s = nil
+	s.GetClosureRequestComment()
+}
+
+func TestSecretScanningAlert_GetClosureRequestReviewer(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlert{}
+	s.GetClosureRequestReviewer()
+	s = nil
+	s.GetClosureRequestReviewer()
+}
+
+func TestSecretScanningAlert_GetClosureRequestReviewerComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{ClosureRequestReviewerComment: &zeroValue}
+	s.GetClosureRequestReviewerComment()
+	s = &SecretScanningAlert{}
+	s.GetClosureRequestReviewerComment()
+	s = nil
+	s.GetClosureRequestReviewerComment()
+}
+
 func TestSecretScanningAlert_GetCreatedAt(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue Timestamp
@@ -51662,6 +51700,17 @@ func TestSecretScanningAlert_GetLocationsURL(tt *testing.T) {
 	s.GetLocationsURL()
 }
 
+func TestSecretScanningAlert_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningAlertMetadata{}
+	s := &SecretScanningAlert{Metadata: zeroValue}
+	s.GetMetadata()
+	s = &SecretScanningAlert{}
+	s.GetMetadata()
+	s = nil
+	s.GetMetadata()
+}
+
 func TestSecretScanningAlert_GetMultiRepo(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
@@ -51682,6 +51731,28 @@ func TestSecretScanningAlert_GetNumber(tt *testing.T) {
 	s.GetNumber()
 	s = nil
 	s.GetNumber()
+}
+
+func TestSecretScanningAlert_GetProvider(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{Provider: &zeroValue}
+	s.GetProvider()
+	s = &SecretScanningAlert{}
+	s.GetProvider()
+	s = nil
+	s.GetProvider()
+}
+
+func TestSecretScanningAlert_GetProviderSlug(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlert{ProviderSlug: &zeroValue}
+	s.GetProviderSlug()
+	s = &SecretScanningAlert{}
+	s.GetProviderSlug()
+	s = nil
+	s.GetProviderSlug()
 }
 
 func TestSecretScanningAlert_GetPubliclyLeaked(tt *testing.T) {
@@ -52201,6 +52272,22 @@ func TestSecretScanningAlertLocationEvent_GetSender(tt *testing.T) {
 	s.GetSender()
 	s = nil
 	s.GetSender()
+}
+
+func TestSecretScanningAlertMetadata_GetKey(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertMetadata{}
+	s.GetKey()
+	s = nil
+	s.GetKey()
+}
+
+func TestSecretScanningAlertMetadata_GetValue(tt *testing.T) {
+	tt.Parallel()
+	s := &SecretScanningAlertMetadata{}
+	s.GetValue()
+	s = nil
+	s.GetValue()
 }
 
 func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {

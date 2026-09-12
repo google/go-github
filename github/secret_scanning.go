@@ -44,6 +44,19 @@ type SecretScanningAlert struct {
 	PushProtectionBypassRequestReviewer        *User                               `json:"push_protection_bypass_request_reviewer,omitempty"`
 	PushProtectionBypassRequestReviewerComment *string                             `json:"push_protection_bypass_request_reviewer_comment,omitempty"`
 	Validity                                   *string                             `json:"validity,omitempty"`
+	AssignedTo                                 *User                               `json:"assigned_to,omitempty"`
+	ClosureRequestComment                      *string                             `json:"closure_request_comment,omitempty"`
+	ClosureRequestReviewer                     *User                               `json:"closure_request_reviewer,omitempty"`
+	ClosureRequestReviewerComment              *string                             `json:"closure_request_reviewer_comment,omitempty"`
+	Provider                                   *string                             `json:"provider,omitempty"`
+	ProviderSlug                               *string                             `json:"provider_slug,omitempty"`
+	Metadata                                   []*SecretScanningAlertMetadata      `json:"metadata,omitempty"`
+}
+
+// SecretScanningAlertMetadata represents a metadata key/value pair associated with a secret scanning alert.
+type SecretScanningAlertMetadata struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 // SecretScanningAlertLocation represents the location for a secret scanning alert.

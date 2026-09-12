@@ -362,7 +362,12 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 			"resolved_at": `+refTimeStr(1136178001)+`,
 			"resolved_by": null,
 			"secret_type": "mailchimp_api_key",
-			"secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"
+			"secret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2",
+			"assigned_to": {"login": "octocat"},
+			"closure_request_comment": "closure comment",
+			"provider": "Mailchimp",
+			"provider_slug": "mailchimp",
+			"metadata": [{"key": "k", "value": "v"}]
 		}`)
 	})
 
@@ -373,18 +378,23 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	}
 
 	want := &SecretScanningAlert{
-		Number:            new(1),
-		CreatedAt:         refTimestamp(1136178000),
-		URL:               new("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
-		HTMLURL:           new("https://github.com/o/r/security/secret-scanning/1"),
-		LocationsURL:      new("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
-		State:             new("resolved"),
-		Resolution:        new("used_in_tests"),
-		ResolutionComment: new("resolution comment"),
-		ResolvedAt:        refTimestamp(1136178001),
-		ResolvedBy:        nil,
-		SecretType:        new("mailchimp_api_key"),
-		Secret:            new("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+		Number:                new(1),
+		CreatedAt:             refTimestamp(1136178000),
+		URL:                   new("https://api.github.com/repos/o/r/secret-scanning/alerts/1"),
+		HTMLURL:               new("https://github.com/o/r/security/secret-scanning/1"),
+		LocationsURL:          new("https://api.github.com/repos/o/r/secret-scanning/alerts/1/locations"),
+		State:                 new("resolved"),
+		Resolution:            new("used_in_tests"),
+		ResolutionComment:     new("resolution comment"),
+		ResolvedAt:            refTimestamp(1136178001),
+		ResolvedBy:            nil,
+		SecretType:            new("mailchimp_api_key"),
+		Secret:                new("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-us2"),
+		AssignedTo:            &User{Login: new("octocat")},
+		ClosureRequestComment: new("closure comment"),
+		Provider:              new("Mailchimp"),
+		ProviderSlug:          new("mailchimp"),
+		Metadata:              []*SecretScanningAlertMetadata{{Key: "k", Value: "v"}},
 	}
 
 	if !cmp.Equal(alert, want) {
