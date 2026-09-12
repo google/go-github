@@ -9094,6 +9094,126 @@ func (c *CopilotCodeReviewRuleParameters) GetReviewOnPush() bool {
 	return c.ReviewOnPush
 }
 
+// GetFilePath returns the FilePath field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgent) GetFilePath() string {
+	if c == nil || c.FilePath == nil {
+		return ""
+	}
+	return *c.FilePath
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgent) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgent) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
+// GetOrganization returns the Organization field.
+func (c *CopilotCustomAgentsSource) GetOrganization() *CopilotCustomAgentsSourceOrganization {
+	if c == nil {
+		return nil
+	}
+	return c.Organization
+}
+
+// GetRepository returns the Repository field.
+func (c *CopilotCustomAgentsSource) GetRepository() *CopilotCustomAgentsSourceRepository {
+	if c == nil {
+		return nil
+	}
+	return c.Repository
+}
+
+// GetRuleset returns the Ruleset field.
+func (c *CopilotCustomAgentsSource) GetRuleset() *CopilotCustomAgentsSourceRuleset {
+	if c == nil {
+		return nil
+	}
+	return c.Ruleset
+}
+
+// GetAvatarURL returns the AvatarURL field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgentsSourceOrganization) GetAvatarURL() string {
+	if c == nil || c.AvatarURL == nil {
+		return ""
+	}
+	return *c.AvatarURL
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgentsSourceOrganization) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetLogin returns the Login field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgentsSourceOrganization) GetLogin() string {
+	if c == nil || c.Login == nil {
+		return ""
+	}
+	return *c.Login
+}
+
+// GetFullName returns the FullName field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgentsSourceRepository) GetFullName() string {
+	if c == nil || c.FullName == nil {
+		return ""
+	}
+	return *c.FullName
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgentsSourceRepository) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgentsSourceRepository) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetEnforcement returns the Enforcement field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgentsSourceRuleset) GetEnforcement() string {
+	if c == nil || c.Enforcement == nil {
+		return ""
+	}
+	return *c.Enforcement
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgentsSourceRuleset) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CopilotCustomAgentsSourceRuleset) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
 // GetCodeAcceptanceActivityCount returns the CodeAcceptanceActivityCount field if it's non-nil, zero value otherwise.
 func (c *CopilotDailyMetrics) GetCodeAcceptanceActivityCount() int {
 	if c == nil || c.CodeAcceptanceActivityCount == nil {
@@ -16972,6 +17092,14 @@ func (e *EnterpriseCreateOrUpdateBudgetResponse) GetMessage() string {
 		return ""
 	}
 	return e.Message
+}
+
+// GetCustomAgents returns the CustomAgents slice if it's non-nil, nil otherwise.
+func (e *EnterpriseCustomAgents) GetCustomAgents() []*CopilotCustomAgent {
+	if e == nil || e.CustomAgents == nil {
+		return nil
+	}
+	return e.CustomAgents
 }
 
 // GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
@@ -42956,6 +43084,22 @@ func (s *ServiceInstanceItems) GetType() string {
 		return ""
 	}
 	return s.Type
+}
+
+// GetCreateRuleset returns the CreateRuleset field if it's non-nil, zero value otherwise.
+func (s *SetCopilotCustomAgentsSourceRequest) GetCreateRuleset() bool {
+	if s == nil || s.CreateRuleset == nil {
+		return false
+	}
+	return *s.CreateRuleset
+}
+
+// GetOrganizationID returns the OrganizationID field.
+func (s *SetCopilotCustomAgentsSourceRequest) GetOrganizationID() int64 {
+	if s == nil {
+		return 0
+	}
+	return s.OrganizationID
 }
 
 // GetSelectedOrganizationIDs returns the SelectedOrganizationIDs slice if it's non-nil, nil otherwise.
