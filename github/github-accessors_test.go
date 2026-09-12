@@ -52290,6 +52290,17 @@ func TestSecretScanningAlertMetadata_GetValue(tt *testing.T) {
 	s.GetValue()
 }
 
+func TestSecretScanningAlertUpdateOptions_GetAssignee(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlertUpdateOptions{Assignee: &zeroValue}
+	s.GetAssignee()
+	s = &SecretScanningAlertUpdateOptions{}
+	s.GetAssignee()
+	s = nil
+	s.GetAssignee()
+}
+
 func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -52314,10 +52325,24 @@ func TestSecretScanningAlertUpdateOptions_GetResolutionComment(tt *testing.T) {
 
 func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
 	tt.Parallel()
-	s := &SecretScanningAlertUpdateOptions{}
+	var zeroValue string
+	s := &SecretScanningAlertUpdateOptions{State: &zeroValue}
+	s.GetState()
+	s = &SecretScanningAlertUpdateOptions{}
 	s.GetState()
 	s = nil
 	s.GetState()
+}
+
+func TestSecretScanningAlertUpdateOptions_GetValidity(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SecretScanningAlertUpdateOptions{Validity: &zeroValue}
+	s.GetValidity()
+	s = &SecretScanningAlertUpdateOptions{}
+	s.GetValidity()
+	s = nil
+	s.GetValidity()
 }
 
 func TestSecretScanningCreateCustomPatternsRequest_GetPatterns(tt *testing.T) {

@@ -41918,6 +41918,14 @@ func (s *SecretScanningAlertMetadata) GetValue() string {
 	return s.Value
 }
 
+// GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlertUpdateOptions) GetAssignee() string {
+	if s == nil || s.Assignee == nil {
+		return ""
+	}
+	return *s.Assignee
+}
+
 // GetResolution returns the Resolution field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlertUpdateOptions) GetResolution() string {
 	if s == nil || s.Resolution == nil {
@@ -41934,12 +41942,20 @@ func (s *SecretScanningAlertUpdateOptions) GetResolutionComment() string {
 	return *s.ResolutionComment
 }
 
-// GetState returns the State field.
+// GetState returns the State field if it's non-nil, zero value otherwise.
 func (s *SecretScanningAlertUpdateOptions) GetState() string {
-	if s == nil {
+	if s == nil || s.State == nil {
 		return ""
 	}
-	return s.State
+	return *s.State
+}
+
+// GetValidity returns the Validity field if it's non-nil, zero value otherwise.
+func (s *SecretScanningAlertUpdateOptions) GetValidity() string {
+	if s == nil || s.Validity == nil {
+		return ""
+	}
+	return *s.Validity
 }
 
 // GetPatterns returns the Patterns slice if it's non-nil, nil otherwise.

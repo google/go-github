@@ -345,7 +345,7 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
-	opts := &SecretScanningAlertUpdateOptions{State: "resolved", Resolution: new("used_in_tests")}
+	opts := &SecretScanningAlertUpdateOptions{State: new("resolved"), Resolution: new("used_in_tests")}
 
 	mux.HandleFunc("/repos/o/r/secret-scanning/alerts/1", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PATCH")
@@ -412,6 +412,21 @@ func TestSecretScanningService_UpdateAlert(t *testing.T) {
 		_, resp, err := client.SecretScanning.UpdateAlert(ctx, "o", "r", 1, opts)
 		return resp, err
 	})
+}
+
+func TestSecretScanningAlertUpdateOptions_Marshal(t *testing.T) {
+	t.Parallel()
+
+	resolveInput := SecretScanningAlertUpdateOptions{
+		State:      new("resolved"),
+		Resolution: new("used_in_tests"),
+	}
+	testJSONMarshal(t, resolveInput, `{"state":"resolved","resolution":"used_in_tests"}`)
+
+	assignInput := SecretScanningAlertUpdateOptions{
+		Assignee: new("octocat"),
+	}
+	testJSONMarshal(t, assignInput, `{"assignee":"octocat"}`)
 }
 
 func TestSecretScanningService_ListLocationsForAlert(t *testing.T) {

@@ -120,10 +120,9 @@ type SecretScanningAlertListOptions struct {
 
 // SecretScanningAlertUpdateOptions specifies optional parameters to the SecretScanningService.UpdateAlert method.
 type SecretScanningAlertUpdateOptions struct {
-	// State is required and sets the state of the secret scanning alert.
-	// Can be either "open" or "resolved".
+	// State sets the state of the secret scanning alert. Can be either "open" or "resolved".
 	// You must provide resolution when you set the state to "resolved".
-	State string `json:"state"`
+	State *string `json:"state,omitempty"`
 
 	// Required when the state is "resolved" and represents the reason for resolving the alert.
 	// Can be one of: "false_positive", "wont_fix", "revoked", or "used_in_tests".
@@ -131,6 +130,12 @@ type SecretScanningAlertUpdateOptions struct {
 
 	// An optional comment when closing an alert.
 	ResolutionComment *string `json:"resolution_comment,omitempty"`
+
+	// Assignee is the username of the user to assign to the alert.
+	Assignee *string `json:"assignee,omitempty"`
+
+	// Validity sets the validity of the secret scanning alert. Can be either "active" or "inactive".
+	Validity *string `json:"validity,omitempty"`
 }
 
 // PushProtectionBypassRequest represents the parameters for CreatePushProtectionBypass.
