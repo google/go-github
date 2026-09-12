@@ -50326,6 +50326,17 @@ func TestSBOM_GetSBOM(tt *testing.T) {
 	s.GetSBOM()
 }
 
+func TestSBOMGeneration_GetSBOMURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	s := &SBOMGeneration{SBOMURL: &zeroValue}
+	s.GetSBOMURL()
+	s = &SBOMGeneration{}
+	s.GetSBOMURL()
+	s = nil
+	s.GetSBOMURL()
+}
+
 func TestSBOMInfo_GetCreationInfo(tt *testing.T) {
 	tt.Parallel()
 	s := &SBOMInfo{}
