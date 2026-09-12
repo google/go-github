@@ -151,8 +151,6 @@ func (s *CodespacesService) List(ctx context.Context, opts *ListCodespacesOption
 }
 
 // CreateCodespaceRequest represents a request to create a codespace in a repository.
-//
-//meta:schema request POST /repos/{owner}/{repo}/codespaces
 type CreateCodespaceRequest struct {
 	Ref *string `json:"ref,omitempty"`
 	// Geo represents the geographic area for this codespace.
@@ -233,8 +231,6 @@ type CreateCodespaceForUserRequest struct {
 }
 
 // UpdateCodespaceRequest represents a request to update a codespace.
-//
-//meta:schema request PATCH /user/codespaces/{codespace_name}
 type UpdateCodespaceRequest struct {
 	// Machine represents a valid machine to transition this codespace to.
 	Machine *string `json:"machine,omitempty"`
@@ -258,8 +254,6 @@ type CodespaceExport struct {
 }
 
 // PublishCodespaceRequest represents a request to create a repository from an unpublished codespace.
-//
-//meta:schema request POST /user/codespaces/{codespace_name}/publish
 type PublishCodespaceRequest struct {
 	// Name represents the name of the new repository.
 	Name *string `json:"name,omitempty"`
