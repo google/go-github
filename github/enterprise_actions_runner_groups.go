@@ -7,6 +7,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 )
 
@@ -65,6 +66,24 @@ type UpdateEnterpriseRunnerGroupRequest struct {
 	RestrictedToWorkflows    *bool    `json:"restricted_to_workflows,omitempty"`
 	SelectedWorkflows        []string `json:"selected_workflows,omitempty"`
 	NetworkConfigurationID   *string  `json:"network_configuration_id,omitempty"`
+
+	// If true, the network configuration is removed by sending null.
+	// This takes precedence over NetworkConfigurationID.
+	RemoveNetworkConfiguration bool `json:"-"`
+}
+
+// MarshalJSON implements the json.Marshaler interface.
+func (r UpdateEnterpriseRunnerGroupRequest) MarshalJSON() ([]byte, error) {
+	type alias UpdateEnterpriseRunnerGroupRequest
+	if !r.RemoveNetworkConfiguration {
+		return json.Marshal(alias(r))
+	}
+	return json.Marshal(&struct {
+		alias
+		NetworkConfigurationID *string `json:"network_configuration_id"`
+	}{
+		alias: alias(r),
+	})
 }
 
 // SetOrgAccessRunnerGroupRequest represents a request to replace the list of organizations

@@ -6,6 +6,7 @@
 package github
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -279,6 +280,93 @@ func TestEnterpriseService_UpdateEnterpriseRunnerGroup(t *testing.T) {
 		}
 		return resp, err
 	})
+}
+
+func TestEnterpriseService_UpdateEnterpriseRunnerGroup_NetworkConfiguration(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		body UpdateEnterpriseRunnerGroupRequest
+		want string
+	}{
+		{
+			name: "omitted",
+			body: UpdateEnterpriseRunnerGroupRequest{},
+			want: `{}`,
+		},
+		{
+			name: "set",
+			body: UpdateEnterpriseRunnerGroupRequest{NetworkConfigurationID: new("network-id")},
+			want: `{"network_configuration_id":"network-id"}`,
+		},
+		{
+			name: "empty string",
+			body: UpdateEnterpriseRunnerGroupRequest{NetworkConfigurationID: new("")},
+			want: `{"network_configuration_id":""}`,
+		},
+		{
+			name: "rename only",
+			body: UpdateEnterpriseRunnerGroupRequest{Name: new("renamed")},
+			want: `{"name":"renamed"}`,
+		},
+		{
+			name: "remove",
+			body: UpdateEnterpriseRunnerGroupRequest{RemoveNetworkConfiguration: true},
+			want: `{"network_configuration_id":null}`,
+		},
+		{
+			name: "remove overrides ID",
+			body: UpdateEnterpriseRunnerGroupRequest{
+				NetworkConfigurationID:     new("network-id"),
+				RemoveNetworkConfiguration: true,
+			},
+			want: `{"network_configuration_id":null}`,
+		},
+		{
+			name: "remove with other fields",
+			body: UpdateEnterpriseRunnerGroupRequest{
+				Name:                       new("renamed"),
+				Visibility:                 new("selected"),
+				AllowsPublicRepositories:   new(false),
+				RestrictedToWorkflows:      new(true),
+				SelectedWorkflows:          []string{"o/r/.github/workflows/build.yml@refs/heads/main"},
+				RemoveNetworkConfiguration: true,
+			},
+			want: `{"name":"renamed","visibility":"selected","allows_public_repositories":false,"restricted_to_workflows":true,"selected_workflows":["o/r/.github/workflows/build.yml@refs/heads/main"],"network_configuration_id":null}`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			before := Stringify(tt.body)
+			testJSONMarshalOnly(t, tt.body, tt.want)
+			testJSONMarshalOnly(t, &tt.body, tt.want)
+			if got := Stringify(tt.body); got != before {
+				t.Errorf("json.Marshal changed request to %v, want %v", got, before)
+			}
+
+			var want map[string]json.RawMessage
+			if err := json.Unmarshal([]byte(tt.want), &want); err != nil {
+				t.Fatalf("json.Unmarshal returned error: %v", err)
+			}
+
+			client, mux, _ := setup(t)
+			mux.HandleFunc("/enterprises/o/actions/runner-groups/2", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "PATCH")
+				testJSONBody(t, r, want)
+				fmt.Fprint(w, `{"id":2}`)
+			})
+
+			if _, _, err := client.Enterprise.UpdateEnterpriseRunnerGroup(t.Context(), "o", 2, tt.body); err != nil {
+				t.Fatalf("Enterprise.UpdateEnterpriseRunnerGroup returned error: %v", err)
+			}
+			if got := Stringify(tt.body); got != before {
+				t.Errorf("Enterprise.UpdateEnterpriseRunnerGroup changed request to %v, want %v", got, before)
+			}
+		})
+	}
 }
 
 func TestEnterpriseService_ListOrganizationAccessRunnerGroup(t *testing.T) {
