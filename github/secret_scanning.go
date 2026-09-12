@@ -118,8 +118,8 @@ type SecretScanningAlertListOptions struct {
 	ListOptions
 }
 
-// SecretScanningAlertUpdateOptions specifies optional parameters to the SecretScanningService.UpdateAlert method.
-type SecretScanningAlertUpdateOptions struct {
+// UpdateSecretScanningAlertRequest represents a request to update a secret scanning alert.
+type UpdateSecretScanningAlertRequest struct {
 	// State sets the state of the secret scanning alert. Can be either "open" or "resolved".
 	// You must provide resolution when you set the state to "resolved".
 	State *string `json:"state,omitempty"`
@@ -305,7 +305,7 @@ func (s *SecretScanningService) GetAlert(ctx context.Context, owner, repo string
 // GitHub API docs: https://docs.github.com/rest/secret-scanning/secret-scanning?apiVersion=2022-11-28#update-a-secret-scanning-alert
 //
 //meta:operation PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}
-func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo string, number int64, body *SecretScanningAlertUpdateOptions) (*SecretScanningAlert, *Response, error) {
+func (s *SecretScanningService) UpdateAlert(ctx context.Context, owner, repo string, number int64, body UpdateSecretScanningAlertRequest) (*SecretScanningAlert, *Response, error) {
 	u := fmt.Sprintf("repos/%v/%v/secret-scanning/alerts/%v", owner, repo, number)
 
 	req, err := s.client.NewRequest(ctx, "PATCH", u, body)

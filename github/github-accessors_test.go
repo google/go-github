@@ -52290,61 +52290,6 @@ func TestSecretScanningAlertMetadata_GetValue(tt *testing.T) {
 	s.GetValue()
 }
 
-func TestSecretScanningAlertUpdateOptions_GetAssignee(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{Assignee: &zeroValue}
-	s.GetAssignee()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetAssignee()
-	s = nil
-	s.GetAssignee()
-}
-
-func TestSecretScanningAlertUpdateOptions_GetResolution(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{Resolution: &zeroValue}
-	s.GetResolution()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetResolution()
-	s = nil
-	s.GetResolution()
-}
-
-func TestSecretScanningAlertUpdateOptions_GetResolutionComment(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{ResolutionComment: &zeroValue}
-	s.GetResolutionComment()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetResolutionComment()
-	s = nil
-	s.GetResolutionComment()
-}
-
-func TestSecretScanningAlertUpdateOptions_GetState(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{State: &zeroValue}
-	s.GetState()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetState()
-	s = nil
-	s.GetState()
-}
-
-func TestSecretScanningAlertUpdateOptions_GetValidity(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	s := &SecretScanningAlertUpdateOptions{Validity: &zeroValue}
-	s.GetValidity()
-	s = &SecretScanningAlertUpdateOptions{}
-	s.GetValidity()
-	s = nil
-	s.GetValidity()
-}
-
 func TestSecretScanningCreateCustomPatternsRequest_GetPatterns(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []*SecretScanningCustomPatternRequest{}
@@ -52705,39 +52650,6 @@ func TestSecretScanningPatternConfigsUpdate_GetPatternConfigVersion(tt *testing.
 	s.GetPatternConfigVersion()
 	s = nil
 	s.GetPatternConfigVersion()
-}
-
-func TestSecretScanningPatternConfigsUpdateOptions_GetCustomPatternSettings(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []*SecretScanningCustomPatternSetting{}
-	s := &SecretScanningPatternConfigsUpdateOptions{CustomPatternSettings: zeroValue}
-	s.GetCustomPatternSettings()
-	s = &SecretScanningPatternConfigsUpdateOptions{}
-	s.GetCustomPatternSettings()
-	s = nil
-	s.GetCustomPatternSettings()
-}
-
-func TestSecretScanningPatternConfigsUpdateOptions_GetPatternConfigVersion(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	s := &SecretScanningPatternConfigsUpdateOptions{PatternConfigVersion: &zeroValue}
-	s.GetPatternConfigVersion()
-	s = &SecretScanningPatternConfigsUpdateOptions{}
-	s.GetPatternConfigVersion()
-	s = nil
-	s.GetPatternConfigVersion()
-}
-
-func TestSecretScanningPatternConfigsUpdateOptions_GetProviderPatternSettings(tt *testing.T) {
-	tt.Parallel()
-	zeroValue := []*SecretScanningProviderPatternSetting{}
-	s := &SecretScanningPatternConfigsUpdateOptions{ProviderPatternSettings: zeroValue}
-	s.GetProviderPatternSettings()
-	s = &SecretScanningPatternConfigsUpdateOptions{}
-	s.GetProviderPatternSettings()
-	s = nil
-	s.GetProviderPatternSettings()
 }
 
 func TestSecretScanningPatternOverride_GetAlertTotal(tt *testing.T) {
@@ -57890,6 +57802,94 @@ func TestUpdateRunnerGroupRequest_GetVisibility(tt *testing.T) {
 	u.GetVisibility()
 	u = nil
 	u.GetVisibility()
+}
+
+func TestUpdateSecretScanningAlertRequest_GetAssignee(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningAlertRequest{Assignee: &zeroValue}
+	u.GetAssignee()
+	u = &UpdateSecretScanningAlertRequest{}
+	u.GetAssignee()
+	u = nil
+	u.GetAssignee()
+}
+
+func TestUpdateSecretScanningAlertRequest_GetResolution(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningAlertRequest{Resolution: &zeroValue}
+	u.GetResolution()
+	u = &UpdateSecretScanningAlertRequest{}
+	u.GetResolution()
+	u = nil
+	u.GetResolution()
+}
+
+func TestUpdateSecretScanningAlertRequest_GetResolutionComment(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningAlertRequest{ResolutionComment: &zeroValue}
+	u.GetResolutionComment()
+	u = &UpdateSecretScanningAlertRequest{}
+	u.GetResolutionComment()
+	u = nil
+	u.GetResolutionComment()
+}
+
+func TestUpdateSecretScanningAlertRequest_GetState(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningAlertRequest{State: &zeroValue}
+	u.GetState()
+	u = &UpdateSecretScanningAlertRequest{}
+	u.GetState()
+	u = nil
+	u.GetState()
+}
+
+func TestUpdateSecretScanningAlertRequest_GetValidity(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningAlertRequest{Validity: &zeroValue}
+	u.GetValidity()
+	u = &UpdateSecretScanningAlertRequest{}
+	u.GetValidity()
+	u = nil
+	u.GetValidity()
+}
+
+func TestUpdateSecretScanningPatternConfigsRequest_GetCustomPatternSettings(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningCustomPatternSetting{}
+	u := &UpdateSecretScanningPatternConfigsRequest{CustomPatternSettings: zeroValue}
+	u.GetCustomPatternSettings()
+	u = &UpdateSecretScanningPatternConfigsRequest{}
+	u.GetCustomPatternSettings()
+	u = nil
+	u.GetCustomPatternSettings()
+}
+
+func TestUpdateSecretScanningPatternConfigsRequest_GetPatternConfigVersion(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateSecretScanningPatternConfigsRequest{PatternConfigVersion: &zeroValue}
+	u.GetPatternConfigVersion()
+	u = &UpdateSecretScanningPatternConfigsRequest{}
+	u.GetPatternConfigVersion()
+	u = nil
+	u.GetPatternConfigVersion()
+}
+
+func TestUpdateSecretScanningPatternConfigsRequest_GetProviderPatternSettings(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*SecretScanningProviderPatternSetting{}
+	u := &UpdateSecretScanningPatternConfigsRequest{ProviderPatternSettings: zeroValue}
+	u.GetProviderPatternSettings()
+	u = &UpdateSecretScanningPatternConfigsRequest{}
+	u.GetProviderPatternSettings()
+	u = nil
+	u.GetProviderPatternSettings()
 }
 
 func TestUpdateTeamLDAPMappingRequest_GetLDAPDN(tt *testing.T) {

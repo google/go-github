@@ -41918,46 +41918,6 @@ func (s *SecretScanningAlertMetadata) GetValue() string {
 	return s.Value
 }
 
-// GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlertUpdateOptions) GetAssignee() string {
-	if s == nil || s.Assignee == nil {
-		return ""
-	}
-	return *s.Assignee
-}
-
-// GetResolution returns the Resolution field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlertUpdateOptions) GetResolution() string {
-	if s == nil || s.Resolution == nil {
-		return ""
-	}
-	return *s.Resolution
-}
-
-// GetResolutionComment returns the ResolutionComment field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlertUpdateOptions) GetResolutionComment() string {
-	if s == nil || s.ResolutionComment == nil {
-		return ""
-	}
-	return *s.ResolutionComment
-}
-
-// GetState returns the State field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlertUpdateOptions) GetState() string {
-	if s == nil || s.State == nil {
-		return ""
-	}
-	return *s.State
-}
-
-// GetValidity returns the Validity field if it's non-nil, zero value otherwise.
-func (s *SecretScanningAlertUpdateOptions) GetValidity() string {
-	if s == nil || s.Validity == nil {
-		return ""
-	}
-	return *s.Validity
-}
-
 // GetPatterns returns the Patterns slice if it's non-nil, nil otherwise.
 func (s *SecretScanningCreateCustomPatternsRequest) GetPatterns() []*SecretScanningCustomPatternRequest {
 	if s == nil || s.Patterns == nil {
@@ -42252,30 +42212,6 @@ func (s *SecretScanningPatternConfigsUpdate) GetPatternConfigVersion() string {
 		return ""
 	}
 	return *s.PatternConfigVersion
-}
-
-// GetCustomPatternSettings returns the CustomPatternSettings slice if it's non-nil, nil otherwise.
-func (s *SecretScanningPatternConfigsUpdateOptions) GetCustomPatternSettings() []*SecretScanningCustomPatternSetting {
-	if s == nil || s.CustomPatternSettings == nil {
-		return nil
-	}
-	return s.CustomPatternSettings
-}
-
-// GetPatternConfigVersion returns the PatternConfigVersion field if it's non-nil, zero value otherwise.
-func (s *SecretScanningPatternConfigsUpdateOptions) GetPatternConfigVersion() string {
-	if s == nil || s.PatternConfigVersion == nil {
-		return ""
-	}
-	return *s.PatternConfigVersion
-}
-
-// GetProviderPatternSettings returns the ProviderPatternSettings slice if it's non-nil, nil otherwise.
-func (s *SecretScanningPatternConfigsUpdateOptions) GetProviderPatternSettings() []*SecretScanningProviderPatternSetting {
-	if s == nil || s.ProviderPatternSettings == nil {
-		return nil
-	}
-	return s.ProviderPatternSettings
 }
 
 // GetAlertTotal returns the AlertTotal field if it's non-nil, zero value otherwise.
@@ -46324,6 +46260,70 @@ func (u *UpdateRunnerGroupRequest) GetVisibility() string {
 		return ""
 	}
 	return *u.Visibility
+}
+
+// GetAssignee returns the Assignee field if it's non-nil, zero value otherwise.
+func (u *UpdateSecretScanningAlertRequest) GetAssignee() string {
+	if u == nil || u.Assignee == nil {
+		return ""
+	}
+	return *u.Assignee
+}
+
+// GetResolution returns the Resolution field if it's non-nil, zero value otherwise.
+func (u *UpdateSecretScanningAlertRequest) GetResolution() string {
+	if u == nil || u.Resolution == nil {
+		return ""
+	}
+	return *u.Resolution
+}
+
+// GetResolutionComment returns the ResolutionComment field if it's non-nil, zero value otherwise.
+func (u *UpdateSecretScanningAlertRequest) GetResolutionComment() string {
+	if u == nil || u.ResolutionComment == nil {
+		return ""
+	}
+	return *u.ResolutionComment
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (u *UpdateSecretScanningAlertRequest) GetState() string {
+	if u == nil || u.State == nil {
+		return ""
+	}
+	return *u.State
+}
+
+// GetValidity returns the Validity field if it's non-nil, zero value otherwise.
+func (u *UpdateSecretScanningAlertRequest) GetValidity() string {
+	if u == nil || u.Validity == nil {
+		return ""
+	}
+	return *u.Validity
+}
+
+// GetCustomPatternSettings returns the CustomPatternSettings slice if it's non-nil, nil otherwise.
+func (u *UpdateSecretScanningPatternConfigsRequest) GetCustomPatternSettings() []*SecretScanningCustomPatternSetting {
+	if u == nil || u.CustomPatternSettings == nil {
+		return nil
+	}
+	return u.CustomPatternSettings
+}
+
+// GetPatternConfigVersion returns the PatternConfigVersion field if it's non-nil, zero value otherwise.
+func (u *UpdateSecretScanningPatternConfigsRequest) GetPatternConfigVersion() string {
+	if u == nil || u.PatternConfigVersion == nil {
+		return ""
+	}
+	return *u.PatternConfigVersion
+}
+
+// GetProviderPatternSettings returns the ProviderPatternSettings slice if it's non-nil, nil otherwise.
+func (u *UpdateSecretScanningPatternConfigsRequest) GetProviderPatternSettings() []*SecretScanningProviderPatternSetting {
+	if u == nil || u.ProviderPatternSettings == nil {
+		return nil
+	}
+	return u.ProviderPatternSettings
 }
 
 // GetLDAPDN returns the LDAPDN field.
