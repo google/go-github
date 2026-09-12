@@ -205,10 +205,8 @@ linters:
             - AddProjectItemOptions
             - AuthorizationRequest
             - CodeScanningAlertState
-            - CodespaceCreateForUserOptions
             - ConfigApplyOptions
             - ConfigSettings
-            - CreateCodespaceOptions
             - CreateOrUpdateIssueTypesOptions
             - CreateOrgInvitationOptions
             - CreateUpdateEnvironment
@@ -229,7 +227,6 @@ linters:
             - PagesUpdate
             - PagesUpdateWithoutCNAME
             - ProtectionRequest
-            - PublishCodespaceOptions
             - PullRequestBranchUpdateOptions
             - PullRequestReviewRequest
             - PullRequestReviewsEnforcementUpdate
@@ -246,7 +243,6 @@ linters:
             - TeamAddTeamMembershipOptions
             - TeamAddTeamRepoOptions
             - TeamProjectOptions
-            - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
             - UserSuspendOptions
@@ -256,18 +252,15 @@ linters:
           body-allowed-wrong-names:
             - AddProjectItemOptions
             - CheckSuitePreferenceOptions
-            - CodespaceCreateForUserOptions
             - ConfigApplyOptions
             - CreateCheckRunOptions
             - CreateCheckSuiteOptions
-            - CreateCodespaceOptions
             - CreateOrUpdateIssueTypesOptions
             - CreateOrgInvitationOptions
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
             - LockIssueOptions
             - MaintenanceOptions
-            - PublishCodespaceOptions
             - PullRequestBranchUpdateOptions
             - RepositoryAddCollaboratorOptions
             - RepositoryContentFileOptions
@@ -278,7 +271,6 @@ linters:
             - TeamAddTeamRepoOptions
             - TeamProjectOptions
             - UpdateCheckRunOptions
-            - UpdateCodespaceOptions
             - UpdateDefaultSetupConfigurationOptions
             - UpdateProjectItemOptions
             - UserSuspendOptions
