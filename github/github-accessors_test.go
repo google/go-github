@@ -8020,143 +8020,6 @@ func TestCodespace_GetWebURL(tt *testing.T) {
 	c.GetWebURL()
 }
 
-func TestCodespaceCreateForUserOptions_GetClientIP(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{ClientIP: &zeroValue}
-	c.GetClientIP()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetClientIP()
-	c = nil
-	c.GetClientIP()
-}
-
-func TestCodespaceCreateForUserOptions_GetDevcontainerPath(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{DevcontainerPath: &zeroValue}
-	c.GetDevcontainerPath()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetDevcontainerPath()
-	c = nil
-	c.GetDevcontainerPath()
-}
-
-func TestCodespaceCreateForUserOptions_GetDisplayName(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{DisplayName: &zeroValue}
-	c.GetDisplayName()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetDisplayName()
-	c = nil
-	c.GetDisplayName()
-}
-
-func TestCodespaceCreateForUserOptions_GetGeo(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{Geo: &zeroValue}
-	c.GetGeo()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetGeo()
-	c = nil
-	c.GetGeo()
-}
-
-func TestCodespaceCreateForUserOptions_GetIdleTimeoutMinutes(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	c := &CodespaceCreateForUserOptions{IdleTimeoutMinutes: &zeroValue}
-	c.GetIdleTimeoutMinutes()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetIdleTimeoutMinutes()
-	c = nil
-	c.GetIdleTimeoutMinutes()
-}
-
-func TestCodespaceCreateForUserOptions_GetLocation(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{Location: &zeroValue}
-	c.GetLocation()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetLocation()
-	c = nil
-	c.GetLocation()
-}
-
-func TestCodespaceCreateForUserOptions_GetMachine(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{Machine: &zeroValue}
-	c.GetMachine()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetMachine()
-	c = nil
-	c.GetMachine()
-}
-
-func TestCodespaceCreateForUserOptions_GetMultiRepoPermissionsOptOut(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue bool
-	c := &CodespaceCreateForUserOptions{MultiRepoPermissionsOptOut: &zeroValue}
-	c.GetMultiRepoPermissionsOptOut()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetMultiRepoPermissionsOptOut()
-	c = nil
-	c.GetMultiRepoPermissionsOptOut()
-}
-
-func TestCodespaceCreateForUserOptions_GetPullRequest(tt *testing.T) {
-	tt.Parallel()
-	c := &CodespaceCreateForUserOptions{}
-	c.GetPullRequest()
-	c = nil
-	c.GetPullRequest()
-}
-
-func TestCodespaceCreateForUserOptions_GetRef(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{Ref: &zeroValue}
-	c.GetRef()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetRef()
-	c = nil
-	c.GetRef()
-}
-
-func TestCodespaceCreateForUserOptions_GetRepositoryID(tt *testing.T) {
-	tt.Parallel()
-	c := &CodespaceCreateForUserOptions{}
-	c.GetRepositoryID()
-	c = nil
-	c.GetRepositoryID()
-}
-
-func TestCodespaceCreateForUserOptions_GetRetentionPeriodMinutes(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue int
-	c := &CodespaceCreateForUserOptions{RetentionPeriodMinutes: &zeroValue}
-	c.GetRetentionPeriodMinutes()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetRetentionPeriodMinutes()
-	c = nil
-	c.GetRetentionPeriodMinutes()
-}
-
-func TestCodespaceCreateForUserOptions_GetWorkingDirectory(tt *testing.T) {
-	tt.Parallel()
-	var zeroValue string
-	c := &CodespaceCreateForUserOptions{WorkingDirectory: &zeroValue}
-	c.GetWorkingDirectory()
-	c = &CodespaceCreateForUserOptions{}
-	c.GetWorkingDirectory()
-	c = nil
-	c.GetWorkingDirectory()
-}
-
 func TestCodespaceDefaultAttributes_GetBillableOwner(tt *testing.T) {
 	tt.Parallel()
 	c := &CodespaceDefaultAttributes{}
@@ -13607,6 +13470,303 @@ func TestCopilotSeatDetails_GetUpdatedAt(tt *testing.T) {
 	c.GetUpdatedAt()
 }
 
+func TestCopilotSpace_GetAPIURL(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetAPIURL()
+	c = nil
+	c.GetAPIURL()
+}
+
+func TestCopilotSpace_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCopilotSpace_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCopilotSpace_GetCreator(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetCreator()
+	c = nil
+	c.GetCreator()
+}
+
+func TestCopilotSpace_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpace{Description: &zeroValue}
+	c.GetDescription()
+	c = &CopilotSpace{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCopilotSpace_GetGeneralInstructions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpace{GeneralInstructions: &zeroValue}
+	c.GetGeneralInstructions()
+	c = &CopilotSpace{}
+	c.GetGeneralInstructions()
+	c = nil
+	c.GetGeneralInstructions()
+}
+
+func TestCopilotSpace_GetHTMLURL(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetHTMLURL()
+	c = nil
+	c.GetHTMLURL()
+}
+
+func TestCopilotSpace_GetID(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCopilotSpace_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotSpace_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetNumber()
+	c = nil
+	c.GetNumber()
+}
+
+func TestCopilotSpace_GetOwner(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetOwner()
+	c = nil
+	c.GetOwner()
+}
+
+func TestCopilotSpace_GetResourcesAttributes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotSpaceResource{}
+	c := &CopilotSpace{ResourcesAttributes: zeroValue}
+	c.GetResourcesAttributes()
+	c = &CopilotSpace{}
+	c.GetResourcesAttributes()
+	c = nil
+	c.GetResourcesAttributes()
+}
+
+func TestCopilotSpace_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpace{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCopilotSpaceMetadata_GetCopilotChatAttachmentID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotSpaceMetadata{CopilotChatAttachmentID: &zeroValue}
+	c.GetCopilotChatAttachmentID()
+	c = &CopilotSpaceMetadata{}
+	c.GetCopilotChatAttachmentID()
+	c = nil
+	c.GetCopilotChatAttachmentID()
+}
+
+func TestCopilotSpaceMetadata_GetFilePath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{FilePath: &zeroValue}
+	c.GetFilePath()
+	c = &CopilotSpaceMetadata{}
+	c.GetFilePath()
+	c = nil
+	c.GetFilePath()
+}
+
+func TestCopilotSpaceMetadata_GetHeight(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotSpaceMetadata{Height: &zeroValue}
+	c.GetHeight()
+	c = &CopilotSpaceMetadata{}
+	c.GetHeight()
+	c = nil
+	c.GetHeight()
+}
+
+func TestCopilotSpaceMetadata_GetMediaType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{MediaType: &zeroValue}
+	c.GetMediaType()
+	c = &CopilotSpaceMetadata{}
+	c.GetMediaType()
+	c = nil
+	c.GetMediaType()
+}
+
+func TestCopilotSpaceMetadata_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{Name: &zeroValue}
+	c.GetName()
+	c = &CopilotSpaceMetadata{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCopilotSpaceMetadata_GetNumber(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotSpaceMetadata{Number: &zeroValue}
+	c.GetNumber()
+	c = &CopilotSpaceMetadata{}
+	c.GetNumber()
+	c = nil
+	c.GetNumber()
+}
+
+func TestCopilotSpaceMetadata_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotSpaceMetadata{RepositoryID: &zeroValue}
+	c.GetRepositoryID()
+	c = &CopilotSpaceMetadata{}
+	c.GetRepositoryID()
+	c = nil
+	c.GetRepositoryID()
+}
+
+func TestCopilotSpaceMetadata_GetText(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{Text: &zeroValue}
+	c.GetText()
+	c = &CopilotSpaceMetadata{}
+	c.GetText()
+	c = nil
+	c.GetText()
+}
+
+func TestCopilotSpaceMetadata_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceMetadata{URL: &zeroValue}
+	c.GetURL()
+	c = &CopilotSpaceMetadata{}
+	c.GetURL()
+	c = nil
+	c.GetURL()
+}
+
+func TestCopilotSpaceMetadata_GetWidth(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CopilotSpaceMetadata{Width: &zeroValue}
+	c.GetWidth()
+	c = &CopilotSpaceMetadata{}
+	c.GetWidth()
+	c = nil
+	c.GetWidth()
+}
+
+func TestCopilotSpaceResource_GetCopilotChatAttachmentID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotSpaceResource{CopilotChatAttachmentID: &zeroValue}
+	c.GetCopilotChatAttachmentID()
+	c = &CopilotSpaceResource{}
+	c.GetCopilotChatAttachmentID()
+	c = nil
+	c.GetCopilotChatAttachmentID()
+}
+
+func TestCopilotSpaceResource_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &CopilotSpaceResource{CreatedAt: &zeroValue}
+	c.GetCreatedAt()
+	c = &CopilotSpaceResource{}
+	c.GetCreatedAt()
+	c = nil
+	c.GetCreatedAt()
+}
+
+func TestCopilotSpaceResource_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CopilotSpaceResource{ID: &zeroValue}
+	c.GetID()
+	c = &CopilotSpaceResource{}
+	c.GetID()
+	c = nil
+	c.GetID()
+}
+
+func TestCopilotSpaceResource_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotSpaceResource{}
+	c.GetMetadata()
+	c = nil
+	c.GetMetadata()
+}
+
+func TestCopilotSpaceResource_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotSpaceResource{ResourceType: &zeroValue}
+	c.GetResourceType()
+	c = &CopilotSpaceResource{}
+	c.GetResourceType()
+	c = nil
+	c.GetResourceType()
+}
+
+func TestCopilotSpaceResource_GetUpdatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	c := &CopilotSpaceResource{UpdatedAt: &zeroValue}
+	c.GetUpdatedAt()
+	c = &CopilotSpaceResource{}
+	c.GetUpdatedAt()
+	c = nil
+	c.GetUpdatedAt()
+}
+
+func TestCopilotSpacesList_GetSpaces(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CopilotSpace{}
+	c := &CopilotSpacesList{Spaces: zeroValue}
+	c.GetSpaces()
+	c = &CopilotSpacesList{}
+	c.GetSpaces()
+	c = nil
+	c.GetSpaces()
+}
+
 func TestCopilotUserDailyMetrics_GetAIAdoptionPhase(tt *testing.T) {
 	tt.Parallel()
 	c := &CopilotUserDailyMetrics{}
@@ -14328,6 +14488,68 @@ func TestCopilotUserPeriodicMetrics_GetUserLogin(tt *testing.T) {
 	c.GetUserLogin()
 }
 
+func TestCopilotUserTeamsDailyMetrics_GetDay(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetDay()
+	c = nil
+	c.GetDay()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetEnterpriseID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotUserTeamsDailyMetrics{EnterpriseID: &zeroValue}
+	c.GetEnterpriseID()
+	c = &CopilotUserTeamsDailyMetrics{}
+	c.GetEnterpriseID()
+	c = nil
+	c.GetEnterpriseID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetOrganizationID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CopilotUserTeamsDailyMetrics{OrganizationID: &zeroValue}
+	c.GetOrganizationID()
+	c = &CopilotUserTeamsDailyMetrics{}
+	c.GetOrganizationID()
+	c = nil
+	c.GetOrganizationID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetSlug(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetSlug()
+	c = nil
+	c.GetSlug()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetTeamID(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetTeamID()
+	c = nil
+	c.GetTeamID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetUserID(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetUserID()
+	c = nil
+	c.GetUserID()
+}
+
+func TestCopilotUserTeamsDailyMetrics_GetUserLogin(tt *testing.T) {
+	tt.Parallel()
+	c := &CopilotUserTeamsDailyMetrics{}
+	c.GetUserLogin()
+	c = nil
+	c.GetUserLogin()
+}
+
 func TestCostCenter_GetAzureSubscription(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -14840,122 +15062,262 @@ func TestCreateCheckSuiteOptions_GetHeadSHA(tt *testing.T) {
 	c.GetHeadSHA()
 }
 
-func TestCreateCodespaceOptions_GetClientIP(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetClientIP(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{ClientIP: &zeroValue}
+	c := &CreateCodespaceForUserRequest{ClientIP: &zeroValue}
 	c.GetClientIP()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetClientIP()
 	c = nil
 	c.GetClientIP()
 }
 
-func TestCreateCodespaceOptions_GetDevcontainerPath(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetDevcontainerPath(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{DevcontainerPath: &zeroValue}
+	c := &CreateCodespaceForUserRequest{DevcontainerPath: &zeroValue}
 	c.GetDevcontainerPath()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetDevcontainerPath()
 	c = nil
 	c.GetDevcontainerPath()
 }
 
-func TestCreateCodespaceOptions_GetDisplayName(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{DisplayName: &zeroValue}
+	c := &CreateCodespaceForUserRequest{DisplayName: &zeroValue}
 	c.GetDisplayName()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetDisplayName()
 	c = nil
 	c.GetDisplayName()
 }
 
-func TestCreateCodespaceOptions_GetGeo(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetGeo(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{Geo: &zeroValue}
+	c := &CreateCodespaceForUserRequest{Geo: &zeroValue}
 	c.GetGeo()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetGeo()
 	c = nil
 	c.GetGeo()
 }
 
-func TestCreateCodespaceOptions_GetIdleTimeoutMinutes(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetIdleTimeoutMinutes(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	c := &CreateCodespaceOptions{IdleTimeoutMinutes: &zeroValue}
+	c := &CreateCodespaceForUserRequest{IdleTimeoutMinutes: &zeroValue}
 	c.GetIdleTimeoutMinutes()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetIdleTimeoutMinutes()
 	c = nil
 	c.GetIdleTimeoutMinutes()
 }
 
-func TestCreateCodespaceOptions_GetLocation(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetLocation(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{Location: &zeroValue}
+	c := &CreateCodespaceForUserRequest{Location: &zeroValue}
 	c.GetLocation()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetLocation()
 	c = nil
 	c.GetLocation()
 }
 
-func TestCreateCodespaceOptions_GetMachine(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetMachine(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{Machine: &zeroValue}
+	c := &CreateCodespaceForUserRequest{Machine: &zeroValue}
 	c.GetMachine()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetMachine()
 	c = nil
 	c.GetMachine()
 }
 
-func TestCreateCodespaceOptions_GetMultiRepoPermissionsOptOut(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetMultiRepoPermissionsOptOut(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	c := &CreateCodespaceOptions{MultiRepoPermissionsOptOut: &zeroValue}
+	c := &CreateCodespaceForUserRequest{MultiRepoPermissionsOptOut: &zeroValue}
 	c.GetMultiRepoPermissionsOptOut()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetMultiRepoPermissionsOptOut()
 	c = nil
 	c.GetMultiRepoPermissionsOptOut()
 }
 
-func TestCreateCodespaceOptions_GetRef(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetPullRequest(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCodespaceForUserRequest{}
+	c.GetPullRequest()
+	c = nil
+	c.GetPullRequest()
+}
+
+func TestCreateCodespaceForUserRequest_GetRef(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{Ref: &zeroValue}
+	c := &CreateCodespaceForUserRequest{Ref: &zeroValue}
 	c.GetRef()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetRef()
 	c = nil
 	c.GetRef()
 }
 
-func TestCreateCodespaceOptions_GetRetentionPeriodMinutes(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetRepositoryID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	c := &CreateCodespaceForUserRequest{RepositoryID: &zeroValue}
+	c.GetRepositoryID()
+	c = &CreateCodespaceForUserRequest{}
+	c.GetRepositoryID()
+	c = nil
+	c.GetRepositoryID()
+}
+
+func TestCreateCodespaceForUserRequest_GetRetentionPeriodMinutes(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int
-	c := &CreateCodespaceOptions{RetentionPeriodMinutes: &zeroValue}
+	c := &CreateCodespaceForUserRequest{RetentionPeriodMinutes: &zeroValue}
 	c.GetRetentionPeriodMinutes()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
 	c.GetRetentionPeriodMinutes()
 	c = nil
 	c.GetRetentionPeriodMinutes()
 }
 
-func TestCreateCodespaceOptions_GetWorkingDirectory(tt *testing.T) {
+func TestCreateCodespaceForUserRequest_GetWorkingDirectory(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateCodespaceOptions{WorkingDirectory: &zeroValue}
+	c := &CreateCodespaceForUserRequest{WorkingDirectory: &zeroValue}
 	c.GetWorkingDirectory()
-	c = &CreateCodespaceOptions{}
+	c = &CreateCodespaceForUserRequest{}
+	c.GetWorkingDirectory()
+	c = nil
+	c.GetWorkingDirectory()
+}
+
+func TestCreateCodespaceRequest_GetClientIP(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{ClientIP: &zeroValue}
+	c.GetClientIP()
+	c = &CreateCodespaceRequest{}
+	c.GetClientIP()
+	c = nil
+	c.GetClientIP()
+}
+
+func TestCreateCodespaceRequest_GetDevcontainerPath(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{DevcontainerPath: &zeroValue}
+	c.GetDevcontainerPath()
+	c = &CreateCodespaceRequest{}
+	c.GetDevcontainerPath()
+	c = nil
+	c.GetDevcontainerPath()
+}
+
+func TestCreateCodespaceRequest_GetDisplayName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{DisplayName: &zeroValue}
+	c.GetDisplayName()
+	c = &CreateCodespaceRequest{}
+	c.GetDisplayName()
+	c = nil
+	c.GetDisplayName()
+}
+
+func TestCreateCodespaceRequest_GetGeo(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{Geo: &zeroValue}
+	c.GetGeo()
+	c = &CreateCodespaceRequest{}
+	c.GetGeo()
+	c = nil
+	c.GetGeo()
+}
+
+func TestCreateCodespaceRequest_GetIdleTimeoutMinutes(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreateCodespaceRequest{IdleTimeoutMinutes: &zeroValue}
+	c.GetIdleTimeoutMinutes()
+	c = &CreateCodespaceRequest{}
+	c.GetIdleTimeoutMinutes()
+	c = nil
+	c.GetIdleTimeoutMinutes()
+}
+
+func TestCreateCodespaceRequest_GetLocation(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{Location: &zeroValue}
+	c.GetLocation()
+	c = &CreateCodespaceRequest{}
+	c.GetLocation()
+	c = nil
+	c.GetLocation()
+}
+
+func TestCreateCodespaceRequest_GetMachine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{Machine: &zeroValue}
+	c.GetMachine()
+	c = &CreateCodespaceRequest{}
+	c.GetMachine()
+	c = nil
+	c.GetMachine()
+}
+
+func TestCreateCodespaceRequest_GetMultiRepoPermissionsOptOut(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CreateCodespaceRequest{MultiRepoPermissionsOptOut: &zeroValue}
+	c.GetMultiRepoPermissionsOptOut()
+	c = &CreateCodespaceRequest{}
+	c.GetMultiRepoPermissionsOptOut()
+	c = nil
+	c.GetMultiRepoPermissionsOptOut()
+}
+
+func TestCreateCodespaceRequest_GetRef(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{Ref: &zeroValue}
+	c.GetRef()
+	c = &CreateCodespaceRequest{}
+	c.GetRef()
+	c = nil
+	c.GetRef()
+}
+
+func TestCreateCodespaceRequest_GetRetentionPeriodMinutes(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int
+	c := &CreateCodespaceRequest{RetentionPeriodMinutes: &zeroValue}
+	c.GetRetentionPeriodMinutes()
+	c = &CreateCodespaceRequest{}
+	c.GetRetentionPeriodMinutes()
+	c = nil
+	c.GetRetentionPeriodMinutes()
+}
+
+func TestCreateCodespaceRequest_GetWorkingDirectory(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCodespaceRequest{WorkingDirectory: &zeroValue}
+	c.GetWorkingDirectory()
+	c = &CreateCodespaceRequest{}
 	c.GetWorkingDirectory()
 	c = nil
 	c.GetWorkingDirectory()
@@ -15008,6 +15370,25 @@ func TestCreateCommitOptions_GetSigner(tt *testing.T) {
 	c.GetSigner()
 	c = nil
 	c.GetSigner()
+}
+
+func TestCreateCopilotSpaceResourceAttributes_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateCopilotSpaceResourceAttributes{}
+	c.GetMetadata()
+	c = nil
+	c.GetMetadata()
+}
+
+func TestCreateCopilotSpaceResourceAttributes_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateCopilotSpaceResourceAttributes{ResourceType: &zeroValue}
+	c.GetResourceType()
+	c = &CreateCopilotSpaceResourceAttributes{}
+	c.GetResourceType()
+	c = nil
+	c.GetResourceType()
 }
 
 func TestCreateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
@@ -15667,6 +16048,58 @@ func TestCreateMilestoneRequest_GetTitle(tt *testing.T) {
 	c.GetTitle()
 	c = nil
 	c.GetTitle()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationCopilotSpaceRequest{BaseRole: &zeroValue}
+	c.GetBaseRole()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetBaseRole()
+	c = nil
+	c.GetBaseRole()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationCopilotSpaceRequest{Description: &zeroValue}
+	c.GetDescription()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetDescription()
+	c = nil
+	c.GetDescription()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetGeneralInstructions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateOrganizationCopilotSpaceRequest{GeneralInstructions: &zeroValue}
+	c.GetGeneralInstructions()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetGeneralInstructions()
+	c = nil
+	c.GetGeneralInstructions()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	c := &CreateOrganizationCopilotSpaceRequest{}
+	c.GetName()
+	c = nil
+	c.GetName()
+}
+
+func TestCreateOrganizationCopilotSpaceRequest_GetResourcesAttributes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*CreateCopilotSpaceResourceAttributes{}
+	c := &CreateOrganizationCopilotSpaceRequest{ResourcesAttributes: zeroValue}
+	c.GetResourcesAttributes()
+	c = &CreateOrganizationCopilotSpaceRequest{}
+	c.GetResourcesAttributes()
+	c = nil
+	c.GetResourcesAttributes()
 }
 
 func TestCreateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {
@@ -39836,6 +40269,28 @@ func TestPublicIPUsage_GetMaximum(tt *testing.T) {
 	p.GetMaximum()
 }
 
+func TestPublicKey_GetCreatedAt(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue Timestamp
+	p := &PublicKey{CreatedAt: &zeroValue}
+	p.GetCreatedAt()
+	p = &PublicKey{}
+	p.GetCreatedAt()
+	p = nil
+	p.GetCreatedAt()
+}
+
+func TestPublicKey_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	p := &PublicKey{ID: &zeroValue}
+	p.GetID()
+	p = &PublicKey{}
+	p.GetID()
+	p = nil
+	p.GetID()
+}
+
 func TestPublicKey_GetKey(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -39858,23 +40313,45 @@ func TestPublicKey_GetKeyID(tt *testing.T) {
 	p.GetKeyID()
 }
 
-func TestPublishCodespaceOptions_GetName(tt *testing.T) {
+func TestPublicKey_GetTitle(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	p := &PublishCodespaceOptions{Name: &zeroValue}
+	p := &PublicKey{Title: &zeroValue}
+	p.GetTitle()
+	p = &PublicKey{}
+	p.GetTitle()
+	p = nil
+	p.GetTitle()
+}
+
+func TestPublicKey_GetURL(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PublicKey{URL: &zeroValue}
+	p.GetURL()
+	p = &PublicKey{}
+	p.GetURL()
+	p = nil
+	p.GetURL()
+}
+
+func TestPublishCodespaceRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	p := &PublishCodespaceRequest{Name: &zeroValue}
 	p.GetName()
-	p = &PublishCodespaceOptions{}
+	p = &PublishCodespaceRequest{}
 	p.GetName()
 	p = nil
 	p.GetName()
 }
 
-func TestPublishCodespaceOptions_GetPrivate(tt *testing.T) {
+func TestPublishCodespaceRequest_GetPrivate(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue bool
-	p := &PublishCodespaceOptions{Private: &zeroValue}
+	p := &PublishCodespaceRequest{Private: &zeroValue}
 	p.GetPrivate()
-	p = &PublishCodespaceOptions{}
+	p = &PublishCodespaceRequest{}
 	p.GetPrivate()
 	p = nil
 	p.GetPrivate()
@@ -56083,23 +56560,34 @@ func TestUpdateCheckRunOptions_GetStatus(tt *testing.T) {
 	u.GetStatus()
 }
 
-func TestUpdateCodespaceOptions_GetMachine(tt *testing.T) {
+func TestUpdateCodespaceRequest_GetDisplayName(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	u := &UpdateCodespaceOptions{Machine: &zeroValue}
+	u := &UpdateCodespaceRequest{DisplayName: &zeroValue}
+	u.GetDisplayName()
+	u = &UpdateCodespaceRequest{}
+	u.GetDisplayName()
+	u = nil
+	u.GetDisplayName()
+}
+
+func TestUpdateCodespaceRequest_GetMachine(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCodespaceRequest{Machine: &zeroValue}
 	u.GetMachine()
-	u = &UpdateCodespaceOptions{}
+	u = &UpdateCodespaceRequest{}
 	u.GetMachine()
 	u = nil
 	u.GetMachine()
 }
 
-func TestUpdateCodespaceOptions_GetRecentFolders(tt *testing.T) {
+func TestUpdateCodespaceRequest_GetRecentFolders(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
-	u := &UpdateCodespaceOptions{RecentFolders: zeroValue}
+	u := &UpdateCodespaceRequest{RecentFolders: zeroValue}
 	u.GetRecentFolders()
-	u = &UpdateCodespaceOptions{}
+	u = &UpdateCodespaceRequest{}
 	u.GetRecentFolders()
 	u = nil
 	u.GetRecentFolders()
@@ -56119,6 +56607,47 @@ func TestUpdateConnectedExternalGroupRequest_GetGroupID(tt *testing.T) {
 	u.GetGroupID()
 	u = nil
 	u.GetGroupID()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetDestroy(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateCopilotSpaceResourceAttributes{Destroy: &zeroValue}
+	u.GetDestroy()
+	u = &UpdateCopilotSpaceResourceAttributes{}
+	u.GetDestroy()
+	u = nil
+	u.GetDestroy()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetID(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue int64
+	u := &UpdateCopilotSpaceResourceAttributes{ID: &zeroValue}
+	u.GetID()
+	u = &UpdateCopilotSpaceResourceAttributes{}
+	u.GetID()
+	u = nil
+	u.GetID()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetMetadata(tt *testing.T) {
+	tt.Parallel()
+	u := &UpdateCopilotSpaceResourceAttributes{}
+	u.GetMetadata()
+	u = nil
+	u.GetMetadata()
+}
+
+func TestUpdateCopilotSpaceResourceAttributes_GetResourceType(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateCopilotSpaceResourceAttributes{ResourceType: &zeroValue}
+	u.GetResourceType()
+	u = &UpdateCopilotSpaceResourceAttributes{}
+	u.GetResourceType()
+	u = nil
+	u.GetResourceType()
 }
 
 func TestUpdateCustomOrgRoleRequest_GetBaseRole(tt *testing.T) {
@@ -56649,6 +57178,61 @@ func TestUpdateMilestoneRequest_GetTitle(tt *testing.T) {
 	u.GetTitle()
 	u = nil
 	u.GetTitle()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetBaseRole(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{BaseRole: &zeroValue}
+	u.GetBaseRole()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetBaseRole()
+	u = nil
+	u.GetBaseRole()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetDescription(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{Description: &zeroValue}
+	u.GetDescription()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetDescription()
+	u = nil
+	u.GetDescription()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetGeneralInstructions(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{GeneralInstructions: &zeroValue}
+	u.GetGeneralInstructions()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetGeneralInstructions()
+	u = nil
+	u.GetGeneralInstructions()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetName(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	u := &UpdateOrganizationCopilotSpaceRequest{Name: &zeroValue}
+	u.GetName()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetName()
+	u = nil
+	u.GetName()
+}
+
+func TestUpdateOrganizationCopilotSpaceRequest_GetResourcesAttributes(tt *testing.T) {
+	tt.Parallel()
+	zeroValue := []*UpdateCopilotSpaceResourceAttributes{}
+	u := &UpdateOrganizationCopilotSpaceRequest{ResourcesAttributes: zeroValue}
+	u.GetResourcesAttributes()
+	u = &UpdateOrganizationCopilotSpaceRequest{}
+	u.GetResourcesAttributes()
+	u = nil
+	u.GetResourcesAttributes()
 }
 
 func TestUpdateOrganizationPrivateRegistry_GetAccountID(tt *testing.T) {

@@ -6318,110 +6318,6 @@ func (c *Codespace) GetWebURL() string {
 	return *c.WebURL
 }
 
-// GetClientIP returns the ClientIP field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetClientIP() string {
-	if c == nil || c.ClientIP == nil {
-		return ""
-	}
-	return *c.ClientIP
-}
-
-// GetDevcontainerPath returns the DevcontainerPath field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetDevcontainerPath() string {
-	if c == nil || c.DevcontainerPath == nil {
-		return ""
-	}
-	return *c.DevcontainerPath
-}
-
-// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetDisplayName() string {
-	if c == nil || c.DisplayName == nil {
-		return ""
-	}
-	return *c.DisplayName
-}
-
-// GetGeo returns the Geo field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetGeo() string {
-	if c == nil || c.Geo == nil {
-		return ""
-	}
-	return *c.Geo
-}
-
-// GetIdleTimeoutMinutes returns the IdleTimeoutMinutes field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetIdleTimeoutMinutes() int {
-	if c == nil || c.IdleTimeoutMinutes == nil {
-		return 0
-	}
-	return *c.IdleTimeoutMinutes
-}
-
-// GetLocation returns the Location field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetLocation() string {
-	if c == nil || c.Location == nil {
-		return ""
-	}
-	return *c.Location
-}
-
-// GetMachine returns the Machine field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetMachine() string {
-	if c == nil || c.Machine == nil {
-		return ""
-	}
-	return *c.Machine
-}
-
-// GetMultiRepoPermissionsOptOut returns the MultiRepoPermissionsOptOut field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetMultiRepoPermissionsOptOut() bool {
-	if c == nil || c.MultiRepoPermissionsOptOut == nil {
-		return false
-	}
-	return *c.MultiRepoPermissionsOptOut
-}
-
-// GetPullRequest returns the PullRequest field.
-func (c *CodespaceCreateForUserOptions) GetPullRequest() *CodespacePullRequestOptions {
-	if c == nil {
-		return nil
-	}
-	return c.PullRequest
-}
-
-// GetRef returns the Ref field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetRef() string {
-	if c == nil || c.Ref == nil {
-		return ""
-	}
-	return *c.Ref
-}
-
-// GetRepositoryID returns the RepositoryID field.
-func (c *CodespaceCreateForUserOptions) GetRepositoryID() int64 {
-	if c == nil {
-		return 0
-	}
-	return c.RepositoryID
-}
-
-// GetRetentionPeriodMinutes returns the RetentionPeriodMinutes field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetRetentionPeriodMinutes() int {
-	if c == nil || c.RetentionPeriodMinutes == nil {
-		return 0
-	}
-	return *c.RetentionPeriodMinutes
-}
-
-// GetWorkingDirectory returns the WorkingDirectory field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetWorkingDirectory() string {
-	if c == nil || c.WorkingDirectory == nil {
-		return ""
-	}
-	return *c.WorkingDirectory
-}
-
 // GetBillableOwner returns the BillableOwner field.
 func (c *CodespaceDefaultAttributes) GetBillableOwner() *User {
 	if c == nil {
@@ -10774,6 +10670,246 @@ func (c *CopilotSeatDetails) GetUpdatedAt() Timestamp {
 	return *c.UpdatedAt
 }
 
+// GetAPIURL returns the APIURL field.
+func (c *CopilotSpace) GetAPIURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.APIURL
+}
+
+// GetBaseRole returns the BaseRole field.
+func (c *CopilotSpace) GetBaseRole() string {
+	if c == nil {
+		return ""
+	}
+	return c.BaseRole
+}
+
+// GetCreatedAt returns the CreatedAt field.
+func (c *CopilotSpace) GetCreatedAt() Timestamp {
+	if c == nil {
+		return Timestamp{}
+	}
+	return c.CreatedAt
+}
+
+// GetCreator returns the Creator field.
+func (c *CopilotSpace) GetCreator() User {
+	if c == nil {
+		return User{}
+	}
+	return c.Creator
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetGeneralInstructions returns the GeneralInstructions field if it's non-nil, zero value otherwise.
+func (c *CopilotSpace) GetGeneralInstructions() string {
+	if c == nil || c.GeneralInstructions == nil {
+		return ""
+	}
+	return *c.GeneralInstructions
+}
+
+// GetHTMLURL returns the HTMLURL field.
+func (c *CopilotSpace) GetHTMLURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.HTMLURL
+}
+
+// GetID returns the ID field.
+func (c *CopilotSpace) GetID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.ID
+}
+
+// GetName returns the Name field.
+func (c *CopilotSpace) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetNumber returns the Number field.
+func (c *CopilotSpace) GetNumber() int {
+	if c == nil {
+		return 0
+	}
+	return c.Number
+}
+
+// GetOwner returns the Owner field.
+func (c *CopilotSpace) GetOwner() any {
+	if c == nil {
+		return nil
+	}
+	return c.Owner
+}
+
+// GetResourcesAttributes returns the ResourcesAttributes slice if it's non-nil, nil otherwise.
+func (c *CopilotSpace) GetResourcesAttributes() []*CopilotSpaceResource {
+	if c == nil || c.ResourcesAttributes == nil {
+		return nil
+	}
+	return c.ResourcesAttributes
+}
+
+// GetUpdatedAt returns the UpdatedAt field.
+func (c *CopilotSpace) GetUpdatedAt() Timestamp {
+	if c == nil {
+		return Timestamp{}
+	}
+	return c.UpdatedAt
+}
+
+// GetCopilotChatAttachmentID returns the CopilotChatAttachmentID field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetCopilotChatAttachmentID() int64 {
+	if c == nil || c.CopilotChatAttachmentID == nil {
+		return 0
+	}
+	return *c.CopilotChatAttachmentID
+}
+
+// GetFilePath returns the FilePath field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetFilePath() string {
+	if c == nil || c.FilePath == nil {
+		return ""
+	}
+	return *c.FilePath
+}
+
+// GetHeight returns the Height field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetHeight() int {
+	if c == nil || c.Height == nil {
+		return 0
+	}
+	return *c.Height
+}
+
+// GetMediaType returns the MediaType field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetMediaType() string {
+	if c == nil || c.MediaType == nil {
+		return ""
+	}
+	return *c.MediaType
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetName() string {
+	if c == nil || c.Name == nil {
+		return ""
+	}
+	return *c.Name
+}
+
+// GetNumber returns the Number field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetNumber() int {
+	if c == nil || c.Number == nil {
+		return 0
+	}
+	return *c.Number
+}
+
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetRepositoryID() int64 {
+	if c == nil || c.RepositoryID == nil {
+		return 0
+	}
+	return *c.RepositoryID
+}
+
+// GetText returns the Text field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetText() string {
+	if c == nil || c.Text == nil {
+		return ""
+	}
+	return *c.Text
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetURL() string {
+	if c == nil || c.URL == nil {
+		return ""
+	}
+	return *c.URL
+}
+
+// GetWidth returns the Width field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceMetadata) GetWidth() int {
+	if c == nil || c.Width == nil {
+		return 0
+	}
+	return *c.Width
+}
+
+// GetCopilotChatAttachmentID returns the CopilotChatAttachmentID field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceResource) GetCopilotChatAttachmentID() int64 {
+	if c == nil || c.CopilotChatAttachmentID == nil {
+		return 0
+	}
+	return *c.CopilotChatAttachmentID
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceResource) GetCreatedAt() Timestamp {
+	if c == nil || c.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceResource) GetID() int64 {
+	if c == nil || c.ID == nil {
+		return 0
+	}
+	return *c.ID
+}
+
+// GetMetadata returns the Metadata field.
+func (c *CopilotSpaceResource) GetMetadata() *CopilotSpaceMetadata {
+	if c == nil {
+		return nil
+	}
+	return c.Metadata
+}
+
+// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceResource) GetResourceType() string {
+	if c == nil || c.ResourceType == nil {
+		return ""
+	}
+	return *c.ResourceType
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (c *CopilotSpaceResource) GetUpdatedAt() Timestamp {
+	if c == nil || c.UpdatedAt == nil {
+		return Timestamp{}
+	}
+	return *c.UpdatedAt
+}
+
+// GetSpaces returns the Spaces slice if it's non-nil, nil otherwise.
+func (c *CopilotSpacesList) GetSpaces() []*CopilotSpace {
+	if c == nil || c.Spaces == nil {
+		return nil
+	}
+	return c.Spaces
+}
+
 // GetAIAdoptionPhase returns the AIAdoptionPhase field.
 func (c *CopilotUserDailyMetrics) GetAIAdoptionPhase() *CopilotMetricsAIAdoptionPhase {
 	if c == nil {
@@ -11342,6 +11478,62 @@ func (c *CopilotUserPeriodicMetrics) GetUserLogin() string {
 	return c.UserLogin
 }
 
+// GetDay returns the Day field.
+func (c *CopilotUserTeamsDailyMetrics) GetDay() string {
+	if c == nil {
+		return ""
+	}
+	return c.Day
+}
+
+// GetEnterpriseID returns the EnterpriseID field if it's non-nil, zero value otherwise.
+func (c *CopilotUserTeamsDailyMetrics) GetEnterpriseID() string {
+	if c == nil || c.EnterpriseID == nil {
+		return ""
+	}
+	return *c.EnterpriseID
+}
+
+// GetOrganizationID returns the OrganizationID field if it's non-nil, zero value otherwise.
+func (c *CopilotUserTeamsDailyMetrics) GetOrganizationID() string {
+	if c == nil || c.OrganizationID == nil {
+		return ""
+	}
+	return *c.OrganizationID
+}
+
+// GetSlug returns the Slug field.
+func (c *CopilotUserTeamsDailyMetrics) GetSlug() string {
+	if c == nil {
+		return ""
+	}
+	return c.Slug
+}
+
+// GetTeamID returns the TeamID field.
+func (c *CopilotUserTeamsDailyMetrics) GetTeamID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.TeamID
+}
+
+// GetUserID returns the UserID field.
+func (c *CopilotUserTeamsDailyMetrics) GetUserID() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.UserID
+}
+
+// GetUserLogin returns the UserLogin field.
+func (c *CopilotUserTeamsDailyMetrics) GetUserLogin() string {
+	if c == nil {
+		return ""
+	}
+	return c.UserLogin
+}
+
 // GetAzureSubscription returns the AzureSubscription field if it's non-nil, zero value otherwise.
 func (c *CostCenter) GetAzureSubscription() string {
 	if c == nil || c.AzureSubscription == nil {
@@ -11759,7 +11951,7 @@ func (c *CreateCheckSuiteOptions) GetHeadSHA() string {
 }
 
 // GetClientIP returns the ClientIP field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetClientIP() string {
+func (c *CreateCodespaceForUserRequest) GetClientIP() string {
 	if c == nil || c.ClientIP == nil {
 		return ""
 	}
@@ -11767,7 +11959,7 @@ func (c *CreateCodespaceOptions) GetClientIP() string {
 }
 
 // GetDevcontainerPath returns the DevcontainerPath field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetDevcontainerPath() string {
+func (c *CreateCodespaceForUserRequest) GetDevcontainerPath() string {
 	if c == nil || c.DevcontainerPath == nil {
 		return ""
 	}
@@ -11775,7 +11967,7 @@ func (c *CreateCodespaceOptions) GetDevcontainerPath() string {
 }
 
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetDisplayName() string {
+func (c *CreateCodespaceForUserRequest) GetDisplayName() string {
 	if c == nil || c.DisplayName == nil {
 		return ""
 	}
@@ -11783,7 +11975,7 @@ func (c *CreateCodespaceOptions) GetDisplayName() string {
 }
 
 // GetGeo returns the Geo field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetGeo() string {
+func (c *CreateCodespaceForUserRequest) GetGeo() string {
 	if c == nil || c.Geo == nil {
 		return ""
 	}
@@ -11791,7 +11983,7 @@ func (c *CreateCodespaceOptions) GetGeo() string {
 }
 
 // GetIdleTimeoutMinutes returns the IdleTimeoutMinutes field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetIdleTimeoutMinutes() int {
+func (c *CreateCodespaceForUserRequest) GetIdleTimeoutMinutes() int {
 	if c == nil || c.IdleTimeoutMinutes == nil {
 		return 0
 	}
@@ -11799,7 +11991,7 @@ func (c *CreateCodespaceOptions) GetIdleTimeoutMinutes() int {
 }
 
 // GetLocation returns the Location field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetLocation() string {
+func (c *CreateCodespaceForUserRequest) GetLocation() string {
 	if c == nil || c.Location == nil {
 		return ""
 	}
@@ -11807,7 +11999,7 @@ func (c *CreateCodespaceOptions) GetLocation() string {
 }
 
 // GetMachine returns the Machine field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetMachine() string {
+func (c *CreateCodespaceForUserRequest) GetMachine() string {
 	if c == nil || c.Machine == nil {
 		return ""
 	}
@@ -11815,23 +12007,39 @@ func (c *CreateCodespaceOptions) GetMachine() string {
 }
 
 // GetMultiRepoPermissionsOptOut returns the MultiRepoPermissionsOptOut field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetMultiRepoPermissionsOptOut() bool {
+func (c *CreateCodespaceForUserRequest) GetMultiRepoPermissionsOptOut() bool {
 	if c == nil || c.MultiRepoPermissionsOptOut == nil {
 		return false
 	}
 	return *c.MultiRepoPermissionsOptOut
 }
 
+// GetPullRequest returns the PullRequest field.
+func (c *CreateCodespaceForUserRequest) GetPullRequest() *CodespacePullRequestOptions {
+	if c == nil {
+		return nil
+	}
+	return c.PullRequest
+}
+
 // GetRef returns the Ref field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetRef() string {
+func (c *CreateCodespaceForUserRequest) GetRef() string {
 	if c == nil || c.Ref == nil {
 		return ""
 	}
 	return *c.Ref
 }
 
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceForUserRequest) GetRepositoryID() int64 {
+	if c == nil || c.RepositoryID == nil {
+		return 0
+	}
+	return *c.RepositoryID
+}
+
 // GetRetentionPeriodMinutes returns the RetentionPeriodMinutes field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetRetentionPeriodMinutes() int {
+func (c *CreateCodespaceForUserRequest) GetRetentionPeriodMinutes() int {
 	if c == nil || c.RetentionPeriodMinutes == nil {
 		return 0
 	}
@@ -11839,7 +12047,95 @@ func (c *CreateCodespaceOptions) GetRetentionPeriodMinutes() int {
 }
 
 // GetWorkingDirectory returns the WorkingDirectory field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetWorkingDirectory() string {
+func (c *CreateCodespaceForUserRequest) GetWorkingDirectory() string {
+	if c == nil || c.WorkingDirectory == nil {
+		return ""
+	}
+	return *c.WorkingDirectory
+}
+
+// GetClientIP returns the ClientIP field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetClientIP() string {
+	if c == nil || c.ClientIP == nil {
+		return ""
+	}
+	return *c.ClientIP
+}
+
+// GetDevcontainerPath returns the DevcontainerPath field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetDevcontainerPath() string {
+	if c == nil || c.DevcontainerPath == nil {
+		return ""
+	}
+	return *c.DevcontainerPath
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetDisplayName() string {
+	if c == nil || c.DisplayName == nil {
+		return ""
+	}
+	return *c.DisplayName
+}
+
+// GetGeo returns the Geo field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetGeo() string {
+	if c == nil || c.Geo == nil {
+		return ""
+	}
+	return *c.Geo
+}
+
+// GetIdleTimeoutMinutes returns the IdleTimeoutMinutes field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetIdleTimeoutMinutes() int {
+	if c == nil || c.IdleTimeoutMinutes == nil {
+		return 0
+	}
+	return *c.IdleTimeoutMinutes
+}
+
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetLocation() string {
+	if c == nil || c.Location == nil {
+		return ""
+	}
+	return *c.Location
+}
+
+// GetMachine returns the Machine field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetMachine() string {
+	if c == nil || c.Machine == nil {
+		return ""
+	}
+	return *c.Machine
+}
+
+// GetMultiRepoPermissionsOptOut returns the MultiRepoPermissionsOptOut field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetMultiRepoPermissionsOptOut() bool {
+	if c == nil || c.MultiRepoPermissionsOptOut == nil {
+		return false
+	}
+	return *c.MultiRepoPermissionsOptOut
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetRef() string {
+	if c == nil || c.Ref == nil {
+		return ""
+	}
+	return *c.Ref
+}
+
+// GetRetentionPeriodMinutes returns the RetentionPeriodMinutes field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetRetentionPeriodMinutes() int {
+	if c == nil || c.RetentionPeriodMinutes == nil {
+		return 0
+	}
+	return *c.RetentionPeriodMinutes
+}
+
+// GetWorkingDirectory returns the WorkingDirectory field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetWorkingDirectory() string {
 	if c == nil || c.WorkingDirectory == nil {
 		return ""
 	}
@@ -11884,6 +12180,22 @@ func (c *CreateCommitOptions) GetSigner() MessageSigner {
 		return nil
 	}
 	return c.Signer
+}
+
+// GetMetadata returns the Metadata field.
+func (c *CreateCopilotSpaceResourceAttributes) GetMetadata() *CopilotSpaceMetadata {
+	if c == nil {
+		return nil
+	}
+	return c.Metadata
+}
+
+// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
+func (c *CreateCopilotSpaceResourceAttributes) GetResourceType() string {
+	if c == nil || c.ResourceType == nil {
+		return ""
+	}
+	return *c.ResourceType
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
@@ -12420,6 +12732,46 @@ func (c *CreateMilestoneRequest) GetTitle() string {
 		return ""
 	}
 	return c.Title
+}
+
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationCopilotSpaceRequest) GetBaseRole() string {
+	if c == nil || c.BaseRole == nil {
+		return ""
+	}
+	return *c.BaseRole
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationCopilotSpaceRequest) GetDescription() string {
+	if c == nil || c.Description == nil {
+		return ""
+	}
+	return *c.Description
+}
+
+// GetGeneralInstructions returns the GeneralInstructions field if it's non-nil, zero value otherwise.
+func (c *CreateOrganizationCopilotSpaceRequest) GetGeneralInstructions() string {
+	if c == nil || c.GeneralInstructions == nil {
+		return ""
+	}
+	return *c.GeneralInstructions
+}
+
+// GetName returns the Name field.
+func (c *CreateOrganizationCopilotSpaceRequest) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+// GetResourcesAttributes returns the ResourcesAttributes slice if it's non-nil, nil otherwise.
+func (c *CreateOrganizationCopilotSpaceRequest) GetResourcesAttributes() []*CreateCopilotSpaceResourceAttributes {
+	if c == nil || c.ResourcesAttributes == nil {
+		return nil
+	}
+	return c.ResourcesAttributes
 }
 
 // GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.
@@ -31798,6 +32150,22 @@ func (p *PublicIPUsage) GetMaximum() int64 {
 	return p.Maximum
 }
 
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetCreatedAt() Timestamp {
+	if p == nil || p.CreatedAt == nil {
+		return Timestamp{}
+	}
+	return *p.CreatedAt
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
 // GetKey returns the Key field if it's non-nil, zero value otherwise.
 func (p *PublicKey) GetKey() string {
 	if p == nil || p.Key == nil {
@@ -31814,8 +32182,24 @@ func (p *PublicKey) GetKeyID() string {
 	return *p.KeyID
 }
 
+// GetTitle returns the Title field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetTitle() string {
+	if p == nil || p.Title == nil {
+		return ""
+	}
+	return *p.Title
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (p *PublicKey) GetURL() string {
+	if p == nil || p.URL == nil {
+		return ""
+	}
+	return *p.URL
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
-func (p *PublishCodespaceOptions) GetName() string {
+func (p *PublishCodespaceRequest) GetName() string {
 	if p == nil || p.Name == nil {
 		return ""
 	}
@@ -31823,7 +32207,7 @@ func (p *PublishCodespaceOptions) GetName() string {
 }
 
 // GetPrivate returns the Private field if it's non-nil, zero value otherwise.
-func (p *PublishCodespaceOptions) GetPrivate() bool {
+func (p *PublishCodespaceRequest) GetPrivate() bool {
 	if p == nil || p.Private == nil {
 		return false
 	}
@@ -44934,8 +45318,16 @@ func (u *UpdateCheckRunOptions) GetStatus() string {
 	return *u.Status
 }
 
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (u *UpdateCodespaceRequest) GetDisplayName() string {
+	if u == nil || u.DisplayName == nil {
+		return ""
+	}
+	return *u.DisplayName
+}
+
 // GetMachine returns the Machine field if it's non-nil, zero value otherwise.
-func (u *UpdateCodespaceOptions) GetMachine() string {
+func (u *UpdateCodespaceRequest) GetMachine() string {
 	if u == nil || u.Machine == nil {
 		return ""
 	}
@@ -44943,7 +45335,7 @@ func (u *UpdateCodespaceOptions) GetMachine() string {
 }
 
 // GetRecentFolders returns the RecentFolders slice if it's non-nil, nil otherwise.
-func (u *UpdateCodespaceOptions) GetRecentFolders() []string {
+func (u *UpdateCodespaceRequest) GetRecentFolders() []string {
 	if u == nil || u.RecentFolders == nil {
 		return nil
 	}
@@ -44964,6 +45356,38 @@ func (u *UpdateConnectedExternalGroupRequest) GetGroupID() int64 {
 		return 0
 	}
 	return u.GroupID
+}
+
+// GetDestroy returns the Destroy field if it's non-nil, zero value otherwise.
+func (u *UpdateCopilotSpaceResourceAttributes) GetDestroy() bool {
+	if u == nil || u.Destroy == nil {
+		return false
+	}
+	return *u.Destroy
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (u *UpdateCopilotSpaceResourceAttributes) GetID() int64 {
+	if u == nil || u.ID == nil {
+		return 0
+	}
+	return *u.ID
+}
+
+// GetMetadata returns the Metadata field.
+func (u *UpdateCopilotSpaceResourceAttributes) GetMetadata() *CopilotSpaceMetadata {
+	if u == nil {
+		return nil
+	}
+	return u.Metadata
+}
+
+// GetResourceType returns the ResourceType field if it's non-nil, zero value otherwise.
+func (u *UpdateCopilotSpaceResourceAttributes) GetResourceType() string {
+	if u == nil || u.ResourceType == nil {
+		return ""
+	}
+	return *u.ResourceType
 }
 
 // GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
@@ -45356,6 +45780,46 @@ func (u *UpdateMilestoneRequest) GetTitle() string {
 		return ""
 	}
 	return *u.Title
+}
+
+// GetBaseRole returns the BaseRole field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationCopilotSpaceRequest) GetBaseRole() string {
+	if u == nil || u.BaseRole == nil {
+		return ""
+	}
+	return *u.BaseRole
+}
+
+// GetDescription returns the Description field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationCopilotSpaceRequest) GetDescription() string {
+	if u == nil || u.Description == nil {
+		return ""
+	}
+	return *u.Description
+}
+
+// GetGeneralInstructions returns the GeneralInstructions field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationCopilotSpaceRequest) GetGeneralInstructions() string {
+	if u == nil || u.GeneralInstructions == nil {
+		return ""
+	}
+	return *u.GeneralInstructions
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (u *UpdateOrganizationCopilotSpaceRequest) GetName() string {
+	if u == nil || u.Name == nil {
+		return ""
+	}
+	return *u.Name
+}
+
+// GetResourcesAttributes returns the ResourcesAttributes slice if it's non-nil, nil otherwise.
+func (u *UpdateOrganizationCopilotSpaceRequest) GetResourcesAttributes() []*UpdateCopilotSpaceResourceAttributes {
+	if u == nil || u.ResourcesAttributes == nil {
+		return nil
+	}
+	return u.ResourcesAttributes
 }
 
 // GetAccountID returns the AccountID field if it's non-nil, zero value otherwise.
