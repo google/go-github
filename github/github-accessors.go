@@ -6318,110 +6318,6 @@ func (c *Codespace) GetWebURL() string {
 	return *c.WebURL
 }
 
-// GetClientIP returns the ClientIP field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetClientIP() string {
-	if c == nil || c.ClientIP == nil {
-		return ""
-	}
-	return *c.ClientIP
-}
-
-// GetDevcontainerPath returns the DevcontainerPath field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetDevcontainerPath() string {
-	if c == nil || c.DevcontainerPath == nil {
-		return ""
-	}
-	return *c.DevcontainerPath
-}
-
-// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetDisplayName() string {
-	if c == nil || c.DisplayName == nil {
-		return ""
-	}
-	return *c.DisplayName
-}
-
-// GetGeo returns the Geo field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetGeo() string {
-	if c == nil || c.Geo == nil {
-		return ""
-	}
-	return *c.Geo
-}
-
-// GetIdleTimeoutMinutes returns the IdleTimeoutMinutes field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetIdleTimeoutMinutes() int {
-	if c == nil || c.IdleTimeoutMinutes == nil {
-		return 0
-	}
-	return *c.IdleTimeoutMinutes
-}
-
-// GetLocation returns the Location field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetLocation() string {
-	if c == nil || c.Location == nil {
-		return ""
-	}
-	return *c.Location
-}
-
-// GetMachine returns the Machine field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetMachine() string {
-	if c == nil || c.Machine == nil {
-		return ""
-	}
-	return *c.Machine
-}
-
-// GetMultiRepoPermissionsOptOut returns the MultiRepoPermissionsOptOut field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetMultiRepoPermissionsOptOut() bool {
-	if c == nil || c.MultiRepoPermissionsOptOut == nil {
-		return false
-	}
-	return *c.MultiRepoPermissionsOptOut
-}
-
-// GetPullRequest returns the PullRequest field.
-func (c *CodespaceCreateForUserOptions) GetPullRequest() *CodespacePullRequestOptions {
-	if c == nil {
-		return nil
-	}
-	return c.PullRequest
-}
-
-// GetRef returns the Ref field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetRef() string {
-	if c == nil || c.Ref == nil {
-		return ""
-	}
-	return *c.Ref
-}
-
-// GetRepositoryID returns the RepositoryID field.
-func (c *CodespaceCreateForUserOptions) GetRepositoryID() int64 {
-	if c == nil {
-		return 0
-	}
-	return c.RepositoryID
-}
-
-// GetRetentionPeriodMinutes returns the RetentionPeriodMinutes field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetRetentionPeriodMinutes() int {
-	if c == nil || c.RetentionPeriodMinutes == nil {
-		return 0
-	}
-	return *c.RetentionPeriodMinutes
-}
-
-// GetWorkingDirectory returns the WorkingDirectory field if it's non-nil, zero value otherwise.
-func (c *CodespaceCreateForUserOptions) GetWorkingDirectory() string {
-	if c == nil || c.WorkingDirectory == nil {
-		return ""
-	}
-	return *c.WorkingDirectory
-}
-
 // GetBillableOwner returns the BillableOwner field.
 func (c *CodespaceDefaultAttributes) GetBillableOwner() *User {
 	if c == nil {
@@ -12055,7 +11951,7 @@ func (c *CreateCheckSuiteOptions) GetHeadSHA() string {
 }
 
 // GetClientIP returns the ClientIP field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetClientIP() string {
+func (c *CreateCodespaceForUserRequest) GetClientIP() string {
 	if c == nil || c.ClientIP == nil {
 		return ""
 	}
@@ -12063,7 +11959,7 @@ func (c *CreateCodespaceOptions) GetClientIP() string {
 }
 
 // GetDevcontainerPath returns the DevcontainerPath field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetDevcontainerPath() string {
+func (c *CreateCodespaceForUserRequest) GetDevcontainerPath() string {
 	if c == nil || c.DevcontainerPath == nil {
 		return ""
 	}
@@ -12071,7 +11967,7 @@ func (c *CreateCodespaceOptions) GetDevcontainerPath() string {
 }
 
 // GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetDisplayName() string {
+func (c *CreateCodespaceForUserRequest) GetDisplayName() string {
 	if c == nil || c.DisplayName == nil {
 		return ""
 	}
@@ -12079,7 +11975,7 @@ func (c *CreateCodespaceOptions) GetDisplayName() string {
 }
 
 // GetGeo returns the Geo field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetGeo() string {
+func (c *CreateCodespaceForUserRequest) GetGeo() string {
 	if c == nil || c.Geo == nil {
 		return ""
 	}
@@ -12087,7 +11983,7 @@ func (c *CreateCodespaceOptions) GetGeo() string {
 }
 
 // GetIdleTimeoutMinutes returns the IdleTimeoutMinutes field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetIdleTimeoutMinutes() int {
+func (c *CreateCodespaceForUserRequest) GetIdleTimeoutMinutes() int {
 	if c == nil || c.IdleTimeoutMinutes == nil {
 		return 0
 	}
@@ -12095,7 +11991,7 @@ func (c *CreateCodespaceOptions) GetIdleTimeoutMinutes() int {
 }
 
 // GetLocation returns the Location field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetLocation() string {
+func (c *CreateCodespaceForUserRequest) GetLocation() string {
 	if c == nil || c.Location == nil {
 		return ""
 	}
@@ -12103,7 +11999,7 @@ func (c *CreateCodespaceOptions) GetLocation() string {
 }
 
 // GetMachine returns the Machine field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetMachine() string {
+func (c *CreateCodespaceForUserRequest) GetMachine() string {
 	if c == nil || c.Machine == nil {
 		return ""
 	}
@@ -12111,23 +12007,39 @@ func (c *CreateCodespaceOptions) GetMachine() string {
 }
 
 // GetMultiRepoPermissionsOptOut returns the MultiRepoPermissionsOptOut field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetMultiRepoPermissionsOptOut() bool {
+func (c *CreateCodespaceForUserRequest) GetMultiRepoPermissionsOptOut() bool {
 	if c == nil || c.MultiRepoPermissionsOptOut == nil {
 		return false
 	}
 	return *c.MultiRepoPermissionsOptOut
 }
 
+// GetPullRequest returns the PullRequest field.
+func (c *CreateCodespaceForUserRequest) GetPullRequest() *CodespacePullRequestOptions {
+	if c == nil {
+		return nil
+	}
+	return c.PullRequest
+}
+
 // GetRef returns the Ref field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetRef() string {
+func (c *CreateCodespaceForUserRequest) GetRef() string {
 	if c == nil || c.Ref == nil {
 		return ""
 	}
 	return *c.Ref
 }
 
+// GetRepositoryID returns the RepositoryID field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceForUserRequest) GetRepositoryID() int64 {
+	if c == nil || c.RepositoryID == nil {
+		return 0
+	}
+	return *c.RepositoryID
+}
+
 // GetRetentionPeriodMinutes returns the RetentionPeriodMinutes field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetRetentionPeriodMinutes() int {
+func (c *CreateCodespaceForUserRequest) GetRetentionPeriodMinutes() int {
 	if c == nil || c.RetentionPeriodMinutes == nil {
 		return 0
 	}
@@ -12135,7 +12047,95 @@ func (c *CreateCodespaceOptions) GetRetentionPeriodMinutes() int {
 }
 
 // GetWorkingDirectory returns the WorkingDirectory field if it's non-nil, zero value otherwise.
-func (c *CreateCodespaceOptions) GetWorkingDirectory() string {
+func (c *CreateCodespaceForUserRequest) GetWorkingDirectory() string {
+	if c == nil || c.WorkingDirectory == nil {
+		return ""
+	}
+	return *c.WorkingDirectory
+}
+
+// GetClientIP returns the ClientIP field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetClientIP() string {
+	if c == nil || c.ClientIP == nil {
+		return ""
+	}
+	return *c.ClientIP
+}
+
+// GetDevcontainerPath returns the DevcontainerPath field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetDevcontainerPath() string {
+	if c == nil || c.DevcontainerPath == nil {
+		return ""
+	}
+	return *c.DevcontainerPath
+}
+
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetDisplayName() string {
+	if c == nil || c.DisplayName == nil {
+		return ""
+	}
+	return *c.DisplayName
+}
+
+// GetGeo returns the Geo field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetGeo() string {
+	if c == nil || c.Geo == nil {
+		return ""
+	}
+	return *c.Geo
+}
+
+// GetIdleTimeoutMinutes returns the IdleTimeoutMinutes field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetIdleTimeoutMinutes() int {
+	if c == nil || c.IdleTimeoutMinutes == nil {
+		return 0
+	}
+	return *c.IdleTimeoutMinutes
+}
+
+// GetLocation returns the Location field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetLocation() string {
+	if c == nil || c.Location == nil {
+		return ""
+	}
+	return *c.Location
+}
+
+// GetMachine returns the Machine field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetMachine() string {
+	if c == nil || c.Machine == nil {
+		return ""
+	}
+	return *c.Machine
+}
+
+// GetMultiRepoPermissionsOptOut returns the MultiRepoPermissionsOptOut field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetMultiRepoPermissionsOptOut() bool {
+	if c == nil || c.MultiRepoPermissionsOptOut == nil {
+		return false
+	}
+	return *c.MultiRepoPermissionsOptOut
+}
+
+// GetRef returns the Ref field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetRef() string {
+	if c == nil || c.Ref == nil {
+		return ""
+	}
+	return *c.Ref
+}
+
+// GetRetentionPeriodMinutes returns the RetentionPeriodMinutes field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetRetentionPeriodMinutes() int {
+	if c == nil || c.RetentionPeriodMinutes == nil {
+		return 0
+	}
+	return *c.RetentionPeriodMinutes
+}
+
+// GetWorkingDirectory returns the WorkingDirectory field if it's non-nil, zero value otherwise.
+func (c *CreateCodespaceRequest) GetWorkingDirectory() string {
 	if c == nil || c.WorkingDirectory == nil {
 		return ""
 	}
@@ -32199,7 +32199,7 @@ func (p *PublicKey) GetURL() string {
 }
 
 // GetName returns the Name field if it's non-nil, zero value otherwise.
-func (p *PublishCodespaceOptions) GetName() string {
+func (p *PublishCodespaceRequest) GetName() string {
 	if p == nil || p.Name == nil {
 		return ""
 	}
@@ -32207,7 +32207,7 @@ func (p *PublishCodespaceOptions) GetName() string {
 }
 
 // GetPrivate returns the Private field if it's non-nil, zero value otherwise.
-func (p *PublishCodespaceOptions) GetPrivate() bool {
+func (p *PublishCodespaceRequest) GetPrivate() bool {
 	if p == nil || p.Private == nil {
 		return false
 	}
@@ -45310,8 +45310,16 @@ func (u *UpdateCheckRunOptions) GetStatus() string {
 	return *u.Status
 }
 
+// GetDisplayName returns the DisplayName field if it's non-nil, zero value otherwise.
+func (u *UpdateCodespaceRequest) GetDisplayName() string {
+	if u == nil || u.DisplayName == nil {
+		return ""
+	}
+	return *u.DisplayName
+}
+
 // GetMachine returns the Machine field if it's non-nil, zero value otherwise.
-func (u *UpdateCodespaceOptions) GetMachine() string {
+func (u *UpdateCodespaceRequest) GetMachine() string {
 	if u == nil || u.Machine == nil {
 		return ""
 	}
@@ -45319,7 +45327,7 @@ func (u *UpdateCodespaceOptions) GetMachine() string {
 }
 
 // GetRecentFolders returns the RecentFolders slice if it's non-nil, nil otherwise.
-func (u *UpdateCodespaceOptions) GetRecentFolders() []string {
+func (u *UpdateCodespaceRequest) GetRecentFolders() []string {
 	if u == nil || u.RecentFolders == nil {
 		return nil
 	}
