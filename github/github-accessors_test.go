@@ -42035,6 +42035,14 @@ func TestPullRequestReviewEvent_GetAction(tt *testing.T) {
 	p.GetAction()
 }
 
+func TestPullRequestReviewEvent_GetChanges(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewEvent{}
+	p.GetChanges()
+	p = nil
+	p.GetChanges()
+}
+
 func TestPullRequestReviewEvent_GetInstallation(tt *testing.T) {
 	tt.Parallel()
 	p := &PullRequestReviewEvent{}

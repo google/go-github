@@ -33550,6 +33550,14 @@ func (p *PullRequestReviewEvent) GetAction() string {
 	return *p.Action
 }
 
+// GetChanges returns the Changes field.
+func (p *PullRequestReviewEvent) GetChanges() *EditChange {
+	if p == nil {
+		return nil
+	}
+	return p.Changes
+}
+
 // GetInstallation returns the Installation field.
 func (p *PullRequestReviewEvent) GetInstallation() *Installation {
 	if p == nil {
