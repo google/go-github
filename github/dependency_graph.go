@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 )
 
 // DependencyGraphService handles communication with the dependency graph
@@ -111,6 +110,9 @@ func (s SBOM) String() string {
 
 // GetSBOM fetches the software bill of materials for a repository.
 //
+// Deprecated: GitHub is retiring this endpoint on 11-13-2026 in favor of the
+// asynchronous workflow. Use GenerateSBOM followed by FetchSBOM.
+//
 // GitHub API docs: https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28#export-a-software-bill-of-materials-sbom-for-a-repository
 //
 //meta:operation GET /repos/{owner}/{repo}/dependency-graph/sbom
@@ -134,25 +136,14 @@ func (s *DependencyGraphService) GetSBOM(ctx context.Context, owner, repo string
 // SBOMGeneration represents the response to a request to generate
 // a software bill of materials for a repository.
 type SBOMGeneration struct {
-	// SBOMURL is the URL the generated SBOM can be fetched from once it's
-	// ready. UUID extracts the identifier FetchSBOM takes.
+	// SBOMURL is the URL the generated SBOM can be fetched from once it's ready.
 	SBOMURL *string `json:"sbom_url,omitempty"`
-}
-
-// UUID returns the sbomUUID accepted by FetchSBOM. It is the final path segment
-// of SBOMURL.
-func (s *SBOMGeneration) UUID() string {
-	url := s.GetSBOMURL()
-	if i := strings.LastIndex(url, "/"); i >= 0 {
-		return url[i+1:]
-	}
-	return ""
 }
 
 // GenerateSBOM requests the generation of a software bill of materials for a repository.
 //
-// Generation is asynchronous. Pass the returned SBOMGeneration's UUID to
-// FetchSBOM to retrieve the SBOM once GitHub has built it.
+// Generation is asynchronous. Pass the UUID from the returned
+// SBOMGeneration to FetchSBOM to retrieve the report once GitHub has built it.
 //
 // GitHub API docs: https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28#request-generation-of-a-software-bill-of-materials-sbom-for-a-repository
 //
@@ -175,6 +166,8 @@ func (s *DependencyGraphService) GenerateSBOM(ctx context.Context, owner, repo s
 }
 
 // FetchSBOM downloads a software bill of materials or returns a redirect URL.
+//
+// sbomUUID is the final path segment of the SBOMURL returned by GenerateSBOM.
 //
 // If followRedirectsClient is nil, FetchSBOM returns the download URL in
 // redirectURL and a nil sbom. Otherwise, it downloads the report and returns

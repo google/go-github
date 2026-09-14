@@ -78,52 +78,6 @@ func TestDependencyGraphService_GetSBOM(t *testing.T) {
 	})
 }
 
-func TestSBOMGeneration_UUID(t *testing.T) {
-	t.Parallel()
-
-	tests := []struct {
-		name string
-		gen  *SBOMGeneration
-		want string
-	}{
-		{
-			name: "reads the UUID off a generation response",
-			gen: &SBOMGeneration{
-				SBOMURL: new("https://api.github.com/repos/owner/repo/dependency-graph/sbom/fetch-report/c0ccba21-ccba-4292-9afd-a64781f7e98a"),
-			},
-			want: "c0ccba21-ccba-4292-9afd-a64781f7e98a",
-		},
-		{
-			name: "nil SBOMGeneration",
-			gen:  nil,
-		},
-		{
-			name: "unset SBOMURL",
-			gen:  &SBOMGeneration{},
-		},
-		{
-			name: "SBOMURL has no path segments",
-			gen:  &SBOMGeneration{SBOMURL: new("c0ccba21")},
-		},
-		{
-			name: "SBOMURL ends in a separator",
-			gen: &SBOMGeneration{
-				SBOMURL: new("https://api.github.com/repos/owner/repo/dependency-graph/sbom/fetch-report/"),
-			},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-
-			if got := tt.gen.UUID(); got != tt.want {
-				t.Errorf("SBOMGeneration.UUID() = %q, want %q", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestDependencyGraphService_GenerateSBOM(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
