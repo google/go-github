@@ -16916,6 +16916,17 @@ func TestCreateTeamRequest_GetDescription(tt *testing.T) {
 	c.GetDescription()
 }
 
+func TestCreateTeamRequest_GetLDAPDN(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{LDAPDN: &zeroValue}
+	c.GetLDAPDN()
+	c = &CreateTeamRequest{}
+	c.GetLDAPDN()
+	c = nil
+	c.GetLDAPDN()
+}
+
 func TestCreateTeamRequest_GetMaintainers(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}

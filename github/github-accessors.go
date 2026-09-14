@@ -13414,6 +13414,14 @@ func (c *CreateTeamRequest) GetDescription() string {
 	return *c.Description
 }
 
+// GetLDAPDN returns the LDAPDN field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetLDAPDN() string {
+	if c == nil || c.LDAPDN == nil {
+		return ""
+	}
+	return *c.LDAPDN
+}
+
 // GetMaintainers returns the Maintainers slice if it's non-nil, nil otherwise.
 func (c *CreateTeamRequest) GetMaintainers() []string {
 	if c == nil || c.Maintainers == nil {
