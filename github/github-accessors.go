@@ -12927,7 +12927,7 @@ func (c *CreateOrganizationPrivateRegistry) GetVisibility() PrivateRegistryVisib
 }
 
 // GetEmail returns the Email field if it's non-nil, zero value otherwise.
-func (c *CreateOrgInvitationOptions) GetEmail() string {
+func (c *CreateOrgInvitationRequest) GetEmail() string {
 	if c == nil || c.Email == nil {
 		return ""
 	}
@@ -12935,7 +12935,7 @@ func (c *CreateOrgInvitationOptions) GetEmail() string {
 }
 
 // GetInviteeID returns the InviteeID field if it's non-nil, zero value otherwise.
-func (c *CreateOrgInvitationOptions) GetInviteeID() int64 {
+func (c *CreateOrgInvitationRequest) GetInviteeID() int64 {
 	if c == nil || c.InviteeID == nil {
 		return 0
 	}
@@ -12943,7 +12943,7 @@ func (c *CreateOrgInvitationOptions) GetInviteeID() int64 {
 }
 
 // GetRole returns the Role field if it's non-nil, zero value otherwise.
-func (c *CreateOrgInvitationOptions) GetRole() string {
+func (c *CreateOrgInvitationRequest) GetRole() string {
 	if c == nil || c.Role == nil {
 		return ""
 	}
@@ -12951,7 +12951,7 @@ func (c *CreateOrgInvitationOptions) GetRole() string {
 }
 
 // GetTeamID returns the TeamID slice if it's non-nil, nil otherwise.
-func (c *CreateOrgInvitationOptions) GetTeamID() []int64 {
+func (c *CreateOrgInvitationRequest) GetTeamID() []int64 {
 	if c == nil || c.TeamID == nil {
 		return nil
 	}

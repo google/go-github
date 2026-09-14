@@ -341,9 +341,8 @@ func (s *OrganizationsService) ListPendingOrgInvitations(ctx context.Context, or
 	return pendingInvitations, resp, nil
 }
 
-// CreateOrgInvitationOptions specifies the parameters to the OrganizationService.Invite
-// method.
-type CreateOrgInvitationOptions struct {
+// CreateOrgInvitationRequest specifies the request body for OrganizationsService.CreateOrgInvitation.
+type CreateOrgInvitationRequest struct {
 	// GitHub user ID for the person you are inviting. Not required if you provide Email.
 	InviteeID *int64 `json:"invitee_id,omitempty"`
 	// Email address of the person you are inviting, which can be an existing GitHub user.
@@ -368,7 +367,7 @@ type CreateOrgInvitationOptions struct {
 // GitHub API docs: https://docs.github.com/rest/orgs/members?apiVersion=2022-11-28#create-an-organization-invitation
 //
 //meta:operation POST /orgs/{org}/invitations
-func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org string, body *CreateOrgInvitationOptions) (*Invitation, *Response, error) {
+func (s *OrganizationsService) CreateOrgInvitation(ctx context.Context, org string, body CreateOrgInvitationRequest) (*Invitation, *Response, error) {
 	u := fmt.Sprintf("orgs/%v/invitations", org)
 
 	req, err := s.client.NewRequest(ctx, "POST", u, body)

@@ -210,7 +210,6 @@ linters:
             - ConfigSettings
             - CreateCodespaceOptions
             - CreateOrUpdateIssueTypesOptions
-            - CreateOrgInvitationOptions
             - CreateUpdateEnvironment
             - CreateWorkflowDispatchEventRequest
             - CustomDeploymentProtectionRuleRequest
@@ -262,7 +261,6 @@ linters:
             - CreateCheckSuiteOptions
             - CreateCodespaceOptions
             - CreateOrUpdateIssueTypesOptions
-            - CreateOrgInvitationOptions
             - InstallationTokenListRepoOptions
             - InstallationTokenOptions
             - LockIssueOptions
@@ -302,7 +300,7 @@ linters:
             - CommitAuthor.Login
             - CommitsSearchResult.Commits
             - CommitsSearchResult.Total
-            - CreateOrgInvitationOptions.TeamID # TODO: TeamIDs
+            - CreateOrgInvitationRequest.TeamID # TODO: TeamIDs
             - Discussion.DiscussionCategory # TODO: Category ?
             - EditOwner.OwnerInfo
             - EnterpriseLicensedUsers.GithubComSamlNameID # TODO: GithubComSAMLNameID
