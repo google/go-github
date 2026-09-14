@@ -323,3 +323,16 @@ func TestDependencyGraphService_FetchSBOM_requestErrors(t *testing.T) {
 		return resp, err
 	})
 }
+
+func TestDependencyGraphService_fetchSBOMFromURL_unparsableURL(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	sbom, err := client.DependencyGraph.fetchSBOMFromURL(t.Context(), http.DefaultClient, "\n")
+	if err == nil {
+		t.Error("DependencyGraph.fetchSBOMFromURL returned no error for an unparsable URL")
+	}
+	if sbom != nil {
+		t.Errorf("DependencyGraph.fetchSBOMFromURL returned %v, want nil", sbom)
+	}
+}
