@@ -520,8 +520,9 @@ func TestCreateTeamRequest_String(t *testing.T) {
 		Permission:          new(""),
 		ParentTeamID:        new(int64(0)),
 		ParentTeamSlug:      new(""),
+		LDAPDN:              new(""),
 	}
-	want := `github.CreateTeamRequest{Name:"", Description:"", Maintainers:[""], RepoNames:[""], Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:""}`
+	want := `github.CreateTeamRequest{Name:"", Description:"", Maintainers:[""], RepoNames:[""], Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:"", LDAPDN:""}`
 	if got := v.String(); got != want {
 		t.Errorf("CreateTeamRequest.String = %v, want %v", got, want)
 	}
