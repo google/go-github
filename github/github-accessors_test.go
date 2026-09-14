@@ -16916,6 +16916,17 @@ func TestCreateTeamRequest_GetDescription(tt *testing.T) {
 	c.GetDescription()
 }
 
+func TestCreateTeamRequest_GetLDAPDN(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue string
+	c := &CreateTeamRequest{LDAPDN: &zeroValue}
+	c.GetLDAPDN()
+	c = &CreateTeamRequest{}
+	c.GetLDAPDN()
+	c = nil
+	c.GetLDAPDN()
+}
+
 func TestCreateTeamRequest_GetMaintainers(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []string{}
@@ -25038,6 +25049,17 @@ func TestHostedRunner_GetImageDetails(tt *testing.T) {
 	h.GetImageDetails()
 	h = nil
 	h.GetImageDetails()
+}
+
+func TestHostedRunner_GetImageGen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	h := &HostedRunner{ImageGen: &zeroValue}
+	h.GetImageGen()
+	h = &HostedRunner{}
+	h.GetImageGen()
+	h = nil
+	h.GetImageGen()
 }
 
 func TestHostedRunner_GetLastActiveOn(tt *testing.T) {
@@ -42035,6 +42057,14 @@ func TestPullRequestReviewEvent_GetAction(tt *testing.T) {
 	p.GetAction()
 }
 
+func TestPullRequestReviewEvent_GetChanges(tt *testing.T) {
+	tt.Parallel()
+	p := &PullRequestReviewEvent{}
+	p.GetChanges()
+	p = nil
+	p.GetChanges()
+}
+
 func TestPullRequestReviewEvent_GetInstallation(tt *testing.T) {
 	tt.Parallel()
 	p := &PullRequestReviewEvent{}
@@ -56914,6 +56944,17 @@ func TestUpdateHostedRunnerRequest_GetEnableStaticIP(tt *testing.T) {
 	u.GetEnableStaticIP()
 	u = nil
 	u.GetEnableStaticIP()
+}
+
+func TestUpdateHostedRunnerRequest_GetImageGen(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	u := &UpdateHostedRunnerRequest{ImageGen: &zeroValue}
+	u.GetImageGen()
+	u = &UpdateHostedRunnerRequest{}
+	u.GetImageGen()
+	u = nil
+	u.GetImageGen()
 }
 
 func TestUpdateHostedRunnerRequest_GetImageID(tt *testing.T) {

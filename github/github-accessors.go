@@ -13414,6 +13414,14 @@ func (c *CreateTeamRequest) GetDescription() string {
 	return *c.Description
 }
 
+// GetLDAPDN returns the LDAPDN field if it's non-nil, zero value otherwise.
+func (c *CreateTeamRequest) GetLDAPDN() string {
+	if c == nil || c.LDAPDN == nil {
+		return ""
+	}
+	return *c.LDAPDN
+}
+
 // GetMaintainers returns the Maintainers slice if it's non-nil, nil otherwise.
 func (c *CreateTeamRequest) GetMaintainers() []string {
 	if c == nil || c.Maintainers == nil {
@@ -19964,6 +19972,14 @@ func (h *HostedRunner) GetImageDetails() *HostedRunnerImageDetail {
 		return nil
 	}
 	return h.ImageDetails
+}
+
+// GetImageGen returns the ImageGen field if it's non-nil, zero value otherwise.
+func (h *HostedRunner) GetImageGen() bool {
+	if h == nil || h.ImageGen == nil {
+		return false
+	}
+	return *h.ImageGen
 }
 
 // GetLastActiveOn returns the LastActiveOn field if it's non-nil, zero value otherwise.
@@ -33550,6 +33566,14 @@ func (p *PullRequestReviewEvent) GetAction() string {
 	return *p.Action
 }
 
+// GetChanges returns the Changes field.
+func (p *PullRequestReviewEvent) GetChanges() *EditChange {
+	if p == nil {
+		return nil
+	}
+	return p.Changes
+}
+
 // GetInstallation returns the Installation field.
 func (p *PullRequestReviewEvent) GetInstallation() *Installation {
 	if p == nil {
@@ -45588,6 +45612,14 @@ func (u *UpdateHostedRunnerRequest) GetEnableStaticIP() bool {
 		return false
 	}
 	return *u.EnableStaticIP
+}
+
+// GetImageGen returns the ImageGen field if it's non-nil, zero value otherwise.
+func (u *UpdateHostedRunnerRequest) GetImageGen() bool {
+	if u == nil || u.ImageGen == nil {
+		return false
+	}
+	return *u.ImageGen
 }
 
 // GetImageID returns the ImageID field if it's non-nil, zero value otherwise.
