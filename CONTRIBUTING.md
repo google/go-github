@@ -413,8 +413,15 @@ type RepositoryRuleset struct {
 }
 ```
 
-For optional boolean fields where you need to distinguish between `false`
-and "not set", use `*bool` with `omitzero`.
+For optional primitive fields where the zero value has API semantics, use a
+pointer with `omitempty`. A nil pointer omits the field, while a pointer to the
+zero value includes it, such as `false`, `0`, or `""`.
+
+Neither `omitempty` nor `omitzero` makes a pointer to a zero value encode as
+JSON `null`. When an update must distinguish omission, assignment, and explicit
+removal using `null`, follow `UpdateTeamRequest.RemoveParentTeam`: add a Go-only
+removal flag and a value-receiver `MarshalJSON` method. This supports marshaling
+both request values and pointers without changing the request.
 
 #### Response Bodies
 

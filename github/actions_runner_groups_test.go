@@ -309,14 +309,12 @@ func TestActionsService_UpdateOrganizationRunnerGroup_NetworkConfiguration(t *te
 			want: `{"network_configuration_id":"network-id"}`,
 		},
 		{
-			name: "empty string",
-			body: UpdateRunnerGroupRequest{NetworkConfigurationID: new("")},
+			name: "empty ID without removal",
+			body: UpdateRunnerGroupRequest{
+				NetworkConfigurationID:     new(""),
+				RemoveNetworkConfiguration: false,
+			},
 			want: `{"network_configuration_id":""}`,
-		},
-		{
-			name: "rename only",
-			body: UpdateRunnerGroupRequest{Name: new("renamed")},
-			want: `{"name":"renamed"}`,
 		},
 		{
 			name: "remove",
@@ -324,7 +322,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup_NetworkConfiguration(t *te
 			want: `{"network_configuration_id":null}`,
 		},
 		{
-			name: "remove overrides ID",
+			name: "remove takes precedence",
 			body: UpdateRunnerGroupRequest{
 				NetworkConfigurationID:     new("network-id"),
 				RemoveNetworkConfiguration: true,
@@ -332,7 +330,7 @@ func TestActionsService_UpdateOrganizationRunnerGroup_NetworkConfiguration(t *te
 			want: `{"network_configuration_id":null}`,
 		},
 		{
-			name: "remove with other fields",
+			name: "remove preserves other fields",
 			body: UpdateRunnerGroupRequest{
 				Name:                       new("renamed"),
 				Visibility:                 new("selected"),
@@ -342,6 +340,11 @@ func TestActionsService_UpdateOrganizationRunnerGroup_NetworkConfiguration(t *te
 				RemoveNetworkConfiguration: true,
 			},
 			want: `{"name":"renamed","visibility":"selected","allows_public_repositories":false,"restricted_to_workflows":true,"selected_workflows":["o/r/.github/workflows/build.yml@refs/heads/main"],"network_configuration_id":null}`,
+		},
+		{
+			name: "rename only",
+			body: UpdateRunnerGroupRequest{Name: new("renamed")},
+			want: `{"name":"renamed"}`,
 		},
 	}
 

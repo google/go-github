@@ -67,7 +67,7 @@ type UpdateEnterpriseRunnerGroupRequest struct {
 	SelectedWorkflows        []string `json:"selected_workflows,omitempty"`
 	NetworkConfigurationID   *string  `json:"network_configuration_id,omitempty"`
 
-	// If true, the network configuration is removed by sending null.
+	// If true, send a null network_configuration_id to remove the network configuration.
 	// This takes precedence over NetworkConfigurationID.
 	RemoveNetworkConfiguration bool `json:"-"`
 }

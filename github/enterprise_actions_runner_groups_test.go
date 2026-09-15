@@ -301,14 +301,12 @@ func TestEnterpriseService_UpdateEnterpriseRunnerGroup_NetworkConfiguration(t *t
 			want: `{"network_configuration_id":"network-id"}`,
 		},
 		{
-			name: "empty string",
-			body: UpdateEnterpriseRunnerGroupRequest{NetworkConfigurationID: new("")},
+			name: "empty ID without removal",
+			body: UpdateEnterpriseRunnerGroupRequest{
+				NetworkConfigurationID:     new(""),
+				RemoveNetworkConfiguration: false,
+			},
 			want: `{"network_configuration_id":""}`,
-		},
-		{
-			name: "rename only",
-			body: UpdateEnterpriseRunnerGroupRequest{Name: new("renamed")},
-			want: `{"name":"renamed"}`,
 		},
 		{
 			name: "remove",
@@ -316,7 +314,7 @@ func TestEnterpriseService_UpdateEnterpriseRunnerGroup_NetworkConfiguration(t *t
 			want: `{"network_configuration_id":null}`,
 		},
 		{
-			name: "remove overrides ID",
+			name: "remove takes precedence",
 			body: UpdateEnterpriseRunnerGroupRequest{
 				NetworkConfigurationID:     new("network-id"),
 				RemoveNetworkConfiguration: true,
@@ -324,7 +322,7 @@ func TestEnterpriseService_UpdateEnterpriseRunnerGroup_NetworkConfiguration(t *t
 			want: `{"network_configuration_id":null}`,
 		},
 		{
-			name: "remove with other fields",
+			name: "remove preserves other fields",
 			body: UpdateEnterpriseRunnerGroupRequest{
 				Name:                       new("renamed"),
 				Visibility:                 new("selected"),
@@ -334,6 +332,11 @@ func TestEnterpriseService_UpdateEnterpriseRunnerGroup_NetworkConfiguration(t *t
 				RemoveNetworkConfiguration: true,
 			},
 			want: `{"name":"renamed","visibility":"selected","allows_public_repositories":false,"restricted_to_workflows":true,"selected_workflows":["o/r/.github/workflows/build.yml@refs/heads/main"],"network_configuration_id":null}`,
+		},
+		{
+			name: "rename only",
+			body: UpdateEnterpriseRunnerGroupRequest{Name: new("renamed")},
+			want: `{"name":"renamed"}`,
 		},
 	}
 
