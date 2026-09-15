@@ -1994,9 +1994,10 @@ func GetRateLimitCategory(method, path string) RateLimitCategory {
 	case strings.HasSuffix(path, "/audit-log"):
 		return AuditLogCategory
 
-	// https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28#export-a-software-bill-of-materials-sbom-for-a-repository
+	// https://docs.github.com/rest/dependency-graph/sboms?apiVersion=2022-11-28
 	case strings.HasPrefix(path, "/repos/") &&
-		strings.HasSuffix(path, "/dependency-graph/sbom"):
+		(strings.HasSuffix(path, "/dependency-graph/sbom") ||
+			strings.HasSuffix(path, "/dependency-graph/sbom/generate-report")):
 		return DependencySBOMCategory
 	}
 }
