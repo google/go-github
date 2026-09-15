@@ -12950,12 +12950,12 @@ func (c *CreateOrgInvitationRequest) GetRole() string {
 	return *c.Role
 }
 
-// GetTeamID returns the TeamID slice if it's non-nil, nil otherwise.
-func (c *CreateOrgInvitationRequest) GetTeamID() []int64 {
-	if c == nil || c.TeamID == nil {
+// GetTeamIDs returns the TeamIDs slice if it's non-nil, nil otherwise.
+func (c *CreateOrgInvitationRequest) GetTeamIDs() []int64 {
+	if c == nil || c.TeamIDs == nil {
 		return nil
 	}
-	return c.TeamID
+	return c.TeamIDs
 }
 
 // GetColor returns the Color field if it's non-nil, zero value otherwise.

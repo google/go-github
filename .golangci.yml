@@ -292,7 +292,6 @@ linters:
             - CommitAuthor.Login
             - CommitsSearchResult.Commits
             - CommitsSearchResult.Total
-            - CreateOrgInvitationRequest.TeamID # TODO: TeamIDs
             - Discussion.DiscussionCategory # TODO: Category ?
             - EditOwner.OwnerInfo
             - EnterpriseLicensedUsers.GithubComSamlNameID # TODO: GithubComSAMLNameID

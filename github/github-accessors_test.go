@@ -16335,15 +16335,15 @@ func TestCreateOrgInvitationRequest_GetRole(tt *testing.T) {
 	c.GetRole()
 }
 
-func TestCreateOrgInvitationRequest_GetTeamID(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetTeamIDs(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []int64{}
-	c := &CreateOrgInvitationRequest{TeamID: zeroValue}
-	c.GetTeamID()
+	c := &CreateOrgInvitationRequest{TeamIDs: zeroValue}
+	c.GetTeamIDs()
 	c = &CreateOrgInvitationRequest{}
-	c.GetTeamID()
+	c.GetTeamIDs()
 	c = nil
-	c.GetTeamID()
+	c.GetTeamIDs()
 }
 
 func TestCreateOrUpdateIssueTypesOptions_GetColor(tt *testing.T) {

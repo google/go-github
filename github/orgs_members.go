@@ -356,8 +356,8 @@ type CreateOrgInvitationRequest struct {
 	// * billing_manager - Non-owner organization members with ability to
 	//   manage the billing settings of your organization.
 	// Default is "direct_member".
-	Role   *string `json:"role,omitempty"`
-	TeamID []int64 `json:"team_ids,omitempty"`
+	Role    *string `json:"role,omitempty"`
+	TeamIDs []int64 `json:"team_ids,omitempty"`
 }
 
 // CreateOrgInvitation invites people to an organization by using their GitHub user ID or their email address.
