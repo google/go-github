@@ -189,7 +189,7 @@ func TestDependencyGraphService_FetchSBOM_Download(t *testing.T) {
 				t.Errorf("DependencyGraph.FetchSBOM SBOM mismatch (-want +got):\n%v", diff)
 			}
 			if redirectURL != "" {
-				t.Errorf("DependencyGraph.FetchSBOM redirectURL = %q, want empty", redirectURL)
+				t.Errorf("DependencyGraph.FetchSBOM redirectURL = %v, want empty", redirectURL)
 			}
 		})
 	}
@@ -217,7 +217,7 @@ func TestDependencyGraphService_FetchSBOM_Redirect(t *testing.T) {
 		t.Errorf("DependencyGraph.FetchSBOM SBOM = %v, want nil", sbom)
 	}
 	if redirectURL != downloadURL {
-		t.Errorf("DependencyGraph.FetchSBOM redirectURL = %q, want %q", redirectURL, downloadURL)
+		t.Errorf("DependencyGraph.FetchSBOM redirectURL = %v, want %v", redirectURL, downloadURL)
 	}
 	if resp == nil || resp.StatusCode != http.StatusFound {
 		t.Errorf("DependencyGraph.FetchSBOM response = %v, want status 302", resp)
@@ -234,7 +234,7 @@ func TestDependencyGraphService_FetchSBOM_DownloadTransportError(t *testing.T) {
 		Transport: roundTripperFunc(func(r *http.Request) (*http.Response, error) {
 			testMethod(t, r, "GET")
 			if got := r.URL.String(); got != downloadURL {
-				t.Errorf("download URL = %q, want %q", got, downloadURL)
+				t.Errorf("download URL = %v, want %v", got, downloadURL)
 			}
 			return nil, wantErr
 		}),
@@ -251,7 +251,7 @@ func TestDependencyGraphService_FetchSBOM_DownloadTransportError(t *testing.T) {
 	}
 
 	if sbom != nil || redirectURL != "" {
-		t.Errorf("DependencyGraph.FetchSBOM returned (%v, %q), want (nil, empty)", sbom, redirectURL)
+		t.Errorf("DependencyGraph.FetchSBOM returned (%v, %v), want (nil, empty)", sbom, redirectURL)
 	}
 	if resp == nil || resp.StatusCode != http.StatusFound {
 		t.Errorf("DependencyGraph.FetchSBOM response = %v, want status 302", resp)
@@ -274,7 +274,7 @@ func TestDependencyGraphService_FetchSBOM_AcceptedError(t *testing.T) {
 	}
 
 	if sbom != nil || redirectURL != "" {
-		t.Errorf("DependencyGraph.FetchSBOM returned (%v, %q), want (nil, empty)", sbom, redirectURL)
+		t.Errorf("DependencyGraph.FetchSBOM returned (%v, %v), want (nil, empty)", sbom, redirectURL)
 	}
 	if resp == nil || resp.StatusCode != http.StatusAccepted {
 		t.Errorf("DependencyGraph.FetchSBOM response = %v, want status 202", resp)
@@ -296,7 +296,7 @@ func TestDependencyGraphService_FetchSBOM_NoRedirect(t *testing.T) {
 	}
 
 	if sbom != nil || redirectURL != "" {
-		t.Errorf("DependencyGraph.FetchSBOM returned (%v, %q), want (nil, empty)", sbom, redirectURL)
+		t.Errorf("DependencyGraph.FetchSBOM returned (%v, %v), want (nil, empty)", sbom, redirectURL)
 	}
 	if resp == nil || resp.StatusCode != http.StatusOK {
 		t.Errorf("DependencyGraph.FetchSBOM response = %v, want status 200", resp)
@@ -318,7 +318,7 @@ func TestDependencyGraphService_FetchSBOM_requestErrors(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		sbom, redirectURL, resp, err := client.DependencyGraph.FetchSBOM(ctx, "owner", "repo", "1234", http.DefaultClient)
 		if sbom != nil || redirectURL != "" {
-			t.Errorf("testNewRequestAndDoFailure %v returned (%v, %q), want (nil, empty)", methodName, sbom, redirectURL)
+			t.Errorf("testNewRequestAndDoFailure %v returned (%v, %v), want (nil, empty)", methodName, sbom, redirectURL)
 		}
 		return resp, err
 	})
