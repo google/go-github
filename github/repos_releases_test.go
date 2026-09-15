@@ -882,6 +882,22 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_ForeignHostIsRejected
 	}
 }
 
+func TestRepositoriesService_UploadReleaseAssetFromRelease_MalformedUploadURL(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	// net/url rejects ASCII control characters, so a response naming such a URL must
+	// surface as an error rather than a panic or an upload to an unchecked host.
+	release := &RepositoryRelease{UploadURL: "https://uploads.github.com/\x7f/upload{?name,label}"}
+	ctx := t.Context()
+	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(
+		ctx, release, &UploadOptions{Name: "n.txt"}, bytes.NewReader([]byte("x")), 1,
+	)
+	if err == nil {
+		t.Fatal("expected an error for an unparsable upload URL, got nil")
+	}
+}
+
 func TestRepositoriesService_UploadReleaseAssetFromRelease_NilRelease(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
