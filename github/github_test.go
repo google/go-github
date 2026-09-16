@@ -2566,6 +2566,16 @@ func TestDo_rateLimitCategory(t *testing.T) {
 			url:      "/repos/google/go-github/dependency-graph/sbom",
 			category: DependencySBOMCategory,
 		},
+		{
+			method:   "GET",
+			url:      "/repos/google/go-github/dependency-graph/sbom/generate-report",
+			category: DependencySBOMCategory,
+		},
+		{
+			method:   "GET",
+			url:      "/repos/google/go-github/dependency-graph/sbom/fetch-report/1234",
+			category: CoreCategory,
+		},
 		// missing a check for actionsRunnerRegistrationCategory: API not found
 	}
 
