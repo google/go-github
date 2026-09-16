@@ -878,7 +878,7 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_ForeignHostIsRejected
 		t.Fatal("expected an error for an upload URL naming a foreign host, got nil")
 	}
 	if leaked != 0 {
-		t.Fatalf("upload reached the foreign host %d time(s); the token and body must never be sent there", leaked)
+		t.Fatalf("upload reached the foreign host %v time(s); the token and body must never be sent there", leaked)
 	}
 }
 

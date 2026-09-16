@@ -520,7 +520,7 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(
 		}
 		if !strings.EqualFold(u.Host, s.client.uploadURL.Host) {
 			return nil, nil, fmt.Errorf(
-				"upload URL host %q does not match the client's configured upload host %q",
+				"upload URL host %v does not match the client's configured upload host %v",
 				u.Host, s.client.uploadURL.Host,
 			)
 		}
