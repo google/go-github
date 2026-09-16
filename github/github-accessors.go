@@ -35646,12 +35646,12 @@ func (r *ReleaseChanges) GetTagName() *ReleaseChangeFrom {
 	return r.TagName
 }
 
-// GetTo returns the To field if it's non-nil, zero value otherwise.
+// GetTo returns the To field.
 func (r *ReleaseChangeToBool) GetTo() bool {
-	if r == nil || r.To == nil {
+	if r == nil {
 		return false
 	}
-	return *r.To
+	return r.To
 }
 
 // GetAction returns the Action field if it's non-nil, zero value otherwise.

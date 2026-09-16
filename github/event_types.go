@@ -1509,7 +1509,7 @@ type ReleaseChangeFrom struct {
 
 // ReleaseChangeToBool represents a boolean release field change containing the new value.
 type ReleaseChangeToBool struct {
-	To *bool `json:"to,omitempty"`
+	To bool `json:"to"`
 }
 
 // RepositoryEvent is triggered when a repository is created, archived, unarchived,

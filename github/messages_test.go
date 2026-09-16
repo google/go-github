@@ -702,7 +702,7 @@ func TestParseWebHook_ReleaseEvent_Edited(t *testing.T) {
 
 	event, ok := got.(*ReleaseEvent)
 	if !ok {
-		t.Fatalf("ParseWebHook returned %T, want *ReleaseEvent", got)
+		t.Fatalf("ParseWebHook returned %v, want *ReleaseEvent", got)
 	}
 
 	want := &ReleaseEvent{
@@ -711,7 +711,7 @@ func TestParseWebHook_ReleaseEvent_Edited(t *testing.T) {
 			Body:       &ReleaseChangeFrom{From: new("Old body")},
 			Name:       &ReleaseChangeFrom{From: new("Old name")},
 			TagName:    &ReleaseChangeFrom{From: new("v1.0.0-rc1")},
-			MakeLatest: &ReleaseChangeToBool{To: new(true)},
+			MakeLatest: &ReleaseChangeToBool{To: true},
 		},
 		Release: &RepositoryRelease{
 			ID:      12345,

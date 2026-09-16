@@ -44529,10 +44529,7 @@ func TestReleaseChanges_GetTagName(tt *testing.T) {
 
 func TestReleaseChangeToBool_GetTo(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue bool
-	r := &ReleaseChangeToBool{To: &zeroValue}
-	r.GetTo()
-	r = &ReleaseChangeToBool{}
+	r := &ReleaseChangeToBool{}
 	r.GetTo()
 	r = nil
 	r.GetTo()
