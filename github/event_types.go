@@ -1468,24 +1468,48 @@ type RegistryPackageEvent struct {
 }
 
 // ReleaseEvent is triggered when a release is published, unpublished, created,
-// edited, deleted, or prereleased.
+// edited, deleted, prereleased, or released.
 // The Webhook event name is "release".
 //
 // GitHub API docs: https://docs.github.com/developers/webhooks-and-events/webhook-events-and-payloads#release
 type ReleaseEvent struct {
 	// Action is the action that was performed. Possible values are: "published", "unpublished",
-	// "created", "edited", "deleted", or "prereleased".
+	// "created", "edited", "deleted", "prereleased", or "released".
 	Action  *string            `json:"action,omitempty"`
 	Release *RepositoryRelease `json:"release,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Repo         *Repository   `json:"repository,omitempty"`
-	Sender       *User         `json:"sender,omitempty"`
-	Installation *Installation `json:"installation,omitempty"`
+	// Changes is populated in "edited" event deliveries.
+	Changes      *ReleaseChanges `json:"changes,omitempty"`
+	Repo         *Repository     `json:"repository,omitempty"`
+	Sender       *User           `json:"sender,omitempty"`
+	Installation *Installation   `json:"installation,omitempty"`
 
 	// The following field is only present when the webhook is triggered on
 	// a repository belonging to an organization.
 	Org *Organization `json:"organization,omitempty"`
+
+	// The following field is only present when the webhook is triggered on
+	// a repository belonging to an enterprise.
+	Enterprise *Enterprise `json:"enterprise,omitempty"`
+}
+
+// ReleaseChanges represents changes made to a release.
+type ReleaseChanges struct {
+	Body       *ReleaseChangeFrom   `json:"body,omitempty"`
+	Name       *ReleaseChangeFrom   `json:"name,omitempty"`
+	TagName    *ReleaseChangeFrom   `json:"tag_name,omitempty"`
+	MakeLatest *ReleaseChangeToBool `json:"make_latest,omitempty"`
+}
+
+// ReleaseChangeFrom represents a release string field change containing the previous value.
+type ReleaseChangeFrom struct {
+	From *string `json:"from,omitempty"`
+}
+
+// ReleaseChangeToBool represents a boolean release field change containing the new value.
+type ReleaseChangeToBool struct {
+	To *bool `json:"to,omitempty"`
 }
 
 // RepositoryEvent is triggered when a repository is created, archived, unarchived,
