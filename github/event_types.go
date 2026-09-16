@@ -1504,7 +1504,7 @@ type ReleaseChanges struct {
 
 // ReleaseChangeFrom represents a release string field change containing the previous value.
 type ReleaseChangeFrom struct {
-	From *string `json:"from,omitempty"`
+	From string `json:"from"`
 }
 
 // ReleaseChangeToBool represents a boolean release field change containing the new value.

@@ -708,9 +708,9 @@ func TestParseWebHook_ReleaseEvent_Edited(t *testing.T) {
 	want := &ReleaseEvent{
 		Action: new("edited"),
 		Changes: &ReleaseChanges{
-			Body:       &ReleaseChangeFrom{From: new("Old body")},
-			Name:       &ReleaseChangeFrom{From: new("Old name")},
-			TagName:    &ReleaseChangeFrom{From: new("v1.0.0-rc1")},
+			Body:       &ReleaseChangeFrom{From: "Old body"},
+			Name:       &ReleaseChangeFrom{From: "Old name"},
+			TagName:    &ReleaseChangeFrom{From: "v1.0.0-rc1"},
 			MakeLatest: &ReleaseChangeToBool{To: true},
 		},
 		Release: &RepositoryRelease{

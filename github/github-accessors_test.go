@@ -44486,10 +44486,7 @@ func TestReleaseAsset_GetURL(tt *testing.T) {
 
 func TestReleaseChangeFrom_GetFrom(tt *testing.T) {
 	tt.Parallel()
-	var zeroValue string
-	r := &ReleaseChangeFrom{From: &zeroValue}
-	r.GetFrom()
-	r = &ReleaseChangeFrom{}
+	r := &ReleaseChangeFrom{}
 	r.GetFrom()
 	r = nil
 	r.GetFrom()

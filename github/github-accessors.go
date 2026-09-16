@@ -35606,12 +35606,12 @@ func (r *ReleaseAsset) GetURL() string {
 	return *r.URL
 }
 
-// GetFrom returns the From field if it's non-nil, zero value otherwise.
+// GetFrom returns the From field.
 func (r *ReleaseChangeFrom) GetFrom() string {
-	if r == nil || r.From == nil {
+	if r == nil {
 		return ""
 	}
-	return *r.From
+	return r.From
 }
 
 // GetBody returns the Body field.
