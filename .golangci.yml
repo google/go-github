@@ -362,6 +362,7 @@ linters:
             - CreateTag.Object # TODO: Git
             - CreateTag.Tag # TODO: Git
             - CreateTag.Type # TODO: Git
+            - CustomProperty.RequireExplicitValues
             - DismissalRestrictionsRequest.Apps # TODO: Repositories
             - DismissalRestrictionsRequest.Teams # TODO: Repositories
             - DismissalRestrictionsRequest.Users # TODO: Repositories

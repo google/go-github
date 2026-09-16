@@ -38,6 +38,8 @@ type CustomProperty struct {
 	ValueType PropertyValueType `json:"value_type"`
 	// Whether the property is required.
 	Required *bool `json:"required,omitempty"`
+	// Whether setting property values is mandatory.
+	RequireExplicitValues *bool `json:"require_explicit_values,omitzero"`
 	// Default value of the property.
 	DefaultValue any `json:"default_value,omitempty"`
 	// Short description of the property.
