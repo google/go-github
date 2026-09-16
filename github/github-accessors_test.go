@@ -16302,48 +16302,48 @@ func TestCreateOrganizationPrivateRegistry_GetVisibility(tt *testing.T) {
 	c.GetVisibility()
 }
 
-func TestCreateOrgInvitationOptions_GetEmail(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetEmail(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateOrgInvitationOptions{Email: &zeroValue}
+	c := &CreateOrgInvitationRequest{Email: &zeroValue}
 	c.GetEmail()
-	c = &CreateOrgInvitationOptions{}
+	c = &CreateOrgInvitationRequest{}
 	c.GetEmail()
 	c = nil
 	c.GetEmail()
 }
 
-func TestCreateOrgInvitationOptions_GetInviteeID(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetInviteeID(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue int64
-	c := &CreateOrgInvitationOptions{InviteeID: &zeroValue}
+	c := &CreateOrgInvitationRequest{InviteeID: &zeroValue}
 	c.GetInviteeID()
-	c = &CreateOrgInvitationOptions{}
+	c = &CreateOrgInvitationRequest{}
 	c.GetInviteeID()
 	c = nil
 	c.GetInviteeID()
 }
 
-func TestCreateOrgInvitationOptions_GetRole(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetRole(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
-	c := &CreateOrgInvitationOptions{Role: &zeroValue}
+	c := &CreateOrgInvitationRequest{Role: &zeroValue}
 	c.GetRole()
-	c = &CreateOrgInvitationOptions{}
+	c = &CreateOrgInvitationRequest{}
 	c.GetRole()
 	c = nil
 	c.GetRole()
 }
 
-func TestCreateOrgInvitationOptions_GetTeamID(tt *testing.T) {
+func TestCreateOrgInvitationRequest_GetTeamIDs(tt *testing.T) {
 	tt.Parallel()
 	zeroValue := []int64{}
-	c := &CreateOrgInvitationOptions{TeamID: zeroValue}
-	c.GetTeamID()
-	c = &CreateOrgInvitationOptions{}
-	c.GetTeamID()
+	c := &CreateOrgInvitationRequest{TeamIDs: zeroValue}
+	c.GetTeamIDs()
+	c = &CreateOrgInvitationRequest{}
+	c.GetTeamIDs()
 	c = nil
-	c.GetTeamID()
+	c.GetTeamIDs()
 }
 
 func TestCreateOrUpdateIssueTypesOptions_GetColor(tt *testing.T) {
