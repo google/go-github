@@ -319,6 +319,55 @@ func TestEnterpriseService_GetBudget_invalidEnterprise(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestEnterpriseService_GetBudgetByID(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/settings/billing/budgets/b-123", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": "b-123",
+			"budget_type": "ProductPricing",
+			"budget_product_sku": "ai_credits",
+			"budget_scope": "repository",
+			"budget_amount": 30,
+			"prevent_further_usage": true
+		}`)
+	})
+
+	ctx := t.Context()
+	budget, _, err := client.Enterprise.GetBudgetByID(ctx, "e", "b-123")
+	if err != nil {
+		t.Errorf("Enterprise.GetBudgetByID returned error: %v", err)
+	}
+
+	want := &EnterpriseBudget{
+		ID:                  Ptr("b-123"),
+		BudgetType:          Ptr(BudgetTypeProductPricing),
+		BudgetProductSKU:    Ptr("ai_credits"),
+		BudgetScope:         Ptr(BudgetScopeRepository),
+		BudgetAmount:        Ptr(30),
+		PreventFurtherUsage: Ptr(true),
+	}
+	if !cmp.Equal(budget, want) {
+		t.Errorf("Enterprise.GetBudgetByID returned %+v, want %+v", budget, want)
+	}
+
+	const methodName = "GetBudgetByID"
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Enterprise.GetBudgetByID(ctx, "e", "b-123")
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Enterprise.GetBudgetByID(ctx, "\n", "\n")
+		return err
+	})
+}
+
 func TestEnterpriseService_UpdateBudget(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
