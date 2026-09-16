@@ -414,7 +414,8 @@ type RepositoryRuleset struct {
 ```
 
 For optional boolean fields where you need to distinguish between `false`
-and "not set", use `*bool` with `omitzero`.
+and "not set", use `*bool` with `omitempty`. A non-nil pointer preserves an
+explicit `false`, while a nil pointer is omitted.
 
 #### Response Bodies
 

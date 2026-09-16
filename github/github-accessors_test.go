@@ -17601,6 +17601,17 @@ func TestCustomProperty_GetRequired(tt *testing.T) {
 	c.GetRequired()
 }
 
+func TestCustomProperty_GetRequireExplicitValues(tt *testing.T) {
+	tt.Parallel()
+	var zeroValue bool
+	c := &CustomProperty{RequireExplicitValues: &zeroValue}
+	c.GetRequireExplicitValues()
+	c = &CustomProperty{}
+	c.GetRequireExplicitValues()
+	c = nil
+	c.GetRequireExplicitValues()
+}
+
 func TestCustomProperty_GetSourceType(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
