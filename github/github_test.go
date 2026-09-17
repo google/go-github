@@ -1746,7 +1746,7 @@ func TestNewUploadRequest_setsGetBodyForSeekableReader(t *testing.T) {
 	const content = "upload content"
 	file := openTestFile(t, "upload.txt", content)
 
-	req, err := c.NewUploadRequest(t.Context(), "https://example.com/", file, int64(len(content)), "text/plain")
+	req, err := c.NewUploadRequest(t.Context(), "repos/o/r/releases/1/assets", file, int64(len(content)), "text/plain")
 	if err != nil {
 		t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
 	}
@@ -1815,7 +1815,7 @@ func TestNewUploadRequest_noGetBodyWithoutReaderAt(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			req, err := c.NewUploadRequest(t.Context(), "https://example.com/", tt.reader, 14, "text/plain")
+			req, err := c.NewUploadRequest(t.Context(), "repos/o/r/releases/1/assets", tt.reader, 14, "text/plain")
 			if err != nil {
 				t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
 			}
@@ -1838,7 +1838,7 @@ func TestNewUploadRequest_returnsErrorWhenSeekFails(t *testing.T) {
 		t.Fatalf("closing test file: %v", err)
 	}
 
-	_, err := c.NewUploadRequest(t.Context(), "https://example.com/", file, int64(len(content)), "text/plain")
+	_, err := c.NewUploadRequest(t.Context(), "repos/o/r/releases/1/assets", file, int64(len(content)), "text/plain")
 	if err == nil {
 		t.Error("NewUploadRequest returned nil error when Seek failed, want error")
 	}
@@ -1950,14 +1950,14 @@ func TestNewFormRequest_errorForNoTrailingSlash(t *testing.T) {
 func TestNewUploadRequest_WithVersion(t *testing.T) {
 	t.Parallel()
 	c := mustNewClient(t)
-	req, _ := c.NewUploadRequest(t.Context(), "https://example.com/", nil, 0, "")
+	req, _ := c.NewUploadRequest(t.Context(), "repos/o/r/releases/1/assets", nil, 0, "")
 
 	apiVersion := req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, api20221128; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
 	}
 
-	req, _ = c.NewUploadRequest(t.Context(), "https://example.com/", nil, 0, "", WithVersion("2022-11-29"))
+	req, _ = c.NewUploadRequest(t.Context(), "repos/o/r/releases/1/assets", nil, 0, "", WithVersion("2022-11-29"))
 	apiVersion = req.Header.Get(headerAPIVersion)
 	if got, want := apiVersion, "2022-11-29"; got != want {
 		t.Errorf("NewRequest() %v header is %v, want %v", headerAPIVersion, got, want)
@@ -1998,6 +1998,77 @@ func TestNewUploadRequest_errorForNoTrailingSlash(t *testing.T) {
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewUploadRequest returned unexpected error: %v", err)
 		}
+	}
+}
+
+// TestNewUploadRequest_rejectsUnconfiguredDestination covers the rule that an
+// upload carrying the caller's bytes is refused unless it targets an origin the
+// client was configured for. An upload URL routinely comes out of a response --
+// a release's UploadURL is the usual case -- so the host in one is chosen by
+// whoever answered the request rather than by the caller.
+func TestNewUploadRequest_rejectsUnconfiguredDestination(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	tests := []struct {
+		name   string
+		rawurl string
+	}{
+		{"foreign https host", "https://evil.example.com/upload"},
+		{"foreign http host", "http://evil.example.com/upload"},
+		{"scheme downgrade of a configured host", "http://uploads.github.com/upload"},
+		{"configured host as a prefix of the real host", "https://uploads.github.com.evil.example.com/upload"},
+		{"host that merely ends with the configured name", "https://evil-uploads.github.com/upload"},
+		{"subdomain of a configured host", "https://cdn.uploads.github.com/upload"},
+		{"non-default port on a configured host", "https://uploads.github.com:8443/upload"},
+		{"userinfo naming a configured host", "https://uploads.github.com@evil.example.com/upload"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			_, err := c.NewUploadRequest(t.Context(), tt.rawurl, strings.NewReader("x"), 1, "text/plain")
+			if !errors.Is(err, ErrUntrustedUploadDestination) {
+				t.Fatalf("NewUploadRequest(%q): want ErrUntrustedUploadDestination, got %v", tt.rawurl, err)
+			}
+		})
+	}
+}
+
+// TestNewUploadRequest_allowsConfiguredDestination covers the uploads that must
+// keep working: the origins the client was configured for, whether that is the
+// GitHub.com defaults or a GitHub Enterprise or proxy deployment.
+func TestNewUploadRequest_allowsConfiguredDestination(t *testing.T) {
+	t.Parallel()
+
+	ghe := mustNewClient(t, WithEnterpriseURLs("https://ghe.example.com/", "https://uploads.ghe.example.com/"))
+
+	tests := []struct {
+		name   string
+		client *Client
+		rawurl string
+	}{
+		{"relative path resolves against the configured upload origin", mustNewClient(t), "repos/o/r/releases/1/assets"},
+		{"absolute upload origin", mustNewClient(t), "https://uploads.github.com/repos/o/r/releases/1/assets"},
+		{"absolute API origin", mustNewClient(t), "https://api.github.com/repos/o/r/releases/1/assets"},
+		{"userinfo that does not change the real destination", mustNewClient(t), "https://evil.example.com@uploads.github.com/repos/o/r/releases/1/assets"},
+		{"enterprise upload origin", ghe, "https://uploads.ghe.example.com/api/uploads/repos/o/r/releases/1/assets"},
+		{"enterprise API origin", ghe, "https://ghe.example.com/api/v3/repos/o/r/releases/1/assets"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if _, err := tt.client.NewUploadRequest(t.Context(), tt.rawurl, strings.NewReader("x"), 1, "text/plain"); err != nil {
+				t.Fatalf("NewUploadRequest(%q) returned unexpected error: %v", tt.rawurl, err)
+			}
+		})
+	}
+
+	// An enterprise client is scoped to its own origins: carrying the same rule
+	// over from the default configuration would widen it, not narrow it.
+	if _, err := ghe.NewUploadRequest(t.Context(), "https://uploads.github.com/repos/o/r/releases/1/assets", strings.NewReader("x"), 1, "text/plain"); !errors.Is(err, ErrUntrustedUploadDestination) {
+		t.Fatalf("enterprise client accepted the GitHub.com upload origin: %v", err)
 	}
 }
 

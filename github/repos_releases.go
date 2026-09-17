@@ -476,6 +476,13 @@ func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, rep
 // templated like "https://uploads.github.com/.../assets{?name,label}") and uploads
 // the provided data (reader + size) using the existing upload helpers.
 //
+// Because release is normally the object an API call returned, its UploadURL is
+// a value the server chose rather than one the caller did. A release whose
+// UploadURL names an origin the client was not configured for is refused with
+// [ErrUntrustedUploadDestination] rather than uploaded to, so that a response
+// cannot take the artifact to a host of its own choosing. Configure a
+// legitimate alternate upload host with [WithURLs] or [WithEnterpriseURLs].
+//
 // GitHub API docs: https://docs.github.com/rest/releases/assets?apiVersion=2022-11-28#upload-a-release-asset
 //
 //meta:operation POST /repos/{owner}/{repo}/releases/{release_id}/assets
@@ -505,13 +512,14 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(
 	// If this is a *relative* URL (no scheme), normalize it by trimming a leading "/"
 	// so it works with Client.BaseURL path prefixes (e.g. "/api-v3/").
 	//
-	// An absolute URL replaces the client's configured upload host entirely.
-	// That is deliberately left to the client's transport, which attaches the
-	// caller's Authorization header only to the client's configured API and
-	// upload origins: a response naming a foreign host therefore cannot take
-	// the token with it, and does not need a host check here. In the default
-	// configuration the upload host is uploads.github.com rather than
-	// api.github.com, so both are configured origins the token may reach.
+	// An absolute URL replaces the client's configured upload host entirely, and
+	// release.UploadURL is normally whatever the API last answered with, so the
+	// host in it is not the caller's choice. NewUploadRequest refuses that case
+	// with ErrUntrustedUploadDestination unless it names a configured origin, so
+	// there is no host check here: every upload this helper builds goes through
+	// that one gate. In the default configuration the upload host is
+	// uploads.github.com rather than api.github.com, and both are configured
+	// origins, so the URL the API hands back is accepted as-is.
 	if !strings.HasPrefix(uploadURL, "http://") && !strings.HasPrefix(uploadURL, "https://") {
 		uploadURL = strings.TrimPrefix(uploadURL, "/")
 	}

@@ -732,18 +732,50 @@ func newClient(opts clientOptions) (*Client, error) {
 	return c, nil
 }
 
+// A request's destination is governed by two rules, and they deliberately differ
+// because a credential and a payload fail in opposite ways.
+//
 // Credentials — the token configured by [WithAuthToken], and the credentials on
 // [BasicAuthTransport] and [UnauthenticatedRateLimitedTransport] — are sent
 // only to origins the caller has configured. Any other destination, including
 // a redirect hop, goes out with no credentials attached. Such a request is
 // never rejected and the credentials are never forwarded: it is simply sent
 // unauthenticated, so that a caller cannot leak a token by handing the client a
-// URL whose host it does not control.
+// URL whose host it does not control. Withholding a credential is safe to do
+// silently because the request can still succeed without it — a pre-signed
+// download URL handed back by the API is the ordinary case.
 //
-// sameOrigin is the one predicate behind that rule. Every place that decides
-// whether a destination may receive credentials — the WithAuthToken wrapper,
-// both exported auth transports, and the redirect guards — must use it, so the
-// answer cannot differ depending on which code path a request happens to take.
+// A payload cannot be withheld that way, because a request whose body is dropped
+// cannot succeed at all, and the caller would be told an upload succeeded when
+// nothing was stored. The rule for a body is therefore absolute:
+// [Client.NewUploadRequest] refuses to build an upload aimed at an origin this
+// client was not configured for, so the caller's bytes are never sent to a host
+// the caller did not choose. See [ErrUntrustedUploadDestination].
+//
+// Within a Client both rules read the same two configured origins, BaseURL and
+// UploadURL, which is where [WithEnterpriseURLs] and [WithURLs] put them; a
+// GitHub Enterprise or proxy deployment whose upload host differs from its API
+// host must therefore configure both. The exported transports are not attached
+// to a Client and take their own [BasicAuthTransport.AllowedOrigins] list
+// instead. sameOrigin is the one predicate behind both rules. Every place that
+// decides whether a destination may receive credentials — the WithAuthToken
+// wrapper, both exported auth transports, and the redirect guards — must use it,
+// so the answer cannot differ depending on which code path a request happens to
+// take.
+
+// ErrUntrustedUploadDestination is returned by [Client.NewUploadRequest] when an
+// upload would send its body to an origin this client was not configured for.
+//
+// Upload URLs are routinely read out of an API response — a release's UploadURL
+// is the usual case — so the host in one is chosen by whoever answered the
+// request rather than by the caller. A response naming a foreign host must not
+// be able to take the caller's bytes, and an error is the only safe answer:
+// sending the payload unauthenticated, the way a credential is withheld, would
+// report success for an upload that never reached GitHub.
+//
+// Configure the destination with [WithURLs] or [WithEnterpriseURLs] if an
+// upload legitimately belongs on a host other than BaseURL or UploadURL.
+var ErrUntrustedUploadDestination = errors.New("refusing to upload to a destination the client is not configured for")
 
 // defaultAuthOrigins are the origins credentials may be sent to when no
 // allowlist is configured: GitHub.com's API and upload hosts. An empty
@@ -807,6 +839,22 @@ func isAllowedOrigin(u *url.URL, origins []*url.URL) bool {
 // plumbing (NewRequest, BaseURL) reads them the same way.
 func (c *Client) shouldAuthorizeRequest(u *url.URL) bool {
 	return sameOrigin(u, c.baseURL) || sameOrigin(u, c.uploadURL)
+}
+
+// checkUploadDestination returns [ErrUntrustedUploadDestination] when u is not
+// an origin this client may upload to.
+//
+// An upload carries the caller's payload to a URL that a response usually chose,
+// and unlike a credential a body cannot be withheld and then have the request
+// still mean anything. So the destination is refused outright rather than
+// quietly sent unauthenticated, and the refusal happens where the upload request
+// is built, before any byte of the body is written.
+func (c *Client) checkUploadDestination(u *url.URL) error {
+	if c.shouldAuthorizeRequest(u) {
+		return nil
+	}
+
+	return fmt.Errorf("%w: %v", ErrUntrustedUploadDestination, u.Redacted())
 }
 
 // UserAgent returns the User-Agent header value for the client.
@@ -1043,6 +1091,13 @@ func checkURLPathTraversal(urlStr string) error {
 // NewUploadRequest creates an upload request. A relative URL can be provided in
 // urlStr, in which case it is resolved relative to the UploadURL of the Client.
 // Relative URLs should always be specified without a preceding slash.
+//
+// An absolute urlStr replaces the Client's UploadURL, and the host in one of
+// those is usually chosen by an API response rather than by the caller — a
+// release's UploadURL is the usual case. The request is therefore refused with
+// [ErrUntrustedUploadDestination] unless it targets an origin this Client was
+// configured for, so that a response cannot redirect the caller's bytes to a
+// host the caller did not choose.
 func (c *Client) NewUploadRequest(ctx context.Context, urlStr string, reader io.Reader, size int64, mediaType string, opts ...RequestOption) (*http.Request, error) {
 	if !strings.HasSuffix(c.uploadURL.Path, "/") {
 		return nil, fmt.Errorf("uploadURL must have a trailing slash, but %q does not", c.uploadURL)
@@ -1054,6 +1109,13 @@ func (c *Client) NewUploadRequest(ctx context.Context, urlStr string, reader io.
 
 	u, err := c.uploadURL.Parse(urlStr)
 	if err != nil {
+		return nil, err
+	}
+
+	// Checked here, at the one place an upload request is built, rather than at
+	// each call site: a new upload helper inherits the rule without having to
+	// remember it, and the refusal lands before any of the body is written.
+	if err := c.checkUploadDestination(u); err != nil {
 		return nil, err
 	}
 

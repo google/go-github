@@ -7,6 +7,7 @@ package github
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -851,20 +852,20 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_AbsoluteTemplate(t *t
 	}
 }
 
-func TestRepositoriesService_UploadReleaseAssetFromRelease_ForeignHostGetsNoCredentials(t *testing.T) {
+func TestRepositoriesService_UploadReleaseAssetFromRelease_ForeignHostIsRejected(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	// A server that hands out an absolute upload URL naming a different host must not
-	// be able to take the caller's credentials with it: the client attaches its token
-	// only to its own configured origins. The upload itself is still attempted - the
-	// policy is to send such a request unauthenticated rather than to reject it - so
-	// the body does reach the foreign host, and the request must arrive with no
-	// Authorization header.
-	authHeaders := make(chan string, 1)
-	foreign := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	// A response that hands out an absolute upload URL naming a different host must
+	// not be able to take the caller's artifact with it. Withholding only the
+	// credential would not be enough here: the body would still arrive, and the call
+	// would return a nil error and a *ReleaseAsset, telling the caller the upload
+	// succeeded when the bytes went somewhere the caller never configured. So the
+	// destination is refused instead, and the foreign host is never contacted at all.
+	reached := make(chan struct{}, 1)
+	foreign := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		select {
-		case authHeaders <- r.Header.Get("Authorization"):
+		case reached <- struct{}{}:
 		default:
 		}
 		fmt.Fprint(w, `{"id":1}`)
@@ -882,19 +883,53 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_ForeignHostGetsNoCred
 
 	release := &RepositoryRelease{UploadURL: foreign.URL + "/upload{?name,label}"}
 	ctx := t.Context()
-	if _, _, err := authedClient.Repositories.UploadReleaseAssetFromRelease(
+	asset, _, err := authedClient.Repositories.UploadReleaseAssetFromRelease(
 		ctx, release, &UploadOptions{Name: "n.txt"}, reader, size,
-	); err != nil {
-		t.Fatalf("UploadReleaseAssetFromRelease returned error: %v", err)
+	)
+	if !errors.Is(err, ErrUntrustedUploadDestination) {
+		t.Fatalf("UploadReleaseAssetFromRelease to a foreign host: want ErrUntrustedUploadDestination, got err=%v", err)
+	}
+	if asset != nil {
+		t.Errorf("UploadReleaseAssetFromRelease returned asset %+v for a refused upload, want nil", asset)
 	}
 
 	select {
-	case got := <-authHeaders:
-		if got != "" {
-			t.Fatalf("upload to a foreign host carried Authorization %q; the token must never be sent there", got)
-		}
+	case <-reached:
+		t.Fatal("the artifact was sent to a foreign host; the upload must be refused before any byte is written")
 	default:
-		t.Fatal("upload never reached the foreign host")
+	}
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_ConfiguredUploadHost(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// The counterpart to the rejection above: an absolute URL naming the client's own
+	// configured upload origin is the ordinary case and must still be uploaded to.
+	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testFormValues(t, r, values{"name": "cfg.txt"})
+		testPlainBody(t, r, "Upload me !\n")
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	body := []byte("Upload me !\n")
+	reader := bytes.NewReader(body)
+	size := int64(len(body))
+
+	uploadURL := client.uploadURL.String() + "repos/o/r/releases/1/assets{?name,label}"
+	release := &RepositoryRelease{UploadURL: uploadURL}
+
+	ctx := t.Context()
+	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(
+		ctx, release, &UploadOptions{Name: "cfg.txt"}, reader, size,
+	)
+	if err != nil {
+		t.Fatalf("UploadReleaseAssetFromRelease returned error: %v", err)
+	}
+	want := &ReleaseAsset{ID: new(int64(1))}
+	if !cmp.Equal(asset, want) {
+		t.Fatalf("UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
 	}
 }
 
