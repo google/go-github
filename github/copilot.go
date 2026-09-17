@@ -12,6 +12,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 )
 
@@ -1230,8 +1232,25 @@ func (s *CopilotService) GetOrganizationUserTeamsDailyMetricsReport(ctx context.
 // (see https://github.com/google/go-github/issues/4136).
 // This method is retained
 // for GitHub Enterprise Server installations that may still serve the legacy shape.
-func (s *CopilotService) DownloadCopilotMetrics(ctx context.Context, url string) ([]*CopilotMetrics, *Response, error) {
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+//
+// downloadURL is a value the caller reads out of a prior Get*MetricsReport
+// response, not one it constructs itself. BareDo's auth transport attaches
+// the caller's Authorization header to every request it sends, regardless
+// of host, so a report response naming a foreign host must be rejected
+// before the request goes out. See fetchMetricsReport for the same guard.
+func (s *CopilotService) DownloadCopilotMetrics(ctx context.Context, downloadURL string) ([]*CopilotMetrics, *Response, error) {
+	parsed, err := url.Parse(downloadURL)
+	if err != nil {
+		return nil, nil, err
+	}
+	if !strings.EqualFold(parsed.Host, s.client.baseURL.Host) {
+		return nil, nil, fmt.Errorf(
+			"download URL host %v does not match the client's configured host %v",
+			parsed.Host, s.client.baseURL.Host,
+		)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", downloadURL, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1617,8 +1636,28 @@ type CopilotUserPeriodicMetrics struct {
 
 // fetchMetricsReport performs a GET against the provided download URL and returns the raw
 // http.Response. The caller is responsible for closing the body.
-func (s *CopilotService) fetchMetricsReport(ctx context.Context, url string) (*http.Response, *Response, error) {
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+//
+// downloadURL is documented as a value the caller reads out of a prior
+// Get*MetricsReport response's DownloadLinks, not one it constructs itself.
+// The request below goes out through s.client.client, whose auth transport
+// attaches the caller's Authorization header to every request it sends,
+// regardless of host. Left unchecked, a report response naming a foreign
+// host would receive that header. Compare against the client's configured
+// host before the request is built, the same guard applied to UploadURL in
+// UploadReleaseAssetFromRelease and to redirects in bareDoUntilFound.
+func (s *CopilotService) fetchMetricsReport(ctx context.Context, downloadURL string) (*http.Response, *Response, error) {
+	parsed, err := url.Parse(downloadURL)
+	if err != nil {
+		return nil, nil, err
+	}
+	if !strings.EqualFold(parsed.Host, s.client.baseURL.Host) {
+		return nil, nil, fmt.Errorf(
+			"download URL host %v does not match the client's configured host %v",
+			parsed.Host, s.client.baseURL.Host,
+		)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", downloadURL, nil)
 	if err != nil {
 		return nil, nil, err
 	}

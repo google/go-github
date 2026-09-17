@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -4156,6 +4157,86 @@ func TestCopilotService_fetchMetricsReport_closesOriginalBodyOnErrorResponse(t *
 	}
 	if !closed {
 		t.Error("original response body was not closed on an error response")
+	}
+}
+
+func TestCopilotService_fetchMetricsReport_ForeignHostIsRejected(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	// Simulate the auth transport that attaches the caller's credentials to
+	// every outgoing request, regardless of host: DownloadDailyMetrics takes
+	// a download link read out of a prior report response, not one the
+	// caller constructs, so a report response naming a foreign host must
+	// not be able to redirect that request - and the Authorization header
+	// riding on it - away from the client's configured host.
+	base := client.client.Transport
+	if base == nil {
+		base = http.DefaultTransport
+	}
+	client.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		req.Header.Set("Authorization", "Bearer super-secret-token")
+		return base.RoundTrip(req)
+	})
+
+	var leakedAuth string
+	evil := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		leakedAuth = r.Header.Get("Authorization")
+		fmt.Fprint(w, `[]`)
+	}))
+	t.Cleanup(evil.Close)
+
+	ctx := t.Context()
+	_, _, err := client.Copilot.DownloadDailyMetrics(ctx, evil.URL+"/path/to/daily")
+	if err == nil {
+		t.Fatal("Copilot.DownloadDailyMetrics expected an error for a foreign-host download URL, got nil")
+	}
+	if leakedAuth != "" {
+		t.Fatalf("Authorization header %q reached the foreign host; it must never be sent there", leakedAuth)
+	}
+}
+
+func TestCopilotService_DownloadCopilotMetrics_ForeignHostIsRejected(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	base := client.client.Transport
+	if base == nil {
+		base = http.DefaultTransport
+	}
+	client.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		req.Header.Set("Authorization", "Bearer super-secret-token")
+		return base.RoundTrip(req)
+	})
+
+	var leakedAuth string
+	evil := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		leakedAuth = r.Header.Get("Authorization")
+		fmt.Fprint(w, `[]`)
+	}))
+	t.Cleanup(evil.Close)
+
+	ctx := t.Context()
+	_, _, err := client.Copilot.DownloadCopilotMetrics(ctx, evil.URL+"/path/to/download")
+	if err == nil {
+		t.Fatal("Copilot.DownloadCopilotMetrics expected an error for a foreign-host download URL, got nil")
+	}
+	if leakedAuth != "" {
+		t.Fatalf("Authorization header %q reached the foreign host; it must never be sent there", leakedAuth)
+	}
+}
+
+func TestCopilotService_fetchMetricsReport_MalformedDownloadURL(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	// net/url rejects ASCII control characters, so a report response naming
+	// such a URL must surface as an error rather than a panic or a request
+	// to an unchecked host.
+	ctx := t.Context()
+	_, _, err := client.Copilot.DownloadDailyMetrics(ctx, "https://example.com/\x7f/report")
+	if err == nil {
+		t.Fatal("Copilot.DownloadDailyMetrics expected an error for an unparsable download URL, got nil")
 	}
 }
 
