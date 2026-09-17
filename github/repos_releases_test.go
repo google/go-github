@@ -886,8 +886,8 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_ForeignHostIsRejected
 	asset, _, err := authedClient.Repositories.UploadReleaseAssetFromRelease(
 		ctx, release, &UploadOptions{Name: "n.txt"}, reader, size,
 	)
-	if !errors.Is(err, ErrUntrustedUploadDestination) {
-		t.Fatalf("UploadReleaseAssetFromRelease to a foreign host: want ErrUntrustedUploadDestination, got err=%v", err)
+	if !errors.Is(err, ErrUntrustedDestination) {
+		t.Fatalf("UploadReleaseAssetFromRelease to a foreign host: want ErrUntrustedDestination, got err=%v", err)
 	}
 	if asset != nil {
 		t.Errorf("UploadReleaseAssetFromRelease returned asset %+v for a refused upload, want nil", asset)

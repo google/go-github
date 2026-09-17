@@ -1729,6 +1729,28 @@ func TestNewFormRequest_pathTraversal(t *testing.T) {
 	}
 }
 
+// TestNewFormRequest_rejectsUnconfiguredDestination covers the same rule as
+// TestNewUploadRequest_rejectsUnconfiguredDestination, for the other constructor
+// that builds a body-carrying request. Its only call site passes a relative path
+// today, so this guards the next caller rather than a present exposure: an
+// absolute urlStr is a destination a response could have supplied, and the body
+// cannot be withheld the way a credential can.
+func TestNewFormRequest_rejectsUnconfiguredDestination(t *testing.T) {
+	t.Parallel()
+	c := mustNewClient(t)
+
+	_, err := c.NewFormRequest(t.Context(), "https://evil.example.com/hub", strings.NewReader("a=b"))
+	if !errors.Is(err, ErrUntrustedDestination) {
+		t.Fatalf("NewFormRequest to a foreign host: want ErrUntrustedDestination, got %v", err)
+	}
+
+	// A relative path resolves against BaseURL, which is always configured, so
+	// the ordinary call keeps working.
+	if _, err := c.NewFormRequest(t.Context(), "hub", strings.NewReader("a=b")); err != nil {
+		t.Fatalf("NewFormRequest with a relative path returned unexpected error: %v", err)
+	}
+}
+
 func TestNewUploadRequest_pathTraversal(t *testing.T) {
 	t.Parallel()
 	c := mustNewClient(t)
@@ -2028,8 +2050,8 @@ func TestNewUploadRequest_rejectsUnconfiguredDestination(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			_, err := c.NewUploadRequest(t.Context(), tt.rawurl, strings.NewReader("x"), 1, "text/plain")
-			if !errors.Is(err, ErrUntrustedUploadDestination) {
-				t.Fatalf("NewUploadRequest(%q): want ErrUntrustedUploadDestination, got %v", tt.rawurl, err)
+			if !errors.Is(err, ErrUntrustedDestination) {
+				t.Fatalf("NewUploadRequest(%q): want ErrUntrustedDestination, got %v", tt.rawurl, err)
 			}
 		})
 	}
@@ -2067,7 +2089,7 @@ func TestNewUploadRequest_allowsConfiguredDestination(t *testing.T) {
 
 	// An enterprise client is scoped to its own origins: carrying the same rule
 	// over from the default configuration would widen it, not narrow it.
-	if _, err := ghe.NewUploadRequest(t.Context(), "https://uploads.github.com/repos/o/r/releases/1/assets", strings.NewReader("x"), 1, "text/plain"); !errors.Is(err, ErrUntrustedUploadDestination) {
+	if _, err := ghe.NewUploadRequest(t.Context(), "https://uploads.github.com/repos/o/r/releases/1/assets", strings.NewReader("x"), 1, "text/plain"); !errors.Is(err, ErrUntrustedDestination) {
 		t.Fatalf("enterprise client accepted the GitHub.com upload origin: %v", err)
 	}
 }

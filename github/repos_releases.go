@@ -479,9 +479,11 @@ func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, rep
 // Because release is normally the object an API call returned, its UploadURL is
 // a value the server chose rather than one the caller did. A release whose
 // UploadURL names an origin the client was not configured for is refused with
-// [ErrUntrustedUploadDestination] rather than uploaded to, so that a response
-// cannot take the artifact to a host of its own choosing. Configure a
-// legitimate alternate upload host with [WithURLs] or [WithEnterpriseURLs].
+// [ErrUntrustedDestination] rather than uploaded to, so that a response cannot
+// take the artifact to a host of its own choosing. This function performs no
+// host check of its own: the refusal comes from [Client.NewUploadRequest], which
+// every upload here is built through. Configure a legitimate alternate upload
+// host with [WithURLs] or [WithEnterpriseURLs].
 //
 // GitHub API docs: https://docs.github.com/rest/releases/assets?apiVersion=2022-11-28#upload-a-release-asset
 //
@@ -515,7 +517,7 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(
 	// An absolute URL replaces the client's configured upload host entirely, and
 	// release.UploadURL is normally whatever the API last answered with, so the
 	// host in it is not the caller's choice. NewUploadRequest refuses that case
-	// with ErrUntrustedUploadDestination unless it names a configured origin, so
+	// with ErrUntrustedDestination unless it names a configured origin, so
 	// there is no host check here: every upload this helper builds goes through
 	// that one gate. In the default configuration the upload host is
 	// uploads.github.com rather than api.github.com, and both are configured
