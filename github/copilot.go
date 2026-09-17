@@ -1617,6 +1617,11 @@ type CopilotUserPeriodicMetrics struct {
 
 // fetchMetricsReport performs a GET against the provided download URL and returns the raw
 // http.Response. The caller is responsible for closing the body.
+//
+// The download URL is a value the caller reads out of a report response, which
+// may name any host. No host check belongs here: the client attaches its
+// credentials only to its configured API and upload origins, so a link that
+// points elsewhere is fetched without them, as is any redirect target.
 func (s *CopilotService) fetchMetricsReport(ctx context.Context, url string) (*http.Response, *Response, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {

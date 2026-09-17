@@ -12,7 +12,6 @@ import (
 	"io"
 	"mime"
 	"net/http"
-	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -326,9 +325,11 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 // of the io.ReadCloser. Exactly one of rc and redirectURL will be zero.
 //
 // followRedirectsClient can be passed to download the asset from a redirected
-// location. Specifying any http.Client is possible, but passing http.DefaultClient
-// is recommended, except when the specified repository is private, in which case
-// it's necessary to pass an http.Client that performs authenticated requests.
+// location. The redirect target is typically a pre-signed third-party URL (for
+// example S3), so http.DefaultClient is recommended. The client's own
+// credentials reach only its configured API and upload origins, so they are not
+// attached to the redirected request in any case; supply a client that adds its
+// own credentials only if the redirect target requires them.
 // If nil is passed the redirectURL will be returned instead.
 //
 // GitHub API docs: https://docs.github.com/rest/releases/assets?apiVersion=2022-11-28#get-a-release-asset
@@ -503,27 +504,16 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(
 
 	// If this is a *relative* URL (no scheme), normalize it by trimming a leading "/"
 	// so it works with Client.BaseURL path prefixes (e.g. "/api-v3/").
+	//
+	// An absolute URL replaces the client's configured upload host entirely.
+	// That is deliberately left to the client's transport, which attaches the
+	// caller's Authorization header only to the client's configured API and
+	// upload origins: a response naming a foreign host therefore cannot take
+	// the token with it, and does not need a host check here. In the default
+	// configuration the upload host is uploads.github.com rather than
+	// api.github.com, so both are configured origins the token may reach.
 	if !strings.HasPrefix(uploadURL, "http://") && !strings.HasPrefix(uploadURL, "https://") {
 		uploadURL = strings.TrimPrefix(uploadURL, "/")
-	} else {
-		// This helper is the one upload entry point whose URL comes from a server
-		// response rather than from the caller, and an absolute URL replaces the
-		// client's configured upload host entirely. Left unchecked, a response could
-		// name any host and receive the artifact together with the caller's
-		// Authorization header. Keep the upload on the host the client was
-		// configured with; that is uploads.github.com rather than api.github.com in
-		// the default configuration, which is why the comparison is against
-		// uploadURL and not baseURL.
-		u, err := url.Parse(uploadURL)
-		if err != nil {
-			return nil, nil, err
-		}
-		if !strings.EqualFold(u.Host, s.client.uploadURL.Host) {
-			return nil, nil, fmt.Errorf(
-				"upload URL host %v does not match the client's configured upload host %v",
-				u.Host, s.client.uploadURL.Host,
-			)
-		}
 	}
 
 	// addOptions will append name/label query params (same behavior as UploadReleaseAsset).

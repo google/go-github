@@ -168,6 +168,15 @@ type Client struct {
 	client                *http.Client // HTTP client used to communicate with the API.
 	clientIgnoreRedirects *http.Client // HTTP client used to communicate with the API on endpoints where we don't want to follow redirects.
 
+	// authToken is the token configured by [WithAuthToken], retained so that
+	// [Client.Clone] can install it against the clone's own origins.
+	authToken *string
+
+	// baseTransport is the transport the credential wrapper was installed on
+	// top of, so that [Client.Clone] can rebase onto it rather than layering a
+	// second wrapper over the first.
+	baseTransport http.RoundTripper
+
 	// Base URL for API requests. Defaults to the public GitHub API, but can be
 	// set to a domain endpoint to use with GitHub Enterprise. baseURL should
 	// always be specified with a trailing slash.
@@ -257,8 +266,9 @@ type service struct {
 }
 
 // Client returns the http.Client used by this GitHub client.
-// This should only be used for requests to the GitHub API because
-// request headers will contain an authorization token.
+// The token configured by [WithAuthToken] is attached only to requests to this
+// client's configured API and upload origins, so the returned client may also
+// be used for requests to other hosts without leaking the token.
 func (c *Client) Client() *http.Client {
 	clientCopy := *c.client
 	return &clientCopy
@@ -436,7 +446,9 @@ func WithEnvProxy() ClientOptionsFunc {
 }
 
 // WithAuthToken returns a ClientOptionsFunc that sets the authentication token
-// for a Client. If not set, the client will make unauthenticated requests.
+// for a Client. The token is attached only to requests to the Client's
+// configured API and upload origins; a request to any other origin is sent
+// without it. If not set, the client will make unauthenticated requests.
 func WithAuthToken(token string) ClientOptionsFunc {
 	return func(o *clientOptions) error {
 		if token == "" {
@@ -604,25 +616,6 @@ func newClient(opts clientOptions) (*Client, error) {
 		c.client.Transport = t2
 	}
 
-	if opts.token != nil {
-		transport := c.client.Transport
-		if transport == nil {
-			transport = http.DefaultTransport
-		}
-		c.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
-			req = req.Clone(req.Context())
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", *opts.token))
-			return transport.RoundTrip(req)
-		})
-	}
-
-	c.clientIgnoreRedirects = &http.Client{
-		Transport:     c.client.Transport,
-		Timeout:       c.client.Timeout,
-		Jar:           c.client.Jar,
-		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
-	}
-
 	if opts.apiVersionMin != nil {
 		c.apiVersionMin = *opts.apiVersionMin
 	}
@@ -647,6 +640,36 @@ func newClient(opts clientOptions) (*Client, error) {
 		c.uploadURL = opts.uploadURL
 	} else {
 		c.uploadURL, _ = url.Parse(uploadBaseURL)
+	}
+
+	// Install the credential wrapper only after the API and upload origins are
+	// known: the wrapper consults them for every request, so that a request to
+	// any other origin goes out unauthenticated instead of carrying the token.
+	c.baseTransport = c.client.Transport
+	if opts.token != nil {
+		token := "Bearer " + *opts.token
+		c.authToken = opts.token
+
+		transport := c.baseTransport
+		if transport == nil {
+			transport = http.DefaultTransport
+		}
+
+		c.client.Transport = roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			if c.shouldAuthorizeRequest(req.URL) {
+				req = req.Clone(req.Context())
+				req.Header.Set("Authorization", token)
+			}
+
+			return transport.RoundTrip(req)
+		})
+	}
+
+	c.clientIgnoreRedirects = &http.Client{
+		Transport:     c.client.Transport,
+		Timeout:       c.client.Timeout,
+		Jar:           c.client.Jar,
+		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
 	}
 
 	c.disableRateLimitCheck = opts.disableRateLimitCheck
@@ -709,6 +732,83 @@ func newClient(opts clientOptions) (*Client, error) {
 	return c, nil
 }
 
+// Credentials — the token configured by [WithAuthToken], and the credentials on
+// [BasicAuthTransport] and [UnauthenticatedRateLimitedTransport] — are sent
+// only to origins the caller has configured. Any other destination, including
+// a redirect hop, goes out with no credentials attached. Such a request is
+// never rejected and the credentials are never forwarded: it is simply sent
+// unauthenticated, so that a caller cannot leak a token by handing the client a
+// URL whose host it does not control.
+//
+// sameOrigin is the one predicate behind that rule. Every place that decides
+// whether a destination may receive credentials — the WithAuthToken wrapper,
+// both exported auth transports, and the redirect guards — must use it, so the
+// answer cannot differ depending on which code path a request happens to take.
+
+// defaultAuthOrigins are the origins credentials may be sent to when no
+// allowlist is configured: GitHub.com's API and upload hosts. An empty
+// allowlist must never be read as "any origin".
+var defaultAuthOrigins = []*url.URL{
+	{Scheme: "https", Host: "api.github.com"},
+	{Scheme: "https", Host: "uploads.github.com"},
+}
+
+// sameOrigin reports whether u and base share an origin: the same scheme, the
+// same hostname, and the same port once the scheme's default port is implied. A
+// nil argument never matches.
+func sameOrigin(u, base *url.URL) bool {
+	if u == nil || base == nil {
+		return false
+	}
+
+	return strings.EqualFold(u.Scheme, base.Scheme) &&
+		strings.EqualFold(u.Hostname(), base.Hostname()) &&
+		normalizedPort(u) == normalizedPort(base)
+}
+
+// normalizedPort returns u's explicit port, or the default port for u's scheme
+// so that "https://ghe.example.com" and "https://ghe.example.com:443" compare
+// equal. It returns "" for a scheme with no default port.
+func normalizedPort(u *url.URL) string {
+	if port := u.Port(); port != "" {
+		return port
+	}
+
+	switch strings.ToLower(u.Scheme) {
+	case "http":
+		return "80"
+	case "https":
+		return "443"
+	default:
+		return ""
+	}
+}
+
+// isAllowedOrigin reports whether u matches one of origins. An empty origins
+// list means [defaultAuthOrigins], not "allow every origin".
+func isAllowedOrigin(u *url.URL, origins []*url.URL) bool {
+	if len(origins) == 0 {
+		origins = defaultAuthOrigins
+	}
+
+	for _, origin := range origins {
+		if sameOrigin(u, origin) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// shouldAuthorizeRequest reports whether the credentials configured on c may be
+// sent to u. The client's own origins are read here, at request time, rather
+// than captured when the wrapper was installed: GitHub Enterprise installs and
+// test setups assign baseURL/uploadURL directly, and the rest of the request
+// plumbing (NewRequest, BaseURL) reads them the same way.
+func (c *Client) shouldAuthorizeRequest(u *url.URL) bool {
+	return sameOrigin(u, c.baseURL) || sameOrigin(u, c.uploadURL)
+}
+
 // UserAgent returns the User-Agent header value for the client.
 func (c *Client) UserAgent() string {
 	return c.userAgent
@@ -736,7 +836,9 @@ func (c *Client) UploadURL() string {
 // the same rate limit information as the original client, but it is not
 // updated when the original client's rate limit information is updated.
 // The returned client is independent of the original client and can be
-// modified without affecting the original client.
+// modified without affecting the original client. Any token configured by
+// [WithAuthToken] carries over to the clone, and is re-scoped to the clone's
+// own API and upload origins.
 func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 	if c.client == nil {
 		return nil, errUninitialized
@@ -748,6 +850,7 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 		userAgent:                               &c.userAgent,
 		baseURL:                                 new(*c.baseURL),
 		uploadURL:                               new(*c.uploadURL),
+		token:                                   c.authToken,
 		disableRateLimitCheck:                   c.disableRateLimitCheck,
 		rateLimitRedirectionalEndpoints:         c.rateLimitRedirectionalEndpoints,
 		maxSecondaryRateLimitRetryAfterDuration: &c.maxSecondaryRateLimitRetryAfterDuration,
@@ -764,8 +867,17 @@ func (c *Client) Clone(opts ...ClientOptionsFunc) (*Client, error) {
 	}
 
 	if o.httpClient == nil {
+		// A clone that carries a token installs the credential against its own
+		// origins, so it starts from the unwrapped transport: reusing the
+		// wrapped one would stack a second check that still enforces the
+		// original client's origins.
+		transport := c.client.Transport
+		if c.authToken != nil {
+			transport = c.baseTransport
+		}
+
 		o.httpClient = &http.Client{
-			Transport:     c.client.Transport,
+			Transport:     transport,
 			CheckRedirect: c.client.CheckRedirect,
 			Jar:           c.client.Jar,
 			Timeout:       c.client.Timeout,
@@ -1395,10 +1507,12 @@ func (c *Client) bareDoUntilFound(req *http.Request, maxRedirects int) (*url.URL
 					return nil, nil, errInvalidLocation
 				}
 				newURL := c.baseURL.ResolveReference(rerr.Location)
-				// Refuse to follow a permanent redirect to a different host:
-				// req.Clone preserves Authorization headers added by the auth
-				// transport, so a cross-host target would leak credentials.
-				if newURL.Host != c.baseURL.Host {
+				// Refuse to follow a permanent redirect outside the origins
+				// this client may send credentials to: the auth transport
+				// attaches them on every hop, so a cross-host target would
+				// leak them. This uses the same predicate as the transport so
+				// that the two cannot disagree about which origin is allowed.
+				if !c.shouldAuthorizeRequest(newURL) {
 					return nil, response, fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.baseURL.Host, newURL.Host)
 				}
 				newRequest := req.Clone(req.Context())
@@ -2052,6 +2166,16 @@ type UnauthenticatedRateLimitedTransport struct {
 	// application.
 	ClientSecret string
 
+	// AllowedOrigins limits the origins ClientID and ClientSecret are sent to.
+	// The credentials are attached only to requests whose origin matches one of
+	// these; every other request, including a redirect hop, is sent without
+	// them.
+	//
+	// If empty, the GitHub.com API and upload origins are used. An empty
+	// AllowedOrigins does not mean "any origin": set it explicitly when talking
+	// to GitHub Enterprise.
+	AllowedOrigins []*url.URL
+
 	// Transport is the underlying HTTP transport to use when making requests.
 	// It will default to http.DefaultTransport if nil.
 	Transport http.RoundTripper
@@ -2066,9 +2190,12 @@ func (t *UnauthenticatedRateLimitedTransport) RoundTrip(req *http.Request) (*htt
 		return nil, errors.New("t.ClientSecret is empty")
 	}
 
-	req2 := setCredentialsAsHeaders(req, t.ClientID, t.ClientSecret)
+	if isAllowedOrigin(req.URL, t.AllowedOrigins) {
+		req = setCredentialsAsHeaders(req, t.ClientID, t.ClientSecret)
+	}
+
 	// Make the HTTP request.
-	return t.transport().RoundTrip(req2)
+	return t.transport().RoundTrip(req)
 }
 
 // Client returns an *http.Client that makes requests which are subject to the
@@ -2093,6 +2220,15 @@ type BasicAuthTransport struct {
 	Password string // GitHub password
 	OTP      string // one-time password for users with two-factor auth enabled
 
+	// AllowedOrigins limits the origins the credentials above are sent to. They
+	// are attached only to requests whose origin matches one of these; every
+	// other request, including a redirect hop, is sent without them.
+	//
+	// If empty, the GitHub.com API and upload origins are used. An empty
+	// AllowedOrigins does not mean "any origin": set it explicitly when talking
+	// to GitHub Enterprise.
+	AllowedOrigins []*url.URL
+
 	// Transport is the underlying HTTP transport to use when making requests.
 	// It will default to http.DefaultTransport if nil.
 	Transport http.RoundTripper
@@ -2100,11 +2236,14 @@ type BasicAuthTransport struct {
 
 // RoundTrip implements the RoundTripper interface.
 func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req2 := setCredentialsAsHeaders(req, t.Username, t.Password)
-	if t.OTP != "" {
-		req2.Header.Set(headerOTP, t.OTP)
+	if isAllowedOrigin(req.URL, t.AllowedOrigins) {
+		req = setCredentialsAsHeaders(req, t.Username, t.Password)
+		if t.OTP != "" {
+			req.Header.Set(headerOTP, t.OTP)
+		}
 	}
-	return t.transport().RoundTrip(req2)
+
+	return t.transport().RoundTrip(req)
 }
 
 // Client returns an *http.Client that makes requests that are authenticated
@@ -2190,11 +2329,11 @@ func (c *Client) roundTripWithOptionalFollowRedirect(ctx context.Context, u stri
 	return resp, err
 }
 
-// checkRedirectHost returns an error if the redirect target is on a different
-// host than the client's configured BaseURL. This prevents credentials attached
-// by the auth transport from being sent to an attacker-controlled host when a
-// compromised or malicious API response returns a cross-origin Location header.
-// An empty Location is also rejected.
+// checkRedirectHost returns an error if the redirect target is outside the
+// origins this client may send credentials to. The auth transport attaches
+// credentials on every hop, so a cross-origin Location header would otherwise
+// carry them to a host the caller never configured, when a compromised or
+// malicious API response supplies one. An empty Location is also rejected.
 func (c *Client) checkRedirectHost(location string) error {
 	if location == "" {
 		return errInvalidLocation
@@ -2205,7 +2344,7 @@ func (c *Client) checkRedirectHost(location string) error {
 	}
 	// Resolve relative locations against BaseURL so relative paths are allowed.
 	target = c.baseURL.ResolveReference(target)
-	if target.Host != c.baseURL.Host {
+	if !c.shouldAuthorizeRequest(target) {
 		return fmt.Errorf("refusing to follow cross-host redirect from %q to %q", c.baseURL.Host, target.Host)
 	}
 	return nil

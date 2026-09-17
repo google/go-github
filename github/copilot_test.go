@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -3903,6 +3905,50 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 	if err == nil {
 		t.Error("Copilot.DownloadCopilotMetrics expected error for bad JSON, got none")
 	}
+}
+
+// TestCopilotService_DownloadMetrics_ForeignHostGetsNoCredentials covers the
+// download helpers whose URL comes straight out of a report response, and which
+// therefore may name any host: DownloadCopilotMetrics, and the fetchMetricsReport
+// backed Download*Metrics methods. The client attaches its token only to its own
+// configured origins, so a download link naming some other host is fetched
+// unauthenticated. That is a property of the client's credential wrapper rather
+// than of any one of these methods, which is why none of them needs a host check
+// of its own.
+func TestCopilotService_DownloadMetrics_ForeignHostGetsNoCredentials(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	auth := make(chan string, 1)
+	foreign := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		select {
+		case auth <- r.Header.Get("Authorization"):
+		default:
+		}
+		if strings.HasSuffix(r.URL.Path, "/metrics") {
+			// DownloadCopilotMetrics decodes an array...
+			fmt.Fprint(w, `[]`)
+			return
+		}
+		// ...and DownloadDailyMetrics decodes an object.
+		fmt.Fprint(w, `{}`)
+	}))
+	t.Cleanup(foreign.Close)
+
+	authedClient, err := client.Clone(WithAuthToken("secret-token"))
+	if err != nil {
+		t.Fatalf("Client.Clone returned error: %v", err)
+	}
+
+	if _, _, err := authedClient.Copilot.DownloadDailyMetrics(t.Context(), foreign.URL+"/daily"); err != nil {
+		t.Fatalf("DownloadDailyMetrics returned error: %v", err)
+	}
+	assertRecordedAuthHeader(t, auth, "")
+
+	if _, _, err := authedClient.Copilot.DownloadCopilotMetrics(t.Context(), foreign.URL+"/metrics"); err != nil {
+		t.Fatalf("DownloadCopilotMetrics returned error: %v", err)
+	}
+	assertRecordedAuthHeader(t, auth, "")
 }
 
 func TestCopilotService_DownloadDailyMetrics(t *testing.T) {

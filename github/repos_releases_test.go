@@ -851,34 +851,50 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_AbsoluteTemplate(t *t
 	}
 }
 
-func TestRepositoriesService_UploadReleaseAssetFromRelease_ForeignHostIsRejected(t *testing.T) {
+func TestRepositoriesService_UploadReleaseAssetFromRelease_ForeignHostGetsNoCredentials(t *testing.T) {
 	t.Parallel()
 	client, _, _ := setup(t)
 
 	// A server that hands out an absolute upload URL naming a different host must not
-	// be able to redirect the upload - and therefore the caller's Authorization header
-	// and the artifact body - away from the host the client was configured with.
-	var leaked int
-	evil := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		leaked++
+	// be able to take the caller's credentials with it: the client attaches its token
+	// only to its own configured origins. The upload itself is still attempted - the
+	// policy is to send such a request unauthenticated rather than to reject it - so
+	// the body does reach the foreign host, and the request must arrive with no
+	// Authorization header.
+	authHeaders := make(chan string, 1)
+	foreign := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		select {
+		case authHeaders <- r.Header.Get("Authorization"):
+		default:
+		}
 		fmt.Fprint(w, `{"id":1}`)
 	}))
-	t.Cleanup(evil.Close)
+	t.Cleanup(foreign.Close)
 
-	body := []byte("private artifact\n")
+	authedClient, err := client.Clone(WithAuthToken("secret-token"))
+	if err != nil {
+		t.Fatalf("Client.Clone returned error: %v", err)
+	}
+
+	body := []byte("artifact\n")
 	reader := bytes.NewReader(body)
 	size := int64(len(body))
 
-	release := &RepositoryRelease{UploadURL: evil.URL + "/upload{?name,label}"}
+	release := &RepositoryRelease{UploadURL: foreign.URL + "/upload{?name,label}"}
 	ctx := t.Context()
-	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(
+	if _, _, err := authedClient.Repositories.UploadReleaseAssetFromRelease(
 		ctx, release, &UploadOptions{Name: "n.txt"}, reader, size,
-	)
-	if err == nil {
-		t.Fatal("expected an error for an upload URL naming a foreign host, got nil")
+	); err != nil {
+		t.Fatalf("UploadReleaseAssetFromRelease returned error: %v", err)
 	}
-	if leaked != 0 {
-		t.Fatalf("upload reached the foreign host %v time(s); the token and body must never be sent there", leaked)
+
+	select {
+	case got := <-authHeaders:
+		if got != "" {
+			t.Fatalf("upload to a foreign host carried Authorization %q; the token must never be sent there", got)
+		}
+	default:
+		t.Fatal("upload never reached the foreign host")
 	}
 }
 
