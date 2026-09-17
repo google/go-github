@@ -3644,6 +3644,28 @@ func TestBareDoUntilFound_RejectsCrossHostRedirect(t *testing.T) {
 	}
 }
 
+// TestBareDoUntilFound_MissingRedirectLocation covers a 301 that carries no
+// Location header at all. There is no target to resolve, so the redirect cannot
+// be followed and the caller gets an error rather than a request built from an
+// empty Location.
+func TestBareDoUntilFound_MissingRedirectLocation(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	req, _ := client.NewRequest(t.Context(), "GET", ".", nil)
+	_, _, err := client.bareDoUntilFound(req, 1)
+	if err == nil {
+		t.Fatal("Expected a 301 with no Location header to be rejected, got nil error.")
+	}
+	if !errors.Is(err, errInvalidLocation) {
+		t.Errorf("Expected errInvalidLocation, got: %v", err)
+	}
+}
+
 // TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect verifies
 // that roundTripWithOptionalFollowRedirect refuses to follow a 301 redirect to
 // a different host, preventing Authorization-header leakage to attacker-
@@ -3663,6 +3685,26 @@ func TestRoundTripWithOptionalFollowRedirect_RejectsCrossHostRedirect(t *testing
 	}
 	if !strings.Contains(err.Error(), "cross-host redirect") {
 		t.Errorf("Expected cross-host redirect error, got: %v", err)
+	}
+}
+
+// TestRoundTripWithOptionalFollowRedirect_MissingRedirectLocation covers a 301
+// that carries no Location header at all. There is no target to check or follow,
+// so the caller gets an error rather than a request built from an empty Location.
+func TestRoundTripWithOptionalFollowRedirect_MissingRedirectLocation(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	_, err := client.roundTripWithOptionalFollowRedirect(t.Context(), ".", 1)
+	if err == nil {
+		t.Fatal("Expected a 301 with no Location header to be rejected, got nil error.")
+	}
+	if !errors.Is(err, errInvalidLocation) {
+		t.Errorf("Expected errInvalidLocation, got: %v", err)
 	}
 }
 
@@ -4747,6 +4789,7 @@ func TestSameOrigin(t *testing.T) {
 		{name: "scheme case is ignored", a: "HTTPS://api.github.com", b: "https://api.github.com", want: true},
 		{name: "userinfo is not part of the origin", a: "https://user:pass@api.github.com", b: "https://api.github.com", want: true},
 		{name: "scheme is compared", a: "http://api.github.com", b: "https://api.github.com", want: false},
+		{name: "a scheme with no default port implies none", a: "ftp://ghe.example.com", b: "ftp://ghe.example.com:21", want: false},
 		{name: "explicit non-default port differs", a: "https://ghe.example.com", b: "https://ghe.example.com:8443", want: false},
 		{name: "two ports differ", a: "http://127.0.0.1:8080", b: "http://127.0.0.1:9090", want: false},
 		{name: "subdomain is a different origin", a: "https://evil.api.github.com", b: "https://api.github.com", want: false},
@@ -4779,6 +4822,29 @@ func TestSameOrigin(t *testing.T) {
 			t.Error("sameOrigin(base, nil) = true, want false")
 		}
 	})
+}
+
+func TestNormalizedPort(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name string
+		url  string
+		want string
+	}{
+		{name: "http implies its default port", url: "http://ghe.example.com", want: "80"},
+		{name: "https implies its default port", url: "https://ghe.example.com", want: "443"},
+		{name: "an explicit port wins", url: "https://ghe.example.com:8443", want: "8443"},
+		{name: "an explicit default port stays explicit", url: "https://ghe.example.com:443", want: "443"},
+		{name: "a scheme with no default port has none to imply", url: "ftp://ghe.example.com", want: ""},
+		{name: "an explicit port is kept whatever the scheme", url: "ftp://ghe.example.com:21", want: "21"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			if got := normalizedPort(mustParseURL(t, tt.url)); got != tt.want {
+				t.Errorf("normalizedPort(%q) = %q, want %q", tt.url, got, tt.want)
+			}
+		})
+	}
 }
 
 func TestIsAllowedOrigin(t *testing.T) {
