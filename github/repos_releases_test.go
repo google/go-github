@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 
@@ -847,6 +848,53 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_AbsoluteTemplate(t *t
 	want := &ReleaseAsset{ID: new(int64(1))}
 	if !cmp.Equal(asset, want) {
 		t.Fatalf("UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
+	}
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_ForeignHostIsRejected(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	// A server that hands out an absolute upload URL naming a different host must not
+	// be able to redirect the upload - and therefore the caller's Authorization header
+	// and the artifact body - away from the host the client was configured with.
+	var leaked int
+	evil := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		leaked++
+		fmt.Fprint(w, `{"id":1}`)
+	}))
+	t.Cleanup(evil.Close)
+
+	body := []byte("private artifact\n")
+	reader := bytes.NewReader(body)
+	size := int64(len(body))
+
+	release := &RepositoryRelease{UploadURL: evil.URL + "/upload{?name,label}"}
+	ctx := t.Context()
+	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(
+		ctx, release, &UploadOptions{Name: "n.txt"}, reader, size,
+	)
+	if err == nil {
+		t.Fatal("expected an error for an upload URL naming a foreign host, got nil")
+	}
+	if leaked != 0 {
+		t.Fatalf("upload reached the foreign host %v time(s); the token and body must never be sent there", leaked)
+	}
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_MalformedUploadURL(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	// net/url rejects ASCII control characters, so a response naming such a URL must
+	// surface as an error rather than a panic or an upload to an unchecked host.
+	release := &RepositoryRelease{UploadURL: "https://uploads.github.com/\x7f/upload{?name,label}"}
+	ctx := t.Context()
+	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(
+		ctx, release, &UploadOptions{Name: "n.txt"}, bytes.NewReader([]byte("x")), 1,
+	)
+	if err == nil {
+		t.Fatal("expected an error for an unparsable upload URL, got nil")
 	}
 }
 
