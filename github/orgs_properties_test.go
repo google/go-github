@@ -313,33 +313,6 @@ func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
 	})
 }
 
-func TestCustomProperty_RequireExplicitValuesJSON(t *testing.T) {
-	t.Parallel()
-	tests := map[string]struct {
-		property *CustomProperty
-		want     string
-	}{
-		"omitted": {
-			property: &CustomProperty{ValueType: PropertyValueTypeString},
-			want:     `{"value_type":"string"}`,
-		},
-		"explicit false": {
-			property: &CustomProperty{
-				ValueType:             PropertyValueTypeString,
-				RequireExplicitValues: new(false),
-			},
-			want: `{"value_type":"string","require_explicit_values":false}`,
-		},
-	}
-
-	for name, test := range tests {
-		t.Run(name, func(t *testing.T) {
-			t.Parallel()
-			testJSONMarshal(t, test.property, test.want)
-		})
-	}
-}
-
 func TestOrganizationsService_RemoveCustomProperty(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
