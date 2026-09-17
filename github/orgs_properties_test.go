@@ -25,6 +25,7 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
     "property_name": "name",
     "value_type": "single_select",
     "required": true,
+    "require_explicit_values": true,
     "default_value": "production",
     "description": "Prod or dev environment",
     "allowed_values":[
@@ -76,13 +77,14 @@ func TestOrganizationsService_GetAllCustomProperties(t *testing.T) {
 
 	want := []*CustomProperty{
 		{
-			PropertyName:     new("name"),
-			ValueType:        PropertyValueTypeSingleSelect,
-			Required:         new(true),
-			DefaultValue:     "production",
-			Description:      new("Prod or dev environment"),
-			AllowedValues:    []string{"production", "development"},
-			ValuesEditableBy: new("org_actors"),
+			PropertyName:          new("name"),
+			ValueType:             PropertyValueTypeSingleSelect,
+			Required:              new(true),
+			RequireExplicitValues: new(true),
+			DefaultValue:          "production",
+			Description:           new("Prod or dev environment"),
+			AllowedValues:         []string{"production", "development"},
+			ValuesEditableBy:      new("org_actors"),
 		},
 		{
 			PropertyName:     new("test"),
@@ -135,9 +137,10 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 	}{
 		Properties: []*CustomProperty{
 			{
-				PropertyName: new("name"),
-				ValueType:    PropertyValueTypeSingleSelect,
-				Required:     new(true),
+				PropertyName:          new("name"),
+				ValueType:             PropertyValueTypeSingleSelect,
+				Required:              new(true),
+				RequireExplicitValues: new(false),
 			},
 			{
 				PropertyName: new("service"),
@@ -153,7 +156,8 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 		{
           "property_name": "name",
           "value_type": "single_select",
-          "required": true
+          "required": true,
+          "require_explicit_values": false
         },
         {
           "property_name": "service",
@@ -170,9 +174,10 @@ func TestOrganizationsService_CreateOrUpdateCustomProperties(t *testing.T) {
 
 	want := []*CustomProperty{
 		{
-			PropertyName: new("name"),
-			ValueType:    PropertyValueTypeSingleSelect,
-			Required:     new(true),
+			PropertyName:          new("name"),
+			ValueType:             PropertyValueTypeSingleSelect,
+			Required:              new(true),
+			RequireExplicitValues: new(false),
 		},
 		{
 			PropertyName: new("service"),
@@ -249,12 +254,24 @@ func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
 
+	input := &CustomProperty{
+		ValueType:             PropertyValueTypeSingleSelect,
+		Required:              new(true),
+		RequireExplicitValues: new(false),
+		DefaultValue:          "production",
+		Description:           new("Prod or dev environment"),
+		AllowedValues:         []string{"production", "development"},
+		ValuesEditableBy:      new("org_actors"),
+	}
+
 	mux.HandleFunc("/orgs/o/properties/schema/name", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
 		fmt.Fprint(w, `{
 		"property_name": "name",
 		"value_type": "single_select",
 		"required": true,
+		"require_explicit_values": false,
 		"default_value": "production",
 		"description": "Prod or dev environment",
 		"allowed_values":[
@@ -266,26 +283,20 @@ func TestOrganizationsService_CreateOrUpdateCustomProperty(t *testing.T) {
 	})
 
 	ctx := t.Context()
-	property, _, err := client.Organizations.CreateOrUpdateCustomProperty(ctx, "o", "name", &CustomProperty{
-		ValueType:        PropertyValueTypeSingleSelect,
-		Required:         new(true),
-		DefaultValue:     "production",
-		Description:      new("Prod or dev environment"),
-		AllowedValues:    []string{"production", "development"},
-		ValuesEditableBy: new("org_actors"),
-	})
+	property, _, err := client.Organizations.CreateOrUpdateCustomProperty(ctx, "o", "name", input)
 	if err != nil {
 		t.Errorf("Organizations.CreateOrUpdateCustomProperty returned error: %v", err)
 	}
 
 	want := &CustomProperty{
-		PropertyName:     new("name"),
-		ValueType:        PropertyValueTypeSingleSelect,
-		Required:         new(true),
-		DefaultValue:     "production",
-		Description:      new("Prod or dev environment"),
-		AllowedValues:    []string{"production", "development"},
-		ValuesEditableBy: new("org_actors"),
+		PropertyName:          new("name"),
+		ValueType:             PropertyValueTypeSingleSelect,
+		Required:              new(true),
+		RequireExplicitValues: new(false),
+		DefaultValue:          "production",
+		Description:           new("Prod or dev environment"),
+		AllowedValues:         []string{"production", "development"},
+		ValuesEditableBy:      new("org_actors"),
 	}
 	if !cmp.Equal(property, want) {
 		t.Errorf("Organizations.CreateOrUpdateCustomProperty returned %+v, want %+v", property, want)

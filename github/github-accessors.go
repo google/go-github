@@ -13934,6 +13934,14 @@ func (c *CustomProperty) GetRequired() bool {
 	return *c.Required
 }
 
+// GetRequireExplicitValues returns the RequireExplicitValues field if it's non-nil, zero value otherwise.
+func (c *CustomProperty) GetRequireExplicitValues() bool {
+	if c == nil || c.RequireExplicitValues == nil {
+		return false
+	}
+	return *c.RequireExplicitValues
+}
+
 // GetSourceType returns the SourceType field if it's non-nil, zero value otherwise.
 func (c *CustomProperty) GetSourceType() string {
 	if c == nil || c.SourceType == nil {
