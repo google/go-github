@@ -35614,12 +35614,76 @@ func (r *ReleaseAsset) GetURL() string {
 	return *r.URL
 }
 
+// GetFrom returns the From field.
+func (r *ReleaseChangeFrom) GetFrom() string {
+	if r == nil {
+		return ""
+	}
+	return r.From
+}
+
+// GetBody returns the Body field.
+func (r *ReleaseChanges) GetBody() *ReleaseChangeFrom {
+	if r == nil {
+		return nil
+	}
+	return r.Body
+}
+
+// GetMakeLatest returns the MakeLatest field.
+func (r *ReleaseChanges) GetMakeLatest() *ReleaseChangeToBool {
+	if r == nil {
+		return nil
+	}
+	return r.MakeLatest
+}
+
+// GetName returns the Name field.
+func (r *ReleaseChanges) GetName() *ReleaseChangeFrom {
+	if r == nil {
+		return nil
+	}
+	return r.Name
+}
+
+// GetTagName returns the TagName field.
+func (r *ReleaseChanges) GetTagName() *ReleaseChangeFrom {
+	if r == nil {
+		return nil
+	}
+	return r.TagName
+}
+
+// GetTo returns the To field.
+func (r *ReleaseChangeToBool) GetTo() bool {
+	if r == nil {
+		return false
+	}
+	return r.To
+}
+
 // GetAction returns the Action field if it's non-nil, zero value otherwise.
 func (r *ReleaseEvent) GetAction() string {
 	if r == nil || r.Action == nil {
 		return ""
 	}
 	return *r.Action
+}
+
+// GetChanges returns the Changes field.
+func (r *ReleaseEvent) GetChanges() *ReleaseChanges {
+	if r == nil {
+		return nil
+	}
+	return r.Changes
+}
+
+// GetEnterprise returns the Enterprise field.
+func (r *ReleaseEvent) GetEnterprise() *Enterprise {
+	if r == nil {
+		return nil
+	}
+	return r.Enterprise
 }
 
 // GetInstallation returns the Installation field.

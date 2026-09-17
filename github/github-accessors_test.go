@@ -44495,6 +44495,54 @@ func TestReleaseAsset_GetURL(tt *testing.T) {
 	r.GetURL()
 }
 
+func TestReleaseChangeFrom_GetFrom(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChangeFrom{}
+	r.GetFrom()
+	r = nil
+	r.GetFrom()
+}
+
+func TestReleaseChanges_GetBody(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetBody()
+	r = nil
+	r.GetBody()
+}
+
+func TestReleaseChanges_GetMakeLatest(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetMakeLatest()
+	r = nil
+	r.GetMakeLatest()
+}
+
+func TestReleaseChanges_GetName(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetName()
+	r = nil
+	r.GetName()
+}
+
+func TestReleaseChanges_GetTagName(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChanges{}
+	r.GetTagName()
+	r = nil
+	r.GetTagName()
+}
+
+func TestReleaseChangeToBool_GetTo(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseChangeToBool{}
+	r.GetTo()
+	r = nil
+	r.GetTo()
+}
+
 func TestReleaseEvent_GetAction(tt *testing.T) {
 	tt.Parallel()
 	var zeroValue string
@@ -44504,6 +44552,22 @@ func TestReleaseEvent_GetAction(tt *testing.T) {
 	r.GetAction()
 	r = nil
 	r.GetAction()
+}
+
+func TestReleaseEvent_GetChanges(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseEvent{}
+	r.GetChanges()
+	r = nil
+	r.GetChanges()
+}
+
+func TestReleaseEvent_GetEnterprise(tt *testing.T) {
+	tt.Parallel()
+	r := &ReleaseEvent{}
+	r.GetEnterprise()
+	r = nil
+	r.GetEnterprise()
 }
 
 func TestReleaseEvent_GetInstallation(tt *testing.T) {
