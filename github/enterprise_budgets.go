@@ -247,7 +247,6 @@ func (s *EnterpriseService) GetBudgetByID(ctx context.Context, enterprise, budge
 	return budget, resp, nil
 }
 
-
 // UpdateBudget updates an existing budget for an enterprise.
 //
 // GitHub API docs: https://docs.github.com/enterprise-cloud@latest/rest/billing/budgets?apiVersion=2022-11-28#update-a-budget

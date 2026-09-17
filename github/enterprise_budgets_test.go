@@ -342,12 +342,12 @@ func TestEnterpriseService_GetBudgetByID(t *testing.T) {
 	}
 
 	want := &EnterpriseBudget{
-		ID:                  Ptr("b-123"),
-		BudgetType:          Ptr(BudgetTypeProductPricing),
-		BudgetProductSKU:    Ptr("ai_credits"),
-		BudgetScope:         Ptr(BudgetScopeRepository),
-		BudgetAmount:        Ptr(30),
-		PreventFurtherUsage: Ptr(true),
+		ID:                  new("b-123"),
+		BudgetType:          new(BudgetTypeProductPricing),
+		BudgetProductSKU:    new("ai_credits"),
+		BudgetScope:         new(BudgetScopeRepository),
+		BudgetAmount:        new(30),
+		PreventFurtherUsage: new(true),
 	}
 	if !cmp.Equal(budget, want) {
 		t.Errorf("Enterprise.GetBudgetByID returned %+v, want %+v", budget, want)
