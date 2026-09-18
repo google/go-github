@@ -257,7 +257,15 @@ func checkGolden(t *testing.T, name, got string) {
 	}
 	want, err := os.ReadFile(path)
 	assertNilError(t, err)
-	assertEqual(t, string(want), got)
+	// The tool writes LF, but a Windows checkout converts the golden file to CRLF,
+	// so compare with the endings normalized. tools/metadata does the same.
+	assertEqual(t, normalizeEOL(string(want)), normalizeEOL(got))
+}
+
+// normalizeEOL removes the carriage returns of CRLF line endings, so that a file compares
+// equal to one that uses LF.
+func normalizeEOL(s string) string {
+	return strings.ReplaceAll(s, "\r\n", "\n")
 }
 
 // copyTree copies every file of src into dst, preserving relative paths.

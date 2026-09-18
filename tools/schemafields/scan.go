@@ -147,6 +147,10 @@ func scanRepo(repo string) (*repoInfo, error) {
 		if err != nil {
 			return err
 		}
+		// Report paths with forward slashes on every platform: they name the file
+		// in a GitHub annotation, and they are the keys that -fix and the golden
+		// files use.
+		rel = filepath.ToSlash(rel)
 		file, err := parser.ParseFile(fset, path, nil, parser.ParseComments|parser.SkipObjectResolution)
 		if err != nil {
 			return err
