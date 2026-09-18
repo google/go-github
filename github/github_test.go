@@ -2073,7 +2073,7 @@ func TestNewUploadRequest_allowsConfiguredDestination(t *testing.T) {
 		{"relative path resolves against the configured upload origin", mustNewClient(t), "repos/o/r/releases/1/assets"},
 		{"absolute upload origin", mustNewClient(t), "https://uploads.github.com/repos/o/r/releases/1/assets"},
 		{"absolute API origin", mustNewClient(t), "https://api.github.com/repos/o/r/releases/1/assets"},
-		{"userinfo that does not change the real destination", mustNewClient(t), "https://evil.example.com@uploads.github.com/repos/o/r/releases/1/assets"},
+		{"userinfo that does not change the real destination", mustNewClient(t), "https://example.com@uploads.github.com/repos/o/r/releases/1/assets"},
 		{"enterprise upload origin", ghe, "https://uploads.ghe.example.com/api/uploads/repos/o/r/releases/1/assets"},
 		{"enterprise API origin", ghe, "https://ghe.example.com/api/v3/repos/o/r/releases/1/assets"},
 	}
