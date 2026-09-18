@@ -180,6 +180,40 @@ func TestRepositoriesService_GetEnvironment(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_GetEnvironment_EscapeName(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name        string
+		escapedName string
+	}{
+		{name: "staging", escapedName: "staging"},
+		{name: "team/staging", escapedName: "team%2Fstaging"},
+		{name: "staging%25", escapedName: "staging%2525"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				if got, want := r.URL.EscapedPath(), "/repos/o/repo/environments/"+tt.escapedName; got != want {
+					t.Errorf("Request path = %q, want %q", got, want)
+				}
+				if got, want := r.URL.Path, "/repos/o/repo/environments/"+tt.name; got != want {
+					t.Errorf("Decoded request path = %q, want %q", got, want)
+				}
+				fmt.Fprint(w, `{}`)
+			})
+
+			ctx := t.Context()
+			_, _, err := client.Repositories.GetEnvironment(ctx, "o", "repo", tt.name)
+			if err != nil {
+				t.Fatalf("Repositories.GetEnvironment returned error: %v", err)
+			}
+		})
+	}
+}
+
 func TestRepositoriesService_CreateEnvironment(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

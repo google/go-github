@@ -6,6 +6,7 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -692,4 +693,136 @@ func TestUsersService_specifiedUser_PackageRestoreVersion(t *testing.T) {
 	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
 		return client.Users.PackageRestoreVersion(ctx, "", "", "", 45763)
 	})
+}
+
+func TestUsersService_packageName_isEscaped(t *testing.T) {
+	t.Parallel()
+	const packageName = "hello/hello_docker"
+	const escaped = "hello%2fhello_docker"
+
+	for _, tt := range []struct {
+		name       string
+		wantPath   string
+		wantMethod string
+		body       string
+		call       func(ctx context.Context, client *Client) error
+	}{
+		{
+			name:       "DeletePackage",
+			wantPath:   "/user/packages/container/" + escaped,
+			wantMethod: "DELETE",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Users.DeletePackage(ctx, "", "container", packageName)
+				return err
+			},
+		},
+		{
+			name:       "DeletePackage_specifiedUser",
+			wantPath:   "/users/u/packages/container/" + escaped,
+			wantMethod: "DELETE",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Users.DeletePackage(ctx, "u", "container", packageName)
+				return err
+			},
+		},
+		{
+			name:       "RestorePackage",
+			wantPath:   "/user/packages/container/" + escaped + "/restore",
+			wantMethod: "POST",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Users.RestorePackage(ctx, "", "container", packageName)
+				return err
+			},
+		},
+		{
+			name:       "RestorePackage_specifiedUser",
+			wantPath:   "/users/u/packages/container/" + escaped + "/restore",
+			wantMethod: "POST",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Users.RestorePackage(ctx, "u", "container", packageName)
+				return err
+			},
+		},
+		{
+			name:       "ListPackageVersions",
+			wantPath:   "/user/packages/container/" + escaped + "/versions",
+			wantMethod: "GET",
+			body:       `[]`,
+			call: func(ctx context.Context, client *Client) error {
+				_, _, err := client.Users.ListPackageVersions(ctx, "container", packageName, nil)
+				return err
+			},
+		},
+		{
+			name:       "ListUserPackageVersions",
+			wantPath:   "/users/u/packages/container/" + escaped + "/versions",
+			wantMethod: "GET",
+			body:       `[]`,
+			call: func(ctx context.Context, client *Client) error {
+				_, _, err := client.Users.ListUserPackageVersions(ctx, "u", "container", packageName)
+				return err
+			},
+		},
+		{
+			name:       "PackageGetVersion",
+			wantPath:   "/user/packages/container/" + escaped + "/versions/45763",
+			wantMethod: "GET",
+			body:       `{}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, _, err := client.Users.PackageGetVersion(ctx, "", "container", packageName, 45763)
+				return err
+			},
+		},
+		{
+			name:       "PackageGetVersion_specifiedUser",
+			wantPath:   "/users/u/packages/container/" + escaped + "/versions/45763",
+			wantMethod: "GET",
+			body:       `{}`,
+			call: func(ctx context.Context, client *Client) error {
+				_, _, err := client.Users.PackageGetVersion(ctx, "u", "container", packageName, 45763)
+				return err
+			},
+		},
+		{
+			name:       "PackageDeleteVersion",
+			wantPath:   "/user/packages/container/" + escaped + "/versions/45763",
+			wantMethod: "DELETE",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Users.PackageDeleteVersion(ctx, "", "container", packageName, 45763)
+				return err
+			},
+		},
+		{
+			name:       "PackageRestoreVersion",
+			wantPath:   "/user/packages/container/" + escaped + "/versions/45763/restore",
+			wantMethod: "POST",
+			call: func(ctx context.Context, client *Client) error {
+				_, err := client.Users.PackageRestoreVersion(ctx, "", "container", packageName, 45763)
+				return err
+			},
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			var called bool
+			mux.HandleFunc(tt.wantPath, func(w http.ResponseWriter, r *http.Request) {
+				called = true
+				testMethod(t, r, tt.wantMethod)
+				if tt.body != "" {
+					if _, err := io.WriteString(w, tt.body); err != nil {
+						t.Fatal("Failed to write test response: ", err)
+					}
+				}
+			})
+
+			if err := tt.call(t.Context(), client); err != nil {
+				t.Errorf("Users.%v returned error: %v", tt.name, err)
+			}
+			if !called {
+				t.Errorf("Users.%v did not request the escaped path %v", tt.name, tt.wantPath)
+			}
+		})
+	}
 }

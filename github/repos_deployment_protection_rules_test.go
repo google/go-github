@@ -49,6 +49,39 @@ func TestRepositoriesService_GetAllDeploymentProtectionRules(t *testing.T) {
 	})
 }
 
+func TestRepositoriesService_GetAllDeploymentProtectionRules_EscapeEnvironment(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		environment        string
+		escapedEnvironment string
+	}{
+		{environment: "staging", escapedEnvironment: "staging"},
+		{environment: "team/staging", escapedEnvironment: "team%2Fstaging"},
+	} {
+		t.Run(tt.environment, func(t *testing.T) {
+			t.Parallel()
+			client, mux, _ := setup(t)
+
+			mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+				testMethod(t, r, "GET")
+				if got, want := r.URL.EscapedPath(), "/repos/o/repo/environments/"+tt.escapedEnvironment+"/deployment_protection_rules"; got != want {
+					t.Errorf("Request path = %q, want %q", got, want)
+				}
+				if got, want := r.URL.Path, "/repos/o/repo/environments/"+tt.environment+"/deployment_protection_rules"; got != want {
+					t.Errorf("Decoded request path = %q, want %q", got, want)
+				}
+				fmt.Fprint(w, `{"total_count":0,"custom_deployment_protection_rules":[]}`)
+			})
+
+			ctx := t.Context()
+			_, _, err := client.Repositories.GetAllDeploymentProtectionRules(ctx, "o", "repo", tt.environment)
+			if err != nil {
+				t.Fatalf("Repositories.GetAllDeploymentProtectionRules returned error: %v", err)
+			}
+		})
+	}
+}
+
 func TestRepositoriesService_CreateCustomDeploymentProtectionRule(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)

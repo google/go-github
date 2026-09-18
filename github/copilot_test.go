@@ -6,14 +6,255 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestCopilotSpace_UnmarshalJSON(t *testing.T) {
+	t.Parallel()
+
+	var got CopilotSpace
+	err := got.UnmarshalJSON([]byte(`{`))
+	if err == nil {
+		t.Error("CopilotSpace.UnmarshalJSON returned nil instead of an error")
+	}
+	tests := []struct {
+		name    string
+		json    string
+		want    *CopilotSpace
+		wantErr bool
+	}{
+		{
+			name: "user owner with large ID",
+			json: `{"owner":{"id":9007199254740993,"type":"User"}}`,
+			want: &CopilotSpace{
+				Owner: &User{
+					ID:   new(int64(9007199254740993)),
+					Type: new("User"),
+				},
+			},
+		},
+		{
+			name: "organization owner with large ID",
+			json: `{"owner":{"id":9007199254740993,"type":"Organization"}}`,
+			want: &CopilotSpace{
+				Owner: &Organization{
+					ID:   new(int64(9007199254740993)),
+					Type: new("Organization"),
+				},
+			},
+		},
+		{
+			name: "organization owner without type with large ID",
+			json: `{"owner":{"id":9007199254740993,"hooks_url":"https://api.github.com/orgs/octo-org/hooks"}}`,
+			want: &CopilotSpace{
+				Owner: &Organization{
+					ID:       new(int64(9007199254740993)),
+					HooksURL: new("https://api.github.com/orgs/octo-org/hooks"),
+				},
+			},
+		},
+		{
+			name: "user owner",
+			json: `{
+				"id": 12,
+				"number": 6,
+				"name": "Test Planning Space",
+				"owner": {
+					"login": "octocat",
+					"id": 1,
+					"type": "User"
+				},
+				"creator": {
+					"login": "octocat",
+					"id": 1,
+					"type": "User"
+				},
+				"created_at": ` + refTimeStr(1136178000) + `,
+				"updated_at": ` + refTimeStr(1136178001) + `,
+				"html_url": "https://github.com/copilot/spaces/octocat/6",
+				"api_url": "https://api.github.com/users/octocat/copilot-spaces/6",
+				"base_role": "read"
+			}`,
+			want: &CopilotSpace{
+				ID:        int64(12),
+				Number:    6,
+				Name:      "Test Planning Space",
+				Owner:     &User{Login: new("octocat"), ID: new(int64(1)), Type: new("User")},
+				Creator:   User{Login: new("octocat"), ID: new(int64(1)), Type: new("User")},
+				CreatedAt: *refTimestamp(1136178000),
+				UpdatedAt: *refTimestamp(1136178001),
+				HTMLURL:   "https://github.com/copilot/spaces/octocat/6",
+				APIURL:    "https://api.github.com/users/octocat/copilot-spaces/6",
+				BaseRole:  "read",
+			},
+		},
+		{
+			name: "organization owner without type",
+			json: `{
+				"id": 12,
+				"number": 6,
+				"name": "Test Planning Space",
+				"owner": {
+					"login": "octo-org",
+					"id": 1,
+					"node_id": "MDEyOk9yZ2FuaXphdGlvbjE=",
+					"url": "https://api.github.com/orgs/octo-org",
+					"repos_url": "https://api.github.com/orgs/octo-org/repos",
+					"events_url": "https://api.github.com/orgs/octo-org/events",
+					"hooks_url": "https://api.github.com/orgs/octo-org/hooks",
+					"issues_url": "https://api.github.com/orgs/octo-org/issues",
+					"members_url": "https://api.github.com/orgs/octo-org/members{/member}",
+					"public_members_url": "https://api.github.com/orgs/octo-org/public_members{/member}",
+					"avatar_url": "https://github.com/images/error/octocat_happy.gif",
+					"description": "A great organization"
+				},
+				"creator": {
+					"login": "octocat",
+					"id": 1,
+					"type": "User"
+				},
+				"created_at": ` + refTimeStr(1136178000) + `,
+				"updated_at": ` + refTimeStr(1136178001) + `,
+				"html_url": "https://github.com/copilot/spaces/octo-org/6",
+				"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+				"base_role": "read"
+			}`,
+			want: &CopilotSpace{
+				ID:     int64(12),
+				Number: 6,
+				Name:   "Test Planning Space",
+				Owner: &Organization{
+					Login:            new("octo-org"),
+					ID:               new(int64(1)),
+					NodeID:           new("MDEyOk9yZ2FuaXphdGlvbjE="),
+					URL:              new("https://api.github.com/orgs/octo-org"),
+					ReposURL:         new("https://api.github.com/orgs/octo-org/repos"),
+					EventsURL:        new("https://api.github.com/orgs/octo-org/events"),
+					HooksURL:         new("https://api.github.com/orgs/octo-org/hooks"),
+					IssuesURL:        new("https://api.github.com/orgs/octo-org/issues"),
+					MembersURL:       new("https://api.github.com/orgs/octo-org/members{/member}"),
+					PublicMembersURL: new("https://api.github.com/orgs/octo-org/public_members{/member}"),
+					AvatarURL:        new("https://github.com/images/error/octocat_happy.gif"),
+					Description:      new("A great organization"),
+				},
+				Creator:   User{Login: new("octocat"), ID: new(int64(1)), Type: new("User")},
+				CreatedAt: *refTimestamp(1136178000),
+				UpdatedAt: *refTimestamp(1136178001),
+				HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+				APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+				BaseRole:  "read",
+			},
+		},
+		{
+			name: "Unsupported owner type",
+			json: `{
+				"id": 12,
+				"owner": {
+					"login": "octo-bot",
+					"id": 1,
+					"type": "Bot"
+				}
+			}`,
+			wantErr: true,
+		},
+		{
+			name: "Owner without discriminator",
+			json: `{
+				"id": 12,
+				"owner": {
+					"login": "octo-org",
+					"id": 1
+				}
+			}`,
+			wantErr: true,
+		},
+		{
+			name: "Unsupported owner json type",
+			json: `{
+				"id": 12,
+				"owner": "octo-cat"
+			}`,
+			wantErr: true,
+		},
+		{
+			name: "User owner decode error",
+			json: `{
+				"id": 12,
+				"owner": {
+					"login": "octocat",
+					"id": "not-an-int",
+					"type": "User"
+				}
+			}`,
+			wantErr: true,
+		},
+		{
+			name: "Null owner",
+			json: `{
+				"id": 12,
+				"owner": null
+			}`,
+			want: &CopilotSpace{
+				ID:    12,
+				Owner: nil,
+			},
+		},
+		{
+			name: "Organization owner decode error",
+			json: `{
+				"id": 12,
+				"owner": {
+					"login": "octo-org",
+					"id": "not-an-int",
+					"type": "Organization"
+				}
+			}`,
+			wantErr: true,
+		},
+		{
+			name: "Organization owner fallback decode error",
+			json: `{
+				"id": 12,
+				"owner": {
+					"login": "octo-org",
+					"id": "not-an-int",
+					"hooks_url": "https://api.github.com/orgs/octo-org/hooks"
+				}
+			}`,
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			var got *CopilotSpace
+			err := json.Unmarshal([]byte(tt.json), &got)
+			if tt.wantErr {
+				if err == nil {
+					t.Error("CopilotSpace.UnmarshalJSON returned nil instead of an error")
+				}
+				return
+			}
+			if err != nil {
+				t.Errorf("CopilotSpace.UnmarshalJSON returned error: %v", err)
+			}
+
+			if !cmp.Equal(got, tt.want) {
+				t.Errorf("CopilotSpace.UnmarshalJSON returned %+v, want %+v", got, tt.want)
+			}
+		})
+	}
+}
 
 func TestCopilotSeatDetails_UnmarshalJSON(t *testing.T) {
 	t.Parallel()
@@ -1042,6 +1283,468 @@ func TestCopilotService_RemoveCopilotUsers(t *testing.T) {
 			t.Errorf("Copilot.RemoveCopilotUsers returned %+v, want nil", got)
 		}
 		return resp, err
+	})
+}
+
+func TestCopilotService_ListOrganizationCopilotSpaces(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot-spaces", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{
+			"per_page": "100",
+			"after":    "cursor",
+		})
+		fmt.Fprint(w, `{
+			"spaces": [
+			{
+				"id": 12,
+				"number": 6,
+				"name": "Test Planning Space",
+				"description": "A space for planning",
+				"general_instructions": "use this space for team planning",
+				"owner": {
+					"login": "octo-org",
+					"id": 1,
+					"type": "Organization"
+				},
+				"creator": {
+					"login": "octocat",
+					"id": 2,
+					"type": "User"
+				},
+				"created_at": `+refTimeStr(1136178000)+`,
+				"updated_at": `+refTimeStr(1136178001)+`,
+				"html_url": "https://github.com/copilot/spaces/octo-org/3",
+				"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/3",
+				"base_role": "read"
+			}
+			]
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &ListCursorOptions{PerPage: 100, After: "cursor"}
+	got, _, err := client.Copilot.ListOrganizationCopilotSpaces(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Copilot.ListOrganizationCopilotSpaces returned error: %v", err)
+	}
+	want := &CopilotSpacesList{
+		Spaces: []*CopilotSpace{
+			{
+				ID:                  int64(12),
+				Number:              6,
+				Name:                "Test Planning Space",
+				Description:         new("A space for planning"),
+				GeneralInstructions: new("use this space for team planning"),
+				Owner: &Organization{
+					Login: new("octo-org"),
+					ID:    new(int64(1)),
+					Type:  new("Organization"),
+				},
+				Creator: User{
+					Login: new("octocat"),
+					ID:    new(int64(2)),
+					Type:  new("User"),
+				},
+				CreatedAt: *refTimestamp(1136178000),
+				UpdatedAt: *refTimestamp(1136178001),
+				HTMLURL:   "https://github.com/copilot/spaces/octo-org/3",
+				APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/3",
+				BaseRole:  "read",
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.ListOrganizationCopilotSpaces returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "ListOrganizationCopilotSpaces"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.ListOrganizationCopilotSpaces(ctx, "\n", opts)
+		return err
+	})
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.ListOrganizationCopilotSpaces(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("Copilot.ListOrganizationCopilotSpaces returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationCopilotSpace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot-spaces/6", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{
+			"id": 12,
+			"number": 6,
+			"name": "Test Planning Space",
+			"description": "A space for planning",
+			"general_instructions": "use this space for team planning",
+			"owner": {
+				"login": "octo-org",
+				"id": 1,
+				"type": "Organization"
+			},
+			"creator": {
+				"login": "octocat",
+				"id": 2,
+				"type": "User"
+			},
+			"created_at": `+refTimeStr(1136178000)+`,
+			"updated_at": `+refTimeStr(1136178001)+`,
+			"html_url": "https://github.com/copilot/spaces/octo-org/6",
+			"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+			"base_role": "read"
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.GetOrganizationCopilotSpace(ctx, "o", 6)
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationCopilotSpace returned error: %v", err)
+	}
+
+	want := &CopilotSpace{
+		ID:                  int64(12),
+		Number:              6,
+		Name:                "Test Planning Space",
+		Description:         new("A space for planning"),
+		GeneralInstructions: new("use this space for team planning"),
+		Owner: &Organization{
+			Login: new("octo-org"),
+			ID:    new(int64(1)),
+			Type:  new("Organization"),
+		},
+		Creator: User{
+			Login: new("octocat"),
+			ID:    new(int64(2)),
+			Type:  new("User"),
+		},
+		CreatedAt: *refTimestamp(1136178000),
+		UpdatedAt: *refTimestamp(1136178001),
+		HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+		APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		BaseRole:  "read",
+	}
+
+	if !cmp.Equal(want, got) {
+		t.Errorf("CopilotService returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationCopilotSpace"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationCopilotSpace(ctx, "\n", 6)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationCopilotSpace(ctx, "o", 6)
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationCopilotSpace returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_CreateOrganizationCopilotSpace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := CreateOrganizationCopilotSpaceRequest{
+		Name:                "Team Planning Space",
+		Description:         new("Organization space for team planning"),
+		GeneralInstructions: new("Help the team with planning tasks"),
+		BaseRole:            new("no_access"),
+		ResourcesAttributes: []*CreateCopilotSpaceResourceAttributes{
+			{
+				ResourceType: new("free_text"),
+				Metadata: &CopilotSpaceMetadata{
+					Name: new("Team Guidelines"),
+					Text: new("Our team follows agile methodology"),
+				},
+			},
+		},
+	}
+
+	want := &CopilotSpace{
+		ID:                  int64(12),
+		Number:              6,
+		Name:                "Team Planning Space",
+		Description:         new("Organization space for team planning"),
+		GeneralInstructions: new("Help the team with planning tasks"),
+		Owner: &Organization{
+			Login: new("octo-org"),
+			ID:    new(int64(1)),
+			Type:  new("Organization"),
+		},
+		Creator: User{
+			Login: new("octocat"),
+			ID:    new(int64(2)),
+			Type:  new("User"),
+		},
+		CreatedAt: *refTimestamp(1136178000),
+		UpdatedAt: *refTimestamp(1136178001),
+		HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+		APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		BaseRole:  "no_access",
+		ResourcesAttributes: []*CopilotSpaceResource{
+			{
+				ID:           new(int64(101)),
+				ResourceType: new("free_text"),
+				Metadata: &CopilotSpaceMetadata{
+					Name: new("Team Guidelines"),
+					Text: new("Our team follows agile methodology"),
+				},
+			},
+			{
+				ID:                      new(int64(125)),
+				ResourceType:            new("media_content"),
+				CopilotChatAttachmentID: new(int64(123)),
+				Metadata: &CopilotSpaceMetadata{
+					CopilotChatAttachmentID: new(int64(123)),
+					MediaType:               new("image/png"),
+					URL:                     new("https://example.com/image.png"),
+					Height:                  new(640),
+					Width:                   new(480),
+				},
+				CreatedAt: &Timestamp{referenceTime},
+				UpdatedAt: &Timestamp{referenceTime},
+			},
+		},
+	}
+
+	mux.HandleFunc("/orgs/o/copilot-spaces", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testJSONBody(t, r, input)
+
+		fmt.Fprint(w, `{
+		"id": 12,
+		"number": 6,
+		"name": "Team Planning Space",
+		"description": "Organization space for team planning",
+		"general_instructions": "Help the team with planning tasks",
+		"owner": {
+			"login": "octo-org",
+			"id": 1,
+			"type": "Organization"
+		},
+		"creator": {
+			"login": "octocat",
+			"id": 2,
+			"type": "User"
+		},
+		"created_at": `+refTimeStr(1136178000)+`,
+		"updated_at": `+refTimeStr(1136178001)+`,
+		"html_url": "https://github.com/copilot/spaces/octo-org/6",
+		"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		"base_role": "no_access",
+		"resources_attributes": [
+		{
+			"id": 101,
+			"resource_type": "free_text",
+			"metadata": {
+				"name": "Team Guidelines",
+				"text": "Our team follows agile methodology"
+			}
+		},
+		{
+			"id": 125,
+			"resource_type": "media_content",
+			"copilot_chat_attachment_id": 123,
+			"metadata": {
+				"copilot_chat_attachment_id": 123,
+				"media_type": "image/png",
+				"url": "https://example.com/image.png",
+				"height": 640,
+				"width": 480
+			},
+			"created_at": `+referenceTimeStr+`,
+			"updated_at": `+referenceTimeStr+`
+		}
+	]
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.CreateOrganizationCopilotSpace(ctx, "o", input)
+	if err != nil {
+		t.Errorf("Copilot.CreateOrganizationCopilotSpace returned error: %v", err)
+	}
+
+	if !cmp.Equal(want, got) {
+		t.Errorf("CopilotService returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "CreateOrganizationCopilotSpace"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.CreateOrganizationCopilotSpace(ctx, "\n", input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.CreateOrganizationCopilotSpace(ctx, "o", input)
+		if got != nil {
+			t.Errorf("Copilot.CreateOrganizationCopilotSpace returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_UpdateOrganizationCopilotSpace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	input := UpdateOrganizationCopilotSpaceRequest{
+		Name:                new("Team Planning Space"),
+		Description:         new("Updated organization space for team planning"),
+		GeneralInstructions: new("Help the team with updated planning tasks"),
+		BaseRole:            new("read"),
+		ResourcesAttributes: []*UpdateCopilotSpaceResourceAttributes{
+			{
+				ID:           new(int64(101)),
+				ResourceType: new("free_text"),
+				Metadata: &CopilotSpaceMetadata{
+					Name: new("Team Guidelines"),
+					Text: new("Our team follows agile methodology"),
+				},
+			},
+			{
+				ID:      new(int64(102)),
+				Destroy: new(true),
+			},
+		},
+	}
+
+	want := &CopilotSpace{
+		ID:                  int64(12),
+		Number:              6,
+		Name:                "Team Planning Space",
+		Description:         new("Updated organization space for team planning"),
+		GeneralInstructions: new("Help the team with updated planning tasks"),
+		Owner: &Organization{
+			Login: new("octo-org"),
+			ID:    new(int64(1)),
+			Type:  new("Organization"),
+		},
+		Creator: User{
+			Login: new("octocat"),
+			ID:    new(int64(2)),
+			Type:  new("User"),
+		},
+		CreatedAt: *refTimestamp(1136178000),
+		UpdatedAt: *refTimestamp(1136178001),
+		HTMLURL:   "https://github.com/copilot/spaces/octo-org/6",
+		APIURL:    "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		BaseRole:  "read",
+		ResourcesAttributes: []*CopilotSpaceResource{
+			{
+				ID:           new(int64(101)),
+				ResourceType: new("free_text"),
+				Metadata: &CopilotSpaceMetadata{
+					Name: new("Updated Team Guidelines"),
+					Text: new("Our team now follows updated agile methodology"),
+				},
+			},
+		},
+	}
+
+	mux.HandleFunc("/orgs/o/copilot-spaces/6", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, input)
+
+		fmt.Fprint(w, `{
+		"id": 12,
+		"number": 6,
+		"name": "Team Planning Space",
+		"description": "Updated organization space for team planning",
+		"general_instructions": "Help the team with updated planning tasks",
+		"owner": {
+			"login": "octo-org",
+			"id": 1,
+			"type": "Organization"
+		},
+		"creator": {
+			"login": "octocat",
+			"id": 2,
+			"type": "User"
+		},
+		"created_at": `+refTimeStr(1136178000)+`,
+		"updated_at": `+refTimeStr(1136178001)+`,
+		"html_url": "https://github.com/copilot/spaces/octo-org/6",
+		"api_url": "https://api.github.com/orgs/octo-org/copilot-spaces/6",
+		"base_role": "read",
+		"resources_attributes": [
+		{
+			"id": 101,
+			"resource_type": "free_text",
+			"metadata": {
+				"name": "Updated Team Guidelines",
+				"text": "Our team now follows updated agile methodology"
+			}
+		}
+	]
+		}`)
+	})
+
+	ctx := t.Context()
+	got, _, err := client.Copilot.UpdateOrganizationCopilotSpace(ctx, "o", 6, input)
+	if err != nil {
+		t.Errorf("Copilot.UpdateOrganizationCopilotSpace returned error: %v", err)
+	}
+
+	if !cmp.Equal(want, got) {
+		t.Errorf("CopilotService returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "UpdateOrganizationCopilotSpace"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.UpdateOrganizationCopilotSpace(ctx, "\n", 6, input)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.UpdateOrganizationCopilotSpace(ctx, "o", 6, input)
+		if got != nil {
+			t.Errorf("Copilot.UpdateOrganizationCopilotSpace returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_DeleteOrganizationCopilotSpace(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot-spaces/6", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+	})
+
+	ctx := t.Context()
+	_, err := client.Copilot.DeleteOrganizationCopilotSpace(ctx, "o", 6)
+	if err != nil {
+		t.Errorf("Copilot.DeleteOrganizationCopilotSpace returned error: %v", err)
+	}
+
+	const methodName = "DeleteOrganizationCopilotSpace"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, err = client.Copilot.DeleteOrganizationCopilotSpace(ctx, "\n", 6)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		return client.Copilot.DeleteOrganizationCopilotSpace(ctx, "o", 6)
 	})
 }
 
@@ -2888,6 +3591,186 @@ func TestCopilotService_GetOrganizationUsersMetricsReport(t *testing.T) {
 	})
 }
 
+func TestCopilotService_GetEnterpriseRepositoriesDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/metrics/reports/repos-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2026-07-14"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/repos-1.json", "https://example.com/repos-2.json"],
+			"report_day": "2026-07-14"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2026-07-14"}
+	got, _, err := client.Copilot.GetEnterpriseRepositoriesDailyMetricsReport(ctx, "e", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseRepositoriesDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/repos-1.json", "https://example.com/repos-2.json"},
+		ReportDay:     "2026-07-14",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseRepositoriesDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseRepositoriesDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseRepositoriesDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseRepositoriesDailyMetricsReport(ctx, "e", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseRepositoriesDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationRepositoriesDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/metrics/reports/repos-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2026-07-14"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/repos-1.json"],
+			"report_day": "2026-07-14"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2026-07-14"}
+	got, _, err := client.Copilot.GetOrganizationRepositoriesDailyMetricsReport(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationRepositoriesDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/repos-1.json"},
+		ReportDay:     "2026-07-14",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationRepositoriesDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationRepositoriesDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationRepositoriesDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationRepositoriesDailyMetricsReport(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationRepositoriesDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetEnterpriseUserTeamsDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/enterprises/e/copilot/metrics/reports/user-teams-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2026-05-14"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/user-teams-1.json", "https://example.com/user-teams-2.json"],
+			"report_day": "2026-05-14"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2026-05-14"}
+	got, _, err := client.Copilot.GetEnterpriseUserTeamsDailyMetricsReport(ctx, "e", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetEnterpriseUserTeamsDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/user-teams-1.json", "https://example.com/user-teams-2.json"},
+		ReportDay:     "2026-05-14",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetEnterpriseUserTeamsDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetEnterpriseUserTeamsDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetEnterpriseUserTeamsDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetEnterpriseUserTeamsDailyMetricsReport(ctx, "e", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetEnterpriseUserTeamsDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
+func TestCopilotService_GetOrganizationUserTeamsDailyMetricsReport(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/orgs/o/copilot/metrics/reports/user-teams-1-day", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testFormValues(t, r, values{"day": "2026-05-14"})
+		fmt.Fprint(w, `{
+			"download_links": ["https://example.com/user-teams-1.json"],
+			"report_day": "2026-05-14"
+		}`)
+	})
+
+	ctx := t.Context()
+	opts := &CopilotMetricsReportOptions{Day: "2026-05-14"}
+	got, _, err := client.Copilot.GetOrganizationUserTeamsDailyMetricsReport(ctx, "o", opts)
+	if err != nil {
+		t.Errorf("Copilot.GetOrganizationUserTeamsDailyMetricsReport returned error: %v", err)
+	}
+
+	want := &CopilotDailyMetricsReport{
+		DownloadLinks: []string{"https://example.com/user-teams-1.json"},
+		ReportDay:     "2026-05-14",
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.GetOrganizationUserTeamsDailyMetricsReport returned %+v, want %+v", got, want)
+	}
+
+	const methodName = "GetOrganizationUserTeamsDailyMetricsReport"
+
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.Copilot.GetOrganizationUserTeamsDailyMetricsReport(ctx, "\n", opts)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.Copilot.GetOrganizationUserTeamsDailyMetricsReport(ctx, "o", opts)
+		if got != nil {
+			t.Errorf("Copilot.GetOrganizationUserTeamsDailyMetricsReport returned %+v, want nil", got)
+		}
+		return resp, err
+	})
+}
+
 func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -3024,6 +3907,71 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 	}
 }
 
+// downloadFunc adapts a Download*Metrics method whose decoded payload the table
+// below does not inspect into the error-only shape it runs. Each method returns a
+// different type, so the shared signature is what lets one case list them all.
+func downloadFunc[V any](f func(context.Context, string) (V, *Response, error)) func(context.Context, string) error {
+	return func(ctx context.Context, url string) error {
+		_, _, err := f(ctx, url)
+		return err
+	}
+}
+
+// TestCopilotService_DownloadMetrics_ForeignHostGetsNoCredentials covers the
+// download helpers whose URL comes straight out of a report response, and which
+// therefore may name any host: DownloadCopilotMetrics, and the fetchMetricsReport
+// backed Download*Metrics methods. The client attaches its token only to its own
+// configured origins, so a download link naming some other host is fetched
+// unauthenticated. That is a property of the client's credential wrapper rather
+// than of any one of these methods, which is why none of them needs a host check
+// of its own.
+func TestCopilotService_DownloadMetrics_ForeignHostGetsNoCredentials(t *testing.T) {
+	t.Parallel()
+	client, _, _ := setup(t)
+
+	authedClient, err := client.Clone(WithAuthToken("secret-token"))
+	if err != nil {
+		t.Fatalf("Client.Clone returned error: %v", err)
+	}
+
+	tests := []struct {
+		name string
+		// payload is what the foreign host serves. The methods do not all decode
+		// the same shape, so each case carries one its method can parse: a case
+		// then fails on the header and not on a decode error.
+		payload  string
+		download func(ctx context.Context, url string) error
+	}{
+		{"DownloadCopilotMetrics decodes a JSON array", `[]`, downloadFunc(authedClient.Copilot.DownloadCopilotMetrics)},
+		{"DownloadDailyMetrics decodes a JSON object", `{}`, downloadFunc(authedClient.Copilot.DownloadDailyMetrics)},
+		{"DownloadPeriodicMetrics decodes a JSON object", `{}`, downloadFunc(authedClient.Copilot.DownloadPeriodicMetrics)},
+		{"DownloadUserDailyMetrics decodes NDJSON", `{}`, downloadFunc(authedClient.Copilot.DownloadUserDailyMetrics)},
+		{"DownloadUserPeriodicMetrics decodes NDJSON", `{}`, downloadFunc(authedClient.Copilot.DownloadUserPeriodicMetrics)},
+		{"DownloadRepositoryDailyMetrics decodes NDJSON", `{}`, downloadFunc(authedClient.Copilot.DownloadRepositoryDailyMetrics)},
+		{"DownloadUserTeamsDailyMetrics decodes NDJSON", `{}`, downloadFunc(authedClient.Copilot.DownloadUserTeamsDailyMetrics)},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			auth := make(chan string, 1)
+			foreign := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				select {
+				case auth <- r.Header.Get("Authorization"):
+				default:
+				}
+				fmt.Fprint(w, tt.payload)
+			}))
+			t.Cleanup(foreign.Close)
+
+			if err := tt.download(t.Context(), foreign.URL+"/path/to/report"); err != nil {
+				t.Fatalf("download returned error: %v", err)
+			}
+			assertRecordedAuthHeader(t, auth, "")
+		})
+	}
+}
+
 func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 	t.Parallel()
 	client, mux, _ := setup(t)
@@ -3036,8 +3984,14 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 			"daily_active_cli_users": 2,
 			"daily_active_copilot_app_users": 1,
 			"daily_active_users": 10,
+			"daily_active_copilot_code_review_users": 3,
+			"daily_passive_copilot_code_review_users": 1,
 			"weekly_active_users": 20,
+			"weekly_active_copilot_code_review_users": 8,
+			"weekly_passive_copilot_code_review_users": 2,
 			"monthly_active_users": 30,
+			"monthly_active_copilot_code_review_users": 15,
+			"monthly_passive_copilot_code_review_users": 4,
 			"chat_panel_ask_mode": 4,
 			"totals_by_ide": [
 				{"ide": "vscode", "user_initiated_interaction_count": 5, "loc_added_sum": 100}
@@ -3124,13 +4078,19 @@ func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
 	}
 
 	want := &CopilotDailyMetrics{
-		Day:                        "2026-04-01",
-		OrganizationID:             new("123"),
-		DailyActiveCLIUsers:        new(2),
-		DailyActiveCopilotAppUsers: new(1),
-		DailyActiveUsers:           new(10),
-		WeeklyActiveUsers:          new(20),
-		MonthlyActiveUsers:         new(30),
+		Day:                                  "2026-04-01",
+		OrganizationID:                       new("123"),
+		DailyActiveCLIUsers:                  new(2),
+		DailyActiveCopilotAppUsers:           new(1),
+		DailyActiveUsers:                     new(10),
+		DailyActiveCopilotCodeReviewUsers:    new(3),
+		DailyPassiveCopilotCodeReviewUsers:   new(1),
+		WeeklyActiveUsers:                    new(20),
+		WeeklyActiveCopilotCodeReviewUsers:   new(8),
+		WeeklyPassiveCopilotCodeReviewUsers:  new(2),
+		MonthlyActiveUsers:                   new(30),
+		MonthlyActiveCopilotCodeReviewUsers:  new(15),
+		MonthlyPassiveCopilotCodeReviewUsers: new(4),
 		CopilotMetricsChatPanel: CopilotMetricsChatPanel{
 			ChatPanelAskMode: new(4),
 		},
@@ -3283,6 +4243,10 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 					"daily_active_cli_users": 2,
 					"daily_active_copilot_app_users": 1,
 					"daily_active_users": 5,
+					"daily_active_copilot_code_review_users": 2,
+					"daily_passive_copilot_code_review_users": 1,
+					"weekly_active_copilot_code_review_users": 6,
+					"monthly_active_copilot_code_review_users": 12,
 					"totals_by_cli": {
 						"session_count": 1,
 						"request_count": 2,
@@ -3331,10 +4295,14 @@ func TestCopilotService_DownloadPeriodicMetrics(t *testing.T) {
 		CreatedAt:      refTimestamp(1136178000),
 		DayTotals: []*CopilotDailyMetrics{
 			{
-				Day:                        "2026-03-05",
-				DailyActiveCLIUsers:        new(2),
-				DailyActiveCopilotAppUsers: new(1),
-				DailyActiveUsers:           new(5),
+				Day:                                 "2026-03-05",
+				DailyActiveCLIUsers:                 new(2),
+				DailyActiveCopilotAppUsers:          new(1),
+				DailyActiveUsers:                    new(5),
+				DailyActiveCopilotCodeReviewUsers:   new(2),
+				DailyPassiveCopilotCodeReviewUsers:  new(1),
+				WeeklyActiveCopilotCodeReviewUsers:  new(6),
+				MonthlyActiveCopilotCodeReviewUsers: new(12),
 				TotalsByCLI: &CopilotMetricsCLI{
 					SessionCount: new(1),
 					RequestCount: new(2),
@@ -3632,5 +4600,211 @@ func TestCopilotService_DownloadUserPeriodicMetrics(t *testing.T) {
 	})
 	if _, _, err := client.Copilot.DownloadUserPeriodicMetrics(ctx, client.baseURL.String()+"path/to/users-periodic/badjson"); err == nil {
 		t.Error("Copilot.DownloadUserPeriodicMetrics expected error for bad JSON, got none")
+	}
+}
+
+func TestCopilotService_DownloadRepositoryDailyMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/repos-daily", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"day":"2026-07-14","enterprise_id":"1001","organization_id":"2002","repo_id":900000001,"repo_owner_name":"octodemo-metrics","repo_name":"example-service-alpha","repo_visibility":"INTERNAL","pull_requests":{"total_reviewed":1,"total_created":1,"total_created_by_copilot":1,"total_reviewed_by_copilot":1,"total_merged":1,"median_minutes_to_merge":372.62,"total_suggestions":0,"total_applied_suggestions":0,"total_merged_created_by_copilot":1,"median_minutes_to_merge_copilot_authored":372.62,"total_copilot_suggestions":0,"total_copilot_applied_suggestions":0,"total_merged_reviewed_by_copilot":1,"median_minutes_to_merge_copilot_reviewed":372.62,"copilot_suggestions_by_comment_type":[]}}
+{"day":"2026-07-14","enterprise_id":"1001","organization_id":"2002","repo_id":900000003,"repo_owner_name":"octodemo-metrics","repo_name":"example-service-gamma","repo_visibility":"INTERNAL","pull_requests":{"total_reviewed":1,"total_created":0,"total_created_by_copilot":0,"total_reviewed_by_copilot":1,"total_merged":1,"median_minutes_to_merge":1020.53,"total_suggestions":0,"total_applied_suggestions":1,"total_merged_created_by_copilot":0,"total_copilot_suggestions":0,"total_copilot_applied_suggestions":1,"total_merged_reviewed_by_copilot":1,"median_minutes_to_merge_copilot_reviewed":1020.53,"copilot_suggestions_by_comment_type":[{"comment_type":"spelling","total_copilot_suggestions":0,"total_copilot_applied_suggestions":1}]}}
+`)
+	})
+
+	ctx := t.Context()
+	url := client.baseURL.String() + "path/to/repos-daily"
+	got, resp, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, url)
+	if err != nil {
+		t.Errorf("Copilot.DownloadRepositoryDailyMetrics returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Copilot.DownloadRepositoryDailyMetrics returned status code: %v", resp.StatusCode)
+	}
+
+	want := []*CopilotRepositoryDailyMetrics{
+		{
+			Day:            "2026-07-14",
+			EnterpriseID:   new("1001"),
+			OrganizationID: new("2002"),
+			RepoID:         900000001,
+			RepoOwnerName:  "octodemo-metrics",
+			RepoName:       "example-service-alpha",
+			RepoVisibility: "INTERNAL",
+			PullRequests: &CopilotMetricsPullRequests{
+				TotalReviewed:                       new(1),
+				TotalCreated:                        new(1),
+				TotalCreatedByCopilot:               new(1),
+				TotalReviewedByCopilot:              new(1),
+				TotalMerged:                         new(1),
+				MedianMinutesToMerge:                new(372.62),
+				TotalSuggestions:                    new(0),
+				TotalAppliedSuggestions:             new(0),
+				TotalMergedCreatedByCopilot:         new(1),
+				MedianMinutesToMergeCopilotAuthored: new(372.62),
+				TotalCopilotSuggestions:             new(0),
+				TotalCopilotAppliedSuggestions:      new(0),
+				TotalMergedReviewedByCopilot:        new(1),
+				MedianMinutesToMergeCopilotReviewed: new(372.62),
+				CopilotSuggestionsByCommentType:     []*CopilotMetricsCopilotSuggestionByCommentType{},
+			},
+		},
+		{
+			Day:            "2026-07-14",
+			EnterpriseID:   new("1001"),
+			OrganizationID: new("2002"),
+			RepoID:         900000003,
+			RepoOwnerName:  "octodemo-metrics",
+			RepoName:       "example-service-gamma",
+			RepoVisibility: "INTERNAL",
+			PullRequests: &CopilotMetricsPullRequests{
+				TotalReviewed:                       new(1),
+				TotalCreated:                        new(0),
+				TotalCreatedByCopilot:               new(0),
+				TotalReviewedByCopilot:              new(1),
+				TotalMerged:                         new(1),
+				MedianMinutesToMerge:                new(1020.53),
+				TotalSuggestions:                    new(0),
+				TotalAppliedSuggestions:             new(1),
+				TotalMergedCreatedByCopilot:         new(0),
+				TotalCopilotSuggestions:             new(0),
+				TotalCopilotAppliedSuggestions:      new(1),
+				TotalMergedReviewedByCopilot:        new(1),
+				MedianMinutesToMergeCopilotReviewed: new(1020.53),
+				CopilotSuggestionsByCommentType: []*CopilotMetricsCopilotSuggestionByCommentType{
+					{
+						CommentType:                    "spelling",
+						TotalCopilotSuggestions:        new(0),
+						TotalCopilotAppliedSuggestions: new(1),
+					},
+				},
+			},
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.DownloadRepositoryDailyMetrics returned %+v, want %+v", got, want)
+	}
+
+	mux.HandleFunc("/path/to/repos-daily/empty", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+	})
+	gotEmpty, _, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, client.baseURL.String()+"path/to/repos-daily/empty")
+	if err != nil {
+		t.Errorf("Copilot.DownloadRepositoryDailyMetrics empty body returned error: %v", err)
+	}
+	if gotEmpty != nil {
+		t.Errorf("Copilot.DownloadRepositoryDailyMetrics empty body returned %+v, want nil", gotEmpty)
+	}
+
+	mux.HandleFunc("/path/to/repos-daily/error", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+	if _, _, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, client.baseURL.String()+"path/to/repos-daily/error"); err == nil {
+		t.Error("Copilot.DownloadRepositoryDailyMetrics expected error but got none")
+	}
+	if _, _, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, "\n"); err == nil {
+		t.Error("Copilot.DownloadRepositoryDailyMetrics expected error for invalid URL, got none")
+	}
+	if _, _, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, "invalid-scheme://test"); err == nil {
+		t.Error("Copilot.DownloadRepositoryDailyMetrics expected error for invalid scheme, got none")
+	}
+
+	mux.HandleFunc("/path/to/repos-daily/badjson", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "{\"repo_id\":1,\"day\":\"2026-07-14\"}\n{bad\n")
+	})
+	if _, _, err := client.Copilot.DownloadRepositoryDailyMetrics(ctx, client.baseURL.String()+"path/to/repos-daily/badjson"); err == nil {
+		t.Error("Copilot.DownloadRepositoryDailyMetrics expected error for bad JSON, got none")
+	}
+}
+
+func TestCopilotService_DownloadUserTeamsDailyMetrics(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	mux.HandleFunc("/path/to/user-teams-daily", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"user_id":1001,"user_login":"octocat","day":"2026-05-14","organization_id":"999","team_id":42,"slug":"frontend"}
+{"user_id":1001,"user_login":"octocat","day":"2026-05-14","organization_id":"999","team_id":43,"slug":"backend"}
+{"user_id":1002,"user_login":"hubot","day":"2026-05-14","enterprise_id":"1","team_id":9001,"slug":"eng-platform"}
+`)
+	})
+
+	ctx := t.Context()
+	url := client.baseURL.String() + "path/to/user-teams-daily"
+	got, resp, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, url)
+	if err != nil {
+		t.Errorf("Copilot.DownloadUserTeamsDailyMetrics returned error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Copilot.DownloadUserTeamsDailyMetrics returned status code: %v", resp.StatusCode)
+	}
+
+	want := []*CopilotUserTeamsDailyMetrics{
+		{
+			UserID:         1001,
+			UserLogin:      "octocat",
+			Day:            "2026-05-14",
+			OrganizationID: new("999"),
+			TeamID:         42,
+			Slug:           "frontend",
+		},
+		{
+			UserID:         1001,
+			UserLogin:      "octocat",
+			Day:            "2026-05-14",
+			OrganizationID: new("999"),
+			TeamID:         43,
+			Slug:           "backend",
+		},
+		{
+			UserID:       1002,
+			UserLogin:    "hubot",
+			Day:          "2026-05-14",
+			EnterpriseID: new("1"),
+			TeamID:       9001,
+			Slug:         "eng-platform",
+		},
+	}
+
+	if !cmp.Equal(got, want) {
+		t.Errorf("Copilot.DownloadUserTeamsDailyMetrics returned %+v, want %+v", got, want)
+	}
+
+	mux.HandleFunc("/path/to/user-teams-daily/empty", func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+	})
+	gotEmpty, _, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, client.baseURL.String()+"path/to/user-teams-daily/empty")
+	if err != nil {
+		t.Errorf("Copilot.DownloadUserTeamsDailyMetrics empty body returned error: %v", err)
+	}
+	if gotEmpty != nil {
+		t.Errorf("Copilot.DownloadUserTeamsDailyMetrics empty body returned %+v, want nil", gotEmpty)
+	}
+
+	mux.HandleFunc("/path/to/user-teams-daily/error", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		w.WriteHeader(http.StatusNotFound)
+	})
+	if _, _, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, client.baseURL.String()+"path/to/user-teams-daily/error"); err == nil {
+		t.Error("Copilot.DownloadUserTeamsDailyMetrics expected error but got none")
+	}
+	if _, _, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, "\n"); err == nil {
+		t.Error("Copilot.DownloadUserTeamsDailyMetrics expected error for invalid URL, got none")
+	}
+	if _, _, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, "invalid-scheme://test"); err == nil {
+		t.Error("Copilot.DownloadUserTeamsDailyMetrics expected error for invalid scheme, got none")
+	}
+
+	mux.HandleFunc("/path/to/user-teams-daily/badjson", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, "{\"user_id\":1,\"day\":\"2026-05-14\"}\n{bad\n")
+	})
+	if _, _, err := client.Copilot.DownloadUserTeamsDailyMetrics(ctx, client.baseURL.String()+"path/to/user-teams-daily/badjson"); err == nil {
+		t.Error("Copilot.DownloadUserTeamsDailyMetrics expected error for bad JSON, got none")
 	}
 }

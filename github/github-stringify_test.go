@@ -520,8 +520,9 @@ func TestCreateTeamRequest_String(t *testing.T) {
 		Permission:          new(""),
 		ParentTeamID:        new(int64(0)),
 		ParentTeamSlug:      new(""),
+		LDAPDN:              new(""),
 	}
-	want := `github.CreateTeamRequest{Name:"", Description:"", Maintainers:[""], RepoNames:[""], Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:""}`
+	want := `github.CreateTeamRequest{Name:"", Description:"", Maintainers:[""], RepoNames:[""], Privacy:"", NotificationSetting:"", Permission:"", ParentTeamID:0, ParentTeamSlug:"", LDAPDN:""}`
 	if got := v.String(); got != want {
 		t.Errorf("CreateTeamRequest.String = %v, want %v", got, want)
 	}
@@ -613,6 +614,32 @@ func TestEnterpriseBudget_String(t *testing.T) {
 	want := `github.EnterpriseBudget{ID:"", BudgetType:"", BudgetProductSKU:"", BudgetScope:"", BudgetEntityName:"", BudgetAmount:0, PreventFurtherUsage:false, BudgetAlerting:github.EnterpriseBudgetAlerting{}}`
 	if got := v.String(); got != want {
 		t.Errorf("EnterpriseBudget.String = %v, want %v", got, want)
+	}
+}
+
+func TestEnterpriseBudgetUserState_String(t *testing.T) {
+	t.Parallel()
+	v := EnterpriseBudgetUserState{
+		User:             new(""),
+		ConsumedAmount:   0.0,
+		TargetAmount:     0.0,
+		OverrideBudgetID: new(""),
+	}
+	want := `github.EnterpriseBudgetUserState{User:"", ConsumedAmount:0, TargetAmount:0, OverrideBudgetID:""}`
+	if got := v.String(); got != want {
+		t.Errorf("EnterpriseBudgetUserState.String = %v, want %v", got, want)
+	}
+}
+
+func TestEnterpriseBudgetUserStates_String(t *testing.T) {
+	t.Parallel()
+	v := EnterpriseBudgetUserStates{
+		HasNextPage: false,
+		TotalCount:  0,
+	}
+	want := `github.EnterpriseBudgetUserStates{HasNextPage:false, TotalCount:0}`
+	if got := v.String(); got != want {
+		t.Errorf("EnterpriseBudgetUserStates.String = %v, want %v", got, want)
 	}
 }
 
@@ -849,10 +876,11 @@ func TestHookDelivery_String(t *testing.T) {
 		Action:         new(""),
 		InstallationID: new(int64(0)),
 		RepositoryID:   new(int64(0)),
+		ThrottledAt:    &Timestamp{},
 		Request:        &HookRequest{},
 		Response:       &HookResponse{},
 	}
-	want := `github.HookDelivery{ID:0, GUID:"", DeliveredAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Redelivery:false, Duration:0, Status:"", StatusCode:0, Event:"", Action:"", InstallationID:0, RepositoryID:0, Request:github.HookRequest{}, Response:github.HookResponse{}}`
+	want := `github.HookDelivery{ID:0, GUID:"", DeliveredAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Redelivery:false, Duration:0, Status:"", StatusCode:0, Event:"", Action:"", InstallationID:0, RepositoryID:0, ThrottledAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Request:github.HookRequest{}, Response:github.HookResponse{}}`
 	if got := v.String(); got != want {
 		t.Errorf("HookDelivery.String = %v, want %v", got, want)
 	}
@@ -2050,20 +2078,22 @@ func TestRepository_String(t *testing.T) {
 func TestRepositoryComment_String(t *testing.T) {
 	t.Parallel()
 	v := RepositoryComment{
-		HTMLURL:   new(""),
-		URL:       new(""),
-		ID:        new(int64(0)),
-		NodeID:    new(""),
-		CommitID:  new(""),
-		User:      &User{},
-		Reactions: &Reactions{},
-		CreatedAt: &Timestamp{},
-		UpdatedAt: &Timestamp{},
-		Body:      new(""),
-		Path:      new(""),
-		Position:  new(0),
+		HTMLURL:           new(""),
+		URL:               new(""),
+		ID:                new(int64(0)),
+		NodeID:            new(""),
+		CommitID:          new(""),
+		User:              &User{},
+		AuthorAssociation: new(""),
+		Reactions:         &Reactions{},
+		CreatedAt:         &Timestamp{},
+		UpdatedAt:         &Timestamp{},
+		Body:              new(""),
+		Path:              new(""),
+		Position:          new(0),
+		Line:              new(0),
 	}
-	want := `github.RepositoryComment{HTMLURL:"", URL:"", ID:0, NodeID:"", CommitID:"", User:github.User{}, Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Body:"", Path:"", Position:0}`
+	want := `github.RepositoryComment{HTMLURL:"", URL:"", ID:0, NodeID:"", CommitID:"", User:github.User{}, AuthorAssociation:"", Reactions:github.Reactions{}, CreatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, UpdatedAt:github.Timestamp{0001-01-01 00:00:00 +0000 UTC}, Body:"", Path:"", Position:0, Line:0}`
 	if got := v.String(); got != want {
 		t.Errorf("RepositoryComment.String = %v, want %v", got, want)
 	}

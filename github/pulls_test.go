@@ -756,6 +756,115 @@ func TestPullRequestsService_Merge(t *testing.T) {
 	})
 }
 
+func TestPullRequestsService_MergeAsync(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	request := PullRequestMergeAsyncRequest{
+		MergeMethod: new("squash"),
+		MergeAction: new("default"),
+	}
+
+	mux.HandleFunc("/repos/o/r/pulls/1/merge-async", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testJSONBody(t, r, request)
+		fmt.Fprint(w, `
+			{
+			  "status": "pending",
+			  "details": {
+			    "message": "Merge request enqueued.",
+			    "uuid": "630b9d5e-3f2a-4f7e-8b0c-2d5f9a8c1e42",
+			    "merge_method": "squash",
+			    "merge_action": "default",
+			    "expected_head_sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+			  }
+			}`)
+	})
+
+	ctx := t.Context()
+	result, _, err := client.PullRequests.MergeAsync(ctx, "o", "r", 1, request)
+	if err != nil {
+		t.Errorf("PullRequests.MergeAsync returned error: %v", err)
+	}
+
+	want := &PullRequestMergeAsyncResult{
+		Status: new("pending"),
+		Details: &PullRequestMergeAsyncDetails{
+			Message:         new("Merge request enqueued."),
+			UUID:            new("630b9d5e-3f2a-4f7e-8b0c-2d5f9a8c1e42"),
+			MergeMethod:     new("squash"),
+			MergeAction:     new("default"),
+			ExpectedHeadSHA: new("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+		},
+	}
+	if !cmp.Equal(result, want) {
+		t.Errorf("PullRequests.MergeAsync returned %+v, want %+v", result, want)
+	}
+
+	const methodName = "MergeAsync"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.MergeAsync(ctx, "\n", "\n", -1, request)
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.MergeAsync(ctx, "o", "r", 1, request)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
+func TestPullRequestsService_GetMergeAsyncResult(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	const uuid = "630b9d5e-3f2a-4f7e-8b0c-2d5f9a8c1e42"
+	mux.HandleFunc(fmt.Sprintf("/repos/o/r/pulls/1/merge-async/%v", uuid), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `
+			{
+			  "status": "merged",
+			  "details": {
+			    "message": "Pull request was merged.",
+			    "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e"
+			  }
+			}`)
+	})
+
+	ctx := t.Context()
+	result, _, err := client.PullRequests.GetMergeAsyncResult(ctx, "o", "r", 1, uuid)
+	if err != nil {
+		t.Errorf("PullRequests.GetMergeAsyncResult returned error: %v", err)
+	}
+
+	want := &PullRequestMergeAsyncResult{
+		Status: new("merged"),
+		Details: &PullRequestMergeAsyncDetails{
+			Message: new("Pull request was merged."),
+			SHA:     new("6dcb09b5b57875f334f61aebed695e2e4193db5e"),
+		},
+	}
+	if !cmp.Equal(result, want) {
+		t.Errorf("PullRequests.GetMergeAsyncResult returned %+v, want %+v", result, want)
+	}
+
+	const methodName = "GetMergeAsyncResult"
+	testBadOptions(t, methodName, func() (err error) {
+		_, _, err = client.PullRequests.GetMergeAsyncResult(ctx, "\n", "\n", -1, "\n")
+		return err
+	})
+
+	testNewRequestAndDoFailure(t, methodName, client, func() (*Response, error) {
+		got, resp, err := client.PullRequests.GetMergeAsyncResult(ctx, "o", "r", 1, uuid)
+		if got != nil {
+			t.Errorf("testNewRequestAndDoFailure %v = %#v, want nil", methodName, got)
+		}
+		return resp, err
+	})
+}
+
 // Test that different merge options produce expected PUT requests. See issue https://github.com/google/go-github/issues/500.
 func TestPullRequestsService_Merge_options(t *testing.T) {
 	t.Parallel()
