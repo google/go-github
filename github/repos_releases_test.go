@@ -7,6 +7,7 @@ package github
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -855,30 +856,80 @@ func TestRepositoriesService_UploadReleaseAssetFromRelease_ForeignHostIsRejected
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	// A server that hands out an absolute upload URL naming a different host must not
-	// be able to redirect the upload - and therefore the caller's Authorization header
-	// and the artifact body - away from the host the client was configured with.
-	var leaked int
-	evil := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		leaked++
+	// A response that hands out an absolute upload URL naming a different host must
+	// not be able to take the caller's artifact with it. Withholding only the
+	// credential would not be enough here: the body would still arrive, and the call
+	// would return a nil error and a *ReleaseAsset, telling the caller the upload
+	// succeeded when the bytes went somewhere the caller never configured. So the
+	// destination is refused instead, and the foreign host is never contacted at all.
+	reached := make(chan struct{}, 1)
+	foreign := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		select {
+		case reached <- struct{}{}:
+		default:
+		}
 		fmt.Fprint(w, `{"id":1}`)
 	}))
-	t.Cleanup(evil.Close)
+	t.Cleanup(foreign.Close)
 
-	body := []byte("private artifact\n")
+	authedClient, err := client.Clone(WithAuthToken("secret-token"))
+	if err != nil {
+		t.Fatalf("Client.Clone returned error: %v", err)
+	}
+
+	body := []byte("artifact\n")
 	reader := bytes.NewReader(body)
 	size := int64(len(body))
 
-	release := &RepositoryRelease{UploadURL: evil.URL + "/upload{?name,label}"}
+	release := &RepositoryRelease{UploadURL: foreign.URL + "/upload{?name,label}"}
 	ctx := t.Context()
-	_, _, err := client.Repositories.UploadReleaseAssetFromRelease(
+	asset, _, err := authedClient.Repositories.UploadReleaseAssetFromRelease(
 		ctx, release, &UploadOptions{Name: "n.txt"}, reader, size,
 	)
-	if err == nil {
-		t.Fatal("expected an error for an upload URL naming a foreign host, got nil")
+	if !errors.Is(err, ErrUntrustedDestination) {
+		t.Fatalf("UploadReleaseAssetFromRelease to a foreign host: want ErrUntrustedDestination, got err=%v", err)
 	}
-	if leaked != 0 {
-		t.Fatalf("upload reached the foreign host %v time(s); the token and body must never be sent there", leaked)
+	if asset != nil {
+		t.Errorf("UploadReleaseAssetFromRelease returned asset %+v for a refused upload, want nil", asset)
+	}
+
+	select {
+	case <-reached:
+		t.Fatal("the artifact was sent to a foreign host; the upload must be refused before any byte is written")
+	default:
+	}
+}
+
+func TestRepositoriesService_UploadReleaseAssetFromRelease_ConfiguredUploadHost(t *testing.T) {
+	t.Parallel()
+	client, mux, _ := setup(t)
+
+	// The counterpart to the rejection above: an absolute URL naming the client's own
+	// configured upload origin is the ordinary case and must still be uploaded to.
+	mux.HandleFunc("/repos/o/r/releases/1/assets", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testFormValues(t, r, values{"name": "cfg.txt"})
+		testPlainBody(t, r, "Upload me !\n")
+		fmt.Fprint(w, `{"id":1}`)
+	})
+
+	body := []byte("Upload me !\n")
+	reader := bytes.NewReader(body)
+	size := int64(len(body))
+
+	uploadURL := client.uploadURL.String() + "repos/o/r/releases/1/assets{?name,label}"
+	release := &RepositoryRelease{UploadURL: uploadURL}
+
+	ctx := t.Context()
+	asset, _, err := client.Repositories.UploadReleaseAssetFromRelease(
+		ctx, release, &UploadOptions{Name: "cfg.txt"}, reader, size,
+	)
+	if err != nil {
+		t.Fatalf("UploadReleaseAssetFromRelease returned error: %v", err)
+	}
+	want := &ReleaseAsset{ID: new(int64(1))}
+	if !cmp.Equal(asset, want) {
+		t.Fatalf("UploadReleaseAssetFromRelease returned %+v, want %+v", asset, want)
 	}
 }
 
