@@ -4798,7 +4798,7 @@ func TestBasicAuthTransport_originScope(t *testing.T) {
 	})
 
 	// ...and any other origin receives neither. The OTP is a second factor, so a
-	// foreign origin must not see it even though it is not a "credential" per se.
+	// foreign origin must not see it even though it is not itself a "credential".
 	foreign, foreignMux, _ := setup(t)
 	foreignMux.HandleFunc("/", func(_ http.ResponseWriter, r *http.Request) {
 		if u, p, ok := r.BasicAuth(); ok {
