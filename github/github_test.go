@@ -1739,9 +1739,31 @@ func TestNewFormRequest_rejectsUnconfiguredDestination(t *testing.T) {
 	t.Parallel()
 	c := mustNewClient(t)
 
-	_, err := c.NewFormRequest(t.Context(), "https://evil.example.com/hub", strings.NewReader("a=b"))
-	if !errors.Is(err, ErrUntrustedDestination) {
-		t.Fatalf("NewFormRequest to a foreign host: want ErrUntrustedDestination, got %v", err)
+	tests := []struct {
+		name   string
+		rawurl string
+	}{
+		{"foreign https host", "https://evil.example.com/hub"},
+		{"foreign http host", "http://evil.example.com/hub"},
+		{"scheme downgrade of a configured host", "http://api.github.com/hub"},
+		{"configured host as a prefix of the real host", "https://api.github.com.evil.example.com/hub"},
+		{"host that merely ends with the configured name", "https://evil-api.github.com/hub"},
+		{"subdomain of a configured host", "https://cdn.api.github.com/hub"},
+		{"non-default port on a configured host", "https://api.github.com:8443/hub"},
+		// The userinfo is a decoy: the host the check reads is the one after the
+		// @, evil.example.com -- foreign, so the body is refused. The allow table
+		// has the mirror case, where the userinfo names a foreign host instead.
+		{"userinfo naming a configured host", "https://api.github.com@evil.example.com/hub"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			_, err := c.NewFormRequest(t.Context(), tt.rawurl, strings.NewReader("a=b"))
+			if !errors.Is(err, ErrUntrustedDestination) {
+				t.Fatalf("NewFormRequest(%q): want ErrUntrustedDestination, got %v", tt.rawurl, err)
+			}
+		})
 	}
 
 	// A relative path resolves against BaseURL, which is always configured, so
@@ -2043,6 +2065,9 @@ func TestNewUploadRequest_rejectsUnconfiguredDestination(t *testing.T) {
 		{"host that merely ends with the configured name", "https://evil-uploads.github.com/upload"},
 		{"subdomain of a configured host", "https://cdn.uploads.github.com/upload"},
 		{"non-default port on a configured host", "https://uploads.github.com:8443/upload"},
+		// The userinfo is a decoy: the host the check reads is the one after the
+		// @, evil.example.com -- foreign, so the body is refused. The allow table
+		// has the mirror case, where the userinfo names a foreign host instead.
 		{"userinfo naming a configured host", "https://uploads.github.com@evil.example.com/upload"},
 	}
 

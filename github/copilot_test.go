@@ -6,12 +6,12 @@
 package github
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -3907,6 +3907,16 @@ func TestCopilotService_DownloadCopilotMetrics(t *testing.T) {
 	}
 }
 
+// downloadFunc adapts a Download*Metrics method whose decoded payload the table
+// below does not inspect into the error-only shape it runs. Each method returns a
+// different type, so the shared signature is what lets one case list them all.
+func downloadFunc[V any](f func(context.Context, string) (V, *Response, error)) func(context.Context, string) error {
+	return func(ctx context.Context, url string) error {
+		_, _, err := f(ctx, url)
+		return err
+	}
+}
+
 // TestCopilotService_DownloadMetrics_ForeignHostGetsNoCredentials covers the
 // download helpers whose URL comes straight out of a report response, and which
 // therefore may name any host: DownloadCopilotMetrics, and the fetchMetricsReport
@@ -3919,36 +3929,47 @@ func TestCopilotService_DownloadMetrics_ForeignHostGetsNoCredentials(t *testing.
 	t.Parallel()
 	client, _, _ := setup(t)
 
-	auth := make(chan string, 1)
-	foreign := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		select {
-		case auth <- r.Header.Get("Authorization"):
-		default:
-		}
-		if strings.HasSuffix(r.URL.Path, "/metrics") {
-			// DownloadCopilotMetrics decodes an array...
-			fmt.Fprint(w, `[]`)
-			return
-		}
-		// ...and DownloadDailyMetrics decodes an object.
-		fmt.Fprint(w, `{}`)
-	}))
-	t.Cleanup(foreign.Close)
-
 	authedClient, err := client.Clone(WithAuthToken("secret-token"))
 	if err != nil {
 		t.Fatalf("Client.Clone returned error: %v", err)
 	}
 
-	if _, _, err := authedClient.Copilot.DownloadDailyMetrics(t.Context(), foreign.URL+"/daily"); err != nil {
-		t.Fatalf("DownloadDailyMetrics returned error: %v", err)
+	tests := []struct {
+		name string
+		// payload is what the foreign host serves. The methods do not all decode
+		// the same shape, so each case carries one its method can parse: a case
+		// then fails on the header and not on a decode error.
+		payload  string
+		download func(ctx context.Context, url string) error
+	}{
+		{"DownloadCopilotMetrics decodes a JSON array", `[]`, downloadFunc(authedClient.Copilot.DownloadCopilotMetrics)},
+		{"DownloadDailyMetrics decodes a JSON object", `{}`, downloadFunc(authedClient.Copilot.DownloadDailyMetrics)},
+		{"DownloadPeriodicMetrics decodes a JSON object", `{}`, downloadFunc(authedClient.Copilot.DownloadPeriodicMetrics)},
+		{"DownloadUserDailyMetrics decodes NDJSON", `{}`, downloadFunc(authedClient.Copilot.DownloadUserDailyMetrics)},
+		{"DownloadUserPeriodicMetrics decodes NDJSON", `{}`, downloadFunc(authedClient.Copilot.DownloadUserPeriodicMetrics)},
+		{"DownloadRepositoryDailyMetrics decodes NDJSON", `{}`, downloadFunc(authedClient.Copilot.DownloadRepositoryDailyMetrics)},
+		{"DownloadUserTeamsDailyMetrics decodes NDJSON", `{}`, downloadFunc(authedClient.Copilot.DownloadUserTeamsDailyMetrics)},
 	}
-	assertRecordedAuthHeader(t, auth, "")
 
-	if _, _, err := authedClient.Copilot.DownloadCopilotMetrics(t.Context(), foreign.URL+"/metrics"); err != nil {
-		t.Fatalf("DownloadCopilotMetrics returned error: %v", err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			auth := make(chan string, 1)
+			foreign := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				select {
+				case auth <- r.Header.Get("Authorization"):
+				default:
+				}
+				fmt.Fprint(w, tt.payload)
+			}))
+			t.Cleanup(foreign.Close)
+
+			if err := tt.download(t.Context(), foreign.URL+"/path/to/report"); err != nil {
+				t.Fatalf("download returned error: %v", err)
+			}
+			assertRecordedAuthHeader(t, auth, "")
+		})
 	}
-	assertRecordedAuthHeader(t, auth, "")
 }
 
 func TestCopilotService_DownloadDailyMetrics(t *testing.T) {
