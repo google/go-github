@@ -192,6 +192,18 @@ func (s *RepositoriesService) DownloadContentsWithMeta(ctx context.Context, owne
 		return nil, fileContent, resp, ErrContentsNoDownloadURL
 	}
 
+	// download_url is a value the API chose, not the caller, so it is in the same
+	// family as a release's UploadURL. The two are not handled the same way, and
+	// the difference is what travels: this request carries no body of the
+	// caller's, and a download link is cross-origin by design — GitHub serves
+	// file content from raw.githubusercontent.com, and asset downloads from a
+	// pre-signed CDN host — so refusing a foreign origin here would break the
+	// ordinary path rather than a dangerous one. What the rules do cover is the
+	// credential: s.client's token is attached only to this client's configured
+	// origins, so a link naming another host is fetched without it. The residual
+	// is that the bytes come from whatever host the response named; a caller that
+	// needs the content to be provably GitHub's should read it from the API
+	// response itself.
 	dlReq, err := http.NewRequestWithContext(ctx, "GET", downloadURL, nil)
 	if err != nil {
 		return nil, fileContent, resp, err

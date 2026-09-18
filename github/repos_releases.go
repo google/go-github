@@ -12,7 +12,6 @@ import (
 	"io"
 	"mime"
 	"net/http"
-	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -326,9 +325,11 @@ func (s *RepositoriesService) GetReleaseAsset(ctx context.Context, owner, repo s
 // of the io.ReadCloser. Exactly one of rc and redirectURL will be zero.
 //
 // followRedirectsClient can be passed to download the asset from a redirected
-// location. Specifying any http.Client is possible, but passing http.DefaultClient
-// is recommended, except when the specified repository is private, in which case
-// it's necessary to pass an http.Client that performs authenticated requests.
+// location. The redirect target is typically a pre-signed third-party URL (for
+// example S3), so http.DefaultClient is recommended. The client's own
+// credentials reach only its configured API and upload origins, so they are not
+// attached to the redirected request in any case; supply a client that adds its
+// own credentials only if the redirect target requires them.
 // If nil is passed the redirectURL will be returned instead.
 //
 // GitHub API docs: https://docs.github.com/rest/releases/assets?apiVersion=2022-11-28#get-a-release-asset
@@ -475,6 +476,15 @@ func (s *RepositoriesService) UploadReleaseAsset(ctx context.Context, owner, rep
 // templated like "https://uploads.github.com/.../assets{?name,label}") and uploads
 // the provided data (reader + size) using the existing upload helpers.
 //
+// Because release is normally the object an API call returned, its UploadURL is
+// a value the server chose rather than one the caller did. A release whose
+// UploadURL names an origin the client was not configured for is refused with
+// [ErrUntrustedDestination] rather than uploaded to, so that a response cannot
+// take the artifact to a host of its own choosing. This function performs no
+// host check of its own: the refusal comes from [Client.NewUploadRequest], which
+// every upload here is built through. Configure a legitimate alternate upload
+// host with [WithURLs] or [WithEnterpriseURLs].
+//
 // GitHub API docs: https://docs.github.com/rest/releases/assets?apiVersion=2022-11-28#upload-a-release-asset
 //
 //meta:operation POST /repos/{owner}/{repo}/releases/{release_id}/assets
@@ -503,27 +513,17 @@ func (s *RepositoriesService) UploadReleaseAssetFromRelease(
 
 	// If this is a *relative* URL (no scheme), normalize it by trimming a leading "/"
 	// so it works with Client.BaseURL path prefixes (e.g. "/api-v3/").
+	//
+	// An absolute URL replaces the client's configured upload host entirely, and
+	// release.UploadURL is normally whatever the API last answered with, so the
+	// host in it is not the caller's choice. NewUploadRequest refuses that case
+	// with ErrUntrustedDestination unless it names a configured origin, so
+	// there is no host check here: every upload this helper builds goes through
+	// that one gate. In the default configuration the upload host is
+	// uploads.github.com rather than api.github.com, and both are configured
+	// origins, so the URL the API hands back is accepted as-is.
 	if !strings.HasPrefix(uploadURL, "http://") && !strings.HasPrefix(uploadURL, "https://") {
 		uploadURL = strings.TrimPrefix(uploadURL, "/")
-	} else {
-		// This helper is the one upload entry point whose URL comes from a server
-		// response rather than from the caller, and an absolute URL replaces the
-		// client's configured upload host entirely. Left unchecked, a response could
-		// name any host and receive the artifact together with the caller's
-		// Authorization header. Keep the upload on the host the client was
-		// configured with; that is uploads.github.com rather than api.github.com in
-		// the default configuration, which is why the comparison is against
-		// uploadURL and not baseURL.
-		u, err := url.Parse(uploadURL)
-		if err != nil {
-			return nil, nil, err
-		}
-		if !strings.EqualFold(u.Host, s.client.uploadURL.Host) {
-			return nil, nil, fmt.Errorf(
-				"upload URL host %v does not match the client's configured upload host %v",
-				u.Host, s.client.uploadURL.Host,
-			)
-		}
 	}
 
 	// addOptions will append name/label query params (same behavior as UploadReleaseAsset).
