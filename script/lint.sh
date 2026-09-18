@@ -96,6 +96,14 @@ if [ -n "$CHECK_GITHUB_OPENAPI" ]; then
     printf "${RED}✘ openapi_operations.yaml validation failed${NC}\n"
     fail
   fi
+
+  print_header "Checking request body fields against the OpenAPI schemas"
+  if script/check-schema-fields.sh; then
+    printf "${GREEN}✔ request body fields match the OpenAPI schemas${NC}\n"
+  else
+    printf "${RED}✘ request body fields disagree with the OpenAPI schemas${NC}\n"
+    fail
+  fi
 fi
 
 print_header "Validating generated files"
