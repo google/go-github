@@ -27,7 +27,7 @@ func TestRepositoriesService_ListAttestations(t *testing.T) {
 				},
 				{
 					"repository_id": 2,
-					"bundle": {}
+					"bundle_url": "https://example.com/attestations/2"
 				}
 			]
 		}`)
@@ -46,7 +46,7 @@ func TestRepositoriesService_ListAttestations(t *testing.T) {
 			},
 			{
 				RepositoryID: 2,
-				Bundle:       []byte(`{}`),
+				BundleURL:    new("https://example.com/attestations/2"),
 			},
 		},
 	}
