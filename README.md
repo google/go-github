@@ -172,6 +172,8 @@ func main() {
 
 `go-githubauth` implements a set of `oauth2.TokenSource` to be used with `oauth2.Client`. An `oauth2.Client` can be injected into the `github.Client` to authenticate requests.
 
+`NewApplicationTokenSource` accepts either the App's client ID (a `string`, which GitHub now recommends) or its legacy app ID (an `int64`).
+
 Another example using `go-githubauth`:
 
 ```go
@@ -190,14 +192,21 @@ import (
 
 func main() {
 	privateKey := []byte(os.Getenv("GITHUB_APP_PRIVATE_KEY"))
+	clientID := os.Getenv("GITHUB_APP_CLIENT_ID")
 
-	appTokenSource, err := githubauth.NewApplicationTokenSource(1112, privateKey)
+	installationID, err := strconv.ParseInt(os.Getenv("GITHUB_APP_INSTALLATION_ID"), 10, 64)
+	if err != nil {
+		fmt.Println("Error parsing installation ID:", err)
+		return
+	}
+
+	appTokenSource, err := githubauth.NewApplicationTokenSource(clientID, privateKey)
 	if err != nil {
 		fmt.Println("Error creating application token source:", err)
 		return
-	 }
+	}
 
-	installationTokenSource := githubauth.NewInstallationTokenSource(1113, appTokenSource)
+	installationTokenSource := githubauth.NewInstallationTokenSource(installationID, appTokenSource)
 
 	// oauth2.NewClient uses oauth2.ReuseTokenSource to reuse the token until it expires.
 	// The token will be automatically refreshed when it expires.
@@ -208,6 +217,8 @@ func main() {
 	if err != nil {
 		// Handle error.
 	}
+
+	// Use client...
 }
 ```
 
