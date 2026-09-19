@@ -416,6 +416,11 @@ type RepositoryRuleset struct {
 For optional boolean fields where you need to distinguish between `false`
 and "not set", use `*bool` with `omitzero`.
 
+Whether a request body property is required is documented by GitHub in their
+OpenAPI descriptions, not in this repository, so these rules are checked by
+`script/check-schema-fields.sh` against those descriptions. See the
+[tools/schemafields](#toolsschemafields) section for more information.
+
 #### Response Bodies
 
 Follow the same conventions as request bodies for `omitempty` and
@@ -584,11 +589,12 @@ Conventions to follow:
 ## Metadata
 
 GitHub publishes [OpenAPI descriptions of their API][]. We use these
-descriptions to keep documentation links up to date and to keep track of which
+descriptions to keep documentation links up to date, to keep track of which
 methods call which endpoints via the `//meta:operation` comments described
-above. GitHub's descriptions are far too large to keep in this repository or to
-pull down every time we generate code, so we keep only the metadata we need
-in `openapi_operations.yaml`.
+above, and to check that request body fields are required exactly when the API
+requires them. GitHub's descriptions are far too large to keep in this
+repository or to pull down every time we generate code, so we keep only the
+metadata we need in `openapi_operations.yaml`.
 
 ### openapi_operations.yaml
 
@@ -652,6 +658,43 @@ Its subcommands are:
 - `unused` - lists operations from `openapi_operations.yaml` that are not mapped
   from any methods.
 
+### tools/schemafields
+
+The `tools/schemafields` package checks Go request body struct field
+optionality against GitHub's OpenAPI request body schemas. It is run by
+`script/check-schema-fields.sh`, which `script/lint.sh` and the `linter`
+workflow call, so you rarely need to run it directly.
+
+The struct-to-schema mapping is derived automatically: the tool takes the
+`//meta:operation` annotation that a method already has, and checks the `body`
+parameter that `paramcheck` requires to be passed by value. An endpoint is
+therefore checked without any extra annotation, and coverage grows as pointer
+bodies are converted to by-value ones.
+
+Its flags are:
+
+- `-fix` repairs the findings that can be repaired mechanically: adding or
+  removing `omitempty` and `omitzero`, and converting fields between value and
+  pointer types. A field whose type changes can require a call site or a test
+  to be updated, and `script/generate.sh` must be run afterward to regenerate
+  the accessors.
+- `-write-exceptions` rewrites `tools/schemafields/exceptions.txt` from the
+  current findings.
+- `-descriptions` checks against local OpenAPI description files instead of
+  downloading the ones pinned in `openapi_operations.yaml`.
+- `-verbose` lists request bodies that no operation could be found to check.
+
+GitHub's descriptions are large, so a run without `-descriptions` downloads
+them from `github/rest-api-description` at the `openapi_commit` pinned in
+`openapi_operations.yaml` and caches them in the user cache directory; a
+repeated run is therefore offline.
+
+Findings are reported as `ERROR`s, which fail the run, and `WARN`ings, which
+are advisory. `tools/schemafields/exceptions.txt` grandfathers the findings
+that the repository already has, so that a pull request is only told about the
+ones it introduces. An entry that no finding needs any more is reported as
+obsolete, and `-fix` removes it, so the file can only shrink.
+
 [OpenAPI descriptions of their API]: https://github.com/github/rest-api-description
 
 ## Scripts
@@ -663,6 +706,7 @@ tasks:
 - `script/generate.sh` runs code generators and `go mod tidy` on all modules. With `--check` it checks that the generated files are current.
 - `script/lint.sh` runs linters on the project and checks generated files are current.
 - `script/metadata.sh` runs `tools/metadata`. See the [Metadata](#metadata) section for more information.
+- `script/check-schema-fields.sh` runs `tools/schemafields`. See the [tools/schemafields](#toolsschemafields) section for more information.
 - `script/test.sh` runs tests on all modules.
 
 ## Maintainer's Guide
