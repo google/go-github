@@ -148,18 +148,16 @@ func run(stdout, stderr io.Writer, args []string) error {
 	if o.writeExceptions {
 		keys := make([]string, 0, len(c.diags))
 		for _, d := range c.diags {
-			if !slices.Contains(keys, d.key()) {
-				keys = append(keys, d.key())
-			}
+			keys = append(keys, d.key())
 		}
 		slices.Sort(keys)
-		if err := exc.write(keys); err != nil {
+		exc.setEntries(keys) // Dropping the duplicates that several findings share.
+		if err := exc.write(exc.entries); err != nil {
 			return err
 		}
 		// The file now holds every finding, so the run that regenerated it is clean
 		// and can be used to set the baseline for a repository that has none yet.
-		exc.entries = keys
-		fmt.Fprintf(stderr, "wrote %v exception(s) to %v\n", len(keys), exc.path)
+		fmt.Fprintf(stderr, "wrote %v exception(s) to %v\n", len(exc.entries), exc.path)
 	}
 
 	threshold := sevWarn
@@ -230,7 +228,7 @@ func fixAll(c *checker, exc *exceptions, o *options, stderr io.Writer) error {
 		if err := exc.write(kept); err != nil {
 			return err
 		}
-		exc.entries = kept
+		exc.setEntries(kept)
 		fmt.Fprintf(stderr, "dropped %v obsolete exception(s) from %v\n", len(obsolete), exc.path)
 	}
 	return nil

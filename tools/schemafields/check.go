@@ -188,18 +188,13 @@ func (c *checker) run() {
 	})
 }
 
-// useView is one operation's opinion about one field.
-type useView struct {
-	required bool
-	nullable bool
-}
-
 func (c *checker) checkStruct(si *structInfo, uses []*structUse) {
 	for _, f := range si.fields {
 		c.stats.fieldsChecked++
 
-		var checkable []*useView
+		// One pass over the operations, counting what they agree on.
 		inSchema := false
+		checkable, required, nullable := 0, 0, false
 		for _, u := range uses {
 			meta, ok := u.schema.props[f.jsonName]
 			if !ok {
@@ -211,10 +206,11 @@ func (c *checker) checkStruct(si *structInfo, uses []*structUse) {
 				// apply to it.
 				continue
 			}
-			checkable = append(checkable, &useView{
-				required: u.schema.required[f.jsonName],
-				nullable: meta.nullable,
-			})
+			checkable++
+			if u.schema.required[f.jsonName] {
+				required++
+			}
+			nullable = nullable || meta.nullable
 		}
 
 		if !inSchema {
@@ -225,22 +221,14 @@ func (c *checker) checkStruct(si *structInfo, uses []*structUse) {
 			})
 			continue
 		}
-		if len(checkable) == 0 {
+		if checkable == 0 {
 			continue // Present in the schema, but readOnly in every operation.
 		}
 
-		required, nullable := 0, false
-		for _, v := range checkable {
-			if v.required {
-				required++
-			}
-			nullable = nullable || v.nullable
-		}
-
-		switch {
-		case required == len(checkable):
-			c.checkRequired(f, si, len(checkable), nullable)
-		case required == 0:
+		switch required {
+		case checkable:
+			c.checkRequired(f, si, checkable, nullable)
+		case 0:
 			c.checkOptional(f, si)
 		default:
 			// Required by some operations and optional in others: conditional
@@ -349,7 +337,22 @@ func missingRequiredProps(si *structInfo, uses []*structUse) []string {
 type exceptions struct {
 	path     string
 	comments []string
-	entries  []string
+	entries  []string        // In file order, so that a rewrite keeps the file stable.
+	known    map[string]bool // The same keys, so that a lookup is not a scan.
+}
+
+// setEntries replaces the entries. The ordered slice and the lookup map are built together,
+// so that they cannot disagree, and duplicates are dropped.
+func (e *exceptions) setEntries(entries []string) {
+	e.entries = nil
+	e.known = make(map[string]bool, len(entries))
+	for _, entry := range entries {
+		if e.known[entry] {
+			continue
+		}
+		e.known[entry] = true
+		e.entries = append(e.entries, entry)
+	}
 }
 
 // loadExceptions reads the exceptions file. A missing file is not an error.
@@ -362,22 +365,24 @@ func loadExceptions(path string) (*exceptions, error) {
 	if err != nil {
 		return nil, err
 	}
+	var entries []string
 	for line := range strings.Lines(string(data)) {
 		line = strings.TrimSpace(line)
 		switch {
 		case line == "":
 		case strings.HasPrefix(line, "#"):
 			e.comments = append(e.comments, line)
-		case !slices.Contains(e.entries, line):
-			e.entries = append(e.entries, line)
+		default:
+			entries = append(entries, line)
 		}
 	}
+	e.setEntries(entries)
 	return e, nil
 }
 
 // suppress reports whether key is grandfathered.
 func (e *exceptions) suppress(key string) bool {
-	return e != nil && slices.Contains(e.entries, key)
+	return e != nil && e.known[key]
 }
 
 // obsolete returns the entries that no current finding needs.
@@ -385,13 +390,13 @@ func (e *exceptions) obsolete(diags []*diagnostic) []string {
 	if e == nil {
 		return nil
 	}
-	keys := make([]string, 0, len(diags))
+	needed := make(map[string]bool, len(diags))
 	for _, d := range diags {
-		keys = append(keys, d.key())
+		needed[d.key()] = true
 	}
 	var out []string
 	for _, entry := range e.entries {
-		if !slices.Contains(keys, entry) {
+		if !needed[entry] {
 			out = append(out, entry)
 		}
 	}
